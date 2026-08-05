@@ -1,0 +1,16 @@
+{
+  "description": "Ordered pipeline stage names used to number magazine XML checkpoints. The position of a name in 'stages' (1-based) becomes the two-digit ordinal in 'checkpoint.<NN>_<stage>.xml', so lexicographic filename order equals execution order.",
+  "ordinal_width": 2,
+  "ordinal_width_allowed_range": "2..4",
+  "stages": [
+    "create_il",
+    "detect_scanned_file",
+    "layout_generator",
+    "table_parser",
+    "paragraph_finder",
+    "styles_and_formulas",
+    "il_translated",
+    "add_debug_information",
+    "typesetting"
+  ]
+}

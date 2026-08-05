@@ -217,6 +217,7 @@ class TranslationConfig:
         metadata_extra_data: str | None = None,
         term_pool_max_workers: int | None = None,
         disable_same_text_fallback: bool = False,
+        magazine_checkpoint: bool = False,
     ):
         self.translator = translator
         self.term_extraction_translator = term_extraction_translator or translator
@@ -336,6 +337,8 @@ class TranslationConfig:
         self.auto_enable_ocr_workaround = auto_enable_ocr_workaround
         self.skip_translation = skip_translation
         self.only_parse_generate_pdf = only_parse_generate_pdf
+        # Magazine extension: write round-trippable IL XML checkpoints per stage.
+        self.magazine_checkpoint = magazine_checkpoint
 
         if self.skip_translation or self.only_parse_generate_pdf:
             self.auto_extract_glossary = False

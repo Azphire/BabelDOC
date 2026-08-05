@@ -28,7 +28,14 @@ __pycache__
 .tmp
 yadt.toml
 yadt.toml*
-examples/
+examples/input/*
+examples/output/*
+examples/cache/*
+!examples/input/.gitkeep
+!examples/output/.gitkeep
+!examples/cache/.gitkeep
+!configs/*.json
+!corpus/*.json
 /make_gif.py
 /dist
 .cache

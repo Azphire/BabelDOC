@@ -52,6 +52,7 @@ from babeldoc.format.pdf.split_manager import SplitManager
 from babeldoc.format.pdf.translation_config import TranslateResult
 from babeldoc.format.pdf.translation_config import TranslationConfig
 from babeldoc.format.pdf.translation_config import WatermarkOutputMode
+from babeldoc.magazine.checkpoint import dump_checkpoint
 from babeldoc.progress_monitor import ProgressMonitor
 from babeldoc.utils import memory
 
@@ -918,6 +919,8 @@ def _do_translate_single(
             docs,
             translation_config.get_working_file_path("create_il.debug.json"),
         )
+    if translation_config.magazine_checkpoint:
+        dump_checkpoint(docs, translation_config, "create_il")
 
     if check_cid_char(docs):
         raise ExtractTextError("The document contains too many CID chars.")
@@ -948,6 +951,8 @@ def _do_translate_single(
                 docs,
                 translation_config.get_working_file_path("detect_scanned_file.json"),
             )
+        if translation_config.magazine_checkpoint:
+            dump_checkpoint(docs, translation_config, "detect_scanned_file")
 
     # Generate layouts for all pages
     logger.debug("start generating layouts")
@@ -959,6 +964,8 @@ def _do_translate_single(
             docs,
             translation_config.get_working_file_path("layout_generator.json"),
         )
+    if translation_config.magazine_checkpoint:
+        dump_checkpoint(docs, translation_config, "layout_generator")
 
     if translation_config.table_model:
         docs = TableParser(translation_config).process(docs, doc_pdf2zh)
@@ -968,6 +975,8 @@ def _do_translate_single(
                 docs,
                 translation_config.get_working_file_path("table_parser.json"),
             )
+        if translation_config.magazine_checkpoint:
+            dump_checkpoint(docs, translation_config, "table_parser")
     ParagraphFinder(translation_config).process(docs)
     logger.debug(f"finish paragraph finder from {temp_pdf_path}")
     if translation_config.debug:
@@ -975,6 +984,8 @@ def _do_translate_single(
             docs,
             translation_config.get_working_file_path("paragraph_finder.json"),
         )
+    if translation_config.magazine_checkpoint:
+        dump_checkpoint(docs, translation_config, "paragraph_finder")
     StylesAndFormulas(translation_config).process(docs)
     logger.debug(f"finish styles and formulas from {temp_pdf_path}")
     if translation_config.debug:
@@ -982,6 +993,8 @@ def _do_translate_single(
             docs,
             translation_config.get_working_file_path("styles_and_formulas.json"),
         )
+    if translation_config.magazine_checkpoint:
+        dump_checkpoint(docs, translation_config, "styles_and_formulas")
 
     translate_engine = translation_config.translator
     term_extraction_engine = translation_config.get_term_extraction_translator()
@@ -1011,6 +1024,8 @@ def _do_translate_single(
             docs,
             translation_config.get_working_file_path("il_translated.json"),
         )
+    if translation_config.magazine_checkpoint:
+        dump_checkpoint(docs, translation_config, "il_translated")
 
     if translation_config.debug:
         AddDebugInformation(translation_config).process(docs)
@@ -1018,6 +1033,8 @@ def _do_translate_single(
             docs,
             translation_config.get_working_file_path("add_debug_information.json"),
         )
+        if translation_config.magazine_checkpoint:
+            dump_checkpoint(docs, translation_config, "add_debug_information")
     mono_watermark_first_page_doc_bytes = None
     dual_watermark_first_page_doc_bytes = None
     try:
@@ -1042,6 +1059,8 @@ def _do_translate_single(
             docs,
             translation_config.get_working_file_path("typsetting.json"),
         )
+    if translation_config.magazine_checkpoint:
+        dump_checkpoint(docs, translation_config, "typesetting")
 
     pdf_creater = PDFCreater(temp_pdf_path, docs, translation_config, mediabox_data)
     result = pdf_creater.write(translation_config)

@@ -1,0 +1,27 @@
+{
+  "version": 1,
+  "samples": [
+    {
+      "file": "basic-en.pdf",
+      "sha256": "f3087ec79c39d68f1ba80f22355f5259e4eb1f384ab870453e1bc236350f9a74",
+      "pages": 6,
+      "notes": "English multi-page sample used as the primary B0 regression fixture.",
+      "baseline": {
+        "pdf": "examples/output/baseline/basic-en.b0.pdf",
+        "sha256": "f66d1c44aa2115fc4083de86939c2599b36efa963c6e863a359a3fe80ba6431d",
+        "checkpoints": "examples/output/baseline/basic-en.checkpoints"
+      }
+    },
+    {
+      "file": "passage-en.pdf",
+      "sha256": "c304d4a6af3e9978c31232df05aa0bf167ed7ff43ab1100099cdedb7372371e4",
+      "pages": 2,
+      "notes": "Short English passage; cheap fixture for fast gate runs.",
+      "baseline": {
+        "pdf": "examples/output/baseline/passage-en.b0.pdf",
+        "sha256": "f55b34bdfb46fbf7bf64a3500783c8dadd6e9fedccdaaaffb68411e8d3633115",
+        "checkpoints": "examples/output/baseline/passage-en.checkpoints"
+      }
+    }
+  ]
+}

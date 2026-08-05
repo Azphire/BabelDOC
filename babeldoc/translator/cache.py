@@ -27,6 +27,11 @@ MAX_CACHE_ROWS = 50_000  # Keep only the latest 50,000 rows
 # Thread-level mutex to ensure only one cleanup runs at a time within the process
 _cleanup_lock = threading.Lock()
 
+# Row eviction switch, set by init_db(). True keeps the upstream behaviour of
+# trimming the table down to MAX_CACHE_ROWS; False makes the cache durable for
+# callers that redirect the database to a project-local file.
+_cleanup_enabled = True
+
 
 class _TranslationCache(Model):
     id = AutoField()
@@ -127,6 +132,8 @@ class TranslationCache:
 
     def _cleanup(self) -> None:
         """Remove old cache entries, keeping only the latest MAX_CACHE_ROWS records."""
+        if not _cleanup_enabled:
+            return
         # Quick exit if another thread is already performing cleanup.
         if not _cleanup_lock.acquire(blocking=False):
             return
@@ -145,13 +152,32 @@ class TranslationCache:
             _cleanup_lock.release()
 
 
-def init_db(remove_exists=False):
-    CACHE_FOLDER.mkdir(parents=True, exist_ok=True)
-    # The current version does not support database migration, so add the version number to the file name.
-    cache_db_path = CACHE_FOLDER / "cache.v1.db"
+def init_db(
+    remove_exists=False,
+    db_path: Path | None = None,
+    enable_cleanup: bool = True,
+):
+    """Bind the deferred SQLite database.
+
+    ``db_path`` of None keeps the default global cache location. Passing a path
+    redirects the database, which is safe to call again after import because
+    peewee's ``Database.init`` closes the previous connection first.
+    ``enable_cleanup`` of False turns off MAX_CACHE_ROWS row eviction.
+    """
+    global _cleanup_enabled
+    _cleanup_enabled = enable_cleanup
+    if db_path is None:
+        CACHE_FOLDER.mkdir(parents=True, exist_ok=True)
+        # The current version does not support database migration, so add the version number to the file name.
+        cache_db_path = CACHE_FOLDER / "cache.v1.db"
+    else:
+        cache_db_path = Path(db_path)
+        cache_db_path.parent.mkdir(parents=True, exist_ok=True)
     logger.info(f"Initializing cache database at {cache_db_path}")
     if remove_exists and cache_db_path.exists():
         cache_db_path.unlink()
+    if not db.is_closed():
+        db.close()
     db.init(
         cache_db_path,
         pragmas={
