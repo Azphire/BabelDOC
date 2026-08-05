@@ -54,6 +54,21 @@
       <attribute name="Unit">
         <data type="string"/>
       </attribute>
+      <optional>
+        <attribute name="pageKind">
+          <data type="string"/>
+        </attribute>
+      </optional>
+      <optional>
+        <attribute name="pageKindConf">
+          <data type="float"/>
+        </attribute>
+      </optional>
+      <optional>
+        <attribute name="pageKindSource">
+          <data type="string"/>
+        </attribute>
+      </optional>
       <element name="baseOperations">
         <data type="string"/>
       </element>
@@ -325,6 +340,36 @@
       </optional>
       <optional>
         <attribute name="renderOrder">
+          <data type="int"/>
+        </attribute>
+      </optional>
+      <optional>
+        <attribute name="chainId">
+          <data type="string"/>
+        </attribute>
+      </optional>
+      <optional>
+        <attribute name="chainIndex">
+          <data type="int"/>
+        </attribute>
+      </optional>
+      <optional>
+        <attribute name="dropCapCandidate">
+          <data type="boolean"/>
+        </attribute>
+      </optional>
+      <optional>
+        <attribute name="dropCapDecision">
+          <data type="string"/>
+        </attribute>
+      </optional>
+      <optional>
+        <attribute name="segmentSentenceStart">
+          <data type="int"/>
+        </attribute>
+      </optional>
+      <optional>
+        <attribute name="segmentSentenceEnd">
           <data type="int"/>
         </attribute>
       </optional>

@@ -19,6 +19,9 @@ Page =
     PDFForm*,
     attribute pageNumber { xsd:int },
     attribute Unit { xsd:string },
+    attribute pageKind { xsd:string }?,
+    attribute pageKindConf { xsd:float }?,
+    attribute pageKindSource { xsd:string }?,
     element baseOperations { xsd:string }
   }
 Box =
@@ -110,6 +113,12 @@ PDFParagraph =
     attribute layout_label { xsd:string }?,
     attribute layout_id { xsd:int }?,
     attribute renderOrder { xsd:int }?,
+    attribute chainId { xsd:string }?,
+    attribute chainIndex { xsd:int }?,
+    attribute dropCapCandidate { xsd:boolean }?,
+    attribute dropCapDecision { xsd:string }?,
+    attribute segmentSentenceStart { xsd:int }?,
+    attribute segmentSentenceEnd { xsd:int }?,
     Box,
     PDFStyle,
     PDFParagraphComposition*

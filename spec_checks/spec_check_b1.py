@@ -1,0 +1,613 @@
+"""Gate script for batch B1 (IL schema extension: page kind, chains, drop caps).
+
+Run from the repository root:
+
+    python spec_checks/spec_check_b1.py
+
+Exit code 0 when every assertion in plans/PLAN_B1.md passes, 1 otherwise.
+Requires no API key: the pipeline is exercised with only_parse_generate_pdf and
+skip_translation.
+"""
+
+from __future__ import annotations
+
+import json
+import logging
+import re
+import shutil
+import subprocess
+import sys
+import tempfile
+import traceback
+import warnings
+import xml.etree.ElementTree as ET
+from dataclasses import fields as dataclass_fields
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT))
+
+from babeldoc.assets.assets import warmup  # noqa: E402
+from babeldoc.docvision.doclayout import DocLayoutModel  # noqa: E402
+from babeldoc.format.pdf import high_level  # noqa: E402
+from babeldoc.format.pdf.document_il import il_version_1  # noqa: E402
+from babeldoc.format.pdf.document_il.xml_converter import XMLConverter  # noqa: E402
+from babeldoc.format.pdf.parse_shared import _ParseOnlyDocLayoutModel  # noqa: E402
+from babeldoc.format.pdf.translation_config import TranslationConfig  # noqa: E402
+from babeldoc.format.pdf.translation_config import WatermarkOutputMode  # noqa: E402
+from babeldoc.magazine import ir_compat  # noqa: E402
+from babeldoc.magazine.cache_setup import use_project_cache  # noqa: E402
+from babeldoc.magazine.checkpoint import CHECKPOINT_PREFIX  # noqa: E402
+from xsdata.exceptions import ConverterWarning  # noqa: E402
+
+PYTHON = sys.executable
+MANIFEST_PATH = ROOT / "corpus" / "manifest.json"
+INPUT_DIR = ROOT / "examples" / "input"
+OUTPUT_DIR = ROOT / "examples" / "output" / "b1"
+SCHEMA_DIR = ROOT / "babeldoc" / "format" / "pdf" / "document_il"
+UPSTREAM_DIFF = ROOT / "UPSTREAM_DIFF.md"
+
+RNG_NS = "{http://relaxng.org/ns/structure/1.0}"
+XSD_NS = "{http://www.w3.org/2001/XMLSchema}"
+
+# XML attribute name -> (owning element, Python field name, Python type).
+NEW_ATTRIBUTES = {
+    "pageKind": ("page", "page_kind", str),
+    "pageKindConf": ("page", "page_kind_conf", float),
+    "pageKindSource": ("page", "page_kind_source", str),
+    "chainId": ("pdfParagraph", "chain_id", str),
+    "chainIndex": ("pdfParagraph", "chain_index", int),
+    "dropCapCandidate": ("pdfParagraph", "drop_cap_candidate", bool),
+    "dropCapDecision": ("pdfParagraph", "drop_cap_decision", str),
+    "segmentSentenceStart": ("pdfParagraph", "segment_sentence_start", int),
+    "segmentSentenceEnd": ("pdfParagraph", "segment_sentence_end", int),
+}
+NEW_FIELD_NAMES = {py for _, py, _ in NEW_ATTRIBUTES.values()}
+
+# Files allowed to mention the new names; everything else must stay free of
+# them until a later batch introduces consumers.
+NAME_REFERENCE_ALLOW_LIST = {
+    "babeldoc/format/pdf/document_il/il_version_1.py",
+    "babeldoc/magazine/ir_compat.py",
+    "spec_checks/spec_check_b1.py",
+}
+
+# Upstream files carried over from B0, still uncommitted in the working tree.
+ALLOWED_UPSTREAM_B0 = {
+    "babeldoc/format/pdf/high_level.py",
+    "babeldoc/format/pdf/translation_config.py",
+    "babeldoc/translator/cache.py",
+}
+# Upstream files this batch is allowed to touch.
+ALLOWED_UPSTREAM_B1 = {
+    "babeldoc/format/pdf/document_il/il_version_1.py",
+    "babeldoc/format/pdf/document_il/il_version_1.rnc",
+    "babeldoc/format/pdf/document_il/il_version_1.rng",
+    "babeldoc/format/pdf/document_il/il_version_1.xsd",
+}
+ALLOWED_UPSTREAM_OTHER = {".gitignore"}
+
+# Project-owned trees whose files must be free of non-ASCII comments.
+NEW_CODE_GLOBS = (
+    "babeldoc/magazine/*.py",
+    "tools/*.py",
+    "spec_checks/*.py",
+    "configs/*.json",
+    "corpus/*.json",
+)
+
+# CJK / fullwidth / CJK-punctuation ranges, kept as code points so that this
+# gate script stays pure ASCII itself.
+CJK_RANGES = ((0x3000, 0x303F), (0x4E00, 0x9FFF), (0xFF00, 0xFFEF))
+
+# The only converter warning tolerated when reading pipeline output (W-B0-02).
+KNOWN_CONVERTER_WARNING = "debug_info"
+
+_results: list[tuple[str, bool, str]] = []
+_tmp_root = Path(tempfile.mkdtemp(prefix="spec_b1_"))
+
+
+def has_cjk(text: str) -> bool:
+    return any(
+        any(low <= ord(char) <= high for low, high in CJK_RANGES) for char in text
+    )
+
+
+def record(name: str, ok: bool, detail: str = "") -> bool:
+    _results.append((name, ok, detail))
+    print(f"[{'PASS' if ok else 'FAIL'}] {name}" + (f" :: {detail}" if detail else ""))
+    return ok
+
+
+# --- schema parsing helpers -------------------------------------------------
+
+
+def rnc_attributes() -> dict[str, dict[str, bool]]:
+    """element name -> {attribute name: optional} parsed from the RNC grammar."""
+    text = (SCHEMA_DIR / "il_version_1.rnc").read_text(encoding="utf-8")
+    out: dict[str, dict[str, bool]] = {}
+    for match in re.finditer(r"element\s+(\w+)\s*\{", text):
+        name = match.group(1)
+        start = match.end()
+        index, depth = start, 1
+        while depth:
+            if text[index] == "{":
+                depth += 1
+            elif text[index] == "}":
+                depth -= 1
+            index += 1
+        body = text[start : index - 1]
+        # Nested element bodies belong to their own element, not to this one.
+        flat = re.sub(r"element\s+\w+\s*\{[^{}]*\}", "", body)
+        attrs: dict[str, bool] = {}
+        for attr in re.finditer(r"attribute\s+(\w+)\s*\{", flat):
+            cursor, depth = attr.end(), 1
+            while depth:
+                if flat[cursor] == "{":
+                    depth += 1
+                elif flat[cursor] == "}":
+                    depth -= 1
+                cursor += 1
+            attrs[attr.group(1)] = flat[cursor : cursor + 1] == "?"
+        out.setdefault(name, {}).update(attrs)
+    return out
+
+
+def rng_attributes() -> dict[str, dict[str, bool]]:
+    root = ET.parse(SCHEMA_DIR / "il_version_1.rng").getroot()  # noqa: S314
+    out: dict[str, dict[str, bool]] = {}
+
+    def walk(node, owner: str | None, optional: bool) -> None:
+        for child in node:
+            if child.tag == f"{RNG_NS}element":
+                name = child.get("name")
+                out.setdefault(name, {})
+                walk(child, name, False)
+            elif child.tag == f"{RNG_NS}attribute":
+                if owner is not None:
+                    out.setdefault(owner, {})[child.get("name")] = optional
+            elif child.tag == f"{RNG_NS}optional":
+                walk(child, owner, True)
+            else:
+                walk(child, owner, optional)
+
+    for define in root.findall(f"{RNG_NS}define"):
+        walk(define, None, False)
+    walk(root, None, False)
+    return out
+
+
+def xsd_attributes() -> dict[str, dict[str, bool]]:
+    root = ET.parse(SCHEMA_DIR / "il_version_1.xsd").getroot()  # noqa: S314
+    out: dict[str, dict[str, bool]] = {}
+    for element in root.findall(f"{XSD_NS}element"):
+        attrs: dict[str, bool] = {}
+        complex_type = element.find(f"{XSD_NS}complexType")
+        if complex_type is not None:
+            for attr in complex_type.findall(f"{XSD_NS}attribute"):
+                attrs[attr.get("name")] = attr.get("use") != "required"
+        out[element.get("name")] = attrs
+    return out
+
+
+# --- pipeline helpers -------------------------------------------------------
+
+
+def run_parse_only(pdf: Path, name: str) -> tuple[Path, Path]:
+    """Dry run a sample and freeze its mono PDF and checkpoints under b1/."""
+    stage_dir = _tmp_root / f"parse_only_{name}"
+    config = TranslationConfig(
+        translator=None,
+        input_file=pdf,
+        lang_in="en",
+        lang_out="zh",
+        doc_layout_model=_ParseOnlyDocLayoutModel(),
+        output_dir=stage_dir / "out",
+        working_dir=stage_dir / "work",
+        watermark_output_mode=WatermarkOutputMode.NoWatermark,
+        no_dual=True,
+        auto_extract_glossary=False,
+        only_parse_generate_pdf=True,
+        magazine_checkpoint=True,
+    )
+    result = high_level.translate(config)
+    OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
+    produced_pdf = OUTPUT_DIR / f"{name}.b1.pdf"
+    shutil.copyfile(result.mono_pdf_path, produced_pdf)
+
+    checkpoint_dir = OUTPUT_DIR / f"{name}.checkpoints"
+    if checkpoint_dir.exists():
+        shutil.rmtree(checkpoint_dir)
+    checkpoint_dir.mkdir(parents=True)
+    for item in sorted(Path(config.working_dir).glob(f"{CHECKPOINT_PREFIX}*")):
+        shutil.copyfile(item, checkpoint_dir / item.name)
+    return produced_pdf, checkpoint_dir
+
+
+def run_all_stages(pdf: Path, name: str) -> Path:
+    """Run every non-translation stage so paragraph-bearing checkpoints exist."""
+    stage_dir = _tmp_root / f"stages_{name}"
+    config = TranslationConfig(
+        translator=None,
+        input_file=pdf,
+        lang_in="en",
+        lang_out="zh",
+        doc_layout_model=DocLayoutModel.load_onnx(),
+        output_dir=stage_dir / "out",
+        working_dir=stage_dir / "work",
+        watermark_output_mode=WatermarkOutputMode.NoWatermark,
+        no_dual=True,
+        auto_extract_glossary=False,
+        skip_translation=True,
+        magazine_checkpoint=True,
+    )
+    high_level.translate(config)
+    checkpoint_dir = OUTPUT_DIR / f"{name}.stages"
+    if checkpoint_dir.exists():
+        shutil.rmtree(checkpoint_dir)
+    checkpoint_dir.mkdir(parents=True)
+    for item in sorted(Path(config.working_dir).glob(f"{CHECKPOINT_PREFIX}*")):
+        shutil.copyfile(item, checkpoint_dir / item.name)
+    return checkpoint_dir
+
+
+def render_diff(pdf_a: Path, pdf_b: Path, out_dir: Path) -> int:
+    proc = subprocess.run(  # noqa: S603 - fixed argv built from repository paths
+        [
+            PYTHON,
+            str(ROOT / "tools" / "render_diff.py"),
+            str(pdf_a),
+            str(pdf_b),
+            "--out",
+            str(out_dir),
+        ],
+        cwd=ROOT,
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    return proc.returncode
+
+
+def json_delta(old, new, path: str = "") -> list[str]:
+    """Report differences between two JSON trees, ignoring new null-valued keys."""
+    problems: list[str] = []
+    if isinstance(old, dict) and isinstance(new, dict):
+        for key in old:
+            if key not in new:
+                problems.append(f"{path}/{key}: key disappeared")
+            else:
+                problems.extend(json_delta(old[key], new[key], f"{path}/{key}"))
+        for key in new:
+            if key in old:
+                continue
+            if key not in NEW_FIELD_NAMES:
+                problems.append(f"{path}/{key}: unexpected new key")
+            elif new[key] is not None:
+                problems.append(f"{path}/{key}: new key carries {new[key]!r}")
+    elif isinstance(old, list) and isinstance(new, list):
+        if len(old) != len(new):
+            problems.append(f"{path}: length {len(old)} -> {len(new)}")
+        else:
+            for index, (a, b) in enumerate(zip(old, new, strict=True)):
+                problems.extend(json_delta(a, b, f"{path}[{index}]"))
+    elif old != new:
+        problems.append(f"{path}: {old!r} -> {new!r}")
+    return problems
+
+
+# --- assertions -------------------------------------------------------------
+
+
+def check_01_schema_attributes() -> None:
+    rnc, rng, xsd = rnc_attributes(), rng_attributes(), xsd_attributes()
+    missing: list[str] = []
+    not_optional: list[str] = []
+    for attribute, (element, _, _) in NEW_ATTRIBUTES.items():
+        for label, table in (("rnc", rnc), ("rng", rng), ("xsd", xsd)):
+            if attribute not in table.get(element, {}):
+                missing.append(f"{label}:{element}/{attribute}")
+            elif not table[element][attribute]:
+                not_optional.append(f"{label}:{element}/{attribute}")
+    record(
+        "01a all nine new attributes present in rnc, rng and xsd",
+        not missing,
+        f"missing={missing}",
+    )
+    record(
+        "01b every new attribute is optional in all three schemas",
+        not not_optional,
+        f"required={not_optional}",
+    )
+
+    elements = sorted(set(rnc) | set(rng) | set(xsd))
+    mismatched = [
+        name
+        for name in elements
+        if not (rnc.get(name) == rng.get(name) == xsd.get(name))
+    ]
+    record(
+        "01c the three schema files stay attribute-wise identical",
+        not mismatched,
+        f"elements={len(elements)} mismatched={mismatched}",
+    )
+
+
+def check_02_dataclass_fields() -> None:
+    problems: list[str] = []
+    models = {"page": il_version_1.Page, "pdfParagraph": il_version_1.PdfParagraph}
+    for attribute, (element, field_name, field_type) in NEW_ATTRIBUTES.items():
+        by_name = {f.name: f for f in dataclass_fields(models[element])}
+        if field_name not in by_name:
+            problems.append(f"{element}.{field_name}: missing")
+            continue
+        field = by_name[field_name]
+        if field.default is not None:
+            problems.append(f"{element}.{field_name}: default={field.default!r}")
+        if field.metadata.get("name") != attribute:
+            problems.append(
+                f"{element}.{field_name}: metadata name={field.metadata.get('name')!r}"
+            )
+        if field.metadata.get("type") != "Attribute":
+            problems.append(f"{element}.{field_name}: not mapped as an attribute")
+        if str(field.type) != f"{field_type.__name__} | None":
+            problems.append(f"{element}.{field_name}: type={field.type}")
+    record(
+        "02 Page and PdfParagraph expose the new fields with camelCase metadata",
+        not problems,
+        f"problems={problems}",
+    )
+
+
+def check_03_roundtrip() -> None:
+    try:
+        ir_compat.assert_new_fields_roundtrip()
+        record("03 assert_new_fields_roundtrip passes over the XML path", True)
+    except AssertionError as exc:
+        record(
+            "03 assert_new_fields_roundtrip passes over the XML path", False, str(exc)
+        )
+
+
+def check_04a_json_keys() -> None:
+    converter = XMLConverter()
+    payload = json.loads(converter.to_json(ir_compat.build_probe_document()))
+    page = payload["page"][0]
+    paragraph = page["pdf_paragraph"][0]
+    missing = [name for name in ir_compat.NEW_PAGE_FIELDS if name not in page]
+    missing += [
+        name for name in ir_compat.NEW_PARAGRAPH_FIELDS if name not in paragraph
+    ]
+    unset = [name for name in ir_compat.NEW_PAGE_FIELDS if page.get(name) is None]
+    unset += [
+        name for name in ir_compat.NEW_PARAGRAPH_FIELDS if paragraph.get(name) is None
+    ]
+    record(
+        "04a to_json emits every new key once the field is set",
+        not missing and not unset,
+        f"missing={missing} unset={unset}",
+    )
+
+
+def check_04b_json_stability(produced: dict[str, Path], manifest: dict) -> None:
+    problems: list[str] = []
+    compared = 0
+    for entry in manifest["samples"]:
+        name = Path(entry["file"]).stem
+        baseline_dir = ROOT / entry["baseline"]["checkpoints"]
+        for baseline_json in sorted(baseline_dir.glob("*.json")):
+            new_json = produced[name] / baseline_json.name
+            if not new_json.exists():
+                problems.append(f"{name}: {baseline_json.name} not produced")
+                continue
+            compared += 1
+            old = json.loads(baseline_json.read_text(encoding="utf-8"))
+            new = json.loads(new_json.read_text(encoding="utf-8"))
+            problems.extend(
+                f"{name}/{baseline_json.name}{item}"
+                for item in json_delta(old, new)[:5]
+            )
+    record(
+        "04b unset new fields leave the existing JSON key set untouched",
+        not problems and compared > 0,
+        f"compared={compared} problems={problems[:5]}",
+    )
+
+
+def check_05_backward_compat(manifest: dict) -> None:
+    problems: list[str] = []
+    unexpected_warnings: list[str] = []
+    checked = 0
+    for entry in manifest["samples"]:
+        baseline_dir = ROOT / entry["baseline"]["checkpoints"]
+        for xml_path in sorted(baseline_dir.glob("*.xml")):
+            checked += 1
+            with warnings.catch_warnings(record=True) as caught:
+                warnings.simplefilter("always")
+                try:
+                    ir_compat.assert_backward_compat(xml_path)
+                except AssertionError as exc:
+                    problems.append(str(exc))
+            for item in caught:
+                message = str(item.message)
+                if item.category is not ConverterWarning:
+                    unexpected_warnings.append(f"{xml_path.name}: {message}")
+                elif KNOWN_CONVERTER_WARNING not in message or any(
+                    field in message for field in NEW_FIELD_NAMES
+                ):
+                    unexpected_warnings.append(f"{xml_path.name}: {message}")
+    record(
+        "05a every B0 baseline checkpoint parses with all new fields None",
+        not problems and checked > 0,
+        f"checked={checked} problems={problems[:3]}",
+    )
+    record(
+        "05b reading old checkpoints raises no warning beyond the known one",
+        not unexpected_warnings,
+        f"unexpected={unexpected_warnings[:3]}",
+    )
+
+
+def check_06_no_consumers() -> None:
+    needles = sorted(set(NEW_ATTRIBUTES) | NEW_FIELD_NAMES)
+    offenders: list[str] = []
+    skip_parts = {".git", "__pycache__", ".venv", "examples", ".ruff_cache"}
+    for path in ROOT.rglob("*.py"):
+        relative = path.relative_to(ROOT).as_posix()
+        if set(path.relative_to(ROOT).parts) & skip_parts:
+            continue
+        if relative in NAME_REFERENCE_ALLOW_LIST:
+            continue
+        text = path.read_text(encoding="utf-8", errors="ignore")
+        for needle in needles:
+            if needle in text:
+                offenders.append(f"{relative}: {needle}")
+    record(
+        "06 no code outside the schema and compat helpers references the new names",
+        not offenders,
+        f"offenders={offenders[:5]}",
+    )
+
+
+def check_07_no_values_written(checkpoint_dirs: list[Path]) -> None:
+    needles = sorted(NEW_ATTRIBUTES)
+    hits: list[str] = []
+    scanned = 0
+    for directory in checkpoint_dirs:
+        for xml_path in sorted(directory.glob("*.xml")):
+            scanned += 1
+            text = xml_path.read_text(encoding="utf-8")
+            hits.extend(
+                f"{directory.name}/{xml_path.name}: {needle}"
+                for needle in needles
+                if needle in text
+            )
+    record(
+        "07 no stage writes a new attribute into any checkpoint",
+        not hits and scanned > 0,
+        f"scanned={scanned} hits={hits[:5]}",
+    )
+
+
+def check_08_render(manifest: dict, produced_pdfs: dict[str, Path]) -> None:
+    for entry in manifest["samples"]:
+        name = Path(entry["file"]).stem
+        baseline = ROOT / entry["baseline"]["pdf"]
+        code = render_diff(baseline, produced_pdfs[name], _tmp_root / f"rd_{name}")
+        record(
+            f"08 dry run still renders identically to the B0 baseline ({name})",
+            code == 0,
+            f"exit={code}",
+        )
+
+
+def check_09_upstream_scope() -> None:
+    proc = subprocess.run(  # noqa: S603, S607 - git is expected on PATH for this gate
+        ["git", "diff", "--name-only", "HEAD"],  # noqa: S607
+        cwd=ROOT,
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    changed = {line.strip() for line in proc.stdout.splitlines() if line.strip()}
+    allowed = ALLOWED_UPSTREAM_B0 | ALLOWED_UPSTREAM_B1 | ALLOWED_UPSTREAM_OTHER
+    record(
+        "09a modified upstream files stay inside the registered allow list",
+        changed <= allowed,
+        f"unexpected={sorted(changed - allowed)}",
+    )
+    batch_delta = changed - ALLOWED_UPSTREAM_B0 - ALLOWED_UPSTREAM_OTHER
+    record(
+        "09b this batch touches only the IL schema quadruple",
+        batch_delta <= ALLOWED_UPSTREAM_B1 and ALLOWED_UPSTREAM_B1 <= changed,
+        f"delta={sorted(batch_delta)}",
+    )
+
+    registry = UPSTREAM_DIFF.read_text(encoding="utf-8")
+    unregistered = sorted(path for path in changed if path not in registry)
+    record(
+        "09c every modified upstream file is registered in UPSTREAM_DIFF.md",
+        not unregistered,
+        f"unregistered={unregistered}",
+    )
+
+
+def check_09d_ascii_comments() -> None:
+    offenders: list[str] = []
+    for pattern in NEW_CODE_GLOBS:
+        for path in sorted(ROOT.glob(pattern)):
+            for number, line in enumerate(
+                path.read_text(encoding="utf-8").splitlines(), start=1
+            ):
+                if has_cjk(line):
+                    offenders.append(f"{path.relative_to(ROOT)}:{number}")
+
+    tracked = sorted(ALLOWED_UPSTREAM_B0 | ALLOWED_UPSTREAM_B1)
+    proc = subprocess.run(  # noqa: S603, S607 - git is expected on PATH for this gate
+        ["git", "diff", "-U0", "HEAD", "--"] + tracked,  # noqa: S607
+        cwd=ROOT,
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    for line in proc.stdout.splitlines():
+        if line.startswith("+") and not line.startswith("+++") and has_cjk(line):
+            offenders.append(f"added upstream line: {line.strip()}")
+    record(
+        "09d no CJK characters in new or added code",
+        not offenders,
+        f"offenders={offenders[:5]}",
+    )
+
+
+def main() -> int:
+    logging.basicConfig(level=logging.ERROR)
+    use_project_cache(ROOT)
+    warmup()
+
+    with MANIFEST_PATH.open(encoding="utf-8") as f:
+        manifest = json.load(f)
+
+    check_01_schema_attributes()
+    check_02_dataclass_fields()
+    check_03_roundtrip()
+    check_04a_json_keys()
+    check_05_backward_compat(manifest)
+    check_06_no_consumers()
+
+    produced_pdfs: dict[str, Path] = {}
+    checkpoint_dirs: dict[str, Path] = {}
+    for entry in manifest["samples"]:
+        name = Path(entry["file"]).stem
+        pdf, checkpoints = run_parse_only(INPUT_DIR / entry["file"], name)
+        produced_pdfs[name] = pdf
+        checkpoint_dirs[name] = checkpoints
+
+    # The dry run stops after IL creation, so one sample is also taken through
+    # every non-translation stage to cover paragraph-bearing checkpoints.
+    smallest = min(manifest["samples"], key=lambda entry: entry["pages"])
+    stage_dir = run_all_stages(
+        INPUT_DIR / smallest["file"], Path(smallest["file"]).stem
+    )
+
+    check_04b_json_stability(checkpoint_dirs, manifest)
+    check_07_no_values_written([*checkpoint_dirs.values(), stage_dir])
+    check_08_render(manifest, produced_pdfs)
+    check_09_upstream_scope()
+    check_09d_ascii_comments()
+
+    failed = [name for name, ok, _ in _results if not ok]
+    print()
+    print(f"spec_check_b1: {len(_results) - len(failed)}/{len(_results)} passed")
+    for name in failed:
+        print(f"  FAILED: {name}")
+    shutil.rmtree(_tmp_root, ignore_errors=True)
+    return 1 if failed else 0
+
+
+if __name__ == "__main__":
+    try:
+        sys.exit(main())
+    except Exception:
+        traceback.print_exc()
+        sys.exit(1)

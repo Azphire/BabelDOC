@@ -26,6 +26,9 @@
       </xs:sequence>
       <xs:attribute name="pageNumber" use="required" type="xs:int"/>
       <xs:attribute name="Unit" use="required" type="xs:string"/>
+      <xs:attribute name="pageKind" type="xs:string"/>
+      <xs:attribute name="pageKindConf" type="xs:float"/>
+      <xs:attribute name="pageKindSource" type="xs:string"/>
     </xs:complexType>
   </xs:element>
   <xs:element name="mediabox">
@@ -162,6 +165,12 @@
       <xs:attribute name="layout_label" type="xs:string"/>
       <xs:attribute name="layout_id" type="xs:int"/>
       <xs:attribute name="renderOrder" type="xs:int"/>
+      <xs:attribute name="chainId" type="xs:string"/>
+      <xs:attribute name="chainIndex" type="xs:int"/>
+      <xs:attribute name="dropCapCandidate" type="xs:boolean"/>
+      <xs:attribute name="dropCapDecision" type="xs:string"/>
+      <xs:attribute name="segmentSentenceStart" type="xs:int"/>
+      <xs:attribute name="segmentSentenceEnd" type="xs:int"/>
     </xs:complexType>
   </xs:element>
   <xs:element name="pdfParagraphComposition">
