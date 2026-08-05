@@ -53,6 +53,7 @@ from babeldoc.format.pdf.translation_config import TranslateResult
 from babeldoc.format.pdf.translation_config import TranslationConfig
 from babeldoc.format.pdf.translation_config import WatermarkOutputMode
 from babeldoc.magazine.checkpoint import dump_checkpoint
+from babeldoc.magazine.page_classifier import PageClassifier
 from babeldoc.progress_monitor import ProgressMonitor
 from babeldoc.utils import memory
 
@@ -995,6 +996,12 @@ def _do_translate_single(
         )
     if translation_config.magazine_checkpoint:
         dump_checkpoint(docs, translation_config, "styles_and_formulas")
+
+    if translation_config.magazine_page_classify:
+        PageClassifier(translation_config).process(docs)
+        logger.debug(f"finish page classifier from {temp_pdf_path}")
+        if translation_config.magazine_checkpoint:
+            dump_checkpoint(docs, translation_config, "page_classifier")
 
     translate_engine = translation_config.translator
     term_extraction_engine = translation_config.get_term_extraction_translator()

@@ -50,6 +50,21 @@ ALLOWED_UPSTREAM_PY = {
 }
 ALLOWED_UPSTREAM_OTHER = {".gitignore"}
 
+# Trees and root documents owned by the magazine extension. The upstream scope
+# assertions ignore them: the allow lists above describe upstream files only,
+# and later batches keep these project paths dirty.
+PROJECT_OWNED_PREFIXES = (
+    "babeldoc/magazine/",
+    "configs/",
+    "corpus/",
+    "examples/",
+    "plans/",
+    "prompts/",
+    "spec_checks/",
+    "tools/",
+)
+PROJECT_OWNED_FILES = {"CLAUDE.md", "UPSTREAM_DIFF.md", "WAIVERS.md"}
+
 # Project-owned trees whose files must be free of non-ASCII comments.
 NEW_CODE_GLOBS = (
     "babeldoc/magazine/*.py",
@@ -241,7 +256,12 @@ def check_07_baseline_render(manifest: dict) -> None:
         )
 
 
-def check_08_upstream_scope() -> None:
+def changed_upstream_files() -> set[str]:
+    """Upstream paths in the working tree delta against HEAD.
+
+    HEAD is the basis so this gate stays recomputable once its own batch is
+    committed: the delta then carries only what later batches changed.
+    """
     proc = subprocess.run(  # noqa: S603, S607 - git is expected on PATH for this gate
         ["git", "diff", "--name-only", "HEAD"],  # noqa: S607
         cwd=ROOT,
@@ -249,7 +269,17 @@ def check_08_upstream_scope() -> None:
         text=True,
         check=False,
     )
-    changed = {line.strip() for line in proc.stdout.splitlines() if line.strip()}
+    return {
+        path
+        for path in (line.strip() for line in proc.stdout.splitlines())
+        if path
+        and path not in PROJECT_OWNED_FILES
+        and not path.startswith(PROJECT_OWNED_PREFIXES)
+    }
+
+
+def check_08_upstream_scope() -> None:
+    changed = changed_upstream_files()
     changed_py = {p for p in changed if p.endswith(".py")}
     changed_other = changed - changed_py
     record(

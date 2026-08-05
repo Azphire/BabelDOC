@@ -9,6 +9,7 @@
     "table_parser",
     "paragraph_finder",
     "styles_and_formulas",
+    "page_classifier",
     "il_translated",
     "add_debug_information",
     "typesetting"

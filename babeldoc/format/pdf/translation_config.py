@@ -218,6 +218,7 @@ class TranslationConfig:
         term_pool_max_workers: int | None = None,
         disable_same_text_fallback: bool = False,
         magazine_checkpoint: bool = False,
+        magazine_page_classify: bool = False,
     ):
         self.translator = translator
         self.term_extraction_translator = term_extraction_translator or translator
@@ -339,6 +340,8 @@ class TranslationConfig:
         self.only_parse_generate_pdf = only_parse_generate_pdf
         # Magazine extension: write round-trippable IL XML checkpoints per stage.
         self.magazine_checkpoint = magazine_checkpoint
+        # Magazine extension: run the deterministic page classifier stage.
+        self.magazine_page_classify = magazine_page_classify
 
         if self.skip_translation or self.only_parse_generate_pdf:
             self.auto_extract_glossary = False

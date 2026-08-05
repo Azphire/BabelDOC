@@ -87,6 +87,21 @@ ALLOWED_UPSTREAM_B1 = {
 }
 ALLOWED_UPSTREAM_OTHER = {".gitignore"}
 
+# Trees and root documents owned by the magazine extension. The upstream scope
+# assertions ignore them: the allow lists above describe upstream files only,
+# and later batches keep these project paths dirty.
+PROJECT_OWNED_PREFIXES = (
+    "babeldoc/magazine/",
+    "configs/",
+    "corpus/",
+    "examples/",
+    "plans/",
+    "prompts/",
+    "spec_checks/",
+    "tools/",
+)
+PROJECT_OWNED_FILES = {"CLAUDE.md", "UPSTREAM_DIFF.md", "WAIVERS.md"}
+
 # Project-owned trees whose files must be free of non-ASCII comments.
 NEW_CODE_GLOBS = (
     "babeldoc/magazine/*.py",
@@ -501,7 +516,12 @@ def check_08_render(manifest: dict, produced_pdfs: dict[str, Path]) -> None:
         )
 
 
-def check_09_upstream_scope() -> None:
+def changed_upstream_files() -> set[str]:
+    """Upstream paths in the working tree delta against HEAD.
+
+    HEAD is the basis so this gate stays recomputable once its own batch is
+    committed: the delta then carries only what later batches changed.
+    """
     proc = subprocess.run(  # noqa: S603, S607 - git is expected on PATH for this gate
         ["git", "diff", "--name-only", "HEAD"],  # noqa: S607
         cwd=ROOT,
@@ -509,7 +529,17 @@ def check_09_upstream_scope() -> None:
         text=True,
         check=False,
     )
-    changed = {line.strip() for line in proc.stdout.splitlines() if line.strip()}
+    return {
+        path
+        for path in (line.strip() for line in proc.stdout.splitlines())
+        if path
+        and path not in PROJECT_OWNED_FILES
+        and not path.startswith(PROJECT_OWNED_PREFIXES)
+    }
+
+
+def check_09_upstream_scope() -> None:
+    changed = changed_upstream_files()
     allowed = ALLOWED_UPSTREAM_B0 | ALLOWED_UPSTREAM_B1 | ALLOWED_UPSTREAM_OTHER
     record(
         "09a modified upstream files stay inside the registered allow list",
@@ -519,7 +549,7 @@ def check_09_upstream_scope() -> None:
     batch_delta = changed - ALLOWED_UPSTREAM_B0 - ALLOWED_UPSTREAM_OTHER
     record(
         "09b this batch touches only the IL schema quadruple",
-        batch_delta <= ALLOWED_UPSTREAM_B1 and ALLOWED_UPSTREAM_B1 <= changed,
+        batch_delta <= ALLOWED_UPSTREAM_B1,
         f"delta={sorted(batch_delta)}",
     )
 

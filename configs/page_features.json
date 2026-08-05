@@ -1,0 +1,17 @@
+{
+  "description": "Bounded parameters for deterministic page feature extraction (babeldoc/magazine/page_features.py). Every parameter carries a '<name>_allowed_range' sibling of the form 'low..high', inclusive on both ends. Tuning happens here; the extractor holds no numeric literals.",
+  "grid_resolution": 64,
+  "grid_resolution_allowed_range": "16..256",
+  "short_char_limit": 80,
+  "short_char_limit_allowed_range": "10..400",
+  "leader_dot_min_run": 4,
+  "leader_dot_min_run_allowed_range": "2..12",
+  "column_gap_ratio": 0.05,
+  "column_gap_ratio_allowed_range": "0.005..0.3",
+  "column_count_max": 4,
+  "column_count_max_allowed_range": "2..8",
+  "font_size_bucket": 0.5,
+  "font_size_bucket_allowed_range": "0.1..4.0",
+  "label_agreement_min": 0.7,
+  "label_agreement_min_allowed_range": "0.0..1.0"
+}
