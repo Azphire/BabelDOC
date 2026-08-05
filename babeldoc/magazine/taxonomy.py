@@ -21,6 +21,7 @@ from pathlib import Path
 from babeldoc.magazine.page_features import CONFIG_PATH as FEATURE_CONFIG_PATH
 from babeldoc.magazine.page_features import FEATURE_NAMES
 from babeldoc.magazine.page_features import ConfigError
+from babeldoc.magazine.page_features import Parameter
 from babeldoc.magazine.page_features import load_feature_config
 
 logger = logging.getLogger(__name__)
@@ -64,7 +65,14 @@ class PageType:
 
     @property
     def total_weight(self) -> float:
-        return sum(rule.weight for rule in self.rules)
+        """Evidence available for this type, which is its positive weight.
+
+        A negative rule is a penalty: it withdraws evidence a page has already
+        earned rather than adding any of its own, so it stays out of the
+        denominator and a type that trips none of its penalties can still
+        reach 1.0.
+        """
+        return sum(rule.weight for rule in self.rules if rule.weight > 0)
 
 
 @dataclass(frozen=True)
@@ -108,7 +116,7 @@ def _parse_rule(raw: object, owner: str, index: int) -> Rule:
         isinstance(weight, int | float) and not isinstance(weight, bool),
         f"{where}: weight must be a number",
     )
-    _require(weight > 0, f"{where}: weight must be positive, got {weight}")
+    _require(weight != 0, f"{where}: weight must be non-zero")
     return Rule(
         feature=feature, op=op, threshold=float(threshold), weight=float(weight)
     )
@@ -160,6 +168,11 @@ def parse_taxonomy(raw: dict, source: str) -> Taxonomy:
             _parse_rule(rule, f"{source}.{name}", index)
             for index, rule in enumerate(rules_raw)
         )
+        _require(
+            sum(rule.weight for rule in rules if rule.weight > 0) > 0,
+            f"{where}: needs positive weight to score against, "
+            f"a type made only of penalties can never be reached",
+        )
 
         policy = entry.get("policy")
         _require(isinstance(policy, dict), f"{where}: policy must be an object")
@@ -205,7 +218,7 @@ def load_taxonomy(path: str | None = None) -> Taxonomy:
     return parse_taxonomy(raw, taxonomy_path.name)
 
 
-def load_configs() -> tuple[dict[str, float], Taxonomy]:
+def load_configs() -> tuple[dict[str, Parameter], Taxonomy]:
     """Load both magazine classification configurations, validating each."""
     return load_feature_config(), load_taxonomy()
 
@@ -213,12 +226,19 @@ def load_configs() -> tuple[dict[str, float], Taxonomy]:
 def score_page_types(
     features: dict[str, float], taxonomy: Taxonomy
 ) -> dict[str, float]:
-    """Score every page type as satisfied rule weight over total rule weight."""
+    """Score every page type as satisfied weight over available weight.
+
+    Satisfied weight is the algebraic sum, so a tripped penalty subtracts. The
+    result is clamped to 0..1: a page that trips enough penalties is simply not
+    of that type, and there is nothing to gain from ranking how badly.
+    """
     scores: dict[str, float] = {}
     for page_type in taxonomy.page_types:
         total = page_type.total_weight
         satisfied = sum(rule.weight for rule in page_type.rules if rule.holds(features))
-        scores[page_type.name] = satisfied / total if total > 0 else 0.0
+        scores[page_type.name] = (
+            min(1.0, max(0.0, satisfied / total)) if total > 0 else 0.0
+        )
     return scores
 
 

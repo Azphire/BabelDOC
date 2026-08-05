@@ -63,6 +63,10 @@ _DOT_SEPARATORS = "  "
 
 _RANGE_SUFFIX = "_allowed_range"
 
+# A configuration entry is either a bounded number or a closed vocabulary of
+# IL structure values.
+Parameter = float | tuple[str, ...]
+
 
 class ConfigError(ValueError):
     """Raised when a magazine JSON configuration file is malformed."""
@@ -81,15 +85,30 @@ def _parse_range(raw: object, key: str) -> tuple[float, float]:
     return low, high
 
 
-def validate_bounded_config(config: dict, path: Path) -> dict:
-    """Check that every numeric entry declares and respects an allowed range.
+def validate_bounded_config(config: dict, path: Path) -> dict[str, Parameter]:
+    """Check that every entry declares and respects its bounds.
+
+    A numeric entry is bounded by its ``<name>_allowed_range`` sibling. A list
+    entry is a closed vocabulary of IL structure values, so the list is its own
+    bound: it must hold at least one non-empty string and takes no range.
 
     Returns the parameter mapping without the ``description`` and range keys,
     so callers index it by plain parameter name.
     """
-    parameters: dict[str, float] = {}
+    parameters: dict[str, Parameter] = {}
     for key, value in config.items():
         if key == "description" or key.endswith(_RANGE_SUFFIX):
+            continue
+        if isinstance(value, list):
+            if not value or any(
+                not isinstance(item, str) or not item for item in value
+            ):
+                raise ConfigError(
+                    f"{path.name}: {key} must list at least one non-empty string"
+                )
+            if f"{key}{_RANGE_SUFFIX}" in config:
+                raise ConfigError(f"{path.name}: {key} is a vocabulary, not a range")
+            parameters[key] = tuple(value)
             continue
         if not isinstance(value, int | float) or isinstance(value, bool):
             raise ConfigError(f"{path.name}: {key} is not a number")
@@ -122,12 +141,16 @@ REQUIRED_PARAMETERS: frozenset[str] = frozenset(
         "column_count_max",
         "font_size_bucket",
         "label_agreement_min",
+        "min_image_side_ratio",
+        "column_min_width_ratio",
+        "image_form_types",
+        "column_estimate_labels",
     }
 )
 
 
 @lru_cache(maxsize=1)
-def load_feature_config(path: str | None = None) -> dict[str, float]:
+def load_feature_config(path: str | None = None) -> dict[str, Parameter]:
     """Load and validate ``configs/page_features.json``."""
     config_path = CONFIG_PATH if path is None else Path(path)
     with config_path.open(encoding="utf-8") as f:
@@ -200,21 +223,62 @@ def _paragraph_font_sizes(page: il_version_1.Page) -> list[float]:
     return sizes
 
 
+def _image_boxes(
+    page: il_version_1.Page,
+    frame: il_version_1.Box,
+    form_types: tuple[str, ...],
+    min_side_ratio: float,
+) -> list[il_version_1.Box]:
+    """Boxes of the artwork occupying a page.
+
+    Upstream files a raster image under ``pdf_form`` with one of the configured
+    form types; ``pdf_figure`` only fills on the legacy parse path, so both are
+    read. Boxes degenerate on either axis are dropped: page wrapping forms
+    flattened to zero extent and hairline decorations occupy no visual area,
+    and counting them would swamp the real artwork.
+    """
+    width = frame.x2 - frame.x
+    height = frame.y2 - frame.y
+    candidates = [figure.box for figure in page.pdf_figure if figure.box is not None]
+    candidates.extend(
+        form.box
+        for form in page.pdf_form
+        if form.box is not None and form.form_type in form_types
+    )
+    return [
+        box
+        for box in candidates
+        if abs(box.x2 - box.x) >= width * min_side_ratio
+        and abs(box.y2 - box.y) >= height * min_side_ratio
+    ]
+
+
 def _column_count(
     page: il_version_1.Page,
     frame: il_version_1.Box,
     gap_ratio: float,
     maximum: int,
+    labels: tuple[str, ...],
+    min_width_ratio: float,
 ) -> int:
-    """Cluster paragraph box centres along x, splitting on wide gaps."""
+    """Cluster paragraph box centres along x, splitting on wide gaps.
+
+    Only running text of a full measure votes. Page furniture, captions and
+    stray fragments sit at their own x positions and would otherwise each open
+    a cluster, pinning the estimate at its ceiling on every page.
+    """
+    width = frame.x2 - frame.x
+    minimum_width = width * min_width_ratio
     centres = sorted(
         (paragraph.box.x + paragraph.box.x2) / 2.0
         for paragraph in page.pdf_paragraph
         if paragraph.box is not None
+        and (paragraph.layout_label or "") in labels
+        and paragraph.box.x2 - paragraph.box.x >= minimum_width
     )
     if not centres:
         return 0
-    gap_threshold = (frame.x2 - frame.x) * gap_ratio
+    gap_threshold = width * gap_ratio
     clusters = 1
     previous = centres[0]
     for centre in centres[1:]:
@@ -227,7 +291,7 @@ def _column_count(
 def extract_page_features(
     page: il_version_1.Page,
     document: il_version_1.Document,
-    config: dict[str, float] | None = None,
+    config: dict[str, Parameter] | None = None,
 ) -> dict[str, float]:
     """Compute the deterministic feature vector of one IL page.
 
@@ -253,13 +317,22 @@ def extract_page_features(
             [p.box for p in paragraphs if p.box is not None], frame, resolution
         )
         image_coverage = _grid_coverage(
-            [f.box for f in page.pdf_figure if f.box is not None], frame, resolution
+            _image_boxes(
+                page,
+                frame,
+                parameters["image_form_types"],
+                parameters["min_image_side_ratio"],
+            ),
+            frame,
+            resolution,
         )
         columns = _column_count(
             page,
             frame,
             parameters["column_gap_ratio"],
             int(parameters["column_count_max"]),
+            parameters["column_estimate_labels"],
+            parameters["column_min_width_ratio"],
         )
 
     count = len(paragraphs)
@@ -294,9 +367,11 @@ def extract_page_features(
         distinct_sizes = 0
         size_ratio = 0.0
 
+    # page_number is 0-based upstream, so the ordinal is one past it and the
+    # last page of a document sits exactly at 1.0.
     total_pages = document.total_pages or 0
     page_number = page.page_number or 0
-    position = page_number / total_pages if total_pages > 0 else 0.0
+    position = (page_number + 1) / total_pages if total_pages > 0 else 0.0
 
     return {
         "text_coverage_ratio": text_coverage,

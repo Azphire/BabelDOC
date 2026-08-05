@@ -64,12 +64,23 @@ NEW_ATTRIBUTES = {
 }
 NEW_FIELD_NAMES = {py for _, py, _ in NEW_ATTRIBUTES.values()}
 
-# Files allowed to mention the new names; everything else must stay free of
-# them until a later batch introduces consumers.
-NAME_REFERENCE_ALLOW_LIST = {
+# Where the new names are defined, rather than consumed: the generated schema
+# and the gate that checks it.
+NAME_DEFINITION_FILES = {
     "babeldoc/format/pdf/document_il/il_version_1.py",
-    "babeldoc/magazine/ir_compat.py",
     "spec_checks/spec_check_b1.py",
+}
+
+# Consumers must stay within the authorized writer list. Every file here reads
+# or writes one of the nine fields on purpose and is answerable for it; any
+# other file mentioning one, in either spelling, is an unauthorized consumer
+# and fails the assertion. The paragraph level six stay unwritten until B9, so
+# this list is what keeps that true.
+NAME_REFERENCE_ALLOW_LIST = NAME_DEFINITION_FILES | {
+    "babeldoc/magazine/ir_compat.py",
+    "babeldoc/magazine/page_classifier.py",
+    "spec_checks/spec_check_b2.py",
+    "spec_checks/spec_check_b2_1.py",
 }
 
 # Upstream files carried over from B0, still uncommitted in the working tree.
@@ -464,6 +475,8 @@ def check_05_backward_compat(manifest: dict) -> None:
 
 
 def check_06_no_consumers() -> None:
+    # Both spellings: the XML attribute name and the Python field name. A file
+    # touching either one is consuming the field.
     needles = sorted(set(NEW_ATTRIBUTES) | NEW_FIELD_NAMES)
     offenders: list[str] = []
     skip_parts = {".git", "__pycache__", ".venv", "examples", ".ruff_cache"}
@@ -477,10 +490,12 @@ def check_06_no_consumers() -> None:
         for needle in needles:
             if needle in text:
                 offenders.append(f"{relative}: {needle}")
+    unauthorized = sorted({entry.split(":")[0] for entry in offenders})
     record(
-        "06 no code outside the schema and compat helpers references the new names",
+        "06 consumers must stay within the authorized writer list",
         not offenders,
-        f"offenders={offenders[:5]}",
+        f"unauthorized_files={unauthorized} hits={len(offenders)} "
+        f"examples={offenders[:5]}",
     )
 
 

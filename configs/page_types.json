@@ -1,6 +1,6 @@
 {
   "taxonomy_version": "1.0",
-  "description": "Magazine page type vocabulary. Every rule references a feature produced by babeldoc/magazine/page_features.py, compares it with one of ge/le/gt/lt against a threshold, and contributes its weight when satisfied. A type scores satisfied weight over total weight, so all scores lie in 0..1. Thresholds are tuning parameters: retune them here from the report produced by tools/page_classify_report.py, never in code.",
+  "description": "Magazine page type vocabulary. Every rule references a feature produced by babeldoc/magazine/page_features.py, compares it with one of ge/le/gt/lt against a threshold, and contributes its weight when satisfied. A positive weight is evidence for the type; a negative weight is a penalty that withdraws evidence when the page shows something the type rules out. A type scores its satisfied weight, positive and negative summed, over its positive weight alone, clamped to 0..1, so a type that trips no penalty can still reach 1.0. Weights may not be zero, and every type needs some positive weight. Thresholds and weights are tuning parameters: retune them here from the report produced by tools/page_classify_report.py, never in code.",
   "ambiguity_margin": 0.15,
   "default_type": "article_body",
   "page_types": [
@@ -117,7 +117,8 @@
         {"feature": "mean_paragraph_chars", "op": "ge", "threshold": 120.0, "weight": 1.5},
         {"feature": "distinct_font_size_count", "op": "ge", "threshold": 3.0, "weight": 2.0},
         {"feature": "text_coverage_ratio", "op": "ge", "threshold": 0.3, "weight": 1.5},
-        {"feature": "column_count_estimate", "op": "ge", "threshold": 2.0, "weight": 1.0}
+        {"feature": "column_count_estimate", "op": "ge", "threshold": 2.0, "weight": 1.0},
+        {"feature": "title_label_ratio", "op": "lt", "threshold": 0.15, "weight": -1.5}
       ],
       "policy": {"chain_eligible": true, "translate": true, "repair_profile": "flow"}
     },
@@ -128,7 +129,9 @@
         {"feature": "column_count_estimate", "op": "ge", "threshold": 3.0, "weight": 2.5},
         {"feature": "distinct_font_size_count", "op": "ge", "threshold": 4.0, "weight": 2.5},
         {"feature": "short_paragraph_ratio", "op": "ge", "threshold": 0.45, "weight": 1.5},
-        {"feature": "text_coverage_ratio", "op": "ge", "threshold": 0.25, "weight": 1.0}
+        {"feature": "text_coverage_ratio", "op": "ge", "threshold": 0.25, "weight": 1.0},
+        {"feature": "mean_paragraph_chars", "op": "ge", "threshold": 150.0, "weight": -2.0},
+        {"feature": "leader_dot_line_ratio", "op": "ge", "threshold": 0.08, "weight": -2.0}
       ],
       "policy": {"chain_eligible": false, "translate": true, "repair_profile": "grid"}
     },
@@ -165,7 +168,8 @@
         {"feature": "text_coverage_ratio", "op": "le", "threshold": 0.2, "weight": 2.0},
         {"feature": "paragraph_count", "op": "le", "threshold": 6.0, "weight": 2.0},
         {"feature": "distinct_font_size_count", "op": "le", "threshold": 3.0, "weight": 1.0},
-        {"feature": "column_count_estimate", "op": "le", "threshold": 1.0, "weight": 1.5}
+        {"feature": "column_count_estimate", "op": "le", "threshold": 1.0, "weight": 1.5},
+        {"feature": "title_label_ratio", "op": "ge", "threshold": 0.3, "weight": -1.5}
       ],
       "policy": {"chain_eligible": false, "translate": true, "repair_profile": "figure"}
     },
