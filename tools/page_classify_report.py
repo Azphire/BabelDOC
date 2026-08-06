@@ -32,7 +32,8 @@ sys.path.insert(0, str(ROOT))
 import pymupdf  # noqa: E402
 from babeldoc.magazine.checkpoint import load_checkpoint  # noqa: E402
 from babeldoc.magazine.page_features import FEATURE_NAMES  # noqa: E402
-from babeldoc.magazine.page_features import extract_page_features  # noqa: E402
+from babeldoc.magazine.page_features import PERCENTILE_SUFFIX  # noqa: E402
+from babeldoc.magazine.page_features import extract_document_features  # noqa: E402
 from babeldoc.magazine.taxonomy import classify  # noqa: E402
 from babeldoc.magazine.taxonomy import load_configs  # noqa: E402
 
@@ -101,11 +102,16 @@ def thumbnail_uri(doc: pymupdf.Document, index: int, dpi: int) -> str:
 
 
 def feature_table(features: dict[str, float]) -> str:
-    rows = "".join(
-        f"<tr><th>{html.escape(name)}</th><td>{features[name]:.4f}</td></tr>"
-        for name in FEATURE_NAMES
-    )
-    return f"<table>{rows}</table>"
+    """Raw value and, where one exists, its document percentile beside it."""
+    rows = ["<tr><th>feature</th><th>raw</th><th>pctl</th></tr>"]
+    for name in FEATURE_NAMES:
+        percentile = features.get(f"{name}{PERCENTILE_SUFFIX}")
+        cell = "&mdash;" if percentile is None else f"{percentile:.3f}"
+        rows.append(
+            f"<tr><th>{html.escape(name)}</th>"
+            f"<td>{features[name]:.4f}</td><td>{cell}</td></tr>"
+        )
+    return f"<table>{''.join(rows)}</table>"
 
 
 def score_table(scores: dict[str, float], limit: int) -> str:
@@ -125,9 +131,11 @@ def build_html(pdf: Path, checkpoint: Path, config: dict) -> tuple[str, int]:
     limit = int(config["score_rows"])
 
     sections = []
+    vectors = extract_document_features(docs, feature_config)
     with pymupdf.open(pdf) as rendered:
-        for position, page in enumerate(docs.page):
-            features = extract_page_features(page, docs, feature_config)
+        for position, (page, features) in enumerate(
+            zip(docs.page, vectors, strict=True)
+        ):
             verdict = classify(features, taxonomy)
             index = page.page_number if page.page_number is not None else position
             thumb = (

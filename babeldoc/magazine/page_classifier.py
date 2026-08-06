@@ -16,7 +16,9 @@ import logging
 from pathlib import Path
 
 from babeldoc.format.pdf.document_il import il_version_1
-from babeldoc.magazine.page_features import extract_page_features
+from babeldoc.magazine.page_features import FEATURE_NAMES
+from babeldoc.magazine.page_features import extract_document_features
+from babeldoc.magazine.page_features import percentile_feature_names
 from babeldoc.magazine.taxonomy import DEFAULT_CONFIG_PATHS
 from babeldoc.magazine.taxonomy import classify
 from babeldoc.magazine.taxonomy import load_configs
@@ -42,8 +44,9 @@ class PageClassifier:
 
     def process(self, docs: il_version_1.Document) -> il_version_1.Document:
         records = []
-        for page in docs.page:
-            features = extract_page_features(page, docs, self.feature_config)
+        percentile_names = percentile_feature_names(self.feature_config)
+        vectors = extract_document_features(docs, self.feature_config)
+        for page, features in zip(docs.page, vectors, strict=True):
             verdict = classify(features, self.taxonomy)
             page.page_kind = verdict.kind
             page.page_kind_conf = verdict.confidence
@@ -54,7 +57,13 @@ class PageClassifier:
                     "kind": verdict.kind,
                     "conf": verdict.confidence,
                     "ambiguous": verdict.ambiguous,
-                    "features": features,
+                    # Raw and percentile values are reported side by side: a
+                    # reviewer reading a rule needs the absolute quantity and
+                    # the position it maps to within this document.
+                    "features": {name: features[name] for name in FEATURE_NAMES},
+                    "features_pctl": {
+                        name: features[name] for name in percentile_names
+                    },
                     "scores": verdict.scores,
                 }
             )

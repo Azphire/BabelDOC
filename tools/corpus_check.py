@@ -1,116 +1,84 @@
-"""Validate corpus/manifest.json against the actual sample files.
+"""Validate the sample corpus in three directions.
 
 Usage:
-    python tools/corpus_check.py [--manifest corpus/manifest.json]
+    python tools/corpus_check.py [--registry PATH] [--manifest PATH]
 
-Checks that every registered sample exists under examples/input/ with the
-recorded SHA-256 and page count, and warns about unregistered PDFs. Registered
-baseline artefacts under examples/output/ are verified when present; they are
-build products and are not tracked by version control, so a missing baseline is
-a warning rather than an error.
+The checks are:
 
-Exit codes: 0 all registered samples valid, 1 otherwise.
+1. the registry covers every PDF under examples/input/ and satisfies its
+   schema, an unregistered sample being an error;
+2. every semantic field in the manifest equals the registry value verbatim,
+   the registry being the sole authority for them;
+3. every mechanical field in the manifest matches the sample file on disk.
+
+Registered baseline artefacts are verified when present; they are build
+products and are not tracked by version control, so a missing baseline is a
+warning rather than an error. A per publication breakdown is printed for the
+leave-one-publication-out tuning protocol.
+
+Exit codes: 0 the corpus is consistent, 1 otherwise.
 """
 
 from __future__ import annotations
 
 import argparse
-import hashlib
-import json
 import sys
 from pathlib import Path
 
-import pymupdf
-
 ROOT = Path(__file__).resolve().parents[1]
-INPUT_DIR = ROOT / "examples" / "input"
-MANIFEST_PATH = ROOT / "corpus" / "manifest.json"
+sys.path.insert(0, str(ROOT))
 
-# Read size for incremental hashing; a pure I/O buffer, not a tuning knob.
-_HASH_CHUNK_BYTES = 1 << 20
+from babeldoc.magazine import corpus  # noqa: E402
 
 
-def sha256_file(path: Path) -> str:
-    digest = hashlib.sha256()
-    with path.open("rb") as f:
-        while chunk := f.read(_HASH_CHUNK_BYTES):
-            digest.update(chunk)
-    return digest.hexdigest()
-
-
-def page_count(path: Path) -> int:
-    with pymupdf.open(path) as doc:
-        return doc.page_count
-
-
-def check(manifest_path: Path) -> tuple[list[str], list[str]]:
+def check(registry_path: Path, manifest_path: Path) -> tuple[list[str], list[str]]:
     errors: list[str] = []
     warnings: list[str] = []
 
+    if not registry_path.exists():
+        return [f"registry not found: {registry_path}"], warnings
     if not manifest_path.exists():
         return [f"manifest not found: {manifest_path}"], warnings
 
-    with manifest_path.open(encoding="utf-8") as f:
-        manifest = json.load(f)
+    entries = corpus.load_registry(registry_path)
+    errors.extend(corpus.validate_registry(entries))
 
-    registered: set[str] = set()
-    for entry in manifest.get("samples", []):
-        rel = entry["file"]
-        registered.add(rel)
-        path = INPUT_DIR / rel
-        if not path.exists():
-            errors.append(f"{rel}: missing from {INPUT_DIR}")
-            continue
-        actual_hash = sha256_file(path)
-        if actual_hash != entry["sha256"]:
-            errors.append(
-                f"{rel}: sha256 mismatch, manifest={entry['sha256']} actual={actual_hash}"
-            )
-        actual_pages = page_count(path)
-        if actual_pages != entry["pages"]:
-            errors.append(
-                f"{rel}: page count mismatch, manifest={entry['pages']} actual={actual_pages}"
-            )
-
-        baseline = entry.get("baseline")
-        if baseline:
-            baseline_pdf = ROOT / baseline["pdf"]
-            if not baseline_pdf.exists():
-                warnings.append(f"{rel}: baseline PDF not built at {baseline['pdf']}")
-            else:
-                actual_baseline_hash = sha256_file(baseline_pdf)
-                if actual_baseline_hash != baseline["sha256"]:
-                    errors.append(
-                        f"{rel}: baseline sha256 mismatch, "
-                        f"manifest={baseline['sha256']} actual={actual_baseline_hash}"
-                    )
-            checkpoints = ROOT / baseline["checkpoints"]
-            if not checkpoints.is_dir():
-                warnings.append(
-                    f"{rel}: baseline checkpoints not built at {baseline['checkpoints']}"
-                )
-
-    if INPUT_DIR.is_dir():
-        for pdf in sorted(INPUT_DIR.rglob("*.pdf")):
-            rel = pdf.relative_to(INPUT_DIR).as_posix()
-            if rel not in registered:
-                warnings.append(f"{rel}: present in examples/input but not registered")
-    else:
-        errors.append(f"sample directory missing: {INPUT_DIR}")
-
+    manifest = corpus.load_manifest(manifest_path)
+    manifest_errors, manifest_warnings = corpus.validate_manifest(manifest, entries)
+    errors.extend(manifest_errors)
+    warnings.extend(manifest_warnings)
     return errors, warnings
+
+
+def print_groups(manifest_path: Path) -> None:
+    if not manifest_path.exists():
+        return
+    groups = corpus.group_by_publication(corpus.load_manifest(manifest_path))
+    print(f"publications: {len(groups)}")
+    for publication, samples in groups.items():
+        roles = sorted(
+            {role for sample in samples for role in sample.get("corpus_role", [])}
+        )
+        pages = sum(sample.get("pages", 0) for sample in samples)
+        files = ", ".join(sample["file"] for sample in samples)
+        print(
+            f"  {publication}: {len(samples)} sample(s), {pages} page(s), "
+            f"roles={roles} [{files}]"
+        )
 
 
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--manifest", type=Path, default=MANIFEST_PATH)
+    parser.add_argument("--registry", type=Path, default=corpus.REGISTRY_PATH)
+    parser.add_argument("--manifest", type=Path, default=corpus.MANIFEST_PATH)
     args = parser.parse_args(argv)
 
-    errors, warnings = check(args.manifest)
+    errors, warnings = check(args.registry, args.manifest)
     for warning in warnings:
         print(f"WARNING: {warning}")
     for error in errors:
         print(f"ERROR: {error}")
+    print_groups(args.manifest)
     if errors:
         print(f"corpus_check: FAILED ({len(errors)} error(s))")
         return 1

@@ -2,28 +2,99 @@
   "version": 1,
   "samples": [
     {
-      "file": "basic-en.pdf",
-      "sha256": "f3087ec79c39d68f1ba80f22355f5259e4eb1f384ab870453e1bc236350f9a74",
-      "pages": 6,
+      "file": "Courier-en.pdf",
+      "sha256": "9fcb6b5e7d5a51972d766b98518554c64ef39080371ec98b4d04570402ea275a",
+      "pages": 8,
+      "publication": "unesco_courier",
       "magazine": true,
-      "toc_pages": [1],
-      "notes": "magazine: English magazine issue excerpt, 6 pages, table of contents on page 1 (shared with the editorial). Primary B0 regression fixture and the B2 page classification sample.",
+      "toc_pages": [
+        1
+      ],
+      "corpus_role": [
+        "translation_eval",
+        "layout_generalization"
+      ],
+      "notes": "UNESCO Courier Jan-Mar 2026, 8-page excerpt (merges former basic-en and passage-en fixtures; issue pp. 4-6, 9, 12-13, 38 plus the contents page). PDF p1: contents grid with dotted page leaders, section headers, sharing the page with the editorial (Agnes Bardon). p2: article opener, oversized italic display title, author rail with bio, large embroidered-photo artwork. p3: display-title continuation with near-full-page artwork and rotated credit rail. p4: drop cap, two/three-column body, centered pull quote, boxed sidebar (LINKS programme). p5: article opener with standfirst, author rail, bottom photo with caption. p6: three-column body (IDEAS), boxed feature (2025 quantum year), left-rail pull quote, right-edge full-height illustration. p7: article opener with drop cap, three-column body, bottom pull quote, two-author sidebar rail. p8: top full-width photo with caption and right pull quote, three-column body, end-of-article marker.",
       "baseline": {
-        "pdf": "examples/output/baseline/basic-en.b0.pdf",
-        "sha256": "f66d1c44aa2115fc4083de86939c2599b36efa963c6e863a359a3fe80ba6431d",
-        "checkpoints": "examples/output/baseline/basic-en.checkpoints"
+        "pdf": "examples/output/baseline/Courier-en.b2_2.pdf",
+        "sha256": "2b841e1abeb9bade8804f13c4044ee9663855eb9f1211772b10a9e37c50950da",
+        "checkpoints": "examples/output/baseline/Courier-en.checkpoints"
       }
     },
     {
-      "file": "passage-en.pdf",
-      "sha256": "c304d4a6af3e9978c31232df05aa0bf167ed7ff43ab1100099cdedb7372371e4",
-      "pages": 2,
-      "magazine": false,
-      "notes": "Short English passage, not a magazine; cheap fixture for fast gate runs.",
+      "file": "Vogue-en.pdf",
+      "sha256": "d1bfee53834180de22e3c890a08a7f7fc7cc708024189a7df265248a4f9024d9",
+      "pages": 3,
+      "publication": "vogue_us",
+      "magazine": true,
+      "toc_pages": [
+        3
+      ],
+      "corpus_role": [
+        "layout_generalization"
+      ],
+      "notes": "Vogue (US) Winter 2025, 3-page excerpt. p1: FENDI full-page advertisement (photo, brand wordmark, vertical rail with boutique contact). p2: OMEGA full-page advertisement (product photo, tagline, body blurb, brand mark; vertical rail with URL). p3: contents page - masthead wordmark, issue date, hero photo with caption block, multi-column TOC grid with page numbers and blurbs, 'Cover Look' boxed sidebar with two cover thumbnails, bottom folio (p.22), vertical credits rail.",
       "baseline": {
-        "pdf": "examples/output/baseline/passage-en.b0.pdf",
-        "sha256": "f55b34bdfb46fbf7bf64a3500783c8dadd6e9fedccdaaaffb68411e8d3633115",
-        "checkpoints": "examples/output/baseline/passage-en.checkpoints"
+        "pdf": "examples/output/baseline/Vogue-en.b2_2.pdf",
+        "sha256": "d9a78f2f5ad1effd288fe3aada4639b04bf691b22a98e5ed285ccd7217f2dca7",
+        "checkpoints": "examples/output/baseline/Vogue-en.checkpoints"
+      }
+    },
+    {
+      "file": "CERNCourier-en.pdf",
+      "sha256": "c099e0094adf0782bd45746860c95cef6934e919f4cc7c527f48bd01a4eb0929",
+      "pages": 4,
+      "publication": "cern_courier",
+      "magazine": true,
+      "toc_pages": [
+        2
+      ],
+      "corpus_role": [
+        "layout_generalization"
+      ],
+      "notes": "CERN Courier Jul-Aug 2026 (Vol 66 No 4), digital-edition excerpt. CAUTION: digital edition is paginated as landscape TWO-PAGE SPREADS with a persistent navigation chrome bar (masthead + icon buttons) along the bottom of every PDF page; print typography is otherwise preserved. p1 spread: front cover (masthead, cover lines, full-bleed photo) + welcome/editorial column. p2 spread: full-page conference advertisement (IBIC 2026) + 'In This Issue' contents (department grid, article thumbnails with blurbs and page numbers). p3 spread: full-page vendor advertisement (Bergoz) + News Analysis page (dense single-story news layout, margin pull quote, photo with caption). p4 spread: feature spread 'Culture and History' pp. 24-25 (three-column dense body, multiple captioned photos, right-rail pull quote). Technical/trade-magazine density pole of the corpus; real commercial ads.",
+      "baseline": {
+        "pdf": "examples/output/baseline/CERNCourier-en.b2_2.pdf",
+        "sha256": "33788d874c76389d05510b51e291ddd53deb6042a1bad7c1af89b8390b443971",
+        "checkpoints": "examples/output/baseline/CERNCourier-en.checkpoints"
+      }
+    },
+    {
+      "file": "FD-en.pdf",
+      "sha256": "7440bcfe67ca4e2072e5404dd9d4cc4e42fde644ce0c92b912c40d61559fbc38",
+      "pages": 8,
+      "publication": "imf_fd",
+      "magazine": true,
+      "toc_pages": [
+        3
+      ],
+      "corpus_role": [
+        "layout_generalization"
+      ],
+      "notes": "IMF Finance & Development, June 2026 (Vol 63 No 2), English edition excerpt. p1: front cover (large wordmark, cover-line strip with three teasers, full-bleed collage art). p2: full-page house advertisement (World Economic Outlook). p3: contents page - two-section TOC grid with page numbers, large red pull quote inline, bottom image with page cross-reference. p4: full-page house advertisement (IMF Weekend Read, photo with QR code). p5: masthead page - staff/colophon column plus multilingual-editions promo panel (seven language covers). p6: 'Kaleidoscope' news-brief page (big picture photo with caption box, three-column brief with oversized headline). p7: 'Point of View' opener (full-column illustration, drop cap, author photo, standfirst). p8: 'Currency Notes' back-of-book article (oversized headline, single image with typewriter-style margin caption, two-column body, author sign-off). NOTE: official Chinese edition exists for this issue; pair FD-zh to promote this entry to translation_eval.",
+      "baseline": {
+        "pdf": "examples/output/baseline/FD-en.b2_2.pdf",
+        "sha256": "4dc793d25b46be24451405bb084175d127f0cc0bad0740526511c072f08e2df0",
+        "checkpoints": "examples/output/baseline/FD-en.checkpoints"
+      }
+    },
+    {
+      "file": "AramcoWorld-en.pdf",
+      "sha256": "80a4aa5d23ac83aa27c07d72c4d7983a97bb75cabe1bfc469ad5f2212713d766",
+      "pages": 8,
+      "publication": "aramcoworld",
+      "magazine": true,
+      "toc_pages": [
+        3
+      ],
+      "corpus_role": [
+        "layout_generalization"
+      ],
+      "notes": "AramcoWorld Jul-Aug 2026 (Vol 77 No 4), 8-page excerpt. p1: front cover (wordmark over full-bleed geometric dome photo, minimal cover lines). p2: masthead/colophon page - narrow staff and subscription column, right half full-height photo. p3: contents page - FEATURES entries with oversized page numerals and thumbnail images, DEPARTMENTS strip, front-cover description box, rotated credit rail. p4: feature page (p30) - large photo top, two-column body, oversized centered pull quote with attribution, narrow margin caption column. p5: feature opener (p33) - giant ghosted display type 'RAILWAY?', large-leading standfirst, two-column body, margin captions, embedded photo. p6: feature body (p34) - boxed section heading, two stacked photos left column, margin caption, two-column body. p7: Reviews (p40) - book-review layout with cover thumbnails, italic pull-quote panel, footer motto line. p8: Reviews (p41) - asymmetric three-column review layout, artwork image top-left, book thumbnail, shaded pull-quote panel, rotated credit rail. Photo-led feature-magazine pole of the corpus.",
+      "baseline": {
+        "pdf": "examples/output/baseline/AramcoWorld-en.b2_2.pdf",
+        "sha256": "a23a98f8574055f26659b620b299e89ad27170dc8e1c730e1f6ad043e65694bb",
+        "checkpoints": "examples/output/baseline/AramcoWorld-en.checkpoints"
       }
     }
   ]

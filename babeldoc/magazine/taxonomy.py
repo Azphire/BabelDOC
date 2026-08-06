@@ -19,9 +19,9 @@ from functools import lru_cache
 from pathlib import Path
 
 from babeldoc.magazine.page_features import CONFIG_PATH as FEATURE_CONFIG_PATH
-from babeldoc.magazine.page_features import FEATURE_NAMES
 from babeldoc.magazine.page_features import ConfigError
 from babeldoc.magazine.page_features import Parameter
+from babeldoc.magazine.page_features import known_feature_names
 from babeldoc.magazine.page_features import load_feature_config
 
 logger = logging.getLogger(__name__)
@@ -97,9 +97,12 @@ def _parse_rule(raw: object, owner: str, index: int) -> Rule:
     missing = sorted({"feature", "op", "threshold", "weight"} - set(raw))
     _require(not missing, f"{where}: missing keys {missing}")
     feature = raw["feature"]
+    # Percentile companions are referenced by name like any other feature, but
+    # only for the raw features the configuration selects for one.
+    known = known_feature_names()
     _require(
-        feature in FEATURE_NAMES,
-        f"{where}: unknown feature {feature!r}; known features are {list(FEATURE_NAMES)}",
+        feature in known,
+        f"{where}: unknown feature {feature!r}; known features are {list(known)}",
     )
     op = raw["op"]
     _require(

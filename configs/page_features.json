@@ -1,5 +1,5 @@
 {
-  "description": "Bounded parameters for deterministic page feature extraction (babeldoc/magazine/page_features.py). Numeric parameters carry a '<name>_allowed_range' sibling of the form 'low..high', inclusive on both ends. List parameters are closed vocabularies of IL structure values (upstream form types, upstream layout labels); the list is its own bound, so it takes no allowed range. Tuning happens here; the extractor holds no literals of either kind.",
+  "description": "Bounded parameters for deterministic page feature extraction (babeldoc/magazine/page_features.py). Numeric parameters carry a '<name>_allowed_range' sibling of the form 'low..high', inclusive on both ends. List parameters are closed vocabularies (IL structure values such as upstream form types and layout labels, or feature names); the list is its own bound, so it takes no allowed range. 'percentile_features' selects which raw features get a document level '<name>_pctl' companion from extract_document_features; every name must be a declared feature. Tuning happens here; the extractor holds no literals of either kind.",
   "grid_resolution": 64,
   "grid_resolution_allowed_range": "16..256",
   "short_char_limit": 80,
@@ -19,5 +19,15 @@
   "column_min_width_ratio": 0.12,
   "column_min_width_ratio_allowed_range": "0.0..1.0",
   "image_form_types": ["image"],
-  "column_estimate_labels": ["text", "plain text", "paragraph_hybrid"]
+  "column_estimate_labels": ["text", "plain text", "paragraph_hybrid"],
+  "percentile_features": [
+    "numeric_token_density",
+    "short_paragraph_ratio",
+    "mean_paragraph_chars",
+    "title_label_ratio",
+    "image_area_ratio",
+    "text_coverage_ratio",
+    "leader_dot_line_ratio",
+    "max_font_size_ratio"
+  ]
 }

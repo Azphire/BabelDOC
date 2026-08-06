@@ -15,6 +15,8 @@ from __future__ import annotations
 import json
 import re
 import statistics
+from bisect import bisect_left
+from bisect import bisect_right
 from functools import lru_cache
 from pathlib import Path
 
@@ -50,6 +52,10 @@ RATIO_FEATURES: frozenset[str] = frozenset(
         "page_relative_position",
     }
 )
+
+# Suffix of the document level companion of a raw feature: where the page sits
+# among the pages of its own document, rather than an absolute quantity.
+PERCENTILE_SUFFIX = "_pctl"
 
 # Substring that marks a layout label as a heading. This is a layout label from
 # the upstream layout model, not a page type name.
@@ -145,6 +151,7 @@ REQUIRED_PARAMETERS: frozenset[str] = frozenset(
         "column_min_width_ratio",
         "image_form_types",
         "column_estimate_labels",
+        "percentile_features",
     }
 )
 
@@ -159,7 +166,32 @@ def load_feature_config(path: str | None = None) -> dict[str, Parameter]:
     missing = sorted(REQUIRED_PARAMETERS - set(parameters))
     if missing:
         raise ConfigError(f"{config_path.name}: missing parameters {missing}")
+    selected = parameters["percentile_features"]
+    unknown = sorted(set(selected) - set(FEATURE_NAMES))
+    if unknown:
+        raise ConfigError(
+            f"{config_path.name}: percentile_features names unknown features {unknown}"
+        )
+    if len(set(selected)) != len(selected):
+        raise ConfigError(f"{config_path.name}: percentile_features repeats a feature")
     return parameters
+
+
+def percentile_feature_names(
+    config: dict[str, Parameter] | None = None,
+) -> tuple[str, ...]:
+    """Percentile keys ``extract_document_features`` adds, in configured order."""
+    parameters = load_feature_config() if config is None else config
+    return tuple(
+        f"{name}{PERCENTILE_SUFFIX}" for name in parameters["percentile_features"]
+    )
+
+
+def known_feature_names(
+    config: dict[str, Parameter] | None = None,
+) -> tuple[str, ...]:
+    """Every feature name a rule may reference: raw features plus percentiles."""
+    return FEATURE_NAMES + percentile_feature_names(config)
 
 
 @lru_cache(maxsize=8)
@@ -387,3 +419,49 @@ def extract_page_features(
         "column_count_estimate": float(columns),
         "page_relative_position": min(1.0, max(0.0, position)),
     }
+
+
+def _midranks(values: list[float]) -> list[float]:
+    """Midrank percentile of every value among the values of its own document.
+
+    ``(count(v < x) + 0.5 * count(v == x)) / n``. Ties share a rank, so a
+    feature that is constant across a document lands on 0.5 on every page and
+    simply stops discriminating, and no value ever reaches 0 or 1.
+    """
+    total = len(values)
+    ordered = sorted(values)
+    ranks = []
+    for value in values:
+        below = bisect_left(ordered, value)
+        equal = bisect_right(ordered, value) - below
+        ranks.append((below + 0.5 * equal) / total)
+    return ranks
+
+
+def extract_document_features(
+    document: il_version_1.Document,
+    config: dict[str, Parameter] | None = None,
+) -> list[dict[str, float]]:
+    """Feature vectors of every page, each carrying its document percentiles.
+
+    The raw keys are exactly what ``extract_page_features`` returns for the
+    same page. The ``_pctl`` companions state where the page sits inside this
+    document, so a threshold written against one reads as a relative position
+    in the issue at hand rather than an absolute quantity of a design grid,
+    which is what lets it carry across publications.
+
+    Pure and deterministic: the same IL always yields the same list, in page
+    order.
+    """
+    parameters = load_feature_config() if config is None else config
+    vectors = [
+        extract_page_features(page, document, parameters) for page in document.page
+    ]
+    if not vectors:
+        return vectors
+    for name in parameters["percentile_features"]:
+        key = f"{name}{PERCENTILE_SUFFIX}"
+        ranks = _midranks([vector[name] for vector in vectors])
+        for vector, rank in zip(vectors, ranks, strict=True):
+            vector[key] = rank
+    return vectors

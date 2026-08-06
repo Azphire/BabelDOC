@@ -39,6 +39,9 @@ from babeldoc.magazine.cache_setup import use_project_cache  # noqa: E402
 from babeldoc.magazine.checkpoint import CHECKPOINT_PREFIX  # noqa: E402
 
 PYTHON = sys.executable
+# Tag that freezes this batch; once it exists the scope assertions read the
+# delta it introduced instead of the working tree.
+BATCH_TAG = "batch-b2.1"
 MANIFEST_PATH = ROOT / "corpus" / "manifest.json"
 INPUT_DIR = ROOT / "examples" / "input"
 OUTPUT_DIR = ROOT / "examples" / "output" / "b2_1"
@@ -72,8 +75,9 @@ PROJECT_OWNED_PREFIXES = (
 )
 PROJECT_OWNED_FILES = {"CLAUDE.md", "UPSTREAM_DIFF.md", "WAIVERS.md"}
 
-# Marker that flags a corpus sample as a magazine, per its manifest notes.
-MAGAZINE_NOTE_MARKER = "magazine"
+# Manifest boolean that flags a corpus sample as a magazine. Sample selection
+# reads this field rather than free text, so notes stay purely descriptive.
+MAGAZINE_FIELD = "magazine"
 
 # Directories excluded from the "no page type name in code" scan.
 TYPE_NAME_SCAN_ROOT = ROOT / "babeldoc"
@@ -184,17 +188,34 @@ def render_diff(pdf_a: Path, pdf_b: Path, out_dir: Path) -> int:
     return proc.returncode
 
 
-def changed_files() -> set[str]:
-    """Every path in the working tree delta against HEAD."""
+def git_output(arguments: list[str]) -> tuple[int, str]:
     proc = subprocess.run(  # noqa: S603, S607 - git is expected on PATH for this gate
-        ["git", "status", "--porcelain", "--untracked-files=all"],  # noqa: S607
+        ["git", *arguments],  # noqa: S607
         cwd=ROOT,
         capture_output=True,
         text=True,
         check=False,
     )
+    return proc.returncode, proc.stdout
+
+
+def changed_files() -> set[str]:
+    """Every path this batch changed.
+
+    Before the batch is committed that is the working tree delta against HEAD.
+    Once the batch is tagged the same delta is the tag against its parent, so a
+    later batch can re-run this gate without its own changes counting here.
+    """
+    code, _ = git_output(["rev-parse", "-q", "--verify", f"{BATCH_TAG}^{{commit}}"])
+    if code == 0:
+        _, listing = git_output(
+            ["diff", "--name-only", f"{BATCH_TAG}^", BATCH_TAG]
+        )
+        return {line.strip() for line in listing.splitlines() if line.strip()}
+
+    _, listing = git_output(["status", "--porcelain", "--untracked-files=all"])
     paths: set[str] = set()
-    for line in proc.stdout.splitlines():
+    for line in listing.splitlines():
         entry = line[3:].strip()
         if " -> " in entry:
             entry = entry.split(" -> ", 1)[1]
@@ -222,7 +243,7 @@ def check_01_image_area(manifest: dict, classified: dict[str, Path]) -> None:
     positives = 0
     samples = 0
     for entry in manifest["samples"]:
-        if MAGAZINE_NOTE_MARKER not in entry.get("notes", ""):
+        if entry.get(MAGAZINE_FIELD) is not True:
             continue
         samples += 1
         name = Path(entry["file"]).stem
