@@ -41,6 +41,9 @@ from babeldoc.magazine.checkpoint import CHECKPOINT_PREFIX  # noqa: E402
 from xsdata.exceptions import ConverterWarning  # noqa: E402
 
 PYTHON = sys.executable
+# Tag that freezes this batch; once it exists the scope assertions read the
+# delta it introduced instead of the working tree.
+BATCH_TAG = "batch-b1"
 MANIFEST_PATH = ROOT / "corpus" / "manifest.json"
 INPUT_DIR = ROOT / "examples" / "input"
 OUTPUT_DIR = ROOT / "examples" / "output" / "b1"
@@ -81,6 +84,7 @@ NAME_REFERENCE_ALLOW_LIST = NAME_DEFINITION_FILES | {
     "babeldoc/magazine/page_classifier.py",
     "spec_checks/spec_check_b2.py",
     "spec_checks/spec_check_b2_1.py",
+    "spec_checks/spec_check_b2_3.py",
 }
 
 # Upstream files carried over from B0, still uncommitted in the working tree.
@@ -531,22 +535,34 @@ def check_08_render(manifest: dict, produced_pdfs: dict[str, Path]) -> None:
         )
 
 
-def changed_upstream_files() -> set[str]:
-    """Upstream paths in the working tree delta against HEAD.
-
-    HEAD is the basis so this gate stays recomputable once its own batch is
-    committed: the delta then carries only what later batches changed.
-    """
+def git_output(args: list[str]) -> tuple[int, str]:
     proc = subprocess.run(  # noqa: S603, S607 - git is expected on PATH for this gate
-        ["git", "diff", "--name-only", "HEAD"],  # noqa: S607
+        ["git", *args],  # noqa: S607
         cwd=ROOT,
         capture_output=True,
         text=True,
         check=False,
     )
+    return proc.returncode, proc.stdout
+
+
+def batch_revisions() -> list[str]:
+    """Revision arguments selecting the delta this batch introduced.
+
+    Once the batch is tagged that is the tag against its parent, so a later
+    batch can re-run this gate without its own changes counting here. Before
+    the tag exists it is the working tree against HEAD.
+    """
+    code, _ = git_output(["rev-parse", "-q", "--verify", f"{BATCH_TAG}^{{commit}}"])
+    return [f"{BATCH_TAG}^", BATCH_TAG] if code == 0 else ["HEAD"]
+
+
+def changed_upstream_files() -> set[str]:
+    """Upstream paths this batch changed."""
+    _, listing = git_output(["diff", "--name-only", *batch_revisions()])
     return {
         path
-        for path in (line.strip() for line in proc.stdout.splitlines())
+        for path in (line.strip() for line in listing.splitlines())
         if path
         and path not in PROJECT_OWNED_FILES
         and not path.startswith(PROJECT_OWNED_PREFIXES)
@@ -588,14 +604,8 @@ def check_09d_ascii_comments() -> None:
                     offenders.append(f"{path.relative_to(ROOT)}:{number}")
 
     tracked = sorted(ALLOWED_UPSTREAM_B0 | ALLOWED_UPSTREAM_B1)
-    proc = subprocess.run(  # noqa: S603, S607 - git is expected on PATH for this gate
-        ["git", "diff", "-U0", "HEAD", "--"] + tracked,  # noqa: S607
-        cwd=ROOT,
-        capture_output=True,
-        text=True,
-        check=False,
-    )
-    for line in proc.stdout.splitlines():
+    _, diff = git_output(["diff", "-U0", *batch_revisions(), "--", *tracked])
+    for line in diff.splitlines():
         if line.startswith("+") and not line.startswith("+++") and has_cjk(line):
             offenders.append(f"added upstream line: {line.strip()}")
     record(

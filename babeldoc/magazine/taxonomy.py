@@ -38,6 +38,12 @@ OPERATORS = {
     "lt": lambda value, threshold: value < threshold,
 }
 
+# Operators that assert a page reaches a quantity rather than staying under
+# one. Only a rule of this shape carrying positive weight is evidence a page
+# really is of a type: an ``le``/``lt`` rule is satisfied by the absence of a
+# quantity, so a page with nothing on it satisfies every one of them at once.
+EVIDENCE_OPERATORS = frozenset({"ge", "gt"})
+
 POLICY_KEYS = frozenset({"chain_eligible", "translate", "repair_profile"})
 
 
@@ -74,12 +80,25 @@ class PageType:
         """
         return sum(rule.weight for rule in self.rules if rule.weight > 0)
 
+    @property
+    def evidence_rules(self) -> tuple[Rule, ...]:
+        """Rules whose satisfaction is positive evidence for this type."""
+        return tuple(
+            rule
+            for rule in self.rules
+            if rule.op in EVIDENCE_OPERATORS and rule.weight > 0
+        )
+
+    def has_evidence(self, features: dict[str, float]) -> bool:
+        return any(rule.holds(features) for rule in self.evidence_rules)
+
 
 @dataclass(frozen=True)
 class Taxonomy:
     version: str
     ambiguity_margin: float
     default_type: str
+    require_positive_evidence: bool
     page_types: tuple[PageType, ...]
 
     def names(self) -> tuple[str, ...]:
@@ -128,8 +147,20 @@ def _parse_rule(raw: object, owner: str, index: int) -> Rule:
 def parse_taxonomy(raw: dict, source: str) -> Taxonomy:
     """Validate a decoded page type vocabulary and build its object model."""
     _require(isinstance(raw, dict), f"{source}: root must be an object")
-    for key in ("taxonomy_version", "ambiguity_margin", "default_type", "page_types"):
+    for key in (
+        "taxonomy_version",
+        "ambiguity_margin",
+        "default_type",
+        "require_positive_evidence",
+        "page_types",
+    ):
         _require(key in raw, f"{source}: missing key {key!r}")
+
+    require_evidence = raw["require_positive_evidence"]
+    _require(
+        isinstance(require_evidence, bool),
+        f"{source}: require_positive_evidence must be a boolean",
+    )
 
     margin = raw["ambiguity_margin"]
     _require(
@@ -176,6 +207,12 @@ def parse_taxonomy(raw: dict, source: str) -> Taxonomy:
             f"{where}: needs positive weight to score against, "
             f"a type made only of penalties can never be reached",
         )
+        _require(
+            any(rule.op in EVIDENCE_OPERATORS and rule.weight > 0 for rule in rules),
+            f"{where}: needs at least one positive weight rule using one of "
+            f"{sorted(EVIDENCE_OPERATORS)}, otherwise the type is reachable only "
+            f"by what a page lacks and an empty page would score against it",
+        )
 
         policy = entry.get("policy")
         _require(isinstance(policy, dict), f"{where}: policy must be an object")
@@ -208,6 +245,7 @@ def parse_taxonomy(raw: dict, source: str) -> Taxonomy:
         version=str(raw["taxonomy_version"]),
         ambiguity_margin=float(margin),
         default_type=default_type,
+        require_positive_evidence=require_evidence,
         page_types=tuple(page_types),
     )
 
@@ -234,14 +272,23 @@ def score_page_types(
     Satisfied weight is the algebraic sum, so a tripped penalty subtracts. The
     result is clamped to 0..1: a page that trips enough penalties is simply not
     of that type, and there is nothing to gain from ranking how badly.
+
+    With ``require_positive_evidence`` set, a type scores 0 on a page that
+    satisfies none of its evidence rules. Without that guard a page carrying
+    nothing at all sweeps every ``le``/``lt`` rule in the vocabulary and can
+    reach a high score on types it shows no sign of being.
     """
     scores: dict[str, float] = {}
     for page_type in taxonomy.page_types:
         total = page_type.total_weight
+        if total <= 0:
+            scores[page_type.name] = 0.0
+            continue
+        if taxonomy.require_positive_evidence and not page_type.has_evidence(features):
+            scores[page_type.name] = 0.0
+            continue
         satisfied = sum(rule.weight for rule in page_type.rules if rule.holds(features))
-        scores[page_type.name] = (
-            min(1.0, max(0.0, satisfied / total)) if total > 0 else 0.0
-        )
+        scores[page_type.name] = min(1.0, max(0.0, satisfied / total))
     return scores
 
 

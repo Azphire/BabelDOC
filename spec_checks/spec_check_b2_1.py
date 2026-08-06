@@ -14,6 +14,7 @@ from __future__ import annotations
 
 import json
 import logging
+import os
 import re
 import shutil
 import subprocess
@@ -84,6 +85,11 @@ TYPE_NAME_SCAN_ROOT = ROOT / "babeldoc"
 TYPE_NAME_SCAN_SKIP = {"__pycache__", "tests", "test"}
 
 EARLIER_GATES = ("spec_check_b0.py", "spec_check_b1.py", "spec_check_b2.py")
+
+# Set by spec_checks/run_all.py, which runs every gate once in order. The
+# nested re-run below is the fallback for running this file on its own; under
+# the runner it would repeat work the runner already covers, exponentially so.
+NESTED_SUPPRESSED = os.environ.get("SPEC_NO_NESTED") == "1"
 
 CJK_RANGES = ((0x3000, 0x303F), (0x4E00, 0x9FFF), (0xFF00, 0xFFEF))
 
@@ -412,6 +418,9 @@ def check_04_penalties_and_purity(classified: dict[str, Path]) -> None:
 
 
 def check_05_earlier_gates() -> None:
+    if NESTED_SUPPRESSED:
+        print("SKIPPED: nested run suppressed")
+        return
     for gate in EARLIER_GATES:
         proc = subprocess.run(  # noqa: S603 - fixed argv built from repository paths
             [PYTHON, str(ROOT / "spec_checks" / gate)],

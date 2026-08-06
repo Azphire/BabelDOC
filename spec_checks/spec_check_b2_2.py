@@ -15,6 +15,7 @@ from __future__ import annotations
 import importlib.util
 import json
 import logging
+import os
 import re
 import shutil
 import subprocess
@@ -51,6 +52,10 @@ OUTPUT_DIR = ROOT / "examples" / "output" / "b2_2"
 # The commit this batch builds on; the raw feature definitions and the page
 # type vocabulary must be identical to it.
 PREVIOUS_TAG = "batch-b2.1"
+
+# Tag that freezes this batch; once it exists the scope and freeze assertions
+# read this batch's own delta instead of the working tree.
+BATCH_TAG = "batch-b2.2"
 
 # Files this batch is allowed to change, per PLAN_B2_2 negative assertion 9.
 ALLOWED_CHANGES = {
@@ -99,6 +104,11 @@ EARLIER_GATES = (
     "spec_check_b2.py",
     "spec_check_b2_1.py",
 )
+
+# Set by spec_checks/run_all.py, which runs every gate once in order. The
+# nested re-run below is the fallback for running this file on its own; under
+# the runner it would repeat work the runner already covers, exponentially so.
+NESTED_SUPPRESSED = os.environ.get("SPEC_NO_NESTED") == "1"
 
 CJK_RANGES = ((0x3000, 0x303F), (0x4E00, 0x9FFF), (0xFF00, 0xFFEF))
 
@@ -214,8 +224,45 @@ def git_show(revision: str, path: str) -> bytes:
     return proc.stdout
 
 
+def batch_tag_exists() -> bool:
+    proc = subprocess.run(  # noqa: S603, S607 - git is expected on PATH for this gate
+        ["git", "rev-parse", "-q", "--verify", f"{BATCH_TAG}^{{commit}}"],  # noqa: S607
+        cwd=ROOT,
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    return proc.returncode == 0
+
+
+def current_bytes(path: str) -> bytes:
+    """This batch's version of a tracked file.
+
+    Once the batch is tagged that is the tagged content, so a later batch
+    editing the same file does not make this gate read its work.
+    """
+    if batch_tag_exists():
+        return git_show(BATCH_TAG, path)
+    return (ROOT / path).read_bytes()
+
+
 def changed_files() -> set[str]:
-    """Every path in the working tree delta against HEAD."""
+    """Every path this batch changed.
+
+    Before the batch is committed that is the working tree delta against HEAD.
+    Once the batch is tagged the same delta is the tag against its parent, so a
+    later batch can re-run this gate without its own changes counting here.
+    """
+    if batch_tag_exists():
+        proc = subprocess.run(  # noqa: S603, S607 - git is expected on PATH for this gate
+            ["git", "diff", "--name-only", f"{BATCH_TAG}^", BATCH_TAG],  # noqa: S607
+            cwd=ROOT,
+            capture_output=True,
+            text=True,
+            check=False,
+        )
+        return {line.strip() for line in proc.stdout.splitlines() if line.strip()}
+
     proc = subprocess.run(  # noqa: S603, S607 - git is expected on PATH for this gate
         ["git", "status", "--porcelain", "--untracked-files=all"],  # noqa: S607
         cwd=ROOT,
@@ -233,14 +280,29 @@ def changed_files() -> set[str]:
     return paths
 
 
-def previous_feature_module() -> ModuleType:
-    """Import the feature extractor as it stood at the previous batch tag."""
-    path = _tmp_root / "page_features_previous.py"
-    path.write_bytes(git_show(PREVIOUS_TAG, "babeldoc/magazine/page_features.py"))
-    spec = importlib.util.spec_from_file_location("page_features_previous", path)
+def feature_module_at(revision: str, alias: str) -> ModuleType:
+    """Import the feature extractor as it stood at a given revision."""
+    path = _tmp_root / f"page_features_{alias}.py"
+    path.write_bytes(git_show(revision, "babeldoc/magazine/page_features.py"))
+    spec = importlib.util.spec_from_file_location(f"page_features_{alias}", path)
     module = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(module)
     return module
+
+
+def previous_feature_module() -> ModuleType:
+    return feature_module_at(PREVIOUS_TAG, "previous")
+
+
+def current_feature_module() -> ModuleType:
+    """The feature extractor this batch delivered.
+
+    Read from the tag once it exists, so a later batch editing the extractor
+    is compared against its own baseline rather than against this one.
+    """
+    if batch_tag_exists():
+        return feature_module_at(BATCH_TAG, "batch")
+    return page_features
 
 
 def synthetic_document(page_count: int) -> il_version_1.Document:
@@ -404,10 +466,14 @@ def check_04_reports(classified: dict[str, Path], reports: dict[str, Path]) -> N
     pages_checked = 0
     for name, report_path in reports.items():
         report = json.loads(report_path.read_text(encoding="utf-8"))
-        docs = checkpoint_module.load_checkpoint(classifier_checkpoint(classified[name]))
+        docs = checkpoint_module.load_checkpoint(
+            classifier_checkpoint(classified[name])
+        )
         vectors = page_features.extract_document_features(docs, config)
         if len(report["pages"]) != len(vectors):
-            problems.append(f"{name}: {len(report['pages'])} records for {len(vectors)}")
+            problems.append(
+                f"{name}: {len(report['pages'])} records for {len(vectors)}"
+            )
             continue
         for record_entry, vector in zip(report["pages"], vectors, strict=True):
             pages_checked += 1
@@ -417,10 +483,14 @@ def check_04_reports(classified: dict[str, Path], reports: dict[str, Path]) -> N
                 page_features.FEATURE_NAMES
             ):
                 problems.append(f"{name}#{record_entry['page_number']}: raw column")
-            if sorted(record_entry.get("features_pctl", {})) != sorted(percentile_names):
+            if sorted(record_entry.get("features_pctl", {})) != sorted(
+                percentile_names
+            ):
                 problems.append(f"{name}#{record_entry['page_number']}: pctl column")
                 continue
-            merged = dict(record_entry["features"]) | dict(record_entry["features_pctl"])
+            merged = dict(record_entry["features"]) | dict(
+                record_entry["features_pctl"]
+            )
             if merged != vector:
                 problems.append(f"{name}#{record_entry['page_number']}: value drift")
     record(
@@ -595,7 +665,9 @@ def check_07_conservation(manifest: dict, classified: dict[str, Path]) -> None:
         before_paragraphs = sum(len(page.pdf_paragraph) for page in before.page)
         totals.append(f"{name}: {pages}p/{paragraphs}par")
         if pages != pages_by_file[name]:
-            problems.append(f"{name}: {pages} pages, manifest says {pages_by_file[name]}")
+            problems.append(
+                f"{name}: {pages} pages, manifest says {pages_by_file[name]}"
+            )
         if len(before.page) != pages or before_paragraphs != paragraphs:
             problems.append(
                 f"{name}: {before_paragraphs} paragraphs before, {paragraphs} after"
@@ -609,7 +681,7 @@ def check_07_conservation(manifest: dict, classified: dict[str, Path]) -> None:
 
 def check_08_frozen_thresholds() -> None:
     """The vocabulary and every pre-existing threshold are untouched."""
-    current = (ROOT / "configs" / "page_types.json").read_bytes()
+    current = current_bytes("configs/page_types.json")
     previous = git_show(PREVIOUS_TAG, "configs/page_types.json")
     record(
         "08a configs/page_types.json is byte identical to the previous batch",
@@ -618,7 +690,7 @@ def check_08_frozen_thresholds() -> None:
     )
 
     old = json.loads(git_show(PREVIOUS_TAG, "configs/page_features.json"))
-    new = json.loads((ROOT / "configs" / "page_features.json").read_text("utf-8"))
+    new = json.loads(current_bytes("configs/page_features.json"))
     changed = [
         key
         for key, value in old.items()
@@ -635,10 +707,13 @@ def check_08_frozen_thresholds() -> None:
 def check_09_raw_features_frozen(classified: dict[str, Path]) -> None:
     """Raw per page features are bit identical to the previous batch."""
     previous = previous_feature_module()
+    current = current_feature_module()
     old_config = previous.load_feature_config(
         str(ROOT / "configs" / "page_features.json")
     )
-    new_config = page_features.load_feature_config()
+    new_config = current.load_feature_config(
+        str(ROOT / "configs" / "page_features.json")
+    )
     drift: list[str] = []
     pages_checked = 0
     for name, directory in classified.items():
@@ -646,7 +721,7 @@ def check_09_raw_features_frozen(classified: dict[str, Path]) -> None:
         for page in docs.page:
             pages_checked += 1
             before = previous.extract_page_features(page, docs, old_config)
-            after = page_features.extract_page_features(page, docs, new_config)
+            after = current.extract_page_features(page, docs, new_config)
             if sorted(before.items()) != sorted(after.items()):
                 differing = sorted(
                     key for key in before if before[key] != after.get(key)
@@ -743,6 +818,9 @@ def check_11_no_type_names_and_no_cjk() -> None:
 
 
 def check_12_earlier_gates() -> None:
+    if NESTED_SUPPRESSED:
+        print("SKIPPED: nested run suppressed")
+        return
     for gate in EARLIER_GATES:
         proc = subprocess.run(  # noqa: S603 - fixed argv built from repository paths
             [PYTHON, str(ROOT / "spec_checks" / gate)],
