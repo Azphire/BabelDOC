@@ -214,9 +214,7 @@ def changed_files() -> set[str]:
     """
     code, _ = git_output(["rev-parse", "-q", "--verify", f"{BATCH_TAG}^{{commit}}"])
     if code == 0:
-        _, listing = git_output(
-            ["diff", "--name-only", f"{BATCH_TAG}^", BATCH_TAG]
-        )
+        _, listing = git_output(["diff", "--name-only", f"{BATCH_TAG}^", BATCH_TAG])
         return {line.strip() for line in listing.splitlines() if line.strip()}
 
     _, listing = git_output(["status", "--porcelain", "--untracked-files=all"])

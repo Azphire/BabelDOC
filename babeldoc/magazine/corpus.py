@@ -38,9 +38,7 @@ SEMANTIC_FIELDS: tuple[str, ...] = (
 MECHANICAL_FIELDS: tuple[str, ...] = ("sha256", "pages")
 
 # Closed vocabulary for the corpus_role list.
-CORPUS_ROLES: frozenset[str] = frozenset(
-    {"translation_eval", "layout_generalization"}
-)
+CORPUS_ROLES: frozenset[str] = frozenset({"translation_eval", "layout_generalization"})
 
 # Marker a registry entry carries while its metadata is still unverified; a
 # corpus holding one is not fit to build baselines from.
@@ -91,9 +89,7 @@ def registered_pdfs(input_dir: Path = INPUT_DIR) -> list[str]:
     )
 
 
-def validate_registry(
-    entries: list[dict], input_dir: Path = INPUT_DIR
-) -> list[str]:
+def validate_registry(entries: list[dict], input_dir: Path = INPUT_DIR) -> list[str]:
     """Check the registry against its schema and against the sample directory."""
     errors: list[str] = []
     if not entries:
