@@ -26,14 +26,11 @@ sys.path.insert(0, str(ROOT))
 
 import pymupdf  # noqa: E402
 from babeldoc.assets.assets import warmup  # noqa: E402
-from babeldoc.docvision.doclayout import DocLayoutModel  # noqa: E402
-from babeldoc.format.pdf import high_level  # noqa: E402
 from babeldoc.format.pdf.document_il.xml_converter import XMLConverter  # noqa: E402
-from babeldoc.format.pdf.parse_shared import _ParseOnlyDocLayoutModel  # noqa: E402
-from babeldoc.format.pdf.translation_config import TranslationConfig  # noqa: E402
-from babeldoc.format.pdf.translation_config import WatermarkOutputMode  # noqa: E402
 from babeldoc.magazine import cache_setup  # noqa: E402
 from babeldoc.magazine import checkpoint as checkpoint_module  # noqa: E402
+from spec_checks import artifacts  # noqa: E402
+from spec_checks import harness  # noqa: E402
 
 PYTHON = sys.executable
 # Tag that freezes this batch; once it exists the scope assertions read the
@@ -88,6 +85,15 @@ def has_cjk(text: str) -> bool:
     )
 
 
+# Checks that need an artefact built during this run. run_all --fast skips
+# them; everything else here reads source, git, configuration or a corpus
+# fixture that is already on disk.
+PIPELINE_TIER = (
+    "check_02_03_checkpoints",
+    "check_06_default_off",
+    "check_07_baseline_render",
+)
+
 # Row count used to prove that eviction is disabled; MAX_CACHE_ROWS + 1.
 CLEANUP_PROBE_ROWS = 50_001
 # Engine name for the cache probe rows; must stay within the 20 char column.
@@ -95,9 +101,11 @@ PROBE_ENGINE = "b0-cache-probe"
 
 _results: list[tuple[str, bool, str]] = []
 _tmp_root = Path(tempfile.mkdtemp(prefix="spec_b0_"))
+_timer = harness.Timer("spec_check_b0")
 
 
 def record(name: str, ok: bool, detail: str = "") -> bool:
+    _timer.mark(name)
     _results.append((name, ok, detail))
     print(f"[{'PASS' if ok else 'FAIL'}] {name}" + (f" :: {detail}" if detail else ""))
     return ok
@@ -105,44 +113,15 @@ def record(name: str, ok: bool, detail: str = "") -> bool:
 
 def run_checkpoint_pipeline(pdf: Path, tag: str, enable_checkpoint: bool) -> Path:
     """Run every non-translation stage over ``pdf`` and return the working dir."""
-    work_root = _tmp_root / tag
-    config = TranslationConfig(
-        translator=None,
-        input_file=pdf,
-        lang_in="en",
-        lang_out="zh",
-        doc_layout_model=DocLayoutModel.load_onnx(),
-        output_dir=work_root / "out",
-        working_dir=work_root / "work",
-        watermark_output_mode=WatermarkOutputMode.NoWatermark,
-        no_dual=True,
-        auto_extract_glossary=False,
-        skip_translation=True,
-        magazine_checkpoint=enable_checkpoint,
-    )
-    high_level.translate(config)
-    return Path(config.working_dir)
+    mode = "stages" if enable_checkpoint else "stages_plain"
+    with _timer.phase(f"pipeline:{mode}:{tag}"):
+        return artifacts.get_artifacts(pdf, mode).working_dir
 
 
 def run_parse_only(pdf: Path, tag: str) -> Path:
     """Dry run with only_parse_generate_pdf and return the produced mono PDF."""
-    work_root = _tmp_root / tag
-    config = TranslationConfig(
-        translator=None,
-        input_file=pdf,
-        lang_in="en",
-        lang_out="zh",
-        doc_layout_model=_ParseOnlyDocLayoutModel(),
-        output_dir=work_root / "out",
-        working_dir=work_root / "work",
-        watermark_output_mode=WatermarkOutputMode.NoWatermark,
-        no_dual=True,
-        auto_extract_glossary=False,
-        only_parse_generate_pdf=True,
-        magazine_checkpoint=True,
-    )
-    result = high_level.translate(config)
-    return Path(result.mono_pdf_path)
+    with _timer.phase(f"pipeline:parse_only:{tag}"):
+        return artifacts.get_artifacts(pdf, "parse_only").mono_pdf
 
 
 def render_diff(pdf_a: Path, pdf_b: Path, out_dir: Path) -> int:
@@ -431,7 +410,8 @@ def check_10_cache() -> None:
 
 def main() -> int:
     logging.basicConfig(level=logging.ERROR)
-    warmup()
+    with _timer.phase("warmup"):
+        warmup()
 
     with MANIFEST_PATH.open(encoding="utf-8") as f:
         manifest = json.load(f)
@@ -441,21 +421,26 @@ def main() -> int:
 
     check_01_module_api()
 
-    work_on = run_checkpoint_pipeline(sample_pdf, "ckpt_on", True)
-    check_02_03_checkpoints(work_on)
-
-    work_off = run_checkpoint_pipeline(sample_pdf, "ckpt_off", False)
-    check_06_default_off(work_off)
+    if harness.FAST_TIER:
+        for name in PIPELINE_TIER:
+            harness.fast_skip(name)
+    else:
+        check_02_03_checkpoints(run_checkpoint_pipeline(sample_pdf, "ckpt_on", True))
+        check_06_default_off(run_checkpoint_pipeline(sample_pdf, "ckpt_off", False))
+        check_07_baseline_render(manifest)
 
     check_04_render_diff(baseline_pdf)
     check_05_corpus()
-    check_07_baseline_render(manifest)
     check_08_upstream_scope()
     check_09_ascii_comments()
     check_10_cache()
 
     failed = [name for name, ok, _ in _results if not ok]
     print()
+    artifacts.write_stats("spec_check_b0")
+    artifacts.print_stats("spec_check_b0")
+    _timer.write()
+    _timer.print_summary()
     print(f"spec_check_b0: {len(_results) - len(failed)}/{len(_results)} passed")
     if failed:
         for name in failed:

@@ -28,16 +28,13 @@ sys.path.insert(0, str(ROOT))
 
 import pymupdf  # noqa: E402
 from babeldoc.assets.assets import warmup  # noqa: E402
-from babeldoc.docvision.doclayout import DocLayoutModel  # noqa: E402
-from babeldoc.format.pdf import high_level  # noqa: E402
-from babeldoc.format.pdf.parse_shared import _ParseOnlyDocLayoutModel  # noqa: E402
-from babeldoc.format.pdf.translation_config import TranslationConfig  # noqa: E402
-from babeldoc.format.pdf.translation_config import WatermarkOutputMode  # noqa: E402
 from babeldoc.magazine import checkpoint as checkpoint_module  # noqa: E402
 from babeldoc.magazine import page_features  # noqa: E402
 from babeldoc.magazine import taxonomy as taxonomy_module  # noqa: E402
 from babeldoc.magazine.cache_setup import use_project_cache  # noqa: E402
 from babeldoc.magazine.checkpoint import CHECKPOINT_PREFIX  # noqa: E402
+from spec_checks import artifacts  # noqa: E402
+from spec_checks import harness  # noqa: E402
 
 PYTHON = sys.executable
 # Tag that freezes this batch; once it exists the scope assertions read the
@@ -86,6 +83,16 @@ TYPE_NAME_SCAN_SKIP = {"__pycache__", "tests", "test"}
 
 EARLIER_GATES = ("spec_check_b0.py", "spec_check_b1.py", "spec_check_b2.py")
 
+# Checks that need an artefact built during this run. run_all --fast skips
+# them; the scope and naming assertions read git and source only.
+PIPELINE_TIER = (
+    "check_01_image_area",
+    "check_02_columns",
+    "check_03_last_page",
+    "check_04_penalties_and_purity",
+    "check_06_default_off",
+)
+
 # Set by spec_checks/run_all.py, which runs every gate once in order. The
 # nested re-run below is the fallback for running this file on its own; under
 # the runner it would repeat work the runner already covers, exponentially so.
@@ -95,6 +102,7 @@ CJK_RANGES = ((0x3000, 0x303F), (0x4E00, 0x9FFF), (0xFF00, 0xFFEF))
 
 _results: list[tuple[str, bool, str]] = []
 _tmp_root = Path(tempfile.mkdtemp(prefix="spec_b2_1_"))
+_timer = harness.Timer("spec_check_b2_1")
 
 
 def has_cjk(text: str) -> bool:
@@ -104,6 +112,7 @@ def has_cjk(text: str) -> bool:
 
 
 def record(name: str, ok: bool, detail: str = "") -> bool:
+    _timer.mark(name)
     _results.append((name, ok, detail))
     print(f"[{'PASS' if ok else 'FAIL'}] {name}" + (f" :: {detail}" if detail else ""))
     return ok
@@ -112,62 +121,35 @@ def record(name: str, ok: bool, detail: str = "") -> bool:
 # --- pipeline helpers -------------------------------------------------------
 
 
+def freeze_checkpoints(working_dir: Path, target: Path) -> Path:
+    """Copy the checkpoints of a run into ``target``, replacing what was there."""
+    if target.exists():
+        shutil.rmtree(target)
+    target.mkdir(parents=True)
+    for item in sorted(working_dir.glob(f"{CHECKPOINT_PREFIX}*")):
+        shutil.copyfile(item, target / item.name)
+    return target
+
+
 def run_all_stages(pdf: Path, name: str, classify: bool) -> Path:
     """Run every non-translation stage; return the checkpoint directory."""
-    stage_dir = _tmp_root / f"stages_{name}_{int(classify)}"
-    config = TranslationConfig(
-        translator=None,
-        input_file=pdf,
-        lang_in="en",
-        lang_out="zh",
-        doc_layout_model=DocLayoutModel.load_onnx(),
-        output_dir=stage_dir / "out",
-        working_dir=stage_dir / "work",
-        watermark_output_mode=WatermarkOutputMode.NoWatermark,
-        no_dual=True,
-        auto_extract_glossary=False,
-        skip_translation=True,
-        magazine_checkpoint=True,
-        magazine_page_classify=classify,
-    )
-    high_level.translate(config)
-    suffix = "classified" if classify else "stages"
-    checkpoint_dir = OUTPUT_DIR / f"{name}.{suffix}"
-    if checkpoint_dir.exists():
-        shutil.rmtree(checkpoint_dir)
-    checkpoint_dir.mkdir(parents=True)
-    for item in sorted(Path(config.working_dir).glob(f"{CHECKPOINT_PREFIX}*")):
-        shutil.copyfile(item, checkpoint_dir / item.name)
-    return checkpoint_dir
+    mode = "classified" if classify else "stages"
+    with _timer.phase(f"pipeline:{mode}:{name}"):
+        built = artifacts.get_artifacts(pdf, mode)
+    OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
+    return freeze_checkpoints(built.working_dir, OUTPUT_DIR / f"{name}.{mode}")
 
 
 def run_parse_only(pdf: Path, name: str) -> tuple[Path, Path]:
     """Dry run with the classifier left at its default, for the render diff."""
-    stage_dir = _tmp_root / f"parse_only_{name}"
-    config = TranslationConfig(
-        translator=None,
-        input_file=pdf,
-        lang_in="en",
-        lang_out="zh",
-        doc_layout_model=_ParseOnlyDocLayoutModel(),
-        output_dir=stage_dir / "out",
-        working_dir=stage_dir / "work",
-        watermark_output_mode=WatermarkOutputMode.NoWatermark,
-        no_dual=True,
-        auto_extract_glossary=False,
-        only_parse_generate_pdf=True,
-        magazine_checkpoint=True,
-    )
-    result = high_level.translate(config)
+    with _timer.phase(f"pipeline:parse_only:{name}"):
+        built = artifacts.get_artifacts(pdf, "parse_only")
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
     produced_pdf = OUTPUT_DIR / f"{name}.b2_1.pdf"
-    shutil.copyfile(result.mono_pdf_path, produced_pdf)
-    checkpoint_dir = OUTPUT_DIR / f"{name}.checkpoints"
-    if checkpoint_dir.exists():
-        shutil.rmtree(checkpoint_dir)
-    checkpoint_dir.mkdir(parents=True)
-    for item in sorted(Path(config.working_dir).glob(f"{CHECKPOINT_PREFIX}*")):
-        shutil.copyfile(item, checkpoint_dir / item.name)
+    shutil.copyfile(built.mono_pdf, produced_pdf)
+    checkpoint_dir = freeze_checkpoints(
+        built.working_dir, OUTPUT_DIR / f"{name}.checkpoints"
+    )
     return produced_pdf, checkpoint_dir
 
 
@@ -538,35 +520,45 @@ def check_08_no_type_names_and_no_cjk() -> None:
 
 def main() -> int:
     logging.basicConfig(level=logging.ERROR)
-    use_project_cache(ROOT)
-    warmup()
+    with _timer.phase("warmup"):
+        use_project_cache(ROOT)
+        warmup()
 
     with MANIFEST_PATH.open(encoding="utf-8") as f:
         manifest = json.load(f)
 
-    classified: dict[str, Path] = {}
-    default_dirs: list[Path] = []
-    produced_pdfs: dict[str, Path] = {}
-    for entry in manifest["samples"]:
-        name = Path(entry["file"]).stem
-        pdf = INPUT_DIR / entry["file"]
-        classified[name] = run_all_stages(pdf, name, classify=True)
-        default_dirs.append(run_all_stages(pdf, name, classify=False))
-        produced_pdf, parse_only_dir = run_parse_only(pdf, name)
-        produced_pdfs[name] = produced_pdf
-        default_dirs.append(parse_only_dir)
+    if harness.FAST_TIER:
+        for name in PIPELINE_TIER:
+            harness.fast_skip(name)
+    else:
+        classified: dict[str, Path] = {}
+        default_dirs: list[Path] = []
+        produced_pdfs: dict[str, Path] = {}
+        for entry in manifest["samples"]:
+            name = Path(entry["file"]).stem
+            pdf = INPUT_DIR / entry["file"]
+            classified[name] = run_all_stages(pdf, name, classify=True)
+            default_dirs.append(run_all_stages(pdf, name, classify=False))
+            produced_pdf, parse_only_dir = run_parse_only(pdf, name)
+            produced_pdfs[name] = produced_pdf
+            default_dirs.append(parse_only_dir)
 
-    check_01_image_area(manifest, classified)
-    check_02_columns(classified)
-    check_03_last_page(classified)
-    check_04_penalties_and_purity(classified)
-    check_06_default_off(manifest, produced_pdfs, default_dirs)
+        check_01_image_area(manifest, classified)
+        check_02_columns(classified)
+        check_03_last_page(classified)
+        check_04_penalties_and_purity(classified)
+        check_06_default_off(manifest, produced_pdfs, default_dirs)
+
     check_07_change_scope()
     check_08_no_type_names_and_no_cjk()
     check_05_earlier_gates()
 
     failed = [name for name, ok, _ in _results if not ok]
     print()
+    artifacts.write_stats("spec_check_b2_1")
+    artifacts.print_stats("spec_check_b2_1")
+    _timer.write()
+    _timer.print_summary()
     print(f"spec_check_b2_1: {len(_results) - len(failed)}/{len(_results)} passed")
     for name in failed:
         print(f"  FAILED: {name}")

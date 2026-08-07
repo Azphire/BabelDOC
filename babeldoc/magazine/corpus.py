@@ -317,12 +317,20 @@ def normalize_page_labels(raw: dict) -> dict[str, dict[str, list[str]]]:
 
 
 def validate_page_labels(
-    raw: object, known_types: Collection[str], source: str = PAGE_LABELS_PATH.name
+    raw: object,
+    known_types: Collection[str],
+    source: str = PAGE_LABELS_PATH.name,
+    pages_by_file: dict[str, int] | None = None,
 ) -> list[str]:
     """Check the ground truth against its shape and the declared vocabulary.
 
     Every message names the file, the page and, where one is at fault, the
     offending element, so a hand editing round trip does not need the code.
+
+    When ``pages_by_file`` maps a sample to its page count, a page number past
+    the end of that sample is an error. Without the bound such a label simply
+    never matches any produced page, and a typo would be scored as a
+    classifier miss rather than reported as the editing mistake it is.
     """
     errors: list[str] = []
     if not isinstance(raw, dict):
@@ -333,10 +341,13 @@ def validate_page_labels(
         if not isinstance(pages, dict):
             errors.append(f"{source}: {file_name}: value must be an object")
             continue
+        total = (pages_by_file or {}).get(file_name)
         for page, value in pages.items():
             where = f"{source}: {file_name} page {page}"
             if not (page.isdigit() and int(page) >= 1):
                 errors.append(f"{where}: page must be a 1-based page number")
+            elif total is not None and int(page) > total:
+                errors.append(f"{where}: outside the 1..{total} pages of {file_name}")
             if isinstance(value, str):
                 value = [value]
             if not isinstance(value, list):

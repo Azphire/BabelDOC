@@ -28,16 +28,13 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
 from babeldoc.assets.assets import warmup  # noqa: E402
-from babeldoc.docvision.doclayout import DocLayoutModel  # noqa: E402
-from babeldoc.format.pdf import high_level  # noqa: E402
 from babeldoc.format.pdf.document_il import il_version_1  # noqa: E402
 from babeldoc.format.pdf.document_il.xml_converter import XMLConverter  # noqa: E402
-from babeldoc.format.pdf.parse_shared import _ParseOnlyDocLayoutModel  # noqa: E402
-from babeldoc.format.pdf.translation_config import TranslationConfig  # noqa: E402
-from babeldoc.format.pdf.translation_config import WatermarkOutputMode  # noqa: E402
 from babeldoc.magazine import ir_compat  # noqa: E402
 from babeldoc.magazine.cache_setup import use_project_cache  # noqa: E402
 from babeldoc.magazine.checkpoint import CHECKPOINT_PREFIX  # noqa: E402
+from spec_checks import artifacts  # noqa: E402
+from spec_checks import harness  # noqa: E402
 from xsdata.exceptions import ConverterWarning  # noqa: E402
 
 PYTHON = sys.executable
@@ -130,11 +127,21 @@ NEW_CODE_GLOBS = (
 # gate script stays pure ASCII itself.
 CJK_RANGES = ((0x3000, 0x303F), (0x4E00, 0x9FFF), (0xFF00, 0xFFEF))
 
+# Checks that need an artefact built during this run. run_all --fast skips
+# them; the rest read the schema quadruple, source, git or a B0 baseline that
+# is already on disk.
+PIPELINE_TIER = (
+    "check_04b_json_stability",
+    "check_07_no_values_written",
+    "check_08_render",
+)
+
 # The only converter warning tolerated when reading pipeline output (W-B0-02).
 KNOWN_CONVERTER_WARNING = "debug_info"
 
 _results: list[tuple[str, bool, str]] = []
 _tmp_root = Path(tempfile.mkdtemp(prefix="spec_b1_"))
+_timer = harness.Timer("spec_check_b1")
 
 
 def has_cjk(text: str) -> bool:
@@ -144,6 +151,7 @@ def has_cjk(text: str) -> bool:
 
 
 def record(name: str, ok: bool, detail: str = "") -> bool:
+    _timer.mark(name)
     _results.append((name, ok, detail))
     print(f"[{'PASS' if ok else 'FAIL'}] {name}" + (f" :: {detail}" if detail else ""))
     return ok
@@ -223,62 +231,35 @@ def xsd_attributes() -> dict[str, dict[str, bool]]:
 # --- pipeline helpers -------------------------------------------------------
 
 
+def freeze_checkpoints(working_dir: Path, target: Path) -> Path:
+    """Copy the checkpoints of a run into ``target``, replacing what was there."""
+    if target.exists():
+        shutil.rmtree(target)
+    target.mkdir(parents=True)
+    for item in sorted(working_dir.glob(f"{CHECKPOINT_PREFIX}*")):
+        shutil.copyfile(item, target / item.name)
+    return target
+
+
 def run_parse_only(pdf: Path, name: str) -> tuple[Path, Path]:
     """Dry run a sample and freeze its mono PDF and checkpoints under b1/."""
-    stage_dir = _tmp_root / f"parse_only_{name}"
-    config = TranslationConfig(
-        translator=None,
-        input_file=pdf,
-        lang_in="en",
-        lang_out="zh",
-        doc_layout_model=_ParseOnlyDocLayoutModel(),
-        output_dir=stage_dir / "out",
-        working_dir=stage_dir / "work",
-        watermark_output_mode=WatermarkOutputMode.NoWatermark,
-        no_dual=True,
-        auto_extract_glossary=False,
-        only_parse_generate_pdf=True,
-        magazine_checkpoint=True,
-    )
-    result = high_level.translate(config)
+    with _timer.phase(f"pipeline:parse_only:{name}"):
+        built = artifacts.get_artifacts(pdf, "parse_only")
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
     produced_pdf = OUTPUT_DIR / f"{name}.b1.pdf"
-    shutil.copyfile(result.mono_pdf_path, produced_pdf)
-
-    checkpoint_dir = OUTPUT_DIR / f"{name}.checkpoints"
-    if checkpoint_dir.exists():
-        shutil.rmtree(checkpoint_dir)
-    checkpoint_dir.mkdir(parents=True)
-    for item in sorted(Path(config.working_dir).glob(f"{CHECKPOINT_PREFIX}*")):
-        shutil.copyfile(item, checkpoint_dir / item.name)
+    shutil.copyfile(built.mono_pdf, produced_pdf)
+    checkpoint_dir = freeze_checkpoints(
+        built.working_dir, OUTPUT_DIR / f"{name}.checkpoints"
+    )
     return produced_pdf, checkpoint_dir
 
 
 def run_all_stages(pdf: Path, name: str) -> Path:
     """Run every non-translation stage so paragraph-bearing checkpoints exist."""
-    stage_dir = _tmp_root / f"stages_{name}"
-    config = TranslationConfig(
-        translator=None,
-        input_file=pdf,
-        lang_in="en",
-        lang_out="zh",
-        doc_layout_model=DocLayoutModel.load_onnx(),
-        output_dir=stage_dir / "out",
-        working_dir=stage_dir / "work",
-        watermark_output_mode=WatermarkOutputMode.NoWatermark,
-        no_dual=True,
-        auto_extract_glossary=False,
-        skip_translation=True,
-        magazine_checkpoint=True,
-    )
-    high_level.translate(config)
-    checkpoint_dir = OUTPUT_DIR / f"{name}.stages"
-    if checkpoint_dir.exists():
-        shutil.rmtree(checkpoint_dir)
-    checkpoint_dir.mkdir(parents=True)
-    for item in sorted(Path(config.working_dir).glob(f"{CHECKPOINT_PREFIX}*")):
-        shutil.copyfile(item, checkpoint_dir / item.name)
-    return checkpoint_dir
+    with _timer.phase(f"pipeline:stages:{name}"):
+        built = artifacts.get_artifacts(pdf, "stages")
+    OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
+    return freeze_checkpoints(built.working_dir, OUTPUT_DIR / f"{name}.stages")
 
 
 def render_diff(pdf_a: Path, pdf_b: Path, out_dir: Path) -> int:
@@ -617,8 +598,9 @@ def check_09d_ascii_comments() -> None:
 
 def main() -> int:
     logging.basicConfig(level=logging.ERROR)
-    use_project_cache(ROOT)
-    warmup()
+    with _timer.phase("warmup"):
+        use_project_cache(ROOT)
+        warmup()
 
     with MANIFEST_PATH.open(encoding="utf-8") as f:
         manifest = json.load(f)
@@ -630,29 +612,39 @@ def main() -> int:
     check_05_backward_compat(manifest)
     check_06_no_consumers()
 
-    produced_pdfs: dict[str, Path] = {}
-    checkpoint_dirs: dict[str, Path] = {}
-    for entry in manifest["samples"]:
-        name = Path(entry["file"]).stem
-        pdf, checkpoints = run_parse_only(INPUT_DIR / entry["file"], name)
-        produced_pdfs[name] = pdf
-        checkpoint_dirs[name] = checkpoints
+    if harness.FAST_TIER:
+        for name in PIPELINE_TIER:
+            harness.fast_skip(name)
+    else:
+        produced_pdfs: dict[str, Path] = {}
+        checkpoint_dirs: dict[str, Path] = {}
+        for entry in manifest["samples"]:
+            name = Path(entry["file"]).stem
+            pdf, checkpoints = run_parse_only(INPUT_DIR / entry["file"], name)
+            produced_pdfs[name] = pdf
+            checkpoint_dirs[name] = checkpoints
 
-    # The dry run stops after IL creation, so one sample is also taken through
-    # every non-translation stage to cover paragraph-bearing checkpoints.
-    smallest = min(manifest["samples"], key=lambda entry: entry["pages"])
-    stage_dir = run_all_stages(
-        INPUT_DIR / smallest["file"], Path(smallest["file"]).stem
-    )
+        # The dry run stops after IL creation, so one sample is also taken
+        # through every non-translation stage to cover paragraph-bearing
+        # checkpoints.
+        smallest = min(manifest["samples"], key=lambda entry: entry["pages"])
+        stage_dir = run_all_stages(
+            INPUT_DIR / smallest["file"], Path(smallest["file"]).stem
+        )
 
-    check_04b_json_stability(checkpoint_dirs, manifest)
-    check_07_no_values_written([*checkpoint_dirs.values(), stage_dir])
-    check_08_render(manifest, produced_pdfs)
+        check_04b_json_stability(checkpoint_dirs, manifest)
+        check_07_no_values_written([*checkpoint_dirs.values(), stage_dir])
+        check_08_render(manifest, produced_pdfs)
+
     check_09_upstream_scope()
     check_09d_ascii_comments()
 
     failed = [name for name, ok, _ in _results if not ok]
     print()
+    artifacts.write_stats("spec_check_b1")
+    artifacts.print_stats("spec_check_b1")
+    _timer.write()
+    _timer.print_summary()
     print(f"spec_check_b1: {len(_results) - len(failed)}/{len(_results)} passed")
     for name in failed:
         print(f"  FAILED: {name}")

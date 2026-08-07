@@ -12,11 +12,15 @@ overlay PNG for every page that differs. Exit codes:
 
 A raster size mismatch on a page present in both files is reported as a
 page-level difference (exit 1), not as a structural difference (exit 2).
+
+Two files with the same bytes cannot render differently, so that case is
+answered from the content hashes and no page is rasterised at all.
 """
 
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import sys
 from collections import deque
@@ -30,6 +34,17 @@ EXIT_DIFFERENT = 1
 EXIT_STRUCTURAL = 2
 
 _CONFIG_PATH = Path(__file__).resolve().parents[1] / "configs" / "render_diff.json"
+
+# Read size for incremental hashing; a pure I/O buffer, not a tuning knob.
+_HASH_CHUNK_BYTES = 1 << 20
+
+
+def sha256_file(path: Path) -> str:
+    digest = hashlib.sha256()
+    with path.open("rb") as f:
+        while chunk := f.read(_HASH_CHUNK_BYTES):
+            digest.update(chunk)
+    return digest.hexdigest()
 
 
 def load_config(path: Path = _CONFIG_PATH) -> dict:
@@ -111,8 +126,22 @@ def compare(
         "region_block_px": block_px,
         "structural_difference": False,
         "structural_reason": None,
+        "identical_bytes": False,
         "pages": [],
     }
+
+    if pdf_a.exists() and pdf_b.exists():
+        digest_a = sha256_file(pdf_a)
+        if digest_a == sha256_file(pdf_b):
+            report["identical_bytes"] = True
+            report["sha256"] = digest_a
+            report["summary"] = {
+                "compared_pages": 0,
+                "differing_pages": 0,
+                "mean_diff_ratio": 0.0,
+                "max_diff_ratio": 0.0,
+            }
+            return EXIT_IDENTICAL, report
 
     try:
         doc_a = pymupdf.open(pdf_a)

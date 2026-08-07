@@ -30,12 +30,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
 from babeldoc.assets.assets import warmup  # noqa: E402
-from babeldoc.docvision.doclayout import DocLayoutModel  # noqa: E402
-from babeldoc.format.pdf import high_level  # noqa: E402
 from babeldoc.format.pdf.document_il import il_version_1  # noqa: E402
-from babeldoc.format.pdf.parse_shared import _ParseOnlyDocLayoutModel  # noqa: E402
-from babeldoc.format.pdf.translation_config import TranslationConfig  # noqa: E402
-from babeldoc.format.pdf.translation_config import WatermarkOutputMode  # noqa: E402
 from babeldoc.magazine import checkpoint as checkpoint_module  # noqa: E402
 from babeldoc.magazine import corpus as corpus_module  # noqa: E402
 from babeldoc.magazine import taxonomy as taxonomy_module  # noqa: E402
@@ -47,6 +42,8 @@ from babeldoc.magazine.page_features import PERCENTILE_SUFFIX  # noqa: E402
 from babeldoc.magazine.page_features import extract_document_features  # noqa: E402
 from babeldoc.magazine.page_features import load_feature_config  # noqa: E402
 from babeldoc.magazine.page_features import percentile_feature_names  # noqa: E402
+from spec_checks import artifacts  # noqa: E402
+from spec_checks import harness  # noqa: E402
 
 PYTHON = sys.executable
 # Tag that freezes this batch; once it exists the scope assertions read the
@@ -133,6 +130,15 @@ EARLIER_GATES = (
 # the runner it would repeat work the runner already covers, exponentially so.
 NESTED_SUPPRESSED = os.environ.get("SPEC_NO_NESTED") == "1"
 
+# Checks that need an artefact built during this run. run_all --fast skips
+# them; the synthetic-page, validator, freeze and scope assertions build their
+# own documents in memory or read files that are already on disk.
+PIPELINE_TIER = (
+    "check_01_forensics",
+    "check_03_corpus_regression",
+    "check_06_end_to_end",
+)
+
 CJK_RANGES = ((0x3000, 0x303F), (0x4E00, 0x9FFF), (0xFF00, 0xFFEF))
 
 # Documents whose prose is Chinese by design; the CJK scan covers code only.
@@ -140,6 +146,7 @@ CJK_SCAN_SUFFIXES = (".py", ".json")
 
 _results: list[tuple[str, bool, str]] = []
 _tmp_root = Path(tempfile.mkdtemp(prefix="spec_b2_3_"))
+_timer = harness.Timer("spec_check_b2_3")
 
 
 def has_cjk(text: str) -> bool:
@@ -149,6 +156,7 @@ def has_cjk(text: str) -> bool:
 
 
 def record(name: str, ok: bool, detail: str = "") -> bool:
+    _timer.mark(name)
     _results.append((name, ok, detail))
     print(f"[{'PASS' if ok else 'FAIL'}] {name}" + (f" :: {detail}" if detail else ""))
     return ok
@@ -162,55 +170,27 @@ def run_classified(pdf: Path, name: str) -> tuple[Path, Path]:
 
     Returns the checkpoint directory and the classifier sidecar report.
     """
-    stage_dir = _tmp_root / f"classified_{name}"
-    config = TranslationConfig(
-        translator=None,
-        input_file=pdf,
-        lang_in="en",
-        lang_out="zh",
-        doc_layout_model=DocLayoutModel.load_onnx(),
-        output_dir=stage_dir / "out",
-        working_dir=stage_dir / "work",
-        watermark_output_mode=WatermarkOutputMode.NoWatermark,
-        no_dual=True,
-        auto_extract_glossary=False,
-        skip_translation=True,
-        magazine_checkpoint=True,
-        magazine_page_classify=True,
-    )
-    high_level.translate(config)
+    with _timer.phase(f"pipeline:classified:{name}"):
+        built = artifacts.get_artifacts(pdf, "classified")
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
     checkpoint_dir = OUTPUT_DIR / f"{name}.classified"
     if checkpoint_dir.exists():
         shutil.rmtree(checkpoint_dir)
     checkpoint_dir.mkdir(parents=True)
-    for item in sorted(Path(config.working_dir).glob(f"{CHECKPOINT_PREFIX}*")):
+    for item in sorted(built.working_dir.glob(f"{CHECKPOINT_PREFIX}*")):
         shutil.copyfile(item, checkpoint_dir / item.name)
     report = OUTPUT_DIR / f"{name}.{REPORT_NAME}"
-    shutil.copyfile(Path(config.working_dir) / REPORT_NAME, report)
+    shutil.copyfile(built.working_dir / REPORT_NAME, report)
     return checkpoint_dir, report
 
 
 def run_parse_only(pdf: Path, name: str) -> Path:
     """Dry run with the classifier at its default, for the render diff."""
-    stage_dir = _tmp_root / f"parse_only_{name}"
-    config = TranslationConfig(
-        translator=None,
-        input_file=pdf,
-        lang_in="en",
-        lang_out="zh",
-        doc_layout_model=_ParseOnlyDocLayoutModel(),
-        output_dir=stage_dir / "out",
-        working_dir=stage_dir / "work",
-        watermark_output_mode=WatermarkOutputMode.NoWatermark,
-        no_dual=True,
-        auto_extract_glossary=False,
-        only_parse_generate_pdf=True,
-    )
-    result = high_level.translate(config)
+    with _timer.phase(f"pipeline:parse_only_plain:{name}"):
+        built = artifacts.get_artifacts(pdf, "parse_only_plain")
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
     produced = OUTPUT_DIR / f"{name}.b2_3.pdf"
-    shutil.copyfile(result.mono_pdf_path, produced)
+    shutil.copyfile(built.mono_pdf, produced)
     return produced
 
 
@@ -815,35 +795,45 @@ def check_08_earlier_gates() -> None:
 
 def main() -> int:
     logging.basicConfig(level=logging.ERROR)
-    use_project_cache(ROOT)
-    warmup()
+    with _timer.phase("warmup"):
+        use_project_cache(ROOT)
+        warmup()
 
     with MANIFEST_PATH.open(encoding="utf-8") as f:
         manifest = json.load(f)
 
-    classified: dict[str, Path] = {}
-    reports: dict[str, Path] = {}
-    produced_pdfs: dict[str, Path] = {}
-    for entry in manifest["samples"]:
-        name = Path(entry["file"]).stem
-        pdf = INPUT_DIR / entry["file"]
-        if corpus_module.sha256_file(pdf) != entry["sha256"]:
-            print(f"corpus sample {entry['file']} does not match the manifest hash")
-            return 1
-        classified[name], reports[name] = run_classified(pdf, name)
-        produced_pdfs[name] = run_parse_only(pdf, name)
+    if harness.FAST_TIER:
+        for name in PIPELINE_TIER:
+            harness.fast_skip(name)
+    else:
+        classified: dict[str, Path] = {}
+        reports: dict[str, Path] = {}
+        produced_pdfs: dict[str, Path] = {}
+        for entry in manifest["samples"]:
+            name = Path(entry["file"]).stem
+            pdf = INPUT_DIR / entry["file"]
+            if corpus_module.sha256_file(pdf) != entry["sha256"]:
+                print(f"corpus sample {entry['file']} does not match the manifest hash")
+                return 1
+            classified[name], reports[name] = run_classified(pdf, name)
+            produced_pdfs[name] = run_parse_only(pdf, name)
 
-    check_01_forensics(reports)
+        check_01_forensics(reports)
+        check_03_corpus_regression(classified)
+        check_06_end_to_end(manifest, classified, reports, produced_pdfs)
+
     check_02_empty_page_scores_nothing()
-    check_03_corpus_regression(classified)
     check_04_validator()
     check_05_vocabulary_frozen()
-    check_06_end_to_end(manifest, classified, reports, produced_pdfs)
     check_07_change_scope()
     check_08_earlier_gates()
 
     failed = [name for name, ok, _ in _results if not ok]
     print()
+    artifacts.write_stats("spec_check_b2_3")
+    artifacts.print_stats("spec_check_b2_3")
+    _timer.write()
+    _timer.print_summary()
     print(f"spec_check_b2_3: {len(_results) - len(failed)}/{len(_results)} passed")
     for name in failed:
         print(f"  FAILED: {name}")
