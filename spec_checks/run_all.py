@@ -14,11 +14,18 @@ Every gate reports where its wall clock went, split into pipeline builds and
 per-assertion intervals; the runner prints the slowest assertions of each gate
 and a corpus-wide build total, so a sweep that grows slower says which of the
 two grew.
+
+A sweep ends by writing ``run_all.done.json`` next to the other gate outputs,
+carrying the exit code, the total wall clock and the timestamps. A caller that
+launched the sweep in the background reads completion from that file rather
+than from a wrapper's return, which a detached process cannot be relied on to
+deliver.
 """
 
 from __future__ import annotations
 
 import argparse
+import json
 import os
 import subprocess
 import sys
@@ -29,6 +36,12 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 GATE_DIR = ROOT / "spec_checks"
 PYTHON = sys.executable
+
+# Completion marker for a caller polling a sweep it launched in the background.
+DONE_PATH = ROOT / "examples" / "output" / "run_all.done.json"
+
+# Every key the marker carries; a reader may rely on all of them being present.
+DONE_FIELDS = ("exit_code", "elapsed_seconds", "started_at", "finished_at", "gates")
 
 sys.path.insert(0, str(ROOT))
 
@@ -45,6 +58,7 @@ GATES = (
     "spec_check_b2_2.py",
     "spec_check_b2_3.py",
     "spec_check_b2_5.py",
+    "spec_check_b2_7.py",
 )
 
 
@@ -121,6 +135,46 @@ def report_timing(results: list[tuple[str, int, float, str]]) -> None:
         print(f"      {seconds:8.1f}s  {gate} :: {name}")
 
 
+def govern_cache() -> None:
+    """Report the cache size and trim it back under its configured ceiling."""
+    limit_gb = float(artifacts.load_cache_config()["gate_cache_max_gb"])
+    limit_bytes = int(limit_gb * artifacts.BYTES_PER_GB)
+    size = artifacts.cache_size_bytes()
+    print(
+        f"gate cache size: {size / artifacts.BYTES_PER_GB:.2f} GB "
+        f"of {limit_gb:g} GB allowed"
+    )
+    dropped, freed = artifacts.trim_cache(limit_bytes)
+    if dropped:
+        print(
+            f"gate cache trimmed: {dropped} least recently used slot(s) dropped, "
+            f"{freed / artifacts.BYTES_PER_GB:.2f} GB reclaimed"
+        )
+
+
+def write_done(
+    exit_code: int,
+    elapsed: float,
+    started_at: str,
+    results: list[tuple[str, int, float, str]],
+) -> Path:
+    DONE_PATH.parent.mkdir(parents=True, exist_ok=True)
+    payload = {
+        "exit_code": exit_code,
+        "elapsed_seconds": round(elapsed, 3),
+        "started_at": started_at,
+        "finished_at": datetime.now().astimezone().isoformat(),
+        "gates": [
+            {"gate": gate, "exit_code": code, "seconds": round(seconds, 3)}
+            for gate, code, seconds, _ in results
+        ],
+    }
+    with DONE_PATH.open("w", encoding="utf-8") as f:
+        json.dump(payload, f, indent=2)
+        f.write("\n")
+    return DONE_PATH
+
+
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument(
@@ -144,10 +198,14 @@ def main(argv: list[str] | None = None) -> int:
         print(f"missing gate scripts: {missing}")
         return 1
 
+    started_at = datetime.now().astimezone().isoformat()
+    started = time.monotonic()
+
     harness.clear_timing()
     if args.clear_cache:
         print(f"gate cache cleared: {artifacts.clear_cache()} slot(s)")
     artifacts.clear_stats()
+    govern_cache()
 
     print("gates to run, in order:")
     for gate in GATES:
@@ -184,7 +242,11 @@ def main(argv: list[str] | None = None) -> int:
     )
     print()
     report_timing(results)
-    return 1 if failed else 0
+
+    exit_code = 1 if failed else 0
+    marker = write_done(exit_code, time.monotonic() - started, started_at, results)
+    print(f"  completion marker: {marker}")
+    return exit_code
 
 
 if __name__ == "__main__":

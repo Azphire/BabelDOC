@@ -19,6 +19,7 @@ from functools import lru_cache
 from pathlib import Path
 
 from babeldoc.magazine.page_features import CONFIG_PATH as FEATURE_CONFIG_PATH
+from babeldoc.magazine.page_features import PERCENTILE_SUFFIX
 from babeldoc.magazine.page_features import ConfigError
 from babeldoc.magazine.page_features import Parameter
 from babeldoc.magazine.page_features import known_feature_names
@@ -43,6 +44,16 @@ OPERATORS = {
 # really is of a type: an ``le``/``lt`` rule is satisfied by the absence of a
 # quantity, so a page with nothing on it satisfies every one of them at once.
 EVIDENCE_OPERATORS = frozenset({"ge", "gt"})
+
+# Midrank a percentile companion lands on when its raw feature is constant
+# across a document: every page ties with every other, so the rank is
+# ``(0 + 0.5 * n) / n``. A feature that is zero on every page of an issue is the
+# common case, and it lands here too. Positive evidence on a percentile must sit
+# strictly above this value, or such a document satisfies the rule on every one
+# of its pages and the positive evidence guard admits exactly what it exists to
+# keep out. Definitional, not a tuning parameter: it follows from how
+# ``page_features._midranks`` breaks ties and moves only if that does.
+CONSTANT_COLUMN_MIDRANK = 0.5
 
 POLICY_KEYS = frozenset({"chain_eligible", "translate", "repair_profile"})
 
@@ -139,6 +150,20 @@ def _parse_rule(raw: object, owner: str, index: int) -> Rule:
         f"{where}: weight must be a number",
     )
     _require(weight != 0, f"{where}: weight must be non-zero")
+    if (
+        feature.endswith(PERCENTILE_SUFFIX)
+        and op in EVIDENCE_OPERATORS
+        and weight > 0
+        and threshold <= CONSTANT_COLUMN_MIDRANK
+    ):
+        raise TaxonomyError(
+            f"{where}: positive evidence on the percentile feature {feature!r} "
+            f"needs a threshold above {CONSTANT_COLUMN_MIDRANK}, got {threshold}. "
+            f"A raw feature that is constant across a document -- an all zero "
+            f"column among them -- puts every page on the midrank "
+            f"{CONSTANT_COLUMN_MIDRANK}, so a rule at or below it is satisfied by "
+            f"a blank page and the positive evidence guard stops guarding."
+        )
     return Rule(
         feature=feature, op=op, threshold=float(threshold), weight=float(weight)
     )

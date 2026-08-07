@@ -74,3 +74,5 @@ WAIVERS.md                  # 偏离/豁免登记表
 6. 门禁的 changed-files 类断言一律锚定本批次 tag(tag 存在时读 batch-<n>^..batch-<n>,否则读工作区对 HEAD);新批次门禁自创建起即用此写法。
 7. 历史门禁复跑一律经 spec_checks/run_all.py 线性执行,门禁内部的嵌套复跑仅作为单文件独立运行时的兜底。
 8. 迭代开发期用 run_all --fast 快速回归;批次提交打 tag 前必须全量 run_all 全绿(断言 6 的 EXPECTED-RED 状态除外,直至调参批次达标)。
+9. plans/PLAN_<batch>.md 默认属于该批次门禁白名单,无须逐批枚举。
+10. _pctl 特征的正向证据规则阈值必须 > 0.5(常量列 midrank 恒为 0.5)。

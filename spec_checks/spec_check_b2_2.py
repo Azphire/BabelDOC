@@ -407,8 +407,11 @@ def check_03_validator() -> None:
 
     def with_rule(feature: str) -> dict:
         mutated = json.loads(json.dumps(valid))
+        # Above the midrank a constant feature column lands on: positive
+        # evidence on a percentile at or below it is refused for a reason of
+        # its own, and this probe is about the feature name being resolvable.
         mutated["page_types"][0]["rules"].append(
-            {"feature": feature, "op": "ge", "threshold": 0.5, "weight": 1.0}
+            {"feature": feature, "op": "ge", "threshold": 0.55, "weight": 1.0}
         )
         return mutated
 

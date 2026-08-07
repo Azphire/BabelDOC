@@ -1,0 +1,5 @@
+{
+  "description": "Bounded parameters for the gate artefact cache (spec_checks/artifacts.py, reported and applied by spec_checks/run_all.py). Same convention as configs/page_features.json: every numeric parameter carries a '<name>_allowed_range' sibling of the form 'low..high', inclusive on both ends. 'gate_cache_max_gb' is the size a sweep trims the cache back under before it starts; slots go least recently used first, and a slot's last use is the last sweep that was served from it rather than the run that built it.",
+  "gate_cache_max_gb": 8,
+  "gate_cache_max_gb_allowed_range": "0.5..256"
+}

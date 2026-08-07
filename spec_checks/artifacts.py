@@ -14,22 +14,35 @@ Cache key
 ---------
 
 The key is (sample content hash, mode, workspace fingerprint). The fingerprint
-covers `git rev-parse HEAD`, the working tree's own diff against it, and the
-contents of every file under `configs/`, so any change to code or configuration
-mints a new key and no run can be served an artefact built by different code.
-Files that are new and not yet committed are folded in as well: `git diff HEAD`
-cannot see them, and a new module under `babeldoc/magazine/` is exactly how
-this project adds pipeline behaviour, so leaving them out would be the one
-remaining way to eat a stale artefact.
+covers `git rev-parse HEAD` and, restricted to the paths in
+``FINGERPRINT_PATHS``, the working tree's diff against it plus the files git
+does not track yet. Those two trees are everything a pipeline run reads: the
+package that runs it and the configuration it is steered by. `git diff HEAD`
+cannot see a new file, and a new module under `babeldoc/magazine/` is exactly
+how this project adds pipeline behaviour, so untracked files are folded in
+rather than left as the one remaining way to eat a stale artefact.
 
-The key is deliberately coarse. Editing a gate script invalidates every entry
-even though gate scripts cannot change pipeline output; that is the safe
-direction to be wrong in, and `run_all --fast` is the answer for iterating
-without paying for builds at all.
+Everything else in the repository is outside the key. A gate script or a plan
+document cannot change what the pipeline produces, so an edit to one no longer
+discards a cache that took an hour to fill.
+
+Within those paths the key stays deliberately coarse: any byte of any module or
+configuration file invalidates every entry, whether or not that byte could have
+reached the run. That is the safe direction to be wrong in, and `run_all --fast`
+is the answer for iterating without paying for builds at all.
+
+Size
+----
+
+Every distinct fingerprint opens a new generation directory and old generations
+are never read again, so the cache only grows. `run_all` reports its size at
+startup and trims it back under ``gate_cache_max_gb`` from
+``configs/gate_cache.json``, least recently used slot first.
 """
 
 from __future__ import annotations
 
+import contextlib
 import hashlib
 import json
 import os
@@ -49,6 +62,8 @@ from babeldoc.format.pdf import high_level  # noqa: E402
 from babeldoc.format.pdf.parse_shared import _ParseOnlyDocLayoutModel  # noqa: E402
 from babeldoc.format.pdf.translation_config import TranslationConfig  # noqa: E402
 from babeldoc.format.pdf.translation_config import WatermarkOutputMode  # noqa: E402
+from babeldoc.magazine.page_features import Parameter  # noqa: E402
+from babeldoc.magazine.page_features import validate_bounded_config  # noqa: E402
 
 # SPEC_CACHE_ROOT lets a gate point the cache somewhere disposable, which is
 # how the no-cache fallback is proved without destroying the real cache.
@@ -57,9 +72,17 @@ CACHE_ROOT = Path(
 )
 STATS_DIR = CACHE_ROOT / "stats"
 CONFIG_DIR = ROOT / "configs"
+CACHE_CONFIG_PATH = CONFIG_DIR / "gate_cache.json"
+
+# Repository paths whose content reaches a pipeline run: the package that
+# performs it and the configuration that steers it. Everything outside them is
+# outside the cache key.
+FINGERPRINT_PATHS = ("babeldoc", "configs")
 
 # Read size for incremental hashing; a pure I/O buffer, not a tuning knob.
 _HASH_CHUNK_BYTES = 1 << 20
+
+BYTES_PER_GB = 1 << 30
 
 # The pipeline configurations the gates actually ask for, taken from a survey
 # of every TranslationConfig the six gate scripts build. The layout model is
@@ -143,12 +166,16 @@ def workspace_fingerprint(refresh: bool = False) -> str:
 
     digest = hashlib.sha256()
     digest.update(_git(["rev-parse", "HEAD"]).strip().encode())
-    digest.update(_git(["diff", "--binary", "HEAD"], binary=True))
+    digest.update(
+        _git(["diff", "--binary", "HEAD", "--", *FINGERPRINT_PATHS], binary=True)
+    )
 
     # Files git does not track yet still reach the interpreter.
     for relative in sorted(
         line.strip()
-        for line in _git(["ls-files", "--others", "--exclude-standard"]).splitlines()
+        for line in _git(
+            ["ls-files", "--others", "--exclude-standard", "--", *FINGERPRINT_PATHS]
+        ).splitlines()
         if line.strip()
     ):
         path = ROOT / relative
@@ -157,6 +184,8 @@ def workspace_fingerprint(refresh: bool = False) -> str:
         digest.update(relative.encode())
         digest.update(sha256_file(path).encode())
 
+    # Read directly rather than through git, so a configuration file git is set
+    # to ignore still counts; the classifier reads the file either way.
     for path in sorted(CONFIG_DIR.glob("*")):
         if path.is_file():
             digest.update(path.name.encode())
@@ -266,6 +295,70 @@ def _build(sample: Path, mode: str, slot: Path) -> None:
     _stats["build_seconds"] += seconds
 
 
+def _slots() -> list[Path]:
+    """Every published cache slot, across all fingerprint generations."""
+    if not CACHE_ROOT.is_dir():
+        return []
+    return [
+        path
+        for generation in CACHE_ROOT.iterdir()
+        if generation.is_dir() and generation.name != STATS_DIR.name
+        for path in generation.iterdir()
+        if path.is_dir() and (path / "meta.json").exists()
+    ]
+
+
+def _slot_bytes(slot: Path) -> int:
+    return sum(path.stat().st_size for path in slot.rglob("*") if path.is_file())
+
+
+def load_cache_config(path: Path | None = None) -> dict[str, Parameter]:
+    """Load and validate ``configs/gate_cache.json``."""
+    config_path = CACHE_CONFIG_PATH if path is None else Path(path)
+    with config_path.open(encoding="utf-8") as f:
+        raw = json.load(f)
+    parameters = validate_bounded_config(raw, config_path)
+    if "gate_cache_max_gb" not in parameters:
+        raise KeyError(f"{config_path.name}: missing parameter gate_cache_max_gb")
+    return parameters
+
+
+def cache_size_bytes() -> int:
+    return sum(_slot_bytes(slot) for slot in _slots())
+
+
+def trim_cache(max_bytes: int) -> tuple[int, int]:
+    """Drop slots until the cache fits in ``max_bytes``. Least recent go first.
+
+    A slot's mtime is its last use rather than its build time: ``get_artifacts``
+    stamps it on every hit, so a generation that a sweep still serves from
+    survives a trim even when a newer one exists.
+
+    Returns the number of slots dropped and the bytes reclaimed.
+    """
+    sized = [(slot, _slot_bytes(slot)) for slot in _slots()]
+    total = sum(size for _, size in sized)
+    if total <= max_bytes:
+        return 0, 0
+
+    sized.sort(key=lambda item: item[0].stat().st_mtime)
+    dropped = 0
+    freed = 0
+    for slot, size in sized:
+        if total - freed <= max_bytes:
+            break
+        parent = slot.parent
+        shutil.rmtree(slot, ignore_errors=True)
+        dropped += 1
+        freed += size
+        # A generation directory left with nothing in it is noise in the
+        # listing; the stats directory is not a generation and is never touched.
+        with contextlib.suppress(OSError):
+            if parent != STATS_DIR and not any(parent.iterdir()):
+                parent.rmdir()
+    return dropped, freed
+
+
 def get_artifacts(sample: Path, mode: str) -> Artifacts:
     """Return the artefacts for one (sample, mode) pair, building on a miss."""
     slot = cache_slot(sample, mode)
@@ -274,6 +367,9 @@ def get_artifacts(sample: Path, mode: str) -> Artifacts:
         _build(sample, mode, slot)
     else:
         _stats["hit"] += 1
+        # Recency for the trim, which is the only reader of this timestamp.
+        with contextlib.suppress(OSError):
+            os.utime(slot, None)
 
     with (slot / "meta.json").open(encoding="utf-8") as f:
         meta = json.load(f)

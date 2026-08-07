@@ -368,7 +368,12 @@ def check_04_penalties_and_purity(classified: dict[str, Path]) -> None:
     pages_checked = 0
     for name, directory in classified.items():
         docs = checkpoint_module.load_checkpoint(classifier_checkpoint(directory))
-        for page in docs.page:
+        # Scoring reads the document level vectors, the same ones the classifier
+        # stage builds. A rule may reference a percentile companion and only
+        # these vectors carry one; the per-page vector alone is what a rule
+        # would look up and fail to find.
+        scored = page_features.extract_document_features(docs, feature_config)
+        for page, vector in zip(docs.page, scored, strict=True):
             pages_checked += 1
             first = page_features.extract_page_features(page, docs, feature_config)
             second = page_features.extract_page_features(page, docs, feature_config)
@@ -381,7 +386,7 @@ def check_04_penalties_and_purity(classified: dict[str, Path]) -> None:
                     )
             for vocabulary in (live, probe):
                 for kind, score in taxonomy_module.score_page_types(
-                    first, vocabulary
+                    vector, vocabulary
                 ).items():
                     if not 0.0 <= score <= 1.0:
                         out_of_range.append(f"{name}#{page.page_number}:{kind}={score}")
