@@ -1,10 +1,10 @@
 """Shared pipeline artefacts for the gate scripts.
 
-Six gates need the same handful of pipeline runs over the same five samples. A
-full sweep performs 63 `high_level.translate` calls that reduce to 21 distinct
-(sample, mode) pairs, so five sixths of the work is one gate rebuilding what
-another already built. This module builds each pair once and hands the result
-to whoever asks for it.
+Most gates need the same handful of pipeline runs over the same samples, and a
+full sweep asks for each of them several times over. The requests collapse to a
+much smaller set of distinct (sample, mode) pairs, so without this module most
+of a sweep is a gate rebuilding what another already built. This module builds
+each pair once and hands the result to whoever asks for it.
 
 The assertions are unaffected. A gate still checks the same artefacts for the
 same properties; only the provenance changes, from "this gate built it" to
@@ -30,6 +30,13 @@ Within those paths the key stays deliberately coarse: any byte of any module or
 configuration file invalidates every entry, whether or not that byte could have
 reached the run. That is the safe direction to be wrong in, and `run_all --fast`
 is the answer for iterating without paying for builds at all.
+
+``FINGERPRINT_EXCLUDED_KEYS`` is the one exception, and it is narrow: a few
+named configuration keys steer how a request leaves this machine or how the
+gate cache governs itself, and none of them can reach a produced artefact. A
+file listed there enters the fingerprint through its parsed form with those
+keys removed, and is kept out of the git-derived half so the same exclusion
+holds whether or not it is committed yet.
 
 Size
 ----
@@ -79,15 +86,31 @@ CACHE_CONFIG_PATH = CONFIG_DIR / "gate_cache.json"
 # outside the cache key.
 FINGERPRINT_PATHS = ("babeldoc", "configs")
 
+# Configuration keys that cannot reach a produced artefact: an endpoint, the
+# name of the environment variable a credential is read from, a wall clock
+# limit, and the ceiling the gate cache applies to itself. A file listed here is
+# digested from its parsed form with these keys and their ``_allowed_range``
+# siblings dropped, so its remaining keys still invalidate the cache and a move
+# to another endpoint no longer does.
+FINGERPRINT_EXCLUDED_KEYS: dict[str, tuple[str, ...]] = {
+    "configs/gate_cache.json": ("description", "gate_cache_max_gb"),
+    "configs/vlm.json": ("description", "base_url", "api_key_env", "timeout_seconds"),
+}
+
+# Keeps the excluded files out of the git-derived half of the fingerprint. Their
+# retained keys still enter it through the configuration loop, which reads them
+# from disk whether git tracks them or not.
+_EXCLUDE_PATHSPECS = tuple(f":(exclude){path}" for path in FINGERPRINT_EXCLUDED_KEYS)
+
 # Read size for incremental hashing; a pure I/O buffer, not a tuning knob.
 _HASH_CHUNK_BYTES = 1 << 20
 
 BYTES_PER_GB = 1 << 30
 
 # The pipeline configurations the gates actually ask for, taken from a survey
-# of every TranslationConfig the six gate scripts build. The layout model is
-# named rather than instantiated so that a mode that is never requested never
-# loads an ONNX session.
+# of every TranslationConfig the gate scripts build. The layout model is named
+# rather than instantiated so that a mode that is never requested never loads an
+# ONNX session.
 MODES: dict[str, dict] = {
     # Dry run that stops after IL creation, with checkpoints. Used for the
     # baseline render diff and for IL-shape assertions.
@@ -148,6 +171,24 @@ def sha256_file(path: Path) -> str:
     return digest.hexdigest()
 
 
+def config_digest(path: Path) -> str:
+    """Digest of one configuration file, minus the keys outside the cache key.
+
+    A file with no declared exclusions is digested from its bytes, so formatting
+    counts for it; a file with exclusions is digested from its parsed content,
+    which is the only form in which a single key can be left out.
+    """
+    excluded = FINGERPRINT_EXCLUDED_KEYS.get(path.relative_to(ROOT).as_posix())
+    if excluded is None:
+        return sha256_file(path)
+    with path.open(encoding="utf-8") as f:
+        raw = json.load(f)
+    dropped = {key for name in excluded for key in (name, f"{name}_allowed_range")}
+    kept = {key: value for key, value in raw.items() if key not in dropped}
+    payload = json.dumps(kept, sort_keys=True, separators=(",", ":"))
+    return hashlib.sha256(payload.encode()).hexdigest()
+
+
 def _git(args: list[str], binary: bool = False):
     proc = subprocess.run(  # noqa: S603, S607 - git is expected on PATH for the gates
         ["git", *args],  # noqa: S607
@@ -167,14 +208,31 @@ def workspace_fingerprint(refresh: bool = False) -> str:
     digest = hashlib.sha256()
     digest.update(_git(["rev-parse", "HEAD"]).strip().encode())
     digest.update(
-        _git(["diff", "--binary", "HEAD", "--", *FINGERPRINT_PATHS], binary=True)
+        _git(
+            [
+                "diff",
+                "--binary",
+                "HEAD",
+                "--",
+                *FINGERPRINT_PATHS,
+                *_EXCLUDE_PATHSPECS,
+            ],
+            binary=True,
+        )
     )
 
     # Files git does not track yet still reach the interpreter.
     for relative in sorted(
         line.strip()
         for line in _git(
-            ["ls-files", "--others", "--exclude-standard", "--", *FINGERPRINT_PATHS]
+            [
+                "ls-files",
+                "--others",
+                "--exclude-standard",
+                "--",
+                *FINGERPRINT_PATHS,
+                *_EXCLUDE_PATHSPECS,
+            ]
         ).splitlines()
         if line.strip()
     ):
@@ -189,7 +247,7 @@ def workspace_fingerprint(refresh: bool = False) -> str:
     for path in sorted(CONFIG_DIR.glob("*")):
         if path.is_file():
             digest.update(path.name.encode())
-            digest.update(sha256_file(path).encode())
+            digest.update(config_digest(path).encode())
 
     _fingerprint = digest.hexdigest()
     return _fingerprint

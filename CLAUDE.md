@@ -60,6 +60,7 @@ WAIVERS.md                  # 偏离/豁免登记表
 8. **所有 LLM/VLM 调用一律可缓存**:翻译路径复用内建 `TranslationCache`;新引入的调用点(页面分类 VLM、ReAct 决策等)必须经统一的缓存客户端封装(B3 建立),cache key 含 prompt 文件哈希。缓存 DB 使用项目本地 `examples/cache/cache.v1.db`,禁用行数淘汰;相同输入直接命中缓存,不发起 API 调用。
 9. **人工介入(HITL)一律为可选层**:默认配置下全流程自动运行,每个裁决点必须有机器默认决策;启用人工裁决需显式开关,裁决结果作为覆盖输入。ReAct 修复循环同理,默认全自动。
 10. IL schema 冻结:W-B1-01 解除前禁止新增/修改 IL 字段;批次运行期数据一律写入 working_dir 的 sidecar 文件(如 *.report.json)。
+11. VLM 输出必须约束在声明词表内,越界输出按违规处理并回退确定性判定;VLM 判定只写 pageKindSource="vlm",次判定与失败原因一律走 sidecar。
 
 ## 5. 会话执行协议
 

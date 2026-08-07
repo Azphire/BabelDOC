@@ -346,6 +346,20 @@ def classify(features: dict[str, float], taxonomy: Taxonomy) -> Verdict:
     return Verdict(kind=kind, confidence=top_score, ambiguous=ambiguous, scores=scores)
 
 
+def vocabulary_block(taxonomy: Taxonomy) -> str:
+    """The vocabulary as one name and description per line, for prompt injection.
+
+    Rules, thresholds and policy stay out. A judge told which downstream flags a
+    name carries is being invited to answer with the consequence it prefers
+    rather than with what the page in front of it is, and the numbers are the
+    deterministic layer's own workings, not evidence about the page.
+    """
+    return "\n".join(
+        f"- {page_type.name}: {page_type.description}"
+        for page_type in taxonomy.page_types
+    )
+
+
 def file_digest(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
 

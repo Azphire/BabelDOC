@@ -532,7 +532,11 @@ def check_03_agreement_tables(classified: dict[str, Path], manifest: dict) -> No
 def check_04_fingerprint_scope() -> None:
     """The cache key follows the package and the configuration, nothing else."""
     outside = ROOT / "spec_checks" / "run_all.py"
-    inside = ROOT / "configs" / "gate_cache.json"
+    # A configuration file the classifier reads. configs/gate_cache.json steers
+    # the artefact cache rather than a run, so its keys are declared outside the
+    # fingerprint and it can no longer stand for "a configuration file" here;
+    # spec_check_b3 09 asserts that exclusion in its own right.
+    inside = ROOT / "configs" / "page_features.json"
     outside_bytes = outside.read_bytes()
     inside_bytes = inside.read_bytes()
 

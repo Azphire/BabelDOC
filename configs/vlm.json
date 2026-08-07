@@ -1,0 +1,17 @@
+{
+  "description": "Bounded configuration for the vision model fallback (babeldoc/magazine/vlm_client.py). Same convention as configs/page_features.json: every numeric parameter carries a '<name>_allowed_range' sibling of the form 'low..high', inclusive on both ends. 'enabled' is the master switch and is false by default, so a run performs no model call and no network request unless it is turned on deliberately. 'api_key_env' names the environment variable the credential is read from at request time; the credential itself is never written to any file in this repository. 'base_url' points at an OpenAI-compatible chat completions endpoint. 'model', 'temperature' and 'max_output_tokens' shape a reply and therefore enter the cache key, as does 'render_dpi' through the bytes of the page image it produces; 'base_url', 'api_key_env', 'timeout_seconds' and 'max_retries' do not.",
+  "enabled": false,
+  "model": "gpt-4o-mini",
+  "base_url": "https://api.openai.com/v1",
+  "api_key_env": "BABELDOC_VLM_API_KEY",
+  "temperature": 0.0,
+  "temperature_allowed_range": "0..2",
+  "max_output_tokens": 512,
+  "max_output_tokens_allowed_range": "64..4096",
+  "max_retries": 1,
+  "max_retries_allowed_range": "0..3",
+  "render_dpi": 150,
+  "render_dpi_allowed_range": "72..400",
+  "timeout_seconds": 60,
+  "timeout_seconds_allowed_range": "5..600"
+}

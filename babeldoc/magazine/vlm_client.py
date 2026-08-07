@@ -1,0 +1,405 @@
+"""Cached client for the vision model that adjudicates ambiguous pages.
+
+This is the project's first model call outside the translation path, and it is
+built to the same three rules the translation path already follows.
+
+Cached. A reply is stored in the project-local database the translator cache
+already uses, under an engine name of its own, keyed by everything that could
+change the answer: the model, the request parameters that shape a reply, the
+identity of the prompt template, the rendered prompt and the page image. Two
+runs over one unchanged page therefore cost one request, and a gate can prove
+it by counting calls into the transport.
+
+Bounded. Every setting comes from ``configs/vlm.json`` with a declared range,
+including the switch that decides whether any request is made at all. The
+credential is not a setting: the configuration names an environment variable
+and the value is read from the process environment when a request is built.
+
+Constrained. A reply is a JSON object naming a kind from the vocabulary it was
+given, and a reply that is anything else is a violation, not a result. A
+violation is retried once with the previous violation stated, and a second
+violation refuses the reply outright so the caller keeps its deterministic
+verdict. The vocabulary is never widened by what a model returns.
+
+Nothing here names a page type or renders a page. The vocabulary arrives from
+the caller and the page image arrives as bytes.
+"""
+
+from __future__ import annotations
+
+import base64
+import hashlib
+import json
+import logging
+import os
+from collections.abc import Sequence
+from dataclasses import dataclass
+from dataclasses import replace
+from functools import lru_cache
+from pathlib import Path
+from typing import Protocol
+
+from babeldoc.magazine.page_features import ConfigError
+from babeldoc.magazine.page_features import validate_bounded_config
+from babeldoc.magazine.prompt_loader import Prompt
+from babeldoc.magazine.prompt_loader import load_prompt
+from babeldoc.translator.cache import TranslationCache
+
+logger = logging.getLogger(__name__)
+
+CONFIG_PATH = Path(__file__).resolve().parents[2] / "configs" / "vlm.json"
+
+# Engine name the cached replies are filed under, keeping them apart from the
+# translated segments sharing the database.
+ENGINE_NAME = "magazine_vlm"
+
+# Bumped when the composition of the cache key changes, which retires every
+# entry written under the old composition in one step.
+CACHE_KEY_VERSION = 1
+
+# Template that states a rejected reply back to the model on the retry.
+RETRY_PROMPT_NAME = "vlm_retry_notice"
+
+# Configuration keys that are not bounded numbers, and so are validated here
+# rather than by the shared bounded-parameter validator.
+FLAG_KEYS: tuple[str, ...] = ("enabled",)
+TEXT_KEYS: tuple[str, ...] = ("model", "base_url", "api_key_env")
+
+NUMERIC_KEYS: tuple[str, ...] = (
+    "temperature",
+    "max_output_tokens",
+    "max_retries",
+    "render_dpi",
+    "timeout_seconds",
+)
+
+# Request parameters that shape a reply, and therefore belong in the cache key.
+# The endpoint, the credential's variable name, the wall clock limit and the
+# retry budget are how a request is delivered, not what it asks for.
+KEY_PARAMETERS: tuple[str, ...] = ("temperature", "max_output_tokens")
+
+# Fields a reply must carry. Anything else in the object is ignored; anything
+# missing from this set makes the reply unusable.
+REQUIRED_REPLY_FIELDS = ("kind", "confidence")
+
+# Documentation key every configuration file in this project carries.
+DESCRIPTION_KEY = "description"
+
+_RANGE_SUFFIX = "_allowed_range"
+
+
+class VlmError(ConfigError):
+    """Raised when the vision model configuration or transport is unusable."""
+
+
+@dataclass(frozen=True)
+class VlmConfig:
+    enabled: bool
+    model: str
+    base_url: str
+    api_key_env: str
+    temperature: float
+    max_output_tokens: int
+    max_retries: int
+    render_dpi: int
+    timeout_seconds: float
+
+    def key_parameters(self) -> dict[str, float]:
+        """The request parameters the cache key is composed from."""
+        return {name: getattr(self, name) for name in KEY_PARAMETERS}
+
+
+@dataclass(frozen=True)
+class VlmVerdict:
+    """Outcome of one adjudication, accepted or refused.
+
+    A refusal is a result like any other: it carries why it was refused so the
+    caller can record the reason beside the deterministic verdict it keeps.
+    """
+
+    accepted: bool
+    kind: str | None = None
+    confidence: float | None = None
+    secondary_kind: str | None = None
+    secondary_reason: str | None = None
+    reason: str = ""
+    attempts: int = 0
+    from_cache: bool = False
+
+
+class Transport(Protocol):
+    """How a rendered prompt and a page image reach a model."""
+
+    def complete(self, config: VlmConfig, prompt: str, image_png: bytes) -> str:
+        """Return the model's reply text, or raise if the request fails."""
+
+
+def _require(condition: bool, message: str) -> None:
+    if not condition:
+        raise VlmError(message)
+
+
+def parse_vlm_config(raw: dict, source: str) -> VlmConfig:
+    """Validate a decoded ``vlm.json`` and build its object model."""
+    _require(isinstance(raw, dict), f"{source}: root must be an object")
+    # The key set is closed rather than merely validated. An undeclared key is
+    # the shape a planted credential would take, and a closed set refuses it
+    # without having to guess at what a credential is named.
+    declared = {
+        DESCRIPTION_KEY,
+        *FLAG_KEYS,
+        *TEXT_KEYS,
+        *NUMERIC_KEYS,
+        *(f"{key}{_RANGE_SUFFIX}" for key in NUMERIC_KEYS),
+    }
+    unknown = sorted(set(raw) - declared)
+    _require(
+        not unknown,
+        f"{source}: undeclared keys {unknown}; this file holds the declared "
+        f"settings only and never a credential, which is read from the "
+        f"environment variable it names",
+    )
+
+    for key in (*FLAG_KEYS, *TEXT_KEYS, *NUMERIC_KEYS):
+        _require(key in raw, f"{source}: missing key {key!r}")
+    for key in FLAG_KEYS:
+        _require(isinstance(raw[key], bool), f"{source}: {key} must be a boolean")
+    for key in TEXT_KEYS:
+        _require(
+            isinstance(raw[key], str) and raw[key],
+            f"{source}: {key} must be a non-empty string",
+        )
+
+    bounded = {
+        key: value
+        for key, value in raw.items()
+        if key not in FLAG_KEYS and key not in TEXT_KEYS
+    }
+    parameters = validate_bounded_config(bounded, Path(source))
+    missing = sorted(set(NUMERIC_KEYS) - set(parameters))
+    _require(not missing, f"{source}: missing bounded parameters {missing}")
+
+    return VlmConfig(
+        enabled=raw["enabled"],
+        model=raw["model"],
+        base_url=raw["base_url"],
+        api_key_env=raw["api_key_env"],
+        temperature=float(parameters["temperature"]),
+        max_output_tokens=int(parameters["max_output_tokens"]),
+        max_retries=int(parameters["max_retries"]),
+        render_dpi=int(parameters["render_dpi"]),
+        timeout_seconds=float(parameters["timeout_seconds"]),
+    )
+
+
+@lru_cache(maxsize=1)
+def load_vlm_config(path: str | None = None) -> VlmConfig:
+    """Load and validate ``configs/vlm.json``."""
+    config_path = CONFIG_PATH if path is None else Path(path)
+    with config_path.open(encoding="utf-8") as f:
+        raw = json.load(f)
+    return parse_vlm_config(raw, config_path.name)
+
+
+def cache_key(config: VlmConfig, prompt: Prompt, image_png: bytes) -> str:
+    """Digest of everything that could change the reply to one request.
+
+    ``render_dpi`` enters through the image bytes rather than by name: two
+    resolutions of one page are two different images and cannot collide.
+    """
+    fields = (
+        f"cache_key_version={CACHE_KEY_VERSION}",
+        f"model={config.model}",
+        "params="
+        + json.dumps(config.key_parameters(), sort_keys=True, separators=(",", ":")),
+        f"prompt_file_sha256={prompt.digest}",
+        f"prompt_text_sha256={hashlib.sha256(prompt.text.encode()).hexdigest()}",
+        f"image_sha256={hashlib.sha256(image_png).hexdigest()}",
+    )
+    return hashlib.sha256("\n".join(fields).encode()).hexdigest()
+
+
+def interpret_reply(reply: str, vocabulary: Sequence[str]) -> VlmVerdict:
+    """Turn a reply into a verdict, refusing anything outside the contract.
+
+    The vocabulary is closed. A name the caller did not declare is a violation
+    and never a new page type, whatever the model believes it saw.
+    """
+    try:
+        payload = json.loads(reply)
+    except (json.JSONDecodeError, TypeError) as exc:
+        return VlmVerdict(accepted=False, reason=f"reply is not valid JSON: {exc}")
+    if not isinstance(payload, dict):
+        return VlmVerdict(
+            accepted=False,
+            reason=f"reply is a {type(payload).__name__}, expected a JSON object",
+        )
+
+    missing = sorted(set(REQUIRED_REPLY_FIELDS) - set(payload))
+    if missing:
+        return VlmVerdict(accepted=False, reason=f"reply is missing fields {missing}")
+
+    known = tuple(vocabulary)
+    kind = payload["kind"]
+    if kind not in known:
+        return VlmVerdict(
+            accepted=False,
+            reason=f"kind {kind!r} is not one of the {len(known)} declared names",
+        )
+
+    confidence = payload["confidence"]
+    if isinstance(confidence, bool) or not isinstance(confidence, int | float):
+        return VlmVerdict(
+            accepted=False, reason=f"confidence {confidence!r} is not a number"
+        )
+    if not 0.0 <= float(confidence) <= 1.0:
+        return VlmVerdict(
+            accepted=False, reason=f"confidence {confidence} lies outside 0..1"
+        )
+
+    secondary = payload.get("secondary_kind")
+    if secondary is not None and secondary not in known:
+        return VlmVerdict(
+            accepted=False,
+            reason=f"secondary_kind {secondary!r} is not one of the declared names",
+        )
+    reason = payload.get("secondary_reason")
+    if reason is not None and not isinstance(reason, str):
+        return VlmVerdict(accepted=False, reason="secondary_reason is not a string")
+
+    return VlmVerdict(
+        accepted=True,
+        kind=kind,
+        confidence=float(confidence),
+        secondary_kind=secondary,
+        secondary_reason=reason,
+    )
+
+
+class OpenAICompatibleTransport:
+    """Chat completions over an OpenAI-compatible endpoint, image inline.
+
+    The client is built on first use so that importing this module, or running
+    with the switch off, neither reads a credential nor opens a connection.
+    """
+
+    def __init__(self) -> None:
+        self._client = None
+        self._built_for: str | None = None
+
+    def _api_key(self, config: VlmConfig) -> str:
+        key = os.environ.get(config.api_key_env, "")
+        _require(
+            bool(key),
+            f"environment variable {config.api_key_env} is unset; the vision "
+            f"model credential is read from the environment only",
+        )
+        return key
+
+    def _openai_client(self, config: VlmConfig):
+        signature = f"{config.base_url}|{config.api_key_env}|{config.timeout_seconds}"
+        if self._client is None or self._built_for != signature:
+            import openai
+
+            self._client = openai.OpenAI(
+                api_key=self._api_key(config),
+                base_url=config.base_url,
+                timeout=config.timeout_seconds,
+            )
+            self._built_for = signature
+        return self._client
+
+    def complete(self, config: VlmConfig, prompt: str, image_png: bytes) -> str:
+        encoded = base64.b64encode(image_png).decode("ascii")
+        response = self._openai_client(config).chat.completions.create(
+            model=config.model,
+            temperature=config.temperature,
+            max_tokens=config.max_output_tokens,
+            messages=[
+                {
+                    "role": "user",
+                    "content": [
+                        {"type": "text", "text": prompt},
+                        {
+                            "type": "image_url",
+                            "image_url": {"url": f"data:image/png;base64,{encoded}"},
+                        },
+                    ],
+                }
+            ],
+        )
+        return response.choices[0].message.content or ""
+
+
+class CachedVlmClient:
+    """One adjudication point: cache lookup, bounded retry, closed vocabulary."""
+
+    def __init__(
+        self,
+        config: VlmConfig | None = None,
+        transport: Transport | None = None,
+        cache: TranslationCache | None = None,
+        working_dir: Path | str | None = None,
+    ) -> None:
+        self.config = load_vlm_config() if config is None else config
+        self.transport = OpenAICompatibleTransport() if transport is None else transport
+        self.cache = (
+            TranslationCache(ENGINE_NAME, {"cache_key_version": CACHE_KEY_VERSION})
+            if cache is None
+            else cache
+        )
+        self.working_dir = working_dir
+
+    @property
+    def enabled(self) -> bool:
+        return self.config.enabled
+
+    def cache_key(self, prompt: Prompt, image_png: bytes) -> str:
+        return cache_key(self.config, prompt, image_png)
+
+    def _retry_prompt(self, prompt: Prompt, violation: str) -> str:
+        notice = load_prompt(
+            RETRY_PROMPT_NAME,
+            {"violation": violation},
+            working_dir=self.working_dir,
+        )
+        return f"{prompt.text}\n\n{notice.text}"
+
+    def classify(
+        self, prompt: Prompt, image_png: bytes, vocabulary: Sequence[str]
+    ) -> VlmVerdict:
+        """Adjudicate one page, from cache when the request is not new."""
+        key = self.cache_key(prompt, image_png)
+        stored = self.cache.get(key)
+        if stored is not None:
+            verdict = interpret_reply(stored, vocabulary)
+            if verdict.accepted:
+                return replace(verdict, attempts=0, from_cache=True)
+            # A stored reply that no longer validates means the vocabulary moved
+            # under it. Ask again rather than serve a reply the caller cannot use.
+            logger.debug("cached reply rejected, re-requesting: %s", verdict.reason)
+
+        text = prompt.text
+        violations: list[str] = []
+        attempts = 0
+        while attempts <= self.config.max_retries:
+            attempts += 1
+            try:
+                reply = self.transport.complete(self.config, text, image_png)
+            except Exception as exc:  # noqa: BLE001 - any failure is a violation
+                violations.append(f"request failed: {type(exc).__name__}: {exc}")
+            else:
+                verdict = interpret_reply(reply, vocabulary)
+                if verdict.accepted:
+                    self.cache.set(key, reply)
+                    return replace(verdict, attempts=attempts, from_cache=False)
+                violations.append(verdict.reason)
+            if attempts <= self.config.max_retries:
+                text = self._retry_prompt(prompt, violations[-1])
+
+        return VlmVerdict(
+            accepted=False,
+            reason="; ".join(violations),
+            attempts=attempts,
+            from_cache=False,
+        )

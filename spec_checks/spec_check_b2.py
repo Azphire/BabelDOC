@@ -109,6 +109,13 @@ TYPE_NAME_SCAN_SKIP = {"__pycache__", "tests", "test"}
 # Modules that would mean the extension reaches the network or an LLM.
 NETWORK_MARKERS = ("openai", "requests", "httpx")
 
+# The magazine modules allowed to hold a model client. B2 had none, and the
+# assertion below was the statement that the extension was reachable offline in
+# its entirety. B3 introduced the project's first model call point in one named
+# module, so the assertion now states the same thing about every other module:
+# the client is one declared file rather than something that spread.
+MODEL_CLIENT_MODULES = ("vlm_client.py",)
+
 CJK_RANGES = ((0x3000, 0x303F), (0x4E00, 0x9FFF), (0xFF00, 0xFFEF))
 
 _results: list[tuple[str, bool, str]] = []
@@ -644,7 +651,11 @@ def check_09_no_paragraph_fields(checkpoint_dirs: list[Path]) -> None:
 def check_10_offline() -> None:
     offenders: list[str] = []
     scanned = 0
+    exempt = 0
     for path in sorted((ROOT / "babeldoc" / "magazine").glob("*.py")):
+        if path.name in MODEL_CLIENT_MODULES:
+            exempt += 1
+            continue
         scanned += 1
         text = path.read_text(encoding="utf-8")
         offenders.extend(
@@ -652,8 +663,9 @@ def check_10_offline() -> None:
         )
     record(
         "10 the magazine package contains no network or LLM client",
-        not offenders and scanned > 0,
-        f"modules={scanned} offenders={offenders}",
+        not offenders and scanned > 0 and exempt == len(MODEL_CLIENT_MODULES),
+        f"modules={scanned} declared_clients={list(MODEL_CLIENT_MODULES)} "
+        f"present={exempt} offenders={offenders}",
     )
 
 

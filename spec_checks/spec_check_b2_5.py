@@ -12,9 +12,15 @@ The batch changes how the gates obtain their evidence, never what they assert,
 so the load-bearing assertion here is 08: the set of assertion descriptions
 across the gate scripts may grow but no member of it may change or disappear.
 
-Three assertions drive whole gate processes or a whole sweep (04, 05, 07).
-Under spec_checks/run_all.py they are suppressed, the same SPEC_NO_NESTED
-contract the earlier gates use; running this file on its own executes them.
+Two assertions drive whole gate processes (04, 07). Under
+spec_checks/run_all.py they are suppressed, the same SPEC_NO_NESTED contract
+the earlier gates use; running this file on its own executes them.
+
+Greenness of the full sweep is asserted by spec_check_b2_7 05a, which states it
+unconditionally. This gate once asserted it in the weaker form the batch needed
+at the time, "green apart from one expected red", and required that red to be
+present; the red it named has since turned green, so the assertion is retired
+rather than kept as a claim that a failure still exists.
 """
 
 from __future__ import annotations
@@ -56,7 +62,6 @@ PREVIOUS_TAG = "batch-b2.4"
 MANIFEST_PATH = ROOT / "corpus" / "manifest.json"
 LABELS_PATH = ROOT / "corpus" / "page_labels.json"
 INPUT_DIR = ROOT / "examples" / "input"
-OUTPUT_DIR = ROOT / "examples" / "output" / "b2_5"
 
 # Gate scripts that existed at PREVIOUS_TAG, whose assertion descriptions this
 # batch may extend but not rewrite.
@@ -103,10 +108,6 @@ PROJECT_OWNED_PREFIXES = (
     "tools/",
 )
 PROJECT_OWNED_FILES = {"CLAUDE.md", "UPSTREAM_DIFF.md", "WAIVERS.md"}
-
-# The one assertion the plan expects to stay red until a tuning batch reaches
-# the agreement threshold.
-EXPECTED_RED = "06c classification agrees with the human page labels"
 
 # Ceiling the plan puts on a fast-tier sweep.
 FAST_TIER_BUDGET_SECONDS = 300
@@ -391,48 +392,6 @@ def check_04_fast_tier() -> None:
     )
 
 
-def check_05_full_sweep() -> None:
-    """The full sweep is green apart from the assertion the plan expects red."""
-    name = "05 the full run_all sweep is green apart from the expected red"
-    if NESTED_SUPPRESSED:
-        print(f"SKIPPED: nested run suppressed :: {name}")
-        return
-    started = time.monotonic()
-    proc = subprocess.run(  # noqa: S603 - fixed argv built from repository paths
-        [PYTHON, str(ROOT / "spec_checks" / "run_all.py")],
-        cwd=ROOT,
-        capture_output=True,
-        text=True,
-        check=False,
-    )
-    seconds = time.monotonic() - started
-    # run_all echoes two kinds of [FAIL] line: one per failed assertion, and
-    # one per gate in its closing summary. Only the assertion lines say what
-    # actually failed, so the gate lines are counted separately; a gate whose
-    # sole red is the expected one is not itself an unexpected failure.
-    assertion_failures = [
-        line.strip()
-        for line in proc.stdout.splitlines()
-        if line.strip().startswith("[FAIL]")
-        and not line.strip().split()[1].endswith(".py")
-    ]
-    gate_failures = [
-        line.strip()
-        for line in proc.stdout.splitlines()
-        if line.strip().startswith("[FAIL]") and line.strip().split()[1].endswith(".py")
-    ]
-    unexpected = [line for line in assertion_failures if EXPECTED_RED not in line]
-    OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
-    (OUTPUT_DIR / "run_all.full.log").write_text(proc.stdout, encoding="utf-8")
-    record(
-        name,
-        not unexpected and bool(assertion_failures),
-        f"elapsed={seconds:.1f}s expected_red={EXPECTED_RED!r} "
-        f"red_assertions={len(assertion_failures)} unexpected={unexpected[:3]} "
-        f"gates_reporting_red={[line.split()[1] for line in gate_failures]}",
-    )
-
-
 def check_06_label_bounds(manifest: dict) -> None:
     """A page number past the end of its sample is rejected, not silently missed."""
     known = set(taxonomy_module.load_taxonomy().names())
@@ -590,7 +549,6 @@ def main() -> int:
     check_09_change_scope()
     check_07_fallbacks()
     check_04_fast_tier()
-    check_05_full_sweep()
 
     failed = [name for name, ok, _ in _results if not ok]
     print()
