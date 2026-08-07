@@ -6,6 +6,10 @@ manifest.json`` is a machine rebuilt view of it: the semantic fields are copied
 verbatim, the mechanical fields are measured from the sample files, and the
 baseline block is filled in by ``tools/build_baseline.py``.
 
+``corpus/page_labels.json`` is the second hand written file: the page type
+ground truth the classifier is measured against. It is read here and never
+written.
+
 Nothing here interprets a publication: the module validates structure and
 copies values, so adding a sample is a registry edit followed by a rebuild.
 """
@@ -15,6 +19,7 @@ from __future__ import annotations
 import copy
 import hashlib
 import json
+from collections.abc import Collection
 from pathlib import Path
 
 import pymupdf
@@ -23,6 +28,7 @@ ROOT = Path(__file__).resolve().parents[2]
 INPUT_DIR = ROOT / "examples" / "input"
 REGISTRY_PATH = ROOT / "corpus" / "registry.user.json"
 MANIFEST_PATH = ROOT / "corpus" / "manifest.json"
+PAGE_LABELS_PATH = ROOT / "corpus" / "page_labels.json"
 
 # Fields the registry owns. The manifest carries a verbatim copy of each, and
 # any difference between the two is an error rather than a rebuild trigger.
@@ -286,6 +292,75 @@ def validate_manifest(
             errors.append(f"{rel}: registered but absent from the manifest")
 
     return errors, warnings
+
+
+def load_page_labels(path: Path = PAGE_LABELS_PATH) -> dict:
+    """Read the page label ground truth exactly as it is written."""
+    with path.open(encoding="utf-8") as f:
+        return json.load(f)
+
+
+def normalize_page_labels(raw: dict) -> dict[str, dict[str, list[str]]]:
+    """Canonical form: file -> 1-based page number -> acceptable type names.
+
+    A bare string value is the earlier single label spelling and reads as a one
+    element list, so a hand written file predating the array form still loads.
+    Assumes ``validate_page_labels`` found nothing to complain about.
+    """
+    return {
+        file_name: {
+            page: [value] if isinstance(value, str) else list(value)
+            for page, value in pages.items()
+        }
+        for file_name, pages in raw.items()
+    }
+
+
+def validate_page_labels(
+    raw: object, known_types: Collection[str], source: str = PAGE_LABELS_PATH.name
+) -> list[str]:
+    """Check the ground truth against its shape and the declared vocabulary.
+
+    Every message names the file, the page and, where one is at fault, the
+    offending element, so a hand editing round trip does not need the code.
+    """
+    errors: list[str] = []
+    if not isinstance(raw, dict):
+        return [f"{source}: root must be an object"]
+
+    declared = sorted(known_types)
+    for file_name, pages in raw.items():
+        if not isinstance(pages, dict):
+            errors.append(f"{source}: {file_name}: value must be an object")
+            continue
+        for page, value in pages.items():
+            where = f"{source}: {file_name} page {page}"
+            if not (page.isdigit() and int(page) >= 1):
+                errors.append(f"{where}: page must be a 1-based page number")
+            if isinstance(value, str):
+                value = [value]
+            if not isinstance(value, list):
+                errors.append(f"{where}: value must be an array of type names")
+                continue
+            if not value:
+                errors.append(f"{where}: array must hold at least one type name")
+                continue
+            seen: set[str] = set()
+            for element in value:
+                if not isinstance(element, str) or not element:
+                    errors.append(
+                        f"{where}: element {element!r} must be a non-empty string"
+                    )
+                    continue
+                if element not in known_types:
+                    errors.append(
+                        f"{where}: element {element!r} is not a declared page type; "
+                        f"declared types are {declared}"
+                    )
+                if element in seen:
+                    errors.append(f"{where}: element {element!r} appears twice")
+                seen.add(element)
+    return errors
 
 
 def group_by_publication(manifest: dict) -> dict[str, list[dict]]:

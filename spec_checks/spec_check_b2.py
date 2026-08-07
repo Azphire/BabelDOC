@@ -32,6 +32,7 @@ from babeldoc.format.pdf.parse_shared import _ParseOnlyDocLayoutModel  # noqa: E
 from babeldoc.format.pdf.translation_config import TranslationConfig  # noqa: E402
 from babeldoc.format.pdf.translation_config import WatermarkOutputMode  # noqa: E402
 from babeldoc.magazine import checkpoint as checkpoint_module  # noqa: E402
+from babeldoc.magazine import corpus as corpus_module  # noqa: E402
 from babeldoc.magazine import page_features  # noqa: E402
 from babeldoc.magazine import taxonomy as taxonomy_module  # noqa: E402
 from babeldoc.magazine.cache_setup import use_project_cache  # noqa: E402
@@ -463,43 +464,114 @@ def check_05_report_tool(magazine: dict, checkpoint_dir: Path) -> None:
     )
 
 
-def check_06_ground_truth(runs: dict[str, tuple[Path, Path]]) -> None:
-    name = "06 classification agrees with the human page labels"
-    with LABELS_PATH.open(encoding="utf-8") as f:
-        labels = json.load(f)
-    labelled = {key: value for key, value in labels.items() if value}
+def classified_kinds(checkpoint_dir: Path) -> dict[str, str]:
+    """Page kind per 1-based page number, the numbering the labels use."""
+    xml_path = (
+        checkpoint_dir / f"{checkpoint_module.checkpoint_stem('page_classifier')}.xml"
+    )
+    docs = checkpoint_module.load_checkpoint(xml_path)
+    kinds: dict[str, str] = {}
+    for position, page in enumerate(docs.page):
+        index = page.page_number if page.page_number is not None else position
+        kinds[str(index + 1)] = page.page_kind
+    return kinds
+
+
+def check_06_ground_truth(runs: dict[str, tuple[Path, Path]], manifest: dict) -> None:
+    vocabulary = taxonomy_module.load_taxonomy()
+    known = set(vocabulary.names())
+    # Two page types with the same policy are interchangeable to everything
+    # downstream, so agreement is measured at that level as well.
+    policy_of = {
+        page_type.name: tuple(sorted(page_type.policy.items()))
+        for page_type in vocabulary.page_types
+    }
+
+    raw = corpus_module.load_page_labels(LABELS_PATH)
+    errors = corpus_module.validate_page_labels(raw, known, LABELS_PATH.name)
+    record(
+        "06a the page label ground truth validates against the vocabulary",
+        not errors,
+        f"errors={errors[:5]}",
+    )
+
+    probes = {
+        "empty array": {"a.pdf": {"1": []}},
+        "undeclared type name": {"a.pdf": {"1": [sorted(known)[0], "not_a_page_type"]}},
+        "repeated element": {"a.pdf": {"1": [sorted(known)[0], sorted(known)[0]]}},
+        "non string element": {"a.pdf": {"1": [7]}},
+        "page number not 1-based": {"a.pdf": {"zero": [sorted(known)[0]]}},
+    }
+    survived = [
+        label
+        for label, probe in probes.items()
+        if not corpus_module.validate_page_labels(probe, known, "probe")
+    ]
+    record(
+        "06b the label validator rejects every malformed probe",
+        not survived,
+        f"survived={survived}",
+    )
+
+    name = "06c classification agrees with the human page labels"
+    if errors:
+        skip(name, f"{LABELS_PATH.name} is malformed; agreement is not measurable")
+        return
+    labelled = {
+        file_name: pages
+        for file_name, pages in corpus_module.normalize_page_labels(raw).items()
+        if pages
+    }
     if not labelled:
         skip(name, f"{LABELS_PATH.name} is empty; no ground truth to check")
         return
 
+    publication_of = {
+        sample["file"]: sample.get("publication", "") for sample in manifest["samples"]
+    }
     minimum = page_features.load_feature_config()["label_agreement_min"]
-    agreed = total = 0
+    # publication -> [kind hits, policy hits, labelled pages]
+    tallies: dict[str, list[int]] = {}
     misses: list[str] = []
     for file_name, expected_by_page in labelled.items():
         stem = Path(file_name).stem
+        publication = publication_of.get(file_name, file_name)
         if stem not in runs:
             misses.append(f"{file_name}: not in the corpus run")
             continue
-        checkpoint_dir, _ = runs[stem]
-        xml_path = (
-            checkpoint_dir
-            / f"{checkpoint_module.checkpoint_stem('page_classifier')}.xml"
+        actual_kinds = classified_kinds(runs[stem][0])
+        tally = tallies.setdefault(publication, [0, 0, 0])
+        for page_number, accepted in expected_by_page.items():
+            tally[2] += 1
+            actual = actual_kinds.get(page_number)
+            if actual in accepted:
+                tally[0] += 1
+                tally[1] += 1
+                continue
+            if actual in policy_of and any(
+                policy_of[actual] == policy_of[candidate] for candidate in accepted
+            ):
+                tally[1] += 1
+            misses.append(f"{file_name}#{page_number}: {actual!r} not in {accepted}")
+
+    kind_hits = sum(tally[0] for tally in tallies.values())
+    policy_hits = sum(tally[1] for tally in tallies.values())
+    total = sum(tally[2] for tally in tallies.values())
+    rate = kind_hits / total if total else 0.0
+    policy_rate = policy_hits / total if total else 0.0
+
+    print("    label agreement by publication (kind / policy / labelled pages):")
+    for publication in sorted(tallies):
+        hits, policy, count = tallies[publication]
+        print(
+            f"      {publication}: kind={hits / count:.3f} ({hits}/{count}) "
+            f"policy={policy / count:.3f} ({policy}/{count})"
         )
-        docs = checkpoint_module.load_checkpoint(xml_path)
-        actual = {str(page.page_number): page.page_kind for page in docs.page}
-        for page_number, expected in expected_by_page.items():
-            total += 1
-            if actual.get(page_number) == expected:
-                agreed += 1
-            else:
-                misses.append(
-                    f"{file_name}#{page_number}: {actual.get(page_number)!r} != {expected!r}"
-                )
-    rate = agreed / total if total else 0.0
     record(
         name,
         total > 0 and rate >= minimum,
-        f"agreement={rate:.3f} over {total} labelled page(s), "
+        f"kind_agreement={rate:.3f} ({kind_hits}/{total}), "
+        f"policy_agreement={policy_rate:.3f} ({policy_hits}/{total}), "
         f"minimum={minimum}, misses={misses[:5]}",
     )
 
@@ -659,7 +731,7 @@ def main() -> int:
     check_03_written_fields(classified)
     check_04_checkpoint_order(classified_dirs + default_checkpoints)
     check_05_report_tool(magazines[0], classified[Path(magazines[0]["file"]).stem][0])
-    check_06_ground_truth(classified)
+    check_06_ground_truth(classified, manifest)
     check_07_default_off(manifest, produced_pdfs, default_checkpoints)
     check_08_no_type_names_in_code()
     check_09_no_paragraph_fields(classified_dirs + default_checkpoints)

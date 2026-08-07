@@ -26,7 +26,7 @@
 - 打包:hatchling,包名 `BabelDOC`,Python >=3.10,<3.14。
 - **本地翻译缓存已内建**:`translator/cache.py`,peewee SQLite,DB 默认 `~/.cache/babeldoc/cache.v1.db`(`const.CACHE_FOLDER`),key = 引擎名 + 引擎参数 + 原文。`BaseTranslator.translate` 与 `llm_translate` 均先查缓存(受 `ignore_cache` 控制)。注意:`init_db()` 在 `cache.py` 模块导入时执行且路径硬编码;`MAX_CACHE_ROWS = 50_000` 超限即删旧行。B0 起缓存重定向到项目本地并禁用淘汰(见 §3)。
 - checkpoint 规范形式为再序列化形式(to_xml(from_xml(x)));字节级比对一律先归一化。读取旧 checkpoint 时容忍 xsdata ConverterWarning,不容忍错误(W-B0-02)。
-- corpus/registry.user.json 是语料语义元数据的唯一权威,仅用户可编辑;机器会话从它重建 manifest,任何批次的 git diff 中出现 registry.user.json 即违规,除非当次 prompt 显式声明用户已更新登记。toc_pages 为 PDF 文件页序(1-based)中出现目录版面的页码列表,空列表表示节选不含目录页。
+- corpus/registry.user.json 是语料语义元数据的唯一权威,仅用户可编辑;机器会话从它重建 manifest,任何批次的 git diff 中出现 registry.user.json 即违规,除非当次 prompt 显式声明用户已更新登记。toc_pages 为 PDF 文件页序(1-based)中出现目录版面的页码列表,空列表表示节选不含目录页。page_labels.json 的值为可接受类型名数组(1-based 页号),机器判定命中数组任一元素即计为一致;多元素用于单页多版面(如目录与卷首语同版)与复合拼版页。
 
 ## 3. 目录与代码落点约定
 
