@@ -47,6 +47,22 @@ def check(registry_path: Path, manifest_path: Path) -> tuple[list[str], list[str
     manifest_errors, manifest_warnings = corpus.validate_manifest(manifest, entries)
     errors.extend(manifest_errors)
     warnings.extend(manifest_warnings)
+
+    # Boundary ground truth is optional: a corpus nobody has adjudicated yet is
+    # unlabelled, not wrong. What is written down is bound to the manifest's
+    # page counts, so a boundary naming a page the sample does not have is
+    # reported here as the editing mistake it is.
+    if corpus.CHAIN_LABELS_PATH.exists():
+        pages_by_file = {
+            sample["file"]: sample.get("pages", 0)
+            for sample in manifest.get("samples", [])
+            if "file" in sample
+        }
+        errors.extend(
+            corpus.validate_chain_labels(
+                corpus.load_chain_labels(), pages_by_file=pages_by_file
+            )
+        )
     return errors, warnings
 
 

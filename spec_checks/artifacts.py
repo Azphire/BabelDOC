@@ -146,6 +146,15 @@ MODES: dict[str, dict] = {
         "magazine_checkpoint": True,
         "magazine_page_classify": True,
     },
+    # The same with chain detection on, which is the only mode in which the
+    # paragraph level chain fields are written at all.
+    "chained": {
+        "layout_model": "onnx",
+        "skip_translation": True,
+        "magazine_checkpoint": True,
+        "magazine_page_classify": True,
+        "magazine_chain_detect": True,
+    },
 }
 
 _fingerprint: str | None = None

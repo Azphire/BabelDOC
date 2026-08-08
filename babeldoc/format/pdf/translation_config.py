@@ -219,6 +219,7 @@ class TranslationConfig:
         disable_same_text_fallback: bool = False,
         magazine_checkpoint: bool = False,
         magazine_page_classify: bool = False,
+        magazine_chain_detect: bool = False,
     ):
         self.translator = translator
         self.term_extraction_translator = term_extraction_translator or translator
@@ -342,6 +343,8 @@ class TranslationConfig:
         self.magazine_checkpoint = magazine_checkpoint
         # Magazine extension: run the deterministic page classifier stage.
         self.magazine_page_classify = magazine_page_classify
+        # Magazine extension: run the article chain detection stage.
+        self.magazine_chain_detect = magazine_chain_detect
 
         if self.skip_translation or self.only_parse_generate_pdf:
             self.auto_extract_glossary = False

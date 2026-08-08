@@ -79,10 +79,14 @@ NAME_DEFINITION_FILES = {
 NAME_REFERENCE_ALLOW_LIST = NAME_DEFINITION_FILES | {
     "babeldoc/magazine/ir_compat.py",
     "babeldoc/magazine/page_classifier.py",
+    # B4 is the first writer of the paragraph level chain pair.
+    "babeldoc/magazine/chain_builder.py",
+    "babeldoc/magazine/chain_signals.py",
     "spec_checks/spec_check_b2.py",
     "spec_checks/spec_check_b2_1.py",
     "spec_checks/spec_check_b2_3.py",
     "spec_checks/spec_check_b3.py",
+    "spec_checks/spec_check_b4.py",
 }
 
 # Upstream files carried over from B0, still uncommitted in the working tree.

@@ -1,0 +1,60 @@
+{
+  "description": "Article chain detection. A boundary is the adjacent page pair (N, N+1); its endpoints are the last paragraph of page N and the first paragraph of page N+1 in derived reading order. A boundary is only scored when both pages carry a page kind whose policy sets chain_eligible; that mask is a qualification, not a term in the score. Each signal named by a weight_<signal> key returns a value in 0..1, and the boundary score is the weighted sum over the signals divided by the total positive weight, clamped to 0..1; a signal the geometry cannot supply contributes nothing. A negative weight is a soft prior that withdraws evidence rather than supplying any, so it stays out of the denominator, and the loader refuses a weight set in which a boundary carrying every signal at full strength could be pulled below link_min_score by the priors alone. That refusal is what keeps paragraph level evidence authoritative over the page level prior. terminal_punctuation lists the sentence enders, Latin and CJK, and terminal_closers the closing marks stripped from a tail before its ender is read, so a quoted sentence still reads as ended; both are written as JSON unicode escapes to keep this file ASCII. Retune the weights and thresholds here from the report produced by tools/chain_report.py, never in code.",
+
+  "link_min_score": 0.55,
+  "link_min_score_allowed_range": "0.0..1.0",
+
+  "weight_tail_no_terminal_punct": 0.3,
+  "weight_tail_no_terminal_punct_allowed_range": "0.0..1.0",
+  "weight_tail_line_fill": 0.2,
+  "weight_tail_line_fill_allowed_range": "0.0..1.0",
+  "weight_style_continuity": 0.2,
+  "weight_style_continuity_allowed_range": "0.0..1.0",
+  "weight_body_label_pair": 0.2,
+  "weight_body_label_pair_allowed_range": "0.0..1.0",
+  "weight_column_position": 0.1,
+  "weight_column_position_allowed_range": "0.0..1.0",
+  "weight_opener_prior": -0.35,
+  "weight_opener_prior_allowed_range": "-1.0..0.0",
+
+  "tail_line_fill_min": 0.85,
+  "tail_line_fill_min_allowed_range": "0.0..1.0",
+  "font_size_tolerance": 0.75,
+  "font_size_tolerance_allowed_range": "0.0..12.0",
+  "line_overlap_min": 0.5,
+  "line_overlap_min_allowed_range": "0.05..1.0",
+  "column_split_gap_ratio": 0.05,
+  "column_split_gap_ratio_allowed_range": "0.005..0.5",
+  "bottom_band_ratio": 0.35,
+  "bottom_band_ratio_allowed_range": "0.0..1.0",
+  "top_band_ratio": 0.35,
+  "top_band_ratio_allowed_range": "0.0..1.0",
+  "boundary_agreement_min": 0.8,
+  "boundary_agreement_min_allowed_range": "0.0..1.0",
+
+  "body_labels": ["text", "plain text", "paragraph_hybrid"],
+  "endpoint_labels": [
+    "text",
+    "plain text",
+    "paragraph_hybrid",
+    "tiny text",
+    "title",
+    "paragraph_title",
+    "abstract",
+    "figure_caption",
+    "table_caption"
+  ],
+  "terminal_punctuation": [".", "!", "?", "\u2026", "\u3002", "\uff01", "\uff1f"],
+  "terminal_closers": [
+    "\"",
+    "'",
+    "\u201d",
+    "\u2019",
+    "\u00bb",
+    "\u300b",
+    ")",
+    "\uff09",
+    "]",
+    "\u3011"
+  ]
+}

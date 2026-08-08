@@ -20,3 +20,6 @@ same session it is made.
 | `babeldoc/format/pdf/translation_config.py` | `TranslationConfig.__init__` | Add `magazine_page_classify: bool = False` constructor parameter and store it on the instance; gates the deterministic page classifier stage. | B2 |
 | `babeldoc/format/pdf/high_level.py` | module imports | Import `PageClassifier` from `babeldoc.magazine.page_classifier`. | B2 |
 | `babeldoc/format/pdf/high_level.py` | `_do_translate_single` | Run `PageClassifier(...).process(docs)` after the `styles_and_formulas` checkpoint and before term extraction, gated by `magazine_page_classify`, followed by a `magazine_checkpoint`-gated `page_classifier` checkpoint. No effect while the switch is off. | B2 |
+| `babeldoc/format/pdf/translation_config.py` | `TranslationConfig.__init__` | Add `magazine_chain_detect: bool = False` constructor parameter and store it on the instance; gates the article chain detection stage. | B4 |
+| `babeldoc/format/pdf/high_level.py` | module imports | Import `ChainBuilder` from `babeldoc.magazine.chain_builder`. | B4 |
+| `babeldoc/format/pdf/high_level.py` | `_do_translate_single` | Run `ChainBuilder(...).process(docs)` after the `page_classifier` checkpoint and before term extraction, gated by `magazine_chain_detect`, followed by a `magazine_checkpoint`-gated `chain_builder` checkpoint. No effect while the switch is off. | B4 |

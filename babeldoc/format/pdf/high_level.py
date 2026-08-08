@@ -52,6 +52,7 @@ from babeldoc.format.pdf.split_manager import SplitManager
 from babeldoc.format.pdf.translation_config import TranslateResult
 from babeldoc.format.pdf.translation_config import TranslationConfig
 from babeldoc.format.pdf.translation_config import WatermarkOutputMode
+from babeldoc.magazine.chain_builder import ChainBuilder
 from babeldoc.magazine.checkpoint import dump_checkpoint
 from babeldoc.magazine.page_classifier import PageClassifier
 from babeldoc.progress_monitor import ProgressMonitor
@@ -1002,6 +1003,12 @@ def _do_translate_single(
         logger.debug(f"finish page classifier from {temp_pdf_path}")
         if translation_config.magazine_checkpoint:
             dump_checkpoint(docs, translation_config, "page_classifier")
+
+    if translation_config.magazine_chain_detect:
+        ChainBuilder(translation_config).process(docs)
+        logger.debug(f"finish chain builder from {temp_pdf_path}")
+        if translation_config.magazine_checkpoint:
+            dump_checkpoint(docs, translation_config, "chain_builder")
 
     translate_engine = translation_config.translator
     term_extraction_engine = translation_config.get_term_extraction_translator()

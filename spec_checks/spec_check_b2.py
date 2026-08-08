@@ -270,10 +270,16 @@ def check_01_configs() -> None:
         len(vocabulary.page_types) >= 15,
         f"types={len(vocabulary.page_types)}",
     )
+    # Required keys must all be present, and nothing may appear beyond them and
+    # the optional flags the parser declares and fills a default in for.
+    declarable = taxonomy_module.POLICY_KEYS | set(
+        taxonomy_module.OPTIONAL_POLICY_DEFAULTS
+    )
     incomplete = [
         page_type.name
         for page_type in vocabulary.page_types
-        if set(page_type.policy) != taxonomy_module.POLICY_KEYS
+        if not taxonomy_module.POLICY_KEYS <= set(page_type.policy)
+        or not set(page_type.policy) <= declarable
     ]
     record(
         "01c every type declares all three policy keys",

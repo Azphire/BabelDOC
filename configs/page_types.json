@@ -15,7 +15,7 @@
         {"feature": "image_area_ratio", "op": "ge", "threshold": 0.3, "weight": 2.0},
         {"feature": "text_coverage_ratio", "op": "le", "threshold": 0.35, "weight": 1.0}
       ],
-      "policy": {"chain_eligible": false, "translate": true, "repair_profile": "poster"}
+      "policy": {"chain_eligible": false, "translate": true, "starts_article": true, "repair_profile": "poster"}
     },
     {
       "name": "back_cover",
@@ -26,7 +26,7 @@
         {"feature": "image_area_ratio", "op": "ge", "threshold": 0.25, "weight": 1.5},
         {"feature": "text_coverage_ratio", "op": "le", "threshold": 0.35, "weight": 1.0}
       ],
-      "policy": {"chain_eligible": false, "translate": true, "repair_profile": "poster"}
+      "policy": {"chain_eligible": false, "translate": true, "starts_article": true, "repair_profile": "poster"}
     },
     {
       "name": "toc",
@@ -37,7 +37,7 @@
         {"feature": "leader_dot_line_ratio", "op": "ge", "threshold": 0.08, "weight": 1.0},
         {"feature": "title_label_ratio", "op": "ge", "threshold": 0.26, "weight": 3.5}
       ],
-      "policy": {"chain_eligible": false, "translate": true, "repair_profile": "grid"}
+      "policy": {"chain_eligible": false, "translate": true, "starts_article": true, "repair_profile": "grid"}
     },
     {
       "name": "masthead",
@@ -49,7 +49,7 @@
         {"feature": "text_coverage_ratio", "op": "le", "threshold": 0.25, "weight": 1.0},
         {"feature": "title_label_ratio", "op": "ge", "threshold": 0.26, "weight": -1.5}
       ],
-      "policy": {"chain_eligible": false, "translate": true, "repair_profile": "grid"}
+      "policy": {"chain_eligible": false, "translate": true, "starts_article": true, "repair_profile": "grid"}
     },
     {
       "name": "editorial",
@@ -61,7 +61,7 @@
         {"feature": "column_count_estimate", "op": "le", "threshold": 2.0, "weight": 1.0},
         {"feature": "max_font_size_ratio", "op": "ge", "threshold": 1.5, "weight": 1.0}
       ],
-      "policy": {"chain_eligible": true, "translate": true, "repair_profile": "flow"}
+      "policy": {"chain_eligible": true, "translate": true, "starts_article": true, "repair_profile": "flow"}
     },
     {
       "name": "article_opener",
@@ -73,7 +73,7 @@
         {"feature": "paragraph_count", "op": "le", "threshold": 24.0, "weight": 1.0},
         {"feature": "text_coverage_ratio", "op": "ge", "threshold": 0.25, "weight": 1.5}
       ],
-      "policy": {"chain_eligible": false, "translate": true, "repair_profile": "poster"}
+      "policy": {"chain_eligible": false, "translate": true, "starts_article": true, "repair_profile": "poster"}
     },
     {
       "name": "article_body",
@@ -85,7 +85,7 @@
         {"feature": "max_font_size_ratio", "op": "le", "threshold": 2.5, "weight": 1.5},
         {"feature": "short_paragraph_ratio", "op": "le", "threshold": 0.6, "weight": 1.5}
       ],
-      "policy": {"chain_eligible": true, "translate": true, "repair_profile": "flow"}
+      "policy": {"chain_eligible": true, "translate": true, "starts_article": false, "repair_profile": "flow"}
     },
     {
       "name": "photo_spread",
@@ -96,7 +96,7 @@
         {"feature": "text_coverage_ratio", "op": "ge", "threshold": 0.05, "weight": 1.5},
         {"feature": "mean_paragraph_chars", "op": "le", "threshold": 40.0, "weight": 1.0}
       ],
-      "policy": {"chain_eligible": false, "translate": true, "repair_profile": "figure"}
+      "policy": {"chain_eligible": false, "translate": true, "starts_article": true, "repair_profile": "figure"}
     },
     {
       "name": "infographic",
@@ -108,7 +108,7 @@
         {"feature": "mean_paragraph_chars", "op": "le", "threshold": 100.0, "weight": 1.5},
         {"feature": "paragraph_count", "op": "ge", "threshold": 8.0, "weight": 1.0}
       ],
-      "policy": {"chain_eligible": false, "translate": true, "repair_profile": "figure"}
+      "policy": {"chain_eligible": false, "translate": true, "starts_article": true, "repair_profile": "figure"}
     },
     {
       "name": "interview",
@@ -121,7 +121,7 @@
         {"feature": "column_count_estimate", "op": "ge", "threshold": 2.0, "weight": 1.0},
         {"feature": "title_label_ratio", "op": "ge", "threshold": 0.2, "weight": -1.5}
       ],
-      "policy": {"chain_eligible": true, "translate": true, "repair_profile": "flow"}
+      "policy": {"chain_eligible": true, "translate": true, "starts_article": true, "repair_profile": "flow"}
     },
     {
       "name": "sidebar_heavy",
@@ -134,7 +134,7 @@
         {"feature": "mean_paragraph_chars", "op": "ge", "threshold": 140.0, "weight": -2.0},
         {"feature": "title_label_ratio", "op": "ge", "threshold": 0.26, "weight": -2.5}
       ],
-      "policy": {"chain_eligible": false, "translate": true, "repair_profile": "grid"}
+      "policy": {"chain_eligible": false, "translate": true, "starts_article": false, "repair_profile": "grid"}
     },
     {
       "name": "contributors",
@@ -146,7 +146,7 @@
         {"feature": "title_label_ratio", "op": "ge", "threshold": 0.26, "weight": -2.0},
         {"feature": "image_area_ratio", "op": "ge", "threshold": 0.1, "weight": 1.0}
       ],
-      "policy": {"chain_eligible": false, "translate": true, "repair_profile": "grid"}
+      "policy": {"chain_eligible": false, "translate": true, "starts_article": true, "repair_profile": "grid"}
     },
     {
       "name": "letters_page",
@@ -159,7 +159,7 @@
         {"feature": "image_area_ratio", "op": "le", "threshold": 0.15, "weight": 1.5},
         {"feature": "title_label_ratio", "op": "ge", "threshold": 0.26, "weight": -2.0}
       ],
-      "policy": {"chain_eligible": false, "translate": true, "repair_profile": "flow"}
+      "policy": {"chain_eligible": false, "translate": true, "starts_article": true, "repair_profile": "flow"}
     },
     {
       "name": "advertisement",
@@ -172,7 +172,7 @@
         {"feature": "column_count_estimate", "op": "le", "threshold": 2.0, "weight": 1.5},
         {"feature": "title_label_ratio", "op": "ge", "threshold": 0.4, "weight": -1.5}
       ],
-      "policy": {"chain_eligible": false, "translate": true, "repair_profile": "figure"}
+      "policy": {"chain_eligible": false, "translate": true, "starts_article": true, "repair_profile": "figure"}
     },
     {
       "name": "section_divider",
@@ -183,7 +183,7 @@
         {"feature": "max_font_size_ratio", "op": "ge", "threshold": 1.8, "weight": 1.5},
         {"feature": "text_coverage_ratio", "op": "le", "threshold": 0.15, "weight": 2.0}
       ],
-      "policy": {"chain_eligible": false, "translate": true, "repair_profile": "poster"}
+      "policy": {"chain_eligible": false, "translate": true, "starts_article": true, "repair_profile": "poster"}
     }
   ]
 }

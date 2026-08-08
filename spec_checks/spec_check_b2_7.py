@@ -172,6 +172,11 @@ def git_output(args: list[str]) -> tuple[int, str]:
     return proc.returncode, proc.stdout
 
 
+def batch_tag_exists() -> bool:
+    code, _ = git_output(["rev-parse", "-q", "--verify", f"{BATCH_TAG}^{{commit}}"])
+    return code == 0
+
+
 def changed_files() -> set[str]:
     """Every path this batch changed.
 
@@ -179,8 +184,7 @@ def changed_files() -> set[str]:
     Once the batch is tagged the same delta is the tag against its parent, so a
     later batch can re-run this gate without its own changes counting here.
     """
-    code, _ = git_output(["rev-parse", "-q", "--verify", f"{BATCH_TAG}^{{commit}}"])
-    if code == 0:
+    if batch_tag_exists():
         _, listing = git_output(["diff", "--name-only", f"{BATCH_TAG}^", BATCH_TAG])
         return {line.strip() for line in listing.splitlines() if line.strip()}
 
@@ -735,14 +739,17 @@ def check_07_vocabulary_unchanged() -> None:
             "candidate adopted; the vocabulary is expected to differ",
         )
         return
+    # Anchored to this batch's own tag once it exists, so a later batch editing
+    # the vocabulary is not read as this batch having moved it.
+    revisions = [PREVIOUS_TAG, BATCH_TAG] if batch_tag_exists() else [PREVIOUS_TAG]
     code, listing = git_output(
-        ["diff", "--name-only", PREVIOUS_TAG, "--", "configs/page_types.json"]
+        ["diff", "--name-only", *revisions, "--", "configs/page_types.json"]
     )
     differing = [line.strip() for line in listing.splitlines() if line.strip()]
     record(
         "07 the shipped vocabulary is byte identical to the previous batch",
         code == 0 and not differing,
-        f"against={PREVIOUS_TAG} exit={code} differing={differing}",
+        f"against={PREVIOUS_TAG} at={revisions[-1]} exit={code} differing={differing}",
     )
 
 

@@ -10,6 +10,7 @@
     "paragraph_finder",
     "styles_and_formulas",
     "page_classifier",
+    "chain_builder",
     "il_translated",
     "add_debug_information",
     "typesetting"

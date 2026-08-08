@@ -57,6 +57,15 @@ CONSTANT_COLUMN_MIDRANK = 0.5
 
 POLICY_KEYS = frozenset({"chain_eligible", "translate", "repair_profile"})
 
+# Policy flags a type may declare but need not. A vocabulary written before the
+# flag existed still loads, and every consumer sees the declared default rather
+# than a missing key, so a downstream stage never has to ask whether a policy
+# carries a flag at all.
+OPTIONAL_POLICY_DEFAULTS: dict[str, object] = {"starts_article": False}
+
+# Optional flags whose value is a boolean, validated as such when declared.
+OPTIONAL_BOOLEAN_POLICY_KEYS = frozenset({"starts_article"})
+
 
 class TaxonomyError(ConfigError):
     """Raised when the page type vocabulary is malformed."""
@@ -114,6 +123,18 @@ class Taxonomy:
 
     def names(self) -> tuple[str, ...]:
         return tuple(page_type.name for page_type in self.page_types)
+
+    def policy_of(self, kind: str | None) -> dict[str, object] | None:
+        """Declared policy of a page kind, or None when the kind is unknown.
+
+        A page carrying no kind, or one whose kind is not in this vocabulary,
+        has no policy to consume; the caller decides what an absent policy
+        means rather than getting a silent default that looks declared.
+        """
+        for page_type in self.page_types:
+            if page_type.name == kind:
+                return page_type.policy
+        return None
 
 
 def _require(condition: bool, message: str) -> None:
@@ -243,9 +264,14 @@ def parse_taxonomy(raw: dict, source: str) -> Taxonomy:
         _require(isinstance(policy, dict), f"{where}: policy must be an object")
         missing = sorted(POLICY_KEYS - set(policy))
         _require(not missing, f"{where}: policy missing keys {missing}")
-        unknown = sorted(set(policy) - POLICY_KEYS)
+        unknown = sorted(set(policy) - POLICY_KEYS - set(OPTIONAL_POLICY_DEFAULTS))
         _require(not unknown, f"{where}: policy has unknown keys {unknown}")
         for flag in ("chain_eligible", "translate"):
+            _require(
+                isinstance(policy[flag], bool),
+                f"{where}: policy.{flag} must be a boolean",
+            )
+        for flag in sorted(OPTIONAL_BOOLEAN_POLICY_KEYS & set(policy)):
             _require(
                 isinstance(policy[flag], bool),
                 f"{where}: policy.{flag} must be a boolean",
@@ -257,7 +283,10 @@ def parse_taxonomy(raw: dict, source: str) -> Taxonomy:
 
         page_types.append(
             PageType(
-                name=name, description=description, rules=rules, policy=dict(policy)
+                name=name,
+                description=description,
+                rules=rules,
+                policy=OPTIONAL_POLICY_DEFAULTS | dict(policy),
             )
         )
 

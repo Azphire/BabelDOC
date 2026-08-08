@@ -7,8 +7,9 @@ verbatim, the mechanical fields are measured from the sample files, and the
 baseline block is filled in by ``tools/build_baseline.py``.
 
 ``corpus/page_labels.json`` is the second hand written file: the page type
-ground truth the classifier is measured against. It is read here and never
-written.
+ground truth the classifier is measured against. ``corpus/chain_labels.user.json``
+is the third: the ground truth for whether an article runs across a given page
+boundary. Both are read here and never written.
 
 Nothing here interprets a publication: the module validates structure and
 copies values, so adding a sample is a registry edit followed by a rebuild.
@@ -29,6 +30,14 @@ INPUT_DIR = ROOT / "examples" / "input"
 REGISTRY_PATH = ROOT / "corpus" / "registry.user.json"
 MANIFEST_PATH = ROOT / "corpus" / "manifest.json"
 PAGE_LABELS_PATH = ROOT / "corpus" / "page_labels.json"
+CHAIN_LABELS_PATH = ROOT / "corpus" / "chain_labels.user.json"
+
+# How a boundary key joins the two page numbers it names.
+BOUNDARY_SEPARATOR = "->"
+
+# Keys a boundary entry may carry: the adjudication itself and the note the
+# adjudicator left behind explaining it.
+CHAIN_LABEL_KEYS: frozenset[str] = frozenset({"link", "note"})
 
 # Fields the registry owns. The manifest carries a verbatim copy of each, and
 # any difference between the two is an error rather than a rebuild trigger.
@@ -371,6 +380,77 @@ def validate_page_labels(
                 if element in seen:
                     errors.append(f"{where}: element {element!r} appears twice")
                 seen.add(element)
+    return errors
+
+
+def load_chain_labels(path: Path = CHAIN_LABELS_PATH) -> dict:
+    """Read the boundary ground truth exactly as it is written."""
+    with path.open(encoding="utf-8") as f:
+        return json.load(f)
+
+
+def parse_boundary_key(key: str) -> tuple[int, int] | None:
+    """Split a ``"N->M"`` boundary key into its two 1-based page numbers.
+
+    Returns None for anything not of that shape, which is what the validator
+    turns into a message naming the offending key.
+    """
+    left, separator, right = key.partition(BOUNDARY_SEPARATOR)
+    if not separator or not left.isdigit() or not right.isdigit():
+        return None
+    return int(left), int(right)
+
+
+def validate_chain_labels(
+    raw: object,
+    source: str = CHAIN_LABELS_PATH.name,
+    pages_by_file: dict[str, int] | None = None,
+) -> list[str]:
+    """Check the boundary ground truth against its shape and the page counts.
+
+    A boundary is an adjacent page pair written ``"N->N+1"`` with a boolean
+    ``link``. Absent boundaries are unlabelled rather than negative, so nothing
+    here requires a file to be labelled at all; what is written down, though,
+    has to name a pair that exists, or a typo would be scored as a detector miss
+    rather than reported as the editing mistake it is.
+    """
+    errors: list[str] = []
+    if not isinstance(raw, dict):
+        return [f"{source}: root must be an object"]
+
+    for file_name, boundaries in raw.items():
+        if not isinstance(boundaries, dict):
+            errors.append(f"{source}: {file_name}: value must be an object")
+            continue
+        total = (pages_by_file or {}).get(file_name)
+        for key, entry in boundaries.items():
+            where = f"{source}: {file_name} boundary {key}"
+            pair = parse_boundary_key(key)
+            if pair is None:
+                errors.append(
+                    f"{where}: key must be two 1-based page numbers "
+                    f"joined by {BOUNDARY_SEPARATOR!r}"
+                )
+            else:
+                tail, head = pair
+                if tail < 1:
+                    errors.append(f"{where}: pages are 1-based")
+                elif head != tail + 1:
+                    errors.append(f"{where}: pages must be adjacent")
+                elif total is not None and head > total:
+                    errors.append(
+                        f"{where}: outside the 1..{total} pages of {file_name}"
+                    )
+            if not isinstance(entry, dict):
+                errors.append(f"{where}: value must be an object")
+                continue
+            if "link" not in entry:
+                errors.append(f"{where}: value must declare 'link'")
+            elif not isinstance(entry["link"], bool):
+                errors.append(f"{where}: 'link' must be a boolean")
+            unknown = sorted(set(entry) - CHAIN_LABEL_KEYS)
+            if unknown:
+                errors.append(f"{where}: unknown keys {unknown}")
     return errors
 
 

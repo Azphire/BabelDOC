@@ -249,6 +249,17 @@ def normalized(payload: bytes) -> bytes:
     return payload.replace(b"\r\n", b"\n")
 
 
+def current_bytes(path: str) -> bytes:
+    """This batch's version of a tracked file.
+
+    Once the batch is tagged that is the tagged content, so a later batch
+    editing the same file does not make this gate read its work.
+    """
+    if tag_exists(BATCH_TAG):
+        return git_show(BATCH_TAG, path)
+    return (ROOT / path).read_bytes()
+
+
 def classifier_checkpoint(working_dir: Path) -> Path:
     stem = checkpoint_module.checkpoint_stem("page_classifier")
     return working_dir / f"{stem}.xml"
@@ -774,7 +785,7 @@ def check_04_disabled_run(classified: dict[str, Path], manifest: dict) -> None:
     )
 
     unchanged = {
-        relative: normalized((ROOT / relative).read_bytes())
+        relative: normalized(current_bytes(relative))
         == normalized(git_show(PREVIOUS_TAG, relative))
         for relative in ("configs/page_types.json", "configs/page_features.json")
     }
