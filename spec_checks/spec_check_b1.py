@@ -82,6 +82,7 @@ NAME_REFERENCE_ALLOW_LIST = NAME_DEFINITION_FILES | {
     "spec_checks/spec_check_b2.py",
     "spec_checks/spec_check_b2_1.py",
     "spec_checks/spec_check_b2_3.py",
+    "spec_checks/spec_check_b3.py",
 }
 
 # Upstream files carried over from B0, still uncommitted in the working tree.

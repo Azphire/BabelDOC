@@ -32,6 +32,7 @@ import hashlib
 import json
 import logging
 import os
+import re
 from collections.abc import Sequence
 from dataclasses import dataclass
 from dataclasses import replace
@@ -71,11 +72,15 @@ NUMERIC_KEYS: tuple[str, ...] = (
     "max_retries",
     "render_dpi",
     "timeout_seconds",
+    "verdict_rows",
 )
 
 # Request parameters that shape a reply, and therefore belong in the cache key.
 # The endpoint, the credential's variable name, the wall clock limit and the
-# retry budget are how a request is delivered, not what it asks for.
+# retry budget are how a request is delivered, not what it asks for. Settings
+# that reach the model through the words of the prompt -- ``verdict_rows`` among
+# them -- are already in the key through the rendered text and are not repeated
+# here, and ``render_dpi`` is in it through the bytes of the image.
 KEY_PARAMETERS: tuple[str, ...] = ("temperature", "max_output_tokens")
 
 # Fields a reply must carry. Anything else in the object is ignored; anything
@@ -86,6 +91,14 @@ REQUIRED_REPLY_FIELDS = ("kind", "confidence")
 DESCRIPTION_KEY = "description"
 
 _RANGE_SUFFIX = "_allowed_range"
+
+# One code fence wrapping the whole reply, opened bare or tagged as JSON and
+# closed at the very end. Chat models emit this shape even when told not to, and
+# it changes nothing about the answer inside it, so it is peeled off rather than
+# refused. The match is anchored at both ends and the tag set is closed: a reply
+# with prose around the fence, a second fence, or any other tag is a reply that
+# did not do as it was asked, and stays a violation.
+_FENCED = re.compile(r"\A```(?:json)?[ \t]*\r?\n(?P<body>.*)\r?\n?```\Z", re.DOTALL)
 
 
 class VlmError(ConfigError):
@@ -103,6 +116,7 @@ class VlmConfig:
     max_retries: int
     render_dpi: int
     timeout_seconds: float
+    verdict_rows: int
 
     def key_parameters(self) -> dict[str, float]:
         """The request parameters the cache key is composed from."""
@@ -189,6 +203,7 @@ def parse_vlm_config(raw: dict, source: str) -> VlmConfig:
         max_retries=int(parameters["max_retries"]),
         render_dpi=int(parameters["render_dpi"]),
         timeout_seconds=float(parameters["timeout_seconds"]),
+        verdict_rows=int(parameters["verdict_rows"]),
     )
 
 
@@ -219,6 +234,14 @@ def cache_key(config: VlmConfig, prompt: Prompt, image_png: bytes) -> str:
     return hashlib.sha256("\n".join(fields).encode()).hexdigest()
 
 
+def unfence(reply: str) -> str:
+    """Strip one balanced code fence enclosing the whole reply, if there is one."""
+    if not isinstance(reply, str):
+        return reply
+    match = _FENCED.match(reply.strip())
+    return match.group("body").strip() if match else reply
+
+
 def interpret_reply(reply: str, vocabulary: Sequence[str]) -> VlmVerdict:
     """Turn a reply into a verdict, refusing anything outside the contract.
 
@@ -226,7 +249,7 @@ def interpret_reply(reply: str, vocabulary: Sequence[str]) -> VlmVerdict:
     and never a new page type, whatever the model believes it saw.
     """
     try:
-        payload = json.loads(reply)
+        payload = json.loads(unfence(reply))
     except (json.JSONDecodeError, TypeError) as exc:
         return VlmVerdict(accepted=False, reason=f"reply is not valid JSON: {exc}")
     if not isinstance(payload, dict):

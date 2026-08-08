@@ -1,21 +1,26 @@
-"""Gate script for batch B3, session one (prompt infrastructure, cached client).
+"""Gate script for batch B3 (prompt infrastructure, cached client, fallback).
 
 Run from the repository root:
 
     python spec_checks/spec_check_b3.py
 
-Exit code 0 when every assertion this session owns passes, 1 otherwise. It
-requires no API key and makes no network request: the client is exercised
-through an injected transport that counts its calls, which is also how the
-cache is proved to serve a repeated request without one.
+Exit code 0 when every assertion in plans/PLAN_B3.md passes, 1 otherwise.
 
-Covered here are the T3.0 backlog (00) and PLAN_B3 assertions 1, 3, 7, 8 and 9.
-Assertions 2, 4, 5 and 6 land with the classifier routing in session two,
-because the behaviour they describe -- the fallback to the deterministic verdict
-and the byte-for-byte equality of a disabled run -- lives at the call site
-rather than in the client.
+The gate needs no API key and makes no network request, and that is a property
+it enforces rather than assumes: the credential named by ``configs/vlm.json`` is
+removed from this process's environment before anything else runs, so every
+model call here reaches an injected transport that counts what it was asked.
+Any assertion that came to depend on a real reply would fail rather than pass
+quietly, which is the only arrangement under which "the gates are offline" stays
+true as the model call points multiply.
 
-Every assertion is static tier: nothing here builds a pipeline artefact.
+Covered are the T3.0 backlog (00) and every PLAN_B3 assertion. Assertions 2, 4
+and 5 exercise the classifier stage itself, driving it over the checkpoints the
+corpus builds produce; 6 is the full sweep and is suppressed when the runner is
+already performing one.
+
+Tiers: assertions 2, 4 and 5 need a corpus artefact and belong to the pipeline
+tier; the rest are static.
 """
 
 from __future__ import annotations
@@ -29,30 +34,82 @@ import subprocess
 import sys
 import tempfile
 import traceback
+from dataclasses import dataclass
 from dataclasses import replace
+from datetime import datetime
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
+from babeldoc.assets.assets import warmup  # noqa: E402
+from babeldoc.magazine import checkpoint as checkpoint_module  # noqa: E402
+from babeldoc.magazine import corpus as corpus_module  # noqa: E402
+from babeldoc.magazine import page_features  # noqa: E402
 from babeldoc.magazine import prompt_loader  # noqa: E402
 from babeldoc.magazine import taxonomy as taxonomy_module  # noqa: E402
 from babeldoc.magazine import vlm_client  # noqa: E402
 from babeldoc.magazine.cache_setup import use_project_cache  # noqa: E402
+from babeldoc.magazine.page_classifier import REPORT_NAME  # noqa: E402
+from babeldoc.magazine.page_classifier import SOURCE  # noqa: E402
+from babeldoc.magazine.page_classifier import VLM_SOURCE  # noqa: E402
+from babeldoc.magazine.page_classifier import PageClassifier  # noqa: E402
 from babeldoc.translator import cache as translator_cache  # noqa: E402
 from spec_checks import artifacts  # noqa: E402
 from spec_checks import harness  # noqa: E402
+from spec_checks import run_all as runner  # noqa: E402
 
-# Tag that freezes this batch; once it exists the scope assertions read the
-# delta it introduced instead of the working tree.
-BATCH_TAG = "batch-b3.1"
+# The credential is removed before the first assertion runs, so this gate is
+# offline by construction rather than by the accident of an unset variable on
+# the machine it happens to run on. Child processes inherit the cleared
+# environment, which extends the same guarantee to the nested sweep.
+os.environ.pop(vlm_client.load_vlm_config().api_key_env, None)
+
+# The batch spans two sessions and therefore two commits. The scope assertions
+# read the whole batch: from the parent of the first tag to the second one, or
+# to the working tree while the second is still unwritten.
+FIRST_TAG = "batch-b3.1"
+BATCH_TAG = "batch-b3.2"
+
+PYTHON = sys.executable
 
 CLASSIFY_PROMPT = "page_classify_vlm"
 CONFIG_PATH = ROOT / "configs" / "vlm.json"
+MANIFEST_PATH = ROOT / "corpus" / "manifest.json"
+LABELS_PATH = ROOT / "corpus" / "page_labels.json"
+INPUT_DIR = ROOT / "examples" / "input"
+OUTPUT_DIR = ROOT / "examples" / "output" / "b3"
+
+# The batch the disabled run must still be equal to, and the agreement table it
+# froze, as (kind hits, labelled pages) keyed by publication with the empty key
+# holding the pooled figure. Recomputed here from artefacts this batch's code
+# produced: if the fallback layer leaked into a disabled run, or a threshold
+# moved, this table is where it shows.
+PREVIOUS_TAG = "batch-b2.7"
+FROZEN_AGREEMENT = {
+    "": (28, 31),
+    "aramcoworld": (6, 8),
+    "cern_courier": (3, 4),
+    "imf_fd": (8, 8),
+    "unesco_courier": (8, 8),
+    "vogue_us": (3, 3),
+}
+
+# Set by spec_checks/run_all.py. The sweep assertion is the fallback for running
+# this file on its own; under the runner it would repeat the sweep in progress.
+NESTED_SUPPRESSED = os.environ.get("SPEC_NO_NESTED") == "1"
+
+# Checks that need an artefact built during this run.
+PIPELINE_TIER = (
+    "check_02_reply_classes",
+    "check_04_disabled_run",
+    "check_05_routed_pages",
+)
 
 # Files this session adds or rewrites whose text must stay free of page type
 # names: the vocabulary reaches a prompt by injection from the JSON alone.
 VOCABULARY_FREE_FILES = (
+    "babeldoc/magazine/page_classifier.py",
     "babeldoc/magazine/prompt_loader.py",
     "babeldoc/magazine/vlm_client.py",
     "babeldoc/magazine/taxonomy.py",
@@ -60,6 +117,7 @@ VOCABULARY_FREE_FILES = (
     "prompts/page_classify_vlm.md",
     "prompts/vlm_retry_notice.md",
     "spec_checks/spec_check_b3.py",
+    "tools/vlm_classify_eval.py",
 )
 
 # Path prefixes and root documents this batch may change, per PLAN_B3 negative
@@ -71,7 +129,7 @@ ALLOWED_PREFIXES = (
     "spec_checks/",
     "tools/",
 )
-ALLOWED_FILES = {"CLAUDE.md", "plans/PLAN_B3.md"}
+ALLOWED_FILES = {"CLAUDE.md", "WAIVERS.md", "plans/PLAN_B3.md"}
 
 # Trees and root documents owned by the magazine extension; the upstream scope
 # assertion ignores them.
@@ -145,20 +203,27 @@ def git_output(args: list[str]) -> tuple[int, str]:
     return proc.returncode, proc.stdout
 
 
-def changed_files() -> set[str]:
-    """Every path this batch changed.
+def tag_exists(tag: str) -> bool:
+    code, _ = git_output(["rev-parse", "-q", "--verify", f"{tag}^{{commit}}"])
+    return code == 0
 
-    Before the batch is committed that is the working tree delta against HEAD.
-    Once the batch is tagged the same delta is the tag against its parent, so a
-    later batch can re-run this gate without its own changes counting here.
+
+def changed_files() -> set[str]:
+    """Every path this batch changed, across both of its sessions.
+
+    The base is the commit the batch started from. The head is the tag that
+    closes it once it exists, and the working tree until then, so the same
+    assertion holds while the second session is in progress and after a later
+    batch has moved on.
     """
-    code, _ = git_output(["rev-parse", "-q", "--verify", f"{BATCH_TAG}^{{commit}}"])
-    if code == 0:
-        _, listing = git_output(["diff", "--name-only", f"{BATCH_TAG}^", BATCH_TAG])
+    base = f"{FIRST_TAG}^" if tag_exists(FIRST_TAG) else "HEAD"
+    if tag_exists(BATCH_TAG):
+        _, listing = git_output(["diff", "--name-only", base, BATCH_TAG])
         return {line.strip() for line in listing.splitlines() if line.strip()}
 
+    _, tracked = git_output(["diff", "--name-only", base])
+    paths = {line.strip() for line in tracked.splitlines() if line.strip()}
     _, listing = git_output(["status", "--porcelain", "--untracked-files=all"])
-    paths: set[str] = set()
     for line in listing.splitlines():
         if not line.strip():
             continue
@@ -167,6 +232,102 @@ def changed_files() -> set[str]:
             path = path.split(" -> ", 1)[1]
         paths.add(path)
     return paths
+
+
+def git_show(revision: str, path: str) -> bytes:
+    proc = subprocess.run(  # noqa: S603, S607 - git is expected on PATH for this gate
+        ["git", "show", f"{revision}:{path}"],  # noqa: S607
+        cwd=ROOT,
+        capture_output=True,
+        check=True,
+    )
+    return proc.stdout
+
+
+def normalized(payload: bytes) -> bytes:
+    """Line-ending normalised bytes, so a checkout convention is not a change."""
+    return payload.replace(b"\r\n", b"\n")
+
+
+def classifier_checkpoint(working_dir: Path) -> Path:
+    stem = checkpoint_module.checkpoint_stem("page_classifier")
+    return working_dir / f"{stem}.xml"
+
+
+@dataclass(frozen=True)
+class RoutedSample:
+    """The corpus sample the routing assertions replay, and what it routes."""
+
+    name: str
+    sample: Path
+    checkpoint: Path
+    count: int
+
+
+def pick_routed_sample(classified: dict[str, Path], manifest: dict) -> RoutedSample:
+    """The sample with the most ambiguous pages, which routes the most work.
+
+    Ambiguity is a property of the corpus rather than of this gate, so the
+    sample is chosen by measurement instead of being named here; a retune that
+    moves which pages are ambiguous moves the choice with it.
+    """
+    file_of = {
+        Path(sample["file"]).stem: sample["file"] for sample in manifest["samples"]
+    }
+    best: RoutedSample | None = None
+    for name, working in sorted(classified.items()):
+        report = json.loads((working / REPORT_NAME).read_text(encoding="utf-8"))
+        count = sum(entry["ambiguous"] for entry in report["pages"])
+        if best is None or count > best.count:
+            best = RoutedSample(
+                name=name,
+                sample=INPUT_DIR / file_of[name],
+                checkpoint=classifier_checkpoint(working),
+                count=count,
+            )
+    return best
+
+
+class WorkingDirConfig:
+    """The whole of ``TranslationConfig`` the classifier stage actually reads.
+
+    Driving the stage from a checkpoint instead of a pipeline run is what makes
+    the routing assertions affordable: the corpus is built once for the sweep,
+    and each reply class replays the stage over it in milliseconds.
+    """
+
+    def __init__(self, working_dir: Path, input_file: Path) -> None:
+        self.working_dir = working_dir
+        self.input_file = input_file
+
+    def get_working_file_path(self, filename: str) -> Path:
+        self.working_dir.mkdir(parents=True, exist_ok=True)
+        return self.working_dir / filename
+
+
+def run_stage(
+    sample: Path,
+    checkpoint: Path,
+    working: Path,
+    replies,
+    enabled: bool = True,
+) -> tuple[object, dict, StubTransport]:
+    """Replay the classifier stage over one checkpoint against scripted replies.
+
+    Each call gets a database of its own, so one reply class never answers the
+    next one from the cache.
+    """
+    use_project_cache(working / "cache_root")
+    transport = StubTransport(replies)
+    config = replace(vlm_client.load_vlm_config(), enabled=enabled)
+    client = vlm_client.CachedVlmClient(
+        config=config, transport=transport, working_dir=working
+    )
+    docs = checkpoint_module.load_checkpoint(checkpoint)
+    stage = PageClassifier(WorkingDirConfig(working, sample), vlm_client=client)
+    stage.process(docs)
+    report = json.loads((working / REPORT_NAME).read_text(encoding="utf-8"))
+    return docs, report, transport
 
 
 def scannable_files() -> list[Path]:
@@ -207,6 +368,11 @@ class StubTransport:
 
 def valid_reply(kind: str, confidence: float = 0.8) -> str:
     return json.dumps({"kind": kind, "confidence": confidence})
+
+
+def fenced_reply(kind: str, tag: str = "json") -> str:
+    """A contract-abiding answer wrapped in the code fence chat models add."""
+    return f"```{tag}\n{valid_reply(kind)}\n```"
 
 
 def load_classify_prompt(
@@ -470,6 +636,335 @@ def check_03_cache() -> None:
     )
 
 
+def check_02_reply_classes(routed: RoutedSample) -> None:
+    """Each class of reply lands where the contract says it lands.
+
+    A usable answer is adopted, a fenced one is adopted after the fence is
+    peeled off, and everything else -- a name outside the vocabulary, an
+    unparseable body, a request that never returned -- is retried once and then
+    refused, leaving the deterministic verdict in place with the reason beside
+    it in the sidecar.
+    """
+    names = taxonomy_module.load_taxonomy().names()
+    adopted = names[0]
+    budget = vlm_client.load_vlm_config().max_retries + 1
+    classes = (
+        ("02a a reply inside the contract is adopted", valid_reply(adopted), True, ""),
+        (
+            "02b a reply wrapped in one code fence is adopted",
+            fenced_reply(adopted),
+            True,
+            "",
+        ),
+        (
+            "02c a name outside the vocabulary is retried once and refused",
+            valid_reply("a name the vocabulary does not declare"),
+            False,
+            "is not one of",
+        ),
+        (
+            "02d an unparseable reply is retried once and refused",
+            "{ this was never JSON",
+            False,
+            "not valid JSON",
+        ),
+        (
+            "02e a request that fails is retried once and refused",
+            TimeoutError("the stub transport timed out"),
+            False,
+            "request failed",
+        ),
+    )
+
+    retry_notices: list[bool] = []
+    for index, (name, reply, accept, marker) in enumerate(classes):
+        working = _tmp_root / f"class_{index}"
+        docs, report, transport = run_stage(
+            routed.sample, routed.checkpoint, working, [reply]
+        )
+        entries = [entry for entry in report["pages"] if entry["vlm"] is not None]
+        pages = {page.page_number: page for page in docs.page}
+        expected_calls = routed.count * (1 if accept else budget)
+        problems: list[str] = []
+        if len(entries) != routed.count:
+            problems.append(f"routed {len(entries)} of {routed.count}")
+        if transport.calls != expected_calls:
+            problems.append(f"calls {transport.calls} expected {expected_calls}")
+        for entry in entries:
+            page = pages[entry["page_number"]]
+            outcome = entry["vlm"]
+            if outcome["accepted"] is not accept:
+                problems.append(
+                    f"#{entry['page_number']}: accepted={outcome['accepted']}"
+                )
+                continue
+            if accept:
+                if (
+                    page.page_kind_source != VLM_SOURCE
+                    or page.page_kind != adopted
+                    or entry["source"] != VLM_SOURCE
+                    or outcome["attempts"] != 1
+                ):
+                    problems.append(f"#{entry['page_number']}: not adopted whole")
+            else:
+                if (
+                    page.page_kind_source != SOURCE
+                    or page.page_kind != entry["kind"]
+                    or page.page_kind_conf != entry["conf"]
+                    or outcome["attempts"] != budget
+                ):
+                    problems.append(
+                        f"#{entry['page_number']}: deterministic verdict moved"
+                    )
+                if marker not in outcome["reason"]:
+                    problems.append(
+                        f"#{entry['page_number']}: reason {outcome['reason'][:60]!r}"
+                    )
+        if not accept:
+            retry_notices.append(
+                len(transport.prompts) >= 2
+                and transport.prompts[1] != transport.prompts[0]
+                and transport.prompts[1].startswith(transport.prompts[0])
+            )
+        record(
+            name,
+            not problems,
+            f"routed={routed.count} calls={transport.calls} problems={problems[:3]}",
+        )
+
+    record(
+        "02f a retry states the violation that rejected the previous reply",
+        all(retry_notices) and bool(retry_notices),
+        f"retried_classes={len(retry_notices)} carried_notice={retry_notices}",
+    )
+
+
+def check_04_disabled_run(classified: dict[str, Path], manifest: dict) -> None:
+    """With the switch off the corpus is decided exactly as batch-b2.7 decided it."""
+    feature_config = page_features.load_feature_config()
+    vocabulary = taxonomy_module.load_taxonomy()
+    drift: list[str] = []
+    routed: list[str] = []
+    pages_seen = 0
+    for name, working in sorted(classified.items()):
+        docs = checkpoint_module.load_checkpoint(classifier_checkpoint(working))
+        report = json.loads((working / REPORT_NAME).read_text(encoding="utf-8"))
+        if report.get("vlm_enabled"):
+            routed.append(f"{name}: report says the fallback ran")
+        for page, features, entry in zip(
+            docs.page,
+            page_features.extract_document_features(docs, feature_config),
+            report["pages"],
+            strict=True,
+        ):
+            pages_seen += 1
+            verdict = taxonomy_module.classify(features, vocabulary)
+            if (
+                page.page_kind != verdict.kind
+                or page.page_kind_conf != verdict.confidence
+                or page.page_kind_source != SOURCE
+            ):
+                drift.append(f"{name}#{page.page_number}")
+            if entry["vlm"] is not None:
+                routed.append(f"{name}#{page.page_number}")
+    record(
+        "04a a disabled run decides every page deterministically and consults nothing",
+        not drift and not routed and pages_seen > 0,
+        f"pages={pages_seen} drift={drift[:3]} routed={routed[:3]}",
+    )
+
+    unchanged = {
+        relative: normalized((ROOT / relative).read_bytes())
+        == normalized(git_show(PREVIOUS_TAG, relative))
+        for relative in ("configs/page_types.json", "configs/page_features.json")
+    }
+    record(
+        "04b the vocabulary those verdicts come from is the one batch-b2.7 shipped",
+        all(unchanged.values()),
+        f"identical={unchanged} against={PREVIOUS_TAG}",
+    )
+
+    labels = corpus_module.normalize_page_labels(
+        corpus_module.load_page_labels(LABELS_PATH)
+    )
+    publication_of = {
+        sample["file"]: sample.get("publication", "") for sample in manifest["samples"]
+    }
+    tallies: dict[str, list[int]] = {}
+    misses: list[str] = []
+    for file_name, expected_by_page in labels.items():
+        working = classified[Path(file_name).stem]
+        docs = checkpoint_module.load_checkpoint(classifier_checkpoint(working))
+        kinds = {
+            str((page.page_number if page.page_number is not None else position) + 1): (
+                page.page_kind
+            )
+            for position, page in enumerate(docs.page)
+        }
+        tally = tallies.setdefault(publication_of.get(file_name, file_name), [0, 0])
+        for page_number, accepted in expected_by_page.items():
+            tally[1] += 1
+            if kinds.get(page_number) in accepted:
+                tally[0] += 1
+            else:
+                misses.append(f"{file_name}#{page_number}: {kinds.get(page_number)!r}")
+    table = {key: (hits, total) for key, (hits, total) in tallies.items()}
+    table[""] = (
+        sum(hits for hits, _ in table.values()),
+        sum(total for _, total in table.values()),
+    )
+    moved = sorted(
+        f"{key or 'overall'}: now={table.get(key)} frozen={FROZEN_AGREEMENT.get(key)}"
+        for key in set(table) | set(FROZEN_AGREEMENT)
+        if table.get(key) != FROZEN_AGREEMENT.get(key)
+    )
+    record(
+        "04c the agreement of the disabled run is the table batch-b2.7 froze",
+        not moved,
+        f"overall={table['']} moved={moved[:3]} misses={len(misses)}",
+    )
+
+
+def check_04d_render(manifest: dict) -> None:
+    """The produced PDF is still the registered baseline, page for page."""
+    OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
+    outcomes: list[str] = []
+    for entry in manifest["samples"]:
+        name = Path(entry["file"]).stem
+        with _timer.phase(f"pipeline:parse_only_plain:{name}"):
+            built = artifacts.get_artifacts(
+                INPUT_DIR / entry["file"], "parse_only_plain"
+            )
+        produced = OUTPUT_DIR / f"{name}.b3.pdf"
+        shutil.copyfile(built.mono_pdf, produced)
+        proc = subprocess.run(  # noqa: S603 - fixed argv built from repository paths
+            [
+                PYTHON,
+                str(ROOT / "tools" / "render_diff.py"),
+                str(ROOT / entry["baseline"]["pdf"]),
+                str(produced),
+                "--out",
+                str(_tmp_root / f"rd_{name}"),
+            ],
+            cwd=ROOT,
+            capture_output=True,
+            text=True,
+            check=False,
+        )
+        if proc.returncode != 0:
+            outcomes.append(f"{name}: exit={proc.returncode}")
+    record(
+        "04d the batch leaves the produced PDF identical to the baseline",
+        not outcomes and bool(manifest["samples"]),
+        f"samples={len(manifest['samples'])} differing={outcomes}",
+    )
+
+
+def check_05_routed_pages(routed: RoutedSample) -> None:
+    """With the switch on, exactly the ambiguous pages are adjudicated."""
+    names = taxonomy_module.load_taxonomy().names()
+    adopted = names[0]
+    working = _tmp_root / "routed"
+    before = checkpoint_module.load_checkpoint(routed.checkpoint)
+    docs, report, transport = run_stage(
+        routed.sample, routed.checkpoint, working, [valid_reply(adopted)]
+    )
+
+    wrong: list[str] = []
+    for page, entry in zip(docs.page, report["pages"], strict=True):
+        expected = VLM_SOURCE if entry["ambiguous"] else SOURCE
+        if page.page_kind_source != expected:
+            wrong.append(f"#{page.page_number}: {page.page_kind_source} != {expected}")
+        if entry["ambiguous"] != (entry["vlm"] is not None):
+            wrong.append(f"#{page.page_number}: routing does not follow ambiguity")
+    adjudicated = sum(page.page_kind_source == VLM_SOURCE for page in docs.page)
+    record(
+        "05a every ambiguous page is adjudicated and no other page is",
+        not wrong and adjudicated == routed.count and transport.calls == routed.count,
+        f"sample={routed.name} ambiguous={routed.count} adjudicated={adjudicated} "
+        f"calls={transport.calls} wrong={wrong[:3]}",
+    )
+
+    pages_before = len(before.page)
+    pages_after = len(docs.page)
+    paragraphs_before = sum(len(page.pdf_paragraph) for page in before.page)
+    paragraphs_after = sum(len(page.pdf_paragraph) for page in docs.page)
+    record(
+        "05b adjudication conserves pages and paragraphs",
+        pages_before == pages_after and paragraphs_before == paragraphs_after,
+        f"pages={pages_before}->{pages_after} "
+        f"paragraphs={paragraphs_before}->{paragraphs_after}",
+    )
+
+    manifest_path = working / prompt_loader.MANIFEST_NAME
+    manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    template = ROOT / "prompts" / f"{CLASSIFY_PROMPT}.md"
+    key = prompt_loader.manifest_key(template)
+    record(
+        "05c the run records the digest of the prompt it actually sent",
+        manifest.get(key) == prompt_loader.file_digest(template),
+        f"entries={sorted(manifest)} digest={str(manifest.get(key))[:16]}",
+    )
+
+
+def check_06_sweep() -> None:
+    """The full sweep is green and leaves a complete completion marker."""
+    names = (
+        "06a the full run_all sweep is green",
+        "06b the sweep leaves a complete run_all.done.json",
+    )
+    if NESTED_SUPPRESSED:
+        for name in names:
+            print(f"SKIPPED: nested run suppressed :: {name}")
+        return
+
+    if runner.DONE_PATH.exists():
+        runner.DONE_PATH.unlink()
+    proc = subprocess.run(  # noqa: S603 - fixed argv built from repository paths
+        [PYTHON, str(ROOT / "spec_checks" / "run_all.py")],
+        cwd=ROOT,
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
+    (OUTPUT_DIR / "run_all.full.log").write_text(proc.stdout, encoding="utf-8")
+    failures = [
+        line.strip()
+        for line in proc.stdout.splitlines()
+        if line.strip().startswith("[FAIL]")
+    ]
+    record(
+        names[0],
+        proc.returncode == 0 and not failures,
+        f"exit={proc.returncode} failures={failures[:5]}",
+    )
+
+    payload: dict = {}
+    if runner.DONE_PATH.exists():
+        payload = json.loads(runner.DONE_PATH.read_text(encoding="utf-8"))
+    missing = sorted(set(runner.DONE_FIELDS) - set(payload))
+    timestamps_parse = all(
+        isinstance(payload.get(key), str) and bool(datetime.fromisoformat(payload[key]))
+        for key in ("started_at", "finished_at")
+        if key in payload
+    )
+    gates_covered = {entry.get("gate") for entry in payload.get("gates", [])} == set(
+        runner.GATES
+    )
+    record(
+        names[1],
+        not missing
+        and payload.get("exit_code") == proc.returncode
+        and isinstance(payload.get("elapsed_seconds"), int | float)
+        and payload["elapsed_seconds"] > 0
+        and timestamps_parse
+        and gates_covered,
+        f"missing={missing} exit_code={payload.get('exit_code')} "
+        f"timestamps_parse={timestamps_parse} gates_covered={gates_covered}",
+    )
+
+
 def check_07_no_page_type_names() -> None:
     """No page type name is spelled out anywhere in the new code or prompts."""
     names = taxonomy_module.load_taxonomy().names()
@@ -550,13 +1045,17 @@ def check_08_no_credentials() -> None:
         f"api_key_env={config.api_key_env} refusal={refusal[:80]!r}",
     )
 
+    # Not an observation about the machine: the variable was removed at import,
+    # so this states that everything above ran without one and that the shipped
+    # switch is off. An assertion that had come to need a real reply would have
+    # failed on the way here rather than reaching this line.
     record(
-        "08c this gate ran with no credential in its environment",
+        "08c this gate ran with the credential removed and the switch off",
         not os.environ.get(config.api_key_env)
         and not config.enabled
         and not raw["enabled"],
-        f"variable_set={bool(os.environ.get(config.api_key_env))} "
-        f"enabled={raw['enabled']}",
+        f"variable={config.api_key_env} still_set="
+        f"{bool(os.environ.get(config.api_key_env))} enabled={raw['enabled']}",
     )
 
 
@@ -606,12 +1105,37 @@ def check_09_change_scope() -> None:
 
 def main() -> int:
     logging.basicConfig(level=logging.ERROR)
+    if not harness.FAST_TIER:
+        with _timer.phase("warmup"):
+            use_project_cache(ROOT)
+            warmup()
     check_00_backlog()
     check_01_prompt_loader()
     check_03_cache()
+
+    if harness.FAST_TIER:
+        for name in PIPELINE_TIER:
+            harness.fast_skip(name)
+    else:
+        with MANIFEST_PATH.open(encoding="utf-8") as f:
+            manifest = json.load(f)
+        classified: dict[str, Path] = {}
+        for entry in manifest["samples"]:
+            name = Path(entry["file"]).stem
+            with _timer.phase(f"pipeline:classified:{name}"):
+                built = artifacts.get_artifacts(INPUT_DIR / entry["file"], "classified")
+            classified[name] = built.working_dir
+
+        check_04_disabled_run(classified, manifest)
+        check_04d_render(manifest)
+        routed = pick_routed_sample(classified, manifest)
+        check_02_reply_classes(routed)
+        check_05_routed_pages(routed)
+
     check_07_no_page_type_names()
     check_08_no_credentials()
     check_09_change_scope()
+    check_06_sweep()
 
     failed = [name for name, ok, _ in _results if not ok]
     print()
