@@ -89,6 +89,8 @@ NAME_REFERENCE_ALLOW_LIST = NAME_DEFINITION_FILES | {
     "spec_checks/spec_check_b2_3.py",
     "spec_checks/spec_check_b3.py",
     "spec_checks/spec_check_b4.py",
+    # Reads the chain order out of the B4 report to rebuild a chain's members.
+    "spec_checks/spec_check_b5.py",
 }
 
 # Upstream files carried over from B0, still uncommitted in the working tree.
