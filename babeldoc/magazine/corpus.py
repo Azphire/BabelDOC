@@ -39,6 +39,13 @@ BOUNDARY_SEPARATOR = "->"
 # adjudicator left behind explaining it.
 CHAIN_LABEL_KEYS: frozenset[str] = frozenset({"link", "note"})
 
+# Prefix marking a top level key of a hand written truth file as documentation
+# rather than as a sample: the adjudicator states the rule the file was written
+# under beside the judgements made under it, and no sample file is named this
+# way. Machines skip these keys; they exist for whoever reads or revises the
+# adjudications next.
+DOCUMENTATION_KEY_PREFIX = "_"
+
 # Fields the registry owns. The manifest carries a verbatim copy of each, and
 # any difference between the two is an error rather than a rebuild trigger.
 SEMANTIC_FIELDS: tuple[str, ...] = (
@@ -389,6 +396,15 @@ def load_chain_labels(path: Path = CHAIN_LABELS_PATH) -> dict:
         return json.load(f)
 
 
+def chain_label_samples(raw: dict) -> dict[str, dict]:
+    """The sample entries of the boundary ground truth, documentation aside."""
+    return {
+        name: value
+        for name, value in raw.items()
+        if not name.startswith(DOCUMENTATION_KEY_PREFIX)
+    }
+
+
 def parse_boundary_key(key: str) -> tuple[int, int] | None:
     """Split a ``"N->M"`` boundary key into its two 1-based page numbers.
 
@@ -413,12 +429,16 @@ def validate_chain_labels(
     here requires a file to be labelled at all; what is written down, though,
     has to name a pair that exists, or a typo would be scored as a detector miss
     rather than reported as the editing mistake it is.
+
+    A top level key marked as documentation carries the adjudicator's own prose
+    and is passed over: it states what the judgements below it were made under,
+    which is worth keeping beside them and is not itself a judgement.
     """
     errors: list[str] = []
     if not isinstance(raw, dict):
         return [f"{source}: root must be an object"]
 
-    for file_name, boundaries in raw.items():
+    for file_name, boundaries in chain_label_samples(raw).items():
         if not isinstance(boundaries, dict):
             errors.append(f"{source}: {file_name}: value must be an object")
             continue

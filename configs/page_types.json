@@ -73,7 +73,7 @@
         {"feature": "paragraph_count", "op": "le", "threshold": 24.0, "weight": 1.0},
         {"feature": "text_coverage_ratio", "op": "ge", "threshold": 0.25, "weight": 1.5}
       ],
-      "policy": {"chain_eligible": false, "translate": true, "starts_article": true, "repair_profile": "poster"}
+      "policy": {"chain_eligible": true, "translate": true, "starts_article": true, "repair_profile": "poster"}
     },
     {
       "name": "article_body",
@@ -96,7 +96,7 @@
         {"feature": "text_coverage_ratio", "op": "ge", "threshold": 0.05, "weight": 1.5},
         {"feature": "mean_paragraph_chars", "op": "le", "threshold": 40.0, "weight": 1.0}
       ],
-      "policy": {"chain_eligible": false, "translate": true, "starts_article": true, "repair_profile": "figure"}
+      "policy": {"chain_eligible": true, "translate": true, "starts_article": false, "repair_profile": "figure"}
     },
     {
       "name": "infographic",

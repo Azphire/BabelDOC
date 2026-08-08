@@ -1,4 +1,4 @@
-"""Gate script for batch B4.1 (chain signals, builder, IL chain writing).
+"""Gate script for batch B4 (chain signals, builder, IL chain writing).
 
 Run from the repository root:
 
@@ -18,19 +18,36 @@ either side of it are compared field by field and only the chain pair may
 differ. Those two together say the stage writes the chains it found and nothing
 else.
 
+03 covers the qualification mask, which is read per endpoint: the tail endpoint
+answers to the page it sits on and the head endpoint to the page it begins, so
+the assertion checks that excluding one page masks the boundary and says which
+end it was excluded by.
+
 04 is a weight structure assertion rather than a corpus measurement. The page
 level prior is soft by design, so a boundary carrying every continuity signal at
 full strength has to survive every prior firing against it; the gate proves that
-holds for the shipped weights and that the loader refuses a weight set where it
+holds for every shipped weight profile and that the loader refuses one where it
 does not.
 
 05 scores the detector against ``corpus/chain_labels.user.json``. That file is
 the corpus owner's to write and is empty until they do, so the assertion reports
 SKIPPED rather than passing vacuously.
 
-Tiers: assertions 01, 02, 05, 06 and 08b need a pipeline run and belong to the
-pipeline tier; the rest are static or synthetic. Assertion 07 is the full sweep
-and is suppressed when the runner is already performing one.
+12 and 13 cover the two mechanisms the second session added beside the mask. 12
+is the width filter: a paragraph set too narrow to be part of the text is not
+the page's last paragraph, however far down the reading order it sits. 13 is the
+declared pairings: a display line broken across a spread is a handover of its
+own kind, weighed by the profile its pairing declares, and the same evidence
+under the running text weights would not link.
+
+14 is an instance assertion rather than a rule: one adjudicated mid sentence
+split in the corpus has to be found at the paragraph a reader would call the end
+of the page. It names a sample because it is a measurement of that sample, and
+it reports SKIPPED when the sample is not in the corpus.
+
+Tiers: assertions 01, 02, 05, 06, 08b and 14 need a pipeline run and belong to
+the pipeline tier; the rest are static or synthetic. Assertion 07 is the full
+sweep and is suppressed when the runner is already performing one.
 """
 
 from __future__ import annotations
@@ -59,16 +76,22 @@ from babeldoc.magazine import taxonomy as taxonomy_module  # noqa: E402
 from babeldoc.magazine.cache_setup import use_project_cache  # noqa: E402
 from babeldoc.magazine.chain_builder import REPORT_NAME  # noqa: E402
 from babeldoc.magazine.chain_builder import ChainBuilder  # noqa: E402
+from babeldoc.magazine.chain_signals import PAIR_RULES_KEY  # noqa: E402
 from babeldoc.magazine.chain_signals import SIGNAL_NAMES  # noqa: E402
 from babeldoc.magazine.chain_signals import ChainConfigError  # noqa: E402
 from babeldoc.magazine.chain_signals import combine  # noqa: E402
+from babeldoc.magazine.chain_signals import default_weights  # noqa: E402
 from babeldoc.magazine.chain_signals import evaluate_boundary  # noqa: E402
 from babeldoc.magazine.chain_signals import load_chain_config  # noqa: E402
 from babeldoc.magazine.chain_signals import positive_weight  # noqa: E402
 from spec_checks import artifacts  # noqa: E402
 from spec_checks import harness  # noqa: E402
 
-BATCH_TAG = "batch-b4.1"
+# The batch was delivered in two sessions, each tagged. The change scope
+# assertions read the whole batch, from the commit before the first session to
+# the second session's tag, so nothing either session changed escapes them.
+BASE_TAG = "batch-b4.1"
+BATCH_TAG = "batch-b4.2"
 
 PYTHON = sys.executable
 
@@ -92,7 +115,12 @@ PIPELINE_TIER = (
     "check_05_label_agreement",
     "check_06_determinism",
     "check_08b_switch_off_render",
+    "check_14_split_instance",
 )
+
+# The adjudicated mid sentence split assertion 14 measures, as (sample, key).
+INSTANCE_SAMPLE = "Courier-en.pdf"
+INSTANCE_BOUNDARY = "7->8"
 
 # The paragraph level fields B1 declared. The switch-off assertion is the B2.2
 # assertion 09 continued: with the switch down not one of them may appear.
@@ -145,9 +173,21 @@ PROJECT_OWNED_FILES = {"CLAUDE.md", "UPSTREAM_DIFF.md", "WAIVERS.md"}
 CJK_SCAN_FILES = (
     *NEW_MODULES,
     "spec_checks/spec_check_b4.py",
+    "tools/chain_report.py",
     "configs/chain_detection.json",
+    "configs/chain_report.json",
     "corpus/chain_labels.user.json",
 )
+
+# Files that must name no page type, which is every file this batch adds that
+# reads a page kind. The review tool prints the kinds it finds; naming one would
+# mean it had an opinion about them.
+TYPE_NAME_SCAN_FILES = (*NEW_MODULES, "tools/chain_report.py")
+
+# Files this batch adds that read or write one of the fields B1 declared, and
+# are therefore answerable to the B1 consumer list. The review tool reads the
+# page kind to show why a boundary was scored or masked.
+FIELD_CONSUMERS = (*NEW_MODULES, "tools/chain_report.py")
 CJK_RANGES = ((0x3000, 0x303F), (0x4E00, 0x9FFF), (0xFF00, 0xFFEF))
 
 # A credential in the diff would mean this batch shipped one. The scan looks for
@@ -191,14 +231,24 @@ def git_output(args: list[str]) -> tuple[int, str]:
     return proc.returncode, proc.stdout.decode("utf-8", "replace")
 
 
-def batch_tag_exists() -> bool:
-    code, _ = git_output(["rev-parse", "-q", "--verify", f"{BATCH_TAG}^{{commit}}"])
+def tag_exists(tag: str) -> bool:
+    code, _ = git_output(["rev-parse", "-q", "--verify", f"{tag}^{{commit}}"])
     return code == 0
 
 
 def batch_revisions() -> list[str]:
-    """Revision arguments selecting the delta this batch introduced."""
-    return [f"{BATCH_TAG}^", BATCH_TAG] if batch_tag_exists() else ["HEAD"]
+    """Revision arguments selecting the delta this batch introduced.
+
+    Once the batch is finished that is the span from before its first session to
+    its last tag. While the last session is still uncommitted the span runs from
+    the same starting point to the working tree, so what is being written now is
+    inside the scope as well.
+    """
+    if tag_exists(BATCH_TAG):
+        return [f"{BASE_TAG}^", BATCH_TAG]
+    if tag_exists(BASE_TAG):
+        return [f"{BASE_TAG}^"]
+    return ["HEAD"]
 
 
 def changed_files() -> set[str]:
@@ -443,40 +493,56 @@ _TAIL_TEXT = "the sentence continues past the foot of this page and"
 _HEAD_TEXT = "resumes here at the head of the next one without a break"
 
 
-def _synthetic_page(number: int, text: str, at_bottom: bool) -> il_version_1.Page:
-    """One page carrying a single paragraph built to look like running text.
+# A page of the synthetic documents; wide enough that a fragment set at a
+# fraction of it is unambiguously narrow.
+_PAGE_WIDTH = 600.0
+_PAGE_HEIGHT = 800.0
+# Width one synthetic character occupies, so a paragraph's width is a plain
+# function of the text it carries.
+_CHAR_WIDTH = 5.0
 
-    Everything the signals read is set deliberately: two lines of equal width,
-    so the measure equals the last line's width and the fill ratio is exactly
-    one; a last line that stops mid sentence; one family at one size; the
-    running text label; and a position at the foot or the head of the measure.
+
+def _synthetic_paragraph(
+    text: str,
+    debug_id: str,
+    label: str,
+    left: float,
+    bottom: float,
+    rows: int,
+) -> il_version_1.PdfParagraph:
+    """One paragraph whose every measured quantity is set deliberately.
+
+    ``rows`` lines of equal width, so a multi line paragraph has a measure equal
+    to its last line's width and a fill ratio of exactly one, while a single
+    line paragraph has no measure at all, which is what a display line is.
     """
     characters = []
-    for row, y in enumerate((120.0, 100.0) if at_bottom else (700.0, 680.0)):
+    for row in range(rows):
+        y = bottom + (rows - 1 - row) * 20.0
         for column, letter in enumerate(text):
             characters.append(
                 il_version_1.PdfCharacter(
-                    # Only the last line's text is read, so the line above it is
-                    # filled with a placeholder of the same width.
-                    char_unicode=letter if row else "x",
+                    # Only the last line's text is read, so the lines above it
+                    # are filled with a placeholder of the same width.
+                    char_unicode=letter if row == rows - 1 else "x",
                     box=il_version_1.Box(
-                        x=50.0 + column * 5.0,
+                        x=left + column * _CHAR_WIDTH,
                         y=y,
-                        x2=55.0 + column * 5.0,
+                        x2=left + (column + 1) * _CHAR_WIDTH,
                         y2=y + 10.0,
                     ),
                 )
             )
-    paragraph = il_version_1.PdfParagraph(
+    return il_version_1.PdfParagraph(
         box=il_version_1.Box(
-            x=50.0,
-            y=100.0 if at_bottom else 680.0,
-            x2=50.0 + len(text) * 5.0,
-            y2=130.0 if at_bottom else 710.0,
+            x=left,
+            y=bottom,
+            x2=left + len(text) * _CHAR_WIDTH,
+            y2=bottom + (rows - 1) * 20.0 + 10.0,
         ),
         pdf_style=il_version_1.PdfStyle(font_id="F0", font_size=10.0),
-        layout_label="plain text",
-        debug_id=f"p{number}",
+        layout_label=label,
+        debug_id=debug_id,
         pdf_paragraph_composition=[
             il_version_1.PdfParagraphComposition(
                 pdf_same_style_characters=il_version_1.PdfSameStyleCharacters(
@@ -485,15 +551,47 @@ def _synthetic_page(number: int, text: str, at_bottom: bool) -> il_version_1.Pag
             )
         ],
     )
+
+
+def _synthetic_document_page(
+    number: int, paragraphs: list[il_version_1.PdfParagraph]
+) -> il_version_1.Page:
     return il_version_1.Page(
         page_number=number,
         cropbox=il_version_1.Cropbox(
-            box=il_version_1.Box(x=0.0, y=0.0, x2=600.0, y2=800.0)
+            box=il_version_1.Box(x=0.0, y=0.0, x2=_PAGE_WIDTH, y2=_PAGE_HEIGHT)
         ),
         pdf_font=[_FONT],
-        pdf_paragraph=[paragraph],
+        pdf_paragraph=paragraphs,
         page_kind="synthetic",
         page_kind_conf=1.0,
+    )
+
+
+def _synthetic_page(
+    number: int,
+    text: str,
+    at_bottom: bool,
+    label: str = "plain text",
+    rows: int = 2,
+) -> il_version_1.Page:
+    """One page carrying a single paragraph built to look like running text.
+
+    A last line that stops mid sentence, one family at one size, the running
+    text label, and a position at the foot or the head of the measure.
+    """
+    return _synthetic_document_page(
+        number,
+        [
+            _synthetic_paragraph(
+                text,
+                f"p{number}",
+                label,
+                left=50.0,
+                bottom=100.0 if at_bottom else 680.0,
+                rows=rows,
+            )
+        ],
     )
 
 
@@ -520,7 +618,7 @@ def _policy(eligible: bool = True, starts: bool = False):
 
 
 def check_03_eligibility_mask() -> None:
-    """Positive 3: a page the vocabulary excludes takes its boundary out of scoring."""
+    """Positive 3: a page the vocabulary excludes takes its endpoint out of scoring."""
     config = load_chain_config()
     tail, head = _synthetic_pair()
 
@@ -528,7 +626,7 @@ def check_03_eligibility_mask() -> None:
     masked = evaluate_boundary(tail, head, 0, 1, _policy(eligible=False), config)
 
     def mixed(kind):
-        # Only the head page is excluded, which must be enough on its own.
+        # Whichever page is marked excluded loses its own end of the boundary.
         return {
             "chain_eligible": kind != "excluded",
             "translate": True,
@@ -538,7 +636,11 @@ def check_03_eligibility_mask() -> None:
 
     head_excluded = copy.deepcopy(head)
     head_excluded.page_kind = "excluded"
-    one_sided = evaluate_boundary(tail, head_excluded, 0, 1, mixed, config)
+    head_side = evaluate_boundary(tail, head_excluded, 0, 1, mixed, config)
+
+    tail_excluded = copy.deepcopy(tail)
+    tail_excluded.page_kind = "excluded"
+    tail_side = evaluate_boundary(tail_excluded, head, 0, 1, mixed, config)
 
     record(
         "03a the same boundary scores when both pages are chain eligible",
@@ -555,8 +657,21 @@ def check_03_eligibility_mask() -> None:
     )
     record(
         "03c one ineligible page of the two is enough to mask the boundary",
-        not one_sided.eligible and not one_sided.linked,
-        f"reason={one_sided.reason}",
+        not head_side.eligible
+        and not head_side.linked
+        and not tail_side.eligible
+        and not tail_side.linked,
+        f"head_excluded={head_side.reason} tail_excluded={tail_side.reason}",
+    )
+    # The mask is read per endpoint, so which end was excluded is what the
+    # reason says; the two cases must not be reported as the same thing.
+    record(
+        "03d the mask names the endpoint that was excluded",
+        head_side.reason.endswith(":head")
+        and tail_side.reason.endswith(":tail")
+        and masked.reason.endswith(":tail,head"),
+        f"head_excluded={head_side.reason} tail_excluded={tail_side.reason} "
+        f"both={masked.reason}",
     )
 
 
@@ -566,10 +681,21 @@ def check_04_evidence_beats_prior() -> None:
 
     full = {name: 0.0 if name == "opener_prior" else 1.0 for name in SIGNAL_NAMES}
     against = dict.fromkeys(SIGNAL_NAMES, 1.0)
+    # Every profile a boundary can be scored under, the flat weights included.
+    profiles = {"default": default_weights(config)} | {
+        rule.name: rule.weights for rule in config[PAIR_RULES_KEY]
+    }
+    weak = sorted(
+        f"{name}={combine(against, weights):.3f}"
+        for name, weights in profiles.items()
+        if combine(against, weights) < config["link_min_score"]
+    )
     record(
-        "04a the shipped weights let complete evidence outscore every prior",
-        combine(against, config) >= config["link_min_score"],
-        f"with_prior={combine(against, config):.3f} without={combine(full, config):.3f} "
+        "04a every shipped weight profile lets complete evidence outscore the priors",
+        not weak,
+        f"profiles={len(profiles)} below_threshold={weak} "
+        f"default_with_prior={combine(against, profiles['default']):.3f} "
+        f"default_without={combine(full, profiles['default']):.3f} "
         f"link_min_score={config['link_min_score']}",
     )
 
@@ -608,7 +734,7 @@ def check_04_evidence_beats_prior() -> None:
     record(
         "04d a weight set where the prior overrules full evidence is refused",
         refused,
-        f"positive_weight={positive_weight(config)}",
+        f"positive_weight={positive_weight(default_weights(config))}",
     )
 
 
@@ -621,11 +747,12 @@ def check_05_label_agreement(runs: dict[str, dict]) -> None:
     if not CHAIN_LABELS_PATH.exists():
         skip(name, "no boundary ground truth file")
         return
-    labels = corpus.load_chain_labels()
-    errors = corpus.validate_chain_labels(labels)
+    raw = corpus.load_chain_labels()
+    errors = corpus.validate_chain_labels(raw)
     if errors:
         record(name, False, f"ground truth is malformed: {errors[:3]}")
         return
+    labels = corpus.chain_label_samples(raw)
     labelled = sum(len(entries) for entries in labels.values())
     if not labelled:
         skip(name, "boundary ground truth is empty; the corpus owner writes it")
@@ -659,6 +786,190 @@ def check_05_label_agreement(runs: dict[str, dict]) -> None:
         total > 0 and rate >= config["boundary_agreement_min"],
         f"agreement={rate:.3f} ({hits}/{total}) "
         f"min={config['boundary_agreement_min']} misses={misses[:5]}",
+    )
+
+
+# --- 12 and 13 --------------------------------------------------------------
+
+
+# A fragment beside the text: too narrow to be part of it, ending in a full
+# stop, and sitting further along the reading order than the text does.
+_FRAGMENT_TEXT = "A. Author."
+
+
+def _page_with_fragment(number: int) -> il_version_1.Page:
+    """A page whose last paragraph in reading order is a narrow fragment.
+
+    The running text sits in the first column and the fragment in the second,
+    so the fragment is what a reading order walk arrives at last. Only the width
+    filter can tell them apart, which is what makes this a filter assertion.
+    """
+    return _synthetic_document_page(
+        number,
+        [
+            _synthetic_paragraph(
+                _TAIL_TEXT, "body", "plain text", left=50.0, bottom=100.0, rows=2
+            ),
+            _synthetic_paragraph(
+                _FRAGMENT_TEXT,
+                "fragment",
+                "plain text",
+                left=400.0,
+                bottom=90.0,
+                rows=2,
+            ),
+        ],
+    )
+
+
+def _config_with(**overrides) -> dict:
+    """The shipped configuration with a few entries replaced, loaded afresh."""
+    raw = json.loads(CHAIN_CONFIG_PATH.read_text(encoding="utf-8"))
+    raw.update(overrides)
+    path = _tmp_root / f"variant_{len(list(_tmp_root.glob('variant_*.json')))}.json"
+    path.write_text(json.dumps(raw), encoding="utf-8")
+    load_chain_config.cache_clear()
+    try:
+        return load_chain_config(str(path))
+    finally:
+        load_chain_config.cache_clear()
+
+
+def check_12_width_filter() -> None:
+    """Positive 12: a paragraph too narrow to be text never stands in for it."""
+    config = load_chain_config()
+    tail = _page_with_fragment(0)
+    _, head = _synthetic_pair()
+
+    filtered = evaluate_boundary(tail, head, 0, 1, _policy(), config)
+    # The same boundary with the filter switched off, which is the only
+    # difference between the two runs.
+    unfiltered = evaluate_boundary(
+        tail, head, 0, 1, _policy(), _config_with(chain_endpoint_min_width_ratio=0.0)
+    )
+
+    ratio = config["chain_endpoint_min_width_ratio"]
+    fragment_ratio = len(_FRAGMENT_TEXT) * _CHAR_WIDTH / _PAGE_WIDTH
+    body_ratio = len(_TAIL_TEXT) * _CHAR_WIDTH / _PAGE_WIDTH
+    record(
+        "12a the filter is what separates the two paragraphs of the case",
+        fragment_ratio < ratio < body_ratio,
+        f"fragment={fragment_ratio:.3f} threshold={ratio} text={body_ratio:.3f}",
+    )
+    record(
+        "12b the tail endpoint is the running text, not the fragment behind it",
+        filtered.tail is not None
+        and filtered.tail.paragraph.debug_id == "body"
+        and filtered.linked,
+        f"tail={filtered.tail.paragraph.debug_id if filtered.tail else None} "
+        f"score={filtered.score}",
+    )
+    record(
+        "12c without the filter the fragment is taken for the end of the page",
+        unfiltered.tail is not None
+        and unfiltered.tail.paragraph.debug_id == "fragment"
+        and not unfiltered.linked,
+        f"tail={unfiltered.tail.paragraph.debug_id if unfiltered.tail else None} "
+        f"score={unfiltered.score}",
+    )
+
+
+def _display_line_pair() -> tuple[il_version_1.Page, il_version_1.Page]:
+    """Two pages carrying one half each of a display line broken across them.
+
+    A single line, so there is no measure to fill, and a heading label, so it is
+    not running text. What is left is that it stops without an ender and is set
+    in the same type as the half completing it.
+    """
+    return (
+        _synthetic_page(0, _TAIL_TEXT, at_bottom=True, label="title", rows=1),
+        _synthetic_page(1, _HEAD_TEXT, at_bottom=False, label="title", rows=1),
+    )
+
+
+def check_13_pair_classes() -> None:
+    """Positive 13: a declared pairing is scored by the profile it declares."""
+    config = load_chain_config()
+    declared = {rule.name for rule in config[PAIR_RULES_KEY]}
+    tail, head = _display_line_pair()
+    verdict = evaluate_boundary(tail, head, 0, 1, _policy(), config)
+
+    record(
+        "13a a boundary of headings is scored by the pairing declared for them",
+        verdict.eligible
+        and verdict.pair in declared
+        and {pair.pair for pair in verdict.pairs} <= declared,
+        f"declared={sorted(declared)} chosen={verdict.pair} "
+        f"scored={sorted(pair.pair for pair in verdict.pairs)}",
+    )
+    record(
+        "13b a broken display line links on the evidence a heading can carry",
+        verdict.linked
+        and verdict.values["tail_line_fill"] is None
+        and verdict.values["body_label_pair"] == 0.0,
+        f"score={verdict.score} values={verdict.values}",
+    )
+    # The same evidence read by the running text weights, which is what the
+    # pairing exists to avoid: a heading cannot fill a measure or be body text,
+    # so weighing it as though it could would leave it short.
+    under_default = combine(verdict.values, default_weights(config))
+    record(
+        "13c the pairing profile is what carries it, not the flat weights",
+        under_default < config["link_min_score"] <= verdict.score,
+        f"under_pairing={verdict.score:.3f} under_default={under_default:.3f} "
+        f"link_min_score={config['link_min_score']}",
+    )
+    # A pairing the configuration does not declare is not a handover this
+    # detector recognises, whichever way the geometry points.
+    mixed_tail = _synthetic_page(0, _TAIL_TEXT, at_bottom=True, label="title", rows=1)
+    mixed_head = _synthetic_page(1, _HEAD_TEXT, at_bottom=False)
+    crossed = evaluate_boundary(mixed_tail, mixed_head, 0, 1, _policy(), config)
+    record(
+        "13d a combination of classes that is not declared is never scored",
+        not crossed.eligible and crossed.reason == "no_endpoint",
+        f"reason={crossed.reason} pairs={[p.pair for p in crossed.pairs]}",
+    )
+
+
+# --- 14 ---------------------------------------------------------------------
+
+
+def check_14_split_instance(runs: dict[str, dict]) -> None:
+    """Positive 14: the adjudicated mid sentence split is found at the right end.
+
+    The corpus carries one boundary where a sentence of running text is cut by
+    the page break. Agreement alone would be satisfied by linking it for the
+    wrong reason, so this reads which paragraph the detector actually paired:
+    the last running text of the page, not a credit or a caption beside it.
+    """
+    name = "14 the adjudicated mid sentence split pairs the running text"
+    run = next(
+        (entry for entry in runs.values() if entry["file"] == INSTANCE_SAMPLE), None
+    )
+    if run is None or run["report"] is None:
+        skip(name, f"{INSTANCE_SAMPLE} is not in the corpus")
+        return
+    entry = next(
+        (
+            row
+            for row in run["report"]["boundaries"]
+            if row["boundary"] == INSTANCE_BOUNDARY
+        ),
+        None,
+    )
+    if entry is None:
+        record(name, False, f"{INSTANCE_BOUNDARY} absent from the report")
+        return
+    body_labels = load_chain_config()["body_labels"]
+    record(
+        name,
+        entry["linked"]
+        and entry["tail_label"] in body_labels
+        and entry["head_label"] in body_labels,
+        f"{INSTANCE_SAMPLE} {INSTANCE_BOUNDARY}: linked={entry['linked']} "
+        f"pair={entry['pair']} score={entry['score']} "
+        f"tail=[{entry['tail_label']}] {entry['tail_text']!r} "
+        f"head=[{entry['head_label']}]",
     )
 
 
@@ -824,7 +1135,7 @@ def check_09_no_page_type_names() -> None:
     """Negative 9: the prior reaches the code as a flag, never as a type name."""
     names = taxonomy_module.load_taxonomy().names()
     offenders: list[str] = []
-    for relative in NEW_MODULES:
+    for relative in TYPE_NAME_SCAN_FILES:
         text = (ROOT / relative).read_text(encoding="utf-8")
         for number, line in enumerate(text.splitlines(), start=1):
             for name in names:
@@ -863,9 +1174,9 @@ def check_10_b1_registration() -> None:
                 for element in ast.walk(node.value)
                 if isinstance(element, ast.Constant) and isinstance(element.value, str)
             }
-    missing = sorted(set(NEW_MODULES) - listed)
+    missing = sorted(set(FIELD_CONSUMERS) - listed)
     record(
-        "10 the chain modules are registered as B1 field consumers",
+        "10 everything this batch adds that reads a field is a listed consumer",
         not missing,
         f"missing={missing} listed={len(listed)}",
     )
@@ -989,9 +1300,12 @@ def main() -> int:
     check_01d_closure_shape()
     check_03_eligibility_mask()
     check_04_evidence_beats_prior()
+    check_12_width_filter()
+    check_13_pair_classes()
 
     if not harness.FAST_TIER:
         check_05_label_agreement(runs)
+        check_14_split_instance(runs)
         check_06_determinism(runs)
 
     check_08a_switch_default()

@@ -11,6 +11,14 @@ declared policy flags of the two pages. Nothing inspects a publication or names
 a page type, and every number it compares against comes from
 ``configs/chain_detection.json``.
 
+A boundary is not one pair of paragraphs but one pair per declared endpoint
+class: running text hands over to running text, and a display line broken
+across a spread hands over to the line that completes it. Which classes exist,
+which of them may pair with which, and how each pairing weighs the signals are
+all declared in the configuration; this module only reads the declaration. A
+boundary is scored once per allowed pairing and takes the strongest verdict any
+of them supports.
+
 The stage runs after StylesAndFormulas, which replaces the line compositions
 built by ParagraphFinder with style runs. Line structure is therefore rebuilt
 here from the character boxes that survive, by the same vertical banding
@@ -46,12 +54,35 @@ SIGNAL_NAMES: tuple[str, ...] = (
 
 WEIGHT_PREFIX = "weight_"
 
+# Suffix under which a bounded entry declares its range. The same convention
+# validate_bounded_config applies to the flat parameters, repeated here because
+# a weight declared inside a pairing is bounded by the range its flat namesake
+# declares.
+RANGE_SUFFIX = "_allowed_range"
+
+# The section declaring the endpoint classes and the pairings between them.
+PAIR_CLASSES_KEY = "pair_classes"
+CLASSES_KEY = "classes"
+PAIRS_KEY = "pairs"
+TAIL_CLASS_KEY = "tail_class"
+HEAD_CLASS_KEY = "head_class"
+PAIR_WEIGHTS_KEY = "weights"
+
+# Keys the parsed pairing section is published under, alongside the bounded
+# parameters, so that one loaded configuration carries everything scoring needs.
+PAIR_RULES_KEY = "pair_rules"
+CLASS_LABELS_KEY = "pair_class_labels"
+
 # The policy flag the page level prior is read through. The prior enters the
 # score only by this name, which is what keeps page type names out of the code.
 OPENER_POLICY_FLAG = "starts_article"
 
-# The policy flag that qualifies a page for chaining at all.
+# The policy flag that qualifies an endpoint for chaining at all.
 ELIGIBILITY_POLICY_FLAG = "chain_eligible"
+
+# The two ends of a boundary, named for the reports and for the mask reasons.
+TAIL_ENDPOINT = "tail"
+HEAD_ENDPOINT = "head"
 
 REQUIRED_PARAMETERS: frozenset[str] = frozenset(
     {f"{WEIGHT_PREFIX}{name}" for name in SIGNAL_NAMES}
@@ -63,6 +94,7 @@ REQUIRED_PARAMETERS: frozenset[str] = frozenset(
         "column_split_gap_ratio",
         "bottom_band_ratio",
         "top_band_ratio",
+        "chain_endpoint_min_width_ratio",
         "boundary_agreement_min",
         "body_labels",
         "endpoint_labels",
@@ -88,24 +120,184 @@ class ChainConfigError(ConfigError):
     """Raised when the chain detection configuration is malformed."""
 
 
+@dataclass(frozen=True)
+class PairRule:
+    """One allowed pairing of endpoint classes, with the weights it is read by.
+
+    A pairing carries a complete weight profile: the flat weights are the
+    default, and what the pairing declares replaces them signal by signal. Two
+    kinds of handover leave different traces, so they are not comparable on one
+    weight set: a broken display line has no measure to fill and is not running
+    text, and weighing it as though it were would score it for evidence it
+    cannot produce.
+    """
+
+    tail_class: str
+    head_class: str
+    weights: dict[str, float]
+
+    @property
+    def name(self) -> str:
+        return f"{self.tail_class}->{self.head_class}"
+
+
+# A chain configuration entry is a bounded parameter, a closed vocabulary, or
+# the parsed pairing section.
+ChainParameter = Parameter | tuple[PairRule, ...] | dict[str, tuple[str, ...]]
+
+
+def _require(condition: bool, message: str) -> None:
+    if not condition:
+        raise ChainConfigError(message)
+
+
+def _parse_classes(raw: object, source: str, labels: tuple[str, ...]) -> dict:
+    """Endpoint classes: a name and the layout labels that belong to it."""
+    _require(
+        isinstance(raw, dict) and raw,
+        f"{source}: {CLASSES_KEY} must be a non-empty object",
+    )
+    classes: dict[str, tuple[str, ...]] = {}
+    for name, members in raw.items():
+        where = f"{source}: {CLASSES_KEY}.{name}"
+        _require(
+            isinstance(members, list) and members,
+            f"{where}: must list at least one layout label",
+        )
+        _require(
+            all(isinstance(member, str) and member for member in members),
+            f"{where}: every layout label must be a non-empty string",
+        )
+        unknown = sorted(set(members) - set(labels))
+        _require(
+            not unknown,
+            f"{where}: labels {unknown} are not endpoint candidates; add them to "
+            f"endpoint_labels first, or a class would name paragraphs that never "
+            f"reach the scoring",
+        )
+        classes[name] = tuple(members)
+    return classes
+
+
+def _parse_pair_weights(
+    raw: object, source: str, where: str, config: dict, defaults: dict[str, float]
+) -> dict[str, float]:
+    """A pairing's weight profile: the flat weights with its overrides applied.
+
+    Each override is validated against the range its flat namesake declares, so
+    a weight inside a pairing is bounded exactly as the default it replaces and
+    the bound is still written down once.
+    """
+    if raw is None:
+        return dict(defaults)
+    _require(isinstance(raw, dict), f"{where}: {PAIR_WEIGHTS_KEY} must be an object")
+    unknown = sorted(set(raw) - set(SIGNAL_NAMES))
+    _require(
+        not unknown,
+        f"{where}: weights for unknown signals {unknown}; declared signals are "
+        f"{list(SIGNAL_NAMES)}",
+    )
+    flat: dict[str, object] = {}
+    for name, value in raw.items():
+        key = f"{WEIGHT_PREFIX}{name}"
+        range_key = f"{key}{RANGE_SUFFIX}"
+        _require(
+            range_key in config,
+            f"{where}: {name} has no {range_key} to be bounded by",
+        )
+        flat[key] = value
+        flat[range_key] = config[range_key]
+    bounded = validate_bounded_config(flat, Path(source))
+    return defaults | {
+        key[len(WEIGHT_PREFIX) :]: float(value) for key, value in bounded.items()
+    }
+
+
+def _parse_pair_rules(
+    raw: object, source: str, config: dict, defaults: dict[str, float], classes: dict
+) -> tuple[PairRule, ...]:
+    _require(
+        isinstance(raw, list) and raw, f"{source}: {PAIRS_KEY} must be a non-empty list"
+    )
+    rules: list[PairRule] = []
+    seen: set[tuple[str, str]] = set()
+    for position, entry in enumerate(raw):
+        where = f"{source}: {PAIRS_KEY}[{position}]"
+        _require(isinstance(entry, dict), f"{where}: pairing must be an object")
+        unknown = sorted(
+            set(entry) - {TAIL_CLASS_KEY, HEAD_CLASS_KEY, PAIR_WEIGHTS_KEY}
+        )
+        _require(not unknown, f"{where}: unknown keys {unknown}")
+        tail_class = entry.get(TAIL_CLASS_KEY)
+        head_class = entry.get(HEAD_CLASS_KEY)
+        for role, name in ((TAIL_CLASS_KEY, tail_class), (HEAD_CLASS_KEY, head_class)):
+            _require(
+                isinstance(name, str) and name in classes,
+                f"{where}: {role} {name!r} is not a declared endpoint class; "
+                f"declared classes are {sorted(classes)}",
+            )
+        key = (tail_class, head_class)
+        _require(key not in seen, f"{where}: pairing {key} is declared twice")
+        seen.add(key)
+        weights = _parse_pair_weights(
+            entry.get(PAIR_WEIGHTS_KEY), source, where, config, defaults
+        )
+        rules.append(
+            PairRule(tail_class=tail_class, head_class=head_class, weights=weights)
+        )
+    return tuple(rules)
+
+
+def _check_prior_is_soft(
+    weights: dict[str, float], link_min_score: float, source: str, where: str
+) -> None:
+    """A weight profile in which the priors can overrule full evidence is refused.
+
+    Paragraph level evidence is authoritative and the page level prior is soft,
+    so a boundary carrying every continuity signal at full strength has to stay
+    linked even with every prior firing against it. A profile where it does not
+    is a misconfiguration rather than a tuning choice.
+    """
+    positive = positive_weight(weights)
+    _require(
+        positive > 0,
+        f"{source}: {where} carries no positive weight, so no boundary scored "
+        f"under it could ever rise above zero",
+    )
+    penalty = sum(value for value in weights.values() if value < 0)
+    floor = (positive + penalty) / positive
+    _require(
+        floor >= link_min_score,
+        f"{source}: under {where}, full continuity evidence scores {floor:.3f} "
+        f"once every prior fires against it, below link_min_score "
+        f"{link_min_score}. The page level prior is soft and may not overrule "
+        f"complete paragraph level evidence; raise the positive weights, weaken "
+        f"the priors, or lower link_min_score",
+    )
+
+
 @lru_cache(maxsize=1)
-def load_chain_config(path: str | None = None) -> dict[str, Parameter]:
+def load_chain_config(path: str | None = None) -> dict[str, ChainParameter]:
     """Load and validate ``configs/chain_detection.json``.
 
-    Beyond the bounds every entry declares for itself, the weight set has to
-    satisfy one structural property: a boundary on which every continuity
-    signal fires at full strength must still be scored as linked even when the
-    page level prior fires against it. Paragraph level evidence is authoritative
-    and the prior is soft, so a weight set in which the prior alone can overrule
-    complete evidence is a misconfiguration, not a tuning choice.
+    The flat entries are bounded the usual way. The pairing section is checked
+    against the vocabulary it refers to, and every weight profile it produces
+    has to keep the page level prior soft.
     """
     config_path = CONFIG_PATH if path is None else Path(path)
     with config_path.open(encoding="utf-8") as f:
         raw = json.load(f)
-    parameters = validate_bounded_config(raw, config_path)
+    source = config_path.name
+    section = raw.get(PAIR_CLASSES_KEY)
+    parameters: dict[str, ChainParameter] = dict(
+        validate_bounded_config(
+            {key: value for key, value in raw.items() if key != PAIR_CLASSES_KEY},
+            config_path,
+        )
+    )
     missing = sorted(REQUIRED_PARAMETERS - set(parameters))
     if missing:
-        raise ChainConfigError(f"{config_path.name}: missing parameters {missing}")
+        raise ChainConfigError(f"{source}: missing parameters {missing}")
     unknown = sorted(
         name
         for name in parameters
@@ -113,44 +305,48 @@ def load_chain_config(path: str | None = None) -> dict[str, Parameter]:
         and name[len(WEIGHT_PREFIX) :] not in SIGNAL_NAMES
     )
     if unknown:
-        raise ChainConfigError(
-            f"{config_path.name}: weights for unknown signals {unknown}"
+        raise ChainConfigError(f"{source}: weights for unknown signals {unknown}")
+
+    defaults = default_weights(parameters)
+    link_min_score = parameters["link_min_score"]
+    _check_prior_is_soft(defaults, link_min_score, source, "the default weights")
+
+    _require(
+        isinstance(section, dict),
+        f"{source}: {PAIR_CLASSES_KEY} must be an object declaring "
+        f"{CLASSES_KEY} and {PAIRS_KEY}",
+    )
+    section_unknown = sorted(set(section) - {"description", CLASSES_KEY, PAIRS_KEY})
+    _require(
+        not section_unknown,
+        f"{source}: {PAIR_CLASSES_KEY} has unknown keys {section_unknown}",
+    )
+    classes = _parse_classes(
+        section.get(CLASSES_KEY), source, parameters["endpoint_labels"]
+    )
+    rules = _parse_pair_rules(section.get(PAIRS_KEY), source, raw, defaults, classes)
+    for rule in rules:
+        _check_prior_is_soft(
+            rule.weights, link_min_score, source, f"the {rule.name} pairing"
         )
 
-    positive = positive_weight(parameters)
-    if positive <= 0:
-        raise ChainConfigError(
-            f"{config_path.name}: no signal carries positive weight, so no "
-            f"boundary could ever be scored above zero"
-        )
-    penalty = sum(
-        value
-        for name, value in parameters.items()
-        if name.startswith(WEIGHT_PREFIX)
-        and isinstance(value, float | int)
-        and value < 0
-    )
-    floor = (positive + penalty) / positive
-    if floor < parameters["link_min_score"]:
-        raise ChainConfigError(
-            f"{config_path.name}: full continuity evidence scores {floor:.3f} once "
-            f"every prior fires against it, below link_min_score "
-            f"{parameters['link_min_score']}. The page level prior is soft and may "
-            f"not overrule complete paragraph level evidence; raise the positive "
-            f"weights, weaken the priors, or lower link_min_score"
-        )
+    parameters[CLASS_LABELS_KEY] = classes
+    parameters[PAIR_RULES_KEY] = rules
     return parameters
 
 
-def positive_weight(config: dict[str, Parameter]) -> float:
-    """Evidence available to a boundary, which is the total positive weight."""
-    return sum(
-        value
-        for name, value in config.items()
-        if name.startswith(WEIGHT_PREFIX)
-        and isinstance(value, float | int)
-        and value > 0
-    )
+def default_weights(config: dict[str, ChainParameter]) -> dict[str, float]:
+    """The flat weight profile, which every pairing starts from."""
+    return {
+        name: float(config[f"{WEIGHT_PREFIX}{name}"])
+        for name in SIGNAL_NAMES
+        if f"{WEIGHT_PREFIX}{name}" in config
+    }
+
+
+def positive_weight(weights: dict[str, float]) -> float:
+    """Evidence available under one weight profile, its total positive weight."""
+    return sum(value for value in weights.values() if value > 0)
 
 
 # --- geometry rebuilt from the intermediate language ------------------------
@@ -167,6 +363,7 @@ class Endpoint:
     column_count: int
     last_line_text: str
     last_line_width: float
+    width: float
     measure: float | None
     font_family: str | None
     font_size: float | None
@@ -248,6 +445,15 @@ def line_text(line: list[il_version_1.PdfCharacter]) -> str:
     return "".join(c.char_unicode or "" for c in line)
 
 
+def paragraph_width(lines: list[list[il_version_1.PdfCharacter]]) -> float:
+    """The width a paragraph is actually set across, its widest line.
+
+    Unlike the measure this is defined for a single line paragraph too, which
+    is what a display line broken across a spread consists of.
+    """
+    return max(line_width(line) for line in lines)
+
+
 def paragraph_measure(lines: list[list[il_version_1.PdfCharacter]]) -> float | None:
     """The measure a paragraph is set to, or None when it cannot be told.
 
@@ -313,28 +519,40 @@ def _band_index(bands: list[float], left: float) -> int:
     return index
 
 
-def page_endpoints(
-    page: il_version_1.Page, page_index: int, config: dict[str, Parameter]
-) -> tuple[Endpoint | None, Endpoint | None]:
-    """The first and last paragraph of a page in derived reading order.
+@dataclass(frozen=True)
+class PageEndpoints:
+    """What one page offers a boundary: an endpoint per class, and its extent."""
+
+    first: dict[str, Endpoint]
+    last: dict[str, Endpoint]
+    region: tuple[float, float] | None
+
+
+def page_candidates(
+    page: il_version_1.Page, config: dict[str, ChainParameter]
+) -> list[tuple[il_version_1.PdfParagraph, str, list]]:
+    """Paragraphs a page offers as endpoints, in derived reading order.
 
     Reading order is column major: the columns left to right, and within a
     column top to bottom. It has to be derived, because the order paragraphs sit
     in the intermediate language is the order the content stream drew them,
     which for a multi column page is not the order anybody reads them.
 
-    Only paragraphs whose layout label is in ``endpoint_labels`` are candidates,
-    which keeps folios, figures and tables from standing in for the text; the
-    narrower body test is a scored signal rather than a filter, so a page whose
-    text hands over from something that is not running text still reaches the
-    scoring and is judged on the evidence.
+    Two filters apply. A paragraph whose layout label is outside
+    ``endpoint_labels`` is furniture rather than text and never stands in for
+    it. A paragraph set narrower than ``chain_endpoint_min_width_ratio`` of the
+    page is a fragment beside the text rather than part of it: a byline, a
+    credit, a boxed aside. Both are ordinary members of the page and would
+    otherwise be picked as the last thing on it, which is a handover the reader
+    never makes.
     """
     frame = _page_frame(page)
     if frame is None:
-        return None, None
+        return []
     labels = config["endpoint_labels"]
     overlap_min = config["line_overlap_min"]
-    families = _font_families(page)
+    page_width = frame.x2 - frame.x
+    minimum = page_width * config["chain_endpoint_min_width_ratio"]
 
     candidates = []
     for paragraph in page.pdf_paragraph:
@@ -342,16 +560,15 @@ def page_endpoints(
         if label not in labels or paragraph.box is None:
             continue
         lines = group_lines(paragraph_characters(paragraph), overlap_min)
-        if not lines:
+        if not lines or paragraph_width(lines) < minimum:
             continue
         candidates.append((paragraph, label, lines))
     if not candidates:
-        return None, None
+        return []
 
-    gap = (frame.x2 - frame.x) * config["column_split_gap_ratio"]
+    gap = page_width * config["column_split_gap_ratio"]
     bands = _column_bands([line_left(item[2][0]) for item in candidates], gap)
-
-    ordered = sorted(
+    return sorted(
         candidates,
         key=lambda item: (
             _band_index(bands, line_left(item[2][0])),
@@ -359,6 +576,26 @@ def page_endpoints(
             item[0].box.x,
         ),
     )
+
+
+def page_endpoints(
+    page: il_version_1.Page, page_index: int, config: dict[str, ChainParameter]
+) -> PageEndpoints:
+    """The first and last candidate of every declared class, in reading order.
+
+    One page carries one endpoint per class rather than one endpoint outright:
+    the running text of a page and the display line across it end in different
+    places, and a boundary that joins the second cannot be found by looking at
+    the first.
+    """
+    candidates = page_candidates(page, config)
+    if not candidates:
+        return PageEndpoints(first={}, last={}, region=None)
+
+    frame = _page_frame(page)
+    families = _font_families(page)
+    gap = (frame.x2 - frame.x) * config["column_split_gap_ratio"]
+    bands = _column_bands([line_left(item[2][0]) for item in candidates], gap)
 
     def build(item) -> Endpoint:
         paragraph, label, lines = item
@@ -372,6 +609,7 @@ def page_endpoints(
             column_count=len(bands),
             last_line_text=line_text(lines[-1]),
             last_line_width=line_width(lines[-1]),
+            width=paragraph_width(lines),
             measure=paragraph_measure(lines),
             font_family=families.get(font_id) if font_id else None,
             font_size=float(style.font_size)
@@ -379,34 +617,25 @@ def page_endpoints(
             else None,
         )
 
-    return build(ordered[0]), build(ordered[-1])
+    first: dict[str, Endpoint] = {}
+    last: dict[str, Endpoint] = {}
+    for name, labels in config[CLASS_LABELS_KEY].items():
+        members = [item for item in candidates if item[1] in labels]
+        if not members:
+            continue
+        first[name] = build(members[0])
+        last[name] = build(members[-1])
 
-
-def _text_region(
-    page: il_version_1.Page, config: dict[str, Parameter]
-) -> tuple[float, float] | None:
-    """Vertical extent of the text on a page, as (bottom, top).
-
-    The band tests are taken against the text a page actually carries rather
-    than against its trim, so a page with generous margins and one set tight
-    are measured on the same scale.
-    """
-    labels = config["endpoint_labels"]
-    boxes = [
-        paragraph.box
-        for paragraph in page.pdf_paragraph
-        if (paragraph.layout_label or "") in labels and paragraph.box is not None
-    ]
-    if not boxes:
-        return None
-    return min(box.y for box in boxes), max(box.y2 for box in boxes)
+    boxes = [item[0].box for item in candidates]
+    region = (min(box.y for box in boxes), max(box.y2 for box in boxes))
+    return PageEndpoints(first=first, last=last, region=region)
 
 
 # --- signals ----------------------------------------------------------------
 
 
 def tail_no_terminal_punct(
-    tail: Endpoint, config: dict[str, Parameter]
+    tail: Endpoint, config: dict[str, ChainParameter]
 ) -> float | None:
     """Whether the tail's last line stops without ending a sentence.
 
@@ -426,7 +655,7 @@ def tail_no_terminal_punct(
     return 0.0 if text[-1] in config["terminal_punctuation"] else 1.0
 
 
-def tail_line_fill(tail: Endpoint, config: dict[str, Parameter]) -> float | None:
+def tail_line_fill(tail: Endpoint, config: dict[str, ChainParameter]) -> float | None:
     """Whether the tail's last line runs to the measure of its column.
 
     A paragraph that ends mid measure ended because its text ended. One that
@@ -450,7 +679,7 @@ def tail_line_fill_ratio(tail: Endpoint) -> float | None:
 
 
 def style_continuity(
-    tail: Endpoint, head: Endpoint, config: dict[str, Parameter]
+    tail: Endpoint, head: Endpoint, config: dict[str, ChainParameter]
 ) -> float | None:
     """Whether both ends are set in the same family at the same size.
 
@@ -467,7 +696,7 @@ def style_continuity(
 
 
 def body_label_pair(
-    tail: Endpoint, head: Endpoint, config: dict[str, Parameter]
+    tail: Endpoint, head: Endpoint, config: dict[str, ChainParameter]
 ) -> float:
     """Whether both ends are running text rather than furniture around it."""
     labels = config["body_labels"]
@@ -479,7 +708,7 @@ def column_position(
     head: Endpoint,
     tail_region: tuple[float, float] | None,
     head_region: tuple[float, float] | None,
-    config: dict[str, Parameter],
+    config: dict[str, ChainParameter],
 ) -> float | None:
     """Whether the two ends sit where one page hands over to the next.
 
@@ -532,6 +761,34 @@ def opener_prior(page: il_version_1.Page, policy: dict[str, object] | None) -> f
 
 
 @dataclass(frozen=True)
+class PairVerdict:
+    """One allowed pairing, scored on the two endpoints it selected."""
+
+    pair: str
+    values: dict[str, float | None]
+    score: float
+    linked: bool
+    tail_fill_ratio: float | None
+    tail: Endpoint
+    head: Endpoint
+
+    def as_record(self) -> dict:
+        return {
+            "pair": self.pair,
+            "signals": dict(self.values),
+            "score": self.score,
+            "linked": self.linked,
+            "tail_fill_ratio": self.tail_fill_ratio,
+            "tail_debug_id": self.tail.paragraph.debug_id,
+            "head_debug_id": self.head.paragraph.debug_id,
+            "tail_label": self.tail.label,
+            "head_label": self.head.label,
+            "tail_text": self.tail.last_line_text,
+            "head_text": self.head.paragraph.unicode or "",
+        }
+
+
+@dataclass(frozen=True)
 class BoundaryVerdict:
     """One boundary, scored or explained."""
 
@@ -539,12 +796,14 @@ class BoundaryVerdict:
     head_page: int
     eligible: bool
     reason: str | None
+    pair: str | None
     values: dict[str, float | None]
     score: float | None
     linked: bool
     tail_fill_ratio: float | None
     tail: Endpoint | None
     head: Endpoint | None
+    pairs: tuple[PairVerdict, ...] = ()
 
     def as_record(self) -> dict:
         """The report row for this boundary, one page pair per row."""
@@ -555,6 +814,7 @@ class BoundaryVerdict:
             "head_page": self.head_page + 1,
             "eligible": self.eligible,
             "reason": self.reason,
+            "pair": self.pair,
             "signals": dict(self.values),
             "tail_fill_ratio": self.tail_fill_ratio,
             "score": self.score,
@@ -565,10 +825,11 @@ class BoundaryVerdict:
             "head_label": self.head.label if self.head else None,
             "tail_text": self.tail.last_line_text if self.tail else None,
             "head_text": (self.head.paragraph.unicode or "") if self.head else None,
+            "pairs": [pair.as_record() for pair in self.pairs],
         }
 
 
-def combine(values: dict[str, float | None], config: dict[str, Parameter]) -> float:
+def combine(values: dict[str, float | None], weights: dict[str, float]) -> float:
     """Weighted evidence over available evidence, clamped to 0..1.
 
     A signal the geometry cannot supply contributes nothing rather than being
@@ -576,15 +837,46 @@ def combine(values: dict[str, float | None], config: dict[str, Parameter]) -> fl
     points, and a boundary with less evidence should score lower, not differently
     biased.
     """
-    total = positive_weight(config)
+    total = positive_weight(weights)
     if total <= 0:
         return 0.0
     satisfied = sum(
-        config[f"{WEIGHT_PREFIX}{name}"] * value
+        weights.get(name, 0.0) * value
         for name, value in values.items()
         if value is not None
     )
     return max(0.0, min(1.0, satisfied / total))
+
+
+def _pair_verdict(
+    rule: PairRule,
+    tail: Endpoint,
+    head: Endpoint,
+    tail_region: tuple[float, float] | None,
+    head_region: tuple[float, float] | None,
+    prior: float,
+    config: dict[str, ChainParameter],
+) -> PairVerdict:
+    values: dict[str, float | None] = {
+        "tail_no_terminal_punct": tail_no_terminal_punct(tail, config),
+        "tail_line_fill": tail_line_fill(tail, config),
+        "style_continuity": style_continuity(tail, head, config),
+        "body_label_pair": body_label_pair(tail, head, config),
+        "column_position": column_position(
+            tail, head, tail_region, head_region, config
+        ),
+        "opener_prior": prior,
+    }
+    score = combine(values, rule.weights)
+    return PairVerdict(
+        pair=rule.name,
+        values=values,
+        score=score,
+        linked=score >= config["link_min_score"],
+        tail_fill_ratio=tail_line_fill_ratio(tail),
+        tail=tail,
+        head=head,
+    )
 
 
 def evaluate_boundary(
@@ -593,15 +885,21 @@ def evaluate_boundary(
     tail_index: int,
     head_index: int,
     policy_of,
-    config: dict[str, Parameter],
+    config: dict[str, ChainParameter],
 ) -> BoundaryVerdict:
     """Score one adjacent page boundary, or explain why it was not scored.
 
     ``policy_of`` maps a page kind to its declared policy, or to None when the
-    kind is not in the vocabulary. Eligibility is a qualification rather than a
-    term: a boundary between pages that are not both declared chain eligible is
-    not scored at all, so no accumulation of continuity evidence can link across
-    a page the vocabulary says is not part of a chain.
+    kind is not in the vocabulary. Eligibility is read per endpoint: the tail
+    endpoint answers to the page it sits on and the head endpoint to the page it
+    begins, so a page the vocabulary keeps out of chains takes only its own end
+    of the boundary with it. It is a qualification rather than a term, so no
+    accumulation of continuity evidence can link through an endpoint the
+    vocabulary excludes.
+
+    Every allowed pairing that finds both its endpoints is scored, and the
+    boundary takes the strongest of them; a pairing that finds neither leaves no
+    trace beyond the report.
     """
     blank: dict[str, float | None] = dict.fromkeys(SIGNAL_NAMES)
 
@@ -611,6 +909,7 @@ def evaluate_boundary(
             head_page=head_index,
             eligible=False,
             reason=reason,
+            pair=None,
             values=blank,
             score=None,
             linked=False,
@@ -623,40 +922,52 @@ def evaluate_boundary(
     head_policy = policy_of(head_page.page_kind)
     if tail_policy is None or head_policy is None:
         return rejected(REASON_NO_PAGE_KIND)
-    if not tail_policy.get(ELIGIBILITY_POLICY_FLAG, False) or not head_policy.get(
-        ELIGIBILITY_POLICY_FLAG, False
-    ):
-        return rejected(REASON_NOT_CHAIN_ELIGIBLE)
+    excluded = [
+        endpoint
+        for endpoint, policy in (
+            (TAIL_ENDPOINT, tail_policy),
+            (HEAD_ENDPOINT, head_policy),
+        )
+        if not policy.get(ELIGIBILITY_POLICY_FLAG, False)
+    ]
+    if excluded:
+        return rejected(f"{REASON_NOT_CHAIN_ELIGIBLE}:{','.join(excluded)}")
 
-    _, tail = page_endpoints(tail_page, tail_index, config)
-    head, _ = page_endpoints(head_page, head_index, config)
-    if tail is None or head is None:
+    tail_ends = page_endpoints(tail_page, tail_index, config)
+    head_ends = page_endpoints(head_page, head_index, config)
+    prior = opener_prior(head_page, head_policy)
+
+    scored: list[PairVerdict] = []
+    for rule in config[PAIR_RULES_KEY]:
+        tail = tail_ends.last.get(rule.tail_class)
+        head = head_ends.first.get(rule.head_class)
+        if tail is None or head is None:
+            continue
+        scored.append(
+            _pair_verdict(
+                rule, tail, head, tail_ends.region, head_ends.region, prior, config
+            )
+        )
+    if not scored:
         return rejected(REASON_NO_ENDPOINT)
 
-    values: dict[str, float | None] = {
-        "tail_no_terminal_punct": tail_no_terminal_punct(tail, config),
-        "tail_line_fill": tail_line_fill(tail, config),
-        "style_continuity": style_continuity(tail, head, config),
-        "body_label_pair": body_label_pair(tail, head, config),
-        "column_position": column_position(
-            tail,
-            head,
-            _text_region(tail_page, config),
-            _text_region(head_page, config),
-            config,
-        ),
-        "opener_prior": opener_prior(head_page, head_policy),
-    }
-    score = combine(values, config)
+    # Declaration order breaks a tie, so the same document always yields the
+    # same verdict.
+    best = scored[0]
+    for candidate in scored[1:]:
+        if candidate.score > best.score:
+            best = candidate
     return BoundaryVerdict(
         tail_page=tail_index,
         head_page=head_index,
         eligible=True,
         reason=None,
-        values=values,
-        score=score,
-        linked=score >= config["link_min_score"],
-        tail_fill_ratio=tail_line_fill_ratio(tail),
-        tail=tail,
-        head=head,
+        pair=best.pair,
+        values=best.values,
+        score=best.score,
+        linked=best.linked,
+        tail_fill_ratio=best.tail_fill_ratio,
+        tail=best.tail,
+        head=best.head,
+        pairs=tuple(scored),
     )

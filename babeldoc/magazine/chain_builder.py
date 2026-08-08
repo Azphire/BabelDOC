@@ -31,6 +31,7 @@ from pathlib import Path
 from babeldoc.format.pdf.document_il import il_version_1
 from babeldoc.format.pdf.document_il.midend.paragraph_finder import generate_base58_id
 from babeldoc.magazine.chain_signals import CONFIG_PATH as CHAIN_CONFIG_PATH
+from babeldoc.magazine.chain_signals import PAIR_RULES_KEY
 from babeldoc.magazine.chain_signals import REASON_SPLIT_BOUNDARY
 from babeldoc.magazine.chain_signals import BoundaryVerdict
 from babeldoc.magazine.chain_signals import evaluate_boundary
@@ -109,6 +110,7 @@ class ChainBuilder:
                 "eligible": False,
                 "reason": REASON_SPLIT_BOUNDARY,
                 "dropped_reason": REASON_SPLIT_BOUNDARY,
+                "pair": None,
                 "signals": {},
                 "score": None,
                 "linked": False,
@@ -129,6 +131,12 @@ class ChainBuilder:
                 name: value
                 for name, value in sorted(self.config.items())
                 if name.startswith("weight_")
+            },
+            # One profile per allowed pairing, so a score in the rows below can
+            # be recomputed from the report alone.
+            "pair_weights": {
+                rule.name: dict(sorted(rule.weights.items()))
+                for rule in self.config[PAIR_RULES_KEY]
             },
             "boundaries": records,
             "chains": [

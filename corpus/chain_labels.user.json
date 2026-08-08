@@ -1,1 +1,40 @@
-{}
+{
+    "_semantics": "link=true iff a semantic unit (sentence or display phrase) is cut by the page boundary; content affinity across a clean per-page layout is false",
+
+    "Courier-en.pdf": {
+    "1->2": {"link": false, "note": "contents/editorial -> article opener; no shared flow"},
+    "2->3": {"link": true, "note": "DISPLAY-TITLE SPLIT: 'How Indigenous knowledge drives' / 'scientific discovery' is one phrase cut across the spread; a split semantic unit, same class as a mid-sentence body split"},
+    "3->4": {"link": false, "note": "title-continuation page has no body tail; p4 body starts fresh with drop cap. Same article, no paragraph flow across"},
+    "4->5": {"link": false, "note": "issue p6 -> p9, non-adjacent; different articles (Indigenous knowledge -> Brazil)"},
+    "5->6": {"link": false, "note": "TRAP: p5 tail dangles mid-sentence ('Technicians arrived ->' continues on issue p10, absent from excerpt) but next PDF page is issue p38, a different article. Known false positive under open mask (scored 0.55)"},
+    "6->7": {"link": false, "note": "TRAP: p6 tail dangles mid-sentence ('This technology' continues on issue p39, absent); next PDF page is issue p12, different article"},
+    "7->8": {"link": true, "note": "MID-SENTENCE BODY SPLIT: 'a composite material from' -> 'the grass has been patented'; issue pp.12-13"}
+    },
+  "Vogue-en.pdf": {
+    "1->2": {"link": false, "note": "ad -> ad, unrelated"},
+    "2->3": {"link": false, "note": "ad -> contents"}
+  },
+  "CERNCourier-en.pdf": {
+    "1->2": {"link": false, "note": "welcome editorial ends complete; next sheet is ad + toc"},
+    "2->3": {"link": false, "note": "toc sheet -> ad + news sheet, no shared flow"},
+    "3->4": {"link": false, "note": "News Analysis (issue p7) ends complete; next sheet is feature pp.24-25, non-adjacent. NB: the real continuation on p4 is INTRA-sheet (p24 col 3 -> p25 col 1), invisible to page-boundary chaining - spread limitation, flagged"}
+  },
+  "FD-en.pdf": {
+    "1->2": {"link": false, "note": "cover -> house ad"},
+    "2->3": {"link": false, "note": "ad -> contents"},
+    "3->4": {"link": false, "note": "contents -> house ad"},
+    "4->5": {"link": false, "note": "ad -> masthead"},
+    "5->6": {"link": false, "note": "masthead -> Kaleidoscope briefs"},
+    "6->7": {"link": false, "note": "Kaleidoscope (issue p6) -> Point of View (issue p10), non-adjacent, different pieces"},
+    "7->8": {"link": false, "note": "PoV ends complete ('...guise of national security.'); next is Currency Notes, issue p10 -> p72 non-adjacent"}
+  },
+  "AramcoWorld-en.pdf": {
+    "1->2": {"link": false, "note": "cover -> masthead"},
+    "2->3": {"link": false, "note": "masthead -> contents"},
+    "3->4": {"link": false, "note": "contents -> feature p30, non-adjacent"},
+    "4->5": {"link": false, "note": "Samarkand feature (issue p30) ends complete; Railway opener is issue p33, non-adjacent, different article"},
+    "5->6": {"link": false, "note": "same article, adjacent issue pages, but CLEAN paragraph boundary; per semantics, per-page layout is respected, no unit is cut"},
+    "6->7": {"link": false, "note": "TRAP: p6 tail dangles mid-sentence ('a scarcity of water along much of' continues on issue p35, absent); next PDF page is Reviews p40, non-adjacent"},
+    "7->8": {"link": false, "note": "Reviews pp.40-41: each review self-contained, nothing crosses (user verified)"}
+  }
+}
