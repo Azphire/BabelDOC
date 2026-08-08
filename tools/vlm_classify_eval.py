@@ -10,6 +10,15 @@ deterministic verdict stands, how often the fallback is right on the pages it is
 actually given, and whether the two layers together agree with the hand written
 ground truth more often than the deterministic layer does alone.
 
+Two scores answer the last question, reported side by side and never merged.
+The single point score asks whether the one kind a page was given is among the
+kinds it carries. The label set score asks whether anything the layer named --
+its verdict and, where the fallback offered one, its second candidate -- is
+among them; a composite sheet the ground truth records under two names is then
+scored on whether the system saw either. The deterministic layer names one kind
+and never a second, so its two columns are equal by construction, which is what
+makes the pair readable as a comparison instead of as two unrelated numbers.
+
 This is a report, not a gate. The numbers go into the delivery as they come out.
 Nothing here has a target to clear, and the only permitted response to a
 disappointing number is a prompt edit -- recorded, with its hash and the numbers
@@ -108,6 +117,32 @@ def as_pairs(table: dict[str, list[int]]) -> dict[str, dict]:
     }
 
 
+def pooled(table: dict[str, list[int]]) -> None:
+    """Add the corpus wide row every table carries under the empty key."""
+    table[""] = [
+        sum(hits for hits, _ in table.values()),
+        sum(total for _, total in table.values()),
+    ]
+
+
+def predicted_set(kind: str, outcome: dict | None) -> set[str]:
+    """The kinds a layer named for one page: its verdict and its runner up.
+
+    A page the fallback never saw, and one it saw without offering a second
+    candidate, are both a single name -- so this collapses to the single point
+    prediction wherever there is no second candidate to add.
+    """
+    predicted = {kind}
+    if outcome is not None and outcome.get("secondary_kind") is not None:
+        predicted.add(outcome["secondary_kind"])
+    return predicted
+
+
+def coverage_hit(kind: str, outcome: dict | None, expected: list[str]) -> bool:
+    """Whether anything the layer named is among the labels the page carries."""
+    return bool(predicted_set(kind, outcome) & set(expected))
+
+
 def _build_requests(working_dir: Path) -> int:
     """Requests the pipeline run itself made while producing these checkpoints.
 
@@ -146,6 +181,11 @@ def evaluate(samples: list[dict], out_dir: Path) -> dict:
     combined: dict[str, list[int]] = {}
     routed_deterministic: dict[str, list[int]] = {}
     routed_model: dict[str, list[int]] = {}
+    coverage_deterministic: dict[str, list[int]] = {}
+    coverage_combined: dict[str, list[int]] = {}
+    routed_coverage_deterministic: dict[str, list[int]] = {}
+    routed_coverage_combined: dict[str, list[int]] = {}
+    secondary_gain: list[dict] = []
     refusals: list[str] = []
     reasons: Counter[str] = Counter()
     secondary: list[dict] = []
@@ -189,6 +229,30 @@ def evaluate(samples: list[dict], out_dir: Path) -> dict:
                 row["final_hit"] = record["final_kind"] in expected
                 tally(deterministic, publication, row["deterministic_hit"])
                 tally(combined, publication, row["final_hit"])
+                # The label set columns, beside the single point ones above and
+                # computed from the same verdicts.
+                row["deterministic_coverage_hit"] = coverage_hit(
+                    record["kind"], None, expected
+                )
+                row["final_coverage_hit"] = coverage_hit(
+                    record["final_kind"], outcome, expected
+                )
+                tally(
+                    coverage_deterministic,
+                    publication,
+                    row["deterministic_coverage_hit"],
+                )
+                tally(coverage_combined, publication, row["final_coverage_hit"])
+                if row["final_coverage_hit"] and not row["final_hit"]:
+                    secondary_gain.append(
+                        {
+                            "file": file_name,
+                            "page": int(page_key),
+                            "labels": expected,
+                            "kind": record["final_kind"],
+                            "secondary_kind": outcome["secondary_kind"],
+                        }
+                    )
             pages.append(row)
 
             if outcome is None:
@@ -214,12 +278,24 @@ def evaluate(samples: list[dict], out_dir: Path) -> dict:
             if expected is not None:
                 tally(routed_deterministic, publication, record["kind"] in expected)
                 tally(routed_model, publication, record["final_kind"] in expected)
+                tally(
+                    routed_coverage_deterministic,
+                    publication,
+                    row["deterministic_coverage_hit"],
+                )
+                tally(routed_coverage_combined, publication, row["final_coverage_hit"])
 
-    for table in (deterministic, combined, routed_deterministic, routed_model):
-        table[""] = [
-            sum(hits for hits, _ in table.values()),
-            sum(total for _, total in table.values()),
-        ]
+    for table in (
+        deterministic,
+        combined,
+        routed_deterministic,
+        routed_model,
+        coverage_deterministic,
+        coverage_combined,
+        routed_coverage_deterministic,
+        routed_coverage_combined,
+    ):
+        pooled(table)
 
     manifest_paths = sorted((out_dir / "work").glob(f"*/{MANIFEST_NAME}"))
     prompts: dict[str, str] = {}
@@ -232,6 +308,7 @@ def evaluate(samples: list[dict], out_dir: Path) -> dict:
             "enabled": config.enabled,
             "model": config.model,
             "temperature": config.temperature,
+            "token_parameter": config.token_parameter,
             "max_output_tokens": config.max_output_tokens,
             "max_retries": config.max_retries,
             "render_dpi": config.render_dpi,
@@ -259,6 +336,13 @@ def evaluate(samples: list[dict], out_dir: Path) -> dict:
             "routed_pages_deterministic": as_pairs(routed_deterministic),
             "routed_pages_combined": as_pairs(routed_model),
         },
+        "label_set_coverage": {
+            "deterministic": as_pairs(coverage_deterministic),
+            "combined": as_pairs(coverage_combined),
+            "routed_pages_deterministic": as_pairs(routed_coverage_deterministic),
+            "routed_pages_combined": as_pairs(routed_coverage_combined),
+            "secondary_gain_pages": secondary_gain,
+        },
         "secondary_kinds": secondary,
         "pages": pages,
     }
@@ -270,6 +354,14 @@ def summarize(report: dict) -> str:
     lines.append(
         f"model={configuration['model']} enabled={configuration['enabled']} "
         f"dpi={configuration['render_dpi']} rows={configuration['verdict_rows']}"
+    )
+    # The ablation setting travels with every accuracy figure below it: two
+    # models measured at different supported settings are not comparable, and a
+    # number quoted without the setting cannot be checked.
+    lines.append(
+        f"setting: temperature={configuration['temperature']} "
+        f"token_parameter={configuration['token_parameter']} "
+        f"max_output_tokens={configuration['max_output_tokens']}"
     )
     for path, digest in sorted(report["prompts"].items()):
         lines.append(f"prompt {path} {digest}")
@@ -289,16 +381,37 @@ def summarize(report: dict) -> str:
         lines.append(f"  refusal {count} x {reason}")
 
     agreement = report["agreement"]
+    coverage = report["label_set_coverage"]
     for label in ("routed_pages_deterministic", "routed_pages_combined"):
-        pooled = agreement[label][""]
-        lines.append(f"{label}: {pooled['hits']}/{pooled['total']} = {pooled['rate']}")
-    lines.append("agreement by publication (deterministic -> combined):")
+        total = agreement[label][""]
+        covered = coverage[label][""]
+        lines.append(
+            f"{label}: {total['hits']}/{total['total']} = {total['rate']} "
+            f"| coverage {covered['hits']}/{covered['total']} = {covered['rate']}"
+        )
+    lines.append(
+        "agreement by publication (deterministic -> combined) "
+        "| label set coverage (deterministic -> combined):"
+    )
     for key in sorted(agreement["combined"]):
         before = agreement["deterministic"][key]
         after = agreement["combined"][key]
+        covered_before = coverage["deterministic"][key]
+        covered_after = coverage["combined"][key]
         lines.append(
             f"  {key or 'overall':16s} {before['hits']}/{before['total']} "
             f"({before['rate']}) -> {after['hits']}/{after['total']} ({after['rate']})"
+            f" | {covered_before['hits']}/{covered_before['total']} "
+            f"({covered_before['rate']}) -> "
+            f"{covered_after['hits']}/{covered_after['total']} "
+            f"({covered_after['rate']})"
+        )
+    gains = coverage["secondary_gain_pages"]
+    lines.append(f"pages the second candidate alone covers: {len(gains)}")
+    for item in gains:
+        lines.append(
+            f"  gain {item['file']}#{item['page']}: {item['kind']} + "
+            f"{item['secondary_kind']} against {item['labels']}"
         )
     for item in report["secondary_kinds"]:
         lines.append(

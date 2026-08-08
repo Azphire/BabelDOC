@@ -14,6 +14,13 @@ Bounded. Every setting comes from ``configs/vlm.json`` with a declared range,
 including the switch that decides whether any request is made at all. The
 credential is not a setting: the configuration names an environment variable
 and the value is read from the process environment when a request is built.
+Which parameters a model will accept is a setting too: the name the token limit
+travels under, and whether a temperature is sent at all, are declared rather
+than assumed, so a model with a different capability profile is a configuration
+to write and never a branch to add. A request the endpoint rejects is a
+configuration to correct: nothing here retries under a different parameter,
+because a client that quietly changed the contract would file replies produced
+under one profile behind a key that claims another.
 
 Constrained. A reply is a JSON object naming a kind from the vocabulary it was
 given, and a reply that is anything else is a violation, not a result. A
@@ -33,6 +40,7 @@ import json
 import logging
 import os
 import re
+from collections.abc import Callable
 from collections.abc import Sequence
 from dataclasses import dataclass
 from dataclasses import replace
@@ -75,13 +83,38 @@ NUMERIC_KEYS: tuple[str, ...] = (
     "verdict_rows",
 )
 
+# Settings whose value is one of a closed set of names rather than a number in
+# a range. The token limit reaches an OpenAI-compatible endpoint under one of
+# two names, and which one a model accepts is a property of that model.
+ENUM_KEYS: dict[str, tuple[str, ...]] = {
+    "token_parameter": ("max_tokens", "max_completion_tokens"),
+}
+
+# Numeric settings a request may leave out entirely. ``null`` means the field
+# is absent from the body and the service default applies, which for some
+# models is the only value they will serve. The declared range stays required:
+# it bounds whatever value replaces the null.
+NULLABLE_NUMERIC_KEYS: tuple[str, ...] = ("temperature",)
+
 # Request parameters that shape a reply, and therefore belong in the cache key.
 # The endpoint, the credential's variable name, the wall clock limit and the
 # retry budget are how a request is delivered, not what it asks for. Settings
 # that reach the model through the words of the prompt -- ``verdict_rows`` among
 # them -- are already in the key through the rendered text and are not repeated
 # here, and ``render_dpi`` is in it through the bytes of the image.
-KEY_PARAMETERS: tuple[str, ...] = ("temperature", "max_output_tokens")
+KEY_PARAMETERS: tuple[str, ...] = (
+    "temperature",
+    "max_output_tokens",
+    "token_parameter",
+)
+
+# What a stored reply was already produced under, for parameters the key did
+# not name at the time it was written. A setting sitting at its implied value
+# carries no information the stored keys do not already encode, so it is left
+# out of the key and the replies written under it stay valid; any other value
+# is written in, and retires only the requests that departed. This is how a
+# capability can be declared without discarding replies already paid for.
+IMPLIED_PARAMETERS: dict[str, object] = {"token_parameter": "max_tokens"}
 
 # Fields a reply must carry. Anything else in the object is ignored; anything
 # missing from this set makes the reply unusable.
@@ -111,16 +144,22 @@ class VlmConfig:
     model: str
     base_url: str
     api_key_env: str
-    temperature: float
+    temperature: float | None
     max_output_tokens: int
     max_retries: int
     render_dpi: int
     timeout_seconds: float
     verdict_rows: int
+    token_parameter: str
 
-    def key_parameters(self) -> dict[str, float]:
+    def key_parameters(self) -> dict[str, object]:
         """The request parameters the cache key is composed from."""
-        return {name: getattr(self, name) for name in KEY_PARAMETERS}
+        return {
+            name: getattr(self, name)
+            for name in KEY_PARAMETERS
+            if name not in IMPLIED_PARAMETERS
+            or getattr(self, name) != IMPLIED_PARAMETERS[name]
+        }
 
 
 @dataclass(frozen=True)
@@ -163,6 +202,7 @@ def parse_vlm_config(raw: dict, source: str) -> VlmConfig:
         DESCRIPTION_KEY,
         *FLAG_KEYS,
         *TEXT_KEYS,
+        *ENUM_KEYS,
         *NUMERIC_KEYS,
         *(f"{key}{_RANGE_SUFFIX}" for key in NUMERIC_KEYS),
     }
@@ -174,7 +214,7 @@ def parse_vlm_config(raw: dict, source: str) -> VlmConfig:
         f"environment variable it names",
     )
 
-    for key in (*FLAG_KEYS, *TEXT_KEYS, *NUMERIC_KEYS):
+    for key in (*FLAG_KEYS, *TEXT_KEYS, *ENUM_KEYS, *NUMERIC_KEYS):
         _require(key in raw, f"{source}: missing key {key!r}")
     for key in FLAG_KEYS:
         _require(isinstance(raw[key], bool), f"{source}: {key} must be a boolean")
@@ -183,27 +223,45 @@ def parse_vlm_config(raw: dict, source: str) -> VlmConfig:
             isinstance(raw[key], str) and raw[key],
             f"{source}: {key} must be a non-empty string",
         )
+    for key, choices in ENUM_KEYS.items():
+        _require(
+            raw[key] in choices,
+            f"{source}: {key} must be one of {list(choices)}, not {raw[key]!r}",
+        )
 
     bounded = {
         key: value
         for key, value in raw.items()
-        if key not in FLAG_KEYS and key not in TEXT_KEYS
+        if key not in FLAG_KEYS and key not in TEXT_KEYS and key not in ENUM_KEYS
     }
+    # A nullable setting at ``null`` is not sent, so there is no value for the
+    # shared validator to bound; its range declaration is still required, and
+    # is parsed by that validator as soon as a value takes the null's place.
+    omitted = tuple(key for key in NULLABLE_NUMERIC_KEYS if bounded.get(key) is None)
+    for key in omitted:
+        _require(
+            f"{key}{_RANGE_SUFFIX}" in raw, f"{source}: {key} has no {_RANGE_SUFFIX}"
+        )
+        bounded.pop(key)
+        bounded.pop(f"{key}{_RANGE_SUFFIX}")
+
     parameters = validate_bounded_config(bounded, Path(source))
-    missing = sorted(set(NUMERIC_KEYS) - set(parameters))
+    missing = sorted(set(NUMERIC_KEYS) - set(parameters) - set(omitted))
     _require(not missing, f"{source}: missing bounded parameters {missing}")
 
+    temperature = parameters.get("temperature")
     return VlmConfig(
         enabled=raw["enabled"],
         model=raw["model"],
         base_url=raw["base_url"],
         api_key_env=raw["api_key_env"],
-        temperature=float(parameters["temperature"]),
+        temperature=None if temperature is None else float(temperature),
         max_output_tokens=int(parameters["max_output_tokens"]),
         max_retries=int(parameters["max_retries"]),
         render_dpi=int(parameters["render_dpi"]),
         timeout_seconds=float(parameters["timeout_seconds"]),
         verdict_rows=int(parameters["verdict_rows"]),
+        token_parameter=raw["token_parameter"],
     )
 
 
@@ -299,57 +357,84 @@ def interpret_reply(reply: str, vocabulary: Sequence[str]) -> VlmVerdict:
     )
 
 
+def build_request(config: VlmConfig, prompt: str, image_png: bytes) -> dict:
+    """The chat completion body one configuration asks for.
+
+    The token limit travels under the name the configuration declares, and a
+    temperature of ``null`` is absent from the body rather than sent as a
+    value: asking a model for its own default and asking it for a setting it
+    refuses are different requests, and only one of them is answerable.
+    """
+    encoded = base64.b64encode(image_png).decode("ascii")
+    body = {
+        "model": config.model,
+        config.token_parameter: config.max_output_tokens,
+        "messages": [
+            {
+                "role": "user",
+                "content": [
+                    {"type": "text", "text": prompt},
+                    {
+                        "type": "image_url",
+                        "image_url": {"url": f"data:image/png;base64,{encoded}"},
+                    },
+                ],
+            }
+        ],
+    }
+    if config.temperature is not None:
+        body["temperature"] = config.temperature
+    return body
+
+
+def read_api_key(config: VlmConfig) -> str:
+    key = os.environ.get(config.api_key_env, "")
+    _require(
+        bool(key),
+        f"environment variable {config.api_key_env} is unset; the vision "
+        f"model credential is read from the environment only",
+    )
+    return key
+
+
+def build_openai_client(config: VlmConfig):
+    """The endpoint this project talks to, built from the configuration."""
+    import openai
+
+    return openai.OpenAI(
+        api_key=read_api_key(config),
+        base_url=config.base_url,
+        timeout=config.timeout_seconds,
+    )
+
+
 class OpenAICompatibleTransport:
     """Chat completions over an OpenAI-compatible endpoint, image inline.
 
     The client is built on first use so that importing this module, or running
     with the switch off, neither reads a credential nor opens a connection.
+    Which client is built is a constructor argument, so a caller can watch a
+    request take the shape the configuration asks for without a credential and
+    without reaching a network.
     """
 
-    def __init__(self) -> None:
+    def __init__(self, client_factory: Callable[[VlmConfig], object] | None = None):
+        self._client_factory = (
+            build_openai_client if client_factory is None else client_factory
+        )
         self._client = None
         self._built_for: str | None = None
-
-    def _api_key(self, config: VlmConfig) -> str:
-        key = os.environ.get(config.api_key_env, "")
-        _require(
-            bool(key),
-            f"environment variable {config.api_key_env} is unset; the vision "
-            f"model credential is read from the environment only",
-        )
-        return key
 
     def _openai_client(self, config: VlmConfig):
         signature = f"{config.base_url}|{config.api_key_env}|{config.timeout_seconds}"
         if self._client is None or self._built_for != signature:
-            import openai
-
-            self._client = openai.OpenAI(
-                api_key=self._api_key(config),
-                base_url=config.base_url,
-                timeout=config.timeout_seconds,
-            )
+            self._client = self._client_factory(config)
             self._built_for = signature
         return self._client
 
     def complete(self, config: VlmConfig, prompt: str, image_png: bytes) -> str:
-        encoded = base64.b64encode(image_png).decode("ascii")
         response = self._openai_client(config).chat.completions.create(
-            model=config.model,
-            temperature=config.temperature,
-            max_tokens=config.max_output_tokens,
-            messages=[
-                {
-                    "role": "user",
-                    "content": [
-                        {"type": "text", "text": prompt},
-                        {
-                            "type": "image_url",
-                            "image_url": {"url": f"data:image/png;base64,{encoded}"},
-                        },
-                    ],
-                }
-            ],
+            **build_request(config, prompt, image_png)
         )
         return response.choices[0].message.content or ""
 
