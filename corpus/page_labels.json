@@ -2,7 +2,7 @@
   "Courier-en.pdf": {
     "1": ["toc", "editorial"],
     "2": ["article_opener"],
-    "3": ["photo_spread"],
+    "3": ["photo_spread", "section_divider"],
     "4": ["article_body"],
     "5": ["article_opener"],
     "6": ["article_body"],

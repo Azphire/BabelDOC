@@ -1,0 +1,1 @@
+- 2026.08.08，Courier-en.pdf：page3，修改前：["photo_spread"]，修改后：["photo_spread", "section_divider"]，理由：栏目开卷跨页右半,整版图与栏目分隔双语义并立;依据页面版式本身裁定,先于并独立于其对模型评估的影响
