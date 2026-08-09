@@ -3,6 +3,14 @@
 Every modification to an upstream BabelDOC file must be registered here in the
 same session it is made.
 
+Two kinds of entry appear below. A *modification* row records a change made to
+an upstream file. A *coupling* row records extension code that calls into an
+upstream symbol without changing it: nothing upstream moves, but the extension
+breaks if that symbol's name or contract does, so the dependency is registered
+for the same reason a modification is.
+
+## Modifications
+
 | file | symbol | purpose | batch |
 | --- | --- | --- | --- |
 | `babeldoc/format/pdf/translation_config.py` | `TranslationConfig.__init__` | Add `magazine_checkpoint: bool = False` constructor parameter and store it on the instance; gates IL XML checkpoint writing. | B0 |
@@ -29,3 +37,14 @@ same session it is made.
 | `babeldoc/format/pdf/document_il/midend/il_translator_llm_only.py` | `ILTranslatorLLMOnly.process_cross_page_paragraph` | Add `chain_claim: ChainClaim = EMPTY_CLAIM` and drop an endpoint pair whose tail or head the chain pass has claimed. Asked after the endpoints are selected, so the endpoint role is still decided by the untouched filter. | B5 |
 | `babeldoc/format/pdf/document_il/midend/il_translator_llm_only.py` | `ILTranslatorLLMOnly.process_cross_column_paragraph` | Add `chain_claim: ChainClaim = EMPTY_CLAIM` and drop a same-page pair whose either half the chain pass has claimed, by the same rule and at the same point as the cross-page pairing. | B5 |
 | `babeldoc/format/pdf/document_il/midend/il_translator_llm_only.py` | `ILTranslatorLLMOnly.process_page` | Add `chain_claim: ChainClaim = EMPTY_CLAIM` and skip a claimed paragraph so it takes no slot in a batch. The existing running-title snapshot is moved above that skip, which leaves it reached by a claimed member as well; the move is behaviour preserving with the switch down, the statements it crosses being the batch accumulation, which neither reads nor writes the snapshot. | B5 |
+
+## Couplings
+
+Extension code calling upstream symbols it does not change. Each row names the
+caller, so an upstream rename is traceable to what it breaks.
+
+| file | upstream symbol | caller | purpose | batch |
+| --- | --- | --- | --- | --- |
+| `babeldoc/format/pdf/document_il/midend/il_translator_llm_only.py` | `ILTranslatorLLMOnly._build_llm_prompt` | `magazine/chain_translation.py`, `ChainPlan._translate` | Build a merged chain's request from the same template, glossary matching and title context a page batch is built from, so a chain is one row of the existing batch protocol rather than a second protocol beside it. Private by name, and the only way to reach that template. | B5 |
+| `babeldoc/format/pdf/document_il/midend/il_translator_llm_only.py` | `ILTranslatorLLMOnly._clean_json_output` | `magazine/chain_translation.py`, `ChainPlan._translate` | Strip the engine's response down to parseable JSON exactly as the per paragraph path does, so a chain and a batch tolerate the same malformed output. | B5 |
+| `babeldoc/format/pdf/document_il/midend/il_translator_llm_only.py` | `ILTranslatorLLMOnly._build_font_maps` | `magazine/chain_translation.py`, `ChainPlan._prepare` | Obtain the page and xobject font maps a member's `pre_translate_paragraph` call requires. Reused rather than reimplemented so a member is prepared identically whether the chain pass or the page batch prepares it. | B5 |
