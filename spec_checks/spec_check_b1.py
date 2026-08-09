@@ -82,6 +82,9 @@ NAME_REFERENCE_ALLOW_LIST = NAME_DEFINITION_FILES | {
     # B4 is the first writer of the paragraph level chain pair.
     "babeldoc/magazine/chain_builder.py",
     "babeldoc/magazine/chain_signals.py",
+    # B5 is the first writer of the sentence range, and reads the chain pair to
+    # decide what a chain is.
+    "babeldoc/magazine/chain_translation.py",
     # Reads the page kind to show why a boundary was scored or masked.
     "tools/chain_report.py",
     "spec_checks/spec_check_b2.py",

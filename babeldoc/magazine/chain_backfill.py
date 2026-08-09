@@ -25,17 +25,18 @@ publication, and every character class, threshold and separator it compares
 against comes from that file.
 
 Sentence splitting is a model, not a parser, and its failure modes are known
-and bounded. Two guards narrow them. A terminator that carries no whitespace
+and bounded. Three guards narrow them. A terminator that carries no whitespace
 after it does not end a sentence, which is what keeps decimals, version
-numbers, in-word full stops and abbreviations written without spaces whole. A
-boundary that would close a sentence shorter than the profile's minimum is
-dropped, which absorbs an initial standing at the head of a sentence. What
-neither guard catches is an abbreviation that is long enough to clear the floor
-and is followed by a space: it is read as a sentence end and offers a cut
-position mid-sentence. Over-splitting only offers a cut position that need not
-be taken, and under-splitting only withholds one; neither can violate the
-conservation law, because every cut is a position in the translated string and
-no branch here adds or removes a character from it.
+numbers and in-word full stops whole. A boundary that closes on an abbreviation
+the profile declares is dropped however the whitespace falls, which is what
+keeps the abbreviations a magazine actually writes from ending a sentence in
+the middle of one. A boundary that would close a sentence shorter than the
+profile's minimum is dropped as well, which absorbs an initial standing at the
+head of a sentence. What none of them catches is an abbreviation nobody
+declared. Over-splitting only offers a cut position that need not be taken, and
+under-splitting only withholds one; neither can violate the conservation law,
+because every cut is a position in the translated string and no branch here
+adds or removes a character from it.
 """
 
 from __future__ import annotations
@@ -103,7 +104,12 @@ NO_SENTENCE_INDEX = -1
 # A cut immediately after a joiner would break the sequence it joins.
 _ZERO_WIDTH_JOINER = "\u200d"
 
-# Keys a profile declares. sentence_min_chars is the one optional entry.
+# The abbreviations a profile exempts from ending a sentence. Optional, because
+# a script that writes no abbreviation with a terminator in it declares none.
+NON_TERMINAL_PREFIXES_KEY = "non_terminal_prefixes"
+
+# Keys a profile declares. sentence_min_chars and the abbreviation table are the
+# optional entries.
 _PROFILE_REQUIRED = (
     "language_prefixes",
     "terminators",
@@ -111,7 +117,7 @@ _PROFILE_REQUIRED = (
     "closers",
     "break_rule",
 )
-_PROFILE_OPTIONAL = (SENTENCE_MIN_CHARS_KEY,)
+_PROFILE_OPTIONAL = (SENTENCE_MIN_CHARS_KEY, NON_TERMINAL_PREFIXES_KEY)
 
 # Separator a language tag puts before its region or script subtag.
 _SUBTAG_SEPARATOR = "-"
@@ -150,6 +156,7 @@ class LanguageProfile:
     space_gated_terminators: frozenset[str]
     all_terminators: frozenset[str]
     closers: frozenset[str]
+    non_terminal_prefixes: tuple[str, ...]
     break_rule: str
     sentence_min_chars: int
 
@@ -338,6 +345,31 @@ def _parse_ranges(raw: object, where: str) -> tuple[tuple[int, int], ...]:
     return tuple(ranges)
 
 
+def _parse_prefixes(
+    raw: object, where: str, terminators: frozenset[str]
+) -> tuple[str, ...]:
+    """Abbreviations that carry a terminator and still do not end a sentence.
+
+    Each entry has to end in a terminator the same profile declares: an entry
+    that does not is a word the scan never looks at, so it would sit in the file
+    claiming an effect it cannot have.
+    """
+    if raw is None:
+        return ()
+    _require(isinstance(raw, list), f"{where}: must be a list of abbreviations")
+    for item in raw:
+        _require(
+            isinstance(item, str) and len(item) > 1,
+            f"{where}: {item!r} is not an abbreviation of at least two characters",
+        )
+        _require(
+            item[-1] in terminators,
+            f"{where}: {item!r} does not end in a terminator this profile "
+            f"declares, so no boundary could ever be read at it",
+        )
+    return tuple(raw)
+
+
 def _parse_join(raw: object, source: str) -> JoinRules:
     where = f"{source}: {JOIN_KEY}"
     _require(isinstance(raw, dict), f"{where}: must be an object")
@@ -430,6 +462,11 @@ def _parse_profile(name: str, raw: object, source: str, config: dict, default: i
         space_gated_terminators=gated,
         all_terminators=terminators | gated,
         closers=_parse_char_set(raw["closers"], f"{where}.closers", True),
+        non_terminal_prefixes=_parse_prefixes(
+            raw.get(NON_TERMINAL_PREFIXES_KEY),
+            f"{where}.{NON_TERMINAL_PREFIXES_KEY}",
+            terminators | gated,
+        ),
         break_rule=raw["break_rule"],
         sentence_min_chars=_parse_min_chars(
             raw.get(SENTENCE_MIN_CHARS_KEY), where, config, default
@@ -642,6 +679,22 @@ def _visible_length(text: str) -> int:
     return sum(1 for char in text if not char.isspace())
 
 
+def _ends_with_abbreviation(text: str, end: int, profile: LanguageProfile) -> bool:
+    """Whether the text ending at ``end`` closes on a declared abbreviation.
+
+    The character in front of the abbreviation has to be one that cannot
+    continue a word, so a longer word ending in the same letters is not read as
+    the abbreviation itself.
+    """
+    for prefix in profile.non_terminal_prefixes:
+        start = end - len(prefix)
+        if start < 0 or text[start:end] != prefix:
+            continue
+        if start == 0 or not text[start - 1].isalnum():
+            return True
+    return False
+
+
 def split_sentences(text: str, profile: LanguageProfile) -> tuple[str, ...]:
     """Cut ``text`` into sentences that join back to it exactly.
 
@@ -649,7 +702,8 @@ def split_sentences(text: str, profile: LanguageProfile) -> tuple[str, ...]:
     whitespace behind those, so every character of the text belongs to exactly
     one sentence and the trailing space of a sentence travels with it. The last
     terminator of the run decides whether the boundary needs whitespace after
-    it to count.
+    it to count, and a run that closes a declared abbreviation is no boundary
+    whatever follows it.
     """
     if not text:
         return ()
@@ -664,6 +718,9 @@ def split_sentences(text: str, profile: LanguageProfile) -> tuple[str, ...]:
         run_end = index
         while run_end < length and text[run_end] in profile.all_terminators:
             run_end += 1
+        if _ends_with_abbreviation(text, run_end, profile):
+            index = run_end
+            continue
         closer_end = run_end
         while closer_end < length and text[closer_end] in profile.closers:
             closer_end += 1

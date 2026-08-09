@@ -28,7 +28,7 @@
   },
 
   "profiles": {
-    "description": "One sentence model per target script. terminators end a sentence wherever they stand. space_gated_terminators end one only when whitespace or the end of the text follows, which is what keeps a decimal point, a version number and an in-word full stop from ending a sentence; the two lists together must not be empty. closers are the marks stripped after a terminator before the gate is read, so a quoted sentence still ends where the quotation does. A run of terminators is one boundary and the last character of the run decides whether the gate applies. sentence_min_chars is the shortest sentence a boundary may close, counted in non-space characters: below it the boundary is dropped and the text carries on into the next sentence, which is what absorbs single letter initials. It is bounded by the range the flat sentence_min_chars declares. break_rule says where a proportional cut may land: word_boundary only after whitespace, any_char anywhere a combining sequence is not broken. language_prefixes match the target language tag, longest first; a prefix may be declared by one profile only.",
+    "description": "One sentence model per target script. terminators end a sentence wherever they stand. space_gated_terminators end one only when whitespace or the end of the text follows, which is what keeps a decimal point, a version number and an in-word full stop from ending a sentence; the two lists together must not be empty. closers are the marks stripped after a terminator before the gate is read, so a quoted sentence still ends where the quotation does. A run of terminators is one boundary and the last character of the run decides whether the gate applies. non_terminal_prefixes are the abbreviations that carry a terminator and a space and still do not end a sentence; the table is read before the gate, so a boundary whose text ends in one of them is dropped whatever the gate would have said. A prefix matches only where the character in front of it is not a letter or a digit, so a longer word ending in the same letters is not mistaken for it. sentence_min_chars is the shortest sentence a boundary may close, counted in non-space characters: below it the boundary is dropped and the text carries on into the next sentence, which is what absorbs single letter initials. It is bounded by the range the flat sentence_min_chars declares. break_rule says where a proportional cut may land: word_boundary only after whitespace, any_char anywhere a combining sequence is not broken. language_prefixes match the target language tag, longest first; a prefix may be declared by one profile only.",
     "default": "latin",
     "entries": {
       "latin": {
@@ -68,6 +68,39 @@
           "]",
           "\u300b"
         ],
+        "non_terminal_prefixes": [
+          "Mr.",
+          "Mrs.",
+          "Ms.",
+          "Dr.",
+          "Prof.",
+          "St.",
+          "Jr.",
+          "Sr.",
+          "Fig.",
+          "figs.",
+          "Tab.",
+          "No.",
+          "no.",
+          "vol.",
+          "Vol.",
+          "pp.",
+          "ed.",
+          "eds.",
+          "al.",
+          "etc.",
+          "e.g.",
+          "i.e.",
+          "cf.",
+          "vs.",
+          "approx.",
+          "Inc.",
+          "Ltd.",
+          "Co.",
+          "U.S.",
+          "U.K.",
+          "U.N."
+        ],
         "break_rule": "word_boundary",
         "sentence_min_chars": 3
       },
@@ -93,6 +126,7 @@
           "\"",
           "'"
         ],
+        "non_terminal_prefixes": [],
         "break_rule": "any_char",
         "sentence_min_chars": 2
       }

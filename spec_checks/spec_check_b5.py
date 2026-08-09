@@ -1,35 +1,42 @@
-"""Gate script for batch B5.1 (chain backfill pure functions).
+"""Gate script for batch B5 (chain level joint translation).
 
 Run from the repository root:
 
     python spec_checks/spec_check_b5.py
 
-Exit code 0 when every assertion in plans/PLAN_B5.md that T5.1 answers for
-passes, 1 otherwise.
+Exit code 0 when every assertion in plans/PLAN_B5.md that T5.1 and T5.2 answer
+for passes, 1 otherwise.
 
-This session delivers the pure layer only: strings in, strings out. Nothing
-here runs a translator, reads a credential or touches the translation path, so
-every assertion but one is a synthetic case run directly against
-``babeldoc/magazine/chain_backfill.py``. The exception is assertion 07, which
-takes the chains batch-b4.2 actually found in the corpus, merges their members
-and cuts a deterministic stand-in translation back up, so the conservation law
-is stated over real chain shapes and not only over the cases this file thought
-to write down.
+Assertions 01 to 08 belong to T5.1, the pure layer: strings in, strings out,
+nothing that runs a translator or touches the pipeline. Every one of them is a
+synthetic case run directly against ``babeldoc/magazine/chain_backfill.py``,
+except assertion 07, which takes the chains batch-b4.2 actually found in the
+corpus, merges their members and cuts a deterministic stand-in translation back
+up, so the conservation law is stated over real chain shapes and not only over
+the cases this file thought to write down.
 
-The synthetic cases are the whole point of the session, so they are exhaustive
-in the directions that matter: both translation directions, sentence counts
-above, equal to and below the member count, a single sentence spanning three
-members, and the boundary cases of the terminator model -- an ellipsis, a
-sentence closed by a quotation mark, a decimal point, an initial and an
-abbreviation. The last two are known limitations rather than successes, and the
-assertions state the behaviour that actually occurs rather than the behaviour
-one might wish for.
+The synthetic cases are exhaustive in the directions that matter: both
+translation directions, sentence counts above, equal to and below the member
+count, a single sentence spanning three members, and the boundary cases of the
+terminator model -- an ellipsis, a sentence closed by a quotation mark, a
+decimal point, an initial and an abbreviation.
+
+Assertions 10 to 15 belong to T5.2, the translation path. They drive the real
+translation stage over the whole corpus with a stub engine, so no credential is
+read and no request leaves the machine, and state the conservation law over
+what the stage actually wrote: the members of a chain join back to exactly the
+translation their chain was sent, every paragraph is translated exactly once,
+the sentence spans tile the translation, and the switch being down reproduces
+batch-b5.1's translator byte for byte. The stub is loaded twice per sample --
+once against this session's translator and once against the one git holds at
+batch-b5.1 -- which is what makes that last claim a comparison rather than an
+assertion of intent.
 
 CJK fixtures are built from code points instead of being written out, because
 assertion 08c requires every file this batch changes to be ASCII.
 
-Tiers: assertion 07 needs the corpus artefacts and belongs to the pipeline
-tier; everything else is static. Assertion 09 is the full sweep and is
+Tiers: assertions 07 and 10 to 13 need the corpus artefacts and belong to the
+pipeline tier; everything else is static. Assertion 09 is the full sweep and is
 suppressed when the runner is already performing one.
 """
 
@@ -61,11 +68,17 @@ from babeldoc.magazine.chain_signals import load_chain_config  # noqa: E402
 from spec_checks import artifacts  # noqa: E402
 from spec_checks import harness  # noqa: E402
 
-BATCH_TAG = "batch-b5.1"
+BATCH_TAG = "batch-b5.2"
+
+# The translator this session changed, as git holds it before the change. The
+# switch-off comparison runs both and asks for the same bytes.
+BASELINE_TAG = "batch-b5.1"
 
 PYTHON = sys.executable
 
 MODULE = "babeldoc/magazine/chain_backfill.py"
+STAGE_MODULE = "babeldoc/magazine/chain_translation.py"
+TRANSLATOR = "babeldoc/format/pdf/document_il/midend/il_translator_llm_only.py"
 CONFIG = "configs/chain_translation.json"
 CONFIG_PATH = ROOT / CONFIG
 OUTPUT_DIR = ROOT / "examples" / "output" / "b5"
@@ -73,12 +86,32 @@ OUTPUT_DIR = ROOT / "examples" / "output" / "b5"
 # Set by spec_checks/run_all.py.
 NESTED_SUPPRESSED = os.environ.get("SPEC_NO_NESTED") == "1"
 
-PIPELINE_TIER = ("check_07_real_chains",)
+PIPELINE_TIER = (
+    "check_07_real_chains",
+    "check_10_stub_corpus",
+    "check_11_switch_off",
+    "check_12_switch_on",
+    "check_13_escalation",
+    "check_15_sidecar",
+)
 
-# Paths this session may change. The upstream translation path is session two's
-# business and must not appear here.
+# Paths this session may change.
 ALLOWED_PREFIXES = ("spec_checks/", "plans/")
-ALLOWED_FILES = {MODULE, CONFIG}
+ALLOWED_FILES = {MODULE, STAGE_MODULE, CONFIG, "UPSTREAM_DIFF.md"}
+
+# The two upstream files T5.2 declares. Everything else upstream is out of
+# bounds, the per paragraph translator il_translator.py above all.
+ALLOWED_UPSTREAM = {TRANSLATOR, "babeldoc/format/pdf/translation_config.py"}
+
+# The upstream functions this session changed, each of which UPSTREAM_DIFF.md
+# has to name in a row of its own.
+UPSTREAM_SYMBOLS = (
+    "ILTranslatorLLMOnly.translate",
+    "ILTranslatorLLMOnly.process_cross_page_paragraph",
+    "ILTranslatorLLMOnly.process_cross_column_paragraph",
+    "ILTranslatorLLMOnly.process_page",
+    "TranslationConfig.__init__",
+)
 
 # Trees and root documents owned by the magazine extension; the upstream scope
 # assertion ignores them.
@@ -97,9 +130,9 @@ PROJECT_OWNED_FILES = {"CLAUDE.md", "UPSTREAM_DIFF.md", "WAIVERS.md"}
 CJK_SCAN_SUFFIXES = (".py", ".json")
 CJK_RANGES = ((0x3000, 0x303F), (0x4E00, 0x9FFF), (0xFF00, 0xFFEF))
 
-# The intermediate language fields B1 declared for the sentence range. This
-# session writes neither, so neither name may appear in what it ships; session
-# two registers itself with the B1 consumer list when it becomes their writer.
+# The intermediate language fields B1 declared for the sentence range. The pure
+# layer writes neither: they are written by the stage module, which is
+# registered with the B1 consumer list as their first writer.
 SEGMENT_FIELD_NAMES = ("segmentSentence", "segment_sentence")
 
 # Fixtures. Ideographs stand in for target language text without this file
@@ -183,6 +216,18 @@ def changed_files() -> set[str]:
             path = path.split(" -> ", 1)[1]
         paths.add(path)
     return paths
+
+
+def batch_revisions() -> list[str]:
+    """Revision arguments selecting the delta this session introduced.
+
+    Once the session is committed and tagged that is the tag against its parent;
+    while it is still uncommitted it is the working tree against HEAD, so what
+    is being written now is inside the scope as well.
+    """
+    if tag_exists(BATCH_TAG):
+        return [f"{BATCH_TAG}^", BATCH_TAG]
+    return ["HEAD"]
 
 
 def config() -> backfill.BackfillConfig:
@@ -373,6 +418,10 @@ def check_01_configuration() -> None:
         entry["terminators"] = []
         entry["space_gated_terminators"] = []
 
+    def toothless_abbreviation(raw_config: dict) -> None:
+        entry = raw_config[backfill.PROFILES_KEY][backfill.ENTRIES_KEY]["latin"]
+        entry[backfill.NON_TERMINAL_PREFIXES_KEY] = ["Doctor"]
+
     malformed = {
         "out_of_range": out_of_range,
         "unknown_rule": unknown_rule,
@@ -380,6 +429,7 @@ def check_01_configuration() -> None:
         "unknown_strategy": unknown_strategy,
         "no_range": no_range,
         "no_terminators": no_terminators,
+        "toothless_abbreviation": toothless_abbreviation,
     }
     accepted = [
         name
@@ -434,6 +484,10 @@ def check_01_configuration() -> None:
         entry["terminators"] = [marker]
         entry["space_gated_terminators"] = []
         entry["closers"] = []
+        # The abbreviations go with them: an abbreviation is read at a
+        # terminator, so a profile that no longer declares the terminator it
+        # was written with cannot declare the abbreviation either.
+        entry[backfill.NON_TERMINAL_PREFIXES_KEY] = []
 
     substituted = backfill.select_profile(
         "en", backfill.load_backfill_config(write_config("substituted", substitute))
@@ -626,14 +680,44 @@ def check_03_sentences() -> None:
         f"sentences={initials}",
     )
 
-    # Known limitation, asserted as it behaves: an abbreviation long enough to
-    # clear the floor is read as a sentence end and offers a cut position
-    # mid-sentence. It cannot break the conservation law, only the prose.
-    abbreviated = backfill.split_sentences("Dr. Smith arrived. He left.", profile)
+    # Was a known limitation until the abbreviation table: an abbreviation long
+    # enough to clear the floor used to be read as a sentence end and to offer
+    # a cut position mid-sentence. A declared one no longer does.
+    declared = [
+        backfill.split_sentences(text, profile)
+        for text in (
+            "Dr. Smith arrived. He left.",
+            "See Fig. 3 for the layout. Then go.",
+            "The U.S. delegation left. It rained.",
+            "Read vol. 4 first. Then go.",
+        )
+    ]
     record(
-        "03g an abbreviation past the floor still over-splits, as documented",
-        abbreviated == ("Dr. ", "Smith arrived. ", "He left."),
-        f"sentences={abbreviated}",
+        "03g a declared abbreviation no longer ends a sentence",
+        all(len(sentences) == 2 for sentences in declared)
+        and declared[0][0] == "Dr. Smith arrived. ",
+        f"sentences={[len(s) for s in declared]} first={declared[0]}",
+    )
+
+    # The table is a table, not a rule: an abbreviation nobody declared still
+    # over-splits, and removing the shipped table brings the old behaviour back,
+    # which is what shows the behaviour lives in the file.
+    def drop_prefixes(raw_config: dict) -> None:
+        entry = raw_config[backfill.PROFILES_KEY][backfill.ENTRIES_KEY]["latin"]
+        entry[backfill.NON_TERMINAL_PREFIXES_KEY] = []
+
+    stripped = backfill.select_profile(
+        "en", backfill.load_backfill_config(write_config("no_prefixes", drop_prefixes))
+    )
+    undeclared = backfill.split_sentences("A config. of sorts. Next.", profile)
+    without = backfill.split_sentences("Dr. Smith arrived. He left.", stripped)
+    record(
+        "03j the abbreviation table comes from the file and covers only what it names",
+        without == ("Dr. ", "Smith arrived. ", "He left.")
+        and len(undeclared) == 3
+        and "".join(without) == "Dr. Smith arrived. He left."
+        and "".join(undeclared) == "A config. of sorts. Next.",
+        f"without_table={without} undeclared={undeclared}",
     )
 
     record(
@@ -1063,15 +1147,17 @@ def check_07_real_chains() -> None:
 
 
 def check_08_change_scope() -> None:
-    """Negative 8: the session stays inside the pure layer."""
+    """Negative 8: the batch stays inside the files it declares."""
     changed = changed_files()
     outside = sorted(
         path
         for path in changed
-        if path not in ALLOWED_FILES and not path.startswith(ALLOWED_PREFIXES)
+        if path not in ALLOWED_FILES
+        and path not in ALLOWED_UPSTREAM
+        and not path.startswith(ALLOWED_PREFIXES)
     )
     record(
-        "08a this session changes only the files T5.1 declares",
+        "08a this session changes only the files B5 declares",
         not outside and bool(changed),
         f"changed={len(changed)} outside={outside}",
     )
@@ -1082,17 +1168,31 @@ def check_08_change_scope() -> None:
         if path not in PROJECT_OWNED_FILES
         and not path.startswith(PROJECT_OWNED_PREFIXES)
     )
+    registry = (ROOT / "UPSTREAM_DIFF.md").read_text(encoding="utf-8")
+    unregistered = [path for path in upstream if path not in registry]
+    unnamed = [symbol for symbol in UPSTREAM_SYMBOLS if symbol not in registry]
     record(
-        "08b this session touches no upstream file",
-        not upstream,
-        f"upstream={upstream}",
+        "08b the only upstream files touched are the two the plan names",
+        set(upstream) <= ALLOWED_UPSTREAM,
+        f"upstream={upstream} allowed={sorted(ALLOWED_UPSTREAM)}",
+    )
+    record(
+        "08b2 every touched upstream file and function is registered",
+        not unregistered and not unnamed,
+        f"unregistered={unregistered} unnamed={unnamed}",
     )
 
+    # An upstream file carries the comments it always carried, so only the
+    # lines this batch added are its business; a project file is scanned whole.
     cjk_lines: list[str] = []
     checked = 0
     for relative in sorted(changed):
         path = ROOT / relative
-        if not path.is_file() or path.suffix not in CJK_SCAN_SUFFIXES:
+        if (
+            not path.is_file()
+            or path.suffix not in CJK_SCAN_SUFFIXES
+            or relative in ALLOWED_UPSTREAM
+        ):
             continue
         checked += 1
         for number, line in enumerate(
@@ -1100,43 +1200,815 @@ def check_08_change_scope() -> None:
         ):
             if has_cjk(line):
                 cjk_lines.append(f"{relative}:{number}")
+    _, diff = git_output(
+        ["diff", "-U0", *batch_revisions(), "--", *sorted(ALLOWED_UPSTREAM)]
+    )
+    added = 0
+    for line in diff.splitlines():
+        if line.startswith("+") and not line.startswith("+++"):
+            added += 1
+            if has_cjk(line):
+                cjk_lines.append(f"added upstream line: {line.strip()}")
     record(
-        "08c no CJK characters in the code this session changed",
+        "08c no CJK characters in the code this batch changed or added",
         not cjk_lines and checked > 0,
-        f"files={checked} offenders={cjk_lines[:5]}",
+        f"files={checked} added_upstream_lines={added} offenders={cjk_lines[:5]}",
     )
 
     source = (ROOT / MODULE).read_text(encoding="utf-8")
+    stage_source = (ROOT / STAGE_MODULE).read_text(encoding="utf-8")
     names = taxonomy_module.load_taxonomy().names()
     named = [
-        name
+        f"{relative}: {name}"
+        for relative, text in ((MODULE, source), (STAGE_MODULE, stage_source))
         for name in names
-        if re.search(rf"(?<![A-Za-z0-9_]){re.escape(name)}(?![A-Za-z0-9_])", source)
+        if re.search(rf"(?<![A-Za-z0-9_]){re.escape(name)}(?![A-Za-z0-9_])", text)
     ]
     record(
-        "08d the module names no page type",
+        "08d neither chain module names a page type",
         not named,
         f"vocabulary={len(names)} named={named}",
     )
 
     pipeline_imports = [
-        line
-        for line in source.splitlines()
+        f"{relative}: {line}"
+        for relative, text in ((MODULE, source), (STAGE_MODULE, stage_source))
+        for line in text.splitlines()
         if line.startswith(("import ", "from "))
         and "babeldoc" in line
         and "babeldoc.magazine" not in line
     ]
     record(
-        "08e the module imports nothing from the translation pipeline",
+        "08e neither chain module imports from the translation pipeline",
         not pipeline_imports,
         f"imports={pipeline_imports}",
     )
 
     written = [needle for needle in SEGMENT_FIELD_NAMES if needle in source]
+    upstream_written = [
+        f"{relative}: {needle}"
+        for relative in ALLOWED_UPSTREAM
+        for needle in SEGMENT_FIELD_NAMES
+        if needle in (ROOT / relative).read_text(encoding="utf-8")
+    ]
     record(
-        "08f the pure layer writes no intermediate language field",
-        not written and "il_version_1" not in source,
-        f"written={written}",
+        "08f the sentence range is written by the stage module and nowhere else",
+        not written
+        and "il_version_1" not in source
+        and not upstream_written
+        and all(needle in stage_source for needle in ("segment_sentence",)),
+        f"pure_layer={written} upstream={upstream_written}",
+    )
+
+
+# --- stub driven runs of the translation stage -------------------------------
+
+# What the stub puts in front of a translation. Six characters, because the per
+# paragraph path falls back when a translation is within five edits of its
+# input.
+MARKER = "zzzzz "
+
+# Where the prompt template ends and the batch begins. The stub reads its work
+# out of the prompt the stage built, so it exercises the real prompt path.
+INPUT_HEADER = "## Here is the input:"
+
+# Below this many tokens the stub returns the input unchanged. The per
+# paragraph path falls back when the output is more than three times the input
+# in tokens, and on a paragraph of a few tokens the marker alone would clear
+# that; returning the input is safe there because the same-as-input fallback
+# only applies above ten tokens. The point is to measure the chain machinery
+# rather than the fallback machinery, which the run asserts by requiring no
+# fallback at all.
+STUB_TOKEN_FLOOR = 10
+
+# Requests per second the stub run allows itself, and with it the number of
+# workers the stage runs. Nothing leaves the machine, so the only thing the
+# shipped default would buy here is waiting.
+STUB_MAX_QPS = 16
+
+# Where a stub run puts its working files.
+STUB_WORK = _tmp_root / "stub"
+
+
+_TOKENIZER = None
+
+
+def tokenizer():
+    """The tokenizer the stage itself uses, so the stub sees the same counts."""
+    global _TOKENIZER
+    if _TOKENIZER is None:
+        import tiktoken
+
+        _TOKENIZER = tiktoken.encoding_for_model("gpt-4o")
+    return _TOKENIZER
+
+
+def pseudo_translate(text: str) -> str:
+    """A deterministic stand-in translation of one batch item."""
+    if len(tokenizer().encode(text, disallowed_special=())) > STUB_TOKEN_FLOOR:
+        return MARKER + text
+    return text
+
+
+def build_stub_translator():
+    from babeldoc.translator.translator import BaseTranslator
+
+    class StubTranslator(BaseTranslator):
+        """An engine that answers the prompt without leaving the machine."""
+
+        name = "b5-stub"
+
+        def __init__(self):
+            super().__init__("en", "zh", ignore_cache=True)
+            self.calls = 0
+            self.prompts: list[str] = []
+
+        def do_translate(self, text, rate_limit_params: dict = None):
+            return pseudo_translate(text)
+
+        def do_llm_translate(self, text, rate_limit_params: dict = None):
+            if text is None:
+                return None
+            self.calls += 1
+            self.prompts.append(text)
+            items = json.loads(text.split(INPUT_HEADER, 1)[1].strip())
+            return json.dumps(
+                [
+                    {"id": item["id"], "output": pseudo_translate(item["input"])}
+                    for item in items
+                ],
+                ensure_ascii=False,
+            )
+
+    return StubTranslator()
+
+
+class StubRun:
+    """One run of the translation stage over one document."""
+
+    def __init__(self, name: str, document, config, stage, engine, calls):
+        self.name = name
+        self.document = document
+        self.config = config
+        self.stage = stage
+        self.engine = engine
+        self.calls = calls
+
+    @property
+    def paragraphs(self) -> dict:
+        return {
+            paragraph.debug_id: paragraph
+            for page in self.document.page
+            for paragraph in page.pdf_paragraph
+            if paragraph.debug_id is not None
+        }
+
+    def xml(self) -> str:
+        return XMLConverter().to_xml(self.document)
+
+    def report(self) -> dict | None:
+        path = Path(self.config.get_working_file_path("chain_translation.report.json"))
+        if not path.exists():
+            return None
+        return json.loads(path.read_text(encoding="utf-8"))
+
+
+def load_translator_class(revision: str | None):
+    """The translator stage class, from the working tree or from a revision."""
+    from babeldoc.format.pdf.document_il.midend.il_translator_llm_only import (
+        ILTranslatorLLMOnly,
+    )
+
+    if revision is None:
+        return ILTranslatorLLMOnly
+
+    import importlib.util
+
+    # Read as bytes and decode explicitly: the file carries comments in a
+    # script the console code page cannot represent, and git hands them over
+    # as the UTF-8 they were written in.
+    proc = subprocess.run(  # noqa: S603, S607 - git is expected on PATH for this gate
+        ["git", "show", f"{revision}:{TRANSLATOR}"],  # noqa: S607
+        cwd=ROOT,
+        capture_output=True,
+        check=False,
+    )
+    source = proc.stdout.decode("utf-8")
+    if proc.returncode != 0 or not source.strip():
+        raise RuntimeError(f"{revision} does not carry {TRANSLATOR}")
+    path = _tmp_root / f"translator_{revision.replace('.', '_').replace('-', '_')}.py"
+    path.write_text(source, encoding="utf-8")
+    spec = importlib.util.spec_from_file_location(f"baseline_{path.stem}", path)
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module.ILTranslatorLLMOnly
+
+
+def run_stub(
+    checkpoint: Path,
+    label: str,
+    chain_translate: bool,
+    revision: str | None = None,
+    prepare=None,
+) -> StubRun:
+    """Run the translation stage over one checkpoint with the stub engine.
+
+    Every call to the per paragraph writer is counted, keyed by the paragraph
+    it wrote, which is what lets the assertions say that each paragraph was
+    translated exactly once however it got there.
+    """
+    import threading
+
+    from babeldoc.format.pdf.document_il.midend.il_translator import ILTranslator
+    from babeldoc.format.pdf.parse_shared import _ParseOnlyDocLayoutModel
+    from babeldoc.format.pdf.translation_config import TranslationConfig
+    from babeldoc.progress_monitor import ProgressMonitor
+    from babeldoc.translator.translator import set_translate_rate_limiter
+
+    # The engine is local, so the rate limiter is pure waiting; lifting it and
+    # the worker count is what keeps the gate quick, and it puts real
+    # concurrency behind the assertions rather than a single worker.
+    set_translate_rate_limiter(STUB_MAX_QPS)
+    stage_class = load_translator_class(revision)
+    document = read_checkpoint(checkpoint)
+    monitor = ProgressMonitor([(stage_class.stage_name, 1.0)])
+    monitor.disable = True
+    work = STUB_WORK / label
+    work.mkdir(parents=True, exist_ok=True)
+    config = TranslationConfig(
+        translator=build_stub_translator(),
+        input_file=str(checkpoint),
+        lang_in="en",
+        lang_out="zh",
+        doc_layout_model=_ParseOnlyDocLayoutModel(),
+        working_dir=work,
+        output_dir=work / "out",
+        progress_monitor=monitor,
+        auto_extract_glossary=False,
+        qps=STUB_MAX_QPS,
+        magazine_chain_translate=chain_translate,
+    )
+    stage = stage_class(config.translator, config)
+    if prepare is not None:
+        prepare(stage)
+
+    calls: list[str] = []
+    lock = threading.Lock()
+    original = ILTranslator.post_translate_paragraph
+
+    def counted(self, paragraph, tracker, translate_input, translated_text):
+        with lock:
+            calls.append(paragraph.debug_id)
+        return original(self, paragraph, tracker, translate_input, translated_text)
+
+    ILTranslator.post_translate_paragraph = counted
+    try:
+        stage.translate(document)
+    finally:
+        ILTranslator.post_translate_paragraph = original
+    return StubRun(label, document, config, stage, config.translator, calls)
+
+
+def chained_checkpoints() -> list[tuple[str, Path]]:
+    """The chain builder checkpoint of every sample, built once by the cache."""
+    from babeldoc.magazine.checkpoint import checkpoint_stem
+
+    found: list[tuple[str, Path]] = []
+    for pdf in sample_pdfs():
+        built = artifacts.get_artifacts(pdf, "chained")
+        checkpoint = built.working_dir / f"{checkpoint_stem('chain_builder')}.xml"
+        if checkpoint.exists():
+            found.append((pdf.stem, checkpoint))
+    return found
+
+
+_stub_runs: dict[str, dict[str, StubRun]] = {}
+
+
+def stub_runs() -> dict[str, dict[str, StubRun]]:
+    """One switched-off run, one switched-on run and one baseline, per sample."""
+    if _stub_runs:
+        return _stub_runs
+    for name, checkpoint in chained_checkpoints():
+        _stub_runs[name] = {
+            "off": run_stub(checkpoint, f"{name}.off", False),
+            "on": run_stub(checkpoint, f"{name}.on", True),
+            "baseline": run_stub(
+                checkpoint, f"{name}.baseline", False, revision=BASELINE_TAG
+            ),
+        }
+    return _stub_runs
+
+
+def chain_members(run: StubRun) -> dict[str, list]:
+    """The members of every chain in one document, in chain order."""
+    chains: dict[str, list] = {}
+    for page in run.document.page:
+        for paragraph in page.pdf_paragraph:
+            if paragraph.chain_id:
+                chains.setdefault(paragraph.chain_id, []).append(paragraph)
+    for members in chains.values():
+        members.sort(key=lambda p: p.chain_index if p.chain_index is not None else 0)
+    return chains
+
+
+# --- 10 the law over the stub driven corpus ----------------------------------
+
+
+def check_10_stub_corpus() -> None:
+    """Positive 10: the stage holds the conservation law over the whole corpus."""
+    runs = stub_runs()
+    joins: list[str] = []
+    counts: list[str] = []
+    spans: list[str] = []
+    skips: list[str] = []
+    once: list[str] = []
+    chains_seen = 0
+    members_seen = 0
+    table: list[dict] = []
+
+    for name, variants in runs.items():
+        run = variants["on"]
+        report = run.report()
+        if report is None:
+            counts.append(f"{name}: no report written")
+            continue
+        paragraphs = run.paragraphs
+        found = len(chain_members(run))
+        if report["counts"]["chains"] != found:
+            counts.append(
+                f"{name}: report counts {report['counts']['chains']} chains, the "
+                f"document carries {found}"
+            )
+        if (
+            report["counts"]["chains"]
+            != report["counts"]["merged"] + report["counts"]["escalated"]
+        ):
+            counts.append(f"{name}: {report['counts']} does not add up")
+
+        for entry in report["chains"]:
+            chains_seen += 1
+            members = entry["members"]
+            members_seen += len(members)
+            pieces = [paragraphs[member["debug_id"]].unicode for member in members]
+            if "".join(pieces) != entry["translation"]:
+                joins.append(f"{name}/{entry['chain_id']}: pieces do not join back")
+            cursor = 0
+            for member, piece in zip(members, pieces, strict=True):
+                segment = member["segment"]
+                if segment["start"] != cursor or segment["end"] <= segment["start"]:
+                    spans.append(
+                        f"{name}/{entry['chain_id']}: span {segment['start']}.."
+                        f"{segment['end']} at {cursor}"
+                    )
+                if entry["translation"][segment["start"] : segment["end"]] != piece:
+                    spans.append(
+                        f"{name}/{entry['chain_id']}: member {member['chain_index']} "
+                        f"is not the text at its own span"
+                    )
+                cursor = segment["end"]
+            if cursor != len(entry["translation"]):
+                spans.append(
+                    f"{name}/{entry['chain_id']}: spans stop at {cursor} of "
+                    f"{len(entry['translation'])}"
+                )
+
+            sentence_cursor = 0
+            marked = {
+                member["segment"]["sentence_start"] == backfill.NO_SENTENCE_INDEX
+                for member in members
+            }
+            if len(marked) != 1:
+                spans.append(f"{name}/{entry['chain_id']}: only some members marked")
+            elif not marked.pop():
+                for member in members:
+                    segment = member["segment"]
+                    if segment["sentence_start"] != sentence_cursor:
+                        spans.append(
+                            f"{name}/{entry['chain_id']}: sentence range starts at "
+                            f"{segment['sentence_start']}, not {sentence_cursor}"
+                        )
+                    sentence_cursor = segment["sentence_end"]
+                if sentence_cursor != entry["redistribution"]["sentence_count"]:
+                    spans.append(
+                        f"{name}/{entry['chain_id']}: sentence ranges stop at "
+                        f"{sentence_cursor}"
+                    )
+            table.append(
+                {
+                    "sample": name,
+                    "chain_id": entry["chain_id"],
+                    "pair_class": entry["pair_class"],
+                    "strategy": entry["strategy"],
+                    "fallback": entry["redistribution"]["fallback"],
+                    "sentences": entry["redistribution"]["sentence_count"],
+                    "members": [
+                        {
+                            "debug_id": member["debug_id"],
+                            "chain_index": member["chain_index"],
+                            "page_index": member["page_index"],
+                            "layout_label": member["layout_label"],
+                            "source_chars": member["source_chars"],
+                            "span": [
+                                member["segment"]["start"],
+                                member["segment"]["end"],
+                            ],
+                            "sentences": [
+                                member["segment"]["sentence_start"],
+                                member["segment"]["sentence_end"],
+                            ],
+                            "text": paragraphs[member["debug_id"]].unicode,
+                        }
+                        for member in members
+                    ],
+                }
+            )
+
+        claimed = {
+            member["debug_id"]
+            for entry in report["chains"]
+            for member in entry["members"]
+        }
+        recorded = {record_["debug_id"] for record_ in report["skips"]}
+        if claimed != recorded:
+            skips.append(
+                f"{name}: {sorted(claimed - recorded)} unrecorded, "
+                f"{sorted(recorded - claimed)} recorded without a chain"
+            )
+        undeclined = [
+            record_["debug_id"]
+            for record_ in report["skips"]
+            if not record_["declined_by"]
+        ]
+        if undeclined:
+            skips.append(f"{name}: nothing asked for {undeclined}")
+
+        for label, variant in variants.items():
+            repeated = sorted(
+                {
+                    debug_id
+                    for debug_id in variant.calls
+                    if variant.calls.count(debug_id) > 1
+                }
+            )
+            if repeated:
+                once.append(f"{name}/{label}: {repeated[:3]} written more than once")
+            if variant.stage.fallback_count:
+                once.append(
+                    f"{name}/{label}: {variant.stage.fallback_count} paragraph(s) "
+                    f"fell back, which the stub is built not to provoke"
+                )
+
+    OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
+    (OUTPUT_DIR / "chain_translation.stub.json").write_text(
+        json.dumps(table, indent=2, ensure_ascii=False), encoding="utf-8"
+    )
+    record(
+        "10a every chain is either merged or escalated, and the counts add up",
+        not counts and chains_seen > 0,
+        f"samples={len(runs)} chains={chains_seen} problems={counts[:3]}",
+    )
+    record(
+        "10b the members of a chain join back to exactly its translation",
+        not joins and members_seen > 0,
+        f"chains={chains_seen} members={members_seen} problems={joins[:3]}",
+    )
+    record(
+        "10c the member spans tile the translation and the sentence ranges partition",
+        not spans,
+        f"problems={spans[:3]}",
+    )
+    record(
+        "10d one skip record per member, each with a mechanism that asked for it",
+        not skips,
+        f"problems={skips[:3]}",
+    )
+    record(
+        "10e every paragraph is written exactly once, in every variant",
+        not once,
+        f"problems={once[:3]}",
+    )
+
+
+# --- 11 the switch down -------------------------------------------------------
+
+
+def check_11_switch_off() -> None:
+    """Negative 11: with the switch down this is batch-b5.1's translator."""
+    from babeldoc.format.pdf.translation_config import TranslationConfig
+
+    signature = __import__("inspect").signature(TranslationConfig.__init__)
+    parameter = signature.parameters.get("magazine_chain_translate")
+    record(
+        "11a the chain translation switch exists and defaults to False",
+        parameter is not None and parameter.default is False,
+        f"default={parameter.default if parameter else 'absent'}",
+    )
+
+    runs = stub_runs()
+    differing = [
+        name
+        for name, variants in runs.items()
+        if variants["off"].xml() != variants["baseline"].xml()
+    ]
+    record(
+        "11b with the switch down the document matches batch-b5.1 byte for byte",
+        not differing and bool(runs),
+        f"samples={len(runs)} differing={differing}",
+    )
+
+    wrote = [
+        name for name, variants in runs.items() if variants["off"].report() is not None
+    ]
+    fields = [
+        f"{name}: {paragraph.debug_id}"
+        for name, variants in runs.items()
+        for paragraph in variants["off"].paragraphs.values()
+        if paragraph.segment_sentence_start is not None
+        or paragraph.segment_sentence_end is not None
+    ]
+    record(
+        "11c with the switch down nothing is written and no sidecar appears",
+        not wrote and not fields,
+        f"reports={wrote} fields={fields[:3]}",
+    )
+
+
+# --- 12 the switch up ---------------------------------------------------------
+
+
+def check_12_switch_on() -> None:
+    """Positive 12: the chain mechanism reaches its members and nothing else."""
+    runs = stub_runs()
+    spilled: list[str] = []
+    moved: list[str] = []
+    rewritten: list[str] = []
+    fields: list[str] = []
+    strategies: dict[str, str] = {}
+    compared = 0
+    claimed_total = 0
+    for name, variants in runs.items():
+        off = variants["off"].paragraphs
+        on = variants["on"].paragraphs
+        # Every claimed member, against the piece of its chain's translation
+        # the backfill cut for it. Read out of the sidecar rather than out of
+        # the paragraph, so the two have to agree.
+        claimed = {
+            member["debug_id"]: entry["translation"][
+                member["segment"]["start"] : member["segment"]["end"]
+            ]
+            for entry in (variants["on"].report() or {}).get("chains", ())
+            for member in entry["members"]
+        }
+        # Not every sample carries a chain; the detector is reluctant by
+        # design. The corpus as a whole has to carry one, which the count
+        # below asserts.
+        claimed_total += len(claimed)
+        for debug_id, paragraph in on.items():
+            before = off.get(debug_id)
+            if before is None:
+                spilled.append(f"{name}: {debug_id} appeared out of nowhere")
+                continue
+            if debug_id in claimed:
+                if paragraph.unicode != claimed[debug_id]:
+                    moved.append(
+                        f"{name}: {debug_id} does not carry the piece its chain "
+                        f"was cut into"
+                    )
+                if paragraph.unicode != before.unicode:
+                    rewritten.append(debug_id)
+                if (
+                    paragraph.segment_sentence_start is None
+                    or paragraph.segment_sentence_end is None
+                ):
+                    fields.append(f"{name}: {debug_id} carries no sentence range")
+                continue
+            compared += 1
+            if paragraph.unicode != before.unicode:
+                spilled.append(f"{name}: {debug_id} changed without being claimed")
+            if (
+                paragraph.segment_sentence_start is not None
+                or paragraph.segment_sentence_end is not None
+            ):
+                fields.append(f"{name}: {debug_id} carries a range it never earned")
+        for entry in (variants["on"].report() or {}).get("chains", ()):
+            strategies[entry["pair_class"] or "unclassed"] = entry["strategy"]
+
+        if len(off) != len(on) or len(variants["on"].document.page) != len(
+            variants["off"].document.page
+        ):
+            spilled.append(f"{name}: the paragraph or page count moved")
+
+    record(
+        "12a a paragraph outside a chain is translated exactly as with the switch down",
+        not spilled and compared > 0,
+        f"compared={compared} problems={spilled[:3]}",
+    )
+    record(
+        "12b every claimed member carries the piece its chain was cut into",
+        not moved and bool(rewritten) and claimed_total > 0,
+        f"claimed={claimed_total} rewritten={len(rewritten)} problems={moved[:3]}",
+    )
+    record(
+        "12c the sentence range is written for claimed members and for nobody else",
+        not fields,
+        f"problems={fields[:3]}",
+    )
+    expected = {
+        pair_class: backfill.strategy_for_pair_class(pair_class, config())
+        for pair_class in strategies
+    }
+    record(
+        "12d each chain is cut by the strategy its pair class declares",
+        bool(strategies) and strategies == expected,
+        f"observed={strategies} declared={expected}",
+    )
+
+
+# --- 13 the escape hatch ------------------------------------------------------
+
+
+def check_13_escalation() -> None:
+    """Negative 13: a chain the pass cannot see through goes back, and says so."""
+    from babeldoc.magazine import chain_translation
+
+    checkpoints = [
+        (name, path)
+        for name, path in chained_checkpoints()
+        if any(
+            paragraph.chain_id
+            for page in read_checkpoint(path).page
+            for paragraph in page.pdf_paragraph
+        )
+    ]
+    if not checkpoints:
+        record("13 a chain that cannot be merged goes back to the old path", False, "")
+        return
+    name, checkpoint = checkpoints[0]
+
+    def bearing(stage) -> None:
+        """Make the first member of every chain carry a placeholder.
+
+        Only on the first preparation of a paragraph, which is the chain pass:
+        the escalated member is prepared a second time by the per paragraph
+        path, and that preparation has to be the untouched one.
+        """
+        translator = stage.il_translator
+        original = translator.pre_translate_paragraph
+        seen: set[int] = set()
+
+        def patched(paragraph, tracker, page_font_map, xobj_font_map):
+            text, translate_input = original(
+                paragraph, tracker, page_font_map, xobj_font_map
+            )
+            first = id(paragraph) not in seen
+            seen.add(id(paragraph))
+            if (
+                first
+                and translate_input is not None
+                and getattr(paragraph, "chain_index", None) == 0
+            ):
+                translate_input.placeholders = [object()]
+            return text, translate_input
+
+        translator.pre_translate_paragraph = patched
+
+    refusing_calls = {"count": 0}
+
+    def refusing(stage) -> None:  # noqa: ARG001 - the hook takes the stage
+        """Make every redistribution fail the conservation law."""
+
+        def patched(merge, translated, language, strategy, backfill_config=None):  # noqa: ARG001 - stands in for the real signature
+            refusing_calls["count"] += 1
+            raise backfill.ChainBackfillError("injected conservation failure")
+
+        chain_translation.backfill.redistribute = patched
+
+    outcomes: dict[str, dict] = {}
+    for label, prepare, reason in (
+        ("placeholder", bearing, chain_translation.ESCALATION_PLACEHOLDER),
+        ("conservation", refusing, chain_translation.ESCALATION_CONSERVATION),
+    ):
+        original_redistribute = chain_translation.backfill.redistribute
+        try:
+            run = run_stub(checkpoint, f"{name}.{label}", True, prepare=prepare)
+        finally:
+            chain_translation.backfill.redistribute = original_redistribute
+        report = run.report() or {}
+        reasons = {entry["reason"] for entry in report.get("escalated", ())}
+        repeated = sorted(
+            {debug_id for debug_id in run.calls if run.calls.count(debug_id) > 1}
+        )
+        fields = [
+            paragraph.debug_id
+            for paragraph in run.paragraphs.values()
+            if paragraph.segment_sentence_start is not None
+        ]
+        members = {
+            member["debug_id"]
+            for entry in report.get("escalated", ())
+            for member in entry["members"]
+        }
+        translated = [
+            debug_id for debug_id in members if debug_id not in set(run.calls)
+        ]
+        outcomes[label] = {
+            "counts": report.get("counts"),
+            "reasons": sorted(reasons),
+            "expected": reason,
+            "repeated": repeated,
+            "fields": fields,
+            "untranslated": sorted(translated),
+        }
+
+    broken = [
+        f"{label}: {outcome}"
+        for label, outcome in outcomes.items()
+        if outcome["reasons"] != [outcome["expected"]]
+        or outcome["counts"]["merged"] != 0
+        or outcome["counts"]["escalated"] != outcome["counts"]["chains"]
+        or outcome["repeated"]
+        or outcome["fields"]
+        or outcome["untranslated"]
+    ]
+    record(
+        "13a an unmergeable chain is escalated by reason and left to the old path",
+        not broken and refusing_calls["count"] > 0,
+        f"outcomes={ascii_only(json.dumps(outcomes))[:400]}",
+    )
+
+
+# --- 14 the enforcement point -------------------------------------------------
+
+
+def check_14_single_enforcement() -> None:
+    """Negative 14: the claim is the only thing that hides a member."""
+    source = (ROOT / TRANSLATOR).read_text(encoding="utf-8")
+    stage_source = (ROOT / STAGE_MODULE).read_text(encoding="utf-8")
+
+    # Every mechanism that could take a paragraph asks the claim, and the two
+    # pairings ask after they have chosen their endpoints, never before.
+    asks = {
+        "process_cross_page_paragraph": "declines_cross_page",
+        "process_cross_column_paragraph": "declines_cross_column",
+        "process_page": "claims_paragraph",
+    }
+    missing = [name for name, call in asks.items() if call not in source]
+    selection = source.find("last_curr_paragraph = curr_body_paragraphs[-1]")
+    decline = source.find("chain_claim.declines_cross_page")
+    column_selection = source.find("p2 = body_paragraphs[idx + 1]")
+    column_decline = source.find("chain_claim.declines_cross_column")
+    record(
+        "14a every mechanism asks the claim, and the pairings ask after selecting",
+        not missing
+        and 0 < selection < decline
+        and 0 < column_selection < column_decline,
+        f"missing={missing} cross_page={selection}<{decline} "
+        f"cross_column={column_selection}<{column_decline}",
+    )
+
+    # The filter that feeds the selection is untouched, so a claimed member is
+    # still what the endpoint role is decided from.
+    record(
+        "14b the endpoint filter knows nothing about chains",
+        "chain" not in source.split("def _filter_paragraphs")[1].split("def ")[0]
+        and "chain"
+        not in source.split("def _should_translate_paragraph")[1].split("def ")[0],
+        "",
+    )
+
+    # The stage module never reaches into the per paragraph translator, which is
+    # the file this batch is forbidden to change.
+    record(
+        "14c the stage module leaves the per paragraph translator alone",
+        "il_translator.py" not in stage_source
+        and "ILTranslator(" not in stage_source
+        and TRANSLATOR not in stage_source,
+        "",
+    )
+
+
+# --- 15 the sidecar -----------------------------------------------------------
+
+
+def check_15_sidecar() -> None:
+    """Positive 15: the sidecar carries what the intermediate language cannot."""
+    runs = stub_runs()
+    missing: list[str] = []
+    for name, variants in runs.items():
+        report = variants["on"].report()
+        if report is None:
+            missing.append(f"{name}: no report")
+            continue
+        for key in ("counts", "chains", "escalated", "skips", "language", "applied"):
+            if key not in report:
+                missing.append(f"{name}: no {key}")
+        if not report.get("applied"):
+            missing.append(f"{name}: the plan was never applied")
+    record(
+        "15 the run leaves a sidecar naming every chain, escalation and skip",
+        not missing and bool(runs),
+        f"samples={len(runs)} problems={missing[:3]}",
     )
 
 
@@ -1186,8 +2058,16 @@ def main() -> int:
             harness.fast_skip(name)
     else:
         check_07_real_chains()
+        with _timer.phase("stub runs"):
+            stub_runs()
+        check_10_stub_corpus()
+        check_11_switch_off()
+        check_12_switch_on()
+        check_13_escalation()
+        check_15_sidecar()
 
     check_08_change_scope()
+    check_14_single_enforcement()
     check_09_sweep()
 
     failed = [name for name, ok, _ in _results if not ok]

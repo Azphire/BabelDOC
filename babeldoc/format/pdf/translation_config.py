@@ -220,6 +220,7 @@ class TranslationConfig:
         magazine_checkpoint: bool = False,
         magazine_page_classify: bool = False,
         magazine_chain_detect: bool = False,
+        magazine_chain_translate: bool = False,
     ):
         self.translator = translator
         self.term_extraction_translator = term_extraction_translator or translator
@@ -345,6 +346,8 @@ class TranslationConfig:
         self.magazine_page_classify = magazine_page_classify
         # Magazine extension: run the article chain detection stage.
         self.magazine_chain_detect = magazine_chain_detect
+        # Magazine extension: translate the members of a chain as one unit.
+        self.magazine_chain_translate = magazine_chain_translate
 
         if self.skip_translation or self.only_parse_generate_pdf:
             self.auto_extract_glossary = False
