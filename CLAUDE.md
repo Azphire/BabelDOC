@@ -28,6 +28,7 @@
 - checkpoint 规范形式为再序列化形式(to_xml(from_xml(x)));字节级比对一律先归一化。读取旧 checkpoint 时容忍 xsdata ConverterWarning,不容忍错误(W-B0-02)。
 - 两层 IR 原则:Article IR(段落级 chainId)权威规定统一翻译边界;Page IR(pageKind→policy)只提供排版/修复策略与链构建软先验,冲突时段落级证据优先。
 - VLM 兜底消融关账:四档模型均无 policy 级增益,enabled 保持 false;基础设施保留,待区域语义或分布漂移场景重启评估。
+- 评估协议:A/B 对比以缓存冻结重放为准;模型采样方差(gpt-4o temp=0 实测非确定)为已知局限;显著性主张需三跑设计。
 - corpus/registry.user.json 是语料语义元数据的唯一权威,仅用户可编辑;机器会话从它重建 manifest,任何批次的 git diff 中出现 registry.user.json 即违规,除非当次 prompt 显式声明用户已更新登记。toc_pages 为 PDF 文件页序(1-based)中出现目录版面的页码列表,空列表表示节选不含目录页。page_labels.json 的值为可接受类型名数组(1-based 页号),机器判定命中数组任一元素即计为一致;多元素用于单页多版面(如目录与卷首语同版)与复合拼版页。
 
 ## 3. 目录与代码落点约定

@@ -24,7 +24,8 @@ answers no to everything, which is what the switch being off leaves behind.
 
 A chain the pass cannot see through goes back to the per paragraph path whole,
 and the reason is written down: a member carrying a formula or style
-placeholder, a member the pipeline will not hand over text for, an engine that
+placeholder, a member the pipeline will not hand over text for, a chain whose
+answer would be larger than the engine will return in one piece, an engine that
 returns nothing usable, or a cut that fails the conservation law. Falling back
 is the escape hatch, not a way of swallowing the error, so every one of them
 appears in the report and in the counts, which is what makes ``chains ==
@@ -53,6 +54,7 @@ ESCALATION_CONSERVATION = "conservation_failure"
 ESCALATION_MEMBER = "member_unavailable"
 ESCALATION_TRANSLATION = "translation_unavailable"
 ESCALATION_INCOMPLETE = "incomplete_chain"
+ESCALATION_TOKEN_BUDGET = "token_budget"
 
 # Why a member is invisible to everything else.
 SKIP_REASON = "chain_member"
@@ -366,6 +368,24 @@ class ChainPlan:
             )
         except backfill.ChainBackfillError as error:
             self._escalate(chain_id, members, ESCALATION_MEMBER, str(error))
+            return
+
+        # Asked before the request, because the engine truncates an answer that
+        # reaches its output ceiling instead of refusing it, and a truncated
+        # answer is a string the redistribution would happily cut up. Splitting
+        # the chain instead would put a page break back inside the sentence the
+        # chain exists to close, so an oversized chain goes back whole.
+        source_tokens = self.translator.calc_token_count(merge.text)
+        if backfill.over_output_token_budget(source_tokens, self.config):
+            self._escalate(
+                chain_id,
+                members,
+                ESCALATION_TOKEN_BUDGET,
+                f"{source_tokens} source token(s) estimate "
+                f"{backfill.estimated_output_tokens(source_tokens, self.config)} "
+                f"output token(s), over the budget of "
+                f"{self.config.output_token_budget}",
+            )
             return
         try:
             translated = self._translate(merge.text, prepared, chain_tracker)

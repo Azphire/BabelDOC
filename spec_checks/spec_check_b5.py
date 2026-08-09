@@ -32,6 +32,15 @@ once against this session's translator and once against the one git holds at
 batch-b5.1 -- which is what makes that last claim a comparison rather than an
 assertion of intent.
 
+Assertions 01g, 01h and 13b were added by batch B6's maintenance pass and cover
+the output token budget: a chain whose answer would be larger than the engine
+returns in one piece is handed back to the per paragraph path rather than sent
+and truncated. 01g states that the size at which that happens is read from the
+configuration, 01h that the budget stays under the ceiling the engine itself
+applies, and 13b drives the exemption through the real stage with the budget
+lowered until no chain fits, then asserts the members carry the per paragraph
+translation.
+
 CJK fixtures are built from code points instead of being written out, because
 assertion 08c requires every file this batch changes to be ASCII.
 
@@ -44,6 +53,7 @@ from __future__ import annotations
 
 import json
 import logging
+import math
 import os
 import re
 import shutil
@@ -79,6 +89,12 @@ PYTHON = sys.executable
 MODULE = "babeldoc/magazine/chain_backfill.py"
 STAGE_MODULE = "babeldoc/magazine/chain_translation.py"
 TRANSLATOR = "babeldoc/format/pdf/document_il/midend/il_translator_llm_only.py"
+
+# Where the engine's own output ceiling is written. The chain budget is
+# measured against it rather than against a number this gate repeats.
+ENGINE = "babeldoc/translator/translator.py"
+ENGINE_CEILING_PATTERN = r"max_tokens\s*=\s*(\d+)"
+
 CONFIG = "configs/chain_translation.json"
 CONFIG_PATH = ROOT / CONFIG
 OUTPUT_DIR = ROOT / "examples" / "output" / "b5"
@@ -249,6 +265,19 @@ def write_config(name: str, mutate) -> str:
     path = _tmp_root / f"{name}.json"
     path.write_text(json.dumps(raw), encoding="utf-8")
     return str(path)
+
+
+def first_over_budget(candidate: backfill.BackfillConfig) -> int:
+    """The smallest merged chain, in source tokens, this configuration refuses.
+
+    Walked rather than solved, so the boundary comes out of the module's own
+    decision instead of out of this file's arithmetic.
+    """
+    ceiling = candidate.output_token_budget + 1
+    for count in range(math.ceil(ceiling / candidate.output_token_ratio) + 2):
+        if backfill.over_output_token_budget(count, candidate):
+            return count
+    raise AssertionError(f"nothing is over the budget of {candidate}")
 
 
 def refuses(path: str) -> str | None:
@@ -515,6 +544,55 @@ def check_01_configuration() -> None:
         len(marked) == 3 and len(unmarked) == 1 and not literals,
         f"substituted={marked} shipped_marks={unmarked} "
         f"vocabulary={len(vocabulary)} literals={literals}",
+    )
+
+    # The output budget is a threshold like any other: the size at which a
+    # chain stops being sent as one unit moves when the file moves, down with
+    # the budget and up as the coefficient falls.
+    def halve_budget(raw_config: dict) -> None:
+        raw_config["output_token_budget"] = raw_config["output_token_budget"] // 2
+
+    def halve_ratio(raw_config: dict) -> None:
+        raw_config["output_token_ratio"] = raw_config["output_token_ratio"] / 2
+
+    shipped_config = config()
+    smaller = backfill.load_backfill_config(write_config("small_budget", halve_budget))
+    cheaper = backfill.load_backfill_config(write_config("small_ratio", halve_ratio))
+    limits = {
+        name: first_over_budget(candidate)
+        for name, candidate in (
+            ("shipped", shipped_config),
+            ("halved_budget", smaller),
+            ("halved_ratio", cheaper),
+        )
+    }
+    monotone = all(
+        backfill.estimated_output_tokens(count, shipped_config)
+        <= backfill.estimated_output_tokens(count + 1, shipped_config)
+        for count in range(0, limits["shipped"] + 2)
+    )
+    record(
+        "01g the output budget and its coefficient are read from the file",
+        limits["halved_budget"] < limits["shipped"] < limits["halved_ratio"]
+        and not backfill.over_output_token_budget(0, shipped_config)
+        and monotone,
+        f"first_over={limits}",
+    )
+
+    # The budget exists because the engine truncates rather than refusing, so
+    # it has to sit under the ceiling the engine actually applies. That number
+    # is read out of the engine rather than repeated here, so this fails if
+    # upstream moves it.
+    ceilings = [
+        int(found)
+        for found in re.findall(
+            ENGINE_CEILING_PATTERN, (ROOT / ENGINE).read_text(encoding="utf-8")
+        )
+    ]
+    record(
+        "01h the chain budget stays under the ceiling the engine applies",
+        bool(ceilings) and shipped_config.output_token_budget < min(ceilings),
+        f"budget={shipped_config.output_token_budget} engine_ceilings={ceilings}",
     )
 
 
@@ -1738,7 +1816,25 @@ def check_11_switch_off() -> None:
 
 
 def check_12_switch_on() -> None:
-    """Positive 12: the chain mechanism reaches its members and nothing else."""
+    """Positive 12: under the stub the chain mechanism reaches its members only.
+
+    Assertion 12a states that a paragraph outside a chain comes out exactly as
+    it does with the switch down. That is a property of this stub rather than of
+    the pass: the stub's answer is a pure function of the item's own input, so
+    recomposing the batch around a paragraph cannot change what comes back for
+    it. Under a real engine it does not hold. The batch-b5.3 smoke measured it
+    on Courier -- 15 of 123 paragraphs changed between the two modes, 4 chain
+    members and 11 neighbours, all on the three pages whose batches were
+    recomposed -- and could not separate that drift from the engine's own
+    repeat noise, gpt-4o at temperature 0 having returned three different
+    answers to one re-sent prompt.
+
+    So what 12a pins down is the enforcement point, not the output: exactly the
+    claimed members are withheld, nothing else is withheld with them, and the
+    per paragraph path is otherwise entered as it was. The consequence a
+    recomposed batch has on a real engine's wording is a measurement, reported
+    in examples/output/b5_smoke/smoke.report.md, and is not asserted here.
+    """
     runs = stub_runs()
     spilled: list[str] = []
     moved: list[str] = []
@@ -1884,16 +1980,44 @@ def check_13_escalation() -> None:
 
         chain_translation.backfill.redistribute = patched
 
+    def starved(stage) -> None:  # noqa: ARG001 - the hook takes the stage
+        """Shrink the output budget until no chain fits inside it.
+
+        Nothing else is touched, so the chain is one an engine could translate
+        and the pass declines to send only because the answer would come back
+        cut off. The corpus carries no chain that reaches the shipped budget,
+        which is why the budget rather than the chain is what moves here.
+        """
+        original = chain_translation.backfill.load_backfill_config
+
+        def patched(path: str | None = None) -> backfill.BackfillConfig:
+            return replace(original(path), output_token_budget=1)
+
+        chain_translation.backfill.load_backfill_config = patched
+
+    # What the switch-down run made of the same document. An escalated member
+    # has to carry exactly this: a chain that is handed back is translated by
+    # the per paragraph path, not written a truncated piece of a chain answer.
+    switched_off = stub_runs().get(name, {}).get("off")
+    off_texts = (
+        {debug_id: paragraph.unicode for debug_id, paragraph in switched_off.paragraphs.items()}
+        if switched_off is not None
+        else {}
+    )
+
     outcomes: dict[str, dict] = {}
     for label, prepare, reason in (
         ("placeholder", bearing, chain_translation.ESCALATION_PLACEHOLDER),
         ("conservation", refusing, chain_translation.ESCALATION_CONSERVATION),
+        ("token_budget", starved, chain_translation.ESCALATION_TOKEN_BUDGET),
     ):
         original_redistribute = chain_translation.backfill.redistribute
+        original_loader = chain_translation.backfill.load_backfill_config
         try:
             run = run_stub(checkpoint, f"{name}.{label}", True, prepare=prepare)
         finally:
             chain_translation.backfill.redistribute = original_redistribute
+            chain_translation.backfill.load_backfill_config = original_loader
         report = run.report() or {}
         reasons = {entry["reason"] for entry in report.get("escalated", ())}
         repeated = sorted(
@@ -1912,6 +2036,13 @@ def check_13_escalation() -> None:
         translated = [
             debug_id for debug_id in members if debug_id not in set(run.calls)
         ]
+        written = run.paragraphs
+        diverged = sorted(
+            debug_id
+            for debug_id in members
+            if debug_id in off_texts
+            and written[debug_id].unicode != off_texts[debug_id]
+        )
         outcomes[label] = {
             "counts": report.get("counts"),
             "reasons": sorted(reasons),
@@ -1919,6 +2050,7 @@ def check_13_escalation() -> None:
             "repeated": repeated,
             "fields": fields,
             "untranslated": sorted(translated),
+            "diverged": diverged,
         }
 
     broken = [
@@ -1930,11 +2062,27 @@ def check_13_escalation() -> None:
         or outcome["repeated"]
         or outcome["fields"]
         or outcome["untranslated"]
+        or outcome["diverged"]
     ]
     record(
         "13a an unmergeable chain is escalated by reason and left to the old path",
-        not broken and refusing_calls["count"] > 0,
+        not broken and refusing_calls["count"] > 0 and bool(off_texts),
         f"outcomes={ascii_only(json.dumps(outcomes))[:400]}",
+    )
+
+    # The oversized case specifically: the chain is handed back whole, and its
+    # members carry the per paragraph translation rather than a piece cut out
+    # of an answer the engine would have truncated.
+    budget = outcomes[chain_translation.ESCALATION_TOKEN_BUDGET]
+    record(
+        "13b a chain too large to answer in one piece is exempted, not truncated",
+        budget["reasons"] == [chain_translation.ESCALATION_TOKEN_BUDGET]
+        and budget["counts"]["merged"] == 0
+        and budget["counts"]["escalated"] > 0
+        and not budget["diverged"]
+        and not budget["untranslated"]
+        and not budget["fields"],
+        f"outcome={ascii_only(json.dumps(budget))[:300]}",
     )
 
 

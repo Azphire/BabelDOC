@@ -43,6 +43,7 @@ from __future__ import annotations
 
 import bisect
 import json
+import math
 import unicodedata
 from collections.abc import Mapping
 from collections.abc import Sequence
@@ -74,7 +75,13 @@ SENTENCE_MIN_CHARS_KEY = "sentence_min_chars"
 RANGE_SUFFIX = "_allowed_range"
 
 REQUIRED_PARAMETERS: frozenset[str] = frozenset(
-    {SENTENCE_MIN_CHARS_KEY, "snap_search_ratio", "snap_search_min_chars"}
+    {
+        SENTENCE_MIN_CHARS_KEY,
+        "snap_search_ratio",
+        "snap_search_min_chars",
+        "output_token_budget",
+        "output_token_ratio",
+    }
 )
 
 # The redistributions this module implements. A strategy named by the
@@ -183,6 +190,8 @@ class BackfillConfig:
     sentence_min_chars: int
     snap_search_ratio: float
     snap_search_min_chars: int
+    output_token_budget: int
+    output_token_ratio: float
     join: JoinRules
     profiles: Mapping[str, LanguageProfile]
     default_profile: str
@@ -566,6 +575,8 @@ def load_backfill_config(path: str | None = None) -> BackfillConfig:
         sentence_min_chars=default_min_chars,
         snap_search_ratio=float(parameters["snap_search_ratio"]),
         snap_search_min_chars=int(parameters["snap_search_min_chars"]),
+        output_token_budget=int(parameters["output_token_budget"]),
+        output_token_ratio=float(parameters["output_token_ratio"]),
         join=_parse_join(raw.get(JOIN_KEY), source),
         profiles=profiles,
         default_profile=default_profile,
@@ -601,6 +612,26 @@ def strategy_for_pair_class(pair_class: str | None, config: BackfillConfig) -> s
     if pair_class is None:
         return config.default_strategy
     return config.strategy_by_pair_class.get(pair_class, config.default_strategy)
+
+
+def estimated_output_tokens(source_tokens: int, config: BackfillConfig) -> int:
+    """How large an answer a merged chain of this size is expected to draw.
+
+    The estimate rounds up, so a chain sitting exactly on the budget is treated
+    as reaching it rather than as fitting.
+    """
+    return math.ceil(max(0, source_tokens) * config.output_token_ratio)
+
+
+def over_output_token_budget(source_tokens: int, config: BackfillConfig) -> bool:
+    """Whether a chain this size is too large to be sent as one unit.
+
+    The engine answers with a fixed output ceiling and truncates rather than
+    refusing when a request reaches it, and a truncated answer is still a
+    string the redistribution would cut up and write back. The size is
+    therefore judged before the request, from the merged source alone.
+    """
+    return estimated_output_tokens(source_tokens, config) > config.output_token_budget
 
 
 # --- merge ------------------------------------------------------------------
