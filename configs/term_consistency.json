@@ -10,7 +10,7 @@
   "connector_max_chars": 3,
   "connector_max_chars_allowed_range": "0..8",
 
-  "candidate_min_chars": 2,
+  "candidate_min_chars": 3,
   "candidate_min_chars_allowed_range": "1..8",
 
   "candidate_max_chars": 8,

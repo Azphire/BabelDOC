@@ -346,7 +346,12 @@ def stub_brief_reply(index: int = 0) -> str:
         {
             "title_translation": f"{BRIEF_MARK}-title-{index}",
             "register": f"{BRIEF_MARK}-register-{index}",
-            "names": [f"{BRIEF_MARK}-name"],
+            "names": [
+                {
+                    context_module.NAME_SOURCE_FIELD: f"{BRIEF_MARK}-source",
+                    context_module.NAME_TARGET_FIELD: f"{BRIEF_MARK}-rendering",
+                }
+            ],
         }
     )
 
@@ -416,8 +421,22 @@ def check_01_templates() -> None:
 # --- 02 the reply contract ----------------------------------------------------
 
 
+def named(source: str, target: str) -> dict:
+    """One entry of the names array, in the shape the template asks for."""
+    return {
+        context_module.NAME_SOURCE_FIELD: source,
+        context_module.NAME_TARGET_FIELD: target,
+    }
+
+
 def check_02_reply_contract() -> None:
-    """Positive 2: a reply is the object it was asked for, or it is refused."""
+    """Positive 2: a reply is the object it was asked for, or it is refused.
+
+    A name is a source-and-rendering pair from batch-b6.3 on. A bare list could
+    only say which names occur, and the batch-b6.2 smoke found the engine
+    reading such a list as an instruction to leave those names untranslated, so
+    the shape the contract enforces is the pair.
+    """
     config = context_module.load_context_config()
 
     accepted = context_module.interpret_reply(
@@ -425,7 +444,12 @@ def check_02_reply_contract() -> None:
             {
                 "title_translation": " a title ",
                 "register": "a register",
-                "names": ["One", " Two ", ""],
+                "names": [
+                    named("One", " First "),
+                    named(" Two ", "Second"),
+                    named("", "nothing"),
+                    named("no rendering", "  "),
+                ],
             }
         ),
         config,
@@ -434,7 +458,8 @@ def check_02_reply_contract() -> None:
         "02a a well formed reply becomes a brief, trimmed and without empties",
         not accepted.failed
         and accepted.brief.title_translation == "a title"
-        and accepted.brief.names == ("One", "Two"),
+        and [name.as_record() for name in accepted.brief.names]
+        == [named("One", "First"), named("Two", "Second")],
         f"brief={None if accepted.failed else accepted.brief.as_record()}",
     )
 
@@ -457,8 +482,21 @@ def check_02_reply_contract() -> None:
         "names not an array": json.dumps(
             {"title_translation": "t", "register": "r", "names": "One"}
         ),
-        "a name that is not a string": json.dumps(
+        "a name that is not an object": json.dumps(
+            {"title_translation": "t", "register": "r", "names": ["One"]}
+        ),
+        "a name that is the old bare form": json.dumps(
             {"title_translation": "t", "register": "r", "names": [1]}
+        ),
+        "a name missing its rendering": json.dumps(
+            {
+                "title_translation": "t",
+                "register": "r",
+                "names": [{context_module.NAME_SOURCE_FIELD: "One"}],
+            }
+        ),
+        "a name whose rendering is not a string": json.dumps(
+            {"title_translation": "t", "register": "r", "names": [named("One", 1)]}
         ),
     }
     accepted_wrongly = [
@@ -477,7 +515,13 @@ def check_02_reply_contract() -> None:
             {
                 "title_translation": "t" * (config.max_title_translation_chars + 50),
                 "register": "r" * (config.max_register_chars + 50),
-                "names": [f"n{index}" for index in range(config.max_names + 10)],
+                "names": [
+                    named(
+                        "s" * (config.max_name_chars + 20),
+                        "t" * (config.max_name_chars + 20),
+                    )
+                    for _ in range(config.max_names + 10)
+                ],
             }
         ),
         config,
@@ -487,8 +531,32 @@ def check_02_reply_contract() -> None:
         not long.failed
         and len(long.brief.title_translation) == config.max_title_translation_chars
         and len(long.brief.register) == config.max_register_chars
-        and len(long.brief.names) == config.max_names,
+        and len(long.brief.names) == config.max_names
+        and all(
+            len(name.source) == config.max_name_chars
+            and len(name.suggested_translation) == config.max_name_chars
+            for name in long.brief.names
+        ),
         f"title={len(long.brief.title_translation) if not long.failed else 0}",
+    )
+
+    # The rendering the brief states reaches the batch as a pair, arrow and
+    # all: a batch that was given only the source form is the batch-b6.2
+    # defect this micro batch exists to remove.
+    work = WorkingDir(_tmp_root / "rendering")
+    plan = context_module.ArticleContextPlan(
+        work,
+        client=context_module.CachedBriefClient(
+            transport=RecordingTransport(), cache=MemoryCache(), identity="gate"
+        ),
+        policy_of=SYNTHETIC_POLICY.get,
+    )
+    rendered = plan._context_text(accepted.brief)
+    record(
+        "02e a stated rendering reaches the batch beside the name it renders",
+        f"One{context_module.NAME_ARROW}First" in rendered
+        and f"Two{context_module.NAME_ARROW}Second" in rendered,
+        f"line={[line for line in rendered.splitlines() if 'One' in line][:1]}",
     )
 
 

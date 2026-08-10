@@ -27,13 +27,19 @@ fence, no explanation. The object carries exactly these three fields.
   reader, whether it is reportage, argument, interview or narrative, and
   anything about its voice a translator would otherwise have to guess at
   separately for every batch.
-- "names": an array of the personal, place and organisation names occurring in
-  the text above, each written exactly as it appears there. Source form only:
-  do not translate them here. An empty array when the text carries none.
+- "names": the proper names -- of people, places, organisations, peoples,
+  species and anything else that names one particular thing -- which occur in
+  the text above and will have to read the same way everywhere in the article.
+  Each entry is an object with two fields: "source", the name exactly as it
+  appears above, and "suggested_translation", how that name should read in
+  {target_language} every time it occurs. Give a {target_language} rendering
+  wherever one is idiomatic; where the convention in {target_language} is to
+  leave the name in its original script, repeat the source form as the
+  suggested translation. An empty array when the text carries no such name.
 
 Judge only from the text above. Do not add a name, a claim or a subject that
 does not appear in it, and do not describe the brief itself.
 
 This is the shape of the answer, not its content:
 
-{"title_translation": "...", "register": "...", "names": ["...", "..."]}
+{"title_translation": "...", "register": "...", "names": [{"source": "...", "suggested_translation": "..."}]}

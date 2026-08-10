@@ -23,6 +23,16 @@ reading of one opening paragraph binding on the rest of the document, and would
 launder a guess into a decision. The names in a brief are guidance to the same
 model in the same request, which is a different thing entirely.
 
+That distinction is worth restating now that a name carries a rendering rather
+than only a source form, because a source-and-target pair is exactly the shape
+of a glossary entry. What separates them is not the shape but the standing: a
+brief binds the requests of one article, it is discarded when the run ends, it
+is never consulted by anything but the batch it accompanies, and nothing
+downstream may read it as a decision about the document's terminology. The
+pair is there because a bare list could not say how a name reads, and the
+batch-b6.2 smoke found the engine reading a bare list as an instruction to
+leave those names untranslated.
+
 Everything degrades to nothing. An article whose brief cannot be produced --
 the request failed, the reply was not the object it was asked for, the article
 carries no text to describe -- is translated exactly as it would have been with
@@ -78,6 +88,20 @@ BODY_LABELS_KEY = "body_labels"
 # Fields a reply must carry. Anything else in the object is ignored.
 REQUIRED_REPLY_FIELDS = ("title_translation", "register", "names")
 
+# Fields one entry of the names array must carry: the name as the source has
+# it, and how it is to read in the target language wherever it occurs.
+NAME_SOURCE_FIELD = "source"
+NAME_TARGET_FIELD = "suggested_translation"
+NAME_FIELDS = (NAME_SOURCE_FIELD, NAME_TARGET_FIELD)
+
+# What separates the two halves of a rendering where the brief states one. The
+# template that carries the brief explains what the arrow means; this is the
+# punctuation it is written with and not a sentence of prompt.
+NAME_ARROW = " -> "
+
+# What separates one rendering from the next in the same line.
+NAME_SEPARATOR = "; "
+
 # Why an article carries no brief.
 REASON_NO_SOURCE = "no_source_text"
 REASON_REFUSED = "reply_refused"
@@ -121,18 +145,40 @@ def load_context_config(path: str | None = None) -> BriefConfig:
 
 
 @dataclass(frozen=True)
+class NameRendering:
+    """One proper name, and how it is to read everywhere in its article.
+
+    A bare list of names turned out to be read as an instruction to leave them
+    alone: the batch-b6.2 smoke found source forms surviving into the target
+    text where the engine had rendered them perfectly well without a brief. A
+    name is carried as a pair because the question a brief is answering is not
+    which names occur but how each one reads, and a pair can state that a name
+    stays in its source script without that being the only thing it can say.
+    """
+
+    source: str
+    suggested_translation: str
+
+    def as_record(self) -> dict:
+        return {
+            "source": self.source,
+            "suggested_translation": self.suggested_translation,
+        }
+
+
+@dataclass(frozen=True)
 class ArticleBrief:
     """What one article was described as, in the target language."""
 
     title_translation: str
     register: str
-    names: tuple[str, ...]
+    names: tuple[NameRendering, ...]
 
     def as_record(self) -> dict:
         return {
             "title_translation": self.title_translation,
             "register": self.register,
-            "names": list(self.names),
+            "names": [name.as_record() for name in self.names],
         }
 
 
@@ -245,10 +291,18 @@ def interpret_reply(reply: str, config: BriefConfig) -> BriefOutcome:
         if not isinstance(payload[field_name], str):
             return BriefOutcome(reason=f"{field_name} is not a string")
     names = payload["names"]
-    if not isinstance(names, list) or any(
-        not isinstance(name, str) for name in names
-    ):
-        return BriefOutcome(reason="names is not an array of strings")
+    if not isinstance(names, list):
+        return BriefOutcome(reason="names is not an array")
+    for entry in names:
+        if not isinstance(entry, dict):
+            return BriefOutcome(
+                reason=f"a names entry is a {type(entry).__name__}, expected an object"
+            )
+        absent = sorted(set(NAME_FIELDS) - set(entry))
+        if absent:
+            return BriefOutcome(reason=f"a names entry is missing {absent}")
+        if any(not isinstance(entry[field], str) for field in NAME_FIELDS):
+            return BriefOutcome(reason="a names entry field is not a string")
 
     return BriefOutcome(
         brief=ArticleBrief(
@@ -256,10 +310,23 @@ def interpret_reply(reply: str, config: BriefConfig) -> BriefOutcome:
                 : config.max_title_translation_chars
             ],
             register=payload["register"].strip()[: config.max_register_chars],
+            # An entry naming nothing, or saying nothing about how it reads,
+            # is dropped rather than refused: the brief is still usable and
+            # there is nothing to render for that one name.
             names=tuple(
-                name.strip()[: config.max_name_chars]
-                for name in names[: config.max_names]
-                if name.strip()
+                rendering
+                for rendering in (
+                    NameRendering(
+                        source=entry[NAME_SOURCE_FIELD].strip()[
+                            : config.max_name_chars
+                        ],
+                        suggested_translation=entry[NAME_TARGET_FIELD].strip()[
+                            : config.max_name_chars
+                        ],
+                    )
+                    for entry in names[: config.max_names]
+                )
+                if rendering.source and rendering.suggested_translation
             ),
         )
     )
@@ -501,7 +568,10 @@ class ArticleContextPlan:
             {
                 "title_translation": brief.title_translation,
                 "register": brief.register,
-                "names": "; ".join(brief.names),
+                "names": NAME_SEPARATOR.join(
+                    name.source + NAME_ARROW + name.suggested_translation
+                    for name in brief.names
+                ),
             },
             working_dir=self.working_dir,
         )
