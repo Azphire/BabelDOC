@@ -222,6 +222,7 @@ class TranslationConfig:
         magazine_chain_detect: bool = False,
         magazine_chain_translate: bool = False,
         magazine_article_group: bool = False,
+        magazine_article_context: bool = False,
     ):
         self.translator = translator
         self.term_extraction_translator = term_extraction_translator or translator
@@ -351,6 +352,9 @@ class TranslationConfig:
         self.magazine_chain_translate = magazine_chain_translate
         # Magazine extension: group the pages of the document into articles.
         self.magazine_article_group = magazine_article_group
+        # Magazine extension: describe each article once and carry the
+        # description on every batch that belongs to it.
+        self.magazine_article_context = magazine_article_context
 
         if self.skip_translation or self.only_parse_generate_pdf:
             self.auto_extract_glossary = False

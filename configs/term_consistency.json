@@ -1,0 +1,24 @@
+{
+  "description": "Term consistency measurement, used by tools/term_consistency.py and by nothing on the translation path. A source term is a run of capitalised words in the source text of one article -- the general proxy for a proper name that needs no word list and names no publication -- qualifying when it occurs at least min_article_occurrences times, is at least source_term_min_chars long, and occurs at least once away from a sentence opening, so that an ordinary word capitalised only because a sentence began with it does not qualify. Sentence openings are read from terminal_punctuation in chain_detection.json rather than from anything written here. connector_max_chars lets a short lower case word stand between two capitalised ones inside a single term, which is how a name that carries a particle stays one term; the bound is a length rather than a list of words, so no language's function words are written down. A term's rendering is measured without an alignment: the translations of the paragraphs the term occurs in are searched for a substring between candidate_min_chars and candidate_max_chars long that appears in as many of them as possible and in no more than candidate_max_outside_share of that article's other translated paragraphs, and the consistency of the term is the share of its own paragraphs that carry that substring. A term whose occurrences all fall in one paragraph carries no information about consistency and is reported as unmeasured rather than as consistent. max_terms_per_article bounds the work per article, keeping the terms that occur most often.",
+
+  "min_article_occurrences": 3,
+  "min_article_occurrences_allowed_range": "2..50",
+
+  "source_term_min_chars": 4,
+  "source_term_min_chars_allowed_range": "2..40",
+
+  "connector_max_chars": 3,
+  "connector_max_chars_allowed_range": "0..8",
+
+  "candidate_min_chars": 2,
+  "candidate_min_chars_allowed_range": "1..8",
+
+  "candidate_max_chars": 8,
+  "candidate_max_chars_allowed_range": "2..24",
+
+  "candidate_max_outside_share": 0.25,
+  "candidate_max_outside_share_allowed_range": "0.0..1.0",
+
+  "max_terms_per_article": 40,
+  "max_terms_per_article_allowed_range": "1..500"
+}

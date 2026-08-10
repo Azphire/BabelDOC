@@ -110,17 +110,22 @@ INSTANCE_UNASSIGNED = (1, 2, 3)
 INSTANCE_FIRST_START = 4
 
 # Paths this session may change. The delivery report is committed alongside the
-# code, as batch-b5.3's smoke report was, so the output tree is inside the scope
-# for documents; nothing else under it is tracked.
+# code, as batch-b5.3's smoke report was, so one document under the output tree
+# is inside the scope -- named file by file rather than by prefix, because
+# everything else that lands under examples/output/ is a produced artefact and a
+# prefix would let one be committed without anyone noticing.
 ALLOWED_PREFIXES = (
     "babeldoc/magazine/",
     "configs/",
     "tools/",
     "spec_checks/",
     "plans/",
-    "examples/output/",
 )
-ALLOWED_FILES = {"CLAUDE.md", "UPSTREAM_DIFF.md"}
+ALLOWED_FILES = {
+    "CLAUDE.md",
+    "UPSTREAM_DIFF.md",
+    "examples/output/b6/article_grouping.report.md",
+}
 
 # The upstream files PLAN_B6 names. This session hooks into two of them and
 # leaves the third alone, so the assertion is a subset rather than an equality.

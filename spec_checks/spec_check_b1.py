@@ -89,6 +89,9 @@ NAME_REFERENCE_ALLOW_LIST = NAME_DEFINITION_FILES | {
     # and writes neither: the article map is a sidecar.
     "babeldoc/magazine/article_builder.py",
     "spec_checks/spec_check_b6.py",
+    # Builds synthetic pages carrying a page kind, so that the grouping the
+    # brief pass depends on is driven by a policy the gate controls.
+    "spec_checks/spec_check_b6_2.py",
     # Reads the page kind to show why a boundary was scored or masked.
     "tools/chain_report.py",
     "spec_checks/spec_check_b2.py",

@@ -38,6 +38,25 @@ def _stage_config() -> tuple[tuple[str, ...], int]:
 
 
 @lru_cache(maxsize=1)
+def sidecar_products() -> tuple[dict[str, str], ...]:
+    """Return every declared sidecar a magazine run may leave in its working dir.
+
+    A checkpoint holds the intermediate language; a sidecar holds what a stage
+    found that the frozen schema has nowhere for. Both are products of a run, so
+    both are declared, and a stage writing only a sidecar is in the inventory
+    even though it appends no checkpoint.
+    """
+    with _CONFIG_PATH.open(encoding="utf-8") as f:
+        config = json.load(f)
+    return tuple(dict(entry) for entry in config.get("sidecars", ()))
+
+
+def sidecar_names() -> tuple[str, ...]:
+    """Filenames of the declared sidecars, in declaration order."""
+    return tuple(entry["name"] for entry in sidecar_products())
+
+
+@lru_cache(maxsize=1)
 def _converter() -> XMLConverter:
     return XMLConverter()
 

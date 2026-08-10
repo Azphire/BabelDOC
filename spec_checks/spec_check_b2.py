@@ -114,7 +114,11 @@ NETWORK_MARKERS = ("openai", "requests", "httpx")
 # its entirety. B3 introduced the project's first model call point in one named
 # module, so the assertion now states the same thing about every other module:
 # the client is one declared file rather than something that spread.
-MODEL_CLIENT_MODULES = ("vlm_client.py",)
+# B6 adds the second one, for the article brief. It opens no transport of its
+# own -- it asks the run's own translation engine -- but it is a model call
+# point and is declared as such rather than kept out of the list by wording.
+# That it imports no network library is asserted by spec_check_b6_2.
+MODEL_CLIENT_MODULES = ("vlm_client.py", "article_context.py")
 
 CJK_RANGES = ((0x3000, 0x303F), (0x4E00, 0x9FFF), (0xFF00, 0xFFEF))
 

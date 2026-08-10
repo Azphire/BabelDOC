@@ -41,6 +41,7 @@ from dataclasses import field
 from pathlib import Path
 
 from babeldoc.magazine import chain_backfill as backfill
+from babeldoc.magazine.article_context import EMPTY_CONTEXT
 from babeldoc.magazine.chain_signals import CLASS_LABELS_KEY
 from babeldoc.magazine.chain_signals import load_chain_config
 
@@ -263,8 +264,9 @@ def pair_class_of(labels: list[str | None], class_labels: dict) -> str | None:
 class ChainPlan:
     """Every chain of one document, merged and cut, waiting to be written back."""
 
-    def __init__(self, translator):
+    def __init__(self, translator, article_context=EMPTY_CONTEXT):
         self.translator = translator
+        self.article_context = article_context
         self.config = backfill.load_backfill_config()
         self.class_labels = load_chain_config()[CLASS_LABELS_KEY]
         self.language = translator.translation_config.lang_out
@@ -433,11 +435,19 @@ class ChainPlan:
                 "layout_label": getattr(members[0].paragraph, "layout_label", None),
             }
         ]
+        # A chain never crosses an article, so its members share one brief and
+        # the first of them answers for all: a chain is one batch of its
+        # article and carries what the article's other batches carry. A chain
+        # with no brief asks for exactly the prompt it asked for before, the
+        # argument not being passed at all rather than passed as nothing.
+        brief = self.article_context.brief_for_page_index(members[0].page_index)
+        extra = {"article_brief": brief} if brief else {}
         prompt = translator._build_llm_prompt(
             json_input_str=json.dumps(json_input, ensure_ascii=False, indent=2),
             title_paragraph=shared.first_paragraph,
             local_title_paragraph=shared.recent_title_paragraph,
             batch_text_for_glossary_matching=merged,
+            **extra,
         )
         llm_trackers = [
             member.tracker.new_llm_translate_tracker() for member in members
@@ -535,6 +545,8 @@ class ChainPlan:
         return path
 
 
-def plan_chain_translation(translator, docs, tracker) -> ChainPlan:
+def plan_chain_translation(
+    translator, docs, tracker, article_context=EMPTY_CONTEXT
+) -> ChainPlan:
     """Merge, translate and cut every chain in ``docs``, writing nothing yet."""
-    return ChainPlan(translator).plan(docs, tracker)
+    return ChainPlan(translator, article_context).plan(docs, tracker)

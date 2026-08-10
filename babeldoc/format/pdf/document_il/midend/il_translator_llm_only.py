@@ -31,6 +31,9 @@ from babeldoc.format.pdf.document_il.utils.paragraph_helper import (
 )
 from babeldoc.format.pdf.translation_config import TitleContextSnapshot
 from babeldoc.format.pdf.translation_config import TranslationConfig
+from babeldoc.magazine.article_context import EMPTY_CONTEXT
+from babeldoc.magazine.article_context import ArticleContext
+from babeldoc.magazine.article_context import plan_article_context
 from babeldoc.magazine.chain_translation import EMPTY_CLAIM
 from babeldoc.magazine.chain_translation import ChainClaim
 from babeldoc.magazine.chain_translation import plan_chain_translation
@@ -216,10 +219,18 @@ class ILTranslatorLLMOnly:
             # machinery starts, and its members are written back after that
             # machinery has finished, so the context it builds as it goes reads
             # the same source text either way.
+            # Described before anything is translated, chains included: a
+            # brief is what every batch of one article carries, and a chain is
+            # one such batch.
+            article_context = EMPTY_CONTEXT
+            if self.translation_config.magazine_article_context:
+                article_context = plan_article_context(self, docs)
             chain_plan = None
             chain_claim = EMPTY_CLAIM
             if self.translation_config.magazine_chain_translate:
-                chain_plan = plan_chain_translation(self, docs, tracker)
+                chain_plan = plan_chain_translation(
+                    self, docs, tracker, article_context
+                )
                 chain_claim = chain_plan.claim
             with PriorityThreadPoolExecutor(
                 max_workers=self.translation_config.pool_max_workers,
@@ -235,6 +246,7 @@ class ILTranslatorLLMOnly:
                         executor2,
                         translated_ids,
                         chain_claim,
+                        article_context,
                     )
                     # Cross-column detection per page (after cross-page processing)
                     for page in docs.page:
@@ -246,6 +258,7 @@ class ILTranslatorLLMOnly:
                             executor2,
                             translated_ids,
                             chain_claim,
+                            article_context,
                         )
                     for page in docs.page:
                         self.process_page(
@@ -256,6 +269,7 @@ class ILTranslatorLLMOnly:
                             executor2,
                             translated_ids,
                             chain_claim,
+                            article_context,
                         )
             if chain_plan is not None:
                 chain_plan.apply(pbar)
@@ -382,6 +396,7 @@ class ILTranslatorLLMOnly:
         executor2: PriorityThreadPoolExecutor | None = None,
         translated_ids: set[int] | None = None,
         chain_claim: ChainClaim = EMPTY_CLAIM,
+        article_context: ArticleContext = EMPTY_CONTEXT,
     ):
         """Process cross-page paragraphs by combining last body text paragraph of current page
         with first body text paragraph of next page.
@@ -394,6 +409,7 @@ class ILTranslatorLLMOnly:
             executor2: Secondary executor for fallback translation
             translated_ids: Set of already translated paragraph IDs
             chain_claim: Paragraphs the chain pass has already taken
+            article_context: Which article each page belongs to, and its brief
         """
         self.translation_config.raise_if_cancelled()
 
@@ -475,6 +491,11 @@ class ILTranslatorLLMOnly:
                 priority=1048576 - total_token_count,
                 paragraph_token_count=total_token_count,
                 mp_id=self.mid,
+                # A pair straddling two articles is part of neither, so it
+                # carries no brief.
+                article_brief=article_context.brief_for_page_pair(
+                    page_curr, page_next
+                ),
             )
 
             # Mark paragraphs as translated
@@ -490,6 +511,7 @@ class ILTranslatorLLMOnly:
         executor2: PriorityThreadPoolExecutor | None = None,
         translated_ids: set[int] | None = None,
         chain_claim: ChainClaim = EMPTY_CLAIM,
+        article_context: ArticleContext = EMPTY_CONTEXT,
     ):
         """Process cross-column paragraphs within the same page.
 
@@ -513,6 +535,7 @@ class ILTranslatorLLMOnly:
 
         # Build font maps once for the whole page
         page_font_map, page_xobj_font_map = self._build_font_maps(page)
+        article_brief = article_context.brief_for_page(page)
 
         for idx in range(len(body_paragraphs) - 1):
             p1 = body_paragraphs[idx]
@@ -554,6 +577,7 @@ class ILTranslatorLLMOnly:
                 priority=1048576 - total_token_count,
                 paragraph_token_count=total_token_count,
                 mp_id=self.mid,
+                article_brief=article_brief,
             )
 
             translated_ids.add(id(p1))
@@ -568,8 +592,15 @@ class ILTranslatorLLMOnly:
         executor2: PriorityThreadPoolExecutor | None = None,
         translated_ids: set | None = None,
         chain_claim: ChainClaim = EMPTY_CLAIM,
+        article_context: ArticleContext = EMPTY_CONTEXT,
     ):
         self.translation_config.raise_if_cancelled()
+        # A running title belongs to the article it was printed in: the heading
+        # of the feature above is not context for the one starting here, so an
+        # article opening on this page starts without one.
+        if article_context.opens_article(page):
+            self.shared_context_cross_split_part.recent_title_paragraph = None
+        article_brief = article_context.brief_for_page(page)
         page_font_map = {}
         for font in page.pdf_font:
             page_font_map[font.font_id] = font
@@ -617,7 +648,16 @@ class ILTranslatorLLMOnly:
             # chain pass claims still contributes the running title it would
             # have contributed. It carries its source text until the chain
             # pieces are written back, which is after every batch has run.
-            if paragraph.layout_label == "title":
+            # Which labels count as a heading is the article context's to
+            # declare while it is in force, so that one declaration serves the
+            # chain detector, the grouping walk and the running title alike.
+            # With no context in force this stage's own label decides, which is
+            # what a document translated with the switch down carries.
+            if article_context.declares_titles:
+                is_running_title = article_context.is_running_title(paragraph)
+            else:
+                is_running_title = paragraph.layout_label == "title"
+            if is_running_title:
                 self.shared_context_cross_split_part.recent_title_paragraph = (
                     self.shared_context_cross_split_part.snapshot_title_paragraph(
                         paragraph
@@ -648,6 +688,7 @@ class ILTranslatorLLMOnly:
                     priority=1048576 - total_token_count,
                     paragraph_token_count=total_token_count,
                     mp_id=self.mid,
+                    article_brief=article_brief,
                 )
                 paragraphs = []
                 total_token_count = 0
@@ -666,6 +707,7 @@ class ILTranslatorLLMOnly:
                 priority=1048576 - total_token_count,
                 paragraph_token_count=total_token_count,
                 mp_id=self.mid,
+                article_brief=article_brief,
             )
 
     def translate_paragraph(
@@ -679,6 +721,7 @@ class ILTranslatorLLMOnly:
         executor: PriorityThreadPoolExecutor | None = None,
         paragraph_token_count: int = 0,
         mp_id: int = 0,
+        article_brief: str | None = None,
     ):
         """Translate a paragraph using pre and post processing functions."""
         self.translation_config.raise_if_cancelled()
@@ -747,6 +790,7 @@ class ILTranslatorLLMOnly:
                 title_paragraph=title_paragraph,
                 local_title_paragraph=local_title_paragraph,
                 batch_text_for_glossary_matching=batch_text_for_glossary_matching,
+                article_brief=article_brief,
             )
 
             for llm_translate_tracker in llm_translate_trackers:
@@ -934,6 +978,7 @@ class ILTranslatorLLMOnly:
         title_paragraph: TitleContextSnapshot | None,
         local_title_paragraph: TitleContextSnapshot | None,
         batch_text_for_glossary_matching: str,
+        article_brief: str | None = None,
     ) -> str:
         """Build LLM prompt using a single template for easier maintenance."""
         # Build role block, honoring custom_system_prompt if provided.
@@ -970,6 +1015,12 @@ class ILTranslatorLLMOnly:
                 contextual_lines.append(
                     f"{hint_idx}. The most recent title is: {local_title_paragraph.unicode}"
                 )
+                hint_idx += 1
+
+        # The brief arrives rendered, from the template that states it; this
+        # only gives it its place in the numbered list.
+        if article_brief:
+            contextual_lines.append(f"{hint_idx}. {article_brief}")
 
         if contextual_lines:
             contextual_hints_block = (
