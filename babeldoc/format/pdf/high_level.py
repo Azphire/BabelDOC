@@ -52,6 +52,7 @@ from babeldoc.format.pdf.split_manager import SplitManager
 from babeldoc.format.pdf.translation_config import TranslateResult
 from babeldoc.format.pdf.translation_config import TranslationConfig
 from babeldoc.format.pdf.translation_config import WatermarkOutputMode
+from babeldoc.magazine.article_builder import ArticleBuilder
 from babeldoc.magazine.chain_builder import ChainBuilder
 from babeldoc.magazine.checkpoint import dump_checkpoint
 from babeldoc.magazine.page_classifier import PageClassifier
@@ -1009,6 +1010,13 @@ def _do_translate_single(
         logger.debug(f"finish chain builder from {temp_pdf_path}")
         if translation_config.magazine_checkpoint:
             dump_checkpoint(docs, translation_config, "chain_builder")
+
+    # No checkpoint of its own: the stage writes nothing into the intermediate
+    # language, so the document after it is the one the chain builder's
+    # checkpoint already holds. What it finds goes to its sidecar.
+    if translation_config.magazine_article_group:
+        ArticleBuilder(translation_config).process(docs)
+        logger.debug(f"finish article builder from {temp_pdf_path}")
 
     translate_engine = translation_config.translator
     term_extraction_engine = translation_config.get_term_extraction_translator()

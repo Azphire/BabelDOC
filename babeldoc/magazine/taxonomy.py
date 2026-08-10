@@ -61,10 +61,20 @@ POLICY_KEYS = frozenset({"chain_eligible", "translate", "repair_profile"})
 # flag existed still loads, and every consumer sees the declared default rather
 # than a missing key, so a downstream stage never has to ask whether a policy
 # carries a flag at all.
-OPTIONAL_POLICY_DEFAULTS: dict[str, object] = {"starts_article": False}
+#
+# The two article flags answer different questions and are declared separately.
+# ``starts_article`` is the chain detector's prior: running text does not
+# continue into this page. ``opens_article`` is where an article begins. They
+# agree on the flowing page types and diverge on every piece of furniture, a
+# contents page being somewhere text begins without being somewhere an article
+# does, so one flag cannot carry both readings.
+OPTIONAL_POLICY_DEFAULTS: dict[str, object] = {
+    "starts_article": False,
+    "opens_article": False,
+}
 
 # Optional flags whose value is a boolean, validated as such when declared.
-OPTIONAL_BOOLEAN_POLICY_KEYS = frozenset({"starts_article"})
+OPTIONAL_BOOLEAN_POLICY_KEYS = frozenset({"starts_article", "opens_article"})
 
 
 class TaxonomyError(ConfigError):

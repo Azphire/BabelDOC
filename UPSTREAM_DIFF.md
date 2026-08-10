@@ -38,6 +38,10 @@ for the same reason a modification is.
 | `babeldoc/format/pdf/document_il/midend/il_translator_llm_only.py` | `ILTranslatorLLMOnly.process_cross_column_paragraph` | Add `chain_claim: ChainClaim = EMPTY_CLAIM` and drop a same-page pair whose either half the chain pass has claimed, by the same rule and at the same point as the cross-page pairing. | B5 |
 | `babeldoc/format/pdf/document_il/midend/il_translator_llm_only.py` | `ILTranslatorLLMOnly.process_page` | Add `chain_claim: ChainClaim = EMPTY_CLAIM` and skip a claimed paragraph so it takes no slot in a batch. The existing running-title snapshot is moved above that skip, which leaves it reached by a claimed member as well; the move is behaviour preserving with the switch down, the statements it crosses being the batch accumulation, which neither reads nor writes the snapshot. | B5 |
 
+| `babeldoc/format/pdf/translation_config.py` | `TranslationConfig.__init__` | Add `magazine_article_group: bool = False` constructor parameter and store it on the instance; gates the article grouping stage. | B6 |
+| `babeldoc/format/pdf/high_level.py` | module imports | Import `ArticleBuilder` from `babeldoc.magazine.article_builder`. | B6 |
+| `babeldoc/format/pdf/high_level.py` | `_do_translate_single` | Run `ArticleBuilder(...).process(docs)` after the `chain_builder` checkpoint and before term extraction, gated by `magazine_article_group`. No checkpoint follows it: the stage writes nothing into the intermediate language, so the document after it is the one the preceding checkpoint already holds. No effect while the switch is off. | B6 |
+
 ## Couplings
 
 Extension code calling upstream symbols it does not change. Each row names the

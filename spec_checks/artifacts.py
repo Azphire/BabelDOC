@@ -155,6 +155,17 @@ MODES: dict[str, dict] = {
         "magazine_page_classify": True,
         "magazine_chain_detect": True,
     },
+    # The same again with article grouping on. It is its own mode rather than a
+    # flag on the one above because the pair is what the switch-down comparison
+    # is made of.
+    "grouped": {
+        "layout_model": "onnx",
+        "skip_translation": True,
+        "magazine_checkpoint": True,
+        "magazine_page_classify": True,
+        "magazine_chain_detect": True,
+        "magazine_article_group": True,
+    },
 }
 
 _fingerprint: str | None = None
