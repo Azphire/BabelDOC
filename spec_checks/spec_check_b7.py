@@ -1148,10 +1148,43 @@ def check_09a_never_writes_decisions() -> None:
                         faults.append(
                             f"{path.name}:{node.lineno} opens a decisions file to write"
                         )
-    skeleton = ROOT / "reviews" / f"Courier-en{hitl.DECISIONS_SUFFIX}"
-    if skeleton.exists() and json.loads(skeleton.read_text(encoding="utf-8")) != {}:
-        faults.append("the committed skeleton is not empty")
+    # And the committed ruling is not one a machine could have produced. It began
+    # as an empty skeleton; once a human has written into it, emptiness no longer
+    # says anything, and what does is that every entry disagrees with the draft
+    # beside it. A machine adopting its own previous draft as a ruling -- the
+    # failure the two files exist to prevent -- would agree with it everywhere.
+    faults.extend(ruling_disagrees_with_draft("Courier-en"))
     record("check_09a_never_writes_decisions", not faults, "; ".join(faults))
+
+
+def ruling_disagrees_with_draft(sample: str) -> list[str]:
+    """Faults where a committed ruling merely restates the machine's own draft."""
+    ruling_path = ROOT / "reviews" / f"{sample}{hitl.DECISIONS_SUFFIX}"
+    draft_path = ROOT / "reviews" / f"{sample}{hitl.REVIEW_SUFFIX}"
+    if not ruling_path.exists():
+        return []
+    ruling = json.loads(ruling_path.read_text(encoding="utf-8"))
+    if not any(ruling.get(section) for section in hitl.sections()):
+        return []
+    if not draft_path.exists():
+        return [f"{ruling_path.name} rules on something with no draft beside it"]
+    draft = json.loads(draft_path.read_text(encoding="utf-8"))
+    auto = {
+        row["source"]: row.get("auto_target")
+        for row in draft.get(hitl.TERMS_SECTION, ())
+    }
+    machine = {
+        str(row["page"]): row.get("machine_kind")
+        for row in draft.get(hitl.PAGE_KINDS_SECTION, ())
+    }
+    faults = []
+    for source, target in (ruling.get(hitl.TERMS_SECTION) or {}).items():
+        if source in auto and auto[source] == target:
+            faults.append(f"ruled term {source!r} restates the draft")
+    for page, kind in (ruling.get(hitl.PAGE_KINDS_SECTION) or {}).items():
+        if machine.get(page) == kind:
+            faults.append(f"ruled page {page} restates the draft")
+    return faults
 
 
 def check_09b_comments_ascii() -> None:

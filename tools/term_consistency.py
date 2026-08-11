@@ -22,7 +22,9 @@ case is visible rather than silent.
 A translation is read with its markup taken out. The rich text tags and formula
 placeholders the translator carries through a request are not text anyone reads,
 so a candidate drawn from them measures nothing; the batch-b6.3 sweep found one
-term measured by a style tag under every setting of the tuning grid.
+term measured by a style tag under every setting of the tuning grid. A candidate
+must also begin on a word rather than on a mark, for the same reason: the same
+sweep left two terms measured by a comma and the clause after it.
 
 A source term is a run of capitalised words -- the general proxy for a proper
 name, needing no word list and naming no publication -- that occurs often
@@ -52,6 +54,7 @@ import json
 import logging
 import re
 import sys
+import unicodedata
 import warnings
 from collections import defaultdict
 from dataclasses import dataclass
@@ -247,14 +250,29 @@ def terms_in(text: str, terminals, config: Config) -> list[tuple[tuple[str, ...]
 # --- target side: how consistently a term was rendered ------------------------
 
 
+def opens_with_punctuation(piece: str) -> bool:
+    """Whether a candidate begins on a mark rather than on a word.
+
+    A substring starting at a comma or a dash is a piece of the sentence around
+    a term, not a piece of the term: the mark before a rendering says where the
+    clause broke, and two paragraphs sharing one share the punctuation habit of
+    the model rather than a name. The batch-b6.3 sweep left two such candidates
+    standing under every setting of the tuning grid.
+    """
+    return bool(piece) and unicodedata.category(piece[0]).startswith("P")
+
+
 def candidates_from(text: str, config: Config) -> set[str]:
-    """Every whitespace-free substring of the declared lengths."""
+    """Every whitespace-free substring of the declared lengths, word-initial."""
     found: set[str] = set()
     for length in range(config.candidate_min_chars, config.candidate_max_chars + 1):
         for start in range(0, len(text) - length + 1):
             piece = text[start : start + length]
-            if not any(char.isspace() for char in piece):
-                found.add(piece)
+            if any(char.isspace() for char in piece):
+                continue
+            if opens_with_punctuation(piece):
+                continue
+            found.add(piece)
     return found
 
 

@@ -112,6 +112,9 @@ NAME_REFERENCE_ALLOW_LIST = NAME_DEFINITION_FILES | {
     # this one module.
     "babeldoc/magazine/drop_cap.py",
     "spec_checks/spec_check_b7_2.py",
+    # B7.3 reads both pairs out of the frozen evidence of the two-pass smoke to
+    # assert what a ruling reached; it writes nothing and touches no document.
+    "spec_checks/spec_check_b7_3.py",
 }
 
 # Upstream files carried over from B0, still uncommitted in the working tree.

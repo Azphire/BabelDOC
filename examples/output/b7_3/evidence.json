@@ -1,0 +1,975 @@
+{
+  "sample": "Courier-en",
+  "decisions": {
+    "terms": {
+      "Marcelo Silva de Sousa": "马塞洛·席尔瓦·德·索萨",
+      "Lagipoiva Cherelle Jackson": "拉吉波伊瓦·谢雷尔·杰克逊",
+      "Daniel Robinson": "丹尼尔·罗宾逊",
+      "David Jefferson": "大卫·杰斐逊"
+    },
+    "page_kinds": {
+      "1": "toc"
+    },
+    "drop_caps": {
+      "p4#3": "keep",
+      "p5#5": "flatten",
+      "p7#8": "flatten"
+    }
+  },
+  "totals": {
+    "paragraphs": 132,
+    "unchanged": 114,
+    "changed": 18,
+    "by_cause": {
+      "ruled_term": 7,
+      "ruled_term_batch": 3,
+      "brief_scope": 8,
+      "prompt_not_recorded": 0,
+      "unexplained": 0
+    }
+  },
+  "changed_paragraphs": [
+    {
+      "paragraph": "p1#2",
+      "page": 1,
+      "layout_label": "plain text",
+      "ruled_terms": [],
+      "article_membership_changed": true,
+      "brief_changed": false,
+      "prompt_sections_changed": [
+        "## Contextual Hints for Better Translation"
+      ],
+      "source": "Indigenous knowledge has long been ignored, and sometimes even opposed, by science. Now, however, it is receiving renewed interest — and it’s about time: the consequences of global mechanization, along with crises linked to climate change and health issues, are encouraging us to assign new importance to knowledge, practices and expertise that have long been marginalized.",
+      "pass1": "土著知识长期以来被科学忽视，有时甚至遭到反对。然而，现在它重新引起了人们的兴趣——这正是时候：全球机械化的后果，以及与气候变化和健康问题相关的危机，促使我们重新重视那些长期被边缘化的知识、实践和专业技能。",
+      "pass2": "土著知识长期以来被科学忽视，有时甚至受到反对。然而，现在它重新引起了人们的兴趣——这正是时候：全球机械化的后果，以及与气候变化和健康问题相关的危机，促使我们重新重视那些长期被边缘化的知识、实践和专业技能。",
+      "cause": "brief_scope"
+    },
+    {
+      "paragraph": "p1#4",
+      "page": 1,
+      "layout_label": "plain text",
+      "ruled_terms": [],
+      "article_membership_changed": true,
+      "brief_changed": false,
+      "prompt_sections_changed": [
+        "## Contextual Hints for Better Translation"
+      ],
+      "source": "UNESCO has long been a pioneer in this field. Through its Local and Indigenous Knowledge Systems (LINKS) programme, the Organization promotes exchanges between Indigenous knowledge-holders and scientists, particularly in the fields of ecology, water management and natural risk prevention. Biosphere reserves are a concrete example of this approach — they bring together researchers and local communities to develop solutions adapted to specific territories. This is a major shift, as science is no longer seen as a single, top- down form of knowledge, but as a dialogue between knowledge systems. Furthermore, the Convention for the Safeguarding of the Intangible Cultural Heritage protects practices, techniques and skills passed down from generation to generation, recognizing their universal dimension.",
+      "pass1": "联合国教科文组织长期以来在这一领域处于先锋地位。通过其地方和土著知识系统 (LINKS) 计划，该组织促进土著知识持有者与科学家之间的交流，特别是在生态学、水管理和自然风险预防领域。生物圈保护区是这一方法的具体例子——它们将研究人员和当地社区结合在一起，开发适应特定地区的解决方案。这是一个重大转变，因为科学不再被视为单一的、自上而下的知识形式，而是知识系统之间的对话。此外，《保护非物质文化遗产公约》保护代代相传的实践、技术和技能，承认其普遍性。",
+      "pass2": "联合国教科文组织长期以来在这一领域处于先锋地位。通过其地方和土著知识系统 (LINKS) 计划，该组织促进土著知识持有者与科学家之间的交流，特别是在生态学、水管理和自然风险预防领域。生物圈保护区是这一方法的具体例子——它们将研究人员和当地社区聚集在一起，开发适应特定地区的解决方案。这是一个重大转变，因为科学不再被视为单一的自上而下的知识形式，而是知识系统之间的对话。此外，《保护非物质文化遗产公约》保护代代相传的实践、技术和技能，承认其普遍性。",
+      "cause": "brief_scope"
+    },
+    {
+      "paragraph": "p1#5",
+      "page": 1,
+      "layout_label": "plain text",
+      "ruled_terms": [],
+      "article_membership_changed": true,
+      "brief_changed": false,
+      "prompt_sections_changed": [
+        "## Contextual Hints for Better Translation"
+      ],
+      "source": "Beyond providing empirical data, Indigenous knowledge challenges the very foundations of the scientific approach, whether in terms of the place of ethics, the relationship between humans and nature, or the long timeframe of observations. In agriculture, traditional medicine and climatology, this knowledge has already inspired major innovations, which are often more sustainable than purely technological solutions.",
+      "pass1": "土著知识不仅提供了实证数据，还挑战了科学方法的基础，无论是在伦理的位置、人类与自然的关系，还是观察的长时间框架方面。在农业、传统医学和气候学中，这些知识已经激发了重大创新，往往比纯粹的技术解决方案更具可持续性。",
+      "pass2": "除了提供实证数据外，土著知识还挑战了科学方法的基础，无论是在伦理的位置、人类与自然的关系，还是观察的长时间框架方面。在农业、传统医学和气候学中，这些知识已经激发了重大的创新，往往比纯粹的技术解决方案更具可持续性。",
+      "cause": "brief_scope"
+    },
+    {
+      "paragraph": "p1#6",
+      "page": 1,
+      "layout_label": "plain text",
+      "ruled_terms": [],
+      "article_membership_changed": true,
+      "brief_changed": false,
+      "prompt_sections_changed": [
+        "## Contextual Hints for Better Translation"
+      ],
+      "source": "But this recognition must be accompanied by guarantees — the free and informed consent of communities, equitable sharing of benefits, and protection against abusive appropriation. The objective is not simply to absorb Indigenous knowledge into mainstream science, but to promote cooperation for the benefit of all.",
+      "pass1": "但这种认可必须伴随保障措施——社区的自由和知情同意、利益的公平分享以及防止滥用占有的保护。目标不仅仅是将土著知识吸收到主流科学中，而是促进合作，以造福所有人。",
+      "pass2": "但这种认可必须伴随着保障措施——社区的自由和知情同意、利益的公平分享以及防止滥用占有的保护。目标不仅仅是将土著知识吸收到主流科学中，而是促进合作，以造福所有人。",
+      "cause": "brief_scope"
+    },
+    {
+      "paragraph": "p1#7",
+      "page": 1,
+      "layout_label": "plain text",
+      "ruled_terms": [],
+      "article_membership_changed": true,
+      "brief_changed": false,
+      "prompt_sections_changed": [
+        "## Contextual Hints for Better Translation"
+      ],
+      "source": "By promoting this knowledge, UNESCO is reminding us of the obvious — to understand and preserve the world, we have everything to gain by integrating the knowledge and traditions of all peoples. True science, and the ethics appropriate to our diverse world, are those that make room for all human expressions, in all their diversity.",
+      "pass1": "通过推广这种知识，联合国教科文组织提醒我们一个显而易见的事实——要理解和保护这个世界，我们可以通过整合所有民族的知识和传统而获益良多。真正的科学以及适合我们多元化世界的伦理，是那些为所有人类表达形式留出空间的科学和伦理。",
+      "pass2": "通过推广这些知识，联合国教科文组织提醒我们一个显而易见的事实——要理解和保护这个世界，我们可以通过整合所有民族的知识和传统而获益良多。真正的科学，以及适合我们多元化世界的伦理，是那些为所有人类表达形式留出空间的科学和伦理。",
+      "cause": "brief_scope"
+    },
+    {
+      "paragraph": "p1#12",
+      "page": 1,
+      "layout_label": "plain text",
+      "ruled_terms": [],
+      "article_membership_changed": true,
+      "brief_changed": false,
+      "prompt_sections_changed": [
+        "## Contextual Hints for Better Translation"
+      ],
+      "source": "A changing climate for Indigenous knowledge ....................................... 4",
+      "pass1": "土著知识的气候变化.4",
+      "pass2": "气候变化对土著知识的影响.4",
+      "cause": "brief_scope"
+    },
+    {
+      "paragraph": "p1#13",
+      "page": 1,
+      "layout_label": "plain text",
+      "ruled_terms": [
+        "Lagipoiva Cherelle Jackson"
+      ],
+      "article_membership_changed": true,
+      "brief_changed": false,
+      "prompt_sections_changed": [
+        "## Contextual Hints for Better Translation",
+        "## Glossary Tables"
+      ],
+      "source": "Lagipoiva Cherelle Jackson",
+      "pass1": "Lagipoiva Cherelle Jackson",
+      "pass2": "拉吉波伊瓦·谢雷尔·杰克逊",
+      "cause": "ruled_term"
+    },
+    {
+      "paragraph": "p1#14",
+      "page": 1,
+      "layout_label": "plain text",
+      "ruled_terms": [
+        "Marcelo Silva de Sousa"
+      ],
+      "article_membership_changed": true,
+      "brief_changed": false,
+      "prompt_sections_changed": [
+        "## Contextual Hints for Better Translation",
+        "## Glossary Tables"
+      ],
+      "source": "Brazil: lessons from the water people ..... 9 Marcelo Silva de Sousa",
+      "pass1": "巴西：水上人家的教训 ..... 9Marcelo Silva de Sousa",
+      "pass2": "巴西：水上人家的教训 ..... 9马塞洛·席尔瓦·德·索萨",
+      "cause": "ruled_term"
+    },
+    {
+      "paragraph": "p1#15",
+      "page": 1,
+      "layout_label": "plain text",
+      "ruled_terms": [
+        "Daniel Robinson",
+        "David Jefferson"
+      ],
+      "article_membership_changed": true,
+      "brief_changed": false,
+      "prompt_sections_changed": [
+        "## Contextual Hints for Better Translation",
+        "## Glossary Tables"
+      ],
+      "source": "When biopiracy takes root .................. 12 Daniel Robinson and David Jefferson",
+      "pass1": "当生物盗窃扎根时.12Daniel Robinson 和 David Jefferson",
+      "pass2": "当生物盗窃扎根时.12丹尼尔·罗宾逊和大卫·杰斐逊",
+      "cause": "ruled_term"
+    },
+    {
+      "paragraph": "p1#16",
+      "page": 1,
+      "layout_label": "plain text",
+      "ruled_terms": [],
+      "article_membership_changed": true,
+      "brief_changed": false,
+      "prompt_sections_changed": [
+        "## Contextual Hints for Better Translation",
+        "## Glossary Tables"
+      ],
+      "source": "China: the radiant health of traditional Dai medicine .................. 14 Yang Sha and Du Junzhi",
+      "pass1": "中国：传统傣族医学的健康光辉.14Yang Sha 和 Du Junzhi",
+      "pass2": "中国：传统傣族医学的光辉健康.14杨沙和杜俊志",
+      "cause": "brief_scope"
+    },
+    {
+      "paragraph": "p1#18",
+      "page": 1,
+      "layout_label": "plain text",
+      "ruled_terms": [],
+      "article_membership_changed": true,
+      "brief_changed": false,
+      "prompt_sections_changed": [
+        "## Contextual Hints for Better Translation",
+        "## Glossary Tables"
+      ],
+      "source": "The Sámi people, indispensable guardians of climate change ............... 20 Anna Ruohonen",
+      "pass1": "萨米人：气候变化不可或缺的守护者 ............... 20Anna Ruohonen",
+      "pass2": "萨米人，气候变化不可或缺的守护者 ............... 20Anna Ruohonen",
+      "cause": "brief_scope"
+    },
+    {
+      "paragraph": "p2#4",
+      "page": 2,
+      "layout_label": "figure_caption",
+      "ruled_terms": [],
+      "article_membership_changed": false,
+      "brief_changed": false,
+      "prompt_sections_changed": [
+        "## Glossary Tables"
+      ],
+      "source": "Work by Ecuadorian photographer Carolina Zambrano, embroidered with chambira fibres, a palm tree emblematic of Indigenous Amazonian craftsmanship.",
+      "pass1": "由厄瓜多尔摄影师Carolina Zambrano创作的作品，使用chambira纤维刺绣，这是一种象征亚马逊土著工艺的棕榈树材料。",
+      "pass2": "由厄瓜多尔摄影师Carolina Zambrano创作，使用chambira纤维刺绣，这是一种象征亚马逊土著工艺的棕榈树材料。",
+      "cause": "ruled_term_batch"
+    },
+    {
+      "paragraph": "p2#6",
+      "page": 2,
+      "layout_label": "title",
+      "ruled_terms": [
+        "Lagipoiva Cherelle Jackson"
+      ],
+      "article_membership_changed": false,
+      "brief_changed": false,
+      "prompt_sections_changed": [
+        "## Contextual Hints for Better Translation",
+        "## Glossary Tables"
+      ],
+      "source": "Lagipoiva Cherelle Jackson",
+      "pass1": "Lagipoiva Cherelle Jackson",
+      "pass2": "拉吉波伊瓦·谢雷尔·杰克逊",
+      "cause": "ruled_term"
+    },
+    {
+      "paragraph": "p2#7",
+      "page": 2,
+      "layout_label": "plain text",
+      "ruled_terms": [],
+      "article_membership_changed": false,
+      "brief_changed": false,
+      "prompt_sections_changed": [
+        "## Glossary Tables"
+      ],
+      "source": "Indigenous climate journalist from Samoa reporting for The Guardian on Pacific Island issues, she currently serves as Professor of Pacific Island Studies at Portland State University (United States).",
+      "pass1": "来自萨摩亚的原住民气候记者，为卫报报道太平洋岛屿问题，目前在美国波特兰州立大学担任太平洋岛屿研究教授。",
+      "pass2": "来自萨摩亚的原住民气候记者，为卫报报道太平洋岛屿问题，目前在波特兰州立大学（美国）担任太平洋岛屿研究教授。",
+      "cause": "ruled_term_batch"
+    },
+    {
+      "paragraph": "p5#8",
+      "page": 5,
+      "layout_label": "abandon",
+      "ruled_terms": [
+        "Marcelo Silva de Sousa"
+      ],
+      "article_membership_changed": false,
+      "brief_changed": false,
+      "prompt_sections_changed": [
+        "## Glossary Tables"
+      ],
+      "source": "Marcelo Silva de Sousa",
+      "pass1": "Marcelo Silva de Sousa",
+      "pass2": "马塞洛·席尔瓦·德·索萨",
+      "cause": "ruled_term"
+    },
+    {
+      "paragraph": "p7#13",
+      "page": 7,
+      "layout_label": "abandon",
+      "ruled_terms": [
+        "Daniel Robinson"
+      ],
+      "article_membership_changed": false,
+      "brief_changed": false,
+      "prompt_sections_changed": [
+        "## Glossary Tables"
+      ],
+      "source": "Daniel Robinson",
+      "pass1": "Daniel Robinson",
+      "pass2": "丹尼尔·罗宾逊",
+      "cause": "ruled_term"
+    },
+    {
+      "paragraph": "p7#14",
+      "page": 7,
+      "layout_label": "plain text",
+      "ruled_terms": [],
+      "article_membership_changed": false,
+      "brief_changed": false,
+      "prompt_sections_changed": [
+        "## Glossary Tables"
+      ],
+      "source": "Professor and Associate Dean of Research for the Faculty of Arts, University of New South Wales (Australia), his research focuses on the regulation of nature and knowledge.",
+      "pass1": "他是新南威尔士大学（澳大利亚）艺术学院的教授兼研究副院长，他的研究重点是自然和知识的监管。",
+      "pass2": "他是新南威尔士大学（澳大利亚）艺术学院的教授兼研究副院长，其研究重点是自然和知识的监管。",
+      "cause": "ruled_term_batch"
+    },
+    {
+      "paragraph": "p7#15",
+      "page": 7,
+      "layout_label": "title",
+      "ruled_terms": [
+        "David Jefferson"
+      ],
+      "article_membership_changed": false,
+      "brief_changed": false,
+      "prompt_sections_changed": [
+        "## Glossary Tables"
+      ],
+      "source": "David Jefferson",
+      "pass1": "David Jefferson",
+      "pass2": "大卫·杰斐逊",
+      "cause": "ruled_term"
+    }
+  ],
+  "terms": {
+    "Marcelo Silva de Sousa": [
+      {
+        "paragraph": "p1#14",
+        "page": 1,
+        "layout_label": "plain text",
+        "source": "Brazil: lessons from the water people ..... 9 Marcelo Silva de Sousa",
+        "pass1": "巴西：水上人家的教训 ..... 9Marcelo Silva de Sousa",
+        "pass2": "巴西：水上人家的教训 ..... 9马塞洛·席尔瓦·德·索萨",
+        "identical": false
+      },
+      {
+        "paragraph": "p5#8",
+        "page": 5,
+        "layout_label": "abandon",
+        "source": "Marcelo Silva de Sousa",
+        "pass1": "Marcelo Silva de Sousa",
+        "pass2": "马塞洛·席尔瓦·德·索萨",
+        "identical": false
+      }
+    ],
+    "Lagipoiva Cherelle Jackson": [
+      {
+        "paragraph": "p1#13",
+        "page": 1,
+        "layout_label": "plain text",
+        "source": "Lagipoiva Cherelle Jackson",
+        "pass1": "Lagipoiva Cherelle Jackson",
+        "pass2": "拉吉波伊瓦·谢雷尔·杰克逊",
+        "identical": false
+      },
+      {
+        "paragraph": "p2#6",
+        "page": 2,
+        "layout_label": "title",
+        "source": "Lagipoiva Cherelle Jackson",
+        "pass1": "Lagipoiva Cherelle Jackson",
+        "pass2": "拉吉波伊瓦·谢雷尔·杰克逊",
+        "identical": false
+      }
+    ],
+    "Daniel Robinson": [
+      {
+        "paragraph": "p1#15",
+        "page": 1,
+        "layout_label": "plain text",
+        "source": "When biopiracy takes root .................. 12 Daniel Robinson and David Jefferson",
+        "pass1": "当生物盗窃扎根时.12Daniel Robinson 和 David Jefferson",
+        "pass2": "当生物盗窃扎根时.12丹尼尔·罗宾逊和大卫·杰斐逊",
+        "identical": false
+      },
+      {
+        "paragraph": "p7#13",
+        "page": 7,
+        "layout_label": "abandon",
+        "source": "Daniel Robinson",
+        "pass1": "Daniel Robinson",
+        "pass2": "丹尼尔·罗宾逊",
+        "identical": false
+      }
+    ],
+    "David Jefferson": [
+      {
+        "paragraph": "p1#15",
+        "page": 1,
+        "layout_label": "plain text",
+        "source": "When biopiracy takes root .................. 12 Daniel Robinson and David Jefferson",
+        "pass1": "当生物盗窃扎根时.12Daniel Robinson 和 David Jefferson",
+        "pass2": "当生物盗窃扎根时.12丹尼尔·罗宾逊和大卫·杰斐逊",
+        "identical": false
+      },
+      {
+        "paragraph": "p7#15",
+        "page": 7,
+        "layout_label": "title",
+        "source": "David Jefferson",
+        "pass1": "David Jefferson",
+        "pass2": "大卫·杰斐逊",
+        "identical": false
+      }
+    ],
+    "biopiracy": [
+      {
+        "paragraph": "p1#15",
+        "page": 1,
+        "layout_label": "plain text",
+        "source": "When biopiracy takes root .................. 12 Daniel Robinson and David Jefferson",
+        "pass1": "当生物盗窃扎根时.12Daniel Robinson 和 David Jefferson",
+        "pass2": "当生物盗窃扎根时.12丹尼尔·罗宾逊和大卫·杰斐逊",
+        "identical": false
+      },
+      {
+        "paragraph": "p7#4",
+        "page": 7,
+        "layout_label": "plain text",
+        "source": "Not all commercial use of Indigenous knowledge linked to genetic resources constitutes biopiracy; some projects are mutually beneficial. For instance, the Indjalandji-Dhidhanu people in Australia have worked with researchers at the University of Queensland to build upon their Indigenous knowledge of spinifex, a hardy perennial tussock grass tradition- ally used for a variety of purposes. The collaborative research agreement includes provisions for benefit sharing. A spinoff company is now developing medical gels from cellulose nanofibers extracted from spinifex, and a composite material from",
+        "pass1": "并非所有与遗传资源相关的土著知识的商业使用都构成生物盗窃；有些项目是互利的。例如，澳大利亚的Indjalandji-Dhidhanu人就与昆士兰大学的研究人员合作，基于他们对传统上用于多种用途的耐旱多年生丛生草——针茅的土著知识进行研究。该合作研究协议包括利益分享的条款。现在，一家衍生公司正在开发从针茅中提取的纤维素纳米纤维制成的医用凝胶，并已为这种草的复合材料申请了专利。",
+        "pass2": "并非所有与遗传资源相关的土著知识的商业使用都构成生物盗窃；有些项目是互利的。例如，澳大利亚的Indjalandji-Dhidhanu人就与昆士兰大学的研究人员合作，基于他们对传统上用于多种用途的耐旱多年生丛生草——针茅的土著知识进行研究。该合作研究协议包括利益分享的条款。现在，一家衍生公司正在开发从针茅中提取的纤维素纳米纤维制成的医用凝胶，并已为这种草的复合材料申请了专利。",
+        "identical": true
+      },
+      {
+        "paragraph": "p7#5",
+        "page": 7,
+        "layout_label": "plain text",
+        "source": "However, there is criticism against biodiscovery as “free riding” on knowledge developed by Indigenous and other local peoples. When the role of their knowledge is not sufficiently recognized in scientific investigation, product development, or commercialization, and where the users of this knowledge do not appropriately share benefits with ancestral knowledge holders, it can be called “biopiracy”.",
+        "pass1": "然而，生物发现被批评为对原住民和其他地方人民所发展的知识的“搭便车”。当他们的知识在科学研究、产品开发或商业化中未得到充分认可，且知识使用者未能适当地与祖传知识持有者分享利益时，这种行为可被称为“生物盗窃”。",
+        "pass2": "然而，生物发现被批评为对原住民和其他地方人民所发展的知识的“搭便车”。当他们的知识在科学研究、产品开发或商业化中未得到充分认可，且知识使用者未能适当地与祖传知识持有者分享利益时，这种行为可被称为“生物盗窃”。",
+        "identical": true
+      },
+      {
+        "paragraph": "p7#11",
+        "page": 7,
+        "layout_label": "title",
+        "source": "When biopiracy takes root",
+        "pass1": "当生物盗窃扎根时",
+        "pass2": "当生物盗窃扎根时",
+        "identical": true
+      },
+      {
+        "paragraph": "p8#0",
+        "page": 8,
+        "layout_label": "abandon",
+        "source": "When biopiracy takes root | 13",
+        "pass1": "当生物盗窃扎根时 ",
+        "pass2": "当生物盗窃扎根时 ",
+        "identical": true
+      },
+      {
+        "paragraph": "p8#3",
+        "page": 8,
+        "layout_label": "plain text",
+        "source": "But despite these measures, biopiracy continues to occur due to exploitable gaps in the system. For instance, the rules may be bypassed by collecting genetic resources or traditional knowledge from a country where no restrictive legislation has been adopted or by obtaining genetic resources from historical collections made prior to the entry into force of the convention. Furthermore, while much attention is paid to patent abuse, other forms of intellectual property, such as plant breeders’ rights and trademarks, also facilitate the misappropriation of Indigenous knowledge. Without major change, the persistence of these gaps means biopiracy will remain an unfortunate reality.",
+        "pass1": "然而，尽管采取了这些措施，由于系统中存在可利用的漏洞，生物盗窃仍然时有发生。例如，可以通过从未采纳限制性立法的国家收集遗传资源或传统知识，或者从在公约生效前的历史收藏中获取遗传资源来规避规则。此外，尽管对专利滥用给予了大量关注，其他形式的知识产权，如植物育种者权利和商标，也在促进土著知识的盗用。如果不进行重大变革，这些漏洞的持续存在意味着生物盗窃将仍然是不幸的现实。",
+        "pass2": "然而，尽管采取了这些措施，由于系统中存在可利用的漏洞，生物盗窃仍然时有发生。例如，可以通过从未采纳限制性立法的国家收集遗传资源或传统知识，或者从在公约生效前的历史收藏中获取遗传资源来规避规则。此外，尽管对专利滥用给予了大量关注，其他形式的知识产权，如植物育种者权利和商标，也在促进土著知识的盗用。如果不进行重大变革，这些漏洞的持续存在意味着生物盗窃将仍然是不幸的现实。",
+        "identical": true
+      },
+      {
+        "paragraph": "p8#10",
+        "page": 8,
+        "layout_label": "plain text",
+        "source": "The root of the biopiracy question lies in a historical transformation: the moment the global community began treating biological resources not as a shared heritage, but as proprietary assets.",
+        "pass1": "生物盗窃问题的根源在于一个历史性的转变：全球社会开始将生物资源视为专有资产，而非共享遗产的那一刻。",
+        "pass2": "生物盗窃问题的根源在于一个历史性的转变：全球社会开始将生物资源视为专有资产，而非共享遗产的那一刻。",
+        "identical": true
+      }
+    ],
+    "spinifex": [
+      {
+        "paragraph": "p7#4",
+        "page": 7,
+        "layout_label": "plain text",
+        "source": "Not all commercial use of Indigenous knowledge linked to genetic resources constitutes biopiracy; some projects are mutually beneficial. For instance, the Indjalandji-Dhidhanu people in Australia have worked with researchers at the University of Queensland to build upon their Indigenous knowledge of spinifex, a hardy perennial tussock grass tradition- ally used for a variety of purposes. The collaborative research agreement includes provisions for benefit sharing. A spinoff company is now developing medical gels from cellulose nanofibers extracted from spinifex, and a composite material from",
+        "pass1": "并非所有与遗传资源相关的土著知识的商业使用都构成生物盗窃；有些项目是互利的。例如，澳大利亚的Indjalandji-Dhidhanu人就与昆士兰大学的研究人员合作，基于他们对传统上用于多种用途的耐旱多年生丛生草——针茅的土著知识进行研究。该合作研究协议包括利益分享的条款。现在，一家衍生公司正在开发从针茅中提取的纤维素纳米纤维制成的医用凝胶，并已为这种草的复合材料申请了专利。",
+        "pass2": "并非所有与遗传资源相关的土著知识的商业使用都构成生物盗窃；有些项目是互利的。例如，澳大利亚的Indjalandji-Dhidhanu人就与昆士兰大学的研究人员合作，基于他们对传统上用于多种用途的耐旱多年生丛生草——针茅的土著知识进行研究。该合作研究协议包括利益分享的条款。现在，一家衍生公司正在开发从针茅中提取的纤维素纳米纤维制成的医用凝胶，并已为这种草的复合材料申请了专利。",
+        "identical": true
+      }
+    ]
+  },
+  "publication_name": [
+    {
+      "paragraph": "p1#9",
+      "page": 1,
+      "layout_label": "title",
+      "source": "CourierT H E UNESCO",
+      "pass1": "信使H E 联合国教科文组织",
+      "pass2": "信使H E 联合国教科文组织",
+      "identical": true
+    },
+    {
+      "paragraph": "p2#0",
+      "page": 2,
+      "layout_label": "abandon",
+      "source": "| The UNESCO Courier • January-March 2026",
+      "pass1": "联合国教科文组织信使 2026年1月至3月",
+      "pass2": "联合国教科文组织信使 2026年1月至3月",
+      "identical": true
+    },
+    {
+      "paragraph": "p4#0",
+      "page": 4,
+      "layout_label": "abandon",
+      "source": "| The UNESCO Courier • January-March 2026",
+      "pass1": "联合国教科文组织信使 2026年1月至3月",
+      "pass2": "联合国教科文组织信使 2026年1月至3月",
+      "identical": true
+    },
+    {
+      "paragraph": "p6#0",
+      "page": 6,
+      "layout_label": "abandon",
+      "source": "| The UNESCO Courier • January-March 2026",
+      "pass1": "联合国教科文组织信使 2026年1月至3月",
+      "pass2": "联合国教科文组织信使 2026年1月至3月",
+      "identical": true
+    },
+    {
+      "paragraph": "p6#15",
+      "page": 6,
+      "layout_label": "fallback_line",
+      "source": "r The UNESCO Courier éniako fo © Boris Sém",
+      "pass1": "r The UNESCO Courier éniako fo © Boris Sém",
+      "pass2": "r The UNESCO Courier éniako fo © Boris Sém",
+      "identical": true
+    },
+    {
+      "paragraph": "p7#0",
+      "page": 7,
+      "layout_label": "abandon",
+      "source": "| The UNESCO Courier • January-March 2026",
+      "pass1": "联合国教科文组织信使 2026年1月至3月",
+      "pass2": "联合国教科文组织信使 2026年1月至3月",
+      "identical": true
+    }
+  ],
+  "page_kinds": [
+    {
+      "page": 1,
+      "pass1": {
+        "page": 1,
+        "kind": "editorial",
+        "conf": 0.8666666666666667,
+        "source": "deterministic"
+      },
+      "pass2": {
+        "page": 1,
+        "kind": "toc",
+        "conf": 1.0,
+        "source": "human"
+      },
+      "pass1_policy": {
+        "starts_article": true,
+        "opens_article": true,
+        "chain_eligible": true,
+        "translate": true,
+        "repair_profile": "flow"
+      },
+      "pass2_policy": {
+        "starts_article": true,
+        "opens_article": false,
+        "chain_eligible": false,
+        "translate": true,
+        "repair_profile": "grid"
+      }
+    },
+    {
+      "page": 2,
+      "pass1": {
+        "page": 2,
+        "kind": "article_opener",
+        "conf": 1.0,
+        "source": "deterministic"
+      },
+      "pass2": {
+        "page": 2,
+        "kind": "article_opener",
+        "conf": 1.0,
+        "source": "deterministic"
+      },
+      "pass1_policy": {
+        "starts_article": true,
+        "opens_article": true,
+        "chain_eligible": true,
+        "translate": true,
+        "repair_profile": "poster"
+      },
+      "pass2_policy": {
+        "starts_article": true,
+        "opens_article": true,
+        "chain_eligible": true,
+        "translate": true,
+        "repair_profile": "poster"
+      }
+    },
+    {
+      "page": 3,
+      "pass1": {
+        "page": 3,
+        "kind": "photo_spread",
+        "conf": 1.0,
+        "source": "deterministic"
+      },
+      "pass2": {
+        "page": 3,
+        "kind": "photo_spread",
+        "conf": 1.0,
+        "source": "deterministic"
+      },
+      "pass1_policy": {
+        "starts_article": false,
+        "opens_article": false,
+        "chain_eligible": true,
+        "translate": true,
+        "repair_profile": "figure"
+      },
+      "pass2_policy": {
+        "starts_article": false,
+        "opens_article": false,
+        "chain_eligible": true,
+        "translate": true,
+        "repair_profile": "figure"
+      }
+    },
+    {
+      "page": 4,
+      "pass1": {
+        "page": 4,
+        "kind": "article_body",
+        "conf": 1.0,
+        "source": "deterministic"
+      },
+      "pass2": {
+        "page": 4,
+        "kind": "article_body",
+        "conf": 1.0,
+        "source": "deterministic"
+      },
+      "pass1_policy": {
+        "starts_article": false,
+        "opens_article": false,
+        "chain_eligible": true,
+        "translate": true,
+        "repair_profile": "flow"
+      },
+      "pass2_policy": {
+        "starts_article": false,
+        "opens_article": false,
+        "chain_eligible": true,
+        "translate": true,
+        "repair_profile": "flow"
+      }
+    },
+    {
+      "page": 5,
+      "pass1": {
+        "page": 5,
+        "kind": "article_opener",
+        "conf": 1.0,
+        "source": "deterministic"
+      },
+      "pass2": {
+        "page": 5,
+        "kind": "article_opener",
+        "conf": 1.0,
+        "source": "deterministic"
+      },
+      "pass1_policy": {
+        "starts_article": true,
+        "opens_article": true,
+        "chain_eligible": true,
+        "translate": true,
+        "repair_profile": "poster"
+      },
+      "pass2_policy": {
+        "starts_article": true,
+        "opens_article": true,
+        "chain_eligible": true,
+        "translate": true,
+        "repair_profile": "poster"
+      }
+    },
+    {
+      "page": 6,
+      "pass1": {
+        "page": 6,
+        "kind": "article_body",
+        "conf": 1.0,
+        "source": "deterministic"
+      },
+      "pass2": {
+        "page": 6,
+        "kind": "article_body",
+        "conf": 1.0,
+        "source": "deterministic"
+      },
+      "pass1_policy": {
+        "starts_article": false,
+        "opens_article": false,
+        "chain_eligible": true,
+        "translate": true,
+        "repair_profile": "flow"
+      },
+      "pass2_policy": {
+        "starts_article": false,
+        "opens_article": false,
+        "chain_eligible": true,
+        "translate": true,
+        "repair_profile": "flow"
+      }
+    },
+    {
+      "page": 7,
+      "pass1": {
+        "page": 7,
+        "kind": "article_opener",
+        "conf": 0.875,
+        "source": "deterministic"
+      },
+      "pass2": {
+        "page": 7,
+        "kind": "article_opener",
+        "conf": 0.875,
+        "source": "deterministic"
+      },
+      "pass1_policy": {
+        "starts_article": true,
+        "opens_article": true,
+        "chain_eligible": true,
+        "translate": true,
+        "repair_profile": "poster"
+      },
+      "pass2_policy": {
+        "starts_article": true,
+        "opens_article": true,
+        "chain_eligible": true,
+        "translate": true,
+        "repair_profile": "poster"
+      }
+    },
+    {
+      "page": 8,
+      "pass1": {
+        "page": 8,
+        "kind": "article_body",
+        "conf": 1.0,
+        "source": "deterministic"
+      },
+      "pass2": {
+        "page": 8,
+        "kind": "article_body",
+        "conf": 1.0,
+        "source": "deterministic"
+      },
+      "pass1_policy": {
+        "starts_article": false,
+        "opens_article": false,
+        "chain_eligible": true,
+        "translate": true,
+        "repair_profile": "flow"
+      },
+      "pass2_policy": {
+        "starts_article": false,
+        "opens_article": false,
+        "chain_eligible": true,
+        "translate": true,
+        "repair_profile": "flow"
+      }
+    }
+  ],
+  "articles": {
+    "pass1": [
+      {
+        "article_id": "nZViB",
+        "pages": [
+          1
+        ],
+        "paragraphs": 35,
+        "chains": []
+      },
+      {
+        "article_id": "eUgBn",
+        "pages": [
+          2,
+          3,
+          4
+        ],
+        "paragraphs": 35,
+        "chains": [
+          "G1AJ5"
+        ]
+      },
+      {
+        "article_id": "fDDmW",
+        "pages": [
+          5,
+          6
+        ],
+        "paragraphs": 28,
+        "chains": []
+      },
+      {
+        "article_id": "bPwYp",
+        "pages": [
+          7,
+          8
+        ],
+        "paragraphs": 34,
+        "chains": [
+          "4qcAu"
+        ]
+      }
+    ],
+    "pass2": [
+      {
+        "article_id": "HUqYE",
+        "pages": [
+          2,
+          3,
+          4
+        ],
+        "paragraphs": 35,
+        "chains": [
+          "2qQHg"
+        ]
+      },
+      {
+        "article_id": "Gkeuc",
+        "pages": [
+          5,
+          6
+        ],
+        "paragraphs": 28,
+        "chains": []
+      },
+      {
+        "article_id": "UXXuT",
+        "pages": [
+          7,
+          8
+        ],
+        "paragraphs": 34,
+        "chains": [
+          "36pFd"
+        ]
+      }
+    ]
+  },
+  "unassigned": {
+    "pass1": [],
+    "pass2": [
+      {
+        "page": 1,
+        "page_kind": "toc",
+        "reason": "not_chain_eligible"
+      }
+    ]
+  },
+  "drop_cap_decisions": {
+    "pass1": [],
+    "pass2": [
+      {
+        "paragraph": "p4#3",
+        "decision": "keep",
+        "candidate": true
+      },
+      {
+        "paragraph": "p5#5",
+        "decision": "flatten",
+        "candidate": true
+      },
+      {
+        "paragraph": "p7#8",
+        "decision": "flatten",
+        "candidate": true
+      }
+    ]
+  },
+  "apply_report": {
+    "decisions_file": "D:\\Codes\\BabelDOC\\reviews\\Courier-en.decisions.json",
+    "drop_caps": [
+      {
+        "debug_id": "XKQkF",
+        "decision": "keep",
+        "page": 4,
+        "paragraph": "p4#3",
+        "was_candidate": true
+      },
+      {
+        "debug_id": "purMe",
+        "decision": "flatten",
+        "page": 5,
+        "paragraph": "p5#5",
+        "was_candidate": true
+      },
+      {
+        "debug_id": "a7X4A",
+        "decision": "flatten",
+        "page": 7,
+        "paragraph": "p7#8",
+        "was_candidate": true
+      }
+    ],
+    "page_kinds": [
+      {
+        "kind": "toc",
+        "machine_conf": 0.8666666666666667,
+        "machine_kind": "editorial",
+        "machine_source": "deterministic",
+        "page": 1
+      }
+    ],
+    "sample": "Courier-en",
+    "terms": {
+      "auto_glossary_kept": 141,
+      "auto_glossary_relocated": "auto_extracted_glossary",
+      "dropped_from_auto": [
+        {
+          "auto_target": "Lagipoiva Cherelle Jackson",
+          "source": "Lagipoiva Cherelle Jackson",
+          "user_target": "拉吉波伊瓦·谢雷尔·杰克逊"
+        },
+        {
+          "auto_target": "Marcelo Silva de Sousa",
+          "source": "Marcelo Silva de Sousa",
+          "user_target": "马塞洛·席尔瓦·德·索萨"
+        },
+        {
+          "auto_target": "Daniel Robinson",
+          "source": "Daniel Robinson",
+          "user_target": "丹尼尔·罗宾逊"
+        },
+        {
+          "auto_target": "David Jefferson",
+          "source": "David Jefferson",
+          "user_target": "大卫·杰斐逊"
+        }
+      ],
+      "entries": [
+        {
+          "source": "Marcelo Silva de Sousa",
+          "target": "马塞洛·席尔瓦·德·索萨"
+        },
+        {
+          "source": "Lagipoiva Cherelle Jackson",
+          "target": "拉吉波伊瓦·谢雷尔·杰克逊"
+        },
+        {
+          "source": "Daniel Robinson",
+          "target": "丹尼尔·罗宾逊"
+        },
+        {
+          "source": "David Jefferson",
+          "target": "大卫·杰斐逊"
+        }
+      ],
+      "glossary": "hitl_decisions"
+    }
+  },
+  "cost": {
+    "pass1": {
+      "seconds": 381.2,
+      "requests": 51,
+      "cache_hits": 3,
+      "api_calls": 48
+    },
+    "pass2": {
+      "seconds": 77.5,
+      "requests": 53,
+      "cache_hits": 42,
+      "api_calls": 11
+    }
+  }
+}
