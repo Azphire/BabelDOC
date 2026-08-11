@@ -67,10 +67,15 @@ CONFIG_PATH = Path(__file__).resolve().parents[2] / "configs" / "article_context
 
 REPORT_NAME = "article_context.report.json"
 
-# The template that asks for a brief, and the template that states one back to
-# the translating model. Neither text lives in this file.
+# The template that asks for a brief, and the templates that state one back to
+# the translating model. None of the text lives in this file. The names line is
+# a template of its own because it is the one line of the block that a brief can
+# have nothing to say in: a brief stating no name renders the block without it,
+# and the condition lives at the call site rather than in a template language
+# this project deliberately does not have.
 BRIEF_PROMPT = "article_brief"
 CONTEXT_PROMPT = "article_brief_context"
+NAMES_PROMPT = "article_brief_names"
 
 # Engine name the cached briefs are filed under, keeping them apart from the
 # translated segments sharing the database. The column is 20 characters wide.
@@ -562,16 +567,36 @@ class ArticleContextPlan:
         self.requests += 1
         return self.client.brief(prompt), prompt
 
+    def _names_block(self, brief: ArticleBrief) -> str:
+        """The names line of the block, or nothing where the brief states none.
+
+        An article with no name to render was still receiving the sentence about
+        names, and the batch-b6.2 smoke found source forms surviving into the
+        target text of exactly such articles. The line is dropped rather than
+        rendered empty; what it says when it is rendered is unchanged, so a
+        brief that states names carries the block it carried before.
+        """
+        if not brief.names:
+            return ""
+        prompt = load_prompt(
+            NAMES_PROMPT,
+            {
+                "names": NAME_SEPARATOR.join(
+                    name.source + NAME_ARROW + name.suggested_translation
+                    for name in brief.names
+                )
+            },
+            working_dir=self.working_dir,
+        )
+        return prompt.text.rstrip("\n")
+
     def _context_text(self, brief: ArticleBrief) -> str:
         prompt = load_prompt(
             CONTEXT_PROMPT,
             {
                 "title_translation": brief.title_translation,
                 "register": brief.register,
-                "names": NAME_SEPARATOR.join(
-                    name.source + NAME_ARROW + name.suggested_translation
-                    for name in brief.names
-                ),
+                "names_block": self._names_block(brief),
             },
             working_dir=self.working_dir,
         )

@@ -54,6 +54,24 @@ glossary 被整体丢弃,user 无法压过 auto。用户裁定走**方案 2(注�
 4. 上游挂接:`_do_translate_single` 两处调用(1003-1005 窗口的页型钩子、
    1029-1033 窗口的术语钩子)+ translation_config 两开关,逐函数登记。
 
+## T7.2 执行裁决(会话二;与上文冲突处以本节为准)
+
+1. **上游零改动**。本会话硬约束禁止任何上游新增改动,因此
+   `magazine_drop_cap_mark` 不是 `TranslationConfig.__init__` 形参,而是
+   配置对象上的属性(`getattr(..., False)`),由构造方设置;门禁与
+   artifacts 通过 mode 的 `attributes` 项设置。登记为 W-B7-02。
+2. **挂接点**:标记不新增 stage,复用既有 `hitl.after_term_extract`
+   钩子(无条件、位于 ArticleBuilder 与译器构造之间),在同一钩子内
+   完成"标记 → 导出 drop_caps 节 → 写裁决"。article_map.json 由该钩子
+   读取,故 `magazine_article_group` 是硬依赖,缺失即 DropCapError。
+3. **段落引用格式** `p<page>#<index>`(1-based 文件页 + 页内段落序号)。
+   debug_id 每次运行重新生成,不能作为两遍式裁决的引用;未知引用在
+   校验期整份拒绝。
+4. **rank 阈值来自实测**:语料中三处真实首字下沉分别位于其文章的
+   第 3/5/5 个 body 段(Courier p4 非开篇页、p5 与 p7 为开篇页),
+   `max_body_rank_in_article` 取 5,使开篇页析取项不成为必要条件。
+   字号比实测 6.67,阈值取 2.0(最近的假阳性为 1.43)。
+
 ## 明确不做
 
 阻塞式交互;Typesetting 消费 dropCapDecision;裁决反写任何权威源;Web UI。

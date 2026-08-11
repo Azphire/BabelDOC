@@ -1,0 +1,11 @@
+{
+  "description": "Bounds of the drop cap candidate signal. A drop cap is an oversized initial standing at the head of a piece of running text, and it is found here from three general typographic facts and no publication specific one. 'min_first_run_size_ratio' is how large the paragraph's first style run must be against that paragraph's own median character size: an initial set three lines tall is several times the body size, while a paragraph opening in small caps or bold is barely above it. 'max_first_run_chars' is how many non-space characters that run may carry, which is what separates an initial from a heading or a lead-in phrase that happens to be set larger. 'max_body_rank_in_article' is how far into its article the paragraph may stand, counted over the body text paragraphs of that article in page order; a paragraph on the page its article opens on qualifies whatever its rank, because that is where a piece's opening initial goes. The three corpus drop caps stand at ranks 3, 5 and 5, so the bound is set at the deepest of them and holds each of them without relying on the opening page rule. 'excerpt_chars' bounds the opening of the paragraph quoted into the review draft, which is what a human reads to recognise the paragraph; it steers no decision.",
+  "min_first_run_size_ratio": 2.0,
+  "min_first_run_size_ratio_allowed_range": "1.1..10.0",
+  "max_first_run_chars": 2,
+  "max_first_run_chars_allowed_range": "1..8",
+  "max_body_rank_in_article": 5,
+  "max_body_rank_in_article_allowed_range": "1..50",
+  "excerpt_chars": 80,
+  "excerpt_chars_allowed_range": "20..400"
+}

@@ -19,6 +19,11 @@ ordinary that the outside filter throws it away; that shows up as a low score
 with no candidate reported, and the per-term table carries the candidate so the
 case is visible rather than silent.
 
+A translation is read with its markup taken out. The rich text tags and formula
+placeholders the translator carries through a request are not text anyone reads,
+so a candidate drawn from them measures nothing; the batch-b6.3 sweep found one
+term measured by a style tag under every setting of the tuning grid.
+
 A source term is a run of capitalised words -- the general proxy for a proper
 name, needing no word list and naming no publication -- that occurs often
 enough, is long enough, and occurs at least once away from a sentence opening.
@@ -83,6 +88,15 @@ TERMINALS_KEY = "terminal_punctuation"
 _JOINERS = "'" + "".join(map(chr, (0x2019, 0x2010, 0x2011, 0x2012, 0x2013))) + "-"
 _WORD = re.compile(rf"[^\W\d_]+(?:[{_JOINERS}][^\W\d_]+)*")
 
+# What the translator puts into a paragraph's text that is not text: the rich
+# text tags it asks the model to carry through unchanged, and the placeholders
+# standing for formulas. Both are stripped from a translation before candidate
+# renderings are generated from it, because a candidate is a piece of what a
+# reader reads and neither of these is read at all. Removed rather than spaced
+# out: a tag occupies no width on the page, so the characters either side of one
+# are adjacent to the reader as well.
+_MARKUP = re.compile(r"<[^<>]*>|\{\s*v\s*\d+\s*\}")
+
 
 @dataclass(frozen=True)
 class Config:
@@ -118,6 +132,16 @@ def load_config(path: str | None = None) -> Config:
 # --- reading a run -----------------------------------------------------------
 
 
+def strip_markup(text: str) -> str:
+    """A translation with the tags and placeholders taken out of it.
+
+    Input cleaning only: what is measured, and how, is unchanged. It is applied
+    to every translation the run produced, so a candidate is counted inside and
+    outside a term's paragraphs against the same cleaned text.
+    """
+    return _MARKUP.sub("", text)
+
+
 def read_checkpoint(path: Path):
     with warnings.catch_warnings():
         warnings.simplefilter("ignore")
@@ -151,7 +175,7 @@ def load_run(label: str, working_dir: Path) -> Run:
     source = read_checkpoint(source_path)
     target = read_checkpoint(target_path)
     translated = {
-        paragraph.debug_id: (paragraph.unicode or "")
+        paragraph.debug_id: strip_markup(paragraph.unicode or "")
         for page in target.page
         for paragraph in page.pdf_paragraph
         if paragraph.debug_id is not None

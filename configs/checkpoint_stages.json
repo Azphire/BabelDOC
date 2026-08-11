@@ -47,6 +47,11 @@
       "name": "hitl_apply.report.json",
       "stage": "hitl",
       "switch": "magazine_hitl_apply"
+    },
+    {
+      "name": "drop_cap.report.json",
+      "stage": "hitl",
+      "switch": "magazine_drop_cap_mark"
     }
   ]
 }

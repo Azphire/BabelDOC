@@ -41,7 +41,10 @@ Regenerate the HTML from an edited draft with:
     {"page": 1, "machine_kind": "...", "conf": 0.71,
      "ambiguous": false, "source": "deterministic"}
   ],
-  "drop_caps": []
+  "drop_caps": [
+    {"paragraph": "p4#8", "page": 4, "article_id": "...", "size_ratio": 6.668,
+     "first_run": "L", "excerpt": "L ong before satellites orbited Earth,"}
+  ]
 }
 ```
 
@@ -60,7 +63,18 @@ own account of whether its top candidates could be separated, which the
 intermediate language has no field for, and is `null` where the classifier's
 report is not beside the run.
 
-`drop_caps` is declared and stays empty until the batch that fills it.
+`drop_caps` holds the paragraphs the machine thinks open with an oversized
+initial. It is filled only on a run with `magazine_drop_cap_mark` up, which also
+requires `magazine_article_group`: a candidate is judged against the article it
+belongs to, and a run raising the first switch without the second is refused
+rather than quietly finding nothing. `size_ratio` is the size of the paragraph's
+first style run over that paragraph's own median character size; `first_run` is
+what that run says, which for a drop cap is the initial itself.
+
+`paragraph` is how a paragraph is named in both files: `p<page>#<index>`, the
+one-based file page and the paragraph's position on that page. It is not the
+paragraph's debug id, which is minted afresh on every run and would name nothing
+on the second pass.
 
 ## decisions.json
 
@@ -78,14 +92,21 @@ report is not beside the run.
 - `page_kinds` maps a one-based page number, written as a decimal string, to a
   page type name declared in `configs/page_types.json`. A ruled page is
   recorded at confidence 1.0 with source `human`.
-- `drop_caps` maps a paragraph reference to `keep` or `flatten`. Validated
-  from this batch; consumed from a later one.
+- `drop_caps` maps a paragraph reference to `keep` or `flatten`. The reference
+  is the `paragraph` field of the draft, and a reference this document has no
+  paragraph for refuses the whole file. A paragraph the machine did not flag may
+  still be ruled on, as an unextracted term may be. The verdict is written into
+  the intermediate language as `dropCapDecision` and **no stage reads it yet**:
+  teaching typesetting to act on it is a batch of its own, so a ruling here
+  changes nothing about the output until then. `drop_cap.report.json` in the
+  run's working directory says the same.
 
 Validation is all-or-nothing. An unknown section, a page number this document
 does not have, a page type the vocabulary does not declare, a padded or empty
-term, or two sources that collide once case and whitespace are normalised: any
-of these refuses the whole file with every fault listed. Nothing is applied in
-part.
+term, two sources that collide once case and whitespace are normalised, an
+unknown drop cap verdict, or a paragraph reference this document cannot resolve:
+any of these refuses the whole file with every fault listed. Nothing is applied
+in part.
 
 ## What a ruling may not do
 

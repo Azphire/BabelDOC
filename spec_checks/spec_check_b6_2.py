@@ -154,11 +154,14 @@ PROJECT_OWNED_FILES = {"CLAUDE.md", "UPSTREAM_DIFF.md", "WAIVERS.md"}
 CJK_SCAN_FILES = (MODULE, TOOL, CONFIG, TOOL_CONFIG, "spec_checks/spec_check_b6_2.py")
 CJK_RANGES = ((0x3000, 0x303F), (0x4E00, 0x9FFF), (0xFF00, 0xFFEF))
 
-# The two templates and the variables each declares. Written here because the
+# The three templates and the variables each declares. Written here because the
 # assertion is about the contract between the templates and the code: a
 # variable renamed on one side and not the other is exactly what this catches.
+# The names line is a template of its own so that a brief stating no name can
+# leave it out; the condition is at the call site, not in a template language.
 BRIEF_VARIABLES = ("title_paragraph", "first_body_excerpt", "target_language")
-CONTEXT_VARIABLES = ("title_translation", "register", "names")
+CONTEXT_VARIABLES = ("title_translation", "register", "names_block")
+NAMES_VARIABLES = ("names",)
 
 # What the stub puts in a brief so that a prompt carrying one is recognisable.
 BRIEF_MARK = "ZQBRIEFMARK"
@@ -366,6 +369,7 @@ def check_01_templates() -> None:
     for name, expected in (
         (context_module.BRIEF_PROMPT, BRIEF_VARIABLES),
         (context_module.CONTEXT_PROMPT, CONTEXT_VARIABLES),
+        (context_module.NAMES_PROMPT, NAMES_VARIABLES),
     ):
         path = prompt_path(name)
         if not path.is_file():
@@ -374,11 +378,12 @@ def check_01_templates() -> None:
         prompt = load_prompt(name, dict.fromkeys(expected, "x"))
         declared[name] = prompt.variables
     record(
-        "01a both templates exist and declare exactly the variables the code supplies",
+        "01a every template exists and declares exactly the variables the code supplies",
         not missing
         and set(declared.get(context_module.BRIEF_PROMPT, ())) == set(BRIEF_VARIABLES)
         and set(declared.get(context_module.CONTEXT_PROMPT, ()))
-        == set(CONTEXT_VARIABLES),
+        == set(CONTEXT_VARIABLES)
+        and set(declared.get(context_module.NAMES_PROMPT, ())) == set(NAMES_VARIABLES),
         f"missing={missing} declared={ {k: sorted(v) for k, v in declared.items()} }",
     )
 
@@ -386,6 +391,7 @@ def check_01_templates() -> None:
     for name, expected in (
         (context_module.BRIEF_PROMPT, BRIEF_VARIABLES),
         (context_module.CONTEXT_PROMPT, CONTEXT_VARIABLES),
+        (context_module.NAMES_PROMPT, NAMES_VARIABLES),
     ):
         load_prompt(name, dict.fromkeys(expected, "x"), working_dir=work.directory)
     manifest = json.loads(
@@ -393,7 +399,11 @@ def check_01_templates() -> None:
     )
     wrong = [
         name
-        for name in (context_module.BRIEF_PROMPT, context_module.CONTEXT_PROMPT)
+        for name in (
+            context_module.BRIEF_PROMPT,
+            context_module.CONTEXT_PROMPT,
+            context_module.NAMES_PROMPT,
+        )
         if manifest.get(f"prompts/{name}.md") != file_digest(prompt_path(name))
     ]
     record(
@@ -407,12 +417,16 @@ def check_01_templates() -> None:
     source = (ROOT / MODULE).read_text(encoding="utf-8")
     borrowed = [
         line.strip()
-        for name in (context_module.BRIEF_PROMPT, context_module.CONTEXT_PROMPT)
+        for name in (
+            context_module.BRIEF_PROMPT,
+            context_module.CONTEXT_PROMPT,
+            context_module.NAMES_PROMPT,
+        )
         for line in prompt_path(name).read_text(encoding="utf-8").splitlines()
         if len(line.strip()) > 24 and line.strip() in source
     ]
     record(
-        "01c no line of either template appears in the code",
+        "01c no line of any template appears in the code",
         not borrowed,
         f"borrowed={borrowed[:2]}",
     )
@@ -557,6 +571,29 @@ def check_02_reply_contract() -> None:
         f"One{context_module.NAME_ARROW}First" in rendered
         and f"Two{context_module.NAME_ARROW}Second" in rendered,
         f"line={[line for line in rendered.splitlines() if 'One' in line][:1]}",
+    )
+
+    # An article with no name to render receives no sentence about names. What
+    # the block says when there is one to render is unchanged, so the block a
+    # brief with names carries is the block it carried before.
+    bare = context_module.ArticleBrief(
+        title_translation=accepted.brief.title_translation,
+        register=accepted.brief.register,
+        names=(),
+    )
+    without = plan._context_text(bare)
+    names_template = prompt_path(context_module.NAMES_PROMPT).read_text(
+        encoding="utf-8"
+    )
+    first_line = names_template.splitlines()[0].strip()
+    record(
+        "02f a brief stating no name renders the block without the names line",
+        first_line not in without
+        and first_line in rendered
+        and bare.title_translation in without
+        and bare.register in without
+        and not without.endswith("\n"),
+        f"tail={without.splitlines()[-1][:60]!r}",
     )
 
 
@@ -1481,6 +1518,32 @@ def check_09_measurement() -> None:
         and covered["consistency"] == same["consistency"]
         and all(row["in_glossary"] is None for row in rows),
         f"row={covered}",
+    )
+
+    # Markup is not text. A style tag shared by every translation was winning
+    # the candidate column under every setting of the batch-b6.3 tuning grid;
+    # it is taken out of the translation before candidates are generated, and
+    # what is measured is unchanged by that.
+    tag = "<style id='1'>"
+    marked = [
+        tag + text[: len(text) // 2] + "</style>" + "{v1}" + text[len(text) // 2 :]
+        for text in consistent
+    ]
+    cleaned = [tool.strip_markup(text) for text in marked]
+    _, dirty_run = measurement_run(sources, cleaned)
+    dirty_rows = tool.measure_article(
+        dirty_run, [0], labels, terminals, config, glossary_terms=None
+    )
+    dirty = next((row for row in dirty_rows if row["term"] == term), None)
+    record(
+        "09e markup is stripped before candidates are generated, and only that",
+        all(tag not in text and "{v1}" not in text for text in cleaned)
+        and all(len(text) > 0 for text in cleaned)
+        and dirty is not None
+        and dirty["consistency"] == same["consistency"]
+        and dirty["candidate"] is not None
+        and "<" not in dirty["candidate"],
+        f"row={dirty} cleaned={cleaned[0][:24]!r}",
     )
 
 

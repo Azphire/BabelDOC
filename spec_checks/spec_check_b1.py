@@ -107,6 +107,11 @@ NAME_REFERENCE_ALLOW_LIST = NAME_DEFINITION_FILES | {
     # vocabulary a later batch's verdicts come from, not the IL attribute.
     "babeldoc/magazine/hitl.py",
     "spec_checks/spec_check_b7.py",
+    # B7.2 is the first writer of the drop cap pair: the marking pass sets the
+    # candidate flag and the review layer's ruling sets the verdict, both from
+    # this one module.
+    "babeldoc/magazine/drop_cap.py",
+    "spec_checks/spec_check_b7_2.py",
 }
 
 # Upstream files carried over from B0, still uncommitted in the working tree.

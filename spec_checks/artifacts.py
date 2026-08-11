@@ -166,7 +166,23 @@ MODES: dict[str, dict] = {
         "magazine_chain_detect": True,
         "magazine_article_group": True,
     },
+    # The grouped run with drop cap marking on, which is the pair the b7.2
+    # switch-down comparison is made of. The marking switch is not a constructor
+    # parameter (W-B7-02), so it is set on the built configuration instead.
+    "drop_capped": {
+        "layout_model": "onnx",
+        "skip_translation": True,
+        "magazine_checkpoint": True,
+        "magazine_page_classify": True,
+        "magazine_chain_detect": True,
+        "magazine_article_group": True,
+        "attributes": {"magazine_drop_cap_mark": True},
+    },
 }
+
+# Settings that are not constructor parameters and are set on the built
+# configuration object instead.
+ATTRIBUTES_KEY = "attributes"
 
 _fingerprint: str | None = None
 _stats = {"hit": 0, "built": 0, "build_seconds": 0.0}
@@ -294,6 +310,7 @@ def build_into(sample: Path, mode: str, destination: Path) -> Artifacts:
     """
     settings = dict(MODES[mode])
     layout = settings.pop("layout_model")
+    attributes = settings.pop(ATTRIBUTES_KEY, {})
     destination.mkdir(parents=True, exist_ok=True)
 
     config = TranslationConfig(
@@ -309,6 +326,8 @@ def build_into(sample: Path, mode: str, destination: Path) -> Artifacts:
         auto_extract_glossary=False,
         **settings,
     )
+    for name, value in attributes.items():
+        setattr(config, name, value)
     result = high_level.translate(config)
     mono = getattr(result, "mono_pdf_path", None)
     return Artifacts(
@@ -324,6 +343,7 @@ def _build(sample: Path, mode: str, slot: Path) -> None:
     """Run the pipeline for one (sample, mode) pair into ``slot``."""
     settings = dict(MODES[mode])
     layout = settings.pop("layout_model")
+    attributes = settings.pop(ATTRIBUTES_KEY, {})
 
     staging = slot.with_name(slot.name + ".partial")
     if staging.exists():
@@ -343,6 +363,8 @@ def _build(sample: Path, mode: str, slot: Path) -> None:
         auto_extract_glossary=False,
         **settings,
     )
+    for name, value in attributes.items():
+        setattr(config, name, value)
     started = time.monotonic()
     result = high_level.translate(config)
     seconds = time.monotonic() - started

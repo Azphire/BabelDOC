@@ -45,6 +45,12 @@ source naming the human, which is the provenance the intermediate language
 carries for the rest of the run. No page type is named here; the ruling is
 checked against whatever ``configs/page_types.json`` declares and everything
 downstream reads the policy of the kind that ends up on the page.
+
+Drop caps. The candidates are found by ``magazine/drop_cap.py``, which this
+module calls at the same hook the term channel runs at, and the ruling on them
+is written back into the intermediate language as a verdict per paragraph. That
+verdict is the one thing a ruling can decide here that nothing in this batch
+acts on; see that module for why, and for the sidecar that records it.
 """
 
 from __future__ import annotations
@@ -61,6 +67,7 @@ from pathlib import Path
 
 from babeldoc.glossary import Glossary
 from babeldoc.glossary import GlossaryEntry
+from babeldoc.magazine import drop_cap
 from babeldoc.magazine.page_classifier import REPORT_NAME as CLASSIFY_REPORT_NAME
 from babeldoc.magazine.page_features import ConfigError
 from babeldoc.magazine.page_features import validate_bounded_config
@@ -171,6 +178,13 @@ def page_label(page, position: int) -> int:
     return int(index) + 1
 
 
+def labeled_pages(docs) -> list[tuple[int, object]]:
+    """The document's pages, each with the number both files speak of it by."""
+    return [
+        (page_label(page, position), page) for position, page in enumerate(docs.page)
+    ]
+
+
 @dataclass
 class Decisions:
     """One validated decisions file."""
@@ -247,7 +261,10 @@ def _validate_page_kinds(
 
 
 def _validate_drop_caps(
-    raw: object, verdicts: tuple[str, ...], faults: list[str]
+    raw: object,
+    verdicts: tuple[str, ...],
+    references: set[str] | None,
+    faults: list[str],
 ) -> dict[str, str]:
     entries: dict[str, str] = {}
     for reference, verdict in _require_object(raw, DROP_CAPS_SECTION, faults).items():
@@ -258,11 +275,19 @@ def _validate_drop_caps(
         if not isinstance(verdict, str) or verdict not in verdicts:
             faults.append(f"{where}: {verdict!r} is not one of {list(verdicts)}")
             continue
+        # A reference is checked against the document only where the caller
+        # knows the document. A ruling read against a document names paragraphs
+        # of it or is refused, by the same rule a ruled page number is.
+        if references is not None and reference not in references:
+            faults.append(f"{where}: no such paragraph in this document")
+            continue
         entries[reference] = verdict
     return entries
 
 
-def parse_decisions(raw: object, path: Path, pages: set[int]) -> Decisions:
+def parse_decisions(
+    raw: object, path: Path, pages: set[int], references: set[str] | None = None
+) -> Decisions:
     """Validate one decisions document, refusing it whole if anything is wrong."""
     faults: list[str] = []
     if not isinstance(raw, dict):
@@ -279,6 +304,7 @@ def parse_decisions(raw: object, path: Path, pages: set[int]) -> Decisions:
     drop_caps = _validate_drop_caps(
         raw.get(DROP_CAPS_SECTION),
         tuple(config[_CONFIG_KEY_DROP_CAP_DECISIONS]),
+        references,
         faults,
     )
     if faults:
@@ -289,7 +315,9 @@ def parse_decisions(raw: object, path: Path, pages: set[int]) -> Decisions:
     )
 
 
-def load_decisions(path: Path, pages: set[int]) -> Decisions | None:
+def load_decisions(
+    path: Path, pages: set[int], references: set[str] | None = None
+) -> Decisions | None:
     """Read and validate a decisions file, or return None where none was written."""
     if not path.exists():
         return None
@@ -298,7 +326,7 @@ def load_decisions(path: Path, pages: set[int]) -> Decisions | None:
             raw = json.load(f)
     except json.JSONDecodeError as exc:
         raise HitlError(f"{path}: not valid JSON: {exc}") from exc
-    return parse_decisions(raw, path, pages)
+    return parse_decisions(raw, path, pages, references)
 
 
 # Per-run state. Both hooks contribute to one draft and one report, and a run is
@@ -354,11 +382,12 @@ def _decisions_for(translation_config, docs) -> Decisions | None:
     """The ruling governing this run, read and validated once."""
     if translation_config in _decisions:
         return _decisions[translation_config]
-    pages = {
-        page_label(page, position) for position, page in enumerate(docs.page)
-    }
+    labeled = labeled_pages(docs)
+    pages = {label for label, _page in labeled}
     decisions = load_decisions(
-        decisions_path(sample_name(translation_config)), pages
+        decisions_path(sample_name(translation_config)),
+        pages,
+        drop_cap.document_references(labeled),
     )
     _decisions[translation_config] = decisions
     return decisions
@@ -598,11 +627,17 @@ def after_term_extract(translation_config, docs) -> None:
     """Hook run once term extraction is over and before the translator is built.
 
     The translator caches its glossaries as it is constructed, so this is the
-    last point at which a ruled term can reach a prompt.
+    last point at which a ruled term can reach a prompt. Drop cap marking runs
+    here too, unconditionally and behind its own switch: it needs the article map
+    the grouping stage writes earlier in the pipeline, and marking before the
+    draft is written is what lets one hook export the candidates it just found.
     """
+    labeled = labeled_pages(docs)
+    candidates = drop_cap.mark(translation_config, labeled)
     if translation_config.magazine_hitl_export:
         draft = _draft(translation_config)
         draft[TERMS_SECTION] = export_terms(translation_config, docs)
+        draft[DROP_CAPS_SECTION] = drop_cap.review_rows(candidates)
         _write_draft(translation_config, draft)
     if not translation_config.magazine_hitl_apply:
         return
@@ -610,9 +645,13 @@ def after_term_extract(translation_config, docs) -> None:
     if decisions is None:
         return
     applied = apply_terms(translation_config, decisions)
-    if applied:
+    ruled = drop_cap.apply_decisions(labeled, decisions.drop_caps)
+    if applied or ruled:
         report = _report(translation_config)
-        report[TERMS_SECTION] = applied
+        if applied:
+            report[TERMS_SECTION] = applied
+        if ruled:
+            report[DROP_CAPS_SECTION] = ruled
         report["decisions_file"] = str(decisions.path)
         _write_report(translation_config, report)
 
@@ -635,7 +674,14 @@ code { background: #f4f4f4; padding: 0 3px; }
 _COLUMNS = {
     TERMS_SECTION: ("source", "auto_target", "vote_count", "first_page"),
     PAGE_KINDS_SECTION: ("page", "machine_kind", "conf", "ambiguous", "source"),
-    DROP_CAPS_SECTION: (),
+    DROP_CAPS_SECTION: (
+        "paragraph",
+        "page",
+        "article_id",
+        "size_ratio",
+        "first_run",
+        "excerpt",
+    ),
 }
 
 
