@@ -1,0 +1,64 @@
+{
+  "drop_caps": [],
+  "format_version": 1,
+  "page_kinds": [
+    {
+      "ambiguous": true,
+      "conf": 0.8666666666666667,
+      "machine_kind": "editorial",
+      "page": 1,
+      "source": "deterministic"
+    },
+    {
+      "ambiguous": false,
+      "conf": 1.0,
+      "machine_kind": "article_opener",
+      "page": 2,
+      "source": "deterministic"
+    },
+    {
+      "ambiguous": true,
+      "conf": 1.0,
+      "machine_kind": "photo_spread",
+      "page": 3,
+      "source": "deterministic"
+    },
+    {
+      "ambiguous": true,
+      "conf": 1.0,
+      "machine_kind": "article_body",
+      "page": 4,
+      "source": "deterministic"
+    },
+    {
+      "ambiguous": false,
+      "conf": 1.0,
+      "machine_kind": "article_opener",
+      "page": 5,
+      "source": "deterministic"
+    },
+    {
+      "ambiguous": false,
+      "conf": 1.0,
+      "machine_kind": "article_body",
+      "page": 6,
+      "source": "deterministic"
+    },
+    {
+      "ambiguous": true,
+      "conf": 0.875,
+      "machine_kind": "article_opener",
+      "page": 7,
+      "source": "deterministic"
+    },
+    {
+      "ambiguous": false,
+      "conf": 1.0,
+      "machine_kind": "article_body",
+      "page": 8,
+      "source": "deterministic"
+    }
+  ],
+  "sample": "Courier-en",
+  "terms": []
+}

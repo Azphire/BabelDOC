@@ -101,6 +101,12 @@ NAME_REFERENCE_ALLOW_LIST = NAME_DEFINITION_FILES | {
     "spec_checks/spec_check_b4.py",
     # Reads the chain order out of the B4 report to rebuild a chain's members.
     "spec_checks/spec_check_b5.py",
+    # B7 is the first writer of the page kind trio outside the classifier: a
+    # human ruling replaces all three at once. It writes no paragraph level
+    # field; the drop cap name it mentions is the configuration key naming the
+    # vocabulary a later batch's verdicts come from, not the IL attribute.
+    "babeldoc/magazine/hitl.py",
+    "spec_checks/spec_check_b7.py",
 }
 
 # Upstream files carried over from B0, still uncommitted in the working tree.

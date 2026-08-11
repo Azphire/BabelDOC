@@ -1,0 +1,14 @@
+{
+  "description": "Declarative surface of the human review layer. 'sections' is the closed set of sections both review.json and decisions.json may carry, in the order a reader meets them; a decisions file naming anything else is rejected whole. 'drop_cap_decisions' is the closed vocabulary of the drop_caps section's values, declared here so the validator refuses an unknown verdict from the batch the section is introduced in rather than from the batch that first consumes it. 'review_format_version' stamps every exported draft, so a draft written by an older layer is recognisable rather than silently reinterpreted.",
+  "review_format_version": 1,
+  "review_format_version_allowed_range": "1..99",
+  "sections": [
+    "terms",
+    "page_kinds",
+    "drop_caps"
+  ],
+  "drop_cap_decisions": [
+    "keep",
+    "flatten"
+  ]
+}

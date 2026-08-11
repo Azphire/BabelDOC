@@ -54,6 +54,7 @@ from babeldoc.format.pdf.translation_config import TranslationConfig
 from babeldoc.format.pdf.translation_config import WatermarkOutputMode
 from babeldoc.magazine.article_builder import ArticleBuilder
 from babeldoc.magazine.chain_builder import ChainBuilder
+from babeldoc.magazine import hitl
 from babeldoc.magazine.checkpoint import dump_checkpoint
 from babeldoc.magazine.page_classifier import PageClassifier
 from babeldoc.progress_monitor import ProgressMonitor
@@ -1002,6 +1003,7 @@ def _do_translate_single(
     if translation_config.magazine_page_classify:
         PageClassifier(translation_config).process(docs)
         logger.debug(f"finish page classifier from {temp_pdf_path}")
+        hitl.after_page_classify(translation_config, docs)
         if translation_config.magazine_checkpoint:
             dump_checkpoint(docs, translation_config, "page_classifier")
 
@@ -1028,6 +1030,10 @@ def _do_translate_single(
         AutomaticTermExtractor(term_extraction_engine, translation_config).procress(
             docs
         )
+
+    # Unconditional: a ruling on terms applies whether or not extraction ran,
+    # and the translator caches its glossaries as it is constructed below.
+    hitl.after_term_extract(translation_config, docs)
 
     if not translation_config.skip_translation:
         if support_llm_translate:

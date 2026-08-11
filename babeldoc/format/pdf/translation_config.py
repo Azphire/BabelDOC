@@ -223,6 +223,8 @@ class TranslationConfig:
         magazine_chain_translate: bool = False,
         magazine_article_group: bool = False,
         magazine_article_context: bool = False,
+        magazine_hitl_export: bool = False,
+        magazine_hitl_apply: bool = False,
     ):
         self.translator = translator
         self.term_extraction_translator = term_extraction_translator or translator
@@ -355,6 +357,12 @@ class TranslationConfig:
         # Magazine extension: describe each article once and carry the
         # description on every batch that belongs to it.
         self.magazine_article_context = magazine_article_context
+        # Magazine extension: write the review draft of what the machine
+        # decided on its own.
+        self.magazine_hitl_export = magazine_hitl_export
+        # Magazine extension: let the decisions file beside that draft overrule
+        # those decisions.
+        self.magazine_hitl_apply = magazine_hitl_apply
 
         if self.skip_translation or self.only_parse_generate_pdf:
             self.auto_extract_glossary = False

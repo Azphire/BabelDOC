@@ -42,6 +42,11 @@
       "name": "article_context.report.json",
       "stage": "il_translated",
       "switch": "magazine_article_context"
+    },
+    {
+      "name": "hitl_apply.report.json",
+      "stage": "hitl",
+      "switch": "magazine_hitl_apply"
     }
   ]
 }
