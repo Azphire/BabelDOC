@@ -1,0 +1,61 @@
+{
+  "description": "Bounds of the post typesetting issue detectors (babeldoc/magazine/detectors/). Same convention as configs/drop_cap.json: every numeric parameter carries a '<name>_allowed_range' sibling of the form 'low..high', inclusive on both ends. Which detectors run on a page is decided by the repair profile the page's kind declares in configs/page_types.json, never by the kind itself: 'profile_detectors' maps a declared profile to the detectors that answer for a page carrying it, 'default_profile' is what a page whose kind is absent or outside the vocabulary is treated as, and 'document_detectors' run once for the whole document because what they read is a sidecar rather than a page. 'severity' declares the weight of each issue kind, in the closed vocabulary 'severity_vocabulary'; nothing in this batch acts on it, and the repair controller of the next one selects by it. Residue is language directional: 'residue_directions' names, per target language, the script whose presence in a finished translation is residue rather than content, and the matching 'residue_min_ratio_into_<language>' is the share of the paragraph's cased characters that script has to hold. The share is measured over the scripts named here alone, so digits, punctuation and spacing neither raise nor lower it, and 'residue_min_script_chars' keeps a folio or a copyright glyph from being evidence of anything. Fragment clustering is a report only census of paragraphs the finder left in pieces: members are short by 'fragment_max_chars', set in one font at one size within 'fragment_font_size_tolerance', standing in one column by 'fragment_min_x_overlap_ratio' of the narrower box, separated by no more than 'fragment_max_line_gap_ratio' of their own median height, and a run of at least 'fragment_min_cluster' of them is a cluster. Overlap is likewise report only: 'overlap_min_iou' is the intersection over union of a paragraph box and an artwork box above which the pair is recorded. 'excerpt_chars' bounds the text quoted into an issue, which is what a human reads to recognise it and steers no decision.",
+  "residue_directions": {
+    "zh": "latin",
+    "en": "han"
+  },
+  "residue_min_ratio_into_zh": 0.6,
+  "residue_min_ratio_into_zh_allowed_range": "0.05..1.0",
+  "residue_min_ratio_into_en": 0.4,
+  "residue_min_ratio_into_en_allowed_range": "0.05..1.0",
+  "residue_min_script_chars": 12,
+  "residue_min_script_chars_allowed_range": "1..400",
+  "fragment_max_chars": 40,
+  "fragment_max_chars_allowed_range": "1..400",
+  "fragment_min_cluster": 3,
+  "fragment_min_cluster_allowed_range": "2..50",
+  "fragment_max_line_gap_ratio": 1.5,
+  "fragment_max_line_gap_ratio_allowed_range": "0.0..20.0",
+  "fragment_min_x_overlap_ratio": 0.5,
+  "fragment_min_x_overlap_ratio_allowed_range": "0.0..1.0",
+  "fragment_font_size_tolerance": 0.05,
+  "fragment_font_size_tolerance_allowed_range": "0.0..1.0",
+  "overlap_min_iou": 0.2,
+  "overlap_min_iou_allowed_range": "0.01..1.0",
+  "excerpt_chars": 80,
+  "excerpt_chars_allowed_range": "20..400",
+  "severity_vocabulary": [
+    "low",
+    "medium",
+    "high"
+  ],
+  "severity": {
+    "untranslated_residue": "high",
+    "fragment_cluster": "low",
+    "text_figure_overlap": "low",
+    "chain_escalation": "medium"
+  },
+  "default_profile": "flow",
+  "profile_detectors": {
+    "flow": [
+      "untranslated_residue",
+      "fragment_cluster",
+      "text_figure_overlap"
+    ],
+    "grid": [
+      "untranslated_residue",
+      "fragment_cluster"
+    ],
+    "poster": [
+      "untranslated_residue",
+      "text_figure_overlap"
+    ],
+    "figure": [
+      "untranslated_residue",
+      "text_figure_overlap"
+    ]
+  },
+  "document_detectors": [
+    "escalation_surfacing"
+  ]
+}

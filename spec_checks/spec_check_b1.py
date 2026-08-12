@@ -118,6 +118,15 @@ NAME_REFERENCE_ALLOW_LIST = NAME_DEFINITION_FILES | {
     # B7.5 reads the page kind out of the classifier checkpoint to score the
     # refreshed corpus against the ground truth, and writes nothing.
     "spec_checks/spec_check_b7_5.py",
+    # B8 detects defects in a finished document and writes none of them back.
+    # The package reads the page kind to reach that page's policy, and the
+    # chain pair to restate what the chain pass escalated; every write it makes
+    # goes to a sidecar. Its gate builds pages carrying a kind, so the detector
+    # selection it asserts is driven by a policy the gate controls.
+    "babeldoc/magazine/detectors/__init__.py",
+    "babeldoc/magazine/detectors/base.py",
+    "babeldoc/magazine/detectors/escalation.py",
+    "spec_checks/spec_check_b8.py",
 }
 
 # Upstream files carried over from B0, still uncommitted in the working tree.

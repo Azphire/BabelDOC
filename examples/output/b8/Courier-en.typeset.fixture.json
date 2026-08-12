@@ -1,0 +1,15 @@
+{
+  "dropped": [
+    "characters, curves, forms, fonts, page layouts, rectangles, base operations"
+  ],
+  "fixture_bytes": 115398,
+  "kept": [
+    "page: mediabox, cropbox, pageNumber, unit, pageKind, pageKindConf, pageKindSource, pdfXobject boxes, pdfFigure boxes",
+    "paragraph: box, pdfStyle, vertical, unicode, debugId, layoutLabel, layoutId, chainId, chainIndex, rendered text as one unicode composition"
+  ],
+  "pages": 8,
+  "paragraphs": 132,
+  "source": "examples/output/b7_5/pass2/work/Courier-en/checkpoint.11_typesetting.xml",
+  "source_bytes": 5137493,
+  "source_sha256": "53b8f98e32a09010ff8d2341ac79e7610dafa6fe5664e0de909a699310180c43"
+}

@@ -179,6 +179,17 @@ MODES: dict[str, dict] = {
         "magazine_article_group": True,
         "attributes": {"magazine_drop_cap_mark": True},
     },
+    # The grouped run with post typesetting detection on, which is the pair the
+    # b8 switch-down comparison is made of.
+    "detected": {
+        "layout_model": "onnx",
+        "skip_translation": True,
+        "magazine_checkpoint": True,
+        "magazine_page_classify": True,
+        "magazine_chain_detect": True,
+        "magazine_article_group": True,
+        "magazine_detect": True,
+    },
 }
 
 # Settings that are not constructor parameters and are set on the built

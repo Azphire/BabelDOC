@@ -54,6 +54,7 @@ from babeldoc.format.pdf.translation_config import TranslationConfig
 from babeldoc.format.pdf.translation_config import WatermarkOutputMode
 from babeldoc.magazine.article_builder import ArticleBuilder
 from babeldoc.magazine.chain_builder import ChainBuilder
+from babeldoc.magazine import detectors
 from babeldoc.magazine import hitl
 from babeldoc.magazine.checkpoint import dump_checkpoint
 from babeldoc.magazine.page_classifier import PageClassifier
@@ -1047,6 +1048,10 @@ def _do_translate_single(
     else:
         logger.info("skip ILTranslator")
 
+    # After the translator, because what a ruling reached is only knowable from
+    # the requests it was given the chance to reach.
+    hitl.after_translate(translation_config)
+
     if translation_config.debug:
         xml_converter.write_json(
             docs,
@@ -1089,6 +1094,12 @@ def _do_translate_single(
         )
     if translation_config.magazine_checkpoint:
         dump_checkpoint(docs, translation_config, "typesetting")
+
+    # The one point where the translation is written back and the geometry it
+    # will be rendered at is final. Reads the document, writes a sidecar.
+    if translation_config.magazine_detect:
+        detectors.detect_issues(translation_config, docs)
+        logger.debug(f"finish detection from {temp_pdf_path}")
 
     pdf_creater = PDFCreater(temp_pdf_path, docs, translation_config, mediabox_data)
     result = pdf_creater.write(translation_config)

@@ -225,6 +225,7 @@ class TranslationConfig:
         magazine_article_context: bool = False,
         magazine_hitl_export: bool = False,
         magazine_hitl_apply: bool = False,
+        magazine_detect: bool = False,
     ):
         self.translator = translator
         self.term_extraction_translator = term_extraction_translator or translator
@@ -363,6 +364,9 @@ class TranslationConfig:
         # Magazine extension: let the decisions file beside that draft overrule
         # those decisions.
         self.magazine_hitl_apply = magazine_hitl_apply
+        # Magazine extension: inspect the finished document for defects and
+        # write what it finds to a sidecar.
+        self.magazine_detect = magazine_detect
 
         if self.skip_translation or self.only_parse_generate_pdf:
             self.auto_extract_glossary = False

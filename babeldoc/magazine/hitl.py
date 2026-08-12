@@ -51,6 +51,16 @@ module calls at the same hook the term channel runs at, and the ruling on them
 is written back into the intermediate language as a verdict per paragraph. That
 verdict is the one thing a ruling can decide here that nothing in this batch
 acts on; see that module for why, and for the sidecar that records it.
+
+A ruling that reaches nothing is the one failure the loop could not report on
+its own, and a third hook after the translator closes it. A paragraph is
+matched against the text the request was built from, which carries the markup
+its style runs imply, while a human rules from the joined rendering the draft
+shows; where a paragraph is set in several styles the two strings differ and a
+ruling keyed on the rendering matches nothing at all. So the draft carries the
+offered text beside the rendering, and an applied ruling records how many
+offered texts each pair reached, warning where that is none. Both are read from
+the tracking file the translator already writes, so neither costs a request.
 """
 
 from __future__ import annotations
@@ -111,6 +121,28 @@ DECISIONS_GLOSSARY = "hitl_decisions"
 _CONFIG_KEY_VERSION = "review_format_version"
 _CONFIG_KEY_SECTIONS = "sections"
 _CONFIG_KEY_DROP_CAP_DECISIONS = "drop_cap_decisions"
+_CONFIG_KEY_TRANSLATOR_VIEW_CHARS = "translator_view_chars"
+_CONFIG_KEY_MATCHED_EXCERPTS = "matched_prompt_excerpts"
+
+# What the translator leaves beside a run, holding for every paragraph it built
+# a request from both the joined rendering a human is shown and the text the
+# request was actually built from.
+TRACKING_NAME = "translate_tracking.json"
+
+# The three lists of the tracking file, each a list of objects carrying one
+# ``paragraph`` list. A request is a request whichever of them it came from.
+_TRACKING_SECTIONS = ("page", "cross_page", "cross_column")
+
+# The column the terms section carries the offered text in.
+TRANSLATOR_VIEW_COLUMN = "translator_view"
+
+# What ``matched_prompt_count`` counts, written into the report beside the
+# counts themselves so a reader of the file needs nothing else to read them.
+MATCH_DEFINITION = (
+    "how many translator inputs -- the text a paragraph was offered as, which "
+    "is what the glossary is matched against -- activate this entry, by the "
+    "matcher the translation prompt itself uses"
+)
 
 
 class HitlError(ValueError):
@@ -131,6 +163,8 @@ def load_hitl_config(path: str | None = None) -> dict:
         _CONFIG_KEY_VERSION,
         _CONFIG_KEY_SECTIONS,
         _CONFIG_KEY_DROP_CAP_DECISIONS,
+        _CONFIG_KEY_TRANSLATOR_VIEW_CHARS,
+        _CONFIG_KEY_MATCHED_EXCERPTS,
     ):
         if key not in parameters:
             raise HitlError(f"{config_path.name}: missing {key}")
@@ -656,6 +690,131 @@ def after_term_extract(translation_config, docs) -> None:
         _write_report(translation_config, report)
 
 
+def read_tracking(translation_config) -> list[dict]:
+    """Every request the translator built, as the tracking file records them.
+
+    Empty where no tracking file is beside the run, which is what a run that
+    translated nothing leaves. Order is the file's own, which is document order
+    within each of its three lists.
+    """
+    path = Path(translation_config.get_working_file_path(TRACKING_NAME))
+    if not path.exists():
+        return []
+    with path.open(encoding="utf-8") as f:
+        tracking = json.load(f)
+    records: list[dict] = []
+    for name in _TRACKING_SECTIONS:
+        for holder in tracking.get(name) or ():
+            records.extend(holder.get("paragraph") or ())
+    return records
+
+
+def offered_text(record: dict) -> str:
+    return record.get("input") or ""
+
+
+def rendered_text(record: dict) -> str:
+    return record.get("pdf_unicode") or ""
+
+
+def translator_view(source: str, records: list[dict], limit: int) -> str | None:
+    """The offered text of the first request whose rendering carries ``source``.
+
+    Only where the two differ. A paragraph offered exactly what it renders as
+    holds no disagreement to show, and a column repeating the source string for
+    every term would bury the ones that do.
+    """
+    for record in records:
+        rendered = rendered_text(record)
+        offered = offered_text(record)
+        if source not in rendered or offered == rendered:
+            continue
+        return offered[:limit]
+    return None
+
+
+def match_counts(
+    entries: list[tuple[str, str]], records: list[dict], excerpts: int
+) -> list[dict]:
+    """How many offered texts each ruled pair reaches, and a few of them.
+
+    Matching goes through the glossary type the translation prompt matches
+    with, so a pair counted here is a pair that prompt would have carried.
+    """
+    counted: list[dict] = []
+    for source, target in entries:
+        glossary = Glossary(
+            name=DECISIONS_GLOSSARY, entries=[GlossaryEntry(source, target)]
+        )
+        matched = [
+            offered_text(record)
+            for record in records
+            if glossary.get_active_entries_for_text(offered_text(record))
+        ]
+        counted.append(
+            {
+                "source": source,
+                "target": target,
+                "matched_prompt_count": len(matched),
+                "matched_excerpts": matched[:excerpts],
+            }
+        )
+    return counted
+
+
+def after_translate(translation_config) -> None:
+    """Hook run once the translator has finished with the whole document.
+
+    Two things are only knowable here, both about the gap between what a human
+    is shown and what the machine matches on. The draft gains the text each
+    ruled-on paragraph was actually offered, which is what a reviewer needs to
+    write a ruling that can match. An applied ruling gains, per pair, how many
+    of those offered texts it reached; a pair that reached none is a ruling
+    that silently did nothing, and is reported as a warning rather than left to
+    be discovered from an unchanged rendering.
+    """
+    if not (
+        translation_config.magazine_hitl_export or translation_config.magazine_hitl_apply
+    ):
+        return
+    records = read_tracking(translation_config)
+    if not records:
+        return
+    config = load_hitl_config()
+
+    if translation_config.magazine_hitl_export:
+        draft = _draft(translation_config)
+        limit = int(config[_CONFIG_KEY_TRANSLATOR_VIEW_CHARS])
+        for row in draft.get(TERMS_SECTION) or ():
+            row[TRANSLATOR_VIEW_COLUMN] = translator_view(
+                row.get("source") or "", records, limit
+            )
+        _write_draft(translation_config, draft)
+
+    if not translation_config.magazine_hitl_apply:
+        return
+    report = _report(translation_config)
+    applied = report.get(TERMS_SECTION)
+    if not applied:
+        return
+    counted = match_counts(
+        [(entry["source"], entry["target"]) for entry in applied["entries"]],
+        records,
+        int(config[_CONFIG_KEY_MATCHED_EXCERPTS]),
+    )
+    applied["match_definition"] = MATCH_DEFINITION
+    applied["matches"] = counted
+    unreached = [record["source"] for record in counted if not record["matched_prompt_count"]]
+    if unreached:
+        logger.warning(
+            "hitl: %d ruled term(s) matched no translator input and changed "
+            "nothing: %s",
+            len(unreached),
+            ", ".join(repr(source) for source in unreached),
+        )
+    _write_report(translation_config, report)
+
+
 _STYLE = """
 body { font: 13px/1.5 sans-serif; margin: 24px; color: #1a1a1a; }
 h1 { font-size: 20px; }
@@ -672,7 +831,13 @@ code { background: #f4f4f4; padding: 0 3px; }
 
 # Column order each section is read in, and the key each column shows.
 _COLUMNS = {
-    TERMS_SECTION: ("source", "auto_target", "vote_count", "first_page"),
+    TERMS_SECTION: (
+        "source",
+        "auto_target",
+        "vote_count",
+        "first_page",
+        TRANSLATOR_VIEW_COLUMN,
+    ),
     PAGE_KINDS_SECTION: ("page", "machine_kind", "conf", "ambiguous", "source"),
     DROP_CAPS_SECTION: (
         "paragraph",
