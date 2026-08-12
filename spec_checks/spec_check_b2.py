@@ -93,12 +93,15 @@ PROJECT_OWNED_PREFIXES = (
 )
 PROJECT_OWNED_FILES = {"CLAUDE.md", "UPSTREAM_DIFF.md", "WAIVERS.md"}
 
+# Code and configuration whose prose has to be English. The corpus tree is not
+# here: its files are adjudications of documents rather than prose about code,
+# and a Chinese edition in the corpus is adjudicated by quoting the Chinese it
+# splits. What governs those files is their validators and their ownership.
 NEW_CODE_GLOBS = (
     "babeldoc/magazine/*.py",
     "tools/*.py",
     "spec_checks/*.py",
     "configs/*.json",
-    "corpus/*.json",
 )
 
 # Directories excluded from the "no page type name in code" scan, per PLAN_B2
@@ -540,18 +543,27 @@ def check_06_ground_truth(runs: dict[str, tuple[Path, Path]], manifest: dict) ->
     publication_of = {
         sample["file"]: sample.get("publication", "") for sample in manifest["samples"]
     }
+    # Which samples the rate is binding on. A sample outside the constrained
+    # role is scored and printed the same way, and its numbers carry no gate: a
+    # distribution the thresholds were never tuned against would otherwise
+    # decide whether the tuned ones still hold.
+    constrained = set(corpus_module.constrained_samples(manifest))
     minimum = page_features.load_feature_config()["label_agreement_min"]
     # publication -> [kind hits, policy hits, labelled pages]
     tallies: dict[str, list[int]] = {}
+    observed_tallies: dict[str, list[int]] = {}
     misses: list[str] = []
     for file_name, expected_by_page in labelled.items():
         stem = Path(file_name).stem
         publication = publication_of.get(file_name, file_name)
+        binding = file_name in constrained
         if stem not in runs:
-            misses.append(f"{file_name}: not in the corpus run")
+            if binding:
+                misses.append(f"{file_name}: not in the corpus run")
             continue
         actual_kinds = classified_kinds(runs[stem][0])
-        tally = tallies.setdefault(publication, [0, 0, 0])
+        into = tallies if binding else observed_tallies
+        tally = into.setdefault(file_name, [0, 0, 0])
         for page_number, accepted in expected_by_page.items():
             tally[2] += 1
             actual = actual_kinds.get(page_number)
@@ -563,7 +575,8 @@ def check_06_ground_truth(runs: dict[str, tuple[Path, Path]], manifest: dict) ->
                 policy_of[actual] == policy_of[candidate] for candidate in accepted
             ):
                 tally[1] += 1
-            misses.append(f"{file_name}#{page_number}: {actual!r} not in {accepted}")
+            if binding:
+                misses.append(f"{file_name}#{page_number}: {actual!r} not in {accepted}")
 
     kind_hits = sum(tally[0] for tally in tallies.values())
     policy_hits = sum(tally[1] for tally in tallies.values())
@@ -571,13 +584,23 @@ def check_06_ground_truth(runs: dict[str, tuple[Path, Path]], manifest: dict) ->
     rate = kind_hits / total if total else 0.0
     policy_rate = policy_hits / total if total else 0.0
 
-    print("    label agreement by publication (kind / policy / labelled pages):")
-    for publication in sorted(tallies):
-        hits, policy, count = tallies[publication]
-        print(
-            f"      {publication}: kind={hits / count:.3f} ({hits}/{count}) "
-            f"policy={policy / count:.3f} ({policy}/{count})"
-        )
+    def print_tallies(title: str, rows: dict[str, list[int]]) -> None:
+        if not rows:
+            return
+        print(f"    {title} (kind / policy / labelled pages):")
+        for file_name in sorted(rows):
+            hits, policy, count = rows[file_name]
+            publication = publication_of.get(file_name, file_name)
+            print(
+                f"      {publication} {file_name}: "
+                f"kind={hits / count:.3f} ({hits}/{count}) "
+                f"policy={policy / count:.3f} ({policy}/{count})"
+            )
+
+    print_tallies(
+        f"label agreement, binding ({corpus_module.CONSTRAINED_ROLE})", tallies
+    )
+    print_tallies("label agreement, observed only", observed_tallies)
     record(
         name,
         total > 0 and rate >= minimum,

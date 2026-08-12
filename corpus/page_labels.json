@@ -20,24 +20,23 @@
     "3": ["advertisement", "article_opener"],
     "4": ["article_body"]
   },
-  "FD-en.pdf": {
-    "1": ["front_cover"],
-    "2": ["advertisement"],
-    "3": ["toc"],
-    "4": ["advertisement"],
-    "5": ["masthead"],
-    "6": ["article_opener"],
-    "7": ["article_opener"],
-    "8": ["article_opener"]
-  },
-  "AramcoWorld-en.pdf": {
-    "1": ["front_cover"],
+  "AramcoWorld-en-v2.pdf": { "1": ["front_cover"],
     "2": ["masthead"],
     "3": ["toc"],
     "4": ["article_body"],
     "5": ["article_opener"],
-    "6": ["article_body"],
-    "7": ["article_body"],
-    "8": ["article_body"]
-  }
+    "6": ["article_body"], 
+    "7": ["article_body"], "8": ["article_body"], "9": ["article_body"] },
+"FD-en-v2.pdf": { "1": ["front_cover"],
+    "2": ["advertisement"],
+    "3": ["toc"],
+    "4": ["advertisement"],
+    "5": ["masthead"],
+    "6": ["article_opener"], 
+    "7": ["infographic", "sidebar_heavy"], "8": ["article_opener"], "9": ["article_opener"] },
+"Courier-zh.pdf": {
+  "1": ["toc", "editorial"], "2": ["article_opener"], "3": ["photo_spread"],
+  "4": ["article_body"], "5": ["article_opener"], "6": ["article_body"],
+  "7": ["article_opener"], "8": ["article_body"]
+}
 }

@@ -13,8 +13,11 @@ The checks are:
 
 Registered baseline artefacts are verified when present; they are build
 products and are not tracked by version control, so a missing baseline is a
-warning rather than an error. A per publication breakdown is printed for the
-leave-one-publication-out tuning protocol.
+warning rather than an error. Two breakdowns are printed: one per publication,
+the unit the leave-one-publication-out tuning protocol splits on, and one per
+corpus role, the unit the agreement rate assertions are scoped to. The role
+breakdown names the constrained role explicitly, so which samples a failing
+agreement rate can come from is readable here rather than only from the gates.
 
 Exit codes: 0 the corpus is consistent, 1 otherwise.
 """
@@ -69,7 +72,9 @@ def check(registry_path: Path, manifest_path: Path) -> tuple[list[str], list[str
 def print_groups(manifest_path: Path) -> None:
     if not manifest_path.exists():
         return
-    groups = corpus.group_by_publication(corpus.load_manifest(manifest_path))
+    manifest = corpus.load_manifest(manifest_path)
+
+    groups = corpus.group_by_publication(manifest)
     print(f"publications: {len(groups)}")
     for publication, samples in groups.items():
         roles = sorted(
@@ -81,6 +86,26 @@ def print_groups(manifest_path: Path) -> None:
             f"  {publication}: {len(samples)} sample(s), {pages} page(s), "
             f"roles={roles} [{files}]"
         )
+
+    # A sample carrying several roles is listed under each, so these groups
+    # overlap by design: the question they answer is what a role covers.
+    by_role = corpus.group_by_role(manifest)
+    print(f"roles: {len(by_role)} (constrained: {corpus.CONSTRAINED_ROLE})")
+    for role, samples in by_role.items():
+        pages = sum(sample.get("pages", 0) for sample in samples)
+        files = ", ".join(sample["file"] for sample in samples)
+        binding = "binding" if role == corpus.CONSTRAINED_ROLE else "observed"
+        print(
+            f"  {role} [{binding}]: {len(samples)} sample(s), {pages} page(s) "
+            f"[{files}]"
+        )
+    unroled = [
+        sample["file"]
+        for sample in manifest.get("samples", [])
+        if not sample.get("corpus_role")
+    ]
+    if unroled:
+        print(f"  (no role): {unroled}")
 
 
 def main(argv: list[str] | None = None) -> int:

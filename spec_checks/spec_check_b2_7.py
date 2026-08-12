@@ -102,20 +102,23 @@ CJK_RANGES = ((0x3000, 0x303F), (0x4E00, 0x9FFF), (0xFF00, 0xFFEF))
 
 # Agreement measured in T2.7c, as (kind hits, labelled pages). Frozen numbers:
 # the point of recomputing them here is that a later edit to a threshold, a
-# feature or the corpus cannot move either table without saying so.
+# feature or the corpus cannot move either table without saying so. Restated at
+# batch-b7.5.1 over the refreshed corpus, two publications having been replaced
+# by longer excerpts of the same issues; the comparison the batch drew from them
+# is unchanged, and the candidate loses by more than it did.
 RAW_AGREEMENT = {
-    "": (28, 31),
-    "aramcoworld": (6, 8),
+    "": (29, 33),
+    "aramcoworld": (7, 9),
     "cern_courier": (3, 4),
-    "imf_fd": (8, 8),
+    "imf_fd": (8, 9),
     "unesco_courier": (8, 8),
     "vogue_us": (3, 3),
 }
 CANDIDATE_AGREEMENT = {
-    "": (28, 31),
-    "aramcoworld": (8, 8),
+    "": (26, 33),
+    "aramcoworld": (7, 9),
     "cern_courier": (2, 4),
-    "imf_fd": (8, 8),
+    "imf_fd": (7, 9),
     "unesco_courier": (7, 8),
     "vogue_us": (3, 3),
 }
@@ -466,9 +469,18 @@ def check_03_agreement_tables(classified: dict[str, Path], manifest: dict) -> No
     candidate = taxonomy_module.parse_taxonomy(
         json.loads(CANDIDATE_PATH.read_text(encoding="utf-8")), CANDIDATE_PATH.name
     )
-    labels = corpus_module.normalize_page_labels(
-        corpus_module.load_page_labels(LABELS_PATH)
-    )
+    # Both tables are a regression baseline over the distribution the two
+    # vocabularies were compared on, so they are measured on the samples
+    # carrying the constrained role. Folding in a distribution neither was tuned
+    # against would make the adoption verdict partly about that distribution.
+    binding = set(corpus_module.constrained_samples(manifest))
+    labels = {
+        file_name: pages
+        for file_name, pages in corpus_module.normalize_page_labels(
+            corpus_module.load_page_labels(LABELS_PATH)
+        ).items()
+        if file_name in binding
+    }
     publication_of = {
         sample["file"]: sample.get("publication", "") for sample in manifest["samples"]
     }

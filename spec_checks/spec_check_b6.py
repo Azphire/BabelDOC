@@ -102,10 +102,13 @@ PIPELINE_TIER = (
 # about the declaration itself: these three and nothing else.
 OPENING_TYPES = frozenset({"article_opener", "editorial", "interview"})
 
-# The sample the absorbed page was found on, and what the rule says about its
-# first four pages: cover, colophon and contents belong to no article, and the
-# first page carrying chainable text opens the first one.
-INSTANCE_SAMPLE = "AramcoWorld-en"
+# The publication the absorbed page was found on, and what the rule says about
+# the first four pages of its sample: cover, colophon and contents belong to no
+# article, and the first page carrying chainable text opens the first one. The
+# publication is named rather than the file, so a corpus refresh that replaces
+# the excerpt with a longer one keeps the instance instead of silently skipping
+# it; the front matter the assertion is about is the same either way.
+INSTANCE_PUBLICATION = "aramcoworld"
 INSTANCE_UNASSIGNED = (1, 2, 3)
 INSTANCE_FIRST_START = 4
 
@@ -256,6 +259,14 @@ def read_checkpoint(path: Path) -> il_version_1.Document:
 def sample_pdfs() -> list[Path]:
     manifest = corpus.load_manifest()
     return [ROOT / "examples" / "input" / e["file"] for e in manifest["samples"]]
+
+
+def instance_stem() -> str | None:
+    """The stem of the registered sample of the instance publication."""
+    for sample in corpus.load_manifest().get("samples", []):
+        if sample.get("publication") == INSTANCE_PUBLICATION:
+            return Path(sample["file"]).stem
+    return None
 
 
 def code_strings(path: Path) -> set[str]:
@@ -774,9 +785,10 @@ def check_05_instance() -> None:
     the contents page as it did while one flag answered both questions.
     """
     name = "05 the furniture pages stand apart and the first feature page opens"
-    run = runs().get(INSTANCE_SAMPLE)
+    stem = instance_stem()
+    run = runs().get(stem) if stem else None
     if run is None or run["map"] is None:
-        skip(name, f"{INSTANCE_SAMPLE} is not in the corpus")
+        skip(name, f"no {INSTANCE_PUBLICATION} sample is in the corpus")
         return
     article_map = run["map"]
     unassigned = [entry["page"] for entry in article_map["unassigned"]]

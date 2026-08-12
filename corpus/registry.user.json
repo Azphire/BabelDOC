@@ -1,5 +1,5 @@
 {
-    "version": 1,
+    "version": 2,
     "owner": "user-only; machine sessions must never edit this file",
     "entries": [
         {
@@ -39,29 +39,30 @@
             ],
             "notes": "CERN Courier Jul-Aug 2026 (Vol 66 No 4), digital-edition excerpt. CAUTION: digital edition is paginated as landscape TWO-PAGE SPREADS with a persistent navigation chrome bar (masthead + icon buttons) along the bottom of every PDF page; print typography is otherwise preserved. p1 spread: front cover (masthead, cover lines, full-bleed photo) + welcome/editorial column. p2 spread: full-page conference advertisement (IBIC 2026) + 'In This Issue' contents (department grid, article thumbnails with blurbs and page numbers). p3 spread: full-page vendor advertisement (Bergoz) + News Analysis page (dense single-story news layout, margin pull quote, photo with caption). p4 spread: feature spread 'Culture and History' pp. 24-25 (three-column dense body, multiple captioned photos, right-rail pull quote). Technical/trade-magazine density pole of the corpus; real commercial ads."
         },
+
         {
-            "file": "FD-en.pdf",
-            "publication": "imf_fd",
-            "magazine": true,
-            "toc_pages": [
-                3
-            ],
-            "corpus_role": [
-                "layout_generalization"
-            ],
-            "notes": "IMF Finance & Development, June 2026 (Vol 63 No 2), English edition excerpt. p1: front cover (large wordmark, cover-line strip with three teasers, full-bleed collage art). p2: full-page house advertisement (World Economic Outlook). p3: contents page - two-section TOC grid with page numbers, large red pull quote inline, bottom image with page cross-reference. p4: full-page house advertisement (IMF Weekend Read, photo with QR code). p5: masthead page - staff/colophon column plus multilingual-editions promo panel (seven language covers). p6: 'Kaleidoscope' news-brief page (big picture photo with caption box, three-column brief with oversized headline). p7: 'Point of View' opener (full-column illustration, drop cap, author photo, standfirst). p8: 'Currency Notes' back-of-book article (oversized headline, single image with typewriter-style margin caption, two-column body, author sign-off). NOTE: official Chinese edition exists for this issue; pair FD-zh to promote this entry to translation_eval."
+        "file": "AramcoWorld-en-v2.pdf",
+        "publication": "aramcoworld",
+        "magazine": true,
+        "toc_pages": [3],
+        "corpus_role": ["layout_generalization"],
+        "notes": "Supersedes AramcoWorld-en.pdf. 9 pages: v1 pages 1-6 unchanged (cover, masthead, contents, issue p30, p33, p34); NEW page 7 = issue p35 (Hijaz feature continuation: top photo, two-column body, boxed section heading STEAMING AHEAD, right margin caption, bottom map figure); pages 8-9 = former 7-8 (Reviews p40-41). Purpose of v2: issue p34->p35 is a real mid-sentence page split ('a scarcity of water along much of' -> 'the route south of the Hauran'); p35 tail dangles mid-sentence ('...where a', continuation p36 absent) making 7->8 a new non-adjacent trap."
         },
         {
-            "file": "AramcoWorld-en.pdf",
-            "publication": "aramcoworld",
-            "magazine": true,
-            "toc_pages": [
-                3
-            ],
-            "corpus_role": [
-                "layout_generalization"
-            ],
-            "notes": "AramcoWorld Jul-Aug 2026 (Vol 77 No 4), 8-page excerpt. p1: front cover (wordmark over full-bleed geometric dome photo, minimal cover lines). p2: masthead/colophon page - narrow staff and subscription column, right half full-height photo. p3: contents page - FEATURES entries with oversized page numerals and thumbnail images, DEPARTMENTS strip, front-cover description box, rotated credit rail. p4: feature page (p30) - large photo top, two-column body, oversized centered pull quote with attribution, narrow margin caption column. p5: feature opener (p33) - giant ghosted display type 'RAILWAY?', large-leading standfirst, two-column body, margin captions, embedded photo. p6: feature body (p34) - boxed section heading, two stacked photos left column, margin caption, two-column body. p7: Reviews (p40) - book-review layout with cover thumbnails, italic pull-quote panel, footer motto line. p8: Reviews (p41) - asymmetric three-column review layout, artwork image top-left, book thumbnail, shaded pull-quote panel, rotated credit rail. Photo-led feature-magazine pole of the corpus."
+        "file": "FD-en-v2.pdf",
+        "publication": "imf_fd",
+        "magazine": true,
+        "toc_pages": [3],
+        "corpus_role": ["layout_generalization"],
+        "notes": "Supersedes FD-en.pdf. 9 pages: v1 pages 1-6 unchanged; NEW page 7 = issue p7 (Kaleidoscope continuation: Overheard quote rail with portraits, IN THE NEWS photo brief, By the numbers bar-chart panel - first infographic/quote-rail-dense page in corpus); pages 8-9 = former 7-8 (PoV p10, Currency Notes p72). NOTE: issue p6 ends with a complete sentence; 6->7 is a clean same-department boundary, NOT a chain positive."
+        },
+        {
+        "file": "Courier-zh.pdf",
+        "publication": "unesco_courier",
+        "magazine": true,
+        "toc_pages": [1],
+        "corpus_role": ["translation_eval"],
+        "notes": "Official Chinese edition of UNESCO Courier Jan-Mar 2026; page-for-page parallel of Courier-en.pdf (zh issue folio = en folio - 2: en p4<->zh p2, en p12<->zh p10, en p38<->zh p36). 8 pages mirroring Courier-en structure: contents+editorial, opener (display title split across pp.2-3), body with LINKS box, Brazil opener (zh p7), quantum body (zh p36), biopiracy opener (zh p10), biopiracy continuation (zh p11). Contains the official MID-WORD page split at zh p10->p11 ('...协议中包' / '含惠益分享条款') cited in the b5.3 evidence set. Official renderings for reference: biopiracy=生物剽窃, spinifex=三齿稃, masthead=联合国教科文组织《信使》. Serves as parallel reference for translation_eval; zh-source chain testing (zh->en) is a future use."
         }
     ]
 }

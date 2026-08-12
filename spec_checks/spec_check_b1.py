@@ -115,6 +115,9 @@ NAME_REFERENCE_ALLOW_LIST = NAME_DEFINITION_FILES | {
     # B7.3 reads both pairs out of the frozen evidence of the two-pass smoke to
     # assert what a ruling reached; it writes nothing and touches no document.
     "spec_checks/spec_check_b7_3.py",
+    # B7.5 reads the page kind out of the classifier checkpoint to score the
+    # refreshed corpus against the ground truth, and writes nothing.
+    "spec_checks/spec_check_b7_5.py",
 }
 
 # Upstream files carried over from B0, still uncommitted in the working tree.
@@ -148,12 +151,15 @@ PROJECT_OWNED_PREFIXES = (
 PROJECT_OWNED_FILES = {"CLAUDE.md", "UPSTREAM_DIFF.md", "WAIVERS.md"}
 
 # Project-owned trees whose files must be free of non-ASCII comments.
+# Code and configuration whose prose has to be English. The corpus tree is not
+# here: its files are adjudications of documents rather than prose about code,
+# and a Chinese edition in the corpus is adjudicated by quoting the Chinese it
+# splits. What governs those files is their validators and their ownership.
 NEW_CODE_GLOBS = (
     "babeldoc/magazine/*.py",
     "tools/*.py",
     "spec_checks/*.py",
     "configs/*.json",
-    "corpus/*.json",
 )
 
 # CJK / fullwidth / CJK-punctuation ranges, kept as code points so that this

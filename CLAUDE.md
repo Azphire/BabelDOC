@@ -25,7 +25,7 @@
 - 无 API key 的干跑方式:`only_parse_generate_pdf` 配置跳过全部翻译相关 stage,仍产出 PDF。
 - 打包:hatchling,包名 `BabelDOC`,Python >=3.10,<3.14。
 - **本地翻译缓存已内建**:`translator/cache.py`,peewee SQLite,DB 默认 `~/.cache/babeldoc/cache.v1.db`(`const.CACHE_FOLDER`),key = 引擎名 + 引擎参数 + 原文。`BaseTranslator.translate` 与 `llm_translate` 均先查缓存(受 `ignore_cache` 控制)。注意:`init_db()` 在 `cache.py` 模块导入时执行且路径硬编码;`MAX_CACHE_ROWS = 50_000` 超限即删旧行。B0 起缓存重定向到项目本地并禁用淘汰(见 §3)。
-- checkpoint 规范形式为再序列化形式(to_xml(from_xml(x)));字节级比对一律先归一化。读取旧 checkpoint 时容忍 xsdata ConverterWarning,不容忍错误(W-B0-02)。
+- checkpoint 规范形式为再序列化形式(to_xml(from_xml(x)));字节级比对一律先归一化。读取旧 checkpoint 时容忍 xsdata ConverterWarning,不容忍错误(W-B0-02)。checkpoint 序列化对 XML 1.0 非法码位做可逆转义,转义引导符自转义保证无歧义;规范形式比较在还原后进行。
 - 两层 IR 原则:Article IR(段落级 chainId)权威规定统一翻译边界;Page IR(pageKind→policy)只提供排版/修复策略与链构建软先验,冲突时段落级证据优先。
 - VLM 兜底消融关账:四档模型均无 policy 级增益,enabled 保持 false;基础设施保留,待区域语义或分布漂移场景重启评估。
 - 评估协议:A/B 对比以缓存冻结重放为准;模型采样方差(gpt-4o temp=0 实测非确定)为已知局限;显著性主张需三跑设计。

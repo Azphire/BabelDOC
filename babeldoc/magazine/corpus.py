@@ -62,6 +62,13 @@ MECHANICAL_FIELDS: tuple[str, ...] = ("sha256", "pages")
 # Closed vocabulary for the corpus_role list.
 CORPUS_ROLES: frozenset[str] = frozenset({"translation_eval", "layout_generalization"})
 
+# The role whose samples the agreement rate assertions are binding on. Every
+# sample is measured and reported the same way; a sample outside this role
+# carries no gate, because a distribution the thresholds were never tuned
+# against would otherwise decide whether the tuned ones still hold. Its numbers
+# are the baseline a later calibration for that distribution is judged from.
+CONSTRAINED_ROLE = "layout_generalization"
+
 # Marker a registry entry carries while its metadata is still unverified; a
 # corpus holding one is not fit to build baselines from.
 UNVERIFIED_MARKER = "TO-VERIFY"
@@ -480,3 +487,25 @@ def group_by_publication(manifest: dict) -> dict[str, list[dict]]:
     for sample in manifest.get("samples", []):
         groups.setdefault(sample.get("publication", ""), []).append(sample)
     return {key: groups[key] for key in sorted(groups)}
+
+
+def group_by_role(manifest: dict) -> dict[str, list[dict]]:
+    """Samples grouped by corpus role, the unit the agreement domain is cut on.
+
+    A sample carrying several roles appears under each of them, so the groups
+    overlap: they answer what a role covers rather than how the corpus divides.
+    """
+    groups: dict[str, list[dict]] = {}
+    for sample in manifest.get("samples", []):
+        for role in sample.get("corpus_role", []):
+            groups.setdefault(role, []).append(sample)
+    return {key: groups[key] for key in sorted(groups)}
+
+
+def constrained_samples(manifest: dict, role: str = CONSTRAINED_ROLE) -> list[str]:
+    """File names of the samples an agreement rate assertion is binding on."""
+    return [
+        sample["file"]
+        for sample in manifest.get("samples", [])
+        if "file" in sample and role in sample.get("corpus_role", [])
+    ]
