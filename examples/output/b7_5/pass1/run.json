@@ -1,0 +1,18 @@
+{
+  "sample": "Courier-en.pdf",
+  "pass": "pass1",
+  "model": "gpt-4o",
+  "seconds": 421.4,
+  "requests": 51,
+  "cache_hits": 51,
+  "api_calls": 0,
+  "prompt_tokens": 0,
+  "completion_tokens": 0,
+  "working_dir": "examples\\output\\b7_5\\pass1\\work\\Courier-en",
+  "mono_pdf": "Courier-en.pass1.pdf",
+  "reviews": [
+    "Courier-en.review.json",
+    "Courier-en.review.html",
+    "Courier-en.decisions.json"
+  ]
+}

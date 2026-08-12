@@ -69,6 +69,7 @@ from babeldoc.format.pdf import high_level  # noqa: E402
 from babeldoc.format.pdf.parse_shared import _ParseOnlyDocLayoutModel  # noqa: E402
 from babeldoc.format.pdf.translation_config import TranslationConfig  # noqa: E402
 from babeldoc.format.pdf.translation_config import WatermarkOutputMode  # noqa: E402
+from babeldoc.magazine.checkpoint import CHECKPOINT_PREFIX  # noqa: E402
 from babeldoc.magazine.page_features import Parameter  # noqa: E402
 from babeldoc.magazine.page_features import validate_bounded_config  # noqa: E402
 
@@ -186,6 +187,27 @@ ATTRIBUTES_KEY = "attributes"
 
 _fingerprint: str | None = None
 _stats = {"hit": 0, "built": 0, "build_seconds": 0.0}
+
+
+class BuildIncomplete(RuntimeError):
+    """Raised when a run finished without producing what its mode promises."""
+
+
+def _incomplete(working: Path, mono: object, mode: str) -> list[str]:
+    """What a finished run owes its mode and did not deliver.
+
+    Every mode produces a mono PDF. A mode that asks for checkpoints owes at
+    least one, and one is enough: which stages appear is the business of the
+    gates that read them, not of the cache.
+    """
+    missing: list[str] = []
+    if not mono:
+        missing.append("mono PDF")
+    if MODES[mode].get("magazine_checkpoint") and not list(
+        working.glob(f"{CHECKPOINT_PREFIX}*.xml")
+    ):
+        missing.append("checkpoint")
+    return missing
 
 
 @dataclass
@@ -375,6 +397,20 @@ def _build(sample: Path, mode: str, slot: Path) -> None:
     # TranslationConfig appends the input stem to the working directory it was
     # given, so the resolved path is recorded rather than reconstructed.
     working = Path(config.working_dir).relative_to(staging).as_posix()
+
+    # A run the pipeline reported as finished can still have produced nothing:
+    # `translate` swallows some failures and hands back a result with no PDF.
+    # Publishing that leaves a slot every later hit serves as an empty working
+    # directory, and a gate reading it scores zero agreement against ground
+    # truth rather than reporting that nothing was built. Refusing to publish
+    # keeps the failure loud and leaves the evidence in the staging directory.
+    missing = _incomplete(staging / working, mono, mode)
+    if missing:
+        raise BuildIncomplete(
+            f"{sample.name} [{mode}]: the run produced no {', '.join(missing)}; "
+            f"the slot was not published and the run is left at {staging}"
+        )
+
     with (staging / "meta.json").open("w", encoding="utf-8") as f:
         json.dump(
             {

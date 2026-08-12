@@ -53,7 +53,7 @@ WAIVERS.md                  # 偏离/豁免登记表
 
 ## 4. 硬性编码约定
 
-1. **注释一律英文**。注释只解释代码当前为何如此;**禁止变更日志式注释**(不写 changed/fixed/added for batch N,不留注释掉的旧代码)。改动理由写进 commit message 与 PLAN 文件。
+1. **注释一律英文(语料真值文件除外)**。注释只解释代码当前为何如此;**禁止变更日志式注释**(不写 changed/fixed/added for batch N,不留注释掉的旧代码)。改动理由写进 commit message 与 PLAN 文件。
 2. **禁止在代码中按页面类型名分支**(不得出现 `if page_kind == "toc"` 之类)。下游只消费 `configs/page_types.json` 中声明的 policy 标志(`chain_eligible` / `translate` / `repair_profile`)。
 3. **prompt 不进代码**。所有 LLM/VLM 调用的 prompt 从 `prompts/` 加载;prompt loader 在运行时把所加载文件的 SHA-256 记入 working_dir 的运行清单。
 4. **阈值不散落**。新引入的数值阈值/开关一律进 `configs/` 的 JSON(有界参数:名称、取值、允许范围);禁止裸字面量启发式。

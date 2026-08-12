@@ -1,0 +1,209 @@
+{
+  "sample": "Courier-en",
+  "ruling": {
+    "terms": {
+      "Marcelo Silva de Sousa": "马塞洛·席尔瓦·德·索萨",
+      "Lagipoiva Cherelle Jackson": "拉吉波伊瓦·谢雷尔·杰克逊",
+      "Daniel Robinson": "丹尼尔·罗宾逊",
+      "David Jefferson": "大卫·杰斐逊",
+      "The UNESCO Courier": "联合国教科文组织《信使》",
+      "CourierT H E UNESCO": "联合国教科文组织《信使》"
+    },
+    "page_kinds": {
+      "1": "toc"
+    },
+    "drop_caps": {
+      "p4#3": "keep",
+      "p5#5": "flatten",
+      "p7#8": "flatten"
+    }
+  },
+  "ruled_masthead_targets": [
+    "联合国教科文组织《信使》"
+  ],
+  "sites": [
+    {
+      "paragraph": "p1#9",
+      "page": 1,
+      "layout_label": "title",
+      "source": "CourierT H E UNESCO",
+      "pass1": "信使H E 联合国教科文组织",
+      "pass2": "信使H E 联合国教科文组织",
+      "reach": "offered_but_unmatched",
+      "carries_ruled_name": false,
+      "moved": false
+    },
+    {
+      "paragraph": "p2#0",
+      "page": 2,
+      "layout_label": "abandon",
+      "source": "| The UNESCO Courier • January-March 2026",
+      "pass1": "联合国教科文组织信使 2026年1月至3月",
+      "pass2": "联合国教科文组织《信使》2026年1月至3月",
+      "reach": "ruling_matched",
+      "carries_ruled_name": true,
+      "moved": true
+    },
+    {
+      "paragraph": "p4#0",
+      "page": 4,
+      "layout_label": "abandon",
+      "source": "| The UNESCO Courier • January-March 2026",
+      "pass1": "联合国教科文组织信使 2026年1月至3月",
+      "pass2": "联合国教科文组织《信使》 2026年1月至3月",
+      "reach": "ruling_matched",
+      "carries_ruled_name": true,
+      "moved": true
+    },
+    {
+      "paragraph": "p6#0",
+      "page": 6,
+      "layout_label": "abandon",
+      "source": "| The UNESCO Courier • January-March 2026",
+      "pass1": "联合国教科文组织信使 2026年1月至3月",
+      "pass2": "联合国教科文组织《信使》 2026年1月至3月",
+      "reach": "ruling_matched",
+      "carries_ruled_name": true,
+      "moved": true
+    },
+    {
+      "paragraph": "p6#15",
+      "page": 6,
+      "layout_label": "fallback_line",
+      "source": "r The UNESCO Courier éniako fo © Boris Sém",
+      "pass1": "r The UNESCO Courier éniako fo © Boris Sém",
+      "pass2": "r The UNESCO Courier éniako fo © Boris Sém",
+      "reach": "not_offered",
+      "carries_ruled_name": false,
+      "moved": false
+    },
+    {
+      "paragraph": "p7#0",
+      "page": 7,
+      "layout_label": "abandon",
+      "source": "| The UNESCO Courier • January-March 2026",
+      "pass1": "联合国教科文组织信使 2026年1月至3月",
+      "pass2": "联合国教科文组织《信使》2026年1月至3月",
+      "reach": "ruling_matched",
+      "carries_ruled_name": true,
+      "moved": true
+    }
+  ],
+  "ruling_matched": 4,
+  "offered_but_unmatched": 1,
+  "not_offered": 1,
+  "matched_all_carry_ruled_name": true,
+  "matched_renderings": [
+    "联合国教科文组织《信使》 2026年1月至3月",
+    "联合国教科文组织《信使》2026年1月至3月"
+  ],
+  "unmatched_unmoved": [
+    "p1#9"
+  ],
+  "not_offered_untranslated": [
+    "p6#15"
+  ],
+  "controls": [
+    {
+      "paragraph": "p1#15",
+      "term": "biopiracy",
+      "pass1": "当生物盗窃扎根时.12Daniel Robinson 和 David Jefferson",
+      "pass2": "当生物盗窃扎根时.12丹尼尔·罗宾逊和大卫·杰斐逊",
+      "identical": false
+    },
+    {
+      "paragraph": "p7#4",
+      "term": "biopiracy",
+      "pass1": "并非所有与遗传资源相关的土著知识的商业使用都构成生物盗窃；有些项目是互利的。例如，澳大利亚的Indjalandji-Dhidhanu人就与昆士兰大学的研究人员合作，基于他们对传统上用于多种用途的耐旱多年生丛生草——针茅的土著知识进行研究。该合作研究协议包括利益分享的条款。现在，一家衍生公司正在开发从针茅中提取的纤维素纳米纤维制成的医用凝胶，并已为这种草的复合材料申请了专利。",
+      "pass2": "并非所有与遗传资源相关的土著知识的商业使用都构成生物盗窃；有些项目是互利的。例如，澳大利亚的Indjalandji-Dhidhanu人就与昆士兰大学的研究人员合作，基于他们对传统上用于多种用途的耐旱多年生丛生草——针茅的土著知识进行研究。该合作研究协议包括利益分享的条款。现在，一家衍生公司正在开发从针茅中提取的纤维素纳米纤维制成的医用凝胶，并已为这种草的复合材料申请了专利。",
+      "identical": true
+    },
+    {
+      "paragraph": "p7#5",
+      "term": "biopiracy",
+      "pass1": "然而，生物发现被批评为对原住民和其他地方人民所发展的知识的“搭便车”。当他们的知识在科学研究、产品开发或商业化中未得到充分认可，且知识使用者未能适当地与祖传知识持有者分享利益时，这种行为可被称为“生物盗窃”。",
+      "pass2": "然而，生物发现被批评为对土著和其他地方人民所发展的知识的“搭便车”。当他们的知识在科学研究、产品开发或商业化中未得到充分认可，并且这些知识的使用者未能适当地与祖传知识持有者分享利益时，这种行为可以被称为“生物盗窃”。",
+      "identical": false
+    },
+    {
+      "paragraph": "p7#11",
+      "term": "biopiracy",
+      "pass1": "当生物盗窃扎根时",
+      "pass2": "当生物盗窃扎根",
+      "identical": false
+    },
+    {
+      "paragraph": "p8#0",
+      "term": "biopiracy",
+      "pass1": "当生物盗窃扎根时 ",
+      "pass2": "当生物盗窃扎根时 ",
+      "identical": true
+    },
+    {
+      "paragraph": "p8#3",
+      "term": "biopiracy",
+      "pass1": "然而，尽管采取了这些措施，由于系统中存在可利用的漏洞，生物盗窃仍然时有发生。例如，可以通过从未采纳限制性立法的国家收集遗传资源或传统知识，或者从在公约生效前的历史收藏中获取遗传资源来规避规则。此外，尽管对专利滥用给予了大量关注，其他形式的知识产权，如植物育种者权利和商标，也在促进土著知识的盗用。如果不进行重大变革，这些漏洞的持续存在意味着生物盗窃将仍然是不幸的现实。",
+      "pass2": "然而，尽管采取了这些措施，由于系统中存在可利用的漏洞，生物盗窃仍然时有发生。例如，可以通过从未采纳限制性立法的国家收集遗传资源或传统知识，或者从在公约生效前的历史收藏中获取遗传资源来规避规则。此外，尽管对专利滥用给予了大量关注，其他形式的知识产权，如植物育种者权利和商标，也在促进土著知识的盗用。如果不进行重大变革，这些漏洞的持续存在意味着生物盗窃将仍然是不幸的现实。",
+      "identical": true
+    },
+    {
+      "paragraph": "p8#10",
+      "term": "biopiracy",
+      "pass1": "生物盗窃问题的根源在于一个历史性的转变：全球社会开始将生物资源视为专有资产，而非共享遗产的那一刻。",
+      "pass2": "生物盗窃问题的根源在于一个历史性的转变：全球社会开始将生物资源视为专有资产，而非共享遗产的那一刻。",
+      "identical": true
+    }
+  ],
+  "paragraphs": 132,
+  "changed_paragraphs": [
+    "p1#2",
+    "p1#4",
+    "p1#5",
+    "p1#6",
+    "p1#7",
+    "p1#12",
+    "p1#13",
+    "p1#14",
+    "p1#15",
+    "p1#16",
+    "p1#18",
+    "p2#0",
+    "p2#4",
+    "p2#6",
+    "p2#7",
+    "p4#0",
+    "p5#8",
+    "p6#0",
+    "p6#7",
+    "p6#13",
+    "p7#0",
+    "p7#5",
+    "p7#9",
+    "p7#11",
+    "p7#13",
+    "p7#14",
+    "p7#15"
+  ],
+  "offered_text": {
+    "joined_unicode_the_draft_shows": [
+      "CourierT H E UNESCO",
+      "r The UNESCO Courier éniako fo © Boris Sém",
+      "| The UNESCO Courier • January-March 2026"
+    ],
+    "text_the_translator_is_offered": [
+      "<b1>Courier</b1><b3>H E UNESCO",
+      "<b1>The UNESCO Courier <b2><b3>January-March 2026</b3>"
+    ],
+    "ruled_sources": [
+      "The UNESCO Courier",
+      "CourierT H E UNESCO"
+    ],
+    "ruled_source_matches_offered_text": {
+      "The UNESCO Courier": [
+        "<b1>The UNESCO Courier <b2><b3>January-March 2026</b3>"
+      ],
+      "CourierT H E UNESCO": []
+    },
+    "prompts_captured": 123
+  }
+}

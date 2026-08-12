@@ -251,13 +251,15 @@ def check_02c_ruling_matches_the_file() -> None:
     }
     if ruled_caps != written.get("drop_caps", {}):
         faults.append(f"drop caps applied {ruled_caps}")
-    # The file in the working tree is the one the run read, unedited since. The
-    # default directory is named rather than asked for: this gate redirects the
-    # review directory so that nothing it does can write into the tree.
-    ruling = hitl.DEFAULT_REVIEWS_DIR / f"{SAMPLE}{hitl.DECISIONS_SUFFIX}"
+    # The ruling the run read, frozen beside the run that read it. The working
+    # tree copy is not the reference: a ruling is a living document and a later
+    # batch may add to it -- batch-b7.5.2 added the masthead entries -- while
+    # what this evidence has to agree with is the ruling as it stood when these
+    # two passes were made.
+    ruling = SMOKE_DIR / "pass2" / f"{SAMPLE}{hitl.DECISIONS_SUFFIX}"
     with ruling.open(encoding="utf-8") as f:
         if json.load(f) != written:
-            faults.append(f"{ruling.name} no longer matches the run")
+            faults.append(f"the frozen {ruling.name} no longer matches the run")
     record("check_02c_ruling_matches_the_file", not faults, "; ".join(faults))
 
 

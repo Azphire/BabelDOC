@@ -1,0 +1,22 @@
+{
+  "joined_unicode_the_draft_shows": [
+    "CourierT H E UNESCO",
+    "r The UNESCO Courier éniako fo © Boris Sém",
+    "| The UNESCO Courier • January-March 2026"
+  ],
+  "text_the_translator_is_offered": [
+    "<b1>Courier</b1><b3>H E UNESCO",
+    "<b1>The UNESCO Courier <b2><b3>January-March 2026</b3>"
+  ],
+  "ruled_sources": [
+    "The UNESCO Courier",
+    "CourierT H E UNESCO"
+  ],
+  "ruled_source_matches_offered_text": {
+    "The UNESCO Courier": [
+      "<b1>The UNESCO Courier <b2><b3>January-March 2026</b3>"
+    ],
+    "CourierT H E UNESCO": []
+  },
+  "prompts_captured": 123
+}
