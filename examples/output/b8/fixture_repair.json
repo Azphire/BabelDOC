@@ -1,0 +1,292 @@
+{
+  "applications": 3,
+  "config": {
+    "actions": [
+      {
+        "applicability": {
+          "min_residue_ratio": 0.9,
+          "min_source_chars": 12,
+          "orphan_layout_labels": [
+            "fallback_line"
+          ]
+        },
+        "description": "Send the text of an orphan line through the translation engine and write the answer back into the paragraph, then lay that paragraph out again.",
+        "issue_kinds": [
+          "untranslated_residue"
+        ],
+        "max_applications": 12,
+        "name": "translate_orphan_lines",
+        "parameters": [
+          {
+            "allowed_range": "1.0..20.0",
+            "default": 3.0,
+            "name": "max_paragraphs"
+          }
+        ]
+      }
+    ],
+    "decide_max_attempts": 2,
+    "issue_excerpt_chars": 120,
+    "max_glossary_entries": 24,
+    "max_issues_offered": 40,
+    "max_iterations": 3,
+    "page_context_chars": 1200
+  },
+  "conservation": {
+    "changed_outside_touched": [],
+    "changed_refs": [
+      "p3#2",
+      "p5#10",
+      "p6#15"
+    ],
+    "pages_after": 5,
+    "pages_before": 5,
+    "paragraphs_after": 90,
+    "paragraphs_before": 90,
+    "touched_refs": [
+      "p3#2",
+      "p5#10",
+      "p6#15"
+    ],
+    "verdict": "conserved"
+  },
+  "engine_configured": true,
+  "final": {
+    "by_kind": {
+      "fragment_cluster": 1,
+      "untranslated_residue": 2
+    },
+    "total": 3
+  },
+  "iterations": [
+    {
+      "applicability": [
+        {
+          "accepted": false,
+          "attempts": 0,
+          "changed": false,
+          "from_cache": false,
+          "glossary_entries": [],
+          "issue_id": "fragment_cluster:p1:p1#13+p1#14+p1#15+p1#16",
+          "offered_text": "",
+          "paragraph_ref": "p1#13, p1#14, p1#15, p1#16",
+          "reason": "kind_outside_action",
+          "source_text": "",
+          "translated_text": ""
+        },
+        {
+          "accepted": false,
+          "attempts": 0,
+          "changed": false,
+          "from_cache": false,
+          "glossary_entries": [],
+          "issue_id": "untranslated_residue:p1:p1#20",
+          "offered_text": "",
+          "paragraph_ref": "p1#20",
+          "reason": "layout_label_not_orphan",
+          "source_text": "与Ora Marek-Martinez的访谈",
+          "translated_text": ""
+        },
+        {
+          "accepted": false,
+          "attempts": 0,
+          "changed": false,
+          "from_cache": false,
+          "glossary_entries": [],
+          "issue_id": "untranslated_residue:p1:p1#25",
+          "offered_text": "",
+          "paragraph_ref": "p1#25",
+          "reason": "layout_label_not_orphan",
+          "source_text": "Jim Al-Khalili",
+          "translated_text": ""
+        }
+      ],
+      "decision": {
+        "action": "translate_orphan_lines",
+        "attempts": 1,
+        "from_cache": false,
+        "issue_ids": [
+          "fragment_cluster:p1:p1#13+p1#14+p1#15+p1#16",
+          "untranslated_residue:p1:p1#20",
+          "untranslated_residue:p1:p1#25",
+          "untranslated_residue:p3:p3#2",
+          "untranslated_residue:p5:p5#10",
+          "untranslated_residue:p6:p6#15"
+        ],
+        "parameters": {
+          "max_paragraphs": 8.0
+        },
+        "raw": "{\"action\": \"translate_orphan_lines\", \"issue_ids\": [\"fragment_cluster:p1:p1#13+p1#14+p1#15+p1#16\", \"untranslated_residue:p1:p1#20\", \"untranslated_residue:p1:p1#25\", \"untranslated_residue:p3:p3#2\", \"untranslated_residue:p5:p5#10\", \"untranslated_residue:p6:p6#15\"], \"parameters\": {\"max_paragraphs\": 8}, \"reason\": \"orphan lines are still in the source script\"}",
+        "reason": "orphan lines are still in the source script",
+        "violations": []
+      },
+      "detected": {
+        "by_kind": {
+          "fragment_cluster": 1,
+          "untranslated_residue": 5
+        },
+        "total": 6
+      },
+      "detected_ids": [
+        "fragment_cluster:p1:p1#13+p1#14+p1#15+p1#16",
+        "untranslated_residue:p1:p1#20",
+        "untranslated_residue:p1:p1#25",
+        "untranslated_residue:p3:p3#2",
+        "untranslated_residue:p5:p5#10",
+        "untranslated_residue:p6:p6#15"
+      ],
+      "executed": [
+        {
+          "accepted": true,
+          "attempts": 1,
+          "changed": true,
+          "from_cache": false,
+          "glossary_entries": [],
+          "issue_id": "untranslated_residue:p3:p3#2",
+          "offered_text": "brano© Carolina Zam",
+          "paragraph_ref": "p3#2",
+          "reason": "accepted",
+          "source_text": "brano© Carolina Zam",
+          "translated_text": "为联合国教科文组织《信使》拍摄"
+        },
+        {
+          "accepted": true,
+          "attempts": 1,
+          "changed": true,
+          "from_cache": false,
+          "glossary_entries": [],
+          "issue_id": "untranslated_residue:p5:p5#10",
+          "offered_text": "barini / OPAN© Adriano Gam",
+          "paragraph_ref": "p5#10",
+          "reason": "accepted",
+          "source_text": "barini / OPAN© Adriano Gam",
+          "translated_text": "为联合国教科文组织《信使》拍摄"
+        },
+        {
+          "accepted": true,
+          "attempts": 1,
+          "changed": true,
+          "from_cache": false,
+          "glossary_entries": [],
+          "issue_id": "untranslated_residue:p6:p6#15",
+          "offered_text": "r The UNESCO Courieréniako fo© Boris Sém",
+          "paragraph_ref": "p6#15",
+          "reason": "accepted",
+          "source_text": "r The UNESCO Courieréniako fo© Boris Sém",
+          "translated_text": "为联合国教科文组织《信使》拍摄"
+        }
+      ],
+      "iteration": 1,
+      "new_ids": [],
+      "outcome": "advanced",
+      "recheck": {
+        "by_kind": {
+          "fragment_cluster": 1,
+          "untranslated_residue": 2
+        },
+        "total": 3
+      },
+      "request": {
+        "cache_key": "0fd303ee81013fe9c978b740a36958310dd8e5ce954096ca712817bc14158fe8",
+        "prompt_sha256": "61fafa9e370e2b196f8007a1adbad381f9f8ede354cafea17ae5627ab4ec3b2a"
+      },
+      "resolved_ids": [
+        "untranslated_residue:p3:p3#2",
+        "untranslated_residue:p5:p5#10",
+        "untranslated_residue:p6:p6#15"
+      ]
+    },
+    {
+      "applicability": [
+        {
+          "accepted": false,
+          "attempts": 0,
+          "changed": false,
+          "from_cache": false,
+          "glossary_entries": [],
+          "issue_id": "fragment_cluster:p1:p1#13+p1#14+p1#15+p1#16",
+          "offered_text": "",
+          "paragraph_ref": "p1#13, p1#14, p1#15, p1#16",
+          "reason": "kind_outside_action",
+          "source_text": "",
+          "translated_text": ""
+        },
+        {
+          "accepted": false,
+          "attempts": 0,
+          "changed": false,
+          "from_cache": false,
+          "glossary_entries": [],
+          "issue_id": "untranslated_residue:p1:p1#20",
+          "offered_text": "",
+          "paragraph_ref": "p1#20",
+          "reason": "layout_label_not_orphan",
+          "source_text": "与Ora Marek-Martinez的访谈",
+          "translated_text": ""
+        },
+        {
+          "accepted": false,
+          "attempts": 0,
+          "changed": false,
+          "from_cache": false,
+          "glossary_entries": [],
+          "issue_id": "untranslated_residue:p1:p1#25",
+          "offered_text": "",
+          "paragraph_ref": "p1#25",
+          "reason": "layout_label_not_orphan",
+          "source_text": "Jim Al-Khalili",
+          "translated_text": ""
+        }
+      ],
+      "decision": {
+        "action": "translate_orphan_lines",
+        "attempts": 1,
+        "from_cache": false,
+        "issue_ids": [
+          "fragment_cluster:p1:p1#13+p1#14+p1#15+p1#16",
+          "untranslated_residue:p1:p1#20",
+          "untranslated_residue:p1:p1#25"
+        ],
+        "parameters": {
+          "max_paragraphs": 8.0
+        },
+        "raw": "{\"action\": \"translate_orphan_lines\", \"issue_ids\": [\"fragment_cluster:p1:p1#13+p1#14+p1#15+p1#16\", \"untranslated_residue:p1:p1#20\", \"untranslated_residue:p1:p1#25\"], \"parameters\": {\"max_paragraphs\": 8}, \"reason\": \"orphan lines are still in the source script\"}",
+        "reason": "orphan lines are still in the source script",
+        "violations": []
+      },
+      "detected": {
+        "by_kind": {
+          "fragment_cluster": 1,
+          "untranslated_residue": 2
+        },
+        "total": 3
+      },
+      "detected_ids": [
+        "fragment_cluster:p1:p1#13+p1#14+p1#15+p1#16",
+        "untranslated_residue:p1:p1#20",
+        "untranslated_residue:p1:p1#25"
+      ],
+      "executed": [],
+      "iteration": 2,
+      "outcome": "applied_nothing",
+      "request": {
+        "cache_key": "67408f47d75cd04873fe485d1b6dbb33c87f926f3dd8ccf9cde7beee311b970f",
+        "prompt_sha256": "61fafa9e370e2b196f8007a1adbad381f9f8ede354cafea17ae5627ab4ec3b2a"
+      }
+    }
+  ],
+  "iterations_run": 2,
+  "offered_texts": [
+    "brano© Carolina Zam",
+    "barini / OPAN© Adriano Gam",
+    "r The UNESCO Courieréniako fo© Boris Sém"
+  ],
+  "rendered_after": {
+    "p3#2": "为联合国教科文组织《信使》拍摄",
+    "p5#10": "为联合国教科文组织《信使》拍摄",
+    "p6#15": "为联合国教科文组织《信使》拍摄"
+  },
+  "requests_made": 5,
+  "stopped_because": "no_finding_the_action_may_act_on",
+  "switch": "magazine_repair"
+}

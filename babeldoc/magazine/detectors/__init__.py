@@ -186,9 +186,18 @@ def detect_issues(translation_config, docs) -> list[Issue]:
 
     Returns them in report order, empty where the switch is down, in which case
     nothing is written either.
+
+    Where the repair switch is up as well, the loop beside this package owns the
+    pass instead: it detects, acts and detects again, and the sidecar it leaves
+    describes the document the PDF is written from rather than the one detection
+    first saw. The import is local because that package reads this one.
     """
     if not enabled(translation_config):
         return []
+    from babeldoc.magazine.react import controller
+
+    if controller.enabled(translation_config):
+        return controller.repair_document(translation_config, docs)
     config = detector_config()
     working_dir = Path(translation_config.get_working_file_path(REPORT_NAME)).parent
     context = build_context(

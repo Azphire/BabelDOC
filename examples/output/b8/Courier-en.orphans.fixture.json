@@ -1,0 +1,38 @@
+{
+  "dropped": [
+    "page characters, curves, forms, layouts, rectangles and base operations; the compositions of non-orphan paragraphs"
+  ],
+  "fixture_bytes": 207874,
+  "kept": [
+    "page: mediabox, cropbox, pageNumber, unit, pageKind and its provenance, the whole pdfFont list, pdfXobject boxes and fonts, pdfFigure boxes",
+    "orphan paragraph: everything, as the run left it",
+    "every other paragraph: box, pdfStyle, orientation, label, scales and rendered text as one unicode composition"
+  ],
+  "orphan_labels": [
+    "fallback_line"
+  ],
+  "orphans_by_source_page": {
+    "1": [
+      30,
+      31,
+      32
+    ],
+    "3": [
+      2
+    ],
+    "4": [
+      5,
+      7
+    ],
+    "5": [
+      10
+    ],
+    "6": [
+      15
+    ]
+  },
+  "pages": 5,
+  "paragraphs": 90,
+  "source": "examples/output/b7_5/pass2/work/Courier-en/checkpoint.11_typesetting.xml",
+  "source_sha256": "53b8f98e32a09010ff8d2341ac79e7610dafa6fe5664e0de909a699310180c43"
+}

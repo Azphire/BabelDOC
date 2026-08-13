@@ -127,6 +127,10 @@ NAME_REFERENCE_ALLOW_LIST = NAME_DEFINITION_FILES | {
     "babeldoc/magazine/detectors/base.py",
     "babeldoc/magazine/detectors/escalation.py",
     "spec_checks/spec_check_b8.py",
+    # B8.2 repairs what B8.1 detected. Its gate builds pages carrying a kind,
+    # for the same reason, and renumbers the chain id when it compares two runs
+    # of one pipeline; neither the loop nor the gate writes an IL field.
+    "spec_checks/spec_check_b8_2.py",
 }
 
 # Upstream files carried over from B0, still uncommitted in the working tree.

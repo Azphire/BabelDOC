@@ -190,6 +190,19 @@ MODES: dict[str, dict] = {
         "magazine_article_group": True,
         "magazine_detect": True,
     },
+    # The detected run with the repair loop on, which is the pair the b8.2
+    # switch-down comparison is made of. The repair switch is not a constructor
+    # parameter (W-B8-01), so it is set on the built configuration instead.
+    "repaired": {
+        "layout_model": "onnx",
+        "skip_translation": True,
+        "magazine_checkpoint": True,
+        "magazine_page_classify": True,
+        "magazine_chain_detect": True,
+        "magazine_article_group": True,
+        "magazine_detect": True,
+        "attributes": {"magazine_repair": True},
+    },
 }
 
 # Settings that are not constructor parameters and are set on the built

@@ -1,0 +1,40 @@
+{
+  "description": "Bounds of the ReAct repair controller (babeldoc/magazine/react/). Same convention as configs/detectors.json: every numeric parameter carries a '<name>_allowed_range' sibling of the form 'low..high', inclusive on both ends, and the convention holds inside the nested action blocks as well. 'actions' is the vocabulary a decision may choose from; a name outside it, a parameter the chosen action does not declare, or a value outside that parameter's range is a violation and the reply is refused. Each action declares 'issue_kinds', the detector kinds it answers for, 'max_applications', the ceiling on how many paragraphs it may touch over the whole run, its 'parameters' with a default and a range each, and its 'applicability', which is what decides whether a particular finding is one this action may act on at all. Applicability is deliberately stricter than detection: a detector reports what looks wrong and a repair has to be sure, because leaving a defect standing costs one defect and rewriting a correct paragraph costs a correct paragraph. For translate_orphan_lines that is two conditions. 'min_residue_ratio' is the share of the paragraph's script characters that must be in the wrong script -- a paragraph that is almost entirely the wrong script was not translated, whereas a mixed one is a translation that kept a name in its source form, and rewriting the second would undo a correct decision. 'orphan_layout_labels' is the closed set of layout labels an orphan carries: a paragraph the layout parser recovered outside every detected block, which is what 'fallback_line' means and the only way a paragraph reaches typesetting without ever having been offered to the translator. A paragraph carrying any other label was offered and what it renders as is the translator's decision, which this action does not overrule. 'min_source_chars' keeps a folio or a credit glyph from being sent anywhere. 'max_iterations' bounds the detect-decide-act-recheck loop, 'decide_max_attempts' bounds how many times one iteration's decision may be asked for before the iteration is abandoned, and the remaining numbers bound what one request is allowed to carry.",
+  "max_iterations": 3,
+  "max_iterations_allowed_range": "1..10",
+  "decide_max_attempts": 2,
+  "decide_max_attempts_allowed_range": "1..5",
+  "max_issues_offered": 40,
+  "max_issues_offered_allowed_range": "1..500",
+  "issue_excerpt_chars": 120,
+  "issue_excerpt_chars_allowed_range": "20..400",
+  "max_glossary_entries": 24,
+  "max_glossary_entries_allowed_range": "1..200",
+  "page_context_chars": 1200,
+  "page_context_chars_allowed_range": "0..20000",
+  "actions": {
+    "translate_orphan_lines": {
+      "description": "Send the text of an orphan line through the translation engine and write the answer back into the paragraph, then lay that paragraph out again.",
+      "issue_kinds": [
+        "untranslated_residue"
+      ],
+      "max_applications": 12,
+      "max_applications_allowed_range": "1..200",
+      "parameters": {
+        "max_paragraphs": {
+          "default": 3,
+          "default_allowed_range": "1..20"
+        }
+      },
+      "applicability": {
+        "min_residue_ratio": 0.9,
+        "min_residue_ratio_allowed_range": "0.05..1.0",
+        "min_source_chars": 12,
+        "min_source_chars_allowed_range": "1..400",
+        "orphan_layout_labels": [
+          "fallback_line"
+        ]
+      }
+    }
+  }
+}

@@ -61,6 +61,13 @@ for the same reason a modification is.
 | `babeldoc/format/pdf/high_level.py` | module imports | Import the `detectors` module from `babeldoc.magazine`. | B8 |
 | `babeldoc/format/pdf/high_level.py` | `_do_translate_single` | Run `detectors.detect_issues(translation_config, docs)` after the `magazine_checkpoint`-gated `typesetting` checkpoint and before `PDFCreater` is constructed, gated by `magazine_detect`. That point is the only one at which the translation is written back and the geometry it will render at is final. The pass reads the document and writes a sidecar; it changes nothing, so with the switch off or on the produced PDF is the same. | B8 |
 
+Batch b8.2 changes no upstream file. The repair loop reaches the pipeline
+through the `detect_issues` call the row above already declares: that function
+hands the pass to `magazine/react/controller.py` when `magazine_repair` is set
+on the configuration object, and behaves exactly as before when it is not. The
+switch is not a constructor parameter for the same reason the drop cap one is
+not; see W-B8-01.
+
 ## Couplings
 
 Extension code calling upstream symbols it does not change. Each row names the

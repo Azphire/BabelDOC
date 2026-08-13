@@ -1073,7 +1073,7 @@ def check_07b_ruling_reach() -> None:
         faults.append(f"a reached term counted {matches.get('the reached term')}")
     if matches.get("CourierT H E UNESCO") != 0:
         faults.append("a ruling that matched nothing was counted as reaching something")
-    if not any("matched no translator input" in message for message in logs):
+    if not any("matched no input" in message for message in logs):
         faults.append("no warning was logged for the ruling that reached nothing")
     if hitl.MATCH_DEFINITION not in json.dumps(written):
         faults.append("the report does not say what it counted")

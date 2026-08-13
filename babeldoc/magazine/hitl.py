@@ -61,6 +61,14 @@ ruling keyed on the rendering matches nothing at all. So the draft carries the
 offered text beside the rendering, and an applied ruling records how many
 offered texts each pair reached, warning where that is none. Both are read from
 the tracking file the translator already writes, so neither costs a request.
+
+That count covers every path that sends text to the engine, not only the
+translator's. The repair loop translates the lines the translator was never
+given, and a ruling that binds the document binds what the loop asks for too,
+so a fourth hook after the loop recounts with the loop's own inputs included.
+Without it a ruling whose only occurrence is on an orphan line would be
+reported as having reached nothing, which is the same silence the third hook
+exists to end.
 """
 
 from __future__ import annotations
@@ -139,10 +147,15 @@ TRANSLATOR_VIEW_COLUMN = "translator_view"
 # What ``matched_prompt_count`` counts, written into the report beside the
 # counts themselves so a reader of the file needs nothing else to read them.
 MATCH_DEFINITION = (
-    "how many translator inputs -- the text a paragraph was offered as, which "
+    "how many inputs -- the text a paragraph was offered as, which "
     "is what the glossary is matched against -- activate this entry, by the "
-    "matcher the translation prompt itself uses"
+    "matcher the translation prompt itself uses; counted over every request "
+    "this run built from the document, the repair loop's included"
 )
+
+# How many of the counted inputs came from the repair loop rather than from the
+# translator, written beside the counts so the two paths stay distinguishable.
+REPAIR_INPUTS_KEY = "repair_inputs"
 
 
 class HitlError(ValueError):
@@ -804,14 +817,48 @@ def after_translate(translation_config) -> None:
     )
     applied["match_definition"] = MATCH_DEFINITION
     applied["matches"] = counted
+    _warn_unreached(counted)
+    _write_report(translation_config, report)
+
+
+def _warn_unreached(counted: list[dict]) -> None:
     unreached = [record["source"] for record in counted if not record["matched_prompt_count"]]
     if unreached:
         logger.warning(
-            "hitl: %d ruled term(s) matched no translator input and changed "
-            "nothing: %s",
+            "hitl: %d ruled term(s) matched no input and changed nothing: %s",
             len(unreached),
             ", ".join(repr(source) for source in unreached),
         )
+
+
+def after_repair(translation_config, offered: list[str]) -> None:
+    """Hook run once the repair loop has finished with the document.
+
+    The loop sends text to the engine that the translator never saw, so a pair
+    counted after the translator alone is counted over part of the run. This
+    recounts over both, which is the only count a reader of the report can act
+    on: a pair reported as reaching nothing has to mean it reached nothing
+    anywhere.
+    """
+    if not translation_config.magazine_hitl_apply or not offered:
+        return
+    report = _report(translation_config)
+    applied = report.get(TERMS_SECTION)
+    if not applied:
+        return
+    config = load_hitl_config()
+    records = read_tracking(translation_config) + [
+        {"input": text} for text in offered
+    ]
+    counted = match_counts(
+        [(entry["source"], entry["target"]) for entry in applied["entries"]],
+        records,
+        int(config[_CONFIG_KEY_MATCHED_EXCERPTS]),
+    )
+    applied["match_definition"] = MATCH_DEFINITION
+    applied["matches"] = counted
+    applied[REPAIR_INPUTS_KEY] = len(offered)
+    _warn_unreached(counted)
     _write_report(translation_config, report)
 
 

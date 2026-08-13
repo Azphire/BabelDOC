@@ -52,6 +52,11 @@
       "name": "drop_cap.report.json",
       "stage": "hitl",
       "switch": "magazine_drop_cap_mark"
+    },
+    {
+      "name": "react_repair.report.json",
+      "stage": "typesetting",
+      "switch": "magazine_repair"
     }
   ]
 }
