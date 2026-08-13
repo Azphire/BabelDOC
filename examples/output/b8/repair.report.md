@@ -135,7 +135,15 @@ T8.0 existed to end.
 - `detectors.detect_issues` hands the pass to the controller when
   `magazine_repair` is set; `hitl.after_repair` closes the reach count;
   `react_repair.report.json` is declared in the run inventory.
-- No upstream file is changed. W-B8-01 records the switch.
+- No upstream file is changed. W-B8-01 records the switch: because this batch
+  is delivered under a zero-upstream-change constraint, `magazine_repair` is not
+  a `TranslationConfig.__init__` parameter like its siblings but an attribute
+  read off the configuration object with `getattr(..., False)` and set by
+  whoever builds it, exactly as `magazine_drop_cap_mark` is under W-B7-02, and
+  the loop is reached through the `magazine_detect` hook rather than through a
+  call site of its own. The waiver is lifted when a batch is authorised to touch
+  `translation_config.py` and `high_level.py` again, at which point the flag
+  becomes a constructor parameter and the loop takes its own hook.
 
 Two properties are worth naming because both were found by running the loop
 over a real pipeline document rather than a built one.

@@ -54,6 +54,11 @@
       "switch": "magazine_drop_cap_mark"
     },
     {
+      "name": "issues.json",
+      "stage": "typesetting",
+      "switch": "magazine_detect"
+    },
+    {
       "name": "react_repair.report.json",
       "stage": "typesetting",
       "switch": "magazine_repair"

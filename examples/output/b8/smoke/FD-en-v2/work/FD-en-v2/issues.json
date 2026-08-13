@@ -1,0 +1,739 @@
+{
+  "counts": {
+    "by_kind": {
+      "fragment_cluster": 1,
+      "untranslated_residue": 24
+    },
+    "issues": 25
+  },
+  "document_detectors": [
+    "escalation_surfacing"
+  ],
+  "issues": [
+    {
+      "detected_at_iteration": 0,
+      "detector": "fragment_cluster",
+      "evidence": {
+        "debug_ids": [
+          "tDvDk",
+          "1LSsk",
+          "D7srE",
+          "Lspqh",
+          "7xQif",
+          "RbVKd",
+          "9vakb",
+          "g7d7H",
+          "jH9Cm",
+          "Thh9E"
+        ],
+        "excerpt": "S M Ali Abbas / Aqib Aslam / James Astill / Helge Berger / Yan Carriere-Swallow ",
+        "layout_labels": [
+          "fallback_line"
+        ],
+        "max_chars": 40,
+        "member_count": 10,
+        "min_cluster": 3
+      },
+      "geometry": {
+        "x": 333.57,
+        "x2": 407.231,
+        "y": 365.0352999999999,
+        "y2": 453.2283
+      },
+      "id": "fragment_cluster:p5:p5#15+p5#16+p5#17+p5#18+p5#19+p5#20+p5#21+p5#22+p5#23+p5#24",
+      "kind": "fragment_cluster",
+      "page": 5,
+      "paragraph_refs": [
+        "p5#15",
+        "p5#16",
+        "p5#17",
+        "p5#18",
+        "p5#19",
+        "p5#20",
+        "p5#21",
+        "p5#22",
+        "p5#23",
+        "p5#24"
+      ],
+      "severity": "low"
+    },
+    {
+      "detected_at_iteration": 0,
+      "detector": "untranslated_residue",
+      "evidence": {
+        "debug_id": "1tzTq",
+        "excerpt": "经济理论Robert Skidelsky 谈凯恩斯",
+        "layout_label": "plain text",
+        "min_ratio": 0.6,
+        "residue_chars": 15,
+        "residue_ratio": 0.6522,
+        "residue_script": "latin",
+        "script_chars": 23
+      },
+      "geometry": {
+        "x": 246.831,
+        "x2": 330.432,
+        "y": 670.6888,
+        "y2": 704.7837999999999
+      },
+      "id": "untranslated_residue:p1:p1#0",
+      "kind": "untranslated_residue",
+      "page": 1,
+      "paragraph_refs": [
+        "p1#0"
+      ],
+      "severity": "high"
+    },
+    {
+      "detected_at_iteration": 0,
+      "detector": "untranslated_residue",
+      "evidence": {
+        "debug_id": "YbKF3",
+        "excerpt": "贸易政策Jamieson Greer 谈关税",
+        "layout_label": "plain text",
+        "min_ratio": 0.6,
+        "residue_chars": 13,
+        "residue_ratio": 0.65,
+        "residue_script": "latin",
+        "script_chars": 20
+      },
+      "geometry": {
+        "x": 465.9505,
+        "x2": 529.1913000000001,
+        "y": 670.6888,
+        "y2": 704.7837999999999
+      },
+      "id": "untranslated_residue:p1:p1#2",
+      "kind": "untranslated_residue",
+      "page": 1,
+      "paragraph_refs": [
+        "p1#2"
+      ],
+      "severity": "high"
+    },
+    {
+      "detected_at_iteration": 0,
+      "detector": "untranslated_residue",
+      "evidence": {
+        "debug_id": "JT74n",
+        "excerpt": "FFERSTAUNBRIA",
+        "layout_label": "fallback_line",
+        "min_ratio": 0.6,
+        "residue_chars": 13,
+        "residue_ratio": 1.0,
+        "residue_script": "latin",
+        "script_chars": 13
+      },
+      "geometry": {
+        "x": 601.2732500000001,
+        "x2": 604.98775,
+        "y": 54.0,
+        "y2": 106.68725
+      },
+      "id": "untranslated_residue:p2:p2#8",
+      "kind": "untranslated_residue",
+      "page": 2,
+      "paragraph_refs": [
+        "p2#8"
+      ],
+      "severity": "high"
+    },
+    {
+      "detected_at_iteration": 0,
+      "detector": "untranslated_residue",
+      "evidence": {
+        "debug_id": "3gA7B",
+        "excerpt": "FFERSTAUNBRIA",
+        "layout_label": "abandon",
+        "min_ratio": 0.6,
+        "residue_chars": 13,
+        "residue_ratio": 1.0,
+        "residue_script": "latin",
+        "script_chars": 13
+      },
+      "geometry": {
+        "x": 25.27325,
+        "x2": 28.987750000000002,
+        "y": 54.0,
+        "y2": 106.68725
+      },
+      "id": "untranslated_residue:p3:p3#5",
+      "kind": "untranslated_residue",
+      "page": 3,
+      "paragraph_refs": [
+        "p3#5"
+      ],
+      "severity": "high"
+    },
+    {
+      "detected_at_iteration": 0,
+      "detector": "untranslated_residue",
+      "evidence": {
+        "debug_id": "zdn4z",
+        "excerpt": "新经济学工具如何解释全球权力动态Christopher Clayton, Matteo Maggiori, 和 Jesse Schreger",
+        "layout_label": "plain text",
+        "min_ratio": 0.6,
+        "residue_chars": 45,
+        "residue_ratio": 0.7258,
+        "residue_script": "latin",
+        "script_chars": 62
+      },
+      "geometry": {
+        "x": 47.24085000000001,
+        "x2": 196.59142500000002,
+        "y": 459.60875,
+        "y2": 504.906
+      },
+      "id": "untranslated_residue:p3:p3#22",
+      "kind": "untranslated_residue",
+      "page": 3,
+      "paragraph_refs": [
+        "p3#22"
+      ],
+      "severity": "high"
+    },
+    {
+      "detected_at_iteration": 0,
+      "detector": "untranslated_residue",
+      "evidence": {
+        "debug_id": "QQh6T",
+        "excerpt": "ANHCHJALTAANHC,RDIFFOGRTERPO",
+        "layout_label": "fallback_line",
+        "min_ratio": 0.6,
+        "residue_chars": 27,
+        "residue_ratio": 1.0,
+        "residue_script": "latin",
+        "script_chars": 27
+      },
+      "geometry": {
+        "x": -32.685,
+        "x2": -26.935,
+        "y": 54.0,
+        "y2": 175.85975000000008
+      },
+      "id": "untranslated_residue:p4:p4#3",
+      "kind": "untranslated_residue",
+      "page": 4,
+      "paragraph_refs": [
+        "p4#3"
+      ],
+      "severity": "high"
+    },
+    {
+      "detected_at_iteration": 0,
+      "detector": "untranslated_residue",
+      "evidence": {
+        "debug_id": "qQtYz",
+        "excerpt": "EDITOR-IN-CHIEFGita Bhatt",
+        "layout_label": "plain text",
+        "min_ratio": 0.6,
+        "residue_chars": 22,
+        "residue_ratio": 1.0,
+        "residue_script": "latin",
+        "script_chars": 22
+      },
+      "geometry": {
+        "x": 333.829,
+        "x2": 393.56,
+        "y": 666.05,
+        "y2": 682.0
+      },
+      "id": "untranslated_residue:p5:p5#4",
+      "kind": "untranslated_residue",
+      "page": 5,
+      "paragraph_refs": [
+        "p5#4"
+      ],
+      "severity": "high"
+    },
+    {
+      "detected_at_iteration": 0,
+      "detector": "untranslated_residue",
+      "evidence": {
+        "debug_id": "NdrE8",
+        "excerpt": "MANAGING EDITORNicholas Owen",
+        "layout_label": "plain text",
+        "min_ratio": 0.6,
+        "residue_chars": 26,
+        "residue_ratio": 1.0,
+        "residue_script": "latin",
+        "script_chars": 26
+      },
+      "geometry": {
+        "x": 334.0265,
+        "x2": 393.98249999999996,
+        "y": 643.05,
+        "y2": 659.0
+      },
+      "id": "untranslated_residue:p5:p5#5",
+      "kind": "untranslated_residue",
+      "page": 5,
+      "paragraph_refs": [
+        "p5#5"
+      ],
+      "severity": "high"
+    },
+    {
+      "detected_at_iteration": 0,
+      "detector": "untranslated_residue",
+      "evidence": {
+        "debug_id": "vfEGa",
+        "excerpt": "SENIOR EDITORSandreas adriano Jeff Kearns Peter Walker",
+        "layout_label": "plain text",
+        "min_ratio": 0.6,
+        "residue_chars": 48,
+        "residue_ratio": 1.0,
+        "residue_script": "latin",
+        "script_chars": 48
+      },
+      "geometry": {
+        "x": 333.598,
+        "x2": 389.97950000000003,
+        "y": 602.046,
+        "y2": 636.0
+      },
+      "id": "untranslated_residue:p5:p5#6",
+      "kind": "untranslated_residue",
+      "page": 5,
+      "paragraph_refs": [
+        "p5#6"
+      ],
+      "severity": "high"
+    },
+    {
+      "detected_at_iteration": 0,
+      "detector": "untranslated_residue",
+      "evidence": {
+        "debug_id": "JvCJ8",
+        "excerpt": "ASSISTANT EDITORAndrew Stanley",
+        "layout_label": "plain text",
+        "min_ratio": 0.6,
+        "residue_chars": 28,
+        "residue_ratio": 1.0,
+        "residue_script": "latin",
+        "script_chars": 28
+      },
+      "geometry": {
+        "x": 333.598,
+        "x2": 398.0125,
+        "y": 579.05,
+        "y2": 595.0
+      },
+      "id": "untranslated_residue:p5:p5#7",
+      "kind": "untranslated_residue",
+      "page": 5,
+      "paragraph_refs": [
+        "p5#7"
+      ],
+      "severity": "high"
+    },
+    {
+      "detected_at_iteration": 0,
+      "detector": "untranslated_residue",
+      "evidence": {
+        "debug_id": "FPjVM",
+        "excerpt": "CREATIVE AND MARKETINGMarta Doroszczyk Natalia Venegas Figueroa Huong (Vanessa) ",
+        "layout_label": "plain text",
+        "min_ratio": 0.6,
+        "residue_chars": 71,
+        "residue_ratio": 1.0,
+        "residue_script": "latin",
+        "script_chars": 71
+      },
+      "geometry": {
+        "x": 333.8965,
+        "x2": 422.62799999999993,
+        "y": 538.046,
+        "y2": 572.0
+      },
+      "id": "untranslated_residue:p5:p5#8",
+      "kind": "untranslated_residue",
+      "page": 5,
+      "paragraph_refs": [
+        "p5#8"
+      ],
+      "severity": "high"
+    },
+    {
+      "detected_at_iteration": 0,
+      "detector": "untranslated_residue",
+      "evidence": {
+        "debug_id": "nMej9",
+        "excerpt": "PRODUCTION MANAGER",
+        "layout_label": "fallback_line",
+        "min_ratio": 0.6,
+        "residue_chars": 17,
+        "residue_ratio": 1.0,
+        "residue_script": "latin",
+        "script_chars": 17
+      },
+      "geometry": {
+        "x": 334.228,
+        "x2": 406.0725,
+        "y": 524.5033000000001,
+        "y2": 531.0033000000001
+      },
+      "id": "untranslated_residue:p5:p5#9",
+      "kind": "untranslated_residue",
+      "page": 5,
+      "paragraph_refs": [
+        "p5#9"
+      ],
+      "severity": "high"
+    },
+    {
+      "detected_at_iteration": 0,
+      "detector": "untranslated_residue",
+      "evidence": {
+        "debug_id": "kjfwD",
+        "excerpt": "ART DIRECTION AND DESIGN2communiqué",
+        "layout_label": "plain text",
+        "min_ratio": 0.6,
+        "residue_chars": 31,
+        "residue_ratio": 1.0,
+        "residue_script": "latin",
+        "script_chars": 31
+      },
+      "geometry": {
+        "x": 333.682,
+        "x2": 430.9024999999999,
+        "y": 469.3753,
+        "y2": 485.00329999999997
+      },
+      "id": "untranslated_residue:p5:p5#13",
+      "kind": "untranslated_residue",
+      "page": 5,
+      "paragraph_refs": [
+        "p5#13"
+      ],
+      "severity": "high"
+    },
+    {
+      "detected_at_iteration": 0,
+      "detector": "untranslated_residue",
+      "evidence": {
+        "debug_id": "iJc7n",
+        "excerpt": "ADVISORS TO THE EDITOR",
+        "layout_label": "fallback_line",
+        "min_ratio": 0.6,
+        "residue_chars": 19,
+        "residue_ratio": 1.0,
+        "residue_script": "latin",
+        "script_chars": 19
+      },
+      "geometry": {
+        "x": 333.682,
+        "x2": 422.9984999999999,
+        "y": 455.50329999999997,
+        "y2": 462.00329999999997
+      },
+      "id": "untranslated_residue:p5:p5#14",
+      "kind": "untranslated_residue",
+      "page": 5,
+      "paragraph_refs": [
+        "p5#14"
+      ],
+      "severity": "high"
+    },
+    {
+      "detected_at_iteration": 0,
+      "detector": "untranslated_residue",
+      "evidence": {
+        "debug_id": "7xQif",
+        "excerpt": "Yan Carriere-Swallow",
+        "layout_label": "fallback_line",
+        "min_ratio": 0.6,
+        "residue_chars": 18,
+        "residue_ratio": 1.0,
+        "residue_script": "latin",
+        "script_chars": 18
+      },
+      "geometry": {
+        "x": 333.57,
+        "x2": 407.231,
+        "y": 410.04529999999994,
+        "y2": 417.22029999999995
+      },
+      "id": "untranslated_residue:p5:p5#19",
+      "kind": "untranslated_residue",
+      "page": 5,
+      "paragraph_refs": [
+        "p5#19"
+      ],
+      "severity": "high"
+    },
+    {
+      "detected_at_iteration": 0,
+      "detector": "untranslated_residue",
+      "evidence": {
+        "debug_id": "g7d7H",
+        "excerpt": "Rupa Duttagupta",
+        "layout_label": "fallback_line",
+        "min_ratio": 0.6,
+        "residue_chars": 14,
+        "residue_ratio": 1.0,
+        "residue_script": "latin",
+        "script_chars": 14
+      },
+      "geometry": {
+        "x": 334.074,
+        "x2": 391.42429999999996,
+        "y": 383.0392999999999,
+        "y2": 390.1092999999999
+      },
+      "id": "untranslated_residue:p5:p5#22",
+      "kind": "untranslated_residue",
+      "page": 5,
+      "paragraph_refs": [
+        "p5#22"
+      ],
+      "severity": "high"
+    },
+    {
+      "detected_at_iteration": 0,
+      "detector": "untranslated_residue",
+      "evidence": {
+        "debug_id": "jH9Cm",
+        "excerpt": "Davide Furceri",
+        "layout_label": "fallback_line",
+        "min_ratio": 0.6,
+        "residue_chars": 13,
+        "residue_ratio": 1.0,
+        "residue_script": "latin",
+        "script_chars": 13
+      },
+      "geometry": {
+        "x": 334.074,
+        "x2": 382.5063,
+        "y": 374.0372999999999,
+        "y2": 381.1072999999999
+      },
+      "id": "untranslated_residue:p5:p5#23",
+      "kind": "untranslated_residue",
+      "page": 5,
+      "paragraph_refs": [
+        "p5#23"
+      ],
+      "severity": "high"
+    },
+    {
+      "detected_at_iteration": 0,
+      "detector": "untranslated_residue",
+      "evidence": {
+        "debug_id": "cwd5Q",
+        "excerpt": "Subir Lall Papa N’Diaye Malhar Nabar Diaa Noureldin Uma Ramakrishnan Christoph R",
+        "layout_label": "plain text",
+        "min_ratio": 0.6,
+        "residue_chars": 133,
+        "residue_ratio": 1.0,
+        "residue_script": "latin",
+        "script_chars": 133
+      },
+      "geometry": {
+        "x": 438.318,
+        "x2": 516.3995,
+        "y": 365.0142999999998,
+        "y2": 453.2072999999999
+      },
+      "id": "untranslated_residue:p5:p5#25",
+      "kind": "untranslated_residue",
+      "page": 5,
+      "paragraph_refs": [
+        "p5#25"
+      ],
+      "severity": "high"
+    },
+    {
+      "detected_at_iteration": 0,
+      "detector": "untranslated_residue",
+      "evidence": {
+        "debug_id": "szmS1",
+        "excerpt": "www.imf.org/fandd",
+        "layout_label": "plain text",
+        "min_ratio": 0.6,
+        "residue_chars": 14,
+        "residue_ratio": 1.0,
+        "residue_script": "latin",
+        "script_chars": 14
+      },
+      "geometry": {
+        "x": 61.0005,
+        "x2": 177.30107354999996,
+        "y": 72.29092000000001,
+        "y2": 84.5363875
+      },
+      "id": "untranslated_residue:p5:p5#34",
+      "kind": "untranslated_residue",
+      "page": 5,
+      "paragraph_refs": [
+        "p5#34"
+      ],
+      "severity": "high"
+    },
+    {
+      "detected_at_iteration": 0,
+      "detector": "untranslated_residue",
+      "evidence": {
+        "debug_id": "Wwkvh",
+        "excerpt": "插图：Chantal Jahchan",
+        "layout_label": "abandon",
+        "min_ratio": 0.6,
+        "residue_chars": 14,
+        "residue_ratio": 0.875,
+        "residue_script": "latin",
+        "script_chars": 16
+      },
+      "geometry": {
+        "x": 409.29330000000004,
+        "x2": 528.4425500000001,
+        "y": 15.53025,
+        "y2": 24.9005
+      },
+      "id": "untranslated_residue:p8:p8#3",
+      "kind": "untranslated_residue",
+      "page": 8,
+      "paragraph_refs": [
+        "p8#3"
+      ],
+      "severity": "high"
+    },
+    {
+      "detected_at_iteration": 0,
+      "detector": "untranslated_residue",
+      "evidence": {
+        "debug_id": "swSAF",
+        "excerpt": "LHRUKIMRTESYUOC",
+        "layout_label": "abandon",
+        "min_ratio": 0.6,
+        "residue_chars": 15,
+        "residue_ratio": 1.0,
+        "residue_script": "latin",
+        "script_chars": 15
+      },
+      "geometry": {
+        "x": 543.3783500000001,
+        "x2": 548.00135,
+        "y": 53.91375,
+        "y2": 121.53374999999998
+      },
+      "id": "untranslated_residue:p8:p8#5",
+      "kind": "untranslated_residue",
+      "page": 8,
+      "paragraph_refs": [
+        "p8#5"
+      ],
+      "severity": "high"
+    },
+    {
+      "detected_at_iteration": 0,
+      "detector": "untranslated_residue",
+      "evidence": {
+        "debug_id": "LLGQ6",
+        "excerpt": "KNBALANATIONISSSWRTESYUOC",
+        "layout_label": "abandon",
+        "min_ratio": 0.6,
+        "residue_chars": 25,
+        "residue_ratio": 1.0,
+        "residue_script": "latin",
+        "script_chars": 25
+      },
+      "geometry": {
+        "x": 543.3783500000001,
+        "x2": 548.6568500000001,
+        "y": 53.91375,
+        "y2": 164.26200000000003
+      },
+      "id": "untranslated_residue:p9:p9#9",
+      "kind": "untranslated_residue",
+      "page": 9,
+      "paragraph_refs": [
+        "p9#9"
+      ],
+      "severity": "high"
+    },
+    {
+      "detected_at_iteration": 0,
+      "detector": "untranslated_residue",
+      "evidence": {
+        "debug_id": "Xx31B",
+        "excerpt": "andreas adriano",
+        "layout_label": "plain text",
+        "min_ratio": 0.6,
+        "residue_chars": 14,
+        "residue_ratio": 1.0,
+        "residue_script": "latin",
+        "script_chars": 14
+      },
+      "geometry": {
+        "x": 35.7576,
+        "x2": 135.8004,
+        "y": 617.832,
+        "y2": 630.0
+      },
+      "id": "untranslated_residue:p9:p9#11",
+      "kind": "untranslated_residue",
+      "page": 9,
+      "paragraph_refs": [
+        "p9#11"
+      ],
+      "severity": "high"
+    },
+    {
+      "detected_at_iteration": 0,
+      "detector": "untranslated_residue",
+      "evidence": {
+        "debug_id": "boKiX",
+        "excerpt": "A glacierbuttercupappears onthe frontof the draft1,000 francnote.",
+        "layout_label": "plain text",
+        "min_ratio": 0.6,
+        "residue_chars": 53,
+        "residue_ratio": 1.0,
+        "residue_script": "latin",
+        "script_chars": 53
+      },
+      "geometry": {
+        "x": 444.35580000000004,
+        "x2": 495.4698000000001,
+        "y": 478.38800000000003,
+        "y2": 539.4
+      },
+      "id": "untranslated_residue:p9:p9#19",
+      "kind": "untranslated_residue",
+      "page": 9,
+      "paragraph_refs": [
+        "p9#19"
+      ],
+      "severity": "high"
+    }
+  ],
+  "iteration": 0,
+  "language": "zh",
+  "notes": [],
+  "pages_by_detector": {
+    "fragment_cluster": [
+      3,
+      5,
+      7
+    ],
+    "text_figure_overlap": [
+      1,
+      2,
+      4,
+      6,
+      8,
+      9
+    ],
+    "untranslated_residue": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9
+    ]
+  },
+  "translation_performed": true
+}

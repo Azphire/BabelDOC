@@ -1,0 +1,135 @@
+{
+  "applications": 0,
+  "config": {
+    "actions": [
+      {
+        "applicability": {
+          "min_residue_ratio": 0.9,
+          "min_source_chars": 12,
+          "orphan_layout_labels": [
+            "fallback_line"
+          ]
+        },
+        "description": "Send the text of an orphan line through the translation engine and write the answer back into the paragraph, then lay that paragraph out again.",
+        "issue_kinds": [
+          "untranslated_residue"
+        ],
+        "max_applications": 12,
+        "name": "translate_orphan_lines",
+        "parameters": [
+          {
+            "allowed_range": "1.0..20.0",
+            "default": 3.0,
+            "name": "max_paragraphs"
+          }
+        ]
+      }
+    ],
+    "decide_max_attempts": 2,
+    "issue_excerpt_chars": 120,
+    "max_glossary_entries": 24,
+    "max_issues_offered": 40,
+    "max_iterations": 3,
+    "page_context_chars": 1200
+  },
+  "conservation": {
+    "changed_outside_touched": [],
+    "changed_refs": [],
+    "pages_after": 3,
+    "pages_before": 3,
+    "paragraphs_after": 39,
+    "paragraphs_before": 39,
+    "touched_refs": [],
+    "verdict": "conserved"
+  },
+  "engine_configured": true,
+  "final": {
+    "by_kind": {
+      "untranslated_residue": 3
+    },
+    "total": 3
+  },
+  "iterations": [
+    {
+      "applicability": [
+        {
+          "accepted": false,
+          "attempts": 0,
+          "changed": false,
+          "from_cache": false,
+          "glossary_entries": [],
+          "issue_id": "untranslated_residue:p3:p3#37",
+          "offered_text": "",
+          "paragraph_ref": "p3#37",
+          "reason": "layout_label_not_orphan",
+          "source_text": "E.IS ISSUFASHION EDITOR: JULIA SARR-JAMOIS. HAIR SUSIE SOBOL.   PRODUCED BY BOOM PRODUCTIONS. PROP STYLIST: PETER KLEIN. DETAILS JOEY GEORGE; MAKEUP SEE IN TH,,,",
+          "translated_text": ""
+        },
+        {
+          "accepted": false,
+          "attempts": 0,
+          "changed": false,
+          "from_cache": false,
+          "glossary_entries": [],
+          "issue_id": "untranslated_residue:p1:p1#0",
+          "offered_text": "",
+          "paragraph_ref": "p1#0",
+          "reason": "layout_label_not_orphan",
+          "source_text": "MI.CODFEN291 0163UES  888I BOUTIQDFEN",
+          "translated_text": ""
+        },
+        {
+          "accepted": false,
+          "attempts": 0,
+          "changed": false,
+          "from_cache": false,
+          "glossary_entries": [],
+          "issue_id": "untranslated_residue:p3:p3#17",
+          "offered_text": "",
+          "paragraph_ref": "p3#17",
+          "reason": "layout_label_not_orphan",
+          "source_text": "48从A到Zac Zac Posen加入Gap让人感到",
+          "translated_text": ""
+        }
+      ],
+      "decision": {
+        "action": "translate_orphan_lines",
+        "attempts": 1,
+        "from_cache": false,
+        "issue_ids": [
+          "untranslated_residue:p3:p3#37",
+          "untranslated_residue:p1:p1#0",
+          "untranslated_residue:p3:p3#17"
+        ],
+        "parameters": {
+          "max_paragraphs": 3.0
+        },
+        "raw": "{\"action\": \"translate_orphan_lines\", \"issue_ids\": [\"untranslated_residue:p3:p3#37\", \"untranslated_residue:p1:p1#0\", \"untranslated_residue:p3:p3#17\"], \"parameters\": {}, \"reason\": \"The evidence shows untranslated residues with high severity and residue ratios of 1.0 and 0.6522, indicating untranslated text that needs translation.\"}",
+        "reason": "The evidence shows untranslated residues with high severity and residue ratios of 1.0 and 0.6522, indicating untranslated text that needs translation.",
+        "violations": []
+      },
+      "detected": {
+        "by_kind": {
+          "untranslated_residue": 3
+        },
+        "total": 3
+      },
+      "detected_ids": [
+        "untranslated_residue:p1:p1#0",
+        "untranslated_residue:p3:p3#17",
+        "untranslated_residue:p3:p3#37"
+      ],
+      "executed": [],
+      "iteration": 1,
+      "outcome": "applied_nothing",
+      "request": {
+        "cache_key": "6bfbd15270535beb3ca2768e086f725f12548b4f7531e3c7e54f13f7337b1a10",
+        "prompt_sha256": "744bfb666e22851a82d69ee3e217672eddbcfd17f78d6c941edffd78d44ba2c1"
+      }
+    }
+  ],
+  "iterations_run": 1,
+  "offered_texts": [],
+  "stopped_because": "no_finding_the_action_may_act_on",
+  "switch": "magazine_repair"
+}

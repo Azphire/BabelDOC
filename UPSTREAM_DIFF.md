@@ -68,6 +68,11 @@ on the configuration object, and behaves exactly as before when it is not. The
 switch is not a constructor parameter for the same reason the drop cap one is
 not; see W-B8-01.
 
+Batch b8.3 changes no upstream file either. It runs the pipeline with the
+switches the two rows above declare and measures what came out; the only
+executable code it adds is under `spec_checks/` and `examples/output/b8/`, and
+the only production file it edits is a prompt template.
+
 ## Couplings
 
 Extension code calling upstream symbols it does not change. Each row names the

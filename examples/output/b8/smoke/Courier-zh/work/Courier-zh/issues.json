@@ -1,0 +1,230 @@
+{
+  "counts": {
+    "by_kind": {
+      "untranslated_residue": 7
+    },
+    "issues": 7
+  },
+  "document_detectors": [
+    "escalation_surfacing"
+  ],
+  "issues": [
+    {
+      "detected_at_iteration": 0,
+      "detector": "untranslated_residue",
+      "evidence": {
+        "debug_id": "3tfbd",
+        "excerpt": "马塞洛·席尔瓦·德索萨(Marcelo Silva de Sousa)",
+        "layout_label": "plain text",
+        "min_ratio": 0.6,
+        "residue_chars": 19,
+        "residue_ratio": 0.6786,
+        "residue_script": "latin",
+        "script_chars": 28
+      },
+      "geometry": {
+        "x": 78.30969999999999,
+        "x2": 228.97140000000007,
+        "y": 551.9071,
+        "y2": 559.3411
+      },
+      "id": "untranslated_residue:p1:p1#13",
+      "kind": "untranslated_residue",
+      "page": 1,
+      "paragraph_refs": [
+        "p1#13"
+      ],
+      "severity": "high"
+    },
+    {
+      "detected_at_iteration": 0,
+      "detector": "untranslated_residue",
+      "evidence": {
+        "debug_id": "qYTbx",
+        "excerpt": "丹尼尔·鲁滨逊(Daniel Robinson)和戴维·杰斐逊(David Jefferson)",
+        "layout_label": "plain text",
+        "min_ratio": 0.6,
+        "residue_chars": 28,
+        "residue_ratio": 0.7,
+        "residue_script": "latin",
+        "script_chars": 40
+      },
+      "geometry": {
+        "x": 78.10669999999999,
+        "x2": 252.35489999999996,
+        "y": 509.8988,
+        "y2": 526.9648
+      },
+      "id": "untranslated_residue:p1:p1#15",
+      "kind": "untranslated_residue",
+      "page": 1,
+      "paragraph_refs": [
+        "p1#15"
+      ],
+      "severity": "high"
+    },
+    {
+      "detected_at_iteration": 0,
+      "detector": "untranslated_residue",
+      "evidence": {
+        "debug_id": "HiGzo",
+        "excerpt": "brano）lina ZamCaro（诺",
+        "layout_label": "fallback_line",
+        "min_ratio": 0.6,
+        "residue_chars": 16,
+        "residue_ratio": 0.9412,
+        "residue_script": "latin",
+        "script_chars": 17
+      },
+      "geometry": {
+        "x": 540.9262,
+        "x2": 547.4262,
+        "y": 571.804778125,
+        "y2": 639.35679375
+      },
+      "id": "untranslated_residue:p3:p3#2",
+      "kind": "untranslated_residue",
+      "page": 3,
+      "paragraph_refs": [
+        "p3#2"
+      ],
+      "severity": "high"
+    },
+    {
+      "detected_at_iteration": 0,
+      "detector": "untranslated_residue",
+      "evidence": {
+        "debug_id": "duzYb",
+        "excerpt": "马塞洛·席尔瓦·德索萨 (Marcelo Silva de Sousa)",
+        "layout_label": "abandon",
+        "min_ratio": 0.6,
+        "residue_chars": 19,
+        "residue_ratio": 0.6786,
+        "residue_script": "latin",
+        "script_chars": 28
+      },
+      "geometry": {
+        "x": 445.68949999999995,
+        "x2": 563.1999999999999,
+        "y": 794.3234,
+        "y2": 816.4034
+      },
+      "id": "untranslated_residue:p5:p5#11",
+      "kind": "untranslated_residue",
+      "page": 5,
+      "paragraph_refs": [
+        "p5#11"
+      ],
+      "severity": "high"
+    },
+    {
+      "detected_at_iteration": 0,
+      "detector": "untranslated_residue",
+      "evidence": {
+        "debug_id": "pugeQ",
+        "excerpt": "丹尼尔·鲁滨逊 (Daniel Robinson)",
+        "layout_label": "abandon",
+        "min_ratio": 0.6,
+        "residue_chars": 14,
+        "residue_ratio": 0.7,
+        "residue_script": "latin",
+        "script_chars": 20
+      },
+      "geometry": {
+        "x": 477.125,
+        "x2": 559.749,
+        "y": 792.9234,
+        "y2": 814.5634
+      },
+      "id": "untranslated_residue:p7:p7#16",
+      "kind": "untranslated_residue",
+      "page": 7,
+      "paragraph_refs": [
+        "p7#16"
+      ],
+      "severity": "high"
+    },
+    {
+      "detected_at_iteration": 0,
+      "detector": "untranslated_residue",
+      "evidence": {
+        "debug_id": "ne2Pe",
+        "excerpt": "戴维·杰斐逊 (David Jefferson)",
+        "layout_label": "plain text",
+        "min_ratio": 0.6,
+        "residue_chars": 14,
+        "residue_ratio": 0.7368,
+        "residue_script": "latin",
+        "script_chars": 19
+      },
+      "geometry": {
+        "x": 480.54499999999996,
+        "x2": 559.749,
+        "y": 664.4538,
+        "y2": 686.1338000000001
+      },
+      "id": "untranslated_residue:p7:p7#18",
+      "kind": "untranslated_residue",
+      "page": 7,
+      "paragraph_refs": [
+        "p7#18"
+      ],
+      "severity": "high"
+    },
+    {
+      "detected_at_iteration": 0,
+      "detector": "untranslated_residue",
+      "evidence": {
+        "debug_id": "XKGay",
+        "excerpt": "© 克里斯蒂安·古皮(Christian goupi)/ robertharding.com",
+        "layout_label": "abandon",
+        "min_ratio": 0.6,
+        "residue_chars": 30,
+        "residue_ratio": 0.8108,
+        "residue_script": "latin",
+        "script_chars": 37
+      },
+      "geometry": {
+        "x": 17.2419,
+        "x2": 183.070509375,
+        "y": 802.3661,
+        "y2": 809.500865625
+      },
+      "id": "untranslated_residue:p8:p8#15",
+      "kind": "untranslated_residue",
+      "page": 8,
+      "paragraph_refs": [
+        "p8#15"
+      ],
+      "severity": "high"
+    }
+  ],
+  "iteration": 0,
+  "language": "zh",
+  "notes": [],
+  "pages_by_detector": {
+    "fragment_cluster": [
+      1,
+      4,
+      6,
+      7,
+      8
+    ],
+    "text_figure_overlap": [
+      2,
+      3,
+      5
+    ],
+    "untranslated_residue": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8
+    ]
+  },
+  "translation_performed": true
+}

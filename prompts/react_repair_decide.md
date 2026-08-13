@@ -23,9 +23,19 @@ correct paragraph, and the second is the worse outcome. Choose an action only
 for findings whose evidence plainly describes the defect that action repairs.
 
 Every finding you name has to be one of the findings listed above, by its
-exact "id", and its kind has to be one the chosen action answers for. Name the
-findings that most clearly show the defect first; the action applies its own
-limit and will take them in the order you give.
+exact "id", and its kind has to be one the chosen action answers for.
+
+Name every finding of that kind whose evidence plainly shows the defect, not a
+sample of them. The action holds each one against its own applicability rule
+before it touches anything, and a finding that rule refuses is refused at no
+cost and reported as refused; a finding you did not name is simply not looked
+at this iteration. Leaving one out is the more expensive mistake.
+
+Order matters, because the action applies its own ceiling and takes what you
+name in the order you name it. Put first the findings whose evidence reports
+the most of the defect -- for a finding measured in characters or in a
+proportion, the larger figure -- so that if the ceiling cuts your list, what it
+cuts is the weakest evidence rather than the end of an arbitrary ordering.
 
 You are not choosing how the repair is carried out, only whether it is and on
 what. Do not describe the repair, the layout, or the text a paragraph should

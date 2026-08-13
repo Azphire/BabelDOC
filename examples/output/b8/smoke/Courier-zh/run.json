@@ -1,0 +1,16 @@
+{
+  "sample": "Courier-zh.pdf",
+  "model": "gpt-4o",
+  "seconds": 690.8,
+  "requests": 86,
+  "cache_hits": 1,
+  "api_calls": 85,
+  "prompt_tokens": 56376,
+  "completion_tokens": 13539,
+  "working_dir": "examples\\output\\b8\\smoke\\Courier-zh\\work\\Courier-zh",
+  "mono_pdf": "Courier-zh.b8_3.pdf",
+  "reviews": [
+    "Courier-zh.review.json",
+    "Courier-zh.review.html"
+  ]
+}

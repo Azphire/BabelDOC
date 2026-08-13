@@ -1,0 +1,166 @@
+{
+  "applications": 0,
+  "config": {
+    "actions": [
+      {
+        "applicability": {
+          "min_residue_ratio": 0.9,
+          "min_source_chars": 12,
+          "orphan_layout_labels": [
+            "fallback_line"
+          ]
+        },
+        "description": "Send the text of an orphan line through the translation engine and write the answer back into the paragraph, then lay that paragraph out again.",
+        "issue_kinds": [
+          "untranslated_residue"
+        ],
+        "max_applications": 12,
+        "name": "translate_orphan_lines",
+        "parameters": [
+          {
+            "allowed_range": "1.0..20.0",
+            "default": 3.0,
+            "name": "max_paragraphs"
+          }
+        ]
+      }
+    ],
+    "decide_max_attempts": 2,
+    "issue_excerpt_chars": 120,
+    "max_glossary_entries": 24,
+    "max_issues_offered": 40,
+    "max_iterations": 3,
+    "page_context_chars": 1200
+  },
+  "conservation": {
+    "changed_outside_touched": [],
+    "changed_refs": [],
+    "pages_after": 4,
+    "pages_before": 4,
+    "paragraphs_after": 202,
+    "paragraphs_before": 202,
+    "touched_refs": [],
+    "verdict": "conserved"
+  },
+  "engine_configured": true,
+  "final": {
+    "by_kind": {
+      "fragment_cluster": 4,
+      "untranslated_residue": 28
+    },
+    "total": 32
+  },
+  "iterations": [
+    {
+      "applicability": [
+        {
+          "accepted": false,
+          "attempts": 0,
+          "changed": false,
+          "from_cache": false,
+          "glossary_entries": [],
+          "issue_id": "untranslated_residue:p1:p1#6",
+          "offered_text": "",
+          "paragraph_ref": "p1#6",
+          "reason": "layout_label_not_orphan",
+          "source_text": "CCJulAug2626_Cover_v22.indd   1 1CCJulAug_Cover_v.indd",
+          "translated_text": ""
+        },
+        {
+          "accepted": false,
+          "attempts": 0,
+          "changed": false,
+          "from_cache": false,
+          "glossary_entries": [],
+          "issue_id": "untranslated_residue:p1:p1#16",
+          "offered_text": "",
+          "paragraph_ref": "p1#16",
+          "reason": "layout_label_not_orphan",
+          "source_text": "要订阅本杂志，请访问：https://cerncourier.com/p/about-cern-courier",
+          "translated_text": ""
+        },
+        {
+          "accepted": false,
+          "attempts": 0,
+          "changed": false,
+          "from_cache": false,
+          "glossary_entries": [],
+          "issue_id": "untranslated_residue:p1:p1#19",
+          "offered_text": "",
+          "paragraph_ref": "p1#19",
+          "reason": "layout_label_not_orphan",
+          "source_text": "副主编：DAVIDE DE BIASIO",
+          "translated_text": ""
+        }
+      ],
+      "decision": {
+        "action": "translate_orphan_lines",
+        "attempts": 1,
+        "from_cache": false,
+        "issue_ids": [
+          "untranslated_residue:p1:p1#6",
+          "untranslated_residue:p1:p1#16",
+          "untranslated_residue:p1:p1#19"
+        ],
+        "parameters": {
+          "max_paragraphs": 3.0
+        },
+        "raw": "{\"action\": \"translate_orphan_lines\", \"issue_ids\": [\"untranslated_residue:p1:p1#6\", \"untranslated_residue:p1:p1#16\", \"untranslated_residue:p1:p1#19\"], \"parameters\": {\"max_paragraphs\": 3}, \"reason\": \"The untranslated_residue findings have high severity and the evidence shows untranslated Latin script text, which the action can address.\"}",
+        "reason": "The untranslated_residue findings have high severity and the evidence shows untranslated Latin script text, which the action can address.",
+        "violations": []
+      },
+      "detected": {
+        "by_kind": {
+          "fragment_cluster": 4,
+          "untranslated_residue": 28
+        },
+        "total": 32
+      },
+      "detected_ids": [
+        "fragment_cluster:p2:p2#9+p2#10+p2#11+p2#12+p2#13+p2#14+p2#15+p2#16+p2#17",
+        "fragment_cluster:p2:p2#36+p2#37+p2#38+p2#39",
+        "fragment_cluster:p2:p2#51+p2#52+p2#53",
+        "fragment_cluster:p2:p2#56+p2#57+p2#58",
+        "untranslated_residue:p1:p1#6",
+        "untranslated_residue:p1:p1#16",
+        "untranslated_residue:p1:p1#19",
+        "untranslated_residue:p2:p2#6",
+        "untranslated_residue:p2:p2#8",
+        "untranslated_residue:p2:p2#19",
+        "untranslated_residue:p2:p2#20",
+        "untranslated_residue:p2:p2#21",
+        "untranslated_residue:p2:p2#22",
+        "untranslated_residue:p2:p2#24",
+        "untranslated_residue:p2:p2#26",
+        "untranslated_residue:p2:p2#30",
+        "untranslated_residue:p2:p2#32",
+        "untranslated_residue:p2:p2#56",
+        "untranslated_residue:p2:p2#57",
+        "untranslated_residue:p2:p2#66",
+        "untranslated_residue:p2:p2#78",
+        "untranslated_residue:p2:p2#80",
+        "untranslated_residue:p3:p3#5",
+        "untranslated_residue:p3:p3#28",
+        "untranslated_residue:p3:p3#30",
+        "untranslated_residue:p3:p3#44",
+        "untranslated_residue:p3:p3#49",
+        "untranslated_residue:p3:p3#51",
+        "untranslated_residue:p4:p4#20",
+        "untranslated_residue:p4:p4#23",
+        "untranslated_residue:p4:p4#38",
+        "untranslated_residue:p4:p4#44"
+      ],
+      "executed": [],
+      "iteration": 1,
+      "outcome": "applied_nothing",
+      "request": {
+        "cache_key": "891be84e828431974671931217e8c2d05990440d799ec86bfe88aea8b46b3250",
+        "prompt_sha256": "744bfb666e22851a82d69ee3e217672eddbcfd17f78d6c941edffd78d44ba2c1"
+      }
+    }
+  ],
+  "iterations_run": 1,
+  "offered_texts": [],
+  "stopped_because": "no_finding_the_action_may_act_on",
+  "switch": "magazine_repair"
+}

@@ -1,0 +1,17 @@
+{
+  "sample": "Courier-en.pdf",
+  "model": "gpt-4o",
+  "seconds": 456.4,
+  "requests": 55,
+  "cache_hits": 53,
+  "api_calls": 2,
+  "prompt_tokens": 2827,
+  "completion_tokens": 109,
+  "working_dir": "examples\\output\\b8\\smoke\\Courier-en\\work\\Courier-en",
+  "mono_pdf": "Courier-en.b8_3.pdf",
+  "reviews": [
+    "Courier-en.review.json",
+    "Courier-en.review.html",
+    "Courier-en.decisions.json"
+  ]
+}

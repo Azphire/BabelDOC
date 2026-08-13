@@ -1,0 +1,153 @@
+{
+  "applications": 0,
+  "config": {
+    "actions": [
+      {
+        "applicability": {
+          "min_residue_ratio": 0.9,
+          "min_source_chars": 12,
+          "orphan_layout_labels": [
+            "fallback_line"
+          ]
+        },
+        "description": "Send the text of an orphan line through the translation engine and write the answer back into the paragraph, then lay that paragraph out again.",
+        "issue_kinds": [
+          "untranslated_residue"
+        ],
+        "max_applications": 12,
+        "name": "translate_orphan_lines",
+        "parameters": [
+          {
+            "allowed_range": "1.0..20.0",
+            "default": 3.0,
+            "name": "max_paragraphs"
+          }
+        ]
+      }
+    ],
+    "decide_max_attempts": 2,
+    "issue_excerpt_chars": 120,
+    "max_glossary_entries": 24,
+    "max_issues_offered": 40,
+    "max_iterations": 3,
+    "page_context_chars": 1200
+  },
+  "conservation": {
+    "changed_outside_touched": [],
+    "changed_refs": [],
+    "pages_after": 8,
+    "pages_before": 8,
+    "paragraphs_after": 135,
+    "paragraphs_before": 135,
+    "touched_refs": [],
+    "verdict": "conserved"
+  },
+  "engine_configured": true,
+  "final": {
+    "by_kind": {
+      "untranslated_residue": 7
+    },
+    "total": 7
+  },
+  "iterations": [
+    {
+      "applicability": [
+        {
+          "accepted": false,
+          "attempts": 0,
+          "changed": false,
+          "from_cache": false,
+          "glossary_entries": [],
+          "issue_id": "untranslated_residue:p8:p8#15",
+          "offered_text": "",
+          "paragraph_ref": "p8#15",
+          "reason": "layout_label_not_orphan",
+          "source_text": "© 克里斯蒂安·古皮(Christian goupi)/ robertharding.com",
+          "translated_text": ""
+        },
+        {
+          "accepted": false,
+          "attempts": 0,
+          "changed": false,
+          "from_cache": false,
+          "glossary_entries": [],
+          "issue_id": "untranslated_residue:p1:p1#15",
+          "offered_text": "",
+          "paragraph_ref": "p1#15",
+          "reason": "layout_label_not_orphan",
+          "source_text": "丹尼尔·鲁滨逊(Daniel Robinson)和戴维·杰斐逊(David Jefferson)",
+          "translated_text": ""
+        }
+      ],
+      "decision": {
+        "action": "translate_orphan_lines",
+        "attempts": 1,
+        "from_cache": false,
+        "issue_ids": [
+          "untranslated_residue:p8:p8#15",
+          "untranslated_residue:p3:p3#2",
+          "untranslated_residue:p1:p1#15"
+        ],
+        "parameters": {
+          "max_paragraphs": 3.0
+        },
+        "raw": "{\"action\": \"translate_orphan_lines\", \"issue_ids\": [\"untranslated_residue:p8:p8#15\", \"untranslated_residue:p3:p3#2\", \"untranslated_residue:p1:p1#15\"], \"parameters\": {}, \"reason\": \"The findings have high residue ratios, indicating untranslated text that needs correction.\"}",
+        "reason": "The findings have high residue ratios, indicating untranslated text that needs correction.",
+        "violations": []
+      },
+      "detected": {
+        "by_kind": {
+          "untranslated_residue": 7
+        },
+        "total": 7
+      },
+      "detected_ids": [
+        "untranslated_residue:p1:p1#13",
+        "untranslated_residue:p1:p1#15",
+        "untranslated_residue:p3:p3#2",
+        "untranslated_residue:p5:p5#11",
+        "untranslated_residue:p7:p7#16",
+        "untranslated_residue:p7:p7#18",
+        "untranslated_residue:p8:p8#15"
+      ],
+      "executed": [
+        {
+          "accepted": true,
+          "attempts": 1,
+          "changed": true,
+          "from_cache": false,
+          "glossary_entries": [],
+          "issue_id": "untranslated_residue:p3:p3#2",
+          "offered_text": "brano）lina ZamCaro（诺",
+          "paragraph_ref": "p3#2",
+          "reason": "accepted",
+          "source_text": "brano）lina ZamCaro（诺",
+          "translated_text": "brano）丽洛© ZamCaro（诺"
+        }
+      ],
+      "iteration": 1,
+      "new_ids": [],
+      "outcome": "rolled_back",
+      "recheck": {
+        "by_kind": {
+          "untranslated_residue": 7
+        },
+        "total": 7
+      },
+      "request": {
+        "cache_key": "b5b46350de7b4406c883dabe0535847baeae477c85063018904bd62d6306257c",
+        "prompt_sha256": "744bfb666e22851a82d69ee3e217672eddbcfd17f78d6c941edffd78d44ba2c1"
+      },
+      "resolved_ids": [],
+      "rolled_back_refs": [
+        "p3#2"
+      ]
+    }
+  ],
+  "iterations_run": 1,
+  "offered_texts": [
+    "brano）lina ZamCaro（诺"
+  ],
+  "stopped_because": "finding_count_did_not_strictly_decrease",
+  "switch": "magazine_repair"
+}

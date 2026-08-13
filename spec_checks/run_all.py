@@ -71,6 +71,7 @@ GATES = (
     "spec_check_b7_5.py",
     "spec_check_b8.py",
     "spec_check_b8_2.py",
+    "spec_check_b8_3.py",
 )
 
 
@@ -149,8 +150,8 @@ def report_timing(results: list[tuple[str, int, float, str]]) -> None:
 
 def govern_cache() -> None:
     """Report the cache size and trim it back under its configured ceiling."""
-    limit_gb = float(artifacts.load_cache_config()["gate_cache_max_gb"])
-    limit_bytes = int(limit_gb * artifacts.BYTES_PER_GB)
+    limit_bytes = artifacts.max_cache_bytes()
+    limit_gb = limit_bytes / artifacts.BYTES_PER_GB
     size = artifacts.cache_size_bytes()
     print(
         f"gate cache size: {size / artifacts.BYTES_PER_GB:.2f} GB "
@@ -251,6 +252,12 @@ def main(argv: list[str] | None = None) -> int:
     print(
         f"  artifact cache: {cache['hit']} hit / {cache['built']} built "
         f"({share} served from cache), {cache['build_seconds']:.1f}s spent building"
+    )
+    print(
+        f"  in-sweep trims: {cache['swept_slots']} slot(s) dropped before "
+        f"publishing, {cache['swept_bytes'] / artifacts.BYTES_PER_GB:.2f} GB "
+        f"reclaimed; cache now "
+        f"{artifacts.cache_size_bytes() / artifacts.BYTES_PER_GB:.2f} GB"
     )
     print()
     report_timing(results)

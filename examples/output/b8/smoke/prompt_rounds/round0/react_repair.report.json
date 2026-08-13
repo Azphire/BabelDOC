@@ -1,0 +1,145 @@
+{
+  "applications": 0,
+  "config": {
+    "actions": [
+      {
+        "applicability": {
+          "min_residue_ratio": 0.9,
+          "min_source_chars": 12,
+          "orphan_layout_labels": [
+            "fallback_line"
+          ]
+        },
+        "description": "Send the text of an orphan line through the translation engine and write the answer back into the paragraph, then lay that paragraph out again.",
+        "issue_kinds": [
+          "untranslated_residue"
+        ],
+        "max_applications": 12,
+        "name": "translate_orphan_lines",
+        "parameters": [
+          {
+            "allowed_range": "1.0..20.0",
+            "default": 3.0,
+            "name": "max_paragraphs"
+          }
+        ]
+      }
+    ],
+    "decide_max_attempts": 2,
+    "issue_excerpt_chars": 120,
+    "max_glossary_entries": 24,
+    "max_issues_offered": 40,
+    "max_iterations": 3,
+    "page_context_chars": 1200
+  },
+  "conservation": {
+    "changed_outside_touched": [],
+    "changed_refs": [],
+    "pages_after": 8,
+    "pages_before": 8,
+    "paragraphs_after": 132,
+    "paragraphs_before": 132,
+    "touched_refs": [],
+    "verdict": "conserved"
+  },
+  "engine_configured": true,
+  "final": {
+    "by_kind": {
+      "fragment_cluster": 1,
+      "untranslated_residue": 6
+    },
+    "total": 7
+  },
+  "iterations": [
+    {
+      "applicability": [
+        {
+          "accepted": false,
+          "attempts": 0,
+          "changed": false,
+          "from_cache": false,
+          "glossary_entries": [],
+          "issue_id": "untranslated_residue:p1:p1#25",
+          "offered_text": "",
+          "paragraph_ref": "p1#25",
+          "reason": "layout_label_not_orphan",
+          "source_text": "Jim Al-Khalili",
+          "translated_text": ""
+        }
+      ],
+      "decision": {
+        "action": "translate_orphan_lines",
+        "attempts": 1,
+        "from_cache": false,
+        "issue_ids": [
+          "untranslated_residue:p1:p1#25",
+          "untranslated_residue:p3:p3#2",
+          "untranslated_residue:p5:p5#10"
+        ],
+        "parameters": {
+          "max_paragraphs": 3.0
+        },
+        "raw": "{\"action\": \"translate_orphan_lines\", \"issue_ids\": [\"untranslated_residue:p1:p1#25\", \"untranslated_residue:p3:p3#2\", \"untranslated_residue:p5:p5#10\"], \"parameters\": {\"max_paragraphs\": 3}, \"reason\": \"The untranslated_residue findings have a high severity and clearly show untranslated text in Latin script, which the action can address.\"}",
+        "reason": "The untranslated_residue findings have a high severity and clearly show untranslated text in Latin script, which the action can address.",
+        "violations": []
+      },
+      "detected": {
+        "by_kind": {
+          "fragment_cluster": 1,
+          "untranslated_residue": 6
+        },
+        "total": 7
+      },
+      "detected_ids": [
+        "fragment_cluster:p1:p1#13+p1#14+p1#15+p1#16",
+        "untranslated_residue:p1:p1#20",
+        "untranslated_residue:p1:p1#25",
+        "untranslated_residue:p3:p3#2",
+        "untranslated_residue:p5:p5#10",
+        "untranslated_residue:p6:p6#15",
+        "untranslated_residue:p8:p8#15"
+      ],
+      "executed": [
+        {
+          "accepted": false,
+          "attempts": 1,
+          "changed": false,
+          "from_cache": false,
+          "glossary_entries": [],
+          "issue_id": "untranslated_residue:p3:p3#2",
+          "offered_text": "brano© Carolina Zam",
+          "paragraph_ref": "p3#2",
+          "reason": "translation_equals_source",
+          "source_text": "brano© Carolina Zam",
+          "translated_text": "brano© Carolina Zam"
+        },
+        {
+          "accepted": false,
+          "attempts": 1,
+          "changed": false,
+          "from_cache": false,
+          "glossary_entries": [],
+          "issue_id": "untranslated_residue:p5:p5#10",
+          "offered_text": "barini / OPAN© Adriano Gam",
+          "paragraph_ref": "p5#10",
+          "reason": "translation_equals_source",
+          "source_text": "barini / OPAN© Adriano Gam",
+          "translated_text": "barini / OPAN© Adriano Gam"
+        }
+      ],
+      "iteration": 1,
+      "outcome": "applied_nothing",
+      "request": {
+        "cache_key": "d43942fb552dd210ef0c06d1b9d5327117d85dad5a0390318fafaab1bad80cb6",
+        "prompt_sha256": "61fafa9e370e2b196f8007a1adbad381f9f8ede354cafea17ae5627ab4ec3b2a"
+      }
+    }
+  ],
+  "iterations_run": 1,
+  "offered_texts": [
+    "brano© Carolina Zam",
+    "barini / OPAN© Adriano Gam"
+  ],
+  "stopped_because": "no_paragraph_was_written",
+  "switch": "magazine_repair"
+}

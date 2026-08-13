@@ -45,6 +45,16 @@ Every distinct fingerprint opens a new generation directory and old generations
 are never read again, so the cache only grows. `run_all` reports its size at
 startup and trims it back under ``gate_cache_max_gb`` from
 ``configs/gate_cache.json``, least recently used slot first.
+
+That opening trim bounds what a sweep *starts* from and not what it reaches: a
+sweep whose fingerprint is new builds a full generation on top of a cache that
+was already at the ceiling, and nothing would reclaim the difference until the
+next sweep began. So a build also fits itself in before it publishes -- it
+measures what it is about to add, sweeps least recently used slots until that
+much room exists, and only then moves the staging directory into place. The
+sweep is best effort by construction: a slot it cannot remove is left where it
+is and the build publishes anyway. A cache over its ceiling is a disk bill,
+while a build that raised rather than published is a gate that cannot run.
 """
 
 from __future__ import annotations
@@ -209,8 +219,17 @@ MODES: dict[str, dict] = {
 # configuration object instead.
 ATTRIBUTES_KEY = "attributes"
 
+# Suffix marking a build in progress. A directory carrying it is never a slot.
+STAGING_SUFFIX = ".partial"
+
 _fingerprint: str | None = None
-_stats = {"hit": 0, "built": 0, "build_seconds": 0.0}
+_stats = {
+    "hit": 0,
+    "built": 0,
+    "build_seconds": 0.0,
+    "swept_slots": 0,
+    "swept_bytes": 0,
+}
 
 
 class BuildIncomplete(RuntimeError):
@@ -391,7 +410,7 @@ def _build(sample: Path, mode: str, slot: Path) -> None:
     layout = settings.pop("layout_model")
     attributes = settings.pop(ATTRIBUTES_KEY, {})
 
-    staging = slot.with_name(slot.name + ".partial")
+    staging = slot.with_name(slot.name + STAGING_SUFFIX)
     if staging.exists():
         shutil.rmtree(staging)
     staging.mkdir(parents=True)
@@ -435,6 +454,23 @@ def _build(sample: Path, mode: str, slot: Path) -> None:
             f"the slot was not published and the run is left at {staging}"
         )
 
+    # Fit what is about to be published into the budget before publishing it,
+    # so a sweep that builds a whole new generation stays under the ceiling
+    # while it runs rather than only at the start of the next sweep.
+    room = make_room(directory_bytes(staging))
+    if room["dropped_slots"]:
+        print(
+            f"gate cache swept before publishing {slot.name}: "
+            f"{room['dropped_slots']} slot(s), "
+            f"{room['freed_bytes'] / BYTES_PER_GB:.2f} GB reclaimed"
+        )
+    if room["single_slot_over_budget"]:
+        print(
+            f"gate cache: {slot.name} is {room['incoming_bytes'] / BYTES_PER_GB:.2f} GB "
+            f"on its own against a {room['max_bytes'] / BYTES_PER_GB:g} GB ceiling; "
+            f"published anyway, no sweep can make it fit"
+        )
+
     with (staging / "meta.json").open("w", encoding="utf-8") as f:
         json.dump(
             {
@@ -444,6 +480,7 @@ def _build(sample: Path, mode: str, slot: Path) -> None:
                 "fingerprint": workspace_fingerprint(),
                 "working_subdir": working,
                 "build_seconds": seconds,
+                "cache_room": room,
             },
             f,
             indent=2,
@@ -456,7 +493,12 @@ def _build(sample: Path, mode: str, slot: Path) -> None:
 
 
 def _slots() -> list[Path]:
-    """Every published cache slot, across all fingerprint generations."""
+    """Every published cache slot, across all fingerprint generations.
+
+    A staging directory is not one, whether or not it has reached the point of
+    carrying a ``meta.json``: it belongs to a build in progress, and a sweep
+    that removed it would delete the very thing it is making room for.
+    """
     if not CACHE_ROOT.is_dir():
         return []
     return [
@@ -464,12 +506,37 @@ def _slots() -> list[Path]:
         for generation in CACHE_ROOT.iterdir()
         if generation.is_dir() and generation.name != STATS_DIR.name
         for path in generation.iterdir()
-        if path.is_dir() and (path / "meta.json").exists()
+        if path.is_dir()
+        and not path.name.endswith(STAGING_SUFFIX)
+        and (path / "meta.json").exists()
     ]
 
 
+def directory_bytes(path: Path) -> int:
+    """Bytes a directory tree occupies, ignoring what vanishes while counting.
+
+    A file removed by a concurrent sweep between the listing and the ``stat``
+    is not an error here: it is a file that no longer costs anything, which is
+    the answer being measured.
+    """
+    total = 0
+    for entry in path.rglob("*"):
+        with contextlib.suppress(OSError):
+            if entry.is_file():
+                total += entry.stat().st_size
+    return total
+
+
 def _slot_bytes(slot: Path) -> int:
-    return sum(path.stat().st_size for path in slot.rglob("*") if path.is_file())
+    return directory_bytes(slot)
+
+
+def _mtime(path: Path) -> float:
+    """Last use of a slot; a slot that vanished sorts first and is skipped."""
+    try:
+        return path.stat().st_mtime
+    except OSError:
+        return 0.0
 
 
 def load_cache_config(path: Path | None = None) -> dict[str, Parameter]:
@@ -501,7 +568,7 @@ def trim_cache(max_bytes: int) -> tuple[int, int]:
     if total <= max_bytes:
         return 0, 0
 
-    sized.sort(key=lambda item: item[0].stat().st_mtime)
+    sized.sort(key=lambda item: _mtime(item[0]))
     dropped = 0
     freed = 0
     for slot, size in sized:
@@ -509,14 +576,56 @@ def trim_cache(max_bytes: int) -> tuple[int, int]:
             break
         parent = slot.parent
         shutil.rmtree(slot, ignore_errors=True)
+        # What the removal actually reclaimed. A slot holding a file another
+        # process still has open survives on Windows, and counting it as freed
+        # would end the loop believing in room that does not exist.
+        remaining = _slot_bytes(slot) if slot.exists() else 0
+        if remaining >= size:
+            continue
         dropped += 1
-        freed += size
+        freed += size - remaining
         # A generation directory left with nothing in it is noise in the
         # listing; the stats directory is not a generation and is never touched.
         with contextlib.suppress(OSError):
             if parent != STATS_DIR and not any(parent.iterdir()):
                 parent.rmdir()
     return dropped, freed
+
+
+def max_cache_bytes() -> int:
+    """The configured ceiling, in bytes."""
+    return int(float(load_cache_config()["gate_cache_max_gb"]) * BYTES_PER_GB)
+
+
+def make_room(incoming_bytes: int) -> dict:
+    """Sweep least recently used slots until ``incoming_bytes`` fits the budget.
+
+    Returns what it did, for the caller to record: the ceiling it worked to,
+    what the cache held before and after, how much it reclaimed, and whether
+    the slot about to be published overruns the ceiling on its own.
+
+    The single slot larger than the whole budget is not an error and is not
+    refused. Nothing can be swept to make it fit, so it publishes and the
+    overrun is reported: a gate cache that declined to hold what a gate just
+    built would make that gate rebuild it on every sweep, which costs more than
+    the disk it was protecting.
+    """
+    max_bytes = max_cache_bytes()
+    before = cache_size_bytes()
+    overrun = incoming_bytes > max_bytes
+    room = max(0, max_bytes - incoming_bytes)
+    dropped, freed = (0, 0) if before + incoming_bytes <= max_bytes else trim_cache(room)
+    _stats["swept_slots"] += dropped
+    _stats["swept_bytes"] += freed
+    return {
+        "max_bytes": max_bytes,
+        "incoming_bytes": incoming_bytes,
+        "before_bytes": before,
+        "after_bytes": before - freed,
+        "dropped_slots": dropped,
+        "freed_bytes": freed,
+        "single_slot_over_budget": overrun,
+    }
 
 
 def get_artifacts(sample: Path, mode: str) -> Artifacts:
@@ -564,7 +673,8 @@ def print_stats(gate: str) -> None:
 
 
 def load_all_stats() -> dict:
-    total = {"hit": 0, "built": 0, "build_seconds": 0.0}
+    total = dict.fromkeys(_stats, 0)
+    total["build_seconds"] = 0.0
     if not STATS_DIR.is_dir():
         return total
     for path in sorted(STATS_DIR.glob("*.json")):

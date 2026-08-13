@@ -1,0 +1,181 @@
+{
+  "escalation_findings": [],
+  "samples": [
+    {
+      "api_calls": 63,
+      "applications": 0,
+      "conservation": "conserved",
+      "decision_action": "translate_orphan_lines",
+      "decision_named": 3,
+      "detected_by_kind": {
+        "untranslated_residue": 19
+      },
+      "detected_first": 19,
+      "final_by_kind": {
+        "untranslated_residue": 19
+      },
+      "final_total": 19,
+      "iterations_run": 1,
+      "notes": [],
+      "pages": 9,
+      "paragraphs": 146,
+      "rejections": {
+        "layout_label_not_orphan": 1,
+        "translation_equals_source": 1
+      },
+      "repaired_refs": [],
+      "requests": 79,
+      "sample": "AramcoWorld-en-v2.pdf",
+      "seconds": 811.6,
+      "stopped_because": "finding_count_did_not_strictly_decrease"
+    },
+    {
+      "api_calls": 68,
+      "applications": 0,
+      "conservation": "conserved",
+      "decision_action": "translate_orphan_lines",
+      "decision_named": 3,
+      "detected_by_kind": {
+        "fragment_cluster": 4,
+        "untranslated_residue": 28
+      },
+      "detected_first": 32,
+      "final_by_kind": {
+        "fragment_cluster": 4,
+        "untranslated_residue": 28
+      },
+      "final_total": 32,
+      "iterations_run": 1,
+      "notes": [],
+      "pages": 4,
+      "paragraphs": 202,
+      "rejections": {
+        "layout_label_not_orphan": 3
+      },
+      "repaired_refs": [],
+      "requests": 84,
+      "sample": "CERNCourier-en.pdf",
+      "seconds": 536.0,
+      "stopped_because": "no_finding_the_action_may_act_on"
+    },
+    {
+      "api_calls": 2,
+      "applications": 0,
+      "conservation": "conserved",
+      "decision_action": "translate_orphan_lines",
+      "decision_named": 3,
+      "detected_by_kind": {
+        "fragment_cluster": 1,
+        "untranslated_residue": 6
+      },
+      "detected_first": 7,
+      "final_by_kind": {
+        "fragment_cluster": 1,
+        "untranslated_residue": 6
+      },
+      "final_total": 7,
+      "iterations_run": 1,
+      "notes": [],
+      "pages": 8,
+      "paragraphs": 132,
+      "rejections": {
+        "layout_label_not_orphan": 1,
+        "translation_equals_source": 1
+      },
+      "repaired_refs": [],
+      "requests": 55,
+      "sample": "Courier-en.pdf",
+      "seconds": 456.4,
+      "stopped_because": "finding_count_did_not_strictly_decrease"
+    },
+    {
+      "api_calls": 85,
+      "applications": 0,
+      "conservation": "conserved",
+      "decision_action": "translate_orphan_lines",
+      "decision_named": 3,
+      "detected_by_kind": {
+        "untranslated_residue": 7
+      },
+      "detected_first": 7,
+      "final_by_kind": {
+        "untranslated_residue": 7
+      },
+      "final_total": 7,
+      "iterations_run": 1,
+      "notes": [],
+      "pages": 8,
+      "paragraphs": 135,
+      "rejections": {
+        "layout_label_not_orphan": 2
+      },
+      "repaired_refs": [],
+      "requests": 86,
+      "sample": "Courier-zh.pdf",
+      "seconds": 690.8,
+      "stopped_because": "finding_count_did_not_strictly_decrease"
+    },
+    {
+      "api_calls": 62,
+      "applications": 0,
+      "conservation": "conserved",
+      "decision_action": "translate_orphan_lines",
+      "decision_named": 3,
+      "detected_by_kind": {
+        "fragment_cluster": 1,
+        "untranslated_residue": 24
+      },
+      "detected_first": 25,
+      "final_by_kind": {
+        "fragment_cluster": 1,
+        "untranslated_residue": 24
+      },
+      "final_total": 25,
+      "iterations_run": 1,
+      "notes": [],
+      "pages": 9,
+      "paragraphs": 189,
+      "rejections": {
+        "layout_label_not_orphan": 3
+      },
+      "repaired_refs": [],
+      "requests": 65,
+      "sample": "FD-en-v2.pdf",
+      "seconds": 499.4,
+      "stopped_because": "no_finding_the_action_may_act_on"
+    },
+    {
+      "api_calls": 12,
+      "applications": 0,
+      "conservation": "conserved",
+      "decision_action": "translate_orphan_lines",
+      "decision_named": 3,
+      "detected_by_kind": {
+        "untranslated_residue": 3
+      },
+      "detected_first": 3,
+      "final_by_kind": {
+        "untranslated_residue": 3
+      },
+      "final_total": 3,
+      "iterations_run": 1,
+      "notes": [],
+      "pages": 3,
+      "paragraphs": 39,
+      "rejections": {
+        "layout_label_not_orphan": 3
+      },
+      "repaired_refs": [],
+      "requests": 13,
+      "sample": "Vogue-en.pdf",
+      "seconds": 250.5,
+      "stopped_because": "no_finding_the_action_may_act_on"
+    }
+  ],
+  "totals": {
+    "api_calls": 292,
+    "documents_conserved": 6,
+    "paragraphs_repaired": 0,
+    "samples": 6
+  }
+}

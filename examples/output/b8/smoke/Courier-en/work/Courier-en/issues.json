@@ -1,0 +1,242 @@
+{
+  "counts": {
+    "by_kind": {
+      "fragment_cluster": 1,
+      "untranslated_residue": 6
+    },
+    "issues": 7
+  },
+  "document_detectors": [
+    "escalation_surfacing"
+  ],
+  "issues": [
+    {
+      "detected_at_iteration": 0,
+      "detector": "fragment_cluster",
+      "evidence": {
+        "debug_ids": [
+          "JSkcP",
+          "p9svT",
+          "TiyPy",
+          "Vos2R"
+        ],
+        "excerpt": "拉吉波伊瓦·谢雷尔·杰克逊 / 巴西：水上人家的教训 ..... 9马塞洛·席尔瓦·德·索萨 / 当生物盗窃扎根时.12丹尼尔·罗宾逊和大卫·杰斐逊 / 中国：",
+        "layout_labels": [
+          "plain text"
+        ],
+        "max_chars": 40,
+        "member_count": 4,
+        "min_cluster": 3
+      },
+      "geometry": {
+        "x": 78.0367,
+        "x2": 256.3125,
+        "y": 448.6895,
+        "y2": 551.8502
+      },
+      "id": "fragment_cluster:p1:p1#13+p1#14+p1#15+p1#16",
+      "kind": "fragment_cluster",
+      "page": 1,
+      "paragraph_refs": [
+        "p1#13",
+        "p1#14",
+        "p1#15",
+        "p1#16"
+      ],
+      "severity": "low"
+    },
+    {
+      "detected_at_iteration": 0,
+      "detector": "untranslated_residue",
+      "evidence": {
+        "debug_id": "1MNus",
+        "excerpt": "与Ora Marek-Martinez的访谈",
+        "layout_label": "plain text",
+        "min_ratio": 0.6,
+        "residue_chars": 16,
+        "residue_ratio": 0.8,
+        "residue_script": "latin",
+        "script_chars": 20
+      },
+      "geometry": {
+        "x": 78.12769999999999,
+        "x2": 193.76769999999993,
+        "y": 340.5289,
+        "y2": 347.5289
+      },
+      "id": "untranslated_residue:p1:p1#20",
+      "kind": "untranslated_residue",
+      "page": 1,
+      "paragraph_refs": [
+        "p1#20"
+      ],
+      "severity": "high"
+    },
+    {
+      "detected_at_iteration": 0,
+      "detector": "untranslated_residue",
+      "evidence": {
+        "debug_id": "xDtg3",
+        "excerpt": "Jim Al-Khalili",
+        "layout_label": "plain text",
+        "min_ratio": 0.6,
+        "residue_chars": 12,
+        "residue_ratio": 1.0,
+        "residue_script": "latin",
+        "script_chars": 12
+      },
+      "geometry": {
+        "x": 77.9807,
+        "x2": 116.8237,
+        "y": 203.0675,
+        "y2": 210.0675
+      },
+      "id": "untranslated_residue:p1:p1#25",
+      "kind": "untranslated_residue",
+      "page": 1,
+      "paragraph_refs": [
+        "p1#25"
+      ],
+      "severity": "high"
+    },
+    {
+      "detected_at_iteration": 0,
+      "detector": "untranslated_residue",
+      "evidence": {
+        "debug_id": "tXfgu",
+        "excerpt": "brano© Carolina Zam",
+        "layout_label": "fallback_line",
+        "min_ratio": 0.6,
+        "residue_chars": 16,
+        "residue_ratio": 1.0,
+        "residue_script": "latin",
+        "script_chars": 16
+      },
+      "geometry": {
+        "x": 540.9262,
+        "x2": 547.4262,
+        "y": 583.6095,
+        "y2": 640.894
+      },
+      "id": "untranslated_residue:p3:p3#2",
+      "kind": "untranslated_residue",
+      "page": 3,
+      "paragraph_refs": [
+        "p3#2"
+      ],
+      "severity": "high"
+    },
+    {
+      "detected_at_iteration": 0,
+      "detector": "untranslated_residue",
+      "evidence": {
+        "debug_id": "YvgHm",
+        "excerpt": "barini / OPAN© Adriano Gam",
+        "layout_label": "fallback_line",
+        "min_ratio": 0.6,
+        "residue_chars": 20,
+        "residue_ratio": 1.0,
+        "residue_script": "latin",
+        "script_chars": 20
+      },
+      "geometry": {
+        "x": 24.305500000000002,
+        "x2": 30.812,
+        "y": 298.3919,
+        "y2": 376.5934
+      },
+      "id": "untranslated_residue:p5:p5#10",
+      "kind": "untranslated_residue",
+      "page": 5,
+      "paragraph_refs": [
+        "p5#10"
+      ],
+      "severity": "high"
+    },
+    {
+      "detected_at_iteration": 0,
+      "detector": "untranslated_residue",
+      "evidence": {
+        "debug_id": "K1qXi",
+        "excerpt": "r The UNESCO Courieréniako fo© Boris Sém",
+        "layout_label": "fallback_line",
+        "min_ratio": 0.6,
+        "residue_chars": 33,
+        "residue_ratio": 1.0,
+        "residue_script": "latin",
+        "script_chars": 33
+      },
+      "geometry": {
+        "x": 413.3671,
+        "x2": 419.8671,
+        "y": 711.2186,
+        "y2": 826.0346
+      },
+      "id": "untranslated_residue:p6:p6#15",
+      "kind": "untranslated_residue",
+      "page": 6,
+      "paragraph_refs": [
+        "p6#15"
+      ],
+      "severity": "high"
+    },
+    {
+      "detected_at_iteration": 0,
+      "detector": "untranslated_residue",
+      "evidence": {
+        "debug_id": "HmnTJ",
+        "excerpt": "© Christian goupi / robertharding.com",
+        "layout_label": "abandon",
+        "min_ratio": 0.6,
+        "residue_chars": 30,
+        "residue_ratio": 1.0,
+        "residue_script": "latin",
+        "script_chars": 30
+      },
+      "geometry": {
+        "x": 17.2419,
+        "x2": 120.18239999999997,
+        "y": 802.6325999999999,
+        "y2": 810.4911
+      },
+      "id": "untranslated_residue:p8:p8#15",
+      "kind": "untranslated_residue",
+      "page": 8,
+      "paragraph_refs": [
+        "p8#15"
+      ],
+      "severity": "high"
+    }
+  ],
+  "iteration": 0,
+  "language": "zh",
+  "notes": [],
+  "pages_by_detector": {
+    "fragment_cluster": [
+      1,
+      4,
+      6,
+      8
+    ],
+    "text_figure_overlap": [
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8
+    ],
+    "untranslated_residue": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8
+    ]
+  },
+  "translation_performed": true
+}

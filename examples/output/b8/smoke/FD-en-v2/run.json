@@ -1,0 +1,16 @@
+{
+  "sample": "FD-en-v2.pdf",
+  "model": "gpt-4o",
+  "seconds": 499.4,
+  "requests": 65,
+  "cache_hits": 3,
+  "api_calls": 62,
+  "prompt_tokens": 44806,
+  "completion_tokens": 9932,
+  "working_dir": "examples\\output\\b8\\smoke\\FD-en-v2\\work\\FD-en-v2",
+  "mono_pdf": "FD-en-v2.b8_3.pdf",
+  "reviews": [
+    "FD-en-v2.review.json",
+    "FD-en-v2.review.html"
+  ]
+}

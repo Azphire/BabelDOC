@@ -1,0 +1,145 @@
+{
+  "decisions_file": "D:\\Codes\\BabelDOC\\reviews\\Courier-en.decisions.json",
+  "drop_caps": [
+    {
+      "debug_id": "UfHwj",
+      "decision": "keep",
+      "page": 4,
+      "paragraph": "p4#3",
+      "was_candidate": true
+    },
+    {
+      "debug_id": "CeNfo",
+      "decision": "flatten",
+      "page": 5,
+      "paragraph": "p5#5",
+      "was_candidate": true
+    },
+    {
+      "debug_id": "pkskb",
+      "decision": "flatten",
+      "page": 7,
+      "paragraph": "p7#8",
+      "was_candidate": true
+    }
+  ],
+  "page_kinds": [
+    {
+      "kind": "toc",
+      "machine_conf": 0.8666666666666667,
+      "machine_kind": "editorial",
+      "machine_source": "deterministic",
+      "page": 1
+    }
+  ],
+  "sample": "Courier-en",
+  "terms": {
+    "auto_glossary_kept": 141,
+    "auto_glossary_relocated": "auto_extracted_glossary",
+    "dropped_from_auto": [
+      {
+        "auto_target": "Lagipoiva Cherelle Jackson",
+        "source": "Lagipoiva Cherelle Jackson",
+        "user_target": "拉吉波伊瓦·谢雷尔·杰克逊"
+      },
+      {
+        "auto_target": "Marcelo Silva de Sousa",
+        "source": "Marcelo Silva de Sousa",
+        "user_target": "马塞洛·席尔瓦·德·索萨"
+      },
+      {
+        "auto_target": "Daniel Robinson",
+        "source": "Daniel Robinson",
+        "user_target": "丹尼尔·罗宾逊"
+      },
+      {
+        "auto_target": "David Jefferson",
+        "source": "David Jefferson",
+        "user_target": "大卫·杰斐逊"
+      }
+    ],
+    "entries": [
+      {
+        "source": "Marcelo Silva de Sousa",
+        "target": "马塞洛·席尔瓦·德·索萨"
+      },
+      {
+        "source": "Lagipoiva Cherelle Jackson",
+        "target": "拉吉波伊瓦·谢雷尔·杰克逊"
+      },
+      {
+        "source": "Daniel Robinson",
+        "target": "丹尼尔·罗宾逊"
+      },
+      {
+        "source": "David Jefferson",
+        "target": "大卫·杰斐逊"
+      },
+      {
+        "source": "The UNESCO Courier",
+        "target": "联合国教科文组织《信使》"
+      },
+      {
+        "source": "CourierT H E UNESCO",
+        "target": "联合国教科文组织《信使》"
+      }
+    ],
+    "glossary": "hitl_decisions",
+    "match_definition": "how many inputs -- the text a paragraph was offered as, which is what the glossary is matched against -- activate this entry, by the matcher the translation prompt itself uses; counted over every request this run built from the document, the repair loop's included",
+    "matches": [
+      {
+        "matched_excerpts": [
+          "<style id='1'>Brazil: lessons from the water people</style><style id='3'> ..... </style><style id='5'>9</style>Marcelo Silva de Sousa",
+          "Marcelo Silva de Sousa"
+        ],
+        "matched_prompt_count": 2,
+        "source": "Marcelo Silva de Sousa",
+        "target": "马塞洛·席尔瓦·德·索萨"
+      },
+      {
+        "matched_excerpts": [
+          "Lagipoiva Cherelle Jackson",
+          "Lagipoiva Cherelle Jackson"
+        ],
+        "matched_prompt_count": 2,
+        "source": "Lagipoiva Cherelle Jackson",
+        "target": "拉吉波伊瓦·谢雷尔·杰克逊"
+      },
+      {
+        "matched_excerpts": [
+          "<style id='1'>When biopiracy takes root</style><style id='3'> .................. </style><style id='5'>12</style>Daniel Robinson and David Jefferson",
+          "Daniel Robinson"
+        ],
+        "matched_prompt_count": 2,
+        "source": "Daniel Robinson",
+        "target": "丹尼尔·罗宾逊"
+      },
+      {
+        "matched_excerpts": [
+          "<style id='1'>When biopiracy takes root</style><style id='3'> .................. </style><style id='5'>12</style>Daniel Robinson and David Jefferson",
+          "David Jefferson"
+        ],
+        "matched_prompt_count": 2,
+        "source": "David Jefferson",
+        "target": "大卫·杰斐逊"
+      },
+      {
+        "matched_excerpts": [
+          "{v1}The UNESCO Courier {v2}<style id='3'>January-March 2026</style>",
+          "{v1}The UNESCO Courier {v2}<style id='3'>January-March 2026</style>",
+          "{v1}The UNESCO Courier {v2}<style id='3'>January-March 2026</style>"
+        ],
+        "matched_prompt_count": 5,
+        "source": "The UNESCO Courier",
+        "target": "联合国教科文组织《信使》"
+      },
+      {
+        "matched_excerpts": [],
+        "matched_prompt_count": 0,
+        "source": "CourierT H E UNESCO",
+        "target": "联合国教科文组织《信使》"
+      }
+    ],
+    "repair_inputs": 2
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "sample": "CERNCourier-en.pdf",
+  "model": "gpt-4o",
+  "seconds": 536.0,
+  "requests": 84,
+  "cache_hits": 16,
+  "api_calls": 68,
+  "prompt_tokens": 57821,
+  "completion_tokens": 14442,
+  "working_dir": "examples\\output\\b8\\smoke\\CERNCourier-en\\work\\CERNCourier-en",
+  "mono_pdf": "CERNCourier-en.b8_3.pdf",
+  "reviews": [
+    "CERNCourier-en.review.json",
+    "CERNCourier-en.review.html"
+  ]
+}
