@@ -248,6 +248,13 @@ def changed_paths() -> set[str]:
     return paths
 
 
+def baseline_checkpoint_containers() -> list[Path]:
+    """Every frozen baseline checkpoint set, whether directory or archive."""
+    return sorted(
+        BASELINE_DIR.glob(f"*.checkpoints{checkpoint_module.CHECKPOINT_ARCHIVE_SUFFIX}")
+    ) + sorted(BASELINE_DIR.glob("*.checkpoints"))
+
+
 def sha256_file(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
@@ -395,12 +402,12 @@ def check_01d_baselines_are_complete() -> None:
             faults.append(f"{sample['file']}: baseline PDF missing")
         elif sha256_file(pdf) != baseline["sha256"]:
             faults.append(f"{sample['file']}: baseline PDF digest moved")
-        if not checkpoints.is_dir() or not list(checkpoints.glob("*.xml")):
+        if not checkpoint_module.checkpoint_paths(checkpoints, "*.xml"):
             faults.append(f"{sample['file']}: baseline checkpoints missing")
     for retired in RETIRED_SAMPLES:
         leftovers = sorted(
             path.name for path in BASELINE_DIR.glob(f"{retired}.*")
-        ) + sorted(path.name for path in BASELINE_DIR.glob(f"{retired}.checkpoints"))
+        ) + sorted(path.name for path in BASELINE_DIR.glob(f"{retired}.checkpoints*"))
         if leftovers:
             faults.append(f"{retired}: retired baseline still present {leftovers}")
         if (INPUT_DIR / f"{retired}.pdf").exists():
@@ -576,9 +583,9 @@ def check_03b_documents_needing_no_escape_are_untouched() -> None:
     faults = []
     marked = []
     plain = checkpoint_module._converter()
-    for directory in sorted(BASELINE_DIR.glob("*.checkpoints")):
-        for path in sorted(directory.glob("*.xml")):
-            text = path.read_text(encoding="utf-8")
+    for directory in baseline_checkpoint_containers():
+        for path in checkpoint_module.checkpoint_paths(directory, "*.xml"):
+            text = checkpoint_module.read_checkpoint_text(path)
             docs = checkpoint_module.load_checkpoint(path)
             has_illegal = checkpoint_module._holds_illegal(docs)
             declares = checkpoint_module._ESCAPE_MARKER in text
@@ -605,9 +612,11 @@ def check_03c_the_corpus_codepoint_survives() -> None:
     """Positive 3c: the codepoint that forced the escape is in the checkpoint it was in."""
     faults = []
     found = []
-    for directory in sorted(BASELINE_DIR.glob("*.checkpoints")):
-        for path in sorted(directory.glob("*.xml")):
-            if checkpoint_module._ESCAPE_MARKER not in path.read_text(encoding="utf-8"):
+    for directory in baseline_checkpoint_containers():
+        for path in checkpoint_module.checkpoint_paths(directory, "*.xml"):
+            if checkpoint_module._ESCAPE_MARKER not in (
+                checkpoint_module.read_checkpoint_text(path)
+            ):
                 continue
             docs = checkpoint_module.load_checkpoint(path)
             for page in docs.page:

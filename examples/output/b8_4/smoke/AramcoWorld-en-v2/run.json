@@ -1,0 +1,16 @@
+{
+  "sample": "AramcoWorld-en-v2.pdf",
+  "model": "gpt-4o",
+  "seconds": 115.3,
+  "requests": 78,
+  "cache_hits": 74,
+  "api_calls": 4,
+  "prompt_tokens": 5752,
+  "completion_tokens": 632,
+  "working_dir": "examples\\output\\b8_4\\smoke\\AramcoWorld-en-v2\\work\\AramcoWorld-en-v2",
+  "mono_pdf": "AramcoWorld-en-v2.b8_4.pdf",
+  "reviews": [
+    "AramcoWorld-en-v2.review.json",
+    "AramcoWorld-en-v2.review.html"
+  ]
+}

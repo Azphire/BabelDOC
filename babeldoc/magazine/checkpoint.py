@@ -22,6 +22,7 @@ import dataclasses
 import json
 import logging
 import re
+import zipfile
 from functools import lru_cache
 from pathlib import Path
 
@@ -31,6 +32,14 @@ from babeldoc.format.pdf.document_il.xml_converter import XMLConverter
 logger = logging.getLogger(__name__)
 
 CHECKPOINT_PREFIX = "checkpoint."
+
+# A set of checkpoints kept for the long term is kept as one archive rather than
+# as a directory of files. They are XML and JSON of one shape, so they compress
+# by about an order of magnitude, and the whole set of a run is read start to
+# finish or not at all. A member is named the way a file in the directory was:
+# ``<name>.checkpoints.zip/checkpoint.11_typesetting.xml`` is a path a caller
+# builds by joining, and every reader below resolves it.
+CHECKPOINT_ARCHIVE_SUFFIX = ".zip"
 
 # The complement of the XML 1.0 Char production, restricted to what a Python
 # string can hold: the C0 controls other than tab, newline and carriage return,
@@ -252,6 +261,83 @@ def dump_checkpoint(
     return xml_path
 
 
+def archive_member(path: str | Path) -> tuple[Path, str] | None:
+    """The archive and member ``path`` names, or None where it names a file.
+
+    A path is inside an archive when one of its components is an archive that
+    exists and something follows it. Nothing is opened to decide this, so the
+    question is cheap enough to ask on every read.
+    """
+    path = Path(path)
+    for index, part in enumerate(path.parts):
+        if not part.endswith(CHECKPOINT_ARCHIVE_SUFFIX):
+            continue
+        member = "/".join(path.parts[index + 1 :])
+        archive = Path(*path.parts[: index + 1])
+        if member and archive.is_file():
+            return archive, member
+    return None
+
+
+def read_checkpoint_text(path: str | Path) -> str:
+    """The text of one checkpoint, whether it is a file or inside an archive."""
+    found = archive_member(path)
+    if found is None:
+        return Path(path).read_text(encoding="utf-8")
+    archive, member = found
+    with zipfile.ZipFile(archive) as bundle:
+        return bundle.read(member).decode("utf-8")
+
+
+def checkpoint_container(path: str | Path) -> Path:
+    """The archive standing for a checkpoint directory, or the directory itself.
+
+    Callers name the directory; what is on the disk may be either, and which one
+    is not something a caller should have to know.
+    """
+    path = Path(path)
+    archive = path.with_name(path.name + CHECKPOINT_ARCHIVE_SUFFIX)
+    if not path.is_dir() and archive.is_file():
+        return archive
+    return path
+
+
+def checkpoint_paths(container: str | Path, pattern: str = "*") -> list[Path]:
+    """Every checkpoint in a directory or an archive, as paths that can be read.
+
+    A path into an archive does not exist on the filesystem and is not meant to:
+    it is what ``read_checkpoint_text`` and ``load_checkpoint`` accept, and it
+    keeps the name a caller would have used for the file.
+    """
+    container = checkpoint_container(container)
+    if container.is_dir():
+        return sorted(container.glob(pattern))
+    if not container.is_file():
+        return []
+    with zipfile.ZipFile(container) as bundle:
+        names = [name for name in bundle.namelist() if not name.endswith("/")]
+    return sorted(
+        container / name for name in names if Path(name).match(pattern)
+    )
+
+
+def write_checkpoint_archive(paths, destination: Path) -> Path:
+    """Pack the given checkpoint files into one archive and return its path.
+
+    Members are named by their filename alone, which is what makes an archive a
+    drop-in replacement for the directory the files were in.
+    """
+    destination = Path(destination)
+    destination.parent.mkdir(parents=True, exist_ok=True)
+    with zipfile.ZipFile(
+        destination, "w", compression=zipfile.ZIP_DEFLATED, compresslevel=9
+    ) as bundle:
+        for item in sorted(Path(path) for path in paths):
+            if item.is_file():
+                bundle.write(item, item.name)
+    return destination
+
+
 def load_checkpoint(path: str | Path) -> il_version_1.Document:
     """Read an XML checkpoint back into a ``Document``.
 
@@ -259,8 +345,7 @@ def load_checkpoint(path: str | Path) -> il_version_1.Document:
     actually present, which catches truncated or hand-edited checkpoints.
     """
     path = Path(path)
-    with path.open(encoding="utf-8") as f:
-        docs = from_checkpoint_xml(f.read())
+    docs = from_checkpoint_xml(read_checkpoint_text(path))
     if docs.total_pages != len(docs.page):
         raise CheckpointError(
             f"corrupt checkpoint {path}: total_pages={docs.total_pages} "

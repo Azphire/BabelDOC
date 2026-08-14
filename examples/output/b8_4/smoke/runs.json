@@ -1,0 +1,99 @@
+[
+  {
+    "sample": "Courier-en.pdf",
+    "model": "gpt-4o",
+    "seconds": 339.2,
+    "requests": 54,
+    "cache_hits": 53,
+    "api_calls": 1,
+    "prompt_tokens": 1735,
+    "completion_tokens": 93,
+    "working_dir": "examples\\output\\b8_4\\smoke\\Courier-en\\work\\Courier-en",
+    "mono_pdf": "Courier-en.b8_4.pdf",
+    "reviews": [
+      "Courier-en.review.json",
+      "Courier-en.review.html",
+      "Courier-en.decisions.json"
+    ]
+  },
+  {
+    "sample": "AramcoWorld-en-v2.pdf",
+    "model": "gpt-4o",
+    "seconds": 115.3,
+    "requests": 78,
+    "cache_hits": 74,
+    "api_calls": 4,
+    "prompt_tokens": 5752,
+    "completion_tokens": 632,
+    "working_dir": "examples\\output\\b8_4\\smoke\\AramcoWorld-en-v2\\work\\AramcoWorld-en-v2",
+    "mono_pdf": "AramcoWorld-en-v2.b8_4.pdf",
+    "reviews": [
+      "AramcoWorld-en-v2.review.json",
+      "AramcoWorld-en-v2.review.html"
+    ]
+  },
+  {
+    "sample": "CERNCourier-en.pdf",
+    "model": "gpt-4o",
+    "seconds": 65.9,
+    "requests": 85,
+    "cache_hits": 83,
+    "api_calls": 2,
+    "prompt_tokens": 9201,
+    "completion_tokens": 137,
+    "working_dir": "examples\\output\\b8_4\\smoke\\CERNCourier-en\\work\\CERNCourier-en",
+    "mono_pdf": "CERNCourier-en.b8_4.pdf",
+    "reviews": [
+      "CERNCourier-en.review.json",
+      "CERNCourier-en.review.html"
+    ]
+  },
+  {
+    "sample": "Courier-zh.pdf",
+    "model": "gpt-4o",
+    "seconds": 186.4,
+    "requests": 83,
+    "cache_hits": 82,
+    "api_calls": 1,
+    "prompt_tokens": 1700,
+    "completion_tokens": 62,
+    "working_dir": "examples\\output\\b8_4\\smoke\\Courier-zh\\work\\Courier-zh",
+    "mono_pdf": "Courier-zh.b8_4.pdf",
+    "reviews": [
+      "Courier-zh.review.json",
+      "Courier-zh.review.html"
+    ]
+  },
+  {
+    "sample": "FD-en-v2.pdf",
+    "model": "gpt-4o",
+    "seconds": 518.5,
+    "requests": 71,
+    "cache_hits": 64,
+    "api_calls": 7,
+    "prompt_tokens": 10975,
+    "completion_tokens": 432,
+    "working_dir": "examples\\output\\b8_4\\smoke\\FD-en-v2\\work\\FD-en-v2",
+    "mono_pdf": "FD-en-v2.b8_4.pdf",
+    "reviews": [
+      "FD-en-v2.review.json",
+      "FD-en-v2.review.html"
+    ]
+  },
+  {
+    "sample": "Vogue-en.pdf",
+    "model": "gpt-4o",
+    "seconds": 372.6,
+    "requests": 13,
+    "cache_hits": 12,
+    "api_calls": 1,
+    "prompt_tokens": 1272,
+    "completion_tokens": 58,
+    "working_dir": "examples\\output\\b8_4\\smoke\\Vogue-en\\work\\Vogue-en",
+    "mono_pdf": "Vogue-en.b8_4.pdf",
+    "reviews": [
+      "Vogue-en.review.json",
+      "Vogue-en.review.html"
+    ]
+  }
+]

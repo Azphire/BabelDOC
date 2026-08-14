@@ -15,6 +15,14 @@ findings to act on rather than judging whether the detectors were right.
 
 {actions_block}
 
+## What each action may act on
+
+Every action holds each finding you name against a rule of its own before it
+touches anything. The rule is applied from the measurements, not from your
+judgement of them, and naming a finding the rule refuses does not repair it.
+
+{action_constraints}
+
 ## How to choose
 
 Prefer doing nothing to doing something uncertain. A finding left standing
@@ -25,17 +33,24 @@ for findings whose evidence plainly describes the defect that action repairs.
 Every finding you name has to be one of the findings listed above, by its
 exact "id", and its kind has to be one the chosen action answers for.
 
-Name every finding of that kind whose evidence plainly shows the defect, not a
-sample of them. The action holds each one against its own applicability rule
-before it touches anything, and a finding that rule refuses is refused at no
-cost and reported as refused; a finding you did not name is simply not looked
-at this iteration. Leaving one out is the more expensive mistake.
+Name every finding that satisfies the conditions above, and name no finding
+that fails them. Both halves matter and they fail in different ways: a finding
+you leave out is not looked at this iteration at all, and a finding you name
+that the rule refuses fills your list with something that was never going to be
+repaired. Read each finding's evidence against the conditions and decide from
+what it reports.
 
-Order matters, because the action applies its own ceiling and takes what you
-name in the order you name it. Put first the findings whose evidence reports
-the most of the defect -- for a finding measured in characters or in a
-proportion, the larger figure -- so that if the ceiling cuts your list, what it
-cuts is the weakest evidence rather than the end of an arbitrary ordering.
+The parameters are ceilings the action applies for you, not quotas for you to
+fill. Naming fewer findings than a ceiling permits does not make the answer
+safer, and naming exactly as many as it permits does not make it better. Name
+the findings that qualify, however many that turns out to be -- one, none, or
+every finding on the list.
+
+Order matters, because the action applies its ceilings and takes what you name
+in the order you name it. Put first the findings whose evidence reports the
+most of the defect -- for a finding measured in characters or in a proportion,
+the larger figure -- so that if a ceiling cuts your list, what it cuts is the
+weakest evidence rather than the end of an arbitrary ordering.
 
 You are not choosing how the repair is carried out, only whether it is and on
 what. Do not describe the repair, the layout, or the text a paragraph should

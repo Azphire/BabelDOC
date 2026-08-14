@@ -207,6 +207,8 @@ class _Sandbox:
                     "description": "disposable budget for one gate assertion",
                     "gate_cache_max_gb": max_bytes / artifacts.BYTES_PER_GB,
                     "gate_cache_max_gb_allowed_range": "0.0000001..256",
+                    "staging_stale_after_seconds": 86400,
+                    "staging_stale_after_seconds_allowed_range": "60..2592000",
                 },
                 f,
             )
@@ -681,8 +683,10 @@ def check_06_prompt_rounds_are_recorded() -> None:
 
     Each round keeps the trace, the repair sidecar and the detection sidecar it
     produced, so the before and after of a prompt change is readable without
-    rerunning anything. The last round's decision prompt has to be the file in
-    the tree, or the evidence describes a prompt nobody is using.
+    rerunning anything. The last round's decision prompt has to be the one the
+    frozen run actually sent, or the rounds describe a prompt this batch never
+    used. That the file in the tree matches is a live property of whichever
+    batch reworked it last and is asserted by that batch, not by this one.
     """
     rounds = sorted(path for path in ROUNDS_DIR.iterdir() if path.is_dir())
     faults = []
@@ -707,11 +711,14 @@ def check_06_prompt_rounds_are_recorded() -> None:
                 break
     if len(set(digests.values())) != len(digests):
         faults.append(f"two rounds ran the same prompt: {digests}")
-    current = file_digest(DECIDE_PROMPT)
-    if digests and digests[rounds[-1].name] != current:
+    sent = {
+        entry.get("request", {}).get("prompt_sha256")
+        for entry in evidence()["subject"]["iterations"]
+    } - {None}
+    if digests and sent and digests[rounds[-1].name] not in sent:
         faults.append(
-            f"the last round ran {digests[rounds[-1].name][:12]} and the tree "
-            f"carries {current[:12]}"
+            f"the last round ran {digests[rounds[-1].name][:12]} and the frozen "
+            f"run sent {sorted(item[:12] for item in sent)}"
         )
     record("check_06_prompt_rounds_are_recorded", not faults, "; ".join(faults))
 

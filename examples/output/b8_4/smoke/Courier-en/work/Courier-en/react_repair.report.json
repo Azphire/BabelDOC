@@ -1,0 +1,187 @@
+{
+  "applications": 0,
+  "config": {
+    "actions": [
+      {
+        "applicability": {
+          "min_residue_ratio": 0.9,
+          "min_source_chars": 12,
+          "orphan_layout_labels": [
+            "fallback_line"
+          ]
+        },
+        "conditions": [
+          "its evidence reports residue_ratio at or above 0.9",
+          "the text the page renders for it is at least 12 characters long",
+          "its evidence reports layout_label as one of: fallback_line"
+        ],
+        "description": "Send the text of an orphan line through the translation engine and write the answer back into the paragraph, then lay that paragraph out again.",
+        "issue_kinds": [
+          "untranslated_residue"
+        ],
+        "max_applications": 12,
+        "name": "translate_orphan_lines",
+        "parameters": [
+          {
+            "allowed_range": "1.0..20.0",
+            "default": 3.0,
+            "name": "max_paragraphs"
+          }
+        ]
+      }
+    ],
+    "decide_max_attempts": 2,
+    "issue_excerpt_chars": 120,
+    "max_glossary_entries": 24,
+    "max_issues_offered": 40,
+    "max_iterations": 3,
+    "page_context_chars": 1200
+  },
+  "conservation": {
+    "changed_outside_touched": [],
+    "changed_refs": [],
+    "pages_after": 8,
+    "pages_before": 8,
+    "paragraphs_after": 132,
+    "paragraphs_before": 132,
+    "touched_refs": [],
+    "verdict": "conserved"
+  },
+  "engine_configured": true,
+  "final": {
+    "by_kind": {
+      "fragment_cluster": 1,
+      "untranslated_residue": 6
+    },
+    "total": 7
+  },
+  "final_untreated": {
+    "by_kind": {
+      "fragment_cluster": 1,
+      "untranslated_residue": 6
+    },
+    "total": 7
+  },
+  "iterations": [
+    {
+      "applicability": [],
+      "decision": {
+        "action": "translate_orphan_lines",
+        "attempts": 1,
+        "from_cache": false,
+        "issue_ids": [
+          "untranslated_residue:p3:p3#2",
+          "untranslated_residue:p5:p5#10",
+          "untranslated_residue:p6:p6#15"
+        ],
+        "parameters": {
+          "max_paragraphs": 3.0
+        },
+        "raw": "{\"action\": \"translate_orphan_lines\", \"issue_ids\": [\"untranslated_residue:p3:p3#2\", \"untranslated_residue:p5:p5#10\", \"untranslated_residue:p6:p6#15\"], \"parameters\": {}, \"reason\": \"The findings have a residue_ratio of 1.0, text length of at least 12 characters, and layout_label as 'fallback_line', meeting all conditions for translation.\"}",
+        "reason": "The findings have a residue_ratio of 1.0, text length of at least 12 characters, and layout_label as 'fallback_line', meeting all conditions for translation.",
+        "violations": []
+      },
+      "detected": {
+        "by_kind": {
+          "fragment_cluster": 1,
+          "untranslated_residue": 6
+        },
+        "total": 7
+      },
+      "detected_ids": [
+        "fragment_cluster:p1:p1#13+p1#14+p1#15+p1#16",
+        "untranslated_residue:p1:p1#20",
+        "untranslated_residue:p1:p1#25",
+        "untranslated_residue:p3:p3#2",
+        "untranslated_residue:p5:p5#10",
+        "untranslated_residue:p6:p6#15",
+        "untranslated_residue:p8:p8#15"
+      ],
+      "executed": [
+        {
+          "accepted": false,
+          "attempts": 0,
+          "changed": false,
+          "from_cache": true,
+          "glossary_entries": [
+            [
+              "Carolina Zambrano",
+              "Carolina Zambrano"
+            ]
+          ],
+          "issue_id": "untranslated_residue:p3:p3#2",
+          "offered_text": "© Carolina Zambrano",
+          "paragraph_ref": "p3#2",
+          "reason": "translation_equals_source",
+          "source_text": "© Carolina Zambrano",
+          "translated_text": "© Carolina Zambrano"
+        },
+        {
+          "accepted": false,
+          "attempts": 0,
+          "changed": false,
+          "from_cache": true,
+          "glossary_entries": [],
+          "issue_id": "untranslated_residue:p5:p5#10",
+          "offered_text": "© Adriano Gambarini / OPAN",
+          "paragraph_ref": "p5#10",
+          "reason": "translation_equals_source",
+          "source_text": "© Adriano Gambarini / OPAN",
+          "translated_text": "© Adriano Gambarini / OPAN"
+        },
+        {
+          "accepted": false,
+          "attempts": 0,
+          "changed": false,
+          "from_cache": true,
+          "glossary_entries": [
+            [
+              "Courier",
+              "信使"
+            ],
+            [
+              "UNESCO",
+              "联合国教科文组织"
+            ],
+            [
+              "UNESCO Courier",
+              "联合国教科文组织信使"
+            ],
+            [
+              "The UNESCO Courier",
+              "联合国教科文组织《信使》"
+            ]
+          ],
+          "issue_id": "untranslated_residue:p6:p6#15",
+          "offered_text": "© Boris Séméniako for The UNESCO Courier",
+          "paragraph_ref": "p6#15",
+          "reason": "retypesetting_needed_more_room_than_the_paragraph_had",
+          "source_text": "© Boris Séméniako for The UNESCO Courier",
+          "translated_text": "© Boris Séméniako 为 联合国教科文组织《信使》"
+        }
+      ],
+      "iteration": 1,
+      "outcome": "applied_nothing",
+      "request": {
+        "cache_key": "bf5c77f9d6aed8455db7d3479d624c8061fca60400c3cff25b528cf2f0f74f61",
+        "prompt_sha256": "cf9cd8e5b6313dc05b8fd0e1464dc1a4c53daf0f76c5dcf118254f91bed8ce57"
+      },
+      "untreated": {
+        "by_kind": {
+          "fragment_cluster": 1,
+          "untranslated_residue": 6
+        },
+        "total": 7
+      }
+    }
+  ],
+  "iterations_run": 1,
+  "offered_texts": [
+    "© Carolina Zambrano",
+    "© Adriano Gambarini / OPAN",
+    "© Boris Séméniako for The UNESCO Courier"
+  ],
+  "stopped_because": "no_paragraph_was_written",
+  "switch": "magazine_repair",
+  "treated": []
+}

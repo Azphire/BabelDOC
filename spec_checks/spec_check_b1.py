@@ -30,6 +30,7 @@ sys.path.insert(0, str(ROOT))
 from babeldoc.assets.assets import warmup  # noqa: E402
 from babeldoc.format.pdf.document_il import il_version_1  # noqa: E402
 from babeldoc.format.pdf.document_il.xml_converter import XMLConverter  # noqa: E402
+from babeldoc.magazine import checkpoint as checkpoint_module  # noqa: E402
 from babeldoc.magazine import ir_compat  # noqa: E402
 from babeldoc.magazine.cache_setup import use_project_cache  # noqa: E402
 from babeldoc.magazine.checkpoint import CHECKPOINT_PREFIX  # noqa: E402
@@ -458,13 +459,13 @@ def check_04b_json_stability(produced: dict[str, Path], manifest: dict) -> None:
     for entry in manifest["samples"]:
         name = Path(entry["file"]).stem
         baseline_dir = ROOT / entry["baseline"]["checkpoints"]
-        for baseline_json in sorted(baseline_dir.glob("*.json")):
+        for baseline_json in checkpoint_module.checkpoint_paths(baseline_dir, "*.json"):
             new_json = produced[name] / baseline_json.name
             if not new_json.exists():
                 problems.append(f"{name}: {baseline_json.name} not produced")
                 continue
             compared += 1
-            old = json.loads(baseline_json.read_text(encoding="utf-8"))
+            old = json.loads(checkpoint_module.read_checkpoint_text(baseline_json))
             new = json.loads(new_json.read_text(encoding="utf-8"))
             problems.extend(
                 f"{name}/{baseline_json.name}{item}"
@@ -483,7 +484,7 @@ def check_05_backward_compat(manifest: dict) -> None:
     checked = 0
     for entry in manifest["samples"]:
         baseline_dir = ROOT / entry["baseline"]["checkpoints"]
-        for xml_path in sorted(baseline_dir.glob("*.xml")):
+        for xml_path in checkpoint_module.checkpoint_paths(baseline_dir, "*.xml"):
             checked += 1
             with warnings.catch_warnings(record=True) as caught:
                 warnings.simplefilter("always")

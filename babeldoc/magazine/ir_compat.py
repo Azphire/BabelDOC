@@ -22,6 +22,7 @@ from xsdata.exceptions import ConverterWarning
 
 from babeldoc.format.pdf.document_il import il_version_1
 from babeldoc.format.pdf.document_il.xml_converter import XMLConverter
+from babeldoc.magazine.checkpoint import read_checkpoint_text
 
 # Fields added to the IL by batch B1, as Python attribute names.
 NEW_PAGE_FIELDS = (
@@ -83,7 +84,7 @@ def read_document(path: str | Path) -> il_version_1.Document:
     with warnings.catch_warnings():
         warnings.simplefilter("error")
         warnings.simplefilter("ignore", ConverterWarning)
-        return _converter().read_xml(str(path))
+        return _converter().from_xml(read_checkpoint_text(path))
 
 
 def roundtrip_equal(docs: il_version_1.Document) -> bool:

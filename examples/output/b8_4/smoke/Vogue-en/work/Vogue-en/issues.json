@@ -1,0 +1,112 @@
+{
+  "counts": {
+    "by_kind": {
+      "untranslated_residue": 3
+    },
+    "issues": 3
+  },
+  "document_detectors": [
+    "escalation_surfacing"
+  ],
+  "issues": [
+    {
+      "detected_at_iteration": 0,
+      "detector": "untranslated_residue",
+      "evidence": {
+        "debug_id": "japeu",
+        "excerpt": "FENDI BOUTIQUES  888291 0163FENDI.COM",
+        "layout_label": "abandon",
+        "min_ratio": 0.6,
+        "residue_chars": 22,
+        "residue_ratio": 1.0,
+        "residue_script": "latin",
+        "script_chars": 22
+      },
+      "geometry": {
+        "x": 19.8734586,
+        "x2": 28.8289986,
+        "y": 581.073,
+        "y2": 754.385985220834
+      },
+      "id": "untranslated_residue:p1:p1#0",
+      "kind": "untranslated_residue",
+      "page": 1,
+      "paragraph_refs": [
+        "p1#0"
+      ],
+      "severity": "high"
+    },
+    {
+      "detected_at_iteration": 0,
+      "detector": "untranslated_residue",
+      "evidence": {
+        "debug_id": "kE8NA",
+        "excerpt": "48从A到Zac Zac Posen加入Gap让人感到",
+        "layout_label": "plain text",
+        "min_ratio": 0.6,
+        "residue_chars": 15,
+        "residue_ratio": 0.6522,
+        "residue_script": "latin",
+        "script_chars": 23
+      },
+      "geometry": {
+        "x": 56.21589999999994,
+        "x2": 121.65318191999994,
+        "y": 54.379589999999986,
+        "y2": 88.31267999999999
+      },
+      "id": "untranslated_residue:p3:p3#17",
+      "kind": "untranslated_residue",
+      "page": 3,
+      "paragraph_refs": [
+        "p3#17"
+      ],
+      "severity": "high"
+    },
+    {
+      "detected_at_iteration": 0,
+      "detector": "untranslated_residue",
+      "evidence": {
+        "debug_id": "szHLf",
+        "excerpt": "FASHION EDITOR: JULIA SARR-JAMOIS. HAIR SUSIE SOBOL.   PRODUCED BY BOOM PRODUCTI",
+        "layout_label": "abandon",
+        "min_ratio": 0.6,
+        "residue_chars": 125,
+        "residue_ratio": 1.0,
+        "residue_script": "latin",
+        "script_chars": 125
+      },
+      "geometry": {
+        "x": 548.099,
+        "x2": 558.91272,
+        "y": 56.0,
+        "y2": 299.7408129499996
+      },
+      "id": "untranslated_residue:p3:p3#37",
+      "kind": "untranslated_residue",
+      "page": 3,
+      "paragraph_refs": [
+        "p3#37"
+      ],
+      "severity": "high"
+    }
+  ],
+  "iteration": 0,
+  "language": "zh",
+  "notes": [],
+  "pages_by_detector": {
+    "fragment_cluster": [
+      3
+    ],
+    "text_figure_overlap": [
+      1,
+      2
+    ],
+    "untranslated_residue": [
+      1,
+      2,
+      3
+    ]
+  },
+  "translation_performed": true
+}

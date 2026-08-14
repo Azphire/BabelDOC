@@ -1,5 +1,10 @@
 # Upstream Diff Registry
 
+<!-- UPSTREAM PIN: 17480db9df92ddcb37349ce34b312335226e8ec9
+     (Release v0.6.4, 2026-07-17). All entries below are diffs
+     against this commit. Dissertation citations of upstream
+     source refer to this commit. -->
+
 Every modification to an upstream BabelDOC file must be registered here in the
 same session it is made.
 
@@ -73,6 +78,14 @@ switches the two rows above declare and measures what came out; the only
 executable code it adds is under `spec_checks/` and `examples/output/b8/`, and
 the only production file it edits is a prompt template.
 
+Batch b8.4 changes no upstream file either. Everything it adds is in the
+extension package, in `configs/`, in `prompts/`, in `tools/` and under
+`spec_checks/`. Two of those are worth naming here because other things read
+them: `magazine/reading_order.py` is now the single place a paragraph is turned
+into the text it shows, and `magazine/checkpoint.py` resolves a checkpoint
+directory to the archive standing for it, which is what lets a frozen baseline
+be one file rather than a directory without any reader knowing.
+
 ## Couplings
 
 Extension code calling upstream symbols it does not change. Each row names the
@@ -92,4 +105,5 @@ caller, so an upstream rename is traceable to what it breaks.
 | `babeldoc/format/pdf/document_il/il_version_1.py` | `PdfParagraph.drop_cap_candidate`, `PdfParagraph.drop_cap_decision` | `magazine/drop_cap.py`, `mark` and `apply_decisions` | First writer of the drop cap pair B1 added to the schema: the marking pass sets the candidate flag on the paragraphs it finds and the review layer's ruling sets the verdict. Only a candidate and only a ruled paragraph is written, so a document neither pass touched carries neither attribute. Nothing reads the verdict in this batch. | B7 |
 | `babeldoc/format/pdf/document_il/il_version_1.py` | `PdfParagraph.pdf_paragraph_composition`, `PdfSameStyleCharacters.pdf_style`, `PdfCharacter.pdf_style` | `magazine/drop_cap.py`, `first_style_run` and `median_font_size` | Read the paragraph's opening style run and the sizes of its characters, which is the whole of the typographic evidence a drop cap is found from. The composition is read as the styling stage leaves it -- a list of same-style runs -- and is never rewritten. | B7 |
 | `babeldoc/format/pdf/document_il/il_version_1.py` | `PdfParagraph.pdf_paragraph_composition`, `PdfParagraph.box`, `PdfParagraph.pdf_style`, `Page.pdf_figure`, `Page.pdf_xobject` | `magazine/detectors/`, `base.rendered_text` and the three page detectors | Read a finished page: the characters a paragraph is laid out as, its box and style, and the artwork boxes it may be standing on. Every read is after typesetting and nothing is written back, which is what makes detection a pass that cannot change a rendering. | B8 |
+| `babeldoc/format/pdf/document_il/il_version_1.py` | `PdfParagraphComposition.pdf_character`, `PdfSameStyleCharacters`, `PdfLine`, `PdfFormula`, `PdfSameStyleUnicodeCharacters`, `PdfCharacter.box` | `magazine/reading_order.py`, `paragraph_reading_text` | Read a paragraph's style runs and the boxes of the characters inside them, which is the whole of the evidence the reading order of a rotated paragraph is derived from. Read only, and now the single place in the package that walks a composition for text: the detectors and the repair action both go through it, so a finding and the repair answering for it are about one string. | B8.4 |
 | `babeldoc/format/pdf/document_il/midend/il_translator.py` | `ILTranslator.translate` tracking file (`translate_tracking.json`) | `magazine/hitl.py`, `read_tracking` | Read what text each paragraph was actually offered as, which is the string the glossary is matched against and the one a review draft does not show. The file is written by the translator whether or not this reads it, so nothing upstream changes and no request is spent to learn what a ruling reached. | B8 |

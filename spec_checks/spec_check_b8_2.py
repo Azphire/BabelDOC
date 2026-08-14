@@ -79,6 +79,7 @@ from babeldoc.format.pdf.translation_config import TranslationConfig  # noqa: E4
 from babeldoc.magazine import checkpoint as checkpoint_module  # noqa: E402
 from babeldoc.magazine import detectors  # noqa: E402
 from babeldoc.magazine import hitl  # noqa: E402
+from babeldoc.magazine import prompt_loader  # noqa: E402
 from babeldoc.magazine.detectors import base as detector_base  # noqa: E402
 from babeldoc.magazine.react import actions  # noqa: E402
 from babeldoc.magazine.react import config as react_config  # noqa: E402
@@ -679,12 +680,17 @@ def check_02b_decision_cached() -> None:
         faults.append(f"{len(engine.requests)} request(s) for two identical decisions")
 
     # The key names the prompt file, so a reworded prompt is a different request.
+    # The variables are taken from the template rather than spelled out, so a
+    # prompt that grows a section still renders here.
+    declared = prompt_loader.template_variables(
+        DECIDE_PROMPT.read_text(encoding="utf-8")
+    )
+    variables = dict.fromkeys(declared, "a")
     first = decide.cache_key(
-        decide.load_prompt(decide.DECIDE_PROMPT, {"issues_block": "a", "actions_block": "b"}),
-        "engine",
+        decide.load_prompt(decide.DECIDE_PROMPT, variables), "engine"
     )
     second = decide.cache_key(
-        decide.load_prompt(decide.DECIDE_PROMPT, {"issues_block": "a", "actions_block": "c"}),
+        decide.load_prompt(decide.DECIDE_PROMPT, {**variables, declared[0]: "b"}),
         "engine",
     )
     if first == second:

@@ -2,13 +2,25 @@
 
 The shape is the one the batch was planned around and every part of it is
 bounded. Iterations stop at a declared ceiling. An iteration that does not
-strictly reduce the number of findings is undone and the loop ends, so a repair
-that trades one defect for another cannot be mistaken for progress and a loop
-that oscillates cannot run to the ceiling. An iteration with no usable decision
-applies nothing. Every iteration is written down -- what was found, what was
-asked, what came back, what was rejected and why, what was written and what the
-recheck then found -- because a loop whose reasoning is not on paper is one
-nobody can audit after the fact.
+strictly reduce the number of *untreated* findings is undone and the loop ends,
+so a repair that trades one defect for another cannot be mistaken for progress
+and a loop that oscillates cannot run to the ceiling.
+
+Untreated is the whole of the difference between this rule and a count of
+findings. A repair can leave a finding standing and still have improved it: a
+line half in the wrong script is measurably better than a line wholly in it,
+and a detector reporting both says so in the evidence it carries. A finding
+this run repaired into something its own detector measures as smaller is
+treated -- it is not offered again, not acted on again, and not counted against
+the loop again -- and one rewritten into the same defect is not, which is what
+keeps the guard as strong as it was. A run whose every remaining finding has
+been treated stops with that said rather than looping over work it has already
+done. An iteration with no usable decision applies nothing.
+
+Every iteration is written down -- what was found, what was asked, what came
+back, what was rejected and why, what was written and what the recheck then
+found -- because a loop whose reasoning is not on paper is one nobody can audit
+after the fact.
 
 Two conservation rules hold over the whole run and are checked rather than
 trusted. The document keeps its pages and every page keeps its paragraphs. And
@@ -41,6 +53,7 @@ from babeldoc.magazine import detectors
 from babeldoc.magazine import hitl
 from babeldoc.magazine.checkpoint import to_checkpoint_xml
 from babeldoc.magazine.detectors.base import CONFIG_PATH as DETECTOR_CONFIG_PATH
+from babeldoc.magazine.detectors.base import box_tuple
 from babeldoc.magazine.drop_cap import paragraph_reference
 from babeldoc.magazine.react import actions
 from babeldoc.magazine.react import writeback
@@ -67,6 +80,7 @@ STOP_NO_ACTION = "decision_applied_nothing"
 STOP_NOTHING_APPLICABLE = "no_finding_the_action_may_act_on"
 STOP_NOT_CONVERGING = "finding_count_did_not_strictly_decrease"
 STOP_NOTHING_WRITTEN = "no_paragraph_was_written"
+STOP_CONVERGED_WITH_RESIDUALS = "converged_with_residuals"
 
 # What an iteration did with itself.
 OUTCOME_ADVANCED = "advanced"
@@ -141,6 +155,30 @@ def shape(docs) -> list[int]:
     return [len(page.pdf_paragraph or ()) for page in docs.page]
 
 
+def improved(before: dict, after: dict, fields) -> bool:
+    """Whether one finding reports strictly less of the defect than it did.
+
+    Every field the finding's kind declares as a measure of the defect has to be
+    no higher than it was, and at least one strictly lower. A field either side
+    cannot supply as a number leaves the comparison unanswerable, and
+    unanswerable is not progress: a kind with nothing monotone to measure can be
+    resolved but never improved.
+    """
+    strictly = False
+    for name in fields:
+        left = before.get(name)
+        right = after.get(name)
+        if isinstance(left, bool) or isinstance(right, bool):
+            return False
+        if not isinstance(left, int | float) or not isinstance(right, int | float):
+            return False
+        if right > left:
+            return False
+        if right < left:
+            strictly = True
+    return strictly
+
+
 def counts_of(issues) -> dict:
     by_kind: dict[str, int] = {}
     for issue in issues:
@@ -186,6 +224,10 @@ class RepairLoop:
         self.iterations: list[dict] = []
         self.offered_texts: list[str] = []
         self.touched: set[str] = set()
+        # Findings this run repaired into something the detectors still report,
+        # by id. Run state and nothing else: the intermediate language is frozen
+        # and carries no field for it, and a rerun starts with none of them.
+        self.treated: dict[str, dict] = {}
         self.applications = 0
         # The document as it stood before the first iteration, taken once the
         # run begins and put back if the run cannot finish.
@@ -353,18 +395,26 @@ class RepairLoop:
                 continue
             position = positions[candidate.page_index]
             snapshot.take(position, candidate.page, candidate.paragraph_index)
+            box_before = box_tuple(candidate.paragraph.box)
             writeback.rebuild(candidate.paragraph, outcome.translated_text)
             laid_out = writeback.retypeset(
                 typesetting, candidate.paragraph, candidate.page
             )
-            if not laid_out:
+            stayed = writeback.stayed_inside(
+                box_before, box_tuple(candidate.paragraph.box)
+            )
+            if not laid_out or not stayed:
                 # An empty composition would erase the line rather than repair
-                # it, so this one paragraph goes back and the rest continue.
+                # it, and one that needed more room than the paragraph had has
+                # rearranged the page rather than repaired it. Either way this
+                # one paragraph goes back and the rest continue.
                 candidate.page.pdf_paragraph[candidate.paragraph_index] = (
                     snapshot.paragraphs.pop((position, candidate.paragraph_index))
                 )
                 outcome.accepted = False
-                outcome.reason = actions.REASON_LAYOUT
+                outcome.reason = (
+                    actions.REASON_LAYOUT if not laid_out else actions.REASON_GEOMETRY
+                )
                 records.append(outcome)
                 continue
             outcome.changed = True
@@ -373,12 +423,53 @@ class RepairLoop:
             records.append(outcome)
         return records
 
+    def _untreated(self, issues) -> list:
+        """The findings this run has not already repaired into something better.
+
+        A finding the loop treated is not offered again, not acted on again and
+        not counted again: it stands in the report with what it still measures,
+        and the loop's business is what it has not yet reached.
+        """
+        return [issue for issue in issues if issue.id not in self.treated]
+
+    def _newly_treated(self, written, issues, rechecked, iteration: int) -> dict:
+        """The findings this iteration repaired into something smaller.
+
+        A finding the recheck no longer reports was resolved and is not one of
+        these; a finding still reported with less of the defect in it was
+        treated. Which evidence says so is the detector's declaration, read from
+        the configuration rather than named here.
+        """
+        before = {issue.id: issue for issue in issues}
+        after = {issue.id: issue for issue in rechecked}
+        treated: dict[str, dict] = {}
+        for item in written:
+            was = before.get(item.issue_id)
+            still = after.get(item.issue_id)
+            if was is None or still is None:
+                continue
+            fields = self.detector_config.progress_fields(still.kind)
+            if not improved(was.evidence, still.evidence, fields):
+                continue
+            treated[item.issue_id] = {
+                "issue_id": item.issue_id,
+                "paragraph_ref": item.reference,
+                "kind": still.kind,
+                "treated_at_iteration": iteration,
+                "measured": list(fields),
+                "before": {name: was.evidence.get(name) for name in fields},
+                "residual": {name: still.evidence.get(name) for name in fields},
+            }
+        return treated
+
     def _iterate(self, iteration: int, issues, context) -> tuple[str, str, list]:
         """One iteration. Returns (outcome, stop reason or empty, new issues)."""
+        working = self._untreated(issues)
         record: dict = {
             "iteration": iteration,
             "detected": counts_of(issues),
             "detected_ids": [issue.id for issue in issues],
+            "untreated": counts_of(working),
         }
         self.iterations.append(record)
 
@@ -387,7 +478,7 @@ class RepairLoop:
             record["decision"] = None
             return OUTCOME_INERT, STOP_NO_ENGINE, issues
 
-        decision, request = self._decision_client().decide(issues)
+        decision, request = self._decision_client().decide(working)
         record["decision"] = decision.as_record()
         record["request"] = {
             "prompt_sha256": request.prompt_digest,
@@ -401,7 +492,7 @@ class RepairLoop:
             return OUTCOME_INERT, STOP_NO_ACTION, issues
 
         action = self.repair_config.action(decision.action)
-        candidates, rejected = self._candidates(issues, decision, action, context)
+        candidates, rejected = self._candidates(working, decision, action, context)
         snapshot = Snapshot()
         applied = self._apply(candidates, context, snapshot) if candidates else []
         record["applicability"] = [item.as_record() for item in rejected]
@@ -421,26 +512,38 @@ class RepairLoop:
         )
         before = {issue.id for issue in issues}
         after = {issue.id for issue in rechecked}
+        newly = self._newly_treated(written, issues, rechecked, iteration)
+        self.treated.update(newly)
+        untreated = self._untreated(rechecked)
         record["recheck"] = counts_of(rechecked)
+        record["untreated_after"] = counts_of(untreated)
         record["resolved_ids"] = sorted(before - after)
         record["new_ids"] = sorted(after - before)
+        record["treated_ids"] = sorted(newly)
 
-        if len(rechecked) >= len(issues):
+        if len(untreated) >= len(working):
             # Not strictly decreasing: undo this iteration and stop. A repair
             # that trades one finding for another is not progress, and a loop
-            # that cannot tell the difference will run to its ceiling.
+            # that cannot tell the difference will run to its ceiling. What is
+            # counted is the findings this run has neither resolved nor made
+            # smaller, so a repair that improved a finding without clearing it
+            # is progress and one that rewrote a line into the same defect is
+            # not.
+            for issue_id in newly:
+                self.treated.pop(issue_id, None)
             snapshot.restore(self.docs)
             for item in written:
                 self.touched.discard(item.reference)
                 self.applications -= 1
             record["outcome"] = OUTCOME_ROLLED_BACK
             record["rolled_back_refs"] = [item.reference for item in written]
+            record["treated_ids"] = []
             logger.warning(
-                "react: iteration %d left %d finding(s) against %d before it; "
-                "rolled back and stopped",
+                "react: iteration %d left %d untreated finding(s) against %d "
+                "before it; rolled back and stopped",
                 iteration,
-                len(rechecked),
-                len(issues),
+                len(untreated),
+                len(working),
             )
             return OUTCOME_ROLLED_BACK, STOP_NOT_CONVERGING, issues
 
@@ -448,6 +551,20 @@ class RepairLoop:
         return OUTCOME_ADVANCED, "", (rechecked, new_context)
 
     # -- the run ----------------------------------------------------------
+
+    def _standing(self, issues) -> str:
+        """Why the loop would stop if it stopped here, given what still stands.
+
+        Nothing reported at all is a document with nothing left to repair.
+        Everything reported already repaired into something smaller is a
+        different ending and is named as one: the loop converged, and what it
+        leaves behind is residue it improved rather than defects it missed.
+        """
+        if not issues:
+            return STOP_NO_ISSUES
+        if not self._untreated(issues):
+            return STOP_CONVERGED_WITH_RESIDUALS
+        return STOP_CEILING
 
     def run(self):
         before_digests = paragraph_digests(self.docs)
@@ -458,16 +575,16 @@ class RepairLoop:
         issues, context = detect(
             self.translation_config, self.docs, self.detector_config, 0
         )
-        stop = STOP_NO_ISSUES if not issues else STOP_CEILING
+        stop = self._standing(issues)
         iteration = 0
-        while issues and iteration < self.repair_config.max_iterations:
+        while self._untreated(issues) and iteration < self.repair_config.max_iterations:
             iteration += 1
             outcome, reason, result = self._iterate(iteration, issues, context)
             if outcome != OUTCOME_ADVANCED:
                 stop = reason
                 break
             issues, context = result
-            stop = STOP_NO_ISSUES if not issues else STOP_CEILING
+            stop = self._standing(issues)
 
         after_shape = shape(self.docs)
         after_digests = paragraph_digests(self.docs)
@@ -499,6 +616,7 @@ class RepairLoop:
             )
             self.docs.page = before_document.page
             self.touched.clear()
+            self.treated.clear()
             stop = f"{VIOLATED}: conservation"
             issues, context = detect(
                 self.translation_config, self.docs, self.detector_config, 0
@@ -507,6 +625,26 @@ class RepairLoop:
         self._write(issues, context, conservation, stop, iteration)
         hitl.after_repair(self.translation_config, self.offered_texts)
         return issues
+
+    def _treated_record(self, issues) -> list[dict]:
+        """What the run repaired, and what each repaired finding still reports.
+
+        The residual is refreshed from the findings standing at the end rather
+        than left at what it was when the repair was made, so the report says
+        what the produced document carries.
+        """
+        standing = {issue.id: issue for issue in issues}
+        rows: list[dict] = []
+        for issue_id, entry in sorted(self.treated.items()):
+            row = dict(entry)
+            final = standing.get(issue_id)
+            row["still_reported"] = final is not None
+            if final is not None:
+                row["residual"] = {
+                    name: final.evidence.get(name) for name in entry["measured"]
+                }
+            rows.append(row)
+        return rows
 
     def _write(self, issues, context, conservation, stop: str, iterations: int) -> None:
         detectors.write_report(
@@ -522,7 +660,9 @@ class RepairLoop:
             "iterations": self.iterations,
             "conservation": conservation,
             "offered_texts": list(self.offered_texts),
+            "treated": self._treated_record(issues),
             "final": counts_of(issues),
+            "final_untreated": counts_of(self._untreated(issues)),
         }
         path = self.working_dir / REPORT_NAME
         with path.open("w", encoding="utf-8") as f:

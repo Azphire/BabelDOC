@@ -25,6 +25,8 @@ from pathlib import Path
 
 import pymupdf
 
+from babeldoc.magazine.checkpoint import checkpoint_paths
+
 ROOT = Path(__file__).resolve().parents[2]
 INPUT_DIR = ROOT / "examples" / "input"
 REGISTRY_PATH = ROOT / "corpus" / "registry.user.json"
@@ -305,7 +307,7 @@ def validate_manifest(
                 f"{rel}: baseline sha256 mismatch, manifest={baseline['sha256']} "
                 f"actual={sha256_file(baseline_pdf)}"
             )
-        if not (root / baseline["checkpoints"]).is_dir():
+        if not checkpoint_paths(root / baseline["checkpoints"]):
             warnings.append(
                 f"{rel}: baseline checkpoints not built at {baseline['checkpoints']}"
             )

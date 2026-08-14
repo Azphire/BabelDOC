@@ -36,6 +36,15 @@ ISSUE_KINDS_KEY = "issue_kinds"
 DEFAULT_KEY = "default"
 RANGE_SUFFIX = "_allowed_range"
 
+# How each applicability term reads to a reader, keyed by the term it states.
+# The rule is enforced from the numbers beside it and is stated from here, so
+# what a request tells a model about the filter it is feeding cannot drift from
+# what the filter does: both are this one declaration.
+STATEMENTS_KEY = "statements"
+
+# Where the term's own value is substituted into its statement.
+STATEMENT_VALUE = "{value}"
+
 # The name a decision uses to apply nothing. Reserved, so no action may take it.
 NO_ACTION = "none"
 
@@ -92,9 +101,29 @@ class Action:
     max_applications: int
     parameters: dict[str, Parameter]
     applicability: dict[str, object]
+    statements: dict[str, str]
 
     def answers_for(self, kind: str) -> bool:
         return kind in self.issue_kinds
+
+    def conditions(self) -> list[str]:
+        """Each applicability term as one sentence, its own value substituted.
+
+        In the file's own order, so the sentences read the way the rule is
+        written rather than in an order chosen here.
+        """
+        rendered: list[str] = []
+        for key, value in self.applicability.items():
+            statement = self.statements.get(key)
+            if statement is None:
+                continue
+            shown = (
+                ", ".join(str(item) for item in value)
+                if isinstance(value, list | tuple)
+                else str(value)
+            )
+            rendered.append(statement.replace(STATEMENT_VALUE, shown))
+        return rendered
 
     def resolve(self, supplied: object) -> dict[str, float]:
         """The parameters of one application, defaults filled, bounds enforced.
@@ -136,6 +165,7 @@ class Action:
                 key: (list(value) if isinstance(value, tuple) else value)
                 for key, value in sorted(self.applicability.items())
             },
+            "conditions": self.conditions(),
         }
 
 
@@ -194,15 +224,47 @@ def _parse_parameter(name: str, raw: object, source: str) -> Parameter:
     )
 
 
-def _parse_applicability(raw: object, source: str) -> dict[str, object]:
+def _parse_applicability(raw: object, source: str) -> tuple[dict, dict]:
+    """The rule's terms and the sentence each of them is stated with.
+
+    Every term has to carry a statement and every statement has to name a term.
+    Neither direction is optional: a term with nothing to say about itself is
+    one a request cannot state, and a statement about a term that no longer
+    exists is a request describing a filter that is not there.
+    """
     _require(isinstance(raw, dict) and raw, f"{source}: {APPLICABILITY_KEY} is empty")
-    parameters = _bounded(raw, f"{source}.{APPLICABILITY_KEY}")
+    flat = {key: value for key, value in raw.items() if key != STATEMENTS_KEY}
+    parameters = _bounded(flat, f"{source}.{APPLICABILITY_KEY}")
     for key in (MIN_RATIO_KEY, MIN_CHARS_KEY, ORPHAN_LABELS_KEY):
         _require(
             key in parameters,
             f"{source}: {APPLICABILITY_KEY} omits {key}",
         )
-    return dict(parameters)
+    statements = raw.get(STATEMENTS_KEY)
+    _require(
+        isinstance(statements, dict) and bool(statements),
+        f"{source}: {APPLICABILITY_KEY} declares no {STATEMENTS_KEY}",
+    )
+    unstated = sorted(set(parameters) - set(statements))
+    _require(
+        not unstated,
+        f"{source}: {APPLICABILITY_KEY}.{STATEMENTS_KEY} omits {unstated}",
+    )
+    unknown = sorted(set(statements) - set(parameters))
+    _require(
+        not unknown,
+        f"{source}: {APPLICABILITY_KEY}.{STATEMENTS_KEY} states {unknown}, which "
+        f"{APPLICABILITY_KEY} does not declare",
+    )
+    for key, sentence in statements.items():
+        _require(
+            isinstance(sentence, str) and STATEMENT_VALUE in sentence,
+            f"{source}: {APPLICABILITY_KEY}.{STATEMENTS_KEY}.{key} must be a "
+            f"sentence carrying {STATEMENT_VALUE}",
+        )
+    # The declaration order of the terms, which is the order they read in.
+    ordered = {key: parameters[key] for key in flat if key in parameters}
+    return ordered, dict(statements)
 
 
 def _parse_action(name: str, raw: object, kinds: set[str], source: str) -> Action:
@@ -237,6 +299,9 @@ def _parse_action(name: str, raw: object, kinds: set[str], source: str) -> Actio
         isinstance(raw_parameters, dict),
         f"{source}.{name}: {PARAMETERS_KEY} must be an object",
     )
+    applicability, statements = _parse_applicability(
+        raw.get(APPLICABILITY_KEY), f"{source}.{name}"
+    )
     return Action(
         name=name,
         description=str(raw.get("description") or ""),
@@ -246,9 +311,8 @@ def _parse_action(name: str, raw: object, kinds: set[str], source: str) -> Actio
             key: _parse_parameter(key, value, f"{source}.{name}.{PARAMETERS_KEY}")
             for key, value in raw_parameters.items()
         },
-        applicability=_parse_applicability(
-            raw.get(APPLICABILITY_KEY), f"{source}.{name}"
-        ),
+        applicability=applicability,
+        statements=statements,
     )
 
 

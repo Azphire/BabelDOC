@@ -1,0 +1,721 @@
+{
+  "blast_radius": {
+    "changed_by_repair": [],
+    "changed_outside_touched": [],
+    "paragraphs_compared": 132,
+    "pdf_pages_changed": [],
+    "pdf_pages_of_touched": [],
+    "touched_by_repair": []
+  },
+  "decision_quality": {
+    "AramcoWorld-en-v2.pdf": {
+      "applications": 0,
+      "eligible_available": 3,
+      "eligible_named": 2,
+      "findings": 19,
+      "named": 2,
+      "previous_eligible_available": 3,
+      "previous_eligible_named": 2,
+      "previous_named": 3,
+      "previous_stopped_because": "finding_count_did_not_strictly_decrease",
+      "stopped_because": "no_paragraph_was_written",
+      "treated": 0
+    },
+    "CERNCourier-en.pdf": {
+      "applications": 1,
+      "eligible_available": 4,
+      "eligible_named": 1,
+      "findings": 32,
+      "named": 1,
+      "previous_eligible_available": 4,
+      "previous_eligible_named": 0,
+      "previous_named": 3,
+      "previous_stopped_because": "no_finding_the_action_may_act_on",
+      "stopped_because": "no_paragraph_was_written",
+      "treated": 0
+    },
+    "Courier-en.pdf": {
+      "applications": 0,
+      "eligible_available": 3,
+      "eligible_named": 3,
+      "findings": 7,
+      "named": 3,
+      "previous_eligible_available": 3,
+      "previous_eligible_named": 2,
+      "previous_named": 3,
+      "previous_stopped_because": "finding_count_did_not_strictly_decrease",
+      "stopped_because": "no_paragraph_was_written",
+      "treated": 0
+    },
+    "Courier-zh.pdf": {
+      "applications": 0,
+      "eligible_available": 1,
+      "eligible_named": 1,
+      "findings": 7,
+      "named": 1,
+      "previous_eligible_available": 1,
+      "previous_eligible_named": 1,
+      "previous_named": 3,
+      "previous_stopped_because": "finding_count_did_not_strictly_decrease",
+      "stopped_because": "no_paragraph_was_written",
+      "treated": 0
+    },
+    "FD-en-v2.pdf": {
+      "applications": 2,
+      "eligible_available": 7,
+      "eligible_named": 2,
+      "findings": 25,
+      "named": 8,
+      "previous_eligible_available": 7,
+      "previous_eligible_named": 0,
+      "previous_named": 3,
+      "previous_stopped_because": "no_finding_the_action_may_act_on",
+      "stopped_because": "no_paragraph_was_written",
+      "treated": 0
+    },
+    "Vogue-en.pdf": {
+      "applications": 0,
+      "eligible_available": 0,
+      "eligible_named": 0,
+      "findings": 3,
+      "named": 0,
+      "previous_eligible_available": 0,
+      "previous_eligible_named": 0,
+      "previous_named": 3,
+      "previous_stopped_because": "no_finding_the_action_may_act_on",
+      "stopped_because": "decision_applied_nothing",
+      "treated": 0
+    }
+  },
+  "issues_final": {
+    "counts": {
+      "by_kind": {
+        "fragment_cluster": 1,
+        "untranslated_residue": 6
+      },
+      "issues": 7
+    },
+    "document_detectors": [
+      "escalation_surfacing"
+    ],
+    "issues": [
+      {
+        "detected_at_iteration": 0,
+        "detector": "fragment_cluster",
+        "evidence": {
+          "debug_ids": [
+            "jmSHR",
+            "DWDCa",
+            "8naxP",
+            "qQajJ"
+          ],
+          "excerpt": "拉吉波伊瓦·谢雷尔·杰克逊 / 巴西：水上人家的教训 ..... 9马塞洛·席尔瓦·德·索萨 / 当生物盗窃扎根时.12丹尼尔·罗宾逊和大卫·杰斐逊 / 中国：",
+          "layout_labels": [
+            "plain text"
+          ],
+          "max_chars": 40,
+          "member_count": 4,
+          "min_cluster": 3
+        },
+        "geometry": {
+          "x": 78.0367,
+          "x2": 256.3125,
+          "y": 448.6895,
+          "y2": 551.8502
+        },
+        "id": "fragment_cluster:p1:p1#13+p1#14+p1#15+p1#16",
+        "kind": "fragment_cluster",
+        "page": 1,
+        "paragraph_refs": [
+          "p1#13",
+          "p1#14",
+          "p1#15",
+          "p1#16"
+        ],
+        "severity": "low"
+      },
+      {
+        "detected_at_iteration": 0,
+        "detector": "untranslated_residue",
+        "evidence": {
+          "debug_id": "svbLQ",
+          "excerpt": "与Ora Marek-Martinez的访谈",
+          "layout_label": "plain text",
+          "min_ratio": 0.6,
+          "residue_chars": 16,
+          "residue_ratio": 0.8,
+          "residue_script": "latin",
+          "script_chars": 20
+        },
+        "geometry": {
+          "x": 78.12769999999999,
+          "x2": 193.76769999999993,
+          "y": 340.5289,
+          "y2": 347.5289
+        },
+        "id": "untranslated_residue:p1:p1#20",
+        "kind": "untranslated_residue",
+        "page": 1,
+        "paragraph_refs": [
+          "p1#20"
+        ],
+        "severity": "high"
+      },
+      {
+        "detected_at_iteration": 0,
+        "detector": "untranslated_residue",
+        "evidence": {
+          "debug_id": "wJWvG",
+          "excerpt": "Jim Al-Khalili",
+          "layout_label": "plain text",
+          "min_ratio": 0.6,
+          "residue_chars": 12,
+          "residue_ratio": 1.0,
+          "residue_script": "latin",
+          "script_chars": 12
+        },
+        "geometry": {
+          "x": 77.9807,
+          "x2": 116.8237,
+          "y": 203.0675,
+          "y2": 210.0675
+        },
+        "id": "untranslated_residue:p1:p1#25",
+        "kind": "untranslated_residue",
+        "page": 1,
+        "paragraph_refs": [
+          "p1#25"
+        ],
+        "severity": "high"
+      },
+      {
+        "detected_at_iteration": 0,
+        "detector": "untranslated_residue",
+        "evidence": {
+          "debug_id": "6w85Y",
+          "excerpt": "© Carolina Zambrano",
+          "layout_label": "fallback_line",
+          "min_ratio": 0.6,
+          "residue_chars": 16,
+          "residue_ratio": 1.0,
+          "residue_script": "latin",
+          "script_chars": 16
+        },
+        "geometry": {
+          "x": 540.9262,
+          "x2": 547.4262,
+          "y": 583.6095,
+          "y2": 640.894
+        },
+        "id": "untranslated_residue:p3:p3#2",
+        "kind": "untranslated_residue",
+        "page": 3,
+        "paragraph_refs": [
+          "p3#2"
+        ],
+        "severity": "high"
+      },
+      {
+        "detected_at_iteration": 0,
+        "detector": "untranslated_residue",
+        "evidence": {
+          "debug_id": "Lp4oB",
+          "excerpt": "© Adriano Gambarini / OPAN",
+          "layout_label": "fallback_line",
+          "min_ratio": 0.6,
+          "residue_chars": 20,
+          "residue_ratio": 1.0,
+          "residue_script": "latin",
+          "script_chars": 20
+        },
+        "geometry": {
+          "x": 24.305500000000002,
+          "x2": 30.812,
+          "y": 298.3919,
+          "y2": 376.5934
+        },
+        "id": "untranslated_residue:p5:p5#10",
+        "kind": "untranslated_residue",
+        "page": 5,
+        "paragraph_refs": [
+          "p5#10"
+        ],
+        "severity": "high"
+      },
+      {
+        "detected_at_iteration": 0,
+        "detector": "untranslated_residue",
+        "evidence": {
+          "debug_id": "AMDKc",
+          "excerpt": "© Boris Séméniako for The UNESCO Courier",
+          "layout_label": "fallback_line",
+          "min_ratio": 0.6,
+          "residue_chars": 33,
+          "residue_ratio": 1.0,
+          "residue_script": "latin",
+          "script_chars": 33
+        },
+        "geometry": {
+          "x": 413.3671,
+          "x2": 419.8671,
+          "y": 711.2186,
+          "y2": 826.0346
+        },
+        "id": "untranslated_residue:p6:p6#15",
+        "kind": "untranslated_residue",
+        "page": 6,
+        "paragraph_refs": [
+          "p6#15"
+        ],
+        "severity": "high"
+      },
+      {
+        "detected_at_iteration": 0,
+        "detector": "untranslated_residue",
+        "evidence": {
+          "debug_id": "TqWwN",
+          "excerpt": "© Christian goupi / robertharding.com",
+          "layout_label": "abandon",
+          "min_ratio": 0.6,
+          "residue_chars": 30,
+          "residue_ratio": 1.0,
+          "residue_script": "latin",
+          "script_chars": 30
+        },
+        "geometry": {
+          "x": 17.2419,
+          "x2": 120.18239999999997,
+          "y": 802.6325999999999,
+          "y2": 810.4911
+        },
+        "id": "untranslated_residue:p8:p8#15",
+        "kind": "untranslated_residue",
+        "page": 8,
+        "paragraph_refs": [
+          "p8#15"
+        ],
+        "severity": "high"
+      }
+    ],
+    "iteration": 0,
+    "language": "zh",
+    "notes": [],
+    "pages_by_detector": {
+      "fragment_cluster": [
+        1,
+        4,
+        6,
+        8
+      ],
+      "text_figure_overlap": [
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8
+      ],
+      "untranslated_residue": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8
+      ]
+    },
+    "translation_performed": true
+  },
+  "landed": [
+    {
+      "box_after": [
+        775.3338257324219,
+        717.0481232999999,
+        914.4502841151563,
+        723.5835811523438
+      ],
+      "box_before": [
+        775.3338257324219,
+        717.0481232999999,
+        914.4502841151563,
+        723.5835811523438
+      ],
+      "box_held": true,
+      "paragraph_ref": "p2#32",
+      "sample": "CERNCourier-en.pdf",
+      "text_after": "第66卷第4期 2026年7月/8月",
+      "text_before": "Volume 66 Number 4  July/August 2026",
+      "vertical": false
+    },
+    {
+      "box_after": [
+        333.682,
+        455.50329999999997,
+        422.9984999999999,
+        462.00329999999997
+      ],
+      "box_before": [
+        333.682,
+        455.50329999999997,
+        422.9984999999999,
+        462.00329999999997
+      ],
+      "box_held": true,
+      "paragraph_ref": "p5#14",
+      "sample": "FD-en-v2.pdf",
+      "text_after": "编辑顾问",
+      "text_before": "ADVISORS TO THE EDITOR",
+      "vertical": false
+    },
+    {
+      "box_after": [
+        334.228,
+        524.5033000000001,
+        406.0725,
+        531.0033000000001
+      ],
+      "box_before": [
+        334.228,
+        524.5033000000001,
+        406.0725,
+        531.0033000000001
+      ],
+      "box_held": true,
+      "paragraph_ref": "p5#9",
+      "sample": "FD-en-v2.pdf",
+      "text_after": "制作经理",
+      "text_before": "PRODUCTION MANAGER",
+      "vertical": false
+    }
+  ],
+  "loop": {
+    "applications": 0,
+    "config": {
+      "actions": [
+        {
+          "applicability": {
+            "min_residue_ratio": 0.9,
+            "min_source_chars": 12,
+            "orphan_layout_labels": [
+              "fallback_line"
+            ]
+          },
+          "conditions": [
+            "its evidence reports residue_ratio at or above 0.9",
+            "the text the page renders for it is at least 12 characters long",
+            "its evidence reports layout_label as one of: fallback_line"
+          ],
+          "description": "Send the text of an orphan line through the translation engine and write the answer back into the paragraph, then lay that paragraph out again.",
+          "issue_kinds": [
+            "untranslated_residue"
+          ],
+          "max_applications": 12,
+          "name": "translate_orphan_lines",
+          "parameters": [
+            {
+              "allowed_range": "1.0..20.0",
+              "default": 3.0,
+              "name": "max_paragraphs"
+            }
+          ]
+        }
+      ],
+      "decide_max_attempts": 2,
+      "issue_excerpt_chars": 120,
+      "max_glossary_entries": 24,
+      "max_issues_offered": 40,
+      "max_iterations": 3,
+      "page_context_chars": 1200
+    },
+    "conservation": {
+      "changed_outside_touched": [],
+      "changed_refs": [],
+      "pages_after": 8,
+      "pages_before": 8,
+      "paragraphs_after": 132,
+      "paragraphs_before": 132,
+      "touched_refs": [],
+      "verdict": "conserved"
+    },
+    "engine_configured": true,
+    "final": {
+      "by_kind": {
+        "fragment_cluster": 1,
+        "untranslated_residue": 6
+      },
+      "total": 7
+    },
+    "final_untreated": {
+      "by_kind": {
+        "fragment_cluster": 1,
+        "untranslated_residue": 6
+      },
+      "total": 7
+    },
+    "iterations": [
+      {
+        "applicability": [],
+        "decision": {
+          "action": "translate_orphan_lines",
+          "attempts": 1,
+          "from_cache": false,
+          "issue_ids": [
+            "untranslated_residue:p3:p3#2",
+            "untranslated_residue:p5:p5#10",
+            "untranslated_residue:p6:p6#15"
+          ],
+          "parameters": {
+            "max_paragraphs": 3.0
+          },
+          "raw": "{\"action\": \"translate_orphan_lines\", \"issue_ids\": [\"untranslated_residue:p3:p3#2\", \"untranslated_residue:p5:p5#10\", \"untranslated_residue:p6:p6#15\"], \"parameters\": {}, \"reason\": \"The findings have a residue_ratio of 1.0, text length of at least 12 characters, and layout_label as 'fallback_line', meeting all conditions for translation.\"}",
+          "reason": "The findings have a residue_ratio of 1.0, text length of at least 12 characters, and layout_label as 'fallback_line', meeting all conditions for translation.",
+          "violations": []
+        },
+        "detected": {
+          "by_kind": {
+            "fragment_cluster": 1,
+            "untranslated_residue": 6
+          },
+          "total": 7
+        },
+        "detected_ids": [
+          "fragment_cluster:p1:p1#13+p1#14+p1#15+p1#16",
+          "untranslated_residue:p1:p1#20",
+          "untranslated_residue:p1:p1#25",
+          "untranslated_residue:p3:p3#2",
+          "untranslated_residue:p5:p5#10",
+          "untranslated_residue:p6:p6#15",
+          "untranslated_residue:p8:p8#15"
+        ],
+        "executed": [
+          {
+            "accepted": false,
+            "attempts": 0,
+            "changed": false,
+            "from_cache": true,
+            "glossary_entries": [
+              [
+                "Carolina Zambrano",
+                "Carolina Zambrano"
+              ]
+            ],
+            "issue_id": "untranslated_residue:p3:p3#2",
+            "offered_text": "© Carolina Zambrano",
+            "paragraph_ref": "p3#2",
+            "reason": "translation_equals_source",
+            "source_text": "© Carolina Zambrano",
+            "translated_text": "© Carolina Zambrano"
+          },
+          {
+            "accepted": false,
+            "attempts": 0,
+            "changed": false,
+            "from_cache": true,
+            "glossary_entries": [],
+            "issue_id": "untranslated_residue:p5:p5#10",
+            "offered_text": "© Adriano Gambarini / OPAN",
+            "paragraph_ref": "p5#10",
+            "reason": "translation_equals_source",
+            "source_text": "© Adriano Gambarini / OPAN",
+            "translated_text": "© Adriano Gambarini / OPAN"
+          },
+          {
+            "accepted": false,
+            "attempts": 0,
+            "changed": false,
+            "from_cache": true,
+            "glossary_entries": [
+              [
+                "Courier",
+                "信使"
+              ],
+              [
+                "UNESCO",
+                "联合国教科文组织"
+              ],
+              [
+                "UNESCO Courier",
+                "联合国教科文组织信使"
+              ],
+              [
+                "The UNESCO Courier",
+                "联合国教科文组织《信使》"
+              ]
+            ],
+            "issue_id": "untranslated_residue:p6:p6#15",
+            "offered_text": "© Boris Séméniako for The UNESCO Courier",
+            "paragraph_ref": "p6#15",
+            "reason": "retypesetting_needed_more_room_than_the_paragraph_had",
+            "source_text": "© Boris Séméniako for The UNESCO Courier",
+            "translated_text": "© Boris Séméniako 为 联合国教科文组织《信使》"
+          }
+        ],
+        "iteration": 1,
+        "outcome": "applied_nothing",
+        "request": {
+          "cache_key": "bf5c77f9d6aed8455db7d3479d624c8061fca60400c3cff25b528cf2f0f74f61",
+          "prompt_sha256": "cf9cd8e5b6313dc05b8fd0e1464dc1a4c53daf0f76c5dcf118254f91bed8ce57"
+        },
+        "untreated": {
+          "by_kind": {
+            "fragment_cluster": 1,
+            "untranslated_residue": 6
+          },
+          "total": 7
+        }
+      }
+    ],
+    "iterations_run": 1,
+    "offered_texts": [
+      "© Carolina Zambrano",
+      "© Adriano Gambarini / OPAN",
+      "© Boris Séméniako for The UNESCO Courier"
+    ],
+    "stopped_because": "no_paragraph_was_written",
+    "switch": "magazine_repair",
+    "treated": []
+  },
+  "refusals": [
+    {
+      "paragraph_ref": "p3#2",
+      "reason": "translation_equals_source",
+      "sample": "Courier-en.pdf",
+      "source_text": "© Carolina Zambrano",
+      "translated_text": "© Carolina Zambrano"
+    },
+    {
+      "paragraph_ref": "p5#10",
+      "reason": "translation_equals_source",
+      "sample": "Courier-en.pdf",
+      "source_text": "© Adriano Gambarini / OPAN",
+      "translated_text": "© Adriano Gambarini / OPAN"
+    },
+    {
+      "paragraph_ref": "p6#15",
+      "reason": "retypesetting_needed_more_room_than_the_paragraph_had",
+      "sample": "Courier-en.pdf",
+      "source_text": "© Boris Séméniako for The UNESCO Courier",
+      "translated_text": "© Boris Séméniako 为 联合国教科文组织《信使》"
+    },
+    {
+      "paragraph_ref": "p1#1",
+      "reason": "translation_equals_source",
+      "sample": "AramcoWorld-en-v2.pdf",
+      "source_text": "16344araD1R1.Cvr.indd 1-3",
+      "translated_text": "16344araD1R1.Cvr.indd 1-3"
+    },
+    {
+      "paragraph_ref": "p1#2",
+      "reason": "translation_equals_source",
+      "sample": "AramcoWorld-en-v2.pdf",
+      "source_text": "(cid:25)(cid:18)(cid:23)(cid:18)(cid:21)(cid:25)(cid:3)(cid:3)(cid:3)(cid:23)(cid:29)(cid:24)(cid:27)(cid:592)(cid:51)(cid:48)",
+      "translated_text": "(cid:25)(cid:18)(cid:23)(cid:18)(cid:21)(cid:25)(cid:3)(cid:3)(cid:3)(cid:23)(cid:29)(cid:24)(cid:27)(cid:592)(cid:51)(cid:48)"
+    },
+    {
+      "paragraph_ref": "p2#8",
+      "reason": "translation_equals_source",
+      "sample": "CERNCourier-en.pdf",
+      "source_text": "indico.jacow.org/event/113/",
+      "translated_text": "indico.jacow.org/event/113/"
+    },
+    {
+      "paragraph_ref": "p3#2",
+      "reason": "translation_equals_source",
+      "sample": "Courier-zh.pdf",
+      "source_text": "诺（Carolina Zambrano）",
+      "translated_text": "诺（Carolina Zambrano）"
+    },
+    {
+      "paragraph_ref": "p2#8",
+      "reason": "translation_equals_source",
+      "sample": "FD-en-v2.pdf",
+      "source_text": "BRIANSTAUFFER",
+      "translated_text": "BRIANSTAUFFER"
+    },
+    {
+      "paragraph_ref": "p4#3",
+      "reason": "translation_equals_source",
+      "sample": "FD-en-v2.pdf",
+      "source_text": "PORTERGIFFORD,CHANTALJAHCHAN",
+      "translated_text": "PORTERGIFFORD,CHANTALJAHCHAN"
+    },
+    {
+      "paragraph_ref": "p5#19",
+      "reason": "translation_equals_source",
+      "sample": "FD-en-v2.pdf",
+      "source_text": "Yan Carriere-Swallow",
+      "translated_text": "Yan Carriere-Swallow"
+    }
+  ],
+  "run": {
+    "api_calls": 1,
+    "cache_hits": 53,
+    "completion_tokens": 93,
+    "model": "gpt-4o",
+    "mono_pdf": "Courier-en.b8_4.pdf",
+    "prompt_tokens": 1735,
+    "requests": 54,
+    "reviews": [
+      "Courier-en.review.json",
+      "Courier-en.review.html",
+      "Courier-en.decisions.json"
+    ],
+    "sample": "Courier-en.pdf",
+    "seconds": 339.2,
+    "working_dir": "examples\\output\\b8_4\\smoke\\Courier-en\\work\\Courier-en"
+  },
+  "subject": {
+    "box_after": [
+      413.3671,
+      711.2186,
+      419.8671,
+      826.0346
+    ],
+    "box_before": [
+      413.3671,
+      711.2186,
+      419.8671,
+      826.0346
+    ],
+    "changed": false,
+    "detected": [
+      {
+        "detected_at_iteration": 0,
+        "detector": "untranslated_residue",
+        "evidence": {
+          "debug_id": "AMDKc",
+          "excerpt": "© Boris Séméniako for The UNESCO Courier",
+          "layout_label": "fallback_line",
+          "min_ratio": 0.6,
+          "residue_chars": 33,
+          "residue_ratio": 1.0,
+          "residue_script": "latin",
+          "script_chars": 33
+        },
+        "geometry": {
+          "x": 413.3671,
+          "x2": 419.8671,
+          "y": 711.2186,
+          "y2": 826.0346
+        },
+        "id": "untranslated_residue:p6:p6#15",
+        "kind": "untranslated_residue",
+        "page": 6,
+        "paragraph_refs": [
+          "p6#15"
+        ],
+        "severity": "high"
+      }
+    ],
+    "layout_label": "fallback_line",
+    "rendered_after": "© Boris Séméniako for The UNESCO Courier",
+    "rendered_before": "© Boris Séméniako for The UNESCO Courier",
+    "source_offered": "© Boris Séméniako for The UNESCO Courier",
+    "translation_written": "© Boris Séméniako 为 联合国教科文组织《信使》",
+    "vertical_after": true,
+    "vertical_before": true
+  }
+}

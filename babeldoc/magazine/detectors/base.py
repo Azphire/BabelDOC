@@ -24,6 +24,7 @@ from pathlib import Path
 from babeldoc.magazine.drop_cap import paragraph_reference
 from babeldoc.magazine.page_features import ConfigError
 from babeldoc.magazine.page_features import validate_bounded_config
+from babeldoc.magazine.reading_order import paragraph_reading_text
 
 CONFIG_PATH = Path(__file__).resolve().parents[3] / "configs" / "detectors.json"
 
@@ -35,12 +36,14 @@ SEVERITY_VOCABULARY_KEY = "severity_vocabulary"
 PROFILE_DETECTORS_KEY = "profile_detectors"
 DOCUMENT_DETECTORS_KEY = "document_detectors"
 DEFAULT_PROFILE_KEY = "default_profile"
+PROGRESS_EVIDENCE_KEY = "progress_evidence"
 
 _STRUCTURAL_KEYS = (
     DIRECTIONS_KEY,
     SEVERITY_KEY,
     PROFILE_DETECTORS_KEY,
     DEFAULT_PROFILE_KEY,
+    PROGRESS_EVIDENCE_KEY,
 )
 
 # How a per direction threshold is named from the target language it governs.
@@ -87,6 +90,11 @@ class DetectorConfig:
     default_profile: str
     profile_detectors: dict[str, tuple[str, ...]]
     document_detectors: tuple[str, ...]
+    progress_evidence: dict[str, tuple[str, ...]]
+
+    def progress_fields(self, kind: str) -> tuple[str, ...]:
+        """The evidence fields quantifying how much of the defect ``kind`` reports."""
+        return self.progress_evidence.get(kind, ())
 
     def detectors_for_profile(self, profile: str | None) -> tuple[str, ...]:
         """Which page detectors answer for a page carrying ``profile``.
@@ -153,6 +161,31 @@ def _parse_profiles(raw: object, source: str, known: set[str]) -> dict:
     return profiles
 
 
+def _parse_progress(raw: object, source: str, kinds: set[str]) -> dict:
+    """Validate the per kind list of evidence fields that quantify a defect."""
+    if raw is None:
+        return {}
+    _require(
+        isinstance(raw, dict),
+        f"{source}: {PROGRESS_EVIDENCE_KEY} must be an object",
+    )
+    progress: dict[str, tuple[str, ...]] = {}
+    for kind, fields in raw.items():
+        _require(
+            not kinds or kind in kinds,
+            f"{source}: {PROGRESS_EVIDENCE_KEY}.{kind} names a kind no detector "
+            f"raises; raised are {sorted(kinds)}",
+        )
+        _require(
+            isinstance(fields, list)
+            and bool(fields)
+            and all(isinstance(name, str) for name in fields),
+            f"{source}: {PROGRESS_EVIDENCE_KEY}.{kind} must list evidence fields",
+        )
+        progress[kind] = tuple(fields)
+    return progress
+
+
 def parse_detector_config(
     raw: dict, source: str, known: set[str], kinds: set[str]
 ) -> DetectorConfig:
@@ -213,6 +246,9 @@ def parse_detector_config(
         default_profile=str(default_profile),
         profile_detectors=profiles,
         document_detectors=document,
+        progress_evidence=_parse_progress(
+            raw.get(PROGRESS_EVIDENCE_KEY), source, kinds
+        ),
     )
 
 
@@ -253,43 +289,15 @@ def script_counts(text: str) -> dict[str, int]:
     return counts
 
 
-# The composition members that hold the characters a paragraph is laid out as.
-# ``pdf_character`` is one on its own; the rest each carry a list of them, and
-# the unicode holder carries a string instead.
-_CHARACTER_HOLDERS = ("pdf_same_style_characters", "pdf_line", "pdf_formula")
-_UNICODE_HOLDER = "pdf_same_style_unicode_characters"
-
-
 def rendered_text(paragraph) -> str:
     """What the page shows for this paragraph, as characters rather than markup.
 
-    ``unicode`` is the string the translation round trip was carried out in and
-    it still carries the placeholder markup the paragraph's style runs and
-    formulae were represented by; measuring a script share over it would count
-    the markup as text. The composition after typesetting is the laid out
-    characters themselves, which is what the reader sees. A paragraph with no
-    composition -- which a hand built one may be -- falls back to ``unicode``.
+    Read in the order a reader reads it rather than in the order the composition
+    is stored in, which for a paragraph set along the vertical axis are not the
+    same order. The ordering rule is shared with the repair path, so a detector
+    and the action answering for what it found are looking at one string.
     """
-    parts: list[str] = []
-    compositions = paragraph.pdf_paragraph_composition or []
-    for composition in compositions:
-        character = composition.pdf_character
-        if character is not None:
-            parts.append(character.char_unicode or "")
-            continue
-        holder = getattr(composition, _UNICODE_HOLDER, None)
-        if holder is not None:
-            parts.append(holder.unicode or "")
-            continue
-        for name in _CHARACTER_HOLDERS:
-            group = getattr(composition, name, None)
-            if group is None:
-                continue
-            parts.extend(item.char_unicode or "" for item in group.pdf_character)
-            break
-    if not compositions:
-        return paragraph.unicode or ""
-    return "".join(parts)
+    return paragraph_reading_text(paragraph)
 
 
 def box_tuple(box) -> tuple[float, float, float, float] | None:

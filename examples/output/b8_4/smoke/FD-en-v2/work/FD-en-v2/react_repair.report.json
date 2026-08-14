@@ -1,0 +1,556 @@
+{
+  "applications": 2,
+  "config": {
+    "actions": [
+      {
+        "applicability": {
+          "min_residue_ratio": 0.9,
+          "min_source_chars": 12,
+          "orphan_layout_labels": [
+            "fallback_line"
+          ]
+        },
+        "conditions": [
+          "its evidence reports residue_ratio at or above 0.9",
+          "the text the page renders for it is at least 12 characters long",
+          "its evidence reports layout_label as one of: fallback_line"
+        ],
+        "description": "Send the text of an orphan line through the translation engine and write the answer back into the paragraph, then lay that paragraph out again.",
+        "issue_kinds": [
+          "untranslated_residue"
+        ],
+        "max_applications": 12,
+        "name": "translate_orphan_lines",
+        "parameters": [
+          {
+            "allowed_range": "1.0..20.0",
+            "default": 3.0,
+            "name": "max_paragraphs"
+          }
+        ]
+      }
+    ],
+    "decide_max_attempts": 2,
+    "issue_excerpt_chars": 120,
+    "max_glossary_entries": 24,
+    "max_issues_offered": 40,
+    "max_iterations": 3,
+    "page_context_chars": 1200
+  },
+  "conservation": {
+    "changed_outside_touched": [],
+    "changed_refs": [
+      "p5#14",
+      "p5#9"
+    ],
+    "pages_after": 9,
+    "pages_before": 9,
+    "paragraphs_after": 189,
+    "paragraphs_before": 189,
+    "touched_refs": [
+      "p5#14",
+      "p5#9"
+    ],
+    "verdict": "conserved"
+  },
+  "engine_configured": true,
+  "final": {
+    "by_kind": {
+      "fragment_cluster": 1,
+      "untranslated_residue": 22
+    },
+    "total": 23
+  },
+  "final_untreated": {
+    "by_kind": {
+      "fragment_cluster": 1,
+      "untranslated_residue": 22
+    },
+    "total": 23
+  },
+  "iterations": [
+    {
+      "applicability": [
+        {
+          "accepted": false,
+          "attempts": 0,
+          "changed": false,
+          "from_cache": false,
+          "glossary_entries": [],
+          "issue_id": "untranslated_residue:p5:p5#4",
+          "offered_text": "",
+          "paragraph_ref": "p5#4",
+          "reason": "layout_label_not_orphan",
+          "source_text": "EDITOR-IN-CHIEFGita Bhatt",
+          "translated_text": ""
+        },
+        {
+          "accepted": false,
+          "attempts": 0,
+          "changed": false,
+          "from_cache": false,
+          "glossary_entries": [],
+          "issue_id": "untranslated_residue:p5:p5#5",
+          "offered_text": "",
+          "paragraph_ref": "p5#5",
+          "reason": "layout_label_not_orphan",
+          "source_text": "MANAGING EDITORNicholas Owen",
+          "translated_text": ""
+        },
+        {
+          "accepted": false,
+          "attempts": 0,
+          "changed": false,
+          "from_cache": false,
+          "glossary_entries": [],
+          "issue_id": "untranslated_residue:p5:p5#6",
+          "offered_text": "",
+          "paragraph_ref": "p5#6",
+          "reason": "layout_label_not_orphan",
+          "source_text": "SENIOR EDITORSAndreas Adriano Jeff Kearns Peter Walker",
+          "translated_text": ""
+        },
+        {
+          "accepted": false,
+          "attempts": 0,
+          "changed": false,
+          "from_cache": false,
+          "glossary_entries": [],
+          "issue_id": "untranslated_residue:p5:p5#7",
+          "offered_text": "",
+          "paragraph_ref": "p5#7",
+          "reason": "layout_label_not_orphan",
+          "source_text": "ASSISTANT EDITORAndrew Stanley",
+          "translated_text": ""
+        },
+        {
+          "accepted": false,
+          "attempts": 0,
+          "changed": false,
+          "from_cache": false,
+          "glossary_entries": [],
+          "issue_id": "untranslated_residue:p5:p5#8",
+          "offered_text": "",
+          "paragraph_ref": "p5#8",
+          "reason": "layout_label_not_orphan",
+          "source_text": "CREATIVE AND MARKETINGMarta Doroszczyk Natalia Venegas Figueroa Huong (Vanessa) Le",
+          "translated_text": ""
+        },
+        {
+          "accepted": false,
+          "attempts": 0,
+          "changed": false,
+          "from_cache": false,
+          "glossary_entries": [],
+          "issue_id": "untranslated_residue:p5:p5#13",
+          "offered_text": "",
+          "paragraph_ref": "p5#13",
+          "reason": "layout_label_not_orphan",
+          "source_text": "ART DIRECTION AND DESIGN2communiqué",
+          "translated_text": ""
+        }
+      ],
+      "decision": {
+        "action": "translate_orphan_lines",
+        "attempts": 1,
+        "from_cache": false,
+        "issue_ids": [
+          "untranslated_residue:p5:p5#4",
+          "untranslated_residue:p5:p5#5",
+          "untranslated_residue:p5:p5#6",
+          "untranslated_residue:p5:p5#7",
+          "untranslated_residue:p5:p5#8",
+          "untranslated_residue:p5:p5#9",
+          "untranslated_residue:p5:p5#13",
+          "untranslated_residue:p5:p5#14"
+        ],
+        "parameters": {
+          "max_paragraphs": 3.0
+        },
+        "raw": "{\"action\": \"translate_orphan_lines\", \"issue_ids\": [\"untranslated_residue:p5:p5#4\", \"untranslated_residue:p5:p5#5\", \"untranslated_residue:p5:p5#6\", \"untranslated_residue:p5:p5#7\", \"untranslated_residue:p5:p5#8\", \"untranslated_residue:p5:p5#9\", \"untranslated_residue:p5:p5#13\", \"untranslated_residue:p5:p5#14\"], \"parameters\": {}, \"reason\": \"These findings have a residue_ratio of 1.0, text length of at least 12 characters, and layout_label as 'fallback_line', meeting all conditions for translation.\"}",
+        "reason": "These findings have a residue_ratio of 1.0, text length of at least 12 characters, and layout_label as 'fallback_line', meeting all conditions for translation.",
+        "violations": []
+      },
+      "detected": {
+        "by_kind": {
+          "fragment_cluster": 1,
+          "untranslated_residue": 24
+        },
+        "total": 25
+      },
+      "detected_ids": [
+        "fragment_cluster:p5:p5#15+p5#16+p5#17+p5#18+p5#19+p5#20+p5#21+p5#22+p5#23+p5#24",
+        "untranslated_residue:p1:p1#0",
+        "untranslated_residue:p1:p1#2",
+        "untranslated_residue:p2:p2#8",
+        "untranslated_residue:p3:p3#5",
+        "untranslated_residue:p3:p3#22",
+        "untranslated_residue:p4:p4#3",
+        "untranslated_residue:p5:p5#4",
+        "untranslated_residue:p5:p5#5",
+        "untranslated_residue:p5:p5#6",
+        "untranslated_residue:p5:p5#7",
+        "untranslated_residue:p5:p5#8",
+        "untranslated_residue:p5:p5#9",
+        "untranslated_residue:p5:p5#13",
+        "untranslated_residue:p5:p5#14",
+        "untranslated_residue:p5:p5#19",
+        "untranslated_residue:p5:p5#22",
+        "untranslated_residue:p5:p5#23",
+        "untranslated_residue:p5:p5#25",
+        "untranslated_residue:p5:p5#34",
+        "untranslated_residue:p8:p8#3",
+        "untranslated_residue:p8:p8#5",
+        "untranslated_residue:p9:p9#9",
+        "untranslated_residue:p9:p9#11",
+        "untranslated_residue:p9:p9#19"
+      ],
+      "executed": [
+        {
+          "accepted": true,
+          "attempts": 1,
+          "changed": true,
+          "from_cache": false,
+          "glossary_entries": [],
+          "issue_id": "untranslated_residue:p5:p5#9",
+          "offered_text": "PRODUCTION MANAGER",
+          "paragraph_ref": "p5#9",
+          "reason": "accepted",
+          "source_text": "PRODUCTION MANAGER",
+          "translated_text": "制作经理"
+        },
+        {
+          "accepted": true,
+          "attempts": 1,
+          "changed": true,
+          "from_cache": false,
+          "glossary_entries": [],
+          "issue_id": "untranslated_residue:p5:p5#14",
+          "offered_text": "ADVISORS TO THE EDITOR",
+          "paragraph_ref": "p5#14",
+          "reason": "accepted",
+          "source_text": "ADVISORS TO THE EDITOR",
+          "translated_text": "编辑顾问"
+        }
+      ],
+      "iteration": 1,
+      "new_ids": [],
+      "outcome": "advanced",
+      "recheck": {
+        "by_kind": {
+          "fragment_cluster": 1,
+          "untranslated_residue": 22
+        },
+        "total": 23
+      },
+      "request": {
+        "cache_key": "286fcc1b961994376ef8894bc52278e9d870e27f15da22839f6e06226f99826a",
+        "prompt_sha256": "cf9cd8e5b6313dc05b8fd0e1464dc1a4c53daf0f76c5dcf118254f91bed8ce57"
+      },
+      "resolved_ids": [
+        "untranslated_residue:p5:p5#14",
+        "untranslated_residue:p5:p5#9"
+      ],
+      "treated_ids": [],
+      "untreated": {
+        "by_kind": {
+          "fragment_cluster": 1,
+          "untranslated_residue": 24
+        },
+        "total": 25
+      },
+      "untreated_after": {
+        "by_kind": {
+          "fragment_cluster": 1,
+          "untranslated_residue": 22
+        },
+        "total": 23
+      }
+    },
+    {
+      "applicability": [
+        {
+          "accepted": false,
+          "attempts": 0,
+          "changed": false,
+          "from_cache": false,
+          "glossary_entries": [],
+          "issue_id": "untranslated_residue:p5:p5#4",
+          "offered_text": "",
+          "paragraph_ref": "p5#4",
+          "reason": "layout_label_not_orphan",
+          "source_text": "EDITOR-IN-CHIEFGita Bhatt",
+          "translated_text": ""
+        },
+        {
+          "accepted": false,
+          "attempts": 0,
+          "changed": false,
+          "from_cache": false,
+          "glossary_entries": [],
+          "issue_id": "untranslated_residue:p5:p5#5",
+          "offered_text": "",
+          "paragraph_ref": "p5#5",
+          "reason": "layout_label_not_orphan",
+          "source_text": "MANAGING EDITORNicholas Owen",
+          "translated_text": ""
+        },
+        {
+          "accepted": false,
+          "attempts": 0,
+          "changed": false,
+          "from_cache": false,
+          "glossary_entries": [],
+          "issue_id": "untranslated_residue:p5:p5#6",
+          "offered_text": "",
+          "paragraph_ref": "p5#6",
+          "reason": "layout_label_not_orphan",
+          "source_text": "SENIOR EDITORSAndreas Adriano Jeff Kearns Peter Walker",
+          "translated_text": ""
+        },
+        {
+          "accepted": false,
+          "attempts": 0,
+          "changed": false,
+          "from_cache": false,
+          "glossary_entries": [],
+          "issue_id": "untranslated_residue:p5:p5#7",
+          "offered_text": "",
+          "paragraph_ref": "p5#7",
+          "reason": "layout_label_not_orphan",
+          "source_text": "ASSISTANT EDITORAndrew Stanley",
+          "translated_text": ""
+        },
+        {
+          "accepted": false,
+          "attempts": 0,
+          "changed": false,
+          "from_cache": false,
+          "glossary_entries": [],
+          "issue_id": "untranslated_residue:p5:p5#8",
+          "offered_text": "",
+          "paragraph_ref": "p5#8",
+          "reason": "layout_label_not_orphan",
+          "source_text": "CREATIVE AND MARKETINGMarta Doroszczyk Natalia Venegas Figueroa Huong (Vanessa) Le",
+          "translated_text": ""
+        },
+        {
+          "accepted": false,
+          "attempts": 0,
+          "changed": false,
+          "from_cache": false,
+          "glossary_entries": [],
+          "issue_id": "untranslated_residue:p5:p5#13",
+          "offered_text": "",
+          "paragraph_ref": "p5#13",
+          "reason": "layout_label_not_orphan",
+          "source_text": "ART DIRECTION AND DESIGN2communiqué",
+          "translated_text": ""
+        },
+        {
+          "accepted": false,
+          "attempts": 0,
+          "changed": false,
+          "from_cache": false,
+          "glossary_entries": [],
+          "issue_id": "untranslated_residue:p5:p5#22",
+          "offered_text": "",
+          "paragraph_ref": "p5#22",
+          "reason": "iteration_paragraph_limit_reached",
+          "source_text": "Rupa Duttagupta",
+          "translated_text": ""
+        },
+        {
+          "accepted": false,
+          "attempts": 0,
+          "changed": false,
+          "from_cache": false,
+          "glossary_entries": [],
+          "issue_id": "untranslated_residue:p5:p5#23",
+          "offered_text": "",
+          "paragraph_ref": "p5#23",
+          "reason": "iteration_paragraph_limit_reached",
+          "source_text": "Davide Furceri",
+          "translated_text": ""
+        },
+        {
+          "accepted": false,
+          "attempts": 0,
+          "changed": false,
+          "from_cache": false,
+          "glossary_entries": [],
+          "issue_id": "untranslated_residue:p5:p5#25",
+          "offered_text": "",
+          "paragraph_ref": "p5#25",
+          "reason": "layout_label_not_orphan",
+          "source_text": "Subir Lall Papa N’Diaye Malhar Nabar Diaa Noureldin Uma Ramakrishnan Christoph Rosenberg Mauricio Soto Elizabeth Van Heuvelen Daria Zakharova Robert Zymek",
+          "translated_text": ""
+        },
+        {
+          "accepted": false,
+          "attempts": 0,
+          "changed": false,
+          "from_cache": false,
+          "glossary_entries": [],
+          "issue_id": "untranslated_residue:p5:p5#34",
+          "offered_text": "",
+          "paragraph_ref": "p5#34",
+          "reason": "layout_label_not_orphan",
+          "source_text": "www.imf.org/fandd",
+          "translated_text": ""
+        },
+        {
+          "accepted": false,
+          "attempts": 0,
+          "changed": false,
+          "from_cache": false,
+          "glossary_entries": [],
+          "issue_id": "untranslated_residue:p9:p9#9",
+          "offered_text": "",
+          "paragraph_ref": "p9#9",
+          "reason": "layout_label_not_orphan",
+          "source_text": "COURTESYSWISSNATIONALBANK",
+          "translated_text": ""
+        },
+        {
+          "accepted": false,
+          "attempts": 0,
+          "changed": false,
+          "from_cache": false,
+          "glossary_entries": [],
+          "issue_id": "untranslated_residue:p9:p9#19",
+          "offered_text": "",
+          "paragraph_ref": "p9#19",
+          "reason": "layout_label_not_orphan",
+          "source_text": "A glacierbuttercupappears onthe frontof the draft1,000 francnote.",
+          "translated_text": ""
+        }
+      ],
+      "decision": {
+        "action": "translate_orphan_lines",
+        "attempts": 1,
+        "from_cache": false,
+        "issue_ids": [
+          "untranslated_residue:p2:p2#8",
+          "untranslated_residue:p4:p4#3",
+          "untranslated_residue:p5:p5#4",
+          "untranslated_residue:p5:p5#5",
+          "untranslated_residue:p5:p5#6",
+          "untranslated_residue:p5:p5#7",
+          "untranslated_residue:p5:p5#8",
+          "untranslated_residue:p5:p5#13",
+          "untranslated_residue:p5:p5#19",
+          "untranslated_residue:p5:p5#22",
+          "untranslated_residue:p5:p5#23",
+          "untranslated_residue:p5:p5#25",
+          "untranslated_residue:p5:p5#34",
+          "untranslated_residue:p9:p9#9",
+          "untranslated_residue:p9:p9#19"
+        ],
+        "parameters": {
+          "max_paragraphs": 3.0
+        },
+        "raw": "{\"action\": \"translate_orphan_lines\", \"issue_ids\": [\"untranslated_residue:p2:p2#8\", \"untranslated_residue:p4:p4#3\", \"untranslated_residue:p5:p5#4\", \"untranslated_residue:p5:p5#5\", \"untranslated_residue:p5:p5#6\", \"untranslated_residue:p5:p5#7\", \"untranslated_residue:p5:p5#8\", \"untranslated_residue:p5:p5#13\", \"untranslated_residue:p5:p5#19\", \"untranslated_residue:p5:p5#22\", \"untranslated_residue:p5:p5#23\", \"untranslated_residue:p5:p5#25\", \"untranslated_residue:p5:p5#34\", \"untranslated_residue:p9:p9#9\", \"untranslated_residue:p9:p9#19\"], \"parameters\": {}, \"reason\": \"Findings have residue_ratio >= 0.9, text length >= 12, and layout_label 'fallback_line'.\"}",
+        "reason": "Findings have residue_ratio >= 0.9, text length >= 12, and layout_label 'fallback_line'.",
+        "violations": []
+      },
+      "detected": {
+        "by_kind": {
+          "fragment_cluster": 1,
+          "untranslated_residue": 22
+        },
+        "total": 23
+      },
+      "detected_ids": [
+        "fragment_cluster:p5:p5#15+p5#16+p5#17+p5#18+p5#19+p5#20+p5#21+p5#22+p5#23+p5#24",
+        "untranslated_residue:p1:p1#0",
+        "untranslated_residue:p1:p1#2",
+        "untranslated_residue:p2:p2#8",
+        "untranslated_residue:p3:p3#5",
+        "untranslated_residue:p3:p3#22",
+        "untranslated_residue:p4:p4#3",
+        "untranslated_residue:p5:p5#4",
+        "untranslated_residue:p5:p5#5",
+        "untranslated_residue:p5:p5#6",
+        "untranslated_residue:p5:p5#7",
+        "untranslated_residue:p5:p5#8",
+        "untranslated_residue:p5:p5#13",
+        "untranslated_residue:p5:p5#19",
+        "untranslated_residue:p5:p5#22",
+        "untranslated_residue:p5:p5#23",
+        "untranslated_residue:p5:p5#25",
+        "untranslated_residue:p5:p5#34",
+        "untranslated_residue:p8:p8#3",
+        "untranslated_residue:p8:p8#5",
+        "untranslated_residue:p9:p9#9",
+        "untranslated_residue:p9:p9#11",
+        "untranslated_residue:p9:p9#19"
+      ],
+      "executed": [
+        {
+          "accepted": false,
+          "attempts": 1,
+          "changed": false,
+          "from_cache": false,
+          "glossary_entries": [],
+          "issue_id": "untranslated_residue:p2:p2#8",
+          "offered_text": "BRIANSTAUFFER",
+          "paragraph_ref": "p2#8",
+          "reason": "translation_equals_source",
+          "source_text": "BRIANSTAUFFER",
+          "translated_text": "BRIANSTAUFFER"
+        },
+        {
+          "accepted": false,
+          "attempts": 1,
+          "changed": false,
+          "from_cache": false,
+          "glossary_entries": [],
+          "issue_id": "untranslated_residue:p4:p4#3",
+          "offered_text": "PORTERGIFFORD,CHANTALJAHCHAN",
+          "paragraph_ref": "p4#3",
+          "reason": "translation_equals_source",
+          "source_text": "PORTERGIFFORD,CHANTALJAHCHAN",
+          "translated_text": "PORTERGIFFORD,CHANTALJAHCHAN"
+        },
+        {
+          "accepted": false,
+          "attempts": 1,
+          "changed": false,
+          "from_cache": false,
+          "glossary_entries": [],
+          "issue_id": "untranslated_residue:p5:p5#19",
+          "offered_text": "Yan Carriere-Swallow",
+          "paragraph_ref": "p5#19",
+          "reason": "translation_equals_source",
+          "source_text": "Yan Carriere-Swallow",
+          "translated_text": "Yan Carriere-Swallow"
+        }
+      ],
+      "iteration": 2,
+      "outcome": "applied_nothing",
+      "request": {
+        "cache_key": "66d5a7cb571975c9c56e18bea345d9fac0730c259759020d09edd802ee267280",
+        "prompt_sha256": "cf9cd8e5b6313dc05b8fd0e1464dc1a4c53daf0f76c5dcf118254f91bed8ce57"
+      },
+      "untreated": {
+        "by_kind": {
+          "fragment_cluster": 1,
+          "untranslated_residue": 22
+        },
+        "total": 23
+      }
+    }
+  ],
+  "iterations_run": 2,
+  "offered_texts": [
+    "PRODUCTION MANAGER",
+    "ADVISORS TO THE EDITOR",
+    "BRIANSTAUFFER",
+    "PORTERGIFFORD,CHANTALJAHCHAN",
+    "Yan Carriere-Swallow"
+  ],
+  "stopped_because": "no_paragraph_was_written",
+  "switch": "magazine_repair",
+  "treated": []
+}

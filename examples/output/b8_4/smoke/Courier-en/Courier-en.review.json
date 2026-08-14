@@ -1,0 +1,1105 @@
+{
+  "drop_caps": [
+    {
+      "article_id": "dT4FH",
+      "excerpt": "L ong before satellites orbited Earth, Polynesian navigators crossed thousands o",
+      "first_run": "L",
+      "page": 4,
+      "paragraph": "p4#3",
+      "size_ratio": 6.668
+    },
+    {
+      "article_id": "8hWSm",
+      "excerpt": "O n the Purus River, as the light fades and the heat lingers over the water, a p",
+      "first_run": "O",
+      "page": 5,
+      "paragraph": "p5#5",
+      "size_ratio": 6.668
+    },
+    {
+      "article_id": "rp9Nj",
+      "excerpt": "T here is a huge diversity of Indigenous Peoples, cultures, languages, and knowl",
+      "first_run": "T",
+      "page": 7,
+      "paragraph": "p7#8",
+      "size_ratio": 6.668
+    }
+  ],
+  "format_version": 1,
+  "page_kinds": [
+    {
+      "ambiguous": true,
+      "conf": 0.8666666666666667,
+      "machine_kind": "editorial",
+      "page": 1,
+      "source": "deterministic"
+    },
+    {
+      "ambiguous": false,
+      "conf": 1.0,
+      "machine_kind": "article_opener",
+      "page": 2,
+      "source": "deterministic"
+    },
+    {
+      "ambiguous": true,
+      "conf": 1.0,
+      "machine_kind": "photo_spread",
+      "page": 3,
+      "source": "deterministic"
+    },
+    {
+      "ambiguous": true,
+      "conf": 1.0,
+      "machine_kind": "article_body",
+      "page": 4,
+      "source": "deterministic"
+    },
+    {
+      "ambiguous": false,
+      "conf": 1.0,
+      "machine_kind": "article_opener",
+      "page": 5,
+      "source": "deterministic"
+    },
+    {
+      "ambiguous": false,
+      "conf": 1.0,
+      "machine_kind": "article_body",
+      "page": 6,
+      "source": "deterministic"
+    },
+    {
+      "ambiguous": true,
+      "conf": 0.875,
+      "machine_kind": "article_opener",
+      "page": 7,
+      "source": "deterministic"
+    },
+    {
+      "ambiguous": false,
+      "conf": 1.0,
+      "machine_kind": "article_body",
+      "page": 8,
+      "source": "deterministic"
+    }
+  ],
+  "sample": "Courier-en",
+  "terms": [
+    {
+      "auto_target": "2007年",
+      "first_page": 1,
+      "source": "2007",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "非洲",
+      "first_page": 1,
+      "source": "Africa",
+      "translator_view": "Africa’s book industry: a new page is turning<style id='1'> ........................ </style>44",
+      "vote_count": 2
+    },
+    {
+      "auto_target": "Agnès Bardon",
+      "first_page": 1,
+      "source": "Agnès Bardon",
+      "translator_view": "<style id='1'>Agnès Bardon</style>Editor-in-Chief",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "Anna Ruohonen",
+      "first_page": 1,
+      "source": "Anna Ruohonen",
+      "translator_view": "<style id='1'>The Sámi people, indispensable guardians of climate change</style><style id='3'> ............... </style><",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "生物圈保护区",
+      "first_page": 1,
+      "source": "Biosphere reserves",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "巴西",
+      "first_page": 1,
+      "source": "Brazil",
+      "translator_view": "<style id='1'>Brazil: lessons from the water people</style><style id='3'> ..... </style><style id='5'>9</style>Marcelo S",
+      "vote_count": 2
+    },
+    {
+      "auto_target": "Chimamanda Ngozi Adichie",
+      "first_page": 1,
+      "source": "Chimamanda Ngozi Adichie",
+      "translator_view": "<style id='1'>“Fiction is humanity’s last collective frontier in honest storytelling”</style><style id='3'> ........... ",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "中国",
+      "first_page": 1,
+      "source": "China",
+      "translator_view": "<style id='1'>China: the radiant health of traditional Dai medicine</style><style id='3'> .................. </style><st",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "保护非物质文化遗产公约",
+      "first_page": 1,
+      "source": "Convention for the Safeguarding of the Intangible Cultural Heritage",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "信使",
+      "first_page": 1,
+      "source": "Courier",
+      "translator_view": "<style id='1'>Courier</style>{v3}H E UNESCO",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "Daniel Robinson",
+      "first_page": 1,
+      "source": "Daniel Robinson",
+      "translator_view": "<style id='1'>When biopiracy takes root</style><style id='3'> .................. </style><style id='5'>12</style>Daniel ",
+      "vote_count": 2
+    },
+    {
+      "auto_target": "David Jefferson",
+      "first_page": 1,
+      "source": "David Jefferson",
+      "translator_view": "<style id='1'>When biopiracy takes root</style><style id='3'> .................. </style><style id='5'>12</style>Daniel ",
+      "vote_count": 2
+    },
+    {
+      "auto_target": "Du Junzhi",
+      "first_page": 1,
+      "source": "Du Junzhi",
+      "translator_view": "<style id='1'>China: the radiant health of traditional Dai medicine</style><style id='3'> .................. </style><st",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "Fotohane DARKROOM",
+      "first_page": 1,
+      "source": "Fotohane DARKROOM",
+      "translator_view": "<style id='1'>Exile through a child’s eyes</style><style id='3'> ................. </style><style id='5'>26</style>Photo",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "土著人民",
+      "first_page": 1,
+      "source": "Indigenous Peoples",
+      "translator_view": "<style id='1'>T </style>here is a huge diversity of Indigenous Peoples, cultures, languages, and knowledge systems aroun",
+      "vote_count": 2
+    },
+    {
+      "auto_target": "土著知识",
+      "first_page": 1,
+      "source": "Indigenous knowledge",
+      "translator_view": "<style id='1'>5 </style>A changing climate for Indigenous knowledge {v3}",
+      "vote_count": 4
+    },
+    {
+      "auto_target": "Jim Al-Khalili",
+      "first_page": 1,
+      "source": "Jim Al-Khalili",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "卡拉哈里",
+      "first_page": 1,
+      "source": "Kalahari",
+      "translator_view": "<style id='1'>The secret skies of Kalahari</style><style id='3'> ................. </style><style id='5'>17</style>Sisco",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "Lagipoiva Cherelle Jackson",
+      "first_page": 1,
+      "source": "Lagipoiva Cherelle Jackson",
+      "translator_view": null,
+      "vote_count": 2
+    },
+    {
+      "auto_target": "地方和土著知识系统",
+      "first_page": 1,
+      "source": "Local and Indigenous Knowledge Systems",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "地方和土著知识系统 (LINKS)",
+      "first_page": 1,
+      "source": "Local and Indigenous Knowledge Systems (LINKS)",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "Marcelo Silva de Sousa",
+      "first_page": 1,
+      "source": "Marcelo Silva de Sousa",
+      "translator_view": "<style id='1'>Brazil: lessons from the water people</style><style id='3'> ..... </style><style id='5'>9</style>Marcelo S",
+      "vote_count": 2
+    },
+    {
+      "auto_target": "Ora Marek-Martinez",
+      "first_page": 1,
+      "source": "Ora Marek-Martinez",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "组织",
+      "first_page": 1,
+      "source": "Organization",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "Sisco Auala",
+      "first_page": 1,
+      "source": "Sisco Auala",
+      "translator_view": "<style id='1'>The secret skies of Kalahari</style><style id='3'> ................. </style><style id='5'>17</style>Sisco",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "萨米人",
+      "first_page": 1,
+      "source": "Sámi people",
+      "translator_view": "<style id='1'>The Sámi people, indispensable guardians of climate change</style><style id='3'> ............... </style><",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "联合国教科文组织",
+      "first_page": 1,
+      "source": "UNESCO",
+      "translator_view": "<style id='1'>Courier</style>{v3}H E UNESCO",
+      "vote_count": 3
+    },
+    {
+      "auto_target": "联合国",
+      "first_page": 1,
+      "source": "United Nations",
+      "translator_view": null,
+      "vote_count": 2
+    },
+    {
+      "auto_target": "联合国土著人民权利宣言",
+      "first_page": 1,
+      "source": "United Nations Declaration on the Rights of Indigenous Peoples",
+      "translator_view": null,
+      "vote_count": 2
+    },
+    {
+      "auto_target": "Yang Sha",
+      "first_page": 1,
+      "source": "Yang Sha",
+      "translator_view": "<style id='1'>China: the radiant health of traditional Dai medicine</style><style id='3'> .................. </style><st",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "ZOOM",
+      "first_page": 1,
+      "source": "ZOOM",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "生物盗窃",
+      "first_page": 1,
+      "source": "biopiracy",
+      "translator_view": "<style id='1'>When biopiracy takes root</style><style id='3'> .................. </style><style id='5'>12</style>Daniel ",
+      "vote_count": 4
+    },
+    {
+      "auto_target": "气候变化",
+      "first_page": 1,
+      "source": "climate change",
+      "translator_view": "<style id='1'>The Sámi people, indispensable guardians of climate change</style><style id='3'> ............... </style><",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "气候学",
+      "first_page": 1,
+      "source": "climatology",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "生态学",
+      "first_page": 1,
+      "source": "ecology",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "全球机械化",
+      "first_page": 1,
+      "source": "global mechanization",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "自然风险预防",
+      "first_page": 1,
+      "source": "natural risk prevention",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "第二次量子革命",
+      "first_page": 1,
+      "source": "second quantum revolution",
+      "translator_view": "Welcome to the second quantum revolution<style id='1'> ........................................ </style>36",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "传统傣族医学",
+      "first_page": 1,
+      "source": "traditional Dai medicine",
+      "translator_view": "<style id='1'>China: the radiant health of traditional Dai medicine</style><style id='3'> .................. </style><st",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "传统医学",
+      "first_page": 1,
+      "source": "traditional medicine",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "水管理",
+      "first_page": 1,
+      "source": "water management",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "土著",
+      "first_page": 2,
+      "source": "Aboriginal",
+      "translator_view": "From the Aboriginal practice of controlled burning to prevent wildfires to Inuit weather forecasting, and the <style id=",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "Carolina Zambrano",
+      "first_page": 2,
+      "source": "Carolina Zambrano",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "厄瓜多尔",
+      "first_page": 2,
+      "source": "Ecuadorian",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "亚马逊土著工艺",
+      "first_page": 2,
+      "source": "Indigenous Amazonian craftsmanship",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "因纽特",
+      "first_page": 2,
+      "source": "Inuit",
+      "translator_view": "From the Aboriginal practice of controlled burning to prevent wildfires to Inuit weather forecasting, and the <style id=",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "2026年1月至3月",
+      "first_page": 2,
+      "source": "January-March 2026",
+      "translator_view": "{v1}The UNESCO Courier {v2}<style id='3'>January-March 2026</style>",
+      "vote_count": 4
+    },
+    {
+      "auto_target": "太平洋",
+      "first_page": 2,
+      "source": "Pacific",
+      "translator_view": "Indigenous climate journalist from Samoa reporting for <style id='1'>The Guardian</style> on Pacific Island issues, she ",
+      "vote_count": 2
+    },
+    {
+      "auto_target": "太平洋岛屿",
+      "first_page": 2,
+      "source": "Pacific Island",
+      "translator_view": "Indigenous climate journalist from Samoa reporting for <style id='1'>The Guardian</style> on Pacific Island issues, she ",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "波特兰州立大学",
+      "first_page": 2,
+      "source": "Portland State University",
+      "translator_view": "Indigenous climate journalist from Samoa reporting for <style id='1'>The Guardian</style> on Pacific Island issues, she ",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "萨摩亚",
+      "first_page": 2,
+      "source": "Samoa",
+      "translator_view": "Indigenous climate journalist from Samoa reporting for <style id='1'>The Guardian</style> on Pacific Island issues, she ",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "卫报",
+      "first_page": 2,
+      "source": "The Guardian",
+      "translator_view": "Indigenous climate journalist from Samoa reporting for <style id='1'>The Guardian</style> on Pacific Island issues, she ",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "联合国教科文组织信使",
+      "first_page": 2,
+      "source": "UNESCO Courier",
+      "translator_view": "{v1}The UNESCO Courier {v2}<style id='3'>January-March 2026</style>",
+      "vote_count": 3
+    },
+    {
+      "auto_target": "美国",
+      "first_page": 2,
+      "source": "United States",
+      "translator_view": "Indigenous climate journalist from Samoa reporting for <style id='1'>The Guardian</style> on Pacific Island issues, she ",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "生物多样性",
+      "first_page": 2,
+      "source": "biodiversity",
+      "translator_view": "From the Aboriginal practice of controlled burning to prevent wildfires to Inuit weather forecasting, and the <style id=",
+      "vote_count": 2
+    },
+    {
+      "auto_target": "chambira纤维",
+      "first_page": 2,
+      "source": "chambira fibres",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "zaï技术",
+      "first_page": 2,
+      "source": "zaï techniques",
+      "translator_view": "From the Aboriginal practice of controlled burning to prevent wildfires to Inuit weather forecasting, and the <style id=",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "2002年",
+      "first_page": 4,
+      "source": "2002",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "2025年",
+      "first_page": 4,
+      "source": "2025",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "2025年第二届太平洋岛国海洋会议",
+      "first_page": 4,
+      "source": "2025 Second Pacific Island Ocean Conference",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "2024年4月",
+      "first_page": 4,
+      "source": "April 2024",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "乍得",
+      "first_page": 4,
+      "source": "Chad",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "联合国土著问题常设论坛第23届会议主席",
+      "first_page": 4,
+      "source": "Chair of the 23rd Session of the United Nations Permanent Forum on Indigenous Issues",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "认知科学",
+      "first_page": 4,
+      "source": "Cognitive science",
+      "translator_view": "<style id='1'>L </style>ong before satellites orbited Earth, Polynesian navigators crossed thousands of miles of open oc",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "地球",
+      "first_page": 4,
+      "source": "Earth",
+      "translator_view": "<style id='1'>L </style>ong before satellites orbited Earth, Polynesian navigators crossed thousands of miles of open oc",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "斐济",
+      "first_page": 4,
+      "source": "Fijian",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "加纳",
+      "first_page": 4,
+      "source": "Ghana",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "Hindou Oumarou Ibrahim",
+      "first_page": 4,
+      "source": "Hindou Oumarou Ibrahim",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "霍尼亚拉",
+      "first_page": 4,
+      "source": "Honiara",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "生物多样性和生态系统服务政府间科学政策平台",
+      "first_page": 4,
+      "source": "IPBES",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "LINKS计划",
+      "first_page": 4,
+      "source": "LINKS programme",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "姆博罗罗",
+      "first_page": 4,
+      "source": "Mbororo",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "密克罗尼西亚",
+      "first_page": 4,
+      "source": "Micronesia",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "尼日利亚",
+      "first_page": 4,
+      "source": "Nigeria",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "外岛",
+      "first_page": 4,
+      "source": "Outer Islands",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "波利尼西亚",
+      "first_page": 4,
+      "source": "Polynesian",
+      "translator_view": "<style id='1'>L </style>ong before satellites orbited Earth, Polynesian navigators crossed thousands of miles of open oc",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "撒哈拉",
+      "first_page": 4,
+      "source": "Sahara",
+      "translator_view": "<style id='1'>L </style>ong before satellites orbited Earth, Polynesian navigators crossed thousands of miles of open oc",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "Salanieta Kitolelei",
+      "first_page": 4,
+      "source": "Salanieta Kitolelei",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "所罗门群岛",
+      "first_page": 4,
+      "source": "Solomon Islands",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "图阿雷格",
+      "first_page": 4,
+      "source": "Tuareg",
+      "translator_view": "<style id='1'>L </style>ong before satellites orbited Earth, Polynesian navigators crossed thousands of miles of open oc",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "西非",
+      "first_page": 4,
+      "source": "West African",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "气候危机",
+      "first_page": 4,
+      "source": "climate crisis",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "亚马孙州",
+      "first_page": 5,
+      "source": "Amazonas state",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "巴西利亚",
+      "first_page": 5,
+      "source": "Brasilia",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "奇科·保马里",
+      "first_page": 5,
+      "source": "Chico Paumari",
+      "translator_view": "<style id='1'>O </style>n the Purus River, as the light fades and the heat lingers over the water, a pirarucu fish comes",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "保马里族",
+      "first_page": 5,
+      "source": "Paumari",
+      "translator_view": "<style id='1'>O </style>n the Purus River, as the light fades and the heat lingers over the water, a pirarucu fish comes",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "普鲁斯河",
+      "first_page": 5,
+      "source": "Purus River",
+      "translator_view": "<style id='1'>O </style>n the Purus River, as the light fades and the heat lingers over the water, a pirarucu fish comes",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "巨骨舌鱼",
+      "first_page": 5,
+      "source": "pirarucus",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "地球重力",
+      "first_page": 6,
+      "source": "Earth’s gravity",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "全球南方",
+      "first_page": 6,
+      "source": "Global South",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "国际量子科学与技术年",
+      "first_page": 6,
+      "source": "International Year of Quantum Science and Technology",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "诺贝尔奖",
+      "first_page": 6,
+      "source": "Nobel Prize",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "巴黎",
+      "first_page": 6,
+      "source": "Paris",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "科学、技术、工程和数学",
+      "first_page": 6,
+      "source": "STEM",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "自闭症",
+      "first_page": 6,
+      "source": "autism",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "脑扫描仪",
+      "first_page": 6,
+      "source": "brain scanner",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "乳腺癌",
+      "first_page": 6,
+      "source": "breast cancer",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "暗物质",
+      "first_page": 6,
+      "source": "dark matter",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "痴呆",
+      "first_page": 6,
+      "source": "dementia",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "纠缠相机",
+      "first_page": 6,
+      "source": "entanglement camera",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "癫痫",
+      "first_page": 6,
+      "source": "epilepsy",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "功能性磁共振成像",
+      "first_page": 6,
+      "source": "functional MRI",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "性别平等",
+      "first_page": 6,
+      "source": "gender equality",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "红外光",
+      "first_page": 6,
+      "source": "infrared light",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "量子鸿沟",
+      "first_page": 6,
+      "source": "quantum divide",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "量子纠缠",
+      "first_page": 6,
+      "source": "quantum entanglement",
+      "translator_view": "This quantum entanglement is far from being a novel phenomenon that only happens rarely in nature, nor is it restricted ",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "量子传感器",
+      "first_page": 6,
+      "source": "quantum sensors",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "量子叠加",
+      "first_page": 6,
+      "source": "quantum superposition",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "精神分裂症",
+      "first_page": 6,
+      "source": "schizophrenia",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "可见光",
+      "first_page": 6,
+      "source": "visible light",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "柏柏尔",
+      "first_page": 7,
+      "source": "Amazigh",
+      "translator_view": "Oil produced from the nuts of the Moroccan argan tree (<style id='1'>Argania spinosa L.</style>) provides another exampl",
+      "vote_count": 2
+    },
+    {
+      "auto_target": "柏柏尔妇女合作社",
+      "first_page": 7,
+      "source": "Amazigh women’s cooperatives",
+      "translator_view": "Oil produced from the nuts of the Moroccan argan tree (<style id='1'>Argania spinosa L.</style>) provides another exampl",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "阿甘树",
+      "first_page": 7,
+      "source": "Argania spinosa L.",
+      "translator_view": "Oil produced from the nuts of the Moroccan argan tree (<style id='1'>Argania spinosa L.</style>) provides another exampl",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "澳大利亚",
+      "first_page": 7,
+      "source": "Australia",
+      "translator_view": null,
+      "vote_count": 2
+    },
+    {
+      "auto_target": "柏柏尔",
+      "first_page": 7,
+      "source": "Berber",
+      "translator_view": "Oil produced from the nuts of the Moroccan argan tree (<style id='1'>Argania spinosa L.</style>) provides another exampl",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "Indjalandji-Dhidhanu",
+      "first_page": 7,
+      "source": "Indjalandji-Dhidhanu",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "摩洛哥",
+      "first_page": 7,
+      "source": "Moroccan",
+      "translator_view": "Oil produced from the nuts of the Moroccan argan tree (<style id='1'>Argania spinosa L.</style>) provides another exampl",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "新西兰",
+      "first_page": 7,
+      "source": "New Zealand",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "醉椒",
+      "first_page": 7,
+      "source": "Piper methysticum",
+      "translator_view": "The case of the kava (<style id='1'>Piper methysticum</style>), a plant in the pepper family that is native to the Pacif",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "坎特伯雷大学",
+      "first_page": 7,
+      "source": "University of Canterbury",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "新南威尔士大学",
+      "first_page": 7,
+      "source": "University of New South Wales",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "昆士兰大学",
+      "first_page": 7,
+      "source": "University of Queensland",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "阿甘树",
+      "first_page": 7,
+      "source": "argan tree",
+      "translator_view": "Oil produced from the nuts of the Moroccan argan tree (<style id='1'>Argania spinosa L.</style>) provides another exampl",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "生物发现",
+      "first_page": 7,
+      "source": "biodiscovery",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "纤维素纳米纤维",
+      "first_page": 7,
+      "source": "cellulose nanofibers",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "遗传资源",
+      "first_page": 7,
+      "source": "genetic resources",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "知识产权",
+      "first_page": 7,
+      "source": "intellectual property",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "卡瓦",
+      "first_page": 7,
+      "source": "kava",
+      "translator_view": "The case of the kava (<style id='1'>Piper methysticum</style>), a plant in the pepper family that is native to the Pacif",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "专利",
+      "first_page": 7,
+      "source": "patents",
+      "translator_view": "Oil produced from the nuts of the Moroccan argan tree (<style id='1'>Argania spinosa L.</style>) provides another exampl",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "制药行业",
+      "first_page": 7,
+      "source": "pharmaceutical industry",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "针茅",
+      "first_page": 7,
+      "source": "spinifex",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "生物多样性公约",
+      "first_page": 8,
+      "source": "Convention on Biological Diversity",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "第一民族",
+      "first_page": 8,
+      "source": "First Nations",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "澳大利亚土著",
+      "first_page": 8,
+      "source": "Indigenous Australians",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "摩洛哥",
+      "first_page": 8,
+      "source": "Morocco",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "名古屋议定书",
+      "first_page": 8,
+      "source": "Nagoya Protocol on Access and Benefit Sharing",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "塔夫拉乌特",
+      "first_page": 8,
+      "source": "Tafraout",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "知识产权、遗传资源及相关传统知识条约",
+      "first_page": 8,
+      "source": "Treaty on Intellectual Property, Genetic Resources and Associated Traditional Knowledge",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "世界知识产权组织",
+      "first_page": 8,
+      "source": "World Intellectual Property Organization",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "世界贸易组织",
+      "first_page": 8,
+      "source": "World Trade Organization",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "阿甘油",
+      "first_page": 8,
+      "source": "argan oil",
+      "translator_view": null,
+      "vote_count": 2
+    },
+    {
+      "auto_target": "来源披露",
+      "first_page": 8,
+      "source": "disclosure of origin",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "知识产权",
+      "first_page": 8,
+      "source": "intellectual property rights",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "植物育种者权利",
+      "first_page": 8,
+      "source": "plant breeders’ rights",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "商标",
+      "first_page": 8,
+      "source": "trademarks",
+      "translator_view": null,
+      "vote_count": 1
+    }
+  ]
+}

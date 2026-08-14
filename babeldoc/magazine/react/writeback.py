@@ -24,12 +24,15 @@ this repair is not allowed to touch. ``render_paragraph`` touches the paragraph
 it is given and the page's curve and form lists, and a rebuilt run contributes
 no curves and no forms, so nothing else on the page moves.
 
-Vertical orphans go through the same path. Typesetting has no vertical mode --
-a unicode unit is always emitted horizontal -- and the strip an orphan credit
-stands in is about one character wide, so the laid out result is one character
-per line down the strip. For a target language set in Han script that is the
-conventional vertical setting; for one that is not, the action's applicability
-is what decides whether the paragraph is offered here at all.
+What the box is for is the other half of this. Typesetting has no vertical mode
+-- a unicode unit is always emitted horizontal -- so a paragraph set down a
+strip one character wide cannot be laid out again as the strip it was, and what
+``render_paragraph`` does with it instead is widen the box until the line fits
+across the page. Measured on a real credit that is a box ninety times the area
+it had and a caption printed over the artwork it belonged beside. So the box is
+read before and after: a composition that needs more room than the paragraph
+had is not a repair of that paragraph, and the caller puts it back. Shrinking is
+allowed, because needing less room moves nothing the reader can see.
 """
 
 from __future__ import annotations
@@ -113,6 +116,24 @@ def page_font_map(page, font_mapper) -> dict:
                 scoped[font.font_id] = font
         fonts[xobject.xobj_id] = scoped
     return fonts
+
+
+def stayed_inside(before, after) -> bool:
+    """Whether a laid out paragraph still occupies the region it occupied.
+
+    Shrinking is allowed and growing is not. Laying a paragraph out again is
+    allowed to need less room than it had; needing more means the composition no
+    longer fits where the reader was looking, and the page has been rearranged
+    rather than repaired.
+    """
+    if before is None or after is None:
+        return before == after
+    return (
+        after[0] >= before[0]
+        and after[1] >= before[1]
+        and after[2] <= before[2]
+        and after[3] <= before[3]
+    )
 
 
 def retypeset(typesetting, paragraph, page) -> bool:

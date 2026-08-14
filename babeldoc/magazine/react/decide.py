@@ -201,6 +201,27 @@ def actions_block(config: RepairConfig) -> str:
     return "\n".join(lines)
 
 
+def constraints_block(config: RepairConfig) -> str:
+    """The applicability rule as the request states it, one block per action.
+
+    The rule is what decides whether a named finding is acted on, and it is
+    deterministic and is not the model's to overrule. Stating it is not a
+    weakening of that: a decision step that cannot see the filter it feeds
+    spends its list on findings the filter throws away, which costs the
+    iteration the findings it did not name instead.
+    """
+    lines: list[str] = []
+    for name, action in sorted(config.actions.items()):
+        conditions = action.conditions()
+        if not conditions:
+            continue
+        stated = "\n".join(f"    - {sentence}" for sentence in conditions)
+        lines.append(
+            f'- "{name}" acts on a finding only when all of these hold:\n{stated}'
+        )
+    return "\n".join(lines) if lines else "- none"
+
+
 def interpret(reply: str, config: RepairConfig, offered: set[str]):
     """One reply as a decision, or the violation that refuses it."""
     try:
@@ -299,6 +320,7 @@ class CachedDecisionClient:
                     self.config.max_issues_offered,
                 ),
                 "actions_block": actions_block(self.config),
+                "action_constraints": constraints_block(self.config),
             },
             working_dir=self.working_dir,
         )

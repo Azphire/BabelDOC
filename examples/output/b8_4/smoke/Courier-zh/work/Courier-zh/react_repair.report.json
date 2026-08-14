@@ -1,0 +1,131 @@
+{
+  "applications": 0,
+  "config": {
+    "actions": [
+      {
+        "applicability": {
+          "min_residue_ratio": 0.9,
+          "min_source_chars": 12,
+          "orphan_layout_labels": [
+            "fallback_line"
+          ]
+        },
+        "conditions": [
+          "its evidence reports residue_ratio at or above 0.9",
+          "the text the page renders for it is at least 12 characters long",
+          "its evidence reports layout_label as one of: fallback_line"
+        ],
+        "description": "Send the text of an orphan line through the translation engine and write the answer back into the paragraph, then lay that paragraph out again.",
+        "issue_kinds": [
+          "untranslated_residue"
+        ],
+        "max_applications": 12,
+        "name": "translate_orphan_lines",
+        "parameters": [
+          {
+            "allowed_range": "1.0..20.0",
+            "default": 3.0,
+            "name": "max_paragraphs"
+          }
+        ]
+      }
+    ],
+    "decide_max_attempts": 2,
+    "issue_excerpt_chars": 120,
+    "max_glossary_entries": 24,
+    "max_issues_offered": 40,
+    "max_iterations": 3,
+    "page_context_chars": 1200
+  },
+  "conservation": {
+    "changed_outside_touched": [],
+    "changed_refs": [],
+    "pages_after": 8,
+    "pages_before": 8,
+    "paragraphs_after": 135,
+    "paragraphs_before": 135,
+    "touched_refs": [],
+    "verdict": "conserved"
+  },
+  "engine_configured": true,
+  "final": {
+    "by_kind": {
+      "untranslated_residue": 7
+    },
+    "total": 7
+  },
+  "final_untreated": {
+    "by_kind": {
+      "untranslated_residue": 7
+    },
+    "total": 7
+  },
+  "iterations": [
+    {
+      "applicability": [],
+      "decision": {
+        "action": "translate_orphan_lines",
+        "attempts": 1,
+        "from_cache": false,
+        "issue_ids": [
+          "untranslated_residue:p3:p3#2"
+        ],
+        "parameters": {
+          "max_paragraphs": 3.0
+        },
+        "raw": "{\"action\": \"translate_orphan_lines\", \"issue_ids\": [\"untranslated_residue:p3:p3#2\"], \"parameters\": {}, \"reason\": \"The finding has a residue_ratio of 0.9412 and a layout_label of 'fallback_line', meeting the conditions for the action.\"}",
+        "reason": "The finding has a residue_ratio of 0.9412 and a layout_label of 'fallback_line', meeting the conditions for the action.",
+        "violations": []
+      },
+      "detected": {
+        "by_kind": {
+          "untranslated_residue": 7
+        },
+        "total": 7
+      },
+      "detected_ids": [
+        "untranslated_residue:p1:p1#13",
+        "untranslated_residue:p1:p1#15",
+        "untranslated_residue:p3:p3#2",
+        "untranslated_residue:p5:p5#11",
+        "untranslated_residue:p7:p7#16",
+        "untranslated_residue:p7:p7#18",
+        "untranslated_residue:p8:p8#15"
+      ],
+      "executed": [
+        {
+          "accepted": false,
+          "attempts": 0,
+          "changed": false,
+          "from_cache": true,
+          "glossary_entries": [],
+          "issue_id": "untranslated_residue:p3:p3#2",
+          "offered_text": "诺（Carolina Zambrano）",
+          "paragraph_ref": "p3#2",
+          "reason": "translation_equals_source",
+          "source_text": "诺（Carolina Zambrano）",
+          "translated_text": "诺（Carolina Zambrano）"
+        }
+      ],
+      "iteration": 1,
+      "outcome": "applied_nothing",
+      "request": {
+        "cache_key": "6d80a57ef418426fa16e5c0ec611a5fc533dd5ae96db6d0c8977bc96b29128e5",
+        "prompt_sha256": "cf9cd8e5b6313dc05b8fd0e1464dc1a4c53daf0f76c5dcf118254f91bed8ce57"
+      },
+      "untreated": {
+        "by_kind": {
+          "untranslated_residue": 7
+        },
+        "total": 7
+      }
+    }
+  ],
+  "iterations_run": 1,
+  "offered_texts": [
+    "诺（Carolina Zambrano）"
+  ],
+  "stopped_because": "no_paragraph_was_written",
+  "switch": "magazine_repair",
+  "treated": []
+}

@@ -15,7 +15,9 @@ per-assertion intervals; the runner prints the slowest assertions of each gate
 and a corpus-wide build total, so a sweep that grows slower says which of the
 two grew.
 
-A sweep ends by writing ``run_all.done.json`` next to the other gate outputs,
+A sweep ends by applying the output retention policy in
+``tools/prune_outputs.py``, which is what keeps ``examples/output/`` from
+growing without bound, and then by writing ``run_all.done.json`` next to the other gate outputs,
 carrying the exit code, the total wall clock and the timestamps. A caller that
 launched the sweep in the background reads completion from that file rather
 than from a wrapper's return, which a detached process cannot be relied on to
@@ -72,6 +74,7 @@ GATES = (
     "spec_check_b8.py",
     "spec_check_b8_2.py",
     "spec_check_b8_3.py",
+    "spec_check_b8_4.py",
 )
 
 
@@ -163,6 +166,27 @@ def govern_cache() -> None:
             f"gate cache trimmed: {dropped} least recently used slot(s) dropped, "
             f"{freed / artifacts.BYTES_PER_GB:.2f} GB reclaimed"
         )
+
+
+def prune_outputs() -> None:
+    """Apply the output retention policy, which is what bounds this directory.
+
+    At the end rather than at the start: a sweep reads what earlier sweeps left
+    and writes what this one produces, and both are inside the batches the
+    policy keeps whole. Its failure is reported and is never the sweep's, since
+    a policy that could not reclaim disk has not invalidated a gate result.
+    """
+    proc = subprocess.run(  # noqa: S603 - fixed argv built from repository paths
+        [PYTHON, str(ROOT / "tools" / "prune_outputs.py"), "--apply"],
+        cwd=ROOT,
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    for line in (proc.stdout or "").splitlines():
+        print(f"  {line}")
+    if proc.returncode != 0:
+        print(f"  output retention failed: {(proc.stderr or '')[-500:]}")
 
 
 def write_done(
@@ -261,6 +285,8 @@ def main(argv: list[str] | None = None) -> int:
     )
     print()
     report_timing(results)
+    print()
+    prune_outputs()
 
     exit_code = 1 if failed else 0
     marker = write_done(exit_code, time.monotonic() - started, started_at, results)

@@ -1,0 +1,12 @@
+{
+  "description": "What examples/output/ keeps, applied by tools/prune_outputs.py and called with --apply at the end of every sweep by spec_checks/run_all.py. Same convention as configs/gate_cache.json: every numeric parameter carries a '<name>_allowed_range' sibling of the form 'low..high', inclusive on both ends. The directory holds every artefact every batch ever produced, which is the right thing while a batch is live and dead weight once its successor has been delivered twice over. 'keep_recent_batches' is how many batch directories keep everything they hold, newest first by the batch number in the directory name; every earlier batch directory keeps only the files matching 'keep_patterns', which is what a delivery report and its run log are and is what a later batch is ever read back for. Three things are never pruned whatever this says: a file git tracks, because the repository is the record and what is committed is the evidence; a file corpus/manifest.json names, because a baseline is an input to the gates rather than a product of them; and any directory that is not a batch directory, which is how the gate cache and the timing records are left to the mechanisms that govern them. 'baseline_archive' turns each frozen baseline checkpoint directory into the archive the readers already resolve, which is the same artefact at about a tenth of the disk.",
+  "keep_recent_batches": 2,
+  "keep_recent_batches_allowed_range": "1..20",
+  "keep_patterns": [
+    "*.report.md",
+    "*.log"
+  ],
+  "baseline_archive": [
+    "*.checkpoints"
+  ]
+}

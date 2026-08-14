@@ -1,0 +1,13 @@
+{
+  "eligible": [
+    "p1#0",
+    "p1#1",
+    "p1#2",
+    "p1#3",
+    "p1#4",
+    "p1#5"
+  ],
+  "eligible_share": 0.3158,
+  "findings": 19,
+  "refused_reasons": []
+}

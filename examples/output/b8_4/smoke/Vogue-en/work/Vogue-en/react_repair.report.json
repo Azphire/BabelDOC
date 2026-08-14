@@ -1,0 +1,105 @@
+{
+  "applications": 0,
+  "config": {
+    "actions": [
+      {
+        "applicability": {
+          "min_residue_ratio": 0.9,
+          "min_source_chars": 12,
+          "orphan_layout_labels": [
+            "fallback_line"
+          ]
+        },
+        "conditions": [
+          "its evidence reports residue_ratio at or above 0.9",
+          "the text the page renders for it is at least 12 characters long",
+          "its evidence reports layout_label as one of: fallback_line"
+        ],
+        "description": "Send the text of an orphan line through the translation engine and write the answer back into the paragraph, then lay that paragraph out again.",
+        "issue_kinds": [
+          "untranslated_residue"
+        ],
+        "max_applications": 12,
+        "name": "translate_orphan_lines",
+        "parameters": [
+          {
+            "allowed_range": "1.0..20.0",
+            "default": 3.0,
+            "name": "max_paragraphs"
+          }
+        ]
+      }
+    ],
+    "decide_max_attempts": 2,
+    "issue_excerpt_chars": 120,
+    "max_glossary_entries": 24,
+    "max_issues_offered": 40,
+    "max_iterations": 3,
+    "page_context_chars": 1200
+  },
+  "conservation": {
+    "changed_outside_touched": [],
+    "changed_refs": [],
+    "pages_after": 3,
+    "pages_before": 3,
+    "paragraphs_after": 39,
+    "paragraphs_before": 39,
+    "touched_refs": [],
+    "verdict": "conserved"
+  },
+  "engine_configured": true,
+  "final": {
+    "by_kind": {
+      "untranslated_residue": 3
+    },
+    "total": 3
+  },
+  "final_untreated": {
+    "by_kind": {
+      "untranslated_residue": 3
+    },
+    "total": 3
+  },
+  "iterations": [
+    {
+      "decision": {
+        "action": "none",
+        "attempts": 1,
+        "from_cache": false,
+        "issue_ids": [],
+        "parameters": {},
+        "raw": "{\"action\": \"none\", \"issue_ids\": [], \"parameters\": {}, \"reason\": \"No findings meet the conditions for the 'translate_orphan_lines' action, as none have a layout_label of 'fallback_line' and a residue_ratio at or above 0.9.\"}",
+        "reason": "No findings meet the conditions for the 'translate_orphan_lines' action, as none have a layout_label of 'fallback_line' and a residue_ratio at or above 0.9.",
+        "violations": []
+      },
+      "detected": {
+        "by_kind": {
+          "untranslated_residue": 3
+        },
+        "total": 3
+      },
+      "detected_ids": [
+        "untranslated_residue:p1:p1#0",
+        "untranslated_residue:p3:p3#17",
+        "untranslated_residue:p3:p3#37"
+      ],
+      "iteration": 1,
+      "outcome": "applied_nothing",
+      "request": {
+        "cache_key": "1905b326700895f0816a196c93533846dfd8418f19a829c36b1bd7cb1591d6ea",
+        "prompt_sha256": "cf9cd8e5b6313dc05b8fd0e1464dc1a4c53daf0f76c5dcf118254f91bed8ce57"
+      },
+      "untreated": {
+        "by_kind": {
+          "untranslated_residue": 3
+        },
+        "total": 3
+      }
+    }
+  ],
+  "iterations_run": 1,
+  "offered_texts": [],
+  "stopped_because": "decision_applied_nothing",
+  "switch": "magazine_repair",
+  "treated": []
+}

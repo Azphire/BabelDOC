@@ -1,0 +1,16 @@
+{
+  "sample": "Vogue-en.pdf",
+  "model": "gpt-4o",
+  "seconds": 372.6,
+  "requests": 13,
+  "cache_hits": 12,
+  "api_calls": 1,
+  "prompt_tokens": 1272,
+  "completion_tokens": 58,
+  "working_dir": "examples\\output\\b8_4\\smoke\\Vogue-en\\work\\Vogue-en",
+  "mono_pdf": "Vogue-en.b8_4.pdf",
+  "reviews": [
+    "Vogue-en.review.json",
+    "Vogue-en.review.html"
+  ]
+}

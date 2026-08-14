@@ -621,7 +621,7 @@ def check_06_baselines(manifest: dict, produced_pdfs: dict[str, Path]) -> None:
             missing.append(f"{entry['file']}: {baseline['pdf']} absent")
         elif corpus_module.sha256_file(pdf) != baseline["sha256"]:
             missing.append(f"{entry['file']}: baseline sha256")
-        if not (ROOT / baseline["checkpoints"]).is_dir():
+        if not checkpoint_module.checkpoint_paths(ROOT / baseline["checkpoints"]):
             missing.append(f"{entry['file']}: checkpoints absent")
     record(
         "06a every sample carries a built baseline with the recorded hash",

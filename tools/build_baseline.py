@@ -3,7 +3,9 @@
 Each sample is dry-run through the pipeline with ``only_parse_generate_pdf``
 (no translation stage, no API key) and ``magazine_checkpoint`` enabled. The
 resulting mono PDF is frozen at ``examples/output/baseline/<name><suffix>`` and
-its IL checkpoints at ``examples/output/baseline/<name>.checkpoints/``. The
+its IL checkpoints in the archive
+``examples/output/baseline/<name>.checkpoints.zip``. The manifest names the
+directory the archive stands for, and every reader resolves one to the other. The
 manifest is updated in place with the baseline paths and hashes. The suffix
 carries the batch that froze the corpus, so a corpus swap is visible in the
 artefact names; gates read the path from the manifest and never spell it out.
@@ -30,7 +32,9 @@ from babeldoc.format.pdf.parse_shared import _ParseOnlyDocLayoutModel  # noqa: E
 from babeldoc.format.pdf.translation_config import TranslationConfig  # noqa: E402
 from babeldoc.format.pdf.translation_config import WatermarkOutputMode  # noqa: E402
 from babeldoc.magazine.cache_setup import use_project_cache  # noqa: E402
+from babeldoc.magazine.checkpoint import CHECKPOINT_ARCHIVE_SUFFIX  # noqa: E402
 from babeldoc.magazine.checkpoint import CHECKPOINT_PREFIX  # noqa: E402
+from babeldoc.magazine.checkpoint import write_checkpoint_archive  # noqa: E402
 
 logger = logging.getLogger(__name__)
 
@@ -73,16 +77,20 @@ def build_one(pdf: Path, name: str, suffix: str = BASELINE_SUFFIX) -> tuple[Path
     shutil.copyfile(result.mono_pdf_path, baseline_pdf)
 
     checkpoint_dir = BASELINE_DIR / f"{name}.checkpoints"
+    archive = checkpoint_dir.with_name(
+        checkpoint_dir.name + CHECKPOINT_ARCHIVE_SUFFIX
+    )
     if checkpoint_dir.exists():
         shutil.rmtree(checkpoint_dir)
-    checkpoint_dir.mkdir(parents=True)
+    if archive.exists():
+        archive.unlink()
     work_dir = Path(config.working_dir)
-    copied = 0
-    for item in sorted(work_dir.glob(f"{CHECKPOINT_PREFIX}*")):
-        shutil.copyfile(item, checkpoint_dir / item.name)
-        copied += 1
-    if copied == 0:
+    staged = sorted(work_dir.glob(f"{CHECKPOINT_PREFIX}*"))
+    if not staged:
         raise RuntimeError(f"{name}: no checkpoint files produced in {work_dir}")
+    # Kept as one archive: a baseline is read whole and never edited, and the
+    # XML of one run compresses by about an order of magnitude.
+    write_checkpoint_archive(staged, archive)
 
     shutil.rmtree(stage_dir.parent, ignore_errors=True)
     return baseline_pdf, checkpoint_dir

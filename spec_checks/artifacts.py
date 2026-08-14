@@ -104,7 +104,11 @@ FINGERPRINT_PATHS = ("babeldoc", "configs")
 # siblings dropped, so its remaining keys still invalidate the cache and a move
 # to another endpoint no longer does.
 FINGERPRINT_EXCLUDED_KEYS: dict[str, tuple[str, ...]] = {
-    "configs/gate_cache.json": ("description", "gate_cache_max_gb"),
+    "configs/gate_cache.json": (
+        "description",
+        "gate_cache_max_gb",
+        "staging_stale_after_seconds",
+    ),
     "configs/vlm.json": ("description", "base_url", "api_key_env", "timeout_seconds"),
 }
 
@@ -221,6 +225,12 @@ ATTRIBUTES_KEY = "attributes"
 
 # Suffix marking a build in progress. A directory carrying it is never a slot.
 STAGING_SUFFIX = ".partial"
+
+# Written into a staging directory while its build runs, and removed before the
+# directory is published. It is what exempts a build from the sweep it triggers
+# itself, and its absence is what makes an interrupted build's leftovers
+# reclaimable rather than invisible.
+STAGING_LOCK = "building.json"
 
 _fingerprint: str | None = None
 _stats = {
@@ -414,6 +424,7 @@ def _build(sample: Path, mode: str, slot: Path) -> None:
     if staging.exists():
         shutil.rmtree(staging)
     staging.mkdir(parents=True)
+    _take_lock(staging)
 
     config = TranslationConfig(
         translator=None,
@@ -487,6 +498,10 @@ def _build(sample: Path, mode: str, slot: Path) -> None:
         )
 
     # Publish atomically, so an interrupted build is never mistaken for a hit.
+    # The lock goes first: a published slot is not a build in progress, and one
+    # carrying a lock would exempt itself from every later sweep.
+    with contextlib.suppress(OSError):
+        (staging / STAGING_LOCK).unlink()
     staging.replace(slot)
     _stats["built"] += 1
     _stats["build_seconds"] += seconds
@@ -510,6 +525,79 @@ def _slots() -> list[Path]:
         and not path.name.endswith(STAGING_SUFFIX)
         and (path / "meta.json").exists()
     ]
+
+
+def _take_lock(staging: Path) -> Path:
+    """Declare a staging directory as belonging to a build in progress."""
+    path = staging / STAGING_LOCK
+    with path.open("w", encoding="utf-8") as f:
+        json.dump({"pid": os.getpid(), "started": time.time()}, f)
+    return path
+
+
+def _lock_is_live(staging: Path) -> bool:
+    """Whether a staging directory still belongs to a build that is running.
+
+    This process's own builds are known by their pid and are never in doubt.
+    Another process's lock is believed for as long as the configuration says,
+    because there is no portable way to ask whether a pid from an earlier run is
+    still the process that wrote it; past that the directory is read as what an
+    interrupted build leaves, which is what it almost always is.
+    """
+    path = staging / STAGING_LOCK
+    try:
+        with path.open(encoding="utf-8") as f:
+            lock = json.load(f)
+    except (OSError, ValueError):
+        return False
+    if lock.get("pid") == os.getpid():
+        return True
+    started = lock.get("started")
+    if isinstance(started, bool) or not isinstance(started, int | float):
+        return False
+    return time.time() - float(started) < staging_stale_after_seconds()
+
+
+def _staging_dirs() -> list[Path]:
+    """Every staging directory in the cache, whether live or abandoned."""
+    if not CACHE_ROOT.is_dir():
+        return []
+    return [
+        path
+        for generation in CACHE_ROOT.iterdir()
+        if generation.is_dir() and generation.name != STATS_DIR.name
+        for path in generation.iterdir()
+        if path.is_dir() and path.name.endswith(STAGING_SUFFIX)
+    ]
+
+
+def abandoned_staging() -> list[Path]:
+    """Staging directories no build is working in: dead weight on the disk."""
+    return [path for path in _staging_dirs() if not _lock_is_live(path)]
+
+
+def drop_abandoned() -> tuple[int, int]:
+    """Remove what interrupted builds left behind. Returns directories and bytes.
+
+    Unconditional rather than budget driven. A staging directory can never be
+    served as a hit, so keeping one under the ceiling buys nothing, and the
+    reason one is here at all is that some earlier build did not finish.
+    """
+    dropped = 0
+    freed = 0
+    for path in abandoned_staging():
+        size = directory_bytes(path)
+        parent = path.parent
+        shutil.rmtree(path, ignore_errors=True)
+        remaining = directory_bytes(path) if path.exists() else 0
+        if remaining >= size:
+            continue
+        dropped += 1
+        freed += size - remaining
+        with contextlib.suppress(OSError):
+            if parent != STATS_DIR and not any(parent.iterdir()):
+                parent.rmdir()
+    return dropped, freed
 
 
 def directory_bytes(path: Path) -> int:
@@ -545,13 +633,20 @@ def load_cache_config(path: Path | None = None) -> dict[str, Parameter]:
     with config_path.open(encoding="utf-8") as f:
         raw = json.load(f)
     parameters = validate_bounded_config(raw, config_path)
-    if "gate_cache_max_gb" not in parameters:
-        raise KeyError(f"{config_path.name}: missing parameter gate_cache_max_gb")
+    for name in ("gate_cache_max_gb", "staging_stale_after_seconds"):
+        if name not in parameters:
+            raise KeyError(f"{config_path.name}: missing parameter {name}")
     return parameters
 
 
 def cache_size_bytes() -> int:
-    return sum(_slot_bytes(slot) for slot in _slots())
+    """What the cache costs: its slots, plus what interrupted builds left.
+
+    A staging directory belonging to a running build is not counted, because it
+    is what a build is about to publish rather than what the cache is holding,
+    and the build accounts for it as the incoming size it fits into the budget.
+    """
+    return sum(_slot_bytes(path) for path in [*_slots(), *abandoned_staging()])
 
 
 def trim_cache(max_bytes: int) -> tuple[int, int]:
@@ -561,18 +656,22 @@ def trim_cache(max_bytes: int) -> tuple[int, int]:
     stamps it on every hit, so a generation that a sweep still serves from
     survives a trim even when a newer one exists.
 
-    Returns the number of slots dropped and the bytes reclaimed.
+    What an interrupted build left goes first and goes whether or not the cache
+    is over its ceiling, since it is the one thing here that could never be
+    served. Returns the number of directories dropped and the bytes reclaimed.
     """
+    dropped, freed = drop_abandoned()
     sized = [(slot, _slot_bytes(slot)) for slot in _slots()]
     total = sum(size for _, size in sized)
     if total <= max_bytes:
-        return 0, 0
+        return dropped, freed
 
     sized.sort(key=lambda item: _mtime(item[0]))
-    dropped = 0
-    freed = 0
+    # Counted apart from what the abandoned sweep reclaimed, because the target
+    # is the size of the published slots and that is what ``total`` measures.
+    reclaimed = 0
     for slot, size in sized:
-        if total - freed <= max_bytes:
+        if total - reclaimed <= max_bytes:
             break
         parent = slot.parent
         shutil.rmtree(slot, ignore_errors=True)
@@ -583,6 +682,7 @@ def trim_cache(max_bytes: int) -> tuple[int, int]:
         if remaining >= size:
             continue
         dropped += 1
+        reclaimed += size - remaining
         freed += size - remaining
         # A generation directory left with nothing in it is noise in the
         # listing; the stats directory is not a generation and is never touched.
@@ -595,6 +695,11 @@ def trim_cache(max_bytes: int) -> tuple[int, int]:
 def max_cache_bytes() -> int:
     """The configured ceiling, in bytes."""
     return int(float(load_cache_config()["gate_cache_max_gb"]) * BYTES_PER_GB)
+
+
+def staging_stale_after_seconds() -> float:
+    """How long another process's build lock is believed."""
+    return float(load_cache_config()["staging_stale_after_seconds"])
 
 
 def make_room(incoming_bytes: int) -> dict:
@@ -614,7 +719,10 @@ def make_room(incoming_bytes: int) -> dict:
     before = cache_size_bytes()
     overrun = incoming_bytes > max_bytes
     room = max(0, max_bytes - incoming_bytes)
-    dropped, freed = (0, 0) if before + incoming_bytes <= max_bytes else trim_cache(room)
+    # Unconditional: a cache already inside the ceiling still has nothing to
+    # gain from what an interrupted build left, and the sweep's own early
+    # return is what keeps a slot from being dropped when there is room.
+    dropped, freed = trim_cache(room)
     _stats["swept_slots"] += dropped
     _stats["swept_bytes"] += freed
     return {
