@@ -1,0 +1,326 @@
+{
+  "batch": "upstream-baseline",
+  "purpose": "Unmodified upstream BabelDOC translation output for the six paper samples, produced as the comparison baseline for the fork. No metrics are computed here; metrics belong to the fork-side evaluation batch.",
+  "generated_at_utc": "2026-08-13T17:05:00Z",
+  "environment": {
+    "conda_env": "babeldoc-upstream",
+    "python": "3.13.14",
+    "python_executable": "C:\\Users\\Azphire\\Anaconda\\envs\\babeldoc-upstream\\python.exe",
+    "install": "pip install -e D:\\Codes\\BabelDOC-main",
+    "babeldoc___file__": "D:\\Codes\\BabelDOC-main\\babeldoc\\__init__.py",
+    "babeldoc_cli_version": "0.6.4",
+    "openai": "3.0.0",
+    "pymupdf": "1.28.2",
+    "onnxruntime": "1.28.0",
+    "platform": "Windows-11-10.0.26200-SP0",
+    "isolation_check": "PASS - babeldoc.__file__ resolves inside D:\\Codes\\BabelDOC-main, not the fork at D:\\Codes\\BabelDOC",
+    "note_python_version": "Fork .venv runs 3.13.3; this env resolved to 3.13.14 (same minor series). pyproject requires >=3.10,<3.14."
+  },
+  "version_pair": {
+    "upstream": {
+      "path": "D:\\Codes\\BabelDOC-main",
+      "version": "0.6.4",
+      "git": null,
+      "git_note": "NOT a git repository - this is the GitHub 'main' branch zip download, so `git status` and `git rev-parse HEAD` are not available. An equivalent (stronger) identity check was performed instead, see identity_evidence.",
+      "identity_evidence": {
+        "method": "git hash-object on every file of the download, compared against `git ls-tree -r 17480db` in the fork repository",
+        "tracked_files_at_fork_base": 410,
+        "byte_identical": 408,
+        "differing": [
+          "README.md"
+        ],
+        "differing_detail": "Documentation only: two links changed from github.com/PDFMathTranslate/PDFMathTranslate-next to pdf2zh-next.com. No source difference.",
+        "present_at_fork_base_but_absent_in_download": [
+          "examples/ci/test.pdf"
+        ],
+        "present_in_download_only": [
+          "examples/ci/AramcoWorld-en-v2.pdf",
+          "examples/ci/CERNCourier-en.pdf",
+          "examples/ci/Courier-en.pdf",
+          "examples/ci/Courier-zh.pdf",
+          "examples/ci/FD-en-v2.pdf",
+          "examples/ci/Vogue-en.pdf"
+        ],
+        "conclusion": "Every Python/source/asset file of the download is byte-identical to the fork's upstream base commit. The download is 'main' a little ahead of the v0.6.4 tag, differing only in README prose."
+      }
+    },
+    "fork": {
+      "path": "D:\\Codes\\BabelDOC",
+      "version": "0.6.4",
+      "upstream_base_commit": "17480db",
+      "upstream_base_subject": "Release v0.6.4",
+      "head_commit": "9b3437f7ef15adf33f24fe7b5e70f3b557515d96"
+    },
+    "match": true,
+    "match_note": "Both sides report version 0.6.4 and the source trees agree byte-for-byte. Recorded only; the comparison wording for the paper is the user's call."
+  },
+  "run_configuration": {
+    "shared_flags": [
+      "--openai",
+      "--openai-model gpt-4o",
+      "--watermark-output-mode no_watermark",
+      "--no-dual",
+      "--no-auto-extract-glossary"
+    ],
+    "qps": "default (4) - not passed on the command line",
+    "debug": "off - --debug not passed",
+    "auto_term_extraction": "disabled via --no-auto-extract-glossary; upstream 0.6.4 enables it by default, so the flag is required to match the fork's b5 smoke configuration",
+    "dual_output": "disabled via --no-dual; only the mono PDF is produced",
+    "api_key_handling": "babeldoc 0.6.4 has no environment-variable support for --openai-api-key, so the key was placed alone in a TOML config outside the repository and passed with -c. The path is redacted as <API_KEY_ONLY_CONFIG> in this manifest; the file was deleted after the batch. The key appears in no recorded artifact.",
+    "execution": "The six samples ran sequentially in one process-per-sample loop. `babeldoc --warmup` was run once beforehand so asset downloads are not included in any sample's elapsed time."
+  },
+  "samples": [
+    {
+      "sample": "Courier-en",
+      "direction": "en->zh",
+      "lang_in": "en",
+      "lang_out": "zh",
+      "input": {
+        "filename": "Courier-en.pdf",
+        "bytes": 940142,
+        "pages": 8,
+        "sha256": "9fcb6b5e7d5a51972d766b98518554c64ef39080371ec98b4d04570402ea275a"
+      },
+      "command_line": "babeldoc -c <API_KEY_ONLY_CONFIG> --openai --openai-model gpt-4o --lang-in en --lang-out zh --watermark-output-mode no_watermark --no-dual --no-auto-extract-glossary --output D:\\Codes\\BabelDOC-main\\examples\\ci\\output_baseline\\pdf\\Courier-en --files D:\\Codes\\BabelDOC-main\\examples\\ci\\Courier-en.pdf",
+      "started_at_utc": "2026-08-14T00:39:21.8094201Z",
+      "ended_at_utc": "2026-08-14T00:41:36.6986744Z",
+      "elapsed_sec": 134.89,
+      "exit_code": 0,
+      "status": "ok",
+      "artifacts": [
+        {
+          "filename": "Courier-en.no_watermark.zh.mono.pdf",
+          "path": "pdf/Courier-en/Courier-en.no_watermark.zh.mono.pdf",
+          "bytes": 1394679,
+          "pages": 8,
+          "sha256": "d78d442beb91d63450ffc354a50b04fecb9b24585490bc6f6708734b79faf688"
+        }
+      ],
+      "log": "logs/Courier-en.log",
+      "upstream_fallback_warnings": {
+        "translation_same_as_input_fallback": 1,
+        "result_too_long_or_short": 2,
+        "fallback_to_simple_translation": 3,
+        "results_length_mismatch": 1
+      }
+    },
+    {
+      "sample": "Vogue-en",
+      "direction": "en->zh",
+      "lang_in": "en",
+      "lang_out": "zh",
+      "input": {
+        "filename": "Vogue-en.pdf",
+        "bytes": 515942,
+        "pages": 3,
+        "sha256": "d1bfee53834180de22e3c890a08a7f7fc7cc708024189a7df265248a4f9024d9"
+      },
+      "command_line": "babeldoc -c <API_KEY_ONLY_CONFIG> --openai --openai-model gpt-4o --lang-in en --lang-out zh --watermark-output-mode no_watermark --no-dual --no-auto-extract-glossary --output D:\\Codes\\BabelDOC-main\\examples\\ci\\output_baseline\\pdf\\Vogue-en --files D:\\Codes\\BabelDOC-main\\examples\\ci\\Vogue-en.pdf",
+      "started_at_utc": "2026-08-14T00:41:37.1788004Z",
+      "ended_at_utc": "2026-08-14T00:43:04.0106514Z",
+      "elapsed_sec": 86.83,
+      "exit_code": 0,
+      "status": "ok",
+      "artifacts": [
+        {
+          "filename": "Vogue-en.no_watermark.zh.mono.pdf",
+          "path": "pdf/Vogue-en/Vogue-en.no_watermark.zh.mono.pdf",
+          "bytes": 715144,
+          "pages": 3,
+          "sha256": "b4e9ad6dcd9f2928f2cfab6280ee4afcaaab3a6c30554aa1f8f49da3ceebb086"
+        }
+      ],
+      "log": "logs/Vogue-en.log",
+      "upstream_fallback_warnings": {
+        "translation_same_as_input_fallback": 0,
+        "result_too_long_or_short": 0,
+        "fallback_to_simple_translation": 0,
+        "results_length_mismatch": 0
+      }
+    },
+    {
+      "sample": "CERNCourier-en",
+      "direction": "en->zh",
+      "lang_in": "en",
+      "lang_out": "zh",
+      "input": {
+        "filename": "CERNCourier-en.pdf",
+        "bytes": 1911978,
+        "pages": 4,
+        "sha256": "c099e0094adf0782bd45746860c95cef6934e919f4cc7c527f48bd01a4eb0929"
+      },
+      "command_line": "babeldoc -c <API_KEY_ONLY_CONFIG> --openai --openai-model gpt-4o --lang-in en --lang-out zh --watermark-output-mode no_watermark --no-dual --no-auto-extract-glossary --output D:\\Codes\\BabelDOC-main\\examples\\ci\\output_baseline\\pdf\\CERNCourier-en --files D:\\Codes\\BabelDOC-main\\examples\\ci\\CERNCourier-en.pdf",
+      "started_at_utc": "2026-08-14T00:43:04.0649455Z",
+      "ended_at_utc": "2026-08-14T00:45:28.1613607Z",
+      "elapsed_sec": 144.1,
+      "exit_code": 0,
+      "status": "ok",
+      "artifacts": [
+        {
+          "filename": "CERNCourier-en.no_watermark.zh.mono.pdf",
+          "path": "pdf/CERNCourier-en/CERNCourier-en.no_watermark.zh.mono.pdf",
+          "bytes": 2089832,
+          "pages": 4,
+          "sha256": "c78bce91b62018f9162c40c31798e64023f6d65dc2818fe2ac77f5eeacbe6a54"
+        }
+      ],
+      "log": "logs/CERNCourier-en.log",
+      "upstream_fallback_warnings": {
+        "translation_same_as_input_fallback": 17,
+        "result_too_long_or_short": 2,
+        "fallback_to_simple_translation": 19,
+        "results_length_mismatch": 0
+      }
+    },
+    {
+      "sample": "AramcoWorld-en-v2",
+      "direction": "en->zh",
+      "lang_in": "en",
+      "lang_out": "zh",
+      "input": {
+        "filename": "AramcoWorld-en-v2.pdf",
+        "bytes": 3460017,
+        "pages": 9,
+        "sha256": "174cf0480ded6fb10bbbaa6368dc6b578bfd54835e2d2ff886073a23ae873663"
+      },
+      "command_line": "babeldoc -c <API_KEY_ONLY_CONFIG> --openai --openai-model gpt-4o --lang-in en --lang-out zh --watermark-output-mode no_watermark --no-dual --no-auto-extract-glossary --output D:\\Codes\\BabelDOC-main\\examples\\ci\\output_baseline\\pdf\\AramcoWorld-en-v2 --files D:\\Codes\\BabelDOC-main\\examples\\ci\\AramcoWorld-en-v2.pdf",
+      "started_at_utc": "2026-08-14T00:45:28.2175207Z",
+      "ended_at_utc": "2026-08-14T00:47:59.6772302Z",
+      "elapsed_sec": 151.46,
+      "exit_code": 0,
+      "status": "ok",
+      "artifacts": [
+        {
+          "filename": "AramcoWorld-en-v2.no_watermark.zh.mono.pdf",
+          "path": "pdf/AramcoWorld-en-v2/AramcoWorld-en-v2.no_watermark.zh.mono.pdf",
+          "bytes": 3654608,
+          "pages": 9,
+          "sha256": "9d45fc58f62a1634c6684f8f341fb3fd6ef725f2f586fd024704ad0c8adf0ba2"
+        }
+      ],
+      "log": "logs/AramcoWorld-en-v2.log",
+      "upstream_fallback_warnings": {
+        "translation_same_as_input_fallback": 16,
+        "result_too_long_or_short": 2,
+        "fallback_to_simple_translation": 18,
+        "results_length_mismatch": 0
+      }
+    },
+    {
+      "sample": "FD-en-v2",
+      "direction": "en->zh",
+      "lang_in": "en",
+      "lang_out": "zh",
+      "input": {
+        "filename": "FD-en-v2.pdf",
+        "bytes": 1809060,
+        "pages": 9,
+        "sha256": "15e00ca85f0ee3ad9e3ae7a71af8808b57da6bb57f63708943b2a6b9dad4d622"
+      },
+      "command_line": "babeldoc -c <API_KEY_ONLY_CONFIG> --openai --openai-model gpt-4o --lang-in en --lang-out zh --watermark-output-mode no_watermark --no-dual --no-auto-extract-glossary --output D:\\Codes\\BabelDOC-main\\examples\\ci\\output_baseline\\pdf\\FD-en-v2 --files D:\\Codes\\BabelDOC-main\\examples\\ci\\FD-en-v2.pdf",
+      "started_at_utc": "2026-08-14T00:47:59.7510761Z",
+      "ended_at_utc": "2026-08-14T00:50:20.2130003Z",
+      "elapsed_sec": 140.46,
+      "exit_code": 0,
+      "status": "ok",
+      "artifacts": [
+        {
+          "filename": "FD-en-v2.no_watermark.zh.mono.pdf",
+          "path": "pdf/FD-en-v2/FD-en-v2.no_watermark.zh.mono.pdf",
+          "bytes": 2230396,
+          "pages": 9,
+          "sha256": "7b2d99895be0f37ace61a9879c06142b4d6d9e2d3ce50b16fa2411cbacc6943f"
+        }
+      ],
+      "log": "logs/FD-en-v2.log",
+      "upstream_fallback_warnings": {
+        "translation_same_as_input_fallback": 2,
+        "result_too_long_or_short": 3,
+        "fallback_to_simple_translation": 5,
+        "results_length_mismatch": 0
+      }
+    },
+    {
+      "sample": "Courier-zh",
+      "direction": "zh->en",
+      "lang_in": "zh",
+      "lang_out": "en",
+      "input": {
+        "filename": "Courier-zh.pdf",
+        "bytes": 3340450,
+        "pages": 8,
+        "sha256": "2975c623b0bc604a4deb15f36229de512d295f69e171462f083b3c7d494bbaf1"
+      },
+      "command_line": "babeldoc -c <API_KEY_ONLY_CONFIG> --openai --openai-model gpt-4o --lang-in zh --lang-out en --watermark-output-mode no_watermark --no-dual --no-auto-extract-glossary --output D:\\Codes\\BabelDOC-main\\examples\\ci\\output_baseline\\pdf\\Courier-zh --files D:\\Codes\\BabelDOC-main\\examples\\ci\\Courier-zh.pdf",
+      "started_at_utc": "2026-08-14T00:50:20.2799648Z",
+      "ended_at_utc": "2026-08-14T00:52:43.9423902Z",
+      "elapsed_sec": 143.66,
+      "exit_code": 0,
+      "status": "ok",
+      "artifacts": [
+        {
+          "filename": "Courier-zh.no_watermark.en.mono.pdf",
+          "path": "pdf/Courier-zh/Courier-zh.no_watermark.en.mono.pdf",
+          "bytes": 2140367,
+          "pages": 8,
+          "sha256": "71ca4c37ea0990a4a4dadb3d33db9e85dc5844213bbf371bccdbd7e3e2cd5aeb"
+        }
+      ],
+      "log": "logs/Courier-zh.log",
+      "upstream_fallback_warnings": {
+        "translation_same_as_input_fallback": 0,
+        "result_too_long_or_short": 5,
+        "fallback_to_simple_translation": 5,
+        "results_length_mismatch": 0
+      }
+    }
+  ],
+  "summary": {
+    "total": 6,
+    "ok": 6,
+    "failed": 0,
+    "total_elapsed_sec": 801.4,
+    "page_counts_preserved": true
+  },
+  "translation_cache": {
+    "localization": "None. Upstream writes the global cache at ~/.cache/babeldoc/cache.v1.db; there is no project-local cache in unmodified upstream.",
+    "global_db_path": "C:\\Users\\Azphire\\.cache\\babeldoc\\cache.v1.db",
+    "before_batch": {
+      "rows": 75,
+      "max_id": 75,
+      "bytes": 655360,
+      "mtime_local": "2026-08-10 01:46:40",
+      "content_note": "73 openai rows all carry model=gpt-4o-mini and 2 rows carry the fork-only 'magazine_brief' engine. The model is part of the cache key, so none of them could be hit by this gpt-4o batch: the outputs are genuinely fresh, not cache replays."
+    },
+    "after_batch": {
+      "rows": 337,
+      "max_id": 337,
+      "new_rows_since_boundary": 262,
+      "new_rows_breakdown": {
+        "openai gpt-4o en->zh": 220,
+        "openai gpt-4o zh->en": 42
+      },
+      "raw_file_bytes": 1880064,
+      "raw_file_mtime_utc": "2026-08-14T00:47:25.0824590Z",
+      "wal_bytes_at_copy_time": 4132392,
+      "wal_mtime_utc": "2026-08-14T00:52:15.3891959Z"
+    },
+    "frozen_copy": {
+      "path": "cache/cache.v1.db",
+      "rows": 337,
+      "max_id": 337,
+      "bytes": 2920448,
+      "sha256": "0e2f4b000745b5aed0293e3824536473e1c49fad3f5b8afe4ddb4f2bc913677d",
+      "method": "sqlite3 backup API from a read-only connection, NOT a raw file copy. At copy time the live db held a 4.1 MB uncommitted WAL, so a plain file copy would have silently dropped this batch's newest rows. The backup folds the WAL in and yields a self-contained, replayable db.",
+      "attribution_caveat": "Two fork-side processes (spec_checks/run_all.py and spec_checks/spec_check_b2.py, running in the separate 'babeldoc' conda env) held the global db open during this batch and were left running. All 262 new rows carry model=gpt-4o with exactly this batch's two language pairs, and no other engine or model appears, so attribution is consistent - but it is not exclusive by construction."
+    }
+  },
+  "tree_integrity": {
+    "method": "SHA-256 of every file under D:\\Codes\\BabelDOC-main (excluding examples/ci/output_baseline and __pycache__), taken before `pip install -e .` and again after the whole batch. Substitutes for `git status` because the download carries no git metadata.",
+    "files_hashed": 415,
+    "before_after": "IDENTICAL",
+    "conclusion": "Zero bytes of upstream source were modified by installing or by running the batch. The editable install wrote only into site-packages.",
+    "snapshot_file": "integrity/tree_sha256_after.txt"
+  },
+  "deliverable_note": "The whole examples/ci/output_baseline/ directory is the deliverable. Nothing was committed and no tag was created; this is not a fork batch."
+}

@@ -121,9 +121,19 @@
 - **成本**:零。
 - **不补的措辞**:不适用——这不是可以留着的缺口,是引用纪律。
 
-### GAP-07 关键出处文件未入库(本台账最大的单点风险)
+### GAP-07 关键出处文件未入库(本台账最大的单点风险)—— 已由 batch-e1 会话一分级入库
 
-- **现状**:下列出处**只存在于工作区**,不在任何 tag 里,一次 clone 或一次
+> **已补(分级)。** 用户裁定的入库集已进 git:`docs/dissertation/background_chapter.tex`、
+> `examples/baseline/manifest.json`、`examples/baseline/baseline.report.md`、
+> `examples/baseline/logs/`、`examples/baseline/integrity/`、`examples/baseline/cache/cache.v1.db`、
+> 四档消融的 `vlm_eval.report.json` 与 `vlm_eval.summary.txt`(见
+> `examples/output/vlm_ablation/gpt-4o/vlm_eval.report.json` 及同级另三档)、
+> 三份 sweep 日志(`examples/output/b4/run_all.b4_2.final.log`、
+> `examples/output/b2_7/run_all.full.log`、`examples/output/run_all.b8_3.log`)。
+> **六份基线成品 PDF 按体积不入库**,由 `spec_checks/spec_check_e0.py` 的工作区档以显式
+> "路径 + sha256"清单断言其存续。台账 C 组与 F 组的**入库**列因此已从 `worktree` 改为 `git`。
+
+- **原现状**:下列出处**只存在于工作区**,不在任何 tag 里,一次 clone 或一次
   `tools/prune_outputs.py` 就可能失去:
   - `examples/baseline/` 整目录(六份上游基线 PDF、manifest、日志、缓存冻结拷贝、完整性快照)
     —— 台账 F 全组、G-02 的唯一出处。
@@ -156,17 +166,21 @@
   > 首字下沉的处置在本系统中由人工裁决点记录(`dropCapDecision`),但排版层尚未消费该
   > 裁决,故本轴以目视对照呈现,不给出自动指标。
 
-### GAP-09 官方中文版原件与哈希已失效(台账 A-15)
+### GAP-09 官方中文版原件与哈希已失效(台账 A-15)—— 已由 batch-e1 会话一重锚
 
-- **现状**:b5.3 §1d 记录了官方中文版的 sha256 `fa789f8a…46a7d3ac`,但原件
+> **已补(重锚而非重取)。** 官方中文版原件早已在树内,只是台账指错了对象:语料样张
+> `examples/input/Courier-zh.pdf` 就是 UNESCO Courier 2026 年 1–3 月刊的官方中文版,
+> `corpus/manifest.json` 载其 sha256 `2975c623b0bc604a4deb15f36229de512d295f69e171462f083b3c7d494bbaf1`,
+> 且该条 notes 自述"Contains the official MID-WORD page split at zh p10->p11"。
+> A-15 的出处已改锚到该样张与登记文件,状态由 `needs-recompute` 改为 `直接可引`。
+
+- **原现状**:b5.3 §1d 记录了官方中文版的 sha256 `fa789f8a…46a7d3ac`,但那份产物
   `parallel/courier_official_zh.md` 已被保留策略淘汰(见台账"已失效产物登记"),
-  本会话无法现场核验该哈希。四方对照表的**引文本身**逐字保存在报告与
+  该哈希无法现场核验。四方对照表的**引文本身**逐字保存在报告与
   `docs/dissertation_assets/dissertation_b5_evidence_section_filled.md` 中,可引。
-- **补法**:重新取回官方中文版对应页,重记哈希并入库(用户侧资产)。
-- **成本**:零 API;一次外部取件。
-- **不补的措辞**:
-  > 官方中文版的对照引文取自 UNESCO Courier 2026 年 1–3 月刊官方中文版(2026-08-09 取得)。
-  > 引文逐字保存于本项目的批次报告中;**原件哈希不在本文中给出**。
+- **遗留纪律**:旧 sha256 `fa789f8a…46a7d3ac` 描述的是被淘汰的**抽取文本**,不是 PDF 原件,
+  两者不同物;论文一律引重锚后的样张哈希,旧值不得出现。
+- **成本**:零 API,零外部取件。
 
 ### GAP-10 VLM "policy 级零增益"的措辞与产物不符
 

@@ -76,6 +76,7 @@ GATES = (
     "spec_check_b8_3.py",
     "spec_check_b8_4.py",
     "spec_check_e0.py",
+    "spec_check_e1.py",
 )
 
 

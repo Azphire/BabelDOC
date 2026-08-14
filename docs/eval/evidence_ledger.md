@@ -63,8 +63,8 @@
 
 | # | 数字 | 出处 | 入库 | 论文用途 | 状态 |
 | --- | --- | --- | --- | --- | --- |
-| A-01 | 边界一致 **1.000 (26/26)**,门限 0.8,零 miss(v1 语料) | batch-b4.2 · `examples/output/b4/run_all.b4_2.final.log`:482;可由 `spec_checks/spec_check_b4.py` 断言 05 现场重算 | worktree | 链检测器达标的原始证据 | 直接可引(须标注"v1 语料") |
-| A-02 | 边界一致 **1.000 (28/28)**,限于 `layout_generalization` 角色(v2 语料) | batch-b7.5.1 · `examples/output/b7_5/refresh.report.md` §2;现行 witness `examples/output/run_all.b8_3.log`:508 | git(报告)/ worktree(日志) | **论文正文该引这一条**,26/26 作换血前的沿革 | 直接可引 |
+| A-01 | 边界一致 **1.000 (26/26)**,门限 0.8,零 miss(v1 语料) | batch-b4.2 · `examples/output/b4/run_all.b4_2.final.log`:482;可由 `spec_checks/spec_check_b4.py` 断言 05 现场重算 | git | 链检测器达标的原始证据 | 直接可引(须标注"v1 语料") |
+| A-02 | 边界一致 **1.000 (28/28)**,限于 `layout_generalization` 角色(v2 语料) | batch-b7.5.1 · `examples/output/b7_5/refresh.report.md` §2;现行 witness `examples/output/run_all.b8_3.log`:508 | git | **论文正文该引这一条**,26/26 作换血前的沿革 | 直接可引 |
 | A-03 | 零假阳性:**30** 条裁定负边界无一被连 | `corpus/chain_labels.user.json`(本会话现场统计);`spec_checks/spec_check_b7_5.py` `check_02d_no_false_link_anywhere` PASS,见 `examples/output/run_all.b8_3.log`:1500 | git | 检测器的"宁缺毋滥"性质 | 直接可引 |
 | A-04 | 语料边界台账:全语料 **35** 条(link 5 / no-link 30);约束域 **28** 条(link 3 / no-link 25);观察样张 7 条(link 2 / no-link 5) | `corpus/chain_labels.user.json`,本会话逐样张现场重算 | git | 语料章的边界规模 | 直接可引 |
 | A-05 | 约束域三条正样本得分 **0.950 / 0.950 / 1.000** | batch-b7.5.1 · `examples/output/b7_5/refresh.report.md` §4 | git | 正样本裕度 | 直接可引 |
@@ -77,18 +77,18 @@
 | A-12 | 邻段漂移:123 段匹配,**15 段变**(4 成员 + 11 邻段),集中在页 2/7/8 | `examples/output/b5_smoke/smoke.report.md` §3.1 | git | 重组效应的规模 | **需三跑**(见 D3 GAP-01) |
 | A-13 | 重组机制:页 2 一批 6→5、页 3 由 2 批→1 批、页 7 [6,3]→[6,4]、页 8 [3,6]→[3,6,1];cross-column 跟踪组 14→12,cross-page 真对稳定在 5 | `examples/output/b5_smoke/smoke.report.md` §3.1 | git | 机制可见性(与 A-12 的归因分开陈述) | 直接可引(机制);归因需三跑 |
 | A-14 | 成本:十一跑合计 **449** 次 translate(216 上行 / 233 缓存),**120 755** prompt tokens、**34 853** completion tokens | `examples/output/b5_smoke/smoke.report.md` §2 表 4 | git | 可复现性与成本章 | 直接可引 |
-| A-15 | 官方中文版页边界落在**词中**(`…协议中包` / `含惠益分享条款。`),原件 sha256 `fa789f8a…46a7d3ac` | `examples/output/b5_smoke/smoke.report.md` §1d | git(报告);原件已失效 | 四方对照表 | **needs-recompute**(哈希无法现场核验;若论文要写哈希须重新取原件) |
+| A-15 | 官方中文版页边界落在**词中**(`…协议中包` / `含惠益分享条款。`);原件重锚为语料样张 `examples/input/Courier-zh.pdf`,sha256 `2975c623b0bc604a4deb15f36229de512d295f69e171462f083b3c7d494bbaf1`(本会话按登记值现场复核),该样张的 notes 自述含 zh p10→p11 的官方词中切断 | `corpus/manifest.json`(sha 与 notes);引文原文 `examples/output/b5_smoke/smoke.report.md` §1d | git(登记)/ worktree(原件) | 四方对照表 | 直接可引(旧 sha256 `fa789f8a…46a7d3ac` 指向已淘汰的 `parallel/courier_official_zh.md`,一律不得再引) |
 
 ## B 分类线(页面类型)
 
 | # | 数字 | 出处 | 入库 | 论文用途 | 状态 |
 | --- | --- | --- | --- | --- | --- |
-| B-01 | raw 词表整体一致率 **0.903 (28/31)**;分刊物 6/8, 3/4, 8/8, 8/8, 3/3(v1) | batch-b2.7 · `examples/output/b2_7/run_all.full.log`:292–299 | worktree | 调参落点的原始数字 | 直接可引(须标注 v1) |
+| B-01 | raw 词表整体一致率 **0.903 (28/31)**;分刊物 6/8, 3/4, 8/8, 8/8, 3/3(v1) | batch-b2.7 · `examples/output/b2_7/run_all.full.log`:292–299 | git | 调参落点的原始数字 | 直接可引(须标注 v1) |
 | B-02 | LOPO **holdout 0.938** 与整体 0.903 的区分 | 唯一出处是 `plans/PLAN_B2_7.md`:22 的**转述**;调参会话的逐折矩阵从未落盘 | none | 泛化性论证的核心数字 | **needs-recompute**(见 D3 GAP-02) |
 | B-03 | 分位数候选词表:v1 **0.903 (28/31)**,v2 **0.788 (26/33)**,未采纳 | `spec_checks/spec_check_b2_7.py`:109–124(冻结表,batch-b7.5.1 重述为 v2) | git | 词表选型的负结果 | 直接可引 |
 | B-04 | 换血后 kind 与 policy 一致率均 **0.879 (29/33)**,门限 0.70,4 处 miss | batch-b7.5.1 · `examples/output/b7_5/refresh.report.md` §2;冻结表 `spec_checks/spec_check_b2_7.py`:109–116;witness `examples/output/run_all.b8_3.log`:130 | git | **论文正文该引这一条** | 直接可引 |
-| B-05 | 分刊物 binding:0.778 (7/9), 0.750 (3/4), 1.000 (8/8), 0.889 (8/9), 1.000 (3/3) | `examples/output/run_all.b8_3.log`:123–127 | worktree | 逐刊物分解 | 直接可引 |
-| B-06 | Courier-zh 观察基线:kind **0.250 (2/8)**,边界 **0.714 (5/7)** | `examples/output/run_all.b8_3.log`:129 与 507 | worktree | zh 侧未标定的基线,后续标定的对照起点 | 直接可引(须标注"该分布未参与任何调参") |
+| B-05 | 分刊物 binding:0.778 (7/9), 0.750 (3/4), 1.000 (8/8), 0.889 (8/9), 1.000 (3/3) | `examples/output/run_all.b8_3.log`:123–127 | git | 逐刊物分解 | 直接可引 |
+| B-06 | Courier-zh 观察基线:kind **0.250 (2/8)**,边界 **0.714 (5/7)** | `examples/output/run_all.b8_3.log`:129 与 507 | git | zh 侧未标定的基线,后续标定的对照起点 | 直接可引(须标注"该分布未参与任何调参") |
 | B-07 | 三处 miss 的特征级归因:`max_font_size_ratio` **4.286**(Aramco p8/p9);`numeric_token_density` **0.0503** 对门限 0.08(FD p7);`mean_paragraph_chars` **98.6** 对 `article_body` 的 110 与 `sidebar_heavy` 惩罚的 140(zh p8) | `examples/output/b7_5/refresh.report.md` §3、§4 | git | "误判可归因到单一阈值"的论证 | 直接可引 |
 | B-08 | 迁移零漂移:两条被替换样张与后继共享的 **25** 页判定全部未变 | `examples/output/b7_5/refresh.report.md` §3 | git | 换血未污染结论 | 直接可引 |
 | B-09 | 页型覆盖 **11 / 15**;未覆盖 `back_cover` `contributors` `interview` `letters_page` | `examples/output/b7_5/refresh.report.md` §1 | git | 语料局限 | 直接可引 |
@@ -98,10 +98,10 @@
 
 | # | 数字 | 出处 | 入库 | 论文用途 | 状态 |
 | --- | --- | --- | --- | --- | --- |
-| C-01 | 四点曲线(combined kind agreement,v1 语料,确定性基线一律 28/31 = 0.9032):`gpt-4o` **28/31 (0.9032)**、`gpt-4o-mini` **26/31 (0.8387)**、`gpt-5.6-sol` **28/31 (0.9032)**、`gpt-5.6-terra` **28/31 (0.9032)** | `examples/output/vlm_ablation/gpt-4o/vlm_eval.report.json` 等四份(`agreement.combined` 与 `agreement.deterministic`) | worktree | 消融曲线:四档模型无一超过确定性基线 | 直接可引(须标注 v1 语料 + 每模型各自的最小方差设定) |
-| C-02 | 路由页 **18 / 31**;routed 一致率 deterministic **15/18 (0.8333)**,combined 同为 15/18(`gpt-4o-mini` 降至 13/18) | `examples/output/vlm_ablation/gpt-4o/vlm_eval.summary.txt` 及同级另三档 | worktree | 兜底只作用于 18 页,分母须说明 | 直接可引 |
-| C-03 | 词表约束:accepted **18/18**,refused **0**,越界率 0.0(四档一致) | `examples/output/vlm_ablation/gpt-4o/vlm_eval.summary.txt` 及同级另三档 | worktree | 受约束输出可用性 | 直接可引 |
-| C-04 | 结论措辞"四档模型均无 **policy 级**增益" | 措辞出处 `CLAUDE.md`:30 与 `plans/PLAN_B4.md`:14;**产物只报 kind agreement 与 label_set_coverage,没有 policy 列** | git(措辞)/ worktree(产物) | 关账结论 | **需重述**(见 D3 GAP-03) |
+| C-01 | 四点曲线(combined kind agreement,v1 语料,确定性基线一律 28/31 = 0.9032):`gpt-4o` **28/31 (0.9032)**、`gpt-4o-mini` **26/31 (0.8387)**、`gpt-5.6-sol` **28/31 (0.9032)**、`gpt-5.6-terra` **28/31 (0.9032)** | `examples/output/vlm_ablation/gpt-4o/vlm_eval.report.json` 等四份(`agreement.combined` 与 `agreement.deterministic`) | git | 消融曲线:四档模型无一超过确定性基线 | 直接可引(须标注 v1 语料 + 每模型各自的最小方差设定) |
+| C-02 | 路由页 **18 / 31**;routed 一致率 deterministic **15/18 (0.8333)**,combined 同为 15/18(`gpt-4o-mini` 降至 13/18) | `examples/output/vlm_ablation/gpt-4o/vlm_eval.summary.txt` 及同级另三档 | git | 兜底只作用于 18 页,分母须说明 | 直接可引 |
+| C-03 | 词表约束:accepted **18/18**,refused **0**,越界率 0.0(四档一致) | `examples/output/vlm_ablation/gpt-4o/vlm_eval.summary.txt` 及同级另三档 | git | 受约束输出可用性 | 直接可引 |
+| C-04 | 结论措辞"四档模型均无 **policy 级**增益" | 措辞出处 `CLAUDE.md`:30 与 `plans/PLAN_B4.md`:14;**产物只报 kind agreement 与 label_set_coverage,没有 policy 列** | git | 关账结论 | **需重述**(见 D3 GAP-03) |
 | C-05 | 现行 `enabled: false` | `configs/vlm.json` | git | 默认全自动、无网络 | 直接可引 |
 
 ## D HITL 线(人工两遍式仲裁)
@@ -135,21 +135,27 @@
 | E-10 | 语料检测普查:`fragment_cluster` 3 处(CERN 2 / FD 1)、`text_figure_overlap` **0** | batch-b8.1 · `examples/output/b8/corpus_detection.md` | git | report-only 检测器的产出稀薄 | 直接可引 |
 | E-11 | b8.4 成本:**16** 次 API 调用、**30 635** prompt tokens、**26.6** 分钟 | `examples/output/b8_4/smoke.report.md` §1 | git | 成本章 | 直接可引 |
 | E-12 | 措辞出入两处:b8.3 §7 写"19, 24 and 28"(只数 residue),b8.4 §5 写"19, 25 and 32"(数全部 findings);b8.4 的 commit message 只写 "landed repair",未载主角 `p6#15` 被拒 | `examples/output/b8/smoke.report.md` §7;`examples/output/b8_4/smoke.report.md` §5;`git show 6ab55bb` | git | 引用前必须统一口径 | **需重述**(见 D3 GAP-05) |
+| E-13 | E-06 三处落地的逐处摘录(batch-e1 会话一现场读出):CERNCourier-en `p2#32` 由 `Volume 66 Number 4  July/August 2026` 变为 `第66卷第4期 2026年7月/8月`;FD-en-v2 `p5#14` 由 `ADVISORS TO THE EDITOR` 变为 `编辑顾问`;FD-en-v2 `p5#9` 由 `PRODUCTION MANAGER` 变为 `制作经理`。三处 `box_before` 与 `box_after` 四个坐标逐值相等,`vertical` 均为 false,`box_held` 均为 true;光栅对照 `examples/output/b8_4/smoke/raster/b8_3.p2_32.png` 与 `examples/output/b8_4/smoke/raster/b8_4.p2_32.png`(另两处同名以 `p5_14` / `p5_9` 结尾,页级图以 `.page2.png` / `.page5.png` 结尾) | `examples/output/b8_4/smoke/evidence.json` 的 `landed` 数组;同数据的表格形式 `examples/output/b8_4/smoke.report.md` §3 | git | E-06 的可摘录形式:修复落地这一承诺的候选证据主角(三处并列,选定权在用户) | 直接可引 |
 
 ## F 上游基线(比较基准)
 
-`examples/baseline/` 整目录未入库(`git status` 显示为未跟踪),因此下列全部条目的**入库**列
-都是 `worktree`。这是本台账最大的单点风险,见 D3 GAP-07。
+batch-e1 会话一按 D3 GAP-07 的优先级做了**分级入库**:`examples/baseline/manifest.json`、
+`examples/baseline/baseline.report.md`、`examples/baseline/logs/`、
+`examples/baseline/integrity/tree_sha256_after.txt` 与其 before 对照、
+`examples/baseline/cache/cache.v1.db` 已进 git,下列条目的出处因此都是 `git`。
+**六份基线成品 PDF(`examples/baseline/pdf/`)按体积不入库**,仍只存在于工作区;它们不是
+任何一行的直接出处(逐份 sha256 载于已入库的 manifest),其存续由 `spec_checks/spec_check_e0.py`
+的工作区档以显式"路径 + sha256"清单断言。
 
 | # | 数字 | 出处 | 入库 | 论文用途 | 状态 |
 | --- | --- | --- | --- | --- | --- |
-| F-01 | 六样张全部 exit 0,页数 1:1 守恒,总耗时 **801.4 s**;逐样张耗时 134.89 / 86.83 / 144.10 / 151.46 / 140.46 / 143.66 s,输出 sha256 全载 | `examples/baseline/manifest.json`;摘要表 `examples/baseline/baseline.report.md` §Results | worktree | 上游可跑通、成本可比 | 直接可引 |
-| F-02 | 版本对:上游为 main(post-`v0.6.4`-tag),**408 / 410** 文件与 fork 基线 `17480db` 逐字节相同,唯一差异是 `README.md`(两处链接改写,散文级) | `examples/baseline/manifest.json` 的 `version_pair.identity_evidence` | worktree | "同版本比较"的措辞依据 | 直接可引 |
-| F-03 | 零改动证明:**415** 个文件的 SHA-256 在 `pip install -e` 前后一致 | `examples/baseline/integrity/tree_sha256_after.txt`;结论在 `examples/baseline/manifest.json` 的 `tree_integrity` | worktree | 上游未被污染 | 直接可引 |
-| F-04 | 上游 fallback 警告矩阵(六样张 × same-as-input / too long-short / fell back / length mismatch) | `examples/baseline/baseline.report.md` §Results | worktree | 上游自陈的失败面 | 直接可引 |
-| F-05 | **五缺陷家族**:未擦除原文 / 首字下沉 / display 与 chrome 文本漏译 / 文本流损坏 / 整块静默漏译 | `examples/baseline/baseline.report.md` §Cross-cutting patterns | worktree | **E3 对照轴的来源**,映射见 D3 GAP-08 | 直接可引 |
-| F-06 | 警告数不追踪可见质量:Vogue-en 零警告却含全批最明显的整块漏译;CERNCourier-en 19 次 fallback 却产出全批最干净的一页 | `examples/baseline/baseline.report.md` §Results 末段 | worktree | 论证"须用几何/覆盖指标而非引擎自陈" | 直接可引 |
-| F-07 | 缓存:批前 75 行(全部 `gpt-4o-mini` 或 fork 专有引擎,模型进 key 故不可命中)→ 批后 337 行,新增 **262**(220 en→zh + 42 zh→en);冻结拷贝 sha256 `0e2f4b00…`,以 SQLite backup API 而非文件拷贝取得 | `examples/baseline/manifest.json` 的 `translation_cache` | worktree | "输出是新翻译而非缓存重放" | 直接可引(**必须连同 manifest 的 attribution caveat 一起引:归因一致但不排他**) |
+| F-01 | 六样张全部 exit 0,页数 1:1 守恒,总耗时 **801.4 s**;逐样张耗时 134.89 / 86.83 / 144.10 / 151.46 / 140.46 / 143.66 s,输出 sha256 全载 | `examples/baseline/manifest.json`;摘要表 `examples/baseline/baseline.report.md` §Results | git | 上游可跑通、成本可比 | 直接可引 |
+| F-02 | 版本对:上游为 main(post-`v0.6.4`-tag),**408 / 410** 文件与 fork 基线 `17480db` 逐字节相同,唯一差异是 `README.md`(两处链接改写,散文级) | `examples/baseline/manifest.json` 的 `version_pair.identity_evidence` | git | "同版本比较"的措辞依据 | 直接可引 |
+| F-03 | 零改动证明:**415** 个文件的 SHA-256 在 `pip install -e` 前后一致 | `examples/baseline/integrity/tree_sha256_after.txt`;结论在 `examples/baseline/manifest.json` 的 `tree_integrity` | git | 上游未被污染 | 直接可引 |
+| F-04 | 上游 fallback 警告矩阵(六样张 × same-as-input / too long-short / fell back / length mismatch) | `examples/baseline/baseline.report.md` §Results | git | 上游自陈的失败面 | 直接可引 |
+| F-05 | **五缺陷家族**:未擦除原文 / 首字下沉 / display 与 chrome 文本漏译 / 文本流损坏 / 整块静默漏译 | `examples/baseline/baseline.report.md` §Cross-cutting patterns | git | **E3 对照轴的来源**,映射见 D3 GAP-08 | 直接可引 |
+| F-06 | 警告数不追踪可见质量:Vogue-en 零警告却含全批最明显的整块漏译;CERNCourier-en 19 次 fallback 却产出全批最干净的一页 | `examples/baseline/baseline.report.md` §Results 末段 | git | 论证"须用几何/覆盖指标而非引擎自陈" | 直接可引 |
+| F-07 | 缓存:批前 75 行(全部 `gpt-4o-mini` 或 fork 专有引擎,模型进 key 故不可命中)→ 批后 337 行,新增 **262**(220 en→zh + 42 zh→en);冻结拷贝 sha256 `0e2f4b00…`,以 SQLite backup API 而非文件拷贝取得 | `examples/baseline/manifest.json` 的 `translation_cache` | git | "输出是新翻译而非缓存重放" | 直接可引(**必须连同 manifest 的 attribution caveat 一起引:归因一致但不排他**) |
 
 ## G 方法论与基础设施特属
 
@@ -166,16 +172,16 @@
 
 ## 状态汇总
 
-分组行数:A 15、B 10、C 5、D 10、E 12、F 7、G 6,**合计 65 条**。
+分组行数:A 15、B 10、C 5、D 10、E 13、F 7、G 6,**合计 66 条**。
 
 计数规则:一行按其状态单元格中**最先出现**的那个状态词归类(A-13 因此归入"直接可引",
 其"归因需三跑"的半条在 D3 GAP-01 里与 A-12 合并处理)。
 
 | 状态 | 条数 | 条目 |
 | --- | ---: | --- |
-| 直接可引 | 59 | 其余全部 |
+| 直接可引 | 61 | 其余全部 |
 | 需三跑 | 1 | A-12 |
-| needs-recompute | 3 | A-15、B-02、E-09 |
+| needs-recompute | 2 | B-02、E-09 |
 | 需重述 | 2 | C-04、E-12 |
 
 needs-recompute 与需三跑的完整清单、重算来源与 E2 运行矩阵见 `docs/eval/gap_register.md` §1。

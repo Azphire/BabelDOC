@@ -1,0 +1,172 @@
+﻿babeldoc.exe : fatal: not a git repository (or any of the parent directories): .git
+At C:\Users\Azphire\AppData\Local\Temp\claude\d--Codes-BabelDOC-main\9ae3bfb4-604a-483d-bf2e-b00d2878a814\scratchpad\ru
+n_all.ps1:49 char:5
++     & $exe @argList *> $logF
++     ~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (fatal: not a gi...ectories): .git:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+[08/14/26 01:48:02] INFO     INFO:babeldoc.docvision.base_ base_doclayout.py:43
+                             doclayout:Loading ONNX                            
+                             model...                                          
+                    INFO     INFO:babeldoc.docvision.doclayout: doclayout.py:73
+                             Available Provider:                               
+                             CPUExecutionProvider                              
+[08/14/26 01:48:05] INFO     INFO:babeldoc.format.pdf.high_le high_level.py:533
+                             vel:start to translate:                           
+                             D:\Codes\BabelDOC-main\examples\                  
+                             ci\FD-en-v2.pdf                                   
+warning: The `fitz` API is deprecated and will be removed in future. Use `import pymupdf` instead.
+[08/14/26 01:49:30] INFO     INFO:babeldoc.format il_translator_llm_only.py:171
+                             .pdf.document_il.mid                              
+                             end.il_translator_ll                              
+                             m_only:Found title                                
+                             paragraph: FINANCE &                              
+                             DEVELOPMENT                                       
+                    INFO     INFO:babeldoc.format il_translator_llm_only.py:192
+                             .pdf.document_il.mid                              
+                             end.il_translator_ll                              
+                             m_only:Found first                                
+                             title paragraph:                                  
+                             FINANCE &                                         
+                             DEVELOPMENT                                       
+[08/14/26 01:49:40] WARNING  WARNING:babeldoc.for il_translator_llm_only.py:787
+                             mat.pdf.document_il.                              
+                             midend.il_translator                              
+                             _llm_only:Translatio                              
+                             n result is too long                              
+                             or too short. Input:                              
+                             2, Output: 8                                      
+                    WARNING  WARNING:babeldoc.for il_translator_llm_only.py:828
+                             mat.pdf.document_il.                              
+                             midend.il_translator                              
+                             _llm_only:Fallback                                
+                             to simple                                         
+                             translation.                                      
+                             paragraph id: eAton                               
+[08/14/26 01:49:43] WARNING  WARNING:babeldoc.for il_translator_llm_only.py:787
+                             mat.pdf.document_il.                              
+                             midend.il_translator                              
+                             _llm_only:Translatio                              
+                             n result is too long                              
+                             or too short. Input:                              
+                             23, Output: 5                                     
+                    WARNING  WARNING:babeldoc.for il_translator_llm_only.py:828
+                             mat.pdf.document_il.                              
+                             midend.il_translator                              
+                             _llm_only:Fallback                                
+                             to simple                                         
+                             translation.                                      
+                             paragraph id: ha2ns                               
+[08/14/26 01:49:45] WARNING  WARNING:babeldoc.for il_translator_llm_only.py:778
+                             mat.pdf.document_il.                              
+                             midend.il_translator                              
+                             _llm_only:Translatio                              
+                             n result is the same                              
+                             as input, fallback.                               
+                    WARNING  WARNING:babeldoc.for il_translator_llm_only.py:828
+                             mat.pdf.document_il.                              
+                             midend.il_translator                              
+                             _llm_only:Fallback                                
+                             to simple                                         
+                             translation.                                      
+                             paragraph id: 3YCjE                               
+[08/14/26 01:49:46] WARNING  WARNING:babeldoc.for il_translator_llm_only.py:778
+                             mat.pdf.document_il.                              
+                             midend.il_translator                              
+                             _llm_only:Translatio                              
+                             n result is the same                              
+                             as input, fallback.                               
+                    WARNING  WARNING:babeldoc.for il_translator_llm_only.py:828
+                             mat.pdf.document_il.                              
+                             midend.il_translator                              
+                             _llm_only:Fallback                                
+                             to simple                                         
+                             translation.                                      
+                             paragraph id: MCyPc                               
+[08/14/26 01:49:47] WARNING  WARNING:babeldoc.for il_translator_llm_only.py:787
+                             mat.pdf.document_il.                              
+                             midend.il_translator                              
+                             _llm_only:Translatio                              
+                             n result is too long                              
+                             or too short. Input:                              
+                             3, Output: 9                                      
+                    WARNING  WARNING:babeldoc.for il_translator_llm_only.py:828
+                             mat.pdf.document_il.                              
+                             midend.il_translator                              
+                             _llm_only:Fallback                                
+                             to simple                                         
+                             translation.                                      
+                             paragraph id: gcqS9                               
+[08/14/26 01:49:48] INFO     INFO:babeldoc.format il_translator_llm_only.py:255
+                             .pdf.document_il.mid                              
+                             end.il_translator_ll                              
+                             m_only:Translation                                
+                             completed. Total:                                 
+                             138, Successful:                                  
+                             133, Fallback: 5                                  
+fatal: not a git repository (or any of the parent directories): .git
+[08/14/26 01:50:15] INFO     INFO:babeldoc.format.pdf.docum pdf_creater.py:1285
+                             ent_il.backend.pdf_creater:Fon                    
+                             t subsetting completed                            
+                             successfully                                      
+fatal: not a git repository (or any of the parent directories): .git
+[08/14/26 01:50:17] INFO     INFO:babeldoc.format.pdf.docum pdf_creater.py:1400
+                             ent_il.backend.pdf_creater:PDF                    
+                              save with clean=True                             
+                             completed successfully                            
+                    INFO     INFO:babeldoc.format.pdf.high_le high_level.py:411
+                             vel:Peak memory usage: 2301.75                    
+                             MB                                                
+                    INFO     INFO:babeldoc.format.pdf.high_le high_level.py:688
+                             vel:finish translate:                             
+                             D:\Codes\BabelDOC-main\examples\                  
+                             ci\FD-en-v2.pdf, cost:                            
+                             132.81237626075745 s                              
+[08/14/26 01:50:18] INFO     INFO:babeldoc.format.pdf.high_le high_level.py:754
+                             vel:No TOC found in the original                  
+                             PDF, skipping migration.                          
+translate                                              ----- 100/… 0:02… 0:00:…
+Parse PDF and Create Intermediate Representation (1/1) ----- 9/9   0:00… 0:00:…
+DetectScannedFile (1/1)                                ----- 9/9   0:00… 0:00:…
+Parse Page Layout (1/1)                                ----- 18/18 0:00… 0:00:…
+Parse Paragraphs (1/1)                                 ----- 9/9   0:00… 0:00:…
+Parse Formulas and Styles (1/1)                        ----- 9/9   0:00… 0:00:…
+Translate Paragraphs (1/1)                             ----- 189/… 0:00… 0:00:…
+Typesetting (1/1)                                      ----- 18/18 0:00… 0:00:…
+Add Fonts (1/1)                                        ----- 462/… 0:00… 0:00:…
+Generate drawing instructions (1/1)                    ----- 9/9   0:00… 0:00:…
+Subset font (1/1)                                      ----- 1/1   0:00… 0:00:…
+Save PDF (1/1)                                         ----- 2/2   0:00… 0:00:…
+                    INFO     INFO:babeldoc.main:Translation         main.py:763
+                             results:                                          
+                                     Original PDF:                             
+                             D:\Codes\BabelDOC-main\examples\ci\FD-            
+                             en-v2.pdf                                         
+                                     Total time: 132.81 seconds                
+                                     Monolingual PDF:                          
+                             D:\Codes\BabelDOC-main\examples\ci\out            
+                             put_baseline\pdf\FD-en-v2\FD-en-v2.no_            
+                             watermark.zh.mono.pdf                             
+                                     Peak memory usage:                        
+                             2301.74609375 MB                                  
+                                     Total valid character count:              
+                             13923                                             
+                                     Total valid text token count              
+                             (gpt-4o): 3054                                    
+translate                                              ----- 100/… 0:02… 0:00:…
+Parse PDF and Create Intermediate Representation (1/1) ----- 9/9   0:00… 0:00:…
+DetectScannedFile (1/1)                                ----- 9/9   0:00… 0:00:…
+Parse Page Layout (1/1)                                ----- 18/18 0:00… 0:00:…
+Parse Paragraphs (1/1)                                 ----- 9/9   0:00… 0:00:…
+Parse Formulas and Styles (1/1)                        ----- 9/9   0:00… 0:00:…
+Translate Paragraphs (1/1)                             ----- 189/… 0:00… 0:00:…
+Typesetting (1/1)                                      ----- 18/18 0:00… 0:00:…
+Add Fonts (1/1)                                        ----- 462/… 0:00… 0:00:…
+Generate drawing instructions (1/1)                    ----- 9/9   0:00… 0:00:…
+Subset font (1/1)                                      ----- 1/1   0:00… 0:00:…
+Save PDF (1/1)                                         ----- 2/2   0:00… 0:00:…                    INFO     INFO:babeldoc.format.pdf translation_config.py:472
+                             .translation_config:clea                          
+                             nup temp files:                                   
+                             C:\Users\Azphire\AppData                          
+                             \Local\Temp\tmpk5g2571x                           

@@ -132,6 +132,15 @@ NAME_REFERENCE_ALLOW_LIST = NAME_DEFINITION_FILES | {
     # for the same reason, and renumbers the chain id when it compares two runs
     # of one pipeline; neither the loop nor the gate writes an IL field.
     "spec_checks/spec_check_b8_2.py",
+    # E1 measures a finished document and writes nothing into one. The mid-unit
+    # page-break rate reads the chain pair and the sentence range to tell a
+    # display continuation from a cut sentence; the conservation invariant reads
+    # the chain id out of a sidecar to name the chain that failed it. Its gate
+    # builds paragraphs carrying all four, so the verdicts it asserts are driven
+    # by geometry and fields the gate controls.
+    "babeldoc/magazine/metrics/mid_break_rate.py",
+    "babeldoc/magazine/metrics/conservation.py",
+    "spec_checks/spec_check_e1.py",
 }
 
 # Upstream files carried over from B0, still uncommitted in the working tree.

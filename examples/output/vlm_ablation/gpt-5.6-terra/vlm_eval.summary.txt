@@ -1,0 +1,24 @@
+model=gpt-5.6-terra enabled=True dpi=150 rows=3
+setting: temperature=None token_parameter=max_completion_tokens max_output_tokens=512
+prompt prompts/page_classify_vlm.md d492aba1f5f52a48bb6dff5f7bec7cf9675649e24a37686f9a9658e0581620b0
+cost: routed=18 requests=18 pipeline_requests=36 cache_hits=0 attempts=18
+fallback: accepted=18/18 refused=0 rate=0.0
+routed_pages_deterministic: 15/18 = 0.8333 | coverage 15/18 = 0.8333
+routed_pages_combined: 15/18 = 0.8333 | coverage 15/18 = 0.8333
+agreement by publication (deterministic -> combined) | label set coverage (deterministic -> combined):
+  overall          28/31 (0.9032) -> 28/31 (0.9032) | 28/31 (0.9032) -> 28/31 (0.9032)
+  aramcoworld      6/8 (0.75) -> 6/8 (0.75) | 6/8 (0.75) -> 6/8 (0.75)
+  cern_courier     3/4 (0.75) -> 4/4 (1.0) | 3/4 (0.75) -> 4/4 (1.0)
+  imf_fd           8/8 (1.0) -> 8/8 (1.0) | 8/8 (1.0) -> 8/8 (1.0)
+  unesco_courier   8/8 (1.0) -> 7/8 (0.875) | 8/8 (1.0) -> 7/8 (0.875)
+  vogue_us         3/3 (1.0) -> 3/3 (1.0) | 3/3 (1.0) -> 3/3 (1.0)
+pages the second candidate alone covers: 0
+secondary Courier-en.pdf#1: editorial + toc :: The left half is a table of contents with section entries and page numbers.
+secondary Courier-en.pdf#4: article_body + sidebar_heavy :: A large boxed LINKS programme information panel occupies the lower third of the page.
+secondary CERNCourier-en.pdf#1: front_cover + editorial :: A welcome/editorial letter occupies the left-hand page.
+secondary CERNCourier-en.pdf#2: toc + advertisement :: The facing left-hand page is a full-page conference advertisement.
+secondary CERNCourier-en.pdf#3: article_opener + advertisement :: A full-page Bergonz Instrumentation advertisement occupies the left-hand page.
+pages the fallback moved: 3
+  Courier-en.pdf#3 photo_spread -> section_divider (miss)
+  CERNCourier-en.pdf#1 editorial -> front_cover (hit)
+  CERNCourier-en.pdf#4 interview -> article_body (hit)

@@ -1,0 +1,24 @@
+model=gpt-4o-mini enabled=True dpi=150 rows=3
+setting: temperature=0.0 token_parameter=max_tokens max_output_tokens=512
+prompt prompts/page_classify_vlm.md d492aba1f5f52a48bb6dff5f7bec7cf9675649e24a37686f9a9658e0581620b0
+cost: routed=18 requests=0 pipeline_requests=0 cache_hits=18 attempts=0
+fallback: accepted=18/18 refused=0 rate=0.0
+routed_pages_deterministic: 15/18 = 0.8333 | coverage 15/18 = 0.8333
+routed_pages_combined: 13/18 = 0.7222 | coverage 13/18 = 0.7222
+agreement by publication (deterministic -> combined) | label set coverage (deterministic -> combined):
+  overall          28/31 (0.9032) -> 26/31 (0.8387) | 28/31 (0.9032) -> 26/31 (0.8387)
+  aramcoworld      6/8 (0.75) -> 7/8 (0.875) | 6/8 (0.75) -> 7/8 (0.875)
+  cern_courier     3/4 (0.75) -> 3/4 (0.75) | 3/4 (0.75) -> 3/4 (0.75)
+  imf_fd           8/8 (1.0) -> 7/8 (0.875) | 8/8 (1.0) -> 7/8 (0.875)
+  unesco_courier   8/8 (1.0) -> 6/8 (0.75) | 8/8 (1.0) -> 6/8 (0.75)
+  vogue_us         3/3 (1.0) -> 3/3 (1.0) | 3/3 (1.0) -> 3/3 (1.0)
+pages the second candidate alone covers: 0
+pages the fallback moved: 8
+  Courier-en.pdf#3 photo_spread -> article_opener (miss)
+  Courier-en.pdf#7 article_opener -> article_body (miss)
+  CERNCourier-en.pdf#3 article_opener -> article_body (miss)
+  CERNCourier-en.pdf#4 interview -> article_body (hit)
+  FD-en.pdf#8 article_opener -> article_body (miss)
+  AramcoWorld-en.pdf#5 article_opener -> article_body (miss)
+  AramcoWorld-en.pdf#7 article_opener -> article_body (hit)
+  AramcoWorld-en.pdf#8 article_opener -> article_body (hit)

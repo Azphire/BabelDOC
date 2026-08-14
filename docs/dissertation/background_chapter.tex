@@ -1,0 +1,1275 @@
+\chapter{Background}
+\label{chap:background}
+
+This chapter positions the project against existing work and
+establishes the concepts the rest of the report depends on.
+Section~\ref{sec:background-problem} defines the magazine translation
+problem and argues that layout preservation is part of translation
+correctness, with particular attention to the typographic divergence
+between Latin and Chinese. Section~\ref{sec:background-routes} surveys
+the three automatic routes to layout-preserving translation and
+justifies this project's choice of the PDF-native route.
+Section~\ref{sec:background-ir} examines intermediate representations
+for documents through three case studies, and
+Section~\ref{sec:background-babeldoc} analyses BabelDoc, the system
+this project extends, in depth --- including the boundary between its
+work and this project's. Section~\ref{sec:background-agentic}
+introduces the ReAct pattern and defines the parameter-bounded
+autonomy contract adopted here;
+Section~\ref{sec:background-hitl} reviews constrained and
+human-in-the-loop translation; and
+Section~\ref{sec:background-eval} reviews evaluation instruments for
+translated documents, from sentence-level metrics to document-level
+coherence and geometric layout quality.
+
+\section{The Magazine Translation Problem and Why Layout Matters}
+\label{sec:background-problem}
+
+\subsection{Layout as Part of Translation Correctness}
+
+A magazine page is not a container for text; it is an instruction for
+how to read. Column order determines sentence order across column
+breaks. Visual hierarchy --- headline, standfirst, body, caption ---
+tells the reader what is content and what is apparatus. Devices such
+as pull quotes duplicate body text for emphasis, drop caps mark article
+openings, and sidebars carry content that is related to, but must not
+be interleaved with, the main article. When several articles share a
+page, or one article spans several pages, only the layout distinguishes
+one text from another and indicates where each continues.
+
+Layout preservation is therefore part of translation
+\emph{correctness}, not an aesthetic afterthought. If a translated
+page breaks column order, the reader receives sentences in the wrong
+sequence; if it collapses hierarchy, apparatus and content become
+indistinguishable; if it merges blocks across article boundaries, the
+output interleaves two texts that were never one. Each of these is a
+meaning-level failure produced entirely at the layout level, and none
+of them is detectable in the translated text alone. This is the
+central reason the present project treats the rendered page, not the
+extracted text, as the unit of evaluation
+(Section~\ref{sec:background-eval}).
+
+\subsection{Typographic Divergence between Latin and Chinese}
+\label{sec:background-typography}
+
+English-to-Chinese translation makes the layout problem harder in ways
+that are specific to the script pair, and that reward being stated
+precisely \cite{w3c_clreq}.
+
+First, the two scripts justify text by different mechanisms. Latin
+typography sets words separated by spaces, and justifies a paragraph
+by distributing adjustment across inter-word spaces, letter spacing,
+and hyphenation. Chinese typography sets a continuous run of
+predominantly full-width characters with no word delimiters:
+justification cannot lean on inter-word spaces that do not exist;
+the primary fine adjustment is the compression of full-width
+punctuation, with inter-character spacing admitted only as a
+secondary method \cite{w3c_clreq}. The \emph{inter-word} axis on
+which Latin justification chiefly relies is thus absent entirely,
+and the remaining axes are conventionally used far more sparingly.
+%% VERIFIED V01 2026-08-14 https://www.w3.org/TR/clreq/#line_adjustment
+%% clreq §6.2.2: line adjustment applies punctuation-width adjustment
+%% first and adds space between Han characters only when that is
+%% insufficient.
+The main axis of variation that Latin compositors use to fit text into
+a fixed geometry is thus absent on the Chinese side; where an English
+paragraph can be coaxed into a tight box by re-spacing, the Chinese
+translation of that paragraph largely either fits or does not.
+
+Second, line breaking follows different rules. Chinese permits a break
+between almost any two characters, subject to prohibition rules that
+forbid certain punctuation at line starts and ends \cite{w3c_clreq},
+and it does not hyphenate; English breaks only at spaces and
+hyphenation points. Line-break opportunity is therefore denser in
+Chinese but constrained differently, and naive re-use of the source's
+line geometry produces violations of the target script's conventions.
+
+Third, the visual footprint of the same content changes. A Chinese
+rendering typically uses far fewer characters than its English source,
+but each character occupies a full em square; the translated block is
+therefore generally not the same size or shape as the space vacated by
+the source text.
+%% VERIFIED V02 2026-08-14 resolved qualitative; optional corpus
+%% footprint ratio deferred to evaluation chapter (owner note)
+Reinserting translated text into the exact source boxes consequently
+tends to produce either large blank areas or overflow --- the failure
+mode observed in the pilot studies of Section~\ref{sec:background-routes} --- and
+this, together with the justification asymmetry above, is the concrete
+motivation for treating text placement as a reflow problem over
+article-level regions rather than a box-filling problem over
+block-level regions (Chapter~\ref{chap:method}).
+
+Throughout this report, ``Chinese'' refers to Simplified Chinese, and
+English-to-Chinese magazine translation is the primary studied
+direction; the corpus and direction choices are justified in
+Section~\ref{sec:corpus}.
+%% NOTE: this sentence absorbs the scoping material that the interim
+%% report carried in Section 1.1 (which the second marker judged too
+%% early there); keep Chapter 1 down to one forward reference.
+% =====================================================================
+% Section 2.2 — Automatic Routes to Layout-Preserving Translation
+% (draft v1)
+% Three-route taxonomy replacing interim sections 2.1 (partly) and 2.2.
+% Conventions as before. Figures reuse the interim filenames.
+% MMT paragraph (mmt_survey_2024, futeral2023commute) deliberately
+% omitted pending the architecture decision on visual context in
+% translation; if the final translator consumes page images, add one
+% sentence at the end of 2.2.2 rather than restoring the old paragraph.
+% =====================================================================
+
+\section{Automatic Routes to Layout-Preserving Translation}
+\label{sec:background-routes}
+
+Automatic approaches that preserve layout while translating fall into
+three routes, distinguished by what they take as input and what they
+make explicit in between: commercial end-to-end systems, academic work
+on document \emph{image} translation, and PDF-native pipelines that
+consume the document's own text layer and geometry. This section
+surveys all three, explains why this project builds on the third, and
+identifies the limitation the three routes share.
+
+\subsection{Commercial Document Translation Systems}
+
+DeepL Document Translation translates uploaded documents while aiming
+to preserve their layout and design \cite{deepl_document_translation}.
+Its engineering discussion of PDF translation is unusually informative
+about mechanism: the pipeline reconstructs the document after
+translation, and the team describes using page position and
+bounding-box overlap as signals of layout quality
+\cite{deepl_document_workflow} --- an early industrial precedent for
+the geometric evaluation measures discussed in
+Section~\ref{sec:background-layoutmetrics}. In the pilot comparison
+run for this project (Figure~\ref{fig:deepl-pilot}), DeepL produced
+relatively fluent Chinese and preserved the broad structure of the
+page, but when translated text did not fit the source geometry it
+moved the excess onto an additional, sparsely filled page --- an
+acceptable compromise for office documents, but not for a magazine,
+where the page grid is part of the product.
+
+\begin{figure}[tbp]
+    \centering
+    \includegraphics[width=\linewidth]{\detokenize{figures/deepl pilot.png}}
+    \caption{DeepL Document Translation preserves part of the page
+    structure, but may move overflow content to an additional sparse
+    page.}
+    \label{fig:deepl-pilot}
+\end{figure}
+
+Google Cloud Document Translation likewise aims to preserve original
+formatting and layout \cite{google_document_translation}. In the pilot
+(Figure~\ref{fig:google-pilot}) it was fast and retained image
+placement and broad page geometry, but text segmentation followed
+visual lines rather than semantic paragraphs: multi-column body text
+and pull quotes were fragmented into line-level units, which damages
+both readability and --- because each fragment is translated with
+truncated context --- translation accuracy itself.
+
+\begin{figure}[!htbp]
+    \centering
+    \includegraphics[width=\linewidth]{\detokenize{figures/google pilot.png}}
+    \caption{Google Document Translation can split paragraphs into
+    line-level fragments, degrading both layout and translation
+    accuracy.}
+    \label{fig:google-pilot}
+\end{figure}
+
+A third commercial-adjacent route generates the translated page as an
+image. GPT-based visual translation (Figure~\ref{fig:gpt-pilot})
+produced natural-looking, magazine-styled Chinese pages, but the
+output behaves as a picture rather than a document: characters may be
+blurred or malformed --- consistent with prior findings that image
+generation models struggle to render well-formed glyphs
+\cite{liu2022characteraware} --- and the text is not reliably
+editable, searchable, or traceable to its source.
+
+\begin{figure}[!htbp]
+    \centering
+    \includegraphics[width=0.70\linewidth]{\detokenize{figures/gpt pilot.png}}
+    \caption{GPT-based visual translation can look plausible, but
+    distorted or blurred characters are not standard Chinese glyphs,
+    and the output is an image rather than structured text.}
+    \label{fig:gpt-pilot}
+\end{figure}
+
+These pilots are motivating observations, not a benchmark: each system
+was run in its default configuration on a small number of pages, and
+the observations identify failure modes rather than measure rates.
+%% NOTE: this framing sentence survived from the interim report and
+%% was not criticised; keep it.
+
+\subsection{The Image Route: Document Image Translation}
+\label{sec:background-routes-image}
+
+Academic work has concentrated on the harder input condition where the
+document is only available as an image. The classical pipeline runs
+OCR and then machine translation, but OCR output fragments paragraphs
+into lines, misses decorative or image-internal text, and propagates
+its recognition errors into every downstream stage --- a weakness
+identified explicitly by Kim et al., whose Donut model removes OCR
+entirely and maps the page image to structured output end-to-end,
+improving over OCR-dependent pipelines on information-extraction
+benchmarks (on CORD, 84.1 vs.\ 78.9 F1) while avoiding per-language
+OCR engineering
+\cite{kim2021donut}.
+%% VERIFIED V03 2026-08-14 https://arxiv.org/abs/2111.15664 (Tab. 2;
+%% claim scoped to the information-extraction benchmarks per owner
+%% adjudication)
+In the same spirit, multimodal document models such as LayoutLMv3
+jointly encode text and image with unified masking objectives and
+word--patch alignment, improving document understanding tasks over
+text-only encoding: its base model reaches 90.29 F1 on FUNSD and
+96.56 F1 on CORD, against 66.48 and 93.54 for the comparably sized
+text-only RoBERTa \cite{huang2022layoutlmv3}.
+%% VERIFIED V04 2026-08-13 https://arxiv.org/pdf/2204.08387 (Table 1)
+
+Document image translation (DIT) work builds translation directly into
+this setting. Translatotron-V translates text inside images end-to-end
+and introduces Structure-BLEU, which couples translation scoring to
+spatial correspondence
+(Section~\ref{sec:background-layoutmetrics})
+\cite{lan2024translatotron}, matching the strongest cascaded
+OCR--translate--render pipeline on German--English in-image
+translation (15.39 against 15.37 BLEU) with roughly 71\% of its
+parameters. QRDIT addresses whole-page,
+complex-layout documents with a query--response framework that
+concentrates translation on relevant regions \cite{zhang2025query},
+improving the previous state of the art (LayoutDIT) by 2.14 average
+BLEU across the three English--Chinese DITrans domains (26.84 against
+24.70), and ZoomDIT recovers document-level coherence from fragmented OCR
+words through a fine-to-coarse zoom-out network \cite{zhang2025chaotic},
+improving the same baseline by 2.27 average BLEU on English--Chinese
+DIT700K (38.72 against 36.45).
+%% VERIFIED V05 2026-08-13 https://aclanthology.org/2024.findings-acl.325/ ;
+%% https://aclanthology.org/2025.findings-acl.372/ (Tab. 3) ;
+%% https://aclanthology.org/2025.coling-main.723/ (Tab. 3)
+Collectively this line establishes techniques for exactly the page
+phenomena magazines exhibit --- dense mixed layouts, region-dependent
+translation, fragmented text recovery --- but always under the
+assumption that the source text must be recovered from pixels.
+% NOTE: if the final architecture consumes page images during
+% translation, add ONE sentence here on multimodal context (restore
+% keys mmt_survey_2024 / futeral2023commute); do not restore the old
+% MMT paragraph.
+
+\subsection{The PDF-Native Route}
+\label{sec:background-routes-pdfnative}
+
+When the document is born digital, its exact text, fonts, and geometry
+are already present in the PDF, and a third route consumes them
+directly. BabelDoc \cite{qi2026babeldoc} is the representative and,
+to the knowledge gathered for this report, the only open-source system
+on this route with a published system description: it parses the PDF
+into an explicit intermediate representation, translates over that
+representation with document-level operations, and re-anchors the
+translated content into the source geometry. Because this project is
+built as an extension of BabelDoc, the system is examined in depth in
+Section~\ref{sec:background-babeldoc}, and its representation is compared with
+other document IRs in Section~\ref{sec:background-ir}.
+
+\subsection{Route Choice, Scope, and the Shared Gap}
+\label{sec:background-routes-gap}
+
+\paragraph{Route choice.} Contemporary magazines are produced with
+digital layout tools, and their PDFs carry a complete text layer. For
+such documents the image route answers a harder question than the one
+being asked: recovering text from pixels that the file already
+contains verbatim, at the cost of OCR error propagation
+\cite{kim2021donut} and the loss of exact fonts and geometry. This
+project therefore takes the PDF-native route. An early prototype of
+this project rasterised pages and applied OCR before this decision was
+revisited; the change and its rationale are recorded in
+Chapter~\ref{chap:method}.
+%% NOTE: one honest sentence about the early OCR prototype
+%% pre-empts the question the second marker asked about rasterisation,
+%% without re-arguing it here.
+
+\paragraph{Scope.} The PDF-native route defines this project's
+applicability boundary: a PDF is not guaranteed to contain an
+extractable text layer, and scanned or legacy magazine issues do not.
+For those inputs the image route of
+Section~\ref{sec:background-routes-image} is the appropriate technology, and
+extending the present system with an image-route front end is future
+work. All corpora used in this project are born-digital
+(Section~\ref{sec:corpus}), and the generalisation claims of
+Chapter~\ref{chap:eval} are made within this boundary.
+
+\paragraph{The shared gap.} Across all three routes, processing is
+scoped to the page or below: blocks are detected per page, translated
+per page, and re-placed per page. None of the routes carries an
+explicit unit for the \emph{article} --- the text that readers
+actually follow, which routinely spans pages and shares pages with
+other articles. The consequences are concrete: a sentence split by a
+page break is translated as two fragments that cannot see each other,
+and terminology drifts between pages of the same article. Direct
+computational work on magazine translation specifically remains
+scarce, and the article-level gap identified here is, to the best of
+the review conducted for this project, unaddressed on any of the three
+routes; closing it is the central technical contribution of this
+project (Chapter~\ref{chap:method}), and the failure it causes is
+demonstrated empirically in Section~\ref{sec:eval-midbreak}.
+% =====================================================================
+% Section 2.3 — Intermediate Representations for Documents (draft v1)
+% Case-study section requested explicitly by the second marker.
+% Same conventions as section_2_4_babeldoc.tex:
+%  - %% VERIFY marks facts to re-check against primary sources.
+%  - \ref placeholders: \ref{sec:background-routes} (2.2), \ref{sec:background-babeldoc} (2.4),
+%    \ref{chap:method}, \ref{sec:method-two-layer}.
+%  - Bib keys reused from interim report: docling2025, smoldocling2025;
+%    new key qi2026babeldoc (defined with Section 2.4 draft).
+% =====================================================================
+
+\section{Intermediate Representations for Documents}
+\label{sec:background-ir}
+
+The routes surveyed in Section~\ref{sec:background-routes} differ in how much of
+the document they make explicit between input and output. This section
+examines the design space of explicit document representations, because
+the representation chosen determines what a translation pipeline can
+know, check, and revise. The term \emph{intermediate representation}
+(IR) is used here in the same sense as in compiler construction: a
+structured, inspectable encoding of the artefact being transformed,
+which decouples analysis from generation and allows each stage to be
+validated independently. A pipeline that passes plain text between
+stages cannot answer questions such as ``which source block does this
+translated sentence come from?'' or ``was every extracted block
+rendered?''; a pipeline built around an explicit IR can. Three recent
+systems illustrate three distinct points in this design space, and each
+is examined below for what it represents, what it demonstrably does
+well, and what it lacks for the magazine translation task.
+
+\subsection{Case Study: DoclingDocument}
+
+Docling is an open-source document conversion toolkit built around a
+unified representation called \texttt{DoclingDocument}, defined as a
+typed (Pydantic) data model \cite{docling2025}. The representation
+expresses text, tables, pictures, captions and lists; document
+hierarchy through sections and groups; an explicit distinction between
+body content and \emph{furniture} such as headers and footers; layout
+information as bounding boxes for all items; and provenance information
+such as page numbers and document origin \cite{docling2025}.
+Construction is performed by specialised models --- a layout detector
+derived from RT-DETR and trained on DocLayNet, and the TableFormer
+table-structure model --- and the resulting document can be traversed
+in reading order, serialised losslessly to JSON, or exported to
+Markdown and HTML \cite{docling2025}.
+%% VERIFIED V06 2026-08-13 https://arxiv.org/abs/2501.17887 (toolkit paper
+%% states the layout model is "derived from RT-DETR ... re-trained on
+%% DocLayNet" and names TableFormer; DoclingDocument is defined there as a
+%% Pydantic model with furniture and provenance)
+
+Two design decisions in \texttt{DoclingDocument} are directly relevant
+to this project. The furniture distinction shows the value of
+separating repeating page apparatus from article content --- the same
+separation magazine pages require for rails, folios, and running heads.
+The provenance model shows that a representation can carry ``where did
+this come from'' alongside ``what is this'', which is the precondition
+for any auditable pipeline. What the representation lacks, reasonably
+given its purpose, is anything specific to transformation: it records
+what a document \emph{is}, not what is being \emph{done to it}. There
+is no translation state, no source-to-target linkage, and its hierarchy
+assumes an essentially linear document of sections --- it has no unit
+for several independent articles sharing one page, nor for one article
+spanning several pages.
+
+\subsection{Case Study: DocTags}
+
+SmolDocling takes a different position: instead of assembling a
+representation from specialised detectors, a single ultra-compact
+vision--language model (256M parameters, combining a SigLIP visual
+backbone with a SmolLM-2 language backbone) reads a page image and
+autoregressively generates the full page representation in a markup
+format called DocTags \cite{smoldocling2025}. DocTags defines a
+structured vocabulary that separates textual content from document
+structure, covering captions, charts, forms, code, equations, tables,
+footnotes, lists, page headers and footers, section headings, and body
+text --- fourteen layout classes in total --- with each element
+annotated with its bounding box, and OCR performed within elements as
+part of the same generation \cite{smoldocling2025}. The result is
+competitive with substantially larger models: on full-page text
+recognition over DocLayNet the 256M-parameter model reports an F1 of
+0.80 and an edit distance of 0.48, against 0.72 and 0.56 for the
+7B-parameter Qwen2.5-VL \cite{smoldocling2025}.
+%% VERIFIED V07 2026-08-13 https://arxiv.org/abs/2503.11576 (Table 2;
+%% the "27 times larger" figure in the paper is a parameter-count
+%% comparison and is deliberately not used here as a quality margin)
+
+For this project, DocTags demonstrates two things. First, that a typed
+role vocabulary --- a closed set of named element classes --- makes a
+page representation both compact and checkable; this idea recurs in the
+page-kind vocabulary of Chapter~\ref{chap:method}. Second, and by way
+of contrast, it illustrates the cost of an end-to-end generative
+representation for a translation workflow: DocTags is produced one page
+at a time from a page image, so the representation is inherently
+page-scoped, and its content passes through autoregressive generation
+rather than extraction from the source. For a born-digital magazine
+PDF, where the exact source text is available, regenerating that text
+through a model reintroduces precisely the fidelity risk that
+PDF-native extraction avoids (Section~\ref{sec:background-routes}).
+
+\subsection{Case Study: The BabelDoc IL}
+
+BabelDoc's Intermediate Language, described in detail in
+Section~\ref{sec:background-babeldoc}, occupies a third position: unlike the two
+representations above, it is designed \emph{for} transformation rather
+than for conversion. The IL records character-level text, style, and
+detected layout regions from the source PDF, and the pipeline's
+document-level operations --- terminology extraction,
+glossary-constrained generation, formula placeholdering --- operate
+over this state before an adaptive typesetting engine re-anchors the
+translated content into the source geometry \cite{qi2026babeldoc}. The
+IL therefore does carry transformation state, and it is the only
+representation of the three in which ``source block'' and ``translated
+block'' are linked objects. Its structural ceiling, established in
+Section~\ref{sec:background-babeldoc}, is that this state stops at the block and
+page level: there is no unit between block and document, so article
+identity, cross-page continuity, and article-scoped context cannot be
+represented.
+
+\subsection{Synthesis}
+
+Table~\ref{tab:ir-comparison} summarises the three representations
+against the requirements of layout-preserving magazine translation.
+Each contributes a proven idea; none covers the requirements alone.
+
+\begin{table}[tb]
+\centering
+\small
+\begin{tabular}{p{0.26\linewidth}p{0.20\linewidth}p{0.20\linewidth}p{0.22\linewidth}}
+\hline
+ & \textbf{DoclingDocument} & \textbf{DocTags} & \textbf{BabelDoc IL} \\
+\hline
+Primary purpose & conversion & end-to-end conversion & translation \\
+Construction & specialised detectors & generative VLM & PDF-native parsing \\
+Structural units & section hierarchy, furniture & typed page elements & blocks, pages \\
+Cross-page semantics & none & none (page-scoped) & context sharing only (\S\ref{sec:background-babeldoc}) \\
+Transformation state & none & none & source--target linkage \\
+Human adjudication & none & none & none \\
+\hline
+\end{tabular}
+\caption{Document representations compared against the requirements of
+layout-preserving magazine translation. All three lack an article-level
+unit and human-adjudicated semantics; only the BabelDoc IL carries
+translation state.}
+\label{tab:ir-comparison}
+\end{table}
+%% VERIFIED V08 2026-08-14 aligned with the Section 2.4 wording adopted
+%% under E1: the IL shares context across a page boundary but does not
+%% reconstruct a cross-page unit.
+
+The synthesis this project draws is as follows. From
+\texttt{DoclingDocument} it takes the principles that provenance
+belongs inside the representation and that page apparatus should be
+structurally separated from content. From DocTags it takes the value of
+a closed, typed vocabulary of element and page roles. From the BabelDoc
+IL it takes the translation-oriented core: an inspectable state in
+which source and target remain linked through rendering. What none of
+the three provides --- an authoritative unit for the article, spanning
+pages and carrying translation-boundary semantics, together with a
+mechanism for human-adjudicated metadata to take precedence over
+machine-extracted structure --- is what the two-layer representation
+developed in Chapter~\ref{chap:method} adds: an article layer whose
+paragraph-level chain identifiers are the single authority for
+translation-unit boundaries, and a page layer whose page kinds are
+consumed only as policy priors, never as content authority.
+%% NOTE: keep the final sentence structurally parallel to the boundary
+%% statement in Section 2.4 --- the two passages are the ``existing
+%% work ends / my work begins'' pair for representations and for the
+%% base system respectively.
+% =====================================================================
+% Section 2.4 — BabelDoc as the Base System (draft v1)
+% Style notes:
+%  - Every claim about BabelDoc is sourced to the paper or project docs.
+%  - %% VERIFY comments mark facts to check against the original before
+%    submission (exact numbers, authorship, current README).
+%  - \ref placeholders point at chapters/sections to be named later:
+%    \ref{chap:method}, \ref{sec:eval-midbreak}, \ref{sec:corpus}.
+%  - Suggested bib key: qi2026babeldoc (replaces any yang2026 draft key).
+% =====================================================================
+
+\section{BabelDoc as the Base System}
+\label{sec:background-babeldoc}
+
+The system developed in this project is built as an extension of
+BabelDoc, an open-source, IR-based framework for layout-preserving PDF
+translation \cite{qi2026babeldoc}. This section describes what BabelDoc
+does and what evidence supports its design, explains why it was chosen
+as the base system, and then identifies the specific limitations that
+define where this project's work begins.
+
+\subsection{Design and Evidence}
+
+BabelDoc addresses a tension identified by its authors between
+linguistic processing and layout preservation: computer-assisted
+translation systems tend to discard structural metadata, while document
+parsers extract structure but do not support faithful re-rendering
+after translation \cite{qi2026babeldoc}. Its central design decision is
+an explicit Intermediate Language (IL) that decouples visual layout
+metadata from semantic content. The pipeline parses the PDF into the IL
+(recording text, character-level position, style, and detected layout
+regions), performs analysis and translation over the IL, and finally
+re-anchors the translated content into the original page geometry
+through an adaptive typesetting engine. Because translation operates on
+an explicit document state rather than on raw extracted text, the
+framework can support document-level operations such as terminology
+extraction, glossary-constrained generation, formula placeholdering,
+and a degree of cross-page context handling \cite{qi2026babeldoc}.
+%% VERIFIED V09 2026-08-13 https://aclanthology.org/2026.acl-demo.25/ (the
+%% paper names its stages "Multimodal Parsing", "NLP & Semantic Engine" and
+%% "Adaptive Typesetting & Reconstruction"; frontend/midend/backend do not
+%% occur in the paper, so the avoidance above is correct)
+
+The framework is supported by empirical evidence rather than by design
+argument alone. Its authors evaluate on a curated 200-page benchmark
+spanning three domains --- scientific literature (80 pages), technical
+documentation (60 pages), and international patents (60 pages) ---
+using human evaluation and multimodal LLM-as-a-judge protocols
+alongside geometric measures including bounding-box IoU
+\cite{qi2026babeldoc}. On this benchmark, against the two baselines
+they evaluate --- DeepL Document Translation and PDFMathTranslate ---
+BabelDoc improves layout fidelity, visual aesthetics, and terminology
+consistency: in the human evaluation it scores 4.59, 4.46, and 4.47 on
+a 1--5 scale, against 3.44, 3.63, and 4.21 for DeepL and 3.29, 3.28,
+and 3.34 for PDFMathTranslate, with a bounding-box IoU of 50.0\%
+against 19.8\% and 48.7\% respectively
+%% VERIFIED V10 2026-08-13 https://aclanthology.org/2026.acl-demo.25/ (Tab. 3)
+\cite{qi2026babeldoc}. Two results deserve emphasis because they shape
+how the system should be used. First, in the LLM-as-a-judge evaluation
+BabelDoc's translation-precision score ties with DeepL, and in the
+human evaluation DeepL leaves fewer untranslated blocks; the authors
+conclude that BabelDoc's contribution lies not in replacing strong
+translation engines but in providing a layout-aware, controllable
+document-level pipeline around them \cite{qi2026babeldoc}. Second, the
+authors attribute part of the residual error to extraction-side
+omissions and rendering-stage coverage gaps \cite{qi2026babeldoc} ---
+that is, to silent losses between pipeline stages. Both observations
+directly motivate design choices in this project: the first locates the
+research contribution at the pipeline level rather than the
+translation-engine level, and the second motivates the explicit
+conservation checks introduced in
+Chapter~\ref{chap:method}.
+%% NOTE: the conservation-invariant link here is a deliberate set-up;
+%% the eval chapter should call back to this sentence.
+
+\subsection{Why BabelDoc Was Chosen}
+
+Three properties make BabelDoc the appropriate base among the routes
+surveyed in Section~\ref{sec:background-routes}. First, it is PDF-native: it
+consumes the text layer and geometry of born-digital PDFs directly,
+avoiding the OCR error propagation discussed in
+Section~\ref{sec:background-routes} \cite{kim2021donut}. Second, its IL is an
+explicit, inspectable document state, which is a precondition for the
+auditable, revisable workflow this project targets; a pipeline that
+passes opaque text between stages could not support the two-layer
+document representation developed in Chapter~\ref{chap:method}. Third,
+it is open source with a published system description
+\cite{qi2026babeldoc}, which makes a disciplined extension possible:
+the boundary between upstream behaviour and this project's changes can
+be stated, versioned, and audited precisely.
+
+\subsection{Limitations for Magazine Translation}
+
+BabelDoc was designed and validated for documents whose dominant
+structure is a single linear reading flow --- papers, manuals, and
+patents. Magazines violate this assumption in specific ways, and each
+limitation below is grounded either in the paper, in the project's
+public documentation, or in reproducible failures observed on the
+corpus used in this project (Section~\ref{sec:corpus}).
+
+First, the benchmark contains no magazine-like domain: none of its
+three document classes exhibits the multi-column article layouts,
+pull quotes, table-of-contents grids, sidebar boxes, or rail elements
+that characterise magazine pages \cite{qi2026babeldoc}. The domain gap
+is concrete rather than rhetorical: the project documentation lists
+drop caps --- a standard magazine typographic device --- as
+unsupported \cite{babeldoc_repo_docs}.
+%% VERIFIED V11 2026-08-13 https://github.com/funstory-ai/BabelDOC (README,
+%% "Known Issues": "Does not support drop caps."; accessed 2026-08-13.
+%% Cited to the repository documentation, not to the paper.)
+
+Second, and centrally for this project, the base system's cross-page
+handling shares context but does not reconstruct units. Inspection of
+the translation module shows the mechanism precisely: at a page
+boundary, the last body-text paragraph of one page and the first of
+the next --- selected by a whitelist heuristic --- are placed into the
+same translation batch, so that each fragment's prompt can see the
+other.\footnote{Functions \texttt{process\_cross\_page\_paragraph} and
+\texttt{process\_cross\_column\_paragraph} in the upstream translation
+module, inspected at the pinned upstream release v0.6.4, commit
+\texttt{17480db9}; paragraph selection via the
+\texttt{\_is\_body\_text\_paragraph} heuristic.} The fragments
+nevertheless remain independent translation
+units: each produces its own output, each output is re-anchored to its
+own source box, and the typesetting stage remains strictly
+page-scoped. A sentence physically split by a page break is therefore
+still materialised as two outputs rendered into two boxes; whether the
+splice reads as one sentence is delegated entirely to prompt-level
+cooperation between two generation calls, with no structural
+guarantee --- no merged unit, no redistribution of translated text
+across the boundary, and no conservation relation tying the two
+outputs together. The framework's claim of cross-page context handling
+\cite{qi2026babeldoc} is thus accurate, but narrower than unit-level
+continuity. On the corpus prepared for this project, real mid-sentence
+page breaks under exactly this mechanism reproducibly caused
+translation defects; the defects, their mechanism, and their repair
+are analysed in Section~\ref{sec:eval-midbreak}. Notably, the official
+human-translated Chinese edition of the same magazine also resorts to
+mid-unit breaks in places where the extended system does not, which
+suggests the problem is a genuine editorial difficulty rather than an
+artefact of automatic processing (Section~\ref{sec:eval-midbreak}).
+%% VERIFIED V12 2026-08-14 owner adjudication + source inspection
+%% (il_translator_llm_only.py at 17480db9df92ddcb37349ce34b312335226e8ec9,
+%% "Release v0.6.4", 2026-07-17; the pin is now declared in the header of
+%% UPSTREAM_DIFF.md)
+
+Third, BabelDoc has no article-level document model. Magazine pages
+frequently interleave several articles, and a single article frequently
+spans several pages; correct translation therefore requires knowing
+which blocks belong to the same article and in what order they are
+read. BabelDoc's IL records pages and blocks but carries no unit
+between ``block'' and ``document'', so it cannot represent article
+identity, cross-page continuity, or article-scoped terminology
+context.
+
+Fourth, terminology handling is automatic only. BabelDoc extracts
+glossaries and applies them during generation \cite{qi2026babeldoc},
+but there is no mechanism for a human editor to adjudicate terms,
+override automatically extracted entries, or have such decisions
+persist and take priority in a controlled way --- a requirement for
+publication-grade translation workflows
+(Section~\ref{sec:background-hitl}).
+
+Fifth, processing strategy is fixed. The pipeline applies the same
+treatment to every page, with no per-page policy selection, no bounded
+configuration surface, and no audit trail recording why a given page
+was processed in a given way. For heterogeneous magazine issues ---
+where a table-of-contents grid, a photo spread, and a dense three-column
+article demand different handling --- a single fixed strategy is
+insufficient, and an unlogged adaptive one would be unauditable.
+
+\subsection{Boundary of This Project's Work}
+
+The limitations above define the boundary between upstream work and
+this project. Everything described so far in this section is BabelDoc's
+contribution. This project's contributions, developed in
+Chapter~\ref{chap:method}, are: an article-level representation layered
+above the IL, with paragraph-level chain identifiers as the single
+authority for translation-unit boundaries; a page-level strategy layer
+that maps page kinds to policy flags consumed as soft priors; a
+human-in-the-loop adjudication protocol for terminology with explicit
+priority semantics; a parameter-bounded controller that selects
+strategies only through typed, range-bounded configuration; and a
+conservation-based evaluation harness.
+
+Two engineering disciplines keep this boundary auditable. Upstream
+modifications are minimised, and every modification to BabelDoc itself
+is recorded individually in a change log (\texttt{UPSTREAM\_DIFF.md})
+kept under version control, so that the exact delta between the
+published system and the extended system is inspectable at any commit.
+All extensions live outside the upstream codebase, consume the IL
+through its public structure, and route translation through a single
+locked entry point, so that no behaviour of the extended system is
+silently attributable to hidden upstream changes.
+%% NOTE (do not delete lightly): this final paragraph is the direct
+%% answer to the second marker's request to show ``where existing work
+%% stops and your work begins''; if space is tight elsewhere, cut
+%% elsewhere.
+
+% ---------------------------------------------------------------------
+% Suggested bibliography entry (Vancouver note style, matching
+% references.bib conventions in the interim report):
+%
+% @misc{qi2026babeldoc,
+%   note = {Qi Y, Ma X, Wang X, Wang H, Wang R. BabelDOC: better
+%   layout-preserving PDF translation via intermediate representation.
+%   In: Proceedings of the 64th Annual Meeting of the Association for
+%   Computational Linguistics (Volume 3: System Demonstrations); 2026
+%   Jul; San Diego, California, United States. Association for
+%   Computational Linguistics; 2026. p. 253--262.
+%   doi: 10.18653/v1/2026.acl-demo.25. Available from:
+%   \url{https://aclanthology.org/2026.acl-demo.25/}.
+%   arXiv:2605.10845}
+% }
+% %% VERIFIED V13 2026-08-13 https://aclanthology.org/2026.acl-demo.25.bib
+% ---------------------------------------------------------------------
+% =====================================================================
+% Section 2.5 — Agentic Control and Parameter-Bounded Autonomy
+% (draft v1)
+% Conventions as before. \ref placeholders: \ref{chap:method},
+% \ref{sec:method-controller}, \ref{sec:background-eval},
+% \ref{sec:background-babeldoc}.
+% Audit decisions implemented:
+%  - AutoGen citation dropped; the single-controller demarcation
+%    sentence stands without it (see %% NOTE below to reinstate if
+%    preferred).
+%  - ReAct receives its full definition HERE; Chapter 1 keeps only a
+%    parenthetical forward reference "(see Section 2.5)".
+%  - The interim sentence "The translation task is iterative and
+%    failure-prone" is replaced by a claim scoped to THIS workflow.
+% =====================================================================
+
+\section{Agentic Control and Parameter-Bounded Autonomy}
+\label{sec:background-agentic}
+
+\subsection{ReAct and Tool-Calling}
+
+The workflow built in this project --- parse, plan, translate, place,
+render, inspect, and revise --- is iterative and failure-prone: any
+stage can fail, and failures are often only observable downstream, when
+a critic inspects the rendered result. A controller for such a
+workflow must therefore be able to act, observe the consequences, and
+revise its plan, rather than execute a fixed sequence once.
+
+The pattern this project adopts for that controller is ReAct,
+introduced by Yao et al.\ at ICLR 2023 \cite{yao2023react}. ReAct
+prompts a language model to interleave \emph{reasoning traces} ---
+free-text reflection on the current state of the task --- with
+\emph{actions} that query tools or an environment, so that reasoning
+can steer subsequent actions and observations from actions can revise
+subsequent reasoning. The evidence for the pattern is substantial: on
+knowledge-intensive tasks (HotpotQA, Fever), interleaving actions with
+reasoning reduced the hallucination observed in reasoning-only
+chain-of-thought prompting, and on interactive decision-making
+benchmarks the authors report improvements over imitation- and
+reinforcement-learning baselines of roughly 34 and 10 absolute
+percentage points in success rate (ALFWorld and WebShop respectively),
+from prompting alone with one or two in-context examples
+\cite{yao2023react}.
+%% VERIFIED V14 2026-08-13 https://arxiv.org/abs/2210.03629 (Sec. 1: "two or
+%% even one-shot ReAct prompting is able to outperform imitation or
+%% reinforcement learning methods trained with 10^3 ~ 10^5 task instances,
+%% with an absolute improvement of 34% and 10% in success rates
+%% respectively" --- ALFWorld and WebShop, as stated above)
+
+The mechanism by which a model's decisions become executable is the
+tool-calling pattern: the model selects a tool and emits structured
+arguments; the application validates and executes the call and returns
+the result as the model's next observation
+\cite{openai_function_calling}. Two properties of this pattern matter
+for what follows: the model never executes anything itself, and every
+decision it takes is materialised as a structured, loggable object.
+%% NOTE: if an academic citation is preferred alongside the vendor
+%% documentation, Toolformer (Schick et al. 2023) is the standard
+%% choice; add key schick2023toolformer and one clause.
+
+In this project the controller is a single ReAct-style decision module
+operating over the document state, with specialised components ---
+parser, translator, layout planner, renderer, critics --- exposed to
+it as tools. It is a single-controller architecture, not a multi-agent
+system: no component other than the controller plans or delegates, and
+the specialised components are deliberately kept as callable functions
+with structured inputs and outputs.
+%% NOTE: if a citation is wanted for the multi-agent contrast, the
+%% dropped AutoGen reference (wu2023autogen) can be reinstated for
+%% exactly this sentence and nothing else.
+
+\subsection{From Free-Form Agency to Bounded Control}
+\label{sec:background-pba}
+
+The ReAct pattern specifies \emph{when} a controller decides ---
+interleaved with observation --- but not \emph{what it is allowed to
+decide}. At one extreme, the controller's action space includes
+emitting free-form instructions, rules, or code that downstream stages
+then obey. This maximises flexibility, and it is the prevailing style
+in general-purpose agent frameworks; but for a research system it has
+two costs that compound. First, auditability: when behaviour is shaped
+by generated text, explaining an output requires interpreting prose,
+and the effective configuration of the system at any moment has no
+schema against which it can be checked. Second, reproducibility: two
+runs of the same pipeline on the same input can diverge because the
+controller phrased a rule differently, which makes ablation --- the
+attribution of an observed improvement to a specific mechanism ---
+unreliable. For a project whose evaluation rests on controlled
+comparisons (Section~\ref{sec:background-eval}), an unconstrained
+action space would undermine the evidence.
+
+This project therefore adopts, and names, a narrower contract between
+controller and pipeline: \emph{parameter-bounded autonomy}. The term
+is defined by this project as follows. The controller retains full
+autonomy over \emph{which} decisions to take and \emph{when} --- the
+ReAct loop is intact --- but every decision must be expressed through
+one of two typed channels: composing \emph{declarative constraints}
+drawn from a closed, typed vocabulary, or adjusting \emph{numerical
+parameters} each of which carries an explicitly declared admissible
+range. The controller can never emit free-form rules, prompts, or
+code into the pipeline. Three properties follow directly. Every
+controller decision is machine-checkable: a constraint either belongs
+to the vocabulary or is rejected, and a parameter either lies in its
+declared range or is rejected. The system's complete decision surface
+is enumerable in advance: it is the vocabulary and the ranges, both of
+which are versioned configuration rather than emergent behaviour. And
+runs are reproducible up to the controller's choices themselves, which
+are logged as structured values and can be replayed exactly.
+%% NOTE: this definition must match the method chapter's mechanics
+%% word-for-word in the key terms (typed vocabulary; declared
+%% admissible range; structured logging/replay). Draft the method
+%% chapter's definition by copying, not paraphrasing, these clauses.
+
+The division of labour that results is worth stating, because it
+answers a natural objection. The specialised tools in this system are
+unapologetically layout-specific --- drop-cap handling, column reflow,
+and rail detection exist because magazines need them. Generality is
+not sought in the tools but in the controller and its contract: the
+controller reasons only over typed page evidence and bounded
+parameters, never over publication-specific rules, so adapting the
+system to a new magazine --- or, prospectively, to other layout-heavy
+document families such as textbooks or illustrated manuals --- means
+extending the tool set and the vocabulary, not rewriting the
+controller. The evaluation design enforces this division: the
+generalisation protocol of Chapter~\ref{chap:eval} configures the
+system without access to the held-out publication, which is only
+meaningful because no publication-specific behaviour can hide inside
+free-form controller output.
+%% NOTE: this paragraph is the corrected version of the interim
+%% sentence "The purpose is not to hard-code magazine-specific rules"
+%% that the second marker flagged as self-contradictory; the fix is
+%% the explicit tools-specific / controller-general division, with
+%% transferability as the motivation, per the marker's own suggestion.
+
+Within this contract, the controller's remaining discretion is real:
+strategy selection per page, constraint composition per article, and
+parameter adjustment within ranges are all consequential decisions,
+and Chapter~\ref{chap:method} describes how they are made and logged.
+What the contract removes is precisely the discretion that could not
+be audited afterwards.
+% =====================================================================
+% Section 2.6 — Human-in-the-Loop and Constrained Translation
+% (draft v1)
+% Conventions as before. \ref placeholders: \ref{chap:method},
+% \ref{sec:method-hitl}, \ref{chap:eval}, \ref{sec:background-agentic}.
+% New bib keys introduced here (add to references.bib):
+%   hokamp2017gbs   — Hokamp & Liu, ACL 2017, grid beam search.
+%   dinu2019terminology — Dinu et al., ACL 2019, training-time
+%                     terminology via inline annotation. %% VERIFY key
+%                     details before adding; drop if 2.6 is over length.
+% Existing keys reused: hasler2018terminology, yang2023human.
+% This section grounds the interim claim "modeling human requirements
+% as explicit constraints" that the second marker flagged as appearing
+% from nowhere.
+% =====================================================================
+
+\section{Human-in-the-Loop and Constrained Translation}
+\label{sec:background-hitl}
+
+Magazine content is dense with items whose translation is a matter of
+editorial decision rather than linguistic inference: brand and product
+names, personal and place names with established renderings, recurring
+column titles, and terms the publication deliberately leaves in the
+source language. A translation workflow for publication therefore
+needs a way for humans to constrain the machine --- and, just as
+importantly, a defined account of what happens when human and machine
+disagree. This section reviews how existing work represents and
+enforces such constraints, and identifies the part of the problem that
+remains open.
+
+\subsection{Constrained Machine Translation}
+
+Imposing pre-specified lexical constraints on neural translation has
+been studied along two lines. The first enforces constraints
+\emph{at decoding time}. Grid beam search extends beam search with an
+additional dimension tracking how many constraints each hypothesis has
+satisfied, guaranteeing that supplied words or phrases appear in the
+output \cite{hokamp2017gbs}; Hasler et al.\ develop this direction
+with finite-state tracking of constraint coverage, and frame adherence
+to user-provided terminology as a recognised open challenge for neural
+translation \cite{hasler2018terminology}, reporting gains of up to
+3 BLEU from decoding with up to two dictionary constraints per
+sentence.
+%% VERIFIED V15 2026-08-13 https://aclanthology.org/N18-2081/ (Sec. 2.1
+%% finite-state acceptors + multi-stack decoding, Sec. 2.2 attention-informed
+%% constraint placement; Sec. 4.2 "Decoding with up to two dictionary
+%% constraints per sentence yields gains of up to 3 BLEU". GBS
+%% characterisation cross-checked against Hokamp & Liu 2017, Fig. 3, where
+%% the added grid dimension is one row per constraint token.)
+Constrained decoding offers hard guarantees, but the literature
+records its costs. Decoding slows substantially: grid beam search
+multiplies the number of beams by the number of constraints, giving a
+runtime linear in that number rather than constant
+\cite{hokamp2017gbs}, and Hasler et al.\ measure constrained decoding
+running at between a fifth and a ninth of unconstrained speed for two
+to four constraints per sentence \cite{hasler2018terminology}. And
+forcing constraint tokens into the beam tends to reduce the fluency of
+the surrounding translation: Post and Vilar show a decoder pushed to
+place a lexically ill-fitting constraint distorting the sentence
+around it, and attribute this to the model, once forced off the path
+it prefers, no longer generating good competing hypotheses
+\cite{post2018dba}.
+%% VERIFIED V16 2026-08-14 speed half: https://aclanthology.org/P17-1141/
+%% (Sec. 3.3, O(ktc) vs O(kt)) and https://aclanthology.org/N18-2081/
+%% (Tab. 3, speed ratios 0.20/0.14/0.11 for c=2/3/4). Fluency half:
+%% https://aclanthology.org/N18-1119/ (Fig. 6 caption and Sec. 6.4
+%% "reference aversion"). The Post & Vilar evidence is a qualitative
+%% demonstration plus model-score analysis, not a fluency score; the
+%% hu2019vdba fallback was therefore not needed --- see the log.
+Constraints in this line may be \emph{positive} (a rendering that must
+appear) or \emph{negative} (a rendering that must not) --- a
+distinction that maps directly onto the terminology choices and
+do-not-translate rules of the present task.
+
+The second line enforces constraints \emph{through the input}:
+training-time or prompt-time methods surface the desired terminology
+to the model --- for instance by annotating source terms inline with
+their required translations \cite{dinu2019terminology} --- and rely on
+the model to comply. This is the natural mode for LLM-based
+translation, where a glossary can simply be included in the prompt,
+and it preserves speed and fluency; but it trades away the guarantee.
+Compliance becomes probabilistic, and nothing in the mechanism itself
+reports whether a given constraint was honoured.
+
+\subsection{Human-in-the-Loop Translation with LLMs}
+
+LLMs widen the channel through which humans can steer translation
+beyond term lists: Yang et al.\ show that revision instructions and
+human feedback can guide an LLM translator towards more customised
+output across successive passes; running GPT-3.5-turbo over five
+domain-specific German--English benchmarks, they report a
+domain-dependent improvement over direct prompting, for example 35.2
+against 34.4 BLEU in the IT domain, with mixed results: in their
+experiments only the comparison-based feedback variant consistently
+improved over the baseline, while $k$-shot instruction variants often
+scored below it \cite{yang2023human}. That free-form feedback helps
+only under particular structures is itself instructive: it suggests
+the bottleneck is not the channel but the governance of what flows
+through it.
+%% VERIFIED V17 2026-08-14 https://aclanthology.org/2023.mtsummit-users.8/
+%% (Sec. 3 setup; Tab. 1 --- mixed-results wording per owner adjudication)
+This restores the interactive character that end-to-end neural systems
+had removed, and it matches the editorial reality of magazine work,
+where preferences emerge from reviewing drafts rather than being fully
+known in advance. But it also sharpens the enforcement problem of the
+input-side line: instructions accumulated in prompts are free text,
+their interaction is implicit, and whether any one of them was
+followed on any given block is not directly observable.
+
+\subsection{The Open Part: Adjudication, Priority, and Verifiability}
+
+Read together, the two lines above address \emph{how} a known
+constraint reaches the model, and the HITL work addresses \emph{how
+humans express} preferences. What remains largely unaddressed is the
+layer this project needs most: where the constraint set itself comes
+from and how it is governed. Automatic terminology extraction ---
+including the glossary construction built into the base system
+(Section~\ref{sec:background-babeldoc}) --- produces candidate term pairs at
+scale, but of varying quality; human editors hold authority but cannot
+review every candidate on every run. Three questions follow that none
+of the reviewed work answers: when a machine-extracted entry and a
+human decision conflict, which wins, and by what rule; how a human
+decision, once made, persists so that it is never re-litigated by the
+machine on a later run; and how adherence is \emph{verified} on the
+rendered output rather than assumed from the enforcement mechanism.
+
+The position this project takes, developed in
+Chapter~\ref{chap:method}, is that human decisions are sovereign
+ground truth: machines draft candidates and machines validate
+formats, but humans decide, through a two-pass review protocol whose
+outcome is recorded as explicit, versioned data rather than prompt
+text. Machine-extracted glossary entries are subordinated to these
+decisions by construction --- conflicting automatic entries are
+removed at glossary build time, not merely outranked at prompt time
+--- so the priority rule is enforced at the point where the constraint
+set is assembled rather than left to the model's discretion.
+%% NOTE: "enforced where the set is assembled, not left to model
+%% discretion" is the weakest-enforcement-point principle applied to
+%% terminology; keep this phrasing aligned with the method chapter's
+%% description of the glossary rebuild mechanism.
+Because every constraint is explicit data with scope and priority, it
+remains checkable after rendering: instruction adherence is an
+evaluated property of the output (Chapter~\ref{chap:eval}), not a
+presumed property of the mechanism. Representing human requirements as
+explicit constraints is thus not an invention of this project --- it
+is the founding idea of the constrained-MT literature above --- but
+extending that idea from decode-time token constraints to
+workflow-level, human-adjudicated, post-hoc verifiable decisions is
+where this project's contribution in this area lies.
+% =====================================================================
+% Section 2.7 — Evaluating Translated Documents (draft v1)
+% Same conventions as sections 2.3/2.4:
+%  - %% VERIFY marks facts/formulas to re-check against primary sources.
+%  - \ref placeholders: \ref{chap:eval}, \ref{sec:eval-midbreak},
+%    \ref{sec:eval-metrics}, \ref{sec:corpus}, \ref{sec:background-hitl}.
+%  - New bib keys introduced here (add to references.bib):
+%    jiang2022blonde, lyu2021ltcr, wong2012cohesion, tan2022dcoem,
+%    mueller2018contrapro, kikuchi2021layoutganpp, li2020layoutgan,
+%    freitag2021mqm. Existing keys reused: papineni2002bleu,
+%    rei2020comet, burchardt2013mqm, kocmi2023gemba_mqm,
+%    lan2024translatotron.
+% =====================================================================
+
+\section{Evaluating Translated Documents}
+\label{sec:background-eval}
+
+Evaluation is central to this project because the usefulness of a
+translated magazine depends jointly on two properties that fail
+independently: whether the translation itself is adequate and coherent,
+and whether the rendered page remains readable and visually faithful.
+Evaluation is also unusually \emph{difficult} here, because the output
+is a rendered PDF rather than plain text: a fluent translation can
+still fail as a document by omitting blocks, leaving source text
+behind, breaking article flow, or overlapping images, and none of these
+failures is visible to text-only metrics. This section reviews how
+existing work measures each property --- text quality at sentence
+level, coherence at document level, error analysis, and layout quality
+--- and identifies the combination this project adopts.
+
+\subsection{Sentence-Level Text Metrics}
+
+The standard automatic metrics for machine translation are
+reference-based. BLEU \cite{papineni2002bleu} scores a candidate
+against one or more reference translations by modified $n$-gram
+precision with a brevity penalty:
+\begin{equation}
+\mathrm{BLEU} = \mathrm{BP} \cdot \exp\!\Big(\sum_{n=1}^{N} w_n \log p_n\Big),
+\qquad
+\mathrm{BP} =
+\begin{cases}
+1 & c > r\\
+e^{\,1-r/c} & c \le r,
+\end{cases}
+\label{eq:bleu}
+\end{equation}
+where $p_n$ is the modified $n$-gram precision, $w_n$ the (typically
+uniform) weights, and $c$, $r$ the candidate and reference lengths.
+COMET \cite{rei2020comet} instead trains a neural regressor over
+source, candidate, and reference embeddings to predict human quality
+judgements, and correlates substantially better with human assessment
+than surface-overlap metrics: on the WMT19 Metrics DARR corpus its
+ranking model reaches a Kendall's $\tau$-like correlation of 0.449 on
+English--Chinese against 0.235 for BLEU, and 0.445 on Chinese--English
+against 0.321.
+%% VERIFIED V18 2026-08-13 https://aclanthology.org/2020.emnlp-main.213/
+%% (Tables 1 and 2, COMET-RANK rows)
+
+Both metrics presuppose exactly what magazine translation cannot
+guarantee: a clean, sentence-aligned text pair. Neither observes
+layout, rendering, or coverage, and both are known to be insensitive to
+document-level phenomena, which motivates the next family.
+
+\subsection{Document-Level and Discourse-Aware Metrics}
+\label{sec:background-doclevel}
+
+Whether a translated article still reads as a continuous, coherent
+text --- across paragraphs, columns, and pages --- is a document-level
+property. Sentence-level metrics cannot distinguish document-level
+improvements from sentence-level ones, a limitation identified
+explicitly by Jiang et al.\ in proposing BlonDe
+\cite{jiang2022blonde}: BlonDe categorises discourse-related spans
+(entities, pronouns, tense, and discourse markers), computes a
+similarity-based F1 over the categories, and in a large-scale human
+study achieves significantly higher Pearson correlation with human
+judgements than sentence-level metrics on BWB, a document-level
+Chinese--English corpus \cite{jiang2022blonde}. BlonDe is directly
+relevant to this project because its motivating language pair is
+Chinese--English; however, its span categories were designed for
+English-side evaluation, where tense morphology and explicit pronouns
+carry the discourse signal. In the English-to-Chinese direction the
+target language drops pronouns and does not inflect tense, so applying
+BlonDe unmodified would measure the wrong surface phenomena; this
+project therefore uses it only as a diagnostic, not a headline metric.
+%% VERIFIED V19 2026-08-13 https://aclanthology.org/2022.naacl-main.111/
+%% (Sec. 2: BWB is Chinese web novels with their English translations, so the
+%% evaluated direction is zh->en; Sec. 5.3/Tab. 5: BlonDe obtains the highest
+%% Pearson correlation at both units and significantly outperforms all other
+%% metrics at document level, e.g. BLONDE.F1 .417 adequacy vs BLEU .343)
+
+A simpler document-level extension --- d-BLEU, which matches
+$n$-grams over the whole document rather than sentence by sentence
+\cite{liu2020mbart} --- provides a cheap baseline but inherits the
+reference-alignment assumption.
+%% VERIFIED V20 2026-08-14 https://aclanthology.org/2020.tacl-1.47/ (n. 2:
+%% "Standard BLEU scores match n-grams at sentence-level. We also consider
+%% document-level where we match n-grams over the whole document").
+%% The character-level document variant was deleted per owner decision:
+%% no identifiable originating work.
+A separate strand measures \emph{consistency} rather than similarity:
+lexical cohesion was shown by Wong and Kit to distinguish human from
+machine translation and, when added to sentence-level metrics, to
+improve their correlation with human judgement by roughly 3--5
+percentage points \cite{wong2012cohesion}; the lexical translation
+consistency ratio (LTCR) \cite{lyu2021ltcr} formalises the intuition
+directly, measuring whether repeated source terms are translated
+consistently across a document. For a source word $w$ occurring $k$
+times in a document with word-aligned translations $(t_1,\dots,t_k)$,
+\begin{equation}
+\mathrm{LTCR}(w) =
+\frac{\sum_{i=1}^{k}\sum_{j=i+1}^{k} \mathbf{1}\!\left(t_i = t_j\right)}
+     {C_k^2} \times 100\%,
+\label{eq:ltcr}
+\end{equation}
+where $C_k^2$ is the size of the combination of the translation set and
+$\mathbf{1}(t_i = t_j)$ returns 1 when the two translations are
+identical; the metric extends to a corpus by summing numerators and
+denominators over all words of interest \cite{lyu2021ltcr}.
+%% VERIFIED V21 2026-08-13 https://aclanthology.org/2021.emnlp-main.262/
+%% (Eq. 1, transcribed verbatim; LTCR is defined in that paper. NB the
+%% venue is EMNLP 2021 main, not Findings --- bib corrected.)
+LTCR matters for this project because article-level context injection
+was introduced precisely to stabilise proper-name and terminology
+rendering across pages (Chapter~\ref{chap:method}); LTCR turns that
+design goal into a reportable number.
+
+A third strand evaluates targeted phenomena through purpose-built test
+suites rather than corpus-level scores: ContraPro tests context-aware
+pronoun translation through contrastive example pairs
+\cite{mueller2018contrapro}, and DCoEM contributes a test suite
+covering four cohesive devices --- reference, conjunction,
+substitution, and lexical cohesion \cite{tan2022dcoem}. This project
+adopts the test-suite methodology rather than any specific suite: the
+evaluation corpus (Section~\ref{sec:corpus}) contains real mid-sentence
+page breaks identified and adjudicated during corpus preparation, and
+each such break point functions as a targeted test case for exactly the
+failure mode this project addresses. The resulting protocol ---
+contrastive evaluation at splice points between page-scoped and
+article-scoped translation --- is defined formally in
+Chapter~\ref{chap:eval}.
+
+\subsection{Error Taxonomies and Structured Human Evaluation}
+
+Where automatic metrics compress quality into a scalar, the
+Multidimensional Quality Metrics framework (MQM) treats translation
+quality as a set of typed issues \cite{burchardt2013mqm}. MQM,
+developed in the QTLaunchPad project by Lommel, Burchardt and
+Uszkoreit, defines a hierarchy of issue types --- accuracy errors such
+as omission and mistranslation, fluency errors, terminology errors,
+and style issues --- from which task-appropriate subsets are selected,
+with each identified error assigned a severity; quality is then an
+aggregation over annotated errors rather than a single holistic score
+\cite{burchardt2013mqm}. MQM-style annotation has since become the
+reference standard for careful human MT evaluation: in the largest
+such study to date, professional annotators working with full document
+context produced a substantially different ranking of the WMT 2020
+systems from the one established by crowd workers, with a clear
+preference for human over machine output \cite{freitag2021mqm}.
+%% VERIFIED V22 2026-08-13 https://aclanthology.org/2021.tacl-1.87/ (abstract)
+
+GEMBA-MQM \cite{kocmi2023gemba_mqm} automates this style of
+annotation: GPT-4 is prompted, with fixed few-shot examples, to mark
+error spans and assign MQM categories and severities. In the WMT23
+metrics evaluation it achieved state-of-the-art system-ranking
+accuracy, at 96.5\% system-level pairwise accuracy in the preliminary
+results its authors report. Its authors' stated caution is the
+dependence on a proprietary, black-box model; this project mitigates
+the reproducibility half of that concern by caching all judge
+responses for exact replay and pinning the model version
+(Chapter~\ref{chap:eval}).
+%% VERIFIED V23 2026-08-14 https://aclanthology.org/2023.wmt-1.64/ (Tab. 1
+%% for the accuracy; abstract, Conclusion and Limitations for the caution,
+%% which concerns proprietary black-box dependence)
+For this project the relevance is twofold: MQM supplies the issue
+taxonomy for the structured human review rubric, and GEMBA-MQM
+supplies a practical instrument for annotating errors \emph{at
+specific locations} --- in particular at page-break splice points,
+where the question is not ``how good is this document overall'' but
+``did stitching these fragments introduce an omission, a
+mistranslation, or a fluency break here''. Used this way, an LLM-based
+annotator is a targeted microscope rather than a wholesale replacement
+for human judgement, and its outputs are cached and replayable for
+reproducibility (Chapter~\ref{chap:eval}).
+
+\subsection{Layout and Rendering Quality}
+\label{sec:background-layoutmetrics}
+
+Text metrics of any granularity say nothing about whether the rendered
+page is readable. Two bodies of work supply spatial measures. In
+document image translation, Translatotron-V introduces
+Structure-BLEU, which computes BLEU only over text pairs whose
+regions correspond spatially (bounding-box IoU $\geq 0.5$), so that
+translated text scores only where it also appears in the right
+place --- coupling translation quality to spatial fidelity
+\cite{lan2024translatotron}. This establishes
+that layout preservation is a measurable property of translation
+output rather than a purely aesthetic one.
+%% VERIFIED V24 2026-08-14 https://arxiv.org/html/2407.02894 (metric
+%% definition: OCR both images, match by bounding-box IoU, discard pairs
+%% below 0.5, then compute BLEU over the remaining paired texts)
+
+The layout generation literature provides the standard geometric
+instruments; two are used throughout that field as measures of
+perceptual layout quality, introduced by Li et al.\
+\cite{li2020layoutgan} and normalised per element by Kikuchi et
+al.\ \cite{kikuchi2021layoutganpp}:
+\emph{Overlap}, the total pairwise overlapping area between element
+bounding boxes on a page (normalised per element or per page), on the
+principle that well-set elements do not intrude on one another; and
+\emph{Alignment}, which for each element measures its minimum deviation
+from alignment (left, centre, or right edges) with other elements, on
+the principle that professionally set pages align elements to shared
+axes.
+\begin{equation}
+\mathrm{Overlap} = \frac{1}{N}\sum_{i=1}^{N}\sum_{j \ne i}
+\frac{A\!\left(b_i \cap b_j\right)}{A\!\left(b_i\right)}
+\label{eq:overlap}
+\end{equation}
+where $b_i$ is the bounding box of element $i$ and $A(\cdot)$ its
+area; the summation is Li et al.'s overlapping loss, and the leading
+$1/N$ is Kikuchi et al.'s per-element normalisation of it. The
+companion measure is defined over the same coordinates,
+$(x^{L}, y^{T}, x^{C}, y^{C}, x^{R}, y^{B})$ being the top-left,
+centre, and bottom-right coordinates of an element's box:
+\begin{equation}
+\mathrm{Alignment} = \frac{1}{N}\sum_{i=1}^{N}
+\min\!\Big(
+g\!\left(\Delta x_i^{L}\right),\,
+g\!\left(\Delta x_i^{C}\right),\,
+g\!\left(\Delta x_i^{R}\right),\,
+g\!\left(\Delta y_i^{T}\right),\,
+g\!\left(\Delta y_i^{C}\right),\,
+g\!\left(\Delta y_i^{B}\right)
+\Big),
+\label{eq:alignment}
+\end{equation}
+where $g(x) = -\log(1-x)$ and
+$\Delta x_i^{*} = \min_{\forall j \ne i}\left| x_i^{*} - x_j^{*}\right|$
+for $* \in \{L, C, R\}$, with $\Delta y_i^{*}$ ($* \in \{T, C, B\}$)
+computed in the same way. Equations~(10) and~(11) of Li et al.\
+\cite{li2020layoutgan} state this sum without the leading $1/N$; the
+per-element normalisation is Kikuchi et al.'s modification
+\cite{kikuchi2021layoutganpp}.
+%% VERIFIED V25 2026-08-14 https://arxiv.org/pdf/2009.05284 (Eqs. 9--11,
+%% transcribed) + https://doi.org/10.1145/3474085.3475497 (Sec. 4.2.3: "We
+%% use the Alignment and Overlap metrics used in the previous work [18].
+%% We modify the original metrics by normalizing with the number of
+%% elements N.")
+These measures are appropriate for magazine translation for a reason
+worth stating: they are \emph{reference-free} with respect to text.
+They compare geometry against geometric principles (or against the
+source page's own geometry), so they remain valid even where no
+reference translation exists --- which is the normal case for magazine
+content. BabelDoc's own evaluation already uses bounding-box IoU
+against the source layout \cite{qi2026babeldoc}
+(Section~\ref{sec:background-babeldoc}), and this project extends the same
+geometric philosophy with task-specific measures --- among them a
+mid-unit page-break rate and a block conservation invariant, defined
+formally in Chapter~\ref{chap:eval} --- whose purpose is to detect the
+failure modes that generic geometry misses.
+
+\subsection{References, Their Limits, and Generalisation}
+
+Two methodological choices complete the evaluation design. First, the
+availability of an official human-translated Chinese edition of the
+primary corpus magazine provides a rare parallel reference
+(Section~\ref{sec:corpus}); but it is an \emph{editorial adaptation}
+--- retranslated, re-set, and sometimes restructured by human editors
+--- not a literal rendering of the English edition. Reference-based
+scores computed against it are therefore treated as diagnostics, and
+its principal evaluative use is comparative: where the official
+edition itself resorts to a layout compromise (such as a mid-unit
+break) that the system under test avoids, that comparison is evidence
+about the difficulty of the problem, not merely about the system
+(Section~\ref{sec:eval-midbreak}). Second, because the project claims
+generalised magazine translation rather than adaptation to a single
+publication, evaluation uses leave-one-publication-out cross-validation:
+all adaptive components are configured without access to the held-out
+publication, and performance on it measures transfer rather than fit.
+The corresponding protocol, and the anti-overfitting constraint that
+forbids publication-specific rules anywhere in the pipeline, are
+specified in Chapter~\ref{chap:eval}.
+
+In combination, the evaluation instruments adopted from this
+literature form three layers, each targeting a property the others
+miss: geometric and structural measures for the rendered page
+(Section~\ref{sec:background-layoutmetrics}), contrastive splice-point
+evaluation with MQM-style annotation for translation quality at the
+exact locations this project's mechanisms change
+(Section~\ref{sec:background-doclevel}), and document-level consistency
+measures for article-scoped coherence. Their formal definitions, and
+the conservation invariants that guard the pipeline against silent
+loss, are given in Chapter~\ref{chap:eval}.

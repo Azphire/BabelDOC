@@ -1,0 +1,432 @@
+gate cache size: 9.16 GB of 8 GB allowed
+gate cache trimmed: 15 least recently used slot(s) dropped, 1.34 GB reclaimed
+gates to run, in order:
+  spec_check_b0.py
+  spec_check_b1.py
+  spec_check_b2.py
+  spec_check_b2_1.py
+  spec_check_b2_2.py
+  spec_check_b2_3.py
+  spec_check_b2_5.py
+  spec_check_b2_7.py
+artifact cache: D:\Codes\BabelDOC\examples\output\gate_cache
+workspace fingerprint: dba96221e42c9741
+
+=== spec_check_b0.py start 23:13:49 ===
+    [PASS] 01 checkpoint.py exposes dump_checkpoint/load_checkpoint :: babeldoc\magazine\checkpoint.py
+    [PASS] 02 checkpoint XML count >= 5 with strictly increasing ordinals :: 7 files, ordinals=[1, 2, 3, 5, 6, 8, 10]
+    C:\Users\Azphire\Anaconda\envs\babeldoc\Lib\site-packages\xsdata\formats\dataclass\parsers\utils.py:130: ConverterWarning: Failed to convert value for `PdfCurve.debug_info`
+      `a` is not a valid `bool`
+      warnings.warn(message, ConverterWarning)
+    [PASS] 03 load_checkpoint round trip is idempotent :: checkpoint.10_typesetting.xml: total_pages=8 pages=8 xml_equal=True
+    [PASS] 06 magazine_checkpoint default False writes no checkpoint files :: found=[]
+    [PASS] 07 dry run matches baseline render (Courier-en.pdf) :: exit=0
+    [PASS] 07 dry run matches baseline render (Vogue-en.pdf) :: exit=0
+    [PASS] 07 dry run matches baseline render (CERNCourier-en.pdf) :: exit=0
+    [PASS] 07 dry run matches baseline render (FD-en.pdf) :: exit=0
+    [PASS] 07 dry run matches baseline render (AramcoWorld-en.pdf) :: exit=0
+    [PASS] 04a render_diff self comparison exits 0 :: exit=0
+    [PASS] 04b render_diff page-count mismatch exits 2 :: exit=2
+    [PASS] 05 corpus_check passes :: corpus_check: OK (0 warning(s))
+    [PASS] 08a modified upstream python files within allowed set :: changed=['babeldoc/format/pdf/high_level.py', 'babeldoc/format/pdf/translation_config.py', 'babeldoc/translator/cache.py']
+    [PASS] 08b modified upstream non-python files within allowed set :: changed=['.gitignore']
+    [PASS] 08c every modified upstream python file registered in UPSTREAM_DIFF.md :: unregistered=[]
+    [PASS] 08d init_db() with no arguments keeps upstream defaults :: path=C:\Users\Azphire\.cache\babeldoc\cache.v1.db cleanup_enabled=True
+    [PASS] 09 no CJK characters in new or added code :: offenders=[]
+    [PASS] 10a use_project_cache redirects the database :: D:\Codes\BabelDOC\examples\cache\cache.v1.db
+    [PASS] 10b second translate is served from cache :: calls=1 first==second=True
+    [PASS] 10c project cache database file exists :: D:\Codes\BabelDOC\examples\cache\cache.v1.db
+    [PASS] 10d row eviction disabled for the project cache :: rows before=50033 after=50033
+    [PASS] 10e global cache database untouched :: mtime 1784530340.2457192 -> 1784530340.2457192
+    
+    artifact cache spec_check_b0: hit=7 built=0 build_seconds=0.0
+    timing spec_check_b0: phases=1.2s assertions=27.4s
+      slow assertion     19.3s  03 load_checkpoint round trip is idempotent
+      slow assertion      1.7s  04b render_diff page-count mismatch exits 2
+      slow assertion      1.4s  07 dry run matches baseline render (AramcoWorld-en.pdf)
+      slow assertion      1.3s  07 dry run matches baseline render (CERNCourier-en.pdf)
+      slow assertion      1.1s  07 dry run matches baseline render (FD-en.pdf)
+    spec_check_b0: 22/22 passed
+=== spec_check_b0.py end 23:14:21 exit=0 elapsed=31.7s ===
+
+=== spec_check_b1.py start 23:14:21 ===
+    [PASS] 01a all nine new attributes present in rnc, rng and xsd :: missing=[]
+    [PASS] 01b every new attribute is optional in all three schemas :: required=[]
+    [PASS] 01c the three schema files stay attribute-wise identical :: elements=31 mismatched=[]
+    [PASS] 02 Page and PdfParagraph expose the new fields with camelCase metadata :: problems=[]
+    [PASS] 03 assert_new_fields_roundtrip passes over the XML path
+    [PASS] 04a to_json emits every new key once the field is set :: missing=[] unset=[]
+    [PASS] 05a every B0 baseline checkpoint parses with all new fields None :: checked=5 problems=[]
+    [PASS] 05b reading old checkpoints raises no warning beyond the known one :: unexpected=[]
+    [PASS] 06 consumers must stay within the authorized writer list :: unauthorized_files=[] hits=0 examples=[]
+    [PASS] 04b unset new fields leave the existing JSON key set untouched :: compared=5 problems=[]
+    [PASS] 07 no stage writes a new attribute into any checkpoint :: scanned=12 hits=[]
+    [PASS] 08 dry run still renders identically to the B0 baseline (Courier-en) :: exit=0
+    [PASS] 08 dry run still renders identically to the B0 baseline (Vogue-en) :: exit=0
+    [PASS] 08 dry run still renders identically to the B0 baseline (CERNCourier-en) :: exit=0
+    [PASS] 08 dry run still renders identically to the B0 baseline (FD-en) :: exit=0
+    [PASS] 08 dry run still renders identically to the B0 baseline (AramcoWorld-en) :: exit=0
+    [PASS] 09a modified upstream files stay inside the registered allow list :: unexpected=[]
+    [PASS] 09b this batch touches only the IL schema quadruple :: delta=['babeldoc/format/pdf/document_il/il_version_1.py', 'babeldoc/format/pdf/document_il/il_version_1.rnc', 'babeldoc/format/pdf/document_il/il_version_1.rng', 'babeldoc/format/pdf/document_il/il_version_1.xsd']
+    [PASS] 09c every modified upstream file is registered in UPSTREAM_DIFF.md :: unregistered=[]
+    [PASS] 09d no CJK characters in new or added code :: offenders=[]
+    
+    artifact cache spec_check_b1: hit=6 built=0 build_seconds=0.0
+    timing spec_check_b1: phases=1.2s assertions=22.0s
+      slow assertion     10.4s  05a every B0 baseline checkpoint parses with all new fields None
+      slow assertion      3.3s  07 no stage writes a new attribute into any checkpoint
+      slow assertion      2.9s  04b unset new fields leave the existing JSON key set untouched
+      slow assertion      1.4s  08 dry run still renders identically to the B0 baseline (AramcoWorld-en)
+      slow assertion      1.3s  08 dry run still renders identically to the B0 baseline (CERNCourier-en)
+    spec_check_b1: 20/20 passed
+=== spec_check_b1.py end 23:14:47 exit=0 elapsed=26.2s ===
+
+=== spec_check_b2.py start 23:14:47 ===
+    [PASS] 01a both configuration files load and validate :: problems=[]
+    [PASS] 01b seed vocabulary has at least 15 types :: types=15
+    [PASS] 01c every type declares all three policy keys :: incomplete=[] parameters=12
+    [PASS] 01d the validator rejects every malformed vocabulary probe :: survived=[]
+    C:\Users\Azphire\Anaconda\envs\babeldoc\Lib\site-packages\xsdata\formats\dataclass\parsers\utils.py:130: ConverterWarning: Failed to convert value for `PdfCurve.debug_info`
+      `a` is not a valid `bool`
+      warnings.warn(message, ConverterWarning)
+    [PASS] 02a repeated extraction returns bit identical feature vectors :: pages=496 unstable=[]
+    [PASS] 02b every ratio feature stays within 0..1 :: offenders=[]
+    [PASS] 03a every classified page carries kind, confidence and source :: pages=31 problems=[]
+    [PASS] 03b the sidecar report exists and covers every page :: problems=[]
+    [PASS] 04 checkpoint ordinals increase and match checkpoint_stages.json :: scanned=80 problems=[]
+    [PASS] 05 the review tool renders one HTML page per magazine page :: html_pages=8 pdf_pages=8 -> Courier-en.classify.html
+    [PASS] 06a the page label ground truth validates against the vocabulary :: errors=[]
+    [PASS] 06b the label validator rejects every malformed probe :: survived=[]
+        label agreement by publication (kind / policy / labelled pages):
+          aramcoworld: kind=0.750 (6/8) policy=0.750 (6/8)
+          cern_courier: kind=0.750 (3/4) policy=1.000 (4/4)
+          imf_fd: kind=1.000 (8/8) policy=1.000 (8/8)
+          unesco_courier: kind=1.000 (8/8) policy=1.000 (8/8)
+          vogue_us: kind=1.000 (3/3) policy=1.000 (3/3)
+    [PASS] 06c classification agrees with the human page labels :: kind_agreement=0.903 (28/31), policy_agreement=0.935 (29/31), minimum=0.7, misses=["CERNCourier-en.pdf#4: 'interview' not in ['article_body']", "AramcoWorld-en.pdf#7: 'article_opener' not in ['article_body']", "AramcoWorld-en.pdf#8: 'article_opener' not in ['article_body']"]
+    [PASS] 07a with the switch off no checkpoint carries a page kind attribute :: scanned=40 hits=[]
+    [PASS] 07b dry run still renders identically to the baseline (Courier-en) :: exit=0
+    [PASS] 07b dry run still renders identically to the baseline (Vogue-en) :: exit=0
+    [PASS] 07b dry run still renders identically to the baseline (CERNCourier-en) :: exit=0
+    [PASS] 07b dry run still renders identically to the baseline (FD-en) :: exit=0
+    [PASS] 07b dry run still renders identically to the baseline (AramcoWorld-en) :: exit=0
+    [PASS] 09 no produced checkpoint carries a paragraph level B1 attribute :: scanned=80 hits=[]
+    [PASS] 08 no page type name appears anywhere under babeldoc/ :: types=15 files=203 offenders=[]
+    [PASS] 10 the magazine package contains no network or LLM client :: modules=8 offenders=[]
+    [PASS] 11a this batch touches only the two registered upstream files :: changed=['babeldoc/format/pdf/high_level.py', 'babeldoc/format/pdf/translation_config.py']
+    [PASS] 11b every modified upstream file is registered in UPSTREAM_DIFF.md :: unregistered=[]
+    [PASS] 11c no CJK characters in new or added code :: offenders=[]
+    
+    artifact cache spec_check_b2: hit=15 built=0 build_seconds=0.0
+    timing spec_check_b2: phases=1.2s assertions=241.2s
+      slow assertion    205.2s  02a repeated extraction returns bit identical feature vectors
+      slow assertion     10.9s  03a every classified page carries kind, confidence and source
+      slow assertion     10.8s  06c classification agrees with the human page labels
+      slow assertion      3.8s  09 no produced checkpoint carries a paragraph level B1 attribute
+      slow assertion      3.1s  05 the review tool renders one HTML page per magazine page
+    spec_check_b2: 25/25 passed, 0 skipped
+=== spec_check_b2.py end 23:18:54 exit=0 elapsed=247.0s ===
+
+=== spec_check_b2_1.py start 23:18:54 ===
+    C:\Users\Azphire\Anaconda\envs\babeldoc\Lib\site-packages\xsdata\formats\dataclass\parsers\utils.py:130: ConverterWarning: Failed to convert value for `PdfCurve.debug_info`
+      `a` is not a valid `bool`
+      warnings.warn(message, ConverterWarning)
+    [PASS] 01 image_area_ratio is positive exactly on the pages that carry artwork :: samples=5 pages=31 with_artwork=28 mismatches=[]
+    [PASS] 02 the column estimate is no longer pinned at its ceiling :: ceiling=4 below_ceiling=['Courier-en#0=3', 'Courier-en#1=1', 'Vogue-en#2=3', 'CERNCourier-en#0=2', 'CERNCourier-en#1=1', 'CERNCourier-en#2=2', 'FD-en#0=3', 'FD-en#1=1', 'FD-en#3=2', 'FD-en#4=3', 'FD-en#5=3', 'FD-en#6=2', 'FD-en#7=3', 'AramcoWorld-en#1=1', 'AramcoWorld-en#2=2', 'AramcoWorld-en#3=2', 'AramcoWorld-en#4=3', 'AramcoWorld-en#5=2', 'AramcoWorld-en#6=2'] distribution=[0.0, 0.0, 0.0, 0.0, 1.0, 1.0, 1.0, 1.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 3.0, 3.0, 3.0, 3.0, 3.0, 3.0, 3.0, 4.0, 4.0, 4.0, 4.0, 4.0, 4.0, 4.0, 4.0]
+    [PASS] 03 the last page of every sample sits at relative position 1.0 :: samples=5 problems=[]
+    [PASS] 04a a vocabulary carrying a negative weight validates :: reason=
+    [PASS] 04b zero weight and penalty only types are still rejected :: survived=[]
+    [PASS] 04c every score stays within 0..1 with penalties in play :: pages=31 offenders=[]
+    [PASS] 04d feature extraction stays pure and in range under the new definitions :: unstable=[] ratio_offenders=[]
+    [PASS] 06a with the switch off no checkpoint carries a page kind attribute :: scanned=40 hits=[]
+    [PASS] 06b dry run still renders identically to the baseline (Courier-en) :: exit=0
+    [PASS] 06b dry run still renders identically to the baseline (Vogue-en) :: exit=0
+    [PASS] 06b dry run still renders identically to the baseline (CERNCourier-en) :: exit=0
+    [PASS] 06b dry run still renders identically to the baseline (FD-en) :: exit=0
+    [PASS] 06b dry run still renders identically to the baseline (AramcoWorld-en) :: exit=0
+    [PASS] 07a this batch changes only the files the plan allows :: changed=['babeldoc/magazine/page_features.py', 'babeldoc/magazine/taxonomy.py', 'configs/page_features.json', 'configs/page_types.json', 'spec_checks/spec_check_b1.py', 'spec_checks/spec_check_b2_1.py'] unexpected=[]
+    [PASS] 07b this batch touches no upstream file :: upstream=[]
+    [PASS] 08a no page type name appears anywhere under babeldoc/ :: types=15 files=203 offenders=[]
+    [PASS] 08b no CJK characters in the files this batch changed :: offenders=[]
+    SKIPPED: nested run suppressed
+    
+    artifact cache spec_check_b2_1: hit=15 built=0 build_seconds=0.0
+    timing spec_check_b2_1: phases=1.1s assertions=68.9s
+      slow assertion     17.8s  06a with the switch off no checkpoint carries a page kind attribute
+      slow assertion     12.9s  01 image_area_ratio is positive exactly on the pages that carry artwork
+      slow assertion     10.9s  03 the last page of every sample sits at relative position 1.0
+      slow assertion     10.8s  04c every score stays within 0..1 with penalties in play
+      slow assertion     10.8s  02 the column estimate is no longer pinned at its ceiling
+    spec_check_b2_1: 17/17 passed
+=== spec_check_b2_1.py end 23:20:09 exit=0 elapsed=74.8s ===
+
+=== spec_check_b2_2.py start 23:20:09 ===
+    C:\Users\Azphire\Anaconda\envs\babeldoc\Lib\site-packages\xsdata\formats\dataclass\parsers\utils.py:130: ConverterWarning: Failed to convert value for `PdfCurve.debug_info`
+      `a` is not a valid `bool`
+      warnings.warn(message, ConverterWarning)
+    [PASS] 01a every page carries every percentile key inside the open range 0..1 :: pages=31 missing=[] out_of_range=[]
+    [PASS] 01b the raw keys of a document level vector equal the per page ones :: drift=[]
+    [PASS] 01c percentiles discriminate on the live corpus :: features_with_spread=36
+    [PASS] 01d a single page document sits at 0.5 on every percentile :: offenders={}
+    [PASS] 01e a feature that is constant across a document sits at 0.5 everywhere :: offenders=[]
+    [PASS] 02 the document level extractor is deterministic :: samples=5 unstable=[]
+    [PASS] 04a the classifier sidecar reports raw and percentile columns :: pages=31 problems=[]
+    [PASS] 04b the HTML review page carries a raw and a pctl column :: exit=0 header=True path=AramcoWorld-en.classify.html
+    [PASS] 06a every sample carries a built baseline with the recorded hash :: samples=5 problems=[]
+    [PASS] 06b dry run still renders identically to the baseline (Courier-en) :: exit=0
+    [PASS] 06b dry run still renders identically to the baseline (Vogue-en) :: exit=0
+    [PASS] 06b dry run still renders identically to the baseline (CERNCourier-en) :: exit=0
+    [PASS] 06b dry run still renders identically to the baseline (FD-en) :: exit=0
+    [PASS] 06b dry run still renders identically to the baseline (AramcoWorld-en) :: exit=0
+    [PASS] 07 the classifier stage conserves page and paragraph counts :: ['Courier-en: 8p/132par', 'Vogue-en: 3p/39par', 'CERNCourier-en: 4p/202par', 'FD-en: 8p/156par', 'AramcoWorld-en: 8p/125par'] problems=[]
+    [PASS] 09 raw features are bit identical to batch-b2.1 :: pages=31 drift=[]
+    [PASS] 03a the validator accepts a percentile reference from the configured list :: feature=numeric_token_density_pctl reason=
+    [PASS] 03b the validator rejects a percentile of an unlisted or unknown feature :: unlisted=paragraph_count survived=[]
+    [PASS] 05a corpus_check passes and prints the per publication breakdown :: exit=0 grouped=True
+    [PASS] 05b every manifest semantic field is a verbatim registry copy :: samples=5 drift=[]
+    [PASS] 05c the mechanical fields match the sample files and none is unregistered :: drift=[] unregistered=[]
+    [PASS] 05d corpus_check errors on an unregistered sample and on a bad field :: rejected={'unregistered sample': True, 'unknown corpus_role': True, 'missing publication': True}
+    [PASS] 05e the manifest on disk equals a fresh rebuild from the registry :: exit=0 ['corpus_sync: in sync']
+    [PASS] 08a configs/page_types.json is byte identical to the previous batch :: bytes now=11412 then=11412
+    [PASS] 08b no pre-existing feature parameter or allowed range changed value :: changed=[] added=['percentile_features']
+    [PASS] 10a this batch changes only the files the plan allows :: changed=['CLAUDE.md', 'babeldoc/magazine/corpus.py', 'babeldoc/magazine/page_classifier.py', 'babeldoc/magazine/page_features.py', 'babeldoc/magazine/taxonomy.py', 'configs/page_features.json', 'corpus/manifest.json', 'corpus/registry.user.json', 'plans/PLAN_B2_2.md', 'spec_checks/spec_check_b2_1.py', 'spec_checks/spec_check_b2_2.py', 'tools/build_baseline.py', 'tools/corpus_check.py', 'tools/corpus_sync.py', 'tools/page_classify_report.py'] unexpected=[]
+    [PASS] 10b this batch touches no upstream file :: upstream=[]
+    [PASS] 10c no code opens the user owned registry for writing :: files=13 writers=[]
+    [PASS] 11a no page type name appears anywhere under babeldoc/ :: types=15 files=203 offenders=[]
+    [PASS] 11b no CJK characters in the code and configuration this batch changed :: files=13 offenders=[]
+    SKIPPED: nested run suppressed
+    
+    artifact cache spec_check_b2_2: hit=10 built=0 build_seconds=0.0
+    timing spec_check_b2_2: phases=1.2s assertions=79.0s
+      slow assertion     23.3s  07 the classifier stage conserves page and paragraph counts
+      slow assertion     12.8s  01a every page carries every percentile key inside the open range 0..1
+      slow assertion     10.9s  02 the document level extractor is deterministic
+      slow assertion     10.8s  09 raw features are bit identical to batch-b2.1
+      slow assertion     10.7s  04a the classifier sidecar reports raw and percentile columns
+    spec_check_b2_2: 30/30 passed
+=== spec_check_b2_2.py end 23:21:33 exit=0 elapsed=84.0s ===
+
+=== spec_check_b2_3.py start 23:21:33 ===
+    [PASS] 01a every reported percentile is the midrank of its own reported raw column :: pages=31 mismatches=[]
+    [PASS] 01b a page with no paragraph reports every paragraph derived feature as zero :: blank_pages=[('Vogue-en', 1)] contradictions=[]
+    [PASS] 01c a zero paragraph page still carries positive image area, which its percentile reflects :: carriers=[('Vogue-en', 1, 1.0, 0.8333333333333334)] above_tie=1
+    [PASS] 01d a feature constant across a document sits at the tie value on every page :: columns=4 wrong=[]
+    C:\Users\Azphire\Anaconda\envs\babeldoc\Lib\site-packages\xsdata\formats\dataclass\parsers\utils.py:130: ConverterWarning: Failed to convert value for `PdfCurve.debug_info`
+      `a` is not a valid `bool`
+      warnings.warn(message, ConverterWarning)
+    [PASS] 03a every corpus page still receives a verdict with a confidence in 0..1 :: pages=31 unverdicted=[] out_of_range=[]
+    [PASS] 03b no page whose winning type had positive evidence changed verdict :: pages=31 regressions=[] changed_without_evidence=[]
+    [PASS] 03c the guard does withdraw score from types a page shows no sign of :: page/type cells zeroed=27
+    [PASS] 06a the classifier stage conserves pages and paragraphs and labels every page :: ['AramcoWorld-en:8p/125par', 'CERNCourier-en:4p/202par', 'Courier-en:8p/132par', 'FD-en:8p/156par', 'Vogue-en:3p/39par'] problems=[]
+    [PASS] 06b the sidecar report and the IL carry the guarded scores :: drift=[]
+    [PASS] 06c dry run still renders identically to the baseline (Courier-en) :: exit=0
+    [PASS] 06c dry run still renders identically to the baseline (Vogue-en) :: exit=0
+    [PASS] 06c dry run still renders identically to the baseline (CERNCourier-en) :: exit=0
+    [PASS] 06c dry run still renders identically to the baseline (FD-en) :: exit=0
+    [PASS] 06c dry run still renders identically to the baseline (AramcoWorld-en) :: exit=0
+    [PASS] 02a the synthetic page carries no paragraph and no artwork :: non zero raw features=['page_relative_position']
+    [PASS] 02b the synthetic page scores zero on every declared type :: types=15 nonzero=[] without the guard top=('advertisement', 0.7222222222222222)
+    [PASS] 02c the synthetic page falls to the declared default at zero confidence :: kind=article_body conf=0.0 default=article_body
+    [PASS] 02d the all zero feature vector scores zero everywhere and takes the default :: nonzero=[] kind=article_body conf=0.0
+    [PASS] 04a the shipped vocabulary validates :: types=15
+    [PASS] 04b every shipped type carries at least one positive weight ge/gt rule :: types=15 without_evidence=[]
+    [PASS] 04c the validator rejects a type with no positive evidence rule and a malformed switch :: rejected={'type without a ge/gt positive rule': True, 'type whose only ge rule is a penalty': True, 'missing require_positive_evidence': True, 'non boolean require_positive_evidence': True}
+    [PASS] 05a the taxonomy gains only the guard switch and loses no key :: added=['require_positive_evidence'] removed=[]
+    [PASS] 05b every pre-existing threshold, weight and policy is unchanged :: drifted=[]
+    [PASS] 05c no page type gained, lost or retuned a rule :: types=15 drift=[]
+    [PASS] 07a this batch changes only the files the plan allows :: changed=['CLAUDE.md', 'babeldoc/magazine/taxonomy.py', 'configs/page_types.json', 'plans/PLAN_B2_3.md', 'spec_checks/run_all.py', 'spec_checks/spec_check_b0.py', 'spec_checks/spec_check_b1.py', 'spec_checks/spec_check_b2.py', 'spec_checks/spec_check_b2_1.py', 'spec_checks/spec_check_b2_2.py', 'spec_checks/spec_check_b2_3.py'] unexpected=[]
+    [PASS] 07b this batch touches no upstream file :: upstream=[]
+    [PASS] 07c no CJK characters in the code and configuration this batch changed :: files=9 offenders=[]
+    [PASS] 07d no page type name appears anywhere under babeldoc/ :: types=15 files=203 offenders=[]
+    SKIPPED: nested run suppressed
+    
+    artifact cache spec_check_b2_3: hit=10 built=0 build_seconds=0.0
+    timing spec_check_b2_3: phases=1.2s assertions=52.5s
+      slow assertion     23.4s  06a the classifier stage conserves pages and paragraphs and labels every page
+      slow assertion     12.6s  03a every corpus page still receives a verdict with a confidence in 0..1
+      slow assertion     10.8s  06b the sidecar report and the IL carry the guarded scores
+      slow assertion      1.5s  06c dry run still renders identically to the baseline (AramcoWorld-en)
+      slow assertion      1.3s  06c dry run still renders identically to the baseline (CERNCourier-en)
+    spec_check_b2_3: 28/28 passed
+=== spec_check_b2_3.py end 23:22:30 exit=0 elapsed=57.7s ===
+
+=== spec_check_b2_5.py start 23:22:30 ===
+    C:\Users\Azphire\Anaconda\envs\babeldoc\Lib\site-packages\xsdata\formats\dataclass\parsers\utils.py:130: ConverterWarning: Failed to convert value for `PdfCurve.debug_info`
+      `a` is not a valid `bool`
+      warnings.warn(message, ConverterWarning)
+    [PASS] 01a cached and directly built checkpoints are equal in canonical form :: sample=Vogue-en.pdf mode=classified checkpoints=8 missing=[] extra=[] differing=[]
+    [PASS] 01b the normalised difference is the pipeline's own per-run labelling :: normalised_differences=[] raw_differences=['checkpoint.05_paragraph_finder.xml', 'checkpoint.06_styles_and_formulas.xml', 'checkpoint.07_page_classifier.xml', 'checkpoint.08_il_translated.xml', 'checkpoint.10_typesetting.xml']
+    [PASS] 02a a one byte configuration edit mints a new workspace fingerprint :: before=dba96221e42c9741 mutated=f7bbb59068422c52
+    [PASS] 02b restoring the file restores the fingerprint :: restored=dba96221e42c9741
+    [PASS] 03a comparing a file with itself exits 0 through the hash shortcut :: exit=0 identical_bytes=True
+    [PASS] 03b the shortcut rasterises no page :: rasters=[] pages=0
+    [PASS] 03c a differing pair still takes the rasterising path :: exit=2 identical_bytes=False
+    [PASS] 06a the shipped ground truth validates against the page count bound :: errors=[]
+    [PASS] 06b a page number past the end of a sample is rejected :: page=9 of Courier-en.pdf (8 pages) rejected=['probe: Courier-en.pdf page 9: outside the 1..8 pages of Courier-en.pdf'] without_bound=[]
+    [PASS] 08 every assertion description from the previous batch survives verbatim :: gates=6 lost=[] newly_added=0
+    [PASS] 09a this batch changes only the files the plan allows :: changed=['CLAUDE.md', 'babeldoc/magazine/corpus.py', 'plans/PLAN_B2_5.md', 'spec_checks/artifacts.py', 'spec_checks/harness.py', 'spec_checks/run_all.py', 'spec_checks/spec_check_b0.py', 'spec_checks/spec_check_b1.py', 'spec_checks/spec_check_b2.py', 'spec_checks/spec_check_b2_1.py', 'spec_checks/spec_check_b2_2.py', 'spec_checks/spec_check_b2_3.py', 'spec_checks/spec_check_b2_5.py', 'tools/render_diff.py'] unexpected=[]
+    [PASS] 09b this batch touches no upstream file :: upstream=[]
+    [PASS] 09c no CJK characters in the code this batch changed :: files=12 offenders=[]
+    [PASS] 07a the nesting suppression contract is intact :: gates_without_switch=[]
+    SKIPPED: nested run suppressed :: 07b a gate with an empty cache still passes by building its own
+    SKIPPED: nested run suppressed :: 04 run_all --fast is green inside its budget
+    SKIPPED: nested run suppressed :: 05 the full run_all sweep is green apart from the expected red
+    
+    artifact cache spec_check_b2_5: hit=1 built=0 build_seconds=0.0
+    timing spec_check_b2_5: phases=148.8s assertions=149.5s
+      slow assertion    113.5s  01a cached and directly built checkpoints are equal in canonical form
+      slow assertion     34.3s  01b the normalised difference is the pipeline's own per-run labelling
+      slow assertion      0.5s  03c a differing pair still takes the rasterising path
+      slow assertion      0.4s  02a a one byte configuration edit mints a new workspace fingerprint
+      slow assertion      0.3s  08 every assertion description from the previous batch survives verbatim
+    spec_check_b2_5: 14/14 passed
+=== spec_check_b2_5.py end 23:25:04 exit=0 elapsed=153.6s ===
+
+=== spec_check_b2_7.py start 23:25:04 ===
+    C:\Users\Azphire\Anaconda\envs\babeldoc\Lib\site-packages\xsdata\formats\dataclass\parsers\utils.py:130: ConverterWarning: Failed to convert value for `PdfCurve.debug_info`
+      `a` is not a valid `bool`
+      warnings.warn(message, ConverterWarning)
+    [PASS] 01a a vocabulary carrying a percentile rule scores the document vectors :: sample=AramcoWorld-en scores=8 failure= out_of_range=[]
+    [PASS] 01b the per-page vector alone cannot satisfy a percentile rule lookup :: percentile_keys_in_page_vector=[]
+    [PASS] 01c the document vector carries exactly the feature names a rule may use :: missing=[] extra=[]
+        raw agreement (kind hits / labelled pages):
+          overall: 28/31
+          aramcoworld: 6/8
+          cern_courier: 3/4
+          imf_fd: 8/8
+          unesco_courier: 8/8
+          vogue_us: 3/3
+    [PASS] 03a the measured raw agreement matches the frozen table :: overall=0.9032 drift=[] misses=["CERNCourier-en.pdf#4: 'interview' not in ['article_body']", "AramcoWorld-en.pdf#7: 'article_opener' not in ['article_body']", "AramcoWorld-en.pdf#8: 'article_opener' not in ['article_body']"]
+        candidate agreement (kind hits / labelled pages):
+          overall: 28/31
+          aramcoworld: 8/8
+          cern_courier: 2/4
+          imf_fd: 8/8
+          unesco_courier: 7/8
+          vogue_us: 3/3
+    [PASS] 03a the measured candidate agreement matches the frozen table :: overall=0.9032 drift=[] misses=["Courier-en.pdf#7: 'article_body' not in ['article_opener']", "CERNCourier-en.pdf#3: 'article_body' not in ['advertisement', 'article_opener']", "CERNCourier-en.pdf#4: 'interview' not in ['article_body']"]
+    [PASS] 03b the adoption criterion resolves the way the batch recorded :: overall_shipped=0.9032 overall_candidate=0.9032 max_family_drop_allowed=0.1 offenders=['cern_courier', 'unesco_courier'] drops={'aramcoworld': -0.25, 'cern_courier': 0.25, 'imf_fd': 0.0, 'unesco_courier': 0.125, 'vogue_us': 0.0} adopted=False recorded=False
+    [PASS] 03c the archived candidate is the percentile ruleset and is not the live one :: candidate_pctl_rules=9 live_pctl_rules=0
+    [PASS] 02a percentile evidence at or below the constant column midrank is rejected :: feature=numeric_token_density_pctl midrank=0.5 thresholds=[0.0, 0.25, 0.4, 0.5] survived=[]
+    [PASS] 02b the refusal names the feature, the bound and the reason :: message="probe.probe.rules[0]: positive evidence on the percentile feature 'numeric_token_density_pctl' needs a threshold above 0.5, got 0.5. A raw feature that is const"
+    [PASS] 02c percentile evidence above the midrank is accepted :: thresholds=[0.55, 0.7, 0.9] refused=[]
+    [PASS] 02d the rule binds positive percentile evidence only :: wrongly_rejected=[]
+    [PASS] 04a editing a gate script leaves the workspace fingerprint alone :: file=spec_checks/run_all.py before=dba96221e42c9741 after=dba96221e42c9741
+    [PASS] 04b editing a configuration file mints a new workspace fingerprint :: file=configs/gate_cache.json before=dba96221e42c9741 after=35710a832f0f4a7b
+    [PASS] 04c both probe files are restored byte for byte :: restored=dba96221e42c9741
+    [PASS] 04d the fingerprint declares the two paths it follows :: paths=('babeldoc', 'configs')
+    [PASS] 09a the cache ceiling is a bounded configuration parameter :: gate_cache_max_gb=8.0 range=0.5..256.0 source=gate_cache.json
+    [PASS] 09b a cache already inside its ceiling is left alone :: size=12294 trimmed=(0, 0)
+    [PASS] 09c the trim drops least recently used slots until the cache fits :: dropped=2 freed=8196 survivors=['sample.newest'] remaining=4098 limit=4098
+    [PASS] 09d the real cache root was never the one under test :: restored=gate_cache
+    [PASS] 06 the hand written corpus files are untouched :: frozen=['corpus/manifest.json', 'corpus/page_labels.json', 'corpus/registry.user.json'] touched=[]
+    [PASS] 07 the shipped vocabulary is byte identical to the previous batch :: against=batch-b2.6 exit=0 differing=[]
+    [PASS] 08a this batch changes only the files the plan allows :: changed=['CLAUDE.md', 'babeldoc/magazine/taxonomy.py', 'configs/gate_cache.json', 'configs/page_features.json', 'configs/page_types.pctl.json', 'plans/PLAN_B2_7.md', 'spec_checks/artifacts.py', 'spec_checks/run_all.py', 'spec_checks/spec_check_b2_1.py', 'spec_checks/spec_check_b2_2.py', 'spec_checks/spec_check_b2_7.py'] unexpected=[]
+    [PASS] 08b this batch touches no upstream file :: upstream=[]
+    [PASS] 08c no CJK characters in the code this batch changed :: files=9 offenders=[]
+    SKIPPED: nested run suppressed :: 05a the full run_all sweep is green
+    SKIPPED: nested run suppressed :: 05b the sweep leaves a complete run_all.done.json
+    SKIPPED: nested run suppressed :: 05c classification agreement clears the configured minimum
+    
+    artifact cache spec_check_b2_7: hit=5 built=0 build_seconds=0.0
+    timing spec_check_b2_7: phases=1.2s assertions=25.5s
+      slow assertion     10.8s  03a the measured candidate agreement matches the frozen table
+      slow assertion     10.8s  03a the measured raw agreement matches the frozen table
+      slow assertion      3.1s  01a a vocabulary carrying a percentile rule scores the document vectors
+      slow assertion      0.5s  04a editing a gate script leaves the workspace fingerprint alone
+      slow assertion      0.1s  08a this batch changes only the files the plan allows
+    spec_check_b2_7: 24/24 passed
+=== spec_check_b2_7.py end 23:25:34 exit=0 elapsed=29.7s ===
+
+run_all summary
+  [PASS] spec_check_b0.py    31.7s  spec_check_b0: 22/22 passed
+  [PASS] spec_check_b1.py    26.2s  spec_check_b1: 20/20 passed
+  [PASS] spec_check_b2.py   247.0s  spec_check_b2: 25/25 passed, 0 skipped
+  [PASS] spec_check_b2_1.py    74.8s  spec_check_b2_1: 17/17 passed
+  [PASS] spec_check_b2_2.py    84.0s  spec_check_b2_2: 30/30 passed
+  [PASS] spec_check_b2_3.py    57.7s  spec_check_b2_3: 28/28 passed
+  [PASS] spec_check_b2_5.py   153.6s  spec_check_b2_5: 14/14 passed
+  [PASS] spec_check_b2_7.py    29.7s  spec_check_b2_7: 24/24 passed
+  8/8 gates passed in 704.8s
+  artifact cache: 69 hit / 0 built (100% served from cache), 0.0s spent building
+
+run_all timing
+  spec_check_b0.py: build=1.2s assertions=27.4s unattributed=3.1s
+      build      1.0s  warmup
+      build      0.1s  pipeline:stages:ckpt_on
+      build      0.0s  pipeline:stages_plain:ckpt_off
+      assert    19.3s  03 load_checkpoint round trip is idempotent
+      assert     1.7s  04b render_diff page-count mismatch exits 2
+      assert     1.4s  07 dry run matches baseline render (AramcoWorld-en.pdf)
+      assert     1.3s  07 dry run matches baseline render (CERNCourier-en.pdf)
+      assert     1.1s  07 dry run matches baseline render (FD-en.pdf)
+  spec_check_b1.py: build=1.2s assertions=22.0s unattributed=3.1s
+      build      1.0s  warmup
+      build      0.1s  pipeline:parse_only:Courier-en
+      build      0.0s  pipeline:parse_only:CERNCourier-en
+      assert    10.4s  05a every B0 baseline checkpoint parses with all new fields None
+      assert     3.3s  07 no stage writes a new attribute into any checkpoint
+      assert     2.9s  04b unset new fields leave the existing JSON key set untouched
+      assert     1.4s  08 dry run still renders identically to the B0 baseline (AramcoWorld-en)
+      assert     1.3s  08 dry run still renders identically to the B0 baseline (CERNCourier-en)
+  spec_check_b2.py: build=1.2s assertions=241.2s unattributed=4.6s
+      build      1.0s  warmup
+      build      0.2s  pipeline:classified:Courier-en
+      build      0.0s  pipeline:parse_only:AramcoWorld-en
+      assert   205.2s  02a repeated extraction returns bit identical feature vectors
+      assert    10.9s  03a every classified page carries kind, confidence and source
+      assert    10.8s  06c classification agrees with the human page labels
+      assert     3.8s  09 no produced checkpoint carries a paragraph level B1 attribute
+      assert     3.1s  05 the review tool renders one HTML page per magazine page
+  spec_check_b2_1.py: build=1.1s assertions=68.9s unattributed=4.7s
+      build      1.0s  warmup
+      build      0.1s  pipeline:classified:Courier-en
+      build      0.0s  pipeline:stages:Courier-en
+      assert    17.8s  06a with the switch off no checkpoint carries a page kind attribute
+      assert    12.9s  01 image_area_ratio is positive exactly on the pages that carry artwork
+      assert    10.9s  03 the last page of every sample sits at relative position 1.0
+      assert    10.8s  04c every score stays within 0..1 with penalties in play
+      assert    10.8s  02 the column estimate is no longer pinned at its ceiling
+  spec_check_b2_2.py: build=1.2s assertions=79.0s unattributed=3.8s
+      build      1.0s  warmup
+      build      0.1s  pipeline:classified:Courier-en
+      build      0.0s  pipeline:parse_only_plain:Courier-en
+      assert    23.3s  07 the classifier stage conserves page and paragraph counts
+      assert    12.8s  01a every page carries every percentile key inside the open range 0..1
+      assert    10.9s  02 the document level extractor is deterministic
+      assert    10.8s  09 raw features are bit identical to batch-b2.1
+      assert    10.7s  04a the classifier sidecar reports raw and percentile columns
+  spec_check_b2_3.py: build=1.2s assertions=52.5s unattributed=4.0s
+      build      1.0s  warmup
+      build      0.1s  pipeline:classified:Courier-en
+      build      0.0s  pipeline:parse_only_plain:AramcoWorld-en
+      assert    23.4s  06a the classifier stage conserves pages and paragraphs and labels every page
+      assert    12.6s  03a every corpus page still receives a verdict with a confidence in 0..1
+      assert    10.8s  06b the sidecar report and the IL carry the guarded scores
+      assert     1.5s  06c dry run still renders identically to the baseline (AramcoWorld-en)
+      assert     1.3s  06c dry run still renders identically to the baseline (CERNCourier-en)
+  spec_check_b2_5.py: build=148.8s assertions=149.5s unattributed=-144.7s
+      build    147.8s  pipeline:classified:Vogue-en
+      build      1.0s  warmup
+      assert   113.5s  01a cached and directly built checkpoints are equal in canonical form
+      assert    34.3s  01b the normalised difference is the pipeline's own per-run labelling
+      assert     0.5s  03c a differing pair still takes the rasterising path
+      assert     0.4s  02a a one byte configuration edit mints a new workspace fingerprint
+      assert     0.3s  08 every assertion description from the previous batch survives verbatim
+  spec_check_b2_7.py: build=1.2s assertions=25.5s unattributed=3.1s
+      build      1.0s  warmup
+      build      0.1s  pipeline:classified:Courier-en
+      build      0.0s  pipeline:classified:Vogue-en
+      assert    10.8s  03a the measured candidate agreement matches the frozen table
+      assert    10.8s  03a the measured raw agreement matches the frozen table
+      assert     3.1s  01a a vocabulary carrying a percentile rule scores the document vectors
+      assert     0.5s  04a editing a gate script leaves the workspace fingerprint alone
+      assert     0.1s  08a this batch changes only the files the plan allows
+  build total=157.0s assertion total=666.0s
+  slowest assertions across the sweep:
+         205.2s  spec_check_b2.py :: 02a repeated extraction returns bit identical feature vectors
+         113.5s  spec_check_b2_5.py :: 01a cached and directly built checkpoints are equal in canonical form
+          34.3s  spec_check_b2_5.py :: 01b the normalised difference is the pipeline's own per-run labelling
+          23.4s  spec_check_b2_3.py :: 06a the classifier stage conserves pages and paragraphs and labels every page
+          23.3s  spec_check_b2_2.py :: 07 the classifier stage conserves page and paragraph counts
+  completion marker: D:\Codes\BabelDOC\examples\output\run_all.done.json

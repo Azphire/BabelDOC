@@ -4,8 +4,8 @@
 E1 之后任何指标实现若与本表不符,以本表为准或先改本表。
 
 公式出处一律指 `docs/dissertation/background_chapter.tex` 中的 `\label{eq:...}` 标签。
-本会话逐一 grep 核对过下表引用的每个标签,可解析。该 `.tex` 目前**未入库**(见
-`docs/eval/gap_register.md` GAP-07)。
+batch-e0 逐一 grep 核对过下表引用的每个标签,可解析。该 `.tex` 已由 batch-e1 会话一入库
+(GAP-07 分级入库),`spec_checks/spec_check_e0.py` 的断言 04 每次 sweep 复核一遍标签可解析。
 
 ## 1. 合同表
 
@@ -86,6 +86,38 @@ $$\mathrm{LTCR}(w) = \frac{\sum_{i<j}\mathbf{1}(t_i=t_j)}{C_k^2}\times 100\%$$
 - 参考侧只有 Courier 一刊有官方中文版,且背景章已定性为 **editorial adaptation**,
   故两者一律标"诊断",不进主结果表。
 - M11 的参考原件当前**不在树内**(台账 A-15),须先重新取回并记哈希。
+
+## 2b. batch-e1 会话一的实现决议(本表授权的裁量点,已定案)
+
+实现落在 `babeldoc/magazine/metrics/`,参数在 `configs/metrics.json`(每项带 allowed_range),
+统一入口 `tools/eval_report.py`;M2 落在 `babeldoc/magazine/metrics/conservation.py`。各指标的 LaTeX 定义随模块 docstring 给出;
+沿用已有公式者只引本表第 1 节列出的公式标签,新定义者自成一式(E4 收编进论文)。
+
+1. **M1 的边界口径**(`babeldoc/magazine/metrics/mid_break_rate.py`):合同的分母(页数 − 1)为**主序列**;`plans/PLAN_E1.md` 另要求的
+   **栏边界**作为**第二序列**并列输出,分母为逐页"栏数 − 1"之和,两序列不混算。
+2. **M1 的 tail 定义**:页 N 的 tail 取 `chain_signals.page_candidates` 派生阅读序的**最后一个
+   端点候选**,而非最后一个盒——与链检测器共用同一口径,否则指标与检测器谈的不是同一条边界。
+3. **M1 的 by-design 档**:合同允许"从分子中排除或单列一档",本实现**两者都做**:`designed`
+   自成一档(链成员、后继成员存在、句区间记 `-1/-1`),`rate` 保留合同分母,`strict_rate` 从
+   分母中扣除 `designed`。另有 `axis_unsupported`(竖排 tail)与 `no_tail` 两档,不进任何分子。
+4. **M3 的 $t_i$ 代理**(`babeldoc/magazine/metrics/ltcr.py`):本项目无词对齐,`eq:ltcr` 的 $t_i$ 由候选串迭代分组导出(每轮取最广
+   共享的区别性子串,覆盖到的段落成一组,剩余段落再来一轮,无人共享者自成单元素组),
+   $\mathrm{LTCR} = \sum_t C(m_t,2)/C(k,2)$。旧量(b6.3 的 $m_1/k$)以 `legacy_share` 并列输出,
+   **不得标为 LTCR**。两者关系已证并进门禁:`LTCR ≤ legacy_share`;`LTCR = 1 ⟺ legacy_share = 1`;
+   `LTCR = 0 ⟺ legacy_share = 1/k`。两者在 $k=2$ 时**不**相等(无共享译名时旧量记 0.5、
+   LTCR 记 0),这一差正是成对口径的代价,论文引用时须只引 LTCR。
+5. **M4 / M5 的元素集**(`babeldoc/magazine/metrics/layout_geometry.py`):`pdf_paragraph` 的 box **∪** 图像元素,图像取 `pdf_figure` 与
+   `page_layout` 中 `class_name` 落在 `configs/metrics.json` 的 `image_layout_classes` 内者
+   ——语料上 `pdf_figure` 恒为空,图像全部以 layout 区域形式存在。**排除 `pdf_xobject`**
+   (容器,其内容已被计入)与文本类 layout 区域(段落由其派生,计两次)。
+6. **M4 / M5 的坐标**:按页框(cropbox,无则 mediabox)归一到单位页;Kikuchi 的 $1/N$ 逐元素
+   归一;`g(x) = -\log(1-x)` 的定义域由 `alignment_max_delta` 夹断,元素数 < 2 的页返回
+   `None` 而非 0.0。
+7. **M4 / M5 的报告口径**:源侧取 `checkpoint.08_chain_builder`(翻译前最后一个 checkpoint,
+   段落与盒已就位),译侧取 `checkpoint.11_typesetting`,报两侧与差值。
+8. **M9 的配对规则**:源侧图像按页内序号遍历,取面积比最接近的未配对译侧图像,面积比超过
+   `image_pair_max_area_ratio` 者拒绝配对;并列时以译侧页内序号定序。未配对图像按 IoU 0
+   计入分母(分母 = 两侧图像数的较大者)并在报告中单列。
 
 ## 3. 本合同不涵盖
 

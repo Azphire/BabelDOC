@@ -1,0 +1,1054 @@
+{
+  "agreement": {
+    "combined": {
+      "": {
+        "hits": 28,
+        "rate": 0.9032,
+        "total": 31
+      },
+      "aramcoworld": {
+        "hits": 6,
+        "rate": 0.75,
+        "total": 8
+      },
+      "cern_courier": {
+        "hits": 4,
+        "rate": 1.0,
+        "total": 4
+      },
+      "imf_fd": {
+        "hits": 8,
+        "rate": 1.0,
+        "total": 8
+      },
+      "unesco_courier": {
+        "hits": 7,
+        "rate": 0.875,
+        "total": 8
+      },
+      "vogue_us": {
+        "hits": 3,
+        "rate": 1.0,
+        "total": 3
+      }
+    },
+    "deterministic": {
+      "": {
+        "hits": 28,
+        "rate": 0.9032,
+        "total": 31
+      },
+      "aramcoworld": {
+        "hits": 6,
+        "rate": 0.75,
+        "total": 8
+      },
+      "cern_courier": {
+        "hits": 3,
+        "rate": 0.75,
+        "total": 4
+      },
+      "imf_fd": {
+        "hits": 8,
+        "rate": 1.0,
+        "total": 8
+      },
+      "unesco_courier": {
+        "hits": 8,
+        "rate": 1.0,
+        "total": 8
+      },
+      "vogue_us": {
+        "hits": 3,
+        "rate": 1.0,
+        "total": 3
+      }
+    },
+    "routed_pages_combined": {
+      "": {
+        "hits": 15,
+        "rate": 0.8333,
+        "total": 18
+      },
+      "aramcoworld": {
+        "hits": 3,
+        "rate": 0.6,
+        "total": 5
+      },
+      "cern_courier": {
+        "hits": 4,
+        "rate": 1.0,
+        "total": 4
+      },
+      "imf_fd": {
+        "hits": 3,
+        "rate": 1.0,
+        "total": 3
+      },
+      "unesco_courier": {
+        "hits": 3,
+        "rate": 0.75,
+        "total": 4
+      },
+      "vogue_us": {
+        "hits": 2,
+        "rate": 1.0,
+        "total": 2
+      }
+    },
+    "routed_pages_deterministic": {
+      "": {
+        "hits": 15,
+        "rate": 0.8333,
+        "total": 18
+      },
+      "aramcoworld": {
+        "hits": 3,
+        "rate": 0.6,
+        "total": 5
+      },
+      "cern_courier": {
+        "hits": 3,
+        "rate": 0.75,
+        "total": 4
+      },
+      "imf_fd": {
+        "hits": 3,
+        "rate": 1.0,
+        "total": 3
+      },
+      "unesco_courier": {
+        "hits": 4,
+        "rate": 1.0,
+        "total": 4
+      },
+      "vogue_us": {
+        "hits": 2,
+        "rate": 1.0,
+        "total": 2
+      }
+    }
+  },
+  "configuration": {
+    "enabled": true,
+    "max_output_tokens": 512,
+    "max_retries": 1,
+    "model": "gpt-5.6-sol",
+    "render_dpi": 150,
+    "temperature": null,
+    "token_parameter": "max_completion_tokens",
+    "verdict_rows": 3
+  },
+  "cost": {
+    "attempts": 0,
+    "cache_hits": 18,
+    "pipeline_requests": 18,
+    "routed_pages": 18,
+    "transport_requests": 0
+  },
+  "fallback": {
+    "accepted": 18,
+    "refusal_rate": 0.0,
+    "refusal_reasons": {},
+    "refusals": [],
+    "refused": 0,
+    "routed": 18
+  },
+  "label_set_coverage": {
+    "combined": {
+      "": {
+        "hits": 28,
+        "rate": 0.9032,
+        "total": 31
+      },
+      "aramcoworld": {
+        "hits": 6,
+        "rate": 0.75,
+        "total": 8
+      },
+      "cern_courier": {
+        "hits": 4,
+        "rate": 1.0,
+        "total": 4
+      },
+      "imf_fd": {
+        "hits": 8,
+        "rate": 1.0,
+        "total": 8
+      },
+      "unesco_courier": {
+        "hits": 7,
+        "rate": 0.875,
+        "total": 8
+      },
+      "vogue_us": {
+        "hits": 3,
+        "rate": 1.0,
+        "total": 3
+      }
+    },
+    "deterministic": {
+      "": {
+        "hits": 28,
+        "rate": 0.9032,
+        "total": 31
+      },
+      "aramcoworld": {
+        "hits": 6,
+        "rate": 0.75,
+        "total": 8
+      },
+      "cern_courier": {
+        "hits": 3,
+        "rate": 0.75,
+        "total": 4
+      },
+      "imf_fd": {
+        "hits": 8,
+        "rate": 1.0,
+        "total": 8
+      },
+      "unesco_courier": {
+        "hits": 8,
+        "rate": 1.0,
+        "total": 8
+      },
+      "vogue_us": {
+        "hits": 3,
+        "rate": 1.0,
+        "total": 3
+      }
+    },
+    "routed_pages_combined": {
+      "": {
+        "hits": 15,
+        "rate": 0.8333,
+        "total": 18
+      },
+      "aramcoworld": {
+        "hits": 3,
+        "rate": 0.6,
+        "total": 5
+      },
+      "cern_courier": {
+        "hits": 4,
+        "rate": 1.0,
+        "total": 4
+      },
+      "imf_fd": {
+        "hits": 3,
+        "rate": 1.0,
+        "total": 3
+      },
+      "unesco_courier": {
+        "hits": 3,
+        "rate": 0.75,
+        "total": 4
+      },
+      "vogue_us": {
+        "hits": 2,
+        "rate": 1.0,
+        "total": 2
+      }
+    },
+    "routed_pages_deterministic": {
+      "": {
+        "hits": 15,
+        "rate": 0.8333,
+        "total": 18
+      },
+      "aramcoworld": {
+        "hits": 3,
+        "rate": 0.6,
+        "total": 5
+      },
+      "cern_courier": {
+        "hits": 3,
+        "rate": 0.75,
+        "total": 4
+      },
+      "imf_fd": {
+        "hits": 3,
+        "rate": 1.0,
+        "total": 3
+      },
+      "unesco_courier": {
+        "hits": 4,
+        "rate": 1.0,
+        "total": 4
+      },
+      "vogue_us": {
+        "hits": 2,
+        "rate": 1.0,
+        "total": 2
+      }
+    },
+    "secondary_gain_pages": []
+  },
+  "pages": [
+    {
+      "ambiguous": true,
+      "deterministic_conf": 0.8667,
+      "deterministic_coverage_hit": true,
+      "deterministic_hit": true,
+      "deterministic_kind": "editorial",
+      "file": "Courier-en.pdf",
+      "final_conf": 0.99,
+      "final_coverage_hit": true,
+      "final_hit": true,
+      "final_kind": "editorial",
+      "labels": [
+        "toc",
+        "editorial"
+      ],
+      "page": 1,
+      "source": "vlm",
+      "vlm": {
+        "accepted": true,
+        "attempts": 0,
+        "confidence": 0.99,
+        "from_cache": true,
+        "kind": "editorial",
+        "reason": "",
+        "secondary_kind": "toc",
+        "secondary_reason": "The left half contains the table of contents, while the slightly larger right half carries the editorial."
+      }
+    },
+    {
+      "ambiguous": false,
+      "deterministic_conf": 1.0,
+      "deterministic_coverage_hit": true,
+      "deterministic_hit": true,
+      "deterministic_kind": "article_opener",
+      "file": "Courier-en.pdf",
+      "final_conf": 1.0,
+      "final_coverage_hit": true,
+      "final_hit": true,
+      "final_kind": "article_opener",
+      "labels": [
+        "article_opener"
+      ],
+      "page": 2,
+      "source": "deterministic",
+      "vlm": null
+    },
+    {
+      "ambiguous": true,
+      "deterministic_conf": 1.0,
+      "deterministic_coverage_hit": true,
+      "deterministic_hit": true,
+      "deterministic_kind": "photo_spread",
+      "file": "Courier-en.pdf",
+      "final_conf": 0.97,
+      "final_coverage_hit": false,
+      "final_hit": false,
+      "final_kind": "section_divider",
+      "labels": [
+        "photo_spread"
+      ],
+      "page": 3,
+      "source": "vlm",
+      "vlm": {
+        "accepted": true,
+        "attempts": 0,
+        "confidence": 0.97,
+        "from_cache": true,
+        "kind": "section_divider",
+        "reason": "",
+        "secondary_kind": null,
+        "secondary_reason": null
+      }
+    },
+    {
+      "ambiguous": true,
+      "deterministic_conf": 1.0,
+      "deterministic_coverage_hit": true,
+      "deterministic_hit": true,
+      "deterministic_kind": "article_body",
+      "file": "Courier-en.pdf",
+      "final_conf": 0.98,
+      "final_coverage_hit": true,
+      "final_hit": true,
+      "final_kind": "article_body",
+      "labels": [
+        "article_body"
+      ],
+      "page": 4,
+      "source": "vlm",
+      "vlm": {
+        "accepted": true,
+        "attempts": 0,
+        "confidence": 0.98,
+        "from_cache": true,
+        "kind": "article_body",
+        "reason": "",
+        "secondary_kind": "sidebar_heavy",
+        "secondary_reason": "A clearly bounded three-column informational sidebar occupies the bottom band of the page."
+      }
+    },
+    {
+      "ambiguous": false,
+      "deterministic_conf": 1.0,
+      "deterministic_coverage_hit": true,
+      "deterministic_hit": true,
+      "deterministic_kind": "article_opener",
+      "file": "Courier-en.pdf",
+      "final_conf": 1.0,
+      "final_coverage_hit": true,
+      "final_hit": true,
+      "final_kind": "article_opener",
+      "labels": [
+        "article_opener"
+      ],
+      "page": 5,
+      "source": "deterministic",
+      "vlm": null
+    },
+    {
+      "ambiguous": false,
+      "deterministic_conf": 1.0,
+      "deterministic_coverage_hit": true,
+      "deterministic_hit": true,
+      "deterministic_kind": "article_body",
+      "file": "Courier-en.pdf",
+      "final_conf": 1.0,
+      "final_coverage_hit": true,
+      "final_hit": true,
+      "final_kind": "article_body",
+      "labels": [
+        "article_body"
+      ],
+      "page": 6,
+      "source": "deterministic",
+      "vlm": null
+    },
+    {
+      "ambiguous": true,
+      "deterministic_conf": 0.875,
+      "deterministic_coverage_hit": true,
+      "deterministic_hit": true,
+      "deterministic_kind": "article_opener",
+      "file": "Courier-en.pdf",
+      "final_conf": 0.99,
+      "final_coverage_hit": true,
+      "final_hit": true,
+      "final_kind": "article_opener",
+      "labels": [
+        "article_opener"
+      ],
+      "page": 7,
+      "source": "vlm",
+      "vlm": {
+        "accepted": true,
+        "attempts": 0,
+        "confidence": 0.99,
+        "from_cache": true,
+        "kind": "article_opener",
+        "reason": "",
+        "secondary_kind": null,
+        "secondary_reason": null
+      }
+    },
+    {
+      "ambiguous": false,
+      "deterministic_conf": 1.0,
+      "deterministic_coverage_hit": true,
+      "deterministic_hit": true,
+      "deterministic_kind": "article_body",
+      "file": "Courier-en.pdf",
+      "final_conf": 1.0,
+      "final_coverage_hit": true,
+      "final_hit": true,
+      "final_kind": "article_body",
+      "labels": [
+        "article_body"
+      ],
+      "page": 8,
+      "source": "deterministic",
+      "vlm": null
+    },
+    {
+      "ambiguous": true,
+      "deterministic_conf": 1.0,
+      "deterministic_coverage_hit": true,
+      "deterministic_hit": true,
+      "deterministic_kind": "advertisement",
+      "file": "Vogue-en.pdf",
+      "final_conf": 0.99,
+      "final_coverage_hit": true,
+      "final_hit": true,
+      "final_kind": "advertisement",
+      "labels": [
+        "advertisement"
+      ],
+      "page": 1,
+      "source": "vlm",
+      "vlm": {
+        "accepted": true,
+        "attempts": 0,
+        "confidence": 0.99,
+        "from_cache": true,
+        "kind": "advertisement",
+        "reason": "",
+        "secondary_kind": null,
+        "secondary_reason": null
+      }
+    },
+    {
+      "ambiguous": false,
+      "deterministic_conf": 1.0,
+      "deterministic_coverage_hit": true,
+      "deterministic_hit": true,
+      "deterministic_kind": "advertisement",
+      "file": "Vogue-en.pdf",
+      "final_conf": 1.0,
+      "final_coverage_hit": true,
+      "final_hit": true,
+      "final_kind": "advertisement",
+      "labels": [
+        "advertisement"
+      ],
+      "page": 2,
+      "source": "deterministic",
+      "vlm": null
+    },
+    {
+      "ambiguous": true,
+      "deterministic_conf": 0.875,
+      "deterministic_coverage_hit": true,
+      "deterministic_hit": true,
+      "deterministic_kind": "toc",
+      "file": "Vogue-en.pdf",
+      "final_conf": 0.99,
+      "final_coverage_hit": true,
+      "final_hit": true,
+      "final_kind": "toc",
+      "labels": [
+        "toc"
+      ],
+      "page": 3,
+      "source": "vlm",
+      "vlm": {
+        "accepted": true,
+        "attempts": 0,
+        "confidence": 0.99,
+        "from_cache": true,
+        "kind": "toc",
+        "reason": "",
+        "secondary_kind": null,
+        "secondary_reason": null
+      }
+    },
+    {
+      "ambiguous": true,
+      "deterministic_conf": 1.0,
+      "deterministic_coverage_hit": true,
+      "deterministic_hit": true,
+      "deterministic_kind": "editorial",
+      "file": "CERNCourier-en.pdf",
+      "final_conf": 0.93,
+      "final_coverage_hit": true,
+      "final_hit": true,
+      "final_kind": "editorial",
+      "labels": [
+        "editorial",
+        "front_cover"
+      ],
+      "page": 1,
+      "source": "vlm",
+      "vlm": {
+        "accepted": true,
+        "attempts": 0,
+        "confidence": 0.93,
+        "from_cache": true,
+        "kind": "editorial",
+        "reason": "",
+        "secondary_kind": "front_cover",
+        "secondary_reason": "The right half displays the issue's image-led front cover."
+      }
+    },
+    {
+      "ambiguous": true,
+      "deterministic_conf": 0.875,
+      "deterministic_coverage_hit": true,
+      "deterministic_hit": true,
+      "deterministic_kind": "toc",
+      "file": "CERNCourier-en.pdf",
+      "final_conf": 0.99,
+      "final_coverage_hit": true,
+      "final_hit": true,
+      "final_kind": "toc",
+      "labels": [
+        "advertisement",
+        "toc"
+      ],
+      "page": 2,
+      "source": "vlm",
+      "vlm": {
+        "accepted": true,
+        "attempts": 0,
+        "confidence": 0.99,
+        "from_cache": true,
+        "kind": "toc",
+        "reason": "",
+        "secondary_kind": "advertisement",
+        "secondary_reason": "The left half is a full-page conference advertisement."
+      }
+    },
+    {
+      "ambiguous": true,
+      "deterministic_conf": 0.875,
+      "deterministic_coverage_hit": true,
+      "deterministic_hit": true,
+      "deterministic_kind": "article_opener",
+      "file": "CERNCourier-en.pdf",
+      "final_conf": 0.98,
+      "final_coverage_hit": true,
+      "final_hit": true,
+      "final_kind": "article_opener",
+      "labels": [
+        "advertisement",
+        "article_opener"
+      ],
+      "page": 3,
+      "source": "vlm",
+      "vlm": {
+        "accepted": true,
+        "attempts": 0,
+        "confidence": 0.98,
+        "from_cache": true,
+        "kind": "article_opener",
+        "reason": "",
+        "secondary_kind": "advertisement",
+        "secondary_reason": "The left half is a full-page Bergoz Instrumentation advertisement."
+      }
+    },
+    {
+      "ambiguous": true,
+      "deterministic_conf": 1.0,
+      "deterministic_coverage_hit": false,
+      "deterministic_hit": false,
+      "deterministic_kind": "interview",
+      "file": "CERNCourier-en.pdf",
+      "final_conf": 0.99,
+      "final_coverage_hit": true,
+      "final_hit": true,
+      "final_kind": "article_body",
+      "labels": [
+        "article_body"
+      ],
+      "page": 4,
+      "source": "vlm",
+      "vlm": {
+        "accepted": true,
+        "attempts": 0,
+        "confidence": 0.99,
+        "from_cache": true,
+        "kind": "article_body",
+        "reason": "",
+        "secondary_kind": null,
+        "secondary_reason": null
+      }
+    },
+    {
+      "ambiguous": true,
+      "deterministic_conf": 1.0,
+      "deterministic_coverage_hit": true,
+      "deterministic_hit": true,
+      "deterministic_kind": "front_cover",
+      "file": "FD-en.pdf",
+      "final_conf": 0.99,
+      "final_coverage_hit": true,
+      "final_hit": true,
+      "final_kind": "front_cover",
+      "labels": [
+        "front_cover"
+      ],
+      "page": 1,
+      "source": "vlm",
+      "vlm": {
+        "accepted": true,
+        "attempts": 0,
+        "confidence": 0.99,
+        "from_cache": true,
+        "kind": "front_cover",
+        "reason": "",
+        "secondary_kind": null,
+        "secondary_reason": null
+      }
+    },
+    {
+      "ambiguous": false,
+      "deterministic_conf": 1.0,
+      "deterministic_coverage_hit": true,
+      "deterministic_hit": true,
+      "deterministic_kind": "advertisement",
+      "file": "FD-en.pdf",
+      "final_conf": 1.0,
+      "final_coverage_hit": true,
+      "final_hit": true,
+      "final_kind": "advertisement",
+      "labels": [
+        "advertisement"
+      ],
+      "page": 2,
+      "source": "deterministic",
+      "vlm": null
+    },
+    {
+      "ambiguous": true,
+      "deterministic_conf": 0.875,
+      "deterministic_coverage_hit": true,
+      "deterministic_hit": true,
+      "deterministic_kind": "toc",
+      "file": "FD-en.pdf",
+      "final_conf": 0.99,
+      "final_coverage_hit": true,
+      "final_hit": true,
+      "final_kind": "toc",
+      "labels": [
+        "toc"
+      ],
+      "page": 3,
+      "source": "vlm",
+      "vlm": {
+        "accepted": true,
+        "attempts": 0,
+        "confidence": 0.99,
+        "from_cache": true,
+        "kind": "toc",
+        "reason": "",
+        "secondary_kind": null,
+        "secondary_reason": null
+      }
+    },
+    {
+      "ambiguous": false,
+      "deterministic_conf": 1.0,
+      "deterministic_coverage_hit": true,
+      "deterministic_hit": true,
+      "deterministic_kind": "advertisement",
+      "file": "FD-en.pdf",
+      "final_conf": 1.0,
+      "final_coverage_hit": true,
+      "final_hit": true,
+      "final_kind": "advertisement",
+      "labels": [
+        "advertisement"
+      ],
+      "page": 4,
+      "source": "deterministic",
+      "vlm": null
+    },
+    {
+      "ambiguous": false,
+      "deterministic_conf": 1.0,
+      "deterministic_coverage_hit": true,
+      "deterministic_hit": true,
+      "deterministic_kind": "masthead",
+      "file": "FD-en.pdf",
+      "final_conf": 1.0,
+      "final_coverage_hit": true,
+      "final_hit": true,
+      "final_kind": "masthead",
+      "labels": [
+        "masthead"
+      ],
+      "page": 5,
+      "source": "deterministic",
+      "vlm": null
+    },
+    {
+      "ambiguous": false,
+      "deterministic_conf": 1.0,
+      "deterministic_coverage_hit": true,
+      "deterministic_hit": true,
+      "deterministic_kind": "article_opener",
+      "file": "FD-en.pdf",
+      "final_conf": 1.0,
+      "final_coverage_hit": true,
+      "final_hit": true,
+      "final_kind": "article_opener",
+      "labels": [
+        "article_opener"
+      ],
+      "page": 6,
+      "source": "deterministic",
+      "vlm": null
+    },
+    {
+      "ambiguous": false,
+      "deterministic_conf": 1.0,
+      "deterministic_coverage_hit": true,
+      "deterministic_hit": true,
+      "deterministic_kind": "article_opener",
+      "file": "FD-en.pdf",
+      "final_conf": 1.0,
+      "final_coverage_hit": true,
+      "final_hit": true,
+      "final_kind": "article_opener",
+      "labels": [
+        "article_opener"
+      ],
+      "page": 7,
+      "source": "deterministic",
+      "vlm": null
+    },
+    {
+      "ambiguous": true,
+      "deterministic_conf": 0.875,
+      "deterministic_coverage_hit": true,
+      "deterministic_hit": true,
+      "deterministic_kind": "article_opener",
+      "file": "FD-en.pdf",
+      "final_conf": 0.99,
+      "final_coverage_hit": true,
+      "final_hit": true,
+      "final_kind": "article_opener",
+      "labels": [
+        "article_opener"
+      ],
+      "page": 8,
+      "source": "vlm",
+      "vlm": {
+        "accepted": true,
+        "attempts": 0,
+        "confidence": 0.99,
+        "from_cache": true,
+        "kind": "article_opener",
+        "reason": "",
+        "secondary_kind": null,
+        "secondary_reason": null
+      }
+    },
+    {
+      "ambiguous": true,
+      "deterministic_conf": 1.0,
+      "deterministic_coverage_hit": true,
+      "deterministic_hit": true,
+      "deterministic_kind": "front_cover",
+      "file": "AramcoWorld-en.pdf",
+      "final_conf": 0.99,
+      "final_coverage_hit": true,
+      "final_hit": true,
+      "final_kind": "front_cover",
+      "labels": [
+        "front_cover"
+      ],
+      "page": 1,
+      "source": "vlm",
+      "vlm": {
+        "accepted": true,
+        "attempts": 0,
+        "confidence": 0.99,
+        "from_cache": true,
+        "kind": "front_cover",
+        "reason": "",
+        "secondary_kind": null,
+        "secondary_reason": null
+      }
+    },
+    {
+      "ambiguous": false,
+      "deterministic_conf": 1.0,
+      "deterministic_coverage_hit": true,
+      "deterministic_hit": true,
+      "deterministic_kind": "masthead",
+      "file": "AramcoWorld-en.pdf",
+      "final_conf": 1.0,
+      "final_coverage_hit": true,
+      "final_hit": true,
+      "final_kind": "masthead",
+      "labels": [
+        "masthead"
+      ],
+      "page": 2,
+      "source": "deterministic",
+      "vlm": null
+    },
+    {
+      "ambiguous": true,
+      "deterministic_conf": 0.875,
+      "deterministic_coverage_hit": true,
+      "deterministic_hit": true,
+      "deterministic_kind": "toc",
+      "file": "AramcoWorld-en.pdf",
+      "final_conf": 0.99,
+      "final_coverage_hit": true,
+      "final_hit": true,
+      "final_kind": "toc",
+      "labels": [
+        "toc"
+      ],
+      "page": 3,
+      "source": "vlm",
+      "vlm": {
+        "accepted": true,
+        "attempts": 0,
+        "confidence": 0.99,
+        "from_cache": true,
+        "kind": "toc",
+        "reason": "",
+        "secondary_kind": null,
+        "secondary_reason": null
+      }
+    },
+    {
+      "ambiguous": false,
+      "deterministic_conf": 1.0,
+      "deterministic_coverage_hit": true,
+      "deterministic_hit": true,
+      "deterministic_kind": "article_body",
+      "file": "AramcoWorld-en.pdf",
+      "final_conf": 1.0,
+      "final_coverage_hit": true,
+      "final_hit": true,
+      "final_kind": "article_body",
+      "labels": [
+        "article_body"
+      ],
+      "page": 4,
+      "source": "deterministic",
+      "vlm": null
+    },
+    {
+      "ambiguous": true,
+      "deterministic_conf": 0.875,
+      "deterministic_coverage_hit": true,
+      "deterministic_hit": true,
+      "deterministic_kind": "article_opener",
+      "file": "AramcoWorld-en.pdf",
+      "final_conf": 0.99,
+      "final_coverage_hit": true,
+      "final_hit": true,
+      "final_kind": "article_opener",
+      "labels": [
+        "article_opener"
+      ],
+      "page": 5,
+      "source": "vlm",
+      "vlm": {
+        "accepted": true,
+        "attempts": 0,
+        "confidence": 0.99,
+        "from_cache": true,
+        "kind": "article_opener",
+        "reason": "",
+        "secondary_kind": null,
+        "secondary_reason": null
+      }
+    },
+    {
+      "ambiguous": false,
+      "deterministic_conf": 1.0,
+      "deterministic_coverage_hit": true,
+      "deterministic_hit": true,
+      "deterministic_kind": "article_body",
+      "file": "AramcoWorld-en.pdf",
+      "final_conf": 1.0,
+      "final_coverage_hit": true,
+      "final_hit": true,
+      "final_kind": "article_body",
+      "labels": [
+        "article_body"
+      ],
+      "page": 6,
+      "source": "deterministic",
+      "vlm": null
+    },
+    {
+      "ambiguous": true,
+      "deterministic_conf": 0.875,
+      "deterministic_coverage_hit": false,
+      "deterministic_hit": false,
+      "deterministic_kind": "article_opener",
+      "file": "AramcoWorld-en.pdf",
+      "final_conf": 0.76,
+      "final_coverage_hit": false,
+      "final_hit": false,
+      "final_kind": "article_opener",
+      "labels": [
+        "article_body"
+      ],
+      "page": 7,
+      "source": "vlm",
+      "vlm": {
+        "accepted": true,
+        "attempts": 0,
+        "confidence": 0.76,
+        "from_cache": true,
+        "kind": "article_opener",
+        "reason": "",
+        "secondary_kind": null,
+        "secondary_reason": null
+      }
+    },
+    {
+      "ambiguous": true,
+      "deterministic_conf": 0.875,
+      "deterministic_coverage_hit": false,
+      "deterministic_hit": false,
+      "deterministic_kind": "article_opener",
+      "file": "AramcoWorld-en.pdf",
+      "final_conf": 0.98,
+      "final_coverage_hit": false,
+      "final_hit": false,
+      "final_kind": "article_opener",
+      "labels": [
+        "article_body"
+      ],
+      "page": 8,
+      "source": "vlm",
+      "vlm": {
+        "accepted": true,
+        "attempts": 0,
+        "confidence": 0.98,
+        "from_cache": true,
+        "kind": "article_opener",
+        "reason": "",
+        "secondary_kind": null,
+        "secondary_reason": null
+      }
+    }
+  ],
+  "prompts": {
+    "prompts/page_classify_vlm.md": "d492aba1f5f52a48bb6dff5f7bec7cf9675649e24a37686f9a9658e0581620b0"
+  },
+  "secondary_kinds": [
+    {
+      "file": "Courier-en.pdf",
+      "kind": "editorial",
+      "page": 1,
+      "secondary_kind": "toc",
+      "secondary_reason": "The left half contains the table of contents, while the slightly larger right half carries the editorial."
+    },
+    {
+      "file": "Courier-en.pdf",
+      "kind": "article_body",
+      "page": 4,
+      "secondary_kind": "sidebar_heavy",
+      "secondary_reason": "A clearly bounded three-column informational sidebar occupies the bottom band of the page."
+    },
+    {
+      "file": "CERNCourier-en.pdf",
+      "kind": "editorial",
+      "page": 1,
+      "secondary_kind": "front_cover",
+      "secondary_reason": "The right half displays the issue's image-led front cover."
+    },
+    {
+      "file": "CERNCourier-en.pdf",
+      "kind": "toc",
+      "page": 2,
+      "secondary_kind": "advertisement",
+      "secondary_reason": "The left half is a full-page conference advertisement."
+    },
+    {
+      "file": "CERNCourier-en.pdf",
+      "kind": "article_opener",
+      "page": 3,
+      "secondary_kind": "advertisement",
+      "secondary_reason": "The left half is a full-page Bergoz Instrumentation advertisement."
+    }
+  ]
+}

@@ -1,0 +1,358 @@
+﻿babeldoc.exe : fatal: not a git repository (or any of the parent directories): .git
+At C:\Users\Azphire\AppData\Local\Temp\claude\d--Codes-BabelDOC-main\9ae3bfb4-604a-483d-bf2e-b00d2878a814\scratchpad\ru
+n_all.ps1:49 char:5
++     & $exe @argList *> $logF
++     ~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (fatal: not a gi...ectories): .git:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+[08/14/26 01:43:06] INFO     INFO:babeldoc.docvision.base_ base_doclayout.py:43
+                             doclayout:Loading ONNX                            
+                             model...                                          
+[08/14/26 01:43:07] INFO     INFO:babeldoc.docvision.doclayout: doclayout.py:73
+                             Available Provider:                               
+                             CPUExecutionProvider                              
+[08/14/26 01:43:09] INFO     INFO:babeldoc.format.pdf.high_le high_level.py:533
+                             vel:start to translate:                           
+                             D:\Codes\BabelDOC-main\examples\                  
+                             ci\CERNCourier-en.pdf                             
+warning: The `fitz` API is deprecated and will be removed in future. Use `import pymupdf` instead.
+[08/14/26 01:44:26] INFO     INFO:babeldoc.format il_translator_llm_only.py:171
+                             .pdf.document_il.mid                              
+                             end.il_translator_ll                              
+                             m_only:Found title                                
+                             paragraph:                                        
+                             CERNCOURIER                                       
+                             July/August 2026                                  
+                             cerncourier.com                                   
+                             Reporting on                                      
+                             international                                     
+                             high-energy physics                               
+                    INFO     INFO:babeldoc.format il_translator_llm_only.py:192
+                             .pdf.document_il.mid                              
+                             end.il_translator_ll                              
+                             m_only:Found first                                
+                             title paragraph:                                  
+                             CERNCOURIER                                       
+                             July/August 2026                                  
+                             cerncourier.com                                   
+                             Reporting on                                      
+                             international                                     
+                             high-energy physics                               
+[08/14/26 01:44:42] WARNING  WARNING:babeldoc.for il_translator_llm_only.py:778
+                             mat.pdf.document_il.                              
+                             midend.il_translator                              
+                             _llm_only:Translatio                              
+                             n result is the same                              
+                             as input, fallback.                               
+                    WARNING  WARNING:babeldoc.for il_translator_llm_only.py:828
+                             mat.pdf.document_il.                              
+                             midend.il_translator                              
+                             _llm_only:Fallback                                
+                             to simple                                         
+                             translation.                                      
+                             paragraph id: YeGEs                               
+[08/14/26 01:44:50] WARNING  WARNING:babeldoc.for il_translator_llm_only.py:778
+                             mat.pdf.document_il.                              
+                             midend.il_translator                              
+                             _llm_only:Translatio                              
+                             n result is the same                              
+                             as input, fallback.                               
+                    WARNING  WARNING:babeldoc.for il_translator_llm_only.py:828
+                             mat.pdf.document_il.                              
+                             midend.il_translator                              
+                             _llm_only:Fallback                                
+                             to simple                                         
+                             translation.                                      
+                             paragraph id: qmYs4                               
+[08/14/26 01:44:54] WARNING  WARNING:babeldoc.for il_translator_llm_only.py:778
+                             mat.pdf.document_il.                              
+                             midend.il_translator                              
+                             _llm_only:Translatio                              
+                             n result is the same                              
+                             as input, fallback.                               
+                    WARNING  WARNING:babeldoc.for il_translator_llm_only.py:828
+                             mat.pdf.document_il.                              
+                             midend.il_translator                              
+                             _llm_only:Fallback                                
+                             to simple                                         
+                             translation.                                      
+                             paragraph id: fRm7b                               
+[08/14/26 01:44:55] WARNING  WARNING:babeldoc.for il_translator_llm_only.py:778
+                             mat.pdf.document_il.                              
+                             midend.il_translator                              
+                             _llm_only:Translatio                              
+                             n result is the same                              
+                             as input, fallback.                               
+                    WARNING  WARNING:babeldoc.for il_translator_llm_only.py:828
+                             mat.pdf.document_il.                              
+                             midend.il_translator                              
+                             _llm_only:Fallback                                
+                             to simple                                         
+                             translation.                                      
+                             paragraph id: aZpjz                               
+                    WARNING  WARNING:babeldoc.for il_translator_llm_only.py:778
+                             mat.pdf.document_il.                              
+                             midend.il_translator                              
+                             _llm_only:Translatio                              
+                             n result is the same                              
+                             as input, fallback.                               
+                    WARNING  WARNING:babeldoc.for il_translator_llm_only.py:828
+                             mat.pdf.document_il.                              
+                             midend.il_translator                              
+                             _llm_only:Fallback                                
+                             to simple                                         
+                             translation.                                      
+                             paragraph id: y2Xjj                               
+                    WARNING  WARNING:babeldoc.for il_translator_llm_only.py:778
+                             mat.pdf.document_il.                              
+                             midend.il_translator                              
+                             _llm_only:Translatio                              
+                             n result is the same                              
+                             as input, fallback.                               
+                    WARNING  WARNING:babeldoc.for il_translator_llm_only.py:828
+                             mat.pdf.document_il.                              
+                             midend.il_translator                              
+                             _llm_only:Fallback                                
+                             to simple                                         
+                             translation.                                      
+                             paragraph id: z5qMy                               
+                    WARNING  WARNING:babeldoc.for il_translator_llm_only.py:778
+                             mat.pdf.document_il.                              
+                             midend.il_translator                              
+                             _llm_only:Translatio                              
+                             n result is the same                              
+                             as input, fallback.                               
+                    WARNING  WARNING:babeldoc.for il_translator_llm_only.py:828
+                             mat.pdf.document_il.                              
+                             midend.il_translator                              
+                             _llm_only:Fallback                                
+                             to simple                                         
+                             translation.                                      
+                             paragraph id: sZhpF                               
+[08/14/26 01:44:56] WARNING  WARNING:babeldoc.for il_translator_llm_only.py:778
+                             mat.pdf.document_il.                              
+                             midend.il_translator                              
+                             _llm_only:Translatio                              
+                             n result is the same                              
+                             as input, fallback.                               
+                    WARNING  WARNING:babeldoc.for il_translator_llm_only.py:828
+                             mat.pdf.document_il.                              
+                             midend.il_translator                              
+                             _llm_only:Fallback                                
+                             to simple                                         
+                             translation.                                      
+                             paragraph id: zVVL9                               
+                    WARNING  WARNING:babeldoc.for il_translator_llm_only.py:778
+                             mat.pdf.document_il.                              
+                             midend.il_translator                              
+                             _llm_only:Translatio                              
+                             n result is the same                              
+                             as input, fallback.                               
+                    WARNING  WARNING:babeldoc.for il_translator_llm_only.py:828
+                             mat.pdf.document_il.                              
+                             midend.il_translator                              
+                             _llm_only:Fallback                                
+                             to simple                                         
+                             translation.                                      
+                             paragraph id: D2s4T                               
+                    WARNING  WARNING:babeldoc.for il_translator_llm_only.py:778
+                             mat.pdf.document_il.                              
+                             midend.il_translator                              
+                             _llm_only:Translatio                              
+                             n result is the same                              
+                             as input, fallback.                               
+                    WARNING  WARNING:babeldoc.for il_translator_llm_only.py:828
+                             mat.pdf.document_il.                              
+                             midend.il_translator                              
+                             _llm_only:Fallback                                
+                             to simple                                         
+                             translation.                                      
+                             paragraph id: 2cSNU                               
+                    WARNING  WARNING:babeldoc.for il_translator_llm_only.py:778
+                             mat.pdf.document_il.                              
+                             midend.il_translator                              
+                             _llm_only:Translatio                              
+                             n result is the same                              
+                             as input, fallback.                               
+                    WARNING  WARNING:babeldoc.for il_translator_llm_only.py:828
+                             mat.pdf.document_il.                              
+                             midend.il_translator                              
+                             _llm_only:Fallback                                
+                             to simple                                         
+                             translation.                                      
+                             paragraph id: WKJyk                               
+                    WARNING  WARNING:babeldoc.for il_translator_llm_only.py:778
+                             mat.pdf.document_il.                              
+                             midend.il_translator                              
+                             _llm_only:Translatio                              
+                             n result is the same                              
+                             as input, fallback.                               
+                    WARNING  WARNING:babeldoc.for il_translator_llm_only.py:828
+                             mat.pdf.document_il.                              
+                             midend.il_translator                              
+                             _llm_only:Fallback                                
+                             to simple                                         
+                             translation.                                      
+                             paragraph id: VTZvK                               
+                    WARNING  WARNING:babeldoc.for il_translator_llm_only.py:778
+                             mat.pdf.document_il.                              
+                             midend.il_translator                              
+                             _llm_only:Translatio                              
+                             n result is the same                              
+                             as input, fallback.                               
+                    WARNING  WARNING:babeldoc.for il_translator_llm_only.py:828
+                             mat.pdf.document_il.                              
+                             midend.il_translator                              
+                             _llm_only:Fallback                                
+                             to simple                                         
+                             translation.                                      
+                             paragraph id: 5Qrqi                               
+[08/14/26 01:45:00] WARNING  WARNING:babeldoc.for il_translator_llm_only.py:778
+                             mat.pdf.document_il.                              
+                             midend.il_translator                              
+                             _llm_only:Translatio                              
+                             n result is the same                              
+                             as input, fallback.                               
+                    WARNING  WARNING:babeldoc.for il_translator_llm_only.py:828
+                             mat.pdf.document_il.                              
+                             midend.il_translator                              
+                             _llm_only:Fallback                                
+                             to simple                                         
+                             translation.                                      
+                             paragraph id: TyGwj                               
+[08/14/26 01:45:01] WARNING  WARNING:babeldoc.for il_translator_llm_only.py:778
+                             mat.pdf.document_il.                              
+                             midend.il_translator                              
+                             _llm_only:Translatio                              
+                             n result is the same                              
+                             as input, fallback.                               
+                    WARNING  WARNING:babeldoc.for il_translator_llm_only.py:828
+                             mat.pdf.document_il.                              
+                             midend.il_translator                              
+                             _llm_only:Fallback                                
+                             to simple                                         
+                             translation.                                      
+                             paragraph id: V4nH7                               
+[08/14/26 01:45:02] WARNING  WARNING:babeldoc.for il_translator_llm_only.py:778
+                             mat.pdf.document_il.                              
+                             midend.il_translator                              
+                             _llm_only:Translatio                              
+                             n result is the same                              
+                             as input, fallback.                               
+                    WARNING  WARNING:babeldoc.for il_translator_llm_only.py:828
+                             mat.pdf.document_il.                              
+                             midend.il_translator                              
+                             _llm_only:Fallback                                
+                             to simple                                         
+                             translation.                                      
+                             paragraph id: 2LwJn                               
+[08/14/26 01:45:03] WARNING  WARNING:babeldoc.for il_translator_llm_only.py:778
+                             mat.pdf.document_il.                              
+                             midend.il_translator                              
+                             _llm_only:Translatio                              
+                             n result is the same                              
+                             as input, fallback.                               
+                    WARNING  WARNING:babeldoc.for il_translator_llm_only.py:828
+                             mat.pdf.document_il.                              
+                             midend.il_translator                              
+                             _llm_only:Fallback                                
+                             to simple                                         
+                             translation.                                      
+                             paragraph id: hEiL4                               
+                    WARNING  WARNING:babeldoc.for il_translator_llm_only.py:787
+                             mat.pdf.document_il.                              
+                             midend.il_translator                              
+                             _llm_only:Translatio                              
+                             n result is too long                              
+                             or too short. Input:                              
+                             4, Output: 1                                      
+                    WARNING  WARNING:babeldoc.for il_translator_llm_only.py:828
+                             mat.pdf.document_il.                              
+                             midend.il_translator                              
+                             _llm_only:Fallback                                
+                             to simple                                         
+                             translation.                                      
+                             paragraph id: 76Uoj                               
+[08/14/26 01:45:05] WARNING  WARNING:babeldoc.for il_translator_llm_only.py:787
+                             mat.pdf.document_il.                              
+                             midend.il_translator                              
+                             _llm_only:Translatio                              
+                             n result is too long                              
+                             or too short. Input:                              
+                             7, Output: 1                                      
+                    WARNING  WARNING:babeldoc.for il_translator_llm_only.py:828
+                             mat.pdf.document_il.                              
+                             midend.il_translator                              
+                             _llm_only:Fallback                                
+                             to simple                                         
+                             translation.                                      
+                             paragraph id: dZwqr                               
+                    INFO     INFO:babeldoc.format il_translator_llm_only.py:255
+                             .pdf.document_il.mid                              
+                             end.il_translator_ll                              
+                             m_only:Translation                                
+                             completed. Total:                                 
+                             179, Successful:                                  
+                             160, Fallback: 19                                 
+fatal: not a git repository (or any of the parent directories): .git
+[08/14/26 01:45:23] INFO     INFO:babeldoc.format.pdf.docum pdf_creater.py:1285
+                             ent_il.backend.pdf_creater:Fon                    
+                             t subsetting completed                            
+                             successfully                                      
+fatal: not a git repository (or any of the parent directories): .git
+[08/14/26 01:45:26] INFO     INFO:babeldoc.format.pdf.docum pdf_creater.py:1400
+                             ent_il.backend.pdf_creater:PDF                    
+                              save with clean=True                             
+                             completed successfully                            
+                    INFO     INFO:babeldoc.format.pdf.high_le high_level.py:411
+                             vel:Peak memory usage: 2268.27                    
+                             MB                                                
+                    INFO     INFO:babeldoc.format.pdf.high_le high_level.py:688
+                             vel:finish translate:                             
+                             D:\Codes\BabelDOC-main\examples\                  
+                             ci\CERNCourier-en.pdf, cost:                      
+                             137.02774381637573 s                              
+                    INFO     INFO:babeldoc.format.pdf.high_le high_level.py:754
+                             vel:No TOC found in the original                  
+                             PDF, skipping migration.                          
+translate                                              ----- 100/… 0:02… 0:00:…
+Parse PDF and Create Intermediate Representation (1/1) ----- 4/4   0:00… 0:00:…
+DetectScannedFile (1/1)                                ----- 4/4   0:00… 0:00:…
+Parse Page Layout (1/1)                                ----- 8/8   0:00… 0:00:…
+Parse Paragraphs (1/1)                                 ----- 4/4   0:00… 0:00:…
+Parse Formulas and Styles (1/1)                        ----- 4/4   0:00… 0:00:…
+Translate Paragraphs (1/1)                             ----- 202/… 0:00… 0:00:…
+Typesetting (1/1)                                      ----- 8/8   0:00… 0:00:…
+Add Fonts (1/1)                                        ----- 716/… 0:00… 0:00:…
+Generate drawing instructions (1/1)                    ----- 4/4   0:00… 0:00:…
+Subset font (1/1)                                      ----- 1/1   0:00… 0:00:…
+Save PDF (1/1)                                         ----- 2/2   0:00… 0:00:…
+                    INFO     INFO:babeldoc.main:Translation         main.py:763
+                             results:                                          
+                                     Original PDF:                             
+                             D:\Codes\BabelDOC-main\examples\ci\CER            
+                             NCourier-en.pdf                                   
+                                     Total time: 137.03 seconds                
+                                     Monolingual PDF:                          
+                             D:\Codes\BabelDOC-main\examples\ci\out            
+                             put_baseline\pdf\CERNCourier-en\CERNCo            
+                             urier-en.no_watermark.zh.mono.pdf                 
+                                     Peak memory usage:                        
+                             2268.2734375 MB                                   
+                                     Total valid character count:              
+                             19529                                             
+                                     Total valid text token count              
+                             (gpt-4o): 4433                                    
+translate                                              ----- 100/… 0:02… 0:00:…
+Parse PDF and Create Intermediate Representation (1/1) ----- 4/4   0:00… 0:00:…
+DetectScannedFile (1/1)                                ----- 4/4   0:00… 0:00:…
+Parse Page Layout (1/1)                                ----- 8/8   0:00… 0:00:…
+Parse Paragraphs (1/1)                                 ----- 4/4   0:00… 0:00:…
+Parse Formulas and Styles (1/1)                        ----- 4/4   0:00… 0:00:…
+Translate Paragraphs (1/1)                             ----- 202/… 0:00… 0:00:…
+Typesetting (1/1)                                      ----- 8/8   0:00… 0:00:…
+Add Fonts (1/1)                                        ----- 716/… 0:00… 0:00:…
+Generate drawing instructions (1/1)                    ----- 4/4   0:00… 0:00:…
+Subset font (1/1)                                      ----- 1/1   0:00… 0:00:…
+Save PDF (1/1)                                         ----- 2/2   0:00… 0:00:…

@@ -52,13 +52,10 @@ from __future__ import annotations
 import argparse
 import json
 import logging
-import re
 import sys
-import unicodedata
 import warnings
 from collections import defaultdict
 from dataclasses import dataclass
-from functools import lru_cache
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -69,12 +66,22 @@ from babeldoc.format.pdf.document_il.xml_converter import XMLConverter  # noqa: 
 from babeldoc.magazine import article_builder  # noqa: E402
 from babeldoc.magazine.chain_signals import load_chain_config  # noqa: E402
 from babeldoc.magazine.checkpoint import checkpoint_stem  # noqa: E402
-from babeldoc.magazine.page_features import validate_bounded_config  # noqa: E402
+from babeldoc.magazine.metrics.ltcr import Config  # noqa: E402
+from babeldoc.magazine.metrics.ltcr import candidates_from  # noqa: E402,F401
+from babeldoc.magazine.metrics.ltcr import load_config  # noqa: E402
+from babeldoc.magazine.metrics.ltcr import opens_with_punctuation  # noqa: E402,F401
+from babeldoc.magazine.metrics.ltcr import rendering  # noqa: E402
+from babeldoc.magazine.metrics.ltcr import strip_markup  # noqa: E402
+from babeldoc.magazine.metrics.ltcr import terms_in  # noqa: E402
 from babeldoc.magazine.taxonomy import load_taxonomy  # noqa: E402
 
 logger = logging.getLogger(__name__)
 
-CONFIG_PATH = ROOT / "configs" / "term_consistency.json"
+# The term qualification, the candidate search and the markup stripping live in
+# babeldoc/magazine/metrics/ltcr.py, which is where the pairwise metric that
+# shares them lives. They are imported rather than restated so that this tool
+# and LTCR cannot disagree about what a term is or what a rendering is; the
+# bounds they read are still configs/term_consistency.json.
 
 # The two checkpoints one measurement needs: the document before translation and
 # the same document after it.
@@ -85,64 +92,8 @@ TARGET_STAGE = "il_translated"
 BODY_LABELS_KEY = "body_labels"
 TERMINALS_KEY = "terminal_punctuation"
 
-# A word: letters only, with internal apostrophes and hyphens kept, so a name
-# carrying one stays a single token. The joiners are written as escapes to keep
-# this file ASCII, as the configuration files are.
-_JOINERS = "'" + "".join(map(chr, (0x2019, 0x2010, 0x2011, 0x2012, 0x2013))) + "-"
-_WORD = re.compile(rf"[^\W\d_]+(?:[{_JOINERS}][^\W\d_]+)*")
-
-# What the translator puts into a paragraph's text that is not text: the rich
-# text tags it asks the model to carry through unchanged, and the placeholders
-# standing for formulas. Both are stripped from a translation before candidate
-# renderings are generated from it, because a candidate is a piece of what a
-# reader reads and neither of these is read at all. Removed rather than spaced
-# out: a tag occupies no width on the page, so the characters either side of one
-# are adjacent to the reader as well.
-_MARKUP = re.compile(r"<[^<>]*>|\{\s*v\s*\d+\s*\}")
-
-
-@dataclass(frozen=True)
-class Config:
-    min_article_occurrences: int
-    source_term_min_chars: int
-    connector_max_chars: int
-    candidate_min_chars: int
-    candidate_max_chars: int
-    candidate_max_outside_share: float
-    max_terms_per_article: int
-
-
-@lru_cache(maxsize=1)
-def load_config(path: str | None = None) -> Config:
-    config_path = CONFIG_PATH if path is None else Path(path)
-    with config_path.open(encoding="utf-8") as f:
-        raw = json.load(f)
-    parameters = validate_bounded_config(raw, config_path)
-    missing = sorted(set(Config.__dataclass_fields__) - set(parameters))
-    if missing:
-        raise KeyError(f"{config_path.name}: missing parameters {missing}")
-    return Config(
-        min_article_occurrences=int(parameters["min_article_occurrences"]),
-        source_term_min_chars=int(parameters["source_term_min_chars"]),
-        connector_max_chars=int(parameters["connector_max_chars"]),
-        candidate_min_chars=int(parameters["candidate_min_chars"]),
-        candidate_max_chars=int(parameters["candidate_max_chars"]),
-        candidate_max_outside_share=float(parameters["candidate_max_outside_share"]),
-        max_terms_per_article=int(parameters["max_terms_per_article"]),
-    )
-
 
 # --- reading a run -----------------------------------------------------------
-
-
-def strip_markup(text: str) -> str:
-    """A translation with the tags and placeholders taken out of it.
-
-    Input cleaning only: what is measured, and how, is unchanged. It is applied
-    to every translation the run produced, so a candidate is counted inside and
-    outside a term's paragraphs against the same cleaned text.
-    """
-    return _MARKUP.sub("", text)
 
 
 def read_checkpoint(path: Path):
@@ -186,123 +137,6 @@ def load_run(label: str, working_dir: Path) -> Run:
     return Run(
         label=label, working_dir=working_dir, source=source, target_text=translated
     )
-
-
-# --- source side: which terms recur ------------------------------------------
-
-
-def tokens_of(text: str) -> list[tuple[str, int, int]]:
-    return [(match.group(0), match.start(), match.end()) for match in _WORD.finditer(text)]
-
-
-def sentence_openings(text: str, tokens: list[tuple[str, int, int]], terminals) -> list[bool]:
-    """Whether each token opens a sentence, read from the declared enders."""
-    flags: list[bool] = []
-    previous_end = 0
-    for index, (_word, start, end) in enumerate(tokens):
-        gap = text[previous_end:start]
-        flags.append(index == 0 or any(char in terminals for char in gap))
-        previous_end = end
-    return flags
-
-
-def capitalised(word: str) -> bool:
-    return bool(word) and word[0].isupper()
-
-
-def terms_in(text: str, terminals, config: Config) -> list[tuple[tuple[str, ...], bool]]:
-    """Every maximal run of capitalised words, with whether it ever ran mid-sentence.
-
-    A short lower case word is allowed inside a run when a capitalised word
-    follows it, which keeps a name carrying a particle in one piece. The bound
-    is a length rather than a list of words, so no language's function words are
-    written down here.
-    """
-    tokens = tokens_of(text)
-    opens = sentence_openings(text, tokens, terminals)
-    found: list[tuple[tuple[str, ...], bool]] = []
-    index = 0
-    while index < len(tokens):
-        if not capitalised(tokens[index][0]):
-            index += 1
-            continue
-        run = [tokens[index][0]]
-        non_initial = not opens[index]
-        cursor = index + 1
-        while cursor < len(tokens):
-            word = tokens[cursor][0]
-            if capitalised(word):
-                run.append(word)
-                non_initial = non_initial or not opens[cursor]
-                cursor += 1
-                continue
-            follows = cursor + 1 < len(tokens) and capitalised(tokens[cursor + 1][0])
-            if follows and len(word) <= config.connector_max_chars:
-                run.append(word)
-                cursor += 1
-                continue
-            break
-        found.append((tuple(run), non_initial))
-        index = cursor
-    return found
-
-
-# --- target side: how consistently a term was rendered ------------------------
-
-
-def opens_with_punctuation(piece: str) -> bool:
-    """Whether a candidate begins on a mark rather than on a word.
-
-    A substring starting at a comma or a dash is a piece of the sentence around
-    a term, not a piece of the term: the mark before a rendering says where the
-    clause broke, and two paragraphs sharing one share the punctuation habit of
-    the model rather than a name. The batch-b6.3 sweep left two such candidates
-    standing under every setting of the tuning grid.
-    """
-    return bool(piece) and unicodedata.category(piece[0]).startswith("P")
-
-
-def candidates_from(text: str, config: Config) -> set[str]:
-    """Every whitespace-free substring of the declared lengths, word-initial."""
-    found: set[str] = set()
-    for length in range(config.candidate_min_chars, config.candidate_max_chars + 1):
-        for start in range(0, len(text) - length + 1):
-            piece = text[start : start + length]
-            if any(char.isspace() for char in piece):
-                continue
-            if opens_with_punctuation(piece):
-                continue
-            found.add(piece)
-    return found
-
-
-def rendering(inside: list[str], outside: list[str], config: Config):
-    """The most widely shared distinctive substring of ``inside``, and its share.
-
-    Candidates are drawn from the shortest translation only: a string shared by
-    all of them is in that one too, and generating from every translation costs
-    more than the answer is worth. Counting inside comes first because it is
-    cheap, and the outside filter is applied only to the candidates that could
-    still win, which keeps the work bounded on a long article.
-    """
-    if len(inside) < 2:
-        return None, None
-    shortest = min(inside, key=len)
-    by_count: dict[int, list[str]] = defaultdict(list)
-    for candidate in candidates_from(shortest, config):
-        count = sum(1 for text in inside if candidate in text)
-        if count >= 2:
-            by_count[count].append(candidate)
-
-    outside_total = len(outside)
-    for count in sorted(by_count, reverse=True):
-        for candidate in sorted(by_count[count], key=lambda item: (-len(item), item)):
-            if outside_total:
-                share = sum(1 for text in outside if candidate in text) / outside_total
-                if share > config.candidate_max_outside_share:
-                    continue
-            return count / len(inside), candidate
-    return 1 / len(inside), None
 
 
 # --- one article --------------------------------------------------------------

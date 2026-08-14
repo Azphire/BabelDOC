@@ -19,6 +19,14 @@ otherwise use.
 path any of the three documents cites must exist. A ledger whose citations do
 not resolve is worse than no ledger, because it reads as evidence.
 
+02b is the same question asked of durability rather than of existence. The
+evidence the ledger stands on falls into two tiers, and the tiers are asserted
+differently because they survive differently. What is tracked is asserted to be
+tracked, so a clone carries it; what is deliberately not tracked -- the six
+produced baseline PDFs, kept out by size -- is asserted by an explicit list of
+path and SHA-256, which is the only durable statement that can be made about a
+file a clone will not receive.
+
 03 is its negative twin. The ledger carries a bounded register of artefacts that
 were retired by the output retention policy, and every path inside that register
 must NOT exist. If one comes back, the register is wrong and the entries that
@@ -48,6 +56,7 @@ Every assertion is static. There is no pipeline tier.
 from __future__ import annotations
 
 import contextlib
+import hashlib
 import os
 import re
 import subprocess
@@ -143,6 +152,61 @@ PRE_EXISTING_FILES = {
     "examples/output/b8/corpus_detection.json",
 }
 
+# The evidence intake decided under gap register GAP-07, tier one: what a clone
+# receives. Directories stand for every file below them.
+TRACKED_EVIDENCE = (
+    "docs/dissertation/background_chapter.tex",
+    "examples/baseline/manifest.json",
+    "examples/baseline/baseline.report.md",
+    "examples/baseline/integrity/tree_sha256_before.txt",
+    "examples/baseline/integrity/tree_sha256_after.txt",
+    "examples/baseline/logs/",
+    "examples/baseline/cache/cache.v1.db",
+    "examples/output/vlm_ablation/gpt-4o/vlm_eval.report.json",
+    "examples/output/vlm_ablation/gpt-4o/vlm_eval.summary.txt",
+    "examples/output/vlm_ablation/gpt-4o-mini/vlm_eval.report.json",
+    "examples/output/vlm_ablation/gpt-4o-mini/vlm_eval.summary.txt",
+    "examples/output/vlm_ablation/gpt-5.6-sol/vlm_eval.report.json",
+    "examples/output/vlm_ablation/gpt-5.6-sol/vlm_eval.summary.txt",
+    "examples/output/vlm_ablation/gpt-5.6-terra/vlm_eval.report.json",
+    "examples/output/vlm_ablation/gpt-5.6-terra/vlm_eval.summary.txt",
+    "examples/output/b4/run_all.b4_2.final.log",
+    "examples/output/b2_7/run_all.full.log",
+    "examples/output/run_all.b8_3.log",
+)
+
+# Tier two: the produced baseline PDFs, kept out of git by size. Each is named
+# with the digest recorded for it in the baseline manifest, which is tracked, so
+# a workspace copy that drifted from what the manifest describes is caught here
+# rather than at the point somebody measures it.
+WORKSPACE_EVIDENCE = (
+    (
+        "examples/baseline/pdf/Courier-en/Courier-en.no_watermark.zh.mono.pdf",
+        "d78d442beb91d63450ffc354a50b04fecb9b24585490bc6f6708734b79faf688",
+    ),
+    (
+        "examples/baseline/pdf/Vogue-en/Vogue-en.no_watermark.zh.mono.pdf",
+        "b4e9ad6dcd9f2928f2cfab6280ee4afcaaab3a6c30554aa1f8f49da3ceebb086",
+    ),
+    (
+        "examples/baseline/pdf/CERNCourier-en/CERNCourier-en.no_watermark.zh.mono.pdf",
+        "c78bce91b62018f9162c40c31798e64023f6d65dc2818fe2ac77f5eeacbe6a54",
+    ),
+    (
+        "examples/baseline/pdf/AramcoWorld-en-v2/"
+        "AramcoWorld-en-v2.no_watermark.zh.mono.pdf",
+        "9d45fc58f62a1634c6684f8f341fb3fd6ef725f2f586fd024704ad0c8adf0ba2",
+    ),
+    (
+        "examples/baseline/pdf/FD-en-v2/FD-en-v2.no_watermark.zh.mono.pdf",
+        "7b2d99895be0f37ace61a9879c06142b4d6d9e2d3ce50b16fa2411cbacc6943f",
+    ),
+    (
+        "examples/baseline/pdf/Courier-zh/Courier-zh.no_watermark.en.mono.pdf",
+        "71ca4c37ea0990a4a4dadb3d33db9e85dc5844213bbf371bccdbd7e3e2cd5aeb",
+    ),
+)
+
 # The ledger discipline, sampled. Each entry is a row id, the number as the
 # ledger writes it, and the file the row cites for it. The needle is matched
 # against the file's text, so a transcription error fails here.
@@ -216,6 +280,20 @@ def changed_paths() -> set[str]:
             path = path.split(" -> ", 1)[1]
         paths.add(path)
     return paths
+
+
+def tracked_paths() -> set[str]:
+    """Every path the index holds, which is what a clone would receive."""
+    _, listing = git_output(["ls-files"])
+    return {line.strip() for line in listing.splitlines() if line.strip()}
+
+
+def digest_of(path: Path) -> str:
+    digest = hashlib.sha256()
+    with path.open("rb") as f:
+        for block in iter(lambda: f.read(1 << 20), b""):
+            digest.update(block)
+    return digest.hexdigest()
 
 
 def text_of(path: Path) -> str:
@@ -374,6 +452,40 @@ def check_02_no_dead_link() -> None:
             if not (ROOT / token).exists():
                 faults.append(f"{path.name} -> {token}")
     record("check_02_no_dead_link", not faults, f"{len(faults)} dead: {faults[:8]}")
+
+
+def check_02b_the_evidence_is_tiered() -> None:
+    """Positive 2b: the durable tier is tracked, the rest is named with its digest.
+
+    Two assertions rather than one, because the two tiers fail differently. A
+    file in the first tier that is not in the index is evidence one clone away
+    from being lost, which is the whole of GAP-07. A file in the second tier is
+    known not to travel; what can still be asserted is that the copy standing
+    here is the copy the manifest describes, so it is named by path and digest
+    and both are checked. A second-tier file that turned up in the index is a
+    failure too: the tiers are a decision, not an accident, and a twelve
+    megabyte PDF entering git silently is how a repository stops being cloneable.
+    """
+    tracked = tracked_paths()
+    faults = []
+    for entry in TRACKED_EVIDENCE:
+        if entry.endswith("/"):
+            if not any(path.startswith(entry) for path in tracked):
+                faults.append(f"{entry} holds nothing tracked")
+            continue
+        if entry not in tracked:
+            faults.append(f"{entry} is not tracked")
+    for relative, expected in WORKSPACE_EVIDENCE:
+        if relative in tracked:
+            faults.append(f"{relative} is tracked and the tiering says it is not")
+        path = ROOT / relative
+        if not path.is_file():
+            faults.append(f"{relative} is absent from the workspace")
+            continue
+        actual = digest_of(path)
+        if actual != expected:
+            faults.append(f"{relative}: sha256 {actual[:16]} against {expected[:16]}")
+    record("check_02b_the_evidence_is_tiered", not faults, "; ".join(faults[:6]))
 
 
 def check_03_the_retired_register_is_actually_retired() -> None:
@@ -557,20 +669,28 @@ def check_07a_no_code_and_no_configuration_changed() -> None:
 
 
 def check_07b_the_runner_registers_this_gate() -> None:
-    """Positive 7b: the sweep runs this gate, and runs it last.
+    """Positive 7b: the sweep runs this gate, after every batch gate.
 
     A gate the runner does not know about is a gate that passes forever. E0 sits
-    after every batch gate because its citations are of what those batches left.
+    after every ``b`` gate because its citations are of what those batches left;
+    the evaluation gates that follow it cite what it inventoried, so being last
+    is not the property -- being after the batches is.
     """
     source = text_of(ROOT / "spec_checks" / "run_all.py")
     name = Path(__file__).name
     faults = []
-    if name not in source:
+    listed = re.findall(r'"(spec_check_[a-z0-9_]+\.py)"', source)
+    if name not in listed:
         faults.append("run_all.py does not list this gate")
     else:
-        listed = re.findall(r'"(spec_check_[a-z0-9_]+\.py)"', source)
-        if listed and listed[-1] != name:
-            faults.append(f"this gate is not last in the sweep; last is {listed[-1]}")
+        position = listed.index(name)
+        late = [
+            gate
+            for gate in listed[position + 1 :]
+            if gate.startswith("spec_check_b")
+        ]
+        if late:
+            faults.append(f"batch gates run after this one: {late}")
     record("check_07b_the_runner_registers_this_gate", not faults, "; ".join(faults))
 
 
@@ -636,6 +756,7 @@ def main() -> int:
         check_01b_every_ledger_row_carries_its_provenance,
         check_01c_the_status_summary_agrees_with_the_rows,
         check_02_no_dead_link,
+        check_02b_the_evidence_is_tiered,
         check_03_the_retired_register_is_actually_retired,
         check_04_every_equation_label_resolves,
         check_05_the_ledger_and_the_gap_register_close_over_each_other,
