@@ -71,15 +71,22 @@
 | A-06 | 链 `ktff8`:2 成员、合并源文 **826** 字符、`sentence_greedy`、5 句、segment 区间 0/4 与 4/5 | batch-b5.3 · `examples/output/b5_smoke/smoke.report.md` §1a(826 已由本会话逐字符复核) | git | 案例设定 | 直接可引 |
 | A-07 | 守恒不变量:成员译文拼接与链整体译文**逐字节相等**;IL 字段与 sidecar 一致 | `examples/output/b5_smoke/smoke.report.md` §1a | git | block conservation invariant 的实录 | 直接可引 |
 | A-08 | 排版后几何:页 7 框末字符 `。`(x=471.28, y=199.14);页 8 框末字符 `。`(x=75.26, y=443.8) | `examples/output/b5_smoke/smoke.report.md` §1b | git | mid-unit page-break rate 的方法原型 | 直接可引 |
-| A-09 | A/B 缺陷对:悬空从句被虚构收束(`…以及一种复合材料。`)+ 先行词丢失致 `the grass`→`草地` | `examples/output/b5_smoke/smoke.report.md` §1b | git | 切断损害翻译质量的存在性论证 | 直接可引(底层 `ab.json` 已失效,引用限于报告原文) |
+| A-09 | A/B 缺陷对(**已按 GAP-13 重述,以下为可引形式**):切断损害的确定性证据是**两项**——(1) 悬空从句被**虚构收束**,off 臂页 7 以 `以及一种复合材料。` 收尾;(2) 专利句被**切成两半**,off 臂 `p8#8` 以 `这种草已经被申请了专利。` 起头,与页 7 的收尾内容重复且逻辑断裂。**被撤下的是** `the grass`→`草地` 这一词级误译:R1 两个独立 off 臂均译作 `这种草`,该观察落在重复采样方差内,一律不得引作缺陷证据 | `examples/output/b5_smoke/smoke.report.md` §1b;三跑复核 batch-e2.1 · `docs/eval/results_e2/README.md` §5;重述合同 `docs/eval/gap_register.md` GAP-13 | git | 切断损害翻译质量的存在性论证 | 直接可引(**只能引重述后的两项**;引用时须连同"第三项观察未复现"一并陈述。判官侧的第三项候选见 A-23) |
 | A-10 | 零外溢:五样张 A/B 渲染,四份逐像素相同;唯一含链样张仅在页 **2, 3, 7, 8** 有差异,最大差异比 **0.0289** | `examples/output/b5_smoke/smoke.report.md` §2 表 3 | git | 爆炸半径与链成员严格重合 | 直接可引 |
 | A-11 | spill 集合两模式逐样张逐段相同;**无正文段外溢** | `examples/output/b5_smoke/smoke.report.md` §2 表 2 | git | 链翻译不引入版式回归 | 直接可引 |
-| A-12 | 邻段漂移:123 段匹配,**15 段变**(4 成员 + 11 邻段),集中在页 2/7/8 | `examples/output/b5_smoke/smoke.report.md` §3.1 | git | 重组效应的规模 | **需三跑**(见 D3 GAP-01) |
-| A-13 | 重组机制:页 2 一批 6→5、页 3 由 2 批→1 批、页 7 [6,3]→[6,4]、页 8 [3,6]→[3,6,1];cross-column 跟踪组 14→12,cross-page 真对稳定在 5 | `examples/output/b5_smoke/smoke.report.md` §3.1 | git | 机制可见性(与 A-12 的归因分开陈述) | 直接可引(机制);归因需三跑 |
+| A-12 | 邻段漂移:123 段匹配,**15 段变**(4 成员 + 11 邻段),集中在页 2/7/8 | `examples/output/b5_smoke/smoke.report.md` §3.1;归因由 batch-e2.1 · `docs/eval/results_e2/drift_attribution.json` 给出 | git | 重组效应的规模 | 直接可引(**归因已定,见 A-18**;规模数字仍引 b5.3 原文,其 123 段分母是按源文匹配的结果,R1 按段位匹配得 132) |
+| A-13 | 重组机制:页 2 一批 6→5、页 3 由 2 批→1 批、页 7 [6,3]→[6,4]、页 8 [3,6]→[3,6,1];cross-column 跟踪组 14→12,cross-page 真对稳定在 5 | `examples/output/b5_smoke/smoke.report.md` §3.1;独立复现 batch-e2.1 · `docs/eval/results_e2/drift_attribution.json` 的 `recomposed_pages` 与 `batch` 列 | git | 机制可见性(与 A-12 的归因分开陈述) | 直接可引(**机制已在 R1 独立复现**:页 2 一批 6→5、页 3 由 2→1、页 7 `[2,2,2,3,6]`→`[2,2,4,6]`、页 8 `[2,2,2,3,6]`→`[1,2,2,3,6]`,受影响段落 27 段全部落在页 2/3/7/8) |
 | A-14 | 成本:十一跑合计 **449** 次 translate(216 上行 / 233 缓存),**120 755** prompt tokens、**34 853** completion tokens | `examples/output/b5_smoke/smoke.report.md` §2 表 4 | git | 可复现性与成本章 | 直接可引 |
 | A-15 | 官方中文版页边界落在**词中**(`…协议中包` / `含惠益分享条款。`);原件重锚为语料样张 `examples/input/Courier-zh.pdf`,sha256 `2975c623b0bc604a4deb15f36229de512d295f69e171462f083b3c7d494bbaf1`(本会话按登记值现场复核),该样张的 notes 自述含 zh p10→p11 的官方词中切断 | `corpus/manifest.json`(sha 与 notes);引文原文 `examples/output/b5_smoke/smoke.report.md` §1d | git(登记)/ worktree(原件) | 四方对照表 | 直接可引(旧 sha256 `fa789f8a…46a7d3ac` 指向已淘汰的 `parallel/courier_official_zh.md`,一律不得再引) |
 | A-16 | M1 分层实测(上游 / fork_full_il / fork_full_pdf 三列):AramcoWorld-en-v2 `6->7`(linked)上游 **open** → fork **closed**,是 M1 独立成立的唯一正例;Courier-en `7->8`(linked)三列**全部 closed**;Courier-zh `7->8`(linked)三列**全部 open**;trap 档 open 计入 `source_inherited_open` 不进分子(Courier-en 2 条) | batch-e1.2 · `docs/eval/results_e1/eval_corpus.md` §2–§3 与 `docs/eval/results_e1/eval_corpus.json` | git | 主结果表的 M1 一列 | 直接可引(主数为 `mbr_linkable`,定义见 `docs/eval/metric_contract.md` §2c.1) |
 | A-17 | M1 在 Courier-en `7->8` 零判别力:上游末字符 `。` 来自**虚构收束**(A-09),fork 末字符 `。` 来自链重排后的真实句末;几何量无法区分二者 | batch-e1.2 · `docs/eval/results_e1/eval_report.Courier-en.json`(逐边界 tail 末字符)+ A-09 原文 | git | 指标局限的自陈;该边界的优劣**必须**引 A-09 的语义证据 | 直接可引 |
+| A-18 | R1 三跑归因(Courier-en):A-12 集 **15** 段 = **4** 链成员 + **8** 重组归因 + **3** 与重复采样不可分辨。判据:既变更**又**落在被重组批次里的段落恰 15 段(与 A-12 的 4+11 分解逐数吻合);11 段邻段中 8 段在两个独立 off 臂上逐字节相同而 on 臂不同,3 段两个 off 臂本身就不同 | batch-e2.1 · `docs/eval/results_e2/drift_attribution.json` 的 `changed_and_recomposed_verdicts`;表在同目录 `drift_attribution.md` §1 | git | **GAP-01 的关账数字**:重组效应存在且可定位,但不是全部 | 直接可引(单样张单模型,**不作显著性主张**;`gap01` 列按 GAP-01 原文规则并列给出,可由三列译文复算) |
+| A-19 | 配置内跑间方差:同一全栈配置的两次独立运行,132 段中 **43** 段译文不同,即 **0.3258**;两臂批次组成**逐段相同**,翻译前文档逐段相同 | batch-e2.1 · `docs/eval/results_e2/drift_attribution.json` 的 `noise_population` / `noise_rate` / `premises` | git | 一切单跑差异的解释上限,取代 G-01 的两点相似度作定量基线 | 直接可引(该率是**整段是否逐字节相同**的比例,不是相似度;与 G-01 的 0.989/0.995 不是同一个量) |
+| A-20 | 链 A/B 指标级(三臂 × 两路径):`mbr_linkable` 三臂同为 0.4000(IL)/0.2000(PDF),七条边界逐条判决三臂全同;M2 三臂全 hold(8→8 页、132→132 段);LTCR 0.482143 / 0.428571 / 0.446429,合格词条数三臂均为 3(**两 off 臂之差 0.0536 大于 off 与 on 之差 0.0357 与 0.0179**);几何组 IL 路径 delta 全 0.0000、PDF 路径 `overlap_delta` −0.0406~−0.0410、`image_placement_iou` 1.0000、页数差 0 | batch-e2.1 · `docs/eval/results_e2/eval_report.Courier-en.json`;表在 `docs/eval/results_e2/README.md` §4 | git | 兑现 E1.2 遗留 1(冻结产物里没有 chain_on/chain_off 的指标级 A/B) | 直接可引(**M1 与 M3 在本 A/B 上均无判别力**,须与 A-17、A-18 一并陈述) |
+| A-21 | R1 成本:三跑合计 **124** 次 API 调用(chain_on 1 / off₁ 62 / off₂ 61)、**105 759** prompt tokens、**22 701** completion tokens、**245.0** s 壁钟;chain_on 的 54 次翻译请求 **54 次全部命中缓存**,那 1 次调用是 ReAct 决策而非翻译 | batch-e2.1 · `docs/eval/results_e2/drift_attribution.json` 的 `runs`;工作区原件 `examples/output/e2/r1/runs.json` | git(台账)/ worktree(原件) | 成本章;冻结重放可控性的第二个实录(继 D-08) | 直接可引 |
+| A-22 | M10 判官运行事实(R2):测试点 **5**(裁定单全部 `link: true` 正样本)× 可用臂 = **14** 行,`judge_refused` **0** 行;判官 `gpt-5.6-terra`(异族于被测 `gpt-4o`),`max_completion_tokens=1024`、不发 `temperature`,逐行钉版;**14** 次请求对应 **13** 个不同 prompt(`Courier-en 2->3` 两个 off 臂窗口逐字节相同,一个 cache key 服务两行;多出的一次是某一行首次尝试未产出可用回复、有界重试后通过),16 256 prompt / 6 806 completion tokens;`--offline` 重放 **14/14** 命中缓存、0 请求、两份 JSON 逐字节相同 | batch-e2.2 · `docs/eval/results_e2/splice_judgements.json`;协议 `docs/eval/splice_protocol.md`;成本原件 `examples/output/e2/r2/judge_cost.json` | git(表)/ worktree(成本原件) | M10 的实现与可复现性;GAP-03 方案 a 的兑现 | 直接可引(**定性微镜,不作比率**:点集只有 5 条正样本、无负控,每行只问一次) |
+| A-23 | 判官在 `Courier-en 7->8` 四臂上**全部**记 `accuracy/mistranslation` **critical**,但落点不同:`upstream` / `chain_off_1` / `chain_off_2` 三行的 span 在 **head**(`草地已经被申请了专利。` / `这种草已经被申请了专利。` ×2),判词是"专利被安在草上而不是由草制成的复合材料上,由跨页处把未完短语断开后重启造成";`chain_on` 那一行的 span 在 **tail**(`并已为这种草的复合材料申请了专利。`),判词是专利状态"已获得"被写成"申请",**与边界无关** | batch-e2.2 · `docs/eval/results_e2/splice_judgements.json` 的 `Courier-en 7->8` 四行;表在 `docs/eval/results_e2/README.md` §8b | git | 切断损害的**第三项候选证据**(谓述层的先行词错误,三处独立产物复现),与 A-09 重述后的两项同向 | 直接可引(**单判官、每行一次抽样**;按 GAP-03 方案 a 只作定性错误类型提示,不作质量排序、不作显著性主张) |
+| A-24 | 判官侧的两处方向性观察:(1) `Courier-en 2->3` 是本次唯一一处**链臂独有的缺陷**——两个 off 臂零错误,`chain_on` 页 3 首行排成 `动科学发现`,判官记 `accuracy/addition` (minor),span 即多出的 `动`;(2) `AramcoWorld-en-v2 6->7`(M1 唯一独立成立的正例,见 A-16)上判官与几何判决**同向**:上游臂 2 处错误、fork 臂 0 处 | batch-e2.2 · `docs/eval/results_e2/splice_judgements.json`;读法在 `docs/eval/results_e2/README.md` §8c | git | "链臂不是一律更好"的实录;M1 那一个正例的语义佐证 | 直接可引(同 A-23 的限定;`Courier-zh` 两臂方向不同、不构成对照,见 README §8d) |
 
 ## B 分类线(页面类型)
 
@@ -104,8 +111,9 @@
 | C-01 | 四点曲线(combined kind agreement,v1 语料,确定性基线一律 28/31 = 0.9032):`gpt-4o` **28/31 (0.9032)**、`gpt-4o-mini` **26/31 (0.8387)**、`gpt-5.6-sol` **28/31 (0.9032)**、`gpt-5.6-terra` **28/31 (0.9032)** | `examples/output/vlm_ablation/gpt-4o/vlm_eval.report.json` 等四份(`agreement.combined` 与 `agreement.deterministic`) | git | 消融曲线:四档模型无一超过确定性基线 | 直接可引(须标注 v1 语料 + 每模型各自的最小方差设定) |
 | C-02 | 路由页 **18 / 31**;routed 一致率 deterministic **15/18 (0.8333)**,combined 同为 15/18(`gpt-4o-mini` 降至 13/18) | `examples/output/vlm_ablation/gpt-4o/vlm_eval.summary.txt` 及同级另三档 | git | 兜底只作用于 18 页,分母须说明 | 直接可引 |
 | C-03 | 词表约束:accepted **18/18**,refused **0**,越界率 0.0(四档一致) | `examples/output/vlm_ablation/gpt-4o/vlm_eval.summary.txt` 及同级另三档 | git | 受约束输出可用性 | 直接可引 |
-| C-04 | policy 级一致率(combined)四档:`gpt-4o` **28/31**、`gpt-4o-mini` **26/31**、`gpt-5.6-sol` **28/31**、`gpt-5.6-terra` **28/31**;对确定性层的 policy 增益 **0 / −2 / 0 / 0**——"四档模型均无 policy 级增益"至此有列可引 | batch-e1.2 · `docs/eval/results_e1/vlm_policy_c04.json`(由四份冻结报告离线重算,零请求零缓存查询) | git | 关账结论 | 直接可引(须标注 **v1 语料 31 页**分母,`unregistered_samples` 列出两份已换血样张) |
+| C-04 | policy 级一致率(combined)四档:`gpt-4o` **28/31**、`gpt-4o-mini` **26/31**、`gpt-5.6-sol` **28/31**、`gpt-5.6-terra` **28/31**;对确定性层的 policy 增益 **0 / −2 / 0 / 0**——"四档模型均无 policy 级增益"至此有列可引 | batch-e1.2 · `docs/eval/results_e1/vlm_policy_c04.json`(由四份冻结报告离线重算,零请求零缓存查询;batch-e2.2 复跑该重算,**二次运行逐字节相同**,9 716 bytes) | git | 关账结论 | 直接可引(须标注 **v1 语料 31 页**分母,`unregistered_samples` 列出两份已换血样张)。**四档同源同口径:全部是离线重算,不是缓存重放。** GAP-10 曾写"terra 若要同口径需 18 次调用",batch-e2.2 现场核实该路径**不可执行**——18 个 routed page 中 **8 个**(AramcoWorld-en 5、FD-en 3)落在换血时移出的两份样张上,其 PDF 已不在 `examples/input/`,故四档都无法再实跑重现该分母,详见 C-06 |
 | C-05 | 现行 `enabled: false` | `configs/vlm.json` | git | 默认全自动、无网络 | 直接可引 |
+| C-06 | 消融不可重跑的量化:四档共用的 routed 页集 **18** 页,其中 **8** 页(`AramcoWorld-en.pdf` 5 页、`FD-en.pdf` 3 页)属于 batch-b7.5.1 换血移出的样张;两份 PDF 不在 `examples/input/`,因此 **C-01~C-04 的 31 页分母在今日语料上不可重建** | batch-e2.2 · 现场从 `examples/output/vlm_ablation/gpt-5.6-terra/vlm_eval.report.json` 的 `pages`(`source == "vlm"` 行)与 `corpus/manifest.json` 统计;结论落 `docs/eval/results_e2/README.md` §9 | git | 消融组一切数字的**存续性限定**;GAP-10 的关账依据 | 直接可引(这是"为什么四档只能离线重算"的答案,引 C 组任何一行时须与之并陈) |
 
 ## D HITL 线(人工两遍式仲裁)
 
@@ -134,10 +142,10 @@
 | E-06 | **3 处修复落地**且盒不变:CERNCourier-en `p2#32`、FD-en-v2 `p5#14`、FD-en-v2 `p5#9` | batch-b8.4 · `examples/output/b8_4/smoke.report.md` §3;本会话从 `examples/output/b8_4/smoke/evidence.json` 的 `landed` 段现场复核 `box_held: true` ×3 | git | **v1 修复不是零落地**——推翻 E-03 的表述 | 直接可引 |
 | E-07 | 决策质量 named/eligible:b8.3 **18 / 5 (28%)** → b8.4 **15 / 9 (60%)**;`FD-en-v2` 反向(8 named / 7 eligible) | `examples/output/b8_4/smoke.report.md` §5;`examples/output/b8_4/smoke/evidence.json` `decision_quality` | git | prompt 暴露适用性规则的效果 | 直接可引(**单样本单模型,不得作显著性主张**) |
 | E-08 | 阅读序修正影响面:冻结 fixture 90 段中 **3** 段改变,均为竖排 `fallback_line` | `examples/output/b8_4/smoke.report.md` §2a | git | 修正是定向的而非全局重写 | 直接可引 |
-| E-09 | `escalation_surfacing` 在 6+6 次真跑中**零触发** | `examples/output/b8/smoke.report.md` §7;`examples/output/b8_4/smoke.report.md` §9.4 | git | 该检测器只有合成覆盖 | **needs-recompute**(须以合成覆盖声明替代,见 D3 GAP-04) |
+| E-09 | `escalation_surfacing` 在 6+6 次真跑中**零触发**;`converged_with_residuals` 同样只有合成场景。**可引形式(合成覆盖声明,GAP-04 原文)**:"`escalation_surfacing` 与 `converged_with_residuals` 两条路径由合成场景覆盖并在门禁中逐次断言,**在真实语料的十二次运行中均未被触发**。本文因此把它们记为'机制已实现且有合成覆盖',而不记为'已被文档验证'。" | `examples/output/b8/smoke.report.md` §7;`examples/output/b8_4/smoke.report.md` §9.4;声明措辞 `docs/eval/gap_register.md` GAP-04 | git | 该检测器只有合成覆盖 | 直接可引(**只能按左列的声明形式引**;R3 不跑,batch-e2.2 按 GAP-04 的"不补的措辞"收口。此前的 `needs-recompute` 是"缺一次真触发",而不是"数字不可复算"——12 次零触发本身有出处且已复核) |
 | E-10 | 语料检测普查:`fragment_cluster` 3 处(CERN 2 / FD 1)、`text_figure_overlap` **0** | batch-b8.1 · `examples/output/b8/corpus_detection.md` | git | report-only 检测器的产出稀薄 | 直接可引 |
 | E-11 | b8.4 成本:**16** 次 API 调用、**30 635** prompt tokens、**26.6** 分钟 | `examples/output/b8_4/smoke.report.md` §1 | git | 成本章 | 直接可引 |
-| E-12 | 措辞出入两处:b8.3 §7 写"19, 24 and 28"(只数 residue),b8.4 §5 写"19, 25 and 32"(数全部 findings);b8.4 的 commit message 只写 "landed repair",未载主角 `p6#15` 被拒 | `examples/output/b8/smoke.report.md` §7;`examples/output/b8_4/smoke.report.md` §5;`git show 6ab55bb` | git | 引用前必须统一口径 | **需重述**(见 D3 GAP-05) |
+| E-12 | 措辞出入两处:b8.3 §7 写"19, 24 and 28"(只数 residue),b8.4 §5 写"19, 25 and 32"(数全部 findings);b8.4 的 commit message 只写 "landed repair",未载主角 `p6#15` 被拒。**可引形式(GAP-06 的统一口径)**:一律引**全部 findings** 的 **19 / 25 / 32**;凡引 b8.3 §7 那一句须加注"该处只计 residue,故写作 19 / 24 / 28";commit message 不改写历史,须引报告而非 commit | `examples/output/b8/smoke.report.md` §7;`examples/output/b8_4/smoke.report.md` §5;`git show 6ab55bb`;统一口径 `docs/eval/gap_register.md` GAP-06 | git | 引用前必须统一口径 | 直接可引(**只能按左列的统一口径引**;batch-e2.2 按 GAP-06 收口,该缺口是引用纪律而非可留的缺口) |
 | E-13 | E-06 三处落地的逐处摘录(batch-e1 会话一现场读出):CERNCourier-en `p2#32` 由 `Volume 66 Number 4  July/August 2026` 变为 `第66卷第4期 2026年7月/8月`;FD-en-v2 `p5#14` 由 `ADVISORS TO THE EDITOR` 变为 `编辑顾问`;FD-en-v2 `p5#9` 由 `PRODUCTION MANAGER` 变为 `制作经理`。三处 `box_before` 与 `box_after` 四个坐标逐值相等,`vertical` 均为 false,`box_held` 均为 true;光栅对照 `examples/output/b8_4/smoke/raster/b8_3.p2_32.png` 与 `examples/output/b8_4/smoke/raster/b8_4.p2_32.png`(另两处同名以 `p5_14` / `p5_9` 结尾,页级图以 `.page2.png` / `.page5.png` 结尾) | `examples/output/b8_4/smoke/evidence.json` 的 `landed` 数组;同数据的表格形式 `examples/output/b8_4/smoke.report.md` §3 | git | E-06 的可摘录形式:修复落地这一承诺的候选证据主角(三处并列,选定权在用户) | 直接可引 |
 
 ## F 上游基线(比较基准)
@@ -172,21 +180,35 @@ batch-e1 会话一按 D3 GAP-07 的优先级做了**分级入库**:`examples/bas
 | G-06 | 评估协议:A/B 一律以缓存冻结重放为准;显著性主张需三跑设计 | `CLAUDE.md`:31 | git | 评估章方法学 | 直接可引 |
 | G-07 | 上游几何路径的方法差异(同一份 fork 产物,IL 路径 vs PyMuPDF 抽取路径,门限 0.1):`overlap_*` 与 `alignment_*` 六样张几乎全部出界 → **not-comparable**;`image_placement_iou` **6/6** 可比;M1 比率不可比而逐边界判决一致 **30/35 (0.857)**;元素数比(PDF/IL)实测 **1.00–1.72** | batch-e1.2 · `docs/eval/results_e1/eval_corpus.md` §4;裁定表在 `docs/eval/metric_contract.md` §2c.2 | git | 上游列与 fork 列可否并排的前提条件 | 直接可引(**M4/M5 的上游列记 not-comparable,跨路径差值不得出现**) |
 | G-08 | IL 路径的 before/after 几何差值是**结构性零**:六样张中四份的 `overlap_source` 与 `overlap_produced`、`alignment_source` 与 `alignment_produced` 在 6 位小数上完全相等,余两份差在第 4 位;成因是排版沿用源段落框 | batch-e1.2 · `docs/eval/results_e1/eval_corpus.json`(`fork_full_il` 各行) | git | 版面变化一律读 PDF 路径的理由 | 直接可引 |
+| G-09 | 自动术语抽取本身被采样:同一配置的两次运行,**36** 个批次中 **10 个**(涉及 42 段)的 prompt 不同而**批次成员完全相同**,差异全在 glossary 块(如 `LINKS → LINKS` 一行在一臂在场、另一臂缺席)。**因此 prompt 字节不等不能作为"批次被重组"的判据**,归因用的是批次成员是否移动 | batch-e2.1 · `docs/eval/results_e2/drift_attribution.json` 的 `premises.off_arm_batches_with_a_differing_prompt` 与 `…_prompt_differences_with_identical_batch` | git | 归因方法学:两个混淆源必须分开;A/B 设计的已知陷阱 | 直接可引 |
 
 ---
 
 ## 状态汇总
 
-分组行数:A 15、B 10、C 5、D 10、E 13、F 7、G 6,**合计 66 条**。
+分组行数:A 24、B 11、C 6、D 10、E 13、F 7、G 9,**合计 80 条**。
 
-计数规则:一行按其状态单元格中**最先出现**的那个状态词归类(A-13 因此归入"直接可引",
-其"归因需三跑"的半条在 D3 GAP-01 里与 A-12 合并处理)。
+计数规则:一行按其状态单元格中**最先出现**的那个状态词归类。
 
 | 状态 | 条数 | 条目 |
 | --- | ---: | --- |
-| 直接可引 | 68 | 其余全部 |
-| 需三跑 | 1 | A-12 |
-| needs-recompute | 1 | E-09 |
-| 需重述 | 1 | E-12 |
+| 直接可引 | 80 | 全部 |
+| 需三跑 | 0 | — |
+| needs-recompute | 0 | — |
+| 需重述 | 0 | — |
 
-needs-recompute 与需三跑的完整清单、重算来源与 E2 运行矩阵见 `docs/eval/gap_register.md` §1。
+batch-e2.1 的变动:A-12 的"需三跑"由 R1 三跑消掉(归因见 A-18),`需三跑` 一档就此清零;
+A-09 由"直接可引"降为"需重述",因为它的两半在三跑下证据强度不同;新增 A-18~A-21 与 G-09。
+
+batch-e2.2 的变动,**四档状态就此全部收口**:
+
+- **A-09** 按 GAP-13 的合同措辞重述后回到"直接可引",左列写死"能引哪两项、撤下哪一项";
+- **E-12** 按 GAP-06 的统一口径(19 / 25 / 32)重述后回到"直接可引",`需重述` 清零;
+- **E-09** 按 GAP-04 的合成覆盖声明收口,`needs-recompute` 清零。R3 不跑是用户裁定,
+  代价写在左列:该路径只能作"机制已实现且有合成覆盖",不得作"已被文档验证";
+- **新增 A-22~A-24**(M10 判官)与 **C-06**(消融不可重跑的量化)。C-06 是本会话对
+  GAP-10 前提的现场核实结果,它把"terra 18 次补算"从待办改成声明。
+
+**四档清零不等于零缺口**:留下的是**声明**而不是数字缺口——E-09 的合成覆盖声明、C-04/C-06
+的 v1 分母不可重建、A-22~A-24 的"单判官、无负控、不作比率"。逐条见
+`docs/eval/gap_register.md`。

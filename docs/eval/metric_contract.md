@@ -20,7 +20,7 @@ batch-e0 逐一 grep 核对过下表引用的每个标签,可解析。该 `.tex`
 | M7 | image-area delta | **新定义**(导师图形学指标) | E2 运行的源侧与译侧 IL box 集 | **需新建**;确定性,无 API | E1 |
 | M8 | page-count delta | **新定义**(导师图形学指标) | 成品 PDF 页数;上游侧已冻结在 `examples/baseline/manifest.json` | **需新建**(平凡);上游侧数据已在,见台账 F-01 | E1 |
 | M9 | image IoU | **新定义**(导师图形学指标) | 同 M7 | **需新建**;可复用 `babeldoc/magazine/detectors/base.py` 的 `intersection_over_union` | E1 |
-| M10 | GEMBA-MQM 拼接点标注 | `kocmi2023gemba_mqm` + 本项目的拼接点协议(背景章 §2.7 "targeted microscope") | E2 运行的拼接点对(chain_on / chain_off) | **需新建**:缓存判官,**judge 模型待用户定**(见 gap GAP-03) | E2 |
+| M10 | GEMBA-MQM 拼接点标注 | `kocmi2023gemba_mqm` + 本项目的拼接点协议(背景章 §2.7 "targeted microscope") | E2 运行的拼接点对(chain_on / chain_off) | **已建**(batch-e2.2):`tools/splice_judge.py` + `prompts/splice_judge_mqm.md` + `configs/splice_judge.json`,判官 `gpt-5.6-terra`(异族,GAP-03 方案 a);协议 `docs/eval/splice_protocol.md`,细则见 §2e | E2 |
 | M11 | d-BLEU(诊断) | `liu2020mbart`(背景章正文,无独立 eq 标签;BLEU 本体为 `eq:bleu`) | 官方中文版作参考;E2 运行的译文 | **需新建**;脚注级,不作主指标 | E2 |
 | M12 | BlonDe(诊断,仅 zh→en) | `jiang2022blonde` | Courier-zh 方向的 E2 运行 | **可选**;背景章已声明 en→zh 方向不适用 | E4 |
 
@@ -76,8 +76,8 @@ $$\mathrm{LTCR}(w) = \frac{\sum_{i<j}\mathbf{1}(t_i=t_j)}{C_k^2}\times 100\%$$
 - **协议**:标注单位是"拼接点",不是文档。每个拼接点给判官三段材料——页 $n$ 尾、页 $n+1$ 首、
   以及源文对应区间——问"拼接是否引入了 omission / mistranslation / fluency break"。
 - **必须走统一缓存客户端**(CLAUDE.md §4.8),cache key 含 prompt 文件哈希;prompt 进 `prompts/`。
-- **judge 模型**:待用户决策。同源偏倚(judge 与被测同为 gpt-4o)是已知风险,见
-  `docs/eval/gap_register.md` GAP-03。
+- **judge 模型**:**已定为 `gpt-5.6-terra`**(batch-e2.2,GAP-03 方案 a 异族判官);同源偏倚
+  因此不适用,代价按 GAP-03 原文由人工抽验承担。
 - 样本量上界由语料决定:全语料 5 条 link 边界 + 30 条 no-link 边界(台账 A-04)。
   **5 条正样本不足以支撑比率型主张**,GEMBA-MQM 在本项目里是定性微镜而非统计量。
 
@@ -207,9 +207,52 @@ Courier-en 的 `7->8` 是裁定单里的 MID-SENTENCE BODY SPLIT。三列实测�
 承担,不得只引 M1。反例是 AramcoWorld-en-v2 的 `6->7`(同为 linked):上游 `open`、fork
 `closed`,该处 M1 独立成立。
 
+## 2d. batch-e2.1 的链 A/B 实测(R1 三跑)
+
+E1.2 遗留 1 是"冻结产物里没有 chain_on/chain_off 的指标级 A/B"。R1 三跑补上了:
+`chain_off ×2 + chain_on ×1`,同一全栈配置只差一个开关,六列(三臂 × IL/PDF 两路径)在
+`docs/eval/results_e2/eval_report.Courier-en.json`,表在 `docs/eval/results_e2/README.md` §4。
+本节只写它对**合同本身**的三条补充,数字进台账 A-20。
+
+1. **M1 在链 A/B 上零判别力,§2c.4 的边界因此扩大。** §2c.4 此前只证到 Courier-en `7->8`
+   在"上游 vs fork"两列都 closed;R1 证到**同一 fork 的开关两态也都 closed**,且三臂七条
+   边界的逐边界判决**逐条相同**,`mbr_linkable` 三臂同为 0.4000(IL)。这一次两侧是同一套
+   排版代码与同一条读数路径,排除了"两条路径口径不同"这一解释:M1 分不出"虚构收束"与
+   "真句末",是指标本身的性质而非方法学噪声。**该边界的优劣一律引 A-09 的语义证据**,且
+   A-09 可引的那一半以 GAP-13 重述后的措辞为准。
+2. **M3 的臂间差小于跑间方差,本语料上不作 A/B 用。** LTCR 三臂 0.482143 / 0.428571 /
+   0.446429,**两个 off 臂之差(0.0536)大于 off 与 on 之差(0.0357 与 0.0179)**,而三臂
+   的合格词条数都只有 3。合同第 1 节把 M3 列为主指标之一;在本语料的词条规模下,它对开关
+   两态没有分辨力,论文引用 LTCR 时须与该事实一并陈述。
+3. **M2 的 `absent` 与 0 必须分开读。** 两个 off 臂没有 `chain_translation.report.json`,
+   链级那一层记 `absent`——开关是关的,没有链可守恒,与"守恒失败"是两件事。三臂的文档级与
+   修复级守恒全部 hold(8→8 页、132→132 段)。
+
 ## 3. 本合同不涵盖
 
 - 任何人工评分量表(MQM 人工评审的 rubric 属评估章,不属本表)。
 - 任何模型选型/成本指标(成本数字在台账 A-14、D-08、E-04、E-11、F-01,不是"指标")。
 - 显著性检验:本项目所有 A/B 均为单跑冻结重放,显著性主张须先有三跑设计,见
   `docs/eval/gap_register.md` GAP-01。
+
+## 2e. batch-e2.2 的 M10 实测裁定(R2 判官跑)
+
+M10 在第 1 节只有一行"需新建"。本节写它落地后对**合同本身**的补充,协议全文在
+`docs/eval/splice_protocol.md`,数字进台账 A-22~A-24。
+
+1. **标注单位与 M1 的 tail 共用同一口径。** 合同 §M10 只说"页 n 尾、页 n+1 首、源文对应
+   区间"。实现把"页 n 尾"钉死为 `chain_signals.page_candidates` 派生阅读序的**最后一个端点
+   候选**,即 §2b.2 给 M1 定的那一个;"页 n+1 首"是同一序列的第一个。因此几何判决(M1)与
+   语义标注(M10)谈的是**同一条边界**,双证表可以左右并读,而不是两张各自定义边界的表。
+2. **样本量上界比合同写的更紧。** 合同说"5 条正样本不足以支撑比率型主张";实际运行的点集
+   **就是**那 5 条,臂展开后 14 行,**且没有负控**(30 条 `link: false` 未跑)。所以 M10 在
+   本项目里连"判官能否分辨好坏拼接"都未验证,只验证了"在被裁定切断的边界上判官报出了
+   什么"。论文引用 M10 一律作定性微镜,**不合成 MQM 分数**(与 kocmi2023 的偏离之一,
+   协议 §6.1)。
+3. **上游列与 fork 列的窗口来自两条读数路径。** upstream 无 IL,窗口经 PyMuPDF 抽取重建;
+   fork 各臂从 `checkpoint.11_typesetting` 读。G-07 已裁定几何比率跨路径不可比;对**窗口
+   文本**,两条路径抽的是同一批字符,但 tail 选取的一处分歧就能换掉整个窗口,故 M10 的逐点
+   跨臂比较须连同各行的 `origin` 一起引。
+4. **`Courier-zh` 的 fork 臂不是方向对照。** 上游那一跑是 zh→en,而 b8.4 全栈那一跑对该样张
+   走 en→zh,落在中文文档上等于未译(135 段中 45 段与源文逐字相同)。该样张的 M10 两行只能
+   各自作产物观察。zh 校准是 PLAN_E2 明确不做的事。

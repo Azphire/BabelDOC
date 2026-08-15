@@ -1,0 +1,42 @@
+{
+  "description": "Bounded configuration for the splice point judge (tools/splice_judge.py), the GEMBA-MQM adaptation metric contract D2 registers as M10. Same convention as configs/page_features.json: every numeric parameter carries a '<name>_allowed_range' sibling of the form 'low..high', inclusive on both ends. 'api_key_env' names the environment variable the credential is read from at request time; the credential itself is never written to any file in this repository. 'base_url' points at an OpenAI-compatible chat completions endpoint. 'token_parameter' and 'temperature' are the transport capability profile, exactly as in configs/vlm.json: 'token_parameter' is the name the output limit travels under and is one of 'max_tokens' or 'max_completion_tokens', and 'temperature' may be null, which leaves the field out of the request body so the service default applies. A model that refuses one of these is a configuration to correct rather than a request to rebuild. 'model', 'temperature', 'max_output_tokens' and 'token_parameter' shape a reply and therefore enter the cache key, as do the prompt file digest and the rendered prompt text; 'base_url', 'api_key_env', 'timeout_seconds' and 'max_retries' do not. The judge is deliberately not the family under test: the translations it grades were produced by gpt-4o, and a judge of that family could not be shown to be free of a preference for its own output (gap register GAP-03, option a). 'mqm_categories' and 'mqm_severities' are the closed vocabularies a reply is validated against; a value outside either is a violation and never a new category, whatever the model believes it saw. 'max_errors' bounds how many errors one reply may report, following the same bound the GEMBA-MQM prompt places on a segment. The three window sizes are how much text each side of a splice point the judge is shown, counted in characters after the window is assembled from rendered lines; they are part of the material and therefore of the cache key through the rendered prompt. Anything a reply depends on that this file cannot name is covered by CACHE_KEY_VERSION in tools/splice_judge.py: raise it to retire every stored reply in one step.",
+  "model": "gpt-5.6-terra",
+  "base_url": "https://api.openai.com/v1",
+  "api_key_env": "OPENAI_API_KEY",
+  "token_parameter": "max_completion_tokens",
+  "temperature": null,
+  "temperature_allowed_range": "0..2",
+  "max_output_tokens": 1024,
+  "max_output_tokens_allowed_range": "64..4096",
+  "max_retries": 1,
+  "max_retries_allowed_range": "0..3",
+  "timeout_seconds": 120,
+  "timeout_seconds_allowed_range": "5..600",
+  "max_errors": 5,
+  "max_errors_allowed_range": "1..10",
+  "source_window_characters": 600,
+  "source_window_characters_allowed_range": "80..4000",
+  "tail_window_characters": 600,
+  "tail_window_characters_allowed_range": "80..4000",
+  "head_window_characters": 600,
+  "head_window_characters_allowed_range": "80..4000",
+  "mqm_categories": [
+    "accuracy/addition",
+    "accuracy/omission",
+    "accuracy/mistranslation",
+    "accuracy/untranslated",
+    "fluency/grammar",
+    "fluency/punctuation",
+    "fluency/register",
+    "fluency/inconsistency",
+    "fluency/spelling",
+    "style/awkward",
+    "terminology/inconsistent",
+    "non_translation"
+  ],
+  "mqm_severities": [
+    "critical",
+    "major",
+    "minor"
+  ]
+}

@@ -583,8 +583,19 @@ def check_05_the_ledger_and_the_gap_register_close_over_each_other() -> None:
 
     gaps = text_of(GAPS)
     faults = []
-    if not open_rows:
-        faults.append("the ledger reports no open row at all, which cannot be right")
+    # This used to require at least one open row, on the reasoning that a ledger
+    # with none had stopped parsing. Batch E2 closed the last three, so the
+    # premise is now the classification itself: every row has to carry a word
+    # from the declared vocabulary. A vocabulary that stopped matching leaves
+    # rows unclassified and still fails here; a ledger with nothing open no
+    # longer does, because that is a state this project can reach. See W-E2-02.
+    unclassified = sorted(
+        identifier for identifier, _ in rows if identifier not in classified
+    )
+    if not classified:
+        faults.append("no ledger row carries a status, so the vocabulary did not parse")
+    elif unclassified:
+        faults.append(f"rows carrying no declared status: {unclassified}")
     for identifier in open_rows:
         if identifier not in gaps:
             faults.append(f"{identifier} is open in the ledger and absent from the gaps")

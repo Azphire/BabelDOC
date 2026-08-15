@@ -141,6 +141,11 @@ NAME_REFERENCE_ALLOW_LIST = NAME_DEFINITION_FILES | {
     "babeldoc/magazine/metrics/mid_break_rate.py",
     "babeldoc/magazine/metrics/conservation.py",
     "spec_checks/spec_check_e1.py",
+    # E2 attributes the drift between three frozen runs. It reads the chain pair
+    # off the pre-translation checkpoint to tell a merged member from its batch
+    # neighbours, which is the one distinction the attribution turns on; it
+    # opens no document for writing and writes only its own report.
+    "tools/drift_attribution.py",
 }
 
 # Upstream files carried over from B0, still uncommitted in the working tree.

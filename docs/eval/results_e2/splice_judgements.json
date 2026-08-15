@@ -1,0 +1,504 @@
+{
+  "arms": [
+    "chain_off_1",
+    "chain_off_2",
+    "chain_on",
+    "fork_full",
+    "upstream"
+  ],
+  "error_tally": {
+    "accuracy/addition/minor": 1,
+    "accuracy/mistranslation/critical": 4,
+    "accuracy/mistranslation/major": 1,
+    "accuracy/omission/major": 1,
+    "accuracy/omission/minor": 1,
+    "accuracy/untranslated/major": 1,
+    "fluency/grammar/major": 1
+  },
+  "generated_by": "tools/splice_judge.py",
+  "judge": {
+    "base_url": "https://api.openai.com/v1",
+    "cache_engine": "magazine_splice_judge",
+    "cache_key_version": 1,
+    "judge_model": "gpt-5.6-terra",
+    "judge_transport": {
+      "max_output_tokens": 1024,
+      "temperature": null,
+      "token_parameter": "max_completion_tokens"
+    },
+    "max_errors": 5,
+    "mqm_categories": [
+      "accuracy/addition",
+      "accuracy/omission",
+      "accuracy/mistranslation",
+      "accuracy/untranslated",
+      "fluency/grammar",
+      "fluency/punctuation",
+      "fluency/register",
+      "fluency/inconsistency",
+      "fluency/spelling",
+      "style/awkward",
+      "terminology/inconsistent",
+      "non_translation"
+    ],
+    "mqm_severities": [
+      "critical",
+      "major",
+      "minor"
+    ],
+    "windows": {
+      "head_window_characters": 600,
+      "source_window_characters": 600,
+      "tail_window_characters": 600
+    }
+  },
+  "material_faults": [],
+  "metric": "M10",
+  "points": 5,
+  "protocol": "docs/eval/splice_protocol.md",
+  "rows": [
+    {
+      "adjudication_note": "MID-SENTENCE SPLIT #2: issue p34->p35 adjacent, 'a scarcity of water along much of' -> 'the route south of the Hauran...'",
+      "arm": "upstream",
+      "boundary": "6->7",
+      "cache_key": "6c6531f09e16b6c2fcf8801d54ff0b4e6339944bc78ce88fe363f98d462e609b",
+      "errors": [
+        {
+          "category": "accuracy/omission",
+          "explanation": "源文中尼科尔森关于铁路工人必须克服许多技术困难的引述在两个译文窗口中均未呈现。",
+          "severity": "major",
+          "span": "“The railway workers had to overcome many technical difficulties,” writes Nicholson.",
+          "window": "source"
+        },
+        {
+          "category": "accuracy/mistranslation",
+          "explanation": "该尾部与页首的“哈兰以南的路线”拼接成“水哈兰以南的路线”，边界造成语法断裂，并未表达哈兰以南大部分路段缺水。",
+          "severity": "major",
+          "span": "沿途大部分地区水",
+          "window": "tail"
+        }
+      ],
+      "head_window": "哈兰以南的路线以及当地可用燃料资源的严重短缺。",
+      "judge_model": "gpt-5.6-terra",
+      "judge_transport": {
+        "max_output_tokens": 1024,
+        "temperature": null,
+        "token_parameter": "max_completion_tokens"
+      },
+      "origin": "examples/baseline/pdf/AramcoWorld-en-v2/AramcoWorld-en-v2.no_watermark.zh.mono.pdf",
+      "path": "pdf_extraction",
+      "point": "AramcoWorld-en-v2 6->7",
+      "prompt_file": "prompts/splice_judge_mqm.md",
+      "prompt_file_sha256": "d62069c3b3488fc6fe19cd08169066ce93f72764b1bfab66c51513e7f47aea19",
+      "reading": "读者读到的是一句在“水哈兰以南的路线”处断裂且不合语法的陈述，随后提到当地燃料资源严重短缺。",
+      "refusal_reason": "",
+      "reply": "{\"reading\":\"读者读到的是一句在“水哈兰以南的路线”处断裂且不合语法的陈述，随后提到当地燃料资源严重短缺。\",\"errors\":[{\"category\":\"accuracy/omission\",\"severity\":\"major\",\"window\":\"source\",\"span\":\"“The railway workers had to overcome many technical difficulties,” writes Nicholson.\",\"explanation\":\"源文中尼科尔森关于铁路工人必须克服许多技术困难的引述在两个译文窗口中均未呈现。\"},{\"category\":\"accuracy/mistranslation\",\"severity\":\"major\",\"window\":\"tail\",\"span\":\"沿途大部分地区水\",\"explanation\":\"该尾部与页首的“哈兰以南的路线”拼接成“水哈兰以南的路线”，边界造成语法断裂，并未表达哈兰以南大部分路段缺水。\"}]}",
+      "sample": "AramcoWorld-en-v2.pdf",
+      "source_window": "“The railway workers had to overcome many  \ntechnical difficulties,” writes Nicholson. These, iron-\nically, also included a scarcity of water along much of\n\nthe route south of the Hauran and a severe shortage \nof locally available fuel sources.",
+      "status": "annotated",
+      "tail_window": "具有讽刺意味的是，这些难题还包括沿途大部分地区水"
+    },
+    {
+      "adjudication_note": "MID-SENTENCE SPLIT #2: issue p34->p35 adjacent, 'a scarcity of water along much of' -> 'the route south of the Hauran...'",
+      "arm": "fork_full",
+      "boundary": "6->7",
+      "cache_key": "9225603188872b3a4216fc490098a5619ade2b95b50bad85acc3923939215478",
+      "errors": [],
+      "head_window": "具有讽刺意味的是，这些难题还包括豪兰以南沿线大部\n分地区水源稀缺，以及当地可用燃料资源的严重短缺。",
+      "judge_model": "gpt-5.6-terra",
+      "judge_transport": {
+        "max_output_tokens": 1024,
+        "temperature": null,
+        "token_parameter": "max_completion_tokens"
+      },
+      "origin": "examples/output/b8_4/smoke/AramcoWorld-en-v2/work/AramcoWorld-en-v2",
+      "path": "intermediate_language",
+      "point": "AramcoWorld-en-v2 6->7",
+      "prompt_file": "prompts/splice_judge_mqm.md",
+      "prompt_file_sha256": "d62069c3b3488fc6fe19cd08169066ce93f72764b1bfab66c51513e7f47aea19",
+      "reading": "读者读到的是 Nicholson 对铁路工人技术难题的引述，随后说明这些难题还包括豪兰以南沿线大部分地区缺水和当地燃料严重短缺。",
+      "refusal_reason": "",
+      "reply": "{\"reading\":\"读者读到的是 Nicholson 对铁路工人技术难题的引述，随后说明这些难题还包括豪兰以南沿线大部分地区缺水和当地燃料严重短缺。\",\"errors\":[]}",
+      "sample": "AramcoWorld-en-v2.pdf",
+      "source_window": "“The railway workers had to overcome many  \ntechnical difficulties,” writes Nicholson. These, iron-\nically, also included a scarcity of water along much of\n\nthe route south of the Hauran and a severe shortage \nof locally available fuel sources.",
+      "status": "annotated",
+      "tail_window": "Nicholson 写道：“铁路工人必须克服许多\n技术难题。”"
+    },
+    {
+      "adjudication_note": "DISPLAY-TITLE SPLIT: 'How Indigenous knowledge drives' / 'scientific discovery' is one phrase cut across the spread; a split semantic unit, same class as a mid-sentence body split",
+      "arm": "upstream",
+      "boundary": "2->3",
+      "cache_key": "9b13169200eaa4159c01f4155b61e781250d6f70d0c78d554266b546282aff9d",
+      "errors": [
+        {
+          "category": "accuracy/omission",
+          "explanation": "译文未保留纤维名称“chambira”，只笼统译为棕榈树纤维。",
+          "severity": "minor",
+          "span": "棕榈\n树纤维",
+          "window": "tail"
+        }
+      ],
+      "head_window": "科学发现",
+      "judge_model": "gpt-5.6-terra",
+      "judge_transport": {
+        "max_output_tokens": 1024,
+        "temperature": null,
+        "token_parameter": "max_completion_tokens"
+      },
+      "origin": "examples/baseline/pdf/Courier-en/Courier-en.no_watermark.zh.mono.pdf",
+      "path": "pdf_extraction",
+      "point": "Courier-en 2->3",
+      "prompt_file": "prompts/splice_judge_mqm.md",
+      "prompt_file_sha256": "d62069c3b3488fc6fe19cd08169066ce93f72764b1bfab66c51513e7f47aea19",
+      "reading": "读者读到一则关于厄瓜多尔摄影师卡罗琳娜·萨姆布拉诺作品的说明，随后看到“科学发现”标题。",
+      "refusal_reason": "",
+      "reply": "{\"reading\":\"读者读到一则关于厄瓜多尔摄影师卡罗琳娜·萨姆布拉诺作品的说明，随后看到“科学发现”标题。\",\"errors\":[{\"category\":\"accuracy/omission\",\"severity\":\"minor\",\"window\":\"tail\",\"span\":\"棕榈\\n树纤维\",\"explanation\":\"译文未保留纤维名称“chambira”，只笼统译为棕榈树纤维。\"}]}",
+      "sample": "Courier-en.pdf",
+      "source_window": "Work by Ecuadorian photographer Carolina Zambrano, embroidered with chambira\nfibres, a palm tree emblematic of Indigenous Amazonian craftsmanship.\n\nscientific discover y",
+      "status": "annotated",
+      "tail_window": "厄瓜多尔摄影师卡罗琳娜·萨姆布拉诺的作品，使用象征亚马逊土著工艺的棕榈\n树纤维刺绣而成。"
+    },
+    {
+      "adjudication_note": "DISPLAY-TITLE SPLIT: 'How Indigenous knowledge drives' / 'scientific discovery' is one phrase cut across the spread; a split semantic unit, same class as a mid-sentence body split",
+      "arm": "chain_off_1",
+      "boundary": "2->3",
+      "cache_key": "bb52cc66f9d8c28eac1b8c83d0a0f19bb6e133b2c05bc48720345f53983f4fe2",
+      "errors": [],
+      "head_window": "科学发现",
+      "judge_model": "gpt-5.6-terra",
+      "judge_transport": {
+        "max_output_tokens": 1024,
+        "temperature": null,
+        "token_parameter": "max_completion_tokens"
+      },
+      "origin": "examples/output/e2/r1/chain_off_1/work/Courier-en",
+      "path": "intermediate_language",
+      "point": "Courier-en 2->3",
+      "prompt_file": "prompts/splice_judge_mqm.md",
+      "prompt_file_sha256": "d62069c3b3488fc6fe19cd08169066ce93f72764b1bfab66c51513e7f47aea19",
+      "reading": "读者读到的是对Carolina Zambrano作品及其所用chambira棕榈纤维刺绣的说明，随后进入“科学发现”栏目。",
+      "refusal_reason": "",
+      "reply": "{\"reading\":\"读者读到的是对Carolina Zambrano作品及其所用chambira棕榈纤维刺绣的说明，随后进入“科学发现”栏目。\",\"errors\":[]}",
+      "sample": "Courier-en.pdf",
+      "source_window": "Work by Ecuadorian photographer Carolina Zambrano, embroidered with chambira\nfibres, a palm tree emblematic of Indigenous Amazonian craftsmanship.\n\nscientific discover y",
+      "status": "annotated",
+      "tail_window": "厄瓜多尔摄影师Carolina Zambrano的作品，采用象征亚马逊土著工艺的棕榈\n树chambira纤维刺绣而成。"
+    },
+    {
+      "adjudication_note": "DISPLAY-TITLE SPLIT: 'How Indigenous knowledge drives' / 'scientific discovery' is one phrase cut across the spread; a split semantic unit, same class as a mid-sentence body split",
+      "arm": "chain_off_2",
+      "boundary": "2->3",
+      "cache_key": "bb52cc66f9d8c28eac1b8c83d0a0f19bb6e133b2c05bc48720345f53983f4fe2",
+      "errors": [],
+      "head_window": "科学发现",
+      "judge_model": "gpt-5.6-terra",
+      "judge_transport": {
+        "max_output_tokens": 1024,
+        "temperature": null,
+        "token_parameter": "max_completion_tokens"
+      },
+      "origin": "examples/output/e2/r1/chain_off_2/work/Courier-en",
+      "path": "intermediate_language",
+      "point": "Courier-en 2->3",
+      "prompt_file": "prompts/splice_judge_mqm.md",
+      "prompt_file_sha256": "d62069c3b3488fc6fe19cd08169066ce93f72764b1bfab66c51513e7f47aea19",
+      "reading": "读者读到的是对Carolina Zambrano作品及其所用chambira棕榈纤维刺绣的说明，随后进入“科学发现”栏目。",
+      "refusal_reason": "",
+      "reply": "{\"reading\":\"读者读到的是对Carolina Zambrano作品及其所用chambira棕榈纤维刺绣的说明，随后进入“科学发现”栏目。\",\"errors\":[]}",
+      "sample": "Courier-en.pdf",
+      "source_window": "Work by Ecuadorian photographer Carolina Zambrano, embroidered with chambira\nfibres, a palm tree emblematic of Indigenous Amazonian craftsmanship.\n\nscientific discover y",
+      "status": "annotated",
+      "tail_window": "厄瓜多尔摄影师Carolina Zambrano的作品，采用象征亚马逊土著工艺的棕榈\n树chambira纤维刺绣而成。"
+    },
+    {
+      "adjudication_note": "DISPLAY-TITLE SPLIT: 'How Indigenous knowledge drives' / 'scientific discovery' is one phrase cut across the spread; a split semantic unit, same class as a mid-sentence body split",
+      "arm": "chain_on",
+      "boundary": "2->3",
+      "cache_key": "6e79bed863ba40d59973eec78c55ad0903a0c01cf4b9a4c0b69b13ee816bbed7",
+      "errors": [
+        {
+          "category": "accuracy/addition",
+          "explanation": "源文的“scientific discovery”不支持标题开头额外出现的“动”，使译文标题不自然。",
+          "severity": "minor",
+          "span": "动",
+          "window": "head"
+        }
+      ],
+      "head_window": "动科学发现",
+      "judge_model": "gpt-5.6-terra",
+      "judge_transport": {
+        "max_output_tokens": 1024,
+        "temperature": null,
+        "token_parameter": "max_completion_tokens"
+      },
+      "origin": "examples/output/e2/r1/chain_on/work/Courier-en",
+      "path": "intermediate_language",
+      "point": "Courier-en 2->3",
+      "prompt_file": "prompts/splice_judge_mqm.md",
+      "prompt_file_sha256": "d62069c3b3488fc6fe19cd08169066ce93f72764b1bfab66c51513e7f47aea19",
+      "reading": "读者先读到一则完整的摄影作品说明，随后看到不通顺的标题“动科学发现”。",
+      "refusal_reason": "",
+      "reply": "{\"reading\":\"读者先读到一则完整的摄影作品说明，随后看到不通顺的标题“动科学发现”。\",\"errors\":[{\"category\":\"accuracy/addition\",\"severity\":\"minor\",\"window\":\"head\",\"span\":\"动\",\"explanation\":\"源文的“scientific discovery”不支持标题开头额外出现的“动”，使译文标题不自然。\"}]}",
+      "sample": "Courier-en.pdf",
+      "source_window": "Work by Ecuadorian photographer Carolina Zambrano, embroidered with chambira\nfibres, a palm tree emblematic of Indigenous Amazonian craftsmanship.\n\nscientific discover y",
+      "status": "annotated",
+      "tail_window": "由厄瓜多尔摄影师Carolina Zambrano创作，使用chambira纤维刺绣，这是\n一种象征亚马逊土著工艺的棕榈树材料。"
+    },
+    {
+      "adjudication_note": "MID-SENTENCE BODY SPLIT: 'a composite material from' -> 'the grass has been patented'; issue pp.12-13",
+      "arm": "upstream",
+      "boundary": "7->8",
+      "cache_key": "2d3cbd9a72b11adf2dcc8d5a02f17c6c8b3c10b6646368fb4f743ceb59712ef8",
+      "errors": [
+        {
+          "category": "accuracy/mistranslation",
+          "explanation": "原文说明由这种草制成的复合材料获得了专利，而译文错误地说草地本身申请了专利，这一错误由跨页处将未完短语断开后重启造成。",
+          "severity": "critical",
+          "span": "草地已经被申请了专利。",
+          "window": "head"
+        }
+      ],
+      "head_window": "草地已经被申请了专利。根据协议，\n已经共享的利益包括为第一民族青年",
+      "judge_model": "gpt-5.6-terra",
+      "judge_transport": {
+        "max_output_tokens": 1024,
+        "temperature": null,
+        "token_parameter": "max_completion_tokens"
+      },
+      "origin": "examples/baseline/pdf/Courier-en/Courier-en.no_watermark.zh.mono.pdf",
+      "path": "pdf_extraction",
+      "point": "Courier-en 7->8",
+      "prompt_file": "prompts/splice_judge_mqm.md",
+      "prompt_file_sha256": "d62069c3b3488fc6fe19cd08169066ce93f72764b1bfab66c51513e7f47aea19",
+      "reading": "读者读到一家公司开发医用凝胶和一种复合材料，随后却被告知草地本身已经申请了专利。",
+      "refusal_reason": "",
+      "reply": "{\"reading\":\"读者读到一家公司开发医用凝胶和一种复合材料，随后却被告知草地本身已经申请了专利。\",\"errors\":[{\"category\":\"accuracy/mistranslation\",\"severity\":\"critical\",\"window\":\"head\",\"span\":\"草地已经被申请了专利。\",\"explanation\":\"原文说明由这种草制成的复合材料获得了专利，而译文错误地说草地本身申请了专利，这一错误由跨页处将未完短语断开后重启造成。\"}]}",
+      "sample": "Courier-en.pdf",
+      "source_window": "pinifex,\na hardy perennial tussock grass tradition-\nally used  for a  variety  of  purposes. The\ncollaborative research agreement includes\nprovisions for benefit sharing. A spinoff\ncompany is now developing medical gels\nfrom cellulose nanofibers extracted from\nspinifex, and a composite material from\n\nthe grass has been  patented. Benefits\nthat have already been shared  under\nthe agreement include  employment\nopportunities  for  First  Nations youth\nand funding for training and educational\nopportunities for Indigenous Australians.",
+      "status": "annotated",
+      "tail_window": "研究。该合作研究协议包括利益分享\n的条款。一家衍生公司目前正在开发\n从spinifex中提取的纤维素纳米纤维\n制成的医用凝胶，以及一种复合材料。"
+    },
+    {
+      "adjudication_note": "MID-SENTENCE BODY SPLIT: 'a composite material from' -> 'the grass has been patented'; issue pp.12-13",
+      "arm": "chain_off_1",
+      "boundary": "7->8",
+      "cache_key": "0bf5ba4c7077cc0c7eed45a334d045d412bfa040d0ac9f07973caca77545a372",
+      "errors": [
+        {
+          "category": "accuracy/mistranslation",
+          "explanation": "源文说的是由这种草制成的复合材料已经获得专利，而译文错误地说这种草本身被申请专利，并将已获专利弱化为申请。",
+          "severity": "critical",
+          "span": "这种草已经被申请了专利。",
+          "window": "head"
+        }
+      ],
+      "head_window": "这种草已经被申请了专利。根据协议，\n已经分享的利益包括为第一民族青年\n提供的就业机会，以及为澳大利亚土\n著提供的培训和教育机会的资金。",
+      "judge_model": "gpt-5.6-terra",
+      "judge_transport": {
+        "max_output_tokens": 1024,
+        "temperature": null,
+        "token_parameter": "max_completion_tokens"
+      },
+      "origin": "examples/output/e2/r1/chain_off_1/work/Courier-en",
+      "path": "intermediate_language",
+      "point": "Courier-en 7->8",
+      "prompt_file": "prompts/splice_judge_mqm.md",
+      "prompt_file_sha256": "d62069c3b3488fc6fe19cd08169066ce93f72764b1bfab66c51513e7f47aea19",
+      "reading": "读者读到一家公司开发医用凝胶和一种复合材料，随后得知这种草本身已被申请专利。",
+      "refusal_reason": "",
+      "reply": "{\"reading\":\"读者读到一家公司开发医用凝胶和一种复合材料，随后得知这种草本身已被申请专利。\",\"errors\":[{\"category\":\"accuracy/mistranslation\",\"severity\":\"critical\",\"window\":\"head\",\"span\":\"这种草已经被申请了专利。\",\"explanation\":\"源文说的是由这种草制成的复合材料已经获得专利，而译文错误地说这种草本身被申请专利，并将已获专利弱化为申请。\"}]}",
+      "sample": "Courier-en.pdf",
+      "source_window": "pinifex,\na hardy perennial tussock grass tradition-\nally used  for a  variety  of  purposes. The\ncollaborative research agreement includes\nprovisions for benefit sharing. A spinoff\ncompany is now developing medical gels\nfrom cellulose nanofibers extracted from\nspinifex, and a composite material from\n\nthe grass has been  patented. Benefits\nthat have already been shared  under\nthe agreement include  employment\nopportunities  for  First  Nations youth\nand funding for training and educational\nopportunities for Indigenous Australians.",
+      "status": "annotated",
+      "tail_window": "并非所有与遗传资源相关的土著\n知识的商业使用都构成生物盗窃；有\n些项目是互惠互利的。例如，澳大利\n亚的Indjalandji-Dhidhanu人就与昆\n士兰大学的研究人员合作，基于他们\n对针茅的土著知识进行研究，这种耐\n旱的多年生丛生草传统上用于多种用\n途。该合作研究协议包括利益分享的\n条款。一家衍生公司现在正在开发从\n针茅中提取的纤维素纳米纤维制成的\n医用凝胶，以及一种复合材料。"
+    },
+    {
+      "adjudication_note": "MID-SENTENCE BODY SPLIT: 'a composite material from' -> 'the grass has been patented'; issue pp.12-13",
+      "arm": "chain_off_2",
+      "boundary": "7->8",
+      "cache_key": "58cd524f4fccfe38747c0449977dd409d79f4f061aaa462072a655855650fb83",
+      "errors": [
+        {
+          "category": "accuracy/mistranslation",
+          "explanation": "源文说的是由该草制成的复合材料已获专利，而跨页后错误地说成这种草申请了专利，并改变了专利状态。",
+          "severity": "critical",
+          "span": "这种草已经被申请了专利。",
+          "window": "head"
+        }
+      ],
+      "head_window": "这种草已经被申请了专利。根据协议，\n已经分享的利益包括为第一民族青年\n提供的就业机会，以及为澳大利亚土\n著提供的培训和教育机会的资金。",
+      "judge_model": "gpt-5.6-terra",
+      "judge_transport": {
+        "max_output_tokens": 1024,
+        "temperature": null,
+        "token_parameter": "max_completion_tokens"
+      },
+      "origin": "examples/output/e2/r1/chain_off_2/work/Courier-en",
+      "path": "intermediate_language",
+      "point": "Courier-en 7->8",
+      "prompt_file": "prompts/splice_judge_mqm.md",
+      "prompt_file_sha256": "d62069c3b3488fc6fe19cd08169066ce93f72764b1bfab66c51513e7f47aea19",
+      "reading": "读者读到的是一项从针茅制成的复合材料，随后被告知这种草本身已经申请了专利。",
+      "refusal_reason": "",
+      "reply": "{\"reading\":\"读者读到的是一项从针茅制成的复合材料，随后被告知这种草本身已经申请了专利。\",\"errors\":[{\"category\":\"accuracy/mistranslation\",\"severity\":\"critical\",\"window\":\"head\",\"span\":\"这种草已经被申请了专利。\",\"explanation\":\"源文说的是由该草制成的复合材料已获专利，而跨页后错误地说成这种草申请了专利，并改变了专利状态。\"}]}",
+      "sample": "Courier-en.pdf",
+      "source_window": "pinifex,\na hardy perennial tussock grass tradition-\nally used  for a  variety  of  purposes. The\ncollaborative research agreement includes\nprovisions for benefit sharing. A spinoff\ncompany is now developing medical gels\nfrom cellulose nanofibers extracted from\nspinifex, and a composite material from\n\nthe grass has been  patented. Benefits\nthat have already been shared  under\nthe agreement include  employment\nopportunities  for  First  Nations youth\nand funding for training and educational\nopportunities for Indigenous Australians.",
+      "status": "annotated",
+      "tail_window": "并非所有与遗传资源相关的土著\n知识的商业使用都构成生物盗窃；有\n些项目是互惠互利的。例如，澳大利\n亚的Indjalandji-Dhidhanu人就与昆\n士兰大学的研究人员合作，基于他们\n对传统上用于多种用途的耐旱多年生\n丛生草——针茅的土著知识进行研究。\n该合作研究协议包括利益分享的条款。\n一家衍生公司现在正在开发从针茅中\n提取的纤维素纳米纤维制成的医用凝\n胶，以及一种复合材料。"
+    },
+    {
+      "adjudication_note": "MID-SENTENCE BODY SPLIT: 'a composite material from' -> 'the grass has been patented'; issue pp.12-13",
+      "arm": "chain_on",
+      "boundary": "7->8",
+      "cache_key": "04301b9c4042d0186ea3be68891fe09e2914783b203805245132615dc83f2a4b",
+      "errors": [
+        {
+          "category": "accuracy/mistranslation",
+          "explanation": "原文说明该复合材料“has been patented”即已获得专利，译文却称仅申请了专利，错误改变了专利状态这一事实。",
+          "severity": "critical",
+          "span": "并已为这种草的复合材料申请了专利。",
+          "window": "tail"
+        }
+      ],
+      "head_window": "根据协议，已经分享的利益包括为第\n一民族青年提供就业机会，以及为澳\n大利亚土著提供培训和教育机会的资\n金。",
+      "judge_model": "gpt-5.6-terra",
+      "judge_transport": {
+        "max_output_tokens": 1024,
+        "temperature": null,
+        "token_parameter": "max_completion_tokens"
+      },
+      "origin": "examples/output/e2/r1/chain_on/work/Courier-en",
+      "path": "intermediate_language",
+      "point": "Courier-en 7->8",
+      "prompt_file": "prompts/splice_judge_mqm.md",
+      "prompt_file_sha256": "d62069c3b3488fc6fe19cd08169066ce93f72764b1bfab66c51513e7f47aea19",
+      "reading": "译文在分页处连贯地继续说明协议下已分享的利益，但将复合材料已获专利误写成申请专利。",
+      "refusal_reason": "",
+      "reply": "{\"reading\":\"译文在分页处连贯地继续说明协议下已分享的利益，但将复合材料已获专利误写成申请专利。\",\"errors\":[{\"category\":\"accuracy/mistranslation\",\"severity\":\"critical\",\"window\":\"tail\",\"span\":\"并已为这种草的复合材料申请了专利。\",\"explanation\":\"原文说明该复合材料“has been patented”即已获得专利，译文却称仅申请了专利，错误改变了专利状态这一事实。\"}]}",
+      "sample": "Courier-en.pdf",
+      "source_window": "pinifex,\na hardy perennial tussock grass tradition-\nally used  for a  variety  of  purposes. The\ncollaborative research agreement includes\nprovisions for benefit sharing. A spinoff\ncompany is now developing medical gels\nfrom cellulose nanofibers extracted from\nspinifex, and a composite material from\n\nthe grass has been  patented. Benefits\nthat have already been shared  under\nthe agreement include  employment\nopportunities  for  First  Nations youth\nand funding for training and educational\nopportunities for Indigenous Australians.",
+      "status": "annotated",
+      "tail_window": "并非所有与遗传资源相关的土著\n知识的商业使用都构成生物盗窃；有\n些项目是互利的。例如，澳大利亚的\nIndjalandji-Dhidhanu人就与昆士兰\n大学的研究人员合作，基于他们对传\n统上用于多种用途的耐旱多年生丛生\n草——针茅的土著知识进行研究。该\n合作研究协议包括利益分享的条款。\n现在，一家衍生公司正在开发从针茅\n中提取的纤维素纳米纤维制成的医用\n凝胶，并已为这种草的复合材料申请\n了专利。"
+    },
+    {
+      "adjudication_note": "DISPLAY-TITLE SPLIT (zh): 时代变迁背景下的 / 土著知识 cut across the spread",
+      "arm": "upstream",
+      "boundary": "2->3",
+      "cache_key": "33ef1a194ad9b3751c513a78118625d4ed560a5be2ba7fb78f595e22d2c6080f",
+      "errors": [
+        {
+          "category": "accuracy/untranslated",
+          "explanation": "The heading is left untranslated instead of rendering the source's “Indigenous knowledge.”",
+          "severity": "major",
+          "span": "土著知识",
+          "window": "head"
+        }
+      ],
+      "head_window": "土著知识",
+      "judge_model": "gpt-5.6-terra",
+      "judge_transport": {
+        "max_output_tokens": 1024,
+        "temperature": null,
+        "token_parameter": "max_completion_tokens"
+      },
+      "origin": "examples/baseline/pdf/Courier-zh/Courier-zh.no_watermark.en.mono.pdf",
+      "path": "pdf_extraction",
+      "point": "Courier-zh 2->3",
+      "prompt_file": "prompts/splice_judge_mqm.md",
+      "prompt_file_sha256": "d62069c3b3488fc6fe19cd08169066ce93f72764b1bfab66c51513e7f47aea19",
+      "reading": "The reader gets a complete English sentence about Zambrano's embroidery followed by an untranslated Chinese heading.",
+      "refusal_reason": "",
+      "reply": "{\"reading\":\"The reader gets a complete English sentence about Zambrano's embroidery followed by an untranslated Chinese heading.\",\"errors\":[{\"category\":\"accuracy/untranslated\",\"severity\":\"major\",\"window\":\"head\",\"span\":\"土著知识\",\"explanation\":\"The heading is left untranslated instead of rendering the source's “Indigenous knowledge.”\"}]}",
+      "sample": "Courier-zh.pdf",
+      "source_window": "厄瓜多尔摄影师卡洛丽娜·赞布拉诺的刺绣作品，采用昌比拉棕榈纤维制作—\n这种棕榈是亚马孙土著手工艺的象征。\n\n土著知识",
+      "status": "annotated",
+      "tail_window": "The embroidery work of Ecuadorian photographer Carolina Zambrano, made with \nchambira palm fibers—this palm is a symbol of Amazonian indigenous craftsmanship."
+    },
+    {
+      "adjudication_note": "DISPLAY-TITLE SPLIT (zh): 时代变迁背景下的 / 土著知识 cut across the spread",
+      "arm": "fork_full",
+      "boundary": "2->3",
+      "cache_key": "bf426011aa5c7ae2edf88c4c5a42183b32ac572bc7719d87681d7458bd807ed9",
+      "errors": [],
+      "head_window": "土著知识",
+      "judge_model": "gpt-5.6-terra",
+      "judge_transport": {
+        "max_output_tokens": 1024,
+        "temperature": null,
+        "token_parameter": "max_completion_tokens"
+      },
+      "origin": "examples/output/b8_4/smoke/Courier-zh/work/Courier-zh",
+      "path": "intermediate_language",
+      "point": "Courier-zh 2->3",
+      "prompt_file": "prompts/splice_judge_mqm.md",
+      "prompt_file_sha256": "d62069c3b3488fc6fe19cd08169066ce93f72764b1bfab66c51513e7f47aea19",
+      "reading": "读者读到一则关于厄瓜多尔摄影师卡洛丽娜·赞布拉诺使用昌比拉棕榈纤维创作刺绣作品的说明，随后看到“土著知识”标题。",
+      "refusal_reason": "",
+      "reply": "{\"reading\":\"读者读到一则关于厄瓜多尔摄影师卡洛丽娜·赞布拉诺使用昌比拉棕榈纤维创作刺绣作品的说明，随后看到“土著知识”标题。\",\"errors\":[]}",
+      "sample": "Courier-zh.pdf",
+      "source_window": "厄瓜多尔摄影师卡洛丽娜·赞布拉诺的刺绣作品，采用昌比拉棕榈纤维制作—\n这种棕榈是亚马孙土著手工艺的象征。\n\n土著知识",
+      "status": "annotated",
+      "tail_window": "厄瓜多尔摄影师卡洛丽娜·赞布拉诺的刺绣作品，采用昌比拉棕榈纤维制作——\n这种棕榈是亚马孙土著手工艺的象征。"
+    },
+    {
+      "adjudication_note": "MID-WORD SPLIT (official): zh p10->p11 adjacent, 协议中包 / 含惠益分享条款 - the acute zh positive, same site as the b5.3 official-edition citation",
+      "arm": "upstream",
+      "boundary": "7->8",
+      "cache_key": "ddaa0128727cc788cddd14c175f399a3e7b5bffcc7c25b3fd836f772ab113a4a",
+      "errors": [
+        {
+          "category": "fluency/grammar",
+          "explanation": "The boundary causes this infinitive phrase to follow the tail's “included,” producing the ungrammatical and duplicative construction “included to include.”",
+          "severity": "major",
+          "span": "to include benefit-sharing clauses.",
+          "window": "head"
+        }
+      ],
+      "head_window": "to include benefit-sharing clauses. A \nspin-off company is currently using \ncellulose nanofibers extracted from \nTriodia to develop medical gels, and \ncomposite materials made from this herb \nhave also been patented. According to \nthe agreement, realized benefits include \nproviding employment opportunities for \nFirst Nations youth and funding support \nfor training and education related to \nAustralian indigenous communities.",
+      "judge_model": "gpt-5.6-terra",
+      "judge_transport": {
+        "max_output_tokens": 1024,
+        "temperature": null,
+        "token_parameter": "max_completion_tokens"
+      },
+      "origin": "examples/baseline/pdf/Courier-zh/Courier-zh.no_watermark.en.mono.pdf",
+      "path": "pdf_extraction",
+      "point": "Courier-zh 7->8",
+      "prompt_file": "prompts/splice_judge_mqm.md",
+      "prompt_file_sha256": "d62069c3b3488fc6fe19cd08169066ce93f72764b1bfab66c51513e7f47aea19",
+      "reading": "The passage is generally clear, but the agreement sentence becomes ungrammatical across the page boundary as “included to include benefit-sharing clauses.”",
+      "refusal_reason": "",
+      "reply": "{\"reading\":\"The passage is generally clear, but the agreement sentence becomes ungrammatical across the page boundary as “included to include benefit-sharing clauses.”\",\"errors\":[{\"category\":\"fluency/grammar\",\"severity\":\"major\",\"window\":\"head\",\"span\":\"to include benefit-sharing clauses.\",\"explanation\":\"The boundary causes this infinitive phrase to follow the tail's “included,” producing the ungrammatical and duplicative construction “included to include.”\"}]}",
+      "sample": "Courier-zh.pdf",
+      "source_window": "并非所有与遗传 资源相关的土\n著知识商业化利用行为都构成生物剽\n窃；部分项目实现了互利共赢。以澳大\n利亚的印贾兰吉 - 迪达努（Indjalan-\ndji-Dhidhanu） 部族为例，该部族与\n昆士兰大学的研究人员合作，根据其\n关于三齿稃 （一种多年生丛生草本植\n物，传统用途广泛） 的土著知识开展\n研究。双方签订的合作研究协议中包\n\n含惠益分享条款。一家衍生企业目前\n正利用从三齿稃中提取的纤维素纳米\n纤维开发医用凝胶，同时，该草本植\n物制成的复合材料也已获得专利。根\n据该协议，已实现的惠益分享包括为\n第一民族青年提供就业机会，并为澳\n大利亚土著群体提供培训与教育相关\n的资金支持。",
+      "status": "annotated",
+      "tail_window": "Not all commercial uses of \nindigenous knowledge related to genetic \nresources constitute biopiracy; some \nprojects achieve mutual benefits. For \nexample, the Indjalandji-Dhidhanu tribe i\nn Australia collaborated with researchers \nfrom the University of Queensland to \nconduct research based on their \nindigenous knowledge of Triodia (a \nperennial tussock grass with various \ntraditional uses). The cooperative \nresearch agreement signed by both \nparties included"
+    },
+    {
+      "adjudication_note": "MID-WORD SPLIT (official): zh p10->p11 adjacent, 协议中包 / 含惠益分享条款 - the acute zh positive, same site as the b5.3 official-edition citation",
+      "arm": "fork_full",
+      "boundary": "7->8",
+      "cache_key": "123aac5da3ddcc7f30d333b89fb956517d495a830d08aac6e03a6811985587c4",
+      "errors": [],
+      "head_window": "包含惠益分享条款。一家衍生企业目前\n正利用从三齿稃中提取的纤维素纳米纤\n维开发医用凝胶，同时，该草本植物制\n成的复合材料也已获得专利。根据该协\n议，已实现的惠益分享包括为第一民族\n青年提供就业机会，并为澳大利亚土著\n群体提供培训与教育相关的资金支持。",
+      "judge_model": "gpt-5.6-terra",
+      "judge_transport": {
+        "max_output_tokens": 1024,
+        "temperature": null,
+        "token_parameter": "max_completion_tokens"
+      },
+      "origin": "examples/output/b8_4/smoke/Courier-zh/work/Courier-zh",
+      "path": "intermediate_language",
+      "point": "Courier-zh 7->8",
+      "prompt_file": "prompts/splice_judge_mqm.md",
+      "prompt_file_sha256": "d62069c3b3488fc6fe19cd08169066ce93f72764b1bfab66c51513e7f47aea19",
+      "reading": "读者读到的是一段连贯的中文说明，页面边界处“包—包含”自然衔接为“合作研究协议中包含惠益分享条款”。",
+      "refusal_reason": "",
+      "reply": "{\"reading\":\"读者读到的是一段连贯的中文说明，页面边界处“包—包含”自然衔接为“合作研究协议中包含惠益分享条款”。\",\"errors\":[]}",
+      "sample": "Courier-zh.pdf",
+      "source_window": "并非所有与遗传 资源相关的土\n著知识商业化利用行为都构成生物剽\n窃；部分项目实现了互利共赢。以澳大\n利亚的印贾兰吉 - 迪达努（Indjalan-\ndji-Dhidhanu） 部族为例，该部族与\n昆士兰大学的研究人员合作，根据其\n关于三齿稃 （一种多年生丛生草本植\n物，传统用途广泛） 的土著知识开展\n研究。双方签订的合作研究协议中包\n\n含惠益分享条款。一家衍生企业目前\n正利用从三齿稃中提取的纤维素纳米\n纤维开发医用凝胶，同时，该草本植\n物制成的复合材料也已获得专利。根\n据该协议，已实现的惠益分享包括为\n第一民族青年提供就业机会，并为澳\n大利亚土著群体提供培训与教育相关\n的资金支持。",
+      "status": "annotated",
+      "tail_window": "并非所有与遗传资源相关的土著知\n识商业化利用行为都构成生物剽窃；部\n分项目实现了互利共赢。以澳大利亚的\n印贾兰吉-迪达努（\nIndjalandji-Dhidhanu）部族为例，该\n部族与昆士兰大学的研究人员合作，根\n据其关于三齿稃（一种多年生丛生草本\n植物，传统用途广泛）的土著知识开展\n研究。双方签订的合作研究协议中包"
+    }
+  ]
+}

@@ -1,0 +1,1920 @@
+{
+  "generated_by": "tools/drift_attribution.py",
+  "sample": "Courier-en.pdf",
+  "arms": {
+    "chain_off_1": {
+      "working_dir": "examples/output/e2/r1/chain_off_1/work/Courier-en",
+      "pages": 8,
+      "paragraphs": 132,
+      "chain_prompts": []
+    },
+    "chain_off_2": {
+      "working_dir": "examples/output/e2/r1/chain_off_2/work/Courier-en",
+      "pages": 8,
+      "paragraphs": 132,
+      "chain_prompts": []
+    },
+    "chain_on": {
+      "working_dir": "examples/output/e2/r1/chain_on/work/Courier-en",
+      "pages": 8,
+      "paragraphs": 132,
+      "chain_prompts": [
+        "2509cb166d5399756e7ebf4eec2553661f49faa2f20a0229b1faea6fecef2c39",
+        "ae96f658d9186eac23f2af7b2077c92f6b6e7451673026709431f83a9d5139b1"
+      ]
+    }
+  },
+  "runs": [
+    {
+      "arm": "chain_on",
+      "sample": "Courier-en.pdf",
+      "model": "gpt-4o",
+      "magazine_chain_translate": true,
+      "cache_namespace": null,
+      "cache_engine": "openai",
+      "cache_key_params": "{\"lang_in\": \"en\", \"lang_out\": \"zh\", \"model\": \"gpt-4o\", \"prompt\": [{\"content\": \"You are a professional,authentic machine translation engine.\", \"role\": \"system\"}, {\"content\": \";; Treat next line as plain text input and translate it into zh, output translation ONLY. If translation is unnecessary (e.g. proper nouns, codes, {{1}}, etc. ), return the original text. NO explanations. NO notes. Input:\\n\\n\", \"role\": \"user\"}], \"temperature\": 0}",
+      "cache_key_sha256": "014661621997448386148618e394c0bfd4ca4d49a36921fbfbf53ed15ec25b4b",
+      "seconds": 64.9,
+      "requests": 54,
+      "cache_hits": 53,
+      "api_calls": 1,
+      "prompt_tokens": 1734,
+      "completion_tokens": 93,
+      "cache_rows_filed": {
+        "magazine_repair": 1
+      },
+      "working_dir": "examples/output/e2/r1/chain_on/work/Courier-en",
+      "mono_pdf": "Courier-en.chain_on.pdf",
+      "mono_pdf_sha256": "0110d07b56a6aca3384fa5db2a6491631e715593f5ae851d8c65ca22eeeb60d7",
+      "prompt_trace": "prompt_trace.json",
+      "prompt_batches": 35,
+      "chain_prompts": 2
+    },
+    {
+      "arm": "chain_off_1",
+      "sample": "Courier-en.pdf",
+      "model": "gpt-4o",
+      "magazine_chain_translate": false,
+      "cache_namespace": "off1",
+      "cache_engine": "openai",
+      "cache_key_params": "{\"e2_r1_arm\": \"off1\", \"lang_in\": \"en\", \"lang_out\": \"zh\", \"model\": \"gpt-4o\", \"prompt\": [{\"content\": \"You are a professional,authentic machine translation engine.\", \"role\": \"system\"}, {\"content\": \";; Treat next line as plain text input and translate it into zh, output translation ONLY. If translation is unnecessary (e.g. proper nouns, codes, {{1}}, etc. ), return the original text. NO explanations. NO notes. Input:\\n\\n\", \"role\": \"user\"}], \"temperature\": 0}",
+      "cache_key_sha256": "1c23e53bbabdb665c7ccd3236afbe3d52a28c1bd6d9961c7db0b8702f842f6d5",
+      "seconds": 93.8,
+      "requests": 62,
+      "cache_hits": 0,
+      "api_calls": 62,
+      "prompt_tokens": 52312,
+      "completion_tokens": 11377,
+      "cache_rows_filed": {
+        "magazine_orphan": 3,
+        "magazine_repair": 1,
+        "openai": 58
+      },
+      "working_dir": "examples/output/e2/r1/chain_off_1/work/Courier-en",
+      "mono_pdf": "Courier-en.chain_off_1.pdf",
+      "mono_pdf_sha256": "7e4a1734aa704c3f0def8d2c80aa09375e356e47ca5013ac6bde04ddc3813154",
+      "prompt_trace": "prompt_trace.json",
+      "prompt_batches": 36,
+      "chain_prompts": 0
+    },
+    {
+      "arm": "chain_off_2",
+      "sample": "Courier-en.pdf",
+      "model": "gpt-4o",
+      "magazine_chain_translate": false,
+      "cache_namespace": "off2",
+      "cache_engine": "openai",
+      "cache_key_params": "{\"e2_r1_arm\": \"off2\", \"lang_in\": \"en\", \"lang_out\": \"zh\", \"model\": \"gpt-4o\", \"prompt\": [{\"content\": \"You are a professional,authentic machine translation engine.\", \"role\": \"system\"}, {\"content\": \";; Treat next line as plain text input and translate it into zh, output translation ONLY. If translation is unnecessary (e.g. proper nouns, codes, {{1}}, etc. ), return the original text. NO explanations. NO notes. Input:\\n\\n\", \"role\": \"user\"}], \"temperature\": 0}",
+      "cache_key_sha256": "ea01c25b1a45777887becf316472bd2fc4ef0ecb7e09600f1a2dd50ed66a5a16",
+      "seconds": 86.3,
+      "requests": 61,
+      "cache_hits": 0,
+      "api_calls": 61,
+      "prompt_tokens": 51713,
+      "completion_tokens": 11231,
+      "cache_rows_filed": {
+        "magazine_orphan": 2,
+        "magazine_repair": 1,
+        "openai": 58
+      },
+      "working_dir": "examples/output/e2/r1/chain_off_2/work/Courier-en",
+      "mono_pdf": "Courier-en.chain_off_2.pdf",
+      "mono_pdf_sha256": "31f113e6b630ef56b6d1bef1ce6adb05614d6a77085744a209dde8bcfc2123b5",
+      "prompt_trace": "prompt_trace.json",
+      "prompt_batches": 36,
+      "chain_prompts": 0
+    }
+  ],
+  "premises": {
+    "documents_identical_before_translation": true,
+    "off_arm_batches_identical": true,
+    "off_arm_batch_faults": [],
+    "off_arm_prompt_differences": 42,
+    "off_arm_prompt_differences_with_identical_batch": 42,
+    "off_arm_batches": 36,
+    "off_arm_batches_with_a_differing_prompt": 10,
+    "chain_members": [
+      "p2#3",
+      "p3#1",
+      "p7#4",
+      "p8#8"
+    ],
+    "faults": []
+  },
+  "attribution": {
+    "matched": 132,
+    "changed_reference_vs_treatment": 59,
+    "noise_population": 43,
+    "noise_rate": 0.325758,
+    "recomposed_paragraphs": 27,
+    "recomposed_pages": [
+      2,
+      3,
+      7,
+      8
+    ],
+    "changed_and_recomposed": [
+      "p2#3",
+      "p2#4",
+      "p2#7",
+      "p3#1",
+      "p7#4",
+      "p7#5",
+      "p7#9",
+      "p7#11",
+      "p7#14",
+      "p7#17",
+      "p8#7",
+      "p8#8",
+      "p8#10",
+      "p8#11",
+      "p8#14"
+    ],
+    "changed_and_recomposed_verdicts": {
+      "chain_member": 4,
+      "rebatch_effect": 8,
+      "sampling_noise": 3
+    },
+    "verdict_counts": {
+      "sampling_noise": 36,
+      "run_variance": 11,
+      "chain_member": 4,
+      "rebatch_effect": 8
+    },
+    "gap01_verdict_counts": {
+      "sampling_noise": 36,
+      "rebatch_effect": 19,
+      "chain_member": 4
+    },
+    "rows": [
+      {
+        "reference": "p1#2",
+        "page": 1,
+        "layout_label": "plain text",
+        "chain_member": false,
+        "source": "Indigenous knowledge has long been ignored, and sometimes even opposed, by science. Now, however, it is receiving renewed interest — and it’s about time: the consequences of global mechanization, along with crises linked to climate change and health issues, are encouraging us to assign new importance to knowledge, practices and expertise that have long been marginalized.",
+        "off1": "土著知识长期以来被科学忽视，有时甚至遭到反对。然而，现在它重新引起了人们的兴趣——这正是时候：全球机械化的后果，以及与气候变化和健康问题相关的危机，促使我们重新重视那些长期被边缘化的知识、实践和专业技能。",
+        "off2": "土著知识长期以来被科学忽视，有时甚至被反对。然而，现在它重新引起了人们的兴趣——这正是时候：全球机械化的后果，以及与气候变化和健康问题相关的危机，促使我们重新重视那些长期被边缘化的知识、实践和专业技能。",
+        "on": "土著知识长期以来被科学忽视，有时甚至受到反对。然而，现在它重新引起了人们的兴趣——这正是时候：全球机械化的后果，以及与气候变化和健康问题相关的危机，促使我们重新重视那些长期被边缘化的知识、实践和专业技能。",
+        "off1_equals_off2": false,
+        "off2_equals_on": false,
+        "batch": {
+          "chain_off_1": [
+            "p1#0",
+            "p1#1",
+            "p1#2",
+            "p1#3",
+            "p1#4"
+          ],
+          "chain_on": [
+            "p1#0",
+            "p1#1",
+            "p1#2",
+            "p1#3",
+            "p1#4"
+          ]
+        },
+        "batch_moved": false,
+        "prompt_moved": true,
+        "gap01_verdict": "sampling_noise",
+        "verdict": "sampling_noise"
+      },
+      {
+        "reference": "p1#3",
+        "page": 1,
+        "layout_label": "plain text",
+        "chain_member": false,
+        "source": "Rooted in the careful observation of ecosystems and passed down orally from generation to generation, this knowledge offers valuable keys to building a sustainable future. It has been gaining increased recognition for several years. The United Nations Declaration on the Rights of Indigenous Peoples, adopted in 2007, affirms the right of these peoples to preserve, control and develop their traditional knowledge.",
+        "off1": "这种知识植根于对生态系统的细致观察，并通过口头方式代代相传，为构建可持续的未来提供了宝贵的钥匙。近年来，它获得了越来越多的认可。2007年通过的《联合国土著人民权利宣言》确认了这些人民有权保留、控制和发展其传统知识。",
+        "off2": "这种知识植根于对生态系统的细致观察，并通过口头方式代代相传，为构建可持续的未来提供了宝贵的钥匙。近年来，它获得了越来越多的认可。2007年通过的《联合国土著人民权利宣言》确认了这些人民保留、控制和发展其传统知识的权利。",
+        "on": "这种知识植根于对生态系统的细致观察，并通过口头方式代代相传，为构建可持续的未来提供了宝贵的钥匙。近年来，它获得了越来越多的认可。2007年通过的《联合国土著人民权利宣言》确认了这些人民保留、控制和发展其传统知识的权利。",
+        "off1_equals_off2": false,
+        "off2_equals_on": true,
+        "batch": {
+          "chain_off_1": [
+            "p1#0",
+            "p1#1",
+            "p1#2",
+            "p1#3",
+            "p1#4"
+          ],
+          "chain_on": [
+            "p1#0",
+            "p1#1",
+            "p1#2",
+            "p1#3",
+            "p1#4"
+          ]
+        },
+        "batch_moved": false,
+        "prompt_moved": true,
+        "gap01_verdict": "sampling_noise",
+        "verdict": "sampling_noise"
+      },
+      {
+        "reference": "p1#4",
+        "page": 1,
+        "layout_label": "plain text",
+        "chain_member": false,
+        "source": "UNESCO has long been a pioneer in this field. Through its Local and Indigenous Knowledge Systems (LINKS) programme, the Organization promotes exchanges between Indigenous knowledge-holders and scientists, particularly in the fields of ecology, water management and natural risk prevention. Biosphere reserves are a concrete example of this approach — they bring together researchers and local communities to develop solutions adapted to specific territories. This is a major shift, as science is no longer seen as a single, top- down form of knowledge, but as a dialogue between knowledge systems. Furthermore, the Convention for the Safeguarding of the Intangible Cultural Heritage protects practices, techniques and skills passed down from generation to generation, recognizing their universal dimension.",
+        "off1": "联合国教科文组织长期以来在这一领域处于先锋地位。通过其地方和土著知识系统（LINKS）计划，该组织促进土著知识持有者与科学家之间的交流，特别是在生态学、水资源管理和自然风险预防领域。生物圈保护区是这一方法的具体例子——它们将研究人员和当地社区聚集在一起，开发适应特定地区的解决方案。这是一个重大转变，因为科学不再被视为单一的、自上而下的知识形式，而是知识系统之间的对话。此外，《保护非物质文化遗产公约》保护代代相传的实践、技术和技能，承认其普遍性。",
+        "off2": "联合国教科文组织长期以来在这一领域处于先锋地位。通过其地方和土著知识系统（LINKS）计划，该组织促进土著知识持有者与科学家之间的交流，特别是在生态学、水资源管理和自然风险预防领域。生物圈保护区是这一方法的具体例子——它们将研究人员和当地社区聚集在一起，开发适合特定地区的解决方案。这是一个重大转变，因为科学不再被视为单一的、自上而下的知识形式，而是知识系统之间的对话。此外，《保护非物质文化遗产公约》保护代代相传的实践、技术和技能，承认其普遍性。",
+        "on": "联合国教科文组织长期以来在这一领域处于先锋地位。通过其地方和土著知识系统 (LINKS) 计划，该组织促进土著知识持有者与科学家之间的交流，特别是在生态学、水管理和自然风险预防领域。生物圈保护区是这一方法的具体例子——它们将研究人员和当地社区聚集在一起，开发适应特定地区的解决方案。这是一个重大转变，因为科学不再被视为单一的自上而下的知识形式，而是知识系统之间的对话。此外，《保护非物质文化遗产公约》保护代代相传的实践、技术和技能，承认其普遍性。",
+        "off1_equals_off2": false,
+        "off2_equals_on": false,
+        "batch": {
+          "chain_off_1": [
+            "p1#0",
+            "p1#1",
+            "p1#2",
+            "p1#3",
+            "p1#4"
+          ],
+          "chain_on": [
+            "p1#0",
+            "p1#1",
+            "p1#2",
+            "p1#3",
+            "p1#4"
+          ]
+        },
+        "batch_moved": false,
+        "prompt_moved": true,
+        "gap01_verdict": "sampling_noise",
+        "verdict": "sampling_noise"
+      },
+      {
+        "reference": "p1#5",
+        "page": 1,
+        "layout_label": "plain text",
+        "chain_member": false,
+        "source": "Beyond providing empirical data, Indigenous knowledge challenges the very foundations of the scientific approach, whether in terms of the place of ethics, the relationship between humans and nature, or the long timeframe of observations. In agriculture, traditional medicine and climatology, this knowledge has already inspired major innovations, which are often more sustainable than purely technological solutions.",
+        "off1": "除了提供实证数据外，土著知识还挑战了科学方法的基础，无论是在伦理的位置、人类与自然的关系，还是观察的长时间框架方面。在农业、传统医学和气候学中，这些知识已经激发了重大创新，往往比纯粹的技术解决方案更具可持续性。",
+        "off2": "除了提供实证数据外，土著知识还挑战了科学方法的基础，无论是在伦理的位置、人类与自然的关系，还是观察的长时间框架方面。在农业、传统医学和气候学中，这些知识已经激发了重大的创新，往往比纯粹的技术解决方案更具可持续性。",
+        "on": "除了提供实证数据外，土著知识还挑战了科学方法的基础，无论是在伦理的位置、人类与自然的关系，还是观察的长时间框架方面。在农业、传统医学和气候学中，这些知识已经激发了重大的创新，往往比纯粹的技术解决方案更具可持续性。",
+        "off1_equals_off2": false,
+        "off2_equals_on": true,
+        "batch": {
+          "chain_off_1": [
+            "p1#10",
+            "p1#11",
+            "p1#5",
+            "p1#6",
+            "p1#8",
+            "p1#9"
+          ],
+          "chain_on": [
+            "p1#10",
+            "p1#11",
+            "p1#5",
+            "p1#6",
+            "p1#8",
+            "p1#9"
+          ]
+        },
+        "batch_moved": false,
+        "prompt_moved": false,
+        "gap01_verdict": "sampling_noise",
+        "verdict": "sampling_noise"
+      },
+      {
+        "reference": "p1#6",
+        "page": 1,
+        "layout_label": "plain text",
+        "chain_member": false,
+        "source": "But this recognition must be accompanied by guarantees — the free and informed consent of communities, equitable sharing of benefits, and protection against abusive appropriation. The objective is not simply to absorb Indigenous knowledge into mainstream science, but to promote cooperation for the benefit of all.",
+        "off1": "但这种认可必须伴随保障措施——社区的自由和知情同意、利益的公平分享以及防止滥用占有的保护。目标不仅仅是将土著知识吸收到主流科学中，而是促进合作，以造福所有人。",
+        "off2": "但这种认可必须伴随着保障措施——社区的自由和知情同意、利益的公平分享以及防止滥用占有的保护。目标不仅仅是将土著知识吸收到主流科学中，而是促进合作，以造福所有人。",
+        "on": "但这种认可必须伴随着保障措施——社区的自由和知情同意、利益的公平分享以及防止滥用占有的保护。目标不仅仅是将土著知识吸收到主流科学中，而是促进合作，以造福所有人。",
+        "off1_equals_off2": false,
+        "off2_equals_on": true,
+        "batch": {
+          "chain_off_1": [
+            "p1#10",
+            "p1#11",
+            "p1#5",
+            "p1#6",
+            "p1#8",
+            "p1#9"
+          ],
+          "chain_on": [
+            "p1#10",
+            "p1#11",
+            "p1#5",
+            "p1#6",
+            "p1#8",
+            "p1#9"
+          ]
+        },
+        "batch_moved": false,
+        "prompt_moved": false,
+        "gap01_verdict": "sampling_noise",
+        "verdict": "sampling_noise"
+      },
+      {
+        "reference": "p1#7",
+        "page": 1,
+        "layout_label": "plain text",
+        "chain_member": false,
+        "source": "By promoting this knowledge, UNESCO is reminding us of the obvious — to understand and preserve the world, we have everything to gain by integrating the knowledge and traditions of all peoples. True science, and the ethics appropriate to our diverse world, are those that make room for all human expressions, in all their diversity.",
+        "off1": "通过推广这些知识，联合国教科文组织提醒我们一个显而易见的道理——要理解和保护这个世界，我们可以通过整合所有民族的知识和传统而获益良多。真正的科学，以及适合我们多元化世界的伦理，是那些为所有人类表达形式留出空间的科学和伦理。",
+        "off2": "通过推广这些知识，联合国教科文组织提醒我们一个显而易见的道理——要理解和保护这个世界，我们可以通过整合所有民族的知识和传统来获得一切。真正的科学以及适合我们多元化世界的伦理，是那些为所有人类表达形式留出空间的科学和伦理。",
+        "on": "通过推广这些知识，联合国教科文组织提醒我们一个显而易见的事实——要理解和保护这个世界，我们可以通过整合所有民族的知识和传统而获益良多。真正的科学，以及适合我们多元化世界的伦理，是那些为所有人类表达形式留出空间的科学和伦理。",
+        "off1_equals_off2": false,
+        "off2_equals_on": false,
+        "batch": {
+          "chain_off_1": [
+            "p1#12",
+            "p1#7"
+          ],
+          "chain_on": [
+            "p1#12",
+            "p1#7"
+          ]
+        },
+        "batch_moved": false,
+        "prompt_moved": false,
+        "gap01_verdict": "sampling_noise",
+        "verdict": "sampling_noise"
+      },
+      {
+        "reference": "p1#16",
+        "page": 1,
+        "layout_label": "plain text",
+        "chain_member": false,
+        "source": "China: the radiant health of traditional Dai medicine .................. 14 Yang Sha and Du Junzhi",
+        "off1": "<style id='1'>中国：传统傣族医学的光辉健康</style><style id='3'>.</style><style id='5'>14</style>Yang Sha和Du Junzhi",
+        "off2": "<style id='1'>中国：传统傣族医学的光辉健康</style><style id='3'>.</style><style id='5'>14</style>Yang Sha和Du Junzhi",
+        "on": "<style id='1'>中国：传统傣族医学的光辉健康</style><style id='3'>.</style><style id='5'>14</style>杨沙和杜俊志",
+        "off1_equals_off2": true,
+        "off2_equals_on": false,
+        "batch": {
+          "chain_off_1": [
+            "p1#13",
+            "p1#14",
+            "p1#15",
+            "p1#16",
+            "p1#17",
+            "p1#18"
+          ],
+          "chain_on": [
+            "p1#13",
+            "p1#14",
+            "p1#15",
+            "p1#16",
+            "p1#17",
+            "p1#18"
+          ]
+        },
+        "batch_moved": false,
+        "prompt_moved": true,
+        "gap01_verdict": "rebatch_effect",
+        "verdict": "run_variance"
+      },
+      {
+        "reference": "p1#27",
+        "page": 1,
+        "layout_label": "plain text",
+        "chain_member": false,
+        "source": "“Fiction is humanity’s last collective frontier in honest storytelling” ........... 40 An interview with Chimamanda Ngozi Adichie",
+        "off1": "<style id='1'>“小说是人类在诚实叙事中的最后集体边界”</style><style id='3'> ........... </style><style id='5'>40</style>与Chimamanda Ngozi Adichie的访谈",
+        "off2": "<style id='1'>“小说是人类在诚实叙事中的最后集体边界”</style><style id='3'> ........... </style><style id='5'>40</style>与Chimamanda Ngozi Adichie的访谈",
+        "on": "<style id='1'>“小说是人类在诚实叙事中的最后集体前沿”</style><style id='3'> ........... </style><style id='5'>40</style>与Chimamanda Ngozi Adichie的访谈",
+        "off1_equals_off2": true,
+        "off2_equals_on": false,
+        "batch": {
+          "chain_off_1": [
+            "p1#26",
+            "p1#27",
+            "p1#28"
+          ],
+          "chain_on": [
+            "p1#26",
+            "p1#27",
+            "p1#28"
+          ]
+        },
+        "batch_moved": false,
+        "prompt_moved": false,
+        "gap01_verdict": "rebatch_effect",
+        "verdict": "run_variance"
+      },
+      {
+        "reference": "p2#3",
+        "page": 2,
+        "layout_label": "title",
+        "chain_member": true,
+        "source": "How Indigenous knowledge drives",
+        "off1": "土著知识如何驱动",
+        "off2": "土著知识如何驱动",
+        "on": "土著知识如何推",
+        "off1_equals_off2": true,
+        "off2_equals_on": false,
+        "batch": {
+          "chain_off_1": [
+            "p2#0",
+            "p2#1",
+            "p2#3",
+            "p2#4",
+            "p2#6",
+            "p2#7"
+          ],
+          "chain_on": []
+        },
+        "batch_moved": true,
+        "prompt_moved": true,
+        "gap01_verdict": "chain_member",
+        "verdict": "chain_member"
+      },
+      {
+        "reference": "p2#4",
+        "page": 2,
+        "layout_label": "figure_caption",
+        "chain_member": false,
+        "source": "Work by Ecuadorian photographer Carolina Zambrano, embroidered with chambira fibres, a palm tree emblematic of Indigenous Amazonian craftsmanship.",
+        "off1": "厄瓜多尔摄影师Carolina Zambrano的作品，采用象征亚马逊土著工艺的棕榈树chambira纤维刺绣而成。",
+        "off2": "厄瓜多尔摄影师Carolina Zambrano的作品，采用象征亚马逊土著工艺的棕榈树chambira纤维刺绣而成。",
+        "on": "由厄瓜多尔摄影师Carolina Zambrano创作，使用chambira纤维刺绣，这是一种象征亚马逊土著工艺的棕榈树材料。",
+        "off1_equals_off2": true,
+        "off2_equals_on": false,
+        "batch": {
+          "chain_off_1": [
+            "p2#0",
+            "p2#1",
+            "p2#3",
+            "p2#4",
+            "p2#6",
+            "p2#7"
+          ],
+          "chain_on": [
+            "p2#0",
+            "p2#1",
+            "p2#4",
+            "p2#6",
+            "p2#7"
+          ]
+        },
+        "batch_moved": true,
+        "prompt_moved": true,
+        "gap01_verdict": "rebatch_effect",
+        "verdict": "rebatch_effect"
+      },
+      {
+        "reference": "p2#5",
+        "page": 2,
+        "layout_label": "plain text",
+        "chain_member": false,
+        "source": "From the Aboriginal practice of controlled burning to prevent wildfires to Inuit weather forecasting, and the zaï techniques used in some African countries to capture water, the world is rich with diverse, proven Indigenous wisdom. This knowledge is particularly valuable in the context of climate change and declining biodiversity.",
+        "off1": "从土著的控制燃烧以防止野火的做法，到因纽特人的天气预报，以及一些非洲国家用于蓄水的<style id='1'>zaï</style>技术，世界上充满了多样且经过验证的土著智慧。在气候变化和生物多样性下降的背景下，这些知识尤为宝贵。",
+        "off2": "从土著的控制燃烧以防止野火的做法，到因纽特人的天气预报，以及一些非洲国家用于蓄水的<style id='1'>zaï</style>技术，世界上充满了多样且经过验证的原住民智慧。在气候变化和生物多样性下降的背景下，这些知识尤为珍贵。",
+        "on": "从土著的控制燃烧以防止野火的做法，到因纽特人的天气预报，以及一些非洲国家用于蓄水的<style id='1'>zaï</style>技术，世界充满了多样且经过验证的原住民智慧。在气候变化和生物多样性下降的背景下，这些知识尤为宝贵。",
+        "off1_equals_off2": false,
+        "off2_equals_on": false,
+        "batch": {
+          "chain_off_1": [
+            "p1#29",
+            "p2#5"
+          ],
+          "chain_on": [
+            "p1#29",
+            "p2#5"
+          ]
+        },
+        "batch_moved": false,
+        "prompt_moved": true,
+        "gap01_verdict": "sampling_noise",
+        "verdict": "sampling_noise"
+      },
+      {
+        "reference": "p2#7",
+        "page": 2,
+        "layout_label": "plain text",
+        "chain_member": false,
+        "source": "Indigenous climate journalist from Samoa reporting for The Guardian on Pacific Island issues, she currently serves as Professor of Pacific Island Studies at Portland State University (United States).",
+        "off1": "来自萨摩亚的土著气候记者，为<style id='1'>卫报</style>报道太平洋岛屿问题，目前在美国波特兰州立大学担任太平洋岛屿研究教授。",
+        "off2": "来自萨摩亚的土著气候记者，为<style id='1'>卫报</style>报道太平洋岛屿问题，目前担任美国波特兰州立大学太平洋岛屿研究教授。",
+        "on": "来自萨摩亚的原住民气候记者，为<style id='1'>卫报</style>报道太平洋岛屿问题，目前担任美国波特兰州立大学太平洋岛屿研究教授。",
+        "off1_equals_off2": false,
+        "off2_equals_on": false,
+        "batch": {
+          "chain_off_1": [
+            "p2#0",
+            "p2#1",
+            "p2#3",
+            "p2#4",
+            "p2#6",
+            "p2#7"
+          ],
+          "chain_on": [
+            "p2#0",
+            "p2#1",
+            "p2#4",
+            "p2#6",
+            "p2#7"
+          ]
+        },
+        "batch_moved": true,
+        "prompt_moved": true,
+        "gap01_verdict": "sampling_noise",
+        "verdict": "sampling_noise"
+      },
+      {
+        "reference": "p3#1",
+        "page": 3,
+        "layout_label": "title",
+        "chain_member": true,
+        "source": "scientific discover y",
+        "off1": "科学发现",
+        "off2": "科学发现",
+        "on": "动科学发现",
+        "off1_equals_off2": true,
+        "off2_equals_on": false,
+        "batch": {
+          "chain_off_1": [
+            "p3#0",
+            "p3#1"
+          ],
+          "chain_on": []
+        },
+        "batch_moved": true,
+        "prompt_moved": true,
+        "gap01_verdict": "chain_member",
+        "verdict": "chain_member"
+      },
+      {
+        "reference": "p4#3",
+        "page": 4,
+        "layout_label": "plain text",
+        "chain_member": false,
+        "source": "L ong before satellites orbited Earth, Polynesian navigators crossed thousands of miles of open ocean by reading stars, swells, bioluminescence, and seabird flight patterns. In the Sahara, Tuareg guides historically travelled by celestial patterns, the sun, wind, and terrain, although their modern navigation now relies more on landmarks and daytime travel. Cognitive science research has revealed that these navigation systems demonstrate sophisticated spatial reasoning through diverse environmental cues, far more integrated than the single-input methods used in laboratory studies.",
+        "off1": "<style id='1'>很 </style>久以前，在卫星绕地球运行之前，波利尼西亚航海家通过观察星星、海浪、生物发光现象和海鸟的飞行模式，穿越了数千英里的开阔海洋。在撒哈拉，图阿雷格向导历史上通过天体模式、太阳、风和地形进行旅行，尽管他们现代的导航更多依赖于地标和白天旅行。认知科学研究揭示了这些导航系统通过多样的环境线索展示了复杂的空间推理，远比实验室研究中使用的单一输入方法更为综合。",
+        "off2": "<style id='1'>很 </style>久以前，在卫星绕地球运行之前，波利尼西亚航海家通过观察星星、海浪、生物荧光和海鸟的飞行模式，穿越了数千英里的开阔海洋。在撒哈拉，图阿雷格向导历史上通过天体模式、太阳、风和地形进行旅行，尽管他们现代的导航现在更多依赖于地标和白天旅行。认知科学研究揭示了这些导航系统通过多样的环境线索展示了复杂的空间推理，远比实验室研究中使用的单一输入方法更为综合。",
+        "on": "<style id='1'>很</style>久以前，在卫星绕地球运行之前，波利尼西亚航海家通过观察星星、海浪、生物荧光和海鸟的飞行模式，穿越了数千英里的开阔海洋。在撒哈拉，图阿雷格向导历史上通过天体模式、太阳、风和地形进行旅行，尽管他们现代的导航现在更多依赖于地标和白天旅行。认知科学研究揭示了这些导航系统通过多样的环境线索展示了复杂的空间推理，远比实验室研究中使用的单一输入方法更为综合。",
+        "off1_equals_off2": false,
+        "off2_equals_on": false,
+        "batch": {
+          "chain_off_1": [
+            "p4#0",
+            "p4#1",
+            "p4#3",
+            "p4#4",
+            "p4#5",
+            "p4#6"
+          ],
+          "chain_on": [
+            "p4#0",
+            "p4#1",
+            "p4#3",
+            "p4#4",
+            "p4#5",
+            "p4#6"
+          ]
+        },
+        "batch_moved": false,
+        "prompt_moved": true,
+        "gap01_verdict": "sampling_noise",
+        "verdict": "sampling_noise"
+      },
+      {
+        "reference": "p4#4",
+        "page": 4,
+        "layout_label": "plain text",
+        "chain_member": false,
+        "source": "There are many more examples of how t",
+        "off1": "还有许多其他例子说明了",
+        "off2": "还有许多其他例子说明",
+        "on": "还有许多其他例子说明",
+        "off1_equals_off2": false,
+        "off2_equals_on": true,
+        "batch": {
+          "chain_off_1": [
+            "p4#0",
+            "p4#1",
+            "p4#3",
+            "p4#4",
+            "p4#5",
+            "p4#6"
+          ],
+          "chain_on": [
+            "p4#0",
+            "p4#1",
+            "p4#3",
+            "p4#4",
+            "p4#5",
+            "p4#6"
+          ]
+        },
+        "batch_moved": false,
+        "prompt_moved": true,
+        "gap01_verdict": "sampling_noise",
+        "verdict": "sampling_noise"
+      },
+      {
+        "reference": "p4#6",
+        "page": 4,
+        "layout_label": "plain text",
+        "chain_member": false,
+        "source": "has proven its worth, in areas as diverse as",
+        "off1": "在各个不同领域中证明了其价值，",
+        "off2": "在各个领域都证明了其价值，",
+        "on": "在各个不同领域中证明了其价值",
+        "off1_equals_off2": false,
+        "off2_equals_on": false,
+        "batch": {
+          "chain_off_1": [
+            "p4#0",
+            "p4#1",
+            "p4#3",
+            "p4#4",
+            "p4#5",
+            "p4#6"
+          ],
+          "chain_on": [
+            "p4#0",
+            "p4#1",
+            "p4#3",
+            "p4#4",
+            "p4#5",
+            "p4#6"
+          ]
+        },
+        "batch_moved": false,
+        "prompt_moved": true,
+        "gap01_verdict": "sampling_noise",
+        "verdict": "sampling_noise"
+      },
+      {
+        "reference": "p4#7",
+        "page": 4,
+        "layout_label": "fallback_line",
+        "chain_member": false,
+        "source": "water management,",
+        "off1": "水资源管理，",
+        "off2": "水资源管理，",
+        "on": "水管理，",
+        "off1_equals_off2": true,
+        "off2_equals_on": false,
+        "batch": {
+          "chain_off_1": [
+            "p4#10",
+            "p4#13",
+            "p4#14",
+            "p4#7",
+            "p4#8",
+            "p4#9"
+          ],
+          "chain_on": [
+            "p4#10",
+            "p4#13",
+            "p4#14",
+            "p4#7",
+            "p4#8",
+            "p4#9"
+          ]
+        },
+        "batch_moved": false,
+        "prompt_moved": true,
+        "gap01_verdict": "rebatch_effect",
+        "verdict": "run_variance"
+      },
+      {
+        "reference": "p4#8",
+        "page": 4,
+        "layout_label": "plain text",
+        "chain_member": false,
+        "source": "agroforestry, health and fishing. Far more than a collection of techniques, these practices are also an expression of a worldview. Textile creation, for instance, has served as another form of navigation, this time in a spiritual sense. The woven skirts of Micronesia’s Outer Islands and the strip-weaving traditions of Ghana and Nigeria map community knowledge and cultural identity into symbolic pattern language.",
+        "off1": "农林业、健康和渔业。这些实践远不止是一系列技术，它们也是一种世界观的表达。例如，纺织品的创作在精神层面上成为另一种形式的导航。密克罗尼西亚外岛的编织裙和加纳及尼日利亚的条纹编织传统将社区知识和文化身份映射到象征性的图案语言中。",
+        "off2": "农林业、健康和渔业。这些实践远不止是一系列技术，它们也是一种世界观的表达。例如，纺织品的创作在精神层面上成为了另一种导航方式。密克罗尼西亚外岛的编织裙和加纳及尼日利亚的条纹编织传统将社区知识和文化身份映射到象征性的图案语言中。",
+        "on": "农林业、健康和渔业。这些实践远不止是一系列技术，它们也是一种世界观的表达。例如，纺织品的创作在精神层面上也起到了导航的作用。密克罗尼西亚外岛的编织裙子以及加纳和尼日利亚的条纹编织传统，将社区知识和文化身份映射到象征性的图案语言中。",
+        "off1_equals_off2": false,
+        "off2_equals_on": false,
+        "batch": {
+          "chain_off_1": [
+            "p4#10",
+            "p4#13",
+            "p4#14",
+            "p4#7",
+            "p4#8",
+            "p4#9"
+          ],
+          "chain_on": [
+            "p4#10",
+            "p4#13",
+            "p4#14",
+            "p4#7",
+            "p4#8",
+            "p4#9"
+          ]
+        },
+        "batch_moved": false,
+        "prompt_moved": true,
+        "gap01_verdict": "sampling_noise",
+        "verdict": "sampling_noise"
+      },
+      {
+        "reference": "p4#14",
+        "page": 4,
+        "layout_label": "plain text",
+        "chain_member": false,
+        "source": "As the climate crisis intensifies and biodiversity collapses, the world turns to the very knowledge systems it once dismissed. According to the United Nations, Indigenous Peoples comprise less than 5 per cent of the global population yet steward lands containing about 80 per cent of Earth’s remaining biodiversity. From their close relationship with the surrounding natural world, they have derived valuable knowledge that merits greater attention.",
+        "off1": "随着气候危机加剧和生物多样性崩溃，世界开始转向曾经被忽视的知识体系。根据联合国的数据，土著人民占全球人口的不到5%，却管理着包含地球约80%剩余生物多样性的土地。通过与周围自然世界的密切关系，他们获得了值得更多关注的宝贵知识。",
+        "off2": "随着气候危机加剧和生物多样性崩溃，世界开始转向曾经被忽视的知识体系。根据联合国的数据，土著人民占全球人口的不到5%，却管理着包含地球约80%剩余生物多样性的土地。通过与周围自然世界的密切关系，他们获得了值得更多关注的宝贵知识。",
+        "on": "随着气候危机加剧和生物多样性崩溃，世界开始转向那些曾经被忽视的知识体系。根据联合国的数据，土著人民占全球人口的不到5%，但他们管理的土地却包含了地球上约80%的剩余生物多样性。通过与周围自然世界的密切关系，他们获得了值得更多关注的宝贵知识。",
+        "off1_equals_off2": true,
+        "off2_equals_on": false,
+        "batch": {
+          "chain_off_1": [
+            "p4#10",
+            "p4#13",
+            "p4#14",
+            "p4#7",
+            "p4#8",
+            "p4#9"
+          ],
+          "chain_on": [
+            "p4#10",
+            "p4#13",
+            "p4#14",
+            "p4#7",
+            "p4#8",
+            "p4#9"
+          ]
+        },
+        "batch_moved": false,
+        "prompt_moved": true,
+        "gap01_verdict": "rebatch_effect",
+        "verdict": "run_variance"
+      },
+      {
+        "reference": "p4#15",
+        "page": 4,
+        "layout_label": "plain text",
+        "chain_member": false,
+        "source": "“We observe nature, our animals and plants. We are the guardians of nature and we possess an enormous amount of knowledge about our environment,” noted Hindou Oumarou Ibrahim, an Indigenous Mbororo leader from Chad and Chair of the 23rd Session of the United Nations Permanent Forum on Indigenous Issues, in April 2024. “This knowledge is not theoretical; it has been tried and tested for centuries.”",
+        "off1": "“我们观察自然，我们的动物和植物。我们是自然的守护者，拥有关于我们环境的大量知识，”乍得的土著Mbororo领导者、联合国土著问题常设论坛第23届会议主席Hindou Oumarou Ibrahim在2024年4月指出。“这些知识不是理论上的；它们经过了几个世纪的实践和检验。”",
+        "off2": "“我们观察自然，我们的动物和植物。我们是自然的守护者，拥有关于我们环境的大量知识，”乍得的土著Mbororo领导人、联合国土著问题常设论坛第23届会议主席Hindou Oumarou Ibrahim在2024年4月指出。“这些知识不是理论上的；它们经过了几个世纪的实践和检验。”",
+        "on": "“我们观察自然，我们的动物和植物。我们是自然的守护者，拥有关于我们环境的大量知识，”乍得的土著姆博罗罗领导人、联合国土著问题常设论坛第23届会议主席Hindou Oumarou Ibrahim在2024年4月指出。“这些知识不是理论上的；它们经过了几个世纪的实践和检验。”",
+        "off1_equals_off2": false,
+        "off2_equals_on": false,
+        "batch": {
+          "chain_off_1": [
+            "p4#15",
+            "p4#16",
+            "p4#17"
+          ],
+          "chain_on": [
+            "p4#15",
+            "p4#16",
+            "p4#17"
+          ]
+        },
+        "batch_moved": false,
+        "prompt_moved": true,
+        "gap01_verdict": "sampling_noise",
+        "verdict": "sampling_noise"
+      },
+      {
+        "reference": "p4#16",
+        "page": 4,
+        "layout_label": "plain text",
+        "chain_member": false,
+        "source": "The accumulated skills and wisdom are not solely passed down mechanically from one generation to the next, but also codified to form complex systems of knowledge, as illustrated by the mastery of textile art in the Pacific and Africa. Pacific weavers understand plant ecology, sail dynamics, and cultural protocol. West African weavers master loom technologies, natural dyes, and symbolic pattern languages. In both regions, knowledge is transmitted through apprenticeship and cultural practice. The textiles themselves become living archives where knowledge resides in the hands, the patterns, and the process.",
+        "off1": "积累的技能和智慧不仅仅是机械地从一代传递到下一代，还被编纂成复杂的知识体系，正如太平洋和非洲的纺织艺术所展示的那样。太平洋的编织者了解植物生态学、航行动力学和文化礼仪。西非的编织者掌握织机技术、天然染料和象征性图案语言。在这两个地区，知识通过学徒制和文化实践进行传递。纺织品本身成为活的档案，知识存在于手中、图案中和工艺过程中。",
+        "off2": "积累的技能和智慧不仅仅是机械地从一代传递到下一代，还被编纂成复杂的知识体系，正如太平洋和非洲的纺织艺术所展示的那样。太平洋的编织者了解植物生态学、航行动力学和文化礼仪。西非的编织者掌握织机技术、天然染料和象征性图案语言。在这两个地区，知识通过学徒制和文化实践传递。纺织品本身成为活的档案，知识存在于手中、图案中和工艺中。",
+        "on": "积累的技能和智慧不仅仅是机械地从一代传递到下一代，还被编纂成复杂的知识体系，如太平洋和非洲的纺织艺术掌握所示。太平洋的编织者了解植物生态学、航行动力学和文化礼仪。西非的编织者精通织机技术、天然染料和象征性图案语言。在这两个地区，知识通过学徒制和文化实践传递。纺织品本身成为活的档案，知识存在于手中、图案中和工艺中。",
+        "off1_equals_off2": false,
+        "off2_equals_on": false,
+        "batch": {
+          "chain_off_1": [
+            "p4#15",
+            "p4#16",
+            "p4#17"
+          ],
+          "chain_on": [
+            "p4#15",
+            "p4#16",
+            "p4#17"
+          ]
+        },
+        "batch_moved": false,
+        "prompt_moved": true,
+        "gap01_verdict": "sampling_noise",
+        "verdict": "sampling_noise"
+      },
+      {
+        "reference": "p4#18",
+        "page": 4,
+        "layout_label": "title",
+        "chain_member": false,
+        "source": "LINKS programme: promoting Indigenous knowledge",
+        "off1": "LINKS计划：推广土著知识",
+        "off2": "LINKS计划：促进土著知识",
+        "on": "LINKS计划：促进土著知识",
+        "off1_equals_off2": false,
+        "off2_equals_on": true,
+        "batch": {
+          "chain_off_1": [
+            "p4#18",
+            "p4#19",
+            "p4#22"
+          ],
+          "chain_on": [
+            "p4#18",
+            "p4#19",
+            "p4#22"
+          ]
+        },
+        "batch_moved": false,
+        "prompt_moved": true,
+        "gap01_verdict": "sampling_noise",
+        "verdict": "sampling_noise"
+      },
+      {
+        "reference": "p4#19",
+        "page": 4,
+        "layout_label": "plain text",
+        "chain_member": false,
+        "source": "Established in 2002, UNESCO’s Local and Indigenous Knowledge Systems (LINKS) programme mobilizes the knowledge, know-how and practices of local communities and Indigenous Peoples to support their inclusion in environmental decision- making, particularly with regard to biodiversity and climate change.",
+        "off1": "联合国教科文组织的地方和土著知识系统（LINKS）计划成立于2002年，旨在动员地方社区和土著人民的知识、技能和实践，以支持他们在环境决策中的参与，特别是在生物多样性和气候变化方面。",
+        "off2": "联合国教科文组织的地方和土著知识系统（LINKS）计划成立于2002年，旨在动员地方社区和土著人民的知识、技能和实践，以支持他们在环境决策中的参与，特别是在生物多样性和气候变化方面。",
+        "on": "联合国教科文组织的地方和土著知识系统 (LINKS) 计划成立于2002年，旨在动员地方社区和土著人民的知识、技能和实践，以支持他们在环境决策中的参与，特别是在生物多样性和气候变化方面。",
+        "off1_equals_off2": true,
+        "off2_equals_on": false,
+        "batch": {
+          "chain_off_1": [
+            "p4#18",
+            "p4#19",
+            "p4#22"
+          ],
+          "chain_on": [
+            "p4#18",
+            "p4#19",
+            "p4#22"
+          ]
+        },
+        "batch_moved": false,
+        "prompt_moved": true,
+        "gap01_verdict": "rebatch_effect",
+        "verdict": "run_variance"
+      },
+      {
+        "reference": "p4#20",
+        "page": 4,
+        "layout_label": "plain text",
+        "chain_member": false,
+        "source": "LINKS aims to build dialogue among Indigenous and local knowledge holders,",
+        "off1": "LINKS旨在建立土著和地方知识持有者之间的对话，",
+        "off2": "LINKS旨在建立原住民和地方知识持有者之间的对话，",
+        "on": "LINKS旨在建立原住民和地方知识持有者之间的对话，",
+        "off1_equals_off2": false,
+        "off2_equals_on": true,
+        "batch": {
+          "chain_off_1": [
+            "p4#20",
+            "p4#21"
+          ],
+          "chain_on": [
+            "p4#20",
+            "p4#21"
+          ]
+        },
+        "batch_moved": false,
+        "prompt_moved": true,
+        "gap01_verdict": "sampling_noise",
+        "verdict": "sampling_noise"
+      },
+      {
+        "reference": "p4#21",
+        "page": 4,
+        "layout_label": "plain text",
+        "chain_member": false,
+        "source": "natural and social scientists, resource managers and decision-makers to secure an active and equitable role for local communities in governance. The programme aims to strengthen knowledge transmission of elders’ knowledge, and to find a balance between community- based knowledge and global knowledge in formal science.",
+        "off1": "自然和社会科学家、资源管理者和决策者，以确保地方社区在治理中发挥积极和公平的作用。该项目旨在加强长者知识的传承，并在正式科学中找到社区知识与全球知识之间的平衡。",
+        "off2": "自然和社会科学家、资源管理者和决策者，以确保地方社区在治理中发挥积极和公平的作用。该计划旨在加强长者知识的传承，并在正式科学中找到社区知识与全球知识之间的平衡。",
+        "on": "自然和社会科学家、资源管理者和决策者，以确保地方社区在治理中发挥积极和公平的作用。该计划旨在加强长者知识的传承，并在社区知识与全球知识之间找到平衡，以融入正式科学中。",
+        "off1_equals_off2": false,
+        "off2_equals_on": false,
+        "batch": {
+          "chain_off_1": [
+            "p4#20",
+            "p4#21"
+          ],
+          "chain_on": [
+            "p4#20",
+            "p4#21"
+          ]
+        },
+        "batch_moved": false,
+        "prompt_moved": true,
+        "gap01_verdict": "sampling_noise",
+        "verdict": "sampling_noise"
+      },
+      {
+        "reference": "p4#22",
+        "page": 4,
+        "layout_label": "plain text",
+        "chain_member": false,
+        "source": "Among other roles, the LINKS programme currently hosts the Indigenous and",
+        "off1": "LINKS计划目前还承担着其他角色，其中包括主办土著和",
+        "off2": "LINKS计划目前还承担其他角色，其中包括主办土著和",
+        "on": "LINKS计划目前在其他角色中还负责土著和",
+        "off1_equals_off2": false,
+        "off2_equals_on": false,
+        "batch": {
+          "chain_off_1": [
+            "p4#18",
+            "p4#19",
+            "p4#22"
+          ],
+          "chain_on": [
+            "p4#18",
+            "p4#19",
+            "p4#22"
+          ]
+        },
+        "batch_moved": false,
+        "prompt_moved": true,
+        "gap01_verdict": "sampling_noise",
+        "verdict": "sampling_noise"
+      },
+      {
+        "reference": "p5#1",
+        "page": 5,
+        "layout_label": "plain text",
+        "chain_member": false,
+        "source": "in any scientific textbook: “We are the people of the water, the only ones who truly live within it.” When the population of pirarucus, the world’s largest freshwater fish, fell to just 266 adult specimens in 2009, the Paumari faced an existential threat.",
+        "off1": "在任何科学教科书中：“我们是水中的人，是唯一真正生活在其中的人。” 当世界上最大的淡水鱼——巨骨舌鱼的数量在2009年下降到仅266只成鱼时，保马里族面临生存威胁。",
+        "off2": "在任何科学教科书中：“我们是水中的人，是唯一真正生活在其中的人。” 当世界上最大的淡水鱼——巨骨舌鱼的数量在2009年下降到仅266只成鱼时，保马里族面临生存威胁。",
+        "on": "在任何科学教科书中：“我们是水中的人，是唯一真正生活在其中的人。” 当世界上最大的淡水鱼——巨骨舌鱼的数量在2009年下降到仅266只成年个体时，保马里族面临着生存威胁。",
+        "off1_equals_off2": true,
+        "off2_equals_on": false,
+        "batch": {
+          "chain_off_1": [
+            "p4#23",
+            "p5#1"
+          ],
+          "chain_on": [
+            "p4#23",
+            "p5#1"
+          ]
+        },
+        "batch_moved": false,
+        "prompt_moved": true,
+        "gap01_verdict": "rebatch_effect",
+        "verdict": "run_variance"
+      },
+      {
+        "reference": "p5#4",
+        "page": 5,
+        "layout_label": "plain text",
+        "chain_member": false,
+        "source": "Dawn gives off an odour of ferrous humidity mingled with brazier smoke. The Paumari, an Indigenous people of about two thousand souls living in the vast region of Amazonas state in the north-west of the country, have a way of defining themselves that can’t be found",
+        "off1": "黎明散发出一种铁锈般的潮湿气味，夹杂着火盆的烟雾。保马里族是一个约有两千人的土著民族，生活在该国西北部亚马孙州的广袤地区，他们有一种独特的自我定义方式，这种方式在其他地方找不到。",
+        "off2": "黎明散发出一种铁锈般的潮湿气味，夹杂着火盆的烟雾。保马里族是一个约有两千人的土著民族，生活在该国西北部广袤的亚马孙州，他们有一种独特的自我定义方式，这种方式无法在其他地方找到。",
+        "on": "黎明散发着铁锈般的潮湿气味，夹杂着火盆的烟雾。保马里族是一个约有两千人的土著民族，生活在该国西北部亚马孙州的广袤地区，他们有一种独特的自我定义方式，这种方式无法在其他地方找到。",
+        "off1_equals_off2": false,
+        "off2_equals_on": false,
+        "batch": {
+          "chain_off_1": [
+            "p5#4",
+            "p5#5"
+          ],
+          "chain_on": [
+            "p5#4",
+            "p5#5"
+          ]
+        },
+        "batch_moved": false,
+        "prompt_moved": false,
+        "gap01_verdict": "sampling_noise",
+        "verdict": "sampling_noise"
+      },
+      {
+        "reference": "p5#5",
+        "page": 5,
+        "layout_label": "plain text",
+        "chain_member": false,
+        "source": "O n the Purus River, as the light fades and the heat lingers over the water, a pirarucu fish comes to the surface to gulp some air. This sound — deep, damp, ancestral — revives a pulse that this land had almost lost. “Nature was begging for our help,” recalls Chico Paumari, a young fisherman. “We would arrive at the lake to find there was nothing left. It was",
+        "off1": "<style id='1'>在</style>普鲁斯河上，当光线渐渐消退，热气仍在水面上徘徊时，一条巨骨舌鱼浮出水面，吸了一口气。这个声音——深沉、潮湿、古老——唤醒了这片土地几乎失去的脉动。“大自然在向我们求助，”年轻渔夫奇科·保马里回忆道。“我们到达湖边时，发现什么都没有了。",
+        "off2": "<style id='1'>在</style>普鲁斯河上，当光线渐渐消退，热气仍在水面上徘徊时，一条巨骨舌鱼浮出水面，吸了一口空气。这种声音——深沉、潮湿、古老——唤醒了这片土地几乎失去的脉动。“大自然在向我们求助，”年轻渔夫奇科·保马里回忆道。“我们到达湖边时，发现什么都没有了。",
+        "on": "<style id='1'>在</style>普鲁斯河上，光线渐渐消退，热气仍然笼罩着水面，一条巨骨舌鱼浮出水面，喘口气。这种声音——深沉、潮湿、古老——唤醒了这片土地几乎失去的脉动。“大自然在向我们求助，”年轻渔夫奇科·保马里回忆道。“我们到达湖边时，发现什么都没有了。",
+        "off1_equals_off2": false,
+        "off2_equals_on": false,
+        "batch": {
+          "chain_off_1": [
+            "p5#4",
+            "p5#5"
+          ],
+          "chain_on": [
+            "p5#4",
+            "p5#5"
+          ]
+        },
+        "batch_moved": false,
+        "prompt_moved": false,
+        "gap01_verdict": "sampling_noise",
+        "verdict": "sampling_noise"
+      },
+      {
+        "reference": "p5#7",
+        "page": 5,
+        "layout_label": "plain text",
+        "chain_member": false,
+        "source": "Faced with a dramatic decline in pirarucu, a fish that is essential to their survival, the Paumari people of Amazonas state took part in a programme to restore the species, combining scientific and traditional knowledge. After a few years, the fish are once again populating the Purus River.",
+        "off1": "面对对其生存至关重要的鱼类——巨骨舌鱼数量急剧下降的情况，亚马孙州的保马里族参与了一项结合科学与传统知识的项目，以恢复这一物种。几年后，这些鱼再次在普鲁斯河中繁衍生息。",
+        "off2": "面对对其生存至关重要的鱼类——巨骨舌鱼数量急剧下降的情况，亚马孙州的保马里族参与了一项结合科学与传统知识的物种恢复计划。几年后，这种鱼再次在普鲁斯河中繁衍生息。",
+        "on": "面对对其生存至关重要的鱼类——巨骨舌鱼数量的急剧下降，亚马孙州的保马里族参与了一项结合科学与传统知识的项目，以恢复这一物种。经过几年的努力，这种鱼再次在普鲁斯河中繁衍生息。",
+        "off1_equals_off2": false,
+        "off2_equals_on": false,
+        "batch": {
+          "chain_off_1": [
+            "p5#7",
+            "p6#3"
+          ],
+          "chain_on": [
+            "p5#7",
+            "p6#3"
+          ]
+        },
+        "batch_moved": false,
+        "prompt_moved": false,
+        "gap01_verdict": "sampling_noise",
+        "verdict": "sampling_noise"
+      },
+      {
+        "reference": "p6#0",
+        "page": 6,
+        "layout_label": "abandon",
+        "chain_member": false,
+        "source": "| The UNESCO Courier • January-March 2026",
+        "off1": "{v1}联合国教科文组织《信使》{v2}<style id='3'>2026年1月至3月</style>",
+        "off2": "{v1}联合国教科文组织《信使》{v2}<style id='3'>2026年1月至3月</style>",
+        "on": "{v1}联合国教科文组织《信使》 {v2}<style id='3'>2026年1月至3月</style>",
+        "off1_equals_off2": true,
+        "off2_equals_on": false,
+        "batch": {
+          "chain_off_1": [
+            "p6#0",
+            "p6#1",
+            "p6#11",
+            "p6#13",
+            "p6#6",
+            "p6#7"
+          ],
+          "chain_on": [
+            "p6#0",
+            "p6#1",
+            "p6#11",
+            "p6#13",
+            "p6#6",
+            "p6#7"
+          ]
+        },
+        "batch_moved": false,
+        "prompt_moved": true,
+        "gap01_verdict": "rebatch_effect",
+        "verdict": "run_variance"
+      },
+      {
+        "reference": "p6#1",
+        "page": 6,
+        "layout_label": "abandon",
+        "chain_member": false,
+        "source": "IDEAS",
+        "off1": "IDEAS",
+        "off2": "理念",
+        "on": "理念",
+        "off1_equals_off2": false,
+        "off2_equals_on": true,
+        "batch": {
+          "chain_off_1": [
+            "p6#0",
+            "p6#1",
+            "p6#11",
+            "p6#13",
+            "p6#6",
+            "p6#7"
+          ],
+          "chain_on": [
+            "p6#0",
+            "p6#1",
+            "p6#11",
+            "p6#13",
+            "p6#6",
+            "p6#7"
+          ]
+        },
+        "batch_moved": false,
+        "prompt_moved": true,
+        "gap01_verdict": "sampling_noise",
+        "verdict": "sampling_noise"
+      },
+      {
+        "reference": "p6#3",
+        "page": 6,
+        "layout_label": "plain text",
+        "chain_member": false,
+        "source": "still for a lengthy period inside a noisy, claustrophobic machine.",
+        "off1": "在一个嘈杂、令人感到幽闭的机器内长时间保持静止。",
+        "off2": "在一个嘈杂、令人感到幽闭的机器内长时间保持静止。",
+        "on": "在一个嘈杂、令人感到幽闭恐惧的机器内长时间保持静止。",
+        "off1_equals_off2": true,
+        "off2_equals_on": false,
+        "batch": {
+          "chain_off_1": [
+            "p5#7",
+            "p6#3"
+          ],
+          "chain_on": [
+            "p5#7",
+            "p6#3"
+          ]
+        },
+        "batch_moved": false,
+        "prompt_moved": false,
+        "gap01_verdict": "rebatch_effect",
+        "verdict": "run_variance"
+      },
+      {
+        "reference": "p6#5",
+        "page": 6,
+        "layout_label": "plain text",
+        "chain_member": false,
+        "source": "down in the quantum realm is constantly getting entangled and unentangled with everything else, all the time. The new quantum revolution, which involves technologies that make direct use of quantum superposition and entanglement, is already well underway and will without doubt transform our world.",
+        "off1": "在量子领域中不断与其他一切纠缠和解纠缠。涉及直接利用量子叠加和纠缠的技术的新量子革命已经在进行中，毫无疑问将会改变我们的世界。",
+        "off2": "在量子领域中不断与其他一切纠缠和解纠缠。涉及直接利用量子叠加和纠缠的技术的新量子革命已经在进行中，毫无疑问将会改变我们的世界。",
+        "on": "在量子领域中不断与其他事物纠缠和解纠缠。涉及直接利用量子叠加和纠缠的技术的新量子革命已经在稳步进行中，毫无疑问将会改变我们的世界。",
+        "off1_equals_off2": true,
+        "off2_equals_on": false,
+        "batch": {
+          "chain_off_1": [
+            "p6#4",
+            "p6#5"
+          ],
+          "chain_on": [
+            "p6#4",
+            "p6#5"
+          ]
+        },
+        "batch_moved": false,
+        "prompt_moved": false,
+        "gap01_verdict": "rebatch_effect",
+        "verdict": "run_variance"
+      },
+      {
+        "reference": "p6#6",
+        "page": 6,
+        "layout_label": "title",
+        "chain_member": false,
+        "source": "Sensors reading our thoughts",
+        "off1": "传感器读取我们的思想",
+        "off2": "读取我们思想的传感器",
+        "on": "读取我们思想的传感器",
+        "off1_equals_off2": false,
+        "off2_equals_on": true,
+        "batch": {
+          "chain_off_1": [
+            "p6#0",
+            "p6#1",
+            "p6#11",
+            "p6#13",
+            "p6#6",
+            "p6#7"
+          ],
+          "chain_on": [
+            "p6#0",
+            "p6#1",
+            "p6#11",
+            "p6#13",
+            "p6#6",
+            "p6#7"
+          ]
+        },
+        "batch_moved": false,
+        "prompt_moved": true,
+        "gap01_verdict": "sampling_noise",
+        "verdict": "sampling_noise"
+      },
+      {
+        "reference": "p6#7",
+        "page": 6,
+        "layout_label": "plain text",
+        "chain_member": false,
+        "source": "One such technology is quantum sensing. We now have quantum devices that can sense changes in Earth’s gravity to one part in a billion and which can help in studying the Earth’s climate as well as having many practical uses in the construction industry. Quantum sensors are even being developed to hunt for dark matter, the illusive invisible substance that holds galaxies together.",
+        "off1": "其中一种技术是量子传感。我们现在拥有可以检测地球重力变化到十亿分之一的量子设备，这不仅有助于研究地球气候，还在建筑行业中有许多实际应用。量子传感器甚至正在被开发用于寻找暗物质，这种神秘的不可见物质维系着星系的存在。",
+        "off2": "其中一项技术是量子传感。我们现在拥有可以感知地球重力变化至十亿分之一的量子设备，这不仅有助于研究地球气候，还在建筑行业中有许多实际应用。量子传感器甚至正在被开发用于寻找暗物质，这种神秘的不可见物质维系着星系的存在。",
+        "on": "其中一种技术是量子传感。我们现在拥有可以感知地球重力变化到十亿分之一的量子设备，这不仅有助于研究地球气候，还在建筑行业中有许多实际应用。量子传感器甚至正在被开发用于寻找暗物质，这种神秘的不可见物质维系着星系的存在。",
+        "off1_equals_off2": false,
+        "off2_equals_on": false,
+        "batch": {
+          "chain_off_1": [
+            "p6#0",
+            "p6#1",
+            "p6#11",
+            "p6#13",
+            "p6#6",
+            "p6#7"
+          ],
+          "chain_on": [
+            "p6#0",
+            "p6#1",
+            "p6#11",
+            "p6#13",
+            "p6#6",
+            "p6#7"
+          ]
+        },
+        "batch_moved": false,
+        "prompt_moved": true,
+        "gap01_verdict": "sampling_noise",
+        "verdict": "sampling_noise"
+      },
+      {
+        "reference": "p6#8",
+        "page": 6,
+        "layout_label": "plain text",
+        "chain_member": false,
+        "source": "There are even quantum sensors that can read your thoughts. A special brain scanner that can be worn like a cycle helmet is so sensitive it can detect the electrical firing of individual neurons inside a patient’s brain, enabling researchers to “see” brain processes in real time. This device is already proving useful in analyzing a range of neurological disorders such as autism, epilepsy, dementia, and schizophrenia and is far less intrusive than other established imaging techniques like functional MRI where the patient has to lie very",
+        "off1": "甚至有一些量子传感器可以读取你的想法。一种特殊的脑扫描仪可以像自行车头盔一样佩戴，其灵敏度极高，能够检测到患者大脑内单个神经元的电活动，使研究人员能够实时“观察”大脑过程。该设备在分析自闭症、癫痫、痴呆和精神分裂症等多种神经系统疾病方面已经显示出有用性，并且比其他已建立的成像技术（如功能性磁共振成像）对患者的侵入性要小得多，因为后者需要患者躺得非常",
+        "off2": "甚至还有能够读取你思想的量子传感器。一种可以像自行车头盔一样佩戴的特殊脑扫描仪，其灵敏度高到可以检测到患者大脑内单个神经元的电活动，使研究人员能够实时“观察”大脑过程。该设备在分析自闭症、癫痫、痴呆和精神分裂症等一系列神经系统疾病方面已经证明了其有用性，并且比其他需要患者平躺的成像技术如功能性磁共振成像要少得多的侵入性。",
+        "on": "甚至有量子传感器可以读取你的想法。一种特殊的脑扫描仪，可以像自行车头盔一样佩戴，其灵敏度极高，能够检测到患者大脑中单个神经元的电活动，使研究人员能够实时“观察”大脑过程。该设备在分析自闭症、癫痫、痴呆和精神分裂症等多种神经系统疾病方面已经显示出有用性，并且比其他已建立的成像技术（如功能性磁共振成像）对患者的侵入性要小得多，因为后者需要患者躺得非常",
+        "off1_equals_off2": false,
+        "off2_equals_on": false,
+        "batch": {
+          "chain_off_1": [
+            "p6#8",
+            "p6#9"
+          ],
+          "chain_on": [
+            "p6#8",
+            "p6#9"
+          ]
+        },
+        "batch_moved": false,
+        "prompt_moved": false,
+        "gap01_verdict": "sampling_noise",
+        "verdict": "sampling_noise"
+      },
+      {
+        "reference": "p6#9",
+        "page": 6,
+        "layout_label": "plain text",
+        "chain_member": false,
+        "source": "having a range of values simultaneously, such as being spread out in space or spinning in two directions at once. Only when we choose to measure them do we force them to decide on one of the many options in which they were co-existing. When two or more particles join forces they can become quantum “entangled”.",
+        "off1": "同时具有多个数值范围，例如在空间中扩散或同时向两个方向旋转。只有当我们选择测量它们时，才迫使它们在共存的多个选项中决定一个。当两个或多个粒子联合时，它们可以变得量子“纠缠”。",
+        "off2": "同时具有一系列数值，例如在空间中扩散或同时向两个方向旋转。只有当我们选择测量它们时，才迫使它们在共存的多个选项中决定一个。当两个或多个粒子联合时，它们可以变得量子“纠缠”。",
+        "on": "同时具有多个值，例如在空间中扩展开来或同时向两个方向旋转。只有当我们选择测量它们时，才迫使它们在共存的多个选项中决定一个。当两个或多个粒子联合时，它们可以变得量子“纠缠”。",
+        "off1_equals_off2": false,
+        "off2_equals_on": false,
+        "batch": {
+          "chain_off_1": [
+            "p6#8",
+            "p6#9"
+          ],
+          "chain_on": [
+            "p6#8",
+            "p6#9"
+          ]
+        },
+        "batch_moved": false,
+        "prompt_moved": false,
+        "gap01_verdict": "sampling_noise",
+        "verdict": "sampling_noise"
+      },
+      {
+        "reference": "p6#10",
+        "page": 6,
+        "layout_label": "plain text",
+        "chain_member": false,
+        "source": "This quantum entanglement is far from being a novel phenomenon that only happens rarely in nature, nor is it restricted to a “spooky” telepathic connection between two separated particles. Rather, it is one of the most, if not the most, prevalent process in the entire Universe. Everything everywhere",
+        "off1": "这种量子纠缠远非自然界中罕见的新现象，也不仅限于两个分离粒子之间“诡异”的心灵感应连接。相反，它是整个宇宙中最普遍的过程之一，甚至可以说是最普遍的过程。无处不在的每一件事",
+        "off2": "这种量子纠缠远非自然界中罕见的新现象，也不仅限于两个分离粒子之间“诡异”的心灵感应连接。相反，它是整个宇宙中最普遍的过程之一，甚至可以说是最普遍的过程。无论何地的一切",
+        "on": "这种量子纠缠远非自然界中罕见的新现象，也不仅限于两个分离粒子之间“神秘”的心灵感应连接。相反，它是整个宇宙中最普遍的过程之一，甚至可以说是最普遍的过程。无处不在的每一件事",
+        "off1_equals_off2": false,
+        "off2_equals_on": false,
+        "batch": {
+          "chain_off_1": [
+            "p6#10",
+            "p6#12"
+          ],
+          "chain_on": [
+            "p6#10",
+            "p6#12"
+          ]
+        },
+        "batch_moved": false,
+        "prompt_moved": true,
+        "gap01_verdict": "sampling_noise",
+        "verdict": "sampling_noise"
+      },
+      {
+        "reference": "p6#11",
+        "page": 6,
+        "layout_label": "title",
+        "chain_member": false,
+        "source": "The 2025 international year of quantum",
+        "off1": "2025国际量子年",
+        "off2": "2025国际量子年",
+        "on": "2025年国际量子年",
+        "off1_equals_off2": true,
+        "off2_equals_on": false,
+        "batch": {
+          "chain_off_1": [
+            "p6#0",
+            "p6#1",
+            "p6#11",
+            "p6#13",
+            "p6#6",
+            "p6#7"
+          ],
+          "chain_on": [
+            "p6#0",
+            "p6#1",
+            "p6#11",
+            "p6#13",
+            "p6#6",
+            "p6#7"
+          ]
+        },
+        "batch_moved": false,
+        "prompt_moved": true,
+        "gap01_verdict": "rebatch_effect",
+        "verdict": "run_variance"
+      },
+      {
+        "reference": "p6#13",
+        "page": 6,
+        "layout_label": "plain text",
+        "chain_member": false,
+        "source": "Throughout the year, scientists, educators, and citizens worldwide were invited to explore and celebrate quantum innovations. Global events elevated public awareness and fostered collaboration, highlighting quantum science’s potential for sustainable solutions. UNESCO spearheaded efforts for inclusive development and universal access to quantum science’s benefits. Focus areas included building capacity in the Global South, advancing gender equality in science, technology, engineering and mathematics (STEM), and tackling the growing quantum divide.",
+        "off1": "在这一年中，全球的科学家、教育者和公民被邀请探索和庆祝量子创新。全球活动提升了公众意识并促进了合作，突显了量子科学在可持续解决方案中的潜力。联合国教科文组织带头推动包容性发展和普遍获取量子科学的利益。重点领域包括在全球南方建立能力、推进科学、技术、工程和数学（STEM）领域的性别平等，以及应对日益扩大的量子鸿沟。",
+        "off2": "在这一年中，全球的科学家、教育者和公民被邀请探索和庆祝量子创新。全球活动提升了公众意识并促进了合作，突显了量子科学在可持续解决方案中的潜力。联合国教科文组织带头推动包容性发展和普遍获取量子科学的利益。重点领域包括在全球南方建立能力、推进科学、技术、工程和数学（STEM）领域的性别平等，以及应对日益扩大的量子鸿沟。",
+        "on": "在这一年中，全球的科学家、教育工作者和公民被邀请探索和庆祝量子创新。全球活动提升了公众意识并促进了合作，突显了量子科学在可持续解决方案中的潜力。联合国教科文组织带头推动包容性发展和普遍获取量子科学的利益。重点领域包括在全球南方建立能力、在科学、技术、工程和数学（STEM）领域推进性别平等，以及应对日益扩大的量子鸿沟。",
+        "off1_equals_off2": true,
+        "off2_equals_on": false,
+        "batch": {
+          "chain_off_1": [
+            "p6#0",
+            "p6#1",
+            "p6#11",
+            "p6#13",
+            "p6#6",
+            "p6#7"
+          ],
+          "chain_on": [
+            "p6#0",
+            "p6#1",
+            "p6#11",
+            "p6#13",
+            "p6#6",
+            "p6#7"
+          ]
+        },
+        "batch_moved": false,
+        "prompt_moved": true,
+        "gap01_verdict": "rebatch_effect",
+        "verdict": "run_variance"
+      },
+      {
+        "reference": "p7#3",
+        "page": 7,
+        "layout_label": "plain text",
+        "chain_member": false,
+        "source": "Oil produced from the nuts of the Moroccan argan tree (Argania spinosa L.) provides another example. Argan oil is now used in hair and skin care products around the world for essentially the same purposes for which Amazigh (or Berber) women used it for over 1,000 years. While some major international companies with relevant patents selling argan-based products have set up benefit-sharing agreements with Amazigh women’s cooperatives, others appear never to have shared benefits with Amazigh communities.",
+        "off1": "由摩洛哥阿甘树（<style id='1'>阿甘树</style>）的坚果生产的油提供了另一个例子。阿甘油现在被用于全球的护发和护肤产品中，其用途与柏柏尔（或柏柏尔）妇女在过去1000多年中使用的目的基本相同。虽然一些拥有相关专利的国际大公司在销售基于阿甘的产品时，与柏柏尔妇女合作社建立了利益共享协议，但其他公司似乎从未与柏柏尔社区分享过利益。",
+        "off2": "由摩洛哥阿甘树（<style id='1'>阿甘树</style>）的坚果生产的油提供了另一个例子。阿甘油现在被用于全球的护发和护肤产品中，其用途与柏柏尔（或柏柏尔）妇女在一千多年前使用的用途基本相同。虽然一些拥有相关专利的国际大公司在销售基于阿甘的产品时，与柏柏尔妇女合作社建立了利益共享协议，但其他公司似乎从未与柏柏尔社区分享过利益。",
+        "on": "由摩洛哥阿甘树（<style id='1'>阿甘树</style>）的坚果生产的油提供了另一个例子。阿甘油现在被用于全球的护发和护肤产品中，其用途与柏柏尔（或柏柏尔）妇女在一千多年前使用它的目的基本相同。虽然一些拥有相关专利的国际大公司在销售基于阿甘的产品时，与柏柏尔妇女合作社建立了利益共享协议，但其他公司似乎从未与柏柏尔社区分享过利益。",
+        "off1_equals_off2": false,
+        "off2_equals_on": false,
+        "batch": {
+          "chain_off_1": [
+            "p6#14",
+            "p7#3"
+          ],
+          "chain_on": [
+            "p6#14",
+            "p7#3"
+          ]
+        },
+        "batch_moved": false,
+        "prompt_moved": false,
+        "gap01_verdict": "sampling_noise",
+        "verdict": "sampling_noise"
+      },
+      {
+        "reference": "p7#4",
+        "page": 7,
+        "layout_label": "plain text",
+        "chain_member": true,
+        "source": "Not all commercial use of Indigenous knowledge linked to genetic resources constitutes biopiracy; some projects are mutually beneficial. For instance, the Indjalandji-Dhidhanu people in Australia have worked with researchers at the University of Queensland to build upon their Indigenous knowledge of spinifex, a hardy perennial tussock grass tradition- ally used for a variety of purposes. The collaborative research agreement includes provisions for benefit sharing. A spinoff company is now developing medical gels from cellulose nanofibers extracted from spinifex, and a composite material from",
+        "off1": "并非所有与遗传资源相关的土著知识的商业使用都构成生物盗窃；有些项目是互惠互利的。例如，澳大利亚的Indjalandji-Dhidhanu人就与昆士兰大学的研究人员合作，基于他们对针茅的土著知识进行研究，这种耐旱的多年生丛生草传统上用于多种用途。该合作研究协议包括利益分享的条款。一家衍生公司现在正在开发从针茅中提取的纤维素纳米纤维制成的医用凝胶，以及一种复合材料。",
+        "off2": "并非所有与遗传资源相关的土著知识的商业使用都构成生物盗窃；有些项目是互惠互利的。例如，澳大利亚的Indjalandji-Dhidhanu人就与昆士兰大学的研究人员合作，基于他们对传统上用于多种用途的耐旱多年生丛生草——针茅的土著知识进行研究。该合作研究协议包括利益分享的条款。一家衍生公司现在正在开发从针茅中提取的纤维素纳米纤维制成的医用凝胶，以及一种复合材料。",
+        "on": "并非所有与遗传资源相关的土著知识的商业使用都构成生物盗窃；有些项目是互利的。例如，澳大利亚的Indjalandji-Dhidhanu人就与昆士兰大学的研究人员合作，基于他们对传统上用于多种用途的耐旱多年生丛生草——针茅的土著知识进行研究。该合作研究协议包括利益分享的条款。现在，一家衍生公司正在开发从针茅中提取的纤维素纳米纤维制成的医用凝胶，并已为这种草的复合材料申请了专利。",
+        "off1_equals_off2": false,
+        "off2_equals_on": false,
+        "batch": {
+          "chain_off_1": [
+            "p7#4",
+            "p7#5"
+          ],
+          "chain_on": []
+        },
+        "batch_moved": true,
+        "prompt_moved": true,
+        "gap01_verdict": "chain_member",
+        "verdict": "chain_member"
+      },
+      {
+        "reference": "p7#5",
+        "page": 7,
+        "layout_label": "plain text",
+        "chain_member": false,
+        "source": "However, there is criticism against biodiscovery as “free riding” on knowledge developed by Indigenous and other local peoples. When the role of their knowledge is not sufficiently recognized in scientific investigation, product development, or commercialization, and where the users of this knowledge do not appropriately share benefits with ancestral knowledge holders, it can be called “biopiracy”.",
+        "off1": "然而，生物发现被批评为在土著和其他地方人民开发的知识上“搭便车”。当他们的知识在科学研究、产品开发或商业化过程中没有得到充分认可，而这些知识的使用者又没有适当地与祖传知识持有者分享利益时，这就可以被称为“生物盗窃”。",
+        "off2": "然而，生物发现被批评为对土著和其他地方人民开发的知识的“搭便车”。当他们的知识在科学研究、产品开发或商业化过程中没有得到充分认可，并且这些知识的使用者没有适当地与祖传知识持有者分享利益时，这可以被称为“生物盗窃”。",
+        "on": "然而，生物发现被批评为对土著和其他地方人民所发展的知识的“搭便车”。当他们的知识在科学研究、产品开发或商业化中未得到充分认可，并且这些知识的使用者未能适当地与祖传知识持有者分享利益时，这种行为可以被称为“生物盗窃”。",
+        "off1_equals_off2": false,
+        "off2_equals_on": false,
+        "batch": {
+          "chain_off_1": [
+            "p7#4",
+            "p7#5"
+          ],
+          "chain_on": [
+            "p7#0",
+            "p7#1",
+            "p7#11",
+            "p7#5",
+            "p7#6",
+            "p7#9"
+          ]
+        },
+        "batch_moved": true,
+        "prompt_moved": true,
+        "gap01_verdict": "sampling_noise",
+        "verdict": "sampling_noise"
+      },
+      {
+        "reference": "p7#7",
+        "page": 7,
+        "layout_label": "plain text",
+        "chain_member": false,
+        "source": "The case of the kava (Piper methysticum), a plant in the pepper family that is native to the Pacific, appears to be a prime example of misappropriation of knowledge developed by Indigenous and local communities. Kava has attracted hundreds of patent applications, many of which relate to its anti-anxiety and sedative effects, long known to Pacific peoples. Despite this massive interest, there are no known agreements today for securing permission or implementing benefit-sharing for research and patent claims.",
+        "off1": "卡瓦（<style id='1'>醉椒</style>）是一种原产于太平洋的胡椒科植物，其案例似乎是土著和当地社区开发知识被不当利用的典型例子。卡瓦吸引了数百项专利申请，其中许多与其抗焦虑和镇静效果有关，这些效果早已为太平洋人民所知。尽管对此有极大的兴趣，但目前尚无已知协议来确保研究和专利申请的许可或实施利益分享。",
+        "off2": "卡瓦（<style id='1'>醉椒</style>）是一种原产于太平洋的胡椒科植物，其案例似乎是土著和当地社区开发知识被不当利用的典型例子。卡瓦吸引了数百项专利申请，其中许多与其抗焦虑和镇静效果有关，这些效果早已为太平洋人民所知。尽管有如此巨大的兴趣，但目前尚无已知协议来确保研究和专利申请的许可或实施利益分享。",
+        "on": "卡瓦（<style id='1'>醉椒</style>）是一种原产于太平洋的胡椒科植物，其案例似乎是土著和当地社区开发知识被不当利用的典型例子。卡瓦吸引了数百项专利申请，其中许多与其抗焦虑和镇静效果有关，这些效果早已为太平洋人民所知。尽管有如此巨大的兴趣，但目前尚无已知协议来确保研究和专利申请的许可或实施利益分享。",
+        "off1_equals_off2": false,
+        "off2_equals_on": true,
+        "batch": {
+          "chain_off_1": [
+            "p7#7",
+            "p7#8"
+          ],
+          "chain_on": [
+            "p7#7",
+            "p7#8"
+          ]
+        },
+        "batch_moved": false,
+        "prompt_moved": true,
+        "gap01_verdict": "sampling_noise",
+        "verdict": "sampling_noise"
+      },
+      {
+        "reference": "p7#8",
+        "page": 7,
+        "layout_label": "plain text",
+        "chain_member": false,
+        "source": "T here is a huge diversity of Indigenous Peoples, cultures, languages, and knowledge systems around the world. These systems, developed over hundreds or thousands of years, have greatly contributed to the development of the foods we eat, traditional and modern medicines, and fibres and materials used in our homes and our clothes. Although often described as “traditional”, Indigenous knowledge systems originate from empirical observation and repeated practice, and like other knowledge systems they continuously evolve over time to incorporate new information and as local conditions change.",
+        "off1": "世界上有着多样的土著人民、文化、语言和知识体系。这些体系经过数百年或数千年的发展，对我们所食用的食物、传统和现代药物以及用于家庭和衣物的纤维和材料的发展做出了巨大贡献。尽管常被描述为“传统”，但土著知识体系源于经验观察和反复实践，并且像其他知识体系一样，随着时间的推移不断演变，以纳入新信息并适应当地条件的变化。",
+        "off2": "<style id='1'>世</style>界上有着多样化的土著人民、文化、语言和知识体系。这些体系经过数百年甚至数千年的发展，对我们所食用的食物、传统和现代药物以及我们家中和衣物中使用的纤维和材料的发展做出了巨大贡献。尽管常被描述为“传统”，但土著知识体系源于经验观察和反复实践，像其他知识体系一样，它们随着时间的推移不断演变，以纳入新信息并适应当地条件的变化。",
+        "on": "<style id='1'>T </style>世界上有着多样化的土著人民、文化、语言和知识体系。这些体系经过数百年甚至数千年的发展，对我们所食用的食物、传统和现代药物以及我们家中和衣物中使用的纤维和材料的发展做出了巨大贡献。尽管常被描述为“传统”，但土著知识体系源于经验观察和反复实践，像其他知识体系一样，它们随着时间的推移不断演变，以融入新信息并适应当地条件的变化。",
+        "off1_equals_off2": false,
+        "off2_equals_on": false,
+        "batch": {
+          "chain_off_1": [
+            "p7#7",
+            "p7#8"
+          ],
+          "chain_on": [
+            "p7#7",
+            "p7#8"
+          ]
+        },
+        "batch_moved": false,
+        "prompt_moved": true,
+        "gap01_verdict": "sampling_noise",
+        "verdict": "sampling_noise"
+      },
+      {
+        "reference": "p7#9",
+        "page": 7,
+        "layout_label": "plain text",
+        "chain_member": false,
+        "source": "Indigenous insights on the properties of plants, animals, and other non-human inhabitants of ecosystems have often been sought by researchers and companies for the development of new technologies and innovations. This process, sometimes referred to as “biodiscovery”, frequently occurs in the sectors of agriculture and food, biotechnology, pharmaceuticals, cosmetics, forestry, and others to create products that are marketed globally.",
+        "off1": "研究人员和公司常常寻求土著居民对植物、动物及生态系统中其他非人类生物的特性的见解，以开发新技术和创新。这一过程有时被称为“生物发现”，经常发生在农业和食品、生物技术、制药、化妆品、林业等领域，以创造在全球市场销售的产品。",
+        "off2": "研究人员和公司常常寻求土著居民对植物、动物及生态系统中其他非人类生物的特性的见解，以开发新技术和创新。这一过程有时被称为“生物发现”，经常发生在农业和食品、生物技术、制药、化妆品、林业等领域，以创造在全球市场销售的产品。",
+        "on": "研究人员和公司常常寻求土著对植物、动物及生态系统中其他非人类居民特性的见解，以开发新技术和创新。这一过程有时被称为“生物发现”，经常发生在农业和食品、生物技术、制药、化妆品、林业等领域，以创造在全球市场销售的产品。",
+        "off1_equals_off2": true,
+        "off2_equals_on": false,
+        "batch": {
+          "chain_off_1": [
+            "p7#0",
+            "p7#1",
+            "p7#11",
+            "p7#13",
+            "p7#6",
+            "p7#9"
+          ],
+          "chain_on": [
+            "p7#0",
+            "p7#1",
+            "p7#11",
+            "p7#5",
+            "p7#6",
+            "p7#9"
+          ]
+        },
+        "batch_moved": true,
+        "prompt_moved": true,
+        "gap01_verdict": "rebatch_effect",
+        "verdict": "rebatch_effect"
+      },
+      {
+        "reference": "p7#11",
+        "page": 7,
+        "layout_label": "title",
+        "chain_member": false,
+        "source": "When biopiracy takes root",
+        "off1": "当生物盗窃扎根时",
+        "off2": "当生物盗窃扎根时",
+        "on": "当生物盗窃扎根",
+        "off1_equals_off2": true,
+        "off2_equals_on": false,
+        "batch": {
+          "chain_off_1": [
+            "p7#0",
+            "p7#1",
+            "p7#11",
+            "p7#13",
+            "p7#6",
+            "p7#9"
+          ],
+          "chain_on": [
+            "p7#0",
+            "p7#1",
+            "p7#11",
+            "p7#5",
+            "p7#6",
+            "p7#9"
+          ]
+        },
+        "batch_moved": true,
+        "prompt_moved": true,
+        "gap01_verdict": "rebatch_effect",
+        "verdict": "rebatch_effect"
+      },
+      {
+        "reference": "p7#14",
+        "page": 7,
+        "layout_label": "plain text",
+        "chain_member": false,
+        "source": "Professor and Associate Dean of Research for the Faculty of Arts, University of New South Wales (Australia), his research focuses on the regulation of nature and knowledge.",
+        "off1": "他是新南威尔士大学（澳大利亚）艺术学院的教授兼研究副院长，他的研究重点是自然和知识的监管。",
+        "off2": "他是新南威尔士大学（澳大利亚）艺术学院的教授兼研究副院长，他的研究重点是自然和知识的监管。",
+        "on": "他是新南威尔士大学（澳大利亚）艺术学院的教授兼研究副院长，其研究重点是自然和知识的监管。",
+        "off1_equals_off2": true,
+        "off2_equals_on": false,
+        "batch": {
+          "chain_off_1": [
+            "p7#14",
+            "p7#15",
+            "p7#17"
+          ],
+          "chain_on": [
+            "p7#13",
+            "p7#14",
+            "p7#15",
+            "p7#17"
+          ]
+        },
+        "batch_moved": true,
+        "prompt_moved": true,
+        "gap01_verdict": "rebatch_effect",
+        "verdict": "rebatch_effect"
+      },
+      {
+        "reference": "p7#17",
+        "page": 7,
+        "layout_label": "title",
+        "chain_member": false,
+        "source": "Today, many countries require prospective users of Indigenous knowledge to first secure consent from the knowledge holders",
+        "off1": "如今，许多国家要求土著知识的潜在使用者首先获得知识持有者的同意",
+        "off2": "如今，许多国家要求土著知识的潜在使用者首先获得知识持有者的同意",
+        "on": "如今，许多国家要求潜在的土著知识使用者首先获得知识持有者的同意",
+        "off1_equals_off2": true,
+        "off2_equals_on": false,
+        "batch": {
+          "chain_off_1": [
+            "p7#14",
+            "p7#15",
+            "p7#17"
+          ],
+          "chain_on": [
+            "p7#13",
+            "p7#14",
+            "p7#15",
+            "p7#17"
+          ]
+        },
+        "batch_moved": true,
+        "prompt_moved": true,
+        "gap01_verdict": "rebatch_effect",
+        "verdict": "rebatch_effect"
+      },
+      {
+        "reference": "p8#1",
+        "page": 8,
+        "layout_label": "plain text",
+        "chain_member": false,
+        "source": "require prospective users of Indigenous knowledge to first secure clear consent from the knowledge holders and sign agreements detailing how benefits will be shared.",
+        "off1": "要求土著知识的潜在使用者首先从知识持有者那里获得明确的同意，并签署详细说明如何分享利益的协议。",
+        "off2": "要求土著知识的潜在使用者首先获得知识持有者的明确同意，并签署详细说明如何分享利益的协议。",
+        "on": "要求土著知识的潜在使用者首先获得知识持有者的明确同意，并签署详细说明利益分享方式的协议。",
+        "off1_equals_off2": false,
+        "off2_equals_on": false,
+        "batch": {
+          "chain_off_1": [
+            "p7#16",
+            "p8#1"
+          ],
+          "chain_on": [
+            "p7#16",
+            "p8#1"
+          ]
+        },
+        "batch_moved": false,
+        "prompt_moved": true,
+        "gap01_verdict": "sampling_noise",
+        "verdict": "sampling_noise"
+      },
+      {
+        "reference": "p8#2",
+        "page": 8,
+        "layout_label": "plain text",
+        "chain_member": false,
+        "source": "Additionally, an increasing number of laws require that applicants for intellectual property rights — particularly patents — disclose the origin of any genetic resources or traditional knowledge used to create the invention. Such “disclosure of origin” requirements may be adopted by a growing number of countries following the finalization of the 2024 World Intellectual Property Organization Treaty on Intellectual Property, Genetic Resources and Associated Traditional Knowledge.",
+        "off1": "此外，越来越多的法律要求知识产权申请者——尤其是专利申请者——披露任何用于创造发明的遗传资源或传统知识的来源。随着2024年世界知识产权组织关于知识产权、遗传资源及相关传统知识条约的最终确定，越来越多的国家可能会采纳这种“来源披露”要求。",
+        "off2": "此外，越来越多的法律要求知识产权申请者——尤其是专利——披露任何用于创造发明的遗传资源或传统知识的来源。随着2024年世界知识产权组织关于知识产权、遗传资源及相关传统知识条约的最终确定，越来越多的国家可能会采纳这种“来源披露”要求。",
+        "on": "此外，越来越多的法律要求知识产权申请者——尤其是专利申请者——披露任何用于创造发明的遗传资源或传统知识的来源。随着2024年世界知识产权组织《知识产权、遗传资源及相关传统知识条约》的最终确定，越来越多的国家可能会采纳这种“来源披露”要求。",
+        "off1_equals_off2": false,
+        "off2_equals_on": false,
+        "batch": {
+          "chain_off_1": [
+            "p8#0",
+            "p8#2",
+            "p8#5"
+          ],
+          "chain_on": [
+            "p8#0",
+            "p8#2",
+            "p8#5"
+          ]
+        },
+        "batch_moved": false,
+        "prompt_moved": true,
+        "gap01_verdict": "sampling_noise",
+        "verdict": "sampling_noise"
+      },
+      {
+        "reference": "p8#3",
+        "page": 8,
+        "layout_label": "plain text",
+        "chain_member": false,
+        "source": "But despite these measures, biopiracy continues to occur due to exploitable gaps in the system. For instance, the rules may be bypassed by collecting genetic resources or traditional knowledge from a country where no restrictive legislation has been adopted or by obtaining genetic resources from historical collections made prior to the entry into force of the convention. Furthermore, while much attention is paid to patent abuse, other forms of intellectual property, such as plant breeders’ rights and trademarks, also facilitate the misappropriation of Indigenous knowledge. Without major change, the persistence of these gaps means biopiracy will remain an unfortunate reality.",
+        "off1": "但尽管采取了这些措施，由于系统中存在可被利用的漏洞，生物盗窃仍然时有发生。例如，可以通过从未采纳限制性立法的国家收集遗传资源或传统知识，或从公约生效前的历史收藏中获取遗传资源来规避规则。此外，尽管对专利滥用给予了大量关注，其他形式的知识产权，如植物育种者权利和商标，也在促进土著知识的盗用。如果不进行重大变革，这些漏洞的持续存在意味着生物盗窃将继续成为一个不幸的现实。",
+        "off2": "但尽管采取了这些措施，由于系统中存在可利用的漏洞，生物盗窃仍然发生。例如，可以通过从未采纳限制性立法的国家收集遗传资源或传统知识，或从公约生效前的历史收藏中获取遗传资源来规避规则。此外，尽管对专利滥用给予了很多关注，其他形式的知识产权，如植物育种者权利和商标，也在促进土著知识的盗用。如果不进行重大变革，这些漏洞的持续存在意味着生物盗窃将继续成为一个不幸的现实。",
+        "on": "然而，尽管采取了这些措施，由于系统中存在可利用的漏洞，生物盗窃仍然时有发生。例如，可以通过从未采纳限制性立法的国家收集遗传资源或传统知识，或者从在公约生效前的历史收藏中获取遗传资源来规避规则。此外，尽管对专利滥用给予了大量关注，其他形式的知识产权，如植物育种者权利和商标，也在促进土著知识的盗用。如果不进行重大变革，这些漏洞的持续存在意味着生物盗窃将仍然是不幸的现实。",
+        "off1_equals_off2": false,
+        "off2_equals_on": false,
+        "batch": {
+          "chain_off_1": [
+            "p8#3",
+            "p8#4"
+          ],
+          "chain_on": [
+            "p8#3",
+            "p8#4"
+          ]
+        },
+        "batch_moved": false,
+        "prompt_moved": true,
+        "gap01_verdict": "sampling_noise",
+        "verdict": "sampling_noise"
+      },
+      {
+        "reference": "p8#5",
+        "page": 8,
+        "layout_label": "plain text",
+        "chain_member": false,
+        "source": "The situation changed dramatically in the 1990s with a few developments. First, intellectual property rights were harmonized under the World Trade Organization ( WTO) agreements, changing how states allowed intellectual property protection relating to genetic resources. In 1992, when the Convention on Biological Diversity (CBD) placed genetic resources under state sovereignty, it also laid the foundation for systems designed to prevent the misappropriation of traditional knowledge. More recently, the 2010 Nagoya Protocol on Access and Benefit Sharing created an international template for users and providers of genetic resources and traditional knowledge to negotiate agreements governing how these assets may be utilized.",
+        "off1": "20世纪90年代，随着一些发展，情况发生了巨大变化。首先，知识产权在世界贸易组织（WTO）协议下得到了统一，改变了各国对与遗传资源相关的知识产权保护的方式。1992年，生物多样性公约（CBD）将遗传资源置于国家主权之下，同时为防止传统知识被盗用的系统奠定了基础。最近，2010年名古屋议定书关于获取和利益分享为遗传资源和传统知识的使用者和提供者创建了一个国际模板，以协商如何利用这些资产的协议。",
+        "off2": "20世纪90年代，随着一些发展，情况发生了巨大变化。首先，知识产权在世界贸易组织（WTO）协议下得到了统一，改变了各国对与遗传资源相关的知识产权保护的方式。1992年，当生物多样性公约（CBD）将遗传资源置于国家主权之下时，也为防止传统知识被盗用的系统奠定了基础。最近，2010年名古屋议定书关于获取和利益分享为遗传资源和传统知识的使用者和提供者提供了一个国际模板，以协商如何利用这些资产的协议。",
+        "on": "在1990年代，随着一些发展，情况发生了显著变化。首先，知识产权在世界贸易组织（WTO）协议下得到了统一，这改变了各国对与遗传资源相关的知识产权保护的方式。1992年，《生物多样性公约》（CBD）将遗传资源置于国家主权之下，同时为防止传统知识被盗用的系统奠定了基础。更近期的是，2010年的《名古屋议定书》为遗传资源和传统知识的使用者和提供者创建了一个国际模板，以协商如何利用这些资产的协议。",
+        "off1_equals_off2": false,
+        "off2_equals_on": false,
+        "batch": {
+          "chain_off_1": [
+            "p8#0",
+            "p8#2",
+            "p8#5"
+          ],
+          "chain_on": [
+            "p8#0",
+            "p8#2",
+            "p8#5"
+          ]
+        },
+        "batch_moved": false,
+        "prompt_moved": true,
+        "gap01_verdict": "sampling_noise",
+        "verdict": "sampling_noise"
+      },
+      {
+        "reference": "p8#7",
+        "page": 8,
+        "layout_label": "plain text",
+        "chain_member": false,
+        "source": "The reinforced international framework of rules and agreements, built over the past 30 years, has brought about some positive change. Today, many countries",
+        "off1": "过去30年间建立的强化国际规则和协议框架，已经带来了一些积极的变化。如今，许多国家",
+        "off2": "过去30年间建立的强化国际规则和协议框架，已经带来了一些积极的变化。如今，许多国家",
+        "on": "过去30年间建立的强化国际规则和协议框架，带来了一些积极的变化。如今，许多国家",
+        "off1_equals_off2": true,
+        "off2_equals_on": false,
+        "batch": {
+          "chain_off_1": [
+            "p8#7",
+            "p8#8"
+          ],
+          "chain_on": [
+            "p8#10",
+            "p8#11",
+            "p8#14",
+            "p8#6",
+            "p8#7",
+            "p8#9"
+          ]
+        },
+        "batch_moved": true,
+        "prompt_moved": true,
+        "gap01_verdict": "rebatch_effect",
+        "verdict": "rebatch_effect"
+      },
+      {
+        "reference": "p8#8",
+        "page": 8,
+        "layout_label": "plain text",
+        "chain_member": true,
+        "source": "the grass has been patented. Benefits that have already been shared under the agreement include employment opportunities for First Nations youth and funding for training and educational opportunities for Indigenous Australians.",
+        "off1": "这种草已经被申请了专利。根据协议，已经分享的利益包括为第一民族青年提供的就业机会，以及为澳大利亚土著提供的培训和教育机会的资金。",
+        "off2": "这种草已经被申请了专利。根据协议，已经分享的利益包括为第一民族青年提供的就业机会，以及为澳大利亚土著提供的培训和教育机会的资金。",
+        "on": "根据协议，已经分享的利益包括为第一民族青年提供就业机会，以及为澳大利亚土著提供培训和教育机会的资金。",
+        "off1_equals_off2": true,
+        "off2_equals_on": false,
+        "batch": {
+          "chain_off_1": [
+            "p8#7",
+            "p8#8"
+          ],
+          "chain_on": []
+        },
+        "batch_moved": true,
+        "prompt_moved": true,
+        "gap01_verdict": "chain_member",
+        "verdict": "chain_member"
+      },
+      {
+        "reference": "p8#10",
+        "page": 8,
+        "layout_label": "plain text",
+        "chain_member": false,
+        "source": "The root of the biopiracy question lies in a historical transformation: the moment the global community began treating biological resources not as a shared heritage, but as proprietary assets.",
+        "off1": "生物盗窃问题的根源在于一个历史性的转变：全球社会开始将生物资源视为专有资产，而不是共享遗产的那一刻。",
+        "off2": "生物盗窃问题的根源在于一个历史性的转变：全球社会开始将生物资源视为专有资产，而不是共享遗产的那一刻。",
+        "on": "生物盗窃问题的根源在于一个历史性的转变：全球社会开始将生物资源视为专有资产，而非共享遗产的那一刻。",
+        "off1_equals_off2": true,
+        "off2_equals_on": false,
+        "batch": {
+          "chain_off_1": [
+            "p8#10",
+            "p8#11",
+            "p8#14",
+            "p8#15",
+            "p8#6",
+            "p8#9"
+          ],
+          "chain_on": [
+            "p8#10",
+            "p8#11",
+            "p8#14",
+            "p8#6",
+            "p8#7",
+            "p8#9"
+          ]
+        },
+        "batch_moved": true,
+        "prompt_moved": true,
+        "gap01_verdict": "rebatch_effect",
+        "verdict": "rebatch_effect"
+      },
+      {
+        "reference": "p8#11",
+        "page": 8,
+        "layout_label": "plain text",
+        "chain_member": false,
+        "source": "The circulation of plants, animals, and other components of biodiversity around the world and the sharing of associated knowledge between different human groups is nothing new. Well before the era of European colonization, there were broad global movements of different species and knowledge about how to cultivate and utilize them. People have long traded domesticated animals, spices, herbal medicines, foods and beverages, and fibre products across vast distances, frequently drawing upon knowledge developed by other groups to understand how to use the items obtained.",
+        "off1": "植物、动物和其他生物多样性成分在全球范围内的流通以及不同人群之间相关知识的共享并不是什么新鲜事。在欧洲殖民时代之前，就已经存在着不同物种和关于如何栽培和利用它们的知识的广泛全球流动。人们长期以来在广阔的距离上交易驯养动物、香料、草药、食品和饮料以及纤维产品，经常借鉴其他群体开发的知识来理解如何使用获得的物品。",
+        "off2": "植物、动物和其他生物多样性成分在全球范围内的流通以及不同人群之间相关知识的共享并不是什么新鲜事。在欧洲殖民时代之前，就已经存在着不同物种和关于如何栽培和利用它们的知识的广泛全球流动。人们长期以来在广阔的距离上交易驯养动物、香料、草药、食品和饮料以及纤维产品，经常借鉴其他群体发展出的知识来理解如何使用获得的物品。",
+        "on": "植物、动物和其他生物多样性成分在全球范围内的流通，以及不同人群之间相关知识的共享，并不是新鲜事。在欧洲殖民时代之前，各种物种和关于如何栽培和利用它们的知识就已经在全球范围内广泛流动。人们长期以来在广阔的距离上交易驯化动物、香料、草药、食品和饮料以及纤维产品，常常借鉴其他群体发展出的知识来理解如何使用获得的物品。",
+        "off1_equals_off2": false,
+        "off2_equals_on": false,
+        "batch": {
+          "chain_off_1": [
+            "p8#10",
+            "p8#11",
+            "p8#14",
+            "p8#15",
+            "p8#6",
+            "p8#9"
+          ],
+          "chain_on": [
+            "p8#10",
+            "p8#11",
+            "p8#14",
+            "p8#6",
+            "p8#7",
+            "p8#9"
+          ]
+        },
+        "batch_moved": true,
+        "prompt_moved": true,
+        "gap01_verdict": "sampling_noise",
+        "verdict": "sampling_noise"
+      },
+      {
+        "reference": "p8#14",
+        "page": 8,
+        "layout_label": "figure_caption",
+        "chain_member": false,
+        "source": "Argan oil production workshop at a women’s cooperative in Tafraout, southwestern Morocco.",
+        "off1": "在摩洛哥西南部塔夫拉乌特的一个女性合作社的阿甘油生产车间。",
+        "off2": "在摩洛哥西南部塔夫拉乌特的一个女性合作社的阿甘油生产车间。",
+        "on": "摩洛哥西南部塔夫拉乌特的一家女性合作社的阿甘油生产车间。",
+        "off1_equals_off2": true,
+        "off2_equals_on": false,
+        "batch": {
+          "chain_off_1": [
+            "p8#10",
+            "p8#11",
+            "p8#14",
+            "p8#15",
+            "p8#6",
+            "p8#9"
+          ],
+          "chain_on": [
+            "p8#10",
+            "p8#11",
+            "p8#14",
+            "p8#6",
+            "p8#7",
+            "p8#9"
+          ]
+        },
+        "batch_moved": true,
+        "prompt_moved": true,
+        "gap01_verdict": "rebatch_effect",
+        "verdict": "rebatch_effect"
+      }
+    ]
+  }
+}
