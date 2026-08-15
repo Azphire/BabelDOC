@@ -125,6 +125,11 @@ TYPESET_STAGE = "typesetting"
 # test points rather than a sampling rule.
 MANUAL_REVIEW_MIN_POINTS = 5
 
+# The fields a human answers in a review draft. A draft exports them null; any
+# of them carrying a value makes the file a ruling, and a ruling is never
+# rewritten by a run of this tool.
+HUMAN_FIELDS = ("human_agrees", "human_errors", "human_note")
+
 # Configuration keys that are not bounded numbers.
 TEXT_KEYS: tuple[str, ...] = ("model", "base_url", "api_key_env")
 VOCABULARY_KEYS: tuple[str, ...] = ("mqm_categories", "mqm_severities")
@@ -887,6 +892,10 @@ def manual_review_of(report: dict) -> dict:
     of whether the sampled rows were the flattering ones. The human fields are
     left empty; a filled copy of this file is the ruling, in the same shape the
     HITL review draft and its decisions file already have.
+
+    Once answered, the file stops being this function's output: ``main`` leaves
+    a ruled draft where it is rather than writing over it, so re-running the
+    tool cannot destroy a ruling.
     """
     chosen = list(report["rows"])
     items = [
@@ -1063,6 +1072,28 @@ def _write(out: Path, stem: str, payload: dict, text: str) -> None:
     (out / f"{stem}.md").write_text(text, encoding="utf-8")
 
 
+def is_ruled(path: Path) -> bool:
+    """Whether a review draft has been answered by a human.
+
+    A draft exports its human fields as null. Any of them carrying a value
+    makes the file a ruling, which belongs to whoever wrote it: the same
+    discipline the HITL decisions file has, where the machine writes the draft
+    and reads the ruling and never the other way round.
+    """
+    if not path.is_file():
+        return False
+    try:
+        with path.open(encoding="utf-8") as f:
+            existing = json.load(f)
+    except (OSError, json.JSONDecodeError):
+        return False
+    return any(
+        item.get(field) is not None
+        for item in existing.get("items", ())
+        for field in HUMAN_FIELDS
+    )
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument(
@@ -1092,7 +1123,10 @@ def main(argv: list[str] | None = None) -> int:
     _write(args.out, "splice_judgements", report, markdown(report))
 
     review = manual_review_of(report)
-    _write(args.out, "splice_manual_review", review, manual_review_markdown(review))
+    review_path = args.out / "splice_manual_review.json"
+    ruled = is_ruled(review_path)
+    if not ruled:
+        _write(args.out, "splice_manual_review", review, manual_review_markdown(review))
 
     args.cost_out.parent.mkdir(parents=True, exist_ok=True)
     with args.cost_out.open("w", encoding="utf-8") as f:
@@ -1107,7 +1141,10 @@ def main(argv: list[str] | None = None) -> int:
         f"cache hits {annotated['cost']['cache_hits']}, "
         f"requests {annotated['cost']['transport_requests']}"
     )
-    print(f"manual review items: {len(review['items'])}")
+    if ruled:
+        print(f"manual review: {review_path.name} carries a ruling and was left alone")
+    else:
+        print(f"manual review items: {len(review['items'])}")
     if len(review["items"]) < MANUAL_REVIEW_MIN_POINTS:
         print(
             f"ERROR: {len(review['items'])} review items, fewer than the "

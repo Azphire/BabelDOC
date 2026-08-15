@@ -84,9 +84,11 @@
 | A-19 | 配置内跑间方差:同一全栈配置的两次独立运行,132 段中 **43** 段译文不同,即 **0.3258**;两臂批次组成**逐段相同**,翻译前文档逐段相同 | batch-e2.1 · `docs/eval/results_e2/drift_attribution.json` 的 `noise_population` / `noise_rate` / `premises` | git | 一切单跑差异的解释上限,取代 G-01 的两点相似度作定量基线 | 直接可引(该率是**整段是否逐字节相同**的比例,不是相似度;与 G-01 的 0.989/0.995 不是同一个量) |
 | A-20 | 链 A/B 指标级(三臂 × 两路径):`mbr_linkable` 三臂同为 0.4000(IL)/0.2000(PDF),七条边界逐条判决三臂全同;M2 三臂全 hold(8→8 页、132→132 段);LTCR 0.482143 / 0.428571 / 0.446429,合格词条数三臂均为 3(**两 off 臂之差 0.0536 大于 off 与 on 之差 0.0357 与 0.0179**);几何组 IL 路径 delta 全 0.0000、PDF 路径 `overlap_delta` −0.0406~−0.0410、`image_placement_iou` 1.0000、页数差 0 | batch-e2.1 · `docs/eval/results_e2/eval_report.Courier-en.json`;表在 `docs/eval/results_e2/README.md` §4 | git | 兑现 E1.2 遗留 1(冻结产物里没有 chain_on/chain_off 的指标级 A/B) | 直接可引(**M1 与 M3 在本 A/B 上均无判别力**,须与 A-17、A-18 一并陈述) |
 | A-21 | R1 成本:三跑合计 **124** 次 API 调用(chain_on 1 / off₁ 62 / off₂ 61)、**105 759** prompt tokens、**22 701** completion tokens、**245.0** s 壁钟;chain_on 的 54 次翻译请求 **54 次全部命中缓存**,那 1 次调用是 ReAct 决策而非翻译 | batch-e2.1 · `docs/eval/results_e2/drift_attribution.json` 的 `runs`;工作区原件 `examples/output/e2/r1/runs.json` | git(台账)/ worktree(原件) | 成本章;冻结重放可控性的第二个实录(继 D-08) | 直接可引 |
-| A-22 | M10 判官运行事实(R2):测试点 **5**(裁定单全部 `link: true` 正样本)× 可用臂 = **14** 行,`judge_refused` **0** 行;判官 `gpt-5.6-terra`(异族于被测 `gpt-4o`),`max_completion_tokens=1024`、不发 `temperature`,逐行钉版;**14** 次请求对应 **13** 个不同 prompt(`Courier-en 2->3` 两个 off 臂窗口逐字节相同,一个 cache key 服务两行;多出的一次是某一行首次尝试未产出可用回复、有界重试后通过),16 256 prompt / 6 806 completion tokens;`--offline` 重放 **14/14** 命中缓存、0 请求、两份 JSON 逐字节相同 | batch-e2.2 · `docs/eval/results_e2/splice_judgements.json`;协议 `docs/eval/splice_protocol.md`;成本原件 `examples/output/e2/r2/judge_cost.json` | git(表)/ worktree(成本原件) | M10 的实现与可复现性;GAP-03 方案 a 的兑现 | 直接可引(**定性微镜,不作比率**:点集只有 5 条正样本、无负控,每行只问一次) |
-| A-23 | 判官在 `Courier-en 7->8` 四臂上**全部**记 `accuracy/mistranslation` **critical**,但落点不同:`upstream` / `chain_off_1` / `chain_off_2` 三行的 span 在 **head**(`草地已经被申请了专利。` / `这种草已经被申请了专利。` ×2),判词是"专利被安在草上而不是由草制成的复合材料上,由跨页处把未完短语断开后重启造成";`chain_on` 那一行的 span 在 **tail**(`并已为这种草的复合材料申请了专利。`),判词是专利状态"已获得"被写成"申请",**与边界无关** | batch-e2.2 · `docs/eval/results_e2/splice_judgements.json` 的 `Courier-en 7->8` 四行;表在 `docs/eval/results_e2/README.md` §8b | git | 切断损害的**第三项候选证据**(谓述层的先行词错误,三处独立产物复现),与 A-09 重述后的两项同向 | 直接可引(**单判官、每行一次抽样**;按 GAP-03 方案 a 只作定性错误类型提示,不作质量排序、不作显著性主张) |
-| A-24 | 判官侧的两处方向性观察:(1) `Courier-en 2->3` 是本次唯一一处**链臂独有的缺陷**——两个 off 臂零错误,`chain_on` 页 3 首行排成 `动科学发现`,判官记 `accuracy/addition` (minor),span 即多出的 `动`;(2) `AramcoWorld-en-v2 6->7`(M1 唯一独立成立的正例,见 A-16)上判官与几何判决**同向**:上游臂 2 处错误、fork 臂 0 处 | batch-e2.2 · `docs/eval/results_e2/splice_judgements.json`;读法在 `docs/eval/results_e2/README.md` §8c | git | "链臂不是一律更好"的实录;M1 那一个正例的语义佐证 | 直接可引(同 A-23 的限定;`Courier-zh` 两臂方向不同、不构成对照,见 README §8d) |
+| A-22 | M10 判官运行事实(R2):测试点 **5**(裁定单全部 `link: true` 正样本)× 可用臂 = **14** 行,`judge_refused` **0** 行;判官 `gpt-5.6-terra`(异族于被测 `gpt-4o`),`max_completion_tokens=1024`、不发 `temperature`,逐行钉版;**14** 次请求对应 **13** 个不同 prompt(`Courier-en 2->3` 两个 off 臂窗口逐字节相同,一个 cache key 服务两行;多出的一次是某一行首次尝试未产出可用回复、有界重试后通过),16 256 prompt / 6 806 completion tokens;`--offline` 重放 **14/14** 命中缓存、0 请求、两份 JSON 逐字节相同 | batch-e2.2 · `docs/eval/results_e2/splice_judgements.json`;协议 `docs/eval/splice_protocol.md`;成本原件 `examples/output/e2/r2/judge_cost.json` | git(表)/ worktree(成本原件) | M10 的实现与可复现性;GAP-03 方案 a 的兑现 | 直接可引(**定性微镜,不作比率**:点集只有 5 条正样本、无负控,每行只问一次)。**14 行不等于 14 个有效观察**:人工裁决把 6 行判为 `PROTOCOL-INVALID`(窗口取的是页几何端点而非被裁定的那对链成员,GAP-14),**有效集 8 行 / 3 点**,论文主证据只能取这 8 行,见 A-25 |
+| A-23 | 判官在 `Courier-en 7->8` 四臂上**全部**记 `accuracy/mistranslation` **critical**,但落点不同:`upstream` / `chain_off_1` / `chain_off_2` 三行的 span 在 **head**(`草地已经被申请了专利。` / `这种草已经被申请了专利。` ×2),判词是"专利被安在草上而不是由草制成的复合材料上,由跨页处把未完短语断开后重启造成";`chain_on` 那一行的 span 在 **tail**(`并已为这种草的复合材料申请了专利。`),判词是专利状态"已获得"被写成"申请",**与边界无关** | batch-e2.2 · `docs/eval/results_e2/splice_judgements.json` 的 `Courier-en 7->8` 四行;表在 `docs/eval/results_e2/README.md` §8b | git | 切断损害的**第三项候选证据**(谓述层的先行词错误,三处独立产物复现),与 A-09 重述后的两项同向 | 直接可引,但**四行里只有三行经人工确认**:`upstream` / `chain_off_1` / `chain_off_2` 三行的 critical 由裁决确认为拼接归因(裁决把机制写作"虚构收束 + head 另起一句自足句",先行词丢失的**表层措辞**在两臂间不稳定——`草地` 对 `这种草`,与 GAP-13 一致);`chain_on` 那一行被**人工推翻**:该行 tail 收在真句末、head 另起一句,**没有拼接错误**,判官的 critical 是把四臂皆有的非拼接词汇问题(`申请` vs `已获得`)按 critical 计进了拼接,严重度亦偏高(GAP-16)。引用时须写"三臂确认、一臂推翻"。单判官、每行一次抽样,只作定性提示 |
+| A-24 | 判官侧的两处方向性观察:(1) `Courier-en 2->3` 是本次唯一一处**链臂独有的缺陷**——两个 off 臂零错误,`chain_on` 页 3 首行排成 `动科学发现`,判官记 `accuracy/addition` (minor),span 即多出的 `动`;(2) `AramcoWorld-en-v2 6->7`(M1 唯一独立成立的正例,见 A-16)上判官与几何判决**同向**:上游臂 2 处错误、fork 臂 0 处 | batch-e2.2 · `docs/eval/results_e2/splice_judgements.json`;读法在 `docs/eval/results_e2/README.md` §8c | git | "链臂不是一律更好"的实录;M1 那一个正例的语义佐证 | 直接可引,但**须按裁决限定**:(2) `AramcoWorld-en-v2 6->7` 两行**人工确认**(上游拼接确实断句、fork 读作一句),是有效集里最干净的一对;(1) `Courier-en 2->3` 那一行**落在 `PROTOCOL-INVALID` 里**(GAP-14),不得作拼接点结论——但 `动科学发现` 这个缺陷**本身成立且是链臂独有**,只是成因被判官记错:它是合并标题链 `…如何推动科学发现` 被 `proportional` 策略切在词内(`推 / 动`)的残字,属设计行为的边界情形(GAP-18),不是"源文不支持的增字"。引用该缺陷须引 GAP-18 的机制而非判官的 `accuracy/addition`。`Courier-zh` 两臂方向不同、不构成对照(README §8d、A-26) |
+| A-25 | 判官与人工的一致率:有效集 **8** 行(`Courier-en 7->8` 四臂 + `AramcoWorld-en-v2 6->7` 两臂 + `Courier-zh 7->8` 两臂)上一致 **6/8**;不一致两行,类型相反——`Courier-en 7->8` 的 `chain_on` 是**高估**(非拼接的词汇错误被按 critical 计进拼接,GAP-16),`Courier-zh 7->8` 的 `fork_full` 是**漏报**(未标目标语言不符 GAP-15,未标 `包` 跨边界重复 GAP-17)。另有 **6** 行标 `PROTOCOL-INVALID`(两个 `2->3` 点的全部臂,GAP-14),不进分母 | batch-e2.2 · `docs/eval/results_e2/splice_manual_review.json` 的 `human_review_scope` 与逐条 `human_agrees`;门禁 `spec_checks/spec_check_e2.py` 断言 14 由该文件重算 | git | **GAP-03 方案 (a) 的第二半**:异族判官的质量由人工抽验交代 | 直接可引(分母 8、每行一次抽样,**不作比率型主张**;该率只在"拼接归因"这一口径上成立,窗口内的非拼接观察按裁决不计) |
+| A-26 | `Courier-zh` fork 臂窗口通篇中文的判定(本会话现场核实):**是段落未被译成另一种语言,不是源文误入窗口**。三项证据——(a) `auto_extractor_glossary.csv` 每行 `source == target`(如 `本土知识,本土知识`)、`tgt_lng` 为空,即该跑的目标语言等于源语言;(b) `checkpoint.09_il_translated` 的段落 `unicode` 字段本身就是中文,且带 `{v1}` 占位符与 `<style>` 标记,说明翻译往返**确实跑过**;(c) 两条裁定边界在 `chain_report.json` 里都是 `eligible: false`(`2->3` 记 `not_chain_eligible:head`,`7->8` 记 `not_chain_eligible:tail,head`),因为该样张八页全被判成 `sidebar_heavy`,与 B-06 的 kind 0.250 同因。**由此得到 GAP-17 的实例**:源文在切断处只有一个 `包`(`…协议中包` / `含惠益分享条款`),而 `p8#8` 的译文字段是 `包含惠益分享条款。…`——链未建立,残段按普通段落单独送译,引擎把残词 `含` 补全成 `包含`,`包` 于是跨边界出现两次 | batch-e2.2 · `examples/output/b8_4/smoke/Courier-zh/work/Courier-zh/` 的 `auto_extractor_glossary.csv`、`chain_report.json`、`checkpoint.08_chain_builder.xml` 与 `checkpoint.09_il_translated.xml`(逐段现场比对) | worktree | 回答裁决留下的待查项;**链失效时切断损害的表现形式**(与链生效时的虚构收束是同一机制的两面) | 直接可引(**该跑是 zh→zh**,故该样张的 fork 臂一律不得读作 zh→en 的性能;`包` 重复是单例观察,尚无自动检测,见 GAP-17) |
 
 ## B 分类线(页面类型)
 
@@ -186,13 +188,13 @@ batch-e1 会话一按 D3 GAP-07 的优先级做了**分级入库**:`examples/bas
 
 ## 状态汇总
 
-分组行数:A 24、B 11、C 6、D 10、E 13、F 7、G 9,**合计 80 条**。
+分组行数:A 26、B 11、C 6、D 10、E 13、F 7、G 9,**合计 82 条**。
 
 计数规则:一行按其状态单元格中**最先出现**的那个状态词归类。
 
 | 状态 | 条数 | 条目 |
 | --- | ---: | --- |
-| 直接可引 | 80 | 全部 |
+| 直接可引 | 82 | 全部 |
 | 需三跑 | 0 | — |
 | needs-recompute | 0 | — |
 | 需重述 | 0 | — |
@@ -208,6 +210,12 @@ batch-e2.2 的变动,**四档状态就此全部收口**:
   代价写在左列:该路径只能作"机制已实现且有合成覆盖",不得作"已被文档验证";
 - **新增 A-22~A-24**(M10 判官)与 **C-06**(消融不可重跑的量化)。C-06 是本会话对
   GAP-10 前提的现场核实结果,它把"terra 18 次补算"从待办改成声明。
+
+人工裁决入库后(同批次追加):**A-25**(判官与人工一致 **6/8**,分母是有效集)与 **A-26**
+(`Courier-zh` fork 臂的 zh→zh 判定与 `包` 跨边界重复)进表;A-22 加上有效集限定、A-23 的
+四行改记"三臂确认一臂推翻"、A-24 的 `动科学发现` 改按 GAP-18 的机制陈述。裁决另开
+GAP-14~GAP-18 五条,全部是**缺口**而非未关行——它们要么改材料要么改判官契约,不改任何
+已落盘的数字。
 
 **四档清零不等于零缺口**:留下的是**声明**而不是数字缺口——E-09 的合成覆盖声明、C-04/C-06
 的 v1 分母不可重建、A-22~A-24 的"单判官、无负控、不作比率"。逐条见

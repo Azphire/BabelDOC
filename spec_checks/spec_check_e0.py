@@ -603,6 +603,53 @@ def check_05_the_ledger_and_the_gap_register_close_over_each_other() -> None:
     for match in re.finditer(r"\b([A-G]-\d+)\b", gaps):
         if match.group(1) not in known:
             faults.append(f"the gap register names {match.group(1)}, which has no row")
+
+    # The other direction, added in E2: a ledger row that answers to a gap has
+    # to name a gap the register actually carries. Rows now cite gaps by number
+    # for their citable wording -- a mistyped or retired number would otherwise
+    # send a reader to a section that is not there.
+    registered = set(re.findall(r"^#+\s*(GAP-\d+)", gaps, re.M))
+    for cited in sorted(set(re.findall(r"\bGAP-\d+\b", document))):
+        if cited not in registered:
+            faults.append(f"the ledger cites {cited}, which the register has no section for")
+
+    # And the summary has to be the rows. The ledger states its own tallies in
+    # prose and in a table; recomputing them here is what keeps a row added at
+    # the bottom from being invisible in the counts a reader quotes.
+    for status, counted in tally.items():
+        stated = re.search(
+            rf"^\|\s*{re.escape(status)}\s*\|\s*(\d+)\s*\|", document, re.M
+        )
+        if stated is None:
+            faults.append(f"the summary does not count the {status} rows")
+        elif int(stated.group(1)) != counted:
+            faults.append(
+                f"the summary counts {stated.group(1)} {status} rows, recomputed {counted}"
+            )
+    groups: dict[str, int] = {}
+    for identifier in classified:
+        groups[identifier[0]] = groups.get(identifier[0], 0) + 1
+    # The ledger is written in Chinese and this file is ASCII, so the phrases
+    # the tally is stated under are escapes: the heading "group row count", the
+    # counter word the total is written with, and the full width colon.
+    group_line = "\u5206\u7ec4\u884c\u6570"
+    counter = "\u6761"
+    stated_groups = re.search(rf"{group_line}[:\uff1a]([^\n]*)", document)
+    if stated_groups is None:
+        faults.append("the ledger states no group tally")
+    else:
+        pairs = dict(re.findall(r"([A-G])\s*(\d+)", stated_groups.group(1)))
+        for group, counted in sorted(groups.items()):
+            if int(pairs.get(group, -1)) != counted:
+                faults.append(
+                    f"group {group}: the summary says {pairs.get(group)}, recomputed {counted}"
+                )
+        total = re.search(rf"(\d+)\s*{counter}", stated_groups.group(1))
+        if total is None or int(total.group(1)) != len(classified):
+            faults.append(
+                f"the summary total is {None if total is None else total.group(1)}, "
+                f"recomputed {len(classified)}"
+            )
     record(
         "check_05_the_ledger_and_the_gap_register_close_over_each_other",
         not faults,

@@ -52,11 +52,15 @@ and a refusal, if there is one, is recorded as a refusal rather than dropped.
 here from the ground truth, and the seam the paper argues from carries the three
 arms the plan asked for plus the robustness arm.
 
-12 is the replay: the whole run is regenerated with no transport at all and
-compared byte for byte, which is only possible if every reply is cached and no
-provenance leaked into the table. 13 is the manual review draft: it exists, it
-is not empty, its human fields are unfilled in this batch, and it covers the
-rows it says it covers.
+12 is the replay: the judgement table is regenerated with no transport at all
+and compared byte for byte, which is only possible if every reply is cached and
+no provenance leaked into it.
+
+13 and 14 are the ruling. The manual review draft came back answered, so 13
+asserts that every judged row was put to a human and answered, and 14 recomputes
+the headline from the answers: the rows whose windows do not target the
+adjudicated splice are marked and set aside, the agreement is counted over what
+is left, and the documents quoting the number have to quote that one.
 """
 
 from __future__ import annotations
@@ -112,6 +116,10 @@ SEAM_ARMS = ("upstream", "chain_off_1", "chain_off_2", "chain_on")
 # writing the ruling it is supposed to be checked by.
 HUMAN_FIELDS = ("human_agrees", "human_errors", "human_note")
 
+# How the ruling marks a row whose windows do not target the adjudicated
+# splice. Such a row tests nothing and is kept out of the agreement count.
+PROTOCOL_INVALID = "PROTOCOL-INVALID"
+
 LEDGER = ROOT / "docs" / "eval" / "evidence_ledger.md"
 GAPS = ROOT / "docs" / "eval" / "gap_register.md"
 CONTRACT = ROOT / "docs" / "eval" / "metric_contract.md"
@@ -147,6 +155,9 @@ ALLOWED_FILES = {
     "UPSTREAM_DIFF.md",
     "WAIVERS.md",
     "prompts/splice_judge_mqm.md",
+    # Outside the whitelist PLAN_E2 declares; see W-E2-03. The two conventions
+    # this batch discovered belong in the file every session reads first.
+    "CLAUDE.md",
 }
 
 # Prefixes no session of this batch may touch: the corpus rulings are the user's
@@ -880,12 +891,19 @@ def check_12_the_judgements_replay_from_cache_byte_for_byte() -> None:
             )
             return
         faults = []
-        for produced in (JUDGEMENTS, MANUAL_REVIEW):
-            again = Path(tmp) / produced.name
-            if not again.is_file():
-                faults.append(f"{produced.name} was not regenerated")
-            elif again.read_bytes() != produced.read_bytes():
-                faults.append(f"{produced.name} regenerated with different bytes")
+        again = Path(tmp) / JUDGEMENTS.name
+        if not again.is_file():
+            faults.append(f"{JUDGEMENTS.name} was not regenerated")
+        elif again.read_bytes() != JUDGEMENTS.read_bytes():
+            faults.append(f"{JUDGEMENTS.name} regenerated with different bytes")
+        # The review draft is compared by its rows rather than its bytes: once
+        # answered it is a ruling, and 13 asserts that a run leaves it alone.
+        draft = Path(tmp) / MANUAL_REVIEW.name
+        if draft.is_file():
+            drafted = {item["id"] for item in read_json(draft).get("items", ())}
+            ruled = {item["id"] for item in read_json(MANUAL_REVIEW).get("items", ())}
+            if drafted != ruled:
+                faults.append("the ruling covers different rows than a fresh draft")
         cost = read_json(Path(tmp) / "judge_cost.json")
         if cost.get("transport_requests"):
             faults.append(f"the replay spent {cost['transport_requests']} request(s)")
@@ -896,18 +914,23 @@ def check_12_the_judgements_replay_from_cache_byte_for_byte() -> None:
     )
 
 
-def check_13_the_manual_review_is_exported_and_unfilled() -> None:
-    """Positive 13, with a negative half: the human's list exists and is the human's.
+def check_13_the_manual_review_is_ruled_and_covers_every_row() -> None:
+    """Positive 13: the human's list exists, is answered, and answers everything.
 
-    The draft has to be there and non-empty, because the manual check is half of
-    what closes GAP-03; and its human fields have to be empty, because a machine
-    session that filled one would be writing the ruling it is meant to be
-    checked by. What it covers is recomputed from the judgement table.
+    This assertion was the other way round when the draft was exported: it
+    asserted the human fields were empty, because a machine session that filled
+    one would be writing the ruling it is meant to be checked by. The ruling is
+    in, so what it asserts now is that every judged row was answered, that no
+    answer names a row nobody judged, and that the machine has not since
+    overwritten it -- a run of the tool leaves a ruled draft alone, and a
+    regenerated blank in its place would show up here as an unanswered row.
     """
     faults = []
     if not MANUAL_REVIEW.is_file():
         record(
-            "check_13_the_manual_review_is_exported_and_unfilled", False, "no review draft"
+            "check_13_the_manual_review_is_ruled_and_covers_every_row",
+            False,
+            "no review draft",
         )
         return
     review = read_json(MANUAL_REVIEW)
@@ -916,20 +939,69 @@ def check_13_the_manual_review_is_exported_and_unfilled() -> None:
         faults.append(f"{len(items)} review items, fewer than the five GAP-03 asks for")
     judged = {f"{row['point']} [{row['arm']}]" for row in read_json(JUDGEMENTS)["rows"]}
     listed = {item.get("id") for item in items}
-    stray = sorted(listed - judged)
-    if stray:
-        faults.append(f"review items that are not judged rows: {stray}")
+    for missing in sorted(judged - listed):
+        faults.append(f"judged row not put to a human: {missing}")
+    for stray in sorted(listed - judged):
+        faults.append(f"review item that is not a judged row: {stray}")
     for item in items:
-        for field in HUMAN_FIELDS:
-            if field not in item:
-                faults.append(f"{item.get('id')}: no {field} to fill")
-            elif item[field] is not None:
-                faults.append(f"{item.get('id')}: {field} is already filled")
+        if item.get("human_agrees") not in (True, False):
+            faults.append(f"{item.get('id')}: human_agrees is unanswered")
+        if not (item.get("human_note") or "").strip():
+            faults.append(f"{item.get('id')}: human_note is unanswered")
+        if item.get("human_agrees") is False and not item.get("human_errors"):
+            faults.append(f"{item.get('id')}: disagrees without giving an annotation")
         for field in ("source_window", "tail_window", "head_window"):
             if not (item.get(field) or "").strip():
                 faults.append(f"{item.get('id')}: {field} is empty")
     record(
-        "check_13_the_manual_review_is_exported_and_unfilled",
+        "check_13_the_manual_review_is_ruled_and_covers_every_row",
+        not faults,
+        "; ".join(faults[:5]),
+    )
+
+
+def check_14_the_agreement_is_recomputed_from_the_ruling() -> None:
+    """Positive 14: the headline agreement is the ruling's own arithmetic.
+
+    The ruling splits its rows in two. A row whose windows do not target the
+    adjudicated splice cannot test anything and is marked with the declared
+    marker; what is left is the valid set, and the agreement is counted over
+    that set alone. Both are recomputed here from the file, and the documents
+    that quote the number have to quote the one that comes out -- a denominator
+    that quietly included the invalid rows would show up as a mismatch here
+    rather than as a footnote nobody checked.
+    """
+    faults = []
+    review = read_json(MANUAL_REVIEW)
+    items = review.get("items") or []
+    invalid = [
+        item
+        for item in items
+        if (item.get("human_note") or "").strip().startswith(PROTOCOL_INVALID)
+    ]
+    valid = [item for item in items if item not in invalid]
+    agree = [item for item in valid if item.get("human_agrees") is True]
+    if not valid:
+        faults.append("every row is protocol invalid, so nothing was tested")
+    if not invalid:
+        faults.append(f"no row carries {PROTOCOL_INVALID}, which the ruling records")
+    headline = f"{len(agree)}/{len(valid)}"
+    for document in (LEDGER, RESULTS_README, PROTOCOL):
+        body = document.read_text(encoding="utf-8")
+        if headline not in body:
+            faults.append(f"{document.name} does not quote the agreement {headline}")
+        if PROTOCOL_INVALID not in body:
+            faults.append(f"{document.name} does not name the {PROTOCOL_INVALID} rule")
+    # An invalid row is invalid for every arm of its point: the window selection
+    # is a property of the boundary, not of the run that was measured at it.
+    by_point: dict[str, set[bool]] = {}
+    for item in items:
+        by_point.setdefault(item["point"], set()).add(item in invalid)
+    split = sorted(point for point, kinds in by_point.items() if len(kinds) > 1)
+    if split:
+        faults.append(f"a point is invalid on some arms only: {split}")
+    record(
+        "check_14_the_agreement_is_recomputed_from_the_ruling",
         not faults,
         "; ".join(faults[:5]),
     )
@@ -974,7 +1046,8 @@ def main() -> int:
         check_10_every_judgement_answers_within_the_declared_vocabularies,
         check_11_the_test_points_are_the_adjudicated_positives,
         check_12_the_judgements_replay_from_cache_byte_for_byte,
-        check_13_the_manual_review_is_exported_and_unfilled,
+        check_13_the_manual_review_is_ruled_and_covers_every_row,
+        check_14_the_agreement_is_recomputed_from_the_ruling,
         check_09_sweep,
     ]
     for check in checks:

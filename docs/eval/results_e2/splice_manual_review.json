@@ -8,9 +8,9 @@
       "arm": "upstream",
       "boundary": "6->7",
       "head_window": "哈兰以南的路线以及当地可用燃料资源的严重短缺。",
-      "human_agrees": null,
-      "human_errors": null,
-      "human_note": null,
+      "human_agrees": true,
+      "human_errors": [],
+      "human_note": "Splice-attributable: sentence broken at the boundary — tail dangles at '水', head restarts mid-phrase '哈兰以南的路线', the source clause 'a scarcity of water along much of the route south of the Hauran' is never rendered as one unit. accuracy/omission major agreed; judge's tail mistranslation call is the same defect seen from the tail side. Non-splice: none material.",
       "id": "AramcoWorld-en-v2 6->7 [upstream]",
       "judge_errors": [
         {
@@ -41,9 +41,9 @@
       "arm": "fork_full",
       "boundary": "6->7",
       "head_window": "具有讽刺意味的是，这些难题还包括豪兰以南沿线大部\n分地区水源稀缺，以及当地可用燃料资源的严重短缺。",
-      "human_agrees": null,
-      "human_errors": null,
-      "human_note": null,
+      "human_agrees": true,
+      "human_errors": [],
+      "human_note": "no-error at the splice: boundary reads as one sentence. '豪兰/哈兰' transliteration variance is non-splice, not counted. This row is the M1-independent positive (upstream open, fork closed).",
       "id": "AramcoWorld-en-v2 6->7 [fork_full]",
       "judge_errors": [],
       "judge_model": "gpt-5.6-terra",
@@ -59,9 +59,17 @@
       "arm": "upstream",
       "boundary": "2->3",
       "head_window": "科学发现",
-      "human_agrees": null,
-      "human_errors": null,
-      "human_note": null,
+      "human_agrees": false,
+      "human_errors": [
+        {
+          "category": "accuracy/omission",
+          "severity": "minor",
+          "span": "(window selection)",
+          "window": "source",
+          "explanation": "PROTOCOL-INVALID: windows are the page-tail figure caption and page-head title, not the two title chain members ('How Indigenous knowledge drives' / 'scientific discovery'); the row does not test the adjudicated title split. Excluded from the agreement count. Judge's chambira omission call is non-splice."
+        }
+      ],
+      "human_note": "PROTOCOL-INVALID: windows are the page-tail figure caption and page-head title, not the two title chain members ('How Indigenous knowledge drives' / 'scientific discovery'); the row does not test the adjudicated title split. Excluded from the agreement count. Judge's chambira/棕榈树纤维 call is a non-splice lexical observation, not counted.",
       "id": "Courier-en 2->3 [upstream]",
       "judge_errors": [
         {
@@ -85,9 +93,17 @@
       "arm": "chain_off_1",
       "boundary": "2->3",
       "head_window": "科学发现",
-      "human_agrees": null,
-      "human_errors": null,
-      "human_note": null,
+      "human_agrees": false,
+      "human_errors": [
+        {
+          "category": "accuracy/omission",
+          "severity": "minor",
+          "span": "(window selection)",
+          "window": "source",
+          "explanation": "PROTOCOL-INVALID: windows are the page-tail figure caption and page-head title, not the two title chain members ('How Indigenous knowledge drives' / 'scientific discovery'); the row does not test the adjudicated title split. Excluded from the agreement count. "
+        }
+      ],
+      "human_note": "PROTOCOL-INVALID: windows are the page-tail figure caption and page-head title, not the two title chain members ('How Indigenous knowledge drives' / 'scientific discovery'); the row does not test the adjudicated title split. Excluded from the agreement count. Same window defect.",
       "id": "Courier-en 2->3 [chain_off_1]",
       "judge_errors": [],
       "judge_model": "gpt-5.6-terra",
@@ -103,9 +119,17 @@
       "arm": "chain_off_2",
       "boundary": "2->3",
       "head_window": "科学发现",
-      "human_agrees": null,
-      "human_errors": null,
-      "human_note": null,
+      "human_agrees": false,
+      "human_errors": [
+        {
+          "category": "accuracy/omission",
+          "severity": "minor",
+          "span": "(window selection)",
+          "window": "source",
+          "explanation": "PROTOCOL-INVALID: windows are the page-tail figure caption and page-head title, not the two title chain members ('How Indigenous knowledge drives' / 'scientific discovery'); the row does not test the adjudicated title split. Excluded from the agreement count. "
+        }
+      ],
+      "human_note": "PROTOCOL-INVALID: windows are the page-tail figure caption and page-head title, not the two title chain members ('How Indigenous knowledge drives' / 'scientific discovery'); the row does not test the adjudicated title split. Excluded from the agreement count. Same window defect.",
       "id": "Courier-en 2->3 [chain_off_2]",
       "judge_errors": [],
       "judge_model": "gpt-5.6-terra",
@@ -121,9 +145,17 @@
       "arm": "chain_on",
       "boundary": "2->3",
       "head_window": "动科学发现",
-      "human_agrees": null,
-      "human_errors": null,
-      "human_note": null,
+      "human_agrees": false,
+      "human_errors": [
+        {
+          "category": "accuracy/addition",
+          "severity": "minor",
+          "span": "动",
+          "window": "head",
+          "explanation": "'动' is the proportional-split residue of the merged title chain '原住民知识如何推动科学发现' cut mid-word ('推 / 动') by the title-chain redistribution; a design behaviour of the proportional strategy, not a source-unsupported addition."
+        }
+      ],
+      "human_note": "PROTOCOL-INVALID: windows are the page-tail figure caption and page-head title, not the two title chain members ('How Indigenous knowledge drives' / 'scientific discovery'); the row does not test the adjudicated title split. Excluded from the agreement count. Judge's addition/minor on '动' is a correct symptom but misattributed: it is title-chain proportional redistribution cutting inside a word (known limitation registered at b5.1). Carry as GAP G-e (title-chain word-boundary snapping).",
       "id": "Courier-en 2->3 [chain_on]",
       "judge_errors": [
         {
@@ -147,9 +179,9 @@
       "arm": "upstream",
       "boundary": "7->8",
       "head_window": "草地已经被申请了专利。根据协议，\n已经共享的利益包括为第一民族青年",
-      "human_agrees": null,
-      "human_errors": null,
-      "human_note": null,
+      "human_agrees": true,
+      "human_errors": [],
+      "human_note": "Splice-attributable: tail '…以及一种复合材料。' is a fabricated closure (accuracy/addition + omission of 'from the grass has been patented'); head '草地已经被申请了专利' loses the antecedent spinifex → '草地' (accuracy/mistranslation). critical agreed. Non-splice, not counted: spinifex untranslated; '申请/获得' patent-status wording (minor, present in all arms).",
       "id": "Courier-en 7->8 [upstream]",
       "judge_errors": [
         {
@@ -173,9 +205,9 @@
       "arm": "chain_off_1",
       "boundary": "7->8",
       "head_window": "这种草已经被申请了专利。根据协议，\n已经分享的利益包括为第一民族青年\n提供的就业机会，以及为澳大利亚土\n著提供的培训和教育机会的资金。",
-      "human_agrees": null,
-      "human_errors": null,
-      "human_note": null,
+      "human_agrees": true,
+      "human_errors": [],
+      "human_note": "Splice-attributable: same fabricated closure ('以及一种复合材料。') and head restart '这种草已经被申请了专利' — the patent sentence is split into two self-contained sentences (accuracy/addition + mistranslation), critical agreed. Antecedent-loss rendering differs from upstream ('这种草' vs '草地'): unstable across samples (GAP-13). Non-splice: '申请/获得' minor, '针茅' acceptable, not counted.",
       "id": "Courier-en 7->8 [chain_off_1]",
       "judge_errors": [
         {
@@ -199,9 +231,9 @@
       "arm": "chain_off_2",
       "boundary": "7->8",
       "head_window": "这种草已经被申请了专利。根据协议，\n已经分享的利益包括为第一民族青年\n提供的就业机会，以及为澳大利亚土\n著提供的培训和教育机会的资金。",
-      "human_agrees": null,
-      "human_errors": null,
-      "human_note": null,
+      "human_agrees": true,
+      "human_errors": [],
+      "human_note": "Splice-attributable: identical splice defect to chain_off_1 with different upstream wording; closure and head restart are byte-identical across the two independent samples → structural, not sampling noise (E2.1 finding). critical agreed. Non-splice as in off_1, not counted.",
       "id": "Courier-en 7->8 [chain_off_2]",
       "judge_errors": [
         {
@@ -225,9 +257,17 @@
       "arm": "chain_on",
       "boundary": "7->8",
       "head_window": "根据协议，已经分享的利益包括为第\n一民族青年提供就业机会，以及为澳\n大利亚土著提供培训和教育机会的资\n金。",
-      "human_agrees": null,
-      "human_errors": null,
-      "human_note": null,
+      "human_agrees": false,
+      "human_errors": [
+        {
+          "category": "accuracy/mistranslation",
+          "severity": "minor",
+          "span": "并已为这种草的复合材料申请了专利。",
+          "window": "tail",
+          "explanation": "'申请了专利' for 'has been patented' understates patent status: a real but minor lexical error, present in all four arms and unrelated to the splice. No splice-attributable error exists in this row: the tail ends at a true sentence end and the head begins the next sentence."
+        }
+      ],
+      "human_note": "No splice error: tail ends '…申请了专利。' (true sentence end), head begins '根据协议…'. The only error is the non-splice '申请/获得' wording (minor, all arms). Judge scored it critical and attributed it to the splice window → severity_off + non-splice counted as splice. Human verdict for this row: no splice-attributable error.",
       "id": "Courier-en 7->8 [chain_on]",
       "judge_errors": [
         {
@@ -251,9 +291,17 @@
       "arm": "upstream",
       "boundary": "2->3",
       "head_window": "土著知识",
-      "human_agrees": null,
-      "human_errors": null,
-      "human_note": null,
+      "human_agrees": false,
+      "human_errors": [
+        {
+          "category": "accuracy/untranslated",
+          "severity": "major",
+          "span": "土著知识",
+          "window": "head",
+          "explanation": "PROTOCOL-INVALID: windows are the page-tail caption and page-head title, not the two title chain members ('时代变迁背景下的' / '土著知识'); the row does not test the adjudicated split. Excluded from the agreement count. Judge's untranslated call on the head window is a correct observation of upstream leaving display headings untranslated zh→en (baseline defect family 3), but it is not the adjudicated splice."
+        }
+      ],
+      "human_note": "PROTOCOL-INVALID: windows are the page-tail caption and page-head title, not the two title chain members ('时代变迁背景下的' / '土著知识'); the row does not test the adjudicated split. Excluded from the agreement count. Judge's untranslated/major on '土著知识' retained as an observation (upstream family 3), not as a splice verdict.",
       "id": "Courier-zh 2->3 [upstream]",
       "judge_errors": [
         {
@@ -277,9 +325,17 @@
       "arm": "fork_full",
       "boundary": "2->3",
       "head_window": "土著知识",
-      "human_agrees": null,
-      "human_errors": null,
-      "human_note": null,
+      "human_agrees": false,
+      "human_errors": [
+        {
+          "category": "accuracy/untranslated",
+          "severity": "critical",
+          "span": "(both windows)",
+          "window": "tail",
+          "explanation": "PROTOCOL-INVALID: windows are the page-tail caption and page-head title, not the two title chain members ('时代变迁背景下的' / '土著知识'); the row does not test the adjudicated split. Excluded from the agreement count. Both tail and head windows are Chinese in a zh→en arm; the judge gave a reading of source-language text as if translated and reported no error (language mismatch not flagged). Pending IL check: source leaked into the window vs paragraph genuinely untranslated (chain masked by sidebar_heavy misclassification, b7.5.2)."
+        }
+      ],
+      "human_note": "PROTOCOL-INVALID: windows are the page-tail caption and page-head title, not the two title chain members ('时代变迁背景下的' / '土著知识'); the row does not test the adjudicated split. Excluded from the agreement count. Additionally a judge failure independent of the window defect: windows are Chinese in a zh→en arm and the judge did not flag target-language mismatch. Pending IL confirmation of paragraph translation status.",
       "id": "Courier-zh 2->3 [fork_full]",
       "judge_errors": [],
       "judge_model": "gpt-5.6-terra",
@@ -295,9 +351,9 @@
       "arm": "upstream",
       "boundary": "7->8",
       "head_window": "to include benefit-sharing clauses. A \nspin-off company is currently using \ncellulose nanofibers extracted from \nTriodia to develop medical gels, and \ncomposite materials made from this herb \nhave also been patented. According to \nthe agreement, realized benefits include \nproviding employment opportunities for \nFirst Nations youth and funding support \nfor training and education related to \nAustralian indigenous communities.",
-      "human_agrees": null,
-      "human_errors": null,
-      "human_note": null,
+      "human_agrees": true,
+      "human_errors": [],
+      "human_note": "Splice-attributable: '…included' / 'to include benefit-sharing clauses' — head restarts the verb, 'included to include' is an ungrammatical duplication → fluency/grammar major agreed. Category is symptom-correct: on the zh→en side the split surfaces as a grammar break, on the en→zh side as a semantic rewrite; different symptoms of the same split mechanism. Non-splice: 'Triodia' fine.",
       "id": "Courier-zh 7->8 [upstream]",
       "judge_errors": [
         {
@@ -321,9 +377,24 @@
       "arm": "fork_full",
       "boundary": "7->8",
       "head_window": "包含惠益分享条款。一家衍生企业目前\n正利用从三齿稃中提取的纤维素纳米纤\n维开发医用凝胶，同时，该草本植物制\n成的复合材料也已获得专利。根据该协\n议，已实现的惠益分享包括为第一民族\n青年提供就业机会，并为澳大利亚土著\n群体提供培训与教育相关的资金支持。",
-      "human_agrees": null,
-      "human_errors": null,
-      "human_note": null,
+      "human_agrees": false,
+      "human_errors": [
+        {
+          "category": "accuracy/untranslated",
+          "severity": "critical",
+          "span": "(both windows)",
+          "window": "tail",
+          "explanation": "Both windows are Chinese in a zh→en arm; judge did not flag target-language mismatch."
+        },
+        {
+          "category": "accuracy/addition",
+          "severity": "major",
+          "span": "包含",
+          "window": "head",
+          "explanation": "Boundary character duplication: source has a single '包' at the page break ('协议中包 / 含惠益分享条款'), the rendered text has '包' at the tail end AND '包含' at the head start → '包' duplicated across the boundary. Splice-attributable. Judge read it as natural continuation and reported no error."
+        }
+      ],
+      "human_note": "Judge missed two errors: (a) windows are Chinese in a zh→en arm, language mismatch not flagged; (b) '包/包含' duplication at the boundary — source has one '包', output has two; the judge's own reading mentions '包—包含' yet reports no error. Context: this chain was not linked/translated in the fork for this sample (zh page-kind collapse → chain_eligible=false → boundary masked, b7.5.2). Pending IL confirmation of paragraph translation status; new defect G-d (boundary character duplication) to register.",
       "id": "Courier-zh 7->8 [fork_full]",
       "judge_errors": [],
       "judge_model": "gpt-5.6-terra",
@@ -335,5 +406,6 @@
       "tail_window": "并非所有与遗传资源相关的土著知\n识商业化利用行为都构成生物剽窃；部\n分项目实现了互利共赢。以澳大利亚的\n印贾兰吉-迪达努（\nIndjalandji-Dhidhanu）部族为例，该\n部族与昆士兰大学的研究人员合作，根\n据其关于三齿稃（一种多年生丛生草本\n植物，传统用途广泛）的土著知识开展\n研究。双方签订的合作研究协议中包"
     }
   ],
-  "selection_rule": "every point on every arm"
+  "selection_rule": "every point on every arm",
+  "human_review_scope": "human_agrees is judged on splice-attributable errors only; non-splice lexical noise is recorded in human_note but excluded from agrees/errors. Rows whose windows do not target the adjudicated splice carry human_note starting with 'PROTOCOL-INVALID' and are excluded from the agreement count. Tally: valid rows 8 → agree 6, disagree 2 (Courier-en 7->8 chain_on: severity_off + non-splice counted as splice; Courier-zh 7->8 fork_full: missed_error x2). PROTOCOL-INVALID rows: 6 (both 2->3 points, all arms; window taken from geometric page tail/head instead of chain members). GAP items: G-a window selection by chain members; G-b judge does not check window target language; G-c judge conflates non-splice lexical errors with splice errors; G-d boundary character duplication in Courier-zh fork output; G-e title-chain proportional redistribution cuts inside words (visible '动科学发现')."
 }
