@@ -1,0 +1,4044 @@
+{
+  "detail": "eval_report.<sample>.json beside this file",
+  "generated_by": "tools/eval_report.py --corpus",
+  "labels": [
+    "upstream",
+    "fork_full_il",
+    "fork_full_pdf"
+  ],
+  "samples": [
+    {
+      "method_comparison": {
+        "bound": 0.1,
+        "boundary_verdicts": {
+          "agreeing": 6,
+          "agreement": 0.857143,
+          "disagreeing": [
+            {
+              "intermediate_language": "open",
+              "label": "1->2",
+              "pdf_extraction": "closed"
+            }
+          ],
+          "shared": 7
+        },
+        "elements": {
+          "intermediate_language_produced": 140,
+          "intermediate_language_source": 140,
+          "pdf_extraction_produced": 199,
+          "pdf_extraction_source": 136
+        },
+        "metrics": {
+          "alignment_delta": {
+            "comparable": false,
+            "intermediate_language": 0.0,
+            "pdf_extraction": 0.003436,
+            "relative_delta": 1.0
+          },
+          "alignment_produced": {
+            "comparable": false,
+            "intermediate_language": 0.002648,
+            "pdf_extraction": 0.005883,
+            "relative_delta": 0.54989
+          },
+          "alignment_source": {
+            "comparable": true,
+            "intermediate_language": 0.002648,
+            "pdf_extraction": 0.002447,
+            "relative_delta": 0.075906
+          },
+          "image_area_delta": {
+            "comparable": true,
+            "intermediate_language": 0.0,
+            "pdf_extraction": -0.0,
+            "relative_delta": 0.0
+          },
+          "image_placement_iou": {
+            "comparable": true,
+            "intermediate_language": 1.0,
+            "pdf_extraction": 1.0,
+            "relative_delta": 0.0
+          },
+          "mid_break_rate.rate": {
+            "comparable": false,
+            "comparable_basis": "boundary verdict agreement",
+            "intermediate_language": 0.571429,
+            "pdf_extraction": 0.428571,
+            "relative_delta": 0.250001
+          },
+          "overlap_delta": {
+            "comparable": false,
+            "intermediate_language": 0.0,
+            "pdf_extraction": -0.040955,
+            "relative_delta": 1.0
+          },
+          "overlap_produced": {
+            "comparable": false,
+            "intermediate_language": 0.018821,
+            "pdf_extraction": 0.002963,
+            "relative_delta": 0.842569
+          },
+          "overlap_source": {
+            "comparable": false,
+            "intermediate_language": 0.018821,
+            "pdf_extraction": 0.043917,
+            "relative_delta": 0.571442
+          }
+        },
+        "sample": "Courier-en.pdf"
+      },
+      "missing": [],
+      "pages": 8,
+      "publication": "unesco_courier",
+      "runs": [
+        {
+          "absent": [
+            "no working directory: no chain or repair level of the conservation invariant",
+            "no source and translated checkpoint pair: no LTCR"
+          ],
+          "boundaries": [
+            {
+              "label": "1->2",
+              "last_character": "。",
+              "layout_label": "plain text",
+              "truth_category": "clean",
+              "verdict": "closed"
+            },
+            {
+              "label": "2->3",
+              "last_character": "。",
+              "layout_label": "plain text",
+              "truth_category": "linked",
+              "verdict": "closed"
+            },
+            {
+              "label": "3->4",
+              "last_character": "|",
+              "layout_label": "plain text",
+              "truth_category": "clean",
+              "verdict": "open"
+            },
+            {
+              "label": "4->5",
+              "last_character": "。",
+              "layout_label": "plain text",
+              "truth_category": "clean",
+              "verdict": "closed"
+            },
+            {
+              "label": "5->6",
+              "last_character": "9",
+              "layout_label": "plain text",
+              "truth_category": "trap",
+              "verdict": "open"
+            },
+            {
+              "label": "6->7",
+              "last_character": "术",
+              "layout_label": "plain text",
+              "truth_category": "trap",
+              "verdict": "open"
+            },
+            {
+              "label": "7->8",
+              "last_character": "。",
+              "layout_label": "plain text",
+              "truth_category": "linked",
+              "verdict": "closed"
+            }
+          ],
+          "conservation": {
+            "holds": true,
+            "levels": {
+              "chain": {
+                "evidence": {
+                  "absent": "no chain translation report"
+                },
+                "failures": [],
+                "holds": null,
+                "level": "chain",
+                "subjects": 0
+              },
+              "document": {
+                "evidence": {
+                  "produced_pages": 8,
+                  "source_pages": 8
+                },
+                "failures": [],
+                "holds": true,
+                "level": "document",
+                "subjects": 1
+              },
+              "repair": {
+                "evidence": {
+                  "absent": "no repair report"
+                },
+                "failures": [],
+                "holds": null,
+                "level": "repair",
+                "subjects": 0
+              }
+            },
+            "levels_absent": [
+              "chain",
+              "repair"
+            ],
+            "levels_present": [
+              "document"
+            ],
+            "metric": "block_conservation_invariant"
+          },
+          "label": "upstream",
+          "layout_geometry": {
+            "alignment_delta": 0.003122,
+            "alignment_produced": 0.005569,
+            "alignment_source": 0.002447,
+            "image_area_delta": -0.0,
+            "image_placement_iou": 1.0,
+            "overlap_delta": -0.039941,
+            "overlap_produced": 0.003976,
+            "overlap_source": 0.043917
+          },
+          "ltcr": null,
+          "mid_break_rate": {
+            "metric": "mid_unit_page_break_rate",
+            "pages": 8,
+            "rate": 0.428571,
+            "strict_rate": 0.428571,
+            "vertical_paragraphs": 3
+          },
+          "page_count_delta": {
+            "conserved": true,
+            "produced_pages": 8,
+            "source_pages": 8,
+            "value": 0
+          },
+          "page_series": {
+            "answerable": 7,
+            "axis_unsupported_count": 0,
+            "boundaries_total": 7,
+            "closed_count": 4,
+            "designed_count": 0,
+            "no_tail_count": 0,
+            "open_count": 3,
+            "rate": 0.428571,
+            "series": "page",
+            "strict_rate": 0.428571
+          },
+          "path": "pdf_extraction",
+          "produced_pdf": "examples/baseline/pdf/Courier-en/Courier-en.no_watermark.zh.mono.pdf",
+          "produced_pdf_sha256": "d78d442beb91d63450ffc354a50b04fecb9b24585490bc6f6708734b79faf688",
+          "source_pdf": "examples/input/Courier-en.pdf",
+          "source_pdf_sha256": "9fcb6b5e7d5a51972d766b98518554c64ef39080371ec98b4d04570402ea275a",
+          "stratified": {
+            "mbr_all": 0.428571,
+            "mbr_all_denominator": 7,
+            "mbr_linkable": 0.2,
+            "mbr_linkable_denominator": 5,
+            "mbr_linkable_open": 1,
+            "source_inherited_open": 2,
+            "strata": {
+              "clean": {
+                "answerable": 3,
+                "axis_unsupported_count": 0,
+                "boundaries_total": 3,
+                "closed_count": 2,
+                "designed_count": 0,
+                "no_tail_count": 0,
+                "open_count": 1,
+                "rate": 0.333333,
+                "series": "page",
+                "strict_rate": 0.333333
+              },
+              "linked": {
+                "answerable": 2,
+                "axis_unsupported_count": 0,
+                "boundaries_total": 2,
+                "closed_count": 2,
+                "designed_count": 0,
+                "no_tail_count": 0,
+                "open_count": 0,
+                "rate": 0.0,
+                "series": "page",
+                "strict_rate": 0.0
+              },
+              "trap": {
+                "answerable": 2,
+                "axis_unsupported_count": 0,
+                "boundaries_total": 2,
+                "closed_count": 0,
+                "designed_count": 0,
+                "no_tail_count": 0,
+                "open_count": 2,
+                "rate": 1.0,
+                "series": "page",
+                "strict_rate": 1.0
+              },
+              "unlabelled": {
+                "answerable": 0,
+                "axis_unsupported_count": 0,
+                "boundaries_total": 0,
+                "closed_count": 0,
+                "designed_count": 0,
+                "no_tail_count": 0,
+                "open_count": 0,
+                "rate": null,
+                "series": "page",
+                "strict_rate": null
+              }
+            },
+            "trap_boundaries": 2,
+            "unlabelled_boundaries": 0
+          }
+        },
+        {
+          "absent": [],
+          "boundaries": [
+            {
+              "label": "1->2",
+              "last_character": "织",
+              "layout_label": "title",
+              "truth_category": "clean",
+              "verdict": "open"
+            },
+            {
+              "label": "2->3",
+              "last_character": "。",
+              "layout_label": "figure_caption",
+              "truth_category": "linked",
+              "verdict": "closed"
+            },
+            {
+              "label": "3->4",
+              "last_character": "现",
+              "layout_label": "title",
+              "truth_category": "clean",
+              "verdict": "open"
+            },
+            {
+              "label": "4->5",
+              "last_character": "。",
+              "layout_label": "plain text",
+              "truth_category": "clean",
+              "verdict": "closed"
+            },
+            {
+              "label": "5->6",
+              "last_character": "来",
+              "layout_label": "plain text",
+              "truth_category": "trap",
+              "verdict": "open"
+            },
+            {
+              "label": "6->7",
+              "last_character": "术",
+              "layout_label": "plain text",
+              "truth_category": "trap",
+              "verdict": "open"
+            },
+            {
+              "label": "7->8",
+              "last_character": "。",
+              "layout_label": "plain text",
+              "truth_category": "linked",
+              "verdict": "closed"
+            }
+          ],
+          "conservation": {
+            "holds": true,
+            "levels": {
+              "chain": {
+                "evidence": {
+                  "chains": 2,
+                  "escalated_members": 0,
+                  "merged_members": 4,
+                  "rendered_members": 4
+                },
+                "failures": [],
+                "holds": true,
+                "level": "chain",
+                "subjects": 2
+              },
+              "document": {
+                "evidence": {
+                  "produced_pages": 8,
+                  "source_pages": 8
+                },
+                "failures": [],
+                "holds": true,
+                "level": "document",
+                "subjects": 1
+              },
+              "repair": {
+                "evidence": {
+                  "changed": 0,
+                  "changed_outside_touched": 0,
+                  "pages_after": 8,
+                  "pages_before": 8,
+                  "paragraphs_after": 132,
+                  "paragraphs_before": 132,
+                  "reported_verdict": "conserved",
+                  "touched": 0
+                },
+                "failures": [],
+                "holds": true,
+                "level": "repair",
+                "subjects": 1
+              }
+            },
+            "levels_absent": [],
+            "levels_present": [
+              "chain",
+              "repair",
+              "document"
+            ],
+            "metric": "block_conservation_invariant"
+          },
+          "label": "fork_full_il",
+          "layout_geometry": {
+            "alignment_delta": 0.0,
+            "alignment_produced": 0.002648,
+            "alignment_source": 0.002648,
+            "image_area_delta": 0.0,
+            "image_placement_iou": 1.0,
+            "overlap_delta": 0.0,
+            "overlap_produced": 0.018821,
+            "overlap_source": 0.018821
+          },
+          "ltcr": {
+            "fully_consistent": 1,
+            "legacy_mean_share": 0.7,
+            "ltcr": 0.446429,
+            "measured": 3,
+            "pairs_agreeing": 25,
+            "pairs_total": 56,
+            "terms": 3
+          },
+          "mid_break_rate": {
+            "metric": "mid_unit_page_break_rate",
+            "pages": 8,
+            "rate": 0.571429,
+            "strict_rate": 0.571429,
+            "vertical_paragraphs": 3
+          },
+          "page_count_delta": {
+            "conserved": true,
+            "produced_pages": 8,
+            "source_pages": 8,
+            "value": 0
+          },
+          "page_series": {
+            "answerable": 7,
+            "axis_unsupported_count": 0,
+            "boundaries_total": 7,
+            "closed_count": 3,
+            "designed_count": 0,
+            "no_tail_count": 0,
+            "open_count": 4,
+            "rate": 0.571429,
+            "series": "page",
+            "strict_rate": 0.571429
+          },
+          "path": "intermediate_language",
+          "stratified": {
+            "mbr_all": 0.571429,
+            "mbr_all_denominator": 7,
+            "mbr_linkable": 0.4,
+            "mbr_linkable_denominator": 5,
+            "mbr_linkable_open": 2,
+            "source_inherited_open": 2,
+            "strata": {
+              "clean": {
+                "answerable": 3,
+                "axis_unsupported_count": 0,
+                "boundaries_total": 3,
+                "closed_count": 1,
+                "designed_count": 0,
+                "no_tail_count": 0,
+                "open_count": 2,
+                "rate": 0.666667,
+                "series": "page",
+                "strict_rate": 0.666667
+              },
+              "linked": {
+                "answerable": 2,
+                "axis_unsupported_count": 0,
+                "boundaries_total": 2,
+                "closed_count": 2,
+                "designed_count": 0,
+                "no_tail_count": 0,
+                "open_count": 0,
+                "rate": 0.0,
+                "series": "page",
+                "strict_rate": 0.0
+              },
+              "trap": {
+                "answerable": 2,
+                "axis_unsupported_count": 0,
+                "boundaries_total": 2,
+                "closed_count": 0,
+                "designed_count": 0,
+                "no_tail_count": 0,
+                "open_count": 2,
+                "rate": 1.0,
+                "series": "page",
+                "strict_rate": 1.0
+              },
+              "unlabelled": {
+                "answerable": 0,
+                "axis_unsupported_count": 0,
+                "boundaries_total": 0,
+                "closed_count": 0,
+                "designed_count": 0,
+                "no_tail_count": 0,
+                "open_count": 0,
+                "rate": null,
+                "series": "page",
+                "strict_rate": null
+              }
+            },
+            "trap_boundaries": 2,
+            "unlabelled_boundaries": 0
+          },
+          "working_dir": "examples/output/b8_4/smoke/Courier-en/work/Courier-en"
+        },
+        {
+          "absent": [
+            "no working directory: no chain or repair level of the conservation invariant",
+            "no source and translated checkpoint pair: no LTCR"
+          ],
+          "boundaries": [
+            {
+              "label": "1->2",
+              "last_character": "。",
+              "layout_label": "plain text",
+              "truth_category": "clean",
+              "verdict": "closed"
+            },
+            {
+              "label": "2->3",
+              "last_character": "。",
+              "layout_label": "plain text",
+              "truth_category": "linked",
+              "verdict": "closed"
+            },
+            {
+              "label": "3->4",
+              "last_character": "|",
+              "layout_label": "plain text",
+              "truth_category": "clean",
+              "verdict": "open"
+            },
+            {
+              "label": "4->5",
+              "last_character": "。",
+              "layout_label": "plain text",
+              "truth_category": "clean",
+              "verdict": "closed"
+            },
+            {
+              "label": "5->6",
+              "last_character": "来",
+              "layout_label": "plain text",
+              "truth_category": "trap",
+              "verdict": "open"
+            },
+            {
+              "label": "6->7",
+              "last_character": "术",
+              "layout_label": "plain text",
+              "truth_category": "trap",
+              "verdict": "open"
+            },
+            {
+              "label": "7->8",
+              "last_character": "。",
+              "layout_label": "plain text",
+              "truth_category": "linked",
+              "verdict": "closed"
+            }
+          ],
+          "conservation": {
+            "holds": true,
+            "levels": {
+              "chain": {
+                "evidence": {
+                  "absent": "no chain translation report"
+                },
+                "failures": [],
+                "holds": null,
+                "level": "chain",
+                "subjects": 0
+              },
+              "document": {
+                "evidence": {
+                  "produced_pages": 8,
+                  "source_pages": 8
+                },
+                "failures": [],
+                "holds": true,
+                "level": "document",
+                "subjects": 1
+              },
+              "repair": {
+                "evidence": {
+                  "absent": "no repair report"
+                },
+                "failures": [],
+                "holds": null,
+                "level": "repair",
+                "subjects": 0
+              }
+            },
+            "levels_absent": [
+              "chain",
+              "repair"
+            ],
+            "levels_present": [
+              "document"
+            ],
+            "metric": "block_conservation_invariant"
+          },
+          "label": "fork_full_pdf",
+          "layout_geometry": {
+            "alignment_delta": 0.003436,
+            "alignment_produced": 0.005883,
+            "alignment_source": 0.002447,
+            "image_area_delta": -0.0,
+            "image_placement_iou": 1.0,
+            "overlap_delta": -0.040955,
+            "overlap_produced": 0.002963,
+            "overlap_source": 0.043917
+          },
+          "ltcr": null,
+          "mid_break_rate": {
+            "metric": "mid_unit_page_break_rate",
+            "pages": 8,
+            "rate": 0.428571,
+            "strict_rate": 0.428571,
+            "vertical_paragraphs": 3
+          },
+          "page_count_delta": {
+            "conserved": true,
+            "produced_pages": 8,
+            "source_pages": 8,
+            "value": 0
+          },
+          "page_series": {
+            "answerable": 7,
+            "axis_unsupported_count": 0,
+            "boundaries_total": 7,
+            "closed_count": 4,
+            "designed_count": 0,
+            "no_tail_count": 0,
+            "open_count": 3,
+            "rate": 0.428571,
+            "series": "page",
+            "strict_rate": 0.428571
+          },
+          "path": "pdf_extraction",
+          "produced_pdf": "examples/output/b8_4/smoke/Courier-en/out/Courier-en.no_watermark.zh.mono.pdf",
+          "produced_pdf_sha256": "0bbf13877d6db4744c545432f2b0bd3782736989ba74053408806bccc8e837aa",
+          "source_pdf": "examples/input/Courier-en.pdf",
+          "source_pdf_sha256": "9fcb6b5e7d5a51972d766b98518554c64ef39080371ec98b4d04570402ea275a",
+          "stratified": {
+            "mbr_all": 0.428571,
+            "mbr_all_denominator": 7,
+            "mbr_linkable": 0.2,
+            "mbr_linkable_denominator": 5,
+            "mbr_linkable_open": 1,
+            "source_inherited_open": 2,
+            "strata": {
+              "clean": {
+                "answerable": 3,
+                "axis_unsupported_count": 0,
+                "boundaries_total": 3,
+                "closed_count": 2,
+                "designed_count": 0,
+                "no_tail_count": 0,
+                "open_count": 1,
+                "rate": 0.333333,
+                "series": "page",
+                "strict_rate": 0.333333
+              },
+              "linked": {
+                "answerable": 2,
+                "axis_unsupported_count": 0,
+                "boundaries_total": 2,
+                "closed_count": 2,
+                "designed_count": 0,
+                "no_tail_count": 0,
+                "open_count": 0,
+                "rate": 0.0,
+                "series": "page",
+                "strict_rate": 0.0
+              },
+              "trap": {
+                "answerable": 2,
+                "axis_unsupported_count": 0,
+                "boundaries_total": 2,
+                "closed_count": 0,
+                "designed_count": 0,
+                "no_tail_count": 0,
+                "open_count": 2,
+                "rate": 1.0,
+                "series": "page",
+                "strict_rate": 1.0
+              },
+              "unlabelled": {
+                "answerable": 0,
+                "axis_unsupported_count": 0,
+                "boundaries_total": 0,
+                "closed_count": 0,
+                "designed_count": 0,
+                "no_tail_count": 0,
+                "open_count": 0,
+                "rate": null,
+                "series": "page",
+                "strict_rate": null
+              }
+            },
+            "trap_boundaries": 2,
+            "unlabelled_boundaries": 0
+          }
+        }
+      ],
+      "sample": "Courier-en.pdf"
+    },
+    {
+      "method_comparison": {
+        "bound": 0.1,
+        "boundary_verdicts": {
+          "agreeing": 2,
+          "agreement": 1.0,
+          "disagreeing": [],
+          "shared": 2
+        },
+        "elements": {
+          "intermediate_language_produced": 43,
+          "intermediate_language_source": 43,
+          "pdf_extraction_produced": 62,
+          "pdf_extraction_source": 31
+        },
+        "metrics": {
+          "alignment_delta": {
+            "comparable": false,
+            "intermediate_language": 0.0,
+            "pdf_extraction": 3.8e-05,
+            "relative_delta": 1.0
+          },
+          "alignment_produced": {
+            "comparable": false,
+            "intermediate_language": 0.002802,
+            "pdf_extraction": 0.000282,
+            "relative_delta": 0.899358
+          },
+          "alignment_source": {
+            "comparable": false,
+            "intermediate_language": 0.002802,
+            "pdf_extraction": 0.000245,
+            "relative_delta": 0.912562
+          },
+          "image_area_delta": {
+            "comparable": true,
+            "intermediate_language": 0.0,
+            "pdf_extraction": -0.0,
+            "relative_delta": 0.0
+          },
+          "image_placement_iou": {
+            "comparable": true,
+            "intermediate_language": 1.0,
+            "pdf_extraction": 1.0,
+            "relative_delta": 0.0
+          },
+          "mid_break_rate.rate": {
+            "comparable": true,
+            "comparable_basis": "boundary verdict agreement",
+            "intermediate_language": 0.0,
+            "pdf_extraction": 0.0,
+            "relative_delta": 0.0
+          },
+          "overlap_delta": {
+            "comparable": true,
+            "intermediate_language": 0.0,
+            "pdf_extraction": 0.0,
+            "relative_delta": 0.0
+          },
+          "overlap_produced": {
+            "comparable": false,
+            "intermediate_language": 0.125767,
+            "pdf_extraction": 0.0,
+            "relative_delta": 1.0
+          },
+          "overlap_source": {
+            "comparable": false,
+            "intermediate_language": 0.125767,
+            "pdf_extraction": 0.0,
+            "relative_delta": 1.0
+          }
+        },
+        "sample": "Vogue-en.pdf"
+      },
+      "missing": [],
+      "pages": 3,
+      "publication": "vogue_us",
+      "runs": [
+        {
+          "absent": [
+            "no working directory: no chain or repair level of the conservation invariant",
+            "no source and translated checkpoint pair: no LTCR"
+          ],
+          "boundaries": [
+            {
+              "label": "1->2",
+              "last_character": null,
+              "layout_label": null,
+              "truth_category": "clean",
+              "verdict": "no_tail"
+            },
+            {
+              "label": "2->3",
+              "last_character": null,
+              "layout_label": null,
+              "truth_category": "clean",
+              "verdict": "no_tail"
+            }
+          ],
+          "conservation": {
+            "holds": true,
+            "levels": {
+              "chain": {
+                "evidence": {
+                  "absent": "no chain translation report"
+                },
+                "failures": [],
+                "holds": null,
+                "level": "chain",
+                "subjects": 0
+              },
+              "document": {
+                "evidence": {
+                  "produced_pages": 3,
+                  "source_pages": 3
+                },
+                "failures": [],
+                "holds": true,
+                "level": "document",
+                "subjects": 1
+              },
+              "repair": {
+                "evidence": {
+                  "absent": "no repair report"
+                },
+                "failures": [],
+                "holds": null,
+                "level": "repair",
+                "subjects": 0
+              }
+            },
+            "levels_absent": [
+              "chain",
+              "repair"
+            ],
+            "levels_present": [
+              "document"
+            ],
+            "metric": "block_conservation_invariant"
+          },
+          "label": "upstream",
+          "layout_geometry": {
+            "alignment_delta": 1e-06,
+            "alignment_produced": 0.000246,
+            "alignment_source": 0.000245,
+            "image_area_delta": -0.0,
+            "image_placement_iou": 1.0,
+            "overlap_delta": 0.0,
+            "overlap_produced": 0.0,
+            "overlap_source": 0.0
+          },
+          "ltcr": null,
+          "mid_break_rate": {
+            "metric": "mid_unit_page_break_rate",
+            "pages": 3,
+            "rate": 0.0,
+            "strict_rate": null,
+            "vertical_paragraphs": 3
+          },
+          "page_count_delta": {
+            "conserved": true,
+            "produced_pages": 3,
+            "source_pages": 3,
+            "value": 0
+          },
+          "page_series": {
+            "answerable": 0,
+            "axis_unsupported_count": 0,
+            "boundaries_total": 2,
+            "closed_count": 0,
+            "designed_count": 0,
+            "no_tail_count": 2,
+            "open_count": 0,
+            "rate": 0.0,
+            "series": "page",
+            "strict_rate": null
+          },
+          "path": "pdf_extraction",
+          "produced_pdf": "examples/baseline/pdf/Vogue-en/Vogue-en.no_watermark.zh.mono.pdf",
+          "produced_pdf_sha256": "b4e9ad6dcd9f2928f2cfab6280ee4afcaaab3a6c30554aa1f8f49da3ceebb086",
+          "source_pdf": "examples/input/Vogue-en.pdf",
+          "source_pdf_sha256": "d1bfee53834180de22e3c890a08a7f7fc7cc708024189a7df265248a4f9024d9",
+          "stratified": {
+            "mbr_all": 0.0,
+            "mbr_all_denominator": 2,
+            "mbr_linkable": null,
+            "mbr_linkable_denominator": 0,
+            "mbr_linkable_open": 0,
+            "source_inherited_open": 0,
+            "strata": {
+              "clean": {
+                "answerable": 0,
+                "axis_unsupported_count": 0,
+                "boundaries_total": 2,
+                "closed_count": 0,
+                "designed_count": 0,
+                "no_tail_count": 2,
+                "open_count": 0,
+                "rate": 0.0,
+                "series": "page",
+                "strict_rate": null
+              },
+              "linked": {
+                "answerable": 0,
+                "axis_unsupported_count": 0,
+                "boundaries_total": 0,
+                "closed_count": 0,
+                "designed_count": 0,
+                "no_tail_count": 0,
+                "open_count": 0,
+                "rate": null,
+                "series": "page",
+                "strict_rate": null
+              },
+              "trap": {
+                "answerable": 0,
+                "axis_unsupported_count": 0,
+                "boundaries_total": 0,
+                "closed_count": 0,
+                "designed_count": 0,
+                "no_tail_count": 0,
+                "open_count": 0,
+                "rate": null,
+                "series": "page",
+                "strict_rate": null
+              },
+              "unlabelled": {
+                "answerable": 0,
+                "axis_unsupported_count": 0,
+                "boundaries_total": 0,
+                "closed_count": 0,
+                "designed_count": 0,
+                "no_tail_count": 0,
+                "open_count": 0,
+                "rate": null,
+                "series": "page",
+                "strict_rate": null
+              }
+            },
+            "trap_boundaries": 0,
+            "unlabelled_boundaries": 0
+          }
+        },
+        {
+          "absent": [],
+          "boundaries": [
+            {
+              "label": "1->2",
+              "last_character": null,
+              "layout_label": null,
+              "truth_category": "clean",
+              "verdict": "no_tail"
+            },
+            {
+              "label": "2->3",
+              "last_character": null,
+              "layout_label": null,
+              "truth_category": "clean",
+              "verdict": "no_tail"
+            }
+          ],
+          "conservation": {
+            "holds": true,
+            "levels": {
+              "chain": {
+                "evidence": {
+                  "chains": 0,
+                  "escalated_members": 0,
+                  "merged_members": 0,
+                  "rendered_members": 0
+                },
+                "failures": [],
+                "holds": true,
+                "level": "chain",
+                "subjects": 0
+              },
+              "document": {
+                "evidence": {
+                  "produced_pages": 3,
+                  "source_pages": 3
+                },
+                "failures": [],
+                "holds": true,
+                "level": "document",
+                "subjects": 1
+              },
+              "repair": {
+                "evidence": {
+                  "changed": 0,
+                  "changed_outside_touched": 0,
+                  "pages_after": 3,
+                  "pages_before": 3,
+                  "paragraphs_after": 39,
+                  "paragraphs_before": 39,
+                  "reported_verdict": "conserved",
+                  "touched": 0
+                },
+                "failures": [],
+                "holds": true,
+                "level": "repair",
+                "subjects": 1
+              }
+            },
+            "levels_absent": [],
+            "levels_present": [
+              "chain",
+              "repair",
+              "document"
+            ],
+            "metric": "block_conservation_invariant"
+          },
+          "label": "fork_full_il",
+          "layout_geometry": {
+            "alignment_delta": 0.0,
+            "alignment_produced": 0.002802,
+            "alignment_source": 0.002802,
+            "image_area_delta": 0.0,
+            "image_placement_iou": 1.0,
+            "overlap_delta": 0.0,
+            "overlap_produced": 0.125767,
+            "overlap_source": 0.125767
+          },
+          "ltcr": {
+            "fully_consistent": 0,
+            "legacy_mean_share": null,
+            "ltcr": null,
+            "measured": 0,
+            "pairs_agreeing": 0,
+            "pairs_total": 0,
+            "terms": 0
+          },
+          "mid_break_rate": {
+            "metric": "mid_unit_page_break_rate",
+            "pages": 3,
+            "rate": 0.0,
+            "strict_rate": null,
+            "vertical_paragraphs": 2
+          },
+          "page_count_delta": {
+            "conserved": true,
+            "produced_pages": 3,
+            "source_pages": 3,
+            "value": 0
+          },
+          "page_series": {
+            "answerable": 0,
+            "axis_unsupported_count": 0,
+            "boundaries_total": 2,
+            "closed_count": 0,
+            "designed_count": 0,
+            "no_tail_count": 2,
+            "open_count": 0,
+            "rate": 0.0,
+            "series": "page",
+            "strict_rate": null
+          },
+          "path": "intermediate_language",
+          "stratified": {
+            "mbr_all": 0.0,
+            "mbr_all_denominator": 2,
+            "mbr_linkable": null,
+            "mbr_linkable_denominator": 0,
+            "mbr_linkable_open": 0,
+            "source_inherited_open": 0,
+            "strata": {
+              "clean": {
+                "answerable": 0,
+                "axis_unsupported_count": 0,
+                "boundaries_total": 2,
+                "closed_count": 0,
+                "designed_count": 0,
+                "no_tail_count": 2,
+                "open_count": 0,
+                "rate": 0.0,
+                "series": "page",
+                "strict_rate": null
+              },
+              "linked": {
+                "answerable": 0,
+                "axis_unsupported_count": 0,
+                "boundaries_total": 0,
+                "closed_count": 0,
+                "designed_count": 0,
+                "no_tail_count": 0,
+                "open_count": 0,
+                "rate": null,
+                "series": "page",
+                "strict_rate": null
+              },
+              "trap": {
+                "answerable": 0,
+                "axis_unsupported_count": 0,
+                "boundaries_total": 0,
+                "closed_count": 0,
+                "designed_count": 0,
+                "no_tail_count": 0,
+                "open_count": 0,
+                "rate": null,
+                "series": "page",
+                "strict_rate": null
+              },
+              "unlabelled": {
+                "answerable": 0,
+                "axis_unsupported_count": 0,
+                "boundaries_total": 0,
+                "closed_count": 0,
+                "designed_count": 0,
+                "no_tail_count": 0,
+                "open_count": 0,
+                "rate": null,
+                "series": "page",
+                "strict_rate": null
+              }
+            },
+            "trap_boundaries": 0,
+            "unlabelled_boundaries": 0
+          },
+          "working_dir": "examples/output/b8_4/smoke/Vogue-en/work/Vogue-en"
+        },
+        {
+          "absent": [
+            "no working directory: no chain or repair level of the conservation invariant",
+            "no source and translated checkpoint pair: no LTCR"
+          ],
+          "boundaries": [
+            {
+              "label": "1->2",
+              "last_character": null,
+              "layout_label": null,
+              "truth_category": "clean",
+              "verdict": "no_tail"
+            },
+            {
+              "label": "2->3",
+              "last_character": null,
+              "layout_label": null,
+              "truth_category": "clean",
+              "verdict": "no_tail"
+            }
+          ],
+          "conservation": {
+            "holds": true,
+            "levels": {
+              "chain": {
+                "evidence": {
+                  "absent": "no chain translation report"
+                },
+                "failures": [],
+                "holds": null,
+                "level": "chain",
+                "subjects": 0
+              },
+              "document": {
+                "evidence": {
+                  "produced_pages": 3,
+                  "source_pages": 3
+                },
+                "failures": [],
+                "holds": true,
+                "level": "document",
+                "subjects": 1
+              },
+              "repair": {
+                "evidence": {
+                  "absent": "no repair report"
+                },
+                "failures": [],
+                "holds": null,
+                "level": "repair",
+                "subjects": 0
+              }
+            },
+            "levels_absent": [
+              "chain",
+              "repair"
+            ],
+            "levels_present": [
+              "document"
+            ],
+            "metric": "block_conservation_invariant"
+          },
+          "label": "fork_full_pdf",
+          "layout_geometry": {
+            "alignment_delta": 3.8e-05,
+            "alignment_produced": 0.000282,
+            "alignment_source": 0.000245,
+            "image_area_delta": -0.0,
+            "image_placement_iou": 1.0,
+            "overlap_delta": 0.0,
+            "overlap_produced": 0.0,
+            "overlap_source": 0.0
+          },
+          "ltcr": null,
+          "mid_break_rate": {
+            "metric": "mid_unit_page_break_rate",
+            "pages": 3,
+            "rate": 0.0,
+            "strict_rate": null,
+            "vertical_paragraphs": 3
+          },
+          "page_count_delta": {
+            "conserved": true,
+            "produced_pages": 3,
+            "source_pages": 3,
+            "value": 0
+          },
+          "page_series": {
+            "answerable": 0,
+            "axis_unsupported_count": 0,
+            "boundaries_total": 2,
+            "closed_count": 0,
+            "designed_count": 0,
+            "no_tail_count": 2,
+            "open_count": 0,
+            "rate": 0.0,
+            "series": "page",
+            "strict_rate": null
+          },
+          "path": "pdf_extraction",
+          "produced_pdf": "examples/output/b8_4/smoke/Vogue-en/out/Vogue-en.no_watermark.zh.mono.pdf",
+          "produced_pdf_sha256": "4a1bb92a0d723ebeab20d8bfa6bf58529fa3eb050df46dce71031616e72395be",
+          "source_pdf": "examples/input/Vogue-en.pdf",
+          "source_pdf_sha256": "d1bfee53834180de22e3c890a08a7f7fc7cc708024189a7df265248a4f9024d9",
+          "stratified": {
+            "mbr_all": 0.0,
+            "mbr_all_denominator": 2,
+            "mbr_linkable": null,
+            "mbr_linkable_denominator": 0,
+            "mbr_linkable_open": 0,
+            "source_inherited_open": 0,
+            "strata": {
+              "clean": {
+                "answerable": 0,
+                "axis_unsupported_count": 0,
+                "boundaries_total": 2,
+                "closed_count": 0,
+                "designed_count": 0,
+                "no_tail_count": 2,
+                "open_count": 0,
+                "rate": 0.0,
+                "series": "page",
+                "strict_rate": null
+              },
+              "linked": {
+                "answerable": 0,
+                "axis_unsupported_count": 0,
+                "boundaries_total": 0,
+                "closed_count": 0,
+                "designed_count": 0,
+                "no_tail_count": 0,
+                "open_count": 0,
+                "rate": null,
+                "series": "page",
+                "strict_rate": null
+              },
+              "trap": {
+                "answerable": 0,
+                "axis_unsupported_count": 0,
+                "boundaries_total": 0,
+                "closed_count": 0,
+                "designed_count": 0,
+                "no_tail_count": 0,
+                "open_count": 0,
+                "rate": null,
+                "series": "page",
+                "strict_rate": null
+              },
+              "unlabelled": {
+                "answerable": 0,
+                "axis_unsupported_count": 0,
+                "boundaries_total": 0,
+                "closed_count": 0,
+                "designed_count": 0,
+                "no_tail_count": 0,
+                "open_count": 0,
+                "rate": null,
+                "series": "page",
+                "strict_rate": null
+              }
+            },
+            "trap_boundaries": 0,
+            "unlabelled_boundaries": 0
+          }
+        }
+      ],
+      "sample": "Vogue-en.pdf"
+    },
+    {
+      "method_comparison": {
+        "bound": 0.1,
+        "boundary_verdicts": {
+          "agreeing": 3,
+          "agreement": 1.0,
+          "disagreeing": [],
+          "shared": 3
+        },
+        "elements": {
+          "intermediate_language_produced": 217,
+          "intermediate_language_source": 217,
+          "pdf_extraction_produced": 255,
+          "pdf_extraction_source": 184
+        },
+        "metrics": {
+          "alignment_delta": {
+            "comparable": false,
+            "intermediate_language": 4e-06,
+            "pdf_extraction": -2e-05,
+            "relative_delta": 1.2
+          },
+          "alignment_produced": {
+            "comparable": false,
+            "intermediate_language": 0.000148,
+            "pdf_extraction": 0.000246,
+            "relative_delta": 0.398374
+          },
+          "alignment_source": {
+            "comparable": false,
+            "intermediate_language": 0.000145,
+            "pdf_extraction": 0.000266,
+            "relative_delta": 0.454887
+          },
+          "image_area_delta": {
+            "comparable": false,
+            "intermediate_language": 0.0,
+            "pdf_extraction": 0.00031,
+            "relative_delta": 1.0
+          },
+          "image_placement_iou": {
+            "comparable": true,
+            "intermediate_language": 1.0,
+            "pdf_extraction": 0.999709,
+            "relative_delta": 0.000291
+          },
+          "mid_break_rate.rate": {
+            "comparable": true,
+            "comparable_basis": "boundary verdict agreement",
+            "intermediate_language": 0.666667,
+            "pdf_extraction": 0.666667,
+            "relative_delta": 0.0
+          },
+          "overlap_delta": {
+            "comparable": false,
+            "intermediate_language": 0.00012,
+            "pdf_extraction": -0.056976,
+            "relative_delta": 1.002106
+          },
+          "overlap_produced": {
+            "comparable": false,
+            "intermediate_language": 0.163538,
+            "pdf_extraction": 0.340063,
+            "relative_delta": 0.519095
+          },
+          "overlap_source": {
+            "comparable": false,
+            "intermediate_language": 0.163417,
+            "pdf_extraction": 0.397039,
+            "relative_delta": 0.588411
+          }
+        },
+        "sample": "CERNCourier-en.pdf"
+      },
+      "missing": [],
+      "pages": 4,
+      "publication": "cern_courier",
+      "runs": [
+        {
+          "absent": [
+            "no working directory: no chain or repair level of the conservation invariant",
+            "no source and translated checkpoint pair: no LTCR"
+          ],
+          "boundaries": [
+            {
+              "label": "1->2",
+              "last_character": "6",
+              "layout_label": "plain text",
+              "truth_category": "clean",
+              "verdict": "open"
+            },
+            {
+              "label": "2->3",
+              "last_character": "2",
+              "layout_label": "plain text",
+              "truth_category": "clean",
+              "verdict": "open"
+            },
+            {
+              "label": "3->4",
+              "last_character": "。",
+              "layout_label": "plain text",
+              "truth_category": "clean",
+              "verdict": "closed"
+            }
+          ],
+          "conservation": {
+            "holds": true,
+            "levels": {
+              "chain": {
+                "evidence": {
+                  "absent": "no chain translation report"
+                },
+                "failures": [],
+                "holds": null,
+                "level": "chain",
+                "subjects": 0
+              },
+              "document": {
+                "evidence": {
+                  "produced_pages": 4,
+                  "source_pages": 4
+                },
+                "failures": [],
+                "holds": true,
+                "level": "document",
+                "subjects": 1
+              },
+              "repair": {
+                "evidence": {
+                  "absent": "no repair report"
+                },
+                "failures": [],
+                "holds": null,
+                "level": "repair",
+                "subjects": 0
+              }
+            },
+            "levels_absent": [
+              "chain",
+              "repair"
+            ],
+            "levels_present": [
+              "document"
+            ],
+            "metric": "block_conservation_invariant"
+          },
+          "label": "upstream",
+          "layout_geometry": {
+            "alignment_delta": -1e-05,
+            "alignment_produced": 0.000256,
+            "alignment_source": 0.000266,
+            "image_area_delta": 0.00031,
+            "image_placement_iou": 0.999709,
+            "overlap_delta": -0.046859,
+            "overlap_produced": 0.350179,
+            "overlap_source": 0.397039
+          },
+          "ltcr": null,
+          "mid_break_rate": {
+            "metric": "mid_unit_page_break_rate",
+            "pages": 4,
+            "rate": 0.666667,
+            "strict_rate": 0.666667,
+            "vertical_paragraphs": 3
+          },
+          "page_count_delta": {
+            "conserved": true,
+            "produced_pages": 4,
+            "source_pages": 4,
+            "value": 0
+          },
+          "page_series": {
+            "answerable": 3,
+            "axis_unsupported_count": 0,
+            "boundaries_total": 3,
+            "closed_count": 1,
+            "designed_count": 0,
+            "no_tail_count": 0,
+            "open_count": 2,
+            "rate": 0.666667,
+            "series": "page",
+            "strict_rate": 0.666667
+          },
+          "path": "pdf_extraction",
+          "produced_pdf": "examples/baseline/pdf/CERNCourier-en/CERNCourier-en.no_watermark.zh.mono.pdf",
+          "produced_pdf_sha256": "c78bce91b62018f9162c40c31798e64023f6d65dc2818fe2ac77f5eeacbe6a54",
+          "source_pdf": "examples/input/CERNCourier-en.pdf",
+          "source_pdf_sha256": "c099e0094adf0782bd45746860c95cef6934e919f4cc7c527f48bd01a4eb0929",
+          "stratified": {
+            "mbr_all": 0.666667,
+            "mbr_all_denominator": 3,
+            "mbr_linkable": 0.666667,
+            "mbr_linkable_denominator": 3,
+            "mbr_linkable_open": 2,
+            "source_inherited_open": 0,
+            "strata": {
+              "clean": {
+                "answerable": 3,
+                "axis_unsupported_count": 0,
+                "boundaries_total": 3,
+                "closed_count": 1,
+                "designed_count": 0,
+                "no_tail_count": 0,
+                "open_count": 2,
+                "rate": 0.666667,
+                "series": "page",
+                "strict_rate": 0.666667
+              },
+              "linked": {
+                "answerable": 0,
+                "axis_unsupported_count": 0,
+                "boundaries_total": 0,
+                "closed_count": 0,
+                "designed_count": 0,
+                "no_tail_count": 0,
+                "open_count": 0,
+                "rate": null,
+                "series": "page",
+                "strict_rate": null
+              },
+              "trap": {
+                "answerable": 0,
+                "axis_unsupported_count": 0,
+                "boundaries_total": 0,
+                "closed_count": 0,
+                "designed_count": 0,
+                "no_tail_count": 0,
+                "open_count": 0,
+                "rate": null,
+                "series": "page",
+                "strict_rate": null
+              },
+              "unlabelled": {
+                "answerable": 0,
+                "axis_unsupported_count": 0,
+                "boundaries_total": 0,
+                "closed_count": 0,
+                "designed_count": 0,
+                "no_tail_count": 0,
+                "open_count": 0,
+                "rate": null,
+                "series": "page",
+                "strict_rate": null
+              }
+            },
+            "trap_boundaries": 0,
+            "unlabelled_boundaries": 0
+          }
+        },
+        {
+          "absent": [],
+          "boundaries": [
+            {
+              "label": "1->2",
+              "last_character": "道",
+              "layout_label": "title",
+              "truth_category": "clean",
+              "verdict": "open"
+            },
+            {
+              "label": "2->3",
+              "last_character": "讯",
+              "layout_label": "title",
+              "truth_category": "clean",
+              "verdict": "open"
+            },
+            {
+              "label": "3->4",
+              "last_character": "。",
+              "layout_label": "figure_caption",
+              "truth_category": "clean",
+              "verdict": "closed"
+            }
+          ],
+          "conservation": {
+            "holds": true,
+            "levels": {
+              "chain": {
+                "evidence": {
+                  "chains": 0,
+                  "escalated_members": 0,
+                  "merged_members": 0,
+                  "rendered_members": 0
+                },
+                "failures": [],
+                "holds": true,
+                "level": "chain",
+                "subjects": 0
+              },
+              "document": {
+                "evidence": {
+                  "produced_pages": 4,
+                  "source_pages": 4
+                },
+                "failures": [],
+                "holds": true,
+                "level": "document",
+                "subjects": 1
+              },
+              "repair": {
+                "evidence": {
+                  "changed": 1,
+                  "changed_outside_touched": 0,
+                  "pages_after": 4,
+                  "pages_before": 4,
+                  "paragraphs_after": 202,
+                  "paragraphs_before": 202,
+                  "reported_verdict": "conserved",
+                  "touched": 1
+                },
+                "failures": [],
+                "holds": true,
+                "level": "repair",
+                "subjects": 1
+              }
+            },
+            "levels_absent": [],
+            "levels_present": [
+              "chain",
+              "repair",
+              "document"
+            ],
+            "metric": "block_conservation_invariant"
+          },
+          "label": "fork_full_il",
+          "layout_geometry": {
+            "alignment_delta": 4e-06,
+            "alignment_produced": 0.000148,
+            "alignment_source": 0.000145,
+            "image_area_delta": 0.0,
+            "image_placement_iou": 1.0,
+            "overlap_delta": 0.00012,
+            "overlap_produced": 0.163538,
+            "overlap_source": 0.163417
+          },
+          "ltcr": {
+            "fully_consistent": 3,
+            "legacy_mean_share": 0.95,
+            "ltcr": 0.818182,
+            "measured": 4,
+            "pairs_agreeing": 18,
+            "pairs_total": 22,
+            "terms": 4
+          },
+          "mid_break_rate": {
+            "metric": "mid_unit_page_break_rate",
+            "pages": 4,
+            "rate": 0.666667,
+            "strict_rate": 0.666667,
+            "vertical_paragraphs": 3
+          },
+          "page_count_delta": {
+            "conserved": true,
+            "produced_pages": 4,
+            "source_pages": 4,
+            "value": 0
+          },
+          "page_series": {
+            "answerable": 3,
+            "axis_unsupported_count": 0,
+            "boundaries_total": 3,
+            "closed_count": 1,
+            "designed_count": 0,
+            "no_tail_count": 0,
+            "open_count": 2,
+            "rate": 0.666667,
+            "series": "page",
+            "strict_rate": 0.666667
+          },
+          "path": "intermediate_language",
+          "stratified": {
+            "mbr_all": 0.666667,
+            "mbr_all_denominator": 3,
+            "mbr_linkable": 0.666667,
+            "mbr_linkable_denominator": 3,
+            "mbr_linkable_open": 2,
+            "source_inherited_open": 0,
+            "strata": {
+              "clean": {
+                "answerable": 3,
+                "axis_unsupported_count": 0,
+                "boundaries_total": 3,
+                "closed_count": 1,
+                "designed_count": 0,
+                "no_tail_count": 0,
+                "open_count": 2,
+                "rate": 0.666667,
+                "series": "page",
+                "strict_rate": 0.666667
+              },
+              "linked": {
+                "answerable": 0,
+                "axis_unsupported_count": 0,
+                "boundaries_total": 0,
+                "closed_count": 0,
+                "designed_count": 0,
+                "no_tail_count": 0,
+                "open_count": 0,
+                "rate": null,
+                "series": "page",
+                "strict_rate": null
+              },
+              "trap": {
+                "answerable": 0,
+                "axis_unsupported_count": 0,
+                "boundaries_total": 0,
+                "closed_count": 0,
+                "designed_count": 0,
+                "no_tail_count": 0,
+                "open_count": 0,
+                "rate": null,
+                "series": "page",
+                "strict_rate": null
+              },
+              "unlabelled": {
+                "answerable": 0,
+                "axis_unsupported_count": 0,
+                "boundaries_total": 0,
+                "closed_count": 0,
+                "designed_count": 0,
+                "no_tail_count": 0,
+                "open_count": 0,
+                "rate": null,
+                "series": "page",
+                "strict_rate": null
+              }
+            },
+            "trap_boundaries": 0,
+            "unlabelled_boundaries": 0
+          },
+          "working_dir": "examples/output/b8_4/smoke/CERNCourier-en/work/CERNCourier-en"
+        },
+        {
+          "absent": [
+            "no working directory: no chain or repair level of the conservation invariant",
+            "no source and translated checkpoint pair: no LTCR"
+          ],
+          "boundaries": [
+            {
+              "label": "1->2",
+              "last_character": "6",
+              "layout_label": "plain text",
+              "truth_category": "clean",
+              "verdict": "open"
+            },
+            {
+              "label": "2->3",
+              "last_character": "2",
+              "layout_label": "plain text",
+              "truth_category": "clean",
+              "verdict": "open"
+            },
+            {
+              "label": "3->4",
+              "last_character": "。",
+              "layout_label": "plain text",
+              "truth_category": "clean",
+              "verdict": "closed"
+            }
+          ],
+          "conservation": {
+            "holds": true,
+            "levels": {
+              "chain": {
+                "evidence": {
+                  "absent": "no chain translation report"
+                },
+                "failures": [],
+                "holds": null,
+                "level": "chain",
+                "subjects": 0
+              },
+              "document": {
+                "evidence": {
+                  "produced_pages": 4,
+                  "source_pages": 4
+                },
+                "failures": [],
+                "holds": true,
+                "level": "document",
+                "subjects": 1
+              },
+              "repair": {
+                "evidence": {
+                  "absent": "no repair report"
+                },
+                "failures": [],
+                "holds": null,
+                "level": "repair",
+                "subjects": 0
+              }
+            },
+            "levels_absent": [
+              "chain",
+              "repair"
+            ],
+            "levels_present": [
+              "document"
+            ],
+            "metric": "block_conservation_invariant"
+          },
+          "label": "fork_full_pdf",
+          "layout_geometry": {
+            "alignment_delta": -2e-05,
+            "alignment_produced": 0.000246,
+            "alignment_source": 0.000266,
+            "image_area_delta": 0.00031,
+            "image_placement_iou": 0.999709,
+            "overlap_delta": -0.056976,
+            "overlap_produced": 0.340063,
+            "overlap_source": 0.397039
+          },
+          "ltcr": null,
+          "mid_break_rate": {
+            "metric": "mid_unit_page_break_rate",
+            "pages": 4,
+            "rate": 0.666667,
+            "strict_rate": 0.666667,
+            "vertical_paragraphs": 3
+          },
+          "page_count_delta": {
+            "conserved": true,
+            "produced_pages": 4,
+            "source_pages": 4,
+            "value": 0
+          },
+          "page_series": {
+            "answerable": 3,
+            "axis_unsupported_count": 0,
+            "boundaries_total": 3,
+            "closed_count": 1,
+            "designed_count": 0,
+            "no_tail_count": 0,
+            "open_count": 2,
+            "rate": 0.666667,
+            "series": "page",
+            "strict_rate": 0.666667
+          },
+          "path": "pdf_extraction",
+          "produced_pdf": "examples/output/b8_4/smoke/CERNCourier-en/out/CERNCourier-en.no_watermark.zh.mono.pdf",
+          "produced_pdf_sha256": "9a5d7ffd16238e54c5cf01fc4f88addb3d7e3cfac67152ad12bc9ba9c0e4c1fa",
+          "source_pdf": "examples/input/CERNCourier-en.pdf",
+          "source_pdf_sha256": "c099e0094adf0782bd45746860c95cef6934e919f4cc7c527f48bd01a4eb0929",
+          "stratified": {
+            "mbr_all": 0.666667,
+            "mbr_all_denominator": 3,
+            "mbr_linkable": 0.666667,
+            "mbr_linkable_denominator": 3,
+            "mbr_linkable_open": 2,
+            "source_inherited_open": 0,
+            "strata": {
+              "clean": {
+                "answerable": 3,
+                "axis_unsupported_count": 0,
+                "boundaries_total": 3,
+                "closed_count": 1,
+                "designed_count": 0,
+                "no_tail_count": 0,
+                "open_count": 2,
+                "rate": 0.666667,
+                "series": "page",
+                "strict_rate": 0.666667
+              },
+              "linked": {
+                "answerable": 0,
+                "axis_unsupported_count": 0,
+                "boundaries_total": 0,
+                "closed_count": 0,
+                "designed_count": 0,
+                "no_tail_count": 0,
+                "open_count": 0,
+                "rate": null,
+                "series": "page",
+                "strict_rate": null
+              },
+              "trap": {
+                "answerable": 0,
+                "axis_unsupported_count": 0,
+                "boundaries_total": 0,
+                "closed_count": 0,
+                "designed_count": 0,
+                "no_tail_count": 0,
+                "open_count": 0,
+                "rate": null,
+                "series": "page",
+                "strict_rate": null
+              },
+              "unlabelled": {
+                "answerable": 0,
+                "axis_unsupported_count": 0,
+                "boundaries_total": 0,
+                "closed_count": 0,
+                "designed_count": 0,
+                "no_tail_count": 0,
+                "open_count": 0,
+                "rate": null,
+                "series": "page",
+                "strict_rate": null
+              }
+            },
+            "trap_boundaries": 0,
+            "unlabelled_boundaries": 0
+          }
+        }
+      ],
+      "sample": "CERNCourier-en.pdf"
+    },
+    {
+      "method_comparison": {
+        "bound": 0.1,
+        "boundary_verdicts": {
+          "agreeing": 7,
+          "agreement": 0.875,
+          "disagreeing": [
+            {
+              "intermediate_language": "no_tail",
+              "label": "1->2",
+              "pdf_extraction": "open"
+            }
+          ],
+          "shared": 8
+        },
+        "elements": {
+          "intermediate_language_produced": 165,
+          "intermediate_language_source": 165,
+          "pdf_extraction_produced": 283,
+          "pdf_extraction_source": 367
+        },
+        "metrics": {
+          "alignment_delta": {
+            "comparable": false,
+            "intermediate_language": 0.0,
+            "pdf_extraction": 0.00042,
+            "relative_delta": 1.0
+          },
+          "alignment_produced": {
+            "comparable": false,
+            "intermediate_language": 0.002198,
+            "pdf_extraction": 0.001123,
+            "relative_delta": 0.489081
+          },
+          "alignment_source": {
+            "comparable": false,
+            "intermediate_language": 0.002198,
+            "pdf_extraction": 0.000703,
+            "relative_delta": 0.680164
+          },
+          "image_area_delta": {
+            "comparable": false,
+            "intermediate_language": 0.0,
+            "pdf_extraction": -0.004457,
+            "relative_delta": 1.0
+          },
+          "image_placement_iou": {
+            "comparable": true,
+            "intermediate_language": 1.0,
+            "pdf_extraction": 0.960554,
+            "relative_delta": 0.039446
+          },
+          "mid_break_rate.rate": {
+            "comparable": false,
+            "comparable_basis": "boundary verdict agreement",
+            "intermediate_language": 0.125,
+            "pdf_extraction": 0.25,
+            "relative_delta": 0.5
+          },
+          "overlap_delta": {
+            "comparable": false,
+            "intermediate_language": 0.0,
+            "pdf_extraction": 0.11568,
+            "relative_delta": 1.0
+          },
+          "overlap_produced": {
+            "comparable": false,
+            "intermediate_language": 0.04905,
+            "pdf_extraction": 0.432311,
+            "relative_delta": 0.88654
+          },
+          "overlap_source": {
+            "comparable": false,
+            "intermediate_language": 0.04905,
+            "pdf_extraction": 0.316631,
+            "relative_delta": 0.845088
+          }
+        },
+        "sample": "AramcoWorld-en-v2.pdf"
+      },
+      "missing": [],
+      "pages": 9,
+      "publication": "aramcoworld",
+      "runs": [
+        {
+          "absent": [
+            "no working directory: no chain or repair level of the conservation invariant",
+            "no source and translated checkpoint pair: no LTCR"
+          ],
+          "boundaries": [
+            {
+              "label": "1->2",
+              "last_character": "m",
+              "layout_label": "plain text",
+              "truth_category": "clean",
+              "verdict": "open"
+            },
+            {
+              "label": "2->3",
+              "last_character": "。",
+              "layout_label": "plain text",
+              "truth_category": "clean",
+              "verdict": "closed"
+            },
+            {
+              "label": "3->4",
+              "last_character": "。",
+              "layout_label": "plain text",
+              "truth_category": "clean",
+              "verdict": "closed"
+            },
+            {
+              "label": "4->5",
+              "last_character": "”",
+              "layout_label": "plain text",
+              "truth_category": "clean",
+              "verdict": "closed"
+            },
+            {
+              "label": "5->6",
+              "last_character": "。",
+              "layout_label": "plain text",
+              "truth_category": "clean",
+              "verdict": "closed"
+            },
+            {
+              "label": "6->7",
+              "last_character": "水",
+              "layout_label": "plain text",
+              "truth_category": "linked",
+              "verdict": "open"
+            },
+            {
+              "label": "7->8",
+              "last_character": "个",
+              "layout_label": "plain text",
+              "truth_category": "trap",
+              "verdict": "open"
+            },
+            {
+              "label": "8->9",
+              "last_character": "”",
+              "layout_label": "plain text",
+              "truth_category": "clean",
+              "verdict": "closed"
+            }
+          ],
+          "conservation": {
+            "holds": true,
+            "levels": {
+              "chain": {
+                "evidence": {
+                  "absent": "no chain translation report"
+                },
+                "failures": [],
+                "holds": null,
+                "level": "chain",
+                "subjects": 0
+              },
+              "document": {
+                "evidence": {
+                  "produced_pages": 9,
+                  "source_pages": 9
+                },
+                "failures": [],
+                "holds": true,
+                "level": "document",
+                "subjects": 1
+              },
+              "repair": {
+                "evidence": {
+                  "absent": "no repair report"
+                },
+                "failures": [],
+                "holds": null,
+                "level": "repair",
+                "subjects": 0
+              }
+            },
+            "levels_absent": [
+              "chain",
+              "repair"
+            ],
+            "levels_present": [
+              "document"
+            ],
+            "metric": "block_conservation_invariant"
+          },
+          "label": "upstream",
+          "layout_geometry": {
+            "alignment_delta": 0.00054,
+            "alignment_produced": 0.001243,
+            "alignment_source": 0.000703,
+            "image_area_delta": -0.004457,
+            "image_placement_iou": 0.960554,
+            "overlap_delta": 0.119655,
+            "overlap_produced": 0.436286,
+            "overlap_source": 0.316631
+          },
+          "ltcr": null,
+          "mid_break_rate": {
+            "metric": "mid_unit_page_break_rate",
+            "pages": 9,
+            "rate": 0.375,
+            "strict_rate": 0.375,
+            "vertical_paragraphs": 3
+          },
+          "page_count_delta": {
+            "conserved": true,
+            "produced_pages": 9,
+            "source_pages": 9,
+            "value": 0
+          },
+          "page_series": {
+            "answerable": 8,
+            "axis_unsupported_count": 0,
+            "boundaries_total": 8,
+            "closed_count": 5,
+            "designed_count": 0,
+            "no_tail_count": 0,
+            "open_count": 3,
+            "rate": 0.375,
+            "series": "page",
+            "strict_rate": 0.375
+          },
+          "path": "pdf_extraction",
+          "produced_pdf": "examples/baseline/pdf/AramcoWorld-en-v2/AramcoWorld-en-v2.no_watermark.zh.mono.pdf",
+          "produced_pdf_sha256": "9d45fc58f62a1634c6684f8f341fb3fd6ef725f2f586fd024704ad0c8adf0ba2",
+          "source_pdf": "examples/input/AramcoWorld-en-v2.pdf",
+          "source_pdf_sha256": "174cf0480ded6fb10bbbaa6368dc6b578bfd54835e2d2ff886073a23ae873663",
+          "stratified": {
+            "mbr_all": 0.375,
+            "mbr_all_denominator": 8,
+            "mbr_linkable": 0.285714,
+            "mbr_linkable_denominator": 7,
+            "mbr_linkable_open": 2,
+            "source_inherited_open": 1,
+            "strata": {
+              "clean": {
+                "answerable": 6,
+                "axis_unsupported_count": 0,
+                "boundaries_total": 6,
+                "closed_count": 5,
+                "designed_count": 0,
+                "no_tail_count": 0,
+                "open_count": 1,
+                "rate": 0.166667,
+                "series": "page",
+                "strict_rate": 0.166667
+              },
+              "linked": {
+                "answerable": 1,
+                "axis_unsupported_count": 0,
+                "boundaries_total": 1,
+                "closed_count": 0,
+                "designed_count": 0,
+                "no_tail_count": 0,
+                "open_count": 1,
+                "rate": 1.0,
+                "series": "page",
+                "strict_rate": 1.0
+              },
+              "trap": {
+                "answerable": 1,
+                "axis_unsupported_count": 0,
+                "boundaries_total": 1,
+                "closed_count": 0,
+                "designed_count": 0,
+                "no_tail_count": 0,
+                "open_count": 1,
+                "rate": 1.0,
+                "series": "page",
+                "strict_rate": 1.0
+              },
+              "unlabelled": {
+                "answerable": 0,
+                "axis_unsupported_count": 0,
+                "boundaries_total": 0,
+                "closed_count": 0,
+                "designed_count": 0,
+                "no_tail_count": 0,
+                "open_count": 0,
+                "rate": null,
+                "series": "page",
+                "strict_rate": null
+              }
+            },
+            "trap_boundaries": 1,
+            "unlabelled_boundaries": 0
+          }
+        },
+        {
+          "absent": [],
+          "boundaries": [
+            {
+              "label": "1->2",
+              "last_character": null,
+              "layout_label": null,
+              "truth_category": "clean",
+              "verdict": "no_tail"
+            },
+            {
+              "label": "2->3",
+              "last_character": "。",
+              "layout_label": "plain text",
+              "truth_category": "clean",
+              "verdict": "closed"
+            },
+            {
+              "label": "3->4",
+              "last_character": "。",
+              "layout_label": "plain text",
+              "truth_category": "clean",
+              "verdict": "closed"
+            },
+            {
+              "label": "4->5",
+              "last_character": "”",
+              "layout_label": "plain text",
+              "truth_category": "clean",
+              "verdict": "closed"
+            },
+            {
+              "label": "5->6",
+              "last_character": "。",
+              "layout_label": "plain text",
+              "truth_category": "clean",
+              "verdict": "closed"
+            },
+            {
+              "label": "6->7",
+              "last_character": "”",
+              "layout_label": "plain text",
+              "truth_category": "linked",
+              "verdict": "closed"
+            },
+            {
+              "label": "7->8",
+              "last_character": "个",
+              "layout_label": "plain text",
+              "truth_category": "trap",
+              "verdict": "open"
+            },
+            {
+              "label": "8->9",
+              "last_character": "”",
+              "layout_label": "title",
+              "truth_category": "clean",
+              "verdict": "closed"
+            }
+          ],
+          "conservation": {
+            "holds": true,
+            "levels": {
+              "chain": {
+                "evidence": {
+                  "chains": 1,
+                  "escalated_members": 0,
+                  "merged_members": 2,
+                  "rendered_members": 2
+                },
+                "failures": [],
+                "holds": true,
+                "level": "chain",
+                "subjects": 1
+              },
+              "document": {
+                "evidence": {
+                  "produced_pages": 9,
+                  "source_pages": 9
+                },
+                "failures": [],
+                "holds": true,
+                "level": "document",
+                "subjects": 1
+              },
+              "repair": {
+                "evidence": {
+                  "changed": 0,
+                  "changed_outside_touched": 0,
+                  "pages_after": 9,
+                  "pages_before": 9,
+                  "paragraphs_after": 146,
+                  "paragraphs_before": 146,
+                  "reported_verdict": "conserved",
+                  "touched": 0
+                },
+                "failures": [],
+                "holds": true,
+                "level": "repair",
+                "subjects": 1
+              }
+            },
+            "levels_absent": [],
+            "levels_present": [
+              "chain",
+              "repair",
+              "document"
+            ],
+            "metric": "block_conservation_invariant"
+          },
+          "label": "fork_full_il",
+          "layout_geometry": {
+            "alignment_delta": 0.0,
+            "alignment_produced": 0.002198,
+            "alignment_source": 0.002198,
+            "image_area_delta": 0.0,
+            "image_placement_iou": 1.0,
+            "overlap_delta": 0.0,
+            "overlap_produced": 0.04905,
+            "overlap_source": 0.04905
+          },
+          "ltcr": {
+            "fully_consistent": 7,
+            "legacy_mean_share": 0.85,
+            "ltcr": 0.724638,
+            "measured": 10,
+            "pairs_agreeing": 50,
+            "pairs_total": 69,
+            "terms": 10
+          },
+          "mid_break_rate": {
+            "metric": "mid_unit_page_break_rate",
+            "pages": 9,
+            "rate": 0.125,
+            "strict_rate": 0.142857,
+            "vertical_paragraphs": 3
+          },
+          "page_count_delta": {
+            "conserved": true,
+            "produced_pages": 9,
+            "source_pages": 9,
+            "value": 0
+          },
+          "page_series": {
+            "answerable": 7,
+            "axis_unsupported_count": 0,
+            "boundaries_total": 8,
+            "closed_count": 6,
+            "designed_count": 0,
+            "no_tail_count": 1,
+            "open_count": 1,
+            "rate": 0.125,
+            "series": "page",
+            "strict_rate": 0.142857
+          },
+          "path": "intermediate_language",
+          "stratified": {
+            "mbr_all": 0.125,
+            "mbr_all_denominator": 8,
+            "mbr_linkable": 0.0,
+            "mbr_linkable_denominator": 6,
+            "mbr_linkable_open": 0,
+            "source_inherited_open": 1,
+            "strata": {
+              "clean": {
+                "answerable": 5,
+                "axis_unsupported_count": 0,
+                "boundaries_total": 6,
+                "closed_count": 5,
+                "designed_count": 0,
+                "no_tail_count": 1,
+                "open_count": 0,
+                "rate": 0.0,
+                "series": "page",
+                "strict_rate": 0.0
+              },
+              "linked": {
+                "answerable": 1,
+                "axis_unsupported_count": 0,
+                "boundaries_total": 1,
+                "closed_count": 1,
+                "designed_count": 0,
+                "no_tail_count": 0,
+                "open_count": 0,
+                "rate": 0.0,
+                "series": "page",
+                "strict_rate": 0.0
+              },
+              "trap": {
+                "answerable": 1,
+                "axis_unsupported_count": 0,
+                "boundaries_total": 1,
+                "closed_count": 0,
+                "designed_count": 0,
+                "no_tail_count": 0,
+                "open_count": 1,
+                "rate": 1.0,
+                "series": "page",
+                "strict_rate": 1.0
+              },
+              "unlabelled": {
+                "answerable": 0,
+                "axis_unsupported_count": 0,
+                "boundaries_total": 0,
+                "closed_count": 0,
+                "designed_count": 0,
+                "no_tail_count": 0,
+                "open_count": 0,
+                "rate": null,
+                "series": "page",
+                "strict_rate": null
+              }
+            },
+            "trap_boundaries": 1,
+            "unlabelled_boundaries": 0
+          },
+          "working_dir": "examples/output/b8_4/smoke/AramcoWorld-en-v2/work/AramcoWorld-en-v2"
+        },
+        {
+          "absent": [
+            "no working directory: no chain or repair level of the conservation invariant",
+            "no source and translated checkpoint pair: no LTCR"
+          ],
+          "boundaries": [
+            {
+              "label": "1->2",
+              "last_character": "m",
+              "layout_label": "plain text",
+              "truth_category": "clean",
+              "verdict": "open"
+            },
+            {
+              "label": "2->3",
+              "last_character": "。",
+              "layout_label": "plain text",
+              "truth_category": "clean",
+              "verdict": "closed"
+            },
+            {
+              "label": "3->4",
+              "last_character": "。",
+              "layout_label": "plain text",
+              "truth_category": "clean",
+              "verdict": "closed"
+            },
+            {
+              "label": "4->5",
+              "last_character": "”",
+              "layout_label": "plain text",
+              "truth_category": "clean",
+              "verdict": "closed"
+            },
+            {
+              "label": "5->6",
+              "last_character": "。",
+              "layout_label": "plain text",
+              "truth_category": "clean",
+              "verdict": "closed"
+            },
+            {
+              "label": "6->7",
+              "last_character": "”",
+              "layout_label": "plain text",
+              "truth_category": "linked",
+              "verdict": "closed"
+            },
+            {
+              "label": "7->8",
+              "last_character": "个",
+              "layout_label": "plain text",
+              "truth_category": "trap",
+              "verdict": "open"
+            },
+            {
+              "label": "8->9",
+              "last_character": "”",
+              "layout_label": "plain text",
+              "truth_category": "clean",
+              "verdict": "closed"
+            }
+          ],
+          "conservation": {
+            "holds": true,
+            "levels": {
+              "chain": {
+                "evidence": {
+                  "absent": "no chain translation report"
+                },
+                "failures": [],
+                "holds": null,
+                "level": "chain",
+                "subjects": 0
+              },
+              "document": {
+                "evidence": {
+                  "produced_pages": 9,
+                  "source_pages": 9
+                },
+                "failures": [],
+                "holds": true,
+                "level": "document",
+                "subjects": 1
+              },
+              "repair": {
+                "evidence": {
+                  "absent": "no repair report"
+                },
+                "failures": [],
+                "holds": null,
+                "level": "repair",
+                "subjects": 0
+              }
+            },
+            "levels_absent": [
+              "chain",
+              "repair"
+            ],
+            "levels_present": [
+              "document"
+            ],
+            "metric": "block_conservation_invariant"
+          },
+          "label": "fork_full_pdf",
+          "layout_geometry": {
+            "alignment_delta": 0.00042,
+            "alignment_produced": 0.001123,
+            "alignment_source": 0.000703,
+            "image_area_delta": -0.004457,
+            "image_placement_iou": 0.960554,
+            "overlap_delta": 0.11568,
+            "overlap_produced": 0.432311,
+            "overlap_source": 0.316631
+          },
+          "ltcr": null,
+          "mid_break_rate": {
+            "metric": "mid_unit_page_break_rate",
+            "pages": 9,
+            "rate": 0.25,
+            "strict_rate": 0.25,
+            "vertical_paragraphs": 3
+          },
+          "page_count_delta": {
+            "conserved": true,
+            "produced_pages": 9,
+            "source_pages": 9,
+            "value": 0
+          },
+          "page_series": {
+            "answerable": 8,
+            "axis_unsupported_count": 0,
+            "boundaries_total": 8,
+            "closed_count": 6,
+            "designed_count": 0,
+            "no_tail_count": 0,
+            "open_count": 2,
+            "rate": 0.25,
+            "series": "page",
+            "strict_rate": 0.25
+          },
+          "path": "pdf_extraction",
+          "produced_pdf": "examples/output/b8_4/smoke/AramcoWorld-en-v2/out/AramcoWorld-en-v2.no_watermark.zh.mono.pdf",
+          "produced_pdf_sha256": "460b7b08d86a94a492116dcaabb361130afc55f07af66936dd9b8ce4bd2d3711",
+          "source_pdf": "examples/input/AramcoWorld-en-v2.pdf",
+          "source_pdf_sha256": "174cf0480ded6fb10bbbaa6368dc6b578bfd54835e2d2ff886073a23ae873663",
+          "stratified": {
+            "mbr_all": 0.25,
+            "mbr_all_denominator": 8,
+            "mbr_linkable": 0.142857,
+            "mbr_linkable_denominator": 7,
+            "mbr_linkable_open": 1,
+            "source_inherited_open": 1,
+            "strata": {
+              "clean": {
+                "answerable": 6,
+                "axis_unsupported_count": 0,
+                "boundaries_total": 6,
+                "closed_count": 5,
+                "designed_count": 0,
+                "no_tail_count": 0,
+                "open_count": 1,
+                "rate": 0.166667,
+                "series": "page",
+                "strict_rate": 0.166667
+              },
+              "linked": {
+                "answerable": 1,
+                "axis_unsupported_count": 0,
+                "boundaries_total": 1,
+                "closed_count": 1,
+                "designed_count": 0,
+                "no_tail_count": 0,
+                "open_count": 0,
+                "rate": 0.0,
+                "series": "page",
+                "strict_rate": 0.0
+              },
+              "trap": {
+                "answerable": 1,
+                "axis_unsupported_count": 0,
+                "boundaries_total": 1,
+                "closed_count": 0,
+                "designed_count": 0,
+                "no_tail_count": 0,
+                "open_count": 1,
+                "rate": 1.0,
+                "series": "page",
+                "strict_rate": 1.0
+              },
+              "unlabelled": {
+                "answerable": 0,
+                "axis_unsupported_count": 0,
+                "boundaries_total": 0,
+                "closed_count": 0,
+                "designed_count": 0,
+                "no_tail_count": 0,
+                "open_count": 0,
+                "rate": null,
+                "series": "page",
+                "strict_rate": null
+              }
+            },
+            "trap_boundaries": 1,
+            "unlabelled_boundaries": 0
+          }
+        }
+      ],
+      "sample": "AramcoWorld-en-v2.pdf"
+    },
+    {
+      "method_comparison": {
+        "bound": 0.1,
+        "boundary_verdicts": {
+          "agreeing": 5,
+          "agreement": 0.625,
+          "disagreeing": [
+            {
+              "intermediate_language": "no_tail",
+              "label": "1->2",
+              "pdf_extraction": "open"
+            },
+            {
+              "intermediate_language": "closed",
+              "label": "5->6",
+              "pdf_extraction": "open"
+            },
+            {
+              "intermediate_language": "closed",
+              "label": "7->8",
+              "pdf_extraction": "open"
+            }
+          ],
+          "shared": 8
+        },
+        "elements": {
+          "intermediate_language_produced": 211,
+          "intermediate_language_source": 211,
+          "pdf_extraction_produced": 210,
+          "pdf_extraction_source": 186
+        },
+        "metrics": {
+          "alignment_delta": {
+            "comparable": false,
+            "intermediate_language": 6e-06,
+            "pdf_extraction": 0.001489,
+            "relative_delta": 0.99597
+          },
+          "alignment_produced": {
+            "comparable": false,
+            "intermediate_language": 0.001261,
+            "pdf_extraction": 0.002124,
+            "relative_delta": 0.406309
+          },
+          "alignment_source": {
+            "comparable": false,
+            "intermediate_language": 0.001255,
+            "pdf_extraction": 0.000635,
+            "relative_delta": 0.494024
+          },
+          "image_area_delta": {
+            "comparable": true,
+            "intermediate_language": 0.0,
+            "pdf_extraction": -0.0,
+            "relative_delta": 0.0
+          },
+          "image_placement_iou": {
+            "comparable": true,
+            "intermediate_language": 1.0,
+            "pdf_extraction": 1.0,
+            "relative_delta": 0.0
+          },
+          "mid_break_rate.rate": {
+            "comparable": false,
+            "comparable_basis": "boundary verdict agreement",
+            "intermediate_language": 0.25,
+            "pdf_extraction": 0.625,
+            "relative_delta": 0.6
+          },
+          "overlap_delta": {
+            "comparable": false,
+            "intermediate_language": 0.000604,
+            "pdf_extraction": -0.059561,
+            "relative_delta": 1.010141
+          },
+          "overlap_produced": {
+            "comparable": false,
+            "intermediate_language": 0.153224,
+            "pdf_extraction": 0.299359,
+            "relative_delta": 0.48816
+          },
+          "overlap_source": {
+            "comparable": false,
+            "intermediate_language": 0.152619,
+            "pdf_extraction": 0.35892,
+            "relative_delta": 0.574783
+          }
+        },
+        "sample": "FD-en-v2.pdf"
+      },
+      "missing": [],
+      "pages": 9,
+      "publication": "imf_fd",
+      "runs": [
+        {
+          "absent": [
+            "no working directory: no chain or repair level of the conservation invariant",
+            "no source and translated checkpoint pair: no LTCR"
+          ],
+          "boundaries": [
+            {
+              "label": "1->2",
+              "last_character": "织",
+              "layout_label": "plain text",
+              "truth_category": "clean",
+              "verdict": "open"
+            },
+            {
+              "label": "2->3",
+              "last_character": "望",
+              "layout_label": "plain text",
+              "truth_category": "clean",
+              "verdict": "open"
+            },
+            {
+              "label": "3->4",
+              "last_character": "斯",
+              "layout_label": "plain text",
+              "truth_category": "clean",
+              "verdict": "open"
+            },
+            {
+              "label": "4->5",
+              "last_character": "。",
+              "layout_label": "plain text",
+              "truth_category": "clean",
+              "verdict": "closed"
+            },
+            {
+              "label": "5->6",
+              "last_character": "e",
+              "layout_label": "plain text",
+              "truth_category": "clean",
+              "verdict": "open"
+            },
+            {
+              "label": "6->7",
+              "last_character": "”",
+              "layout_label": "plain text",
+              "truth_category": "clean",
+              "verdict": "closed"
+            },
+            {
+              "label": "7->8",
+              "last_character": "D",
+              "layout_label": "plain text",
+              "truth_category": "clean",
+              "verdict": "open"
+            },
+            {
+              "label": "8->9",
+              "last_character": "。",
+              "layout_label": "plain text",
+              "truth_category": "clean",
+              "verdict": "closed"
+            }
+          ],
+          "conservation": {
+            "holds": true,
+            "levels": {
+              "chain": {
+                "evidence": {
+                  "absent": "no chain translation report"
+                },
+                "failures": [],
+                "holds": null,
+                "level": "chain",
+                "subjects": 0
+              },
+              "document": {
+                "evidence": {
+                  "produced_pages": 9,
+                  "source_pages": 9
+                },
+                "failures": [],
+                "holds": true,
+                "level": "document",
+                "subjects": 1
+              },
+              "repair": {
+                "evidence": {
+                  "absent": "no repair report"
+                },
+                "failures": [],
+                "holds": null,
+                "level": "repair",
+                "subjects": 0
+              }
+            },
+            "levels_absent": [
+              "chain",
+              "repair"
+            ],
+            "levels_present": [
+              "document"
+            ],
+            "metric": "block_conservation_invariant"
+          },
+          "label": "upstream",
+          "layout_geometry": {
+            "alignment_delta": 0.002977,
+            "alignment_produced": 0.003612,
+            "alignment_source": 0.000635,
+            "image_area_delta": -0.0,
+            "image_placement_iou": 1.0,
+            "overlap_delta": -0.058686,
+            "overlap_produced": 0.300234,
+            "overlap_source": 0.35892
+          },
+          "ltcr": null,
+          "mid_break_rate": {
+            "metric": "mid_unit_page_break_rate",
+            "pages": 9,
+            "rate": 0.625,
+            "strict_rate": 0.625,
+            "vertical_paragraphs": 3
+          },
+          "page_count_delta": {
+            "conserved": true,
+            "produced_pages": 9,
+            "source_pages": 9,
+            "value": 0
+          },
+          "page_series": {
+            "answerable": 8,
+            "axis_unsupported_count": 0,
+            "boundaries_total": 8,
+            "closed_count": 3,
+            "designed_count": 0,
+            "no_tail_count": 0,
+            "open_count": 5,
+            "rate": 0.625,
+            "series": "page",
+            "strict_rate": 0.625
+          },
+          "path": "pdf_extraction",
+          "produced_pdf": "examples/baseline/pdf/FD-en-v2/FD-en-v2.no_watermark.zh.mono.pdf",
+          "produced_pdf_sha256": "7b2d99895be0f37ace61a9879c06142b4d6d9e2d3ce50b16fa2411cbacc6943f",
+          "source_pdf": "examples/input/FD-en-v2.pdf",
+          "source_pdf_sha256": "15e00ca85f0ee3ad9e3ae7a71af8808b57da6bb57f63708943b2a6b9dad4d622",
+          "stratified": {
+            "mbr_all": 0.625,
+            "mbr_all_denominator": 8,
+            "mbr_linkable": 0.625,
+            "mbr_linkable_denominator": 8,
+            "mbr_linkable_open": 5,
+            "source_inherited_open": 0,
+            "strata": {
+              "clean": {
+                "answerable": 8,
+                "axis_unsupported_count": 0,
+                "boundaries_total": 8,
+                "closed_count": 3,
+                "designed_count": 0,
+                "no_tail_count": 0,
+                "open_count": 5,
+                "rate": 0.625,
+                "series": "page",
+                "strict_rate": 0.625
+              },
+              "linked": {
+                "answerable": 0,
+                "axis_unsupported_count": 0,
+                "boundaries_total": 0,
+                "closed_count": 0,
+                "designed_count": 0,
+                "no_tail_count": 0,
+                "open_count": 0,
+                "rate": null,
+                "series": "page",
+                "strict_rate": null
+              },
+              "trap": {
+                "answerable": 0,
+                "axis_unsupported_count": 0,
+                "boundaries_total": 0,
+                "closed_count": 0,
+                "designed_count": 0,
+                "no_tail_count": 0,
+                "open_count": 0,
+                "rate": null,
+                "series": "page",
+                "strict_rate": null
+              },
+              "unlabelled": {
+                "answerable": 0,
+                "axis_unsupported_count": 0,
+                "boundaries_total": 0,
+                "closed_count": 0,
+                "designed_count": 0,
+                "no_tail_count": 0,
+                "open_count": 0,
+                "rate": null,
+                "series": "page",
+                "strict_rate": null
+              }
+            },
+            "trap_boundaries": 0,
+            "unlabelled_boundaries": 0
+          }
+        },
+        {
+          "absent": [],
+          "boundaries": [
+            {
+              "label": "1->2",
+              "last_character": null,
+              "layout_label": null,
+              "truth_category": "clean",
+              "verdict": "no_tail"
+            },
+            {
+              "label": "2->3",
+              "last_character": "望",
+              "layout_label": "title",
+              "truth_category": "clean",
+              "verdict": "open"
+            },
+            {
+              "label": "3->4",
+              "last_character": "e",
+              "layout_label": "plain text",
+              "truth_category": "clean",
+              "verdict": "open"
+            },
+            {
+              "label": "4->5",
+              "last_character": "。",
+              "layout_label": "plain text",
+              "truth_category": "clean",
+              "verdict": "closed"
+            },
+            {
+              "label": "5->6",
+              "last_character": "。",
+              "layout_label": "plain text",
+              "truth_category": "clean",
+              "verdict": "closed"
+            },
+            {
+              "label": "6->7",
+              "last_character": "”",
+              "layout_label": "plain text",
+              "truth_category": "clean",
+              "verdict": "closed"
+            },
+            {
+              "label": "7->8",
+              "last_character": "。",
+              "layout_label": "plain text",
+              "truth_category": "clean",
+              "verdict": "closed"
+            },
+            {
+              "label": "8->9",
+              "last_character": "。",
+              "layout_label": "plain text",
+              "truth_category": "clean",
+              "verdict": "closed"
+            }
+          ],
+          "conservation": {
+            "holds": true,
+            "levels": {
+              "chain": {
+                "evidence": {
+                  "chains": 0,
+                  "escalated_members": 0,
+                  "merged_members": 0,
+                  "rendered_members": 0
+                },
+                "failures": [],
+                "holds": true,
+                "level": "chain",
+                "subjects": 0
+              },
+              "document": {
+                "evidence": {
+                  "produced_pages": 9,
+                  "source_pages": 9
+                },
+                "failures": [],
+                "holds": true,
+                "level": "document",
+                "subjects": 1
+              },
+              "repair": {
+                "evidence": {
+                  "changed": 2,
+                  "changed_outside_touched": 0,
+                  "pages_after": 9,
+                  "pages_before": 9,
+                  "paragraphs_after": 189,
+                  "paragraphs_before": 189,
+                  "reported_verdict": "conserved",
+                  "touched": 2
+                },
+                "failures": [],
+                "holds": true,
+                "level": "repair",
+                "subjects": 1
+              }
+            },
+            "levels_absent": [],
+            "levels_present": [
+              "chain",
+              "repair",
+              "document"
+            ],
+            "metric": "block_conservation_invariant"
+          },
+          "label": "fork_full_il",
+          "layout_geometry": {
+            "alignment_delta": 6e-06,
+            "alignment_produced": 0.001261,
+            "alignment_source": 0.001255,
+            "image_area_delta": 0.0,
+            "image_placement_iou": 1.0,
+            "overlap_delta": 0.000604,
+            "overlap_produced": 0.153224,
+            "overlap_source": 0.152619
+          },
+          "ltcr": {
+            "fully_consistent": 0,
+            "legacy_mean_share": 0.375,
+            "ltcr": 0.083333,
+            "measured": 2,
+            "pairs_agreeing": 1,
+            "pairs_total": 12,
+            "terms": 2
+          },
+          "mid_break_rate": {
+            "metric": "mid_unit_page_break_rate",
+            "pages": 9,
+            "rate": 0.25,
+            "strict_rate": 0.285714,
+            "vertical_paragraphs": 5
+          },
+          "page_count_delta": {
+            "conserved": true,
+            "produced_pages": 9,
+            "source_pages": 9,
+            "value": 0
+          },
+          "page_series": {
+            "answerable": 7,
+            "axis_unsupported_count": 0,
+            "boundaries_total": 8,
+            "closed_count": 5,
+            "designed_count": 0,
+            "no_tail_count": 1,
+            "open_count": 2,
+            "rate": 0.25,
+            "series": "page",
+            "strict_rate": 0.285714
+          },
+          "path": "intermediate_language",
+          "stratified": {
+            "mbr_all": 0.25,
+            "mbr_all_denominator": 8,
+            "mbr_linkable": 0.285714,
+            "mbr_linkable_denominator": 7,
+            "mbr_linkable_open": 2,
+            "source_inherited_open": 0,
+            "strata": {
+              "clean": {
+                "answerable": 7,
+                "axis_unsupported_count": 0,
+                "boundaries_total": 8,
+                "closed_count": 5,
+                "designed_count": 0,
+                "no_tail_count": 1,
+                "open_count": 2,
+                "rate": 0.25,
+                "series": "page",
+                "strict_rate": 0.285714
+              },
+              "linked": {
+                "answerable": 0,
+                "axis_unsupported_count": 0,
+                "boundaries_total": 0,
+                "closed_count": 0,
+                "designed_count": 0,
+                "no_tail_count": 0,
+                "open_count": 0,
+                "rate": null,
+                "series": "page",
+                "strict_rate": null
+              },
+              "trap": {
+                "answerable": 0,
+                "axis_unsupported_count": 0,
+                "boundaries_total": 0,
+                "closed_count": 0,
+                "designed_count": 0,
+                "no_tail_count": 0,
+                "open_count": 0,
+                "rate": null,
+                "series": "page",
+                "strict_rate": null
+              },
+              "unlabelled": {
+                "answerable": 0,
+                "axis_unsupported_count": 0,
+                "boundaries_total": 0,
+                "closed_count": 0,
+                "designed_count": 0,
+                "no_tail_count": 0,
+                "open_count": 0,
+                "rate": null,
+                "series": "page",
+                "strict_rate": null
+              }
+            },
+            "trap_boundaries": 0,
+            "unlabelled_boundaries": 0
+          },
+          "working_dir": "examples/output/b8_4/smoke/FD-en-v2/work/FD-en-v2"
+        },
+        {
+          "absent": [
+            "no working directory: no chain or repair level of the conservation invariant",
+            "no source and translated checkpoint pair: no LTCR"
+          ],
+          "boundaries": [
+            {
+              "label": "1->2",
+              "last_character": "织",
+              "layout_label": "plain text",
+              "truth_category": "clean",
+              "verdict": "open"
+            },
+            {
+              "label": "2->3",
+              "last_character": "望",
+              "layout_label": "plain text",
+              "truth_category": "clean",
+              "verdict": "open"
+            },
+            {
+              "label": "3->4",
+              "last_character": "e",
+              "layout_label": "plain text",
+              "truth_category": "clean",
+              "verdict": "open"
+            },
+            {
+              "label": "4->5",
+              "last_character": "。",
+              "layout_label": "plain text",
+              "truth_category": "clean",
+              "verdict": "closed"
+            },
+            {
+              "label": "5->6",
+              "last_character": "e",
+              "layout_label": "plain text",
+              "truth_category": "clean",
+              "verdict": "open"
+            },
+            {
+              "label": "6->7",
+              "last_character": "”",
+              "layout_label": "plain text",
+              "truth_category": "clean",
+              "verdict": "closed"
+            },
+            {
+              "label": "7->8",
+              "last_character": "D",
+              "layout_label": "plain text",
+              "truth_category": "clean",
+              "verdict": "open"
+            },
+            {
+              "label": "8->9",
+              "last_character": "。",
+              "layout_label": "plain text",
+              "truth_category": "clean",
+              "verdict": "closed"
+            }
+          ],
+          "conservation": {
+            "holds": true,
+            "levels": {
+              "chain": {
+                "evidence": {
+                  "absent": "no chain translation report"
+                },
+                "failures": [],
+                "holds": null,
+                "level": "chain",
+                "subjects": 0
+              },
+              "document": {
+                "evidence": {
+                  "produced_pages": 9,
+                  "source_pages": 9
+                },
+                "failures": [],
+                "holds": true,
+                "level": "document",
+                "subjects": 1
+              },
+              "repair": {
+                "evidence": {
+                  "absent": "no repair report"
+                },
+                "failures": [],
+                "holds": null,
+                "level": "repair",
+                "subjects": 0
+              }
+            },
+            "levels_absent": [
+              "chain",
+              "repair"
+            ],
+            "levels_present": [
+              "document"
+            ],
+            "metric": "block_conservation_invariant"
+          },
+          "label": "fork_full_pdf",
+          "layout_geometry": {
+            "alignment_delta": 0.001489,
+            "alignment_produced": 0.002124,
+            "alignment_source": 0.000635,
+            "image_area_delta": -0.0,
+            "image_placement_iou": 1.0,
+            "overlap_delta": -0.059561,
+            "overlap_produced": 0.299359,
+            "overlap_source": 0.35892
+          },
+          "ltcr": null,
+          "mid_break_rate": {
+            "metric": "mid_unit_page_break_rate",
+            "pages": 9,
+            "rate": 0.625,
+            "strict_rate": 0.625,
+            "vertical_paragraphs": 3
+          },
+          "page_count_delta": {
+            "conserved": true,
+            "produced_pages": 9,
+            "source_pages": 9,
+            "value": 0
+          },
+          "page_series": {
+            "answerable": 8,
+            "axis_unsupported_count": 0,
+            "boundaries_total": 8,
+            "closed_count": 3,
+            "designed_count": 0,
+            "no_tail_count": 0,
+            "open_count": 5,
+            "rate": 0.625,
+            "series": "page",
+            "strict_rate": 0.625
+          },
+          "path": "pdf_extraction",
+          "produced_pdf": "examples/output/b8_4/smoke/FD-en-v2/out/FD-en-v2.no_watermark.zh.mono.pdf",
+          "produced_pdf_sha256": "e09143d4c378074c531993e84acbb9e050c4d31fe682bc9d8acb94b2cb5201f4",
+          "source_pdf": "examples/input/FD-en-v2.pdf",
+          "source_pdf_sha256": "15e00ca85f0ee3ad9e3ae7a71af8808b57da6bb57f63708943b2a6b9dad4d622",
+          "stratified": {
+            "mbr_all": 0.625,
+            "mbr_all_denominator": 8,
+            "mbr_linkable": 0.625,
+            "mbr_linkable_denominator": 8,
+            "mbr_linkable_open": 5,
+            "source_inherited_open": 0,
+            "strata": {
+              "clean": {
+                "answerable": 8,
+                "axis_unsupported_count": 0,
+                "boundaries_total": 8,
+                "closed_count": 3,
+                "designed_count": 0,
+                "no_tail_count": 0,
+                "open_count": 5,
+                "rate": 0.625,
+                "series": "page",
+                "strict_rate": 0.625
+              },
+              "linked": {
+                "answerable": 0,
+                "axis_unsupported_count": 0,
+                "boundaries_total": 0,
+                "closed_count": 0,
+                "designed_count": 0,
+                "no_tail_count": 0,
+                "open_count": 0,
+                "rate": null,
+                "series": "page",
+                "strict_rate": null
+              },
+              "trap": {
+                "answerable": 0,
+                "axis_unsupported_count": 0,
+                "boundaries_total": 0,
+                "closed_count": 0,
+                "designed_count": 0,
+                "no_tail_count": 0,
+                "open_count": 0,
+                "rate": null,
+                "series": "page",
+                "strict_rate": null
+              },
+              "unlabelled": {
+                "answerable": 0,
+                "axis_unsupported_count": 0,
+                "boundaries_total": 0,
+                "closed_count": 0,
+                "designed_count": 0,
+                "no_tail_count": 0,
+                "open_count": 0,
+                "rate": null,
+                "series": "page",
+                "strict_rate": null
+              }
+            },
+            "trap_boundaries": 0,
+            "unlabelled_boundaries": 0
+          }
+        }
+      ],
+      "sample": "FD-en-v2.pdf"
+    },
+    {
+      "method_comparison": {
+        "bound": 0.1,
+        "boundary_verdicts": {
+          "agreeing": 7,
+          "agreement": 1.0,
+          "disagreeing": [],
+          "shared": 7
+        },
+        "elements": {
+          "intermediate_language_produced": 142,
+          "intermediate_language_source": 142,
+          "pdf_extraction_produced": 154,
+          "pdf_extraction_source": 426
+        },
+        "metrics": {
+          "alignment_delta": {
+            "comparable": false,
+            "intermediate_language": 0.0,
+            "pdf_extraction": 0.00121,
+            "relative_delta": 1.0
+          },
+          "alignment_produced": {
+            "comparable": false,
+            "intermediate_language": 0.003722,
+            "pdf_extraction": 0.004932,
+            "relative_delta": 0.245337
+          },
+          "alignment_source": {
+            "comparable": true,
+            "intermediate_language": 0.003722,
+            "pdf_extraction": 0.003722,
+            "relative_delta": 0.0
+          },
+          "image_area_delta": {
+            "comparable": true,
+            "intermediate_language": 0.0,
+            "pdf_extraction": -0.0,
+            "relative_delta": 0.0
+          },
+          "image_placement_iou": {
+            "comparable": true,
+            "intermediate_language": 1.0,
+            "pdf_extraction": 1.0,
+            "relative_delta": 0.0
+          },
+          "mid_break_rate.rate": {
+            "comparable": true,
+            "comparable_basis": "boundary verdict agreement",
+            "intermediate_language": 0.571429,
+            "pdf_extraction": 0.571429,
+            "relative_delta": 0.0
+          },
+          "overlap_delta": {
+            "comparable": false,
+            "intermediate_language": -1e-06,
+            "pdf_extraction": 0.0,
+            "relative_delta": 1.0
+          },
+          "overlap_produced": {
+            "comparable": false,
+            "intermediate_language": 0.025811,
+            "pdf_extraction": 0.0,
+            "relative_delta": 1.0
+          },
+          "overlap_source": {
+            "comparable": false,
+            "intermediate_language": 0.025811,
+            "pdf_extraction": 0.0,
+            "relative_delta": 1.0
+          }
+        },
+        "sample": "Courier-zh.pdf"
+      },
+      "missing": [],
+      "pages": 8,
+      "publication": "unesco_courier",
+      "runs": [
+        {
+          "absent": [
+            "no working directory: no chain or repair level of the conservation invariant",
+            "no source and translated checkpoint pair: no LTCR"
+          ],
+          "boundaries": [
+            {
+              "label": "1->2",
+              "last_character": ".",
+              "layout_label": "plain text",
+              "truth_category": "clean",
+              "verdict": "closed"
+            },
+            {
+              "label": "2->3",
+              "last_character": ".",
+              "layout_label": "plain text",
+              "truth_category": "linked",
+              "verdict": "closed"
+            },
+            {
+              "label": "3->4",
+              "last_character": "识",
+              "layout_label": "plain text",
+              "truth_category": "clean",
+              "verdict": "open"
+            },
+            {
+              "label": "4->5",
+              "last_character": ".",
+              "layout_label": "plain text",
+              "truth_category": "clean",
+              "verdict": "closed"
+            },
+            {
+              "label": "5->6",
+              "last_character": ".",
+              "layout_label": "plain text",
+              "truth_category": "trap",
+              "verdict": "closed"
+            },
+            {
+              "label": "6->7",
+              "last_character": ".",
+              "layout_label": "plain text",
+              "truth_category": "clean",
+              "verdict": "closed"
+            },
+            {
+              "label": "7->8",
+              "last_character": "d",
+              "layout_label": "plain text",
+              "truth_category": "linked",
+              "verdict": "open"
+            }
+          ],
+          "conservation": {
+            "holds": true,
+            "levels": {
+              "chain": {
+                "evidence": {
+                  "absent": "no chain translation report"
+                },
+                "failures": [],
+                "holds": null,
+                "level": "chain",
+                "subjects": 0
+              },
+              "document": {
+                "evidence": {
+                  "produced_pages": 8,
+                  "source_pages": 8
+                },
+                "failures": [],
+                "holds": true,
+                "level": "document",
+                "subjects": 1
+              },
+              "repair": {
+                "evidence": {
+                  "absent": "no repair report"
+                },
+                "failures": [],
+                "holds": null,
+                "level": "repair",
+                "subjects": 0
+              }
+            },
+            "levels_absent": [
+              "chain",
+              "repair"
+            ],
+            "levels_present": [
+              "document"
+            ],
+            "metric": "block_conservation_invariant"
+          },
+          "label": "upstream",
+          "layout_geometry": {
+            "alignment_delta": 0.001655,
+            "alignment_produced": 0.005377,
+            "alignment_source": 0.003722,
+            "image_area_delta": -0.0,
+            "image_placement_iou": 1.0,
+            "overlap_delta": 0.008429,
+            "overlap_produced": 0.008429,
+            "overlap_source": 0.0
+          },
+          "ltcr": null,
+          "mid_break_rate": {
+            "metric": "mid_unit_page_break_rate",
+            "pages": 8,
+            "rate": 0.285714,
+            "strict_rate": 0.285714,
+            "vertical_paragraphs": 3
+          },
+          "page_count_delta": {
+            "conserved": true,
+            "produced_pages": 8,
+            "source_pages": 8,
+            "value": 0
+          },
+          "page_series": {
+            "answerable": 7,
+            "axis_unsupported_count": 0,
+            "boundaries_total": 7,
+            "closed_count": 5,
+            "designed_count": 0,
+            "no_tail_count": 0,
+            "open_count": 2,
+            "rate": 0.285714,
+            "series": "page",
+            "strict_rate": 0.285714
+          },
+          "path": "pdf_extraction",
+          "produced_pdf": "examples/baseline/pdf/Courier-zh/Courier-zh.no_watermark.en.mono.pdf",
+          "produced_pdf_sha256": "71ca4c37ea0990a4a4dadb3d33db9e85dc5844213bbf371bccdbd7e3e2cd5aeb",
+          "source_pdf": "examples/input/Courier-zh.pdf",
+          "source_pdf_sha256": "2975c623b0bc604a4deb15f36229de512d295f69e171462f083b3c7d494bbaf1",
+          "stratified": {
+            "mbr_all": 0.285714,
+            "mbr_all_denominator": 7,
+            "mbr_linkable": 0.333333,
+            "mbr_linkable_denominator": 6,
+            "mbr_linkable_open": 2,
+            "source_inherited_open": 0,
+            "strata": {
+              "clean": {
+                "answerable": 4,
+                "axis_unsupported_count": 0,
+                "boundaries_total": 4,
+                "closed_count": 3,
+                "designed_count": 0,
+                "no_tail_count": 0,
+                "open_count": 1,
+                "rate": 0.25,
+                "series": "page",
+                "strict_rate": 0.25
+              },
+              "linked": {
+                "answerable": 2,
+                "axis_unsupported_count": 0,
+                "boundaries_total": 2,
+                "closed_count": 1,
+                "designed_count": 0,
+                "no_tail_count": 0,
+                "open_count": 1,
+                "rate": 0.5,
+                "series": "page",
+                "strict_rate": 0.5
+              },
+              "trap": {
+                "answerable": 1,
+                "axis_unsupported_count": 0,
+                "boundaries_total": 1,
+                "closed_count": 1,
+                "designed_count": 0,
+                "no_tail_count": 0,
+                "open_count": 0,
+                "rate": 0.0,
+                "series": "page",
+                "strict_rate": 0.0
+              },
+              "unlabelled": {
+                "answerable": 0,
+                "axis_unsupported_count": 0,
+                "boundaries_total": 0,
+                "closed_count": 0,
+                "designed_count": 0,
+                "no_tail_count": 0,
+                "open_count": 0,
+                "rate": null,
+                "series": "page",
+                "strict_rate": null
+              }
+            },
+            "trap_boundaries": 1,
+            "unlabelled_boundaries": 0
+          }
+        },
+        {
+          "absent": [],
+          "boundaries": [
+            {
+              "label": "1->2",
+              "last_character": ")",
+              "layout_label": "plain text",
+              "truth_category": "clean",
+              "verdict": "open"
+            },
+            {
+              "label": "2->3",
+              "last_character": "。",
+              "layout_label": "figure_caption",
+              "truth_category": "linked",
+              "verdict": "closed"
+            },
+            {
+              "label": "3->4",
+              "last_character": "识",
+              "layout_label": "title",
+              "truth_category": "clean",
+              "verdict": "open"
+            },
+            {
+              "label": "4->5",
+              "last_character": "。",
+              "layout_label": "plain text",
+              "truth_category": "clean",
+              "verdict": "closed"
+            },
+            {
+              "label": "5->6",
+              "last_character": "原",
+              "layout_label": "plain text",
+              "truth_category": "trap",
+              "verdict": "open"
+            },
+            {
+              "label": "6->7",
+              "last_character": "。",
+              "layout_label": "plain text",
+              "truth_category": "clean",
+              "verdict": "closed"
+            },
+            {
+              "label": "7->8",
+              "last_character": "包",
+              "layout_label": "plain text",
+              "truth_category": "linked",
+              "verdict": "open"
+            }
+          ],
+          "conservation": {
+            "holds": true,
+            "levels": {
+              "chain": {
+                "evidence": {
+                  "chains": 0,
+                  "escalated_members": 0,
+                  "merged_members": 0,
+                  "rendered_members": 0
+                },
+                "failures": [],
+                "holds": true,
+                "level": "chain",
+                "subjects": 0
+              },
+              "document": {
+                "evidence": {
+                  "produced_pages": 8,
+                  "source_pages": 8
+                },
+                "failures": [],
+                "holds": true,
+                "level": "document",
+                "subjects": 1
+              },
+              "repair": {
+                "evidence": {
+                  "changed": 0,
+                  "changed_outside_touched": 0,
+                  "pages_after": 8,
+                  "pages_before": 8,
+                  "paragraphs_after": 135,
+                  "paragraphs_before": 135,
+                  "reported_verdict": "conserved",
+                  "touched": 0
+                },
+                "failures": [],
+                "holds": true,
+                "level": "repair",
+                "subjects": 1
+              }
+            },
+            "levels_absent": [],
+            "levels_present": [
+              "chain",
+              "repair",
+              "document"
+            ],
+            "metric": "block_conservation_invariant"
+          },
+          "label": "fork_full_il",
+          "layout_geometry": {
+            "alignment_delta": 0.0,
+            "alignment_produced": 0.003722,
+            "alignment_source": 0.003722,
+            "image_area_delta": 0.0,
+            "image_placement_iou": 1.0,
+            "overlap_delta": -1e-06,
+            "overlap_produced": 0.025811,
+            "overlap_source": 0.025811
+          },
+          "ltcr": {
+            "fully_consistent": 0,
+            "legacy_mean_share": null,
+            "ltcr": null,
+            "measured": 0,
+            "pairs_agreeing": 0,
+            "pairs_total": 0,
+            "terms": 0
+          },
+          "mid_break_rate": {
+            "metric": "mid_unit_page_break_rate",
+            "pages": 8,
+            "rate": 0.571429,
+            "strict_rate": 0.571429,
+            "vertical_paragraphs": 6
+          },
+          "page_count_delta": {
+            "conserved": true,
+            "produced_pages": 8,
+            "source_pages": 8,
+            "value": 0
+          },
+          "page_series": {
+            "answerable": 7,
+            "axis_unsupported_count": 0,
+            "boundaries_total": 7,
+            "closed_count": 3,
+            "designed_count": 0,
+            "no_tail_count": 0,
+            "open_count": 4,
+            "rate": 0.571429,
+            "series": "page",
+            "strict_rate": 0.571429
+          },
+          "path": "intermediate_language",
+          "stratified": {
+            "mbr_all": 0.571429,
+            "mbr_all_denominator": 7,
+            "mbr_linkable": 0.5,
+            "mbr_linkable_denominator": 6,
+            "mbr_linkable_open": 3,
+            "source_inherited_open": 1,
+            "strata": {
+              "clean": {
+                "answerable": 4,
+                "axis_unsupported_count": 0,
+                "boundaries_total": 4,
+                "closed_count": 2,
+                "designed_count": 0,
+                "no_tail_count": 0,
+                "open_count": 2,
+                "rate": 0.5,
+                "series": "page",
+                "strict_rate": 0.5
+              },
+              "linked": {
+                "answerable": 2,
+                "axis_unsupported_count": 0,
+                "boundaries_total": 2,
+                "closed_count": 1,
+                "designed_count": 0,
+                "no_tail_count": 0,
+                "open_count": 1,
+                "rate": 0.5,
+                "series": "page",
+                "strict_rate": 0.5
+              },
+              "trap": {
+                "answerable": 1,
+                "axis_unsupported_count": 0,
+                "boundaries_total": 1,
+                "closed_count": 0,
+                "designed_count": 0,
+                "no_tail_count": 0,
+                "open_count": 1,
+                "rate": 1.0,
+                "series": "page",
+                "strict_rate": 1.0
+              },
+              "unlabelled": {
+                "answerable": 0,
+                "axis_unsupported_count": 0,
+                "boundaries_total": 0,
+                "closed_count": 0,
+                "designed_count": 0,
+                "no_tail_count": 0,
+                "open_count": 0,
+                "rate": null,
+                "series": "page",
+                "strict_rate": null
+              }
+            },
+            "trap_boundaries": 1,
+            "unlabelled_boundaries": 0
+          },
+          "working_dir": "examples/output/b8_4/smoke/Courier-zh/work/Courier-zh"
+        },
+        {
+          "absent": [
+            "no working directory: no chain or repair level of the conservation invariant",
+            "no source and translated checkpoint pair: no LTCR"
+          ],
+          "boundaries": [
+            {
+              "label": "1->2",
+              "last_character": ")",
+              "layout_label": "plain text",
+              "truth_category": "clean",
+              "verdict": "open"
+            },
+            {
+              "label": "2->3",
+              "last_character": "。",
+              "layout_label": "plain text",
+              "truth_category": "linked",
+              "verdict": "closed"
+            },
+            {
+              "label": "3->4",
+              "last_character": "识",
+              "layout_label": "plain text",
+              "truth_category": "clean",
+              "verdict": "open"
+            },
+            {
+              "label": "4->5",
+              "last_character": "。",
+              "layout_label": "plain text",
+              "truth_category": "clean",
+              "verdict": "closed"
+            },
+            {
+              "label": "5->6",
+              "last_character": "原",
+              "layout_label": "plain text",
+              "truth_category": "trap",
+              "verdict": "open"
+            },
+            {
+              "label": "6->7",
+              "last_character": "。",
+              "layout_label": "plain text",
+              "truth_category": "clean",
+              "verdict": "closed"
+            },
+            {
+              "label": "7->8",
+              "last_character": "包",
+              "layout_label": "plain text",
+              "truth_category": "linked",
+              "verdict": "open"
+            }
+          ],
+          "conservation": {
+            "holds": true,
+            "levels": {
+              "chain": {
+                "evidence": {
+                  "absent": "no chain translation report"
+                },
+                "failures": [],
+                "holds": null,
+                "level": "chain",
+                "subjects": 0
+              },
+              "document": {
+                "evidence": {
+                  "produced_pages": 8,
+                  "source_pages": 8
+                },
+                "failures": [],
+                "holds": true,
+                "level": "document",
+                "subjects": 1
+              },
+              "repair": {
+                "evidence": {
+                  "absent": "no repair report"
+                },
+                "failures": [],
+                "holds": null,
+                "level": "repair",
+                "subjects": 0
+              }
+            },
+            "levels_absent": [
+              "chain",
+              "repair"
+            ],
+            "levels_present": [
+              "document"
+            ],
+            "metric": "block_conservation_invariant"
+          },
+          "label": "fork_full_pdf",
+          "layout_geometry": {
+            "alignment_delta": 0.00121,
+            "alignment_produced": 0.004932,
+            "alignment_source": 0.003722,
+            "image_area_delta": -0.0,
+            "image_placement_iou": 1.0,
+            "overlap_delta": 0.0,
+            "overlap_produced": 0.0,
+            "overlap_source": 0.0
+          },
+          "ltcr": null,
+          "mid_break_rate": {
+            "metric": "mid_unit_page_break_rate",
+            "pages": 8,
+            "rate": 0.571429,
+            "strict_rate": 0.571429,
+            "vertical_paragraphs": 3
+          },
+          "page_count_delta": {
+            "conserved": true,
+            "produced_pages": 8,
+            "source_pages": 8,
+            "value": 0
+          },
+          "page_series": {
+            "answerable": 7,
+            "axis_unsupported_count": 0,
+            "boundaries_total": 7,
+            "closed_count": 3,
+            "designed_count": 0,
+            "no_tail_count": 0,
+            "open_count": 4,
+            "rate": 0.571429,
+            "series": "page",
+            "strict_rate": 0.571429
+          },
+          "path": "pdf_extraction",
+          "produced_pdf": "examples/output/b8_4/smoke/Courier-zh/out/Courier-zh.no_watermark.zh.mono.pdf",
+          "produced_pdf_sha256": "528b85013e09b5a56c768ab3e514d5740eb061575714bbaa828e9153cef88da7",
+          "source_pdf": "examples/input/Courier-zh.pdf",
+          "source_pdf_sha256": "2975c623b0bc604a4deb15f36229de512d295f69e171462f083b3c7d494bbaf1",
+          "stratified": {
+            "mbr_all": 0.571429,
+            "mbr_all_denominator": 7,
+            "mbr_linkable": 0.5,
+            "mbr_linkable_denominator": 6,
+            "mbr_linkable_open": 3,
+            "source_inherited_open": 1,
+            "strata": {
+              "clean": {
+                "answerable": 4,
+                "axis_unsupported_count": 0,
+                "boundaries_total": 4,
+                "closed_count": 2,
+                "designed_count": 0,
+                "no_tail_count": 0,
+                "open_count": 2,
+                "rate": 0.5,
+                "series": "page",
+                "strict_rate": 0.5
+              },
+              "linked": {
+                "answerable": 2,
+                "axis_unsupported_count": 0,
+                "boundaries_total": 2,
+                "closed_count": 1,
+                "designed_count": 0,
+                "no_tail_count": 0,
+                "open_count": 1,
+                "rate": 0.5,
+                "series": "page",
+                "strict_rate": 0.5
+              },
+              "trap": {
+                "answerable": 1,
+                "axis_unsupported_count": 0,
+                "boundaries_total": 1,
+                "closed_count": 0,
+                "designed_count": 0,
+                "no_tail_count": 0,
+                "open_count": 1,
+                "rate": 1.0,
+                "series": "page",
+                "strict_rate": 1.0
+              },
+              "unlabelled": {
+                "answerable": 0,
+                "axis_unsupported_count": 0,
+                "boundaries_total": 0,
+                "closed_count": 0,
+                "designed_count": 0,
+                "no_tail_count": 0,
+                "open_count": 0,
+                "rate": null,
+                "series": "page",
+                "strict_rate": null
+              }
+            },
+            "trap_boundaries": 1,
+            "unlabelled_boundaries": 0
+          }
+        }
+      ],
+      "sample": "Courier-zh.pdf"
+    }
+  ]
+}

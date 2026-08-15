@@ -44,6 +44,24 @@ corpus/ or reviews/, and no upstream file at all.
 
 08 is the negative twin of the whole batch: no metric may reach a translator, a
 model client or a credential, and none may name a publication.
+
+The rest is the second session, which computed rather than implemented.
+
+10 is the mid-unit rate's stratification: the strata are read off the corpus
+ruling and its note, and the headline rate is deaf to a boundary no producer
+could have closed.
+
+11 is the leave-one-publication-out matrix: on disk, arithmetically consistent,
+and recomputing to the same bytes.
+
+12 is the two geometry paths measured against each other on the one artefact
+both can read, with the deviation written into the contract rather than assumed.
+
+13 is the corpus sweep: every registered sample in every configuration this
+repository holds, or a stated reason there is no such run.
+
+14 is the policy column ledger row C-04 was missing, recomputed offline for
+every model tier.
 """
 
 from __future__ import annotations
@@ -62,6 +80,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
 from babeldoc.format.pdf.document_il import il_version_1  # noqa: E402
+from babeldoc.magazine import corpus as corpus_module  # noqa: E402
 from babeldoc.magazine.chain_signals import load_chain_config  # noqa: E402
 from babeldoc.magazine.metrics import MetricError  # noqa: E402
 from babeldoc.magazine.metrics import conservation  # noqa: E402
@@ -72,14 +91,26 @@ from babeldoc.magazine.metrics import mid_break_rate  # noqa: E402
 from spec_checks import artifacts  # noqa: E402
 from spec_checks import harness  # noqa: E402
 
-BATCH_TAG = "batch-e1.1"
+# Both sessions of batch E1, in order. The scope assertion reads the union of
+# the deltas the tags that exist introduced, plus the working tree while the
+# last of them is still uncut, so a session does not stop covering itself the
+# moment the session before it is frozen.
+BATCH_TAGS = ("batch-e1.1", "batch-e1.2")
 
 PYTHON = sys.executable
 
 PACKAGE = ROOT / "babeldoc" / "magazine" / "metrics"
 CONFIG = ROOT / "configs" / "metrics.json"
 TOOL = ROOT / "tools" / "eval_report.py"
+LOPO_TOOL = ROOT / "tools" / "lopo.py"
 CONTRACT = ROOT / "docs" / "eval" / "metric_contract.md"
+
+# What the second session computed. Tracked, because the whole point of B-02 is
+# that a matrix nobody wrote down is a matrix nobody has.
+RESULTS = ROOT / "docs" / "eval" / "results_e1"
+LOPO_RESULT = RESULTS / "lopo_v2.json"
+CORPUS_RESULT = RESULTS / "eval_corpus.json"
+POLICY_RESULT = RESULTS / "vlm_policy_c04.json"
 
 # A frozen working directory the entry point is driven over. Produced by batch
 # b8.4; this batch makes no run of its own.
@@ -93,7 +124,10 @@ NESTED_SUPPRESSED = os.environ.get("SPEC_NO_NESTED") == "1"
 
 # Assertions that read a produced artefact rather than one built here, skipped
 # by the fast tier during iteration and run before any tag is cut.
-PIPELINE_TIER = ("check_06_the_entry_point_over_a_frozen_run",)
+PIPELINE_TIER = (
+    "check_06_the_entry_point_over_a_frozen_run",
+    "check_11b_the_fold_matrix_recomputes_bit_for_bit",
+)
 
 # Paths this session may change. The metrics package, the tool, the bounded
 # configuration, the evaluation documents, this gate and the runner; plus the
@@ -113,7 +147,12 @@ ALLOWED_PREFIXES = (
     "spec_checks/",
     "tools/",
 )
-ALLOWED_FILES = {"UPSTREAM_DIFF.md", "WAIVERS.md"}
+# ``.gitignore`` is here for one line: the repository ignores every ``*.json``
+# and un-ignores the directories whose JSON is meant to be kept, and the results
+# of this session are such a directory. Without it the fold matrix would be
+# produced, reported and silently never committed, which is B-02 happening a
+# second time. Registered as W-E1-01.
+ALLOWED_FILES = {".gitignore", "UPSTREAM_DIFF.md", "WAIVERS.md"}
 
 # Everything under babeldoc/ that is not the new package is upstream or an
 # earlier batch's, with one exception: the term consistency tool's measurement
@@ -151,13 +190,20 @@ def git_output(args: list[str]) -> tuple[int, str]:
 
 
 def changed_paths() -> set[str]:
-    """This batch's delta: its tag where it exists, the working tree otherwise."""
-    code, _ = git_output(["rev-parse", "--verify", f"{BATCH_TAG}^{{commit}}"])
-    if code == 0:
-        _, listing = git_output(["diff", "--name-only", f"{BATCH_TAG}^..{BATCH_TAG}"])
-        return {line.strip() for line in listing.splitlines() if line.strip()}
+    """This batch's delta: the tags that exist, plus the tree while one is not cut."""
+    paths: set[str] = set()
+    uncut = False
+    for tag in BATCH_TAGS:
+        code, _ = git_output(["rev-parse", "--verify", f"{tag}^{{commit}}"])
+        if code != 0:
+            uncut = True
+            continue
+        _, listing = git_output(["diff", "--name-only", f"{tag}^..{tag}"])
+        paths |= {line.strip() for line in listing.splitlines() if line.strip()}
+    if not uncut:
+        return paths
     _, listing = git_output(["diff", "--name-only", "HEAD"])
-    paths = {line.strip() for line in listing.splitlines() if line.strip()}
+    paths |= {line.strip() for line in listing.splitlines() if line.strip()}
     _, staged = git_output(["diff", "--name-only", "--cached"])
     paths |= {line.strip() for line in staged.splitlines() if line.strip()}
     _, untracked = git_output(["status", "--porcelain", "--untracked-files=all"])
@@ -949,6 +995,451 @@ def check_06_the_entry_point_over_a_frozen_run() -> None:
     record("check_06_the_entry_point_over_a_frozen_run", not faults, "; ".join(faults))
 
 
+# --- 10 the stratification of the mid-unit rate --------------------------------
+
+
+def _stratified_document():
+    """Six pages whose five boundaries cover every stratum, verdicts by hand.
+
+    Read with the ruling below: an open linked tail, a closed trap, an open
+    trap, a closed clean tail, and an open tail the ruling says nothing about.
+    """
+    return _document(
+        [
+            _page([_paragraph("and it runs on", 40.0, 700.0, 500.0)], 0),
+            _page([_paragraph("A closed one.", 40.0, 700.0, 500.0)], 1),
+            _page([_paragraph("dangling here", 40.0, 700.0, 500.0)], 2),
+            _page([_paragraph("Ends properly.", 40.0, 700.0, 500.0)], 3),
+            _page([_paragraph("cut mid sentence", 40.0, 700.0, 500.0)], 4),
+            _page([_paragraph("The last page.", 40.0, 700.0, 500.0)], 5),
+        ]
+    )
+
+
+_RULING = {
+    "1->2": {"link": True, "note": "a unit is cut here"},
+    "2->3": {"link": False, "note": "TRAP: the continuation is outside the excerpt"},
+    "3->4": {"link": False, "note": "TRAP: the same, and this one dangles"},
+    "4->5": {"link": False, "note": "a clean boundary, nothing crosses"},
+}
+
+
+def check_10a_the_strata_are_read_from_the_ruling_and_the_note() -> None:
+    """Positive 10a: each boundary lands in the stratum the adjudication put it in.
+
+    The ruling gives the linked boundaries and the declared marker gives the
+    traps, so the three strata are a reading of the ground truth file and not a
+    second opinion about it. A boundary the ruling is silent about is
+    ``unlabelled`` -- not clean, which would be a claim nobody made.
+    """
+    config = load_metrics_config()
+    chain_config = load_chain_config()
+    truth = mid_break_rate.adjudications_of(_RULING, config.truth_trap_markers)
+    result = mid_break_rate.measure(
+        _stratified_document(), chain_config, truth, config
+    )
+    series = result["series"][mid_break_rate.PAGE_SERIES]
+    faults = []
+    expected = [
+        (mid_break_rate.LINKED, mid_break_rate.OPEN),
+        (mid_break_rate.TRAP, mid_break_rate.CLOSED),
+        (mid_break_rate.TRAP, mid_break_rate.OPEN),
+        (mid_break_rate.CLEAN, mid_break_rate.CLOSED),
+        (mid_break_rate.UNLABELLED, mid_break_rate.OPEN),
+    ]
+    actual = [
+        (item["truth_category"], item["verdict"]) for item in series["boundaries"]
+    ]
+    if actual != expected:
+        faults.append(f"{actual} against {expected}")
+
+    stratified = result["stratified"]
+    # One open of the two answerable linkable boundaries; three opens of the
+    # five boundaries there are; one of the two traps open.
+    for key, value in (
+        ("mbr_linkable", 0.5),
+        ("mbr_linkable_open", 1),
+        ("mbr_linkable_denominator", 2),
+        ("mbr_all", 0.6),
+        ("mbr_all_denominator", 5),
+        ("source_inherited_open", 1),
+        ("trap_boundaries", 2),
+        ("unlabelled_boundaries", 1),
+    ):
+        if stratified[key] != value:
+            faults.append(f"{key}={stratified[key]} against {value}")
+    if stratified["strata"][mid_break_rate.TRAP]["boundaries_total"] != 2:
+        faults.append("the trap stratum lost a boundary")
+    record(
+        "check_10a_the_strata_are_read_from_the_ruling_and_the_note",
+        not faults,
+        "; ".join(faults),
+    )
+
+
+def check_10b_a_trap_cannot_move_the_headline() -> None:
+    """Negative 10b: openness the excerpt caused never enters the headline rate.
+
+    The whole reason for the stratification. Two documents differing only in
+    whether a trap tail dangles have to report the same linkable rate, because
+    no producer could have closed that boundary either way; the difference has
+    to show in the all-boundaries rate and in the inherited count, where it is
+    attributed to the excerpt.
+    """
+    config = load_metrics_config()
+    chain_config = load_chain_config()
+    truth = mid_break_rate.adjudications_of(_RULING, config.truth_trap_markers)
+    dangling = mid_break_rate.measure(
+        _stratified_document(), chain_config, truth, config
+    )["stratified"]
+
+    closed_trap = _stratified_document()
+    closed_trap.page[2].pdf_paragraph[0] = _paragraph(
+        "no longer dangling.", 40.0, 700.0, 500.0
+    )
+    repaired = mid_break_rate.measure(closed_trap, chain_config, truth, config)[
+        "stratified"
+    ]
+
+    faults = []
+    if dangling["mbr_linkable"] != repaired["mbr_linkable"]:
+        faults.append(
+            f"the headline moved from {dangling['mbr_linkable']} to "
+            f"{repaired['mbr_linkable']} on a trap"
+        )
+    if dangling["mbr_all"] == repaired["mbr_all"]:
+        faults.append("the all-boundaries rate did not notice the trap at all")
+    if (dangling["source_inherited_open"], repaired["source_inherited_open"]) != (1, 0):
+        faults.append(
+            f"inherited open {dangling['source_inherited_open']} then "
+            f"{repaired['source_inherited_open']}"
+        )
+    # And with no ruling at all there is no stratification, rather than one
+    # where every boundary silently counts as clean.
+    unruled = mid_break_rate.measure(_stratified_document(), chain_config)
+    if unruled["stratified"] is not None:
+        faults.append("a sample with no adjudication was stratified anyway")
+    record("check_10b_a_trap_cannot_move_the_headline", not faults, "; ".join(faults))
+
+
+# --- 11 the leave-one-publication-out matrix -----------------------------------
+
+
+def check_11a_the_fold_matrix_is_on_disk_and_adds_up() -> None:
+    """Positive 11a: the matrix is a tracked file whose folds are consistent.
+
+    B-02's lesson is that a number whose matrix was never written down cannot be
+    checked, restored or defended, so the assertion is on the file. Each fold's
+    held out and in-fold halves must partition the corpus exactly -- the pages
+    add up, the hits add up, and no sample appears in both halves -- and the
+    protocol must state that no fold refits anything, since the whole reading of
+    the matrix depends on that.
+    """
+    if not LOPO_RESULT.is_file():
+        record(
+            "check_11a_the_fold_matrix_is_on_disk_and_adds_up",
+            False,
+            f"{LOPO_RESULT.relative_to(ROOT)} is not there",
+        )
+        return
+    with LOPO_RESULT.open(encoding="utf-8") as f:
+        report = json.load(f)
+    faults = []
+    protocol = report["protocol"]
+    if protocol["refit_per_fold"] is not False:
+        faults.append("the protocol claims a per fold refit this repository cannot do")
+    for field in ("refit_note", "tuning_contact"):
+        if not protocol.get(field):
+            faults.append(f"the protocol states no {field}")
+    if report["missing"]:
+        faults.append(f"samples the matrix could not classify: {report['missing']}")
+
+    everything = report["corpus"]["all"]
+    if not report["folds"]:
+        faults.append("no folds")
+    for fold in report["folds"]:
+        held = fold["held_out"]
+        rest = fold["in_fold"]
+        if held["labelled_pages"] + rest["labelled_pages"] != everything[
+            "labelled_pages"
+        ]:
+            faults.append(f"{fold['held_out_publication']}: pages do not partition")
+        for key in ("kind_hits", "policy_hits"):
+            if held[key] + rest[key] != everything[key]:
+                faults.append(f"{fold['held_out_publication']}: {key} do not partition")
+        if set(held["samples"]) & set(rest["samples"]):
+            faults.append(f"{fold['held_out_publication']}: a sample is in both halves")
+        if not held["samples"]:
+            faults.append(f"{fold['held_out_publication']}: nothing held out")
+    # The policy column can never be below the kind column: a kind hit is a
+    # policy hit by construction.
+    for row in report["samples"]:
+        if row["policy_hits"] < row["kind_hits"]:
+            faults.append(f"{row['file']}: policy below kind")
+    record(
+        "check_11a_the_fold_matrix_is_on_disk_and_adds_up", not faults, "; ".join(faults)
+    )
+
+
+def check_11b_the_fold_matrix_recomputes_bit_for_bit() -> None:
+    """Positive 11b: running the tool again reproduces the tracked file exactly.
+
+    Determinism is the property that makes a frozen number checkable, and the
+    only way to assert it is to run the thing twice. The tool writes where the
+    tracked copy is, so this also catches a matrix that was hand edited after
+    the tool produced it.
+    """
+    if not LOPO_RESULT.is_file():
+        record(
+            "check_11b_the_fold_matrix_recomputes_bit_for_bit",
+            False,
+            f"{LOPO_RESULT.relative_to(ROOT)} is not there",
+        )
+        return
+    before = LOPO_RESULT.read_bytes()
+    proc = subprocess.run(  # noqa: S603
+        [PYTHON, str(LOPO_TOOL), "--out", str(RESULTS), "--name", LOPO_RESULT.stem],
+        cwd=ROOT,
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    after = LOPO_RESULT.read_bytes()
+    faults = []
+    if proc.returncode != 0:
+        faults.append(f"the tool exited {proc.returncode}: {proc.stdout[-400:]}")
+    if before != after:
+        faults.append("the recomputed matrix differs from the tracked one")
+    record(
+        "check_11b_the_fold_matrix_recomputes_bit_for_bit", not faults, "; ".join(faults)
+    )
+
+
+# --- 12 the two geometry paths --------------------------------------------------
+
+
+def check_12a_the_paths_are_compared_where_both_can_read() -> None:
+    """Positive 12a: the fork product is measured down both paths, and differenced.
+
+    An upstream column exists only because a PDF can be measured without a
+    checkpoint. Whether it may be read beside a fork column is a question about
+    the two methods, and it is answered on the one artefact both can read: the
+    fork's own product, measured through the intermediate language and through
+    extraction, with the deviation reported per metric.
+    """
+    if not CORPUS_RESULT.is_file():
+        record(
+            "check_12a_the_paths_are_compared_where_both_can_read",
+            False,
+            f"{CORPUS_RESULT.relative_to(ROOT)} is not there",
+        )
+        return
+    with CORPUS_RESULT.open(encoding="utf-8") as f:
+        report = json.load(f)
+    faults = []
+    for sample in report["samples"]:
+        comparison = sample["method_comparison"]
+        if comparison is None:
+            faults.append(f"{sample['sample']}: no method comparison")
+            continue
+        if not comparison["metrics"]:
+            faults.append(f"{sample['sample']}: the comparison names no metric")
+        for name, row in comparison["metrics"].items():
+            if row["relative_delta"] is not None and row["comparable"] is None:
+                faults.append(f"{sample['sample']} {name}: a delta with no verdict")
+        counts = comparison["elements"]
+        if counts["pdf_extraction_produced"] <= 0:
+            faults.append(f"{sample['sample']}: the extraction path found no element")
+        verdicts = comparison["boundary_verdicts"]
+        if verdicts["shared"] <= 0 and sample["pages"] and sample["pages"] > 1:
+            faults.append(f"{sample['sample']}: no boundary shared by the two paths")
+    record(
+        "check_12a_the_paths_are_compared_where_both_can_read",
+        not faults,
+        "; ".join(faults[:5]),
+    )
+
+
+def check_12b_the_deviation_is_in_the_contract() -> None:
+    """Negative 12b: no metric is declared comparable anywhere but the contract.
+
+    A deviation measured and left in a JSON file is a deviation nobody will read
+    before quoting a number across the two columns. Every metric the sweep found
+    incomparable has to be named in the metric contract, and the contract has to
+    state the bound it was judged against.
+    """
+    if not CORPUS_RESULT.is_file():
+        record(
+            "check_12b_the_deviation_is_in_the_contract",
+            False,
+            f"{CORPUS_RESULT.relative_to(ROOT)} is not there",
+        )
+        return
+    with CORPUS_RESULT.open(encoding="utf-8") as f:
+        report = json.load(f)
+    contract = CONTRACT.read_text(encoding="utf-8")
+    incomparable = sorted(
+        {
+            name
+            for sample in report["samples"]
+            for name, row in (sample["method_comparison"] or {}).get(
+                "metrics", {}
+            ).items()
+            if row["comparable"] is False
+        }
+    )
+    faults = [name for name in incomparable if name not in contract]
+    bound = next(
+        (
+            sample["method_comparison"]["bound"]
+            for sample in report["samples"]
+            if sample["method_comparison"]
+        ),
+        None,
+    )
+    if bound is None:
+        faults.append("no bound was recorded")
+    elif str(bound) not in contract:
+        faults.append(f"the contract does not state the bound {bound}")
+    if not incomparable:
+        faults.append("no metric was judged: the comparison found nothing to say")
+    record(
+        "check_12b_the_deviation_is_in_the_contract",
+        not faults,
+        f"unnamed in the contract: {faults[:5]}",
+    )
+
+
+# --- 13 the corpus sweep --------------------------------------------------------
+
+
+def check_13a_every_sample_in_every_configuration() -> None:
+    """Positive 13a: the sweep covers the registered corpus, or says why it does not.
+
+    One file per registered sample, each carrying the configurations this
+    repository holds artefacts for. A configuration that is absent is named
+    under ``missing`` with the path that was looked for, because a run silently
+    dropped from a table is a run whose absence gets read as a result.
+    """
+    if not CORPUS_RESULT.is_file():
+        record(
+            "check_13a_every_sample_in_every_configuration",
+            False,
+            f"{CORPUS_RESULT.relative_to(ROOT)} is not there",
+        )
+        return
+    with CORPUS_RESULT.open(encoding="utf-8") as f:
+        report = json.load(f)
+    manifest = corpus_module.load_manifest()
+    registered = {entry["file"] for entry in manifest["samples"]}
+    measured = {sample["sample"] for sample in report["samples"]}
+    faults = []
+    if measured != registered:
+        faults.append(f"measured {sorted(measured)} against {sorted(registered)}")
+    for sample in report["samples"]:
+        stem = Path(sample["sample"]).stem
+        if not (RESULTS / f"eval_report.{stem}.json").is_file():
+            faults.append(f"{sample['sample']}: no per sample file")
+        labels = {run["label"] for run in sample["runs"]}
+        for label in report["labels"]:
+            if label not in labels and not any(
+                line.startswith(f"{label}:") for line in sample["missing"]
+            ):
+                faults.append(f"{sample['sample']}: {label} neither run nor explained")
+        for run in sample["runs"]:
+            if run["conservation"]["holds"] is False:
+                faults.append(f"{sample['sample']} {run['label']}: did not conserve")
+    record(
+        "check_13a_every_sample_in_every_configuration", not faults, "; ".join(faults[:5])
+    )
+
+
+def check_13b_the_unmeasurable_boundaries_are_counted() -> None:
+    """Negative 13b: no run hides a boundary behind the axis it cannot measure.
+
+    ``axis_unsupported`` is the verdict for a tail the method has no reading end
+    for, and it enters no rate. That is only honest if the count is reported, so
+    every run states it, and every run also states how many paragraphs of the
+    document were set on that axis at all -- a zero of the first with a zero of
+    the second is a document with nothing to miss, and a zero of the first with
+    a positive second is the check having been made.
+    """
+    if not CORPUS_RESULT.is_file():
+        record(
+            "check_13b_the_unmeasurable_boundaries_are_counted",
+            False,
+            f"{CORPUS_RESULT.relative_to(ROOT)} is not there",
+        )
+        return
+    with CORPUS_RESULT.open(encoding="utf-8") as f:
+        report = json.load(f)
+    faults = []
+    for sample in report["samples"]:
+        for run in sample["runs"]:
+            series = run["page_series"]
+            if "axis_unsupported_count" not in series:
+                faults.append(f"{sample['sample']} {run['label']}: no count")
+                continue
+            if "vertical_paragraphs" not in run["mid_break_rate"]:
+                faults.append(f"{sample['sample']} {run['label']}: no vertical tally")
+                continue
+            swallowed = series["axis_unsupported_count"]
+            answerable = series["answerable"]
+            if swallowed + answerable + series["no_tail_count"] != series[
+                "boundaries_total"
+            ]:
+                faults.append(f"{sample['sample']} {run['label']}: verdicts do not sum")
+    record(
+        "check_13b_the_unmeasurable_boundaries_are_counted",
+        not faults,
+        "; ".join(faults[:5]),
+    )
+
+
+# --- 14 the policy column -------------------------------------------------------
+
+
+def check_14_the_policy_column_exists_for_every_tier() -> None:
+    """Positive 14: ledger row C-04's missing column, computed for all four tiers.
+
+    The conclusion the ledger carries is about the policy level and the produced
+    reports only ever carried the kind level. The column is recomputed from the
+    frozen reports, which costs nothing and reaches no model, and it has to obey
+    the one property it cannot violate: a kind hit is a policy hit, so the policy
+    column is never below the kind column.
+    """
+    if not POLICY_RESULT.is_file():
+        record(
+            "check_14_the_policy_column_exists_for_every_tier",
+            False,
+            f"{POLICY_RESULT.relative_to(ROOT)} is not there",
+        )
+        return
+    with POLICY_RESULT.open(encoding="utf-8") as f:
+        report = json.load(f)
+    faults = []
+    if len(report["tiers"]) < 4:
+        faults.append(f"{len(report['tiers'])} tiers, not the four the ledger names")
+    for tier in report["tiers"]:
+        for column in ("deterministic", "combined"):
+            kind = tier["kind_agreement"][column]
+            policy = tier["policy_agreement"][column]
+            if policy["total"] != kind["total"]:
+                faults.append(f"{tier['model']} {column}: denominators differ")
+            if policy["hits"] < kind["hits"]:
+                faults.append(f"{tier['model']} {column}: policy below kind")
+        if tier["policy_gain"][""] > 0:
+            faults.append(
+                f"{tier['model']}: gains {tier['policy_gain']['']} at the policy "
+                "level, which the ledger says no tier does"
+            )
+        if not Path(ROOT / tier["report"]).is_file():
+            faults.append(f"{tier['model']}: {tier['report']} is not there")
+    record(
+        "check_14_the_policy_column_exists_for_every_tier", not faults, "; ".join(faults)
+    )
+
+
 # --- 07 the scope --------------------------------------------------------------
 
 
@@ -1008,7 +1499,7 @@ def check_07b_the_runner_registers_this_gate() -> None:
 def check_07c_ascii_prose() -> None:
     """Negative 7c: every file this batch adds is ASCII, as the code always is."""
     faults = []
-    files = sorted(PACKAGE.glob("*.py")) + [TOOL, CONFIG, Path(__file__)]
+    files = sorted(PACKAGE.glob("*.py")) + [TOOL, LOPO_TOOL, CONFIG, Path(__file__)]
     for path in files:
         for number, line in enumerate(
             path.read_text(encoding="utf-8").splitlines(), start=1
@@ -1062,7 +1553,7 @@ def check_08a_no_metric_can_spend_anything() -> None:
     at no cost, which is the property that makes the whole evaluation replayable.
     """
     faults = []
-    for path in sorted(PACKAGE.glob("*.py")) + [TOOL]:
+    for path in sorted(PACKAGE.glob("*.py")) + [TOOL, LOPO_TOOL]:
         source = path.read_text(encoding="utf-8")
         for forbidden in ("translator", "openai", "vlm_client", "gate_cache", "httpx"):
             if re.search(rf"^\s*(import|from)\s+.*{forbidden}", source, re.MULTILINE):
@@ -1153,6 +1644,15 @@ def main() -> int:
         check_05d_image_pairing_and_the_unpaired_case,
         check_05e_the_deltas_over_a_whole_document,
         check_06_the_entry_point_over_a_frozen_run,
+        check_10a_the_strata_are_read_from_the_ruling_and_the_note,
+        check_10b_a_trap_cannot_move_the_headline,
+        check_11a_the_fold_matrix_is_on_disk_and_adds_up,
+        check_11b_the_fold_matrix_recomputes_bit_for_bit,
+        check_12a_the_paths_are_compared_where_both_can_read,
+        check_12b_the_deviation_is_in_the_contract,
+        check_13a_every_sample_in_every_configuration,
+        check_13b_the_unmeasurable_boundaries_are_counted,
+        check_14_the_policy_column_exists_for_every_tier,
         check_07a_no_upstream_and_no_ground_truth_change,
         check_07b_the_runner_registers_this_gate,
         check_07c_ascii_prose,

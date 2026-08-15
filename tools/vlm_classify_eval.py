@@ -60,6 +60,7 @@ from babeldoc.magazine.page_classifier import REPORT_NAME  # noqa: E402
 from babeldoc.magazine.page_classifier import VLM_SOURCE  # noqa: E402
 from babeldoc.magazine.page_classifier import PageClassifier  # noqa: E402
 from babeldoc.magazine.prompt_loader import MANIFEST_NAME  # noqa: E402
+from babeldoc.magazine.taxonomy import load_taxonomy  # noqa: E402
 from babeldoc.magazine.vlm_client import CachedVlmClient  # noqa: E402
 from babeldoc.magazine.vlm_client import OpenAICompatibleTransport  # noqa: E402
 from babeldoc.magazine.vlm_client import load_vlm_config  # noqa: E402
@@ -141,6 +142,66 @@ def predicted_set(kind: str, outcome: dict | None) -> set[str]:
 def coverage_hit(kind: str, outcome: dict | None, expected: list[str]) -> bool:
     """Whether anything the layer named is among the labels the page carries."""
     return bool(predicted_set(kind, outcome) & set(expected))
+
+
+def policy_hit(kind: str, expected: list[str], policy_of) -> bool:
+    """Whether the kind named leads to a policy one of the accepted kinds leads to.
+
+    The column ledger row C-04 says was never produced. Everything downstream of
+    the classifier consumes the policy flags and never the name, so two kinds
+    declaring the same policy are the same decision, and a page called one of
+    them when the truth is the other is a naming difference rather than a
+    misclassification. Reported beside the kind column and never instead of it:
+    the two answer different questions and the looser one alone would flatter.
+    """
+    if kind in expected:
+        return True
+    own = policy_of(kind)
+    if own is None:
+        return False
+    return any(policy_of(candidate) == own for candidate in expected)
+
+
+def policy_columns(pages: list[dict], policy_of, publication_of) -> dict:
+    """The policy level agreement of both layers, from per page verdicts.
+
+    Takes the rows a report already carries, so it recomputes the column over a
+    frozen report at no cost and with no replay: the kinds are in the report and
+    the mapping is in the vocabulary, and nothing else is needed.
+    """
+    deterministic: dict[str, list[int]] = {}
+    combined: dict[str, list[int]] = {}
+    routed_deterministic: dict[str, list[int]] = {}
+    routed_combined: dict[str, list[int]] = {}
+    for row in pages:
+        expected = row.get("labels")
+        if not expected:
+            continue
+        publication = publication_of.get(row["file"], row["file"])
+        before = policy_hit(row["deterministic_kind"], expected, policy_of)
+        after = policy_hit(row["final_kind"], expected, policy_of)
+        tally(deterministic, publication, before)
+        tally(combined, publication, after)
+        if row.get("vlm") is not None:
+            tally(routed_deterministic, publication, before)
+            tally(routed_combined, publication, after)
+    for table in (deterministic, combined, routed_deterministic, routed_combined):
+        pooled(table)
+    return {
+        "deterministic": as_pairs(deterministic),
+        "combined": as_pairs(combined),
+        "routed_pages_deterministic": as_pairs(routed_deterministic),
+        "routed_pages_combined": as_pairs(routed_combined),
+    }
+
+
+def publication_index() -> dict[str, str]:
+    """Sample file name to the publication it came from, as the manifest says."""
+    manifest = corpus_module.load_manifest()
+    return {
+        entry["file"]: entry.get("publication", entry["file"])
+        for entry in manifest["samples"]
+    }
 
 
 def _build_requests(working_dir: Path) -> int:
@@ -336,6 +397,12 @@ def evaluate(samples: list[dict], out_dir: Path) -> dict:
             "routed_pages_deterministic": as_pairs(routed_deterministic),
             "routed_pages_combined": as_pairs(routed_model),
         },
+        "policy_agreement": policy_columns(
+            pages, load_taxonomy().policy_of, {
+                entry["file"]: entry.get("publication", entry["file"])
+                for entry in samples
+            }
+        ),
         "label_set_coverage": {
             "deterministic": as_pairs(coverage_deterministic),
             "combined": as_pairs(coverage_combined),
@@ -430,6 +497,71 @@ def summarize(report: dict) -> str:
     return "\n".join(lines)
 
 
+def recompute_policy(paths: list[Path]) -> dict:
+    """The policy column of frozen ablation reports, without running anything.
+
+    Ledger row C-04 states a conclusion -- no model tier gains at the policy
+    level -- that the produced reports never carried the column for. This
+    recomputes it from the reports themselves. It is offline for every tier
+    alike, including the one whose replies were never cached: what is read is
+    the frozen verdict, not the model, so no tier costs a request and all four
+    have the same provenance.
+    """
+    policy_of = load_taxonomy().policy_of
+    publication_of = publication_index()
+    tiers = []
+    for path in paths:
+        with path.open(encoding="utf-8") as f:
+            report = json.load(f)
+        columns = policy_columns(report["pages"], policy_of, publication_of)
+        kind = report["agreement"]
+        # Which samples the frozen run measured that the corpus no longer
+        # registers. The ablation predates a corpus swap, so the column is a
+        # property of the corpus it ran on and is not the same denominator as a
+        # figure quoted for the corpus registered today.
+        unregistered = sorted(
+            {
+                row["file"]
+                for row in report["pages"]
+                if row.get("labels") and row["file"] not in publication_of
+            }
+        )
+        tiers.append(
+            {
+                "report": path.as_posix(),
+                "unregistered_samples": unregistered,
+                "model": report["configuration"]["model"],
+                "enabled": report["configuration"]["enabled"],
+                "cost": report["cost"],
+                "kind_agreement": {
+                    name: kind[name][""] for name in sorted(kind)
+                },
+                "policy_agreement": {
+                    name: columns[name][""] for name in sorted(columns)
+                },
+                "policy_by_publication": columns["combined"],
+                "policy_gain": {
+                    name: columns["combined"][name]["hits"]
+                    - columns["deterministic"][name]["hits"]
+                    for name in sorted(columns["combined"])
+                },
+            }
+        )
+    return {
+        "generated_by": "tools/vlm_classify_eval.py --from-report",
+        "ledger_row": "C-04",
+        "note": (
+            "Recomputed offline from the frozen ablation reports. No model "
+            "request was made and no reply cache was consulted: the reports "
+            "carry every verdict the column needs. Any sample named under "
+            "unregistered_samples was in the corpus the ablation ran on and is "
+            "not in the corpus registered today, so these denominators are not "
+            "the denominators of a figure quoted for the current corpus."
+        ),
+        "tiers": tiers,
+    }
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument(
@@ -438,10 +570,45 @@ def main(argv: list[str] | None = None) -> int:
         default=None,
         help="restrict to one registered sample file name; repeatable",
     )
+    parser.add_argument(
+        "--from-report",
+        action="append",
+        type=Path,
+        default=None,
+        metavar="REPORT_JSON",
+        help="recompute the policy column of a frozen report; runs nothing",
+    )
+    parser.add_argument(
+        "--name",
+        default="vlm_policy",
+        help="stem of the file --from-report writes into --out",
+    )
     parser.add_argument("--out", type=Path, default=DEFAULT_OUT_DIR)
     args = parser.parse_args(argv)
 
     logging.basicConfig(level=logging.ERROR)
+
+    if args.from_report:
+        missing = [path for path in args.from_report if not path.is_file()]
+        if missing:
+            print(f"ERROR: no such report: {[str(path) for path in missing]}")
+            return 1
+        report = recompute_policy(args.from_report)
+        args.out.mkdir(parents=True, exist_ok=True)
+        target = args.out / f"{args.name}.json"
+        with target.open("w", encoding="utf-8") as f:
+            json.dump(report, f, indent=2, sort_keys=True)
+            f.write("\n")
+        for tier in report["tiers"]:
+            kind = tier["kind_agreement"]["combined"]
+            policy = tier["policy_agreement"]["combined"]
+            print(
+                f"{tier['model']:16s} kind={kind['hits']}/{kind['total']} "
+                f"({kind['rate']}) policy={policy['hits']}/{policy['total']} "
+                f"({policy['rate']}) policy_gain={tier['policy_gain']['']}"
+            )
+        print(f"\nvlm_classify_eval: {len(report['tiers'])} tier(s) -> {target}")
+        return 0
     use_project_cache(ROOT)
     warmup()
 

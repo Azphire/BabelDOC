@@ -1,0 +1,3521 @@
+{
+  "runs": [
+    {
+      "absent": [
+        "no working directory: no chain or repair level of the conservation invariant",
+        "no source and translated checkpoint pair: no LTCR"
+      ],
+      "conservation": {
+        "holds": true,
+        "levels": {
+          "chain": {
+            "evidence": {
+              "absent": "no chain translation report"
+            },
+            "failures": [],
+            "holds": null,
+            "level": "chain",
+            "subjects": 0
+          },
+          "document": {
+            "evidence": {
+              "produced_pages": 8,
+              "source_pages": 8
+            },
+            "failures": [],
+            "holds": true,
+            "level": "document",
+            "subjects": 1
+          },
+          "repair": {
+            "evidence": {
+              "absent": "no repair report"
+            },
+            "failures": [],
+            "holds": null,
+            "level": "repair",
+            "subjects": 0
+          }
+        },
+        "levels_absent": [
+          "chain",
+          "repair"
+        ],
+        "levels_present": [
+          "document"
+        ],
+        "metric": "block_conservation_invariant"
+      },
+      "label": "upstream",
+      "layout_geometry": {
+        "metric": "layout_geometry",
+        "page_count_delta": {
+          "conserved": true,
+          "produced_pages": 8,
+          "source_pages": 8,
+          "value": 0
+        },
+        "pages": [
+          {
+            "alignment_delta": 0.000158,
+            "image_area_delta": {
+              "absolute": 0,
+              "produced_area": 0,
+              "source_area": 0,
+              "value": null
+            },
+            "image_placement_iou": {
+              "pairs": 0,
+              "produced_images": 0,
+              "source_images": 0,
+              "unpaired_produced": 0,
+              "unpaired_source": 0,
+              "value": null
+            },
+            "overlap_delta": 0.0,
+            "page_index": 0,
+            "produced": {
+              "alignment": {
+                "dropped": 0,
+                "elements": 36,
+                "value": 0.00015949407607919507
+              },
+              "elements": 36,
+              "overlap": {
+                "dropped": 0,
+                "elements": 36,
+                "value": 0.0
+              }
+            },
+            "source": {
+              "alignment": {
+                "dropped": 0,
+                "elements": 72,
+                "value": 1.9319795628207996e-06
+              },
+              "elements": 72,
+              "overlap": {
+                "dropped": 0,
+                "elements": 72,
+                "value": 0.0
+              }
+            }
+          },
+          {
+            "alignment_delta": 0.002651,
+            "image_area_delta": {
+              "absolute": 0.0,
+              "produced_area": 0.382743,
+              "source_area": 0.382743,
+              "value": 0.0
+            },
+            "image_placement_iou": {
+              "pairs": 1,
+              "produced_images": 1,
+              "source_images": 1,
+              "unpaired_produced": 0,
+              "unpaired_source": 0,
+              "value": 1.0
+            },
+            "overlap_delta": 0.0,
+            "page_index": 1,
+            "produced": {
+              "alignment": {
+                "dropped": 0,
+                "elements": 8,
+                "value": 0.004143872122471882
+              },
+              "elements": 8,
+              "overlap": {
+                "dropped": 0,
+                "elements": 8,
+                "value": 0.0
+              }
+            },
+            "source": {
+              "alignment": {
+                "dropped": 0,
+                "elements": 15,
+                "value": 0.0014931967232766348
+              },
+              "elements": 15,
+              "overlap": {
+                "dropped": 0,
+                "elements": 15,
+                "value": 0.0
+              }
+            }
+          },
+          {
+            "alignment_delta": -0.00029,
+            "image_area_delta": {
+              "absolute": -0.0,
+              "produced_area": 0.622779,
+              "source_area": 0.622779,
+              "value": -0.0
+            },
+            "image_placement_iou": {
+              "pairs": 1,
+              "produced_images": 1,
+              "source_images": 1,
+              "unpaired_produced": 0,
+              "unpaired_source": 0,
+              "value": 1.0
+            },
+            "overlap_delta": 0.0,
+            "page_index": 2,
+            "produced": {
+              "alignment": {
+                "dropped": 0,
+                "elements": 4,
+                "value": 0.026262433878571852
+              },
+              "elements": 4,
+              "overlap": {
+                "dropped": 0,
+                "elements": 4,
+                "value": 0.0
+              }
+            },
+            "source": {
+              "alignment": {
+                "dropped": 0,
+                "elements": 4,
+                "value": 0.026551999751393076
+              },
+              "elements": 4,
+              "overlap": {
+                "dropped": 0,
+                "elements": 4,
+                "value": 0.0
+              }
+            }
+          },
+          {
+            "alignment_delta": 0.00146,
+            "image_area_delta": {
+              "absolute": 0,
+              "produced_area": 0,
+              "source_area": 0,
+              "value": null
+            },
+            "image_placement_iou": {
+              "pairs": 0,
+              "produced_images": 0,
+              "source_images": 0,
+              "unpaired_produced": 0,
+              "unpaired_source": 0,
+              "value": null
+            },
+            "overlap_delta": 0.067434,
+            "page_index": 3,
+            "produced": {
+              "alignment": {
+                "dropped": 0,
+                "elements": 21,
+                "value": 0.0015977136524118547
+              },
+              "elements": 21,
+              "overlap": {
+                "dropped": 0,
+                "elements": 21,
+                "value": 0.06743396783310456
+              }
+            },
+            "source": {
+              "alignment": {
+                "dropped": 0,
+                "elements": 85,
+                "value": 0.00013814232468266452
+              },
+              "elements": 85,
+              "overlap": {
+                "dropped": 0,
+                "elements": 85,
+                "value": 0.0
+              }
+            }
+          },
+          {
+            "alignment_delta": 0.00163,
+            "image_area_delta": {
+              "absolute": 0.0,
+              "produced_area": 0.327187,
+              "source_area": 0.327187,
+              "value": 0.0
+            },
+            "image_placement_iou": {
+              "pairs": 1,
+              "produced_images": 1,
+              "source_images": 1,
+              "unpaired_produced": 0,
+              "unpaired_source": 0,
+              "value": 1.0
+            },
+            "overlap_delta": 0.0,
+            "page_index": 4,
+            "produced": {
+              "alignment": {
+                "dropped": 0,
+                "elements": 13,
+                "value": 0.0023261271067529904
+              },
+              "elements": 13,
+              "overlap": {
+                "dropped": 0,
+                "elements": 13,
+                "value": 0.0
+              }
+            },
+            "source": {
+              "alignment": {
+                "dropped": 0,
+                "elements": 34,
+                "value": 0.0006961706002494939
+              },
+              "elements": 34,
+              "overlap": {
+                "dropped": 0,
+                "elements": 34,
+                "value": 0.0
+              }
+            }
+          },
+          {
+            "alignment_delta": 0.003346,
+            "image_area_delta": {
+              "absolute": 0.0,
+              "produced_area": 0.199503,
+              "source_area": 0.199503,
+              "value": 0.0
+            },
+            "image_placement_iou": {
+              "pairs": 1,
+              "produced_images": 1,
+              "source_images": 1,
+              "unpaired_produced": 0,
+              "unpaired_source": 0,
+              "value": 1.0
+            },
+            "overlap_delta": 0.0,
+            "page_index": 5,
+            "produced": {
+              "alignment": {
+                "dropped": 0,
+                "elements": 15,
+                "value": 0.0037949293697239926
+              },
+              "elements": 15,
+              "overlap": {
+                "dropped": 0,
+                "elements": 15,
+                "value": 0.0
+              }
+            },
+            "source": {
+              "alignment": {
+                "dropped": 0,
+                "elements": 57,
+                "value": 0.00044939879962813307
+              },
+              "elements": 57,
+              "overlap": {
+                "dropped": 0,
+                "elements": 57,
+                "value": 0.0
+              }
+            }
+          },
+          {
+            "alignment_delta": 0.001963,
+            "image_area_delta": {
+              "absolute": 0,
+              "produced_area": 0,
+              "source_area": 0,
+              "value": null
+            },
+            "image_placement_iou": {
+              "pairs": 0,
+              "produced_images": 0,
+              "source_images": 0,
+              "unpaired_produced": 0,
+              "unpaired_source": 0,
+              "value": null
+            },
+            "overlap_delta": 0.0,
+            "page_index": 6,
+            "produced": {
+              "alignment": {
+                "dropped": 0,
+                "elements": 19,
+                "value": 0.002113584936835531
+              },
+              "elements": 19,
+              "overlap": {
+                "dropped": 0,
+                "elements": 19,
+                "value": 0.0
+              }
+            },
+            "source": {
+              "alignment": {
+                "dropped": 0,
+                "elements": 75,
+                "value": 0.00015082470288341025
+              },
+              "elements": 75,
+              "overlap": {
+                "dropped": 0,
+                "elements": 75,
+                "value": 0.0
+              }
+            }
+          },
+          {
+            "alignment_delta": 0.002323,
+            "image_area_delta": {
+              "absolute": 0.0,
+              "produced_area": 0.216551,
+              "source_area": 0.216551,
+              "value": 0.0
+            },
+            "image_placement_iou": {
+              "pairs": 1,
+              "produced_images": 1,
+              "source_images": 1,
+              "unpaired_produced": 0,
+              "unpaired_source": 0,
+              "value": 1.0
+            },
+            "overlap_delta": 0.0,
+            "page_index": 7,
+            "produced": {
+              "alignment": {
+                "dropped": 0,
+                "elements": 17,
+                "value": 0.0026205473893079704
+              },
+              "elements": 17,
+              "overlap": {
+                "dropped": 0,
+                "elements": 17,
+                "value": 0.0
+              }
+            },
+            "source": {
+              "alignment": {
+                "dropped": 0,
+                "elements": 84,
+                "value": 0.0002975908865297757
+              },
+              "elements": 84,
+              "overlap": {
+                "dropped": 0,
+                "elements": 84,
+                "value": 0.0
+              }
+            }
+          }
+        ],
+        "pages_compared": 8,
+        "summary": {
+          "alignment_delta": 0.001655,
+          "alignment_produced": 0.005377,
+          "alignment_source": 0.003722,
+          "image_area_delta": -0.0,
+          "image_placement_iou": 1.0,
+          "overlap_delta": 0.008429,
+          "overlap_produced": 0.008429,
+          "overlap_source": 0.0
+        }
+      },
+      "mid_break_rate": {
+        "metric": "mid_unit_page_break_rate",
+        "pages": 8,
+        "rate": 0.285714,
+        "series": {
+          "column": {
+            "answerable": 19,
+            "axis_unsupported_count": 0,
+            "boundaries": [
+              {
+                "from_column": 0,
+                "label": "p1c0->c1",
+                "page_index": 0,
+                "series": "column",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 0,
+                  "last_character": "n",
+                  "last_character_x": 209.95642852783203,
+                  "last_character_y": 68.6817626953125,
+                  "last_line_text": "Chapter .................42Anuliina Savolainen",
+                  "layout_label": "plain text",
+                  "page_index": 0,
+                  "paragraph_index": 30,
+                  "reference": "p1#30",
+                  "vertical": false
+                },
+                "to_column": 1,
+                "to_page_index": 0,
+                "truth_category": null,
+                "truth_link": null,
+                "verdict": "open"
+              },
+              {
+                "from_column": 0,
+                "label": "p2c0->c1",
+                "page_index": 1,
+                "series": "column",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 0,
+                  "last_character": "6",
+                  "last_character_x": 166.69994354248047,
+                  "last_character_y": 32.7376708984375,
+                  "last_line_text": "2 |  UNESCO Courier · January-March 2026",
+                  "layout_label": "plain text",
+                  "page_index": 1,
+                  "paragraph_index": 1,
+                  "reference": "p2#1",
+                  "vertical": false
+                },
+                "to_column": 1,
+                "to_page_index": 1,
+                "truth_category": null,
+                "truth_link": null,
+                "verdict": "open"
+              },
+              {
+                "from_column": 1,
+                "label": "p2c1->c2",
+                "page_index": 1,
+                "series": "column",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 1,
+                  "last_character": ".",
+                  "last_character_x": 145.99557495117188,
+                  "last_character_y": 375.31248474121094,
+                  "last_line_text": "particularly valuable.",
+                  "layout_label": "plain text",
+                  "page_index": 1,
+                  "paragraph_index": 4,
+                  "reference": "p2#4",
+                  "vertical": false
+                },
+                "to_column": 2,
+                "to_page_index": 1,
+                "truth_category": null,
+                "truth_link": null,
+                "verdict": "closed"
+              },
+              {
+                "from_column": 0,
+                "label": "p4c0->c1",
+                "page_index": 3,
+                "series": "column",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 0,
+                  "last_character": "6",
+                  "last_character_x": 166.69994354248047,
+                  "last_character_y": 32.7376708984375,
+                  "last_line_text": "4 |  UNESCO Courier · January-March 2026",
+                  "layout_label": "plain text",
+                  "page_index": 3,
+                  "paragraph_index": 1,
+                  "reference": "p4#1",
+                  "vertical": false
+                },
+                "to_column": 1,
+                "to_page_index": 3,
+                "truth_category": null,
+                "truth_link": null,
+                "verdict": "open"
+              },
+              {
+                "from_column": 1,
+                "label": "p4c1->c2",
+                "page_index": 3,
+                "series": "column",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 1,
+                  "last_character": ".",
+                  "last_character_x": 134.63477325439453,
+                  "last_character_y": 626.3902206420898,
+                  "last_line_text": "traditional knowledge.",
+                  "layout_label": "plain text",
+                  "page_index": 3,
+                  "paragraph_index": 3,
+                  "reference": "p4#3",
+                  "vertical": false
+                },
+                "to_column": 2,
+                "to_page_index": 3,
+                "truth_category": null,
+                "truth_link": null,
+                "verdict": "closed"
+              },
+              {
+                "from_column": 2,
+                "label": "p4c2->c3",
+                "page_index": 3,
+                "series": "column",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 2,
+                  "last_character": ".",
+                  "last_character_x": 308.3532257080078,
+                  "last_character_y": 94.53485107421875,
+                  "last_line_text": "mal scientific systems.",
+                  "layout_label": "plain text",
+                  "page_index": 3,
+                  "paragraph_index": 19,
+                  "reference": "p4#19",
+                  "vertical": false
+                },
+                "to_column": 3,
+                "to_page_index": 3,
+                "truth_category": null,
+                "truth_link": null,
+                "verdict": "closed"
+              },
+              {
+                "from_column": 3,
+                "label": "p4c3->c4",
+                "page_index": 3,
+                "series": "column",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 3,
+                  "last_character": "\"",
+                  "last_character_x": 472.7608337402344,
+                  "last_character_y": 297.3924560546875,
+                  "last_line_text": "responsible for building most of the structures.\"",
+                  "layout_label": "plain text",
+                  "page_index": 3,
+                  "paragraph_index": 14,
+                  "reference": "p4#14",
+                  "vertical": false
+                },
+                "to_column": 4,
+                "to_page_index": 3,
+                "truth_category": null,
+                "truth_link": null,
+                "verdict": "closed"
+              },
+              {
+                "from_column": 0,
+                "label": "p5c0->c1",
+                "page_index": 4,
+                "series": "column",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 0,
+                  "last_character": ".",
+                  "last_character_x": 286.8496551513672,
+                  "last_character_y": 45.09283447265625,
+                  "last_line_text": "quickly transport the arapaima from the lakes to the cold chain system.",
+                  "layout_label": "plain text",
+                  "page_index": 4,
+                  "paragraph_index": 9,
+                  "reference": "p5#9",
+                  "vertical": false
+                },
+                "to_column": 1,
+                "to_page_index": 4,
+                "truth_category": null,
+                "truth_link": null,
+                "verdict": "closed"
+              },
+              {
+                "from_column": 1,
+                "label": "p5c1->c2",
+                "page_index": 4,
+                "series": "column",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 1,
+                  "last_character": "e",
+                  "last_character_x": 257.64666748046875,
+                  "last_character_y": 673.9072952270508,
+                  "last_line_text": "Water People",
+                  "layout_label": "plain text",
+                  "page_index": 4,
+                  "paragraph_index": 6,
+                  "reference": "p5#6",
+                  "vertical": false
+                },
+                "to_column": 2,
+                "to_page_index": 4,
+                "truth_category": null,
+                "truth_link": null,
+                "verdict": "open"
+              },
+              {
+                "from_column": 2,
+                "label": "p5c2->c3",
+                "page_index": 4,
+                "series": "column",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 2,
+                  "last_character": "\"",
+                  "last_character_x": 325.45094299316406,
+                  "last_character_y": 427.1513977050781,
+                  "last_line_text": "ones truly living in the water.\"",
+                  "layout_label": "plain text",
+                  "page_index": 4,
+                  "paragraph_index": 4,
+                  "reference": "p5#4",
+                  "vertical": false
+                },
+                "to_column": 3,
+                "to_page_index": 4,
+                "truth_category": null,
+                "truth_link": null,
+                "verdict": "closed"
+              },
+              {
+                "from_column": 0,
+                "label": "p6c0->c1",
+                "page_index": 5,
+                "series": "column",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 0,
+                  "last_character": "6",
+                  "last_character_x": 166.69994354248047,
+                  "last_character_y": 32.7376708984375,
+                  "last_line_text": "36 |  UNESCO Courier · January-March 2026",
+                  "layout_label": "plain text",
+                  "page_index": 5,
+                  "paragraph_index": 0,
+                  "reference": "p6#0",
+                  "vertical": false
+                },
+                "to_column": 1,
+                "to_page_index": 5,
+                "truth_category": null,
+                "truth_link": null,
+                "verdict": "open"
+              },
+              {
+                "from_column": 1,
+                "label": "p6c1->c2",
+                "page_index": 5,
+                "series": "column",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 1,
+                  "last_character": "e",
+                  "last_character_x": 279.64312744140625,
+                  "last_character_y": 72.03213500976562,
+                  "last_line_text": "types of light: one",
+                  "layout_label": "plain text",
+                  "page_index": 5,
+                  "paragraph_index": 6,
+                  "reference": "p6#6",
+                  "vertical": false
+                },
+                "to_column": 2,
+                "to_page_index": 5,
+                "truth_category": null,
+                "truth_link": null,
+                "verdict": "open"
+              },
+              {
+                "from_column": 0,
+                "label": "p7c0->c1",
+                "page_index": 6,
+                "series": "column",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 0,
+                  "last_character": "6",
+                  "last_character_x": 166.69994354248047,
+                  "last_character_y": 32.7376708984375,
+                  "last_line_text": "10 |  UNESCO Courier · January-March 2026",
+                  "layout_label": "plain text",
+                  "page_index": 6,
+                  "paragraph_index": 1,
+                  "reference": "p7#1",
+                  "vertical": false
+                },
+                "to_column": 1,
+                "to_page_index": 6,
+                "truth_category": null,
+                "truth_link": null,
+                "verdict": "open"
+              },
+              {
+                "from_column": 1,
+                "label": "p7c1->c2",
+                "page_index": 6,
+                "series": "column",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 1,
+                  "last_character": ",",
+                  "last_character_x": 96.09839248657227,
+                  "last_character_y": 69.67605590820312,
+                  "last_line_text": "or commerce,",
+                  "layout_label": "plain text",
+                  "page_index": 6,
+                  "paragraph_index": 11,
+                  "reference": "p7#11",
+                  "vertical": false
+                },
+                "to_column": 2,
+                "to_page_index": 6,
+                "truth_category": null,
+                "truth_link": null,
+                "verdict": "open"
+              },
+              {
+                "from_column": 2,
+                "label": "p7c2->c3",
+                "page_index": 6,
+                "series": "column",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 2,
+                  "last_character": "s",
+                  "last_character_x": 356.4191436767578,
+                  "last_character_y": 715.295726776123,
+                  "last_line_text": "Breeds and Spreads",
+                  "layout_label": "plain text",
+                  "page_index": 6,
+                  "paragraph_index": 12,
+                  "reference": "p7#12",
+                  "vertical": false
+                },
+                "to_column": 3,
+                "to_page_index": 6,
+                "truth_category": null,
+                "truth_link": null,
+                "verdict": "open"
+              },
+              {
+                "from_column": 3,
+                "label": "p7c3->c4",
+                "page_index": 6,
+                "series": "column",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 3,
+                  "last_character": ".",
+                  "last_character_x": 482.1727600097656,
+                  "last_character_y": 80.80575561523438,
+                  "last_line_text": "consent of the knowledge holders.",
+                  "layout_label": "plain text",
+                  "page_index": 6,
+                  "paragraph_index": 14,
+                  "reference": "p7#14",
+                  "vertical": false
+                },
+                "to_column": 4,
+                "to_page_index": 6,
+                "truth_category": null,
+                "truth_link": null,
+                "verdict": "closed"
+              },
+              {
+                "from_column": 0,
+                "label": "p8c0->c1",
+                "page_index": 7,
+                "series": "column",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 0,
+                  "last_character": "d",
+                  "last_character_x": 145.6393814086914,
+                  "last_character_y": 74.47064208984375,
+                  "last_line_text": "that anyone could access and",
+                  "layout_label": "plain text",
+                  "page_index": 7,
+                  "paragraph_index": 12,
+                  "reference": "p8#12",
+                  "vertical": false
+                },
+                "to_column": 1,
+                "to_page_index": 7,
+                "truth_category": null,
+                "truth_link": null,
+                "verdict": "open"
+              },
+              {
+                "from_column": 1,
+                "label": "p8c1->c2",
+                "page_index": 7,
+                "series": "column",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 1,
+                  "last_character": "e",
+                  "last_character_x": 290.87635803222656,
+                  "last_character_y": 68.1634521484375,
+                  "last_line_text": "indigenous knowledge",
+                  "layout_label": "plain text",
+                  "page_index": 7,
+                  "paragraph_index": 7,
+                  "reference": "p8#7",
+                  "vertical": false
+                },
+                "to_column": 2,
+                "to_page_index": 7,
+                "truth_category": null,
+                "truth_link": null,
+                "verdict": "open"
+              },
+              {
+                "from_column": 2,
+                "label": "p8c2->c3",
+                "page_index": 7,
+                "series": "column",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 2,
+                  "last_character": ".",
+                  "last_character_x": 451.47447204589844,
+                  "last_character_y": 99.19955444335938,
+                  "last_line_text": "unfortunate reality.",
+                  "layout_label": "plain text",
+                  "page_index": 7,
+                  "paragraph_index": 3,
+                  "reference": "p8#3",
+                  "vertical": false
+                },
+                "to_column": 3,
+                "to_page_index": 7,
+                "truth_category": null,
+                "truth_link": null,
+                "verdict": "closed"
+              }
+            ],
+            "boundaries_total": 19,
+            "closed_count": 8,
+            "designed_count": 0,
+            "no_tail_count": 0,
+            "open_count": 11,
+            "rate": 0.578947,
+            "series": "column",
+            "strict_rate": 0.578947
+          },
+          "page": {
+            "answerable": 7,
+            "axis_unsupported_count": 0,
+            "boundaries": [
+              {
+                "from_column": -1,
+                "label": "1->2",
+                "page_index": 0,
+                "series": "page",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 1,
+                  "last_character": ".",
+                  "last_character_x": 496.7593231201172,
+                  "last_character_y": 122.8714599609375,
+                  "last_line_text": "the vibrant flowers of human civilization to bloom freely.",
+                  "layout_label": "plain text",
+                  "page_index": 0,
+                  "paragraph_index": 6,
+                  "reference": "p1#6",
+                  "vertical": false
+                },
+                "to_column": -1,
+                "to_page_index": 1,
+                "truth_category": "clean",
+                "truth_link": false,
+                "verdict": "closed"
+              },
+              {
+                "from_column": -1,
+                "label": "2->3",
+                "page_index": 1,
+                "series": "page",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 2,
+                  "last_character": ".",
+                  "last_character_x": 549.435791015625,
+                  "last_character_y": 45.938720703125,
+                  "last_line_text": "chambira palm fibers—this palm is a symbol of Amazonian indigenous craftsmanship.",
+                  "layout_label": "plain text",
+                  "page_index": 1,
+                  "paragraph_index": 3,
+                  "reference": "p2#3",
+                  "vertical": false
+                },
+                "to_column": -1,
+                "to_page_index": 2,
+                "truth_category": "linked",
+                "truth_link": true,
+                "verdict": "closed"
+              },
+              {
+                "from_column": -1,
+                "label": "3->4",
+                "page_index": 2,
+                "series": "page",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 0,
+                  "last_character": "识",
+                  "last_character_x": 228.57789611816406,
+                  "last_character_y": 701.5128784179688,
+                  "last_line_text": "土著知识",
+                  "layout_label": "plain text",
+                  "page_index": 2,
+                  "paragraph_index": 1,
+                  "reference": "p3#1",
+                  "vertical": false
+                },
+                "to_column": -1,
+                "to_page_index": 3,
+                "truth_category": "clean",
+                "truth_link": false,
+                "verdict": "open"
+              },
+              {
+                "from_column": -1,
+                "label": "4->5",
+                "page_index": 3,
+                "series": "page",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 4,
+                  "last_character": ".",
+                  "last_character_x": 461.71498107910156,
+                  "last_character_y": 86.36126708984375,
+                  "last_line_text": "nto its assessments.",
+                  "layout_label": "plain text",
+                  "page_index": 3,
+                  "paragraph_index": 20,
+                  "reference": "p4#20",
+                  "vertical": false
+                },
+                "to_column": -1,
+                "to_page_index": 4,
+                "truth_category": "clean",
+                "truth_link": false,
+                "verdict": "closed"
+              },
+              {
+                "from_column": -1,
+                "label": "5->6",
+                "page_index": 4,
+                "series": "page",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 3,
+                  "last_character": ".",
+                  "last_character_x": 522.0273742675781,
+                  "last_character_y": 423.43797302246094,
+                  "last_line_text": "formed by Brazil's oldest indigenous group.",
+                  "layout_label": "plain text",
+                  "page_index": 4,
+                  "paragraph_index": 2,
+                  "reference": "p5#2",
+                  "vertical": false
+                },
+                "to_column": -1,
+                "to_page_index": 5,
+                "truth_category": "trap",
+                "truth_link": false,
+                "verdict": "closed"
+              },
+              {
+                "from_column": -1,
+                "label": "6->7",
+                "page_index": 5,
+                "series": "page",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 2,
+                  "last_character": ".",
+                  "last_character_x": 416.41246032714844,
+                  "last_character_y": 77.8575439453125,
+                  "last_line_text": "surgery.",
+                  "layout_label": "plain text",
+                  "page_index": 5,
+                  "paragraph_index": 2,
+                  "reference": "p6#2",
+                  "vertical": false
+                },
+                "to_column": -1,
+                "to_page_index": 6,
+                "truth_category": "clean",
+                "truth_link": false,
+                "verdict": "closed"
+              },
+              {
+                "from_column": -1,
+                "label": "7->8",
+                "page_index": 6,
+                "series": "page",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 4,
+                  "last_character": "d",
+                  "last_character_x": 442.2868194580078,
+                  "last_character_y": 223.7418212890625,
+                  "last_line_text": "parties included",
+                  "layout_label": "plain text",
+                  "page_index": 6,
+                  "paragraph_index": 3,
+                  "reference": "p7#3",
+                  "vertical": false
+                },
+                "to_column": -1,
+                "to_page_index": 7,
+                "truth_category": "linked",
+                "truth_link": true,
+                "verdict": "open"
+              }
+            ],
+            "boundaries_total": 7,
+            "closed_count": 5,
+            "designed_count": 0,
+            "no_tail_count": 0,
+            "open_count": 2,
+            "rate": 0.285714,
+            "series": "page",
+            "strict_rate": 0.285714
+          }
+        },
+        "stratified": {
+          "mbr_all": 0.285714,
+          "mbr_all_denominator": 7,
+          "mbr_linkable": 0.333333,
+          "mbr_linkable_denominator": 6,
+          "mbr_linkable_open": 2,
+          "source_inherited_open": 0,
+          "strata": {
+            "clean": {
+              "answerable": 4,
+              "axis_unsupported_count": 0,
+              "boundaries_total": 4,
+              "closed_count": 3,
+              "designed_count": 0,
+              "no_tail_count": 0,
+              "open_count": 1,
+              "rate": 0.25,
+              "series": "page",
+              "strict_rate": 0.25
+            },
+            "linked": {
+              "answerable": 2,
+              "axis_unsupported_count": 0,
+              "boundaries_total": 2,
+              "closed_count": 1,
+              "designed_count": 0,
+              "no_tail_count": 0,
+              "open_count": 1,
+              "rate": 0.5,
+              "series": "page",
+              "strict_rate": 0.5
+            },
+            "trap": {
+              "answerable": 1,
+              "axis_unsupported_count": 0,
+              "boundaries_total": 1,
+              "closed_count": 1,
+              "designed_count": 0,
+              "no_tail_count": 0,
+              "open_count": 0,
+              "rate": 0.0,
+              "series": "page",
+              "strict_rate": 0.0
+            },
+            "unlabelled": {
+              "answerable": 0,
+              "axis_unsupported_count": 0,
+              "boundaries_total": 0,
+              "closed_count": 0,
+              "designed_count": 0,
+              "no_tail_count": 0,
+              "open_count": 0,
+              "rate": null,
+              "series": "page",
+              "strict_rate": null
+            }
+          },
+          "trap_boundaries": 1,
+          "unlabelled_boundaries": 0
+        },
+        "strict_rate": 0.285714,
+        "vertical_paragraphs": 3
+      },
+      "path": "pdf_extraction",
+      "produced_pdf": "examples/baseline/pdf/Courier-zh/Courier-zh.no_watermark.en.mono.pdf",
+      "produced_pdf_sha256": "71ca4c37ea0990a4a4dadb3d33db9e85dc5844213bbf371bccdbd7e3e2cd5aeb",
+      "sample": "Courier-zh.pdf",
+      "source_pdf": "examples/input/Courier-zh.pdf",
+      "source_pdf_sha256": "2975c623b0bc604a4deb15f36229de512d295f69e171462f083b3c7d494bbaf1"
+    },
+    {
+      "absent": [],
+      "conservation": {
+        "holds": true,
+        "levels": {
+          "chain": {
+            "evidence": {
+              "chains": 0,
+              "escalated_members": 0,
+              "merged_members": 0,
+              "rendered_members": 0
+            },
+            "failures": [],
+            "holds": true,
+            "level": "chain",
+            "subjects": 0
+          },
+          "document": {
+            "evidence": {
+              "produced_pages": 8,
+              "source_pages": 8
+            },
+            "failures": [],
+            "holds": true,
+            "level": "document",
+            "subjects": 1
+          },
+          "repair": {
+            "evidence": {
+              "changed": 0,
+              "changed_outside_touched": 0,
+              "pages_after": 8,
+              "pages_before": 8,
+              "paragraphs_after": 135,
+              "paragraphs_before": 135,
+              "reported_verdict": "conserved",
+              "touched": 0
+            },
+            "failures": [],
+            "holds": true,
+            "level": "repair",
+            "subjects": 1
+          }
+        },
+        "levels_absent": [],
+        "levels_present": [
+          "chain",
+          "repair",
+          "document"
+        ],
+        "metric": "block_conservation_invariant"
+      },
+      "label": "fork_full_il",
+      "layout_geometry": {
+        "metric": "layout_geometry",
+        "page_count_delta": {
+          "conserved": true,
+          "produced_pages": 8,
+          "source_pages": 8,
+          "value": 0
+        },
+        "pages": [
+          {
+            "alignment_delta": 0.0,
+            "image_area_delta": {
+              "absolute": 0.0,
+              "produced_area": 0.004701,
+              "source_area": 0.004701,
+              "value": 0.0
+            },
+            "image_placement_iou": {
+              "pairs": 2,
+              "produced_images": 2,
+              "source_images": 2,
+              "unpaired_produced": 0,
+              "unpaired_source": 0,
+              "value": 1.0
+            },
+            "overlap_delta": 0.0,
+            "page_index": 0,
+            "produced": {
+              "alignment": {
+                "dropped": 0,
+                "elements": 37,
+                "value": 5.401877540298567e-05
+              },
+              "elements": 37,
+              "overlap": {
+                "dropped": 0,
+                "elements": 37,
+                "value": 0.0913529635114291
+              }
+            },
+            "source": {
+              "alignment": {
+                "dropped": 0,
+                "elements": 37,
+                "value": 5.401877540298567e-05
+              },
+              "elements": 37,
+              "overlap": {
+                "dropped": 0,
+                "elements": 37,
+                "value": 0.0913529635114291
+              }
+            }
+          },
+          {
+            "alignment_delta": 0.0,
+            "image_area_delta": {
+              "absolute": 0.0,
+              "produced_area": 0.388046,
+              "source_area": 0.388046,
+              "value": 0.0
+            },
+            "image_placement_iou": {
+              "pairs": 1,
+              "produced_images": 1,
+              "source_images": 1,
+              "unpaired_produced": 0,
+              "unpaired_source": 0,
+              "value": 1.0
+            },
+            "overlap_delta": 0.0,
+            "page_index": 1,
+            "produced": {
+              "alignment": {
+                "dropped": 0,
+                "elements": 9,
+                "value": 0.002470503694908254
+              },
+              "elements": 9,
+              "overlap": {
+                "dropped": 0,
+                "elements": 9,
+                "value": 0.0
+              }
+            },
+            "source": {
+              "alignment": {
+                "dropped": 0,
+                "elements": 9,
+                "value": 0.002470503694908254
+              },
+              "elements": 9,
+              "overlap": {
+                "dropped": 0,
+                "elements": 9,
+                "value": 0.0
+              }
+            }
+          },
+          {
+            "alignment_delta": 0.0,
+            "image_area_delta": {
+              "absolute": 0.0,
+              "produced_area": 0.637002,
+              "source_area": 0.637002,
+              "value": 0.0
+            },
+            "image_placement_iou": {
+              "pairs": 1,
+              "produced_images": 1,
+              "source_images": 1,
+              "unpaired_produced": 0,
+              "unpaired_source": 0,
+              "value": 1.0
+            },
+            "overlap_delta": -2e-06,
+            "page_index": 2,
+            "produced": {
+              "alignment": {
+                "dropped": 0,
+                "elements": 5,
+                "value": 0.022572893945119455
+              },
+              "elements": 5,
+              "overlap": {
+                "dropped": 0,
+                "elements": 5,
+                "value": 0.059555310902567216
+              }
+            },
+            "source": {
+              "alignment": {
+                "dropped": 0,
+                "elements": 5,
+                "value": 0.022572893945119455
+              },
+              "elements": 5,
+              "overlap": {
+                "dropped": 0,
+                "elements": 5,
+                "value": 0.05955688497847217
+              }
+            }
+          },
+          {
+            "alignment_delta": 0.0,
+            "image_area_delta": {
+              "absolute": 0,
+              "produced_area": 0,
+              "source_area": 0,
+              "value": null
+            },
+            "image_placement_iou": {
+              "pairs": 0,
+              "produced_images": 0,
+              "source_images": 0,
+              "unpaired_produced": 0,
+              "unpaired_source": 0,
+              "value": null
+            },
+            "overlap_delta": 0.0,
+            "page_index": 3,
+            "produced": {
+              "alignment": {
+                "dropped": 0,
+                "elements": 23,
+                "value": 0.0004443776611077486
+              },
+              "elements": 23,
+              "overlap": {
+                "dropped": 0,
+                "elements": 23,
+                "value": 0.0
+              }
+            },
+            "source": {
+              "alignment": {
+                "dropped": 0,
+                "elements": 23,
+                "value": 0.0004443776611077486
+              },
+              "elements": 23,
+              "overlap": {
+                "dropped": 0,
+                "elements": 23,
+                "value": 0.0
+              }
+            }
+          },
+          {
+            "alignment_delta": 0.0,
+            "image_area_delta": {
+              "absolute": 0.0,
+              "produced_area": 0.335244,
+              "source_area": 0.335244,
+              "value": 0.0
+            },
+            "image_placement_iou": {
+              "pairs": 1,
+              "produced_images": 1,
+              "source_images": 1,
+              "unpaired_produced": 0,
+              "unpaired_source": 0,
+              "value": 1.0
+            },
+            "overlap_delta": -1e-06,
+            "page_index": 4,
+            "produced": {
+              "alignment": {
+                "dropped": 0,
+                "elements": 14,
+                "value": 0.0017474545724705836
+              },
+              "elements": 14,
+              "overlap": {
+                "dropped": 0,
+                "elements": 14,
+                "value": 0.03997673800258039
+              }
+            },
+            "source": {
+              "alignment": {
+                "dropped": 0,
+                "elements": 14,
+                "value": 0.0017474545724705836
+              },
+              "elements": 14,
+              "overlap": {
+                "dropped": 0,
+                "elements": 14,
+                "value": 0.039978208010344594
+              }
+            }
+          },
+          {
+            "alignment_delta": 0.0,
+            "image_area_delta": {
+              "absolute": 0.0,
+              "produced_area": 0.203689,
+              "source_area": 0.203689,
+              "value": 0.0
+            },
+            "image_placement_iou": {
+              "pairs": 1,
+              "produced_images": 1,
+              "source_images": 1,
+              "unpaired_produced": 0,
+              "unpaired_source": 0,
+              "value": 1.0
+            },
+            "overlap_delta": -1e-06,
+            "page_index": 5,
+            "produced": {
+              "alignment": {
+                "dropped": 0,
+                "elements": 17,
+                "value": 0.0010706846046487943
+              },
+              "elements": 17,
+              "overlap": {
+                "dropped": 0,
+                "elements": 17,
+                "value": 0.015601254733879267
+              }
+            },
+            "source": {
+              "alignment": {
+                "dropped": 0,
+                "elements": 17,
+                "value": 0.0010706846046487943
+              },
+              "elements": 17,
+              "overlap": {
+                "dropped": 0,
+                "elements": 17,
+                "value": 0.015602328062056074
+              }
+            }
+          },
+          {
+            "alignment_delta": 0.0,
+            "image_area_delta": {
+              "absolute": 0,
+              "produced_area": 0,
+              "source_area": 0,
+              "value": null
+            },
+            "image_placement_iou": {
+              "pairs": 0,
+              "produced_images": 0,
+              "source_images": 0,
+              "unpaired_produced": 0,
+              "unpaired_source": 0,
+              "value": null
+            },
+            "overlap_delta": 0.0,
+            "page_index": 6,
+            "produced": {
+              "alignment": {
+                "dropped": 0,
+                "elements": 20,
+                "value": 0.0002901022202643061
+              },
+              "elements": 20,
+              "overlap": {
+                "dropped": 0,
+                "elements": 20,
+                "value": 0.0
+              }
+            },
+            "source": {
+              "alignment": {
+                "dropped": 0,
+                "elements": 20,
+                "value": 0.0002901022202643061
+              },
+              "elements": 20,
+              "overlap": {
+                "dropped": 0,
+                "elements": 20,
+                "value": 0.0
+              }
+            }
+          },
+          {
+            "alignment_delta": 0.0,
+            "image_area_delta": {
+              "absolute": 0.0,
+              "produced_area": 0.217924,
+              "source_area": 0.217924,
+              "value": 0.0
+            },
+            "image_placement_iou": {
+              "pairs": 1,
+              "produced_images": 1,
+              "source_images": 1,
+              "unpaired_produced": 0,
+              "unpaired_source": 0,
+              "value": 1.0
+            },
+            "overlap_delta": 0.0,
+            "page_index": 7,
+            "produced": {
+              "alignment": {
+                "dropped": 0,
+                "elements": 17,
+                "value": 0.0011294071128558462
+              },
+              "elements": 17,
+              "overlap": {
+                "dropped": 0,
+                "elements": 17,
+                "value": 0.0
+              }
+            },
+            "source": {
+              "alignment": {
+                "dropped": 0,
+                "elements": 17,
+                "value": 0.0011294071128558462
+              },
+              "elements": 17,
+              "overlap": {
+                "dropped": 0,
+                "elements": 17,
+                "value": 0.0
+              }
+            }
+          }
+        ],
+        "pages_compared": 8,
+        "summary": {
+          "alignment_delta": 0.0,
+          "alignment_produced": 0.003722,
+          "alignment_source": 0.003722,
+          "image_area_delta": 0.0,
+          "image_placement_iou": 1.0,
+          "overlap_delta": -1e-06,
+          "overlap_produced": 0.025811,
+          "overlap_source": 0.025811
+        }
+      },
+      "ltcr": {
+        "metric": "ltcr",
+        "min_occurrences": 3,
+        "min_paragraphs": 2,
+        "regions": [
+          {
+            "region": "A1",
+            "summary": {
+              "fully_consistent": 0,
+              "legacy_mean_share": null,
+              "ltcr": null,
+              "measured": 0,
+              "pairs_agreeing": 0,
+              "pairs_total": 0,
+              "terms": 0
+            },
+            "terms": []
+          },
+          {
+            "region": "A2",
+            "summary": {
+              "fully_consistent": 0,
+              "legacy_mean_share": null,
+              "ltcr": null,
+              "measured": 0,
+              "pairs_agreeing": 0,
+              "pairs_total": 0,
+              "terms": 0
+            },
+            "terms": []
+          }
+        ],
+        "summary": {
+          "fully_consistent": 0,
+          "legacy_mean_share": null,
+          "ltcr": null,
+          "measured": 0,
+          "pairs_agreeing": 0,
+          "pairs_total": 0,
+          "terms": 0
+        }
+      },
+      "mid_break_rate": {
+        "metric": "mid_unit_page_break_rate",
+        "pages": 8,
+        "rate": 0.571429,
+        "series": {
+          "column": {
+            "answerable": 17,
+            "axis_unsupported_count": 0,
+            "boundaries": [
+              {
+                "from_column": 0,
+                "label": "p1c0->c1",
+                "page_index": 0,
+                "series": "column",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 0,
+                  "last_character": ")",
+                  "last_character_x": 200.6336999591112,
+                  "last_character_y": 70.42320000000001,
+                  "last_line_text": "努利那·萨沃莱宁(Anuliina Savolainen)",
+                  "layout_label": "plain text",
+                  "page_index": 0,
+                  "paragraph_index": 29,
+                  "reference": "p1#29",
+                  "vertical": false
+                },
+                "to_column": 1,
+                "to_page_index": 0,
+                "truth_category": null,
+                "truth_link": null,
+                "verdict": "open"
+              },
+              {
+                "from_column": 1,
+                "label": "p1c1->c2",
+                "page_index": 0,
+                "series": "column",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 1,
+                  "last_character": "。",
+                  "last_character_x": 523.7648984374999,
+                  "last_character_y": 128.56071406249998,
+                  "last_line_text": "表达提供包容空间，让绚烂多彩的人类文明之花尽情绽放。",
+                  "layout_label": "plain text",
+                  "page_index": 0,
+                  "paragraph_index": 6,
+                  "reference": "p1#6",
+                  "vertical": false
+                },
+                "to_column": 2,
+                "to_page_index": 0,
+                "truth_category": null,
+                "truth_link": null,
+                "verdict": "closed"
+              },
+              {
+                "from_column": 0,
+                "label": "p2c0->c1",
+                "page_index": 1,
+                "series": "column",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 0,
+                  "last_character": "。",
+                  "last_character_x": 171.3335249999994,
+                  "last_character_y": 393.7397062500007,
+                  "last_line_text": "这些知识显得尤为珍贵。",
+                  "layout_label": "plain text",
+                  "page_index": 1,
+                  "paragraph_index": 5,
+                  "reference": "p2#5",
+                  "vertical": false
+                },
+                "to_column": 1,
+                "to_page_index": 1,
+                "truth_category": null,
+                "truth_link": null,
+                "verdict": "closed"
+              },
+              {
+                "from_column": 0,
+                "label": "p4c0->c1",
+                "page_index": 3,
+                "series": "column",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 0,
+                  "last_character": "。",
+                  "last_character_x": 119.1620984375,
+                  "last_character_y": 127.27799999999999,
+                  "last_line_text": "化相关领域。",
+                  "layout_label": "plain text",
+                  "page_index": 3,
+                  "paragraph_index": 19,
+                  "reference": "p4#19",
+                  "vertical": false
+                },
+                "to_column": 1,
+                "to_page_index": 3,
+                "truth_category": null,
+                "truth_link": null,
+                "verdict": "closed"
+              },
+              {
+                "from_column": 1,
+                "label": "p4c1->c2",
+                "page_index": 3,
+                "series": "column",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 1,
+                  "last_character": "。",
+                  "last_character_x": 253.51041874999999,
+                  "last_character_y": 112.64909374999996,
+                  "last_line_text": "平衡。",
+                  "layout_label": "plain text",
+                  "page_index": 3,
+                  "paragraph_index": 21,
+                  "reference": "p4#21",
+                  "vertical": false
+                },
+                "to_column": 2,
+                "to_page_index": 3,
+                "truth_category": null,
+                "truth_link": null,
+                "verdict": "closed"
+              },
+              {
+                "from_column": 2,
+                "label": "p4c2->c3",
+                "page_index": 3,
+                "series": "column",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 2,
+                  "last_character": "部",
+                  "last_character_x": 478.45927774949087,
+                  "last_character_y": 303.0816937500003,
+                  "last_line_text": "Delsie Betty Bosi）所言：“男性负责建造大部",
+                  "layout_label": "plain text",
+                  "page_index": 3,
+                  "paragraph_index": 16,
+                  "reference": "p4#16",
+                  "vertical": false
+                },
+                "to_column": 3,
+                "to_page_index": 3,
+                "truth_category": null,
+                "truth_link": null,
+                "verdict": "open"
+              },
+              {
+                "from_column": 0,
+                "label": "p5c0->c1",
+                "page_index": 4,
+                "series": "column",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 0,
+                  "last_character": "，",
+                  "last_character_x": 87.48199843749998,
+                  "last_character_y": 441.58381406249987,
+                  "last_line_text": "了着落，",
+                  "layout_label": "plain text",
+                  "page_index": 4,
+                  "paragraph_index": 5,
+                  "reference": "p5#5",
+                  "vertical": false
+                },
+                "to_column": 1,
+                "to_page_index": 4,
+                "truth_category": null,
+                "truth_link": null,
+                "verdict": "open"
+              },
+              {
+                "from_column": 1,
+                "label": "p5c1->c2",
+                "page_index": 4,
+                "series": "column",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 1,
+                  "last_character": "示",
+                  "last_character_x": 206.9929,
+                  "last_character_y": 693.2973,
+                  "last_line_text": "族的启示",
+                  "layout_label": "title",
+                  "page_index": 4,
+                  "paragraph_index": 6,
+                  "reference": "p5#6",
+                  "vertical": false
+                },
+                "to_column": 2,
+                "to_page_index": 4,
+                "truth_category": null,
+                "truth_link": null,
+                "verdict": "open"
+              },
+              {
+                "from_column": 2,
+                "label": "p5c2->c3",
+                "page_index": 4,
+                "series": "column",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 2,
+                  "last_character": "。",
+                  "last_character_x": 323.3119984375,
+                  "last_character_y": 435.5969,
+                  "last_line_text": "是唯一真正生活在水中的。",
+                  "layout_label": "plain text",
+                  "page_index": 4,
+                  "paragraph_index": 4,
+                  "reference": "p5#4",
+                  "vertical": false
+                },
+                "to_column": 3,
+                "to_page_index": 4,
+                "truth_category": null,
+                "truth_link": null,
+                "verdict": "closed"
+              },
+              {
+                "from_column": 0,
+                "label": "p6c0->c1",
+                "page_index": 5,
+                "series": "column",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 0,
+                  "last_character": "的",
+                  "last_character_x": 139.95111874999995,
+                  "last_character_y": 440.7487125,
+                  "last_line_text": "利用量子叠加与纠缠的",
+                  "layout_label": "plain text",
+                  "page_index": 5,
+                  "paragraph_index": 8,
+                  "reference": "p6#8",
+                  "vertical": false
+                },
+                "to_column": 1,
+                "to_page_index": 5,
+                "truth_category": null,
+                "truth_link": null,
+                "verdict": "open"
+              },
+              {
+                "from_column": 1,
+                "label": "p6c1->c2",
+                "page_index": 5,
+                "series": "column",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 1,
+                  "last_character": "种",
+                  "last_character_x": 332.03111874999996,
+                  "last_character_y": 83.14113437500001,
+                  "last_line_text": "依赖两种光的量子纠缠：一种",
+                  "layout_label": "plain text",
+                  "page_index": 5,
+                  "paragraph_index": 7,
+                  "reference": "p6#7",
+                  "vertical": false
+                },
+                "to_column": 2,
+                "to_page_index": 5,
+                "truth_category": null,
+                "truth_link": null,
+                "verdict": "open"
+              },
+              {
+                "from_column": 0,
+                "label": "p7c0->c1",
+                "page_index": 6,
+                "series": "column",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 0,
+                  "last_character": "商",
+                  "last_character_x": 157.5968875,
+                  "last_character_y": 77.44955000000022,
+                  "last_line_text": "在科学调研、产品开发或商",
+                  "layout_label": "plain text",
+                  "page_index": 6,
+                  "paragraph_index": 12,
+                  "reference": "p7#12",
+                  "vertical": false
+                },
+                "to_column": 1,
+                "to_page_index": 6,
+                "truth_category": null,
+                "truth_link": null,
+                "verdict": "open"
+              },
+              {
+                "from_column": 1,
+                "label": "p7c1->c2",
+                "page_index": 6,
+                "series": "column",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 1,
+                  "last_character": "时",
+                  "last_character_x": 207.19289999999998,
+                  "last_character_y": 692.4357,
+                  "last_line_text": "生蔓延时",
+                  "layout_label": "title",
+                  "page_index": 6,
+                  "paragraph_index": 13,
+                  "reference": "p7#13",
+                  "vertical": false
+                },
+                "to_column": 2,
+                "to_page_index": 6,
+                "truth_category": null,
+                "truth_link": null,
+                "verdict": "open"
+              },
+              {
+                "from_column": 2,
+                "label": "p7c2->c3",
+                "page_index": 6,
+                "series": "column",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 2,
+                  "last_character": "意",
+                  "last_character_x": 390.9519499999999,
+                  "last_character_y": 77.14060000000002,
+                  "last_line_text": "持有者的明确同意",
+                  "layout_label": "title",
+                  "page_index": 6,
+                  "paragraph_index": 15,
+                  "reference": "p7#15",
+                  "vertical": false
+                },
+                "to_column": 3,
+                "to_page_index": 6,
+                "truth_category": null,
+                "truth_link": null,
+                "verdict": "open"
+              },
+              {
+                "from_column": 0,
+                "label": "p8c0->c1",
+                "page_index": 7,
+                "series": "column",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 0,
+                  "last_character": "并",
+                  "last_character_x": 166.272978125,
+                  "last_character_y": 73.45561406249998,
+                  "last_line_text": "这意味着任何人都可以获取并",
+                  "layout_label": "plain text",
+                  "page_index": 7,
+                  "paragraph_index": 12,
+                  "reference": "p8#12",
+                  "vertical": false
+                },
+                "to_column": 1,
+                "to_page_index": 7,
+                "truth_category": null,
+                "truth_link": null,
+                "verdict": "open"
+              },
+              {
+                "from_column": 1,
+                "label": "p8c1->c2",
+                "page_index": 7,
+                "series": "column",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 1,
+                  "last_character": "者",
+                  "last_character_x": 340.849778125,
+                  "last_character_y": 75.6797,
+                  "last_line_text": "家要求，土著知识的潜在使用者",
+                  "layout_label": "plain text",
+                  "page_index": 7,
+                  "paragraph_index": 7,
+                  "reference": "p8#7",
+                  "vertical": false
+                },
+                "to_column": 2,
+                "to_page_index": 7,
+                "truth_category": null,
+                "truth_link": null,
+                "verdict": "open"
+              },
+              {
+                "from_column": 2,
+                "label": "p8c2->c3",
+                "page_index": 7,
+                "series": "column",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 2,
+                  "last_character": "。",
+                  "last_character_x": 524.0994687499999,
+                  "last_character_y": 136.7335999999999,
+                  "last_line_text": "着生物剽窃仍将是令人遗憾的现实。",
+                  "layout_label": "plain text",
+                  "page_index": 7,
+                  "paragraph_index": 3,
+                  "reference": "p8#3",
+                  "vertical": false
+                },
+                "to_column": 3,
+                "to_page_index": 7,
+                "truth_category": null,
+                "truth_link": null,
+                "verdict": "closed"
+              }
+            ],
+            "boundaries_total": 17,
+            "closed_count": 6,
+            "designed_count": 0,
+            "no_tail_count": 0,
+            "open_count": 11,
+            "rate": 0.647059,
+            "series": "column",
+            "strict_rate": 0.647059
+          },
+          "page": {
+            "answerable": 7,
+            "axis_unsupported_count": 0,
+            "boundaries": [
+              {
+                "from_column": -1,
+                "label": "1->2",
+                "page_index": 0,
+                "series": "page",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 2,
+                  "last_character": ")",
+                  "last_character_x": 523.2423496433258,
+                  "last_character_y": 69.56322500000002,
+                  "last_line_text": "阿涅丝·巴尔东(Agnès Bardon)",
+                  "layout_label": "plain text",
+                  "page_index": 0,
+                  "paragraph_index": 8,
+                  "reference": "p1#8",
+                  "vertical": false
+                },
+                "to_column": -1,
+                "to_page_index": 1,
+                "truth_category": "clean",
+                "truth_link": false,
+                "verdict": "open"
+              },
+              {
+                "from_column": -1,
+                "label": "2->3",
+                "page_index": 1,
+                "series": "page",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 1,
+                  "last_character": "。",
+                  "last_character_x": 402.3960249999996,
+                  "last_character_y": 43.640278124999995,
+                  "last_line_text": "这种棕榈是亚马孙土著手工艺的象征。",
+                  "layout_label": "figure_caption",
+                  "page_index": 1,
+                  "paragraph_index": 4,
+                  "reference": "p2#4",
+                  "vertical": false
+                },
+                "to_column": -1,
+                "to_page_index": 2,
+                "truth_category": "linked",
+                "truth_link": true,
+                "verdict": "closed"
+              },
+              {
+                "from_column": -1,
+                "label": "3->4",
+                "page_index": 2,
+                "series": "page",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 0,
+                  "last_character": "识",
+                  "last_character_x": 228.5779,
+                  "last_character_y": 708.3879,
+                  "last_line_text": "土著知识",
+                  "layout_label": "title",
+                  "page_index": 2,
+                  "paragraph_index": 1,
+                  "reference": "p3#1",
+                  "vertical": false
+                },
+                "to_column": -1,
+                "to_page_index": 3,
+                "truth_category": "clean",
+                "truth_link": false,
+                "verdict": "open"
+              },
+              {
+                "from_column": -1,
+                "label": "4->5",
+                "page_index": 3,
+                "series": "page",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 3,
+                  "last_character": "。",
+                  "last_character_x": 440.41834843749996,
+                  "last_character_y": 114.14424999999991,
+                  "last_line_text": "和地方知识。",
+                  "layout_label": "plain text",
+                  "page_index": 3,
+                  "paragraph_index": 22,
+                  "reference": "p4#22",
+                  "vertical": false
+                },
+                "to_column": -1,
+                "to_page_index": 4,
+                "truth_category": "clean",
+                "truth_link": false,
+                "verdict": "closed"
+              },
+              {
+                "from_column": -1,
+                "label": "5->6",
+                "page_index": 4,
+                "series": "page",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 3,
+                  "last_character": "原",
+                  "last_character_x": 489.13834843750004,
+                  "last_character_y": 430.2979640625,
+                  "last_line_text": "这一联盟由巴西最古老的原",
+                  "layout_label": "plain text",
+                  "page_index": 4,
+                  "paragraph_index": 2,
+                  "reference": "p5#2",
+                  "vertical": false
+                },
+                "to_column": -1,
+                "to_page_index": 5,
+                "truth_category": "trap",
+                "truth_link": false,
+                "verdict": "open"
+              },
+              {
+                "from_column": -1,
+                "label": "6->7",
+                "page_index": 5,
+                "series": "page",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 2,
+                  "last_character": "。",
+                  "last_character_x": 410.426578125,
+                  "last_character_y": 102.18429375,
+                  "last_line_text": "化疗。",
+                  "layout_label": "plain text",
+                  "page_index": 5,
+                  "paragraph_index": 3,
+                  "reference": "p6#3",
+                  "vertical": false
+                },
+                "to_column": -1,
+                "to_page_index": 6,
+                "truth_category": "clean",
+                "truth_link": false,
+                "verdict": "closed"
+              },
+              {
+                "from_column": -1,
+                "label": "7->8",
+                "page_index": 6,
+                "series": "page",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 3,
+                  "last_character": "包",
+                  "last_character_x": 524.1423984375,
+                  "last_character_y": 234.9435999999999,
+                  "last_line_text": "研究。双方签订的合作研究协议中包",
+                  "layout_label": "plain text",
+                  "page_index": 6,
+                  "paragraph_index": 4,
+                  "reference": "p7#4",
+                  "vertical": false
+                },
+                "to_column": -1,
+                "to_page_index": 7,
+                "truth_category": "linked",
+                "truth_link": true,
+                "verdict": "open"
+              }
+            ],
+            "boundaries_total": 7,
+            "closed_count": 3,
+            "designed_count": 0,
+            "no_tail_count": 0,
+            "open_count": 4,
+            "rate": 0.571429,
+            "series": "page",
+            "strict_rate": 0.571429
+          }
+        },
+        "stratified": {
+          "mbr_all": 0.571429,
+          "mbr_all_denominator": 7,
+          "mbr_linkable": 0.5,
+          "mbr_linkable_denominator": 6,
+          "mbr_linkable_open": 3,
+          "source_inherited_open": 1,
+          "strata": {
+            "clean": {
+              "answerable": 4,
+              "axis_unsupported_count": 0,
+              "boundaries_total": 4,
+              "closed_count": 2,
+              "designed_count": 0,
+              "no_tail_count": 0,
+              "open_count": 2,
+              "rate": 0.5,
+              "series": "page",
+              "strict_rate": 0.5
+            },
+            "linked": {
+              "answerable": 2,
+              "axis_unsupported_count": 0,
+              "boundaries_total": 2,
+              "closed_count": 1,
+              "designed_count": 0,
+              "no_tail_count": 0,
+              "open_count": 1,
+              "rate": 0.5,
+              "series": "page",
+              "strict_rate": 0.5
+            },
+            "trap": {
+              "answerable": 1,
+              "axis_unsupported_count": 0,
+              "boundaries_total": 1,
+              "closed_count": 0,
+              "designed_count": 0,
+              "no_tail_count": 0,
+              "open_count": 1,
+              "rate": 1.0,
+              "series": "page",
+              "strict_rate": 1.0
+            },
+            "unlabelled": {
+              "answerable": 0,
+              "axis_unsupported_count": 0,
+              "boundaries_total": 0,
+              "closed_count": 0,
+              "designed_count": 0,
+              "no_tail_count": 0,
+              "open_count": 0,
+              "rate": null,
+              "series": "page",
+              "strict_rate": null
+            }
+          },
+          "trap_boundaries": 1,
+          "unlabelled_boundaries": 0
+        },
+        "strict_rate": 0.571429,
+        "vertical_paragraphs": 6
+      },
+      "path": "intermediate_language",
+      "sample": "Courier-zh.pdf",
+      "working_dir": "examples/output/b8_4/smoke/Courier-zh/work/Courier-zh"
+    },
+    {
+      "absent": [
+        "no working directory: no chain or repair level of the conservation invariant",
+        "no source and translated checkpoint pair: no LTCR"
+      ],
+      "conservation": {
+        "holds": true,
+        "levels": {
+          "chain": {
+            "evidence": {
+              "absent": "no chain translation report"
+            },
+            "failures": [],
+            "holds": null,
+            "level": "chain",
+            "subjects": 0
+          },
+          "document": {
+            "evidence": {
+              "produced_pages": 8,
+              "source_pages": 8
+            },
+            "failures": [],
+            "holds": true,
+            "level": "document",
+            "subjects": 1
+          },
+          "repair": {
+            "evidence": {
+              "absent": "no repair report"
+            },
+            "failures": [],
+            "holds": null,
+            "level": "repair",
+            "subjects": 0
+          }
+        },
+        "levels_absent": [
+          "chain",
+          "repair"
+        ],
+        "levels_present": [
+          "document"
+        ],
+        "metric": "block_conservation_invariant"
+      },
+      "label": "fork_full_pdf",
+      "layout_geometry": {
+        "metric": "layout_geometry",
+        "page_count_delta": {
+          "conserved": true,
+          "produced_pages": 8,
+          "source_pages": 8,
+          "value": 0
+        },
+        "pages": [
+          {
+            "alignment_delta": 0.000132,
+            "image_area_delta": {
+              "absolute": 0,
+              "produced_area": 0,
+              "source_area": 0,
+              "value": null
+            },
+            "image_placement_iou": {
+              "pairs": 0,
+              "produced_images": 0,
+              "source_images": 0,
+              "unpaired_produced": 0,
+              "unpaired_source": 0,
+              "value": null
+            },
+            "overlap_delta": 0.0,
+            "page_index": 0,
+            "produced": {
+              "alignment": {
+                "dropped": 0,
+                "elements": 41,
+                "value": 0.00013346241174050464
+              },
+              "elements": 41,
+              "overlap": {
+                "dropped": 0,
+                "elements": 41,
+                "value": 0.0
+              }
+            },
+            "source": {
+              "alignment": {
+                "dropped": 0,
+                "elements": 72,
+                "value": 1.9319795628207996e-06
+              },
+              "elements": 72,
+              "overlap": {
+                "dropped": 0,
+                "elements": 72,
+                "value": 0.0
+              }
+            }
+          },
+          {
+            "alignment_delta": 0.002604,
+            "image_area_delta": {
+              "absolute": 0.0,
+              "produced_area": 0.382743,
+              "source_area": 0.382743,
+              "value": 0.0
+            },
+            "image_placement_iou": {
+              "pairs": 1,
+              "produced_images": 1,
+              "source_images": 1,
+              "unpaired_produced": 0,
+              "unpaired_source": 0,
+              "value": 1.0
+            },
+            "overlap_delta": 0.0,
+            "page_index": 1,
+            "produced": {
+              "alignment": {
+                "dropped": 0,
+                "elements": 8,
+                "value": 0.004097207442522302
+              },
+              "elements": 8,
+              "overlap": {
+                "dropped": 0,
+                "elements": 8,
+                "value": 0.0
+              }
+            },
+            "source": {
+              "alignment": {
+                "dropped": 0,
+                "elements": 15,
+                "value": 0.0014931967232766348
+              },
+              "elements": 15,
+              "overlap": {
+                "dropped": 0,
+                "elements": 15,
+                "value": 0.0
+              }
+            }
+          },
+          {
+            "alignment_delta": 0.000777,
+            "image_area_delta": {
+              "absolute": -0.0,
+              "produced_area": 0.622779,
+              "source_area": 0.622779,
+              "value": -0.0
+            },
+            "image_placement_iou": {
+              "pairs": 1,
+              "produced_images": 1,
+              "source_images": 1,
+              "unpaired_produced": 0,
+              "unpaired_source": 0,
+              "value": 1.0
+            },
+            "overlap_delta": 0.0,
+            "page_index": 2,
+            "produced": {
+              "alignment": {
+                "dropped": 0,
+                "elements": 4,
+                "value": 0.027328683253997708
+              },
+              "elements": 4,
+              "overlap": {
+                "dropped": 0,
+                "elements": 4,
+                "value": 0.0
+              }
+            },
+            "source": {
+              "alignment": {
+                "dropped": 0,
+                "elements": 4,
+                "value": 0.026551999751393076
+              },
+              "elements": 4,
+              "overlap": {
+                "dropped": 0,
+                "elements": 4,
+                "value": 0.0
+              }
+            }
+          },
+          {
+            "alignment_delta": 0.000386,
+            "image_area_delta": {
+              "absolute": 0,
+              "produced_area": 0,
+              "source_area": 0,
+              "value": null
+            },
+            "image_placement_iou": {
+              "pairs": 0,
+              "produced_images": 0,
+              "source_images": 0,
+              "unpaired_produced": 0,
+              "unpaired_source": 0,
+              "value": null
+            },
+            "overlap_delta": 0.0,
+            "page_index": 3,
+            "produced": {
+              "alignment": {
+                "dropped": 0,
+                "elements": 25,
+                "value": 0.0005239591484117252
+              },
+              "elements": 25,
+              "overlap": {
+                "dropped": 0,
+                "elements": 25,
+                "value": 0.0
+              }
+            },
+            "source": {
+              "alignment": {
+                "dropped": 0,
+                "elements": 85,
+                "value": 0.00013814232468266452
+              },
+              "elements": 85,
+              "overlap": {
+                "dropped": 0,
+                "elements": 85,
+                "value": 0.0
+              }
+            }
+          },
+          {
+            "alignment_delta": 0.00127,
+            "image_area_delta": {
+              "absolute": 0.0,
+              "produced_area": 0.327187,
+              "source_area": 0.327187,
+              "value": 0.0
+            },
+            "image_placement_iou": {
+              "pairs": 1,
+              "produced_images": 1,
+              "source_images": 1,
+              "unpaired_produced": 0,
+              "unpaired_source": 0,
+              "value": 1.0
+            },
+            "overlap_delta": 0.0,
+            "page_index": 4,
+            "produced": {
+              "alignment": {
+                "dropped": 0,
+                "elements": 13,
+                "value": 0.0019665124784985608
+              },
+              "elements": 13,
+              "overlap": {
+                "dropped": 0,
+                "elements": 13,
+                "value": 0.0
+              }
+            },
+            "source": {
+              "alignment": {
+                "dropped": 0,
+                "elements": 34,
+                "value": 0.0006961706002494939
+              },
+              "elements": 34,
+              "overlap": {
+                "dropped": 0,
+                "elements": 34,
+                "value": 0.0
+              }
+            }
+          },
+          {
+            "alignment_delta": 0.001608,
+            "image_area_delta": {
+              "absolute": 0.0,
+              "produced_area": 0.199503,
+              "source_area": 0.199503,
+              "value": 0.0
+            },
+            "image_placement_iou": {
+              "pairs": 1,
+              "produced_images": 1,
+              "source_images": 1,
+              "unpaired_produced": 0,
+              "unpaired_source": 0,
+              "value": 1.0
+            },
+            "overlap_delta": 0.0,
+            "page_index": 5,
+            "produced": {
+              "alignment": {
+                "dropped": 0,
+                "elements": 20,
+                "value": 0.002056919900818295
+              },
+              "elements": 20,
+              "overlap": {
+                "dropped": 0,
+                "elements": 20,
+                "value": 0.0
+              }
+            },
+            "source": {
+              "alignment": {
+                "dropped": 0,
+                "elements": 57,
+                "value": 0.00044939879962813307
+              },
+              "elements": 57,
+              "overlap": {
+                "dropped": 0,
+                "elements": 57,
+                "value": 0.0
+              }
+            }
+          },
+          {
+            "alignment_delta": 0.001268,
+            "image_area_delta": {
+              "absolute": 0,
+              "produced_area": 0,
+              "source_area": 0,
+              "value": null
+            },
+            "image_placement_iou": {
+              "pairs": 0,
+              "produced_images": 0,
+              "source_images": 0,
+              "unpaired_produced": 0,
+              "unpaired_source": 0,
+              "value": null
+            },
+            "overlap_delta": 0.0,
+            "page_index": 6,
+            "produced": {
+              "alignment": {
+                "dropped": 0,
+                "elements": 20,
+                "value": 0.0014184480201496013
+              },
+              "elements": 20,
+              "overlap": {
+                "dropped": 0,
+                "elements": 20,
+                "value": 0.0
+              }
+            },
+            "source": {
+              "alignment": {
+                "dropped": 0,
+                "elements": 75,
+                "value": 0.00015082470288341025
+              },
+              "elements": 75,
+              "overlap": {
+                "dropped": 0,
+                "elements": 75,
+                "value": 0.0
+              }
+            }
+          },
+          {
+            "alignment_delta": 0.001635,
+            "image_area_delta": {
+              "absolute": 0.0,
+              "produced_area": 0.216551,
+              "source_area": 0.216551,
+              "value": 0.0
+            },
+            "image_placement_iou": {
+              "pairs": 1,
+              "produced_images": 1,
+              "source_images": 1,
+              "unpaired_produced": 0,
+              "unpaired_source": 0,
+              "value": 1.0
+            },
+            "overlap_delta": 0.0,
+            "page_index": 7,
+            "produced": {
+              "alignment": {
+                "dropped": 0,
+                "elements": 23,
+                "value": 0.001932576100601097
+              },
+              "elements": 23,
+              "overlap": {
+                "dropped": 0,
+                "elements": 23,
+                "value": 0.0
+              }
+            },
+            "source": {
+              "alignment": {
+                "dropped": 0,
+                "elements": 84,
+                "value": 0.0002975908865297757
+              },
+              "elements": 84,
+              "overlap": {
+                "dropped": 0,
+                "elements": 84,
+                "value": 0.0
+              }
+            }
+          }
+        ],
+        "pages_compared": 8,
+        "summary": {
+          "alignment_delta": 0.00121,
+          "alignment_produced": 0.004932,
+          "alignment_source": 0.003722,
+          "image_area_delta": -0.0,
+          "image_placement_iou": 1.0,
+          "overlap_delta": 0.0,
+          "overlap_produced": 0.0,
+          "overlap_source": 0.0
+        }
+      },
+      "mid_break_rate": {
+        "metric": "mid_unit_page_break_rate",
+        "pages": 8,
+        "rate": 0.571429,
+        "series": {
+          "column": {
+            "answerable": 21,
+            "axis_unsupported_count": 0,
+            "boundaries": [
+              {
+                "from_column": 0,
+                "label": "p1c0->c1",
+                "page_index": 0,
+                "series": "column",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 0,
+                  "last_character": ")",
+                  "last_character_x": 200.63369750976562,
+                  "last_character_y": 69.63919067382812,
+                  "last_line_text": "努利那·萨沃莱宁(Anuliina Savolainen)",
+                  "layout_label": "plain text",
+                  "page_index": 0,
+                  "paragraph_index": 35,
+                  "reference": "p1#35",
+                  "vertical": false
+                },
+                "to_column": 1,
+                "to_page_index": 0,
+                "truth_category": null,
+                "truth_link": null,
+                "verdict": "open"
+              },
+              {
+                "from_column": 1,
+                "label": "p1c1->c2",
+                "page_index": 0,
+                "series": "column",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 1,
+                  "last_character": "。",
+                  "last_character_x": 523.764892578125,
+                  "last_character_y": 128.000732421875,
+                  "last_line_text": "表达提供包容空间，让绚烂多彩的人类文明之花尽情绽放。",
+                  "layout_label": "plain text",
+                  "page_index": 0,
+                  "paragraph_index": 6,
+                  "reference": "p1#6",
+                  "vertical": false
+                },
+                "to_column": 2,
+                "to_page_index": 0,
+                "truth_category": null,
+                "truth_link": null,
+                "verdict": "closed"
+              },
+              {
+                "from_column": 0,
+                "label": "p2c0->c1",
+                "page_index": 1,
+                "series": "column",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 0,
+                  "last_character": "月",
+                  "last_character_x": 189.75779724121094,
+                  "last_character_y": 32.43109130859375,
+                  "last_line_text": "2 |  联合国教科文组织《信使》·2026年1—3月",
+                  "layout_label": "plain text",
+                  "page_index": 1,
+                  "paragraph_index": 1,
+                  "reference": "p2#1",
+                  "vertical": false
+                },
+                "to_column": 1,
+                "to_page_index": 1,
+                "truth_category": null,
+                "truth_link": null,
+                "verdict": "open"
+              },
+              {
+                "from_column": 1,
+                "label": "p2c1->c2",
+                "page_index": 1,
+                "series": "column",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 1,
+                  "last_character": "。",
+                  "last_character_x": 171.33352661132812,
+                  "last_character_y": 393.0357208251953,
+                  "last_line_text": "这些知识显得尤为珍贵。",
+                  "layout_label": "plain text",
+                  "page_index": 1,
+                  "paragraph_index": 4,
+                  "reference": "p2#4",
+                  "vertical": false
+                },
+                "to_column": 2,
+                "to_page_index": 1,
+                "truth_category": null,
+                "truth_link": null,
+                "verdict": "closed"
+              },
+              {
+                "from_column": 0,
+                "label": "p4c0->c1",
+                "page_index": 3,
+                "series": "column",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 0,
+                  "last_character": "月",
+                  "last_character_x": 189.75779724121094,
+                  "last_character_y": 32.43109130859375,
+                  "last_line_text": "4 |  联合国教科文组织《信使》·2026年1—3月",
+                  "layout_label": "plain text",
+                  "page_index": 3,
+                  "paragraph_index": 1,
+                  "reference": "p4#1",
+                  "vertical": false
+                },
+                "to_column": 1,
+                "to_page_index": 3,
+                "truth_category": null,
+                "truth_link": null,
+                "verdict": "open"
+              },
+              {
+                "from_column": 1,
+                "label": "p4c1->c2",
+                "page_index": 3,
+                "series": "column",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 1,
+                  "last_character": "。",
+                  "last_character_x": 183.77297973632812,
+                  "last_character_y": 301.27227783203125,
+                  "last_line_text": "层面的侵占行为仍对其构成威胁。",
+                  "layout_label": "plain text",
+                  "page_index": 3,
+                  "paragraph_index": 7,
+                  "reference": "p4#7",
+                  "vertical": false
+                },
+                "to_column": 2,
+                "to_page_index": 3,
+                "truth_category": null,
+                "truth_link": null,
+                "verdict": "closed"
+              },
+              {
+                "from_column": 2,
+                "label": "p4c2->c3",
+                "page_index": 3,
+                "series": "column",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 2,
+                  "last_character": "。",
+                  "last_character_x": 253.51042938232422,
+                  "last_character_y": 112.089111328125,
+                  "last_line_text": "平衡。",
+                  "layout_label": "plain text",
+                  "page_index": 3,
+                  "paragraph_index": 22,
+                  "reference": "p4#22",
+                  "vertical": false
+                },
+                "to_column": 3,
+                "to_page_index": 3,
+                "truth_category": null,
+                "truth_link": null,
+                "verdict": "closed"
+              },
+              {
+                "from_column": 3,
+                "label": "p4c3->c4",
+                "page_index": 3,
+                "series": "column",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 3,
+                  "last_character": "部",
+                  "last_character_x": 478.45928955078125,
+                  "last_character_y": 302.52166748046875,
+                  "last_line_text": "Delsie Betty Bosi）所言：“男性负责建造大部",
+                  "layout_label": "plain text",
+                  "page_index": 3,
+                  "paragraph_index": 15,
+                  "reference": "p4#15",
+                  "vertical": false
+                },
+                "to_column": 4,
+                "to_page_index": 3,
+                "truth_category": null,
+                "truth_link": null,
+                "verdict": "open"
+              },
+              {
+                "from_column": 0,
+                "label": "p5c0->c1",
+                "page_index": 4,
+                "series": "column",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 0,
+                  "last_character": "。",
+                  "last_character_x": 73.27056503295898,
+                  "last_character_y": 43.117523193359375,
+                  "last_line_text": "链系统。",
+                  "layout_label": "plain text",
+                  "page_index": 4,
+                  "paragraph_index": 9,
+                  "reference": "p5#9",
+                  "vertical": false
+                },
+                "to_column": 1,
+                "to_page_index": 4,
+                "truth_category": null,
+                "truth_link": null,
+                "verdict": "closed"
+              },
+              {
+                "from_column": 1,
+                "label": "p5c1->c2",
+                "page_index": 4,
+                "series": "column",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 1,
+                  "last_character": "示",
+                  "last_character_x": 206.99290466308594,
+                  "last_character_y": 690.4073028564453,
+                  "last_line_text": "族的启示",
+                  "layout_label": "plain text",
+                  "page_index": 4,
+                  "paragraph_index": 6,
+                  "reference": "p5#6",
+                  "vertical": false
+                },
+                "to_column": 2,
+                "to_page_index": 4,
+                "truth_category": null,
+                "truth_link": null,
+                "verdict": "open"
+              },
+              {
+                "from_column": 2,
+                "label": "p5c2->c3",
+                "page_index": 4,
+                "series": "column",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 2,
+                  "last_character": "。",
+                  "last_character_x": 323.31201171875,
+                  "last_character_y": 435.0368957519531,
+                  "last_line_text": "是唯一真正生活在水中的。",
+                  "layout_label": "plain text",
+                  "page_index": 4,
+                  "paragraph_index": 4,
+                  "reference": "p5#4",
+                  "vertical": false
+                },
+                "to_column": 3,
+                "to_page_index": 4,
+                "truth_category": null,
+                "truth_link": null,
+                "verdict": "closed"
+              },
+              {
+                "from_column": 0,
+                "label": "p6c0->c1",
+                "page_index": 5,
+                "series": "column",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 0,
+                  "last_character": "月",
+                  "last_character_x": 189.75779724121094,
+                  "last_character_y": 32.43109130859375,
+                  "last_line_text": "36 |  联合国教科文组织《信使》·2026年1—3月",
+                  "layout_label": "plain text",
+                  "page_index": 5,
+                  "paragraph_index": 0,
+                  "reference": "p6#0",
+                  "vertical": false
+                },
+                "to_column": 1,
+                "to_page_index": 5,
+                "truth_category": null,
+                "truth_link": null,
+                "verdict": "open"
+              },
+              {
+                "from_column": 1,
+                "label": "p6c1->c2",
+                "page_index": 5,
+                "series": "column",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 1,
+                  "last_character": "种",
+                  "last_character_x": 332.0311279296875,
+                  "last_character_y": 82.58111572265625,
+                  "last_line_text": "依赖两种光的量子纠缠：一种",
+                  "layout_label": "plain text",
+                  "page_index": 5,
+                  "paragraph_index": 6,
+                  "reference": "p6#6",
+                  "vertical": false
+                },
+                "to_column": 2,
+                "to_page_index": 5,
+                "truth_category": null,
+                "truth_link": null,
+                "verdict": "open"
+              },
+              {
+                "from_column": 0,
+                "label": "p7c0->c1",
+                "page_index": 6,
+                "series": "column",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 0,
+                  "last_character": "月",
+                  "last_character_x": 189.75779724121094,
+                  "last_character_y": 32.43109130859375,
+                  "last_line_text": "10 |  联合国教科文组织《信使》·2026年1—3月",
+                  "layout_label": "plain text",
+                  "page_index": 6,
+                  "paragraph_index": 1,
+                  "reference": "p7#1",
+                  "vertical": false
+                },
+                "to_column": 1,
+                "to_page_index": 6,
+                "truth_category": null,
+                "truth_link": null,
+                "verdict": "open"
+              },
+              {
+                "from_column": 1,
+                "label": "p7c1->c2",
+                "page_index": 6,
+                "series": "column",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 1,
+                  "last_character": "商",
+                  "last_character_x": 157.59689331054688,
+                  "last_character_y": 76.8895263671875,
+                  "last_line_text": "在科学调研、产品开发或商",
+                  "layout_label": "plain text",
+                  "page_index": 6,
+                  "paragraph_index": 11,
+                  "reference": "p7#11",
+                  "vertical": false
+                },
+                "to_column": 2,
+                "to_page_index": 6,
+                "truth_category": null,
+                "truth_link": null,
+                "verdict": "open"
+              },
+              {
+                "from_column": 2,
+                "label": "p7c2->c3",
+                "page_index": 6,
+                "series": "column",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 2,
+                  "last_character": "时",
+                  "last_character_x": 207.19290161132812,
+                  "last_character_y": 689.5457305908203,
+                  "last_line_text": "生蔓延时",
+                  "layout_label": "plain text",
+                  "page_index": 6,
+                  "paragraph_index": 12,
+                  "reference": "p7#12",
+                  "vertical": false
+                },
+                "to_column": 3,
+                "to_page_index": 6,
+                "truth_category": null,
+                "truth_link": null,
+                "verdict": "open"
+              },
+              {
+                "from_column": 3,
+                "label": "p7c3->c4",
+                "page_index": 6,
+                "series": "column",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 3,
+                  "last_character": "意",
+                  "last_character_x": 390.9519500732422,
+                  "last_character_y": 75.80300903320312,
+                  "last_line_text": "持有者的明确同意",
+                  "layout_label": "plain text",
+                  "page_index": 6,
+                  "paragraph_index": 15,
+                  "reference": "p7#15",
+                  "vertical": false
+                },
+                "to_column": 4,
+                "to_page_index": 6,
+                "truth_category": null,
+                "truth_link": null,
+                "verdict": "open"
+              },
+              {
+                "from_column": 0,
+                "label": "p8c0->c1",
+                "page_index": 7,
+                "series": "column",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 0,
+                  "last_character": "m",
+                  "last_character_x": 171.9102020263672,
+                  "last_character_y": 805.7217655181885,
+                  "last_line_text": "© 克里斯蒂安·古皮(Christian goupi)/ robertharding.com",
+                  "layout_label": "plain text",
+                  "page_index": 7,
+                  "paragraph_index": 21,
+                  "reference": "p8#21",
+                  "vertical": false
+                },
+                "to_column": 1,
+                "to_page_index": 7,
+                "truth_category": null,
+                "truth_link": null,
+                "verdict": "open"
+              },
+              {
+                "from_column": 1,
+                "label": "p8c1->c2",
+                "page_index": 7,
+                "series": "column",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 1,
+                  "last_character": "并",
+                  "last_character_x": 166.27297973632812,
+                  "last_character_y": 72.8956298828125,
+                  "last_line_text": "这意味着任何人都可以获取并",
+                  "layout_label": "plain text",
+                  "page_index": 7,
+                  "paragraph_index": 13,
+                  "reference": "p8#13",
+                  "vertical": false
+                },
+                "to_column": 2,
+                "to_page_index": 7,
+                "truth_category": null,
+                "truth_link": null,
+                "verdict": "open"
+              },
+              {
+                "from_column": 2,
+                "label": "p8c2->c3",
+                "page_index": 7,
+                "series": "column",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 2,
+                  "last_character": "者",
+                  "last_character_x": 340.84979248046875,
+                  "last_character_y": 75.11968994140625,
+                  "last_line_text": "家要求，土著知识的潜在使用者",
+                  "layout_label": "plain text",
+                  "page_index": 7,
+                  "paragraph_index": 8,
+                  "reference": "p8#8",
+                  "vertical": false
+                },
+                "to_column": 3,
+                "to_page_index": 7,
+                "truth_category": null,
+                "truth_link": null,
+                "verdict": "open"
+              },
+              {
+                "from_column": 3,
+                "label": "p8c3->c4",
+                "page_index": 7,
+                "series": "column",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 3,
+                  "last_character": "。",
+                  "last_character_x": 524.0994873046875,
+                  "last_character_y": 136.173583984375,
+                  "last_line_text": "着生物剽窃仍将是令人遗憾的现实。",
+                  "layout_label": "plain text",
+                  "page_index": 7,
+                  "paragraph_index": 4,
+                  "reference": "p8#4",
+                  "vertical": false
+                },
+                "to_column": 4,
+                "to_page_index": 7,
+                "truth_category": null,
+                "truth_link": null,
+                "verdict": "closed"
+              }
+            ],
+            "boundaries_total": 21,
+            "closed_count": 7,
+            "designed_count": 0,
+            "no_tail_count": 0,
+            "open_count": 14,
+            "rate": 0.666667,
+            "series": "column",
+            "strict_rate": 0.666667
+          },
+          "page": {
+            "answerable": 7,
+            "axis_unsupported_count": 0,
+            "boundaries": [
+              {
+                "from_column": -1,
+                "label": "1->2",
+                "page_index": 0,
+                "series": "page",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 2,
+                  "last_character": ")",
+                  "last_character_x": 523.2423706054688,
+                  "last_character_y": 68.57760620117188,
+                  "last_line_text": "阿涅丝·巴尔东(Agnès Bardon)",
+                  "layout_label": "plain text",
+                  "page_index": 0,
+                  "paragraph_index": 8,
+                  "reference": "p1#8",
+                  "vertical": false
+                },
+                "to_column": -1,
+                "to_page_index": 1,
+                "truth_category": "clean",
+                "truth_link": false,
+                "verdict": "open"
+              },
+              {
+                "from_column": -1,
+                "label": "2->3",
+                "page_index": 1,
+                "series": "page",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 2,
+                  "last_character": "。",
+                  "last_character_x": 402.39601135253906,
+                  "last_character_y": 43.150726318359375,
+                  "last_line_text": "这种棕榈是亚马孙土著手工艺的象征。",
+                  "layout_label": "plain text",
+                  "page_index": 1,
+                  "paragraph_index": 3,
+                  "reference": "p2#3",
+                  "vertical": false
+                },
+                "to_column": -1,
+                "to_page_index": 2,
+                "truth_category": "linked",
+                "truth_link": true,
+                "verdict": "closed"
+              },
+              {
+                "from_column": -1,
+                "label": "3->4",
+                "page_index": 2,
+                "series": "page",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 0,
+                  "last_character": "识",
+                  "last_character_x": 228.57789611816406,
+                  "last_character_y": 701.5128784179688,
+                  "last_line_text": "土著知识",
+                  "layout_label": "plain text",
+                  "page_index": 2,
+                  "paragraph_index": 1,
+                  "reference": "p3#1",
+                  "vertical": false
+                },
+                "to_column": -1,
+                "to_page_index": 3,
+                "truth_category": "clean",
+                "truth_link": false,
+                "verdict": "open"
+              },
+              {
+                "from_column": -1,
+                "label": "4->5",
+                "page_index": 3,
+                "series": "page",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 4,
+                  "last_character": "。",
+                  "last_character_x": 440.4183349609375,
+                  "last_character_y": 113.584228515625,
+                  "last_line_text": "和地方知识。",
+                  "layout_label": "plain text",
+                  "page_index": 3,
+                  "paragraph_index": 24,
+                  "reference": "p4#24",
+                  "vertical": false
+                },
+                "to_column": -1,
+                "to_page_index": 4,
+                "truth_category": "clean",
+                "truth_link": false,
+                "verdict": "closed"
+              },
+              {
+                "from_column": -1,
+                "label": "5->6",
+                "page_index": 4,
+                "series": "page",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 3,
+                  "last_character": "原",
+                  "last_character_x": 489.1383361816406,
+                  "last_character_y": 429.73797607421875,
+                  "last_line_text": "这一联盟由巴西最古老的原",
+                  "layout_label": "plain text",
+                  "page_index": 4,
+                  "paragraph_index": 2,
+                  "reference": "p5#2",
+                  "vertical": false
+                },
+                "to_column": -1,
+                "to_page_index": 5,
+                "truth_category": "trap",
+                "truth_link": false,
+                "verdict": "open"
+              },
+              {
+                "from_column": -1,
+                "label": "6->7",
+                "page_index": 5,
+                "series": "page",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 2,
+                  "last_character": "。",
+                  "last_character_x": 410.42657470703125,
+                  "last_character_y": 101.62432861328125,
+                  "last_line_text": "化疗。",
+                  "layout_label": "plain text",
+                  "page_index": 5,
+                  "paragraph_index": 2,
+                  "reference": "p6#2",
+                  "vertical": false
+                },
+                "to_column": -1,
+                "to_page_index": 6,
+                "truth_category": "clean",
+                "truth_link": false,
+                "verdict": "closed"
+              },
+              {
+                "from_column": -1,
+                "label": "7->8",
+                "page_index": 6,
+                "series": "page",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 4,
+                  "last_character": "包",
+                  "last_character_x": 524.1423950195312,
+                  "last_character_y": 234.38360595703125,
+                  "last_line_text": "研究。双方签订的合作研究协议中包",
+                  "layout_label": "plain text",
+                  "page_index": 6,
+                  "paragraph_index": 3,
+                  "reference": "p7#3",
+                  "vertical": false
+                },
+                "to_column": -1,
+                "to_page_index": 7,
+                "truth_category": "linked",
+                "truth_link": true,
+                "verdict": "open"
+              }
+            ],
+            "boundaries_total": 7,
+            "closed_count": 3,
+            "designed_count": 0,
+            "no_tail_count": 0,
+            "open_count": 4,
+            "rate": 0.571429,
+            "series": "page",
+            "strict_rate": 0.571429
+          }
+        },
+        "stratified": {
+          "mbr_all": 0.571429,
+          "mbr_all_denominator": 7,
+          "mbr_linkable": 0.5,
+          "mbr_linkable_denominator": 6,
+          "mbr_linkable_open": 3,
+          "source_inherited_open": 1,
+          "strata": {
+            "clean": {
+              "answerable": 4,
+              "axis_unsupported_count": 0,
+              "boundaries_total": 4,
+              "closed_count": 2,
+              "designed_count": 0,
+              "no_tail_count": 0,
+              "open_count": 2,
+              "rate": 0.5,
+              "series": "page",
+              "strict_rate": 0.5
+            },
+            "linked": {
+              "answerable": 2,
+              "axis_unsupported_count": 0,
+              "boundaries_total": 2,
+              "closed_count": 1,
+              "designed_count": 0,
+              "no_tail_count": 0,
+              "open_count": 1,
+              "rate": 0.5,
+              "series": "page",
+              "strict_rate": 0.5
+            },
+            "trap": {
+              "answerable": 1,
+              "axis_unsupported_count": 0,
+              "boundaries_total": 1,
+              "closed_count": 0,
+              "designed_count": 0,
+              "no_tail_count": 0,
+              "open_count": 1,
+              "rate": 1.0,
+              "series": "page",
+              "strict_rate": 1.0
+            },
+            "unlabelled": {
+              "answerable": 0,
+              "axis_unsupported_count": 0,
+              "boundaries_total": 0,
+              "closed_count": 0,
+              "designed_count": 0,
+              "no_tail_count": 0,
+              "open_count": 0,
+              "rate": null,
+              "series": "page",
+              "strict_rate": null
+            }
+          },
+          "trap_boundaries": 1,
+          "unlabelled_boundaries": 0
+        },
+        "strict_rate": 0.571429,
+        "vertical_paragraphs": 3
+      },
+      "path": "pdf_extraction",
+      "produced_pdf": "examples/output/b8_4/smoke/Courier-zh/out/Courier-zh.no_watermark.zh.mono.pdf",
+      "produced_pdf_sha256": "528b85013e09b5a56c768ab3e514d5740eb061575714bbaa828e9153cef88da7",
+      "sample": "Courier-zh.pdf",
+      "source_pdf": "examples/input/Courier-zh.pdf",
+      "source_pdf_sha256": "2975c623b0bc604a4deb15f36229de512d295f69e171462f083b3c7d494bbaf1"
+    }
+  ],
+  "sample": "Courier-zh.pdf"
+}

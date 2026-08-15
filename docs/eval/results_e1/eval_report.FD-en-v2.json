@@ -1,0 +1,3126 @@
+{
+  "runs": [
+    {
+      "absent": [
+        "no working directory: no chain or repair level of the conservation invariant",
+        "no source and translated checkpoint pair: no LTCR"
+      ],
+      "conservation": {
+        "holds": true,
+        "levels": {
+          "chain": {
+            "evidence": {
+              "absent": "no chain translation report"
+            },
+            "failures": [],
+            "holds": null,
+            "level": "chain",
+            "subjects": 0
+          },
+          "document": {
+            "evidence": {
+              "produced_pages": 9,
+              "source_pages": 9
+            },
+            "failures": [],
+            "holds": true,
+            "level": "document",
+            "subjects": 1
+          },
+          "repair": {
+            "evidence": {
+              "absent": "no repair report"
+            },
+            "failures": [],
+            "holds": null,
+            "level": "repair",
+            "subjects": 0
+          }
+        },
+        "levels_absent": [
+          "chain",
+          "repair"
+        ],
+        "levels_present": [
+          "document"
+        ],
+        "metric": "block_conservation_invariant"
+      },
+      "label": "upstream",
+      "layout_geometry": {
+        "metric": "layout_geometry",
+        "page_count_delta": {
+          "conserved": true,
+          "produced_pages": 9,
+          "source_pages": 9,
+          "value": 0
+        },
+        "pages": [
+          {
+            "alignment_delta": 0.000986,
+            "image_area_delta": {
+              "absolute": -0.0,
+              "produced_area": 1.006874,
+              "source_area": 1.006874,
+              "value": -0.0
+            },
+            "image_placement_iou": {
+              "pairs": 1,
+              "produced_images": 1,
+              "source_images": 1,
+              "unpaired_produced": 0,
+              "unpaired_source": 0,
+              "value": 1.0
+            },
+            "overlap_delta": -0.109509,
+            "page_index": 0,
+            "produced": {
+              "alignment": {
+                "dropped": 0,
+                "elements": 7,
+                "value": 0.0013561356635640887
+              },
+              "elements": 7,
+              "overlap": {
+                "dropped": 0,
+                "elements": 7,
+                "value": 0.8623151326883461
+              }
+            },
+            "source": {
+              "alignment": {
+                "dropped": 0,
+                "elements": 12,
+                "value": 0.00037042785346331927
+              },
+              "elements": 12,
+              "overlap": {
+                "dropped": 0,
+                "elements": 12,
+                "value": 0.9718238158511023
+              }
+            }
+          },
+          {
+            "alignment_delta": 0.00632,
+            "image_area_delta": {
+              "absolute": -0.0,
+              "produced_area": 0.685792,
+              "source_area": 0.685792,
+              "value": -0.0
+            },
+            "image_placement_iou": {
+              "pairs": 1,
+              "produced_images": 1,
+              "source_images": 1,
+              "unpaired_produced": 0,
+              "unpaired_source": 0,
+              "value": 1.0
+            },
+            "overlap_delta": -0.127184,
+            "page_index": 1,
+            "produced": {
+              "alignment": {
+                "dropped": 0,
+                "elements": 8,
+                "value": 0.006981007851420241
+              },
+              "elements": 8,
+              "overlap": {
+                "dropped": 0,
+                "elements": 8,
+                "value": 0.2157359581607787
+              }
+            },
+            "source": {
+              "alignment": {
+                "dropped": 0,
+                "elements": 9,
+                "value": 0.0006607009636167386
+              },
+              "elements": 9,
+              "overlap": {
+                "dropped": 0,
+                "elements": 9,
+                "value": 0.34291968580350174
+              }
+            }
+          },
+          {
+            "alignment_delta": -0.000242,
+            "image_area_delta": {
+              "absolute": 0.0,
+              "produced_area": 0.122408,
+              "source_area": 0.122408,
+              "value": 0.0
+            },
+            "image_placement_iou": {
+              "pairs": 1,
+              "produced_images": 1,
+              "source_images": 1,
+              "unpaired_produced": 0,
+              "unpaired_source": 0,
+              "value": 1.0
+            },
+            "overlap_delta": -0.005008,
+            "page_index": 2,
+            "produced": {
+              "alignment": {
+                "dropped": 0,
+                "elements": 35,
+                "value": 0.0005998936689409943
+              },
+              "elements": 35,
+              "overlap": {
+                "dropped": 0,
+                "elements": 35,
+                "value": 0.051624281413521614
+              }
+            },
+            "source": {
+              "alignment": {
+                "dropped": 0,
+                "elements": 27,
+                "value": 0.0008414979664523253
+              },
+              "elements": 27,
+              "overlap": {
+                "dropped": 0,
+                "elements": 27,
+                "value": 0.05663234691187339
+              }
+            }
+          },
+          {
+            "alignment_delta": 0.017957,
+            "image_area_delta": {
+              "absolute": 0.0,
+              "produced_area": 1.076263,
+              "source_area": 1.076263,
+              "value": 0.0
+            },
+            "image_placement_iou": {
+              "pairs": 2,
+              "produced_images": 2,
+              "source_images": 2,
+              "unpaired_produced": 0,
+              "unpaired_source": 0,
+              "value": 1.0
+            },
+            "overlap_delta": -0.009531,
+            "page_index": 3,
+            "produced": {
+              "alignment": {
+                "dropped": 0,
+                "elements": 5,
+                "value": 0.018858767481948018
+              },
+              "elements": 5,
+              "overlap": {
+                "dropped": 0,
+                "elements": 5,
+                "value": 0.8202805695847022
+              }
+            },
+            "source": {
+              "alignment": {
+                "dropped": 0,
+                "elements": 5,
+                "value": 0.0009021160335471243
+              },
+              "elements": 5,
+              "overlap": {
+                "dropped": 0,
+                "elements": 5,
+                "value": 0.8298118577700049
+              }
+            }
+          },
+          {
+            "alignment_delta": 6.7e-05,
+            "image_area_delta": {
+              "absolute": -0.0,
+              "produced_area": 0.299156,
+              "source_area": 0.299156,
+              "value": -0.0
+            },
+            "image_placement_iou": {
+              "pairs": 13,
+              "produced_images": 13,
+              "source_images": 13,
+              "unpaired_produced": 0,
+              "unpaired_source": 0,
+              "value": 1.0
+            },
+            "overlap_delta": -0.140308,
+            "page_index": 4,
+            "produced": {
+              "alignment": {
+                "dropped": 0,
+                "elements": 63,
+                "value": 0.0005804686619121956
+              },
+              "elements": 63,
+              "overlap": {
+                "dropped": 0,
+                "elements": 63,
+                "value": 0.2837740085577356
+              }
+            },
+            "source": {
+              "alignment": {
+                "dropped": 0,
+                "elements": 43,
+                "value": 0.0005131260660587802
+              },
+              "elements": 43,
+              "overlap": {
+                "dropped": 0,
+                "elements": 43,
+                "value": 0.42408189690840836
+              }
+            }
+          },
+          {
+            "alignment_delta": 0.000717,
+            "image_area_delta": {
+              "absolute": 0.0,
+              "produced_area": 0.307428,
+              "source_area": 0.307428,
+              "value": 0.0
+            },
+            "image_placement_iou": {
+              "pairs": 1,
+              "produced_images": 1,
+              "source_images": 1,
+              "unpaired_produced": 0,
+              "unpaired_source": 0,
+              "value": 1.0
+            },
+            "overlap_delta": -0.028934,
+            "page_index": 5,
+            "produced": {
+              "alignment": {
+                "dropped": 0,
+                "elements": 17,
+                "value": 0.0016263809810299252
+              },
+              "elements": 17,
+              "overlap": {
+                "dropped": 0,
+                "elements": 17,
+                "value": 0.0
+              }
+            },
+            "source": {
+              "alignment": {
+                "dropped": 0,
+                "elements": 16,
+                "value": 0.0009098570590948372
+              },
+              "elements": 16,
+              "overlap": {
+                "dropped": 0,
+                "elements": 16,
+                "value": 0.028934272444317163
+              }
+            }
+          },
+          {
+            "alignment_delta": 0.00076,
+            "image_area_delta": {
+              "absolute": 0.0,
+              "produced_area": 0.249303,
+              "source_area": 0.249303,
+              "value": 0.0
+            },
+            "image_placement_iou": {
+              "pairs": 4,
+              "produced_images": 4,
+              "source_images": 4,
+              "unpaired_produced": 0,
+              "unpaired_source": 0,
+              "value": 1.0
+            },
+            "overlap_delta": -0.007287,
+            "page_index": 6,
+            "produced": {
+              "alignment": {
+                "dropped": 0,
+                "elements": 32,
+                "value": 0.0009900441589121018
+              },
+              "elements": 32,
+              "overlap": {
+                "dropped": 0,
+                "elements": 32,
+                "value": 0.0
+              }
+            },
+            "source": {
+              "alignment": {
+                "dropped": 0,
+                "elements": 36,
+                "value": 0.00022997704358513482
+              },
+              "elements": 36,
+              "overlap": {
+                "dropped": 0,
+                "elements": 36,
+                "value": 0.007287487032987535
+              }
+            }
+          },
+          {
+            "alignment_delta": -0.000102,
+            "image_area_delta": {
+              "absolute": 0.0,
+              "produced_area": 0.336285,
+              "source_area": 0.336285,
+              "value": 0.0
+            },
+            "image_placement_iou": {
+              "pairs": 2,
+              "produced_images": 2,
+              "source_images": 2,
+              "unpaired_produced": 0,
+              "unpaired_source": 0,
+              "value": 1.0
+            },
+            "overlap_delta": -0.050833,
+            "page_index": 7,
+            "produced": {
+              "alignment": {
+                "dropped": 0,
+                "elements": 18,
+                "value": 0.0009708024015685197
+              },
+              "elements": 18,
+              "overlap": {
+                "dropped": 0,
+                "elements": 18,
+                "value": 0.009278912817425303
+              }
+            },
+            "source": {
+              "alignment": {
+                "dropped": 0,
+                "elements": 15,
+                "value": 0.0010731402055528143
+              },
+              "elements": 15,
+              "overlap": {
+                "dropped": 0,
+                "elements": 15,
+                "value": 0.060111470689891824
+              }
+            }
+          },
+          {
+            "alignment_delta": 0.000327,
+            "image_area_delta": {
+              "absolute": 0.0,
+              "produced_area": 0.200224,
+              "source_area": 0.200224,
+              "value": 0.0
+            },
+            "image_placement_iou": {
+              "pairs": 2,
+              "produced_images": 2,
+              "source_images": 2,
+              "unpaired_produced": 0,
+              "unpaired_source": 0,
+              "value": 1.0
+            },
+            "overlap_delta": -0.049581,
+            "page_index": 8,
+            "produced": {
+              "alignment": {
+                "dropped": 0,
+                "elements": 24,
+                "value": 0.0005455415532647405
+              },
+              "elements": 24,
+              "overlap": {
+                "dropped": 0,
+                "elements": 24,
+                "value": 0.4591004975524305
+              }
+            },
+            "source": {
+              "alignment": {
+                "dropped": 0,
+                "elements": 23,
+                "value": 0.00021804335577701002
+              },
+              "elements": 23,
+              "overlap": {
+                "dropped": 0,
+                "elements": 23,
+                "value": 0.508681081235709
+              }
+            }
+          }
+        ],
+        "pages_compared": 9,
+        "summary": {
+          "alignment_delta": 0.002977,
+          "alignment_produced": 0.003612,
+          "alignment_source": 0.000635,
+          "image_area_delta": -0.0,
+          "image_placement_iou": 1.0,
+          "overlap_delta": -0.058686,
+          "overlap_produced": 0.300234,
+          "overlap_source": 0.35892
+        }
+      },
+      "mid_break_rate": {
+        "metric": "mid_unit_page_break_rate",
+        "pages": 9,
+        "rate": 0.625,
+        "series": {
+          "column": {
+            "answerable": 10,
+            "axis_unsupported_count": 0,
+            "boundaries": [
+              {
+                "from_column": 0,
+                "label": "p2c0->c1",
+                "page_index": 1,
+                "series": "column",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 0,
+                  "last_character": "。",
+                  "last_character_x": 231.3063507080078,
+                  "last_character_y": 133.45147705078125,
+                  "last_line_text": "二战后全球冲突的数据来评估战争的经济影响。",
+                  "layout_label": "plain text",
+                  "page_index": 1,
+                  "paragraph_index": 3,
+                  "reference": "p2#3",
+                  "vertical": false
+                },
+                "to_column": 1,
+                "to_page_index": 1,
+                "truth_category": null,
+                "truth_link": null,
+                "verdict": "closed"
+              },
+              {
+                "from_column": 0,
+                "label": "p3c0->c1",
+                "page_index": 2,
+                "series": "column",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 0,
+                  "last_character": "n",
+                  "last_character_x": 151.17225646972656,
+                  "last_character_y": 267.74476623535156,
+                  "last_line_text": "应考虑其权衡Jefrfy Frieden",
+                  "layout_label": "plain text",
+                  "page_index": 2,
+                  "paragraph_index": 26,
+                  "reference": "p3#26",
+                  "vertical": false
+                },
+                "to_column": 1,
+                "to_page_index": 2,
+                "truth_category": null,
+                "truth_link": null,
+                "verdict": "open"
+              },
+              {
+                "from_column": 1,
+                "label": "p3c1->c2",
+                "page_index": 2,
+                "series": "column",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 1,
+                  "last_character": "”",
+                  "last_character_x": 378.5150146484375,
+                  "last_character_y": 254.1264190673828,
+                  "last_line_text": "合作的可能性。”",
+                  "layout_label": "plain text",
+                  "page_index": 2,
+                  "paragraph_index": 17,
+                  "reference": "p3#17",
+                  "vertical": false
+                },
+                "to_column": 2,
+                "to_page_index": 2,
+                "truth_category": null,
+                "truth_link": null,
+                "verdict": "closed"
+              },
+              {
+                "from_column": 2,
+                "label": "p3c2->c3",
+                "page_index": 2,
+                "series": "column",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 2,
+                  "last_character": "期",
+                  "last_character_x": 304.28399658203125,
+                  "last_character_y": 690.3629760742188,
+                  "last_line_text": "第2期",
+                  "layout_label": "plain text",
+                  "page_index": 2,
+                  "paragraph_index": 33,
+                  "reference": "p3#33",
+                  "vertical": false
+                },
+                "to_column": 3,
+                "to_page_index": 2,
+                "truth_category": null,
+                "truth_link": null,
+                "verdict": "open"
+              },
+              {
+                "from_column": 0,
+                "label": "p6c0->c1",
+                "page_index": 5,
+                "series": "column",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 0,
+                  "last_character": "。",
+                  "last_character_x": 73.97010040283203,
+                  "last_character_y": 57.058929443359375,
+                  "last_line_text": "了供应链。",
+                  "layout_label": "plain text",
+                  "page_index": 5,
+                  "paragraph_index": 5,
+                  "reference": "p6#5",
+                  "vertical": false
+                },
+                "to_column": 1,
+                "to_page_index": 5,
+                "truth_category": null,
+                "truth_link": null,
+                "verdict": "closed"
+              },
+              {
+                "from_column": 1,
+                "label": "p6c1->c2",
+                "page_index": 5,
+                "series": "column",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 1,
+                  "last_character": "和",
+                  "last_character_x": 368.770263671875,
+                  "last_character_y": 69.06442260742188,
+                  "last_line_text": "燃料进口的高度依赖以及不断上涨的食品和",
+                  "layout_label": "plain text",
+                  "page_index": 5,
+                  "paragraph_index": 8,
+                  "reference": "p6#8",
+                  "vertical": false
+                },
+                "to_column": 2,
+                "to_page_index": 5,
+                "truth_category": null,
+                "truth_link": null,
+                "verdict": "open"
+              },
+              {
+                "from_column": 0,
+                "label": "p7c0->c1",
+                "page_index": 6,
+                "series": "column",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 0,
+                  "last_character": "。",
+                  "last_character_x": 437.6289520263672,
+                  "last_character_y": 69.43569946289062,
+                  "last_line_text": "来源：IMF，2026年4月世界经济展望；以及IMF工作人员计算。",
+                  "layout_label": "plain text",
+                  "page_index": 6,
+                  "paragraph_index": 5,
+                  "reference": "p7#5",
+                  "vertical": false
+                },
+                "to_column": 1,
+                "to_page_index": 6,
+                "truth_category": null,
+                "truth_link": null,
+                "verdict": "closed"
+              },
+              {
+                "from_column": 1,
+                "label": "p7c1->c2",
+                "page_index": 6,
+                "series": "column",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 1,
+                  "last_character": "胀",
+                  "last_character_x": 450.69105529785156,
+                  "last_character_y": 92.19674682617188,
+                  "last_line_text": "GDP增长总体通胀",
+                  "layout_label": "plain text",
+                  "page_index": 6,
+                  "paragraph_index": 14,
+                  "reference": "p7#14",
+                  "vertical": false
+                },
+                "to_column": 2,
+                "to_page_index": 6,
+                "truth_category": null,
+                "truth_link": null,
+                "verdict": "open"
+              },
+              {
+                "from_column": 0,
+                "label": "p8c0->c1",
+                "page_index": 7,
+                "series": "column",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 0,
+                  "last_character": "全",
+                  "last_character_x": 218.8144073486328,
+                  "last_character_y": 61.177581787109375,
+                  "last_line_text": "正在重新平衡经济效率与国家安全",
+                  "layout_label": "plain text",
+                  "page_index": 7,
+                  "paragraph_index": 7,
+                  "reference": "p8#7",
+                  "vertical": false
+                },
+                "to_column": 1,
+                "to_page_index": 7,
+                "truth_category": null,
+                "truth_link": null,
+                "verdict": "open"
+              },
+              {
+                "from_column": 0,
+                "label": "p9c0->c1",
+                "page_index": 8,
+                "series": "column",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 0,
+                  "last_character": "2",
+                  "last_character_x": 150.7176055908203,
+                  "last_character_y": 20.618011474609375,
+                  "last_line_text": "72DECEMBER 2022",
+                  "layout_label": "plain text",
+                  "page_index": 8,
+                  "paragraph_index": 2,
+                  "reference": "p9#2",
+                  "vertical": false
+                },
+                "to_column": 1,
+                "to_page_index": 8,
+                "truth_category": null,
+                "truth_link": null,
+                "verdict": "open"
+              }
+            ],
+            "boundaries_total": 10,
+            "closed_count": 4,
+            "designed_count": 0,
+            "no_tail_count": 0,
+            "open_count": 6,
+            "rate": 0.6,
+            "series": "column",
+            "strict_rate": 0.6
+          },
+          "page": {
+            "answerable": 8,
+            "axis_unsupported_count": 0,
+            "boundaries": [
+              {
+                "from_column": -1,
+                "label": "1->2",
+                "page_index": 0,
+                "series": "page",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 0,
+                  "last_character": "织",
+                  "last_character_x": 443.0768127441406,
+                  "last_character_y": 725.6425304412842,
+                  "last_line_text": "金融与发展国际货币基金组织",
+                  "layout_label": "plain text",
+                  "page_index": 0,
+                  "paragraph_index": 3,
+                  "reference": "p1#3",
+                  "vertical": false
+                },
+                "to_column": -1,
+                "to_page_index": 1,
+                "truth_category": "clean",
+                "truth_link": false,
+                "verdict": "open"
+              },
+              {
+                "from_column": -1,
+                "label": "2->3",
+                "page_index": 1,
+                "series": "page",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 1,
+                  "last_character": "望",
+                  "last_character_x": 361.272216796875,
+                  "last_character_y": 722.0148887634277,
+                  "last_line_text": "世界经济展望",
+                  "layout_label": "plain text",
+                  "page_index": 1,
+                  "paragraph_index": 0,
+                  "reference": "p2#0",
+                  "vertical": false
+                },
+                "to_column": -1,
+                "to_page_index": 2,
+                "truth_category": "clean",
+                "truth_link": false,
+                "verdict": "open"
+              },
+              {
+                "from_column": -1,
+                "label": "3->4",
+                "page_index": 2,
+                "series": "page",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 3,
+                  "last_character": "斯",
+                  "last_character_x": 431.0341491699219,
+                  "last_character_y": 159.49496459960938,
+                  "last_line_text": "克尔·斯彭斯",
+                  "layout_label": "plain text",
+                  "page_index": 2,
+                  "paragraph_index": 16,
+                  "reference": "p3#16",
+                  "vertical": false
+                },
+                "to_column": -1,
+                "to_page_index": 3,
+                "truth_category": "clean",
+                "truth_link": false,
+                "verdict": "open"
+              },
+              {
+                "from_column": -1,
+                "label": "4->5",
+                "page_index": 3,
+                "series": "page",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 0,
+                  "last_character": "。",
+                  "last_character_x": 210.4490966796875,
+                  "last_character_y": 159.74075317382812,
+                  "last_line_text": "展和政策问题的前沿研究和分析。",
+                  "layout_label": "plain text",
+                  "page_index": 3,
+                  "paragraph_index": 0,
+                  "reference": "p4#0",
+                  "vertical": false
+                },
+                "to_column": -1,
+                "to_page_index": 4,
+                "truth_category": "clean",
+                "truth_link": false,
+                "verdict": "closed"
+              },
+              {
+                "from_column": -1,
+                "label": "5->6",
+                "page_index": 4,
+                "series": "page",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 0,
+                  "last_character": "e",
+                  "last_character_x": 475.52471923828125,
+                  "last_character_y": 163.24850463867188,
+                  "last_line_text": "金融与发展由y the",
+                  "layout_label": "plain text",
+                  "page_index": 4,
+                  "paragraph_index": 33,
+                  "reference": "p5#33",
+                  "vertical": false
+                },
+                "to_column": -1,
+                "to_page_index": 5,
+                "truth_category": "clean",
+                "truth_link": false,
+                "verdict": "open"
+              },
+              {
+                "from_column": -1,
+                "label": "6->7",
+                "page_index": 5,
+                "series": "page",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 2,
+                  "last_character": "”",
+                  "last_character_x": 441.6938018798828,
+                  "last_character_y": 72.2139892578125,
+                  "last_line_text": "财政空间。”",
+                  "layout_label": "plain text",
+                  "page_index": 5,
+                  "paragraph_index": 15,
+                  "reference": "p6#15",
+                  "vertical": false
+                },
+                "to_column": -1,
+                "to_page_index": 6,
+                "truth_category": "clean",
+                "truth_link": false,
+                "verdict": "closed"
+              },
+              {
+                "from_column": -1,
+                "label": "7->8",
+                "page_index": 6,
+                "series": "page",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 2,
+                  "last_character": "D",
+                  "last_character_x": 533.720703125,
+                  "last_character_y": 742.3440704345703,
+                  "last_line_text": "万花筒F&D",
+                  "layout_label": "plain text",
+                  "page_index": 6,
+                  "paragraph_index": 1,
+                  "reference": "p7#1",
+                  "vertical": false
+                },
+                "to_column": -1,
+                "to_page_index": 7,
+                "truth_category": "clean",
+                "truth_link": false,
+                "verdict": "open"
+              },
+              {
+                "from_column": -1,
+                "label": "8->9",
+                "page_index": 7,
+                "series": "page",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 1,
+                  "last_character": "。",
+                  "last_character_x": 520.0250854492188,
+                  "last_character_y": 82.74600219726562,
+                  "last_line_text": "家安全的名义实施粗暴的保护主义。",
+                  "layout_label": "plain text",
+                  "page_index": 7,
+                  "paragraph_index": 15,
+                  "reference": "p8#15",
+                  "vertical": false
+                },
+                "to_column": -1,
+                "to_page_index": 8,
+                "truth_category": "clean",
+                "truth_link": false,
+                "verdict": "closed"
+              }
+            ],
+            "boundaries_total": 8,
+            "closed_count": 3,
+            "designed_count": 0,
+            "no_tail_count": 0,
+            "open_count": 5,
+            "rate": 0.625,
+            "series": "page",
+            "strict_rate": 0.625
+          }
+        },
+        "stratified": {
+          "mbr_all": 0.625,
+          "mbr_all_denominator": 8,
+          "mbr_linkable": 0.625,
+          "mbr_linkable_denominator": 8,
+          "mbr_linkable_open": 5,
+          "source_inherited_open": 0,
+          "strata": {
+            "clean": {
+              "answerable": 8,
+              "axis_unsupported_count": 0,
+              "boundaries_total": 8,
+              "closed_count": 3,
+              "designed_count": 0,
+              "no_tail_count": 0,
+              "open_count": 5,
+              "rate": 0.625,
+              "series": "page",
+              "strict_rate": 0.625
+            },
+            "linked": {
+              "answerable": 0,
+              "axis_unsupported_count": 0,
+              "boundaries_total": 0,
+              "closed_count": 0,
+              "designed_count": 0,
+              "no_tail_count": 0,
+              "open_count": 0,
+              "rate": null,
+              "series": "page",
+              "strict_rate": null
+            },
+            "trap": {
+              "answerable": 0,
+              "axis_unsupported_count": 0,
+              "boundaries_total": 0,
+              "closed_count": 0,
+              "designed_count": 0,
+              "no_tail_count": 0,
+              "open_count": 0,
+              "rate": null,
+              "series": "page",
+              "strict_rate": null
+            },
+            "unlabelled": {
+              "answerable": 0,
+              "axis_unsupported_count": 0,
+              "boundaries_total": 0,
+              "closed_count": 0,
+              "designed_count": 0,
+              "no_tail_count": 0,
+              "open_count": 0,
+              "rate": null,
+              "series": "page",
+              "strict_rate": null
+            }
+          },
+          "trap_boundaries": 0,
+          "unlabelled_boundaries": 0
+        },
+        "strict_rate": 0.625,
+        "vertical_paragraphs": 3
+      },
+      "path": "pdf_extraction",
+      "produced_pdf": "examples/baseline/pdf/FD-en-v2/FD-en-v2.no_watermark.zh.mono.pdf",
+      "produced_pdf_sha256": "7b2d99895be0f37ace61a9879c06142b4d6d9e2d3ce50b16fa2411cbacc6943f",
+      "sample": "FD-en-v2.pdf",
+      "source_pdf": "examples/input/FD-en-v2.pdf",
+      "source_pdf_sha256": "15e00ca85f0ee3ad9e3ae7a71af8808b57da6bb57f63708943b2a6b9dad4d622"
+    },
+    {
+      "absent": [],
+      "conservation": {
+        "holds": true,
+        "levels": {
+          "chain": {
+            "evidence": {
+              "chains": 0,
+              "escalated_members": 0,
+              "merged_members": 0,
+              "rendered_members": 0
+            },
+            "failures": [],
+            "holds": true,
+            "level": "chain",
+            "subjects": 0
+          },
+          "document": {
+            "evidence": {
+              "produced_pages": 9,
+              "source_pages": 9
+            },
+            "failures": [],
+            "holds": true,
+            "level": "document",
+            "subjects": 1
+          },
+          "repair": {
+            "evidence": {
+              "changed": 2,
+              "changed_outside_touched": 0,
+              "pages_after": 9,
+              "pages_before": 9,
+              "paragraphs_after": 189,
+              "paragraphs_before": 189,
+              "reported_verdict": "conserved",
+              "touched": 2
+            },
+            "failures": [],
+            "holds": true,
+            "level": "repair",
+            "subjects": 1
+          }
+        },
+        "levels_absent": [],
+        "levels_present": [
+          "chain",
+          "repair",
+          "document"
+        ],
+        "metric": "block_conservation_invariant"
+      },
+      "label": "fork_full_il",
+      "layout_geometry": {
+        "metric": "layout_geometry",
+        "page_count_delta": {
+          "conserved": true,
+          "produced_pages": 9,
+          "source_pages": 9,
+          "value": 0
+        },
+        "pages": [
+          {
+            "alignment_delta": 0.0,
+            "image_area_delta": {
+              "absolute": 0,
+              "produced_area": 0,
+              "source_area": 0,
+              "value": null
+            },
+            "image_placement_iou": {
+              "pairs": 0,
+              "produced_images": 0,
+              "source_images": 0,
+              "unpaired_produced": 0,
+              "unpaired_source": 0,
+              "value": null
+            },
+            "overlap_delta": 0.0,
+            "page_index": 0,
+            "produced": {
+              "alignment": {
+                "dropped": 0,
+                "elements": 8,
+                "value": 0.000669228684729557
+              },
+              "elements": 8,
+              "overlap": {
+                "dropped": 0,
+                "elements": 8,
+                "value": 0.0
+              }
+            },
+            "source": {
+              "alignment": {
+                "dropped": 0,
+                "elements": 8,
+                "value": 0.000669228684729557
+              },
+              "elements": 8,
+              "overlap": {
+                "dropped": 0,
+                "elements": 8,
+                "value": 0.0
+              }
+            }
+          },
+          {
+            "alignment_delta": 0.0,
+            "image_area_delta": {
+              "absolute": 0.0,
+              "produced_area": 0.1683,
+              "source_area": 0.1683,
+              "value": 0.0
+            },
+            "image_placement_iou": {
+              "pairs": 2,
+              "produced_images": 2,
+              "source_images": 2,
+              "unpaired_produced": 0,
+              "unpaired_source": 0,
+              "value": 1.0
+            },
+            "overlap_delta": 0.0,
+            "page_index": 1,
+            "produced": {
+              "alignment": {
+                "dropped": 0,
+                "elements": 11,
+                "value": 0.004385742419302647
+              },
+              "elements": 11,
+              "overlap": {
+                "dropped": 0,
+                "elements": 11,
+                "value": 0.145691330505515
+              }
+            },
+            "source": {
+              "alignment": {
+                "dropped": 0,
+                "elements": 11,
+                "value": 0.004385742419302647
+              },
+              "elements": 11,
+              "overlap": {
+                "dropped": 0,
+                "elements": 11,
+                "value": 0.145691330505515
+              }
+            }
+          },
+          {
+            "alignment_delta": 0.0,
+            "image_area_delta": {
+              "absolute": 0.0,
+              "produced_area": 0.125386,
+              "source_area": 0.125386,
+              "value": 0.0
+            },
+            "image_placement_iou": {
+              "pairs": 1,
+              "produced_images": 1,
+              "source_images": 1,
+              "unpaired_produced": 0,
+              "unpaired_source": 0,
+              "value": 1.0
+            },
+            "overlap_delta": 0.0,
+            "page_index": 2,
+            "produced": {
+              "alignment": {
+                "dropped": 0,
+                "elements": 38,
+                "value": 0.0005341014519697568
+              },
+              "elements": 38,
+              "overlap": {
+                "dropped": 0,
+                "elements": 38,
+                "value": 0.02640941162979004
+              }
+            },
+            "source": {
+              "alignment": {
+                "dropped": 0,
+                "elements": 38,
+                "value": 0.0005341014519697568
+              },
+              "elements": 38,
+              "overlap": {
+                "dropped": 0,
+                "elements": 38,
+                "value": 0.02640941162979004
+              }
+            }
+          },
+          {
+            "alignment_delta": 0.0,
+            "image_area_delta": {
+              "absolute": 0.0,
+              "produced_area": 0.631,
+              "source_area": 0.631,
+              "value": 0.0
+            },
+            "image_placement_iou": {
+              "pairs": 2,
+              "produced_images": 2,
+              "source_images": 2,
+              "unpaired_produced": 0,
+              "unpaired_source": 0,
+              "value": 1.0
+            },
+            "overlap_delta": 0.0,
+            "page_index": 3,
+            "produced": {
+              "alignment": {
+                "dropped": 0,
+                "elements": 6,
+                "value": 0.0007962091141505215
+              },
+              "elements": 6,
+              "overlap": {
+                "dropped": 0,
+                "elements": 6,
+                "value": 0.0
+              }
+            },
+            "source": {
+              "alignment": {
+                "dropped": 0,
+                "elements": 6,
+                "value": 0.0007962091141505215
+              },
+              "elements": 6,
+              "overlap": {
+                "dropped": 0,
+                "elements": 6,
+                "value": 0.0
+              }
+            }
+          },
+          {
+            "alignment_delta": 5.3e-05,
+            "image_area_delta": {
+              "absolute": 0.0,
+              "produced_area": 0.504179,
+              "source_area": 0.504179,
+              "value": 0.0
+            },
+            "image_placement_iou": {
+              "pairs": 7,
+              "produced_images": 7,
+              "source_images": 7,
+              "unpaired_produced": 0,
+              "unpaired_source": 0,
+              "value": 1.0
+            },
+            "overlap_delta": 0.00544,
+            "page_index": 4,
+            "produced": {
+              "alignment": {
+                "dropped": 0,
+                "elements": 54,
+                "value": 0.0005598512366877018
+              },
+              "elements": 54,
+              "overlap": {
+                "dropped": 0,
+                "elements": 54,
+                "value": 0.30276397898956364
+              }
+            },
+            "source": {
+              "alignment": {
+                "dropped": 0,
+                "elements": 54,
+                "value": 0.0005065639441216042
+              },
+              "elements": 54,
+              "overlap": {
+                "dropped": 0,
+                "elements": 54,
+                "value": 0.2973242006055937
+              }
+            }
+          },
+          {
+            "alignment_delta": 0.0,
+            "image_area_delta": {
+              "absolute": 0.0,
+              "produced_area": 0.313738,
+              "source_area": 0.313738,
+              "value": 0.0
+            },
+            "image_placement_iou": {
+              "pairs": 1,
+              "produced_images": 1,
+              "source_images": 1,
+              "unpaired_produced": 0,
+              "unpaired_source": 0,
+              "value": 1.0
+            },
+            "overlap_delta": 0.0,
+            "page_index": 5,
+            "produced": {
+              "alignment": {
+                "dropped": 0,
+                "elements": 16,
+                "value": 0.002028383095275782
+              },
+              "elements": 16,
+              "overlap": {
+                "dropped": 0,
+                "elements": 16,
+                "value": 0.0
+              }
+            },
+            "source": {
+              "alignment": {
+                "dropped": 0,
+                "elements": 16,
+                "value": 0.002028383095275782
+              },
+              "elements": 16,
+              "overlap": {
+                "dropped": 0,
+                "elements": 16,
+                "value": 0.0
+              }
+            }
+          },
+          {
+            "alignment_delta": 0.0,
+            "image_area_delta": {
+              "absolute": 0.0,
+              "produced_area": 0.402484,
+              "source_area": 0.402484,
+              "value": 0.0
+            },
+            "image_placement_iou": {
+              "pairs": 6,
+              "produced_images": 6,
+              "source_images": 6,
+              "unpaired_produced": 0,
+              "unpaired_source": 0,
+              "value": 1.0
+            },
+            "overlap_delta": 0.0,
+            "page_index": 6,
+            "produced": {
+              "alignment": {
+                "dropped": 0,
+                "elements": 39,
+                "value": 0.0004087874821187275
+              },
+              "elements": 39,
+              "overlap": {
+                "dropped": 0,
+                "elements": 39,
+                "value": 0.46335224994078233
+              }
+            },
+            "source": {
+              "alignment": {
+                "dropped": 0,
+                "elements": 39,
+                "value": 0.0004087874821187275
+              },
+              "elements": 39,
+              "overlap": {
+                "dropped": 0,
+                "elements": 39,
+                "value": 0.46335224994078233
+              }
+            }
+          },
+          {
+            "alignment_delta": 0.0,
+            "image_area_delta": {
+              "absolute": 0.0,
+              "produced_area": 0.341379,
+              "source_area": 0.341379,
+              "value": 0.0
+            },
+            "image_placement_iou": {
+              "pairs": 2,
+              "produced_images": 2,
+              "source_images": 2,
+              "unpaired_produced": 0,
+              "unpaired_source": 0,
+              "value": 1.0
+            },
+            "overlap_delta": 0.0,
+            "page_index": 7,
+            "produced": {
+              "alignment": {
+                "dropped": 0,
+                "elements": 15,
+                "value": 0.0013339498007236064
+              },
+              "elements": 15,
+              "overlap": {
+                "dropped": 0,
+                "elements": 15,
+                "value": 0.0
+              }
+            },
+            "source": {
+              "alignment": {
+                "dropped": 0,
+                "elements": 15,
+                "value": 0.0013339498007236064
+              },
+              "elements": 15,
+              "overlap": {
+                "dropped": 0,
+                "elements": 15,
+                "value": 0.0
+              }
+            }
+          },
+          {
+            "alignment_delta": 0.0,
+            "image_area_delta": {
+              "absolute": 0.0,
+              "produced_area": 0.09017,
+              "source_area": 0.09017,
+              "value": 0.0
+            },
+            "image_placement_iou": {
+              "pairs": 1,
+              "produced_images": 1,
+              "source_images": 1,
+              "unpaired_produced": 0,
+              "unpaired_source": 0,
+              "value": 1.0
+            },
+            "overlap_delta": 0.0,
+            "page_index": 8,
+            "produced": {
+              "alignment": {
+                "dropped": 0,
+                "elements": 24,
+                "value": 0.0006319298401895329
+              },
+              "elements": 24,
+              "overlap": {
+                "dropped": 0,
+                "elements": 24,
+                "value": 0.44079754795493836
+              }
+            },
+            "source": {
+              "alignment": {
+                "dropped": 0,
+                "elements": 24,
+                "value": 0.0006319298401895329
+              },
+              "elements": 24,
+              "overlap": {
+                "dropped": 0,
+                "elements": 24,
+                "value": 0.44079754795493836
+              }
+            }
+          }
+        ],
+        "pages_compared": 9,
+        "summary": {
+          "alignment_delta": 6e-06,
+          "alignment_produced": 0.001261,
+          "alignment_source": 0.001255,
+          "image_area_delta": 0.0,
+          "image_placement_iou": 1.0,
+          "overlap_delta": 0.000604,
+          "overlap_produced": 0.153224,
+          "overlap_source": 0.152619
+        }
+      },
+      "ltcr": {
+        "metric": "ltcr",
+        "min_occurrences": 3,
+        "min_paragraphs": 2,
+        "regions": [
+          {
+            "region": "A1",
+            "summary": {
+              "fully_consistent": 0,
+              "legacy_mean_share": null,
+              "ltcr": null,
+              "measured": 0,
+              "pairs_agreeing": 0,
+              "pairs_total": 0,
+              "terms": 0
+            },
+            "terms": []
+          },
+          {
+            "region": "A2",
+            "summary": {
+              "fully_consistent": 0,
+              "legacy_mean_share": null,
+              "ltcr": null,
+              "measured": 0,
+              "pairs_agreeing": 0,
+              "pairs_total": 0,
+              "terms": 0
+            },
+            "terms": []
+          },
+          {
+            "region": "A3",
+            "summary": {
+              "fully_consistent": 0,
+              "legacy_mean_share": 0.375,
+              "ltcr": 0.083333,
+              "measured": 2,
+              "pairs_agreeing": 1,
+              "pairs_total": 12,
+              "terms": 2
+            },
+            "terms": [
+              {
+                "group_candidates": [
+                  "瑞士人",
+                  null,
+                  null
+                ],
+                "group_sizes": [
+                  2,
+                  1,
+                  1
+                ],
+                "k": 4,
+                "legacy_candidate": "瑞士人",
+                "legacy_share": 0.5,
+                "ltcr": 0.16666666666666666,
+                "occurrences": 4,
+                "pairs_agreeing": 1,
+                "pairs_total": 6,
+                "paragraphs": 4,
+                "term": "Swiss"
+              },
+              {
+                "group_candidates": [
+                  null,
+                  null,
+                  null,
+                  null
+                ],
+                "group_sizes": [
+                  1,
+                  1,
+                  1,
+                  1
+                ],
+                "k": 4,
+                "legacy_candidate": null,
+                "legacy_share": 0.25,
+                "ltcr": 0.0,
+                "occurrences": 4,
+                "pairs_agreeing": 0,
+                "pairs_total": 6,
+                "paragraphs": 4,
+                "term": "Switzerland"
+              }
+            ]
+          }
+        ],
+        "summary": {
+          "fully_consistent": 0,
+          "legacy_mean_share": 0.375,
+          "ltcr": 0.083333,
+          "measured": 2,
+          "pairs_agreeing": 1,
+          "pairs_total": 12,
+          "terms": 2
+        }
+      },
+      "mid_break_rate": {
+        "metric": "mid_unit_page_break_rate",
+        "pages": 9,
+        "rate": 0.25,
+        "series": {
+          "column": {
+            "answerable": 9,
+            "axis_unsupported_count": 0,
+            "boundaries": [
+              {
+                "from_column": 0,
+                "label": "p2c0->c1",
+                "page_index": 1,
+                "series": "column",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 0,
+                  "last_character": "。",
+                  "last_character_x": 301.30635625,
+                  "last_character_y": 134.13146406249996,
+                  "last_line_text": "全球关于第二次世界大战后冲突的数据来评估战争的经济影响。",
+                  "layout_label": "plain text",
+                  "page_index": 1,
+                  "paragraph_index": 5,
+                  "reference": "p2#5",
+                  "vertical": false
+                },
+                "to_column": 1,
+                "to_page_index": 1,
+                "truth_category": null,
+                "truth_link": null,
+                "verdict": "closed"
+              },
+              {
+                "from_column": 0,
+                "label": "p3c0->c1",
+                "page_index": 2,
+                "series": "column",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 0,
+                  "last_character": "n",
+                  "last_character_x": 151.17225000000002,
+                  "last_character_y": 266.21387500000003,
+                  "last_line_text": "应考虑其权衡Jeffry Frieden",
+                  "layout_label": "plain text",
+                  "page_index": 2,
+                  "paragraph_index": 29,
+                  "reference": "p3#29",
+                  "vertical": false
+                },
+                "to_column": 1,
+                "to_page_index": 2,
+                "truth_category": null,
+                "truth_link": null,
+                "verdict": "open"
+              },
+              {
+                "from_column": 1,
+                "label": "p3c1->c2",
+                "page_index": 2,
+                "series": "column",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 1,
+                  "last_character": "”",
+                  "last_character_x": 378.51499986410147,
+                  "last_character_y": 256.68000000000006,
+                  "last_line_text": "合作的可能性。”",
+                  "layout_label": "title",
+                  "page_index": 2,
+                  "paragraph_index": 19,
+                  "reference": "p3#19",
+                  "vertical": false
+                },
+                "to_column": 2,
+                "to_page_index": 2,
+                "truth_category": null,
+                "truth_link": null,
+                "verdict": "closed"
+              },
+              {
+                "from_column": 2,
+                "label": "p3c2->c3",
+                "page_index": 2,
+                "series": "column",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 2,
+                  "last_character": "期",
+                  "last_character_x": 325.1550001373292,
+                  "last_character_y": 690.975,
+                  "last_line_text": "63  |  第2期",
+                  "layout_label": "plain text",
+                  "page_index": 2,
+                  "paragraph_index": 36,
+                  "reference": "p3#36",
+                  "vertical": false
+                },
+                "to_column": 3,
+                "to_page_index": 2,
+                "truth_category": null,
+                "truth_link": null,
+                "verdict": "open"
+              },
+              {
+                "from_column": 0,
+                "label": "p6c0->c1",
+                "page_index": 5,
+                "series": "column",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 0,
+                  "last_character": "。",
+                  "last_character_x": 73.9701,
+                  "last_character_y": 57.62500000000001,
+                  "last_line_text": "了供应链。",
+                  "layout_label": "plain text",
+                  "page_index": 5,
+                  "paragraph_index": 6,
+                  "reference": "p6#6",
+                  "vertical": false
+                },
+                "to_column": 1,
+                "to_page_index": 5,
+                "truth_category": null,
+                "truth_link": null,
+                "verdict": "closed"
+              },
+              {
+                "from_column": 1,
+                "label": "p6c1->c2",
+                "page_index": 5,
+                "series": "column",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 1,
+                  "last_character": "。",
+                  "last_character_x": 327.1452499999998,
+                  "last_character_y": 57.14300000000002,
+                  "last_line_text": "赖以及食品和化肥价格的上涨。",
+                  "layout_label": "plain text",
+                  "page_index": 5,
+                  "paragraph_index": 9,
+                  "reference": "p6#9",
+                  "vertical": false
+                },
+                "to_column": 2,
+                "to_page_index": 5,
+                "truth_category": null,
+                "truth_link": null,
+                "verdict": "closed"
+              },
+              {
+                "from_column": 0,
+                "label": "p7c0->c1",
+                "page_index": 6,
+                "series": "column",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 0,
+                  "last_character": "”",
+                  "last_character_x": 119.27539994337559,
+                  "last_character_y": 108.15010000000001,
+                  "last_line_text": "观关键问题。”",
+                  "layout_label": "plain text",
+                  "page_index": 6,
+                  "paragraph_index": 31,
+                  "reference": "p7#31",
+                  "vertical": false
+                },
+                "to_column": 1,
+                "to_page_index": 6,
+                "truth_category": null,
+                "truth_link": null,
+                "verdict": "closed"
+              },
+              {
+                "from_column": 0,
+                "label": "p8c0->c1",
+                "page_index": 7,
+                "series": "column",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 0,
+                  "last_character": "全",
+                  "last_character_x": 218.81439999999992,
+                  "last_character_y": 63.244000000000014,
+                  "last_line_text": "正在重新平衡经济效率与国家安全",
+                  "layout_label": "plain text",
+                  "page_index": 7,
+                  "paragraph_index": 7,
+                  "reference": "p8#7",
+                  "vertical": false
+                },
+                "to_column": 1,
+                "to_page_index": 7,
+                "truth_category": null,
+                "truth_link": null,
+                "verdict": "open"
+              },
+              {
+                "from_column": 0,
+                "label": "p9c0->c1",
+                "page_index": 8,
+                "series": "column",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 0,
+                  "last_character": "。",
+                  "last_character_x": 175.9837505645752,
+                  "last_character_y": 58.62775,
+                  "last_line_text": "瑞士每15到20年更换一次纸币。",
+                  "layout_label": "plain text",
+                  "page_index": 8,
+                  "paragraph_index": 18,
+                  "reference": "p9#18",
+                  "vertical": false
+                },
+                "to_column": 1,
+                "to_page_index": 8,
+                "truth_category": null,
+                "truth_link": null,
+                "verdict": "closed"
+              }
+            ],
+            "boundaries_total": 9,
+            "closed_count": 6,
+            "designed_count": 0,
+            "no_tail_count": 0,
+            "open_count": 3,
+            "rate": 0.333333,
+            "series": "column",
+            "strict_rate": 0.333333
+          },
+          "page": {
+            "answerable": 7,
+            "axis_unsupported_count": 0,
+            "boundaries": [
+              {
+                "from_column": -1,
+                "label": "1->2",
+                "page_index": 0,
+                "series": "page",
+                "tail": null,
+                "to_column": -1,
+                "to_page_index": 1,
+                "truth_category": "clean",
+                "truth_link": false,
+                "verdict": "no_tail"
+              },
+              {
+                "from_column": -1,
+                "label": "2->3",
+                "page_index": 1,
+                "series": "page",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 1,
+                  "last_character": "望",
+                  "last_character_x": 361.27220703125,
+                  "last_character_y": 725.074871875,
+                  "last_line_text": "世界经济展望",
+                  "layout_label": "title",
+                  "page_index": 1,
+                  "paragraph_index": 0,
+                  "reference": "p2#0",
+                  "vertical": false
+                },
+                "to_column": -1,
+                "to_page_index": 2,
+                "truth_category": "clean",
+                "truth_link": false,
+                "verdict": "open"
+              },
+              {
+                "from_column": -1,
+                "label": "3->4",
+                "page_index": 2,
+                "series": "page",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 3,
+                  "last_character": "e",
+                  "last_character_x": 443.1794,
+                  "last_character_y": 158.68099999999998,
+                  "last_line_text": "Michael Spence",
+                  "layout_label": "plain text",
+                  "page_index": 2,
+                  "paragraph_index": 18,
+                  "reference": "p3#18",
+                  "vertical": false
+                },
+                "to_column": -1,
+                "to_page_index": 3,
+                "truth_category": "clean",
+                "truth_link": false,
+                "verdict": "open"
+              },
+              {
+                "from_column": -1,
+                "label": "4->5",
+                "page_index": 3,
+                "series": "page",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 0,
+                  "last_character": "。",
+                  "last_character_x": 198.4491,
+                  "last_character_y": 160.5568,
+                  "last_line_text": "和政策问题的前沿研究和分析。",
+                  "layout_label": "plain text",
+                  "page_index": 3,
+                  "paragraph_index": 0,
+                  "reference": "p4#0",
+                  "vertical": false
+                },
+                "to_column": -1,
+                "to_page_index": 4,
+                "truth_category": "clean",
+                "truth_link": false,
+                "verdict": "closed"
+              },
+              {
+                "from_column": -1,
+                "label": "5->6",
+                "page_index": 4,
+                "series": "page",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 0,
+                  "last_character": "。",
+                  "last_character_x": 511.58400000000006,
+                  "last_character_y": 183.03610000000006,
+                  "last_line_text": "英语版由达特茅斯印刷公司在汉诺威，新罕布什尔州印刷。",
+                  "layout_label": "plain text",
+                  "page_index": 4,
+                  "paragraph_index": 42,
+                  "reference": "p5#42",
+                  "vertical": false
+                },
+                "to_column": -1,
+                "to_page_index": 5,
+                "truth_category": "clean",
+                "truth_link": false,
+                "verdict": "closed"
+              },
+              {
+                "from_column": -1,
+                "label": "6->7",
+                "page_index": 5,
+                "series": "page",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 2,
+                  "last_character": "”",
+                  "last_character_x": 515.6937999448658,
+                  "last_character_y": 73.25,
+                  "last_line_text": "在这次冲击后重建财政空间。”",
+                  "layout_label": "plain text",
+                  "page_index": 5,
+                  "paragraph_index": 14,
+                  "reference": "p6#14",
+                  "vertical": false
+                },
+                "to_column": -1,
+                "to_page_index": 6,
+                "truth_category": "clean",
+                "truth_link": false,
+                "verdict": "closed"
+              },
+              {
+                "from_column": -1,
+                "label": "7->8",
+                "page_index": 6,
+                "series": "page",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 1,
+                  "last_character": "。",
+                  "last_character_x": 402.8635179999999,
+                  "last_character_y": 333.19432759999995,
+                  "last_line_text": "冲突的持续时间和规模将影响全球前景。",
+                  "layout_label": "plain text",
+                  "page_index": 6,
+                  "paragraph_index": 6,
+                  "reference": "p7#6",
+                  "vertical": false
+                },
+                "to_column": -1,
+                "to_page_index": 7,
+                "truth_category": "clean",
+                "truth_link": false,
+                "verdict": "closed"
+              },
+              {
+                "from_column": -1,
+                "label": "8->9",
+                "page_index": 7,
+                "series": "page",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 1,
+                  "last_character": "。",
+                  "last_character_x": 464.5251,
+                  "last_character_y": 83.375,
+                  "last_line_text": "实施粗暴的保护主义。",
+                  "layout_label": "plain text",
+                  "page_index": 7,
+                  "paragraph_index": 12,
+                  "reference": "p8#12",
+                  "vertical": false
+                },
+                "to_column": -1,
+                "to_page_index": 8,
+                "truth_category": "clean",
+                "truth_link": false,
+                "verdict": "closed"
+              }
+            ],
+            "boundaries_total": 8,
+            "closed_count": 5,
+            "designed_count": 0,
+            "no_tail_count": 1,
+            "open_count": 2,
+            "rate": 0.25,
+            "series": "page",
+            "strict_rate": 0.285714
+          }
+        },
+        "stratified": {
+          "mbr_all": 0.25,
+          "mbr_all_denominator": 8,
+          "mbr_linkable": 0.285714,
+          "mbr_linkable_denominator": 7,
+          "mbr_linkable_open": 2,
+          "source_inherited_open": 0,
+          "strata": {
+            "clean": {
+              "answerable": 7,
+              "axis_unsupported_count": 0,
+              "boundaries_total": 8,
+              "closed_count": 5,
+              "designed_count": 0,
+              "no_tail_count": 1,
+              "open_count": 2,
+              "rate": 0.25,
+              "series": "page",
+              "strict_rate": 0.285714
+            },
+            "linked": {
+              "answerable": 0,
+              "axis_unsupported_count": 0,
+              "boundaries_total": 0,
+              "closed_count": 0,
+              "designed_count": 0,
+              "no_tail_count": 0,
+              "open_count": 0,
+              "rate": null,
+              "series": "page",
+              "strict_rate": null
+            },
+            "trap": {
+              "answerable": 0,
+              "axis_unsupported_count": 0,
+              "boundaries_total": 0,
+              "closed_count": 0,
+              "designed_count": 0,
+              "no_tail_count": 0,
+              "open_count": 0,
+              "rate": null,
+              "series": "page",
+              "strict_rate": null
+            },
+            "unlabelled": {
+              "answerable": 0,
+              "axis_unsupported_count": 0,
+              "boundaries_total": 0,
+              "closed_count": 0,
+              "designed_count": 0,
+              "no_tail_count": 0,
+              "open_count": 0,
+              "rate": null,
+              "series": "page",
+              "strict_rate": null
+            }
+          },
+          "trap_boundaries": 0,
+          "unlabelled_boundaries": 0
+        },
+        "strict_rate": 0.285714,
+        "vertical_paragraphs": 5
+      },
+      "path": "intermediate_language",
+      "sample": "FD-en-v2.pdf",
+      "working_dir": "examples/output/b8_4/smoke/FD-en-v2/work/FD-en-v2"
+    },
+    {
+      "absent": [
+        "no working directory: no chain or repair level of the conservation invariant",
+        "no source and translated checkpoint pair: no LTCR"
+      ],
+      "conservation": {
+        "holds": true,
+        "levels": {
+          "chain": {
+            "evidence": {
+              "absent": "no chain translation report"
+            },
+            "failures": [],
+            "holds": null,
+            "level": "chain",
+            "subjects": 0
+          },
+          "document": {
+            "evidence": {
+              "produced_pages": 9,
+              "source_pages": 9
+            },
+            "failures": [],
+            "holds": true,
+            "level": "document",
+            "subjects": 1
+          },
+          "repair": {
+            "evidence": {
+              "absent": "no repair report"
+            },
+            "failures": [],
+            "holds": null,
+            "level": "repair",
+            "subjects": 0
+          }
+        },
+        "levels_absent": [
+          "chain",
+          "repair"
+        ],
+        "levels_present": [
+          "document"
+        ],
+        "metric": "block_conservation_invariant"
+      },
+      "label": "fork_full_pdf",
+      "layout_geometry": {
+        "metric": "layout_geometry",
+        "page_count_delta": {
+          "conserved": true,
+          "produced_pages": 9,
+          "source_pages": 9,
+          "value": 0
+        },
+        "pages": [
+          {
+            "alignment_delta": 0.00108,
+            "image_area_delta": {
+              "absolute": -0.0,
+              "produced_area": 1.006874,
+              "source_area": 1.006874,
+              "value": -0.0
+            },
+            "image_placement_iou": {
+              "pairs": 1,
+              "produced_images": 1,
+              "source_images": 1,
+              "unpaired_produced": 0,
+              "unpaired_source": 0,
+              "value": 1.0
+            },
+            "overlap_delta": -0.109483,
+            "page_index": 0,
+            "produced": {
+              "alignment": {
+                "dropped": 0,
+                "elements": 7,
+                "value": 0.0014504498306094986
+              },
+              "elements": 7,
+              "overlap": {
+                "dropped": 0,
+                "elements": 7,
+                "value": 0.8623404396310196
+              }
+            },
+            "source": {
+              "alignment": {
+                "dropped": 0,
+                "elements": 12,
+                "value": 0.00037042785346331927
+              },
+              "elements": 12,
+              "overlap": {
+                "dropped": 0,
+                "elements": 12,
+                "value": 0.9718238158511023
+              }
+            }
+          },
+          {
+            "alignment_delta": 0.00632,
+            "image_area_delta": {
+              "absolute": -0.0,
+              "produced_area": 0.685792,
+              "source_area": 0.685792,
+              "value": -0.0
+            },
+            "image_placement_iou": {
+              "pairs": 1,
+              "produced_images": 1,
+              "source_images": 1,
+              "unpaired_produced": 0,
+              "unpaired_source": 0,
+              "value": 1.0
+            },
+            "overlap_delta": -0.127184,
+            "page_index": 1,
+            "produced": {
+              "alignment": {
+                "dropped": 0,
+                "elements": 8,
+                "value": 0.006981007851420241
+              },
+              "elements": 8,
+              "overlap": {
+                "dropped": 0,
+                "elements": 8,
+                "value": 0.2157359581607787
+              }
+            },
+            "source": {
+              "alignment": {
+                "dropped": 0,
+                "elements": 9,
+                "value": 0.0006607009636167386
+              },
+              "elements": 9,
+              "overlap": {
+                "dropped": 0,
+                "elements": 9,
+                "value": 0.34291968580350174
+              }
+            }
+          },
+          {
+            "alignment_delta": -8.6e-05,
+            "image_area_delta": {
+              "absolute": 0.0,
+              "produced_area": 0.122408,
+              "source_area": 0.122408,
+              "value": 0.0
+            },
+            "image_placement_iou": {
+              "pairs": 1,
+              "produced_images": 1,
+              "source_images": 1,
+              "unpaired_produced": 0,
+              "unpaired_source": 0,
+              "value": 1.0
+            },
+            "overlap_delta": -0.005007,
+            "page_index": 2,
+            "produced": {
+              "alignment": {
+                "dropped": 0,
+                "elements": 35,
+                "value": 0.0007554523260592463
+              },
+              "elements": 35,
+              "overlap": {
+                "dropped": 0,
+                "elements": 35,
+                "value": 0.05162557686234979
+              }
+            },
+            "source": {
+              "alignment": {
+                "dropped": 0,
+                "elements": 27,
+                "value": 0.0008414979664523253
+              },
+              "elements": 27,
+              "overlap": {
+                "dropped": 0,
+                "elements": 27,
+                "value": 0.05663234691187339
+              }
+            }
+          },
+          {
+            "alignment_delta": 0.005001,
+            "image_area_delta": {
+              "absolute": 0.0,
+              "produced_area": 1.076263,
+              "source_area": 1.076263,
+              "value": 0.0
+            },
+            "image_placement_iou": {
+              "pairs": 2,
+              "produced_images": 2,
+              "source_images": 2,
+              "unpaired_produced": 0,
+              "unpaired_source": 0,
+              "value": 1.0
+            },
+            "overlap_delta": -0.010022,
+            "page_index": 3,
+            "produced": {
+              "alignment": {
+                "dropped": 0,
+                "elements": 5,
+                "value": 0.005903044396943503
+              },
+              "elements": 5,
+              "overlap": {
+                "dropped": 0,
+                "elements": 5,
+                "value": 0.8197893959253861
+              }
+            },
+            "source": {
+              "alignment": {
+                "dropped": 0,
+                "elements": 5,
+                "value": 0.0009021160335471243
+              },
+              "elements": 5,
+              "overlap": {
+                "dropped": 0,
+                "elements": 5,
+                "value": 0.8298118577700049
+              }
+            }
+          },
+          {
+            "alignment_delta": -0.000192,
+            "image_area_delta": {
+              "absolute": -0.0,
+              "produced_area": 0.299156,
+              "source_area": 0.299156,
+              "value": -0.0
+            },
+            "image_placement_iou": {
+              "pairs": 13,
+              "produced_images": 13,
+              "source_images": 13,
+              "unpaired_produced": 0,
+              "unpaired_source": 0,
+              "value": 1.0
+            },
+            "overlap_delta": -0.148235,
+            "page_index": 4,
+            "produced": {
+              "alignment": {
+                "dropped": 0,
+                "elements": 64,
+                "value": 0.0003212771231962367
+              },
+              "elements": 64,
+              "overlap": {
+                "dropped": 0,
+                "elements": 64,
+                "value": 0.2758471138005477
+              }
+            },
+            "source": {
+              "alignment": {
+                "dropped": 0,
+                "elements": 43,
+                "value": 0.0005131260660587802
+              },
+              "elements": 43,
+              "overlap": {
+                "dropped": 0,
+                "elements": 43,
+                "value": 0.42408189690840836
+              }
+            }
+          },
+          {
+            "alignment_delta": -0.000107,
+            "image_area_delta": {
+              "absolute": 0.0,
+              "produced_area": 0.307428,
+              "source_area": 0.307428,
+              "value": 0.0
+            },
+            "image_placement_iou": {
+              "pairs": 1,
+              "produced_images": 1,
+              "source_images": 1,
+              "unpaired_produced": 0,
+              "unpaired_source": 0,
+              "value": 1.0
+            },
+            "overlap_delta": -0.028934,
+            "page_index": 5,
+            "produced": {
+              "alignment": {
+                "dropped": 0,
+                "elements": 17,
+                "value": 0.0008025265246405773
+              },
+              "elements": 17,
+              "overlap": {
+                "dropped": 0,
+                "elements": 17,
+                "value": 0.0
+              }
+            },
+            "source": {
+              "alignment": {
+                "dropped": 0,
+                "elements": 16,
+                "value": 0.0009098570590948372
+              },
+              "elements": 16,
+              "overlap": {
+                "dropped": 0,
+                "elements": 16,
+                "value": 0.028934272444317163
+              }
+            }
+          },
+          {
+            "alignment_delta": 0.000904,
+            "image_area_delta": {
+              "absolute": 0.0,
+              "produced_area": 0.249303,
+              "source_area": 0.249303,
+              "value": 0.0
+            },
+            "image_placement_iou": {
+              "pairs": 4,
+              "produced_images": 4,
+              "source_images": 4,
+              "unpaired_produced": 0,
+              "unpaired_source": 0,
+              "value": 1.0
+            },
+            "overlap_delta": -0.007287,
+            "page_index": 6,
+            "produced": {
+              "alignment": {
+                "dropped": 0,
+                "elements": 32,
+                "value": 0.0011342473299118974
+              },
+              "elements": 32,
+              "overlap": {
+                "dropped": 0,
+                "elements": 32,
+                "value": 0.0
+              }
+            },
+            "source": {
+              "alignment": {
+                "dropped": 0,
+                "elements": 36,
+                "value": 0.00022997704358513482
+              },
+              "elements": 36,
+              "overlap": {
+                "dropped": 0,
+                "elements": 36,
+                "value": 0.007287487032987535
+              }
+            }
+          },
+          {
+            "alignment_delta": 0.000155,
+            "image_area_delta": {
+              "absolute": 0.0,
+              "produced_area": 0.336285,
+              "source_area": 0.336285,
+              "value": 0.0
+            },
+            "image_placement_iou": {
+              "pairs": 2,
+              "produced_images": 2,
+              "source_images": 2,
+              "unpaired_produced": 0,
+              "unpaired_source": 0,
+              "value": 1.0
+            },
+            "overlap_delta": -0.050831,
+            "page_index": 7,
+            "produced": {
+              "alignment": {
+                "dropped": 0,
+                "elements": 18,
+                "value": 0.0012282457155704052
+              },
+              "elements": 18,
+              "overlap": {
+                "dropped": 0,
+                "elements": 18,
+                "value": 0.009280082482433621
+              }
+            },
+            "source": {
+              "alignment": {
+                "dropped": 0,
+                "elements": 15,
+                "value": 0.0010731402055528143
+              },
+              "elements": 15,
+              "overlap": {
+                "dropped": 0,
+                "elements": 15,
+                "value": 0.060111470689891824
+              }
+            }
+          },
+          {
+            "alignment_delta": 0.000322,
+            "image_area_delta": {
+              "absolute": 0.0,
+              "produced_area": 0.200224,
+              "source_area": 0.200224,
+              "value": 0.0
+            },
+            "image_placement_iou": {
+              "pairs": 2,
+              "produced_images": 2,
+              "source_images": 2,
+              "unpaired_produced": 0,
+              "unpaired_source": 0,
+              "value": 1.0
+            },
+            "overlap_delta": -0.049065,
+            "page_index": 8,
+            "produced": {
+              "alignment": {
+                "dropped": 0,
+                "elements": 24,
+                "value": 0.0005396290930042234
+              },
+              "elements": 24,
+              "overlap": {
+                "dropped": 0,
+                "elements": 24,
+                "value": 0.45961639404891735
+              }
+            },
+            "source": {
+              "alignment": {
+                "dropped": 0,
+                "elements": 23,
+                "value": 0.00021804335577701002
+              },
+              "elements": 23,
+              "overlap": {
+                "dropped": 0,
+                "elements": 23,
+                "value": 0.508681081235709
+              }
+            }
+          }
+        ],
+        "pages_compared": 9,
+        "summary": {
+          "alignment_delta": 0.001489,
+          "alignment_produced": 0.002124,
+          "alignment_source": 0.000635,
+          "image_area_delta": -0.0,
+          "image_placement_iou": 1.0,
+          "overlap_delta": -0.059561,
+          "overlap_produced": 0.299359,
+          "overlap_source": 0.35892
+        }
+      },
+      "mid_break_rate": {
+        "metric": "mid_unit_page_break_rate",
+        "pages": 9,
+        "rate": 0.625,
+        "series": {
+          "column": {
+            "answerable": 11,
+            "axis_unsupported_count": 0,
+            "boundaries": [
+              {
+                "from_column": 0,
+                "label": "p2c0->c1",
+                "page_index": 1,
+                "series": "column",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 0,
+                  "last_character": "。",
+                  "last_character_x": 301.3063659667969,
+                  "last_character_y": 133.45147705078125,
+                  "last_line_text": "全球关于第二次世界大战后冲突的数据来评估战争的经济影响。",
+                  "layout_label": "plain text",
+                  "page_index": 1,
+                  "paragraph_index": 3,
+                  "reference": "p2#3",
+                  "vertical": false
+                },
+                "to_column": 1,
+                "to_page_index": 1,
+                "truth_category": null,
+                "truth_link": null,
+                "verdict": "closed"
+              },
+              {
+                "from_column": 0,
+                "label": "p3c0->c1",
+                "page_index": 2,
+                "series": "column",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 0,
+                  "last_character": "n",
+                  "last_character_x": 151.17225646972656,
+                  "last_character_y": 267.74476623535156,
+                  "last_line_text": "应考虑其权衡Jefrfy Frieden",
+                  "layout_label": "plain text",
+                  "page_index": 2,
+                  "paragraph_index": 26,
+                  "reference": "p3#26",
+                  "vertical": false
+                },
+                "to_column": 1,
+                "to_page_index": 2,
+                "truth_category": null,
+                "truth_link": null,
+                "verdict": "open"
+              },
+              {
+                "from_column": 1,
+                "label": "p3c1->c2",
+                "page_index": 2,
+                "series": "column",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 1,
+                  "last_character": "”",
+                  "last_character_x": 378.5150146484375,
+                  "last_character_y": 254.1264190673828,
+                  "last_line_text": "合作的可能性。”",
+                  "layout_label": "plain text",
+                  "page_index": 2,
+                  "paragraph_index": 17,
+                  "reference": "p3#17",
+                  "vertical": false
+                },
+                "to_column": 2,
+                "to_page_index": 2,
+                "truth_category": null,
+                "truth_link": null,
+                "verdict": "closed"
+              },
+              {
+                "from_column": 2,
+                "label": "p3c2->c3",
+                "page_index": 2,
+                "series": "column",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 2,
+                  "last_character": "期",
+                  "last_character_x": 325.1549987792969,
+                  "last_character_y": 690.3629760742188,
+                  "last_line_text": "63  |  第2期",
+                  "layout_label": "plain text",
+                  "page_index": 2,
+                  "paragraph_index": 33,
+                  "reference": "p3#33",
+                  "vertical": false
+                },
+                "to_column": 3,
+                "to_page_index": 2,
+                "truth_category": null,
+                "truth_link": null,
+                "verdict": "open"
+              },
+              {
+                "from_column": 0,
+                "label": "p6c0->c1",
+                "page_index": 5,
+                "series": "column",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 0,
+                  "last_character": "。",
+                  "last_character_x": 73.97010040283203,
+                  "last_character_y": 57.058929443359375,
+                  "last_line_text": "了供应链。",
+                  "layout_label": "plain text",
+                  "page_index": 5,
+                  "paragraph_index": 5,
+                  "reference": "p6#5",
+                  "vertical": false
+                },
+                "to_column": 1,
+                "to_page_index": 5,
+                "truth_category": null,
+                "truth_link": null,
+                "verdict": "closed"
+              },
+              {
+                "from_column": 1,
+                "label": "p6c1->c2",
+                "page_index": 5,
+                "series": "column",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 1,
+                  "last_character": "。",
+                  "last_character_x": 327.145263671875,
+                  "last_character_y": 56.576873779296875,
+                  "last_line_text": "赖以及食品和化肥价格的上涨。",
+                  "layout_label": "plain text",
+                  "page_index": 5,
+                  "paragraph_index": 9,
+                  "reference": "p6#9",
+                  "vertical": false
+                },
+                "to_column": 2,
+                "to_page_index": 5,
+                "truth_category": null,
+                "truth_link": null,
+                "verdict": "closed"
+              },
+              {
+                "from_column": 0,
+                "label": "p7c0->c1",
+                "page_index": 6,
+                "series": "column",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 0,
+                  "last_character": "”",
+                  "last_character_x": 119.2754020690918,
+                  "last_character_y": 107.08609008789062,
+                  "last_line_text": "观关键问题。”",
+                  "layout_label": "plain text",
+                  "page_index": 6,
+                  "paragraph_index": 26,
+                  "reference": "p7#26",
+                  "vertical": false
+                },
+                "to_column": 1,
+                "to_page_index": 6,
+                "truth_category": null,
+                "truth_link": null,
+                "verdict": "closed"
+              },
+              {
+                "from_column": 1,
+                "label": "p7c1->c2",
+                "page_index": 6,
+                "series": "column",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 1,
+                  "last_character": "。",
+                  "last_character_x": 457.8993835449219,
+                  "last_character_y": 70.43301391601562,
+                  "last_line_text": "来源：国际货币基金组织，2026年4月世界经济展望；以及国际货币基金组织工作人员的计算。",
+                  "layout_label": "plain text",
+                  "page_index": 6,
+                  "paragraph_index": 5,
+                  "reference": "p7#5",
+                  "vertical": false
+                },
+                "to_column": 2,
+                "to_page_index": 6,
+                "truth_category": null,
+                "truth_link": null,
+                "verdict": "closed"
+              },
+              {
+                "from_column": 2,
+                "label": "p7c2->c3",
+                "page_index": 6,
+                "series": "column",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 2,
+                  "last_character": "胀",
+                  "last_character_x": 470.75706481933594,
+                  "last_character_y": 92.19674682617188,
+                  "last_line_text": "GDP增长总体通货膨胀",
+                  "layout_label": "plain text",
+                  "page_index": 6,
+                  "paragraph_index": 14,
+                  "reference": "p7#14",
+                  "vertical": false
+                },
+                "to_column": 3,
+                "to_page_index": 6,
+                "truth_category": null,
+                "truth_link": null,
+                "verdict": "open"
+              },
+              {
+                "from_column": 0,
+                "label": "p8c0->c1",
+                "page_index": 7,
+                "series": "column",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 0,
+                  "last_character": "全",
+                  "last_character_x": 218.8144073486328,
+                  "last_character_y": 61.177581787109375,
+                  "last_line_text": "正在重新平衡经济效率与国家安全",
+                  "layout_label": "plain text",
+                  "page_index": 7,
+                  "paragraph_index": 7,
+                  "reference": "p8#7",
+                  "vertical": false
+                },
+                "to_column": 1,
+                "to_page_index": 7,
+                "truth_category": null,
+                "truth_link": null,
+                "verdict": "open"
+              },
+              {
+                "from_column": 0,
+                "label": "p9c0->c1",
+                "page_index": 8,
+                "series": "column",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 0,
+                  "last_character": "2",
+                  "last_character_x": 150.7176055908203,
+                  "last_character_y": 20.618011474609375,
+                  "last_line_text": "72DECEMBER 2022",
+                  "layout_label": "plain text",
+                  "page_index": 8,
+                  "paragraph_index": 2,
+                  "reference": "p9#2",
+                  "vertical": false
+                },
+                "to_column": 1,
+                "to_page_index": 8,
+                "truth_category": null,
+                "truth_link": null,
+                "verdict": "open"
+              }
+            ],
+            "boundaries_total": 11,
+            "closed_count": 6,
+            "designed_count": 0,
+            "no_tail_count": 0,
+            "open_count": 5,
+            "rate": 0.454545,
+            "series": "column",
+            "strict_rate": 0.454545
+          },
+          "page": {
+            "answerable": 8,
+            "axis_unsupported_count": 0,
+            "boundaries": [
+              {
+                "from_column": -1,
+                "label": "1->2",
+                "page_index": 0,
+                "series": "page",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 0,
+                  "last_character": "织",
+                  "last_character_x": 443.0768127441406,
+                  "last_character_y": 725.6425304412842,
+                  "last_line_text": "金融与发展国际货币基金组织",
+                  "layout_label": "plain text",
+                  "page_index": 0,
+                  "paragraph_index": 3,
+                  "reference": "p1#3",
+                  "vertical": false
+                },
+                "to_column": -1,
+                "to_page_index": 1,
+                "truth_category": "clean",
+                "truth_link": false,
+                "verdict": "open"
+              },
+              {
+                "from_column": -1,
+                "label": "2->3",
+                "page_index": 1,
+                "series": "page",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 1,
+                  "last_character": "望",
+                  "last_character_x": 361.272216796875,
+                  "last_character_y": 722.0148887634277,
+                  "last_line_text": "世界经济展望",
+                  "layout_label": "plain text",
+                  "page_index": 1,
+                  "paragraph_index": 0,
+                  "reference": "p2#0",
+                  "vertical": false
+                },
+                "to_column": -1,
+                "to_page_index": 2,
+                "truth_category": "clean",
+                "truth_link": false,
+                "verdict": "open"
+              },
+              {
+                "from_column": -1,
+                "label": "3->4",
+                "page_index": 2,
+                "series": "page",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 3,
+                  "last_character": "e",
+                  "last_character_x": 443.1794128417969,
+                  "last_character_y": 160.22573852539062,
+                  "last_line_text": "Michael Spence",
+                  "layout_label": "plain text",
+                  "page_index": 2,
+                  "paragraph_index": 16,
+                  "reference": "p3#16",
+                  "vertical": false
+                },
+                "to_column": -1,
+                "to_page_index": 3,
+                "truth_category": "clean",
+                "truth_link": false,
+                "verdict": "open"
+              },
+              {
+                "from_column": -1,
+                "label": "4->5",
+                "page_index": 3,
+                "series": "page",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 0,
+                  "last_character": "。",
+                  "last_character_x": 198.4490966796875,
+                  "last_character_y": 159.74075317382812,
+                  "last_line_text": "和政策问题的前沿研究和分析。",
+                  "layout_label": "plain text",
+                  "page_index": 3,
+                  "paragraph_index": 0,
+                  "reference": "p4#0",
+                  "vertical": false
+                },
+                "to_column": -1,
+                "to_page_index": 4,
+                "truth_category": "clean",
+                "truth_link": false,
+                "verdict": "closed"
+              },
+              {
+                "from_column": -1,
+                "label": "5->6",
+                "page_index": 4,
+                "series": "page",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 0,
+                  "last_character": "e",
+                  "last_character_x": 475.52471923828125,
+                  "last_character_y": 163.24850463867188,
+                  "last_line_text": "金融与发展由y\u0003the",
+                  "layout_label": "plain text",
+                  "page_index": 4,
+                  "paragraph_index": 36,
+                  "reference": "p5#36",
+                  "vertical": false
+                },
+                "to_column": -1,
+                "to_page_index": 5,
+                "truth_category": "clean",
+                "truth_link": false,
+                "verdict": "open"
+              },
+              {
+                "from_column": -1,
+                "label": "6->7",
+                "page_index": 5,
+                "series": "page",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 2,
+                  "last_character": "”",
+                  "last_character_x": 515.6937866210938,
+                  "last_character_y": 72.2139892578125,
+                  "last_line_text": "在这次冲击后重建财政空间。”",
+                  "layout_label": "plain text",
+                  "page_index": 5,
+                  "paragraph_index": 15,
+                  "reference": "p6#15",
+                  "vertical": false
+                },
+                "to_column": -1,
+                "to_page_index": 6,
+                "truth_category": "clean",
+                "truth_link": false,
+                "verdict": "closed"
+              },
+              {
+                "from_column": -1,
+                "label": "7->8",
+                "page_index": 6,
+                "series": "page",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 3,
+                  "last_character": "D",
+                  "last_character_x": 533.720703125,
+                  "last_character_y": 742.3440704345703,
+                  "last_line_text": "万花筒F&D",
+                  "layout_label": "plain text",
+                  "page_index": 6,
+                  "paragraph_index": 1,
+                  "reference": "p7#1",
+                  "vertical": false
+                },
+                "to_column": -1,
+                "to_page_index": 7,
+                "truth_category": "clean",
+                "truth_link": false,
+                "verdict": "open"
+              },
+              {
+                "from_column": -1,
+                "label": "8->9",
+                "page_index": 7,
+                "series": "page",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 1,
+                  "last_character": "。",
+                  "last_character_x": 464.52508544921875,
+                  "last_character_y": 82.74600219726562,
+                  "last_line_text": "实施粗暴的保护主义。",
+                  "layout_label": "plain text",
+                  "page_index": 7,
+                  "paragraph_index": 15,
+                  "reference": "p8#15",
+                  "vertical": false
+                },
+                "to_column": -1,
+                "to_page_index": 8,
+                "truth_category": "clean",
+                "truth_link": false,
+                "verdict": "closed"
+              }
+            ],
+            "boundaries_total": 8,
+            "closed_count": 3,
+            "designed_count": 0,
+            "no_tail_count": 0,
+            "open_count": 5,
+            "rate": 0.625,
+            "series": "page",
+            "strict_rate": 0.625
+          }
+        },
+        "stratified": {
+          "mbr_all": 0.625,
+          "mbr_all_denominator": 8,
+          "mbr_linkable": 0.625,
+          "mbr_linkable_denominator": 8,
+          "mbr_linkable_open": 5,
+          "source_inherited_open": 0,
+          "strata": {
+            "clean": {
+              "answerable": 8,
+              "axis_unsupported_count": 0,
+              "boundaries_total": 8,
+              "closed_count": 3,
+              "designed_count": 0,
+              "no_tail_count": 0,
+              "open_count": 5,
+              "rate": 0.625,
+              "series": "page",
+              "strict_rate": 0.625
+            },
+            "linked": {
+              "answerable": 0,
+              "axis_unsupported_count": 0,
+              "boundaries_total": 0,
+              "closed_count": 0,
+              "designed_count": 0,
+              "no_tail_count": 0,
+              "open_count": 0,
+              "rate": null,
+              "series": "page",
+              "strict_rate": null
+            },
+            "trap": {
+              "answerable": 0,
+              "axis_unsupported_count": 0,
+              "boundaries_total": 0,
+              "closed_count": 0,
+              "designed_count": 0,
+              "no_tail_count": 0,
+              "open_count": 0,
+              "rate": null,
+              "series": "page",
+              "strict_rate": null
+            },
+            "unlabelled": {
+              "answerable": 0,
+              "axis_unsupported_count": 0,
+              "boundaries_total": 0,
+              "closed_count": 0,
+              "designed_count": 0,
+              "no_tail_count": 0,
+              "open_count": 0,
+              "rate": null,
+              "series": "page",
+              "strict_rate": null
+            }
+          },
+          "trap_boundaries": 0,
+          "unlabelled_boundaries": 0
+        },
+        "strict_rate": 0.625,
+        "vertical_paragraphs": 3
+      },
+      "path": "pdf_extraction",
+      "produced_pdf": "examples/output/b8_4/smoke/FD-en-v2/out/FD-en-v2.no_watermark.zh.mono.pdf",
+      "produced_pdf_sha256": "e09143d4c378074c531993e84acbb9e050c4d31fe682bc9d8acb94b2cb5201f4",
+      "sample": "FD-en-v2.pdf",
+      "source_pdf": "examples/input/FD-en-v2.pdf",
+      "source_pdf_sha256": "15e00ca85f0ee3ad9e3ae7a71af8808b57da6bb57f63708943b2a6b9dad4d622"
+    }
+  ],
+  "sample": "FD-en-v2.pdf"
+}

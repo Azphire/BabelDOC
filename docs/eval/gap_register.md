@@ -15,9 +15,9 @@
 
 | 台账号 | 要重算什么 | 重算来源 | 备注 |
 | --- | --- | --- | --- |
-| B-02 | LOPO 逐折矩阵与 holdout 一致率 | 确定性:`babeldoc/magazine/page_classifier.py` + `configs/page_types.json` + `corpus/page_labels.json`,按刊物留一折 | 原 0.938 是 **v1 语料 + 调参会话折划分**的产物,两者都已不存在;只能产出 **v2 新数字**,不能"恢复"0.938 |
-| C-04 | VLM 的 policy 级一致率(现有产物只有 kind 与 label_set_coverage) | 前三档模型的回复已全部在缓存(`cache_hits=18`),经 `tools/vlm_classify_eval.py` 补算 policy 列即可 | `gpt-5.6-terra` 那一档 `cache_hits=0 / requests=18`,若要同口径补齐**需 18 次 API 调用** |
-| M6 / M7 / M8 / M9 | policy 一致率、image-area delta、page-count delta、image IoU | 冻结的 `checkpoint.11_typesetting` 与 `examples/baseline/` 的六份 PDF | 纯几何,**E1 就该算完,不进 E2 运行矩阵** |
+| B-02 | LOPO 逐折矩阵与 holdout 一致率 | 确定性:`babeldoc/magazine/page_classifier.py` + `configs/page_types.json` + `corpus/page_labels.json`,按刊物留一折 | 原 0.938 是 **v1 语料 + 调参会话折划分**的产物,两者都已不存在;只能产出 **v2 新数字**,不能"恢复"0.938。**batch-e1.2 已做**:`docs/eval/results_e1/lopo_v2.json`(台账 B-11),`refit_per_fold=false` |
+| C-04 | VLM 的 policy 级一致率(现有产物只有 kind 与 label_set_coverage) | 前三档模型的回复已全部在缓存(`cache_hits=18`),经 `tools/vlm_classify_eval.py` 补算 policy 列即可 | `gpt-5.6-terra` 那一档 `cache_hits=0 / requests=18`。**batch-e1.2 已做且四档齐全**:policy 列由冻结报告**离线**重算(`--from-report`),连缓存都不必查,故第四档同样零成本、同源;见 `docs/eval/results_e1/vlm_policy_c04.json` |
+| M6 / M7 / M8 / M9 | policy 一致率、image-area delta、page-count delta、image IoU | 冻结的 `checkpoint.11_typesetting` 与 `examples/baseline/` 的六份 PDF | 纯几何,**E1 就该算完,不进 E2 运行矩阵**。**batch-e1.2 已做**:`docs/eval/results_e1/eval_corpus.json`;M4/M5 的上游列按台账 G-07 记 not-comparable |
 
 ### 1b. 需要新的运行(E2 运行矩阵)
 
@@ -56,6 +56,11 @@
   逐折矩阵、折划分、调参轨迹均未落盘;调参所用的 v1 语料两条样张已在 batch-b7.5.1 被替换。
 - **补法**:1a 中的 B-02 行——在 v2 语料上按刊物留一重做 LOPO,产出新的逐折矩阵并入库。
 - **成本**:零 API,确定性,E1 内完成。
+- **batch-e1.2 落地**:矩阵已入库(`docs/eval/results_e1/lopo_v2.json`,台账 B-11,二次运行逐位
+  相等)。但**本缺口不因此关闭**:本仓库没有调参器,任何折都不重新拟合
+  (`protocol.refit_per_fold=false`),且词表调参时全部 v2 语料在场,故矩阵是**组合性**的,
+  不是留出估计。下面的"不补的措辞"**继续有效**,只在其上追加一句:逐折分布已落盘可查
+  (held-out kind 7/9、3/4、8/9、10/16、3/3)。
 - **不补的措辞**(且 0.938 一律**不得出现在论文中**):
   > 泛化性以按刊物留一交叉验证的方式配置,所有自适应组件在配置时不接触留出刊物
   > (背景章 §2.7)。本文报告的是全语料一致率 0.879 (29/33)(v2 语料);逐折数字在语料

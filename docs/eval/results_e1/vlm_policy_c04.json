@@ -1,0 +1,407 @@
+{
+  "generated_by": "tools/vlm_classify_eval.py --from-report",
+  "ledger_row": "C-04",
+  "note": "Recomputed offline from the frozen ablation reports. No model request was made and no reply cache was consulted: the reports carry every verdict the column needs. Any sample named under unregistered_samples was in the corpus the ablation ran on and is not in the corpus registered today, so these denominators are not the denominators of a figure quoted for the current corpus.",
+  "tiers": [
+    {
+      "cost": {
+        "attempts": 0,
+        "cache_hits": 18,
+        "pipeline_requests": 0,
+        "routed_pages": 18,
+        "transport_requests": 0
+      },
+      "enabled": true,
+      "kind_agreement": {
+        "combined": {
+          "hits": 28,
+          "rate": 0.9032,
+          "total": 31
+        },
+        "deterministic": {
+          "hits": 28,
+          "rate": 0.9032,
+          "total": 31
+        },
+        "routed_pages_combined": {
+          "hits": 15,
+          "rate": 0.8333,
+          "total": 18
+        },
+        "routed_pages_deterministic": {
+          "hits": 15,
+          "rate": 0.8333,
+          "total": 18
+        }
+      },
+      "model": "gpt-4o",
+      "policy_agreement": {
+        "combined": {
+          "hits": 28,
+          "rate": 0.9032,
+          "total": 31
+        },
+        "deterministic": {
+          "hits": 28,
+          "rate": 0.9032,
+          "total": 31
+        },
+        "routed_pages_combined": {
+          "hits": 15,
+          "rate": 0.8333,
+          "total": 18
+        },
+        "routed_pages_deterministic": {
+          "hits": 15,
+          "rate": 0.8333,
+          "total": 18
+        }
+      },
+      "policy_by_publication": {
+        "": {
+          "hits": 28,
+          "rate": 0.9032,
+          "total": 31
+        },
+        "AramcoWorld-en.pdf": {
+          "hits": 7,
+          "rate": 0.875,
+          "total": 8
+        },
+        "FD-en.pdf": {
+          "hits": 8,
+          "rate": 1.0,
+          "total": 8
+        },
+        "cern_courier": {
+          "hits": 3,
+          "rate": 0.75,
+          "total": 4
+        },
+        "unesco_courier": {
+          "hits": 7,
+          "rate": 0.875,
+          "total": 8
+        },
+        "vogue_us": {
+          "hits": 3,
+          "rate": 1.0,
+          "total": 3
+        }
+      },
+      "policy_gain": {
+        "": 0,
+        "AramcoWorld-en.pdf": 1,
+        "FD-en.pdf": 0,
+        "cern_courier": 0,
+        "unesco_courier": -1,
+        "vogue_us": 0
+      },
+      "report": "examples/output/vlm_ablation/gpt-4o/vlm_eval.report.json",
+      "unregistered_samples": [
+        "AramcoWorld-en.pdf",
+        "FD-en.pdf"
+      ]
+    },
+    {
+      "cost": {
+        "attempts": 0,
+        "cache_hits": 18,
+        "pipeline_requests": 0,
+        "routed_pages": 18,
+        "transport_requests": 0
+      },
+      "enabled": true,
+      "kind_agreement": {
+        "combined": {
+          "hits": 26,
+          "rate": 0.8387,
+          "total": 31
+        },
+        "deterministic": {
+          "hits": 28,
+          "rate": 0.9032,
+          "total": 31
+        },
+        "routed_pages_combined": {
+          "hits": 13,
+          "rate": 0.7222,
+          "total": 18
+        },
+        "routed_pages_deterministic": {
+          "hits": 15,
+          "rate": 0.8333,
+          "total": 18
+        }
+      },
+      "model": "gpt-4o-mini",
+      "policy_agreement": {
+        "combined": {
+          "hits": 26,
+          "rate": 0.8387,
+          "total": 31
+        },
+        "deterministic": {
+          "hits": 28,
+          "rate": 0.9032,
+          "total": 31
+        },
+        "routed_pages_combined": {
+          "hits": 13,
+          "rate": 0.7222,
+          "total": 18
+        },
+        "routed_pages_deterministic": {
+          "hits": 15,
+          "rate": 0.8333,
+          "total": 18
+        }
+      },
+      "policy_by_publication": {
+        "": {
+          "hits": 26,
+          "rate": 0.8387,
+          "total": 31
+        },
+        "AramcoWorld-en.pdf": {
+          "hits": 7,
+          "rate": 0.875,
+          "total": 8
+        },
+        "FD-en.pdf": {
+          "hits": 7,
+          "rate": 0.875,
+          "total": 8
+        },
+        "cern_courier": {
+          "hits": 3,
+          "rate": 0.75,
+          "total": 4
+        },
+        "unesco_courier": {
+          "hits": 6,
+          "rate": 0.75,
+          "total": 8
+        },
+        "vogue_us": {
+          "hits": 3,
+          "rate": 1.0,
+          "total": 3
+        }
+      },
+      "policy_gain": {
+        "": -2,
+        "AramcoWorld-en.pdf": 1,
+        "FD-en.pdf": -1,
+        "cern_courier": 0,
+        "unesco_courier": -2,
+        "vogue_us": 0
+      },
+      "report": "examples/output/vlm_ablation/gpt-4o-mini/vlm_eval.report.json",
+      "unregistered_samples": [
+        "AramcoWorld-en.pdf",
+        "FD-en.pdf"
+      ]
+    },
+    {
+      "cost": {
+        "attempts": 0,
+        "cache_hits": 18,
+        "pipeline_requests": 18,
+        "routed_pages": 18,
+        "transport_requests": 0
+      },
+      "enabled": true,
+      "kind_agreement": {
+        "combined": {
+          "hits": 28,
+          "rate": 0.9032,
+          "total": 31
+        },
+        "deterministic": {
+          "hits": 28,
+          "rate": 0.9032,
+          "total": 31
+        },
+        "routed_pages_combined": {
+          "hits": 15,
+          "rate": 0.8333,
+          "total": 18
+        },
+        "routed_pages_deterministic": {
+          "hits": 15,
+          "rate": 0.8333,
+          "total": 18
+        }
+      },
+      "model": "gpt-5.6-sol",
+      "policy_agreement": {
+        "combined": {
+          "hits": 28,
+          "rate": 0.9032,
+          "total": 31
+        },
+        "deterministic": {
+          "hits": 28,
+          "rate": 0.9032,
+          "total": 31
+        },
+        "routed_pages_combined": {
+          "hits": 15,
+          "rate": 0.8333,
+          "total": 18
+        },
+        "routed_pages_deterministic": {
+          "hits": 15,
+          "rate": 0.8333,
+          "total": 18
+        }
+      },
+      "policy_by_publication": {
+        "": {
+          "hits": 28,
+          "rate": 0.9032,
+          "total": 31
+        },
+        "AramcoWorld-en.pdf": {
+          "hits": 6,
+          "rate": 0.75,
+          "total": 8
+        },
+        "FD-en.pdf": {
+          "hits": 8,
+          "rate": 1.0,
+          "total": 8
+        },
+        "cern_courier": {
+          "hits": 4,
+          "rate": 1.0,
+          "total": 4
+        },
+        "unesco_courier": {
+          "hits": 7,
+          "rate": 0.875,
+          "total": 8
+        },
+        "vogue_us": {
+          "hits": 3,
+          "rate": 1.0,
+          "total": 3
+        }
+      },
+      "policy_gain": {
+        "": 0,
+        "AramcoWorld-en.pdf": 0,
+        "FD-en.pdf": 0,
+        "cern_courier": 1,
+        "unesco_courier": -1,
+        "vogue_us": 0
+      },
+      "report": "examples/output/vlm_ablation/gpt-5.6-sol/vlm_eval.report.json",
+      "unregistered_samples": [
+        "AramcoWorld-en.pdf",
+        "FD-en.pdf"
+      ]
+    },
+    {
+      "cost": {
+        "attempts": 18,
+        "cache_hits": 0,
+        "pipeline_requests": 36,
+        "routed_pages": 18,
+        "transport_requests": 18
+      },
+      "enabled": true,
+      "kind_agreement": {
+        "combined": {
+          "hits": 28,
+          "rate": 0.9032,
+          "total": 31
+        },
+        "deterministic": {
+          "hits": 28,
+          "rate": 0.9032,
+          "total": 31
+        },
+        "routed_pages_combined": {
+          "hits": 15,
+          "rate": 0.8333,
+          "total": 18
+        },
+        "routed_pages_deterministic": {
+          "hits": 15,
+          "rate": 0.8333,
+          "total": 18
+        }
+      },
+      "model": "gpt-5.6-terra",
+      "policy_agreement": {
+        "combined": {
+          "hits": 28,
+          "rate": 0.9032,
+          "total": 31
+        },
+        "deterministic": {
+          "hits": 28,
+          "rate": 0.9032,
+          "total": 31
+        },
+        "routed_pages_combined": {
+          "hits": 15,
+          "rate": 0.8333,
+          "total": 18
+        },
+        "routed_pages_deterministic": {
+          "hits": 15,
+          "rate": 0.8333,
+          "total": 18
+        }
+      },
+      "policy_by_publication": {
+        "": {
+          "hits": 28,
+          "rate": 0.9032,
+          "total": 31
+        },
+        "AramcoWorld-en.pdf": {
+          "hits": 6,
+          "rate": 0.75,
+          "total": 8
+        },
+        "FD-en.pdf": {
+          "hits": 8,
+          "rate": 1.0,
+          "total": 8
+        },
+        "cern_courier": {
+          "hits": 4,
+          "rate": 1.0,
+          "total": 4
+        },
+        "unesco_courier": {
+          "hits": 7,
+          "rate": 0.875,
+          "total": 8
+        },
+        "vogue_us": {
+          "hits": 3,
+          "rate": 1.0,
+          "total": 3
+        }
+      },
+      "policy_gain": {
+        "": 0,
+        "AramcoWorld-en.pdf": 0,
+        "FD-en.pdf": 0,
+        "cern_courier": 1,
+        "unesco_courier": -1,
+        "vogue_us": 0
+      },
+      "report": "examples/output/vlm_ablation/gpt-5.6-terra/vlm_eval.report.json",
+      "unregistered_samples": [
+        "AramcoWorld-en.pdf",
+        "FD-en.pdf"
+      ]
+    }
+  ]
+}

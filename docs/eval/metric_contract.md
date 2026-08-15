@@ -119,6 +119,94 @@ $$\mathrm{LTCR}(w) = \frac{\sum_{i<j}\mathbf{1}(t_i=t_j)}{C_k^2}\times 100\%$$
    `image_pair_max_area_ratio` 者拒绝配对;并列时以译侧页内序号定序。未配对图像按 IoU 0
    计入分母(分母 = 两侧图像数的较大者)并在报告中单列。
 
+## 2c. batch-e1.2 会话二的实测裁定(冻结产物计算)
+
+本节的每个数字都由 `tools/eval_report.py` 的 `--corpus` 模式在冻结产物上算出,落盘于
+`docs/eval/results_e1/`(逐样张 `eval_report.<sample>.json`,汇总 `eval_corpus.json` 与
+`eval_corpus.md`)。零 API、零翻译运行。
+
+### 2c.1 M1 分层输出(本会话授权追加)
+
+每条页边界按 `corpus/chain_labels.user.json` 的裁定归入三档,归档规则写在
+`babeldoc/magazine/metrics/mid_break_rate.py` 的 `adjudications_of`:
+
+| 档 | 判据 | 语义 |
+| --- | --- | --- |
+| `linked` | `link=true` | 语义单元被切断,续接就在下一页。此处 open 是本项目要治的缺陷 |
+| `trap` | `link=false` 且 note 含 `configs/metrics.json` 的 `truth_trap_markers` 声明标记 | 悬尾的续接**不在文档内**(节选跳页)。任何生产者都无法闭合 |
+| `clean` | 其余 `link=false` | 源侧本就句末收束。此处 open 是排版侧引入的 |
+| `unlabelled` | 裁定单无此边界 | 既不进主数分母也不进 trap 计数 |
+
+- **主数** `mbr_linkable` = open(linked ∪ clean) / (answerable(linked ∪ clean) − designed),
+  即合同 strict 分母限制到"生产者应答"的边界上;
+- `mbr_all` 保留合同分母(页数 − 1),两者并列;
+- `source_inherited_open` = trap 档的 open 计数,**不进任何分子**,单列。
+
+无裁定单的样张 `stratified` 记 `null`,不给默认分层。逐档完整判决计数一并落盘,任何其他
+分母都可从记录复算。
+
+### 2c.2 上游几何路径与方法差异(合同细则 M4/M5/M7/M9 的补充)
+
+上游六份基线只有 PDF,没有 IL。`babeldoc/magazine/metrics/pdf_geometry.py` 用 PyMuPDF 把 PDF
+重建为最小 IL 文档(一个文本块 → 一个 `pdf_paragraph`,标签取 `pdf_block_label`;一张位图 →
+一个 `pdf_figure`;坐标翻转到 IL 的下左原点),因此**同一套指标代码**同时跑两条路径。
+
+方法差异在 fork 自己的产物上定量:同一份译后 PDF,一路走 IL(`checkpoint.08_chain_builder` 对
+`checkpoint.11_typesetting`),一路走 PDF 抽取(输入 PDF 对译后 PDF)。判定门限
+`method_comparable_max_relative_delta = 0.1`(相对偏差按两读数中较大者归一)。六样张实测:
+
+| 指标键 | 可比样张数 | 相对偏差范围 | 裁定 |
+| --- | --- | --- | --- |
+| `overlap_source` | 0/6 | 0.571–1.000 | **not-comparable** |
+| `overlap_produced` | 0/6 | 0.488–1.000 | **not-comparable** |
+| `overlap_delta` | 1/6 | 0.000–1.010 | **not-comparable** |
+| `alignment_source` | 2/6 | 0.000–0.913 | **not-comparable** |
+| `alignment_produced` | 0/6 | 0.245–0.899 | **not-comparable** |
+| `alignment_delta` | 0/6 | 0.996–1.200 | **not-comparable** |
+| `image_area_delta` | 4/6 | 0.000–1.000 | 有条件可比(见下) |
+| `image_placement_iou` | 6/6 | 0.000–0.039 | 可比 |
+| `mid_break_rate.rate` | 3/6 | 0.000–0.600 | 比率不可比;判决级 30/35 一致 |
+
+三条结论,均按实测写,不硬凑:
+
+1. **M4 Overlap 与 M5 Alignment 的上游列记 not-comparable。** 两条路径的元素集不是同一个划分:
+   PDF 抽取的文本块数对 IL 段落数的比值实测 1.00–1.72(逐样张 140/199、43/62、217/255、
+   165/283、211/210、142/154),而 eq:overlap 与 eq:alignment 都按 $1/N$ 归一,元素数直接进分母。
+   论文中上游与 fork 的 Overlap/Alignment **只能在同一条路径内比**(即两侧都走 PDF 抽取),
+   跨路径的差值不得出现。差异也不是一个可校正的固定偏置:`overlap_produced` 在稀疏页上
+   PDF 路径更低(Vogue-en 0.126→0.000、Courier-zh 0.026→0.000,抽取块本就互不重叠),在密排页上
+   PDF 路径更高(CERNCourier-en 0.164→0.340、AramcoWorld-en-v2 0.049→0.432,图像 bbox 压在文本块上),
+   方向随版面翻转,故不存在"乘一个系数换算过去"的选项。
+2. **M7 与 M9 可比。** `image_placement_iou` 六样张全部在门限内;`image_area_delta` 两处出界
+   (CERNCourier-en、AramcoWorld-en-v2)都是"两读数皆≈0"的情形——IL 侧恒为 0.000000,PDF 侧
+   为 0.0003 与 −0.0045,相对度量在近零处失效而绝对差 ≤0.0045。这两处按绝对差报告,不按相对
+   偏差判不可比。
+3. **M1 的比率不可跨路径比,判决可比。** 逐边界判决一致率 30/35(0.857):Courier-en 6/7、
+   Vogue-en 2/2、CERNCourier-en 3/3、AramcoWorld-en-v2 7/8、FD-en-v2 5/8、Courier-zh 7/7。
+   分歧全部出在 tail 选取:IL 路径按 `layout_label` 过滤版面家具,PDF 路径没有标签可读,页码条、
+   图注栏与版权竖排因此可能充当 tail(FD-en-v2 的 3 处分歧即此)。故上游 M1 **以逐边界判决表**
+   进论文(见 `eval_corpus.md` §3),比率只在同路径内引用。
+
+### 2c.3 IL 路径的 before/after 几何差值是结构性零
+
+实测:六样张的 fork IL 路径中,四份的 `overlap_source` 与 `overlap_produced`、
+`alignment_source` 与 `alignment_produced` 在 6 位小数上**完全相等**(Courier-en 0.018821、
+Vogue-en 0.125767、AramcoWorld-en-v2 0.049050、Courier-zh 0.025811),另两份(CERNCourier-en、
+FD-en-v2)差在第 4 位小数。原因是排版阶段沿用源段落框、只在框内重排行,段落 box 基本不变。
+
+**因此:M4/M5/M7/M9 的"源侧 vs 译侧差值"若从 IL 读,测的是段落框的账面而不是落墨后的版面。**
+译前译后的版面变化一律从 PDF 路径读(两侧同一抽取器,抽取方法在差值中抵消);IL 路径的绝对值
+仍可用于同一路径内的横向比较。该判定不改任何已有定义,只规定读数来源。
+
+### 2c.4 M1 的判别力边界(A-09 的对照)
+
+Courier-en 的 `7->8` 是裁定单里的 MID-SENTENCE BODY SPLIT。三列实测判决全部是 `closed`:
+上游末字符为 `。`(译文把悬空从句**虚构收束**为"…以及一种复合材料。",即台账 A-09),fork
+末字符也是 `。`(链级联合翻译重排后的真实句末,"…了专利。")。**M1 作为几何量无法区分
+"真收束"与"虚构收束"**,该边界上的优劣判定必须由 A-09 的语义证据(先行词丢失、悬空从句)
+承担,不得只引 M1。反例是 AramcoWorld-en-v2 的 `6->7`(同为 linked):上游 `open`、fork
+`closed`,该处 M1 独立成立。
+
 ## 3. 本合同不涵盖
 
 - 任何人工评分量表(MQM 人工评审的 rubric 属评估章,不属本表)。

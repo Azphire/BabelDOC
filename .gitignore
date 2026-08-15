@@ -37,6 +37,7 @@ examples/cache/*
 !configs/*.json
 !corpus/*.json
 !reviews/*.json
+!docs/eval/**/*.json
 /make_gif.py
 /dist
 .cache

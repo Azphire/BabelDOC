@@ -50,6 +50,9 @@ class MetricsConfig:
     """Everything bounded about measuring a produced document."""
 
     image_layout_classes: tuple[str, ...]
+    truth_trap_markers: tuple[str, ...]
+    pdf_block_label: tuple[str, ...]
+    method_comparable_max_relative_delta: float
     min_element_area_ratio: float
     alignment_max_delta: float
     image_pair_max_area_ratio: float
@@ -73,6 +76,11 @@ def load_metrics_config(path: str | None = None) -> MetricsConfig:
         raise MetricError(f"{config_path.name}: missing parameters {missing}")
     return MetricsConfig(
         image_layout_classes=tuple(parameters["image_layout_classes"]),
+        truth_trap_markers=tuple(parameters["truth_trap_markers"]),
+        pdf_block_label=tuple(parameters["pdf_block_label"]),
+        method_comparable_max_relative_delta=float(
+            parameters["method_comparable_max_relative_delta"]
+        ),
         min_element_area_ratio=float(parameters["min_element_area_ratio"]),
         alignment_max_delta=float(parameters["alignment_max_delta"]),
         image_pair_max_area_ratio=float(parameters["image_pair_max_area_ratio"]),

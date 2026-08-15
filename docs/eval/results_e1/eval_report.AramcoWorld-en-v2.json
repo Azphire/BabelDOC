@@ -1,0 +1,3641 @@
+{
+  "runs": [
+    {
+      "absent": [
+        "no working directory: no chain or repair level of the conservation invariant",
+        "no source and translated checkpoint pair: no LTCR"
+      ],
+      "conservation": {
+        "holds": true,
+        "levels": {
+          "chain": {
+            "evidence": {
+              "absent": "no chain translation report"
+            },
+            "failures": [],
+            "holds": null,
+            "level": "chain",
+            "subjects": 0
+          },
+          "document": {
+            "evidence": {
+              "produced_pages": 9,
+              "source_pages": 9
+            },
+            "failures": [],
+            "holds": true,
+            "level": "document",
+            "subjects": 1
+          },
+          "repair": {
+            "evidence": {
+              "absent": "no repair report"
+            },
+            "failures": [],
+            "holds": null,
+            "level": "repair",
+            "subjects": 0
+          }
+        },
+        "levels_absent": [
+          "chain",
+          "repair"
+        ],
+        "levels_present": [
+          "document"
+        ],
+        "metric": "block_conservation_invariant"
+      },
+      "label": "upstream",
+      "layout_geometry": {
+        "metric": "layout_geometry",
+        "page_count_delta": {
+          "conserved": true,
+          "produced_pages": 9,
+          "source_pages": 9,
+          "value": 0
+        },
+        "pages": [
+          {
+            "alignment_delta": -0.00014,
+            "image_area_delta": {
+              "absolute": 0.0,
+              "produced_area": 1.050167,
+              "source_area": 1.050167,
+              "value": 0.0
+            },
+            "image_placement_iou": {
+              "pairs": 12,
+              "produced_images": 12,
+              "source_images": 12,
+              "unpaired_produced": 0,
+              "unpaired_source": 0,
+              "value": 1.0
+            },
+            "overlap_delta": 0.000482,
+            "page_index": 0,
+            "produced": {
+              "alignment": {
+                "dropped": 0,
+                "elements": 13,
+                "value": 0.001021982391114153
+              },
+              "elements": 13,
+              "overlap": {
+                "dropped": 0,
+                "elements": 13,
+                "value": 0.16537106706795526
+              }
+            },
+            "source": {
+              "alignment": {
+                "dropped": 0,
+                "elements": 13,
+                "value": 0.0011616562523504433
+              },
+              "elements": 13,
+              "overlap": {
+                "dropped": 0,
+                "elements": 13,
+                "value": 0.1648891868573609
+              }
+            }
+          },
+          {
+            "alignment_delta": 0.00046,
+            "image_area_delta": {
+              "absolute": 0.001668,
+              "produced_area": 1.186534,
+              "source_area": 1.184866,
+              "value": 0.001408
+            },
+            "image_placement_iou": {
+              "pairs": 7,
+              "produced_images": 7,
+              "source_images": 7,
+              "unpaired_produced": 0,
+              "unpaired_source": 0,
+              "value": 0.99961
+            },
+            "overlap_delta": 0.124338,
+            "page_index": 1,
+            "produced": {
+              "alignment": {
+                "dropped": 0,
+                "elements": 24,
+                "value": 0.0004945110891172394
+              },
+              "elements": 24,
+              "overlap": {
+                "dropped": 0,
+                "elements": 24,
+                "value": 0.2485201915675942
+              }
+            },
+            "source": {
+              "alignment": {
+                "dropped": 0,
+                "elements": 48,
+                "value": 3.458440263311051e-05
+              },
+              "elements": 48,
+              "overlap": {
+                "dropped": 0,
+                "elements": 48,
+                "value": 0.12418239362030174
+              }
+            }
+          },
+          {
+            "alignment_delta": 0.00026,
+            "image_area_delta": {
+              "absolute": 0.0,
+              "produced_area": 0.210895,
+              "source_area": 0.210895,
+              "value": 0.0
+            },
+            "image_placement_iou": {
+              "pairs": 3,
+              "produced_images": 3,
+              "source_images": 3,
+              "unpaired_produced": 0,
+              "unpaired_source": 0,
+              "value": 1.0
+            },
+            "overlap_delta": 0.071297,
+            "page_index": 2,
+            "produced": {
+              "alignment": {
+                "dropped": 0,
+                "elements": 18,
+                "value": 0.0020586742898639782
+              },
+              "elements": 18,
+              "overlap": {
+                "dropped": 0,
+                "elements": 18,
+                "value": 0.12745293263658128
+              }
+            },
+            "source": {
+              "alignment": {
+                "dropped": 0,
+                "elements": 19,
+                "value": 0.0017982106577956348
+              },
+              "elements": 19,
+              "overlap": {
+                "dropped": 0,
+                "elements": 19,
+                "value": 0.056155666119587035
+              }
+            }
+          },
+          {
+            "alignment_delta": 0.001073,
+            "image_area_delta": {
+              "absolute": 0.0,
+              "produced_area": 0.577602,
+              "source_area": 0.577602,
+              "value": 0.0
+            },
+            "image_placement_iou": {
+              "pairs": 1,
+              "produced_images": 1,
+              "source_images": 1,
+              "unpaired_produced": 0,
+              "unpaired_source": 0,
+              "value": 1.0
+            },
+            "overlap_delta": -0.046575,
+            "page_index": 3,
+            "produced": {
+              "alignment": {
+                "dropped": 0,
+                "elements": 22,
+                "value": 0.0034423935243187427
+              },
+              "elements": 22,
+              "overlap": {
+                "dropped": 0,
+                "elements": 22,
+                "value": 0.0036703695885436424
+              }
+            },
+            "source": {
+              "alignment": {
+                "dropped": 0,
+                "elements": 17,
+                "value": 0.0023697254674842614
+              },
+              "elements": 17,
+              "overlap": {
+                "dropped": 0,
+                "elements": 17,
+                "value": 0.050245333911385304
+              }
+            }
+          },
+          {
+            "alignment_delta": 0.000152,
+            "image_area_delta": {
+              "absolute": -0.01341,
+              "produced_area": 0.30959,
+              "source_area": 0.323001,
+              "value": -0.041518
+            },
+            "image_placement_iou": {
+              "pairs": 6,
+              "produced_images": 8,
+              "source_images": 6,
+              "unpaired_produced": 2,
+              "unpaired_source": 0,
+              "value": 0.645505
+            },
+            "overlap_delta": -0.296299,
+            "page_index": 4,
+            "produced": {
+              "alignment": {
+                "dropped": 0,
+                "elements": 42,
+                "value": 0.00015197109333695162
+              },
+              "elements": 42,
+              "overlap": {
+                "dropped": 0,
+                "elements": 42,
+                "value": 0.4200805569720242
+              }
+            },
+            "source": {
+              "alignment": {
+                "dropped": 0,
+                "elements": 24,
+                "value": 1.2977314365978998e-07
+              },
+              "elements": 24,
+              "overlap": {
+                "dropped": 0,
+                "elements": 24,
+                "value": 0.7163797932516754
+              }
+            }
+          },
+          {
+            "alignment_delta": 0.000188,
+            "image_area_delta": {
+              "absolute": 0.0,
+              "produced_area": 0.348896,
+              "source_area": 0.348896,
+              "value": 0.0
+            },
+            "image_placement_iou": {
+              "pairs": 2,
+              "produced_images": 2,
+              "source_images": 2,
+              "unpaired_produced": 0,
+              "unpaired_source": 0,
+              "value": 1.0
+            },
+            "overlap_delta": -0.022087,
+            "page_index": 5,
+            "produced": {
+              "alignment": {
+                "dropped": 0,
+                "elements": 22,
+                "value": 0.0002660467653159826
+              },
+              "elements": 22,
+              "overlap": {
+                "dropped": 0,
+                "elements": 22,
+                "value": 0.00036019582721843606
+              }
+            },
+            "source": {
+              "alignment": {
+                "dropped": 0,
+                "elements": 14,
+                "value": 7.797539369706155e-05
+              },
+              "elements": 14,
+              "overlap": {
+                "dropped": 0,
+                "elements": 14,
+                "value": 0.022447395547892997
+              }
+            }
+          },
+          {
+            "alignment_delta": 0.001921,
+            "image_area_delta": {
+              "absolute": 0.0,
+              "produced_area": 0.345937,
+              "source_area": 0.345937,
+              "value": 0.0
+            },
+            "image_placement_iou": {
+              "pairs": 1,
+              "produced_images": 1,
+              "source_images": 1,
+              "unpaired_produced": 0,
+              "unpaired_source": 0,
+              "value": 1.0
+            },
+            "overlap_delta": -0.04036,
+            "page_index": 6,
+            "produced": {
+              "alignment": {
+                "dropped": 0,
+                "elements": 21,
+                "value": 0.0026256998547505993
+              },
+              "elements": 21,
+              "overlap": {
+                "dropped": 0,
+                "elements": 21,
+                "value": 0.0
+              }
+            },
+            "source": {
+              "alignment": {
+                "dropped": 0,
+                "elements": 20,
+                "value": 0.000704919927213394
+              },
+              "elements": 20,
+              "overlap": {
+                "dropped": 0,
+                "elements": 20,
+                "value": 0.040360461950336955
+              }
+            }
+          },
+          {
+            "alignment_delta": 0.00077,
+            "image_area_delta": {
+              "absolute": 0.0,
+              "produced_area": 0.059267,
+              "source_area": 0.059267,
+              "value": 0.0
+            },
+            "image_placement_iou": {
+              "pairs": 6,
+              "produced_images": 6,
+              "source_images": 6,
+              "unpaired_produced": 0,
+              "unpaired_source": 0,
+              "value": 1.0
+            },
+            "overlap_delta": 0.070394,
+            "page_index": 7,
+            "produced": {
+              "alignment": {
+                "dropped": 0,
+                "elements": 32,
+                "value": 0.0008853389425185425
+              },
+              "elements": 32,
+              "overlap": {
+                "dropped": 0,
+                "elements": 32,
+                "value": 0.1532112758609212
+              }
+            },
+            "source": {
+              "alignment": {
+                "dropped": 0,
+                "elements": 64,
+                "value": 0.00011539245812668337
+              },
+              "elements": 64,
+              "overlap": {
+                "dropped": 0,
+                "elements": 64,
+                "value": 0.08281754189554172
+              }
+            }
+          },
+          {
+            "alignment_delta": 0.000176,
+            "image_area_delta": {
+              "absolute": -0.0,
+              "produced_area": 0.195268,
+              "source_area": 0.195268,
+              "value": -0.0
+            },
+            "image_placement_iou": {
+              "pairs": 39,
+              "produced_images": 39,
+              "source_images": 39,
+              "unpaired_produced": 0,
+              "unpaired_source": 0,
+              "value": 0.999871
+            },
+            "overlap_delta": 1.215706,
+            "page_index": 8,
+            "produced": {
+              "alignment": {
+                "dropped": 0,
+                "elements": 82,
+                "value": 0.00023623256995377394
+              },
+              "elements": 82,
+              "overlap": {
+                "dropped": 0,
+                "elements": 82,
+                "value": 2.8079103644243264
+              }
+            },
+            "source": {
+              "alignment": {
+                "dropped": 0,
+                "elements": 148,
+                "value": 6.017266115619925e-05
+              },
+              "elements": 148,
+              "overlap": {
+                "dropped": 0,
+                "elements": 148,
+                "value": 1.5922046593396098
+              }
+            }
+          }
+        ],
+        "pages_compared": 9,
+        "summary": {
+          "alignment_delta": 0.00054,
+          "alignment_produced": 0.001243,
+          "alignment_source": 0.000703,
+          "image_area_delta": -0.004457,
+          "image_placement_iou": 0.960554,
+          "overlap_delta": 0.119655,
+          "overlap_produced": 0.436286,
+          "overlap_source": 0.316631
+        }
+      },
+      "mid_break_rate": {
+        "metric": "mid_unit_page_break_rate",
+        "pages": 9,
+        "rate": 0.375,
+        "series": {
+          "column": {
+            "answerable": 15,
+            "axis_unsupported_count": 0,
+            "boundaries": [
+              {
+                "from_column": 0,
+                "label": "p3c0->c1",
+                "page_index": 2,
+                "series": "column",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 0,
+                  "last_character": "验",
+                  "last_character_x": 418.9422912597656,
+                  "last_character_y": 113.2545166015625,
+                  "last_line_text": "2 初见| 4 风味| 6 问答| 38 作者角| 40 评论| 42 活动| 44 在线内容| 45 测验",
+                  "layout_label": "plain text",
+                  "page_index": 2,
+                  "paragraph_index": 12,
+                  "reference": "p3#12",
+                  "vertical": false
+                },
+                "to_column": 1,
+                "to_page_index": 2,
+                "truth_category": null,
+                "truth_link": null,
+                "verdict": "open"
+              },
+              {
+                "from_column": 1,
+                "label": "p3c1->c2",
+                "page_index": 2,
+                "series": "column",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 1,
+                  "last_character": "。",
+                  "last_character_x": 404.7665710449219,
+                  "last_character_y": 72.5526123046875,
+                  "last_line_text": "圆顶和墙壁图案。保护工作者不懈努力，修复和维护这些有着数百年历史的伊斯兰建筑实例。",
+                  "layout_label": "plain text",
+                  "page_index": 2,
+                  "paragraph_index": 11,
+                  "reference": "p3#11",
+                  "vertical": false
+                },
+                "to_column": 2,
+                "to_page_index": 2,
+                "truth_category": null,
+                "truth_link": null,
+                "verdict": "closed"
+              },
+              {
+                "from_column": 0,
+                "label": "p4c0->c1",
+                "page_index": 3,
+                "series": "column",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 0,
+                  "last_character": "”",
+                  "last_character_x": 349.94439697265625,
+                  "last_character_y": 116.53201293945312,
+                  "last_line_text": "们改变技术，这一切都会消亡。”",
+                  "layout_label": "plain text",
+                  "page_index": 3,
+                  "paragraph_index": 16,
+                  "reference": "p4#16",
+                  "vertical": false
+                },
+                "to_column": 1,
+                "to_page_index": 3,
+                "truth_category": null,
+                "truth_link": null,
+                "verdict": "closed"
+              },
+              {
+                "from_column": 1,
+                "label": "p4c1->c2",
+                "page_index": 3,
+                "series": "column",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 1,
+                  "last_character": "”",
+                  "last_character_x": 350.02488708496094,
+                  "last_character_y": 224.50146484375,
+                  "last_line_text": "者，”哈基莫夫说，“它随着时间的推移而稳定下来。”",
+                  "layout_label": "plain text",
+                  "page_index": 3,
+                  "paragraph_index": 5,
+                  "reference": "p4#5",
+                  "vertical": false
+                },
+                "to_column": 2,
+                "to_page_index": 3,
+                "truth_category": null,
+                "truth_link": null,
+                "verdict": "closed"
+              },
+              {
+                "from_column": 0,
+                "label": "p5c0->c1",
+                "page_index": 4,
+                "series": "column",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 0,
+                  "last_character": "。",
+                  "last_character_x": 137.54600524902344,
+                  "last_character_y": 109.08123779296875,
+                  "last_line_text": "一直运营到该国南部。",
+                  "layout_label": "plain text",
+                  "page_index": 4,
+                  "paragraph_index": 15,
+                  "reference": "p5#15",
+                  "vertical": false
+                },
+                "to_column": 1,
+                "to_page_index": 4,
+                "truth_category": null,
+                "truth_link": null,
+                "verdict": "closed"
+              },
+              {
+                "from_column": 1,
+                "label": "p5c1->c2",
+                "page_index": 4,
+                "series": "column",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 1,
+                  "last_character": "，",
+                  "last_character_x": 208.16974639892578,
+                  "last_character_y": 72.56527709960938,
+                  "last_line_text": "建立了麦加和麦地那之间的直接铁路连接，",
+                  "layout_label": "plain text",
+                  "page_index": 4,
+                  "paragraph_index": 16,
+                  "reference": "p5#16",
+                  "vertical": false
+                },
+                "to_column": 2,
+                "to_page_index": 4,
+                "truth_category": null,
+                "truth_link": null,
+                "verdict": "open"
+              },
+              {
+                "from_column": 0,
+                "label": "p6c0->c1",
+                "page_index": 5,
+                "series": "column",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 0,
+                  "last_character": "他",
+                  "last_character_x": 344.53961181640625,
+                  "last_character_y": 623.7592086791992,
+                  "last_line_text": "杜勒·哈米德希望将奥斯曼帝国领土的边缘重新连接到他",
+                  "layout_label": "plain text",
+                  "page_index": 5,
+                  "paragraph_index": 5,
+                  "reference": "p6#5",
+                  "vertical": false
+                },
+                "to_column": 1,
+                "to_page_index": 5,
+                "truth_category": null,
+                "truth_link": null,
+                "verdict": "open"
+              },
+              {
+                "from_column": 0,
+                "label": "p7c0->c1",
+                "page_index": 6,
+                "series": "column",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 0,
+                  "last_character": "。",
+                  "last_character_x": 216.0137481689453,
+                  "last_character_y": 73.77572631835938,
+                  "last_line_text": "段。战争最终导致了奥斯曼帝国的崩溃。",
+                  "layout_label": "plain text",
+                  "page_index": 6,
+                  "paragraph_index": 7,
+                  "reference": "p7#7",
+                  "vertical": false
+                },
+                "to_column": 1,
+                "to_page_index": 6,
+                "truth_category": null,
+                "truth_link": null,
+                "verdict": "closed"
+              },
+              {
+                "from_column": 0,
+                "label": "p8c0->c1",
+                "page_index": 7,
+                "series": "column",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 0,
+                  "last_character": "特",
+                  "last_character_x": 93.05999755859375,
+                  "last_character_y": 157.5689697265625,
+                  "last_line_text": "杰米·S·斯科特",
+                  "layout_label": "plain text",
+                  "page_index": 7,
+                  "paragraph_index": 11,
+                  "reference": "p8#11",
+                  "vertical": false
+                },
+                "to_column": 1,
+                "to_page_index": 7,
+                "truth_category": null,
+                "truth_link": null,
+                "verdict": "open"
+              },
+              {
+                "from_column": 1,
+                "label": "p8c1->c2",
+                "page_index": 7,
+                "series": "column",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 1,
+                  "last_character": "。",
+                  "last_character_x": 328.0653076171875,
+                  "last_character_y": 66.27761840820312,
+                  "last_line_text": "编辑们不支持作者的观点，但鼓励通过阅读来增进理解。",
+                  "layout_label": "plain text",
+                  "page_index": 7,
+                  "paragraph_index": 2,
+                  "reference": "p8#2",
+                  "vertical": false
+                },
+                "to_column": 2,
+                "to_page_index": 7,
+                "truth_category": null,
+                "truth_link": null,
+                "verdict": "closed"
+              },
+              {
+                "from_column": 2,
+                "label": "p8c2->c3",
+                "page_index": 7,
+                "series": "column",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 2,
+                  "last_character": "交",
+                  "last_character_x": 527.4085083007812,
+                  "last_character_y": 250.76495361328125,
+                  "last_line_text": "位女性法老》邀请读者欣赏权力、性别和记忆如何交",
+                  "layout_label": "plain text",
+                  "page_index": 7,
+                  "paragraph_index": 24,
+                  "reference": "p8#24",
+                  "vertical": false
+                },
+                "to_column": 3,
+                "to_page_index": 7,
+                "truth_category": null,
+                "truth_link": null,
+                "verdict": "open"
+              },
+              {
+                "from_column": 0,
+                "label": "p9c0->c1",
+                "page_index": 8,
+                "series": "column",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 0,
+                  "last_character": "。",
+                  "last_character_x": 137.0908966064453,
+                  "last_character_y": 102.22296142578125,
+                  "last_line_text": "版社，2023年。",
+                  "layout_label": "plain text",
+                  "page_index": 8,
+                  "paragraph_index": 42,
+                  "reference": "p9#42",
+                  "vertical": false
+                },
+                "to_column": 1,
+                "to_page_index": 8,
+                "truth_category": null,
+                "truth_link": null,
+                "verdict": "closed"
+              },
+              {
+                "from_column": 1,
+                "label": "p9c1->c2",
+                "page_index": 8,
+                "series": "column",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 1,
+                  "last_character": "。",
+                  "last_character_x": 398.79168701171875,
+                  "last_character_y": 68.77658081054688,
+                  "last_line_text": "在 AramcoWorld.com 在线查找更多类似的评论。",
+                  "layout_label": "plain text",
+                  "page_index": 8,
+                  "paragraph_index": 17,
+                  "reference": "p9#17",
+                  "vertical": false
+                },
+                "to_column": 2,
+                "to_page_index": 8,
+                "truth_category": null,
+                "truth_link": null,
+                "verdict": "closed"
+              },
+              {
+                "from_column": 2,
+                "label": "p9c2->c3",
+                "page_index": 8,
+                "series": "column",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 2,
+                  "last_character": "。",
+                  "last_character_x": 385.7135009765625,
+                  "last_character_y": 218.28842163085938,
+                  "last_line_text": "但Brower揭示了这实际上是身份的抹杀。",
+                  "layout_label": "plain text",
+                  "page_index": 8,
+                  "paragraph_index": 6,
+                  "reference": "p9#6",
+                  "vertical": false
+                },
+                "to_column": 3,
+                "to_page_index": 8,
+                "truth_category": null,
+                "truth_link": null,
+                "verdict": "closed"
+              },
+              {
+                "from_column": 3,
+                "label": "p9c3->c4",
+                "page_index": 8,
+                "series": "column",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 3,
+                  "last_character": "”",
+                  "last_character_x": 471.6681823730469,
+                  "last_character_y": 125.927001953125,
+                  "last_line_text": "审视连接穆斯林社会的纽带。”",
+                  "layout_label": "plain text",
+                  "page_index": 8,
+                  "paragraph_index": 22,
+                  "reference": "p9#22",
+                  "vertical": false
+                },
+                "to_column": 4,
+                "to_page_index": 8,
+                "truth_category": null,
+                "truth_link": null,
+                "verdict": "closed"
+              }
+            ],
+            "boundaries_total": 15,
+            "closed_count": 10,
+            "designed_count": 0,
+            "no_tail_count": 0,
+            "open_count": 5,
+            "rate": 0.333333,
+            "series": "column",
+            "strict_rate": 0.333333
+          },
+          "page": {
+            "answerable": 8,
+            "axis_unsupported_count": 0,
+            "boundaries": [
+              {
+                "from_column": -1,
+                "label": "1->2",
+                "page_index": 0,
+                "series": "page",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 0,
+                  "last_character": "m",
+                  "last_character_x": 294.90943908691406,
+                  "last_character_y": 734.8143711090088,
+                  "last_line_text": "7月 – 8月 2026  |  第77卷 第4   |  期 AramcoWorld.com",
+                  "layout_label": "plain text",
+                  "page_index": 0,
+                  "paragraph_index": 0,
+                  "reference": "p1#0",
+                  "vertical": false
+                },
+                "to_column": -1,
+                "to_page_index": 1,
+                "truth_category": "clean",
+                "truth_link": false,
+                "verdict": "open"
+              },
+              {
+                "from_column": -1,
+                "label": "2->3",
+                "page_index": 1,
+                "series": "page",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 0,
+                  "last_character": "。",
+                  "last_character_x": 154.60440063476562,
+                  "last_character_y": 126.22100830078125,
+                  "last_line_text": "292348, Kettering, Ohio 45429。",
+                  "layout_label": "plain text",
+                  "page_index": 1,
+                  "paragraph_index": 16,
+                  "reference": "p2#16",
+                  "vertical": false
+                },
+                "to_column": -1,
+                "to_page_index": 2,
+                "truth_category": "clean",
+                "truth_link": false,
+                "verdict": "closed"
+              },
+              {
+                "from_column": -1,
+                "label": "3->4",
+                "page_index": 2,
+                "series": "page",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 2,
+                  "last_character": "。",
+                  "last_character_x": 504.2769775390625,
+                  "last_character_y": 187.37615966796875,
+                  "last_line_text": "代项目的遗产，正在为当今该地区铁路的愿景注入新的活力。",
+                  "layout_label": "plain text",
+                  "page_index": 2,
+                  "paragraph_index": 9,
+                  "reference": "p3#9",
+                  "vertical": false
+                },
+                "to_column": -1,
+                "to_page_index": 3,
+                "truth_category": "clean",
+                "truth_link": false,
+                "verdict": "closed"
+              },
+              {
+                "from_column": -1,
+                "label": "4->5",
+                "page_index": 3,
+                "series": "page",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 2,
+                  "last_character": "”",
+                  "last_character_x": 555.1355895996094,
+                  "last_character_y": 74.9041748046875,
+                  "last_line_text": "现在，当你走进去时，感觉就像它一直以来就是这样。”",
+                  "layout_label": "plain text",
+                  "page_index": 3,
+                  "paragraph_index": 15,
+                  "reference": "p4#15",
+                  "vertical": false
+                },
+                "to_column": -1,
+                "to_page_index": 4,
+                "truth_category": "clean",
+                "truth_link": false,
+                "verdict": "closed"
+              },
+              {
+                "from_column": -1,
+                "label": "5->6",
+                "page_index": 4,
+                "series": "page",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 2,
+                  "last_character": "。",
+                  "last_character_x": 293.5322570800781,
+                  "last_character_y": 322.5371398925781,
+                  "last_line_text": "挥作用。",
+                  "layout_label": "plain text",
+                  "page_index": 4,
+                  "paragraph_index": 20,
+                  "reference": "p5#20",
+                  "vertical": false
+                },
+                "to_column": -1,
+                "to_page_index": 5,
+                "truth_category": "clean",
+                "truth_link": false,
+                "verdict": "closed"
+              },
+              {
+                "from_column": -1,
+                "label": "6->7",
+                "page_index": 5,
+                "series": "page",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 1,
+                  "last_character": "水",
+                  "last_character_x": 549.4259948730469,
+                  "last_character_y": 75.25421142578125,
+                  "last_line_text": "具有讽刺意味的是，这些难题还包括沿途大部分地区水",
+                  "layout_label": "plain text",
+                  "page_index": 5,
+                  "paragraph_index": 16,
+                  "reference": "p6#16",
+                  "vertical": false
+                },
+                "to_column": -1,
+                "to_page_index": 6,
+                "truth_category": "linked",
+                "truth_link": true,
+                "verdict": "open"
+              },
+              {
+                "from_column": -1,
+                "label": "7->8",
+                "page_index": 6,
+                "series": "page",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 1,
+                  "last_character": "个",
+                  "last_character_x": 423.4947509765625,
+                  "last_character_y": 235.32363891601562,
+                  "last_line_text": "中心宏伟的希贾兹火车站标志着，那里是一个",
+                  "layout_label": "plain text",
+                  "page_index": 6,
+                  "paragraph_index": 13,
+                  "reference": "p7#13",
+                  "vertical": false
+                },
+                "to_column": -1,
+                "to_page_index": 7,
+                "truth_category": "trap",
+                "truth_link": false,
+                "verdict": "open"
+              },
+              {
+                "from_column": -1,
+                "label": "8->9",
+                "page_index": 7,
+                "series": "page",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 3,
+                  "last_character": "”",
+                  "last_character_x": 508.3893127441406,
+                  "last_character_y": 136.6820068359375,
+                  "last_line_text": "在神秘和想象的面纱之后。”",
+                  "layout_label": "plain text",
+                  "page_index": 7,
+                  "paragraph_index": 12,
+                  "reference": "p8#12",
+                  "vertical": false
+                },
+                "to_column": -1,
+                "to_page_index": 8,
+                "truth_category": "clean",
+                "truth_link": false,
+                "verdict": "closed"
+              }
+            ],
+            "boundaries_total": 8,
+            "closed_count": 5,
+            "designed_count": 0,
+            "no_tail_count": 0,
+            "open_count": 3,
+            "rate": 0.375,
+            "series": "page",
+            "strict_rate": 0.375
+          }
+        },
+        "stratified": {
+          "mbr_all": 0.375,
+          "mbr_all_denominator": 8,
+          "mbr_linkable": 0.285714,
+          "mbr_linkable_denominator": 7,
+          "mbr_linkable_open": 2,
+          "source_inherited_open": 1,
+          "strata": {
+            "clean": {
+              "answerable": 6,
+              "axis_unsupported_count": 0,
+              "boundaries_total": 6,
+              "closed_count": 5,
+              "designed_count": 0,
+              "no_tail_count": 0,
+              "open_count": 1,
+              "rate": 0.166667,
+              "series": "page",
+              "strict_rate": 0.166667
+            },
+            "linked": {
+              "answerable": 1,
+              "axis_unsupported_count": 0,
+              "boundaries_total": 1,
+              "closed_count": 0,
+              "designed_count": 0,
+              "no_tail_count": 0,
+              "open_count": 1,
+              "rate": 1.0,
+              "series": "page",
+              "strict_rate": 1.0
+            },
+            "trap": {
+              "answerable": 1,
+              "axis_unsupported_count": 0,
+              "boundaries_total": 1,
+              "closed_count": 0,
+              "designed_count": 0,
+              "no_tail_count": 0,
+              "open_count": 1,
+              "rate": 1.0,
+              "series": "page",
+              "strict_rate": 1.0
+            },
+            "unlabelled": {
+              "answerable": 0,
+              "axis_unsupported_count": 0,
+              "boundaries_total": 0,
+              "closed_count": 0,
+              "designed_count": 0,
+              "no_tail_count": 0,
+              "open_count": 0,
+              "rate": null,
+              "series": "page",
+              "strict_rate": null
+            }
+          },
+          "trap_boundaries": 1,
+          "unlabelled_boundaries": 0
+        },
+        "strict_rate": 0.375,
+        "vertical_paragraphs": 3
+      },
+      "path": "pdf_extraction",
+      "produced_pdf": "examples/baseline/pdf/AramcoWorld-en-v2/AramcoWorld-en-v2.no_watermark.zh.mono.pdf",
+      "produced_pdf_sha256": "9d45fc58f62a1634c6684f8f341fb3fd6ef725f2f586fd024704ad0c8adf0ba2",
+      "sample": "AramcoWorld-en-v2.pdf",
+      "source_pdf": "examples/input/AramcoWorld-en-v2.pdf",
+      "source_pdf_sha256": "174cf0480ded6fb10bbbaa6368dc6b578bfd54835e2d2ff886073a23ae873663"
+    },
+    {
+      "absent": [],
+      "conservation": {
+        "holds": true,
+        "levels": {
+          "chain": {
+            "evidence": {
+              "chains": 1,
+              "escalated_members": 0,
+              "merged_members": 2,
+              "rendered_members": 2
+            },
+            "failures": [],
+            "holds": true,
+            "level": "chain",
+            "subjects": 1
+          },
+          "document": {
+            "evidence": {
+              "produced_pages": 9,
+              "source_pages": 9
+            },
+            "failures": [],
+            "holds": true,
+            "level": "document",
+            "subjects": 1
+          },
+          "repair": {
+            "evidence": {
+              "changed": 0,
+              "changed_outside_touched": 0,
+              "pages_after": 9,
+              "pages_before": 9,
+              "paragraphs_after": 146,
+              "paragraphs_before": 146,
+              "reported_verdict": "conserved",
+              "touched": 0
+            },
+            "failures": [],
+            "holds": true,
+            "level": "repair",
+            "subjects": 1
+          }
+        },
+        "levels_absent": [],
+        "levels_present": [
+          "chain",
+          "repair",
+          "document"
+        ],
+        "metric": "block_conservation_invariant"
+      },
+      "label": "fork_full_il",
+      "layout_geometry": {
+        "metric": "layout_geometry",
+        "page_count_delta": {
+          "conserved": true,
+          "produced_pages": 9,
+          "source_pages": 9,
+          "value": 0
+        },
+        "pages": [
+          {
+            "alignment_delta": 0.0,
+            "image_area_delta": {
+              "absolute": 0.0,
+              "produced_area": 0.889492,
+              "source_area": 0.889492,
+              "value": 0.0
+            },
+            "image_placement_iou": {
+              "pairs": 1,
+              "produced_images": 1,
+              "source_images": 1,
+              "unpaired_produced": 0,
+              "unpaired_source": 0,
+              "value": 1.0
+            },
+            "overlap_delta": 0.0,
+            "page_index": 0,
+            "produced": {
+              "alignment": {
+                "dropped": 0,
+                "elements": 4,
+                "value": 0.016257058027092864
+              },
+              "elements": 4,
+              "overlap": {
+                "dropped": 0,
+                "elements": 4,
+                "value": 0.0
+              }
+            },
+            "source": {
+              "alignment": {
+                "dropped": 0,
+                "elements": 4,
+                "value": 0.016257058027092864
+              },
+              "elements": 4,
+              "overlap": {
+                "dropped": 0,
+                "elements": 4,
+                "value": 0.0
+              }
+            }
+          },
+          {
+            "alignment_delta": 0.0,
+            "image_area_delta": {
+              "absolute": 0.0,
+              "produced_area": 0.549331,
+              "source_area": 0.549331,
+              "value": 0.0
+            },
+            "image_placement_iou": {
+              "pairs": 3,
+              "produced_images": 3,
+              "source_images": 3,
+              "unpaired_produced": 0,
+              "unpaired_source": 0,
+              "value": 1.0
+            },
+            "overlap_delta": 0.0,
+            "page_index": 1,
+            "produced": {
+              "alignment": {
+                "dropped": 0,
+                "elements": 15,
+                "value": 0.0006516417878782764
+              },
+              "elements": 15,
+              "overlap": {
+                "dropped": 0,
+                "elements": 15,
+                "value": 0.07189993608815426
+              }
+            },
+            "source": {
+              "alignment": {
+                "dropped": 0,
+                "elements": 15,
+                "value": 0.0006516417878782764
+              },
+              "elements": 15,
+              "overlap": {
+                "dropped": 0,
+                "elements": 15,
+                "value": 0.07189993608815426
+              }
+            }
+          },
+          {
+            "alignment_delta": 0.0,
+            "image_area_delta": {
+              "absolute": 0.0,
+              "produced_area": 0.186896,
+              "source_area": 0.186896,
+              "value": 0.0
+            },
+            "image_placement_iou": {
+              "pairs": 3,
+              "produced_images": 3,
+              "source_images": 3,
+              "unpaired_produced": 0,
+              "unpaired_source": 0,
+              "value": 1.0
+            },
+            "overlap_delta": 0.0,
+            "page_index": 2,
+            "produced": {
+              "alignment": {
+                "dropped": 0,
+                "elements": 24,
+                "value": 0.0011331079922695599
+              },
+              "elements": 24,
+              "overlap": {
+                "dropped": 0,
+                "elements": 24,
+                "value": 0.0
+              }
+            },
+            "source": {
+              "alignment": {
+                "dropped": 0,
+                "elements": 24,
+                "value": 0.0011331079922695599
+              },
+              "elements": 24,
+              "overlap": {
+                "dropped": 0,
+                "elements": 24,
+                "value": 0.0
+              }
+            }
+          },
+          {
+            "alignment_delta": 0.0,
+            "image_area_delta": {
+              "absolute": 0.0,
+              "produced_area": 0.897535,
+              "source_area": 0.897535,
+              "value": 0.0
+            },
+            "image_placement_iou": {
+              "pairs": 2,
+              "produced_images": 2,
+              "source_images": 2,
+              "unpaired_produced": 0,
+              "unpaired_source": 0,
+              "value": 1.0
+            },
+            "overlap_delta": 0.0,
+            "page_index": 3,
+            "produced": {
+              "alignment": {
+                "dropped": 0,
+                "elements": 19,
+                "value": 0.00012453610799794432
+              },
+              "elements": 19,
+              "overlap": {
+                "dropped": 0,
+                "elements": 19,
+                "value": 0.10500558083626685
+              }
+            },
+            "source": {
+              "alignment": {
+                "dropped": 0,
+                "elements": 19,
+                "value": 0.00012453610799794432
+              },
+              "elements": 19,
+              "overlap": {
+                "dropped": 0,
+                "elements": 19,
+                "value": 0.10500558083626685
+              }
+            }
+          },
+          {
+            "alignment_delta": 0.0,
+            "image_area_delta": {
+              "absolute": 0.0,
+              "produced_area": 0.16457,
+              "source_area": 0.16457,
+              "value": 0.0
+            },
+            "image_placement_iou": {
+              "pairs": 1,
+              "produced_images": 1,
+              "source_images": 1,
+              "unpaired_produced": 0,
+              "unpaired_source": 0,
+              "value": 1.0
+            },
+            "overlap_delta": 0.0,
+            "page_index": 4,
+            "produced": {
+              "alignment": {
+                "dropped": 0,
+                "elements": 21,
+                "value": 0.0002348325177968258
+              },
+              "elements": 21,
+              "overlap": {
+                "dropped": 0,
+                "elements": 21,
+                "value": 0.0
+              }
+            },
+            "source": {
+              "alignment": {
+                "dropped": 0,
+                "elements": 21,
+                "value": 0.0002348325177968258
+              },
+              "elements": 21,
+              "overlap": {
+                "dropped": 0,
+                "elements": 21,
+                "value": 0.0
+              }
+            }
+          },
+          {
+            "alignment_delta": 0.0,
+            "image_area_delta": {
+              "absolute": 0.0,
+              "produced_area": 0.300412,
+              "source_area": 0.300412,
+              "value": 0.0
+            },
+            "image_placement_iou": {
+              "pairs": 2,
+              "produced_images": 2,
+              "source_images": 2,
+              "unpaired_produced": 0,
+              "unpaired_source": 0,
+              "value": 1.0
+            },
+            "overlap_delta": 0.0,
+            "page_index": 5,
+            "produced": {
+              "alignment": {
+                "dropped": 0,
+                "elements": 16,
+                "value": 5.919465104233556e-05
+              },
+              "elements": 16,
+              "overlap": {
+                "dropped": 0,
+                "elements": 16,
+                "value": 0.0
+              }
+            },
+            "source": {
+              "alignment": {
+                "dropped": 0,
+                "elements": 16,
+                "value": 5.919465104233556e-05
+              },
+              "elements": 16,
+              "overlap": {
+                "dropped": 0,
+                "elements": 16,
+                "value": 0.0
+              }
+            }
+          },
+          {
+            "alignment_delta": 0.0,
+            "image_area_delta": {
+              "absolute": 0.0,
+              "produced_area": 0.373101,
+              "source_area": 0.373101,
+              "value": 0.0
+            },
+            "image_placement_iou": {
+              "pairs": 2,
+              "produced_images": 2,
+              "source_images": 2,
+              "unpaired_produced": 0,
+              "unpaired_source": 0,
+              "value": 1.0
+            },
+            "overlap_delta": 0.0,
+            "page_index": 6,
+            "produced": {
+              "alignment": {
+                "dropped": 0,
+                "elements": 23,
+                "value": 0.0004405567136223413
+              },
+              "elements": 23,
+              "overlap": {
+                "dropped": 0,
+                "elements": 23,
+                "value": 0.26454863948114865
+              }
+            },
+            "source": {
+              "alignment": {
+                "dropped": 0,
+                "elements": 23,
+                "value": 0.0004405567136223413
+              },
+              "elements": 23,
+              "overlap": {
+                "dropped": 0,
+                "elements": 23,
+                "value": 0.26454863948114865
+              }
+            }
+          },
+          {
+            "alignment_delta": 0.0,
+            "image_area_delta": {
+              "absolute": 0.0,
+              "produced_area": 0.04426,
+              "source_area": 0.04426,
+              "value": 0.0
+            },
+            "image_placement_iou": {
+              "pairs": 3,
+              "produced_images": 3,
+              "source_images": 3,
+              "unpaired_produced": 0,
+              "unpaired_source": 0,
+              "value": 1.0
+            },
+            "overlap_delta": 0.0,
+            "page_index": 7,
+            "produced": {
+              "alignment": {
+                "dropped": 0,
+                "elements": 21,
+                "value": 0.000505471065824791
+              },
+              "elements": 21,
+              "overlap": {
+                "dropped": 0,
+                "elements": 21,
+                "value": 0.0
+              }
+            },
+            "source": {
+              "alignment": {
+                "dropped": 0,
+                "elements": 21,
+                "value": 0.000505471065824791
+              },
+              "elements": 21,
+              "overlap": {
+                "dropped": 0,
+                "elements": 21,
+                "value": 0.0
+              }
+            }
+          },
+          {
+            "alignment_delta": 0.0,
+            "image_area_delta": {
+              "absolute": 0.0,
+              "produced_area": 0.126274,
+              "source_area": 0.126274,
+              "value": 0.0
+            },
+            "image_placement_iou": {
+              "pairs": 2,
+              "produced_images": 2,
+              "source_images": 2,
+              "unpaired_produced": 0,
+              "unpaired_source": 0,
+              "value": 1.0
+            },
+            "overlap_delta": 0.0,
+            "page_index": 8,
+            "produced": {
+              "alignment": {
+                "dropped": 0,
+                "elements": 22,
+                "value": 0.000377827553872292
+              },
+              "elements": 22,
+              "overlap": {
+                "dropped": 0,
+                "elements": 22,
+                "value": 0.0
+              }
+            },
+            "source": {
+              "alignment": {
+                "dropped": 0,
+                "elements": 22,
+                "value": 0.000377827553872292
+              },
+              "elements": 22,
+              "overlap": {
+                "dropped": 0,
+                "elements": 22,
+                "value": 0.0
+              }
+            }
+          }
+        ],
+        "pages_compared": 9,
+        "summary": {
+          "alignment_delta": 0.0,
+          "alignment_produced": 0.002198,
+          "alignment_source": 0.002198,
+          "image_area_delta": 0.0,
+          "image_placement_iou": 1.0,
+          "overlap_delta": 0.0,
+          "overlap_produced": 0.04905,
+          "overlap_source": 0.04905
+        }
+      },
+      "ltcr": {
+        "metric": "ltcr",
+        "min_occurrences": 3,
+        "min_paragraphs": 2,
+        "regions": [
+          {
+            "region": "A1",
+            "summary": {
+              "fully_consistent": 0,
+              "legacy_mean_share": null,
+              "ltcr": null,
+              "measured": 0,
+              "pairs_agreeing": 0,
+              "pairs_total": 0,
+              "terms": 0
+            },
+            "terms": []
+          },
+          {
+            "region": "A2",
+            "summary": {
+              "fully_consistent": 3,
+              "legacy_mean_share": 0.75,
+              "ltcr": 0.660714,
+              "measured": 6,
+              "pairs_agreeing": 37,
+              "pairs_total": 56,
+              "terms": 6
+            },
+            "terms": [
+              {
+                "group_candidates": [
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null
+                ],
+                "group_sizes": [
+                  1,
+                  1,
+                  1,
+                  1,
+                  1,
+                  1
+                ],
+                "k": 6,
+                "legacy_candidate": null,
+                "legacy_share": 0.16666666666666666,
+                "ltcr": 0.0,
+                "occurrences": 6,
+                "pairs_agreeing": 0,
+                "pairs_total": 15,
+                "paragraphs": 6,
+                "term": "Hijaz"
+              },
+              {
+                "group_candidates": [
+                  "希贾兹铁路"
+                ],
+                "group_sizes": [
+                  6
+                ],
+                "k": 6,
+                "legacy_candidate": "希贾兹铁路",
+                "legacy_share": 1.0,
+                "ltcr": 1.0,
+                "occurrences": 6,
+                "pairs_agreeing": 15,
+                "pairs_total": 15,
+                "paragraphs": 6,
+                "term": "Hijaz Railway"
+              },
+              {
+                "group_candidates": [
+                  "奥斯曼"
+                ],
+                "group_sizes": [
+                  5
+                ],
+                "k": 5,
+                "legacy_candidate": "奥斯曼",
+                "legacy_share": 1.0,
+                "ltcr": 1.0,
+                "occurrences": 6,
+                "pairs_agreeing": 10,
+                "pairs_total": 10,
+                "paragraphs": 5,
+                "term": "Ottoman"
+              },
+              {
+                "group_candidates": [
+                  "阿尔·朱哈尼"
+                ],
+                "group_sizes": [
+                  5
+                ],
+                "k": 5,
+                "legacy_candidate": "阿尔·朱哈尼",
+                "legacy_share": 1.0,
+                "ltcr": 1.0,
+                "occurrences": 5,
+                "pairs_agreeing": 10,
+                "pairs_total": 10,
+                "paragraphs": 5,
+                "term": "Al Juhani"
+              },
+              {
+                "group_candidates": [
+                  "朝觐者",
+                  null
+                ],
+                "group_sizes": [
+                  2,
+                  1
+                ],
+                "k": 3,
+                "legacy_candidate": "朝觐者",
+                "legacy_share": 0.6666666666666666,
+                "ltcr": 0.3333333333333333,
+                "occurrences": 3,
+                "pairs_agreeing": 1,
+                "pairs_total": 3,
+                "paragraphs": 3,
+                "term": "Hajj"
+              },
+              {
+                "group_candidates": [
+                  "约旦北部",
+                  null
+                ],
+                "group_sizes": [
+                  2,
+                  1
+                ],
+                "k": 3,
+                "legacy_candidate": "约旦北部",
+                "legacy_share": 0.6666666666666666,
+                "ltcr": 0.3333333333333333,
+                "occurrences": 3,
+                "pairs_agreeing": 1,
+                "pairs_total": 3,
+                "paragraphs": 3,
+                "term": "Jordan"
+              }
+            ]
+          },
+          {
+            "region": "A3",
+            "summary": {
+              "fully_consistent": 1,
+              "legacy_mean_share": 1.0,
+              "ltcr": 1.0,
+              "measured": 1,
+              "pairs_agreeing": 1,
+              "pairs_total": 1,
+              "terms": 1
+            },
+            "terms": [
+              {
+                "group_candidates": [
+                  "阿尔罕布拉宫"
+                ],
+                "group_sizes": [
+                  2
+                ],
+                "k": 2,
+                "legacy_candidate": "阿尔罕布拉宫",
+                "legacy_share": 1.0,
+                "ltcr": 1.0,
+                "occurrences": 3,
+                "pairs_agreeing": 1,
+                "pairs_total": 1,
+                "paragraphs": 2,
+                "term": "Europe"
+              }
+            ]
+          },
+          {
+            "region": "A4",
+            "summary": {
+              "fully_consistent": 3,
+              "legacy_mean_share": 1.0,
+              "ltcr": 1.0,
+              "measured": 3,
+              "pairs_agreeing": 12,
+              "pairs_total": 12,
+              "terms": 3
+            },
+            "terms": [
+              {
+                "group_candidates": [
+                  "穆斯林"
+                ],
+                "group_sizes": [
+                  4
+                ],
+                "k": 4,
+                "legacy_candidate": "穆斯林",
+                "legacy_share": 1.0,
+                "ltcr": 1.0,
+                "occurrences": 4,
+                "pairs_agreeing": 6,
+                "pairs_total": 6,
+                "paragraphs": 4,
+                "term": "Muslim"
+              },
+              {
+                "group_candidates": [
+                  "伊斯兰教"
+                ],
+                "group_sizes": [
+                  3
+                ],
+                "k": 3,
+                "legacy_candidate": "伊斯兰教",
+                "legacy_share": 1.0,
+                "ltcr": 1.0,
+                "occurrences": 3,
+                "pairs_agreeing": 3,
+                "pairs_total": 3,
+                "paragraphs": 3,
+                "term": "Islam"
+              },
+              {
+                "group_candidates": [
+                  "伊斯兰教会"
+                ],
+                "group_sizes": [
+                  3
+                ],
+                "k": 3,
+                "legacy_candidate": "伊斯兰教会",
+                "legacy_share": 1.0,
+                "ltcr": 1.0,
+                "occurrences": 3,
+                "pairs_agreeing": 3,
+                "pairs_total": 3,
+                "paragraphs": 3,
+                "term": "Islamic Ecumene"
+              }
+            ]
+          }
+        ],
+        "summary": {
+          "fully_consistent": 7,
+          "legacy_mean_share": 0.85,
+          "ltcr": 0.724638,
+          "measured": 10,
+          "pairs_agreeing": 50,
+          "pairs_total": 69,
+          "terms": 10
+        }
+      },
+      "mid_break_rate": {
+        "metric": "mid_unit_page_break_rate",
+        "pages": 9,
+        "rate": 0.125,
+        "series": {
+          "column": {
+            "answerable": 14,
+            "axis_unsupported_count": 0,
+            "boundaries": [
+              {
+                "from_column": 0,
+                "label": "p3c0->c1",
+                "page_index": 2,
+                "series": "column",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 0,
+                  "last_character": "验",
+                  "last_character_x": 442.9422999999998,
+                  "last_character_y": 137.9345,
+                  "last_line_text": "2 初见| 4 风味| 6 问答| 38 作者角| 40 评论| 42 活动| 44 在线内容| 45 测验",
+                  "layout_label": "plain text",
+                  "page_index": 2,
+                  "paragraph_index": 16,
+                  "reference": "p3#16",
+                  "vertical": false
+                },
+                "to_column": 1,
+                "to_page_index": 2,
+                "truth_category": null,
+                "truth_link": null,
+                "verdict": "open"
+              },
+              {
+                "from_column": 1,
+                "label": "p3c1->c2",
+                "page_index": 2,
+                "series": "column",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 1,
+                  "last_character": "。",
+                  "last_character_x": 428.76657499999993,
+                  "last_character_y": 97.04560000000001,
+                  "last_line_text": "墙面图案。保护工作者不懈努力，修复和维护这些有着数百年历史的伊斯兰建筑实例。",
+                  "layout_label": "plain text",
+                  "page_index": 2,
+                  "paragraph_index": 15,
+                  "reference": "p3#15",
+                  "vertical": false
+                },
+                "to_column": 2,
+                "to_page_index": 2,
+                "truth_category": null,
+                "truth_link": null,
+                "verdict": "closed"
+              },
+              {
+                "from_column": 0,
+                "label": "p4c0->c1",
+                "page_index": 3,
+                "series": "column",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 0,
+                  "last_character": "”",
+                  "last_character_x": 373.94439988675106,
+                  "last_character_y": 142.66,
+                  "last_line_text": "们改变技术，这一切都会消亡。”",
+                  "layout_label": "title",
+                  "page_index": 3,
+                  "paragraph_index": 12,
+                  "reference": "p4#12",
+                  "vertical": false
+                },
+                "to_column": 1,
+                "to_page_index": 3,
+                "truth_category": null,
+                "truth_link": null,
+                "verdict": "closed"
+              },
+              {
+                "from_column": 1,
+                "label": "p4c1->c2",
+                "page_index": 3,
+                "series": "column",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 1,
+                  "last_character": "”",
+                  "last_character_x": 353.6286248511372,
+                  "last_character_y": 249.43387499999997,
+                  "last_line_text": "哈基莫夫说，“它随着时间的推移而稳定下来。”",
+                  "layout_label": "plain text",
+                  "page_index": 3,
+                  "paragraph_index": 3,
+                  "reference": "p4#3",
+                  "vertical": false
+                },
+                "to_column": 2,
+                "to_page_index": 3,
+                "truth_category": null,
+                "truth_link": null,
+                "verdict": "closed"
+              },
+              {
+                "from_column": 2,
+                "label": "p4c2->c3",
+                "page_index": 3,
+                "series": "column",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 2,
+                  "last_character": "V",
+                  "last_character_x": 361.2791484030723,
+                  "last_character_y": 91.94,
+                  "last_line_text": "— B A K H O D I R B A LTAY E V",
+                  "layout_label": "plain text",
+                  "page_index": 3,
+                  "paragraph_index": 13,
+                  "reference": "p4#13",
+                  "vertical": false
+                },
+                "to_column": 3,
+                "to_page_index": 3,
+                "truth_category": null,
+                "truth_link": null,
+                "verdict": "open"
+              },
+              {
+                "from_column": 0,
+                "label": "p5c0->c1",
+                "page_index": 4,
+                "series": "column",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 0,
+                  "last_character": "在",
+                  "last_character_x": 420.4245656349971,
+                  "last_character_y": 635.1931999999999,
+                  "last_line_text": "因为他那辆破旧的老SUV上的仪表盘都不工作。他一只手放在",
+                  "layout_label": "plain text",
+                  "page_index": 4,
+                  "paragraph_index": 12,
+                  "reference": "p5#12",
+                  "vertical": false
+                },
+                "to_column": 1,
+                "to_page_index": 4,
+                "truth_category": null,
+                "truth_link": null,
+                "verdict": "open"
+              },
+              {
+                "from_column": 1,
+                "label": "p5c1->c2",
+                "page_index": 4,
+                "series": "column",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 1,
+                  "last_character": "，",
+                  "last_character_x": 257.1447499999998,
+                  "last_character_y": 97.13137500000002,
+                  "last_line_text": "标：在麦加和麦地那之间建立了直接的铁路连接，",
+                  "layout_label": "plain text",
+                  "page_index": 4,
+                  "paragraph_index": 7,
+                  "reference": "p5#7",
+                  "vertical": false
+                },
+                "to_column": 2,
+                "to_page_index": 4,
+                "truth_category": null,
+                "truth_link": null,
+                "verdict": "open"
+              },
+              {
+                "from_column": 0,
+                "label": "p6c0->c1",
+                "page_index": 5,
+                "series": "column",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 0,
+                  "last_character": "是",
+                  "last_character_x": 217.18650000000005,
+                  "last_character_y": 636.5001249999999,
+                  "last_line_text": "心，那里是",
+                  "layout_label": "plain text",
+                  "page_index": 5,
+                  "paragraph_index": 3,
+                  "reference": "p6#3",
+                  "vertical": false
+                },
+                "to_column": 1,
+                "to_page_index": 5,
+                "truth_category": null,
+                "truth_link": null,
+                "verdict": "open"
+              },
+              {
+                "from_column": 0,
+                "label": "p7c0->c1",
+                "page_index": 6,
+                "series": "column",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 0,
+                  "last_character": "。",
+                  "last_character_x": 258.51375,
+                  "last_character_y": 98.40475,
+                  "last_line_text": "那一段。战争最终导致了奥斯曼帝国的崩溃。",
+                  "layout_label": "plain text",
+                  "page_index": 6,
+                  "paragraph_index": 5,
+                  "reference": "p7#5",
+                  "vertical": false
+                },
+                "to_column": 1,
+                "to_page_index": 6,
+                "truth_category": null,
+                "truth_link": null,
+                "verdict": "closed"
+              },
+              {
+                "from_column": 0,
+                "label": "p8c0->c1",
+                "page_index": 7,
+                "series": "column",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 0,
+                  "last_character": "T",
+                  "last_character_x": 227.9365002770424,
+                  "last_character_y": 182.04500000000002,
+                  "last_line_text": "对进入者产生影响的空间。——JAMIE S. SCOT T",
+                  "layout_label": "plain text",
+                  "page_index": 7,
+                  "paragraph_index": 10,
+                  "reference": "p8#10",
+                  "vertical": false
+                },
+                "to_column": 1,
+                "to_page_index": 7,
+                "truth_category": null,
+                "truth_link": null,
+                "verdict": "open"
+              },
+              {
+                "from_column": 1,
+                "label": "p8c1->c2",
+                "page_index": 7,
+                "series": "column",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 1,
+                  "last_character": "；",
+                  "last_character_x": 155.1328,
+                  "last_character_y": 309.065,
+                  "last_line_text": "存在；",
+                  "layout_label": "plain text",
+                  "page_index": 7,
+                  "paragraph_index": 9,
+                  "reference": "p8#9",
+                  "vertical": false
+                },
+                "to_column": 2,
+                "to_page_index": 7,
+                "truth_category": null,
+                "truth_link": null,
+                "verdict": "open"
+              },
+              {
+                "from_column": 2,
+                "label": "p8c2->c3",
+                "page_index": 7,
+                "series": "column",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 2,
+                  "last_character": "雷",
+                  "last_character_x": 378.62724999999995,
+                  "last_character_y": 261.11250000000047,
+                  "last_line_text": "迪安娜·雷",
+                  "layout_label": "plain text",
+                  "page_index": 7,
+                  "paragraph_index": 15,
+                  "reference": "p8#15",
+                  "vertical": false
+                },
+                "to_column": 3,
+                "to_page_index": 7,
+                "truth_category": null,
+                "truth_link": null,
+                "verdict": "open"
+              },
+              {
+                "from_column": 0,
+                "label": "p9c0->c1",
+                "page_index": 8,
+                "series": "column",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 0,
+                  "last_character": "。",
+                  "last_character_x": 161.09090042724608,
+                  "last_character_y": 126.69900000000001,
+                  "last_line_text": "版社，2023年。",
+                  "layout_label": "figure_caption",
+                  "page_index": 8,
+                  "paragraph_index": 17,
+                  "reference": "p9#17",
+                  "vertical": false
+                },
+                "to_column": 1,
+                "to_page_index": 8,
+                "truth_category": null,
+                "truth_link": null,
+                "verdict": "closed"
+              },
+              {
+                "from_column": 1,
+                "label": "p9c1->c2",
+                "page_index": 8,
+                "series": "column",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 1,
+                  "last_character": "。",
+                  "last_character_x": 422.7916994690419,
+                  "last_character_y": 94.1706,
+                  "last_line_text": "在 AramcoWorld.com 在线查找更多类似的评论。",
+                  "layout_label": "plain text",
+                  "page_index": 8,
+                  "paragraph_index": 11,
+                  "reference": "p9#11",
+                  "vertical": false
+                },
+                "to_column": 2,
+                "to_page_index": 8,
+                "truth_category": null,
+                "truth_link": null,
+                "verdict": "closed"
+              }
+            ],
+            "boundaries_total": 14,
+            "closed_count": 6,
+            "designed_count": 0,
+            "no_tail_count": 0,
+            "open_count": 8,
+            "rate": 0.571429,
+            "series": "column",
+            "strict_rate": 0.571429
+          },
+          "page": {
+            "answerable": 7,
+            "axis_unsupported_count": 0,
+            "boundaries": [
+              {
+                "from_column": -1,
+                "label": "1->2",
+                "page_index": 0,
+                "series": "page",
+                "tail": null,
+                "to_column": -1,
+                "to_page_index": 1,
+                "truth_category": "clean",
+                "truth_link": false,
+                "verdict": "no_tail"
+              },
+              {
+                "from_column": -1,
+                "label": "2->3",
+                "page_index": 1,
+                "series": "page",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 0,
+                  "last_character": "。",
+                  "last_character_x": 156.41040110816954,
+                  "last_character_y": 126.69700000000026,
+                  "last_line_text": "292348，俄亥俄州凯特林 45429。",
+                  "layout_label": "plain text",
+                  "page_index": 1,
+                  "paragraph_index": 11,
+                  "reference": "p2#11",
+                  "vertical": false
+                },
+                "to_column": -1,
+                "to_page_index": 2,
+                "truth_category": "clean",
+                "truth_link": false,
+                "verdict": "closed"
+              },
+              {
+                "from_column": -1,
+                "label": "3->4",
+                "page_index": 2,
+                "series": "page",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 2,
+                  "last_character": "。",
+                  "last_character_x": 576.277,
+                  "last_character_y": 211.9202,
+                  "last_line_text": "的圣地麦地那及更远的地方，如今正在为该地区的铁路愿景注入新的活力。",
+                  "layout_label": "plain text",
+                  "page_index": 2,
+                  "paragraph_index": 10,
+                  "reference": "p3#10",
+                  "vertical": false
+                },
+                "to_column": -1,
+                "to_page_index": 3,
+                "truth_category": "clean",
+                "truth_link": false,
+                "verdict": "closed"
+              },
+              {
+                "from_column": -1,
+                "label": "4->5",
+                "page_index": 3,
+                "series": "page",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 3,
+                  "last_character": "”",
+                  "last_character_x": 579.1355624531357,
+                  "last_character_y": 99.78475,
+                  "last_line_text": "现在，当你走进去时，感觉就像它一直以来就是这样。”",
+                  "layout_label": "plain text",
+                  "page_index": 3,
+                  "paragraph_index": 11,
+                  "reference": "p4#11",
+                  "vertical": false
+                },
+                "to_column": -1,
+                "to_page_index": 4,
+                "truth_category": "clean",
+                "truth_link": false,
+                "verdict": "closed"
+              },
+              {
+                "from_column": -1,
+                "label": "5->6",
+                "page_index": 4,
+                "series": "page",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 2,
+                  "last_character": "。",
+                  "last_character_x": 354.53225,
+                  "last_character_y": 347.166125,
+                  "last_line_text": "讨论中发挥作用。",
+                  "layout_label": "plain text",
+                  "page_index": 4,
+                  "paragraph_index": 10,
+                  "reference": "p5#10",
+                  "vertical": false
+                },
+                "to_column": -1,
+                "to_page_index": 5,
+                "truth_category": "clean",
+                "truth_link": false,
+                "verdict": "closed"
+              },
+              {
+                "from_column": -1,
+                "label": "6->7",
+                "page_index": 5,
+                "series": "page",
+                "tail": {
+                  "chain_id": "P6WRS",
+                  "column_index": 1,
+                  "last_character": "”",
+                  "last_character_x": 436.9884999448657,
+                  "last_character_y": 97.013875,
+                  "last_line_text": "技术难题。”",
+                  "layout_label": "plain text",
+                  "page_index": 5,
+                  "paragraph_index": 10,
+                  "reference": "p6#10",
+                  "vertical": false
+                },
+                "to_column": -1,
+                "to_page_index": 6,
+                "truth_category": "linked",
+                "truth_link": true,
+                "verdict": "closed"
+              },
+              {
+                "from_column": -1,
+                "label": "7->8",
+                "page_index": 6,
+                "series": "page",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 1,
+                  "last_character": "个",
+                  "last_character_x": 447.4947499999997,
+                  "last_character_y": 259.88975000000005,
+                  "last_line_text": "中心宏伟的希贾兹火车站标志着，那里是一个",
+                  "layout_label": "plain text",
+                  "page_index": 6,
+                  "paragraph_index": 10,
+                  "reference": "p7#10",
+                  "vertical": false
+                },
+                "to_column": -1,
+                "to_page_index": 7,
+                "truth_category": "trap",
+                "truth_link": false,
+                "verdict": "open"
+              },
+              {
+                "from_column": -1,
+                "label": "8->9",
+                "page_index": 7,
+                "series": "page",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 3,
+                  "last_character": "”",
+                  "last_character_x": 546.3892999165535,
+                  "last_character_y": 162.25,
+                  "last_line_text": "藏在神秘和想象的面纱之后。”",
+                  "layout_label": "title",
+                  "page_index": 7,
+                  "paragraph_index": 11,
+                  "reference": "p8#11",
+                  "vertical": false
+                },
+                "to_column": -1,
+                "to_page_index": 8,
+                "truth_category": "clean",
+                "truth_link": false,
+                "verdict": "closed"
+              }
+            ],
+            "boundaries_total": 8,
+            "closed_count": 6,
+            "designed_count": 0,
+            "no_tail_count": 1,
+            "open_count": 1,
+            "rate": 0.125,
+            "series": "page",
+            "strict_rate": 0.142857
+          }
+        },
+        "stratified": {
+          "mbr_all": 0.125,
+          "mbr_all_denominator": 8,
+          "mbr_linkable": 0.0,
+          "mbr_linkable_denominator": 6,
+          "mbr_linkable_open": 0,
+          "source_inherited_open": 1,
+          "strata": {
+            "clean": {
+              "answerable": 5,
+              "axis_unsupported_count": 0,
+              "boundaries_total": 6,
+              "closed_count": 5,
+              "designed_count": 0,
+              "no_tail_count": 1,
+              "open_count": 0,
+              "rate": 0.0,
+              "series": "page",
+              "strict_rate": 0.0
+            },
+            "linked": {
+              "answerable": 1,
+              "axis_unsupported_count": 0,
+              "boundaries_total": 1,
+              "closed_count": 1,
+              "designed_count": 0,
+              "no_tail_count": 0,
+              "open_count": 0,
+              "rate": 0.0,
+              "series": "page",
+              "strict_rate": 0.0
+            },
+            "trap": {
+              "answerable": 1,
+              "axis_unsupported_count": 0,
+              "boundaries_total": 1,
+              "closed_count": 0,
+              "designed_count": 0,
+              "no_tail_count": 0,
+              "open_count": 1,
+              "rate": 1.0,
+              "series": "page",
+              "strict_rate": 1.0
+            },
+            "unlabelled": {
+              "answerable": 0,
+              "axis_unsupported_count": 0,
+              "boundaries_total": 0,
+              "closed_count": 0,
+              "designed_count": 0,
+              "no_tail_count": 0,
+              "open_count": 0,
+              "rate": null,
+              "series": "page",
+              "strict_rate": null
+            }
+          },
+          "trap_boundaries": 1,
+          "unlabelled_boundaries": 0
+        },
+        "strict_rate": 0.142857,
+        "vertical_paragraphs": 3
+      },
+      "path": "intermediate_language",
+      "sample": "AramcoWorld-en-v2.pdf",
+      "working_dir": "examples/output/b8_4/smoke/AramcoWorld-en-v2/work/AramcoWorld-en-v2"
+    },
+    {
+      "absent": [
+        "no working directory: no chain or repair level of the conservation invariant",
+        "no source and translated checkpoint pair: no LTCR"
+      ],
+      "conservation": {
+        "holds": true,
+        "levels": {
+          "chain": {
+            "evidence": {
+              "absent": "no chain translation report"
+            },
+            "failures": [],
+            "holds": null,
+            "level": "chain",
+            "subjects": 0
+          },
+          "document": {
+            "evidence": {
+              "produced_pages": 9,
+              "source_pages": 9
+            },
+            "failures": [],
+            "holds": true,
+            "level": "document",
+            "subjects": 1
+          },
+          "repair": {
+            "evidence": {
+              "absent": "no repair report"
+            },
+            "failures": [],
+            "holds": null,
+            "level": "repair",
+            "subjects": 0
+          }
+        },
+        "levels_absent": [
+          "chain",
+          "repair"
+        ],
+        "levels_present": [
+          "document"
+        ],
+        "metric": "block_conservation_invariant"
+      },
+      "label": "fork_full_pdf",
+      "layout_geometry": {
+        "metric": "layout_geometry",
+        "page_count_delta": {
+          "conserved": true,
+          "produced_pages": 9,
+          "source_pages": 9,
+          "value": 0
+        },
+        "pages": [
+          {
+            "alignment_delta": -0.00014,
+            "image_area_delta": {
+              "absolute": 0.0,
+              "produced_area": 1.050167,
+              "source_area": 1.050167,
+              "value": 0.0
+            },
+            "image_placement_iou": {
+              "pairs": 12,
+              "produced_images": 12,
+              "source_images": 12,
+              "unpaired_produced": 0,
+              "unpaired_source": 0,
+              "value": 1.0
+            },
+            "overlap_delta": 0.000482,
+            "page_index": 0,
+            "produced": {
+              "alignment": {
+                "dropped": 0,
+                "elements": 13,
+                "value": 0.001021982391114153
+              },
+              "elements": 13,
+              "overlap": {
+                "dropped": 0,
+                "elements": 13,
+                "value": 0.16537106706795526
+              }
+            },
+            "source": {
+              "alignment": {
+                "dropped": 0,
+                "elements": 13,
+                "value": 0.0011616562523504433
+              },
+              "elements": 13,
+              "overlap": {
+                "dropped": 0,
+                "elements": 13,
+                "value": 0.1648891868573609
+              }
+            }
+          },
+          {
+            "alignment_delta": 0.000641,
+            "image_area_delta": {
+              "absolute": 0.001668,
+              "produced_area": 1.186534,
+              "source_area": 1.184866,
+              "value": 0.001408
+            },
+            "image_placement_iou": {
+              "pairs": 7,
+              "produced_images": 7,
+              "source_images": 7,
+              "unpaired_produced": 0,
+              "unpaired_source": 0,
+              "value": 0.99961
+            },
+            "overlap_delta": 0.124338,
+            "page_index": 1,
+            "produced": {
+              "alignment": {
+                "dropped": 0,
+                "elements": 24,
+                "value": 0.0006754777424196928
+              },
+              "elements": 24,
+              "overlap": {
+                "dropped": 0,
+                "elements": 24,
+                "value": 0.2485201915675942
+              }
+            },
+            "source": {
+              "alignment": {
+                "dropped": 0,
+                "elements": 48,
+                "value": 3.458440263311051e-05
+              },
+              "elements": 48,
+              "overlap": {
+                "dropped": 0,
+                "elements": 48,
+                "value": 0.12418239362030174
+              }
+            }
+          },
+          {
+            "alignment_delta": 3.7e-05,
+            "image_area_delta": {
+              "absolute": 0.0,
+              "produced_area": 0.210895,
+              "source_area": 0.210895,
+              "value": 0.0
+            },
+            "image_placement_iou": {
+              "pairs": 3,
+              "produced_images": 3,
+              "source_images": 3,
+              "unpaired_produced": 0,
+              "unpaired_source": 0,
+              "value": 1.0
+            },
+            "overlap_delta": 0.07229,
+            "page_index": 2,
+            "produced": {
+              "alignment": {
+                "dropped": 0,
+                "elements": 18,
+                "value": 0.001835465931965747
+              },
+              "elements": 18,
+              "overlap": {
+                "dropped": 0,
+                "elements": 18,
+                "value": 0.12844531872683987
+              }
+            },
+            "source": {
+              "alignment": {
+                "dropped": 0,
+                "elements": 19,
+                "value": 0.0017982106577956348
+              },
+              "elements": 19,
+              "overlap": {
+                "dropped": 0,
+                "elements": 19,
+                "value": 0.056155666119587035
+              }
+            }
+          },
+          {
+            "alignment_delta": 0.000283,
+            "image_area_delta": {
+              "absolute": 0.0,
+              "produced_area": 0.577602,
+              "source_area": 0.577602,
+              "value": 0.0
+            },
+            "image_placement_iou": {
+              "pairs": 1,
+              "produced_images": 1,
+              "source_images": 1,
+              "unpaired_produced": 0,
+              "unpaired_source": 0,
+              "value": 1.0
+            },
+            "overlap_delta": -0.046572,
+            "page_index": 3,
+            "produced": {
+              "alignment": {
+                "dropped": 0,
+                "elements": 22,
+                "value": 0.002652841949411094
+              },
+              "elements": 22,
+              "overlap": {
+                "dropped": 0,
+                "elements": 22,
+                "value": 0.0036734314760912905
+              }
+            },
+            "source": {
+              "alignment": {
+                "dropped": 0,
+                "elements": 17,
+                "value": 0.0023697254674842614
+              },
+              "elements": 17,
+              "overlap": {
+                "dropped": 0,
+                "elements": 17,
+                "value": 0.050245333911385304
+              }
+            }
+          },
+          {
+            "alignment_delta": 0.000153,
+            "image_area_delta": {
+              "absolute": -0.01341,
+              "produced_area": 0.30959,
+              "source_area": 0.323001,
+              "value": -0.041518
+            },
+            "image_placement_iou": {
+              "pairs": 6,
+              "produced_images": 8,
+              "source_images": 6,
+              "unpaired_produced": 2,
+              "unpaired_source": 0,
+              "value": 0.645505
+            },
+            "overlap_delta": -0.296256,
+            "page_index": 4,
+            "produced": {
+              "alignment": {
+                "dropped": 0,
+                "elements": 42,
+                "value": 0.000152695919276336
+              },
+              "elements": 42,
+              "overlap": {
+                "dropped": 0,
+                "elements": 42,
+                "value": 0.4201235778876998
+              }
+            },
+            "source": {
+              "alignment": {
+                "dropped": 0,
+                "elements": 24,
+                "value": 1.2977314365978998e-07
+              },
+              "elements": 24,
+              "overlap": {
+                "dropped": 0,
+                "elements": 24,
+                "value": 0.7163797932516754
+              }
+            }
+          },
+          {
+            "alignment_delta": 2.3e-05,
+            "image_area_delta": {
+              "absolute": 0.0,
+              "produced_area": 0.348896,
+              "source_area": 0.348896,
+              "value": 0.0
+            },
+            "image_placement_iou": {
+              "pairs": 2,
+              "produced_images": 2,
+              "source_images": 2,
+              "unpaired_produced": 0,
+              "unpaired_source": 0,
+              "value": 1.0
+            },
+            "overlap_delta": -0.022122,
+            "page_index": 5,
+            "produced": {
+              "alignment": {
+                "dropped": 0,
+                "elements": 25,
+                "value": 0.00010057610483185042
+              },
+              "elements": 25,
+              "overlap": {
+                "dropped": 0,
+                "elements": 25,
+                "value": 0.0003249323296820465
+              }
+            },
+            "source": {
+              "alignment": {
+                "dropped": 0,
+                "elements": 14,
+                "value": 7.797539369706155e-05
+              },
+              "elements": 14,
+              "overlap": {
+                "dropped": 0,
+                "elements": 14,
+                "value": 0.022447395547892997
+              }
+            }
+          },
+          {
+            "alignment_delta": 0.001592,
+            "image_area_delta": {
+              "absolute": 0.0,
+              "produced_area": 0.345937,
+              "source_area": 0.345937,
+              "value": 0.0
+            },
+            "image_placement_iou": {
+              "pairs": 1,
+              "produced_images": 1,
+              "source_images": 1,
+              "unpaired_produced": 0,
+              "unpaired_source": 0,
+              "value": 1.0
+            },
+            "overlap_delta": -0.038921,
+            "page_index": 6,
+            "produced": {
+              "alignment": {
+                "dropped": 0,
+                "elements": 23,
+                "value": 0.0022970648656893064
+              },
+              "elements": 23,
+              "overlap": {
+                "dropped": 0,
+                "elements": 23,
+                "value": 0.0014395994291795673
+              }
+            },
+            "source": {
+              "alignment": {
+                "dropped": 0,
+                "elements": 20,
+                "value": 0.000704919927213394
+              },
+              "elements": 20,
+              "overlap": {
+                "dropped": 0,
+                "elements": 20,
+                "value": 0.040360461950336955
+              }
+            }
+          },
+          {
+            "alignment_delta": 0.000885,
+            "image_area_delta": {
+              "absolute": 0.0,
+              "produced_area": 0.059267,
+              "source_area": 0.059267,
+              "value": 0.0
+            },
+            "image_placement_iou": {
+              "pairs": 6,
+              "produced_images": 6,
+              "source_images": 6,
+              "unpaired_produced": 0,
+              "unpaired_source": 0,
+              "value": 1.0
+            },
+            "overlap_delta": 0.066004,
+            "page_index": 7,
+            "produced": {
+              "alignment": {
+                "dropped": 0,
+                "elements": 33,
+                "value": 0.0010001276180919981
+              },
+              "elements": 33,
+              "overlap": {
+                "dropped": 0,
+                "elements": 33,
+                "value": 0.14882178170503857
+              }
+            },
+            "source": {
+              "alignment": {
+                "dropped": 0,
+                "elements": 64,
+                "value": 0.00011539245812668337
+              },
+              "elements": 64,
+              "overlap": {
+                "dropped": 0,
+                "elements": 64,
+                "value": 0.08281754189554172
+              }
+            }
+          },
+          {
+            "alignment_delta": 0.000308,
+            "image_area_delta": {
+              "absolute": -0.0,
+              "produced_area": 0.195268,
+              "source_area": 0.195268,
+              "value": -0.0
+            },
+            "image_placement_iou": {
+              "pairs": 39,
+              "produced_images": 39,
+              "source_images": 39,
+              "unpaired_produced": 0,
+              "unpaired_source": 0,
+              "value": 0.999871
+            },
+            "overlap_delta": 1.181875,
+            "page_index": 8,
+            "produced": {
+              "alignment": {
+                "dropped": 0,
+                "elements": 83,
+                "value": 0.0003682023765105006
+              },
+              "elements": 83,
+              "overlap": {
+                "dropped": 0,
+                "elements": 83,
+                "value": 2.7740801190698168
+              }
+            },
+            "source": {
+              "alignment": {
+                "dropped": 0,
+                "elements": 148,
+                "value": 6.017266115619925e-05
+              },
+              "elements": 148,
+              "overlap": {
+                "dropped": 0,
+                "elements": 148,
+                "value": 1.5922046593396098
+              }
+            }
+          }
+        ],
+        "pages_compared": 9,
+        "summary": {
+          "alignment_delta": 0.00042,
+          "alignment_produced": 0.001123,
+          "alignment_source": 0.000703,
+          "image_area_delta": -0.004457,
+          "image_placement_iou": 0.960554,
+          "overlap_delta": 0.11568,
+          "overlap_produced": 0.432311,
+          "overlap_source": 0.316631
+        }
+      },
+      "mid_break_rate": {
+        "metric": "mid_unit_page_break_rate",
+        "pages": 9,
+        "rate": 0.25,
+        "series": {
+          "column": {
+            "answerable": 16,
+            "axis_unsupported_count": 0,
+            "boundaries": [
+              {
+                "from_column": 0,
+                "label": "p3c0->c1",
+                "page_index": 2,
+                "series": "column",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 0,
+                  "last_character": "验",
+                  "last_character_x": 418.9422912597656,
+                  "last_character_y": 113.2545166015625,
+                  "last_line_text": "2 初见| 4 风味| 6 问答| 38 作者角| 40 评论| 42 活动| 44 在线内容| 45 测验",
+                  "layout_label": "plain text",
+                  "page_index": 2,
+                  "paragraph_index": 12,
+                  "reference": "p3#12",
+                  "vertical": false
+                },
+                "to_column": 1,
+                "to_page_index": 2,
+                "truth_category": null,
+                "truth_link": null,
+                "verdict": "open"
+              },
+              {
+                "from_column": 1,
+                "label": "p3c1->c2",
+                "page_index": 2,
+                "series": "column",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 1,
+                  "last_character": "。",
+                  "last_character_x": 404.7665710449219,
+                  "last_character_y": 72.5526123046875,
+                  "last_line_text": "圆顶和墙面图案。保护工作者不懈努力，修复和维护这些有着数百年历史的伊斯兰建筑实例。",
+                  "layout_label": "plain text",
+                  "page_index": 2,
+                  "paragraph_index": 11,
+                  "reference": "p3#11",
+                  "vertical": false
+                },
+                "to_column": 2,
+                "to_page_index": 2,
+                "truth_category": null,
+                "truth_link": null,
+                "verdict": "closed"
+              },
+              {
+                "from_column": 0,
+                "label": "p4c0->c1",
+                "page_index": 3,
+                "series": "column",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 0,
+                  "last_character": "”",
+                  "last_character_x": 349.94439697265625,
+                  "last_character_y": 116.53201293945312,
+                  "last_line_text": "们改变技术，这一切都会消亡。”",
+                  "layout_label": "plain text",
+                  "page_index": 3,
+                  "paragraph_index": 16,
+                  "reference": "p4#16",
+                  "vertical": false
+                },
+                "to_column": 1,
+                "to_page_index": 3,
+                "truth_category": null,
+                "truth_link": null,
+                "verdict": "closed"
+              },
+              {
+                "from_column": 1,
+                "label": "p4c1->c2",
+                "page_index": 3,
+                "series": "column",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 1,
+                  "last_character": "”",
+                  "last_character_x": 329.6286163330078,
+                  "last_character_y": 224.50146484375,
+                  "last_line_text": "哈基莫夫说，“它随着时间的推移而稳定下来。”",
+                  "layout_label": "plain text",
+                  "page_index": 3,
+                  "paragraph_index": 5,
+                  "reference": "p4#5",
+                  "vertical": false
+                },
+                "to_column": 2,
+                "to_page_index": 3,
+                "truth_category": null,
+                "truth_link": null,
+                "verdict": "closed"
+              },
+              {
+                "from_column": 2,
+                "label": "p4c2->c3",
+                "page_index": 3,
+                "series": "column",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 2,
+                  "last_character": "V",
+                  "last_character_x": 337.2791442871094,
+                  "last_character_y": 66.98800659179688,
+                  "last_line_text": "— B A K H O D I R B A LTAY E V",
+                  "layout_label": "plain text",
+                  "page_index": 3,
+                  "paragraph_index": 17,
+                  "reference": "p4#17",
+                  "vertical": false
+                },
+                "to_column": 3,
+                "to_page_index": 3,
+                "truth_category": null,
+                "truth_link": null,
+                "verdict": "open"
+              },
+              {
+                "from_column": 0,
+                "label": "p5c0->c1",
+                "page_index": 4,
+                "series": "column",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 0,
+                  "last_character": "。",
+                  "last_character_x": 119.97100448608398,
+                  "last_character_y": 109.08123779296875,
+                  "last_line_text": "运营到该国南部。",
+                  "layout_label": "plain text",
+                  "page_index": 4,
+                  "paragraph_index": 15,
+                  "reference": "p5#15",
+                  "vertical": false
+                },
+                "to_column": 1,
+                "to_page_index": 4,
+                "truth_category": null,
+                "truth_link": null,
+                "verdict": "closed"
+              },
+              {
+                "from_column": 1,
+                "label": "p5c1->c2",
+                "page_index": 4,
+                "series": "column",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 1,
+                  "last_character": "，",
+                  "last_character_x": 233.1447525024414,
+                  "last_character_y": 72.56527709960938,
+                  "last_line_text": "标：在麦加和麦地那之间建立了直接的铁路连接，",
+                  "layout_label": "plain text",
+                  "page_index": 4,
+                  "paragraph_index": 16,
+                  "reference": "p5#16",
+                  "vertical": false
+                },
+                "to_column": 2,
+                "to_page_index": 4,
+                "truth_category": null,
+                "truth_link": null,
+                "verdict": "open"
+              },
+              {
+                "from_column": 0,
+                "label": "p6c0->c1",
+                "page_index": 5,
+                "series": "column",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 0,
+                  "last_character": "中",
+                  "last_character_x": 344.53961181640625,
+                  "last_character_y": 623.7592086791992,
+                  "last_line_text": "杜勒·哈米德希望将奥斯曼帝国领土的边缘重新连接到中",
+                  "layout_label": "plain text",
+                  "page_index": 5,
+                  "paragraph_index": 6,
+                  "reference": "p6#6",
+                  "vertical": false
+                },
+                "to_column": 1,
+                "to_page_index": 5,
+                "truth_category": null,
+                "truth_link": null,
+                "verdict": "open"
+              },
+              {
+                "from_column": 0,
+                "label": "p7c0->c1",
+                "page_index": 6,
+                "series": "column",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 0,
+                  "last_character": "。",
+                  "last_character_x": 234.5137481689453,
+                  "last_character_y": 73.77572631835938,
+                  "last_line_text": "那一段。战争最终导致了奥斯曼帝国的崩溃。",
+                  "layout_label": "plain text",
+                  "page_index": 6,
+                  "paragraph_index": 9,
+                  "reference": "p7#9",
+                  "vertical": false
+                },
+                "to_column": 1,
+                "to_page_index": 6,
+                "truth_category": null,
+                "truth_link": null,
+                "verdict": "closed"
+              },
+              {
+                "from_column": 0,
+                "label": "p8c0->c1",
+                "page_index": 7,
+                "series": "column",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 0,
+                  "last_character": "T",
+                  "last_character_x": 203.9365005493164,
+                  "last_character_y": 157.26095581054688,
+                  "last_line_text": "对进入者产生影响的空间。——JAMIE S. SCOT T",
+                  "layout_label": "plain text",
+                  "page_index": 7,
+                  "paragraph_index": 11,
+                  "reference": "p8#11",
+                  "vertical": false
+                },
+                "to_column": 1,
+                "to_page_index": 7,
+                "truth_category": null,
+                "truth_link": null,
+                "verdict": "open"
+              },
+              {
+                "from_column": 1,
+                "label": "p8c1->c2",
+                "page_index": 7,
+                "series": "column",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 1,
+                  "last_character": "。",
+                  "last_character_x": 328.0653076171875,
+                  "last_character_y": 66.27761840820312,
+                  "last_line_text": "编辑们不支持作者的观点，但鼓励通过阅读来增进理解。",
+                  "layout_label": "plain text",
+                  "page_index": 7,
+                  "paragraph_index": 2,
+                  "reference": "p8#2",
+                  "vertical": false
+                },
+                "to_column": 2,
+                "to_page_index": 7,
+                "truth_category": null,
+                "truth_link": null,
+                "verdict": "closed"
+              },
+              {
+                "from_column": 2,
+                "label": "p8c2->c3",
+                "page_index": 7,
+                "series": "column",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 2,
+                  "last_character": "—",
+                  "last_character_x": 532.98974609375,
+                  "last_character_y": 249.5489501953125,
+                  "last_line_text": "邀请读者欣赏权力、性别和记忆如何交织在一起。——",
+                  "layout_label": "plain text",
+                  "page_index": 7,
+                  "paragraph_index": 25,
+                  "reference": "p8#25",
+                  "vertical": false
+                },
+                "to_column": 3,
+                "to_page_index": 7,
+                "truth_category": null,
+                "truth_link": null,
+                "verdict": "open"
+              },
+              {
+                "from_column": 0,
+                "label": "p9c0->c1",
+                "page_index": 8,
+                "series": "column",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 0,
+                  "last_character": "。",
+                  "last_character_x": 137.0908966064453,
+                  "last_character_y": 102.22296142578125,
+                  "last_line_text": "版社，2023年。",
+                  "layout_label": "plain text",
+                  "page_index": 8,
+                  "paragraph_index": 43,
+                  "reference": "p9#43",
+                  "vertical": false
+                },
+                "to_column": 1,
+                "to_page_index": 8,
+                "truth_category": null,
+                "truth_link": null,
+                "verdict": "closed"
+              },
+              {
+                "from_column": 1,
+                "label": "p9c1->c2",
+                "page_index": 8,
+                "series": "column",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 1,
+                  "last_character": "。",
+                  "last_character_x": 398.79168701171875,
+                  "last_character_y": 68.77658081054688,
+                  "last_line_text": "在 AramcoWorld.com 在线查找更多类似的评论。",
+                  "layout_label": "plain text",
+                  "page_index": 8,
+                  "paragraph_index": 18,
+                  "reference": "p9#18",
+                  "vertical": false
+                },
+                "to_column": 2,
+                "to_page_index": 8,
+                "truth_category": null,
+                "truth_link": null,
+                "verdict": "closed"
+              },
+              {
+                "from_column": 2,
+                "label": "p9c2->c3",
+                "page_index": 8,
+                "series": "column",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 2,
+                  "last_character": "抹",
+                  "last_character_x": 391.66351318359375,
+                  "last_character_y": 218.28842163085938,
+                  "last_line_text": "常规，但Brower揭示了这实际上是身份的抹",
+                  "layout_label": "plain text",
+                  "page_index": 8,
+                  "paragraph_index": 6,
+                  "reference": "p9#6",
+                  "vertical": false
+                },
+                "to_column": 3,
+                "to_page_index": 8,
+                "truth_category": null,
+                "truth_link": null,
+                "verdict": "open"
+              },
+              {
+                "from_column": 3,
+                "label": "p9c3->c4",
+                "page_index": 8,
+                "series": "column",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 3,
+                  "last_character": "”",
+                  "last_character_x": 471.6681823730469,
+                  "last_character_y": 125.927001953125,
+                  "last_line_text": "观察联系穆斯林社会的纽带。”",
+                  "layout_label": "plain text",
+                  "page_index": 8,
+                  "paragraph_index": 23,
+                  "reference": "p9#23",
+                  "vertical": false
+                },
+                "to_column": 4,
+                "to_page_index": 8,
+                "truth_category": null,
+                "truth_link": null,
+                "verdict": "closed"
+              }
+            ],
+            "boundaries_total": 16,
+            "closed_count": 9,
+            "designed_count": 0,
+            "no_tail_count": 0,
+            "open_count": 7,
+            "rate": 0.4375,
+            "series": "column",
+            "strict_rate": 0.4375
+          },
+          "page": {
+            "answerable": 8,
+            "axis_unsupported_count": 0,
+            "boundaries": [
+              {
+                "from_column": -1,
+                "label": "1->2",
+                "page_index": 0,
+                "series": "page",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 0,
+                  "last_character": "m",
+                  "last_character_x": 294.90943908691406,
+                  "last_character_y": 734.8143711090088,
+                  "last_line_text": "7月 – 8月 2026  |  第77卷 第4   |  期 AramcoWorld.com",
+                  "layout_label": "plain text",
+                  "page_index": 0,
+                  "paragraph_index": 0,
+                  "reference": "p1#0",
+                  "vertical": false
+                },
+                "to_column": -1,
+                "to_page_index": 1,
+                "truth_category": "clean",
+                "truth_link": false,
+                "verdict": "open"
+              },
+              {
+                "from_column": -1,
+                "label": "2->3",
+                "page_index": 1,
+                "series": "page",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 0,
+                  "last_character": "。",
+                  "last_character_x": 156.410400390625,
+                  "last_character_y": 126.22100830078125,
+                  "last_line_text": "292348，俄亥俄州凯特林 45429。",
+                  "layout_label": "plain text",
+                  "page_index": 1,
+                  "paragraph_index": 16,
+                  "reference": "p2#16",
+                  "vertical": false
+                },
+                "to_column": -1,
+                "to_page_index": 2,
+                "truth_category": "clean",
+                "truth_link": false,
+                "verdict": "closed"
+              },
+              {
+                "from_column": -1,
+                "label": "3->4",
+                "page_index": 2,
+                "series": "page",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 2,
+                  "last_character": "。",
+                  "last_character_x": 552.2769775390625,
+                  "last_character_y": 187.37615966796875,
+                  "last_line_text": "的圣地麦地那及更远的地方，如今正在为该地区的铁路愿景注入新的活力。",
+                  "layout_label": "plain text",
+                  "page_index": 2,
+                  "paragraph_index": 9,
+                  "reference": "p3#9",
+                  "vertical": false
+                },
+                "to_column": -1,
+                "to_page_index": 3,
+                "truth_category": "clean",
+                "truth_link": false,
+                "verdict": "closed"
+              },
+              {
+                "from_column": -1,
+                "label": "4->5",
+                "page_index": 3,
+                "series": "page",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 3,
+                  "last_character": "”",
+                  "last_character_x": 555.1355895996094,
+                  "last_character_y": 74.9041748046875,
+                  "last_line_text": "现在，当你走进去时，感觉就像它一直以来就是这样。”",
+                  "layout_label": "plain text",
+                  "page_index": 3,
+                  "paragraph_index": 15,
+                  "reference": "p4#15",
+                  "vertical": false
+                },
+                "to_column": -1,
+                "to_page_index": 4,
+                "truth_category": "clean",
+                "truth_link": false,
+                "verdict": "closed"
+              },
+              {
+                "from_column": -1,
+                "label": "5->6",
+                "page_index": 4,
+                "series": "page",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 2,
+                  "last_character": "。",
+                  "last_character_x": 330.5322570800781,
+                  "last_character_y": 322.5371398925781,
+                  "last_line_text": "讨论中发挥作用。",
+                  "layout_label": "plain text",
+                  "page_index": 4,
+                  "paragraph_index": 20,
+                  "reference": "p5#20",
+                  "vertical": false
+                },
+                "to_column": -1,
+                "to_page_index": 5,
+                "truth_category": "clean",
+                "truth_link": false,
+                "verdict": "closed"
+              },
+              {
+                "from_column": -1,
+                "label": "6->7",
+                "page_index": 5,
+                "series": "page",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 1,
+                  "last_character": "”",
+                  "last_character_x": 412.98851013183594,
+                  "last_character_y": 71.97784423828125,
+                  "last_line_text": "技术难题。”",
+                  "layout_label": "plain text",
+                  "page_index": 5,
+                  "paragraph_index": 20,
+                  "reference": "p6#20",
+                  "vertical": false
+                },
+                "to_column": -1,
+                "to_page_index": 6,
+                "truth_category": "linked",
+                "truth_link": true,
+                "verdict": "closed"
+              },
+              {
+                "from_column": -1,
+                "label": "7->8",
+                "page_index": 6,
+                "series": "page",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 1,
+                  "last_character": "个",
+                  "last_character_x": 423.4947509765625,
+                  "last_character_y": 235.32363891601562,
+                  "last_line_text": "中心宏伟的希贾兹火车站标志着，那里是一个",
+                  "layout_label": "plain text",
+                  "page_index": 6,
+                  "paragraph_index": 15,
+                  "reference": "p7#15",
+                  "vertical": false
+                },
+                "to_column": -1,
+                "to_page_index": 7,
+                "truth_category": "trap",
+                "truth_link": false,
+                "verdict": "open"
+              },
+              {
+                "from_column": -1,
+                "label": "8->9",
+                "page_index": 7,
+                "series": "page",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 3,
+                  "last_character": "”",
+                  "last_character_x": 522.3893127441406,
+                  "last_character_y": 136.6820068359375,
+                  "last_line_text": "藏在神秘和想象的面纱之后。”",
+                  "layout_label": "plain text",
+                  "page_index": 7,
+                  "paragraph_index": 12,
+                  "reference": "p8#12",
+                  "vertical": false
+                },
+                "to_column": -1,
+                "to_page_index": 8,
+                "truth_category": "clean",
+                "truth_link": false,
+                "verdict": "closed"
+              }
+            ],
+            "boundaries_total": 8,
+            "closed_count": 6,
+            "designed_count": 0,
+            "no_tail_count": 0,
+            "open_count": 2,
+            "rate": 0.25,
+            "series": "page",
+            "strict_rate": 0.25
+          }
+        },
+        "stratified": {
+          "mbr_all": 0.25,
+          "mbr_all_denominator": 8,
+          "mbr_linkable": 0.142857,
+          "mbr_linkable_denominator": 7,
+          "mbr_linkable_open": 1,
+          "source_inherited_open": 1,
+          "strata": {
+            "clean": {
+              "answerable": 6,
+              "axis_unsupported_count": 0,
+              "boundaries_total": 6,
+              "closed_count": 5,
+              "designed_count": 0,
+              "no_tail_count": 0,
+              "open_count": 1,
+              "rate": 0.166667,
+              "series": "page",
+              "strict_rate": 0.166667
+            },
+            "linked": {
+              "answerable": 1,
+              "axis_unsupported_count": 0,
+              "boundaries_total": 1,
+              "closed_count": 1,
+              "designed_count": 0,
+              "no_tail_count": 0,
+              "open_count": 0,
+              "rate": 0.0,
+              "series": "page",
+              "strict_rate": 0.0
+            },
+            "trap": {
+              "answerable": 1,
+              "axis_unsupported_count": 0,
+              "boundaries_total": 1,
+              "closed_count": 0,
+              "designed_count": 0,
+              "no_tail_count": 0,
+              "open_count": 1,
+              "rate": 1.0,
+              "series": "page",
+              "strict_rate": 1.0
+            },
+            "unlabelled": {
+              "answerable": 0,
+              "axis_unsupported_count": 0,
+              "boundaries_total": 0,
+              "closed_count": 0,
+              "designed_count": 0,
+              "no_tail_count": 0,
+              "open_count": 0,
+              "rate": null,
+              "series": "page",
+              "strict_rate": null
+            }
+          },
+          "trap_boundaries": 1,
+          "unlabelled_boundaries": 0
+        },
+        "strict_rate": 0.25,
+        "vertical_paragraphs": 3
+      },
+      "path": "pdf_extraction",
+      "produced_pdf": "examples/output/b8_4/smoke/AramcoWorld-en-v2/out/AramcoWorld-en-v2.no_watermark.zh.mono.pdf",
+      "produced_pdf_sha256": "460b7b08d86a94a492116dcaabb361130afc55f07af66936dd9b8ce4bd2d3711",
+      "sample": "AramcoWorld-en-v2.pdf",
+      "source_pdf": "examples/input/AramcoWorld-en-v2.pdf",
+      "source_pdf_sha256": "174cf0480ded6fb10bbbaa6368dc6b578bfd54835e2d2ff886073a23ae873663"
+    }
+  ],
+  "sample": "AramcoWorld-en-v2.pdf"
+}

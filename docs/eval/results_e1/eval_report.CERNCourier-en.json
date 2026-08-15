@@ -1,0 +1,1937 @@
+{
+  "runs": [
+    {
+      "absent": [
+        "no working directory: no chain or repair level of the conservation invariant",
+        "no source and translated checkpoint pair: no LTCR"
+      ],
+      "conservation": {
+        "holds": true,
+        "levels": {
+          "chain": {
+            "evidence": {
+              "absent": "no chain translation report"
+            },
+            "failures": [],
+            "holds": null,
+            "level": "chain",
+            "subjects": 0
+          },
+          "document": {
+            "evidence": {
+              "produced_pages": 4,
+              "source_pages": 4
+            },
+            "failures": [],
+            "holds": true,
+            "level": "document",
+            "subjects": 1
+          },
+          "repair": {
+            "evidence": {
+              "absent": "no repair report"
+            },
+            "failures": [],
+            "holds": null,
+            "level": "repair",
+            "subjects": 0
+          }
+        },
+        "levels_absent": [
+          "chain",
+          "repair"
+        ],
+        "levels_present": [
+          "document"
+        ],
+        "metric": "block_conservation_invariant"
+      },
+      "label": "upstream",
+      "layout_geometry": {
+        "metric": "layout_geometry",
+        "page_count_delta": {
+          "conserved": true,
+          "produced_pages": 4,
+          "source_pages": 4,
+          "value": 0
+        },
+        "pages": [
+          {
+            "alignment_delta": -9.6e-05,
+            "image_area_delta": {
+              "absolute": -0.0,
+              "produced_area": 0.468545,
+              "source_area": 0.468545,
+              "value": -0.0
+            },
+            "image_placement_iou": {
+              "pairs": 1,
+              "produced_images": 1,
+              "source_images": 1,
+              "unpaired_produced": 0,
+              "unpaired_source": 0,
+              "value": 1.0
+            },
+            "overlap_delta": -0.160723,
+            "page_index": 0,
+            "produced": {
+              "alignment": {
+                "dropped": 0,
+                "elements": 20,
+                "value": 0.0004602219809144483
+              },
+              "elements": 20,
+              "overlap": {
+                "dropped": 0,
+                "elements": 20,
+                "value": 0.20511011846466146
+              }
+            },
+            "source": {
+              "alignment": {
+                "dropped": 0,
+                "elements": 17,
+                "value": 0.0005560244771872773
+              },
+              "elements": 17,
+              "overlap": {
+                "dropped": 0,
+                "elements": 17,
+                "value": 0.36583302955316793
+              }
+            }
+          },
+          {
+            "alignment_delta": 7.2e-05,
+            "image_area_delta": {
+              "absolute": 0.001307,
+              "produced_area": 1.054053,
+              "source_area": 1.052746,
+              "value": 0.001242
+            },
+            "image_placement_iou": {
+              "pairs": 20,
+              "produced_images": 20,
+              "source_images": 20,
+              "unpaired_produced": 0,
+              "unpaired_source": 0,
+              "value": 0.998837
+            },
+            "overlap_delta": 0.127469,
+            "page_index": 1,
+            "produced": {
+              "alignment": {
+                "dropped": 0,
+                "elements": 82,
+                "value": 0.0002258616904483582
+              },
+              "elements": 82,
+              "overlap": {
+                "dropped": 0,
+                "elements": 82,
+                "value": 0.9054707961817079
+              }
+            },
+            "source": {
+              "alignment": {
+                "dropped": 0,
+                "elements": 76,
+                "value": 0.00015396648170014208
+              },
+              "elements": 76,
+              "overlap": {
+                "dropped": 0,
+                "elements": 76,
+                "value": 0.7780020035341872
+              }
+            }
+          },
+          {
+            "alignment_delta": 6.2e-05,
+            "image_area_delta": {
+              "absolute": 0.0,
+              "produced_area": 0.300302,
+              "source_area": 0.300302,
+              "value": 0.0
+            },
+            "image_placement_iou": {
+              "pairs": 14,
+              "produced_images": 14,
+              "source_images": 14,
+              "unpaired_produced": 0,
+              "unpaired_source": 0,
+              "value": 1.0
+            },
+            "overlap_delta": -0.156798,
+            "page_index": 2,
+            "produced": {
+              "alignment": {
+                "dropped": 0,
+                "elements": 101,
+                "value": 0.00021866986944382434
+              },
+              "elements": 101,
+              "overlap": {
+                "dropped": 0,
+                "elements": 101,
+                "value": 0.23719807714927868
+              }
+            },
+            "source": {
+              "alignment": {
+                "dropped": 0,
+                "elements": 54,
+                "value": 0.00015634975587672714
+              },
+              "elements": 54,
+              "overlap": {
+                "dropped": 0,
+                "elements": 54,
+                "value": 0.39399558102588655
+              }
+            }
+          },
+          {
+            "alignment_delta": -7.8e-05,
+            "image_area_delta": {
+              "absolute": 0.0,
+              "produced_area": 0.264215,
+              "source_area": 0.264215,
+              "value": 0.0
+            },
+            "image_placement_iou": {
+              "pairs": 5,
+              "produced_images": 5,
+              "source_images": 5,
+              "unpaired_produced": 0,
+              "unpaired_source": 0,
+              "value": 1.0
+            },
+            "overlap_delta": 0.002614,
+            "page_index": 3,
+            "produced": {
+              "alignment": {
+                "dropped": 0,
+                "elements": 48,
+                "value": 0.00011985532475872458
+              },
+              "elements": 48,
+              "overlap": {
+                "dropped": 0,
+                "elements": 48,
+                "value": 0.05293898793150992
+              }
+            },
+            "source": {
+              "alignment": {
+                "dropped": 0,
+                "elements": 37,
+                "value": 0.00019795268201080866
+              },
+              "elements": 37,
+              "overlap": {
+                "dropped": 0,
+                "elements": 37,
+                "value": 0.0503248281736573
+              }
+            }
+          }
+        ],
+        "pages_compared": 4,
+        "summary": {
+          "alignment_delta": -1e-05,
+          "alignment_produced": 0.000256,
+          "alignment_source": 0.000266,
+          "image_area_delta": 0.00031,
+          "image_placement_iou": 0.999709,
+          "overlap_delta": -0.046859,
+          "overlap_produced": 0.350179,
+          "overlap_source": 0.397039
+        }
+      },
+      "mid_break_rate": {
+        "metric": "mid_unit_page_break_rate",
+        "pages": 4,
+        "rate": 0.666667,
+        "series": {
+          "column": {
+            "answerable": 8,
+            "axis_unsupported_count": 0,
+            "boundaries": [
+              {
+                "from_column": 0,
+                "label": "p1c0->c1",
+                "page_index": 0,
+                "series": "column",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 0,
+                  "last_character": "报",
+                  "last_character_x": 206.5009002685547,
+                  "last_character_y": 62.59979248046875,
+                  "last_line_text": "CERN快报",
+                  "layout_label": "plain text",
+                  "page_index": 0,
+                  "paragraph_index": 0,
+                  "reference": "p1#0",
+                  "vertical": false
+                },
+                "to_column": 1,
+                "to_page_index": 0,
+                "truth_category": null,
+                "truth_link": null,
+                "verdict": "open"
+              },
+              {
+                "from_column": 0,
+                "label": "p2c0->c1",
+                "page_index": 1,
+                "series": "column",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 0,
+                  "last_character": "8",
+                  "last_character_x": 508.4289093017578,
+                  "last_character_y": 75.29165649414062,
+                  "last_line_text": "CCCCJJuullAAuugg2266__ppIIFFCC..iinndddd  110033//0077//22002266      1111::4488",
+                  "layout_label": "plain text",
+                  "page_index": 1,
+                  "paragraph_index": 22,
+                  "reference": "p2#22",
+                  "vertical": false
+                },
+                "to_column": 1,
+                "to_page_index": 1,
+                "truth_category": null,
+                "truth_link": null,
+                "verdict": "open"
+              },
+              {
+                "from_column": 0,
+                "label": "p3c0->c1",
+                "page_index": 2,
+                "series": "column",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 0,
+                  "last_character": "3",
+                  "last_character_x": 506.85450744628906,
+                  "last_character_y": 76.09414672851562,
+                  "last_line_text": "PPuubb__CCEERRNN--2266--JJuull--AAuugg--BBeerrggoozz__ccoololouurRrRLL.i.nindddd 1   13300//0066//22002266      1188::2233",
+                  "layout_label": "plain text",
+                  "page_index": 2,
+                  "paragraph_index": 85,
+                  "reference": "p3#85",
+                  "vertical": false
+                },
+                "to_column": 1,
+                "to_page_index": 2,
+                "truth_category": null,
+                "truth_link": null,
+                "verdict": "open"
+              },
+              {
+                "from_column": 1,
+                "label": "p3c1->c2",
+                "page_index": 2,
+                "series": "column",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 1,
+                  "last_character": "。",
+                  "last_character_x": 325.5785827636719,
+                  "last_character_y": 302.11669921875,
+                  "last_line_text": "中，很快将发布。",
+                  "layout_label": "plain text",
+                  "page_index": 2,
+                  "paragraph_index": 83,
+                  "reference": "p3#83",
+                  "vertical": false
+                },
+                "to_column": 2,
+                "to_page_index": 2,
+                "truth_category": null,
+                "truth_link": null,
+                "verdict": "closed"
+              },
+              {
+                "from_column": 2,
+                "label": "p3c2->c3",
+                "page_index": 2,
+                "series": "column",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 2,
+                  "last_character": "2",
+                  "last_character_x": 1016.9569396972656,
+                  "last_character_y": 76.5343017578125,
+                  "last_line_text": "CCJulAug2626_新闻分析_v33.indd   7703CCJulAug _新闻分析_v.ind0d3 //0077//220022661166::2222",
+                  "layout_label": "plain text",
+                  "page_index": 2,
+                  "paragraph_index": 68,
+                  "reference": "p3#68",
+                  "vertical": false
+                },
+                "to_column": 3,
+                "to_page_index": 2,
+                "truth_category": null,
+                "truth_link": null,
+                "verdict": "open"
+              },
+              {
+                "from_column": 0,
+                "label": "p4c0->c1",
+                "page_index": 3,
+                "series": "column",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 0,
+                  "last_character": "3",
+                  "last_character_x": 507.2282409667969,
+                  "last_character_y": 76.92782592773438,
+                  "last_line_text": "CCCCJJuullAAuugg2266__HHIISSTTOORRYY__vv44.i.nindddd 2  4 240033//0077//22002266      1166::4433",
+                  "layout_label": "plain text",
+                  "page_index": 3,
+                  "paragraph_index": 41,
+                  "reference": "p4#41",
+                  "vertical": false
+                },
+                "to_column": 1,
+                "to_page_index": 3,
+                "truth_category": null,
+                "truth_link": null,
+                "verdict": "open"
+              },
+              {
+                "from_column": 1,
+                "label": "p4c1->c2",
+                "page_index": 3,
+                "series": "column",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 1,
+                  "last_character": "。",
+                  "last_character_x": 352.16383361816406,
+                  "last_character_y": 276.7019348144531,
+                  "last_line_text": "神冈探测器在1998年观测到了中微子振荡。",
+                  "layout_label": "plain text",
+                  "page_index": 3,
+                  "paragraph_index": 39,
+                  "reference": "p4#39",
+                  "vertical": false
+                },
+                "to_column": 2,
+                "to_page_index": 3,
+                "truth_category": null,
+                "truth_link": null,
+                "verdict": "closed"
+              },
+              {
+                "from_column": 2,
+                "label": "p4c2->c3",
+                "page_index": 3,
+                "series": "column",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 2,
+                  "last_character": "4",
+                  "last_character_x": 1016.9569396972656,
+                  "last_character_y": 76.53399658203125,
+                  "last_line_text": "CCCCJJuullAAuugg2266__HHIISSTTOORRYY__vv44..iinndddd      22550033//0077/2/20026261166::4444",
+                  "layout_label": "plain text",
+                  "page_index": 3,
+                  "paragraph_index": 25,
+                  "reference": "p4#25",
+                  "vertical": false
+                },
+                "to_column": 3,
+                "to_page_index": 3,
+                "truth_category": null,
+                "truth_link": null,
+                "verdict": "open"
+              }
+            ],
+            "boundaries_total": 8,
+            "closed_count": 2,
+            "designed_count": 0,
+            "no_tail_count": 0,
+            "open_count": 6,
+            "rate": 0.75,
+            "series": "column",
+            "strict_rate": 0.75
+          },
+          "page": {
+            "answerable": 3,
+            "axis_unsupported_count": 0,
+            "boundaries": [
+              {
+                "from_column": -1,
+                "label": "1->2",
+                "page_index": 0,
+                "series": "page",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 1,
+                  "last_character": "6",
+                  "last_character_x": 1017.5459594726562,
+                  "last_character_y": 76.12533569335938,
+                  "last_line_text": "CCCCJJuullAAuugg2266__CCoovveerr__vv22..iinndddd      1120032/067年/27月0236日1166::0066",
+                  "layout_label": "plain text",
+                  "page_index": 0,
+                  "paragraph_index": 6,
+                  "reference": "p1#6",
+                  "vertical": false
+                },
+                "to_column": -1,
+                "to_page_index": 1,
+                "truth_category": "clean",
+                "truth_link": false,
+                "verdict": "open"
+              },
+              {
+                "from_column": -1,
+                "label": "2->3",
+                "page_index": 1,
+                "series": "page",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 1,
+                  "last_character": "2",
+                  "last_character_x": 1019.2282409667969,
+                  "last_character_y": 76.92788696289062,
+                  "last_line_text": "CCCCJJuullAAuugg2266__CCoonnttss__vv33..iinndddd      330033//0077//22002266      1166::1122",
+                  "layout_label": "plain text",
+                  "page_index": 1,
+                  "paragraph_index": 60,
+                  "reference": "p2#60",
+                  "vertical": false
+                },
+                "to_column": -1,
+                "to_page_index": 2,
+                "truth_category": "clean",
+                "truth_link": false,
+                "verdict": "open"
+              },
+              {
+                "from_column": -1,
+                "label": "3->4",
+                "page_index": 2,
+                "series": "page",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 3,
+                  "last_character": "。",
+                  "last_character_x": 932.5731506347656,
+                  "last_character_y": 431.2246398925781,
+                  "last_line_text": "战略，更新 2026年5月22日，CERN理事会在布达佩斯举行专门会议，讨论欧洲粒子物理战略。",
+                  "layout_label": "plain text",
+                  "page_index": 2,
+                  "paragraph_index": 63,
+                  "reference": "p3#63",
+                  "vertical": false
+                },
+                "to_column": -1,
+                "to_page_index": 3,
+                "truth_category": "clean",
+                "truth_link": false,
+                "verdict": "closed"
+              }
+            ],
+            "boundaries_total": 3,
+            "closed_count": 1,
+            "designed_count": 0,
+            "no_tail_count": 0,
+            "open_count": 2,
+            "rate": 0.666667,
+            "series": "page",
+            "strict_rate": 0.666667
+          }
+        },
+        "stratified": {
+          "mbr_all": 0.666667,
+          "mbr_all_denominator": 3,
+          "mbr_linkable": 0.666667,
+          "mbr_linkable_denominator": 3,
+          "mbr_linkable_open": 2,
+          "source_inherited_open": 0,
+          "strata": {
+            "clean": {
+              "answerable": 3,
+              "axis_unsupported_count": 0,
+              "boundaries_total": 3,
+              "closed_count": 1,
+              "designed_count": 0,
+              "no_tail_count": 0,
+              "open_count": 2,
+              "rate": 0.666667,
+              "series": "page",
+              "strict_rate": 0.666667
+            },
+            "linked": {
+              "answerable": 0,
+              "axis_unsupported_count": 0,
+              "boundaries_total": 0,
+              "closed_count": 0,
+              "designed_count": 0,
+              "no_tail_count": 0,
+              "open_count": 0,
+              "rate": null,
+              "series": "page",
+              "strict_rate": null
+            },
+            "trap": {
+              "answerable": 0,
+              "axis_unsupported_count": 0,
+              "boundaries_total": 0,
+              "closed_count": 0,
+              "designed_count": 0,
+              "no_tail_count": 0,
+              "open_count": 0,
+              "rate": null,
+              "series": "page",
+              "strict_rate": null
+            },
+            "unlabelled": {
+              "answerable": 0,
+              "axis_unsupported_count": 0,
+              "boundaries_total": 0,
+              "closed_count": 0,
+              "designed_count": 0,
+              "no_tail_count": 0,
+              "open_count": 0,
+              "rate": null,
+              "series": "page",
+              "strict_rate": null
+            }
+          },
+          "trap_boundaries": 0,
+          "unlabelled_boundaries": 0
+        },
+        "strict_rate": 0.666667,
+        "vertical_paragraphs": 3
+      },
+      "path": "pdf_extraction",
+      "produced_pdf": "examples/baseline/pdf/CERNCourier-en/CERNCourier-en.no_watermark.zh.mono.pdf",
+      "produced_pdf_sha256": "c78bce91b62018f9162c40c31798e64023f6d65dc2818fe2ac77f5eeacbe6a54",
+      "sample": "CERNCourier-en.pdf",
+      "source_pdf": "examples/input/CERNCourier-en.pdf",
+      "source_pdf_sha256": "c099e0094adf0782bd45746860c95cef6934e919f4cc7c527f48bd01a4eb0929"
+    },
+    {
+      "absent": [],
+      "conservation": {
+        "holds": true,
+        "levels": {
+          "chain": {
+            "evidence": {
+              "chains": 0,
+              "escalated_members": 0,
+              "merged_members": 0,
+              "rendered_members": 0
+            },
+            "failures": [],
+            "holds": true,
+            "level": "chain",
+            "subjects": 0
+          },
+          "document": {
+            "evidence": {
+              "produced_pages": 4,
+              "source_pages": 4
+            },
+            "failures": [],
+            "holds": true,
+            "level": "document",
+            "subjects": 1
+          },
+          "repair": {
+            "evidence": {
+              "changed": 1,
+              "changed_outside_touched": 0,
+              "pages_after": 4,
+              "pages_before": 4,
+              "paragraphs_after": 202,
+              "paragraphs_before": 202,
+              "reported_verdict": "conserved",
+              "touched": 1
+            },
+            "failures": [],
+            "holds": true,
+            "level": "repair",
+            "subjects": 1
+          }
+        },
+        "levels_absent": [],
+        "levels_present": [
+          "chain",
+          "repair",
+          "document"
+        ],
+        "metric": "block_conservation_invariant"
+      },
+      "label": "fork_full_il",
+      "layout_geometry": {
+        "metric": "layout_geometry",
+        "page_count_delta": {
+          "conserved": true,
+          "produced_pages": 4,
+          "source_pages": 4,
+          "value": 0
+        },
+        "pages": [
+          {
+            "alignment_delta": 0.0,
+            "image_area_delta": {
+              "absolute": 0,
+              "produced_area": 0,
+              "source_area": 0,
+              "value": null
+            },
+            "image_placement_iou": {
+              "pairs": 0,
+              "produced_images": 0,
+              "source_images": 0,
+              "unpaired_produced": 0,
+              "unpaired_source": 0,
+              "value": null
+            },
+            "overlap_delta": 0.0,
+            "page_index": 0,
+            "produced": {
+              "alignment": {
+                "dropped": 0,
+                "elements": 21,
+                "value": 0.00029527274979940633
+              },
+              "elements": 21,
+              "overlap": {
+                "dropped": 0,
+                "elements": 21,
+                "value": 0.19047619047619047
+              }
+            },
+            "source": {
+              "alignment": {
+                "dropped": 0,
+                "elements": 21,
+                "value": 0.00029527274979940633
+              },
+              "elements": 21,
+              "overlap": {
+                "dropped": 0,
+                "elements": 21,
+                "value": 0.19047619047619047
+              }
+            }
+          },
+          {
+            "alignment_delta": 3e-06,
+            "image_area_delta": {
+              "absolute": 0.0,
+              "produced_area": 0.097491,
+              "source_area": 0.097491,
+              "value": 0.0
+            },
+            "image_placement_iou": {
+              "pairs": 7,
+              "produced_images": 7,
+              "source_images": 7,
+              "unpaired_produced": 0,
+              "unpaired_source": 0,
+              "value": 1.0
+            },
+            "overlap_delta": 0.000479,
+            "page_index": 1,
+            "produced": {
+              "alignment": {
+                "dropped": 0,
+                "elements": 91,
+                "value": 9.483888616918408e-05
+              },
+              "elements": 91,
+              "overlap": {
+                "dropped": 0,
+                "elements": 91,
+                "value": 0.09421221371054758
+              }
+            },
+            "source": {
+              "alignment": {
+                "dropped": 0,
+                "elements": 91,
+                "value": 9.19471831893637e-05
+              },
+              "elements": 91,
+              "overlap": {
+                "dropped": 0,
+                "elements": 91,
+                "value": 0.09373291940717282
+              }
+            }
+          },
+          {
+            "alignment_delta": 1e-05,
+            "image_area_delta": {
+              "absolute": 0.0,
+              "produced_area": 0.197282,
+              "source_area": 0.197282,
+              "value": 0.0
+            },
+            "image_placement_iou": {
+              "pairs": 4,
+              "produced_images": 4,
+              "source_images": 4,
+              "unpaired_produced": 0,
+              "unpaired_source": 0,
+              "value": 1.0
+            },
+            "overlap_delta": 1e-06,
+            "page_index": 2,
+            "produced": {
+              "alignment": {
+                "dropped": 0,
+                "elements": 56,
+                "value": 0.00013610625694821264
+              },
+              "elements": 56,
+              "overlap": {
+                "dropped": 0,
+                "elements": 56,
+                "value": 0.1689920667869913
+              }
+            },
+            "source": {
+              "alignment": {
+                "dropped": 0,
+                "elements": 56,
+                "value": 0.00012649038669551043
+              },
+              "elements": 56,
+              "overlap": {
+                "dropped": 0,
+                "elements": 56,
+                "value": 0.16899066382829206
+              }
+            }
+          },
+          {
+            "alignment_delta": 2e-06,
+            "image_area_delta": {
+              "absolute": 0.0,
+              "produced_area": 0.264648,
+              "source_area": 0.264648,
+              "value": 0.0
+            },
+            "image_placement_iou": {
+              "pairs": 4,
+              "produced_images": 4,
+              "source_images": 4,
+              "unpaired_produced": 0,
+              "unpaired_source": 0,
+              "value": 1.0
+            },
+            "overlap_delta": 0.0,
+            "page_index": 3,
+            "produced": {
+              "alignment": {
+                "dropped": 0,
+                "elements": 49,
+                "value": 6.72171627285801e-05
+              },
+              "elements": 49,
+              "overlap": {
+                "dropped": 0,
+                "elements": 49,
+                "value": 0.20047003302976651
+              }
+            },
+            "source": {
+              "alignment": {
+                "dropped": 0,
+                "elements": 49,
+                "value": 6.487132702657872e-05
+              },
+              "elements": 49,
+              "overlap": {
+                "dropped": 0,
+                "elements": 49,
+                "value": 0.20047003302976651
+              }
+            }
+          }
+        ],
+        "pages_compared": 4,
+        "summary": {
+          "alignment_delta": 4e-06,
+          "alignment_produced": 0.000148,
+          "alignment_source": 0.000145,
+          "image_area_delta": 0.0,
+          "image_placement_iou": 1.0,
+          "overlap_delta": 0.00012,
+          "overlap_produced": 0.163538,
+          "overlap_source": 0.163417
+        }
+      },
+      "ltcr": {
+        "metric": "ltcr",
+        "min_occurrences": 3,
+        "min_paragraphs": 2,
+        "regions": [
+          {
+            "region": "A1",
+            "summary": {
+              "fully_consistent": 0,
+              "legacy_mean_share": null,
+              "ltcr": null,
+              "measured": 0,
+              "pairs_agreeing": 0,
+              "pairs_total": 0,
+              "terms": 0
+            },
+            "terms": []
+          },
+          {
+            "region": "A2",
+            "summary": {
+              "fully_consistent": 3,
+              "legacy_mean_share": 0.95,
+              "ltcr": 0.818182,
+              "measured": 4,
+              "pairs_agreeing": 18,
+              "pairs_total": 22,
+              "terms": 4
+            },
+            "terms": [
+              {
+                "group_candidates": [
+                  "欧洲核子研究中心",
+                  null
+                ],
+                "group_sizes": [
+                  4,
+                  1
+                ],
+                "k": 5,
+                "legacy_candidate": "欧洲核子研究中心",
+                "legacy_share": 0.8,
+                "ltcr": 0.6,
+                "occurrences": 5,
+                "pairs_agreeing": 6,
+                "pairs_total": 10,
+                "paragraphs": 5,
+                "term": "CERN"
+              },
+              {
+                "group_candidates": [
+                  "FCC-ee"
+                ],
+                "group_sizes": [
+                  4
+                ],
+                "k": 4,
+                "legacy_candidate": "FCC-ee",
+                "legacy_share": 1.0,
+                "ltcr": 1.0,
+                "occurrences": 5,
+                "pairs_agreeing": 6,
+                "pairs_total": 6,
+                "paragraphs": 4,
+                "term": "FCC-ee"
+              },
+              {
+                "group_candidates": [
+                  "理事会"
+                ],
+                "group_sizes": [
+                  3
+                ],
+                "k": 3,
+                "legacy_candidate": "理事会",
+                "legacy_share": 1.0,
+                "ltcr": 1.0,
+                "occurrences": 3,
+                "pairs_agreeing": 3,
+                "pairs_total": 3,
+                "paragraphs": 3,
+                "term": "CERN’s"
+              },
+              {
+                "group_candidates": [
+                  "希格斯"
+                ],
+                "group_sizes": [
+                  3
+                ],
+                "k": 3,
+                "legacy_candidate": "希格斯",
+                "legacy_share": 1.0,
+                "ltcr": 1.0,
+                "occurrences": 3,
+                "pairs_agreeing": 3,
+                "pairs_total": 3,
+                "paragraphs": 3,
+                "term": "Higgs"
+              }
+            ]
+          },
+          {
+            "region": "A3",
+            "summary": {
+              "fully_consistent": 0,
+              "legacy_mean_share": null,
+              "ltcr": null,
+              "measured": 0,
+              "pairs_agreeing": 0,
+              "pairs_total": 0,
+              "terms": 0
+            },
+            "terms": []
+          }
+        ],
+        "summary": {
+          "fully_consistent": 3,
+          "legacy_mean_share": 0.95,
+          "ltcr": 0.818182,
+          "measured": 4,
+          "pairs_agreeing": 18,
+          "pairs_total": 22,
+          "terms": 4
+        }
+      },
+      "mid_break_rate": {
+        "metric": "mid_unit_page_break_rate",
+        "pages": 4,
+        "rate": 0.666667,
+        "series": {
+          "column": {
+            "answerable": 6,
+            "axis_unsupported_count": 0,
+            "boundaries": [
+              {
+                "from_column": 0,
+                "label": "p1c0->c1",
+                "page_index": 0,
+                "series": "column",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 0,
+                  "last_character": "r",
+                  "last_character_x": 260.8845639269352,
+                  "last_character_y": 246.76196249999998,
+                  "last_line_text": "https://cerncourier.com/p/about-cern-courier",
+                  "layout_label": "plain text",
+                  "page_index": 0,
+                  "paragraph_index": 16,
+                  "reference": "p1#16",
+                  "vertical": false
+                },
+                "to_column": 1,
+                "to_page_index": 0,
+                "truth_category": null,
+                "truth_link": null,
+                "verdict": "open"
+              },
+              {
+                "from_column": 0,
+                "label": "p3c0->c1",
+                "page_index": 2,
+                "series": "column",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 0,
+                  "last_character": "。",
+                  "last_character_x": 248.4187234375,
+                  "last_character_y": 149.1252,
+                  "last_line_text": "荷、阈值联锁、时间戳，并可根据用户要求进行进一步定制。",
+                  "layout_label": "plain text",
+                  "page_index": 2,
+                  "paragraph_index": 36,
+                  "reference": "p3#36",
+                  "vertical": false
+                },
+                "to_column": 1,
+                "to_page_index": 2,
+                "truth_category": null,
+                "truth_link": null,
+                "verdict": "closed"
+              },
+              {
+                "from_column": 1,
+                "label": "p3c1->c2",
+                "page_index": 2,
+                "series": "column",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 1,
+                  "last_character": "。",
+                  "last_character_x": 325.57856914062495,
+                  "last_character_y": 302.6946999999999,
+                  "last_line_text": "中，很快将发布。",
+                  "layout_label": "plain text",
+                  "page_index": 2,
+                  "paragraph_index": 39,
+                  "reference": "p3#39",
+                  "vertical": false
+                },
+                "to_column": 2,
+                "to_page_index": 2,
+                "truth_category": null,
+                "truth_link": null,
+                "verdict": "closed"
+              },
+              {
+                "from_column": 2,
+                "label": "p3c2->c3",
+                "page_index": 2,
+                "series": "column",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 2,
+                  "last_character": "略",
+                  "last_character_x": 776.0652120770458,
+                  "last_character_y": 624.5632229492187,
+                  "last_line_text": "CERN理事会更新欧洲战略",
+                  "layout_label": "title",
+                  "page_index": 2,
+                  "paragraph_index": 16,
+                  "reference": "p3#16",
+                  "vertical": false
+                },
+                "to_column": 3,
+                "to_page_index": 2,
+                "truth_category": null,
+                "truth_link": null,
+                "verdict": "open"
+              },
+              {
+                "from_column": 0,
+                "label": "p4c0->c1",
+                "page_index": 3,
+                "series": "column",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 0,
+                  "last_character": "。",
+                  "last_character_x": 301.1661308178545,
+                  "last_character_y": 469.27759951171873,
+                  "last_line_text": "优化用于探测电子和强子喷流。它们共同在超质子同步加速器对撞机上发现了W和Z玻色子。",
+                  "layout_label": "figure_caption",
+                  "page_index": 3,
+                  "paragraph_index": 36,
+                  "reference": "p4#36",
+                  "vertical": false
+                },
+                "to_column": 1,
+                "to_page_index": 3,
+                "truth_category": null,
+                "truth_link": null,
+                "verdict": "closed"
+              },
+              {
+                "from_column": 1,
+                "label": "p4c1->c2",
+                "page_index": 3,
+                "series": "column",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 1,
+                  "last_character": "。",
+                  "last_character_x": 392.1040439109802,
+                  "last_character_y": 277.79362421875004,
+                  "last_line_text": "其继任者超级神冈探测器于1998年观测到了中微子振荡。",
+                  "layout_label": "figure_caption",
+                  "page_index": 3,
+                  "paragraph_index": 37,
+                  "reference": "p4#37",
+                  "vertical": false
+                },
+                "to_column": 2,
+                "to_page_index": 3,
+                "truth_category": null,
+                "truth_link": null,
+                "verdict": "closed"
+              }
+            ],
+            "boundaries_total": 6,
+            "closed_count": 4,
+            "designed_count": 0,
+            "no_tail_count": 0,
+            "open_count": 2,
+            "rate": 0.333333,
+            "series": "column",
+            "strict_rate": 0.333333
+          },
+          "page": {
+            "answerable": 3,
+            "axis_unsupported_count": 0,
+            "boundaries": [
+              {
+                "from_column": -1,
+                "label": "1->2",
+                "page_index": 0,
+                "series": "page",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 1,
+                  "last_character": "道",
+                  "last_character_x": 723.1000627373476,
+                  "last_character_y": 680.09939453125,
+                  "last_line_text": "报2026年7月/8月   cerncourier.com 国际高能物理报道",
+                  "layout_label": "title",
+                  "page_index": 0,
+                  "paragraph_index": 2,
+                  "reference": "p1#2",
+                  "vertical": false
+                },
+                "to_column": -1,
+                "to_page_index": 1,
+                "truth_category": "clean",
+                "truth_link": false,
+                "verdict": "open"
+              },
+              {
+                "from_column": -1,
+                "label": "2->3",
+                "page_index": 1,
+                "series": "page",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 0,
+                  "last_character": "讯",
+                  "last_character_x": 296.86090546874993,
+                  "last_character_y": 56.44337812500002,
+                  "last_line_text": "欧洲核子研究中心通讯",
+                  "layout_label": "title",
+                  "page_index": 1,
+                  "paragraph_index": 1,
+                  "reference": "p2#1",
+                  "vertical": false
+                },
+                "to_column": -1,
+                "to_page_index": 2,
+                "truth_category": "clean",
+                "truth_link": false,
+                "verdict": "open"
+              },
+              {
+                "from_column": -1,
+                "label": "3->4",
+                "page_index": 2,
+                "series": "page",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 3,
+                  "last_character": "。",
+                  "last_character_x": 932.5731149048634,
+                  "last_character_y": 432.24681171875,
+                  "last_line_text": "战略，更新 2026年5月22日，CERN理事会在布达佩斯举行关于欧洲粒子物理战略的专门会议。",
+                  "layout_label": "figure_caption",
+                  "page_index": 2,
+                  "paragraph_index": 42,
+                  "reference": "p3#42",
+                  "vertical": false
+                },
+                "to_column": -1,
+                "to_page_index": 3,
+                "truth_category": "clean",
+                "truth_link": false,
+                "verdict": "closed"
+              }
+            ],
+            "boundaries_total": 3,
+            "closed_count": 1,
+            "designed_count": 0,
+            "no_tail_count": 0,
+            "open_count": 2,
+            "rate": 0.666667,
+            "series": "page",
+            "strict_rate": 0.666667
+          }
+        },
+        "stratified": {
+          "mbr_all": 0.666667,
+          "mbr_all_denominator": 3,
+          "mbr_linkable": 0.666667,
+          "mbr_linkable_denominator": 3,
+          "mbr_linkable_open": 2,
+          "source_inherited_open": 0,
+          "strata": {
+            "clean": {
+              "answerable": 3,
+              "axis_unsupported_count": 0,
+              "boundaries_total": 3,
+              "closed_count": 1,
+              "designed_count": 0,
+              "no_tail_count": 0,
+              "open_count": 2,
+              "rate": 0.666667,
+              "series": "page",
+              "strict_rate": 0.666667
+            },
+            "linked": {
+              "answerable": 0,
+              "axis_unsupported_count": 0,
+              "boundaries_total": 0,
+              "closed_count": 0,
+              "designed_count": 0,
+              "no_tail_count": 0,
+              "open_count": 0,
+              "rate": null,
+              "series": "page",
+              "strict_rate": null
+            },
+            "trap": {
+              "answerable": 0,
+              "axis_unsupported_count": 0,
+              "boundaries_total": 0,
+              "closed_count": 0,
+              "designed_count": 0,
+              "no_tail_count": 0,
+              "open_count": 0,
+              "rate": null,
+              "series": "page",
+              "strict_rate": null
+            },
+            "unlabelled": {
+              "answerable": 0,
+              "axis_unsupported_count": 0,
+              "boundaries_total": 0,
+              "closed_count": 0,
+              "designed_count": 0,
+              "no_tail_count": 0,
+              "open_count": 0,
+              "rate": null,
+              "series": "page",
+              "strict_rate": null
+            }
+          },
+          "trap_boundaries": 0,
+          "unlabelled_boundaries": 0
+        },
+        "strict_rate": 0.666667,
+        "vertical_paragraphs": 3
+      },
+      "path": "intermediate_language",
+      "sample": "CERNCourier-en.pdf",
+      "working_dir": "examples/output/b8_4/smoke/CERNCourier-en/work/CERNCourier-en"
+    },
+    {
+      "absent": [
+        "no working directory: no chain or repair level of the conservation invariant",
+        "no source and translated checkpoint pair: no LTCR"
+      ],
+      "conservation": {
+        "holds": true,
+        "levels": {
+          "chain": {
+            "evidence": {
+              "absent": "no chain translation report"
+            },
+            "failures": [],
+            "holds": null,
+            "level": "chain",
+            "subjects": 0
+          },
+          "document": {
+            "evidence": {
+              "produced_pages": 4,
+              "source_pages": 4
+            },
+            "failures": [],
+            "holds": true,
+            "level": "document",
+            "subjects": 1
+          },
+          "repair": {
+            "evidence": {
+              "absent": "no repair report"
+            },
+            "failures": [],
+            "holds": null,
+            "level": "repair",
+            "subjects": 0
+          }
+        },
+        "levels_absent": [
+          "chain",
+          "repair"
+        ],
+        "levels_present": [
+          "document"
+        ],
+        "metric": "block_conservation_invariant"
+      },
+      "label": "fork_full_pdf",
+      "layout_geometry": {
+        "metric": "layout_geometry",
+        "page_count_delta": {
+          "conserved": true,
+          "produced_pages": 4,
+          "source_pages": 4,
+          "value": 0
+        },
+        "pages": [
+          {
+            "alignment_delta": -8.5e-05,
+            "image_area_delta": {
+              "absolute": -0.0,
+              "produced_area": 0.468545,
+              "source_area": 0.468545,
+              "value": -0.0
+            },
+            "image_placement_iou": {
+              "pairs": 1,
+              "produced_images": 1,
+              "source_images": 1,
+              "unpaired_produced": 0,
+              "unpaired_source": 0,
+              "value": 1.0
+            },
+            "overlap_delta": -0.16726,
+            "page_index": 0,
+            "produced": {
+              "alignment": {
+                "dropped": 0,
+                "elements": 20,
+                "value": 0.00047127281595735454
+              },
+              "elements": 20,
+              "overlap": {
+                "dropped": 0,
+                "elements": 20,
+                "value": 0.1985733654595219
+              }
+            },
+            "source": {
+              "alignment": {
+                "dropped": 0,
+                "elements": 17,
+                "value": 0.0005560244771872773
+              },
+              "elements": 17,
+              "overlap": {
+                "dropped": 0,
+                "elements": 17,
+                "value": 0.36583302955316793
+              }
+            }
+          },
+          {
+            "alignment_delta": -3e-06,
+            "image_area_delta": {
+              "absolute": 0.001307,
+              "produced_area": 1.054053,
+              "source_area": 1.052746,
+              "value": 0.001242
+            },
+            "image_placement_iou": {
+              "pairs": 20,
+              "produced_images": 20,
+              "source_images": 20,
+              "unpaired_produced": 0,
+              "unpaired_source": 0,
+              "value": 0.998837
+            },
+            "overlap_delta": 0.089224,
+            "page_index": 1,
+            "produced": {
+              "alignment": {
+                "dropped": 0,
+                "elements": 84,
+                "value": 0.0001506053318534597
+              },
+              "elements": 84,
+              "overlap": {
+                "dropped": 0,
+                "elements": 84,
+                "value": 0.8672263646942839
+              }
+            },
+            "source": {
+              "alignment": {
+                "dropped": 0,
+                "elements": 76,
+                "value": 0.00015396648170014208
+              },
+              "elements": 76,
+              "overlap": {
+                "dropped": 0,
+                "elements": 76,
+                "value": 0.7780020035341872
+              }
+            }
+          },
+          {
+            "alignment_delta": 8.5e-05,
+            "image_area_delta": {
+              "absolute": 0.0,
+              "produced_area": 0.300302,
+              "source_area": 0.300302,
+              "value": 0.0
+            },
+            "image_placement_iou": {
+              "pairs": 14,
+              "produced_images": 14,
+              "source_images": 14,
+              "unpaired_produced": 0,
+              "unpaired_source": 0,
+              "value": 1.0
+            },
+            "overlap_delta": -0.152172,
+            "page_index": 2,
+            "produced": {
+              "alignment": {
+                "dropped": 0,
+                "elements": 103,
+                "value": 0.00024132989139425196
+              },
+              "elements": 103,
+              "overlap": {
+                "dropped": 0,
+                "elements": 103,
+                "value": 0.24182315470422816
+              }
+            },
+            "source": {
+              "alignment": {
+                "dropped": 0,
+                "elements": 54,
+                "value": 0.00015634975587672714
+              },
+              "elements": 54,
+              "overlap": {
+                "dropped": 0,
+                "elements": 54,
+                "value": 0.39399558102588655
+              }
+            }
+          },
+          {
+            "alignment_delta": -7.7e-05,
+            "image_area_delta": {
+              "absolute": 0.0,
+              "produced_area": 0.264215,
+              "source_area": 0.264215,
+              "value": 0.0
+            },
+            "image_placement_iou": {
+              "pairs": 5,
+              "produced_images": 5,
+              "source_images": 5,
+              "unpaired_produced": 0,
+              "unpaired_source": 0,
+              "value": 1.0
+            },
+            "overlap_delta": 0.002304,
+            "page_index": 3,
+            "produced": {
+              "alignment": {
+                "dropped": 0,
+                "elements": 48,
+                "value": 0.00012101699979789898
+              },
+              "elements": 48,
+              "overlap": {
+                "dropped": 0,
+                "elements": 48,
+                "value": 0.05262841676442235
+              }
+            },
+            "source": {
+              "alignment": {
+                "dropped": 0,
+                "elements": 37,
+                "value": 0.00019795268201080866
+              },
+              "elements": 37,
+              "overlap": {
+                "dropped": 0,
+                "elements": 37,
+                "value": 0.0503248281736573
+              }
+            }
+          }
+        ],
+        "pages_compared": 4,
+        "summary": {
+          "alignment_delta": -2e-05,
+          "alignment_produced": 0.000246,
+          "alignment_source": 0.000266,
+          "image_area_delta": 0.00031,
+          "image_placement_iou": 0.999709,
+          "overlap_delta": -0.056976,
+          "overlap_produced": 0.340063,
+          "overlap_source": 0.397039
+        }
+      },
+      "mid_break_rate": {
+        "metric": "mid_unit_page_break_rate",
+        "pages": 4,
+        "rate": 0.666667,
+        "series": {
+          "column": {
+            "answerable": 8,
+            "axis_unsupported_count": 0,
+            "boundaries": [
+              {
+                "from_column": 0,
+                "label": "p1c0->c1",
+                "page_index": 0,
+                "series": "column",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 0,
+                  "last_character": "报",
+                  "last_character_x": 296.86090087890625,
+                  "last_character_y": 56.318756103515625,
+                  "last_line_text": "欧洲核子研究中心快报",
+                  "layout_label": "plain text",
+                  "page_index": 0,
+                  "paragraph_index": 0,
+                  "reference": "p1#0",
+                  "vertical": false
+                },
+                "to_column": 1,
+                "to_page_index": 0,
+                "truth_category": null,
+                "truth_link": null,
+                "verdict": "open"
+              },
+              {
+                "from_column": 0,
+                "label": "p2c0->c1",
+                "page_index": 1,
+                "series": "column",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 0,
+                  "last_character": "讯",
+                  "last_character_x": 296.86090087890625,
+                  "last_character_y": 54.454376220703125,
+                  "last_line_text": "欧洲核子研究中心通讯",
+                  "layout_label": "plain text",
+                  "page_index": 1,
+                  "paragraph_index": 0,
+                  "reference": "p2#0",
+                  "vertical": false
+                },
+                "to_column": 1,
+                "to_page_index": 1,
+                "truth_category": null,
+                "truth_link": null,
+                "verdict": "open"
+              },
+              {
+                "from_column": 0,
+                "label": "p3c0->c1",
+                "page_index": 2,
+                "series": "column",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 0,
+                  "last_character": "3",
+                  "last_character_x": 506.85450744628906,
+                  "last_character_y": 76.09414672851562,
+                  "last_line_text": "PPuubb__CCEERRNN--2266--JJuull--AAuugg--BBeerrggoozz__ccoololouurRrRLL.i.nindddd 1   13300//0066//22002266      1188::2233",
+                  "layout_label": "plain text",
+                  "page_index": 2,
+                  "paragraph_index": 87,
+                  "reference": "p3#87",
+                  "vertical": false
+                },
+                "to_column": 1,
+                "to_page_index": 2,
+                "truth_category": null,
+                "truth_link": null,
+                "verdict": "open"
+              },
+              {
+                "from_column": 1,
+                "label": "p3c1->c2",
+                "page_index": 2,
+                "series": "column",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 1,
+                  "last_character": "。",
+                  "last_character_x": 325.5785827636719,
+                  "last_character_y": 302.11669921875,
+                  "last_line_text": "中，很快将发布。",
+                  "layout_label": "plain text",
+                  "page_index": 2,
+                  "paragraph_index": 85,
+                  "reference": "p3#85",
+                  "vertical": false
+                },
+                "to_column": 2,
+                "to_page_index": 2,
+                "truth_category": null,
+                "truth_link": null,
+                "verdict": "closed"
+              },
+              {
+                "from_column": 2,
+                "label": "p3c2->c3",
+                "page_index": 2,
+                "series": "column",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 2,
+                  "last_character": "2",
+                  "last_character_x": 1016.9569396972656,
+                  "last_character_y": 76.5343017578125,
+                  "last_line_text": "CCJulAug2626_新闻分析_v33.indd   7703CCJulAug _新闻分析_v.ind20d2 /60年7/270月236日1166::2222",
+                  "layout_label": "plain text",
+                  "page_index": 2,
+                  "paragraph_index": 70,
+                  "reference": "p3#70",
+                  "vertical": false
+                },
+                "to_column": 3,
+                "to_page_index": 2,
+                "truth_category": null,
+                "truth_link": null,
+                "verdict": "open"
+              },
+              {
+                "from_column": 0,
+                "label": "p4c0->c1",
+                "page_index": 3,
+                "series": "column",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 0,
+                  "last_character": "3",
+                  "last_character_x": 507.2282409667969,
+                  "last_character_y": 76.92782592773438,
+                  "last_line_text": "CCCCJJuullAAuugg2266__HHIISSTTOORRYY__vv44.i.nindddd 2  4 240033//0077//22002266      1166::4433",
+                  "layout_label": "plain text",
+                  "page_index": 3,
+                  "paragraph_index": 41,
+                  "reference": "p4#41",
+                  "vertical": false
+                },
+                "to_column": 1,
+                "to_page_index": 3,
+                "truth_category": null,
+                "truth_link": null,
+                "verdict": "open"
+              },
+              {
+                "from_column": 1,
+                "label": "p4c1->c2",
+                "page_index": 3,
+                "series": "column",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 1,
+                  "last_character": "。",
+                  "last_character_x": 392.1040496826172,
+                  "last_character_y": 276.7019348144531,
+                  "last_line_text": "其继任者超级神冈探测器于1998年观测到了中微子振荡。",
+                  "layout_label": "plain text",
+                  "page_index": 3,
+                  "paragraph_index": 39,
+                  "reference": "p4#39",
+                  "vertical": false
+                },
+                "to_column": 2,
+                "to_page_index": 3,
+                "truth_category": null,
+                "truth_link": null,
+                "verdict": "closed"
+              },
+              {
+                "from_column": 2,
+                "label": "p4c2->c3",
+                "page_index": 3,
+                "series": "column",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 2,
+                  "last_character": "4",
+                  "last_character_x": 1016.9569396972656,
+                  "last_character_y": 76.53399658203125,
+                  "last_line_text": "CCCCJJuullAAuugg2266__HHIISSTTOORRYY__vv44..iinndddd      225502032/60年77/2月032日61166::4444",
+                  "layout_label": "plain text",
+                  "page_index": 3,
+                  "paragraph_index": 25,
+                  "reference": "p4#25",
+                  "vertical": false
+                },
+                "to_column": 3,
+                "to_page_index": 3,
+                "truth_category": null,
+                "truth_link": null,
+                "verdict": "open"
+              }
+            ],
+            "boundaries_total": 8,
+            "closed_count": 2,
+            "designed_count": 0,
+            "no_tail_count": 0,
+            "open_count": 6,
+            "rate": 0.75,
+            "series": "column",
+            "strict_rate": 0.75
+          },
+          "page": {
+            "answerable": 3,
+            "axis_unsupported_count": 0,
+            "boundaries": [
+              {
+                "from_column": -1,
+                "label": "1->2",
+                "page_index": 0,
+                "series": "page",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 1,
+                  "last_character": "6",
+                  "last_character_x": 1017.5459594726562,
+                  "last_character_y": 76.12533569335938,
+                  "last_line_text": "CCCCJJuullAAuugg2266__CCoovveerr__vv22..iinndddd      1122002266年年77月月33日日1166::0066",
+                  "layout_label": "plain text",
+                  "page_index": 0,
+                  "paragraph_index": 6,
+                  "reference": "p1#6",
+                  "vertical": false
+                },
+                "to_column": -1,
+                "to_page_index": 1,
+                "truth_category": "clean",
+                "truth_link": false,
+                "verdict": "open"
+              },
+              {
+                "from_column": -1,
+                "label": "2->3",
+                "page_index": 1,
+                "series": "page",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 1,
+                  "last_character": "2",
+                  "last_character_x": 1019.2282409667969,
+                  "last_character_y": 76.92788696289062,
+                  "last_line_text": "CCCCJJuullAAuugg2266__CCoonnttss__vv33..iinndddd      330033//0077//22002266      1166::1122",
+                  "layout_label": "plain text",
+                  "page_index": 1,
+                  "paragraph_index": 62,
+                  "reference": "p2#62",
+                  "vertical": false
+                },
+                "to_column": -1,
+                "to_page_index": 2,
+                "truth_category": "clean",
+                "truth_link": false,
+                "verdict": "open"
+              },
+              {
+                "from_column": -1,
+                "label": "3->4",
+                "page_index": 2,
+                "series": "page",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 3,
+                  "last_character": "。",
+                  "last_character_x": 932.5731506347656,
+                  "last_character_y": 431.2246398925781,
+                  "last_line_text": "战略，更新 2026年5月22日，CERN理事会在布达佩斯举行关于欧洲粒子物理战略的专门会议。",
+                  "layout_label": "plain text",
+                  "page_index": 2,
+                  "paragraph_index": 65,
+                  "reference": "p3#65",
+                  "vertical": false
+                },
+                "to_column": -1,
+                "to_page_index": 3,
+                "truth_category": "clean",
+                "truth_link": false,
+                "verdict": "closed"
+              }
+            ],
+            "boundaries_total": 3,
+            "closed_count": 1,
+            "designed_count": 0,
+            "no_tail_count": 0,
+            "open_count": 2,
+            "rate": 0.666667,
+            "series": "page",
+            "strict_rate": 0.666667
+          }
+        },
+        "stratified": {
+          "mbr_all": 0.666667,
+          "mbr_all_denominator": 3,
+          "mbr_linkable": 0.666667,
+          "mbr_linkable_denominator": 3,
+          "mbr_linkable_open": 2,
+          "source_inherited_open": 0,
+          "strata": {
+            "clean": {
+              "answerable": 3,
+              "axis_unsupported_count": 0,
+              "boundaries_total": 3,
+              "closed_count": 1,
+              "designed_count": 0,
+              "no_tail_count": 0,
+              "open_count": 2,
+              "rate": 0.666667,
+              "series": "page",
+              "strict_rate": 0.666667
+            },
+            "linked": {
+              "answerable": 0,
+              "axis_unsupported_count": 0,
+              "boundaries_total": 0,
+              "closed_count": 0,
+              "designed_count": 0,
+              "no_tail_count": 0,
+              "open_count": 0,
+              "rate": null,
+              "series": "page",
+              "strict_rate": null
+            },
+            "trap": {
+              "answerable": 0,
+              "axis_unsupported_count": 0,
+              "boundaries_total": 0,
+              "closed_count": 0,
+              "designed_count": 0,
+              "no_tail_count": 0,
+              "open_count": 0,
+              "rate": null,
+              "series": "page",
+              "strict_rate": null
+            },
+            "unlabelled": {
+              "answerable": 0,
+              "axis_unsupported_count": 0,
+              "boundaries_total": 0,
+              "closed_count": 0,
+              "designed_count": 0,
+              "no_tail_count": 0,
+              "open_count": 0,
+              "rate": null,
+              "series": "page",
+              "strict_rate": null
+            }
+          },
+          "trap_boundaries": 0,
+          "unlabelled_boundaries": 0
+        },
+        "strict_rate": 0.666667,
+        "vertical_paragraphs": 3
+      },
+      "path": "pdf_extraction",
+      "produced_pdf": "examples/output/b8_4/smoke/CERNCourier-en/out/CERNCourier-en.no_watermark.zh.mono.pdf",
+      "produced_pdf_sha256": "9a5d7ffd16238e54c5cf01fc4f88addb3d7e3cfac67152ad12bc9ba9c0e4c1fa",
+      "sample": "CERNCourier-en.pdf",
+      "source_pdf": "examples/input/CERNCourier-en.pdf",
+      "source_pdf_sha256": "c099e0094adf0782bd45746860c95cef6934e919f4cc7c527f48bd01a4eb0929"
+    }
+  ],
+  "sample": "CERNCourier-en.pdf"
+}

@@ -58,6 +58,40 @@ script and is not for anything else. A tail the intermediate language marks
 ``vertical`` is reported with the verdict ``axis_unsupported`` and takes part in
 no rate, so an unmeasurable boundary is visible rather than silently counted as
 sound.
+
+**The stratification.** A rate over every boundary of an excerpt answers a
+question nobody asked. The corpus adjudicates each page boundary in
+``corpus/chain_labels.user.json``, and three kinds of boundary are mixed into
+:math:`B`:
+
+* :math:`B_{\\text{linked}}`, where a semantic unit is cut and the continuation
+  is on the next page. An open tail here is the defect the whole project is
+  about, and a closed one is the repair working.
+* :math:`B_{\\text{trap}}`, where the tail dangles mid-sentence and its
+  continuation is **not in the document at all** -- the excerpt skips the issue
+  page it went to. The note the adjudication writes carries one of the markers
+  ``truth_trap_markers`` declares. No producer can close such a boundary: it is
+  open in the source and open in every translation of it, and counting it is
+  measuring how the excerpt was cut.
+* :math:`B_{\\text{clean}}`, where the source tail ends on a sentence. An open
+  tail here was introduced by whatever set the page.
+
+So the headline number is over the boundaries a producer is answerable for,
+
+.. math::
+
+    \\mathrm{MBR}_{\\text{linkable}} = \\frac{
+        |\\{b \\in B_{\\text{linked}} \\cup B_{\\text{clean}} : \\text{open}(b)\\}|}{
+        |\\{b \\in B_{\\text{linked}} \\cup B_{\\text{clean}} :
+            \\text{answerable}(b) \\wedge \\neg D(b)\\}|},
+
+reported beside :math:`\\mathrm{MBR}_{\\text{all}}`, which is the contract's
+rate over the whole of :math:`B`, and beside the count of open tails in
+:math:`B_{\\text{trap}}`, which is inherited from the source and belongs to
+neither numerator. Every stratum's full verdict tally is reported too, so any
+other denominator a reader prefers can be recomputed from the record. A run with
+no adjudication for its sample reports no stratification at all rather than a
+default one.
 """
 
 from __future__ import annotations
@@ -93,6 +127,19 @@ VERDICTS = (CLOSED, DESIGNED, OPEN, AXIS_UNSUPPORTED, NO_TAIL)
 # once the unmeasurable ones are set aside.
 _ANSWERABLE = (CLOSED, DESIGNED, OPEN)
 
+# What the corpus adjudication says one page boundary is. LINKED and CLEAN are
+# the boundaries a producer answers for; TRAP is the one whose continuation the
+# excerpt does not contain; UNLABELLED is a boundary the ground truth is silent
+# about, which is neither of those and is kept out of both.
+LINKED = "linked"
+TRAP = "trap"
+CLEAN = "clean"
+UNLABELLED = "unlabelled"
+STRATA = (LINKED, TRAP, CLEAN, UNLABELLED)
+
+# The strata the headline rate is taken over.
+LINKABLE = (LINKED, CLEAN)
+
 # Character categories that carry no punctuation of their own and would hide the
 # ender they sit on. The same two the chain detector strips.
 _INVISIBLE_CATEGORIES = ("Mn", "Cf")
@@ -100,6 +147,41 @@ _INVISIBLE_CATEGORIES = ("Mn", "Cf")
 # The sentence interval a redistribution records when it had no sentence to cut
 # at, as the chain translation writes it into the intermediate language.
 _NO_SENTENCE = -1
+
+
+@dataclass(frozen=True)
+class Adjudication:
+    """What the corpus says about one boundary: the ruling and its stratum."""
+
+    link: bool
+    category: str
+
+
+def adjudications_of(entry: dict, trap_markers) -> dict[str, Adjudication]:
+    """One sample's ground truth entry as a stratum per boundary.
+
+    ``entry`` is keyed the way ``corpus/chain_labels.user.json`` keys it and
+    holds a ruling and a note per boundary. The ruling gives the linked
+    boundaries; the trap stratum is the subset of the unlinked ones whose note
+    carries a declared marker, which is how the adjudication records that the
+    dangling tail continues onto a page outside the excerpt. Matching is on the
+    note as written, so a marker is an annotation somebody made and not a word
+    that happened to appear.
+    """
+    rulings: dict[str, Adjudication] = {}
+    for label, value in entry.items():
+        if not isinstance(value, dict):
+            continue
+        link = bool(value.get("link"))
+        note = str(value.get("note") or "")
+        if link:
+            category = LINKED
+        elif any(marker in note for marker in trap_markers):
+            category = TRAP
+        else:
+            category = CLEAN
+        rulings[label] = Adjudication(link=link, category=category)
+    return rulings
 
 
 @dataclass(frozen=True)
@@ -131,6 +213,7 @@ class Boundary:
     verdict: str
     tail: Tail | None
     truth_link: bool | None = None
+    truth_category: str | None = None
 
     @property
     def label(self) -> str:
@@ -149,6 +232,7 @@ class Boundary:
             "to_column": self.to_column,
             "verdict": self.verdict,
             "truth_link": self.truth_link,
+            "truth_category": self.truth_category,
             "tail": None if self.tail is None else vars(self.tail),
         }
 
@@ -162,6 +246,20 @@ class SeriesResult:
 
     def count(self, verdict: str) -> int:
         return sum(1 for item in self.boundaries if item.verdict == verdict)
+
+    def subset(self, categories) -> SeriesResult:
+        """The same series restricted to boundaries of the given strata.
+
+        A stratum's rate is the series rate over its own boundaries and nothing
+        else, so restricting and then asking is the same computation rather
+        than a second one that could drift from it.
+        """
+        return SeriesResult(
+            series=self.series,
+            boundaries=[
+                item for item in self.boundaries if item.truth_category in categories
+            ],
+        )
 
     @property
     def answerable(self) -> int:
@@ -182,16 +280,18 @@ class SeriesResult:
             return None
         return self.count(OPEN) / denominator
 
-    def as_record(self, digits: int) -> dict:
-        return {
+    def as_record(self, digits: int, with_boundaries: bool = True) -> dict:
+        record = {
             "series": self.series,
             "boundaries_total": len(self.boundaries),
             "answerable": self.answerable,
             **{f"{verdict}_count": self.count(verdict) for verdict in VERDICTS},
             "rate": rounded(self.rate, digits),
             "strict_rate": rounded(self.strict_rate, digits),
-            "boundaries": [item.as_record() for item in self.boundaries],
         }
+        if with_boundaries:
+            record["boundaries"] = [item.as_record() for item in self.boundaries]
+        return record
 
 
 def _centre(box) -> tuple[float, float] | None:
@@ -328,15 +428,16 @@ def _verdict_of(tail: Tail, paragraph, chain_reach, chain_config) -> str:
 def boundaries_of(
     document: il_version_1.Document,
     chain_config: dict,
-    truth: dict[str, bool] | None = None,
+    truth: dict[str, Adjudication] | None = None,
 ) -> dict[str, SeriesResult]:
     """Every boundary of a produced document, judged, in both series.
 
     ``truth`` is the corpus adjudication for this sample keyed the way
     ``corpus/chain_labels.user.json`` keys it, and is carried through onto the
-    page boundaries so a report can split the rate by whether a human called the
-    boundary a cut unit. It steers nothing: the verdict is read off the geometry
-    either way.
+    page boundaries so a report can split the rate by what a human called the
+    boundary. It steers nothing: the verdict is read off the geometry either
+    way, and a boundary the adjudication is silent about is carried as
+    ``unlabelled`` rather than as one of the strata it was never put in.
     """
     chain_reach = _chain_last_index(document)
     pages = list(document.page)
@@ -352,6 +453,7 @@ def boundaries_of(
             paragraph = items[-1][0]
             tail = _tail_of(pages[index], index, items[-1])
             verdict = _verdict_of(tail, paragraph, chain_reach, chain_config)
+        ruling = None if truth is None else truth.get(f"{index + 1}->{index + 2}")
         results[PAGE_SERIES].boundaries.append(
             Boundary(
                 series=PAGE_SERIES,
@@ -361,7 +463,10 @@ def boundaries_of(
                 to_column=-1,
                 verdict=verdict,
                 tail=tail,
-                truth_link=None if truth is None else truth.get(f"{index + 1}->{index + 2}"),
+                truth_link=None if ruling is None else ruling.link,
+                truth_category=None
+                if truth is None
+                else (UNLABELLED if ruling is None else ruling.category),
             )
         )
 
@@ -385,10 +490,37 @@ def boundaries_of(
     return results
 
 
+def stratify(series: SeriesResult, digits: int) -> dict:
+    """The page series split by what the corpus called each of its boundaries.
+
+    Two rates and a count. The linkable rate is the one a producer answers for;
+    the all rate is the contract's denominator, kept so the two are readable
+    side by side; and the open tails in the trap stratum are reported as their
+    own number because they are inherited from the excerpt rather than caused.
+    """
+    linkable = series.subset(LINKABLE)
+    return {
+        "strata": {
+            name: series.subset((name,)).as_record(digits, with_boundaries=False)
+            for name in STRATA
+        },
+        "mbr_linkable": rounded(linkable.strict_rate, digits),
+        "mbr_linkable_open": linkable.count(OPEN),
+        "mbr_linkable_denominator": max(
+            0, linkable.answerable - linkable.count(DESIGNED)
+        ),
+        "mbr_all": rounded(series.rate, digits),
+        "mbr_all_denominator": len(series.boundaries),
+        "source_inherited_open": series.subset((TRAP,)).count(OPEN),
+        "trap_boundaries": len(series.subset((TRAP,)).boundaries),
+        "unlabelled_boundaries": len(series.subset((UNLABELLED,)).boundaries),
+    }
+
+
 def measure(
     document: il_version_1.Document,
     chain_config: dict,
-    truth: dict[str, bool] | None = None,
+    truth: dict[str, Adjudication] | None = None,
     config: MetricsConfig | None = None,
 ) -> dict:
     """M1 over one produced document, both series, with every boundary shown."""
@@ -398,9 +530,23 @@ def measure(
     return {
         "metric": "mid_unit_page_break_rate",
         "pages": len(document.page),
+        # What the axis restriction could have cost. A run reporting no
+        # unsupported boundary has said nothing until it also says whether the
+        # document held anything set on the other axis to begin with.
+        "vertical_paragraphs": sum(
+            1
+            for page in document.page
+            for paragraph in page.pdf_paragraph or ()
+            if paragraph.vertical
+        ),
         "series": {
             name: results[name].as_record(digits) for name in SERIES
         },
         "rate": rounded(results[PAGE_SERIES].rate, digits),
         "strict_rate": rounded(results[PAGE_SERIES].strict_rate, digits),
+        # Absent rather than empty where the sample has no adjudication: a
+        # stratification of nothing is not a stratification.
+        "stratified": None
+        if truth is None
+        else stratify(results[PAGE_SERIES], digits),
     }

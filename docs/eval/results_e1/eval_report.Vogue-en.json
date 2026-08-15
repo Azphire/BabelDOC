@@ -1,0 +1,1091 @@
+{
+  "runs": [
+    {
+      "absent": [
+        "no working directory: no chain or repair level of the conservation invariant",
+        "no source and translated checkpoint pair: no LTCR"
+      ],
+      "conservation": {
+        "holds": true,
+        "levels": {
+          "chain": {
+            "evidence": {
+              "absent": "no chain translation report"
+            },
+            "failures": [],
+            "holds": null,
+            "level": "chain",
+            "subjects": 0
+          },
+          "document": {
+            "evidence": {
+              "produced_pages": 3,
+              "source_pages": 3
+            },
+            "failures": [],
+            "holds": true,
+            "level": "document",
+            "subjects": 1
+          },
+          "repair": {
+            "evidence": {
+              "absent": "no repair report"
+            },
+            "failures": [],
+            "holds": null,
+            "level": "repair",
+            "subjects": 0
+          }
+        },
+        "levels_absent": [
+          "chain",
+          "repair"
+        ],
+        "levels_present": [
+          "document"
+        ],
+        "metric": "block_conservation_invariant"
+      },
+      "label": "upstream",
+      "layout_geometry": {
+        "metric": "layout_geometry",
+        "page_count_delta": {
+          "conserved": true,
+          "produced_pages": 3,
+          "source_pages": 3,
+          "value": 0
+        },
+        "pages": [
+          {
+            "alignment_delta": 0.0,
+            "image_area_delta": {
+              "absolute": 0.0,
+              "produced_area": 0.659405,
+              "source_area": 0.659405,
+              "value": 0.0
+            },
+            "image_placement_iou": {
+              "pairs": 1,
+              "produced_images": 1,
+              "source_images": 1,
+              "unpaired_produced": 0,
+              "unpaired_source": 0,
+              "value": 1.0
+            },
+            "overlap_delta": 0.0,
+            "page_index": 0,
+            "produced": {
+              "alignment": {
+                "dropped": 0,
+                "elements": 2,
+                "value": 0.0003546957655747669
+              },
+              "elements": 2,
+              "overlap": {
+                "dropped": 0,
+                "elements": 2,
+                "value": 0.0
+              }
+            },
+            "source": {
+              "alignment": {
+                "dropped": 0,
+                "elements": 2,
+                "value": 0.0003546957655747669
+              },
+              "elements": 2,
+              "overlap": {
+                "dropped": 0,
+                "elements": 2,
+                "value": 0.0
+              }
+            }
+          },
+          {
+            "alignment_delta": null,
+            "image_area_delta": {
+              "absolute": -0.0,
+              "produced_area": 1.000153,
+              "source_area": 1.000153,
+              "value": -0.0
+            },
+            "image_placement_iou": {
+              "pairs": 1,
+              "produced_images": 1,
+              "source_images": 1,
+              "unpaired_produced": 0,
+              "unpaired_source": 0,
+              "value": 1.0
+            },
+            "overlap_delta": 0.0,
+            "page_index": 1,
+            "produced": {
+              "alignment": {
+                "dropped": 0,
+                "elements": 1,
+                "value": null
+              },
+              "elements": 1,
+              "overlap": {
+                "dropped": 0,
+                "elements": 1,
+                "value": 0.0
+              }
+            },
+            "source": {
+              "alignment": {
+                "dropped": 0,
+                "elements": 1,
+                "value": null
+              },
+              "elements": 1,
+              "overlap": {
+                "dropped": 0,
+                "elements": 1,
+                "value": 0.0
+              }
+            }
+          },
+          {
+            "alignment_delta": 3e-06,
+            "image_area_delta": {
+              "absolute": -0.0,
+              "produced_area": 0.26473,
+              "source_area": 0.26473,
+              "value": -0.0
+            },
+            "image_placement_iou": {
+              "pairs": 3,
+              "produced_images": 3,
+              "source_images": 3,
+              "unpaired_produced": 0,
+              "unpaired_source": 0,
+              "value": 0.999999
+            },
+            "overlap_delta": 0.0,
+            "page_index": 2,
+            "produced": {
+              "alignment": {
+                "dropped": 0,
+                "elements": 55,
+                "value": 0.00013717496918101813
+              },
+              "elements": 55,
+              "overlap": {
+                "dropped": 0,
+                "elements": 55,
+                "value": 0.0
+              }
+            },
+            "source": {
+              "alignment": {
+                "dropped": 0,
+                "elements": 28,
+                "value": 0.00013454188767068087
+              },
+              "elements": 28,
+              "overlap": {
+                "dropped": 0,
+                "elements": 28,
+                "value": 0.0
+              }
+            }
+          }
+        ],
+        "pages_compared": 3,
+        "summary": {
+          "alignment_delta": 1e-06,
+          "alignment_produced": 0.000246,
+          "alignment_source": 0.000245,
+          "image_area_delta": -0.0,
+          "image_placement_iou": 1.0,
+          "overlap_delta": 0.0,
+          "overlap_produced": 0.0,
+          "overlap_source": 0.0
+        }
+      },
+      "mid_break_rate": {
+        "metric": "mid_unit_page_break_rate",
+        "pages": 3,
+        "rate": 0.0,
+        "series": {
+          "column": {
+            "answerable": 1,
+            "axis_unsupported_count": 0,
+            "boundaries": [
+              {
+                "from_column": 0,
+                "label": "p3c0->c1",
+                "page_index": 2,
+                "series": "column",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 0,
+                  "last_character": "。",
+                  "last_character_x": 421.9070129394531,
+                  "last_character_y": 341.3073425292969,
+                  "last_line_text": "模特Grace Elizabeth身穿Louis Vuitton的夹克、连身裤和包包，以及Nike运动鞋，漫步于海滨。摄影师：Daniel Arnold。",
+                  "layout_label": "plain text",
+                  "page_index": 2,
+                  "paragraph_index": 2,
+                  "reference": "p3#2",
+                  "vertical": false
+                },
+                "to_column": 1,
+                "to_page_index": 2,
+                "truth_category": null,
+                "truth_link": null,
+                "verdict": "closed"
+              }
+            ],
+            "boundaries_total": 1,
+            "closed_count": 1,
+            "designed_count": 0,
+            "no_tail_count": 0,
+            "open_count": 0,
+            "rate": 0.0,
+            "series": "column",
+            "strict_rate": 0.0
+          },
+          "page": {
+            "answerable": 0,
+            "axis_unsupported_count": 0,
+            "boundaries": [
+              {
+                "from_column": -1,
+                "label": "1->2",
+                "page_index": 0,
+                "series": "page",
+                "tail": null,
+                "to_column": -1,
+                "to_page_index": 1,
+                "truth_category": "clean",
+                "truth_link": false,
+                "verdict": "no_tail"
+              },
+              {
+                "from_column": -1,
+                "label": "2->3",
+                "page_index": 1,
+                "series": "page",
+                "tail": null,
+                "to_column": -1,
+                "to_page_index": 2,
+                "truth_category": "clean",
+                "truth_link": false,
+                "verdict": "no_tail"
+              }
+            ],
+            "boundaries_total": 2,
+            "closed_count": 0,
+            "designed_count": 0,
+            "no_tail_count": 2,
+            "open_count": 0,
+            "rate": 0.0,
+            "series": "page",
+            "strict_rate": null
+          }
+        },
+        "stratified": {
+          "mbr_all": 0.0,
+          "mbr_all_denominator": 2,
+          "mbr_linkable": null,
+          "mbr_linkable_denominator": 0,
+          "mbr_linkable_open": 0,
+          "source_inherited_open": 0,
+          "strata": {
+            "clean": {
+              "answerable": 0,
+              "axis_unsupported_count": 0,
+              "boundaries_total": 2,
+              "closed_count": 0,
+              "designed_count": 0,
+              "no_tail_count": 2,
+              "open_count": 0,
+              "rate": 0.0,
+              "series": "page",
+              "strict_rate": null
+            },
+            "linked": {
+              "answerable": 0,
+              "axis_unsupported_count": 0,
+              "boundaries_total": 0,
+              "closed_count": 0,
+              "designed_count": 0,
+              "no_tail_count": 0,
+              "open_count": 0,
+              "rate": null,
+              "series": "page",
+              "strict_rate": null
+            },
+            "trap": {
+              "answerable": 0,
+              "axis_unsupported_count": 0,
+              "boundaries_total": 0,
+              "closed_count": 0,
+              "designed_count": 0,
+              "no_tail_count": 0,
+              "open_count": 0,
+              "rate": null,
+              "series": "page",
+              "strict_rate": null
+            },
+            "unlabelled": {
+              "answerable": 0,
+              "axis_unsupported_count": 0,
+              "boundaries_total": 0,
+              "closed_count": 0,
+              "designed_count": 0,
+              "no_tail_count": 0,
+              "open_count": 0,
+              "rate": null,
+              "series": "page",
+              "strict_rate": null
+            }
+          },
+          "trap_boundaries": 0,
+          "unlabelled_boundaries": 0
+        },
+        "strict_rate": null,
+        "vertical_paragraphs": 3
+      },
+      "path": "pdf_extraction",
+      "produced_pdf": "examples/baseline/pdf/Vogue-en/Vogue-en.no_watermark.zh.mono.pdf",
+      "produced_pdf_sha256": "b4e9ad6dcd9f2928f2cfab6280ee4afcaaab3a6c30554aa1f8f49da3ceebb086",
+      "sample": "Vogue-en.pdf",
+      "source_pdf": "examples/input/Vogue-en.pdf",
+      "source_pdf_sha256": "d1bfee53834180de22e3c890a08a7f7fc7cc708024189a7df265248a4f9024d9"
+    },
+    {
+      "absent": [],
+      "conservation": {
+        "holds": true,
+        "levels": {
+          "chain": {
+            "evidence": {
+              "chains": 0,
+              "escalated_members": 0,
+              "merged_members": 0,
+              "rendered_members": 0
+            },
+            "failures": [],
+            "holds": true,
+            "level": "chain",
+            "subjects": 0
+          },
+          "document": {
+            "evidence": {
+              "produced_pages": 3,
+              "source_pages": 3
+            },
+            "failures": [],
+            "holds": true,
+            "level": "document",
+            "subjects": 1
+          },
+          "repair": {
+            "evidence": {
+              "changed": 0,
+              "changed_outside_touched": 0,
+              "pages_after": 3,
+              "pages_before": 3,
+              "paragraphs_after": 39,
+              "paragraphs_before": 39,
+              "reported_verdict": "conserved",
+              "touched": 0
+            },
+            "failures": [],
+            "holds": true,
+            "level": "repair",
+            "subjects": 1
+          }
+        },
+        "levels_absent": [],
+        "levels_present": [
+          "chain",
+          "repair",
+          "document"
+        ],
+        "metric": "block_conservation_invariant"
+      },
+      "label": "fork_full_il",
+      "layout_geometry": {
+        "metric": "layout_geometry",
+        "page_count_delta": {
+          "conserved": true,
+          "produced_pages": 3,
+          "source_pages": 3,
+          "value": 0
+        },
+        "pages": [
+          {
+            "alignment_delta": 0.0,
+            "image_area_delta": {
+              "absolute": 0.0,
+              "produced_area": 0.687207,
+              "source_area": 0.687207,
+              "value": 0.0
+            },
+            "image_placement_iou": {
+              "pairs": 1,
+              "produced_images": 1,
+              "source_images": 1,
+              "unpaired_produced": 0,
+              "unpaired_source": 0,
+              "value": 1.0
+            },
+            "overlap_delta": 0.0,
+            "page_index": 0,
+            "produced": {
+              "alignment": {
+                "dropped": 0,
+                "elements": 2,
+                "value": 0.005442808509542136
+              },
+              "elements": 2,
+              "overlap": {
+                "dropped": 0,
+                "elements": 2,
+                "value": 0.32707069144126844
+              }
+            },
+            "source": {
+              "alignment": {
+                "dropped": 0,
+                "elements": 2,
+                "value": 0.005442808509542136
+              },
+              "elements": 2,
+              "overlap": {
+                "dropped": 0,
+                "elements": 2,
+                "value": 0.32707069144126844
+              }
+            }
+          },
+          {
+            "alignment_delta": null,
+            "image_area_delta": {
+              "absolute": 0.0,
+              "produced_area": 0.072495,
+              "source_area": 0.072495,
+              "value": 0.0
+            },
+            "image_placement_iou": {
+              "pairs": 1,
+              "produced_images": 1,
+              "source_images": 1,
+              "unpaired_produced": 0,
+              "unpaired_source": 0,
+              "value": 1.0
+            },
+            "overlap_delta": 0.0,
+            "page_index": 1,
+            "produced": {
+              "alignment": {
+                "dropped": 0,
+                "elements": 1,
+                "value": null
+              },
+              "elements": 1,
+              "overlap": {
+                "dropped": 0,
+                "elements": 1,
+                "value": 0.0
+              }
+            },
+            "source": {
+              "alignment": {
+                "dropped": 0,
+                "elements": 1,
+                "value": null
+              },
+              "elements": 1,
+              "overlap": {
+                "dropped": 0,
+                "elements": 1,
+                "value": 0.0
+              }
+            }
+          },
+          {
+            "alignment_delta": 0.0,
+            "image_area_delta": {
+              "absolute": 0.0,
+              "produced_area": 0.272603,
+              "source_area": 0.272603,
+              "value": 0.0
+            },
+            "image_placement_iou": {
+              "pairs": 2,
+              "produced_images": 2,
+              "source_images": 2,
+              "unpaired_produced": 0,
+              "unpaired_source": 0,
+              "value": 1.0
+            },
+            "overlap_delta": 0.0,
+            "page_index": 2,
+            "produced": {
+              "alignment": {
+                "dropped": 0,
+                "elements": 40,
+                "value": 0.00016074575559909025
+              },
+              "elements": 40,
+              "overlap": {
+                "dropped": 0,
+                "elements": 40,
+                "value": 0.050229180634787415
+              }
+            },
+            "source": {
+              "alignment": {
+                "dropped": 0,
+                "elements": 40,
+                "value": 0.00016074575559909025
+              },
+              "elements": 40,
+              "overlap": {
+                "dropped": 0,
+                "elements": 40,
+                "value": 0.050229180634787415
+              }
+            }
+          }
+        ],
+        "pages_compared": 3,
+        "summary": {
+          "alignment_delta": 0.0,
+          "alignment_produced": 0.002802,
+          "alignment_source": 0.002802,
+          "image_area_delta": 0.0,
+          "image_placement_iou": 1.0,
+          "overlap_delta": 0.0,
+          "overlap_produced": 0.125767,
+          "overlap_source": 0.125767
+        }
+      },
+      "ltcr": {
+        "metric": "ltcr",
+        "min_occurrences": 3,
+        "min_paragraphs": 2,
+        "regions": [],
+        "summary": {
+          "fully_consistent": 0,
+          "legacy_mean_share": null,
+          "ltcr": null,
+          "measured": 0,
+          "pairs_agreeing": 0,
+          "pairs_total": 0,
+          "terms": 0
+        }
+      },
+      "mid_break_rate": {
+        "metric": "mid_unit_page_break_rate",
+        "pages": 3,
+        "rate": 0.0,
+        "series": {
+          "column": {
+            "answerable": 1,
+            "axis_unsupported_count": 0,
+            "boundaries": [
+              {
+                "from_column": 0,
+                "label": "p3c0->c1",
+                "page_index": 2,
+                "series": "column",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 0,
+                  "last_character": "。",
+                  "last_character_x": 432.0210000000005,
+                  "last_character_y": 341.33594000000005,
+                  "last_line_text": "模特格蕾丝·伊丽莎白身穿路易威登的夹克、连身裤和包，以及耐克运动鞋，拍摄于海滨。摄影师为丹尼尔·阿诺德。",
+                  "layout_label": "plain text",
+                  "page_index": 2,
+                  "paragraph_index": 2,
+                  "reference": "p3#2",
+                  "vertical": false
+                },
+                "to_column": 1,
+                "to_page_index": 2,
+                "truth_category": null,
+                "truth_link": null,
+                "verdict": "closed"
+              }
+            ],
+            "boundaries_total": 1,
+            "closed_count": 1,
+            "designed_count": 0,
+            "no_tail_count": 0,
+            "open_count": 0,
+            "rate": 0.0,
+            "series": "column",
+            "strict_rate": 0.0
+          },
+          "page": {
+            "answerable": 0,
+            "axis_unsupported_count": 0,
+            "boundaries": [
+              {
+                "from_column": -1,
+                "label": "1->2",
+                "page_index": 0,
+                "series": "page",
+                "tail": null,
+                "to_column": -1,
+                "to_page_index": 1,
+                "truth_category": "clean",
+                "truth_link": false,
+                "verdict": "no_tail"
+              },
+              {
+                "from_column": -1,
+                "label": "2->3",
+                "page_index": 1,
+                "series": "page",
+                "tail": null,
+                "to_column": -1,
+                "to_page_index": 2,
+                "truth_category": "clean",
+                "truth_link": false,
+                "verdict": "no_tail"
+              }
+            ],
+            "boundaries_total": 2,
+            "closed_count": 0,
+            "designed_count": 0,
+            "no_tail_count": 2,
+            "open_count": 0,
+            "rate": 0.0,
+            "series": "page",
+            "strict_rate": null
+          }
+        },
+        "stratified": {
+          "mbr_all": 0.0,
+          "mbr_all_denominator": 2,
+          "mbr_linkable": null,
+          "mbr_linkable_denominator": 0,
+          "mbr_linkable_open": 0,
+          "source_inherited_open": 0,
+          "strata": {
+            "clean": {
+              "answerable": 0,
+              "axis_unsupported_count": 0,
+              "boundaries_total": 2,
+              "closed_count": 0,
+              "designed_count": 0,
+              "no_tail_count": 2,
+              "open_count": 0,
+              "rate": 0.0,
+              "series": "page",
+              "strict_rate": null
+            },
+            "linked": {
+              "answerable": 0,
+              "axis_unsupported_count": 0,
+              "boundaries_total": 0,
+              "closed_count": 0,
+              "designed_count": 0,
+              "no_tail_count": 0,
+              "open_count": 0,
+              "rate": null,
+              "series": "page",
+              "strict_rate": null
+            },
+            "trap": {
+              "answerable": 0,
+              "axis_unsupported_count": 0,
+              "boundaries_total": 0,
+              "closed_count": 0,
+              "designed_count": 0,
+              "no_tail_count": 0,
+              "open_count": 0,
+              "rate": null,
+              "series": "page",
+              "strict_rate": null
+            },
+            "unlabelled": {
+              "answerable": 0,
+              "axis_unsupported_count": 0,
+              "boundaries_total": 0,
+              "closed_count": 0,
+              "designed_count": 0,
+              "no_tail_count": 0,
+              "open_count": 0,
+              "rate": null,
+              "series": "page",
+              "strict_rate": null
+            }
+          },
+          "trap_boundaries": 0,
+          "unlabelled_boundaries": 0
+        },
+        "strict_rate": null,
+        "vertical_paragraphs": 2
+      },
+      "path": "intermediate_language",
+      "sample": "Vogue-en.pdf",
+      "working_dir": "examples/output/b8_4/smoke/Vogue-en/work/Vogue-en"
+    },
+    {
+      "absent": [
+        "no working directory: no chain or repair level of the conservation invariant",
+        "no source and translated checkpoint pair: no LTCR"
+      ],
+      "conservation": {
+        "holds": true,
+        "levels": {
+          "chain": {
+            "evidence": {
+              "absent": "no chain translation report"
+            },
+            "failures": [],
+            "holds": null,
+            "level": "chain",
+            "subjects": 0
+          },
+          "document": {
+            "evidence": {
+              "produced_pages": 3,
+              "source_pages": 3
+            },
+            "failures": [],
+            "holds": true,
+            "level": "document",
+            "subjects": 1
+          },
+          "repair": {
+            "evidence": {
+              "absent": "no repair report"
+            },
+            "failures": [],
+            "holds": null,
+            "level": "repair",
+            "subjects": 0
+          }
+        },
+        "levels_absent": [
+          "chain",
+          "repair"
+        ],
+        "levels_present": [
+          "document"
+        ],
+        "metric": "block_conservation_invariant"
+      },
+      "label": "fork_full_pdf",
+      "layout_geometry": {
+        "metric": "layout_geometry",
+        "page_count_delta": {
+          "conserved": true,
+          "produced_pages": 3,
+          "source_pages": 3,
+          "value": 0
+        },
+        "pages": [
+          {
+            "alignment_delta": 0.0,
+            "image_area_delta": {
+              "absolute": 0.0,
+              "produced_area": 0.659405,
+              "source_area": 0.659405,
+              "value": 0.0
+            },
+            "image_placement_iou": {
+              "pairs": 1,
+              "produced_images": 1,
+              "source_images": 1,
+              "unpaired_produced": 0,
+              "unpaired_source": 0,
+              "value": 1.0
+            },
+            "overlap_delta": 0.0,
+            "page_index": 0,
+            "produced": {
+              "alignment": {
+                "dropped": 0,
+                "elements": 2,
+                "value": 0.0003546957655747669
+              },
+              "elements": 2,
+              "overlap": {
+                "dropped": 0,
+                "elements": 2,
+                "value": 0.0
+              }
+            },
+            "source": {
+              "alignment": {
+                "dropped": 0,
+                "elements": 2,
+                "value": 0.0003546957655747669
+              },
+              "elements": 2,
+              "overlap": {
+                "dropped": 0,
+                "elements": 2,
+                "value": 0.0
+              }
+            }
+          },
+          {
+            "alignment_delta": null,
+            "image_area_delta": {
+              "absolute": -0.0,
+              "produced_area": 1.000153,
+              "source_area": 1.000153,
+              "value": -0.0
+            },
+            "image_placement_iou": {
+              "pairs": 1,
+              "produced_images": 1,
+              "source_images": 1,
+              "unpaired_produced": 0,
+              "unpaired_source": 0,
+              "value": 1.0
+            },
+            "overlap_delta": 0.0,
+            "page_index": 1,
+            "produced": {
+              "alignment": {
+                "dropped": 0,
+                "elements": 1,
+                "value": null
+              },
+              "elements": 1,
+              "overlap": {
+                "dropped": 0,
+                "elements": 1,
+                "value": 0.0
+              }
+            },
+            "source": {
+              "alignment": {
+                "dropped": 0,
+                "elements": 1,
+                "value": null
+              },
+              "elements": 1,
+              "overlap": {
+                "dropped": 0,
+                "elements": 1,
+                "value": 0.0
+              }
+            }
+          },
+          {
+            "alignment_delta": 7.5e-05,
+            "image_area_delta": {
+              "absolute": -0.0,
+              "produced_area": 0.26473,
+              "source_area": 0.26473,
+              "value": -0.0
+            },
+            "image_placement_iou": {
+              "pairs": 3,
+              "produced_images": 3,
+              "source_images": 3,
+              "unpaired_produced": 0,
+              "unpaired_source": 0,
+              "value": 0.999999
+            },
+            "overlap_delta": 0.0,
+            "page_index": 2,
+            "produced": {
+              "alignment": {
+                "dropped": 0,
+                "elements": 59,
+                "value": 0.00020980478626009586
+              },
+              "elements": 59,
+              "overlap": {
+                "dropped": 0,
+                "elements": 59,
+                "value": 0.0
+              }
+            },
+            "source": {
+              "alignment": {
+                "dropped": 0,
+                "elements": 28,
+                "value": 0.00013454188767068087
+              },
+              "elements": 28,
+              "overlap": {
+                "dropped": 0,
+                "elements": 28,
+                "value": 0.0
+              }
+            }
+          }
+        ],
+        "pages_compared": 3,
+        "summary": {
+          "alignment_delta": 3.8e-05,
+          "alignment_produced": 0.000282,
+          "alignment_source": 0.000245,
+          "image_area_delta": -0.0,
+          "image_placement_iou": 1.0,
+          "overlap_delta": 0.0,
+          "overlap_produced": 0.0,
+          "overlap_source": 0.0
+        }
+      },
+      "mid_break_rate": {
+        "metric": "mid_unit_page_break_rate",
+        "pages": 3,
+        "rate": 0.0,
+        "series": {
+          "column": {
+            "answerable": 1,
+            "axis_unsupported_count": 0,
+            "boundaries": [
+              {
+                "from_column": 0,
+                "label": "p3c0->c1",
+                "page_index": 2,
+                "series": "column",
+                "tail": {
+                  "chain_id": null,
+                  "column_index": 0,
+                  "last_character": "。",
+                  "last_character_x": 432.02101135253906,
+                  "last_character_y": 340.9381561279297,
+                  "last_line_text": "模特格蕾丝·伊丽莎白身穿路易威登的夹克、连身裤和包，以及耐克运动鞋，拍摄于海滨。摄影师为丹尼尔·阿诺德。",
+                  "layout_label": "plain text",
+                  "page_index": 2,
+                  "paragraph_index": 2,
+                  "reference": "p3#2",
+                  "vertical": false
+                },
+                "to_column": 1,
+                "to_page_index": 2,
+                "truth_category": null,
+                "truth_link": null,
+                "verdict": "closed"
+              }
+            ],
+            "boundaries_total": 1,
+            "closed_count": 1,
+            "designed_count": 0,
+            "no_tail_count": 0,
+            "open_count": 0,
+            "rate": 0.0,
+            "series": "column",
+            "strict_rate": 0.0
+          },
+          "page": {
+            "answerable": 0,
+            "axis_unsupported_count": 0,
+            "boundaries": [
+              {
+                "from_column": -1,
+                "label": "1->2",
+                "page_index": 0,
+                "series": "page",
+                "tail": null,
+                "to_column": -1,
+                "to_page_index": 1,
+                "truth_category": "clean",
+                "truth_link": false,
+                "verdict": "no_tail"
+              },
+              {
+                "from_column": -1,
+                "label": "2->3",
+                "page_index": 1,
+                "series": "page",
+                "tail": null,
+                "to_column": -1,
+                "to_page_index": 2,
+                "truth_category": "clean",
+                "truth_link": false,
+                "verdict": "no_tail"
+              }
+            ],
+            "boundaries_total": 2,
+            "closed_count": 0,
+            "designed_count": 0,
+            "no_tail_count": 2,
+            "open_count": 0,
+            "rate": 0.0,
+            "series": "page",
+            "strict_rate": null
+          }
+        },
+        "stratified": {
+          "mbr_all": 0.0,
+          "mbr_all_denominator": 2,
+          "mbr_linkable": null,
+          "mbr_linkable_denominator": 0,
+          "mbr_linkable_open": 0,
+          "source_inherited_open": 0,
+          "strata": {
+            "clean": {
+              "answerable": 0,
+              "axis_unsupported_count": 0,
+              "boundaries_total": 2,
+              "closed_count": 0,
+              "designed_count": 0,
+              "no_tail_count": 2,
+              "open_count": 0,
+              "rate": 0.0,
+              "series": "page",
+              "strict_rate": null
+            },
+            "linked": {
+              "answerable": 0,
+              "axis_unsupported_count": 0,
+              "boundaries_total": 0,
+              "closed_count": 0,
+              "designed_count": 0,
+              "no_tail_count": 0,
+              "open_count": 0,
+              "rate": null,
+              "series": "page",
+              "strict_rate": null
+            },
+            "trap": {
+              "answerable": 0,
+              "axis_unsupported_count": 0,
+              "boundaries_total": 0,
+              "closed_count": 0,
+              "designed_count": 0,
+              "no_tail_count": 0,
+              "open_count": 0,
+              "rate": null,
+              "series": "page",
+              "strict_rate": null
+            },
+            "unlabelled": {
+              "answerable": 0,
+              "axis_unsupported_count": 0,
+              "boundaries_total": 0,
+              "closed_count": 0,
+              "designed_count": 0,
+              "no_tail_count": 0,
+              "open_count": 0,
+              "rate": null,
+              "series": "page",
+              "strict_rate": null
+            }
+          },
+          "trap_boundaries": 0,
+          "unlabelled_boundaries": 0
+        },
+        "strict_rate": null,
+        "vertical_paragraphs": 3
+      },
+      "path": "pdf_extraction",
+      "produced_pdf": "examples/output/b8_4/smoke/Vogue-en/out/Vogue-en.no_watermark.zh.mono.pdf",
+      "produced_pdf_sha256": "4a1bb92a0d723ebeab20d8bfa6bf58529fa3eb050df46dce71031616e72395be",
+      "sample": "Vogue-en.pdf",
+      "source_pdf": "examples/input/Vogue-en.pdf",
+      "source_pdf_sha256": "d1bfee53834180de22e3c890a08a7f7fc7cc708024189a7df265248a4f9024d9"
+    }
+  ],
+  "sample": "Vogue-en.pdf"
+}

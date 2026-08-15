@@ -78,13 +78,15 @@
 | A-13 | 重组机制:页 2 一批 6→5、页 3 由 2 批→1 批、页 7 [6,3]→[6,4]、页 8 [3,6]→[3,6,1];cross-column 跟踪组 14→12,cross-page 真对稳定在 5 | `examples/output/b5_smoke/smoke.report.md` §3.1 | git | 机制可见性(与 A-12 的归因分开陈述) | 直接可引(机制);归因需三跑 |
 | A-14 | 成本:十一跑合计 **449** 次 translate(216 上行 / 233 缓存),**120 755** prompt tokens、**34 853** completion tokens | `examples/output/b5_smoke/smoke.report.md` §2 表 4 | git | 可复现性与成本章 | 直接可引 |
 | A-15 | 官方中文版页边界落在**词中**(`…协议中包` / `含惠益分享条款。`);原件重锚为语料样张 `examples/input/Courier-zh.pdf`,sha256 `2975c623b0bc604a4deb15f36229de512d295f69e171462f083b3c7d494bbaf1`(本会话按登记值现场复核),该样张的 notes 自述含 zh p10→p11 的官方词中切断 | `corpus/manifest.json`(sha 与 notes);引文原文 `examples/output/b5_smoke/smoke.report.md` §1d | git(登记)/ worktree(原件) | 四方对照表 | 直接可引(旧 sha256 `fa789f8a…46a7d3ac` 指向已淘汰的 `parallel/courier_official_zh.md`,一律不得再引) |
+| A-16 | M1 分层实测(上游 / fork_full_il / fork_full_pdf 三列):AramcoWorld-en-v2 `6->7`(linked)上游 **open** → fork **closed**,是 M1 独立成立的唯一正例;Courier-en `7->8`(linked)三列**全部 closed**;Courier-zh `7->8`(linked)三列**全部 open**;trap 档 open 计入 `source_inherited_open` 不进分子(Courier-en 2 条) | batch-e1.2 · `docs/eval/results_e1/eval_corpus.md` §2–§3 与 `docs/eval/results_e1/eval_corpus.json` | git | 主结果表的 M1 一列 | 直接可引(主数为 `mbr_linkable`,定义见 `docs/eval/metric_contract.md` §2c.1) |
+| A-17 | M1 在 Courier-en `7->8` 零判别力:上游末字符 `。` 来自**虚构收束**(A-09),fork 末字符 `。` 来自链重排后的真实句末;几何量无法区分二者 | batch-e1.2 · `docs/eval/results_e1/eval_report.Courier-en.json`(逐边界 tail 末字符)+ A-09 原文 | git | 指标局限的自陈;该边界的优劣**必须**引 A-09 的语义证据 | 直接可引 |
 
 ## B 分类线(页面类型)
 
 | # | 数字 | 出处 | 入库 | 论文用途 | 状态 |
 | --- | --- | --- | --- | --- | --- |
 | B-01 | raw 词表整体一致率 **0.903 (28/31)**;分刊物 6/8, 3/4, 8/8, 8/8, 3/3(v1) | batch-b2.7 · `examples/output/b2_7/run_all.full.log`:292–299 | git | 调参落点的原始数字 | 直接可引(须标注 v1) |
-| B-02 | LOPO **holdout 0.938** 与整体 0.903 的区分 | 唯一出处是 `plans/PLAN_B2_7.md`:22 的**转述**;调参会话的逐折矩阵从未落盘 | none | 泛化性论证的核心数字 | **needs-recompute**(见 D3 GAP-02) |
+| B-02 | LOPO **holdout 0.938** 与整体 0.903 的区分 | 唯一出处是 `plans/PLAN_B2_7.md`:22 的**转述**;调参会话的逐折矩阵从未落盘,v1 语料已不存在 | none | 泛化性论证的核心数字 | 直接可引**仅作为负结果**:0.938 不可恢复、一律不得出现;替代品见 B-11 与 D3 GAP-02 |
 | B-03 | 分位数候选词表:v1 **0.903 (28/31)**,v2 **0.788 (26/33)**,未采纳 | `spec_checks/spec_check_b2_7.py`:109–124(冻结表,batch-b7.5.1 重述为 v2) | git | 词表选型的负结果 | 直接可引 |
 | B-04 | 换血后 kind 与 policy 一致率均 **0.879 (29/33)**,门限 0.70,4 处 miss | batch-b7.5.1 · `examples/output/b7_5/refresh.report.md` §2;冻结表 `spec_checks/spec_check_b2_7.py`:109–116;witness `examples/output/run_all.b8_3.log`:130 | git | **论文正文该引这一条** | 直接可引 |
 | B-05 | 分刊物 binding:0.778 (7/9), 0.750 (3/4), 1.000 (8/8), 0.889 (8/9), 1.000 (3/3) | `examples/output/run_all.b8_3.log`:123–127 | git | 逐刊物分解 | 直接可引 |
@@ -93,6 +95,7 @@
 | B-08 | 迁移零漂移:两条被替换样张与后继共享的 **25** 页判定全部未变 | `examples/output/b7_5/refresh.report.md` §3 | git | 换血未污染结论 | 直接可引 |
 | B-09 | 页型覆盖 **11 / 15**;未覆盖 `back_cover` `contributors` `interview` `letters_page` | `examples/output/b7_5/refresh.report.md` §1 | git | 语料局限 | 直接可引 |
 | B-10 | 语料规模:6 样张 / 5 刊物 / **41** 页 | `corpus/manifest.json`,本会话现场求和 | git | 语料章 | 直接可引 |
+| B-11 | v2 按刊物留一逐折矩阵(held-out kind / in-fold kind):aramcoworld **7/9** / 24/32、cern_courier **3/4** / 28/37、imf_fd **8/9** / 23/32、unesco_courier **10/16** / 21/25、vogue_us **3/3** / 28/38;binding 语料级 **29/33 = 0.879**(与 B-04 逐数相符);policy 列处处等于 kind 列 | batch-e1.2 · `docs/eval/results_e1/lopo_v2.json`(`tools/lopo.py` 确定性重算,二次运行逐位相等) | git | 泛化性论证的**替代**数字 | 直接可引(**必须同时标注 `refit_per_fold=false`:无调参器,任何折都不重拟合,矩阵是组合性的而非留出估计;不作留出主张**) |
 
 ## C VLM 线(兜底消融)
 
@@ -101,7 +104,7 @@
 | C-01 | 四点曲线(combined kind agreement,v1 语料,确定性基线一律 28/31 = 0.9032):`gpt-4o` **28/31 (0.9032)**、`gpt-4o-mini` **26/31 (0.8387)**、`gpt-5.6-sol` **28/31 (0.9032)**、`gpt-5.6-terra` **28/31 (0.9032)** | `examples/output/vlm_ablation/gpt-4o/vlm_eval.report.json` 等四份(`agreement.combined` 与 `agreement.deterministic`) | git | 消融曲线:四档模型无一超过确定性基线 | 直接可引(须标注 v1 语料 + 每模型各自的最小方差设定) |
 | C-02 | 路由页 **18 / 31**;routed 一致率 deterministic **15/18 (0.8333)**,combined 同为 15/18(`gpt-4o-mini` 降至 13/18) | `examples/output/vlm_ablation/gpt-4o/vlm_eval.summary.txt` 及同级另三档 | git | 兜底只作用于 18 页,分母须说明 | 直接可引 |
 | C-03 | 词表约束:accepted **18/18**,refused **0**,越界率 0.0(四档一致) | `examples/output/vlm_ablation/gpt-4o/vlm_eval.summary.txt` 及同级另三档 | git | 受约束输出可用性 | 直接可引 |
-| C-04 | 结论措辞"四档模型均无 **policy 级**增益" | 措辞出处 `CLAUDE.md`:30 与 `plans/PLAN_B4.md`:14;**产物只报 kind agreement 与 label_set_coverage,没有 policy 列** | git | 关账结论 | **需重述**(见 D3 GAP-03) |
+| C-04 | policy 级一致率(combined)四档:`gpt-4o` **28/31**、`gpt-4o-mini` **26/31**、`gpt-5.6-sol` **28/31**、`gpt-5.6-terra` **28/31**;对确定性层的 policy 增益 **0 / −2 / 0 / 0**——"四档模型均无 policy 级增益"至此有列可引 | batch-e1.2 · `docs/eval/results_e1/vlm_policy_c04.json`(由四份冻结报告离线重算,零请求零缓存查询) | git | 关账结论 | 直接可引(须标注 **v1 语料 31 页**分母,`unregistered_samples` 列出两份已换血样张) |
 | C-05 | 现行 `enabled: false` | `configs/vlm.json` | git | 默认全自动、无网络 | 直接可引 |
 
 ## D HITL 线(人工两遍式仲裁)
@@ -167,6 +170,8 @@ batch-e1 会话一按 D3 GAP-07 的优先级做了**分级入库**:`examples/bas
 | G-04 | term consistency 语料表:**19** 个合格词;Courier +0.125、AramcoWorld +0.032、两样张持平、Vogue 无可测;38 行候选中 **4** 行仍不可用 | batch-b6.3 · `examples/output/b6_smoke/names_fix.report.md` §"Dual-mode table" | git | LTCR 的现有近似实现与其已知缺陷 | 直接可引(**报告自陈"不构成主张",引用时必须带上**) |
 | G-05 | `max_tokens=2048` 非链感知:超长链会截断、`json.loads` 失败并以 `translation_unavailable` 逃生 | batch-b5.3 · `examples/output/b5_smoke/smoke.report.md` §0 | git | 设计局限 | 直接可引 |
 | G-06 | 评估协议:A/B 一律以缓存冻结重放为准;显著性主张需三跑设计 | `CLAUDE.md`:31 | git | 评估章方法学 | 直接可引 |
+| G-07 | 上游几何路径的方法差异(同一份 fork 产物,IL 路径 vs PyMuPDF 抽取路径,门限 0.1):`overlap_*` 与 `alignment_*` 六样张几乎全部出界 → **not-comparable**;`image_placement_iou` **6/6** 可比;M1 比率不可比而逐边界判决一致 **30/35 (0.857)**;元素数比(PDF/IL)实测 **1.00–1.72** | batch-e1.2 · `docs/eval/results_e1/eval_corpus.md` §4;裁定表在 `docs/eval/metric_contract.md` §2c.2 | git | 上游列与 fork 列可否并排的前提条件 | 直接可引(**M4/M5 的上游列记 not-comparable,跨路径差值不得出现**) |
+| G-08 | IL 路径的 before/after 几何差值是**结构性零**:六样张中四份的 `overlap_source` 与 `overlap_produced`、`alignment_source` 与 `alignment_produced` 在 6 位小数上完全相等,余两份差在第 4 位;成因是排版沿用源段落框 | batch-e1.2 · `docs/eval/results_e1/eval_corpus.json`(`fork_full_il` 各行) | git | 版面变化一律读 PDF 路径的理由 | 直接可引 |
 
 ---
 
@@ -179,9 +184,9 @@ batch-e1 会话一按 D3 GAP-07 的优先级做了**分级入库**:`examples/bas
 
 | 状态 | 条数 | 条目 |
 | --- | ---: | --- |
-| 直接可引 | 61 | 其余全部 |
+| 直接可引 | 68 | 其余全部 |
 | 需三跑 | 1 | A-12 |
-| needs-recompute | 2 | B-02、E-09 |
-| 需重述 | 2 | C-04、E-12 |
+| needs-recompute | 1 | E-09 |
+| 需重述 | 1 | E-12 |
 
 needs-recompute 与需三跑的完整清单、重算来源与 E2 运行矩阵见 `docs/eval/gap_register.md` §1。

@@ -1,0 +1,630 @@
+{
+  "corpus": {
+    "all": {
+      "kind_agreement": 0.7560975609756098,
+      "kind_hits": 31,
+      "labelled_pages": 41,
+      "policy_agreement": 0.7560975609756098,
+      "policy_hits": 31,
+      "samples": [
+        "AramcoWorld-en-v2.pdf",
+        "CERNCourier-en.pdf",
+        "Courier-en.pdf",
+        "Courier-zh.pdf",
+        "FD-en-v2.pdf",
+        "Vogue-en.pdf"
+      ]
+    },
+    "binding": {
+      "kind_agreement": 0.8787878787878788,
+      "kind_hits": 29,
+      "labelled_pages": 33,
+      "policy_agreement": 0.8787878787878788,
+      "policy_hits": 29,
+      "samples": [
+        "AramcoWorld-en-v2.pdf",
+        "CERNCourier-en.pdf",
+        "Courier-en.pdf",
+        "FD-en-v2.pdf",
+        "Vogue-en.pdf"
+      ]
+    },
+    "observed_only": {
+      "kind_agreement": 0.25,
+      "kind_hits": 2,
+      "labelled_pages": 8,
+      "policy_agreement": 0.25,
+      "policy_hits": 2,
+      "samples": [
+        "Courier-zh.pdf"
+      ]
+    }
+  },
+  "folds": [
+    {
+      "held_out": {
+        "kind_agreement": 0.7777777777777778,
+        "kind_hits": 7,
+        "labelled_pages": 9,
+        "policy_agreement": 0.7777777777777778,
+        "policy_hits": 7,
+        "samples": [
+          "AramcoWorld-en-v2.pdf"
+        ]
+      },
+      "held_out_publication": "aramcoworld",
+      "in_fold": {
+        "kind_agreement": 0.75,
+        "kind_hits": 24,
+        "labelled_pages": 32,
+        "policy_agreement": 0.75,
+        "policy_hits": 24,
+        "samples": [
+          "CERNCourier-en.pdf",
+          "Courier-en.pdf",
+          "Courier-zh.pdf",
+          "FD-en-v2.pdf",
+          "Vogue-en.pdf"
+        ]
+      }
+    },
+    {
+      "held_out": {
+        "kind_agreement": 0.75,
+        "kind_hits": 3,
+        "labelled_pages": 4,
+        "policy_agreement": 0.75,
+        "policy_hits": 3,
+        "samples": [
+          "CERNCourier-en.pdf"
+        ]
+      },
+      "held_out_publication": "cern_courier",
+      "in_fold": {
+        "kind_agreement": 0.7567567567567568,
+        "kind_hits": 28,
+        "labelled_pages": 37,
+        "policy_agreement": 0.7567567567567568,
+        "policy_hits": 28,
+        "samples": [
+          "AramcoWorld-en-v2.pdf",
+          "Courier-en.pdf",
+          "Courier-zh.pdf",
+          "FD-en-v2.pdf",
+          "Vogue-en.pdf"
+        ]
+      }
+    },
+    {
+      "held_out": {
+        "kind_agreement": 0.8888888888888888,
+        "kind_hits": 8,
+        "labelled_pages": 9,
+        "policy_agreement": 0.8888888888888888,
+        "policy_hits": 8,
+        "samples": [
+          "FD-en-v2.pdf"
+        ]
+      },
+      "held_out_publication": "imf_fd",
+      "in_fold": {
+        "kind_agreement": 0.71875,
+        "kind_hits": 23,
+        "labelled_pages": 32,
+        "policy_agreement": 0.71875,
+        "policy_hits": 23,
+        "samples": [
+          "AramcoWorld-en-v2.pdf",
+          "CERNCourier-en.pdf",
+          "Courier-en.pdf",
+          "Courier-zh.pdf",
+          "Vogue-en.pdf"
+        ]
+      }
+    },
+    {
+      "held_out": {
+        "kind_agreement": 0.625,
+        "kind_hits": 10,
+        "labelled_pages": 16,
+        "policy_agreement": 0.625,
+        "policy_hits": 10,
+        "samples": [
+          "Courier-en.pdf",
+          "Courier-zh.pdf"
+        ]
+      },
+      "held_out_publication": "unesco_courier",
+      "in_fold": {
+        "kind_agreement": 0.84,
+        "kind_hits": 21,
+        "labelled_pages": 25,
+        "policy_agreement": 0.84,
+        "policy_hits": 21,
+        "samples": [
+          "AramcoWorld-en-v2.pdf",
+          "CERNCourier-en.pdf",
+          "FD-en-v2.pdf",
+          "Vogue-en.pdf"
+        ]
+      }
+    },
+    {
+      "held_out": {
+        "kind_agreement": 1.0,
+        "kind_hits": 3,
+        "labelled_pages": 3,
+        "policy_agreement": 1.0,
+        "policy_hits": 3,
+        "samples": [
+          "Vogue-en.pdf"
+        ]
+      },
+      "held_out_publication": "vogue_us",
+      "in_fold": {
+        "kind_agreement": 0.7368421052631579,
+        "kind_hits": 28,
+        "labelled_pages": 38,
+        "policy_agreement": 0.7368421052631579,
+        "policy_hits": 28,
+        "samples": [
+          "AramcoWorld-en-v2.pdf",
+          "CERNCourier-en.pdf",
+          "Courier-en.pdf",
+          "Courier-zh.pdf",
+          "FD-en-v2.pdf"
+        ]
+      }
+    }
+  ],
+  "generated_by": "tools/lopo.py",
+  "missing": [],
+  "protocol": {
+    "constrained_role": "layout_generalization",
+    "folds": 5,
+    "refit_note": "configs/page_types.json is hand tuned and this repository holds no tuner, so no fold refits anything. Each fold's held out figure is therefore the agreement on that publication and each in-fold figure the agreement on the rest; the matrix is compositional and is not a generalisation estimate. See docs/eval/gap_register.md GAP-02.",
+    "refit_per_fold": false,
+    "source_stage": "styles_and_formulas",
+    "split": "leave one publication out",
+    "tuning_contact": "the vocabulary was tuned with the whole v2 corpus available, so no fold is free of tuner contact and no figure here may be presented as a held out result",
+    "vocabulary_version": "1.0"
+  },
+  "samples": [
+    {
+      "binding": true,
+      "file": "Courier-en.pdf",
+      "kind_hits": 8,
+      "labelled_pages": 8,
+      "pages": [
+        {
+          "accepted": [
+            "toc",
+            "editorial"
+          ],
+          "kind": "editorial",
+          "kind_hit": true,
+          "page": 1,
+          "policy_hit": true
+        },
+        {
+          "accepted": [
+            "article_opener"
+          ],
+          "kind": "article_opener",
+          "kind_hit": true,
+          "page": 2,
+          "policy_hit": true
+        },
+        {
+          "accepted": [
+            "photo_spread",
+            "section_divider"
+          ],
+          "kind": "photo_spread",
+          "kind_hit": true,
+          "page": 3,
+          "policy_hit": true
+        },
+        {
+          "accepted": [
+            "article_body"
+          ],
+          "kind": "article_body",
+          "kind_hit": true,
+          "page": 4,
+          "policy_hit": true
+        },
+        {
+          "accepted": [
+            "article_opener"
+          ],
+          "kind": "article_opener",
+          "kind_hit": true,
+          "page": 5,
+          "policy_hit": true
+        },
+        {
+          "accepted": [
+            "article_body"
+          ],
+          "kind": "article_body",
+          "kind_hit": true,
+          "page": 6,
+          "policy_hit": true
+        },
+        {
+          "accepted": [
+            "article_opener"
+          ],
+          "kind": "article_opener",
+          "kind_hit": true,
+          "page": 7,
+          "policy_hit": true
+        },
+        {
+          "accepted": [
+            "article_body"
+          ],
+          "kind": "article_body",
+          "kind_hit": true,
+          "page": 8,
+          "policy_hit": true
+        }
+      ],
+      "policy_hits": 8,
+      "publication": "unesco_courier"
+    },
+    {
+      "binding": true,
+      "file": "Vogue-en.pdf",
+      "kind_hits": 3,
+      "labelled_pages": 3,
+      "pages": [
+        {
+          "accepted": [
+            "advertisement"
+          ],
+          "kind": "advertisement",
+          "kind_hit": true,
+          "page": 1,
+          "policy_hit": true
+        },
+        {
+          "accepted": [
+            "advertisement"
+          ],
+          "kind": "advertisement",
+          "kind_hit": true,
+          "page": 2,
+          "policy_hit": true
+        },
+        {
+          "accepted": [
+            "toc"
+          ],
+          "kind": "toc",
+          "kind_hit": true,
+          "page": 3,
+          "policy_hit": true
+        }
+      ],
+      "policy_hits": 3,
+      "publication": "vogue_us"
+    },
+    {
+      "binding": true,
+      "file": "CERNCourier-en.pdf",
+      "kind_hits": 3,
+      "labelled_pages": 4,
+      "pages": [
+        {
+          "accepted": [
+            "editorial",
+            "front_cover"
+          ],
+          "kind": "editorial",
+          "kind_hit": true,
+          "page": 1,
+          "policy_hit": true
+        },
+        {
+          "accepted": [
+            "advertisement",
+            "toc"
+          ],
+          "kind": "toc",
+          "kind_hit": true,
+          "page": 2,
+          "policy_hit": true
+        },
+        {
+          "accepted": [
+            "advertisement",
+            "article_opener"
+          ],
+          "kind": "article_opener",
+          "kind_hit": true,
+          "page": 3,
+          "policy_hit": true
+        },
+        {
+          "accepted": [
+            "article_body"
+          ],
+          "kind": "interview",
+          "kind_hit": false,
+          "page": 4,
+          "policy_hit": false
+        }
+      ],
+      "policy_hits": 3,
+      "publication": "cern_courier"
+    },
+    {
+      "binding": true,
+      "file": "AramcoWorld-en-v2.pdf",
+      "kind_hits": 7,
+      "labelled_pages": 9,
+      "pages": [
+        {
+          "accepted": [
+            "front_cover"
+          ],
+          "kind": "front_cover",
+          "kind_hit": true,
+          "page": 1,
+          "policy_hit": true
+        },
+        {
+          "accepted": [
+            "masthead"
+          ],
+          "kind": "masthead",
+          "kind_hit": true,
+          "page": 2,
+          "policy_hit": true
+        },
+        {
+          "accepted": [
+            "toc"
+          ],
+          "kind": "toc",
+          "kind_hit": true,
+          "page": 3,
+          "policy_hit": true
+        },
+        {
+          "accepted": [
+            "article_body"
+          ],
+          "kind": "article_body",
+          "kind_hit": true,
+          "page": 4,
+          "policy_hit": true
+        },
+        {
+          "accepted": [
+            "article_opener"
+          ],
+          "kind": "article_opener",
+          "kind_hit": true,
+          "page": 5,
+          "policy_hit": true
+        },
+        {
+          "accepted": [
+            "article_body"
+          ],
+          "kind": "article_body",
+          "kind_hit": true,
+          "page": 6,
+          "policy_hit": true
+        },
+        {
+          "accepted": [
+            "article_body"
+          ],
+          "kind": "article_body",
+          "kind_hit": true,
+          "page": 7,
+          "policy_hit": true
+        },
+        {
+          "accepted": [
+            "article_body"
+          ],
+          "kind": "article_opener",
+          "kind_hit": false,
+          "page": 8,
+          "policy_hit": false
+        },
+        {
+          "accepted": [
+            "article_body"
+          ],
+          "kind": "article_opener",
+          "kind_hit": false,
+          "page": 9,
+          "policy_hit": false
+        }
+      ],
+      "policy_hits": 7,
+      "publication": "aramcoworld"
+    },
+    {
+      "binding": true,
+      "file": "FD-en-v2.pdf",
+      "kind_hits": 8,
+      "labelled_pages": 9,
+      "pages": [
+        {
+          "accepted": [
+            "front_cover"
+          ],
+          "kind": "front_cover",
+          "kind_hit": true,
+          "page": 1,
+          "policy_hit": true
+        },
+        {
+          "accepted": [
+            "advertisement"
+          ],
+          "kind": "advertisement",
+          "kind_hit": true,
+          "page": 2,
+          "policy_hit": true
+        },
+        {
+          "accepted": [
+            "toc"
+          ],
+          "kind": "toc",
+          "kind_hit": true,
+          "page": 3,
+          "policy_hit": true
+        },
+        {
+          "accepted": [
+            "advertisement"
+          ],
+          "kind": "advertisement",
+          "kind_hit": true,
+          "page": 4,
+          "policy_hit": true
+        },
+        {
+          "accepted": [
+            "masthead"
+          ],
+          "kind": "masthead",
+          "kind_hit": true,
+          "page": 5,
+          "policy_hit": true
+        },
+        {
+          "accepted": [
+            "article_opener"
+          ],
+          "kind": "article_opener",
+          "kind_hit": true,
+          "page": 6,
+          "policy_hit": true
+        },
+        {
+          "accepted": [
+            "infographic",
+            "sidebar_heavy"
+          ],
+          "kind": "masthead",
+          "kind_hit": false,
+          "page": 7,
+          "policy_hit": false
+        },
+        {
+          "accepted": [
+            "article_opener"
+          ],
+          "kind": "article_opener",
+          "kind_hit": true,
+          "page": 8,
+          "policy_hit": true
+        },
+        {
+          "accepted": [
+            "article_opener"
+          ],
+          "kind": "article_opener",
+          "kind_hit": true,
+          "page": 9,
+          "policy_hit": true
+        }
+      ],
+      "policy_hits": 8,
+      "publication": "imf_fd"
+    },
+    {
+      "binding": false,
+      "file": "Courier-zh.pdf",
+      "kind_hits": 2,
+      "labelled_pages": 8,
+      "pages": [
+        {
+          "accepted": [
+            "toc",
+            "editorial"
+          ],
+          "kind": "sidebar_heavy",
+          "kind_hit": false,
+          "page": 1,
+          "policy_hit": false
+        },
+        {
+          "accepted": [
+            "article_opener"
+          ],
+          "kind": "article_opener",
+          "kind_hit": true,
+          "page": 2,
+          "policy_hit": true
+        },
+        {
+          "accepted": [
+            "photo_spread"
+          ],
+          "kind": "advertisement",
+          "kind_hit": false,
+          "page": 3,
+          "policy_hit": false
+        },
+        {
+          "accepted": [
+            "article_body"
+          ],
+          "kind": "sidebar_heavy",
+          "kind_hit": false,
+          "page": 4,
+          "policy_hit": false
+        },
+        {
+          "accepted": [
+            "article_opener"
+          ],
+          "kind": "article_opener",
+          "kind_hit": true,
+          "page": 5,
+          "policy_hit": true
+        },
+        {
+          "accepted": [
+            "article_body"
+          ],
+          "kind": "sidebar_heavy",
+          "kind_hit": false,
+          "page": 6,
+          "policy_hit": false
+        },
+        {
+          "accepted": [
+            "article_opener"
+          ],
+          "kind": "sidebar_heavy",
+          "kind_hit": false,
+          "page": 7,
+          "policy_hit": false
+        },
+        {
+          "accepted": [
+            "article_body"
+          ],
+          "kind": "sidebar_heavy",
+          "kind_hit": false,
+          "page": 8,
+          "policy_hit": false
+        }
+      ],
+      "policy_hits": 2,
+      "publication": "unesco_courier"
+    }
+  ]
+}
