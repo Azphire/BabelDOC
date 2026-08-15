@@ -84,7 +84,7 @@ from spec_checks import harness  # noqa: E402
 # Every session of batch E2, in order. The scope assertion reads the union of
 # the deltas the tags that exist introduced, plus the working tree while the
 # last of them is still uncut.
-BATCH_TAGS = ("batch-e2.1", "batch-e2.2")
+BATCH_TAGS = ("batch-e2.1", "batch-e2.2", "batch-e2.3")
 
 PYTHON = sys.executable
 
