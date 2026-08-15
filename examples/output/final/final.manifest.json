@@ -1,0 +1,791 @@
+{
+  "run": "F1",
+  "purpose": "full-stack reviewed translation run, for human reading",
+  "generated": "2026-08-15T16:29:57+0100",
+  "switches": {
+    "magazine_checkpoint": true,
+    "magazine_page_classify": true,
+    "magazine_chain_detect": true,
+    "magazine_chain_translate": true,
+    "magazine_article_group": true,
+    "magazine_article_context": true,
+    "magazine_drop_cap_mark": true,
+    "magazine_detect": true,
+    "magazine_repair": true,
+    "magazine_hitl_apply": true,
+    "magazine_hitl_export": false
+  },
+  "options": {
+    "model": "gpt-4o",
+    "lang_in": "en",
+    "lang_out": "zh",
+    "qps": 4,
+    "auto_extract_glossary": true,
+    "no_dual": true,
+    "watermark_output_mode": "NoWatermark",
+    "debug": false,
+    "doc_layout_model": "onnx",
+    "cache_db": "examples/cache/cache.v1.db",
+    "cache_eviction": "disabled",
+    "reviews_dir": "reviews"
+  },
+  "totals": {
+    "samples": 6,
+    "seconds": 435.0,
+    "requests": 379,
+    "cache_hits": 367,
+    "api_calls": 12,
+    "prompt_tokens": 28637,
+    "completion_tokens": 1487,
+    "repair_uncached": 9,
+    "cache_hit_rate": "96.8%"
+  },
+  "samples": [
+    {
+      "sample": "AramcoWorld-en-v2.pdf",
+      "model": "gpt-4o",
+      "lang_in": "en",
+      "lang_out": "zh",
+      "seconds": 98.9,
+      "requests": 77,
+      "cache_hits": 73,
+      "api_calls": 4,
+      "prompt_tokens": 6347,
+      "completion_tokens": 909,
+      "input_pages": 9,
+      "output_pages": 9,
+      "pdf": "examples/output/final/AramcoWorld-en-v2/AramcoWorld-en-v2.final.pdf",
+      "pdf_sha256": "7dcea269bab62d76222241e72fce8e20a5f81bdea4472849f3054ca4e36706fd",
+      "working_dir": "examples/output/final/AramcoWorld-en-v2/work/AramcoWorld-en-v2",
+      "ruling": {
+        "path": null,
+        "sha256": null,
+        "present": false
+      },
+      "name": "AramcoWorld-en-v2",
+      "mechanisms": {
+        "page_classify": {
+          "pages": 9,
+          "kinds": {
+            "article_body": 3,
+            "article_opener": 3,
+            "front_cover": 1,
+            "masthead": 1,
+            "toc": 1
+          },
+          "ambiguous": 5,
+          "source": "deterministic",
+          "vlm_enabled": false
+        },
+        "chains": {
+          "boundaries": 8,
+          "linked": 1,
+          "detected": 1,
+          "merged": 1,
+          "merged_members": 2,
+          "escalated": 0
+        },
+        "articles": {
+          "articles": 4,
+          "unassigned_pages": 3,
+          "briefs": 4,
+          "requested": 4,
+          "from_cache": 4,
+          "failed": 0
+        },
+        "drop_caps": {
+          "candidates": 0,
+          "ruled": 0,
+          "ruled_flatten": 0
+        },
+        "hitl": {
+          "decisions_file": false,
+          "page_kinds_overruled": 0,
+          "term_entries": 0,
+          "terms_reaching_input": 0,
+          "terms_reaching_nothing": [],
+          "auto_glossary_kept": null,
+          "dropped_from_auto": 0,
+          "repair_inputs_counted": null
+        },
+        "detect": {
+          "issues": 19,
+          "by_kind": {
+            "untranslated_residue": 19
+          }
+        },
+        "repair": {
+          "engine_configured": true,
+          "iterations_run": 1,
+          "applications": 0,
+          "treated": 0,
+          "stopped_because": "no_paragraph_was_written",
+          "final_issues": 19,
+          "final_untreated": 19,
+          "decision_actions": [
+            "translate_orphan_lines"
+          ],
+          "decisions_from_cache": 0,
+          "decisions": 1,
+          "orphan_attempts": 1,
+          "orphan_from_cache": 1,
+          "orphan_accepted": 0,
+          "uncached_engine_requests": 1,
+          "conservation": "conserved",
+          "paragraphs_before": 146,
+          "paragraphs_after": 146,
+          "touched_refs": []
+        },
+        "prompts": {
+          "prompts/article_brief.md": "819373eb50fbfa5fe2a06271da270e92facc863bdd9b0ca8f2e10bcfc0ef3c7b",
+          "prompts/article_brief_context.md": "beaa6e5fa939787a4127d4741a92addaa7b211658a052e1b2b423c1906ad3421",
+          "prompts/article_brief_names.md": "97c6ae29f13943d9ba6497a0d5eb082c54de46c93f2f88ecbb8c13105df5088e",
+          "prompts/react_repair_decide.md": "cf9cd8e5b6313dc05b8fd0e1464dc1a4c53daf0f76c5dcf118254f91bed8ce57",
+          "prompts/react_translate_orphan.md": "cc3f132c251022995b1e6386450b2b6546d9481686074dd1adbe64af3d650fa4"
+        }
+      },
+      "rendered_text": {
+        "chars": 9043,
+        "cjk_chars": 5920,
+        "cjk_share": 0.655
+      },
+      "cache_hit_rate": "94.8%",
+      "anomalies": [
+        {
+          "severity": "eyeball",
+          "note": "19 untreated untranslated_residue issue(s) stand in the finished PDF"
+        },
+        {
+          "severity": "eyeball",
+          "note": "4 request(s) missed cache and reached the API (attributed in §5)"
+        }
+      ]
+    },
+    {
+      "sample": "CERNCourier-en.pdf",
+      "model": "gpt-4o",
+      "lang_in": "en",
+      "lang_out": "zh",
+      "seconds": 63.9,
+      "requests": 86,
+      "cache_hits": 83,
+      "api_calls": 3,
+      "prompt_tokens": 10387,
+      "completion_tokens": 158,
+      "input_pages": 4,
+      "output_pages": 4,
+      "pdf": "examples/output/final/CERNCourier-en/CERNCourier-en.final.pdf",
+      "pdf_sha256": "934d6670ddbb36eca6b7083eedb2db3233f15cf567eae1cc6ace9115a3aa604f",
+      "working_dir": "examples/output/final/CERNCourier-en/work/CERNCourier-en",
+      "ruling": {
+        "path": null,
+        "sha256": null,
+        "present": false
+      },
+      "name": "CERNCourier-en",
+      "mechanisms": {
+        "page_classify": {
+          "pages": 4,
+          "kinds": {
+            "article_opener": 1,
+            "editorial": 1,
+            "interview": 1,
+            "toc": 1
+          },
+          "ambiguous": 4,
+          "source": "deterministic",
+          "vlm_enabled": false
+        },
+        "chains": {
+          "boundaries": 3,
+          "linked": 0,
+          "detected": 0,
+          "merged": 0,
+          "merged_members": 0,
+          "escalated": 0
+        },
+        "articles": {
+          "articles": 3,
+          "unassigned_pages": 1,
+          "briefs": 3,
+          "requested": 3,
+          "from_cache": 3,
+          "failed": 0
+        },
+        "drop_caps": {
+          "candidates": 0,
+          "ruled": 0,
+          "ruled_flatten": 0
+        },
+        "hitl": {
+          "decisions_file": false,
+          "page_kinds_overruled": 0,
+          "term_entries": 0,
+          "terms_reaching_input": 0,
+          "terms_reaching_nothing": [],
+          "auto_glossary_kept": null,
+          "dropped_from_auto": 0,
+          "repair_inputs_counted": null
+        },
+        "detect": {
+          "issues": 31,
+          "by_kind": {
+            "fragment_cluster": 4,
+            "untranslated_residue": 27
+          }
+        },
+        "repair": {
+          "engine_configured": true,
+          "iterations_run": 2,
+          "applications": 1,
+          "treated": 0,
+          "stopped_because": "no_paragraph_was_written",
+          "final_issues": 31,
+          "final_untreated": 31,
+          "decision_actions": [
+            "translate_orphan_lines",
+            "translate_orphan_lines"
+          ],
+          "decisions_from_cache": 0,
+          "decisions": 2,
+          "orphan_attempts": 3,
+          "orphan_from_cache": 2,
+          "orphan_accepted": 1,
+          "uncached_engine_requests": 3,
+          "conservation": "conserved",
+          "paragraphs_before": 202,
+          "paragraphs_after": 202,
+          "touched_refs": [
+            "p2#32"
+          ]
+        },
+        "prompts": {
+          "prompts/article_brief.md": "819373eb50fbfa5fe2a06271da270e92facc863bdd9b0ca8f2e10bcfc0ef3c7b",
+          "prompts/article_brief_context.md": "beaa6e5fa939787a4127d4741a92addaa7b211658a052e1b2b423c1906ad3421",
+          "prompts/article_brief_names.md": "97c6ae29f13943d9ba6497a0d5eb082c54de46c93f2f88ecbb8c13105df5088e",
+          "prompts/react_repair_decide.md": "cf9cd8e5b6313dc05b8fd0e1464dc1a4c53daf0f76c5dcf118254f91bed8ce57",
+          "prompts/react_translate_orphan.md": "cc3f132c251022995b1e6386450b2b6546d9481686074dd1adbe64af3d650fa4"
+        }
+      },
+      "rendered_text": {
+        "chars": 7868,
+        "cjk_chars": 4521,
+        "cjk_share": 0.575
+      },
+      "cache_hit_rate": "96.5%",
+      "anomalies": [
+        {
+          "severity": "eyeball",
+          "note": "1 repair application(s) wrote paragraph(s) p2#32"
+        },
+        {
+          "severity": "eyeball",
+          "note": "4 untreated fragment_cluster issue(s) stand in the finished PDF"
+        },
+        {
+          "severity": "eyeball",
+          "note": "27 untreated untranslated_residue issue(s) stand in the finished PDF"
+        },
+        {
+          "severity": "eyeball",
+          "note": "3 request(s) missed cache and reached the API (attributed in §5)"
+        }
+      ]
+    },
+    {
+      "sample": "Courier-en.pdf",
+      "model": "gpt-4o",
+      "lang_in": "en",
+      "lang_out": "zh",
+      "seconds": 64.8,
+      "requests": 54,
+      "cache_hits": 53,
+      "api_calls": 1,
+      "prompt_tokens": 1733,
+      "completion_tokens": 93,
+      "input_pages": 8,
+      "output_pages": 8,
+      "pdf": "examples/output/final/Courier-en/Courier-en.final.pdf",
+      "pdf_sha256": "51dde26d08d33782c7dd769477e81a6331f1366e075f5648c08064347f39163a",
+      "working_dir": "examples/output/final/Courier-en/work/Courier-en",
+      "ruling": {
+        "path": "reviews/Courier-en.decisions.json",
+        "sha256": "c86c16c136583a4cf5be63ee9a0df8184035ff128775d16e37989c56b4ad1cfe",
+        "present": true
+      },
+      "name": "Courier-en",
+      "mechanisms": {
+        "page_classify": {
+          "pages": 8,
+          "kinds": {
+            "article_body": 3,
+            "article_opener": 3,
+            "editorial": 1,
+            "photo_spread": 1
+          },
+          "ambiguous": 4,
+          "source": "deterministic",
+          "vlm_enabled": false
+        },
+        "chains": {
+          "boundaries": 7,
+          "linked": 2,
+          "detected": 2,
+          "merged": 2,
+          "merged_members": 4,
+          "escalated": 0
+        },
+        "articles": {
+          "articles": 3,
+          "unassigned_pages": 1,
+          "briefs": 3,
+          "requested": 3,
+          "from_cache": 3,
+          "failed": 0
+        },
+        "drop_caps": {
+          "candidates": 3,
+          "ruled": 3,
+          "ruled_flatten": 2
+        },
+        "hitl": {
+          "decisions_file": true,
+          "page_kinds_overruled": 1,
+          "term_entries": 6,
+          "terms_reaching_input": 5,
+          "terms_reaching_nothing": [
+            "CourierT H E UNESCO"
+          ],
+          "auto_glossary_kept": 141,
+          "dropped_from_auto": 4,
+          "repair_inputs_counted": 3
+        },
+        "detect": {
+          "issues": 7,
+          "by_kind": {
+            "fragment_cluster": 1,
+            "untranslated_residue": 6
+          }
+        },
+        "repair": {
+          "engine_configured": true,
+          "iterations_run": 1,
+          "applications": 0,
+          "treated": 0,
+          "stopped_because": "no_paragraph_was_written",
+          "final_issues": 7,
+          "final_untreated": 7,
+          "decision_actions": [
+            "translate_orphan_lines"
+          ],
+          "decisions_from_cache": 0,
+          "decisions": 1,
+          "orphan_attempts": 3,
+          "orphan_from_cache": 3,
+          "orphan_accepted": 0,
+          "uncached_engine_requests": 1,
+          "conservation": "conserved",
+          "paragraphs_before": 132,
+          "paragraphs_after": 132,
+          "touched_refs": []
+        },
+        "prompts": {
+          "prompts/article_brief.md": "819373eb50fbfa5fe2a06271da270e92facc863bdd9b0ca8f2e10bcfc0ef3c7b",
+          "prompts/article_brief_context.md": "beaa6e5fa939787a4127d4741a92addaa7b211658a052e1b2b423c1906ad3421",
+          "prompts/article_brief_names.md": "97c6ae29f13943d9ba6497a0d5eb082c54de46c93f2f88ecbb8c13105df5088e",
+          "prompts/react_orphan_glossary.md": "7f65988c20b4b4648757c3adee793471aa777bd17027d7cee508556d431b23dd",
+          "prompts/react_repair_decide.md": "cf9cd8e5b6313dc05b8fd0e1464dc1a4c53daf0f76c5dcf118254f91bed8ce57",
+          "prompts/react_translate_orphan.md": "cc3f132c251022995b1e6386450b2b6546d9481686074dd1adbe64af3d650fa4"
+        }
+      },
+      "rendered_text": {
+        "chars": 7165,
+        "cjk_chars": 5366,
+        "cjk_share": 0.749
+      },
+      "cache_hit_rate": "98.1%",
+      "anomalies": [
+        {
+          "severity": "check",
+          "note": "ruled term 'CourierT H E UNESCO' matched no input and changed nothing"
+        },
+        {
+          "severity": "eyeball",
+          "note": "1 untreated fragment_cluster issue(s) stand in the finished PDF"
+        },
+        {
+          "severity": "eyeball",
+          "note": "6 untreated untranslated_residue issue(s) stand in the finished PDF"
+        },
+        {
+          "severity": "eyeball",
+          "note": "1 request(s) missed cache and reached the API (attributed in §5)"
+        }
+      ]
+    },
+    {
+      "sample": "Courier-zh.pdf",
+      "model": "gpt-4o",
+      "lang_in": "en",
+      "lang_out": "zh",
+      "seconds": 105.2,
+      "requests": 83,
+      "cache_hits": 82,
+      "api_calls": 1,
+      "prompt_tokens": 1703,
+      "completion_tokens": 62,
+      "input_pages": 8,
+      "output_pages": 8,
+      "pdf": "examples/output/final/Courier-zh/Courier-zh.final.pdf",
+      "pdf_sha256": "c2a9330083f54da4b6dbe066170dc8de293254e4891e83fa9364bdaba2baa7ae",
+      "working_dir": "examples/output/final/Courier-zh/work/Courier-zh",
+      "ruling": {
+        "path": null,
+        "sha256": null,
+        "present": false
+      },
+      "name": "Courier-zh",
+      "mechanisms": {
+        "page_classify": {
+          "pages": 8,
+          "kinds": {
+            "advertisement": 1,
+            "article_opener": 2,
+            "sidebar_heavy": 5
+          },
+          "ambiguous": 6,
+          "source": "deterministic",
+          "vlm_enabled": false
+        },
+        "chains": {
+          "boundaries": 7,
+          "linked": 0,
+          "detected": 0,
+          "merged": 0,
+          "merged_members": 0,
+          "escalated": 0
+        },
+        "articles": {
+          "articles": 2,
+          "unassigned_pages": 6,
+          "briefs": 2,
+          "requested": 2,
+          "from_cache": 2,
+          "failed": 0
+        },
+        "drop_caps": {
+          "candidates": 0,
+          "ruled": 0,
+          "ruled_flatten": 0
+        },
+        "hitl": {
+          "decisions_file": false,
+          "page_kinds_overruled": 0,
+          "term_entries": 0,
+          "terms_reaching_input": 0,
+          "terms_reaching_nothing": [],
+          "auto_glossary_kept": null,
+          "dropped_from_auto": 0,
+          "repair_inputs_counted": null
+        },
+        "detect": {
+          "issues": 7,
+          "by_kind": {
+            "untranslated_residue": 7
+          }
+        },
+        "repair": {
+          "engine_configured": true,
+          "iterations_run": 1,
+          "applications": 0,
+          "treated": 0,
+          "stopped_because": "no_paragraph_was_written",
+          "final_issues": 7,
+          "final_untreated": 7,
+          "decision_actions": [
+            "translate_orphan_lines"
+          ],
+          "decisions_from_cache": 0,
+          "decisions": 1,
+          "orphan_attempts": 1,
+          "orphan_from_cache": 1,
+          "orphan_accepted": 0,
+          "uncached_engine_requests": 1,
+          "conservation": "conserved",
+          "paragraphs_before": 135,
+          "paragraphs_after": 135,
+          "touched_refs": []
+        },
+        "prompts": {
+          "prompts/article_brief.md": "819373eb50fbfa5fe2a06271da270e92facc863bdd9b0ca8f2e10bcfc0ef3c7b",
+          "prompts/article_brief_context.md": "beaa6e5fa939787a4127d4741a92addaa7b211658a052e1b2b423c1906ad3421",
+          "prompts/article_brief_names.md": "97c6ae29f13943d9ba6497a0d5eb082c54de46c93f2f88ecbb8c13105df5088e",
+          "prompts/react_repair_decide.md": "cf9cd8e5b6313dc05b8fd0e1464dc1a4c53daf0f76c5dcf118254f91bed8ce57",
+          "prompts/react_translate_orphan.md": "cc3f132c251022995b1e6386450b2b6546d9481686074dd1adbe64af3d650fa4"
+        }
+      },
+      "rendered_text": {
+        "chars": 8165,
+        "cjk_chars": 5977,
+        "cjk_share": 0.732
+      },
+      "cache_hit_rate": "98.8%",
+      "anomalies": [
+        {
+          "severity": "eyeball",
+          "note": "7 untreated untranslated_residue issue(s) stand in the finished PDF"
+        },
+        {
+          "severity": "eyeball",
+          "note": "1 request(s) missed cache and reached the API (attributed in §5)"
+        }
+      ]
+    },
+    {
+      "sample": "FD-en-v2.pdf",
+      "model": "gpt-4o",
+      "lang_in": "en",
+      "lang_out": "zh",
+      "seconds": 62.7,
+      "requests": 66,
+      "cache_hits": 64,
+      "api_calls": 2,
+      "prompt_tokens": 7195,
+      "completion_tokens": 235,
+      "input_pages": 9,
+      "output_pages": 9,
+      "pdf": "examples/output/final/FD-en-v2/FD-en-v2.final.pdf",
+      "pdf_sha256": "7ddfa3793286223f272b17b01488e389b14355e6947ce415ce461d23eefa69fa",
+      "working_dir": "examples/output/final/FD-en-v2/work/FD-en-v2",
+      "ruling": {
+        "path": null,
+        "sha256": null,
+        "present": false
+      },
+      "name": "FD-en-v2",
+      "mechanisms": {
+        "page_classify": {
+          "pages": 9,
+          "kinds": {
+            "advertisement": 2,
+            "article_opener": 3,
+            "front_cover": 1,
+            "masthead": 2,
+            "toc": 1
+          },
+          "ambiguous": 4,
+          "source": "deterministic",
+          "vlm_enabled": false
+        },
+        "chains": {
+          "boundaries": 8,
+          "linked": 0,
+          "detected": 0,
+          "merged": 0,
+          "merged_members": 0,
+          "escalated": 0
+        },
+        "articles": {
+          "articles": 3,
+          "unassigned_pages": 6,
+          "briefs": 3,
+          "requested": 3,
+          "from_cache": 3,
+          "failed": 0
+        },
+        "drop_caps": {
+          "candidates": 0,
+          "ruled": 0,
+          "ruled_flatten": 0
+        },
+        "hitl": {
+          "decisions_file": false,
+          "page_kinds_overruled": 0,
+          "term_entries": 0,
+          "terms_reaching_input": 0,
+          "terms_reaching_nothing": [],
+          "auto_glossary_kept": null,
+          "dropped_from_auto": 0,
+          "repair_inputs_counted": null
+        },
+        "detect": {
+          "issues": 23,
+          "by_kind": {
+            "fragment_cluster": 1,
+            "untranslated_residue": 22
+          }
+        },
+        "repair": {
+          "engine_configured": true,
+          "iterations_run": 2,
+          "applications": 2,
+          "treated": 0,
+          "stopped_because": "no_paragraph_was_written",
+          "final_issues": 23,
+          "final_untreated": 23,
+          "decision_actions": [
+            "translate_orphan_lines",
+            "translate_orphan_lines"
+          ],
+          "decisions_from_cache": 0,
+          "decisions": 2,
+          "orphan_attempts": 6,
+          "orphan_from_cache": 6,
+          "orphan_accepted": 2,
+          "uncached_engine_requests": 2,
+          "conservation": "conserved",
+          "paragraphs_before": 189,
+          "paragraphs_after": 189,
+          "touched_refs": [
+            "p5#14",
+            "p5#9"
+          ]
+        },
+        "prompts": {
+          "prompts/article_brief.md": "819373eb50fbfa5fe2a06271da270e92facc863bdd9b0ca8f2e10bcfc0ef3c7b",
+          "prompts/article_brief_context.md": "beaa6e5fa939787a4127d4741a92addaa7b211658a052e1b2b423c1906ad3421",
+          "prompts/article_brief_names.md": "97c6ae29f13943d9ba6497a0d5eb082c54de46c93f2f88ecbb8c13105df5088e",
+          "prompts/react_repair_decide.md": "cf9cd8e5b6313dc05b8fd0e1464dc1a4c53daf0f76c5dcf118254f91bed8ce57",
+          "prompts/react_translate_orphan.md": "cc3f132c251022995b1e6386450b2b6546d9481686074dd1adbe64af3d650fa4"
+        }
+      },
+      "rendered_text": {
+        "chars": 5728,
+        "cjk_chars": 3266,
+        "cjk_share": 0.57
+      },
+      "cache_hit_rate": "97.0%",
+      "anomalies": [
+        {
+          "severity": "eyeball",
+          "note": "2 repair application(s) wrote paragraph(s) p5#14, p5#9"
+        },
+        {
+          "severity": "eyeball",
+          "note": "1 untreated fragment_cluster issue(s) stand in the finished PDF"
+        },
+        {
+          "severity": "eyeball",
+          "note": "22 untreated untranslated_residue issue(s) stand in the finished PDF"
+        },
+        {
+          "severity": "eyeball",
+          "note": "2 request(s) missed cache and reached the API (attributed in §5)"
+        }
+      ]
+    },
+    {
+      "sample": "Vogue-en.pdf",
+      "model": "gpt-4o",
+      "lang_in": "en",
+      "lang_out": "zh",
+      "seconds": 39.5,
+      "requests": 13,
+      "cache_hits": 12,
+      "api_calls": 1,
+      "prompt_tokens": 1272,
+      "completion_tokens": 30,
+      "input_pages": 3,
+      "output_pages": 3,
+      "pdf": "examples/output/final/Vogue-en/Vogue-en.final.pdf",
+      "pdf_sha256": "bafd6da522a2e4cd8e25c4a2df8e779c929508d529470ed634ad5ac215ac417b",
+      "working_dir": "examples/output/final/Vogue-en/work/Vogue-en",
+      "ruling": {
+        "path": null,
+        "sha256": null,
+        "present": false
+      },
+      "name": "Vogue-en",
+      "mechanisms": {
+        "page_classify": {
+          "pages": 3,
+          "kinds": {
+            "advertisement": 2,
+            "toc": 1
+          },
+          "ambiguous": 2,
+          "source": "deterministic",
+          "vlm_enabled": false
+        },
+        "chains": {
+          "boundaries": 2,
+          "linked": 0,
+          "detected": 0,
+          "merged": 0,
+          "merged_members": 0,
+          "escalated": 0
+        },
+        "articles": {
+          "articles": 0,
+          "unassigned_pages": 3,
+          "briefs": 0,
+          "requested": 0,
+          "from_cache": 0,
+          "failed": 0
+        },
+        "drop_caps": {
+          "candidates": 0,
+          "ruled": 0,
+          "ruled_flatten": 0
+        },
+        "hitl": {
+          "decisions_file": false,
+          "page_kinds_overruled": 0,
+          "term_entries": 0,
+          "terms_reaching_input": 0,
+          "terms_reaching_nothing": [],
+          "auto_glossary_kept": null,
+          "dropped_from_auto": 0,
+          "repair_inputs_counted": null
+        },
+        "detect": {
+          "issues": 3,
+          "by_kind": {
+            "untranslated_residue": 3
+          }
+        },
+        "repair": {
+          "engine_configured": true,
+          "iterations_run": 1,
+          "applications": 0,
+          "treated": 0,
+          "stopped_because": "decision_applied_nothing",
+          "final_issues": 3,
+          "final_untreated": 3,
+          "decision_actions": [
+            "none"
+          ],
+          "decisions_from_cache": 0,
+          "decisions": 1,
+          "orphan_attempts": 0,
+          "orphan_from_cache": 0,
+          "orphan_accepted": 0,
+          "uncached_engine_requests": 1,
+          "conservation": "conserved",
+          "paragraphs_before": 39,
+          "paragraphs_after": 39,
+          "touched_refs": []
+        },
+        "prompts": {
+          "prompts/react_repair_decide.md": "cf9cd8e5b6313dc05b8fd0e1464dc1a4c53daf0f76c5dcf118254f91bed8ce57"
+        }
+      },
+      "rendered_text": {
+        "chars": 1292,
+        "cjk_chars": 536,
+        "cjk_share": 0.415
+      },
+      "cache_hit_rate": "92.3%",
+      "anomalies": [
+        {
+          "severity": "eyeball",
+          "note": "3 untreated untranslated_residue issue(s) stand in the finished PDF"
+        },
+        {
+          "severity": "eyeball",
+          "note": "1 request(s) missed cache and reached the API (attributed in §5)"
+        }
+      ]
+    }
+  ]
+}
