@@ -1,0 +1,95 @@
+{
+  "counts": {
+    "by_kind": {
+      "untranslated_residue": 2
+    },
+    "issues": 2
+  },
+  "document_detectors": [
+    "escalation_surfacing"
+  ],
+  "issues": [
+    {
+      "detected_at_iteration": 0,
+      "detector": "untranslated_residue",
+      "evidence": {
+        "debug_id": "mtr4C",
+        "excerpt": "巴里尼（Adriano Gambarini）/亚马孙原住民行动组织",
+        "layout_label": "abandon",
+        "min_ratio": 0.4,
+        "residue_chars": 13,
+        "residue_ratio": 0.4483,
+        "residue_script": "han",
+        "script_chars": 29
+      },
+      "geometry": {
+        "x": 24.312,
+        "x2": 30.812,
+        "y": 226.887559375,
+        "y2": 375.087715625
+      },
+      "id": "untranslated_residue:p5:p5#8",
+      "kind": "untranslated_residue",
+      "page": 5,
+      "paragraph_refs": [
+        "p5#8"
+      ],
+      "severity": "high"
+    },
+    {
+      "detected_at_iteration": 0,
+      "detector": "untranslated_residue",
+      "evidence": {
+        "debug_id": "cncc7",
+        "excerpt": "作创》使信《织组文科教国合联为科亚尼",
+        "layout_label": "fallback_line",
+        "min_ratio": 0.4,
+        "residue_chars": 16,
+        "residue_ratio": 1.0,
+        "residue_script": "han",
+        "script_chars": 16
+      },
+      "geometry": {
+        "x": 413.392490625,
+        "x2": 419.841709375,
+        "y": 709.71413125,
+        "y2": 823.61256875
+      },
+      "id": "untranslated_residue:p6:p6#14",
+      "kind": "untranslated_residue",
+      "page": 6,
+      "paragraph_refs": [
+        "p6#14"
+      ],
+      "severity": "high"
+    }
+  ],
+  "iteration": 0,
+  "language": "en",
+  "notes": [],
+  "pages_by_detector": {
+    "fragment_cluster": [
+      1,
+      4,
+      6,
+      7,
+      8
+    ],
+    "text_figure_overlap": [
+      2,
+      3,
+      5
+    ],
+    "untranslated_residue": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8
+    ]
+  },
+  "translation_performed": true
+}

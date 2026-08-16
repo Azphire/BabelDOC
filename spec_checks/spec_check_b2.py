@@ -11,6 +11,7 @@ only_parse_generate_pdf.
 
 from __future__ import annotations
 
+import ast
 import json
 import logging
 import re
@@ -681,6 +682,45 @@ def check_09_no_paragraph_fields(checkpoint_dirs: list[Path]) -> None:
     )
 
 
+def _reaches_the_network(path: Path) -> list[str]:
+    """Network markers a module reaches, read from its syntax rather than its text.
+
+    A module reaches the network by importing one of these libraries, statically
+    or through a dynamic import, and that is what is read here. The scan was a
+    substring search over the file, which cannot tell an import from prose: it
+    reported a module whose docstring describes the requests a translation run
+    makes, and it would equally report a sidecar that counts its requests under
+    that key. Both are the English word, neither is a client, and a tripwire
+    that fires on the word rather than on the import states nothing about what
+    the package can reach.
+    """
+    tree = ast.parse(path.read_text(encoding="utf-8"))
+    imported: list[str] = []
+    for node in ast.walk(tree):
+        names: list[str] = []
+        if isinstance(node, ast.Import):
+            names = [alias.name for alias in node.names]
+        elif isinstance(node, ast.ImportFrom):
+            names = [node.module or ""]
+        elif isinstance(node, ast.Call):
+            # A dynamic import names its module in a string argument, which is
+            # the one way an import is not an import node.
+            call = ast.unparse(node.func)
+            if call.endswith("import_module") or call == "__import__":
+                names = [
+                    argument.value
+                    for argument in node.args
+                    if isinstance(argument, ast.Constant)
+                    and isinstance(argument.value, str)
+                ]
+        imported.extend(
+            root
+            for root in (name.split(".", 1)[0].strip() for name in names)
+            if root in NETWORK_MARKERS
+        )
+    return imported
+
+
 def check_10_offline() -> None:
     offenders: list[str] = []
     scanned = 0
@@ -690,9 +730,8 @@ def check_10_offline() -> None:
             exempt += 1
             continue
         scanned += 1
-        text = path.read_text(encoding="utf-8")
         offenders.extend(
-            f"{path.name}: {marker}" for marker in NETWORK_MARKERS if marker in text
+            f"{path.name}: {marker}" for marker in _reaches_the_network(path)
         )
     record(
         "10 the magazine package contains no network or LLM client",

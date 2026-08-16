@@ -81,10 +81,17 @@ sys.path.insert(0, str(ROOT))
 from spec_checks import artifacts  # noqa: E402
 from spec_checks import harness  # noqa: E402
 
-# Every session of batch E2, in order. The scope assertion reads the union of
-# the deltas the tags that exist introduced, plus the working tree while the
-# last of them is still uncut.
-BATCH_TAGS = ("batch-e2.1", "batch-e2.2", "batch-e2.3")
+# Every tag batch E2 actually cut, in order. The scope assertion reads the
+# union of the deltas they introduced, plus the working tree while one of them
+# is still uncut.
+#
+# The first session of E2 cut no tag of its own: its work rode into the
+# batch-e2.2 commit, which that commit's message says and CLAUDE.md records.
+# Naming a tag here that will never exist held the uncut branch permanently
+# open, so from the moment any later batch began editing, this assertion read
+# that batch's working tree as E2's own delta and reported its files as E2
+# scope violations. E2's whole delta is in the two tags below.
+BATCH_TAGS = ("batch-e2.2", "batch-e2.3")
 
 PYTHON = sys.executable
 

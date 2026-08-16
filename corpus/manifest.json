@@ -14,6 +14,8 @@
         "translation_eval",
         "layout_generalization"
       ],
+      "source_lang": "en",
+      "target_lang": "zh",
       "notes": "UNESCO Courier Jan-Mar 2026, 8-page excerpt (merges former basic-en and passage-en fixtures; issue pp. 4-6, 9, 12-13, 38 plus the contents page). PDF p1: contents grid with dotted page leaders, section headers, sharing the page with the editorial (Agnes Bardon). p2: article opener, oversized italic display title, author rail with bio, large embroidered-photo artwork. p3: display-title continuation with near-full-page artwork and rotated credit rail. p4: drop cap, two/three-column body, centered pull quote, boxed sidebar (LINKS programme). p5: article opener with standfirst, author rail, bottom photo with caption. p6: three-column body (IDEAS), boxed feature (2025 quantum year), left-rail pull quote, right-edge full-height illustration. p7: article opener with drop cap, three-column body, bottom pull quote, two-author sidebar rail. p8: top full-width photo with caption and right pull quote, three-column body, end-of-article marker.",
       "baseline": {
         "pdf": "examples/output/baseline/Courier-en.b2_2.pdf",
@@ -33,6 +35,8 @@
       "corpus_role": [
         "layout_generalization"
       ],
+      "source_lang": "en",
+      "target_lang": "zh",
       "notes": "Vogue (US) Winter 2025, 3-page excerpt. p1: FENDI full-page advertisement (photo, brand wordmark, vertical rail with boutique contact). p2: OMEGA full-page advertisement (product photo, tagline, body blurb, brand mark; vertical rail with URL). p3: contents page - masthead wordmark, issue date, hero photo with caption block, multi-column TOC grid with page numbers and blurbs, 'Cover Look' boxed sidebar with two cover thumbnails, bottom folio (p.22), vertical credits rail.",
       "baseline": {
         "pdf": "examples/output/baseline/Vogue-en.b2_2.pdf",
@@ -52,6 +56,8 @@
       "corpus_role": [
         "layout_generalization"
       ],
+      "source_lang": "en",
+      "target_lang": "zh",
       "notes": "CERN Courier Jul-Aug 2026 (Vol 66 No 4), digital-edition excerpt. CAUTION: digital edition is paginated as landscape TWO-PAGE SPREADS with a persistent navigation chrome bar (masthead + icon buttons) along the bottom of every PDF page; print typography is otherwise preserved. p1 spread: front cover (masthead, cover lines, full-bleed photo) + welcome/editorial column. p2 spread: full-page conference advertisement (IBIC 2026) + 'In This Issue' contents (department grid, article thumbnails with blurbs and page numbers). p3 spread: full-page vendor advertisement (Bergoz) + News Analysis page (dense single-story news layout, margin pull quote, photo with caption). p4 spread: feature spread 'Culture and History' pp. 24-25 (three-column dense body, multiple captioned photos, right-rail pull quote). Technical/trade-magazine density pole of the corpus; real commercial ads.",
       "baseline": {
         "pdf": "examples/output/baseline/CERNCourier-en.b2_2.pdf",
@@ -71,6 +77,8 @@
       "corpus_role": [
         "layout_generalization"
       ],
+      "source_lang": "en",
+      "target_lang": "zh",
       "notes": "Supersedes AramcoWorld-en.pdf. 9 pages: v1 pages 1-6 unchanged (cover, masthead, contents, issue p30, p33, p34); NEW page 7 = issue p35 (Hijaz feature continuation: top photo, two-column body, boxed section heading STEAMING AHEAD, right margin caption, bottom map figure); pages 8-9 = former 7-8 (Reviews p40-41). Purpose of v2: issue p34->p35 is a real mid-sentence page split ('a scarcity of water along much of' -> 'the route south of the Hauran'); p35 tail dangles mid-sentence ('...where a', continuation p36 absent) making 7->8 a new non-adjacent trap.",
       "baseline": {
         "pdf": "examples/output/baseline/AramcoWorld-en-v2.b7_5.pdf",
@@ -90,6 +98,8 @@
       "corpus_role": [
         "layout_generalization"
       ],
+      "source_lang": "en",
+      "target_lang": "zh",
       "notes": "Supersedes FD-en.pdf. 9 pages: v1 pages 1-6 unchanged; NEW page 7 = issue p7 (Kaleidoscope continuation: Overheard quote rail with portraits, IN THE NEWS photo brief, By the numbers bar-chart panel - first infographic/quote-rail-dense page in corpus); pages 8-9 = former 7-8 (PoV p10, Currency Notes p72). NOTE: issue p6 ends with a complete sentence; 6->7 is a clean same-department boundary, NOT a chain positive.",
       "baseline": {
         "pdf": "examples/output/baseline/FD-en-v2.b7_5.pdf",
@@ -109,6 +119,8 @@
       "corpus_role": [
         "translation_eval"
       ],
+      "source_lang": "zh",
+      "target_lang": "en",
       "notes": "Official Chinese edition of UNESCO Courier Jan-Mar 2026; page-for-page parallel of Courier-en.pdf (zh issue folio = en folio - 2: en p4<->zh p2, en p12<->zh p10, en p38<->zh p36). 8 pages mirroring Courier-en structure: contents+editorial, opener (display title split across pp.2-3), body with LINKS box, Brazil opener (zh p7), quantum body (zh p36), biopiracy opener (zh p10), biopiracy continuation (zh p11). Contains the official MID-WORD page split at zh p10->p11 ('...\u534f\u8bae\u4e2d\u5305' / '\u542b\u60e0\u76ca\u5206\u4eab\u6761\u6b3e') cited in the b5.3 evidence set. Official renderings for reference: biopiracy=\u751f\u7269\u527d\u7a83, spinifex=\u4e09\u9f7f\u7a03, masthead=\u8054\u5408\u56fd\u6559\u79d1\u6587\u7ec4\u7ec7\u300a\u4fe1\u4f7f\u300b. Serves as parallel reference for translation_eval; zh-source chain testing (zh->en) is a future use.",
       "baseline": {
         "pdf": "examples/output/baseline/Courier-zh.b7_5.pdf",

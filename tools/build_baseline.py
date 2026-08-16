@@ -31,6 +31,7 @@ from babeldoc.format.pdf import high_level  # noqa: E402
 from babeldoc.format.pdf.parse_shared import _ParseOnlyDocLayoutModel  # noqa: E402
 from babeldoc.format.pdf.translation_config import TranslationConfig  # noqa: E402
 from babeldoc.format.pdf.translation_config import WatermarkOutputMode  # noqa: E402
+from babeldoc.magazine import corpus  # noqa: E402
 from babeldoc.magazine.cache_setup import use_project_cache  # noqa: E402
 from babeldoc.magazine.checkpoint import CHECKPOINT_ARCHIVE_SUFFIX  # noqa: E402
 from babeldoc.magazine.checkpoint import CHECKPOINT_PREFIX  # noqa: E402
@@ -54,11 +55,12 @@ def build_one(pdf: Path, name: str, suffix: str = BASELINE_SUFFIX) -> tuple[Path
         shutil.rmtree(stage_dir)
     stage_dir.mkdir(parents=True)
 
+    source_lang, target_lang = corpus.direction_of(name)
     config = TranslationConfig(
         translator=None,
         input_file=pdf,
-        lang_in="en",
-        lang_out="zh",
+        lang_in=source_lang,
+        lang_out=target_lang,
         doc_layout_model=_ParseOnlyDocLayoutModel(),
         output_dir=stage_dir / "out",
         working_dir=stage_dir / "work",

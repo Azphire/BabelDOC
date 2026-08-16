@@ -55,9 +55,14 @@ SEMANTIC_FIELDS: tuple[str, ...] = (
     "magazine",
     "toc_pages",
     "corpus_role",
+    "source_lang",
+    "target_lang",
     "notes",
 )
 
+# The two fields naming which way round a sample is translated, in the order a
+# direction is written and read.
+DIRECTION_FIELDS: tuple[str, str] = ("source_lang", "target_lang")
 # Fields measured from the sample file, which the registry never states.
 MECHANICAL_FIELDS: tuple[str, ...] = ("sha256", "pages")
 
@@ -81,6 +86,19 @@ _HASH_CHUNK_BYTES = 1 << 20
 
 class CorpusError(ValueError):
     """Raised when the registry cannot be turned into a manifest."""
+
+
+def languages() -> frozenset[str]:
+    """The closed vocabulary either half of a direction is drawn from.
+
+    Read from the translation configuration rather than written here, so that
+    no language tag is spelled out in code. Imported inside the call because a
+    registry is read by tools that have no business loading a prompt policy
+    until a direction is actually being validated.
+    """
+    from babeldoc.magazine.translation_style import load_style_config
+
+    return load_style_config().languages
 
 
 def sha256_file(path: Path) -> str:
@@ -177,6 +195,28 @@ def validate_registry(entries: list[dict], input_dir: Path = INPUT_DIR) -> list[
                     f"{where}: unknown corpus_role {unknown}; "
                     f"allowed are {sorted(CORPUS_ROLES)}"
                 )
+
+        # A direction is two declared languages that differ. Each half is
+        # checked on its own so that a message names the field at fault, and
+        # the pair is checked once more together: a sample declaring one
+        # language twice states no translation, and reading it as one would
+        # send a document to be turned into what it already is.
+        vocabulary = languages()
+        declared: list[str] = []
+        for field in DIRECTION_FIELDS:
+            value = entry.get(field)
+            if not isinstance(value, str) or value not in vocabulary:
+                errors.append(
+                    f"{where}: {field} must be one of {sorted(vocabulary)}, "
+                    f"not {value!r}"
+                )
+            else:
+                declared.append(value)
+        if len(declared) == len(DIRECTION_FIELDS) and len(set(declared)) == 1:
+            errors.append(
+                f"{where}: {DIRECTION_FIELDS[0]} and {DIRECTION_FIELDS[1]} are "
+                f"both {declared[0]!r}, which declares no translation"
+            )
 
         toc_pages = entry.get("toc_pages")
         if not isinstance(toc_pages, list):
@@ -502,6 +542,39 @@ def group_by_role(manifest: dict) -> dict[str, list[dict]]:
         for role in sample.get("corpus_role", []):
             groups.setdefault(role, []).append(sample)
     return {key: groups[key] for key in sorted(groups)}
+
+
+def direction_of(sample: str, manifest: dict | None = None) -> tuple[str, str]:
+    """The declared translation direction of one sample.
+
+    A driver reads the direction of the sample it is about to run rather than
+    carrying one of its own, so the corpus owner's declaration is the only
+    place in the project a direction is stated. ``sample`` is matched against
+    the registered file name and against its stem, because a driver names a
+    sample either way.
+
+    Nothing here falls back. A sample the manifest declares no usable direction
+    for stops its driver, since the alternative is translating a document the
+    wrong way round and reporting nothing unusual: exactly the failure the F1
+    review found, where the one Chinese sample of the corpus was run as though
+    it were English.
+    """
+    samples = (load_manifest() if manifest is None else manifest).get("samples", [])
+    for entry in samples:
+        name = entry.get("file")
+        if not isinstance(name, str) or sample not in (name, Path(name).stem):
+            continue
+        direction = tuple(entry.get(field) for field in DIRECTION_FIELDS)
+        if any(value not in languages() for value in direction) or len(
+            set(direction)
+        ) != len(direction):
+            raise CorpusError(
+                f"{name}: declares no usable direction, "
+                f"{DIRECTION_FIELDS[0]}={direction[0]!r} "
+                f"{DIRECTION_FIELDS[1]}={direction[1]!r}"
+            )
+        return direction
+    raise CorpusError(f"{sample}: not registered, so no direction is declared for it")
 
 
 def constrained_samples(manifest: dict, role: str = CONSTRAINED_ROLE) -> list[str]:

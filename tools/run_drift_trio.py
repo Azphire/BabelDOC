@@ -72,6 +72,7 @@ from babeldoc.format.pdf.document_il.midend.il_translator_llm_only import (  # n
 )
 from babeldoc.format.pdf.translation_config import TranslationConfig  # noqa: E402
 from babeldoc.format.pdf.translation_config import WatermarkOutputMode  # noqa: E402
+from babeldoc.magazine import corpus  # noqa: E402
 from babeldoc.magazine import hitl  # noqa: E402
 from babeldoc.magazine.cache_setup import PROJECT_CACHE_RELPATH  # noqa: E402
 from babeldoc.magazine.cache_setup import use_project_cache  # noqa: E402
@@ -141,13 +142,15 @@ def file_digest(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
-def build_engine(namespace: str | None) -> OpenAITranslator:
+def build_engine(
+    namespace: str | None, direction: tuple[str, str]
+) -> OpenAITranslator:
     key = os.environ.get("OPENAI_API_KEY")
     if not key:
         raise SystemExit("OPENAI_API_KEY is not set")
     engine = OpenAITranslator(
-        lang_in="en",
-        lang_out="zh",
+        lang_in=direction[0],
+        lang_out=direction[1],
         model=MODEL,
         base_url=os.environ.get("OPENAI_BASE_URL") or None,
         api_key=key,
@@ -291,14 +294,18 @@ def run_one(arm: dict, layout_model) -> dict:
 
     isolate_reviews(SAMPLE, destination)
     trace = PromptTrace(destination / TRACE_NAME)
-    engine = build_engine(arm["namespace"])
+    # The direction the corpus declares for this sample, never one this driver
+    # holds: the three arms differ in one switch and nothing else, and that
+    # includes which way round the sample is translated.
+    direction = corpus.direction_of(SAMPLE)
+    engine = build_engine(arm["namespace"], direction)
     switches = dict(STACK)
     switches["magazine_chain_translate"] = arm["chain_translate"]
     config = TranslationConfig(
         translator=engine,
         input_file=pdf,
-        lang_in="en",
-        lang_out="zh",
+        lang_in=direction[0],
+        lang_out=direction[1],
         doc_layout_model=layout_model,
         output_dir=destination / "out",
         working_dir=destination / "work",

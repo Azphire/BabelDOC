@@ -30,6 +30,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
 import pymupdf  # noqa: E402
+from babeldoc.magazine import corpus  # noqa: E402
 from babeldoc.magazine.checkpoint import load_checkpoint  # noqa: E402
 from babeldoc.magazine.page_features import FEATURE_NAMES  # noqa: E402
 from babeldoc.magazine.page_features import PERCENTILE_SUFFIX  # noqa: E402
@@ -76,11 +77,12 @@ def run_pipeline(pdf: Path) -> Path:
     use_project_cache(ROOT)
     warmup()
     work_root = Path(tempfile.mkdtemp(prefix="page_classify_"))
+    source_lang, target_lang = corpus.direction_of(pdf.stem)
     config = TranslationConfig(
         translator=None,
         input_file=pdf,
-        lang_in="en",
-        lang_out="zh",
+        lang_in=source_lang,
+        lang_out=target_lang,
         doc_layout_model=DocLayoutModel.load_onnx(),
         output_dir=work_root / "out",
         working_dir=work_root / "work",

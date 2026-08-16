@@ -97,11 +97,12 @@ def run_pipeline(pdf: Path) -> Path:
     use_project_cache(ROOT)
     warmup()
     work_root = Path(tempfile.mkdtemp(prefix="chain_report_"))
+    source_lang, target_lang = corpus.direction_of(pdf.stem)
     config = TranslationConfig(
         translator=None,
         input_file=pdf,
-        lang_in="en",
-        lang_out="zh",
+        lang_in=source_lang,
+        lang_out=target_lang,
         doc_layout_model=DocLayoutModel.load_onnx(),
         output_dir=work_root / "out",
         working_dir=work_root / "work",

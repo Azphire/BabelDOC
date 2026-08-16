@@ -1,0 +1,778 @@
+{
+  "person_names": "transliterate",
+  "samples": {
+    "Courier-en": {
+      "comparison": {
+        "after_checkpoint": "examples\\output\\b9_1\\Courier-en\\work\\Courier-en\\checkpoint.09_il_translated.xml",
+        "before_checkpoint": "examples\\output\\final\\Courier-en\\work\\Courier-en\\checkpoint.09_il_translated.xml",
+        "pages": [
+          1
+        ],
+        "paragraphs": [
+          {
+            "after": "目录",
+            "before": "目录",
+            "changed": false,
+            "debug_id": "5XYU9",
+            "layout_label": "title",
+            "order": 0,
+            "page": 1,
+            "position": "p1#0"
+          },
+          {
+            "after": "社论",
+            "before": "社论",
+            "changed": false,
+            "debug_id": "S3fwy",
+            "layout_label": "title",
+            "order": 1,
+            "page": 1,
+            "position": "p1#1"
+          },
+          {
+            "after": "土著知识长期以来被科学忽视，有时甚至被反对。然而，现在它重新引起了人们的兴趣——这正是时候：全球机械化的后果，以及与气候变化和健康问题相关的危机，促使我们重新重视那些长期被边缘化的知识、实践和专业技能。",
+            "before": "土著知识长期以来被科学忽视，有时甚至受到反对。然而，现在它重新引起了人们的兴趣——这正是时候：全球机械化的后果，以及与气候变化和健康问题相关的危机，促使我们重新重视那些长期被边缘化的知识、实践和专业技能。",
+            "changed": true,
+            "debug_id": "q4vMv",
+            "layout_label": "plain text",
+            "order": 2,
+            "page": 1,
+            "position": "p1#2"
+          },
+          {
+            "after": "这种知识植根于对生态系统的细致观察，并通过口头传承代代相传，为构建可持续的未来提供了宝贵的钥匙。近年来，它获得了越来越多的认可。2007年通过的《联合国土著人民权利宣言》确认了这些人民保留、控制和发展其传统知识的权利。",
+            "before": "这种知识植根于对生态系统的细致观察，并通过口头方式代代相传，为构建可持续的未来提供了宝贵的钥匙。近年来，它获得了越来越多的认可。2007年通过的《联合国土著人民权利宣言》确认了这些人民保留、控制和发展其传统知识的权利。",
+            "changed": true,
+            "debug_id": "ZwHf9",
+            "layout_label": "plain text",
+            "order": 3,
+            "page": 1,
+            "position": "p1#3"
+          },
+          {
+            "after": "联合国教科文组织长期以来一直是这一领域的先锋。通过其地方和土著知识系统 (LINKS) 计划，该组织促进土著知识持有者与科学家之间的交流，特别是在生态学、水管理和自然风险预防领域。生物圈保护区是这种方法的一个具体例子——它们将研究人员和当地社区聚集在一起，开发适合特定地区的解决方案。这是一个重大转变，因为科学不再被视为单一的、自上而下的知识形式，而是知识系统之间的对话。此外，《保护非物质文化遗产公约》保护代代相传的实践、技术和技能，承认其普遍性。",
+            "before": "联合国教科文组织长期以来在这一领域处于先锋地位。通过其地方和土著知识系统 (LINKS) 计划，该组织促进土著知识持有者与科学家之间的交流，特别是在生态学、水管理和自然风险预防领域。生物圈保护区是这一方法的具体例子——它们将研究人员和当地社区聚集在一起，开发适应特定地区的解决方案。这是一个重大转变，因为科学不再被视为单一的自上而下的知识形式，而是知识系统之间的对话。此外，《保护非物质文化遗产公约》保护代代相传的实践、技术和技能，承认其普遍性。",
+            "changed": true,
+            "debug_id": "fvRnr",
+            "layout_label": "plain text",
+            "order": 4,
+            "page": 1,
+            "position": "p1#4"
+          },
+          {
+            "after": "除了提供实证数据外，土著知识还挑战了科学方法的基础，无论是在伦理的位置、人类与自然的关系，还是观察的长时间框架方面。在农业、传统医学和气候学中，这些知识已经激发了重大的创新，这些创新往往比纯粹的技术解决方案更具可持续性。",
+            "before": "除了提供实证数据外，土著知识还挑战了科学方法的基础，无论是在伦理的位置、人类与自然的关系，还是观察的长时间框架方面。在农业、传统医学和气候学中，这些知识已经激发了重大的创新，往往比纯粹的技术解决方案更具可持续性。",
+            "changed": true,
+            "debug_id": "wbAVQ",
+            "layout_label": "plain text",
+            "order": 5,
+            "page": 1,
+            "position": "p1#5"
+          },
+          {
+            "after": "但这种认可必须伴随着保障措施——社区的自由和知情同意、利益的公平分享以及防止滥用占有的保护。目标不仅仅是将土著知识吸收到主流科学中，而是促进合作以造福所有人。",
+            "before": "但这种认可必须伴随着保障措施——社区的自由和知情同意、利益的公平分享以及防止滥用占有的保护。目标不仅仅是将土著知识吸收到主流科学中，而是促进合作，以造福所有人。",
+            "changed": true,
+            "debug_id": "qX6v9",
+            "layout_label": "plain text",
+            "order": 6,
+            "page": 1,
+            "position": "p1#6"
+          },
+          {
+            "after": "通过推广这些知识，联合国教科文组织提醒我们一个显而易见的事实——为了理解和保护世界，我们可以通过整合所有民族的知识和传统而获益良多。真正的科学以及适合我们多元化世界的伦理，是那些为所有人类表达形式及其多样性留出空间的科学和伦理。",
+            "before": "通过推广这些知识，联合国教科文组织提醒我们一个显而易见的事实——要理解和保护这个世界，我们可以通过整合所有民族的知识和传统而获益良多。真正的科学，以及适合我们多元化世界的伦理，是那些为所有人类表达形式留出空间的科学和伦理。",
+            "changed": true,
+            "debug_id": "ZLWz3",
+            "layout_label": "plain text",
+            "order": 7,
+            "page": 1,
+            "position": "p1#7"
+          },
+          {
+            "after": "<style id='1'>Agnès Bardon</style>主编",
+            "before": "<style id='1'>Agnès Bardon</style>主编",
+            "changed": false,
+            "debug_id": "DYVsm",
+            "layout_label": "abandon",
+            "order": 8,
+            "page": 1,
+            "position": "p1#8"
+          },
+          {
+            "after": "<style id='1'>信使</style>{v3}H E 联合国教科文组织",
+            "before": "<style id='1'>信使</style>{v3}H E 联合国教科文组织",
+            "changed": false,
+            "debug_id": "HZ28z",
+            "layout_label": "title",
+            "order": 9,
+            "page": 1,
+            "position": "p1#9"
+          },
+          {
+            "after": "广角",
+            "before": "广角",
+            "changed": false,
+            "debug_id": "bpN7L",
+            "layout_label": "title",
+            "order": 10,
+            "page": 1,
+            "position": "p1#10"
+          },
+          {
+            "after": "土著知识如何推动科学发现",
+            "before": "土著知识如何推动科学发现",
+            "changed": false,
+            "debug_id": "MiPEE",
+            "layout_label": "title",
+            "order": 11,
+            "page": 1,
+            "position": "p1#11"
+          },
+          {
+            "after": "气候变化对土著知识的影响<style id='1'>.</style>4",
+            "before": "气候变化对土著知识的影响<style id='1'>.</style>4",
+            "changed": false,
+            "debug_id": "6dhyQ",
+            "layout_label": "plain text",
+            "order": 12,
+            "page": 1,
+            "position": "p1#12"
+          },
+          {
+            "after": "拉吉波伊瓦·谢雷尔·杰克逊",
+            "before": "拉吉波伊瓦·谢雷尔·杰克逊",
+            "changed": false,
+            "debug_id": "Hym1N",
+            "layout_label": "plain text",
+            "order": 13,
+            "page": 1,
+            "position": "p1#13"
+          },
+          {
+            "after": "<style id='1'>巴西：水上人家的教训</style><style id='3'> ..... </style><style id='5'>9</style>马塞洛·席尔瓦·德·索萨",
+            "before": "<style id='1'>巴西：水上人家的教训</style><style id='3'> ..... </style><style id='5'>9</style>马塞洛·席尔瓦·德·索萨",
+            "changed": false,
+            "debug_id": "5vqkB",
+            "layout_label": "plain text",
+            "order": 14,
+            "page": 1,
+            "position": "p1#14"
+          },
+          {
+            "after": "<style id='1'>当生物盗窃扎根时</style><style id='3'>.</style><style id='5'>12</style>丹尼尔·罗宾逊和大卫·杰斐逊",
+            "before": "<style id='1'>当生物盗窃扎根时</style><style id='3'>.</style><style id='5'>12</style>丹尼尔·罗宾逊和大卫·杰斐逊",
+            "changed": false,
+            "debug_id": "aWNvo",
+            "layout_label": "plain text",
+            "order": 15,
+            "page": 1,
+            "position": "p1#15"
+          },
+          {
+            "after": "<style id='1'>中国：传统傣族医学的光辉健康</style><style id='3'>.</style><style id='5'>14</style>Yang Sha和Du Junzhi",
+            "before": "<style id='1'>中国：传统傣族医学的光辉健康</style><style id='3'>.</style><style id='5'>14</style>杨沙和杜俊志",
+            "changed": true,
+            "debug_id": "kQnLN",
+            "layout_label": "plain text",
+            "order": 16,
+            "page": 1,
+            "position": "p1#16"
+          },
+          {
+            "after": "<style id='1'>卡拉哈里的秘密天空</style><style id='3'> ................. </style><style id='5'>17</style>Sisco Auala",
+            "before": "<style id='1'>卡拉哈里的秘密天空</style><style id='3'> ................. </style><style id='5'>17</style>Sisco Auala",
+            "changed": false,
+            "debug_id": "AdV9S",
+            "layout_label": "plain text",
+            "order": 17,
+            "page": 1,
+            "position": "p1#17"
+          },
+          {
+            "after": "<style id='1'>萨米人，不可或缺的气候变化守护者</style><style id='3'> ............... </style><style id='5'>20</style>Anna Ruohonen",
+            "before": "<style id='1'>萨米人，气候变化不可或缺的守护者</style><style id='3'> ............... </style><style id='5'>20</style>Anna Ruohonen",
+            "changed": true,
+            "debug_id": "e8s4Z",
+            "layout_label": "plain text",
+            "order": 18,
+            "page": 1,
+            "position": "p1#18"
+          },
+          {
+            "after": "“我们的知识长期以来被视为民间传说”<style id='1'>.</style>23",
+            "before": "“我们的知识长期以来被视为民间传说”<style id='1'>.</style>23",
+            "changed": false,
+            "debug_id": "Qk4Wu",
+            "layout_label": "plain text",
+            "order": 19,
+            "page": 1,
+            "position": "p1#19"
+          },
+          {
+            "after": "采访奥拉·马雷克-马丁内斯（Ora Marek-Martinez）",
+            "before": "与Ora Marek-Martinez的访谈",
+            "changed": true,
+            "debug_id": "Tbkgg",
+            "layout_label": "plain text",
+            "order": 20,
+            "page": 1,
+            "position": "p1#20"
+          },
+          {
+            "after": "ZOOM",
+            "before": "ZOOM",
+            "changed": false,
+            "debug_id": "8zE26",
+            "layout_label": "title",
+            "order": 21,
+            "page": 1,
+            "position": "p1#21"
+          },
+          {
+            "after": "<style id='1'>通过孩子的眼睛看流亡</style><style id='3'> ................. </style><style id='5'>26</style>照片：Fotohane DARKROOM",
+            "before": "<style id='1'>通过孩子的眼睛看流亡</style><style id='3'> ................. </style><style id='5'>26</style>照片：Fotohane DARKROOM",
+            "changed": false,
+            "debug_id": "6jfqg",
+            "layout_label": "plain text",
+            "order": 22,
+            "page": 1,
+            "position": "p1#22"
+          },
+          {
+            "after": "IDEAS",
+            "before": "IDEAS",
+            "changed": false,
+            "debug_id": "rmk6T",
+            "layout_label": "title",
+            "order": 23,
+            "page": 1,
+            "position": "p1#23"
+          },
+          {
+            "after": "欢迎来到第二次量子革命<style id='1'>.</style>36",
+            "before": "欢迎来到第二次量子革命<style id='1'>.</style>36",
+            "changed": false,
+            "debug_id": "K9fvU",
+            "layout_label": "plain text",
+            "order": 24,
+            "page": 1,
+            "position": "p1#24"
+          },
+          {
+            "after": "Jim Al-Khalili",
+            "before": "Jim Al-Khalili",
+            "changed": false,
+            "debug_id": "tc8YC",
+            "layout_label": "plain text",
+            "order": 25,
+            "page": 1,
+            "position": "p1#25"
+          },
+          {
+            "after": "我们的嘉宾",
+            "before": "我们的嘉宾",
+            "changed": false,
+            "debug_id": "3xvgu",
+            "layout_label": "title",
+            "order": 26,
+            "page": 1,
+            "position": "p1#26"
+          },
+          {
+            "after": "<style id='1'>“小说是人类在诚实叙事中的最后集体边界”</style><style id='3'> ........... </style><style id='5'>40</style>采访Chimamanda Ngozi Adichie",
+            "before": "<style id='1'>“小说是人类在诚实叙事中的最后集体前沿”</style><style id='3'> ........... </style><style id='5'>40</style>与Chimamanda Ngozi Adichie的访谈",
+            "changed": true,
+            "debug_id": "7V1vE",
+            "layout_label": "plain text",
+            "order": 27,
+            "page": 1,
+            "position": "p1#27"
+          },
+          {
+            "after": "深入探讨",
+            "before": "深入探讨",
+            "changed": false,
+            "debug_id": "kL5ry",
+            "layout_label": "title",
+            "order": 28,
+            "page": 1,
+            "position": "p1#28"
+          },
+          {
+            "after": "非洲的图书产业：新的一页正在翻开<style id='1'>.</style>44",
+            "before": "非洲的图书产业：新的一页正在翻开<style id='1'>.</style>44",
+            "changed": false,
+            "debug_id": "z1jGM",
+            "layout_label": "plain text",
+            "order": 29,
+            "page": 1,
+            "position": "p1#29"
+          },
+          {
+            "after": "26",
+            "before": "26",
+            "changed": false,
+            "debug_id": "mj7tw",
+            "layout_label": "fallback_line",
+            "order": 30,
+            "page": 1,
+            "position": "p1#30"
+          },
+          {
+            "after": "36",
+            "before": "36",
+            "changed": false,
+            "debug_id": "Ecb5z",
+            "layout_label": "fallback_line",
+            "order": 31,
+            "page": 1,
+            "position": "p1#31"
+          },
+          {
+            "after": "40",
+            "before": "40",
+            "changed": false,
+            "debug_id": "uRHCq",
+            "layout_label": "fallback_line",
+            "order": 32,
+            "page": 1,
+            "position": "p1#32"
+          },
+          {
+            "after": "44",
+            "before": "44",
+            "changed": false,
+            "debug_id": "yszoJ",
+            "layout_label": "title",
+            "order": 33,
+            "page": 1,
+            "position": "p1#33"
+          },
+          {
+            "after": "4",
+            "before": "4",
+            "changed": false,
+            "debug_id": "6wtWY",
+            "layout_label": "abandon",
+            "order": 34,
+            "page": 1,
+            "position": "p1#34"
+          }
+        ]
+      },
+      "direction": [
+        "en",
+        "zh"
+      ],
+      "ruling": {
+        "terms": {
+          "CourierT H E UNESCO": {
+            "in_after": true,
+            "in_before": true,
+            "ruled": "联合国教科文组织《信使》",
+            "source_form_in_after": false
+          },
+          "Daniel Robinson": {
+            "in_after": true,
+            "in_before": true,
+            "ruled": "丹尼尔·罗宾逊",
+            "source_form_in_after": true
+          },
+          "David Jefferson": {
+            "in_after": true,
+            "in_before": true,
+            "ruled": "大卫·杰斐逊",
+            "source_form_in_after": true
+          },
+          "Lagipoiva Cherelle Jackson": {
+            "in_after": true,
+            "in_before": true,
+            "ruled": "拉吉波伊瓦·谢雷尔·杰克逊",
+            "source_form_in_after": false
+          },
+          "Marcelo Silva de Sousa": {
+            "in_after": true,
+            "in_before": true,
+            "ruled": "马塞洛·席尔瓦·德·索萨",
+            "source_form_in_after": false
+          },
+          "The UNESCO Courier": {
+            "in_after": true,
+            "in_before": true,
+            "ruled": "联合国教科文组织《信使》",
+            "source_form_in_after": true
+          }
+        }
+      }
+    },
+    "Courier-zh": {
+      "comparison": {
+        "after_checkpoint": "examples\\output\\b9_1\\Courier-zh\\work\\Courier-zh\\checkpoint.09_il_translated.xml",
+        "before_checkpoint": "examples\\output\\final\\Courier-zh\\work\\Courier-zh\\checkpoint.09_il_translated.xml",
+        "pages": [
+          1
+        ],
+        "paragraphs": [
+          {
+            "after": "社论",
+            "before": "社论",
+            "changed": false,
+            "debug_id": "QKjQp",
+            "layout_label": "title",
+            "order": 0,
+            "page": 1,
+            "position": "p1#0"
+          },
+          {
+            "after": "For a long time, local knowledge has been ignored by the scientific community and sometimes even resisted. Now, it is regaining attention, and this shift is timely: the various consequences of global mechanization, along with crises related to climate change and health issues, are prompting us to re-examine those knowledge systems, practices, and expertise that have long been marginalized.",
+            "before": "长久以来，本土知识一直被科学界忽视，有时甚至遭到抵制。而如今，它正重新引发人们的关注，这一转变可谓恰逢其时：全球机械化进程带来的种种后果，以及与气候变化和健康问题相关的危机，正促使我们重新审视那些长期以来被边缘化的知识体系、实践经验和专业技能。",
+            "changed": true,
+            "debug_id": "xGKbd",
+            "layout_label": "plain text",
+            "order": 1,
+            "page": 1,
+            "position": "p1#1"
+          },
+          {
+            "after": "Local knowledge is rooted in detailed observations of ecosystems and is passed down through generations orally, providing a valuable key to building a sustainable future. In recent years, this type of knowledge has been increasingly recognized. The United Nations Declaration on the Rights of Indigenous Peoples, adopted in 2007, affirmed the rights of indigenous peoples to own, control, and develop their traditional knowledge.",
+            "before": "本土知识植根于对生态系统的细致观察，并通过口耳相传的方式世代绵延，为构建可持续的未来提供了宝贵的钥匙。近年来，这类知识正受到日益广泛的认可。2007 年通过的《联合国土著人民权利宣言》肯定了土著人民持有、掌管和发展其传统知识的权利。",
+            "changed": true,
+            "debug_id": "rb46A",
+            "layout_label": "plain text",
+            "order": 2,
+            "page": 1,
+            "position": "p1#2"
+          },
+          {
+            "after": "UNESCO has long played a pioneering role in this field. Through the \"Local and Indigenous Knowledge Systems\" (LINKS) program, the organization actively promotes exchanges between indigenous knowledge holders and scientists, particularly in areas such as ecological protection, water resource management, and natural disaster prevention. Biosphere reserves are a concrete example of this concept—bringing together researchers and local communities to jointly explore locally adapted solutions. This effort marks a significant shift: science is no longer seen as a singular, top-down form of knowledge, but as a bridge for dialogue between different knowledge systems. Additionally, the Convention for the Safeguarding of the Intangible Cultural Heritage protects practices, techniques, and skills passed down through generations, recognizing their universal significance.",
+            "before": "联合国教科文组织在这一领域长期发挥着先锋作用。通过“地方和土著知识系统”(LINKS)计划，本组织积极推动土著知识持有者与科学家之间的交流，特别是在生态保护、水资源管理和自然灾害防治等领域。生物圈保护区正是这一理念的具体范例——这里汇聚科研人员与当地社区，他们共同探索因地制宜的解决方案。这一努力标志着一项重大转变：科学不再被视为单一、自上而下的知识形式，而是不同知识体系间对话的桥梁。此外，《保护非物质文化遗产公约》守护着代代相传的实践、技艺和技能，并认可其具有普遍意义。",
+            "changed": true,
+            "debug_id": "Fn8un",
+            "layout_label": "plain text",
+            "order": 3,
+            "page": 1,
+            "position": "p1#3"
+          },
+          {
+            "after": "Local knowledge not only provides empirical data but also challenges the foundations of scientific paradigms from the perspectives of ethical values, the relationship between humans and nature, and long-term observational dimensions. In the fields of agriculture, traditional medicine, and climate science, such knowledge has long fostered numerous major innovations, whose sustainability often surpasses purely technology-driven solutions.",
+            "before": "本土知识不仅提供实证数据，更从伦理价值定位、人与自然的关系、长期观测维度等层面，对科学范式的基础提出了挑战。在农业、传统医学和气候科学领域，这类知识早已孕育出众多重大创新，其可持续性往往超越纯粹技术驱动的解决方案。",
+            "changed": true,
+            "debug_id": "UedEu",
+            "layout_label": "plain text",
+            "order": 4,
+            "page": 1,
+            "position": "p1#4"
+          },
+          {
+            "after": "However, this recognition must be accompanied by safeguards—ensuring the community's free and fully informed consent, achieving equitable benefit sharing, and preventing exploitative plundering. Our goal is not merely to integrate local knowledge into the mainstream scientific system, but to promote cooperation that benefits all parties.",
+            "before": "然而，这种认可必须伴随保障措施——确保社区自由且充分知情同意、实现利益公平分配、防范滥用性掠夺。我们的目标绝非将本土知识简单纳入主流科学体系，而是推动惠及各方的合作。",
+            "changed": true,
+            "debug_id": "uSR9C",
+            "layout_label": "plain text",
+            "order": 5,
+            "page": 1,
+            "position": "p1#5"
+          },
+          {
+            "after": "By promoting this type of knowledge, UNESCO reveals to us an unspoken truth: to understand and protect this world, we need to fully integrate the knowledge and traditions of all peoples, which will bring us immeasurable benefits. True science, along with ethical standards that align with this diverse world, should provide inclusive space for the expression of all forms of human civilization, allowing the vibrant flowers of human civilization to bloom freely.",
+            "before": "通过弘扬这类知识，联合国教科文组织向我们揭示了一个不言而喻的真理：要理解并守护这个世界，我们需充分融合各民族的知识与传统，这将为我们带来无可估量的裨益。真正的科学，以及契合这个多元世界的伦理准则，应当为所有形式的人类文明表达提供包容空间，让绚烂多彩的人类文明之花尽情绽放。",
+            "changed": true,
+            "debug_id": "pRtAV",
+            "layout_label": "plain text",
+            "order": 6,
+            "page": 1,
+            "position": "p1#6"
+          },
+          {
+            "after": "总编辑",
+            "before": "总编辑",
+            "changed": false,
+            "debug_id": "C7Pe6",
+            "layout_label": "plain text",
+            "order": 7,
+            "page": 1,
+            "position": "p1#7"
+          },
+          {
+            "after": "Agnès Bardon",
+            "before": "阿涅丝·巴尔东(Agnès Bardon)",
+            "changed": true,
+            "debug_id": "ot2mz",
+            "layout_label": "plain text",
+            "order": 8,
+            "page": 1,
+            "position": "p1#8"
+          },
+          {
+            "after": "广角",
+            "before": "广角",
+            "changed": false,
+            "debug_id": "3cDcA",
+            "layout_label": "title",
+            "order": 9,
+            "page": 1,
+            "position": "p1#9"
+          },
+          {
+            "after": "How Local Knowledge Drives Scientific Discovery",
+            "before": "本土知识如何推动科学发现",
+            "changed": true,
+            "debug_id": "x1Mzi",
+            "layout_label": "title",
+            "order": 10,
+            "page": 1,
+            "position": "p1#10"
+          },
+          {
+            "after": "<style id='1'>Indigenous Knowledge in the Context of Changing Times</style><style id='3'> ................. </style><style id='5'>2</style>Lagipoiva Cherelle Jackson",
+            "before": "<style id='1'>时代变迁背景下的土著知识</style><style id='3'> ................. </style><style id='5'>2</style>拉吉波瓦·谢雷尔·杰克逊(Lagipoiva Cherelle Jackson)",
+            "changed": true,
+            "debug_id": "BBQwz",
+            "layout_label": "plain text",
+            "order": 11,
+            "page": 1,
+            "position": "p1#11"
+          },
+          {
+            "after": "<style id='1'>Brazil: The Water People's Inspiration</style>.<style id='3'>7</style>",
+            "before": "<style id='1'>巴西：水之民族的启示</style>.<style id='3'>7</style>",
+            "changed": true,
+            "debug_id": "bLBGh",
+            "layout_label": "plain text",
+            "order": 12,
+            "page": 1,
+            "position": "p1#12"
+          },
+          {
+            "after": "Marcelo Silva de Sousa (Marcelo Silva de Sousa)",
+            "before": "马塞洛·席尔瓦·德索萨(Marcelo Silva de Sousa)",
+            "changed": true,
+            "debug_id": "wyuSu",
+            "layout_label": "plain text",
+            "order": 13,
+            "page": 1,
+            "position": "p1#13"
+          },
+          {
+            "after": "<style id='1'>When Biopiracy Breeds and Spreads</style><style id='3'>.</style>10",
+            "before": "<style id='1'>当生物剽窃滋生蔓延时</style><style id='3'>.</style>10",
+            "changed": true,
+            "debug_id": "gMpMj",
+            "layout_label": "plain text",
+            "order": 14,
+            "page": 1,
+            "position": "p1#14"
+          },
+          {
+            "after": "Daniel Robinson and David Jefferson",
+            "before": "丹尼尔·鲁滨逊(Daniel Robinson)和戴维·杰斐逊(David Jefferson)",
+            "changed": true,
+            "debug_id": "fw7m9",
+            "layout_label": "plain text",
+            "order": 15,
+            "page": 1,
+            "position": "p1#15"
+          },
+          {
+            "after": "<style id='1'>China: The Brilliant Vitality of Traditional Dai Medicine</style><style id='3'> ........... </style><style id='5'>12</style>Yang Sha and Du Junzhi",
+            "before": "<style id='1'>中国:传统傣医焕发的璀璨活力</style><style id='3'> ........... </style><style id='5'>12</style>杨莎和杜俊知",
+            "changed": true,
+            "debug_id": "JrQ8j",
+            "layout_label": "plain text",
+            "order": 16,
+            "page": 1,
+            "position": "p1#16"
+          },
+          {
+            "after": "<style id='1'>The Mysterious Skies of the Kalahari</style><style id='3'>.</style>15",
+            "before": "<style id='1'>卡拉哈里的神秘苍穹</style><style id='3'>.</style>15",
+            "changed": true,
+            "debug_id": "Yk5D1",
+            "layout_label": "plain text",
+            "order": 17,
+            "page": 1,
+            "position": "p1#17"
+          },
+          {
+            "after": "Sisco Auala",
+            "before": "西斯科·阿瓦拉(Sisco Auala)",
+            "changed": true,
+            "debug_id": "6uxhu",
+            "layout_label": "plain text",
+            "order": 18,
+            "page": 1,
+            "position": "p1#18"
+          },
+          {
+            "after": "<style id='1'>Sami: Indispensable Guardians of Climate Change</style><style id='3'> .... </style><style id='5'>18</style>Anna Ruohonen",
+            "before": "<style id='1'>萨米人:不可或缺的气候变化守护者</style><style id='3'> .... </style><style id='5'>18</style>安娜·罗霍宁(Anna Ruohonen)",
+            "changed": true,
+            "debug_id": "RKqJH",
+            "layout_label": "plain text",
+            "order": 19,
+            "page": 1,
+            "position": "p1#19"
+          },
+          {
+            "after": "<style id='1'>Ola Marek-Martinez: “Our knowledge has long been regarded as folklore”</style><style id='3'>.</style><style id='5'>21</style>Katerina Markelova conducted the interview",
+            "before": "<style id='1'>奥拉·马雷克-马丁内斯：“我们的知识长期以来一直被当作民间传说”</style><style id='3'>.</style><style id='5'>21</style>卡特琳娜·马尔可洛娃担任采访",
+            "changed": true,
+            "debug_id": "VhBw7",
+            "layout_label": "plain text",
+            "order": 20,
+            "page": 1,
+            "position": "p1#20"
+          },
+          {
+            "after": "聚焦",
+            "before": "聚焦",
+            "changed": false,
+            "debug_id": "yJTgE",
+            "layout_label": "title",
+            "order": 21,
+            "page": 1,
+            "position": "p1#21"
+          },
+          {
+            "after": "<style id='1'>Examining the Phenomenon of Exile from a Child's Perspective</style><style id='3'> ................</style>24",
+            "before": "<style id='1'>以孩童之视角审视流亡现象</style><style id='3'> ................</style>24",
+            "changed": true,
+            "debug_id": "c93mh",
+            "layout_label": "plain text",
+            "order": 22,
+            "page": 1,
+            "position": "p1#22"
+          },
+          {
+            "after": "Image: Darkroom of the House of Photography Text: Katerina Markelova",
+            "before": "图片:摄影之家暗房 文字:卡特琳娜·马尔可洛娃",
+            "changed": true,
+            "debug_id": "4JMao",
+            "layout_label": "plain text",
+            "order": 23,
+            "page": 1,
+            "position": "p1#23"
+          },
+          {
+            "after": "观点",
+            "before": "观点",
+            "changed": false,
+            "debug_id": "3RBwe",
+            "layout_label": "title",
+            "order": 24,
+            "page": 1,
+            "position": "p1#24"
+          },
+          {
+            "after": "<style id='1'>Welcome to the Era of the Second Quantum Revolution</style><style id='3'> .............</style><style id='5'>35</style>Jim Al-Khalili",
+            "before": "<style id='1'>欢迎步入第二次量子革命时代</style><style id='3'> .............</style><style id='5'>35</style>吉姆·艾尔-哈利利",
+            "changed": true,
+            "debug_id": "5PXop",
+            "layout_label": "plain text",
+            "order": 25,
+            "page": 1,
+            "position": "p1#25"
+          },
+          {
+            "after": "嘉宾",
+            "before": "嘉宾",
+            "changed": false,
+            "debug_id": "cQMLh",
+            "layout_label": "title",
+            "order": 26,
+            "page": 1,
+            "position": "p1#26"
+          },
+          {
+            "after": "<style id='1'>Chimamanda Ngozi Adichie: “Novels are humanity's last collective frontier in the realm of honest storytelling”</style><style id='3'> .... </style><style id='5'>39</style>Laetitia Kaci conducted the interview",
+            "before": "<style id='1'>奇玛曼达·恩戈兹·阿迪契：“小说是人类在诚实叙事领域最后的集体探索疆界”</style><style id='3'> .... </style><style id='5'>39</style>蕾蒂西亚·凯西担任采访",
+            "changed": true,
+            "debug_id": "Zyq36",
+            "layout_label": "plain text",
+            "order": 27,
+            "page": 1,
+            "position": "p1#27"
+          },
+          {
+            "after": "深度阅读",
+            "before": "深度阅读",
+            "changed": false,
+            "debug_id": "nLC3T",
+            "layout_label": "title",
+            "order": 28,
+            "page": 1,
+            "position": "p1#28"
+          },
+          {
+            "after": "<style id='1'>African Book Industry: Opening a New Chapter</style><style id='3'> .................</style><style id='5'>42</style>Anuliina Savolainen",
+            "before": "<style id='1'>非洲图书产业:开启新篇章</style><style id='3'> .................</style><style id='5'>42</style>阿努利那·萨沃莱宁(Anuliina Savolainen)",
+            "changed": true,
+            "debug_id": "cM5Ui",
+            "layout_label": "plain text",
+            "order": 29,
+            "page": 1,
+            "position": "p1#29"
+          },
+          {
+            "after": "24",
+            "before": "24",
+            "changed": false,
+            "debug_id": "CxWQT",
+            "layout_label": "title",
+            "order": 30,
+            "page": 1,
+            "position": "p1#30"
+          },
+          {
+            "after": "34",
+            "before": "34",
+            "changed": false,
+            "debug_id": "LGuD3",
+            "layout_label": "plain text",
+            "order": 31,
+            "page": 1,
+            "position": "p1#31"
+          },
+          {
+            "after": "38",
+            "before": "38",
+            "changed": false,
+            "debug_id": "5956h",
+            "layout_label": "fallback_line",
+            "order": 32,
+            "page": 1,
+            "position": "p1#32"
+          },
+          {
+            "after": "42",
+            "before": "42",
+            "changed": false,
+            "debug_id": "ADHTs",
+            "layout_label": "fallback_line",
+            "order": 33,
+            "page": 1,
+            "position": "p1#33"
+          },
+          {
+            "after": "2",
+            "before": "2",
+            "changed": false,
+            "debug_id": "DhorF",
+            "layout_label": "fallback_line",
+            "order": 34,
+            "page": 1,
+            "position": "p1#34"
+          }
+        ]
+      },
+      "direction": [
+        "zh",
+        "en"
+      ],
+      "ruling": {
+        "terms": {}
+      }
+    }
+  }
+}

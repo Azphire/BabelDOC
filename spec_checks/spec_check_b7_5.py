@@ -117,8 +117,12 @@ UNREACHABLE_LABEL = "fallback_line"
 # and not a corpus revision: a revision arrives with a session that says so and
 # repins these.
 TRUTH_DIGESTS = {
+    # Repinned by B9.1: the owner added source_lang and target_lang to all six
+    # entries, which is the revision the paragraph above says arrives with a
+    # session that says so. That the revision added those two fields and
+    # nothing else is asserted separately, by spec_check_b9_1's 04a2.
     "corpus/registry.user.json": (
-        "6747286f971e38ae54c8481d750576b9ee3b2b0fc51f62d82ec2b9c24341e5b8"
+        "64d08f6d00fb0812b8324c00ada89889a224ce6d24b81b5ac70b9db47903f2ec"
     ),
     "corpus/page_labels.json": (
         "eabef80e11262f1d56d750cf71905cf9a3427e56af2081edb17468a0e5bbb2c6"
