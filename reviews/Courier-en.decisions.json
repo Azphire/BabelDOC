@@ -1,8 +1,21 @@
 {
-    "terms": {"Marcelo Silva de Sousa": "马塞洛·席尔瓦·德·索萨", 
-    "Lagipoiva Cherelle Jackson": "拉吉波伊瓦·谢雷尔·杰克逊",
-"Daniel Robinson": "丹尼尔·罗宾逊", "David Jefferson": "大卫·杰斐逊",
-"The UNESCO Courier": "联合国教科文组织《信使》", "CourierT H E UNESCO": "联合国教科文组织《信使》"},
+    "terms": {
+        "Marcelo Silva de Sousa": "马塞洛·席尔瓦·德·索萨",
+        "Lagipoiva Cherelle Jackson": "拉吉波伊瓦·谢雷尔·杰克逊",
+        "Daniel Robinson": "丹尼尔·罗宾逊",
+        "David Jefferson": "大卫·杰斐逊",
+        "The UNESCO Courier": "联合国教科文组织《信使》",
+        "CourierT H E UNESCO": "联合国教科文组织《信使》",
+
+        "Yang Sha": "杨沙",
+        "Du Junzhi": "杜俊志",
+        "Sisco Auala": "西斯科·阿瓦拉",
+        "Anna Ruohonen": "安娜·罗霍宁",
+        "Jim Al-Khalili": "吉姆·艾尔-哈利利",
+        "Chimamanda Ngozi Adichie": "奇玛曼达·恩戈兹·阿迪契",
+        "Ora Marek-Martinez": "奥拉·马雷克-马丁内斯",
+        "Katerina Markelova": "卡特琳娜·马尔可洛娃"
+    },
     "page_kinds": {"1": "toc"},
-    "drop_caps": {"p4#3": "keep", "p5#5": "flatten", "p7#8": "flatten"}
+    "drop_caps": {"p4#3": "flatten", "p5#5": "flatten", "p7#8": "flatten"}
 }
