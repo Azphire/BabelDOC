@@ -1343,6 +1343,15 @@ def check_04c_retention_keeps_what_it_declares() -> None:
     standing for something git tracks. The two newest batches keep everything,
     the oldest keeps its report and its log, and nothing outside a batch
     directory is touched at all.
+
+    Batch b9.2r added the archive pass and the registered-path guard, and both
+    belong to the same question this assertion has always asked -- what the
+    policy keeps -- so they are checked here rather than somewhere a reader of
+    the policy would not look. The evicted batch's small text has to be selected
+    for its archive, including the report the keep patterns leave in place: a
+    file that stays on the disk untracked is one clone away from gone, which is
+    the whole reason the archive exists. And nothing on the configured
+    protection list may be selected for removal anywhere in the real tree.
     """
     from tools import prune_outputs
 
@@ -1355,6 +1364,9 @@ def check_04c_retention_keeps_what_it_declares() -> None:
             (directory / f"{name}.report.md").write_text("report", encoding="utf-8")
             (directory / f"{name}.log").write_text("log", encoding="utf-8")
             (directory / "work" / "checkpoint.01.xml").write_text("x", encoding="utf-8")
+            (directory / "work" / f"{name}.sidecar.json").write_text(
+                "{}", encoding="utf-8"
+            )
             (directory / "bulk.pdf").write_bytes(b"0" * 1024)
         (root / "gate_cache").mkdir()
         (root / "gate_cache" / "payload.bin").write_bytes(b"0" * 1024)
@@ -1362,13 +1374,31 @@ def check_04c_retention_keeps_what_it_declares() -> None:
         config = prune_outputs.load_config()
         doomed, recent = prune_outputs.prunable(root, config)
         names = {path.relative_to(root).as_posix() for path in doomed}
-        if names != {"b1/work/checkpoint.01.xml", "b1/bulk.pdf"}:
+        if names != {
+            "b1/work/checkpoint.01.xml",
+            "b1/work/b1.sidecar.json",
+            "b1/bulk.pdf",
+        }:
             faults.append(f"would remove {sorted(names)}")
         if len(recent) != int(config[prune_outputs.KEEP_RECENT_KEY]):
             faults.append(f"kept {len(recent)} batch(es) whole")
         for path in doomed:
             if path.match("*.report.md") or path.match("*.log"):
                 faults.append(f"a kept pattern was listed: {path.name}")
+
+        # The archive pass, over the same fabricated tree. Only the evicted
+        # batch contributes, and its report and log go in beside the sidecar
+        # even though the keep patterns leave those two on the disk.
+        selected = prune_outputs.archivable(root, config)
+        if sorted(selected) != ["b1"]:
+            faults.append(f"batches selected for archiving: {sorted(selected)}")
+        archived = {
+            path.relative_to(root).as_posix() for path in selected.get("b1", ())
+        }
+        if archived != {"b1/b1.report.md", "b1/b1.log", "b1/work/b1.sidecar.json"}:
+            faults.append(f"would archive {sorted(archived)}")
+        if any("bulk.pdf" in member for member in archived):
+            faults.append("the bulk product was selected for the archive")
     finally:
         shutil.rmtree(root, ignore_errors=True)
 
@@ -1379,9 +1409,17 @@ def check_04c_retention_keeps_what_it_declares() -> None:
     named = prune_outputs.manifest_paths()
     if not named:
         faults.append("the manifest names no baseline")
+    registered_files, registered_dirs = prune_outputs.registered_paths(config)
+    if not registered_files:
+        faults.append("the policy registers no protected path, so that guard is idle")
     real, _recent = prune_outputs.prunable(ROOT / "examples" / "output", config)
     trespass = sorted(
         path.as_posix() for path in real if path.resolve() in protected | named
+    )
+    trespass += sorted(
+        path.as_posix()
+        for path in real
+        if prune_outputs.is_registered(path, registered_files, registered_dirs)
     )
     if trespass:
         faults.append(f"the policy would remove protected files: {trespass[:3]}")
@@ -1448,15 +1486,38 @@ def check_04e_the_sweep_applies_the_policy() -> None:
 
     After the gates rather than before them, because a sweep reads what earlier
     sweeps left, and with --apply rather than as a report nobody acts on.
+
+    The function inspected is whichever one drives the gates, found by looking
+    for the ``run_gate`` calls rather than by name: batch b9.2r moved the sweep
+    body out of ``main`` so the cache lock could be released on every exit path,
+    and an assertion pinned to a function name would have read that refactor as
+    a runner that had stopped applying the policy.
     """
     tree = ast.parse(source_of("spec_checks/run_all.py"))
-    main = next(
+    def calls_run_gate(node: ast.AST) -> bool:
+        return any(
+            isinstance(inner, ast.Call)
+            and isinstance(inner.func, ast.Name)
+            and inner.func.id == "run_gate"
+            for inner in ast.walk(node)
+        )
+
+    drivers = [
         node
         for node in ast.walk(tree)
-        if isinstance(node, ast.FunctionDef) and node.name == "main"
-    )
-    body = ast.unparse(main)
+        if isinstance(node, ast.FunctionDef) and calls_run_gate(node)
+    ]
     faults = []
+    if not drivers:
+        record(
+            "check_04e_the_sweep_applies_the_policy",
+            False,
+            "no function in the runner calls run_gate",
+        )
+        return
+    # The innermost one: an outer wrapper contains the driver's source too.
+    driver = min(drivers, key=lambda node: len(ast.unparse(node)))
+    body = ast.unparse(driver)
     if "prune_outputs()" not in body:
         faults.append("the runner does not apply the retention policy")
     prune = next(

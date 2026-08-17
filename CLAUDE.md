@@ -65,6 +65,7 @@ WAIVERS.md                  # 偏离/豁免登记表
 10. IL schema 冻结:W-B1-01 解除前禁止新增/修改 IL 字段;批次运行期数据一律写入 working_dir 的 sidecar 文件(如 *.report.json)。
 11. VLM 输出必须约束在声明词表内,越界输出按违规处理并回退确定性判定;VLM 判定只写 pageKindSource="vlm",次判定与失败原因一律走 sidecar。
 12. 裁决文件哈希钉仅锚定'机器零改动';用户更新裁决时,钉随重钉条款更新并留变更记录,不构成门禁失败。
+13. **冻结证据只读**:凡 git 跟踪的产出证据(`docs/eval/results_*` 及其同类),门禁与工具一律只读校验——重算写入临时目录再逐字节比对,依赖产物缺失时报 SKIPPED/FAIL 并指明缺失路径,严禁就地重算覆写。**保留策略永不淘汰四类路径**:git 跟踪的文件、`corpus/manifest.json` 命名的文件、`configs/output_retention.json` 的 `protected_paths` 登记的路径(与 `spec_checks/spec_check_e0.py` 的分级入库清单同步)、以及非批次目录。**淘汰前必先归档**:被淘汰批次匹配 `archive_patterns` 且不超过 `archive_max_file_kb` 的文件自动打包进 `docs/reports/archive/<batch>.zip` 并入库,大件仍删除;一次淘汰不得等于一次丢失。冻结产物一经淘汰不得以重跑顶替,受影响台账条目改记 `artifact pruned, sha recorded` 并在缺口登记中说明。
 
 ## 5. 会话执行协议
 

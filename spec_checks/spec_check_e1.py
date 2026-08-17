@@ -73,6 +73,7 @@ import os
 import re
 import subprocess
 import sys
+import tempfile
 import unicodedata
 from pathlib import Path
 
@@ -89,6 +90,7 @@ from babeldoc.magazine.metrics import load_metrics_config  # noqa: E402
 from babeldoc.magazine.metrics import ltcr  # noqa: E402
 from babeldoc.magazine.metrics import mid_break_rate  # noqa: E402
 from spec_checks import artifacts  # noqa: E402
+from spec_checks import frozen  # noqa: E402
 from spec_checks import harness  # noqa: E402
 
 # Both sessions of batch E1, in order. The scope assertion reads the union of
@@ -118,6 +120,15 @@ FROZEN_RUN = (
     ROOT / "examples" / "output" / "b8_4" / "smoke" / "Courier-en" / "work" / "Courier-en"
 )
 FROZEN_SAMPLE = "Courier-en.pdf"
+
+# What tools/eval_report.py reads out of that directory. Named here so the
+# assertion can report a retired artefact as a skip that says which file is
+# gone, rather than raising on the first metric the report could not carry.
+FROZEN_RUN_CHECKPOINTS = (
+    "checkpoint.08_chain_builder.xml",
+    "checkpoint.09_il_translated.xml",
+    "checkpoint.11_typesetting.xml",
+)
 
 # Set by spec_checks/run_all.py.
 NESTED_SUPPRESSED = os.environ.get("SPEC_NO_NESTED") == "1"
@@ -950,12 +961,13 @@ def check_06_the_entry_point_over_a_frozen_run() -> None:
     way to assert it is to run one twice. The artefact is batch b8.4's; this
     batch makes no run.
     """
-    if not FROZEN_RUN.is_dir():
-        record(
-            "check_06_the_entry_point_over_a_frozen_run",
-            False,
-            f"{FROZEN_RUN.relative_to(ROOT)} is not there",
-        )
+    # The artefact is another batch's and the retention policy may since have
+    # retired it. That is a skip naming the missing checkpoints, not a failure
+    # and above all not a licence to build a substitute run here: a run made
+    # under today's prompt space would not be the run this assertion is about.
+    missing = frozen.absent(FROZEN_RUN / name for name in FROZEN_RUN_CHECKPOINTS)
+    if missing:
+        frozen.skip("check_06_the_entry_point_over_a_frozen_run", missing)
         return
     import tools.eval_report as tool
 
@@ -1185,9 +1197,16 @@ def check_11b_the_fold_matrix_recomputes_bit_for_bit() -> None:
     """Positive 11b: running the tool again reproduces the tracked file exactly.
 
     Determinism is the property that makes a frozen number checkable, and the
-    only way to assert it is to run the thing twice. The tool writes where the
-    tracked copy is, so this also catches a matrix that was hand edited after
-    the tool produced it.
+    only way to assert it is to run the thing twice.
+
+    The recomputation goes to a temporary directory and the tracked matrix is
+    only ever read. It used to be given the tracked path as its output, on the
+    reasoning that writing where the copy already is also catches a matrix that
+    was hand edited. What that actually bought was the b9.2 loss: the frozen
+    inputs had been retired, so the tool classified nothing and wrote a
+    degenerate matrix over the one being checked, and the assertion reported a
+    difference it had just created. A hand edited matrix is caught by comparing
+    bytes either way; nothing is caught by writing.
     """
     if not LOPO_RESULT.is_file():
         record(
@@ -1196,20 +1215,38 @@ def check_11b_the_fold_matrix_recomputes_bit_for_bit() -> None:
             f"{LOPO_RESULT.relative_to(ROOT)} is not there",
         )
         return
-    before = LOPO_RESULT.read_bytes()
-    proc = subprocess.run(  # noqa: S603
-        [PYTHON, str(LOPO_TOOL), "--out", str(RESULTS), "--name", LOPO_RESULT.stem],
-        cwd=ROOT,
-        capture_output=True,
-        text=True,
-        check=False,
+    import tools.lopo as lopo
+
+    # The tool replays the classifier over another batch's checkpoints. Those
+    # are produced artefacts and the retention policy may have retired them; a
+    # matrix that cannot be recomputed is a skip, and the tracked one stands.
+    missing = frozen.absent(
+        lopo.checkpoint_path(Path(entry["file"]).stem)
+        for entry in corpus_module.load_manifest()["samples"]
     )
-    after = LOPO_RESULT.read_bytes()
+    if missing:
+        frozen.skip("check_11b_the_fold_matrix_recomputes_bit_for_bit", missing)
+        return
+
+    before = LOPO_RESULT.read_bytes()
     faults = []
-    if proc.returncode != 0:
-        faults.append(f"the tool exited {proc.returncode}: {proc.stdout[-400:]}")
-    if before != after:
-        faults.append("the recomputed matrix differs from the tracked one")
+    with tempfile.TemporaryDirectory(prefix="spec_e1_lopo_") as tmp:
+        proc = subprocess.run(  # noqa: S603
+            [PYTHON, str(LOPO_TOOL), "--out", tmp, "--name", LOPO_RESULT.stem],
+            cwd=ROOT,
+            capture_output=True,
+            text=True,
+            check=False,
+        )
+        again = Path(tmp) / LOPO_RESULT.name
+        if proc.returncode != 0:
+            faults.append(f"the tool exited {proc.returncode}: {proc.stdout[-400:]}")
+        elif not again.is_file():
+            faults.append(f"the tool wrote no {LOPO_RESULT.name}")
+        elif again.read_bytes() != before:
+            faults.append("the recomputed matrix differs from the tracked one")
+    if LOPO_RESULT.read_bytes() != before:
+        faults.append("the recomputation wrote the tracked matrix")
     record(
         "check_11b_the_fold_matrix_recomputes_bit_for_bit", not faults, "; ".join(faults)
     )

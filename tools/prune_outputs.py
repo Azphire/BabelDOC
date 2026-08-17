@@ -8,10 +8,35 @@ run log and nothing else, and what is still on the disk is tens of gigabytes of
 intermediate language nobody will open again.
 
 So: the newest batch directories keep everything, earlier ones keep their
-reports and their logs, and three things are never touched whatever the policy
-says -- a file git tracks, a file the corpus manifest names, and any directory
-that is not a batch directory at all. The last of those is what leaves the gate
-cache and the timing records to the mechanisms that already govern them.
+reports and their logs, and four things are never touched whatever the policy
+says -- a file git tracks, a file the corpus manifest names, a path the
+configuration's ``protected_paths`` registers, and any directory that is not a
+batch directory at all. The last of those is what leaves the gate cache and the
+timing records to the mechanisms that already govern them.
+
+``protected_paths`` exists because of what batch b9.2 lost. The evidence intake
+``spec_checks/spec_check_e0.py`` registers by path and SHA-256 is precisely the
+evidence that is *not* tracked -- it is kept out of git by size -- so the
+tracked-file guard says nothing about it, and it cannot be rebuilt. It is now
+named here and the gate for that batch asserts the two lists still agree.
+
+Archiving
+---------
+
+An eviction used to be indistinguishable from a loss. A batch leaving the
+retention window kept its report and its log in place, untracked, and lost
+everything else; two batches later somebody needed one of the sidecars, and
+what was on the disk was nothing. So before an evicted batch loses anything,
+every file of it matching ``archive_patterns`` and no larger than
+``archive_max_file_kb`` is packed into ``docs/reports/archive/<batch>.zip``,
+which is tracked. Small text -- reports, JSON sidecars, logs -- costs almost
+nothing compressed and is the only part anybody reads back. The bulk still
+goes: an archive of the intermediate language would be the disk bill this tool
+exists to avoid.
+
+The archive is additive and never rewritten. A member already inside is left
+alone and an archive with nothing to add is not touched at all, so a sweep that
+changes nothing leaves no diff for the next commit to carry.
 
 Nothing is removed unless ``--apply`` is passed. The default is a dry run that
 prints what it would do, because a tool that deletes evidence is one whose
@@ -29,6 +54,7 @@ import re
 import shutil
 import subprocess
 import sys
+import zipfile
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -43,6 +69,10 @@ MANIFEST_PATH = ROOT / "corpus" / "manifest.json"
 OUTPUT_DIR = ROOT / "examples" / "output"
 BASELINE_DIR = OUTPUT_DIR / "baseline"
 
+# Where an evicted batch's small text is kept, in git. Under docs/ rather than
+# under examples/output/ so the policy this tool applies can never reach it.
+ARCHIVE_DIR = ROOT / "docs" / "reports" / "archive"
+
 # A batch directory: the letter, a batch number, and the sub-batch numbers
 # under it. Anything after that is a name rather than a number and does not
 # order the directory -- ``b5_smoke`` is part of batch 5 and is kept or pruned
@@ -52,6 +82,18 @@ _BATCH_DIR = re.compile(r"^b(\d+)((?:_\d+)*)")
 KEEP_RECENT_KEY = "keep_recent_batches"
 KEEP_PATTERNS_KEY = "keep_patterns"
 BASELINE_ARCHIVE_KEY = "baseline_archive"
+PROTECTED_PATHS_KEY = "protected_paths"
+ARCHIVE_PATTERNS_KEY = "archive_patterns"
+ARCHIVE_MAX_KB_KEY = "archive_max_file_kb"
+
+REQUIRED_KEYS = (
+    KEEP_RECENT_KEY,
+    KEEP_PATTERNS_KEY,
+    BASELINE_ARCHIVE_KEY,
+    PROTECTED_PATHS_KEY,
+    ARCHIVE_PATTERNS_KEY,
+    ARCHIVE_MAX_KB_KEY,
+)
 
 
 def load_config(path: Path | None = None) -> dict:
@@ -59,7 +101,7 @@ def load_config(path: Path | None = None) -> dict:
     with config_path.open(encoding="utf-8") as f:
         raw = json.load(f)
     parameters = dict(validate_bounded_config(raw, config_path))
-    for name in (KEEP_RECENT_KEY, KEEP_PATTERNS_KEY, BASELINE_ARCHIVE_KEY):
+    for name in REQUIRED_KEYS:
         if name not in parameters:
             raise KeyError(f"{config_path.name}: missing parameter {name}")
     return parameters
@@ -108,6 +150,36 @@ def manifest_paths() -> set[Path]:
     return kept
 
 
+def registered_paths(config: dict) -> tuple[set[Path], tuple[Path, ...]]:
+    """The configured protection list, split into exact files and directories.
+
+    An entry ending in a separator stands for everything below it, which is how
+    a whole logs directory is registered without naming its files.
+    """
+    files: set[Path] = set()
+    directories: list[Path] = []
+    for entry in config[PROTECTED_PATHS_KEY]:
+        text = str(entry)
+        target = (ROOT / text.rstrip("/")).resolve()
+        if text.endswith("/"):
+            directories.append(target)
+        else:
+            files.add(target)
+    return files, tuple(directories)
+
+
+def is_registered(path: Path, files: set[Path], directories: tuple[Path, ...]) -> bool:
+    resolved = path.resolve()
+    if resolved in files:
+        return True
+    return any(directory in resolved.parents for directory in directories)
+
+
+def batch_name(key: tuple[int, ...]) -> str:
+    """The batch a key stands for, written the way a directory name writes it."""
+    return "b" + "_".join(str(part) for part in key)
+
+
 def batch_directories(root: Path) -> dict[tuple[int, ...], list[Path]]:
     """Batch directories under ``root``, grouped by the batch they belong to."""
     grouped: dict[tuple[int, ...], list[Path]] = {}
@@ -133,6 +205,7 @@ def prunable(root: Path, config: dict) -> tuple[list[Path], list[tuple[int, ...]
     keep_recent = int(config[KEEP_RECENT_KEY])
     recent = sorted(grouped, reverse=True)[:keep_recent]
     protected = tracked_paths(root) | manifest_paths()
+    registered_files, registered_dirs = registered_paths(config)
     patterns = tuple(config[KEEP_PATTERNS_KEY])
 
     doomed: list[Path] = []
@@ -145,8 +218,96 @@ def prunable(root: Path, config: dict) -> tuple[list[Path], list[tuple[int, ...]
                     continue
                 if item.resolve() in protected or kept_by_pattern(item, patterns):
                     continue
+                if is_registered(item, registered_files, registered_dirs):
+                    continue
                 doomed.append(item)
     return doomed, recent
+
+
+def archivable(root: Path, config: dict) -> dict[str, list[Path]]:
+    """What each evicted batch would contribute to its archive, by batch name.
+
+    Everything in the batch that matches ``archive_patterns`` and is inside the
+    size cap, whether or not the policy is about to delete it: a file the keep
+    patterns leave in place is still untracked, and leaving it out of the
+    archive is what made a clone of this repository lose the reports of every
+    evicted batch. A file git already tracks is left out, since the archive
+    exists to get untracked evidence into git and it is already there.
+    """
+    grouped = batch_directories(root)
+    keep_recent = int(config[KEEP_RECENT_KEY])
+    recent = set(sorted(grouped, reverse=True)[:keep_recent])
+    tracked = tracked_paths(root)
+    patterns = tuple(config[ARCHIVE_PATTERNS_KEY])
+    ceiling = int(config[ARCHIVE_MAX_KB_KEY]) * 1024
+
+    selected: dict[str, list[Path]] = {}
+    for key in sorted(grouped):
+        if key in recent:
+            continue
+        chosen: list[Path] = []
+        for directory in grouped[key]:
+            for item in sorted(directory.rglob("*")):
+                if not item.is_file() or item.resolve() in tracked:
+                    continue
+                if not kept_by_pattern(item, patterns):
+                    continue
+                try:
+                    if item.stat().st_size > ceiling:
+                        continue
+                except OSError:
+                    continue
+                chosen.append(item)
+        if chosen:
+            selected[batch_name(key)] = chosen
+    return selected
+
+
+def archive_evicted(
+    root: Path,
+    config: dict,
+    apply_changes: bool,
+    archive_dir: Path | None = None,
+) -> list[tuple[Path, list[str]]]:
+    """Add each evicted batch's small text to its archive. Returns what was added.
+
+    Additive by construction: a member already in the archive is not written
+    again and an archive with nothing to add is not opened for writing, so a
+    second pass over an unchanged tree leaves the archive byte for byte as it
+    was. Member names are relative to ``root``, so the archive reads as the
+    subtree it came from.
+
+    ``archive_dir`` defaults to the tracked archive and exists so a caller can
+    exercise the pass against a disposable destination.
+    """
+    destination = ARCHIVE_DIR if archive_dir is None else Path(archive_dir)
+    added: list[tuple[Path, list[str]]] = []
+    for name, files in sorted(archivable(root, config).items()):
+        archive = destination / f"{name}.zip"
+        present: set[str] = set()
+        if archive.is_file():
+            with zipfile.ZipFile(archive) as bundle:
+                present = set(bundle.namelist())
+        members = []
+        for item in files:
+            try:
+                member = item.relative_to(root).as_posix()
+            except ValueError:
+                member = item.name
+            if member not in present:
+                members.append((member, item))
+        if not members:
+            continue
+        if apply_changes:
+            destination.mkdir(parents=True, exist_ok=True)
+            mode = "a" if archive.is_file() else "w"
+            with zipfile.ZipFile(
+                archive, mode, compression=zipfile.ZIP_DEFLATED, compresslevel=9
+            ) as bundle:
+                for member, item in members:
+                    bundle.write(item, member)
+        added.append((archive, [member for member, _ in members]))
+    return added
 
 
 def archive_baselines(config: dict, apply_changes: bool) -> list[tuple[Path, int, int]]:
@@ -208,6 +369,19 @@ def main(argv: list[str] | None = None) -> int:
                 f"baseline would be archived: {directory.name} "
                 f"({before / (1 << 20):.1f} MB)"
             )
+
+    # Before anything is removed: an eviction that archived nothing is what made
+    # batch b9.2's loss silent.
+    for archive, members in archive_evicted(root, config, args.apply):
+        verb = "archived" if args.apply else "would archive"
+        print(
+            f"evidence {verb}: {archive.relative_to(ROOT).as_posix()} "
+            f"+{len(members)} member(s)"
+        )
+        for member in members[:10]:
+            print(f"    {member}")
+        if len(members) > 10:
+            print(f"    ... and {len(members) - 10} more")
 
     doomed, recent = prunable(root, config)
     total = 0

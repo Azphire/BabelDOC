@@ -390,3 +390,32 @@
 - **不补的措辞**:
   > 展示单元的按比例重分配不保证落在词边界上,可能在成品中留下半个词;该行为由 `designed`
   > 档单列,不计入 mid-unit page-break rate 的分子。
+
+### GAP-19(恢复批次 batch-b9.2r) 冻结产物被保留策略淘汰,四行降级为"引文存活、产物级复验已失"
+
+- **成因**:batch-b9.2 会话一的门禁声明并创建了空的 `examples/output/b9_2/`,
+  `configs/output_retention.json` 的 `keep_recent_batches: 2` 保护窗因此由 `[b9_1, b8_4]` 移到
+  `[b9_2, b9_1]`,batch-b8.4 掉出窗口,其**未被 git 跟踪**的冒烟产物(页级栅格、各 stage 的
+  checkpoint、部分 sidecar)在两次 sweep 收尾的 prune 中被删除。被跟踪的产物全部存活。
+  逐路径清单在 `docs/eval/evidence_ledger.md` 顶部的"已失效产物登记"。
+- **已排除的恢复路径(实测,不是推测)**:`examples/output/gate_cache/` 永不被 prune,内含全部
+  六个样张的 stage-06 checkpoint;实测把它们拷回原位后,`docs/eval/results_e1/lopo_v2.json`
+  的 fold matrix 重算结果**与被跟踪的那一份不一致**。gate_cache 的变体与 b8.4 那一跑不可互换,
+  照此"恢复"等于静默篡改证据链,故拷贝已全部撤回。
+- **为什么不重跑**:b8.4 之后 `babeldoc/magazine/` 的 role block 已改变 prompt 空间,同一配置
+  重跑得到的是另一份产物。用新产物顶替原件,与上一条是同一种篡改。
+- **降级(本批采用的处置)**:**A-26、E-02、E-06、E-13** 四行的状态由 `直接可引` 改为
+  `artifact pruned, sha recorded`。语义是:引文内容与哈希存活于**被跟踪的**台账与批次报告,
+  照台账文本引用不受影响;承载它的未跟踪产物已不在树内,**产物级复验已失**,且一律不重算。
+- **根因修复(同批完成,防止再发)**:
+  1. `configs/output_retention.json` 新增 `protected_paths`,并入 `spec_checks/spec_check_e0.py`
+     登记的全部"路径 + sha256"与分级入库路径;prune 对它们一律不选。
+  2. 被淘汰批次的 `*.report.md` / `*.json` / sidecar / `*.log` 自动打包进
+     `docs/reports/archive/` 下的每批次 zip 并**入库**,大件仍删除。此后一次淘汰不再等于一次丢失。
+  3. 门禁对 git 跟踪的 results_e1 / results_e2 产物(`docs/eval/`)一律**只读校验**:重算一律写入临时目录再逐字节
+     比对,依赖缺失时报 SKIPPED 并指明缺失路径,绝不覆写盘上的冻结件。
+     `spec_checks/run_all.py` 逐门禁前后取哈希,谁写了冻结件谁转红。
+- **不补的措辞**(引用这四行时照此写):
+  > 该数字的引文与哈希载于本仓库跟踪的证据台账与批次报告,可按其文本引用;承载它的中间产物
+  > 已由输出保留策略淘汰,因此**不再可作产物级复验**。本文不以重跑替代原件:该批次之后
+  > prompt 空间已变,重跑产出的是另一份产物,不构成同一观察的复现。

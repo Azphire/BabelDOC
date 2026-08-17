@@ -79,6 +79,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
 from spec_checks import artifacts  # noqa: E402
+from spec_checks import frozen  # noqa: E402
 from spec_checks import harness  # noqa: E402
 
 # Every tag batch E2 actually cut, in order. The scope assertion reads the
@@ -595,15 +596,28 @@ def check_05a_the_ledger_no_longer_needs_three_runs() -> None:
         elif classified[identifier] != citable:
             faults.append(f"{identifier} is not citable")
     # Session two closes the last three open rows: A-09 and E-12 by restatement,
-    # E-09 by the synthetic coverage declaration. No row of this ledger may
-    # carry any other status now, and this is the assertion that says so.
-    open_rows = {
-        identifier: status
+    # E-09 by the synthetic coverage declaration.
+    for identifier in ("A-09", "E-09", "E-12"):
+        if identifier not in classified:
+            faults.append(f"the ledger has no row {identifier}")
+        elif classified[identifier] != citable:
+            faults.append(f"{identifier} is not citable, which is what E2 closed")
+
+    # Every other row this ledger leaves open has to be answered in the gap
+    # register. This used to refuse an open row outright, on the reading that E2
+    # had closed the last one; batch b9.2r reopened four by downgrading them
+    # when the artefacts behind them were retired, which is a state this project
+    # can reach and a legitimate one -- what may not happen is a row going open
+    # with nobody writing down why. So the assertion is registration rather than
+    # absence, and the rows E2 itself answers for are named above.
+    gaps = GAPS.read_text(encoding="utf-8")
+    unregistered = sorted(
+        identifier
         for identifier, status in classified.items()
-        if status != citable
-    }
-    if open_rows:
-        faults.append(f"a row is still open: {open_rows}")
+        if status != citable and identifier not in gaps
+    )
+    if unregistered:
+        faults.append(f"open and absent from the gap register: {unregistered}")
     record(
         "check_05a_the_ledger_no_longer_needs_three_runs", not faults, "; ".join(faults[:5])
     )
@@ -873,7 +887,19 @@ def check_12_the_judgements_replay_from_cache_byte_for_byte() -> None:
     not cached stops the run. Passing therefore says two things at once: every
     reply is in the project database, and no cache provenance leaked into the
     table -- an ``attempts`` column would have made these two runs differ.
+
+    The windows the judge quotes come out of another batch's checkpoints, which
+    the retention policy may have retired. That is a skip naming the missing
+    file: the tracked judgement table stands on its own, and regenerating it
+    from whatever is still readable would be a different table wearing the same
+    name.
     """
+    import tools.splice_judge as judge
+
+    missing = frozen.absent(judge.required_checkpoints())
+    if missing:
+        frozen.skip("check_12_the_judgements_replay_from_cache_byte_for_byte", missing)
+        return
     with tempfile.TemporaryDirectory(prefix="spec_e2_judge_") as tmp:
         proc = subprocess.run(  # noqa: S603
             [

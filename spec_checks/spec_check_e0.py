@@ -129,6 +129,12 @@ ROOT_FILES = (
 # Set by spec_checks/run_all.py.
 NESTED_SUPPRESSED = os.environ.get("SPEC_NO_NESTED") == "1"
 
+# Batch gates the runner deliberately places after this one. The recovery batch
+# b9.2r asserts about this gate and about the two that follow it -- it runs them
+# and reads their output -- so it cannot precede them, and it produces no
+# artefact any citation here resolves to.
+AFTER_THIS_GATE = ("spec_check_b9_2r.py",)
+
 # Paths this batch may change. Nothing under babeldoc/, nothing under configs/,
 # nothing under corpus/ or reviews/: E0 is an inventory and writes documents.
 ALLOWED_PREFIXES = ("docs/eval/",)
@@ -733,6 +739,10 @@ def check_07b_the_runner_registers_this_gate() -> None:
     after every ``b`` gate because its citations are of what those batches left;
     the evaluation gates that follow it cite what it inventoried, so being last
     is not the property -- being after the batches is.
+
+    The property is about citation, not about the letter a gate's name starts
+    with, so a batch gate that cites nothing E0 inventories and instead reads E0
+    is exempt and is named in ``AFTER_THIS_GATE``.
     """
     source = text_of(ROOT / "spec_checks" / "run_all.py")
     name = Path(__file__).name
@@ -745,7 +755,7 @@ def check_07b_the_runner_registers_this_gate() -> None:
         late = [
             gate
             for gate in listed[position + 1 :]
-            if gate.startswith("spec_check_b")
+            if gate.startswith("spec_check_b") and gate not in AFTER_THIS_GATE
         ]
         if late:
             faults.append(f"batch gates run after this one: {late}")

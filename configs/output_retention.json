@@ -1,10 +1,43 @@
 {
-  "description": "What examples/output/ keeps, applied by tools/prune_outputs.py and called with --apply at the end of every sweep by spec_checks/run_all.py. Same convention as configs/gate_cache.json: every numeric parameter carries a '<name>_allowed_range' sibling of the form 'low..high', inclusive on both ends. The directory holds every artefact every batch ever produced, which is the right thing while a batch is live and dead weight once its successor has been delivered twice over. 'keep_recent_batches' is how many batch directories keep everything they hold, newest first by the batch number in the directory name; every earlier batch directory keeps only the files matching 'keep_patterns', which is what a delivery report and its run log are and is what a later batch is ever read back for. Three things are never pruned whatever this says: a file git tracks, because the repository is the record and what is committed is the evidence; a file corpus/manifest.json names, because a baseline is an input to the gates rather than a product of them; and any directory that is not a batch directory, which is how the gate cache and the timing records are left to the mechanisms that govern them. 'baseline_archive' turns each frozen baseline checkpoint directory into the archive the readers already resolve, which is the same artefact at about a tenth of the disk.",
+  "description": "What examples/output/ keeps, applied by tools/prune_outputs.py and called with --apply at the end of every sweep by spec_checks/run_all.py. Same convention as configs/gate_cache.json: every numeric parameter carries a '<name>_allowed_range' sibling of the form 'low..high', inclusive on both ends. The directory holds every artefact every batch ever produced, which is the right thing while a batch is live and dead weight once its successor has been delivered twice over. 'keep_recent_batches' is how many batch directories keep everything they hold, newest first by the batch number in the directory name; every earlier batch directory keeps only the files matching 'keep_patterns', which is what a delivery report and its run log are and is what a later batch is ever read back for. Four things are never pruned whatever this says: a file git tracks, because the repository is the record and what is committed is the evidence; a file corpus/manifest.json names, because a baseline is an input to the gates rather than a product of them; any path listed in 'protected_paths', which is the evidence intake spec_checks/spec_check_e0.py registers by path and SHA-256 and whose whole point is that it is not tracked and cannot be rebuilt; and any directory that is not a batch directory, which is how the gate cache and the timing records are left to the mechanisms that govern them. Before an evicted batch loses anything, every file of it matching 'archive_patterns' and no larger than 'archive_max_file_kb' is packed into docs/reports/archive/<batch>.zip, which IS tracked: batch b9.2 showed that eviction without archiving is indistinguishable from loss, because the sidecars a later batch turns out to need are exactly the small text files that cost nothing to keep. Anything bigger, and anything outside those patterns, is still removed -- the archive is for the record, not for the intermediate language. 'baseline_archive' turns each frozen baseline checkpoint directory into the archive the readers already resolve, which is the same artefact at about a tenth of the disk.",
   "keep_recent_batches": 2,
   "keep_recent_batches_allowed_range": "1..20",
   "keep_patterns": [
     "*.report.md",
     "*.log"
+  ],
+  "archive_patterns": [
+    "*.report.md",
+    "*.json",
+    "*.log"
+  ],
+  "archive_max_file_kb": 2048,
+  "archive_max_file_kb_allowed_range": "1..262144",
+  "protected_paths": [
+    "docs/dissertation/background_chapter.tex",
+    "examples/baseline/baseline.report.md",
+    "examples/baseline/cache/cache.v1.db",
+    "examples/baseline/integrity/tree_sha256_after.txt",
+    "examples/baseline/integrity/tree_sha256_before.txt",
+    "examples/baseline/logs/",
+    "examples/baseline/manifest.json",
+    "examples/baseline/pdf/AramcoWorld-en-v2/AramcoWorld-en-v2.no_watermark.zh.mono.pdf",
+    "examples/baseline/pdf/CERNCourier-en/CERNCourier-en.no_watermark.zh.mono.pdf",
+    "examples/baseline/pdf/Courier-en/Courier-en.no_watermark.zh.mono.pdf",
+    "examples/baseline/pdf/Courier-zh/Courier-zh.no_watermark.en.mono.pdf",
+    "examples/baseline/pdf/FD-en-v2/FD-en-v2.no_watermark.zh.mono.pdf",
+    "examples/baseline/pdf/Vogue-en/Vogue-en.no_watermark.zh.mono.pdf",
+    "examples/output/b2_7/run_all.full.log",
+    "examples/output/b4/run_all.b4_2.final.log",
+    "examples/output/run_all.b8_3.log",
+    "examples/output/vlm_ablation/gpt-4o-mini/vlm_eval.report.json",
+    "examples/output/vlm_ablation/gpt-4o-mini/vlm_eval.summary.txt",
+    "examples/output/vlm_ablation/gpt-4o/vlm_eval.report.json",
+    "examples/output/vlm_ablation/gpt-4o/vlm_eval.summary.txt",
+    "examples/output/vlm_ablation/gpt-5.6-sol/vlm_eval.report.json",
+    "examples/output/vlm_ablation/gpt-5.6-sol/vlm_eval.summary.txt",
+    "examples/output/vlm_ablation/gpt-5.6-terra/vlm_eval.report.json",
+    "examples/output/vlm_ablation/gpt-5.6-terra/vlm_eval.summary.txt"
   ],
   "baseline_archive": [
     "*.checkpoints"

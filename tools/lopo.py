@@ -76,7 +76,8 @@ DEFAULT_OUT = ROOT / "docs" / "eval" / "results_e1"
 DEFAULT_NAME = "lopo_v2"
 
 
-def _checkpoint_path(stem: str) -> Path:
+def checkpoint_path(stem: str) -> Path:
+    """Where one sample's classifier input checkpoint sits in the frozen run."""
     return (
         FORK_RUN_DIR
         / stem
@@ -88,7 +89,7 @@ def _checkpoint_path(stem: str) -> Path:
 
 def classify_sample(stem: str) -> list[str] | None:
     """The deterministic kind of every page of one sample, in page order."""
-    path = _checkpoint_path(stem)
+    path = checkpoint_path(stem)
     if not path.is_file():
         return None
     feature_config, taxonomy = load_configs()
@@ -167,7 +168,7 @@ def build_report() -> dict:
         stem = Path(file_name).stem
         kinds = classify_sample(stem)
         if kinds is None:
-            missing.append(f"{file_name}: no {_checkpoint_path(stem)}")
+            missing.append(f"{file_name}: no {checkpoint_path(stem)}")
             continue
         row = score_sample(
             file_name, kinds, labels.get(file_name, {}), taxonomy.policy_of
@@ -261,15 +262,30 @@ def main(argv: list[str] | None = None) -> int:
 
     logging.basicConfig(level=logging.WARNING)
     report = build_report()
-    args.out.mkdir(parents=True, exist_ok=True)
     target = args.out / f"{args.name}.json"
+
+    # A run that could not read some sample's checkpoint has not produced a
+    # fold matrix; it has produced a matrix over whatever was left. Writing
+    # that is how the frozen copy of this file was destroyed once: the default
+    # output path is the tracked one, and a caller re-running the tool to check
+    # determinism got a degenerate report written over the thing it was
+    # checking. So nothing is written unless every sample was classified.
+    if report["missing"]:
+        print(summarize(report))
+        print(
+            f"\nlopo: {len(report['missing'])} sample(s) could not be classified; "
+            f"{target} was left untouched"
+        )
+        return 1
+
+    args.out.mkdir(parents=True, exist_ok=True)
     target.write_text(
         json.dumps(report, indent=2, ensure_ascii=False, sort_keys=True),
         encoding="utf-8",
     )
     print(summarize(report))
     print(f"\nlopo: {len(report['samples'])} sample(s) -> {target}")
-    return 0 if not report["missing"] else 1
+    return 0
 
 
 if __name__ == "__main__":

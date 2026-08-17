@@ -27,6 +27,7 @@ deliver.
 from __future__ import annotations
 
 import argparse
+import contextlib
 import json
 import os
 import subprocess
@@ -48,6 +49,7 @@ DONE_FIELDS = ("exit_code", "elapsed_seconds", "started_at", "finished_at", "gat
 sys.path.insert(0, str(ROOT))
 
 from spec_checks import artifacts  # noqa: E402
+from spec_checks import frozen  # noqa: E402
 from spec_checks import harness  # noqa: E402
 
 # Batch order. A gate may depend on artefacts an earlier one produced, so the
@@ -80,6 +82,7 @@ GATES = (
     "spec_check_e0.py",
     "spec_check_e1.py",
     "spec_check_e2.py",
+    "spec_check_b9_2r.py",
 )
 
 
@@ -92,6 +95,12 @@ def run_gate(gate: str, fast: bool = False) -> tuple[int, float, str]:
 
     Returns its exit code, its wall clock duration and the summary line it
     printed, which carries the passed/total count.
+
+    The frozen evidence is digested before and after. A gate that rewrote a
+    tracked file under ``spec_checks/frozen.FROZEN_PREFIXES`` fails here whether
+    or not it noticed doing so, and the paths are named: batch b9.2 lost a
+    frozen fold matrix to an assertion that recomputed it in place, and no
+    assertion in that gate was looking for it.
     """
     env = dict(os.environ)
     env["SPEC_NO_NESTED"] = "1"
@@ -101,6 +110,7 @@ def run_gate(gate: str, fast: bool = False) -> tuple[int, float, str]:
     # block behind it on a run that takes minutes.
     env["PYTHONUNBUFFERED"] = "1"
 
+    before = frozen.snapshot()
     started = time.monotonic()
     summary = ""
     prefix = gate.removesuffix(".py")
@@ -121,6 +131,11 @@ def run_gate(gate: str, fast: bool = False) -> tuple[int, float, str]:
             summary = line
         print(f"    {line}")
     code = process.wait()
+    written = frozen.changed(before)
+    if written:
+        print(f"    FROZEN EVIDENCE WRITTEN by {gate}: {written}")
+        print("    a gate may read and compare frozen evidence; it may not write it")
+        code = code or 1
     return code, time.monotonic() - started, summary
 
 
@@ -240,12 +255,37 @@ def main(argv: list[str] | None = None) -> int:
         print(f"missing gate scripts: {missing}")
         return 1
 
+    # Before anything is cleared, timed or built: two sweeps sharing one cache
+    # corrupt each other's slots, and the completion marker this one is about to
+    # overwrite belongs to the sweep already running.
+    try:
+        artifacts.acquire_sweep_lock()
+    except artifacts.SweepInProgress as exc:
+        print(f"run_all refused to start: {exc}")
+        return 2
+    try:
+        with contextlib.ExitStack() as closing:
+            closing.callback(artifacts.release_sweep_lock)
+            return _sweep(args)
+    except artifacts.SweepInProgress as exc:  # re-taken after --clear-cache
+        print(f"run_all refused to continue: {exc}")
+        return 2
+
+
+def _sweep(args: argparse.Namespace) -> int:
+    """One sweep, with the cache already claimed for this process.
+
+    Separate from ``main`` only so the lock is released on every exit path
+    including a raise; ``main`` is still where the sweep is ordered.
+    """
     started_at = datetime.now().astimezone().isoformat()
     started = time.monotonic()
 
     harness.clear_timing()
     if args.clear_cache:
         print(f"gate cache cleared: {artifacts.clear_cache()} slot(s)")
+        # Clearing removes the cache root and the lock inside it with it.
+        artifacts.acquire_sweep_lock()
     artifacts.clear_stats()
     govern_cache()
 

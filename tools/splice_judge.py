@@ -416,6 +416,33 @@ def arms_of(stem: str) -> list[Arm]:
     return arms
 
 
+def required_checkpoints() -> list[Path]:
+    """Every checkpoint ``build_material`` reads, for the whole test point set.
+
+    The arms of a sample are discovered by looking for their working
+    directories, so an arm whose checkpoints were retired by the output
+    retention policy does not fail loudly -- it either drops out of the table or
+    stops the run on the first read. Both are silent changes to frozen evidence,
+    which is why a caller that wants to regenerate the table asks this first.
+    """
+    needed: list[Path] = []
+    for point in linked_points():
+        stem = point["stem"]
+        working = source_working_dir(stem)
+        if working is not None:
+            needed.append(working / f"{checkpoint_stem(SOURCE_STAGE)}.xml")
+        for arm in arms_of(stem):
+            if arm.working_dir is None:
+                continue
+            needed.append(arm.working_dir / f"{checkpoint_stem(SOURCE_STAGE)}.xml")
+            needed.append(arm.working_dir / f"{checkpoint_stem(TYPESET_STAGE)}.xml")
+    unique: list[Path] = []
+    for path in needed:
+        if path not in unique:
+            unique.append(path)
+    return unique
+
+
 def source_working_dir(stem: str) -> Path | None:
     """Where the source side of a sample is read from, whichever arms it has."""
     for arm in arms_of(stem):

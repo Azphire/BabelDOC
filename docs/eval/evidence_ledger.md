@@ -7,7 +7,7 @@
 
 - **出处**列写作 `tag · 路径` 加定位(行号或小节号)。路径一律以仓库根为基准,写在反引号内。
 - 行号写在反引号**外**(`path`:482),因为行号会随文件重写漂移而路径不会。
-- **状态**取四值之一:
+- **状态**取五值之一:
 
   | 状态 | 含义 |
   | --- | --- |
@@ -15,12 +15,13 @@
   | `需三跑` | 数字存在且正确,但其**因果归因**在当前设计下不可分辨,须三跑设计才可作断言 |
   | `needs-recompute` | 出处产物已不在树内,或从未落盘;数字不得引用,须按指定来源重算 |
   | `需重述` | 数字本身可引,但现有措辞与产物不符或已被后续批次推翻,须改写后再引 |
+  | `artifact pruned, sha recorded` | 引文内容与哈希存活于**被跟踪的**台账与批次报告,可照台账文本引用;承载它的未跟踪产物已被保留策略淘汰,故**产物级复验已失**。与 `needs-recompute` 的分界是"能否重算":该档一律**不重算**,理由逐条写在状态单元格里 |
 
 - **入库**列取 `git` / `worktree` / `none`:`worktree` 表示该出处文件只存在于工作区、未进任何
   tag,一次 clone 就会失去(`tools/prune_outputs.py` 的保留策略本身不会删它们,见 D3 GAP-07);
   `none` 表示该数字从未落盘。
 
-<!-- status-vocabulary: `直接可引` `需三跑` `needs-recompute` `需重述` -->
+<!-- status-vocabulary: `直接可引` `需三跑` `needs-recompute` `需重述` `artifact pruned, sha recorded` -->
 <!-- provenance-vocabulary: `git` `worktree` `none` -->
 
 - 语料换血(batch-b7.5.1)把 `AramcoWorld-en` / `FD-en` 换成了 `-v2` 长节选,页数与边界数都
@@ -46,6 +47,11 @@
 | `examples/output/b6_smoke/tuning.sweep.json` | 调参网格全表 | 已淘汰,六行摘要保留在报告 §2 |
 | `examples/output/b6_smoke/tuning.compare.txt` | 候选列并排 | 已淘汰 |
 | `examples/output/b7_3/Courier-en.pass1.pdf` | HITL 两遍的成品 PDF | 已淘汰,两遍的 review/decisions/run.json 仍入库 |
+| `examples/output/b8_4/smoke/raster/b8_4.p6_15.page6.png` | E-02 的页 6 页级栅格,sha256 `d06294a6b05e9374…` | batch-b9.2 会话一淘汰;哈希与结论存活于被跟踪的 b8.3 冒烟报告 §4(路径见 E-02 行),同一主角的裁剪级栅格仍入库 |
+| `examples/output/b8_4/smoke/Courier-zh/work/Courier-zh/checkpoint.08_chain_builder.xml` | A-26 的 zh→zh 判定与 `包` 跨边界重复的逐段出处 | batch-b9.2 会话一淘汰;逐段结论存活于本台账 A-26 的引文本身 |
+| `examples/output/b8_4/smoke/Courier-zh/work/Courier-zh/checkpoint.09_il_translated.xml` | A-26 的段落 `unicode` 字段证据 | batch-b9.2 会话一淘汰,同上 |
+| `examples/output/b8_4/smoke/Courier-zh/work/Courier-zh/chain_report.json` | A-26 的两条边界 `eligible: false` 与其原因码 | batch-b9.2 会话一淘汰,同上 |
+| `examples/output/b8_4/smoke/Courier-zh/work/Courier-zh/auto_extractor_glossary.csv` | A-26 的 `source == target` 逐行证据 | batch-b9.2 会话一淘汰,同上 |
 <!-- absent-paths:end -->
 
 论文用的链 A/B 图不依赖已淘汰的叠加图:四张 300 dpi 栅格在
@@ -53,9 +59,10 @@
 `docs/dissertation_assets/dissertation_b5_evidence_section_filled.md`。
 
 `examples/output/b8_4/smoke.report.md` §2d 提到的第一次冒烟页栅格(展示被守卫拦下的横排信用行)
-本就未写入树内,不构成失效产物;树内的
-`examples/output/b8_4/smoke/raster/b8_4.p6_15.page6.png` 是最终受守卫那一跑的产物,
-与 b8.3 的同名图逐字节相同,恰是"拒绝"应有的样子。
+本就未写入树内,不构成失效产物。最终受守卫那一跑的**页级**栅格曾在工作区,与 b8.3 的同名图
+逐字节相同,恰是"拒绝"应有的样子;它已由保留策略淘汰(见上表),其 sha256 与结论存活于
+被跟踪的 `examples/output/b8/smoke.report.md` §4,**裁剪级**栅格
+`examples/output/b8_4/smoke/raster/b8_4.p6_15.png` 与其 b8.3 对照仍入库。
 
 ---
 
@@ -88,7 +95,7 @@
 | A-23 | 判官在 `Courier-en 7->8` 四臂上**全部**记 `accuracy/mistranslation` **critical**,但落点不同:`upstream` / `chain_off_1` / `chain_off_2` 三行的 span 在 **head**(`草地已经被申请了专利。` / `这种草已经被申请了专利。` ×2),判词是"专利被安在草上而不是由草制成的复合材料上,由跨页处把未完短语断开后重启造成";`chain_on` 那一行的 span 在 **tail**(`并已为这种草的复合材料申请了专利。`),判词是专利状态"已获得"被写成"申请",**与边界无关** | batch-e2.2 · `docs/eval/results_e2/splice_judgements.json` 的 `Courier-en 7->8` 四行;表在 `docs/eval/results_e2/README.md` §8b | git | 切断损害的**第三项候选证据**(谓述层的先行词错误,三处独立产物复现),与 A-09 重述后的两项同向 | 直接可引,但**四行里只有三行经人工确认**:`upstream` / `chain_off_1` / `chain_off_2` 三行的 critical 由裁决确认为拼接归因(裁决把机制写作"虚构收束 + head 另起一句自足句",先行词丢失的**表层措辞**在两臂间不稳定——`草地` 对 `这种草`,与 GAP-13 一致);`chain_on` 那一行被**人工推翻**:该行 tail 收在真句末、head 另起一句,**没有拼接错误**,判官的 critical 是把四臂皆有的非拼接词汇问题(`申请` vs `已获得`)按 critical 计进了拼接,严重度亦偏高(GAP-16)。引用时须写"三臂确认、一臂推翻"。单判官、每行一次抽样,只作定性提示 |
 | A-24 | 判官侧的两处方向性观察:(1) `Courier-en 2->3` 是本次唯一一处**链臂独有的缺陷**——两个 off 臂零错误,`chain_on` 页 3 首行排成 `动科学发现`,判官记 `accuracy/addition` (minor),span 即多出的 `动`;(2) `AramcoWorld-en-v2 6->7`(M1 唯一独立成立的正例,见 A-16)上判官与几何判决**同向**:上游臂 2 处错误、fork 臂 0 处 | batch-e2.2 · `docs/eval/results_e2/splice_judgements.json`;读法在 `docs/eval/results_e2/README.md` §8c | git | "链臂不是一律更好"的实录;M1 那一个正例的语义佐证 | 直接可引,但**须按裁决限定**:(2) `AramcoWorld-en-v2 6->7` 两行**人工确认**(上游拼接确实断句、fork 读作一句),是有效集里最干净的一对;(1) `Courier-en 2->3` 那一行**落在 `PROTOCOL-INVALID` 里**(GAP-14),不得作拼接点结论——但 `动科学发现` 这个缺陷**本身成立且是链臂独有**,只是成因被判官记错:它是合并标题链 `…如何推动科学发现` 被 `proportional` 策略切在词内(`推 / 动`)的残字,属设计行为的边界情形(GAP-18),不是"源文不支持的增字"。引用该缺陷须引 GAP-18 的机制而非判官的 `accuracy/addition`。`Courier-zh` 两臂方向不同、不构成对照(README §8d、A-26) |
 | A-25 | 判官与人工的一致率:有效集 **8** 行(`Courier-en 7->8` 四臂 + `AramcoWorld-en-v2 6->7` 两臂 + `Courier-zh 7->8` 两臂)上一致 **6/8**;不一致两行,类型相反——`Courier-en 7->8` 的 `chain_on` 是**高估**(非拼接的词汇错误被按 critical 计进拼接,GAP-16),`Courier-zh 7->8` 的 `fork_full` 是**漏报**(未标目标语言不符 GAP-15,未标 `包` 跨边界重复 GAP-17)。另有 **6** 行标 `PROTOCOL-INVALID`(两个 `2->3` 点的全部臂,GAP-14),不进分母 | batch-e2.2 · `docs/eval/results_e2/splice_manual_review.json` 的 `human_review_scope` 与逐条 `human_agrees`;门禁 `spec_checks/spec_check_e2.py` 断言 14 由该文件重算 | git | **GAP-03 方案 (a) 的第二半**:异族判官的质量由人工抽验交代 | 直接可引(分母 8、每行一次抽样,**不作比率型主张**;该率只在"拼接归因"这一口径上成立,窗口内的非拼接观察按裁决不计) |
-| A-26 | `Courier-zh` fork 臂窗口通篇中文的判定(本会话现场核实):**是段落未被译成另一种语言,不是源文误入窗口**。三项证据——(a) `auto_extractor_glossary.csv` 每行 `source == target`(如 `本土知识,本土知识`)、`tgt_lng` 为空,即该跑的目标语言等于源语言;(b) `checkpoint.09_il_translated` 的段落 `unicode` 字段本身就是中文,且带 `{v1}` 占位符与 `<style>` 标记,说明翻译往返**确实跑过**;(c) 两条裁定边界在 `chain_report.json` 里都是 `eligible: false`(`2->3` 记 `not_chain_eligible:head`,`7->8` 记 `not_chain_eligible:tail,head`),因为该样张八页全被判成 `sidebar_heavy`,与 B-06 的 kind 0.250 同因。**由此得到 GAP-17 的实例**:源文在切断处只有一个 `包`(`…协议中包` / `含惠益分享条款`),而 `p8#8` 的译文字段是 `包含惠益分享条款。…`——链未建立,残段按普通段落单独送译,引擎把残词 `含` 补全成 `包含`,`包` 于是跨边界出现两次 | batch-e2.2 · `examples/output/b8_4/smoke/Courier-zh/work/Courier-zh/` 的 `auto_extractor_glossary.csv`、`chain_report.json`、`checkpoint.08_chain_builder.xml` 与 `checkpoint.09_il_translated.xml`(逐段现场比对) | worktree | 回答裁决留下的待查项;**链失效时切断损害的表现形式**(与链生效时的虚构收束是同一机制的两面) | 直接可引(**该跑是 zh→zh**,故该样张的 fork 臂一律不得读作 zh→en 的性能;`包` 重复是单例观察,尚无自动检测,见 GAP-17) |
+| A-26 | `Courier-zh` fork 臂窗口通篇中文的判定(本会话现场核实):**是段落未被译成另一种语言,不是源文误入窗口**。三项证据——(a) `auto_extractor_glossary.csv` 每行 `source == target`(如 `本土知识,本土知识`)、`tgt_lng` 为空,即该跑的目标语言等于源语言;(b) `checkpoint.09_il_translated` 的段落 `unicode` 字段本身就是中文,且带 `{v1}` 占位符与 `<style>` 标记,说明翻译往返**确实跑过**;(c) 两条裁定边界在 `chain_report.json` 里都是 `eligible: false`(`2->3` 记 `not_chain_eligible:head`,`7->8` 记 `not_chain_eligible:tail,head`),因为该样张八页全被判成 `sidebar_heavy`,与 B-06 的 kind 0.250 同因。**由此得到 GAP-17 的实例**:源文在切断处只有一个 `包`(`…协议中包` / `含惠益分享条款`),而 `p8#8` 的译文字段是 `包含惠益分享条款。…`——链未建立,残段按普通段落单独送译,引擎把残词 `含` 补全成 `包含`,`包` 于是跨边界出现两次 | batch-e2.2 · `examples/output/b8_4/smoke/Courier-zh/work/Courier-zh/` 的 `auto_extractor_glossary.csv`、`chain_report.json`、`checkpoint.08_chain_builder.xml` 与 `checkpoint.09_il_translated.xml`(逐段现场比对) | worktree | 回答裁决留下的待查项;**链失效时切断损害的表现形式**(与链生效时的虚构收束是同一机制的两面) | artifact pruned, sha recorded(**该跑是 zh→zh**,故该样张的 fork 臂一律不得读作 zh→en 的性能;`包` 重复是单例观察,尚无自动检测,见 GAP-17。**四份出处产物(`auto_extractor_glossary.csv`、`chain_report.json`、`checkpoint.08_chain_builder.xml`、`checkpoint.09_il_translated.xml`)已被保留策略淘汰**,三项证据的内容存活于本行引文本身,照台账文本引用;逐段现场复核不可再做。不重跑:该跑属 b8.4 冒烟,role block 已改变 prompt 空间。见 GAP-19) |
 
 ## B 分类线(页面类型)
 
@@ -137,18 +144,18 @@
 | # | 数字 | 出处 | 入库 | 论文用途 | 状态 |
 | --- | --- | --- | --- | --- | --- |
 | E-01 | 防御纵深实录(`p6#15`):检出 → 决策 → 带裁决送出 → 写回 → 单段重排 → **回滚**;residue ratio **1.000 → 0.630** 对门限 0.60;stop 原因 `finding_count_did_not_strictly_decrease` | batch-b8.3 · `examples/output/b8/smoke.report.md` §2 | git | 有界修复与守卫的完整链路 | 直接可引 |
-| E-02 | 爆炸半径四证:132 段逐段摘要 0 变;pages 8→8、paragraphs 132→132、`touched_refs` 空;逐页文本 0 差异;页 6 栅格 `d06294a6b05e9374…`、裁剪 `0d419706e8117591…` | `examples/output/b8/smoke.report.md` §4;两枚哈希本会话在 `examples/output/b8_4/smoke/raster/` 现场 sha256 复核通过 | git | 守恒的最强形式(像素级) | 直接可引 |
+| E-02 | 爆炸半径四证:132 段逐段摘要 0 变;pages 8→8、paragraphs 132→132、`touched_refs` 空;逐页文本 0 差异;页 6 栅格 `d06294a6b05e9374…`、裁剪 `0d419706e8117591…` | `examples/output/b8/smoke.report.md` §4;两枚哈希本会话在 `examples/output/b8_4/smoke/raster/` 现场 sha256 复核通过 | git | 守恒的最强形式(像素级) | artifact pruned, sha recorded(裁剪级栅格 `0d419706e8117591…` 仍可现场复核;**页级栅格 `d06294a6b05e9374…` 的承载文件已被保留策略淘汰**,该哈希只能照被跟踪的 `examples/output/b8/smoke.report.md` §4 引用,不再可现场重算。其余三证(段级摘要 0 变、页/段守恒、逐页文本 0 差异)出处均入库,不受影响。不重跑:b8.4 之后 role block 已改变 prompt 空间,重跑得不到原件。见 GAP-19) |
 | E-03 | b8.3 回归面:**6/6 conserved,0 段修复落地** | `examples/output/b8/smoke.report.md` §7 | git | v1 修复能力的下界 | 直接可引(已被 batch-b8.4 更新,见 E-06) |
 | E-04 | b8.3 成本:**292** 次 API 调用、**229 462** prompt tokens、**58** 分钟 | `examples/output/b8/smoke.report.md` §7 | git | 成本章 | 直接可引 |
 | E-05 | 拒绝分类学三案例:(a) 收敛守卫回滚(b8.3 `p6#15`);(b) 写回时盒面积增长被拒,**746 pt² → 69 700 pt²**(b8.4 `p6#15`);(c) 适用性规则按 `layout_label` 拒绝(`abandon` 段落译者已看过) | (a) `examples/output/b8/smoke.report.md` §2e;(b) `examples/output/b8_4/smoke.report.md` §2c;(c) `examples/output/b8/smoke.report.md` §7 | git | 三种拒绝各自的成因不同,不可合并叙述 | 直接可引 |
-| E-06 | **3 处修复落地**且盒不变:CERNCourier-en `p2#32`、FD-en-v2 `p5#14`、FD-en-v2 `p5#9` | batch-b8.4 · `examples/output/b8_4/smoke.report.md` §3;本会话从 `examples/output/b8_4/smoke/evidence.json` 的 `landed` 段现场复核 `box_held: true` ×3 | git | **v1 修复不是零落地**——推翻 E-03 的表述 | 直接可引 |
+| E-06 | **3 处修复落地**且盒不变:CERNCourier-en `p2#32`、FD-en-v2 `p5#14`、FD-en-v2 `p5#9` | batch-b8.4 · `examples/output/b8_4/smoke.report.md` §3;本会话从 `examples/output/b8_4/smoke/evidence.json` 的 `landed` 段现场复核 `box_held: true` ×3 | git | **v1 修复不是零落地**——推翻 E-03 的表述 | artifact pruned, sha recorded(三处落地的 `box_held: true` 与逐值坐标存活于被跟踪的 `examples/output/b8_4/smoke/evidence.json` 与 `smoke.report.md` §3,照台账文本引用不受影响;**该跑的未跟踪产物(页级栅格与各 stage checkpoint)已被保留策略淘汰**,产物级复验已失。不重跑:b8.4 之后 role block 已改变 prompt 空间,原理上无法复现原件。见 GAP-19) |
 | E-07 | 决策质量 named/eligible:b8.3 **18 / 5 (28%)** → b8.4 **15 / 9 (60%)**;`FD-en-v2` 反向(8 named / 7 eligible) | `examples/output/b8_4/smoke.report.md` §5;`examples/output/b8_4/smoke/evidence.json` `decision_quality` | git | prompt 暴露适用性规则的效果 | 直接可引(**单样本单模型,不得作显著性主张**) |
 | E-08 | 阅读序修正影响面:冻结 fixture 90 段中 **3** 段改变,均为竖排 `fallback_line` | `examples/output/b8_4/smoke.report.md` §2a | git | 修正是定向的而非全局重写 | 直接可引 |
 | E-09 | `escalation_surfacing` 在 6+6 次真跑中**零触发**;`converged_with_residuals` 同样只有合成场景。**可引形式(合成覆盖声明,GAP-04 原文)**:"`escalation_surfacing` 与 `converged_with_residuals` 两条路径由合成场景覆盖并在门禁中逐次断言,**在真实语料的十二次运行中均未被触发**。本文因此把它们记为'机制已实现且有合成覆盖',而不记为'已被文档验证'。" | `examples/output/b8/smoke.report.md` §7;`examples/output/b8_4/smoke.report.md` §9.4;声明措辞 `docs/eval/gap_register.md` GAP-04 | git | 该检测器只有合成覆盖 | 直接可引(**只能按左列的声明形式引**;R3 不跑,batch-e2.2 按 GAP-04 的"不补的措辞"收口。此前的 `needs-recompute` 是"缺一次真触发",而不是"数字不可复算"——12 次零触发本身有出处且已复核) |
 | E-10 | 语料检测普查:`fragment_cluster` 3 处(CERN 2 / FD 1)、`text_figure_overlap` **0** | batch-b8.1 · `examples/output/b8/corpus_detection.md` | git | report-only 检测器的产出稀薄 | 直接可引 |
 | E-11 | b8.4 成本:**16** 次 API 调用、**30 635** prompt tokens、**26.6** 分钟 | `examples/output/b8_4/smoke.report.md` §1 | git | 成本章 | 直接可引 |
 | E-12 | 措辞出入两处:b8.3 §7 写"19, 24 and 28"(只数 residue),b8.4 §5 写"19, 25 and 32"(数全部 findings);b8.4 的 commit message 只写 "landed repair",未载主角 `p6#15` 被拒。**可引形式(GAP-06 的统一口径)**:一律引**全部 findings** 的 **19 / 25 / 32**;凡引 b8.3 §7 那一句须加注"该处只计 residue,故写作 19 / 24 / 28";commit message 不改写历史,须引报告而非 commit | `examples/output/b8/smoke.report.md` §7;`examples/output/b8_4/smoke.report.md` §5;`git show 6ab55bb`;统一口径 `docs/eval/gap_register.md` GAP-06 | git | 引用前必须统一口径 | 直接可引(**只能按左列的统一口径引**;batch-e2.2 按 GAP-06 收口,该缺口是引用纪律而非可留的缺口) |
-| E-13 | E-06 三处落地的逐处摘录(batch-e1 会话一现场读出):CERNCourier-en `p2#32` 由 `Volume 66 Number 4  July/August 2026` 变为 `第66卷第4期 2026年7月/8月`;FD-en-v2 `p5#14` 由 `ADVISORS TO THE EDITOR` 变为 `编辑顾问`;FD-en-v2 `p5#9` 由 `PRODUCTION MANAGER` 变为 `制作经理`。三处 `box_before` 与 `box_after` 四个坐标逐值相等,`vertical` 均为 false,`box_held` 均为 true;光栅对照 `examples/output/b8_4/smoke/raster/b8_3.p2_32.png` 与 `examples/output/b8_4/smoke/raster/b8_4.p2_32.png`(另两处同名以 `p5_14` / `p5_9` 结尾,页级图以 `.page2.png` / `.page5.png` 结尾) | `examples/output/b8_4/smoke/evidence.json` 的 `landed` 数组;同数据的表格形式 `examples/output/b8_4/smoke.report.md` §3 | git | E-06 的可摘录形式:修复落地这一承诺的候选证据主角(三处并列,选定权在用户) | 直接可引 |
+| E-13 | E-06 三处落地的逐处摘录(batch-e1 会话一现场读出):CERNCourier-en `p2#32` 由 `Volume 66 Number 4  July/August 2026` 变为 `第66卷第4期 2026年7月/8月`;FD-en-v2 `p5#14` 由 `ADVISORS TO THE EDITOR` 变为 `编辑顾问`;FD-en-v2 `p5#9` 由 `PRODUCTION MANAGER` 变为 `制作经理`。三处 `box_before` 与 `box_after` 四个坐标逐值相等,`vertical` 均为 false,`box_held` 均为 true;光栅对照 `examples/output/b8_4/smoke/raster/b8_3.p2_32.png` 与 `examples/output/b8_4/smoke/raster/b8_4.p2_32.png`(另两处同名以 `p5_14` / `p5_9` 结尾,页级图以 `.page2.png` / `.page5.png` 结尾) | `examples/output/b8_4/smoke/evidence.json` 的 `landed` 数组;同数据的表格形式 `examples/output/b8_4/smoke.report.md` §3 | git | E-06 的可摘录形式:修复落地这一承诺的候选证据主角(三处并列,选定权在用户) | artifact pruned, sha recorded(逐处摘录与坐标存活于被跟踪的 `evidence.json` 与报告 §3,**裁剪级**光栅对照三对仍入库可看;**页级图已被保留策略淘汰**,故"页级对照"这一层不得再作为可复验证据陈述。不重跑,理由同 E-06。见 GAP-19) |
 
 ## F 上游基线(比较基准)
 
@@ -194,10 +201,11 @@ batch-e1 会话一按 D3 GAP-07 的优先级做了**分级入库**:`examples/bas
 
 | 状态 | 条数 | 条目 |
 | --- | ---: | --- |
-| 直接可引 | 82 | 全部 |
+| 直接可引 | 78 | 其余全部 |
 | 需三跑 | 0 | — |
 | needs-recompute | 0 | — |
 | 需重述 | 0 | — |
+| artifact pruned, sha recorded | 4 | A-26、E-02、E-06、E-13 |
 
 batch-e2.1 的变动:A-12 的"需三跑"由 R1 三跑消掉(归因见 A-18),`需三跑` 一档就此清零;
 A-09 由"直接可引"降为"需重述",因为它的两半在三跑下证据强度不同;新增 A-18~A-21 与 G-09。
@@ -220,3 +228,12 @@ GAP-14~GAP-18 五条,全部是**缺口**而非未关行——它们要么改材�
 **四档清零不等于零缺口**:留下的是**声明**而不是数字缺口——E-09 的合成覆盖声明、C-04/C-06
 的 v1 分母不可重建、A-22~A-24 的"单判官、无负控、不作比率"。逐条见
 `docs/eval/gap_register.md`。
+
+batch-b9.2r 的变动(**恢复批次,降级而非重算**):batch-b9.2 会话一的保留策略事故淘汰了
+batch-b8.4 冒烟跑的未跟踪产物(页级栅格与各 stage checkpoint)。四行因此由 `直接可引` 降为
+`artifact pruned, sha recorded`:**A-26**(四份出处产物全失)、**E-02**(页级栅格哈希不再可现场复算)、
+**E-06** 与 **E-13**(引文与坐标存活于被跟踪的 `evidence.json`,页级对照层已失)。
+被淘汰路径逐条进本文件顶部的"已失效产物登记",受此降级支配的引用纪律见
+`docs/eval/gap_register.md` GAP-19。**一律不重跑**:b8.4 之后 role block 已改变 prompt 空间,
+重跑得到的是另一份产物,拿它顶替原件等于静默篡改证据链。此后冻结证据的引用一律以
+**被跟踪的台账文本**为权威、产物为可选附件;本次降级是该原则的首次全面适用。

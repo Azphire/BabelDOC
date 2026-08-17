@@ -110,6 +110,20 @@ FINGERPRINT_EXCLUDED_KEYS: dict[str, tuple[str, ...]] = {
         "staging_stale_after_seconds",
     ),
     "configs/vlm.json": ("description", "base_url", "api_key_env", "timeout_seconds"),
+    # Every key of the retention policy. It governs what is deleted from
+    # examples/output/ after a sweep has finished and is read by nothing on a
+    # pipeline path, so no value in it can reach a produced artefact. Listing
+    # the whole file rather than a few keys is deliberate: tightening the policy
+    # should cost a review, not an hour of rebuilds.
+    "configs/output_retention.json": (
+        "description",
+        "keep_recent_batches",
+        "keep_patterns",
+        "archive_patterns",
+        "archive_max_file_kb",
+        "protected_paths",
+        "baseline_archive",
+    ),
 }
 
 # Keeps the excluded files out of the git-derived half of the fingerprint. Their
@@ -225,6 +239,12 @@ ATTRIBUTES_KEY = "attributes"
 
 # Suffix marking a build in progress. A directory carrying it is never a slot.
 STAGING_SUFFIX = ".partial"
+
+# Held for the length of one sweep. It sits beside the generation directories
+# rather than inside one, because the thing being serialised is access to the
+# cache as a whole: the trim, the abandoned-staging sweep and the make-room pass
+# all reach across generations.
+SWEEP_LOCK = CACHE_ROOT / "sweep.lock"
 
 # Written into a staging directory while its build runs, and removed before the
 # directory is published. It is what exempts a build from the sweep it triggers
@@ -535,14 +555,62 @@ def _take_lock(staging: Path) -> Path:
     return path
 
 
+def pid_is_running(pid: object) -> bool:
+    """Whether a process with this pid exists, as far as the platform will say.
+
+    Two things this is not. It is not proof that the pid is the *same* process
+    that wrote the lock -- pids are reused -- which is why the configured
+    staleness window still applies on top of it. And it is not a permission
+    check: a process owned by somebody else counts as running, because the
+    question is whether the pid is taken, not whether it can be signalled.
+
+    An answer this cannot establish is reported as running, so an unreadable
+    platform never turns into a sweep deleting a live build's staging tree.
+    """
+    if not isinstance(pid, int) or isinstance(pid, bool) or pid <= 0:
+        return False
+    if sys.platform == "win32":
+        import ctypes
+
+        kernel32 = ctypes.windll.kernel32
+        # PROCESS_QUERY_LIMITED_INFORMATION: enough to read an exit code, and
+        # granted for a process this account could not otherwise touch.
+        handle = kernel32.OpenProcess(0x1000, False, pid)
+        if not handle:
+            # ERROR_INVALID_PARAMETER is what a pid that does not exist gives;
+            # anything else (access denied above all) means it does.
+            return kernel32.GetLastError() != 87
+        try:
+            # A pid whose process has exited stays valid while somebody holds a
+            # handle to it, so the handle alone does not answer the question.
+            # STILL_ACTIVE is the exit code of a process that has not exited.
+            code = ctypes.c_ulong()
+            if not kernel32.GetExitCodeProcess(handle, ctypes.byref(code)):
+                return True
+            return code.value == 259
+        finally:
+            kernel32.CloseHandle(handle)
+    try:
+        os.kill(pid, 0)
+    except ProcessLookupError:
+        return False
+    except OSError:
+        return True
+    return True
+
+
 def _lock_is_live(staging: Path) -> bool:
     """Whether a staging directory still belongs to a build that is running.
 
     This process's own builds are known by their pid and are never in doubt.
-    Another process's lock is believed for as long as the configuration says,
-    because there is no portable way to ask whether a pid from an earlier run is
-    still the process that wrote it; past that the directory is read as what an
-    interrupted build leaves, which is what it almost always is.
+    Another process's lock is believed while its pid is still taken and while
+    the configuration's staleness window has not run out -- either condition
+    failing makes the directory what an interrupted build leaves, which is what
+    it almost always is.
+
+    The pid test is what the staleness window alone could not do. A killed
+    sweep used to hold its staging tree, and the disk under it, for the whole
+    window: a day, for tens of gigabytes, with nothing running.
     """
     path = staging / STAGING_LOCK
     try:
@@ -552,6 +620,8 @@ def _lock_is_live(staging: Path) -> bool:
         return False
     if lock.get("pid") == os.getpid():
         return True
+    if not pid_is_running(lock.get("pid")):
+        return False
     started = lock.get("started")
     if isinstance(started, bool) or not isinstance(started, int | float):
         return False
@@ -598,6 +668,89 @@ def drop_abandoned() -> tuple[int, int]:
             if parent != STATS_DIR and not any(parent.iterdir()):
                 parent.rmdir()
     return dropped, freed
+
+
+class SweepInProgress(RuntimeError):  # noqa: N818 - reads as its sibling above
+    """Raised when another sweep already holds the cache."""
+
+
+def _read_lock(path: Path) -> dict:
+    try:
+        with path.open(encoding="utf-8") as f:
+            lock = json.load(f)
+    except (OSError, ValueError):
+        return {}
+    return lock if isinstance(lock, dict) else {}
+
+
+def sweep_lock_holder() -> dict | None:
+    """The sweep currently holding the cache, or None if it is free.
+
+    A lock whose pid is gone, or whose age has run past the staleness window,
+    is not a holder: it is what a killed sweep left behind.
+    """
+    lock = _read_lock(SWEEP_LOCK)
+    if not lock:
+        return None
+    if lock.get("pid") == os.getpid():
+        return lock
+    if not pid_is_running(lock.get("pid")):
+        return None
+    started = lock.get("started")
+    if isinstance(started, bool) or not isinstance(started, int | float):
+        return None
+    if time.time() - float(started) >= staging_stale_after_seconds():
+        return None
+    return lock
+
+
+def acquire_sweep_lock() -> Path:
+    """Claim the cache for this process's sweep, or refuse to start.
+
+    Two sweeps sharing one cache are not merely slower. They build the same
+    slots into the same staging directories, and each one's publish step sweeps
+    least recently used slots to make room for what it is about to add -- so the
+    second sweep can reclaim the very generation the first is serving hits from,
+    and both come away with artefacts neither can account for. There is no
+    partial-credit version of this: the second sweep is refused, immediately and
+    with the holder named, so the operator knows which process to wait for.
+    """
+    CACHE_ROOT.mkdir(parents=True, exist_ok=True)
+    payload = json.dumps({"pid": os.getpid(), "started": time.time()})
+
+    # Create exclusively first, so two sweeps launched in the same instant do
+    # not both read an absent lock and both proceed. That is not a hypothetical:
+    # the first version of this checked for a holder and then wrote, and a pair
+    # of sweeps started together sailed through the gap between the two steps.
+    try:
+        handle = os.open(SWEEP_LOCK, os.O_CREAT | os.O_EXCL | os.O_WRONLY)
+    except FileExistsError:
+        handle = None
+    if handle is not None:
+        with os.fdopen(handle, "w", encoding="utf-8") as f:
+            f.write(payload)
+        return SWEEP_LOCK
+
+    # A lock is on the disk. Whether it means anything is the holder's business:
+    # this process's own, a dead process's and an expired one are all free.
+    holder = sweep_lock_holder()
+    if holder is not None and holder.get("pid") != os.getpid():
+        age = time.time() - float(holder.get("started") or 0.0)
+        raise SweepInProgress(
+            f"another sweep holds {SWEEP_LOCK}: pid {holder.get('pid')}, "
+            f"started {age / 60:.1f} minute(s) ago. Wait for it to finish, or "
+            f"remove that file if you know the process is gone."
+        )
+    with SWEEP_LOCK.open("w", encoding="utf-8") as f:
+        f.write(payload)
+    return SWEEP_LOCK
+
+
+def release_sweep_lock() -> None:
+    """Give the cache back, if this process is the one holding it."""
+    if _read_lock(SWEEP_LOCK).get("pid") == os.getpid():
+        with contextlib.suppress(OSError):
+            SWEEP_LOCK.unlink()
 
 
 def directory_bytes(path: Path) -> int:
