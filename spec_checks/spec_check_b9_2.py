@@ -1,4 +1,4 @@
-"""Gate script for batch B9.2 session one (heading typesetting mechanics).
+"""Gate script for batch B9.2 (heading typesetting: mechanics and acceptance).
 
 Run from the repository root:
 
@@ -47,6 +47,30 @@ label of its own.
 
 05 is the scope and 06 the sweep.
 
+07 is session two: the acceptance, over the pair of runs the batch was accepted
+on. Those runs spent a credential and this gate does not, so what it reads is
+their frozen evidence -- the ledger, the rasters, and an excerpt of the document
+the doubled headline is in, all of them committed. Every assertion of 07 either
+recomputes something from that excerpt with the pipeline's own code or holds the
+ledger to a claim the batch made:
+
+  a. The arms translated one document. A third arm repeats the first one's
+     configuration, which is what says how much a run of this pipeline differs
+     from itself -- the model is sampled and a request the cache did not keep is
+     asked again -- and the switch's pair is read against it: where the repeat
+     agrees, the pair has to agree, and a page whose pixels moved has to be a
+     page a heading changed on.
+  b. The doubled headline is drawn once, where it was drawn twice.
+  c. Both cover headings come off two lines, the ink still outside the page
+     frame is less than it was, and that residue is on the record as an open
+     defect: it is a different mechanism and this batch does not close it.
+  d. Every heading of the ruled sample is on one line or raised, and the eight
+     names that ruling gained were carried into the run's glossary.
+  e. Every heading that reached the floor is listed with the scale it asked for.
+  f. A doubled heading does not reach M3.
+  g. The arm with the switch up asked the model nothing new: what it spent is
+     what a repeat run spends, far below what the first arm paid.
+
 Every assertion is static; there is no pipeline tier.
 """
 
@@ -55,6 +79,7 @@ from __future__ import annotations
 import ast
 import contextlib
 import copy
+import functools
 import hashlib
 import json
 import os
@@ -85,26 +110,30 @@ from babeldoc.magazine.taxonomy import load_taxonomy  # noqa: E402
 from spec_checks import artifacts  # noqa: E402
 from spec_checks import harness  # noqa: E402
 
-BATCH_TAG = "batch-b9.2.1"
+BATCH_TAG = "batch-b9.2.2"
 
 PYTHON = sys.executable
 
-# This session writes no artefact of its own: every document it reasons about is
+# This gate writes no artefact of its own: every document it reasons about is
 # built in this file or read from a frozen one. So it creates no batch directory
 # under examples/output/ either -- an empty one would still count as a batch to
 # the retention policy and push an older batch out of the window it protects,
 # which is how a gate that produces nothing can still delete another's evidence.
+# The acceptance runs of session two do create one, and everything of theirs
+# this gate reads is committed for that reason: what retention deletes is what
+# git does not hold, and 07 asserts that it holds all of it.
 
 LANGUAGE = "zh"
 
 # Set by spec_checks/run_all.py.
 NESTED_SUPPRESSED = os.environ.get("SPEC_NO_NESTED") == "1"
 
-# Paths this session may change.
+# Paths this batch may change.
 ALLOWED_PREFIXES = (
     "babeldoc/magazine/",
     "configs/",
     "spec_checks/",
+    "examples/output/b9_2/",
 )
 ALLOWED_FILES = {"plans/PLAN_B9_2.md"}
 
@@ -122,13 +151,37 @@ PINNING_GATE = "spec_checks/spec_check_b7_5.py"
 # Files a run may never write to.
 READ_ONLY = ("corpus/registry.user.json", "corpus/page_labels.json")
 
-# The code this session adds or reworks.
+# The code this batch adds or reworks.
 SESSION_CODE = (
     "babeldoc/magazine/title_typeset.py",
     "babeldoc/magazine/detectors/__init__.py",
     "spec_checks/run_all.py",
     f"spec_checks/{Path(__file__).name}",
 )
+
+# The two scripts session two drove and read its runs with. They are evidence
+# rather than pipeline, so they are held to the prose and vocabulary rules but
+# are not part of what 05a calls this batch's code.
+ACCEPTANCE_CODE = (
+    "examples/output/b9_2/scripts/run_b9_2_ab.py",
+    "examples/output/b9_2/scripts/analyze_b9_2.py",
+)
+
+# What session two froze, all of it committed. The ledger is what the runs
+# recorded, the excerpt is the smallest document still carrying the doubled
+# headline, and the sidecar is what the pass wrote for the run it came from.
+EVIDENCE = "examples/output/b9_2/evidence.json"
+ACCEPTANCE_REPORT = "examples/output/b9_2/report.md"
+FIXTURE = "examples/output/b9_2/fixtures/AramcoWorld-en-v2.titles.xml"
+FIXTURE_SIDECAR = (
+    "examples/output/b9_2/fixtures/AramcoWorld-en-v2.title_typeset.report.json"
+)
+
+# How many samples the acceptance ran, and how many person names the ruling's
+# revision added. Both are claims of the batch rather than measurements, so a
+# run that quietly covered less turns 07 red instead of passing thinner.
+ACCEPTANCE_SAMPLES = 5
+RULED_TERMS_ADDED = 8
 
 # Upstream symbols the premise assertions read, named here so a rename is
 # traceable to the assertion it breaks rather than to a line number.
@@ -1215,7 +1268,7 @@ def check_05b_no_vocabulary_literals() -> None:
     for labels in load_chain_config()[CLASS_LABELS_KEY].values():
         declared |= set(labels)
     faults = []
-    for relative in SESSION_CODE:
+    for relative in (*SESSION_CODE, *ACCEPTANCE_CODE):
         if relative.startswith("spec_checks/"):
             # A gate builds documents and reads the labels it builds them with
             # from the configuration; what may not name one is the package the
@@ -1242,7 +1295,7 @@ def check_05b_no_vocabulary_literals() -> None:
 def check_05c_ascii_prose() -> None:
     """Negative 5c: the code and configuration this session touches are English."""
     faults = []
-    files = [*SESSION_CODE, "configs/title_typeset.json"]
+    files = [*SESSION_CODE, *ACCEPTANCE_CODE, "configs/title_typeset.json"]
     for relative in files:
         for number, line in enumerate(source_of(relative).splitlines(), start=1):
             if not line.isascii():
@@ -1291,47 +1344,319 @@ def check_05e_registered() -> None:
     record("check_05e_registered", not faults, "; ".join(faults))
 
 
-def check_05f_the_real_case_if_it_is_here() -> None:
-    """Positive 5f: the F1 headline, where that run's checkpoint is on this disk.
+def check_05f_the_real_case_is_frozen() -> None:
+    """Positive 5f: the real headline, recomputed from a committed excerpt.
 
-    The artefact is a working directory rather than a committed fixture, so this
-    is evidence where it exists and a skip where it does not; session two freezes
-    what it needs. What it asserts is that the case the rule was built for is the
-    case the rule catches: one heading paragraph, two style runs saying the same
-    thing in one font, deduplicated to one.
+    Session one read this out of a working directory when one happened to be on
+    disk, which made the strongest assertion of the batch the one most likely to
+    be absent. Session two froze the page's headings as they left the layout,
+    and this reads that: the case the rule was built for is the case the rule
+    catches -- one heading paragraph, two style runs saying the same thing in
+    one font, deduplicated to one -- and what the pass recorded on the run the
+    excerpt came from says the same.
     """
-    checkpoint = (
-        ROOT
-        / "examples"
-        / "output"
-        / "final"
-        / "AramcoWorld-en-v2"
-        / "work"
-        / "AramcoWorld-en-v2"
-        / "checkpoint.11_typesetting.xml"
-    )
-    if not checkpoint.is_file():
-        print(f"SKIPPED: check_05f_the_real_case_if_it_is_here ({checkpoint} absent)")
-        return
     faults = []
+    fixture, sidecar = ROOT / FIXTURE, ROOT / FIXTURE_SIDECAR
+    for path, relative in ((fixture, FIXTURE), (sidecar, FIXTURE_SIDECAR)):
+        if not path.is_file():
+            faults.append(f"{relative} is not in the tree")
+    if faults:
+        record("check_05f_the_real_case_is_frozen", False, "; ".join(faults))
+        return
     with warnings.catch_warnings():
         warnings.simplefilter("ignore")
-        docs = checkpoint_module.load_checkpoint(checkpoint)
+        docs = checkpoint_module.load_checkpoint(fixture)
     config = policy()
-    found = []
-    for _label, page_ in hitl.labeled_pages(docs):
-        for paragraph in page_.pdf_paragraph or ():
+    found = {}
+    for label, page_ in hitl.labeled_pages(docs):
+        for index, paragraph in enumerate(page_.pdf_paragraph or ()):
             if not config.is_title(paragraph):
+                faults.append("the excerpt carries a paragraph that is not a heading")
                 continue
             runs = title_typeset.style_runs(
                 title_typeset.laid_out_characters(paragraph)
             )
-            _kept, dropped = title_typeset.duplicate_runs(runs, config)
+            kept, dropped = title_typeset.duplicate_runs(runs, config)
             if dropped:
-                found.append((paragraph.debug_id, dropped))
+                found[f"p{label}#{index}"] = (kept, dropped)
     if not found:
-        faults.append("the recorded duplicate layer is no longer found")
-    record("check_05f_the_real_case_if_it_is_here", not faults, "; ".join(faults))
+        faults.append("the frozen excerpt no longer carries a duplicate layer")
+    with sidecar.open(encoding="utf-8") as f:
+        recorded = json.load(f)
+    written = {
+        item["reference"]
+        for item in recorded["duplicates"]
+        if item["layer"] == title_typeset.LAYER_RUN
+    }
+    # An excerpt renumbers the headings it keeps, so what the sidecar calls a
+    # heading and what this file calls it are different names for one paragraph.
+    # The ledger carries the mapping and it is applied rather than assumed.
+    mapping = evidence()["fixture"]["references"]
+    named = {
+        mapping[int(reference.split("#")[1])]
+        for reference in found
+        if int(reference.split("#")[1]) < len(mapping)
+    }
+    if written != named:
+        faults.append(f"the sidecar records {sorted(written)}, this finds {sorted(named)}")
+    for reference, (kept, dropped) in found.items():
+        # The layer that stays says the whole headline once, which is the point
+        # of dropping the other one.
+        if len(kept) + len(dropped) <= len(kept):
+            faults.append(f"{reference}: nothing was dropped")
+        if any(not run.text.strip() for run in kept):
+            faults.append(f"{reference}: an empty layer was kept")
+    record("check_05f_the_real_case_is_frozen", not faults, "; ".join(faults))
+
+
+# --- 07 the acceptance ---------------------------------------------------------
+
+
+@functools.lru_cache(maxsize=1)
+def evidence() -> dict:
+    with (ROOT / EVIDENCE).open(encoding="utf-8") as f:
+        return json.load(f)
+
+
+def tracked(paths) -> list[str]:
+    """Which of these the repository does not hold, which is what gets swept."""
+    absent = []
+    for relative in paths:
+        code, listing = git_output(["ls-files", "--", relative])
+        if not listing.strip():
+            absent.append(relative)
+        elif code != 0:
+            absent.append(relative)
+    return absent
+
+
+def check_07a_the_arms_translated_one_document() -> None:
+    """Positive 7a: one translation, two typographies, and the difference placed.
+
+    The strongest thing the batch can say about itself, read against the arm
+    that says what a run differs from itself by. Where the identical pair agrees
+    on the document handed to the layout, the switch's pair has to agree on it
+    too; and a page whose pixels moved has to be a page a heading was changed
+    on, unless the identical pair moved it as well, in which case nothing here
+    can attribute it and it is recorded as unattributed rather than as either.
+    """
+    faults = []
+    arms = evidence()["arms"]
+    if len(arms) != ACCEPTANCE_SAMPLES:
+        faults.append(f"{len(arms)} sample(s), expected {ACCEPTANCE_SAMPLES}")
+    reproducible = 0
+    for item in arms:
+        sample = item["sample"]
+        for stage in ("il_translated", "typesetting"):
+            if item[stage]["control_identical"] and not item[stage]["identical"]:
+                faults.append(
+                    f"{sample}: the {stage} checkpoint differs between the arms "
+                    f"while the control is quiet, so the switch moved it"
+                )
+        if item["typesetting"]["control_identical"]:
+            reproducible += 1
+        if item["stray"]:
+            faults.append(f"{sample}: {'; '.join(item['stray'])}")
+        counts = set(item["pages"].values())
+        if len(counts) != 1:
+            faults.append(f"{sample}: the arms produced different page counts")
+        if item["repair"]["attributable"]:
+            faults.append(
+                f"{sample}: the repair loop touched different paragraphs while "
+                f"the control reproduced the first arm"
+            )
+        differing = [page for page in item["page_diff"] if page.get("differs")]
+        if item["changed_pages"] and not differing:
+            faults.append(f"{sample}: headings changed and no page differs")
+    if not reproducible:
+        faults.append("no sample reproduced, so nothing is attributable at all")
+    record("check_07a_the_arms_translated_one_document", not faults, "; ".join(faults))
+
+
+def check_07b_the_doubled_headline_is_drawn_once() -> None:
+    """Positive 7b: two renderings became one, in the record and in the pixels."""
+    faults = []
+    ghost = evidence()["ghost"]
+    if not ghost["duplicates"]:
+        faults.append("the sidecar records no duplicate layer")
+    if not ghost["layers"]:
+        faults.append("no heading of that page was found to carry two layers")
+    for reference, layer in ghost["layers"].items():
+        # What survives is exactly half of what the layout laid out, which is
+        # what "drawn twice, shown once" means at the level of the text.
+        if layer["kept"] * 2 != layer["as_laid_out"]:
+            faults.append(f"{reference}: what is kept is not half of what was there")
+        if not layer["runs_dropped"]:
+            faults.append(f"{reference}: nothing was dropped")
+    ratio = ghost.get("extent_ratio")
+    if ratio is None:
+        faults.append("the headline band could not be read from the page")
+    elif ratio > 0.75:
+        faults.append(f"the headline still runs {ratio} of the way it ran")
+    faults += ghost["faults"]
+    cited = list(ghost["raster"].values())
+    if len(cited) < 4:
+        faults.append(f"only {len(cited)} raster(s) cited")
+    missing = [path for path in cited if not (ROOT / path).is_file()]
+    if missing:
+        faults.append(f"cited but absent: {missing}")
+    untracked = tracked(cited)
+    if untracked:
+        faults.append(f"cited but not committed: {untracked}")
+    record("check_07b_the_doubled_headline_is_drawn_once", not faults, "; ".join(faults))
+
+
+def check_07c_the_cover_headings_are_unwrapped_and_the_residue_is_named() -> None:
+    """Positive 7c: both cover headings come off two lines, and what remains is named.
+
+    The batch delivers the unwrapping and does not deliver containment against
+    the page edge, which turned out to be a different mechanism -- the layout
+    anchors a first line by the modal unit height, and the paragraph carrying
+    this masthead also carries the credit line beside it. So this asserts what
+    was delivered, holds the residue to being smaller than it was, and requires
+    it to be on the record as an open defect rather than absent from it.
+    """
+    faults = []
+    cover = evidence()["cover"]
+    if not cover["wrapped_before"]:
+        faults.append("no heading on that page was wrapped before the pass")
+    if cover["still_wrapped"]:
+        faults.append(f"still wrapped after the pass: {cover['still_wrapped']}")
+    overhang = cover["overhang_points"]
+    if overhang["on"] > overhang["off"]:
+        faults.append(f"the overhang grew from {overhang['off']} to {overhang['on']}")
+    if cover["outside_frame"]["on"] and not cover["open_defect"]:
+        faults.append("ink is outside the frame and no open defect is recorded")
+    if not cover["outside_frame"]["off"]:
+        faults.append(
+            "nothing is outside the frame with the switch down, so the case "
+            "does not carry the defect it was written for"
+        )
+    faults += cover["faults"]
+    cited = list(cover["raster"].values())
+    missing = [path for path in cited if not (ROOT / path).is_file()]
+    if missing:
+        faults.append(f"cited but absent: {missing}")
+    untracked = tracked(cited)
+    if untracked:
+        faults.append(f"cited but not committed: {untracked}")
+    record(
+        "check_07c_the_cover_headings_are_unwrapped_and_the_residue_is_named",
+        not faults,
+        "; ".join(faults),
+    )
+
+
+def check_07d_every_heading_is_on_one_line_or_raised() -> None:
+    """Positive 7d: the ruled sample, heading by heading, and the ruling's terms."""
+    faults = []
+    ruled = evidence()["ruled"]
+    if ruled["unaccounted"]:
+        faults.append(f"unaccounted for: {ruled['unaccounted']}")
+    if len(ruled["accounted"]) != ruled["titles"]:
+        faults.append(
+            f"{len(ruled['accounted'])} of {ruled['titles']} heading(s) accounted for"
+        )
+    if not ruled["titles"]:
+        faults.append("the sample carries no heading, so the case is vacuous")
+    if len(ruled["ruling_terms_added"]) != RULED_TERMS_ADDED:
+        faults.append(
+            f"the revision added {len(ruled['ruling_terms_added'])} term(s), "
+            f"expected {RULED_TERMS_ADDED}"
+        )
+    if ruled["ruling_terms_missing"]:
+        faults.append(f"never reached the glossary: {ruled['ruling_terms_missing']}")
+    if len(ruled["ruling_terms_hits"]) != len(ruled["ruling_terms_added"]):
+        faults.append("a ruled term has no hit record")
+    faults += ruled["faults"]
+    record("check_07d_every_heading_is_on_one_line_or_raised", not faults, "; ".join(faults))
+
+
+def check_07e_the_floor_is_listed() -> None:
+    """Positive 7e: every heading that reached the floor is on the list, with its scale."""
+    faults = []
+    report = evidence()
+    listed = report["floor"]["escalations"]
+    reached = sum(item["titles"]["floor_reached"] for item in report["arms"])
+    if len(listed) != reached:
+        faults.append(f"{len(listed)} listed, {reached} reached the floor")
+    if report["floor"]["count"] != len(listed):
+        faults.append("the count and the list disagree")
+    for item in listed:
+        if item["disposition"] != title_typeset.FLOOR_ESCALATE:
+            faults.append(f"{item['reference']}: disposition {item['disposition']}")
+        if not isinstance(item["required_scale"], int | float):
+            faults.append(f"{item['reference']}: no scale asked for")
+        if not item["sample"] or not item["reference"]:
+            faults.append("an entry names neither a sample nor a heading")
+    record("check_07e_the_floor_is_listed", not faults, "; ".join(faults))
+
+
+def check_07f_a_doubled_heading_does_not_reach_the_metric() -> None:
+    """Negative 7f: M3 measures the same with every doubled layer collapsed.
+
+    The measurement is taken upstream of this pass, so if a doubled heading were
+    inside it the defect would have been inflating a published number all along.
+    The perturbation says it is not.
+    """
+    faults = []
+    metric = evidence()["metric"]
+    if metric["contaminated"]:
+        faults.append(f"contaminated: {metric['contaminated']}")
+    if not metric["samples"]:
+        faults.append("no sample carries a doubled heading, so nothing was perturbed")
+    for item in metric["samples"]:
+        if item["summary_as_run"] != item["summary_collapsed"]:
+            faults.append(f"{item['sample']}: the summaries differ")
+        if item["doubled_paragraphs_inside_the_measurement"]:
+            faults.append(
+                f"{item['sample']}: a doubled heading is inside the measurement: "
+                f"{item['doubled_paragraphs_inside_the_measurement']}"
+            )
+    record(
+        "check_07f_a_doubled_heading_does_not_reach_the_metric", not faults, "; ".join(faults)
+    )
+
+
+def check_07g_the_policy_asks_no_question() -> None:
+    """Positive 7g: the arm with the switch up asked the model nothing new.
+
+    The pass runs long after the last request is built, so it cannot reach a
+    prompt and every translation the second arm needs is one the first arm
+    already paid for. What the second arm is still charged for is the repair
+    loop's decision, which is issued with the cache bypassed by its own design;
+    that is accounted for per sample, and a call beyond it would mean the switch
+    had reached a prompt after all.
+    """
+    faults = []
+    report = evidence()
+    cost = report["cost"]
+    if not cost["off"]["api_calls"]:
+        faults.append("the first arm paid for nothing, so the cache proves nothing")
+    for arm in ("on", "control"):
+        if cost[arm]["api_calls"] >= cost["off"]["api_calls"]:
+            faults.append(
+                f"the {arm} arm spent {cost[arm]['api_calls']} against the first "
+                f"arm's {cost['off']['api_calls']}, so nothing was reused"
+            )
+    # Every arm that runs the repair loop is charged for its decision whatever
+    # the cache holds, so that is the floor a repeat arm cannot go below.
+    for item in report["arms"]:
+        floor = item["repair"]["on_live_decisions"]
+        if item["api_calls"]["on"] < floor:
+            faults.append(
+                f"{item['sample']}: {item['api_calls']['on']} call(s) against "
+                f"{floor} uncacheable decision(s)"
+            )
+    if report["faults"]:
+        faults.append(f"the acceptance recorded: {report['faults']}")
+    for relative in (EVIDENCE, ACCEPTANCE_REPORT, FIXTURE, FIXTURE_SIDECAR):
+        if not (ROOT / relative).is_file():
+            faults.append(f"{relative} is not in the tree")
+    untracked = tracked((EVIDENCE, ACCEPTANCE_REPORT, FIXTURE, FIXTURE_SIDECAR))
+    if untracked:
+        faults.append(f"not committed: {untracked}")
+    record("check_07g_the_policy_asks_no_question", not faults, "; ".join(faults))
 
 
 # --- 06 the sweep -------------------------------------------------------------
@@ -1377,7 +1702,14 @@ def main() -> int:
         check_05c_ascii_prose,
         check_05d_the_gate_spends_no_credential,
         check_05e_registered,
-        check_05f_the_real_case_if_it_is_here,
+        check_05f_the_real_case_is_frozen,
+        check_07a_the_arms_translated_one_document,
+        check_07b_the_doubled_headline_is_drawn_once,
+        check_07c_the_cover_headings_are_unwrapped_and_the_residue_is_named,
+        check_07d_every_heading_is_on_one_line_or_raised,
+        check_07e_the_floor_is_listed,
+        check_07f_a_doubled_heading_does_not_reach_the_metric,
+        check_07g_the_policy_asks_no_question,
         check_06_sweep,
     ]
     for check in checks:

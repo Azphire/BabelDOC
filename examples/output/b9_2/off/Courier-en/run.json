@@ -1,0 +1,28 @@
+{
+  "sample": "Courier-en.pdf",
+  "arm": "off",
+  "magazine_title_typeset": false,
+  "model": "gpt-4o",
+  "lang_in": "en",
+  "lang_out": "zh",
+  "seconds": 349.6,
+  "requests": 56,
+  "cache_hits": 50,
+  "api_calls": 6,
+  "prompt_tokens": 6879,
+  "completion_tokens": 836,
+  "input_pages": 8,
+  "output_pages": 8,
+  "pdf": "examples\\output\\b9_2\\off\\Courier-en\\Courier-en.b9_2.off.pdf",
+  "pdf_sha256": "44f4363bceda2590db106c35bf4045ad9d594f9b794d1df8b81e82996ce34ecd",
+  "working_dir": "examples\\output\\b9_2\\off\\Courier-en\\work\\Courier-en",
+  "ruling": {
+    "path": "reviews\\Courier-en.decisions.json",
+    "sha256": "372a6f7cbcdd942ffa971cfa5184689510b53089ace10e73920a195bb07a4fc4",
+    "present": true
+  },
+  "translation_style": {
+    "person_names": "transliterate",
+    "system_prompt_sha256": "74666d7128c1c06127d9193db7b8d2b346866088f1ccabb4c33e69be1c586903"
+  }
+}

@@ -380,6 +380,68 @@ def duplicate_paragraphs(titles, config: TitleConfig) -> dict[int, dict]:
     return suppressed
 
 
+def _styles_correspond(left: list[Run], right: list[Run], config: TitleConfig) -> bool:
+    """Whether two sequences of runs are the same sequence of styles.
+
+    Two paints of one headline are laid in the same fonts at the same sizes and
+    in the same order, because they are the same text: what differs between the
+    layers is the paint, which is what made them separate runs to begin with.
+    """
+    if len(left) != len(right):
+        return False
+    for first, second in zip(left, right, strict=True):
+        if first.style is None or second.style is None:
+            return False
+        if first.style.font_id != second.style.font_id:
+            return False
+        sizes = (first.style.font_size, second.style.font_size)
+        if any(size is None for size in sizes):
+            return False
+        if abs(float(sizes[0]) - float(sizes[1])) > config.duplicate_font_size_tolerance:
+            return False
+    return True
+
+
+def duplicate_layer(runs: list[Run], config: TitleConfig) -> int | None:
+    """Where a heading written twice over splits into its two layers.
+
+    The run level rule below compares one run with another, which answers a
+    layer that is one run and leaves a layer of several runs half removed: a
+    headline whose question mark is set in a fallback font is four runs, and
+    dropping the repeated words alone leaves the punctuation twice over. So the
+    sequence is tested as a whole first. A split at a run boundary whose two
+    sides say the same thing in the same sequence of styles is one display unit
+    drawn twice, and the second side is the second drawing.
+
+    The boundary matters. A folio reading twice its own digit is one run, not
+    two, and stays whole because there is no boundary to split it at; and each
+    side has to carry ``duplicate_min_chars`` of its own, which is the same
+    floor the run level rule applies and for the same reason. Returns the index
+    the second layer starts at, or None where the heading is written once.
+    """
+    if len(runs) < 2:
+        return None
+    best = None
+    for split in range(1, len(runs)):
+        left, right = runs[:split], runs[split:]
+        left_text = "".join(run.text for run in left)
+        right_text = "".join(run.text for run in right)
+        if min(len(normalised(left_text)), len(normalised(right_text))) < (
+            config.duplicate_min_chars
+        ):
+            continue
+        if not _styles_correspond(left, right, config):
+            continue
+        agreement = similarity(left_text, right_text)
+        if agreement < config.duplicate_min_text_similarity:
+            continue
+        imbalance = abs(len(left_text) - len(right_text))
+        key = (-agreement, imbalance, split)
+        if best is None or key < best[0]:
+            best = (key, split)
+    return None if best is None else best[1]
+
+
 def duplicate_runs(runs: list[Run], config: TitleConfig) -> tuple[list[Run], list[dict]]:
     """The runs of one heading with its repeated layers dropped.
 
@@ -387,7 +449,25 @@ def duplicate_runs(runs: list[Run], config: TitleConfig) -> tuple[list[Run], lis
     paints of one display unit: the paragraph finder recovered them as one
     paragraph because they were drawn at one place, and the layout has since put
     them side by side. The earlier run keeps the heading.
+
+    A layer of several runs is recognised as a whole first, by
+    ``duplicate_layer``; what the run level rule then sees is a heading with one
+    layer left, which is what it was written for.
     """
+    split = duplicate_layer(runs, config)
+    if split is not None:
+        return runs[:split], [
+            {
+                "layer": LAYER_RUN,
+                "run": run.position,
+                "duplicate_of_run": runs[position].position,
+                "similarity": round(
+                    similarity(runs[position].text, run.text), 4
+                ),
+                "characters": len(run.characters),
+            }
+            for position, run in enumerate(runs[split:])
+        ]
     kept: list[Run] = []
     dropped: list[dict] = []
     for run in runs:

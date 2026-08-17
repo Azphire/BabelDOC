@@ -1,0 +1,142 @@
+[
+  {
+    "sample": "Courier-en.pdf",
+    "arm": "control",
+    "magazine_title_typeset": false,
+    "model": "gpt-4o",
+    "lang_in": "en",
+    "lang_out": "zh",
+    "seconds": 361.4,
+    "requests": 55,
+    "cache_hits": 54,
+    "api_calls": 1,
+    "prompt_tokens": 1887,
+    "completion_tokens": 71,
+    "input_pages": 8,
+    "output_pages": 8,
+    "pdf": "examples\\output\\b9_2\\control\\Courier-en\\Courier-en.b9_2.control.pdf",
+    "pdf_sha256": "8c80fbbaa3973a8cf3e4cd44fad3da931fac9d1131efae814dfd7c74d635c0e3",
+    "working_dir": "examples\\output\\b9_2\\control\\Courier-en\\work\\Courier-en",
+    "ruling": {
+      "path": "reviews\\Courier-en.decisions.json",
+      "sha256": "372a6f7cbcdd942ffa971cfa5184689510b53089ace10e73920a195bb07a4fc4",
+      "present": true
+    },
+    "translation_style": {
+      "person_names": "transliterate",
+      "system_prompt_sha256": "74666d7128c1c06127d9193db7b8d2b346866088f1ccabb4c33e69be1c586903"
+    }
+  },
+  {
+    "sample": "Vogue-en.pdf",
+    "arm": "control",
+    "magazine_title_typeset": false,
+    "model": "gpt-4o",
+    "lang_in": "en",
+    "lang_out": "zh",
+    "seconds": 216.3,
+    "requests": 15,
+    "cache_hits": 14,
+    "api_calls": 1,
+    "prompt_tokens": 1522,
+    "completion_tokens": 58,
+    "input_pages": 3,
+    "output_pages": 3,
+    "pdf": "examples\\output\\b9_2\\control\\Vogue-en\\Vogue-en.b9_2.control.pdf",
+    "pdf_sha256": "9c3e529c16bbefb442c6d5f512c374edeba0b7a001e91d759dbb3467bf1f9494",
+    "working_dir": "examples\\output\\b9_2\\control\\Vogue-en\\work\\Vogue-en",
+    "ruling": {
+      "path": null,
+      "sha256": null,
+      "present": false
+    },
+    "translation_style": {
+      "person_names": "transliterate",
+      "system_prompt_sha256": "74666d7128c1c06127d9193db7b8d2b346866088f1ccabb4c33e69be1c586903"
+    }
+  },
+  {
+    "sample": "CERNCourier-en.pdf",
+    "arm": "control",
+    "magazine_title_typeset": false,
+    "model": "gpt-4o",
+    "lang_in": "en",
+    "lang_out": "zh",
+    "seconds": 158.0,
+    "requests": 84,
+    "cache_hits": 72,
+    "api_calls": 12,
+    "prompt_tokens": 21607,
+    "completion_tokens": 2552,
+    "input_pages": 4,
+    "output_pages": 4,
+    "pdf": "examples\\output\\b9_2\\control\\CERNCourier-en\\CERNCourier-en.b9_2.control.pdf",
+    "pdf_sha256": "cc9254992e5ede79e3f093083b9931178a824f6000c17d346851129243477142",
+    "working_dir": "examples\\output\\b9_2\\control\\CERNCourier-en\\work\\CERNCourier-en",
+    "ruling": {
+      "path": null,
+      "sha256": null,
+      "present": false
+    },
+    "translation_style": {
+      "person_names": "transliterate",
+      "system_prompt_sha256": "74666d7128c1c06127d9193db7b8d2b346866088f1ccabb4c33e69be1c586903"
+    }
+  },
+  {
+    "sample": "AramcoWorld-en-v2.pdf",
+    "arm": "control",
+    "magazine_title_typeset": false,
+    "model": "gpt-4o",
+    "lang_in": "en",
+    "lang_out": "zh",
+    "seconds": 676.4,
+    "requests": 79,
+    "cache_hits": 68,
+    "api_calls": 11,
+    "prompt_tokens": 16435,
+    "completion_tokens": 2385,
+    "input_pages": 9,
+    "output_pages": 9,
+    "pdf": "examples\\output\\b9_2\\control\\AramcoWorld-en-v2\\AramcoWorld-en-v2.b9_2.control.pdf",
+    "pdf_sha256": "7089407d4429bc7d6bea87318cdbd2d8fa9a8ad0c5813a4ba75b068fb541750e",
+    "working_dir": "examples\\output\\b9_2\\control\\AramcoWorld-en-v2\\work\\AramcoWorld-en-v2",
+    "ruling": {
+      "path": null,
+      "sha256": null,
+      "present": false
+    },
+    "translation_style": {
+      "person_names": "transliterate",
+      "system_prompt_sha256": "74666d7128c1c06127d9193db7b8d2b346866088f1ccabb4c33e69be1c586903"
+    }
+  },
+  {
+    "sample": "FD-en-v2.pdf",
+    "arm": "control",
+    "magazine_title_typeset": false,
+    "model": "gpt-4o",
+    "lang_in": "en",
+    "lang_out": "zh",
+    "seconds": 421.6,
+    "requests": 59,
+    "cache_hits": 58,
+    "api_calls": 1,
+    "prompt_tokens": 3798,
+    "completion_tokens": 101,
+    "input_pages": 9,
+    "output_pages": 9,
+    "pdf": "examples\\output\\b9_2\\control\\FD-en-v2\\FD-en-v2.b9_2.control.pdf",
+    "pdf_sha256": "22a0ecefe4122f4b7beb575057643d6a31de56e9dc338a3eb21f5465801c190e",
+    "working_dir": "examples\\output\\b9_2\\control\\FD-en-v2\\work\\FD-en-v2",
+    "ruling": {
+      "path": null,
+      "sha256": null,
+      "present": false
+    },
+    "translation_style": {
+      "person_names": "transliterate",
+      "system_prompt_sha256": "74666d7128c1c06127d9193db7b8d2b346866088f1ccabb4c33e69be1c586903"
+    }
+  }
+]

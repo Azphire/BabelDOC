@@ -1,0 +1,28 @@
+{
+  "sample": "CERNCourier-en.pdf",
+  "arm": "control",
+  "magazine_title_typeset": false,
+  "model": "gpt-4o",
+  "lang_in": "en",
+  "lang_out": "zh",
+  "seconds": 158.0,
+  "requests": 84,
+  "cache_hits": 72,
+  "api_calls": 12,
+  "prompt_tokens": 21607,
+  "completion_tokens": 2552,
+  "input_pages": 4,
+  "output_pages": 4,
+  "pdf": "examples\\output\\b9_2\\control\\CERNCourier-en\\CERNCourier-en.b9_2.control.pdf",
+  "pdf_sha256": "cc9254992e5ede79e3f093083b9931178a824f6000c17d346851129243477142",
+  "working_dir": "examples\\output\\b9_2\\control\\CERNCourier-en\\work\\CERNCourier-en",
+  "ruling": {
+    "path": null,
+    "sha256": null,
+    "present": false
+  },
+  "translation_style": {
+    "person_names": "transliterate",
+    "system_prompt_sha256": "74666d7128c1c06127d9193db7b8d2b346866088f1ccabb4c33e69be1c586903"
+  }
+}

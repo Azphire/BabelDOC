@@ -1,0 +1,1380 @@
+{
+  "arms": [
+    {
+      "api_calls": {
+        "control": 11,
+        "off": 61,
+        "on": 14
+      },
+      "changed_pages": [
+        4,
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "il_translated": {
+        "control_identical": false,
+        "identical": false,
+        "sha256": {
+          "control": "beef33ed18ba89872817ab9203bcdb5a69ae6cc7af1649102ea856b06a0d7dee",
+          "off": "de2aa00c7313c61bc301496de68183a833ce642e4e875c052e8b37da2647e21c",
+          "on": "ad97ca944d968dc81a05d20d61e72fe8c4a9ad41d895d9156ec191b1559e47a1"
+        },
+        "verbatim_sha256": {
+          "control": "4b370cada2d02b2d3937a0497771e749443e4096ec2434daa2841a6544fd37f3",
+          "off": "3b505fedcdaa95801fbadba7245aebe6d8c38ea3cc41f2d8b3dd0480c396ae25",
+          "on": "76da64aff2190a115b4b053086885fda74505dae32af952f63ab72c34ea6e379"
+        }
+      },
+      "page_diff": [
+        {
+          "control_differs": false,
+          "diff_ratio": 0.0,
+          "differs": false,
+          "heading_changed": false,
+          "page": 1
+        },
+        {
+          "control_differs": true,
+          "diff_ratio": 0.01329412,
+          "differs": true,
+          "heading_changed": false,
+          "page": 2
+        },
+        {
+          "control_differs": true,
+          "diff_ratio": 0.00757074,
+          "differs": true,
+          "heading_changed": false,
+          "page": 3
+        },
+        {
+          "control_differs": true,
+          "diff_ratio": 0.00702382,
+          "differs": true,
+          "heading_changed": true,
+          "page": 4
+        },
+        {
+          "control_differs": true,
+          "diff_ratio": 0.0018363,
+          "differs": true,
+          "heading_changed": true,
+          "page": 5
+        },
+        {
+          "control_differs": true,
+          "diff_ratio": 0.02933916,
+          "differs": true,
+          "heading_changed": true,
+          "page": 6
+        },
+        {
+          "control_differs": true,
+          "diff_ratio": 0.00169884,
+          "differs": true,
+          "heading_changed": true,
+          "page": 7
+        },
+        {
+          "control_differs": true,
+          "diff_ratio": 0.02035078,
+          "differs": true,
+          "heading_changed": true,
+          "page": 8
+        },
+        {
+          "control_differs": false,
+          "diff_ratio": 0.0,
+          "differs": false,
+          "heading_changed": true,
+          "page": 9
+        }
+      ],
+      "pages": {
+        "control": 9,
+        "off": 9,
+        "on": 9
+      },
+      "repair": {
+        "attributable": false,
+        "control_identical": true,
+        "control_touched": [],
+        "identical": true,
+        "off_touched": [],
+        "on_live_decisions": 1,
+        "on_touched": []
+      },
+      "requests": {
+        "control": 79,
+        "off": 77,
+        "on": 79
+      },
+      "sample": "AramcoWorld-en-v2",
+      "stray": [],
+      "titles": {
+        "duplicate_layers": 2,
+        "escalations": 3,
+        "floor_reached": 3,
+        "single_line": 6,
+        "suppressed_paragraphs": 0,
+        "titles": 23,
+        "unchanged": 14
+      },
+      "typesetting": {
+        "control_identical": false,
+        "identical": false,
+        "sha256": {
+          "control": "a6ec10fdee82cfd593d02cfd222bc7ad75d6a6cab28383768fb936841ffa197e",
+          "off": "fbf459516afe987616bf6baef100d51351c0ca75dc648fdc7c367db47ff54ba8",
+          "on": "059abf6c9cc38db0c0e669bbb501e2fd7706c15b72b823895e20d7b959f87ca9"
+        },
+        "verbatim_sha256": {
+          "control": "b0fd7718cac95c9ff81b7ea4d851ec7f9eb9f0d79a04242a6c0ebc9bf733a34a",
+          "off": "22fde3b1717306fd7ff7bd988fda3820deccc819ca1b0d09d2d60e8032dd818b",
+          "on": "314baa36cfcbd2f710e2690376219237ac572b985a6c604916b05556f1ca4983"
+        }
+      },
+      "unattributable_pages": [
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8
+      ]
+    },
+    {
+      "api_calls": {
+        "control": 12,
+        "off": 70,
+        "on": 4
+      },
+      "changed_pages": [
+        1,
+        2,
+        4
+      ],
+      "il_translated": {
+        "control_identical": false,
+        "identical": true,
+        "sha256": {
+          "control": "120feee4b64ce0b1a4fb877b6065d1754f985564a49dff417aff12b18e2fd11f",
+          "off": "c302f2eb5bb8524069e1e4b549f24863cb4766ed3e6e738c214bc205ecc512d7",
+          "on": "c302f2eb5bb8524069e1e4b549f24863cb4766ed3e6e738c214bc205ecc512d7"
+        },
+        "verbatim_sha256": {
+          "control": "3f75be351cd351f9f9fcd120f895c4aac6e1b06f4d999da50b9302c3a2a922af",
+          "off": "1fd6698a325177c4b2c1008a8eb0a295f8a97dc46123432c910f074e778d981f",
+          "on": "a53d4a07f0ec806b0f4291aaccd6c33e93167b4f648ef431479a1edd004d3526"
+        }
+      },
+      "page_diff": [
+        {
+          "control_differs": true,
+          "diff_ratio": 0.0083965,
+          "differs": true,
+          "heading_changed": true,
+          "page": 1
+        },
+        {
+          "control_differs": true,
+          "diff_ratio": 8.083e-05,
+          "differs": true,
+          "heading_changed": true,
+          "page": 2
+        },
+        {
+          "control_differs": true,
+          "diff_ratio": 0.0,
+          "differs": false,
+          "heading_changed": false,
+          "page": 3
+        },
+        {
+          "control_differs": true,
+          "diff_ratio": 8.845e-05,
+          "differs": true,
+          "heading_changed": true,
+          "page": 4
+        }
+      ],
+      "pages": {
+        "control": 4,
+        "off": 4,
+        "on": 4
+      },
+      "repair": {
+        "attributable": false,
+        "control_identical": true,
+        "control_touched": [
+          "p2#32"
+        ],
+        "identical": true,
+        "off_touched": [
+          "p2#32"
+        ],
+        "on_live_decisions": 2,
+        "on_touched": [
+          "p2#32"
+        ]
+      },
+      "requests": {
+        "control": 84,
+        "off": 88,
+        "on": 87
+      },
+      "sample": "CERNCourier-en",
+      "stray": [],
+      "titles": {
+        "duplicate_layers": 2,
+        "escalations": 0,
+        "floor_reached": 0,
+        "single_line": 3,
+        "suppressed_paragraphs": 2,
+        "titles": 41,
+        "unchanged": 38
+      },
+      "typesetting": {
+        "control_identical": false,
+        "identical": true,
+        "sha256": {
+          "control": "a5fe162abe5aebae401af9842b80461c08a31e058fb46ea307360f51bd3cddf3",
+          "off": "56d5f6db03770c968f9ec38465619f80df6873e08933beec52081f66bef36bc1",
+          "on": "56d5f6db03770c968f9ec38465619f80df6873e08933beec52081f66bef36bc1"
+        },
+        "verbatim_sha256": {
+          "control": "422b6689be72f28720a9155e77d4f5cbe889e2832883d60cede86747cfcb0476",
+          "off": "28761d2353b3db05e0b845c9a9a1ef775a8fd5135a0e65f3cc5899d044ef55c3",
+          "on": "dda2a48d4f8154d5b74633dd2b6c39de539a330507ece1762ebc6e4801a0c8de"
+        }
+      },
+      "unattributable_pages": [
+        1,
+        2,
+        4
+      ]
+    },
+    {
+      "api_calls": {
+        "control": 1,
+        "off": 6,
+        "on": 1
+      },
+      "changed_pages": [
+        1,
+        4,
+        5,
+        6,
+        7,
+        8
+      ],
+      "il_translated": {
+        "control_identical": true,
+        "identical": true,
+        "sha256": {
+          "control": "2e0abf7e30e081f306a055dc1c0fa4495adf142de6df11cdae9155665293d28c",
+          "off": "2e0abf7e30e081f306a055dc1c0fa4495adf142de6df11cdae9155665293d28c",
+          "on": "2e0abf7e30e081f306a055dc1c0fa4495adf142de6df11cdae9155665293d28c"
+        },
+        "verbatim_sha256": {
+          "control": "9f32ffe2a64e2c108661281b79f9934f096caf0f8cf4e92fb9e63e0310ee6787",
+          "off": "aec2186c4cf17d0b9d3f5d2dd8b05823761cf1bab02dc011226752b9f73436ad",
+          "on": "da5aeeb7eda8d541bc62c891807d94271f06318ff99dc741b2ebc227bb2e7657"
+        }
+      },
+      "page_diff": [
+        {
+          "control_differs": false,
+          "diff_ratio": 0.00320575,
+          "differs": true,
+          "heading_changed": true,
+          "page": 1
+        },
+        {
+          "control_differs": false,
+          "diff_ratio": 0.0,
+          "differs": false,
+          "heading_changed": false,
+          "page": 2
+        },
+        {
+          "control_differs": false,
+          "diff_ratio": 0.0,
+          "differs": false,
+          "heading_changed": false,
+          "page": 3
+        },
+        {
+          "control_differs": false,
+          "diff_ratio": 0.0,
+          "differs": false,
+          "heading_changed": true,
+          "page": 4
+        },
+        {
+          "control_differs": false,
+          "diff_ratio": 0.00708637,
+          "differs": true,
+          "heading_changed": true,
+          "page": 5
+        },
+        {
+          "control_differs": false,
+          "diff_ratio": 0.00172783,
+          "differs": true,
+          "heading_changed": true,
+          "page": 6
+        },
+        {
+          "control_differs": false,
+          "diff_ratio": 0.00043322,
+          "differs": true,
+          "heading_changed": true,
+          "page": 7
+        },
+        {
+          "control_differs": false,
+          "diff_ratio": 0.00136077,
+          "differs": true,
+          "heading_changed": true,
+          "page": 8
+        }
+      ],
+      "pages": {
+        "control": 8,
+        "off": 8,
+        "on": 8
+      },
+      "repair": {
+        "attributable": false,
+        "control_identical": true,
+        "control_touched": [],
+        "identical": true,
+        "off_touched": [],
+        "on_live_decisions": 1,
+        "on_touched": []
+      },
+      "requests": {
+        "control": 55,
+        "off": 56,
+        "on": 55
+      },
+      "sample": "Courier-en",
+      "stray": [],
+      "titles": {
+        "duplicate_layers": 0,
+        "escalations": 2,
+        "floor_reached": 2,
+        "single_line": 6,
+        "suppressed_paragraphs": 0,
+        "titles": 25,
+        "unchanged": 17
+      },
+      "typesetting": {
+        "control_identical": true,
+        "identical": true,
+        "sha256": {
+          "control": "31e4d82b3561bff2238f8fac0f577dfa0ba5672d5cf8bc81a46acc61bcdb4b59",
+          "off": "31e4d82b3561bff2238f8fac0f577dfa0ba5672d5cf8bc81a46acc61bcdb4b59",
+          "on": "31e4d82b3561bff2238f8fac0f577dfa0ba5672d5cf8bc81a46acc61bcdb4b59"
+        },
+        "verbatim_sha256": {
+          "control": "8fcaafcf5bf657d650c8c51b478e79095ba9d7cdb040751874d34dbe48aca0b9",
+          "off": "4cca3fc53cbca3baa034fa63aaf9b231d863dbd07d4f4a2a7cba9ce7f611310a",
+          "on": "d7e90864d6053cf12a4941817c35483c1957cf0a44af5f076a6217b510792550"
+        }
+      },
+      "unattributable_pages": []
+    },
+    {
+      "api_calls": {
+        "control": 1,
+        "off": 52,
+        "on": 1
+      },
+      "changed_pages": [
+        3,
+        5,
+        6,
+        8
+      ],
+      "il_translated": {
+        "control_identical": true,
+        "identical": true,
+        "sha256": {
+          "control": "e2555ead495efa075a7ff4cd12ee5989ff937c3f3e28e9b9cb27f4ad28aec46b",
+          "off": "e2555ead495efa075a7ff4cd12ee5989ff937c3f3e28e9b9cb27f4ad28aec46b",
+          "on": "e2555ead495efa075a7ff4cd12ee5989ff937c3f3e28e9b9cb27f4ad28aec46b"
+        },
+        "verbatim_sha256": {
+          "control": "f2534f3e6b94437d2a5ea82c44a2ce8888120894562c5c8c1023afa8e2cd8173",
+          "off": "4006a0d931a80470c8d82d1d190de2037bf1d71b66a982f72e72cf5cfd154fc9",
+          "on": "63c0ce708884f743bd5ead6e56d77dc4f481f07928e37a966248d009e3a5d514"
+        }
+      },
+      "page_diff": [
+        {
+          "control_differs": false,
+          "diff_ratio": 0.0,
+          "differs": false,
+          "heading_changed": false,
+          "page": 1
+        },
+        {
+          "control_differs": false,
+          "diff_ratio": 0.0,
+          "differs": false,
+          "heading_changed": false,
+          "page": 2
+        },
+        {
+          "control_differs": false,
+          "diff_ratio": 0.0,
+          "differs": false,
+          "heading_changed": true,
+          "page": 3
+        },
+        {
+          "control_differs": false,
+          "diff_ratio": 0.0,
+          "differs": false,
+          "heading_changed": false,
+          "page": 4
+        },
+        {
+          "control_differs": true,
+          "diff_ratio": 0.00106065,
+          "differs": true,
+          "heading_changed": true,
+          "page": 5
+        },
+        {
+          "control_differs": false,
+          "diff_ratio": 0.0,
+          "differs": false,
+          "heading_changed": true,
+          "page": 6
+        },
+        {
+          "control_differs": false,
+          "diff_ratio": 0.0,
+          "differs": false,
+          "heading_changed": false,
+          "page": 7
+        },
+        {
+          "control_differs": false,
+          "diff_ratio": 0.00541641,
+          "differs": true,
+          "heading_changed": true,
+          "page": 8
+        },
+        {
+          "control_differs": false,
+          "diff_ratio": 0.0,
+          "differs": false,
+          "heading_changed": false,
+          "page": 9
+        }
+      ],
+      "pages": {
+        "control": 9,
+        "off": 9,
+        "on": 9
+      },
+      "repair": {
+        "attributable": false,
+        "control_identical": false,
+        "control_touched": [],
+        "identical": false,
+        "off_touched": [
+          "p5#14",
+          "p5#9"
+        ],
+        "on_live_decisions": 1,
+        "on_touched": []
+      },
+      "requests": {
+        "control": 59,
+        "off": 67,
+        "on": 59
+      },
+      "sample": "FD-en-v2",
+      "stray": [],
+      "titles": {
+        "duplicate_layers": 0,
+        "escalations": 3,
+        "floor_reached": 3,
+        "single_line": 1,
+        "suppressed_paragraphs": 0,
+        "titles": 35,
+        "unchanged": 31
+      },
+      "typesetting": {
+        "control_identical": true,
+        "identical": true,
+        "sha256": {
+          "control": "e5c637fb06abbd5f934e43c996f8fd4f2b5136c5219a27c4cf428e2891c57f6e",
+          "off": "e5c637fb06abbd5f934e43c996f8fd4f2b5136c5219a27c4cf428e2891c57f6e",
+          "on": "e5c637fb06abbd5f934e43c996f8fd4f2b5136c5219a27c4cf428e2891c57f6e"
+        },
+        "verbatim_sha256": {
+          "control": "7bad36b089b552f1dd3cdeedd633974044aef2273785bc5eb4933022c4ed9414",
+          "off": "62fec2c9187eab40d85b225d831782e7792d9b9835504b310bbb8a98966242bc",
+          "on": "a38de6a68f9dc07278aa1543c3e4274eef1ffa884880e142d56296886ef3110b"
+        }
+      },
+      "unattributable_pages": [
+        5
+      ]
+    },
+    {
+      "api_calls": {
+        "control": 1,
+        "off": 11,
+        "on": 1
+      },
+      "changed_pages": [
+        3
+      ],
+      "il_translated": {
+        "control_identical": true,
+        "identical": true,
+        "sha256": {
+          "control": "315c02bd93c27a9ab39dee5fc594c6ff6a2a18a32bce5cb3545a5fa985699a5e",
+          "off": "315c02bd93c27a9ab39dee5fc594c6ff6a2a18a32bce5cb3545a5fa985699a5e",
+          "on": "315c02bd93c27a9ab39dee5fc594c6ff6a2a18a32bce5cb3545a5fa985699a5e"
+        },
+        "verbatim_sha256": {
+          "control": "af15c44badfc55f0dabbb05289dff339aaed4ef29b5211cbde651290187964b1",
+          "off": "977326dcae0d9040cf85786e87897f224a368d10e66b2c3ebb931441de2f5074",
+          "on": "0e23e58e4a18b0784f7dbe2015f1d5897858cc4256d9eddd4853fda9497440e6"
+        }
+      },
+      "page_diff": [
+        {
+          "control_differs": false,
+          "diff_ratio": 0.0,
+          "differs": false,
+          "heading_changed": false,
+          "page": 1
+        },
+        {
+          "control_differs": false,
+          "diff_ratio": 0.0,
+          "differs": false,
+          "heading_changed": false,
+          "page": 2
+        },
+        {
+          "control_differs": false,
+          "diff_ratio": 0.00015676,
+          "differs": true,
+          "heading_changed": true,
+          "page": 3
+        }
+      ],
+      "pages": {
+        "control": 3,
+        "off": 3,
+        "on": 3
+      },
+      "repair": {
+        "attributable": false,
+        "control_identical": true,
+        "control_touched": [],
+        "identical": true,
+        "off_touched": [],
+        "on_live_decisions": 1,
+        "on_touched": []
+      },
+      "requests": {
+        "control": 15,
+        "off": 15,
+        "on": 15
+      },
+      "sample": "Vogue-en",
+      "stray": [],
+      "titles": {
+        "duplicate_layers": 0,
+        "escalations": 0,
+        "floor_reached": 0,
+        "single_line": 1,
+        "suppressed_paragraphs": 0,
+        "titles": 10,
+        "unchanged": 9
+      },
+      "typesetting": {
+        "control_identical": true,
+        "identical": true,
+        "sha256": {
+          "control": "fbb4d18401b8d155f70a1ea185556415d3f0a59f6aa6ce76150a2dc3b6182527",
+          "off": "fbb4d18401b8d155f70a1ea185556415d3f0a59f6aa6ce76150a2dc3b6182527",
+          "on": "fbb4d18401b8d155f70a1ea185556415d3f0a59f6aa6ce76150a2dc3b6182527"
+        },
+        "verbatim_sha256": {
+          "control": "38a810f46ac09473d3f65b2ee2ef57d0d32ca4a963376b182fcadee8590f05a0",
+          "off": "7e3b0938b28ce3da98958cbe356fe064065234699cafa6894a0b4679be595938",
+          "on": "b459115519384c3ae63adfb908a6ddf74ea3d28d278867bcc979961807240e9e"
+        }
+      },
+      "unattributable_pages": []
+    }
+  ],
+  "batch": "b9_2",
+  "cost": {
+    "control": {
+      "api_calls": 26,
+      "cache_hits": 266,
+      "completion_tokens": 5167,
+      "prompt_tokens": 45249,
+      "requests": 292,
+      "seconds": 1833.7
+    },
+    "off": {
+      "api_calls": 200,
+      "cache_hits": 103,
+      "completion_tokens": 29977,
+      "prompt_tokens": 209672,
+      "requests": 303,
+      "seconds": 1075.6
+    },
+    "on": {
+      "api_calls": 21,
+      "cache_hits": 274,
+      "completion_tokens": 3432,
+      "prompt_tokens": 36415,
+      "requests": 295,
+      "seconds": 2022.1
+    }
+  },
+  "cover": {
+    "faults": [],
+    "frame": [
+      0.0,
+      0.0,
+      1024.0,
+      768.0
+    ],
+    "headings": [
+      {
+        "disposition": "single_line",
+        "duplicates": [],
+        "indent_closed": false,
+        "lines_after": 1,
+        "lines_before": 2,
+        "page": 1,
+        "reference": "p1#2",
+        "required_scale": 0.7754,
+        "scale": 0.7754,
+        "suppressed": false
+      },
+      {
+        "disposition": "single_line",
+        "duplicates": [],
+        "indent_closed": false,
+        "lines_after": 1,
+        "lines_before": 2,
+        "page": 1,
+        "reference": "p1#3",
+        "required_scale": 0.8281,
+        "scale": 0.8281,
+        "suppressed": false
+      },
+      {
+        "disposition": "unchanged",
+        "duplicates": [],
+        "indent_closed": false,
+        "lines_before": 1,
+        "page": 1,
+        "reference": "p1#17",
+        "suppressed": false
+      }
+    ],
+    "off_glyphs": 820,
+    "on_glyphs": 821,
+    "open_defect": {
+      "overhang_points": {
+        "off": 44.31,
+        "on": 32.3
+      },
+      "page": 1,
+      "sample": "CERNCourier-en",
+      "what": "a display heading draws past the top edge of the page",
+      "why": "the layout anchors a paragraph's first line at the top of its box less the modal height of its units, and this paragraph carries a masthead and the credit line beside it, so the anchor follows the credit and the masthead stands above it",
+      "why_this_batch_does_not_close_it": "the scale that would bring the glyph box under the edge is far below the floor, and shrinking a masthead to a quarter of its size to fit a frame is not setting a heading; containment against the page edge is a collision question"
+    },
+    "outside_frame": {
+      "off": 9,
+      "on": 10
+    },
+    "outside_frame_detail": {
+      "off": [
+        {
+          "bbox": [
+            521.09,
+            -44.31,
+            571.92,
+            28.68
+          ],
+          "beyond_frame": 44.31,
+          "char": "欧"
+        },
+        {
+          "bbox": [
+            571.92,
+            -44.31,
+            622.75,
+            28.68
+          ],
+          "beyond_frame": 44.31,
+          "char": "洲"
+        },
+        {
+          "bbox": [
+            622.75,
+            -44.31,
+            673.58,
+            28.68
+          ],
+          "beyond_frame": 44.31,
+          "char": "核"
+        },
+        {
+          "bbox": [
+            673.58,
+            -44.31,
+            724.41,
+            28.68
+          ],
+          "beyond_frame": 44.31,
+          "char": "子"
+        },
+        {
+          "bbox": [
+            724.41,
+            -44.31,
+            775.24,
+            28.68
+          ],
+          "beyond_frame": 44.31,
+          "char": "研"
+        },
+        {
+          "bbox": [
+            775.24,
+            -44.31,
+            826.07,
+            28.68
+          ],
+          "beyond_frame": 44.31,
+          "char": "究"
+        },
+        {
+          "bbox": [
+            826.07,
+            -44.31,
+            876.9,
+            28.68
+          ],
+          "beyond_frame": 44.31,
+          "char": "中"
+        },
+        {
+          "bbox": [
+            876.9,
+            -44.31,
+            927.73,
+            28.68
+          ],
+          "beyond_frame": 44.31,
+          "char": "心"
+        },
+        {
+          "bbox": [
+            927.73,
+            -44.31,
+            978.56,
+            28.68
+          ],
+          "beyond_frame": 44.31,
+          "char": "快"
+        }
+      ],
+      "on": [
+        {
+          "bbox": [
+            521.09,
+            -32.3,
+            560.5,
+            24.3
+          ],
+          "beyond_frame": 32.3,
+          "char": "欧"
+        },
+        {
+          "bbox": [
+            560.5,
+            -32.3,
+            599.92,
+            24.3
+          ],
+          "beyond_frame": 32.3,
+          "char": "洲"
+        },
+        {
+          "bbox": [
+            599.92,
+            -32.3,
+            639.33,
+            24.3
+          ],
+          "beyond_frame": 32.3,
+          "char": "核"
+        },
+        {
+          "bbox": [
+            639.33,
+            -32.3,
+            678.74,
+            24.3
+          ],
+          "beyond_frame": 32.3,
+          "char": "子"
+        },
+        {
+          "bbox": [
+            678.74,
+            -32.3,
+            718.16,
+            24.3
+          ],
+          "beyond_frame": 32.3,
+          "char": "研"
+        },
+        {
+          "bbox": [
+            718.16,
+            -32.3,
+            757.57,
+            24.3
+          ],
+          "beyond_frame": 32.3,
+          "char": "究"
+        },
+        {
+          "bbox": [
+            757.57,
+            -32.3,
+            796.99,
+            24.3
+          ],
+          "beyond_frame": 32.3,
+          "char": "中"
+        },
+        {
+          "bbox": [
+            796.99,
+            -32.3,
+            836.4,
+            24.3
+          ],
+          "beyond_frame": 32.3,
+          "char": "心"
+        },
+        {
+          "bbox": [
+            836.4,
+            -32.3,
+            875.81,
+            24.3
+          ],
+          "beyond_frame": 32.3,
+          "char": "快"
+        },
+        {
+          "bbox": [
+            875.81,
+            -32.3,
+            915.23,
+            24.3
+          ],
+          "beyond_frame": 32.3,
+          "char": "报"
+        }
+      ]
+    },
+    "outside_frame_text": {
+      "off": "欧洲核子研究中心快",
+      "on": "欧洲核子研究中心快报"
+    },
+    "overhang_points": {
+      "off": 44.31,
+      "on": 32.3
+    },
+    "page": 1,
+    "raster": {
+      "off_crop": "examples/output/b9_2/raster/cover.p1.off.crop.png",
+      "off_page": "examples/output/b9_2/raster/cover.p1.off.png",
+      "on_crop": "examples/output/b9_2/raster/cover.p1.on.crop.png",
+      "on_page": "examples/output/b9_2/raster/cover.p1.on.png"
+    },
+    "sample": "CERNCourier-en",
+    "still_wrapped": [],
+    "wrapped_before": [
+      "p1#2",
+      "p1#3"
+    ]
+  },
+  "faults": [],
+  "fixture": {
+    "document": "examples/output/b9_2/fixtures/AramcoWorld-en-v2.titles.xml",
+    "document_sha256": "c07db6b7ef773fa26033d2e086ceb95cc0de75a87c4c6a263e0b906127cb31d6",
+    "headings": 3,
+    "page": 5,
+    "references": [
+      "p5#11",
+      "p5#14",
+      "p5#17"
+    ],
+    "sample": "AramcoWorld-en-v2",
+    "sidecar": "examples/output/b9_2/fixtures/AramcoWorld-en-v2.title_typeset.report.json",
+    "sidecar_sha256": "8d527b6c92fe672f929e3f28e8de50137da0f84786527afafa567c5a37bfb37b"
+  },
+  "floor": {
+    "count": 8,
+    "escalations": [
+      {
+        "disposition": "escalate",
+        "floor": 0.55,
+        "lines": 3,
+        "page": 4,
+        "reference": "p4#12",
+        "required_scale": 0.3447,
+        "sample": "AramcoWorld-en-v2"
+      },
+      {
+        "disposition": "escalate",
+        "floor": 0.55,
+        "lines": 3,
+        "page": 8,
+        "reference": "p8#11",
+        "required_scale": 0.3556,
+        "sample": "AramcoWorld-en-v2"
+      },
+      {
+        "disposition": "escalate",
+        "floor": 0.55,
+        "lines": 2,
+        "page": 9,
+        "reference": "p9#13",
+        "required_scale": 0.5245,
+        "sample": "AramcoWorld-en-v2"
+      },
+      {
+        "disposition": "escalate",
+        "floor": 0.55,
+        "lines": 3,
+        "page": 4,
+        "reference": "p4#17",
+        "required_scale": 0.4583,
+        "sample": "Courier-en"
+      },
+      {
+        "disposition": "escalate",
+        "floor": 0.55,
+        "lines": 2,
+        "page": 7,
+        "reference": "p7#17",
+        "required_scale": 0.5428,
+        "sample": "Courier-en"
+      },
+      {
+        "disposition": "escalate",
+        "floor": 0.55,
+        "lines": 3,
+        "page": 3,
+        "reference": "p3#19",
+        "required_scale": 0.333,
+        "sample": "FD-en-v2"
+      },
+      {
+        "disposition": "escalate",
+        "floor": 0.55,
+        "lines": 2,
+        "page": 5,
+        "reference": "p5#29",
+        "required_scale": 0.5833,
+        "sample": "FD-en-v2"
+      },
+      {
+        "disposition": "escalate",
+        "floor": 0.55,
+        "lines": 3,
+        "page": 6,
+        "reference": "p6#10",
+        "required_scale": 0.4544,
+        "sample": "FD-en-v2"
+      }
+    ]
+  },
+  "ghost": {
+    "display_extent_points": {
+      "f1": 474.84,
+      "off": 519.85,
+      "on": 259.93
+    },
+    "dropped_layer_was_visible": false,
+    "duplicates": [
+      {
+        "characters": 5,
+        "duplicate_of": "p5#17~0",
+        "layer": "run",
+        "page": 5,
+        "reference": "p5#17",
+        "run": "p5#17~2",
+        "similarity": 1.0
+      },
+      {
+        "characters": 1,
+        "duplicate_of": "p5#17~1",
+        "layer": "run",
+        "page": 5,
+        "reference": "p5#17",
+        "run": "p5#17~3",
+        "similarity": 1.0
+      }
+    ],
+    "extent_ratio": 0.5,
+    "faults": [],
+    "ink": {
+      "f1": {
+        "band": [
+          30.07,
+          41.18,
+          504.91,
+          154.83
+        ],
+        "ink_fraction": 0.082746,
+        "ink_pixels": 71691,
+        "ink_width_points": 394.0
+      },
+      "off": {
+        "band": [
+          30.07,
+          45.93,
+          549.93,
+          114.45
+        ],
+        "ink_fraction": 0.050467,
+        "ink_pixels": 28867,
+        "ink_width_points": 168.0
+      },
+      "on": {
+        "band": [
+          30.07,
+          45.93,
+          549.93,
+          114.45
+        ],
+        "ink_fraction": 0.050467,
+        "ink_pixels": 28867,
+        "ink_width_points": 168.0
+      }
+    },
+    "layers": {
+      "p5#17": {
+        "as_laid_out": "希贾兹铁路?希贾兹铁路?",
+        "kept": "希贾兹铁路?",
+        "runs": 4,
+        "runs_dropped": 2,
+        "same_heading_in_both_arms": true
+      }
+    },
+    "page": 5,
+    "raster": {
+      "f1_crop": "examples/output/b9_2/raster/ghost.p5.f1.crop.png",
+      "f1_page": "examples/output/b9_2/raster/ghost.p5.f1.png",
+      "off_crop": "examples/output/b9_2/raster/ghost.p5.off.crop.png",
+      "off_page": "examples/output/b9_2/raster/ghost.p5.off.png",
+      "on_crop": "examples/output/b9_2/raster/ghost.p5.on.crop.png",
+      "on_page": "examples/output/b9_2/raster/ghost.p5.on.png"
+    },
+    "record": [
+      {
+        "disposition": "single_line",
+        "duplicates": [
+          {
+            "characters": 5,
+            "duplicate_of": "p5#17~0",
+            "layer": "run",
+            "run": "p5#17~2",
+            "similarity": 1.0
+          },
+          {
+            "characters": 1,
+            "duplicate_of": "p5#17~1",
+            "layer": "run",
+            "run": "p5#17~3",
+            "similarity": 1.0
+          }
+        ],
+        "indent_closed": false,
+        "lines_after": 1,
+        "lines_before": 1,
+        "page": 5,
+        "reference": "p5#17",
+        "required_scale": 1.0,
+        "scale": 1.0,
+        "suppressed": false
+      }
+    ],
+    "references": [
+      "p5#17"
+    ],
+    "sample": "AramcoWorld-en-v2",
+    "what_the_layers_were": {
+      "design": "a solid layer under a gradient layer, read as one headline",
+      "given_up": "the gradient overlay",
+      "kept": "the solid layer",
+      "the_fix_that_keeps_both": "deduplicating before the translation, which this batch does not do because it would change the text a heading is translated as"
+    }
+  },
+  "metric": {
+    "contaminated": [],
+    "faults": [],
+    "samples": [
+      {
+        "doubled_headings": [
+          "p5#17"
+        ],
+        "doubled_paragraphs_inside_the_measurement": [],
+        "identical": true,
+        "sample": "AramcoWorld-en-v2",
+        "summary_as_run": {
+          "fully_consistent": 7,
+          "legacy_mean_share": 0.833333,
+          "ltcr": 0.768116,
+          "measured": 10,
+          "pairs_agreeing": 53,
+          "pairs_total": 69,
+          "terms": 10
+        },
+        "summary_collapsed": {
+          "fully_consistent": 7,
+          "legacy_mean_share": 0.833333,
+          "ltcr": 0.768116,
+          "measured": 10,
+          "pairs_agreeing": 53,
+          "pairs_total": 69,
+          "terms": 10
+        }
+      },
+      {
+        "doubled_headings": [
+          "p2#24",
+          "p4#43"
+        ],
+        "doubled_paragraphs_inside_the_measurement": [],
+        "identical": true,
+        "sample": "CERNCourier-en",
+        "summary_as_run": {
+          "fully_consistent": 3,
+          "legacy_mean_share": 0.95,
+          "ltcr": 0.818182,
+          "measured": 4,
+          "pairs_agreeing": 18,
+          "pairs_total": 22,
+          "terms": 4
+        },
+        "summary_collapsed": {
+          "fully_consistent": 3,
+          "legacy_mean_share": 0.95,
+          "ltcr": 0.818182,
+          "measured": 4,
+          "pairs_agreeing": 18,
+          "pairs_total": 22,
+          "terms": 4
+        }
+      }
+    ]
+  },
+  "ruled": {
+    "accounted": [
+      {
+        "as": "one line",
+        "reference": "p1#0"
+      },
+      {
+        "as": "one line",
+        "reference": "p1#1"
+      },
+      {
+        "as": "one line",
+        "reference": "p1#9"
+      },
+      {
+        "as": "one line",
+        "reference": "p1#10"
+      },
+      {
+        "as": "one line",
+        "reference": "p1#11"
+      },
+      {
+        "as": "one line",
+        "reference": "p1#21"
+      },
+      {
+        "as": "one line",
+        "reference": "p1#23"
+      },
+      {
+        "as": "one line",
+        "reference": "p1#26"
+      },
+      {
+        "as": "one line",
+        "reference": "p1#28"
+      },
+      {
+        "as": "one line",
+        "reference": "p1#33"
+      },
+      {
+        "as": "one line",
+        "reference": "p2#3"
+      },
+      {
+        "as": "one line",
+        "reference": "p2#6"
+      },
+      {
+        "as": "one line",
+        "reference": "p3#1"
+      },
+      {
+        "as": "one line",
+        "reference": "p4#13"
+      },
+      {
+        "as": "raised",
+        "reference": "p4#17"
+      },
+      {
+        "as": "one line",
+        "reference": "p4#18"
+      },
+      {
+        "as": "one line",
+        "reference": "p5#6"
+      },
+      {
+        "as": "one line",
+        "reference": "p6#6"
+      },
+      {
+        "as": "one line",
+        "reference": "p6#11"
+      },
+      {
+        "as": "one line",
+        "reference": "p7#6"
+      },
+      {
+        "as": "one line",
+        "reference": "p7#11"
+      },
+      {
+        "as": "one line",
+        "reference": "p7#15"
+      },
+      {
+        "as": "raised",
+        "reference": "p7#17"
+      },
+      {
+        "as": "one line",
+        "reference": "p8#6"
+      },
+      {
+        "as": "one line",
+        "reference": "p8#9"
+      }
+    ],
+    "faults": [],
+    "ruling_terms_added": [
+      "Anna Ruohonen",
+      "Chimamanda Ngozi Adichie",
+      "Du Junzhi",
+      "Jim Al-Khalili",
+      "Katerina Markelova",
+      "Ora Marek-Martinez",
+      "Sisco Auala",
+      "Yang Sha"
+    ],
+    "ruling_terms_carried": [
+      "Anna Ruohonen",
+      "Chimamanda Ngozi Adichie",
+      "Du Junzhi",
+      "Jim Al-Khalili",
+      "Katerina Markelova",
+      "Ora Marek-Martinez",
+      "Sisco Auala",
+      "Yang Sha"
+    ],
+    "ruling_terms_hits": [
+      {
+        "prompts_matched": 1,
+        "term": "Anna Ruohonen"
+      },
+      {
+        "prompts_matched": 1,
+        "term": "Chimamanda Ngozi Adichie"
+      },
+      {
+        "prompts_matched": 1,
+        "term": "Du Junzhi"
+      },
+      {
+        "prompts_matched": 1,
+        "term": "Jim Al-Khalili"
+      },
+      {
+        "prompts_matched": 0,
+        "term": "Katerina Markelova"
+      },
+      {
+        "prompts_matched": 1,
+        "term": "Ora Marek-Martinez"
+      },
+      {
+        "prompts_matched": 1,
+        "term": "Sisco Auala"
+      },
+      {
+        "prompts_matched": 1,
+        "term": "Yang Sha"
+      }
+    ],
+    "ruling_terms_missing": [],
+    "ruling_terms_unmatched": [
+      "Katerina Markelova"
+    ],
+    "sample": "Courier-en",
+    "titles": 25,
+    "unaccounted": []
+  },
+  "samples": [
+    "AramcoWorld-en-v2",
+    "CERNCourier-en",
+    "Courier-en",
+    "FD-en-v2",
+    "Vogue-en"
+  ],
+  "switch": "magazine_title_typeset"
+}

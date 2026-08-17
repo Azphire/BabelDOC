@@ -1,0 +1,28 @@
+{
+  "sample": "AramcoWorld-en-v2.pdf",
+  "arm": "control",
+  "magazine_title_typeset": false,
+  "model": "gpt-4o",
+  "lang_in": "en",
+  "lang_out": "zh",
+  "seconds": 676.4,
+  "requests": 79,
+  "cache_hits": 68,
+  "api_calls": 11,
+  "prompt_tokens": 16435,
+  "completion_tokens": 2385,
+  "input_pages": 9,
+  "output_pages": 9,
+  "pdf": "examples\\output\\b9_2\\control\\AramcoWorld-en-v2\\AramcoWorld-en-v2.b9_2.control.pdf",
+  "pdf_sha256": "7089407d4429bc7d6bea87318cdbd2d8fa9a8ad0c5813a4ba75b068fb541750e",
+  "working_dir": "examples\\output\\b9_2\\control\\AramcoWorld-en-v2\\work\\AramcoWorld-en-v2",
+  "ruling": {
+    "path": null,
+    "sha256": null,
+    "present": false
+  },
+  "translation_style": {
+    "person_names": "transliterate",
+    "system_prompt_sha256": "74666d7128c1c06127d9193db7b8d2b346866088f1ccabb4c33e69be1c586903"
+  }
+}
