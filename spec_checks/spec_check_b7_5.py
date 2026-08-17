@@ -134,8 +134,23 @@ TRUTH_DIGESTS = {
     # reads it, applies it and reports on it, and never writes a word of it. Its
     # digest is taken after the owner wrote the masthead entries and before the
     # two passes ran, so a difference here means a pass wrote back into it.
+    #
+    # Repinned by B9.2 under CLAUDE.md 4.12, which is what this pin has always
+    # meant: it anchors "no machine edited this file in that batch", not "this
+    # file never changes again". A ruling is a living document and the two pass
+    # process is how it grows.
+    #   was: c86c16c136583a4cf5be63ee9a0df8184035ff128775d16e37989c56b4ad1cfe
+    #   now: 372a6f7cbcdd942ffa971cfa5184689510b53089ace10e73920a195bb07a4fc4
+    #   what: eight person name terms added, and the p4#3 drop cap verdict moved
+    #         from keep to flatten
+    #   who:  the corpus owner, in commit "ruling: person-name terms and
+    #         drop-cap flatten for F2", which carries no machine edit
+    #   why:  the F2 ruling update, following B9.1's person name policy
+    # That the revision is those two things and nothing else is asserted
+    # separately, by spec_check_b9_2's 04d, which also revalidates the whole
+    # file against the loader that will read it.
     "reviews/Courier-en.decisions.json": (
-        "c86c16c136583a4cf5be63ee9a0df8184035ff128775d16e37989c56b4ad1cfe"
+        "372a6f7cbcdd942ffa971cfa5184689510b53089ace10e73920a195bb07a4fc4"
     ),
 }
 
@@ -877,11 +892,21 @@ def check_07a_masthead_ruling_reached_what_it_could() -> None:
             faults.append(f"{site['paragraph']}: does not carry the ruled name")
         if not site["moved"]:
             faults.append(f"{site['paragraph']}: unchanged by the ruling")
-    # The ruling is the file the corpus owner wrote, unedited since the run.
+    # The ruling is the file the corpus owner wrote, unedited by any machine
+    # since the run. Read as a superset rather than as an equality, under
+    # CLAUDE.md 4.12: the owner may add to a ruling between batches and did, so
+    # what this can assert is that every term the run applied is still on disk
+    # rendering the same way. A term the run applied that has gone missing, or
+    # come back rendered differently, is the defect this was written for; a term
+    # the owner added afterwards is not.
     with (ROOT / "reviews" / "Courier-en.decisions.json").open(encoding="utf-8") as f:
         written = json.load(f)
-    if written.get("terms") != data["ruling"]["terms"]:
-        faults.append("the ruling on disk is not the one the run applied")
+    on_disk = written.get("terms") or {}
+    for term, rendering in (data["ruling"]["terms"] or {}).items():
+        if term not in on_disk:
+            faults.append(f"{term!r}: the run applied it and the ruling no longer has it")
+        elif on_disk[term] != rendering:
+            faults.append(f"{term!r}: rendered differently on disk than the run applied")
     record(
         "check_07a_masthead_ruling_reached_what_it_could",
         not faults,

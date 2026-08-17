@@ -1,0 +1,29 @@
+{
+  "description": "Title typesetting policy, applied after the typesetting stage has laid a document out and before it is detected or written. A heading is a display unit: it is set on one line, it carries no first line indent, and it is shown once even where the source drew it twice. title_pair_classes names the endpoint classes declared in chain_detection.json whose layout labels count as a heading, so a heading is recognised here by the same declaration the chain detector pairs display lines by and no layout label is written in code. Single line: the paragraph is laid out again at a scale small enough that its characters land on one line, starting from the ratio its own font metrics predict and shrinking by scale_shrink_step until the laid out characters occupy one band or max_scale_attempts is spent. A heading that would need a scale below title_min_scale is not squeezed in; what happens to it instead is on_floor, which is a member of on_floor_vocabulary: wrap accepts the wrapped rendering the stage produced, escalate accepts the same rendering and records the heading as an escalation, with the scale it asked for, for a human to answer. Duplicate layers: a display headline is often drawn twice, once per paint, and the paragraph finder recovers the two as either two paragraphs standing on each other or two style runs of one paragraph, so both granularities are deduplicated. Two heading paragraphs of one page whose boxes share duplicate_min_iou of their area and whose text agrees to duplicate_min_text_similarity are one display unit: the larger keeps the page and the smaller renders nothing. Two style runs of one heading set in the same font id and, within duplicate_font_size_tolerance, the same size, whose text agrees to the same similarity, are likewise one display unit and the later run is dropped. Neither rule looks at a run shorter than duplicate_min_chars, which is too little text for agreement to mean anything. Erasure needs no rule of its own: the page content stream is rebuilt from this document rather than edited, so a layer removed from it is removed from the output, source and translation alike. line_band_tolerance is how far apart two characters may sit on the vertical axis and still count as one line, as a fraction of the line height. single_line_width_ratio is how much of the box width a single line may occupy, which leaves the margin the inter script spacing the layout adds needs.",
+
+  "title_pair_classes": ["title"],
+
+  "title_min_scale": 0.55,
+  "title_min_scale_allowed_range": "0.05..1.0",
+
+  "on_floor": "escalate",
+  "on_floor_vocabulary": ["wrap", "escalate"],
+
+  "duplicate_min_iou": 0.7,
+  "duplicate_min_iou_allowed_range": "0.0..1.0",
+  "duplicate_min_text_similarity": 0.95,
+  "duplicate_min_text_similarity_allowed_range": "0.5..1.0",
+  "duplicate_min_chars": 2,
+  "duplicate_min_chars_allowed_range": "1..64",
+  "duplicate_font_size_tolerance": 0.5,
+  "duplicate_font_size_tolerance_allowed_range": "0.0..12.0",
+
+  "single_line_width_ratio": 0.98,
+  "single_line_width_ratio_allowed_range": "0.5..1.0",
+  "scale_shrink_step": 0.96,
+  "scale_shrink_step_allowed_range": "0.5..0.999",
+  "max_scale_attempts": 24,
+  "max_scale_attempts_allowed_range": "1..64",
+  "line_band_tolerance": 0.35,
+  "line_band_tolerance_allowed_range": "0.0..1.0"
+}

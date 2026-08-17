@@ -18,6 +18,15 @@ is a profile: both are strings read from configuration and used as keys.
 A detector that needs a translated document says so, and is skipped with its
 reason recorded on a run that translated nothing, rather than reporting every
 paragraph of an untranslated document as untranslated.
+
+One pass that does change the document is called from here, before any of this
+runs: the heading policy in ``magazine/title_typeset.py``. It belongs in the
+same window -- after the geometry is final, before anything reads it -- and this
+call is the only extension owned code the pipeline runs in that window, so
+reaching the window through it is what keeps the pipeline itself unchanged. It
+carries its own switch and answers for its own sidecar; with that switch down it
+returns having read nothing, and detection then sees exactly the document it
+saw before.
 """
 
 from __future__ import annotations
@@ -191,7 +200,14 @@ def detect_issues(translation_config, docs) -> list[Issue]:
     pass instead: it detects, acts and detects again, and the sidecar it leaves
     describes the document the PDF is written from rather than the one detection
     first saw. The import is local because that package reads this one.
+
+    The heading policy runs first, and before the switch is consulted, so that
+    what is detected is the document as it will be written. Its import is local
+    for the same reason the controller's is.
     """
+    from babeldoc.magazine import title_typeset
+
+    title_typeset.apply(translation_config, docs)
     if not enabled(translation_config):
         return []
     from babeldoc.magazine.react import controller

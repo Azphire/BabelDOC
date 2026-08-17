@@ -146,6 +146,11 @@ NAME_REFERENCE_ALLOW_LIST = NAME_DEFINITION_FILES | {
     # neighbours, which is the one distinction the attribution turns on; it
     # opens no document for writing and writes only its own report.
     "tools/drift_attribution.py",
+    # B9.2 sets a heading after the layout has run. The pass itself names none
+    # of the nine; its gate builds one paragraph carrying a chain id, because
+    # the ordering it asserts -- a chain member is scaled after its backfill,
+    # never rewritten by the scaling -- is only about a paragraph that is one.
+    "spec_checks/spec_check_b9_2.py",
 }
 
 # Upstream files carried over from B0, still uncommitted in the working tree.
