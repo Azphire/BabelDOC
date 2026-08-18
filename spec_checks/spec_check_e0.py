@@ -135,8 +135,14 @@ NESTED_SUPPRESSED = os.environ.get("SPEC_NO_NESTED") == "1"
 # artefact any citation here resolves to. Batch b9.3 follows it for the ordering
 # reason alone: it builds every document it asserts on, cites nothing this gate
 # inventories, and its own coverage of the read-only guard is over the state
-# b9.2r established.
-AFTER_THIS_GATE = ("spec_check_b9_2r.py", "spec_check_b9_3.py")
+# b9.2r established. Batch b9.4 follows for the same reason: its documents are
+# built in its own file, the frozen artefacts it reads are its batch's and the
+# corpus run's, and it cites nothing this gate inventories.
+AFTER_THIS_GATE = (
+    "spec_check_b9_2r.py",
+    "spec_check_b9_3.py",
+    "spec_check_b9_4.py",
+)
 
 # Paths this batch may change. Nothing under babeldoc/, nothing under configs/,
 # nothing under corpus/ or reviews/: E0 is an inventory and writes documents.

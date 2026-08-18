@@ -16,9 +16,9 @@ The paragraph is body text, by the label vocabulary every other stage reads. It
 belongs to an article, and stands within the first few body paragraphs of it or
 on the page that article opens on -- which is where an opening initial goes, and
 which is why this needs the article map: a paragraph in no article is never a
-candidate, and a run without the grouping stage has no map to read. Its first
-style run is large against the paragraph's own median character size and short
-enough to be an initial rather than a heading the paragraph finder swept in.
+candidate, and a run without the grouping stage has no map to read. Its opening
+run of characters is large against the paragraph's own median character size and
+short enough to be an initial rather than a heading the paragraph finder swept in.
 
 The size ratio is measured against the paragraph's median rather than the
 document's: a magazine sets its body text at several sizes, and what makes an
@@ -33,11 +33,48 @@ requires ``magazine_article_group``, and a run that raises one without the other
 is refused rather than quietly marking nothing, because a run that was asked for
 candidates and produced none has to be a run that found none.
 
-Nothing consumes the ruling. ``dropCapDecision`` is written into the
-intermediate language and read by no stage in this batch: making typesetting act
-on a verdict is a batch of its own. The sidecar this module writes says so too,
-so a run whose ruling appears to have changed nothing is explained by its own
-inventory rather than by reading the code.
+Where the initial is read from
+------------------------------
+
+From the paragraph's leading characters, not from its first composition. The
+composition holding an initial is a style run on one page and a formula on the
+next: where the styling stage reads the body sized letters standing after an
+enlarged initial as corner marks, the initial and the rest of the first word are
+grouped into one formula, and a reader consulting the first style run alone finds
+nothing there. What makes an initial an initial is the size of the characters, so
+that is what is read.
+
+What consumes the ruling
+------------------------
+
+``apply``, behind ``magazine_drop_cap_apply`` and down by default, run after the
+ruling is injected and before the translator is built. It is the reader of the
+``dropCapDecision`` attribute B1 added to the schema, and the only one.
+``flatten`` merges the enlarged initial into the text it opens, so the first word
+reaches the engine as a word; ``keep`` leaves the paragraph exactly as an unruled
+one is left. A
+candidate nobody ruled takes the default its target language declares in
+``configs/drop_cap.json``, which is how a run with no human in it still decides,
+and only a marked candidate is decided that way.
+
+The merge is the whole of the mechanism, and the typographic downgrade follows
+from it rather than from a rewrite of the characters. One composition carrying
+the paragraph's own base style is what the translator's fast path reads as plain
+text -- no style span around the initial, so no span for the engine to carry the
+initial across untranslated -- and a translated paragraph is written back as one
+run at that style, so the towering glyph is gone because the paragraph is one run
+again. Each character keeps the style it was drawn with, so a paragraph that ends
+up untranslated renders as its source did.
+
+One character has to be decided about. The paragraph finder fills the gap between
+the initial's drawing position and the first word's with a space of its own, and
+that space is what splits ``Long`` into ``L`` and ``ong``. It is recognisable
+because no content stream drew it: every character the frontend reads off a page
+carries an xobject id and a synthesised one does not. Under the declared
+separator policy such a space is dropped when the runs are merged and a space the
+source itself drew is kept, and every join is recorded with the text before and
+after it, because a source that draws no space after a one letter word leaves the
+two cases indistinguishable at this layer.
 """
 
 from __future__ import annotations
@@ -45,12 +82,20 @@ from __future__ import annotations
 import json
 import logging
 import statistics
+from collections.abc import Mapping
 from dataclasses import dataclass
 from functools import lru_cache
 from pathlib import Path
+from types import MappingProxyType
 
+from babeldoc.format.pdf.document_il import il_version_1
 from babeldoc.magazine import article_builder
 from babeldoc.magazine.chain_signals import load_chain_config
+from babeldoc.magazine.line_split import SPLITTABLE
+from babeldoc.magazine.line_split import character_union
+from babeldoc.magazine.line_split import composition_characters
+from babeldoc.magazine.line_split import composition_kind
+from babeldoc.magazine.line_split import paragraph_characters
 from babeldoc.magazine.page_features import ConfigError
 from babeldoc.magazine.page_features import validate_bounded_config
 from babeldoc.magazine.taxonomy import record_config_manifest
@@ -61,12 +106,48 @@ CONFIG_PATH = Path(__file__).resolve().parents[2] / "configs" / "drop_cap.json"
 
 REPORT_NAME = "drop_cap.report.json"
 
+# What the pass acting on a verdict leaves behind. Separate from the marking
+# report because the two run at different points of the same hook and each has to
+# be readable on its own.
+APPLY_REPORT_NAME = "drop_cap_apply.report.json"
+
 # Where the body label vocabulary is declared, once for the whole project.
 BODY_LABELS_KEY = "body_labels"
 
-# The two switches, by the names the caller sets on the translation config.
+# The switches, by the names the caller sets on the translation config.
 MARK_SWITCH = "magazine_drop_cap_mark"
+APPLY_SWITCH = "magazine_drop_cap_apply"
 GROUP_SWITCH = "magazine_article_group"
+
+# Keys of the declarative surface. The structural ones are read by hand: the
+# bounded configuration reader takes numbers and vocabularies, and a policy word
+# and a table of defaults are neither.
+SEPARATOR_KEY = "separator_policy"
+SEPARATOR_VOCABULARY_KEY = "separator_policy_vocabulary"
+DEFAULTS_KEY = "default_decision_by_target"
+ENTRIES_KEY = "entries"
+DESCRIPTION_KEY = "description"
+_STRUCTURAL_KEYS = (SEPARATOR_KEY, DEFAULTS_KEY)
+
+# The separator policy that closes the break the paragraph finder opened.
+SEPARATOR_DROP_SYNTHESIZED = "drop_synthesized"
+
+# The verdict this pass acts on, and where the verdicts are declared. A verdict
+# is named in one file for the whole project, and that file belongs to the review
+# layer, so it is read through the module that owns it.
+DECISION_FLATTEN = "flatten"
+HITL_DECISIONS_KEY = "drop_cap_decisions"
+
+# Where the verdict a paragraph was acted on under came from.
+SOURCE_RULED = "ruled"
+SOURCE_DEFAULT = "default"
+
+# Composition kinds the initial may be merged into: the ones the line split
+# already declares regroupable, read from there rather than spelled again, so the
+# package keeps one place that names a composition member. A formula is not among
+# them, so an initial standing before one is left alone rather than folded into a
+# unit the engine is required to carry across whole.
+_MERGEABLE = SPLITTABLE
 
 # How a decisions file names one paragraph: its one-based file page and its
 # position among that page's paragraphs. Neither half is generated per run, so a
@@ -81,12 +162,129 @@ class DropCapError(ConfigError):
 
 @dataclass(frozen=True)
 class DropCapConfig:
-    """Everything bounded about finding one candidate."""
+    """Everything declared about finding one candidate and acting on a verdict."""
 
     min_first_run_size_ratio: float
     max_first_run_chars: int
     max_body_rank_in_article: int
     excerpt_chars: int
+    initial_size_tolerance: float
+    separator_policy: str
+    decision_sources: tuple[str, ...]
+    apply_fields: tuple[str, ...]
+    defaults: Mapping[str, str]
+
+    def default_for(self, target_lang: str) -> str | None:
+        """The verdict an unruled candidate takes under one target language.
+
+        Matched by longest declared prefix, because a target language reaches
+        this project as a tag and a tag carries a region. None where no entry
+        claims the language, which leaves every unruled candidate as it was: a
+        default stated for the wrong language would change a rendering nobody
+        asked a question about.
+        """
+        tag = (target_lang or "").strip().lower()
+        claimed = [key for key in self.defaults if tag.startswith(key.lower())]
+        if not claimed:
+            return None
+        return self.defaults[max(claimed, key=len)]
+
+
+def decision_vocabulary() -> tuple[str, ...]:
+    """The verdicts a ruling may carry, read from the file that declares them.
+
+    Imported inside the call because the review layer imports this module. The
+    vocabulary is declared once, in the review layer's configuration, and read
+    through the module that owns that file rather than copied into a second one.
+    """
+    from babeldoc.magazine.hitl import load_hitl_config
+
+    return tuple(load_hitl_config()[HITL_DECISIONS_KEY])
+
+
+def _require(condition: bool, message: str) -> None:
+    if not condition:
+        raise DropCapError(message)
+
+
+def _read_defaults(raw: object, source: str, verdicts: tuple[str, ...]):
+    """The table of per target language defaults, checked against the verdicts."""
+    _require(isinstance(raw, dict), f"{source}: {DEFAULTS_KEY} must be an object")
+    entries = raw.get(ENTRIES_KEY)
+    _require(
+        isinstance(entries, dict) and bool(entries),
+        f"{source}: {DEFAULTS_KEY}.{ENTRIES_KEY} must be a non-empty object",
+    )
+    for key, value in entries.items():
+        _require(
+            isinstance(key, str) and bool(key.strip()),
+            f"{source}: {DEFAULTS_KEY}.{ENTRIES_KEY} has a key that is not a "
+            f"language tag: {key!r}",
+        )
+        _require(
+            value in verdicts,
+            f"{source}: {DEFAULTS_KEY}.{ENTRIES_KEY}[{key!r}]={value!r} is "
+            f"outside the declared verdicts {sorted(verdicts)}",
+        )
+    return MappingProxyType({key.strip(): value for key, value in entries.items()})
+
+
+def parse_drop_cap_config(raw: dict, source: str) -> DropCapConfig:
+    """Validate one configuration mapping into the policy it declares."""
+    flat = {key: value for key, value in raw.items() if key not in _STRUCTURAL_KEYS}
+    try:
+        parameters = dict(validate_bounded_config(flat, CONFIG_PATH))
+    except ConfigError as exc:
+        raise DropCapError(str(exc)) from exc
+
+    verdicts = decision_vocabulary()
+    _require(
+        DECISION_FLATTEN in verdicts,
+        f"{source}: the verdict vocabulary omits {DECISION_FLATTEN!r}, which is "
+        f"the verdict this pass acts on",
+    )
+    vocabulary = tuple(parameters.get(SEPARATOR_VOCABULARY_KEY, ()))
+    _require(bool(vocabulary), f"{source}: missing {SEPARATOR_VOCABULARY_KEY}")
+    separator = raw.get(SEPARATOR_KEY)
+    _require(
+        separator in vocabulary,
+        f"{source}: {SEPARATOR_KEY}={separator!r} is outside {sorted(vocabulary)}",
+    )
+    _require(
+        SEPARATOR_DROP_SYNTHESIZED in vocabulary,
+        f"{source}: {SEPARATOR_VOCABULARY_KEY} omits "
+        f"{SEPARATOR_DROP_SYNTHESIZED!r}, which is the policy that closes the "
+        f"break the paragraph finder opened",
+    )
+    sources = tuple(parameters.get("decision_sources", ()))
+    for name in (SOURCE_RULED, SOURCE_DEFAULT):
+        _require(
+            name in sources,
+            f"{source}: decision_sources omits {name!r}, which a record may name",
+        )
+    fields = tuple(parameters.get("apply_fields", ()))
+    _require(bool(fields), f"{source}: missing apply_fields")
+
+    numbers = (
+        "min_first_run_size_ratio",
+        "max_first_run_chars",
+        "max_body_rank_in_article",
+        "excerpt_chars",
+        "initial_size_tolerance",
+    )
+    missing = sorted(set(numbers) - set(parameters))
+    _require(not missing, f"{source}: missing parameters {missing}")
+    return DropCapConfig(
+        min_first_run_size_ratio=float(parameters["min_first_run_size_ratio"]),
+        max_first_run_chars=int(parameters["max_first_run_chars"]),
+        max_body_rank_in_article=int(parameters["max_body_rank_in_article"]),
+        excerpt_chars=int(parameters["excerpt_chars"]),
+        initial_size_tolerance=float(parameters["initial_size_tolerance"]),
+        separator_policy=str(separator),
+        decision_sources=sources,
+        apply_fields=fields,
+        defaults=_read_defaults(raw.get(DEFAULTS_KEY), source, verdicts),
+    )
 
 
 @lru_cache(maxsize=1)
@@ -95,16 +293,9 @@ def load_drop_cap_config(path: str | None = None) -> DropCapConfig:
     config_path = CONFIG_PATH if path is None else Path(path)
     with config_path.open(encoding="utf-8") as f:
         raw = json.load(f)
-    parameters = validate_bounded_config(raw, config_path)
-    missing = sorted(set(DropCapConfig.__dataclass_fields__) - set(parameters))
-    if missing:
-        raise DropCapError(f"{config_path.name}: missing parameters {missing}")
-    return DropCapConfig(
-        min_first_run_size_ratio=float(parameters["min_first_run_size_ratio"]),
-        max_first_run_chars=int(parameters["max_first_run_chars"]),
-        max_body_rank_in_article=int(parameters["max_body_rank_in_article"]),
-        excerpt_chars=int(parameters["excerpt_chars"]),
-    )
+    if not isinstance(raw, dict):
+        raise DropCapError(f"{config_path.name}: root must be an object")
+    return parse_drop_cap_config(raw, config_path.name)
 
 
 def body_labels() -> tuple[str, ...]:
@@ -142,21 +333,44 @@ def document_references(labeled_pages) -> set[str]:
     }
 
 
-def first_style_run(paragraph):
-    """The paragraph's opening style run, as (font size, text).
+@dataclass(frozen=True)
+class LeadingRun:
+    """The run of characters one paragraph opens with, at one size."""
 
-    Only the first composition is consulted. A paragraph whose text does not
-    begin with a run of characters -- one opening with a formula, or one no
-    styling pass has grouped -- opens with no initial either.
+    size: float
+    text: str
+    span: int
+
+
+def character_size(character) -> float | None:
+    style = getattr(character, "pdf_style", None)
+    size = getattr(style, "font_size", None)
+    return float(size) if size else None
+
+
+def leading_run(paragraph, tolerance: float) -> LeadingRun | None:
+    """The paragraph's opening run of characters set at one size, or None.
+
+    Read off the characters in the order they are stored, so the composition
+    holding them does not matter: an initial grouped into a formula with the
+    letters after it is the same initial as one standing in a style run of its
+    own. The run ends where a character's size leaves the first character's by
+    more than the tolerance the styling stage merges two styles under.
     """
-    compositions = paragraph.pdf_paragraph_composition or []
-    if not compositions:
-        return None, ""
-    run = compositions[0].pdf_same_style_characters
-    if run is None or run.pdf_style is None:
-        return None, ""
-    text = "".join(character.char_unicode or "" for character in run.pdf_character)
-    return run.pdf_style.font_size, text
+    characters = paragraph_characters(paragraph)
+    if not characters:
+        return None
+    size = character_size(characters[0])
+    if size is None:
+        return None
+    span = 1
+    for character in characters[1:]:
+        other = character_size(character)
+        if other is None or abs(other - size) > tolerance:
+            break
+        span += 1
+    text = "".join(character.char_unicode or "" for character in characters[:span])
+    return LeadingRun(size=size, text=text, span=span)
 
 
 def median_font_size(paragraph) -> float | None:
@@ -245,16 +459,16 @@ def find_candidates(
             opens = label in openers
             if rank > config.max_body_rank_in_article and not opens:
                 continue
-            size, run_text = first_style_run(paragraph)
+            run = leading_run(paragraph, config.initial_size_tolerance)
             median = median_font_size(paragraph)
-            if not size or not median:
+            if run is None or not median:
                 continue
-            initial = run_text.strip()
-            # An initial is a character. A first run holding only the space
+            initial = run.text.strip()
+            # An initial is a character. An opening run holding only the space
             # after one is not the initial itself, whatever it is set at.
             if not initial or len(initial) > config.max_first_run_chars:
                 continue
-            ratio = size / median
+            ratio = run.size / median
             if ratio < config.min_first_run_size_ratio:
                 continue
             found.append(
@@ -323,10 +537,16 @@ def _write_report(
         "body_labels": list(body_labels()),
         "reference_format": REFERENCE_FORMAT,
         "candidates": [candidate.as_record() for candidate in candidates],
-        # What reads the verdict a human returns, which in this batch is
-        # nothing: the field is carried in the intermediate language and acted
-        # on by no stage until typesetting is taught to.
-        "decision_consumers": [],
+        # What reads the verdict a human returns, so a run whose ruling appears
+        # to have changed nothing is explained by its own inventory rather than
+        # by reading the code.
+        "decision_consumers": [
+            {
+                "pass": "drop_cap.apply",
+                "switch": APPLY_SWITCH,
+                "report": APPLY_REPORT_NAME,
+            }
+        ],
     }
     path = Path(translation_config.get_working_file_path(REPORT_NAME))
     with path.open("w", encoding="utf-8") as f:
@@ -377,3 +597,269 @@ def apply_decisions(labeled_pages, verdicts: dict[str, str]) -> list[dict]:
             )
             paragraph.drop_cap_decision = verdict
     return records
+
+
+# --- acting on the ruling ------------------------------------------------------
+
+
+def apply_enabled(translation_config) -> bool:
+    return bool(getattr(translation_config, APPLY_SWITCH, False))
+
+
+def require_apply_dependencies(translation_config) -> None:
+    """Refuse a run that asks for a verdict to be acted on without the finding."""
+    if not apply_enabled(translation_config):
+        return
+    if not mark_enabled(translation_config):
+        raise DropCapError(
+            f"{APPLY_SWITCH} requires {MARK_SWITCH}: the verdict an unruled "
+            f"candidate is acted on under is decided from the candidate mark, so "
+            f"a run acting on defaults without the marking pass would act on none"
+        )
+
+
+def synthesized(character) -> bool:
+    """Whether one character was inserted by the pipeline rather than drawn.
+
+    Every character the frontend reads off a content stream carries an xobject
+    id -- zero for the page itself -- and the space the paragraph finder fills a
+    drawing gap with is built without one.
+    """
+    return getattr(character, "xobj_id", None) is None
+
+
+def closed_text(text: str, initial: str) -> str | None:
+    """The paragraph text with the break after its initial closed, or None.
+
+    None where the break cannot be located: a text that does not open with the
+    initial, or one carrying no space after it, is left exactly as it is rather
+    than repaired by a rule written for a shape it does not have.
+    """
+    if not initial or not text.startswith(initial):
+        return None
+    rest = text[len(initial) :]
+    closed = rest.lstrip()
+    if closed == rest:
+        return None
+    return initial + closed
+
+
+def merged_style(paragraph, compositions):
+    """The style the merged run declares.
+
+    The paragraph's own, which is what a paragraph with no drop cap declares and
+    what makes the run indistinguishable from ordinary text to the reader that
+    decides whether a style span is needed. Where the paragraph carries none, the
+    style of the run being merged into stands in, so the merged run is never left
+    declaring nothing.
+    """
+    if paragraph.pdf_style is not None:
+        return paragraph.pdf_style
+    run = compositions[1].pdf_same_style_characters
+    return run.pdf_style if run is not None else None
+
+
+def _unchanged(paragraph, config: DropCapConfig) -> dict:
+    """What a paragraph nothing was merged in reports."""
+    text = (paragraph.unicode or "")[: config.excerpt_chars]
+    return {
+        "merged": False,
+        "characters_merged": 0,
+        "separator_dropped": 0,
+        "unicode_before": text,
+        "unicode_after": text,
+    }
+
+
+def flatten(paragraph, config: DropCapConfig) -> dict:
+    """Merge the paragraph's enlarged initial into the text it opens.
+
+    Reports what it did, and reports doing nothing where there was nothing to
+    do: a paragraph whose opening already stands in one composition is one the
+    translator already sees whole, and a paragraph whose opening run reaches past
+    the first composition is not standing at the boundary this would close.
+    """
+    outcome = _unchanged(paragraph, config)
+    compositions = list(paragraph.pdf_paragraph_composition or ())
+    if len(compositions) < 2:
+        return outcome
+    head_kind = composition_kind(compositions[0])
+    tail_kind = composition_kind(compositions[1])
+    if head_kind is None or tail_kind not in _MERGEABLE:
+        return outcome
+    head = composition_characters(compositions[0], head_kind)
+    tail = composition_characters(compositions[1], tail_kind)
+    if not head or not tail:
+        return outcome
+    run = leading_run(paragraph, config.initial_size_tolerance)
+    if run is None or run.span > len(head):
+        return outcome
+
+    dropped = 0
+    if config.separator_policy == SEPARATOR_DROP_SYNTHESIZED:
+        while len(head) - dropped > 1:
+            character = head[-1 - dropped]
+            if not (character.char_unicode or "").isspace():
+                break
+            if not synthesized(character):
+                break
+            dropped += 1
+    before = paragraph.unicode or ""
+    after = before
+    if dropped:
+        closed = closed_text(before, run.text.strip())
+        if closed is None:
+            # The break is not locatable in the recorded text, so the characters
+            # stay whole: a paragraph whose text and characters say different
+            # things is not something this pass leaves behind.
+            dropped = 0
+        else:
+            after = closed
+    kept = head[: len(head) - dropped] if dropped else head
+    merged = [*kept, *tail]
+    paragraph.pdf_paragraph_composition = [
+        il_version_1.PdfParagraphComposition(
+            pdf_same_style_characters=il_version_1.PdfSameStyleCharacters(
+                box=character_union(merged),
+                pdf_style=merged_style(paragraph, compositions),
+                pdf_character=merged,
+            )
+        ),
+        *compositions[2:],
+    ]
+    paragraph.unicode = after
+    outcome.update(
+        {
+            "merged": True,
+            "characters_merged": len(merged),
+            "separator_dropped": dropped,
+            "unicode_after": after[: config.excerpt_chars],
+        }
+    )
+    return outcome
+
+
+def resolve_decision(paragraph, default: str | None) -> tuple[str | None, str | None]:
+    """The verdict one paragraph is acted on under, and where it came from.
+
+    A ruling outranks the default, and the default reaches a marked candidate
+    only: the machine answer is an answer to a finding, so a paragraph the
+    marking pass did not find is left alone whatever the default says.
+    """
+    if paragraph.drop_cap_decision:
+        return paragraph.drop_cap_decision, SOURCE_RULED
+    if paragraph.drop_cap_candidate and default is not None:
+        return default, SOURCE_DEFAULT
+    return None, None
+
+
+def apply(translation_config, labeled_pages) -> dict | None:
+    """Act on every verdict of one document. None where the switch is down.
+
+    Returns the record it wrote, so a caller holding the document can assert
+    about the pass without reading the sidecar back.
+    """
+    require_apply_dependencies(translation_config)
+    if not apply_enabled(translation_config):
+        return None
+    config = load_drop_cap_config()
+    verdicts = decision_vocabulary()
+    target = getattr(translation_config, "lang_out", "") or ""
+    default = config.default_for(target)
+
+    records: list[dict] = []
+    for label, page in labeled_pages:
+        for index, paragraph in enumerate(page.pdf_paragraph or ()):
+            decision, source = resolve_decision(paragraph, default)
+            if decision is None:
+                continue
+            if decision not in verdicts:
+                raise DropCapError(
+                    f"{paragraph_reference(label, index)} carries verdict "
+                    f"{decision!r}, which is outside {sorted(verdicts)}"
+                )
+            run = leading_run(paragraph, config.initial_size_tolerance)
+            median = median_font_size(paragraph)
+            outcome = (
+                flatten(paragraph, config)
+                if decision == DECISION_FLATTEN
+                else _unchanged(paragraph, config)
+            )
+            records.append(
+                {
+                    "paragraph": paragraph_reference(label, index),
+                    "page": label,
+                    "debug_id": paragraph.debug_id,
+                    "decision": decision,
+                    "source": source,
+                    "was_candidate": bool(paragraph.drop_cap_candidate),
+                    "initial": None if run is None else run.text.strip(),
+                    "size_ratio": (
+                        None
+                        if run is None or not median
+                        else round(run.size / median, 4)
+                    ),
+                    **outcome,
+                }
+            )
+
+    expected = set(config.apply_fields)
+    for item in records:
+        if set(item) != expected:
+            raise DropCapError(
+                f"{APPLY_REPORT_NAME}: a record carries {sorted(item)}, and "
+                f"{CONFIG_PATH.name} declares {sorted(expected)}"
+            )
+        if item["source"] not in config.decision_sources:
+            raise DropCapError(
+                f"{APPLY_REPORT_NAME}: a record names source {item['source']!r}, "
+                f"and {CONFIG_PATH.name} declares {sorted(config.decision_sources)}"
+            )
+
+    record = as_apply_record(config, verdicts, target, default, records)
+    _write_apply_report(translation_config, record)
+    logger.debug(
+        "drop cap apply: %d verdict(s), %d merged",
+        record["totals"]["decided"],
+        record["totals"]["merged"],
+    )
+    return record
+
+
+def as_apply_record(
+    config: DropCapConfig,
+    verdicts: tuple[str, ...],
+    target_lang: str,
+    default: str | None,
+    records: list[dict],
+) -> dict:
+    return {
+        "switch": APPLY_SWITCH,
+        "target_lang": target_lang,
+        "default_decision": default,
+        "separator_policy": config.separator_policy,
+        "verdicts": list(verdicts),
+        "decision_sources": list(config.decision_sources),
+        "totals": {
+            "decided": len(records),
+            "merged": sum(1 for item in records if item["merged"]),
+            "separators_dropped": sum(item["separator_dropped"] for item in records),
+            "by_source": {
+                name: sum(1 for item in records if item["source"] == name)
+                for name in config.decision_sources
+            },
+            "by_decision": {
+                name: sum(1 for item in records if item["decision"] == name)
+                for name in verdicts
+            },
+        },
+        "decisions": records,
+    }
+
+
+def _write_apply_report(translation_config, record: dict) -> Path:
+    path = Path(translation_config.get_working_file_path(APPLY_REPORT_NAME))
+    with path.open("w", encoding="utf-8") as f:
+        json.dump(record, f, indent=2, sort_keys=True, ensure_ascii=False)
+    record_config_manifest(path.parent, [CONFIG_PATH])
+    return path

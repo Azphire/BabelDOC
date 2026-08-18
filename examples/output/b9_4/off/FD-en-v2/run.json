@@ -1,0 +1,29 @@
+{
+  "sample": "FD-en-v2.pdf",
+  "arm": "off",
+  "magazine_drop_cap_apply": false,
+  "model": "gpt-4o",
+  "lang_in": "en",
+  "lang_out": "zh",
+  "seconds": 296.2,
+  "requests": 63,
+  "cache_hits": 61,
+  "api_calls": 2,
+  "prompt_tokens": 11795,
+  "completion_tokens": 140,
+  "input_pages": 9,
+  "output_pages": 9,
+  "pdf": "examples\\output\\b9_4\\off\\FD-en-v2\\FD-en-v2.b9_4.off.pdf",
+  "pdf_sha256": "f136a32ecbe2f763ddfb39f8158a0303b1e209c9c83675a921d2456eb3923c7f",
+  "working_dir": "examples\\output\\b9_4\\off\\FD-en-v2\\work\\FD-en-v2",
+  "ruling": {
+    "path": null,
+    "sha256": null,
+    "present": false,
+    "drop_caps": {}
+  },
+  "translation_style": {
+    "person_names": "transliterate",
+    "system_prompt_sha256": "74666d7128c1c06127d9193db7b8d2b346866088f1ccabb4c33e69be1c586903"
+  }
+}

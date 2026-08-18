@@ -159,6 +159,12 @@ NAME_REFERENCE_ALLOW_LIST = NAME_DEFINITION_FILES | {
     # the first and that the policy of the second is what selects a page.
     "babeldoc/magazine/line_split.py",
     "spec_checks/spec_check_b9_3.py",
+    # B9.4 is the first reader of the drop cap verdict. The pass that acts on it
+    # lives in the module that writes it, which is why no file joins the writer
+    # list here; its gate builds paragraphs carrying the candidate flag and the
+    # verdict, because what it asserts is which of the two decides and that a
+    # paragraph carrying neither is left alone.
+    "spec_checks/spec_check_b9_4.py",
 }
 
 # Upstream files carried over from B0, still uncommitted in the working tree.

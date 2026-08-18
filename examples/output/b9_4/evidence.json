@@ -1,0 +1,1090 @@
+{
+  "arms": {
+    "control": [
+      {
+        "api_calls": 1,
+        "arm": "control",
+        "cache_hits": 61,
+        "completion_tokens": 61,
+        "input_pages": 8,
+        "lang_in": "en",
+        "lang_out": "zh",
+        "magazine_drop_cap_apply": false,
+        "model": "gpt-4o",
+        "output_pages": 8,
+        "pdf": "examples\\output\\b9_4\\control\\Courier-en\\Courier-en.b9_4.control.pdf",
+        "pdf_sha256": "5c92888e61149c202d9b10185f20e8c1fb2b7ce50fdaa98df7fe6c75dedf6565",
+        "prompt_tokens": 2578,
+        "requests": 62,
+        "ruling": {
+          "drop_caps": {
+            "p4#3": "flatten",
+            "p5#5": "flatten",
+            "p7#8": "flatten"
+          },
+          "path": "reviews\\Courier-en.decisions.json",
+          "present": true,
+          "sha256": "372a6f7cbcdd942ffa971cfa5184689510b53089ace10e73920a195bb07a4fc4"
+        },
+        "sample": "Courier-en.pdf",
+        "seconds": 312.0,
+        "translation_style": {
+          "person_names": "transliterate",
+          "system_prompt_sha256": "74666d7128c1c06127d9193db7b8d2b346866088f1ccabb4c33e69be1c586903"
+        },
+        "working_dir": "examples\\output\\b9_4\\control\\Courier-en\\work\\Courier-en"
+      },
+      {
+        "api_calls": 2,
+        "arm": "control",
+        "cache_hits": 61,
+        "completion_tokens": 166,
+        "input_pages": 9,
+        "lang_in": "en",
+        "lang_out": "zh",
+        "magazine_drop_cap_apply": false,
+        "model": "gpt-4o",
+        "output_pages": 9,
+        "pdf": "examples\\output\\b9_4\\control\\FD-en-v2\\FD-en-v2.b9_4.control.pdf",
+        "pdf_sha256": "de7b984c9fa8ca4daae1e047a230e2b44198fb348d72a6dfda7c9de5a3ca1c1c",
+        "prompt_tokens": 11777,
+        "requests": 63,
+        "ruling": {
+          "drop_caps": {},
+          "path": null,
+          "present": false,
+          "sha256": null
+        },
+        "sample": "FD-en-v2.pdf",
+        "seconds": 323.3,
+        "translation_style": {
+          "person_names": "transliterate",
+          "system_prompt_sha256": "74666d7128c1c06127d9193db7b8d2b346866088f1ccabb4c33e69be1c586903"
+        },
+        "working_dir": "examples\\output\\b9_4\\control\\FD-en-v2\\work\\FD-en-v2"
+      }
+    ],
+    "off": [
+      {
+        "api_calls": 1,
+        "arm": "off",
+        "cache_hits": 61,
+        "completion_tokens": 58,
+        "input_pages": 8,
+        "lang_in": "en",
+        "lang_out": "zh",
+        "magazine_drop_cap_apply": false,
+        "model": "gpt-4o",
+        "output_pages": 8,
+        "pdf": "examples\\output\\b9_4\\off\\Courier-en\\Courier-en.b9_4.off.pdf",
+        "pdf_sha256": "6a3838d98f0249ff0596e1a71be3e10f509d033fc3f587c5c4849c4ff68904ee",
+        "prompt_tokens": 2576,
+        "requests": 62,
+        "ruling": {
+          "drop_caps": {
+            "p4#3": "flatten",
+            "p5#5": "flatten",
+            "p7#8": "flatten"
+          },
+          "path": "reviews\\Courier-en.decisions.json",
+          "present": true,
+          "sha256": "372a6f7cbcdd942ffa971cfa5184689510b53089ace10e73920a195bb07a4fc4"
+        },
+        "sample": "Courier-en.pdf",
+        "seconds": 274.0,
+        "translation_style": {
+          "person_names": "transliterate",
+          "system_prompt_sha256": "74666d7128c1c06127d9193db7b8d2b346866088f1ccabb4c33e69be1c586903"
+        },
+        "working_dir": "examples\\output\\b9_4\\off\\Courier-en\\work\\Courier-en"
+      },
+      {
+        "api_calls": 2,
+        "arm": "off",
+        "cache_hits": 61,
+        "completion_tokens": 140,
+        "input_pages": 9,
+        "lang_in": "en",
+        "lang_out": "zh",
+        "magazine_drop_cap_apply": false,
+        "model": "gpt-4o",
+        "output_pages": 9,
+        "pdf": "examples\\output\\b9_4\\off\\FD-en-v2\\FD-en-v2.b9_4.off.pdf",
+        "pdf_sha256": "f136a32ecbe2f763ddfb39f8158a0303b1e209c9c83675a921d2456eb3923c7f",
+        "prompt_tokens": 11795,
+        "requests": 63,
+        "ruling": {
+          "drop_caps": {},
+          "path": null,
+          "present": false,
+          "sha256": null
+        },
+        "sample": "FD-en-v2.pdf",
+        "seconds": 296.2,
+        "translation_style": {
+          "person_names": "transliterate",
+          "system_prompt_sha256": "74666d7128c1c06127d9193db7b8d2b346866088f1ccabb4c33e69be1c586903"
+        },
+        "working_dir": "examples\\output\\b9_4\\off\\FD-en-v2\\work\\FD-en-v2"
+      }
+    ],
+    "on": [
+      {
+        "api_calls": 4,
+        "arm": "on",
+        "cache_hits": 58,
+        "completion_tokens": 829,
+        "input_pages": 8,
+        "lang_in": "en",
+        "lang_out": "zh",
+        "magazine_drop_cap_apply": true,
+        "model": "gpt-4o",
+        "output_pages": 8,
+        "pdf": "examples\\output\\b9_4\\on\\Courier-en\\Courier-en.b9_4.on.pdf",
+        "pdf_sha256": "e33189c3458cdd4034aff56f52b784d4f3a87af1b6c93e00adac3698752d391f",
+        "prompt_tokens": 6626,
+        "requests": 62,
+        "ruling": {
+          "drop_caps": {
+            "p4#3": "flatten",
+            "p5#5": "flatten",
+            "p7#8": "flatten"
+          },
+          "path": "reviews\\Courier-en.decisions.json",
+          "present": true,
+          "sha256": "372a6f7cbcdd942ffa971cfa5184689510b53089ace10e73920a195bb07a4fc4"
+        },
+        "sample": "Courier-en.pdf",
+        "seconds": 276.4,
+        "translation_style": {
+          "person_names": "transliterate",
+          "system_prompt_sha256": "74666d7128c1c06127d9193db7b8d2b346866088f1ccabb4c33e69be1c586903"
+        },
+        "working_dir": "examples\\output\\b9_4\\on\\Courier-en\\work\\Courier-en"
+      },
+      {
+        "api_calls": 3,
+        "arm": "on",
+        "cache_hits": 60,
+        "completion_tokens": 510,
+        "input_pages": 9,
+        "lang_in": "en",
+        "lang_out": "zh",
+        "magazine_drop_cap_apply": true,
+        "model": "gpt-4o",
+        "output_pages": 9,
+        "pdf": "examples\\output\\b9_4\\on\\FD-en-v2\\FD-en-v2.b9_4.on.pdf",
+        "pdf_sha256": "a1e4d5678065d8e9f7369d6743e41370b250639ceb8279688aa45d88ca952cb5",
+        "prompt_tokens": 13287,
+        "requests": 63,
+        "ruling": {
+          "drop_caps": {},
+          "path": null,
+          "present": false,
+          "sha256": null
+        },
+        "sample": "FD-en-v2.pdf",
+        "seconds": 63.5,
+        "translation_style": {
+          "person_names": "transliterate",
+          "system_prompt_sha256": "74666d7128c1c06127d9193db7b8d2b346866088f1ccabb4c33e69be1c586903"
+        },
+        "working_dir": "examples\\output\\b9_4\\on\\FD-en-v2\\work\\FD-en-v2"
+      }
+    ]
+  },
+  "batch": "b9.4",
+  "candidates": [
+    {
+      "article_id": "wMG4a",
+      "body_rank": 3,
+      "excerpt": "L ong before satellites orbited Earth, Polynes",
+      "first_run": "L",
+      "opens_article": false,
+      "page": 4,
+      "paragraph": "p4#3",
+      "ruled": "flatten",
+      "sample": "Courier-en",
+      "size_ratio": 6.6683
+    },
+    {
+      "article_id": "RyecR",
+      "body_rank": 5,
+      "excerpt": "O n the Purus River, as the light fades and th",
+      "first_run": "O",
+      "opens_article": true,
+      "page": 5,
+      "paragraph": "p5#5",
+      "ruled": "flatten",
+      "sample": "Courier-en",
+      "size_ratio": 6.6683
+    },
+    {
+      "article_id": "8MdmY",
+      "body_rank": 5,
+      "excerpt": "T here is a huge diversity of Indigenous Peopl",
+      "first_run": "T",
+      "opens_article": true,
+      "page": 7,
+      "paragraph": "p7#8",
+      "ruled": "flatten",
+      "sample": "Courier-en",
+      "size_ratio": 6.6683
+    },
+    {
+      "article_id": "SgQhb",
+      "body_rank": 2,
+      "excerpt": "When it comes to international trade, countrie",
+      "first_run": "W",
+      "opens_article": true,
+      "page": 8,
+      "paragraph": "p8#9",
+      "ruled": null,
+      "sample": "FD-en-v2",
+      "size_ratio": 4.255
+    }
+  ],
+  "detectors": [
+    {
+      "arms": {
+        "control": {
+          "by_kind": {
+            "fragment_cluster": 1,
+            "untranslated_residue": 12
+          },
+          "detectors_that_ran": [
+            "fragment_cluster",
+            "text_figure_overlap",
+            "untranslated_residue"
+          ],
+          "issues": 13,
+          "naming_a_ruled_paragraph": [],
+          "on_ruled_pages": {
+            "untranslated_residue": 3
+          }
+        },
+        "off": {
+          "by_kind": {
+            "fragment_cluster": 1,
+            "untranslated_residue": 12
+          },
+          "detectors_that_ran": [
+            "fragment_cluster",
+            "text_figure_overlap",
+            "untranslated_residue"
+          ],
+          "issues": 13,
+          "naming_a_ruled_paragraph": [],
+          "on_ruled_pages": {
+            "untranslated_residue": 3
+          }
+        },
+        "on": {
+          "by_kind": {
+            "fragment_cluster": 1,
+            "untranslated_residue": 12
+          },
+          "detectors_that_ran": [
+            "fragment_cluster",
+            "text_figure_overlap",
+            "untranslated_residue"
+          ],
+          "issues": 13,
+          "naming_a_ruled_paragraph": [],
+          "on_ruled_pages": {
+            "untranslated_residue": 3
+          }
+        }
+      },
+      "ruled_pages": [
+        4,
+        5,
+        7
+      ],
+      "sample": "Courier-en"
+    },
+    {
+      "arms": {
+        "control": {
+          "by_kind": {
+            "fragment_cluster": 9,
+            "untranslated_residue": 32
+          },
+          "detectors_that_ran": [
+            "fragment_cluster",
+            "text_figure_overlap",
+            "untranslated_residue"
+          ],
+          "issues": 41,
+          "naming_a_ruled_paragraph": [],
+          "on_ruled_pages": {
+            "untranslated_residue": 2
+          }
+        },
+        "off": {
+          "by_kind": {
+            "fragment_cluster": 9,
+            "untranslated_residue": 32
+          },
+          "detectors_that_ran": [
+            "fragment_cluster",
+            "text_figure_overlap",
+            "untranslated_residue"
+          ],
+          "issues": 41,
+          "naming_a_ruled_paragraph": [],
+          "on_ruled_pages": {
+            "untranslated_residue": 2
+          }
+        },
+        "on": {
+          "by_kind": {
+            "fragment_cluster": 9,
+            "untranslated_residue": 33
+          },
+          "detectors_that_ran": [
+            "fragment_cluster",
+            "text_figure_overlap",
+            "untranslated_residue"
+          ],
+          "issues": 42,
+          "naming_a_ruled_paragraph": [],
+          "on_ruled_pages": {
+            "untranslated_residue": 2
+          }
+        }
+      },
+      "ruled_pages": [
+        8
+      ],
+      "sample": "FD-en-v2"
+    }
+  ],
+  "draft": "examples/output/b9_4/reviews/FD-en-v2.review.json",
+  "drafts": [
+    "examples/output/b9_4/reviews/FD-en-v2.review.json"
+  ],
+  "fixtures": [
+    "examples/output/b9_4/fixtures/Courier-en.checkpoints.zip",
+    "examples/output/b9_4/fixtures/Courier-en.drop_cap.report.json",
+    "examples/output/b9_4/fixtures/Courier-en.drop_cap_apply.report.json",
+    "examples/output/b9_4/fixtures/FD-en-v2.checkpoints.zip",
+    "examples/output/b9_4/fixtures/FD-en-v2.drop_cap.report.json",
+    "examples/output/b9_4/fixtures/FD-en-v2.drop_cap_apply.report.json"
+  ],
+  "repair": [
+    {
+      "arms": {
+        "control": {
+          "applications": 0,
+          "decisions": [
+            {
+              "action": "translate_orphan_lines",
+              "executed": [
+                {
+                  "accepted": false,
+                  "attempts": 0,
+                  "changed": false,
+                  "from_cache": true,
+                  "glossary_entries": [
+                    [
+                      "Courier",
+                      "信使"
+                    ],
+                    [
+                      "UNESCO",
+                      "联合国教科文组织"
+                    ],
+                    [
+                      "UNESCO Courier",
+                      "联合国教科文组织信使"
+                    ],
+                    [
+                      "The UNESCO Courier",
+                      "联合国教科文组织《信使》"
+                    ]
+                  ],
+                  "issue_id": "untranslated_residue:p6:p6#15",
+                  "offered_text": "© Boris Séméniako for The UNESCO Courier",
+                  "paragraph_ref": "p6#15",
+                  "reason": "retypesetting_needed_more_room_than_the_paragraph_had",
+                  "source_text": "© Boris Séméniako for The UNESCO Courier",
+                  "translated_text": "© Boris Séméniako 为 联合国教科文组织《信使》"
+                }
+              ],
+              "from_cache": false,
+              "issue_ids": [
+                "untranslated_residue:p6:p6#15"
+              ],
+              "iteration": 1,
+              "outcome": "applied_nothing",
+              "resolved_ids": null
+            }
+          ],
+          "findings": 13,
+          "findings_missing_here": [],
+          "findings_only_here": [],
+          "iterations": 1,
+          "resolved_by_page": {},
+          "stopped_because": "no_paragraph_was_written"
+        },
+        "off": {
+          "applications": 0,
+          "decisions": [
+            {
+              "action": "none",
+              "executed": null,
+              "from_cache": false,
+              "issue_ids": [],
+              "iteration": 1,
+              "outcome": "applied_nothing",
+              "resolved_ids": null
+            }
+          ],
+          "findings": 13,
+          "findings_missing_here": [],
+          "findings_only_here": [],
+          "iterations": 1,
+          "resolved_by_page": {},
+          "stopped_because": "decision_applied_nothing"
+        },
+        "on": {
+          "applications": 0,
+          "decisions": [
+            {
+              "action": "none",
+              "executed": null,
+              "from_cache": false,
+              "issue_ids": [],
+              "iteration": 1,
+              "outcome": "applied_nothing",
+              "resolved_ids": null
+            }
+          ],
+          "findings": 13,
+          "findings_missing_here": [],
+          "findings_only_here": [],
+          "iterations": 1,
+          "resolved_by_page": {},
+          "stopped_because": "decision_applied_nothing"
+        }
+      },
+      "control_chose_the_same_as_off": false,
+      "decision_served_from_cache": [
+        false
+      ],
+      "sample": "Courier-en"
+    },
+    {
+      "arms": {
+        "control": {
+          "applications": 2,
+          "decisions": [
+            {
+              "action": "translate_orphan_lines",
+              "executed": [
+                {
+                  "accepted": true,
+                  "attempts": 0,
+                  "changed": true,
+                  "from_cache": true,
+                  "glossary_entries": [],
+                  "issue_id": "untranslated_residue:p5:p5#18",
+                  "offered_text": "PRODUCTION MANAGER",
+                  "paragraph_ref": "p5#18",
+                  "reason": "accepted",
+                  "source_text": "PRODUCTION MANAGER",
+                  "translated_text": "制作经理"
+                },
+                {
+                  "accepted": true,
+                  "attempts": 0,
+                  "changed": true,
+                  "from_cache": true,
+                  "glossary_entries": [],
+                  "issue_id": "untranslated_residue:p5:p5#24",
+                  "offered_text": "ADVISORS TO THE EDITOR",
+                  "paragraph_ref": "p5#24",
+                  "reason": "accepted",
+                  "source_text": "ADVISORS TO THE EDITOR",
+                  "translated_text": "编辑顾问"
+                }
+              ],
+              "from_cache": false,
+              "issue_ids": [
+                "untranslated_residue:p5:p5#18",
+                "untranslated_residue:p5:p5#22",
+                "untranslated_residue:p5:p5#24"
+              ],
+              "iteration": 1,
+              "outcome": "advanced",
+              "resolved_ids": [
+                "untranslated_residue:p5:p5#18",
+                "untranslated_residue:p5:p5#24"
+              ]
+            },
+            {
+              "action": "translate_orphan_lines",
+              "executed": [
+                {
+                  "accepted": false,
+                  "attempts": 0,
+                  "changed": false,
+                  "from_cache": true,
+                  "glossary_entries": [],
+                  "issue_id": "untranslated_residue:p5:p5#29",
+                  "offered_text": "Yan Carriere-Swallow",
+                  "paragraph_ref": "p5#29",
+                  "reason": "translation_equals_source",
+                  "source_text": "Yan Carriere-Swallow",
+                  "translated_text": "Yan Carriere-Swallow"
+                }
+              ],
+              "from_cache": false,
+              "issue_ids": [
+                "untranslated_residue:p5:p5#29"
+              ],
+              "iteration": 2,
+              "outcome": "applied_nothing",
+              "resolved_ids": null
+            }
+          ],
+          "findings": 41,
+          "findings_missing_here": [],
+          "findings_only_here": [],
+          "iterations": 2,
+          "resolved_by_page": {
+            "5": [
+              "untranslated_residue:p5:p5#18",
+              "untranslated_residue:p5:p5#24"
+            ]
+          },
+          "stopped_because": "no_paragraph_was_written"
+        },
+        "off": {
+          "applications": 2,
+          "decisions": [
+            {
+              "action": "translate_orphan_lines",
+              "executed": [
+                {
+                  "accepted": true,
+                  "attempts": 0,
+                  "changed": true,
+                  "from_cache": true,
+                  "glossary_entries": [],
+                  "issue_id": "untranslated_residue:p5:p5#18",
+                  "offered_text": "PRODUCTION MANAGER",
+                  "paragraph_ref": "p5#18",
+                  "reason": "accepted",
+                  "source_text": "PRODUCTION MANAGER",
+                  "translated_text": "制作经理"
+                },
+                {
+                  "accepted": true,
+                  "attempts": 0,
+                  "changed": true,
+                  "from_cache": true,
+                  "glossary_entries": [],
+                  "issue_id": "untranslated_residue:p5:p5#24",
+                  "offered_text": "ADVISORS TO THE EDITOR",
+                  "paragraph_ref": "p5#24",
+                  "reason": "accepted",
+                  "source_text": "ADVISORS TO THE EDITOR",
+                  "translated_text": "编辑顾问"
+                }
+              ],
+              "from_cache": false,
+              "issue_ids": [
+                "untranslated_residue:p5:p5#18",
+                "untranslated_residue:p5:p5#24"
+              ],
+              "iteration": 1,
+              "outcome": "advanced",
+              "resolved_ids": [
+                "untranslated_residue:p5:p5#18",
+                "untranslated_residue:p5:p5#24"
+              ]
+            },
+            {
+              "action": "none",
+              "executed": null,
+              "from_cache": false,
+              "issue_ids": [],
+              "iteration": 2,
+              "outcome": "applied_nothing",
+              "resolved_ids": null
+            }
+          ],
+          "findings": 41,
+          "findings_missing_here": [],
+          "findings_only_here": [],
+          "iterations": 2,
+          "resolved_by_page": {
+            "5": [
+              "untranslated_residue:p5:p5#18",
+              "untranslated_residue:p5:p5#24"
+            ]
+          },
+          "stopped_because": "decision_applied_nothing"
+        },
+        "on": {
+          "applications": 1,
+          "decisions": [
+            {
+              "action": "translate_orphan_lines",
+              "executed": [
+                {
+                  "accepted": true,
+                  "attempts": 0,
+                  "changed": true,
+                  "from_cache": true,
+                  "glossary_entries": [],
+                  "issue_id": "untranslated_residue:p5:p5#18",
+                  "offered_text": "PRODUCTION MANAGER",
+                  "paragraph_ref": "p5#18",
+                  "reason": "accepted",
+                  "source_text": "PRODUCTION MANAGER",
+                  "translated_text": "制作经理"
+                }
+              ],
+              "from_cache": false,
+              "issue_ids": [
+                "untranslated_residue:p5:p5#18"
+              ],
+              "iteration": 1,
+              "outcome": "advanced",
+              "resolved_ids": [
+                "untranslated_residue:p5:p5#18"
+              ]
+            },
+            {
+              "action": "none",
+              "executed": null,
+              "from_cache": false,
+              "issue_ids": [],
+              "iteration": 2,
+              "outcome": "applied_nothing",
+              "resolved_ids": null
+            }
+          ],
+          "findings": 42,
+          "findings_missing_here": [],
+          "findings_only_here": [
+            "untranslated_residue:p5:p5#24"
+          ],
+          "iterations": 2,
+          "resolved_by_page": {
+            "5": [
+              "untranslated_residue:p5:p5#18"
+            ]
+          },
+          "stopped_because": "decision_applied_nothing"
+        }
+      },
+      "control_chose_the_same_as_off": false,
+      "decision_served_from_cache": [
+        false
+      ],
+      "sample": "FD-en-v2"
+    }
+  ],
+  "sites": [
+    {
+      "box_off": [
+        56.86,
+        653.43,
+        292.36,
+        786.55
+      ],
+      "box_on": [
+        56.86,
+        653.43,
+        292.36,
+        786.55
+      ],
+      "crop_off": "examples/output/b9_4/raster/Courier-en.p4_3.off.png",
+      "crop_on": "examples/output/b9_4/raster/Courier-en.p4_3.on.png",
+      "debug_id": "DwZ3M",
+      "debug_id_off": "J5qBu",
+      "debug_id_on": "DwZ3M",
+      "decision": "flatten",
+      "initial": "L",
+      "median_glyph_off": 8.28,
+      "median_glyph_on": 9.2,
+      "merged": true,
+      "offered_off": "<style id='1'>L </style>ong before satellites ",
+      "offered_on": "Long before satellites orbited Earth, Polynesi",
+      "opening_glyph_off": 55.21,
+      "opening_glyph_on": 9.2,
+      "opens_in_off": "target",
+      "opens_in_on": "target",
+      "page": 4,
+      "paragraph": "p4#3",
+      "placeholders_off": 1,
+      "placeholders_on": 0,
+      "sample": "Courier-en",
+      "separator_dropped": 1,
+      "size_ratio": 6.6683,
+      "source": "ruled",
+      "translated_off": "<style id='1'>很 </style>久以前，在卫星环绕地球之前，波利尼西亚航海家",
+      "translated_on": "早在卫星环绕地球运行之前，波利尼西亚航海家就通过观察星星、海浪、生物发光现象和海鸟飞行模式，",
+      "unicode_after": "Long before satellites orbited Earth, Polynesi",
+      "unicode_before": "L ong before satellites orbited Earth, Polynes",
+      "was_candidate": true
+    },
+    {
+      "box_off": [
+        56.8,
+        411.3,
+        209.87,
+        546.55
+      ],
+      "box_on": [
+        56.8,
+        411.3,
+        209.87,
+        546.55
+      ],
+      "crop_off": "examples/output/b9_4/raster/Courier-en.p5_5.off.png",
+      "crop_on": "examples/output/b9_4/raster/Courier-en.p5_5.on.png",
+      "debug_id": "arE5R",
+      "debug_id_off": "RR8k3",
+      "debug_id_on": "arE5R",
+      "decision": "flatten",
+      "initial": "O",
+      "median_glyph_off": 8.28,
+      "median_glyph_on": 9.2,
+      "merged": true,
+      "offered_off": "<style id='1'>O </style>n the Purus River, as ",
+      "offered_on": "On the Purus River, as the light fades and the",
+      "opening_glyph_off": 55.21,
+      "opening_glyph_on": 9.2,
+      "opens_in_off": "target",
+      "opens_in_on": "target",
+      "page": 5,
+      "paragraph": "p5#5",
+      "placeholders_off": 1,
+      "placeholders_on": 0,
+      "sample": "Courier-en",
+      "separator_dropped": 1,
+      "size_ratio": 6.6683,
+      "source": "ruled",
+      "translated_off": "<style id='1'>在</style>普鲁斯河上，当光线渐渐消退，热气仍在水面上徘徊",
+      "translated_on": "在普鲁斯河上，光线渐渐消退，热气仍然笼罩着水面，一条巨骨舌鱼浮出水面，吸了一口空气。这种声音",
+      "unicode_after": "On the Purus River, as the light fades and the",
+      "unicode_before": "O n the Purus River, as the light fades and th",
+      "was_candidate": true
+    },
+    {
+      "box_off": [
+        56.68,
+        327.15,
+        211.94,
+        546.55
+      ],
+      "box_on": [
+        56.68,
+        327.15,
+        211.94,
+        546.55
+      ],
+      "crop_off": "examples/output/b9_4/raster/Courier-en.p7_8.off.png",
+      "crop_on": "examples/output/b9_4/raster/Courier-en.p7_8.on.png",
+      "debug_id": "zCzFs",
+      "debug_id_off": "xekWE",
+      "debug_id_on": "zCzFs",
+      "decision": "flatten",
+      "initial": "T",
+      "median_glyph_off": 9.2,
+      "median_glyph_on": 9.2,
+      "merged": true,
+      "offered_off": "<style id='1'>T </style>here is a huge diversi",
+      "offered_on": "There is a huge diversity of Indigenous People",
+      "opening_glyph_off": 61.35,
+      "opening_glyph_on": 9.2,
+      "opens_in_off": "target",
+      "opens_in_on": "target",
+      "page": 7,
+      "paragraph": "p7#8",
+      "placeholders_off": 1,
+      "placeholders_on": 0,
+      "sample": "Courier-en",
+      "separator_dropped": 1,
+      "size_ratio": 6.6683,
+      "source": "ruled",
+      "translated_off": "<style id='1'>T </style>世界上有着多样化的土著人民、文化、语言和知识",
+      "translated_on": "世界上有着多样化的土著人民、文化、语言和知识体系。这些体系经过数百年或数千年的发展，对我们所",
+      "unicode_after": "There is a huge diversity of Indigenous People",
+      "unicode_before": "T here is a huge diversity of Indigenous Peopl",
+      "was_candidate": true
+    },
+    {
+      "box_off": [
+        376.0,
+        462.25,
+        533.79,
+        663.25
+      ],
+      "box_on": [
+        376.0,
+        462.25,
+        533.79,
+        663.25
+      ],
+      "crop_off": "examples/output/b9_4/raster/FD-en-v2.p8_9.off.png",
+      "crop_on": "examples/output/b9_4/raster/FD-en-v2.p8_9.on.png",
+      "debug_id": "a2nzz",
+      "debug_id_off": "NWRbN",
+      "debug_id_on": "a2nzz",
+      "decision": "flatten",
+      "initial": "W",
+      "median_glyph_off": 9.25,
+      "median_glyph_on": 9.25,
+      "merged": true,
+      "offered_off": "{v1}it comes to international trade, countries",
+      "offered_on": "When it comes to international trade, countrie",
+      "opening_glyph_off": 39.36,
+      "opening_glyph_on": 9.25,
+      "opens_in_off": "target",
+      "opens_in_on": "target",
+      "page": 8,
+      "paragraph": "p8#9",
+      "placeholders_off": 1,
+      "placeholders_on": 0,
+      "sample": "FD-en-v2",
+      "separator_dropped": 0,
+      "size_ratio": 4.255,
+      "source": "default",
+      "translated_off": "{v1}在国际贸易方面，各国一直在经济效率与国家安全之间进行权衡。第二次世界大战后，他们通过",
+      "translated_on": "在国际贸易方面，各国一直在经济效率与国家安全之间进行权衡。第二次世界大战后，他们通过低关税追",
+      "unicode_after": "When it comes to international trade, countrie",
+      "unicode_before": "When it comes to international trade, countrie",
+      "was_candidate": true
+    }
+  ],
+  "spill": [
+    {
+      "attributable": [
+        4,
+        5,
+        7
+      ],
+      "batch_composition_identical": true,
+      "batches": {
+        "control": 27,
+        "off": 27,
+        "on": 27
+      },
+      "control_raster_moved": [],
+      "control_text_moved": [],
+      "glossary_changed_entries": 0,
+      "glossary_entries": {
+        "control": 146,
+        "off": 146,
+        "on": 146
+      },
+      "glossary_identical": true,
+      "pages": 8,
+      "raster_exceptions": [],
+      "raster_moved": [
+        4,
+        5,
+        7
+      ],
+      "raster_moved_outside_ruled": [],
+      "ruled_pages": [
+        4,
+        5,
+        7
+      ],
+      "sample": "Courier-en",
+      "text_moved": [
+        4,
+        5,
+        7
+      ],
+      "text_moved_outside_ruled": []
+    },
+    {
+      "attributable": [
+        8
+      ],
+      "batch_composition_identical": true,
+      "batches": {
+        "control": 25,
+        "off": 25,
+        "on": 25
+      },
+      "control_raster_moved": [],
+      "control_text_moved": [],
+      "glossary_changed_entries": 0,
+      "glossary_entries": {
+        "control": 149,
+        "off": 149,
+        "on": 149
+      },
+      "glossary_identical": true,
+      "pages": 9,
+      "raster_exceptions": [
+        {
+          "attribution": [
+            "the translated document is identical on this page",
+            "the repair loop resolved ['untranslated_residue:p5:p5#24'] in the base arm and [] in the subject arm, on an uncached decision"
+          ],
+          "control_moved": false,
+          "control_raster_moved": false,
+          "page": 5,
+          "repair_resolved_base": [
+            "untranslated_residue:p5:p5#18",
+            "untranslated_residue:p5:p5#24"
+          ],
+          "repair_resolved_subject": [
+            "untranslated_residue:p5:p5#18"
+          ],
+          "text_moved": false
+        }
+      ],
+      "raster_moved": [
+        5,
+        8
+      ],
+      "raster_moved_outside_ruled": [
+        5
+      ],
+      "ruled_pages": [
+        8
+      ],
+      "sample": "FD-en-v2",
+      "text_moved": [
+        8
+      ],
+      "text_moved_outside_ruled": []
+    }
+  ],
+  "switch": "magazine_drop_cap_apply",
+  "totals": {
+    "defaulted": 1,
+    "merged": 4,
+    "ruled": 3,
+    "sites": 4,
+    "still_latin_off": 0,
+    "still_latin_on": 0
+  },
+  "vogue": {
+    "available": true,
+    "candidates_on_page": [],
+    "line_split_declared": [
+      3
+    ],
+    "page": 3,
+    "residues": [
+      {
+        "characters": 3,
+        "is_candidate": false,
+        "label": "title",
+        "paragraph": "p3#10",
+        "reasons": [
+          "labelled title",
+          "page belongs to no article",
+          "ratio 1.0 below 2.0"
+        ],
+        "text": "NAD"
+      },
+      {
+        "characters": 1,
+        "is_candidate": false,
+        "label": "title",
+        "paragraph": "p3#12",
+        "reasons": [
+          "labelled title",
+          "page belongs to no article",
+          "ratio 1.0 below 2.0"
+        ],
+        "text": "i"
+      },
+      {
+        "characters": 1,
+        "is_candidate": false,
+        "label": "plain text",
+        "paragraph": "p3#13",
+        "reasons": [
+          "page belongs to no article",
+          "ratio 1.0 below 2.0"
+        ],
+        "text": "n"
+      },
+      {
+        "characters": 1,
+        "is_candidate": false,
+        "label": "title",
+        "paragraph": "p3#14",
+        "reasons": [
+          "labelled title",
+          "page belongs to no article",
+          "ratio 1.0 below 2.0"
+        ],
+        "text": "f"
+      },
+      {
+        "characters": 2,
+        "is_candidate": false,
+        "label": "plain text",
+        "paragraph": "p3#15",
+        "reasons": [
+          "page belongs to no article",
+          "ratio 1.0 below 2.0"
+        ],
+        "text": "us"
+      },
+      {
+        "characters": 1,
+        "is_candidate": false,
+        "label": "title",
+        "paragraph": "p3#16",
+        "reasons": [
+          "labelled title",
+          "page belongs to no article",
+          "ratio 1.0 below 2.0"
+        ],
+        "text": "i"
+      },
+      {
+        "characters": 2,
+        "is_candidate": false,
+        "label": "title",
+        "paragraph": "p3#35",
+        "reasons": [
+          "labelled title",
+          "page belongs to no article",
+          "ratio 1.0 below 2.0"
+        ],
+        "text": "Wh"
+      },
+      {
+        "characters": 1,
+        "is_candidate": false,
+        "label": "plain text",
+        "paragraph": "p3#36",
+        "reasons": [
+          "page belongs to no article",
+          "ratio 1.0 below 2.0"
+        ],
+        "text": "e"
+      },
+      {
+        "characters": 2,
+        "is_candidate": false,
+        "label": "title",
+        "paragraph": "p3#37",
+        "reasons": [
+          "labelled title",
+          "page belongs to no article",
+          "ratio 1.0 below 2.0"
+        ],
+        "text": "th"
+      }
+    ],
+    "source": "examples/output/b9_3/on/Vogue-en/work/Vogue-en"
+  }
+}

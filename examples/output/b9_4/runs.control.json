@@ -1,0 +1,64 @@
+[
+  {
+    "sample": "Courier-en.pdf",
+    "arm": "control",
+    "magazine_drop_cap_apply": false,
+    "model": "gpt-4o",
+    "lang_in": "en",
+    "lang_out": "zh",
+    "seconds": 312.0,
+    "requests": 62,
+    "cache_hits": 61,
+    "api_calls": 1,
+    "prompt_tokens": 2578,
+    "completion_tokens": 61,
+    "input_pages": 8,
+    "output_pages": 8,
+    "pdf": "examples\\output\\b9_4\\control\\Courier-en\\Courier-en.b9_4.control.pdf",
+    "pdf_sha256": "5c92888e61149c202d9b10185f20e8c1fb2b7ce50fdaa98df7fe6c75dedf6565",
+    "working_dir": "examples\\output\\b9_4\\control\\Courier-en\\work\\Courier-en",
+    "ruling": {
+      "path": "reviews\\Courier-en.decisions.json",
+      "sha256": "372a6f7cbcdd942ffa971cfa5184689510b53089ace10e73920a195bb07a4fc4",
+      "present": true,
+      "drop_caps": {
+        "p4#3": "flatten",
+        "p5#5": "flatten",
+        "p7#8": "flatten"
+      }
+    },
+    "translation_style": {
+      "person_names": "transliterate",
+      "system_prompt_sha256": "74666d7128c1c06127d9193db7b8d2b346866088f1ccabb4c33e69be1c586903"
+    }
+  },
+  {
+    "sample": "FD-en-v2.pdf",
+    "arm": "control",
+    "magazine_drop_cap_apply": false,
+    "model": "gpt-4o",
+    "lang_in": "en",
+    "lang_out": "zh",
+    "seconds": 323.3,
+    "requests": 63,
+    "cache_hits": 61,
+    "api_calls": 2,
+    "prompt_tokens": 11777,
+    "completion_tokens": 166,
+    "input_pages": 9,
+    "output_pages": 9,
+    "pdf": "examples\\output\\b9_4\\control\\FD-en-v2\\FD-en-v2.b9_4.control.pdf",
+    "pdf_sha256": "de7b984c9fa8ca4daae1e047a230e2b44198fb348d72a6dfda7c9de5a3ca1c1c",
+    "working_dir": "examples\\output\\b9_4\\control\\FD-en-v2\\work\\FD-en-v2",
+    "ruling": {
+      "path": null,
+      "sha256": null,
+      "present": false,
+      "drop_caps": {}
+    },
+    "translation_style": {
+      "person_names": "transliterate",
+      "system_prompt_sha256": "74666d7128c1c06127d9193db7b8d2b346866088f1ccabb4c33e69be1c586903"
+    }
+  }
+]

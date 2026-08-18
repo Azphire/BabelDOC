@@ -251,7 +251,7 @@ def _bounds(character) -> tuple[float, float] | None:
     return float(box.y), float(box.y2)
 
 
-def _union(characters):
+def character_union(characters):
     """The box covering every character, measured as the stages measure it."""
     boxes = [character_box(item) for item in characters]
     boxes = [
@@ -272,13 +272,16 @@ def _union(characters):
 
 # The composition kinds this pass understands, and whether one may be cut. A
 # formula is a unit of its own and is never cut; everything else is a run of
-# characters whose grouping this pass is allowed to regroup.
-_SPLITTABLE = ("pdf_line", "pdf_same_style_characters")
+# characters whose grouping this pass is allowed to regroup. Public because the
+# regroupable kinds are the same question wherever a pass rebuilds a paragraph's
+# compositions, and naming them once is what keeps the package to one place that
+# spells a composition member out.
+SPLITTABLE = ("pdf_line", "pdf_same_style_characters")
 _ATOMIC = ("pdf_formula", "pdf_character", "pdf_same_style_unicode_characters")
 
 
 def composition_kind(composition) -> str | None:
-    for name in (*_SPLITTABLE, *_ATOMIC):
+    for name in (*SPLITTABLE, *_ATOMIC):
         if getattr(composition, name, None) is not None:
             return name
     return None
@@ -492,14 +495,14 @@ def _rebuilt(composition, kind: str, characters: list):
     if kind == "pdf_line":
         return il_version_1.PdfParagraphComposition(
             pdf_line=il_version_1.PdfLine(
-                box=_union(characters),
+                box=character_union(characters),
                 pdf_character=characters,
                 render_order=composition.pdf_line.render_order,
             )
         )
     return il_version_1.PdfParagraphComposition(
         pdf_same_style_characters=il_version_1.PdfSameStyleCharacters(
-            box=_union(characters),
+            box=character_union(characters),
             pdf_style=composition.pdf_same_style_characters.pdf_style,
             pdf_character=characters,
         )
@@ -552,7 +555,7 @@ def _line_paragraph(paragraph, characters, compositions, ordinal: int):
     translation of a short byline nowhere to grow. The band is the line's own,
     which is what puts each record back where it was.
     """
-    band = _union(characters)
+    band = character_union(characters)
     parent = paragraph.box
     if band is None:
         box = None

@@ -287,11 +287,23 @@ def check_01a_config() -> None:
         return
     with (ROOT / CONFIG).open(encoding="utf-8") as f:
         raw = json.load(f)
+    # A number is bounded by a range beside it; a vocabulary is its own bound and
+    # takes none; and the structural keys -- the separator policy and the table of
+    # per language defaults -- are checked by the rules the reader holds them to,
+    # which the b9.4 gate asserts one probe at a time.
+    structural = {
+        drop_cap.SEPARATOR_KEY: drop_cap.SEPARATOR_KEY,
+        "defaults": drop_cap.DEFAULTS_KEY,
+    }
     for name in drop_cap.DropCapConfig.__dataclass_fields__:
-        if name not in raw:
-            faults.append(f"{name} is not declared")
-        elif f"{name}_allowed_range" not in raw:
-            faults.append(f"{name} has no allowed range")
+        key = structural.get(name, name)
+        if key not in raw:
+            faults.append(f"{key} is not declared")
+        elif isinstance(raw[key], (int, float)) and not isinstance(raw[key], bool):
+            if f"{key}_allowed_range" not in raw:
+                faults.append(f"{key} has no allowed range")
+        elif isinstance(raw[key], list) and not raw[key]:
+            faults.append(f"{key} is an empty vocabulary")
     if config.min_first_run_size_ratio <= 1.0:
         faults.append("a ratio of one or less makes every paragraph a candidate")
     if config.max_first_run_chars < 1:
@@ -365,12 +377,14 @@ def check_01c_sidecar_and_note() -> None:
     for token in ("p<page>#<index>", drop_cap.MARK_SWITCH, "dropCapDecision"):
         if token not in text:
             faults.append(f"{README} does not mention {token}")
-    # The one thing a reader has to be told: the ruling is not acted on yet.
-    if "no stage reads it yet" not in text:
-        faults.append(f"{README} does not say the verdict is not consumed")
+    # The one thing a reader has to be told: what acts on the ruling, and under
+    # which switch. The module docstring is where a reader of an unchanged run
+    # looks first, so it has to name the pass and its switch rather than leave
+    # the verdict looking inert.
     module = (ROOT / MODULE).read_text(encoding="utf-8")
-    if "Nothing consumes the ruling" not in module:
-        faults.append("the module docstring does not say the verdict is not consumed")
+    for token in ("dropCapDecision", drop_cap.APPLY_SWITCH, "flatten"):
+        if token not in module:
+            faults.append(f"the module docstring does not name {token}")
     record("check_01c_sidecar_and_note", not faults, "; ".join(faults))
 
 
@@ -850,7 +864,13 @@ def check_05b_negative_probes() -> None:
 
 
 def check_05c_no_consumer() -> None:
-    """Negative 5c: nothing reads the verdict, and the writers are registered."""
+    """Negative 5c: the verdict is read inside its own module only.
+
+    The verdict now has a consumer, and it is the module that writes it: the pass
+    behind ``magazine_drop_cap_apply``. What this assertion holds is that no other
+    stage reads the attribute, so a question about what a ruling did has one place
+    to be answered from.
+    """
     faults = []
     readers = []
     field = "drop_cap_decision"

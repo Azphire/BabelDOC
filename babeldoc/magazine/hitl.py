@@ -688,6 +688,12 @@ def after_term_extract(translation_config, docs) -> None:
     here too, unconditionally and behind its own switch: it needs the article map
     the grouping stage writes earlier in the pipeline, and marking before the
     draft is written is what lets one hook export the candidates it just found.
+
+    The pass that acts on a drop cap verdict runs last of all, and outside the
+    ruling branch: a verdict reaches it whether a human wrote it or the target
+    language's declared default supplied it, so a run with no decisions file
+    still decides. It merges what it merges before the translator is built, which
+    is what puts a whole first word in the request.
     """
     labeled = labeled_pages(docs)
     candidates = drop_cap.mark(translation_config, labeled)
@@ -696,21 +702,20 @@ def after_term_extract(translation_config, docs) -> None:
         draft[TERMS_SECTION] = export_terms(translation_config, docs)
         draft[DROP_CAPS_SECTION] = drop_cap.review_rows(candidates)
         _write_draft(translation_config, draft)
-    if not translation_config.magazine_hitl_apply:
-        return
-    decisions = _decisions_for(translation_config, docs)
-    if decisions is None:
-        return
-    applied = apply_terms(translation_config, decisions)
-    ruled = drop_cap.apply_decisions(labeled, decisions.drop_caps)
-    if applied or ruled:
-        report = _report(translation_config)
-        if applied:
-            report[TERMS_SECTION] = applied
-        if ruled:
-            report[DROP_CAPS_SECTION] = ruled
-        report["decisions_file"] = str(decisions.path)
-        _write_report(translation_config, report)
+    if translation_config.magazine_hitl_apply:
+        decisions = _decisions_for(translation_config, docs)
+        if decisions is not None:
+            applied = apply_terms(translation_config, decisions)
+            ruled = drop_cap.apply_decisions(labeled, decisions.drop_caps)
+            if applied or ruled:
+                report = _report(translation_config)
+                if applied:
+                    report[TERMS_SECTION] = applied
+                if ruled:
+                    report[DROP_CAPS_SECTION] = ruled
+                report["decisions_file"] = str(decisions.path)
+                _write_report(translation_config, report)
+    drop_cap.apply(translation_config, labeled)
 
 
 def read_tracking(translation_config) -> list[dict]:
