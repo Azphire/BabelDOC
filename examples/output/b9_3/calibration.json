@@ -1,0 +1,316 @@
+{
+  "annotated": [
+    {
+      "heterogeneous": false,
+      "lines": 5,
+      "mean_line_chars": 63.6,
+      "paragraph": "p1#2",
+      "reason": "long_lines",
+      "text": "Indigenous knowledge has long been ignored, and sometimes ev"
+    },
+    {
+      "heterogeneous": false,
+      "lines": 6,
+      "mean_line_chars": 58.8,
+      "paragraph": "p1#3",
+      "reason": "long_lines",
+      "text": "Rooted in the careful observation of ecosystems and passed d"
+    },
+    {
+      "heterogeneous": false,
+      "lines": 8,
+      "mean_line_chars": 86.1,
+      "paragraph": "p1#4",
+      "reason": "long_lines",
+      "text": "UNESCO has long been a pioneer in this field. Through its Lo"
+    },
+    {
+      "heterogeneous": false,
+      "lines": 5,
+      "mean_line_chars": 72.2,
+      "paragraph": "p1#5",
+      "reason": "long_lines",
+      "text": "Beyond providing empirical data, Indigenous knowledge challe"
+    },
+    {
+      "heterogeneous": false,
+      "lines": 3,
+      "mean_line_chars": 89.0,
+      "paragraph": "p1#6",
+      "reason": "long_lines",
+      "text": "But this recognition must be accompanied by guarantees — the"
+    },
+    {
+      "heterogeneous": false,
+      "lines": 5,
+      "mean_line_chars": 55.6,
+      "paragraph": "p1#7",
+      "reason": "long_lines",
+      "text": "By promoting this knowledge, UNESCO is reminding us of the o"
+    },
+    {
+      "heterogeneous": true,
+      "lines": 2,
+      "mean_line_chars": 13.0,
+      "paragraph": "p1#8",
+      "reason": null,
+      "text": "Agnès Bardon Editor-in-Chief"
+    },
+    {
+      "heterogeneous": false,
+      "lines": 3,
+      "mean_line_chars": 15.3,
+      "paragraph": "p1#11",
+      "reason": "uniform_styling",
+      "text": "How Indigenous knowledge drives scientific discovery"
+    },
+    {
+      "heterogeneous": true,
+      "lines": 2,
+      "mean_line_chars": 39.0,
+      "paragraph": "p1#12",
+      "reason": null,
+      "text": "A changing climate for Indigenous knowledge ................"
+    },
+    {
+      "heterogeneous": true,
+      "lines": 2,
+      "mean_line_chars": 28.5,
+      "paragraph": "p1#14",
+      "reason": null,
+      "text": "Brazil: lessons from the water people ..... 9 Marcelo Silva "
+    },
+    {
+      "heterogeneous": true,
+      "lines": 2,
+      "mean_line_chars": 36.0,
+      "paragraph": "p1#15",
+      "reason": null,
+      "text": "When biopiracy takes root .................. 12 Daniel Robin"
+    },
+    {
+      "heterogeneous": true,
+      "lines": 3,
+      "mean_line_chars": 28.0,
+      "paragraph": "p1#16",
+      "reason": null,
+      "text": "China: the radiant health of traditional Dai medicine ......"
+    },
+    {
+      "heterogeneous": true,
+      "lines": 2,
+      "mean_line_chars": 26.5,
+      "paragraph": "p1#17",
+      "reason": null,
+      "text": "The secret skies of Kalahari ................. 17 Sisco Aual"
+    },
+    {
+      "heterogeneous": true,
+      "lines": 3,
+      "mean_line_chars": 26.7,
+      "paragraph": "p1#18",
+      "reason": null,
+      "text": "The Sámi people, indispensable guardians of climate change ."
+    },
+    {
+      "heterogeneous": true,
+      "lines": 2,
+      "mean_line_chars": 35.0,
+      "paragraph": "p1#19",
+      "reason": null,
+      "text": "“Our knowledge has long been regarded as folklore” ........."
+    },
+    {
+      "heterogeneous": true,
+      "lines": 2,
+      "mean_line_chars": 33.0,
+      "paragraph": "p1#22",
+      "reason": null,
+      "text": "Exile through a child’s eyes ................. 26 Photos: Fo"
+    },
+    {
+      "heterogeneous": true,
+      "lines": 2,
+      "mean_line_chars": 38.5,
+      "paragraph": "p1#24",
+      "reason": null,
+      "text": "Welcome to the second quantum revolution ..................."
+    },
+    {
+      "heterogeneous": true,
+      "lines": 3,
+      "mean_line_chars": 37.7,
+      "paragraph": "p1#27",
+      "reason": null,
+      "text": "“Fiction is humanity’s last collective frontier in honest st"
+    },
+    {
+      "heterogeneous": true,
+      "lines": 2,
+      "mean_line_chars": 32.0,
+      "paragraph": "p1#29",
+      "reason": null,
+      "text": "Africa’s book industry: a new page is turning .............."
+    }
+  ],
+  "measure_bound": {
+    "margin_above": 8.6,
+    "margin_below": 8.0,
+    "name": "max_line_chars",
+    "narrowest_exempted": 55.6,
+    "value": 47.0,
+    "widest_admitted": 39.0
+  },
+  "page": 1,
+  "page_kind": "toc",
+  "paragraphs": [
+    {
+      "heterogeneous": false,
+      "lines": 5,
+      "mean_line_chars": 63.6,
+      "paragraph": "p1#2",
+      "reason": "long_lines"
+    },
+    {
+      "heterogeneous": false,
+      "lines": 6,
+      "mean_line_chars": 58.8,
+      "paragraph": "p1#3",
+      "reason": "long_lines"
+    },
+    {
+      "heterogeneous": false,
+      "lines": 8,
+      "mean_line_chars": 86.1,
+      "paragraph": "p1#4",
+      "reason": "long_lines"
+    },
+    {
+      "heterogeneous": false,
+      "lines": 5,
+      "mean_line_chars": 72.2,
+      "paragraph": "p1#5",
+      "reason": "long_lines"
+    },
+    {
+      "heterogeneous": false,
+      "lines": 3,
+      "mean_line_chars": 89.0,
+      "paragraph": "p1#6",
+      "reason": "long_lines"
+    },
+    {
+      "heterogeneous": false,
+      "lines": 5,
+      "mean_line_chars": 55.6,
+      "paragraph": "p1#7",
+      "reason": "long_lines"
+    },
+    {
+      "heterogeneous": true,
+      "lines": 2,
+      "mean_line_chars": 13.0,
+      "paragraph": "p1#8",
+      "reason": null
+    },
+    {
+      "heterogeneous": false,
+      "lines": 3,
+      "mean_line_chars": 15.3,
+      "paragraph": "p1#11",
+      "reason": "uniform_styling"
+    },
+    {
+      "heterogeneous": true,
+      "lines": 2,
+      "mean_line_chars": 39.0,
+      "paragraph": "p1#12",
+      "reason": null
+    },
+    {
+      "heterogeneous": true,
+      "lines": 2,
+      "mean_line_chars": 28.5,
+      "paragraph": "p1#14",
+      "reason": null
+    },
+    {
+      "heterogeneous": true,
+      "lines": 2,
+      "mean_line_chars": 36.0,
+      "paragraph": "p1#15",
+      "reason": null
+    },
+    {
+      "heterogeneous": true,
+      "lines": 3,
+      "mean_line_chars": 28.0,
+      "paragraph": "p1#16",
+      "reason": null
+    },
+    {
+      "heterogeneous": true,
+      "lines": 2,
+      "mean_line_chars": 26.5,
+      "paragraph": "p1#17",
+      "reason": null
+    },
+    {
+      "heterogeneous": true,
+      "lines": 3,
+      "mean_line_chars": 26.7,
+      "paragraph": "p1#18",
+      "reason": null
+    },
+    {
+      "heterogeneous": true,
+      "lines": 2,
+      "mean_line_chars": 35.0,
+      "paragraph": "p1#19",
+      "reason": null
+    },
+    {
+      "heterogeneous": true,
+      "lines": 2,
+      "mean_line_chars": 33.0,
+      "paragraph": "p1#22",
+      "reason": null
+    },
+    {
+      "heterogeneous": true,
+      "lines": 2,
+      "mean_line_chars": 38.5,
+      "paragraph": "p1#24",
+      "reason": null
+    },
+    {
+      "heterogeneous": true,
+      "lines": 3,
+      "mean_line_chars": 37.7,
+      "paragraph": "p1#27",
+      "reason": null
+    },
+    {
+      "heterogeneous": true,
+      "lines": 2,
+      "mean_line_chars": 32.0,
+      "paragraph": "p1#29",
+      "reason": null
+    }
+  ],
+  "sample": "Courier-en",
+  "setting_bound": {
+    "admitted_all_heterogeneous": true,
+    "exempted_for_uniform_setting": [
+      "p1#11"
+    ],
+    "name": "require_style_heterogeneity",
+    "value": true
+  },
+  "totals": {
+    "admitted": 12,
+    "exempted_long_lines": 6,
+    "exempted_uniform_styling": 1,
+    "measured": 19
+  }
+}

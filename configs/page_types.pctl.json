@@ -37,7 +37,7 @@
         {"feature": "leader_dot_line_ratio", "op": "ge", "threshold": 0.08, "weight": 1.0},
         {"feature": "title_label_ratio_pctl", "op": "ge", "threshold": 0.8, "weight": 3.5}
       ],
-      "policy": {"chain_eligible": false, "translate": true, "repair_profile": "grid"}
+      "policy": {"chain_eligible": false, "translate": true, "preserve_line_structure": true, "repair_profile": "grid"}
     },
     {
       "name": "masthead",
@@ -49,7 +49,7 @@
         {"feature": "text_coverage_ratio", "op": "le", "threshold": 0.25, "weight": 1.0},
         {"feature": "title_label_ratio_pctl", "op": "ge", "threshold": 0.7, "weight": -1.5}
       ],
-      "policy": {"chain_eligible": false, "translate": true, "repair_profile": "grid"}
+      "policy": {"chain_eligible": false, "translate": true, "preserve_line_structure": true, "repair_profile": "grid"}
     },
     {
       "name": "editorial",

@@ -51,6 +51,22 @@ that hook and sees the kind the run went on to use. Its own switch is
 ``magazine_line_structure`` and it is down by default; with it down this module
 returns having read nothing.
 
+What may be cut, and what may not
+---------------------------------
+
+A declared page is not records all the way down. A contents page can carry a
+column of running prose beside the entries -- an editor's letter set in the same
+measure -- and cutting running prose into lines would hand the translator half a
+sentence at a time and give back a translation of half a sentence. So the split is narrowed to the paragraphs
+that look like records, by two bounds that both have to hold. A record line is
+short because the record is short, so a paragraph whose mean line is longer than
+``max_line_chars`` is prose and is left whole. And a record says at its own line
+boundary that it is one -- the leader is set in another face, the byline in a
+third -- so where ``require_style_heterogeneity`` is up a paragraph whose lines
+are all set in the same faces is left whole as well. A paragraph the bounds
+exempt is recorded in the sidecar with the reason, so what was not cut is as
+readable as what was.
+
 What is not reachable from here
 -------------------------------
 
@@ -95,6 +111,14 @@ WINDOW_SWITCH = "magazine_page_classify"
 
 POLICY_FLAGS_KEY = "policy_flags"
 SIDECAR_FIELDS_KEY = "sidecar_fields"
+EXEMPTION_FIELDS_KEY = "exemption_fields"
+EXEMPTION_REASONS_KEY = "exemption_reasons"
+
+# Why a paragraph of a declared page was left whole. Both are the narrowing the
+# bounds perform, and the vocabulary is declared in the configuration so a
+# reason the report may carry cannot be invented in code.
+REASON_LONG_LINES = "long_lines"
+REASON_UNIFORM_STYLING = "uniform_styling"
 
 # How a line paragraph is named after the paragraph it came out of.
 LINE_ID_SEPARATOR = "#L"
@@ -112,8 +136,12 @@ class LineSplitConfig:
     flat_paragraph_height: float
     min_gap_collisions: int
     min_line_characters: int
+    max_line_chars: float
+    require_style_heterogeneity: bool
     policy_flags: tuple[str, ...]
     sidecar_fields: tuple[str, ...]
+    exemption_fields: tuple[str, ...]
+    exemption_reasons: tuple[str, ...]
 
     def declared(self, policy: dict | None) -> bool:
         """Whether a page carrying this policy asks for its lines kept.
@@ -140,9 +168,24 @@ def parse_line_split_config(raw: dict, source: str) -> LineSplitConfig:
     except ConfigError as exc:
         raise LineSplitError(str(exc)) from exc
 
-    for key in (POLICY_FLAGS_KEY, SIDECAR_FIELDS_KEY):
+    for key in (
+        POLICY_FLAGS_KEY,
+        SIDECAR_FIELDS_KEY,
+        EXEMPTION_FIELDS_KEY,
+        EXEMPTION_REASONS_KEY,
+    ):
         _require(key in parameters, f"{source}: missing {key}")
     flags = tuple(parameters[POLICY_FLAGS_KEY])
+
+    # The reasons an exemption may name are declared, and the pass has exactly
+    # one rule per declared reason: a vocabulary and a code path that disagree
+    # would let a narrowing happen under a name no reader could look up.
+    reasons = tuple(parameters[EXEMPTION_REASONS_KEY])
+    _require(
+        set(reasons) == {REASON_LONG_LINES, REASON_UNIFORM_STYLING},
+        f"{source}: {EXEMPTION_REASONS_KEY} is {sorted(reasons)}, and the pass "
+        f"exempts for {sorted((REASON_LONG_LINES, REASON_UNIFORM_STYLING))}",
+    )
 
     # The flags have to be flags some page type could actually raise, or the
     # pass is declared by a key nothing declares and would never run.
@@ -161,8 +204,14 @@ def parse_line_split_config(raw: dict, source: str) -> LineSplitConfig:
         flat_paragraph_height=float(parameters["flat_paragraph_height"]),
         min_gap_collisions=int(parameters["min_gap_collisions"]),
         min_line_characters=int(parameters["min_line_characters"]),
+        max_line_chars=float(parameters["max_line_chars"]),
+        require_style_heterogeneity=bool(
+            int(parameters["require_style_heterogeneity"])
+        ),
         policy_flags=flags,
         sidecar_fields=tuple(parameters[SIDECAR_FIELDS_KEY]),
+        exemption_fields=tuple(parameters[EXEMPTION_FIELDS_KEY]),
+        exemption_reasons=reasons,
     )
 
 
@@ -341,6 +390,100 @@ def _merge_short_lines(lines, characters, config: LineSplitConfig) -> list[list[
     return merged
 
 
+# --- which paragraphs are records, and which are prose -------------------------
+
+
+def line_text(characters, line) -> str:
+    return "".join((characters[index].char_unicode or "") for index in line)
+
+
+def mean_line_chars(characters, lines) -> float:
+    """Non-space characters per recovered line, over the whole paragraph.
+
+    The measure a record is short by. Counted over the characters rather than
+    the paragraph's own text so that it is the same characters the lines were
+    recovered from, and averaged rather than taken at the longest line so that
+    one full measure line inside a block of records does not decide the answer.
+    """
+    if not lines:
+        return 0.0
+    total = sum(
+        1
+        for line in lines
+        for character in (characters[index] for index in line)
+        if (character.char_unicode or "").strip()
+    )
+    return total / len(lines)
+
+
+def line_faces(characters, line) -> frozenset[str]:
+    """The faces one line is set in, by font id.
+
+    Whitespace carries a style of its own and no shape, so it says nothing
+    about how the line is set and is left out. Size is left out as well: a
+    record announces itself by changing face -- the leader, the byline -- and
+    reading a size difference inside one face as a boundary would widen the
+    split on a signal a wrapped prose line can also carry.
+    """
+    faces = set()
+    for index in line:
+        character = characters[index]
+        if not (character.char_unicode or "").strip():
+            continue
+        style = character.pdf_style
+        if style is not None and style.font_id is not None:
+            faces.add(style.font_id)
+    return frozenset(faces)
+
+
+def style_heterogeneous(characters, lines) -> bool:
+    """Whether the paragraph's lines are not all set in the same faces."""
+    return len({line_faces(characters, line) for line in lines}) > 1
+
+
+@dataclass(frozen=True)
+class Examination:
+    """What the bounds saw in one paragraph, and what they decided."""
+
+    lines: list[list[int]]
+    mean_line_chars: float
+    heterogeneous: bool
+    reason: str | None
+
+    @property
+    def admitted(self) -> bool:
+        return self.reason is None
+
+
+def examine(paragraph, config: LineSplitConfig) -> Examination | None:
+    """Recover one paragraph's lines and read the bounds over them.
+
+    None where there is nothing to decide: a paragraph of one line, or of too
+    few characters to hold two. Otherwise an examination whose reason is the
+    bound that exempted the paragraph, or None where both bounds held and it
+    may be cut.
+    """
+    characters = paragraph_characters(paragraph)
+    if len(characters) < 2:
+        return None
+    lines = recover_lines(characters, config)
+    if len(lines) < 2:
+        return None
+    mean = mean_line_chars(characters, lines)
+    heterogeneous = style_heterogeneous(characters, lines)
+    reason = None
+    if mean > config.max_line_chars:
+        reason = REASON_LONG_LINES
+    elif config.require_style_heterogeneity and not heterogeneous:
+        reason = REASON_UNIFORM_STYLING
+    return Examination(
+        lines=lines,
+        mean_line_chars=round(mean, 1),
+        heterogeneous=heterogeneous,
+        reason=reason,
+    )
+
+
 # --- cutting one paragraph into one paragraph per line ------------------------
 
 
@@ -433,21 +576,19 @@ def _line_paragraph(paragraph, characters, compositions, ordinal: int):
 
 
 def split_paragraph(paragraph, config: LineSplitConfig) -> list | None:
-    """One paragraph as one paragraph per source line, or None where it is one.
+    """One paragraph as one paragraph per source line, or None where it stays.
 
     None rather than a single element list, so a caller can tell a paragraph
     this pass left alone from one it rebuilt into the same shape: a paragraph
-    of one line is returned untouched and its object identity is the record of
-    that.
+    of one line, or one the bounds exempt, is returned untouched and its object
+    identity is the record of that.
     """
+    examination = examine(paragraph, config)
+    if examination is None or not examination.admitted:
+        return None
     characters = paragraph_characters(paragraph)
-    if len(characters) < 2:
-        return None
-    lines = recover_lines(characters, config)
-    if len(lines) < 2:
-        return None
     built = []
-    for ordinal, line in enumerate(lines):
+    for ordinal, line in enumerate(examination.lines):
         members = set(line)
         compositions = _compositions_of_line(paragraph, members)
         if not compositions:
@@ -471,14 +612,35 @@ def paragraph_reference(page_label: int, index: int) -> str:
     return f"p{page_label}#{index}"
 
 
-def process_page(page, label: int, config: LineSplitConfig) -> list[dict]:
-    """Split every paragraph of one declared page. One record per split."""
+def process_page(
+    page, label: int, config: LineSplitConfig
+) -> tuple[list[dict], list[dict]]:
+    """Split every record paragraph of one declared page.
+
+    One record per split, and one per paragraph the bounds exempted, so the
+    page's answer is readable in both directions: what was cut, and what was
+    left whole because it was prose rather than records.
+    """
     records: list[dict] = []
+    exemptions: list[dict] = []
     rebuilt: list = []
     for index, paragraph in enumerate(page.pdf_paragraph or ()):
+        examination = examine(paragraph, config)
         lines = split_paragraph(paragraph, config)
         if lines is None:
             rebuilt.append(paragraph)
+            if examination is not None and not examination.admitted:
+                exemptions.append(
+                    {
+                        "page": label,
+                        "paragraph": paragraph_reference(label, index),
+                        "debug_id": paragraph.debug_id,
+                        "lines": len(examination.lines),
+                        "mean_line_chars": examination.mean_line_chars,
+                        "heterogeneous": examination.heterogeneous,
+                        "reason": examination.reason,
+                    }
+                )
             continue
         rebuilt.extend(lines)
         records.append(
@@ -488,12 +650,13 @@ def process_page(page, label: int, config: LineSplitConfig) -> list[dict]:
                 "debug_id": paragraph.debug_id,
                 "characters": len(paragraph_characters(paragraph)),
                 "lines": len(lines),
+                "mean_line_chars": examination.mean_line_chars,
                 "line_paragraphs": [line.debug_id for line in lines],
             }
         )
     if records:
         page.pdf_paragraph = rebuilt
-    return records
+    return records, exemptions
 
 
 def page_lines(page, config: LineSplitConfig) -> int:
@@ -538,6 +701,7 @@ def short_lines(page, label: int, minimum: int) -> list[dict]:
 def as_record(
     config: LineSplitConfig,
     splits: list[dict],
+    exemptions: list[dict],
     pages: list[dict],
     untranslated: list[dict],
     minimum: int,
@@ -547,16 +711,20 @@ def as_record(
         "window_switch": WINDOW_SWITCH,
         "policy_flags": list(config.policy_flags),
         "min_line_characters": config.min_line_characters,
+        "max_line_chars": config.max_line_chars,
+        "require_style_heterogeneity": config.require_style_heterogeneity,
         "min_text_length": minimum,
         "totals": {
             "declared_pages": sum(1 for page in pages if page["declared"]),
             "pages": len(pages),
             "split_paragraphs": len(splits),
             "line_paragraphs": sum(item["lines"] for item in splits),
+            "exempt_paragraphs": len(exemptions),
             "short_lines": len(untranslated),
         },
         "pages": pages,
         "splits": splits,
+        "exemptions": exemptions,
         "short_lines": untranslated,
     }
 
@@ -583,14 +751,18 @@ def apply(translation_config, labeled_pages, policy_of=None) -> dict | None:
     minimum = int(getattr(translation_config, "min_text_length", 0) or 0)
 
     splits: list[dict] = []
+    exempt: list[dict] = []
     pages: list[dict] = []
     untranslated: list[dict] = []
     for label, page in labeled_pages:
         declared = config.declared(resolve(page.page_kind))
         before = page_lines(page, config)
-        records = process_page(page, label, config) if declared else []
+        records, exemptions = (
+            process_page(page, label, config) if declared else ([], [])
+        )
         after = page_lines(page, config)
         splits.extend(records)
+        exempt.extend(exemptions)
         untranslated.extend(short_lines(page, label, minimum) if declared else [])
         pages.append(
             {
@@ -600,24 +772,37 @@ def apply(translation_config, labeled_pages, policy_of=None) -> dict | None:
                 "lines_before": before,
                 "lines_after": after,
                 "split_paragraphs": len(records),
+                "exempt_paragraphs": len(exemptions),
             }
         )
 
-    expected = set(config.sidecar_fields)
-    for item in splits:
-        if set(item) != expected:
+    for items, declared_shape, what in (
+        (splits, config.sidecar_fields, "split"),
+        (exempt, config.exemption_fields, "exemption"),
+    ):
+        expected = set(declared_shape)
+        for item in items:
+            if set(item) != expected:
+                raise LineSplitError(
+                    f"{REPORT_NAME}: a {what} record carries {sorted(item)}, "
+                    f"and {CONFIG_PATH.name} declares {sorted(expected)}"
+                )
+    for item in exempt:
+        if item["reason"] not in config.exemption_reasons:
             raise LineSplitError(
-                f"{REPORT_NAME}: a split record carries {sorted(item)}, "
-                f"and {CONFIG_PATH.name} declares {sorted(expected)}"
+                f"{REPORT_NAME}: an exemption names {item['reason']!r}, "
+                f"and {CONFIG_PATH.name} declares {sorted(config.exemption_reasons)}"
             )
 
-    record = as_record(config, splits, pages, untranslated, minimum)
+    record = as_record(config, splits, exempt, pages, untranslated, minimum)
     working_dir = Path(translation_config.get_working_file_path(REPORT_NAME)).parent
     write_report(working_dir, record)
     logger.debug(
-        "line split: %d declared page(s), %d paragraph(s) cut into %d line(s)",
+        "line split: %d declared page(s), %d paragraph(s) cut into %d line(s), "
+        "%d left whole",
         record["totals"]["declared_pages"],
         record["totals"]["split_paragraphs"],
         record["totals"]["line_paragraphs"],
+        record["totals"]["exempt_paragraphs"],
     )
     return record

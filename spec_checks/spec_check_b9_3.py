@@ -52,6 +52,24 @@ and asserted against what the pass builds.
 09 is scope: no upstream file, no ground truth, no ruling, and the frozen
 evidence guard now covers the tracked evidence under examples/output/, which is
 the item this session carried over from b9.2r.
+
+10 is the sweep.
+
+11 is what session two narrowed. A declared page is not records all the way
+down -- a contents page can carry an editorial column beside the entries -- and
+cutting prose into lines hands the translator half a sentence. Two bounds
+narrow the split and both have to hold: the paragraph's mean line must be no
+longer than a record's, and its lines must not all be set in the same faces.
+The truth table over the two is asserted on built documents, the exemption is
+asserted to reach the sidecar with the reason that caused it, and both bounds
+are asserted to be live rather than decorative by relaxing each one.
+
+12 is the calibration and the acceptance, replayed from frozen evidence: the
+page the bounds were calibrated on is committed as a fixture, both measured
+sides and the shipped thresholds are recomputed from it here, and the run
+evidence the acceptance rests on is read back and checked for the properties
+the batch claims -- nothing outside a declared page, the editorial column left
+whole, and every line the translator's floor skipped listed.
 """
 
 from __future__ import annotations
@@ -82,7 +100,7 @@ from spec_checks import artifacts  # noqa: E402
 from spec_checks import frozen  # noqa: E402
 from spec_checks import harness  # noqa: E402
 
-BATCH_TAG = "batch-b9.3.1"
+BATCH_TAG = "batch-b9.3"
 
 PYTHON = sys.executable
 
@@ -93,6 +111,15 @@ CONFIG = ROOT / "configs" / "line_split.json"
 TAXONOMY_CONFIG = ROOT / "configs" / "page_types.json"
 HIGH_LEVEL = ROOT / "babeldoc" / "format" / "pdf" / "high_level.py"
 
+# Session two's evidence, all of it committed under the batch's output tree.
+EVIDENCE_DIR = ROOT / "examples" / "output" / "b9_3"
+CALIBRATION = EVIDENCE_DIR / "calibration.json"
+EVIDENCE = EVIDENCE_DIR / "evidence.json"
+CALIBRATION_FIXTURE = (
+    EVIDENCE_DIR / "fixtures" / "Courier-en.p1.checkpoints.zip"
+)
+CALIBRATION_MEMBER = "checkpoint.07_page_classifier.xml"
+
 # The policy key this batch introduces, named once here and read from the
 # pass's own configuration everywhere else.
 FLAG = "preserve_line_structure"
@@ -102,9 +129,17 @@ ALLOWED_PREFIXES = (
     "babeldoc/magazine/",
     "configs/",
     "spec_checks/",
+    "examples/output/b9_3/",
+    # The sweep ends by applying the output retention policy, and a batch that
+    # falls out of the keep window is archived into this tree before its
+    # untracked artefacts are removed. The archive is the policy's own product,
+    # written by running the gates rather than by editing anything.
+    "docs/reports/archive/",
 )
 ALLOWED_FILES = {
     "plans/PLAN_B9_3.md",
+    # The sweep's own log, kept beside the batch trees it reports on.
+    "examples/output/run_all.b9_3.log",
 }
 
 # Prefixes no session of this batch may touch.
@@ -284,8 +319,55 @@ def formula_paragraph():
             ],
         )
     )
-    tail = run_of("and nothing else", 80.0, 388.0, 10.0, BODY_FONT, 5.0)
+    tail = run_of("and nothing else", 80.0, 388.0, 10.0, BYLINE_FONT, 5.0)
     return paragraph([lead, formula, tail], debug_id="formula")
+
+
+# What a prose column reads like, cycled to whatever measure a case asks for.
+PROSE = (
+    "Indigenous knowledge has long been ignored and is now receiving renewed "
+    "interest across the sciences as the consequences of mechanization mount "
+)
+
+
+def block_paragraph(line_chars: int, middle_face: str, debug_id: str):
+    """Three source lines of one block, at a chosen measure and setting.
+
+    ``line_chars`` is how many characters each line carries, which is what the
+    measure bound reads: a record line is short because the record is short and
+    a prose line runs the measure of its column. ``middle_face`` is the face the
+    middle line is set in, which is what the setting bound reads: the same face
+    as its neighbours is a column, another face is what a leader or a byline
+    does to the line it stands on.
+    """
+    text = PROSE * 8
+    runs = []
+    for ordinal in range(3):
+        piece = text[ordinal * line_chars : (ordinal + 1) * line_chars]
+        face = middle_face if ordinal == 1 else BODY_FONT
+        runs.append(run_of(piece, 80.0, 400.0 - 12.0 * ordinal, 10.0, face, 5.0))
+    return paragraph(runs, debug_id=debug_id)
+
+
+# The four corners of the two bounds, by the two things they read. Only the
+# corner that is short and set in more than one face may be cut.
+LONG_LINE_CHARS = 70
+SHORT_LINE_CHARS = 20
+
+
+def truth_table():
+    """One built paragraph per corner, with the answer the bounds owe it."""
+    return (
+        ("short_heterogeneous", SHORT_LINE_CHARS, BYLINE_FONT, None),
+        (
+            "short_homogeneous",
+            SHORT_LINE_CHARS,
+            BODY_FONT,
+            line_split.REASON_UNIFORM_STYLING,
+        ),
+        ("long_heterogeneous", LONG_LINE_CHARS, BYLINE_FONT, line_split.REASON_LONG_LINES),
+        ("long_homogeneous", LONG_LINE_CHARS, BODY_FONT, line_split.REASON_LONG_LINES),
+    )
 
 
 def page(paragraphs, kind: str | None, number: int = 0):
@@ -901,6 +983,297 @@ def check_08c_the_short_line_inventory_is_reported() -> None:
     )
 
 
+# --- 11 what may be cut, and what may not --------------------------------------
+
+
+def check_11a_the_two_bounds_are_an_and() -> None:
+    """Positive 11a: all four corners of the two bounds, on one built page.
+
+    Only the paragraph that is both short lined and set in more than one face
+    is cut. Long and mixed is prose with an inset; short and uniform is a
+    heading or a wrapped title; long and uniform is a column. Each of the three
+    stays whole, which is the assertion the editorial column of a real contents
+    page rests on.
+    """
+    built = document(
+        [
+            page(
+                [
+                    block_paragraph(chars, face, name)
+                    for name, chars, face, _ in truth_table()
+                ],
+                declared_kinds()[0],
+            )
+        ]
+    )
+    result, _ = apply_to(built)
+    faults = []
+    split = {item["debug_id"] for item in result["splits"]}
+    exempt = {item["debug_id"]: item["reason"] for item in result["exemptions"]}
+    for name, _, _, expected in truth_table():
+        if expected is None:
+            if name not in split:
+                faults.append(f"{name} was not cut")
+            if name in exempt:
+                faults.append(f"{name} was cut and exempted at once")
+            continue
+        if name in split:
+            faults.append(f"{name} was cut")
+        elif exempt.get(name) != expected:
+            faults.append(f"{name} exempted for {exempt.get(name)!r}, not {expected!r}")
+    # The built measures have to sit on the sides the case names, or the table
+    # above is testing a bound the documents never reach.
+    settings = config()
+    for name, chars, face, _ in truth_table():
+        examination = line_split.examine(block_paragraph(chars, face, name), settings)
+        long_side = examination.mean_line_chars > settings.max_line_chars
+        if long_side != (chars == LONG_LINE_CHARS):
+            faults.append(
+                f"{name} measures {examination.mean_line_chars} against "
+                f"a bound of {settings.max_line_chars}"
+            )
+        if examination.heterogeneous != (face != BODY_FONT):
+            faults.append(f"{name} reads heterogeneous={examination.heterogeneous}")
+    record("check_11a_the_two_bounds_are_an_and", not faults, "; ".join(faults))
+
+
+def check_11b_an_exemption_reaches_the_sidecar_with_its_reason() -> None:
+    """Positive 11b: what was left whole is as readable as what was cut.
+
+    The record's shape is declared in the configuration like the split record's,
+    the reason is a member of the declared vocabulary, and the paragraph itself
+    comes out of the pass as the object it went in as.
+    """
+    source = block_paragraph(LONG_LINE_CHARS, BODY_FONT, "column")
+    before = to_checkpoint_xml(document([page([copy.deepcopy(source)], None)]))
+    built = document([page([source], declared_kinds()[0])])
+    result, directory = apply_to(built)
+    written = json.loads((directory / line_split.REPORT_NAME).read_text("utf-8"))
+    faults = []
+    settings = config()
+    expected = set(settings.exemption_fields)
+    for item in written["exemptions"]:
+        if set(item) != expected:
+            faults.append(
+                f"an exemption carries {sorted(item)}, declared {sorted(expected)}"
+            )
+        if item["reason"] not in settings.exemption_reasons:
+            faults.append(f"an exemption names {item['reason']!r}")
+    if written != result:
+        faults.append("the returned record and the written one differ")
+    if written["totals"]["exempt_paragraphs"] != len(written["exemptions"]):
+        faults.append("the total and the list disagree")
+    if written["max_line_chars"] != settings.max_line_chars:
+        faults.append("the report does not carry the measure bound it ran under")
+    if written["require_style_heterogeneity"] != settings.require_style_heterogeneity:
+        faults.append("the report does not carry the setting bound it ran under")
+    after = to_checkpoint_xml(document([page(built.page[0].pdf_paragraph, None)]))
+    if after != before:
+        faults.append("an exempted paragraph was rebuilt")
+    record(
+        "check_11b_an_exemption_reaches_the_sidecar_with_its_reason",
+        not faults,
+        "; ".join(faults),
+    )
+
+
+def check_11c_each_bound_is_live_and_bounded() -> None:
+    """Negative 11c: relax a bound and the answer moves; break one and it is refused.
+
+    A narrowing nobody can turn off is a narrowing nobody can measure. Each
+    bound is relaxed in turn on a paragraph the other one admits, and the
+    paragraph then splits; each is then broken and the configuration is refused.
+    """
+    raw = json.loads(text_of(CONFIG))
+    faults = []
+
+    def cut_with(mutation: dict, chars: int, face: str) -> bool:
+        settings = line_split.parse_line_split_config({**raw, **mutation}, CONFIG.name)
+        built = block_paragraph(chars, face, "probe")
+        return line_split.split_paragraph(built, settings) is not None
+
+    if cut_with({}, SHORT_LINE_CHARS, BODY_FONT):
+        faults.append("a uniform block is cut under the shipped bounds")
+    if not cut_with({"require_style_heterogeneity": 0}, SHORT_LINE_CHARS, BODY_FONT):
+        faults.append("the setting bound cannot be relaxed")
+    if cut_with({}, LONG_LINE_CHARS, BYLINE_FONT):
+        faults.append("a long measure is cut under the shipped bounds")
+    if not cut_with({"max_line_chars": 400.0}, LONG_LINE_CHARS, BYLINE_FONT):
+        faults.append("the measure bound cannot be relaxed")
+
+    mutations = {
+        "measure out of range": {"max_line_chars": 4000.0},
+        "setting out of range": {"require_style_heterogeneity": 7},
+        "reason nobody implements": {"exemption_reasons": ["long_lines", "invented"]},
+    }
+    for reason, mutated in mutations.items():
+        try:
+            line_split.parse_line_split_config({**raw, **mutated}, CONFIG.name)
+        except line_split.LineSplitError:
+            continue
+        except Exception as exc:  # noqa: BLE001 - a wrong error type is a fault
+            faults.append(f"{reason} raised {exc!r}")
+            continue
+        faults.append(f"{reason} was accepted")
+    dropped = {key: value for key, value in raw.items() if key != "exemption_fields"}
+    try:
+        line_split.parse_line_split_config(dropped, CONFIG.name)
+        faults.append("a configuration declaring no exemption shape was accepted")
+    except line_split.LineSplitError:
+        pass
+    record("check_11c_each_bound_is_live_and_bounded", not faults, "; ".join(faults))
+
+
+# --- 12 the calibration and the acceptance, replayed from frozen evidence ------
+
+
+def check_12a_the_calibration_replays_on_the_frozen_page() -> None:
+    """Positive 12a: the bounds are recomputed from the page they were set on.
+
+    The page is a contents grid sharing its measure with an editorial column,
+    which is the only shape on which both sides of the bound can be measured at
+    once. The fixture is that page as the run left it before the split; this
+    recomputes every paragraph's measure and setting, and asserts that the
+    shipped bound sits strictly between the widest paragraph it admits and the
+    narrowest column it exempts, with the margins the calibration recorded.
+    """
+    name = "check_12a_the_calibration_replays_on_the_frozen_page"
+    missing = frozen.absent([CALIBRATION, CALIBRATION_FIXTURE])
+    if missing:
+        frozen.skip(name, missing)
+        return
+    from babeldoc.magazine.checkpoint import load_checkpoint
+
+    recorded = json.loads(text_of(CALIBRATION))
+    settings = config()
+    document_in = load_checkpoint(CALIBRATION_FIXTURE / CALIBRATION_MEMBER)
+    page_in = document_in.page[0]
+    measured = []
+    for index, paragraph_in in enumerate(page_in.pdf_paragraph or ()):
+        examination = line_split.examine(paragraph_in, settings)
+        if examination is None:
+            continue
+        measured.append(
+            {
+                "paragraph": line_split.paragraph_reference(1, index),
+                "lines": len(examination.lines),
+                "mean_line_chars": examination.mean_line_chars,
+                "heterogeneous": examination.heterogeneous,
+                "reason": examination.reason,
+            }
+        )
+    faults = []
+    if measured != recorded["paragraphs"]:
+        differing = [
+            item["paragraph"]
+            for item, kept in zip(measured, recorded["paragraphs"], strict=False)
+            if item != kept
+        ]
+        faults.append(
+            f"the replay differs from the record on {differing[:4]} "
+            f"({len(measured)} measured, {len(recorded['paragraphs'])} recorded)"
+        )
+    admitted = [item for item in measured if item["reason"] is None]
+    exempted_long = [
+        item for item in measured if item["reason"] == line_split.REASON_LONG_LINES
+    ]
+    if not admitted or not exempted_long:
+        faults.append("the fixture no longer carries both sides of the bound")
+    else:
+        widest = max(item["mean_line_chars"] for item in admitted)
+        narrowest = min(item["mean_line_chars"] for item in exempted_long)
+        if not widest < settings.max_line_chars < narrowest:
+            faults.append(
+                f"the bound {settings.max_line_chars} does not separate "
+                f"{widest} from {narrowest}"
+            )
+        for key, value in (
+            ("widest_admitted", widest),
+            ("narrowest_exempted", narrowest),
+        ):
+            if recorded["measure_bound"][key] != value:
+                faults.append(
+                    f"{key} replays as {value}, "
+                    f"recorded {recorded['measure_bound'][key]}"
+                )
+        if recorded["measure_bound"]["value"] != settings.max_line_chars:
+            faults.append(
+                "the calibration records a bound the configuration does not ship"
+            )
+    if recorded["setting_bound"]["value"] != settings.require_style_heterogeneity:
+        faults.append(
+            "the calibration records a setting the configuration does not ship"
+        )
+    record(name, not faults, "; ".join(faults))
+
+
+def check_12b_the_acceptance_evidence_holds() -> None:
+    """Positive 12b: the run evidence says what the batch claims it says.
+
+    Read back rather than recomputed: the arms cost API calls and this gate
+    spends nothing. Four claims, and the third is the one that had to be
+    weakened to stay true. The split is confined to the declared pages, proved
+    on the document as it stands before a single request is built. Every
+    editorial paragraph of the shared page was offered to the translator whole,
+    and for the measure bound rather than by accident. Downstream of the split
+    the confinement does not hold -- pages nobody touched are translated
+    differently -- and what is asserted there is that every such page is
+    accounted for by a channel the evidence names, not that none exists. And
+    every line the length floor skipped is listed.
+    """
+    name = "check_12b_the_acceptance_evidence_holds"
+    missing = frozen.absent([EVIDENCE])
+    if missing:
+        frozen.skip(name, missing)
+        return
+    evidence = json.loads(text_of(EVIDENCE))
+    faults = []
+    for sample, entry in sorted(evidence["samples"].items()):
+        if entry["structure_confined_to_declared"] is not True:
+            faults.append(
+                f"{sample}: the split reached {entry['structure_differing_pages']}, "
+                f"declared {entry['declared_pages']}"
+            )
+        if entry["structure_differing_control"]:
+            faults.append(
+                f"{sample}: the control moved the document before translation on "
+                f"{entry['structure_differing_control']}"
+            )
+        if entry["split_pages_outside_declared"]:
+            faults.append(
+                f"{sample}: split recorded on undeclared page(s) "
+                f"{entry['split_pages_outside_declared']}"
+            )
+        for item in entry["short_lines"]:
+            if set(item) != {"page", "paragraph", "debug_id", "text"}:
+                faults.append(f"{sample}: a short line record carries {sorted(item)}")
+        if entry["short_line_count"] != len(entry["short_lines"]):
+            faults.append(f"{sample}: the short line total and the list disagree")
+    for sample, entry in sorted(evidence["spillover"].items()):
+        if entry["unexplained"]:
+            faults.append(
+                f"{sample}: page(s) {entry['unexplained']} moved with no channel "
+                f"reaching them"
+            )
+    prose = evidence["prose_exemption"]
+    if not prose["paragraphs"] or prose["exempted"] != prose["paragraphs"]:
+        faults.append(
+            f"{prose['exempted']} of {prose['paragraphs']} editorial paragraph(s) "
+            f"were left whole"
+        )
+    if prose["offered_whole"] != prose["paragraphs"]:
+        faults.append(
+            f"{prose['offered_whole']} of {prose['paragraphs']} reached the "
+            f"translator as one text"
+        )
+    if prose["counterfactual_requests"] <= prose["paragraphs"]:
+        faults.append("the counterfactual is not a counterfactual")
+    for item in prose["evidence"]:
+        if item["reason"] != line_split.REASON_LONG_LINES:
+            faults.append(f"{item['paragraph']} was left whole for {item['reason']!r}")
+    record(name, not faults, "; ".join(faults))
+
+
 # --- 09 scope, registration and the frozen prefix ------------------------------
 
 
@@ -1038,6 +1411,11 @@ def main() -> int:
         check_08a_the_report_has_the_declared_shape,
         check_08b_a_record_of_the_wrong_shape_is_refused,
         check_08c_the_short_line_inventory_is_reported,
+        check_11a_the_two_bounds_are_an_and,
+        check_11b_an_exemption_reaches_the_sidecar_with_its_reason,
+        check_11c_each_bound_is_live_and_bounded,
+        check_12a_the_calibration_replays_on_the_frozen_page,
+        check_12b_the_acceptance_evidence_holds,
         check_09a_no_upstream_no_ground_truth_no_ruling,
         check_09b_the_runner_registers_this_gate,
         check_09c_the_frozen_guard_covers_the_output_evidence,

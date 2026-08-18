@@ -1,0 +1,1762 @@
+{
+  "arms": [
+    "off",
+    "control",
+    "on"
+  ],
+  "calibration": {
+    "annotated": [
+      {
+        "heterogeneous": false,
+        "lines": 5,
+        "mean_line_chars": 63.6,
+        "paragraph": "p1#2",
+        "reason": "long_lines",
+        "text": "Indigenous knowledge has long been ignored, and sometimes ev"
+      },
+      {
+        "heterogeneous": false,
+        "lines": 6,
+        "mean_line_chars": 58.8,
+        "paragraph": "p1#3",
+        "reason": "long_lines",
+        "text": "Rooted in the careful observation of ecosystems and passed d"
+      },
+      {
+        "heterogeneous": false,
+        "lines": 8,
+        "mean_line_chars": 86.1,
+        "paragraph": "p1#4",
+        "reason": "long_lines",
+        "text": "UNESCO has long been a pioneer in this field. Through its Lo"
+      },
+      {
+        "heterogeneous": false,
+        "lines": 5,
+        "mean_line_chars": 72.2,
+        "paragraph": "p1#5",
+        "reason": "long_lines",
+        "text": "Beyond providing empirical data, Indigenous knowledge challe"
+      },
+      {
+        "heterogeneous": false,
+        "lines": 3,
+        "mean_line_chars": 89.0,
+        "paragraph": "p1#6",
+        "reason": "long_lines",
+        "text": "But this recognition must be accompanied by guarantees — the"
+      },
+      {
+        "heterogeneous": false,
+        "lines": 5,
+        "mean_line_chars": 55.6,
+        "paragraph": "p1#7",
+        "reason": "long_lines",
+        "text": "By promoting this knowledge, UNESCO is reminding us of the o"
+      },
+      {
+        "heterogeneous": true,
+        "lines": 2,
+        "mean_line_chars": 13.0,
+        "paragraph": "p1#8",
+        "reason": null,
+        "text": "Agnès Bardon Editor-in-Chief"
+      },
+      {
+        "heterogeneous": false,
+        "lines": 3,
+        "mean_line_chars": 15.3,
+        "paragraph": "p1#11",
+        "reason": "uniform_styling",
+        "text": "How Indigenous knowledge drives scientific discovery"
+      },
+      {
+        "heterogeneous": true,
+        "lines": 2,
+        "mean_line_chars": 39.0,
+        "paragraph": "p1#12",
+        "reason": null,
+        "text": "A changing climate for Indigenous knowledge ................"
+      },
+      {
+        "heterogeneous": true,
+        "lines": 2,
+        "mean_line_chars": 28.5,
+        "paragraph": "p1#14",
+        "reason": null,
+        "text": "Brazil: lessons from the water people ..... 9 Marcelo Silva "
+      },
+      {
+        "heterogeneous": true,
+        "lines": 2,
+        "mean_line_chars": 36.0,
+        "paragraph": "p1#15",
+        "reason": null,
+        "text": "When biopiracy takes root .................. 12 Daniel Robin"
+      },
+      {
+        "heterogeneous": true,
+        "lines": 3,
+        "mean_line_chars": 28.0,
+        "paragraph": "p1#16",
+        "reason": null,
+        "text": "China: the radiant health of traditional Dai medicine ......"
+      },
+      {
+        "heterogeneous": true,
+        "lines": 2,
+        "mean_line_chars": 26.5,
+        "paragraph": "p1#17",
+        "reason": null,
+        "text": "The secret skies of Kalahari ................. 17 Sisco Aual"
+      },
+      {
+        "heterogeneous": true,
+        "lines": 3,
+        "mean_line_chars": 26.7,
+        "paragraph": "p1#18",
+        "reason": null,
+        "text": "The Sámi people, indispensable guardians of climate change ."
+      },
+      {
+        "heterogeneous": true,
+        "lines": 2,
+        "mean_line_chars": 35.0,
+        "paragraph": "p1#19",
+        "reason": null,
+        "text": "“Our knowledge has long been regarded as folklore” ........."
+      },
+      {
+        "heterogeneous": true,
+        "lines": 2,
+        "mean_line_chars": 33.0,
+        "paragraph": "p1#22",
+        "reason": null,
+        "text": "Exile through a child’s eyes ................. 26 Photos: Fo"
+      },
+      {
+        "heterogeneous": true,
+        "lines": 2,
+        "mean_line_chars": 38.5,
+        "paragraph": "p1#24",
+        "reason": null,
+        "text": "Welcome to the second quantum revolution ..................."
+      },
+      {
+        "heterogeneous": true,
+        "lines": 3,
+        "mean_line_chars": 37.7,
+        "paragraph": "p1#27",
+        "reason": null,
+        "text": "“Fiction is humanity’s last collective frontier in honest st"
+      },
+      {
+        "heterogeneous": true,
+        "lines": 2,
+        "mean_line_chars": 32.0,
+        "paragraph": "p1#29",
+        "reason": null,
+        "text": "Africa’s book industry: a new page is turning .............."
+      }
+    ],
+    "measure_bound": {
+      "margin_above": 8.6,
+      "margin_below": 8.0,
+      "name": "max_line_chars",
+      "narrowest_exempted": 55.6,
+      "value": 47.0,
+      "widest_admitted": 39.0
+    },
+    "page": 1,
+    "page_kind": "toc",
+    "paragraphs": [
+      {
+        "heterogeneous": false,
+        "lines": 5,
+        "mean_line_chars": 63.6,
+        "paragraph": "p1#2",
+        "reason": "long_lines"
+      },
+      {
+        "heterogeneous": false,
+        "lines": 6,
+        "mean_line_chars": 58.8,
+        "paragraph": "p1#3",
+        "reason": "long_lines"
+      },
+      {
+        "heterogeneous": false,
+        "lines": 8,
+        "mean_line_chars": 86.1,
+        "paragraph": "p1#4",
+        "reason": "long_lines"
+      },
+      {
+        "heterogeneous": false,
+        "lines": 5,
+        "mean_line_chars": 72.2,
+        "paragraph": "p1#5",
+        "reason": "long_lines"
+      },
+      {
+        "heterogeneous": false,
+        "lines": 3,
+        "mean_line_chars": 89.0,
+        "paragraph": "p1#6",
+        "reason": "long_lines"
+      },
+      {
+        "heterogeneous": false,
+        "lines": 5,
+        "mean_line_chars": 55.6,
+        "paragraph": "p1#7",
+        "reason": "long_lines"
+      },
+      {
+        "heterogeneous": true,
+        "lines": 2,
+        "mean_line_chars": 13.0,
+        "paragraph": "p1#8",
+        "reason": null
+      },
+      {
+        "heterogeneous": false,
+        "lines": 3,
+        "mean_line_chars": 15.3,
+        "paragraph": "p1#11",
+        "reason": "uniform_styling"
+      },
+      {
+        "heterogeneous": true,
+        "lines": 2,
+        "mean_line_chars": 39.0,
+        "paragraph": "p1#12",
+        "reason": null
+      },
+      {
+        "heterogeneous": true,
+        "lines": 2,
+        "mean_line_chars": 28.5,
+        "paragraph": "p1#14",
+        "reason": null
+      },
+      {
+        "heterogeneous": true,
+        "lines": 2,
+        "mean_line_chars": 36.0,
+        "paragraph": "p1#15",
+        "reason": null
+      },
+      {
+        "heterogeneous": true,
+        "lines": 3,
+        "mean_line_chars": 28.0,
+        "paragraph": "p1#16",
+        "reason": null
+      },
+      {
+        "heterogeneous": true,
+        "lines": 2,
+        "mean_line_chars": 26.5,
+        "paragraph": "p1#17",
+        "reason": null
+      },
+      {
+        "heterogeneous": true,
+        "lines": 3,
+        "mean_line_chars": 26.7,
+        "paragraph": "p1#18",
+        "reason": null
+      },
+      {
+        "heterogeneous": true,
+        "lines": 2,
+        "mean_line_chars": 35.0,
+        "paragraph": "p1#19",
+        "reason": null
+      },
+      {
+        "heterogeneous": true,
+        "lines": 2,
+        "mean_line_chars": 33.0,
+        "paragraph": "p1#22",
+        "reason": null
+      },
+      {
+        "heterogeneous": true,
+        "lines": 2,
+        "mean_line_chars": 38.5,
+        "paragraph": "p1#24",
+        "reason": null
+      },
+      {
+        "heterogeneous": true,
+        "lines": 3,
+        "mean_line_chars": 37.7,
+        "paragraph": "p1#27",
+        "reason": null
+      },
+      {
+        "heterogeneous": true,
+        "lines": 2,
+        "mean_line_chars": 32.0,
+        "paragraph": "p1#29",
+        "reason": null
+      }
+    ],
+    "sample": "Courier-en",
+    "setting_bound": {
+      "admitted_all_heterogeneous": true,
+      "exempted_for_uniform_setting": [
+        "p1#11"
+      ],
+      "name": "require_style_heterogeneity",
+      "value": true
+    },
+    "totals": {
+      "admitted": 12,
+      "exempted_long_lines": 6,
+      "exempted_uniform_styling": 1,
+      "measured": 19
+    }
+  },
+  "cost": {
+    "control": {
+      "api_calls": 5,
+      "cache_hits": 126,
+      "completion_tokens": 789,
+      "prompt_tokens": 14507,
+      "requests": 131,
+      "seconds": 188.4
+    },
+    "off": {
+      "api_calls": 5,
+      "cache_hits": 126,
+      "completion_tokens": 765,
+      "prompt_tokens": 14479,
+      "requests": 131,
+      "seconds": 147.4
+    },
+    "on": {
+      "api_calls": 85,
+      "cache_hits": 75,
+      "completion_tokens": 11667,
+      "prompt_tokens": 89077,
+      "requests": 160,
+      "seconds": 183.9
+    }
+  },
+  "fixture": {
+    "calibration_page": "examples/output/b9_3/fixtures/Courier-en.p1.checkpoints.zip",
+    "member": "checkpoint.07_page_classifier.xml",
+    "page_kind": "toc",
+    "paragraphs": 35,
+    "reports": [
+      "examples/output/b9_3/fixtures/Courier-en.line_split.report.json",
+      "examples/output/b9_3/fixtures/FD-en-v2.line_split.report.json",
+      "examples/output/b9_3/fixtures/Vogue-en.line_split.report.json"
+    ]
+  },
+  "flatten_observation": {
+    "entries": [
+      {
+        "decision": "flatten",
+        "heading_policy_touched_page": true,
+        "page": 4,
+        "page_declared": false,
+        "page_split": false,
+        "paragraph": "p4#3",
+        "still_marked_as_candidate": true
+      },
+      {
+        "decision": "flatten",
+        "heading_policy_touched_page": true,
+        "page": 5,
+        "page_declared": false,
+        "page_split": false,
+        "paragraph": "p5#5",
+        "still_marked_as_candidate": true
+      },
+      {
+        "decision": "flatten",
+        "heading_policy_touched_page": true,
+        "page": 7,
+        "page_declared": false,
+        "page_split": false,
+        "paragraph": "p7#8",
+        "still_marked_as_candidate": true
+      }
+    ],
+    "heading_pages": [
+      1,
+      4,
+      5,
+      6,
+      7,
+      8
+    ],
+    "on_a_declared_page": 0,
+    "ruled": 3,
+    "sample": "Courier-en"
+  },
+  "glossary": {
+    "available": true,
+    "gained": [],
+    "line_positions": [
+      {
+        "inside_one_source_line": true,
+        "on_a_declared_page": true,
+        "source": "Anna Ruohonen",
+        "spans_a_line_boundary": false
+      },
+      {
+        "inside_one_source_line": true,
+        "on_a_declared_page": true,
+        "source": "Chimamanda Ngozi Adichie",
+        "spans_a_line_boundary": false
+      },
+      {
+        "inside_one_source_line": false,
+        "on_a_declared_page": true,
+        "source": "CourierT H E UNESCO",
+        "spans_a_line_boundary": true
+      },
+      {
+        "inside_one_source_line": true,
+        "on_a_declared_page": true,
+        "source": "Daniel Robinson",
+        "spans_a_line_boundary": false
+      },
+      {
+        "inside_one_source_line": true,
+        "on_a_declared_page": true,
+        "source": "David Jefferson",
+        "spans_a_line_boundary": false
+      },
+      {
+        "inside_one_source_line": true,
+        "on_a_declared_page": true,
+        "source": "Du Junzhi",
+        "spans_a_line_boundary": false
+      },
+      {
+        "inside_one_source_line": true,
+        "on_a_declared_page": true,
+        "source": "Jim Al-Khalili",
+        "spans_a_line_boundary": false
+      },
+      {
+        "inside_one_source_line": false,
+        "on_a_declared_page": false,
+        "source": "Katerina Markelova",
+        "spans_a_line_boundary": false
+      },
+      {
+        "inside_one_source_line": true,
+        "on_a_declared_page": true,
+        "source": "Lagipoiva Cherelle Jackson",
+        "spans_a_line_boundary": false
+      },
+      {
+        "inside_one_source_line": true,
+        "on_a_declared_page": true,
+        "source": "Marcelo Silva de Sousa",
+        "spans_a_line_boundary": false
+      },
+      {
+        "inside_one_source_line": true,
+        "on_a_declared_page": true,
+        "source": "Ora Marek-Martinez",
+        "spans_a_line_boundary": false
+      },
+      {
+        "inside_one_source_line": true,
+        "on_a_declared_page": true,
+        "source": "Sisco Auala",
+        "spans_a_line_boundary": false
+      },
+      {
+        "inside_one_source_line": false,
+        "on_a_declared_page": false,
+        "source": "The UNESCO Courier",
+        "spans_a_line_boundary": false
+      },
+      {
+        "inside_one_source_line": true,
+        "on_a_declared_page": true,
+        "source": "Yang Sha",
+        "spans_a_line_boundary": false
+      }
+    ],
+    "lost": [],
+    "matches": [
+      {
+        "off": 1,
+        "on": 1,
+        "source": "Anna Ruohonen"
+      },
+      {
+        "off": 1,
+        "on": 1,
+        "source": "Chimamanda Ngozi Adichie"
+      },
+      {
+        "off": 0,
+        "on": 0,
+        "source": "CourierT H E UNESCO"
+      },
+      {
+        "off": 2,
+        "on": 2,
+        "source": "Daniel Robinson"
+      },
+      {
+        "off": 2,
+        "on": 2,
+        "source": "David Jefferson"
+      },
+      {
+        "off": 1,
+        "on": 1,
+        "source": "Du Junzhi"
+      },
+      {
+        "off": 1,
+        "on": 1,
+        "source": "Jim Al-Khalili"
+      },
+      {
+        "off": 0,
+        "on": 0,
+        "source": "Katerina Markelova"
+      },
+      {
+        "off": 2,
+        "on": 2,
+        "source": "Lagipoiva Cherelle Jackson"
+      },
+      {
+        "off": 2,
+        "on": 2,
+        "source": "Marcelo Silva de Sousa"
+      },
+      {
+        "off": 1,
+        "on": 1,
+        "source": "Ora Marek-Martinez"
+      },
+      {
+        "off": 1,
+        "on": 1,
+        "source": "Sisco Auala"
+      },
+      {
+        "off": 5,
+        "on": 4,
+        "source": "The UNESCO Courier"
+      },
+      {
+        "off": 1,
+        "on": 1,
+        "source": "Yang Sha"
+      }
+    ],
+    "on_a_declared_page": [
+      "Anna Ruohonen",
+      "Chimamanda Ngozi Adichie",
+      "CourierT H E UNESCO",
+      "Daniel Robinson",
+      "David Jefferson",
+      "Du Junzhi",
+      "Jim Al-Khalili",
+      "Lagipoiva Cherelle Jackson",
+      "Marcelo Silva de Sousa",
+      "Ora Marek-Martinez",
+      "Sisco Auala",
+      "Yang Sha"
+    ],
+    "spanning_a_line_boundary": [
+      "CourierT H E UNESCO"
+    ],
+    "terms": 14,
+    "unreached_off": [
+      "CourierT H E UNESCO",
+      "Katerina Markelova"
+    ],
+    "unreached_on": [
+      "CourierT H E UNESCO",
+      "Katerina Markelova"
+    ]
+  },
+  "prose_exemption": {
+    "bounds": {
+      "max_line_chars": 47.0,
+      "require_style_heterogeneity": true
+    },
+    "counterfactual_requests": 32,
+    "evidence": [
+      {
+        "counterfactual_first_fragments": [
+          "Indigenous knowledge has long  been ignored, andsometimes  even  opposed,  by  science.  Now,  however,",
+          "it is receiving renewed interest — and it’s about time:"
+        ],
+        "counterfactual_requests": 5,
+        "lines": 5,
+        "mean_line_chars": 63.6,
+        "offered_whole": true,
+        "paragraph": "p1#2",
+        "reason": "long_lines",
+        "source_chars": 373,
+        "translated_chars_off": 101,
+        "translated_chars_on": 101,
+        "translations_identical": true
+      },
+      {
+        "counterfactual_first_fragments": [
+          "Rooted  in  the  careful  observation of  ecosystems  and",
+          "passed down orally from generation to generation, this"
+        ],
+        "counterfactual_requests": 6,
+        "lines": 6,
+        "mean_line_chars": 58.8,
+        "offered_whole": true,
+        "paragraph": "p1#3",
+        "reason": "long_lines",
+        "source_chars": 414,
+        "translated_chars_off": 109,
+        "translated_chars_on": 109,
+        "translations_identical": false
+      },
+      {
+        "counterfactual_first_fragments": [
+          "UNESCO has long been a pioneer in this field. Through",
+          "its Local and Indigenous Knowledge Systems (LINKS)programme, the  Organization promotes exchanges"
+        ],
+        "counterfactual_requests": 8,
+        "lines": 8,
+        "mean_line_chars": 86.1,
+        "offered_whole": true,
+        "paragraph": "p1#4",
+        "reason": "long_lines",
+        "source_chars": 806,
+        "translated_chars_off": 225,
+        "translated_chars_on": 222,
+        "translations_identical": false
+      },
+      {
+        "counterfactual_first_fragments": [
+          "Beyond providing empirical data, Indigenous knowledgechallenges the  very foundations  of the  scientific",
+          "approach, whether in terms of the place of ethics, the"
+        ],
+        "counterfactual_requests": 5,
+        "lines": 5,
+        "mean_line_chars": 72.2,
+        "offered_whole": true,
+        "paragraph": "p1#5",
+        "reason": "long_lines",
+        "source_chars": 416,
+        "translated_chars_off": 110,
+        "translated_chars_on": 110,
+        "translations_identical": true
+      },
+      {
+        "counterfactual_first_fragments": [
+          "But this recognition must be accompanied by guarantees—  the  free and informed  consent  of communities,equitable sharing  of benefits,  and  protection againstabusive appropriation.  The  objective  is  not  simply  to",
+          "absorb Indigenous knowledge into mainstream science,"
+        ],
+        "counterfactual_requests": 3,
+        "lines": 3,
+        "mean_line_chars": 89.0,
+        "offered_whole": true,
+        "paragraph": "p1#6",
+        "reason": "long_lines",
+        "source_chars": 314,
+        "translated_chars_off": 79,
+        "translated_chars_on": 79,
+        "translations_identical": true
+      },
+      {
+        "counterfactual_first_fragments": [
+          "By  promoting  this  knowledge,  UNESCO  is remindingus  of  the  obvious  —  to  understand  and preserve the",
+          "world, we have everything to gain by integrating the"
+        ],
+        "counterfactual_requests": 5,
+        "lines": 5,
+        "mean_line_chars": 55.6,
+        "offered_whole": true,
+        "paragraph": "p1#7",
+        "reason": "long_lines",
+        "source_chars": 332,
+        "translated_chars_off": 114,
+        "translated_chars_on": 109,
+        "translations_identical": false
+      }
+    ],
+    "exempted": 6,
+    "identical_translations": 3,
+    "offered_whole": 6,
+    "page": 1,
+    "paragraphs": 6,
+    "sample": "Courier-en"
+  },
+  "rasters": {
+    "Courier-en": [
+      {
+        "measurements": {
+          "off": {
+            "broken_examples": [
+              "·恩戈兹·阿迪契（Chi | mamandaNgozi"
+            ],
+            "broken_latin_words": 1,
+            "glued_examples": [
+              "巴西：水上人家的教训.....9马塞洛·席尔瓦·德·索",
+              "当生物盗窃生根时.12丹尼尔·罗宾逊和大卫·杰斐",
+              "中国：传统傣族医学的光辉健康.14杨沙和",
+              "卡拉哈里的秘密天空.................17西斯科·阿瓦拉",
+              "20安娜·罗霍宁",
+              "通过孩子的眼睛看流亡.................26照片："
+            ],
+            "leader_lines": 5,
+            "leader_right_edge_spread": 54.56,
+            "leader_right_edges": [
+              219.57,
+              252.37,
+              253.0,
+              255.95,
+              274.13
+            ],
+            "lines": 34,
+            "orphan_examples": [
+              "萨",
+              "逊"
+            ],
+            "orphan_lines": 2,
+            "records_glued_after_folio": 7
+          },
+          "on": {
+            "broken_examples": [],
+            "broken_latin_words": 0,
+            "glued_examples": [],
+            "leader_lines": 5,
+            "leader_right_edge_spread": 36.19,
+            "leader_right_edges": [
+              195.18,
+              200.94,
+              206.36,
+              221.57,
+              231.37
+            ],
+            "lines": 42,
+            "orphan_examples": [],
+            "orphan_lines": 0,
+            "records_glued_after_folio": 0
+          }
+        },
+        "off_column": "examples/output/b9_3/raster/Courier-en.p1.off.crop.png",
+        "on_column": "examples/output/b9_3/raster/Courier-en.p1.on.crop.png",
+        "page": 1
+      }
+    ],
+    "FD-en-v2": [
+      {
+        "measurements": {
+          "off": {
+            "broken_examples": [],
+            "broken_latin_words": 0,
+            "glued_examples": [],
+            "leader_lines": 0,
+            "leader_right_edge_spread": null,
+            "leader_right_edges": [],
+            "lines": 26,
+            "orphan_examples": [],
+            "orphan_lines": 0,
+            "records_glued_after_folio": 0
+          },
+          "on": {
+            "broken_examples": [],
+            "broken_latin_words": 0,
+            "glued_examples": [],
+            "leader_lines": 0,
+            "leader_right_edge_spread": null,
+            "leader_right_edges": [],
+            "lines": 29,
+            "orphan_examples": [],
+            "orphan_lines": 0,
+            "records_glued_after_folio": 0
+          }
+        },
+        "off_column": "examples/output/b9_3/raster/FD-en-v2.p3.off.crop.png",
+        "on_column": "examples/output/b9_3/raster/FD-en-v2.p3.on.crop.png",
+        "page": 3
+      },
+      {
+        "measurements": {
+          "off": {
+            "broken_examples": [
+              "Léalaen | español"
+            ],
+            "broken_latin_words": 1,
+            "glued_examples": [
+              "4JUNE2026"
+            ],
+            "leader_lines": 0,
+            "leader_right_edge_spread": null,
+            "leader_right_edges": [],
+            "lines": 17,
+            "orphan_examples": [],
+            "orphan_lines": 0,
+            "records_glued_after_folio": 1
+          },
+          "on": {
+            "broken_examples": [
+              "Léalaen | español"
+            ],
+            "broken_latin_words": 1,
+            "glued_examples": [
+              "4JUNE2026"
+            ],
+            "leader_lines": 0,
+            "leader_right_edge_spread": null,
+            "leader_right_edges": [],
+            "lines": 16,
+            "orphan_examples": [],
+            "orphan_lines": 0,
+            "records_glued_after_folio": 1
+          }
+        },
+        "off_column": "examples/output/b9_3/raster/FD-en-v2.p5.off.crop.png",
+        "on_column": "examples/output/b9_3/raster/FD-en-v2.p5.on.crop.png",
+        "page": 5
+      },
+      {
+        "measurements": {
+          "off": {
+            "broken_examples": [],
+            "broken_latin_words": 0,
+            "glued_examples": [],
+            "leader_lines": 0,
+            "leader_right_edge_spread": null,
+            "leader_right_edges": [],
+            "lines": 32,
+            "orphan_examples": [],
+            "orphan_lines": 0,
+            "records_glued_after_folio": 0
+          },
+          "on": {
+            "broken_examples": [],
+            "broken_latin_words": 0,
+            "glued_examples": [],
+            "leader_lines": 0,
+            "leader_right_edge_spread": null,
+            "leader_right_edges": [],
+            "lines": 32,
+            "orphan_examples": [],
+            "orphan_lines": 0,
+            "records_glued_after_folio": 0
+          }
+        },
+        "off_column": "examples/output/b9_3/raster/FD-en-v2.p7.off.crop.png",
+        "on_column": "examples/output/b9_3/raster/FD-en-v2.p7.on.crop.png",
+        "page": 7
+      }
+    ],
+    "Vogue-en": [
+      {
+        "measurements": {
+          "off": {
+            "broken_examples": [
+              "ManonWire | estingGround"
+            ],
+            "broken_latin_words": 1,
+            "glued_examples": [
+              "24主编寄语让许多人感到惊讶的消欢乐的印花让你以",
+              "28贡献者一分钟。Irina",
+              "Aleksander（Irina74当体育遇上",
+              "32步入正轨玛戈·",
+              "56到处都是你所",
+              "62AdrienBrody被吸"
+            ],
+            "leader_lines": 1,
+            "leader_right_edge_spread": 0.0,
+            "leader_right_edges": [
+              277.73
+            ],
+            "lines": 42,
+            "orphan_examples": [],
+            "orphan_lines": 0,
+            "records_glued_after_folio": 8
+          },
+          "on": {
+            "broken_examples": [],
+            "broken_latin_words": 0,
+            "glued_examples": [
+              "24主编寄语令许多人感到惊讶，欢乐的印花让你以",
+              "28贡献者分钟。Irina",
+              "32步伐一致亚历山大）在他准备",
+              "56竞技场作为前排",
+              "42无论你看哪里范座位？",
+              "62AdrienBrody是"
+            ],
+            "leader_lines": 0,
+            "leader_right_edge_spread": null,
+            "leader_right_edges": [],
+            "lines": 41,
+            "orphan_examples": [],
+            "orphan_lines": 0,
+            "records_glued_after_folio": 8
+          }
+        },
+        "off_column": "examples/output/b9_3/raster/Vogue-en.p3.off.crop.png",
+        "on_column": "examples/output/b9_3/raster/Vogue-en.p3.on.crop.png",
+        "page": 3
+      }
+    ]
+  },
+  "records": {
+    "line_paragraphs": 27,
+    "metrics": {
+      "off": {
+        "broken_examples": [
+          "·恩戈兹·阿迪契（Chi | mamandaNgozi"
+        ],
+        "broken_latin_words": 1,
+        "glued_examples": [
+          "巴西：水上人家的教训.....9马塞洛·席尔瓦·德·索",
+          "当生物盗窃生根时.12丹尼尔·罗宾逊和大卫·杰斐",
+          "中国：传统傣族医学的光辉健康.14杨沙和",
+          "卡拉哈里的秘密天空.................17西斯科·阿瓦拉",
+          "20安娜·罗霍宁",
+          "通过孩子的眼睛看流亡.................26照片："
+        ],
+        "leader_lines": 5,
+        "leader_right_edge_spread": 54.56,
+        "leader_right_edges": [
+          219.57,
+          252.37,
+          253.0,
+          255.95,
+          274.13
+        ],
+        "lines": 34,
+        "orphan_examples": [
+          "萨",
+          "逊"
+        ],
+        "orphan_lines": 2,
+        "records_glued_after_folio": 7
+      },
+      "on": {
+        "broken_examples": [],
+        "broken_latin_words": 0,
+        "glued_examples": [],
+        "leader_lines": 5,
+        "leader_right_edge_spread": 36.19,
+        "leader_right_edges": [
+          195.18,
+          200.94,
+          206.36,
+          221.57,
+          231.37
+        ],
+        "lines": 42,
+        "orphan_examples": [],
+        "orphan_lines": 0,
+        "records_glued_after_folio": 0
+      },
+      "source": {
+        "lines": 11,
+        "right_edges": [
+          255.93,
+          256.0,
+          256.08,
+          256.19,
+          256.2,
+          256.2,
+          256.23,
+          256.24,
+          256.31,
+          256.32,
+          256.32
+        ],
+        "spread": 0.39
+      }
+    },
+    "page": 1,
+    "raster": {
+      "off_column": "examples/output/b9_3/raster/Courier-en.p1.off.crop.png",
+      "off_page": "examples/output/b9_3/raster/Courier-en.p1.off.png",
+      "on_column": "examples/output/b9_3/raster/Courier-en.p1.on.crop.png",
+      "on_page": "examples/output/b9_3/raster/Courier-en.p1.on.png"
+    },
+    "sample": "Courier-en",
+    "split_paragraphs": 12
+  },
+  "recovery": {
+    "Courier-en": {
+      "exact": 29,
+      "misses": [
+        {
+          "found_by_finder": 8,
+          "paragraph": "p1#2",
+          "recovered": 5,
+          "text": "Indigenous knowledge has long been ignored, and sometimes ev"
+        },
+        {
+          "found_by_finder": 8,
+          "paragraph": "p1#3",
+          "recovered": 6,
+          "text": "Rooted in the careful observation of ecosystems and passed d"
+        },
+        {
+          "found_by_finder": 16,
+          "paragraph": "p1#4",
+          "recovered": 8,
+          "text": "UNESCO has long been a pioneer in this field. Through its Lo"
+        },
+        {
+          "found_by_finder": 8,
+          "paragraph": "p1#5",
+          "recovered": 5,
+          "text": "Beyond providing empirical data, Indigenous knowledge challe"
+        },
+        {
+          "found_by_finder": 6,
+          "paragraph": "p1#6",
+          "recovered": 3,
+          "text": "But this recognition must be accompanied by guarantees — the"
+        },
+        {
+          "found_by_finder": 7,
+          "paragraph": "p1#7",
+          "recovered": 5,
+          "text": "By promoting this knowledge, UNESCO is reminding us of the o"
+        }
+      ],
+      "over_split": 0,
+      "paragraphs": 35,
+      "under_split": 6
+    },
+    "FD-en-v2": {
+      "exact": 109,
+      "misses": [
+        {
+          "found_by_finder": 3,
+          "paragraph": "p3#9",
+          "recovered": 2,
+          "text": "Place-based policies offer regions left behind by globalizat"
+        },
+        {
+          "found_by_finder": 4,
+          "paragraph": "p3#12",
+          "recovered": 3,
+          "text": "Keynes’s moral philosophy and embrace of uncertainty can gui"
+        },
+        {
+          "found_by_finder": 4,
+          "paragraph": "p3#15",
+          "recovered": 3,
+          "text": "Economic development doesn’t shorten the workweek, and socia"
+        },
+        {
+          "found_by_finder": 3,
+          "paragraph": "p3#18",
+          "recovered": 2,
+          "text": "Adam Smith’s philosophy still sheds light on how economies g"
+        },
+        {
+          "found_by_finder": 2,
+          "paragraph": "p3#22",
+          "recovered": 1,
+          "text": "How new economics tools explain global power dynamics Christ"
+        },
+        {
+          "found_by_finder": 3,
+          "paragraph": "p3#25",
+          "recovered": 2,
+          "text": "Around the world, the line between economic policy and natio"
+        },
+        {
+          "found_by_finder": 3,
+          "paragraph": "p3#32",
+          "recovered": 2,
+          "text": "Geopolitical rivalry does not end the need for trade coopera"
+        },
+        {
+          "found_by_finder": 4,
+          "paragraph": "p3#34",
+          "recovered": 3,
+          "text": "The New Wave of Nationalization Historical patterns reveal w"
+        }
+      ],
+      "over_split": 0,
+      "paragraphs": 117,
+      "under_split": 8
+    },
+    "Vogue-en": {
+      "exact": 28,
+      "misses": [
+        {
+          "found_by_finder": 4,
+          "paragraph": "p3#5",
+          "recovered": 3,
+          "text": "32In Step Margaux Anbouba on vintage’s new frontier: shoes"
+        },
+        {
+          "found_by_finder": 4,
+          "paragraph": "p3#14",
+          "recovered": 5,
+          "text": "ons promise to turn back the clock. Mattie Kahn investigates"
+        },
+        {
+          "found_by_finder": 3,
+          "paragraph": "p3#17",
+          "recovered": 2,
+          "text": "48From A to Zac Zac Posen’s arrival at Gap was a"
+        },
+        {
+          "found_by_finder": 9,
+          "paragraph": "p3#18",
+          "recovered": 10,
+          "text": "surprise to many, yet the former wunderkind of New York fash"
+        },
+        {
+          "found_by_finder": 5,
+          "paragraph": "p3#24",
+          "recovered": 6,
+          "text": "er you’re commuting via train, bike, skateboard, or feet on "
+        },
+        {
+          "found_by_finder": 2,
+          "paragraph": "p3#25",
+          "recovered": 3,
+          "text": "jolly prints get you where you’re going in style"
+        },
+        {
+          "found_by_finder": 12,
+          "paragraph": "p3#26",
+          "recovered": 11,
+          "text": "74When Sports Met Fashion... Athletes as muses? The stadium "
+        },
+        {
+          "found_by_finder": 7,
+          "paragraph": "p3#28",
+          "recovered": 6,
+          "text": "Man on Wire Adrien Brody is drawn to extreme roles—but nothi"
+        },
+        {
+          "found_by_finder": 5,
+          "paragraph": "p3#31",
+          "recovered": 4,
+          "text": "104The Get The dog days of winter are the perfect moment to "
+        },
+        {
+          "found_by_finder": 2,
+          "paragraph": "p3#33",
+          "recovered": 3,
+          "text": "warm, cozy chic that packs a bright punch"
+        }
+      ],
+      "over_split": 5,
+      "paragraphs": 38,
+      "under_split": 5
+    }
+  },
+  "samples": {
+    "Courier-en": {
+      "declared_pages": [
+        1
+      ],
+      "declared_pages_unchanged": [],
+      "exempt_paragraphs": 7,
+      "il": {
+        "il_translated": {
+          "attributable": [
+            1,
+            2,
+            4,
+            7,
+            8
+          ],
+          "differing_control": [],
+          "differing_on": [
+            1,
+            2,
+            4,
+            7,
+            8
+          ],
+          "undeclared_attributable": [
+            2,
+            4,
+            7,
+            8
+          ],
+          "undeclared_differing_on": [
+            2,
+            4,
+            7,
+            8
+          ]
+        },
+        "page_classifier": {
+          "attributable": [
+            1
+          ],
+          "differing_control": [],
+          "differing_on": [
+            1
+          ],
+          "undeclared_attributable": [],
+          "undeclared_differing_on": []
+        },
+        "typesetting": {
+          "attributable": [
+            1,
+            2,
+            4,
+            7,
+            8
+          ],
+          "differing_control": [],
+          "differing_on": [
+            1,
+            2,
+            4,
+            7,
+            8
+          ],
+          "undeclared_attributable": [
+            2,
+            4,
+            7,
+            8
+          ],
+          "undeclared_differing_on": [
+            2,
+            4,
+            7,
+            8
+          ]
+        }
+      },
+      "line_paragraphs": 27,
+      "raster": {
+        "attributable": [
+          1,
+          2,
+          4,
+          7,
+          8
+        ],
+        "differing_control": [],
+        "differing_on": [
+          1,
+          2,
+          4,
+          7,
+          8
+        ],
+        "undeclared_attributable": [
+          2,
+          4,
+          7,
+          8
+        ]
+      },
+      "short_line_count": 0,
+      "short_lines": [],
+      "split_pages_outside_declared": [],
+      "split_paragraphs": 12,
+      "structure_confined_to_declared": true,
+      "structure_differing_control": [],
+      "structure_differing_pages": [
+        1
+      ],
+      "undeclared_attributable": [
+        2,
+        4,
+        7,
+        8
+      ],
+      "undeclared_pages": [
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8
+      ],
+      "undeclared_pages_identical": false
+    },
+    "FD-en-v2": {
+      "declared_pages": [
+        3,
+        5,
+        7
+      ],
+      "declared_pages_unchanged": [
+        7
+      ],
+      "exempt_paragraphs": 18,
+      "il": {
+        "il_translated": {
+          "attributable": [
+            2,
+            3,
+            5,
+            6
+          ],
+          "differing_control": [],
+          "differing_on": [
+            2,
+            3,
+            5,
+            6
+          ],
+          "undeclared_attributable": [
+            2,
+            6
+          ],
+          "undeclared_differing_on": [
+            2,
+            6
+          ]
+        },
+        "page_classifier": {
+          "attributable": [
+            3,
+            5
+          ],
+          "differing_control": [],
+          "differing_on": [
+            3,
+            5
+          ],
+          "undeclared_attributable": [],
+          "undeclared_differing_on": []
+        },
+        "typesetting": {
+          "attributable": [
+            2,
+            3,
+            5,
+            6
+          ],
+          "differing_control": [],
+          "differing_on": [
+            2,
+            3,
+            5,
+            6
+          ],
+          "undeclared_attributable": [
+            2,
+            6
+          ],
+          "undeclared_differing_on": [
+            2,
+            6
+          ]
+        }
+      },
+      "line_paragraphs": 44,
+      "raster": {
+        "attributable": [
+          2,
+          3,
+          5,
+          6
+        ],
+        "differing_control": [],
+        "differing_on": [
+          2,
+          3,
+          5,
+          6
+        ],
+        "undeclared_attributable": [
+          2,
+          6
+        ]
+      },
+      "short_line_count": 0,
+      "short_lines": [],
+      "split_pages_outside_declared": [],
+      "split_paragraphs": 15,
+      "structure_confined_to_declared": true,
+      "structure_differing_control": [],
+      "structure_differing_pages": [
+        3,
+        5
+      ],
+      "undeclared_attributable": [
+        2,
+        6
+      ],
+      "undeclared_pages": [
+        1,
+        2,
+        4,
+        6,
+        8,
+        9
+      ],
+      "undeclared_pages_identical": false
+    },
+    "Vogue-en": {
+      "declared_pages": [
+        3
+      ],
+      "declared_pages_unchanged": [],
+      "exempt_paragraphs": 11,
+      "il": {
+        "il_translated": {
+          "attributable": [
+            3
+          ],
+          "differing_control": [],
+          "differing_on": [
+            3
+          ],
+          "undeclared_attributable": [],
+          "undeclared_differing_on": []
+        },
+        "page_classifier": {
+          "attributable": [
+            3
+          ],
+          "differing_control": [],
+          "differing_on": [
+            3
+          ],
+          "undeclared_attributable": [],
+          "undeclared_differing_on": []
+        },
+        "typesetting": {
+          "attributable": [
+            3
+          ],
+          "differing_control": [],
+          "differing_on": [
+            3
+          ],
+          "undeclared_attributable": [],
+          "undeclared_differing_on": []
+        }
+      },
+      "line_paragraphs": 66,
+      "raster": {
+        "attributable": [
+          3
+        ],
+        "differing_control": [],
+        "differing_on": [
+          3
+        ],
+        "undeclared_attributable": []
+      },
+      "short_line_count": 6,
+      "short_lines": [
+        {
+          "debug_id": "CA8Fd#L1",
+          "page": 3,
+          "paragraph": "p3#10",
+          "text": "NAD"
+        },
+        {
+          "debug_id": "Yz1XU#L0",
+          "page": 3,
+          "paragraph": "p3#25",
+          "text": "56"
+        },
+        {
+          "debug_id": "zgHym#L1",
+          "page": 3,
+          "paragraph": "p3#35",
+          "text": "Wh"
+        },
+        {
+          "debug_id": "AQNa7#L0",
+          "page": 3,
+          "paragraph": "p3#40",
+          "text": "74"
+        },
+        {
+          "debug_id": "5Y4YS#L0",
+          "page": 3,
+          "paragraph": "p3#58",
+          "text": "88"
+        },
+        {
+          "debug_id": "FSE8V#L0",
+          "page": 3,
+          "paragraph": "p3#71",
+          "text": "94"
+        }
+      ],
+      "split_pages_outside_declared": [],
+      "split_paragraphs": 11,
+      "structure_confined_to_declared": true,
+      "structure_differing_control": [],
+      "structure_differing_pages": [
+        3
+      ],
+      "undeclared_attributable": [],
+      "undeclared_pages": [
+        1,
+        2
+      ],
+      "undeclared_pages_identical": true
+    }
+  },
+  "section_observation": {
+    "curves": 11,
+    "grouping_fields_written": [],
+    "paragraphs_by_label": {
+      "abandon": 3,
+      "fallback_line": 3,
+      "plain text": 34,
+      "title": 10
+    }
+  },
+  "spillover": {
+    "Courier-en": {
+      "explained": true,
+      "glossary_entries_changed": [
+        "Editor-in-Chief",
+        "Local and Indigenous Knowledge Systems (LINKS)",
+        "Marcelo Silva de Sousa",
+        "Organization",
+        "WIDE ANGLE",
+        "ZOOM",
+        "water management"
+      ],
+      "glossary_entries_changed_by_the_control": [],
+      "glossary_terms_per_page": {
+        "2": [
+          "WIDE ANGLE"
+        ],
+        "4": [
+          "Local and Indigenous Knowledge Systems (LINKS)",
+          "WIDE ANGLE",
+          "water management"
+        ],
+        "5": [
+          "Marcelo Silva de Sousa"
+        ],
+        "7": [
+          "WIDE ANGLE"
+        ],
+        "8": [
+          "Organization"
+        ]
+      },
+      "observed_moving": [
+        2,
+        4,
+        7,
+        8
+      ],
+      "pages_reached_by_glossary": [
+        2,
+        4,
+        5,
+        7,
+        8
+      ],
+      "pages_reached_by_pairing": [
+        2
+      ],
+      "paired_units_spanning": [
+        [
+          1,
+          2
+        ]
+      ],
+      "unexplained": []
+    },
+    "FD-en-v2": {
+      "explained": true,
+      "glossary_entries_changed": [
+        "Arabic",
+        "Chinese",
+        "English",
+        "English edition ISSN 0145-1707",
+        "French",
+        "Hanover, NH",
+        "IMF Publications",
+        "Japanese",
+        "Michael Spence",
+        "Nationalization",
+        "PO Box 92780",
+        "Revisiting the Wealth of Nations",
+        "Russian",
+        "Spanish",
+        "The New Wave of Nationalization",
+        "Trade Cooperation",
+        "Trade Cooperation in an Age of Geopolitics",
+        "Washington, DC 20090, USA"
+      ],
+      "glossary_entries_changed_by_the_control": [],
+      "glossary_terms_per_page": {},
+      "observed_moving": [
+        2,
+        6
+      ],
+      "pages_reached_by_glossary": [],
+      "pages_reached_by_pairing": [
+        2,
+        4,
+        6,
+        8
+      ],
+      "paired_units_spanning": [
+        [
+          2,
+          3
+        ],
+        [
+          3,
+          4
+        ],
+        [
+          4,
+          5
+        ],
+        [
+          5,
+          6
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          7,
+          8
+        ]
+      ],
+      "unexplained": []
+    },
+    "Vogue-en": {
+      "explained": true,
+      "glossary_entries_changed": [
+        "Alexander McQueen",
+        "American Olympic champion",
+        "Americana",
+        "BOOM PRODUCTIONS",
+        "Boom Productions",
+        "Champions League",
+        "Chicago Sky",
+        "Connecticut",
+        "DANIEL ARNOLD",
+        "English",
+        "FLEX PACE",
+        "Hayley Maitland",
+        "Ireland",
+        "Irishman",
+        "Joey George",
+        "MODEL GRACE ELIZABETH",
+        "Margaux Anbouba",
+        "Mattie Kahn",
+        "Maya Singer",
+        "McGirr",
+        "McQueen",
+        "Miracle Drip",
+        "Miracle Drip NAD",
+        "Susie Sobol",
+        "VOGUE",
+        "VOGUE.COM"
+      ],
+      "glossary_entries_changed_by_the_control": [],
+      "glossary_terms_per_page": {},
+      "observed_moving": [],
+      "pages_reached_by_glossary": [],
+      "pages_reached_by_pairing": [],
+      "paired_units_spanning": [],
+      "unexplained": []
+    }
+  },
+  "unchanged_units": {
+    "Courier-en": {
+      "off": {
+        "examples": [
+          "ZOOM",
+          "IDEAS"
+        ],
+        "unchanged": 2,
+        "units": 30
+      },
+      "on": {
+        "examples": [
+          "Agnès Bardon",
+          "ZOOM",
+          "IDEAS"
+        ],
+        "unchanged": 3,
+        "units": 45
+      }
+    },
+    "FD-en-v2": {
+      "off": {
+        "examples": [
+          "F&D",
+          "JUNE 2026",
+          "FFER STAU N BRIA",
+          "F&D",
+          "PRODUCTION MANAGER",
+          "Melinda Weir",
+          "COPY EDITOR",
+          "Lucy Morales"
+        ],
+        "unchanged": 28,
+        "units": 93
+      },
+      "on": {
+        "examples": [
+          "F&D",
+          "JUNE 2026",
+          "FFER STAU N BRIA",
+          "Jeffry Frieden",
+          "F&D",
+          "EDITOR-IN-CHIEF",
+          "Gita Bhatt",
+          "MANAGING EDITOR"
+        ],
+        "unchanged": 44,
+        "units": 122
+      }
+    },
+    "Vogue-en": {
+      "off": {
+        "examples": [
+          "FLEX PACE",
+          "i",
+          "n",
+          "f",
+          "us",
+          "i",
+          "46T",
+          "e"
+        ],
+        "unchanged": 10,
+        "units": 34
+      },
+      "on": {
+        "examples": [
+          "FLEX PACE",
+          "NAD",
+          "i",
+          "n",
+          "f",
+          "us",
+          "i",
+          "46T"
+        ],
+        "unchanged": 13,
+        "units": 85
+      }
+    }
+  }
+}
