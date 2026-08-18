@@ -52,6 +52,11 @@ is written back into the intermediate language as a verdict per paragraph. That
 verdict is the one thing a ruling can decide here that nothing in this batch
 acts on; see that module for why, and for the sidecar that records it.
 
+Line structure. ``magazine/line_split.py`` rides the page kind hook for the same
+reason the drop cap pass rides the term one: the window it must run in holds no
+other extension owned call. It runs after a ruling is applied, so it reads the
+kind the run settled on, and it is behind its own switch.
+
 A ruling that reaches nothing is the one failure the loop could not report on
 its own, and a third hook after the translator closes it. A paragraph is
 matched against the text the request was built from, which carries the markup
@@ -86,6 +91,7 @@ from pathlib import Path
 from babeldoc.glossary import Glossary
 from babeldoc.glossary import GlossaryEntry
 from babeldoc.magazine import drop_cap
+from babeldoc.magazine import line_split
 from babeldoc.magazine.page_classifier import REPORT_NAME as CLASSIFY_REPORT_NAME
 from babeldoc.magazine.page_features import ConfigError
 from babeldoc.magazine.page_features import validate_bounded_config
@@ -652,22 +658,26 @@ def after_page_classify(translation_config, docs) -> None:
 
     Placed before the checkpoint of that stage, so a checkpoint carries the kind
     the run went on to use rather than the one that was overruled.
+
+    The line structure pass runs here too, behind its own switch, and last: its
+    flag is a page policy, so it has to see the kind a ruling settled rather
+    than the one the classifier proposed, and it has to run before the chain
+    builder, which is the next thing the pipeline does.
     """
     if translation_config.magazine_hitl_export:
         draft = _draft(translation_config)
         draft[PAGE_KINDS_SECTION] = export_page_kinds(translation_config, docs)
         _write_draft(translation_config, draft)
-    if not translation_config.magazine_hitl_apply:
-        return
-    decisions = _decisions_for(translation_config, docs)
-    if decisions is None:
-        return
-    applied = apply_page_kinds(docs, decisions)
-    if applied:
-        report = _report(translation_config)
-        report[PAGE_KINDS_SECTION] = applied
-        report["decisions_file"] = str(decisions.path)
-        _write_report(translation_config, report)
+    if translation_config.magazine_hitl_apply:
+        decisions = _decisions_for(translation_config, docs)
+        if decisions is not None:
+            applied = apply_page_kinds(docs, decisions)
+            if applied:
+                report = _report(translation_config)
+                report[PAGE_KINDS_SECTION] = applied
+                report["decisions_file"] = str(decisions.path)
+                _write_report(translation_config, report)
+    line_split.apply(translation_config, labeled_pages(docs))
 
 
 def after_term_extract(translation_config, docs) -> None:

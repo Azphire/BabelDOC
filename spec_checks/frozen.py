@@ -49,9 +49,15 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 
 # Where the frozen produced evidence lives. The evaluation batches write their
-# results here and later batches quote them; nothing else in the repository has
-# the property that a gate both reads a file and could plausibly rewrite it.
-FROZEN_PREFIXES = ("docs/eval/",)
+# results under ``docs/eval/`` and later batches quote them.
+#
+# ``examples/output/`` is here for the same property and not for the same
+# reason: it is where every batch runs, so most of it is work product and is
+# untracked, and the fixtures and reports a batch committed out of it are
+# evidence sitting in the middle of the directory the next batch writes into.
+# Tracked is what separates the two, and the guard is detection only: it names
+# the gate that moved a committed byte and never puts one back.
+FROZEN_PREFIXES = ("docs/eval/", "examples/output/")
 
 _HASH_CHUNK_BYTES = 1 << 20
 

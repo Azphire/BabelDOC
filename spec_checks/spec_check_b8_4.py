@@ -598,6 +598,11 @@ def check_01d_one_reader_for_the_whole_package() -> None:
         # The write-back builds a composition rather than reading one, and takes
         # a style off the characters it finds; it names the holders to do it.
         "babeldoc/magazine/react/writeback.py",
+        # The line split partitions a paragraph's compositions across the source
+        # lines it recovered and rebuilds one per line, keeping each member's
+        # kind and style. That is building, as above, and not a second reading:
+        # nothing here derives a string a finding could be made about.
+        "babeldoc/magazine/line_split.py",
     }
     faults = []
     for path in sorted((ROOT / "babeldoc" / "magazine").rglob("*.py")):

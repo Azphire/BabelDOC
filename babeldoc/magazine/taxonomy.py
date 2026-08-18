@@ -68,13 +68,20 @@ POLICY_KEYS = frozenset({"chain_eligible", "translate", "repair_profile"})
 # agree on the flowing page types and diverge on every piece of furniture, a
 # contents page being somewhere text begins without being somewhere an article
 # does, so one flag cannot carry both readings.
+# ``preserve_line_structure`` is a layout flag rather than an article one: it
+# says the page sets records, one to a line, so a paragraph assembled out of
+# several of them is not a translation unit. It is off everywhere it is not
+# declared, which is what keeps a page nobody has thought about flowing.
 OPTIONAL_POLICY_DEFAULTS: dict[str, object] = {
     "starts_article": False,
     "opens_article": False,
+    "preserve_line_structure": False,
 }
 
 # Optional flags whose value is a boolean, validated as such when declared.
-OPTIONAL_BOOLEAN_POLICY_KEYS = frozenset({"starts_article", "opens_article"})
+OPTIONAL_BOOLEAN_POLICY_KEYS = frozenset(
+    {"starts_article", "opens_article", "preserve_line_structure"}
+)
 
 
 class TaxonomyError(ConfigError):

@@ -151,6 +151,14 @@ NAME_REFERENCE_ALLOW_LIST = NAME_DEFINITION_FILES | {
     # the ordering it asserts -- a chain member is scaled after its backfill,
     # never rewritten by the scaling -- is only about a paragraph that is one.
     "spec_checks/spec_check_b9_2.py",
+    # B9.3 cuts a paragraph into its source lines. It reads the page kind to
+    # reach that page's policy and writes no field at all: a line paragraph is
+    # copied from the paragraph it came out of, so every one of the nine carries
+    # without being named. Its gate builds a paragraph carrying the chain pair
+    # and pages carrying a kind, because what it asserts is that the copy keeps
+    # the first and that the policy of the second is what selects a page.
+    "babeldoc/magazine/line_split.py",
+    "spec_checks/spec_check_b9_3.py",
 }
 
 # Upstream files carried over from B0, still uncommitted in the working tree.

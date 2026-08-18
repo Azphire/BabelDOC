@@ -1,0 +1,20 @@
+{
+  "description": "Bounds of the line structure preserving split. On a page whose declared policy raises one of 'policy_flags', every paragraph is cut back into the source lines it was assembled from, so that a page whose layout makes one line one record -- a contents entry of title, leader, folio and byline -- reaches the translator as one record per unit rather than as a stream. The line carrier the paragraph finder built is gone by the time this runs: 'StylesAndFormulas.process_page_styles' rebuilds every paragraph as style runs, and a style run crosses line boundaries, so lines are recovered from the geometry the characters still carry. The recovery is the paragraph finder's own threading scan, run over characters rather than compositions: the paragraph's vertical range is scanned at 'scan_step' and a position crossed by fewer than 'min_gap_collisions' characters is a gap between lines. 'flat_paragraph_height' is the vertical span below which a paragraph cannot hold two lines and is left whole, which is also the guard that keeps the scan off a degenerate range. 'min_line_characters' is how many non-space characters a recovered line must carry to be a record of its own; below it the line stays with the line above, which keeps a stray mark from becoming a paragraph. 'policy_flags' is the closed set of policy keys whose truth declares a page, and it is the only place a page type reaches this pass: the code reads the flag, never a type name. 'sidecar_fields' is the format of one split record in the report, asserted against the record the pass builds, so the report's shape is declared here rather than implied by the code.",
+  "scan_step": 0.25,
+  "scan_step_allowed_range": "0.05..2.0",
+  "flat_paragraph_height": 5.0,
+  "flat_paragraph_height_allowed_range": "0.5..50.0",
+  "min_gap_collisions": 1,
+  "min_gap_collisions_allowed_range": "1..5",
+  "min_line_characters": 1,
+  "min_line_characters_allowed_range": "1..20",
+  "policy_flags": ["preserve_line_structure"],
+  "sidecar_fields": [
+    "page",
+    "paragraph",
+    "debug_id",
+    "characters",
+    "lines",
+    "line_paragraphs"
+  ]
+}

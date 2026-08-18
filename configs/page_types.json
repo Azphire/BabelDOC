@@ -1,6 +1,6 @@
 {
   "taxonomy_version": "1.0",
-  "description": "Magazine page type vocabulary. Every rule references a feature produced by babeldoc/magazine/page_features.py, compares it with one of ge/le/gt/lt against a threshold, and contributes its weight when satisfied. A positive weight is evidence for the type; a negative weight is a penalty that withdraws evidence when the page shows something the type rules out. A type scores its satisfied weight, positive and negative summed, over its positive weight alone, clamped to 0..1, so a type that trips no penalty can still reach 1.0. Weights may not be zero, and every type needs some positive weight and at least one positive weight ge/gt rule, because only a rule of that shape is satisfied by a quantity the page actually carries. With require_positive_evidence set, a type scores 0 on a page satisfying none of its positive weight ge/gt rules, so a page carrying nothing cannot sweep the le/lt rules of a type it shows no sign of being. Thresholds and weights are tuning parameters: retune them here from the report produced by tools/page_classify_report.py, never in code. Two optional policy flags concern articles and they are not interchangeable. starts_article is the chain detector's prior, meaning running text does not continue into this page; it is declared on every type that is not flowing body text, furniture included, because no article runs into a bought page either. opens_article means an article begins on this page, which furniture does not do: a contents page is somewhere text begins without being somewhere an article begins, and declaring it as one made it absorb the feature page after it. Both default to false when a type declares neither.",
+  "description": "Magazine page type vocabulary. Every rule references a feature produced by babeldoc/magazine/page_features.py, compares it with one of ge/le/gt/lt against a threshold, and contributes its weight when satisfied. A positive weight is evidence for the type; a negative weight is a penalty that withdraws evidence when the page shows something the type rules out. A type scores its satisfied weight, positive and negative summed, over its positive weight alone, clamped to 0..1, so a type that trips no penalty can still reach 1.0. Weights may not be zero, and every type needs some positive weight and at least one positive weight ge/gt rule, because only a rule of that shape is satisfied by a quantity the page actually carries. With require_positive_evidence set, a type scores 0 on a page satisfying none of its positive weight ge/gt rules, so a page carrying nothing cannot sweep the le/lt rules of a type it shows no sign of being. Thresholds and weights are tuning parameters: retune them here from the report produced by tools/page_classify_report.py, never in code. Two optional policy flags concern articles and they are not interchangeable. starts_article is the chain detector's prior, meaning running text does not continue into this page; it is declared on every type that is not flowing body text, furniture included, because no article runs into a bought page either. opens_article means an article begins on this page, which furniture does not do: a contents page is somewhere text begins without being somewhere an article begins, and declaring it as one made it absorb the feature page after it. Both default to false when a type declares neither. A third optional flag, preserve_line_structure, is about layout rather than articles: it says the page sets records one to a line, so a paragraph the finder assembled out of several source lines is not a translation unit and is cut back into them. It is declared on the two types whose lines are records rather than prose and defaults to false everywhere else.",
   "ambiguity_margin": 0.13,
   "default_type": "article_body",
   "require_positive_evidence": true,
@@ -37,7 +37,7 @@
         {"feature": "leader_dot_line_ratio", "op": "ge", "threshold": 0.08, "weight": 1.0},
         {"feature": "title_label_ratio", "op": "ge", "threshold": 0.26, "weight": 3.5}
       ],
-      "policy": {"chain_eligible": false, "translate": true, "starts_article": true, "repair_profile": "grid"}
+      "policy": {"chain_eligible": false, "translate": true, "starts_article": true, "preserve_line_structure": true, "repair_profile": "grid"}
     },
     {
       "name": "masthead",
@@ -49,7 +49,7 @@
         {"feature": "text_coverage_ratio", "op": "le", "threshold": 0.25, "weight": 1.0},
         {"feature": "title_label_ratio", "op": "ge", "threshold": 0.26, "weight": -1.5}
       ],
-      "policy": {"chain_eligible": false, "translate": true, "starts_article": true, "repair_profile": "grid"}
+      "policy": {"chain_eligible": false, "translate": true, "starts_article": true, "preserve_line_structure": true, "repair_profile": "grid"}
     },
     {
       "name": "editorial",
