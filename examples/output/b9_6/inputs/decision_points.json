@@ -1,0 +1,40 @@
+{
+  "cern_p1": {
+    "sample": "CERNCourier-en",
+    "arm": "on",
+    "iteration": 2,
+    "cache_key": "f29131bddb8418b154368e2878c8c1f18c0456025d9f9795ae71a6cce11c4d31",
+    "target": "out_of_page:p1:p1#2",
+    "source": "examples/output/b9_5/on/CERNCourier-en/work/CERNCourier-en/issues.json",
+    "source_sha256": "aa244161e35c938c82393dd27153b96af02f33dce6763d4d3044ec3a44828860",
+    "b9_5_decision": {
+      "action": "translate_orphan_lines",
+      "issue_ids": [
+        "untranslated_residue:p2:p2#9"
+      ],
+      "reason": "The finding has a residue_ratio of 1.0, is at least 12 characters long, and has a layout_label of 'fallback_line', meeting all conditions for translation."
+    },
+    "b9_5_request": {
+      "cache_key": "f29131bddb8418b154368e2878c8c1f18c0456025d9f9795ae71a6cce11c4d31",
+      "prompt_sha256": "cf9cd8e5b6313dc05b8fd0e1464dc1a4c53daf0f76c5dcf118254f91bed8ce57"
+    }
+  },
+  "courier_p1": {
+    "sample": "Courier-en",
+    "arm": "on",
+    "iteration": 1,
+    "cache_key": "5d6fb5b88016fedb3ef933dd1aa8fcca9f55e7a0f9156768db90ccec5076feee",
+    "target": "out_of_page:p1:p1#10",
+    "source": "examples/output/b9_5/on/Courier-en/work/Courier-en/issues.json",
+    "source_sha256": "9786a4979645b6fe396243f584b1993cc7d2280f5d0919ad0390233b813c49df",
+    "b9_5_decision": {
+      "action": "none",
+      "issue_ids": [],
+      "reason": "No findings meet the conditions for any action; untranslated_residue findings do not meet the residue_ratio threshold, and out_of_page finding does not have a layout_label of title or paragraph_title."
+    },
+    "b9_5_request": {
+      "cache_key": "5d6fb5b88016fedb3ef933dd1aa8fcca9f55e7a0f9156768db90ccec5076feee",
+      "prompt_sha256": "cf9cd8e5b6313dc05b8fd0e1464dc1a4c53daf0f76c5dcf118254f91bed8ce57"
+    }
+  }
+}

@@ -140,12 +140,15 @@ NESTED_SUPPRESSED = os.environ.get("SPEC_NO_NESTED") == "1"
 # corpus run's, and it cites nothing this gate inventories. Batch b9.5 follows on
 # the same terms: its documents and its repair loop are built inside its own
 # file, and the two documents it does read under docs/eval it reads as prose
-# this gate already holds to its own rules.
+# this gate already holds to its own rules. Batch b9.6 follows on those terms
+# too: it asserts over the decision records its own batch froze and reads one
+# document under docs/eval as prose, and cites nothing this gate inventories.
 AFTER_THIS_GATE = (
     "spec_check_b9_2r.py",
     "spec_check_b9_3.py",
     "spec_check_b9_4.py",
     "spec_check_b9_5.py",
+    "spec_check_b9_6.py",
 )
 
 # Paths this batch may change. Nothing under babeldoc/, nothing under configs/,

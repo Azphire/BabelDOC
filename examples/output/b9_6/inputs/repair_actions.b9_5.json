@@ -42,7 +42,7 @@
       }
     },
     "contain_in_page": {
-      "description": "Put a paragraph that is printing off the edge of its page back inside the page. It moves ink and never changes a character of text: it slides the paragraph inside the frame, shrinks it about the centre of its own extent only where sliding alone cannot fit it, and escalates instead of shrinking past the declared floor.",
+      "description": "Slide a paragraph whose laid out characters reach past the page frame back inside it, shrinking it about the centre of its own extent only where sliding alone cannot fit it, and escalate instead of shrinking past the declared floor.",
       "issue_kinds": [
         "out_of_page"
       ],

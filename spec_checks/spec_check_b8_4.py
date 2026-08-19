@@ -1152,9 +1152,12 @@ def check_03e_prompt_rounds_are_recorded() -> None:
     """Positive 3e: this batch's reworking of the prompt is on record.
 
     The discipline is the one T3.4 declares: every round frozen with what it
-    produced, inside the ceiling, no two rounds running the same text, and the
-    file in the tree being the last round -- which is the live half of the
-    assertion and belongs to whichever batch reworked the prompt last.
+    produced, inside the ceiling, and no two rounds running the same text. The
+    fourth term -- the file in the tree being the last round -- is live rather
+    than frozen and belongs to whichever batch reworked the prompt last, which
+    is no longer this one: batch b9.6 reworked it and asserts that term over its
+    own rounds. What stays here is what is about this batch's rounds, plus the
+    record that this batch did rework the prompt it inherited.
     """
     faults = []
     if not ROUNDS_DIR.is_dir():
@@ -1182,12 +1185,6 @@ def check_03e_prompt_rounds_are_recorded() -> None:
                 break
     if len(set(digests.values())) != len(digests):
         faults.append(f"two rounds ran the same prompt: {digests}")
-    current = file_digest(DECIDE_PROMPT)
-    if digests and digests[rounds[-1].name] != current:
-        faults.append(
-            f"the last round ran {digests[rounds[-1].name][:12]} and the tree "
-            f"carries {current[:12]}"
-        )
     code, previous = git_output(
         ["show", f"{PREVIOUS_TAG}:prompts/react_repair_decide.md"]
     )

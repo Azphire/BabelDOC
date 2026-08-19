@@ -1,0 +1,1915 @@
+{
+  "cern_p1": [
+    {
+      "evidence": {
+        "debug_ids": [
+          "H93U6",
+          "rh3yx",
+          "5U4dD",
+          "DJzCF",
+          "T4cDh",
+          "W9gHM",
+          "xQp5G",
+          "RhfFn",
+          "rSGGW"
+        ],
+        "excerpt": "• 束流电荷和电流监测器 / • 束流损失监测器和机器保护 / • 束流位置监测器 / • 横向轮廓和发射度监测器 / • 纵向诊断和同步 / • 反馈系统和束",
+        "layout_labels": [
+          "plain text"
+        ],
+        "max_chars": 40,
+        "member_count": 9,
+        "min_cluster": 3
+      },
+      "id": "fragment_cluster:p2:p2#10+p2#11+p2#12+p2#13+p2#14+p2#15+p2#16+p2#17+p2#18",
+      "kind": "fragment_cluster",
+      "page": 2,
+      "paragraph_refs": [
+        "p2#10",
+        "p2#11",
+        "p2#12",
+        "p2#13",
+        "p2#14",
+        "p2#15",
+        "p2#16",
+        "p2#17",
+        "p2#18"
+      ],
+      "severity": "low"
+    },
+    {
+      "evidence": {
+        "debug_ids": [
+          "zKxgs#L0",
+          "zKxgs#L1",
+          "zKxgs#L2"
+        ],
+        "excerpt": "SPC联合主席 / Paul Dirksen (TRIUMF) / Tonia Batten (CLS)",
+        "layout_labels": [
+          "plain text"
+        ],
+        "max_chars": 40,
+        "member_count": 3,
+        "min_cluster": 3
+      },
+      "id": "fragment_cluster:p2:p2#22+p2#23+p2#24",
+      "kind": "fragment_cluster",
+      "page": 2,
+      "paragraph_refs": [
+        "p2#22",
+        "p2#23",
+        "p2#24"
+      ],
+      "severity": "low"
+    },
+    {
+      "evidence": {
+        "debug_ids": [
+          "nDidf#L0",
+          "nDidf#L1",
+          "ruYbp#L0",
+          "ruYbp#L1",
+          "ruYbp#L2"
+        ],
+        "excerpt": "LOC主席 / Tiffany Angus / LOC 联合主席 / Hanna Dahl / Chloe Beaumier-Martin",
+        "layout_labels": [
+          "plain text"
+        ],
+        "max_chars": 40,
+        "member_count": 5,
+        "min_cluster": 3
+      },
+      "id": "fragment_cluster:p2:p2#25+p2#26+p2#27+p2#28+p2#29",
+      "kind": "fragment_cluster",
+      "page": 2,
+      "paragraph_refs": [
+        "p2#25",
+        "p2#26",
+        "p2#27",
+        "p2#28",
+        "p2#29"
+      ],
+      "severity": "low"
+    },
+    {
+      "evidence": {
+        "debug_ids": [
+          "h3nQF#L0",
+          "h3nQF#L1",
+          "h3nQF#L2"
+        ],
+        "excerpt": "封面故事 / 27公里长的LEP隧道， / 摄于1991年7月。22",
+        "layout_labels": [
+          "plain text"
+        ],
+        "max_chars": 40,
+        "member_count": 3,
+        "min_cluster": 3
+      },
+      "id": "fragment_cluster:p2:p2#40+p2#41+p2#42",
+      "kind": "fragment_cluster",
+      "page": 2,
+      "paragraph_refs": [
+        "p2#40",
+        "p2#41",
+        "p2#42"
+      ],
+      "severity": "low"
+    },
+    {
+      "evidence": {
+        "debug_ids": [
+          "sP56M",
+          "8eqfy",
+          "ZnFwS",
+          "DWM9E#L0",
+          "DWM9E#L1",
+          "DWM9E#L2"
+        ],
+        "excerpt": "• 欧洲战略 / • 第三阶段的结束 / • arXiv关于人工智能的规定 / • 反氢脚趾 / 这条线 • 热启动 / 用于集群。7",
+        "layout_labels": [
+          "plain text"
+        ],
+        "max_chars": 40,
+        "member_count": 6,
+        "min_cluster": 3
+      },
+      "id": "fragment_cluster:p2:p2#45+p2#46+p2#47+p2#48+p2#49+p2#50",
+      "kind": "fragment_cluster",
+      "page": 2,
+      "paragraph_refs": [
+        "p2#45",
+        "p2#46",
+        "p2#47",
+        "p2#48",
+        "p2#49",
+        "p2#50"
+      ],
+      "severity": "low"
+    },
+    {
+      "evidence": {
+        "debug_ids": [
+          "56DSQ#L0",
+          "56DSQ#L1",
+          "56DSQ#L2",
+          "56DSQ#L3",
+          "56DSQ#L4",
+          "56DSQ#L5",
+          "56DSQ#L6"
+        ],
+        "excerpt": "场论在 / 欧洲核子研究中心和欧洲足球协会联盟 / Barbara Storaci 现在 / 应用她在 / 磨练出的分析思维 / 欧洲核子研究中心到一个截然不同",
+        "layout_labels": [
+          "plain text"
+        ],
+        "max_chars": 40,
+        "member_count": 7,
+        "min_cluster": 3
+      },
+      "id": "fragment_cluster:p2:p2#55+p2#56+p2#57+p2#58+p2#59+p2#60+p2#61",
+      "kind": "fragment_cluster",
+      "page": 2,
+      "paragraph_refs": [
+        "p2#55",
+        "p2#56",
+        "p2#57",
+        "p2#58",
+        "p2#59",
+        "p2#60",
+        "p2#61"
+      ],
+      "severity": "low"
+    },
+    {
+      "evidence": {
+        "debug_ids": [
+          "nghrs#L0",
+          "nghrs#L1",
+          "nghrs#L2"
+        ],
+        "excerpt": "• 核中的部分子 / 边缘 • W玻色子衰变 / 到三个带电强子",
+        "layout_labels": [
+          "plain text"
+        ],
+        "max_chars": 40,
+        "member_count": 3,
+        "min_cluster": 3
+      },
+      "id": "fragment_cluster:p2:p2#65+p2#66+p2#67",
+      "kind": "fragment_cluster",
+      "page": 2,
+      "paragraph_refs": [
+        "p2#65",
+        "p2#66",
+        "p2#67"
+      ],
+      "severity": "low"
+    },
+    {
+      "evidence": {
+        "debug_ids": [
+          "kZYR7#L0",
+          "kZYR7#L1",
+          "kZYR7#L2"
+        ],
+        "excerpt": "• 新双重魅 / 重子 • 集体流 / 在超核中。13",
+        "layout_labels": [
+          "plain text"
+        ],
+        "max_chars": 40,
+        "member_count": 3,
+        "min_cluster": 3
+      },
+      "id": "fragment_cluster:p2:p2#68+p2#69+p2#70",
+      "kind": "fragment_cluster",
+      "page": 2,
+      "paragraph_refs": [
+        "p2#68",
+        "p2#69",
+        "p2#70"
+      ],
+      "severity": "low"
+    },
+    {
+      "evidence": {
+        "debug_ids": [
+          "zopSV#L0",
+          "zopSV#L1",
+          "2nKBr",
+          "X7LdT#L0",
+          "X7LdT#L1"
+        ],
+        "excerpt": "• 量子可观测量 / 用于对撞机物理 / • 普朗克会议 / • IPAC’26 • 量子色动力学 / 制图师聚集",
+        "layout_labels": [
+          "plain text"
+        ],
+        "max_chars": 40,
+        "member_count": 5,
+        "min_cluster": 3
+      },
+      "id": "fragment_cluster:p2:p2#72+p2#73+p2#74+p2#75+p2#76",
+      "kind": "fragment_cluster",
+      "page": 2,
+      "paragraph_refs": [
+        "p2#72",
+        "p2#73",
+        "p2#74",
+        "p2#75",
+        "p2#76"
+      ],
+      "severity": "low"
+    },
+    {
+      "evidence": {
+        "debug_ids": [
+          "Q3Ga8",
+          "hXAJJ",
+          "b6uvw"
+        ],
+        "excerpt": "• Bernard Royce French / • Marvin Marshak / • Mannque Rho",
+        "layout_labels": [
+          "plain text"
+        ],
+        "max_chars": 40,
+        "member_count": 3,
+        "min_cluster": 3
+      },
+      "id": "fragment_cluster:p2:p2#79+p2#80+p2#81",
+      "kind": "fragment_cluster",
+      "page": 2,
+      "paragraph_refs": [
+        "p2#79",
+        "p2#80",
+        "p2#81"
+      ],
+      "severity": "low"
+    },
+    {
+      "evidence": {
+        "debug_ids": [
+          "95L4m#L0",
+          "95L4m#L1",
+          "95L4m#L2",
+          "95L4m#L3",
+          "95L4m#L4",
+          "95L4m#L5",
+          "95L4m#L6"
+        ],
+        "excerpt": "十年在 / 缺失能量 / 前沿 / 回顾NA64的 / 固定靶搜索 / 微弱相互作用暗 / 领域粒子。28",
+        "layout_labels": [
+          "plain text"
+        ],
+        "max_chars": 40,
+        "member_count": 7,
+        "min_cluster": 3
+      },
+      "id": "fragment_cluster:p2:p2#84+p2#85+p2#86+p2#87+p2#88+p2#89+p2#90",
+      "kind": "fragment_cluster",
+      "page": 2,
+      "paragraph_refs": [
+        "p2#84",
+        "p2#85",
+        "p2#86",
+        "p2#87",
+        "p2#88",
+        "p2#89",
+        "p2#90"
+      ],
+      "severity": "low"
+    },
+    {
+      "evidence": {
+        "debug_ids": [
+          "LcmWk#L0",
+          "LcmWk#L1",
+          "LcmWk#L2",
+          "LcmWk#L3",
+          "LcmWk#L4"
+        ],
+        "excerpt": "• 不一致• 中微子 / 物理学：一个学生的 / 指南• 伊斯兰教与 / 现代宇宙学。 / 45",
+        "layout_labels": [
+          "plain text"
+        ],
+        "max_chars": 40,
+        "member_count": 5,
+        "min_cluster": 3
+      },
+      "id": "fragment_cluster:p2:p2#93+p2#94+p2#95+p2#96+p2#97",
+      "kind": "fragment_cluster",
+      "page": 2,
+      "paragraph_refs": [
+        "p2#93",
+        "p2#94",
+        "p2#95",
+        "p2#96",
+        "p2#97"
+      ],
+      "severity": "low"
+    },
+    {
+      "evidence": {
+        "debug_ids": [
+          "wXMqj#L0",
+          "wXMqj#L1",
+          "wXMqj#L2",
+          "wXMqj#L3"
+        ],
+        "excerpt": "理事会主席科斯塔斯 (Costas) / 方塔斯（Fountas）论证 / 团结在FCC-ee背后。 / 39",
+        "layout_labels": [
+          "plain text"
+        ],
+        "max_chars": 40,
+        "member_count": 4,
+        "min_cluster": 3
+      },
+      "id": "fragment_cluster:p2:p2#104+p2#105+p2#106+p2#107",
+      "kind": "fragment_cluster",
+      "page": 2,
+      "paragraph_refs": [
+        "p2#104",
+        "p2#105",
+        "p2#106",
+        "p2#107"
+      ],
+      "severity": "low"
+    },
+    {
+      "evidence": {
+        "debug_ids": [
+          "3Wh4a#L0",
+          "3Wh4a#L1",
+          "3Wh4a#L2",
+          "3Wh4a#L3",
+          "3Wh4a#L4",
+          "3Wh4a#L5",
+          "3Wh4a#L6"
+        ],
+        "excerpt": "瑞士军队 / 光束之刃 / 模拟 / Xsuite 如何带来 / 领域的光束模拟 / 工具整合为一个 / 框架。33",
+        "layout_labels": [
+          "plain text"
+        ],
+        "max_chars": 40,
+        "member_count": 7,
+        "min_cluster": 3
+      },
+      "id": "fragment_cluster:p2:p2#108+p2#109+p2#110+p2#111+p2#112+p2#113+p2#114",
+      "kind": "fragment_cluster",
+      "page": 2,
+      "paragraph_refs": [
+        "p2#108",
+        "p2#109",
+        "p2#110",
+        "p2#111",
+        "p2#112",
+        "p2#113",
+        "p2#114"
+      ],
+      "severity": "low"
+    },
+    {
+      "evidence": {
+        "debug_ids": [
+          "xokCJ#L0",
+          "xokCJ#L1",
+          "xokCJ#L2",
+          "xokCJ#L3",
+          "xokCJ#L4",
+          "xokCJ#L5",
+          "xokCJ#L6"
+        ],
+        "excerpt": "当粒子 / 走向全球 / 对……的反思 / 第四届国际 / 粒子历史研讨会 / 粒子历史 / 物理学。22",
+        "layout_labels": [
+          "plain text"
+        ],
+        "max_chars": 40,
+        "member_count": 7,
+        "min_cluster": 3
+      },
+      "id": "fragment_cluster:p2:p2#116+p2#117+p2#118+p2#119+p2#120+p2#121+p2#122",
+      "kind": "fragment_cluster",
+      "page": 2,
+      "paragraph_refs": [
+        "p2#116",
+        "p2#117",
+        "p2#118",
+        "p2#119",
+        "p2#120",
+        "p2#121",
+        "p2#122"
+      ],
+      "severity": "low"
+    },
+    {
+      "evidence": {
+        "debug_ids": [
+          "8pZ9A#L0",
+          "8pZ9A#L1",
+          "8pZ9A#L2",
+          "8pZ9A#L3",
+          "8pZ9A#L4",
+          "8pZ9A#L5"
+        ],
+        "excerpt": "来自宇宙射线 / 从极地到极地 / 詹姆斯·德瓦恩 (James Devine) 和 Etam Noah / 诺亚 (Noah) 在探测器上 / 追踪μ子的探测",
+        "layout_labels": [
+          "plain text"
+        ],
+        "max_chars": 40,
+        "member_count": 6,
+        "min_cluster": 3
+      },
+      "id": "fragment_cluster:p2:p2#125+p2#126+p2#127+p2#128+p2#129+p2#130",
+      "kind": "fragment_cluster",
+      "page": 2,
+      "paragraph_refs": [
+        "p2#125",
+        "p2#126",
+        "p2#127",
+        "p2#128",
+        "p2#129",
+        "p2#130"
+      ],
+      "severity": "low"
+    },
+    {
+      "evidence": {
+        "box_source": "characters",
+        "debug_id": "yRRG9",
+        "excerpt": "欧洲核子研究中心快报2026年7月/8月 CERNCOURIER.COM 国际高能物理报道",
+        "frame_box": [
+          0.0,
+          0.0,
+          1024.0,
+          768.0
+        ],
+        "frame_source": "cropbox",
+        "layout_label": "title",
+        "margin_ratio": 0.0,
+        "min_overflow_ratio": 0.002,
+        "overflow_bottom": 0.0,
+        "overflow_left": 0.0,
+        "overflow_max": 26.0552,
+        "overflow_ratio": 0.033926,
+        "overflow_right": 0.0,
+        "overflow_side": "top",
+        "overflow_top": 26.0552,
+        "safe_box": [
+          0.0,
+          0.0,
+          1024.0,
+          768.0
+        ]
+      },
+      "id": "out_of_page:p1:p1#2",
+      "kind": "out_of_page",
+      "page": 1,
+      "paragraph_refs": [
+        "p1#2"
+      ],
+      "severity": "high"
+    },
+    {
+      "evidence": {
+        "debug_id": "D8ukk",
+        "excerpt": "CCJulAug2626_Cover_v22.indd   1 1CCJulAug_Cover_v.indd",
+        "layout_label": "abandon",
+        "min_ratio": 0.6,
+        "residue_chars": 36,
+        "residue_ratio": 1.0,
+        "residue_script": "latin",
+        "script_chars": 36
+      },
+      "id": "untranslated_residue:p1:p1#6",
+      "kind": "untranslated_residue",
+      "page": 1,
+      "paragraph_refs": [
+        "p1#6"
+      ],
+      "severity": "high"
+    },
+    {
+      "evidence": {
+        "debug_id": "NLJSm",
+        "excerpt": "要订阅该杂志，请访问：https://cerncourier.com/p/about-cern-courier",
+        "layout_label": "plain text",
+        "min_ratio": 0.6,
+        "residue_chars": 36,
+        "residue_ratio": 0.8,
+        "residue_script": "latin",
+        "script_chars": 45
+      },
+      "id": "untranslated_residue:p1:p1#16",
+      "kind": "untranslated_residue",
+      "page": 1,
+      "paragraph_refs": [
+        "p1#16"
+      ],
+      "severity": "high"
+    },
+    {
+      "evidence": {
+        "debug_id": "vAMS5",
+        "excerpt": "副主编：DAVIDE DE BIASIO",
+        "layout_label": "abandon",
+        "min_ratio": 0.6,
+        "residue_chars": 14,
+        "residue_ratio": 0.8235,
+        "residue_script": "latin",
+        "script_chars": 17
+      },
+      "id": "untranslated_residue:p1:p1#19",
+      "kind": "untranslated_residue",
+      "page": 1,
+      "paragraph_refs": [
+        "p1#19"
+      ],
+      "severity": "high"
+    },
+    {
+      "evidence": {
+        "debug_id": "GiNrt#L1",
+        "excerpt": "IBIC2026@triumf.ca",
+        "layout_label": "plain text",
+        "min_ratio": 0.6,
+        "residue_chars": 12,
+        "residue_ratio": 1.0,
+        "residue_script": "latin",
+        "script_chars": 12
+      },
+      "id": "untranslated_residue:p2:p2#7",
+      "kind": "untranslated_residue",
+      "page": 2,
+      "paragraph_refs": [
+        "p2#7"
+      ],
+      "severity": "high"
+    },
+    {
+      "evidence": {
+        "debug_id": "RhjXu",
+        "excerpt": "indico.jacow.org/event/113/",
+        "layout_label": "fallback_line",
+        "min_ratio": 0.6,
+        "residue_chars": 19,
+        "residue_ratio": 1.0,
+        "residue_script": "latin",
+        "script_chars": 19
+      },
+      "id": "untranslated_residue:p2:p2#9",
+      "kind": "untranslated_residue",
+      "page": 2,
+      "paragraph_refs": [
+        "p2#9"
+      ],
+      "severity": "high"
+    },
+    {
+      "evidence": {
+        "debug_id": "JKsnx#L1",
+        "excerpt": "Marco Marchetto",
+        "layout_label": "plain text",
+        "min_ratio": 0.6,
+        "residue_chars": 14,
+        "residue_ratio": 1.0,
+        "residue_script": "latin",
+        "script_chars": 14
+      },
+      "id": "untranslated_residue:p2:p2#21",
+      "kind": "untranslated_residue",
+      "page": 2,
+      "paragraph_refs": [
+        "p2#21"
+      ],
+      "severity": "high"
+    },
+    {
+      "evidence": {
+        "debug_id": "zKxgs#L1",
+        "excerpt": "Paul Dirksen (TRIUMF)",
+        "layout_label": "plain text",
+        "min_ratio": 0.6,
+        "residue_chars": 17,
+        "residue_ratio": 1.0,
+        "residue_script": "latin",
+        "script_chars": 17
+      },
+      "id": "untranslated_residue:p2:p2#23",
+      "kind": "untranslated_residue",
+      "page": 2,
+      "paragraph_refs": [
+        "p2#23"
+      ],
+      "severity": "high"
+    },
+    {
+      "evidence": {
+        "debug_id": "zKxgs#L2",
+        "excerpt": "Tonia Batten (CLS)",
+        "layout_label": "plain text",
+        "min_ratio": 0.6,
+        "residue_chars": 14,
+        "residue_ratio": 1.0,
+        "residue_script": "latin",
+        "script_chars": 14
+      },
+      "id": "untranslated_residue:p2:p2#24",
+      "kind": "untranslated_residue",
+      "page": 2,
+      "paragraph_refs": [
+        "p2#24"
+      ],
+      "severity": "high"
+    },
+    {
+      "evidence": {
+        "debug_id": "nDidf#L1",
+        "excerpt": "Tiffany Angus",
+        "layout_label": "plain text",
+        "min_ratio": 0.6,
+        "residue_chars": 12,
+        "residue_ratio": 1.0,
+        "residue_script": "latin",
+        "script_chars": 12
+      },
+      "id": "untranslated_residue:p2:p2#26",
+      "kind": "untranslated_residue",
+      "page": 2,
+      "paragraph_refs": [
+        "p2#26"
+      ],
+      "severity": "high"
+    },
+    {
+      "evidence": {
+        "debug_id": "ruYbp#L2",
+        "excerpt": "Chloe Beaumier-Martin",
+        "layout_label": "plain text",
+        "min_ratio": 0.6,
+        "residue_chars": 19,
+        "residue_ratio": 1.0,
+        "residue_script": "latin",
+        "script_chars": 19
+      },
+      "id": "untranslated_residue:p2:p2#29",
+      "kind": "untranslated_residue",
+      "page": 2,
+      "paragraph_refs": [
+        "p2#29"
+      ],
+      "severity": "high"
+    },
+    {
+      "evidence": {
+        "debug_id": "9eRCu",
+        "excerpt": "CJulAug26_pIFC.indd 1",
+        "layout_label": "title",
+        "min_ratio": 0.6,
+        "residue_chars": 15,
+        "residue_ratio": 1.0,
+        "residue_script": "latin",
+        "script_chars": 15
+      },
+      "id": "untranslated_residue:p2:p2#33",
+      "kind": "untranslated_residue",
+      "page": 2,
+      "paragraph_refs": [
+        "p2#33"
+      ],
+      "severity": "high"
+    },
+    {
+      "evidence": {
+        "debug_id": "e1zbC",
+        "excerpt": "CERNCOURIER.COM",
+        "layout_label": "abandon",
+        "min_ratio": 0.6,
+        "residue_chars": 14,
+        "residue_ratio": 1.0,
+        "residue_script": "latin",
+        "script_chars": 14
+      },
+      "id": "untranslated_residue:p2:p2#37",
+      "kind": "untranslated_residue",
+      "page": 2,
+      "paragraph_refs": [
+        "p2#37"
+      ],
+      "severity": "high"
+    },
+    {
+      "evidence": {
+        "debug_id": "56DSQ#L2",
+        "excerpt": "Barbara Storaci 现在",
+        "layout_label": "plain text",
+        "min_ratio": 0.6,
+        "residue_chars": 14,
+        "residue_ratio": 0.875,
+        "residue_script": "latin",
+        "script_chars": 16
+      },
+      "id": "untranslated_residue:p2:p2#57",
+      "kind": "untranslated_residue",
+      "page": 2,
+      "paragraph_refs": [
+        "p2#57"
+      ],
+      "severity": "high"
+    },
+    {
+      "evidence": {
+        "debug_id": "Q3Ga8",
+        "excerpt": "• Bernard Royce French",
+        "layout_label": "plain text",
+        "min_ratio": 0.6,
+        "residue_chars": 18,
+        "residue_ratio": 1.0,
+        "residue_script": "latin",
+        "script_chars": 18
+      },
+      "id": "untranslated_residue:p2:p2#79",
+      "kind": "untranslated_residue",
+      "page": 2,
+      "paragraph_refs": [
+        "p2#79"
+      ],
+      "severity": "high"
+    },
+    {
+      "evidence": {
+        "debug_id": "hXAJJ",
+        "excerpt": "• Marvin Marshak",
+        "layout_label": "plain text",
+        "min_ratio": 0.6,
+        "residue_chars": 13,
+        "residue_ratio": 1.0,
+        "residue_script": "latin",
+        "script_chars": 13
+      },
+      "id": "untranslated_residue:p2:p2#80",
+      "kind": "untranslated_residue",
+      "page": 2,
+      "paragraph_refs": [
+        "p2#80"
+      ],
+      "severity": "high"
+    },
+    {
+      "evidence": {
+        "debug_id": "PXP8b",
+        "excerpt": "P Dinault/CERN",
+        "layout_label": "fallback_line",
+        "min_ratio": 0.6,
+        "residue_chars": 12,
+        "residue_ratio": 1.0,
+        "residue_script": "latin",
+        "script_chars": 12
+      },
+      "id": "untranslated_residue:p2:p2#99",
+      "kind": "untranslated_residue",
+      "page": 2,
+      "paragraph_refs": [
+        "p2#99"
+      ],
+      "severity": "high"
+    },
+    {
+      "evidence": {
+        "debug_id": "8pZ9A#L2",
+        "excerpt": "詹姆斯·德瓦恩 (James Devine) 和 Etam Noah",
+        "layout_label": "plain text",
+        "min_ratio": 0.6,
+        "residue_chars": 19,
+        "residue_ratio": 0.7308,
+        "residue_script": "latin",
+        "script_chars": 26
+      },
+      "id": "untranslated_residue:p2:p2#127",
+      "kind": "untranslated_residue",
+      "page": 2,
+      "paragraph_refs": [
+        "p2#127"
+      ],
+      "severity": "high"
+    },
+    {
+      "evidence": {
+        "debug_id": "WrWTu",
+        "excerpt": "CCJulAug26_Conts_v3.in",
+        "layout_label": "abandon",
+        "min_ratio": 0.6,
+        "residue_chars": 16,
+        "residue_ratio": 1.0,
+        "residue_script": "latin",
+        "script_chars": 16
+      },
+      "id": "untranslated_residue:p2:p2#131",
+      "kind": "untranslated_residue",
+      "page": 2,
+      "paragraph_refs": [
+        "p2#131"
+      ],
+      "severity": "high"
+    },
+    {
+      "evidence": {
+        "debug_id": "YxpG4",
+        "excerpt": "CCJulAug26_Conts_v3.in",
+        "layout_label": "abandon",
+        "min_ratio": 0.6,
+        "residue_chars": 16,
+        "residue_ratio": 1.0,
+        "residue_script": "latin",
+        "script_chars": 16
+      },
+      "id": "untranslated_residue:p2:p2#133",
+      "kind": "untranslated_residue",
+      "page": 2,
+      "paragraph_refs": [
+        "p2#133"
+      ],
+      "severity": "high"
+    },
+    {
+      "evidence": {
+        "debug_id": "vGFS3",
+        "excerpt": "CERNCOURIER.COM",
+        "layout_label": "abandon",
+        "min_ratio": 0.6,
+        "residue_chars": 14,
+        "residue_ratio": 1.0,
+        "residue_script": "latin",
+        "script_chars": 14
+      },
+      "id": "untranslated_residue:p3:p3#5",
+      "kind": "untranslated_residue",
+      "page": 3,
+      "paragraph_refs": [
+        "p3#5"
+      ],
+      "severity": "high"
+    },
+    {
+      "evidence": {
+        "debug_id": "JNFcX",
+        "excerpt": "www.bergoz.com",
+        "layout_label": "plain text",
+        "min_ratio": 0.6,
+        "residue_chars": 12,
+        "residue_ratio": 1.0,
+        "residue_script": "latin",
+        "script_chars": 12
+      },
+      "id": "untranslated_residue:p3:p3#28",
+      "kind": "untranslated_residue",
+      "page": 3,
+      "paragraph_refs": [
+        "p3#28"
+      ],
+      "severity": "high"
+    },
+    {
+      "evidence": {
+        "debug_id": "1yhU8",
+        "excerpt": "info@bergoz.com",
+        "layout_label": "abandon",
+        "min_ratio": 0.6,
+        "residue_chars": 13,
+        "residue_ratio": 1.0,
+        "residue_script": "latin",
+        "script_chars": 13
+      },
+      "id": "untranslated_residue:p3:p3#30",
+      "kind": "untranslated_residue",
+      "page": 3,
+      "paragraph_refs": [
+        "p3#30"
+      ],
+      "severity": "high"
+    },
+    {
+      "evidence": {
+        "debug_id": "5hdYF",
+        "excerpt": "CCJulAug2626_NewsAnalysis_v33.indd   7 7 03CCJulAug_NewsAnalysis_v.indd   /07/20",
+        "layout_label": "abandon",
+        "min_ratio": 0.6,
+        "residue_chars": 50,
+        "residue_ratio": 1.0,
+        "residue_script": "latin",
+        "script_chars": 50
+      },
+      "id": "untranslated_residue:p3:p3#44",
+      "kind": "untranslated_residue",
+      "page": 3,
+      "paragraph_refs": [
+        "p3#44"
+      ],
+      "severity": "high"
+    },
+    {
+      "evidence": {
+        "debug_id": "jKLLZ",
+        "excerpt": "ul-Aug-Bergoz_colourRL.indd 1",
+        "layout_label": "abandon",
+        "min_ratio": 0.6,
+        "residue_chars": 23,
+        "residue_ratio": 1.0,
+        "residue_script": "latin",
+        "script_chars": 23
+      },
+      "id": "untranslated_residue:p3:p3#49",
+      "kind": "untranslated_residue",
+      "page": 3,
+      "paragraph_refs": [
+        "p3#49"
+      ],
+      "severity": "high"
+    },
+    {
+      "evidence": {
+        "debug_id": "pqfdv",
+        "excerpt": "ul-Aug-Bergoz_colourRL.indd   1 30/0623 300623/2026   182026   18://:www.",
+        "layout_label": "abandon",
+        "min_ratio": 0.6,
+        "residue_chars": 26,
+        "residue_ratio": 1.0,
+        "residue_script": "latin",
+        "script_chars": 26
+      },
+      "id": "untranslated_residue:p3:p3#51",
+      "kind": "untranslated_residue",
+      "page": 3,
+      "paragraph_refs": [
+        "p3#51"
+      ],
+      "severity": "high"
+    },
+    {
+      "evidence": {
+        "debug_id": "4mTC2",
+        "excerpt": "CERNCOURIER.COM",
+        "layout_label": "abandon",
+        "min_ratio": 0.6,
+        "residue_chars": 14,
+        "residue_ratio": 1.0,
+        "residue_script": "latin",
+        "script_chars": 14
+      },
+      "id": "untranslated_residue:p4:p4#6",
+      "kind": "untranslated_residue",
+      "page": 4,
+      "paragraph_refs": [
+        "p4#6"
+      ],
+      "severity": "high"
+    },
+    {
+      "evidence": {
+        "debug_id": "gHNDe",
+        "excerpt": "https://indico.cern.ch/event/1480892/.",
+        "layout_label": "plain text",
+        "min_ratio": 0.6,
+        "residue_chars": 22,
+        "residue_ratio": 1.0,
+        "residue_script": "latin",
+        "script_chars": 22
+      },
+      "id": "untranslated_residue:p4:p4#20",
+      "kind": "untranslated_residue",
+      "page": 4,
+      "paragraph_refs": [
+        "p4#20"
+      ],
+      "severity": "high"
+    },
+    {
+      "evidence": {
+        "debug_id": "xS6jx",
+        "excerpt": "CCJulAug2626_HISTORY_v44.indd   25 25 03CCJulAug_HISTORY_v.indd   /07/2026",
+        "layout_label": "abandon",
+        "min_ratio": 0.6,
+        "residue_chars": 40,
+        "residue_ratio": 1.0,
+        "residue_script": "latin",
+        "script_chars": 40
+      },
+      "id": "untranslated_residue:p4:p4#23",
+      "kind": "untranslated_residue",
+      "page": 4,
+      "paragraph_refs": [
+        "p4#23"
+      ],
+      "severity": "high"
+    },
+    {
+      "evidence": {
+        "debug_id": "f3bGT",
+        "excerpt": "CERNCOURIER.COM",
+        "layout_label": "abandon",
+        "min_ratio": 0.6,
+        "residue_chars": 14,
+        "residue_ratio": 1.0,
+        "residue_script": "latin",
+        "script_chars": 14
+      },
+      "id": "untranslated_residue:p4:p4#30",
+      "kind": "untranslated_residue",
+      "page": 4,
+      "paragraph_refs": [
+        "p4#30"
+      ],
+      "severity": "high"
+    },
+    {
+      "evidence": {
+        "debug_id": "LjtM5",
+        "excerpt": "R Hahn, Fermilab",
+        "layout_label": "fallback_line",
+        "min_ratio": 0.6,
+        "residue_chars": 13,
+        "residue_ratio": 1.0,
+        "residue_script": "latin",
+        "script_chars": 13
+      },
+      "id": "untranslated_residue:p4:p4#38",
+      "kind": "untranslated_residue",
+      "page": 4,
+      "paragraph_refs": [
+        "p4#38"
+      ],
+      "severity": "high"
+    },
+    {
+      "evidence": {
+        "debug_id": "UF2QC",
+        "excerpt": "STORY_v4.indd   24 03/0743 030743/2026   162026   16://:www.",
+        "layout_label": "abandon",
+        "min_ratio": 0.6,
+        "residue_chars": 13,
+        "residue_ratio": 1.0,
+        "residue_script": "latin",
+        "script_chars": 13
+      },
+      "id": "untranslated_residue:p4:p4#44",
+      "kind": "untranslated_residue",
+      "page": 4,
+      "paragraph_refs": [
+        "p4#44"
+      ],
+      "severity": "high"
+    }
+  ],
+  "courier_p1": [
+    {
+      "evidence": {
+        "debug_ids": [
+          "3JVoT#L0",
+          "3JVoT#L1",
+          "1UnaG#L0",
+          "1UnaG#L1",
+          "AEBEi#L0",
+          "AEBEi#L1",
+          "AEBEi#L2",
+          "WUJDc#L0",
+          "WUJDc#L1",
+          "Ub1HA#L0",
+          "Ub1HA#L1",
+          "Ub1HA#L2"
+        ],
+        "excerpt": "巴西：水上人家的教训 ..... 9 / 马塞洛·席尔瓦·德·索萨 (Marcelo Silva de Sousa) / 当生物盗窃生根时.12 / 丹尼尔·罗",
+        "layout_labels": [
+          "plain text"
+        ],
+        "max_chars": 40,
+        "member_count": 12,
+        "min_cluster": 3
+      },
+      "id": "fragment_cluster:p1:p1#16+p1#17+p1#18+p1#19+p1#20+p1#21+p1#22+p1#23+p1#24+p1#25+p1#26+p1#27",
+      "kind": "fragment_cluster",
+      "page": 1,
+      "paragraph_refs": [
+        "p1#16",
+        "p1#17",
+        "p1#18",
+        "p1#19",
+        "p1#20",
+        "p1#21",
+        "p1#22",
+        "p1#23",
+        "p1#24",
+        "p1#25",
+        "p1#26",
+        "p1#27"
+      ],
+      "severity": "low"
+    },
+    {
+      "evidence": {
+        "box_source": "characters",
+        "debug_id": "mYKF2",
+        "excerpt": "信使T H E 联合国教科文组织",
+        "frame_box": [
+          0.0,
+          0.0,
+          595.276,
+          841.89
+        ],
+        "frame_source": "cropbox",
+        "layout_label": "title",
+        "margin_ratio": 0.0,
+        "min_overflow_ratio": 0.002,
+        "overflow_bottom": 0.0,
+        "overflow_left": 0.0,
+        "overflow_max": 11.5863,
+        "overflow_ratio": 0.013762,
+        "overflow_right": 0.0,
+        "overflow_side": "top",
+        "overflow_top": 11.5863,
+        "safe_box": [
+          0.0,
+          0.0,
+          595.276,
+          841.89
+        ]
+      },
+      "id": "out_of_page:p1:p1#10",
+      "kind": "out_of_page",
+      "page": 1,
+      "paragraph_refs": [
+        "p1#10"
+      ],
+      "severity": "high"
+    },
+    {
+      "evidence": {
+        "debug_id": "4BNny",
+        "excerpt": "拉吉波伊瓦·谢雷尔·杰克逊 (Lagipoiva Cherelle Jackson)",
+        "layout_label": "plain text",
+        "min_ratio": 0.6,
+        "residue_chars": 24,
+        "residue_ratio": 0.6857,
+        "residue_script": "latin",
+        "script_chars": 35
+      },
+      "id": "untranslated_residue:p1:p1#15",
+      "kind": "untranslated_residue",
+      "page": 1,
+      "paragraph_refs": [
+        "p1#15"
+      ],
+      "severity": "high"
+    },
+    {
+      "evidence": {
+        "debug_id": "3JVoT#L1",
+        "excerpt": "马塞洛·席尔瓦·德·索萨 (Marcelo Silva de Sousa)",
+        "layout_label": "plain text",
+        "min_ratio": 0.6,
+        "residue_chars": 19,
+        "residue_ratio": 0.6786,
+        "residue_script": "latin",
+        "script_chars": 28
+      },
+      "id": "untranslated_residue:p1:p1#17",
+      "kind": "untranslated_residue",
+      "page": 1,
+      "paragraph_refs": [
+        "p1#17"
+      ],
+      "severity": "high"
+    },
+    {
+      "evidence": {
+        "debug_id": "Ub1HA#L2",
+        "excerpt": "安娜·罗霍宁 (Anna Ruohonen)",
+        "layout_label": "plain text",
+        "min_ratio": 0.6,
+        "residue_chars": 12,
+        "residue_ratio": 0.7059,
+        "residue_script": "latin",
+        "script_chars": 17
+      },
+      "id": "untranslated_residue:p1:p1#27",
+      "kind": "untranslated_residue",
+      "page": 1,
+      "paragraph_refs": [
+        "p1#27"
+      ],
+      "severity": "high"
+    },
+    {
+      "evidence": {
+        "debug_id": "gdvMF#L1",
+        "excerpt": "照片：Fotohane DARKROOM",
+        "layout_label": "plain text",
+        "min_ratio": 0.6,
+        "residue_chars": 16,
+        "residue_ratio": 0.8889,
+        "residue_script": "latin",
+        "script_chars": 18
+      },
+      "id": "untranslated_residue:p1:p1#33",
+      "kind": "untranslated_residue",
+      "page": 1,
+      "paragraph_refs": [
+        "p1#33"
+      ],
+      "severity": "high"
+    },
+    {
+      "evidence": {
+        "debug_id": "r3Fkt",
+        "excerpt": "吉姆·艾尔-哈利利 (Jim Al-Khalili)",
+        "layout_label": "plain text",
+        "min_ratio": 0.6,
+        "residue_chars": 12,
+        "residue_ratio": 0.6316,
+        "residue_script": "latin",
+        "script_chars": 19
+      },
+      "id": "untranslated_residue:p1:p1#37",
+      "kind": "untranslated_residue",
+      "page": 1,
+      "paragraph_refs": [
+        "p1#37"
+      ],
+      "severity": "high"
+    },
+    {
+      "evidence": {
+        "debug_id": "HYUnP#L2",
+        "excerpt": "与奇玛曼达·恩戈兹·阿迪契（Chimamanda Ngozi Adichie）的访谈",
+        "layout_label": "plain text",
+        "min_ratio": 0.6,
+        "residue_chars": 22,
+        "residue_ratio": 0.6111,
+        "residue_script": "latin",
+        "script_chars": 36
+      },
+      "id": "untranslated_residue:p1:p1#41",
+      "kind": "untranslated_residue",
+      "page": 1,
+      "paragraph_refs": [
+        "p1#41"
+      ],
+      "severity": "high"
+    },
+    {
+      "evidence": {
+        "debug_id": "YmUha",
+        "excerpt": "© Carolina Zambrano",
+        "layout_label": "fallback_line",
+        "min_ratio": 0.6,
+        "residue_chars": 16,
+        "residue_ratio": 1.0,
+        "residue_script": "latin",
+        "script_chars": 16
+      },
+      "id": "untranslated_residue:p3:p3#2",
+      "kind": "untranslated_residue",
+      "page": 3,
+      "paragraph_refs": [
+        "p3#2"
+      ],
+      "severity": "high"
+    },
+    {
+      "evidence": {
+        "debug_id": "tMTPt",
+        "excerpt": "© Adriano Gambarini / OPAN",
+        "layout_label": "fallback_line",
+        "min_ratio": 0.6,
+        "residue_chars": 20,
+        "residue_ratio": 1.0,
+        "residue_script": "latin",
+        "script_chars": 20
+      },
+      "id": "untranslated_residue:p5:p5#10",
+      "kind": "untranslated_residue",
+      "page": 5,
+      "paragraph_refs": [
+        "p5#10"
+      ],
+      "severity": "high"
+    },
+    {
+      "evidence": {
+        "debug_id": "BVH4C",
+        "excerpt": "© Boris Séméniako for The UNESCO Courier",
+        "layout_label": "fallback_line",
+        "min_ratio": 0.6,
+        "residue_chars": 33,
+        "residue_ratio": 1.0,
+        "residue_script": "latin",
+        "script_chars": 33
+      },
+      "id": "untranslated_residue:p6:p6#15",
+      "kind": "untranslated_residue",
+      "page": 6,
+      "paragraph_refs": [
+        "p6#15"
+      ],
+      "severity": "high"
+    },
+    {
+      "evidence": {
+        "debug_id": "njBXy",
+        "excerpt": "丹尼尔·罗宾逊 (Daniel Robinson)",
+        "layout_label": "abandon",
+        "min_ratio": 0.6,
+        "residue_chars": 14,
+        "residue_ratio": 0.7,
+        "residue_script": "latin",
+        "script_chars": 20
+      },
+      "id": "untranslated_residue:p7:p7#13",
+      "kind": "untranslated_residue",
+      "page": 7,
+      "paragraph_refs": [
+        "p7#13"
+      ],
+      "severity": "high"
+    },
+    {
+      "evidence": {
+        "debug_id": "1byVB",
+        "excerpt": "大卫·杰斐逊 (David Jefferson)",
+        "layout_label": "title",
+        "min_ratio": 0.6,
+        "residue_chars": 14,
+        "residue_ratio": 0.7368,
+        "residue_script": "latin",
+        "script_chars": 19
+      },
+      "id": "untranslated_residue:p7:p7#15",
+      "kind": "untranslated_residue",
+      "page": 7,
+      "paragraph_refs": [
+        "p7#15"
+      ],
+      "severity": "high"
+    },
+    {
+      "evidence": {
+        "debug_id": "6RdZ7",
+        "excerpt": "© 克里斯蒂安·古皮（Christian goupi） / robertharding.com",
+        "layout_label": "abandon",
+        "min_ratio": 0.6,
+        "residue_chars": 30,
+        "residue_ratio": 0.8108,
+        "residue_script": "latin",
+        "script_chars": 37
+      },
+      "id": "untranslated_residue:p8:p8#15",
+      "kind": "untranslated_residue",
+      "page": 8,
+      "paragraph_refs": [
+        "p8#15"
+      ],
+      "severity": "high"
+    }
+  ],
+  "orphan_spectrum": [
+    {
+      "evidence": {
+        "debug_id": "h000",
+        "excerpt": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+        "layout_label": "fallback_line",
+        "min_ratio": 0.6,
+        "residue_chars": 60,
+        "residue_ratio": 1.0,
+        "residue_script": "latin",
+        "script_chars": 60
+      },
+      "id": "untranslated_residue:p1:p1#0",
+      "kind": "untranslated_residue",
+      "page": 1,
+      "paragraph_refs": [
+        "p1#0"
+      ],
+      "severity": "high"
+    },
+    {
+      "evidence": {
+        "debug_id": "h001",
+        "excerpt": "cccccccccccccccccccccccccccccccccccccccccccccccccc",
+        "layout_label": "fallback_line",
+        "min_ratio": 0.6,
+        "residue_chars": 50,
+        "residue_ratio": 1.0,
+        "residue_script": "latin",
+        "script_chars": 50
+      },
+      "id": "untranslated_residue:p1:p1#1",
+      "kind": "untranslated_residue",
+      "page": 1,
+      "paragraph_refs": [
+        "p1#1"
+      ],
+      "severity": "high"
+    },
+    {
+      "evidence": {
+        "debug_id": "h002",
+        "excerpt": "cccccccccccccccccccccccccccccccccccccccc",
+        "layout_label": "fallback_line",
+        "min_ratio": 0.6,
+        "residue_chars": 40,
+        "residue_ratio": 1.0,
+        "residue_script": "latin",
+        "script_chars": 40
+      },
+      "id": "untranslated_residue:p1:p1#2",
+      "kind": "untranslated_residue",
+      "page": 1,
+      "paragraph_refs": [
+        "p1#2"
+      ],
+      "severity": "high"
+    },
+    {
+      "evidence": {
+        "debug_id": "h003",
+        "excerpt": "cccccccccccccccccccccccccccccc",
+        "layout_label": "fallback_line",
+        "min_ratio": 0.6,
+        "residue_chars": 30,
+        "residue_ratio": 1.0,
+        "residue_script": "latin",
+        "script_chars": 30
+      },
+      "id": "untranslated_residue:p1:p1#3",
+      "kind": "untranslated_residue",
+      "page": 1,
+      "paragraph_refs": [
+        "p1#3"
+      ],
+      "severity": "high"
+    },
+    {
+      "evidence": {
+        "debug_id": "h004",
+        "excerpt": "cccccccccccccccccccccccccccccccccccccccccccccccccccccc文文文文文文",
+        "layout_label": "fallback_line",
+        "min_ratio": 0.6,
+        "residue_chars": 54,
+        "residue_ratio": 0.9,
+        "residue_script": "latin",
+        "script_chars": 60
+      },
+      "id": "untranslated_residue:p1:p1#4",
+      "kind": "untranslated_residue",
+      "page": 1,
+      "paragraph_refs": [
+        "p1#4"
+      ],
+      "severity": "high"
+    },
+    {
+      "evidence": {
+        "debug_id": "h005",
+        "excerpt": "cccccccccccccccccccccccccccccccccccccccccccccccccccccc文文文文文文",
+        "layout_label": "fallback_line",
+        "min_ratio": 0.6,
+        "residue_chars": 54,
+        "residue_ratio": 0.9,
+        "residue_script": "latin",
+        "script_chars": 60
+      },
+      "id": "untranslated_residue:p1:p1#5",
+      "kind": "untranslated_residue",
+      "page": 1,
+      "paragraph_refs": [
+        "p1#5"
+      ],
+      "severity": "high"
+    },
+    {
+      "evidence": {
+        "debug_id": "h006",
+        "excerpt": "ccccccccccccccccccccccccccccccccccccccccccccccccccc文文文文文文文文文",
+        "layout_label": "fallback_line",
+        "min_ratio": 0.6,
+        "residue_chars": 51,
+        "residue_ratio": 0.85,
+        "residue_script": "latin",
+        "script_chars": 60
+      },
+      "id": "untranslated_residue:p1:p1#6",
+      "kind": "untranslated_residue",
+      "page": 1,
+      "paragraph_refs": [
+        "p1#6"
+      ],
+      "severity": "high"
+    },
+    {
+      "evidence": {
+        "debug_id": "h007",
+        "excerpt": "cccccccccccccccccccccccccccccccccccccccccccccccc文文文文文文文文文文文文",
+        "layout_label": "fallback_line",
+        "min_ratio": 0.6,
+        "residue_chars": 48,
+        "residue_ratio": 0.8,
+        "residue_script": "latin",
+        "script_chars": 60
+      },
+      "id": "untranslated_residue:p1:p1#7",
+      "kind": "untranslated_residue",
+      "page": 1,
+      "paragraph_refs": [
+        "p1#7"
+      ],
+      "severity": "high"
+    },
+    {
+      "evidence": {
+        "debug_id": "h008",
+        "excerpt": "ccccccccccccccccccccccccccccccccccccccccccccc文文文文文文文文文文文文文文文",
+        "layout_label": "fallback_line",
+        "min_ratio": 0.6,
+        "residue_chars": 45,
+        "residue_ratio": 0.75,
+        "residue_script": "latin",
+        "script_chars": 60
+      },
+      "id": "untranslated_residue:p1:p1#8",
+      "kind": "untranslated_residue",
+      "page": 1,
+      "paragraph_refs": [
+        "p1#8"
+      ],
+      "severity": "high"
+    },
+    {
+      "evidence": {
+        "debug_id": "h009",
+        "excerpt": "cccccccccccccccccccccccccccccccccccccccccc文文文文文文文文文文文文文文文文文文",
+        "layout_label": "fallback_line",
+        "min_ratio": 0.6,
+        "residue_chars": 42,
+        "residue_ratio": 0.7,
+        "residue_script": "latin",
+        "script_chars": 60
+      },
+      "id": "untranslated_residue:p1:p1#9",
+      "kind": "untranslated_residue",
+      "page": 1,
+      "paragraph_refs": [
+        "p1#9"
+      ],
+      "severity": "high"
+    },
+    {
+      "evidence": {
+        "debug_id": "h010",
+        "excerpt": "ccccccccccccccccccccccccccccccccccccccccc文文文文文文文文文文文文文文文文文文文",
+        "layout_label": "fallback_line",
+        "min_ratio": 0.6,
+        "residue_chars": 41,
+        "residue_ratio": 0.6833,
+        "residue_script": "latin",
+        "script_chars": 60
+      },
+      "id": "untranslated_residue:p1:p1#10",
+      "kind": "untranslated_residue",
+      "page": 1,
+      "paragraph_refs": [
+        "p1#10"
+      ],
+      "severity": "high"
+    },
+    {
+      "evidence": {
+        "debug_id": "h011",
+        "excerpt": "ccccccccccccccccccccccccccccccccccccccc文文文文文文文文文文文文文文文文文文文文文",
+        "layout_label": "fallback_line",
+        "min_ratio": 0.6,
+        "residue_chars": 39,
+        "residue_ratio": 0.65,
+        "residue_script": "latin",
+        "script_chars": 60
+      },
+      "id": "untranslated_residue:p1:p1#11",
+      "kind": "untranslated_residue",
+      "page": 1,
+      "paragraph_refs": [
+        "p1#11"
+      ],
+      "severity": "high"
+    },
+    {
+      "evidence": {
+        "debug_id": "h012",
+        "excerpt": "ccccccccccccccccccccccccccccccccccccc文文文文文文文文文文文文文文文文文文文文文文文",
+        "layout_label": "fallback_line",
+        "min_ratio": 0.6,
+        "residue_chars": 37,
+        "residue_ratio": 0.6167,
+        "residue_script": "latin",
+        "script_chars": 60
+      },
+      "id": "untranslated_residue:p1:p1#12",
+      "kind": "untranslated_residue",
+      "page": 1,
+      "paragraph_refs": [
+        "p1#12"
+      ],
+      "severity": "high"
+    },
+    {
+      "evidence": {
+        "debug_id": "h013",
+        "excerpt": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+        "layout_label": "plain text",
+        "min_ratio": 0.6,
+        "residue_chars": 60,
+        "residue_ratio": 1.0,
+        "residue_script": "latin",
+        "script_chars": 60
+      },
+      "id": "untranslated_residue:p1:p1#13",
+      "kind": "untranslated_residue",
+      "page": 1,
+      "paragraph_refs": [
+        "p1#13"
+      ],
+      "severity": "high"
+    },
+    {
+      "evidence": {
+        "debug_id": "h014",
+        "excerpt": "cccccccccccccccccccccccccccccccccccccccccccccccccc",
+        "layout_label": "plain text",
+        "min_ratio": 0.6,
+        "residue_chars": 50,
+        "residue_ratio": 1.0,
+        "residue_script": "latin",
+        "script_chars": 50
+      },
+      "id": "untranslated_residue:p1:p1#14",
+      "kind": "untranslated_residue",
+      "page": 1,
+      "paragraph_refs": [
+        "p1#14"
+      ],
+      "severity": "high"
+    },
+    {
+      "evidence": {
+        "debug_id": "h015",
+        "excerpt": "cccccccccccccccccccccccccccccccccccccccc",
+        "layout_label": "plain text",
+        "min_ratio": 0.6,
+        "residue_chars": 40,
+        "residue_ratio": 1.0,
+        "residue_script": "latin",
+        "script_chars": 40
+      },
+      "id": "untranslated_residue:p1:p1#15",
+      "kind": "untranslated_residue",
+      "page": 1,
+      "paragraph_refs": [
+        "p1#15"
+      ],
+      "severity": "high"
+    },
+    {
+      "evidence": {
+        "debug_id": "h016",
+        "excerpt": "cccccccccccccccccccccccccccccc",
+        "layout_label": "plain text",
+        "min_ratio": 0.6,
+        "residue_chars": 30,
+        "residue_ratio": 1.0,
+        "residue_script": "latin",
+        "script_chars": 30
+      },
+      "id": "untranslated_residue:p1:p1#16",
+      "kind": "untranslated_residue",
+      "page": 1,
+      "paragraph_refs": [
+        "p1#16"
+      ],
+      "severity": "high"
+    },
+    {
+      "evidence": {
+        "debug_id": "h017",
+        "excerpt": "cccccccccccccccccccc",
+        "layout_label": "plain text",
+        "min_ratio": 0.6,
+        "residue_chars": 20,
+        "residue_ratio": 1.0,
+        "residue_script": "latin",
+        "script_chars": 20
+      },
+      "id": "untranslated_residue:p1:p1#17",
+      "kind": "untranslated_residue",
+      "page": 1,
+      "paragraph_refs": [
+        "p1#17"
+      ],
+      "severity": "high"
+    },
+    {
+      "evidence": {
+        "debug_id": "h018",
+        "excerpt": "cccccccccccc",
+        "layout_label": "plain text",
+        "min_ratio": 0.6,
+        "residue_chars": 12,
+        "residue_ratio": 1.0,
+        "residue_script": "latin",
+        "script_chars": 12
+      },
+      "id": "untranslated_residue:p1:p1#18",
+      "kind": "untranslated_residue",
+      "page": 1,
+      "paragraph_refs": [
+        "p1#18"
+      ],
+      "severity": "high"
+    }
+  ],
+  "synthetic_contain": [
+    {
+      "evidence": {
+        "debug_ids": [
+          "frag0",
+          "frag1",
+          "frag2",
+          "frag3"
+        ],
+        "excerpt": "文文文文文文文文 / 文文文文文文文文 / 文文文文文文文文 / 文文文文文文文文",
+        "layout_labels": [
+          "plain text"
+        ],
+        "max_chars": 40,
+        "member_count": 4,
+        "min_cluster": 3
+      },
+      "id": "fragment_cluster:p1:p1#5+p1#6+p1#7+p1#8",
+      "kind": "fragment_cluster",
+      "page": 1,
+      "paragraph_refs": [
+        "p1#5",
+        "p1#6",
+        "p1#7",
+        "p1#8"
+      ],
+      "severity": "low"
+    },
+    {
+      "evidence": {
+        "box_source": "characters",
+        "debug_id": "head1",
+        "excerpt": "全球卫生报告二零二六",
+        "frame_box": [
+          0.0,
+          0.0,
+          600.0,
+          800.0
+        ],
+        "frame_source": "cropbox",
+        "layout_label": "title",
+        "margin_ratio": 0.0,
+        "min_overflow_ratio": 0.002,
+        "overflow_bottom": 0.0,
+        "overflow_left": 0.0,
+        "overflow_max": 32.0,
+        "overflow_ratio": 0.04,
+        "overflow_right": 0.0,
+        "overflow_side": "top",
+        "overflow_top": 32.0,
+        "safe_box": [
+          0.0,
+          0.0,
+          600.0,
+          800.0
+        ]
+      },
+      "id": "out_of_page:p1:p1#0",
+      "kind": "out_of_page",
+      "page": 1,
+      "paragraph_refs": [
+        "p1#0"
+      ],
+      "severity": "high"
+    },
+    {
+      "evidence": {
+        "debug_id": "res0",
+        "excerpt": "cccccccccccccccccccccccccccccccccccccccccc文文文文文文文文文文文文文文文文文文",
+        "layout_label": "plain text",
+        "min_ratio": 0.6,
+        "residue_chars": 42,
+        "residue_ratio": 0.7,
+        "residue_script": "latin",
+        "script_chars": 60
+      },
+      "id": "untranslated_residue:p1:p1#1",
+      "kind": "untranslated_residue",
+      "page": 1,
+      "paragraph_refs": [
+        "p1#1"
+      ],
+      "severity": "high"
+    },
+    {
+      "evidence": {
+        "debug_id": "res1",
+        "excerpt": "cccccccccccccccccccccccccccccccccccccccccc文文文文文文文文文文文文文文文文文文",
+        "layout_label": "plain text",
+        "min_ratio": 0.6,
+        "residue_chars": 42,
+        "residue_ratio": 0.7,
+        "residue_script": "latin",
+        "script_chars": 60
+      },
+      "id": "untranslated_residue:p1:p1#2",
+      "kind": "untranslated_residue",
+      "page": 1,
+      "paragraph_refs": [
+        "p1#2"
+      ],
+      "severity": "high"
+    },
+    {
+      "evidence": {
+        "debug_id": "res2",
+        "excerpt": "cccccccccccccccccccccccccccccccccccccccccc文文文文文文文文文文文文文文文文文文",
+        "layout_label": "plain text",
+        "min_ratio": 0.6,
+        "residue_chars": 42,
+        "residue_ratio": 0.7,
+        "residue_script": "latin",
+        "script_chars": 60
+      },
+      "id": "untranslated_residue:p1:p1#3",
+      "kind": "untranslated_residue",
+      "page": 1,
+      "paragraph_refs": [
+        "p1#3"
+      ],
+      "severity": "high"
+    },
+    {
+      "evidence": {
+        "debug_id": "res3",
+        "excerpt": "cccccccccccccccccccccccccccccccccccccccccc文文文文文文文文文文文文文文文文文文",
+        "layout_label": "plain text",
+        "min_ratio": 0.6,
+        "residue_chars": 42,
+        "residue_ratio": 0.7,
+        "residue_script": "latin",
+        "script_chars": 60
+      },
+      "id": "untranslated_residue:p1:p1#4",
+      "kind": "untranslated_residue",
+      "page": 1,
+      "paragraph_refs": [
+        "p1#4"
+      ],
+      "severity": "high"
+    }
+  ]
+}
