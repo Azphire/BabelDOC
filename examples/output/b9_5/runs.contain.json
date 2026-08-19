@@ -1,0 +1,251 @@
+[
+  {
+    "sample": "Courier-en.pdf",
+    "arm": "contain",
+    "magazine_repair": true,
+    "model": "gpt-4o",
+    "lang_in": "en",
+    "lang_out": "zh",
+    "seconds": 194.2,
+    "requests": 61,
+    "cache_hits": 61,
+    "api_calls": 0,
+    "prompt_tokens": 0,
+    "completion_tokens": 0,
+    "input_pages": 8,
+    "output_pages": 8,
+    "pdf": "examples\\output\\b9_5\\contain\\Courier-en\\Courier-en.b9_5.contain.pdf",
+    "pdf_sha256": "ccabbaacb678e5f31bf2d9edb415341d31e0ab2a5e1860094e8876eaf969a66d",
+    "working_dir": "examples\\output\\b9_5\\contain\\Courier-en\\work\\Courier-en",
+    "translation_style": {
+      "person_names": "transliterate",
+      "system_prompt_sha256": "74666d7128c1c06127d9193db7b8d2b346866088f1ccabb4c33e69be1c586903"
+    },
+    "scripted_decisions": [
+      {
+        "action": "contain_in_page",
+        "issue_ids": [
+          "out_of_page:p1:p1#10"
+        ],
+        "parameters": {
+          "max_paragraphs": 20.0
+        },
+        "reason": "scripted: every out of page finding is named and the action's own rule decides which of them it may touch",
+        "attempts": 0,
+        "from_cache": false,
+        "raw": "",
+        "violations": []
+      },
+      {
+        "action": "none",
+        "issue_ids": [],
+        "parameters": {},
+        "reason": "the scripted answer acts on out of page findings only",
+        "attempts": 0,
+        "from_cache": false,
+        "raw": "",
+        "violations": []
+      }
+    ]
+  },
+  {
+    "sample": "Vogue-en.pdf",
+    "arm": "contain",
+    "magazine_repair": true,
+    "model": "gpt-4o",
+    "lang_in": "en",
+    "lang_out": "zh",
+    "seconds": 211.4,
+    "requests": 30,
+    "cache_hits": 30,
+    "api_calls": 0,
+    "prompt_tokens": 0,
+    "completion_tokens": 0,
+    "input_pages": 3,
+    "output_pages": 3,
+    "pdf": "examples\\output\\b9_5\\contain\\Vogue-en\\Vogue-en.b9_5.contain.pdf",
+    "pdf_sha256": "aed927d71c44618aa5e422b0c5aa552e88db4dd883572d40ecce4a02ee9224ad",
+    "working_dir": "examples\\output\\b9_5\\contain\\Vogue-en\\work\\Vogue-en",
+    "translation_style": {
+      "person_names": "transliterate",
+      "system_prompt_sha256": "74666d7128c1c06127d9193db7b8d2b346866088f1ccabb4c33e69be1c586903"
+    },
+    "scripted_decisions": [
+      {
+        "action": "none",
+        "issue_ids": [],
+        "parameters": {},
+        "reason": "the scripted answer acts on out of page findings only",
+        "attempts": 0,
+        "from_cache": false,
+        "raw": "",
+        "violations": []
+      }
+    ]
+  },
+  {
+    "sample": "CERNCourier-en.pdf",
+    "arm": "contain",
+    "magazine_repair": true,
+    "model": "gpt-4o",
+    "lang_in": "en",
+    "lang_out": "zh",
+    "seconds": 437.6,
+    "requests": 102,
+    "cache_hits": 102,
+    "api_calls": 0,
+    "prompt_tokens": 0,
+    "completion_tokens": 0,
+    "input_pages": 4,
+    "output_pages": 4,
+    "pdf": "examples\\output\\b9_5\\contain\\CERNCourier-en\\CERNCourier-en.b9_5.contain.pdf",
+    "pdf_sha256": "34e240db3032f2e0110e75c7ffa69e8c820815a824fb6ff2c969c3907b36069e",
+    "working_dir": "examples\\output\\b9_5\\contain\\CERNCourier-en\\work\\CERNCourier-en",
+    "translation_style": {
+      "person_names": "transliterate",
+      "system_prompt_sha256": "74666d7128c1c06127d9193db7b8d2b346866088f1ccabb4c33e69be1c586903"
+    },
+    "scripted_decisions": [
+      {
+        "action": "contain_in_page",
+        "issue_ids": [
+          "out_of_page:p1:p1#2"
+        ],
+        "parameters": {
+          "max_paragraphs": 20.0
+        },
+        "reason": "scripted: every out of page finding is named and the action's own rule decides which of them it may touch",
+        "attempts": 0,
+        "from_cache": false,
+        "raw": "",
+        "violations": []
+      },
+      {
+        "action": "none",
+        "issue_ids": [],
+        "parameters": {},
+        "reason": "the scripted answer acts on out of page findings only",
+        "attempts": 0,
+        "from_cache": false,
+        "raw": "",
+        "violations": []
+      }
+    ]
+  },
+  {
+    "sample": "AramcoWorld-en-v2.pdf",
+    "arm": "contain",
+    "magazine_repair": true,
+    "model": "gpt-4o",
+    "lang_in": "en",
+    "lang_out": "zh",
+    "seconds": 723.8,
+    "requests": 84,
+    "cache_hits": 79,
+    "api_calls": 5,
+    "prompt_tokens": 5201,
+    "completion_tokens": 848,
+    "input_pages": 9,
+    "output_pages": 9,
+    "pdf": "examples\\output\\b9_5\\contain\\AramcoWorld-en-v2\\AramcoWorld-en-v2.b9_5.contain.pdf",
+    "pdf_sha256": "490a28150160ee5f14368c4943537a606edaf246913af7b2ba7b209d2855fb9b",
+    "working_dir": "examples\\output\\b9_5\\contain\\AramcoWorld-en-v2\\work\\AramcoWorld-en-v2",
+    "translation_style": {
+      "person_names": "transliterate",
+      "system_prompt_sha256": "74666d7128c1c06127d9193db7b8d2b346866088f1ccabb4c33e69be1c586903"
+    },
+    "scripted_decisions": [
+      {
+        "action": "contain_in_page",
+        "issue_ids": [
+          "out_of_page:p1:p1#1",
+          "out_of_page:p1:p1#2",
+          "out_of_page:p5:p5#16"
+        ],
+        "parameters": {
+          "max_paragraphs": 20.0
+        },
+        "reason": "scripted: every out of page finding is named and the action's own rule decides which of them it may touch",
+        "attempts": 0,
+        "from_cache": false,
+        "raw": "",
+        "violations": []
+      }
+    ]
+  },
+  {
+    "sample": "FD-en-v2.pdf",
+    "arm": "contain",
+    "magazine_repair": true,
+    "model": "gpt-4o",
+    "lang_in": "en",
+    "lang_out": "zh",
+    "seconds": 444.6,
+    "requests": 61,
+    "cache_hits": 61,
+    "api_calls": 0,
+    "prompt_tokens": 0,
+    "completion_tokens": 0,
+    "input_pages": 9,
+    "output_pages": 9,
+    "pdf": "examples\\output\\b9_5\\contain\\FD-en-v2\\FD-en-v2.b9_5.contain.pdf",
+    "pdf_sha256": "7dd2bdcd5a6f4ce07f6fccef8245eb6bf59c1cde9531579a2dc6ada7b2b92556",
+    "working_dir": "examples\\output\\b9_5\\contain\\FD-en-v2\\work\\FD-en-v2",
+    "translation_style": {
+      "person_names": "transliterate",
+      "system_prompt_sha256": "74666d7128c1c06127d9193db7b8d2b346866088f1ccabb4c33e69be1c586903"
+    },
+    "scripted_decisions": [
+      {
+        "action": "contain_in_page",
+        "issue_ids": [
+          "out_of_page:p2:p2#8",
+          "out_of_page:p4:p4#3"
+        ],
+        "parameters": {
+          "max_paragraphs": 20.0
+        },
+        "reason": "scripted: every out of page finding is named and the action's own rule decides which of them it may touch",
+        "attempts": 0,
+        "from_cache": false,
+        "raw": "",
+        "violations": []
+      }
+    ]
+  },
+  {
+    "sample": "Courier-zh.pdf",
+    "arm": "contain",
+    "magazine_repair": true,
+    "model": "gpt-4o",
+    "lang_in": "zh",
+    "lang_out": "en",
+    "seconds": 548.4,
+    "requests": 56,
+    "cache_hits": 56,
+    "api_calls": 0,
+    "prompt_tokens": 0,
+    "completion_tokens": 0,
+    "input_pages": 8,
+    "output_pages": 8,
+    "pdf": "examples\\output\\b9_5\\contain\\Courier-zh\\Courier-zh.b9_5.contain.pdf",
+    "pdf_sha256": "93a1ceef3d2a7b4265c623af510e24577a6f8b8c29e6ea6cc6f109fbd1d68dda",
+    "working_dir": "examples\\output\\b9_5\\contain\\Courier-zh\\work\\Courier-zh",
+    "translation_style": {
+      "person_names": "transliterate",
+      "system_prompt_sha256": "6f5e42314b804f107557e2577134f7f58e2cf8141f78dc93138b64ebbdc4e33c"
+    },
+    "scripted_decisions": [
+      {
+        "action": "none",
+        "issue_ids": [],
+        "parameters": {},
+        "reason": "the scripted answer acts on out of page findings only",
+        "attempts": 0,
+        "from_cache": false,
+        "raw": "",
+        "violations": []
+      }
+    ]
+  }
+]

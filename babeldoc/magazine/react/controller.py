@@ -454,6 +454,11 @@ class RepairLoop:
         vocabulary rather than taken from the finding: what a repair is measured
         against has to be the declaration and not a number that travelled
         through a request.
+
+        The guard's bound is the detector's instead, taken from the bounds this
+        pass is already running with: what the guard refuses to create is an
+        overlap of the size the collision detector calls an overlap, so the two
+        have to be reading one number.
         """
         positions = {
             view.label: position for position, view in enumerate(context.pages)
@@ -462,7 +467,9 @@ class RepairLoop:
         for candidate in candidates:
             position = positions[candidate.page_index]
             snapshot.take(position, candidate.page, candidate.paragraph_index)
-            outcome = contain.apply_one(candidate, action)
+            outcome = contain.apply_one(
+                candidate, action, context.config.collision_min_iou
+            )
             if not outcome.changed:
                 candidate.page.pdf_paragraph[candidate.paragraph_index] = (
                     snapshot.paragraphs.pop((position, candidate.paragraph_index))

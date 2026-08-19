@@ -1,0 +1,41 @@
+{
+  "sample": "AramcoWorld-en-v2.pdf",
+  "arm": "contain",
+  "magazine_repair": true,
+  "model": "gpt-4o",
+  "lang_in": "en",
+  "lang_out": "zh",
+  "seconds": 723.8,
+  "requests": 84,
+  "cache_hits": 79,
+  "api_calls": 5,
+  "prompt_tokens": 5201,
+  "completion_tokens": 848,
+  "input_pages": 9,
+  "output_pages": 9,
+  "pdf": "examples\\output\\b9_5\\contain\\AramcoWorld-en-v2\\AramcoWorld-en-v2.b9_5.contain.pdf",
+  "pdf_sha256": "490a28150160ee5f14368c4943537a606edaf246913af7b2ba7b209d2855fb9b",
+  "working_dir": "examples\\output\\b9_5\\contain\\AramcoWorld-en-v2\\work\\AramcoWorld-en-v2",
+  "translation_style": {
+    "person_names": "transliterate",
+    "system_prompt_sha256": "74666d7128c1c06127d9193db7b8d2b346866088f1ccabb4c33e69be1c586903"
+  },
+  "scripted_decisions": [
+    {
+      "action": "contain_in_page",
+      "issue_ids": [
+        "out_of_page:p1:p1#1",
+        "out_of_page:p1:p1#2",
+        "out_of_page:p5:p5#16"
+      ],
+      "parameters": {
+        "max_paragraphs": 20.0
+      },
+      "reason": "scripted: every out of page finding is named and the action's own rule decides which of them it may touch",
+      "attempts": 0,
+      "from_cache": false,
+      "raw": "",
+      "violations": []
+    }
+  ]
+}

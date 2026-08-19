@@ -58,6 +58,40 @@ have to be shrunk past the point where what is left is the heading the designer
 set. Then nothing is applied and the finding is reported with the figure it
 would have needed, which is a fact a human can act on and a fact this action
 cannot.
+
+The guard: where the heading lands has to be empty
+--------------------------------------------------
+
+A page is not empty space, and the inside of the page is where the rest of it
+is. Sliding a heading down off the trim moves it towards the text that was set
+below it, and a repair that clears the trim by printing the heading over the
+standfirst has traded a defect for a worse one -- the first is visible at the
+edge of the sheet and recoverable, and the second destroys two paragraphs at
+once and is recoverable from the finished page by nobody.
+
+So a plan is measured before it is applied, against the page it would be applied
+to: which paragraphs the ink stands on now, and which it would stand on then. A
+paragraph in the second set and not the first is one this action would have put
+it there, and that is the only thing the guard refuses. It does not ask whether
+the overlap is the designer's, because the question here is not the detector's
+question. The detector asks whether the *translation* caused an overlap and
+takes the source layout as its baseline; this asks whether *this action* caused
+one, and its baseline is the document as it stood a moment ago. The two are the
+same question about different agents, and the second has an answer on every run,
+including one that kept no checkpoint for the first to be asked at all. What the
+two do share is the bound: an overlap is the size the collision detector says an
+overlap is, so the guard refuses exactly what that detector would go on to
+report.
+
+Refusing the slide is not refusing the repair. The slide is only the first of
+the ordered outcomes, and what a refused slide falls back to is the second one
+taken alone: shrink the heading where it stands, about the centre of its own
+extent, by the largest factor that lands it inside the frame without moving it.
+That cannot walk into anything, because the ink it leaves is inside the ink it
+started with -- though it can still deepen an overlap it was already partly in,
+which is why the guard measures it too rather than assuming it. What survives
+neither is escalated, and the record says which of the two was refused and what
+it would have stood on.
 """
 
 from __future__ import annotations
@@ -66,6 +100,7 @@ from dataclasses import dataclass
 
 from babeldoc.format.pdf.document_il import il_version_1
 from babeldoc.magazine.detectors import base as detector_base
+from babeldoc.magazine.drop_cap import paragraph_reference
 from babeldoc.magazine.line_split import paragraph_characters
 from babeldoc.magazine.react.actions import ACCEPTED
 from babeldoc.magazine.react.actions import Application
@@ -95,10 +130,19 @@ REASON_NO_INK = "paragraph_carries_no_laid_out_character_to_move"
 REASON_CONTAINED = "the_paragraph_is_already_inside_the_page"
 REASON_FLOOR = "containing_it_would_shrink_it_past_the_declared_floor"
 REASON_NOT_CONTAINED = "the_transform_did_not_bring_the_ink_inside_the_page"
+REASON_INDUCED = "containing_it_would_stand_it_on_text_it_was_not_standing_on"
 
-# How it was contained: the two states an accepted application reports.
+# How it was contained: the three states an accepted application reports. The
+# third is the guard's fallback -- shrunk where it stands, because sliding it
+# would have put it over something.
 STATE_TRANSLATED = "translated"
 STATE_SCALED = "scaled_and_translated"
+STATE_SCALED_IN_PLACE = "scaled_in_place"
+
+# Why a plan was refused by the guard, as the record states it.
+GUARD_INDUCED = "it_would_stand_on_text_it_was_not_standing_on"
+GUARD_NO_FIT = "no_scale_at_its_own_centre_lands_it_inside_the_frame"
+GUARD_FLOOR = "the_scale_it_would_need_is_below_the_declared_floor"
 
 
 def applicability(action: Action) -> tuple[tuple[str, ...], float]:
@@ -150,14 +194,38 @@ class Containment:
     safe: tuple[float, float, float, float]
     frame_source: str
     floor: float
+    # Whether this is the plan the guard fell back to rather than the plan the
+    # ordering would have chosen: shrunk where it stands, not slid.
+    fallback: bool = False
 
     @property
     def state(self) -> str:
+        if self.fallback:
+            return STATE_SCALED_IN_PLACE
         return STATE_TRANSLATED if self.scale >= 1.0 else STATE_SCALED
 
     @property
     def inert(self) -> bool:
         return self.scale >= 1.0 and self.shift == (0.0, 0.0)
+
+    @property
+    def projected(self) -> tuple[float, float, float, float]:
+        """Where the ink would be under this map, without applying it.
+
+        The map is affine and axis aligned with a positive scale, so the extent
+        of the transformed characters is the transform of their extent, and the
+        guard can ask its question of a plan rather than of a document it has
+        already changed.
+        """
+        anchor_x, anchor_y = self.anchor
+        shift_x, shift_y = self.shift
+        left, bottom, right, top = self.box
+        return (
+            anchor_x + (left - anchor_x) * self.scale + shift_x,
+            anchor_y + (bottom - anchor_y) * self.scale + shift_y,
+            anchor_x + (right - anchor_x) * self.scale + shift_x,
+            anchor_y + (top - anchor_y) * self.scale + shift_y,
+        )
 
     def as_record(self) -> dict:
         return {
@@ -208,6 +276,80 @@ def fit(box, bounds) -> tuple[float, tuple[float, float]]:
         amounts["bottom"] - amounts["top"],
     )
     return scale, shift
+
+
+def shrink_in_place(box, bounds) -> float:
+    """The largest scale at or below unity that fits ``box`` in ``bounds`` unmoved.
+
+    Each side of the box has its own room between the centre and the bound it
+    faces, and the scale is the smallest of the four ratios: the one side that
+    runs out of room first is the one that decides. A centre outside the bounds
+    gives a ratio at or below zero, which is a box no scaling can fit without
+    moving it, and the caller reads that as the refusal it is.
+    """
+    left, bottom, right, top = box
+    centre_x = (left + right) / 2
+    centre_y = (bottom + top) / 2
+    reaches = (
+        (centre_x - left, centre_x - bounds[0]),
+        (right - centre_x, bounds[2] - centre_x),
+        (centre_y - bottom, centre_y - bounds[1]),
+        (top - centre_y, bounds[3] - centre_y),
+    )
+    scale = 1.0
+    for reach, room in reaches:
+        if reach <= 0:
+            # A degenerate axis: nothing reaches out along it, so nothing about
+            # it can be made to fit by shrinking.
+            continue
+        scale = min(scale, room / reach)
+    return scale
+
+
+def standing_on(candidate, box, min_iou: float) -> dict[int, float]:
+    """Which other paragraphs of the page a box at these coordinates stands on.
+
+    Keyed by paragraph index so a before and an after can be compared as sets,
+    and valued by the overlap so the record can say how hard the finding the
+    guard prevented would have been. A paragraph the page renders nothing for
+    is not something to stand on.
+    """
+    found: dict[int, float] = {}
+    for index, other in enumerate(candidate.page.pdf_paragraph or ()):
+        if index == candidate.paragraph_index:
+            continue
+        if not detector_base.rendered_text(other).strip():
+            continue
+        other_box, _source = detector_base.rendered_box(other)
+        if other_box is None:
+            continue
+        overlap = detector_base.intersection_over_union(box, other_box)
+        if overlap >= min_iou:
+            found[index] = overlap
+    return found
+
+
+def references(candidate, indices) -> list[str]:
+    """Paragraph indices as the references every report names paragraphs by."""
+    return [
+        paragraph_reference(candidate.page_index, index) for index in sorted(indices)
+    ]
+
+
+def induced(candidate, before: dict[int, float], box, min_iou: float) -> dict:
+    """What standing at ``box`` would newly stand on, and what it would stand on.
+
+    New against the document as it is rather than as the source drew it: the
+    question is what this action would cause, and an overlap already on the page
+    is not something it caused.
+    """
+    after = standing_on(candidate, box, min_iou)
+    new = {index: value for index, value in after.items() if index not in before}
+    return {
+        "standing_on": references(candidate, after),
+        "induced": references(candidate, new),
+        "worst_induced_iou": round(max(new.values()), 4) if new else 0.0,
+    }
 
 
 def transform_box(box, scale: float, anchor, shift) -> il_version_1.Box:
@@ -289,32 +431,71 @@ def admits(issue, candidate, action: Action) -> str:
     return ACCEPTED
 
 
-def plan(candidate, margin_ratio: float, floor: float) -> tuple[str, Containment | None]:
-    """What containing this paragraph would take, and whether it may be done."""
+def plan(
+    candidate, margin_ratio: float, floor: float, min_iou: float
+) -> tuple[str, Containment | None, dict]:
+    """What containing this paragraph would take, whether it may be done, and why.
+
+    The ordered outcomes with the guard between them: slide, and if sliding
+    would stand the heading on something it is not standing on now, shrink it
+    where it stands instead, and if that would too, escalate. The third value is
+    the trace -- what was refused and what it would have stood on -- which is
+    the whole of what makes a refusal reviewable.
+    """
     frame = detector_base.page_frame(candidate.page)
     box = ink_box(candidate.paragraph)
     if frame is None:
-        return REASON_NO_FRAME, None
+        return REASON_NO_FRAME, None, {}
     if box is None:
-        return REASON_NO_INK, None
+        return REASON_NO_INK, None, {}
     bounds, frame_source = frame
     safe = detector_base.inset(bounds, margin_ratio)
+    anchor = ((box[0] + box[2]) / 2, (box[1] + box[3]) / 2)
+
+    def shaped(scale: float, shift, fallback: bool) -> Containment:
+        return Containment(
+            scale=scale,
+            shift=shift,
+            anchor=anchor,
+            box=box,
+            box_source=detector_base.BOX_FROM_CHARACTERS,
+            safe=safe,
+            frame_source=frame_source,
+            floor=floor,
+            fallback=fallback,
+        )
+
     scale, shift = fit(box, safe)
-    found = Containment(
-        scale=scale,
-        shift=shift,
-        anchor=((box[0] + box[2]) / 2, (box[1] + box[3]) / 2),
-        box=box,
-        box_source=detector_base.BOX_FROM_CHARACTERS,
-        safe=safe,
-        frame_source=frame_source,
-        floor=floor,
-    )
-    if found.inert:
-        return REASON_CONTAINED, found
+    slide = shaped(scale, shift, False)
+    if slide.inert:
+        return REASON_CONTAINED, slide, {}
     if scale < floor:
-        return REASON_FLOOR, found
-    return ACCEPTED, found
+        return REASON_FLOOR, slide, {}
+
+    before = standing_on(candidate, box, min_iou)
+    trace = {
+        "collision_min_iou": min_iou,
+        "standing_on_before": references(candidate, before),
+        slide.state: induced(candidate, before, slide.projected, min_iou),
+    }
+    if not trace[slide.state]["induced"]:
+        return ACCEPTED, slide, trace
+
+    in_place = shrink_in_place(box, safe)
+    fallback = shaped(in_place, (0.0, 0.0), True)
+    if in_place <= 0.0:
+        trace["fallback_refused"] = GUARD_NO_FIT
+        return REASON_INDUCED, slide, trace
+    if in_place < floor:
+        trace["fallback_refused"] = GUARD_FLOOR
+        trace["fallback_scale"] = round(in_place, 6)
+        return REASON_INDUCED, fallback, trace
+    trace[fallback.state] = induced(candidate, before, fallback.projected, min_iou)
+    if trace[fallback.state]["induced"]:
+        trace["fallback_refused"] = GUARD_INDUCED
+        return REASON_INDUCED, fallback, trace
+    trace["slide_refused"] = GUARD_INDUCED
+    return ACCEPTED, fallback, trace
 
 
 def worst_overlap(candidate) -> float:
@@ -341,16 +522,18 @@ def worst_overlap(candidate) -> float:
     return worst
 
 
-def apply_one(candidate, action: Action) -> Application:
+def apply_one(candidate, action: Action, min_iou: float) -> Application:
     """Contain one paragraph, or say why it was not contained.
 
     The paragraph is transformed and then measured again, and a transform whose
-    result is still outside the page is not a repair: the caller puts the
-    paragraph back. The test is on the document rather than on the arithmetic,
-    for the same reason the write-back path measures its own result.
+    result is still outside the page, or which has stood the paragraph on
+    something the plan said it would not, is not a repair: the caller puts the
+    paragraph back. Both tests are on the document rather than on the arithmetic
+    the plan was chosen by, for the same reason the write-back path measures its
+    own result.
     """
     floor = min_scale(action)
-    verdict, found = plan(candidate, margin_ratio(action), floor)
+    verdict, found, trace = plan(candidate, margin_ratio(action), floor, min_iou)
     outcome = Application(
         issue_id=candidate.issue_id,
         reference=candidate.reference,
@@ -359,8 +542,11 @@ def apply_one(candidate, action: Action) -> Application:
         source_text=candidate.source_text,
         geometry={} if found is None else found.as_record(),
     )
+    if trace:
+        outcome.geometry["guard"] = trace
     if verdict != ACCEPTED or found is None:
         return outcome
+    before = standing_on(candidate, found.box, min_iou)
     transform(candidate.paragraph, found)
     after = ink_box(candidate.paragraph)
     record = outcome.geometry
@@ -375,6 +561,11 @@ def apply_one(candidate, action: Action) -> Application:
     }
     if max(amounts.values()) > arithmetic_slack(found.safe):
         outcome.reason = REASON_NOT_CONTAINED
+        return outcome
+    applied = induced(candidate, before, after, min_iou)
+    record.setdefault("guard", {})["applied"] = applied
+    if applied["induced"]:
+        outcome.reason = REASON_INDUCED
         return outcome
     record["worst_overlap_after"] = round(worst_overlap(candidate), 4)
     outcome.accepted = True

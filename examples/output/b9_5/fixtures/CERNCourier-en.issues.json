@@ -1,0 +1,1563 @@
+{
+  "counts": {
+    "by_kind": {
+      "fragment_cluster": 16,
+      "out_of_page": 1,
+      "untranslated_residue": 32
+    },
+    "issues": 49
+  },
+  "document_detectors": [
+    "escalation_surfacing"
+  ],
+  "issues": [
+    {
+      "detected_at_iteration": 0,
+      "detector": "fragment_cluster",
+      "evidence": {
+        "debug_ids": [
+          "x4ydW",
+          "K8sUp",
+          "TGDZR",
+          "Txdzp",
+          "G7H3v",
+          "8Sor7",
+          "NjW7t",
+          "mXxAc",
+          "xuuQJ"
+        ],
+        "excerpt": "• 束流电荷和电流监测器 / • 束流损失监测器和机器保护 / • 束流位置监测器 / • 横向轮廓和发射度监测器 / • 纵向诊断和同步 / • 反馈系统和束",
+        "layout_labels": [
+          "plain text"
+        ],
+        "max_chars": 40,
+        "member_count": 9,
+        "min_cluster": 3
+      },
+      "geometry": {
+        "x": 19.69246015625,
+        "x2": 264.16583334375,
+        "y": 239.21000000000018,
+        "y2": 368.57489999999996
+      },
+      "id": "fragment_cluster:p2:p2#10+p2#11+p2#12+p2#13+p2#14+p2#15+p2#16+p2#17+p2#18",
+      "kind": "fragment_cluster",
+      "page": 2,
+      "paragraph_refs": [
+        "p2#10",
+        "p2#11",
+        "p2#12",
+        "p2#13",
+        "p2#14",
+        "p2#15",
+        "p2#16",
+        "p2#17",
+        "p2#18"
+      ],
+      "severity": "low"
+    },
+    {
+      "detected_at_iteration": 0,
+      "detector": "fragment_cluster",
+      "evidence": {
+        "debug_ids": [
+          "bFsfo#L0",
+          "bFsfo#L1",
+          "bFsfo#L2"
+        ],
+        "excerpt": "SPC联合主席 / Paul Dirksen (TRIUMF) / Tonia Batten (CLS)",
+        "layout_labels": [
+          "plain text"
+        ],
+        "max_chars": 40,
+        "member_count": 3,
+        "min_cluster": 3
+      },
+      "geometry": {
+        "x": 34.144190625,
+        "x2": 144.61905040625,
+        "y": 105.73440000000001,
+        "y2": 140.4144
+      },
+      "id": "fragment_cluster:p2:p2#22+p2#23+p2#24",
+      "kind": "fragment_cluster",
+      "page": 2,
+      "paragraph_refs": [
+        "p2#22",
+        "p2#23",
+        "p2#24"
+      ],
+      "severity": "low"
+    },
+    {
+      "detected_at_iteration": 0,
+      "detector": "fragment_cluster",
+      "evidence": {
+        "debug_ids": [
+          "8sVPH#L0",
+          "8sVPH#L1",
+          "AKJbe#L0",
+          "AKJbe#L1",
+          "AKJbe#L2"
+        ],
+        "excerpt": "LOC主席 / Tiffany Angus / LOC 联合主席 / Hanna Dahl / Chloe Beaumier-Martin",
+        "layout_labels": [
+          "plain text"
+        ],
+        "max_chars": 40,
+        "member_count": 5,
+        "min_cluster": 3
+      },
+      "geometry": {
+        "x": 150.773836025,
+        "x2": 265.80049313750004,
+        "y": 105.73440000000001,
+        "y2": 177.1344
+      },
+      "id": "fragment_cluster:p2:p2#25+p2#26+p2#27+p2#28+p2#29",
+      "kind": "fragment_cluster",
+      "page": 2,
+      "paragraph_refs": [
+        "p2#25",
+        "p2#26",
+        "p2#27",
+        "p2#28",
+        "p2#29"
+      ],
+      "severity": "low"
+    },
+    {
+      "detected_at_iteration": 0,
+      "detector": "fragment_cluster",
+      "evidence": {
+        "debug_ids": [
+          "7jhv1#L0",
+          "7jhv1#L1",
+          "7jhv1#L2"
+        ],
+        "excerpt": "封面故事 / 27公里长的LEP隧道， / 摄于1991年7月。22",
+        "layout_labels": [
+          "plain text"
+        ],
+        "max_chars": 40,
+        "member_count": 3,
+        "min_cluster": 3
+      },
+      "geometry": {
+        "x": 818.3901343148437,
+        "x2": 899.4439278386719,
+        "y": 140.65175879999993,
+        "y2": 163.06277551874993
+      },
+      "id": "fragment_cluster:p2:p2#40+p2#41+p2#42",
+      "kind": "fragment_cluster",
+      "page": 2,
+      "paragraph_refs": [
+        "p2#40",
+        "p2#41",
+        "p2#42"
+      ],
+      "severity": "low"
+    },
+    {
+      "detected_at_iteration": 0,
+      "detector": "fragment_cluster",
+      "evidence": {
+        "debug_ids": [
+          "oCppz",
+          "AvtAr",
+          "ZiXVT",
+          "MFLMq#L0",
+          "MFLMq#L1",
+          "MFLMq#L2"
+        ],
+        "excerpt": "• 欧洲战略 / • 第三阶段的结束 / • arXiv关于人工智能的规定 / • 反氢脚趾 / 这条线 • 热启动 / 用于集群。7",
+        "layout_labels": [
+          "plain text"
+        ],
+        "max_chars": 40,
+        "member_count": 6,
+        "min_cluster": 3
+      },
+      "geometry": {
+        "x": 545.8393809261719,
+        "x2": 611.3240719789063,
+        "y": 383.4809452,
+        "y2": 436.8476428710938
+      },
+      "id": "fragment_cluster:p2:p2#45+p2#46+p2#47+p2#48+p2#49+p2#50",
+      "kind": "fragment_cluster",
+      "page": 2,
+      "paragraph_refs": [
+        "p2#45",
+        "p2#46",
+        "p2#47",
+        "p2#48",
+        "p2#49",
+        "p2#50"
+      ],
+      "severity": "low"
+    },
+    {
+      "detected_at_iteration": 0,
+      "detector": "fragment_cluster",
+      "evidence": {
+        "debug_ids": [
+          "gDaeD#L0",
+          "gDaeD#L1",
+          "gDaeD#L2",
+          "gDaeD#L3",
+          "gDaeD#L4",
+          "gDaeD#L5",
+          "gDaeD#L6"
+        ],
+        "excerpt": "场论在 / 欧洲核子研究中心和欧洲足球协会联盟 / Barbara Storaci 现在 / 应用她在 / 磨练出的分析思维 / 欧洲核子研究中心到一个截然不同",
+        "layout_labels": [
+          "plain text"
+        ],
+        "max_chars": 40,
+        "member_count": 7,
+        "min_cluster": 3
+      },
+      "geometry": {
+        "x": 818.5182116699218,
+        "x2": 904.9361540039063,
+        "y": 373.4765669,
+        "y2": 437.68219936523434
+      },
+      "id": "fragment_cluster:p2:p2#55+p2#56+p2#57+p2#58+p2#59+p2#60+p2#61",
+      "kind": "fragment_cluster",
+      "page": 2,
+      "paragraph_refs": [
+        "p2#55",
+        "p2#56",
+        "p2#57",
+        "p2#58",
+        "p2#59",
+        "p2#60",
+        "p2#61"
+      ],
+      "severity": "low"
+    },
+    {
+      "detected_at_iteration": 0,
+      "detector": "fragment_cluster",
+      "evidence": {
+        "debug_ids": [
+          "yHNfD#L0",
+          "yHNfD#L1",
+          "yHNfD#L2"
+        ],
+        "excerpt": "• 核中的部分子 / 边缘 • W玻色子衰变 / 到三个带电强子",
+        "layout_labels": [
+          "plain text"
+        ],
+        "max_chars": 40,
+        "member_count": 3,
+        "min_cluster": 3
+      },
+      "geometry": {
+        "x": 636.6804908238281,
+        "x2": 716.4442058964844,
+        "y": 411.35964520000005,
+        "y2": 437.1886849121094
+      },
+      "id": "fragment_cluster:p2:p2#65+p2#66+p2#67",
+      "kind": "fragment_cluster",
+      "page": 2,
+      "paragraph_refs": [
+        "p2#65",
+        "p2#66",
+        "p2#67"
+      ],
+      "severity": "low"
+    },
+    {
+      "detected_at_iteration": 0,
+      "detector": "fragment_cluster",
+      "evidence": {
+        "debug_ids": [
+          "9kyGc#L0",
+          "9kyGc#L1",
+          "9kyGc#L2"
+        ],
+        "excerpt": "• 新双重魅 / 重子 • 集体流 / 在超核中。13",
+        "layout_labels": [
+          "plain text"
+        ],
+        "max_chars": 40,
+        "member_count": 3,
+        "min_cluster": 3
+      },
+      "geometry": {
+        "x": 636.434953586719,
+        "x2": 714.2080145527345,
+        "y": 383.37594520000005,
+        "y2": 409.20488491210943
+      },
+      "id": "fragment_cluster:p2:p2#68+p2#69+p2#70",
+      "kind": "fragment_cluster",
+      "page": 2,
+      "paragraph_refs": [
+        "p2#68",
+        "p2#69",
+        "p2#70"
+      ],
+      "severity": "low"
+    },
+    {
+      "detected_at_iteration": 0,
+      "detector": "fragment_cluster",
+      "evidence": {
+        "debug_ids": [
+          "FezWF#L0",
+          "FezWF#L1",
+          "gyzpR",
+          "9esLM#L0",
+          "9esLM#L1"
+        ],
+        "excerpt": "• 量子可观测量 / 用于对撞机物理 / • 普朗克会议 / • IPAC’26 • 量子色动力学 / 制图师聚集",
+        "layout_labels": [
+          "plain text"
+        ],
+        "max_chars": 40,
+        "member_count": 5,
+        "min_cluster": 3
+      },
+      "geometry": {
+        "x": 727.499216526172,
+        "x2": 803.0558373964844,
+        "y": 392.70384520000005,
+        "y2": 437.1886849121094
+      },
+      "id": "fragment_cluster:p2:p2#72+p2#73+p2#74+p2#75+p2#76",
+      "kind": "fragment_cluster",
+      "page": 2,
+      "paragraph_refs": [
+        "p2#72",
+        "p2#73",
+        "p2#74",
+        "p2#75",
+        "p2#76"
+      ],
+      "severity": "low"
+    },
+    {
+      "detected_at_iteration": 0,
+      "detector": "fragment_cluster",
+      "evidence": {
+        "debug_ids": [
+          "L9VKr",
+          "BcZ6a",
+          "Ejzv9"
+        ],
+        "excerpt": "• Bernard Royce French / • Marvin Marshak / • Mannque Rho",
+        "layout_labels": [
+          "plain text"
+        ],
+        "max_chars": 40,
+        "member_count": 3,
+        "min_cluster": 3
+      },
+      "geometry": {
+        "x": 909.9361540039063,
+        "x2": 985.575496598047,
+        "y": 411.35727130000004,
+        "y2": 437.18547597656254
+      },
+      "id": "fragment_cluster:p2:p2#79+p2#80+p2#81",
+      "kind": "fragment_cluster",
+      "page": 2,
+      "paragraph_refs": [
+        "p2#79",
+        "p2#80",
+        "p2#81"
+      ],
+      "severity": "low"
+    },
+    {
+      "detected_at_iteration": 0,
+      "detector": "fragment_cluster",
+      "evidence": {
+        "debug_ids": [
+          "FsFW9#L0",
+          "FsFW9#L1",
+          "FsFW9#L2",
+          "FsFW9#L3",
+          "FsFW9#L4",
+          "FsFW9#L5",
+          "FsFW9#L6"
+        ],
+        "excerpt": "十年在 / 缺失能量 / 前沿 / 回顾NA64的 / 固定靶搜索 / 微弱相互作用暗 / 领域粒子。28",
+        "layout_labels": [
+          "plain text"
+        ],
+        "max_chars": 40,
+        "member_count": 7,
+        "min_cluster": 3
+      },
+      "geometry": {
+        "x": 727.2932676757813,
+        "x2": 804.1097679847658,
+        "y": 260.47919300000007,
+        "y2": 324.66804921875
+      },
+      "id": "fragment_cluster:p2:p2#84+p2#85+p2#86+p2#87+p2#88+p2#89+p2#90",
+      "kind": "fragment_cluster",
+      "page": 2,
+      "paragraph_refs": [
+        "p2#84",
+        "p2#85",
+        "p2#86",
+        "p2#87",
+        "p2#88",
+        "p2#89",
+        "p2#90"
+      ],
+      "severity": "low"
+    },
+    {
+      "detected_at_iteration": 0,
+      "detector": "fragment_cluster",
+      "evidence": {
+        "debug_ids": [
+          "ZKek5#L0",
+          "ZKek5#L1",
+          "ZKek5#L2",
+          "ZKek5#L3",
+          "ZKek5#L4"
+        ],
+        "excerpt": "• 不一致• 中微子 / 物理学：一个学生的 / 指南• 伊斯兰教与 / 现代宇宙学。 / 45",
+        "layout_labels": [
+          "plain text"
+        ],
+        "max_chars": 40,
+        "member_count": 5,
+        "min_cluster": 3
+      },
+      "geometry": {
+        "x": 727.3995951843751,
+        "x2": 808.1405268902344,
+        "y": 139.335518359375,
+        "y2": 183.27077597656248
+      },
+      "id": "fragment_cluster:p2:p2#93+p2#94+p2#95+p2#96+p2#97",
+      "kind": "fragment_cluster",
+      "page": 2,
+      "paragraph_refs": [
+        "p2#93",
+        "p2#94",
+        "p2#95",
+        "p2#96",
+        "p2#97"
+      ],
+      "severity": "low"
+    },
+    {
+      "detected_at_iteration": 0,
+      "detector": "fragment_cluster",
+      "evidence": {
+        "debug_ids": [
+          "NSSsB#L0",
+          "NSSsB#L1",
+          "NSSsB#L2",
+          "NSSsB#L3"
+        ],
+        "excerpt": "理事会主席科斯塔斯 (Costas) / 方塔斯（Fountas）论证 / 团结在FCC-ee背后。 / 39",
+        "layout_labels": [
+          "plain text"
+        ],
+        "max_chars": 40,
+        "member_count": 4,
+        "min_cluster": 3
+      },
+      "geometry": {
+        "x": 545.8778791015625,
+        "x2": 626.3987078600001,
+        "y": 148.769416796875,
+        "y2": 183.27398491210937
+      },
+      "id": "fragment_cluster:p2:p2#104+p2#105+p2#106+p2#107",
+      "kind": "fragment_cluster",
+      "page": 2,
+      "paragraph_refs": [
+        "p2#104",
+        "p2#105",
+        "p2#106",
+        "p2#107"
+      ],
+      "severity": "low"
+    },
+    {
+      "detected_at_iteration": 0,
+      "detector": "fragment_cluster",
+      "evidence": {
+        "debug_ids": [
+          "kAzVR#L0",
+          "kAzVR#L1",
+          "kAzVR#L2",
+          "kAzVR#L3",
+          "kAzVR#L4",
+          "kAzVR#L5",
+          "kAzVR#L6"
+        ],
+        "excerpt": "瑞士军队 / 光束之刃 / 模拟 / Xsuite 如何带来 / 领域的光束模拟 / 工具整合为一个 / 框架。33",
+        "layout_labels": [
+          "plain text"
+        ],
+        "max_chars": 40,
+        "member_count": 7,
+        "min_cluster": 3
+      },
+      "geometry": {
+        "x": 909.2386810546875,
+        "x2": 988.1066004365626,
+        "y": 260.47919300000007,
+        "y2": 324.6871993652344
+      },
+      "id": "fragment_cluster:p2:p2#108+p2#109+p2#110+p2#111+p2#112+p2#113+p2#114",
+      "kind": "fragment_cluster",
+      "page": 2,
+      "paragraph_refs": [
+        "p2#108",
+        "p2#109",
+        "p2#110",
+        "p2#111",
+        "p2#112",
+        "p2#113",
+        "p2#114"
+      ],
+      "severity": "low"
+    },
+    {
+      "detected_at_iteration": 0,
+      "detector": "fragment_cluster",
+      "evidence": {
+        "debug_ids": [
+          "3Vgxc#L0",
+          "3Vgxc#L1",
+          "3Vgxc#L2",
+          "3Vgxc#L3",
+          "3Vgxc#L4",
+          "3Vgxc#L5",
+          "3Vgxc#L6"
+        ],
+        "excerpt": "当粒子 / 走向全球 / 对……的反思 / 第四届国际 / 粒子历史研讨会 / 粒子历史 / 物理学。22",
+        "layout_labels": [
+          "plain text"
+        ],
+        "max_chars": 40,
+        "member_count": 7,
+        "min_cluster": 3
+      },
+      "geometry": {
+        "x": 545.4979585937499,
+        "x2": 605.5365344667969,
+        "y": 260.4815669000001,
+        "y2": 324.6871993652344
+      },
+      "id": "fragment_cluster:p2:p2#116+p2#117+p2#118+p2#119+p2#120+p2#121+p2#122",
+      "kind": "fragment_cluster",
+      "page": 2,
+      "paragraph_refs": [
+        "p2#116",
+        "p2#117",
+        "p2#118",
+        "p2#119",
+        "p2#120",
+        "p2#121",
+        "p2#122"
+      ],
+      "severity": "low"
+    },
+    {
+      "detected_at_iteration": 0,
+      "detector": "fragment_cluster",
+      "evidence": {
+        "debug_ids": [
+          "FSEj2#L0",
+          "FSEj2#L1",
+          "FSEj2#L2",
+          "FSEj2#L3",
+          "FSEj2#L4",
+          "FSEj2#L5"
+        ],
+        "excerpt": "来自宇宙射线 / 从极地到极地 / 詹姆斯·德瓦恩 (James Devine) 和 Etam Noah / 诺亚 (Noah) 在探测器上 / 追踪μ子的探测",
+        "layout_labels": [
+          "plain text"
+        ],
+        "max_chars": 40,
+        "member_count": 6,
+        "min_cluster": 3
+      },
+      "geometry": {
+        "x": 636.3610731933594,
+        "x2": 711.7680755184375,
+        "y": 148.12189300000003,
+        "y2": 203.0900900390625
+      },
+      "id": "fragment_cluster:p2:p2#125+p2#126+p2#127+p2#128+p2#129+p2#130",
+      "kind": "fragment_cluster",
+      "page": 2,
+      "paragraph_refs": [
+        "p2#125",
+        "p2#126",
+        "p2#127",
+        "p2#128",
+        "p2#129",
+        "p2#130"
+      ],
+      "severity": "low"
+    },
+    {
+      "detected_at_iteration": 0,
+      "detector": "out_of_page",
+      "evidence": {
+        "box_source": "characters",
+        "debug_id": "n8ZqM",
+        "excerpt": "欧洲核子研究中心快报2026年7月/8月 CERNCOURIER.COM 国际高能物理报道",
+        "frame_box": [
+          0.0,
+          0.0,
+          1024.0,
+          768.0
+        ],
+        "frame_source": "cropbox",
+        "layout_label": "title",
+        "margin_ratio": 0.0,
+        "min_overflow_ratio": 0.002,
+        "overflow_bottom": 0.0,
+        "overflow_left": 0.0,
+        "overflow_max": 26.0552,
+        "overflow_ratio": 0.033926,
+        "overflow_right": 0.0,
+        "overflow_side": "top",
+        "overflow_top": 26.0552,
+        "safe_box": [
+          0.0,
+          0.0,
+          1024.0,
+          768.0
+        ]
+      },
+      "geometry": {
+        "x": 521.08865859375,
+        "x2": 1008.4199374468748,
+        "y": 755.0111112686108,
+        "y2": 794.0552290644798
+      },
+      "id": "out_of_page:p1:p1#2",
+      "kind": "out_of_page",
+      "page": 1,
+      "paragraph_refs": [
+        "p1#2"
+      ],
+      "severity": "high"
+    },
+    {
+      "detected_at_iteration": 0,
+      "detector": "untranslated_residue",
+      "evidence": {
+        "debug_id": "j1McA",
+        "excerpt": "CCJulAug2626_Cover_v22.indd   1 1CCJulAug_Cover_v.indd",
+        "layout_label": "abandon",
+        "min_ratio": 0.6,
+        "residue_chars": 36,
+        "residue_ratio": 1.0,
+        "residue_script": "latin",
+        "script_chars": 36
+      },
+      "geometry": {
+        "x": 520.11752109375,
+        "x2": 592.3240000000001,
+        "y": 72.43220000000001,
+        "y2": 79.9853
+      },
+      "id": "untranslated_residue:p1:p1#6",
+      "kind": "untranslated_residue",
+      "page": 1,
+      "paragraph_refs": [
+        "p1#6"
+      ],
+      "severity": "high"
+    },
+    {
+      "detected_at_iteration": 0,
+      "detector": "untranslated_residue",
+      "evidence": {
+        "debug_id": "VR4SB",
+        "excerpt": "要订阅该杂志，请访问：https://cerncourier.com/p/about-cern-courier",
+        "layout_label": "plain text",
+        "min_ratio": 0.6,
+        "residue_chars": 36,
+        "residue_ratio": 0.8,
+        "residue_script": "latin",
+        "script_chars": 45
+      },
+      "geometry": {
+        "x": 57.91206249999999,
+        "x2": 284.2472781250003,
+        "y": 239.06274374999998,
+        "y2": 264.7619625
+      },
+      "id": "untranslated_residue:p1:p1#16",
+      "kind": "untranslated_residue",
+      "page": 1,
+      "paragraph_refs": [
+        "p1#16"
+      ],
+      "severity": "high"
+    },
+    {
+      "detected_at_iteration": 0,
+      "detector": "untranslated_residue",
+      "evidence": {
+        "debug_id": "nxe7G",
+        "excerpt": "副主编：DAVIDE DE BIASIO",
+        "layout_label": "abandon",
+        "min_ratio": 0.6,
+        "residue_chars": 14,
+        "residue_ratio": 0.8235,
+        "residue_script": "latin",
+        "script_chars": 17
+      },
+      "geometry": {
+        "x": 60.2362,
+        "x2": 184.7594,
+        "y": 105.1831,
+        "y2": 113.6951
+      },
+      "id": "untranslated_residue:p1:p1#19",
+      "kind": "untranslated_residue",
+      "page": 1,
+      "paragraph_refs": [
+        "p1#19"
+      ],
+      "severity": "high"
+    },
+    {
+      "detected_at_iteration": 0,
+      "detector": "untranslated_residue",
+      "evidence": {
+        "debug_id": "pkefN#L1",
+        "excerpt": "IBIC2026@triumf.ca",
+        "layout_label": "plain text",
+        "min_ratio": 0.6,
+        "residue_chars": 12,
+        "residue_ratio": 1.0,
+        "residue_script": "latin",
+        "script_chars": 12
+      },
+      "geometry": {
+        "x": 286.90916875,
+        "x2": 365.46727475625,
+        "y": 138.42155,
+        "y2": 147.77155
+      },
+      "id": "untranslated_residue:p2:p2#7",
+      "kind": "untranslated_residue",
+      "page": 2,
+      "paragraph_refs": [
+        "p2#7"
+      ],
+      "severity": "high"
+    },
+    {
+      "detected_at_iteration": 0,
+      "detector": "untranslated_residue",
+      "evidence": {
+        "debug_id": "3ZYrY",
+        "excerpt": "indico.jacow.org/event/113/",
+        "layout_label": "fallback_line",
+        "min_ratio": 0.6,
+        "residue_chars": 19,
+        "residue_ratio": 1.0,
+        "residue_script": "latin",
+        "script_chars": 19
+      },
+      "geometry": {
+        "x": 286.90916875,
+        "x2": 395.68548548125,
+        "y": 105.26645,
+        "y2": 115.223688671875
+      },
+      "id": "untranslated_residue:p2:p2#9",
+      "kind": "untranslated_residue",
+      "page": 2,
+      "paragraph_refs": [
+        "p2#9"
+      ],
+      "severity": "high"
+    },
+    {
+      "detected_at_iteration": 0,
+      "detector": "untranslated_residue",
+      "evidence": {
+        "debug_id": "SrBSE#L1",
+        "excerpt": "Marco Marchetto",
+        "layout_label": "plain text",
+        "min_ratio": 0.6,
+        "residue_chars": 14,
+        "residue_ratio": 1.0,
+        "residue_script": "latin",
+        "script_chars": 14
+      },
+      "geometry": {
+        "x": 34.8912609375,
+        "x2": 120.00436007500002,
+        "y": 154.6944,
+        "y2": 164.8944
+      },
+      "id": "untranslated_residue:p2:p2#21",
+      "kind": "untranslated_residue",
+      "page": 2,
+      "paragraph_refs": [
+        "p2#21"
+      ],
+      "severity": "high"
+    },
+    {
+      "detected_at_iteration": 0,
+      "detector": "untranslated_residue",
+      "evidence": {
+        "debug_id": "bFsfo#L1",
+        "excerpt": "Paul Dirksen (TRIUMF)",
+        "layout_label": "plain text",
+        "min_ratio": 0.6,
+        "residue_chars": 17,
+        "residue_ratio": 1.0,
+        "residue_script": "latin",
+        "script_chars": 17
+      },
+      "geometry": {
+        "x": 34.144190625,
+        "x2": 144.61905040625,
+        "y": 117.9744,
+        "y2": 128.75217421875
+      },
+      "id": "untranslated_residue:p2:p2#23",
+      "kind": "untranslated_residue",
+      "page": 2,
+      "paragraph_refs": [
+        "p2#23"
+      ],
+      "severity": "high"
+    },
+    {
+      "detected_at_iteration": 0,
+      "detector": "untranslated_residue",
+      "evidence": {
+        "debug_id": "bFsfo#L2",
+        "excerpt": "Tonia Batten (CLS)",
+        "layout_label": "plain text",
+        "min_ratio": 0.6,
+        "residue_chars": 14,
+        "residue_ratio": 1.0,
+        "residue_script": "latin",
+        "script_chars": 14
+      },
+      "geometry": {
+        "x": 34.144190625,
+        "x2": 144.61905040625,
+        "y": 105.73440000000001,
+        "y2": 116.51217421875
+      },
+      "id": "untranslated_residue:p2:p2#24",
+      "kind": "untranslated_residue",
+      "page": 2,
+      "paragraph_refs": [
+        "p2#24"
+      ],
+      "severity": "high"
+    },
+    {
+      "detected_at_iteration": 0,
+      "detector": "untranslated_residue",
+      "evidence": {
+        "debug_id": "8sVPH#L1",
+        "excerpt": "Tiffany Angus",
+        "layout_label": "plain text",
+        "min_ratio": 0.6,
+        "residue_chars": 12,
+        "residue_ratio": 1.0,
+        "residue_script": "latin",
+        "script_chars": 12
+      },
+      "geometry": {
+        "x": 150.773836025,
+        "x2": 216.5545484375,
+        "y": 154.6944,
+        "y2": 164.8944
+      },
+      "id": "untranslated_residue:p2:p2#26",
+      "kind": "untranslated_residue",
+      "page": 2,
+      "paragraph_refs": [
+        "p2#26"
+      ],
+      "severity": "high"
+    },
+    {
+      "detected_at_iteration": 0,
+      "detector": "untranslated_residue",
+      "evidence": {
+        "debug_id": "AKJbe#L2",
+        "excerpt": "Chloe Beaumier-Martin",
+        "layout_label": "plain text",
+        "min_ratio": 0.6,
+        "residue_chars": 19,
+        "residue_ratio": 1.0,
+        "residue_script": "latin",
+        "script_chars": 19
+      },
+      "geometry": {
+        "x": 151.6205157125,
+        "x2": 265.80049313750004,
+        "y": 105.73440000000001,
+        "y2": 115.93440000000001
+      },
+      "id": "untranslated_residue:p2:p2#29",
+      "kind": "untranslated_residue",
+      "page": 2,
+      "paragraph_refs": [
+        "p2#29"
+      ],
+      "severity": "high"
+    },
+    {
+      "detected_at_iteration": 0,
+      "detector": "untranslated_residue",
+      "evidence": {
+        "debug_id": "dRawb",
+        "excerpt": "CJulAug26_pIFC.indd 1",
+        "layout_label": "title",
+        "min_ratio": 0.6,
+        "residue_chars": 15,
+        "residue_ratio": 1.0,
+        "residue_script": "latin",
+        "script_chars": 15
+      },
+      "geometry": {
+        "x": 12.40632109375,
+        "x2": 68.129219921875,
+        "y": 71.56837812500001,
+        "y2": 77.414863671875
+      },
+      "id": "untranslated_residue:p2:p2#33",
+      "kind": "untranslated_residue",
+      "page": 2,
+      "paragraph_refs": [
+        "p2#33"
+      ],
+      "severity": "high"
+    },
+    {
+      "detected_at_iteration": 0,
+      "detector": "untranslated_residue",
+      "evidence": {
+        "debug_id": "z76zK",
+        "excerpt": "CERNCOURIER.COM",
+        "layout_label": "abandon",
+        "min_ratio": 0.6,
+        "residue_chars": 14,
+        "residue_ratio": 1.0,
+        "residue_script": "latin",
+        "script_chars": 14
+      },
+      "geometry": {
+        "x": 545.67236875,
+        "x2": 604.633174075,
+        "y": 747.3771760000001,
+        "y2": 752.589653125
+      },
+      "id": "untranslated_residue:p2:p2#37",
+      "kind": "untranslated_residue",
+      "page": 2,
+      "paragraph_refs": [
+        "p2#37"
+      ],
+      "severity": "high"
+    },
+    {
+      "detected_at_iteration": 0,
+      "detector": "untranslated_residue",
+      "evidence": {
+        "debug_id": "skq8E",
+        "excerpt": "Volume 66 Number 4  July/August 2026",
+        "layout_label": "fallback_line",
+        "min_ratio": 0.6,
+        "residue_chars": 22,
+        "residue_ratio": 1.0,
+        "residue_script": "latin",
+        "script_chars": 22
+      },
+      "geometry": {
+        "x": 775.3338257324219,
+        "x2": 914.4502841151563,
+        "y": 717.0481232999999,
+        "y2": 723.5835811523438
+      },
+      "id": "untranslated_residue:p2:p2#39",
+      "kind": "untranslated_residue",
+      "page": 2,
+      "paragraph_refs": [
+        "p2#39"
+      ],
+      "severity": "high"
+    },
+    {
+      "detected_at_iteration": 0,
+      "detector": "untranslated_residue",
+      "evidence": {
+        "debug_id": "gDaeD#L2",
+        "excerpt": "Barbara Storaci 现在",
+        "layout_label": "plain text",
+        "min_ratio": 0.6,
+        "residue_chars": 14,
+        "residue_ratio": 0.875,
+        "residue_script": "latin",
+        "script_chars": 16
+      },
+      "geometry": {
+        "x": 818.5182116699218,
+        "x2": 896.734371283203,
+        "y": 410.7786713,
+        "y2": 417.9509759765625
+      },
+      "id": "untranslated_residue:p2:p2#57",
+      "kind": "untranslated_residue",
+      "page": 2,
+      "paragraph_refs": [
+        "p2#57"
+      ],
+      "severity": "high"
+    },
+    {
+      "detected_at_iteration": 0,
+      "detector": "untranslated_residue",
+      "evidence": {
+        "debug_id": "L9VKr",
+        "excerpt": "• Bernard Royce French",
+        "layout_label": "plain text",
+        "min_ratio": 0.6,
+        "residue_chars": 18,
+        "residue_ratio": 1.0,
+        "residue_script": "latin",
+        "script_chars": 18
+      },
+      "geometry": {
+        "x": 909.9361540039063,
+        "x2": 985.575496598047,
+        "y": 430.0131713,
+        "y2": 437.18547597656254
+      },
+      "id": "untranslated_residue:p2:p2#79",
+      "kind": "untranslated_residue",
+      "page": 2,
+      "paragraph_refs": [
+        "p2#79"
+      ],
+      "severity": "high"
+    },
+    {
+      "detected_at_iteration": 0,
+      "detector": "untranslated_residue",
+      "evidence": {
+        "debug_id": "BcZ6a",
+        "excerpt": "• Marvin Marshak",
+        "layout_label": "plain text",
+        "min_ratio": 0.6,
+        "residue_chars": 13,
+        "residue_ratio": 1.0,
+        "residue_script": "latin",
+        "script_chars": 13
+      },
+      "geometry": {
+        "x": 909.9361540039063,
+        "x2": 968.3817375515625,
+        "y": 420.68517130000004,
+        "y2": 427.85747597656257
+      },
+      "id": "untranslated_residue:p2:p2#80",
+      "kind": "untranslated_residue",
+      "page": 2,
+      "paragraph_refs": [
+        "p2#80"
+      ],
+      "severity": "high"
+    },
+    {
+      "detected_at_iteration": 0,
+      "detector": "untranslated_residue",
+      "evidence": {
+        "debug_id": "X4PfX",
+        "excerpt": "P Dinault/CERN",
+        "layout_label": "fallback_line",
+        "min_ratio": 0.6,
+        "residue_chars": 12,
+        "residue_ratio": 1.0,
+        "residue_script": "latin",
+        "script_chars": 12
+      },
+      "geometry": {
+        "x": 814.8292953125001,
+        "x2": 817.9796120000001,
+        "y": 191.5391,
+        "y2": 213.305981375
+      },
+      "id": "untranslated_residue:p2:p2#99",
+      "kind": "untranslated_residue",
+      "page": 2,
+      "paragraph_refs": [
+        "p2#99"
+      ],
+      "severity": "high"
+    },
+    {
+      "detected_at_iteration": 0,
+      "detector": "untranslated_residue",
+      "evidence": {
+        "debug_id": "FSEj2#L2",
+        "excerpt": "詹姆斯·德瓦恩 (James Devine) 和 Etam Noah",
+        "layout_label": "plain text",
+        "min_ratio": 0.6,
+        "residue_chars": 19,
+        "residue_ratio": 0.7308,
+        "residue_script": "latin",
+        "script_chars": 26
+      },
+      "geometry": {
+        "x": 636.3610731933594,
+        "x2": 711.7680755184375,
+        "y": 176.0984713,
+        "y2": 183.27077597656248
+      },
+      "id": "untranslated_residue:p2:p2#127",
+      "kind": "untranslated_residue",
+      "page": 2,
+      "paragraph_refs": [
+        "p2#127"
+      ],
+      "severity": "high"
+    },
+    {
+      "detected_at_iteration": 0,
+      "detector": "untranslated_residue",
+      "evidence": {
+        "debug_id": "25pKR",
+        "excerpt": "CCJulAug26_Conts_v3.in",
+        "layout_label": "abandon",
+        "min_ratio": 0.6,
+        "residue_chars": 16,
+        "residue_ratio": 1.0,
+        "residue_script": "latin",
+        "script_chars": 16
+      },
+      "geometry": {
+        "x": 520.70349375,
+        "x2": 578.400280875,
+        "y": 72.849872,
+        "y2": 79.046121875
+      },
+      "id": "untranslated_residue:p2:p2#131",
+      "kind": "untranslated_residue",
+      "page": 2,
+      "paragraph_refs": [
+        "p2#131"
+      ],
+      "severity": "high"
+    },
+    {
+      "detected_at_iteration": 0,
+      "detector": "untranslated_residue",
+      "evidence": {
+        "debug_id": "PveWi",
+        "excerpt": "CCJulAug26_Conts_v3.in",
+        "layout_label": "abandon",
+        "min_ratio": 0.6,
+        "residue_chars": 16,
+        "residue_ratio": 1.0,
+        "residue_script": "latin",
+        "script_chars": 16
+      },
+      "geometry": {
+        "x": 520.70349375,
+        "x2": 578.400280875,
+        "y": 72.849872,
+        "y2": 79.046121875
+      },
+      "id": "untranslated_residue:p2:p2#133",
+      "kind": "untranslated_residue",
+      "page": 2,
+      "paragraph_refs": [
+        "p2#133"
+      ],
+      "severity": "high"
+    },
+    {
+      "detected_at_iteration": 0,
+      "detector": "untranslated_residue",
+      "evidence": {
+        "debug_id": "vzoRv",
+        "excerpt": "CERNCOURIER.COM",
+        "layout_label": "abandon",
+        "min_ratio": 0.6,
+        "residue_chars": 14,
+        "residue_ratio": 1.0,
+        "residue_script": "latin",
+        "script_chars": 14
+      },
+      "geometry": {
+        "x": 545.67236875,
+        "x2": 604.633174075,
+        "y": 747.401276,
+        "y2": 752.613753125
+      },
+      "id": "untranslated_residue:p3:p3#5",
+      "kind": "untranslated_residue",
+      "page": 3,
+      "paragraph_refs": [
+        "p3#5"
+      ],
+      "severity": "high"
+    },
+    {
+      "detected_at_iteration": 0,
+      "detector": "untranslated_residue",
+      "evidence": {
+        "debug_id": "dcX5K",
+        "excerpt": "www.bergoz.com",
+        "layout_label": "plain text",
+        "min_ratio": 0.6,
+        "residue_chars": 12,
+        "residue_ratio": 1.0,
+        "residue_script": "latin",
+        "script_chars": 12
+      },
+      "geometry": {
+        "x": 394.67265,
+        "x2": 468.38804999999996,
+        "y": 242.35684999999998,
+        "y2": 252.97844999999998
+      },
+      "id": "untranslated_residue:p3:p3#28",
+      "kind": "untranslated_residue",
+      "page": 3,
+      "paragraph_refs": [
+        "p3#28"
+      ],
+      "severity": "high"
+    },
+    {
+      "detected_at_iteration": 0,
+      "detector": "untranslated_residue",
+      "evidence": {
+        "debug_id": "yUmHu",
+        "excerpt": "info@bergoz.com",
+        "layout_label": "abandon",
+        "min_ratio": 0.6,
+        "residue_chars": 13,
+        "residue_ratio": 1.0,
+        "residue_script": "latin",
+        "script_chars": 13
+      },
+      "geometry": {
+        "x": 338.04904999999997,
+        "x2": 411.76444999999995,
+        "y": 136.42134999999996,
+        "y2": 147.04294999999996
+      },
+      "id": "untranslated_residue:p3:p3#30",
+      "kind": "untranslated_residue",
+      "page": 3,
+      "paragraph_refs": [
+        "p3#30"
+      ],
+      "severity": "high"
+    },
+    {
+      "detected_at_iteration": 0,
+      "detector": "untranslated_residue",
+      "evidence": {
+        "debug_id": "Gwsot",
+        "excerpt": "CCJulAug2626_NewsAnalysis_v33.indd   7 7 03CCJulAug_NewsAnalysis_v.indd   /07/20",
+        "layout_label": "abandon",
+        "min_ratio": 0.6,
+        "residue_chars": 50,
+        "residue_ratio": 1.0,
+        "residue_script": "latin",
+        "script_chars": 50
+      },
+      "geometry": {
+        "x": 520.70349375,
+        "x2": 1003.471277125,
+        "y": 79.0757414375,
+        "y2": 80.3852
+      },
+      "id": "untranslated_residue:p3:p3#44",
+      "kind": "untranslated_residue",
+      "page": 3,
+      "paragraph_refs": [
+        "p3#44"
+      ],
+      "severity": "high"
+    },
+    {
+      "detected_at_iteration": 0,
+      "detector": "untranslated_residue",
+      "evidence": {
+        "debug_id": "KCDNY",
+        "excerpt": "ul-Aug-Bergoz_colourRL.indd 1",
+        "layout_label": "abandon",
+        "min_ratio": 0.6,
+        "residue_chars": 23,
+        "residue_ratio": 1.0,
+        "residue_script": "latin",
+        "script_chars": 23
+      },
+      "geometry": {
+        "x": 45.21895,
+        "x2": 117.850619921875,
+        "y": 75.3371820625,
+        "y2": 78.13020546874999
+      },
+      "id": "untranslated_residue:p3:p3#49",
+      "kind": "untranslated_residue",
+      "page": 3,
+      "paragraph_refs": [
+        "p3#49"
+      ],
+      "severity": "high"
+    },
+    {
+      "detected_at_iteration": 0,
+      "detector": "untranslated_residue",
+      "evidence": {
+        "debug_id": "qnVLY",
+        "excerpt": "ul-Aug-Bergoz_colourRL.indd   1 30/0623 300623/2026   182026   18://:www.",
+        "layout_label": "abandon",
+        "min_ratio": 0.6,
+        "residue_chars": 26,
+        "residue_ratio": 1.0,
+        "residue_script": "latin",
+        "script_chars": 26
+      },
+      "geometry": {
+        "x": 45.21895,
+        "x2": 777.1921288,
+        "y": 68.70953818359375,
+        "y2": 73.3371820625
+      },
+      "id": "untranslated_residue:p3:p3#51",
+      "kind": "untranslated_residue",
+      "page": 3,
+      "paragraph_refs": [
+        "p3#51"
+      ],
+      "severity": "high"
+    },
+    {
+      "detected_at_iteration": 0,
+      "detector": "untranslated_residue",
+      "evidence": {
+        "debug_id": "W4nGu",
+        "excerpt": "CERNCOURIER.COM",
+        "layout_label": "abandon",
+        "min_ratio": 0.6,
+        "residue_chars": 14,
+        "residue_ratio": 1.0,
+        "residue_script": "latin",
+        "script_chars": 14
+      },
+      "geometry": {
+        "x": 931.38116875,
+        "x2": 990.341974075,
+        "y": 747.4250760000001,
+        "y2": 752.6375531250001
+      },
+      "id": "untranslated_residue:p4:p4#6",
+      "kind": "untranslated_residue",
+      "page": 4,
+      "paragraph_refs": [
+        "p4#6"
+      ],
+      "severity": "high"
+    },
+    {
+      "detected_at_iteration": 0,
+      "detector": "untranslated_residue",
+      "evidence": {
+        "debug_id": "K1rik",
+        "excerpt": "https://indico.cern.ch/event/1480892/.",
+        "layout_label": "plain text",
+        "min_ratio": 0.6,
+        "residue_chars": 22,
+        "residue_ratio": 1.0,
+        "residue_script": "latin",
+        "script_chars": 22
+      },
+      "geometry": {
+        "x": 739.381319810547,
+        "x2": 866.5342696600001,
+        "y": 131.63976540000002,
+        "y2": 138.90461735156254
+      },
+      "id": "untranslated_residue:p4:p4#20",
+      "kind": "untranslated_residue",
+      "page": 4,
+      "paragraph_refs": [
+        "p4#20"
+      ],
+      "severity": "high"
+    },
+    {
+      "detected_at_iteration": 0,
+      "detector": "untranslated_residue",
+      "evidence": {
+        "debug_id": "gAUky",
+        "excerpt": "CCJulAug2626_HISTORY_v44.indd   25 25 03CCJulAug_HISTORY_v.indd   /07/2026",
+        "layout_label": "abandon",
+        "min_ratio": 0.6,
+        "residue_chars": 40,
+        "residue_ratio": 1.0,
+        "residue_script": "latin",
+        "script_chars": 40
+      },
+      "geometry": {
+        "x": 520.70349375,
+        "x2": 1003.471277125,
+        "y": 72.849572,
+        "y2": 80.38489999999999
+      },
+      "id": "untranslated_residue:p4:p4#23",
+      "kind": "untranslated_residue",
+      "page": 4,
+      "paragraph_refs": [
+        "p4#23"
+      ],
+      "severity": "high"
+    },
+    {
+      "detected_at_iteration": 0,
+      "detector": "untranslated_residue",
+      "evidence": {
+        "debug_id": "zLFWa",
+        "excerpt": "CERNCOURIER.COM",
+        "layout_label": "abandon",
+        "min_ratio": 0.6,
+        "residue_chars": 14,
+        "residue_ratio": 1.0,
+        "residue_script": "latin",
+        "script_chars": 14
+      },
+      "geometry": {
+        "x": 33.64836875,
+        "x2": 92.60917407499998,
+        "y": 747.401276,
+        "y2": 752.613753125
+      },
+      "id": "untranslated_residue:p4:p4#30",
+      "kind": "untranslated_residue",
+      "page": 4,
+      "paragraph_refs": [
+        "p4#30"
+      ],
+      "severity": "high"
+    },
+    {
+      "detected_at_iteration": 0,
+      "detector": "untranslated_residue",
+      "evidence": {
+        "debug_id": "BmAqn",
+        "excerpt": "R Hahn, Fermilab",
+        "layout_label": "fallback_line",
+        "min_ratio": 0.6,
+        "residue_chars": 13,
+        "residue_ratio": 1.0,
+        "residue_script": "latin",
+        "script_chars": 13
+      },
+      "geometry": {
+        "x": 29.0275046875,
+        "x2": 32.814463999999994,
+        "y": 413.8221,
+        "y2": 442.935981825
+      },
+      "id": "untranslated_residue:p4:p4#38",
+      "kind": "untranslated_residue",
+      "page": 4,
+      "paragraph_refs": [
+        "p4#38"
+      ],
+      "severity": "high"
+    },
+    {
+      "detected_at_iteration": 0,
+      "detector": "untranslated_residue",
+      "evidence": {
+        "debug_id": "wE4EV",
+        "excerpt": "STORY_v4.indd   24 03/0743 030743/2026   162026   16://:www.",
+        "layout_label": "abandon",
+        "min_ratio": 0.6,
+        "residue_chars": 13,
+        "residue_ratio": 1.0,
+        "residue_script": "latin",
+        "script_chars": 13
+      },
+      "geometry": {
+        "x": 45.201725125,
+        "x2": 777.1921288,
+        "y": 69.2724053046875,
+        "y2": 80.3851
+      },
+      "id": "untranslated_residue:p4:p4#44",
+      "kind": "untranslated_residue",
+      "page": 4,
+      "paragraph_refs": [
+        "p4#44"
+      ],
+      "severity": "high"
+    }
+  ],
+  "iteration": 0,
+  "language": "zh",
+  "notes": [
+    "text_text_collision: 11 overlapping pair(s) not raised: the_source_layout_already_overlapped"
+  ],
+  "pages_by_detector": {
+    "fragment_cluster": [
+      1,
+      2,
+      4
+    ],
+    "out_of_page": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "text_figure_overlap": [
+      1,
+      3,
+      4
+    ],
+    "text_text_collision": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "untranslated_residue": [
+      1,
+      2,
+      3,
+      4
+    ]
+  },
+  "source_geometry": {
+    "checkpoint": "checkpoint.06_styles_and_formulas.xml",
+    "paragraphs": 202,
+    "stage": "styles_and_formulas"
+  },
+  "translation_performed": true
+}

@@ -1,0 +1,23 @@
+{
+  "sample": "Vogue-en.pdf",
+  "arm": "on",
+  "magazine_repair": true,
+  "model": "gpt-4o",
+  "lang_in": "en",
+  "lang_out": "zh",
+  "seconds": 31.3,
+  "requests": 31,
+  "cache_hits": 30,
+  "api_calls": 1,
+  "prompt_tokens": 4270,
+  "completion_tokens": 52,
+  "input_pages": 3,
+  "output_pages": 3,
+  "pdf": "examples\\output\\b9_5\\on\\Vogue-en\\Vogue-en.b9_5.on.pdf",
+  "pdf_sha256": "937667cefd47762234876db6e27d96b39a1851519dfde3075c48117d548e7af4",
+  "working_dir": "examples\\output\\b9_5\\on\\Vogue-en\\work\\Vogue-en",
+  "translation_style": {
+    "person_names": "transliterate",
+    "system_prompt_sha256": "74666d7128c1c06127d9193db7b8d2b346866088f1ccabb4c33e69be1c586903"
+  }
+}

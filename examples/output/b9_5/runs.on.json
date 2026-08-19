@@ -1,0 +1,140 @@
+[
+  {
+    "sample": "Courier-en.pdf",
+    "arm": "on",
+    "magazine_repair": true,
+    "model": "gpt-4o",
+    "lang_in": "en",
+    "lang_out": "zh",
+    "seconds": 54.7,
+    "requests": 62,
+    "cache_hits": 61,
+    "api_calls": 1,
+    "prompt_tokens": 3009,
+    "completion_tokens": 58,
+    "input_pages": 8,
+    "output_pages": 8,
+    "pdf": "examples\\output\\b9_5\\on\\Courier-en\\Courier-en.b9_5.on.pdf",
+    "pdf_sha256": "7e95c7f6be904961c3e8a1faaa4658c83746a7b2c678be189bccc0ba502900fe",
+    "working_dir": "examples\\output\\b9_5\\on\\Courier-en\\work\\Courier-en",
+    "translation_style": {
+      "person_names": "transliterate",
+      "system_prompt_sha256": "74666d7128c1c06127d9193db7b8d2b346866088f1ccabb4c33e69be1c586903"
+    }
+  },
+  {
+    "sample": "Vogue-en.pdf",
+    "arm": "on",
+    "magazine_repair": true,
+    "model": "gpt-4o",
+    "lang_in": "en",
+    "lang_out": "zh",
+    "seconds": 31.3,
+    "requests": 31,
+    "cache_hits": 30,
+    "api_calls": 1,
+    "prompt_tokens": 4270,
+    "completion_tokens": 52,
+    "input_pages": 3,
+    "output_pages": 3,
+    "pdf": "examples\\output\\b9_5\\on\\Vogue-en\\Vogue-en.b9_5.on.pdf",
+    "pdf_sha256": "937667cefd47762234876db6e27d96b39a1851519dfde3075c48117d548e7af4",
+    "working_dir": "examples\\output\\b9_5\\on\\Vogue-en\\work\\Vogue-en",
+    "translation_style": {
+      "person_names": "transliterate",
+      "system_prompt_sha256": "74666d7128c1c06127d9193db7b8d2b346866088f1ccabb4c33e69be1c586903"
+    }
+  },
+  {
+    "sample": "CERNCourier-en.pdf",
+    "arm": "on",
+    "magazine_repair": true,
+    "model": "gpt-4o",
+    "lang_in": "en",
+    "lang_out": "zh",
+    "seconds": 58.4,
+    "requests": 106,
+    "cache_hits": 101,
+    "api_calls": 5,
+    "prompt_tokens": 17239,
+    "completion_tokens": 202,
+    "input_pages": 4,
+    "output_pages": 4,
+    "pdf": "examples\\output\\b9_5\\on\\CERNCourier-en\\CERNCourier-en.b9_5.on.pdf",
+    "pdf_sha256": "f22fc88e9f2752a265e396dc2f3ed3cf99c744ad6ef8a014d19320c39651d9d9",
+    "working_dir": "examples\\output\\b9_5\\on\\CERNCourier-en\\work\\CERNCourier-en",
+    "translation_style": {
+      "person_names": "transliterate",
+      "system_prompt_sha256": "74666d7128c1c06127d9193db7b8d2b346866088f1ccabb4c33e69be1c586903"
+    }
+  },
+  {
+    "sample": "AramcoWorld-en-v2.pdf",
+    "arm": "on",
+    "magazine_repair": true,
+    "model": "gpt-4o",
+    "lang_in": "en",
+    "lang_out": "zh",
+    "seconds": 118.0,
+    "requests": 88,
+    "cache_hits": 87,
+    "api_calls": 1,
+    "prompt_tokens": 6591,
+    "completion_tokens": 103,
+    "input_pages": 9,
+    "output_pages": 9,
+    "pdf": "examples\\output\\b9_5\\on\\AramcoWorld-en-v2\\AramcoWorld-en-v2.b9_5.on.pdf",
+    "pdf_sha256": "d6d386276630d916adcdea3258beb64a4028dc1a39c1d2ea512477df6eaa530d",
+    "working_dir": "examples\\output\\b9_5\\on\\AramcoWorld-en-v2\\work\\AramcoWorld-en-v2",
+    "translation_style": {
+      "person_names": "transliterate",
+      "system_prompt_sha256": "74666d7128c1c06127d9193db7b8d2b346866088f1ccabb4c33e69be1c586903"
+    }
+  },
+  {
+    "sample": "FD-en-v2.pdf",
+    "arm": "on",
+    "magazine_repair": true,
+    "model": "gpt-4o",
+    "lang_in": "en",
+    "lang_out": "zh",
+    "seconds": 376.6,
+    "requests": 62,
+    "cache_hits": 61,
+    "api_calls": 1,
+    "prompt_tokens": 6333,
+    "completion_tokens": 70,
+    "input_pages": 9,
+    "output_pages": 9,
+    "pdf": "examples\\output\\b9_5\\on\\FD-en-v2\\FD-en-v2.b9_5.on.pdf",
+    "pdf_sha256": "3c5eaeafcc24f919b890e47dedc88a488bc2c9c0e7b59291dcdcb51e85251fc5",
+    "working_dir": "examples\\output\\b9_5\\on\\FD-en-v2\\work\\FD-en-v2",
+    "translation_style": {
+      "person_names": "transliterate",
+      "system_prompt_sha256": "74666d7128c1c06127d9193db7b8d2b346866088f1ccabb4c33e69be1c586903"
+    }
+  },
+  {
+    "sample": "Courier-zh.pdf",
+    "arm": "on",
+    "magazine_repair": true,
+    "model": "gpt-4o",
+    "lang_in": "zh",
+    "lang_out": "en",
+    "seconds": 502.3,
+    "requests": 57,
+    "cache_hits": 56,
+    "api_calls": 1,
+    "prompt_tokens": 1394,
+    "completion_tokens": 64,
+    "input_pages": 8,
+    "output_pages": 8,
+    "pdf": "examples\\output\\b9_5\\on\\Courier-zh\\Courier-zh.b9_5.on.pdf",
+    "pdf_sha256": "7b35bfd8e68a3b7f10b649ecceeaa443c28490ca7e5c088cb19bedee31a522a5",
+    "working_dir": "examples\\output\\b9_5\\on\\Courier-zh\\work\\Courier-zh",
+    "translation_style": {
+      "person_names": "transliterate",
+      "system_prompt_sha256": "6f5e42314b804f107557e2577134f7f58e2cf8141f78dc93138b64ebbdc4e33c"
+    }
+  }
+]

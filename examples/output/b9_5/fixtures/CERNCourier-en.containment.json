@@ -1,0 +1,950 @@
+{
+  "arm": "off",
+  "checkpoints": [
+    "checkpoint.06_styles_and_formulas.xml",
+    "checkpoint.11_typesetting.xml"
+  ],
+  "conservation": {
+    "moved": [
+      "p1#2"
+    ],
+    "moved_outside_touched": [],
+    "paragraphs": 255,
+    "shape_held": true,
+    "touched": [
+      "p1#2"
+    ]
+  },
+  "containment": {
+    "applied": [
+      {
+        "accepted": true,
+        "geometry": {
+          "box_after": [
+            521.0887,
+            633.245,
+            978.5587,
+            760.32
+          ],
+          "box_before": [
+            521.0887,
+            677.6131,
+            978.5587,
+            804.6881
+          ],
+          "box_source": "characters",
+          "frame_source": "cropbox",
+          "guard": {
+            "applied": {
+              "induced": [],
+              "standing_on": [],
+              "worst_induced_iou": 0.0
+            },
+            "collision_min_iou": 0.2,
+            "standing_on_before": [],
+            "translated": {
+              "induced": [],
+              "standing_on": [],
+              "worst_induced_iou": 0.0
+            }
+          },
+          "min_scale": 0.5,
+          "overflow_after": {
+            "bottom": 0.0,
+            "left": 0.0,
+            "right": 0.0,
+            "top": 0.0
+          },
+          "overflow_before": {
+            "bottom": 0.0,
+            "left": 0.0,
+            "right": 0.0,
+            "top": 44.3681
+          },
+          "safe_box": [
+            10.24,
+            7.68,
+            1013.76,
+            760.32
+          ],
+          "scale": 1.0,
+          "shift": [
+            0.0,
+            -44.3681
+          ],
+          "state": "translated",
+          "worst_overlap_after": 0.0207
+        },
+        "layout_label": "title",
+        "page": 1,
+        "reason": "accepted",
+        "ref": "p1#2",
+        "text": "欧洲核子研究中心快报2026年7月/8月 CERNCOURIER.COM 国际高"
+      }
+    ],
+    "collision_min_iou": 0.2,
+    "escalated": [],
+    "margin_ratio": 0.01,
+    "min_scale": 0.5,
+    "refused": []
+  },
+  "counts": {
+    "fragment_cluster": 16,
+    "out_of_page": 1,
+    "untranslated_residue": 33
+  },
+  "out_of_page": [
+    {
+      "added": 20.6181,
+      "box": [
+        521.09,
+        633.25,
+        978.56,
+        760.32
+      ],
+      "frame_box": [
+        0.0,
+        0.0,
+        1024.0,
+        768.0
+      ],
+      "layout_label": "title",
+      "origin": "bleed the translation deepened",
+      "overflow_points": 36.6881,
+      "overflow_ratio": 0.047771,
+      "page": 1,
+      "ref": "p1#2",
+      "side": "top",
+      "source_box": [
+        518.3,
+        695.45,
+        1017.68,
+        784.07
+      ],
+      "source_overflow": 16.07,
+      "text": "欧洲核子研究中心快报2026年7月/8月 CERNCOURIER.COM 国际高"
+    }
+  ],
+  "pairs": [
+    {
+      "class": "below the bound",
+      "covered": 0.1105,
+      "iou": 0.0207,
+      "labels": [
+        "title",
+        "title"
+      ],
+      "page": 1,
+      "raised": false,
+      "refs": [
+        "p1#2",
+        "p1#3"
+      ],
+      "source_covered": 0.0,
+      "source_iou": 0.0,
+      "text": [
+        "欧洲核子研究中心快报2026年7月/8月 CERNCOURIER.COM 国际高",
+        "当粒子走向全球"
+      ]
+    },
+    {
+      "class": "source design",
+      "covered": 1.0,
+      "iou": 1.0,
+      "labels": [
+        "abandon",
+        "abandon"
+      ],
+      "page": 1,
+      "raised": false,
+      "refs": [
+        "p1#7",
+        "p1#9"
+      ],
+      "source_covered": 1.0,
+      "source_iou": 1.0,
+      "text": [
+        "2026年7月3日",
+        "2026年7月3日"
+      ]
+    },
+    {
+      "class": "source design",
+      "covered": 1.0,
+      "iou": 1.0,
+      "labels": [
+        "fallback_line",
+        "fallback_line"
+      ],
+      "page": 1,
+      "raised": false,
+      "refs": [
+        "p1#8",
+        "p1#10"
+      ],
+      "source_covered": 1.0,
+      "source_iou": 1.0,
+      "text": [
+        "16:06",
+        "16:06"
+      ]
+    },
+    {
+      "class": "source design",
+      "covered": 1.0,
+      "iou": 1.0,
+      "labels": [
+        "fallback_line",
+        "fallback_line"
+      ],
+      "page": 2,
+      "raised": false,
+      "refs": [
+        "p2#30",
+        "p2#32"
+      ],
+      "source_covered": 1.0,
+      "source_iou": 1.0,
+      "text": [
+        "C",
+        "C"
+      ]
+    },
+    {
+      "class": "source design",
+      "covered": 1.0,
+      "iou": 1.0,
+      "labels": [
+        "title",
+        "title"
+      ],
+      "page": 2,
+      "raised": false,
+      "refs": [
+        "p2#31",
+        "p2#33"
+      ],
+      "source_covered": 1.0,
+      "source_iou": 1.0,
+      "text": [
+        "CJulAug26_pIFC.indd 1",
+        "CJulAug26_pIFC.indd 1"
+      ]
+    },
+    {
+      "class": "below the bound",
+      "covered": 0.1297,
+      "iou": 0.0526,
+      "labels": [
+        "plain text",
+        "plain text"
+      ],
+      "page": 2,
+      "raised": false,
+      "refs": [
+        "p2#45",
+        "p2#46"
+      ],
+      "source_covered": 0.0833,
+      "source_iou": 0.0413,
+      "text": [
+        "• 欧洲战略",
+        "• 第三阶段的结束"
+      ]
+    },
+    {
+      "class": "below the bound",
+      "covered": 0.0326,
+      "iou": 0.0144,
+      "labels": [
+        "plain text",
+        "plain text"
+      ],
+      "page": 2,
+      "raised": false,
+      "refs": [
+        "p2#46",
+        "p2#47"
+      ],
+      "source_covered": 0.0833,
+      "source_iou": 0.0426,
+      "text": [
+        "• 第三阶段的结束",
+        "• arXiv关于人工智能的规定"
+      ]
+    },
+    {
+      "class": "source design",
+      "covered": 0.0817,
+      "iou": 0.0349,
+      "labels": [
+        "plain text",
+        "plain text"
+      ],
+      "page": 2,
+      "raised": false,
+      "refs": [
+        "p2#48",
+        "p2#49"
+      ],
+      "source_covered": 1.0,
+      "source_iou": 1.0,
+      "text": [
+        "• 反氢脚趾",
+        "这条线 • 热启动"
+      ]
+    },
+    {
+      "class": "source design",
+      "covered": 0.0817,
+      "iou": 0.0367,
+      "labels": [
+        "plain text",
+        "plain text"
+      ],
+      "page": 2,
+      "raised": false,
+      "refs": [
+        "p2#65",
+        "p2#66"
+      ],
+      "source_covered": 1.0,
+      "source_iou": 1.0,
+      "text": [
+        "• 核中的部分子",
+        "边缘 • W玻色子衰变"
+      ]
+    },
+    {
+      "class": "source design",
+      "covered": 0.0836,
+      "iou": 0.0391,
+      "labels": [
+        "plain text",
+        "plain text"
+      ],
+      "page": 2,
+      "raised": false,
+      "refs": [
+        "p2#68",
+        "p2#69"
+      ],
+      "source_covered": 1.0,
+      "source_iou": 1.0,
+      "text": [
+        "• 新双重魅",
+        "重子 • 集体流"
+      ]
+    },
+    {
+      "class": "below the bound",
+      "covered": 0.0461,
+      "iou": 0.0204,
+      "labels": [
+        "plain text",
+        "plain text"
+      ],
+      "page": 2,
+      "raised": false,
+      "refs": [
+        "p2#74",
+        "p2#75"
+      ],
+      "source_covered": 0.0804,
+      "source_iou": 0.0306,
+      "text": [
+        "• 普朗克会议",
+        "• IPAC’26 • 量子色动力学"
+      ]
+    },
+    {
+      "class": "source design",
+      "covered": 1.0,
+      "iou": 1.0,
+      "labels": [
+        "abandon",
+        "abandon"
+      ],
+      "page": 2,
+      "raised": false,
+      "refs": [
+        "p2#131",
+        "p2#133"
+      ],
+      "source_covered": 1.0,
+      "source_iou": 1.0,
+      "text": [
+        "CCJulAug26_Conts_v3.in",
+        "CCJulAug26_Conts_v3.in"
+      ]
+    },
+    {
+      "class": "source design",
+      "covered": 1.0,
+      "iou": 1.0,
+      "labels": [
+        "fallback_line",
+        "fallback_line"
+      ],
+      "page": 2,
+      "raised": false,
+      "refs": [
+        "p2#132",
+        "p2#134"
+      ],
+      "source_covered": 1.0,
+      "source_iou": 1.0,
+      "text": [
+        "dd   3",
+        "dd   3"
+      ]
+    },
+    {
+      "class": "source design",
+      "covered": 0.676,
+      "iou": 0.0719,
+      "labels": [
+        "fallback_line",
+        "fallback_line"
+      ],
+      "page": 3,
+      "raised": false,
+      "refs": [
+        "p3#2",
+        "p3#48"
+      ],
+      "source_covered": 0.7119,
+      "source_iou": 0.098,
+      "text": [
+        "C",
+        "Pub_CERN-26-J"
+      ]
+    },
+    {
+      "class": "below the bound",
+      "covered": 0.0392,
+      "iou": 0.0074,
+      "labels": [
+        "fallback_line",
+        "abandon"
+      ],
+      "page": 3,
+      "raised": false,
+      "refs": [
+        "p3#2",
+        "p3#49"
+      ],
+      "source_covered": 0.0403,
+      "source_iou": 0.0089,
+      "text": [
+        "C",
+        "ul-Aug-Bergoz_colourRL.indd 1"
+      ]
+    },
+    {
+      "class": "source design",
+      "covered": 0.676,
+      "iou": 0.0719,
+      "labels": [
+        "fallback_line",
+        "fallback_line"
+      ],
+      "page": 3,
+      "raised": false,
+      "refs": [
+        "p3#2",
+        "p3#50"
+      ],
+      "source_covered": 0.7119,
+      "source_iou": 0.098,
+      "text": [
+        "C",
+        "Pub_CERN-26-J"
+      ]
+    },
+    {
+      "class": "below the bound",
+      "covered": 0.0553,
+      "iou": 0.0038,
+      "labels": [
+        "fallback_line",
+        "abandon"
+      ],
+      "page": 3,
+      "raised": false,
+      "refs": [
+        "p3#2",
+        "p3#51"
+      ],
+      "source_covered": 0.0553,
+      "source_iou": 0.0038,
+      "text": [
+        "C",
+        "ul-Aug-Bergoz_colourRL.indd   1 30/0623 "
+      ]
+    },
+    {
+      "class": "source design",
+      "covered": 0.4528,
+      "iou": 0.1476,
+      "labels": [
+        "abandon",
+        "abandon"
+      ],
+      "page": 3,
+      "raised": false,
+      "refs": [
+        "p3#3",
+        "p3#51"
+      ],
+      "source_covered": 0.5572,
+      "source_iou": 0.2901,
+      "text": [
+        "欧洲核子研究中心快报",
+        "ul-Aug-Bergoz_colourRL.indd   1 30/0623 "
+      ]
+    },
+    {
+      "class": "below the bound",
+      "covered": 0.7876,
+      "iou": 0.0016,
+      "labels": [
+        "plain text",
+        "plain text"
+      ],
+      "page": 3,
+      "raised": false,
+      "refs": [
+        "p3#11",
+        "p3#13"
+      ],
+      "source_covered": 1.0,
+      "source_iou": 0.0015,
+      "text": [
+        "T",
+        "“欧洲战略重申了高亮度大型强子对撞机的关键重要性，该对撞机将利用先进的加速器和探"
+      ]
+    },
+    {
+      "class": "below the bound",
+      "covered": 0.7876,
+      "iou": 0.0015,
+      "labels": [
+        "title",
+        "plain text"
+      ],
+      "page": 3,
+      "raised": false,
+      "refs": [
+        "p3#12",
+        "p3#13"
+      ],
+      "source_covered": 1.0,
+      "source_iou": 0.0014,
+      "text": [
+        "h",
+        "“欧洲战略重申了高亮度大型强子对撞机的关键重要性，该对撞机将利用先进的加速器和探"
+      ]
+    },
+    {
+      "class": "below the bound",
+      "covered": 0.8184,
+      "iou": 0.0052,
+      "labels": [
+        "plain text",
+        "plain text"
+      ],
+      "page": 3,
+      "raised": false,
+      "refs": [
+        "p3#22",
+        "p3#24"
+      ],
+      "source_covered": 1.0,
+      "source_iou": 0.0037,
+      "text": [
+        "T",
+        "战略过程显示了粒子物理学界的强烈参与，并得出了非常明确的结论：如果获得批准，FC"
+      ]
+    },
+    {
+      "class": "below the bound",
+      "covered": 0.8184,
+      "iou": 0.005,
+      "labels": [
+        "title",
+        "plain text"
+      ],
+      "page": 3,
+      "raised": false,
+      "refs": [
+        "p3#23",
+        "p3#24"
+      ],
+      "source_covered": 1.0,
+      "source_iou": 0.0035,
+      "text": [
+        "h",
+        "战略过程显示了粒子物理学界的强烈参与，并得出了非常明确的结论：如果获得批准，FC"
+      ]
+    },
+    {
+      "class": "source design",
+      "covered": 0.9846,
+      "iou": 0.5165,
+      "labels": [
+        "plain text",
+        "plain text"
+      ],
+      "page": 3,
+      "raised": false,
+      "refs": [
+        "p3#35",
+        "p3#40"
+      ],
+      "source_covered": 1.0,
+      "source_iou": 0.7091,
+      "text": [
+        "在数字化过程中保持模拟信号的完整性确保通过使用实现长期可持续性提供一个易于使用且",
+        "数字化；高性能且广泛可用的组件；可以适应不同的光束类型。"
+      ]
+    },
+    {
+      "class": "source design",
+      "covered": 0.4661,
+      "iou": 0.0172,
+      "labels": [
+        "abandon",
+        "abandon"
+      ],
+      "page": 3,
+      "raised": false,
+      "refs": [
+        "p3#44",
+        "p3#46"
+      ],
+      "source_covered": 1.0,
+      "source_iou": 0.0527,
+      "text": [
+        "CCJulAug2626_NewsAnalysis_v33.indd   7 7",
+        "2026年7月3日"
+      ]
+    },
+    {
+      "class": "source design",
+      "covered": 0.4461,
+      "iou": 0.0556,
+      "labels": [
+        "abandon",
+        "abandon"
+      ],
+      "page": 3,
+      "raised": false,
+      "refs": [
+        "p3#44",
+        "p3#51"
+      ],
+      "source_covered": 0.4461,
+      "source_iou": 0.0556,
+      "text": [
+        "CCJulAug2626_NewsAnalysis_v33.indd   7 7",
+        "ul-Aug-Bergoz_colourRL.indd   1 30/0623 "
+      ]
+    },
+    {
+      "class": "source design",
+      "covered": 1.0,
+      "iou": 1.0,
+      "labels": [
+        "fallback_line",
+        "fallback_line"
+      ],
+      "page": 3,
+      "raised": false,
+      "refs": [
+        "p3#45",
+        "p3#47"
+      ],
+      "source_covered": 1.0,
+      "source_iou": 1.0,
+      "text": [
+        "16:22",
+        "16:22"
+      ]
+    },
+    {
+      "class": "source design",
+      "covered": 1.0,
+      "iou": 1.0,
+      "labels": [
+        "fallback_line",
+        "fallback_line"
+      ],
+      "page": 3,
+      "raised": false,
+      "refs": [
+        "p3#48",
+        "p3#50"
+      ],
+      "source_covered": 1.0,
+      "source_iou": 1.0,
+      "text": [
+        "Pub_CERN-26-J",
+        "Pub_CERN-26-J"
+      ]
+    },
+    {
+      "class": "below the bound",
+      "covered": 1.0,
+      "iou": 0.017,
+      "labels": [
+        "abandon",
+        "abandon"
+      ],
+      "page": 3,
+      "raised": false,
+      "refs": [
+        "p3#49",
+        "p3#51"
+      ],
+      "source_covered": 1.0,
+      "source_iou": 0.0205,
+      "text": [
+        "ul-Aug-Bergoz_colourRL.indd 1",
+        "ul-Aug-Bergoz_colourRL.indd   1 30/0623 "
+      ]
+    },
+    {
+      "class": "source design",
+      "covered": 0.8057,
+      "iou": 0.0716,
+      "labels": [
+        "title",
+        "title"
+      ],
+      "page": 4,
+      "raised": false,
+      "refs": [
+        "p4#1",
+        "p4#40"
+      ],
+      "source_covered": 0.8259,
+      "source_iou": 0.0999,
+      "text": [
+        "C",
+        "CJulAug26_HI"
+      ]
+    },
+    {
+      "class": "below the bound",
+      "covered": 0.0645,
+      "iou": 0.0084,
+      "labels": [
+        "title",
+        "abandon"
+      ],
+      "page": 4,
+      "raised": false,
+      "refs": [
+        "p4#1",
+        "p4#41"
+      ],
+      "source_covered": 0.0627,
+      "source_iou": 0.0095,
+      "text": [
+        "C",
+        "STORY_v4.indd 24"
+      ]
+    },
+    {
+      "class": "source design",
+      "covered": 0.8032,
+      "iou": 0.1327,
+      "labels": [
+        "title",
+        "title"
+      ],
+      "page": 4,
+      "raised": false,
+      "refs": [
+        "p4#1",
+        "p4#43"
+      ],
+      "source_covered": 0.8259,
+      "source_iou": 0.0999,
+      "text": [
+        "C",
+        "卷66 第4期 2026年7/8月"
+      ]
+    },
+    {
+      "class": "below the bound",
+      "covered": 0.0561,
+      "iou": 0.0037,
+      "labels": [
+        "title",
+        "abandon"
+      ],
+      "page": 4,
+      "raised": false,
+      "refs": [
+        "p4#1",
+        "p4#44"
+      ],
+      "source_covered": 0.0561,
+      "source_iou": 0.0037,
+      "text": [
+        "C",
+        "STORY_v4.indd   24 03/0743 030743/2026  "
+      ]
+    },
+    {
+      "class": "source design",
+      "covered": 0.4736,
+      "iou": 0.1513,
+      "labels": [
+        "abandon",
+        "abandon"
+      ],
+      "page": 4,
+      "raised": false,
+      "refs": [
+        "p4#2",
+        "p4#44"
+      ],
+      "source_covered": 0.5756,
+      "source_iou": 0.295,
+      "text": [
+        "欧洲核子研究中心快报",
+        "STORY_v4.indd   24 03/0743 030743/2026  "
+      ]
+    },
+    {
+      "class": "source design",
+      "covered": 0.9564,
+      "iou": 0.0359,
+      "labels": [
+        "abandon",
+        "abandon"
+      ],
+      "page": 4,
+      "raised": false,
+      "refs": [
+        "p4#23",
+        "p4#25"
+      ],
+      "source_covered": 1.0,
+      "source_iou": 0.0527,
+      "text": [
+        "CCJulAug2626_HISTORY_v44.indd   25 25 03",
+        "2026年7月3日"
+      ]
+    },
+    {
+      "class": "source design",
+      "covered": 0.5325,
+      "iou": 0.065,
+      "labels": [
+        "abandon",
+        "abandon"
+      ],
+      "page": 4,
+      "raised": false,
+      "refs": [
+        "p4#23",
+        "p4#44"
+      ],
+      "source_covered": 0.5325,
+      "source_iou": 0.065,
+      "text": [
+        "CCJulAug2626_HISTORY_v44.indd   25 25 03",
+        "STORY_v4.indd   24 03/0743 030743/2026  "
+      ]
+    },
+    {
+      "class": "source design",
+      "covered": 1.0,
+      "iou": 1.0,
+      "labels": [
+        "fallback_line",
+        "fallback_line"
+      ],
+      "page": 4,
+      "raised": false,
+      "refs": [
+        "p4#24",
+        "p4#26"
+      ],
+      "source_covered": 1.0,
+      "source_iou": 1.0,
+      "text": [
+        "16:44",
+        "16:44"
+      ]
+    },
+    {
+      "class": "source design",
+      "covered": 1.0,
+      "iou": 1.0,
+      "labels": [
+        "fallback_line",
+        "fallback_line"
+      ],
+      "page": 4,
+      "raised": false,
+      "refs": [
+        "p4#39",
+        "p4#42"
+      ],
+      "source_covered": 1.0,
+      "source_iou": 1.0,
+      "text": [
+        "C",
+        "C"
+      ]
+    },
+    {
+      "class": "source design",
+      "covered": 0.9874,
+      "iou": 0.5196,
+      "labels": [
+        "title",
+        "title"
+      ],
+      "page": 4,
+      "raised": false,
+      "refs": [
+        "p4#40",
+        "p4#43"
+      ],
+      "source_covered": 1.0,
+      "source_iou": 1.0,
+      "text": [
+        "CJulAug26_HI",
+        "卷66 第4期 2026年7/8月"
+      ]
+    },
+    {
+      "class": "below the bound",
+      "covered": 1.0,
+      "iou": 0.0106,
+      "labels": [
+        "abandon",
+        "abandon"
+      ],
+      "page": 4,
+      "raised": false,
+      "refs": [
+        "p4#41",
+        "p4#44"
+      ],
+      "source_covered": 1.0,
+      "source_iou": 0.0125,
+      "text": [
+        "STORY_v4.indd 24",
+        "STORY_v4.indd   24 03/0743 030743/2026  "
+      ]
+    }
+  ],
+  "sample": "CERNCourier-en"
+}

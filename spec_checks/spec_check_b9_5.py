@@ -72,6 +72,7 @@ import subprocess
 import sys
 import tempfile
 import unicodedata
+import zipfile
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -96,7 +97,10 @@ from babeldoc.magazine.taxonomy import load_taxonomy  # noqa: E402
 from spec_checks import artifacts  # noqa: E402
 from spec_checks import harness  # noqa: E402
 
-BATCH_TAG = "batch-b9.5.1"
+# The batch runs over two sessions and each tags its own commit, so the delta
+# this gate holds to scope is the union of both. A tag that does not exist yet
+# is the session in progress, and that session's delta is the working tree.
+BATCH_TAGS = ("batch-b9.5.1", "batch-b9.5")
 
 PYTHON = sys.executable
 RUNNER = ROOT / "spec_checks" / "run_all.py"
@@ -131,6 +135,7 @@ ALLOWED_FILES = {
     "docs/eval/gap_register.md",
     "reviews/README.md",
     "examples/output/run_all.b9_5_1.log",
+    "examples/output/run_all.b9_5.log",
 }
 
 # Prefixes no session of this batch may touch. The review tree is the user's;
@@ -149,6 +154,26 @@ FD_RULING = "reviews/FD-en-v2.decisions.json"
 FD_RULING_DIGEST = (
     "8850413eca6e0f3fecd1e901841a447caff41e251053565432176015d94ac470"
 )
+
+# Every sample of the corpus, read from the register rather than listed here.
+CORPUS_SAMPLES = {
+    entry["file"].removesuffix(".pdf")
+    for entry in json.loads(
+        (ROOT / "corpus" / "manifest.json").read_text(encoding="utf-8")
+    )["samples"]
+}
+
+# The acceptance session's own tree: the arms, the report every figure is in,
+# and the fixture the geometry can be replayed from without a run.
+ACCEPTANCE_DIR = ROOT / "examples" / "output" / "b9_5"
+ACCEPTANCE_ARMS = ("off", "control", "on", "contain")
+ACCEPTANCE_REPORT = ACCEPTANCE_DIR / "report.md"
+ACCEPTANCE_EVIDENCE = ACCEPTANCE_DIR / "evidence.json"
+FIXTURE_SAMPLE = "CERNCourier-en"
+FIXTURE_DIR = ACCEPTANCE_DIR / "fixtures"
+FIXTURE_ARCHIVE = FIXTURE_DIR / f"{FIXTURE_SAMPLE}.checkpoints.zip"
+FIXTURE_CONTAINMENT = FIXTURE_DIR / f"{FIXTURE_SAMPLE}.containment.json"
+FIXTURE_ISSUES = FIXTURE_DIR / f"{FIXTURE_SAMPLE}.issues.json"
 
 PAGE_WIDTH = 600.0
 PAGE_HEIGHT = 800.0
@@ -197,13 +222,20 @@ def git_output(args: list[str]) -> tuple[int, str]:
 
 
 def changed_paths() -> set[str]:
-    """This session's delta: its tag where it exists, the working tree otherwise."""
-    code, _ = git_output(["rev-parse", "--verify", f"{BATCH_TAG}^{{commit}}"])
-    if code == 0:
-        _, listing = git_output(["diff", "--name-only", f"{BATCH_TAG}^..{BATCH_TAG}"])
-        return {line.strip() for line in listing.splitlines() if line.strip()}
+    """The batch's delta: each session's tag where it exists, the tree otherwise."""
+    paths: set[str] = set()
+    pending = False
+    for tag in BATCH_TAGS:
+        code, _ = git_output(["rev-parse", "--verify", f"{tag}^{{commit}}"])
+        if code != 0:
+            pending = True
+            continue
+        _, listing = git_output(["diff", "--name-only", f"{tag}^..{tag}"])
+        paths |= {line.strip() for line in listing.splitlines() if line.strip()}
+    if not pending:
+        return paths
     _, listing = git_output(["diff", "--name-only", "HEAD"])
-    paths = {line.strip() for line in listing.splitlines() if line.strip()}
+    paths |= {line.strip() for line in listing.splitlines() if line.strip()}
     _, untracked = git_output(["status", "--porcelain", "--untracked-files=all"])
     for line in untracked.splitlines():
         if not line.strip():
@@ -367,6 +399,11 @@ def repair_config():
     return react_config.load_repair_config(
         None, tuple(sorted(module.KIND for module in detectors.DETECTORS.values()))
     )
+
+
+def collision_bound() -> float:
+    """The overlap the guard shares with the collision detector."""
+    return detectors.detector_config().collision_min_iou
 
 
 def contain_action():
@@ -940,7 +977,7 @@ def check_04a_a_heading_that_fits_is_slid() -> None:
     before = offsets(paragraph)
     sizes = [item.pdf_style.font_size for item in contain_characters(paragraph)]
     candidate = candidate_for(docs, issue)
-    outcome = contain.apply_one(candidate, action)
+    outcome = contain.apply_one(candidate, action, collision_bound())
     if not outcome.accepted:
         faults.append(f"refused with {outcome.reason}")
     geometry = outcome.geometry
@@ -974,7 +1011,7 @@ def check_04b_a_heading_too_large_is_scaled() -> None:
     before = contain.ink_box(paragraph)
     sizes = [item.pdf_style.font_size for item in contain_characters(paragraph)]
     candidate = candidate_for(docs, issue)
-    outcome = contain.apply_one(candidate, action)
+    outcome = contain.apply_one(candidate, action, collision_bound())
     geometry = outcome.geometry
     if not outcome.accepted:
         faults.append(f"refused with {outcome.reason}")
@@ -1054,7 +1091,7 @@ def check_04c_a_heading_past_the_floor_is_escalated() -> None:
         return
     before = copy.deepcopy(paragraph)
     candidate = candidate_for(docs, issue)
-    outcome = contain.apply_one(candidate, action)
+    outcome = contain.apply_one(candidate, action, collision_bound())
     if outcome.accepted or outcome.changed:
         faults.append("a heading past the floor was contained anyway")
     if outcome.reason != contain.REASON_FLOOR:
@@ -1284,6 +1321,173 @@ def check_04f_the_collision_action_writes_nothing() -> None:
         faults.append(f"stopped because {report['stopped_because']}")
     record(
         "check_04f_the_collision_action_writes_nothing", not faults, "; ".join(faults)
+    )
+
+
+# The fixture the guard is measured on: a display line hanging off the head of
+# the page, and the two neighbours it would meet on the way back in. The first
+# stands where the slide would land the ink and nowhere near where the ink is
+# now, so sliding induces an overlap and shrinking in place does not. The second
+# stands inside what shrinking in place would leave, and is too small a share of
+# the ink where it is now to be an overlap with it, so it induces on the
+# fallback alone. A fixture carrying the first is contained by the fallback; one
+# carrying both is contained by neither and is escalated.
+GUARD_TEXT = "HEAD"
+GUARD_X = 100.0
+GUARD_Y = 700.0
+GUARD_SIZE = 120.0
+GUARD_WIDTH = 50.0
+GUARD_UNDER_THE_SLIDE = (100.0, 660.0, 300.0, 705.0)
+GUARD_INSIDE_THE_SHRINK = (160.0, 740.0, 240.0, 780.0)
+
+
+def guard_fixture(neighbours):
+    """The overflowing heading, its neighbours, and the finding made about it."""
+    heading = laid_out(
+        GUARD_TEXT,
+        GUARD_X,
+        GUARD_Y,
+        size=GUARD_SIZE,
+        width=GUARD_WIDTH,
+        label="title",
+        debug_id="head",
+    )
+    others = [
+        boxed(f"neighbour {index}", box, debug_id=f"near{index}")
+        for index, box in enumerate(neighbours)
+    ]
+    docs = document([page([heading, *others])])
+    issues = of_kind(detect(docs)[0], page_bounds.KIND)
+    # The heading's own finding, by the identity it carries, because a fixture
+    # whose neighbours also left the page would otherwise be measured by one of
+    # theirs.
+    found = [issue for issue in issues if issue.evidence.get("debug_id") == "head"]
+    return docs, heading, (found[0] if found else None)
+
+
+def check_04g_a_slide_onto_a_neighbour_falls_back_to_shrinking() -> None:
+    """Positive 4g: the slide is refused for what it would land on.
+
+    And what it falls back to is the heading shrunk where it stands, which is
+    inside the page and standing on nothing it was not standing on before.
+    """
+    docs, heading, issue = guard_fixture([GUARD_UNDER_THE_SLIDE])
+    faults = []
+    if issue is None:
+        record(
+            "check_04g_a_slide_onto_a_neighbour_falls_back_to_shrinking",
+            False,
+            "nothing was detected",
+        )
+        return
+    min_iou = collision_bound()
+    candidate = candidate_for(docs, issue)
+    before = contain.standing_on(candidate, contain.ink_box(heading), min_iou)
+    if before:
+        faults.append(f"the fixture already stands on {sorted(before)}")
+    outcome = contain.apply_one(candidate, contain_action(), min_iou)
+    geometry = outcome.geometry
+    guard = geometry.get("guard", {})
+    if not outcome.accepted:
+        faults.append(f"refused with {outcome.reason}")
+    if geometry.get("state") != contain.STATE_SCALED_IN_PLACE:
+        faults.append(f"the state is {geometry.get('state')}")
+    if guard.get("slide_refused") != contain.GUARD_INDUCED:
+        faults.append(f"the slide was refused for {guard.get('slide_refused')}")
+    if not guard.get(contain.STATE_TRANSLATED, {}).get("induced"):
+        faults.append("the record does not say what the slide would have stood on")
+    if guard.get(contain.STATE_SCALED_IN_PLACE, {}).get("induced"):
+        faults.append("the fallback was applied while standing on something new")
+    if geometry.get("shift") != [0.0, 0.0]:
+        faults.append(f"the fallback moved the heading by {geometry.get('shift')}")
+    scale = geometry.get("scale", 0.0)
+    if not 0.0 < scale < 1.0:
+        faults.append(f"the fallback scaled by {scale}")
+    # The guard's promise is about the document and not about the plan: what the
+    # heading stands on now is what it stood on before, and nothing else.
+    after = contain.standing_on(candidate, contain.ink_box(heading), min_iou)
+    if set(after) - set(before):
+        faults.append(f"the heading now stands on {sorted(set(after) - set(before))}")
+    landed = detector_base.overflow(
+        contain.ink_box(heading), tuple(geometry["safe_box"])
+    )
+    if max(landed.values()) > 1e-6:
+        faults.append(f"the fallback left the ink outside the page by {landed}")
+    record(
+        "check_04g_a_slide_onto_a_neighbour_falls_back_to_shrinking",
+        not faults,
+        "; ".join(faults),
+    )
+
+
+def check_04h_a_heading_with_nowhere_to_go_is_escalated() -> None:
+    """Negative 4h: neither the slide nor the fallback is clear, so nothing moves."""
+    docs, heading, issue = guard_fixture(
+        [GUARD_UNDER_THE_SLIDE, GUARD_INSIDE_THE_SHRINK]
+    )
+    faults = []
+    if issue is None:
+        record(
+            "check_04h_a_heading_with_nowhere_to_go_is_escalated",
+            False,
+            "nothing was detected",
+        )
+        return
+    min_iou = collision_bound()
+    before = copy.deepcopy(docs)
+    candidate = candidate_for(docs, issue)
+    if contain.standing_on(candidate, contain.ink_box(heading), min_iou):
+        faults.append("the fixture already stands on something")
+    outcome = contain.apply_one(candidate, contain_action(), min_iou)
+    guard = outcome.geometry.get("guard", {})
+    if outcome.accepted or outcome.changed:
+        faults.append("a heading with nowhere to go was moved anyway")
+    if outcome.reason != contain.REASON_INDUCED:
+        faults.append(f"refused with {outcome.reason}")
+    if guard.get("fallback_refused") != contain.GUARD_INDUCED:
+        faults.append(f"the fallback was refused for {guard.get('fallback_refused')}")
+    for state in (contain.STATE_TRANSLATED, contain.STATE_SCALED_IN_PLACE):
+        if not guard.get(state, {}).get("induced"):
+            faults.append(f"the record does not say what {state} would have stood on")
+    if checkpoint_module.to_checkpoint_xml(docs) != checkpoint_module.to_checkpoint_xml(
+        before
+    ):
+        faults.append("the escalated document was not left exactly as it was")
+    record(
+        "check_04h_a_heading_with_nowhere_to_go_is_escalated",
+        not faults,
+        "; ".join(faults),
+    )
+
+
+def check_04i_the_guard_reads_the_detectors_bound() -> None:
+    """Negative 4i: the guard is not a number of its own.
+
+    It refuses at the overlap the collision detector reports at, so the same
+    fixture driven at a bound nothing on the page reaches is slid after all.
+    Asserted by driving the mechanism rather than by reading the source, so what
+    is checked is the behaviour and not the spelling.
+    """
+    docs, _heading, issue = guard_fixture([GUARD_UNDER_THE_SLIDE])
+    faults = []
+    if issue is None:
+        record(
+            "check_04i_the_guard_reads_the_detectors_bound", False, "nothing detected"
+        )
+        return
+    candidate = candidate_for(docs, issue)
+    outcome = contain.apply_one(candidate, contain_action(), 1.0)
+    if not outcome.accepted:
+        faults.append(f"refused with {outcome.reason}")
+    if outcome.geometry.get("state") != contain.STATE_TRANSLATED:
+        faults.append(
+            f"at a bound nothing reaches, the state is "
+            f"{outcome.geometry.get('state')} rather than a slide"
+        )
+    if outcome.geometry.get("guard", {}).get("slide_refused") is not None:
+        faults.append("the slide was refused at a bound nothing reaches")
+    record(
+        "check_04i_the_guard_reads_the_detectors_bound", not faults, "; ".join(faults)
     )
 
 
@@ -1609,6 +1813,358 @@ def check_08e_the_census_no_longer_writes_frozen_evidence() -> None:
     )
 
 
+# --- 10 the acceptance session ------------------------------------------------
+
+
+def acceptance_evidence() -> dict | None:
+    return load_json(ACCEPTANCE_EVIDENCE) if ACCEPTANCE_EVIDENCE.exists() else None
+
+
+def check_10a_the_acceptance_left_its_evidence() -> None:
+    """Positive 10a: the arms, the report and the fixture are all on disk."""
+    faults = []
+    for arm in ACCEPTANCE_ARMS:
+        path = ACCEPTANCE_DIR / f"runs.{arm}.json"
+        if not path.exists():
+            faults.append(f"no ledger for the {arm} arm")
+            continue
+        rows = load_json(path)
+        if len(rows) != len(CORPUS_SAMPLES):
+            faults.append(f"the {arm} arm ran {len(rows)} of {len(CORPUS_SAMPLES)}")
+        missing = sorted(
+            CORPUS_SAMPLES - {row["sample"].removesuffix(".pdf") for row in rows}
+        )
+        if missing:
+            faults.append(f"the {arm} arm did not run {missing}")
+    for path in (
+        ACCEPTANCE_REPORT,
+        ACCEPTANCE_EVIDENCE,
+        FIXTURE_ARCHIVE,
+        FIXTURE_CONTAINMENT,
+        FIXTURE_ISSUES,
+    ):
+        if not path.exists():
+            faults.append(f"{path.relative_to(ROOT).as_posix()} was not written")
+    record("check_10a_the_acceptance_left_its_evidence", not faults, "; ".join(faults))
+
+
+def unpack_fixture(destination: Path) -> Path:
+    """The frozen checkpoints, read out of the archive into a scratch directory.
+
+    Read only, in both directions: the archive is never written and the copy is
+    never put back. What the replay measures is what git carries.
+    """
+    destination.mkdir(parents=True, exist_ok=True)
+    with zipfile.ZipFile(FIXTURE_ARCHIVE) as bundle:
+        bundle.extractall(destination)
+    return destination
+
+
+def replay_containment(directory: Path) -> dict:
+    """Drive the shipped detectors and the shipped action over the fixture.
+
+    The same three steps the loop takes -- resolve the finding to its paragraph,
+    hold it against the action's own rule, apply -- so what is compared against
+    the frozen record is the mechanism and not a description of it.
+    """
+    config = detectors.detector_config()
+    stem = checkpoint_module.checkpoint_stem("typesetting")
+    document = checkpoint_module.load_checkpoint(directory / f"{stem}.xml")
+    source = detectors.source_geometry_of(directory, config)
+    context = detectors.build_context(
+        document, config, LANGUAGE, directory, source_geometry=source
+    )
+    issues = detectors.run_detectors(context)
+    action = repair_config().actions[contain.NAME]
+    pages_by_label = {view.label: view for view in context.pages}
+    applied, escalated, refused = [], [], []
+    for issue in issues:
+        if issue.kind != page_bounds.KIND:
+            continue
+        candidate = actions.resolve(issue, pages_by_label)
+        verdict = contain.admits(issue, candidate, action)
+        if verdict != actions.ACCEPTED:
+            refused.append({"ref": candidate.reference, "reason": verdict})
+            continue
+        outcome = contain.apply_one(candidate, action, config.collision_min_iou)
+        row = {
+            "ref": candidate.reference,
+            "reason": outcome.reason,
+            "geometry": outcome.geometry,
+        }
+        (applied if outcome.accepted else escalated).append(row)
+    return {
+        "counts": counts_by_kind(issues),
+        "applied": applied,
+        "escalated": escalated,
+        "refused": refused,
+    }
+
+
+def counts_by_kind(issues) -> dict:
+    found: dict[str, int] = {}
+    for issue in issues:
+        found[issue.kind] = found.get(issue.kind, 0) + 1
+    return dict(sorted(found.items()))
+
+
+# What of a containment record has to come back identical on a replay. The
+# geometry is compared field by field rather than as a whole object, so a record
+# that gains a field a later batch adds does not fail a replay of the arithmetic
+# this one froze.
+REPLAYED_GEOMETRY = ("state", "scale", "shift", "box_before", "box_after", "safe_box")
+
+
+def check_10b_the_frozen_fixture_replays() -> None:
+    """Positive 10b: the frozen documents still produce the frozen geometry."""
+    faults = []
+    if not (FIXTURE_ARCHIVE.exists() and FIXTURE_CONTAINMENT.exists()):
+        record(
+            "check_10b_the_frozen_fixture_replays", False, "the fixture is not on disk"
+        )
+        return
+    frozen = load_json(FIXTURE_CONTAINMENT)
+    replayed = replay_containment(unpack_fixture(_tmp_root / "fixture"))
+    if replayed["counts"] != frozen["counts"]:
+        faults.append(
+            f"the fixture now reports {replayed['counts']}, frozen "
+            f"{frozen['counts']}"
+        )
+    for name in ("applied", "escalated", "refused"):
+        here = replayed[name]
+        there = frozen["containment"][name]
+        if len(here) != len(there):
+            faults.append(f"{name}: {len(here)} now, {len(there)} frozen")
+            continue
+        for now, then in zip(here, there, strict=True):
+            if now["ref"] != then["ref"] or now["reason"] != then["reason"]:
+                faults.append(
+                    f"{name}: {now['ref']} {now['reason']} now, "
+                    f"{then['ref']} {then['reason']} frozen"
+                )
+                continue
+            for field in REPLAYED_GEOMETRY:
+                if now.get("geometry", {}).get(field) != then.get("geometry", {}).get(
+                    field
+                ):
+                    faults.append(
+                        f"{name}: {now['ref']}.{field} is "
+                        f"{now.get('geometry', {}).get(field)}, frozen "
+                        f"{then.get('geometry', {}).get(field)}"
+                    )
+    record("check_10b_the_frozen_fixture_replays", not faults, "; ".join(faults))
+
+
+def check_10c_the_census_says_what_the_detector_raised() -> None:
+    """Positive 10c: the census and the findings are one set of numbers.
+
+    Every pair the census classified as induced is a pair the detector raised,
+    and every pair it exempted is one the detector did not, on every sample.
+    """
+    evidence = acceptance_evidence()
+    if evidence is None:
+        record("check_10c_the_census_says_what_the_detector_raised", False, "no evidence")
+        return
+    faults = []
+    for item in evidence["samples"]:
+        raised = [pair for pair in item["pairs"] if pair["raised"]]
+        induced = [pair for pair in item["pairs"] if pair["class"] == "induced"]
+        if raised != induced:
+            faults.append(f"{item['sample']}: {len(raised)} raised, {len(induced)} induced")
+        found = item["counts"].get(collision_detector.KIND, 0)
+        if found != len(induced):
+            faults.append(
+                f"{item['sample']}: the detector raised {found} and the census "
+                f"counted {len(induced)}"
+            )
+        for pair in item["pairs"]:
+            if pair["class"] == "source design" and pair["raised"]:
+                faults.append(f"{item['sample']}: an exempt pair was raised")
+    record(
+        "check_10c_the_census_says_what_the_detector_raised", not faults, "; ".join(faults)
+    )
+
+
+def check_10d_nothing_moved_outside_the_contained_set() -> None:
+    """Positive 10d: the soul assertion, on every sample and on three channels.
+
+    In the run: each arm's loop reports its own document conserved and names no
+    paragraph changed outside the ones it touched. On the intermediate language:
+    every paragraph the action did not name carries the digest it carried
+    before. On the page: what the scripted arm renders differently is a page it
+    contained on, unless the control arm moved that page too -- which is the
+    attribution floor -- or that arm had to resample a translation, which is the
+    one channel the evaluation protocol records as unreplayable. A sample where
+    neither arm resampled anything has no such excuse and is held to the page.
+    """
+    evidence = acceptance_evidence()
+    if evidence is None:
+        record("check_10d_nothing_moved_outside_the_contained_set", False, "no evidence")
+        return
+    faults = []
+    for item in evidence["samples"]:
+        for arm, summary in (item.get("loop") or {}).items():
+            if not summary.get("ran"):
+                continue
+            conservation = summary.get("conservation") or {}
+            if conservation.get("verdict") != "conserved":
+                faults.append(
+                    f"{item['sample']}/{arm}: the loop reported "
+                    f"{conservation.get('verdict')}"
+                )
+            if conservation.get("changed_outside_touched"):
+                faults.append(
+                    f"{item['sample']}/{arm}: "
+                    f"{conservation['changed_outside_touched']} changed outside "
+                    f"the touched set"
+                )
+        conservation = item["conservation"]
+        if conservation["moved_outside_touched"]:
+            faults.append(
+                f"{item['sample']}: {conservation['moved_outside_touched']} changed "
+                f"outside the contained set"
+            )
+        if not conservation["shape_held"]:
+            faults.append(f"{item['sample']}: the paragraph set changed")
+        raster = item.get("raster") or {}
+        contained = set(item.get("contain_pages") or ())
+        floor = set(raster.get("control_moved") or ())
+        outside = sorted(set(raster.get("contain_moved") or ()) - contained - floor)
+        calls = item.get("api_calls") or {}
+        resampled = (calls.get("off") or 0) + (calls.get("contain") or 0)
+        if outside and not resampled:
+            faults.append(
+                f"{item['sample']}: pages {outside} render differently, were "
+                f"neither contained on nor moved by the control arm, and neither "
+                f"arm resampled anything"
+            )
+    record(
+        "check_10d_nothing_moved_outside_the_contained_set", not faults, "; ".join(faults)
+    )
+
+
+def check_10e_the_scripted_arm_is_scripted_and_says_so() -> None:
+    """Negative 10e: the fourth arm chose nothing, and nothing hid that.
+
+    Its decisions are written down, every one of them is either containment or
+    nothing, and the report names it as scripted rather than presenting it as
+    what a model chose.
+    """
+    path = ACCEPTANCE_DIR / "runs.contain.json"
+    if not path.exists():
+        record("check_10e_the_scripted_arm_is_scripted_and_says_so", False, "no ledger")
+        return
+    faults = []
+    allowed = {contain.NAME, "none"}
+    for row in load_json(path):
+        answers = row.get("scripted_decisions")
+        if not answers:
+            faults.append(f"{row['sample']} recorded no scripted decision")
+            continue
+        outside = sorted({answer["action"] for answer in answers} - allowed)
+        if outside:
+            faults.append(f"{row['sample']} scripted {outside}")
+    if ACCEPTANCE_REPORT.exists():
+        text = text_of(ACCEPTANCE_REPORT)
+        if "scripted rather than sampled" not in text:
+            faults.append("the report does not say the fourth arm is scripted")
+    else:
+        faults.append("the report was not written")
+    record(
+        "check_10e_the_scripted_arm_is_scripted_and_says_so", not faults, "; ".join(faults)
+    )
+
+
+# The gaps this session files, and the figures each of them quotes. The figures
+# are recomputed from the evidence and matched in the text, so a register entry
+# cannot drift away from the run it describes.
+GAP_REGISTER = ROOT / "docs" / "eval" / "gap_register.md"
+FILED_GAPS = ("GAP-22", "GAP-23", "GAP-24", "GAP-25", "GAP-26")
+NEAR_MISS_COVERAGE = 0.5
+
+
+def census_totals(evidence: dict) -> dict:
+    """What the corpus census adds up to, recomputed from the evidence."""
+    classes: dict[str, int] = {}
+    near = raised = pairs = 0
+    origins: dict[str, int] = {}
+    applied = refused = findings = 0
+    contained_by_model = 0
+    for item in evidence["samples"]:
+        for pair in item["pairs"]:
+            pairs += 1
+            classes[pair["class"]] = classes.get(pair["class"], 0) + 1
+            raised += bool(pair["raised"])
+            if not pair["raised"] and pair["covered"] >= NEAR_MISS_COVERAGE:
+                near += 1
+        for row in item["out_of_page"]:
+            findings += 1
+            origins[row["origin"]] = origins.get(row["origin"], 0) + 1
+        applied += len(item["containment"]["applied"])
+        refused += len(item["containment"]["refused"])
+        summary = (item.get("loop") or {}).get("on") or {}
+        contained_by_model += sum(
+            1
+            for row in summary.get("executed", ())
+            if "safe_box" in (row.get("geometry") or {})
+        )
+    return {
+        "pairs": pairs,
+        "classes": classes,
+        "raised": raised,
+        "near": near,
+        "out_of_page": findings,
+        "origins": origins,
+        "applied": applied,
+        "refused": refused,
+        "contained_by_model": contained_by_model,
+    }
+
+
+def check_10f_the_register_carries_this_batchs_gaps() -> None:
+    """Positive 10f: the F2 readiness list is filed and quotes the run's figures.
+
+    Every gap this session files is in the register, and the figures the entries
+    argue from are the figures the evidence holds. A register that quotes a
+    number the run does not produce is worse than one that quotes none.
+    """
+    evidence = acceptance_evidence()
+    if evidence is None:
+        record("check_10f_the_register_carries_this_batchs_gaps", False, "no evidence")
+        return
+    faults = []
+    text = text_of(GAP_REGISTER)
+    for gap in FILED_GAPS:
+        if f"### {gap} " not in text:
+            faults.append(f"{gap} is not filed")
+    totals = census_totals(evidence)
+    quoted = {
+        "overlapping pairs": totals["pairs"],
+        "raised collisions": totals["raised"],
+        "source design pairs": totals["classes"].get("source design", 0),
+        "pairs below the bound": totals["classes"].get("below the bound", 0),
+        "covered near misses": totals["near"],
+        "out of page findings": totals["out_of_page"],
+        "containments applied": totals["applied"],
+        "containments refused": totals["refused"],
+    }
+    for what, value in quoted.items():
+        if f"**{value}**" not in text and f" {value} " not in text:
+            faults.append(f"the register does not quote {what} as {value}")
+    if totals["contained_by_model"] != 0:
+        faults.append(
+            f"GAP-25 says the model chose containment never; it chose it "
+            f"{totals['contained_by_model']} time(s)"
+        )
+    if f"0/{totals['applied']}" not in text:
+        faults.append(
+            f"GAP-25 does not state the rate as 0/{totals['applied']}"
+        )
+    record(
+        "check_10f_the_register_carries_this_batchs_gaps", not faults, "; ".join(faults)
+    )
+
+
 def check_09_sweep() -> None:
     """Positive 9: every gate passes, this one included."""
     if NESTED_SUPPRESSED:
@@ -1651,6 +2207,9 @@ def main() -> int:
         check_04d_containment_refuses_what_it_may_not_move,
         check_04e_the_loop_carries_containment,
         check_04f_the_collision_action_writes_nothing,
+        check_04g_a_slide_onto_a_neighbour_falls_back_to_shrinking,
+        check_04h_a_heading_with_nowhere_to_go_is_escalated,
+        check_04i_the_guard_reads_the_detectors_bound,
         check_05a_the_switch_is_down_by_default,
         check_05b_detection_changes_nothing,
         check_06_detection_is_deterministic,
@@ -1663,6 +2222,12 @@ def main() -> int:
         check_08c_the_runner_declares_its_encoding,
         check_08d_the_contract_carries_the_replay_boundary,
         check_08e_the_census_no_longer_writes_frozen_evidence,
+        check_10a_the_acceptance_left_its_evidence,
+        check_10b_the_frozen_fixture_replays,
+        check_10c_the_census_says_what_the_detector_raised,
+        check_10d_nothing_moved_outside_the_contained_set,
+        check_10e_the_scripted_arm_is_scripted_and_says_so,
+        check_10f_the_register_carries_this_batchs_gaps,
         check_09_sweep,
     ]
     for check in checks:

@@ -1,0 +1,3615 @@
+{
+  "arms": {
+    "off": [
+      {
+        "sample": "Courier-en.pdf",
+        "arm": "off",
+        "magazine_repair": false,
+        "model": "gpt-4o",
+        "lang_in": "en",
+        "lang_out": "zh",
+        "seconds": 50.8,
+        "requests": 61,
+        "cache_hits": 61,
+        "api_calls": 0,
+        "prompt_tokens": 0,
+        "completion_tokens": 0,
+        "input_pages": 8,
+        "output_pages": 8,
+        "pdf": "examples\\output\\b9_5\\off\\Courier-en\\Courier-en.b9_5.off.pdf",
+        "pdf_sha256": "589960582f362e70922eedcb2fac1ee144b6ae7799a883bb916a6b9e99b1ff79",
+        "working_dir": "examples\\output\\b9_5\\off\\Courier-en\\work\\Courier-en",
+        "translation_style": {
+          "person_names": "transliterate",
+          "system_prompt_sha256": "74666d7128c1c06127d9193db7b8d2b346866088f1ccabb4c33e69be1c586903"
+        }
+      },
+      {
+        "sample": "Vogue-en.pdf",
+        "arm": "off",
+        "magazine_repair": false,
+        "model": "gpt-4o",
+        "lang_in": "en",
+        "lang_out": "zh",
+        "seconds": 27.4,
+        "requests": 30,
+        "cache_hits": 30,
+        "api_calls": 0,
+        "prompt_tokens": 0,
+        "completion_tokens": 0,
+        "input_pages": 3,
+        "output_pages": 3,
+        "pdf": "examples\\output\\b9_5\\off\\Vogue-en\\Vogue-en.b9_5.off.pdf",
+        "pdf_sha256": "7377f2e625adb0b57e0e6e68d102f9f8ec3a0016f3166f91cb177efc2ca2be6c",
+        "working_dir": "examples\\output\\b9_5\\off\\Vogue-en\\work\\Vogue-en",
+        "translation_style": {
+          "person_names": "transliterate",
+          "system_prompt_sha256": "74666d7128c1c06127d9193db7b8d2b346866088f1ccabb4c33e69be1c586903"
+        }
+      },
+      {
+        "sample": "CERNCourier-en.pdf",
+        "arm": "off",
+        "magazine_repair": false,
+        "model": "gpt-4o",
+        "lang_in": "en",
+        "lang_out": "zh",
+        "seconds": 90.4,
+        "requests": 101,
+        "cache_hits": 39,
+        "api_calls": 62,
+        "prompt_tokens": 55905,
+        "completion_tokens": 10629,
+        "input_pages": 4,
+        "output_pages": 4,
+        "pdf": "examples\\output\\b9_5\\off\\CERNCourier-en\\CERNCourier-en.b9_5.off.pdf",
+        "pdf_sha256": "c9d4d0fb847bf34a00881caf011504733edd44dd1afd42fde44a17c3e1a40cdc",
+        "working_dir": "examples\\output\\b9_5\\off\\CERNCourier-en\\work\\CERNCourier-en",
+        "translation_style": {
+          "person_names": "transliterate",
+          "system_prompt_sha256": "74666d7128c1c06127d9193db7b8d2b346866088f1ccabb4c33e69be1c586903"
+        }
+      },
+      {
+        "sample": "AramcoWorld-en-v2.pdf",
+        "arm": "off",
+        "magazine_repair": false,
+        "model": "gpt-4o",
+        "lang_in": "en",
+        "lang_out": "zh",
+        "seconds": 80.0,
+        "requests": 87,
+        "cache_hits": 70,
+        "api_calls": 17,
+        "prompt_tokens": 15128,
+        "completion_tokens": 3003,
+        "input_pages": 9,
+        "output_pages": 9,
+        "pdf": "examples\\output\\b9_5\\off\\AramcoWorld-en-v2\\AramcoWorld-en-v2.b9_5.off.pdf",
+        "pdf_sha256": "678ae14397336cbfe7ebea534adb12ff073ea9143d18897fdfe245fa7d84fda4",
+        "working_dir": "examples\\output\\b9_5\\off\\AramcoWorld-en-v2\\work\\AramcoWorld-en-v2",
+        "translation_style": {
+          "person_names": "transliterate",
+          "system_prompt_sha256": "74666d7128c1c06127d9193db7b8d2b346866088f1ccabb4c33e69be1c586903"
+        }
+      },
+      {
+        "sample": "FD-en-v2.pdf",
+        "arm": "off",
+        "magazine_repair": false,
+        "model": "gpt-4o",
+        "lang_in": "en",
+        "lang_out": "zh",
+        "seconds": 54.6,
+        "requests": 61,
+        "cache_hits": 61,
+        "api_calls": 0,
+        "prompt_tokens": 0,
+        "completion_tokens": 0,
+        "input_pages": 9,
+        "output_pages": 9,
+        "pdf": "examples\\output\\b9_5\\off\\FD-en-v2\\FD-en-v2.b9_5.off.pdf",
+        "pdf_sha256": "aa34c5cb9092350584dbe61e91fdec454fac3a1737e82e38a2f3a10ed56083a9",
+        "working_dir": "examples\\output\\b9_5\\off\\FD-en-v2\\work\\FD-en-v2",
+        "translation_style": {
+          "person_names": "transliterate",
+          "system_prompt_sha256": "74666d7128c1c06127d9193db7b8d2b346866088f1ccabb4c33e69be1c586903"
+        }
+      },
+      {
+        "sample": "Courier-zh.pdf",
+        "arm": "off",
+        "magazine_repair": false,
+        "model": "gpt-4o",
+        "lang_in": "zh",
+        "lang_out": "en",
+        "seconds": 65.7,
+        "requests": 56,
+        "cache_hits": 56,
+        "api_calls": 0,
+        "prompt_tokens": 0,
+        "completion_tokens": 0,
+        "input_pages": 8,
+        "output_pages": 8,
+        "pdf": "examples\\output\\b9_5\\off\\Courier-zh\\Courier-zh.b9_5.off.pdf",
+        "pdf_sha256": "72e55d6aeedb301e8da6b8322d739eabcdd5b9fea57b291281a355e81b90fb80",
+        "working_dir": "examples\\output\\b9_5\\off\\Courier-zh\\work\\Courier-zh",
+        "translation_style": {
+          "person_names": "transliterate",
+          "system_prompt_sha256": "6f5e42314b804f107557e2577134f7f58e2cf8141f78dc93138b64ebbdc4e33c"
+        }
+      }
+    ],
+    "control": [
+      {
+        "sample": "Courier-en.pdf",
+        "arm": "control",
+        "magazine_repair": false,
+        "model": "gpt-4o",
+        "lang_in": "en",
+        "lang_out": "zh",
+        "seconds": 56.4,
+        "requests": 61,
+        "cache_hits": 61,
+        "api_calls": 0,
+        "prompt_tokens": 0,
+        "completion_tokens": 0,
+        "input_pages": 8,
+        "output_pages": 8,
+        "pdf": "examples\\output\\b9_5\\control\\Courier-en\\Courier-en.b9_5.control.pdf",
+        "pdf_sha256": "b99aded53e765cfdf37722aba864ed5f23ab02250ca7af2727f343c314670aec",
+        "working_dir": "examples\\output\\b9_5\\control\\Courier-en\\work\\Courier-en",
+        "translation_style": {
+          "person_names": "transliterate",
+          "system_prompt_sha256": "74666d7128c1c06127d9193db7b8d2b346866088f1ccabb4c33e69be1c586903"
+        }
+      },
+      {
+        "sample": "Vogue-en.pdf",
+        "arm": "control",
+        "magazine_repair": false,
+        "model": "gpt-4o",
+        "lang_in": "en",
+        "lang_out": "zh",
+        "seconds": 31.2,
+        "requests": 30,
+        "cache_hits": 30,
+        "api_calls": 0,
+        "prompt_tokens": 0,
+        "completion_tokens": 0,
+        "input_pages": 3,
+        "output_pages": 3,
+        "pdf": "examples\\output\\b9_5\\control\\Vogue-en\\Vogue-en.b9_5.control.pdf",
+        "pdf_sha256": "ab15712751b0331487b258bab8d0b510e3c5ab31da1acb2d9f45e957f7971ff1",
+        "working_dir": "examples\\output\\b9_5\\control\\Vogue-en\\work\\Vogue-en",
+        "translation_style": {
+          "person_names": "transliterate",
+          "system_prompt_sha256": "74666d7128c1c06127d9193db7b8d2b346866088f1ccabb4c33e69be1c586903"
+        }
+      },
+      {
+        "sample": "CERNCourier-en.pdf",
+        "arm": "control",
+        "magazine_repair": false,
+        "model": "gpt-4o",
+        "lang_in": "en",
+        "lang_out": "zh",
+        "seconds": 58.1,
+        "requests": 102,
+        "cache_hits": 89,
+        "api_calls": 13,
+        "prompt_tokens": 15611,
+        "completion_tokens": 3039,
+        "input_pages": 4,
+        "output_pages": 4,
+        "pdf": "examples\\output\\b9_5\\control\\CERNCourier-en\\CERNCourier-en.b9_5.control.pdf",
+        "pdf_sha256": "8efcdf368d32ba86da75d829bdb47e9c0389013f96994599f3deeb2762ddf2e0",
+        "working_dir": "examples\\output\\b9_5\\control\\CERNCourier-en\\work\\CERNCourier-en",
+        "translation_style": {
+          "person_names": "transliterate",
+          "system_prompt_sha256": "74666d7128c1c06127d9193db7b8d2b346866088f1ccabb4c33e69be1c586903"
+        }
+      },
+      {
+        "sample": "AramcoWorld-en-v2.pdf",
+        "arm": "control",
+        "magazine_repair": false,
+        "model": "gpt-4o",
+        "lang_in": "en",
+        "lang_out": "zh",
+        "seconds": 70.4,
+        "requests": 87,
+        "cache_hits": 87,
+        "api_calls": 0,
+        "prompt_tokens": 0,
+        "completion_tokens": 0,
+        "input_pages": 9,
+        "output_pages": 9,
+        "pdf": "examples\\output\\b9_5\\control\\AramcoWorld-en-v2\\AramcoWorld-en-v2.b9_5.control.pdf",
+        "pdf_sha256": "555d6a626550e307f778763327bd98e46b72499d6969106a8cdef98dd1ade38a",
+        "working_dir": "examples\\output\\b9_5\\control\\AramcoWorld-en-v2\\work\\AramcoWorld-en-v2",
+        "translation_style": {
+          "person_names": "transliterate",
+          "system_prompt_sha256": "74666d7128c1c06127d9193db7b8d2b346866088f1ccabb4c33e69be1c586903"
+        }
+      },
+      {
+        "sample": "FD-en-v2.pdf",
+        "arm": "control",
+        "magazine_repair": false,
+        "model": "gpt-4o",
+        "lang_in": "en",
+        "lang_out": "zh",
+        "seconds": 49.2,
+        "requests": 61,
+        "cache_hits": 61,
+        "api_calls": 0,
+        "prompt_tokens": 0,
+        "completion_tokens": 0,
+        "input_pages": 9,
+        "output_pages": 9,
+        "pdf": "examples\\output\\b9_5\\control\\FD-en-v2\\FD-en-v2.b9_5.control.pdf",
+        "pdf_sha256": "651e25a64b643c634f7caba5d157cbfac088adfd8c8a54a4c31ae5dc1c2b14fd",
+        "working_dir": "examples\\output\\b9_5\\control\\FD-en-v2\\work\\FD-en-v2",
+        "translation_style": {
+          "person_names": "transliterate",
+          "system_prompt_sha256": "74666d7128c1c06127d9193db7b8d2b346866088f1ccabb4c33e69be1c586903"
+        }
+      },
+      {
+        "sample": "Courier-zh.pdf",
+        "arm": "control",
+        "magazine_repair": false,
+        "model": "gpt-4o",
+        "lang_in": "zh",
+        "lang_out": "en",
+        "seconds": 59.7,
+        "requests": 56,
+        "cache_hits": 56,
+        "api_calls": 0,
+        "prompt_tokens": 0,
+        "completion_tokens": 0,
+        "input_pages": 8,
+        "output_pages": 8,
+        "pdf": "examples\\output\\b9_5\\control\\Courier-zh\\Courier-zh.b9_5.control.pdf",
+        "pdf_sha256": "0417c477aef91903434b8db81b5dfa9255517f633d3567a206dae987a2eb8a97",
+        "working_dir": "examples\\output\\b9_5\\control\\Courier-zh\\work\\Courier-zh",
+        "translation_style": {
+          "person_names": "transliterate",
+          "system_prompt_sha256": "6f5e42314b804f107557e2577134f7f58e2cf8141f78dc93138b64ebbdc4e33c"
+        }
+      }
+    ],
+    "on": [
+      {
+        "sample": "Courier-en.pdf",
+        "arm": "on",
+        "magazine_repair": true,
+        "model": "gpt-4o",
+        "lang_in": "en",
+        "lang_out": "zh",
+        "seconds": 54.7,
+        "requests": 62,
+        "cache_hits": 61,
+        "api_calls": 1,
+        "prompt_tokens": 3009,
+        "completion_tokens": 58,
+        "input_pages": 8,
+        "output_pages": 8,
+        "pdf": "examples\\output\\b9_5\\on\\Courier-en\\Courier-en.b9_5.on.pdf",
+        "pdf_sha256": "7e95c7f6be904961c3e8a1faaa4658c83746a7b2c678be189bccc0ba502900fe",
+        "working_dir": "examples\\output\\b9_5\\on\\Courier-en\\work\\Courier-en",
+        "translation_style": {
+          "person_names": "transliterate",
+          "system_prompt_sha256": "74666d7128c1c06127d9193db7b8d2b346866088f1ccabb4c33e69be1c586903"
+        }
+      },
+      {
+        "sample": "Vogue-en.pdf",
+        "arm": "on",
+        "magazine_repair": true,
+        "model": "gpt-4o",
+        "lang_in": "en",
+        "lang_out": "zh",
+        "seconds": 31.3,
+        "requests": 31,
+        "cache_hits": 30,
+        "api_calls": 1,
+        "prompt_tokens": 4270,
+        "completion_tokens": 52,
+        "input_pages": 3,
+        "output_pages": 3,
+        "pdf": "examples\\output\\b9_5\\on\\Vogue-en\\Vogue-en.b9_5.on.pdf",
+        "pdf_sha256": "937667cefd47762234876db6e27d96b39a1851519dfde3075c48117d548e7af4",
+        "working_dir": "examples\\output\\b9_5\\on\\Vogue-en\\work\\Vogue-en",
+        "translation_style": {
+          "person_names": "transliterate",
+          "system_prompt_sha256": "74666d7128c1c06127d9193db7b8d2b346866088f1ccabb4c33e69be1c586903"
+        }
+      },
+      {
+        "sample": "CERNCourier-en.pdf",
+        "arm": "on",
+        "magazine_repair": true,
+        "model": "gpt-4o",
+        "lang_in": "en",
+        "lang_out": "zh",
+        "seconds": 58.4,
+        "requests": 106,
+        "cache_hits": 101,
+        "api_calls": 5,
+        "prompt_tokens": 17239,
+        "completion_tokens": 202,
+        "input_pages": 4,
+        "output_pages": 4,
+        "pdf": "examples\\output\\b9_5\\on\\CERNCourier-en\\CERNCourier-en.b9_5.on.pdf",
+        "pdf_sha256": "f22fc88e9f2752a265e396dc2f3ed3cf99c744ad6ef8a014d19320c39651d9d9",
+        "working_dir": "examples\\output\\b9_5\\on\\CERNCourier-en\\work\\CERNCourier-en",
+        "translation_style": {
+          "person_names": "transliterate",
+          "system_prompt_sha256": "74666d7128c1c06127d9193db7b8d2b346866088f1ccabb4c33e69be1c586903"
+        }
+      },
+      {
+        "sample": "AramcoWorld-en-v2.pdf",
+        "arm": "on",
+        "magazine_repair": true,
+        "model": "gpt-4o",
+        "lang_in": "en",
+        "lang_out": "zh",
+        "seconds": 118.0,
+        "requests": 88,
+        "cache_hits": 87,
+        "api_calls": 1,
+        "prompt_tokens": 6591,
+        "completion_tokens": 103,
+        "input_pages": 9,
+        "output_pages": 9,
+        "pdf": "examples\\output\\b9_5\\on\\AramcoWorld-en-v2\\AramcoWorld-en-v2.b9_5.on.pdf",
+        "pdf_sha256": "d6d386276630d916adcdea3258beb64a4028dc1a39c1d2ea512477df6eaa530d",
+        "working_dir": "examples\\output\\b9_5\\on\\AramcoWorld-en-v2\\work\\AramcoWorld-en-v2",
+        "translation_style": {
+          "person_names": "transliterate",
+          "system_prompt_sha256": "74666d7128c1c06127d9193db7b8d2b346866088f1ccabb4c33e69be1c586903"
+        }
+      },
+      {
+        "sample": "FD-en-v2.pdf",
+        "arm": "on",
+        "magazine_repair": true,
+        "model": "gpt-4o",
+        "lang_in": "en",
+        "lang_out": "zh",
+        "seconds": 376.6,
+        "requests": 62,
+        "cache_hits": 61,
+        "api_calls": 1,
+        "prompt_tokens": 6333,
+        "completion_tokens": 70,
+        "input_pages": 9,
+        "output_pages": 9,
+        "pdf": "examples\\output\\b9_5\\on\\FD-en-v2\\FD-en-v2.b9_5.on.pdf",
+        "pdf_sha256": "3c5eaeafcc24f919b890e47dedc88a488bc2c9c0e7b59291dcdcb51e85251fc5",
+        "working_dir": "examples\\output\\b9_5\\on\\FD-en-v2\\work\\FD-en-v2",
+        "translation_style": {
+          "person_names": "transliterate",
+          "system_prompt_sha256": "74666d7128c1c06127d9193db7b8d2b346866088f1ccabb4c33e69be1c586903"
+        }
+      },
+      {
+        "sample": "Courier-zh.pdf",
+        "arm": "on",
+        "magazine_repair": true,
+        "model": "gpt-4o",
+        "lang_in": "zh",
+        "lang_out": "en",
+        "seconds": 502.3,
+        "requests": 57,
+        "cache_hits": 56,
+        "api_calls": 1,
+        "prompt_tokens": 1394,
+        "completion_tokens": 64,
+        "input_pages": 8,
+        "output_pages": 8,
+        "pdf": "examples\\output\\b9_5\\on\\Courier-zh\\Courier-zh.b9_5.on.pdf",
+        "pdf_sha256": "7b35bfd8e68a3b7f10b649ecceeaa443c28490ca7e5c088cb19bedee31a522a5",
+        "working_dir": "examples\\output\\b9_5\\on\\Courier-zh\\work\\Courier-zh",
+        "translation_style": {
+          "person_names": "transliterate",
+          "system_prompt_sha256": "6f5e42314b804f107557e2577134f7f58e2cf8141f78dc93138b64ebbdc4e33c"
+        }
+      }
+    ],
+    "contain": [
+      {
+        "sample": "Courier-en.pdf",
+        "arm": "contain",
+        "magazine_repair": true,
+        "model": "gpt-4o",
+        "lang_in": "en",
+        "lang_out": "zh",
+        "seconds": 194.2,
+        "requests": 61,
+        "cache_hits": 61,
+        "api_calls": 0,
+        "prompt_tokens": 0,
+        "completion_tokens": 0,
+        "input_pages": 8,
+        "output_pages": 8,
+        "pdf": "examples\\output\\b9_5\\contain\\Courier-en\\Courier-en.b9_5.contain.pdf",
+        "pdf_sha256": "ccabbaacb678e5f31bf2d9edb415341d31e0ab2a5e1860094e8876eaf969a66d",
+        "working_dir": "examples\\output\\b9_5\\contain\\Courier-en\\work\\Courier-en",
+        "translation_style": {
+          "person_names": "transliterate",
+          "system_prompt_sha256": "74666d7128c1c06127d9193db7b8d2b346866088f1ccabb4c33e69be1c586903"
+        },
+        "scripted_decisions": [
+          {
+            "action": "contain_in_page",
+            "issue_ids": [
+              "out_of_page:p1:p1#10"
+            ],
+            "parameters": {
+              "max_paragraphs": 20.0
+            },
+            "reason": "scripted: every out of page finding is named and the action's own rule decides which of them it may touch",
+            "attempts": 0,
+            "from_cache": false,
+            "raw": "",
+            "violations": []
+          },
+          {
+            "action": "none",
+            "issue_ids": [],
+            "parameters": {},
+            "reason": "the scripted answer acts on out of page findings only",
+            "attempts": 0,
+            "from_cache": false,
+            "raw": "",
+            "violations": []
+          }
+        ]
+      },
+      {
+        "sample": "Vogue-en.pdf",
+        "arm": "contain",
+        "magazine_repair": true,
+        "model": "gpt-4o",
+        "lang_in": "en",
+        "lang_out": "zh",
+        "seconds": 211.4,
+        "requests": 30,
+        "cache_hits": 30,
+        "api_calls": 0,
+        "prompt_tokens": 0,
+        "completion_tokens": 0,
+        "input_pages": 3,
+        "output_pages": 3,
+        "pdf": "examples\\output\\b9_5\\contain\\Vogue-en\\Vogue-en.b9_5.contain.pdf",
+        "pdf_sha256": "aed927d71c44618aa5e422b0c5aa552e88db4dd883572d40ecce4a02ee9224ad",
+        "working_dir": "examples\\output\\b9_5\\contain\\Vogue-en\\work\\Vogue-en",
+        "translation_style": {
+          "person_names": "transliterate",
+          "system_prompt_sha256": "74666d7128c1c06127d9193db7b8d2b346866088f1ccabb4c33e69be1c586903"
+        },
+        "scripted_decisions": [
+          {
+            "action": "none",
+            "issue_ids": [],
+            "parameters": {},
+            "reason": "the scripted answer acts on out of page findings only",
+            "attempts": 0,
+            "from_cache": false,
+            "raw": "",
+            "violations": []
+          }
+        ]
+      },
+      {
+        "sample": "CERNCourier-en.pdf",
+        "arm": "contain",
+        "magazine_repair": true,
+        "model": "gpt-4o",
+        "lang_in": "en",
+        "lang_out": "zh",
+        "seconds": 437.6,
+        "requests": 102,
+        "cache_hits": 102,
+        "api_calls": 0,
+        "prompt_tokens": 0,
+        "completion_tokens": 0,
+        "input_pages": 4,
+        "output_pages": 4,
+        "pdf": "examples\\output\\b9_5\\contain\\CERNCourier-en\\CERNCourier-en.b9_5.contain.pdf",
+        "pdf_sha256": "34e240db3032f2e0110e75c7ffa69e8c820815a824fb6ff2c969c3907b36069e",
+        "working_dir": "examples\\output\\b9_5\\contain\\CERNCourier-en\\work\\CERNCourier-en",
+        "translation_style": {
+          "person_names": "transliterate",
+          "system_prompt_sha256": "74666d7128c1c06127d9193db7b8d2b346866088f1ccabb4c33e69be1c586903"
+        },
+        "scripted_decisions": [
+          {
+            "action": "contain_in_page",
+            "issue_ids": [
+              "out_of_page:p1:p1#2"
+            ],
+            "parameters": {
+              "max_paragraphs": 20.0
+            },
+            "reason": "scripted: every out of page finding is named and the action's own rule decides which of them it may touch",
+            "attempts": 0,
+            "from_cache": false,
+            "raw": "",
+            "violations": []
+          },
+          {
+            "action": "none",
+            "issue_ids": [],
+            "parameters": {},
+            "reason": "the scripted answer acts on out of page findings only",
+            "attempts": 0,
+            "from_cache": false,
+            "raw": "",
+            "violations": []
+          }
+        ]
+      },
+      {
+        "sample": "AramcoWorld-en-v2.pdf",
+        "arm": "contain",
+        "magazine_repair": true,
+        "model": "gpt-4o",
+        "lang_in": "en",
+        "lang_out": "zh",
+        "seconds": 723.8,
+        "requests": 84,
+        "cache_hits": 79,
+        "api_calls": 5,
+        "prompt_tokens": 5201,
+        "completion_tokens": 848,
+        "input_pages": 9,
+        "output_pages": 9,
+        "pdf": "examples\\output\\b9_5\\contain\\AramcoWorld-en-v2\\AramcoWorld-en-v2.b9_5.contain.pdf",
+        "pdf_sha256": "490a28150160ee5f14368c4943537a606edaf246913af7b2ba7b209d2855fb9b",
+        "working_dir": "examples\\output\\b9_5\\contain\\AramcoWorld-en-v2\\work\\AramcoWorld-en-v2",
+        "translation_style": {
+          "person_names": "transliterate",
+          "system_prompt_sha256": "74666d7128c1c06127d9193db7b8d2b346866088f1ccabb4c33e69be1c586903"
+        },
+        "scripted_decisions": [
+          {
+            "action": "contain_in_page",
+            "issue_ids": [
+              "out_of_page:p1:p1#1",
+              "out_of_page:p1:p1#2",
+              "out_of_page:p5:p5#16"
+            ],
+            "parameters": {
+              "max_paragraphs": 20.0
+            },
+            "reason": "scripted: every out of page finding is named and the action's own rule decides which of them it may touch",
+            "attempts": 0,
+            "from_cache": false,
+            "raw": "",
+            "violations": []
+          }
+        ]
+      },
+      {
+        "sample": "FD-en-v2.pdf",
+        "arm": "contain",
+        "magazine_repair": true,
+        "model": "gpt-4o",
+        "lang_in": "en",
+        "lang_out": "zh",
+        "seconds": 444.6,
+        "requests": 61,
+        "cache_hits": 61,
+        "api_calls": 0,
+        "prompt_tokens": 0,
+        "completion_tokens": 0,
+        "input_pages": 9,
+        "output_pages": 9,
+        "pdf": "examples\\output\\b9_5\\contain\\FD-en-v2\\FD-en-v2.b9_5.contain.pdf",
+        "pdf_sha256": "7dd2bdcd5a6f4ce07f6fccef8245eb6bf59c1cde9531579a2dc6ada7b2b92556",
+        "working_dir": "examples\\output\\b9_5\\contain\\FD-en-v2\\work\\FD-en-v2",
+        "translation_style": {
+          "person_names": "transliterate",
+          "system_prompt_sha256": "74666d7128c1c06127d9193db7b8d2b346866088f1ccabb4c33e69be1c586903"
+        },
+        "scripted_decisions": [
+          {
+            "action": "contain_in_page",
+            "issue_ids": [
+              "out_of_page:p2:p2#8",
+              "out_of_page:p4:p4#3"
+            ],
+            "parameters": {
+              "max_paragraphs": 20.0
+            },
+            "reason": "scripted: every out of page finding is named and the action's own rule decides which of them it may touch",
+            "attempts": 0,
+            "from_cache": false,
+            "raw": "",
+            "violations": []
+          }
+        ]
+      },
+      {
+        "sample": "Courier-zh.pdf",
+        "arm": "contain",
+        "magazine_repair": true,
+        "model": "gpt-4o",
+        "lang_in": "zh",
+        "lang_out": "en",
+        "seconds": 548.4,
+        "requests": 56,
+        "cache_hits": 56,
+        "api_calls": 0,
+        "prompt_tokens": 0,
+        "completion_tokens": 0,
+        "input_pages": 8,
+        "output_pages": 8,
+        "pdf": "examples\\output\\b9_5\\contain\\Courier-zh\\Courier-zh.b9_5.contain.pdf",
+        "pdf_sha256": "93a1ceef3d2a7b4265c623af510e24577a6f8b8c29e6ea6cc6f109fbd1d68dda",
+        "working_dir": "examples\\output\\b9_5\\contain\\Courier-zh\\work\\Courier-zh",
+        "translation_style": {
+          "person_names": "transliterate",
+          "system_prompt_sha256": "6f5e42314b804f107557e2577134f7f58e2cf8141f78dc93138b64ebbdc4e33c"
+        },
+        "scripted_decisions": [
+          {
+            "action": "none",
+            "issue_ids": [],
+            "parameters": {},
+            "reason": "the scripted answer acts on out of page findings only",
+            "attempts": 0,
+            "from_cache": false,
+            "raw": "",
+            "violations": []
+          }
+        ]
+      }
+    ]
+  },
+  "detector_bounds": {
+    "collision_min_iou": 0.2,
+    "collision_source_min_iou": 0.05,
+    "page_safety_margin_ratio": 0.0,
+    "out_of_page_min_overflow_ratio": 0.002,
+    "source_geometry_stage": "styles_and_formulas"
+  },
+  "samples": [
+    {
+      "sample": "AramcoWorld-en-v2",
+      "arms": {
+        "off": "678ae14397336cbfe7ebea534adb12ff073ea9143d18897fdfe245fa7d84fda4",
+        "control": "555d6a626550e307f778763327bd98e46b72499d6969106a8cdef98dd1ade38a",
+        "on": "d6d386276630d916adcdea3258beb64a4028dc1a39c1d2ea512477df6eaa530d",
+        "contain": "490a28150160ee5f14368c4943537a606edaf246913af7b2ba7b209d2855fb9b"
+      },
+      "pages": 9,
+      "agreement": {
+        "sidecar": "examples\\output\\b9_5\\off\\AramcoWorld-en-v2\\work\\AramcoWorld-en-v2\\issues.json",
+        "counts_here": {
+          "fragment_cluster": 4,
+          "out_of_page": 3,
+          "untranslated_residue": 35
+        },
+        "counts_there": {
+          "fragment_cluster": 4,
+          "out_of_page": 3,
+          "untranslated_residue": 35
+        },
+        "only_here": [],
+        "only_there": [],
+        "agrees": true
+      },
+      "counts": {
+        "fragment_cluster": 4,
+        "out_of_page": 3,
+        "untranslated_residue": 35
+      },
+      "pairs": [
+        {
+          "page": 3,
+          "refs": [
+            "p3#0",
+            "p3#4"
+          ],
+          "labels": [
+            "abandon",
+            "title"
+          ],
+          "iou": 0.0089,
+          "covered": 0.5234,
+          "source_covered": 0.1347,
+          "source_iou": 0.0025,
+          "class": "below the bound",
+          "raised": false,
+          "text": [
+            "阿特拉斯上的班卓琴 撰文 Banning Eyre 一种拥有西非祖先并与美国音乐",
+            "专题内容"
+          ]
+        },
+        {
+          "page": 7,
+          "refs": [
+            "p7#15",
+            "p7#16"
+          ],
+          "labels": [
+            "fallback_line",
+            "fallback_line"
+          ],
+          "iou": 0.0839,
+          "covered": 0.2472,
+          "source_covered": 0.1111,
+          "source_iou": 0.0221,
+          "class": "below the bound",
+          "raised": false,
+          "text": [
+            "地中海",
+            "Sea"
+          ]
+        }
+      ],
+      "out_of_page": [
+        {
+          "page": 1,
+          "ref": "p1#1",
+          "layout_label": "fallback_line",
+          "side": "left",
+          "overflow_points": 603.5539,
+          "overflow_ratio": 0.99357,
+          "frame_box": [
+            0.0,
+            0.0,
+            607.46,
+            783.0
+          ],
+          "box": [
+            -603.55,
+            -18.94,
+            -529.81,
+            -13.24
+          ],
+          "text": "16344araD1R1.Cvr.indd 1-3",
+          "origin": "bleed",
+          "source_box": [
+            -604.16,
+            -18.0,
+            -525.79,
+            -12.0
+          ],
+          "source_overflow": 604.1599,
+          "added": -0.606
+        },
+        {
+          "page": 1,
+          "ref": "p1#2",
+          "layout_label": "fallback_line",
+          "side": "bottom",
+          "overflow_points": 18.0,
+          "overflow_ratio": 0.022989,
+          "frame_box": [
+            0.0,
+            0.0,
+            607.46,
+            783.0
+          ],
+          "box": [
+            559.46,
+            -18.0,
+            602.66,
+            -12.0
+          ],
+          "text": "(cid:25)(cid:18)(cid:23)(cid:18)(cid:21)",
+          "origin": "bleed",
+          "source_box": [
+            559.46,
+            -18.0,
+            602.66,
+            -12.0
+          ],
+          "source_overflow": 18.0,
+          "added": 0.0
+        },
+        {
+          "page": 5,
+          "ref": "p5#16",
+          "layout_label": "fallback_line",
+          "side": "left",
+          "overflow_points": 307.3494,
+          "overflow_ratio": 0.486697,
+          "frame_box": [
+            0.0,
+            0.0,
+            631.5,
+            807.0
+          ],
+          "box": [
+            -307.35,
+            673.22,
+            -69.93,
+            752.36
+          ],
+          "text": "希贾兹",
+          "origin": "bleed",
+          "source_box": [
+            -313.6,
+            697.04,
+            -15.17,
+            776.18
+          ],
+          "source_overflow": 313.6014,
+          "added": -6.252
+        }
+      ],
+      "containment": {
+        "applied": [],
+        "escalated": [],
+        "refused": [
+          {
+            "page": 1,
+            "ref": "p1#1",
+            "layout_label": "fallback_line",
+            "overflow_ratio": 0.99357,
+            "reason": "layout_label_outside_the_containment_classes"
+          },
+          {
+            "page": 1,
+            "ref": "p1#2",
+            "layout_label": "fallback_line",
+            "overflow_ratio": 0.022989,
+            "reason": "layout_label_outside_the_containment_classes"
+          },
+          {
+            "page": 5,
+            "ref": "p5#16",
+            "layout_label": "fallback_line",
+            "overflow_ratio": 0.486697,
+            "reason": "layout_label_outside_the_containment_classes"
+          }
+        ],
+        "min_scale": 0.5,
+        "margin_ratio": 0.01,
+        "collision_min_iou": 0.2
+      },
+      "conservation": {
+        "paragraphs": 176,
+        "touched": [],
+        "moved": [],
+        "moved_outside_touched": [],
+        "shape_held": true
+      },
+      "loop": {
+        "off": {
+          "ran": false
+        },
+        "control": {
+          "ran": false
+        },
+        "on": {
+          "ran": true,
+          "iterations": 1,
+          "chosen": [
+            "translate_orphan_lines(3)"
+          ],
+          "applications": 0,
+          "stopped_because": "no_paragraph_was_written",
+          "conservation": {
+            "changed_outside_touched": [],
+            "changed_refs": [],
+            "pages_after": 9,
+            "pages_before": 9,
+            "paragraphs_after": 176,
+            "paragraphs_before": 176,
+            "touched_refs": [],
+            "verdict": "conserved"
+          },
+          "executed": [
+            {
+              "iteration": 1,
+              "ref": "p1#1",
+              "accepted": false,
+              "reason": "translation_equals_source",
+              "geometry": {}
+            },
+            {
+              "iteration": 1,
+              "ref": "p1#2",
+              "accepted": false,
+              "reason": "translation_equals_source",
+              "geometry": {}
+            }
+          ],
+          "escalated": [
+            {
+              "ref": "p3#18",
+              "reason": "layout_label_not_orphan",
+              "issue_id": "untranslated_residue:p3:p3#18"
+            }
+          ]
+        },
+        "contain": {
+          "ran": true,
+          "iterations": 1,
+          "chosen": [
+            "contain_in_page(3)"
+          ],
+          "applications": 0,
+          "stopped_because": "no_finding_the_action_may_act_on",
+          "conservation": {
+            "changed_outside_touched": [],
+            "changed_refs": [],
+            "pages_after": 9,
+            "pages_before": 9,
+            "paragraphs_after": 176,
+            "paragraphs_before": 176,
+            "touched_refs": [],
+            "verdict": "conserved"
+          },
+          "executed": [],
+          "escalated": [
+            {
+              "ref": "p1#1",
+              "reason": "layout_label_outside_the_containment_classes",
+              "issue_id": "out_of_page:p1:p1#1"
+            },
+            {
+              "ref": "p1#2",
+              "reason": "layout_label_outside_the_containment_classes",
+              "issue_id": "out_of_page:p1:p1#2"
+            },
+            {
+              "ref": "p5#16",
+              "reason": "layout_label_outside_the_containment_classes",
+              "issue_id": "out_of_page:p5:p5#16"
+            }
+          ]
+        }
+      },
+      "api_calls": {
+        "off": 17,
+        "control": 0,
+        "on": 1,
+        "contain": 5
+      },
+      "requests": {
+        "off": 87,
+        "control": 87,
+        "on": 88,
+        "contain": 84
+      },
+      "raster": {
+        "moved": [],
+        "control_moved": [],
+        "contain_moved": [
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8
+        ]
+      },
+      "census_rasters": {},
+      "loop_contained": [],
+      "loop_refused": [
+        {
+          "iteration": 1,
+          "issue_id": "out_of_page:p1:p1#1",
+          "ref": "p1#1",
+          "reason": "layout_label_outside_the_containment_classes"
+        },
+        {
+          "iteration": 1,
+          "issue_id": "out_of_page:p1:p1#2",
+          "ref": "p1#2",
+          "reason": "layout_label_outside_the_containment_classes"
+        },
+        {
+          "iteration": 1,
+          "issue_id": "out_of_page:p5:p5#16",
+          "ref": "p5#16",
+          "reason": "layout_label_outside_the_containment_classes"
+        }
+      ],
+      "contain_pages": []
+    },
+    {
+      "sample": "CERNCourier-en",
+      "arms": {
+        "off": "c9d4d0fb847bf34a00881caf011504733edd44dd1afd42fde44a17c3e1a40cdc",
+        "control": "8efcdf368d32ba86da75d829bdb47e9c0389013f96994599f3deeb2762ddf2e0",
+        "on": "f22fc88e9f2752a265e396dc2f3ed3cf99c744ad6ef8a014d19320c39651d9d9",
+        "contain": "34e240db3032f2e0110e75c7ffa69e8c820815a824fb6ff2c969c3907b36069e"
+      },
+      "pages": 4,
+      "agreement": {
+        "sidecar": "examples\\output\\b9_5\\off\\CERNCourier-en\\work\\CERNCourier-en\\issues.json",
+        "counts_here": {
+          "fragment_cluster": 16,
+          "out_of_page": 1,
+          "untranslated_residue": 33
+        },
+        "counts_there": {
+          "fragment_cluster": 16,
+          "out_of_page": 1,
+          "untranslated_residue": 32
+        },
+        "only_here": [
+          "untranslated_residue:p2:p2#31"
+        ],
+        "only_there": [],
+        "agrees": false
+      },
+      "counts": {
+        "fragment_cluster": 16,
+        "out_of_page": 1,
+        "untranslated_residue": 33
+      },
+      "pairs": [
+        {
+          "page": 1,
+          "refs": [
+            "p1#2",
+            "p1#3"
+          ],
+          "labels": [
+            "title",
+            "title"
+          ],
+          "iou": 0.0207,
+          "covered": 0.1105,
+          "source_covered": 0.0,
+          "source_iou": 0.0,
+          "class": "below the bound",
+          "raised": false,
+          "text": [
+            "欧洲核子研究中心快报2026年7月/8月 CERNCOURIER.COM 国际高",
+            "当粒子走向全球"
+          ]
+        },
+        {
+          "page": 1,
+          "refs": [
+            "p1#7",
+            "p1#9"
+          ],
+          "labels": [
+            "abandon",
+            "abandon"
+          ],
+          "iou": 1.0,
+          "covered": 1.0,
+          "source_covered": 1.0,
+          "source_iou": 1.0,
+          "class": "source design",
+          "raised": false,
+          "text": [
+            "2026年7月3日",
+            "2026年7月3日"
+          ]
+        },
+        {
+          "page": 1,
+          "refs": [
+            "p1#8",
+            "p1#10"
+          ],
+          "labels": [
+            "fallback_line",
+            "fallback_line"
+          ],
+          "iou": 1.0,
+          "covered": 1.0,
+          "source_covered": 1.0,
+          "source_iou": 1.0,
+          "class": "source design",
+          "raised": false,
+          "text": [
+            "16:06",
+            "16:06"
+          ]
+        },
+        {
+          "page": 2,
+          "refs": [
+            "p2#30",
+            "p2#32"
+          ],
+          "labels": [
+            "fallback_line",
+            "fallback_line"
+          ],
+          "iou": 1.0,
+          "covered": 1.0,
+          "source_covered": 1.0,
+          "source_iou": 1.0,
+          "class": "source design",
+          "raised": false,
+          "text": [
+            "C",
+            "C"
+          ]
+        },
+        {
+          "page": 2,
+          "refs": [
+            "p2#31",
+            "p2#33"
+          ],
+          "labels": [
+            "title",
+            "title"
+          ],
+          "iou": 1.0,
+          "covered": 1.0,
+          "source_covered": 1.0,
+          "source_iou": 1.0,
+          "class": "source design",
+          "raised": false,
+          "text": [
+            "CJulAug26_pIFC.indd 1",
+            "CJulAug26_pIFC.indd 1"
+          ]
+        },
+        {
+          "page": 2,
+          "refs": [
+            "p2#45",
+            "p2#46"
+          ],
+          "labels": [
+            "plain text",
+            "plain text"
+          ],
+          "iou": 0.0526,
+          "covered": 0.1297,
+          "source_covered": 0.0833,
+          "source_iou": 0.0413,
+          "class": "below the bound",
+          "raised": false,
+          "text": [
+            "• 欧洲战略",
+            "• 第三阶段的结束"
+          ]
+        },
+        {
+          "page": 2,
+          "refs": [
+            "p2#46",
+            "p2#47"
+          ],
+          "labels": [
+            "plain text",
+            "plain text"
+          ],
+          "iou": 0.0144,
+          "covered": 0.0326,
+          "source_covered": 0.0833,
+          "source_iou": 0.0426,
+          "class": "below the bound",
+          "raised": false,
+          "text": [
+            "• 第三阶段的结束",
+            "• arXiv关于人工智能的规定"
+          ]
+        },
+        {
+          "page": 2,
+          "refs": [
+            "p2#48",
+            "p2#49"
+          ],
+          "labels": [
+            "plain text",
+            "plain text"
+          ],
+          "iou": 0.0349,
+          "covered": 0.0817,
+          "source_covered": 1.0,
+          "source_iou": 1.0,
+          "class": "source design",
+          "raised": false,
+          "text": [
+            "• 反氢脚趾",
+            "这条线 • 热启动"
+          ]
+        },
+        {
+          "page": 2,
+          "refs": [
+            "p2#65",
+            "p2#66"
+          ],
+          "labels": [
+            "plain text",
+            "plain text"
+          ],
+          "iou": 0.0367,
+          "covered": 0.0817,
+          "source_covered": 1.0,
+          "source_iou": 1.0,
+          "class": "source design",
+          "raised": false,
+          "text": [
+            "• 核中的部分子",
+            "边缘 • W玻色子衰变"
+          ]
+        },
+        {
+          "page": 2,
+          "refs": [
+            "p2#68",
+            "p2#69"
+          ],
+          "labels": [
+            "plain text",
+            "plain text"
+          ],
+          "iou": 0.0391,
+          "covered": 0.0836,
+          "source_covered": 1.0,
+          "source_iou": 1.0,
+          "class": "source design",
+          "raised": false,
+          "text": [
+            "• 新双重魅",
+            "重子 • 集体流"
+          ]
+        },
+        {
+          "page": 2,
+          "refs": [
+            "p2#74",
+            "p2#75"
+          ],
+          "labels": [
+            "plain text",
+            "plain text"
+          ],
+          "iou": 0.0204,
+          "covered": 0.0461,
+          "source_covered": 0.0804,
+          "source_iou": 0.0306,
+          "class": "below the bound",
+          "raised": false,
+          "text": [
+            "• 普朗克会议",
+            "• IPAC’26 • 量子色动力学"
+          ]
+        },
+        {
+          "page": 2,
+          "refs": [
+            "p2#131",
+            "p2#133"
+          ],
+          "labels": [
+            "abandon",
+            "abandon"
+          ],
+          "iou": 1.0,
+          "covered": 1.0,
+          "source_covered": 1.0,
+          "source_iou": 1.0,
+          "class": "source design",
+          "raised": false,
+          "text": [
+            "CCJulAug26_Conts_v3.in",
+            "CCJulAug26_Conts_v3.in"
+          ]
+        },
+        {
+          "page": 2,
+          "refs": [
+            "p2#132",
+            "p2#134"
+          ],
+          "labels": [
+            "fallback_line",
+            "fallback_line"
+          ],
+          "iou": 1.0,
+          "covered": 1.0,
+          "source_covered": 1.0,
+          "source_iou": 1.0,
+          "class": "source design",
+          "raised": false,
+          "text": [
+            "dd   3",
+            "dd   3"
+          ]
+        },
+        {
+          "page": 3,
+          "refs": [
+            "p3#2",
+            "p3#48"
+          ],
+          "labels": [
+            "fallback_line",
+            "fallback_line"
+          ],
+          "iou": 0.0719,
+          "covered": 0.676,
+          "source_covered": 0.7119,
+          "source_iou": 0.098,
+          "class": "source design",
+          "raised": false,
+          "text": [
+            "C",
+            "Pub_CERN-26-J"
+          ]
+        },
+        {
+          "page": 3,
+          "refs": [
+            "p3#2",
+            "p3#49"
+          ],
+          "labels": [
+            "fallback_line",
+            "abandon"
+          ],
+          "iou": 0.0074,
+          "covered": 0.0392,
+          "source_covered": 0.0403,
+          "source_iou": 0.0089,
+          "class": "below the bound",
+          "raised": false,
+          "text": [
+            "C",
+            "ul-Aug-Bergoz_colourRL.indd 1"
+          ]
+        },
+        {
+          "page": 3,
+          "refs": [
+            "p3#2",
+            "p3#50"
+          ],
+          "labels": [
+            "fallback_line",
+            "fallback_line"
+          ],
+          "iou": 0.0719,
+          "covered": 0.676,
+          "source_covered": 0.7119,
+          "source_iou": 0.098,
+          "class": "source design",
+          "raised": false,
+          "text": [
+            "C",
+            "Pub_CERN-26-J"
+          ]
+        },
+        {
+          "page": 3,
+          "refs": [
+            "p3#2",
+            "p3#51"
+          ],
+          "labels": [
+            "fallback_line",
+            "abandon"
+          ],
+          "iou": 0.0038,
+          "covered": 0.0553,
+          "source_covered": 0.0553,
+          "source_iou": 0.0038,
+          "class": "below the bound",
+          "raised": false,
+          "text": [
+            "C",
+            "ul-Aug-Bergoz_colourRL.indd   1 30/0623 "
+          ]
+        },
+        {
+          "page": 3,
+          "refs": [
+            "p3#3",
+            "p3#51"
+          ],
+          "labels": [
+            "abandon",
+            "abandon"
+          ],
+          "iou": 0.1476,
+          "covered": 0.4528,
+          "source_covered": 0.5572,
+          "source_iou": 0.2901,
+          "class": "source design",
+          "raised": false,
+          "text": [
+            "欧洲核子研究中心快报",
+            "ul-Aug-Bergoz_colourRL.indd   1 30/0623 "
+          ]
+        },
+        {
+          "page": 3,
+          "refs": [
+            "p3#11",
+            "p3#13"
+          ],
+          "labels": [
+            "plain text",
+            "plain text"
+          ],
+          "iou": 0.0016,
+          "covered": 0.7876,
+          "source_covered": 1.0,
+          "source_iou": 0.0015,
+          "class": "below the bound",
+          "raised": false,
+          "text": [
+            "T",
+            "“欧洲战略重申了高亮度大型强子对撞机的关键重要性，该对撞机将利用先进的加速器和探"
+          ]
+        },
+        {
+          "page": 3,
+          "refs": [
+            "p3#12",
+            "p3#13"
+          ],
+          "labels": [
+            "title",
+            "plain text"
+          ],
+          "iou": 0.0015,
+          "covered": 0.7876,
+          "source_covered": 1.0,
+          "source_iou": 0.0014,
+          "class": "below the bound",
+          "raised": false,
+          "text": [
+            "h",
+            "“欧洲战略重申了高亮度大型强子对撞机的关键重要性，该对撞机将利用先进的加速器和探"
+          ]
+        },
+        {
+          "page": 3,
+          "refs": [
+            "p3#22",
+            "p3#24"
+          ],
+          "labels": [
+            "plain text",
+            "plain text"
+          ],
+          "iou": 0.0052,
+          "covered": 0.8184,
+          "source_covered": 1.0,
+          "source_iou": 0.0037,
+          "class": "below the bound",
+          "raised": false,
+          "text": [
+            "T",
+            "战略过程显示了粒子物理学界的强烈参与，并得出了非常明确的结论：如果获得批准，FC"
+          ]
+        },
+        {
+          "page": 3,
+          "refs": [
+            "p3#23",
+            "p3#24"
+          ],
+          "labels": [
+            "title",
+            "plain text"
+          ],
+          "iou": 0.005,
+          "covered": 0.8184,
+          "source_covered": 1.0,
+          "source_iou": 0.0035,
+          "class": "below the bound",
+          "raised": false,
+          "text": [
+            "h",
+            "战略过程显示了粒子物理学界的强烈参与，并得出了非常明确的结论：如果获得批准，FC"
+          ]
+        },
+        {
+          "page": 3,
+          "refs": [
+            "p3#35",
+            "p3#40"
+          ],
+          "labels": [
+            "plain text",
+            "plain text"
+          ],
+          "iou": 0.5165,
+          "covered": 0.9846,
+          "source_covered": 1.0,
+          "source_iou": 0.7091,
+          "class": "source design",
+          "raised": false,
+          "text": [
+            "在数字化过程中保持模拟信号的完整性确保通过使用实现长期可持续性提供一个易于使用且",
+            "数字化；高性能且广泛可用的组件；可以适应不同的光束类型。"
+          ]
+        },
+        {
+          "page": 3,
+          "refs": [
+            "p3#44",
+            "p3#46"
+          ],
+          "labels": [
+            "abandon",
+            "abandon"
+          ],
+          "iou": 0.0172,
+          "covered": 0.4661,
+          "source_covered": 1.0,
+          "source_iou": 0.0527,
+          "class": "source design",
+          "raised": false,
+          "text": [
+            "CCJulAug2626_NewsAnalysis_v33.indd   7 7",
+            "2026年7月3日"
+          ]
+        },
+        {
+          "page": 3,
+          "refs": [
+            "p3#44",
+            "p3#51"
+          ],
+          "labels": [
+            "abandon",
+            "abandon"
+          ],
+          "iou": 0.0556,
+          "covered": 0.4461,
+          "source_covered": 0.4461,
+          "source_iou": 0.0556,
+          "class": "source design",
+          "raised": false,
+          "text": [
+            "CCJulAug2626_NewsAnalysis_v33.indd   7 7",
+            "ul-Aug-Bergoz_colourRL.indd   1 30/0623 "
+          ]
+        },
+        {
+          "page": 3,
+          "refs": [
+            "p3#45",
+            "p3#47"
+          ],
+          "labels": [
+            "fallback_line",
+            "fallback_line"
+          ],
+          "iou": 1.0,
+          "covered": 1.0,
+          "source_covered": 1.0,
+          "source_iou": 1.0,
+          "class": "source design",
+          "raised": false,
+          "text": [
+            "16:22",
+            "16:22"
+          ]
+        },
+        {
+          "page": 3,
+          "refs": [
+            "p3#48",
+            "p3#50"
+          ],
+          "labels": [
+            "fallback_line",
+            "fallback_line"
+          ],
+          "iou": 1.0,
+          "covered": 1.0,
+          "source_covered": 1.0,
+          "source_iou": 1.0,
+          "class": "source design",
+          "raised": false,
+          "text": [
+            "Pub_CERN-26-J",
+            "Pub_CERN-26-J"
+          ]
+        },
+        {
+          "page": 3,
+          "refs": [
+            "p3#49",
+            "p3#51"
+          ],
+          "labels": [
+            "abandon",
+            "abandon"
+          ],
+          "iou": 0.017,
+          "covered": 1.0,
+          "source_covered": 1.0,
+          "source_iou": 0.0205,
+          "class": "below the bound",
+          "raised": false,
+          "text": [
+            "ul-Aug-Bergoz_colourRL.indd 1",
+            "ul-Aug-Bergoz_colourRL.indd   1 30/0623 "
+          ]
+        },
+        {
+          "page": 4,
+          "refs": [
+            "p4#1",
+            "p4#40"
+          ],
+          "labels": [
+            "title",
+            "title"
+          ],
+          "iou": 0.0716,
+          "covered": 0.8057,
+          "source_covered": 0.8259,
+          "source_iou": 0.0999,
+          "class": "source design",
+          "raised": false,
+          "text": [
+            "C",
+            "CJulAug26_HI"
+          ]
+        },
+        {
+          "page": 4,
+          "refs": [
+            "p4#1",
+            "p4#41"
+          ],
+          "labels": [
+            "title",
+            "abandon"
+          ],
+          "iou": 0.0084,
+          "covered": 0.0645,
+          "source_covered": 0.0627,
+          "source_iou": 0.0095,
+          "class": "below the bound",
+          "raised": false,
+          "text": [
+            "C",
+            "STORY_v4.indd 24"
+          ]
+        },
+        {
+          "page": 4,
+          "refs": [
+            "p4#1",
+            "p4#43"
+          ],
+          "labels": [
+            "title",
+            "title"
+          ],
+          "iou": 0.1327,
+          "covered": 0.8032,
+          "source_covered": 0.8259,
+          "source_iou": 0.0999,
+          "class": "source design",
+          "raised": false,
+          "text": [
+            "C",
+            "卷66 第4期 2026年7/8月"
+          ]
+        },
+        {
+          "page": 4,
+          "refs": [
+            "p4#1",
+            "p4#44"
+          ],
+          "labels": [
+            "title",
+            "abandon"
+          ],
+          "iou": 0.0037,
+          "covered": 0.0561,
+          "source_covered": 0.0561,
+          "source_iou": 0.0037,
+          "class": "below the bound",
+          "raised": false,
+          "text": [
+            "C",
+            "STORY_v4.indd   24 03/0743 030743/2026  "
+          ]
+        },
+        {
+          "page": 4,
+          "refs": [
+            "p4#2",
+            "p4#44"
+          ],
+          "labels": [
+            "abandon",
+            "abandon"
+          ],
+          "iou": 0.1513,
+          "covered": 0.4736,
+          "source_covered": 0.5756,
+          "source_iou": 0.295,
+          "class": "source design",
+          "raised": false,
+          "text": [
+            "欧洲核子研究中心快报",
+            "STORY_v4.indd   24 03/0743 030743/2026  "
+          ]
+        },
+        {
+          "page": 4,
+          "refs": [
+            "p4#23",
+            "p4#25"
+          ],
+          "labels": [
+            "abandon",
+            "abandon"
+          ],
+          "iou": 0.0359,
+          "covered": 0.9564,
+          "source_covered": 1.0,
+          "source_iou": 0.0527,
+          "class": "source design",
+          "raised": false,
+          "text": [
+            "CCJulAug2626_HISTORY_v44.indd   25 25 03",
+            "2026年7月3日"
+          ]
+        },
+        {
+          "page": 4,
+          "refs": [
+            "p4#23",
+            "p4#44"
+          ],
+          "labels": [
+            "abandon",
+            "abandon"
+          ],
+          "iou": 0.065,
+          "covered": 0.5325,
+          "source_covered": 0.5325,
+          "source_iou": 0.065,
+          "class": "source design",
+          "raised": false,
+          "text": [
+            "CCJulAug2626_HISTORY_v44.indd   25 25 03",
+            "STORY_v4.indd   24 03/0743 030743/2026  "
+          ]
+        },
+        {
+          "page": 4,
+          "refs": [
+            "p4#24",
+            "p4#26"
+          ],
+          "labels": [
+            "fallback_line",
+            "fallback_line"
+          ],
+          "iou": 1.0,
+          "covered": 1.0,
+          "source_covered": 1.0,
+          "source_iou": 1.0,
+          "class": "source design",
+          "raised": false,
+          "text": [
+            "16:44",
+            "16:44"
+          ]
+        },
+        {
+          "page": 4,
+          "refs": [
+            "p4#39",
+            "p4#42"
+          ],
+          "labels": [
+            "fallback_line",
+            "fallback_line"
+          ],
+          "iou": 1.0,
+          "covered": 1.0,
+          "source_covered": 1.0,
+          "source_iou": 1.0,
+          "class": "source design",
+          "raised": false,
+          "text": [
+            "C",
+            "C"
+          ]
+        },
+        {
+          "page": 4,
+          "refs": [
+            "p4#40",
+            "p4#43"
+          ],
+          "labels": [
+            "title",
+            "title"
+          ],
+          "iou": 0.5196,
+          "covered": 0.9874,
+          "source_covered": 1.0,
+          "source_iou": 1.0,
+          "class": "source design",
+          "raised": false,
+          "text": [
+            "CJulAug26_HI",
+            "卷66 第4期 2026年7/8月"
+          ]
+        },
+        {
+          "page": 4,
+          "refs": [
+            "p4#41",
+            "p4#44"
+          ],
+          "labels": [
+            "abandon",
+            "abandon"
+          ],
+          "iou": 0.0106,
+          "covered": 1.0,
+          "source_covered": 1.0,
+          "source_iou": 0.0125,
+          "class": "below the bound",
+          "raised": false,
+          "text": [
+            "STORY_v4.indd 24",
+            "STORY_v4.indd   24 03/0743 030743/2026  "
+          ]
+        }
+      ],
+      "out_of_page": [
+        {
+          "page": 1,
+          "ref": "p1#2",
+          "layout_label": "title",
+          "side": "top",
+          "overflow_points": 36.6881,
+          "overflow_ratio": 0.047771,
+          "frame_box": [
+            0.0,
+            0.0,
+            1024.0,
+            768.0
+          ],
+          "box": [
+            521.09,
+            633.25,
+            978.56,
+            760.32
+          ],
+          "text": "欧洲核子研究中心快报2026年7月/8月 CERNCOURIER.COM 国际高",
+          "origin": "bleed the translation deepened",
+          "source_box": [
+            518.3,
+            695.45,
+            1017.68,
+            784.07
+          ],
+          "source_overflow": 16.07,
+          "added": 20.6181
+        }
+      ],
+      "containment": {
+        "applied": [
+          {
+            "page": 1,
+            "ref": "p1#2",
+            "layout_label": "title",
+            "accepted": true,
+            "reason": "accepted",
+            "geometry": {
+              "box_before": [
+                521.0887,
+                677.6131,
+                978.5587,
+                804.6881
+              ],
+              "box_source": "characters",
+              "frame_source": "cropbox",
+              "safe_box": [
+                10.24,
+                7.68,
+                1013.76,
+                760.32
+              ],
+              "scale": 1.0,
+              "shift": [
+                0.0,
+                -44.3681
+              ],
+              "min_scale": 0.5,
+              "overflow_before": {
+                "left": 0.0,
+                "bottom": 0.0,
+                "right": 0.0,
+                "top": 44.3681
+              },
+              "guard": {
+                "collision_min_iou": 0.2,
+                "standing_on_before": [],
+                "translated": {
+                  "standing_on": [],
+                  "induced": [],
+                  "worst_induced_iou": 0.0
+                },
+                "applied": {
+                  "standing_on": [],
+                  "induced": [],
+                  "worst_induced_iou": 0.0
+                }
+              },
+              "state": "translated",
+              "box_after": [
+                521.0887,
+                633.245,
+                978.5587,
+                760.32
+              ],
+              "overflow_after": {
+                "left": 0.0,
+                "bottom": 0.0,
+                "right": 0.0,
+                "top": 0.0
+              },
+              "worst_overlap_after": 0.0207
+            },
+            "text": "欧洲核子研究中心快报2026年7月/8月 CERNCOURIER.COM 国际高"
+          }
+        ],
+        "escalated": [],
+        "refused": [],
+        "min_scale": 0.5,
+        "margin_ratio": 0.01,
+        "collision_min_iou": 0.2
+      },
+      "conservation": {
+        "paragraphs": 255,
+        "touched": [
+          "p1#2"
+        ],
+        "moved": [
+          "p1#2"
+        ],
+        "moved_outside_touched": [],
+        "shape_held": true
+      },
+      "loop": {
+        "off": {
+          "ran": false
+        },
+        "control": {
+          "ran": false
+        },
+        "on": {
+          "ran": true,
+          "iterations": 2,
+          "chosen": [
+            "translate_orphan_lines(2)",
+            "translate_orphan_lines(1)"
+          ],
+          "applications": 1,
+          "stopped_because": "no_paragraph_was_written",
+          "conservation": {
+            "changed_outside_touched": [],
+            "changed_refs": [
+              "p2#39"
+            ],
+            "pages_after": 4,
+            "pages_before": 4,
+            "paragraphs_after": 255,
+            "paragraphs_before": 255,
+            "touched_refs": [
+              "p2#39"
+            ],
+            "verdict": "conserved"
+          },
+          "executed": [
+            {
+              "iteration": 1,
+              "ref": "p2#9",
+              "accepted": false,
+              "reason": "translation_equals_source",
+              "geometry": {}
+            },
+            {
+              "iteration": 1,
+              "ref": "p2#39",
+              "accepted": true,
+              "reason": "accepted",
+              "geometry": {}
+            },
+            {
+              "iteration": 2,
+              "ref": "p2#9",
+              "accepted": false,
+              "reason": "translation_equals_source",
+              "geometry": {}
+            }
+          ],
+          "escalated": []
+        },
+        "contain": {
+          "ran": true,
+          "iterations": 2,
+          "chosen": [
+            "contain_in_page(1)",
+            "none(0)"
+          ],
+          "applications": 1,
+          "stopped_because": "decision_applied_nothing",
+          "conservation": {
+            "changed_outside_touched": [],
+            "changed_refs": [
+              "p1#2"
+            ],
+            "pages_after": 4,
+            "pages_before": 4,
+            "paragraphs_after": 255,
+            "paragraphs_before": 255,
+            "touched_refs": [
+              "p1#2"
+            ],
+            "verdict": "conserved"
+          },
+          "executed": [
+            {
+              "iteration": 1,
+              "ref": "p1#2",
+              "accepted": true,
+              "reason": "accepted",
+              "geometry": {
+                "box_after": [
+                  521.0887,
+                  720.9675,
+                  1008.4199,
+                  760.32
+                ],
+                "box_before": [
+                  521.0887,
+                  754.9809,
+                  1008.4199,
+                  794.3335
+                ],
+                "box_source": "characters",
+                "frame_source": "cropbox",
+                "guard": {
+                  "applied": {
+                    "induced": [],
+                    "standing_on": [],
+                    "worst_induced_iou": 0.0
+                  },
+                  "collision_min_iou": 0.2,
+                  "standing_on_before": [],
+                  "translated": {
+                    "induced": [],
+                    "standing_on": [],
+                    "worst_induced_iou": 0.0
+                  }
+                },
+                "min_scale": 0.5,
+                "overflow_after": {
+                  "bottom": 0.0,
+                  "left": 0.0,
+                  "right": 0.0,
+                  "top": 0.0
+                },
+                "overflow_before": {
+                  "bottom": 0.0,
+                  "left": 0.0,
+                  "right": 0.0,
+                  "top": 34.0135
+                },
+                "safe_box": [
+                  10.24,
+                  7.68,
+                  1013.76,
+                  760.32
+                ],
+                "scale": 1.0,
+                "shift": [
+                  0.0,
+                  -34.0135
+                ],
+                "state": "translated",
+                "worst_overlap_after": 0.0
+              }
+            }
+          ],
+          "escalated": []
+        }
+      },
+      "api_calls": {
+        "off": 62,
+        "control": 13,
+        "on": 5,
+        "contain": 0
+      },
+      "requests": {
+        "off": 101,
+        "control": 102,
+        "on": 106,
+        "contain": 102
+      },
+      "raster": {
+        "moved": [
+          2
+        ],
+        "control_moved": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "contain_moved": [
+          1,
+          2,
+          3,
+          4
+        ]
+      },
+      "census_rasters": {
+        "page 3": "examples/output/b9_5/raster/CERNCourier-en.p3.census.png",
+        "p1#2 as the source drew it": "examples/output/b9_5/raster/CERNCourier-en.p1_2.source.png"
+      },
+      "loop_contained": [
+        {
+          "iteration": 1,
+          "issue_id": "out_of_page:p1:p1#2",
+          "ref": "p1#2",
+          "accepted": true,
+          "reason": "accepted",
+          "geometry": {
+            "box_after": [
+              521.0887,
+              720.9675,
+              1008.4199,
+              760.32
+            ],
+            "box_before": [
+              521.0887,
+              754.9809,
+              1008.4199,
+              794.3335
+            ],
+            "box_source": "characters",
+            "frame_source": "cropbox",
+            "guard": {
+              "applied": {
+                "induced": [],
+                "standing_on": [],
+                "worst_induced_iou": 0.0
+              },
+              "collision_min_iou": 0.2,
+              "standing_on_before": [],
+              "translated": {
+                "induced": [],
+                "standing_on": [],
+                "worst_induced_iou": 0.0
+              }
+            },
+            "min_scale": 0.5,
+            "overflow_after": {
+              "bottom": 0.0,
+              "left": 0.0,
+              "right": 0.0,
+              "top": 0.0
+            },
+            "overflow_before": {
+              "bottom": 0.0,
+              "left": 0.0,
+              "right": 0.0,
+              "top": 34.0135
+            },
+            "safe_box": [
+              10.24,
+              7.68,
+              1013.76,
+              760.32
+            ],
+            "scale": 1.0,
+            "shift": [
+              0.0,
+              -34.0135
+            ],
+            "state": "translated",
+            "worst_overlap_after": 0.0
+          },
+          "page": 1,
+          "window": [
+            521.09,
+            720.97,
+            1008.42,
+            794.33
+          ],
+          "before": "examples/output/b9_5/raster/CERNCourier-en.p1_2.before.png",
+          "after": "examples/output/b9_5/raster/CERNCourier-en.p1_2.after.png",
+          "page_before": "examples/output/b9_5/raster/CERNCourier-en.p1.before.png",
+          "page_after": "examples/output/b9_5/raster/CERNCourier-en.p1.after.png"
+        }
+      ],
+      "loop_refused": [],
+      "contain_pages": [
+        1
+      ]
+    },
+    {
+      "sample": "Courier-en",
+      "arms": {
+        "off": "589960582f362e70922eedcb2fac1ee144b6ae7799a883bb916a6b9e99b1ff79",
+        "control": "b99aded53e765cfdf37722aba864ed5f23ab02250ca7af2727f343c314670aec",
+        "on": "7e95c7f6be904961c3e8a1faaa4658c83746a7b2c678be189bccc0ba502900fe",
+        "contain": "ccabbaacb678e5f31bf2d9edb415341d31e0ab2a5e1860094e8876eaf969a66d"
+      },
+      "pages": 8,
+      "agreement": {
+        "sidecar": "examples\\output\\b9_5\\off\\Courier-en\\work\\Courier-en\\issues.json",
+        "counts_here": {
+          "fragment_cluster": 1,
+          "out_of_page": 1,
+          "untranslated_residue": 12
+        },
+        "counts_there": {
+          "fragment_cluster": 1,
+          "out_of_page": 1,
+          "untranslated_residue": 12
+        },
+        "only_here": [],
+        "only_there": [],
+        "agrees": true
+      },
+      "counts": {
+        "fragment_cluster": 1,
+        "out_of_page": 1,
+        "untranslated_residue": 12
+      },
+      "pairs": [],
+      "out_of_page": [
+        {
+          "page": 1,
+          "ref": "p1#10",
+          "layout_label": "title",
+          "side": "top",
+          "overflow_points": 11.5863,
+          "overflow_ratio": 0.013762,
+          "frame_box": [
+            0.0,
+            0.0,
+            595.276,
+            841.89
+          ],
+          "box": [
+            373.39,
+            791.99,
+            509.19,
+            833.47
+          ],
+          "text": "信使T H E 联合国教科文组织",
+          "origin": "induced",
+          "source_box": [
+            371.34,
+            779.15,
+            518.79,
+            834.46
+          ],
+          "source_overflow": 0.0,
+          "added": 11.5863
+        }
+      ],
+      "containment": {
+        "applied": [
+          {
+            "page": 1,
+            "ref": "p1#10",
+            "layout_label": "title",
+            "accepted": true,
+            "reason": "accepted",
+            "geometry": {
+              "box_before": [
+                373.3852,
+                811.992,
+                509.1913,
+                853.4763
+              ],
+              "box_source": "characters",
+              "frame_source": "cropbox",
+              "safe_box": [
+                5.9528,
+                8.4189,
+                589.3232,
+                833.4711
+              ],
+              "scale": 1.0,
+              "shift": [
+                0.0,
+                -20.0052
+              ],
+              "min_scale": 0.5,
+              "overflow_before": {
+                "left": 0.0,
+                "bottom": 0.0,
+                "right": 0.0,
+                "top": 20.0052
+              },
+              "guard": {
+                "collision_min_iou": 0.2,
+                "standing_on_before": [],
+                "translated": {
+                  "standing_on": [],
+                  "induced": [],
+                  "worst_induced_iou": 0.0
+                },
+                "applied": {
+                  "standing_on": [],
+                  "induced": [],
+                  "worst_induced_iou": 0.0
+                }
+              },
+              "state": "translated",
+              "box_after": [
+                373.3852,
+                791.9867,
+                509.1913,
+                833.4711
+              ],
+              "overflow_after": {
+                "left": 0.0,
+                "bottom": 0.0,
+                "right": 0.0,
+                "top": 0.0
+              },
+              "worst_overlap_after": 0.0
+            },
+            "text": "信使T H E 联合国教科文组织"
+          }
+        ],
+        "escalated": [],
+        "refused": [],
+        "min_scale": 0.5,
+        "margin_ratio": 0.01,
+        "collision_min_iou": 0.2
+      },
+      "conservation": {
+        "paragraphs": 147,
+        "touched": [
+          "p1#10"
+        ],
+        "moved": [
+          "p1#10"
+        ],
+        "moved_outside_touched": [],
+        "shape_held": true
+      },
+      "loop": {
+        "off": {
+          "ran": false
+        },
+        "control": {
+          "ran": false
+        },
+        "on": {
+          "ran": true,
+          "iterations": 1,
+          "chosen": [
+            "none(0)"
+          ],
+          "applications": 0,
+          "stopped_because": "decision_applied_nothing",
+          "conservation": {
+            "changed_outside_touched": [],
+            "changed_refs": [],
+            "pages_after": 8,
+            "pages_before": 8,
+            "paragraphs_after": 147,
+            "paragraphs_before": 147,
+            "touched_refs": [],
+            "verdict": "conserved"
+          },
+          "executed": [],
+          "escalated": []
+        },
+        "contain": {
+          "ran": true,
+          "iterations": 2,
+          "chosen": [
+            "contain_in_page(1)",
+            "none(0)"
+          ],
+          "applications": 1,
+          "stopped_because": "decision_applied_nothing",
+          "conservation": {
+            "changed_outside_touched": [],
+            "changed_refs": [
+              "p1#10"
+            ],
+            "pages_after": 8,
+            "pages_before": 8,
+            "paragraphs_after": 147,
+            "paragraphs_before": 147,
+            "touched_refs": [
+              "p1#10"
+            ],
+            "verdict": "conserved"
+          },
+          "executed": [
+            {
+              "iteration": 1,
+              "ref": "p1#10",
+              "accepted": true,
+              "reason": "accepted",
+              "geometry": {
+                "box_after": [
+                  373.3852,
+                  791.9867,
+                  510.2606,
+                  833.4711
+                ],
+                "box_before": [
+                  373.3852,
+                  811.992,
+                  510.2606,
+                  853.4763
+                ],
+                "box_source": "characters",
+                "frame_source": "cropbox",
+                "guard": {
+                  "applied": {
+                    "induced": [],
+                    "standing_on": [],
+                    "worst_induced_iou": 0.0
+                  },
+                  "collision_min_iou": 0.2,
+                  "standing_on_before": [],
+                  "translated": {
+                    "induced": [],
+                    "standing_on": [],
+                    "worst_induced_iou": 0.0
+                  }
+                },
+                "min_scale": 0.5,
+                "overflow_after": {
+                  "bottom": 0.0,
+                  "left": 0.0,
+                  "right": 0.0,
+                  "top": 0.0
+                },
+                "overflow_before": {
+                  "bottom": 0.0,
+                  "left": 0.0,
+                  "right": 0.0,
+                  "top": 20.0052
+                },
+                "safe_box": [
+                  5.9528,
+                  8.4189,
+                  589.3232,
+                  833.4711
+                ],
+                "scale": 1.0,
+                "shift": [
+                  0.0,
+                  -20.0052
+                ],
+                "state": "translated",
+                "worst_overlap_after": 0.0
+              }
+            }
+          ],
+          "escalated": []
+        }
+      },
+      "api_calls": {
+        "off": 0,
+        "control": 0,
+        "on": 1,
+        "contain": 0
+      },
+      "requests": {
+        "off": 61,
+        "control": 61,
+        "on": 62,
+        "contain": 61
+      },
+      "raster": {
+        "moved": [],
+        "control_moved": [],
+        "contain_moved": [
+          1
+        ]
+      },
+      "census_rasters": {},
+      "loop_contained": [
+        {
+          "iteration": 1,
+          "issue_id": "out_of_page:p1:p1#10",
+          "ref": "p1#10",
+          "accepted": true,
+          "reason": "accepted",
+          "geometry": {
+            "box_after": [
+              373.3852,
+              791.9867,
+              510.2606,
+              833.4711
+            ],
+            "box_before": [
+              373.3852,
+              811.992,
+              510.2606,
+              853.4763
+            ],
+            "box_source": "characters",
+            "frame_source": "cropbox",
+            "guard": {
+              "applied": {
+                "induced": [],
+                "standing_on": [],
+                "worst_induced_iou": 0.0
+              },
+              "collision_min_iou": 0.2,
+              "standing_on_before": [],
+              "translated": {
+                "induced": [],
+                "standing_on": [],
+                "worst_induced_iou": 0.0
+              }
+            },
+            "min_scale": 0.5,
+            "overflow_after": {
+              "bottom": 0.0,
+              "left": 0.0,
+              "right": 0.0,
+              "top": 0.0
+            },
+            "overflow_before": {
+              "bottom": 0.0,
+              "left": 0.0,
+              "right": 0.0,
+              "top": 20.0052
+            },
+            "safe_box": [
+              5.9528,
+              8.4189,
+              589.3232,
+              833.4711
+            ],
+            "scale": 1.0,
+            "shift": [
+              0.0,
+              -20.0052
+            ],
+            "state": "translated",
+            "worst_overlap_after": 0.0
+          },
+          "page": 1,
+          "window": [
+            373.39,
+            791.99,
+            510.26,
+            853.48
+          ],
+          "before": "examples/output/b9_5/raster/Courier-en.p1_10.before.png",
+          "after": "examples/output/b9_5/raster/Courier-en.p1_10.after.png",
+          "page_before": "examples/output/b9_5/raster/Courier-en.p1.before.png",
+          "page_after": "examples/output/b9_5/raster/Courier-en.p1.after.png"
+        }
+      ],
+      "loop_refused": [],
+      "contain_pages": [
+        1
+      ]
+    },
+    {
+      "sample": "Courier-zh",
+      "arms": {
+        "off": "72e55d6aeedb301e8da6b8322d739eabcdd5b9fea57b291281a355e81b90fb80",
+        "control": "0417c477aef91903434b8db81b5dfa9255517f633d3567a206dae987a2eb8a97",
+        "on": "7b35bfd8e68a3b7f10b649ecceeaa443c28490ca7e5c088cb19bedee31a522a5",
+        "contain": "93a1ceef3d2a7b4265c623af510e24577a6f8b8c29e6ea6cc6f109fbd1d68dda"
+      },
+      "pages": 8,
+      "agreement": {
+        "sidecar": "examples\\output\\b9_5\\off\\Courier-zh\\work\\Courier-zh\\issues.json",
+        "counts_here": {
+          "untranslated_residue": 2
+        },
+        "counts_there": {
+          "untranslated_residue": 2
+        },
+        "only_here": [],
+        "only_there": [],
+        "agrees": true
+      },
+      "counts": {
+        "untranslated_residue": 2
+      },
+      "pairs": [],
+      "out_of_page": [],
+      "containment": {
+        "applied": [],
+        "escalated": [],
+        "refused": [],
+        "min_scale": 0.5,
+        "margin_ratio": 0.01,
+        "collision_min_iou": 0.2
+      },
+      "conservation": {
+        "paragraphs": 135,
+        "touched": [],
+        "moved": [],
+        "moved_outside_touched": [],
+        "shape_held": true
+      },
+      "loop": {
+        "off": {
+          "ran": false
+        },
+        "control": {
+          "ran": false
+        },
+        "on": {
+          "ran": true,
+          "iterations": 1,
+          "chosen": [
+            "translate_orphan_lines(1)"
+          ],
+          "applications": 0,
+          "stopped_because": "no_paragraph_was_written",
+          "conservation": {
+            "changed_outside_touched": [],
+            "changed_refs": [],
+            "pages_after": 8,
+            "pages_before": 8,
+            "paragraphs_after": 135,
+            "paragraphs_before": 135,
+            "touched_refs": [],
+            "verdict": "conserved"
+          },
+          "executed": [
+            {
+              "iteration": 1,
+              "ref": "p6#14",
+              "accepted": false,
+              "reason": "retypesetting_needed_more_room_than_the_paragraph_had",
+              "geometry": {}
+            }
+          ],
+          "escalated": []
+        },
+        "contain": {
+          "ran": true,
+          "iterations": 1,
+          "chosen": [
+            "none(0)"
+          ],
+          "applications": 0,
+          "stopped_because": "decision_applied_nothing",
+          "conservation": {
+            "changed_outside_touched": [],
+            "changed_refs": [],
+            "pages_after": 8,
+            "pages_before": 8,
+            "paragraphs_after": 135,
+            "paragraphs_before": 135,
+            "touched_refs": [],
+            "verdict": "conserved"
+          },
+          "executed": [],
+          "escalated": []
+        }
+      },
+      "api_calls": {
+        "off": 0,
+        "control": 0,
+        "on": 1,
+        "contain": 0
+      },
+      "requests": {
+        "off": 56,
+        "control": 56,
+        "on": 57,
+        "contain": 56
+      },
+      "raster": {
+        "moved": [],
+        "control_moved": [],
+        "contain_moved": []
+      },
+      "census_rasters": {
+        "page 8": "examples/output/b9_5/raster/Courier-zh.p8.census.png"
+      },
+      "loop_contained": [],
+      "loop_refused": [],
+      "contain_pages": []
+    },
+    {
+      "sample": "FD-en-v2",
+      "arms": {
+        "off": "aa34c5cb9092350584dbe61e91fdec454fac3a1737e82e38a2f3a10ed56083a9",
+        "control": "651e25a64b643c634f7caba5d157cbfac088adfd8c8a54a4c31ae5dc1c2b14fd",
+        "on": "3c5eaeafcc24f919b890e47dedc88a488bc2c9c0e7b59291dcdcb51e85251fc5",
+        "contain": "7dd2bdcd5a6f4ce07f6fccef8245eb6bf59c1cde9531579a2dc6ada7b2b92556"
+      },
+      "pages": 9,
+      "agreement": {
+        "sidecar": "examples\\output\\b9_5\\off\\FD-en-v2\\work\\FD-en-v2\\issues.json",
+        "counts_here": {
+          "fragment_cluster": 9,
+          "out_of_page": 2,
+          "untranslated_residue": 34
+        },
+        "counts_there": {
+          "fragment_cluster": 9,
+          "out_of_page": 2,
+          "untranslated_residue": 34
+        },
+        "only_here": [],
+        "only_there": [],
+        "agrees": true
+      },
+      "counts": {
+        "fragment_cluster": 9,
+        "out_of_page": 2,
+        "untranslated_residue": 34
+      },
+      "pairs": [
+        {
+          "page": 9,
+          "refs": [
+            "p9#0",
+            "p9#3"
+          ],
+          "labels": [
+            "abandon",
+            "abandon"
+          ],
+          "iou": 0.8986,
+          "covered": 1.0,
+          "source_covered": 1.0,
+          "source_iou": 0.8986,
+          "class": "source design",
+          "raised": false,
+          "text": [
+            "MONTH 202",
+            "DECEMBER 2"
+          ]
+        },
+        {
+          "page": 9,
+          "refs": [
+            "p9#0",
+            "p9#6"
+          ],
+          "labels": [
+            "abandon",
+            "abandon"
+          ],
+          "iou": 0.9778,
+          "covered": 0.9888,
+          "source_covered": 0.9888,
+          "source_iou": 0.9778,
+          "class": "source design",
+          "raised": false,
+          "text": [
+            "MONTH 202",
+            "JUNE 2026"
+          ]
+        },
+        {
+          "page": 9,
+          "refs": [
+            "p9#1",
+            "p9#3"
+          ],
+          "labels": [
+            "fallback_line",
+            "abandon"
+          ],
+          "iou": 0.0858,
+          "covered": 0.984,
+          "source_covered": 0.984,
+          "source_iou": 0.0858,
+          "class": "source design",
+          "raised": false,
+          "text": [
+            "3",
+            "DECEMBER 2"
+          ]
+        },
+        {
+          "page": 9,
+          "refs": [
+            "p9#2",
+            "p9#5"
+          ],
+          "labels": [
+            "abandon",
+            "abandon"
+          ],
+          "iou": 0.1812,
+          "covered": 0.6372,
+          "source_covered": 1.0,
+          "source_iou": 0.2876,
+          "class": "source design",
+          "raised": false,
+          "text": [
+            "F&D 标识",
+            "F&D"
+          ]
+        },
+        {
+          "page": 9,
+          "refs": [
+            "p9#2",
+            "p9#7"
+          ],
+          "labels": [
+            "abandon",
+            "abandon"
+          ],
+          "iou": 0.5775,
+          "covered": 0.8714,
+          "source_covered": 0.9962,
+          "source_iou": 0.5691,
+          "class": "source design",
+          "raised": false,
+          "text": [
+            "F&D 标识",
+            "F  D 货币票据"
+          ]
+        },
+        {
+          "page": 9,
+          "refs": [
+            "p9#3",
+            "p9#6"
+          ],
+          "labels": [
+            "abandon",
+            "abandon"
+          ],
+          "iou": 0.8823,
+          "covered": 0.9904,
+          "source_covered": 0.9904,
+          "source_iou": 0.8823,
+          "class": "source design",
+          "raised": false,
+          "text": [
+            "DECEMBER 2",
+            "JUNE 2026"
+          ]
+        },
+        {
+          "page": 9,
+          "refs": [
+            "p9#5",
+            "p9#7"
+          ],
+          "labels": [
+            "abandon",
+            "abandon"
+          ],
+          "iou": 0.1757,
+          "covered": 0.8001,
+          "source_covered": 0.9948,
+          "source_iou": 0.1637,
+          "class": "source design",
+          "raised": false,
+          "text": [
+            "F&D",
+            "F  D 货币票据"
+          ]
+        }
+      ],
+      "out_of_page": [
+        {
+          "page": 2,
+          "ref": "p2#8",
+          "layout_label": "fallback_line",
+          "side": "right",
+          "overflow_points": 30.96,
+          "overflow_ratio": 0.05375,
+          "frame_box": [
+            0.0,
+            0.0,
+            576.0,
+            774.0
+          ],
+          "box": [
+            601.21,
+            54.0,
+            606.96,
+            106.12
+          ],
+          "text": "BRIANSTAUFFER",
+          "origin": "bleed",
+          "source_box": [
+            601.21,
+            54.0,
+            606.96,
+            106.12
+          ],
+          "source_overflow": 30.96,
+          "added": -0.0
+        },
+        {
+          "page": 4,
+          "ref": "p4#3",
+          "layout_label": "fallback_line",
+          "side": "left",
+          "overflow_points": 32.685,
+          "overflow_ratio": 0.056745,
+          "frame_box": [
+            0.0,
+            0.0,
+            576.0,
+            774.0
+          ],
+          "box": [
+            -32.69,
+            54.0,
+            -26.93,
+            175.98
+          ],
+          "text": "PORTERGIFFORD,CHANTALJAHCHAN",
+          "origin": "bleed",
+          "source_box": [
+            -32.69,
+            54.0,
+            -26.93,
+            175.98
+          ],
+          "source_overflow": 32.685,
+          "added": 0.0
+        }
+      ],
+      "containment": {
+        "applied": [],
+        "escalated": [],
+        "refused": [
+          {
+            "page": 2,
+            "ref": "p2#8",
+            "layout_label": "fallback_line",
+            "overflow_ratio": 0.05375,
+            "reason": "layout_label_outside_the_containment_classes"
+          },
+          {
+            "page": 4,
+            "ref": "p4#3",
+            "layout_label": "fallback_line",
+            "overflow_ratio": 0.056745,
+            "reason": "layout_label_outside_the_containment_classes"
+          }
+        ],
+        "min_scale": 0.5,
+        "margin_ratio": 0.01,
+        "collision_min_iou": 0.2
+      },
+      "conservation": {
+        "paragraphs": 218,
+        "touched": [],
+        "moved": [],
+        "moved_outside_touched": [],
+        "shape_held": true
+      },
+      "loop": {
+        "off": {
+          "ran": false
+        },
+        "control": {
+          "ran": false
+        },
+        "on": {
+          "ran": true,
+          "iterations": 1,
+          "chosen": [
+            "translate_orphan_lines(1)"
+          ],
+          "applications": 0,
+          "stopped_because": "no_finding_the_action_may_act_on",
+          "conservation": {
+            "changed_outside_touched": [],
+            "changed_refs": [],
+            "pages_after": 9,
+            "pages_before": 9,
+            "paragraphs_after": 218,
+            "paragraphs_before": 218,
+            "touched_refs": [],
+            "verdict": "conserved"
+          },
+          "executed": [],
+          "escalated": [
+            {
+              "ref": "p5#35",
+              "reason": "layout_label_not_orphan",
+              "issue_id": "untranslated_residue:p5:p5#35"
+            }
+          ]
+        },
+        "contain": {
+          "ran": true,
+          "iterations": 1,
+          "chosen": [
+            "contain_in_page(2)"
+          ],
+          "applications": 0,
+          "stopped_because": "no_finding_the_action_may_act_on",
+          "conservation": {
+            "changed_outside_touched": [],
+            "changed_refs": [],
+            "pages_after": 9,
+            "pages_before": 9,
+            "paragraphs_after": 218,
+            "paragraphs_before": 218,
+            "touched_refs": [],
+            "verdict": "conserved"
+          },
+          "executed": [],
+          "escalated": [
+            {
+              "ref": "p2#8",
+              "reason": "layout_label_outside_the_containment_classes",
+              "issue_id": "out_of_page:p2:p2#8"
+            },
+            {
+              "ref": "p4#3",
+              "reason": "layout_label_outside_the_containment_classes",
+              "issue_id": "out_of_page:p4:p4#3"
+            }
+          ]
+        }
+      },
+      "api_calls": {
+        "off": 0,
+        "control": 0,
+        "on": 1,
+        "contain": 0
+      },
+      "requests": {
+        "off": 61,
+        "control": 61,
+        "on": 62,
+        "contain": 61
+      },
+      "raster": {
+        "moved": [],
+        "control_moved": [],
+        "contain_moved": []
+      },
+      "census_rasters": {},
+      "loop_contained": [],
+      "loop_refused": [
+        {
+          "iteration": 1,
+          "issue_id": "out_of_page:p2:p2#8",
+          "ref": "p2#8",
+          "reason": "layout_label_outside_the_containment_classes"
+        },
+        {
+          "iteration": 1,
+          "issue_id": "out_of_page:p4:p4#3",
+          "ref": "p4#3",
+          "reason": "layout_label_outside_the_containment_classes"
+        }
+      ],
+      "contain_pages": []
+    },
+    {
+      "sample": "Vogue-en",
+      "arms": {
+        "off": "7377f2e625adb0b57e0e6e68d102f9f8ec3a0016f3166f91cb177efc2ca2be6c",
+        "control": "ab15712751b0331487b258bab8d0b510e3c5ab31da1acb2d9f45e957f7971ff1",
+        "on": "937667cefd47762234876db6e27d96b39a1851519dfde3075c48117d548e7af4",
+        "contain": "aed927d71c44618aa5e422b0c5aa552e88db4dd883572d40ecce4a02ee9224ad"
+      },
+      "pages": 3,
+      "agreement": {
+        "sidecar": "examples\\output\\b9_5\\off\\Vogue-en\\work\\Vogue-en\\issues.json",
+        "counts_here": {
+          "fragment_cluster": 8,
+          "untranslated_residue": 10
+        },
+        "counts_there": {
+          "fragment_cluster": 8,
+          "untranslated_residue": 10
+        },
+        "only_here": [],
+        "only_there": [],
+        "agrees": true
+      },
+      "counts": {
+        "fragment_cluster": 8,
+        "untranslated_residue": 10
+      },
+      "pairs": [
+        {
+          "page": 3,
+          "refs": [
+            "p3#9",
+            "p3#10"
+          ],
+          "labels": [
+            "title",
+            "title"
+          ],
+          "iou": 0.0176,
+          "covered": 0.0419,
+          "source_covered": 1.0,
+          "source_iou": 1.0,
+          "class": "source design",
+          "raised": false,
+          "text": [
+            "奇迹滴",
+            "NAD"
+          ]
+        },
+        {
+          "page": 3,
+          "refs": [
+            "p3#9",
+            "p3#11"
+          ],
+          "labels": [
+            "title",
+            "plain text"
+          ],
+          "iou": 0.0077,
+          "covered": 0.0438,
+          "source_covered": 1.0,
+          "source_iou": 0.0467,
+          "class": "below the bound",
+          "raised": false,
+          "text": [
+            "奇迹滴",
+            "+"
+          ]
+        },
+        {
+          "page": 3,
+          "refs": [
+            "p3#9",
+            "p3#12"
+          ],
+          "labels": [
+            "title",
+            "title"
+          ],
+          "iou": 0.0024,
+          "covered": 0.0313,
+          "source_covered": 1.0,
+          "source_iou": 0.0183,
+          "class": "below the bound",
+          "raised": false,
+          "text": [
+            "奇迹滴",
+            "i"
+          ]
+        },
+        {
+          "page": 3,
+          "refs": [
+            "p3#10",
+            "p3#11"
+          ],
+          "labels": [
+            "title",
+            "plain text"
+          ],
+          "iou": 0.0059,
+          "covered": 0.0251,
+          "source_covered": 1.0,
+          "source_iou": 0.0467,
+          "class": "below the bound",
+          "raised": false,
+          "text": [
+            "NAD",
+            "+"
+          ]
+        },
+        {
+          "page": 3,
+          "refs": [
+            "p3#12",
+            "p3#13"
+          ],
+          "labels": [
+            "title",
+            "plain text"
+          ],
+          "iou": 0.0195,
+          "covered": 0.064,
+          "source_covered": 0.064,
+          "source_iou": 0.0195,
+          "class": "below the bound",
+          "raised": false,
+          "text": [
+            "i",
+            "n"
+          ]
+        },
+        {
+          "page": 3,
+          "refs": [
+            "p3#13",
+            "p3#14"
+          ],
+          "labels": [
+            "plain text",
+            "title"
+          ],
+          "iou": 0.0175,
+          "covered": 0.0465,
+          "source_covered": 0.0465,
+          "source_iou": 0.0175,
+          "class": "below the bound",
+          "raised": false,
+          "text": [
+            "n",
+            "f"
+          ]
+        },
+        {
+          "page": 3,
+          "refs": [
+            "p3#14",
+            "p3#15"
+          ],
+          "labels": [
+            "title",
+            "plain text"
+          ],
+          "iou": 0.0113,
+          "covered": 0.0465,
+          "source_covered": 0.0465,
+          "source_iou": 0.0113,
+          "class": "below the bound",
+          "raised": false,
+          "text": [
+            "f",
+            "us"
+          ]
+        },
+        {
+          "page": 3,
+          "refs": [
+            "p3#15",
+            "p3#16"
+          ],
+          "labels": [
+            "plain text",
+            "title"
+          ],
+          "iou": 0.0121,
+          "covered": 0.064,
+          "source_covered": 0.064,
+          "source_iou": 0.0121,
+          "class": "below the bound",
+          "raised": false,
+          "text": [
+            "us",
+            "i"
+          ]
+        },
+        {
+          "page": 3,
+          "refs": [
+            "p3#18",
+            "p3#19"
+          ],
+          "labels": [
+            "title",
+            "plain text"
+          ],
+          "iou": 0.1031,
+          "covered": 0.5458,
+          "source_covered": 0.5144,
+          "source_iou": 0.0408,
+          "class": "below the bound",
+          "raised": false,
+          "text": [
+            "46T",
+            "测试场 Sanaz Toossi（Sanaz Toossi）带来"
+          ]
+        },
+        {
+          "page": 3,
+          "refs": [
+            "p3#34",
+            "p3#35"
+          ],
+          "labels": [
+            "title",
+            "title"
+          ],
+          "iou": 0.01,
+          "covered": 0.0427,
+          "source_covered": 1.0,
+          "source_iou": 1.0,
+          "class": "source design",
+          "raised": false,
+          "text": [
+            "行动时刻！",
+            "Wh"
+          ]
+        },
+        {
+          "page": 3,
+          "refs": [
+            "p3#34",
+            "p3#36"
+          ],
+          "labels": [
+            "title",
+            "plain text"
+          ],
+          "iou": 0.0044,
+          "covered": 0.0438,
+          "source_covered": 1.0,
+          "source_iou": 0.0541,
+          "class": "source design",
+          "raised": false,
+          "text": [
+            "行动时刻！",
+            "e"
+          ]
+        },
+        {
+          "page": 3,
+          "refs": [
+            "p3#34",
+            "p3#37"
+          ],
+          "labels": [
+            "title",
+            "title"
+          ],
+          "iou": 0.007,
+          "covered": 0.0438,
+          "source_covered": 1.0,
+          "source_iou": 0.093,
+          "class": "source design",
+          "raised": false,
+          "text": [
+            "行动时刻！",
+            "th"
+          ]
+        },
+        {
+          "page": 3,
+          "refs": [
+            "p3#35",
+            "p3#36"
+          ],
+          "labels": [
+            "title",
+            "plain text"
+          ],
+          "iou": 0.0078,
+          "covered": 0.029,
+          "source_covered": 1.0,
+          "source_iou": 0.0541,
+          "class": "source design",
+          "raised": false,
+          "text": [
+            "Wh",
+            "e"
+          ]
+        },
+        {
+          "page": 3,
+          "refs": [
+            "p3#35",
+            "p3#38"
+          ],
+          "labels": [
+            "title",
+            "plain text"
+          ],
+          "iou": 0.0269,
+          "covered": 0.7178,
+          "source_covered": 0.457,
+          "source_iou": 0.0831,
+          "class": "source design",
+          "raised": false,
+          "text": [
+            "Wh",
+            "无论你是乘火车、骑自行车、滑滑板，还是步行，轻便的层次和"
+          ]
+        },
+        {
+          "page": 3,
+          "refs": [
+            "p3#36",
+            "p3#37"
+          ],
+          "labels": [
+            "plain text",
+            "title"
+          ],
+          "iou": 0.0108,
+          "covered": 0.029,
+          "source_covered": 0.029,
+          "source_iou": 0.0108,
+          "class": "below the bound",
+          "raised": false,
+          "text": [
+            "e",
+            "th"
+          ]
+        },
+        {
+          "page": 3,
+          "refs": [
+            "p3#36",
+            "p3#38"
+          ],
+          "labels": [
+            "plain text",
+            "plain text"
+          ],
+          "iou": 0.01,
+          "covered": 0.7211,
+          "source_covered": 1.0,
+          "source_iou": 0.0109,
+          "class": "below the bound",
+          "raised": false,
+          "text": [
+            "e",
+            "无论你是乘火车、骑自行车、滑滑板，还是步行，轻便的层次和"
+          ]
+        },
+        {
+          "page": 3,
+          "refs": [
+            "p3#37",
+            "p3#38"
+          ],
+          "labels": [
+            "title",
+            "plain text"
+          ],
+          "iou": 0.0171,
+          "covered": 0.7211,
+          "source_covered": 1.0,
+          "source_iou": 0.0188,
+          "class": "below the bound",
+          "raised": false,
+          "text": [
+            "th",
+            "无论你是乘火车、骑自行车、滑滑板，还是步行，轻便的层次和"
+          ]
+        },
+        {
+          "page": 3,
+          "refs": [
+            "p3#51",
+            "p3#52"
+          ],
+          "labels": [
+            "title",
+            "plain text"
+          ],
+          "iou": 0.0138,
+          "covered": 0.1481,
+          "source_covered": 0.056,
+          "source_iou": 0.0011,
+          "class": "below the bound",
+          "raised": false,
+          "text": [
+            "84",
+            "钢索上的人Adrien Brody 是"
+          ]
+        }
+      ],
+      "out_of_page": [],
+      "containment": {
+        "applied": [],
+        "escalated": [],
+        "refused": [],
+        "min_scale": 0.5,
+        "margin_ratio": 0.01,
+        "collision_min_iou": 0.2
+      },
+      "conservation": {
+        "paragraphs": 94,
+        "touched": [],
+        "moved": [],
+        "moved_outside_touched": [],
+        "shape_held": true
+      },
+      "loop": {
+        "off": {
+          "ran": false
+        },
+        "control": {
+          "ran": false
+        },
+        "on": {
+          "ran": true,
+          "iterations": 1,
+          "chosen": [
+            "none(0)"
+          ],
+          "applications": 0,
+          "stopped_because": "decision_applied_nothing",
+          "conservation": {
+            "changed_outside_touched": [],
+            "changed_refs": [],
+            "pages_after": 3,
+            "pages_before": 3,
+            "paragraphs_after": 94,
+            "paragraphs_before": 94,
+            "touched_refs": [],
+            "verdict": "conserved"
+          },
+          "executed": [],
+          "escalated": []
+        },
+        "contain": {
+          "ran": true,
+          "iterations": 1,
+          "chosen": [
+            "none(0)"
+          ],
+          "applications": 0,
+          "stopped_because": "decision_applied_nothing",
+          "conservation": {
+            "changed_outside_touched": [],
+            "changed_refs": [],
+            "pages_after": 3,
+            "pages_before": 3,
+            "paragraphs_after": 94,
+            "paragraphs_before": 94,
+            "touched_refs": [],
+            "verdict": "conserved"
+          },
+          "executed": [],
+          "escalated": []
+        }
+      },
+      "api_calls": {
+        "off": 0,
+        "control": 0,
+        "on": 1,
+        "contain": 0
+      },
+      "requests": {
+        "off": 30,
+        "control": 30,
+        "on": 31,
+        "contain": 30
+      },
+      "raster": {
+        "moved": [],
+        "control_moved": [],
+        "contain_moved": []
+      },
+      "census_rasters": {
+        "page 3": "examples/output/b9_5/raster/Vogue-en.p3.census.png"
+      },
+      "loop_contained": [],
+      "loop_refused": [],
+      "contain_pages": []
+    }
+  ],
+  "fixture": [
+    "examples/output/b9_5/fixtures/CERNCourier-en.checkpoints.zip",
+    "examples/output/b9_5/fixtures/CERNCourier-en.issues.json",
+    "examples/output/b9_5/fixtures/CERNCourier-en.containment.json"
+  ]
+}

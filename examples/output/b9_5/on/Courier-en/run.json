@@ -1,0 +1,23 @@
+{
+  "sample": "Courier-en.pdf",
+  "arm": "on",
+  "magazine_repair": true,
+  "model": "gpt-4o",
+  "lang_in": "en",
+  "lang_out": "zh",
+  "seconds": 54.7,
+  "requests": 62,
+  "cache_hits": 61,
+  "api_calls": 1,
+  "prompt_tokens": 3009,
+  "completion_tokens": 58,
+  "input_pages": 8,
+  "output_pages": 8,
+  "pdf": "examples\\output\\b9_5\\on\\Courier-en\\Courier-en.b9_5.on.pdf",
+  "pdf_sha256": "7e95c7f6be904961c3e8a1faaa4658c83746a7b2c678be189bccc0ba502900fe",
+  "working_dir": "examples\\output\\b9_5\\on\\Courier-en\\work\\Courier-en",
+  "translation_style": {
+    "person_names": "transliterate",
+    "system_prompt_sha256": "74666d7128c1c06127d9193db7b8d2b346866088f1ccabb4c33e69be1c586903"
+  }
+}

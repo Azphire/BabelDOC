@@ -1,0 +1,23 @@
+{
+  "sample": "Courier-zh.pdf",
+  "arm": "on",
+  "magazine_repair": true,
+  "model": "gpt-4o",
+  "lang_in": "zh",
+  "lang_out": "en",
+  "seconds": 502.3,
+  "requests": 57,
+  "cache_hits": 56,
+  "api_calls": 1,
+  "prompt_tokens": 1394,
+  "completion_tokens": 64,
+  "input_pages": 8,
+  "output_pages": 8,
+  "pdf": "examples\\output\\b9_5\\on\\Courier-zh\\Courier-zh.b9_5.on.pdf",
+  "pdf_sha256": "7b35bfd8e68a3b7f10b649ecceeaa443c28490ca7e5c088cb19bedee31a522a5",
+  "working_dir": "examples\\output\\b9_5\\on\\Courier-zh\\work\\Courier-zh",
+  "translation_style": {
+    "person_names": "transliterate",
+    "system_prompt_sha256": "6f5e42314b804f107557e2577134f7f58e2cf8141f78dc93138b64ebbdc4e33c"
+  }
+}
