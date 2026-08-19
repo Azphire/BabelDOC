@@ -95,10 +95,12 @@ def main(argv: list[str] | None = None) -> int:
 
     # The skeleton the ruling is written into, with the verdict left empty: a
     # machine session states the question and never the answer.
-    skeleton = {
-        name: {} if name != hitl.TERMS_SECTION else []
-        for name in hitl.sections()
-    }
+    # Every section of a decisions file is an object, the terms section
+    # included: a review draft states its terms as a list of findings, and a
+    # ruling states them as a mapping from source to target. A skeleton written
+    # in the draft's shape is refused by the validator whatever verdict is
+    # filled into it, which is a question that answers itself wrongly.
+    skeleton = {name: {} for name in hitl.sections()}
     skeleton[hitl.DROP_CAPS_SECTION] = {
         candidate.reference: "" for candidate in candidates
     }
