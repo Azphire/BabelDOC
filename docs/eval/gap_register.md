@@ -204,15 +204,20 @@
 | 轴 | 缺陷家族(F-05) | 上游实例 | 已有的量 | E3 需新建 |
 | --- | --- | --- | --- | --- |
 | **A 残留与叠印** | 1. 未擦除原文 | AramcoWorld p5 三层文字叠印、p9 英文尾巴 | `untranslated_residue` 检出(台账 E-10、E-01) | M4 Overlap 差值、M9 image IoU;**须在上游侧也跑一遍同一检测器** |
-| **B 首字下沉** | 2. 首字下沉 | Courier-en p4/p5 碰撞、p7 未译拉丁首字、CERN p3 断连字 | HITL 的 `dropCapDecision` 三条裁决(`examples/output/b7_3/smoke.report.md` §5) | 无自动指标——`dropCapDecision` **至今无人消费**(b7.3 §5;`babeldoc/magazine/drop_cap.py`:36 的模块文档原话"Nothing consumes the ruling",本会话现场核对仍成立)。E3 只能作目视对照或先实现消费方 |
+| **B 首字下沉** | 2. 首字下沉 | Courier-en p4/p5 碰撞、p7 未译拉丁首字、CERN p3 断连字 | HITL 的 `dropCapDecision` 三条裁决(`examples/output/b7_3/smoke.report.md` §5) | **消费端已于 batch-b9.4 落地**(`babeldoc/magazine/drop_cap.py` 的 `apply`,开关 `magazine_drop_cap_apply`,默认关):`flatten` 并首字入正文流,`keep` 原样,未裁决候选取目标语言声明的默认值。E3 的轴 B 因此可给出机器可测的量——裁决站点的首字号是否回落到本段正字号——而不再只能目视对照;下方"不补的措辞"随之作废 |
 | **C furniture 覆盖** | 3. display 与 chrome 文本漏译 | 各刊 section chip、masthead、running title、旋转 credit;zh→en 尤重 | 刊名三态实录(台账 D-07);`fallback_line` 无 prompt 是已知结构原因 | 按 `layout_label` 分组的译出率;**分母口径须声明**(`fallback_line` 与 `abandon` 单列) |
 | **D 文本流** | 4. 文本流损坏 | 断词(zh→en 尤重)、栏尾截断、孤立碎片、结构化列表塌成流水段 | `fragment_cluster` 检出 3 处(台账 E-10);链的零外溢证据(A-10) | **M1 mid-unit page-break rate 是这一轴的主指标**;断词率另需一个量 |
 | **E 覆盖** | 5. 整块静默漏译 | Vogue p2(零警告)、FD p9 | 上游 fallback 警告矩阵(F-04)与"警告不追踪质量"的反例(F-06) | 段落级译出率(译文与源文相同的段落占比);可直接在 `examples/baseline/` 的六份 PDF 上算,**零 API** |
 
-- **成本**:轴 A/C/D/E 的新量都是确定性的,可在 E1 实现、E3 使用;轴 B 无自动路径。
-- **不补的措辞**(仅对轴 B):
-  > 首字下沉的处置在本系统中由人工裁决点记录(`dropCapDecision`),但排版层尚未消费该
-  > 裁决,故本轴以目视对照呈现,不给出自动指标。
+- **成本**:轴 A/C/D/E 的新量都是确定性的,可在 E1 实现、E3 使用;轴 B 自 batch-b9.4 起有自动路径。
+- **原"不补的措辞"(仅对轴 B)已作废**,原文留档如下,论文不得再引:
+  > ~~首字下沉的处置在本系统中由人工裁决点记录(`dropCapDecision`),但排版层尚未消费该
+  > 裁决,故本轴以目视对照呈现,不给出自动指标。~~
+
+  改写为:
+  > 首字下沉的处置由人工裁决点记录(`dropCapDecision`),并由 `magazine_drop_cap_apply`
+  > 消费:`flatten` 把放大的首字并回它所开启的正文,`keep` 保持原样,未裁决的候选取目标
+  > 语言声明的默认值。故本轴的量为裁决站点上首字号相对本段正字号的回落。
 
 ### GAP-09 官方中文版原件与哈希已失效(台账 A-15)—— 已由 batch-e1 会话一重锚
 

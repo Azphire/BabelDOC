@@ -22,6 +22,7 @@ NAME = "fragment_cluster"
 KIND = "fragment_cluster"
 
 REQUIRES_TRANSLATION = False
+REQUIRES_SOURCE_GEOMETRY = False
 
 
 def style_key(paragraph, tolerance: float) -> tuple[str, int] | None:

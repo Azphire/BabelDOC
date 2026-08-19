@@ -21,6 +21,7 @@ NAME = "text_figure_overlap"
 KIND = "text_figure_overlap"
 
 REQUIRES_TRANSLATION = False
+REQUIRES_SOURCE_GEOMETRY = False
 
 # What counts as artwork: the figures the parser recorded and the embedded
 # forms it recorded beside them, each named by the attribute holding its box.

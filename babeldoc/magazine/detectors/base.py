@@ -22,6 +22,7 @@ from functools import lru_cache
 from pathlib import Path
 
 from babeldoc.magazine.drop_cap import paragraph_reference
+from babeldoc.magazine.line_split import paragraph_characters
 from babeldoc.magazine.page_features import ConfigError
 from babeldoc.magazine.page_features import validate_bounded_config
 from babeldoc.magazine.reading_order import paragraph_reading_text
@@ -38,12 +39,18 @@ DOCUMENT_DETECTORS_KEY = "document_detectors"
 DEFAULT_PROFILE_KEY = "default_profile"
 PROGRESS_EVIDENCE_KEY = "progress_evidence"
 
+# The pipeline stage whose checkpoint holds the layout as the source drew it.
+# A stage name rather than a number, validated against the declared stage order
+# so that a checkpoint nobody writes cannot be asked for.
+SOURCE_STAGE_KEY = "source_geometry_stage"
+
 _STRUCTURAL_KEYS = (
     DIRECTIONS_KEY,
     SEVERITY_KEY,
     PROFILE_DETECTORS_KEY,
     DEFAULT_PROFILE_KEY,
     PROGRESS_EVIDENCE_KEY,
+    SOURCE_STAGE_KEY,
 )
 
 # How a per direction threshold is named from the target language it governs.
@@ -53,6 +60,16 @@ RATIO_KEY_FORMAT = "residue_min_ratio_into_{language}"
 # residue to answer for, and the profile is how a page selects its detectors.
 TRANSLATE_POLICY_FLAG = "translate"
 REPAIR_PROFILE_POLICY_FLAG = "repair_profile"
+
+# Where a page's frame is taken from, in the order it is tried. The crop box is
+# what the reader is shown and what the writer offsets the content stream by;
+# the media box is the sheet it was imposed on, and stands in only for a page
+# carrying no crop box at all.
+FRAME_SOURCES = ("cropbox", "mediabox")
+
+# Where a paragraph's rendered extent was measured, as an issue records it.
+BOX_FROM_CHARACTERS = "characters"
+BOX_FROM_PARAGRAPH = "paragraph"
 
 # Script buckets a character can fall in. Everything else -- digits, spacing,
 # punctuation, symbols -- is in neither, and takes no part in the residue share.
@@ -85,12 +102,17 @@ class DetectorConfig:
     fragment_min_x_overlap_ratio: float
     fragment_font_size_tolerance: float
     overlap_min_iou: float
+    page_safety_margin_ratio: float
+    out_of_page_min_overflow_ratio: float
+    collision_min_iou: float
+    collision_source_min_iou: float
     excerpt_chars: int
     severity: dict[str, str]
     default_profile: str
     profile_detectors: dict[str, tuple[str, ...]]
     document_detectors: tuple[str, ...]
     progress_evidence: dict[str, tuple[str, ...]]
+    source_geometry_stage: str
 
     def progress_fields(self, kind: str) -> tuple[str, ...]:
         """The evidence fields quantifying how much of the defect ``kind`` reports."""
@@ -186,6 +208,23 @@ def _parse_progress(raw: object, source: str, kinds: set[str]) -> dict:
     return progress
 
 
+def _parse_source_stage(raw: object, source: str) -> str:
+    """Validate the stage whose checkpoint the source layout is read from.
+
+    Against the declared stage order rather than against a list here, so a
+    configuration can only name a stage the pipeline actually checkpoints.
+    """
+    from babeldoc.magazine.checkpoint import stage_names
+
+    declared = stage_names()
+    _require(
+        isinstance(raw, str) and raw in declared,
+        f"{source}: {SOURCE_STAGE_KEY} is {raw!r}, which is not one of the "
+        f"declared pipeline stages {list(declared)}",
+    )
+    return str(raw)
+
+
 def parse_detector_config(
     raw: dict, source: str, known: set[str], kinds: set[str]
 ) -> DetectorConfig:
@@ -241,6 +280,12 @@ def parse_detector_config(
         fragment_min_x_overlap_ratio=float(parameters["fragment_min_x_overlap_ratio"]),
         fragment_font_size_tolerance=float(parameters["fragment_font_size_tolerance"]),
         overlap_min_iou=float(parameters["overlap_min_iou"]),
+        page_safety_margin_ratio=float(parameters["page_safety_margin_ratio"]),
+        out_of_page_min_overflow_ratio=float(
+            parameters["out_of_page_min_overflow_ratio"]
+        ),
+        collision_min_iou=float(parameters["collision_min_iou"]),
+        collision_source_min_iou=float(parameters["collision_source_min_iou"]),
         excerpt_chars=int(parameters["excerpt_chars"]),
         severity=dict(severity),
         default_profile=str(default_profile),
@@ -249,6 +294,7 @@ def parse_detector_config(
         progress_evidence=_parse_progress(
             raw.get(PROGRESS_EVIDENCE_KEY), source, kinds
         ),
+        source_geometry_stage=_parse_source_stage(raw.get(SOURCE_STAGE_KEY), source),
     )
 
 
@@ -319,6 +365,85 @@ def union_box(boxes) -> dict[str, float] | None:
         "y": min(box[1] for box in present),
         "x2": max(box[2] for box in present),
         "y2": max(box[3] for box in present),
+    }
+
+
+def page_frame(page) -> tuple[tuple[float, float, float, float], str] | None:
+    """The box a page's own coordinates are bounded by, and where it came from.
+
+    The crop box, else the media box. This is the frame the rest of the
+    pipeline already measures a page by -- the writer offsets the content
+    stream it builds by the crop box origin, and the typesetting stage sizes
+    its own insets from the same two numbers -- so a paragraph box and this
+    box are in one space and can be compared without a transform.
+    """
+    for name in FRAME_SOURCES:
+        holder = getattr(page, name, None)
+        if holder is None:
+            continue
+        box = box_tuple(holder.box)
+        if box is not None:
+            return box, name
+    return None
+
+
+def inset(box, ratio: float) -> tuple[float, float, float, float]:
+    """One box drawn in by a share of its own size, along each axis separately.
+
+    A share of the page rather than an absolute distance, because the corpus is
+    not one page size and a margin stated in points would mean something
+    different on each sheet. Each axis is drawn in by a share of that axis's own
+    extent, so the inset of a tall page is proportionally the same top and side.
+    """
+    left, bottom, right, top = box
+    horizontal = (right - left) * ratio
+    vertical = (top - bottom) * ratio
+    return (
+        left + horizontal,
+        bottom + vertical,
+        right - horizontal,
+        top - vertical,
+    )
+
+
+def character_extent(characters) -> tuple[float, float, float, float] | None:
+    """The smallest box holding every character box given."""
+    boxes = [box_tuple(item.box) for item in characters]
+    present = [box for box in boxes if box is not None]
+    if not present:
+        return None
+    return (
+        min(box[0] for box in present),
+        min(box[1] for box in present),
+        max(box[2] for box in present),
+        max(box[3] for box in present),
+    )
+
+
+def rendered_box(paragraph) -> tuple[tuple[float, float, float, float] | None, str]:
+    """The extent of the ink a paragraph puts on the page, and how it was read.
+
+    The union of the boxes of the characters the paragraph is laid out as,
+    rather than the paragraph's own box, because the two are not the same thing
+    and the difference is the defect: the box is where the stage decided the
+    paragraph goes, and a character set larger than the line that box was
+    measured for is drawn outside it. A paragraph carrying no character to
+    measure -- one built by hand, or one whose composition is a unicode run
+    nothing has laid out yet -- falls back to its box, and says so.
+    """
+    extent = character_extent(paragraph_characters(paragraph))
+    if extent is not None:
+        return extent, BOX_FROM_CHARACTERS
+    return box_tuple(paragraph.box), BOX_FROM_PARAGRAPH
+
+
+def overflow(box, bounds) -> dict[str, float]:
+    """How far a box reaches past each side of the bounds, never below zero."""
+    return {
+        "left": max(0.0, bounds[0] - box[0]),
+        "bottom": max(0.0, bounds[1] - box[1]),
+        "right": max(0.0, box[2] - bounds[2]),
+        "top": max(0.0, box[3] - bounds[3]),
     }
 
 
@@ -399,6 +524,11 @@ class DetectionContext:
     iteration: int = 0
     translation_performed: bool = True
     working_dir: Path | None = None
+    # Where every paragraph stood before anything was translated, for the
+    # detectors whose finding is about what the translation changed rather than
+    # about what the finished page shows. None where the run kept no checkpoint
+    # to read it from, in which case those detectors are not run at all.
+    source_geometry: object | None = None
     notes: list[str] = field(default_factory=list)
 
     def severity_of(self, kind: str) -> str:

@@ -11,15 +11,23 @@ Applicability is separate from detection on purpose and is stricter. A detector
 reports what looks wrong; an action has to be sure, because a defect left
 standing costs one defect and a correct paragraph rewritten costs a correct
 paragraph. Nothing here names a page type, a publication or a sample: an action
-is selected by the kind of the finding, and a finding is admitted by the share
-of the wrong script it carries and by the layout label that says whether the
-translator was ever given the chance to see it.
+is selected by the kind of the finding, and a finding is admitted by terms its
+own action declares -- the share of the wrong script and the layout label that
+says whether the translator was ever given the chance to see the paragraph, for
+the one that rewrites text; how far past the page frame the ink reached and what
+class of block it belongs to, for the one that puts it back inside.
+
+An action also declares the numbers its own mechanism is bounded by, at its own
+level rather than among its parameters, because they are neither something a
+decision may set nor something that selects a finding: a floor on how far a
+heading may be shrunk before shrinking it is the wrong answer is one of these.
 """
 
 from __future__ import annotations
 
 import json
 from dataclasses import dataclass
+from dataclasses import field
 from functools import lru_cache
 from pathlib import Path
 
@@ -48,11 +56,34 @@ STATEMENT_VALUE = "{value}"
 # The name a decision uses to apply nothing. Reserved, so no action may take it.
 NO_ACTION = "none"
 
-# Applicability keys the orphan action is built from. Read by name here because
-# each is an argument to a single rule; a second action declares its own.
+# The parameter every action that touches paragraphs declares: how many of them
+# one iteration may take. Named here rather than in one action's module because
+# the loop reads it to bound an iteration whichever action it is carrying out.
+MAX_PARAGRAPHS = "max_paragraphs"
+
+# Applicability keys the orphan action is built from.
 MIN_RATIO_KEY = "min_residue_ratio"
 MIN_CHARS_KEY = "min_source_chars"
 ORPHAN_LABELS_KEY = "orphan_layout_labels"
+
+# Applicability keys the containment action is built from.
+CONTAIN_LABELS_KEY = "contain_layout_labels"
+MIN_OVERFLOW_KEY = "min_overflow_ratio"
+
+# Applicability keys the collision action is built from.
+MIN_COLLISION_IOU_KEY = "min_collision_iou"
+
+# Which applicability terms each action's rule is made of. An action whose rule
+# omits one of them is a rule the code answering for that action cannot apply,
+# and that is a fault in the file rather than a surprise at run time. Declared
+# per action rather than as one list for all of them: the actions do not share a
+# rule, and requiring the orphan action's terms of a geometric one would be
+# requiring a filter that means nothing there.
+REQUIRED_APPLICABILITY = {
+    "translate_orphan_lines": (MIN_RATIO_KEY, MIN_CHARS_KEY, ORPHAN_LABELS_KEY),
+    "contain_in_page": (CONTAIN_LABELS_KEY, MIN_OVERFLOW_KEY),
+    "resolve_collision": (MIN_COLLISION_IOU_KEY,),
+}
 
 
 class RepairConfigError(ConfigError):
@@ -102,6 +133,15 @@ class Action:
     parameters: dict[str, Parameter]
     applicability: dict[str, object]
     statements: dict[str, str]
+    # Numbers the action's mechanism is bounded by, as opposed to the parameters
+    # a decision may set and the terms that decide which findings it may act on.
+    # A floor on how far a heading may be shrunk is one of these: it is not the
+    # model's to move and it does not select anything.
+    bounds: dict[str, object] = field(default_factory=dict)
+
+    def bound(self, name: str):
+        """One declared mechanism bound, which validation guarantees is there."""
+        return self.bounds[name]
 
     def answers_for(self, kind: str) -> bool:
         return kind in self.issue_kinds
@@ -165,6 +205,10 @@ class Action:
                 key: (list(value) if isinstance(value, tuple) else value)
                 for key, value in sorted(self.applicability.items())
             },
+            "bounds": {
+                key: (list(value) if isinstance(value, tuple) else value)
+                for key, value in sorted(self.bounds.items())
+            },
             "conditions": self.conditions(),
         }
 
@@ -224,18 +268,21 @@ def _parse_parameter(name: str, raw: object, source: str) -> Parameter:
     )
 
 
-def _parse_applicability(raw: object, source: str) -> tuple[dict, dict]:
+def _parse_applicability(raw: object, source: str, required) -> tuple[dict, dict]:
     """The rule's terms and the sentence each of them is stated with.
 
     Every term has to carry a statement and every statement has to name a term.
     Neither direction is optional: a term with nothing to say about itself is
     one a request cannot state, and a statement about a term that no longer
     exists is a request describing a filter that is not there.
+
+    ``required`` is what this particular action's rule is made of, so an action
+    is held to its own terms rather than to another action's.
     """
     _require(isinstance(raw, dict) and raw, f"{source}: {APPLICABILITY_KEY} is empty")
     flat = {key: value for key, value in raw.items() if key != STATEMENTS_KEY}
     parameters = _bounded(flat, f"{source}.{APPLICABILITY_KEY}")
-    for key in (MIN_RATIO_KEY, MIN_CHARS_KEY, ORPHAN_LABELS_KEY):
+    for key in required:
         _require(
             key in parameters,
             f"{source}: {APPLICABILITY_KEY} omits {key}",
@@ -299,8 +346,14 @@ def _parse_action(name: str, raw: object, kinds: set[str], source: str) -> Actio
         isinstance(raw_parameters, dict),
         f"{source}.{name}: {PARAMETERS_KEY} must be an object",
     )
+    required = REQUIRED_APPLICABILITY.get(name)
+    _require(
+        required is not None,
+        f"{source}.{name}: no code declares what this action's rule is made of; "
+        f"the actions with a rule are {sorted(REQUIRED_APPLICABILITY)}",
+    )
     applicability, statements = _parse_applicability(
-        raw.get(APPLICABILITY_KEY), f"{source}.{name}"
+        raw.get(APPLICABILITY_KEY), f"{source}.{name}", required
     )
     return Action(
         name=name,
@@ -313,6 +366,14 @@ def _parse_action(name: str, raw: object, kinds: set[str], source: str) -> Actio
         },
         applicability=applicability,
         statements=statements,
+        # Whatever else the action declared at its own level: validated by the
+        # same range convention, and everything that is not one of the two keys
+        # read by name above.
+        bounds={
+            key: value
+            for key, value in parameters.items()
+            if key not in (ISSUE_KINDS_KEY, "max_applications")
+        },
     )
 
 

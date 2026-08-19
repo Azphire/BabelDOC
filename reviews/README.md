@@ -96,10 +96,14 @@ on the second pass.
   is the `paragraph` field of the draft, and a reference this document has no
   paragraph for refuses the whole file. A paragraph the machine did not flag may
   still be ruled on, as an unextracted term may be. The verdict is written into
-  the intermediate language as `dropCapDecision` and **no stage reads it yet**:
-  teaching typesetting to act on it is a batch of its own, so a ruling here
-  changes nothing about the output until then. `drop_cap.report.json` in the
-  run's working directory says the same.
+  the intermediate language as `dropCapDecision` and **batch b9.4 gave it a
+  reader**: behind `magazine_drop_cap_apply`, `flatten` merges the enlarged
+  initial into the text it opens so the first word reaches the engine as a
+  word, and `keep` leaves the paragraph as an unruled one is left. A candidate
+  nobody ruled takes the verdict its target language declares in
+  `configs/drop_cap.json`, so a run with no human in it still decides.
+  `drop_cap_apply.report.json` in the run's working directory says what the
+  reader did with each verdict.
 
 Validation is all-or-nothing. An unknown section, a page number this document
 does not have, a page type the vocabulary does not declare, a padded or empty

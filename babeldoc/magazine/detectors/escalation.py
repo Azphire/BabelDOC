@@ -24,6 +24,7 @@ NAME = "escalation_surfacing"
 KIND = "chain_escalation"
 
 REQUIRES_TRANSLATION = True
+REQUIRES_SOURCE_GEOMETRY = False
 
 # The section of the chain pass report this reads, and the key inside it.
 ESCALATED_KEY = "escalated"

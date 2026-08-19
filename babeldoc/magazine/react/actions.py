@@ -36,6 +36,7 @@ from babeldoc.magazine.detectors import base as detector_base
 from babeldoc.magazine.prompt_loader import Prompt
 from babeldoc.magazine.prompt_loader import load_prompt
 from babeldoc.magazine.react import writeback
+from babeldoc.magazine.react.config import MAX_PARAGRAPHS as MAX_PARAGRAPHS_KEY
 from babeldoc.magazine.react.config import MIN_CHARS_KEY
 from babeldoc.magazine.react.config import MIN_RATIO_KEY
 from babeldoc.magazine.react.config import ORPHAN_LABELS_KEY
@@ -48,7 +49,12 @@ logger = logging.getLogger(__name__)
 NAME = "translate_orphan_lines"
 
 # The parameter the decision may set: how many paragraphs one iteration takes.
-MAX_PARAGRAPHS = "max_paragraphs"
+# Declared beside the vocabulary rather than here, because the loop reads it to
+# bound an iteration whichever action that iteration is carrying out.
+MAX_PARAGRAPHS = MAX_PARAGRAPHS_KEY
+
+# One finding, one paragraph: an orphan line is untranslated on its own.
+PARAGRAPHS_PER_FINDING = 1
 
 TRANSLATE_PROMPT = "react_translate_orphan"
 GLOSSARY_PROMPT = "react_orphan_glossary"
@@ -107,6 +113,10 @@ class Application:
     attempts: int = 0
     from_cache: bool = False
     changed: bool = False
+    # What a geometric action measured before and after it acted. Empty for an
+    # action whose evidence is text, and the whole of the evidence for one whose
+    # evidence is where the ink landed.
+    geometry: dict = field(default_factory=dict)
 
     def as_record(self) -> dict:
         return {
@@ -121,6 +131,7 @@ class Application:
             "attempts": self.attempts,
             "from_cache": self.from_cache,
             "changed": self.changed,
+            "geometry": dict(self.geometry),
         }
 
 
@@ -146,6 +157,11 @@ def admits(issue, paragraph, action: Action, source_text: str) -> str:
     if not writeback.can_write_back(paragraph):
         return REASON_NO_STYLE
     return ACCEPTED
+
+
+def admits_candidate(issue, candidate, action: Action) -> str:
+    """This action's admission question, in the shape the loop asks every action."""
+    return admits(issue, candidate.paragraph, action, candidate.source_text)
 
 
 def resolve(issue, pages_by_label: dict) -> Candidate | None:

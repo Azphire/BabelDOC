@@ -17,7 +17,10 @@ is a profile: both are strings read from configuration and used as keys.
 
 A detector that needs a translated document says so, and is skipped with its
 reason recorded on a run that translated nothing, rather than reporting every
-paragraph of an untranslated document as untranslated.
+paragraph of an untranslated document as untranslated. A detector that needs the
+layout as the source drew it says so the same way, and is skipped on a run that
+kept no checkpoint to read it from: its finding is a claim about what the
+translation changed, and without the before there is no such claim to make.
 
 One pass that does change the document is called from here, before any of this
 runs: the heading policy in ``magazine/title_typeset.py``. It belongs in the
@@ -35,10 +38,13 @@ import json
 import logging
 from pathlib import Path
 
+from babeldoc.magazine.detectors import collision
 from babeldoc.magazine.detectors import escalation
 from babeldoc.magazine.detectors import fragment
 from babeldoc.magazine.detectors import overlap
+from babeldoc.magazine.detectors import page_bounds
 from babeldoc.magazine.detectors import residue
+from babeldoc.magazine.detectors import source_geometry
 from babeldoc.magazine.detectors.base import CONFIG_PATH
 from babeldoc.magazine.detectors.base import REPAIR_PROFILE_POLICY_FLAG
 from babeldoc.magazine.detectors.base import DetectionContext
@@ -67,6 +73,7 @@ __all__ = [
     "detect_issues",
     "detector_config",
     "run_detectors",
+    "source_geometry_of",
 ]
 
 REPORT_NAME = "issues.json"
@@ -75,9 +82,18 @@ REPORT_NAME = "issues.json"
 SWITCH = "magazine_detect"
 
 # Every detector, by the name the configuration steers it with. A module is a
-# detector by carrying NAME, KIND, REQUIRES_TRANSLATION and detect().
+# detector by carrying NAME, KIND, REQUIRES_TRANSLATION,
+# REQUIRES_SOURCE_GEOMETRY and detect().
 DETECTORS = {
-    module.NAME: module for module in (residue, fragment, overlap, escalation)
+    module.NAME: module
+    for module in (
+        residue,
+        fragment,
+        overlap,
+        page_bounds,
+        collision,
+        escalation,
+    )
 }
 
 
@@ -97,13 +113,21 @@ def build_context(
     working_dir: Path | None,
     translation_performed: bool = True,
     iteration: int = 0,
+    source_geometry: object | None = None,
 ) -> DetectionContext:
-    """One document as the detectors read it, each page carrying its policy."""
+    """One document as the detectors read it, each page carrying its policy.
+
+    The source layout is loaded from the working directory where none is
+    supplied. A caller that detects the same document several times supplies it
+    instead, so the checkpoint behind it is read once rather than once per pass.
+    """
     taxonomy = load_taxonomy()
     pages = [
         PageView(label=label, page=page, policy=taxonomy.policy_of(page.page_kind))
         for label, page in labeled_pages(docs)
     ]
+    if source_geometry is None and working_dir is not None:
+        source_geometry = source_geometry_of(working_dir, config)
     return DetectionContext(
         pages=pages,
         config=config,
@@ -111,7 +135,13 @@ def build_context(
         iteration=iteration,
         translation_performed=translation_performed,
         working_dir=working_dir,
+        source_geometry=source_geometry,
     )
+
+
+def source_geometry_of(working_dir, config: DetectorConfig):
+    """The layout as the source drew it, from the stage the bounds declare."""
+    return source_geometry.load(working_dir, config.source_geometry_stage)
 
 
 def _selected(context: DetectionContext) -> dict[str, list[PageView]]:
@@ -145,6 +175,13 @@ def run_detectors(context: DetectionContext) -> list[Issue]:
                 f"carries no translated text to answer for; not run"
             )
             continue
+        if module.REQUIRES_SOURCE_GEOMETRY and context.source_geometry is None:
+            context.notes.append(
+                f"{name}: this run kept no checkpoint of the layout as the "
+                f"source drew it, so there is nothing to compare the finished "
+                f"page against; not run"
+            )
+            continue
         scoped = DetectionContext(
             pages=pages,
             config=context.config,
@@ -152,6 +189,7 @@ def run_detectors(context: DetectionContext) -> list[Issue]:
             iteration=context.iteration,
             translation_performed=context.translation_performed,
             working_dir=context.working_dir,
+            source_geometry=context.source_geometry,
             notes=context.notes,
         )
         found.extend(module.detect(scoped))
@@ -173,6 +211,15 @@ def as_record(context: DetectionContext, issues: list[Issue]) -> dict:
             for name, views in sorted(selection.items())
         },
         "document_detectors": list(context.config.document_detectors),
+        "source_geometry": (
+            None
+            if context.source_geometry is None
+            else {
+                "stage": context.source_geometry.stage,
+                "checkpoint": context.source_geometry.path,
+                "paragraphs": len(context.source_geometry.boxes),
+            }
+        ),
         "notes": list(context.notes),
         "issues": [issue.as_record() for issue in issues],
     }

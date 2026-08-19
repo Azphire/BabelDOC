@@ -32,6 +32,7 @@ KIND = "untranslated_residue"
 # A residue finding is only meaningful about a document translation was asked
 # for: where it was not, every paragraph is its source by construction.
 REQUIRES_TRANSLATION = True
+REQUIRES_SOURCE_GEOMETRY = False
 
 
 def measure(text: str, script: str) -> tuple[int, int, float]:

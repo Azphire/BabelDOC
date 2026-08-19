@@ -22,6 +22,14 @@ back, what was rejected and why, what was written and what the recheck then
 found -- because a loop whose reasoning is not on paper is one nobody can audit
 after the fact.
 
+Which mechanism carries out a decision is a table rather than a branch. Each
+declared action has one row naming how many paragraphs a finding of its kind is
+about, the rule that decides whether one finding is one it may act on, and the
+method that carries it out. An action the configuration declares and the table
+does not is refused: a vocabulary entry with no mechanism behind it must stop
+the iteration, never be carried out by whichever mechanism happened to be
+nearest.
+
 Two conservation rules hold over the whole run and are checked rather than
 trusted. The document keeps its pages and every page keeps its paragraphs. And
 every paragraph outside the set this run wrote into is byte for byte what it
@@ -56,8 +64,11 @@ from babeldoc.magazine.detectors.base import CONFIG_PATH as DETECTOR_CONFIG_PATH
 from babeldoc.magazine.detectors.base import box_tuple
 from babeldoc.magazine.drop_cap import paragraph_reference
 from babeldoc.magazine.react import actions
+from babeldoc.magazine.react import collision
+from babeldoc.magazine.react import contain
 from babeldoc.magazine.react import writeback
 from babeldoc.magazine.react.config import CONFIG_PATH
+from babeldoc.magazine.react.config import MAX_PARAGRAPHS
 from babeldoc.magazine.react.config import load_repair_config
 from babeldoc.magazine.react.decide import CachedDecisionClient
 from babeldoc.magazine.react.decide import EngineTransport
@@ -78,6 +89,7 @@ STOP_NO_ENGINE = "no_translation_engine_configured"
 STOP_NO_DECISION = "no_usable_decision"
 STOP_NO_ACTION = "decision_applied_nothing"
 STOP_NOTHING_APPLICABLE = "no_finding_the_action_may_act_on"
+STOP_NO_MECHANISM = "the_chosen_action_has_no_mechanism_behind_it"
 STOP_NOT_CONVERGING = "finding_count_did_not_strictly_decrease"
 STOP_NOTHING_WRITTEN = "no_paragraph_was_written"
 STOP_CONVERGED_WITH_RESIDUALS = "converged_with_residuals"
@@ -186,7 +198,15 @@ def counts_of(issues) -> dict:
     return {"total": len(issues), "by_kind": by_kind}
 
 
-def detect(translation_config, docs, config, iteration: int):
+def detect(translation_config, docs, config, iteration: int, source_geometry=None):
+    """One detection pass over the document as it currently stands.
+
+    The working directory is deliberately not handed over: what a detector reads
+    from it is the chain pass sidecar, which describes the run rather than this
+    iteration, and surfacing it again on every pass would count one escalation
+    once per iteration. The source layout is handed over instead, because it is
+    about the document rather than about the run, and the loop loads it once.
+    """
     context = detectors.build_context(
         docs,
         config,
@@ -196,8 +216,24 @@ def detect(translation_config, docs, config, iteration: int):
             translation_config, "skip_translation", False
         ),
         iteration=iteration,
+        source_geometry=source_geometry,
     )
     return detectors.run_detectors(context), context
+
+
+@dataclass(frozen=True)
+class Handler:
+    """How one member of the action vocabulary is selected for and carried out.
+
+    One row per declared action, and the row is the whole of the binding between
+    the name a decision may say and the code that answers for it. An action with
+    no row is an action the loop refuses to carry out rather than one it carries
+    out with somebody else's mechanism.
+    """
+
+    paragraphs_per_finding: int
+    admits: object
+    apply: object
 
 
 class RepairLoop:
@@ -232,6 +268,13 @@ class RepairLoop:
         # The document as it stood before the first iteration, taken once the
         # run begins and put back if the run cannot finish.
         self.baseline = None
+        # Where every paragraph stood before anything was translated, read from
+        # the run's own checkpoint. Loaded once and handed to every pass: the
+        # loop detects several times over one document and the file behind this
+        # is the whole untranslated document.
+        self.source_layout = detectors.source_geometry_of(
+            self.working_dir, self.detector_config
+        )
 
     # -- clients ----------------------------------------------------------
 
@@ -276,15 +319,41 @@ class RepairLoop:
             self.typesetting = Typesetting(self.translation_config)
         return self.typesetting
 
+    def _handlers(self) -> dict[str, Handler]:
+        """The mechanism behind each declared action, by the name it is named by.
+
+        The whole binding between the vocabulary a decision may say and the code
+        that answers for it, in one table. An action the configuration declares
+        and this does not is refused rather than carried out by whichever
+        mechanism happened to be nearest.
+        """
+        return {
+            actions.NAME: Handler(
+                paragraphs_per_finding=actions.PARAGRAPHS_PER_FINDING,
+                admits=actions.admits_candidate,
+                apply=self._translate_orphans,
+            ),
+            contain.NAME: Handler(
+                paragraphs_per_finding=contain.PARAGRAPHS_PER_FINDING,
+                admits=contain.admits,
+                apply=self._contain,
+            ),
+            collision.NAME: Handler(
+                paragraphs_per_finding=collision.PARAGRAPHS_PER_FINDING,
+                admits=collision.admits,
+                apply=self._apply_nothing,
+            ),
+        }
+
     # -- one iteration ----------------------------------------------------
 
-    def _candidates(self, issues, decision, action, context):
+    def _candidates(self, issues, decision, action, context, handler):
         """The findings the decision named, resolved and filtered, in its order."""
         pages_by_label = {view.label: view for view in context.pages}
         by_id = {issue.id: issue for issue in issues}
         records: list[actions.Application] = []
         accepted: list[actions.Candidate] = []
-        limit = int(decision.parameters.get(actions.MAX_PARAGRAPHS, 0))
+        limit = int(decision.parameters.get(MAX_PARAGRAPHS, 0))
         for issue_id in decision.issue_ids:
             issue = by_id.get(issue_id)
             if issue is None:
@@ -307,9 +376,11 @@ class RepairLoop:
                     )
                 )
                 continue
-            if len(issue.paragraph_refs) != 1:
-                # This action writes into one paragraph. A finding about a run
-                # of them is a different repair, and v1 does not have one.
+            if len(issue.paragraph_refs) != handler.paragraphs_per_finding:
+                # An action answers for findings of one shape: the orphan one
+                # writes into a single paragraph, and a collision is a statement
+                # about a pair. A finding of any other shape is a different
+                # repair, and v1 does not have one.
                 records.append(
                     actions.Application(
                         issue_id=issue_id,
@@ -330,9 +401,7 @@ class RepairLoop:
                     )
                 )
                 continue
-            verdict = actions.admits(
-                issue, candidate.paragraph, action, candidate.source_text
-            )
+            verdict = handler.admits(issue, candidate, action)
             if verdict != actions.ACCEPTED:
                 records.append(
                     actions.Application(
@@ -369,7 +438,43 @@ class RepairLoop:
             accepted.append(candidate)
         return accepted, records
 
-    def _apply(self, candidates, context, snapshot: Snapshot):
+    def _apply_nothing(self, candidates, context, snapshot: Snapshot, action):
+        """The mechanism of an action that writes nothing. Nothing is written.
+
+        Reached only where an action admitted a candidate without having a
+        mechanism to apply to it, which no declared action does; the loop then
+        stops with nothing written rather than with something unexplained.
+        """
+        return []
+
+    def _contain(self, candidates, context, snapshot: Snapshot, action):
+        """Put each admitted paragraph back inside its page. What happened.
+
+        Where inside is the action's own declared margin, read from the
+        vocabulary rather than taken from the finding: what a repair is measured
+        against has to be the declaration and not a number that travelled
+        through a request.
+        """
+        positions = {
+            view.label: position for position, view in enumerate(context.pages)
+        }
+        records: list[actions.Application] = []
+        for candidate in candidates:
+            position = positions[candidate.page_index]
+            snapshot.take(position, candidate.page, candidate.paragraph_index)
+            outcome = contain.apply_one(candidate, action)
+            if not outcome.changed:
+                candidate.page.pdf_paragraph[candidate.paragraph_index] = (
+                    snapshot.paragraphs.pop((position, candidate.paragraph_index))
+                )
+                records.append(outcome)
+                continue
+            self.touched.add(candidate.reference)
+            self.applications += 1
+            records.append(outcome)
+        return records
+
+    def _translate_orphans(self, candidates, context, snapshot: Snapshot, action):
         """Translate and write each admitted candidate. Returns what happened."""
         pages_by_label = {view.label: view for view in context.pages}
         positions = {view.label: position for position, view in enumerate(context.pages)}
@@ -492,9 +597,22 @@ class RepairLoop:
             return OUTCOME_INERT, STOP_NO_ACTION, issues
 
         action = self.repair_config.action(decision.action)
-        candidates, rejected = self._candidates(working, decision, action, context)
+        handler = self._handlers().get(decision.action)
+        if handler is None:
+            record["outcome"] = OUTCOME_INERT
+            logger.error(
+                "react: the vocabulary declares %r but nothing here carries it "
+                "out; no paragraph was touched",
+                decision.action,
+            )
+            return OUTCOME_INERT, STOP_NO_MECHANISM, issues
+        candidates, rejected = self._candidates(
+            working, decision, action, context, handler
+        )
         snapshot = Snapshot()
-        applied = self._apply(candidates, context, snapshot) if candidates else []
+        applied = (
+            handler.apply(candidates, context, snapshot, action) if candidates else []
+        )
         record["applicability"] = [item.as_record() for item in rejected]
         record["executed"] = [item.as_record() for item in applied]
         written = [item for item in applied if item.changed]
@@ -508,7 +626,11 @@ class RepairLoop:
             )
 
         rechecked, new_context = detect(
-            self.translation_config, self.docs, self.detector_config, iteration
+            self.translation_config,
+            self.docs,
+            self.detector_config,
+            iteration,
+            self.source_layout,
         )
         before = {issue.id for issue in issues}
         after = {issue.id for issue in rechecked}
@@ -573,7 +695,11 @@ class RepairLoop:
         self.baseline = before_document
 
         issues, context = detect(
-            self.translation_config, self.docs, self.detector_config, 0
+            self.translation_config,
+            self.docs,
+            self.detector_config,
+            0,
+            self.source_layout,
         )
         stop = self._standing(issues)
         iteration = 0
@@ -619,7 +745,11 @@ class RepairLoop:
             self.treated.clear()
             stop = f"{VIOLATED}: conservation"
             issues, context = detect(
-                self.translation_config, self.docs, self.detector_config, 0
+                self.translation_config,
+                self.docs,
+                self.detector_config,
+                0,
+                self.source_layout,
             )
 
         self._write(issues, context, conservation, stop, iteration)
@@ -690,7 +820,13 @@ def repair_document(translation_config, docs):
         if loop.baseline is not None:
             docs.page = loop.baseline.page
         config = detectors.detector_config()
-        issues, context = detect(translation_config, docs, config, 0)
+        issues, context = detect(
+            translation_config,
+            docs,
+            config,
+            0,
+            detectors.source_geometry_of(loop.working_dir, config),
+        )
         detectors.write_report(
             loop.working_dir, detectors.as_record(context, issues)
         )

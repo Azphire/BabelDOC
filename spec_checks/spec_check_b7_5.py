@@ -152,6 +152,14 @@ TRUTH_DIGESTS = {
     "reviews/Courier-en.decisions.json": (
         "372a6f7cbcdd942ffa971cfa5184689510b53089ace10e73920a195bb07a4fc4"
     ),
+    # The second ruling, filed by the corpus owner in commit "reviews: the
+    # FD-en-v2 drop cap ruling, filed by the corpus owner" after batch b9.4
+    # carried the b9.4 draft out to a human. Pinned here at the digest that
+    # commit delivered, for the same reason the first one is: the batches that
+    # follow read it, apply it and report on it, and write none of it.
+    "reviews/FD-en-v2.decisions.json": (
+        "8850413eca6e0f3fecd1e901841a447caff41e251053565432176015d94ac470"
+    ),
 }
 
 # The samples this refresh retired. They are named here and nowhere else: what

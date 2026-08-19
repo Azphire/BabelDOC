@@ -137,11 +137,15 @@ NESTED_SUPPRESSED = os.environ.get("SPEC_NO_NESTED") == "1"
 # inventories, and its own coverage of the read-only guard is over the state
 # b9.2r established. Batch b9.4 follows for the same reason: its documents are
 # built in its own file, the frozen artefacts it reads are its batch's and the
-# corpus run's, and it cites nothing this gate inventories.
+# corpus run's, and it cites nothing this gate inventories. Batch b9.5 follows on
+# the same terms: its documents and its repair loop are built inside its own
+# file, and the two documents it does read under docs/eval it reads as prose
+# this gate already holds to its own rules.
 AFTER_THIS_GATE = (
     "spec_check_b9_2r.py",
     "spec_check_b9_3.py",
     "spec_check_b9_4.py",
+    "spec_check_b9_5.py",
 )
 
 # Paths this batch may change. Nothing under babeldoc/, nothing under configs/,

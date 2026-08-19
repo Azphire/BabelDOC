@@ -90,7 +90,16 @@ OUTPUT_DIR = ROOT / "examples" / "output" / "b8"
 FIXTURE = OUTPUT_DIR / "Courier-en.typeset.fixture.xml"
 FIXTURE_PROVENANCE = OUTPUT_DIR / "Courier-en.typeset.fixture.json"
 CENSUS_NAME = "corpus_detection.json"
-CENSUS_TABLE = "corpus_detection.md"
+
+# The census this gate regenerates on every sweep, and the one it does not.
+# ``corpus_detection.md`` is tracked, is quoted by the evidence ledger as row
+# E-10, and is therefore frozen: a gate may read produced evidence git carries
+# and may not write it. So the current census is written beside it under its own
+# name, and the tracked table stands as the record of the batch that made it. A
+# later batch adding a detector then widens the census without rewriting a file
+# somebody has already cited.
+CENSUS_TABLE = "corpus_detection.latest.md"
+FROZEN_CENSUS_TABLE = "corpus_detection.md"
 
 # The finding this batch exists for, by the reference the review layer names it
 # with, and the label the layout parser gave it.
@@ -693,6 +702,10 @@ def write_census(rows: list[dict]) -> None:
     lines = [
         "# Corpus detection census",
         "",
+        "The current census, rewritten on every sweep. The tracked",
+        f"`{FROZEN_CENSUS_TABLE}` beside it is the census of the batch that",
+        "first made it, is cited as evidence, and is never written here.",
+        "",
         "Written by `spec_checks/spec_check_b8.py`, one dry run per sample with",
         "`magazine_detect` up. These runs perform no translation, so the two",
         "detectors that answer about a translated document are skipped and say",
@@ -725,11 +738,13 @@ def write_census(rows: list[dict]) -> None:
     for row in rows:
         for issue in row["report"]["issues"]:
             evidence = issue["evidence"]
-            summary = (
-                f"members={evidence['member_count']} "
-                f"labels={','.join(evidence['layout_labels'])}"
-                if issue["kind"] == "fragment_cluster"
-                else f"iou={evidence.get('iou')} on {evidence.get('artwork_source')}"
+            # Every measurement the finding carries, whatever kind it is: a
+            # column naming one kind's fields would print nothing for the next
+            # kind somebody adds.
+            summary = ", ".join(
+                f"{key}={value}"
+                for key, value in sorted(evidence.items())
+                if isinstance(value, int | float) and not isinstance(value, bool)
             )
             lines.append(
                 f"| {row['sample']} | {issue['detector']} | {issue['page']} | "

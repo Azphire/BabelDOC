@@ -40,6 +40,25 @@ ROOT = Path(__file__).resolve().parents[1]
 GATE_DIR = ROOT / "spec_checks"
 PYTHON = sys.executable
 
+# Everything this runner and the gates below it print is UTF-8, declared on both
+# sides of every hop rather than left to the platform. A console picks an
+# encoding from the terminal; a redirect into a file picks one from the locale,
+# which on a Windows workstation is a legacy codepage that cannot carry the
+# characters a corpus of magazines puts into a filename or a note. The failure
+# it produces is not a mangled line but a raised UnicodeEncodeError, so a sweep
+# that ran for hours ends with no summary at all.
+IO_ENCODING = "utf-8"
+
+# What an unencodable character becomes. A replacement mark in a gate's echoed
+# output is a legible sweep; a raise is not one.
+IO_ERRORS = "replace"
+
+for _stream in (sys.stdout, sys.stderr):
+    reconfigure = getattr(_stream, "reconfigure", None)
+    if reconfigure is not None:
+        with contextlib.suppress(Exception):
+            reconfigure(encoding=IO_ENCODING, errors=IO_ERRORS)
+
 # Completion marker for a caller polling a sweep it launched in the background.
 DONE_PATH = ROOT / "examples" / "output" / "run_all.done.json"
 
@@ -85,6 +104,7 @@ GATES = (
     "spec_check_b9_2r.py",
     "spec_check_b9_3.py",
     "spec_check_b9_4.py",
+    "spec_check_b9_5.py",
 )
 
 
@@ -111,6 +131,10 @@ def run_gate(gate: str, fast: bool = False) -> tuple[int, float, str]:
     # Unbuffered, so the echoed output tracks the gate rather than lagging a
     # block behind it on a run that takes minutes.
     env["PYTHONUNBUFFERED"] = "1"
+    # The gate writes into a pipe, which has no terminal to take an encoding
+    # from, so it is told the one this end decodes with instead of falling back
+    # to the platform's.
+    env["PYTHONIOENCODING"] = f"{IO_ENCODING}:{IO_ERRORS}"
 
     before = frozen.snapshot()
     started = time.monotonic()
@@ -123,8 +147,8 @@ def run_gate(gate: str, fast: bool = False) -> tuple[int, float, str]:
         stdout=subprocess.PIPE,
         stderr=subprocess.STDOUT,
         text=True,
-        encoding="utf-8",
-        errors="replace",
+        encoding=IO_ENCODING,
+        errors=IO_ERRORS,
         bufsize=1,
     )
     for line in process.stdout or ():
@@ -203,6 +227,9 @@ def prune_outputs() -> None:
         cwd=ROOT,
         capture_output=True,
         text=True,
+        encoding=IO_ENCODING,
+        errors=IO_ERRORS,
+        env={**os.environ, "PYTHONIOENCODING": f"{IO_ENCODING}:{IO_ERRORS}"},
         check=False,
     )
     for line in (proc.stdout or "").splitlines():
