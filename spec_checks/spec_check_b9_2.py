@@ -110,6 +110,12 @@ from babeldoc.magazine.taxonomy import load_taxonomy  # noqa: E402
 from spec_checks import artifacts  # noqa: E402
 from spec_checks import harness  # noqa: E402
 
+# Which set of the sweep this gate belongs to. It drives no pipeline build:
+# every document it asserts on is a stub it builds itself or evidence a
+# batch froze, so it answers in seconds to a couple of minutes and runs on
+# every batch.
+GATE_SET = "fast"
+
 BATCH_TAG = "batch-b9.2.2"
 
 PYTHON = sys.executable
@@ -1055,7 +1061,7 @@ def check_04a_every_parameter_is_bounded() -> None:
     with title_typeset.CONFIG_PATH.open(encoding="utf-8") as f:
         raw = json.load(f)
     for key, value in raw.items():
-        if key in ("description", title_typeset.FLOOR_KEY) or key.endswith(
+        if key in ("description", *title_typeset._STRUCTURAL_KEYS) or key.endswith(
             "_allowed_range"
         ):
             continue
@@ -1063,6 +1069,20 @@ def check_04a_every_parameter_is_bounded() -> None:
             continue
         if f"{key}_allowed_range" not in raw:
             faults.append(f"{key} declares no range")
+    # A structural key states per target language what a flat key states once,
+    # so it is bounded by that flat key's own vocabulary or range rather than by
+    # one of its own. Checked here so the property the loop above asserts --
+    # nothing numeric is declared without a bound -- reaches the tables too.
+    for name, policy_value in raw.get(title_typeset.FLOOR_BY_TARGET_KEY, {}).items():
+        if policy_value not in raw.get(title_typeset.FLOOR_VOCABULARY_KEY, []):
+            faults.append(f"{title_typeset.FLOOR_BY_TARGET_KEY}[{name}] is unbounded")
+    low, high = (
+        raw.get(f"{title_typeset.MIN_SCALE_KEY}_allowed_range", "0..0")
+        .split("..")
+    )
+    for name, scale in raw.get(title_typeset.MIN_SCALE_BY_TARGET_KEY, {}).items():
+        if not float(low) <= float(scale) <= float(high):
+            faults.append(f"{title_typeset.MIN_SCALE_BY_TARGET_KEY}[{name}] {scale}")
     if raw.get(title_typeset.FLOOR_KEY) not in raw.get(
         title_typeset.FLOOR_VOCABULARY_KEY, []
     ):
@@ -1103,6 +1123,18 @@ def check_04b_a_bad_configuration_is_refused() -> None:
     refused(
         lambda item: item.__setitem__(title_typeset.FLOOR_VOCABULARY_KEY, ["wrap"]),
         "a vocabulary without the raising policy",
+    )
+    refused(
+        lambda item: item.__setitem__(
+            title_typeset.FLOOR_BY_TARGET_KEY, {"en": "nope"}
+        ),
+        "a per target policy outside the vocabulary",
+    )
+    refused(
+        lambda item: item.__setitem__(
+            title_typeset.MIN_SCALE_BY_TARGET_KEY, {"en": 9.0}
+        ),
+        "a per target floor outside the range",
     )
     refused(
         lambda item: item.__setitem__("title_pair_classes", ["not_a_class"]),

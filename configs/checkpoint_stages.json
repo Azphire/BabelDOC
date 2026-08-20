@@ -77,6 +77,11 @@
       "name": "title_typeset.report.json",
       "stage": "typesetting",
       "switch": "magazine_title_typeset"
+    },
+    {
+      "name": "paren_dedup.report.json",
+      "stage": "il_translated",
+      "switch": "magazine_paren_dedup"
     }
   ]
 }

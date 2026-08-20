@@ -1,0 +1,23 @@
+{
+  "sample": "Courier-en",
+  "baseline": "examples\\output\\F2\\Courier-en\\work\\Courier-en\\checkpoint.11_typesetting.json",
+  "baseline_pages": 8,
+  "pages": 8,
+  "target_pages": {
+    "4": {
+      "baseline_paragraphs": 24,
+      "paragraphs": 24,
+      "differing": []
+    },
+    "5": {
+      "baseline_paragraphs": 12,
+      "paragraphs": 12,
+      "differing": []
+    },
+    "7": {
+      "baseline_paragraphs": 18,
+      "paragraphs": 18,
+      "differing": []
+    }
+  }
+}

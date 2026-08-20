@@ -78,6 +78,12 @@ from babeldoc.translator.translator import BaseTranslator  # noqa: E402
 from spec_checks import artifacts  # noqa: E402
 from spec_checks import harness  # noqa: E402
 
+# Which set of the sweep this gate belongs to. It drives no pipeline build:
+# every document it asserts on is a stub it builds itself or evidence a
+# batch froze, so it answers in seconds to a couple of minutes and runs on
+# every batch.
+GATE_SET = "fast"
+
 BATCH_TAG = "batch-b9.1"
 
 PYTHON = sys.executable

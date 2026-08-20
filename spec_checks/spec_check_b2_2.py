@@ -40,6 +40,12 @@ from babeldoc.magazine.page_classifier import REPORT_NAME  # noqa: E402
 from spec_checks import artifacts  # noqa: E402
 from spec_checks import harness  # noqa: E402
 
+# Which set of the sweep this gate belongs to. It asks the artifact builder
+# for documents, so a cold slot means re-running the pipeline over the
+# corpus -- minutes per sample -- and it runs on the cycle's full sweep
+# rather than on every batch.
+GATE_SET = "sweep"
+
 PYTHON = sys.executable
 MANIFEST_PATH = ROOT / "corpus" / "manifest.json"
 REGISTRY_PATH = ROOT / "corpus" / "registry.user.json"

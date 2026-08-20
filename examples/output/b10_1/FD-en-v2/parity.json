@@ -1,0 +1,19 @@
+{
+  "sample": "FD-en-v2",
+  "baseline": "examples\\output\\F2\\FD-en-v2\\work\\FD-en-v2\\translate_tracking.json",
+  "groups_read": [
+    "page",
+    "cross_page",
+    "cross_column"
+  ],
+  "groups_present": [
+    "cross_column",
+    "cross_page",
+    "page"
+  ],
+  "requests": 161,
+  "baseline_requests": 161,
+  "inputs_sha256": "a4a972fe30ce07e2452c7e0eaff9adcfee7fce8d8508d3d2b6f6fc09abfc04d5",
+  "baseline_inputs_sha256": "a4a972fe30ce07e2452c7e0eaff9adcfee7fce8d8508d3d2b6f6fc09abfc04d5",
+  "resampled": []
+}

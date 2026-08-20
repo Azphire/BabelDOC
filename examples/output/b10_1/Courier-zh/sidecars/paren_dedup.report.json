@@ -1,0 +1,56 @@
+{
+  "closers": [
+    ")",
+    "）"
+  ],
+  "max_span_chars": 40,
+  "openers": [
+    "(",
+    "（"
+  ],
+  "pages": 8,
+  "paragraphs": [
+    {
+      "after": "Marcelo Silva de Sousa",
+      "before": "Marcelo Silva de Sousa (Marcelo Silva de Sousa)",
+      "debug_id": "m5toj",
+      "page": 1,
+      "reference": "p1#13",
+      "removed_compositions": 1,
+      "removed_unicode": 1,
+      "spans": [
+        "Marcelo Silva de Sousa"
+      ]
+    },
+    {
+      "after": "Marcelo Silva de Sousa",
+      "before": "Marcelo Silva de Sousa (Marcelo Silva de Sousa)",
+      "debug_id": "DZ2Sc",
+      "page": 5,
+      "reference": "p5#11",
+      "removed_compositions": 1,
+      "removed_unicode": 1,
+      "spans": [
+        "Marcelo Silva de Sousa"
+      ]
+    },
+    {
+      "after": "David Jefferson",
+      "before": "David Jefferson (David Jefferson)",
+      "debug_id": "joq9T",
+      "page": 7,
+      "reference": "p7#18",
+      "removed_compositions": 1,
+      "removed_unicode": 1,
+      "spans": [
+        "David Jefferson"
+      ]
+    }
+  ],
+  "switch": "magazine_paren_dedup",
+  "totals": {
+    "paragraphs_folded": 3,
+    "spans_removed": 3,
+    "unicode_spans_removed": 3
+  }
+}

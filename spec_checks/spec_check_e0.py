@@ -70,6 +70,12 @@ sys.path.insert(0, str(ROOT))
 from spec_checks import artifacts  # noqa: E402
 from spec_checks import harness  # noqa: E402
 
+# Which set of the sweep this gate belongs to. It drives no pipeline build:
+# every document it asserts on is a stub it builds itself or evidence a
+# batch froze, so it answers in seconds to a couple of minutes and runs on
+# every batch.
+GATE_SET = "fast"
+
 BATCH_TAG = "batch-e0"
 
 PYTHON = sys.executable
@@ -145,7 +151,10 @@ NESTED_SUPPRESSED = os.environ.get("SPEC_NO_NESTED") == "1"
 # document under docs/eval as prose, and cites nothing this gate inventories.
 # Batch b9.7 follows on the same terms again: its evidence is the decision
 # records its own batch froze, the fixtures it reads belong to b9.5 and b9.6,
-# and it reads no document under docs/eval at all.
+# and it reads no document under docs/eval at all. Batch b10.1 follows on the
+# same terms once more: its evidence is the replay its own batch froze under
+# examples/output/b10_1 and the F2 run beside it, and it reads no document under
+# docs/eval.
 AFTER_THIS_GATE = (
     "spec_check_b9_2r.py",
     "spec_check_b9_3.py",
@@ -153,6 +162,7 @@ AFTER_THIS_GATE = (
     "spec_check_b9_5.py",
     "spec_check_b9_6.py",
     "spec_check_b9_7.py",
+    "spec_check_b10_1.py",
 )
 
 # Paths this batch may change. Nothing under babeldoc/, nothing under configs/,

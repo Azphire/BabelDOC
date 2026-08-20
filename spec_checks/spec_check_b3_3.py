@@ -53,6 +53,12 @@ from babeldoc.magazine.cache_setup import use_project_cache  # noqa: E402
 from spec_checks import artifacts  # noqa: E402
 from spec_checks import harness  # noqa: E402
 
+# Which set of the sweep this gate belongs to. It drives no pipeline build:
+# every document it asserts on is a stub it builds itself or evidence a
+# batch froze, so it answers in seconds to a couple of minutes and runs on
+# every batch.
+GATE_SET = "fast"
+
 os.environ.pop(vlm_client.load_vlm_config().api_key_env, None)
 
 BATCH_TAG = "batch-b3.3"

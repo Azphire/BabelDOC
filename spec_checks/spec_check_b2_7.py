@@ -43,6 +43,12 @@ from spec_checks import artifacts  # noqa: E402
 from spec_checks import harness  # noqa: E402
 from spec_checks import run_all as runner  # noqa: E402
 
+# Which set of the sweep this gate belongs to. It asks the artifact builder
+# for documents, so a cold slot means re-running the pipeline over the
+# corpus -- minutes per sample -- and it runs on the cycle's full sweep
+# rather than on every batch.
+GATE_SET = "sweep"
+
 PYTHON = sys.executable
 # Tag that freezes this batch; once it exists the scope assertions read the
 # delta it introduced instead of the working tree.

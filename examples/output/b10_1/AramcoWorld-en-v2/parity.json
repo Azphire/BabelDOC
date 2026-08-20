@@ -1,0 +1,32 @@
+{
+  "sample": "AramcoWorld-en-v2",
+  "baseline": "examples\\output\\F2\\AramcoWorld-en-v2\\work\\AramcoWorld-en-v2\\translate_tracking.json",
+  "groups_read": [
+    "page",
+    "cross_page",
+    "cross_column"
+  ],
+  "groups_present": [
+    "cross_column",
+    "cross_page",
+    "page"
+  ],
+  "requests": 166,
+  "baseline_requests": 166,
+  "inputs_sha256": "c9b8c8076f8a21bad830c2a0be6bdd2c919c41129a23ec84ca887373d3363e41",
+  "baseline_inputs_sha256": "c9b8c8076f8a21bad830c2a0be6bdd2c919c41129a23ec84ca887373d3363e41",
+  "resampled": [
+    {
+      "baseline": "<style id='1'>R</style> 撒马尔罕列吉斯坦建筑群中Tilya-Kori神学院的复杂内部细节，包括其镀金的",
+      "run": "<style id='1'>R</style> 撒马尔罕列吉斯坦建筑群中的蒂利亚-科里神学院，其复杂的内部细节包括镀金的"
+    },
+    {
+      "baseline": "“例如，这座纪念碑{v1}Tilya-Kori神学院{v2}坐落在一个9米高的地基上，地基下有一层10厘米厚的芦苇层，”他说。“当受到地震或水位影响时，芦苇会起到天然缓冲的作用。我们的祖先计算了这一切。”",
+      "run": "“例如，这座纪念碑{v1}蒂利亚-科里神学院{v2}坐落在一个9米高的地基上，地基下有一层10厘米厚的芦苇层，”他说。“当受到地震或水位影响时，芦苇会起到天然缓冲的作用。我们的祖先计算了这一切。”"
+    },
+    {
+      "baseline": "在Tilya-Kori神学院内，游客现在沿着曾经有装饰性石雕的大型砖面行走。",
+      "run": "在蒂利亚-科里神学院内，游客现在沿着曾经有装饰性石雕的大型砖面行走。"
+    }
+  ]
+}

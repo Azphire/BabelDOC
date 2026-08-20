@@ -85,6 +85,8 @@ them: `magazine/reading_order.py` is now the single place a paragraph is turned
 into the text it shows, and `magazine/checkpoint.py` resolves a checkpoint
 directory to the archive standing for it, which is what lets a frozen baseline
 be one file rather than a directory without any reader knowing.
+| `babeldoc/format/pdf/high_level.py` | module imports | Import the `paren_dedup` module from `babeldoc.magazine`. | B10.1 |
+| `babeldoc/format/pdf/high_level.py` | `_do_translate_single` | Call `paren_dedup.apply(translation_config, docs)` after `hitl.after_translate` and before the `il_translated` debug dump, gated inside by `magazine_paren_dedup`. That point is the only one at which the translation is written back and the geometry it will be set at is not yet fixed, so a paragraph shortened there is laid out once rather than twice. | B10.1 |
 
 ## Couplings
 

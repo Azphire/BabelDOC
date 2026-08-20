@@ -79,6 +79,12 @@ from babeldoc.magazine.prompt_loader import prompt_path  # noqa: E402
 from spec_checks import artifacts  # noqa: E402
 from spec_checks import harness  # noqa: E402
 
+# Which set of the sweep this gate belongs to. It asks the artifact builder
+# for documents, so a cold slot means re-running the pipeline over the
+# corpus -- minutes per sample -- and it runs on the cycle's full sweep
+# rather than on every batch.
+GATE_SET = "sweep"
+
 # The commit this session starts from, and what the switch-down comparison is
 # made against: with the context down this is that translator, byte for byte.
 BASE_TAG = "batch-b6.1"

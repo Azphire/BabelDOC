@@ -57,10 +57,13 @@ from __future__ import annotations
 import copy
 import json
 import logging
+from collections.abc import Mapping
 from dataclasses import dataclass
+from dataclasses import replace
 from difflib import SequenceMatcher
 from functools import lru_cache
 from pathlib import Path
+from types import MappingProxyType
 
 from babeldoc.format.pdf.document_il import il_version_1
 from babeldoc.format.pdf.document_il.midend.typesetting import Typesetting
@@ -95,17 +98,34 @@ WINDOW_SWITCH = "magazine_detect"
 FLOOR_KEY = "on_floor"
 FLOOR_VOCABULARY_KEY = "on_floor_vocabulary"
 
-_STRUCTURAL_KEYS = (FLOOR_KEY,)
+# The same two policies, stated per target language. A single line constraint is
+# a property of the language the heading is set in rather than of the heading:
+# a script that carries a headline in a third of the width can be squeezed where
+# an alphabetic one cannot. Both tables are keyed by language prefix and every
+# value of them is checked against the bound its flat sibling is checked against,
+# so the declaration stays one vocabulary and one range.
+FLOOR_BY_TARGET_KEY = "on_floor_by_target"
+MIN_SCALE_KEY = "title_min_scale"
+MIN_SCALE_BY_TARGET_KEY = "title_min_scale_by_target"
+
+_STRUCTURAL_KEYS = (FLOOR_KEY, FLOOR_BY_TARGET_KEY, MIN_SCALE_BY_TARGET_KEY)
 
 # The floor policy that raises what it could not set, by the name the
 # configuration's own vocabulary declares it under. The other member of that
 # vocabulary accepts the same rendering without raising anything.
 FLOOR_ESCALATE = "escalate"
+FLOOR_WRAP = "wrap"
+
+# How a language tag is separated into subtags, and what is read as a separator
+# before it is matched.
+_SUBTAG_SEPARATOR = "-"
+_SUBTAG_ALIASES = ("_",)
 
 # What was done with one heading.
 DISPOSITION_UNCHANGED = "unchanged"
 DISPOSITION_SINGLE_LINE = "single_line"
 DISPOSITION_FLOOR = "floor_reached"
+DISPOSITION_WRAP = "wrap"
 
 # What a deduplicated layer was recovered as.
 LAYER_PARAGRAPH = "paragraph"
@@ -123,6 +143,8 @@ class TitleConfig:
     labels: tuple[str, ...]
     title_min_scale: float
     on_floor: str
+    title_min_scale_by_target: Mapping[str, float]
+    on_floor_by_target: Mapping[str, str]
     duplicate_min_iou: float
     duplicate_min_text_similarity: float
     duplicate_min_chars: int
@@ -135,10 +157,92 @@ class TitleConfig:
     def is_title(self, paragraph) -> bool:
         return getattr(paragraph, "layout_label", None) in self.labels
 
+    def for_target(self, target_lang: str | None) -> TitleConfig:
+        """This policy as the given target language states it.
+
+        Whatever the language claims replaces the flat declaration, so the rest
+        of the pass reads one floor and one policy and never asks what language
+        it is setting. What nothing claims stays as the flat keys declare it.
+        """
+        floor = _claimed(target_lang, self.on_floor_by_target)
+        scale = _claimed(target_lang, self.title_min_scale_by_target)
+        if floor is None and scale is None:
+            return self
+        return replace(
+            self,
+            on_floor=self.on_floor if floor is None else str(floor),
+            title_min_scale=(
+                self.title_min_scale if scale is None else float(scale)
+            ),
+        )
+
+
+def _claimed(target_lang: str | None, table: Mapping[str, object]):
+    """The entry a target language tag claims, longest declared prefix first.
+
+    A tag matches a prefix when it is that prefix or a subtag of it, which is
+    the rule the sentence profiles resolve a language under, so ``en`` and
+    ``en-GB`` claim one entry while ``eng`` claims neither. None where nothing
+    claims the tag, which is what sends the caller back to the flat key.
+    """
+    if not table or not target_lang:
+        return None
+    tag = target_lang.strip().lower()
+    for alias in _SUBTAG_ALIASES:
+        tag = tag.replace(alias, _SUBTAG_SEPARATOR)
+    best: tuple[int, str] | None = None
+    for key in table:
+        prefix = key.strip().lower()
+        if tag == prefix or tag.startswith(prefix + _SUBTAG_SEPARATOR):
+            if best is None or len(prefix) > best[0]:
+                best = (len(prefix), key)
+    return None if best is None else table[best[1]]
+
 
 def _require(condition: bool, message: str) -> None:
     if not condition:
         raise TitleTypesetError(message)
+
+
+def _read_target_table(raw: object, key: str, source: str) -> dict:
+    """One by-target mapping, checked for shape before its values are bounded."""
+    if raw is None:
+        return {}
+    _require(isinstance(raw, dict), f"{source}: {key} must be an object")
+    for name in raw:
+        _require(
+            isinstance(name, str) and name.strip() != "",
+            f"{source}: {key} carries a key that is not a language prefix",
+        )
+    return dict(raw)
+
+
+def _read_floor_table(raw: object, source: str, vocabulary: tuple[str, ...]):
+    """The per-language floor policies, each a member of the flat vocabulary."""
+    table = _read_target_table(raw, FLOOR_BY_TARGET_KEY, source)
+    for name, value in table.items():
+        _require(
+            value in vocabulary,
+            f"{source}: {FLOOR_BY_TARGET_KEY}[{name!r}] is {value!r}, outside "
+            f"{sorted(vocabulary)}",
+        )
+    return MappingProxyType({name: str(value) for name, value in table.items()})
+
+
+def _read_scale_table(raw: object, config: dict, source: str):
+    """The per-language floors, each inside the flat key's own allowed range."""
+    table = _read_target_table(raw, MIN_SCALE_BY_TARGET_KEY, source)
+    range_key = f"{MIN_SCALE_KEY}_allowed_range"
+    for name, value in table.items():
+        try:
+            validate_bounded_config(
+                {MIN_SCALE_KEY: value, range_key: config.get(range_key)}, CONFIG_PATH
+            )
+        except ConfigError as exc:
+            raise TitleTypesetError(
+                f"{source}: {MIN_SCALE_BY_TARGET_KEY}[{name!r}]: {exc}"
+            ) from exc
+    return MappingProxyType({name: float(value) for name, value in table.items()})
 
 
 def parse_title_config(raw: dict, source: str) -> TitleConfig:
@@ -157,11 +261,14 @@ def parse_title_config(raw: dict, source: str) -> TitleConfig:
         floor in vocabulary,
         f"{source}: {FLOOR_KEY} is {floor!r}, outside {sorted(vocabulary)}",
     )
-    _require(
-        FLOOR_ESCALATE in vocabulary,
-        f"{source}: {FLOOR_VOCABULARY_KEY} omits {FLOOR_ESCALATE!r}, which is "
-        f"the policy the report raises a heading under",
-    )
+    for policy in (FLOOR_ESCALATE, FLOOR_WRAP):
+        _require(
+            policy in vocabulary,
+            f"{source}: {FLOOR_VOCABULARY_KEY} omits {policy!r}, which is one "
+            f"of the two policies this pass lands a heading on the floor under",
+        )
+    floors_by_target = _read_floor_table(raw.get(FLOOR_BY_TARGET_KEY), source, vocabulary)
+    scales_by_target = _read_scale_table(raw.get(MIN_SCALE_BY_TARGET_KEY), raw, source)
     # The heading labels come from the chain detector's own class declaration,
     # which is what keeps one description of a heading serving both.
     declared = load_chain_config()[CLASS_LABELS_KEY]
@@ -177,8 +284,10 @@ def parse_title_config(raw: dict, source: str) -> TitleConfig:
 
     return TitleConfig(
         labels=labels,
-        title_min_scale=float(parameters["title_min_scale"]),
+        title_min_scale=float(parameters[MIN_SCALE_KEY]),
         on_floor=str(floor),
+        title_min_scale_by_target=scales_by_target,
+        on_floor_by_target=floors_by_target,
         duplicate_min_iou=float(parameters["duplicate_min_iou"]),
         duplicate_min_text_similarity=float(
             parameters["duplicate_min_text_similarity"]
@@ -560,22 +669,31 @@ def natural_width(runs: list[Run], typesetting, fonts, xobj_id) -> float | None:
     return total
 
 
-def _render(typesetting, paragraph, page, fonts) -> bool:
-    """Lay one paragraph out again in place. False where nothing came out."""
+def _render(typesetting, paragraph, page, fonts, record=None) -> bool:
+    """Lay one paragraph out again in place. False where nothing came out.
+
+    A failure is recorded on the heading as well as logged: a font the mapper
+    cannot resolve leaves the source rendering standing, which is a heading the
+    policy did not reach, and a run log is not where the record of what the pass
+    reached belongs.
+    """
     try:
         typesetting.render_paragraph(paragraph, page, fonts)
-    except Exception:  # noqa: BLE001 - a heading that cannot be laid out stands
+    except Exception as exc:  # noqa: BLE001 - a heading that cannot be laid out stands
         logger.warning(
             "title typeset: laying out %s again failed; it is left as it was",
             paragraph.debug_id,
             exc_info=True,
         )
+        if record is not None:
+            record["relayout_failed"] = True
+            record["relayout_error"] = f"{type(exc).__name__}: {exc}"
         return False
     return bool(paragraph.pdf_paragraph_composition)
 
 
 def _fit_single_line(
-    typesetting, paragraph, page, fonts, runs, start_scale, config
+    typesetting, paragraph, page, fonts, runs, start_scale, config, record=None
 ) -> tuple[bool, float, float]:
     """Shrink until the heading lands on one line. The scale it landed at.
 
@@ -588,7 +706,7 @@ def _fit_single_line(
             break
         _set_runs(paragraph, runs)
         paragraph.optimal_scale = scale
-        if not _render(typesetting, paragraph, page, fonts):
+        if not _render(typesetting, paragraph, page, fonts, record):
             return False, scale, start_scale
         bands = line_bands(laid_out_characters(paragraph), config.line_band_tolerance)
         if len(bands) <= 1:
@@ -706,7 +824,7 @@ def _process_title(
     record["required_scale"] = round(start, 4)
 
     landed, scale, _asked = _fit_single_line(
-        typesetting, paragraph, page, fonts, kept, start, config
+        typesetting, paragraph, page, fonts, kept, start, config, record
     )
     if landed:
         record["disposition"] = DISPOSITION_SINGLE_LINE
@@ -714,7 +832,12 @@ def _process_title(
         record["lines_after"] = 1
         return record
 
-    record["disposition"] = DISPOSITION_FLOOR
+    # A heading that cannot be squeezed to the floor keeps the wrapped rendering
+    # the stage produced either way; what the policy decides is whether that
+    # rendering is an answer or a question, and the disposition is what says so.
+    record["disposition"] = (
+        DISPOSITION_WRAP if config.on_floor == FLOOR_WRAP else DISPOSITION_FLOOR
+    )
     record["floor"] = config.title_min_scale
     record["on_floor"] = config.on_floor
     if dropped:
@@ -723,7 +846,7 @@ def _process_title(
         # would have produced for the text that is left.
         _set_runs(paragraph, kept)
         paragraph.optimal_scale = snapshot.optimal_scale or 1.0
-        if not _render(typesetting, paragraph, page, fonts):
+        if not _render(typesetting, paragraph, page, fonts, record):
             _restore(page, index, snapshot)
             record["duplicates"] = []
             record["restored"] = True
@@ -737,7 +860,9 @@ def _process_title(
     return record
 
 
-def as_record(config: TitleConfig, records: list[dict], pages: int) -> dict:
+def as_record(
+    config: TitleConfig, records: list[dict], pages: int, target_lang: str = ""
+) -> dict:
     escalations = [
         {
             "page": item["page"],
@@ -748,7 +873,6 @@ def as_record(config: TitleConfig, records: list[dict], pages: int) -> dict:
         }
         for item in records
         if item["disposition"] == DISPOSITION_FLOOR
-        and config.on_floor == FLOOR_ESCALATE
     ]
     duplicates = [
         {"page": item["page"], "reference": item["reference"], **finding}
@@ -761,6 +885,7 @@ def as_record(config: TitleConfig, records: list[dict], pages: int) -> dict:
         "labels": list(config.labels),
         "on_floor": config.on_floor,
         "title_min_scale": config.title_min_scale,
+        "target_lang": target_lang,
         "pages": pages,
         "totals": {
             "titles": len(records),
@@ -774,6 +899,12 @@ def as_record(config: TitleConfig, records: list[dict], pages: int) -> dict:
             ),
             "floor_reached": sum(
                 1 for item in records if item["disposition"] == DISPOSITION_FLOOR
+            ),
+            "wrapped": sum(
+                1 for item in records if item["disposition"] == DISPOSITION_WRAP
+            ),
+            "relayout_failed": sum(
+                1 for item in records if item.get("relayout_failed")
             ),
             "suppressed_paragraphs": sum(
                 1 for item in records if item.get("suppressed")
@@ -804,13 +935,14 @@ def apply(translation_config, docs) -> dict | None:
     """
     if not enabled(translation_config):
         return None
-    config = load_title_config()
+    target_lang = getattr(translation_config, "lang_out", "") or ""
+    config = load_title_config().for_target(target_lang)
     typesetting = Typesetting(translation_config)
     records: list[dict] = []
     pages = hitl.labeled_pages(docs)
     for label, page in pages:
         records.extend(process_page(page, label, typesetting, config))
-    record = as_record(config, records, len(pages))
+    record = as_record(config, records, len(pages), target_lang)
     working_dir = Path(translation_config.get_working_file_path(REPORT_NAME)).parent
     write_report(working_dir, record)
     logger.debug(

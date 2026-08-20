@@ -10,6 +10,21 @@ what make a full sweep quadratic in the number of batches; here every gate is
 executed exactly once and the runner is the thing that guarantees coverage.
 Exit code 0 when every gate passes, 1 otherwise.
 
+Two independent axes narrow a run, and they are not the same thing.
+
+``--set`` chooses **which gates run**. Every gate declares a module level
+``GATE_SET``: ``sweep`` where it asks the artifact builder for documents, so a
+cold slot re-runs the pipeline over the corpus, and ``fast`` where it answers
+from stubs it builds itself and from evidence a batch froze. ``--set all`` is
+the default and is what a release runs.
+
+``--fast`` chooses **which assertions run inside a gate**: it sets
+SPEC_FAST_TIER, and the gates skip their pipeline-tier assertions. It narrows
+every gate rather than the list of them.
+
+Both can be combined. ``--set fast`` alone still runs every assertion of every
+gate it selects, which is the combination a per-batch discipline wants.
+
 Every gate reports where its wall clock went, split into pipeline builds and
 per-assertion intervals; the runner prints the slowest assertions of each gate
 and a corpus-wide build total, so a sweep that grows slower says which of the
@@ -30,6 +45,7 @@ import argparse
 import contextlib
 import json
 import os
+import re
 import subprocess
 import sys
 import time
@@ -107,7 +123,49 @@ GATES = (
     "spec_check_b9_5.py",
     "spec_check_b9_6.py",
     "spec_check_b9_7.py",
+    "spec_check_b10_1.py",
 )
+
+
+# The two sets a gate belongs to, and how a gate says which. Every gate declares
+# a module level ``GATE_SET``; it is read out of the source rather than imported,
+# because importing a gate runs its module body.
+#
+# The split is not a stopwatch reading. A ``sweep`` gate asks the artifact
+# builder for documents, so a cold slot means re-running the whole pipeline over
+# the corpus to answer one assertion -- b10.1 measured 147 minutes across 27
+# gates on a warm cache, and 18 of them are of this kind. A ``fast`` gate answers
+# from stubs it builds itself and from evidence a batch froze, which is seconds
+# to a couple of minutes each. Both sets are always correct to run; what differs
+# is what they cost, and therefore how often a discipline can afford them.
+SETS = ("fast", "sweep")
+SET_ALL = "all"
+
+_GATE_SET = re.compile(r'^GATE_SET\s*=\s*"([a-z]+)"', re.M)
+
+
+def gate_set(gate: str) -> str:
+    """The set one gate declares. Raises where it declares none.
+
+    A gate with no declaration is not defaulted into either set: which one it
+    belongs to is a property of what it drives, the author of the gate is who
+    knows that, and a gate silently defaulted into ``fast`` would be a pipeline
+    rebuild nobody scheduled.
+    """
+    source = (GATE_DIR / gate).read_text(encoding="utf-8")
+    match = _GATE_SET.search(source)
+    if match is None:
+        raise ValueError(f"{gate} declares no GATE_SET")
+    if match.group(1) not in SETS:
+        raise ValueError(f"{gate} declares GATE_SET {match.group(1)!r}")
+    return match.group(1)
+
+
+def selected_gates(name: str) -> list[str]:
+    """The gates one selection runs, in the runner's order."""
+    if name == SET_ALL:
+        return list(GATES)
+    return [gate for gate in GATES if gate_set(gate) == name]
 
 
 def stamp() -> str:
@@ -245,10 +303,12 @@ def write_done(
     elapsed: float,
     started_at: str,
     results: list[tuple[str, int, float, str]],
+    selection: str = SET_ALL,
 ) -> Path:
     DONE_PATH.parent.mkdir(parents=True, exist_ok=True)
     payload = {
         "exit_code": exit_code,
+        "set": selection,
         "elapsed_seconds": round(elapsed, 3),
         "started_at": started_at,
         "finished_at": datetime.now().astimezone().isoformat(),
@@ -271,6 +331,16 @@ def build_parser() -> argparse.ArgumentParser:
         help="run the static tier only; pipeline-tier assertions are skipped",
     )
     parser.add_argument(
+        "--set",
+        dest="gate_set",
+        choices=(SET_ALL, *SETS),
+        default=SET_ALL,
+        help=(
+            "which set of gates to run: fast (drives no pipeline build), "
+            "sweep (asks the artifact builder for documents), or all"
+        ),
+    )
+    parser.add_argument(
         "--clear-cache",
         action="store_true",
         help="drop every cached pipeline artefact before running",
@@ -286,6 +356,18 @@ def main(argv: list[str] | None = None) -> int:
         print(f"missing gate scripts: {missing}")
         return 1
 
+    # Read every declaration before anything runs, so a gate that forgot one is
+    # a refusal at the start rather than a gap discovered by a green sweep that
+    # quietly left it out.
+    try:
+        gates = selected_gates(args.gate_set)
+    except ValueError as exc:
+        print(f"run_all refused to start: {exc}")
+        return 1
+    if not gates:
+        print(f"run_all refused to start: no gate is in the {args.gate_set!r} set")
+        return 1
+
     # Before anything is cleared, timed or built: two sweeps sharing one cache
     # corrupt each other's slots, and the completion marker this one is about to
     # overwrite belongs to the sweep already running.
@@ -297,17 +379,18 @@ def main(argv: list[str] | None = None) -> int:
     try:
         with contextlib.ExitStack() as closing:
             closing.callback(artifacts.release_sweep_lock)
-            return _sweep(args)
+            return _sweep(args, gates)
     except artifacts.SweepInProgress as exc:  # re-taken after --clear-cache
         print(f"run_all refused to continue: {exc}")
         return 2
 
 
-def _sweep(args: argparse.Namespace) -> int:
-    """One sweep, with the cache already claimed for this process.
+def _sweep(args: argparse.Namespace, gates: list[str]) -> int:
+    """One sweep over the selected gates, with the cache already claimed.
 
     Separate from ``main`` only so the lock is released on every exit path
-    including a raise; ``main`` is still where the sweep is ordered.
+    including a raise; ``main`` is still where the sweep is ordered and where
+    the selection is resolved.
     """
     started_at = datetime.now().astimezone().isoformat()
     started = time.monotonic()
@@ -320,8 +403,8 @@ def _sweep(args: argparse.Namespace) -> int:
     artifacts.clear_stats()
     govern_cache()
 
-    print("gates to run, in order:")
-    for gate in GATES:
+    print(f"gates to run, in order ({args.gate_set} set, {len(gates)} of {len(GATES)}):")
+    for gate in gates:
         print(f"  {gate}")
     if args.fast:
         print("fast tier: pipeline-tier assertions are skipped")
@@ -330,7 +413,7 @@ def _sweep(args: argparse.Namespace) -> int:
     print()
 
     results: list[tuple[str, int, float, str]] = []
-    for gate in GATES:
+    for gate in gates:
         print(f"=== {gate} start {stamp()} ===")
         code, seconds, summary = run_gate(gate, fast=args.fast)
         print(f"=== {gate} end {stamp()} exit={code} elapsed={seconds:.1f}s ===")
@@ -365,7 +448,9 @@ def _sweep(args: argparse.Namespace) -> int:
     prune_outputs()
 
     exit_code = 1 if failed else 0
-    marker = write_done(exit_code, time.monotonic() - started, started_at, results)
+    marker = write_done(
+        exit_code, time.monotonic() - started, started_at, results, args.gate_set
+    )
     print(f"  completion marker: {marker}")
     return exit_code
 

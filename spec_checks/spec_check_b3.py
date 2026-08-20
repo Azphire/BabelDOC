@@ -59,6 +59,12 @@ from spec_checks import artifacts  # noqa: E402
 from spec_checks import harness  # noqa: E402
 from spec_checks import run_all as runner  # noqa: E402
 
+# Which set of the sweep this gate belongs to. It asks the artifact builder
+# for documents, so a cold slot means re-running the pipeline over the
+# corpus -- minutes per sample -- and it runs on the cycle's full sweep
+# rather than on every batch.
+GATE_SET = "sweep"
+
 # The credential is removed before the first assertion runs, so this gate is
 # offline by construction rather than by the accident of an unset variable on
 # the machine it happens to run on. Child processes inherit the cleared

@@ -93,6 +93,12 @@ from spec_checks import artifacts  # noqa: E402
 from spec_checks import frozen  # noqa: E402
 from spec_checks import harness  # noqa: E402
 
+# Which set of the sweep this gate belongs to. It drives no pipeline build:
+# every document it asserts on is a stub it builds itself or evidence a
+# batch froze, so it answers in seconds to a couple of minutes and runs on
+# every batch.
+GATE_SET = "fast"
+
 # Both sessions of batch E1, in order. The scope assertion reads the union of
 # the deltas the tags that exist introduced, plus the working tree while the
 # last of them is still uncut, so a session does not stop covering itself the

@@ -1,0 +1,19 @@
+{
+  "sample": "Courier-en",
+  "baseline": "examples\\output\\F2\\Courier-en\\work\\Courier-en\\translate_tracking.json",
+  "groups_read": [
+    "page",
+    "cross_page",
+    "cross_column"
+  ],
+  "groups_present": [
+    "cross_column",
+    "cross_page",
+    "page"
+  ],
+  "requests": 134,
+  "baseline_requests": 134,
+  "inputs_sha256": "96113131da53411e1010d73e65fc951fe9ca9675f06c478970c19f535bf2fb59",
+  "baseline_inputs_sha256": "96113131da53411e1010d73e65fc951fe9ca9675f06c478970c19f535bf2fb59",
+  "resampled": []
+}

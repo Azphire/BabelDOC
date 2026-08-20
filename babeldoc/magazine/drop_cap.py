@@ -92,6 +92,7 @@ from babeldoc.format.pdf.document_il import il_version_1
 from babeldoc.magazine import article_builder
 from babeldoc.magazine.chain_signals import load_chain_config
 from babeldoc.magazine.line_split import SPLITTABLE
+from babeldoc.magazine.line_split import character_box
 from babeldoc.magazine.line_split import character_union
 from babeldoc.magazine.line_split import composition_characters
 from babeldoc.magazine.line_split import composition_kind
@@ -659,6 +660,61 @@ def merged_style(paragraph, compositions):
     return run.pdf_style if run is not None else None
 
 
+def _start_edge(characters) -> str | None:
+    """The vertical box edge a paragraph of these characters starts from.
+
+    Read off the characters rather than assumed: the first of them sits on the
+    side the reading runs from, so comparing it with the last says which edge
+    that is without this module deciding which way the coordinates grow. None
+    where they do not say -- a text of one line has no second line to start away
+    from -- and nothing is moved then, because a rule that guessed the side
+    would as readily move the edge the paragraph ends at.
+    """
+    boxes = [
+        box
+        for box in (character_box(item) for item in characters)
+        if box is not None and None not in (box.y, box.y2)
+    ]
+    if not boxes:
+        return None
+    first, last = boxes[0], boxes[-1]
+    if first.y > last.y and first.y2 > last.y2:
+        return "y2"
+    if first.y < last.y and first.y2 < last.y2:
+        return "y"
+    return None
+
+
+def merged_box(head, tail):
+    """The box the merged run and the paragraph holding it declare.
+
+    Across the line the box covers the initial and the text it opens both, which
+    is the width the merged run is drawn on. Along the reading it covers the text
+    alone on the side the paragraph starts from: an enlarged initial stands proud
+    of the first line it sits beside, so a box whose start edge is the initial's
+    hands the stage a paragraph that begins that far off the line its neighbours
+    on the page begin on. The initial's characters stay in the run and are set at
+    the text's size once translated, so nothing of it is lost by not measuring
+    the box from it.
+    """
+    whole = character_union([*head, *tail])
+    text = character_union(tail)
+    if whole is None or text is None:
+        return whole
+    box = il_version_1.Box(x=whole.x, y=whole.y, x2=whole.x2, y2=whole.y2)
+    edge = _start_edge(tail)
+    if edge is not None:
+        setattr(box, edge, getattr(text, edge))
+    return box
+
+
+def box_quad(box) -> list[float] | None:
+    """One box as four numbers, for a record a human reads beside a page."""
+    if box is None or None in (box.x, box.y, box.x2, box.y2):
+        return None
+    return [float(box.x), float(box.y), float(box.x2), float(box.y2)]
+
+
 def _unchanged(paragraph, config: DropCapConfig) -> dict:
     """What a paragraph nothing was merged in reports."""
     text = (paragraph.unicode or "")[: config.excerpt_chars]
@@ -668,6 +724,8 @@ def _unchanged(paragraph, config: DropCapConfig) -> dict:
         "separator_dropped": 0,
         "unicode_before": text,
         "unicode_after": text,
+        "box_before": box_quad(paragraph.box),
+        "box_after": box_quad(paragraph.box),
     }
 
 
@@ -717,10 +775,11 @@ def flatten(paragraph, config: DropCapConfig) -> dict:
             after = closed
     kept = head[: len(head) - dropped] if dropped else head
     merged = [*kept, *tail]
+    box = merged_box(kept, tail)
     paragraph.pdf_paragraph_composition = [
         il_version_1.PdfParagraphComposition(
             pdf_same_style_characters=il_version_1.PdfSameStyleCharacters(
-                box=character_union(merged),
+                box=box,
                 pdf_style=merged_style(paragraph, compositions),
                 pdf_character=merged,
             )
@@ -728,12 +787,16 @@ def flatten(paragraph, config: DropCapConfig) -> dict:
         *compositions[2:],
     ]
     paragraph.unicode = after
+    edge = _start_edge(tail)
+    if box is not None and paragraph.box is not None and edge is not None:
+        setattr(paragraph.box, edge, getattr(box, edge))
     outcome.update(
         {
             "merged": True,
             "characters_merged": len(merged),
             "separator_dropped": dropped,
             "unicode_after": after[: config.excerpt_chars],
+            "box_after": box_quad(paragraph.box),
         }
     )
     return outcome

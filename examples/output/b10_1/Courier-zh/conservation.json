@@ -1,0 +1,46 @@
+{
+  "sample": "Courier-zh",
+  "baseline": "examples\\output\\F2\\Courier-zh\\work\\Courier-zh\\checkpoint.11_typesetting.json",
+  "baseline_pages": 8,
+  "pages": 8,
+  "target_pages": {
+    "1": {
+      "baseline_paragraphs": 35,
+      "paragraphs": 35,
+      "differing": [
+        {
+          "reference": "p1#13",
+          "baseline": "Marcelo Silva de Sousa (Marcelo Silva de Sousa)",
+          "run": "Marcelo Silva de Sousa"
+        }
+      ]
+    },
+    "2": {
+      "baseline_paragraphs": 8,
+      "paragraphs": 8,
+      "differing": []
+    },
+    "5": {
+      "baseline_paragraphs": 13,
+      "paragraphs": 13,
+      "differing": [
+        {
+          "reference": "p5#11",
+          "baseline": "Marcelo Silva de Sousa (Marcelo Silva de Sousa)",
+          "run": "Marcelo Silva de Sousa"
+        }
+      ]
+    },
+    "7": {
+      "baseline_paragraphs": 20,
+      "paragraphs": 20,
+      "differing": [
+        {
+          "reference": "p7#18",
+          "baseline": "David Jefferson (David Jefferson)",
+          "run": "David Jefferson"
+        }
+      ]
+    }
+  }
+}

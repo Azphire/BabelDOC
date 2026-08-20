@@ -1,0 +1,93 @@
+{
+  "closers": [
+    ")",
+    "）"
+  ],
+  "max_span_chars": 40,
+  "openers": [
+    "(",
+    "（"
+  ],
+  "pages": 9,
+  "paragraphs": [
+    {
+      "after": "历史遗迹还面临着来自暴雨和其他因素导致的湿气积聚以及材料自然老化的持续威胁。像Khakimov这样的保护主义者会持续监测这些建筑，常常寻找那些游客永远不会注意到的微妙变化。",
+      "before": "历史遗迹还面临着来自暴雨和其他因素导致的湿气积聚以及材料自然老化的持续威胁。像Khakimov（Khakimov）这样的保护主义者会持续监测这些建筑，常常寻找那些游客永远不会注意到的微妙变化。",
+      "debug_id": "LDuLG",
+      "page": 4,
+      "reference": "p4#1",
+      "removed_compositions": 1,
+      "removed_unicode": 1,
+      "spans": [
+        "Khakimov"
+      ]
+    },
+    {
+      "after": "现代西班牙，同时产生了经常相互矛盾的意义——这些意义是被积极构建的，有时也被误读。伊斯坦布尔的历史教授Edhem Eldem追溯了其在18世纪至20世纪初塑造帝国欧洲、阿拉伯北非和奥斯曼土耳其社会和文化身份中的作用。他的分析如同层层叠加的甜",
+      "before": "现代西班牙，同时产生了经常相互矛盾的意义——这些意义是被积极构建的，有时也被误读。伊斯坦布尔的历史教授Edhem Eldem（Edhem Eldem）追溯了其在18世纪至20世纪初塑造帝国欧洲、阿拉伯北非和奥斯曼土耳其社会和文化身份中的作用",
+      "debug_id": "KLdRU",
+      "page": 8,
+      "reference": "p8#6",
+      "removed_compositions": 1,
+      "removed_unicode": 1,
+      "spans": [
+        "Edhem Eldem"
+      ]
+    },
+    {
+      "after": "Paul Binski。加州大学出版社，2024年。",
+      "before": "Paul Binski（Paul Binski）。加州大学出版社，2024年。",
+      "debug_id": "rYVFi",
+      "page": 8,
+      "reference": "p8#8",
+      "removed_compositions": 1,
+      "removed_unicode": 1,
+      "spans": [
+        "Paul Binski"
+      ]
+    },
+    {
+      "after": "从开篇起，Paul Binski的《中世纪的建筑与情感》将读者带入一个浓厚的、多感官的世界。它揭示了一个核心主张：中世纪建筑不仅仅是围绕着崇拜而存在；",
+      "before": "从开篇起，Paul Binski（Paul Binski）的《中世纪的建筑与情感》将读者带入一个浓厚的、多感官的世界。它揭示了一个核心主张：中世纪建筑不仅仅是围绕着崇拜而存在；",
+      "debug_id": "3PznB",
+      "page": 8,
+      "reference": "p8#9",
+      "removed_compositions": 1,
+      "removed_unicode": 1,
+      "spans": [
+        "Paul Binski"
+      ]
+    },
+    {
+      "after": "转向国家控制机制，Benjamin Claude Brower关于阿尔及利亚“姓名规范”的文章因其对帝国权力较为隐秘机制的冷静分析而引人注目。穆斯林名字的强制简化——被剥夺了家族、部落和精神意义——乍看之下似乎是行政常规，但Brower揭示",
+      "before": "转向国家控制机制，Benjamin Claude Brower（Benjamin Claude Brower）关于阿尔及利亚“姓名规范”的文章因其对帝国权力较为隐秘机制的冷静分析而引人注目。穆斯林名字的强制简化——被剥夺了家族、部落和精神意",
+      "debug_id": "tAVTy",
+      "page": 9,
+      "reference": "p9#4",
+      "removed_compositions": 1,
+      "removed_unicode": 1,
+      "spans": [
+        "Benjamin Claude Brower"
+      ]
+    },
+    {
+      "after": "<style id='1'>伊斯兰教会</style>以一个坚定的拒绝开篇：伊斯兰教不能被限制在单一的地理、传统或政治形式中。由康奈尔大学的历史学教授David S. Powers和Eric Tagliacozzo编辑的这本22篇论文集提出",
+      "before": "<style id='1'>伊斯兰教会</style>以一个坚定的拒绝开篇：伊斯兰教不能被限制在单一的地理、传统或政治形式中。由康奈尔大学的历史学教授David S. Powers（David S. Powers）和Eric Tagliac",
+      "debug_id": "iCX1t",
+      "page": 9,
+      "reference": "p9#9",
+      "removed_compositions": 2,
+      "removed_unicode": 2,
+      "spans": [
+        "David S. Powers",
+        "Eric Tagliacozzo"
+      ]
+    }
+  ],
+  "switch": "magazine_paren_dedup",
+  "totals": {
+    "paragraphs_folded": 6,
+    "spans_removed": 7,
+    "unicode_spans_removed": 7
+  }
+}
