@@ -1,0 +1,660 @@
+{
+  "counts": {
+    "by_kind": {
+      "fragment_cluster": 8,
+      "untranslated_residue": 8
+    },
+    "issues": 16
+  },
+  "detector_records": {
+    "text_text_collision": [
+      {
+        "candidate_route": "coverage",
+        "coverage": 0.7178,
+        "exempt_route": "source_iou_and_source_coverage",
+        "iou": 0.0269,
+        "page": 3,
+        "paragraphs": [
+          "p3#35",
+          "p3#38"
+        ],
+        "source_coverage": 0.457,
+        "source_iou": 0.0831,
+        "verdict": "the_source_layout_already_overlapped"
+      },
+      {
+        "candidate_route": "coverage",
+        "coverage": 0.7211,
+        "exempt_route": "source_coverage",
+        "iou": 0.01,
+        "page": 3,
+        "paragraphs": [
+          "p3#36",
+          "p3#38"
+        ],
+        "source_coverage": 1.0,
+        "source_iou": 0.0109,
+        "verdict": "the_source_layout_already_overlapped"
+      },
+      {
+        "candidate_route": "coverage",
+        "coverage": 0.7211,
+        "exempt_route": "source_coverage",
+        "iou": 0.0171,
+        "page": 3,
+        "paragraphs": [
+          "p3#37",
+          "p3#38"
+        ],
+        "source_coverage": 1.0,
+        "source_iou": 0.0188,
+        "verdict": "the_source_layout_already_overlapped"
+      }
+    ]
+  },
+  "document_detectors": [
+    "escalation_surfacing"
+  ],
+  "issues": [
+    {
+      "detected_at_iteration": 0,
+      "detector": "fragment_cluster",
+      "evidence": {
+        "debug_ids": [
+          "8hhXM#L0",
+          "8hhXM#L1",
+          "8hhXM#L2"
+        ],
+        "excerpt": "32步伐一致 Margaux Anbouba / 在复古的新 / 前沿：鞋子",
+        "layout_labels": [
+          "plain text"
+        ],
+        "max_chars": 40,
+        "member_count": 3,
+        "min_cluster": 3
+      },
+      "geometry": {
+        "x": 56.16189999999994,
+        "x2": 120.75128879999994,
+        "y": 215.88422,
+        "y2": 258.29226
+      },
+      "id": "fragment_cluster:p3:p3#5+p3#6+p3#7",
+      "kind": "fragment_cluster",
+      "page": 3,
+      "paragraph_refs": [
+        "p3#5",
+        "p3#6",
+        "p3#7"
+      ],
+      "severity": "low"
+    },
+    {
+      "detected_at_iteration": 0,
+      "detector": "fragment_cluster",
+      "evidence": {
+        "debug_ids": [
+          "GX5fb#L0",
+          "GX5fb#L1",
+          "GX5fb#L2",
+          "xcqYL#L0",
+          "xcqYL#L1"
+        ],
+        "excerpt": "测试场 Sanaz Toossi带来 / 她的戏剧 英语 / 到百老汇 / 48从A到Zac Zac Posen的到来 / 在Gap是一件",
+        "layout_labels": [
+          "plain text"
+        ],
+        "max_chars": 40,
+        "member_count": 5,
+        "min_cluster": 3
+      },
+      "geometry": {
+        "x": 56.17589999999994,
+        "x2": 125.66091279999993,
+        "y": 54.379589999999986,
+        "y2": 133.00356999999997
+      },
+      "id": "fragment_cluster:p3:p3#19+p3#20+p3#21+p3#22+p3#23",
+      "kind": "fragment_cluster",
+      "page": 3,
+      "paragraph_refs": [
+        "p3#19",
+        "p3#20",
+        "p3#21",
+        "p3#22",
+        "p3#23"
+      ],
+      "severity": "low"
+    },
+    {
+      "detected_at_iteration": 0,
+      "detector": "fragment_cluster",
+      "evidence": {
+        "debug_ids": [
+          "52Mqz#L0",
+          "52Mqz#L1",
+          "52Mqz#L2",
+          "52Mqz#L3",
+          "52Mqz#L4",
+          "52Mqz#L5",
+          "52Mqz#L6",
+          "52Mqz#L7"
+        ],
+        "excerpt": "56 / 无论你看哪里 范式转变 / 正在发生 / 随着越来越多的 / 有远见的人 / 设计师们正在 / 与——并且为—— / 大品牌合作",
+        "layout_labels": [
+          "plain text"
+        ],
+        "max_chars": 40,
+        "member_count": 8,
+        "min_cluster": 3
+      },
+      "geometry": {
+        "x": 141.00406561999995,
+        "x2": 205.40194161999997,
+        "y": 130.89835,
+        "y2": 215.78488000000007
+      },
+      "id": "fragment_cluster:p3:p3#25+p3#26+p3#27+p3#28+p3#29+p3#30+p3#31+p3#32",
+      "kind": "fragment_cluster",
+      "page": 3,
+      "paragraph_refs": [
+        "p3#25",
+        "p3#26",
+        "p3#27",
+        "p3#28",
+        "p3#29",
+        "p3#30",
+        "p3#31",
+        "p3#32"
+      ],
+      "severity": "low"
+    },
+    {
+      "detected_at_iteration": 0,
+      "detector": "fragment_cluster",
+      "evidence": {
+        "debug_ids": [
+          "WTa8D#L0",
+          "WTa8D#L1",
+          "ZFKGE"
+        ],
+        "excerpt": "行动时刻！ / Wh / e",
+        "layout_labels": [
+          "plain text",
+          "title"
+        ],
+        "max_chars": 40,
+        "member_count": 3,
+        "min_cluster": 3
+      },
+      "geometry": {
+        "x": 141.15706561999997,
+        "x2": 177.36393601999998,
+        "y": 98.41055,
+        "y2": 114.14846
+      },
+      "id": "fragment_cluster:p3:p3#34+p3#35+p3#36",
+      "kind": "fragment_cluster",
+      "page": 3,
+      "paragraph_refs": [
+        "p3#34",
+        "p3#35",
+        "p3#36"
+      ],
+      "severity": "low"
+    },
+    {
+      "detected_at_iteration": 0,
+      "detector": "fragment_cluster",
+      "evidence": {
+        "debug_ids": [
+          "k7BR2",
+          "hFCSS#L0",
+          "hFCSS#L1",
+          "hFCSS#L2",
+          "hFCSS#L3",
+          "hFCSS#L4",
+          "hFCSS#L5",
+          "hFCSS#L6",
+          "hFCSS#L7",
+          "hFCSS#L8",
+          "hFCSS#L9",
+          "hFCSS#L10"
+        ],
+        "excerpt": "欢乐的印花让你以时尚的方式到达目的地 / 74 / 当体育遇上时尚...运动员作为 / 灵感缪斯？ / 体育场作为 / 跑道？ / 竞技场作为前排 / 座位？ ",
+        "layout_labels": [
+          "plain text"
+        ],
+        "max_chars": 40,
+        "member_count": 12,
+        "min_cluster": 3
+      },
+      "geometry": {
+        "x": 220.69296561999994,
+        "x2": 284.21962941999993,
+        "y": 147.91675,
+        "y2": 310.51410000000004
+      },
+      "id": "fragment_cluster:p3:p3#39+p3#40+p3#41+p3#42+p3#43+p3#44+p3#45+p3#46+p3#47+p3#48+p3#49+p3#50",
+      "kind": "fragment_cluster",
+      "page": 3,
+      "paragraph_refs": [
+        "p3#39",
+        "p3#40",
+        "p3#41",
+        "p3#42",
+        "p3#43",
+        "p3#44",
+        "p3#45",
+        "p3#46",
+        "p3#47",
+        "p3#48",
+        "p3#49",
+        "p3#50"
+      ],
+      "severity": "low"
+    },
+    {
+      "detected_at_iteration": 0,
+      "detector": "fragment_cluster",
+      "evidence": {
+        "debug_ids": [
+          "ENRz6#L0",
+          "ENRz6#L1",
+          "ENRz6#L2",
+          "ENRz6#L3",
+          "ENRz6#L4",
+          "ENRz6#L5"
+        ],
+        "excerpt": "钢索上的人Adrien Brody 是 / 被极端 / 角色吸引——但 / 无与伦比 / 到他的作品中 The Brutalist.作者：温德尔 (Wendel",
+        "layout_labels": [
+          "plain text"
+        ],
+        "max_chars": 40,
+        "member_count": 6,
+        "min_cluster": 3
+      },
+      "geometry": {
+        "x": 220.91384061999992,
+        "x2": 284.386147284,
+        "y": 55.912410000000015,
+        "y2": 133.00056
+      },
+      "id": "fragment_cluster:p3:p3#52+p3#53+p3#54+p3#55+p3#56+p3#57",
+      "kind": "fragment_cluster",
+      "page": 3,
+      "paragraph_refs": [
+        "p3#52",
+        "p3#53",
+        "p3#54",
+        "p3#55",
+        "p3#56",
+        "p3#57"
+      ],
+      "severity": "low"
+    },
+    {
+      "detected_at_iteration": 0,
+      "detector": "fragment_cluster",
+      "evidence": {
+        "debug_ids": [
+          "MG1fh#L0",
+          "MG1fh#L1",
+          "MG1fh#L2",
+          "MG1fh#L3",
+          "MG1fh#L4",
+          "MG1fh#L5",
+          "MG1fh#L6",
+          "MG1fh#L7",
+          "MG1fh#L8",
+          "MG1fh#L9",
+          "MG1fh#L10",
+          "MG1fh#L11",
+          "MG1fh#L12",
+          "bWGeX#L0",
+          "bWGeX#L1",
+          "bWGeX#L2",
+          "bWGeX#L3",
+          "bWGeX#L4",
+          "bWGeX#L5",
+          "bWGeX#L6",
+          "bWGeX#L7",
+          "bWGeX#L8",
+          "bWGeX#L9",
+          "bWGeX#L10",
+          "bWGeX#L11"
+        ],
+        "excerpt": "88 / Through the Looking Glass Sam McKinniss的 / 康涅狄格 / 家是一个 / 神奇的混合 / 充满活力的 / 色彩",
+        "layout_labels": [
+          "plain text"
+        ],
+        "max_chars": 40,
+        "member_count": 25,
+        "min_cluster": 3
+      },
+      "geometry": {
+        "x": 299.8069306199999,
+        "x2": 370.6309906199999,
+        "y": 54.41005000000005,
+        "y2": 309.30941
+      },
+      "id": "fragment_cluster:p3:p3#58+p3#59+p3#60+p3#61+p3#62+p3#63+p3#64+p3#65+p3#66+p3#67+p3#68+p3#69+p3#70+p3#71+p3#72+p3#73+p3#74+p3#75+p3#76+p3#77+p3#78+p3#79+p3#80+p3#81+p3#82",
+      "kind": "fragment_cluster",
+      "page": 3,
+      "paragraph_refs": [
+        "p3#58",
+        "p3#59",
+        "p3#60",
+        "p3#61",
+        "p3#62",
+        "p3#63",
+        "p3#64",
+        "p3#65",
+        "p3#66",
+        "p3#67",
+        "p3#68",
+        "p3#69",
+        "p3#70",
+        "p3#71",
+        "p3#72",
+        "p3#73",
+        "p3#74",
+        "p3#75",
+        "p3#76",
+        "p3#77",
+        "p3#78",
+        "p3#79",
+        "p3#80",
+        "p3#81",
+        "p3#82"
+      ],
+      "severity": "low"
+    },
+    {
+      "detected_at_iteration": 0,
+      "detector": "fragment_cluster",
+      "evidence": {
+        "debug_ids": [
+          "Kgxmu#L0",
+          "Kgxmu#L1",
+          "Kgxmu#L2",
+          "Kgxmu#L3"
+        ],
+        "excerpt": "104获取三伏天 / 冬天是 / 完美时刻 / 倾注于",
+        "layout_labels": [
+          "plain text"
+        ],
+        "max_chars": 40,
+        "member_count": 4,
+        "min_cluster": 3
+      },
+      "geometry": {
+        "x": 375.6829306199999,
+        "x2": 433.34353702,
+        "y": 258.3817800000001,
+        "y2": 309.2800500000001
+      },
+      "id": "fragment_cluster:p3:p3#83+p3#84+p3#85+p3#86",
+      "kind": "fragment_cluster",
+      "page": 3,
+      "paragraph_refs": [
+        "p3#83",
+        "p3#84",
+        "p3#85",
+        "p3#86"
+      ],
+      "severity": "low"
+    },
+    {
+      "detected_at_iteration": 0,
+      "detector": "untranslated_residue",
+      "evidence": {
+        "debug_id": "QDEBc",
+        "excerpt": "FENDI BOUTIQUES  888291 0163FENDI.COM",
+        "layout_label": "abandon",
+        "min_ratio": 0.6,
+        "residue_chars": 22,
+        "residue_ratio": 1.0,
+        "residue_script": "latin",
+        "script_chars": 22
+      },
+      "geometry": {
+        "x": 19.8734586,
+        "x2": 28.8289986,
+        "y": 581.073,
+        "y2": 754.385985220834
+      },
+      "id": "untranslated_residue:p1:p1#0",
+      "kind": "untranslated_residue",
+      "page": 1,
+      "paragraph_refs": [
+        "p1#0"
+      ],
+      "severity": "high"
+    },
+    {
+      "detected_at_iteration": 0,
+      "detector": "untranslated_residue",
+      "evidence": {
+        "debug_id": "8hhXM#L0",
+        "excerpt": "32步伐一致 Margaux Anbouba",
+        "layout_label": "plain text",
+        "min_ratio": 0.6,
+        "residue_chars": 14,
+        "residue_ratio": 0.7778,
+        "residue_script": "latin",
+        "script_chars": 18
+      },
+      "geometry": {
+        "x": 56.16189999999994,
+        "x2": 120.75128879999994,
+        "y": 232.88031,
+        "y2": 258.29226
+      },
+      "id": "untranslated_residue:p3:p3#5",
+      "kind": "untranslated_residue",
+      "page": 3,
+      "paragraph_refs": [
+        "p3#5"
+      ],
+      "severity": "high"
+    },
+    {
+      "detected_at_iteration": 0,
+      "detector": "untranslated_residue",
+      "evidence": {
+        "debug_id": "xcqYL#L0",
+        "excerpt": "48从A到Zac Zac Posen的到来",
+        "layout_label": "plain text",
+        "min_ratio": 0.6,
+        "residue_chars": 12,
+        "residue_ratio": 0.7059,
+        "residue_script": "latin",
+        "script_chars": 17
+      },
+      "geometry": {
+        "x": 56.21589999999994,
+        "x2": 121.65318191999994,
+        "y": 62.87958999999998,
+        "y2": 88.31267999999999
+      },
+      "id": "untranslated_residue:p3:p3#22",
+      "kind": "untranslated_residue",
+      "page": 3,
+      "paragraph_refs": [
+        "p3#22"
+      ],
+      "severity": "high"
+    },
+    {
+      "detected_at_iteration": 0,
+      "detector": "untranslated_residue",
+      "evidence": {
+        "debug_id": "ENRz6#L4",
+        "excerpt": "到他的作品中 The Brutalist.作者：温德尔 (Wendell)",
+        "layout_label": "plain text",
+        "min_ratio": 0.6,
+        "residue_chars": 19,
+        "residue_ratio": 0.6333,
+        "residue_script": "latin",
+        "script_chars": 30
+      },
+      "geometry": {
+        "x": 220.91384061999992,
+        "x2": 284.386147284,
+        "y": 62.896110000000014,
+        "y2": 87.88829000000001
+      },
+      "id": "untranslated_residue:p3:p3#56",
+      "kind": "untranslated_residue",
+      "page": 3,
+      "paragraph_refs": [
+        "p3#56"
+      ],
+      "severity": "high"
+    },
+    {
+      "detected_at_iteration": 0,
+      "detector": "untranslated_residue",
+      "evidence": {
+        "debug_id": "MG1fh#L1",
+        "excerpt": "Through the Looking Glass Sam McKinniss的",
+        "layout_label": "plain text",
+        "min_ratio": 0.6,
+        "residue_chars": 34,
+        "residue_ratio": 0.9714,
+        "residue_script": "latin",
+        "script_chars": 35
+      },
+      "geometry": {
+        "x": 299.8499306199999,
+        "x2": 360.1820090199999,
+        "y": 275.37203000000005,
+        "y2": 301.14632000000006
+      },
+      "id": "untranslated_residue:p3:p3#59",
+      "kind": "untranslated_residue",
+      "page": 3,
+      "paragraph_refs": [
+        "p3#59"
+      ],
+      "severity": "high"
+    },
+    {
+      "detected_at_iteration": 0,
+      "detector": "untranslated_residue",
+      "evidence": {
+        "debug_id": "bWGeX#L1",
+        "excerpt": "McGirr的McQueen Seán McGirr",
+        "layout_label": "plain text",
+        "min_ratio": 0.6,
+        "residue_chars": 23,
+        "residue_ratio": 0.9583,
+        "residue_script": "latin",
+        "script_chars": 24
+      },
+      "geometry": {
+        "x": 299.8069306199999,
+        "x2": 359.5268658199999,
+        "y": 139.37486,
+        "y2": 165.14485000000002
+      },
+      "id": "untranslated_residue:p3:p3#72",
+      "kind": "untranslated_residue",
+      "page": 3,
+      "paragraph_refs": [
+        "p3#72"
+      ],
+      "severity": "high"
+    },
+    {
+      "detected_at_iteration": 0,
+      "detector": "untranslated_residue",
+      "evidence": {
+        "debug_id": "bWGeX#L8",
+        "excerpt": "海莉·梅特兰 (Hayley Maitland)",
+        "layout_label": "plain text",
+        "min_ratio": 0.6,
+        "residue_chars": 14,
+        "residue_ratio": 0.7368,
+        "residue_script": "latin",
+        "script_chars": 19
+      },
+      "geometry": {
+        "x": 299.8069306199999,
+        "x2": 370.6309906199999,
+        "y": 79.90223000000005,
+        "y2": 87.89832000000004
+      },
+      "id": "untranslated_residue:p3:p3#79",
+      "kind": "untranslated_residue",
+      "page": 3,
+      "paragraph_refs": [
+        "p3#79"
+      ],
+      "severity": "high"
+    },
+    {
+      "detected_at_iteration": 0,
+      "detector": "untranslated_residue",
+      "evidence": {
+        "debug_id": "vUeBa",
+        "excerpt": "FASHION EDITOR: JULIA SARR-JAMOIS. HAIR SUSIE SOBOL.   PRODUCED BY BOOM PRODUCTI",
+        "layout_label": "abandon",
+        "min_ratio": 0.6,
+        "residue_chars": 125,
+        "residue_ratio": 1.0,
+        "residue_script": "latin",
+        "script_chars": 125
+      },
+      "geometry": {
+        "x": 548.099,
+        "x2": 558.91272,
+        "y": 56.0,
+        "y2": 299.7408129499996
+      },
+      "id": "untranslated_residue:p3:p3#92",
+      "kind": "untranslated_residue",
+      "page": 3,
+      "paragraph_refs": [
+        "p3#92"
+      ],
+      "severity": "high"
+    }
+  ],
+  "iteration": 0,
+  "language": "zh",
+  "notes": [
+    "text_text_collision: 3 overlapping pair(s) not raised: the_source_layout_already_overlapped"
+  ],
+  "pages_by_detector": {
+    "fragment_cluster": [
+      3
+    ],
+    "out_of_page": [
+      1,
+      2,
+      3
+    ],
+    "text_figure_overlap": [
+      1,
+      2
+    ],
+    "text_text_collision": [
+      1,
+      2,
+      3
+    ],
+    "untranslated_residue": [
+      1,
+      2,
+      3
+    ]
+  },
+  "source_geometry": {
+    "checkpoint": "checkpoint.06_styles_and_formulas.xml",
+    "paragraphs": 39,
+    "stage": "styles_and_formulas"
+  },
+  "translation_performed": true
+}

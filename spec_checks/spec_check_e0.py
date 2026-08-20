@@ -154,7 +154,10 @@ NESTED_SUPPRESSED = os.environ.get("SPEC_NO_NESTED") == "1"
 # and it reads no document under docs/eval at all. Batch b10.1 follows on the
 # same terms once more: its evidence is the replay its own batch froze under
 # examples/output/b10_1 and the F2 run beside it, and it reads no document under
-# docs/eval.
+# docs/eval. Batch b10.2 follows on the same terms as the one before it: its
+# evidence is the replay its own batch froze under examples/output/b10_2 and the
+# collision census batch b9.5 froze beside it, both of which it reads rather than
+# produces for anybody here, and it reads no document under docs/eval at all.
 AFTER_THIS_GATE = (
     "spec_check_b9_2r.py",
     "spec_check_b9_3.py",
@@ -163,6 +166,7 @@ AFTER_THIS_GATE = (
     "spec_check_b9_6.py",
     "spec_check_b9_7.py",
     "spec_check_b10_1.py",
+    "spec_check_b10_2.py",
 )
 
 # Paths this batch may change. Nothing under babeldoc/, nothing under configs/,

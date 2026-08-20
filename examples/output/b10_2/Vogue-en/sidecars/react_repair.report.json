@@ -1,0 +1,235 @@
+{
+  "api_attributions": [],
+  "api_calls": 0,
+  "applications": 0,
+  "config": {
+    "actions": [
+      {
+        "applicability": {
+          "contain_layout_labels": [
+            "title",
+            "paragraph_title"
+          ],
+          "min_overflow_ratio": 0.01
+        },
+        "bounds": {
+          "contain_margin_ratio": 0.01,
+          "contain_min_scale": 0.5
+        },
+        "conditions": [
+          "its evidence reports layout_label as one of: title, paragraph_title",
+          "its evidence reports overflow_ratio at or above 0.01"
+        ],
+        "description": "Put a paragraph that is printing off the edge of its page back inside the page. It moves ink and never changes a character of text: it slides the paragraph inside the frame, shrinks it about the centre of its own extent only where sliding alone cannot fit it, and escalates instead of shrinking past the declared floor.",
+        "issue_kinds": [
+          "out_of_page"
+        ],
+        "max_applications": 8,
+        "name": "contain_in_page",
+        "parameters": [
+          {
+            "allowed_range": "1.0..20.0",
+            "default": 3.0,
+            "name": "max_paragraphs"
+          }
+        ]
+      },
+      {
+        "applicability": {
+          "min_collision_coverage": 0.4
+        },
+        "bounds": {
+          "resolve_margin": 0.05,
+          "resolve_max_area_ratio": 0.5,
+          "resolve_max_shift_ratio": 0.08
+        },
+        "conditions": [
+          "its evidence reports coverage at or above 0.4"
+        ],
+        "description": "Slide the smaller of two paragraphs standing in one place clear of the larger, along the axis on which they overlap least. It moves ink and never changes a character of text, it moves only the paragraph its rule can name as the smaller, and it escalates rather than acting where the two are of comparable size or where clearing the overlap would take more movement than a paragraph that merely drifted would need.",
+        "issue_kinds": [
+          "text_text_collision"
+        ],
+        "max_applications": 8,
+        "name": "resolve_collision",
+        "parameters": [
+          {
+            "allowed_range": "1.0..20.0",
+            "default": 3.0,
+            "name": "max_paragraphs"
+          }
+        ]
+      },
+      {
+        "applicability": {
+          "min_residue_ratio": 0.9,
+          "min_source_chars": 12,
+          "orphan_layout_labels": [
+            "fallback_line"
+          ]
+        },
+        "bounds": {},
+        "conditions": [
+          "its evidence reports residue_ratio at or above 0.9",
+          "the text the page renders for it is at least 12 characters long",
+          "its evidence reports layout_label as one of: fallback_line"
+        ],
+        "description": "Send the text of an orphan line through the translation engine and write the answer back into the paragraph, then lay that paragraph out again.",
+        "issue_kinds": [
+          "untranslated_residue"
+        ],
+        "max_applications": 12,
+        "name": "translate_orphan_lines",
+        "parameters": [
+          {
+            "allowed_range": "1.0..20.0",
+            "default": 3.0,
+            "name": "max_paragraphs"
+          }
+        ]
+      }
+    ],
+    "decide_max_attempts": 2,
+    "issue_excerpt_chars": 120,
+    "max_glossary_entries": 24,
+    "max_issues_offered": 40,
+    "max_iterations": 3,
+    "page_context_chars": 1200,
+    "volatile_evidence_keys": [
+      "debug_id",
+      "debug_ids",
+      "source_checkpoint"
+    ]
+  },
+  "conservation": {
+    "changed_outside_touched": [],
+    "changed_refs": [],
+    "pages_after": 3,
+    "pages_before": 3,
+    "paragraphs_after": 94,
+    "paragraphs_before": 94,
+    "touched_refs": [],
+    "verdict": "conserved"
+  },
+  "engine_configured": true,
+  "final": {
+    "by_kind": {
+      "fragment_cluster": 8,
+      "untranslated_residue": 8
+    },
+    "total": 16
+  },
+  "final_untreated": {
+    "by_kind": {
+      "fragment_cluster": 8,
+      "untranslated_residue": 8
+    },
+    "total": 16
+  },
+  "iterations": [
+    {
+      "applicability": [],
+      "decision": {
+        "action": "none",
+        "attempts": 0,
+        "from_cache": true,
+        "issue_ids": [],
+        "parameters": {},
+        "raw": "{\"action\": \"none\", \"issue_ids\": [], \"parameters\": {}, \"reason\": \"No findings meet the conditions for any action, as none have a residue_ratio at or above 0.9 with a layout_label of 'fallback_line'.\"}",
+        "reason": "No findings meet the conditions for any action, as none have a residue_ratio at or above 0.9 with a layout_label of 'fallback_line'.",
+        "violations": []
+      },
+      "detected": {
+        "by_kind": {
+          "fragment_cluster": 8,
+          "untranslated_residue": 8
+        },
+        "total": 16
+      },
+      "detected_ids": [
+        "fragment_cluster:p3:p3#5+p3#6+p3#7",
+        "fragment_cluster:p3:p3#19+p3#20+p3#21+p3#22+p3#23",
+        "fragment_cluster:p3:p3#25+p3#26+p3#27+p3#28+p3#29+p3#30+p3#31+p3#32",
+        "fragment_cluster:p3:p3#34+p3#35+p3#36",
+        "fragment_cluster:p3:p3#39+p3#40+p3#41+p3#42+p3#43+p3#44+p3#45+p3#46+p3#47+p3#48+p3#49+p3#50",
+        "fragment_cluster:p3:p3#52+p3#53+p3#54+p3#55+p3#56+p3#57",
+        "fragment_cluster:p3:p3#58+p3#59+p3#60+p3#61+p3#62+p3#63+p3#64+p3#65+p3#66+p3#67+p3#68+p3#69+p3#70+p3#71+p3#72+p3#73+p3#74+p3#75+p3#76+p3#77+p3#78+p3#79+p3#80+p3#81+p3#82",
+        "fragment_cluster:p3:p3#83+p3#84+p3#85+p3#86",
+        "untranslated_residue:p1:p1#0",
+        "untranslated_residue:p3:p3#5",
+        "untranslated_residue:p3:p3#22",
+        "untranslated_residue:p3:p3#56",
+        "untranslated_residue:p3:p3#59",
+        "untranslated_residue:p3:p3#72",
+        "untranslated_residue:p3:p3#79",
+        "untranslated_residue:p3:p3#92"
+      ],
+      "executed": [],
+      "iteration": 1,
+      "outcome": "applied_nothing",
+      "request": {
+        "cache_key": "57ad49954aeb73a0fa6df427cc12ae1c302c2fcd1009850ac43d51a4dbfa709f",
+        "calls": [],
+        "prompt_sha256": "94f390049cd07156b3290170062939ad88b1103e9f207335b41769a0a4ba1a03"
+      },
+      "rounds": [
+        {
+          "applicability": [],
+          "decision": {
+            "action": "none",
+            "attempts": 0,
+            "from_cache": true,
+            "issue_ids": [],
+            "parameters": {},
+            "raw": "{\"action\": \"none\", \"issue_ids\": [], \"parameters\": {}, \"reason\": \"No findings meet the conditions for any action, as none have a residue_ratio at or above 0.9 with a layout_label of 'fallback_line'.\"}",
+            "reason": "No findings meet the conditions for any action, as none have a residue_ratio at or above 0.9 with a layout_label of 'fallback_line'.",
+            "violations": []
+          },
+          "executed": [],
+          "kind": "untranslated_residue",
+          "offered": 8,
+          "offered_ids": [
+            "untranslated_residue:p1:p1#0",
+            "untranslated_residue:p3:p3#5",
+            "untranslated_residue:p3:p3#22",
+            "untranslated_residue:p3:p3#56",
+            "untranslated_residue:p3:p3#59",
+            "untranslated_residue:p3:p3#72",
+            "untranslated_residue:p3:p3#79",
+            "untranslated_residue:p3:p3#92"
+          ],
+          "reason": "decision_applied_nothing",
+          "request": {
+            "cache_key": "57ad49954aeb73a0fa6df427cc12ae1c302c2fcd1009850ac43d51a4dbfa709f",
+            "calls": [],
+            "prompt_sha256": "94f390049cd07156b3290170062939ad88b1103e9f207335b41769a0a4ba1a03"
+          },
+          "vocabulary": [
+            "translate_orphan_lines"
+          ],
+          "written": []
+        }
+      ],
+      "untreated": {
+        "by_kind": {
+          "fragment_cluster": 8,
+          "untranslated_residue": 8
+        },
+        "total": 16
+      }
+    }
+  ],
+  "iterations_run": 1,
+  "kind_order": [
+    "out_of_page",
+    "text_text_collision",
+    "text_figure_overlap",
+    "fragment_cluster",
+    "chain_escalation",
+    "untranslated_residue"
+  ],
+  "offered_texts": [],
+  "stopped_because": "decision_applied_nothing",
+  "switch": "magazine_repair",
+  "treated": []
+}

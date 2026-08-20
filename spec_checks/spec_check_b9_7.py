@@ -93,6 +93,8 @@ HISTORICAL_CONFIG = PREVIOUS_INPUTS / "repair_actions.b9_5.json"
 
 # The identity the b9.5 arms ran under, which is half of what a request is filed
 # by and therefore half of what proves a replay is the same request.
+B9_5_CACHE_KEY_VERSION = 1
+
 IDENTITY = "OpenAITranslator/openai/zh"
 
 # The three points that had to recover, and the one that had to not move.
@@ -246,6 +248,24 @@ def check_01a_the_delta_is_the_one_module_and_its_configuration() -> None:
     )
 
 
+def as_this_batch_had_it(tracked: str, path):
+    """One tracked file as this batch left it, or as the tree holds it.
+
+    The batch's own tag where it exists, the working tree before it is cut. The
+    claim being made is about what *this* batch did to the file, and reading the
+    tree instead makes the claim about every batch since -- so it turns false the
+    first time a later batch legitimately changes the same file, which is a gate
+    that fails for having been overtaken rather than for a fault. CLAUDE.md
+    section 5 asks changed-file assertions to anchor on the batch's own tag for
+    exactly this reason.
+    """
+    code, _ = git_output(["rev-parse", "--verify", f"{BATCH_TAG}^{{commit}}"])
+    if code != 0:
+        return path.read_text(encoding="utf-8")
+    code, shipped = git_output(["show", f"{BATCH_TAG}:{tracked}"])
+    return shipped if code == 0 else path.read_text(encoding="utf-8")
+
+
 def check_01b_the_prompt_and_the_vocabulary_did_not_move() -> None:
     """Negative 1b: this batch measures a shape, so it changed no wording.
 
@@ -261,7 +281,7 @@ def check_01b_the_prompt_and_the_vocabulary_did_not_move() -> None:
         code, previous = git_output(["show", f"{PREVIOUS_TAG}:{tracked}"])
         if code != 0:
             faults.append(f"{PREVIOUS_TAG} is not in the repository")
-        elif previous != path.read_text(encoding="utf-8"):
+        elif previous != as_this_batch_had_it(tracked, path):
             faults.append(f"{tracked} moved in a batch that changes no wording")
     record(
         "check_01b_the_prompt_and_the_vocabulary_did_not_move",
@@ -379,7 +399,12 @@ def check_02c_the_digest_assertions_hold_under_the_pin() -> None:
             },
             directory=HISTORICAL_PROMPT_DIR,
         )
-        key = decide.cache_key(prompt, IDENTITY)
+        # Under the composition b9.5 filed its keys with. B10.2 bumped the
+        # current one, deliberately, to retire every key taken over an
+        # unprojected request; recomputing these under today's composition would
+        # assert only that today's code agrees with itself, where what is being
+        # asserted is that the request b9.5 sent is reproduced here.
+        key = decide.cache_key(prompt, IDENTITY, version=B9_5_CACHE_KEY_VERSION)
         if key != meta["cache_key"]:
             faults.append(
                 f"{case}: rendered {key[:12]}, b9.5 filed {meta['cache_key'][:12]}"

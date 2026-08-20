@@ -191,6 +191,7 @@ def run_detectors(context: DetectionContext) -> list[Issue]:
             working_dir=context.working_dir,
             source_geometry=context.source_geometry,
             notes=context.notes,
+            records=context.records,
         )
         found.extend(module.detect(scoped))
     return found
@@ -221,6 +222,9 @@ def as_record(context: DetectionContext, issues: list[Issue]) -> dict:
             }
         ),
         "notes": list(context.notes),
+        "detector_records": {
+            name: list(rows) for name, rows in sorted(context.records.items())
+        },
         "issues": [issue.as_record() for issue in issues],
     }
 

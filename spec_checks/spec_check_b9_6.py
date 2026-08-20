@@ -93,6 +93,8 @@ BASELINE_ROUND = "round0"
 
 # The identity the b9.5 arms ran under, which is half of what a request is
 # filed by and therefore half of what proves a replay is the same request.
+B9_5_CACHE_KEY_VERSION = 1
+
 IDENTITY = "OpenAITranslator/openai/zh"
 
 # The four decision points, and what each one is for.
@@ -228,6 +230,24 @@ def check_01a_no_code_moved() -> None:
     record("check_01a_no_code_moved", not faults, "; ".join(faults))
 
 
+def as_this_batch_had_it(tracked: str, path):
+    """One tracked file as this batch left it, or as the tree holds it.
+
+    The batch's own tag where it exists, the working tree before it is cut. The
+    claim being made is about what *this* batch did to the file, and reading the
+    tree instead makes the claim about every batch since -- so it turns false the
+    first time a later batch legitimately changes the same file, which is a gate
+    that fails for having been overtaken rather than for a fault. CLAUDE.md
+    section 5 asks changed-file assertions to anchor on the batch's own tag for
+    exactly this reason.
+    """
+    code, _ = git_output(["rev-parse", "--verify", f"{BATCH_TAG}^{{commit}}"])
+    if code != 0:
+        return path.read_text(encoding="utf-8")
+    code, shipped = git_output(["show", f"{BATCH_TAG}:{tracked}"])
+    return shipped if code == 0 else path.read_text(encoding="utf-8")
+
+
 def check_01b_only_a_description_changed_in_the_config() -> None:
     """Negative 1b: the repair configuration moved in prose and nowhere else.
 
@@ -245,7 +265,7 @@ def check_01b_only_a_description_changed_in_the_config() -> None:
         )
         return
     was = json.loads(previous)
-    now = load_json(REPAIR_CONFIG)
+    now = json.loads(as_this_batch_had_it("configs/repair_actions.json", REPAIR_CONFIG))
 
     def stripped(node):
         """The configuration with every description removed, at any depth."""
@@ -449,7 +469,12 @@ def check_03a_the_replays_reproduce_the_missed_decisions() -> None:
         prompt = prompt_loader.load_prompt(
             decide.DECIDE_PROMPT, blocks, directory=HISTORICAL_PROMPT_DIR
         )
-        key = decide.cache_key(prompt, IDENTITY)
+        # Under the composition b9.5 filed its keys with. B10.2 bumped the
+        # current one, deliberately, to retire every key taken over an
+        # unprojected request; recomputing these under today's composition would
+        # assert only that today's code agrees with itself, where what is being
+        # asserted is that the request b9.5 sent is reproduced here.
+        key = decide.cache_key(prompt, IDENTITY, version=B9_5_CACHE_KEY_VERSION)
         if key != points[case]["cache_key"]:
             faults.append(
                 f"{case}: rendered {key[:12]}, b9.5 filed {points[case]['cache_key'][:12]}"

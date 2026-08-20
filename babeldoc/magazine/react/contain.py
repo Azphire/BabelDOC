@@ -406,7 +406,7 @@ def transform(paragraph, plan: Containment) -> None:
         )
 
 
-def admits(issue, candidate, action: Action) -> str:
+def admits(issue, candidate, action: Action, context) -> str:  # noqa: ARG001 - the pass is part of the question every action is asked
     """Why this finding is not one to act on, or ``ACCEPTED``.
 
     Stricter than the detector on both terms it shares with it. The label has to

@@ -378,6 +378,10 @@ class RepairLoop:
         # and carries no field for it, and a rerun starts with none of them.
         self.treated: dict[str, dict] = {}
         self.applications = 0
+        # One row per call that reached the transport, in the order they were
+        # made. The rows are written where the calls are made, so this is the
+        # run's bill rather than an estimate of it.
+        self.attributions: list[dict] = []
         # The document as it stood before the first iteration, taken once the
         # run begins and put back if the run cannot finish.
         self.baseline = None
@@ -472,7 +476,7 @@ class RepairLoop:
             collision.NAME: Handler(
                 paragraphs_per_finding=collision.PARAGRAPHS_PER_FINDING,
                 admits=collision.admits,
-                apply=self._apply_nothing,
+                apply=self._resolve_collisions,
             ),
         }
 
@@ -532,7 +536,7 @@ class RepairLoop:
                     )
                 )
                 continue
-            verdict = handler.admits(issue, candidate, action)
+            verdict = handler.admits(issue, candidate, action, context)
             if verdict != actions.ACCEPTED:
                 records.append(
                     actions.Application(
@@ -569,15 +573,6 @@ class RepairLoop:
             accepted.append(candidate)
         return accepted, records
 
-    def _apply_nothing(self, candidates, context, snapshot: Snapshot, action):
-        """The mechanism of an action that writes nothing. Nothing is written.
-
-        Reached only where an action admitted a candidate without having a
-        mechanism to apply to it, which no declared action does; the loop then
-        stops with nothing written rather than with something unexplained.
-        """
-        return []
-
     def _contain(self, candidates, context, snapshot: Snapshot, action):
         """Put each admitted paragraph back inside its page. What happened.
 
@@ -612,6 +607,39 @@ class RepairLoop:
             records.append(outcome)
         return records
 
+    def _resolve_collisions(self, candidates, context, snapshot: Snapshot, action):
+        """Slide the smaller member of each admitted pair clear. What happened.
+
+        The paragraph put under snapshot is the one the plan would move, which
+        is not always the one the finding was resolved to: a finding names a
+        pair, and which of the two is the smaller is the plan's answer rather
+        than the finding's order. Taking the snapshot from the plan is what
+        keeps the restoration and the write about the same paragraph.
+        """
+        positions = {
+            view.label: position for position, view in enumerate(context.pages)
+        }
+        records: list[actions.Application] = []
+        for candidate in candidates:
+            position = positions[candidate.page_index]
+            outcome, found = collision.separate(candidate, action, context.config)
+            if found is None:
+                records.append(outcome)
+                continue
+            snapshot.take(position, candidate.page, found.mover_index)
+            collision.move(candidate.page.pdf_paragraph[found.mover_index], found)
+            outcome = collision.finish(candidate, outcome, found, context.config)
+            if not outcome.changed:
+                candidate.page.pdf_paragraph[found.mover_index] = (
+                    snapshot.paragraphs.pop((position, found.mover_index))
+                )
+                records.append(outcome)
+                continue
+            self.touched.add(outcome.reference)
+            self.applications += 1
+            records.append(outcome)
+        return records
+
     def _translate_orphans(self, candidates, context, snapshot: Snapshot, action):
         """Translate and write each admitted candidate. Returns what happened."""
         pages_by_label = {view.label: view for view in context.pages}
@@ -625,6 +653,8 @@ class RepairLoop:
                 view, candidate.paragraph_index, self.repair_config.page_context_chars
             )
             outcome = translator.translate(candidate.source_text, context_text)
+            for row in outcome.calls:
+                self.attributions.append({**row, "kind": actions.NAME})
             outcome.issue_id = candidate.issue_id
             outcome.reference = candidate.reference
             self.offered_texts.append(candidate.source_text)
@@ -729,7 +759,10 @@ class RepairLoop:
         entry["request"] = {
             "prompt_sha256": request.prompt_digest,
             "cache_key": request.key,
+            "calls": [dict(row) for row in request.calls],
         }
+        for row in request.calls:
+            self.attributions.append({**row, "kind": kind})
         if decision.refused:
             entry["reason"] = STOP_NO_DECISION
             return entry, []
@@ -998,6 +1031,8 @@ class RepairLoop:
             "treated": self._treated_record(issues),
             "final": counts_of(issues),
             "final_untreated": counts_of(self._untreated(issues)),
+            "api_calls": len(self.attributions),
+            "api_attributions": [dict(row) for row in self.attributions],
         }
         path = self.working_dir / REPORT_NAME
         with path.open("w", encoding="utf-8") as f:

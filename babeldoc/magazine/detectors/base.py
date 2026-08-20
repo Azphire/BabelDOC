@@ -105,7 +105,9 @@ class DetectorConfig:
     page_safety_margin_ratio: float
     out_of_page_min_overflow_ratio: float
     collision_min_iou: float
+    collision_min_coverage: float
     collision_source_min_iou: float
+    collision_source_min_coverage: float
     excerpt_chars: int
     severity: dict[str, str]
     default_profile: str
@@ -285,7 +287,11 @@ def parse_detector_config(
             parameters["out_of_page_min_overflow_ratio"]
         ),
         collision_min_iou=float(parameters["collision_min_iou"]),
+        collision_min_coverage=float(parameters["collision_min_coverage"]),
         collision_source_min_iou=float(parameters["collision_source_min_iou"]),
+        collision_source_min_coverage=float(
+            parameters["collision_source_min_coverage"]
+        ),
         excerpt_chars=int(parameters["excerpt_chars"]),
         severity=dict(severity),
         default_profile=str(default_profile),
@@ -460,6 +466,27 @@ def intersection_over_union(left, right) -> float:
     return shared / union if union > 0 else 0.0
 
 
+def coverage(left, right) -> float:
+    """Area shared by two boxes over the area of the smaller of them.
+
+    The measure that answers for the overlap the ratio over the union cannot
+    see. A small box standing wholly inside a large one shares all of its own
+    area and a small share of the area the two cover together, so the union
+    ratio reports nearly nothing where this reports one. Zero where either box
+    has no area, which is a box nothing can stand inside.
+    """
+    width = min(left[2], right[2]) - max(left[0], right[0])
+    height = min(left[3], right[3]) - max(left[1], right[1])
+    if width <= 0 or height <= 0:
+        return 0.0
+    shared = width * height
+    smaller = min(
+        max(0.0, left[2] - left[0]) * max(0.0, left[3] - left[1]),
+        max(0.0, right[2] - right[0]) * max(0.0, right[3] - right[1]),
+    )
+    return shared / smaller if smaller > 0 else 0.0
+
+
 @dataclass(frozen=True)
 class Issue:
     """One finding about a finished document."""
@@ -530,6 +557,15 @@ class DetectionContext:
     # to read it from, in which case those detectors are not run at all.
     source_geometry: object | None = None
     notes: list[str] = field(default_factory=list)
+    # Structured notes, filed by the detector that made them. A note in
+    # ``notes`` is a sentence for a human and a row here is a fact a gate or a
+    # census can read back: how many of a page's pairs a comparison answered
+    # for, and which of the several routes to one verdict each of them took.
+    records: dict[str, list] = field(default_factory=dict)
+
+    def file(self, detector: str, row: dict) -> None:
+        """Record one structured note under the detector that made it."""
+        self.records.setdefault(detector, []).append(row)
 
     def severity_of(self, kind: str) -> str:
         """The declared weight of one issue kind, which validation guarantees."""

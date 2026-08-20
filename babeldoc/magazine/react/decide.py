@@ -17,7 +17,6 @@ deterministic and is not the model's to overrule.
 
 from __future__ import annotations
 
-import hashlib
 import json
 import logging
 from dataclasses import dataclass
@@ -26,6 +25,13 @@ from pathlib import Path
 
 from babeldoc.magazine.prompt_loader import Prompt
 from babeldoc.magazine.prompt_loader import load_prompt
+from babeldoc.magazine.react import cache_key as cache_key_fields
+from babeldoc.magazine.react.cache_key import GROUP_DECISION
+from babeldoc.magazine.react.cache_key import SERVED_BYPASSED
+from babeldoc.magazine.react.cache_key import SERVED_MISS
+from babeldoc.magazine.react.cache_key import SERVED_RETRY
+from babeldoc.magazine.react.cache_key import SERVED_STALE
+from babeldoc.magazine.react.cache_key import attribution
 from babeldoc.magazine.react.config import NO_ACTION
 from babeldoc.magazine.react.config import RepairConfig
 from babeldoc.magazine.react.config import RepairConfigError
@@ -43,9 +49,11 @@ RETRY_PROMPT = "vlm_retry_notice"
 # segments sharing the database. The column is 20 characters wide.
 ENGINE_NAME = "magazine_repair"
 
-# Bumped when the composition of the cache key changes, which retires every
-# entry written under the old composition in one step.
-CACHE_KEY_VERSION = 1
+# The composition a key is built by, shared with the orphan action's cache so
+# the two cannot drift apart. Named here as well because the engine parameters
+# the stored replies are filed under carry it, and those have to move when the
+# composition does.
+CACHE_KEY_VERSION = cache_key_fields.CACHE_KEY_VERSION
 
 # Fields a reply must carry. Anything else in the object is a violation: an
 # extra field is a reply to a different request than the one that was sent.
@@ -97,6 +105,9 @@ class RequestLog:
     prompt_text: str = ""
     key: str = ""
     replies: list[str] = field(default_factory=list)
+    # One row per call that reached the transport, which is one row per call
+    # the run is billed for. A request the cache answered adds none.
+    calls: list[dict] = field(default_factory=list)
 
 
 class EngineTransport:
@@ -125,15 +136,17 @@ def engine_identity(engine, lang_out: str) -> str:
     return f"{type(engine).__name__}/{getattr(engine, 'name', '')}/{lang_out}"
 
 
-def cache_key(prompt: Prompt, identity: str) -> str:
-    """Digest of everything that could change the answer to one request."""
-    fields = (
-        f"cache_key_version={CACHE_KEY_VERSION}",
-        f"engine={identity}",
-        f"prompt_file_sha256={prompt.digest}",
-        f"prompt_text_sha256={hashlib.sha256(prompt.text.encode()).hexdigest()}",
-    )
-    return hashlib.sha256("\n".join(fields).encode()).hexdigest()
+def cache_key(prompt: Prompt, identity: str, version: int | None = None) -> str:
+    """Digest of everything that could change the answer to one request.
+
+    Given the key rendering of a request rather than the sent one, so two runs
+    whose findings differ only in the ids the paragraph finder minted afresh
+    reach one key and the second is served what the first paid for.
+
+    ``version`` is for replaying a key an earlier batch filed under an earlier
+    composition; a run leaves it alone.
+    """
+    return cache_key_fields.digest(identity, prompt.digest, prompt.text, version)
 
 
 def strip_fence(reply: str) -> str:
@@ -148,11 +161,17 @@ def strip_fence(reply: str) -> str:
     return text.strip()
 
 
-def issues_block(issues, excerpt_chars: int, limit: int) -> str:
-    """The findings as the request states them, one block each."""
+def issues_block(issues, excerpt_chars: int, limit: int, drop=()) -> str:
+    """The findings as the request states them, one block each.
+
+    ``drop`` names evidence fields to leave out. It is empty for the rendering
+    that is sent and holds the volatile fields for the rendering the cache key
+    is taken over, so what the model reads and what the key is computed from
+    differ in exactly those fields and in nothing else.
+    """
     lines: list[str] = []
     for issue in issues[:limit]:
-        evidence = dict(issue.evidence)
+        evidence = cache_key_fields.project(issue.evidence, drop)
         excerpt = str(evidence.pop("excerpt", "") or "")[:excerpt_chars]
         detail = ", ".join(
             f"{key}={value!r}" for key, value in sorted(evidence.items())
@@ -310,7 +329,7 @@ class CachedDecisionClient:
         self.working_dir = working_dir
         self.ignore_cache = ignore_cache
 
-    def prompt(self, issues) -> Prompt:
+    def _render(self, issues, drop, working_dir) -> Prompt:
         return load_prompt(
             DECIDE_PROMPT,
             {
@@ -318,12 +337,26 @@ class CachedDecisionClient:
                     issues,
                     self.config.issue_excerpt_chars,
                     self.config.max_issues_offered,
+                    drop=drop,
                 ),
                 "actions_block": actions_block(self.config),
                 "action_constraints": constraints_block(self.config),
             },
-            working_dir=self.working_dir,
+            working_dir=working_dir,
         )
+
+    def prompt(self, issues) -> Prompt:
+        """The request as it is sent: every field the finding carries."""
+        return self._render(issues, (), self.working_dir)
+
+    def key_prompt(self, issues) -> Prompt:
+        """The same request without the fields that change on every run.
+
+        Never sent, so it is not recorded in the run's prompt manifest: what
+        that manifest answers for is what the model was asked, and this was
+        asked of nobody.
+        """
+        return self._render(issues, self.config.volatile_evidence_keys, None)
 
     def _retry_text(self, prompt: Prompt, violation: str) -> str:
         notice = load_prompt(
@@ -335,8 +368,9 @@ class CachedDecisionClient:
         """Choose one action for one iteration, from cache where it is not new."""
         prompt = self.prompt(issues)
         offered = {issue.id for issue in issues[: self.config.max_issues_offered]}
-        key = cache_key(prompt, self.identity)
+        key = cache_key(self.key_prompt(issues), self.identity)
         log = RequestLog(prompt_digest=prompt.digest, prompt_text=prompt.text, key=key)
+        verdict = SERVED_BYPASSED if self.ignore_cache else SERVED_MISS
 
         if not self.ignore_cache:
             try:
@@ -363,12 +397,24 @@ class CachedDecisionClient:
                 # A stored reply that no longer validates means the vocabulary
                 # moved under it. Ask again rather than serve what cannot be used.
                 logger.debug("cached decision rejected, re-requesting: %s", violation)
+                verdict = SERVED_STALE
 
         text = prompt.text
         violations: list[str] = []
         attempts = 0
         while attempts < self.config.decide_max_attempts:
             attempts += 1
+            log.calls.append(
+                attribution(
+                    GROUP_DECISION,
+                    SERVED_RETRY if attempts > 1 else verdict,
+                    key,
+                    prompt.digest,
+                    text,
+                    attempts,
+                    identity=self.identity,
+                )
+            )
             try:
                 reply = self.transport.complete(text)
             except Exception as exc:  # noqa: BLE001 - any failure is a violation

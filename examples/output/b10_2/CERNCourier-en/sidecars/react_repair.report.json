@@ -1,0 +1,893 @@
+{
+  "api_attributions": [
+    {
+      "attempt": 1,
+      "cache_key": "811cf7b96122af8325a587df187f2edcb7a6517227233eaf7e253a893b4a40c6",
+      "cache_verdict": "no_stored_reply_under_this_key",
+      "engine_identity": "OpenAITranslator/openai/zh",
+      "group": "orphan_translation",
+      "kind": "translate_orphan_lines",
+      "prompt_sha256": "cc3f132c251022995b1e6386450b2b6546d9481686074dd1adbe64af3d650fa4",
+      "request_chars": 2828,
+      "request_head": "You are translating one short line of a magazine page into zh.\n\nThe line was recovered by the page parser outside every detected block, so it\nwas never offered ",
+      "request_sha256": "6bc763a94afcb0c96a49fefc5db71ef628ee3ffc0c10a0dcc8f5ed78546f5d36"
+    }
+  ],
+  "api_calls": 1,
+  "applications": 2,
+  "config": {
+    "actions": [
+      {
+        "applicability": {
+          "contain_layout_labels": [
+            "title",
+            "paragraph_title"
+          ],
+          "min_overflow_ratio": 0.01
+        },
+        "bounds": {
+          "contain_margin_ratio": 0.01,
+          "contain_min_scale": 0.5
+        },
+        "conditions": [
+          "its evidence reports layout_label as one of: title, paragraph_title",
+          "its evidence reports overflow_ratio at or above 0.01"
+        ],
+        "description": "Put a paragraph that is printing off the edge of its page back inside the page. It moves ink and never changes a character of text: it slides the paragraph inside the frame, shrinks it about the centre of its own extent only where sliding alone cannot fit it, and escalates instead of shrinking past the declared floor.",
+        "issue_kinds": [
+          "out_of_page"
+        ],
+        "max_applications": 8,
+        "name": "contain_in_page",
+        "parameters": [
+          {
+            "allowed_range": "1.0..20.0",
+            "default": 3.0,
+            "name": "max_paragraphs"
+          }
+        ]
+      },
+      {
+        "applicability": {
+          "min_collision_coverage": 0.4
+        },
+        "bounds": {
+          "resolve_margin": 0.05,
+          "resolve_max_area_ratio": 0.5,
+          "resolve_max_shift_ratio": 0.08
+        },
+        "conditions": [
+          "its evidence reports coverage at or above 0.4"
+        ],
+        "description": "Slide the smaller of two paragraphs standing in one place clear of the larger, along the axis on which they overlap least. It moves ink and never changes a character of text, it moves only the paragraph its rule can name as the smaller, and it escalates rather than acting where the two are of comparable size or where clearing the overlap would take more movement than a paragraph that merely drifted would need.",
+        "issue_kinds": [
+          "text_text_collision"
+        ],
+        "max_applications": 8,
+        "name": "resolve_collision",
+        "parameters": [
+          {
+            "allowed_range": "1.0..20.0",
+            "default": 3.0,
+            "name": "max_paragraphs"
+          }
+        ]
+      },
+      {
+        "applicability": {
+          "min_residue_ratio": 0.9,
+          "min_source_chars": 12,
+          "orphan_layout_labels": [
+            "fallback_line"
+          ]
+        },
+        "bounds": {},
+        "conditions": [
+          "its evidence reports residue_ratio at or above 0.9",
+          "the text the page renders for it is at least 12 characters long",
+          "its evidence reports layout_label as one of: fallback_line"
+        ],
+        "description": "Send the text of an orphan line through the translation engine and write the answer back into the paragraph, then lay that paragraph out again.",
+        "issue_kinds": [
+          "untranslated_residue"
+        ],
+        "max_applications": 12,
+        "name": "translate_orphan_lines",
+        "parameters": [
+          {
+            "allowed_range": "1.0..20.0",
+            "default": 3.0,
+            "name": "max_paragraphs"
+          }
+        ]
+      }
+    ],
+    "decide_max_attempts": 2,
+    "issue_excerpt_chars": 120,
+    "max_glossary_entries": 24,
+    "max_issues_offered": 40,
+    "max_iterations": 3,
+    "page_context_chars": 1200,
+    "volatile_evidence_keys": [
+      "debug_id",
+      "debug_ids",
+      "source_checkpoint"
+    ]
+  },
+  "conservation": {
+    "changed_outside_touched": [],
+    "changed_refs": [
+      "p1#2",
+      "p2#39"
+    ],
+    "pages_after": 4,
+    "pages_before": 4,
+    "paragraphs_after": 255,
+    "paragraphs_before": 255,
+    "touched_refs": [
+      "p1#2",
+      "p2#39"
+    ],
+    "verdict": "conserved"
+  },
+  "engine_configured": true,
+  "final": {
+    "by_kind": {
+      "fragment_cluster": 16,
+      "untranslated_residue": 31
+    },
+    "total": 47
+  },
+  "final_untreated": {
+    "by_kind": {
+      "fragment_cluster": 16,
+      "untranslated_residue": 31
+    },
+    "total": 47
+  },
+  "iterations": [
+    {
+      "applicability": [],
+      "decision": {
+        "action": "contain_in_page",
+        "attempts": 0,
+        "from_cache": true,
+        "issue_ids": [
+          "out_of_page:p1:p1#2"
+        ],
+        "parameters": {
+          "max_paragraphs": 3.0
+        },
+        "raw": "{\"action\": \"contain_in_page\", \"issue_ids\": [\"out_of_page:p1:p1#2\"], \"parameters\": {}, \"reason\": \"The finding meets the conditions with a layout_label of 'title' and an overflow_ratio of 0.034288, which is above the threshold of 0.01.\"}",
+        "reason": "The finding meets the conditions with a layout_label of 'title' and an overflow_ratio of 0.034288, which is above the threshold of 0.01.",
+        "violations": []
+      },
+      "detected": {
+        "by_kind": {
+          "fragment_cluster": 16,
+          "out_of_page": 1,
+          "untranslated_residue": 32
+        },
+        "total": 49
+      },
+      "detected_ids": [
+        "fragment_cluster:p2:p2#10+p2#11+p2#12+p2#13+p2#14+p2#15+p2#16+p2#17+p2#18",
+        "fragment_cluster:p2:p2#22+p2#23+p2#24",
+        "fragment_cluster:p2:p2#25+p2#26+p2#27+p2#28+p2#29",
+        "fragment_cluster:p2:p2#40+p2#41+p2#42",
+        "fragment_cluster:p2:p2#45+p2#46+p2#47+p2#48+p2#49+p2#50",
+        "fragment_cluster:p2:p2#55+p2#56+p2#57+p2#58+p2#59+p2#60+p2#61",
+        "fragment_cluster:p2:p2#65+p2#66+p2#67",
+        "fragment_cluster:p2:p2#68+p2#69+p2#70",
+        "fragment_cluster:p2:p2#72+p2#73+p2#74+p2#75+p2#76",
+        "fragment_cluster:p2:p2#79+p2#80+p2#81",
+        "fragment_cluster:p2:p2#84+p2#85+p2#86+p2#87+p2#88+p2#89+p2#90",
+        "fragment_cluster:p2:p2#93+p2#94+p2#95+p2#96+p2#97",
+        "fragment_cluster:p2:p2#104+p2#105+p2#106+p2#107",
+        "fragment_cluster:p2:p2#108+p2#109+p2#110+p2#111+p2#112+p2#113+p2#114",
+        "fragment_cluster:p2:p2#116+p2#117+p2#118+p2#119+p2#120+p2#121+p2#122",
+        "fragment_cluster:p2:p2#125+p2#126+p2#127+p2#128+p2#129+p2#130",
+        "out_of_page:p1:p1#2",
+        "untranslated_residue:p1:p1#6",
+        "untranslated_residue:p1:p1#16",
+        "untranslated_residue:p1:p1#19",
+        "untranslated_residue:p2:p2#7",
+        "untranslated_residue:p2:p2#9",
+        "untranslated_residue:p2:p2#21",
+        "untranslated_residue:p2:p2#23",
+        "untranslated_residue:p2:p2#24",
+        "untranslated_residue:p2:p2#26",
+        "untranslated_residue:p2:p2#29",
+        "untranslated_residue:p2:p2#33",
+        "untranslated_residue:p2:p2#37",
+        "untranslated_residue:p2:p2#39",
+        "untranslated_residue:p2:p2#57",
+        "untranslated_residue:p2:p2#79",
+        "untranslated_residue:p2:p2#80",
+        "untranslated_residue:p2:p2#99",
+        "untranslated_residue:p2:p2#127",
+        "untranslated_residue:p2:p2#131",
+        "untranslated_residue:p2:p2#133",
+        "untranslated_residue:p3:p3#5",
+        "untranslated_residue:p3:p3#28",
+        "untranslated_residue:p3:p3#30",
+        "untranslated_residue:p3:p3#44",
+        "untranslated_residue:p3:p3#49",
+        "untranslated_residue:p3:p3#51",
+        "untranslated_residue:p4:p4#6",
+        "untranslated_residue:p4:p4#20",
+        "untranslated_residue:p4:p4#23",
+        "untranslated_residue:p4:p4#30",
+        "untranslated_residue:p4:p4#38",
+        "untranslated_residue:p4:p4#44"
+      ],
+      "executed": [
+        {
+          "accepted": true,
+          "attempts": 0,
+          "calls": [],
+          "changed": true,
+          "from_cache": false,
+          "geometry": {
+            "box_after": [
+              521.0887,
+              720.9675,
+              1008.4199,
+              760.32
+            ],
+            "box_before": [
+              521.0887,
+              754.9809,
+              1008.4199,
+              794.3335
+            ],
+            "box_source": "characters",
+            "frame_source": "cropbox",
+            "guard": {
+              "applied": {
+                "induced": [],
+                "standing_on": [],
+                "worst_induced_iou": 0.0
+              },
+              "collision_min_iou": 0.2,
+              "standing_on_before": [],
+              "translated": {
+                "induced": [],
+                "standing_on": [],
+                "worst_induced_iou": 0.0
+              }
+            },
+            "min_scale": 0.5,
+            "overflow_after": {
+              "bottom": 0.0,
+              "left": 0.0,
+              "right": 0.0,
+              "top": 0.0
+            },
+            "overflow_before": {
+              "bottom": 0.0,
+              "left": 0.0,
+              "right": 0.0,
+              "top": 34.0135
+            },
+            "safe_box": [
+              10.24,
+              7.68,
+              1013.76,
+              760.32
+            ],
+            "scale": 1.0,
+            "shift": [
+              0.0,
+              -34.0135
+            ],
+            "state": "translated",
+            "worst_overlap_after": 0.0
+          },
+          "glossary_entries": [],
+          "issue_id": "out_of_page:p1:p1#2",
+          "offered_text": "",
+          "paragraph_ref": "p1#2",
+          "reason": "accepted",
+          "source_text": "欧洲核子研究中心快报2026年7/8月 CERNCOURIER.COM 国际高能物理报道",
+          "translated_text": ""
+        },
+        {
+          "accepted": false,
+          "attempts": 0,
+          "calls": [],
+          "changed": false,
+          "from_cache": true,
+          "geometry": {},
+          "glossary_entries": [],
+          "issue_id": "untranslated_residue:p2:p2#9",
+          "offered_text": "indico.jacow.org/event/113/",
+          "paragraph_ref": "p2#9",
+          "reason": "translation_equals_source",
+          "source_text": "indico.jacow.org/event/113/",
+          "translated_text": "indico.jacow.org/event/113/"
+        },
+        {
+          "accepted": true,
+          "attempts": 0,
+          "calls": [],
+          "changed": true,
+          "from_cache": true,
+          "geometry": {},
+          "glossary_entries": [],
+          "issue_id": "untranslated_residue:p2:p2#39",
+          "offered_text": "Volume 66 Number 4  July/August 2026",
+          "paragraph_ref": "p2#39",
+          "reason": "accepted",
+          "source_text": "Volume 66 Number 4  July/August 2026",
+          "translated_text": "第66卷第4期 2026年7/8月"
+        },
+        {
+          "accepted": false,
+          "attempts": 1,
+          "calls": [
+            {
+              "attempt": 1,
+              "cache_key": "811cf7b96122af8325a587df187f2edcb7a6517227233eaf7e253a893b4a40c6",
+              "cache_verdict": "no_stored_reply_under_this_key",
+              "engine_identity": "OpenAITranslator/openai/zh",
+              "group": "orphan_translation",
+              "prompt_sha256": "cc3f132c251022995b1e6386450b2b6546d9481686074dd1adbe64af3d650fa4",
+              "request_chars": 2828,
+              "request_head": "You are translating one short line of a magazine page into zh.\n\nThe line was recovered by the page parser outside every detected block, so it\nwas never offered ",
+              "request_sha256": "6bc763a94afcb0c96a49fefc5db71ef628ee3ffc0c10a0dcc8f5ed78546f5d36"
+            }
+          ],
+          "changed": false,
+          "from_cache": false,
+          "geometry": {},
+          "glossary_entries": [],
+          "issue_id": "untranslated_residue:p4:p4#38",
+          "offered_text": "R Hahn, Fermilab",
+          "paragraph_ref": "p4#38",
+          "reason": "retypesetting_needed_more_room_than_the_paragraph_had",
+          "source_text": "R Hahn, Fermilab",
+          "translated_text": "R Hahn，费米实验室"
+        }
+      ],
+      "iteration": 1,
+      "new_ids": [],
+      "outcome": "advanced",
+      "recheck": {
+        "by_kind": {
+          "fragment_cluster": 16,
+          "untranslated_residue": 31
+        },
+        "total": 47
+      },
+      "request": {
+        "cache_key": "4dbea0a8dcdbccb4d8c080ec0d855e915a6e8363757a491a4e56d1ee363b388c",
+        "calls": [],
+        "prompt_sha256": "94f390049cd07156b3290170062939ad88b1103e9f207335b41769a0a4ba1a03"
+      },
+      "resolved_ids": [
+        "out_of_page:p1:p1#2",
+        "untranslated_residue:p2:p2#39"
+      ],
+      "rounds": [
+        {
+          "applicability": [],
+          "decision": {
+            "action": "contain_in_page",
+            "attempts": 0,
+            "from_cache": true,
+            "issue_ids": [
+              "out_of_page:p1:p1#2"
+            ],
+            "parameters": {
+              "max_paragraphs": 3.0
+            },
+            "raw": "{\"action\": \"contain_in_page\", \"issue_ids\": [\"out_of_page:p1:p1#2\"], \"parameters\": {}, \"reason\": \"The finding meets the conditions with a layout_label of 'title' and an overflow_ratio of 0.034288, which is above the threshold of 0.01.\"}",
+            "reason": "The finding meets the conditions with a layout_label of 'title' and an overflow_ratio of 0.034288, which is above the threshold of 0.01.",
+            "violations": []
+          },
+          "executed": [
+            {
+              "accepted": true,
+              "attempts": 0,
+              "calls": [],
+              "changed": true,
+              "from_cache": false,
+              "geometry": {
+                "box_after": [
+                  521.0887,
+                  720.9675,
+                  1008.4199,
+                  760.32
+                ],
+                "box_before": [
+                  521.0887,
+                  754.9809,
+                  1008.4199,
+                  794.3335
+                ],
+                "box_source": "characters",
+                "frame_source": "cropbox",
+                "guard": {
+                  "applied": {
+                    "induced": [],
+                    "standing_on": [],
+                    "worst_induced_iou": 0.0
+                  },
+                  "collision_min_iou": 0.2,
+                  "standing_on_before": [],
+                  "translated": {
+                    "induced": [],
+                    "standing_on": [],
+                    "worst_induced_iou": 0.0
+                  }
+                },
+                "min_scale": 0.5,
+                "overflow_after": {
+                  "bottom": 0.0,
+                  "left": 0.0,
+                  "right": 0.0,
+                  "top": 0.0
+                },
+                "overflow_before": {
+                  "bottom": 0.0,
+                  "left": 0.0,
+                  "right": 0.0,
+                  "top": 34.0135
+                },
+                "safe_box": [
+                  10.24,
+                  7.68,
+                  1013.76,
+                  760.32
+                ],
+                "scale": 1.0,
+                "shift": [
+                  0.0,
+                  -34.0135
+                ],
+                "state": "translated",
+                "worst_overlap_after": 0.0
+              },
+              "glossary_entries": [],
+              "issue_id": "out_of_page:p1:p1#2",
+              "offered_text": "",
+              "paragraph_ref": "p1#2",
+              "reason": "accepted",
+              "source_text": "欧洲核子研究中心快报2026年7/8月 CERNCOURIER.COM 国际高能物理报道",
+              "translated_text": ""
+            }
+          ],
+          "kind": "out_of_page",
+          "offered": 1,
+          "offered_ids": [
+            "out_of_page:p1:p1#2"
+          ],
+          "reason": "",
+          "request": {
+            "cache_key": "4dbea0a8dcdbccb4d8c080ec0d855e915a6e8363757a491a4e56d1ee363b388c",
+            "calls": [],
+            "prompt_sha256": "94f390049cd07156b3290170062939ad88b1103e9f207335b41769a0a4ba1a03"
+          },
+          "vocabulary": [
+            "contain_in_page"
+          ],
+          "written": [
+            "p1#2"
+          ]
+        },
+        {
+          "applicability": [],
+          "decision": {
+            "action": "translate_orphan_lines",
+            "attempts": 0,
+            "from_cache": true,
+            "issue_ids": [
+              "untranslated_residue:p2:p2#9",
+              "untranslated_residue:p2:p2#39",
+              "untranslated_residue:p4:p4#38"
+            ],
+            "parameters": {
+              "max_paragraphs": 3.0
+            },
+            "raw": "{\"action\": \"translate_orphan_lines\", \"issue_ids\": [\"untranslated_residue:p2:p2#9\", \"untranslated_residue:p2:p2#39\", \"untranslated_residue:p4:p4#38\"], \"parameters\": {}, \"reason\": \"These findings have a residue_ratio of 1.0, are at least 12 characters long, and have a layout_label of 'fallback_line', meeting all conditions for the action.\"}",
+            "reason": "These findings have a residue_ratio of 1.0, are at least 12 characters long, and have a layout_label of 'fallback_line', meeting all conditions for the action.",
+            "violations": []
+          },
+          "executed": [
+            {
+              "accepted": false,
+              "attempts": 0,
+              "calls": [],
+              "changed": false,
+              "from_cache": true,
+              "geometry": {},
+              "glossary_entries": [],
+              "issue_id": "untranslated_residue:p2:p2#9",
+              "offered_text": "indico.jacow.org/event/113/",
+              "paragraph_ref": "p2#9",
+              "reason": "translation_equals_source",
+              "source_text": "indico.jacow.org/event/113/",
+              "translated_text": "indico.jacow.org/event/113/"
+            },
+            {
+              "accepted": true,
+              "attempts": 0,
+              "calls": [],
+              "changed": true,
+              "from_cache": true,
+              "geometry": {},
+              "glossary_entries": [],
+              "issue_id": "untranslated_residue:p2:p2#39",
+              "offered_text": "Volume 66 Number 4  July/August 2026",
+              "paragraph_ref": "p2#39",
+              "reason": "accepted",
+              "source_text": "Volume 66 Number 4  July/August 2026",
+              "translated_text": "第66卷第4期 2026年7/8月"
+            },
+            {
+              "accepted": false,
+              "attempts": 1,
+              "calls": [
+                {
+                  "attempt": 1,
+                  "cache_key": "811cf7b96122af8325a587df187f2edcb7a6517227233eaf7e253a893b4a40c6",
+                  "cache_verdict": "no_stored_reply_under_this_key",
+                  "engine_identity": "OpenAITranslator/openai/zh",
+                  "group": "orphan_translation",
+                  "prompt_sha256": "cc3f132c251022995b1e6386450b2b6546d9481686074dd1adbe64af3d650fa4",
+                  "request_chars": 2828,
+                  "request_head": "You are translating one short line of a magazine page into zh.\n\nThe line was recovered by the page parser outside every detected block, so it\nwas never offered ",
+                  "request_sha256": "6bc763a94afcb0c96a49fefc5db71ef628ee3ffc0c10a0dcc8f5ed78546f5d36"
+                }
+              ],
+              "changed": false,
+              "from_cache": false,
+              "geometry": {},
+              "glossary_entries": [],
+              "issue_id": "untranslated_residue:p4:p4#38",
+              "offered_text": "R Hahn, Fermilab",
+              "paragraph_ref": "p4#38",
+              "reason": "retypesetting_needed_more_room_than_the_paragraph_had",
+              "source_text": "R Hahn, Fermilab",
+              "translated_text": "R Hahn，费米实验室"
+            }
+          ],
+          "kind": "untranslated_residue",
+          "offered": 32,
+          "offered_ids": [
+            "untranslated_residue:p1:p1#6",
+            "untranslated_residue:p1:p1#16",
+            "untranslated_residue:p1:p1#19",
+            "untranslated_residue:p2:p2#7",
+            "untranslated_residue:p2:p2#9",
+            "untranslated_residue:p2:p2#21",
+            "untranslated_residue:p2:p2#23",
+            "untranslated_residue:p2:p2#24",
+            "untranslated_residue:p2:p2#26",
+            "untranslated_residue:p2:p2#29",
+            "untranslated_residue:p2:p2#33",
+            "untranslated_residue:p2:p2#37",
+            "untranslated_residue:p2:p2#39",
+            "untranslated_residue:p2:p2#57",
+            "untranslated_residue:p2:p2#79",
+            "untranslated_residue:p2:p2#80",
+            "untranslated_residue:p2:p2#99",
+            "untranslated_residue:p2:p2#127",
+            "untranslated_residue:p2:p2#131",
+            "untranslated_residue:p2:p2#133",
+            "untranslated_residue:p3:p3#5",
+            "untranslated_residue:p3:p3#28",
+            "untranslated_residue:p3:p3#30",
+            "untranslated_residue:p3:p3#44",
+            "untranslated_residue:p3:p3#49",
+            "untranslated_residue:p3:p3#51",
+            "untranslated_residue:p4:p4#6",
+            "untranslated_residue:p4:p4#20",
+            "untranslated_residue:p4:p4#23",
+            "untranslated_residue:p4:p4#30",
+            "untranslated_residue:p4:p4#38",
+            "untranslated_residue:p4:p4#44"
+          ],
+          "reason": "",
+          "request": {
+            "cache_key": "f96503d0e6c6af2bb2471c193a6914c0f73a316e618188c44fe026f9ad401be2",
+            "calls": [],
+            "prompt_sha256": "94f390049cd07156b3290170062939ad88b1103e9f207335b41769a0a4ba1a03"
+          },
+          "vocabulary": [
+            "translate_orphan_lines"
+          ],
+          "written": [
+            "p2#39"
+          ]
+        }
+      ],
+      "treated_ids": [],
+      "untreated": {
+        "by_kind": {
+          "fragment_cluster": 16,
+          "out_of_page": 1,
+          "untranslated_residue": 32
+        },
+        "total": 49
+      },
+      "untreated_after": {
+        "by_kind": {
+          "fragment_cluster": 16,
+          "untranslated_residue": 31
+        },
+        "total": 47
+      }
+    },
+    {
+      "applicability": [],
+      "decision": {
+        "action": "translate_orphan_lines",
+        "attempts": 0,
+        "from_cache": true,
+        "issue_ids": [
+          "untranslated_residue:p2:p2#9",
+          "untranslated_residue:p2:p2#99",
+          "untranslated_residue:p4:p4#38"
+        ],
+        "parameters": {
+          "max_paragraphs": 3.0
+        },
+        "raw": "{\"action\": \"translate_orphan_lines\", \"issue_ids\": [\"untranslated_residue:p2:p2#9\", \"untranslated_residue:p2:p2#99\", \"untranslated_residue:p4:p4#38\"], \"parameters\": {}, \"reason\": \"These findings have a residue_ratio of 1.0, text length of at least 12 characters, and layout_label as 'fallback_line', meeting all conditions for the action.\"}",
+        "reason": "These findings have a residue_ratio of 1.0, text length of at least 12 characters, and layout_label as 'fallback_line', meeting all conditions for the action.",
+        "violations": []
+      },
+      "detected": {
+        "by_kind": {
+          "fragment_cluster": 16,
+          "untranslated_residue": 31
+        },
+        "total": 47
+      },
+      "detected_ids": [
+        "fragment_cluster:p2:p2#10+p2#11+p2#12+p2#13+p2#14+p2#15+p2#16+p2#17+p2#18",
+        "fragment_cluster:p2:p2#22+p2#23+p2#24",
+        "fragment_cluster:p2:p2#25+p2#26+p2#27+p2#28+p2#29",
+        "fragment_cluster:p2:p2#40+p2#41+p2#42",
+        "fragment_cluster:p2:p2#45+p2#46+p2#47+p2#48+p2#49+p2#50",
+        "fragment_cluster:p2:p2#55+p2#56+p2#57+p2#58+p2#59+p2#60+p2#61",
+        "fragment_cluster:p2:p2#65+p2#66+p2#67",
+        "fragment_cluster:p2:p2#68+p2#69+p2#70",
+        "fragment_cluster:p2:p2#72+p2#73+p2#74+p2#75+p2#76",
+        "fragment_cluster:p2:p2#79+p2#80+p2#81",
+        "fragment_cluster:p2:p2#84+p2#85+p2#86+p2#87+p2#88+p2#89+p2#90",
+        "fragment_cluster:p2:p2#93+p2#94+p2#95+p2#96+p2#97",
+        "fragment_cluster:p2:p2#104+p2#105+p2#106+p2#107",
+        "fragment_cluster:p2:p2#108+p2#109+p2#110+p2#111+p2#112+p2#113+p2#114",
+        "fragment_cluster:p2:p2#116+p2#117+p2#118+p2#119+p2#120+p2#121+p2#122",
+        "fragment_cluster:p2:p2#125+p2#126+p2#127+p2#128+p2#129+p2#130",
+        "untranslated_residue:p1:p1#6",
+        "untranslated_residue:p1:p1#16",
+        "untranslated_residue:p1:p1#19",
+        "untranslated_residue:p2:p2#7",
+        "untranslated_residue:p2:p2#9",
+        "untranslated_residue:p2:p2#21",
+        "untranslated_residue:p2:p2#23",
+        "untranslated_residue:p2:p2#24",
+        "untranslated_residue:p2:p2#26",
+        "untranslated_residue:p2:p2#29",
+        "untranslated_residue:p2:p2#33",
+        "untranslated_residue:p2:p2#37",
+        "untranslated_residue:p2:p2#57",
+        "untranslated_residue:p2:p2#79",
+        "untranslated_residue:p2:p2#80",
+        "untranslated_residue:p2:p2#99",
+        "untranslated_residue:p2:p2#127",
+        "untranslated_residue:p2:p2#131",
+        "untranslated_residue:p2:p2#133",
+        "untranslated_residue:p3:p3#5",
+        "untranslated_residue:p3:p3#28",
+        "untranslated_residue:p3:p3#30",
+        "untranslated_residue:p3:p3#44",
+        "untranslated_residue:p3:p3#49",
+        "untranslated_residue:p3:p3#51",
+        "untranslated_residue:p4:p4#6",
+        "untranslated_residue:p4:p4#20",
+        "untranslated_residue:p4:p4#23",
+        "untranslated_residue:p4:p4#30",
+        "untranslated_residue:p4:p4#38",
+        "untranslated_residue:p4:p4#44"
+      ],
+      "executed": [
+        {
+          "accepted": false,
+          "attempts": 0,
+          "calls": [],
+          "changed": false,
+          "from_cache": true,
+          "geometry": {},
+          "glossary_entries": [],
+          "issue_id": "untranslated_residue:p2:p2#9",
+          "offered_text": "indico.jacow.org/event/113/",
+          "paragraph_ref": "p2#9",
+          "reason": "translation_equals_source",
+          "source_text": "indico.jacow.org/event/113/",
+          "translated_text": "indico.jacow.org/event/113/"
+        },
+        {
+          "accepted": false,
+          "attempts": 0,
+          "calls": [],
+          "changed": false,
+          "from_cache": true,
+          "geometry": {},
+          "glossary_entries": [],
+          "issue_id": "untranslated_residue:p2:p2#99",
+          "offered_text": "P Dinault/CERN",
+          "paragraph_ref": "p2#99",
+          "reason": "translation_equals_source",
+          "source_text": "P Dinault/CERN",
+          "translated_text": "P Dinault/CERN"
+        },
+        {
+          "accepted": false,
+          "attempts": 0,
+          "calls": [],
+          "changed": false,
+          "from_cache": true,
+          "geometry": {},
+          "glossary_entries": [],
+          "issue_id": "untranslated_residue:p4:p4#38",
+          "offered_text": "R Hahn, Fermilab",
+          "paragraph_ref": "p4#38",
+          "reason": "retypesetting_needed_more_room_than_the_paragraph_had",
+          "source_text": "R Hahn, Fermilab",
+          "translated_text": "R Hahn，费米实验室"
+        }
+      ],
+      "iteration": 2,
+      "outcome": "applied_nothing",
+      "request": {
+        "cache_key": "943199a896f9bcdda1c102a232cd690aacd36828fd1ed0c6b1c6f7f893489b44",
+        "calls": [],
+        "prompt_sha256": "94f390049cd07156b3290170062939ad88b1103e9f207335b41769a0a4ba1a03"
+      },
+      "rounds": [
+        {
+          "applicability": [],
+          "decision": {
+            "action": "translate_orphan_lines",
+            "attempts": 0,
+            "from_cache": true,
+            "issue_ids": [
+              "untranslated_residue:p2:p2#9",
+              "untranslated_residue:p2:p2#99",
+              "untranslated_residue:p4:p4#38"
+            ],
+            "parameters": {
+              "max_paragraphs": 3.0
+            },
+            "raw": "{\"action\": \"translate_orphan_lines\", \"issue_ids\": [\"untranslated_residue:p2:p2#9\", \"untranslated_residue:p2:p2#99\", \"untranslated_residue:p4:p4#38\"], \"parameters\": {}, \"reason\": \"These findings have a residue_ratio of 1.0, text length of at least 12 characters, and layout_label as 'fallback_line', meeting all conditions for the action.\"}",
+            "reason": "These findings have a residue_ratio of 1.0, text length of at least 12 characters, and layout_label as 'fallback_line', meeting all conditions for the action.",
+            "violations": []
+          },
+          "executed": [
+            {
+              "accepted": false,
+              "attempts": 0,
+              "calls": [],
+              "changed": false,
+              "from_cache": true,
+              "geometry": {},
+              "glossary_entries": [],
+              "issue_id": "untranslated_residue:p2:p2#9",
+              "offered_text": "indico.jacow.org/event/113/",
+              "paragraph_ref": "p2#9",
+              "reason": "translation_equals_source",
+              "source_text": "indico.jacow.org/event/113/",
+              "translated_text": "indico.jacow.org/event/113/"
+            },
+            {
+              "accepted": false,
+              "attempts": 0,
+              "calls": [],
+              "changed": false,
+              "from_cache": true,
+              "geometry": {},
+              "glossary_entries": [],
+              "issue_id": "untranslated_residue:p2:p2#99",
+              "offered_text": "P Dinault/CERN",
+              "paragraph_ref": "p2#99",
+              "reason": "translation_equals_source",
+              "source_text": "P Dinault/CERN",
+              "translated_text": "P Dinault/CERN"
+            },
+            {
+              "accepted": false,
+              "attempts": 0,
+              "calls": [],
+              "changed": false,
+              "from_cache": true,
+              "geometry": {},
+              "glossary_entries": [],
+              "issue_id": "untranslated_residue:p4:p4#38",
+              "offered_text": "R Hahn, Fermilab",
+              "paragraph_ref": "p4#38",
+              "reason": "retypesetting_needed_more_room_than_the_paragraph_had",
+              "source_text": "R Hahn, Fermilab",
+              "translated_text": "R Hahn，费米实验室"
+            }
+          ],
+          "kind": "untranslated_residue",
+          "offered": 31,
+          "offered_ids": [
+            "untranslated_residue:p1:p1#6",
+            "untranslated_residue:p1:p1#16",
+            "untranslated_residue:p1:p1#19",
+            "untranslated_residue:p2:p2#7",
+            "untranslated_residue:p2:p2#9",
+            "untranslated_residue:p2:p2#21",
+            "untranslated_residue:p2:p2#23",
+            "untranslated_residue:p2:p2#24",
+            "untranslated_residue:p2:p2#26",
+            "untranslated_residue:p2:p2#29",
+            "untranslated_residue:p2:p2#33",
+            "untranslated_residue:p2:p2#37",
+            "untranslated_residue:p2:p2#57",
+            "untranslated_residue:p2:p2#79",
+            "untranslated_residue:p2:p2#80",
+            "untranslated_residue:p2:p2#99",
+            "untranslated_residue:p2:p2#127",
+            "untranslated_residue:p2:p2#131",
+            "untranslated_residue:p2:p2#133",
+            "untranslated_residue:p3:p3#5",
+            "untranslated_residue:p3:p3#28",
+            "untranslated_residue:p3:p3#30",
+            "untranslated_residue:p3:p3#44",
+            "untranslated_residue:p3:p3#49",
+            "untranslated_residue:p3:p3#51",
+            "untranslated_residue:p4:p4#6",
+            "untranslated_residue:p4:p4#20",
+            "untranslated_residue:p4:p4#23",
+            "untranslated_residue:p4:p4#30",
+            "untranslated_residue:p4:p4#38",
+            "untranslated_residue:p4:p4#44"
+          ],
+          "reason": "no_paragraph_was_written",
+          "request": {
+            "cache_key": "943199a896f9bcdda1c102a232cd690aacd36828fd1ed0c6b1c6f7f893489b44",
+            "calls": [],
+            "prompt_sha256": "94f390049cd07156b3290170062939ad88b1103e9f207335b41769a0a4ba1a03"
+          },
+          "vocabulary": [
+            "translate_orphan_lines"
+          ],
+          "written": []
+        }
+      ],
+      "untreated": {
+        "by_kind": {
+          "fragment_cluster": 16,
+          "untranslated_residue": 31
+        },
+        "total": 47
+      }
+    }
+  ],
+  "iterations_run": 2,
+  "kind_order": [
+    "out_of_page",
+    "text_text_collision",
+    "text_figure_overlap",
+    "fragment_cluster",
+    "chain_escalation",
+    "untranslated_residue"
+  ],
+  "offered_texts": [
+    "indico.jacow.org/event/113/",
+    "Volume 66 Number 4  July/August 2026",
+    "R Hahn, Fermilab",
+    "indico.jacow.org/event/113/",
+    "P Dinault/CERN",
+    "R Hahn, Fermilab"
+  ],
+  "stopped_because": "no_paragraph_was_written",
+  "switch": "magazine_repair",
+  "treated": []
+}

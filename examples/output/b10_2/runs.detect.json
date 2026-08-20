@@ -1,0 +1,145 @@
+[
+  {
+    "sample": "AramcoWorld-en-v2.pdf",
+    "model": "gpt-4o",
+    "arm": "detect",
+    "lang_in": "en",
+    "lang_out": "zh",
+    "seconds": 78.5,
+    "target_pages": [
+      3
+    ],
+    "requests": 84,
+    "cache_hits": 84,
+    "api_calls": 0,
+    "prompt_tokens": 0,
+    "completion_tokens": 0,
+    "pdf": "examples\\output\\b10_2\\AramcoWorld-en-v2.detect\\AramcoWorld-en-v2.b10_2.pdf",
+    "pdf_sha256": "a8b0d324fa1b74930209ceb4be102825235f0f9f5bf86638144e97df91576c12",
+    "pages_pdf": "examples\\output\\b10_2\\AramcoWorld-en-v2.detect\\AramcoWorld-en-v2.b10_2.pages.pdf",
+    "raster": [
+      "examples\\output\\b10_2\\AramcoWorld-en-v2.detect\\raster\\AramcoWorld-en-v2.p3.before.png"
+    ],
+    "sidecars": [
+      "examples\\output\\b10_2\\AramcoWorld-en-v2.detect\\sidecars\\issues.json"
+    ],
+    "working_dir": "examples\\output\\b10_2\\AramcoWorld-en-v2.detect\\work\\AramcoWorld-en-v2",
+    "switches": {
+      "magazine_checkpoint": true,
+      "magazine_page_classify": true,
+      "magazine_chain_detect": true,
+      "magazine_chain_translate": true,
+      "magazine_article_group": true,
+      "magazine_article_context": true,
+      "magazine_hitl_export": false,
+      "magazine_hitl_apply": true,
+      "magazine_detect": true,
+      "magazine_drop_cap_mark": true,
+      "magazine_drop_cap_apply": true,
+      "magazine_title_typeset": true,
+      "magazine_line_structure": true,
+      "magazine_repair": true,
+      "magazine_paren_dedup": true
+    },
+    "translation_style": {
+      "person_names": "transliterate",
+      "system_prompt_sha256": "74666d7128c1c06127d9193db7b8d2b346866088f1ccabb4c33e69be1c586903"
+    }
+  },
+  {
+    "sample": "Vogue-en.pdf",
+    "model": "gpt-4o",
+    "arm": "detect",
+    "lang_in": "en",
+    "lang_out": "zh",
+    "seconds": 28.6,
+    "target_pages": [
+      3
+    ],
+    "requests": 30,
+    "cache_hits": 30,
+    "api_calls": 0,
+    "prompt_tokens": 0,
+    "completion_tokens": 0,
+    "pdf": "examples\\output\\b10_2\\Vogue-en.detect\\Vogue-en.b10_2.pdf",
+    "pdf_sha256": "5f1943f35f3b155e4c8fb65932042ede1313cde33fc1a94a87f95888715f78b9",
+    "pages_pdf": "examples\\output\\b10_2\\Vogue-en.detect\\Vogue-en.b10_2.pages.pdf",
+    "raster": [
+      "examples\\output\\b10_2\\Vogue-en.detect\\raster\\Vogue-en.p3.before.png"
+    ],
+    "sidecars": [
+      "examples\\output\\b10_2\\Vogue-en.detect\\sidecars\\issues.json"
+    ],
+    "working_dir": "examples\\output\\b10_2\\Vogue-en.detect\\work\\Vogue-en",
+    "switches": {
+      "magazine_checkpoint": true,
+      "magazine_page_classify": true,
+      "magazine_chain_detect": true,
+      "magazine_chain_translate": true,
+      "magazine_article_group": true,
+      "magazine_article_context": true,
+      "magazine_hitl_export": false,
+      "magazine_hitl_apply": true,
+      "magazine_detect": true,
+      "magazine_drop_cap_mark": true,
+      "magazine_drop_cap_apply": true,
+      "magazine_title_typeset": true,
+      "magazine_line_structure": true,
+      "magazine_repair": true,
+      "magazine_paren_dedup": true
+    },
+    "translation_style": {
+      "person_names": "transliterate",
+      "system_prompt_sha256": "74666d7128c1c06127d9193db7b8d2b346866088f1ccabb4c33e69be1c586903"
+    }
+  },
+  {
+    "sample": "CERNCourier-en.pdf",
+    "model": "gpt-4o",
+    "arm": "detect",
+    "lang_in": "en",
+    "lang_out": "zh",
+    "seconds": 50.9,
+    "target_pages": [
+      3,
+      4
+    ],
+    "requests": 102,
+    "cache_hits": 102,
+    "api_calls": 0,
+    "prompt_tokens": 0,
+    "completion_tokens": 0,
+    "pdf": "examples\\output\\b10_2\\CERNCourier-en.detect\\CERNCourier-en.b10_2.pdf",
+    "pdf_sha256": "1c66839638089e9e9b7246c0f32618b78d3c373f20971ca8bad83a096a17c20e",
+    "pages_pdf": "examples\\output\\b10_2\\CERNCourier-en.detect\\CERNCourier-en.b10_2.pages.pdf",
+    "raster": [
+      "examples\\output\\b10_2\\CERNCourier-en.detect\\raster\\CERNCourier-en.p3.before.png",
+      "examples\\output\\b10_2\\CERNCourier-en.detect\\raster\\CERNCourier-en.p4.before.png"
+    ],
+    "sidecars": [
+      "examples\\output\\b10_2\\CERNCourier-en.detect\\sidecars\\issues.json"
+    ],
+    "working_dir": "examples\\output\\b10_2\\CERNCourier-en.detect\\work\\CERNCourier-en",
+    "switches": {
+      "magazine_checkpoint": true,
+      "magazine_page_classify": true,
+      "magazine_chain_detect": true,
+      "magazine_chain_translate": true,
+      "magazine_article_group": true,
+      "magazine_article_context": true,
+      "magazine_hitl_export": false,
+      "magazine_hitl_apply": true,
+      "magazine_detect": true,
+      "magazine_drop_cap_mark": true,
+      "magazine_drop_cap_apply": true,
+      "magazine_title_typeset": true,
+      "magazine_line_structure": true,
+      "magazine_repair": true,
+      "magazine_paren_dedup": true
+    },
+    "translation_style": {
+      "person_names": "transliterate",
+      "system_prompt_sha256": "74666d7128c1c06127d9193db7b8d2b346866088f1ccabb4c33e69be1c586903"
+    }
+  }
+]

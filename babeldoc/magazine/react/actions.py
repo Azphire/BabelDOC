@@ -25,7 +25,6 @@ recorded, so that the report on what a ruling reached counts this path too.
 
 from __future__ import annotations
 
-import hashlib
 import json
 import logging
 from dataclasses import dataclass
@@ -35,7 +34,14 @@ from pathlib import Path
 from babeldoc.magazine.detectors import base as detector_base
 from babeldoc.magazine.prompt_loader import Prompt
 from babeldoc.magazine.prompt_loader import load_prompt
+from babeldoc.magazine.react import cache_key as cache_key_fields
 from babeldoc.magazine.react import writeback
+from babeldoc.magazine.react.cache_key import GROUP_ORPHAN
+from babeldoc.magazine.react.cache_key import SERVED_BYPASSED
+from babeldoc.magazine.react.cache_key import SERVED_MISS
+from babeldoc.magazine.react.cache_key import SERVED_RETRY
+from babeldoc.magazine.react.cache_key import SERVED_STALE
+from babeldoc.magazine.react.cache_key import attribution
 from babeldoc.magazine.react.config import MAX_PARAGRAPHS as MAX_PARAGRAPHS_KEY
 from babeldoc.magazine.react.config import MIN_CHARS_KEY
 from babeldoc.magazine.react.config import MIN_RATIO_KEY
@@ -62,7 +68,11 @@ GLOSSARY_PROMPT = "react_orphan_glossary"
 # Engine name the orphan translations are filed under. The column is 20 wide.
 ENGINE_NAME = "magazine_orphan"
 
-CACHE_KEY_VERSION = 1
+# The same composition the decision cache is keyed by, taken from the one place
+# it is defined so the two request points cannot drift apart. This prompt
+# renders no evidence block, so the projection has no field to drop here; what
+# it shares is the composition and the version that retires stored replies.
+CACHE_KEY_VERSION = cache_key_fields.CACHE_KEY_VERSION
 
 TRANSLATION_FIELD = "translation"
 
@@ -96,6 +106,11 @@ class Candidate:
     paragraph: object
     page: object
     source_text: str
+    # The finding this candidate was resolved from. An action about a single
+    # paragraph has everything it needs without it; one about a pair reads the
+    # second member's reference from here, because the pair is what the finding
+    # is and the resolution is only ever to one of them.
+    issue: object = None
 
 
 @dataclass
@@ -117,6 +132,10 @@ class Application:
     # action whose evidence is text, and the whole of the evidence for one whose
     # evidence is where the ink landed.
     geometry: dict = field(default_factory=dict)
+    # One row per call this application made that reached the transport, which
+    # is one row per call it was billed for. Empty for an action that sends
+    # nothing and for a request the cache answered.
+    calls: list[dict] = field(default_factory=list)
 
     def as_record(self) -> dict:
         return {
@@ -132,6 +151,7 @@ class Application:
             "from_cache": self.from_cache,
             "changed": self.changed,
             "geometry": dict(self.geometry),
+            "calls": [dict(row) for row in self.calls],
         }
 
 
@@ -159,7 +179,7 @@ def admits(issue, paragraph, action: Action, source_text: str) -> str:
     return ACCEPTED
 
 
-def admits_candidate(issue, candidate, action: Action) -> str:
+def admits_candidate(issue, candidate, action: Action, context) -> str:  # noqa: ARG001 - the pass is part of the question every action is asked
     """This action's admission question, in the shape the loop asks every action."""
     return admits(issue, candidate.paragraph, action, candidate.source_text)
 
@@ -182,6 +202,7 @@ def resolve(issue, pages_by_label: dict) -> Candidate | None:
             paragraph=paragraphs[index],
             page=view.page,
             source_text=detector_base.rendered_text(paragraphs[index]).strip(),
+            issue=issue,
         )
     return None
 
@@ -241,13 +262,8 @@ def glossary_block(entries, working_dir) -> str:
 
 
 def cache_key(prompt: Prompt, identity: str) -> str:
-    fields = (
-        f"cache_key_version={CACHE_KEY_VERSION}",
-        f"engine={identity}",
-        f"prompt_file_sha256={prompt.digest}",
-        f"prompt_text_sha256={hashlib.sha256(prompt.text.encode()).hexdigest()}",
-    )
-    return hashlib.sha256("\n".join(fields).encode()).hexdigest()
+    """Digest of everything that could change the translation of one line."""
+    return cache_key_fields.digest(identity, prompt.digest, prompt.text)
 
 
 def interpret(reply: str) -> tuple[str | None, str]:
@@ -334,6 +350,7 @@ class CachedOrphanTranslator:
             glossary_entries=[list(pair) for pair in entries],
         )
         key = cache_key(prompt, self.identity)
+        verdict = SERVED_BYPASSED if self.ignore_cache else SERVED_MISS
         if not self.ignore_cache:
             try:
                 stored = self.cache.get(key)
@@ -349,12 +366,24 @@ class CachedOrphanTranslator:
                     result.from_cache = True
                     return result
                 logger.debug("cached orphan reply rejected, re-requesting: %s", violation)
+                verdict = SERVED_STALE
 
         violations: list[str] = []
         attempts = 0
         text_to_send = prompt.text
         while attempts < self.config.decide_max_attempts:
             attempts += 1
+            result.calls.append(
+                attribution(
+                    GROUP_ORPHAN,
+                    SERVED_RETRY if attempts > 1 else verdict,
+                    key,
+                    prompt.digest,
+                    text_to_send,
+                    attempts,
+                    identity=self.identity,
+                )
+            )
             try:
                 reply = self.transport.complete(text_to_send)
             except Exception as exc:  # noqa: BLE001 - any failure is a violation

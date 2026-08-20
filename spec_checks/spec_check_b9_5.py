@@ -570,7 +570,7 @@ def check_01d_repair_negative_probes() -> None:
     refuses(
         lambda raw: raw[key][collision_action.NAME][
             react_config.APPLICABILITY_KEY
-        ].pop(react_config.MIN_COLLISION_IOU_KEY),
+        ].pop(react_config.MIN_COLLISION_COVERAGE_KEY),
         "a collision rule with no overlap bound",
     )
     refuses(
@@ -616,11 +616,19 @@ def check_01e_the_action_is_stricter_than_the_detector() -> None:
         faults.append(f"the shrink floor is {contain.min_scale(action)}")
     if not 0.0 <= contain.margin_ratio(action) < 0.5:
         faults.append(f"the landing margin is {contain.margin_ratio(action)}")
-    # The collision action is declared and admits nothing, which is the whole of
-    # its v1 behaviour and is asserted rather than assumed.
+    # The collision action's own bound is not below the detector's: an action
+    # acting at less overlap than the detector reports at would move a paragraph
+    # on a finding made at the edge of the detector's own noise floor. B10.2
+    # gave this action a mechanism, and what is asserted here is the strictness
+    # this check is named for -- a claim about the rule, not about the
+    # mechanism, which is why it survived the action gaining one.
     collision_rule = repair_config().actions[collision_action.NAME]
-    if collision_rule.parameters:
-        faults.append("the collision action declares parameters it cannot use")
+    action_coverage = collision_action.applicability(collision_rule)
+    if action_coverage < detector.collision_min_coverage:
+        faults.append(
+            f"the collision action acts at coverage {action_coverage}, below the "
+            f"{detector.collision_min_coverage} the detector reports at"
+        )
     record(
         "check_01e_the_action_is_stricter_than_the_detector", not faults, "; ".join(faults)
     )
@@ -1125,7 +1133,9 @@ def check_04d_containment_refuses_what_it_may_not_move() -> None:
     if issue is None:
         faults.append("the running text fixture produced no finding to refuse")
     else:
-        verdict = contain.admits(issue, candidate_for(docs, issue), action)
+        verdict = contain.admits(
+            issue, candidate_for(docs, issue), action, detect(docs)[1]
+        )
         if verdict != contain.REASON_LABEL:
             faults.append(f"a paragraph of running text was admitted with {verdict}")
 
@@ -1138,7 +1148,9 @@ def check_04d_containment_refuses_what_it_may_not_move() -> None:
     if issue is None:
         faults.append("the shallow fixture produced no finding at all")
     else:
-        verdict = contain.admits(issue, candidate_for(docs, issue), action)
+        verdict = contain.admits(
+            issue, candidate_for(docs, issue), action, detect(docs)[1]
+        )
         if verdict != contain.REASON_OVERFLOW:
             faults.append(f"a shallow reach was admitted with {verdict}")
 
@@ -1150,7 +1162,9 @@ def check_04d_containment_refuses_what_it_may_not_move() -> None:
     if not found:
         faults.append("the box-only fixture produced no finding")
     else:
-        verdict = contain.admits(found[0], candidate_for(plain, found[0]), action)
+        verdict = contain.admits(
+            found[0], candidate_for(plain, found[0]), action, detect(plain)[1]
+        )
         if verdict != contain.REASON_NO_INK:
             faults.append(f"a paragraph with no ink was admitted with {verdict}")
     record(
@@ -1293,8 +1307,19 @@ def check_04e_the_loop_carries_containment() -> None:
     record("check_04e_the_loop_carries_containment", not faults, "; ".join(faults))
 
 
-def check_04f_the_collision_action_writes_nothing() -> None:
-    """Negative 4f: a decision naming a collision escalates and touches nothing."""
+def check_04f_the_collision_action_refuses_a_pair_of_equals() -> None:
+    """Negative 4f: a decision naming a collision escalates and touches nothing.
+
+    The fixture is two blocks of one size standing in one place. When this was
+    written the action refused every collision, and the check read as an
+    assertion that it did. B10.2 gave it a mechanism, and this fixture is the
+    case that mechanism still refuses: moving either of two paragraphs of
+    comparable size is exactly as wrong as moving the other, so there is no
+    smaller one to move and the finding is escalated. What the check asserts is
+    therefore unchanged -- nothing is written, nothing is touched, and the
+    refusal reaches the escalation record -- and only the reason it carries has
+    moved, from "this action writes nothing" to "these two are equals".
+    """
     directory = _tmp_root / "loop_collision"
     docs = document([collision_pair(100.0, 100.0)])
     before = checkpoint_module.to_checkpoint_xml(docs)
@@ -1313,20 +1338,22 @@ def check_04f_the_collision_action_writes_nothing() -> None:
     if loop.source_layout is None:
         faults.append("the loop did not load the source layout it was given")
     if report["applications"] != 0:
-        faults.append(f"{report['applications']} application(s) from an inert action")
+        faults.append(f"{report['applications']} application(s) on a pair of equals")
     if checkpoint_module.to_checkpoint_xml(docs) != before:
-        faults.append("the document changed under an action that writes nothing")
+        faults.append("the document changed under a refused finding")
     reasons = {
         row["reason"]
         for iteration in report["iterations"]
         for row in iteration.get("applicability", ())
     }
-    if collision_action.REASON_REPORT_ONLY not in reasons:
+    if collision_action.REASON_AREA not in reasons:
         faults.append(f"no finding was escalated; reasons were {sorted(reasons)}")
     if report["stopped_because"] != controller.STOP_NOTHING_APPLICABLE:
         faults.append(f"stopped because {report['stopped_because']}")
     record(
-        "check_04f_the_collision_action_writes_nothing", not faults, "; ".join(faults)
+        "check_04f_the_collision_action_refuses_a_pair_of_equals",
+        not faults,
+        "; ".join(faults),
     )
 
 
@@ -1888,7 +1915,7 @@ def replay_containment(directory: Path) -> dict:
         if issue.kind != page_bounds.KIND:
             continue
         candidate = actions.resolve(issue, pages_by_label)
-        verdict = contain.admits(issue, candidate, action)
+        verdict = contain.admits(issue, candidate, action, context)
         if verdict != actions.ACCEPTED:
             refused.append({"ref": candidate.reference, "reason": verdict})
             continue
@@ -2212,7 +2239,7 @@ def main() -> int:
         check_04c_a_heading_past_the_floor_is_escalated,
         check_04d_containment_refuses_what_it_may_not_move,
         check_04e_the_loop_carries_containment,
-        check_04f_the_collision_action_writes_nothing,
+        check_04f_the_collision_action_refuses_a_pair_of_equals,
         check_04g_a_slide_onto_a_neighbour_falls_back_to_shrinking,
         check_04h_a_heading_with_nowhere_to_go_is_escalated,
         check_04i_the_guard_reads_the_detectors_bound,

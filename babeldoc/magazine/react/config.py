@@ -70,8 +70,22 @@ ORPHAN_LABELS_KEY = "orphan_layout_labels"
 CONTAIN_LABELS_KEY = "contain_layout_labels"
 MIN_OVERFLOW_KEY = "min_overflow_ratio"
 
-# Applicability keys the collision action is built from.
-MIN_COLLISION_IOU_KEY = "min_collision_iou"
+# The applicability key the collision action is built from. Coverage alone: the
+# detector is bounded by either measure, and the action needs only this one
+# because the other can select nothing the area asymmetry bound does not refuse
+# first. See the action's own module for why.
+MIN_COLLISION_COVERAGE_KEY = "min_collision_coverage"
+
+# The bound that key replaced. Not read by the action any more, and named here
+# because a configuration an earlier batch froze declares it and has to stay
+# readable: reproducing the request that batch sent needs the configuration it
+# shipped, so a parser that refuses last year's file makes last year's run
+# unreplayable.
+LEGACY_COLLISION_IOU_KEY = "min_collision_iou"
+
+# The evidence fields kept out of a cache key, declared beside the loop's other
+# bounds because it is the loop's requests they are keys for.
+VOLATILE_EVIDENCE_KEY = "volatile_evidence_keys"
 
 # Which applicability terms each action's rule is made of. An action whose rule
 # omits one of them is a rule the code answering for that action cannot apply,
@@ -82,7 +96,20 @@ MIN_COLLISION_IOU_KEY = "min_collision_iou"
 REQUIRED_APPLICABILITY = {
     "translate_orphan_lines": (MIN_RATIO_KEY, MIN_CHARS_KEY, ORPHAN_LABELS_KEY),
     "contain_in_page": (CONTAIN_LABELS_KEY, MIN_OVERFLOW_KEY),
-    "resolve_collision": (MIN_COLLISION_IOU_KEY,),
+    "resolve_collision": (),
+}
+
+# Terms an action's rule may declare in place of one another, of which it must
+# declare at least one. Only the collision rule has any: it was written against
+# the union ratio's bound and is written against coverage's, so a configuration
+# frozen by an earlier batch names the first and one written now names the
+# second. Both are rules this file can read, and a collision rule naming neither
+# is a filter that selects everything, which is the fault worth refusing. The
+# action itself reads only the current term and refuses every finding under a
+# rule that carries the older one, rather than reading a bound that means
+# something else.
+ALTERNATIVE_APPLICABILITY = {
+    "resolve_collision": (MIN_COLLISION_COVERAGE_KEY, LEGACY_COLLISION_IOU_KEY),
 }
 
 
@@ -223,6 +250,7 @@ class RepairConfig:
     issue_excerpt_chars: int
     max_glossary_entries: int
     page_context_chars: int
+    volatile_evidence_keys: tuple[str, ...]
     actions: dict[str, Action]
 
     def action(self, name: str) -> Action | None:
@@ -236,6 +264,7 @@ class RepairConfig:
             "issue_excerpt_chars": self.issue_excerpt_chars,
             "max_glossary_entries": self.max_glossary_entries,
             "page_context_chars": self.page_context_chars,
+            "volatile_evidence_keys": list(self.volatile_evidence_keys),
             "actions": [
                 action.as_record() for _name, action in sorted(self.actions.items())
             ],
@@ -268,7 +297,9 @@ def _parse_parameter(name: str, raw: object, source: str) -> Parameter:
     )
 
 
-def _parse_applicability(raw: object, source: str, required) -> tuple[dict, dict]:
+def _parse_applicability(
+    raw: object, source: str, required, alternatives=()
+) -> tuple[dict, dict]:
     """The rule's terms and the sentence each of them is stated with.
 
     Every term has to carry a statement and every statement has to name a term.
@@ -286,6 +317,12 @@ def _parse_applicability(raw: object, source: str, required) -> tuple[dict, dict
         _require(
             key in parameters,
             f"{source}: {APPLICABILITY_KEY} omits {key}",
+        )
+    if alternatives:
+        _require(
+            any(key in parameters for key in alternatives),
+            f"{source}: {APPLICABILITY_KEY} declares none of "
+            f"{sorted(alternatives)}",
         )
     statements = raw.get(STATEMENTS_KEY)
     _require(
@@ -353,7 +390,10 @@ def _parse_action(name: str, raw: object, kinds: set[str], source: str) -> Actio
         f"the actions with a rule are {sorted(REQUIRED_APPLICABILITY)}",
     )
     applicability, statements = _parse_applicability(
-        raw.get(APPLICABILITY_KEY), f"{source}.{name}", required
+        raw.get(APPLICABILITY_KEY),
+        f"{source}.{name}",
+        required,
+        ALTERNATIVE_APPLICABILITY.get(name, ()),
     )
     return Action(
         name=name,
@@ -393,6 +433,13 @@ def parse_repair_config(raw: dict, source: str, kinds: set[str]) -> RepairConfig
         issue_excerpt_chars=int(parameters["issue_excerpt_chars"]),
         max_glossary_entries=int(parameters["max_glossary_entries"]),
         page_context_chars=int(parameters["page_context_chars"]),
+        # Optional, and empty where it is absent. A configuration written
+        # before this key existed is one nobody has classified a field of, and
+        # the conservative reading of that is that every field stays in the key:
+        # the direction this declaration is built to fail in. Required would
+        # instead make every frozen historical configuration unparseable, which
+        # is a replay this project cannot run rather than a fault it catches.
+        volatile_evidence_keys=tuple(parameters.get(VOLATILE_EVIDENCE_KEY, ())),
         actions={
             name: _parse_action(name, value, kinds, source)
             for name, value in actions_raw.items()

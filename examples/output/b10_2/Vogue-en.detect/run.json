@@ -1,0 +1,47 @@
+{
+  "sample": "Vogue-en.pdf",
+  "model": "gpt-4o",
+  "arm": "detect",
+  "lang_in": "en",
+  "lang_out": "zh",
+  "seconds": 28.6,
+  "target_pages": [
+    3
+  ],
+  "requests": 30,
+  "cache_hits": 30,
+  "api_calls": 0,
+  "prompt_tokens": 0,
+  "completion_tokens": 0,
+  "pdf": "examples\\output\\b10_2\\Vogue-en.detect\\Vogue-en.b10_2.pdf",
+  "pdf_sha256": "5f1943f35f3b155e4c8fb65932042ede1313cde33fc1a94a87f95888715f78b9",
+  "pages_pdf": "examples\\output\\b10_2\\Vogue-en.detect\\Vogue-en.b10_2.pages.pdf",
+  "raster": [
+    "examples\\output\\b10_2\\Vogue-en.detect\\raster\\Vogue-en.p3.before.png"
+  ],
+  "sidecars": [
+    "examples\\output\\b10_2\\Vogue-en.detect\\sidecars\\issues.json"
+  ],
+  "working_dir": "examples\\output\\b10_2\\Vogue-en.detect\\work\\Vogue-en",
+  "switches": {
+    "magazine_checkpoint": true,
+    "magazine_page_classify": true,
+    "magazine_chain_detect": true,
+    "magazine_chain_translate": true,
+    "magazine_article_group": true,
+    "magazine_article_context": true,
+    "magazine_hitl_export": false,
+    "magazine_hitl_apply": true,
+    "magazine_detect": true,
+    "magazine_drop_cap_mark": true,
+    "magazine_drop_cap_apply": true,
+    "magazine_title_typeset": true,
+    "magazine_line_structure": true,
+    "magazine_repair": true,
+    "magazine_paren_dedup": true
+  },
+  "translation_style": {
+    "person_names": "transliterate",
+    "system_prompt_sha256": "74666d7128c1c06127d9193db7b8d2b346866088f1ccabb4c33e69be1c586903"
+  }
+}
