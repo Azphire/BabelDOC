@@ -1,0 +1,99 @@
+# B9.7 — per kind decision rounds
+
+Batch b9.6 reworded the decision request over three rounds and recovered two of
+its four points. The one it did not recover, `cern_p1`, was diagnosed there and
+the diagnosis was about position rather than about wording: a single
+`out_of_page` finding standing seventeenth in a list of forty, dominated by
+thirty one `untranslated_residue` findings and sixteen `fragment_cluster` ones.
+Wording cannot move a finding out of a list it is buried in.
+
+This batch changes the shape of the request instead. An iteration asks for its
+decision one detector kind at a time: a round carries the findings of a single
+kind and the actions that answer for that kind, and nothing else. The order the
+rounds are taken in is declared in `configs/decision_rounds.json` and no code
+reasons about which kind a round is for. One iteration is every round taken
+once, so the iteration ceiling and the convergence guard count what they counted
+before.
+
+Nothing else moved. `prompts/react_repair_decide.md` and
+`configs/repair_actions.json` are byte identical to what batch b9.6 shipped, so
+the recovery below is attributable to the shape of the request and to nothing
+else. Every round of every case here ran prompt `94f39004`, which is the file in
+the tree and the file b9.6's last round sent.
+
+## What each case became
+
+The findings, the frozen inputs and the two replayed cache keys are batch
+b9.6's, read where they sit under `examples/output/b9_6/`. The driver imports
+that batch's driver rather than rebuilding its fixtures, so what is compared is
+two shapes of request over one set of findings.
+
+| case | rounds run | subject round | offered | chose | named |
+| --- | --- | --- | --- | --- | --- |
+| `synthetic_contain` | `out_of_page`, `untranslated_residue` | `out_of_page` | 1 of 6 | `contain_in_page` | `out_of_page:p1:p1#0` |
+| `courier_p1` | `out_of_page`, `untranslated_residue` | `out_of_page` | 1 of 14 | `contain_in_page` | `out_of_page:p1:p1#10` |
+| `cern_p1` | `out_of_page`, `untranslated_residue` | `out_of_page` | 1 of 48 | `contain_in_page` | `out_of_page:p1:p1#2` |
+| `orphan_spectrum` | `untranslated_residue` | `untranslated_residue` | 19 of 19 | `translate_orphan_lines` | 3 of the 6 the rule admits |
+
+Three of three containment points hit, `cern_p1` included. Its round offered the
+one `out_of_page` finding on its own; the sixteen `fragment_cluster` findings
+never reached a request at all, because no action answers for that kind and a
+round whose only available answer is to apply nothing is not asked for.
+
+The reason each round gave reads off the conditions rather than off the text.
+For `cern_p1`: *the finding meets the conditions with layout_label 'title' and
+overflow_ratio 0.033926*. For `courier_p1`, where b9.6's baseline had answered
+that the finding *does not have a layout_label of title or paragraph_title*
+about a finding whose evidence says `title`: *a layout_label of 'title' and an
+overflow_ratio of 0.013762*.
+
+The residue rounds are the other half of the evidence. On `courier_p1` and
+`synthetic_contain` the residue round answered `none`, correctly: those
+findings are refused by the orphan rule on its own terms. On `cern_p1` it chose
+`translate_orphan_lines` on three qualifying findings, which is the same action
+that arm chose in b9.5 -- it is no longer the only thing that gets chosen.
+
+## Zero regression
+
+`orphan_spectrum` is batch b8.4's nineteen finding fixture, where only the
+orphan action has qualifying findings. It chose `translate_orphan_lines`, named
+three findings, and every one of them is inside the six the rule admits. B9.6's
+last round named three, all eligible, and the count and the action are
+unchanged. Which three differs between the two samples; the identity inside the
+eligible set is the model's to choose and gpt-4o at temperature 0 is measurably
+non deterministic, which is a recorded limitation rather than a regression.
+
+Batch b9.5's containment guard spectrum is asserted in the gate rather than
+here, driven through the whole loop under the new round shape: the fixture with
+somewhere to go is still contained by the fallback and not by the slide, and the
+one with nowhere to go is still escalated with the document byte identical.
+
+## The newline pin
+
+`.gitattributes` pins the checkout of `prompts/`, `configs/`, `spec_checks/`,
+`docs/` and the frozen prompt copies under `examples/output/` to LF. Several
+assertions identify a file by the SHA-256 of its bytes -- b8.4's and b9.6's
+prompt digests, and the cache key a replay reproduces a request through -- and
+before this a clone with `core.autocrlf` set would have digested a different
+file than the one those records name. Both of those assertions are recomputed
+under the pin in `spec_check_b9_7.check_02c` and both hold.
+
+One exception is declared and is not an oversight: `docs/eval/results_*/` is
+left to the clone, because each file under it is regenerated by a tool into a
+temporary directory and compared byte for byte with the tracked copy, and the
+tool writes the newline of the platform it runs on. Pinning one newline there
+would break that comparison on every other platform. Moving it under the pin
+means first moving the tools that write it, which is not a newline change.
+
+## What this leaves
+
+GAP-25 was opened on b9.5's figure of the containment action never being
+selected and narrowed by b9.6 to one of two replayed points. All three points
+recover here, so the gap's mechanism-level cause is answered; the register entry
+is not this batch's to edit, and this report is the measurement it should be
+updated from.
+
+What is not answered: the orphan action still names three findings where six
+qualify, which is the ceiling being read as a quota and is unchanged by the
+rounds. That is a wording question, on a fixture that has never regressed, and
+is a separate batch.

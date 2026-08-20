@@ -1,0 +1,353 @@
+{
+  "cern_p1": {
+    "action": "contain_in_page",
+    "action_matches": true,
+    "b9_5_decision": {
+      "action": "translate_orphan_lines",
+      "issue_ids": [
+        "untranslated_residue:p2:p2#9"
+      ],
+      "reason": "The finding has a residue_ratio of 1.0, is at least 12 characters long, and has a layout_label of 'fallback_line', meeting all conditions for translation."
+    },
+    "case_kind": "replay",
+    "declared_target": "out_of_page:p1:p1#2",
+    "expect_action": "contain_in_page",
+    "expect_ids": [
+      "out_of_page:p1:p1#2"
+    ],
+    "ids_match": true,
+    "issue_ids": [
+      "out_of_page:p1:p1#2"
+    ],
+    "names_expected": true,
+    "qualifying": {
+      "contain_in_page": [
+        "out_of_page:p1:p1#2"
+      ],
+      "translate_orphan_lines": [
+        "untranslated_residue:p2:p2#9",
+        "untranslated_residue:p2:p2#99",
+        "untranslated_residue:p4:p4#38"
+      ]
+    },
+    "round_kinds": [
+      "out_of_page",
+      "untranslated_residue"
+    ],
+    "rounds": [
+      {
+        "action": "contain_in_page",
+        "attempts": 1,
+        "cache_key": "a9abf18ff71ea399de4534804b9d84970d24540ee5c590f3b5cc2c2e55c26fa9",
+        "issue_ids": [
+          "out_of_page:p1:p1#2"
+        ],
+        "offered_ids": [
+          "out_of_page:p1:p1#2"
+        ],
+        "parameters": {
+          "max_paragraphs": 3.0
+        },
+        "prompt_sha256": "94f390049cd07156b3290170062939ad88b1103e9f207335b41769a0a4ba1a03",
+        "reason": "The finding meets the conditions with layout_label 'title' and overflow_ratio 0.033926, which is above the threshold of 0.01.",
+        "request_sha256": "d28ba7912cbaf3492031d0ddb57a5e079d1986f9c055b6a6a7662c4fc39a1059",
+        "round_kind": "out_of_page",
+        "violations": [],
+        "vocabulary": [
+          "contain_in_page"
+        ]
+      },
+      {
+        "action": "translate_orphan_lines",
+        "attempts": 1,
+        "cache_key": "d875eb7f1747acbbf3dce1cc52851b4c51ad6114b744bae2484ed0e108724a06",
+        "issue_ids": [
+          "untranslated_residue:p2:p2#9",
+          "untranslated_residue:p2:p2#99",
+          "untranslated_residue:p4:p4#38"
+        ],
+        "offered_ids": [
+          "untranslated_residue:p1:p1#6",
+          "untranslated_residue:p1:p1#16",
+          "untranslated_residue:p1:p1#19",
+          "untranslated_residue:p2:p2#7",
+          "untranslated_residue:p2:p2#9",
+          "untranslated_residue:p2:p2#21",
+          "untranslated_residue:p2:p2#23",
+          "untranslated_residue:p2:p2#24",
+          "untranslated_residue:p2:p2#26",
+          "untranslated_residue:p2:p2#29",
+          "untranslated_residue:p2:p2#33",
+          "untranslated_residue:p2:p2#37",
+          "untranslated_residue:p2:p2#57",
+          "untranslated_residue:p2:p2#79",
+          "untranslated_residue:p2:p2#80",
+          "untranslated_residue:p2:p2#99",
+          "untranslated_residue:p2:p2#127",
+          "untranslated_residue:p2:p2#131",
+          "untranslated_residue:p2:p2#133",
+          "untranslated_residue:p3:p3#5",
+          "untranslated_residue:p3:p3#28",
+          "untranslated_residue:p3:p3#30",
+          "untranslated_residue:p3:p3#44",
+          "untranslated_residue:p3:p3#49",
+          "untranslated_residue:p3:p3#51",
+          "untranslated_residue:p4:p4#6",
+          "untranslated_residue:p4:p4#20",
+          "untranslated_residue:p4:p4#23",
+          "untranslated_residue:p4:p4#30",
+          "untranslated_residue:p4:p4#38",
+          "untranslated_residue:p4:p4#44"
+        ],
+        "parameters": {
+          "max_paragraphs": 3.0
+        },
+        "prompt_sha256": "94f390049cd07156b3290170062939ad88b1103e9f207335b41769a0a4ba1a03",
+        "reason": "These findings have a residue_ratio of 1.0, are at least 12 characters long, and have a layout_label of 'fallback_line', meeting all conditions for the action.",
+        "request_sha256": "ed8abe6d1798c369f9480ee28cdeb34cb9a8f151b09bcfab10e06ba8c4ca2202",
+        "round_kind": "untranslated_residue",
+        "violations": [],
+        "vocabulary": [
+          "translate_orphan_lines"
+        ]
+      }
+    ],
+    "subject_kind": "out_of_page"
+  },
+  "courier_p1": {
+    "action": "contain_in_page",
+    "action_matches": true,
+    "b9_5_decision": {
+      "action": "none",
+      "issue_ids": [],
+      "reason": "No findings meet the conditions for any action; untranslated_residue findings do not meet the residue_ratio threshold, and out_of_page finding does not have a layout_label of title or paragraph_title."
+    },
+    "case_kind": "replay",
+    "declared_target": "out_of_page:p1:p1#10",
+    "expect_action": "contain_in_page",
+    "expect_ids": [
+      "out_of_page:p1:p1#10"
+    ],
+    "ids_match": true,
+    "issue_ids": [
+      "out_of_page:p1:p1#10"
+    ],
+    "names_expected": true,
+    "qualifying": {
+      "contain_in_page": [
+        "out_of_page:p1:p1#10"
+      ],
+      "translate_orphan_lines": [
+        "untranslated_residue:p3:p3#2",
+        "untranslated_residue:p5:p5#10",
+        "untranslated_residue:p6:p6#15"
+      ]
+    },
+    "round_kinds": [
+      "out_of_page",
+      "untranslated_residue"
+    ],
+    "rounds": [
+      {
+        "action": "contain_in_page",
+        "attempts": 1,
+        "cache_key": "6d43fbd2bf9ac7ed7d4ad6ffc339b3f5c52cc9a9aab5ca4986292ab6105688f8",
+        "issue_ids": [
+          "out_of_page:p1:p1#10"
+        ],
+        "offered_ids": [
+          "out_of_page:p1:p1#10"
+        ],
+        "parameters": {
+          "max_paragraphs": 3.0
+        },
+        "prompt_sha256": "94f390049cd07156b3290170062939ad88b1103e9f207335b41769a0a4ba1a03",
+        "reason": "The finding meets the conditions with a layout_label of 'title' and an overflow_ratio of 0.013762, which is above the threshold of 0.01.",
+        "request_sha256": "5784a90ea9c50c79c7c198ab6555e8f2b20f012e1a42cf6254bda41cc16217cf",
+        "round_kind": "out_of_page",
+        "violations": [],
+        "vocabulary": [
+          "contain_in_page"
+        ]
+      },
+      {
+        "action": "none",
+        "attempts": 1,
+        "cache_key": "40e00a880b9bfef2f964f2b1ec3941ac2fd9c4b74c4eb596bababecbc0362244",
+        "issue_ids": [],
+        "offered_ids": [
+          "untranslated_residue:p1:p1#15",
+          "untranslated_residue:p1:p1#17",
+          "untranslated_residue:p1:p1#27",
+          "untranslated_residue:p1:p1#33",
+          "untranslated_residue:p1:p1#37",
+          "untranslated_residue:p1:p1#41",
+          "untranslated_residue:p3:p3#2",
+          "untranslated_residue:p5:p5#10",
+          "untranslated_residue:p6:p6#15",
+          "untranslated_residue:p7:p7#13",
+          "untranslated_residue:p7:p7#15",
+          "untranslated_residue:p8:p8#15"
+        ],
+        "parameters": {},
+        "prompt_sha256": "94f390049cd07156b3290170062939ad88b1103e9f207335b41769a0a4ba1a03",
+        "reason": "No findings meet the conditions for 'translate_orphan_lines' as none have a residue_ratio at or above 0.9 with layout_label 'fallback_line'.",
+        "request_sha256": "f29113361e60c96907deb52cda2499f256ac82714cebf6105886b92789e6901a",
+        "round_kind": "untranslated_residue",
+        "violations": [],
+        "vocabulary": [
+          "translate_orphan_lines"
+        ]
+      }
+    ],
+    "subject_kind": "out_of_page"
+  },
+  "orphan_spectrum": {
+    "action": "translate_orphan_lines",
+    "action_matches": true,
+    "case_kind": "regression",
+    "expect_action": "translate_orphan_lines",
+    "expect_ids": [
+      "untranslated_residue:p1:p1#0",
+      "untranslated_residue:p1:p1#1",
+      "untranslated_residue:p1:p1#2",
+      "untranslated_residue:p1:p1#3",
+      "untranslated_residue:p1:p1#4",
+      "untranslated_residue:p1:p1#5"
+    ],
+    "ids_match": false,
+    "issue_ids": [
+      "untranslated_residue:p1:p1#0",
+      "untranslated_residue:p1:p1#1",
+      "untranslated_residue:p1:p1#4"
+    ],
+    "names_expected": false,
+    "qualifying": {
+      "translate_orphan_lines": [
+        "untranslated_residue:p1:p1#0",
+        "untranslated_residue:p1:p1#1",
+        "untranslated_residue:p1:p1#2",
+        "untranslated_residue:p1:p1#3",
+        "untranslated_residue:p1:p1#4",
+        "untranslated_residue:p1:p1#5"
+      ]
+    },
+    "round_kinds": [
+      "untranslated_residue"
+    ],
+    "rounds": [
+      {
+        "action": "translate_orphan_lines",
+        "attempts": 1,
+        "cache_key": "982688a635c60e20ac84569ebc9c97579b62ff7f990a72be1da71ea56f40976d",
+        "issue_ids": [
+          "untranslated_residue:p1:p1#0",
+          "untranslated_residue:p1:p1#1",
+          "untranslated_residue:p1:p1#4"
+        ],
+        "offered_ids": [
+          "untranslated_residue:p1:p1#0",
+          "untranslated_residue:p1:p1#1",
+          "untranslated_residue:p1:p1#2",
+          "untranslated_residue:p1:p1#3",
+          "untranslated_residue:p1:p1#4",
+          "untranslated_residue:p1:p1#5",
+          "untranslated_residue:p1:p1#6",
+          "untranslated_residue:p1:p1#7",
+          "untranslated_residue:p1:p1#8",
+          "untranslated_residue:p1:p1#9",
+          "untranslated_residue:p1:p1#10",
+          "untranslated_residue:p1:p1#11",
+          "untranslated_residue:p1:p1#12",
+          "untranslated_residue:p1:p1#13",
+          "untranslated_residue:p1:p1#14",
+          "untranslated_residue:p1:p1#15",
+          "untranslated_residue:p1:p1#16",
+          "untranslated_residue:p1:p1#17",
+          "untranslated_residue:p1:p1#18"
+        ],
+        "parameters": {
+          "max_paragraphs": 3.0
+        },
+        "prompt_sha256": "94f390049cd07156b3290170062939ad88b1103e9f207335b41769a0a4ba1a03",
+        "reason": "Findings p1#0, p1#1, and p1#4 have residue_ratio >= 0.9, text length >= 12, and layout_label 'fallback_line'.",
+        "request_sha256": "adcb194930a4feb54976009843457d2edc16d64226c8dcbc233b12b90d24136b",
+        "round_kind": "untranslated_residue",
+        "violations": [],
+        "vocabulary": [
+          "translate_orphan_lines"
+        ]
+      }
+    ],
+    "subject_kind": "untranslated_residue"
+  },
+  "synthetic_contain": {
+    "action": "contain_in_page",
+    "action_matches": true,
+    "case_kind": "synthetic",
+    "expect_action": "contain_in_page",
+    "expect_ids": [
+      "out_of_page:p1:p1#0"
+    ],
+    "ids_match": true,
+    "issue_ids": [
+      "out_of_page:p1:p1#0"
+    ],
+    "names_expected": true,
+    "qualifying": {
+      "contain_in_page": [
+        "out_of_page:p1:p1#0"
+      ]
+    },
+    "round_kinds": [
+      "out_of_page",
+      "untranslated_residue"
+    ],
+    "rounds": [
+      {
+        "action": "contain_in_page",
+        "attempts": 1,
+        "cache_key": "6a4090b7e6aaeb0d5eb1d40dfab25fbcc3f3924ad384b44eb31f3d2d9397e795",
+        "issue_ids": [
+          "out_of_page:p1:p1#0"
+        ],
+        "offered_ids": [
+          "out_of_page:p1:p1#0"
+        ],
+        "parameters": {
+          "max_paragraphs": 3.0
+        },
+        "prompt_sha256": "94f390049cd07156b3290170062939ad88b1103e9f207335b41769a0a4ba1a03",
+        "reason": "The finding meets the conditions with a layout_label of 'title' and an overflow_ratio of 0.04, which is above the threshold of 0.01.",
+        "request_sha256": "e3d0ef8698cb556ad0d027ab6567232d1ed5231421f5b1712bd64a829edc1a3d",
+        "round_kind": "out_of_page",
+        "violations": [],
+        "vocabulary": [
+          "contain_in_page"
+        ]
+      },
+      {
+        "action": "none",
+        "attempts": 1,
+        "cache_key": "bc4e3d534e059c8317503c8c1591d31f3feeabb6dc98b4e4f1d32dd1decca315",
+        "issue_ids": [],
+        "offered_ids": [
+          "untranslated_residue:p1:p1#1",
+          "untranslated_residue:p1:p1#2",
+          "untranslated_residue:p1:p1#3",
+          "untranslated_residue:p1:p1#4"
+        ],
+        "parameters": {},
+        "prompt_sha256": "94f390049cd07156b3290170062939ad88b1103e9f207335b41769a0a4ba1a03",
+        "reason": "No findings meet the conditions for any action, as none have a residue_ratio of 0.9 or above or a layout_label of 'fallback_line'.",
+        "request_sha256": "29fb6b824f4bfeb9c16abbe2f45ba49e63593d8d5102eaefaa3ded9a11931559",
+        "round_kind": "untranslated_residue",
+        "violations": [],
+        "vocabulary": [
+          "translate_orphan_lines"
+        ]
+      }
+    ],
+    "subject_kind": "out_of_page"
+  }
+}

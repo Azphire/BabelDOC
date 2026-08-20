@@ -17,10 +17,22 @@ keeps the guard as strong as it was. A run whose every remaining finding has
 been treated stops with that said rather than looping over work it has already
 done. An iteration with no usable decision applies nothing.
 
-Every iteration is written down -- what was found, what was asked, what came
-back, what was rejected and why, what was written and what the recheck then
-found -- because a loop whose reasoning is not on paper is one nobody can audit
-after the fact.
+An iteration asks for its decision one detector kind at a time. A round shows
+the findings of a single kind and the actions that answer for that kind, and
+nothing else; the model still chooses freely inside it, including to apply
+nothing. What this buys is that a kind reported once is not a line among forty
+lines of another kind, and what it costs is one request per kind that has both
+findings standing and an action that answers for it. The order the rounds are
+taken in is declared in ``configs/decision_rounds.json`` and nothing here
+reasons about which kind a round is for. One iteration is every round taken
+once, so the ceiling and the convergence guard below count what they counted
+before: an iteration advances if its rounds together left fewer untreated
+findings than they started with, and is undone whole if they did not.
+
+Every iteration is written down -- what was found, what each round was asked,
+what came back, what was rejected and why, what was written and what the
+recheck then found -- because a loop whose reasoning is not on paper is one
+nobody can audit after the fact.
 
 Which mechanism carries out a decision is a table rather than a branch. Each
 declared action has one row naming how many paragraphs a finding of its kind is
@@ -52,6 +64,7 @@ import json
 import logging
 from dataclasses import dataclass
 from dataclasses import field
+from dataclasses import replace
 from pathlib import Path
 
 from lxml import etree
@@ -69,6 +82,7 @@ from babeldoc.magazine.react import contain
 from babeldoc.magazine.react import writeback
 from babeldoc.magazine.react.config import CONFIG_PATH
 from babeldoc.magazine.react.config import MAX_PARAGRAPHS
+from babeldoc.magazine.react.config import RepairConfigError
 from babeldoc.magazine.react.config import load_repair_config
 from babeldoc.magazine.react.decide import CachedDecisionClient
 from babeldoc.magazine.react.decide import EngineTransport
@@ -82,6 +96,20 @@ SWITCH = "magazine_repair"
 
 REPORT_NAME = "react_repair.report.json"
 
+# The rounds one iteration is made of, declared beside the other bounds rather
+# than written here.
+ROUNDS_CONFIG_PATH = (
+    Path(__file__).resolve().parents[3] / "configs" / "decision_rounds.json"
+)
+KIND_ORDER_KEY = "kind_order"
+
+# What carries the kind into the identity a round files its request under. Two
+# rounds of one iteration ask different questions, so neither may be served the
+# other's stored answer; the request narrowed under this batch is a different
+# question again, and every entry filed under the old composition falls out of
+# use of its own accord.
+ROUND_KEY_PREFIX = "|kind="
+
 # Why the loop stopped.
 STOP_CEILING = "iteration_ceiling_reached"
 STOP_NO_ISSUES = "nothing_left_to_repair"
@@ -93,6 +121,17 @@ STOP_NO_MECHANISM = "the_chosen_action_has_no_mechanism_behind_it"
 STOP_NOT_CONVERGING = "finding_count_did_not_strictly_decrease"
 STOP_NOTHING_WRITTEN = "no_paragraph_was_written"
 STOP_CONVERGED_WITH_RESIDUALS = "converged_with_residuals"
+
+# How far a round got, least far first. An iteration that wrote nothing reports
+# the furthest any of its rounds reached, because it is inert only where every
+# one of them was, and the round that got closest to writing is the one whose
+# reason says what stood in the way.
+ROUND_PROGRESS = (
+    STOP_NO_DECISION,
+    STOP_NO_ACTION,
+    STOP_NOTHING_APPLICABLE,
+    STOP_NOTHING_WRITTEN,
+)
 
 # What an iteration did with itself.
 OUTCOME_ADVANCED = "advanced"
@@ -106,6 +145,82 @@ VIOLATED = "violated"
 
 def enabled(translation_config) -> bool:
     return bool(getattr(translation_config, SWITCH, False))
+
+
+def load_kind_order(kinds, path: Path | str | None = None) -> tuple[str, ...]:
+    """The order an iteration takes the detector kinds in, as configs declares it.
+
+    Every kind a detector raises appears exactly once and nothing else appears
+    at all. An order that omitted a kind would drop its findings out of every
+    round in silence, and one naming a kind no detector raises would declare a
+    round that never runs; both are faults in the file rather than surprises at
+    run time.
+    """
+    source = ROUNDS_CONFIG_PATH if path is None else Path(path)
+    with source.open(encoding="utf-8") as f:
+        raw = json.load(f)
+    declared = raw.get(KIND_ORDER_KEY)
+    if not isinstance(declared, list) or not all(
+        isinstance(item, str) for item in declared
+    ):
+        raise RepairConfigError(
+            f"{source.name}: {KIND_ORDER_KEY} must be a list of kind names"
+        )
+    if len(set(declared)) != len(declared):
+        raise RepairConfigError(f"{source.name}: {KIND_ORDER_KEY} names a kind twice")
+    missing = sorted(set(kinds) - set(declared))
+    unknown = sorted(set(declared) - set(kinds))
+    if missing or unknown:
+        raise RepairConfigError(
+            f"{source.name}: {KIND_ORDER_KEY} omits {missing} and names {unknown}, "
+            f"which no detector raises; raised are {sorted(kinds)}"
+        )
+    return tuple(declared)
+
+
+def detector_kinds() -> tuple[str, ...]:
+    return tuple(sorted(module.KIND for module in detectors.DETECTORS.values()))
+
+
+def round_vocabulary(config, kind: str):
+    """The configuration one round is decided against: this kind's actions only.
+
+    A round shows findings of one kind, so the vocabulary its reply is held to
+    is the actions that answer for that kind. An action named from outside it is
+    an answer to a question the round did not ask, and is refused as a violation
+    rather than carried as far as the applicability rule that would refuse it on
+    the kind anyway.
+    """
+    return replace(
+        config,
+        actions={
+            name: action
+            for name, action in config.actions.items()
+            if action.answers_for(kind)
+        },
+    )
+
+
+def round_plan(config, order, issues) -> list[tuple[str, list]]:
+    """The rounds one iteration runs, in the declared order, with their findings.
+
+    A kind with nothing standing has nothing to decide, and so has a kind no
+    action answers for: neither is asked about, because a request whose only
+    available answer is to apply nothing spends a request to learn what the
+    configuration already says.
+    """
+    standing: dict[str, list] = {}
+    for issue in issues:
+        standing.setdefault(issue.kind, []).append(issue)
+    plan: list[tuple[str, list]] = []
+    for kind in order:
+        offered = standing.get(kind)
+        if not offered:
+            continue
+        if not any(action.answers_for(kind) for action in config.actions.values()):
+            continue
+        plan.append((kind, offered))
+    return plan
 
 
 @dataclass
@@ -243,10 +358,8 @@ class RepairLoop:
         self.translation_config = translation_config
         self.docs = docs
         self.detector_config = detectors.detector_config()
-        self.repair_config = load_repair_config(
-            None,
-            tuple(sorted(module.KIND for module in detectors.DETECTORS.values())),
-        )
+        self.repair_config = load_repair_config(None, detector_kinds())
+        self.kind_order = load_kind_order(detector_kinds())
         self.working_dir = Path(
             translation_config.get_working_file_path(REPORT_NAME)
         ).parent
@@ -288,6 +401,24 @@ class RepairLoop:
                 ignore_cache=self.ignore_cache,
             )
         return self.decision_client
+
+    def _round_client(self, kind: str) -> CachedDecisionClient:
+        """The client of one round: this kind's vocabulary, this kind's cache key.
+
+        Built from the run's own client rather than beside it, so a caller that
+        supplied a transport or a cache is the one every round goes through. The
+        kind enters the identity the request is filed under, which is what keeps
+        two rounds of one iteration out of each other's stored answers.
+        """
+        base = self._decision_client()
+        return CachedDecisionClient(
+            round_vocabulary(base.config, kind),
+            transport=base.transport,
+            cache=base.cache,
+            identity=f"{base.identity}{ROUND_KEY_PREFIX}{kind}",
+            working_dir=base.working_dir,
+            ignore_cache=base.ignore_cache,
+        )
 
     def _translator(self):
         if self.translator is None:
@@ -574,8 +705,74 @@ class RepairLoop:
             }
         return treated
 
+    def _round(self, kind: str, offered, context, snapshot: Snapshot):
+        """One kind's turn: ask, filter, apply. Its record and what it applied.
+
+        The round carries its own reason for having written nothing, so an
+        iteration that wrote nothing anywhere can say which of its rounds got
+        closest and what stopped it. A vocabulary entry with no mechanism behind
+        it stops the whole iteration and says so here, because carrying it out
+        with whichever mechanism happened to be nearest is the one thing the
+        table exists to prevent.
+        """
+        entry: dict = {
+            "kind": kind,
+            "offered": len(offered),
+            "offered_ids": [issue.id for issue in offered],
+            "vocabulary": sorted(round_vocabulary(self.repair_config, kind).actions),
+            "applicability": [],
+            "executed": [],
+            "written": [],
+        }
+        decision, request = self._round_client(kind).decide(offered)
+        entry["decision"] = decision.as_record()
+        entry["request"] = {
+            "prompt_sha256": request.prompt_digest,
+            "cache_key": request.key,
+        }
+        if decision.refused:
+            entry["reason"] = STOP_NO_DECISION
+            return entry, []
+        if not decision.acts:
+            entry["reason"] = STOP_NO_ACTION
+            return entry, []
+
+        action = self.repair_config.action(decision.action)
+        handler = self._handlers().get(decision.action)
+        if handler is None:
+            logger.error(
+                "react: the vocabulary declares %r but nothing here carries it "
+                "out; no paragraph was touched",
+                decision.action,
+            )
+            entry["reason"] = STOP_NO_MECHANISM
+            return entry, []
+
+        candidates, rejected = self._candidates(
+            offered, decision, action, context, handler
+        )
+        applied = (
+            handler.apply(candidates, context, snapshot, action) if candidates else []
+        )
+        written = [item for item in applied if item.changed]
+        entry["applicability"] = [item.as_record() for item in rejected]
+        entry["executed"] = [item.as_record() for item in applied]
+        entry["written"] = [item.reference for item in written]
+        if written:
+            entry["reason"] = ""
+        else:
+            entry["reason"] = (
+                STOP_NOTHING_APPLICABLE if not candidates else STOP_NOTHING_WRITTEN
+            )
+        return entry, written
+
     def _iterate(self, iteration: int, issues, context) -> tuple[str, str, list]:
-        """One iteration. Returns (outcome, stop reason or empty, new issues)."""
+        """One iteration: every round once. Returns (outcome, stop reason, issues).
+
+        The iteration's own record keeps the aggregate the run has always kept
+        -- everything that was rejected, everything that was executed, and the
+        decision that acted -- and ``rounds`` beside it keeps each round whole.
+        """
         working = self._untreated(issues)
         record: dict = {
             "iteration": iteration,
@@ -588,47 +785,47 @@ class RepairLoop:
         if self.engine is None:
             record["outcome"] = OUTCOME_INERT
             record["decision"] = None
+            record["rounds"] = []
             return OUTCOME_INERT, STOP_NO_ENGINE, issues
 
-        decision, request = self._decision_client().decide(working)
-        record["decision"] = decision.as_record()
-        record["request"] = {
-            "prompt_sha256": request.prompt_digest,
-            "cache_key": request.key,
-        }
-        if decision.refused:
-            record["outcome"] = OUTCOME_INERT
-            return OUTCOME_INERT, STOP_NO_DECISION, issues
-        if not decision.acts:
-            record["outcome"] = OUTCOME_INERT
-            return OUTCOME_INERT, STOP_NO_ACTION, issues
-
-        action = self.repair_config.action(decision.action)
-        handler = self._handlers().get(decision.action)
-        if handler is None:
-            record["outcome"] = OUTCOME_INERT
-            logger.error(
-                "react: the vocabulary declares %r but nothing here carries it "
-                "out; no paragraph was touched",
-                decision.action,
-            )
-            return OUTCOME_INERT, STOP_NO_MECHANISM, issues
-        candidates, rejected = self._candidates(
-            working, decision, action, context, handler
-        )
         snapshot = Snapshot()
-        applied = (
-            handler.apply(candidates, context, snapshot, action) if candidates else []
+        rounds: list[dict] = []
+        written: list = []
+        halted = ""
+        for kind, offered in round_plan(self.repair_config, self.kind_order, working):
+            entry, applied = self._round(kind, offered, context, snapshot)
+            rounds.append(entry)
+            written.extend(applied)
+            if entry["reason"] == STOP_NO_MECHANISM:
+                halted = STOP_NO_MECHANISM
+                break
+
+        record["rounds"] = rounds
+        record["applicability"] = [
+            item for entry in rounds for item in entry["applicability"]
+        ]
+        record["executed"] = [item for entry in rounds for item in entry["executed"]]
+        # The iteration's decision is the one that acted, and the first of them
+        # where several rounds did; where none did, the first round asked. What
+        # every round decided is in ``rounds`` and is not summarised away.
+        leading = next(
+            (entry for entry in rounds if not entry["reason"]),
+            rounds[0] if rounds else None,
         )
-        record["applicability"] = [item.as_record() for item in rejected]
-        record["executed"] = [item.as_record() for item in applied]
-        written = [item for item in applied if item.changed]
+        record["decision"] = None if leading is None else leading["decision"]
+        record["request"] = None if leading is None else leading["request"]
+
         if not written:
             record["outcome"] = OUTCOME_INERT
             snapshot.restore(self.docs)
+            if halted:
+                return OUTCOME_INERT, halted, issues
+            reasons = [entry["reason"] for entry in rounds if entry["reason"]]
             return (
                 OUTCOME_INERT,
-                STOP_NOTHING_APPLICABLE if not candidates else STOP_NOTHING_WRITTEN,
+                max(reasons, key=ROUND_PROGRESS.index)
+                if reasons
+                else STOP_NOTHING_APPLICABLE,
                 issues,
             )
 
@@ -790,6 +987,7 @@ class RepairLoop:
         record = {
             "switch": SWITCH,
             "config": self.repair_config.as_record(),
+            "kind_order": list(self.kind_order),
             "engine_configured": self.engine is not None,
             "iterations_run": iterations,
             "stopped_because": stop,
@@ -804,7 +1002,9 @@ class RepairLoop:
         path = self.working_dir / REPORT_NAME
         with path.open("w", encoding="utf-8") as f:
             json.dump(record, f, indent=2, sort_keys=True, ensure_ascii=False)
-        record_config_manifest(self.working_dir, [CONFIG_PATH, DETECTOR_CONFIG_PATH])
+        record_config_manifest(
+            self.working_dir, [CONFIG_PATH, DETECTOR_CONFIG_PATH, ROUNDS_CONFIG_PATH]
+        )
 
 
 def repair_document(translation_config, docs):

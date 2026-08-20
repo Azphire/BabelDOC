@@ -143,12 +143,16 @@ NESTED_SUPPRESSED = os.environ.get("SPEC_NO_NESTED") == "1"
 # this gate already holds to its own rules. Batch b9.6 follows on those terms
 # too: it asserts over the decision records its own batch froze and reads one
 # document under docs/eval as prose, and cites nothing this gate inventories.
+# Batch b9.7 follows on the same terms again: its evidence is the decision
+# records its own batch froze, the fixtures it reads belong to b9.5 and b9.6,
+# and it reads no document under docs/eval at all.
 AFTER_THIS_GATE = (
     "spec_check_b9_2r.py",
     "spec_check_b9_3.py",
     "spec_check_b9_4.py",
     "spec_check_b9_5.py",
     "spec_check_b9_6.py",
+    "spec_check_b9_7.py",
 )
 
 # Paths this batch may change. Nothing under babeldoc/, nothing under configs/,
