@@ -1,0 +1,969 @@
+{
+  "band_overlap_ratio": 0.5,
+  "counts": {
+    "dropped_text": 0,
+    "duplicate_layer": 0,
+    "extraction_order_fault": 0,
+    "true_fracture": 11,
+    "undetermined": 26
+  },
+  "fragments": [
+    {
+      "band_evidence": {
+        "deleted_spans": [],
+        "il_chars": 10,
+        "independent_chars": 10,
+        "inserted_spans": []
+      },
+      "band_members": 1,
+      "band_span": [
+        0,
+        10
+      ],
+      "band_verdict": "true_fracture",
+      "chars": 10,
+      "class": "undetermined",
+      "detail": "the independent reading holds these characters in the same order and this paragraph's span is a whole word of it",
+      "independent_span": [
+        0,
+        10
+      ],
+      "page": 3,
+      "paragraph": "p3#0",
+      "text": "Winter2025"
+    },
+    {
+      "band_evidence": {
+        "deleted_spans": [],
+        "il_chars": 8,
+        "independent_chars": 8,
+        "inserted_spans": []
+      },
+      "band_members": 1,
+      "band_span": [
+        0,
+        8
+      ],
+      "band_verdict": "true_fracture",
+      "chars": 8,
+      "class": "undetermined",
+      "detail": "the independent reading holds these characters in the same order and this paragraph's span is a whole word of it",
+      "independent_span": [
+        0,
+        8
+      ],
+      "page": 3,
+      "paragraph": "p3#1",
+      "text": "FLEXPACE"
+    },
+    {
+      "band_evidence": {
+        "deleted_spans": [],
+        "il_chars": 45,
+        "independent_chars": 45,
+        "inserted_spans": []
+      },
+      "band_members": 6,
+      "band_span": [
+        0,
+        2
+      ],
+      "band_verdict": "true_fracture",
+      "chars": 2,
+      "class": "undetermined",
+      "detail": "the independent reading holds these characters in the same order and this paragraph's span is a whole word of it",
+      "independent_span": [
+        0,
+        2
+      ],
+      "page": 3,
+      "paragraph": "p3#3",
+      "text": "24"
+    },
+    {
+      "band_evidence": {
+        "deleted_spans": [],
+        "il_chars": 69,
+        "independent_chars": 69,
+        "inserted_spans": []
+      },
+      "band_members": 6,
+      "band_span": [
+        0,
+        14
+      ],
+      "band_verdict": "true_fracture",
+      "chars": 14,
+      "class": "undetermined",
+      "detail": "the independent reading holds these characters in the same order and this paragraph's span is a whole word of it",
+      "independent_span": [
+        0,
+        14
+      ],
+      "page": 3,
+      "paragraph": "p3#3",
+      "text": "Editor’sLetter"
+    },
+    {
+      "band_evidence": {
+        "deleted_spans": [],
+        "il_chars": 42,
+        "independent_chars": 42,
+        "inserted_spans": []
+      },
+      "band_members": 4,
+      "band_span": [
+        0,
+        2
+      ],
+      "band_verdict": "true_fracture",
+      "chars": 2,
+      "class": "undetermined",
+      "detail": "the independent reading holds these characters in the same order and this paragraph's span is a whole word of it",
+      "independent_span": [
+        0,
+        2
+      ],
+      "page": 3,
+      "paragraph": "p3#4",
+      "text": "28"
+    },
+    {
+      "band_evidence": {
+        "deleted_spans": [
+          [
+            54,
+            58
+          ]
+        ],
+        "il_chars": 54,
+        "independent_chars": 58,
+        "inserted_spans": []
+      },
+      "band_members": 6,
+      "band_span": [
+        0,
+        12
+      ],
+      "band_verdict": "dropped_text",
+      "chars": 12,
+      "class": "undetermined",
+      "detail": "the independent reading holds these characters in the same order and this paragraph's span is a whole word of it",
+      "independent_span": [
+        0,
+        12
+      ],
+      "page": 3,
+      "paragraph": "p3#4",
+      "text": "Contributors"
+    },
+    {
+      "band_evidence": {
+        "deleted_spans": [],
+        "il_chars": 32,
+        "independent_chars": 32,
+        "inserted_spans": []
+      },
+      "band_members": 4,
+      "band_span": [
+        0,
+        2
+      ],
+      "band_verdict": "true_fracture",
+      "chars": 2,
+      "class": "undetermined",
+      "detail": "the independent reading holds these characters in the same order and this paragraph's span is a whole word of it",
+      "independent_span": [
+        0,
+        2
+      ],
+      "page": 3,
+      "paragraph": "p3#6",
+      "text": "42"
+    },
+    {
+      "band_evidence": {
+        "deleted_spans": [
+          [
+            42,
+            47
+          ]
+        ],
+        "il_chars": 42,
+        "independent_chars": 47,
+        "inserted_spans": []
+      },
+      "band_members": 4,
+      "band_span": [
+        0,
+        11
+      ],
+      "band_verdict": "dropped_text",
+      "chars": 11,
+      "class": "undetermined",
+      "detail": "the independent reading holds these characters in the same order and this paragraph's span is a whole word of it",
+      "independent_span": [
+        0,
+        11
+      ],
+      "page": 3,
+      "paragraph": "p3#7",
+      "text": "MiracleDrip"
+    },
+    {
+      "band_evidence": {
+        "deleted_spans": [],
+        "il_chars": 53,
+        "independent_chars": 53,
+        "inserted_spans": []
+      },
+      "band_members": 11,
+      "band_span": [
+        0,
+        3
+      ],
+      "band_verdict": "true_fracture",
+      "chars": 3,
+      "class": "true_fracture",
+      "detail": "the independent reading holds these characters in the same order and this paragraph's span is not a whole word of it",
+      "independent_span": [
+        0,
+        3
+      ],
+      "page": 3,
+      "paragraph": "p3#7",
+      "text": "NAD"
+    },
+    {
+      "band_evidence": {
+        "deleted_spans": [],
+        "il_chars": 53,
+        "independent_chars": 53,
+        "inserted_spans": []
+      },
+      "band_members": 11,
+      "band_span": [
+        3,
+        4
+      ],
+      "band_verdict": "true_fracture",
+      "chars": 1,
+      "class": "true_fracture",
+      "detail": "the independent reading holds these characters in the same order and this paragraph's span is not a whole word of it",
+      "independent_span": [
+        3,
+        4
+      ],
+      "page": 3,
+      "paragraph": "p3#8",
+      "text": "+"
+    },
+    {
+      "band_evidence": {
+        "deleted_spans": [],
+        "il_chars": 53,
+        "independent_chars": 53,
+        "inserted_spans": []
+      },
+      "band_members": 11,
+      "band_span": [
+        4,
+        5
+      ],
+      "band_verdict": "true_fracture",
+      "chars": 1,
+      "class": "true_fracture",
+      "detail": "the independent reading holds these characters in the same order and this paragraph's span is not a whole word of it",
+      "independent_span": [
+        4,
+        5
+      ],
+      "page": 3,
+      "paragraph": "p3#9",
+      "text": "i"
+    },
+    {
+      "band_evidence": {
+        "deleted_spans": [],
+        "il_chars": 53,
+        "independent_chars": 53,
+        "inserted_spans": []
+      },
+      "band_members": 11,
+      "band_span": [
+        5,
+        6
+      ],
+      "band_verdict": "true_fracture",
+      "chars": 1,
+      "class": "true_fracture",
+      "detail": "the independent reading holds these characters in the same order and this paragraph's span is not a whole word of it",
+      "independent_span": [
+        5,
+        6
+      ],
+      "page": 3,
+      "paragraph": "p3#10",
+      "text": "n"
+    },
+    {
+      "band_evidence": {
+        "deleted_spans": [],
+        "il_chars": 53,
+        "independent_chars": 53,
+        "inserted_spans": []
+      },
+      "band_members": 11,
+      "band_span": [
+        6,
+        7
+      ],
+      "band_verdict": "true_fracture",
+      "chars": 1,
+      "class": "true_fracture",
+      "detail": "the independent reading holds these characters in the same order and this paragraph's span is not a whole word of it",
+      "independent_span": [
+        6,
+        7
+      ],
+      "page": 3,
+      "paragraph": "p3#11",
+      "text": "f"
+    },
+    {
+      "band_evidence": {
+        "deleted_spans": [],
+        "il_chars": 53,
+        "independent_chars": 53,
+        "inserted_spans": []
+      },
+      "band_members": 11,
+      "band_span": [
+        7,
+        9
+      ],
+      "band_verdict": "true_fracture",
+      "chars": 2,
+      "class": "true_fracture",
+      "detail": "the independent reading holds these characters in the same order and this paragraph's span is not a whole word of it",
+      "independent_span": [
+        7,
+        9
+      ],
+      "page": 3,
+      "paragraph": "p3#12",
+      "text": "us"
+    },
+    {
+      "band_evidence": {
+        "deleted_spans": [],
+        "il_chars": 53,
+        "independent_chars": 53,
+        "inserted_spans": []
+      },
+      "band_members": 11,
+      "band_span": [
+        9,
+        10
+      ],
+      "band_verdict": "true_fracture",
+      "chars": 1,
+      "class": "true_fracture",
+      "detail": "the independent reading holds these characters in the same order and this paragraph's span is not a whole word of it",
+      "independent_span": [
+        9,
+        10
+      ],
+      "page": 3,
+      "paragraph": "p3#13",
+      "text": "i"
+    },
+    {
+      "band_evidence": {
+        "deleted_spans": [],
+        "il_chars": 55,
+        "independent_chars": 55,
+        "inserted_spans": []
+      },
+      "band_members": 5,
+      "band_span": [
+        0,
+        2
+      ],
+      "band_verdict": "true_fracture",
+      "chars": 2,
+      "class": "undetermined",
+      "detail": "the independent reading holds these characters in the same order and this paragraph's span is a whole word of it",
+      "independent_span": [
+        0,
+        2
+      ],
+      "page": 3,
+      "paragraph": "p3#15",
+      "text": "46"
+    },
+    {
+      "band_evidence": {
+        "deleted_spans": [],
+        "il_chars": 61,
+        "independent_chars": 61,
+        "inserted_spans": []
+      },
+      "band_members": 5,
+      "band_span": [
+        0,
+        1
+      ],
+      "band_verdict": "true_fracture",
+      "chars": 1,
+      "class": "true_fracture",
+      "detail": "the independent reading holds these characters in the same order and this paragraph's span is not a whole word of it",
+      "independent_span": [
+        0,
+        1
+      ],
+      "page": 3,
+      "paragraph": "p3#15",
+      "text": "T"
+    },
+    {
+      "band_evidence": {
+        "deleted_spans": [
+          [
+            73,
+            75
+          ]
+        ],
+        "il_chars": 73,
+        "independent_chars": 75,
+        "inserted_spans": []
+      },
+      "band_members": 5,
+      "band_span": [
+        0,
+        2
+      ],
+      "band_verdict": "dropped_text",
+      "chars": 2,
+      "class": "undetermined",
+      "detail": "the independent reading holds these characters in the same order and this paragraph's span is a whole word of it",
+      "independent_span": [
+        0,
+        2
+      ],
+      "page": 3,
+      "paragraph": "p3#17",
+      "text": "48"
+    },
+    {
+      "band_evidence": {
+        "deleted_spans": [],
+        "il_chars": 75,
+        "independent_chars": 75,
+        "inserted_spans": []
+      },
+      "band_members": 5,
+      "band_span": [
+        0,
+        10
+      ],
+      "band_verdict": "true_fracture",
+      "chars": 10,
+      "class": "undetermined",
+      "detail": "the independent reading holds these characters in the same order and this paragraph's span is a whole word of it",
+      "independent_span": [
+        0,
+        10
+      ],
+      "page": 3,
+      "paragraph": "p3#17",
+      "text": "FromAtoZac"
+    },
+    {
+      "band_evidence": {
+        "deleted_spans": [],
+        "il_chars": 85,
+        "independent_chars": 85,
+        "inserted_spans": []
+      },
+      "band_members": 5,
+      "band_span": [
+        0,
+        17
+      ],
+      "band_verdict": "true_fracture",
+      "chars": 17,
+      "class": "undetermined",
+      "detail": "the independent reading holds these characters in the same order and this paragraph's span is a whole word of it",
+      "independent_span": [
+        0,
+        17
+      ],
+      "page": 3,
+      "paragraph": "p3#17",
+      "text": "ZacPosen’sarrival"
+    },
+    {
+      "band_evidence": {
+        "deleted_spans": [],
+        "il_chars": 77,
+        "independent_chars": 77,
+        "inserted_spans": []
+      },
+      "band_members": 5,
+      "band_span": [
+        0,
+        9
+      ],
+      "band_verdict": "true_fracture",
+      "chars": 9,
+      "class": "undetermined",
+      "detail": "the independent reading holds these characters in the same order and this paragraph's span is a whole word of it",
+      "independent_span": [
+        0,
+        9
+      ],
+      "page": 3,
+      "paragraph": "p3#17",
+      "text": "atGapwasa"
+    },
+    {
+      "band_evidence": {
+        "deleted_spans": [],
+        "il_chars": 71,
+        "independent_chars": 71,
+        "inserted_spans": []
+      },
+      "band_members": 5,
+      "band_span": [
+        17,
+        19
+      ],
+      "band_verdict": "true_fracture",
+      "chars": 2,
+      "class": "undetermined",
+      "detail": "the independent reading holds these characters in the same order and this paragraph's span is a whole word of it",
+      "independent_span": [
+        17,
+        19
+      ],
+      "page": 3,
+      "paragraph": "p3#20",
+      "text": "62"
+    },
+    {
+      "band_evidence": {
+        "deleted_spans": [
+          [
+            80,
+            85
+          ]
+        ],
+        "il_chars": 80,
+        "independent_chars": 85,
+        "inserted_spans": []
+      },
+      "band_members": 5,
+      "band_span": [
+        14,
+        21
+      ],
+      "band_verdict": "dropped_text",
+      "chars": 7,
+      "class": "undetermined",
+      "detail": "the independent reading holds these characters in the same order and this paragraph's span is a whole word of it",
+      "independent_span": [
+        14,
+        21
+      ],
+      "page": 3,
+      "paragraph": "p3#21",
+      "text": "GoTime!"
+    },
+    {
+      "band_evidence": {
+        "deleted_spans": [
+          [
+            68,
+            72
+          ]
+        ],
+        "il_chars": 68,
+        "independent_chars": 72,
+        "inserted_spans": []
+      },
+      "band_members": 8,
+      "band_span": [
+        10,
+        12
+      ],
+      "band_verdict": "dropped_text",
+      "chars": 2,
+      "class": "true_fracture",
+      "detail": "the independent reading holds these characters in the same order and this paragraph's span is not a whole word of it",
+      "independent_span": [
+        10,
+        12
+      ],
+      "page": 3,
+      "paragraph": "p3#21",
+      "text": "Wh"
+    },
+    {
+      "band_evidence": {
+        "deleted_spans": [
+          [
+            68,
+            72
+          ]
+        ],
+        "il_chars": 68,
+        "independent_chars": 72,
+        "inserted_spans": []
+      },
+      "band_members": 8,
+      "band_span": [
+        12,
+        13
+      ],
+      "band_verdict": "dropped_text",
+      "chars": 1,
+      "class": "true_fracture",
+      "detail": "the independent reading holds these characters in the same order and this paragraph's span is not a whole word of it",
+      "independent_span": [
+        12,
+        13
+      ],
+      "page": 3,
+      "paragraph": "p3#22",
+      "text": "e"
+    },
+    {
+      "band_evidence": {
+        "deleted_spans": [
+          [
+            68,
+            72
+          ]
+        ],
+        "il_chars": 68,
+        "independent_chars": 72,
+        "inserted_spans": []
+      },
+      "band_members": 8,
+      "band_span": [
+        13,
+        15
+      ],
+      "band_verdict": "dropped_text",
+      "chars": 2,
+      "class": "true_fracture",
+      "detail": "the independent reading holds these characters in the same order and this paragraph's span is not a whole word of it",
+      "independent_span": [
+        13,
+        15
+      ],
+      "page": 3,
+      "paragraph": "p3#23",
+      "text": "th"
+    },
+    {
+      "band_evidence": {
+        "deleted_spans": [],
+        "il_chars": 45,
+        "independent_chars": 45,
+        "inserted_spans": []
+      },
+      "band_members": 6,
+      "band_span": [
+        17,
+        31
+      ],
+      "band_verdict": "true_fracture",
+      "chars": 14,
+      "class": "undetermined",
+      "detail": "the independent reading holds these characters in the same order and this paragraph's span is a whole word of it",
+      "independent_span": [
+        17,
+        31
+      ],
+      "page": 3,
+      "paragraph": "p3#25",
+      "text": "jollyprintsget"
+    },
+    {
+      "band_evidence": {
+        "deleted_spans": [],
+        "il_chars": 69,
+        "independent_chars": 69,
+        "inserted_spans": []
+      },
+      "band_members": 6,
+      "band_span": [
+        26,
+        40
+      ],
+      "band_verdict": "true_fracture",
+      "chars": 14,
+      "class": "undetermined",
+      "detail": "the independent reading holds these characters in the same order and this paragraph's span is a whole word of it",
+      "independent_span": [
+        26,
+        40
+      ],
+      "page": 3,
+      "paragraph": "p3#25",
+      "text": "youwhereyou’re"
+    },
+    {
+      "band_evidence": {
+        "deleted_spans": [
+          [
+            60,
+            66
+          ]
+        ],
+        "il_chars": 60,
+        "independent_chars": 66,
+        "inserted_spans": []
+      },
+      "band_members": 5,
+      "band_span": [
+        12,
+        24
+      ],
+      "band_verdict": "dropped_text",
+      "chars": 12,
+      "class": "undetermined",
+      "detail": "the independent reading holds these characters in the same order and this paragraph's span is a whole word of it",
+      "independent_span": [
+        12,
+        24
+      ],
+      "page": 3,
+      "paragraph": "p3#25",
+      "text": "goinginstyle"
+    },
+    {
+      "band_evidence": {
+        "deleted_spans": [],
+        "il_chars": 55,
+        "independent_chars": 55,
+        "inserted_spans": []
+      },
+      "band_members": 5,
+      "band_span": [
+        15,
+        17
+      ],
+      "band_verdict": "true_fracture",
+      "chars": 2,
+      "class": "undetermined",
+      "detail": "the independent reading holds these characters in the same order and this paragraph's span is a whole word of it",
+      "independent_span": [
+        15,
+        17
+      ],
+      "page": 3,
+      "paragraph": "p3#27",
+      "text": "84"
+    },
+    {
+      "band_evidence": {
+        "deleted_spans": [],
+        "il_chars": 45,
+        "independent_chars": 45,
+        "inserted_spans": []
+      },
+      "band_members": 6,
+      "band_span": [
+        36,
+        45
+      ],
+      "band_verdict": "true_fracture",
+      "chars": 9,
+      "class": "undetermined",
+      "detail": "the independent reading holds these characters in the same order and this paragraph's span is a whole word of it",
+      "independent_span": [
+        36,
+        45
+      ],
+      "page": 3,
+      "paragraph": "p3#33",
+      "text": "warm,cozy"
+    },
+    {
+      "band_evidence": {
+        "deleted_spans": [],
+        "il_chars": 69,
+        "independent_chars": 69,
+        "inserted_spans": []
+      },
+      "band_members": 6,
+      "band_span": [
+        56,
+        69
+      ],
+      "band_verdict": "true_fracture",
+      "chars": 13,
+      "class": "undetermined",
+      "detail": "the independent reading holds these characters in the same order and this paragraph's span is a whole word of it",
+      "independent_span": [
+        56,
+        69
+      ],
+      "page": 3,
+      "paragraph": "p3#33",
+      "text": "chicthatpacks"
+    },
+    {
+      "band_evidence": {
+        "deleted_spans": [
+          [
+            60,
+            66
+          ]
+        ],
+        "il_chars": 60,
+        "independent_chars": 66,
+        "inserted_spans": []
+      },
+      "band_members": 5,
+      "band_span": [
+        48,
+        60
+      ],
+      "band_verdict": "dropped_text",
+      "chars": 12,
+      "class": "undetermined",
+      "detail": "the independent reading holds these characters in the same order and this paragraph's span is a whole word of it",
+      "independent_span": [
+        48,
+        60
+      ],
+      "page": 3,
+      "paragraph": "p3#33",
+      "text": "abrightpunch"
+    },
+    {
+      "band_evidence": {
+        "deleted_spans": [
+          [
+            54,
+            58
+          ]
+        ],
+        "il_chars": 54,
+        "independent_chars": 58,
+        "inserted_spans": []
+      },
+      "band_members": 6,
+      "band_span": [
+        51,
+        54
+      ],
+      "band_verdict": "dropped_text",
+      "chars": 3,
+      "class": "undetermined",
+      "detail": "the independent reading holds these characters in the same order and this paragraph's span is a whole word of it",
+      "independent_span": [
+        51,
+        54
+      ],
+      "page": 3,
+      "paragraph": "p3#34",
+      "text": "112"
+    },
+    {
+      "band_evidence": {
+        "deleted_spans": [
+          [
+            51,
+            53
+          ]
+        ],
+        "il_chars": 51,
+        "independent_chars": 53,
+        "inserted_spans": []
+      },
+      "band_members": 5,
+      "band_span": [
+        43,
+        51
+      ],
+      "band_verdict": "dropped_text",
+      "chars": 8,
+      "class": "undetermined",
+      "detail": "the independent reading holds these characters in the same order and this paragraph's span is a whole word of it",
+      "independent_span": [
+        43,
+        51
+      ],
+      "page": 3,
+      "paragraph": "p3#34",
+      "text": "LastLook"
+    },
+    {
+      "band_evidence": {
+        "deleted_spans": [
+          [
+            0,
+            39
+          ],
+          [
+            63,
+            68
+          ]
+        ],
+        "il_chars": 24,
+        "independent_chars": 68,
+        "inserted_spans": []
+      },
+      "band_members": 1,
+      "band_span": [
+        0,
+        24
+      ],
+      "band_verdict": "dropped_text",
+      "chars": 24,
+      "class": "undetermined",
+      "detail": "the independent reading holds these characters in the same order and this paragraph's span is a whole word of it",
+      "independent_span": [
+        39,
+        63
+      ],
+      "page": 3,
+      "paragraph": "p3#35",
+      "text": "CoverLookChampionsLeague"
+    },
+    {
+      "band_evidence": {
+        "deleted_spans": [],
+        "il_chars": 21,
+        "independent_chars": 21,
+        "inserted_spans": []
+      },
+      "band_members": 1,
+      "band_span": [
+        0,
+        21
+      ],
+      "band_verdict": "true_fracture",
+      "chars": 21,
+      "class": "undetermined",
+      "detail": "the independent reading holds these characters in the same order and this paragraph's span is a whole word of it",
+      "independent_span": [
+        0,
+        21
+      ],
+      "page": 3,
+      "paragraph": "p3#36",
+      "text": "22WINTER2025VOGUE.COM"
+    }
+  ],
+  "max_fragment_chars": 40,
+  "min_evidence_chars": 1,
+  "pages": [
+    3
+  ]
+}

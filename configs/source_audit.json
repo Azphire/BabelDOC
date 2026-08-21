@@ -1,0 +1,17 @@
+{
+  "description": "The source audit: a deterministic reading of one page against an extraction that shares no code with the pipeline's own, run to decide whether a run of short paragraphs is a written unit the paragraph finder broke or a layer of text the page holds twice. Nothing here reaches a translation request. The audit exists because the two repairs available -- stitching the pieces back together, and blanking the surplus -- are each right for one of those cases and destructive for the other: stitching a duplicate layer builds a paragraph that says everything twice, and blanking a true fracture deletes text the page needs. So the class is established before either is applied, and a fragment the audit cannot place is left alone. band_overlap_ratio is how much of the shorter of two paragraph bands has to lie inside the taller for them to be read as standing on one line; it is a ratio of the shorter height so that a superscript and the line it sits on are one band. max_fragment_chars is the longest paragraph the audit will call a fragment at all, and is declared here rather than read from fragment_stitch.json because the audit asks a different question of a page than the stitch does and a change to one bound should not silently move the other. classes is the closed vocabulary a fragment may be placed in, and every fragment the audit writes out carries one of them: true_fracture is a piece of a word the independent extraction holds whole, duplicate_layer is text the intermediate language holds and the independent extraction holds fewer times, dropped_text is the reverse, extraction_order_fault is a band whose characters agree as a multiset and disagree in order, and undetermined is every fragment none of the four is established for. min_evidence_chars is the shortest fragment the audit will place at all: a one character fragment matches somewhere in almost any band, so below this bound the audit reports undetermined rather than a coincidence."
+  ,
+  "band_overlap_ratio": 0.5,
+  "band_overlap_ratio_allowed_range": "0.05..1.0",
+  "max_fragment_chars": 40,
+  "max_fragment_chars_allowed_range": "1..400",
+  "min_evidence_chars": 1,
+  "min_evidence_chars_allowed_range": "1..20",
+  "classes": [
+    "true_fracture",
+    "duplicate_layer",
+    "dropped_text",
+    "extraction_order_fault",
+    "undetermined"
+  ]
+}

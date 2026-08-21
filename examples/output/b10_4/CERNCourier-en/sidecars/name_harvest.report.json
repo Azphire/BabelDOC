@@ -1,0 +1,2030 @@
+{
+  "counts": {
+    "defaulted": 41,
+    "harvested": 39,
+    "person_shaped": 61,
+    "rows": 208,
+    "said_person": 19
+  },
+  "pages": [
+    2
+  ],
+  "policy": "transliterate",
+  "request": {
+    "answered": 61,
+    "batches": 3,
+    "prompt_sha256": "d0d5f2979653fd57ebd93e9a16d23ffc645044e804f6ef3bbf875bfadb82678c",
+    "requested": 61
+  },
+  "rows": [
+    {
+      "auto_target": "2026年7月3日",
+      "first_page": 1,
+      "observed_target": "2026年7月3日",
+      "person_shaped": false,
+      "source": "03/07/2026",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "1989年",
+      "first_page": 1,
+      "observed_target": "1989年",
+      "person_shaped": false,
+      "source": "1989",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "欧洲核子研究中心",
+      "first_page": 1,
+      "observed_target": "欧洲核子研究中心",
+      "person_shaped": false,
+      "source": "CERN",
+      "vote_count": 6
+    },
+    {
+      "auto_target": "CERN理事会",
+      "first_page": 1,
+      "observed_target": "CERN理事会",
+      "person_shaped": false,
+      "source": "CERN Council",
+      "vote_count": 6
+    },
+    {
+      "auto_target": "CERN Courier",
+      "candidates": [
+        "CERN Courier"
+      ],
+      "first_page": 1,
+      "is_person": false,
+      "observed_target": "CERN Courier",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "CERN Courier",
+      "vote_count": 3
+    },
+    {
+      "auto_target": "CERN快报",
+      "first_page": 1,
+      "observed_target": "CERN快报",
+      "person_shaped": false,
+      "source": "CERNCOURIER",
+      "vote_count": 3
+    },
+    {
+      "auto_target": "科斯塔斯·丰塔斯",
+      "candidates": [
+        "Costas Fountas"
+      ],
+      "first_page": 1,
+      "is_person": true,
+      "observed_target": "科斯塔斯·丰塔斯",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Costas Fountas",
+      "vote_count": 3
+    },
+    {
+      "auto_target": "理事会主席",
+      "first_page": 1,
+      "observed_target": "理事会主席",
+      "person_shaped": false,
+      "source": "Council president",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "达维德·德·比亚西奥",
+      "candidates": [
+        "DAVIDE DE BIASIO"
+      ],
+      "first_page": 1,
+      "is_person": true,
+      "observed_target": "达维德·德·比亚西奥",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "DAVIDE DE BIASIO",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "欧洲",
+      "first_page": 1,
+      "observed_target": "欧洲",
+      "person_shaped": false,
+      "source": "Europe",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "欧洲战略",
+      "candidates": [
+        "European Strategy"
+      ],
+      "first_page": 1,
+      "is_person": false,
+      "observed_target": "欧洲战略",
+      "origin": "name_harvest",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "European Strategy",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "欧洲粒子物理战略",
+      "first_page": 1,
+      "observed_target": "欧洲粒子物理战略",
+      "person_shaped": false,
+      "source": "European Strategy for Particle Physics",
+      "vote_count": 5
+    },
+    {
+      "auto_target": "未来环形对撞机",
+      "first_page": 1,
+      "observed_target": "未来环形对撞机",
+      "person_shaped": false,
+      "source": "FCC",
+      "vote_count": 2
+    },
+    {
+      "auto_target": "FCC-ee",
+      "first_page": 1,
+      "observed_target": "FCC-ee",
+      "person_shaped": false,
+      "source": "FCC-ee",
+      "vote_count": 5
+    },
+    {
+      "auto_target": "2026年7/8月",
+      "first_page": 1,
+      "observed_target": "2026年7/8月",
+      "person_shaped": false,
+      "source": "July/August 2026",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "6月",
+      "first_page": 1,
+      "observed_target": "6月",
+      "person_shaped": false,
+      "source": "June",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "大型电子正电子对撞机",
+      "first_page": 1,
+      "observed_target": "大型电子正电子对撞机",
+      "person_shaped": false,
+      "source": "LEP",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "大型强子对撞机",
+      "first_page": 1,
+      "observed_target": "大型强子对撞机",
+      "person_shaped": false,
+      "source": "LHC",
+      "vote_count": 6
+    },
+    {
+      "auto_target": "大型电子-正电子对撞机",
+      "first_page": 1,
+      "observed_target": "大型电子-正电子对撞机",
+      "person_shaped": false,
+      "source": "Large Electron–Positron collider",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "大型强子对撞机",
+      "candidates": [
+        "Large Hadron Collider"
+      ],
+      "first_page": 1,
+      "is_person": false,
+      "observed_target": "大型强子对撞机",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Large Hadron Collider",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "第三次长时间停机",
+      "first_page": 1,
+      "observed_target": "第三次长时间停机",
+      "person_shaped": false,
+      "source": "Long Shutdown 3",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "NA64",
+      "first_page": 1,
+      "observed_target": "NA64",
+      "person_shaped": false,
+      "source": "NA64",
+      "vote_count": 2
+    },
+    {
+      "auto_target": "11月",
+      "first_page": 1,
+      "observed_target": "11月",
+      "person_shaped": false,
+      "source": "November",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "战略",
+      "first_page": 1,
+      "observed_target": "战略",
+      "person_shaped": false,
+      "source": "Strategy",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "Xsuite",
+      "first_page": 1,
+      "observed_target": "Xsuite",
+      "person_shaped": false,
+      "source": "Xsuite",
+      "vote_count": 2
+    },
+    {
+      "auto_target": "暗物质领域",
+      "first_page": 1,
+      "observed_target": "暗物质领域",
+      "person_shaped": false,
+      "source": "dark sector",
+      "vote_count": 2
+    },
+    {
+      "auto_target": "电子-正电子对撞机",
+      "first_page": 1,
+      "observed_target": "电子-正电子对撞机",
+      "person_shaped": false,
+      "source": "electron–positron collider",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "第十五届国际束流仪器会议",
+      "first_page": 2,
+      "observed_target": "第十五届国际束流仪器会议",
+      "person_shaped": false,
+      "source": "15th International Beam Instrumentation Conference",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "1991年",
+      "first_page": 2,
+      "observed_target": "1991年",
+      "person_shaped": false,
+      "source": "1991",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "人工智能",
+      "first_page": 2,
+      "observed_target": "人工智能",
+      "person_shaped": false,
+      "source": "AI",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "反氢",
+      "first_page": 2,
+      "observed_target": "反氢",
+      "person_shaped": false,
+      "source": "Antihydrogen",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "芭芭拉·斯托拉奇",
+      "candidates": [
+        "Barbara Storaci"
+      ],
+      "first_page": 2,
+      "is_person": true,
+      "observed_target": "芭芭拉·斯托拉奇",
+      "origin": "name_harvest",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Barbara Storaci",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "束流电荷和电流监测器",
+      "first_page": 2,
+      "observed_target": "束流电荷和电流监测器",
+      "person_shaped": false,
+      "source": "Beam Charge and Current Monitors",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "束流损失监测器和机器保护",
+      "first_page": 2,
+      "observed_target": "束流损失监测器和机器保护",
+      "person_shaped": false,
+      "source": "Beam Loss Monitors and Machine Protection",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "束流位置监测器",
+      "candidates": [
+        "Beam Position Monitors"
+      ],
+      "first_page": 2,
+      "is_person": false,
+      "observed_target": "束流位置监测器",
+      "origin": "name_harvest",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Beam Position Monitors",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "伯纳德·罗伊斯·弗伦奇",
+      "candidates": [
+        "Bernard Royce French"
+      ],
+      "first_page": 2,
+      "is_person": true,
+      "observed_target": "伯纳德·罗伊斯·弗伦奇",
+      "origin": "name_harvest",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Bernard Royce French",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "CERN Courier",
+      "candidates": [
+        "CERN COURIER"
+      ],
+      "first_page": 2,
+      "is_person": false,
+      "observed_target": "CERN Courier",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "CERN COURIER",
+      "vote_count": 2
+    },
+    {
+      "auto_target": "CERNCOURIER.COM",
+      "first_page": 2,
+      "observed_target": "CERNCOURIER.COM",
+      "person_shaped": false,
+      "source": "CERNCOURIER.COM",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "CLS",
+      "first_page": 2,
+      "observed_target": "CLS",
+      "person_shaped": false,
+      "source": "CLS",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "克洛伊·博米耶-马丁",
+      "candidates": [
+        "Chloe Beaumier-Martin"
+      ],
+      "first_page": 2,
+      "is_person": true,
+      "observed_target": "克洛伊·博米耶-马丁",
+      "origin": "name_harvest",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Chloe Beaumier-Martin",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "会议主席",
+      "candidates": [
+        "Conference Chair"
+      ],
+      "first_page": 2,
+      "is_person": false,
+      "observed_target": "会议主席",
+      "origin": "name_harvest",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Conference Chair",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "宇宙射线",
+      "first_page": 2,
+      "observed_target": "宇宙射线",
+      "person_shaped": false,
+      "source": "Cosmic rays",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "数据采集和处理平台",
+      "first_page": 2,
+      "observed_target": "数据采集和处理平台",
+      "person_shaped": false,
+      "source": "Data Acquisition and Processing Platforms",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "反馈系统和束流稳定性",
+      "first_page": 2,
+      "observed_target": "反馈系统和束流稳定性",
+      "person_shaped": false,
+      "source": "Feedback Systems and Beam Stability",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "汉娜·达尔",
+      "candidates": [
+        "Hanna Dahl"
+      ],
+      "first_page": 2,
+      "is_person": true,
+      "observed_target": "汉娜·达尔",
+      "origin": "name_harvest",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Hanna Dahl",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "哈勃战争",
+      "first_page": 2,
+      "observed_target": "哈勃战争",
+      "person_shaped": false,
+      "source": "Hubble wars",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "IBIC 2026",
+      "first_page": 2,
+      "observed_target": "IBIC 2026",
+      "person_shaped": false,
+      "source": "IBIC 2026",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "IPAC’26",
+      "first_page": 2,
+      "observed_target": "IPAC’26",
+      "person_shaped": false,
+      "source": "IPAC’26",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "詹姆斯·德瓦恩",
+      "candidates": [
+        "James Devine"
+      ],
+      "first_page": 2,
+      "is_person": true,
+      "observed_target": "詹姆斯·德瓦恩",
+      "origin": "name_harvest",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "James Devine",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "1991年7月",
+      "first_page": 2,
+      "observed_target": "1991年7月",
+      "person_shaped": false,
+      "source": "July 1991",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "LEP隧道",
+      "first_page": 2,
+      "observed_target": "LEP隧道",
+      "person_shaped": false,
+      "source": "LEP tunnel",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "LOC主席",
+      "candidates": [
+        "LOC Chair"
+      ],
+      "first_page": 2,
+      "is_person": false,
+      "observed_target": "LOC主席",
+      "origin": "name_harvest",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "LOC Chair",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "LOC 联合主席",
+      "candidates": [
+        "LOC Co-Chairs"
+      ],
+      "first_page": 2,
+      "is_person": false,
+      "observed_target": "LOC 联合主席",
+      "origin": "name_harvest",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "LOC Co-Chairs",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "纵向诊断和同步",
+      "first_page": 2,
+      "observed_target": "纵向诊断和同步",
+      "person_shaped": false,
+      "source": "Longitudinal Diagnostics and Synchronization",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "机器参数测量",
+      "candidates": [
+        "Machine Parameter Measurements"
+      ],
+      "first_page": 2,
+      "is_person": false,
+      "observed_target": "机器参数测量",
+      "origin": "name_harvest",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Machine Parameter Measurements",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "卢万基",
+      "candidates": [
+        "Mannque Rho"
+      ],
+      "first_page": 2,
+      "is_person": true,
+      "observed_target": "卢万基",
+      "origin": "name_harvest",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Mannque Rho",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "马尔科·马尔凯托",
+      "candidates": [
+        "Marco Marchetto"
+      ],
+      "first_page": 2,
+      "is_person": true,
+      "observed_target": "马尔科·马尔凯托",
+      "origin": "name_harvest",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Marco Marchetto",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "马文·马沙克",
+      "candidates": [
+        "Marvin Marshak"
+      ],
+      "first_page": 2,
+      "is_person": true,
+      "observed_target": "马文·马沙克",
+      "origin": "name_harvest",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Marvin Marshak",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "米克·斯托尔",
+      "candidates": [
+        "Mick Storr"
+      ],
+      "first_page": 2,
+      "is_person": true,
+      "observed_target": "米克·斯托尔",
+      "origin": "name_harvest",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Mick Storr",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "NA64实验",
+      "first_page": 2,
+      "observed_target": "NA64实验",
+      "person_shaped": false,
+      "source": "NA64 EXPERIMENT",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "中微子",
+      "first_page": 2,
+      "observed_target": "中微子",
+      "person_shaped": false,
+      "source": "Neutrino",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "概述和调试",
+      "first_page": 2,
+      "observed_target": "概述和调试",
+      "person_shaped": false,
+      "source": "Overview and Commissioning",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "普朗克会议",
+      "first_page": 2,
+      "observed_target": "普朗克会议",
+      "person_shaped": false,
+      "source": "PLANCK conference",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "部分子",
+      "first_page": 2,
+      "observed_target": "部分子",
+      "person_shaped": false,
+      "source": "Partons",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "保罗·德克森",
+      "candidates": [
+        "Paul Dirksen"
+      ],
+      "first_page": 2,
+      "is_person": true,
+      "observed_target": "保罗·德克森",
+      "origin": "name_harvest",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Paul Dirksen",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "量子色动力学",
+      "first_page": 2,
+      "observed_target": "量子色动力学",
+      "person_shaped": false,
+      "source": "QCD",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "量子可观测量",
+      "first_page": 2,
+      "observed_target": "量子可观测量",
+      "person_shaped": false,
+      "source": "Quantum observables",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "第三阶段",
+      "first_page": 2,
+      "observed_target": "第三阶段",
+      "person_shaped": false,
+      "source": "Run 3",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "SPC联合主席",
+      "candidates": [
+        "SPC Co-Chairs"
+      ],
+      "first_page": 2,
+      "is_person": false,
+      "observed_target": "SPC联合主席",
+      "origin": "name_harvest",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "SPC Co-Chairs",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "瑞士军刀",
+      "first_page": 2,
+      "observed_target": "瑞士军刀",
+      "person_shaped": false,
+      "source": "Swiss Army knife",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "TRIUMF",
+      "first_page": 2,
+      "observed_target": "TRIUMF",
+      "person_shaped": false,
+      "source": "TRIUMF",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "蒂芙尼·安格斯",
+      "candidates": [
+        "Tiffany Angus"
+      ],
+      "first_page": 2,
+      "is_person": true,
+      "observed_target": "蒂芙尼·安格斯",
+      "origin": "name_harvest",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Tiffany Angus",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "托尼娅·巴滕",
+      "candidates": [
+        "Tonia Batten"
+      ],
+      "first_page": 2,
+      "is_person": true,
+      "observed_target": "托尼娅·巴滕",
+      "origin": "name_harvest",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Tonia Batten",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "横向轮廓和发射度监测器",
+      "first_page": 2,
+      "observed_target": "横向轮廓和发射度监测器",
+      "person_shaped": false,
+      "source": "Transverse Profile and Emittance Monitors",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "欧洲足球协会联盟",
+      "first_page": 2,
+      "observed_target": "欧洲足球协会联盟",
+      "person_shaped": false,
+      "source": "UEFA",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "第66卷第4期",
+      "first_page": 2,
+      "observed_target": "第66卷第4期",
+      "person_shaped": false,
+      "source": "Volume 66 Number 4",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "第66卷第4期2026年7月/8月",
+      "first_page": 2,
+      "observed_target": "第66卷第4期2026年7月/8月",
+      "person_shaped": false,
+      "source": "Volume 66 Number 4 July/August 2026",
+      "vote_count": 2
+    },
+    {
+      "auto_target": "W玻色子",
+      "first_page": 2,
+      "observed_target": "W玻色子",
+      "person_shaped": false,
+      "source": "W boson",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "不列颠哥伦比亚省惠斯勒",
+      "first_page": 2,
+      "observed_target": "不列颠哥伦比亚省惠斯勒",
+      "person_shaped": false,
+      "source": "Whistler, British Columbia",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "arXiv",
+      "first_page": 2,
+      "observed_target": "arXiv",
+      "person_shaped": false,
+      "source": "arXiv",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "束流模拟",
+      "first_page": 2,
+      "observed_target": "束流模拟",
+      "person_shaped": false,
+      "source": "beam simulation",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "对撞机物理",
+      "first_page": 2,
+      "observed_target": "对撞机物理",
+      "person_shaped": false,
+      "source": "collider physics",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "宇宙射线探测器",
+      "first_page": 2,
+      "observed_target": "宇宙射线探测器",
+      "person_shaped": false,
+      "source": "cosmic-ray detector",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "超核",
+      "first_page": 2,
+      "observed_target": "超核",
+      "person_shaped": false,
+      "source": "hypernuclei",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "μ子",
+      "first_page": 2,
+      "observed_target": "μ子",
+      "person_shaped": false,
+      "source": "muons",
+      "vote_count": 2
+    },
+    {
+      "auto_target": "2026年5月22日",
+      "first_page": 3,
+      "observed_target": "2026年5月22日",
+      "person_shaped": false,
+      "source": "22 May 2026",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "2026年6月30日",
+      "first_page": 3,
+      "observed_target": "2026年6月30日",
+      "person_shaped": false,
+      "source": "30/06/2026",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "ADC",
+      "first_page": 3,
+      "observed_target": "ADC",
+      "person_shaped": false,
+      "source": "ADC",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "Bergoz仪器",
+      "candidates": [
+        "Bergoz Instrumentation"
+      ],
+      "first_page": 3,
+      "is_person": false,
+      "observed_target": "Bergoz仪器",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Bergoz Instrumentation",
+      "vote_count": 2
+    },
+    {
+      "auto_target": "布达佩斯",
+      "first_page": 3,
+      "observed_target": "布达佩斯",
+      "person_shaped": false,
+      "source": "Budapest",
+      "vote_count": 2
+    },
+    {
+      "auto_target": "CCJulAug26_NewsAnalysis_v3.indd 7",
+      "first_page": 3,
+      "observed_target": "CCJulAug26_NewsAnalysis_v3.indd 7",
+      "person_shaped": false,
+      "source": "CCJulAug26_NewsAnalysis_v3.indd 7",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "CERN总干事",
+      "candidates": [
+        "CERN Director-General"
+      ],
+      "first_page": 3,
+      "is_person": false,
+      "observed_target": "CERN总干事",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "CERN Director-General",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "EPICS",
+      "first_page": 3,
+      "observed_target": "EPICS",
+      "person_shaped": false,
+      "source": "EPICS",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "以太网",
+      "first_page": 3,
+      "observed_target": "以太网",
+      "person_shaped": false,
+      "source": "Ethernet",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "欧洲战略小组",
+      "first_page": 3,
+      "observed_target": "欧洲战略小组",
+      "person_shaped": false,
+      "source": "European Strategy Group",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "欧洲粒子物理",
+      "first_page": 3,
+      "observed_target": "欧洲粒子物理",
+      "person_shaped": false,
+      "source": "European particle physics",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "法国",
+      "first_page": 3,
+      "observed_target": "法国",
+      "person_shaped": false,
+      "source": "France",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "未来环形对撞机",
+      "candidates": [
+        "Future Circular Collider"
+      ],
+      "first_page": 3,
+      "is_person": false,
+      "observed_target": "未来环形对撞机",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Future Circular Collider",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "高亮度升级",
+      "first_page": 3,
+      "observed_target": "高亮度升级",
+      "person_shaped": false,
+      "source": "HiLumi",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "希格斯玻色子",
+      "first_page": 3,
+      "observed_target": "希格斯玻色子",
+      "person_shaped": false,
+      "source": "Higgs boson",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "希格斯玻色子",
+      "first_page": 3,
+      "observed_target": "希格斯玻色子",
+      "person_shaped": false,
+      "source": "Higgs bosons",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "希格斯工厂",
+      "first_page": 3,
+      "observed_target": "希格斯工厂",
+      "person_shaped": false,
+      "source": "Higgs factory",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "IOC",
+      "first_page": 3,
+      "observed_target": "IOC",
+      "person_shaped": false,
+      "source": "IOC",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "卡尔·雅各布斯",
+      "candidates": [
+        "Karl Jakobs"
+      ],
+      "first_page": 3,
+      "is_person": true,
+      "observed_target": "卡尔·雅各布斯",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Karl Jakobs",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "Linkedin",
+      "first_page": 3,
+      "observed_target": "Linkedin",
+      "person_shaped": false,
+      "source": "Linkedin",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "MDS",
+      "first_page": 3,
+      "observed_target": "MDS",
+      "person_shaped": false,
+      "source": "MDS",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "MDS-ACCT",
+      "first_page": 3,
+      "observed_target": "MDS-ACCT",
+      "person_shaped": false,
+      "source": "MDS-ACCT",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "MDS-ICT",
+      "first_page": 3,
+      "observed_target": "MDS-ICT",
+      "person_shaped": false,
+      "source": "MDS-ICT",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "MDS-NPCT",
+      "first_page": 3,
+      "observed_target": "MDS-NPCT",
+      "person_shaped": false,
+      "source": "MDS-NPCT",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "马克·汤姆森",
+      "candidates": [
+        "Mark Thomson"
+      ],
+      "first_page": 3,
+      "is_person": true,
+      "observed_target": "马克·汤姆森",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Mark Thomson",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "模块化数字解决方案",
+      "candidates": [
+        "Modular Digital Solution"
+      ],
+      "first_page": 3,
+      "is_person": false,
+      "observed_target": "模块化数字解决方案",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Modular Digital Solution",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "Pub_CERN-26-J",
+      "first_page": 3,
+      "observed_target": "Pub_CERN-26-J",
+      "person_shaped": false,
+      "source": "Pub_CERN-26-J",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "瑞士",
+      "first_page": 3,
+      "observed_target": "瑞士",
+      "person_shaped": false,
+      "source": "Switzerland",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "W玻色子对",
+      "first_page": 3,
+      "observed_target": "W玻色子对",
+      "person_shaped": false,
+      "source": "W-boson pairs",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "WW阈值",
+      "first_page": 3,
+      "observed_target": "WW阈值",
+      "person_shaped": false,
+      "source": "WW threshold",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "Z玻色子",
+      "first_page": 3,
+      "observed_target": "Z玻色子",
+      "person_shaped": false,
+      "source": "Z bosons",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "Z极",
+      "first_page": 3,
+      "observed_target": "Z极",
+      "person_shaped": false,
+      "source": "Z pole",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "ZH生产峰值",
+      "first_page": 3,
+      "observed_target": "ZH生产峰值",
+      "person_shaped": false,
+      "source": "ZH production peak",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "高能物理学界",
+      "first_page": 3,
+      "observed_target": "高能物理学界",
+      "person_shaped": false,
+      "source": "high-energy physics community",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "顶夸克对阈值",
+      "first_page": 3,
+      "observed_target": "顶夸克对阈值",
+      "person_shaped": false,
+      "source": "top-quark pair threshold",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "顶夸克-反夸克对",
+      "first_page": 3,
+      "observed_target": "顶夸克-反夸克对",
+      "person_shaped": false,
+      "source": "top-quark–antiquark pairs",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "www.bergoz.com",
+      "first_page": 3,
+      "observed_target": "www.bergoz.com",
+      "person_shaped": false,
+      "source": "www.bergoz.com",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "20世纪80年代",
+      "first_page": 4,
+      "observed_target": "20世纪80年代",
+      "person_shaped": false,
+      "source": "1980s",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "20世纪90年代",
+      "first_page": 4,
+      "observed_target": "20世纪90年代",
+      "person_shaped": false,
+      "source": "1990s",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "2000年",
+      "first_page": 4,
+      "observed_target": "2000年",
+      "person_shaped": false,
+      "source": "2000",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "AdS/CFT对应",
+      "first_page": 4,
+      "observed_target": "AdS/CFT对应",
+      "person_shaped": false,
+      "source": "AdS/CFT correspondence",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "南极洲",
+      "first_page": 4,
+      "observed_target": "南极洲",
+      "person_shaped": false,
+      "source": "Antarctica",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "2025年8月",
+      "first_page": 4,
+      "observed_target": "2025年8月",
+      "person_shaped": false,
+      "source": "August 2025",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "B工厂",
+      "first_page": 4,
+      "observed_target": "B工厂",
+      "person_shaped": false,
+      "source": "B-factories",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "布鲁克海文国家实验室",
+      "first_page": 4,
+      "observed_target": "布鲁克海文国家实验室",
+      "person_shaped": false,
+      "source": "BNL",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "大爆炸",
+      "candidates": [
+        "Big Bang"
+      ],
+      "first_page": 4,
+      "is_person": false,
+      "observed_target": "大爆炸",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Big Bang",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "布鲁克海文国家实验室",
+      "first_page": 4,
+      "observed_target": "布鲁克海文国家实验室",
+      "person_shaped": false,
+      "source": "Brookhaven National Laboratory",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "CDF",
+      "first_page": 4,
+      "observed_target": "CDF",
+      "person_shaped": false,
+      "source": "CDF",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "康奈尔大学",
+      "first_page": 4,
+      "observed_target": "康奈尔大学",
+      "person_shaped": false,
+      "source": "Cornell",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "杜布纳",
+      "first_page": 4,
+      "observed_target": "杜布纳",
+      "person_shaped": false,
+      "source": "Dubna",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "费米实验室",
+      "first_page": 4,
+      "observed_target": "费米实验室",
+      "person_shaped": false,
+      "source": "Fermilab",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "大统一理论",
+      "first_page": 4,
+      "observed_target": "大统一理论",
+      "person_shaped": false,
+      "source": "GUTs",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "电子-质子对撞机",
+      "first_page": 4,
+      "observed_target": "电子-质子对撞机",
+      "person_shaped": false,
+      "source": "HERA",
+      "vote_count": 2
+    },
+    {
+      "auto_target": "赫尔维格·肖普",
+      "candidates": [
+        "Herwig Schopper"
+      ],
+      "first_page": 4,
+      "is_person": true,
+      "observed_target": "赫尔维格·肖普",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Herwig Schopper",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "下议院",
+      "first_page": 4,
+      "observed_target": "下议院",
+      "person_shaped": false,
+      "source": "House of Commons",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "普罗特维诺高能物理研究所",
+      "candidates": [
+        "IHEP Protvino"
+      ],
+      "first_page": 4,
+      "is_person": false,
+      "observed_target": "普罗特维诺高能物理研究所",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "IHEP Protvino",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "ISABELLE",
+      "first_page": 4,
+      "observed_target": "ISABELLE",
+      "person_shaped": false,
+      "source": "ISABELLE",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "ISABELLE质子对撞机",
+      "first_page": 4,
+      "observed_target": "ISABELLE质子对撞机",
+      "person_shaped": false,
+      "source": "ISABELLE proton collider",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "相交储存环",
+      "first_page": 4,
+      "observed_target": "相交储存环",
+      "person_shaped": false,
+      "source": "ISR",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "联合核子研究所",
+      "first_page": 4,
+      "observed_target": "联合核子研究所",
+      "person_shaped": false,
+      "source": "JINR",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "高能加速器研究机构",
+      "first_page": 4,
+      "observed_target": "高能加速器研究机构",
+      "person_shaped": false,
+      "source": "KEK",
+      "vote_count": 2
+    },
+    {
+      "auto_target": "神冈探测器",
+      "first_page": 4,
+      "observed_target": "神冈探测器",
+      "person_shaped": false,
+      "source": "Kamiokande detector",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "M理论",
+      "first_page": 4,
+      "observed_target": "M理论",
+      "person_shaped": false,
+      "source": "M-theory",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "池野山",
+      "candidates": [
+        "Mount Ikeno"
+      ],
+      "first_page": 4,
+      "is_person": false,
+      "observed_target": "池野山",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Mount Ikeno",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "2025年11月/12月",
+      "first_page": 4,
+      "observed_target": "2025年11月/12月",
+      "person_shaped": false,
+      "source": "November/December 2025",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "新西伯利亚",
+      "first_page": 4,
+      "observed_target": "新西伯利亚",
+      "person_shaped": false,
+      "source": "Novosibirsk",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "相对论重离子对撞机",
+      "first_page": 4,
+      "observed_target": "相对论重离子对撞机",
+      "person_shaped": false,
+      "source": "RHIC",
+      "vote_count": 2
+    },
+    {
+      "auto_target": "拉姆齐礼堂",
+      "candidates": [
+        "Ramsey Auditorium"
+      ],
+      "first_page": 4,
+      "is_person": false,
+      "observed_target": "拉姆齐礼堂",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Ramsey Auditorium",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "相对论重离子对撞机",
+      "candidates": [
+        "Relativistic Heavy Ion Collider"
+      ],
+      "first_page": 4,
+      "is_person": false,
+      "observed_target": "相对论重离子对撞机",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Relativistic Heavy Ion Collider",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "卢瑟福电缆",
+      "first_page": 4,
+      "observed_target": "卢瑟福电缆",
+      "person_shaped": false,
+      "source": "Rutherford cables",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "斯坦福直线加速器中心",
+      "first_page": 4,
+      "observed_target": "斯坦福直线加速器中心",
+      "person_shaped": false,
+      "source": "SLAC",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "直线对撞机",
+      "first_page": 4,
+      "observed_target": "直线对撞机",
+      "person_shaped": false,
+      "source": "SLC",
+      "vote_count": 2
+    },
+    {
+      "auto_target": "超导质子同步加速器",
+      "first_page": 4,
+      "observed_target": "超导质子同步加速器",
+      "person_shaped": false,
+      "source": "SPS",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "超质子同步加速器对撞机",
+      "first_page": 4,
+      "observed_target": "超质子同步加速器对撞机",
+      "person_shaped": false,
+      "source": "SPS collider",
+      "vote_count": 2
+    },
+    {
+      "auto_target": "苏联",
+      "first_page": 4,
+      "observed_target": "苏联",
+      "person_shaped": false,
+      "source": "Soviet Union",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "超级神冈",
+      "first_page": 4,
+      "observed_target": "超级神冈",
+      "person_shaped": false,
+      "source": "Super-Kamiokande",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "超导超级对撞机",
+      "candidates": [
+        "Superconducting Super Collider"
+      ],
+      "first_page": 4,
+      "is_person": false,
+      "observed_target": "超导超级对撞机",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Superconducting Super Collider",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "费米实验室质子-反质子对撞机",
+      "first_page": 4,
+      "observed_target": "费米实验室质子-反质子对撞机",
+      "person_shaped": false,
+      "source": "Tevatron",
+      "vote_count": 2
+    },
+    {
+      "auto_target": "德克萨斯州",
+      "first_page": 4,
+      "observed_target": "德克萨斯州",
+      "person_shaped": false,
+      "source": "Texas",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "UA1",
+      "first_page": 4,
+      "observed_target": "UA1",
+      "person_shaped": false,
+      "source": "UA1",
+      "vote_count": 2
+    },
+    {
+      "auto_target": "UA2",
+      "first_page": 4,
+      "observed_target": "UA2",
+      "person_shaped": false,
+      "source": "UA2",
+      "vote_count": 2
+    },
+    {
+      "auto_target": "UNK计划",
+      "first_page": 4,
+      "observed_target": "UNK计划",
+      "person_shaped": false,
+      "source": "UNK programme",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "美国国会",
+      "candidates": [
+        "US Congress"
+      ],
+      "first_page": 4,
+      "is_person": false,
+      "observed_target": "美国国会",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "US Congress",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "美国",
+      "first_page": 4,
+      "observed_target": "美国",
+      "person_shaped": false,
+      "source": "USA",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "W和Z玻色子",
+      "first_page": 4,
+      "observed_target": "W和Z玻色子",
+      "person_shaped": false,
+      "source": "W and Z",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "W和Z玻色子",
+      "first_page": 4,
+      "observed_target": "W和Z玻色子",
+      "person_shaped": false,
+      "source": "W and Z bosons",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "温斯顿·丘吉尔",
+      "candidates": [
+        "Winston Churchill"
+      ],
+      "first_page": 4,
+      "is_person": true,
+      "observed_target": "温斯顿·丘吉尔",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Winston Churchill",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "竞合",
+      "first_page": 4,
+      "observed_target": "竞合",
+      "person_shaped": false,
+      "source": "coopetition",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "暴胀",
+      "first_page": 4,
+      "observed_target": "暴胀",
+      "person_shaped": false,
+      "source": "inflation",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "中微子振荡",
+      "first_page": 4,
+      "observed_target": "中微子振荡",
+      "person_shaped": false,
+      "source": "neutrino oscillations",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "夸克-胶子等离子体",
+      "first_page": 4,
+      "observed_target": "夸克-胶子等离子体",
+      "person_shaped": false,
+      "source": "quark–gluon plasma",
+      "vote_count": 2
+    },
+    {
+      "auto_target": "超导磁体",
+      "first_page": 4,
+      "observed_target": "超导磁体",
+      "person_shaped": false,
+      "source": "superconducting magnets",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "超对称性",
+      "first_page": 4,
+      "observed_target": "超对称性",
+      "person_shaped": false,
+      "source": "supersymmetry",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "顶夸克",
+      "first_page": 4,
+      "observed_target": "顶夸克",
+      "person_shaped": false,
+      "source": "top quark",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "第四届粒子物理史国际研讨会",
+      "first_page": null,
+      "observed_target": "第四届粒子物理史国际研讨会",
+      "person_shaped": false,
+      "source": "4th International Symposium on the History of Particle Physics",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "埃塔姆·诺亚",
+      "candidates": [
+        "Etam Noah"
+      ],
+      "first_page": null,
+      "is_person": true,
+      "observed_target": "埃塔姆·诺亚",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Etam Noah",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "欧盟",
+      "first_page": null,
+      "observed_target": "欧盟",
+      "person_shaped": false,
+      "source": "European Union",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "高亮度大型强子对撞机",
+      "candidates": [
+        "High-Luminosity LHC"
+      ],
+      "first_page": null,
+      "is_person": false,
+      "observed_target": "高亮度大型强子对撞机",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "High-Luminosity LHC",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "伊斯兰教与现代宇宙学",
+      "first_page": null,
+      "observed_target": "伊斯兰教与现代宇宙学",
+      "person_shaped": false,
+      "source": "Islam and Modern Cosmology",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "俄罗斯",
+      "first_page": null,
+      "observed_target": "俄罗斯",
+      "person_shaped": false,
+      "source": "Russia",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "双重魅重子",
+      "first_page": null,
+      "observed_target": "双重魅重子",
+      "person_shaped": false,
+      "source": "doubly charmed baryon",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "粒子宇宙学",
+      "first_page": null,
+      "observed_target": "粒子宇宙学",
+      "person_shaped": false,
+      "source": "particle cosmology",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "弦理论",
+      "first_page": null,
+      "observed_target": "弦理论",
+      "person_shaped": false,
+      "source": "string theory",
+      "vote_count": 1
+    },
+    {
+      "auto_target": null,
+      "candidates": [
+        "AWARDS BACKGROUND"
+      ],
+      "first_page": 2,
+      "is_person": false,
+      "observed_target": null,
+      "origin": "name_harvest",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "AWARDS BACKGROUND",
+      "vote_count": 1
+    },
+    {
+      "auto_target": null,
+      "candidates": [
+        "Abstract Submission Deadline"
+      ],
+      "first_page": 2,
+      "is_person": false,
+      "observed_target": null,
+      "origin": "name_harvest",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Abstract Submission Deadline",
+      "vote_count": 1
+    },
+    {
+      "auto_target": null,
+      "candidates": [
+        "Beam Charge"
+      ],
+      "first_page": 2,
+      "is_person": false,
+      "observed_target": null,
+      "origin": "name_harvest",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Beam Charge",
+      "vote_count": 1
+    },
+    {
+      "auto_target": null,
+      "candidates": [
+        "Beam Loss Monitors"
+      ],
+      "first_page": 2,
+      "is_person": false,
+      "observed_target": null,
+      "origin": "name_harvest",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Beam Loss Monitors",
+      "vote_count": 1
+    },
+    {
+      "auto_target": null,
+      "candidates": [
+        "Beam Stability"
+      ],
+      "first_page": 2,
+      "is_person": false,
+      "observed_target": null,
+      "origin": "name_harvest",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Beam Stability",
+      "vote_count": 1
+    },
+    {
+      "auto_target": null,
+      "candidates": [
+        "British Columbia"
+      ],
+      "first_page": 2,
+      "is_person": false,
+      "observed_target": null,
+      "origin": "name_harvest",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "British Columbia",
+      "vote_count": 1
+    },
+    {
+      "auto_target": null,
+      "candidates": [
+        "Current Monitors"
+      ],
+      "first_page": 2,
+      "is_person": false,
+      "observed_target": null,
+      "origin": "name_harvest",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Current Monitors",
+      "vote_count": 1
+    },
+    {
+      "auto_target": null,
+      "candidates": [
+        "Data Acquisition"
+      ],
+      "first_page": 2,
+      "is_person": false,
+      "observed_target": null,
+      "origin": "name_harvest",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Data Acquisition",
+      "vote_count": 1
+    },
+    {
+      "auto_target": null,
+      "candidates": [
+        "Delegate Registration Deadline"
+      ],
+      "first_page": 2,
+      "is_person": false,
+      "observed_target": null,
+      "origin": "name_harvest",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Delegate Registration Deadline",
+      "vote_count": 1
+    },
+    {
+      "auto_target": null,
+      "candidates": [
+        "ENERGY FRONTIERS"
+      ],
+      "first_page": 2,
+      "is_person": false,
+      "observed_target": null,
+      "origin": "name_harvest",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "ENERGY FRONTIERS",
+      "vote_count": 1
+    },
+    {
+      "auto_target": null,
+      "candidates": [
+        "Emittance Monitors"
+      ],
+      "first_page": 2,
+      "is_person": false,
+      "observed_target": null,
+      "origin": "name_harvest",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Emittance Monitors",
+      "vote_count": 1
+    },
+    {
+      "auto_target": null,
+      "candidates": [
+        "Exhibitor Registration Deadline"
+      ],
+      "first_page": 2,
+      "is_person": false,
+      "observed_target": null,
+      "origin": "name_harvest",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Exhibitor Registration Deadline",
+      "vote_count": 1
+    },
+    {
+      "auto_target": null,
+      "candidates": [
+        "FIELD NOTES"
+      ],
+      "first_page": 2,
+      "is_person": false,
+      "observed_target": null,
+      "origin": "name_harvest",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "FIELD NOTES",
+      "vote_count": 1
+    },
+    {
+      "auto_target": null,
+      "candidates": [
+        "Feedback Systems"
+      ],
+      "first_page": 2,
+      "is_person": false,
+      "observed_target": null,
+      "origin": "name_harvest",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Feedback Systems",
+      "vote_count": 1
+    },
+    {
+      "auto_target": null,
+      "candidates": [
+        "Longitudinal Diagnostics"
+      ],
+      "first_page": 2,
+      "is_person": false,
+      "observed_target": null,
+      "origin": "name_harvest",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Longitudinal Diagnostics",
+      "vote_count": 1
+    },
+    {
+      "auto_target": null,
+      "candidates": [
+        "Machine Protection"
+      ],
+      "first_page": 2,
+      "is_person": false,
+      "observed_target": null,
+      "origin": "name_harvest",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Machine Protection",
+      "vote_count": 1
+    },
+    {
+      "auto_target": null,
+      "candidates": [
+        "Modern Cosmology"
+      ],
+      "first_page": 2,
+      "is_person": false,
+      "observed_target": null,
+      "origin": "name_harvest",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Modern Cosmology",
+      "vote_count": 1
+    },
+    {
+      "auto_target": null,
+      "candidates": [
+        "Particle Physics"
+      ],
+      "first_page": 2,
+      "is_person": false,
+      "observed_target": null,
+      "origin": "name_harvest",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Particle Physics",
+      "vote_count": 1
+    },
+    {
+      "auto_target": null,
+      "candidates": [
+        "Processing Platforms"
+      ],
+      "first_page": 2,
+      "is_person": false,
+      "observed_target": null,
+      "origin": "name_harvest",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Processing Platforms",
+      "vote_count": 1
+    },
+    {
+      "auto_target": null,
+      "candidates": [
+        "Transverse Profile"
+      ],
+      "first_page": 2,
+      "is_person": false,
+      "observed_target": null,
+      "origin": "name_harvest",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Transverse Profile",
+      "vote_count": 1
+    }
+  ],
+  "switch": "magazine_name_harvest"
+}

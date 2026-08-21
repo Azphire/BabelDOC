@@ -1,0 +1,615 @@
+{
+  "decisions_file": "D:\\Codes\\BabelDOC\\reviews\\Courier-en.decisions.json",
+  "drop_caps": [
+    {
+      "debug_id": "v6H69",
+      "decision": "flatten",
+      "page": 4,
+      "paragraph": "p4#3",
+      "was_candidate": true
+    },
+    {
+      "debug_id": "4Bcqb",
+      "decision": "flatten",
+      "page": 5,
+      "paragraph": "p5#5",
+      "was_candidate": true
+    },
+    {
+      "debug_id": "3JmgZ",
+      "decision": "flatten",
+      "page": 7,
+      "paragraph": "p7#8",
+      "was_candidate": true
+    }
+  ],
+  "page_kinds": [
+    {
+      "kind": "toc",
+      "machine_conf": 0.8666666666666667,
+      "machine_kind": "editorial",
+      "machine_source": "deterministic",
+      "page": 1
+    }
+  ],
+  "sample": "Courier-en",
+  "terms": {
+    "auto_glossary_kept": 117,
+    "auto_glossary_relocated": "auto_extracted_glossary",
+    "defaulted": 17,
+    "dropped_from_auto": [
+      {
+        "auto_target": "Agnès Bardon",
+        "source": "Agnès Bardon",
+        "user_target": "阿涅斯·巴尔东"
+      },
+      {
+        "auto_target": "广角",
+        "source": "WIDE ANGLE",
+        "user_target": "广角"
+      },
+      {
+        "auto_target": "Lagipoiva Cherelle Jackson",
+        "source": "Lagipoiva Cherelle Jackson",
+        "user_target": "拉吉波伊瓦·谢雷尔·杰克逊"
+      },
+      {
+        "auto_target": "Marcelo Silva de Sousa",
+        "source": "Marcelo Silva de Sousa",
+        "user_target": "马塞洛·席尔瓦·德·索萨"
+      },
+      {
+        "auto_target": "Daniel Robinson",
+        "source": "Daniel Robinson",
+        "user_target": "丹尼尔·罗宾逊"
+      },
+      {
+        "auto_target": "David Jefferson",
+        "source": "David Jefferson",
+        "user_target": "大卫·杰斐逊"
+      },
+      {
+        "auto_target": "Yang Sha",
+        "source": "Yang Sha",
+        "user_target": "杨沙"
+      },
+      {
+        "auto_target": "Du Junzhi",
+        "source": "Du Junzhi",
+        "user_target": "杜俊志"
+      },
+      {
+        "auto_target": "Sisco Auala",
+        "source": "Sisco Auala",
+        "user_target": "西斯科·阿瓦拉"
+      },
+      {
+        "auto_target": "联合国教科文组织信使",
+        "source": "UNESCO Courier",
+        "user_target": "联合国教科文组织信使"
+      },
+      {
+        "auto_target": "土著人民",
+        "source": "Indigenous Peoples",
+        "user_target": "土著人民"
+      },
+      {
+        "auto_target": "诺贝尔奖",
+        "source": "Nobel Prize",
+        "user_target": "诺贝尔奖"
+      },
+      {
+        "auto_target": "Anna Ruohonen",
+        "source": "Anna Ruohonen",
+        "user_target": "安娜·罗霍宁"
+      },
+      {
+        "auto_target": "Ora Marek-Martinez",
+        "source": "Ora Marek-Martinez",
+        "user_target": "奥拉·马雷克-马丁内斯"
+      },
+      {
+        "auto_target": "Fotohane DARKROOM",
+        "source": "Fotohane DARKROOM",
+        "user_target": "Fotohane DARKROOM"
+      },
+      {
+        "auto_target": "Jim Al-Khalili",
+        "source": "Jim Al-Khalili",
+        "user_target": "吉姆·艾尔-哈利利"
+      },
+      {
+        "auto_target": "澳大利亚土著",
+        "source": "Indigenous Australians",
+        "user_target": "澳大利亚土著"
+      },
+      {
+        "auto_target": "Hindou Oumarou Ibrahim",
+        "source": "Hindou Oumarou Ibrahim",
+        "user_target": "欣杜·乌马鲁·易卜拉欣"
+      },
+      {
+        "auto_target": "西非",
+        "source": "West African",
+        "user_target": "西非"
+      },
+      {
+        "auto_target": "外岛",
+        "source": "Outer Islands",
+        "user_target": "外岛"
+      },
+      {
+        "auto_target": "Salanieta Kitolelei",
+        "source": "Salanieta Kitolelei",
+        "user_target": "萨拉涅塔·基托莱莱"
+      },
+      {
+        "auto_target": "所罗门群岛",
+        "source": "Solomon Islands",
+        "user_target": "所罗门群岛"
+      },
+      {
+        "auto_target": "普鲁斯河",
+        "source": "Purus River",
+        "user_target": "普鲁斯河"
+      },
+      {
+        "auto_target": "奇科·保马里",
+        "source": "Chico Paumari",
+        "user_target": "奇科·保马里"
+      },
+      {
+        "auto_target": "Chimamanda Ngozi Adichie",
+        "source": "Chimamanda Ngozi Adichie",
+        "user_target": "奇玛曼达·恩戈兹·阿迪契"
+      },
+      {
+        "auto_target": "Carolina Zambrano",
+        "source": "Carolina Zambrano",
+        "user_target": "卡罗琳娜·桑布拉诺"
+      },
+      {
+        "auto_target": "太平洋岛屿",
+        "source": "Pacific Island",
+        "user_target": "太平洋岛屿"
+      },
+      {
+        "auto_target": "美国",
+        "source": "United States",
+        "user_target": "美国"
+      }
+    ],
+    "entries": [
+      {
+        "decided_by": "policy",
+        "source": "Agnès Bardon",
+        "target": "阿涅斯·巴尔东"
+      },
+      {
+        "decided_by": "human",
+        "source": "Anna Ruohonen",
+        "target": "安娜·罗霍宁"
+      },
+      {
+        "decided_by": "human",
+        "source": "Chimamanda Ngozi Adichie",
+        "target": "奇玛曼达·恩戈兹·阿迪契"
+      },
+      {
+        "decided_by": "human",
+        "source": "Daniel Robinson",
+        "target": "丹尼尔·罗宾逊"
+      },
+      {
+        "decided_by": "human",
+        "source": "David Jefferson",
+        "target": "大卫·杰斐逊"
+      },
+      {
+        "decided_by": "policy",
+        "source": "Fotohane DARKROOM",
+        "target": "Fotohane DARKROOM"
+      },
+      {
+        "decided_by": "policy",
+        "source": "Indigenous Peoples",
+        "target": "土著人民"
+      },
+      {
+        "decided_by": "human",
+        "source": "Jim Al-Khalili",
+        "target": "吉姆·艾尔-哈利利"
+      },
+      {
+        "decided_by": "human",
+        "source": "Lagipoiva Cherelle Jackson",
+        "target": "拉吉波伊瓦·谢雷尔·杰克逊"
+      },
+      {
+        "decided_by": "human",
+        "source": "Marcelo Silva de Sousa",
+        "target": "马塞洛·席尔瓦·德·索萨"
+      },
+      {
+        "decided_by": "human",
+        "source": "Ora Marek-Martinez",
+        "target": "奥拉·马雷克-马丁内斯"
+      },
+      {
+        "decided_by": "human",
+        "source": "Sisco Auala",
+        "target": "西斯科·阿瓦拉"
+      },
+      {
+        "decided_by": "policy",
+        "source": "WIDE ANGLE",
+        "target": "广角"
+      },
+      {
+        "decided_by": "human",
+        "source": "Yang Sha",
+        "target": "杨沙"
+      },
+      {
+        "decided_by": "policy",
+        "source": "Carolina Zambrano",
+        "target": "卡罗琳娜·桑布拉诺"
+      },
+      {
+        "decided_by": "policy",
+        "source": "Pacific Island",
+        "target": "太平洋岛屿"
+      },
+      {
+        "decided_by": "policy",
+        "source": "UNESCO Courier",
+        "target": "联合国教科文组织信使"
+      },
+      {
+        "decided_by": "policy",
+        "source": "United States",
+        "target": "美国"
+      },
+      {
+        "decided_by": "policy",
+        "source": "Hindou Oumarou Ibrahim",
+        "target": "欣杜·乌马鲁·易卜拉欣"
+      },
+      {
+        "decided_by": "policy",
+        "source": "Outer Islands",
+        "target": "外岛"
+      },
+      {
+        "decided_by": "policy",
+        "source": "Salanieta Kitolelei",
+        "target": "萨拉涅塔·基托莱莱"
+      },
+      {
+        "decided_by": "policy",
+        "source": "Solomon Islands",
+        "target": "所罗门群岛"
+      },
+      {
+        "decided_by": "policy",
+        "source": "West African",
+        "target": "西非"
+      },
+      {
+        "decided_by": "policy",
+        "source": "Chico Paumari",
+        "target": "奇科·保马里"
+      },
+      {
+        "decided_by": "policy",
+        "source": "Purus River",
+        "target": "普鲁斯河"
+      },
+      {
+        "decided_by": "policy",
+        "source": "Nobel Prize",
+        "target": "诺贝尔奖"
+      },
+      {
+        "decided_by": "policy",
+        "source": "Indigenous Australians",
+        "target": "澳大利亚土著"
+      },
+      {
+        "decided_by": "human",
+        "source": "The UNESCO Courier",
+        "target": "联合国教科文组织《信使》"
+      },
+      {
+        "decided_by": "human",
+        "source": "CourierT H E UNESCO",
+        "target": "联合国教科文组织《信使》"
+      },
+      {
+        "decided_by": "human",
+        "source": "Du Junzhi",
+        "target": "杜俊志"
+      },
+      {
+        "decided_by": "human",
+        "source": "Katerina Markelova",
+        "target": "卡特琳娜·马尔可洛娃"
+      }
+    ],
+    "glossary": "hitl_decisions",
+    "match_definition": "how many inputs -- the text a paragraph was offered as, which is what the glossary is matched against -- activate this entry, by the matcher the translation prompt itself uses; counted over every request this run built from the document, the repair loop's included",
+    "matches": [
+      {
+        "matched_excerpts": [
+          "Agnès Bardon"
+        ],
+        "matched_prompt_count": 1,
+        "source": "Agnès Bardon",
+        "target": "阿涅斯·巴尔东"
+      },
+      {
+        "matched_excerpts": [
+          "Anna Ruohonen"
+        ],
+        "matched_prompt_count": 1,
+        "source": "Anna Ruohonen",
+        "target": "安娜·罗霍宁"
+      },
+      {
+        "matched_excerpts": [
+          "An interview with Chimamanda Ngozi Adichie"
+        ],
+        "matched_prompt_count": 1,
+        "source": "Chimamanda Ngozi Adichie",
+        "target": "奇玛曼达·恩戈兹·阿迪契"
+      },
+      {
+        "matched_excerpts": [
+          "Daniel Robinson and David Jefferson",
+          "Daniel Robinson"
+        ],
+        "matched_prompt_count": 2,
+        "source": "Daniel Robinson",
+        "target": "丹尼尔·罗宾逊"
+      },
+      {
+        "matched_excerpts": [
+          "Daniel Robinson and David Jefferson",
+          "David Jefferson"
+        ],
+        "matched_prompt_count": 2,
+        "source": "David Jefferson",
+        "target": "大卫·杰斐逊"
+      },
+      {
+        "matched_excerpts": [
+          "Photos: Fotohane DARKROOM"
+        ],
+        "matched_prompt_count": 1,
+        "source": "Fotohane DARKROOM",
+        "target": "Fotohane DARKROOM"
+      },
+      {
+        "matched_excerpts": [
+          "Rooted in the careful observation of ecosystems and passed down orally from generation to generation, this knowledge offers valuable keys to building a sustainable future. It has been gaining increased recognition for several years. The United Nations Declaration on the Rights of Indigenous Peoples, adopted in 2007, affirms the right of these peoples to preserve, control and develop their traditional knowledge.",
+          "As the climate crisis intensifies and biodiversity collapses, the world turns to the very knowledge systems it once dismissed. According to the United Nations, Indigenous Peoples comprise less than 5 per cent of the global population yet steward lands containing about 80 per cent of Earth’s remaining biodiversity. From their close relationship with the surrounding natural world, they have derived valuable knowledge that merits greater attention.",
+          "Established in 2002, UNESCO’s Local and Indigenous Knowledge Systems (LINKS) programme mobilizes the knowledge, know-how and practices of local communities and Indigenous Peoples to support their inclusion in environmental decision- making, particularly with regard to biodiversity and climate change."
+        ],
+        "matched_prompt_count": 5,
+        "source": "Indigenous Peoples",
+        "target": "土著人民"
+      },
+      {
+        "matched_excerpts": [
+          "Jim Al-Khalili"
+        ],
+        "matched_prompt_count": 1,
+        "source": "Jim Al-Khalili",
+        "target": "吉姆·艾尔-哈利利"
+      },
+      {
+        "matched_excerpts": [
+          "Lagipoiva Cherelle Jackson",
+          "Lagipoiva Cherelle Jackson"
+        ],
+        "matched_prompt_count": 2,
+        "source": "Lagipoiva Cherelle Jackson",
+        "target": "拉吉波伊瓦·谢雷尔·杰克逊"
+      },
+      {
+        "matched_excerpts": [
+          "Marcelo Silva de Sousa",
+          "Marcelo Silva de Sousa"
+        ],
+        "matched_prompt_count": 2,
+        "source": "Marcelo Silva de Sousa",
+        "target": "马塞洛·席尔瓦·德·索萨"
+      },
+      {
+        "matched_excerpts": [
+          "An interview with Ora Marek-Martinez"
+        ],
+        "matched_prompt_count": 1,
+        "source": "Ora Marek-Martinez",
+        "target": "奥拉·马雷克-马丁内斯"
+      },
+      {
+        "matched_excerpts": [
+          "Sisco Auala"
+        ],
+        "matched_prompt_count": 1,
+        "source": "Sisco Auala",
+        "target": "西斯科·阿瓦拉"
+      },
+      {
+        "matched_excerpts": [
+          "WIDE ANGLE",
+          "WIDE ANGLE",
+          "WIDE ANGLE"
+        ],
+        "matched_prompt_count": 4,
+        "source": "WIDE ANGLE",
+        "target": "广角"
+      },
+      {
+        "matched_excerpts": [
+          "Yang Sha and Du Junzhi"
+        ],
+        "matched_prompt_count": 1,
+        "source": "Yang Sha",
+        "target": "杨沙"
+      },
+      {
+        "matched_excerpts": [
+          "Work by Ecuadorian photographer Carolina Zambrano, embroidered with chambira fibres, a palm tree emblematic of Indigenous Amazonian craftsmanship."
+        ],
+        "matched_prompt_count": 1,
+        "source": "Carolina Zambrano",
+        "target": "卡罗琳娜·桑布拉诺"
+      },
+      {
+        "matched_excerpts": [
+          "Indigenous climate journalist from Samoa reporting for <style id='1'>The Guardian</style> on Pacific Island issues, she currently serves as Professor of Pacific Island Studies at Portland State University (United States).",
+          "communities worldwide are defending their rights to protect such cultural heritage while actively making the case of traditional knowledge systems as parallel scientific frameworks. As Fijian researcher Salanieta Kitolelei noted at the 2025 Second Pacific Island Ocean Conference in Honiara, Solomon Islands: “It is the same thing — we just use a different language to talk about the same thing.”"
+        ],
+        "matched_prompt_count": 2,
+        "source": "Pacific Island",
+        "target": "太平洋岛屿"
+      },
+      {
+        "matched_excerpts": [
+          "{v1}The UNESCO Courier {v2}<style id='3'>January-March 2026</style>",
+          "{v1}The UNESCO Courier {v2}<style id='3'>January-March 2026</style>",
+          "{v1}The UNESCO Courier {v2}<style id='3'>January-March 2026</style>"
+        ],
+        "matched_prompt_count": 4,
+        "source": "UNESCO Courier",
+        "target": "联合国教科文组织信使"
+      },
+      {
+        "matched_excerpts": [
+          "Indigenous climate journalist from Samoa reporting for <style id='1'>The Guardian</style> on Pacific Island issues, she currently serves as Professor of Pacific Island Studies at Portland State University (United States)."
+        ],
+        "matched_prompt_count": 1,
+        "source": "United States",
+        "target": "美国"
+      },
+      {
+        "matched_excerpts": [
+          "“We observe nature, our animals and plants. We are the guardians of nature and we possess an enormous amount of knowledge about our environment,” noted Hindou Oumarou Ibrahim, an Indigenous Mbororo leader from Chad and Chair of the 23rd Session of the United Nations Permanent Forum on Indigenous Issues, in April 2024. “This knowledge is not theoretical; it has been tried and tested for centuries.”"
+        ],
+        "matched_prompt_count": 1,
+        "source": "Hindou Oumarou Ibrahim",
+        "target": "欣杜·乌马鲁·易卜拉欣"
+      },
+      {
+        "matched_excerpts": [
+          "There are many more examples of how traditional knowledge has proven its worth, in areas as diverse as water management, agroforestry, health and fishing. Far more than a collection of techniques, these practices are also an expression of a worldview. Textile creation, for instance, has served as another form of navigation, this time in a spiritual sense. The woven skirts of Micronesia’s Outer Islands and the strip-weaving traditions of Ghana and Nigeria map community knowledge and cultural identity into symbolic pattern language."
+        ],
+        "matched_prompt_count": 1,
+        "source": "Outer Islands",
+        "target": "外岛"
+      },
+      {
+        "matched_excerpts": [
+          "communities worldwide are defending their rights to protect such cultural heritage while actively making the case of traditional knowledge systems as parallel scientific frameworks. As Fijian researcher Salanieta Kitolelei noted at the 2025 Second Pacific Island Ocean Conference in Honiara, Solomon Islands: “It is the same thing — we just use a different language to talk about the same thing.”"
+        ],
+        "matched_prompt_count": 1,
+        "source": "Salanieta Kitolelei",
+        "target": "萨拉涅塔·基托莱莱"
+      },
+      {
+        "matched_excerpts": [
+          "communities worldwide are defending their rights to protect such cultural heritage while actively making the case of traditional knowledge systems as parallel scientific frameworks. As Fijian researcher Salanieta Kitolelei noted at the 2025 Second Pacific Island Ocean Conference in Honiara, Solomon Islands: “It is the same thing — we just use a different language to talk about the same thing.”"
+        ],
+        "matched_prompt_count": 1,
+        "source": "Solomon Islands",
+        "target": "所罗门群岛"
+      },
+      {
+        "matched_excerpts": [
+          "The accumulated skills and wisdom are not solely passed down mechanically from one generation to the next, but also codified to form complex systems of knowledge, as illustrated by the mastery of textile art in the Pacific and Africa. Pacific weavers understand plant ecology, sail dynamics, and cultural protocol. West African weavers master loom technologies, natural dyes, and symbolic pattern languages. In both regions, knowledge is transmitted through apprenticeship and cultural practice. The textiles themselves become living archives where knowledge resides in the hands, the patterns, and the process."
+        ],
+        "matched_prompt_count": 1,
+        "source": "West African",
+        "target": "西非"
+      },
+      {
+        "matched_excerpts": [
+          "On the Purus River, as the light fades and the heat lingers over the water, a pirarucu fish comes to the surface to gulp some air. This sound — deep, damp, ancestral — revives a pulse that this land had almost lost. “Nature was begging for our help,” recalls Chico Paumari, a young fisherman. “We would arrive at the lake to find there was nothing left. It was"
+        ],
+        "matched_prompt_count": 1,
+        "source": "Chico Paumari",
+        "target": "奇科·保马里"
+      },
+      {
+        "matched_excerpts": [
+          "Faced with a dramatic decline in pirarucu, a fish that is essential to their survival, the Paumari people of Amazonas state took part in a programme to restore the species, combining scientific and traditional knowledge. After a few years, the fish are once again populating the Purus River.",
+          "On the Purus River, as the light fades and the heat lingers over the water, a pirarucu fish comes to the surface to gulp some air. This sound — deep, damp, ancestral — revives a pulse that this land had almost lost. “Nature was begging for our help,” recalls Chico Paumari, a young fisherman. “We would arrive at the lake to find there was nothing left. It was"
+        ],
+        "matched_prompt_count": 2,
+        "source": "Purus River",
+        "target": "普鲁斯河"
+      },
+      {
+        "matched_excerpts": [
+          "To mark the centennial of quantum mechanics, the United Nations declared 2025 the International Year of Quantum Science and Technology. As the lead agency of the initiative, UNESCO inaugurated the year-long initiative in Paris on 4 and 5 February, attracting over 1,200 participants, including several Nobel Prize laureates."
+        ],
+        "matched_prompt_count": 1,
+        "source": "Nobel Prize",
+        "target": "诺贝尔奖"
+      },
+      {
+        "matched_excerpts": [
+          "the grass has been patented. Benefits that have already been shared under the agreement include employment opportunities for First Nations youth and funding for training and educational opportunities for Indigenous Australians."
+        ],
+        "matched_prompt_count": 1,
+        "source": "Indigenous Australians",
+        "target": "澳大利亚土著"
+      },
+      {
+        "matched_excerpts": [
+          "{v1}The UNESCO Courier {v2}<style id='3'>January-March 2026</style>",
+          "{v1}The UNESCO Courier {v2}<style id='3'>January-March 2026</style>",
+          "{v1}The UNESCO Courier {v2}<style id='3'>January-March 2026</style>"
+        ],
+        "matched_prompt_count": 4,
+        "source": "The UNESCO Courier",
+        "target": "联合国教科文组织《信使》"
+      },
+      {
+        "matched_excerpts": [],
+        "matched_prompt_count": 0,
+        "source": "CourierT H E UNESCO",
+        "target": "联合国教科文组织《信使》"
+      },
+      {
+        "matched_excerpts": [
+          "Yang Sha and Du Junzhi"
+        ],
+        "matched_prompt_count": 1,
+        "source": "Du Junzhi",
+        "target": "杜俊志"
+      },
+      {
+        "matched_excerpts": [],
+        "matched_prompt_count": 0,
+        "source": "Katerina Markelova",
+        "target": "卡特琳娜·马尔可洛娃"
+      }
+    ],
+    "overridden": [
+      "Anna Ruohonen",
+      "Chimamanda Ngozi Adichie",
+      "Daniel Robinson",
+      "David Jefferson",
+      "Jim Al-Khalili",
+      "Lagipoiva Cherelle Jackson",
+      "Marcelo Silva de Sousa",
+      "Ora Marek-Martinez",
+      "Sisco Auala",
+      "Yang Sha"
+    ],
+    "ruled": 14
+  }
+}

@@ -1,0 +1,225 @@
+{
+  "by_rule": {
+    "initial": 0,
+    "inline": 0,
+    "vertical": 3
+  },
+  "declared_page_rules": [
+    "inline"
+  ],
+  "declared_page_switch": "magazine_stitch_declared",
+  "declared_pages_unblocked": true,
+  "duplicate_blanked": [],
+  "initial_candidates": [
+    {
+      "accepted": false,
+      "body": "长久以来,本土知识一直被科学界忽视,有时甚至遭到抵制。 而如今,它正重新引发人们",
+      "body_size": 8.75,
+      "characters": 2,
+      "font_ratio": 1.7143,
+      "fragment": "社论",
+      "left_offset": 0.22,
+      "page": 1,
+      "top_offset": -27.19,
+      "within_unit": true
+    },
+    {
+      "accepted": false,
+      "body": "阿涅丝·巴尔东(Agnès Bardon)",
+      "body_size": 8.8,
+      "characters": 3,
+      "font_ratio": 1.0,
+      "fragment": "总编辑",
+      "left_offset": 117.69,
+      "page": 1,
+      "top_offset": -22.16,
+      "within_unit": true
+    },
+    {
+      "accepted": false,
+      "body": "本土知识如何推动科学 发现",
+      "body_size": 17.0,
+      "characters": 2,
+      "font_ratio": 0.5882,
+      "fragment": "广角",
+      "left_offset": -0.46,
+      "page": 1,
+      "top_offset": -23.15,
+      "within_unit": true
+    },
+    {
+      "accepted": false,
+      "body": "以孩童之视角审视流亡现象 ................24",
+      "body_size": 10.0,
+      "characters": 2,
+      "font_ratio": 1.0,
+      "fragment": "聚焦",
+      "left_offset": -0.2,
+      "page": 1,
+      "top_offset": -20.11,
+      "within_unit": true
+    },
+    {
+      "accepted": false,
+      "body": "欢迎步入第二次量子革命时代 .............35 吉姆·艾尔-哈利利(",
+      "body_size": 7.0,
+      "characters": 2,
+      "font_ratio": 1.4286,
+      "fragment": "观点",
+      "left_offset": -0.16,
+      "page": 1,
+      "top_offset": -20.04,
+      "within_unit": true
+    },
+    {
+      "accepted": false,
+      "body": "奇玛曼达·恩戈兹·阿迪契:“小说是人类在 诚实叙事领域最后的集体探索疆界” ..",
+      "body_size": 7.0,
+      "characters": 2,
+      "font_ratio": 1.4286,
+      "fragment": "嘉宾",
+      "left_offset": -0.12,
+      "page": 1,
+      "top_offset": -20.11,
+      "within_unit": true
+    }
+  ],
+  "initial_max_chars": 3,
+  "initial_min_font_ratio": 1.6,
+  "max_fragment_chars": 40,
+  "pages": [
+    {
+      "blanked": 0,
+      "exempt": true,
+      "page": 1,
+      "paragraphs": 35,
+      "stitches": 0,
+      "unblocked": true
+    },
+    {
+      "blanked": 0,
+      "exempt": false,
+      "page": 2,
+      "paragraphs": 8,
+      "stitches": 0,
+      "unblocked": false
+    },
+    {
+      "blanked": 0,
+      "exempt": false,
+      "page": 3,
+      "paragraphs": 4,
+      "stitches": 0,
+      "unblocked": false
+    },
+    {
+      "blanked": 3,
+      "exempt": false,
+      "page": 4,
+      "paragraphs": 23,
+      "stitches": 2,
+      "unblocked": false
+    },
+    {
+      "blanked": 0,
+      "exempt": false,
+      "page": 5,
+      "paragraphs": 13,
+      "stitches": 0,
+      "unblocked": false
+    },
+    {
+      "blanked": 0,
+      "exempt": false,
+      "page": 6,
+      "paragraphs": 16,
+      "stitches": 0,
+      "unblocked": false
+    },
+    {
+      "blanked": 1,
+      "exempt": false,
+      "page": 7,
+      "paragraphs": 20,
+      "stitches": 1,
+      "unblocked": false
+    },
+    {
+      "blanked": 0,
+      "exempt": false,
+      "page": 8,
+      "paragraphs": 16,
+      "stitches": 0,
+      "unblocked": false
+    }
+  ],
+  "policy_flags": [
+    "preserve_line_structure"
+  ],
+  "rules": [
+    "inline",
+    "vertical",
+    "initial"
+  ],
+  "stitches": [
+    {
+      "characters": 151,
+      "debug_id": "i2Hzc",
+      "member_debug_ids": [
+        "i2Hzc",
+        "bgyqD",
+        "LJgpv"
+      ],
+      "members": 3,
+      "page": 4,
+      "paragraph": "p4#4",
+      "restyled_characters": 0,
+      "rule": "vertical",
+      "style_normalized": false,
+      "text": "传统知识价值得到印证的案例不胜枚举,涵盖水资源管 理、农林业、医疗保健及渔业等多个领 域。这些实践远非单纯的技术集合,更 是一种世界观的体现。例如,纺织工艺 便是另一种形式的“导航”,是精神层 面的引领。密克罗尼西亚外岛的编织 裙,以及加纳和尼日利亚的条纹编织传 统工艺,将社区知识和文化认同转化为 象征性的图案语言。"
+    },
+    {
+      "characters": 182,
+      "debug_id": "tcsJ5",
+      "member_debug_ids": [
+        "tcsJ5",
+        "vxYTE"
+      ],
+      "members": 2,
+      "page": 4,
+      "paragraph": "p4#14",
+      "restyled_characters": 17,
+      "rule": "vertical",
+      "style_normalized": true,
+      "text": "土著人民积累的技艺与智慧并非只 是简单地代代相传,而是被系统化地编 纂成复杂的知识体系,太平洋与非洲的 纺织技艺便是有力例证。太平洋地区的 织工深谙植物生态学、帆船动力学及文 化礼仪规范,西非织工则精通织机技术、 天然染料与符号图案语言。在这两个地 区,知识通过学徒制与文化实践传承延 续。纺织品本身成为承载知识的“活档 案”,其纹样、制作过程以及匠人的技艺都凝结着土著人民 的智慧。"
+    },
+    {
+      "characters": 70,
+      "debug_id": "hse3b",
+      "member_debug_ids": [
+        "hse3b",
+        "wdtzt"
+      ],
+      "members": 2,
+      "page": 7,
+      "paragraph": "p7#18",
+      "restyled_characters": 48,
+      "rule": "vertical",
+      "style_normalized": true,
+      "text": "戴维·杰斐逊 (David Jefferson) 坎特伯雷大学(新西 兰)副教授,其主要 研究方向为生物多样 性、知识产权与土著知 识体系的交叉领域。"
+    }
+  ],
+  "switch": "magazine_fragment_stitch",
+  "totals": {
+    "blanked_paragraphs": 4,
+    "duplicate_blanked": 0,
+    "exempt_pages": 1,
+    "initial_accepted": 0,
+    "initial_candidates": 6,
+    "merged_paragraphs": 7,
+    "pages": 8,
+    "stitches": 3,
+    "style_normalized": 2
+  },
+  "window_switch": "magazine_page_classify"
+}

@@ -1,0 +1,56 @@
+{
+  "sample": "Courier-zh",
+  "baseline": "examples\\output\\F2\\Courier-zh\\work\\Courier-zh\\checkpoint.11_typesetting.json",
+  "baseline_pages": 8,
+  "pages": 8,
+  "target_pages": {
+    "1": {
+      "baseline_paragraphs": 35,
+      "paragraphs": 44,
+      "differing": []
+    },
+    "2": {
+      "baseline_paragraphs": 8,
+      "paragraphs": 8,
+      "differing": [
+        {
+          "reference": "p2#0",
+          "baseline": "广角",
+          "run": "Wide Angle"
+        },
+        {
+          "reference": "p2#5",
+          "baseline": "From the controlled burning by indigenous peoples to prevent wildfires, to the Inuit methods of weather prediction, and the 'zaï' (<style id='1'>zaï</style>) water harvesting techniques used in some African countries, traditional indigenous practices around the world are diverse and effective, embodying the wisdom of indigenous peoples. In the context of climate change and the ongoing loss of biodiversity, this knowledge is particularly valuable.",
+          "run": "From indigenous peoples using controlled burns to prevent wildfires, to the Inuit's weather prediction methods, and the 'zaï' (<style id='1'>zaï</style>) water harvesting technique used in some African countries, traditional indigenous practices around the world are diverse and effective, embodying the wisdom of indigenous peoples. In the context of climate change and the ongoing loss of biodiversity, this knowledge is particularly valuable."
+        }
+      ]
+    },
+    "3": {
+      "baseline_paragraphs": 4,
+      "paragraphs": 4,
+      "differing": [
+        {
+          "reference": "p3#1",
+          "baseline": "土著知识",
+          "run": "Indigenous Knowledge"
+        }
+      ]
+    },
+    "5": {
+      "baseline_paragraphs": 13,
+      "paragraphs": 13,
+      "differing": [
+        {
+          "reference": "p5#11",
+          "baseline": "Marcelo Silva de Sousa (Marcelo Silva de Sousa)",
+          "run": "Marcelo Silva de Sousa"
+        },
+        {
+          "reference": "p5#12",
+          "baseline": "Correspondent in Brasília, Brazil",
+          "run": "Correspondent in Brasília (Brazil)"
+        }
+      ]
+    }
+  }
+}

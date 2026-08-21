@@ -1,0 +1,2035 @@
+{
+  "drop_caps": [
+    {
+      "article_id": "tcUR5",
+      "excerpt": "When it comes to international trade, countries have always weighed economic eff",
+      "first_run": "W",
+      "page": 8,
+      "paragraph": "p8#9",
+      "size_ratio": 4.255
+    }
+  ],
+  "format_version": 2,
+  "page_kinds": [
+    {
+      "ambiguous": true,
+      "conf": 1.0,
+      "machine_kind": "front_cover",
+      "page": 1,
+      "source": "deterministic"
+    },
+    {
+      "ambiguous": false,
+      "conf": 1.0,
+      "machine_kind": "advertisement",
+      "page": 2,
+      "source": "deterministic"
+    },
+    {
+      "ambiguous": true,
+      "conf": 0.875,
+      "machine_kind": "toc",
+      "page": 3,
+      "source": "deterministic"
+    },
+    {
+      "ambiguous": false,
+      "conf": 1.0,
+      "machine_kind": "advertisement",
+      "page": 4,
+      "source": "deterministic"
+    },
+    {
+      "ambiguous": false,
+      "conf": 1.0,
+      "machine_kind": "masthead",
+      "page": 5,
+      "source": "deterministic"
+    },
+    {
+      "ambiguous": false,
+      "conf": 1.0,
+      "machine_kind": "article_opener",
+      "page": 6,
+      "source": "deterministic"
+    },
+    {
+      "ambiguous": true,
+      "conf": 1.0,
+      "machine_kind": "masthead",
+      "page": 7,
+      "source": "deterministic"
+    },
+    {
+      "ambiguous": false,
+      "conf": 1.0,
+      "machine_kind": "article_opener",
+      "page": 8,
+      "source": "deterministic"
+    },
+    {
+      "ambiguous": true,
+      "conf": 0.875,
+      "machine_kind": "article_opener",
+      "page": 9,
+      "source": "deterministic"
+    }
+  ],
+  "sample": "FD-en-v2",
+  "terms": [
+    {
+      "auto_target": "商品",
+      "first_page": 1,
+      "observed_target": "商品",
+      "person_shaped": false,
+      "source": "COMMODITIES",
+      "translator_view": "<style id='1'>COMMODITIES</style>Critical minerals and national security",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "关键矿物",
+      "first_page": 1,
+      "observed_target": "关键矿物",
+      "person_shaped": false,
+      "source": "Critical minerals",
+      "translator_view": "<style id='1'>COMMODITIES</style>Critical minerals and national security",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "经济理论",
+      "candidates": [
+        "ECONOMIC THEORY"
+      ],
+      "first_page": 1,
+      "is_person": false,
+      "observed_target": "经济理论",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "ECONOMIC THEORY",
+      "translator_view": "<style id='1'>ECONOMIC THEORY</style>Robert Skidelsky on Keynes",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "金融与发展",
+      "first_page": 1,
+      "observed_target": "金融与发展",
+      "person_shaped": false,
+      "source": "FINANCE & DEVELOPMENT",
+      "translator_view": null,
+      "vote_count": 2
+    },
+    {
+      "auto_target": "地缘经济学",
+      "first_page": 1,
+      "observed_target": "地缘经济学",
+      "person_shaped": false,
+      "source": "GEOECONOMICS",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "2026年6月",
+      "first_page": 1,
+      "observed_target": "2026年6月",
+      "person_shaped": false,
+      "source": "JUNE 2026",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "杰米森·格里尔",
+      "candidates": [
+        "Jamieson Greer"
+      ],
+      "first_page": 1,
+      "is_person": true,
+      "observed_target": "杰米森·格里尔",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Jamieson Greer",
+      "translator_view": "<style id='1'>TRADE POLICY</style>Jamieson Greer on tariffs",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "凯恩斯",
+      "first_page": 1,
+      "observed_target": "凯恩斯",
+      "person_shaped": false,
+      "source": "Keynes",
+      "translator_view": "<style id='1'>ECONOMIC THEORY</style>Robert Skidelsky on Keynes",
+      "vote_count": 2
+    },
+    {
+      "auto_target": "罗伯特·斯基德尔斯基",
+      "candidates": [
+        "Robert Skidelsky"
+      ],
+      "first_page": 1,
+      "is_person": true,
+      "observed_target": "罗伯特·斯基德尔斯基",
+      "origin": "name_harvest",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Robert Skidelsky",
+      "translator_view": "<style id='1'>ECONOMIC THEORY</style>Robert Skidelsky on Keynes",
+      "vote_count": 2
+    },
+    {
+      "auto_target": "贸易政策",
+      "candidates": [
+        "TRADE POLICY"
+      ],
+      "first_page": 1,
+      "is_person": false,
+      "observed_target": "贸易政策",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "TRADE POLICY",
+      "translator_view": "<style id='1'>TRADE POLICY</style>Jamieson Greer on tariffs",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "经济治国术",
+      "first_page": 1,
+      "observed_target": "经济治国术",
+      "person_shaped": false,
+      "source": "economic statecraft",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "国家安全",
+      "first_page": 1,
+      "observed_target": "国家安全",
+      "person_shaped": false,
+      "source": "national security",
+      "translator_view": "<style id='1'>COMMODITIES</style>Critical minerals and national security",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "关税",
+      "first_page": 1,
+      "observed_target": "关税",
+      "person_shaped": false,
+      "source": "tariffs",
+      "translator_view": "<style id='1'>TRADE POLICY</style>Jamieson Greer on tariffs",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "第一章",
+      "first_page": 2,
+      "observed_target": "第一章",
+      "person_shaped": false,
+      "source": "Chapter 1",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "第二章",
+      "first_page": 2,
+      "observed_target": "第二章",
+      "person_shaped": false,
+      "source": "Chapter 2",
+      "translator_view": "<style id='1'>Chapter 2: Defense Spending: Macroeconomic Consequences & Trade-Offs</style>Defense spending is rising ami",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "第三章",
+      "first_page": 2,
+      "observed_target": "第三章",
+      "person_shaped": false,
+      "source": "Chapter 3",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "国防支出",
+      "candidates": [
+        "Defense Spending"
+      ],
+      "first_page": 2,
+      "is_person": false,
+      "observed_target": "国防支出",
+      "origin": "name_harvest",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Defense Spending",
+      "translator_view": "<style id='1'>Chapter 2: Defense Spending: Macroeconomic Consequences & Trade-Offs</style>Defense spending is rising ami",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "国际货币基金组织",
+      "first_page": 2,
+      "observed_target": "国际货币基金组织",
+      "person_shaped": false,
+      "source": "IMF",
+      "translator_view": "<style id='1'>IMF.org</style>Visit Now",
+      "vote_count": 4
+    },
+    {
+      "auto_target": "IMF.org",
+      "first_page": 2,
+      "observed_target": "IMF.org",
+      "person_shaped": false,
+      "source": "IMF.org",
+      "translator_view": "<style id='1'>IMF.org</style>Visit Now",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "中东",
+      "candidates": [
+        "Middle East"
+      ],
+      "first_page": 2,
+      "is_person": false,
+      "observed_target": "中东",
+      "origin": "name_harvest",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Middle East",
+      "translator_view": "<style id='1'>the war </style><style id='3'>in the Middle East has deliv- ered a global supply shock that is slowing glo",
+      "vote_count": 2
+    },
+    {
+      "auto_target": "第二次世界大战",
+      "first_page": 2,
+      "observed_target": "第二次世界大战",
+      "person_shaped": false,
+      "source": "World War II",
+      "translator_view": null,
+      "vote_count": 2
+    },
+    {
+      "auto_target": "发展中经济体",
+      "first_page": 2,
+      "observed_target": "发展中经济体",
+      "person_shaped": false,
+      "source": "developing economies",
+      "translator_view": "<style id='1'>Chapter 2: Defense Spending: Macroeconomic Consequences & Trade-Offs</style>Defense spending is rising ami",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "新兴市场",
+      "first_page": 2,
+      "observed_target": "新兴市场",
+      "person_shaped": false,
+      "source": "emerging market",
+      "translator_view": "<style id='1'>Chapter 2: Defense Spending: Macroeconomic Consequences & Trade-Offs</style>Defense spending is rising ami",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "阿迪亚·马图",
+      "candidates": [
+        "Aaditya Mattoo"
+      ],
+      "first_page": 3,
+      "is_person": true,
+      "observed_target": "阿迪亚·马图",
+      "origin": "name_harvest",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Aaditya Mattoo",
+      "translator_view": "Geopolitical rivalry does not end the need for trade cooperation, but the multilateral system must adapt <style id='1'>A",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "亚当·斯密",
+      "candidates": [
+        "Adam Smith"
+      ],
+      "first_page": 3,
+      "is_person": true,
+      "observed_target": "亚当·斯密",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Adam Smith",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "阿莫里·盖辛",
+      "candidates": [
+        "Amory Gethin"
+      ],
+      "first_page": 3,
+      "is_person": true,
+      "observed_target": "阿莫里·盖辛",
+      "origin": "name_harvest",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Amory Gethin",
+      "translator_view": "policies determine the organization of work <style id='1'>Amory Gethin and Emmanuel Saez</style>",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "克里斯托弗·克莱顿",
+      "candidates": [
+        "Christopher Clayton"
+      ],
+      "first_page": 3,
+      "is_person": true,
+      "observed_target": "克里斯托弗·克莱顿",
+      "origin": "name_harvest",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Christopher Clayton",
+      "translator_view": "<style id='1'>How new economics tools explain global power dynamics </style>Christopher Clayton, Matteo Maggiori, and Je",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "埃马纽埃尔·萨兹",
+      "candidates": [
+        "Emmanuel Saez"
+      ],
+      "first_page": 3,
+      "is_person": true,
+      "observed_target": "埃马纽埃尔·萨兹",
+      "origin": "name_harvest",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Emmanuel Saez",
+      "translator_view": "policies determine the organization of work <style id='1'>Amory Gethin and Emmanuel Saez</style>",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "F&D",
+      "first_page": 3,
+      "observed_target": "F&D",
+      "person_shaped": false,
+      "source": "F&D",
+      "translator_view": "<style id='1'>F&D </style>Slug",
+      "vote_count": 5
+    },
+    {
+      "auto_target": "金融与发展",
+      "first_page": 3,
+      "observed_target": "金融与发展",
+      "person_shaped": false,
+      "source": "Finance & Development",
+      "translator_view": "Postmaster: send changes of address to <style id='1'>Finance & Development</style>, Inter- national Monetary Fund, PO Bo",
+      "vote_count": 3
+    },
+    {
+      "auto_target": "地缘经济胁迫",
+      "candidates": [
+        "Geoeconomic Coercion"
+      ],
+      "first_page": 3,
+      "is_person": false,
+      "observed_target": "地缘经济胁迫",
+      "origin": "name_harvest",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Geoeconomic Coercion",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "地缘经济学",
+      "first_page": 3,
+      "observed_target": "地缘经济学",
+      "person_shaped": false,
+      "source": "Geoeconomics",
+      "translator_view": null,
+      "vote_count": 2
+    },
+    {
+      "auto_target": "戈登·汉森",
+      "candidates": [
+        "Gordon Hanson"
+      ],
+      "first_page": 3,
+      "is_person": true,
+      "observed_target": "戈登·汉森",
+      "origin": "name_harvest",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Gordon Hanson",
+      "translator_view": "behind by globalization a path beyond economic populism <style id='1'>Gordon Hanson</style>",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "国际货币基金组织",
+      "first_page": 3,
+      "observed_target": "国际货币基金组织",
+      "person_shaped": false,
+      "source": "International Monetary Fund",
+      "translator_view": null,
+      "vote_count": 4
+    },
+    {
+      "auto_target": "杰弗里·弗里登",
+      "candidates": [
+        "Jeffry Frieden"
+      ],
+      "first_page": 3,
+      "is_person": true,
+      "observed_target": "杰弗里·弗里登",
+      "origin": "name_harvest",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Jeffry Frieden",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "杰西·施雷格",
+      "candidates": [
+        "Jesse Schreger"
+      ],
+      "first_page": 3,
+      "is_person": true,
+      "observed_target": "杰西·施雷格",
+      "origin": "name_harvest",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Jesse Schreger",
+      "translator_view": "<style id='1'>How new economics tools explain global power dynamics </style>Christopher Clayton, Matteo Maggiori, and Je",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "乔什·利普斯基",
+      "candidates": [
+        "Josh Lipsky"
+      ],
+      "first_page": 3,
+      "is_person": true,
+      "observed_target": "乔什·利普斯基",
+      "origin": "name_harvest",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Josh Lipsky",
+      "translator_view": "economic policy and national security is disappearing <style id='1'>Josh Lipsky</style>",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "2026年6月",
+      "first_page": 3,
+      "observed_target": "2026年6月",
+      "person_shaped": false,
+      "source": "June 2026",
+      "translator_view": "June {v1}Volume {v2}Number 2",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "马泰奥·马焦里",
+      "candidates": [
+        "Matteo Maggiori"
+      ],
+      "first_page": 3,
+      "is_person": true,
+      "observed_target": "马泰奥·马焦里",
+      "origin": "name_harvest",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Matteo Maggiori",
+      "translator_view": "<style id='1'>How new economics tools explain global power dynamics </style>Christopher Clayton, Matteo Maggiori, and Je",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "迈克尔·斯彭斯",
+      "candidates": [
+        "Michael Spence"
+      ],
+      "first_page": 3,
+      "is_person": true,
+      "observed_target": "迈克尔·斯彭斯",
+      "origin": "name_harvest",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Michael Spence",
+      "translator_view": "light on how economies grow, trade, and respond to change <style id='1'>Michael Spence</style>",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "米凯莱·鲁塔",
+      "candidates": [
+        "Michele Ruta"
+      ],
+      "first_page": 3,
+      "is_person": true,
+      "observed_target": "米凯莱·鲁塔",
+      "origin": "name_harvest",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Michele Ruta",
+      "translator_view": "Geopolitical rivalry does not end the need for trade cooperation, but the multilateral system must adapt <style id='1'>A",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "尼古拉斯·穆尔德",
+      "candidates": [
+        "Nicholas Mulder"
+      ],
+      "first_page": 3,
+      "is_person": true,
+      "observed_target": "尼古拉斯·穆尔德",
+      "origin": "name_harvest",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Nicholas Mulder",
+      "translator_view": "ownership is expanding again and how this time is different <style id='1'>Nicholas Mulder</style>",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "第2期",
+      "first_page": 3,
+      "observed_target": "第2期",
+      "person_shaped": false,
+      "source": "Number 2",
+      "translator_view": "June {v1}Volume {v2}Number 2",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "重访国富论",
+      "first_page": 3,
+      "observed_target": "重访国富论",
+      "person_shaped": false,
+      "source": "Revisiting the Wealth of Nations",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "Robert W. Staiger",
+      "first_page": 3,
+      "observed_target": "Robert W. Staiger",
+      "person_shaped": false,
+      "source": "Robert W. Staiger",
+      "translator_view": "Geopolitical rivalry does not end the need for trade cooperation, but the multilateral system must adapt <style id='1'>A",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "国有化的新浪潮",
+      "first_page": 3,
+      "observed_target": "国有化的新浪潮",
+      "person_shaped": false,
+      "source": "The New Wave of Nationalization",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "地缘政治时代的贸易合作",
+      "first_page": 3,
+      "observed_target": "地缘政治时代的贸易合作",
+      "person_shaped": false,
+      "source": "Trade Cooperation in an Age of Geopolitics",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "第63卷",
+      "first_page": 3,
+      "observed_target": "第63卷",
+      "person_shaped": false,
+      "source": "Volume 63",
+      "translator_view": "June {v1}Volume {v2}Number 2",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "2communiqué",
+      "first_page": 5,
+      "observed_target": "2communiqué",
+      "person_shaped": false,
+      "source": "2communiqué",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "华盛顿特区西北19街700号，邮编20431",
+      "first_page": 5,
+      "observed_target": "华盛顿特区西北19街700号，邮编20431",
+      "person_shaped": false,
+      "source": "700 19th Street NW, Washington, DC 20431",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "安德烈亚斯·阿德里亚诺",
+      "candidates": [
+        "Andreas Adriano"
+      ],
+      "first_page": 5,
+      "is_person": true,
+      "observed_target": "安德烈亚斯·阿德里亚诺",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Andreas Adriano",
+      "translator_view": null,
+      "vote_count": 2
+    },
+    {
+      "auto_target": "安德鲁·斯坦利",
+      "candidates": [
+        "Andrew Stanley"
+      ],
+      "first_page": 5,
+      "is_person": true,
+      "observed_target": "安德鲁·斯坦利",
+      "origin": "name_harvest",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Andrew Stanley",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "阿基布·阿斯拉姆",
+      "candidates": [
+        "Aqib Aslam"
+      ],
+      "first_page": 5,
+      "is_person": true,
+      "observed_target": "阿基布·阿斯拉姆",
+      "origin": "name_harvest",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Aqib Aslam",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "克里斯托夫·罗森伯格",
+      "candidates": [
+        "Christoph Rosenberg"
+      ],
+      "first_page": 5,
+      "is_person": true,
+      "observed_target": "克里斯托夫·罗森伯格",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Christoph Rosenberg",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "版权许可中心",
+      "first_page": 5,
+      "observed_target": "版权许可中心",
+      "person_shaped": false,
+      "source": "Copyright Clearance Center",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "达里娅·扎哈罗娃",
+      "candidates": [
+        "Daria Zakharova"
+      ],
+      "first_page": 5,
+      "is_person": true,
+      "observed_target": "达里娅·扎哈罗娃",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Daria Zakharova",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "达特茅斯印刷公司",
+      "first_page": 5,
+      "observed_target": "达特茅斯印刷公司",
+      "person_shaped": false,
+      "source": "Dartmouth Printing Company",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "达维德·富尔切里",
+      "candidates": [
+        "Davide Furceri"
+      ],
+      "first_page": 5,
+      "is_person": true,
+      "observed_target": "达维德·富尔切里",
+      "origin": "name_harvest",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Davide Furceri",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "德尼兹·伊甘",
+      "candidates": [
+        "Deniz Igan"
+      ],
+      "first_page": 5,
+      "is_person": true,
+      "observed_target": "德尼兹·伊甘",
+      "origin": "name_harvest",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Deniz Igan",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "迪亚·努雷尔丁",
+      "candidates": [
+        "Diaa Noureldin"
+      ],
+      "first_page": 5,
+      "is_person": true,
+      "observed_target": "迪亚·努雷尔丁",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Diaa Noureldin",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "伊丽莎白·范·赫维伦",
+      "candidates": [
+        "Elizabeth Van Heuvelen"
+      ],
+      "first_page": 5,
+      "is_person": true,
+      "observed_target": "伊丽莎白·范·赫维伦",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Elizabeth Van Heuvelen",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "英文版 ISSN 0145-1707",
+      "first_page": 5,
+      "observed_target": "英文版 ISSN 0145-1707",
+      "person_shaped": false,
+      "source": "English edition ISSN 0145-1707",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "吉塔·巴特",
+      "candidates": [
+        "Gita Bhatt"
+      ],
+      "first_page": 5,
+      "is_person": true,
+      "observed_target": "吉塔·巴特",
+      "origin": "name_harvest",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Gita Bhatt",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "新罕布什尔州汉诺威",
+      "first_page": 5,
+      "observed_target": "新罕布什尔州汉诺威",
+      "person_shaped": false,
+      "source": "Hanover, NH",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "赫尔格·贝格尔",
+      "candidates": [
+        "Helge Berger"
+      ],
+      "first_page": 5,
+      "is_person": true,
+      "observed_target": "赫尔格·贝格尔",
+      "origin": "name_harvest",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Helge Berger",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "Huong (Vanessa) Le",
+      "first_page": 5,
+      "observed_target": "Huong (Vanessa) Le",
+      "person_shaped": false,
+      "source": "Huong (Vanessa) Le",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "国际货币基金组织出版物",
+      "first_page": 5,
+      "observed_target": "国际货币基金组织出版物",
+      "person_shaped": false,
+      "source": "IMF Publications",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "詹姆斯·阿斯蒂尔",
+      "candidates": [
+        "James Astill"
+      ],
+      "first_page": 5,
+      "is_person": true,
+      "observed_target": "詹姆斯·阿斯蒂尔",
+      "origin": "name_harvest",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "James Astill",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "杰夫·科恩斯",
+      "candidates": [
+        "Jeff Kearns"
+      ],
+      "first_page": 5,
+      "is_person": true,
+      "observed_target": "杰夫·科恩斯",
+      "origin": "name_harvest",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Jeff Kearns",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "露西·莫拉莱斯",
+      "candidates": [
+        "Lucy Morales"
+      ],
+      "first_page": 5,
+      "is_person": true,
+      "observed_target": "露西·莫拉莱斯",
+      "origin": "name_harvest",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Lucy Morales",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "马尔哈尔·纳巴尔",
+      "candidates": [
+        "Malhar Nabar"
+      ],
+      "first_page": 5,
+      "is_person": true,
+      "observed_target": "马尔哈尔·纳巴尔",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Malhar Nabar",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "玛尔塔·多罗什奇克",
+      "candidates": [
+        "Marta Doroszczyk"
+      ],
+      "first_page": 5,
+      "is_person": true,
+      "observed_target": "玛尔塔·多罗什奇克",
+      "origin": "name_harvest",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Marta Doroszczyk",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "马丁·奇哈克",
+      "candidates": [
+        "Martin Cihak"
+      ],
+      "first_page": 5,
+      "is_person": true,
+      "observed_target": "马丁·奇哈克",
+      "origin": "name_harvest",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Martin Cihak",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "毛里西奥·索托",
+      "candidates": [
+        "Mauricio Soto"
+      ],
+      "first_page": 5,
+      "is_person": true,
+      "observed_target": "毛里西奥·索托",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Mauricio Soto",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "梅琳达·韦尔",
+      "candidates": [
+        "Melinda Weir"
+      ],
+      "first_page": 5,
+      "is_person": true,
+      "observed_target": "梅琳达·韦尔",
+      "origin": "name_harvest",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Melinda Weir",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "娜塔莉亚·维内加斯·菲格罗亚",
+      "candidates": [
+        "Natalia Venegas Figueroa"
+      ],
+      "first_page": 5,
+      "is_person": true,
+      "observed_target": "娜塔莉亚·维内加斯·菲格罗亚",
+      "origin": "name_harvest",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Natalia Venegas Figueroa",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "尼古拉斯·欧文",
+      "candidates": [
+        "Nicholas Owen"
+      ],
+      "first_page": 5,
+      "is_person": true,
+      "observed_target": "尼古拉斯·欧文",
+      "origin": "name_harvest",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Nicholas Owen",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "奥亚·切拉松",
+      "candidates": [
+        "Oya Celasun"
+      ],
+      "first_page": 5,
+      "is_person": true,
+      "observed_target": "奥亚·切拉松",
+      "origin": "name_harvest",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Oya Celasun",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "邮政信箱 92780",
+      "first_page": 5,
+      "observed_target": "邮政信箱 92780",
+      "person_shaped": false,
+      "source": "PO Box 92780",
+      "translator_view": "Postmaster: send changes of address to <style id='1'>Finance & Development</style>, Inter- national Monetary Fund, PO Bo",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "帕帕·恩迪亚耶",
+      "candidates": [
+        "Papa N’Diaye"
+      ],
+      "first_page": 5,
+      "is_person": true,
+      "observed_target": "帕帕·恩迪亚耶",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Papa N’Diaye",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "彼得·沃克",
+      "candidates": [
+        "Peter Walker"
+      ],
+      "first_page": 5,
+      "is_person": true,
+      "observed_target": "彼得·沃克",
+      "origin": "name_harvest",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Peter Walker",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "罗伯特·齐梅克",
+      "candidates": [
+        "Robert Zymek"
+      ],
+      "first_page": 5,
+      "is_person": true,
+      "observed_target": "罗伯特·齐梅克",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Robert Zymek",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "鲁帕·杜塔古普塔",
+      "candidates": [
+        "Rupa Duttagupta"
+      ],
+      "first_page": 5,
+      "is_person": true,
+      "observed_target": "鲁帕·杜塔古普塔",
+      "origin": "name_harvest",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Rupa Duttagupta",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "S M Ali Abbas",
+      "first_page": 5,
+      "observed_target": "S M Ali Abbas",
+      "person_shaped": false,
+      "source": "S M Ali Abbas",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "苏比尔·拉尔",
+      "candidates": [
+        "Subir Lall"
+      ],
+      "first_page": 5,
+      "is_person": true,
+      "observed_target": "苏比尔·拉尔",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Subir Lall",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "美国",
+      "first_page": 5,
+      "observed_target": "美国",
+      "person_shaped": false,
+      "source": "US",
+      "translator_view": "Postmaster: send changes of address to <style id='1'>Finance & Development</style>, Inter- national Monetary Fund, PO Bo",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "乌玛·拉马克里希南",
+      "candidates": [
+        "Uma Ramakrishnan"
+      ],
+      "first_page": 5,
+      "is_person": true,
+      "observed_target": "乌玛·拉马克里希南",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Uma Ramakrishnan",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "华盛顿特区",
+      "first_page": 5,
+      "observed_target": "华盛顿特区",
+      "person_shaped": false,
+      "source": "Washington, DC",
+      "translator_view": "Postmaster: send changes of address to <style id='1'>Finance & Development</style>, Inter- national Monetary Fund, PO Bo",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "美国华盛顿特区 20090",
+      "first_page": 5,
+      "observed_target": "美国华盛顿特区 20090",
+      "person_shaped": false,
+      "source": "Washington, DC 20090, USA",
+      "translator_view": "Postmaster: send changes of address to <style id='1'>Finance & Development</style>, Inter- national Monetary Fund, PO Bo",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "扬·卡里耶-斯沃洛",
+      "candidates": [
+        "Yan Carriere-Swallow"
+      ],
+      "first_page": 5,
+      "is_person": true,
+      "observed_target": "扬·卡里耶-斯沃洛",
+      "origin": "name_harvest",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Yan Carriere-Swallow",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "2023年",
+      "first_page": 6,
+      "observed_target": "2023年",
+      "person_shaped": false,
+      "source": "2023",
+      "translator_view": "<style id='1'>THE BIG PICTURE: </style><style id='3'>Every three years the IMF and World Bank hold their annual meetings",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "四月",
+      "first_page": 6,
+      "observed_target": "四月",
+      "person_shaped": false,
+      "source": "April",
+      "translator_view": "SOURCES: IMF, April 2026 <style id='1'>World Economic Outlook</style>; and IMF staff calculations.",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "曼谷",
+      "first_page": 6,
+      "observed_target": "曼谷",
+      "person_shaped": false,
+      "source": "Bangkok",
+      "translator_view": "<style id='1'>THE BIG PICTURE: </style><style id='3'>Every three years the IMF and World Bank hold their annual meetings",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "二十国集团",
+      "first_page": 6,
+      "observed_target": "二十国集团",
+      "person_shaped": false,
+      "source": "G20",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "国际货币基金组织和世界银行",
+      "first_page": 6,
+      "observed_target": "国际货币基金组织和世界银行",
+      "person_shaped": false,
+      "source": "IMF and World Bank",
+      "translator_view": "<style id='1'>THE BIG PICTURE: </style><style id='3'>Every three years the IMF and World Bank hold their annual meetings",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "克里斯塔利娜·格奥尔基耶娃",
+      "candidates": [
+        "Kristalina Georgieva"
+      ],
+      "first_page": 6,
+      "is_person": true,
+      "observed_target": "克里斯塔利娜·格奥尔基耶娃",
+      "origin": "name_harvest",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Kristalina Georgieva",
+      "translator_view": "<style id='1'>IN THE NEWS: </style><style id='3'>The IMF said on April 16 that it was resuming relations with Venezuela.",
+      "vote_count": 2
+    },
+    {
+      "auto_target": "马拉喀什",
+      "first_page": 6,
+      "observed_target": "马拉喀什",
+      "person_shaped": false,
+      "source": "Marrakech",
+      "translator_view": "<style id='1'>THE BIG PICTURE: </style><style id='3'>Every three years the IMF and World Bank hold their annual meetings",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "摩洛哥",
+      "first_page": 6,
+      "observed_target": "摩洛哥",
+      "person_shaped": false,
+      "source": "Morocco",
+      "translator_view": "<style id='1'>THE BIG PICTURE: </style><style id='3'>Every three years the IMF and World Bank hold their annual meetings",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "十月",
+      "first_page": 6,
+      "observed_target": "十月",
+      "person_shaped": false,
+      "source": "October",
+      "translator_view": "<style id='1'>THE BIG PICTURE: </style><style id='3'>Every three years the IMF and World Bank hold their annual meetings",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "世界经济展望",
+      "first_page": 6,
+      "observed_target": "世界经济展望",
+      "person_shaped": false,
+      "source": "World Economic Outlook",
+      "translator_view": "The comments came as the IMF cut its reference forecast for global growth this year to 3.1 percent, down 0.2 percentage ",
+      "vote_count": 3
+    },
+    {
+      "auto_target": "泰拳",
+      "first_page": 6,
+      "observed_target": "泰拳",
+      "person_shaped": false,
+      "source": "muay Thai",
+      "translator_view": "<style id='1'>THE BIG PICTURE: </style><style id='3'>Every three years the IMF and World Bank hold their annual meetings",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "撒哈拉以南非洲",
+      "first_page": 6,
+      "observed_target": "撒哈拉以南非洲",
+      "person_shaped": false,
+      "source": "sub-Saharan Africa",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "1946年",
+      "first_page": 7,
+      "observed_target": "1946年",
+      "person_shaped": false,
+      "source": "1946",
+      "translator_view": "<style id='1'>IN THE NEWS: </style><style id='3'>The IMF said on April 16 that it was resuming relations with Venezuela.",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "2019年",
+      "first_page": 7,
+      "observed_target": "2019年",
+      "person_shaped": false,
+      "source": "2019",
+      "translator_view": "<style id='1'>IN THE NEWS: </style><style id='3'>The IMF said on April 16 that it was resuming relations with Venezuela.",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "4月16日",
+      "first_page": 7,
+      "observed_target": "4月16日",
+      "person_shaped": false,
+      "source": "April 16",
+      "translator_view": "<style id='1'>IN THE NEWS: </style><style id='3'>The IMF said on April 16 that it was resuming relations with Venezuela.",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "2026年4月",
+      "first_page": 7,
+      "observed_target": "2026年4月",
+      "person_shaped": false,
+      "source": "April 2026",
+      "translator_view": "SOURCES: IMF, April 2026 <style id='1'>World Economic Outlook</style>; and IMF staff calculations.",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "彭博社",
+      "first_page": 7,
+      "observed_target": "彭博社",
+      "person_shaped": false,
+      "source": "Bloomberg",
+      "translator_view": "<style id='1'>IN THE NEWS: </style><style id='3'>The IMF said on April 16 that it was resuming relations with Venezuela.",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "卡洛斯·贝塞拉",
+      "candidates": [
+        "Carlos Becerra"
+      ],
+      "first_page": 7,
+      "is_person": true,
+      "observed_target": "卡洛斯·贝塞拉",
+      "origin": "name_harvest",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Carlos Becerra",
+      "translator_view": "<style id='1'>IN THE NEWS: </style><style id='3'>The IMF said on April 16 that it was resuming relations with Venezuela.",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "丹·卡茨",
+      "candidates": [
+        "Dan Katz"
+      ],
+      "first_page": 7,
+      "is_person": true,
+      "observed_target": "丹·卡茨",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Dan Katz",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "国内生产总值",
+      "first_page": 7,
+      "observed_target": "国内生产总值",
+      "person_shaped": false,
+      "source": "GDP",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "GDP增长",
+      "candidates": [
+        "GDP GROWTH"
+      ],
+      "first_page": 7,
+      "is_person": false,
+      "observed_target": "GDP增长",
+      "origin": "name_harvest",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "GDP GROWTH",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "总体通货膨胀",
+      "candidates": [
+        "HEADLINE INFLATION"
+      ],
+      "first_page": 7,
+      "is_person": false,
+      "observed_target": "总体通货膨胀",
+      "origin": "name_harvest",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "HEADLINE INFLATION",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "国际货币基金组织第一副总裁",
+      "first_page": 7,
+      "observed_target": "国际货币基金组织第一副总裁",
+      "person_shaped": false,
+      "source": "IMF First Deputy Managing Director",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "2026年1月",
+      "first_page": 7,
+      "observed_target": "2026年1月",
+      "person_shaped": false,
+      "source": "January 2026",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "拉丁美洲",
+      "candidates": [
+        "Latin American"
+      ],
+      "first_page": 7,
+      "is_person": false,
+      "observed_target": "拉丁美洲",
+      "origin": "name_harvest",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Latin American",
+      "translator_view": "<style id='1'>IN THE NEWS: </style><style id='3'>The IMF said on April 16 that it was resuming relations with Venezuela.",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "梅赫梅特·希姆谢克",
+      "candidates": [
+        "Mehmet Şimşek"
+      ],
+      "first_page": 7,
+      "is_person": true,
+      "observed_target": "梅赫梅特·希姆谢克",
+      "origin": "name_harvest",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Mehmet Şimşek",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "穆罕默德·阿尔贾丹",
+      "candidates": [
+        "Mohammed Al-Jadaan"
+      ],
+      "first_page": 7,
+      "is_person": true,
+      "observed_target": "穆罕默德·阿尔贾丹",
+      "origin": "name_harvest",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Mohammed Al-Jadaan",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "沙特阿拉伯",
+      "candidates": [
+        "Saudi Arabia"
+      ],
+      "first_page": 7,
+      "is_person": false,
+      "observed_target": "沙特阿拉伯",
+      "origin": "name_harvest",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Saudi Arabia",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "土耳其",
+      "first_page": 7,
+      "observed_target": "土耳其",
+      "person_shaped": false,
+      "source": "Türkiye",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "委内瑞拉",
+      "first_page": 7,
+      "observed_target": "委内瑞拉",
+      "person_shaped": false,
+      "source": "Venezuela",
+      "translator_view": "<style id='1'>IN THE NEWS: </style><style id='3'>The IMF said on April 16 that it was resuming relations with Venezuela.",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "COVID-19",
+      "first_page": 8,
+      "observed_target": "COVID-19",
+      "person_shaped": false,
+      "source": "COVID-19",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "尚塔尔·贾赫昌",
+      "candidates": [
+        "Chantal Jahchan"
+      ],
+      "first_page": 8,
+      "is_person": true,
+      "observed_target": "尚塔尔·贾赫昌",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Chantal Jahchan",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "金·鲁尔",
+      "candidates": [
+        "Kim Ruhl"
+      ],
+      "first_page": 8,
+      "is_person": true,
+      "observed_target": "金·鲁尔",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Kim Ruhl",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "美国",
+      "candidates": [
+        "United States"
+      ],
+      "first_page": 8,
+      "is_person": false,
+      "observed_target": "美国",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "United States",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "1000法郎纸币",
+      "first_page": 9,
+      "observed_target": "1000法郎纸币",
+      "person_shaped": false,
+      "source": "1,000 franc bill",
+      "translator_view": "<style id='1'>Most countries have discontinued large bills, which are seen as mostly facilitating money laundering and t",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "阿尔卑斯山",
+      "first_page": 9,
+      "observed_target": "阿尔卑斯山",
+      "person_shaped": false,
+      "source": "Alps",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "巴塞尔",
+      "first_page": 9,
+      "observed_target": "巴塞尔",
+      "person_shaped": false,
+      "source": "Basel",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "欧洲核子研究中心",
+      "first_page": 9,
+      "observed_target": "欧洲核子研究中心",
+      "person_shaped": false,
+      "source": "CERN",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "宪法",
+      "first_page": 9,
+      "observed_target": "宪法",
+      "person_shaped": false,
+      "source": "Constitution",
+      "translator_view": "<style id='1'>besides the alps,</style><style id='3'> pristine lakes, and a reputation for quiet precision, Switzerland ",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "Emphase",
+      "first_page": 9,
+      "observed_target": "Emphase",
+      "person_shaped": false,
+      "source": "Emphase",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "欧洲中央银行",
+      "first_page": 9,
+      "observed_target": "欧洲中央银行",
+      "person_shaped": false,
+      "source": "European Central Bank",
+      "translator_view": "<style id='1'>Most countries have discontinued large bills, which are seen as mostly facilitating money laundering and t",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "F D 货币票据",
+      "first_page": 9,
+      "observed_target": "F D 货币票据",
+      "person_shaped": false,
+      "source": "F D Currency Notes",
+      "translator_view": "<style id='1'>F D </style>Currency Notes",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "法郎民主",
+      "candidates": [
+        "Franc Democracy"
+      ],
+      "first_page": 9,
+      "is_person": false,
+      "observed_target": "法郎民主",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Franc Democracy",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "日内瓦",
+      "first_page": 9,
+      "observed_target": "日内瓦",
+      "person_shaped": false,
+      "source": "Geneva",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "高阿尔卑斯山",
+      "candidates": [
+        "High Alps"
+      ],
+      "first_page": 9,
+      "is_person": false,
+      "observed_target": "高阿尔卑斯山",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "High Alps",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "汝拉地区",
+      "first_page": 9,
+      "observed_target": "汝拉地区",
+      "person_shaped": false,
+      "source": "Jura region",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "洛桑",
+      "first_page": 9,
+      "observed_target": "洛桑",
+      "person_shaped": false,
+      "source": "Lausanne",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "Monte Rosa 小屋",
+      "candidates": [
+        "Monte Rosa Hut"
+      ],
+      "first_page": 9,
+      "is_person": false,
+      "observed_target": "Monte Rosa 小屋",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Monte Rosa Hut",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "瑞士国家银行",
+      "first_page": 9,
+      "observed_target": "瑞士国家银行",
+      "person_shaped": false,
+      "source": "SNB",
+      "translator_view": "<style id='1'>Most countries have discontinued large bills, which are seen as mostly facilitating money laundering and t",
+      "vote_count": 2
+    },
+    {
+      "auto_target": "瑞士国家银行支付方式调查",
+      "first_page": 9,
+      "observed_target": "瑞士国家银行支付方式调查",
+      "person_shaped": false,
+      "source": "SNB payment methods survey",
+      "translator_view": "<style id='1'>Most countries have discontinued large bills, which are seen as mostly facilitating money laundering and t",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "瑞士",
+      "first_page": 9,
+      "observed_target": "瑞士",
+      "person_shaped": false,
+      "source": "Swiss",
+      "translator_view": "<style id='1'>besides the alps,</style><style id='3'> pristine lakes, and a reputation for quiet precision, Switzerland ",
+      "vote_count": 2
+    },
+    {
+      "auto_target": "瑞士国家银行",
+      "first_page": 9,
+      "observed_target": "瑞士国家银行",
+      "person_shaped": false,
+      "source": "Swiss National Bank",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "瑞士高原",
+      "candidates": [
+        "Swiss Plateau"
+      ],
+      "first_page": 9,
+      "is_person": false,
+      "observed_target": "瑞士高原",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Swiss Plateau",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "瑞士法郎",
+      "first_page": 9,
+      "observed_target": "瑞士法郎",
+      "person_shaped": false,
+      "source": "Swiss franc",
+      "translator_view": "<style id='1'>besides the alps,</style><style id='3'> pristine lakes, and a reputation for quiet precision, Switzerland ",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "瑞士",
+      "first_page": 9,
+      "observed_target": "瑞士",
+      "person_shaped": false,
+      "source": "Switzerland",
+      "translator_view": "<style id='1'>besides the alps,</style><style id='3'> pristine lakes, and a reputation for quiet precision, Switzerland ",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "塞巴斯蒂安·克兰兹林",
+      "candidates": [
+        "Sébastien Kraenzlin"
+      ],
+      "first_page": 9,
+      "is_person": true,
+      "observed_target": "塞巴斯蒂安·克兰兹林",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Sébastien Kraenzlin",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "TWINT",
+      "first_page": 9,
+      "observed_target": "TWINT",
+      "person_shaped": false,
+      "source": "TWINT",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "Andreas Adriano",
+      "candidates": [
+        "andreas adriano"
+      ],
+      "first_page": 9,
+      "observed_target": "Andreas Adriano",
+      "origin": "name_harvest",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "andreas adriano",
+      "translator_view": "<style id='1'>andreas adriano </style><style id='3'>is on the staff of </style>Finance & Development<style id='5'>.</sty",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "州",
+      "first_page": 9,
+      "observed_target": "州",
+      "person_shaped": false,
+      "source": "cantonal",
+      "translator_view": "<style id='1'>besides the alps,</style><style id='3'> pristine lakes, and a reputation for quiet precision, Switzerland ",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "500欧元纸币",
+      "first_page": 9,
+      "observed_target": "500欧元纸币",
+      "person_shaped": false,
+      "source": "€500 notes",
+      "translator_view": "<style id='1'>Most countries have discontinued large bills, which are seen as mostly facilitating money laundering and t",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "国际货币基金组织",
+      "first_page": null,
+      "observed_target": "国际货币基金组织",
+      "person_shaped": false,
+      "source": "INTERNATIONAL MONETARY FUND",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "波斯湾",
+      "candidates": [
+        "Persian Gulf"
+      ],
+      "first_page": null,
+      "is_person": false,
+      "observed_target": "波斯湾",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Persian Gulf",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "总统唐纳德·特朗普",
+      "first_page": null,
+      "observed_target": "总统唐纳德·特朗普",
+      "person_shaped": false,
+      "source": "President Donald Trump",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": null,
+      "candidates": [
+        "COMMODITIES Critical"
+      ],
+      "first_page": 1,
+      "is_person": false,
+      "observed_target": null,
+      "origin": "name_harvest",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "COMMODITIES Critical",
+      "translator_view": "<style id='1'>COMMODITIES</style>Critical minerals and national security",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "罗伯特·斯基德尔斯基",
+      "candidates": [
+        "ECONOMIC THEORY Robert Skidelsky"
+      ],
+      "first_page": 1,
+      "is_person": true,
+      "observed_target": "罗伯特·斯基德尔斯基",
+      "origin": "name_harvest",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "ECONOMIC THEORY Robert Skidelsky",
+      "translator_view": "<style id='1'>ECONOMIC THEORY</style>Robert Skidelsky on Keynes",
+      "vote_count": 1
+    },
+    {
+      "auto_target": null,
+      "candidates": [
+        "TA RY"
+      ],
+      "first_page": 1,
+      "is_person": false,
+      "observed_target": null,
+      "origin": "name_harvest",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "TA RY",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "贾米森·格里尔",
+      "candidates": [
+        "TRADE POLICY Jamieson Greer"
+      ],
+      "first_page": 1,
+      "is_person": true,
+      "observed_target": "贾米森·格里尔",
+      "origin": "name_harvest",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "TRADE POLICY Jamieson Greer",
+      "translator_view": "<style id='1'>TRADE POLICY</style>Jamieson Greer on tariffs",
+      "vote_count": 1
+    },
+    {
+      "auto_target": null,
+      "candidates": [
+        "FFER STAU"
+      ],
+      "first_page": 2,
+      "is_person": false,
+      "observed_target": null,
+      "origin": "name_harvest",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "FFER STAU",
+      "translator_view": null,
+      "vote_count": 2
+    },
+    {
+      "auto_target": null,
+      "candidates": [
+        "Macroeconomic Consequences"
+      ],
+      "first_page": 2,
+      "is_person": false,
+      "observed_target": null,
+      "origin": "name_harvest",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Macroeconomic Consequences",
+      "translator_view": "<style id='1'>Chapter 2: Defense Spending: Macroeconomic Consequences & Trade-Offs</style>Defense spending is rising ami",
+      "vote_count": 1
+    },
+    {
+      "auto_target": null,
+      "candidates": [
+        "Trade-Offs Defense"
+      ],
+      "first_page": 2,
+      "is_person": false,
+      "observed_target": null,
+      "origin": "name_harvest",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Trade-Offs Defense",
+      "translator_view": "<style id='1'>Chapter 2: Defense Spending: Macroeconomic Consequences & Trade-Offs</style>Defense spending is rising ami",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "亚当·斯密",
+      "candidates": [
+        "Adam Smith’s"
+      ],
+      "first_page": 3,
+      "is_person": true,
+      "observed_target": "亚当·斯密",
+      "origin": "name_harvest",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Adam Smith’s",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": null,
+      "candidates": [
+        "Righting Globalization’s Wrongs"
+      ],
+      "first_page": 3,
+      "is_person": false,
+      "observed_target": null,
+      "origin": "name_harvest",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Righting Globalization’s Wrongs",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": null,
+      "candidates": [
+        "Trade Cooperation"
+      ],
+      "first_page": 3,
+      "is_person": false,
+      "observed_target": null,
+      "origin": "name_harvest",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Trade Cooperation",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": null,
+      "candidates": [
+        "Understanding Geoeconomics"
+      ],
+      "first_page": 3,
+      "is_person": false,
+      "observed_target": null,
+      "origin": "name_harvest",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Understanding Geoeconomics",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": null,
+      "candidates": [
+        "RD IFFO"
+      ],
+      "first_page": 4,
+      "is_person": false,
+      "observed_target": null,
+      "origin": "name_harvest",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "RD IFFO",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "阿里·阿巴斯",
+      "candidates": [
+        "Ali Abbas"
+      ],
+      "first_page": 5,
+      "is_person": true,
+      "observed_target": "阿里·阿巴斯",
+      "origin": "name_harvest",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Ali Abbas",
+      "translator_view": null,
+      "vote_count": 1
+    }
+  ]
+}

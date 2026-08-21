@@ -1,0 +1,1359 @@
+{
+  "counts": {
+    "defaulted": 27,
+    "harvested": 16,
+    "person_shaped": 29,
+    "rows": 147,
+    "said_person": 15
+  },
+  "pages": [
+    1
+  ],
+  "policy": "transliterate",
+  "request": {
+    "answered": 29,
+    "batches": 2,
+    "prompt_sha256": "d0d5f2979653fd57ebd93e9a16d23ffc645044e804f6ef3bbf875bfadb82678c",
+    "requested": 29
+  },
+  "rows": [
+    {
+      "auto_target": "2007年",
+      "first_page": 1,
+      "observed_target": "2007年",
+      "person_shaped": false,
+      "source": "2007",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "非洲",
+      "first_page": 1,
+      "observed_target": "非洲",
+      "person_shaped": false,
+      "source": "Africa",
+      "vote_count": 2
+    },
+    {
+      "auto_target": "阿涅斯·巴尔东",
+      "candidates": [
+        "Agnès Bardon"
+      ],
+      "first_page": 1,
+      "is_person": true,
+      "observed_target": "阿涅斯·巴尔东",
+      "origin": "name_harvest",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Agnès Bardon",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "安娜·鲁奥霍宁",
+      "candidates": [
+        "Anna Ruohonen"
+      ],
+      "first_page": 1,
+      "is_person": true,
+      "observed_target": "安娜·鲁奥霍宁",
+      "origin": "name_harvest",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Anna Ruohonen",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "生物圈保护区",
+      "first_page": 1,
+      "observed_target": "生物圈保护区",
+      "person_shaped": false,
+      "source": "Biosphere reserves",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "巴西",
+      "first_page": 1,
+      "observed_target": "巴西",
+      "person_shaped": false,
+      "source": "Brazil",
+      "vote_count": 2
+    },
+    {
+      "auto_target": "奇玛曼达·恩戈齐·阿迪契",
+      "candidates": [
+        "Chimamanda Ngozi Adichie"
+      ],
+      "first_page": 1,
+      "is_person": true,
+      "observed_target": "奇玛曼达·恩戈齐·阿迪契",
+      "origin": "name_harvest",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Chimamanda Ngozi Adichie",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "中国",
+      "first_page": 1,
+      "observed_target": "中国",
+      "person_shaped": false,
+      "source": "China",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "保护非物质文化遗产公约",
+      "first_page": 1,
+      "observed_target": "保护非物质文化遗产公约",
+      "person_shaped": false,
+      "source": "Convention for the Safeguarding of the Intangible Cultural Heritage",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "信使",
+      "first_page": 1,
+      "observed_target": "信使",
+      "person_shaped": false,
+      "source": "Courier",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "丹尼尔·罗宾逊",
+      "candidates": [
+        "Daniel Robinson"
+      ],
+      "first_page": 1,
+      "is_person": true,
+      "observed_target": "丹尼尔·罗宾逊",
+      "origin": "name_harvest",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Daniel Robinson",
+      "vote_count": 2
+    },
+    {
+      "auto_target": "大卫·杰斐逊",
+      "candidates": [
+        "David Jefferson"
+      ],
+      "first_page": 1,
+      "is_person": true,
+      "observed_target": "大卫·杰斐逊",
+      "origin": "name_harvest",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "David Jefferson",
+      "vote_count": 2
+    },
+    {
+      "auto_target": "Du Junzhi",
+      "first_page": 1,
+      "observed_target": "Du Junzhi",
+      "person_shaped": false,
+      "source": "Du Junzhi",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "主编",
+      "first_page": 1,
+      "observed_target": "主编",
+      "person_shaped": false,
+      "source": "Editor-in-Chief",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "Fotohane DARKROOM",
+      "candidates": [
+        "Fotohane DARKROOM"
+      ],
+      "first_page": 1,
+      "is_person": false,
+      "observed_target": "Fotohane DARKROOM",
+      "origin": "name_harvest",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Fotohane DARKROOM",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "土著人民",
+      "candidates": [
+        "Indigenous Peoples"
+      ],
+      "first_page": 1,
+      "is_person": false,
+      "observed_target": "土著人民",
+      "origin": "name_harvest",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Indigenous Peoples",
+      "vote_count": 2
+    },
+    {
+      "auto_target": "土著知识",
+      "first_page": 1,
+      "observed_target": "土著知识",
+      "person_shaped": false,
+      "source": "Indigenous knowledge",
+      "vote_count": 5
+    },
+    {
+      "auto_target": "吉姆·阿尔-哈利利",
+      "candidates": [
+        "Jim Al-Khalili"
+      ],
+      "first_page": 1,
+      "is_person": true,
+      "observed_target": "吉姆·阿尔-哈利利",
+      "origin": "name_harvest",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Jim Al-Khalili",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "卡拉哈里",
+      "first_page": 1,
+      "observed_target": "卡拉哈里",
+      "person_shaped": false,
+      "source": "Kalahari",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "拉吉波伊瓦·谢雷尔·杰克逊",
+      "candidates": [
+        "Lagipoiva Cherelle Jackson"
+      ],
+      "first_page": 1,
+      "is_person": true,
+      "observed_target": "拉吉波伊瓦·谢雷尔·杰克逊",
+      "origin": "name_harvest",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Lagipoiva Cherelle Jackson",
+      "vote_count": 2
+    },
+    {
+      "auto_target": "地方和土著知识系统",
+      "first_page": 1,
+      "observed_target": "地方和土著知识系统",
+      "person_shaped": false,
+      "source": "Local and Indigenous Knowledge Systems",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "地方和土著知识系统（LINKS）",
+      "first_page": 1,
+      "observed_target": "地方和土著知识系统（LINKS）",
+      "person_shaped": false,
+      "source": "Local and Indigenous Knowledge Systems (LINKS)",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "马塞洛·席尔瓦·德·索萨",
+      "candidates": [
+        "Marcelo Silva de Sousa"
+      ],
+      "first_page": 1,
+      "is_person": true,
+      "observed_target": "马塞洛·席尔瓦·德·索萨",
+      "origin": "name_harvest",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Marcelo Silva de Sousa",
+      "vote_count": 2
+    },
+    {
+      "auto_target": "奥拉·马雷克-马丁内斯",
+      "candidates": [
+        "Ora Marek-Martinez"
+      ],
+      "first_page": 1,
+      "is_person": true,
+      "observed_target": "奥拉·马雷克-马丁内斯",
+      "origin": "name_harvest",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Ora Marek-Martinez",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "西斯科·奥阿拉",
+      "candidates": [
+        "Sisco Auala"
+      ],
+      "first_page": 1,
+      "is_person": true,
+      "observed_target": "西斯科·奥阿拉",
+      "origin": "name_harvest",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Sisco Auala",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "萨米人",
+      "first_page": 1,
+      "observed_target": "萨米人",
+      "person_shaped": false,
+      "source": "Sámi people",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "联合国教科文组织",
+      "first_page": 1,
+      "observed_target": "联合国教科文组织",
+      "person_shaped": false,
+      "source": "UNESCO",
+      "vote_count": 3
+    },
+    {
+      "auto_target": "联合国",
+      "first_page": 1,
+      "observed_target": "联合国",
+      "person_shaped": false,
+      "source": "United Nations",
+      "vote_count": 2
+    },
+    {
+      "auto_target": "联合国土著人民权利宣言",
+      "first_page": 1,
+      "observed_target": "联合国土著人民权利宣言",
+      "person_shaped": false,
+      "source": "United Nations Declaration on the Rights of Indigenous Peoples",
+      "vote_count": 2
+    },
+    {
+      "auto_target": "广角",
+      "candidates": [
+        "WIDE ANGLE"
+      ],
+      "first_page": 1,
+      "is_person": false,
+      "observed_target": "广角",
+      "origin": "name_harvest",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "WIDE ANGLE",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "杨沙",
+      "candidates": [
+        "Yang Sha"
+      ],
+      "first_page": 1,
+      "is_person": true,
+      "observed_target": "杨沙",
+      "origin": "name_harvest",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Yang Sha",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "生物盗窃",
+      "first_page": 1,
+      "observed_target": "生物盗窃",
+      "person_shaped": false,
+      "source": "biopiracy",
+      "vote_count": 4
+    },
+    {
+      "auto_target": "气候变化",
+      "first_page": 1,
+      "observed_target": "气候变化",
+      "person_shaped": false,
+      "source": "climate change",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "气候学",
+      "first_page": 1,
+      "observed_target": "气候学",
+      "person_shaped": false,
+      "source": "climatology",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "生态学",
+      "first_page": 1,
+      "observed_target": "生态学",
+      "person_shaped": false,
+      "source": "ecology",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "全球机械化",
+      "first_page": 1,
+      "observed_target": "全球机械化",
+      "person_shaped": false,
+      "source": "global mechanization",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "自然风险预防",
+      "first_page": 1,
+      "observed_target": "自然风险预防",
+      "person_shaped": false,
+      "source": "natural risk prevention",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "传统傣族医学",
+      "first_page": 1,
+      "observed_target": "传统傣族医学",
+      "person_shaped": false,
+      "source": "traditional Dai medicine",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "传统医学",
+      "first_page": 1,
+      "observed_target": "传统医学",
+      "person_shaped": false,
+      "source": "traditional medicine",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "水资源管理",
+      "first_page": 1,
+      "observed_target": "水资源管理",
+      "person_shaped": false,
+      "source": "water management",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "土著",
+      "first_page": 2,
+      "observed_target": "土著",
+      "person_shaped": false,
+      "source": "Aboriginal",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "卡罗琳娜·桑布拉诺",
+      "candidates": [
+        "Carolina Zambrano"
+      ],
+      "first_page": 2,
+      "is_person": true,
+      "observed_target": "卡罗琳娜·桑布拉诺",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Carolina Zambrano",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "厄瓜多尔",
+      "first_page": 2,
+      "observed_target": "厄瓜多尔",
+      "person_shaped": false,
+      "source": "Ecuadorian",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "亚马逊土著工艺",
+      "first_page": 2,
+      "observed_target": "亚马逊土著工艺",
+      "person_shaped": false,
+      "source": "Indigenous Amazonian craftsmanship",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "因纽特",
+      "first_page": 2,
+      "observed_target": "因纽特",
+      "person_shaped": false,
+      "source": "Inuit",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "2026年1月至3月",
+      "first_page": 2,
+      "observed_target": "2026年1月至3月",
+      "person_shaped": false,
+      "source": "January-March 2026",
+      "vote_count": 4
+    },
+    {
+      "auto_target": "太平洋",
+      "first_page": 2,
+      "observed_target": "太平洋",
+      "person_shaped": false,
+      "source": "Pacific",
+      "vote_count": 2
+    },
+    {
+      "auto_target": "太平洋岛屿",
+      "candidates": [
+        "Pacific Island"
+      ],
+      "first_page": 2,
+      "is_person": false,
+      "observed_target": "太平洋岛屿",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Pacific Island",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "波特兰州立大学",
+      "first_page": 2,
+      "observed_target": "波特兰州立大学",
+      "person_shaped": false,
+      "source": "Portland State University",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "萨摩亚",
+      "first_page": 2,
+      "observed_target": "萨摩亚",
+      "person_shaped": false,
+      "source": "Samoa",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "卫报",
+      "first_page": 2,
+      "observed_target": "卫报",
+      "person_shaped": false,
+      "source": "The Guardian",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "联合国教科文组织信使",
+      "candidates": [
+        "UNESCO Courier"
+      ],
+      "first_page": 2,
+      "is_person": false,
+      "observed_target": "联合国教科文组织信使",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "UNESCO Courier",
+      "vote_count": 3
+    },
+    {
+      "auto_target": "美国",
+      "candidates": [
+        "United States"
+      ],
+      "first_page": 2,
+      "is_person": false,
+      "observed_target": "美国",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "United States",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "生物多样性",
+      "first_page": 2,
+      "observed_target": "生物多样性",
+      "person_shaped": false,
+      "source": "biodiversity",
+      "vote_count": 2
+    },
+    {
+      "auto_target": "chambira纤维",
+      "first_page": 2,
+      "observed_target": "chambira纤维",
+      "person_shaped": false,
+      "source": "chambira fibres",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "zaï技术",
+      "first_page": 2,
+      "observed_target": "zaï技术",
+      "person_shaped": false,
+      "source": "zaï techniques",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "2002年",
+      "first_page": 4,
+      "observed_target": "2002年",
+      "person_shaped": false,
+      "source": "2002",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "2025年",
+      "first_page": 4,
+      "observed_target": "2025年",
+      "person_shaped": false,
+      "source": "2025",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "2025年第二届太平洋岛国海洋会议",
+      "first_page": 4,
+      "observed_target": "2025年第二届太平洋岛国海洋会议",
+      "person_shaped": false,
+      "source": "2025 Second Pacific Island Ocean Conference",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "2024年4月",
+      "first_page": 4,
+      "observed_target": "2024年4月",
+      "person_shaped": false,
+      "source": "April 2024",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "乍得",
+      "first_page": 4,
+      "observed_target": "乍得",
+      "person_shaped": false,
+      "source": "Chad",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "联合国土著问题常设论坛第23届会议主席",
+      "first_page": 4,
+      "observed_target": "联合国土著问题常设论坛第23届会议主席",
+      "person_shaped": false,
+      "source": "Chair of the 23rd Session of the United Nations Permanent Forum on Indigenous Issues",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "认知科学",
+      "first_page": 4,
+      "observed_target": "认知科学",
+      "person_shaped": false,
+      "source": "Cognitive science",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "地球",
+      "first_page": 4,
+      "observed_target": "地球",
+      "person_shaped": false,
+      "source": "Earth",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "斐济",
+      "first_page": 4,
+      "observed_target": "斐济",
+      "person_shaped": false,
+      "source": "Fijian",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "加纳",
+      "first_page": 4,
+      "observed_target": "加纳",
+      "person_shaped": false,
+      "source": "Ghana",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "欣杜·乌马鲁·易卜拉欣",
+      "candidates": [
+        "Hindou Oumarou Ibrahim"
+      ],
+      "first_page": 4,
+      "is_person": true,
+      "observed_target": "欣杜·乌马鲁·易卜拉欣",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Hindou Oumarou Ibrahim",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "霍尼亚拉",
+      "first_page": 4,
+      "observed_target": "霍尼亚拉",
+      "person_shaped": false,
+      "source": "Honiara",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "生物多样性和生态系统服务政府间科学政策平台",
+      "first_page": 4,
+      "observed_target": "生物多样性和生态系统服务政府间科学政策平台",
+      "person_shaped": false,
+      "source": "IPBES",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "LINKS计划",
+      "first_page": 4,
+      "observed_target": "LINKS计划",
+      "person_shaped": false,
+      "source": "LINKS programme",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "姆博罗罗",
+      "first_page": 4,
+      "observed_target": "姆博罗罗",
+      "person_shaped": false,
+      "source": "Mbororo",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "密克罗尼西亚",
+      "first_page": 4,
+      "observed_target": "密克罗尼西亚",
+      "person_shaped": false,
+      "source": "Micronesia",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "尼日利亚",
+      "first_page": 4,
+      "observed_target": "尼日利亚",
+      "person_shaped": false,
+      "source": "Nigeria",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "外岛",
+      "candidates": [
+        "Outer Islands"
+      ],
+      "first_page": 4,
+      "is_person": false,
+      "observed_target": "外岛",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Outer Islands",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "波利尼西亚",
+      "first_page": 4,
+      "observed_target": "波利尼西亚",
+      "person_shaped": false,
+      "source": "Polynesian",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "撒哈拉",
+      "first_page": 4,
+      "observed_target": "撒哈拉",
+      "person_shaped": false,
+      "source": "Sahara",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "萨拉涅塔·基托莱莱",
+      "candidates": [
+        "Salanieta Kitolelei"
+      ],
+      "first_page": 4,
+      "is_person": true,
+      "observed_target": "萨拉涅塔·基托莱莱",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Salanieta Kitolelei",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "所罗门群岛",
+      "candidates": [
+        "Solomon Islands"
+      ],
+      "first_page": 4,
+      "is_person": false,
+      "observed_target": "所罗门群岛",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Solomon Islands",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "图阿雷格",
+      "first_page": 4,
+      "observed_target": "图阿雷格",
+      "person_shaped": false,
+      "source": "Tuareg",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "西非",
+      "candidates": [
+        "West African"
+      ],
+      "first_page": 4,
+      "is_person": false,
+      "observed_target": "西非",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "West African",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "气候危机",
+      "first_page": 4,
+      "observed_target": "气候危机",
+      "person_shaped": false,
+      "source": "climate crisis",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "亚马孙州",
+      "first_page": 5,
+      "observed_target": "亚马孙州",
+      "person_shaped": false,
+      "source": "Amazonas state",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "巴西利亚",
+      "first_page": 5,
+      "observed_target": "巴西利亚",
+      "person_shaped": false,
+      "source": "Brasilia",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "奇科·保马里",
+      "candidates": [
+        "Chico Paumari"
+      ],
+      "first_page": 5,
+      "is_person": true,
+      "observed_target": "奇科·保马里",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Chico Paumari",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "保马里族",
+      "first_page": 5,
+      "observed_target": "保马里族",
+      "person_shaped": false,
+      "source": "Paumari",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "普鲁斯河",
+      "candidates": [
+        "Purus River"
+      ],
+      "first_page": 5,
+      "is_person": false,
+      "observed_target": "普鲁斯河",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Purus River",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "巨骨舌鱼",
+      "first_page": 5,
+      "observed_target": "巨骨舌鱼",
+      "person_shaped": false,
+      "source": "pirarucus",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "地球重力",
+      "first_page": 6,
+      "observed_target": "地球重力",
+      "person_shaped": false,
+      "source": "Earth’s gravity",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "全球南方",
+      "first_page": 6,
+      "observed_target": "全球南方",
+      "person_shaped": false,
+      "source": "Global South",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "国际量子科学与技术年",
+      "first_page": 6,
+      "observed_target": "国际量子科学与技术年",
+      "person_shaped": false,
+      "source": "International Year of Quantum Science and Technology",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "诺贝尔奖",
+      "candidates": [
+        "Nobel Prize"
+      ],
+      "first_page": 6,
+      "is_person": false,
+      "observed_target": "诺贝尔奖",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Nobel Prize",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "巴黎",
+      "first_page": 6,
+      "observed_target": "巴黎",
+      "person_shaped": false,
+      "source": "Paris",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "科学、技术、工程和数学",
+      "first_page": 6,
+      "observed_target": "科学、技术、工程和数学",
+      "person_shaped": false,
+      "source": "STEM",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "自闭症",
+      "first_page": 6,
+      "observed_target": "自闭症",
+      "person_shaped": false,
+      "source": "autism",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "脑扫描仪",
+      "first_page": 6,
+      "observed_target": "脑扫描仪",
+      "person_shaped": false,
+      "source": "brain scanner",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "乳腺癌",
+      "first_page": 6,
+      "observed_target": "乳腺癌",
+      "person_shaped": false,
+      "source": "breast cancer",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "暗物质",
+      "first_page": 6,
+      "observed_target": "暗物质",
+      "person_shaped": false,
+      "source": "dark matter",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "痴呆",
+      "first_page": 6,
+      "observed_target": "痴呆",
+      "person_shaped": false,
+      "source": "dementia",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "纠缠相机",
+      "first_page": 6,
+      "observed_target": "纠缠相机",
+      "person_shaped": false,
+      "source": "entanglement camera",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "癫痫",
+      "first_page": 6,
+      "observed_target": "癫痫",
+      "person_shaped": false,
+      "source": "epilepsy",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "功能性磁共振成像",
+      "first_page": 6,
+      "observed_target": "功能性磁共振成像",
+      "person_shaped": false,
+      "source": "functional MRI",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "性别平等",
+      "first_page": 6,
+      "observed_target": "性别平等",
+      "person_shaped": false,
+      "source": "gender equality",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "红外光",
+      "first_page": 6,
+      "observed_target": "红外光",
+      "person_shaped": false,
+      "source": "infrared light",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "量子鸿沟",
+      "first_page": 6,
+      "observed_target": "量子鸿沟",
+      "person_shaped": false,
+      "source": "quantum divide",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "量子纠缠",
+      "first_page": 6,
+      "observed_target": "量子纠缠",
+      "person_shaped": false,
+      "source": "quantum entanglement",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "量子传感器",
+      "first_page": 6,
+      "observed_target": "量子传感器",
+      "person_shaped": false,
+      "source": "quantum sensors",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "量子叠加",
+      "first_page": 6,
+      "observed_target": "量子叠加",
+      "person_shaped": false,
+      "source": "quantum superposition",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "精神分裂症",
+      "first_page": 6,
+      "observed_target": "精神分裂症",
+      "person_shaped": false,
+      "source": "schizophrenia",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "可见光",
+      "first_page": 6,
+      "observed_target": "可见光",
+      "person_shaped": false,
+      "source": "visible light",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "柏柏尔",
+      "first_page": 7,
+      "observed_target": "柏柏尔",
+      "person_shaped": false,
+      "source": "Amazigh",
+      "vote_count": 2
+    },
+    {
+      "auto_target": "柏柏尔妇女合作社",
+      "first_page": 7,
+      "observed_target": "柏柏尔妇女合作社",
+      "person_shaped": false,
+      "source": "Amazigh women’s cooperatives",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "阿甘树",
+      "first_page": 7,
+      "observed_target": "阿甘树",
+      "person_shaped": false,
+      "source": "Argania spinosa L.",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "澳大利亚",
+      "first_page": 7,
+      "observed_target": "澳大利亚",
+      "person_shaped": false,
+      "source": "Australia",
+      "vote_count": 2
+    },
+    {
+      "auto_target": "柏柏尔",
+      "first_page": 7,
+      "observed_target": "柏柏尔",
+      "person_shaped": false,
+      "source": "Berber",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "Indjalandji-Dhidhanu",
+      "first_page": 7,
+      "observed_target": "Indjalandji-Dhidhanu",
+      "person_shaped": false,
+      "source": "Indjalandji-Dhidhanu",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "摩洛哥",
+      "first_page": 7,
+      "observed_target": "摩洛哥",
+      "person_shaped": false,
+      "source": "Moroccan",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "新西兰",
+      "first_page": 7,
+      "observed_target": "新西兰",
+      "person_shaped": false,
+      "source": "New Zealand",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "醉椒",
+      "first_page": 7,
+      "observed_target": "醉椒",
+      "person_shaped": false,
+      "source": "Piper methysticum",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "坎特伯雷大学",
+      "first_page": 7,
+      "observed_target": "坎特伯雷大学",
+      "person_shaped": false,
+      "source": "University of Canterbury",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "新南威尔士大学",
+      "first_page": 7,
+      "observed_target": "新南威尔士大学",
+      "person_shaped": false,
+      "source": "University of New South Wales",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "昆士兰大学",
+      "first_page": 7,
+      "observed_target": "昆士兰大学",
+      "person_shaped": false,
+      "source": "University of Queensland",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "阿甘树",
+      "first_page": 7,
+      "observed_target": "阿甘树",
+      "person_shaped": false,
+      "source": "argan tree",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "生物发现",
+      "first_page": 7,
+      "observed_target": "生物发现",
+      "person_shaped": false,
+      "source": "biodiscovery",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "纤维素纳米纤维",
+      "first_page": 7,
+      "observed_target": "纤维素纳米纤维",
+      "person_shaped": false,
+      "source": "cellulose nanofibers",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "遗传资源",
+      "first_page": 7,
+      "observed_target": "遗传资源",
+      "person_shaped": false,
+      "source": "genetic resources",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "知识产权",
+      "first_page": 7,
+      "observed_target": "知识产权",
+      "person_shaped": false,
+      "source": "intellectual property",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "卡瓦",
+      "first_page": 7,
+      "observed_target": "卡瓦",
+      "person_shaped": false,
+      "source": "kava",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "专利",
+      "first_page": 7,
+      "observed_target": "专利",
+      "person_shaped": false,
+      "source": "patents",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "制药行业",
+      "first_page": 7,
+      "observed_target": "制药行业",
+      "person_shaped": false,
+      "source": "pharmaceutical industry",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "针茅",
+      "first_page": 7,
+      "observed_target": "针茅",
+      "person_shaped": false,
+      "source": "spinifex",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "生物多样性公约",
+      "first_page": 8,
+      "observed_target": "生物多样性公约",
+      "person_shaped": false,
+      "source": "Convention on Biological Diversity",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "第一民族",
+      "first_page": 8,
+      "observed_target": "第一民族",
+      "person_shaped": false,
+      "source": "First Nations",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "澳大利亚土著",
+      "candidates": [
+        "Indigenous Australians"
+      ],
+      "first_page": 8,
+      "is_person": false,
+      "observed_target": "澳大利亚土著",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Indigenous Australians",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "摩洛哥",
+      "first_page": 8,
+      "observed_target": "摩洛哥",
+      "person_shaped": false,
+      "source": "Morocco",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "名古屋议定书",
+      "first_page": 8,
+      "observed_target": "名古屋议定书",
+      "person_shaped": false,
+      "source": "Nagoya Protocol on Access and Benefit Sharing",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "塔夫拉乌特",
+      "first_page": 8,
+      "observed_target": "塔夫拉乌特",
+      "person_shaped": false,
+      "source": "Tafraout",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "知识产权、遗传资源及相关传统知识条约",
+      "first_page": 8,
+      "observed_target": "知识产权、遗传资源及相关传统知识条约",
+      "person_shaped": false,
+      "source": "Treaty on Intellectual Property, Genetic Resources and Associated Traditional Knowledge",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "世界知识产权组织",
+      "first_page": 8,
+      "observed_target": "世界知识产权组织",
+      "person_shaped": false,
+      "source": "World Intellectual Property Organization",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "世界贸易组织",
+      "first_page": 8,
+      "observed_target": "世界贸易组织",
+      "person_shaped": false,
+      "source": "World Trade Organization",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "阿甘油",
+      "first_page": 8,
+      "observed_target": "阿甘油",
+      "person_shaped": false,
+      "source": "argan oil",
+      "vote_count": 2
+    },
+    {
+      "auto_target": "来源披露",
+      "first_page": 8,
+      "observed_target": "来源披露",
+      "person_shaped": false,
+      "source": "disclosure of origin",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "知识产权",
+      "first_page": 8,
+      "observed_target": "知识产权",
+      "person_shaped": false,
+      "source": "intellectual property rights",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "植物育种者权利",
+      "first_page": 8,
+      "observed_target": "植物育种者权利",
+      "person_shaped": false,
+      "source": "plant breeders’ rights",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "商标",
+      "first_page": 8,
+      "observed_target": "商标",
+      "person_shaped": false,
+      "source": "trademarks",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "第二次量子革命",
+      "first_page": null,
+      "observed_target": "第二次量子革命",
+      "person_shaped": false,
+      "source": "second quantum revolution",
+      "vote_count": 1
+    },
+    {
+      "auto_target": null,
+      "candidates": [
+        "Indigenous Knowledge Systems"
+      ],
+      "first_page": 1,
+      "is_person": false,
+      "observed_target": null,
+      "origin": "name_harvest",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Indigenous Knowledge Systems",
+      "vote_count": 1
+    },
+    {
+      "auto_target": null,
+      "candidates": [
+        "Intangible Cultural Heritage"
+      ],
+      "first_page": 1,
+      "is_person": false,
+      "observed_target": null,
+      "origin": "name_harvest",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Intangible Cultural Heritage",
+      "vote_count": 1
+    }
+  ],
+  "switch": "magazine_name_harvest"
+}

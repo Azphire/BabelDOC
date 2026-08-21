@@ -1,0 +1,298 @@
+{
+  "sample": "Courier-en",
+  "baseline": "examples\\output\\F2\\Courier-en\\work\\Courier-en\\translate_tracking.json",
+  "groups_read": [
+    "page",
+    "cross_page",
+    "cross_column"
+  ],
+  "groups_present": [
+    "cross_column",
+    "cross_page",
+    "page"
+  ],
+  "requests": 131,
+  "baseline_requests": 134,
+  "inputs_sha256": "009db87c8aae9902939d6ffb5615531da5e1ff55776d1d49967e92eb45cb8f0e",
+  "baseline_inputs_sha256": "96113131da53411e1010d73e65fc951fe9ca9675f06c478970c19f535bf2fb59",
+  "unchanged_requests": 118,
+  "withdrawn": [
+    "<style id='1'>Brazil: lessons from the water people</style><style id='3'> ..... </style><style id='5'>9</style>",
+    "<style id='1'>Exile through a child’s eyes</style><style id='3'> ................. </style><style id='5'>26</style>",
+    "<style id='1'>The secret skies of Kalahari</style><style id='3'> ................. </style><style id='5'>17</style>",
+    "<style id='1'>When biopiracy takes root</style><style id='3'> .................. </style><style id='5'>12</style>",
+    "<style id='1'>frontier in honest storytelling”</style><style id='3'> ........... </style><style id='5'>40</style>",
+    "<style id='1'>guardians of climate change</style><style id='3'> ............... </style><style id='5'>20</style>",
+    "<style id='1'>of traditional Dai medicine</style><style id='3'> .................. </style><style id='5'>14</style>",
+    "There are many more examples of how t",
+    "a new page is turning<style id='1'> ........................ </style>44",
+    "agroforestry, health and fishing. Far more than a collection of techniques, these practices are also an expression of a worldview. Textile creation, for instance, has served as another form of navigation, this time in a spiritual sense. The woven skirts of Micronesia’s Outer Islands and the strip-weaving traditions of Ghana and Nigeria map community knowledge and cultural identity into symbolic pattern language.",
+    "has proven its worth, in areas as diverse as",
+    "knowledge <style id='1'> ....................................... </style>4",
+    "raditional knowledge",
+    "regarded as folklore”<style id='1'> ......................... </style>23",
+    "revolution<style id='1'> ........................................ </style>36",
+    "water management,"
+  ],
+  "introduced": [
+    "<style id='1'>a new page is turning</style> ........................ <style id='3'>44</style>",
+    "<style id='1'>knowledge </style> ....................................... <style id='3'>4</style>",
+    "<style id='1'>regarded as folklore”</style> ......................... <style id='3'>23</style>",
+    "<style id='1'>revolution</style> ........................................ <style id='3'>36</style>",
+    "Brazil: lessons from the water people<style id='1'> ..... </style>9",
+    "Exile through a child’s eyes<style id='1'> ................. </style>26",
+    "The secret skies of Kalahari<style id='1'> ................. </style>17",
+    "There are many more examples of how traditional knowledge has proven its worth, in areas as diverse as water management, agroforestry, health and fishing. Far more than a collection of techniques, these practices are also an expression of a worldview. Textile creation, for instance, has served as another form of navigation, this time in a spiritual sense. The woven skirts of Micronesia’s Outer Islands and the strip-weaving traditions of Ghana and Nigeria map community knowledge and cultural identity into symbolic pattern language.",
+    "When biopiracy takes root<style id='1'> .................. </style>12",
+    "ZOOM",
+    "frontier in honest storytelling”<style id='1'> ........... </style>40",
+    "guardians of climate change<style id='1'> ............... </style>20",
+    "of traditional Dai medicine<style id='1'> .................. </style>14"
+  ],
+  "answers_changed": [
+    {
+      "input": "Rooted in the careful observation of ecosystems and passed down orally from generation to generation, this knowledge offers valuable keys to building a sustainable future. It has been gaining increased recognition for several years. The United Nations Declaration on the Rights of Indigenous Peoples, adopted in 2007, affirms the right of these peoples to preserve, control and develop their traditional knowledge.",
+      "baseline": [
+        "这种知识植根于对生态系统的细致观察，并通过口头方式代代相传，为构建可持续的未来提供了宝贵的钥匙。多年来，它获得了越来越多的认可。2007年通过的《联合国土著人民权利宣言》确认了这些人民保存、控制和发展其传统知识的权利。"
+      ],
+      "run": [
+        "这种知识植根于对生态系统的细致观察，并通过口头方式代代相传，为构建可持续的未来提供了宝贵的钥匙。多年来，它获得了越来越多的认可。联合国于2007年通过的《联合国土著人民权利宣言》确认了这些人民保留、控制和发展其传统知识的权利。"
+      ]
+    },
+    {
+      "input": "UNESCO has long been a pioneer in this field. Through its Local and Indigenous Knowledge Systems (LINKS) programme, the Organization promotes exchanges between Indigenous knowledge-holders and scientists, particularly in the fields of ecology, water management and natural risk prevention. Biosphere reserves are a concrete example of this approach — they bring together researchers and local communities to develop solutions adapted to specific territories. This is a major shift, as science is no longer seen as a single, top- down form of knowledge, but as a dialogue between knowledge systems. Furthermore, the Convention for the Safeguarding of the Intangible Cultural Heritage protects practices, techniques and skills passed down from generation to generation, recognizing their universal dimension.",
+      "baseline": [
+        "联合国教科文组织长期以来一直是这一领域的先锋。通过其地方和土著知识系统（LINKS）计划，该组织促进土著知识持有者与科学家之间的交流，特别是在生态学、水资源管理和自然风险预防领域。生物圈保护区是这种方法的具体例子——它们将研究人员和当地社区聚集在一起，开发适应特定地区的解决方案。这是一个重大转变，因为科学不再被视为单一的自上而下的知识形式，而是知识系统之间的对话。此外，《保护非物质文化遗产公约》保护代代相传的实践、技术和技能，承认其普遍性。"
+      ],
+      "run": [
+        "联合国教科文组织长期以来一直是这一领域的先锋。通过其地方和土著知识系统（LINKS）计划，该组织促进土著知识持有者与科学家之间的交流，特别是在生态学、水资源管理和自然风险预防领域。生物圈保护区是这种方法的一个具体例子——它们将研究人员和当地社区聚集在一起，开发适合特定地区的解决方案。这是一个重大转变，因为科学不再被视为单一的自上而下的知识形式，而是知识系统之间的对话。此外，《保护非物质文化遗产公约》保护代代相传的实践、技术和技能，承认其普遍性。"
+      ]
+    },
+    {
+      "input": "Agnès Bardon",
+      "baseline": [
+        "Agnès Bardon"
+      ],
+      "run": [
+        "阿涅斯·巴尔东 (Agnès Bardon)"
+      ]
+    },
+    {
+      "input": "{v1}The UNESCO Courier {v2}<style id='3'>January-March 2026</style>",
+      "baseline": [
+        "{v1}联合国教科文组织《信使》 {v2}<style id='3'>2026年1月至3月</style>"
+      ],
+      "run": [
+        "{v1}联合国教科文组织《信使》 {v2}<style id='3'>2026年1月至3月</style>",
+        "{v1}联合国教科文组织《信使》{v2}<style id='3'>2026年1月至3月</style>"
+      ]
+    },
+    {
+      "input": "Work by Ecuadorian photographer Carolina Zambrano, embroidered with chambira fibres, a palm tree emblematic of Indigenous Amazonian craftsmanship.",
+      "baseline": [
+        "厄瓜多尔摄影师Carolina Zambrano的作品，采用chambira纤维刺绣，这是一种象征亚马逊土著工艺的棕榈树纤维。"
+      ],
+      "run": [
+        "厄瓜多尔摄影师卡罗琳娜·桑布拉诺的作品，采用chambira纤维刺绣，这是一种象征亚马逊土著工艺的棕榈树材料。"
+      ]
+    },
+    {
+      "input": "Indigenous climate journalist from Samoa reporting for <style id='1'>The Guardian</style> on Pacific Island issues, she currently serves as Professor of Pacific Island Studies at Portland State University (United States).",
+      "baseline": [
+        "来自萨摩亚的原住民气候记者，为<style id='1'>卫报</style>报道太平洋岛屿问题，目前在美国波特兰州立大学担任太平洋岛屿研究教授。"
+      ],
+      "run": [
+        "来自萨摩亚的原住民气候记者，为<style id='1'>卫报</style>报道太平洋岛屿问题，目前担任波特兰州立大学（美国）太平洋岛屿研究教授。"
+      ]
+    },
+    {
+      "input": "Long before satellites orbited Earth, Polynesian navigators crossed thousands of miles of open ocean by reading stars, swells, bioluminescence, and seabird flight patterns. In the Sahara, Tuareg guides historically travelled by celestial patterns, the sun, wind, and terrain, although their modern navigation now relies more on landmarks and daytime travel. Cognitive science research has revealed that these navigation systems demonstrate sophisticated spatial reasoning through diverse environmental cues, far more integrated than the single-input methods used in laboratory studies.",
+      "baseline": [
+        "早在卫星环绕地球运行之前，波利尼西亚航海家就通过观察星星、海浪、生物发光现象和海鸟飞行模式，跨越了数千英里的开阔海洋。在撒哈拉，图阿雷格向导历史上通过天体模式、太阳、风和地形进行旅行，尽管他们现代的导航现在更多依赖于地标和白天旅行。认知科学研究揭示了这些导航系统通过多样的环境线索展示了复杂的空间推理，远比实验室研究中使用的单一输入方法更为综合。"
+      ],
+      "run": [
+        "早在卫星环绕地球运行之前，波利尼西亚航海家就通过阅读星星、海浪、生物发光现象和海鸟飞行模式，跨越了数千英里的开阔海洋。在撒哈拉，图阿雷格向导历史上通过天体模式、太阳、风和地形进行旅行，尽管他们现代的导航现在更多依赖于地标和白天旅行。认知科学研究揭示了这些导航系统通过多样的环境线索展示了复杂的空间推理，远比实验室研究中使用的单一输入方法更为综合。"
+      ]
+    },
+    {
+      "input": "These practices represent entire knowledge systems. They encode, preserve, and transmit understanding across generations. Today, Indigenous",
+      "baseline": [
+        "这些实践代表了完整的知识体系。它们编码、保存并传递跨代的理解。如今，土著"
+      ],
+      "run": [
+        "这些实践代表了完整的知识体系。它们在代际之间编码、保存和传递理解。如今，土著"
+      ]
+    },
+    {
+      "input": "communities worldwide are defending their rights to protect such cultural heritage while actively making the case of traditional knowledge systems as parallel scientific frameworks. As Fijian researcher Salanieta Kitolelei noted at the 2025 Second Pacific Island Ocean Conference in Honiara, Solomon Islands: “It is the same thing — we just use a different language to talk about the same thing.”",
+      "baseline": [
+        "社区在全球范围内捍卫其保护这种文化遗产的权利，同时积极证明传统知识体系作为平行科学框架的价值。正如斐济研究员Salanieta Kitolelei在2025年第二届太平洋岛国海洋会议上于所罗门群岛霍尼亚拉所指出的：“这是同一件事——我们只是用不同的语言来谈论同一件事。”"
+      ],
+      "run": [
+        "世界各地的社区正在捍卫他们的权利来保护这种文化遗产，同时积极主张将传统知识体系作为平行的科学框架。正如斐济研究员萨拉涅塔·基托莱莱在2025年第二届太平洋岛国海洋会议上于所罗门群岛霍尼亚拉指出的那样：“这是同一件事——我们只是用不同的语言来谈论同一件事。”"
+      ]
+    },
+    {
+      "input": "As the climate crisis intensifies and biodiversity collapses, the world turns to the very knowledge systems it once dismissed. According to the United Nations, Indigenous Peoples comprise less than 5 per cent of the global population yet steward lands containing about 80 per cent of Earth’s remaining biodiversity. From their close relationship with the surrounding natural world, they have derived valuable knowledge that merits greater attention.",
+      "baseline": [
+        "随着气候危机加剧和生物多样性崩溃，世界开始转向那些曾被忽视的知识体系。根据联合国的数据，土著人民占全球人口的不到5%，却管理着包含地球约80%剩余生物多样性的土地。通过与周围自然世界的密切关系，他们获得了值得更多关注的宝贵知识。"
+      ],
+      "run": [
+        "随着气候危机加剧和生物多样性崩溃，世界开始转向那些曾经被忽视的知识体系。根据联合国的数据，土著人民占全球人口的不到5%，但他们管理着包含地球上约80%剩余生物多样性的土地。通过与周围自然世界的密切关系，他们获得了值得更多关注的宝贵知识。"
+      ]
+    },
+    {
+      "input": "“We observe nature, our animals and plants. We are the guardians of nature and we possess an enormous amount of knowledge about our environment,” noted Hindou Oumarou Ibrahim, an Indigenous Mbororo leader from Chad and Chair of the 23rd Session of the United Nations Permanent Forum on Indigenous Issues, in April 2024. “This knowledge is not theoretical; it has been tried and tested for centuries.”",
+      "baseline": [
+        "“我们观察自然，我们的动物和植物。我们是自然的守护者，拥有关于我们环境的大量知识，”乍得的土著姆博罗罗领导者、联合国土著问题常设论坛第23届会议主席Hindou Oumarou Ibrahim在2024年4月指出。“这些知识不是理论上的；它们经过了几个世纪的实践和检验。”"
+      ],
+      "run": [
+        "“我们观察自然，我们的动物和植物。我们是自然的守护者，我们拥有关于我们环境的大量知识，”乍得的土著姆博罗罗领导人欣杜·乌马鲁·易卜拉欣在2024年4月作为联合国土著问题常设论坛第23届会议主席时指出。“这种知识不是理论性的；它已经经过了几个世纪的尝试和检验。”"
+      ]
+    },
+    {
+      "input": "The accumulated skills and wisdom are not solely passed down mechanically from one generation to the next, but also codified to form complex systems of knowledge, as illustrated by the mastery of textile art in the Pacific and Africa. Pacific weavers understand plant ecology, sail dynamics, and cultural protocol. West African weavers master loom technologies, natural dyes, and symbolic pattern languages. In both regions, knowledge is transmitted through apprenticeship and cultural practice. The textiles themselves become living archives where knowledge resides in the hands, the patterns, and the process.",
+      "baseline": [
+        "积累的技能和智慧不仅仅是机械地从一代传递到下一代，还被编纂成复杂的知识体系，如太平洋和非洲的纺织艺术掌握所示。太平洋的编织者了解植物生态学、航行动力学和文化礼仪。西非的编织者精通织机技术、天然染料和象征性图案语言。在这两个地区，知识通过学徒制和文化实践传递。纺织品本身成为活的档案，知识存在于手中、图案中和过程之中。"
+      ],
+      "run": [
+        "积累的技能和智慧不仅仅是机械地从一代传递到下一代，还被编纂成复杂的知识系统，如太平洋和非洲的纺织艺术掌握所示。太平洋的编织者了解植物生态学、航行动力学和文化礼仪。西非的编织者掌握织机技术、天然染料和象征性图案语言。在这两个地区，知识通过学徒制和文化实践进行传递。纺织品本身成为活的档案，知识存在于手中、图案中和过程之中。"
+      ]
+    },
+    {
+      "input": "Indigenous skills and wisdom are codified to form complex systems of knowledge",
+      "baseline": [
+        "土著技能和智慧被编纂成复杂的知识体系"
+      ],
+      "run": [
+        "土著技能和智慧被编纂成复杂的知识系统"
+      ]
+    },
+    {
+      "input": "Established in 2002, UNESCO’s Local and Indigenous Knowledge Systems (LINKS) programme mobilizes the knowledge, know-how and practices of local communities and Indigenous Peoples to support their inclusion in environmental decision- making, particularly with regard to biodiversity and climate change.",
+      "baseline": [
+        "联合国教科文组织的地方和土著知识系统（LINKS）计划成立于2002年，旨在动员地方社区和土著人民的知识、技能和实践，以支持他们在环境决策中的参与，特别是在生物多样性和气候变化方面。"
+      ],
+      "run": [
+        "联合国教科文组织的地方和土著知识系统（LINKS）计划成立于2002年，动员地方社区和土著人民的知识、技能和实践，以支持他们在环境决策中的参与，特别是在生物多样性和气候变化方面。"
+      ]
+    },
+    {
+      "input": "Among other roles, the LINKS programme currently hosts the Indigenous and",
+      "baseline": [
+        "LINKS计划目前在其他角色中还负责土著和"
+      ],
+      "run": [
+        "LINKS计划目前在其他角色中主持土著和"
+      ]
+    },
+    {
+      "input": "One such technology is quantum sensing. We now have quantum devices that can sense changes in Earth’s gravity to one part in a billion and which can help in studying the Earth’s climate as well as having many practical uses in the construction industry. Quantum sensors are even being developed to hunt for dark matter, the illusive invisible substance that holds galaxies together.",
+      "baseline": [
+        "其中一种技术是量子传感。我们现在拥有可以感知地球重力变化到十亿分之一的量子设备，这些设备可以帮助研究地球气候，并在建筑行业中有许多实际用途。量子传感器甚至正在被开发用于寻找暗物质，这种神秘的不可见物质是维系星系的关键。"
+      ],
+      "run": [
+        "其中一种技术是量子传感。我们现在拥有可以感知地球重力变化到十亿分之一的量子设备，这些设备不仅有助于研究地球气候，还在建筑行业中有许多实际应用。量子传感器甚至正在被开发用于寻找暗物质，这种神秘的不可见物质是维系星系的关键。"
+      ]
+    },
+    {
+      "input": "However, there is criticism against biodiscovery as “free riding” on knowledge developed by Indigenous and other local peoples. When the role of their knowledge is not sufficiently recognized in scientific investigation, product development, or commercialization, and where the users of this knowledge do not appropriately share benefits with ancestral knowledge holders, it can be called “biopiracy”.",
+      "baseline": [
+        "然而，有人批评生物发现是对土著和其他地方人民开发的知识的“搭便车”。当他们的知识在科学研究、产品开发或商业化中没有得到充分认可，并且这些知识的使用者没有适当地与祖传知识持有者分享利益时，这可以被称为“生物盗窃”。"
+      ],
+      "run": [
+        "然而，生物发现被批评为对土著和其他地方人民开发的知识“搭便车”。当他们的知识在科学研究、产品开发或商业化中未得到充分认可，并且这些知识的使用者未能适当地与祖传知识持有者分享利益时，这可以被称为“生物盗窃”。"
+      ]
+    },
+    {
+      "input": "How Indigenous knowledge drives",
+      "baseline": [
+        "土著知识如何推"
+      ],
+      "run": [
+        "土著知识如何推动"
+      ]
+    },
+    {
+      "input": "scientific discover y",
+      "baseline": [
+        "动科学发现"
+      ],
+      "run": [
+        "科学发现"
+      ]
+    },
+    {
+      "input": "the grass has been patented. Benefits that have already been shared under the agreement include employment opportunities for First Nations youth and funding for training and educational opportunities for Indigenous Australians.",
+      "baseline": [
+        "根据协议，已经分享的利益包括为第一民族青年提供就业机会，以及为澳大利亚土著提供培训和教育机会的资金。"
+      ],
+      "run": [
+        "根据协议已经分享的利益包括为第一民族青年提供的就业机会以及为澳大利亚土著提供的培训和教育机会的资金。"
+      ]
+    },
+    {
+      "input": "From the Aboriginal practice of controlled burning to prevent wildfires to Inuit weather forecasting, and the <style id='1'>zaï</style>techniques used in some African countries to capture water, the world is rich with diverse, proven Indigenous wisdom. This knowledge is particularly valuable in the context of climate change and declining biodiversity.",
+      "baseline": [
+        "从土著的控制燃烧以防止野火的做法，到因纽特人的天气预报，以及一些非洲国家用于蓄水的<style id='1'>zaï</style>技术，世界充满了多样且经过验证的原住民智慧。在气候变化和生物多样性下降的背景下，这些知识尤为宝贵。"
+      ],
+      "run": [
+        "从土著的控制燃烧以防止野火的做法，到因纽特人的天气预报，以及一些非洲国家用于蓄水的<style id='1'>zaï</style>技术，世界充满了多样且经过验证的原住民智慧。这些知识在气候变化和生物多样性下降的背景下尤为珍贵。"
+      ]
+    },
+    {
+      "input": "Faced with a dramatic decline in pirarucu, a fish that is essential to their survival, the Paumari people of Amazonas state took part in a programme to restore the species, combining scientific and traditional knowledge. After a few years, the fish are once again populating the Purus River.",
+      "baseline": [
+        "面对对其生存至关重要的鱼类——巨骨舌鱼的数量急剧下降，亚马孙州的保马里族参与了一项恢复该物种的计划，结合科学和传统知识。几年后，这种鱼再次在普鲁斯河中繁衍生息。"
+      ],
+      "run": [
+        "面对对他们生存至关重要的鱼类——巨骨舌鱼数量急剧下降的情况，亚马孙州的保马里族参与了一项恢复该物种的计划，结合了科学和传统知识。几年后，这种鱼再次在普鲁斯河中繁殖。"
+      ]
+    },
+    {
+      "input": "United Nations Declaration on the Rights of Indigenous Peoples — but it is nonetheless threatened by cultural and commercial appropriation.",
+      "baseline": [
+        "《联合国土著人民权利宣言》之类的国际文书——但它仍然受到文化和商业挪用的威胁。"
+      ],
+      "run": [
+        "《联合国土著人民权利宣言》这样的国际文书——但它仍然受到文化和商业挪用的威胁。"
+      ]
+    },
+    {
+      "input": "Dawn gives off an odour of ferrous humidity mingled with brazier smoke. The Paumari, an Indigenous people of about two thousand souls living in the vast region of Amazonas state in the north-west of the country, have a way of defining themselves that can’t be found",
+      "baseline": [
+        "黎明散发出一种铁质湿气与火盆烟雾混合的气味。保马里族是一个约有两千人的土著民族，生活在该国西北部广阔的亚马孙州，他们有一种独特的自我定义方式，这种方式无法在其他地方找到。"
+      ],
+      "run": [
+        "黎明散发出一种铁锈般的潮湿气味，夹杂着火盆的烟雾。保马里族（Paumari）是一个约有两千人的土著民族，生活在该国西北部广袤的亚马孙州（Amazonas state）地区，他们有一种独特的自我定义方式，这种方式无法在其他地方找到。"
+      ]
+    },
+    {
+      "input": "On the Purus River, as the light fades and the heat lingers over the water, a pirarucu fish comes to the surface to gulp some air. This sound — deep, damp, ancestral — revives a pulse that this land had almost lost. “Nature was begging for our help,” recalls Chico Paumari, a young fisherman. “We would arrive at the lake to find there was nothing left. It was",
+      "baseline": [
+        "在普鲁斯河上，光线渐渐消退，热气仍然笼罩着水面，一条巨骨舌鱼浮出水面，吸了一口空气。这种声音——深沉、潮湿、古老——唤醒了这片土地几乎失去的脉动。“大自然在乞求我们的帮助，”年轻渔夫奇科·保马里回忆道，“我们到达湖边时，发现什么都没有了。"
+      ],
+      "run": [
+        "在普鲁斯河（Purus River）上，当光线渐渐消退，热气仍在水面上徘徊时，一条巨骨舌鱼（pirarucu）浮出水面，吸了一口空气。这种声音——深沉、潮湿、古老——唤醒了这片土地几乎失去的脉动。“大自然在向我们求助，”年轻渔夫奇科·保马里（Chico Paumari）回忆道，“我们到达湖边时，发现什么都没有了。"
+      ]
+    },
+    {
+      "input": "This quantum entanglement is far from being a novel phenomenon that only happens rarely in nature, nor is it restricted to a “spooky” telepathic connection between two separated particles. Rather, it is one of the most, if not <style id='1'>the</style> most, prevalent process in the entire Universe. Everything everywhere",
+      "baseline": [
+        "这种量子纠缠远非自然界中罕见的新现象，也不仅限于两个分离粒子之间的“诡异”心灵感应连接。相反，它是整个宇宙中最普遍的过程之一，甚至可以说是最普遍的过程。无处不在的每一件事"
+      ],
+      "run": [
+        "这种量子纠缠远非自然界中罕见的新现象，也不仅仅局限于两个分离粒子之间的“诡异”心灵感应连接。相反，它是整个宇宙中最普遍的过程之一，甚至可以说是最普遍的过程。无处不在的每一件事"
+      ]
+    },
+    {
+      "input": "There is a huge diversity of Indigenous Peoples, cultures, languages, and knowledge systems around the world. These systems, developed over hundreds or thousands of years, have greatly contributed to the development of the foods we eat, traditional and modern medicines, and fibres and materials used in our homes and our clothes. Although often described as “traditional”, Indigenous knowledge systems originate from empirical observation and repeated practice, and like other knowledge systems they continuously evolve over time to incorporate new information and as local conditions change.",
+      "baseline": [
+        "世界上有着多样化的土著人民、文化、语言和知识体系。这些体系经过数百年或数千年的发展，对我们所食用的食物、传统和现代药物以及用于家庭和衣物的纤维和材料的发展做出了巨大贡献。尽管常被描述为“传统”，但土著知识体系源于经验观察和反复实践，像其他知识体系一样，它们随着时间的推移不断演变，以融入新信息并适应当地条件的变化。"
+      ],
+      "run": [
+        "世界上有着多样化的土著人民、文化、语言和知识体系。这些体系经过数百年或数千年的发展，对我们所食用的食物、传统和现代药物以及我们家中和衣物中使用的纤维和材料的发展做出了巨大贡献。尽管通常被描述为“传统”，但土著知识体系源于经验观察和反复实践，并且像其他知识体系一样，随着时间的推移不断演变，以纳入新信息并适应当地条件的变化。"
+      ]
+    }
+  ]
+}

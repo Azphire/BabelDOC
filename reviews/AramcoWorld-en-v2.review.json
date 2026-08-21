@@ -1,0 +1,2220 @@
+{
+  "drop_caps": [],
+  "format_version": 2,
+  "page_kinds": [
+    {
+      "ambiguous": true,
+      "conf": 1.0,
+      "machine_kind": "front_cover",
+      "page": 1,
+      "source": "deterministic"
+    },
+    {
+      "ambiguous": false,
+      "conf": 1.0,
+      "machine_kind": "masthead",
+      "page": 2,
+      "source": "deterministic"
+    },
+    {
+      "ambiguous": true,
+      "conf": 0.875,
+      "machine_kind": "toc",
+      "page": 3,
+      "source": "deterministic"
+    },
+    {
+      "ambiguous": false,
+      "conf": 1.0,
+      "machine_kind": "article_body",
+      "page": 4,
+      "source": "deterministic"
+    },
+    {
+      "ambiguous": true,
+      "conf": 0.875,
+      "machine_kind": "article_opener",
+      "page": 5,
+      "source": "deterministic"
+    },
+    {
+      "ambiguous": false,
+      "conf": 1.0,
+      "machine_kind": "article_body",
+      "page": 6,
+      "source": "deterministic"
+    },
+    {
+      "ambiguous": false,
+      "conf": 1.0,
+      "machine_kind": "article_body",
+      "page": 7,
+      "source": "deterministic"
+    },
+    {
+      "ambiguous": true,
+      "conf": 0.875,
+      "machine_kind": "article_opener",
+      "page": 8,
+      "source": "deterministic"
+    },
+    {
+      "ambiguous": true,
+      "conf": 0.875,
+      "machine_kind": "article_opener",
+      "page": 9,
+      "source": "deterministic"
+    }
+  ],
+  "sample": "AramcoWorld-en-v2",
+  "terms": [
+    {
+      "auto_target": "AramcoWorld",
+      "first_page": 1,
+      "observed_target": "AramcoWorld",
+      "person_shaped": false,
+      "source": "AramcoWorld",
+      "translator_view": "Jul – Aug {v1}Vol. 77 No. {v2}AramcoWorld.com",
+      "vote_count": 2
+    },
+    {
+      "auto_target": "AramcoWorld.com",
+      "first_page": 1,
+      "observed_target": "AramcoWorld.com",
+      "person_shaped": false,
+      "source": "AramcoWorld.com",
+      "translator_view": "Jul – Aug {v1}Vol. 77 No. {v2}AramcoWorld.com",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "艾哈迈德·阿尔-穆勒赫姆",
+      "candidates": [
+        "Ahmed AL-Mulhem"
+      ],
+      "first_page": 2,
+      "is_person": true,
+      "observed_target": "艾哈迈德·阿尔-穆勒赫姆",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Ahmed AL-Mulhem",
+      "translator_view": "Publisher: <style id='1'>Aramco Americas Company</style><style id='3'>President and CEO: </style><style id='5'>Ahmed AL-",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "阿尔瓦·罗宾逊",
+      "candidates": [
+        "Alva Robinson"
+      ],
+      "first_page": 2,
+      "is_person": true,
+      "observed_target": "阿尔瓦·罗宾逊",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Alva Robinson",
+      "translator_view": "Publisher: <style id='1'>Aramco Americas Company</style><style id='3'>President and CEO: </style><style id='5'>Ahmed AL-",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "阿姆拉·帕西奇",
+      "candidates": [
+        "Amra Pasic"
+      ],
+      "first_page": 2,
+      "is_person": true,
+      "observed_target": "阿姆拉·帕西奇",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Amra Pasic",
+      "translator_view": "Publisher: <style id='1'>Aramco Americas Company</style><style id='3'>President and CEO: </style><style id='5'>Ahmed AL-",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "阿美美洲公司",
+      "first_page": 2,
+      "observed_target": "阿美美洲公司",
+      "person_shaped": false,
+      "source": "Aramco Americas Company",
+      "translator_view": "Publisher: <style id='1'>Aramco Americas Company</style><style id='3'>President and CEO: </style><style id='5'>Ahmed AL-",
+      "vote_count": 2
+    },
+    {
+      "auto_target": "比安卡·斯佩兰扎",
+      "candidates": [
+        "Bianca Speranza"
+      ],
+      "first_page": 2,
+      "is_person": true,
+      "observed_target": "比安卡·斯佩兰扎",
+      "origin": "name_harvest",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Bianca Speranza",
+      "translator_view": "<style id='1'>Editorial Assistants:</style>Sarah Khan and Bianca Speranza",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "布莱恩·雷思迈尔",
+      "candidates": [
+        "Blain Rethmeier"
+      ],
+      "first_page": 2,
+      "is_person": true,
+      "observed_target": "布莱恩·雷思迈尔",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Blain Rethmeier",
+      "translator_view": "Publisher: <style id='1'>Aramco Americas Company</style><style id='3'>President and CEO: </style><style id='5'>Ahmed AL-",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "Graphic Engine Design Studio",
+      "first_page": 2,
+      "observed_target": "Graphic Engine Design Studio",
+      "person_shaped": false,
+      "source": "Graphic Engine Design Studio",
+      "translator_view": "<style id='1'>Contracts Support:</style>Kymani J. Hill and Nicole E. Martinez<style id='3'>Print design: </style><style ",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "休斯顿",
+      "first_page": 2,
+      "observed_target": "休斯顿",
+      "person_shaped": false,
+      "source": "Houston",
+      "translator_view": "<style id='1'>Editorial: </style>publications@aramcoamericas.com<style id='3'>or </style><style id='5'>P.O. Box 2106, Ho",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "国际标准连续出版物号",
+      "first_page": 2,
+      "observed_target": "国际标准连续出版物号",
+      "person_shaped": false,
+      "source": "ISSN",
+      "translator_view": "<style id='1'>ISSN: </style>2376-1083",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "因德利布·法拉兹·萨贝尔",
+      "candidates": [
+        "Indlieb Farazi Saber"
+      ],
+      "first_page": 2,
+      "is_person": true,
+      "observed_target": "因德利布·法拉兹·萨贝尔",
+      "origin": "name_harvest",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Indlieb Farazi Saber",
+      "translator_view": "Publisher: <style id='1'>Aramco Americas Company</style><style id='3'>President and CEO: </style><style id='5'>Ahmed AL-",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "2023年7月/8月 第77卷 第4期",
+      "first_page": 2,
+      "observed_target": "2023年7月/8月 第77卷 第4期",
+      "person_shaped": false,
+      "source": "July / August Vol. 77, No. 4",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "凯特林",
+      "first_page": 2,
+      "observed_target": "凯特林",
+      "person_shaped": false,
+      "source": "Kettering",
+      "translator_view": "<style id='1'>or </style>P.O. Box 292348, Kettering, Ohio 45429 USA",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "Kymani J. Hill",
+      "first_page": 2,
+      "observed_target": "Kymani J. Hill",
+      "person_shaped": false,
+      "source": "Kymani J. Hill",
+      "translator_view": "<style id='1'>Contracts Support:</style>Kymani J. Hill and Nicole E. Martinez<style id='3'>Print design: </style><style ",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "Nicole E. Martinez",
+      "first_page": 2,
+      "observed_target": "Nicole E. Martinez",
+      "person_shaped": false,
+      "source": "Nicole E. Martinez",
+      "translator_view": "<style id='1'>Contracts Support:</style>Kymani J. Hill and Nicole E. Martinez<style id='3'>Print design: </style><style ",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "俄亥俄州",
+      "first_page": 2,
+      "observed_target": "俄亥俄州",
+      "person_shaped": false,
+      "source": "Ohio",
+      "translator_view": "<style id='1'>or </style>P.O. Box 292348, Kettering, Ohio 45429 USA",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "邮政信箱292348",
+      "first_page": 2,
+      "observed_target": "邮政信箱292348",
+      "person_shaped": false,
+      "source": "P.O. Box 292348",
+      "translator_view": "<style id='1'>or </style>P.O. Box 292348, Kettering, Ohio 45429 USA",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "邮政局长",
+      "first_page": 2,
+      "observed_target": "邮政局长",
+      "person_shaped": false,
+      "source": "POSTMASTER",
+      "translator_view": "<style id='1'>POSTMASTER:</style>Send address changes to AramcoWorld, P.O. Box 292348, Kettering, Ohio 45429.",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "RR Donnelley / Wetmore",
+      "first_page": 2,
+      "observed_target": "RR Donnelley / Wetmore",
+      "person_shaped": false,
+      "source": "RR Donnelley / Wetmore",
+      "translator_view": "<style id='1'>Contracts Support:</style>Kymani J. Hill and Nicole E. Martinez<style id='3'>Print design: </style><style ",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "萨拉·汗",
+      "candidates": [
+        "Sarah Khan"
+      ],
+      "first_page": 2,
+      "is_person": true,
+      "observed_target": "萨拉·汗",
+      "origin": "name_harvest",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Sarah Khan",
+      "translator_view": "<style id='1'>Editorial Assistants:</style>Sarah Khan and Bianca Speranza",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "史密斯街",
+      "first_page": 2,
+      "observed_target": "史密斯街",
+      "person_shaped": false,
+      "source": "Smith Street",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "苏珊娜·加罗法洛",
+      "candidates": [
+        "Suzanne Garofalo"
+      ],
+      "first_page": 2,
+      "is_person": true,
+      "observed_target": "苏珊娜·加罗法洛",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Suzanne Garofalo",
+      "translator_view": "Publisher: <style id='1'>Aramco Americas Company</style><style id='3'>President and CEO: </style><style id='5'>Ahmed AL-",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "德克萨斯州",
+      "first_page": 2,
+      "observed_target": "德克萨斯州",
+      "person_shaped": false,
+      "source": "Texas",
+      "translator_view": "<style id='1'>Editorial: </style>publications@aramcoamericas.com<style id='3'>or </style><style id='5'>P.O. Box 2106, Ho",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "艾伦中心二号楼",
+      "first_page": 2,
+      "observed_target": "艾伦中心二号楼",
+      "person_shaped": false,
+      "source": "Two Allen Center",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "美国",
+      "first_page": 2,
+      "observed_target": "美国",
+      "person_shaped": false,
+      "source": "USA",
+      "translator_view": "<style id='1'>or </style>P.O. Box 292348, Kettering, Ohio 45429 USA",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "瓦利德·达沙什",
+      "candidates": [
+        "Waleed Dashash"
+      ],
+      "first_page": 2,
+      "is_person": true,
+      "observed_target": "瓦利德·达沙什",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Waleed Dashash",
+      "translator_view": "Publisher: <style id='1'>Aramco Americas Company</style><style id='3'>President and CEO: </style><style id='5'>Ahmed AL-",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "aramcoworld@sfsdayton.com",
+      "first_page": 2,
+      "observed_target": "aramcoworld@sfsdayton.com",
+      "person_shaped": false,
+      "source": "aramcoworld@sfsdayton.com",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "eSiteful Corporation",
+      "first_page": 2,
+      "observed_target": "eSiteful Corporation",
+      "person_shaped": false,
+      "source": "eSiteful Corporation",
+      "translator_view": "<style id='1'>Contracts Support:</style>Kymani J. Hill and Nicole E. Martinez<style id='3'>Print design: </style><style ",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "250周年",
+      "first_page": 3,
+      "observed_target": "250周年",
+      "person_shaped": false,
+      "source": "250th anniversary",
+      "translator_view": "<style id='1'>WRITTEN BY </style>RAMIN GANESHRAM, <style id='3'>ILLUSTRATED BY </style>IVY JOHNSON As the United States ",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "非洲",
+      "first_page": 3,
+      "observed_target": "非洲",
+      "person_shaped": false,
+      "source": "Africa",
+      "translator_view": "<style id='1'>Banjo on the Atlas </style><style id='3'>WRITTEN BY </style>BANNING EYRE How did an instrument with West A",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "美国音乐",
+      "first_page": 3,
+      "observed_target": "美国音乐",
+      "person_shaped": false,
+      "source": "Americana music",
+      "translator_view": "<style id='1'>Banjo on the Atlas </style><style id='3'>WRITTEN BY </style>BANNING EYRE How did an instrument with West A",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "阿拉伯",
+      "first_page": 3,
+      "observed_target": "阿拉伯",
+      "person_shaped": false,
+      "source": "Arab",
+      "translator_view": "modern Spain, generates often conflicting meanings at the same time— meanings actively constructed and sometimes misread",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "亚洲",
+      "first_page": 3,
+      "observed_target": "亚洲",
+      "person_shaped": false,
+      "source": "Asia",
+      "translator_view": "<style id='1'>WRITTEN BY </style>RAMIN GANESHRAM, <style id='3'>ILLUSTRATED BY </style>IVY JOHNSON As the United States ",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "阿特拉斯",
+      "first_page": 3,
+      "observed_target": "阿特拉斯",
+      "person_shaped": false,
+      "source": "Atlas",
+      "translator_view": "<style id='1'>Banjo on the Atlas </style><style id='3'>WRITTEN BY </style>BANNING EYRE How did an instrument with West A",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "大马士革",
+      "first_page": 3,
+      "observed_target": "大马士革",
+      "person_shaped": false,
+      "source": "Damascas",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "早期美国",
+      "candidates": [
+        "Early America"
+      ],
+      "first_page": 3,
+      "is_person": false,
+      "observed_target": "早期美国",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Early America",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "开国元勋",
+      "candidates": [
+        "Founding Fathers"
+      ],
+      "first_page": 3,
+      "is_person": false,
+      "observed_target": "开国元勋",
+      "origin": "name_harvest",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Founding Fathers",
+      "translator_view": "<style id='1'>WRITTEN BY </style>RAMIN GANESHRAM, <style id='3'>ILLUSTRATED BY </style>IVY JOHNSON As the United States ",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "希贾兹",
+      "first_page": 3,
+      "observed_target": "希贾兹",
+      "person_shaped": false,
+      "source": "Hijaz",
+      "translator_view": "<style id='1'>beloW</style> Workers lay rails near Tabuk in 1906. Construc- tion of the Hijaz Railway required thousands",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "希贾兹铁路",
+      "candidates": [
+        "Hijaz Railway"
+      ],
+      "first_page": 3,
+      "is_person": false,
+      "observed_target": "希贾兹铁路",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Hijaz Railway",
+      "translator_view": "<style id='1'>beloW</style> Workers lay rails near Tabuk in 1906. Construc- tion of the Hijaz Railway required thousands",
+      "vote_count": 5
+    },
+    {
+      "auto_target": "伊斯兰教",
+      "first_page": 3,
+      "observed_target": "伊斯兰教",
+      "person_shaped": false,
+      "source": "Islam",
+      "translator_view": "<style id='1'>WRITTEN BY </style>AIBARSHYN AKHMETKALI, <style id='3'>PHOTOGRAPHED BY </style>DANIIL USMANOV With earthqu",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "伊斯兰建筑",
+      "first_page": 3,
+      "observed_target": "伊斯兰建筑",
+      "person_shaped": false,
+      "source": "Islamic architecture",
+      "translator_view": "<style id='1'>WRITTEN BY </style>AIBARSHYN AKHMETKALI, <style id='3'>PHOTOGRAPHED BY </style>DANIIL USMANOV With earthqu",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "7月4日",
+      "first_page": 3,
+      "observed_target": "7月4日",
+      "person_shaped": false,
+      "source": "July 4",
+      "translator_view": "<style id='1'>WRITTEN BY </style>RAMIN GANESHRAM, <style id='3'>ILLUSTRATED BY </style>IVY JOHNSON As the United States ",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "麦地那",
+      "first_page": 3,
+      "observed_target": "麦地那",
+      "person_shaped": false,
+      "source": "Madinah",
+      "translator_view": "<style id='1'>opposite</style> A rail-way tunnel cuts through a steep and rocky section of the landscape 50 kilometers (",
+      "vote_count": 5
+    },
+    {
+      "auto_target": "地中海",
+      "first_page": 3,
+      "observed_target": "地中海",
+      "person_shaped": false,
+      "source": "Mediterranean",
+      "translator_view": "<style id='1'>WRITTEN BY </style>RAMIN GANESHRAM, <style id='3'>ILLUSTRATED BY </style>IVY JOHNSON As the United States ",
+      "vote_count": 3
+    },
+    {
+      "auto_target": "中东",
+      "candidates": [
+        "Middle East"
+      ],
+      "first_page": 3,
+      "is_person": false,
+      "observed_target": "中东",
+      "origin": "name_harvest",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Middle East",
+      "translator_view": "<style id='1'>WRITTEN BY </style>RAMIN GANESHRAM, <style id='3'>ILLUSTRATED BY </style>IVY JOHNSON As the United States ",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "北非",
+      "candidates": [
+        "North Africa"
+      ],
+      "first_page": 3,
+      "is_person": false,
+      "observed_target": "北非",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "North Africa",
+      "translator_view": "<style id='1'>Banjo on the Atlas </style><style id='3'>WRITTEN BY </style>BANNING EYRE How did an instrument with West A",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "北非",
+      "candidates": [
+        "North African"
+      ],
+      "first_page": 3,
+      "is_person": false,
+      "observed_target": "北非",
+      "origin": "name_harvest",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "North African",
+      "translator_view": "<style id='1'>Banjo on the Atlas </style><style id='3'>WRITTEN BY </style>BANNING EYRE How did an instrument with West A",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "奥斯曼",
+      "first_page": 3,
+      "observed_target": "奥斯曼",
+      "person_shaped": false,
+      "source": "Ottoman",
+      "translator_view": "“The most unique aspect of all was how it was funded,” Kurşun added. Abdul Hamid contributed personally, and taxes were ",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "奥斯曼时代",
+      "first_page": 3,
+      "observed_target": "奥斯曼时代",
+      "person_shaped": false,
+      "source": "Ottoman-era",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "列吉斯坦",
+      "first_page": 3,
+      "observed_target": "列吉斯坦",
+      "person_shaped": false,
+      "source": "Registan",
+      "translator_view": "<style id='1'>R</style> Intricate interior details of the Tilya-Kori Madrasa on the Registan complex in Samarkand, Uzbek",
+      "vote_count": 2
+    },
+    {
+      "auto_target": "撒马尔罕",
+      "first_page": 3,
+      "observed_target": "撒马尔罕",
+      "person_shaped": false,
+      "source": "Samarkand",
+      "translator_view": "<style id='1'>R</style> Intricate interior details of the Tilya-Kori Madrasa on the Registan complex in Samarkand, Uzbek",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "沙特阿拉伯",
+      "candidates": [
+        "Saudi Arabia"
+      ],
+      "first_page": 3,
+      "is_person": false,
+      "observed_target": "沙特阿拉伯",
+      "origin": "name_harvest",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Saudi Arabia",
+      "translator_view": null,
+      "vote_count": 4
+    },
+    {
+      "auto_target": "叙利亚",
+      "first_page": 3,
+      "observed_target": "叙利亚",
+      "person_shaped": false,
+      "source": "Syria",
+      "translator_view": "<style id='1'>beloW</style> Workers lay rails near Tabuk in 1906. Construc- tion of the Hijaz Railway required thousands",
+      "vote_count": 5
+    },
+    {
+      "auto_target": "Tilya-Kori神学院",
+      "candidates": [
+        "Tilya-Kori Madrasa"
+      ],
+      "first_page": 3,
+      "is_person": false,
+      "observed_target": "Tilya-Kori神学院",
+      "origin": "name_harvest",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Tilya-Kori Madrasa",
+      "translator_view": "<style id='1'>R</style> Intricate interior details of the Tilya-Kori Madrasa on the Registan complex in Samarkand, Uzbek",
+      "vote_count": 2
+    },
+    {
+      "auto_target": "美国",
+      "candidates": [
+        "United States"
+      ],
+      "first_page": 3,
+      "is_person": false,
+      "observed_target": "美国",
+      "origin": "name_harvest",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "United States",
+      "translator_view": "<style id='1'>WRITTEN BY </style>RAMIN GANESHRAM, <style id='3'>ILLUSTRATED BY </style>IVY JOHNSON As the United States ",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "乌兹别克斯坦",
+      "first_page": 3,
+      "observed_target": "乌兹别克斯坦",
+      "person_shaped": false,
+      "source": "Uzbekistan",
+      "translator_view": "<style id='1'>R</style> Intricate interior details of the Tilya-Kori Madrasa on the Registan complex in Samarkand, Uzbek",
+      "vote_count": 2
+    },
+    {
+      "auto_target": "西非",
+      "candidates": [
+        "West African"
+      ],
+      "first_page": 3,
+      "is_person": false,
+      "observed_target": "西非",
+      "origin": "name_harvest",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "West African",
+      "translator_view": "<style id='1'>Banjo on the Atlas </style><style id='3'>WRITTEN BY </style>BANNING EYRE How did an instrument with West A",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "AramcoWorld",
+      "first_page": 4,
+      "observed_target": "AramcoWorld",
+      "person_shaped": false,
+      "source": "ARAMCOWORLD",
+      "translator_view": "<style id='1'>30 </style>ARAMCOWORLD",
+      "vote_count": 3
+    },
+    {
+      "auto_target": "B A K H O D I R B A LTAY E V",
+      "first_page": 4,
+      "observed_target": "B A K H O D I R B A LTAY E V",
+      "person_shaped": false,
+      "source": "B A K H O D I R B A LTAY E V",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "Khakimov",
+      "first_page": 4,
+      "observed_target": "Khakimov",
+      "person_shaped": false,
+      "source": "Khakimov",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "20世纪",
+      "first_page": 5,
+      "observed_target": "20世纪",
+      "person_shaped": false,
+      "source": "20th century",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "阿尔·朱哈尼",
+      "first_page": 5,
+      "observed_target": "阿尔·朱哈尼",
+      "person_shaped": false,
+      "source": "Al Juhani",
+      "translator_view": "The ribbon of tarmac that we had started out on disappeared as the vehicle careered off-road, and Al Juhani swung us fro",
+      "vote_count": 2
+    },
+    {
+      "auto_target": "阿拉伯湾",
+      "candidates": [
+        "Arabian Gulf"
+      ],
+      "first_page": 5,
+      "is_person": false,
+      "observed_target": "阿拉伯湾",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Arabian Gulf",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "Bir Jdid",
+      "candidates": [
+        "Bir Jdid"
+      ],
+      "first_page": 5,
+      "is_person": false,
+      "observed_target": "Bir Jdid",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Bir Jdid",
+      "translator_view": "<style id='1'>opposite</style> A rail-way tunnel cuts through a steep and rocky section of the landscape 50 kilometers (",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "大马士革",
+      "first_page": 5,
+      "observed_target": "大马士革",
+      "person_shaped": false,
+      "source": "Damascus",
+      "translator_view": null,
+      "vote_count": 3
+    },
+    {
+      "auto_target": "2025年12月",
+      "first_page": 5,
+      "observed_target": "2025年12月",
+      "person_shaped": false,
+      "source": "December 2025",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "多哈",
+      "first_page": 5,
+      "observed_target": "多哈",
+      "person_shaped": false,
+      "source": "Doha",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "朝觐",
+      "first_page": 5,
+      "observed_target": "朝觐",
+      "person_shaped": false,
+      "source": "Hajj",
+      "translator_view": null,
+      "vote_count": 3
+    },
+    {
+      "auto_target": "哈拉曼高速铁路",
+      "first_page": 5,
+      "observed_target": "哈拉曼高速铁路",
+      "person_shaped": false,
+      "source": "Haramain high-speed railway",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "2026年7月/8月",
+      "first_page": 5,
+      "observed_target": "2026年7月/8月",
+      "person_shaped": false,
+      "source": "JULY / AUGUST 2026",
+      "translator_view": "<style id='1'>JULY / AUGUST 2026 </style><style id='3'> </style>33",
+      "vote_count": 3
+    },
+    {
+      "auto_target": "约旦",
+      "first_page": 5,
+      "observed_target": "约旦",
+      "person_shaped": false,
+      "source": "Jordan",
+      "translator_view": null,
+      "vote_count": 3
+    },
+    {
+      "auto_target": "麦加",
+      "first_page": 5,
+      "observed_target": "麦加",
+      "person_shaped": false,
+      "source": "Makkah",
+      "translator_view": null,
+      "vote_count": 3
+    },
+    {
+      "auto_target": "穆达拉吉",
+      "first_page": 5,
+      "observed_target": "穆达拉吉",
+      "person_shaped": false,
+      "source": "Mudarraj",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "卡塔尔",
+      "first_page": 5,
+      "observed_target": "卡塔尔",
+      "person_shaped": false,
+      "source": "Qatar",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "利雅得",
+      "first_page": 5,
+      "observed_target": "利雅得",
+      "person_shaped": false,
+      "source": "Riyadh",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "SUV",
+      "first_page": 5,
+      "observed_target": "SUV",
+      "person_shaped": false,
+      "source": "SUV",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "塔布克",
+      "first_page": 5,
+      "observed_target": "塔布克",
+      "person_shaped": false,
+      "source": "Tabuk",
+      "translator_view": "<style id='1'>beloW</style> Workers lay rails near Tabuk in 1906. Construc- tion of the Hijaz Railway required thousands",
+      "vote_count": 2
+    },
+    {
+      "auto_target": "陶菲克·阿尔·朱哈尼",
+      "candidates": [
+        "Tawfiq Al Juhani"
+      ],
+      "first_page": 5,
+      "is_person": true,
+      "observed_target": "陶菲克·阿尔·朱哈尼",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Tawfiq Al Juhani",
+      "translator_view": "<style id='1'>opposite</style> A rail-way tunnel cuts through a steep and rocky section of the landscape 50 kilometers (",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "土耳其",
+      "first_page": 5,
+      "observed_target": "土耳其",
+      "person_shaped": false,
+      "source": "Türkiye",
+      "translator_view": "modern Spain, generates often conflicting meanings at the same time— meanings actively constructed and sometimes misread",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "第一次世界大战",
+      "first_page": 5,
+      "observed_target": "第一次世界大战",
+      "person_shaped": false,
+      "source": "World War I",
+      "translator_view": null,
+      "vote_count": 2
+    },
+    {
+      "auto_target": "2024年春天",
+      "first_page": 5,
+      "observed_target": "2024年春天",
+      "person_shaped": false,
+      "source": "spring of 2024",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "2026年春天",
+      "first_page": 5,
+      "observed_target": "2026年春天",
+      "person_shaped": false,
+      "source": "spring of 2026",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "干河床",
+      "first_page": 5,
+      "observed_target": "干河床",
+      "person_shaped": false,
+      "source": "wadi",
+      "translator_view": "The ribbon of tarmac that we had started out on disappeared as the vehicle careered off-road, and Al Juhani swung us fro",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "巴尔干",
+      "first_page": 6,
+      "observed_target": "巴尔干",
+      "person_shaped": false,
+      "source": "Balkans",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "英属印度",
+      "candidates": [
+        "British India"
+      ],
+      "first_page": 6,
+      "is_person": false,
+      "observed_target": "英属印度",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "British India",
+      "translator_view": "“The most unique aspect of all was how it was funded,” Kurşun added. Abdul Hamid contributed personally, and taxes were ",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "德拉",
+      "first_page": 6,
+      "observed_target": "德拉",
+      "person_shaped": false,
+      "source": "Daraa",
+      "translator_view": "<style id='1'>beloW</style> Workers lay rails near Tabuk in 1906. Construc- tion of the Hijaz Railway required thousands",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "欧洲",
+      "first_page": 6,
+      "observed_target": "欧洲",
+      "person_shaped": false,
+      "source": "Europe",
+      "translator_view": "modern Spain, generates often conflicting meanings at the same time— meanings actively constructed and sometimes misread",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "希贾兹铁路",
+      "candidates": [
+        "HIJAZ RAILWAY"
+      ],
+      "first_page": 6,
+      "is_person": false,
+      "observed_target": "希贾兹铁路",
+      "origin": "name_harvest",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "HIJAZ RAILWAY",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "豪兰",
+      "first_page": 6,
+      "observed_target": "豪兰",
+      "person_shaped": false,
+      "source": "Hauran",
+      "translator_view": null,
+      "vote_count": 2
+    },
+    {
+      "auto_target": "伊斯坦布尔",
+      "first_page": 6,
+      "observed_target": "伊斯坦布尔",
+      "person_shaped": false,
+      "source": "Istanbul",
+      "translator_view": "modern Spain, generates often conflicting meanings at the same time— meanings actively constructed and sometimes misread",
+      "vote_count": 3
+    },
+    {
+      "auto_target": "詹姆斯·尼科尔森",
+      "candidates": [
+        "James Nicholson"
+      ],
+      "first_page": 6,
+      "is_person": true,
+      "observed_target": "詹姆斯·尼科尔森",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "James Nicholson",
+      "translator_view": "Ottoman authorities deployed thousands of mil- itary conscripts to build the railway, said Kurşun, and the landscapes in",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "地中海",
+      "candidates": [
+        "Mediterranean Sea"
+      ],
+      "first_page": 6,
+      "is_person": false,
+      "observed_target": "地中海",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Mediterranean Sea",
+      "translator_view": null,
+      "vote_count": 2
+    },
+    {
+      "auto_target": "穆斯林世界",
+      "first_page": 6,
+      "observed_target": "穆斯林世界",
+      "person_shaped": false,
+      "source": "Muslim world",
+      "translator_view": "“The most unique aspect of all was how it was funded,” Kurşun added. Abdul Hamid contributed personally, and taxes were ",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "Nicholson",
+      "first_page": 6,
+      "observed_target": "Nicholson",
+      "person_shaped": false,
+      "source": "Nicholson",
+      "translator_view": "Ottoman authorities deployed thousands of mil- itary conscripts to build the railway, said Kurşun, and the landscapes in",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "奥斯曼苏丹阿卜杜勒·哈米德二世",
+      "first_page": 6,
+      "observed_target": "奥斯曼苏丹阿卜杜勒·哈米德二世",
+      "person_shaped": false,
+      "source": "Ottoman Sultan Abdul Hamid II",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "红海",
+      "first_page": 6,
+      "observed_target": "红海",
+      "person_shaped": false,
+      "source": "Red seas",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "罗马",
+      "first_page": 6,
+      "observed_target": "罗马",
+      "person_shaped": false,
+      "source": "Roman",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "新加坡",
+      "first_page": 6,
+      "observed_target": "新加坡",
+      "person_shaped": false,
+      "source": "Singapore",
+      "translator_view": "“The most unique aspect of all was how it was funded,” Kurşun added. Abdul Hamid contributed personally, and taxes were ",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "南非",
+      "candidates": [
+        "South Africa"
+      ],
+      "first_page": 6,
+      "is_person": false,
+      "observed_target": "南非",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "South Africa",
+      "translator_view": "“The most unique aspect of all was how it was funded,” Kurşun added. Abdul Hamid contributed personally, and taxes were ",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "希贾兹铁路",
+      "first_page": 6,
+      "observed_target": "希贾兹铁路",
+      "person_shaped": false,
+      "source": "The Hejaz Railway",
+      "translator_view": "Ottoman authorities deployed thousands of mil- itary conscripts to build the railway, said Kurşun, and the landscapes in",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "亚尔穆克山谷",
+      "candidates": [
+        "Yarmouk Valley"
+      ],
+      "first_page": 6,
+      "is_person": false,
+      "observed_target": "亚尔穆克山谷",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Yarmouk Valley",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "泽克里亚·库尔顺",
+      "candidates": [
+        "Zekeriya Kurşun"
+      ],
+      "first_page": 6,
+      "is_person": true,
+      "observed_target": "泽克里亚·库尔顺",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Zekeriya Kurşun",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "宗教基金",
+      "first_page": 6,
+      "observed_target": "宗教基金",
+      "person_shaped": false,
+      "source": "waqf",
+      "translator_view": "“The most unique aspect of all was how it was funded,” Kurşun added. Abdul Hamid contributed personally, and taxes were ",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "1925年",
+      "first_page": 7,
+      "observed_target": "1925年",
+      "person_shaped": false,
+      "source": "1925",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "20世纪60年代",
+      "first_page": 7,
+      "observed_target": "20世纪60年代",
+      "person_shaped": false,
+      "source": "1960s",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "2023年",
+      "first_page": 7,
+      "observed_target": "2023年",
+      "person_shaped": false,
+      "source": "2023",
+      "translator_view": "<style id='1'>Islamic Ecumene: Comparing Muslim Societies</style>David S. Powers and Eric Tagliacozzo, eds. Cornell Univ",
+      "vote_count": 2
+    },
+    {
+      "auto_target": "乌拉",
+      "first_page": 7,
+      "observed_target": "乌拉",
+      "person_shaped": false,
+      "source": "AlUla",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "安曼",
+      "first_page": 7,
+      "observed_target": "安曼",
+      "person_shaped": false,
+      "source": "Amman",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "地理学年鉴",
+      "candidates": [
+        "Annales de Géographie"
+      ],
+      "first_page": 7,
+      "is_person": false,
+      "observed_target": "地理学年鉴",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Annales de Géographie",
+      "translator_view": "Still, it was a great success for the ailing em- pire. In 1909 French explorer Charles-Eudes Bonin noted admiringly in t",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "阿拉伯语",
+      "first_page": 7,
+      "observed_target": "阿拉伯语",
+      "person_shaped": false,
+      "source": "Arabic",
+      "translator_view": "Historian James Pickett’s study of 19th-century Bukharan <style id='1'>madrasa</style>s, for example, is essential readi",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "夏尔-厄德·博南",
+      "candidates": [
+        "Charles-Eudes Bonin"
+      ],
+      "first_page": 7,
+      "is_person": true,
+      "observed_target": "夏尔-厄德·博南",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Charles-Eudes Bonin",
+      "translator_view": "Still, it was a great success for the ailing em- pire. In 1909 French explorer Charles-Eudes Bonin noted admiringly in t",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "法语",
+      "first_page": 7,
+      "observed_target": "法语",
+      "person_shaped": false,
+      "source": "French",
+      "translator_view": "Still, it was a great success for the ailing em- pire. In 1909 French explorer Charles-Eudes Bonin noted admiringly in t",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "希贾兹火车站",
+      "candidates": [
+        "Hijaz Railway Station"
+      ],
+      "first_page": 7,
+      "is_person": false,
+      "observed_target": "希贾兹火车站",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Hijaz Railway Station",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "马夫拉克",
+      "first_page": 7,
+      "observed_target": "马夫拉克",
+      "person_shaped": false,
+      "source": "Mafraq",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "奥斯曼帝国",
+      "candidates": [
+        "Ottoman Empire"
+      ],
+      "first_page": 7,
+      "is_person": false,
+      "observed_target": "奥斯曼帝国",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Ottoman Empire",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "阿蒙涅姆赫特三世",
+      "candidates": [
+        "Amenemhat III"
+      ],
+      "first_page": 8,
+      "is_person": true,
+      "observed_target": "阿蒙涅姆赫特三世",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Amenemhat III",
+      "translator_view": "<style id='1'>In </style><style id='3'>The First Female Pharoah: Sobekneferu, Goddess of the Seven Stars</style><style i",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "安达卢西亚伊斯兰特色",
+      "first_page": 8,
+      "observed_target": "安达卢西亚伊斯兰特色",
+      "person_shaped": false,
+      "source": "Andalusian Islamic features",
+      "translator_view": "modern Spain, generates often conflicting meanings at the same time— meanings actively constructed and sometimes misread",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "安德鲁·柯林斯",
+      "candidates": [
+        "Andrew Collins"
+      ],
+      "first_page": 8,
+      "is_person": true,
+      "observed_target": "安德鲁·柯林斯",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Andrew Collins",
+      "translator_view": "<style id='1'>In </style><style id='3'>The First Female Pharoah: Sobekneferu, Goddess of the Seven Stars</style><style i",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "阿拉伯北非",
+      "candidates": [
+        "Arab North Africa"
+      ],
+      "first_page": 8,
+      "is_person": false,
+      "observed_target": "阿拉伯北非",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Arab North Africa",
+      "translator_view": "modern Spain, generates often conflicting meanings at the same time— meanings actively constructed and sometimes misread",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "中世纪的建筑与情感",
+      "first_page": 8,
+      "observed_target": "中世纪的建筑与情感",
+      "person_shaped": false,
+      "source": "Architecture and Affect in the Middle Ages",
+      "translator_view": "From the opening pages, Paul Binski’s <style id='1'>Architecture and </style><style id='3'>Aff</style><style id='5'>ect ",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "Bear & Company",
+      "first_page": 8,
+      "observed_target": "Bear & Company",
+      "person_shaped": false,
+      "source": "Bear & Company",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "埃德赫姆·埃尔德姆",
+      "candidates": [
+        "Edhem Eldem"
+      ],
+      "first_page": 8,
+      "is_person": true,
+      "observed_target": "埃德赫姆·埃尔德姆",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Edhem Eldem",
+      "translator_view": "modern Spain, generates often conflicting meanings at the same time— meanings actively constructed and sometimes misread",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "爱丁堡大学出版社",
+      "first_page": 8,
+      "observed_target": "爱丁堡大学出版社",
+      "person_shaped": false,
+      "source": "Edinburgh University Press",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "伊利",
+      "first_page": 8,
+      "observed_target": "伊利",
+      "person_shaped": false,
+      "source": "Ely",
+      "translator_view": "it actively shaped how it was perceived and felt. Drawing on classical, biblical and medieval texts, Binski, a professor",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "法尤姆绿洲",
+      "candidates": [
+        "Fayum Oasis"
+      ],
+      "first_page": 8,
+      "is_person": false,
+      "observed_target": "法尤姆绿洲",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Fayum Oasis",
+      "translator_view": "<style id='1'>In </style><style id='3'>The First Female Pharoah: Sobekneferu, Goddess of the Seven Stars</style><style i",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "格拉纳达",
+      "first_page": 8,
+      "observed_target": "格拉纳达",
+      "person_shaped": false,
+      "source": "Granada",
+      "translator_view": "<style id='1'>The Alhambra at the Crossroads of History</style> shows how the 13th-century Andalusi palace complex in Gr",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "圣索菲亚大教堂",
+      "candidates": [
+        "Hagia Sophia"
+      ],
+      "first_page": 8,
+      "is_person": false,
+      "observed_target": "圣索菲亚大教堂",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Hagia Sophia",
+      "translator_view": "it actively shaped how it was perceived and felt. Drawing on classical, biblical and medieval texts, Binski, a professor",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "哈瓦拉",
+      "first_page": 8,
+      "observed_target": "哈瓦拉",
+      "person_shaped": false,
+      "source": "Hawara",
+      "translator_view": "<style id='1'>In </style><style id='3'>The First Female Pharoah: Sobekneferu, Goddess of the Seven Stars</style><style i",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "希罗多德",
+      "first_page": 8,
+      "observed_target": "希罗多德",
+      "person_shaped": false,
+      "source": "Herodotus",
+      "translator_view": "<style id='1'>In </style><style id='3'>The First Female Pharoah: Sobekneferu, Goddess of the Seven Stars</style><style i",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "让·德·让顿",
+      "candidates": [
+        "Jean de Jandun"
+      ],
+      "first_page": 8,
+      "is_person": true,
+      "observed_target": "让·德·让顿",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Jean de Jandun",
+      "translator_view": "it actively shaped how it was perceived and felt. Drawing on classical, biblical and medieval texts, Binski, a professor",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "黎凡特",
+      "first_page": 8,
+      "observed_target": "黎凡特",
+      "person_shaped": false,
+      "source": "Levant",
+      "translator_view": "modern Spain, generates often conflicting meanings at the same time— meanings actively constructed and sometimes misread",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "马格里布",
+      "first_page": 8,
+      "observed_target": "马格里布",
+      "person_shaped": false,
+      "source": "Maghreb",
+      "translator_view": "modern Spain, generates often conflicting meanings at the same time— meanings actively constructed and sometimes misread",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "中世纪建筑",
+      "first_page": 8,
+      "observed_target": "中世纪建筑",
+      "person_shaped": false,
+      "source": "Medieval architecture",
+      "translator_view": "From the opening pages, Paul Binski’s <style id='1'>Architecture and </style><style id='3'>Aff</style><style id='5'>ect ",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "中王国",
+      "candidates": [
+        "Middle Kingdom"
+      ],
+      "first_page": 8,
+      "is_person": false,
+      "observed_target": "中王国",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Middle Kingdom",
+      "translator_view": "<style id='1'>In </style><style id='3'>The First Female Pharoah: Sobekneferu, Goddess of the Seven Stars</style><style i",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "摩洛哥外交官",
+      "first_page": 8,
+      "observed_target": "摩洛哥外交官",
+      "person_shaped": false,
+      "source": "Moroccan diplomat",
+      "translator_view": "modern Spain, generates often conflicting meanings at the same time— meanings actively constructed and sometimes misread",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "尼托克里斯",
+      "first_page": 8,
+      "observed_target": "尼托克里斯",
+      "person_shaped": false,
+      "source": "Nitocris",
+      "translator_view": "<style id='1'>In </style><style id='3'>The First Female Pharoah: Sobekneferu, Goddess of the Seven Stars</style><style i",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "巴黎圣母院",
+      "candidates": [
+        "Notre Dame Cathedral"
+      ],
+      "first_page": 8,
+      "is_person": false,
+      "observed_target": "巴黎圣母院",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Notre Dame Cathedral",
+      "translator_view": "it actively shaped how it was perceived and felt. Drawing on classical, biblical and medieval texts, Binski, a professor",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "奥斯曼土耳其",
+      "candidates": [
+        "Ottoman Türkiye"
+      ],
+      "first_page": 8,
+      "is_person": false,
+      "observed_target": "奥斯曼土耳其",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Ottoman Türkiye",
+      "translator_view": "modern Spain, generates often conflicting meanings at the same time— meanings actively constructed and sometimes misread",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "保罗·宾斯基",
+      "candidates": [
+        "Paul Binski"
+      ],
+      "first_page": 8,
+      "is_person": true,
+      "observed_target": "保罗·宾斯基",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Paul Binski",
+      "translator_view": "From the opening pages, Paul Binski’s <style id='1'>Architecture and </style><style id='3'>Aff</style><style id='5'>ect ",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "俄罗斯套娃",
+      "first_page": 8,
+      "observed_target": "俄罗斯套娃",
+      "person_shaped": false,
+      "source": "Russian matryoshka dolls",
+      "translator_view": "modern Spain, generates often conflicting meanings at the same time— meanings actively constructed and sometimes misread",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "索贝克",
+      "first_page": 8,
+      "observed_target": "索贝克",
+      "person_shaped": false,
+      "source": "Sobek",
+      "translator_view": "<style id='1'>In </style><style id='3'>The First Female Pharoah: Sobekneferu, Goddess of the Seven Stars</style><style i",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "索贝克涅费鲁",
+      "first_page": 8,
+      "observed_target": "索贝克涅费鲁",
+      "person_shaped": false,
+      "source": "Sobekneferu",
+      "translator_view": "<style id='1'>In </style><style id='3'>The First Female Pharoah: Sobekneferu, Goddess of the Seven Stars</style><style i",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "西班牙",
+      "first_page": 8,
+      "observed_target": "西班牙",
+      "person_shaped": false,
+      "source": "Spain",
+      "translator_view": "modern Spain, generates often conflicting meanings at the same time— meanings actively constructed and sometimes misread",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "西班牙东方学家",
+      "candidates": [
+        "Spanish Orientalists"
+      ],
+      "first_page": 8,
+      "is_person": false,
+      "observed_target": "西班牙东方学家",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Spanish Orientalists",
+      "translator_view": "modern Spain, generates often conflicting meanings at the same time— meanings actively constructed and sometimes misread",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "阿尔罕布拉宫",
+      "candidates": [
+        "Th Alhambra"
+      ],
+      "first_page": 8,
+      "is_person": false,
+      "observed_target": "阿尔罕布拉宫",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Th Alhambra",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "第一位女性法老",
+      "first_page": 8,
+      "observed_target": "第一位女性法老",
+      "person_shaped": false,
+      "source": "The First Female Pharoah",
+      "translator_view": "<style id='1'>In </style><style id='3'>The First Female Pharoah: Sobekneferu, Goddess of the Seven Stars</style><style i",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "加州大学出版社",
+      "first_page": 8,
+      "observed_target": "加州大学出版社",
+      "person_shaped": false,
+      "source": "University of California Press",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "剑桥大学",
+      "first_page": 8,
+      "observed_target": "剑桥大学",
+      "person_shaped": false,
+      "source": "University of Cambridge",
+      "translator_view": "it actively shaped how it was perceived and felt. Drawing on classical, biblical and medieval texts, Binski, a professor",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "上埃及和下埃及",
+      "first_page": 8,
+      "observed_target": "上埃及和下埃及",
+      "person_shaped": false,
+      "source": "Upper and Lower Egypt",
+      "translator_view": "<style id='1'>In </style><style id='3'>The First Female Pharoah: Sobekneferu, Goddess of the Seven Stars</style><style i",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "圣母玛利亚",
+      "candidates": [
+        "Virgin Mary"
+      ],
+      "first_page": 8,
+      "is_person": false,
+      "observed_target": "圣母玛利亚",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Virgin Mary",
+      "translator_view": "it actively shaped how it was perceived and felt. Drawing on classical, biblical and medieval texts, Binski, a professor",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "温彻斯特",
+      "first_page": 8,
+      "observed_target": "温彻斯特",
+      "person_shaped": false,
+      "source": "Winchester",
+      "translator_view": "it actively shaped how it was perceived and felt. Drawing on classical, biblical and medieval texts, Binski, a professor",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "19世纪布哈拉经学院",
+      "first_page": 9,
+      "observed_target": "19世纪布哈拉经学院",
+      "person_shaped": false,
+      "source": "19th-century Bukharan madrasas",
+      "translator_view": "Historian James Pickett’s study of 19th-century Bukharan <style id='1'>madrasa</style>s, for example, is essential readi",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "ADIL ZHAN ANAY",
+      "first_page": 9,
+      "observed_target": "ADIL ZHAN ANAY",
+      "person_shaped": false,
+      "source": "ADIL ZHAN ANAY",
+      "translator_view": "<style id='1'>Reviewed by </style>ADIL ZHAN ANAY",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "阿尔及利亚",
+      "first_page": 9,
+      "observed_target": "阿尔及利亚",
+      "person_shaped": false,
+      "source": "Algeria",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "阿拉伯逻辑",
+      "first_page": 9,
+      "observed_target": "阿拉伯逻辑",
+      "person_shaped": false,
+      "source": "Arabic logic",
+      "translator_view": "Historian James Pickett’s study of 19th-century Bukharan <style id='1'>madrasa</style>s, for example, is essential readi",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "本杰明·克劳德·布劳尔",
+      "candidates": [
+        "Benjamin Claude Brower"
+      ],
+      "first_page": 9,
+      "is_person": true,
+      "observed_target": "本杰明·克劳德·布劳尔",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Benjamin Claude Brower",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "康奈尔大学",
+      "first_page": 9,
+      "observed_target": "康奈尔大学",
+      "person_shaped": false,
+      "source": "Cornell University",
+      "translator_view": "<style id='1'>Islamic Ecumene: Comparing Muslim Societies</style>David S. Powers and Eric Tagliacozzo, eds. Cornell Univ",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "康奈尔大学出版社",
+      "first_page": 9,
+      "observed_target": "康奈尔大学出版社",
+      "person_shaped": false,
+      "source": "Cornell University Press",
+      "translator_view": "<style id='1'>Islamic Ecumene: Comparing Muslim Societies</style>David S. Powers and Eric Tagliacozzo, eds. Cornell Univ",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "David S. Powers",
+      "first_page": 9,
+      "observed_target": "David S. Powers",
+      "person_shaped": false,
+      "source": "David S. Powers",
+      "translator_view": "<style id='1'>Islamic Ecumene: Comparing Muslim Societies</style>David S. Powers and Eric Tagliacozzo, eds. Cornell Univ",
+      "vote_count": 2
+    },
+    {
+      "auto_target": "埃里克·塔利亚科佐",
+      "candidates": [
+        "Eric Tagliacozzo"
+      ],
+      "first_page": 9,
+      "is_person": true,
+      "observed_target": "埃里克·塔利亚科佐",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Eric Tagliacozzo",
+      "translator_view": "<style id='1'>Islamic Ecumene: Comparing Muslim Societies</style>David S. Powers and Eric Tagliacozzo, eds. Cornell Univ",
+      "vote_count": 2
+    },
+    {
+      "auto_target": "欧洲政治思想",
+      "first_page": 9,
+      "observed_target": "欧洲政治思想",
+      "person_shaped": false,
+      "source": "European political thought",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "伊斯兰教会",
+      "candidates": [
+        "Islamic Ecumene"
+      ],
+      "first_page": 9,
+      "is_person": false,
+      "observed_target": "伊斯兰教会",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Islamic Ecumene",
+      "translator_view": "As these essays intersect, a cen- tral insight emerges: Muslim societies do not flow as a single river but braids as a w",
+      "vote_count": 2
+    },
+    {
+      "auto_target": "伊斯兰政体",
+      "candidates": [
+        "Islamic Polity"
+      ],
+      "first_page": 9,
+      "is_person": false,
+      "observed_target": "伊斯兰政体",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Islamic Polity",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "伊斯兰历史",
+      "first_page": 9,
+      "observed_target": "伊斯兰历史",
+      "person_shaped": false,
+      "source": "Islamic history",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "詹姆斯·皮克特",
+      "candidates": [
+        "James Pickett"
+      ],
+      "first_page": 9,
+      "is_person": true,
+      "observed_target": "詹姆斯·皮克特",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "James Pickett",
+      "translator_view": "Historian James Pickett’s study of 19th-century Bukharan <style id='1'>madrasa</style>s, for example, is essential readi",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "穆斯林",
+      "first_page": 9,
+      "observed_target": "穆斯林",
+      "person_shaped": false,
+      "source": "Muslims",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "波斯",
+      "first_page": 9,
+      "observed_target": "波斯",
+      "person_shaped": false,
+      "source": "Persian",
+      "translator_view": "Historian James Pickett’s study of 19th-century Bukharan <style id='1'>madrasa</style>s, for example, is essential readi",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "波斯文学文化",
+      "first_page": 9,
+      "observed_target": "波斯文学文化",
+      "person_shaped": false,
+      "source": "Persian literary culture",
+      "translator_view": "Historian James Pickett’s study of 19th-century Bukharan <style id='1'>madrasa</style>s, for example, is essential readi",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "Powers",
+      "first_page": 9,
+      "observed_target": "Powers",
+      "person_shaped": false,
+      "source": "Powers",
+      "translator_view": "<style id='1'>Islamic Ecumene: Comparing Muslim Societies</style>David S. Powers and Eric Tagliacozzo, eds. Cornell Univ",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "Tagliacozzo",
+      "first_page": 9,
+      "observed_target": "Tagliacozzo",
+      "person_shaped": false,
+      "source": "Tagliacozzo",
+      "translator_view": "<style id='1'>Islamic Ecumene: Comparing Muslim Societies</style>David S. Powers and Eric Tagliacozzo, eds. Cornell Univ",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "突厥",
+      "first_page": 9,
+      "observed_target": "突厥",
+      "person_shaped": false,
+      "source": "Turkic",
+      "translator_view": "Historian James Pickett’s study of 19th-century Bukharan <style id='1'>madrasa</style>s, for example, is essential readi",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "艾巴尔申·阿赫梅特卡利",
+      "candidates": [
+        "Aibarshyn Akhmetkali"
+      ],
+      "first_page": null,
+      "is_person": true,
+      "observed_target": "艾巴尔申·阿赫梅特卡利",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Aibarshyn Akhmetkali",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "阿勒乌拉",
+      "first_page": null,
+      "observed_target": "阿勒乌拉",
+      "person_shaped": false,
+      "source": "Al-Ula",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "班宁·艾尔",
+      "candidates": [
+        "Banning Eyre"
+      ],
+      "first_page": 3,
+      "is_person": true,
+      "observed_target": "班宁·艾尔",
+      "origin": "name_harvest",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Banning Eyre",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "达尼尔·乌斯马诺夫",
+      "candidates": [
+        "Daniil Usmanov"
+      ],
+      "first_page": null,
+      "is_person": true,
+      "observed_target": "达尼尔·乌斯马诺夫",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Daniil Usmanov",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "艾维·约翰逊",
+      "candidates": [
+        "Ivy Johnson"
+      ],
+      "first_page": 3,
+      "is_person": true,
+      "observed_target": "艾维·约翰逊",
+      "origin": "name_harvest",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Ivy Johnson",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "希尔贝特·萨姆拉",
+      "candidates": [
+        "Khir-bet Samra"
+      ],
+      "first_page": null,
+      "is_person": false,
+      "observed_target": "希尔贝特·萨姆拉",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Khir-bet Samra",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "利昂·麦卡伦",
+      "candidates": [
+        "Leon McCarron"
+      ],
+      "first_page": null,
+      "is_person": true,
+      "observed_target": "利昂·麦卡伦",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Leon McCarron",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "麦地那",
+      "first_page": null,
+      "observed_target": "麦地那",
+      "person_shaped": false,
+      "source": "Ma-dinah",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "穆罕默德·达拉克乔奥卢",
+      "candidates": [
+        "Mehmet Darakçıoğlu"
+      ],
+      "first_page": null,
+      "is_person": true,
+      "observed_target": "穆罕默德·达拉克乔奥卢",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Mehmet Darakçıoğlu",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "奥斯曼翻译局",
+      "first_page": null,
+      "observed_target": "奥斯曼翻译局",
+      "person_shaped": false,
+      "source": "Ottoman Bureau of Translation",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "拉明·加内什拉姆",
+      "candidates": [
+        "Ramin Ganeshram"
+      ],
+      "first_page": null,
+      "is_person": true,
+      "observed_target": "拉明·加内什拉姆",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Ramin Ganeshram",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "乌鲁伯格神学院",
+      "candidates": [
+        "Ulugh Beg Madrasa"
+      ],
+      "first_page": null,
+      "is_person": false,
+      "observed_target": "乌鲁伯格神学院",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Ulugh Beg Madrasa",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "法学",
+      "first_page": null,
+      "observed_target": "法学",
+      "person_shaped": false,
+      "source": "jurisprudence",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": null,
+      "candidates": [
+        "Contracts Support"
+      ],
+      "first_page": 2,
+      "is_person": false,
+      "observed_target": null,
+      "origin": "name_harvest",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Contracts Support",
+      "translator_view": "<style id='1'>Contracts Support:</style>Kymani J. Hill and Nicole E. Martinez<style id='3'>Print design: </style><style ",
+      "vote_count": 1
+    },
+    {
+      "auto_target": null,
+      "candidates": [
+        "Martinez Print"
+      ],
+      "first_page": 2,
+      "is_person": false,
+      "observed_target": null,
+      "origin": "name_harvest",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Martinez Print",
+      "translator_view": "<style id='1'>Contracts Support:</style>Kymani J. Hill and Nicole E. Martinez<style id='3'>Print design: </style><style ",
+      "vote_count": 1
+    },
+    {
+      "auto_target": null,
+      "candidates": [
+        "Public Affairs"
+      ],
+      "first_page": 2,
+      "is_person": false,
+      "observed_target": null,
+      "origin": "name_harvest",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Public Affairs",
+      "translator_view": "Publisher: <style id='1'>Aramco Americas Company</style><style id='3'>President and CEO: </style><style id='5'>Ahmed AL-",
+      "vote_count": 1
+    },
+    {
+      "auto_target": null,
+      "candidates": [
+        "RR Donnelley"
+      ],
+      "first_page": 2,
+      "is_person": false,
+      "observed_target": null,
+      "origin": "name_harvest",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "RR Donnelley",
+      "translator_view": "<style id='1'>Contracts Support:</style>Kymani J. Hill and Nicole E. Martinez<style id='3'>Print design: </style><style ",
+      "vote_count": 1
+    },
+    {
+      "auto_target": null,
+      "candidates": [
+        "Wetmore Web"
+      ],
+      "first_page": 2,
+      "is_person": false,
+      "observed_target": null,
+      "origin": "name_harvest",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Wetmore Web",
+      "translator_view": "<style id='1'>Contracts Support:</style>Kymani J. Hill and Nicole E. Martinez<style id='3'>Print design: </style><style ",
+      "vote_count": 1
+    },
+    {
+      "auto_target": null,
+      "candidates": [
+        "Author’s Corner"
+      ],
+      "first_page": 3,
+      "is_person": false,
+      "observed_target": null,
+      "origin": "name_harvest",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Author’s Corner",
+      "translator_view": "<style id='1'>2 </style><style id='3'>FirstLook</style>{v5}<style id='6'>Flavors </style>{v8}<style id='9'>Q&A </style>{",
+      "vote_count": 1
+    },
+    {
+      "auto_target": null,
+      "candidates": [
+        "DANIIL USM"
+      ],
+      "first_page": 3,
+      "is_person": false,
+      "observed_target": null,
+      "origin": "name_harvest",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "DANIIL USM",
+      "translator_view": "<style id='1'>WRITTEN BY </style>AIBARSHYN AKHMETKALI, <style id='3'>PHOTOGRAPHED BY </style>DANIIL USMANOV With earthqu",
+      "vote_count": 1
+    },
+    {
+      "auto_target": null,
+      "candidates": [
+        "Early America’s Love"
+      ],
+      "first_page": 3,
+      "is_person": false,
+      "observed_target": null,
+      "origin": "name_harvest",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Early America’s Love",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": null,
+      "candidates": [
+        "FRONT COVE"
+      ],
+      "first_page": 3,
+      "is_person": false,
+      "observed_target": null,
+      "origin": "name_harvest",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "FRONT COVE",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": null,
+      "candidates": [
+        "Safeguarding Samarkand’s Monuments"
+      ],
+      "first_page": 3,
+      "is_person": false,
+      "observed_target": null,
+      "origin": "name_harvest",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Safeguarding Samarkand’s Monuments",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": null,
+      "candidates": [
+        "What’s Online"
+      ],
+      "first_page": 3,
+      "is_person": false,
+      "observed_target": null,
+      "origin": "name_harvest",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "What’s Online",
+      "translator_view": "<style id='1'>2 </style><style id='3'>FirstLook</style>{v5}<style id='6'>Flavors </style>{v8}<style id='9'>Q&A </style>{",
+      "vote_count": 1
+    }
+  ]
+}

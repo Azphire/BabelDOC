@@ -1,0 +1,32 @@
+{
+  "closers": [
+    ")",
+    "）"
+  ],
+  "max_span_chars": 40,
+  "openers": [
+    "(",
+    "（"
+  ],
+  "pages": 9,
+  "paragraphs": [
+    {
+      "after": "这些历史遗迹还面临着来自暴雨和其他因素导致的湿气积聚以及材料自然老化的持续威胁。像Khakimov这样的保护主义者会持续监测这些建筑，常常寻找那些游客永远不会注意到的微妙变化。",
+      "before": "这些历史遗迹还面临着来自暴雨和其他因素导致的湿气积聚以及材料自然老化的持续威胁。像Khakimov（Khakimov）这样的保护主义者会持续监测这些建筑，常常寻找那些游客永远不会注意到的微妙变化。",
+      "debug_id": "6PRi3",
+      "page": 4,
+      "reference": "p4#1",
+      "removed_compositions": 1,
+      "removed_unicode": 1,
+      "spans": [
+        "Khakimov"
+      ]
+    }
+  ],
+  "switch": "magazine_paren_dedup",
+  "totals": {
+    "paragraphs_folded": 1,
+    "spans_removed": 1,
+    "unicode_spans_removed": 1
+  }
+}

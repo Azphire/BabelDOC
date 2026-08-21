@@ -77,6 +77,7 @@ from pathlib import Path
 
 from babeldoc.format.pdf.document_il import il_version_1
 from babeldoc.format.pdf.document_il.utils.layout_helper import get_char_unicode_string
+from babeldoc.magazine import source_audit
 from babeldoc.magazine.line_split import SPLITTABLE
 from babeldoc.magazine.line_split import character_union
 from babeldoc.magazine.line_split import composition_kind
@@ -108,8 +109,23 @@ POLICY_FLAGS_KEY = "policy_flags"
 LAYOUT_LABELS_KEY = "stitch_layout_labels"
 TERMINATORS_KEY = "sentence_terminators"
 CLOSING_MARKS_KEY = "closing_marks"
+DESCRIPTION_KEY = "description"
 RULES_KEY = "rules"
 SIDECAR_FIELDS_KEY = "sidecar_fields"
+
+# What may still run on a page whose lines are records, what lets it, and which
+# audit classes it may act on. The inline rule works inside one line band and
+# cannot reach across a record boundary; the vertical rule can, which is why the
+# narrowing is by rule rather than by page.
+DECLARED_RULES_KEY = "declared_page_rules"
+DECLARED_SWITCH_KEY = "declared_page_switch"
+DECLARED_CLASSES_KEY = "declared_page_classes"
+BLANK_CLASSES_KEY = "duplicate_blank_classes"
+
+# Keys of this configuration that are neither a bounded number nor a closed
+# vocabulary. Declared here rather than listed in whatever scans the file, so a
+# structural key added later is one every reader already knows about.
+_STRUCTURAL_KEYS = (DESCRIPTION_KEY, DECLARED_SWITCH_KEY)
 
 # How a merged paragraph is named after the paragraph it was merged into: it is
 # that paragraph, so it keeps its identity and nothing is minted.
@@ -119,6 +135,9 @@ _VOCABULARIES = (
     TERMINATORS_KEY,
     CLOSING_MARKS_KEY,
     RULES_KEY,
+    DECLARED_RULES_KEY,
+    DECLARED_CLASSES_KEY,
+    BLANK_CLASSES_KEY,
     SIDECAR_FIELDS_KEY,
 )
 
@@ -145,6 +164,10 @@ class StitchConfig:
     terminators: tuple[str, ...]
     closing_marks: tuple[str, ...]
     rules: tuple[str, ...]
+    declared_page_rules: tuple[str, ...]
+    declared_page_switch: str
+    declared_page_classes: frozenset[str]
+    blank_classes: frozenset[str]
     sidecar_fields: tuple[str, ...]
 
     def declared(self, policy: dict | None) -> bool:
@@ -161,8 +184,25 @@ def _require(condition: bool, message: str) -> None:
 
 def parse_stitch_config(raw: dict, source: str) -> StitchConfig:
     """Validate one configuration mapping into the policy it declares."""
+    # The switch is a name rather than a bound, so it is read here rather than
+    # by the bounded validator, which admits numbers and vocabularies only.
+    switch = raw.get(DECLARED_SWITCH_KEY)
+    _require(
+        isinstance(switch, str) and switch and switch.strip() == switch,
+        f"{source}: {DECLARED_SWITCH_KEY} must name the run attribute that lets "
+        f"a declared page be stitched",
+    )
     try:
-        parameters = dict(validate_bounded_config(raw, CONFIG_PATH))
+        parameters = dict(
+            validate_bounded_config(
+                {
+                    key: value
+                    for key, value in raw.items()
+                    if key != DECLARED_SWITCH_KEY
+                },
+                CONFIG_PATH,
+            )
+        )
     except ConfigError as exc:
         raise FragmentStitchError(str(exc)) from exc
 
@@ -176,6 +216,30 @@ def parse_stitch_config(raw: dict, source: str) -> StitchConfig:
         f"under {sorted((RULE_INLINE, RULE_VERTICAL, RULE_INITIAL))}",
     )
 
+    declared_rules = tuple(parameters[DECLARED_RULES_KEY])
+    outside = sorted(set(declared_rules) - set(rules))
+    _require(
+        not outside,
+        f"{source}: {DECLARED_RULES_KEY} names {outside}, which {RULES_KEY} "
+        f"does not admit",
+    )
+    both = sorted(
+        set(parameters[DECLARED_CLASSES_KEY]) & set(parameters[BLANK_CLASSES_KEY])
+    )
+    _require(
+        not both,
+        f"{source}: {both} are named by both {DECLARED_CLASSES_KEY} and "
+        f"{BLANK_CLASSES_KEY}, which leaves it undecided which repair they take",
+    )
+    unimplemented = sorted(
+        (set(parameters[DECLARED_CLASSES_KEY]) | set(parameters[BLANK_CLASSES_KEY]))
+        - set(source_audit.load_audit_config().classes)
+    )
+    _require(
+        not unimplemented,
+        f"{source}: {unimplemented} are not classes the source audit places a "
+        f"fragment in",
+    )
     # The flags have to be flags some page type could actually raise, or the
     # exemption is declared by a key nothing declares and would never apply.
     declared = set()
@@ -203,6 +267,10 @@ def parse_stitch_config(raw: dict, source: str) -> StitchConfig:
         terminators=tuple(parameters[TERMINATORS_KEY]),
         closing_marks=tuple(parameters[CLOSING_MARKS_KEY]),
         rules=rules,
+        declared_page_rules=declared_rules,
+        declared_page_switch=switch,
+        declared_page_classes=frozenset(parameters[DECLARED_CLASSES_KEY]),
+        blank_classes=frozenset(parameters[BLANK_CLASSES_KEY]),
         sidecar_fields=tuple(parameters[SIDECAR_FIELDS_KEY]),
     )
 
@@ -644,12 +712,36 @@ def _stitch(page, group: Group, label: int) -> dict:
     }
 
 
-def process_page(page, label: int, config: StitchConfig) -> tuple[list[dict], list[dict]]:
-    """Stitch every broken unit of one page. One record per stitch."""
+def process_page(
+    page,
+    label: int,
+    config: StitchConfig,
+    allowed_rules: tuple[str, ...] | None = None,
+    placed: dict[int, str] | None = None,
+    admits: frozenset[str] | None = None,
+    forbids: frozenset[str] | None = None,
+) -> tuple[list[dict], list[dict]]:
+    """Stitch every broken unit of one page. One record per stitch.
+
+    ``allowed_rules`` narrows which rules run. ``placed`` narrows which groups
+    may be taken on a page whose lines are records: a group is stitched there
+    only where the source audit put at least one of its members in a class that
+    admits a stitch, and put none of them in a class that does not.
+
+    At least one rather than all of them, because that is the shape of what is
+    being repaired. A broken word is a run of pieces and then the paragraph that
+    finishes it, and the finishing paragraph is not a fragment -- it is the rest
+    of the sentence. Requiring every member to be placed as a fracture would
+    refuse exactly the join the rule exists to make.
+
+    Both are None on a page nothing narrows, which is every page whose lines are
+    not records, and there the pass is what it was.
+    """
     paragraphs = list(page.pdf_paragraph or ())
     if not paragraphs:
         return [], []
     names = face_names(page)
+    rules = config.rules if allowed_rules is None else allowed_rules
 
     groups: list[Group] = []
     for index, paragraph in enumerate(paragraphs):
@@ -668,18 +760,34 @@ def process_page(page, label: int, config: StitchConfig) -> tuple[list[dict], li
     # same pair, and a census taken then would report that the shape was never
     # seen rather than what the rule read on it.
     candidates = _initial_candidates(groups, config)
-    groups = _fold_barriers(groups, accepts_inline, config, RULE_INLINE)
-    groups = _fold_barriers(groups, accepts_vertical, config, RULE_VERTICAL)
-    groups = _fold_barriers(groups, accepts_initial, config, RULE_INITIAL)
+    for rule, accept in (
+        (RULE_INLINE, accepts_inline),
+        (RULE_VERTICAL, accepts_vertical),
+        (RULE_INITIAL, accepts_initial),
+    ):
+        if rule in rules:
+            groups = _fold_barriers(groups, accept, config, rule)
 
     records = [
         _stitch(page, group, label)
         for group in groups
-        if group is not _BARRIER and len(group.members) > 1
+        if group is not _BARRIER
+        and len(group.members) > 1
+        and _audit_admits(group.members, placed, admits, forbids)
     ]
     for candidate in candidates:
         candidate["page"] = label
     return records, candidates
+
+
+def _audit_admits(members, placed, admits, forbids) -> bool:
+    """Whether the audit's placement of a group's members admits a stitch."""
+    if placed is None:
+        return True
+    classes = [placed.get(index) for index in members]
+    if any(name in (forbids or frozenset()) for name in classes if name):
+        return False
+    return any(name in (admits or frozenset()) for name in classes if name)
 
 
 _BARRIER = Group(
@@ -789,6 +897,91 @@ def write_report(working_dir: Path, record: dict) -> Path:
     return path
 
 
+def _audit_declared(translation_config, labeled_pages, resolve, config):
+    """Place the fragments of every declared page, keyed page then paragraph.
+
+    Read from the document in hand and the file it came from, so the audit is
+    of the run being made rather than of a sidecar left by another one. A page
+    the audit cannot be run over -- no input file beside the run -- places
+    nothing, and a page that places nothing is stitched nowhere, which is the
+    behaviour the switch turns off.
+    """
+    declared = [
+        (label, page)
+        for label, page in labeled_pages
+        if config.declared(resolve(page.page_kind))
+    ]
+    if not declared:
+        return {}
+    pdf = getattr(translation_config, "input_file", None)
+    if not pdf or not Path(pdf).exists():
+        logger.warning(
+            "fragment stitch: no input file beside the run, so no declared page "
+            "is audited and none is stitched"
+        )
+        return {}
+    audit_config = source_audit.load_audit_config()
+    placed: dict[int, dict[int, str]] = {}
+    records = []
+    for label, page in declared:
+        words = source_audit.independent_words(Path(pdf), label - 1)
+        found = source_audit.audit_page(page, words, label, audit_config)
+        records.extend(found)
+        for item in found:
+            index = int(item["paragraph"].split("#")[1])
+            # A paragraph appearing in more than one band is placed by the band
+            # that placed it at all: a class is evidence and undetermined is
+            # the absence of it.
+            current = placed.setdefault(label, {}).get(index)
+            if current is None or current == source_audit.CLASS_UNDETERMINED:
+                placed[label][index] = item["class"]
+    source_audit.write_report(
+        Path(translation_config.get_working_file_path(source_audit.REPORT_NAME)).parent,
+        {
+            "pages": [label for label, _page in declared],
+            "band_overlap_ratio": audit_config.band_overlap_ratio,
+            "max_fragment_chars": audit_config.max_fragment_chars,
+            "min_evidence_chars": audit_config.min_evidence_chars,
+            "counts": {
+                name: sum(1 for item in records if item["class"] == name)
+                for name in audit_config.classes
+            },
+            "fragments": records,
+        },
+    )
+    return placed
+
+
+def _blank_duplicates(page, label: int, placed: dict, config: StitchConfig):
+    """Empty the members of a layer the page holds twice.
+
+    Stitching is the wrong repair for these and blanking is the right one, by
+    the same reasoning that makes stitching right for a broken word: what the
+    page needs is for the text to appear once. The blanking is the one the
+    stitch already does to a merged away member, so a blanked paragraph keeps
+    its place and gives up its box.
+    """
+    paragraphs = list(page.pdf_paragraph or ())
+    records = []
+    for index, name in sorted(placed.items()):
+        if name not in config.blank_classes or index >= len(paragraphs):
+            continue
+        paragraph = paragraphs[index]
+        text = paragraph.unicode
+        if not text:
+            continue
+        records.append(
+            {
+                "page": label,
+                "paragraph": paragraph_reference(label, index),
+                "text": text,
+                "audit_class": name,
+            }
+        )
+        _blank(paragraph)
+    return records
+
+
 def apply(translation_config, labeled_pages, policy_of=None) -> dict | None:
     """Stitch every page of one document. None where the switch is down."""
     if not enabled(translation_config):
@@ -796,18 +989,42 @@ def apply(translation_config, labeled_pages, policy_of=None) -> dict | None:
     config = load_stitch_config()
     resolve = policy_of if policy_of is not None else load_taxonomy().policy_of
 
+    unblocked = bool(getattr(translation_config, config.declared_page_switch, False))
+    audit = (
+        _audit_declared(translation_config, labeled_pages, resolve, config)
+        if unblocked
+        else {}
+    )
+
     stitches: list[dict] = []
     pages: list[dict] = []
     candidates: list[dict] = []
+    blanked_records: list[dict] = []
     for label, page in labeled_pages:
         exempt = config.declared(resolve(page.page_kind))
-        records, found = ([], []) if exempt else process_page(page, label, config)
+        if not exempt:
+            records, found = process_page(page, label, config)
+        elif unblocked:
+            placed = audit.get(label, {})
+            records, found = process_page(
+                page,
+                label,
+                config,
+                allowed_rules=config.declared_page_rules,
+                placed=placed,
+                admits=config.declared_page_classes,
+                forbids=config.blank_classes,
+            )
+            blanked_records.extend(_blank_duplicates(page, label, placed, config))
+        else:
+            records, found = [], []
         stitches.extend(records)
         candidates.extend(found)
         pages.append(
             {
                 "page": label,
                 "exempt": exempt,
+                "unblocked": bool(exempt and unblocked),
                 "paragraphs": len(page.pdf_paragraph or ()),
                 "stitches": len(records),
                 "blanked": sum(item["members"] - 1 for item in records),
@@ -828,6 +1045,11 @@ def apply(translation_config, labeled_pages, policy_of=None) -> dict | None:
             )
 
     record = as_record(config, stitches, pages, candidates)
+    record["declared_page_switch"] = config.declared_page_switch
+    record["declared_pages_unblocked"] = unblocked
+    record["declared_page_rules"] = list(config.declared_page_rules)
+    record["duplicate_blanked"] = blanked_records
+    record["totals"]["duplicate_blanked"] = len(blanked_records)
     working_dir = Path(translation_config.get_working_file_path(REPORT_NAME)).parent
     write_report(working_dir, record)
     logger.debug(

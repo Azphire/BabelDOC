@@ -1,0 +1,1301 @@
+{
+  "decisions_file": "D:\\Codes\\BabelDOC\\reviews\\FD-en-v2.decisions.json",
+  "drop_caps": [
+    {
+      "debug_id": "JDmZx",
+      "decision": "flatten",
+      "page": 8,
+      "paragraph": "p8#9",
+      "was_candidate": true
+    }
+  ],
+  "sample": "FD-en-v2",
+  "terms": {
+    "auto_glossary_kept": 81,
+    "auto_glossary_relocated": "auto_extracted_glossary",
+    "defaulted": 72,
+    "dropped_from_auto": [
+      {
+        "auto_target": "经济理论",
+        "source": "ECONOMIC THEORY",
+        "user_target": "经济理论"
+      },
+      {
+        "auto_target": "Robert Skidelsky",
+        "source": "Robert Skidelsky",
+        "user_target": "罗伯特·斯基德尔斯基"
+      },
+      {
+        "auto_target": "贸易政策",
+        "source": "TRADE POLICY",
+        "user_target": "贸易政策"
+      },
+      {
+        "auto_target": "Jamieson Greer",
+        "source": "Jamieson Greer",
+        "user_target": "杰米森·格里尔"
+      },
+      {
+        "auto_target": "中东",
+        "source": "Middle East",
+        "user_target": "中东"
+      },
+      {
+        "auto_target": "国防支出",
+        "source": "Defense Spending",
+        "user_target": "国防支出"
+      },
+      {
+        "auto_target": "Gordon Hanson",
+        "source": "Gordon Hanson",
+        "user_target": "戈登·汉森"
+      },
+      {
+        "auto_target": "Jeffry Frieden",
+        "source": "Jeffry Frieden",
+        "user_target": "杰弗里·弗里登"
+      },
+      {
+        "auto_target": "Aaditya Mattoo",
+        "source": "Aaditya Mattoo",
+        "user_target": "阿迪亚·马图"
+      },
+      {
+        "auto_target": "Michele Ruta",
+        "source": "Michele Ruta",
+        "user_target": "米凯莱·鲁塔"
+      },
+      {
+        "auto_target": "Nicholas Mulder",
+        "source": "Nicholas Mulder",
+        "user_target": "尼古拉斯·穆尔德"
+      },
+      {
+        "auto_target": "Gita Bhatt",
+        "source": "Gita Bhatt",
+        "user_target": "吉塔·巴特"
+      },
+      {
+        "auto_target": "Nicholas Owen",
+        "source": "Nicholas Owen",
+        "user_target": "尼古拉斯·欧文"
+      },
+      {
+        "auto_target": "Andreas Adriano",
+        "source": "Andreas Adriano",
+        "user_target": "Andreas Adriano"
+      },
+      {
+        "auto_target": "Jeff Kearns",
+        "source": "Jeff Kearns",
+        "user_target": "杰夫·科恩斯"
+      },
+      {
+        "auto_target": "Peter Walker",
+        "source": "Peter Walker",
+        "user_target": "彼得·沃克"
+      },
+      {
+        "auto_target": "Andrew Stanley",
+        "source": "Andrew Stanley",
+        "user_target": "安德鲁·斯坦利"
+      },
+      {
+        "auto_target": "Marta Doroszczyk",
+        "source": "Marta Doroszczyk",
+        "user_target": "玛尔塔·多罗什奇克"
+      },
+      {
+        "auto_target": "Natalia Venegas Figueroa",
+        "source": "Natalia Venegas Figueroa",
+        "user_target": "娜塔莉亚·维内加斯·菲格罗亚"
+      },
+      {
+        "auto_target": "Amory Gethin",
+        "source": "Amory Gethin",
+        "user_target": "阿莫里·盖辛"
+      },
+      {
+        "auto_target": "Emmanuel Saez",
+        "source": "Emmanuel Saez",
+        "user_target": "埃马纽埃尔·萨兹"
+      },
+      {
+        "auto_target": "亚当·斯密",
+        "source": "Adam Smith",
+        "user_target": "亚当·斯密"
+      },
+      {
+        "auto_target": "迈克尔·斯彭斯",
+        "source": "Michael Spence",
+        "user_target": "迈克尔·斯彭斯"
+      },
+      {
+        "auto_target": "Christopher Clayton",
+        "source": "Christopher Clayton",
+        "user_target": "克里斯托弗·克莱顿"
+      },
+      {
+        "auto_target": "Matteo Maggiori",
+        "source": "Matteo Maggiori",
+        "user_target": "马泰奥·马焦里"
+      },
+      {
+        "auto_target": "Jesse Schreger",
+        "source": "Jesse Schreger",
+        "user_target": "杰西·施雷格"
+      },
+      {
+        "auto_target": "Josh Lipsky",
+        "source": "Josh Lipsky",
+        "user_target": "乔什·利普斯基"
+      },
+      {
+        "auto_target": "地缘经济胁迫",
+        "source": "Geoeconomic Coercion",
+        "user_target": "地缘经济胁迫"
+      },
+      {
+        "auto_target": "Melinda Weir",
+        "source": "Melinda Weir",
+        "user_target": "梅琳达·韦尔"
+      },
+      {
+        "auto_target": "Lucy Morales",
+        "source": "Lucy Morales",
+        "user_target": "露西·莫拉莱斯"
+      },
+      {
+        "auto_target": "Aqib Aslam",
+        "source": "Aqib Aslam",
+        "user_target": "阿基布·阿斯拉姆"
+      },
+      {
+        "auto_target": "James Astill",
+        "source": "James Astill",
+        "user_target": "詹姆斯·阿斯蒂尔"
+      },
+      {
+        "auto_target": "Helge Berger",
+        "source": "Helge Berger",
+        "user_target": "赫尔格·贝格尔"
+      },
+      {
+        "auto_target": "Yan Carriere-Swallow",
+        "source": "Yan Carriere-Swallow",
+        "user_target": "扬·卡里耶-斯沃洛"
+      },
+      {
+        "auto_target": "Oya Celasun",
+        "source": "Oya Celasun",
+        "user_target": "奥亚·切拉松"
+      },
+      {
+        "auto_target": "Martin Cihak",
+        "source": "Martin Cihak",
+        "user_target": "马丁·奇哈克"
+      },
+      {
+        "auto_target": "Rupa Duttagupta",
+        "source": "Rupa Duttagupta",
+        "user_target": "鲁帕·杜塔古普塔"
+      },
+      {
+        "auto_target": "Davide Furceri",
+        "source": "Davide Furceri",
+        "user_target": "达维德·富尔切里"
+      },
+      {
+        "auto_target": "Deniz Igan",
+        "source": "Deniz Igan",
+        "user_target": "德尼兹·伊甘"
+      },
+      {
+        "auto_target": "Subir Lall",
+        "source": "Subir Lall",
+        "user_target": "苏比尔·拉尔"
+      },
+      {
+        "auto_target": "Papa N’Diaye",
+        "source": "Papa N’Diaye",
+        "user_target": "帕帕·恩迪亚耶"
+      },
+      {
+        "auto_target": "Malhar Nabar",
+        "source": "Malhar Nabar",
+        "user_target": "马尔哈尔·纳巴尔"
+      },
+      {
+        "auto_target": "Diaa Noureldin",
+        "source": "Diaa Noureldin",
+        "user_target": "迪亚·努雷尔丁"
+      },
+      {
+        "auto_target": "Uma Ramakrishnan",
+        "source": "Uma Ramakrishnan",
+        "user_target": "乌玛·拉马克里希南"
+      },
+      {
+        "auto_target": "Christoph Rosenberg",
+        "source": "Christoph Rosenberg",
+        "user_target": "克里斯托夫·罗森伯格"
+      },
+      {
+        "auto_target": "Mauricio Soto",
+        "source": "Mauricio Soto",
+        "user_target": "毛里西奥·索托"
+      },
+      {
+        "auto_target": "Elizabeth Van Heuvelen",
+        "source": "Elizabeth Van Heuvelen",
+        "user_target": "伊丽莎白·范·赫维伦"
+      },
+      {
+        "auto_target": "Daria Zakharova",
+        "source": "Daria Zakharova",
+        "user_target": "达里娅·扎哈罗娃"
+      },
+      {
+        "auto_target": "Robert Zymek",
+        "source": "Robert Zymek",
+        "user_target": "罗伯特·齐梅克"
+      },
+      {
+        "auto_target": "克里斯塔利娜·格奥尔基耶娃",
+        "source": "Kristalina Georgieva",
+        "user_target": "克里斯塔利娜·格奥尔基耶娃"
+      },
+      {
+        "auto_target": "波斯湾",
+        "source": "Persian Gulf",
+        "user_target": "波斯湾"
+      },
+      {
+        "auto_target": "GDP增长",
+        "source": "GDP GROWTH",
+        "user_target": "GDP增长"
+      },
+      {
+        "auto_target": "总体通货膨胀",
+        "source": "HEADLINE INFLATION",
+        "user_target": "总体通货膨胀"
+      },
+      {
+        "auto_target": "拉丁美洲",
+        "source": "Latin American",
+        "user_target": "拉丁美洲"
+      },
+      {
+        "auto_target": "卡洛斯·贝塞拉",
+        "source": "Carlos Becerra",
+        "user_target": "卡洛斯·贝塞拉"
+      },
+      {
+        "auto_target": "穆罕默德·希姆谢克",
+        "source": "Mehmet Şimşek",
+        "user_target": "梅赫梅特·希姆谢克"
+      },
+      {
+        "auto_target": "穆罕默德·阿尔贾丹",
+        "source": "Mohammed Al-Jadaan",
+        "user_target": "穆罕默德·阿尔贾丹"
+      },
+      {
+        "auto_target": "沙特阿拉伯",
+        "source": "Saudi Arabia",
+        "user_target": "沙特阿拉伯"
+      },
+      {
+        "auto_target": "丹·卡茨",
+        "source": "Dan Katz",
+        "user_target": "丹·卡茨"
+      },
+      {
+        "auto_target": "Chantal Jahchan",
+        "source": "Chantal Jahchan",
+        "user_target": "尚塔尔·贾赫昌"
+      },
+      {
+        "auto_target": "Kim Ruhl",
+        "source": "Kim Ruhl",
+        "user_target": "金·鲁尔"
+      },
+      {
+        "auto_target": "美国",
+        "source": "United States",
+        "user_target": "美国"
+      },
+      {
+        "auto_target": "法郎民主",
+        "source": "Franc Democracy",
+        "user_target": "法郎民主"
+      },
+      {
+        "auto_target": "瑞士高原",
+        "source": "Swiss Plateau",
+        "user_target": "瑞士高原"
+      },
+      {
+        "auto_target": "高阿尔卑斯山",
+        "source": "High Alps",
+        "user_target": "高阿尔卑斯山"
+      },
+      {
+        "auto_target": "Monte Rosa 小屋",
+        "source": "Monte Rosa Hut",
+        "user_target": "Monte Rosa 小屋"
+      },
+      {
+        "auto_target": "Sébastien Kraenzlin",
+        "source": "Sébastien Kraenzlin",
+        "user_target": "塞巴斯蒂安·克兰兹林"
+      }
+    ],
+    "entries": [
+      {
+        "decided_by": "policy",
+        "source": "ECONOMIC THEORY",
+        "target": "经济理论"
+      },
+      {
+        "decided_by": "policy",
+        "source": "Jamieson Greer",
+        "target": "杰米森·格里尔"
+      },
+      {
+        "decided_by": "policy",
+        "source": "Robert Skidelsky",
+        "target": "罗伯特·斯基德尔斯基"
+      },
+      {
+        "decided_by": "policy",
+        "source": "TRADE POLICY",
+        "target": "贸易政策"
+      },
+      {
+        "decided_by": "policy",
+        "source": "Defense Spending",
+        "target": "国防支出"
+      },
+      {
+        "decided_by": "policy",
+        "source": "Middle East",
+        "target": "中东"
+      },
+      {
+        "decided_by": "policy",
+        "source": "Aaditya Mattoo",
+        "target": "阿迪亚·马图"
+      },
+      {
+        "decided_by": "policy",
+        "source": "Adam Smith",
+        "target": "亚当·斯密"
+      },
+      {
+        "decided_by": "policy",
+        "source": "Amory Gethin",
+        "target": "阿莫里·盖辛"
+      },
+      {
+        "decided_by": "policy",
+        "source": "Christopher Clayton",
+        "target": "克里斯托弗·克莱顿"
+      },
+      {
+        "decided_by": "policy",
+        "source": "Emmanuel Saez",
+        "target": "埃马纽埃尔·萨兹"
+      },
+      {
+        "decided_by": "policy",
+        "source": "Geoeconomic Coercion",
+        "target": "地缘经济胁迫"
+      },
+      {
+        "decided_by": "policy",
+        "source": "Gordon Hanson",
+        "target": "戈登·汉森"
+      },
+      {
+        "decided_by": "policy",
+        "source": "Jeffry Frieden",
+        "target": "杰弗里·弗里登"
+      },
+      {
+        "decided_by": "policy",
+        "source": "Jesse Schreger",
+        "target": "杰西·施雷格"
+      },
+      {
+        "decided_by": "policy",
+        "source": "Josh Lipsky",
+        "target": "乔什·利普斯基"
+      },
+      {
+        "decided_by": "policy",
+        "source": "Matteo Maggiori",
+        "target": "马泰奥·马焦里"
+      },
+      {
+        "decided_by": "policy",
+        "source": "Michael Spence",
+        "target": "迈克尔·斯彭斯"
+      },
+      {
+        "decided_by": "policy",
+        "source": "Michele Ruta",
+        "target": "米凯莱·鲁塔"
+      },
+      {
+        "decided_by": "policy",
+        "source": "Nicholas Mulder",
+        "target": "尼古拉斯·穆尔德"
+      },
+      {
+        "decided_by": "policy",
+        "source": "Andreas Adriano",
+        "target": "安德烈亚斯·阿德里亚诺"
+      },
+      {
+        "decided_by": "policy",
+        "source": "Andrew Stanley",
+        "target": "安德鲁·斯坦利"
+      },
+      {
+        "decided_by": "policy",
+        "source": "Aqib Aslam",
+        "target": "阿基布·阿斯拉姆"
+      },
+      {
+        "decided_by": "policy",
+        "source": "Christoph Rosenberg",
+        "target": "克里斯托夫·罗森伯格"
+      },
+      {
+        "decided_by": "policy",
+        "source": "Daria Zakharova",
+        "target": "达里娅·扎哈罗娃"
+      },
+      {
+        "decided_by": "policy",
+        "source": "Davide Furceri",
+        "target": "达维德·富尔切里"
+      },
+      {
+        "decided_by": "policy",
+        "source": "Deniz Igan",
+        "target": "德尼兹·伊甘"
+      },
+      {
+        "decided_by": "policy",
+        "source": "Diaa Noureldin",
+        "target": "迪亚·努雷尔丁"
+      },
+      {
+        "decided_by": "policy",
+        "source": "Elizabeth Van Heuvelen",
+        "target": "伊丽莎白·范·赫维伦"
+      },
+      {
+        "decided_by": "policy",
+        "source": "Gita Bhatt",
+        "target": "吉塔·巴特"
+      },
+      {
+        "decided_by": "policy",
+        "source": "Helge Berger",
+        "target": "赫尔格·贝格尔"
+      },
+      {
+        "decided_by": "policy",
+        "source": "James Astill",
+        "target": "詹姆斯·阿斯蒂尔"
+      },
+      {
+        "decided_by": "policy",
+        "source": "Jeff Kearns",
+        "target": "杰夫·科恩斯"
+      },
+      {
+        "decided_by": "policy",
+        "source": "Lucy Morales",
+        "target": "露西·莫拉莱斯"
+      },
+      {
+        "decided_by": "policy",
+        "source": "Malhar Nabar",
+        "target": "马尔哈尔·纳巴尔"
+      },
+      {
+        "decided_by": "policy",
+        "source": "Marta Doroszczyk",
+        "target": "玛尔塔·多罗什奇克"
+      },
+      {
+        "decided_by": "policy",
+        "source": "Martin Cihak",
+        "target": "马丁·奇哈克"
+      },
+      {
+        "decided_by": "policy",
+        "source": "Mauricio Soto",
+        "target": "毛里西奥·索托"
+      },
+      {
+        "decided_by": "policy",
+        "source": "Melinda Weir",
+        "target": "梅琳达·韦尔"
+      },
+      {
+        "decided_by": "policy",
+        "source": "Natalia Venegas Figueroa",
+        "target": "娜塔莉亚·维内加斯·菲格罗亚"
+      },
+      {
+        "decided_by": "policy",
+        "source": "Nicholas Owen",
+        "target": "尼古拉斯·欧文"
+      },
+      {
+        "decided_by": "policy",
+        "source": "Oya Celasun",
+        "target": "奥亚·切拉松"
+      },
+      {
+        "decided_by": "policy",
+        "source": "Papa N’Diaye",
+        "target": "帕帕·恩迪亚耶"
+      },
+      {
+        "decided_by": "policy",
+        "source": "Peter Walker",
+        "target": "彼得·沃克"
+      },
+      {
+        "decided_by": "policy",
+        "source": "Robert Zymek",
+        "target": "罗伯特·齐梅克"
+      },
+      {
+        "decided_by": "policy",
+        "source": "Rupa Duttagupta",
+        "target": "鲁帕·杜塔古普塔"
+      },
+      {
+        "decided_by": "policy",
+        "source": "Subir Lall",
+        "target": "苏比尔·拉尔"
+      },
+      {
+        "decided_by": "policy",
+        "source": "Uma Ramakrishnan",
+        "target": "乌玛·拉马克里希南"
+      },
+      {
+        "decided_by": "policy",
+        "source": "Yan Carriere-Swallow",
+        "target": "扬·卡里耶-斯沃洛"
+      },
+      {
+        "decided_by": "policy",
+        "source": "Kristalina Georgieva",
+        "target": "克里斯塔利娜·格奥尔基耶娃"
+      },
+      {
+        "decided_by": "policy",
+        "source": "Carlos Becerra",
+        "target": "卡洛斯·贝塞拉"
+      },
+      {
+        "decided_by": "policy",
+        "source": "Dan Katz",
+        "target": "丹·卡茨"
+      },
+      {
+        "decided_by": "policy",
+        "source": "GDP GROWTH",
+        "target": "GDP增长"
+      },
+      {
+        "decided_by": "policy",
+        "source": "HEADLINE INFLATION",
+        "target": "总体通货膨胀"
+      },
+      {
+        "decided_by": "policy",
+        "source": "Latin American",
+        "target": "拉丁美洲"
+      },
+      {
+        "decided_by": "policy",
+        "source": "Mehmet Şimşek",
+        "target": "梅赫梅特·希姆谢克"
+      },
+      {
+        "decided_by": "policy",
+        "source": "Mohammed Al-Jadaan",
+        "target": "穆罕默德·阿尔贾丹"
+      },
+      {
+        "decided_by": "policy",
+        "source": "Saudi Arabia",
+        "target": "沙特阿拉伯"
+      },
+      {
+        "decided_by": "policy",
+        "source": "Chantal Jahchan",
+        "target": "尚塔尔·贾赫昌"
+      },
+      {
+        "decided_by": "policy",
+        "source": "Kim Ruhl",
+        "target": "金·鲁尔"
+      },
+      {
+        "decided_by": "policy",
+        "source": "United States",
+        "target": "美国"
+      },
+      {
+        "decided_by": "policy",
+        "source": "Franc Democracy",
+        "target": "法郎民主"
+      },
+      {
+        "decided_by": "policy",
+        "source": "High Alps",
+        "target": "高阿尔卑斯山"
+      },
+      {
+        "decided_by": "policy",
+        "source": "Monte Rosa Hut",
+        "target": "Monte Rosa 小屋"
+      },
+      {
+        "decided_by": "policy",
+        "source": "Swiss Plateau",
+        "target": "瑞士高原"
+      },
+      {
+        "decided_by": "policy",
+        "source": "Sébastien Kraenzlin",
+        "target": "塞巴斯蒂安·克兰兹林"
+      },
+      {
+        "decided_by": "policy",
+        "source": "andreas adriano",
+        "target": "Andreas Adriano"
+      },
+      {
+        "decided_by": "policy",
+        "source": "Persian Gulf",
+        "target": "波斯湾"
+      },
+      {
+        "decided_by": "policy",
+        "source": "ECONOMIC THEORY Robert Skidelsky",
+        "target": "罗伯特·斯基德尔斯基"
+      },
+      {
+        "decided_by": "policy",
+        "source": "TRADE POLICY Jamieson Greer",
+        "target": "贾米森·格里尔"
+      },
+      {
+        "decided_by": "policy",
+        "source": "Adam Smith’s",
+        "target": "亚当·斯密"
+      },
+      {
+        "decided_by": "policy",
+        "source": "Ali Abbas",
+        "target": "阿里·阿巴斯"
+      }
+    ],
+    "glossary": "hitl_decisions",
+    "match_definition": "how many inputs -- the text a paragraph was offered as, which is what the glossary is matched against -- activate this entry, by the matcher the translation prompt itself uses; counted over every request this run built from the document, the repair loop's included",
+    "matches": [
+      {
+        "matched_excerpts": [
+          "<style id='1'>ECONOMIC THEORY</style>Robert Skidelsky on Keynes"
+        ],
+        "matched_prompt_count": 1,
+        "source": "ECONOMIC THEORY",
+        "target": "经济理论"
+      },
+      {
+        "matched_excerpts": [
+          "<style id='1'>TRADE POLICY</style>Jamieson Greer on tariffs"
+        ],
+        "matched_prompt_count": 1,
+        "source": "Jamieson Greer",
+        "target": "杰米森·格里尔"
+      },
+      {
+        "matched_excerpts": [
+          "<style id='1'>ECONOMIC THEORY</style>Robert Skidelsky on Keynes",
+          "economics, finance, and AI-driven markets today <style id='1'>Robert Skidelsky</style>"
+        ],
+        "matched_prompt_count": 2,
+        "source": "Robert Skidelsky",
+        "target": "罗伯特·斯基德尔斯基"
+      },
+      {
+        "matched_excerpts": [
+          "<style id='1'>TRADE POLICY</style>Jamieson Greer on tariffs"
+        ],
+        "matched_prompt_count": 1,
+        "source": "TRADE POLICY",
+        "target": "贸易政策"
+      },
+      {
+        "matched_excerpts": [
+          "<style id='1'>Chapter 2: Defense Spending: Macroeconomic Consequences & Trade-Offs</style>Defense spending is rising amid intensifying geopolitical tensions. This chapter finds that large defense spending booms have become more frequent, especially in emerging market and developing economies."
+        ],
+        "matched_prompt_count": 1,
+        "source": "Defense Spending",
+        "target": "国防支出"
+      },
+      {
+        "matched_excerpts": [
+          "The global economy is again disrupted, this time with the outbreak of war in the Middle East. Rising commodity prices, firmer inflation expectations, and tighter financial conditions are testing the recent resilience.",
+          "<style id='1'>the war </style><style id='3'>in the Middle East has deliv- ered a global supply shock that is slowing global growth, pushing up inflation, and inflicting more pain on some of the world’s poorest countries, according to IMF Man- aging Director Kristalina Georgieva.</style>"
+        ],
+        "matched_prompt_count": 2,
+        "source": "Middle East",
+        "target": "中东"
+      },
+      {
+        "matched_excerpts": [
+          "Geopolitical rivalry does not end the need for trade cooperation, but the multilateral system must adapt <style id='1'>Aaditya Mattoo, Michele Ruta, and Robert W. Staiger</style>"
+        ],
+        "matched_prompt_count": 1,
+        "source": "Aaditya Mattoo",
+        "target": "阿迪亚·马图"
+      },
+      {
+        "matched_excerpts": [
+          "Adam Smith’s philosophy still sheds"
+        ],
+        "matched_prompt_count": 1,
+        "source": "Adam Smith",
+        "target": "亚当·斯密"
+      },
+      {
+        "matched_excerpts": [
+          "policies determine the organization of work <style id='1'>Amory Gethin and Emmanuel Saez</style>"
+        ],
+        "matched_prompt_count": 1,
+        "source": "Amory Gethin",
+        "target": "阿莫里·盖辛"
+      },
+      {
+        "matched_excerpts": [
+          "<style id='1'>How new economics tools explain global power dynamics </style>Christopher Clayton, Matteo Maggiori, and Jesse Schreger"
+        ],
+        "matched_prompt_count": 1,
+        "source": "Christopher Clayton",
+        "target": "克里斯托弗·克莱顿"
+      },
+      {
+        "matched_excerpts": [
+          "policies determine the organization of work <style id='1'>Amory Gethin and Emmanuel Saez</style>"
+        ],
+        "matched_prompt_count": 1,
+        "source": "Emmanuel Saez",
+        "target": "埃马纽埃尔·萨兹"
+      },
+      {
+        "matched_excerpts": [
+          "Geoeconomic Coercion"
+        ],
+        "matched_prompt_count": 1,
+        "source": "Geoeconomic Coercion",
+        "target": "地缘经济胁迫"
+      },
+      {
+        "matched_excerpts": [
+          "behind by globalization a path beyond economic populism <style id='1'>Gordon Hanson</style>"
+        ],
+        "matched_prompt_count": 1,
+        "source": "Gordon Hanson",
+        "target": "戈登·汉森"
+      },
+      {
+        "matched_excerpts": [
+          "Jeffry Frieden"
+        ],
+        "matched_prompt_count": 1,
+        "source": "Jeffry Frieden",
+        "target": "杰弗里·弗里登"
+      },
+      {
+        "matched_excerpts": [
+          "<style id='1'>How new economics tools explain global power dynamics </style>Christopher Clayton, Matteo Maggiori, and Jesse Schreger"
+        ],
+        "matched_prompt_count": 1,
+        "source": "Jesse Schreger",
+        "target": "杰西·施雷格"
+      },
+      {
+        "matched_excerpts": [
+          "economic policy and national security is disappearing <style id='1'>Josh Lipsky</style>"
+        ],
+        "matched_prompt_count": 1,
+        "source": "Josh Lipsky",
+        "target": "乔什·利普斯基"
+      },
+      {
+        "matched_excerpts": [
+          "<style id='1'>How new economics tools explain global power dynamics </style>Christopher Clayton, Matteo Maggiori, and Jesse Schreger"
+        ],
+        "matched_prompt_count": 1,
+        "source": "Matteo Maggiori",
+        "target": "马泰奥·马焦里"
+      },
+      {
+        "matched_excerpts": [
+          "light on how economies grow, trade, and respond to change <style id='1'>Michael Spence</style>"
+        ],
+        "matched_prompt_count": 1,
+        "source": "Michael Spence",
+        "target": "迈克尔·斯彭斯"
+      },
+      {
+        "matched_excerpts": [
+          "Geopolitical rivalry does not end the need for trade cooperation, but the multilateral system must adapt <style id='1'>Aaditya Mattoo, Michele Ruta, and Robert W. Staiger</style>"
+        ],
+        "matched_prompt_count": 1,
+        "source": "Michele Ruta",
+        "target": "米凯莱·鲁塔"
+      },
+      {
+        "matched_excerpts": [
+          "ownership is expanding again and how this time is different <style id='1'>Nicholas Mulder</style>"
+        ],
+        "matched_prompt_count": 1,
+        "source": "Nicholas Mulder",
+        "target": "尼古拉斯·穆尔德"
+      },
+      {
+        "matched_excerpts": [
+          "Andreas Adriano",
+          "Andreas Adriano",
+          "<style id='1'>andreas adriano </style><style id='3'>is on the staff of </style>Finance & Development<style id='5'>.</style>"
+        ],
+        "matched_prompt_count": 3,
+        "source": "Andreas Adriano",
+        "target": "安德烈亚斯·阿德里亚诺"
+      },
+      {
+        "matched_excerpts": [
+          "Andrew Stanley"
+        ],
+        "matched_prompt_count": 1,
+        "source": "Andrew Stanley",
+        "target": "安德鲁·斯坦利"
+      },
+      {
+        "matched_excerpts": [
+          "Aqib Aslam"
+        ],
+        "matched_prompt_count": 1,
+        "source": "Aqib Aslam",
+        "target": "阿基布·阿斯拉姆"
+      },
+      {
+        "matched_excerpts": [
+          "Subir Lall Papa N’Diaye Malhar Nabar Diaa Noureldin Uma Ramakrishnan Christoph Rosenberg Mauricio Soto Elizabeth Van Heuvelen Daria Zakharova Robert Zymek"
+        ],
+        "matched_prompt_count": 1,
+        "source": "Christoph Rosenberg",
+        "target": "克里斯托夫·罗森伯格"
+      },
+      {
+        "matched_excerpts": [
+          "Subir Lall Papa N’Diaye Malhar Nabar Diaa Noureldin Uma Ramakrishnan Christoph Rosenberg Mauricio Soto Elizabeth Van Heuvelen Daria Zakharova Robert Zymek"
+        ],
+        "matched_prompt_count": 1,
+        "source": "Daria Zakharova",
+        "target": "达里娅·扎哈罗娃"
+      },
+      {
+        "matched_excerpts": [
+          "Davide Furceri"
+        ],
+        "matched_prompt_count": 1,
+        "source": "Davide Furceri",
+        "target": "达维德·富尔切里"
+      },
+      {
+        "matched_excerpts": [
+          "Deniz Igan"
+        ],
+        "matched_prompt_count": 1,
+        "source": "Deniz Igan",
+        "target": "德尼兹·伊甘"
+      },
+      {
+        "matched_excerpts": [
+          "Subir Lall Papa N’Diaye Malhar Nabar Diaa Noureldin Uma Ramakrishnan Christoph Rosenberg Mauricio Soto Elizabeth Van Heuvelen Daria Zakharova Robert Zymek"
+        ],
+        "matched_prompt_count": 1,
+        "source": "Diaa Noureldin",
+        "target": "迪亚·努雷尔丁"
+      },
+      {
+        "matched_excerpts": [
+          "Subir Lall Papa N’Diaye Malhar Nabar Diaa Noureldin Uma Ramakrishnan Christoph Rosenberg Mauricio Soto Elizabeth Van Heuvelen Daria Zakharova Robert Zymek"
+        ],
+        "matched_prompt_count": 1,
+        "source": "Elizabeth Van Heuvelen",
+        "target": "伊丽莎白·范·赫维伦"
+      },
+      {
+        "matched_excerpts": [
+          "Gita Bhatt"
+        ],
+        "matched_prompt_count": 1,
+        "source": "Gita Bhatt",
+        "target": "吉塔·巴特"
+      },
+      {
+        "matched_excerpts": [
+          "Helge Berger"
+        ],
+        "matched_prompt_count": 1,
+        "source": "Helge Berger",
+        "target": "赫尔格·贝格尔"
+      },
+      {
+        "matched_excerpts": [
+          "James Astill"
+        ],
+        "matched_prompt_count": 1,
+        "source": "James Astill",
+        "target": "詹姆斯·阿斯蒂尔"
+      },
+      {
+        "matched_excerpts": [
+          "Jeff Kearns"
+        ],
+        "matched_prompt_count": 1,
+        "source": "Jeff Kearns",
+        "target": "杰夫·科恩斯"
+      },
+      {
+        "matched_excerpts": [
+          "Lucy Morales"
+        ],
+        "matched_prompt_count": 1,
+        "source": "Lucy Morales",
+        "target": "露西·莫拉莱斯"
+      },
+      {
+        "matched_excerpts": [
+          "Subir Lall Papa N’Diaye Malhar Nabar Diaa Noureldin Uma Ramakrishnan Christoph Rosenberg Mauricio Soto Elizabeth Van Heuvelen Daria Zakharova Robert Zymek"
+        ],
+        "matched_prompt_count": 1,
+        "source": "Malhar Nabar",
+        "target": "马尔哈尔·纳巴尔"
+      },
+      {
+        "matched_excerpts": [
+          "Marta Doroszczyk"
+        ],
+        "matched_prompt_count": 1,
+        "source": "Marta Doroszczyk",
+        "target": "玛尔塔·多罗什奇克"
+      },
+      {
+        "matched_excerpts": [
+          "Martin Cihak"
+        ],
+        "matched_prompt_count": 1,
+        "source": "Martin Cihak",
+        "target": "马丁·奇哈克"
+      },
+      {
+        "matched_excerpts": [
+          "Subir Lall Papa N’Diaye Malhar Nabar Diaa Noureldin Uma Ramakrishnan Christoph Rosenberg Mauricio Soto Elizabeth Van Heuvelen Daria Zakharova Robert Zymek"
+        ],
+        "matched_prompt_count": 1,
+        "source": "Mauricio Soto",
+        "target": "毛里西奥·索托"
+      },
+      {
+        "matched_excerpts": [
+          "Melinda Weir"
+        ],
+        "matched_prompt_count": 1,
+        "source": "Melinda Weir",
+        "target": "梅琳达·韦尔"
+      },
+      {
+        "matched_excerpts": [
+          "Natalia Venegas Figueroa"
+        ],
+        "matched_prompt_count": 1,
+        "source": "Natalia Venegas Figueroa",
+        "target": "娜塔莉亚·维内加斯·菲格罗亚"
+      },
+      {
+        "matched_excerpts": [
+          "Nicholas Owen"
+        ],
+        "matched_prompt_count": 1,
+        "source": "Nicholas Owen",
+        "target": "尼古拉斯·欧文"
+      },
+      {
+        "matched_excerpts": [
+          "Oya Celasun"
+        ],
+        "matched_prompt_count": 1,
+        "source": "Oya Celasun",
+        "target": "奥亚·切拉松"
+      },
+      {
+        "matched_excerpts": [
+          "Subir Lall Papa N’Diaye Malhar Nabar Diaa Noureldin Uma Ramakrishnan Christoph Rosenberg Mauricio Soto Elizabeth Van Heuvelen Daria Zakharova Robert Zymek"
+        ],
+        "matched_prompt_count": 1,
+        "source": "Papa N’Diaye",
+        "target": "帕帕·恩迪亚耶"
+      },
+      {
+        "matched_excerpts": [
+          "Peter Walker"
+        ],
+        "matched_prompt_count": 1,
+        "source": "Peter Walker",
+        "target": "彼得·沃克"
+      },
+      {
+        "matched_excerpts": [
+          "Subir Lall Papa N’Diaye Malhar Nabar Diaa Noureldin Uma Ramakrishnan Christoph Rosenberg Mauricio Soto Elizabeth Van Heuvelen Daria Zakharova Robert Zymek"
+        ],
+        "matched_prompt_count": 1,
+        "source": "Robert Zymek",
+        "target": "罗伯特·齐梅克"
+      },
+      {
+        "matched_excerpts": [
+          "Rupa Duttagupta"
+        ],
+        "matched_prompt_count": 1,
+        "source": "Rupa Duttagupta",
+        "target": "鲁帕·杜塔古普塔"
+      },
+      {
+        "matched_excerpts": [
+          "Subir Lall Papa N’Diaye Malhar Nabar Diaa Noureldin Uma Ramakrishnan Christoph Rosenberg Mauricio Soto Elizabeth Van Heuvelen Daria Zakharova Robert Zymek"
+        ],
+        "matched_prompt_count": 1,
+        "source": "Subir Lall",
+        "target": "苏比尔·拉尔"
+      },
+      {
+        "matched_excerpts": [
+          "Subir Lall Papa N’Diaye Malhar Nabar Diaa Noureldin Uma Ramakrishnan Christoph Rosenberg Mauricio Soto Elizabeth Van Heuvelen Daria Zakharova Robert Zymek"
+        ],
+        "matched_prompt_count": 1,
+        "source": "Uma Ramakrishnan",
+        "target": "乌玛·拉马克里希南"
+      },
+      {
+        "matched_excerpts": [
+          "Yan Carriere-Swallow"
+        ],
+        "matched_prompt_count": 1,
+        "source": "Yan Carriere-Swallow",
+        "target": "扬·卡里耶-斯沃洛"
+      },
+      {
+        "matched_excerpts": [
+          "<style id='1'>IN THE NEWS: </style><style id='3'>The IMF said on April 16 that it was resuming relations with Venezuela. Kristalina Georgieva told reporters that the Fund was committed to helping the people of the Latin American nation see better days. Venezuela has been a member of the IMF since 1946, but relations were suspended in 2019. </style><style id='5'>Above: A Venezuelan flag flies under a clearing sky. Bloomberg/Carlos Becerra.</style>",
+          "<style id='1'>the war </style><style id='3'>in the Middle East has deliv- ered a global supply shock that is slowing global growth, pushing up inflation, and inflicting more pain on some of the world’s poorest countries, according to IMF Man- aging Director Kristalina Georgieva.</style>"
+        ],
+        "matched_prompt_count": 2,
+        "source": "Kristalina Georgieva",
+        "target": "克里斯塔利娜·格奥尔基耶娃"
+      },
+      {
+        "matched_excerpts": [
+          "<style id='1'>IN THE NEWS: </style><style id='3'>The IMF said on April 16 that it was resuming relations with Venezuela. Kristalina Georgieva told reporters that the Fund was committed to helping the people of the Latin American nation see better days. Venezuela has been a member of the IMF since 1946, but relations were suspended in 2019. </style><style id='5'>Above: A Venezuelan flag flies under a clearing sky. Bloomberg/Carlos Becerra.</style>"
+        ],
+        "matched_prompt_count": 1,
+        "source": "Carlos Becerra",
+        "target": "卡洛斯·贝塞拉"
+      },
+      {
+        "matched_excerpts": [
+          "—IMF First Deputy Managing Director Dan Katz"
+        ],
+        "matched_prompt_count": 1,
+        "source": "Dan Katz",
+        "target": "丹·卡茨"
+      },
+      {
+        "matched_excerpts": [
+          "GDP GROWTH"
+        ],
+        "matched_prompt_count": 1,
+        "source": "GDP GROWTH",
+        "target": "GDP增长"
+      },
+      {
+        "matched_excerpts": [
+          "HEADLINE INFLATION"
+        ],
+        "matched_prompt_count": 1,
+        "source": "HEADLINE INFLATION",
+        "target": "总体通货膨胀"
+      },
+      {
+        "matched_excerpts": [
+          "<style id='1'>IN THE NEWS: </style><style id='3'>The IMF said on April 16 that it was resuming relations with Venezuela. Kristalina Georgieva told reporters that the Fund was committed to helping the people of the Latin American nation see better days. Venezuela has been a member of the IMF since 1946, but relations were suspended in 2019. </style><style id='5'>Above: A Venezuelan flag flies under a clearing sky. Bloomberg/Carlos Becerra.</style>"
+        ],
+        "matched_prompt_count": 1,
+        "source": "Latin American",
+        "target": "拉丁美洲"
+      },
+      {
+        "matched_excerpts": [
+          "—Mehmet Şimşek, minister of finance, Türkiye"
+        ],
+        "matched_prompt_count": 1,
+        "source": "Mehmet Şimşek",
+        "target": "梅赫梅特·希姆谢克"
+      },
+      {
+        "matched_excerpts": [
+          "—Mohammed Al-Jadaan, minister of finance, Saudi Arabia"
+        ],
+        "matched_prompt_count": 1,
+        "source": "Mohammed Al-Jadaan",
+        "target": "穆罕默德·阿尔贾丹"
+      },
+      {
+        "matched_excerpts": [
+          "—Mohammed Al-Jadaan, minister of finance, Saudi Arabia"
+        ],
+        "matched_prompt_count": 1,
+        "source": "Saudi Arabia",
+        "target": "沙特阿拉伯"
+      },
+      {
+        "matched_excerpts": [
+          "Illustration by Chantal Jahchan"
+        ],
+        "matched_prompt_count": 1,
+        "source": "Chantal Jahchan",
+        "target": "尚塔尔·贾赫昌"
+      },
+      {
+        "matched_excerpts": [
+          "Kim Ruhl"
+        ],
+        "matched_prompt_count": 1,
+        "source": "Kim Ruhl",
+        "target": "金·鲁尔"
+      },
+      {
+        "matched_excerpts": [
+          "In the United States, President Don- ald Trump’s administration is work- ing to de-risk supply chains and build domestic capacity in key industries to enhance economic resilience. This implies a modification of the policy of near unconditional openness that char- acterized the past."
+        ],
+        "matched_prompt_count": 1,
+        "source": "United States",
+        "target": "美国"
+      },
+      {
+        "matched_excerpts": [
+          "Franc Democracy"
+        ],
+        "matched_prompt_count": 1,
+        "source": "Franc Democracy",
+        "target": "法郎民主"
+      },
+      {
+        "matched_excerpts": [
+          "About 100,000 people voted online on 12 sets of designs for banknotes of 10, 20, 50, 100, 200, and 1,000 francs. The pro- posed topic, “Switzerland and its altitudes,” highlighted the small country’s geographic diversity: the Jura region, a mid-al- titude mountain range shared with France; the Swiss Plateau, the country’s central area; the lowlands, comprising valleys and cities such as Geneva and Basel; the Alpine foothills; the Alps; and the High Alps. The online poll was combined with analysis by an expert advisory board."
+        ],
+        "matched_prompt_count": 1,
+        "source": "High Alps",
+        "target": "高阿尔卑斯山"
+      },
+      {
+        "matched_excerpts": [
+          "The Swiss National Bank (SNB) announced the winner in March. The designs by Emphase, a Lausanne-based studio, feature scale drawings of native plants found at different alti- tudes on one side and on the other striking landscapes and “civ- ilizational achievements”: Alpine vistas, cable cars, famously punctual trains, the CERN research center, and the hi-tech Monte Rosa Hut atop a 4,634-meter massif. “With its precision and craftsmanship, this concept impressively articulates the diversity and quality of Switzerland,” said Sébastien Kraenzlin, alternate member of the central bank board."
+        ],
+        "matched_prompt_count": 1,
+        "source": "Monte Rosa Hut",
+        "target": "Monte Rosa 小屋"
+      },
+      {
+        "matched_excerpts": [
+          "About 100,000 people voted online on 12 sets of designs for banknotes of 10, 20, 50, 100, 200, and 1,000 francs. The pro- posed topic, “Switzerland and its altitudes,” highlighted the small country’s geographic diversity: the Jura region, a mid-al- titude mountain range shared with France; the Swiss Plateau, the country’s central area; the lowlands, comprising valleys and cities such as Geneva and Basel; the Alpine foothills; the Alps; and the High Alps. The online poll was combined with analysis by an expert advisory board."
+        ],
+        "matched_prompt_count": 1,
+        "source": "Swiss Plateau",
+        "target": "瑞士高原"
+      },
+      {
+        "matched_excerpts": [
+          "The Swiss National Bank (SNB) announced the winner in March. The designs by Emphase, a Lausanne-based studio, feature scale drawings of native plants found at different alti- tudes on one side and on the other striking landscapes and “civ- ilizational achievements”: Alpine vistas, cable cars, famously punctual trains, the CERN research center, and the hi-tech Monte Rosa Hut atop a 4,634-meter massif. “With its precision and craftsmanship, this concept impressively articulates the diversity and quality of Switzerland,” said Sébastien Kraenzlin, alternate member of the central bank board."
+        ],
+        "matched_prompt_count": 1,
+        "source": "Sébastien Kraenzlin",
+        "target": "塞巴斯蒂安·克兰兹林"
+      },
+      {
+        "matched_excerpts": [
+          "Andreas Adriano",
+          "Andreas Adriano",
+          "<style id='1'>andreas adriano </style><style id='3'>is on the staff of </style>Finance & Development<style id='5'>.</style>"
+        ],
+        "matched_prompt_count": 3,
+        "source": "andreas adriano",
+        "target": "Andreas Adriano"
+      },
+      {
+        "matched_excerpts": [],
+        "matched_prompt_count": 0,
+        "source": "Persian Gulf",
+        "target": "波斯湾"
+      },
+      {
+        "matched_excerpts": [],
+        "matched_prompt_count": 0,
+        "source": "ECONOMIC THEORY Robert Skidelsky",
+        "target": "罗伯特·斯基德尔斯基"
+      },
+      {
+        "matched_excerpts": [],
+        "matched_prompt_count": 0,
+        "source": "TRADE POLICY Jamieson Greer",
+        "target": "贾米森·格里尔"
+      },
+      {
+        "matched_excerpts": [
+          "Adam Smith’s philosophy still sheds"
+        ],
+        "matched_prompt_count": 1,
+        "source": "Adam Smith’s",
+        "target": "亚当·斯密"
+      },
+      {
+        "matched_excerpts": [
+          "S M Ali Abbas"
+        ],
+        "matched_prompt_count": 1,
+        "source": "Ali Abbas",
+        "target": "阿里·阿巴斯"
+      }
+    ],
+    "overridden": [],
+    "repair_inputs": 8,
+    "ruled": 0
+  }
+}

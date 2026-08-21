@@ -1,0 +1,9 @@
+{
+  "format_version": 2,
+  "sample": "Courier-zh",
+  "page_kinds": {
+    "1": "toc",
+    "3": "photo_spread"
+  },
+  "terms": []
+}

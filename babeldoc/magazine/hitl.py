@@ -94,6 +94,8 @@ from babeldoc.glossary import GlossaryEntry
 from babeldoc.magazine import drop_cap
 from babeldoc.magazine import fragment_stitch
 from babeldoc.magazine import line_split
+from babeldoc.magazine import name_harvest
+from babeldoc.magazine import translation_style
 from babeldoc.magazine.page_classifier import REPORT_NAME as CLASSIFY_REPORT_NAME
 from babeldoc.magazine.page_features import ConfigError
 from babeldoc.magazine.page_features import validate_bounded_config
@@ -127,12 +129,21 @@ DROP_CAPS_SECTION = "drop_caps"
 # Provenance and confidence a ruled page carries. A human ruling is not a
 # measurement, so it is recorded at certainty rather than at a score.
 HUMAN_SOURCE = "human"
+
+# Where a pair nobody ruled on came from: the run's declared name policy,
+# which is a decision taken once for the document rather than per name.
+POLICY_SOURCE = "policy"
 HUMAN_CONF = 1.0
 
 # Name of the glossary the decided pairs are built into. It appears as the
 # table heading in the translation prompt, which is how a reader of a prompt
 # tells a ruled term from an extracted one.
 DECISIONS_GLOSSARY = "hitl_decisions"
+
+# What a ruling may carry beside its sections. A person writes a ruling from the
+# draft in front of them, and the draft names itself and states its version at
+# the top; a file that keeps that header is the same ruling and is read as one.
+METADATA_KEYS = ("format_version", "sample")
 
 _CONFIG_KEY_VERSION = "review_format_version"
 _CONFIG_KEY_SECTIONS = "sections"
@@ -254,7 +265,17 @@ class Decisions:
 
 
 def _require_object(raw: object, name: str, faults: list[str]) -> dict:
-    if raw is None:
+    """One section of a ruling, as the mapping of source to decision it is.
+
+    An empty list is read as an empty section. A ruling is written by hand from
+    a draft whose sections are lists of rows, so ``[]`` is what an empty one
+    naturally comes out as, and refusing a file that says "I ruled on nothing
+    here" in the other of the two ways of saying it would be a refusal about
+    punctuation. A list holding anything is still refused: what its entries
+    would mean is not decided anywhere, and guessing is how a ruling nobody
+    wrote gets applied.
+    """
+    if raw is None or raw == []:
         return {}
     if not isinstance(raw, dict):
         faults.append(f"section {name!r} must be an object")
@@ -349,7 +370,7 @@ def parse_decisions(
         raise HitlError(f"{path}: top level must be an object")
     declared = sections()
     for key in raw:
-        if key not in declared:
+        if key not in declared and key not in METADATA_KEYS:
             faults.append(f"{key!r} is not one of the declared sections {declared}")
     config = load_hitl_config()
     terms = _validate_terms(raw.get(TERMS_SECTION), faults)
@@ -365,9 +386,7 @@ def parse_decisions(
     if faults:
         listed = "\n  ".join(faults)
         raise HitlError(f"{path}: {len(faults)} fault(s), file rejected:\n  {listed}")
-    return Decisions(
-        path=path, terms=terms, page_kinds=page_kinds, drop_caps=drop_caps
-    )
+    return Decisions(path=path, terms=terms, page_kinds=page_kinds, drop_caps=drop_caps)
 
 
 def load_decisions(
@@ -505,7 +524,7 @@ def export_terms(translation_config, docs) -> list[dict]:
     rows = [
         {
             "source": source,
-            "auto_target": targets.get(Glossary.normalize_source(source)),
+            "observed_target": targets.get(Glossary.normalize_source(source)),
             "vote_count": count,
             "first_page": pages[source],
         }
@@ -521,6 +540,98 @@ def export_terms(translation_config, docs) -> list[dict]:
         )
     )
     return rows
+
+
+def merged_terms(translation_config, docs) -> list[dict]:
+    """One terms table, whoever found each entry, with the defaults derived.
+
+    Two finders reach this table and they are looking for different things: the
+    extractor is looking for a term of art and the harvest is looking for a
+    person. They are merged by source rather than listed apart, because a
+    source found twice is one decision and offering it twice would ask a person
+    to take that decision twice and let them take it two ways.
+
+    What a row defaults to is then derived, per row, from the run's declared
+    name policy -- but only for a row whose source is shaped like a personal
+    name, which is the only kind of row a name policy has anything to say
+    about. Everything else keeps the semantics it always had: the default is
+    what a model observed.
+
+    The derivation is what makes the policy work without a person. A run under
+    ``keep`` defaults every name to its source form and a run under
+    ``transliterate`` defaults every name to its rendering, and neither needs a
+    ruling to do so; a ruling overrides a default rather than supplying one.
+    """
+    rows = export_terms(translation_config, docs)
+    if not name_harvest.enabled(translation_config):
+        for row in rows:
+            row["auto_target"] = row["observed_target"]
+        return rows
+
+    engine = getattr(translation_config, "translator", None)
+    config = name_harvest.load_harvest_config()
+    by_key = {Glossary.normalize_source(row["source"]): row for row in rows}
+    for row in name_harvest.harvested_rows(translation_config, docs):
+        key = Glossary.normalize_source(row["source"])
+        held = by_key.get(key)
+        if held is None:
+            by_key[key] = row
+            rows.append(row)
+            continue
+        # A source both finders reached keeps the extractor's vote count, which
+        # the harvest does not measure, and gains the origin of the finder that
+        # also saw it.
+        held["origin"] = row.get("origin")
+        held["first_page"] = held.get("first_page") or row.get("first_page")
+
+    shaped = [
+        row for row in rows if name_harvest.is_person_shaped(row["source"], config)
+    ]
+    rendered = name_harvest.render_names(
+        translation_config,
+        shaped,
+        translation_config.lang_out,
+        engine,
+    )
+    policy = translation_style.load_style_config()
+    brackets = None
+    try:
+        brackets = policy.brackets_for(translation_config.lang_out)
+    except translation_style.TranslationStyleError:
+        brackets = None
+    shaped_keys = {Glossary.normalize_source(row["source"]) for row in shaped}
+    for row in rows:
+        row.setdefault("observed_target", None)
+        if Glossary.normalize_source(row["source"]) not in shaped_keys:
+            row["auto_target"] = row["observed_target"]
+            row["person_shaped"] = False
+            continue
+        auto, candidates = name_harvest.derive(
+            row["source"], row["observed_target"], policy.person_names, brackets
+        )
+        row["auto_target"] = auto
+        row["candidates"] = candidates
+        row["person_shaped"] = True
+        row["policy"] = policy.person_names
+    name_harvest.write_merged_report(translation_config, rows, rendered)
+    return rows
+
+
+def term_defaults(rows: list[dict]) -> dict[str, str]:
+    """What every row of the merged table lands as when nobody rules on it.
+
+    Only the rows a policy derived. An extractor row's default is the finalised
+    automatic glossary, which reaches the translator by its own route and needs
+    nothing from here; putting it in this table as well would move it out of the
+    automatic slot for no reason.
+    """
+    return {
+        row["source"]: row["auto_target"]
+        for row in rows
+        if row.get("person_shaped")
+        and isinstance(row.get("auto_target"), str)
+        and row["auto_target"].strip()
+    }
 
 
 def export_page_kinds(translation_config, docs) -> list[dict]:
@@ -565,19 +676,36 @@ def _unique_glossary_name(base: str, existing: list) -> str:
     return name
 
 
-def apply_terms(translation_config, decisions: Decisions) -> dict | None:
-    """Put the ruled pairs where the translator reads its glossaries from.
+def apply_terms(
+    translation_config,
+    decisions: Decisions | None,
+    defaults: dict[str, str] | None = None,
+) -> dict | None:
+    """Put the decided pairs where the translator reads its glossaries from.
 
-    Returns what the ruling did, or None where it ruled on no term at all: with
-    nothing to apply nothing is touched, which is what makes a run under an
-    empty ruling the run it would have been with the switch down.
+    A pair is decided in one of two ways and both arrive here, which is what
+    keeps this the single execution point. ``defaults`` is what the run's name
+    policy derived for every personal name in the merged table, so a run under
+    any policy behaves as that policy says with nobody ruling. ``decisions`` is
+    what a person wrote, and it overrides a default for the same source: a
+    ruling is a decision about one name and a policy is a default about all of
+    them, and a default that could overrule a ruling would make the loop
+    pointless.
+
+    Returns what was applied, or None where nothing was decided either way,
+    which is what makes a run with no policy and no ruling the run it would
+    have been with the switch down.
     """
-    if not decisions.terms:
+    ruled = dict(decisions.terms) if decisions is not None else {}
+    pairs = dict(defaults or {})
+    overridden = sorted(set(pairs) & set(ruled))
+    pairs.update(ruled)
+    if not pairs:
         return None
     shared = translation_config.shared_context_cross_split_part
     by_key = {
         Glossary.normalize_source(source): (source, target)
-        for source, target in decisions.terms.items()
+        for source, target in pairs.items()
     }
     dropped: list[dict] = []
     relocated: str | None = None
@@ -608,24 +736,30 @@ def apply_terms(translation_config, decisions: Decisions) -> dict | None:
     shared.user_glossaries.append(
         Glossary(
             name=name,
-            entries=[
-                GlossaryEntry(source, target)
-                for source, target in decisions.terms.items()
-            ],
+            entries=[GlossaryEntry(source, target) for source, target in pairs.items()],
         )
     )
     logger.debug(
-        "hitl: %d ruled term(s) as glossary %s, %d automatic entry(ies) dropped",
-        len(decisions.terms),
+        "hitl: %d decided term(s) as glossary %s (%d ruled), %d automatic "
+        "entry(ies) dropped",
+        len(pairs),
         name,
+        len(ruled),
         len(dropped),
     )
     return {
         "glossary": name,
         "entries": [
-            {"source": source, "target": target}
-            for source, target in decisions.terms.items()
+            {
+                "source": source,
+                "target": target,
+                "decided_by": HUMAN_SOURCE if source in ruled else POLICY_SOURCE,
+            }
+            for source, target in pairs.items()
         ],
+        "ruled": len(ruled),
+        "defaulted": len(pairs) - len(ruled),
+        "overridden": overridden,
         "dropped_from_auto": dropped,
         "auto_glossary_relocated": relocated,
         "auto_glossary_kept": kept_count,
@@ -708,23 +842,42 @@ def after_term_extract(translation_config, docs) -> None:
     """
     labeled = labeled_pages(docs)
     candidates = drop_cap.mark(translation_config, labeled)
+    # Built once, whether or not it is written out: the defaults it derives are
+    # what a run lands under with nobody ruling, so a run with the draft switch
+    # down needs them exactly as much as a run with it up. A run with both
+    # switches down builds nothing and asks nothing, which is the run that
+    # existed before the loop.
+    rows = (
+        merged_terms(translation_config, docs)
+        if (
+            translation_config.magazine_hitl_export
+            or translation_config.magazine_hitl_apply
+        )
+        else []
+    )
     if translation_config.magazine_hitl_export:
         draft = _draft(translation_config)
-        draft[TERMS_SECTION] = export_terms(translation_config, docs)
+        draft[TERMS_SECTION] = rows
         draft[DROP_CAPS_SECTION] = drop_cap.review_rows(candidates)
         _write_draft(translation_config, draft)
     if translation_config.magazine_hitl_apply:
         decisions = _decisions_for(translation_config, docs)
-        if decisions is not None:
-            applied = apply_terms(translation_config, decisions)
-            ruled = drop_cap.apply_decisions(labeled, decisions.drop_caps)
+        defaults = term_defaults(rows)
+        if decisions is not None or defaults:
+            applied = apply_terms(translation_config, decisions, defaults)
+            ruled = (
+                drop_cap.apply_decisions(labeled, decisions.drop_caps)
+                if decisions is not None
+                else []
+            )
             if applied or ruled:
                 report = _report(translation_config)
                 if applied:
                     report[TERMS_SECTION] = applied
                 if ruled:
                     report[DROP_CAPS_SECTION] = ruled
-                report["decisions_file"] = str(decisions.path)
+                if decisions is not None:
+                    report["decisions_file"] = str(decisions.path)
                 _write_report(translation_config, report)
     drop_cap.apply(translation_config, labeled)
 
@@ -813,7 +966,8 @@ def after_translate(translation_config) -> None:
     be discovered from an unchanged rendering.
     """
     if not (
-        translation_config.magazine_hitl_export or translation_config.magazine_hitl_apply
+        translation_config.magazine_hitl_export
+        or translation_config.magazine_hitl_apply
     ):
         return
     records = read_tracking(translation_config)
@@ -848,7 +1002,9 @@ def after_translate(translation_config) -> None:
 
 
 def _warn_unreached(counted: list[dict]) -> None:
-    unreached = [record["source"] for record in counted if not record["matched_prompt_count"]]
+    unreached = [
+        record["source"] for record in counted if not record["matched_prompt_count"]
+    ]
     if unreached:
         logger.warning(
             "hitl: %d ruled term(s) matched no input and changed nothing: %s",
@@ -873,9 +1029,7 @@ def after_repair(translation_config, offered: list[str]) -> None:
     if not applied:
         return
     config = load_hitl_config()
-    records = read_tracking(translation_config) + [
-        {"input": text} for text in offered
-    ]
+    records = read_tracking(translation_config) + [{"input": text} for text in offered]
     counted = match_counts(
         [(entry["source"], entry["target"]) for entry in applied["entries"]],
         records,
@@ -960,9 +1114,7 @@ def render_review_html(draft: dict) -> str:
     answers what was decided and what a ruling would have to say to change it.
     """
     sample = draft.get("sample", "")
-    body = "".join(
-        _section_html(name, draft.get(name) or []) for name in sections()
-    )
+    body = "".join(_section_html(name, draft.get(name) or []) for name in sections())
     return (
         "<!doctype html><html><head><meta charset='utf-8'>"
         f"<title>review draft: {html.escape(sample)}</title>"

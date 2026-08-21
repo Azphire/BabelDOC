@@ -1,0 +1,193 @@
+{
+  "by_rule": {
+    "initial": 0,
+    "inline": 0,
+    "vertical": 2
+  },
+  "declared_page_rules": [
+    "inline"
+  ],
+  "declared_page_switch": "magazine_stitch_declared",
+  "declared_pages_unblocked": true,
+  "duplicate_blanked": [],
+  "initial_candidates": [
+    {
+      "accepted": false,
+      "body": "F E AT U R E S",
+      "body_size": 8.0,
+      "characters": 2,
+      "font_ratio": 4.75,
+      "fragment": "14",
+      "left_offset": 12.93,
+      "page": 3,
+      "top_offset": 141.78,
+      "within_unit": true
+    },
+    {
+      "accepted": false,
+      "body": "What Has Become of the Hijaz Railway?",
+      "body_size": 14.0,
+      "characters": 2,
+      "font_ratio": 2.7143,
+      "fragment": "20",
+      "left_offset": 1.09,
+      "page": 3,
+      "top_offset": -213.95,
+      "within_unit": true
+    },
+    {
+      "accepted": false,
+      "body": "FRONT COVE",
+      "body_size": 7.0,
+      "characters": 2,
+      "font_ratio": 5.4286,
+      "fragment": "32",
+      "left_offset": 191.78,
+      "page": 3,
+      "top_offset": -182.91,
+      "within_unit": true
+    },
+    {
+      "accepted": false,
+      "body": "Madinah",
+      "body_size": 9.0,
+      "characters": 3,
+      "font_ratio": 1.0,
+      "fragment": "Sea",
+      "left_offset": -50.41,
+      "page": 7,
+      "top_offset": -56.71,
+      "within_unit": true
+    }
+  ],
+  "initial_max_chars": 3,
+  "initial_min_font_ratio": 1.6,
+  "max_fragment_chars": 40,
+  "pages": [
+    {
+      "blanked": 0,
+      "exempt": false,
+      "page": 1,
+      "paragraphs": 3,
+      "stitches": 0,
+      "unblocked": false
+    },
+    {
+      "blanked": 0,
+      "exempt": true,
+      "page": 2,
+      "paragraphs": 12,
+      "stitches": 0,
+      "unblocked": true
+    },
+    {
+      "blanked": 0,
+      "exempt": true,
+      "page": 3,
+      "paragraphs": 21,
+      "stitches": 0,
+      "unblocked": true
+    },
+    {
+      "blanked": 0,
+      "exempt": false,
+      "page": 4,
+      "paragraphs": 17,
+      "stitches": 0,
+      "unblocked": false
+    },
+    {
+      "blanked": 0,
+      "exempt": false,
+      "page": 5,
+      "paragraphs": 20,
+      "stitches": 0,
+      "unblocked": false
+    },
+    {
+      "blanked": 0,
+      "exempt": false,
+      "page": 6,
+      "paragraphs": 14,
+      "stitches": 0,
+      "unblocked": false
+    },
+    {
+      "blanked": 2,
+      "exempt": false,
+      "page": 7,
+      "paragraphs": 21,
+      "stitches": 2,
+      "unblocked": false
+    },
+    {
+      "blanked": 0,
+      "exempt": false,
+      "page": 8,
+      "paragraphs": 18,
+      "stitches": 0,
+      "unblocked": false
+    },
+    {
+      "blanked": 0,
+      "exempt": false,
+      "page": 9,
+      "paragraphs": 20,
+      "stitches": 0,
+      "unblocked": false
+    }
+  ],
+  "policy_flags": [
+    "preserve_line_structure"
+  ],
+  "rules": [
+    "inline",
+    "vertical",
+    "initial"
+  ],
+  "stitches": [
+    {
+      "characters": 18,
+      "debug_id": "SKqjk",
+      "member_debug_ids": [
+        "SKqjk",
+        "nF8jz"
+      ],
+      "members": 2,
+      "page": 7,
+      "paragraph": "p7#13",
+      "restyled_characters": 10,
+      "rule": "vertical",
+      "style_normalized": true,
+      "text": "S AU D I A R A B I A"
+    },
+    {
+      "characters": 16,
+      "debug_id": "cHZj4",
+      "member_debug_ids": [
+        "cHZj4",
+        "tjJ2L"
+      ],
+      "members": 2,
+      "page": 7,
+      "paragraph": "p7#15",
+      "restyled_characters": 0,
+      "rule": "vertical",
+      "style_normalized": false,
+      "text": "MediterraneanSea"
+    }
+  ],
+  "switch": "magazine_fragment_stitch",
+  "totals": {
+    "blanked_paragraphs": 2,
+    "duplicate_blanked": 0,
+    "exempt_pages": 2,
+    "initial_accepted": 0,
+    "initial_candidates": 4,
+    "merged_paragraphs": 4,
+    "pages": 9,
+    "stitches": 2,
+    "style_normalized": 1
+  },
+  "window_switch": "magazine_page_classify"
+}

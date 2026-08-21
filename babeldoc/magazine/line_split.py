@@ -290,11 +290,11 @@ def character_union(characters):
 # compositions, and naming them once is what keeps the package to one place that
 # spells a composition member out.
 SPLITTABLE = ("pdf_line", "pdf_same_style_characters")
-_ATOMIC = ("pdf_formula", "pdf_character", "pdf_same_style_unicode_characters")
+ATOMIC = ("pdf_formula", "pdf_character", "pdf_same_style_unicode_characters")
 
 
 def composition_kind(composition) -> str | None:
-    for name in (*SPLITTABLE, *_ATOMIC):
+    for name in (*SPLITTABLE, *ATOMIC):
         if getattr(composition, name, None) is not None:
             return name
     return None
@@ -603,7 +603,7 @@ def _compositions_of_line(paragraph, line: set[int]):
         characters = composition_characters(composition, kind)
         indices = range(position, position + len(characters))
         position += len(characters)
-        if kind in _ATOMIC:
+        if kind in ATOMIC:
             if characters and indices[0] in line:
                 compositions.append(composition)
             continue

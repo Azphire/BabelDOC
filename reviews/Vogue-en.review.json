@@ -1,0 +1,737 @@
+{
+  "drop_caps": [],
+  "format_version": 2,
+  "page_kinds": [
+    {
+      "ambiguous": true,
+      "conf": 1.0,
+      "machine_kind": "advertisement",
+      "page": 1,
+      "source": "deterministic"
+    },
+    {
+      "ambiguous": false,
+      "conf": 1.0,
+      "machine_kind": "advertisement",
+      "page": 2,
+      "source": "deterministic"
+    },
+    {
+      "ambiguous": true,
+      "conf": 0.875,
+      "machine_kind": "toc",
+      "page": 3,
+      "source": "deterministic"
+    }
+  ],
+  "sample": "Vogue-en",
+  "terms": [
+    {
+      "auto_target": "艾德里安·布罗迪",
+      "candidates": [
+        "Adrien Brody"
+      ],
+      "first_page": 3,
+      "is_person": true,
+      "observed_target": "艾德里安·布罗迪",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Adrien Brody",
+      "translator_view": "<style id='1'>Man on Wire </style>Adrien Brody is drawn to extreme roles—but",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "美国",
+      "first_page": 3,
+      "observed_target": "美国",
+      "person_shaped": false,
+      "source": "America",
+      "translator_view": "WNBA star Angel Reese of the Chicago Sky (above feft in a Versace dress) and American Olympic champion sprinter Gabby Th",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "美国",
+      "first_page": 3,
+      "observed_target": "美国",
+      "person_shaped": false,
+      "source": "American",
+      "translator_view": "WNBA star Angel Reese of the Chicago Sky (above feft in a Versace dress) and American Olympic champion sprinter Gabby Th",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "美国风",
+      "first_page": 3,
+      "observed_target": "美国风",
+      "person_shaped": false,
+      "source": "Americana",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "安吉尔·里斯",
+      "candidates": [
+        "Angel Reese"
+      ],
+      "first_page": 3,
+      "is_person": true,
+      "observed_target": "安吉尔·里斯",
+      "origin": "name_harvest",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Angel Reese",
+      "translator_view": "WNBA star Angel Reese of the Chicago Sky (above feft in a Versace dress) and American Olympic champion sprinter Gabby Th",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "百老汇",
+      "first_page": 3,
+      "observed_target": "百老汇",
+      "person_shaped": false,
+      "source": "Broadway",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "冠军联赛",
+      "candidates": [
+        "Champions League"
+      ],
+      "first_page": 3,
+      "is_person": false,
+      "observed_target": "冠军联赛",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Champions League",
+      "translator_view": "<style id='1'>Cover Look </style><style id='3'>Champions League</style>",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "Chicago Sky",
+      "candidates": [
+        "Chicago Sky"
+      ],
+      "first_page": 3,
+      "is_person": false,
+      "observed_target": "Chicago Sky",
+      "origin": "name_harvest",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Chicago Sky",
+      "translator_view": "WNBA star Angel Reese of the Chicago Sky (above feft in a Versace dress) and American Olympic champion sprinter Gabby Th",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "康涅狄格州",
+      "first_page": 3,
+      "observed_target": "康涅狄格州",
+      "person_shaped": false,
+      "source": "Connecticut",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "丹尼尔·阿诺德",
+      "candidates": [
+        "DANIEL ARNOLD"
+      ],
+      "first_page": 3,
+      "is_person": true,
+      "observed_target": "丹尼尔·阿诺德",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "DANIEL ARNOLD",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "加比·托马斯",
+      "candidates": [
+        "Gabby Thomas"
+      ],
+      "first_page": 3,
+      "is_person": true,
+      "observed_target": "加比·托马斯",
+      "origin": "name_harvest",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Gabby Thomas",
+      "translator_view": "WNBA star Angel Reese of the Chicago Sky (above feft in a Versace dress) and American Olympic champion sprinter Gabby Th",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "Gap",
+      "first_page": 3,
+      "observed_target": "Gap",
+      "person_shaped": false,
+      "source": "Gap",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "海莉·梅特兰",
+      "candidates": [
+        "Hayley Maitland"
+      ],
+      "first_page": 3,
+      "is_person": true,
+      "observed_target": "海莉·梅特兰",
+      "origin": "name_harvest",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Hayley Maitland",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "伊琳娜·亚历山大",
+      "candidates": [
+        "Irina Aleksander"
+      ],
+      "first_page": 3,
+      "is_person": true,
+      "observed_target": "伊琳娜·亚历山大",
+      "origin": "name_harvest",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Irina Aleksander",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "爱尔兰人",
+      "first_page": 3,
+      "observed_target": "爱尔兰人",
+      "person_shaped": false,
+      "source": "Irishman",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "朱莉娅·萨尔-贾莫伊斯",
+      "candidates": [
+        "Julia Sarr-Jamois"
+      ],
+      "first_page": 3,
+      "is_person": true,
+      "observed_target": "朱莉娅·萨尔-贾莫伊斯",
+      "origin": "name_harvest",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Julia Sarr-Jamois",
+      "translator_view": "WNBA star Angel Reese of the Chicago Sky (above feft in a Versace dress) and American Olympic champion sprinter Gabby Th",
+      "vote_count": 2
+    },
+    {
+      "auto_target": "路易威登",
+      "candidates": [
+        "LOUIS VUITTON"
+      ],
+      "first_page": 3,
+      "is_person": false,
+      "observed_target": "路易威登",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "LOUIS VUITTON",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "模特Grace Elizabeth",
+      "first_page": 3,
+      "observed_target": "模特Grace Elizabeth",
+      "person_shaped": false,
+      "source": "MODEL GRACE ELIZABETH",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "玛戈·安布巴",
+      "candidates": [
+        "Margaux Anbouba"
+      ],
+      "first_page": 3,
+      "is_person": true,
+      "observed_target": "玛戈·安布巴",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Margaux Anbouba",
+      "translator_view": "<style id='1'>32In Step </style>Margaux Anbouba",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "马蒂·卡恩",
+      "candidates": [
+        "Mattie Kahn"
+      ],
+      "first_page": 3,
+      "is_person": true,
+      "observed_target": "马蒂·卡恩",
+      "origin": "name_harvest",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Mattie Kahn",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "玛雅·辛格",
+      "candidates": [
+        "Maya Singer"
+      ],
+      "first_page": 3,
+      "is_person": true,
+      "observed_target": "玛雅·辛格",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Maya Singer",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "McGirr",
+      "first_page": 3,
+      "observed_target": "McGirr",
+      "person_shaped": false,
+      "source": "McGirr",
+      "translator_view": "<style id='1'>McGirr’s McQueen </style>Seán McGirr came out of nowhere to lead",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "McQueen",
+      "first_page": 3,
+      "observed_target": "McQueen",
+      "person_shaped": false,
+      "source": "McQueen",
+      "translator_view": "<style id='1'>McGirr’s McQueen </style>Seán McGirr came out of nowhere to lead",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "NAD",
+      "first_page": 3,
+      "observed_target": "NAD",
+      "person_shaped": false,
+      "source": "NAD",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "耐克",
+      "first_page": 3,
+      "observed_target": "耐克",
+      "person_shaped": false,
+      "source": "NIKE",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "纽约",
+      "first_page": 3,
+      "observed_target": "纽约",
+      "person_shaped": false,
+      "source": "New York",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "诺曼·让·罗伊",
+      "candidates": [
+        "Norman Jean Roy"
+      ],
+      "first_page": 3,
+      "is_person": true,
+      "observed_target": "诺曼·让·罗伊",
+      "origin": "name_harvest",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Norman Jean Roy",
+      "translator_view": "WNBA star Angel Reese of the Chicago Sky (above feft in a Versace dress) and American Olympic champion sprinter Gabby Th",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "奥林匹克",
+      "first_page": 3,
+      "observed_target": "奥林匹克",
+      "person_shaped": false,
+      "source": "Olympic",
+      "translator_view": "WNBA star Angel Reese of the Chicago Sky (above feft in a Versace dress) and American Olympic champion sprinter Gabby Th",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "萨姆·麦金尼斯",
+      "candidates": [
+        "Sam McKinniss"
+      ],
+      "first_page": 3,
+      "is_person": true,
+      "observed_target": "萨姆·麦金尼斯",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Sam McKinniss",
+      "translator_view": "Through the Looking Glass <style id='1'>Sam McKinniss’s</style>",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "萨纳兹·图西",
+      "candidates": [
+        "Sanaz Toossi"
+      ],
+      "first_page": 3,
+      "is_person": true,
+      "observed_target": "萨纳兹·图西",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Sanaz Toossi",
+      "translator_view": "<style id='1'>esting Ground </style>Sanaz Toossi brings",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "肖恩·麦吉尔",
+      "candidates": [
+        "Seán McGirr"
+      ],
+      "first_page": 3,
+      "is_person": true,
+      "observed_target": "肖恩·麦吉尔",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Seán McGirr",
+      "translator_view": "<style id='1'>McGirr’s McQueen </style>Seán McGirr came out of nowhere to lead",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "Sportmax",
+      "first_page": 3,
+      "observed_target": "Sportmax",
+      "person_shaped": false,
+      "source": "Sportmax",
+      "translator_view": "WNBA star Angel Reese of the Chicago Sky (above feft in a Versace dress) and American Olympic champion sprinter Gabby Th",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "The Brutalist",
+      "first_page": 3,
+      "observed_target": "The Brutalist",
+      "person_shaped": false,
+      "source": "The Brutalist",
+      "translator_view": "nothing compares to his work in <style id='1'>The Brutalist.</style>By Wendell Steavenson",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "范思哲",
+      "first_page": 3,
+      "observed_target": "范思哲",
+      "person_shaped": false,
+      "source": "Versace",
+      "translator_view": "WNBA star Angel Reese of the Chicago Sky (above feft in a Versace dress) and American Olympic champion sprinter Gabby Th",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "WNBA",
+      "first_page": 3,
+      "observed_target": "WNBA",
+      "person_shaped": false,
+      "source": "WNBA",
+      "translator_view": "WNBA star Angel Reese of the Chicago Sky (above feft in a Versace dress) and American Olympic champion sprinter Gabby Th",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "温德尔·斯蒂文森",
+      "candidates": [
+        "Wendell Steavenson"
+      ],
+      "first_page": 3,
+      "is_person": true,
+      "observed_target": "温德尔·斯蒂文森",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Wendell Steavenson",
+      "translator_view": "nothing compares to his work in <style id='1'>The Brutalist.</style>By Wendell Steavenson",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "2025年冬季",
+      "first_page": 3,
+      "observed_target": "2025年冬季",
+      "person_shaped": false,
+      "source": "Winter 2025",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "约哈娜·勒巴西",
+      "candidates": [
+        "Yohana Lebasi"
+      ],
+      "first_page": 3,
+      "is_person": true,
+      "observed_target": "约哈娜·勒巴西",
+      "origin": "name_harvest",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Yohana Lebasi",
+      "translator_view": "WNBA star Angel Reese of the Chicago Sky (above feft in a Versace dress) and American Olympic champion sprinter Gabby Th",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "扎克·珀森",
+      "candidates": [
+        "Zac Posen"
+      ],
+      "first_page": 3,
+      "is_person": true,
+      "observed_target": "扎克·珀森",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Zac Posen",
+      "translator_view": "<style id='1'>48From A to Zac </style>Zac Posen’s arrival",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "Alexander McQueen",
+      "candidates": [
+        "Alexander McQueen"
+      ],
+      "first_page": null,
+      "is_person": false,
+      "observed_target": "Alexander McQueen",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Alexander McQueen",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "Boom Productions",
+      "candidates": [
+        "Boom Productions"
+      ],
+      "first_page": null,
+      "is_person": false,
+      "observed_target": "Boom Productions",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Boom Productions",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "乔伊·乔治",
+      "candidates": [
+        "Joey George"
+      ],
+      "first_page": 3,
+      "is_person": true,
+      "observed_target": "乔伊·乔治",
+      "origin": "name_harvest",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Joey George",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "彼得·克莱因",
+      "candidates": [
+        "Peter Klein"
+      ],
+      "first_page": 3,
+      "is_person": true,
+      "observed_target": "彼得·克莱因",
+      "origin": "name_harvest",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Peter Klein",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "苏西·索博尔",
+      "candidates": [
+        "Susie Sobol"
+      ],
+      "first_page": 3,
+      "is_person": true,
+      "observed_target": "苏西·索博尔",
+      "origin": "name_harvest",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Susie Sobol",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "VOGUE.COM",
+      "first_page": null,
+      "observed_target": "VOGUE.COM",
+      "person_shaped": false,
+      "source": "VOGUE.COM",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": null,
+      "candidates": [
+        "American Olympic"
+      ],
+      "first_page": 3,
+      "is_person": false,
+      "observed_target": null,
+      "origin": "name_harvest",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "American Olympic",
+      "translator_view": "WNBA star Angel Reese of the Chicago Sky (above feft in a Versace dress) and American Olympic champion sprinter Gabby Th",
+      "vote_count": 1
+    },
+    {
+      "auto_target": null,
+      "candidates": [
+        "FLEX PACE"
+      ],
+      "first_page": 3,
+      "is_person": false,
+      "observed_target": null,
+      "origin": "name_harvest",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "FLEX PACE",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": null,
+      "candidates": [
+        "Go Time"
+      ],
+      "first_page": 3,
+      "is_person": false,
+      "observed_target": null,
+      "origin": "name_harvest",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Go Time",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": "萨纳兹·图西",
+      "candidates": [
+        "Ground Sanaz Toossi"
+      ],
+      "first_page": 3,
+      "is_person": true,
+      "observed_target": "萨纳兹·图西",
+      "origin": "name_harvest",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Ground Sanaz Toossi",
+      "translator_view": "<style id='1'>esting Ground </style>Sanaz Toossi brings",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "萨姆·麦金尼斯",
+      "candidates": [
+        "Looking Glass Sam McKinniss’s"
+      ],
+      "first_page": 3,
+      "is_person": true,
+      "observed_target": "萨姆·麦金尼斯",
+      "origin": "name_harvest",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Looking Glass Sam McKinniss’s",
+      "translator_view": "Through the Looking Glass <style id='1'>Sam McKinniss’s</style>",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "肖恩·麦吉尔",
+      "candidates": [
+        "McGirr’s McQueen Seán McGirr"
+      ],
+      "first_page": 3,
+      "is_person": true,
+      "observed_target": "肖恩·麦吉尔",
+      "origin": "name_harvest",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "McGirr’s McQueen Seán McGirr",
+      "translator_view": "<style id='1'>McGirr’s McQueen </style>Seán McGirr came out of nowhere to lead",
+      "vote_count": 1
+    },
+    {
+      "auto_target": null,
+      "candidates": [
+        "Miracle Drip"
+      ],
+      "first_page": 3,
+      "is_person": false,
+      "observed_target": null,
+      "origin": "name_harvest",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Miracle Drip",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": null,
+      "candidates": [
+        "PROP STYLIST"
+      ],
+      "first_page": 3,
+      "is_person": false,
+      "observed_target": null,
+      "origin": "name_harvest",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "PROP STYLIST",
+      "translator_view": null,
+      "vote_count": 1
+    },
+    {
+      "auto_target": null,
+      "candidates": [
+        "VO GU"
+      ],
+      "first_page": 3,
+      "is_person": false,
+      "observed_target": null,
+      "origin": "name_harvest",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "VO GU",
+      "translator_view": "<style id='1'>22 </style>W I N T E R 2 0 2 5 VO G U E .C O M",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "艾德里安·布罗迪",
+      "candidates": [
+        "Wire Adrien Brody"
+      ],
+      "first_page": 3,
+      "is_person": true,
+      "observed_target": "艾德里安·布罗迪",
+      "origin": "name_harvest",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Wire Adrien Brody",
+      "translator_view": "<style id='1'>Man on Wire </style>Adrien Brody is drawn to extreme roles—but",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "扎克·波森",
+      "candidates": [
+        "Zac Zac Posen’s"
+      ],
+      "first_page": 3,
+      "is_person": true,
+      "observed_target": "扎克·波森",
+      "origin": "name_harvest",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Zac Zac Posen’s",
+      "translator_view": "<style id='1'>48From A to Zac </style>Zac Posen’s arrival",
+      "vote_count": 1
+    }
+  ]
+}

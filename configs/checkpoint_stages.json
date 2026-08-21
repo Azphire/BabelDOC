@@ -15,7 +15,6 @@
     "add_debug_information",
     "typesetting"
   ],
-
   "sidecars_description": "Every file a magazine stage writes into the working directory beside the XML checkpoints. A checkpoint is the intermediate language at a point in the pipeline; a sidecar is what a stage found that the frozen schema has nowhere to hold. The two together are what a run leaves behind, so a stage that writes only a sidecar -- article grouping and the article brief pass both do -- is still declared here and is still part of the run's inventory. 'switch' names the constructor flag that has to be up for the file to appear, and 'stage' the pipeline stage it is written by; a stage named here need not appear in 'stages', because writing a sidecar and checkpointing the document are separate things.",
   "sidecars": [
     {
@@ -87,6 +86,21 @@
       "name": "paren_dedup.report.json",
       "stage": "il_translated",
       "switch": "magazine_paren_dedup"
+    },
+    {
+      "name": "source_audit.report.json",
+      "stage": "page_classifier",
+      "switch": "magazine_stitch_declared"
+    },
+    {
+      "name": "short_unit.report.json",
+      "stage": "il_translated",
+      "switch": "magazine_short_unit"
+    },
+    {
+      "name": "name_harvest.report.json",
+      "stage": "il_translated",
+      "switch": "magazine_name_harvest"
     }
   ]
 }

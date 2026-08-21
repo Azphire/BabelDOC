@@ -1,0 +1,210 @@
+{
+  "sample": "FD-en-v2",
+  "baseline": "examples\\output\\F2\\FD-en-v2\\work\\FD-en-v2\\checkpoint.11_typesetting.json",
+  "baseline_pages": 9,
+  "pages": 9,
+  "target_pages": {
+    "3": {
+      "baseline_paragraphs": 52,
+      "paragraphs": 52,
+      "differing": [
+        {
+          "reference": "p3#10",
+          "baseline": "全球化留下的路径 超越经济民粹主义 <style id='1'>Gordon Hanson</style>",
+          "run": "全球化留下的路径：超越经济民粹主义 <style id='1'>戈登·汉森</style>"
+        },
+        {
+          "reference": "p3#12",
+          "baseline": "凯恩斯在我们时代",
+          "run": "我们的时代的凯恩斯"
+        },
+        {
+          "reference": "p3#15",
+          "baseline": "当今的经济、金融和人工智能驱动的市场 <style id='1'>Robert Skidelsky</style>",
+          "run": "当今的经济、金融和人工智能驱动的市场 <style id='1'>罗伯特·斯基德尔斯基</style>"
+        },
+        {
+          "reference": "p3#20",
+          "baseline": "政策决定了工作的组织方式<style id='1'>Amory Gethin 和 Emmanuel Saez</style>",
+          "run": "政策决定了工作的组织 <style id='1'>阿莫里·盖辛和埃马纽埃尔·萨兹</style>"
+        },
+        {
+          "reference": "p3#23",
+          "baseline": "亚当·斯密的哲学仍然影响着",
+          "run": "亚当·斯密的哲学仍然揭示"
+        },
+        {
+          "reference": "p3#24",
+          "baseline": "揭示经济增长、贸易和应对变化的方式 <style id='1'>迈克尔·斯彭斯</style>",
+          "run": "揭示经济如何增长、贸易和应对变化 <style id='1'>迈克尔·斯彭斯</style>"
+        },
+        {
+          "reference": "p3#27",
+          "baseline": "在动荡世界中理解地缘经济学",
+          "run": "在动荡的世界中理解地缘经济学"
+        },
+        {
+          "reference": "p3#28",
+          "baseline": "<style id='1'>新经济学工具如何解释全球权力动态 </style>Christopher Clayton, Matteo Maggiori 和 Jesse Schreger",
+          "run": "<style id='1'>新经济学工具如何解释全球权力动态 </style>克里斯托弗·克莱顿、马泰奥·马焦里和杰西·施雷格"
+        },
+        {
+          "reference": "p3#31",
+          "baseline": "在全球范围内，",
+          "run": "在全球范围内，之间的界限"
+        },
+        {
+          "reference": "p3#32",
+          "baseline": "经济政策与国家安全之间的界限正在消失 <style id='1'>Josh Lipsky（Josh Lipsky）</style>",
+          "run": "经济政策和国家安全的界限正在消失 <style id='1'>乔什·利普斯基 (Josh Lipsky)</style>"
+        },
+        {
+          "reference": "p3#37",
+          "baseline": "在地缘政治中使用关税或制裁，",
+          "run": "使用关税或制裁来进行地缘政治-"
+        },
+        {
+          "reference": "p3#40",
+          "baseline": "Jeffry Frieden",
+          "run": "杰弗里·弗里登"
+        },
+        {
+          "reference": "p3#43",
+          "baseline": "地缘政治竞争并不意味着贸易合作的终结，但多边体系必须适应 <style id='1'>Aaditya Mattoo, Michele Ruta, 和 Robert W. Staiger</style>",
+          "run": "地缘政治竞争并不意味着贸易合作的终结，但多边体系必须适应 <style id='1'>阿迪亚·马图、米凯莱·鲁塔和 Robert W. Staiger</style>"
+        },
+        {
+          "reference": "p3#47",
+          "baseline": "所有权再次扩张，这次有何不同 <style id='1'>Nicholas Mulder</style>",
+          "run": "所有权再次扩张，这次有何不同 <style id='1'>尼古拉斯·穆尔德 (Nicholas Mulder)</style>"
+        },
+        {
+          "reference": "p3#51",
+          "baseline": "<style id='1'>六月 </style>{v3}<style id='4'>第 </style>{v6}<style id='7'>第2期</style>",
+          "run": "6月 {v1}第{v2}卷第2期"
+        }
+      ]
+    },
+    "5": {
+      "baseline_paragraphs": 61,
+      "paragraphs": 61,
+      "differing": [
+        {
+          "reference": "p5#5",
+          "baseline": "Gita Bhatt",
+          "run": "吉塔·巴特"
+        },
+        {
+          "reference": "p5#7",
+          "baseline": "Nicholas Owen",
+          "run": "尼古拉斯·欧文"
+        },
+        {
+          "reference": "p5#9",
+          "baseline": "Andreas Adriano",
+          "run": "安德烈亚斯·阿德里亚诺"
+        },
+        {
+          "reference": "p5#10",
+          "baseline": "Jeff Kearns",
+          "run": "杰夫·科恩斯"
+        },
+        {
+          "reference": "p5#11",
+          "baseline": "Peter Walker",
+          "run": "彼得·沃克"
+        },
+        {
+          "reference": "p5#13",
+          "baseline": "Andrew Stanley",
+          "run": "安德鲁·斯坦利 (Andrew Stanley)"
+        },
+        {
+          "reference": "p5#15",
+          "baseline": "Marta Doroszczyk",
+          "run": "玛尔塔·多罗什奇克"
+        },
+        {
+          "reference": "p5#16",
+          "baseline": "Natalia Venegas Figueroa",
+          "run": "娜塔莉亚·维内加斯·菲格罗亚"
+        },
+        {
+          "reference": "p5#19",
+          "baseline": "Melinda Weir",
+          "run": "梅琳达·韦尔"
+        },
+        {
+          "reference": "p5#21",
+          "baseline": "Lucy Morales",
+          "run": "露西·莫拉莱斯 (Lucy Morales)"
+        },
+        {
+          "reference": "p5#26",
+          "baseline": "Aqib Aslam",
+          "run": "阿基布·阿斯拉姆"
+        },
+        {
+          "reference": "p5#27",
+          "baseline": "James Astill",
+          "run": "詹姆斯·阿斯蒂尔 (James Astill)"
+        },
+        {
+          "reference": "p5#28",
+          "baseline": "Helge Berger",
+          "run": "赫尔格·贝格尔"
+        },
+        {
+          "reference": "p5#29",
+          "baseline": "Yan Carriere-Swallow",
+          "run": "扬·卡里耶-斯沃洛"
+        },
+        {
+          "reference": "p5#30",
+          "baseline": "Oya Celasun",
+          "run": "奥亚·切拉松"
+        },
+        {
+          "reference": "p5#31",
+          "baseline": "Martin Cihak",
+          "run": "马丁·奇哈克"
+        },
+        {
+          "reference": "p5#32",
+          "baseline": "Rupa Duttagupta",
+          "run": "鲁帕·杜塔古普塔"
+        },
+        {
+          "reference": "p5#33",
+          "baseline": "Davide Furceri",
+          "run": "达维德·富尔切里"
+        },
+        {
+          "reference": "p5#34",
+          "baseline": "Deniz Igan",
+          "run": "德尼兹·伊甘"
+        },
+        {
+          "reference": "p5#35",
+          "baseline": "Subir Lall Papa N’Diaye Malhar Nabar Diaa Noureldin Uma Ramakrishnan Christoph Rosenberg Mauricio Soto Elizabeth Van Heuvelen Daria Zakharova Robert Zymek",
+          "run": "苏比尔·拉尔 帕帕·恩迪亚耶 马尔哈尔·纳巴尔 迪亚·努雷尔丁 乌玛·拉马克里希南 克里斯托夫·罗森伯格 毛里西奥·索托 伊丽莎白·范·赫维伦 达里娅·扎哈罗娃 罗伯特·齐梅克"
+        },
+        {
+          "reference": "p5#57",
+          "baseline": "<style id='1'>金融与发展</style>每季度出版一次",
+          "run": "《金融与发展》由以下机构每季度出版"
+        },
+        {
+          "reference": "p5#58",
+          "baseline": "和",
+          "run": ""
+        },
+        {
+          "reference": "p5#59",
+          "baseline": "国际货币基金组织，华盛顿特区西北19街700号，邮编20431，提供英文、阿拉伯文、中文、法文、日文、俄文和西班牙文版本。英文版 ISSN 0145-1707",
+          "run": "国际货币基金组织，华盛顿特区西北19街700号，邮编20431，提供英语、阿拉伯语、中文、法语、日语、俄语和西班牙语版本。英文版 ISSN 0145-1707"
+        }
+      ]
+    }
+  }
+}

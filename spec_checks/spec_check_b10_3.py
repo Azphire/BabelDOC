@@ -522,8 +522,13 @@ def check_01f_the_configuration_is_bounded() -> None:
     """Positive 1f: every knob carries a range and every vocabulary is closed."""
     raw = load_json(STITCH_CONFIG)
     faults = []
+    # The keys that are neither a bound nor a vocabulary are read from the
+    # module that declares them, so a structural key added to the file is
+    # skipped here without this list being edited again. B10.4 adds one: the
+    # name of the run attribute that lets a declared page be stitched.
+    structural = set(fragment_stitch._STRUCTURAL_KEYS)
     for key, value in raw.items():
-        if key == "description" or key.endswith("_allowed_range"):
+        if key in structural or key.endswith("_allowed_range"):
             continue
         if isinstance(value, list):
             if not value:
@@ -531,6 +536,14 @@ def check_01f_the_configuration_is_bounded() -> None:
             continue
         if f"{key}_allowed_range" not in raw:
             faults.append(f"{key} carries no range")
+    # A structural key still has to be something: the switch names a run
+    # attribute, so it has to be a bare identifier and nothing else.
+    for key in structural:
+        if key == "description" or key not in raw:
+            continue
+        value = raw[key]
+        if not isinstance(value, str) or not value.isidentifier():
+            faults.append(f"{key} is not the name of a run attribute")
     split_raw = load_json(SPLIT_CONFIG)
     if "record_gap_ratio_allowed_range" not in split_raw:
         faults.append("record_gap_ratio carries no range")

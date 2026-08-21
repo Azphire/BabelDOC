@@ -541,9 +541,7 @@ def check_02a_the_policy_is_declared_with_its_vocabulary() -> None:
     )
     probe(
         "no_entries",
-        lambda config: config[translation_style.NOTES_KEY].__setitem__(
-            translation_style.ENTRIES_KEY, {}
-        ),
+        lambda config: config.__setitem__(translation_style.POLICIES_KEY, {}),
     )
     probe("unknown_key", lambda config: config.__setitem__("person_names_extra", 1))
 

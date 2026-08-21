@@ -1,0 +1,268 @@
+{
+  "sample": "Courier-zh",
+  "baseline": "examples\\output\\F2\\Courier-zh\\work\\Courier-zh\\translate_tracking.json",
+  "groups_read": [
+    "page",
+    "cross_page",
+    "cross_column"
+  ],
+  "groups_present": [
+    "cross_column",
+    "cross_page",
+    "page"
+  ],
+  "requests": 124,
+  "baseline_requests": 107,
+  "inputs_sha256": "40cb3a3dcb20304da64f2d0d807fb1221c28ad350e44979129d9d46eb2f67e00",
+  "baseline_inputs_sha256": "4a4f6b3b37d83a769be0b79955dcbb06ce6e7dc81c74cf3f855093ac4f853c02",
+  "unchanged_requests": 93,
+  "withdrawn": [
+    "<style id='1'>中国:传统傣医焕发的璀璨活力</style><style id='3'> ........... </style><style id='5'>12</style>杨莎和杜俊知",
+    "<style id='1'>奇玛曼达·恩戈兹·阿迪契:“小说是人类在 诚实叙事领域最后的集体探索疆界”</style><style id='3'> .... </style><style id='5'>39</style>蕾蒂西亚·凯西(Laetitia Kaci)担任采访",
+    "<style id='1'>奥拉·马雷克-马丁内斯:“我们的知识长期 以来一直被当作民间传说”</style><style id='3'> .................. </style><style id='5'>21</style>卡特琳娜·马尔可洛娃(Katerina Markelova)担任采访",
+    "<style id='1'>时代变迁背景下的土著知识</style><style id='3'> ................. </style><style id='5'>2</style>拉吉波瓦·谢雷尔·杰克逊(Lagipoiva Cherelle Jackson)",
+    "<style id='1'>欢迎步入第二次量子革命时代</style><style id='3'> .............</style><style id='5'>35</style>吉姆·艾尔-哈利利(Jim Al-Khalili)",
+    "<style id='1'>萨米人:不可或缺的气候变化守护者</style><style id='3'> .... </style><style id='5'>18</style>安娜·罗霍宁(Anna Ruohonen)",
+    "<style id='1'>非洲图书产业:开启新篇章</style><style id='3'> .................</style><style id='5'>42</style>阿努利那·萨沃莱宁(Anuliina Savolainen)",
+    "举,涵盖水资源管",
+    "传统知识价值得到印证的案例不胜枚",
+    "土著人民积累的技艺与智慧并非只 是简单地代代相传,而是被系统化地编 纂成复杂的知识体系,太平洋与非洲的 纺织技艺便是有力例证。太平洋地区的 织工深谙植物生态学、帆船动力学及文 化礼仪规范,西非织工则精通织机技术、 天然染料与符号图案语言。在这两个地 区,知识通过学徒制与文化实践传承延 续。纺织品本身成为承载知识的“活档",
+    "坎特伯雷大学(新西 兰)副教授,其主要 研究方向为生物多样 性、知识产权与土著知 识体系的交叉领域。",
+    "戴维·杰斐逊 (David Jefferson)",
+    "案”,其纹样、制作过程以及匠人的技艺都凝结着土著人民 的智慧。",
+    "理、农林业、医疗保健及渔业等多个领 域。这些实践远非单纯的技术集合,更 是一种世界观的体现。例如,纺织工艺 便是另一种形式的“导航”,是精神层 面的引领。密克罗尼西亚外岛的编织 裙,以及加纳和尼日利亚的条纹编织传 统工艺,将社区知识和文化认同转化为 象征性的图案语言。"
+  ],
+  "introduced": [
+    "<style id='1'>以来一直被当作民间传说”</style> .................. <style id='3'>21</style>",
+    "<style id='1'>时代变迁背景下的土著知识</style> ................. <style id='3'>2</style>",
+    "<style id='1'>非洲图书产业:开启新篇章</style> .................<style id='3'>42</style>",
+    "中国:传统傣医焕发的璀璨活力<style id='1'> ........... </style><style id='3'>12</style>",
+    "传统知识价值得到印证的案例不胜枚举,涵盖水资源管 理、农林业、医疗保健及渔业等多个领 域。这些实践远非单纯的技术集合,更 是一种世界观的体现。例如,纺织工艺 便是另一种形式的“导航”,是精神层 面的引领。密克罗尼西亚外岛的编织 裙,以及加纳和尼日利亚的条纹编织传 统工艺,将社区知识和文化认同转化为 象征性的图案语言。",
+    "卡特琳娜·马尔可洛娃(Katerina Markelova)担任采访",
+    "吉姆·艾尔-哈利利(Jim Al-Khalili)",
+    "嘉宾",
+    "土著人民积累的技艺与智慧并非只 是简单地代代相传,而是被系统化地编 纂成复杂的知识体系,太平洋与非洲的 纺织技艺便是有力例证。太平洋地区的 织工深谙植物生态学、帆船动力学及文 化礼仪规范,西非织工则精通织机技术、 天然染料与符号图案语言。在这两个地 区,知识通过学徒制与文化实践传承延 续。纺织品本身成为承载知识的“活档 案”,其纹样、制作过程以及匠人的技艺都凝结着土著人民 的智慧。",
+    "土著知识",
+    "奇玛曼达·恩戈兹·阿迪契:“小说是人类在",
+    "奥拉·马雷克-马丁内斯:“我们的知识长期",
+    "安娜·罗霍宁(Anna Ruohonen)",
+    "广角",
+    "广角",
+    "广角",
+    "广角",
+    "总编辑",
+    "戴维·杰斐逊 (David Jefferson) 坎特伯雷大学(新西 兰)副教授,其主要 研究方向为生物多样 性、知识产权与土著知 识体系的交叉领域。",
+    "拉吉波瓦·谢雷尔·杰克逊(Lagipoiva Cherelle Jackson)",
+    "杨莎和杜俊知",
+    "欢迎步入第二次量子革命时代<style id='1'> .............</style><style id='3'>35</style>",
+    "深度阅读",
+    "社论",
+    "聚焦",
+    "萨米人:不可或缺的气候变化守护者<style id='1'> .... </style><style id='3'>18</style>",
+    "蕾蒂西亚·凯西(Laetitia Kaci)担任采访",
+    "观点",
+    "观点",
+    "诚实叙事领域最后的集体探索疆界”<style id='1'> .... </style><style id='3'>39</style>",
+    "阿努利那·萨沃莱宁(Anuliina Savolainen)"
+  ],
+  "answers_changed": [
+    {
+      "input": "然而,这种认可必须伴随保障措施—确保社区自由且充 分知情同意、实现利益公平分配、防范滥用性掠夺。我们的目 标绝非将本土知识简单纳入主流科学体系,而是推动惠及各方 的合作。",
+      "baseline": [
+        "However, this recognition must be accompanied by safeguards—ensuring the community's free and fully informed consent, achieving equitable benefit sharing, and preventing exploitative plundering. Our goal is not merely to integrate local knowledge into the mainstream scientific system, but to promote cooperation that benefits all parties."
+      ],
+      "run": [
+        "However, this recognition must be accompanied by safeguards—ensuring the community's free and fully informed consent, achieving fair distribution of benefits, and preventing exploitative plundering. Our goal is not merely to integrate local knowledge into the mainstream scientific system, but to promote cooperation that benefits all parties."
+      ]
+    },
+    {
+      "input": "通过弘扬这类知识,联合国教科文组织向我们揭示了一个 不言而喻的真理:要理解并守护这个世界,我们需充分融合各民 族的知识与传统,这将为我们带来无可估量的裨益。真正的科 学,以及契合这个多元世界的伦理准则,应当为所有形式的人类 文明表达提供包容空间,让绚烂多彩的人类文明之花尽情绽放。",
+      "baseline": [
+        "By promoting this type of knowledge, UNESCO reveals to us an unspoken truth: to understand and protect this world, we need to fully integrate the knowledge and traditions of all peoples, which will bring us immeasurable benefits. True science, along with ethical standards that align with this diverse world, should provide inclusive space for the expression of all forms of human civilization, allowing the vibrant flowers of human civilization to bloom freely."
+      ],
+      "run": [
+        "By promoting this type of knowledge, UNESCO reveals to us an unspoken truth: to understand and protect this world, we need to fully integrate the knowledge and traditions of all ethnic groups, which will bring us immeasurable benefits. True science, along with ethical standards that align with this diverse world, should provide inclusive space for the expression of all forms of human civilization, allowing the vibrant flowers of human civilization to bloom freely."
+      ]
+    },
+    {
+      "input": "<style id='1'>巴西:水之民族的启示</style> ......................... <style id='3'>7</style>",
+      "baseline": [
+        "<style id='1'>Brazil: The Water People's Inspiration</style>.<style id='3'>7</style>"
+      ],
+      "run": [
+        "<style id='1'>Brazil: Inspiration from the Water People</style>.<style id='3'>7</style>"
+      ]
+    },
+    {
+      "input": "丹尼尔·鲁滨逊(Daniel Robinson)和戴维·杰斐逊(David Jefferson)",
+      "baseline": [
+        "Daniel Robinson and David Jefferson"
+      ],
+      "run": [
+        "Daniel Robinson (Daniel Robinson) and David Jefferson (David Jefferson)"
+      ]
+    },
+    {
+      "input": "西斯科·阿瓦拉(Sisco Auala)",
+      "baseline": [
+        "Sisco Auala"
+      ],
+      "run": [
+        "Sisco Auala (Sisco Auala)"
+      ]
+    },
+    {
+      "input": "早在尚未有人造卫星环绕地球之前,波利尼西亚航海家便 已能通过观测星辰、涌浪、生物发光现象以及海鸟飞行轨 迹,横渡数千英里的茫茫大海。在撒哈拉沙漠,图阿雷格人 (Tuareg)历来依靠天体运行规律、日照、风向和地形特征 指引方向,尽管如今他们的现代导航方式已更多地依赖地标 且多在白天行进。认知科学研究揭示,这些导航系统通过多 样化的环境线索展现出高度复杂的空间推理能力,在综合性 方面远超实验室研究中使用的单一输入方法。",
+      "baseline": [
+        "Long before artificial satellites orbited the Earth, Polynesian navigators were already able to cross thousands of miles of open ocean by observing stars, swells, bioluminescence, and the flight paths of seabirds. In the Sahara Desert, the Tuareg have traditionally relied on celestial movements, sunlight, wind direction, and topographical features for navigation, although today their modern navigation methods rely more on landmarks and are mostly conducted during the day. Cognitive science research reveals that these navigation systems demonstrate highly complex spatial reasoning abilities through diverse environmental cues, far surpassing the single-input methods used in laboratory studies in terms of integration."
+      ],
+      "run": [
+        "Long before artificial satellites orbited the Earth, Polynesian navigators were already able to cross thousands of miles of open ocean by observing stars, swells, bioluminescence, and the flight paths of seabirds. In the Sahara Desert, the Tuareg have traditionally relied on celestial movements, sunlight, wind direction, and topographical features for navigation, although today their modern navigation methods rely more on landmarks and are mostly conducted during the day. Cognitive science research reveals that these navigation systems exhibit highly complex spatial reasoning abilities through diverse environmental cues, far surpassing the single-input methods used in laboratory studies in terms of integration."
+      ]
+    },
+    {
+      "input": "这些实践代表着完整的知识体系。 它们将认知进行编码、加以保存并代代 相传。如今,世界各地的土著社区正 在捍卫保护此类文化遗产的权利,同 时积极阐明传统知识体系作为平行科",
+      "baseline": [
+        "These practices represent complete knowledge systems. They encode, preserve, and pass on cognition from generation to generation. Today, indigenous communities around the world are defending their rights to protect such cultural heritage while actively articulating the value of traditional knowledge systems as parallel scientific frameworks."
+      ],
+      "run": [
+        "These practices represent complete systems of knowledge. They encode, preserve, and pass on cognition from generation to generation. Today, indigenous communities around the world are defending their rights to protect such cultural heritage while actively demonstrating the value of traditional knowledge systems as parallel scientific frameworks."
+      ]
+    },
+    {
+      "input": "学框架的价值。正如斐济研究学者萨拉尼埃塔·基托莱莱 (Salanieta Kitolelei) 在所罗门群岛霍尼亚拉举行的 2025 年第二届太平洋岛国海洋会议上所言:“本质并无二致— 我们只是用不同的语言描述同一件事。”",
+      "baseline": [
+        "As Fijian researcher Salanieta Kitolelei stated at the 2025 Second Pacific Islands Ocean Conference held in Honiara, Solomon Islands: 'In essence, there is no difference—we are merely describing the same thing in different languages.'"
+      ],
+      "run": [
+        "As Fijian researcher Salanieta Kitolelei stated at the second Pacific Islands Ocean Conference in Honiara, Solomon Islands, in 2025: \"In essence, there is no difference—we are just describing the same thing in different languages.\""
+      ]
+    },
+    {
+      "input": "“我们观察自然,观察动植物。我们是自然的守护者,对 所处环境拥有深厚的知识储备。”乍得姆博罗罗 (Mbororo)",
+      "baseline": [
+        "\"We observe nature, observing plants and animals. We are the guardians of nature, possessing profound knowledge of our environment.\" Mbororo"
+      ],
+      "run": [
+        "\"We observe nature, observing plants and animals. We are the guardians of nature, possessing deep knowledge of our environment.\" Mbororo"
+      ]
+    },
+    {
+      "input": "土 著人 民领 袖、联 合国 土著 问题 常设 论 坛第 二十 三届 会议 主席 欣杜· 奥马 鲁·易卜拉欣(Hindou Oumarou Ibrahim) 在 2024 年 4 月指出,“这些知识并非纸 上谈兵,而是历经数百年实践检验的智 慧结晶。”",
+      "baseline": [
+        "Indigenous peoples' leader and Chair of the 23rd Session of the United Nations Permanent Forum on Indigenous Issues, Hindou Oumarou Ibrahim, pointed out in April 2024, \"This knowledge is not just theoretical but is the crystallization of wisdom tested through centuries of practice.\""
+      ],
+      "run": [
+        "Indigenous leader and Chair of the 23rd Session of the United Nations Permanent Forum on Indigenous Issues, Hindou Oumarou Ibrahim, pointed out in April 2024, \"This knowledge is not just theoretical; it is the crystallization of wisdom tested through centuries of practice.\""
+      ]
+    },
+    {
+      "input": "联合国教科文组织于 2002 年制定 的地方和土著知识体系计划,旨在 调动地方社区和土著人民的知识、 技能与实践,支持他们参与环境 决策,特别是在生物多样性和气 候变化相关领域。",
+      "baseline": [
+        "The Local and Indigenous Knowledge Systems Programme, established by UNESCO in 2002, aims to mobilize the knowledge, skills, and practices of local communities and indigenous peoples to support their participation in environmental decision-making, particularly in the fields related to biodiversity and climate change."
+      ],
+      "run": [
+        "In 2002, UNESCO established the Local and Indigenous Knowledge Systems Programme, aiming to mobilize the knowledge, skills, and practices of local communities and indigenous peoples to support their participation in environmental decision-making, particularly in the fields related to biodiversity and climate change."
+      ]
+    },
+    {
+      "input": "驻巴西利亚(巴西)记者",
+      "baseline": [
+        "Correspondent in Brasília, Brazil"
+      ],
+      "run": [
+        "Correspondent in Brasília (Brazil)"
+      ]
+    },
+    {
+      "input": "卡瓦(学名:Piper methysticum)是 一种胡椒科植物,原产于太平洋地区, 其相关案例堪称土著人民和地方社群 知识遭不当侵占的典型代表。关于卡 瓦的专利申请已达数百项,其中多项 均与其抗焦虑和镇静功效相关,而太 平洋地区民众早已熟知这些功效。尽 管各方对卡瓦的关注度极高,但目前 在研究和专利申请的过程中,迄今却 未见任何为相关研究与专利主张获取 许可或落实惠益分享的协议。",
+      "baseline": [
+        "Kava (scientific name: Piper methysticum) is a plant from the pepper family, native to the Pacific region. It is a typical example of the improper appropriation of indigenous peoples' and local communities' knowledge. There have been hundreds of patent applications related to kava, many of which are associated with its anti-anxiety and sedative effects, which are already well-known to the people of the Pacific region. Despite the high level of interest in kava, there are currently no agreements in place to obtain permission or implement benefit sharing for the related research and patent claims."
+      ],
+      "run": [
+        "Kava (scientific name: Piper methysticum) is a plant from the pepper family, native to the Pacific region. It is a typical example of the improper appropriation of indigenous peoples' and local communities' knowledge. There have been hundreds of patent applications related to kava, many of which are associated with its anti-anxiety and sedative effects, which are already well-known among the people of the Pacific region. Despite the high level of interest in kava, there are currently no agreements in place to obtain permission for related research and patent claims or to implement benefit sharing."
+      ]
+    },
+    {
+      "input": "研究人员与企业常为开发新技术 与创新成果,寻求土著对植物、动物 及生态系统中其他非人类元素的特性 认知。这一过程有时被称为“生物探 索”,常见于农业和食品、生物技术、 制药、化妆品、林业等领域,借此研 发出销往全球的各类产品。",
+      "baseline": [
+        "Researchers and companies often seek indigenous knowledge of the characteristics of plants, animals, and other non-human elements within ecosystems to develop new technologies and innovations. This process, sometimes referred to as 'bioprospecting,' is common in fields such as agriculture and food, biotechnology, pharmaceuticals, cosmetics, and forestry, leading to the development of various products sold globally."
+      ],
+      "run": [
+        "Researchers and companies often seek indigenous knowledge of the characteristics of plants, animals, and other non-human elements in ecosystems to develop new technologies and innovations. This process is sometimes referred to as 'bioprospecting' and is common in fields such as agriculture and food, biotechnology, pharmaceuticals, cosmetics, and forestry, leading to the development of various products sold globally."
+      ]
+    },
+    {
+      "input": "借助生物探索,新产品开发者能 够获得诸多优势。例如,在制药行业, 研发与审批周期漫长,产品开发流程 成本高昂,且知识产权和监管保护策 略存在风险,而土著知识则可助力产 品加速推向市场。",
+      "baseline": [
+        "With the help of bioprospecting, new product developers can gain numerous advantages. For example, in the pharmaceutical industry, the research and development and approval cycles are lengthy, the product development process is costly, and there are risks associated with intellectual property and regulatory protection strategies. Indigenous knowledge can help accelerate the product's entry into the market."
+      ],
+      "run": [
+        "With the help of bioprospecting, new product developers can gain numerous advantages. For example, in the pharmaceuticals industry, the research and development and approval cycles are lengthy, the product development process is costly, and there are risks associated with intellectual property and regulatory protection strategies. Indigenous knowledge can help accelerate the product's entry into the market."
+      ]
+    },
+    {
+      "input": "丹尼尔·鲁滨逊 (Daniel Robinson)",
+      "baseline": [
+        "Daniel Robinson"
+      ],
+      "run": [
+        "Daniel Robinson (Daniel Robinson)"
+      ]
+    },
+    {
+      "input": "新南威尔士大学(澳 大利亚)文学院教授 兼研究副院长,其主 要研究方向为自然与 知识的监管机制。",
+      "baseline": [
+        "Professor and Deputy Dean of Research at the Faculty of Arts, University of New South Wales (Australia), whose main research focus is on the regulatory mechanisms of nature and knowledge."
+      ],
+      "run": [
+        "Professor and Deputy Dean of Research at the Faculty of Arts, University of New South Wales (Australia), his main research focus is on the regulatory mechanisms of nature and knowledge."
+      ]
+    },
+    {
+      "input": "共有遗产沦为私有商品?",
+      "baseline": [
+        "Has Common Heritage Become Private Commodity?"
+      ],
+      "run": [
+        "Has Common Heritage Become a Private Commodity?"
+      ]
+    },
+    {
+      "input": "从原住民通过有控制的焚烧来预防 野火,到因纽特人的天气预测方法, 再 到 部 分 非 洲 国 家 采 用 的“ 扎 伊 ” (<style id='1'>zaï</style>) 集水技术,世界各地的土著 传统实践丰富多样且行之有效,凝 聚着土著人民的智慧。在气候变化 和 生 物 多 样 性 不 断 丧 失 的 背 景下, 这些知识显得尤为珍贵。",
+      "baseline": [
+        "From the controlled burning by indigenous peoples to prevent wildfires, to the Inuit methods of weather prediction, and the 'zaï' (<style id='1'>zaï</style>) water harvesting techniques used in some African countries, traditional indigenous practices around the world are diverse and effective, embodying the wisdom of indigenous peoples. In the context of climate change and the ongoing loss of biodiversity, this knowledge is particularly valuable."
+      ],
+      "run": [
+        "From indigenous peoples using controlled burns to prevent wildfires, to the Inuit's weather prediction methods, and the 'zaï' (<style id='1'>zaï</style>) water harvesting technique used in some African countries, traditional indigenous practices around the world are diverse and effective, embodying the wisdom of indigenous peoples. In the context of climate change and the ongoing loss of biodiversity, this knowledge is particularly valuable."
+      ]
+    },
+    {
+      "input": "必 须 首 先 获 得 知 识 持 有 者 的 明 确 同 意,并签署详细载明惠益分享方式的 协议。",
+      "baseline": [
+        "It is necessary to first obtain the explicit consent of the knowledge holders and sign an agreement that clearly specifies the method of benefit-sharing."
+      ],
+      "run": [
+        "It is necessary to first obtain the explicit consent of the knowledge holders and sign an agreement that clearly outlines the method of benefit-sharing."
+      ]
+    },
+    {
+      "input": "阿涅丝·巴尔东(Agnès Bardon)",
+      "baseline": [
+        "Agnès Bardon"
+      ],
+      "run": [
+        "Agnes Bardon (Agnes Bardon)"
+      ]
+    },
+    {
+      "input": "在所罗门群岛的陶马科岛,女性是陆地和海洋的守护 者。她们采摘并加工露兜树(这种小型树木广泛分布于波利 尼西亚、密克罗尼西亚等地区),编织出为航海提供动力的 船帆 —这项技艺已延续三千余年。正如岛民德尔西·贝 蒂·博西 (Delsie Betty Bosi) 所言:“男性负责建造大部",
+      "baseline": [
+        "On Taumako Island in the Solomon Islands, women are the guardians of the land and sea. They harvest and process the pandanus tree (a small tree widely distributed in Polynesia, Micronesia, and other regions) to weave sails that power navigation—a skill that has been passed down for over three thousand years. As islander Delsie Betty Bosi says, \"Men are responsible for building most of the..."
+      ],
+      "run": [
+        "On Taumako Island in the Solomon Islands, women are the guardians of both land and sea. They harvest and process the pandanus tree (a small tree widely distributed in Polynesia, Micronesia, and other regions) to weave sails that power seafaring vessels—a skill that has been passed down for over three thousand years. As islander Delsie Betty Bosi says, \"Men are responsible for building most of the..."
+      ]
+    }
+  ]
+}

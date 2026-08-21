@@ -1,0 +1,675 @@
+{
+  "counts": {
+    "defaulted": 30,
+    "harvested": 23,
+    "person_shaped": 36,
+    "rows": 56,
+    "said_person": 25
+  },
+  "pages": [
+    1,
+    2,
+    3
+  ],
+  "policy": "transliterate",
+  "request": {
+    "answered": 36,
+    "batches": 2,
+    "prompt_sha256": "d0d5f2979653fd57ebd93e9a16d23ffc645044e804f6ef3bbf875bfadb82678c",
+    "requested": 36
+  },
+  "rows": [
+    {
+      "auto_target": "艾德里安·布罗迪",
+      "candidates": [
+        "Adrien Brody"
+      ],
+      "first_page": 3,
+      "is_person": true,
+      "observed_target": "艾德里安·布罗迪",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Adrien Brody",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "美国",
+      "first_page": 3,
+      "observed_target": "美国",
+      "person_shaped": false,
+      "source": "America",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "美国",
+      "first_page": 3,
+      "observed_target": "美国",
+      "person_shaped": false,
+      "source": "American",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "美国风",
+      "first_page": 3,
+      "observed_target": "美国风",
+      "person_shaped": false,
+      "source": "Americana",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "安吉尔·里斯",
+      "candidates": [
+        "Angel Reese"
+      ],
+      "first_page": 3,
+      "is_person": true,
+      "observed_target": "安吉尔·里斯",
+      "origin": "name_harvest",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Angel Reese",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "百老汇",
+      "first_page": 3,
+      "observed_target": "百老汇",
+      "person_shaped": false,
+      "source": "Broadway",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "冠军联赛",
+      "candidates": [
+        "Champions League"
+      ],
+      "first_page": 3,
+      "is_person": false,
+      "observed_target": "冠军联赛",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Champions League",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "Chicago Sky",
+      "candidates": [
+        "Chicago Sky"
+      ],
+      "first_page": 3,
+      "is_person": false,
+      "observed_target": "Chicago Sky",
+      "origin": "name_harvest",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Chicago Sky",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "康涅狄格州",
+      "first_page": 3,
+      "observed_target": "康涅狄格州",
+      "person_shaped": false,
+      "source": "Connecticut",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "丹尼尔·阿诺德",
+      "candidates": [
+        "DANIEL ARNOLD"
+      ],
+      "first_page": 3,
+      "is_person": true,
+      "observed_target": "丹尼尔·阿诺德",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "DANIEL ARNOLD",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "加比·托马斯",
+      "candidates": [
+        "Gabby Thomas"
+      ],
+      "first_page": 3,
+      "is_person": true,
+      "observed_target": "加比·托马斯",
+      "origin": "name_harvest",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Gabby Thomas",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "Gap",
+      "first_page": 3,
+      "observed_target": "Gap",
+      "person_shaped": false,
+      "source": "Gap",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "海莉·梅特兰",
+      "candidates": [
+        "Hayley Maitland"
+      ],
+      "first_page": 3,
+      "is_person": true,
+      "observed_target": "海莉·梅特兰",
+      "origin": "name_harvest",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Hayley Maitland",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "伊琳娜·亚历山大",
+      "candidates": [
+        "Irina Aleksander"
+      ],
+      "first_page": 3,
+      "is_person": true,
+      "observed_target": "伊琳娜·亚历山大",
+      "origin": "name_harvest",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Irina Aleksander",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "爱尔兰人",
+      "first_page": 3,
+      "observed_target": "爱尔兰人",
+      "person_shaped": false,
+      "source": "Irishman",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "朱莉娅·萨尔-贾莫伊斯",
+      "candidates": [
+        "Julia Sarr-Jamois"
+      ],
+      "first_page": 3,
+      "is_person": true,
+      "observed_target": "朱莉娅·萨尔-贾莫伊斯",
+      "origin": "name_harvest",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Julia Sarr-Jamois",
+      "vote_count": 2
+    },
+    {
+      "auto_target": "路易威登",
+      "candidates": [
+        "LOUIS VUITTON"
+      ],
+      "first_page": 3,
+      "is_person": false,
+      "observed_target": "路易威登",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "LOUIS VUITTON",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "模特Grace Elizabeth",
+      "first_page": 3,
+      "observed_target": "模特Grace Elizabeth",
+      "person_shaped": false,
+      "source": "MODEL GRACE ELIZABETH",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "玛戈·安布巴",
+      "candidates": [
+        "Margaux Anbouba"
+      ],
+      "first_page": 3,
+      "is_person": true,
+      "observed_target": "玛戈·安布巴",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Margaux Anbouba",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "马蒂·卡恩",
+      "candidates": [
+        "Mattie Kahn"
+      ],
+      "first_page": 3,
+      "is_person": true,
+      "observed_target": "马蒂·卡恩",
+      "origin": "name_harvest",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Mattie Kahn",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "玛雅·辛格",
+      "candidates": [
+        "Maya Singer"
+      ],
+      "first_page": 3,
+      "is_person": true,
+      "observed_target": "玛雅·辛格",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Maya Singer",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "McGirr",
+      "first_page": 3,
+      "observed_target": "McGirr",
+      "person_shaped": false,
+      "source": "McGirr",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "McQueen",
+      "first_page": 3,
+      "observed_target": "McQueen",
+      "person_shaped": false,
+      "source": "McQueen",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "NAD",
+      "first_page": 3,
+      "observed_target": "NAD",
+      "person_shaped": false,
+      "source": "NAD",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "耐克",
+      "first_page": 3,
+      "observed_target": "耐克",
+      "person_shaped": false,
+      "source": "NIKE",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "纽约",
+      "first_page": 3,
+      "observed_target": "纽约",
+      "person_shaped": false,
+      "source": "New York",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "诺曼·让·罗伊",
+      "candidates": [
+        "Norman Jean Roy"
+      ],
+      "first_page": 3,
+      "is_person": true,
+      "observed_target": "诺曼·让·罗伊",
+      "origin": "name_harvest",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Norman Jean Roy",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "奥林匹克",
+      "first_page": 3,
+      "observed_target": "奥林匹克",
+      "person_shaped": false,
+      "source": "Olympic",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "萨姆·麦金尼斯",
+      "candidates": [
+        "Sam McKinniss"
+      ],
+      "first_page": 3,
+      "is_person": true,
+      "observed_target": "萨姆·麦金尼斯",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Sam McKinniss",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "萨纳兹·图西",
+      "candidates": [
+        "Sanaz Toossi"
+      ],
+      "first_page": 3,
+      "is_person": true,
+      "observed_target": "萨纳兹·图西",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Sanaz Toossi",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "肖恩·麦吉尔",
+      "candidates": [
+        "Seán McGirr"
+      ],
+      "first_page": 3,
+      "is_person": true,
+      "observed_target": "肖恩·麦吉尔",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Seán McGirr",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "Sportmax",
+      "first_page": 3,
+      "observed_target": "Sportmax",
+      "person_shaped": false,
+      "source": "Sportmax",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "The Brutalist",
+      "first_page": 3,
+      "observed_target": "The Brutalist",
+      "person_shaped": false,
+      "source": "The Brutalist",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "范思哲",
+      "first_page": 3,
+      "observed_target": "范思哲",
+      "person_shaped": false,
+      "source": "Versace",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "WNBA",
+      "first_page": 3,
+      "observed_target": "WNBA",
+      "person_shaped": false,
+      "source": "WNBA",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "温德尔·斯蒂文森",
+      "candidates": [
+        "Wendell Steavenson"
+      ],
+      "first_page": 3,
+      "is_person": true,
+      "observed_target": "温德尔·斯蒂文森",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Wendell Steavenson",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "2025年冬季",
+      "first_page": 3,
+      "observed_target": "2025年冬季",
+      "person_shaped": false,
+      "source": "Winter 2025",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "约哈娜·勒巴西",
+      "candidates": [
+        "Yohana Lebasi"
+      ],
+      "first_page": 3,
+      "is_person": true,
+      "observed_target": "约哈娜·勒巴西",
+      "origin": "name_harvest",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Yohana Lebasi",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "扎克·珀森",
+      "candidates": [
+        "Zac Posen"
+      ],
+      "first_page": 3,
+      "is_person": true,
+      "observed_target": "扎克·珀森",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Zac Posen",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "Alexander McQueen",
+      "candidates": [
+        "Alexander McQueen"
+      ],
+      "first_page": null,
+      "is_person": false,
+      "observed_target": "Alexander McQueen",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Alexander McQueen",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "Boom Productions",
+      "candidates": [
+        "Boom Productions"
+      ],
+      "first_page": null,
+      "is_person": false,
+      "observed_target": "Boom Productions",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Boom Productions",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "乔伊·乔治",
+      "candidates": [
+        "Joey George"
+      ],
+      "first_page": 3,
+      "is_person": true,
+      "observed_target": "乔伊·乔治",
+      "origin": "name_harvest",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Joey George",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "彼得·克莱因",
+      "candidates": [
+        "Peter Klein"
+      ],
+      "first_page": 3,
+      "is_person": true,
+      "observed_target": "彼得·克莱因",
+      "origin": "name_harvest",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Peter Klein",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "苏西·索博尔",
+      "candidates": [
+        "Susie Sobol"
+      ],
+      "first_page": 3,
+      "is_person": true,
+      "observed_target": "苏西·索博尔",
+      "origin": "name_harvest",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Susie Sobol",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "VOGUE.COM",
+      "first_page": null,
+      "observed_target": "VOGUE.COM",
+      "person_shaped": false,
+      "source": "VOGUE.COM",
+      "vote_count": 1
+    },
+    {
+      "auto_target": null,
+      "candidates": [
+        "American Olympic"
+      ],
+      "first_page": 3,
+      "is_person": false,
+      "observed_target": null,
+      "origin": "name_harvest",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "American Olympic",
+      "vote_count": 1
+    },
+    {
+      "auto_target": null,
+      "candidates": [
+        "FLEX PACE"
+      ],
+      "first_page": 3,
+      "is_person": false,
+      "observed_target": null,
+      "origin": "name_harvest",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "FLEX PACE",
+      "vote_count": 1
+    },
+    {
+      "auto_target": null,
+      "candidates": [
+        "Go Time"
+      ],
+      "first_page": 3,
+      "is_person": false,
+      "observed_target": null,
+      "origin": "name_harvest",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Go Time",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "萨纳兹·图西",
+      "candidates": [
+        "Ground Sanaz Toossi"
+      ],
+      "first_page": 3,
+      "is_person": true,
+      "observed_target": "萨纳兹·图西",
+      "origin": "name_harvest",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Ground Sanaz Toossi",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "萨姆·麦金尼斯",
+      "candidates": [
+        "Looking Glass Sam McKinniss’s"
+      ],
+      "first_page": 3,
+      "is_person": true,
+      "observed_target": "萨姆·麦金尼斯",
+      "origin": "name_harvest",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Looking Glass Sam McKinniss’s",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "肖恩·麦吉尔",
+      "candidates": [
+        "McGirr’s McQueen Seán McGirr"
+      ],
+      "first_page": 3,
+      "is_person": true,
+      "observed_target": "肖恩·麦吉尔",
+      "origin": "name_harvest",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "McGirr’s McQueen Seán McGirr",
+      "vote_count": 1
+    },
+    {
+      "auto_target": null,
+      "candidates": [
+        "Miracle Drip"
+      ],
+      "first_page": 3,
+      "is_person": false,
+      "observed_target": null,
+      "origin": "name_harvest",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Miracle Drip",
+      "vote_count": 1
+    },
+    {
+      "auto_target": null,
+      "candidates": [
+        "PROP STYLIST"
+      ],
+      "first_page": 3,
+      "is_person": false,
+      "observed_target": null,
+      "origin": "name_harvest",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "PROP STYLIST",
+      "vote_count": 1
+    },
+    {
+      "auto_target": null,
+      "candidates": [
+        "VO GU"
+      ],
+      "first_page": 3,
+      "is_person": false,
+      "observed_target": null,
+      "origin": "name_harvest",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "VO GU",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "艾德里安·布罗迪",
+      "candidates": [
+        "Wire Adrien Brody"
+      ],
+      "first_page": 3,
+      "is_person": true,
+      "observed_target": "艾德里安·布罗迪",
+      "origin": "name_harvest",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Wire Adrien Brody",
+      "vote_count": 1
+    },
+    {
+      "auto_target": "扎克·波森",
+      "candidates": [
+        "Zac Zac Posen’s"
+      ],
+      "first_page": 3,
+      "is_person": true,
+      "observed_target": "扎克·波森",
+      "origin": "name_harvest",
+      "person_shaped": true,
+      "policy": "transliterate",
+      "source": "Zac Zac Posen’s",
+      "vote_count": 1
+    }
+  ],
+  "switch": "magazine_name_harvest"
+}

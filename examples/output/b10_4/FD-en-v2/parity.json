@@ -1,0 +1,585 @@
+{
+  "sample": "FD-en-v2",
+  "baseline": "examples\\output\\F2\\FD-en-v2\\work\\FD-en-v2\\translate_tracking.json",
+  "groups_read": [
+    "page",
+    "cross_page",
+    "cross_column"
+  ],
+  "groups_present": [
+    "cross_column",
+    "cross_page",
+    "page"
+  ],
+  "requests": 165,
+  "baseline_requests": 161,
+  "inputs_sha256": "6af4864579dff882fe31316a7ae252c8a24f095b4d351bfff41918eb78e2c79a",
+  "baseline_inputs_sha256": "a4a972fe30ce07e2452c7e0eaff9adcfee7fce8d8508d3d2b6f6fc09abfc04d5",
+  "unchanged_requests": 158,
+  "withdrawn": [
+    "<style id='1'>Finance & Development</style> is published quarterly b",
+    "<style id='1'>June </style>{v3}<style id='4'>Volume </style>{v6}<style id='7'>Number 2</style>",
+    "y the"
+  ],
+  "introduced": [
+    "F&D",
+    "F&D",
+    "F&D",
+    "F&D",
+    "F&D",
+    "Finance & Development is published quarterly by the",
+    "June {v1}Volume {v2}Number 2"
+  ],
+  "answers_changed": [
+    {
+      "input": "<style id='1'>ECONOMIC THEORY</style>Robert Skidelsky on Keynes",
+      "baseline": [
+        "<style id='1'>经济理论</style>Robert Skidelsky 谈凯恩斯"
+      ],
+      "run": [
+        "<style id='1'>经济理论</style>罗伯特·斯基德尔斯基论凯恩斯"
+      ]
+    },
+    {
+      "input": "<style id='1'>TRADE POLICY</style>Jamieson Greer on tariffs",
+      "baseline": [
+        "<style id='1'>贸易政策</style>Jamieson Greer 谈关税"
+      ],
+      "run": [
+        "<style id='1'>贸易政策</style>杰米森·格里尔论关税"
+      ]
+    },
+    {
+      "input": "<style id='1'>Chapter 2: Defense Spending: Macroeconomic Consequences & Trade-Offs</style>Defense spending is rising amid intensifying geopolitical tensions. This chapter finds that large defense spending booms have become more frequent, especially in emerging market and developing economies.",
+      "baseline": [
+        "<style id='1'>第二章：国防支出：宏观经济后果与权衡</style>随着地缘政治紧张局势加剧，国防支出正在上升。本章发现，国防支出的巨大增长变得更加频繁，尤其是在新兴市场和发展中经济体中。"
+      ],
+      "run": [
+        "<style id='1'>第二章：国防支出：宏观经济后果与权衡</style>国防支出在地缘政治紧张局势加剧的背景下不断增加。本章发现，大规模的国防支出激增变得更加频繁，尤其是在新兴市场和发展中经济体中。"
+      ]
+    },
+    {
+      "input": "behind by globalization a path beyond economic populism <style id='1'>Gordon Hanson</style>",
+      "baseline": [
+        "全球化留下的路径 超越经济民粹主义 <style id='1'>Gordon Hanson</style>"
+      ],
+      "run": [
+        "全球化留下的路径：超越经济民粹主义 <style id='1'>戈登·汉森</style>"
+      ]
+    },
+    {
+      "input": "Keynes for Our Times",
+      "baseline": [
+        "凯恩斯在我们时代"
+      ],
+      "run": [
+        "我们的时代的凯恩斯"
+      ]
+    },
+    {
+      "input": "economics, finance, and AI-driven markets today <style id='1'>Robert Skidelsky</style>",
+      "baseline": [
+        "当今的经济、金融和人工智能驱动的市场 <style id='1'>Robert Skidelsky</style>"
+      ],
+      "run": [
+        "当今的经济、金融和人工智能驱动的市场 <style id='1'>罗伯特·斯基德尔斯基</style>"
+      ]
+    },
+    {
+      "input": "policies determine the organization of work <style id='1'>Amory Gethin and Emmanuel Saez</style>",
+      "baseline": [
+        "政策决定了工作的组织方式<style id='1'>Amory Gethin 和 Emmanuel Saez</style>"
+      ],
+      "run": [
+        "政策决定了工作的组织 <style id='1'>阿莫里·盖辛和埃马纽埃尔·萨兹</style>"
+      ]
+    },
+    {
+      "input": "Adam Smith’s philosophy still sheds",
+      "baseline": [
+        "亚当·斯密的哲学仍然影响着"
+      ],
+      "run": [
+        "亚当·斯密的哲学仍然揭示"
+      ]
+    },
+    {
+      "input": "Understanding Geoeconomics in a Volatile World",
+      "baseline": [
+        "在动荡世界中理解地缘经济学"
+      ],
+      "run": [
+        "在动荡的世界中理解地缘经济学"
+      ]
+    },
+    {
+      "input": "Around the world, the line between",
+      "baseline": [
+        "在全球范围内，"
+      ],
+      "run": [
+        "在全球范围内，之间的界限"
+      ]
+    },
+    {
+      "input": "economic policy and national security is disappearing <style id='1'>Josh Lipsky</style>",
+      "baseline": [
+        "经济政策与国家安全之间的界限正在消失 <style id='1'>Josh Lipsky（Josh Lipsky）</style>"
+      ],
+      "run": [
+        "经济政策和国家安全的界限正在消失 <style id='1'>乔什·利普斯基 (Josh Lipsky)</style>"
+      ]
+    },
+    {
+      "input": "use tariffs or sanctions for geopoliti-",
+      "baseline": [
+        "在地缘政治中使用关税或制裁，"
+      ],
+      "run": [
+        "使用关税或制裁来进行地缘政治-"
+      ]
+    },
+    {
+      "input": "Gita Bhatt",
+      "baseline": [
+        "Gita Bhatt"
+      ],
+      "run": [
+        "吉塔·巴特"
+      ]
+    },
+    {
+      "input": "Nicholas Owen",
+      "baseline": [
+        "Nicholas Owen"
+      ],
+      "run": [
+        "尼古拉斯·欧文"
+      ]
+    },
+    {
+      "input": "Andreas Adriano",
+      "baseline": [
+        "Andreas Adriano"
+      ],
+      "run": [
+        "安德烈亚斯·阿德里亚诺",
+        "安德烈亚斯·阿德里亚诺 (Andreas Adriano)"
+      ]
+    },
+    {
+      "input": "Jeff Kearns",
+      "baseline": [
+        "Jeff Kearns"
+      ],
+      "run": [
+        "杰夫·科恩斯"
+      ]
+    },
+    {
+      "input": "Peter Walker",
+      "baseline": [
+        "Peter Walker"
+      ],
+      "run": [
+        "彼得·沃克"
+      ]
+    },
+    {
+      "input": "Andrew Stanley",
+      "baseline": [
+        "Andrew Stanley"
+      ],
+      "run": [
+        "安德鲁·斯坦利 (Andrew Stanley)"
+      ]
+    },
+    {
+      "input": "Marta Doroszczyk",
+      "baseline": [
+        "Marta Doroszczyk"
+      ],
+      "run": [
+        "玛尔塔·多罗什奇克"
+      ]
+    },
+    {
+      "input": "Natalia Venegas Figueroa",
+      "baseline": [
+        "Natalia Venegas Figueroa"
+      ],
+      "run": [
+        "娜塔莉亚·维内加斯·菲格罗亚"
+      ]
+    },
+    {
+      "input": "Melinda Weir",
+      "baseline": [
+        "Melinda Weir"
+      ],
+      "run": [
+        "梅琳达·韦尔"
+      ]
+    },
+    {
+      "input": "Lucy Morales",
+      "baseline": [
+        "Lucy Morales"
+      ],
+      "run": [
+        "露西·莫拉莱斯 (Lucy Morales)"
+      ]
+    },
+    {
+      "input": "Aqib Aslam",
+      "baseline": [
+        "Aqib Aslam"
+      ],
+      "run": [
+        "阿基布·阿斯拉姆"
+      ]
+    },
+    {
+      "input": "James Astill",
+      "baseline": [
+        "James Astill"
+      ],
+      "run": [
+        "詹姆斯·阿斯蒂尔 (James Astill)"
+      ]
+    },
+    {
+      "input": "Helge Berger",
+      "baseline": [
+        "Helge Berger"
+      ],
+      "run": [
+        "赫尔格·贝格尔"
+      ]
+    },
+    {
+      "input": "Yan Carriere-Swallow",
+      "baseline": [
+        "Yan Carriere-Swallow"
+      ],
+      "run": [
+        "扬·卡里耶-斯沃洛"
+      ]
+    },
+    {
+      "input": "Oya Celasun",
+      "baseline": [
+        "Oya Celasun"
+      ],
+      "run": [
+        "奥亚·切拉松"
+      ]
+    },
+    {
+      "input": "Martin Cihak",
+      "baseline": [
+        "Martin Cihak"
+      ],
+      "run": [
+        "马丁·奇哈克"
+      ]
+    },
+    {
+      "input": "Rupa Duttagupta",
+      "baseline": [
+        "Rupa Duttagupta"
+      ],
+      "run": [
+        "鲁帕·杜塔古普塔"
+      ]
+    },
+    {
+      "input": "Davide Furceri",
+      "baseline": [
+        "Davide Furceri"
+      ],
+      "run": [
+        "达维德·富尔切里"
+      ]
+    },
+    {
+      "input": "Deniz Igan",
+      "baseline": [
+        "Deniz Igan"
+      ],
+      "run": [
+        "德尼兹·伊甘"
+      ]
+    },
+    {
+      "input": "Overheard",
+      "baseline": [
+        "偷听"
+      ],
+      "run": [
+        "听闻"
+      ]
+    },
+    {
+      "input": "By the numbers",
+      "baseline": [
+        "按数字"
+      ],
+      "run": [
+        "数字解读"
+      ]
+    },
+    {
+      "input": "<style id='1'>IN THE NEWS: </style><style id='3'>The IMF said on April 16 that it was resuming relations with Venezuela. Kristalina Georgieva told reporters that the Fund was committed to helping the people of the Latin American nation see better days. Venezuela has been a member of the IMF since 1946, but relations were suspended in 2019. </style><style id='5'>Above: A Venezuelan flag flies under a clearing sky. Bloomberg/Carlos Becerra.</style>",
+      "baseline": [
+        "<style id='1'>新闻中： </style><style id='3'>国际货币基金组织于4月16日表示，将恢复与委内瑞拉的关系。克里斯塔利娜·格奥尔基耶娃告诉记者，基金致力于帮助这个拉丁美洲国家的人民迎来更好的日子。委内瑞拉自1946年以来一直是国际货币基金组织的成员，但关系在2019年被中止。 </style><style id='5'>上图：委内瑞拉国旗在晴朗的天空下飘扬。彭博社/卡洛斯·贝塞拉。</style>"
+      ],
+      "run": [
+        "<style id='1'>新闻中：</style><style id='3'>国际货币基金组织于4月16日表示，将恢复与委内瑞拉的关系。克里斯塔利娜·格奥尔基耶娃告诉记者，基金致力于帮助这个拉丁美洲国家的人民迎来更好的日子。委内瑞拉自1946年以来一直是国际货币基金组织的成员，但关系在2019年中断。</style><style id='5'>上图：委内瑞拉国旗在晴朗的天空下飘扬。彭博社/卡洛斯·贝塞拉。</style>"
+      ]
+    },
+    {
+      "input": "“The response to fragmentation should not be isolation, but deeper regional integration.”",
+      "baseline": [
+        "“应对分裂的方式不应是孤立，而是更深层次的区域一体化。”"
+      ],
+      "run": [
+        "“应对碎片化的措施不应是孤立，而是更深入的区域一体化。”"
+      ]
+    },
+    {
+      "input": "—Mehmet Şimşek, minister of finance, Türkiye",
+      "baseline": [
+        "——穆罕默德·希姆谢克（土耳其财政部长）"
+      ],
+      "run": [
+        "—梅赫梅特·希姆谢克（土耳其财政部长）"
+      ]
+    },
+    {
+      "input": "—Mohammed Al-Jadaan, minister of finance, Saudi Arabia",
+      "baseline": [
+        "——穆罕默德·阿尔贾丹（沙特阿拉伯财政部长）"
+      ],
+      "run": [
+        "—穆罕默德·阿尔贾丹（沙特阿拉伯财政部长）"
+      ]
+    },
+    {
+      "input": "“Some might wonder why the Fund is spending time on these issues...but the truth is corruption, money laundering, and other financial crimes are macro-critical.”",
+      "baseline": [
+        "“有些人可能会想知道为什么基金会在这些问题上花时间……但事实是，腐败、洗钱和其他金融犯罪对宏观经济至关重要。”"
+      ],
+      "run": [
+        "“有些人可能会想知道为什么基金会在这些问题上花费时间……但事实是，腐败、洗钱和其他金融犯罪是宏观关键问题。”"
+      ]
+    },
+    {
+      "input": "Illustration by Chantal Jahchan",
+      "baseline": [
+        "插图作者：Chantal Jahchan"
+      ],
+      "run": [
+        "插图：尚塔尔·贾赫昌 (Chantal Jahchan)"
+      ]
+    },
+    {
+      "input": "Kim Ruhl",
+      "baseline": [
+        "Kim Ruhl"
+      ],
+      "run": [
+        "金·鲁尔 (Kim Ruhl)"
+      ]
+    },
+    {
+      "input": "When it comes to international trade, countries have always weighed economic efficiency against national security. After World War II, they pursued free international trade through low tariffs in the belief that it was both economically efficient and politically stabilizing. World trade tripled as a share of GDP between 1950 and its peak in 2008, with about half of this trade in intermediate goods, reflect- ing the importance of cross-border pro- duction relationships. Although conflict continued, there were no global-scale wars like those that characterized the first half of the 20th century. Globaliza- tion and stability had won out.",
+      "baseline": [
+        "在国际贸易方面，各国一直在经济效率与国家安全之间进行权衡。第二次世界大战后，他们通过低关税追求自由国际贸易，认为这既经济高效又有助于政治稳定。世界贸易占国内生产总值的比例从1950年到2008年达到顶峰时增长了三倍，其中约一半是中间产品贸易，反映了跨境生产关系的重要性。尽管冲突持续，但没有出现像20世纪上半叶那样的全球性战争。全球化和稳定性取得了胜利。"
+      ],
+      "run": [
+        "在国际贸易方面，各国一直在经济效率与国家安全之间进行权衡。第二次世界大战后，他们通过低关税追求自由国际贸易，认为这既经济高效又有助于政治稳定。1950年至2008年达到顶峰期间，世界贸易占国内生产总值的比例增加了三倍，其中约一半是中间产品贸易，反映了跨境生产关系的重要性。尽管冲突持续，但没有出现像20世纪上半叶那样的全球性战争。全球化和稳定性取得了胜利。"
+      ]
+    },
+    {
+      "input": "The world is now reevaluating the role of economic interconnectedness in global affairs, mindful that more inter- connection means more dependencies that adversarial nations can leverage to get their way in other areas of interna- tional relations. Resilient economies must be the response. A country must have access to the resources it needs to fight a protracted war. It must have a reliable supply of medicines, micro- chips, critical minerals, and other vital inputs, regardless of changing global alignment. And it must be able to rap- idly increase production in response to an emergency such as COVID-19.",
+      "baseline": [
+        "世界现在正在重新评估经济互联性在全球事务中的作用，意识到更多的互联意味着更多的依赖性，敌对国家可以利用这些依赖性在国际关系的其他领域达到他们的目的。应对之策是建设有韧性的经济体。一个国家必须能够获得打持久战所需的资源。无论全球格局如何变化，它都必须有可靠的药品、微芯片、关键矿物和其他重要投入品的供应。而且，它必须能够迅速增加生产，以应对COVID-19等紧急情况。"
+      ],
+      "run": [
+        "世界现在正在重新评估经济互联性在全球事务中的作用，意识到更多的互联意味着更多的依赖性，敌对国家可以利用这些依赖性在国际关系的其他领域达到他们的目的。应对之策是建立有韧性的经济。一个国家必须能够获得其在长期战争中所需的资源。无论全球格局如何变化，它都必须有可靠的药品、微芯片、关键矿物和其他重要投入品的供应。而且，它必须能够迅速增加生产，以应对诸如COVID-19这样的紧急情况。"
+      ]
+    },
+    {
+      "input": "In the United States, President Don- ald Trump’s administration is work- ing to de-risk supply chains and build domestic capacity in key industries to enhance economic resilience. This implies a modification of the policy of near unconditional openness that char- acterized the past.",
+      "baseline": [
+        "在美国，唐纳德·特朗普（Donald Trump）总统的政府正在努力降低供应链的风险，并在关键行业建立国内能力，以增强经济韧性。这意味着对过去几乎无条件开放政策的调整。"
+      ],
+      "run": [
+        "在美国，总统唐纳德·特朗普（Donald Trump）的政府正在努力降低供应链的风险，并在关键行业建立国内能力，以增强经济韧性。这意味着对过去几乎无条件开放政策的调整。"
+      ]
+    },
+    {
+      "input": "<style id='1'>F&D </style>Slug",
+      "baseline": [
+        "<style id='1'>F&D </style>标识"
+      ],
+      "run": [
+        "<style id='1'>F&D </style>标语"
+      ]
+    },
+    {
+      "input": "<style id='1'>F D </style>Currency Notes",
+      "baseline": [
+        "<style id='1'>F D </style>货币票据"
+      ],
+      "run": [
+        "<style id='1'>F D </style>货币说明"
+      ]
+    },
+    {
+      "input": "<style id='1'>besides the alps,</style><style id='3'> pristine lakes, and a reputation for quiet precision, Switzerland is also known for its direct democracy. Its 9 million citizens are consulted about four times a year on federal issues (including changing the Constitution) and have up to 100 cantonal (provincial) referendums. Last year, people were asked to help decide what their money, the Swiss franc, will look like in the future.</style>",
+      "baseline": [
+        "<style id='1'>除了阿尔卑斯山，</style><style id='3'>原始湖泊和以安静精确著称的声誉外，瑞士还以其直接民主而闻名。其900万公民每年大约四次就联邦问题（包括修改宪法）进行咨询，并有多达100次州（省级）公投。去年，人们被要求帮助决定未来瑞士法郎的外观。</style>"
+      ],
+      "run": [
+        "<style id='1'>除了阿尔卑斯山，</style><style id='3'>原始湖泊和以安静精确著称的声誉外，瑞士还以其直接民主而闻名。其900万公民每年大约四次就联邦问题（包括修改宪法）进行咨询，并有多达100次州（省）公投。去年，人们被要求帮助决定未来瑞士法郎的外观。</style>"
+      ]
+    },
+    {
+      "input": "About 100,000 people voted online on 12 sets of designs for banknotes of 10, 20, 50, 100, 200, and 1,000 francs. The pro- posed topic, “Switzerland and its altitudes,” highlighted the small country’s geographic diversity: the Jura region, a mid-al- titude mountain range shared with France; the Swiss Plateau, the country’s central area; the lowlands, comprising valleys and cities such as Geneva and Basel; the Alpine foothills; the Alps; and the High Alps. The online poll was combined with analysis by an expert advisory board.",
+      "baseline": [
+        "大约10万人在线投票选择了12套设计方案，用于10、20、50、100、200和1000法郎的纸币。提议的主题“瑞士及其海拔”突出了这个小国的地理多样性：与法国共享的中等海拔山脉汝拉地区；国家的中心区域瑞士高原；包括日内瓦和巴塞尔等城市的低地；阿尔卑斯山麓；阿尔卑斯山；以及高阿尔卑斯山。在线投票结合了专家咨询委员会的分析。"
+      ],
+      "run": [
+        "大约10万人在线投票选择了12套纸币设计，面额为10、20、50、100、200和1000法郎。提议的主题“瑞士及其海拔”突出了这个小国的地理多样性：与法国共享的中等海拔山脉汝拉地区；国家的中心区域瑞士高原；包括日内瓦和巴塞尔等城市的低地；阿尔卑斯山麓；阿尔卑斯山；以及高阿尔卑斯山。在线投票结合了专家咨询委员会的分析。"
+      ]
+    },
+    {
+      "input": "The Swiss National Bank (SNB) announced the winner in March. The designs by Emphase, a Lausanne-based studio, feature scale drawings of native plants found at different alti- tudes on one side and on the other striking landscapes and “civ- ilizational achievements”: Alpine vistas, cable cars, famously punctual trains, the CERN research center, and the hi-tech Monte Rosa Hut atop a 4,634-meter massif. “With its precision and craftsmanship, this concept impressively articulates the diversity and quality of Switzerland,” said Sébastien Kraenzlin, alternate member of the central bank board.",
+      "baseline": [
+        "瑞士国家银行（SNB）在三月份宣布了获奖者。由位于洛桑的工作室 Emphase 设计的作品，在一面展示了不同海拔高度的本土植物的比例图，另一面则展示了引人注目的景观和“文明成就”：阿尔卑斯山景观、缆车、以准时著称的火车、欧洲核子研究中心，以及位于海拔4,634米山峰之上的高科技 Monte Rosa 小屋。瑞士国家银行董事会替补成员 Sébastien Kraenzlin 表示：“凭借其精确性和工艺，这一概念令人印象深刻地展现了瑞士的多样性和质量。”"
+      ],
+      "run": [
+        "瑞士国家银行（SNB）在三月份宣布了获胜者。由位于洛桑的工作室 Emphase 设计的图案，一面展示了不同海拔高度的本土植物的比例图，另一面则是引人注目的风景和“文明成就”：阿尔卑斯山景观、缆车、以准时著称的火车、欧洲核子研究中心，以及位于海拔4,634米高峰上的高科技 Monte Rosa 小屋。瑞士国家银行董事会替补成员塞巴斯蒂安·克兰兹林表示：“凭借其精确性和工艺，这一概念令人印象深刻地表达了瑞士的多样性和质量。”"
+      ]
+    },
+    {
+      "input": "Meanwhile, a recent referendum enshrined access to cash in the Swiss Constitution, reinforcing the central bank’s man- date to always ensure an adequate supply of coins and notes. While proud of their money, one of the world’s safest curren- cies, the Swiss are following the global trend of dwindling cash usage. About 1 in 3 in-person transactions are made in cash, down from 70 percent in 2017. Many prefer the popular fast payment app TWINT.",
+      "baseline": [
+        "与此同时，最近的一次公投将现金使用权写入了瑞士宪法，加强了中央银行始终确保充足硬币和钞票供应的使命。尽管瑞士人对他们的货币感到自豪，作为世界上最安全的货币之一，他们也在跟随全球现金使用减少的趋势。大约三分之一的面对面交易使用现金，较2017年的70%有所下降。许多人更喜欢使用流行的快速支付应用 TWINT。"
+      ],
+      "run": [
+        "与此同时，最近的一次公投将现金使用权写入了瑞士宪法，加强了中央银行始终确保充足硬币和钞票供应的任务。尽管瑞士人对他们的货币感到自豪，作为世界上最安全的货币之一，他们也在跟随全球现金使用减少的趋势。大约三分之一的面对面交易使用现金，较2017年的70%有所下降。许多人更喜欢使用流行的快速支付应用程序 TWINT。"
+      ]
+    },
+    {
+      "input": "forthcoming series—the bank’s 10th—preserves another Swiss peculiarity, the 1,000 franc bill (about $1,250), the world’s larg- est denomination in active circulation.",
+      "baseline": [
+        "即将推出的系列——该银行的第十套——保留了另一个瑞士的特殊性，即1000法郎纸币（约1250美元），这是世界上流通中面额最大的纸币。"
+      ],
+      "run": [
+        "即将推出的系列——银行的第十个系列——保留了另一个瑞士的特殊性，即1000法郎纸币（约1250美元），这是世界上流通中面额最大的纸币。"
+      ]
+    },
+    {
+      "input": "<style id='1'>Most countries have discontinued large bills, which are seen as mostly facilitating money laundering and tax evasion. The European Central Bank stopped issuing new €500 notes in 2019. But, according to an SNB payment methods survey, about a quarter of respondents reported owning 1,000 franc bills in the past two years, using them mostly for payments, not to store value. “The current denominations have proven them- selves reliable and, from today’s perspective, should therefore be retained,” the SNB said.</style> F&D",
+      "baseline": [
+        "<style id='1'>大多数国家已经停止发行大额纸币，因为这些纸币被认为主要用于洗钱和逃税。欧洲中央银行在2019年停止发行新的500欧元纸币。但是，根据瑞士国家银行支付方式调查，大约四分之一的受访者报告在过去两年中持有过1000法郎纸币，主要用于支付，而不是储存价值。“目前的面额已经被证明是可靠的，从今天的角度来看，因此应该保留，”瑞士国家银行表示。</style> F&D"
+      ],
+      "run": [
+        "<style id='1'>大多数国家已经停止使用大额纸币，因为这些纸币被认为主要用于洗钱和逃税。欧洲中央银行在2019年停止发行新的500欧元纸币。但是，根据瑞士国家银行支付方式调查，大约四分之一的受访者报告在过去两年中拥有1000法郎纸币，主要用于支付，而不是储存价值。“目前的面额已经被证明是可靠的，从今天的角度来看，因此应该保留，”瑞士国家银行表示。</style> F&D"
+      ]
+    },
+    {
+      "input": "<style id='1'>andreas adriano </style><style id='3'>is on the staff of </style>Finance & Development<style id='5'>.</style>",
+      "baseline": [
+        "<style id='1'>Andreas Adriano</style><style id='3'>是《</style>金融与发展<style id='5'>》的工作人员。</style>"
+      ],
+      "run": [
+        "<style id='1'>安德烈亚斯·阿德里亚诺</style><style id='3'>是《</style>金融与发展<style id='5'>》的工作人员。</style>"
+      ]
+    },
+    {
+      "input": "International Monetary Fund, 700 19th Street NW, Washington, DC 20431, in English, Arabic, Chinese, French, Japanese, Russian, and Spanish. English edition ISSN 0145-1707",
+      "baseline": [
+        "国际货币基金组织，华盛顿特区西北19街700号，邮编20431，提供英文、阿拉伯文、中文、法文、日文、俄文和西班牙文版本。英文版 ISSN 0145-1707"
+      ],
+      "run": [
+        "国际货币基金组织，华盛顿特区西北19街700号，邮编20431，提供英语、阿拉伯语、中文、法语、日语、俄语和西班牙语版本。英文版 ISSN 0145-1707"
+      ]
+    },
+    {
+      "input": "<style id='1'>the war </style><style id='3'>in the Middle East has deliv- ered a global supply shock that is slowing global growth, pushing up inflation, and inflicting more pain on some of the world’s poorest countries, according to IMF Man- aging Director Kristalina Georgieva.</style>",
+      "baseline": [
+        "<style id='1'>中东的战争</style><style id='3'>引发了一场全球供应冲击，正在减缓全球增长，推高通胀，并给世界上一些最贫穷的国家带来更多痛苦，据国际货币基金组织总裁克里斯塔利娜·格奥尔基耶娃（Kristalina Georgieva）称。</style>"
+      ],
+      "run": [
+        "<style id='1'>中东的战争</style><style id='3'>引发了全球供应冲击，导致全球增长放缓，通货膨胀上升，并给世界上一些最贫穷的国家带来了更多痛苦，据国际货币基金组织总裁克里斯塔利娜·格奥尔基耶娃称。</style>"
+      ]
+    },
+    {
+      "input": "—IMF First Deputy Managing Director Dan Katz",
+      "baseline": [
+        "——国际货币基金组织第一副总裁丹·卡茨 (Dan Katz)"
+      ],
+      "run": [
+        "—国际货币基金组织第一副总裁丹·卡茨"
+      ]
+    },
+    {
+      "input": "light on how economies grow, trade, and respond to change <style id='1'>Michael Spence</style>",
+      "baseline": [
+        "揭示经济增长、贸易和应对变化的方式 <style id='1'>迈克尔·斯彭斯</style>"
+      ],
+      "run": [
+        "揭示经济如何增长、贸易和应对变化 <style id='1'>迈克尔·斯彭斯</style>"
+      ]
+    },
+    {
+      "input": "<style id='1'>How new economics tools explain global power dynamics </style>Christopher Clayton, Matteo Maggiori, and Jesse Schreger",
+      "baseline": [
+        "<style id='1'>新经济学工具如何解释全球权力动态 </style>Christopher Clayton, Matteo Maggiori 和 Jesse Schreger"
+      ],
+      "run": [
+        "<style id='1'>新经济学工具如何解释全球权力动态 </style>克里斯托弗·克莱顿、马泰奥·马焦里和杰西·施雷格"
+      ]
+    },
+    {
+      "input": "Jeffry Frieden",
+      "baseline": [
+        "Jeffry Frieden"
+      ],
+      "run": [
+        "杰弗里·弗里登"
+      ]
+    },
+    {
+      "input": "Geopolitical rivalry does not end the need for trade cooperation, but the multilateral system must adapt <style id='1'>Aaditya Mattoo, Michele Ruta, and Robert W. Staiger</style>",
+      "baseline": [
+        "地缘政治竞争并不意味着贸易合作的终结，但多边体系必须适应 <style id='1'>Aaditya Mattoo, Michele Ruta, 和 Robert W. Staiger</style>"
+      ],
+      "run": [
+        "地缘政治竞争并不意味着贸易合作的终结，但多边体系必须适应 <style id='1'>阿迪亚·马图、米凯莱·鲁塔和 Robert W. Staiger</style>"
+      ]
+    },
+    {
+      "input": "ownership is expanding again and how this time is different <style id='1'>Nicholas Mulder</style>",
+      "baseline": [
+        "所有权再次扩张，这次有何不同 <style id='1'>Nicholas Mulder</style>"
+      ],
+      "run": [
+        "所有权再次扩张，这次有何不同 <style id='1'>尼古拉斯·穆尔德 (Nicholas Mulder)</style>"
+      ]
+    },
+    {
+      "input": "Subir Lall Papa N’Diaye Malhar Nabar Diaa Noureldin Uma Ramakrishnan Christoph Rosenberg Mauricio Soto Elizabeth Van Heuvelen Daria Zakharova Robert Zymek",
+      "baseline": [
+        "Subir Lall Papa N’Diaye Malhar Nabar Diaa Noureldin Uma Ramakrishnan Christoph Rosenberg Mauricio Soto Elizabeth Van Heuvelen Daria Zakharova Robert Zymek"
+      ],
+      "run": [
+        "苏比尔·拉尔 帕帕·恩迪亚耶 马尔哈尔·纳巴尔 迪亚·努雷尔丁 乌玛·拉马克里希南 克里斯托夫·罗森伯格 毛里西奥·索托 伊丽莎白·范·赫维伦 达里娅·扎哈罗娃 罗伯特·齐梅克"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,175 @@
+{
+  "by_rule": {
+    "initial": 0,
+    "inline": 2,
+    "vertical": 0
+  },
+  "declared_page_rules": [
+    "inline"
+  ],
+  "declared_page_switch": "magazine_stitch_declared",
+  "declared_pages_unblocked": true,
+  "duplicate_blanked": [],
+  "initial_candidates": [
+    {
+      "accepted": false,
+      "body": "Miracle Drip NAD",
+      "body_size": 8.0,
+      "characters": 2,
+      "font_ratio": 1.125,
+      "fragment": "42",
+      "left_offset": -0.54,
+      "page": 3,
+      "top_offset": -8.14,
+      "within_unit": true
+    },
+    {
+      "accepted": false,
+      "body": "ons promise to turn back the clock. Matt",
+      "body_size": 8.0,
+      "characters": 1,
+      "font_ratio": 1.0,
+      "fragment": "i",
+      "left_offset": -1.6,
+      "page": 3,
+      "top_offset": 4.52,
+      "within_unit": true
+    },
+    {
+      "accepted": false,
+      "body": "esting Ground Sanaz Toossi brings her pl",
+      "body_size": 8.0,
+      "characters": 3,
+      "font_ratio": 1.125,
+      "fragment": "46T",
+      "left_offset": -0.22,
+      "page": 3,
+      "top_offset": -6.28,
+      "within_unit": true
+    },
+    {
+      "accepted": false,
+      "body": "Go Time! Wh",
+      "body_size": 8.0,
+      "characters": 2,
+      "font_ratio": 1.125,
+      "fragment": "62",
+      "left_offset": -0.02,
+      "page": 3,
+      "top_offset": -8.14,
+      "within_unit": true
+    },
+    {
+      "accepted": false,
+      "body": "er you’re commuting via train, bike, ska",
+      "body_size": 8.0,
+      "characters": 2,
+      "font_ratio": 1.0,
+      "fragment": "th",
+      "left_offset": -7.66,
+      "page": 3,
+      "top_offset": 4.46,
+      "within_unit": true
+    },
+    {
+      "accepted": false,
+      "body": "Man on Wire Adrien Brody is drawn to ext",
+      "body_size": 8.0,
+      "characters": 2,
+      "font_ratio": 1.125,
+      "fragment": "84",
+      "left_offset": 0.0,
+      "page": 3,
+      "top_offset": -6.31,
+      "within_unit": true
+    }
+  ],
+  "initial_max_chars": 3,
+  "initial_min_font_ratio": 1.6,
+  "max_fragment_chars": 40,
+  "pages": [
+    {
+      "blanked": 0,
+      "exempt": false,
+      "page": 1,
+      "paragraphs": 1,
+      "stitches": 0,
+      "unblocked": false
+    },
+    {
+      "blanked": 0,
+      "exempt": false,
+      "page": 2,
+      "paragraphs": 0,
+      "stitches": 0,
+      "unblocked": false
+    },
+    {
+      "blanked": 8,
+      "exempt": true,
+      "page": 3,
+      "paragraphs": 38,
+      "stitches": 2,
+      "unblocked": true
+    }
+  ],
+  "policy_flags": [
+    "preserve_line_structure"
+  ],
+  "rules": [
+    "inline",
+    "vertical",
+    "initial"
+  ],
+  "stitches": [
+    {
+      "characters": 64,
+      "debug_id": "CBn7g",
+      "member_debug_ids": [
+        "CBn7g",
+        "pVNEg",
+        "ZGcoZ",
+        "VruVK",
+        "EUbhV",
+        "PXkS6"
+      ],
+      "members": 6,
+      "page": 3,
+      "paragraph": "p3#9",
+      "restyled_characters": 0,
+      "rule": "inline",
+      "style_normalized": false,
+      "text": "infusions promise to turn back the clock. Mattie Kahn investigates"
+    },
+    {
+      "characters": 98,
+      "debug_id": "CeFSu",
+      "member_debug_ids": [
+        "CeFSu",
+        "cTnyY",
+        "YAaz7",
+        "38T7u"
+      ],
+      "members": 4,
+      "page": 3,
+      "paragraph": "p3#21",
+      "restyled_characters": 25,
+      "rule": "inline",
+      "style_normalized": true,
+      "text": "Go Time! Whether you’re commuting via train, bike, skateboard, or feet on pavement, breezy layers and"
+    }
+  ],
+  "switch": "magazine_fragment_stitch",
+  "totals": {
+    "blanked_paragraphs": 8,
+    "duplicate_blanked": 0,
+    "exempt_pages": 1,
+    "initial_accepted": 0,
+    "initial_candidates": 6,
+    "merged_paragraphs": 10,
+    "pages": 3,
+    "stitches": 2,
+    "style_normalized": 1
+  },
+  "window_switch": "magazine_page_classify"
+}

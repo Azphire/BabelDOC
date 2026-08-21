@@ -61,7 +61,11 @@ CONFIG_PATH = Path(__file__).resolve().parents[2] / "configs" / "chain_translati
 JOIN_KEY = "join"
 PROFILES_KEY = "profiles"
 STRATEGIES_KEY = "strategies"
-NESTED_KEYS = (JOIN_KEY, PROFILES_KEY, STRATEGIES_KEY)
+
+# The run attribute the alignment level is read from. A name rather than a
+# value: the switch itself lives on the run, and this says which one it is.
+ALIGN_SWITCH_KEY = "cut_align_switch"
+NESTED_KEYS = (JOIN_KEY, PROFILES_KEY, STRATEGIES_KEY, ALIGN_SWITCH_KEY)
 
 ENTRIES_KEY = "entries"
 DEFAULT_KEY = "default"
@@ -79,6 +83,7 @@ REQUIRED_PARAMETERS: frozenset[str] = frozenset(
         SENTENCE_MIN_CHARS_KEY,
         "snap_search_ratio",
         "snap_search_min_chars",
+        "cut_snap_radius",
         "output_token_budget",
         "output_token_ratio",
     }
@@ -115,6 +120,11 @@ _ZERO_WIDTH_JOINER = "\u200d"
 # a script that writes no abbreviation with a terminator in it declares none.
 NON_TERMINAL_PREFIXES_KEY = "non_terminal_prefixes"
 
+# The closed class words a cut may be moved to stand after. Declared per
+# profile, beside the break rule it refines, so one language resolution
+# serves both. A profile declaring none takes no such move.
+CUT_BOUNDARY_MARKERS_KEY = "cut_boundary_markers"
+
 # Keys a profile declares. sentence_min_chars and the abbreviation table are the
 # optional entries.
 _PROFILE_REQUIRED = (
@@ -124,7 +134,11 @@ _PROFILE_REQUIRED = (
     "closers",
     "break_rule",
 )
-_PROFILE_OPTIONAL = (SENTENCE_MIN_CHARS_KEY, NON_TERMINAL_PREFIXES_KEY)
+_PROFILE_OPTIONAL = (
+    SENTENCE_MIN_CHARS_KEY,
+    NON_TERMINAL_PREFIXES_KEY,
+    CUT_BOUNDARY_MARKERS_KEY,
+)
 
 # Separator a language tag puts before its region or script subtag.
 _SUBTAG_SEPARATOR = "-"
@@ -166,6 +180,7 @@ class LanguageProfile:
     non_terminal_prefixes: tuple[str, ...]
     break_rule: str
     sentence_min_chars: int
+    cut_boundary_markers: tuple[str, ...]
 
 
 @dataclass(frozen=True)
@@ -190,8 +205,10 @@ class BackfillConfig:
     sentence_min_chars: int
     snap_search_ratio: float
     snap_search_min_chars: int
+    cut_snap_radius: int
     output_token_budget: int
     output_token_ratio: float
+    align_switch: str
     join: JoinRules
     profiles: Mapping[str, LanguageProfile]
     default_profile: str
@@ -239,6 +256,8 @@ class Cut:
     position: int
     mode: str
     snapped: bool
+    estimate: int | None = None
+    moved_to: str | None = None
 
     def as_record(self) -> dict:
         return {
@@ -246,6 +265,8 @@ class Cut:
             "position": self.position,
             "mode": self.mode,
             "snapped": self.snapped,
+            "estimate": self.estimate,
+            "moved_to": self.moved_to,
         }
 
 
@@ -280,6 +301,45 @@ class MemberSegment:
 
 
 @dataclass(frozen=True)
+class Alignment:
+    """What the alignment level measured, and whether the cut was placed by it.
+
+    ``member_lengths`` are the lengths of each member's own translation. The
+    texts those lengths were taken from are deliberately absent: a chain's
+    output comes from the joint translation and from nothing else, and a record
+    that carried the auxiliary text would be an invitation to build output from
+    it. ``source_shares`` is what the third level would have used, kept so that
+    the two placements can be compared without translating anything again.
+    """
+
+    used: bool
+    reason: str | None
+    member_lengths: tuple[int, ...]
+    source_shares: tuple[float, ...]
+
+    def as_record(self) -> dict:
+        return {
+            "used": self.used,
+            "reason": self.reason,
+            "member_lengths": list(self.member_lengths),
+            "source_shares": [round(share, 6) for share in self.source_shares],
+        }
+
+
+# What an alignment records when it was not used, one reason per way of not
+# being used. Declared rather than written at each site so that a reader of a
+# sidecar meets a closed set.
+ALIGN_SWITCH_DOWN = "switch_down"
+ALIGN_NOT_OFFERED = "not_offered"
+ALIGN_UNUSABLE = "unusable_lengths"
+ALIGN_REASONS = (ALIGN_SWITCH_DOWN, ALIGN_NOT_OFFERED, ALIGN_UNUSABLE)
+
+# How a cut came to stand where it does, beyond the share that proposed it.
+MOVED_TO_PUNCTUATION = "punctuation"
+MOVED_TO_MARKER = "marker"
+
+
+@dataclass(frozen=True)
 class Redistribution:
     """A translation cut back into one piece per chain member."""
 
@@ -289,6 +349,7 @@ class Redistribution:
     sentences: tuple[str, ...]
     cuts: tuple[Cut, ...]
     fallback: str | None
+    alignment: Alignment | None = None
 
     @property
     def texts(self) -> tuple[str, ...]:
@@ -302,6 +363,7 @@ class Redistribution:
             "sentence_count": len(self.sentences),
             "members": [segment.as_record() for segment in self.segments],
             "cuts": [cut.as_record() for cut in self.cuts],
+            "alignment": None if self.alignment is None else self.alignment.as_record(),
         }
 
 
@@ -427,6 +489,38 @@ def _parse_min_chars(raw: object, where: str, config: dict, default: int) -> int
     return int(bounded[SENTENCE_MIN_CHARS_KEY])
 
 
+def _parse_markers(raw: object, where: str) -> tuple[str, ...]:
+    """The closed class words a cut may be moved to stand after.
+
+    An empty list is a declaration and not an omission: it says this language
+    takes no marker move, which is what a profile whose break rule already
+    snaps to word boundaries wants.
+    """
+    if raw is None:
+        return ()
+    _require(isinstance(raw, list), f"{where}: must be a list of words")
+    markers = []
+    for item in raw:
+        _require(
+            isinstance(item, str) and item and not item.strip() != item,
+            f"{where}: {item!r} is not a word without surrounding space",
+        )
+        markers.append(item)
+    duplicated = sorted({item for item in markers if markers.count(item) > 1})
+    _require(not duplicated, f"{where}: {duplicated} declared more than once")
+    # Longest first, so a marker that ends with a shorter one is tested whole.
+    return tuple(sorted(markers, key=len, reverse=True))
+
+
+def _parse_align_switch(raw: object, source: str) -> str:
+    where = f"{source}: {ALIGN_SWITCH_KEY}"
+    _require(
+        isinstance(raw, str) and raw.strip() and raw.strip() == raw,
+        f"{where}: must name the run attribute the alignment level is read from",
+    )
+    return raw
+
+
 def _parse_profile(name: str, raw: object, source: str, config: dict, default: int):
     where = f"{source}: {PROFILES_KEY}.{ENTRIES_KEY}.{name}"
     _require(isinstance(raw, dict), f"{where}: must be an object")
@@ -479,6 +573,9 @@ def _parse_profile(name: str, raw: object, source: str, config: dict, default: i
         break_rule=raw["break_rule"],
         sentence_min_chars=_parse_min_chars(
             raw.get(SENTENCE_MIN_CHARS_KEY), where, config, default
+        ),
+        cut_boundary_markers=_parse_markers(
+            raw.get(CUT_BOUNDARY_MARKERS_KEY), f"{where}.{CUT_BOUNDARY_MARKERS_KEY}"
         ),
     )
 
@@ -575,8 +672,10 @@ def load_backfill_config(path: str | None = None) -> BackfillConfig:
         sentence_min_chars=default_min_chars,
         snap_search_ratio=float(parameters["snap_search_ratio"]),
         snap_search_min_chars=int(parameters["snap_search_min_chars"]),
+        cut_snap_radius=int(parameters["cut_snap_radius"]),
         output_token_budget=int(parameters["output_token_budget"]),
         output_token_ratio=float(parameters["output_token_ratio"]),
+        align_switch=_parse_align_switch(raw.get(ALIGN_SWITCH_KEY), source),
         join=_parse_join(raw.get(JOIN_KEY), source),
         profiles=profiles,
         default_profile=default_profile,
@@ -820,6 +919,51 @@ def _snap(
     return None
 
 
+def _follows_marker(text: str, position: int, profile: LanguageProfile) -> str | None:
+    """What, if anything, the character in front of ``position`` finishes.
+
+    A punctuation mark finishes a clause in every language this runs in, and a
+    declared marker finishes one in the language that declared it. Punctuation
+    is asked first: it is the stronger evidence and it is language independent.
+    """
+    if position <= 0 or position > len(text):
+        return None
+    if unicodedata.category(text[position - 1]).startswith("P"):
+        return MOVED_TO_PUNCTUATION
+    for marker in profile.cut_boundary_markers:
+        if text.endswith(marker, 0, position):
+            return MOVED_TO_MARKER
+    return None
+
+
+def _snap_to_boundary(
+    text: str,
+    ideal: int,
+    low: int,
+    high: int,
+    profile: LanguageProfile,
+    config: BackfillConfig,
+) -> tuple[int, str] | None:
+    """Move an estimate onto a nearby clause end, nearest first, earlier on a tie.
+
+    The radius is small and fixed rather than proportional to the piece: this
+    corrects an estimate that is nearly right, and an estimate that is wrong by
+    more than a couple of characters is wrong for a reason no local move
+    repairs.
+    """
+    for offset in range(config.cut_snap_radius + 1):
+        candidates = (ideal,) if offset == 0 else (ideal - offset, ideal + offset)
+        for candidate in candidates:
+            if not low <= candidate <= high:
+                continue
+            if not _is_legal_break(text, candidate, profile):
+                continue
+            moved = _follows_marker(text, candidate, profile)
+            if moved is not None:
+                return candidate, moved
+    return None
+
+
 def _nearest_boundary(
     boundaries: Sequence[int], ideal: int, low: int, high: int, reserve: int
 ) -> int | None:
@@ -873,18 +1017,29 @@ def _plan_cuts(
             reserve = max(0, min(count - 2 - index, available - 1))
             position = _nearest_boundary(boundaries, ideal, low, high, reserve)
         if position is not None:
-            cuts.append(Cut(index, position, CUT_SENTENCE, True))
+            cuts.append(Cut(index, position, CUT_SENTENCE, True, estimate=ideal))
         else:
-            target = max(1, round(length * shares[index]))
-            snapped = _snap(translated, ideal, low, high, target, profile, config)
-            cuts.append(
-                Cut(
-                    index,
-                    ideal if snapped is None else snapped,
-                    CUT_PROPORTIONAL,
-                    snapped is not None,
+            # The second level of the cascade, offered the estimate the first
+            # level produced when there was one and the share when there was
+            # not. It moves the cut onto a clause end within a couple of
+            # characters or leaves it where it stands.
+            moved = _snap_to_boundary(translated, ideal, low, high, profile, config)
+            if moved is not None:
+                cuts.append(
+                    Cut(index, moved[0], CUT_PROPORTIONAL, True, ideal, moved[1])
                 )
-            )
+            else:
+                target = max(1, round(length * shares[index]))
+                snapped = _snap(translated, ideal, low, high, target, profile, config)
+                cuts.append(
+                    Cut(
+                        index,
+                        ideal if snapped is None else snapped,
+                        CUT_PROPORTIONAL,
+                        snapped is not None,
+                        estimate=ideal,
+                    )
+                )
         previous = cuts[-1].position
     return tuple(cuts)
 
@@ -906,21 +1061,44 @@ def _sentence_intervals(
     )
 
 
+def align_shares(lengths: Sequence[int] | None, count: int) -> tuple[float, ...] | None:
+    """The shares a set of auxiliary translation lengths gives, or None.
+
+    None where the lengths cannot size anything: one per member is needed, each
+    positive, and a caller that could not obtain them says so by passing none
+    rather than by passing zeros.
+    """
+    if lengths is None or len(lengths) != count:
+        return None
+    if any(not isinstance(item, int) or item <= 0 for item in lengths):
+        return None
+    total = sum(lengths)
+    return tuple(item / total for item in lengths)
+
+
 def redistribute(
     merge: ChainMerge,
     translated: str,
     language: str | None,
     strategy: str,
     config: BackfillConfig | None = None,
+    aligned_lengths: Sequence[int] | None = None,
+    align_enabled: bool = True,
 ) -> Redistribution:
     """Cut one chain's translation back into one piece per member.
 
-    The pieces are sized by each member's share of the merged source. Under
-    ``sentence_greedy`` a cut lands on a sentence end wherever one is still
-    available and is placed by share where none is, which is reported as a
-    proportional fallback. Under ``proportional`` every cut is placed by share
-    and snapped to a break the target language allows, and no sentence indices
-    are claimed.
+    A cut is placed by a cascade of three. Where ``aligned_lengths`` carries a
+    usable length per member -- each member's own translation measured, never
+    read -- the pieces are sized by those lengths, so a cut lands where the
+    first member's translation would have ended. Where it does not, they are
+    sized by each member's share of the merged source, which is what every run
+    before the cascade did. Either estimate is then offered to a clause end
+    within the declared radius.
+
+    Under ``sentence_greedy`` a cut lands on a sentence end wherever one is
+    still available and is placed by the estimate where none is, which is
+    reported as a proportional fallback. Under ``proportional`` no sentence
+    indices are claimed.
     """
     config = load_backfill_config() if config is None else config
     if strategy not in STRATEGIES:
@@ -942,8 +1120,30 @@ def redistribute(
     interior = [offset for offset in ends if offset < len(translated)]
     sentence_mode = strategy == STRATEGY_SENTENCE_GREEDY
 
+    source_shares = merge.shares
+    aligned = align_shares(aligned_lengths, count) if align_enabled else None
+    if not align_enabled:
+        reason = ALIGN_SWITCH_DOWN
+    elif aligned_lengths is None:
+        reason = ALIGN_NOT_OFFERED
+    elif aligned is None:
+        reason = ALIGN_UNUSABLE
+    else:
+        reason = None
+    alignment = Alignment(
+        used=aligned is not None,
+        reason=reason,
+        member_lengths=tuple(aligned_lengths or ()),
+        source_shares=source_shares,
+    )
+
     cuts = _plan_cuts(
-        translated, merge.shares, interior, profile, config, sentence_mode
+        translated,
+        source_shares if aligned is None else aligned,
+        interior,
+        profile,
+        config,
+        sentence_mode,
     )
     positions = [cut.position for cut in cuts]
     edges = [0, *positions, len(translated)]
@@ -975,6 +1175,7 @@ def redistribute(
         sentences=sentences,
         cuts=cuts,
         fallback=fallback,
+        alignment=alignment,
     )
     report = verify_redistribution(merge, translated, result)
     if not report.ok:

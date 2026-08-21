@@ -1,0 +1,221 @@
+{
+  "decisions_file": "D:\\Codes\\BabelDOC\\reviews\\Courier-zh.decisions.json",
+  "page_kinds": [
+    {
+      "kind": "toc",
+      "machine_conf": 1.0,
+      "machine_kind": "sidebar_heavy",
+      "machine_source": "deterministic",
+      "page": 1
+    },
+    {
+      "kind": "photo_spread",
+      "machine_conf": 1.0,
+      "machine_kind": "advertisement",
+      "machine_source": "deterministic",
+      "page": 3
+    }
+  ],
+  "sample": "Courier-zh",
+  "terms": {
+    "auto_glossary_kept": 174,
+    "auto_glossary_relocated": "auto_extracted_glossary",
+    "defaulted": 14,
+    "dropped_from_auto": [],
+    "entries": [
+      {
+        "decided_by": "policy",
+        "source": "Agnès Bardon",
+        "target": "Agnes Bardon"
+      },
+      {
+        "decided_by": "policy",
+        "source": "Anna Ruohonen",
+        "target": "Anna Ruohonen"
+      },
+      {
+        "decided_by": "policy",
+        "source": "Anuliina Savolainen",
+        "target": "Anuliina Savolainen"
+      },
+      {
+        "decided_by": "policy",
+        "source": "Daniel Robinson",
+        "target": "Daniel Robinson"
+      },
+      {
+        "decided_by": "policy",
+        "source": "David Jefferson",
+        "target": "David Jefferson"
+      },
+      {
+        "decided_by": "policy",
+        "source": "Jim Al-Khalili",
+        "target": "Jim Al-Khalili"
+      },
+      {
+        "decided_by": "policy",
+        "source": "Katerina Markelova",
+        "target": "Katerina Markelova"
+      },
+      {
+        "decided_by": "policy",
+        "source": "Laetitia Kaci",
+        "target": "Laetitia Kaci"
+      },
+      {
+        "decided_by": "policy",
+        "source": "Lagipoiva Cherelle Jackson",
+        "target": "Lagipoiva Cherelle Jackson"
+      },
+      {
+        "decided_by": "policy",
+        "source": "Marcelo Silva de Sousa",
+        "target": "Marcelo Silva de Sousa"
+      },
+      {
+        "decided_by": "policy",
+        "source": "Sisco Auala",
+        "target": "Sisco Auala"
+      },
+      {
+        "decided_by": "policy",
+        "source": "Delsie Betty Bosi",
+        "target": "Delsie Betty Bosi"
+      },
+      {
+        "decided_by": "policy",
+        "source": "Hindou Oumarou Ibrahim",
+        "target": "Hindou Oumarou Ibrahim"
+      },
+      {
+        "decided_by": "policy",
+        "source": "Salanieta Kitolelei",
+        "target": "Salanieta Kitolelei"
+      }
+    ],
+    "glossary": "hitl_decisions",
+    "match_definition": "how many inputs -- the text a paragraph was offered as, which is what the glossary is matched against -- activate this entry, by the matcher the translation prompt itself uses; counted over every request this run built from the document, the repair loop's included",
+    "matches": [
+      {
+        "matched_excerpts": [
+          "阿涅丝·巴尔东(Agnès Bardon)"
+        ],
+        "matched_prompt_count": 1,
+        "source": "Agnès Bardon",
+        "target": "Agnes Bardon"
+      },
+      {
+        "matched_excerpts": [
+          "安娜·罗霍宁(Anna Ruohonen)"
+        ],
+        "matched_prompt_count": 1,
+        "source": "Anna Ruohonen",
+        "target": "Anna Ruohonen"
+      },
+      {
+        "matched_excerpts": [
+          "阿努利那·萨沃莱宁(Anuliina Savolainen)"
+        ],
+        "matched_prompt_count": 1,
+        "source": "Anuliina Savolainen",
+        "target": "Anuliina Savolainen"
+      },
+      {
+        "matched_excerpts": [
+          "丹尼尔·鲁滨逊(Daniel Robinson)和戴维·杰斐逊(David Jefferson)",
+          "丹尼尔·鲁滨逊 (Daniel Robinson)"
+        ],
+        "matched_prompt_count": 2,
+        "source": "Daniel Robinson",
+        "target": "Daniel Robinson"
+      },
+      {
+        "matched_excerpts": [
+          "丹尼尔·鲁滨逊(Daniel Robinson)和戴维·杰斐逊(David Jefferson)",
+          "戴维·杰斐逊 (David Jefferson) 坎特伯雷大学(新西 兰)副教授,其主要 研究方向为生物多样 性、知识产权与土著知 识体系的交叉领域。"
+        ],
+        "matched_prompt_count": 2,
+        "source": "David Jefferson",
+        "target": "David Jefferson"
+      },
+      {
+        "matched_excerpts": [
+          "吉姆·艾尔-哈利利(Jim Al-Khalili)"
+        ],
+        "matched_prompt_count": 1,
+        "source": "Jim Al-Khalili",
+        "target": "Jim Al-Khalili"
+      },
+      {
+        "matched_excerpts": [
+          "卡特琳娜·马尔可洛娃(Katerina Markelova)担任采访"
+        ],
+        "matched_prompt_count": 1,
+        "source": "Katerina Markelova",
+        "target": "Katerina Markelova"
+      },
+      {
+        "matched_excerpts": [
+          "蕾蒂西亚·凯西(Laetitia Kaci)担任采访"
+        ],
+        "matched_prompt_count": 1,
+        "source": "Laetitia Kaci",
+        "target": "Laetitia Kaci"
+      },
+      {
+        "matched_excerpts": [
+          "拉吉波瓦·谢雷尔·杰克逊(Lagipoiva Cherelle Jackson)",
+          "拉吉波瓦·谢雷尔·杰克逊 {v1}Lagipoiva Cherelle Jackson)"
+        ],
+        "matched_prompt_count": 2,
+        "source": "Lagipoiva Cherelle Jackson",
+        "target": "Lagipoiva Cherelle Jackson"
+      },
+      {
+        "matched_excerpts": [
+          "马塞洛·席尔瓦·德索萨(Marcelo Silva de Sousa)",
+          "马塞洛·席尔瓦·德索萨 (Marcelo Silva de Sousa)"
+        ],
+        "matched_prompt_count": 2,
+        "source": "Marcelo Silva de Sousa",
+        "target": "Marcelo Silva de Sousa"
+      },
+      {
+        "matched_excerpts": [
+          "西斯科·阿瓦拉(Sisco Auala)"
+        ],
+        "matched_prompt_count": 1,
+        "source": "Sisco Auala",
+        "target": "Sisco Auala"
+      },
+      {
+        "matched_excerpts": [
+          "在所罗门群岛的陶马科岛,女性是陆地和海洋的守护 者。她们采摘并加工露兜树(这种小型树木广泛分布于波利 尼西亚、密克罗尼西亚等地区),编织出为航海提供动力的 船帆 —这项技艺已延续三千余年。正如岛民德尔西·贝 蒂·博西 (Delsie Betty Bosi) 所言:“男性负责建造大部"
+        ],
+        "matched_prompt_count": 1,
+        "source": "Delsie Betty Bosi",
+        "target": "Delsie Betty Bosi"
+      },
+      {
+        "matched_excerpts": [
+          "土 著人 民领 袖、联 合国 土著 问题 常设 论 坛第 二十 三届 会议 主席 欣杜· 奥马 鲁·易卜拉欣(Hindou Oumarou Ibrahim) 在 2024 年 4 月指出,“这些知识并非纸 上谈兵,而是历经数百年实践检验的智 慧结晶。”"
+        ],
+        "matched_prompt_count": 1,
+        "source": "Hindou Oumarou Ibrahim",
+        "target": "Hindou Oumarou Ibrahim"
+      },
+      {
+        "matched_excerpts": [
+          "学框架的价值。正如斐济研究学者萨拉尼埃塔·基托莱莱 (Salanieta Kitolelei) 在所罗门群岛霍尼亚拉举行的 2025 年第二届太平洋岛国海洋会议上所言:“本质并无二致— 我们只是用不同的语言描述同一件事。”"
+        ],
+        "matched_prompt_count": 1,
+        "source": "Salanieta Kitolelei",
+        "target": "Salanieta Kitolelei"
+      }
+    ],
+    "overridden": [],
+    "repair_inputs": 1,
+    "ruled": 0
+  }
+}

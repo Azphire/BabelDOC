@@ -41,6 +41,7 @@ from dataclasses import field
 from pathlib import Path
 
 from babeldoc.magazine import chain_backfill as backfill
+from babeldoc.magazine import short_unit
 from babeldoc.magazine.article_context import EMPTY_CONTEXT
 from babeldoc.magazine.chain_signals import CLASS_LABELS_KEY
 from babeldoc.magazine.chain_signals import load_chain_config
@@ -56,6 +57,10 @@ ESCALATION_MEMBER = "member_unavailable"
 ESCALATION_TRANSLATION = "translation_unavailable"
 ESCALATION_INCOMPLETE = "incomplete_chain"
 ESCALATION_TOKEN_BUDGET = "token_budget"
+
+# Which pass holds a claimed paragraph.
+TAKEN_BY_CHAIN = "chain"
+TAKEN_BY_SHORT_UNIT = "short_unit"
 
 # Why a member is invisible to everything else.
 SKIP_REASON = "chain_member"
@@ -137,12 +142,20 @@ class ChainEntry:
 
 @dataclass
 class SkipRecord:
-    """One member, and every mechanism that asked for it and was refused."""
+    """One paragraph another pass has taken, and who asked for it and was refused.
+
+    ``taken_by`` names which pass has it. Two do: the chain pass, which merges
+    it with the rest of its chain, and the short unit pass, which translates it
+    on its own because the length floor never offered it a request. Either way
+    the page batch has to leave it alone, and the record says which pass to ask
+    about it.
+    """
 
     chain_id: str
     chain_index: int | None
     debug_id: str | None
     page_index: int
+    taken_by: str = TAKEN_BY_CHAIN
     declined_by: list[str] = field(default_factory=list)
 
     def decline(self, mechanism: str) -> None:
@@ -156,6 +169,7 @@ class SkipRecord:
             "debug_id": self.debug_id,
             "page_index": self.page_index,
             "reason": SKIP_REASON,
+            "taken_by": self.taken_by,
             "declined_by": list(self.declined_by),
         }
 
@@ -275,6 +289,17 @@ class ChainPlan:
         self.chain_count = 0
         self.claim = ChainClaim()
         self.applied = False
+        self.align_enabled = bool(
+            getattr(translator.translation_config, self.config.align_switch, False)
+        )
+        self.alignment_calls = 0
+        # The short unit pass rides here rather than at a hook of its own: the
+        # translation stage offers exactly one place a magazine pass can run
+        # before the page batches, and this is it. What it needs from the stage
+        # is what the chain pass needs -- the translator, the document, the
+        # tracker and the article context -- and what it gives back is a claim
+        # of the same kind, so the two travel together and upstream sees one.
+        self.short_units = None
 
     # --- planning -----------------------------------------------------------
 
@@ -282,7 +307,36 @@ class ChainPlan:
         for chain_id, members in _collect_chains(docs):
             self.chain_count += 1
             self._plan_chain(chain_id, members, tracker)
+        self._plan_short_units(docs, tracker)
         return self
+
+    def _plan_short_units(self, docs, tracker) -> None:
+        """Translate the paragraphs the length floor never offered a request.
+
+        Run after the chains, so a paragraph a chain has taken is already
+        claimed and is not offered twice. A claimed paragraph is skipped by the
+        admission test through the same claim the page batch reads.
+        """
+        translation_config = self.translator.translation_config
+        if not short_unit.enabled(translation_config):
+            return
+        plan_result = short_unit.plan(
+            self.translator, docs, tracker, self.article_context
+        )
+        self.short_units = plan_result
+        for unit in plan_result.units:
+            if self.claim.claims_paragraph(unit.paragraph):
+                continue
+            self.claim.take(
+                unit.paragraph,
+                SkipRecord(
+                    chain_id="",
+                    chain_index=None,
+                    debug_id=getattr(unit.paragraph, "debug_id", None),
+                    page_index=unit.page_index,
+                    taken_by=TAKEN_BY_SHORT_UNIT,
+                ),
+            )
 
     def _escalate(self, chain_id, members, reason: str, detail: str = "") -> None:
         logger.debug("chain %s left to the paragraph path: %s", chain_id, reason)
@@ -397,7 +451,13 @@ class ChainPlan:
             return
         try:
             redistribution = backfill.redistribute(
-                merge, translated, self.language, strategy, self.config
+                merge,
+                translated,
+                self.language,
+                strategy,
+                self.config,
+                aligned_lengths=self._aligned_lengths(prepared, strategy),
+                align_enabled=self.align_enabled,
             )
         except backfill.ChainBackfillError as error:
             self._escalate(chain_id, members, ESCALATION_CONSERVATION, str(error))
@@ -423,6 +483,43 @@ class ChainPlan:
                     page_index=member.page_index,
                 ),
             )
+
+    def _aligned_lengths(
+        self, members: list[MemberPlan], strategy: str
+    ) -> list[int] | None:
+        """Measure each member's own translation, for the cut to be placed by.
+
+        Only for a chain with no sentence structure to cut on. A body chain
+        cuts on sentence ends, which are positions in the joint translation and
+        need no estimate; a display line chain has nothing but the share, and
+        the share is the quantity this replaces.
+
+        The answers are measured and discarded. Nothing a chain writes back
+        comes from anywhere but the joint translation, so the auxiliary text is
+        never returned from here and never stored: what leaves this method is a
+        list of integers. Each request goes through the engine's own cache, so a
+        rerun of the same chain sends nothing.
+
+        Returns None where the alignment cannot be had, which the caller records
+        as such and the cascade falls softly past.
+        """
+        if not self.align_enabled or strategy != backfill.STRATEGY_PROPORTIONAL:
+            return None
+        lengths = []
+        engine = self.translator.translate_engine
+        for member in members:
+            try:
+                answer = engine.translate(member.source)
+            except Exception as error:  # the engine is foreign and may refuse
+                logger.warning(
+                    "chain alignment: a member could not be measured: %s", error
+                )
+                return None
+            if not isinstance(answer, str) or not answer.strip():
+                return None
+            self.alignment_calls += 1
+            lengths.append(len(answer))
+        return lengths
 
     def _translate(self, merged: str, members: list[MemberPlan], chain_tracker) -> str:
         """Send one merged chain through the machinery a batch already uses."""
@@ -507,6 +604,9 @@ class ChainPlan:
                 translator.ok_count += 1
                 if pbar:
                     pbar.advance(1)
+        if self.short_units is not None:
+            short_unit.apply(translator, self.short_units, pbar)
+            short_unit.write_report(translator.translation_config, self.short_units)
         self.applied = True
         self.write_report()
 
@@ -522,6 +622,21 @@ class ChainPlan:
                 "escalated": len(self.escalated),
                 "merged_members": merged_members,
                 "skips": len(self.claim),
+                "alignment_requests": self.alignment_calls,
+                "aligned_cuts": sum(
+                    1
+                    for entry in self.entries
+                    if entry.redistribution.alignment is not None
+                    and entry.redistribution.alignment.used
+                ),
+            },
+            "align_enabled": self.align_enabled,
+            "short_units": None
+            if self.short_units is None
+            else {
+                "admitted": len(self.short_units.units),
+                "refused": len(self.short_units.refused),
+                "requests": self.short_units.requests,
             },
             "applied": self.applied,
             "chains": [entry.as_record() for entry in self.entries],
