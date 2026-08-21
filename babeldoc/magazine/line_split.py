@@ -270,8 +270,7 @@ def character_union(characters):
     boxes = [
         box
         for box in boxes
-        if box is not None
-        and None not in (box.x, box.y, box.x2, box.y2)
+        if box is not None and None not in (box.x, box.y, box.x2, box.y2)
     ]
     if not boxes:
         return None
@@ -292,12 +291,31 @@ def character_union(characters):
 SPLITTABLE = ("pdf_line", "pdf_same_style_characters")
 ATOMIC = ("pdf_formula", "pdf_character", "pdf_same_style_unicode_characters")
 
+# The one atomic kind that carries drawing of its own.
+FORMULA_KIND = ATOMIC[0]
+
 
 def composition_kind(composition) -> str | None:
     for name in (*SPLITTABLE, *ATOMIC):
         if getattr(composition, name, None) is not None:
             return name
     return None
+
+
+def holds_formula(paragraph) -> bool:
+    """Whether one paragraph carries a formula among its compositions.
+
+    Here rather than beside its caller because the composition member names
+    belong to the modules that classify a composition, and asking this question
+    anywhere else would be a second place naming them. What the answer is for is
+    layout: the typesetting stage hands a formula's curves and forms to the
+    *page* rather than to the paragraph, so a paragraph holding one cannot be
+    moved without leaving its own artwork behind.
+    """
+    return any(
+        composition_kind(composition) == FORMULA_KIND
+        for composition in paragraph.pdf_paragraph_composition or ()
+    )
 
 
 def composition_characters(composition, kind: str) -> list:
@@ -396,9 +414,7 @@ def _merge_short_lines(lines, characters, config: LineSplitConfig) -> list[list[
     """
     merged: list[list[int]] = []
     for bucket in lines:
-        text = "".join(
-            (characters[index].char_unicode or "") for index in bucket
-        )
+        text = "".join((characters[index].char_unicode or "") for index in bucket)
         if merged and len(text.strip()) < config.min_line_characters:
             merged[-1].extend(bucket)
             continue
@@ -703,7 +719,9 @@ def split_paragraph(paragraph, config: LineSplitConfig) -> list | None:
         return None
     characters = paragraph_characters(paragraph)
     built = []
-    for ordinal, group in enumerate(record_groups(characters, examination.lines, config)):
+    for ordinal, group in enumerate(
+        record_groups(characters, examination.lines, config)
+    ):
         indices = sorted(index for line in group for index in line)
         members = set(indices)
         compositions = _compositions_of_line(paragraph, members)
@@ -783,11 +801,8 @@ def process_page(
                 "mean_line_chars": examination.mean_line_chars,
                 "records": len(groups),
                 "record_lines": [len(group) for group in groups],
-
                 "restyled_records": sum(
-                    1
-                    for line in lines
-                    if not same_style(line.pdf_style, parent)
+                    1 for line in lines if not same_style(line.pdf_style, parent)
                 ),
                 "line_paragraphs": [line.debug_id for line in lines],
             }

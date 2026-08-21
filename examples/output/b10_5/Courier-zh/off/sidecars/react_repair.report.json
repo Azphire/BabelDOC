@@ -1,0 +1,258 @@
+{
+  "api_attributions": [],
+  "api_calls": 0,
+  "applications": 0,
+  "config": {
+    "actions": [
+      {
+        "applicability": {
+          "contain_layout_labels": [
+            "title",
+            "paragraph_title"
+          ],
+          "min_overflow_ratio": 0.01
+        },
+        "bounds": {
+          "contain_margin_ratio": 0.01,
+          "contain_min_scale": 0.5
+        },
+        "conditions": [
+          "its evidence reports layout_label as one of: title, paragraph_title",
+          "its evidence reports overflow_ratio at or above 0.01"
+        ],
+        "description": "Put a paragraph that is printing off the edge of its page back inside the page. It moves ink and never changes a character of text: it slides the paragraph inside the frame, shrinks it about the centre of its own extent only where sliding alone cannot fit it, and escalates instead of shrinking past the declared floor.",
+        "issue_kinds": [
+          "out_of_page"
+        ],
+        "max_applications": 8,
+        "name": "contain_in_page",
+        "parameters": [
+          {
+            "allowed_range": "1.0..20.0",
+            "default": 3.0,
+            "name": "max_paragraphs"
+          }
+        ]
+      },
+      {
+        "applicability": {
+          "min_collision_coverage": 0.4
+        },
+        "bounds": {
+          "resolve_margin": 0.05,
+          "resolve_max_area_ratio": 0.5,
+          "resolve_max_shift_ratio": 0.08
+        },
+        "conditions": [
+          "its evidence reports coverage at or above 0.4"
+        ],
+        "description": "Slide the smaller of two paragraphs standing in one place clear of the larger, along the axis on which they overlap least. It moves ink and never changes a character of text, it moves only the paragraph its rule can name as the smaller, and it escalates rather than acting where the two are of comparable size or where clearing the overlap would take more movement than a paragraph that merely drifted would need.",
+        "issue_kinds": [
+          "text_text_collision"
+        ],
+        "max_applications": 8,
+        "name": "resolve_collision",
+        "parameters": [
+          {
+            "allowed_range": "1.0..20.0",
+            "default": 3.0,
+            "name": "max_paragraphs"
+          }
+        ]
+      },
+      {
+        "applicability": {
+          "min_residue_ratio": 0.9,
+          "min_source_chars": 12,
+          "orphan_layout_labels": [
+            "fallback_line"
+          ]
+        },
+        "bounds": {},
+        "conditions": [
+          "its evidence reports residue_ratio at or above 0.9",
+          "the text the page renders for it is at least 12 characters long",
+          "its evidence reports layout_label as one of: fallback_line"
+        ],
+        "description": "Send the text of an orphan line through the translation engine and write the answer back into the paragraph, then lay that paragraph out again.",
+        "issue_kinds": [
+          "untranslated_residue"
+        ],
+        "max_applications": 12,
+        "name": "translate_orphan_lines",
+        "parameters": [
+          {
+            "allowed_range": "1.0..20.0",
+            "default": 3.0,
+            "name": "max_paragraphs"
+          }
+        ]
+      }
+    ],
+    "decide_max_attempts": 2,
+    "issue_excerpt_chars": 120,
+    "max_glossary_entries": 24,
+    "max_issues_offered": 40,
+    "max_iterations": 3,
+    "page_context_chars": 1200,
+    "volatile_evidence_keys": [
+      "debug_id",
+      "debug_ids",
+      "source_checkpoint"
+    ]
+  },
+  "conservation": {
+    "changed_outside_touched": [],
+    "changed_refs": [],
+    "pages_after": 8,
+    "pages_before": 8,
+    "paragraphs_after": 144,
+    "paragraphs_before": 144,
+    "touched_refs": [],
+    "verdict": "conserved"
+  },
+  "engine_configured": true,
+  "final": {
+    "by_kind": {
+      "text_figure_overlap": 1,
+      "untranslated_residue": 2
+    },
+    "total": 3
+  },
+  "final_untreated": {
+    "by_kind": {
+      "text_figure_overlap": 1,
+      "untranslated_residue": 2
+    },
+    "total": 3
+  },
+  "iterations": [
+    {
+      "applicability": [],
+      "decision": {
+        "action": "translate_orphan_lines",
+        "attempts": 0,
+        "from_cache": true,
+        "issue_ids": [
+          "untranslated_residue:p6:p6#14"
+        ],
+        "parameters": {
+          "max_paragraphs": 3.0
+        },
+        "raw": "{\"action\": \"translate_orphan_lines\", \"issue_ids\": [\"untranslated_residue:p6:p6#14\"], \"parameters\": {}, \"reason\": \"The finding on page 6 meets all conditions: residue_ratio is 1.0, text length is 16 characters, and layout_label is 'fallback_line'.\"}",
+        "reason": "The finding on page 6 meets all conditions: residue_ratio is 1.0, text length is 16 characters, and layout_label is 'fallback_line'.",
+        "violations": []
+      },
+      "detected": {
+        "by_kind": {
+          "text_figure_overlap": 1,
+          "untranslated_residue": 2
+        },
+        "total": 3
+      },
+      "detected_ids": [
+        "text_figure_overlap:p3:p3#1",
+        "untranslated_residue:p5:p5#8",
+        "untranslated_residue:p6:p6#14"
+      ],
+      "executed": [
+        {
+          "accepted": false,
+          "attempts": 0,
+          "calls": [],
+          "changed": false,
+          "from_cache": true,
+          "geometry": {},
+          "glossary_entries": [],
+          "issue_id": "untranslated_residue:p6:p6#14",
+          "offered_text": "作创》使信《织组文科教国合联为科亚尼",
+          "paragraph_ref": "p6#14",
+          "reason": "retypesetting_needed_more_room_than_the_paragraph_had",
+          "source_text": "作创》使信《织组文科教国合联为科亚尼",
+          "translated_text": "Creative Work\" makes trust \"Weaving Group Culture and Science Education National Union for Science Asia Ni"
+        }
+      ],
+      "iteration": 1,
+      "outcome": "applied_nothing",
+      "request": {
+        "cache_key": "85842c9cc4e24579d152e232b7fb7f822f7f705a14cc1a5a3153a62305665aef",
+        "calls": [],
+        "prompt_sha256": "94f390049cd07156b3290170062939ad88b1103e9f207335b41769a0a4ba1a03"
+      },
+      "rounds": [
+        {
+          "applicability": [],
+          "decision": {
+            "action": "translate_orphan_lines",
+            "attempts": 0,
+            "from_cache": true,
+            "issue_ids": [
+              "untranslated_residue:p6:p6#14"
+            ],
+            "parameters": {
+              "max_paragraphs": 3.0
+            },
+            "raw": "{\"action\": \"translate_orphan_lines\", \"issue_ids\": [\"untranslated_residue:p6:p6#14\"], \"parameters\": {}, \"reason\": \"The finding on page 6 meets all conditions: residue_ratio is 1.0, text length is 16 characters, and layout_label is 'fallback_line'.\"}",
+            "reason": "The finding on page 6 meets all conditions: residue_ratio is 1.0, text length is 16 characters, and layout_label is 'fallback_line'.",
+            "violations": []
+          },
+          "executed": [
+            {
+              "accepted": false,
+              "attempts": 0,
+              "calls": [],
+              "changed": false,
+              "from_cache": true,
+              "geometry": {},
+              "glossary_entries": [],
+              "issue_id": "untranslated_residue:p6:p6#14",
+              "offered_text": "作创》使信《织组文科教国合联为科亚尼",
+              "paragraph_ref": "p6#14",
+              "reason": "retypesetting_needed_more_room_than_the_paragraph_had",
+              "source_text": "作创》使信《织组文科教国合联为科亚尼",
+              "translated_text": "Creative Work\" makes trust \"Weaving Group Culture and Science Education National Union for Science Asia Ni"
+            }
+          ],
+          "kind": "untranslated_residue",
+          "offered": 2,
+          "offered_ids": [
+            "untranslated_residue:p5:p5#8",
+            "untranslated_residue:p6:p6#14"
+          ],
+          "reason": "no_paragraph_was_written",
+          "request": {
+            "cache_key": "85842c9cc4e24579d152e232b7fb7f822f7f705a14cc1a5a3153a62305665aef",
+            "calls": [],
+            "prompt_sha256": "94f390049cd07156b3290170062939ad88b1103e9f207335b41769a0a4ba1a03"
+          },
+          "vocabulary": [
+            "translate_orphan_lines"
+          ],
+          "written": []
+        }
+      ],
+      "untreated": {
+        "by_kind": {
+          "text_figure_overlap": 1,
+          "untranslated_residue": 2
+        },
+        "total": 3
+      }
+    }
+  ],
+  "iterations_run": 1,
+  "kind_order": [
+    "out_of_page",
+    "text_text_collision",
+    "text_figure_overlap",
+    "fragment_cluster",
+    "chain_escalation",
+    "untranslated_residue"
+  ],
+  "offered_texts": [
+    "作创》使信《织组文科教国合联为科亚尼"
+  ],
+  "stopped_because": "no_paragraph_was_written",
+  "switch": "magazine_repair",
+  "treated": []
+}

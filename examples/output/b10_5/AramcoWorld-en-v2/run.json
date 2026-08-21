@@ -1,0 +1,98 @@
+{
+  "sample": "AramcoWorld-en-v2.pdf",
+  "model": "gpt-4o",
+  "lang_in": "en",
+  "lang_out": "zh",
+  "target_pages": [
+    4,
+    6,
+    7
+  ],
+  "arms": {
+    "off": {
+      "arm": "off",
+      "switch": false,
+      "seconds": 83.0,
+      "requests": 80,
+      "cache_hits": 80,
+      "api_calls": 0,
+      "pdf": "examples\\output\\b10_5\\AramcoWorld-en-v2\\off\\AramcoWorld-en-v2.b10_5.off.pdf",
+      "pdf_sha256": "11d39b0efb1d0e6058916e4f1c3a56232d434d935ab38d393fe83737cf6cc5e6",
+      "page_hashes": {
+        "1": "58033b584be7395e802e58f4c6bb8f36132258c41f63ddfc1feec132f23a404c",
+        "2": "b1575c22f307e5675c95237de45853d5242022da76ba785f8a0a5cf7b2df5d8b",
+        "3": "2ab4e8c3de908f0dad903c3e00dadd78fed1bd6dc050546d3fa4b51ca9a6388f",
+        "4": "13dc20cb079d8ef416b21eadcb70b25d9fb89a63294f056a5abb1b9fff945941",
+        "5": "cd4ec63e71011dcd31c82ccb97ff5ba3a846589492bceebefe242542a928eb13",
+        "6": "f010464a29a6b633bf4722106761dd3d763ca2e1589cc72d808b69223cc99527",
+        "7": "5948a1da5a9cbe49451b17105513774a75ea74e452cad99963d96d70c09f822e",
+        "8": "c1100747ae8bb05ff5e83f4833a268781a6c312ee44b653f55cc6ba06974be9e",
+        "9": "d730010f2a767933ca0ea29fcbfce8f7b36379c24c8c3fc4c5187482e6fd0db0"
+      },
+      "raster": [
+        "examples\\output\\b10_5\\AramcoWorld-en-v2\\off\\raster\\AramcoWorld-en-v2.p4.png",
+        "examples\\output\\b10_5\\AramcoWorld-en-v2\\off\\raster\\AramcoWorld-en-v2.p6.png",
+        "examples\\output\\b10_5\\AramcoWorld-en-v2\\off\\raster\\AramcoWorld-en-v2.p7.png"
+      ],
+      "sidecars": [
+        "examples\\output\\b10_5\\AramcoWorld-en-v2\\off\\sidecars\\issues.json",
+        "examples\\output\\b10_5\\AramcoWorld-en-v2\\off\\sidecars\\react_repair.report.json",
+        "examples\\output\\b10_5\\AramcoWorld-en-v2\\off\\sidecars\\title_typeset.report.json"
+      ],
+      "working_dir": "examples\\output\\b10_5\\AramcoWorld-en-v2\\off\\work\\AramcoWorld-en-v2"
+    },
+    "on": {
+      "arm": "on",
+      "switch": true,
+      "seconds": 83.5,
+      "requests": 80,
+      "cache_hits": 80,
+      "api_calls": 0,
+      "pdf": "examples\\output\\b10_5\\AramcoWorld-en-v2\\on\\AramcoWorld-en-v2.b10_5.on.pdf",
+      "pdf_sha256": "4436161c63da80ee9e3b14d89cd17b3e06edb30f5a2e8001f6d9abe7bb39fca8",
+      "page_hashes": {
+        "1": "58033b584be7395e802e58f4c6bb8f36132258c41f63ddfc1feec132f23a404c",
+        "2": "b1575c22f307e5675c95237de45853d5242022da76ba785f8a0a5cf7b2df5d8b",
+        "3": "2ab4e8c3de908f0dad903c3e00dadd78fed1bd6dc050546d3fa4b51ca9a6388f",
+        "4": "dad949a243426c10fc456c7097527875f1c21ddc7a58028a5e9f3bb73c2137aa",
+        "5": "cd4ec63e71011dcd31c82ccb97ff5ba3a846589492bceebefe242542a928eb13",
+        "6": "86b463a13722f97679f489b73698cb00486fd1c356a1acc729366f39c7f4307a",
+        "7": "aae068973a1f6a26f1010b9792ba2bf40dc486b842cf67ddd8d91338303b8679",
+        "8": "c1100747ae8bb05ff5e83f4833a268781a6c312ee44b653f55cc6ba06974be9e",
+        "9": "d730010f2a767933ca0ea29fcbfce8f7b36379c24c8c3fc4c5187482e6fd0db0"
+      },
+      "raster": [
+        "examples\\output\\b10_5\\AramcoWorld-en-v2\\on\\raster\\AramcoWorld-en-v2.p4.png",
+        "examples\\output\\b10_5\\AramcoWorld-en-v2\\on\\raster\\AramcoWorld-en-v2.p6.png",
+        "examples\\output\\b10_5\\AramcoWorld-en-v2\\on\\raster\\AramcoWorld-en-v2.p7.png"
+      ],
+      "sidecars": [
+        "examples\\output\\b10_5\\AramcoWorld-en-v2\\on\\sidecars\\column_reflow.report.json",
+        "examples\\output\\b10_5\\AramcoWorld-en-v2\\on\\sidecars\\issues.json",
+        "examples\\output\\b10_5\\AramcoWorld-en-v2\\on\\sidecars\\react_repair.report.json",
+        "examples\\output\\b10_5\\AramcoWorld-en-v2\\on\\sidecars\\title_typeset.report.json"
+      ],
+      "working_dir": "examples\\output\\b10_5\\AramcoWorld-en-v2\\on\\work\\AramcoWorld-en-v2"
+    }
+  },
+  "pages_changed": [
+    4,
+    6,
+    7
+  ],
+  "reflow_totals": {
+    "columns": 10,
+    "columns_applied": 5,
+    "columns_left": 5,
+    "excess_sum_after": 39.4871,
+    "excess_sum_before": 261.5048,
+    "pages_applied": 3,
+    "pages_considered": 3,
+    "pages_reverted": 0,
+    "paragraphs_moved": 19,
+    "shift_total_pt": 222.0177
+  },
+  "reflow_guards": {},
+  "reflow_notes": [],
+  "conservation": "examples\\output\\b10_5\\AramcoWorld-en-v2\\conservation.json"
+}

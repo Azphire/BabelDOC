@@ -1,0 +1,474 @@
+{
+  "sample": "Courier-en",
+  "pages_off": 8,
+  "pages_on": 8,
+  "pages": {
+    "1": {
+      "paragraphs_off": 50,
+      "paragraphs_on": 50,
+      "differing": [],
+      "displaced": [],
+      "unmatched": {
+        "off": 0,
+        "on": 0
+      },
+      "graphics": {
+        "drawings_equal": true,
+        "images_equal": true,
+        "drawings_sha256": "56de4e0aa56e40d1c65d249cfde0e244a7503f9f73eb6c7420b95dd01a4e6c4b",
+        "images_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      }
+    },
+    "2": {
+      "paragraphs_off": 8,
+      "paragraphs_on": 8,
+      "differing": [],
+      "displaced": [],
+      "unmatched": {
+        "off": 0,
+        "on": 0
+      },
+      "graphics": {
+        "drawings_equal": true,
+        "images_equal": true,
+        "drawings_sha256": "e4ccd9705ec26730e8aa6333a8f9e05ab781b9d2ddb51b695dc377f7e8af3c50",
+        "images_sha256": "74485b22fce292d1f36c6eb9bd83cc24456d73a51a5e44f53a59378c00c1f8fd"
+      }
+    },
+    "3": {
+      "paragraphs_off": 3,
+      "paragraphs_on": 3,
+      "differing": [],
+      "displaced": [],
+      "unmatched": {
+        "off": 0,
+        "on": 0
+      },
+      "graphics": {
+        "drawings_equal": true,
+        "images_equal": true,
+        "drawings_sha256": "f8a3af1c6db8c65e04ff686208d276708f88221c546732dde84641c1cd8edf71",
+        "images_sha256": "31ff39413905b8ec45d042a1e314866705d839e17aea3ea34b9db979516dbdd3"
+      }
+    },
+    "4": {
+      "paragraphs_off": 24,
+      "paragraphs_on": 24,
+      "differing": [],
+      "displaced": [
+        {
+          "dy": -62.34,
+          "words": 7,
+          "off": [
+            306.31,
+            370.05,
+            536.31,
+            466.06
+          ],
+          "on": [
+            306.31,
+            307.71,
+            536.31,
+            403.72
+          ]
+        },
+        {
+          "dy": -59.24,
+          "words": 2,
+          "off": [
+            227.89,
+            727.09,
+            344.26,
+            755.57
+          ],
+          "on": [
+            227.89,
+            667.85,
+            344.26,
+            696.33
+          ]
+        },
+        {
+          "dy": -44.69,
+          "words": 2,
+          "off": [
+            71.14,
+            727.1,
+            199.73,
+            755.58
+          ],
+          "on": [
+            71.14,
+            682.41,
+            199.73,
+            710.89
+          ]
+        },
+        {
+          "dy": -44.68,
+          "words": 1,
+          "off": [
+            71.14,
+            727.88,
+            100.21,
+            741.1
+          ],
+          "on": [
+            71.14,
+            683.2,
+            100.21,
+            696.41
+          ]
+        },
+        {
+          "dy": -38.97,
+          "words": 8,
+          "off": [
+            381.9,
+            238.09,
+            538.3,
+            347.96
+          ],
+          "on": [
+            381.9,
+            199.12,
+            538.3,
+            308.99
+          ]
+        },
+        {
+          "dy": -25.17,
+          "words": 8,
+          "off": [
+            56.86,
+            190.15,
+            292.84,
+            505.02
+          ],
+          "on": [
+            56.86,
+            164.98,
+            292.84,
+            479.84
+          ]
+        },
+        {
+          "dy": -10.19,
+          "words": 6,
+          "off": [
+            306.31,
+            115.24,
+            536.31,
+            210.52
+          ],
+          "on": [
+            306.31,
+            105.05,
+            536.31,
+            200.33
+          ]
+        },
+        {
+          "dy": -8.39,
+          "words": 5,
+          "off": [
+            56.86,
+            394.03,
+            296.06,
+            462.5
+          ],
+          "on": [
+            56.86,
+            385.64,
+            296.06,
+            454.11
+          ]
+        }
+      ],
+      "unmatched": {
+        "off": 0,
+        "on": 0
+      },
+      "graphics": {
+        "drawings_equal": true,
+        "images_equal": true,
+        "drawings_sha256": "c5d6216858bdcb10e72591a7566e611f9002975b029f79a96b11f20b7edf8d89",
+        "images_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      }
+    },
+    "5": {
+      "paragraphs_off": 12,
+      "paragraphs_on": 12,
+      "differing": [],
+      "displaced": [],
+      "unmatched": {
+        "off": 0,
+        "on": 0
+      },
+      "graphics": {
+        "drawings_equal": true,
+        "images_equal": true,
+        "drawings_sha256": "35c40f26d83880be9cd3b01bbd08a0b215f05dbb09107b71c554e6385576b1b3",
+        "images_sha256": "db05ed2c6bf8eca2338b210a619218fd9b099d180ec86b122bdea3a9d7ca9598"
+      }
+    },
+    "6": {
+      "paragraphs_off": 16,
+      "paragraphs_on": 16,
+      "differing": [],
+      "displaced": [
+        {
+          "dy": -97.79,
+          "words": 11,
+          "off": [
+            222.69,
+            610.08,
+            379.09,
+            761.29
+          ],
+          "on": [
+            222.69,
+            512.29,
+            379.09,
+            663.5
+          ]
+        },
+        {
+          "dy": -84.54,
+          "words": 6,
+          "off": [
+            56.82,
+            682.02,
+            204.02,
+            764.23
+          ],
+          "on": [
+            56.82,
+            597.48,
+            204.02,
+            679.69
+          ]
+        },
+        {
+          "dy": -72.62,
+          "words": 7,
+          "off": [
+            222.66,
+            490.11,
+            369.86,
+            586.12
+          ],
+          "on": [
+            222.66,
+            417.49,
+            369.86,
+            513.5
+          ]
+        },
+        {
+          "dy": -54.57,
+          "words": 1,
+          "off": [
+            222.97,
+            451.85,
+            312.53,
+            464.71
+          ],
+          "on": [
+            222.97,
+            397.28,
+            312.53,
+            410.13
+          ]
+        },
+        {
+          "dy": -18.9,
+          "words": 5,
+          "off": [
+            48.49,
+            175.61,
+            378.29,
+            247.74
+          ],
+          "on": [
+            48.49,
+            156.71,
+            378.29,
+            228.84
+          ]
+        }
+      ],
+      "unmatched": {
+        "off": 0,
+        "on": 0
+      },
+      "graphics": {
+        "drawings_equal": true,
+        "images_equal": true,
+        "drawings_sha256": "c173ee665fd007ddf5fe668c1218cb65bf3d9ae3d2d297abefe9f52345483797",
+        "images_sha256": "24afdc0431e9239836404d23798334f7fbae241c136ce116d088b91fdd242ab5"
+      }
+    },
+    "7": {
+      "paragraphs_off": 18,
+      "paragraphs_on": 18,
+      "differing": [],
+      "displaced": [],
+      "unmatched": {
+        "off": 0,
+        "on": 0
+      },
+      "graphics": {
+        "drawings_equal": true,
+        "images_equal": true,
+        "drawings_sha256": "cf9130a2723f4b361aac4d96102a3c69ccff599b0281eaf7155f64c8ae7aa229",
+        "images_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      }
+    },
+    "8": {
+      "paragraphs_off": 16,
+      "paragraphs_on": 16,
+      "differing": [],
+      "displaced": [
+        {
+          "dy": -107.29,
+          "words": 12,
+          "off": [
+            388.48,
+            562.06,
+            535.68,
+            727.07
+          ],
+          "on": [
+            388.48,
+            454.77,
+            535.68,
+            619.78
+          ]
+        },
+        {
+          "dy": -99.69,
+          "words": 5,
+          "off": [
+            56.85,
+            706.05,
+            204.05,
+            774.46
+          ],
+          "on": [
+            56.85,
+            606.36,
+            204.05,
+            674.77
+          ]
+        },
+        {
+          "dy": -59.93,
+          "words": 8,
+          "off": [
+            388.34,
+            406.1,
+            537.71,
+            515.97
+          ],
+          "on": [
+            388.34,
+            346.17,
+            537.71,
+            456.05
+          ]
+        },
+        {
+          "dy": -55.94,
+          "words": 10,
+          "off": [
+            56.82,
+            526.1,
+            213.22,
+            663.51
+          ],
+          "on": [
+            56.82,
+            470.16,
+            213.22,
+            607.57
+          ]
+        },
+        {
+          "dy": -39.54,
+          "words": 3,
+          "off": [
+            388.48,
+            346.11,
+            535.68,
+            386.92
+          ],
+          "on": [
+            388.48,
+            306.57,
+            535.68,
+            347.38
+          ]
+        },
+        {
+          "dy": -35.54,
+          "words": 3,
+          "off": [
+            56.68,
+            466.11,
+            213.08,
+            506.92
+          ],
+          "on": [
+            56.68,
+            430.57,
+            213.08,
+            471.38
+          ]
+        },
+        {
+          "dy": -26.97,
+          "words": 12,
+          "off": [
+            222.69,
+            454.08,
+            381.26,
+            619.1
+          ],
+          "on": [
+            222.69,
+            427.11,
+            381.26,
+            592.12
+          ]
+        },
+        {
+          "dy": -18.59,
+          "words": 1,
+          "off": [
+            57.15,
+            427.69,
+            157.53,
+            442.1
+          ],
+          "on": [
+            57.15,
+            409.1,
+            157.53,
+            423.52
+          ]
+        }
+      ],
+      "unmatched": {
+        "off": 0,
+        "on": 0
+      },
+      "graphics": {
+        "drawings_equal": true,
+        "images_equal": true,
+        "drawings_sha256": "6e72eff6b716746d26b2bd52fd5ac7d934874194cbe4a47fc3be5af6d9392ebf",
+        "images_sha256": "7fdcf3d08e582a56162f1a3e91a00bb7f43aa60eeb322f6ca8ac40eda0fb3e79"
+      }
+    }
+  }
+}

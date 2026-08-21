@@ -1,0 +1,151 @@
+{
+  "sample": "FD-en-v2",
+  "pages_off": 9,
+  "pages_on": 9,
+  "pages": {
+    "1": {
+      "paragraphs_off": 8,
+      "paragraphs_on": 8,
+      "differing": [],
+      "displaced": [],
+      "unmatched": {
+        "off": 0,
+        "on": 0
+      },
+      "graphics": {
+        "drawings_equal": true,
+        "images_equal": true,
+        "drawings_sha256": "f3957b1b98289702b58246cee61e50136f6943ed99fdffd0ab24e41f232da94d",
+        "images_sha256": "5ae9657b40ce7b7dacda861dad349c2f2fa9aabf750f1b116233c9433f2fa344"
+      }
+    },
+    "2": {
+      "paragraphs_off": 9,
+      "paragraphs_on": 9,
+      "differing": [],
+      "displaced": [],
+      "unmatched": {
+        "off": 0,
+        "on": 0
+      },
+      "graphics": {
+        "drawings_equal": true,
+        "images_equal": true,
+        "drawings_sha256": "51ddd6508a8f82cb972269b14f03d0efe49e365de99b8929ffc65caca3380ab9",
+        "images_sha256": "bebda6fe5deb012d8520d6e3b607f00ceb6c13f9ad6a174eb131596b8a3b13b0"
+      }
+    },
+    "3": {
+      "paragraphs_off": 52,
+      "paragraphs_on": 52,
+      "differing": [],
+      "displaced": [],
+      "unmatched": {
+        "off": 0,
+        "on": 0
+      },
+      "graphics": {
+        "drawings_equal": true,
+        "images_equal": true,
+        "drawings_sha256": "43ab76bb56b61db0857f763832334d5785e8246a4c4df76253acadd32273a01a",
+        "images_sha256": "a260a0ced9709eb44b511d5f05527648e0c227bd52d591b144d8df9f04e00b6a"
+      }
+    },
+    "4": {
+      "paragraphs_off": 4,
+      "paragraphs_on": 4,
+      "differing": [],
+      "displaced": [],
+      "unmatched": {
+        "off": 0,
+        "on": 0
+      },
+      "graphics": {
+        "drawings_equal": true,
+        "images_equal": true,
+        "drawings_sha256": "dd94a9d30547208da079da8b998156557bb091cca19ab284bbb87e2b3c8a287c",
+        "images_sha256": "c7d34ec06b20ac4e3037f99b18c4b40b2a09460d160419076081eef3509663b5"
+      }
+    },
+    "5": {
+      "paragraphs_off": 61,
+      "paragraphs_on": 61,
+      "differing": [],
+      "displaced": [],
+      "unmatched": {
+        "off": 0,
+        "on": 0
+      },
+      "graphics": {
+        "drawings_equal": true,
+        "images_equal": true,
+        "drawings_sha256": "d1c33920d50ea56bcd5cb61cc07e96f63342b7eb833a7b20010b4b7b61994b03",
+        "images_sha256": "8954aef2fabada2c78ac968aa8891d36338ddc6d74c4b03a71caea00f14282bc"
+      }
+    },
+    "6": {
+      "paragraphs_off": 15,
+      "paragraphs_on": 15,
+      "differing": [],
+      "displaced": [],
+      "unmatched": {
+        "off": 0,
+        "on": 0
+      },
+      "graphics": {
+        "drawings_equal": true,
+        "images_equal": true,
+        "drawings_sha256": "ea45a5645364121acca525674f4f5cfe8f80275b25a8d7eaa21d47c381a8f51f",
+        "images_sha256": "98433aaf000bb18798b0a26a8852427b369384150e80ed20cc8e1061f2fe025c"
+      }
+    },
+    "7": {
+      "paragraphs_off": 33,
+      "paragraphs_on": 33,
+      "differing": [],
+      "displaced": [],
+      "unmatched": {
+        "off": 0,
+        "on": 0
+      },
+      "graphics": {
+        "drawings_equal": true,
+        "images_equal": true,
+        "drawings_sha256": "537c9a5c17f065a77b95c566a4b5aad8e7cca42304493cc33e733ccdbe49b552",
+        "images_sha256": "e34b900751b4c4c30c4ec22c0cb4435028598167761cc082a048821ba48c624e"
+      }
+    },
+    "8": {
+      "paragraphs_off": 13,
+      "paragraphs_on": 13,
+      "differing": [],
+      "displaced": [],
+      "unmatched": {
+        "off": 0,
+        "on": 0
+      },
+      "graphics": {
+        "drawings_equal": true,
+        "images_equal": true,
+        "drawings_sha256": "7af76fd8b06d80f02e13f018076bd50fd593940a4d38e3c71f7c7dea3f72adbc",
+        "images_sha256": "97110b56d1b73fb1d03bf8b5da11749456591711db35c0d2339c6209b0c55c77"
+      }
+    },
+    "9": {
+      "paragraphs_off": 23,
+      "paragraphs_on": 23,
+      "differing": [],
+      "displaced": [],
+      "unmatched": {
+        "off": 0,
+        "on": 0
+      },
+      "graphics": {
+        "drawings_equal": true,
+        "images_equal": true,
+        "drawings_sha256": "c7a5b8ffadbdb1e22d96ecb8c373b0467be7e565d4b94e99b278107162de2c05",
+        "images_sha256": "6558e90e3b868a4b1d29d362383c4d5aec497b1952cdd869e74cc4b3a5cd5668"
+      }
+    }
+  }
+}

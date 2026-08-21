@@ -1,0 +1,55 @@
+{
+  "sample": "Vogue-en",
+  "pages_off": 3,
+  "pages_on": 3,
+  "pages": {
+    "1": {
+      "paragraphs_off": 1,
+      "paragraphs_on": 1,
+      "differing": [],
+      "displaced": [],
+      "unmatched": {
+        "off": 0,
+        "on": 0
+      },
+      "graphics": {
+        "drawings_equal": true,
+        "images_equal": true,
+        "drawings_sha256": "b6b2871000ddb7422faf1c6497ea84b401c282adbbfa9289e85675932e590dc1",
+        "images_sha256": "bf5c8a0be4e5dcbfe955be34b05ba0bed7fc60f202b8ceb5dcb2043f21613aa2"
+      }
+    },
+    "2": {
+      "paragraphs_off": 0,
+      "paragraphs_on": 0,
+      "differing": [],
+      "displaced": [],
+      "unmatched": {
+        "off": 0,
+        "on": 0
+      },
+      "graphics": {
+        "drawings_equal": true,
+        "images_equal": true,
+        "drawings_sha256": "b0e79518bdf826d1db3ac928940c05c1b08fb7097c4f87b05774815d26330bfb",
+        "images_sha256": "90306efded0139ef13e90daeda7ac1cbc06eda1c0c1280f931dd44f3bed716c9"
+      }
+    },
+    "3": {
+      "paragraphs_off": 60,
+      "paragraphs_on": 60,
+      "differing": [],
+      "displaced": [],
+      "unmatched": {
+        "off": 0,
+        "on": 0
+      },
+      "graphics": {
+        "drawings_equal": true,
+        "images_equal": true,
+        "drawings_sha256": "9a47d36fe89169086f4c52e206ecf70ae75d01a1e05d094c26c35faa6a4460b5",
+        "images_sha256": "9ec30e1492f465cac880e639c53f15f04eed1e19061cf6bb3eee4b491a3013ca"
+      }
+    }
+  }
+}

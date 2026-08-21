@@ -1,0 +1,554 @@
+{
+  "sample": "AramcoWorld-en-v2",
+  "pages_off": 9,
+  "pages_on": 9,
+  "pages": {
+    "1": {
+      "paragraphs_off": 3,
+      "paragraphs_on": 3,
+      "differing": [],
+      "displaced": [],
+      "unmatched": {
+        "off": 0,
+        "on": 0
+      },
+      "graphics": {
+        "drawings_equal": true,
+        "images_equal": true,
+        "drawings_sha256": "daa1644ab221ce261064666c91f5637c8b00d70c21ed163a604270ec7fc5e15f",
+        "images_sha256": "d672660be795fe4215d292aad04eec3719ac5424ce583ffc7e4a30751bf8c5fa"
+      }
+    },
+    "2": {
+      "paragraphs_off": 25,
+      "paragraphs_on": 25,
+      "differing": [],
+      "displaced": [],
+      "unmatched": {
+        "off": 0,
+        "on": 0
+      },
+      "graphics": {
+        "drawings_equal": true,
+        "images_equal": true,
+        "drawings_sha256": "e14d3b23037fbf0d85fa8285cd68c8433666afdf38328f4b7725561e5d64f78b",
+        "images_sha256": "6e0b97377f3084dee3ae2a9f1c2a7d42fc34fb5fba119f7d02b07315210f6b00"
+      }
+    },
+    "3": {
+      "paragraphs_off": 21,
+      "paragraphs_on": 21,
+      "differing": [],
+      "displaced": [],
+      "unmatched": {
+        "off": 0,
+        "on": 0
+      },
+      "graphics": {
+        "drawings_equal": true,
+        "images_equal": true,
+        "drawings_sha256": "5aa364a35d5601f09d3d147c2bf17a04bad1963183e44db2af6bfa324870b187",
+        "images_sha256": "ef011b65ac219035821b94795ae69b8b910167786be281e8195fcfaba50cdf81"
+      }
+    },
+    "4": {
+      "paragraphs_off": 17,
+      "paragraphs_on": 17,
+      "differing": [],
+      "displaced": [
+        {
+          "dy": -63.45,
+          "words": 1,
+          "off": [
+            380.39,
+            690.31,
+            548.26,
+            701.66
+          ],
+          "on": [
+            380.39,
+            626.86,
+            548.26,
+            638.21
+          ]
+        },
+        {
+          "dy": -63.44,
+          "words": 1,
+          "off": [
+            364.67,
+            702.1,
+            556.9,
+            713.45
+          ],
+          "on": [
+            364.67,
+            638.66,
+            556.9,
+            650.0
+          ]
+        },
+        {
+          "dy": -55.81,
+          "words": 2,
+          "off": [
+            364.75,
+            657.83,
+            549.75,
+            684.99
+          ],
+          "on": [
+            364.75,
+            602.02,
+            549.75,
+            629.18
+          ]
+        },
+        {
+          "dy": -44.71,
+          "words": 2,
+          "off": [
+            364.66,
+            625.78,
+            549.03,
+            648.92
+          ],
+          "on": [
+            364.66,
+            581.07,
+            549.03,
+            604.21
+          ]
+        },
+        {
+          "dy": -35.64,
+          "words": 2,
+          "off": [
+            364.85,
+            591.87,
+            552.72,
+            619.03
+          ],
+          "on": [
+            364.85,
+            556.23,
+            552.72,
+            583.39
+          ]
+        },
+        {
+          "dy": -24.88,
+          "words": 1,
+          "off": [
+            364.68,
+            570.36,
+            549.68,
+            583.64
+          ],
+          "on": [
+            364.68,
+            545.48,
+            549.68,
+            558.76
+          ]
+        },
+        {
+          "dy": -17.28,
+          "words": 1,
+          "off": [
+            375.2,
+            541.24,
+            474.2,
+            557.03
+          ],
+          "on": [
+            375.2,
+            523.96,
+            474.2,
+            539.75
+          ]
+        },
+        {
+          "dy": -9.08,
+          "words": 6,
+          "off": [
+            157.51,
+            475.14,
+            553.44,
+            561.58
+          ],
+          "on": [
+            157.51,
+            466.06,
+            553.44,
+            552.51
+          ]
+        },
+        {
+          "dy": -9.07,
+          "words": 1,
+          "off": [
+            364.66,
+            500.11,
+            546.97,
+            512.13
+          ],
+          "on": [
+            364.66,
+            491.04,
+            546.97,
+            503.05
+          ]
+        }
+      ],
+      "unmatched": {
+        "off": 0,
+        "on": 0
+      },
+      "graphics": {
+        "drawings_equal": true,
+        "images_equal": true,
+        "drawings_sha256": "f2fcf2149ddb77eaeae4df0cc104c0c22f35b44636d178f140c545c131ffa33a",
+        "images_sha256": "661eedd38c27fc6c08064548722b3c7e31cbc6fd2a0cae98081919f35a7d621c"
+      }
+    },
+    "5": {
+      "paragraphs_off": 20,
+      "paragraphs_on": 20,
+      "differing": [],
+      "displaced": [],
+      "unmatched": {
+        "off": 0,
+        "on": 0
+      },
+      "graphics": {
+        "drawings_equal": true,
+        "images_equal": true,
+        "drawings_sha256": "f6cce91b533ac1eac5e12c0258e8c9b4fc5f6c6eec08dd7263ee74fef3c6226e",
+        "images_sha256": "ce4c5edfcc53af721e8a6fdc6334964fa5ea74fc6ee2778dcd9c4a2eb8798493"
+      }
+    },
+    "6": {
+      "paragraphs_off": 14,
+      "paragraphs_on": 14,
+      "differing": [],
+      "displaced": [
+        {
+          "dy": -90.46,
+          "words": 1,
+          "off": [
+            383.16,
+            690.1,
+            530.23,
+            703.45
+          ],
+          "on": [
+            383.16,
+            599.64,
+            530.23,
+            612.99
+          ]
+        },
+        {
+          "dy": -90.45,
+          "words": 2,
+          "off": [
+            364.66,
+            703.97,
+            438.93,
+            717.32
+          ],
+          "on": [
+            364.66,
+            613.52,
+            438.93,
+            626.86
+          ]
+        },
+        {
+          "dy": -84.55,
+          "words": 6,
+          "off": [
+            364.66,
+            604.06,
+            549.66,
+            686.72
+          ],
+          "on": [
+            364.66,
+            519.51,
+            549.66,
+            602.17
+          ]
+        },
+        {
+          "dy": -63.33,
+          "words": 5,
+          "off": [
+            364.77,
+            516.58,
+            549.77,
+            585.43
+          ],
+          "on": [
+            364.77,
+            453.25,
+            549.77,
+            522.1
+          ]
+        },
+        {
+          "dy": -51.22,
+          "words": 7,
+          "off": [
+            364.48,
+            410.47,
+            556.1,
+            507.07
+          ],
+          "on": [
+            364.48,
+            359.25,
+            556.1,
+            455.85
+          ]
+        },
+        {
+          "dy": -36.27,
+          "words": 10,
+          "off": [
+            364.66,
+            259.9,
+            551.97,
+            398.06
+          ],
+          "on": [
+            364.66,
+            223.63,
+            551.97,
+            361.79
+          ]
+        },
+        {
+          "dy": -18.11,
+          "words": 1,
+          "off": [
+            364.64,
+            231.51,
+            496.45,
+            244.12
+          ],
+          "on": [
+            364.64,
+            213.4,
+            496.45,
+            226.02
+          ]
+        },
+        {
+          "dy": -18.1,
+          "words": 8,
+          "off": [
+            364.64,
+            152.42,
+            557.96,
+            230.94
+          ],
+          "on": [
+            364.64,
+            134.32,
+            557.96,
+            212.84
+          ]
+        }
+      ],
+      "unmatched": {
+        "off": 0,
+        "on": 0
+      },
+      "graphics": {
+        "drawings_equal": true,
+        "images_equal": true,
+        "drawings_sha256": "9d895742d2a0f782414b26042d0721aee3c4f83aeb6cd280f98cecb0e6c52eee",
+        "images_sha256": "f3a1799ae63a7eb75ae18e871b00a5fb869040c639102811cfacdc0ea6b25296"
+      }
+    },
+    "7": {
+      "paragraphs_off": 21,
+      "paragraphs_on": 21,
+      "differing": [],
+      "displaced": [
+        {
+          "dy": -31.96,
+          "words": 1,
+          "off": [
+            261.31,
+            498.38,
+            452.78,
+            510.33
+          ],
+          "on": [
+            261.31,
+            466.42,
+            452.78,
+            478.38
+          ]
+        },
+        {
+          "dy": -31.95,
+          "words": 1,
+          "off": [
+            277.96,
+            485.89,
+            444.46,
+            497.85
+          ],
+          "on": [
+            277.96,
+            453.94,
+            444.46,
+            465.89
+          ]
+        },
+        {
+          "dy": -27.09,
+          "words": 3,
+          "off": [
+            54.16,
+            598.23,
+            248.94,
+            637.27
+          ],
+          "on": [
+            54.16,
+            571.14,
+            248.94,
+            610.18
+          ]
+        },
+        {
+          "dy": -27.08,
+          "words": 2,
+          "off": [
+            54.16,
+            571.86,
+            240.77,
+            597.72
+          ],
+          "on": [
+            54.16,
+            544.78,
+            240.77,
+            570.64
+          ]
+        },
+        {
+          "dy": -18.06,
+          "words": 3,
+          "off": [
+            54.15,
+            496.51,
+            241.33,
+            565.29
+          ],
+          "on": [
+            54.15,
+            478.45,
+            241.33,
+            547.23
+          ]
+        },
+        {
+          "dy": -18.05,
+          "words": 2,
+          "off": [
+            54.15,
+            510.38,
+            248.4,
+            551.42
+          ],
+          "on": [
+            54.15,
+            492.33,
+            248.4,
+            533.36
+          ]
+        },
+        {
+          "dy": -15.83,
+          "words": 4,
+          "off": [
+            260.98,
+            419.86,
+            447.59,
+            472.02
+          ],
+          "on": [
+            260.98,
+            404.03,
+            447.59,
+            456.19
+          ]
+        },
+        {
+          "dy": -4.52,
+          "words": 1,
+          "off": [
+            285.7,
+            387.59,
+            400.65,
+            402.6
+          ],
+          "on": [
+            285.7,
+            383.07,
+            400.65,
+            398.08
+          ]
+        }
+      ],
+      "unmatched": {
+        "off": 0,
+        "on": 0
+      },
+      "graphics": {
+        "drawings_equal": true,
+        "images_equal": true,
+        "drawings_sha256": "fb95ed8d834bd5ca804e50b9b3db65ad93594d9d14ff4a13ed4aaba460ae0f71",
+        "images_sha256": "5f690706fdfb858ec928f35840a0ae0a420ca9b97dc51b10baadc0a7a3113992"
+      }
+    },
+    "8": {
+      "paragraphs_off": 18,
+      "paragraphs_on": 18,
+      "differing": [],
+      "displaced": [],
+      "unmatched": {
+        "off": 0,
+        "on": 0
+      },
+      "graphics": {
+        "drawings_equal": true,
+        "images_equal": true,
+        "drawings_sha256": "808e60c493ba1c78e748d708a957bddc17cff8a1c0e0baba3721a110682182c1",
+        "images_sha256": "fed7137bfdbb1c75626dad6676e5e51f08c3c4c545d426598b02ccd318749413"
+      }
+    },
+    "9": {
+      "paragraphs_off": 20,
+      "paragraphs_on": 20,
+      "differing": [],
+      "displaced": [],
+      "unmatched": {
+        "off": 0,
+        "on": 0
+      },
+      "graphics": {
+        "drawings_equal": true,
+        "images_equal": true,
+        "drawings_sha256": "ae4b43a4dfd38fd58db547d0c5c923162287fc810f96429ba9069edaf5e78b05",
+        "images_sha256": "f039d34e209ced7bd36c0157a1b086913eb373f904ffbc05dc6c193619fed69d"
+      }
+    }
+  }
+}

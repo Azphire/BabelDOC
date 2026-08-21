@@ -1,0 +1,91 @@
+{
+  "sample": "FD-en-v2.pdf",
+  "model": "gpt-4o",
+  "lang_in": "en",
+  "lang_out": "zh",
+  "target_pages": [
+    3,
+    5
+  ],
+  "arms": {
+    "off": {
+      "arm": "off",
+      "switch": false,
+      "seconds": 55.8,
+      "requests": 79,
+      "cache_hits": 79,
+      "api_calls": 0,
+      "pdf": "examples\\output\\b10_5\\FD-en-v2\\off\\FD-en-v2.b10_5.off.pdf",
+      "pdf_sha256": "e1c84f9fa0d20121c0a19e13003cb45cc1c8565ca497fb91cf0c7d439108a1a8",
+      "page_hashes": {
+        "1": "dbcd1bcd20f34d940ea14693d2c9815d64f1f492e2af9fd7b472e24274d73225",
+        "2": "025858d4714bcb8bdccfca92ab380fb3f16491656480d5adad1c15fbd8b7a09b",
+        "3": "1e545de62664be6eae4bc16f604dbb70648211d109b84ee3536de40fddf8d00c",
+        "4": "b4afadddba12443f49b5dc1067da9479333c79f2d3d34b9988e8d23841ac8a53",
+        "5": "82786d324e9f5b86b4a34ae4f2c49e9ece357ebdc79b50a9f39f2af21af81a11",
+        "6": "169bf07eaa609edfac555364363972c844bec76b0a9916c99ca85d08db91b7cc",
+        "7": "d6059e85a2689dcad118c3985f414c03aa640d1dda8e1363b2031954df76cd92",
+        "8": "56f86559449dc580a5c9d879a251627ae4a8a4459ddec651b25e5e12a0c4bba4",
+        "9": "477d5aa227d1e460d019658622fd40ca5ac36fbe87443023ed88fdd30dced871"
+      },
+      "raster": [
+        "examples\\output\\b10_5\\FD-en-v2\\off\\raster\\FD-en-v2.p3.png",
+        "examples\\output\\b10_5\\FD-en-v2\\off\\raster\\FD-en-v2.p5.png"
+      ],
+      "sidecars": [
+        "examples\\output\\b10_5\\FD-en-v2\\off\\sidecars\\issues.json",
+        "examples\\output\\b10_5\\FD-en-v2\\off\\sidecars\\react_repair.report.json",
+        "examples\\output\\b10_5\\FD-en-v2\\off\\sidecars\\title_typeset.report.json"
+      ],
+      "working_dir": "examples\\output\\b10_5\\FD-en-v2\\off\\work\\FD-en-v2"
+    },
+    "on": {
+      "arm": "on",
+      "switch": true,
+      "seconds": 55.1,
+      "requests": 79,
+      "cache_hits": 79,
+      "api_calls": 0,
+      "pdf": "examples\\output\\b10_5\\FD-en-v2\\on\\FD-en-v2.b10_5.on.pdf",
+      "pdf_sha256": "5dc7453ec60bb26a0a5bc4e2505ed030d50dd095a5d117a43d35cdd01f722683",
+      "page_hashes": {
+        "1": "dbcd1bcd20f34d940ea14693d2c9815d64f1f492e2af9fd7b472e24274d73225",
+        "2": "025858d4714bcb8bdccfca92ab380fb3f16491656480d5adad1c15fbd8b7a09b",
+        "3": "1e545de62664be6eae4bc16f604dbb70648211d109b84ee3536de40fddf8d00c",
+        "4": "b4afadddba12443f49b5dc1067da9479333c79f2d3d34b9988e8d23841ac8a53",
+        "5": "82786d324e9f5b86b4a34ae4f2c49e9ece357ebdc79b50a9f39f2af21af81a11",
+        "6": "169bf07eaa609edfac555364363972c844bec76b0a9916c99ca85d08db91b7cc",
+        "7": "d6059e85a2689dcad118c3985f414c03aa640d1dda8e1363b2031954df76cd92",
+        "8": "56f86559449dc580a5c9d879a251627ae4a8a4459ddec651b25e5e12a0c4bba4",
+        "9": "477d5aa227d1e460d019658622fd40ca5ac36fbe87443023ed88fdd30dced871"
+      },
+      "raster": [
+        "examples\\output\\b10_5\\FD-en-v2\\on\\raster\\FD-en-v2.p3.png",
+        "examples\\output\\b10_5\\FD-en-v2\\on\\raster\\FD-en-v2.p5.png"
+      ],
+      "sidecars": [
+        "examples\\output\\b10_5\\FD-en-v2\\on\\sidecars\\column_reflow.report.json",
+        "examples\\output\\b10_5\\FD-en-v2\\on\\sidecars\\issues.json",
+        "examples\\output\\b10_5\\FD-en-v2\\on\\sidecars\\react_repair.report.json",
+        "examples\\output\\b10_5\\FD-en-v2\\on\\sidecars\\title_typeset.report.json"
+      ],
+      "working_dir": "examples\\output\\b10_5\\FD-en-v2\\on\\work\\FD-en-v2"
+    }
+  },
+  "pages_changed": [],
+  "reflow_totals": {
+    "columns": 0,
+    "columns_applied": 0,
+    "columns_left": 0,
+    "excess_sum_after": 0,
+    "excess_sum_before": 0,
+    "pages_applied": 0,
+    "pages_considered": 0,
+    "pages_reverted": 0,
+    "paragraphs_moved": 0,
+    "shift_total_pt": 0
+  },
+  "reflow_guards": {},
+  "reflow_notes": [],
+  "conservation": "examples\\output\\b10_5\\FD-en-v2\\conservation.json"
+}

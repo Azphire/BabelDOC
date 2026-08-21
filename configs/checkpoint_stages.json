@@ -101,6 +101,11 @@
       "name": "name_harvest.report.json",
       "stage": "il_translated",
       "switch": "magazine_name_harvest"
+    },
+    {
+      "name": "column_reflow.report.json",
+      "stage": "typesetting",
+      "switch": "magazine_column_reflow"
     }
   ]
 }

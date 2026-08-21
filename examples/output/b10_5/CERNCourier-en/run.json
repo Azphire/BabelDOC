@@ -1,0 +1,84 @@
+{
+  "sample": "CERNCourier-en.pdf",
+  "model": "gpt-4o",
+  "lang_in": "en",
+  "lang_out": "zh",
+  "target_pages": [
+    1,
+    4
+  ],
+  "arms": {
+    "off": {
+      "arm": "off",
+      "switch": false,
+      "seconds": 56.2,
+      "requests": 104,
+      "cache_hits": 104,
+      "api_calls": 0,
+      "pdf": "examples\\output\\b10_5\\CERNCourier-en\\off\\CERNCourier-en.b10_5.off.pdf",
+      "pdf_sha256": "f3f0f3cbf5fd0eb90a2c5e5b9a09c90dc336d45625aeadaf43023e58eca607c2",
+      "page_hashes": {
+        "1": "9e3273b7892eeaa89bab92e048dd9939b830dbf1ade1b46158d555a0e1124287",
+        "2": "b3a1c7b57e9f838e051de6aecf43904e6a3fd749c19aa05deeb6bc7c13e4ecb1",
+        "3": "4b2e7ec245b630f1cc13c071610bea5b91d05e896004d0a512ffff1a6c4bce3b",
+        "4": "3801cc0e6d94cde766a13583b7f039943764600fd09a93a70e2b0e16bdd2e829"
+      },
+      "raster": [
+        "examples\\output\\b10_5\\CERNCourier-en\\off\\raster\\CERNCourier-en.p1.png",
+        "examples\\output\\b10_5\\CERNCourier-en\\off\\raster\\CERNCourier-en.p4.png"
+      ],
+      "sidecars": [
+        "examples\\output\\b10_5\\CERNCourier-en\\off\\sidecars\\issues.json",
+        "examples\\output\\b10_5\\CERNCourier-en\\off\\sidecars\\react_repair.report.json",
+        "examples\\output\\b10_5\\CERNCourier-en\\off\\sidecars\\title_typeset.report.json"
+      ],
+      "working_dir": "examples\\output\\b10_5\\CERNCourier-en\\off\\work\\CERNCourier-en"
+    },
+    "on": {
+      "arm": "on",
+      "switch": true,
+      "seconds": 56.1,
+      "requests": 104,
+      "cache_hits": 104,
+      "api_calls": 0,
+      "pdf": "examples\\output\\b10_5\\CERNCourier-en\\on\\CERNCourier-en.b10_5.on.pdf",
+      "pdf_sha256": "14611800ae029afcc0c7c7323f190ef2e32ec68ee874b5da45f16e3e86ac5be3",
+      "page_hashes": {
+        "1": "8f811c5f7ec3db0cab9ec40f3495152c19a4c96e8d7e5494284b18828bffdb76",
+        "2": "b3a1c7b57e9f838e051de6aecf43904e6a3fd749c19aa05deeb6bc7c13e4ecb1",
+        "3": "4b2e7ec245b630f1cc13c071610bea5b91d05e896004d0a512ffff1a6c4bce3b",
+        "4": "6d94ce59f40334b8a20ba4234cb932cc5cd8fdd9fb84eb109ef01220d3087bee"
+      },
+      "raster": [
+        "examples\\output\\b10_5\\CERNCourier-en\\on\\raster\\CERNCourier-en.p1.png",
+        "examples\\output\\b10_5\\CERNCourier-en\\on\\raster\\CERNCourier-en.p4.png"
+      ],
+      "sidecars": [
+        "examples\\output\\b10_5\\CERNCourier-en\\on\\sidecars\\column_reflow.report.json",
+        "examples\\output\\b10_5\\CERNCourier-en\\on\\sidecars\\issues.json",
+        "examples\\output\\b10_5\\CERNCourier-en\\on\\sidecars\\react_repair.report.json",
+        "examples\\output\\b10_5\\CERNCourier-en\\on\\sidecars\\title_typeset.report.json"
+      ],
+      "working_dir": "examples\\output\\b10_5\\CERNCourier-en\\on\\work\\CERNCourier-en"
+    }
+  },
+  "pages_changed": [
+    1,
+    4
+  ],
+  "reflow_totals": {
+    "columns": 18,
+    "columns_applied": 5,
+    "columns_left": 13,
+    "excess_sum_after": 148.2304,
+    "excess_sum_before": 355.7262,
+    "pages_applied": 2,
+    "pages_considered": 2,
+    "pages_reverted": 0,
+    "paragraphs_moved": 11,
+    "shift_total_pt": 207.4958
+  },
+  "reflow_guards": {},
+  "reflow_notes": [],
+  "conservation": "examples\\output\\b10_5\\CERNCourier-en\\conservation.json"
+}

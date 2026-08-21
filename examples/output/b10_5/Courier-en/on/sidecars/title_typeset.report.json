@@ -1,0 +1,295 @@
+{
+  "duplicates": [],
+  "escalations": [
+    {
+      "floor": 0.55,
+      "lines_after": 3,
+      "page": 4,
+      "reference": "p4#17",
+      "required_scale": 0.4583
+    },
+    {
+      "floor": 0.55,
+      "lines_after": 2,
+      "page": 7,
+      "reference": "p7#17",
+      "required_scale": 0.5428
+    }
+  ],
+  "labels": [
+    "title",
+    "paragraph_title"
+  ],
+  "on_floor": "escalate",
+  "pages": 8,
+  "switch": "magazine_title_typeset",
+  "target_lang": "zh",
+  "title_min_scale": 0.55,
+  "titles": [
+    {
+      "disposition": "unchanged",
+      "duplicates": [],
+      "indent_closed": false,
+      "lines_before": 1,
+      "page": 1,
+      "reference": "p1#0",
+      "suppressed": false
+    },
+    {
+      "disposition": "unchanged",
+      "duplicates": [],
+      "indent_closed": false,
+      "lines_before": 1,
+      "page": 1,
+      "reference": "p1#1",
+      "suppressed": false
+    },
+    {
+      "disposition": "single_line",
+      "duplicates": [],
+      "indent_closed": false,
+      "lines_after": 1,
+      "lines_before": 2,
+      "page": 1,
+      "reference": "p1#10",
+      "required_scale": 1.0,
+      "scale": 1.0,
+      "suppressed": false
+    },
+    {
+      "disposition": "unchanged",
+      "duplicates": [],
+      "indent_closed": false,
+      "lines_before": 1,
+      "page": 1,
+      "reference": "p1#11",
+      "suppressed": false
+    },
+    {
+      "disposition": "single_line",
+      "duplicates": [],
+      "indent_closed": false,
+      "lines_after": 1,
+      "lines_before": 2,
+      "page": 1,
+      "reference": "p1#12",
+      "required_scale": 0.681,
+      "scale": 0.681,
+      "suppressed": false
+    },
+    {
+      "disposition": "unchanged",
+      "duplicates": [],
+      "indent_closed": false,
+      "lines_before": 1,
+      "page": 1,
+      "reference": "p1#31",
+      "suppressed": false
+    },
+    {
+      "disposition": "unchanged",
+      "duplicates": [],
+      "indent_closed": false,
+      "lines_before": 1,
+      "page": 1,
+      "reference": "p1#34",
+      "suppressed": false
+    },
+    {
+      "disposition": "unchanged",
+      "duplicates": [],
+      "indent_closed": false,
+      "lines_before": 1,
+      "page": 1,
+      "reference": "p1#38",
+      "suppressed": false
+    },
+    {
+      "disposition": "unchanged",
+      "duplicates": [],
+      "indent_closed": false,
+      "lines_before": 1,
+      "page": 1,
+      "reference": "p1#42",
+      "suppressed": false
+    },
+    {
+      "disposition": "unchanged",
+      "duplicates": [],
+      "indent_closed": false,
+      "lines_before": 1,
+      "page": 1,
+      "reference": "p1#48",
+      "suppressed": false
+    },
+    {
+      "disposition": "unchanged",
+      "duplicates": [],
+      "indent_closed": false,
+      "lines_before": 1,
+      "page": 2,
+      "reference": "p2#3",
+      "suppressed": false
+    },
+    {
+      "disposition": "unchanged",
+      "duplicates": [],
+      "indent_closed": false,
+      "lines_before": 1,
+      "page": 2,
+      "reference": "p2#6",
+      "suppressed": false
+    },
+    {
+      "disposition": "unchanged",
+      "duplicates": [],
+      "indent_closed": false,
+      "lines_before": 1,
+      "page": 3,
+      "reference": "p3#1",
+      "suppressed": false
+    },
+    {
+      "disposition": "unchanged",
+      "duplicates": [],
+      "indent_closed": false,
+      "lines_before": 1,
+      "page": 4,
+      "reference": "p4#13",
+      "suppressed": false
+    },
+    {
+      "disposition": "floor_reached",
+      "duplicates": [],
+      "floor": 0.55,
+      "indent_closed": false,
+      "lines_after": 3,
+      "lines_before": 3,
+      "on_floor": "escalate",
+      "page": 4,
+      "reference": "p4#17",
+      "required_scale": 0.4583,
+      "restored": true,
+      "suppressed": false
+    },
+    {
+      "disposition": "unchanged",
+      "duplicates": [],
+      "indent_closed": false,
+      "lines_before": 1,
+      "page": 4,
+      "reference": "p4#18",
+      "suppressed": false
+    },
+    {
+      "disposition": "single_line",
+      "duplicates": [],
+      "indent_closed": true,
+      "lines_after": 1,
+      "lines_before": 2,
+      "page": 5,
+      "reference": "p5#6",
+      "required_scale": 0.9808,
+      "scale": 0.9808,
+      "suppressed": false
+    },
+    {
+      "disposition": "single_line",
+      "duplicates": [],
+      "indent_closed": false,
+      "lines_after": 1,
+      "lines_before": 2,
+      "page": 6,
+      "reference": "p6#6",
+      "required_scale": 0.7654,
+      "scale": 0.7654,
+      "suppressed": false
+    },
+    {
+      "disposition": "unchanged",
+      "duplicates": [],
+      "indent_closed": false,
+      "lines_before": 1,
+      "page": 6,
+      "reference": "p6#11",
+      "suppressed": false
+    },
+    {
+      "disposition": "unchanged",
+      "duplicates": [],
+      "indent_closed": false,
+      "lines_before": 1,
+      "page": 7,
+      "reference": "p7#6",
+      "suppressed": false
+    },
+    {
+      "disposition": "unchanged",
+      "duplicates": [],
+      "indent_closed": false,
+      "lines_before": 1,
+      "page": 7,
+      "reference": "p7#11",
+      "suppressed": false
+    },
+    {
+      "disposition": "single_line",
+      "duplicates": [],
+      "indent_closed": false,
+      "lines_after": 1,
+      "lines_before": 2,
+      "page": 7,
+      "reference": "p7#15",
+      "required_scale": 0.861,
+      "scale": 0.8265,
+      "suppressed": false
+    },
+    {
+      "disposition": "floor_reached",
+      "duplicates": [],
+      "floor": 0.55,
+      "indent_closed": false,
+      "lines_after": 2,
+      "lines_before": 2,
+      "on_floor": "escalate",
+      "page": 7,
+      "reference": "p7#17",
+      "required_scale": 0.5428,
+      "restored": true,
+      "suppressed": false
+    },
+    {
+      "disposition": "unchanged",
+      "duplicates": [],
+      "indent_closed": false,
+      "lines_before": 1,
+      "page": 8,
+      "reference": "p8#6",
+      "suppressed": false
+    },
+    {
+      "disposition": "single_line",
+      "duplicates": [],
+      "indent_closed": false,
+      "lines_after": 1,
+      "lines_before": 2,
+      "page": 8,
+      "reference": "p8#9",
+      "required_scale": 0.858,
+      "scale": 0.858,
+      "suppressed": false
+    }
+  ],
+  "totals": {
+    "duplicate_layers": 0,
+    "escalations": 2,
+    "floor_reached": 2,
+    "relayout_failed": 0,
+    "single_line": 6,
+    "suppressed_paragraphs": 0,
+    "titles": 25,
+    "unchanged": 17,
+    "wrapped": 0
+  },
+  "window_switch": "magazine_detect"
+}

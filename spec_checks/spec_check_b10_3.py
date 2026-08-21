@@ -1374,6 +1374,16 @@ def check_06d_the_repair_ledger_equals_its_bill() -> None:
     record(name, not faults, "; ".join(faults))
 
 
+# The products of this batch that a clone receives, and the one it does not.
+# The whole translated document was never committed -- only the target pages of
+# it were -- so it is the one product the output retention policy can take once
+# two later batches exist. A frozen product that has been pruned may not be
+# replaced by re-running the batch, which is why its absence is reported as
+# pruned rather than as a run that failed to produce it.
+COMMITTED_PRODUCTS = ("pages_pdf", "parity", "conservation")
+PRUNABLE_PRODUCTS = ("pdf",)
+
+
 def check_06e_the_evidence_is_present() -> None:
     """Positive 6e: every sample of the evidence table produced its products."""
     name = "check_06e_the_evidence_is_present"
@@ -1382,6 +1392,7 @@ def check_06e_the_evidence_is_present() -> None:
         return
     rows = {row["sample"].removesuffix(".pdf"): row for row in load_json(LEDGER)}
     faults = []
+    pruned = []
     for sample, pages in TARGETS.items():
         row = rows.get(sample)
         if row is None:
@@ -1389,12 +1400,23 @@ def check_06e_the_evidence_is_present() -> None:
             continue
         if tuple(row["target_pages"]) != pages:
             faults.append(f"{sample} was written out on {row['target_pages']}")
-        for key in ("pdf", "pages_pdf", "parity", "conservation"):
-            if not row.get(key) or not (ROOT / row[key]).exists():
-                faults.append(f"{sample} is missing {key}")
+        for key in (*COMMITTED_PRODUCTS, *PRUNABLE_PRODUCTS):
+            if not row.get(key):
+                faults.append(f"{sample} names no {key}")
+            elif not (ROOT / row[key]).exists():
+                if key in PRUNABLE_PRODUCTS:
+                    pruned.append(row[key])
+                else:
+                    faults.append(f"{sample} is missing {key}")
         if len(row.get("raster") or ()) != len(pages):
             faults.append(f"{sample} rendered {len(row.get('raster') or ())} page(s)")
-    record(name, not faults, "; ".join(faults))
+    if faults:
+        record(name, False, "; ".join(faults))
+        return
+    if pruned:
+        skip(name, pruned)
+        return
+    record(name, True)
 
 
 def check_07_history_is_green() -> None:

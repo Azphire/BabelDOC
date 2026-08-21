@@ -1,0 +1,886 @@
+warning: The `fitz` API is deprecated and will be removed in future. Use `import pymupdf` instead.
+D:\Codes\BabelDOC\.venv\Lib\site-packages\psutil\__init__.py:999: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x000001B69F226D40>
+  reverse_ppid_map[ppid].append(pid)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+D:\Codes\BabelDOC\.venv\Lib\site-packages\psutil\__init__.py:999: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x000001B69F227100>
+  reverse_ppid_map[ppid].append(pid)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+D:\Codes\BabelDOC\.venv\Lib\site-packages\psutil\__init__.py:999: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x000001B69F250040>
+  reverse_ppid_map[ppid].append(pid)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+D:\Codes\BabelDOC\.venv\Lib\site-packages\psutil\__init__.py:999: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x000001B69F2274C0>
+  reverse_ppid_map[ppid].append(pid)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is too long or too short. Input: 5, Output: 15
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: gxhts#L0
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is too long or too short. Input: 2, Output: 11
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: JtThK
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is too long or too short. Input: 2, Output: 11
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: hDJdU
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is too long or too short. Input: 4, Output: 12
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: 9YDGp#L2
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is too long or too short. Input: 6, Output: 21
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: yNbJp
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is too long or too short. Input: 5, Output: 19
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: xxkLf#L1
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is too long or too short. Input: 5, Output: 15
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: g6Rrh#L1
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is too long or too short. Input: 5, Output: 16
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: ZKo6n
+WARNING:babeldoc.magazine.hitl:hitl: 2 ruled term(s) matched no input and changed nothing: 'CourierT H E UNESCO', 'Katerina Markelova'
+D:\Codes\BabelDOC\.venv\Lib\site-packages\pymupdf\mupdf.py:28527: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x000001B69F226A70>
+  def __init__(self, *args):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+D:\Codes\BabelDOC\.venv\Lib\site-packages\pymupdf\mupdf.py:28527: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x000001B69F250040>
+  def __init__(self, *args):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+D:\Codes\BabelDOC\.venv\Lib\site-packages\pymupdf\mupdf.py:28527: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x000001B69F252A70>
+  def __init__(self, *args):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+D:\Codes\BabelDOC\.venv\Lib\site-packages\pymupdf\mupdf.py:28527: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x000001B69F252C50>
+  def __init__(self, *args):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+D:\Codes\BabelDOC\.venv\Lib\site-packages\pymupdf\mupdf.py:28527: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x000001B69F2532E0>
+  def __init__(self, *args):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+D:\Codes\BabelDOC\.venv\Lib\site-packages\pymupdf\mupdf.py:28527: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x000001B69F253B50>
+  def __init__(self, *args):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+D:\Codes\BabelDOC\.venv\Lib\site-packages\xsdata\formats\dataclass\parsers\utils.py:130: ConverterWarning: Failed to convert value for `PdfCurve.debug_info`
+  `a` is not a valid `bool`
+  warnings.warn(message, ConverterWarning)
+D:\Codes\BabelDOC\.venv\Lib\site-packages\psutil\__init__.py:999: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x000001B69ACE9300>
+  reverse_ppid_map[ppid].append(pid)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+D:\Codes\BabelDOC\.venv\Lib\site-packages\psutil\__init__.py:999: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x000001B69ACE9B70>
+  reverse_ppid_map[ppid].append(pid)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+D:\Codes\BabelDOC\.venv\Lib\site-packages\psutil\__init__.py:999: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x000001B69ACEA4D0>
+  reverse_ppid_map[ppid].append(pid)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+D:\Codes\BabelDOC\.venv\Lib\site-packages\psutil\__init__.py:999: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x000001B69ACE9E40>
+  reverse_ppid_map[ppid].append(pid)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is too long or too short. Input: 5, Output: 15
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: JDvvC#L0
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is too long or too short. Input: 2, Output: 11
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: oUWPN
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is too long or too short. Input: 2, Output: 11
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: qC3eq
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is too long or too short. Input: 6, Output: 21
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is too long or too short. Input: 4, Output: 12
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: xSSPW
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: vpMhe#L2
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is too long or too short. Input: 5, Output: 19
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is too long or too short. Input: 5, Output: 15
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: cPYzB#L1
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: LJWTM#L1
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is too long or too short. Input: 5, Output: 16
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: VmBLc
+WARNING:babeldoc.magazine.hitl:hitl: 2 ruled term(s) matched no input and changed nothing: 'CourierT H E UNESCO', 'Katerina Markelova'
+D:\Codes\BabelDOC\babeldoc\format\pdf\document_il\utils\fontmap.py:182: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x000001B69ACE93F0>
+  script_font_map_result = self.map_in_type(
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+D:\Codes\BabelDOC\babeldoc\format\pdf\document_il\utils\fontmap.py:182: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x000001B69ACE9A80>
+  script_font_map_result = self.map_in_type(
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+D:\Codes\BabelDOC\babeldoc\format\pdf\document_il\utils\fontmap.py:182: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x000001B6921C4040>
+  script_font_map_result = self.map_in_type(
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+D:\Codes\BabelDOC\babeldoc\format\pdf\document_il\utils\fontmap.py:182: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x000001B6921C4130>
+  script_font_map_result = self.map_in_type(
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+D:\Codes\BabelDOC\babeldoc\format\pdf\document_il\utils\fontmap.py:182: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x000001B6921C4310>
+  script_font_map_result = self.map_in_type(
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+D:\Codes\BabelDOC\babeldoc\format\pdf\document_il\utils\fontmap.py:182: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x000001B6921C4A90>
+  script_font_map_result = self.map_in_type(
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+D:\Codes\BabelDOC\babeldoc\format\pdf\document_il\utils\fontmap.py:182: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x000001B6921C5300>
+  script_font_map_result = self.map_in_type(
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+D:\Codes\BabelDOC\babeldoc\format\pdf\document_il\utils\fontmap.py:182: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x000001B6921C46D0>
+  script_font_map_result = self.map_in_type(
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+D:\Codes\BabelDOC\.venv\Lib\site-packages\xsdata\formats\dataclass\parsers\utils.py:130: ConverterWarning: Failed to convert value for `PdfCurve.debug_info`
+  `a` is not a valid `bool`
+  warnings.warn(message, ConverterWarning)
+{
+  "sample": "Courier-en.pdf",
+  "model": "gpt-4o",
+  "lang_in": "en",
+  "lang_out": "zh",
+  "target_pages": [
+    4,
+    6,
+    8
+  ],
+  "pages_changed": [
+    4,
+    6,
+    8
+  ],
+  "reflow_totals": {
+    "columns": 10,
+    "columns_applied": 9,
+    "columns_left": 1,
+    "excess_sum_after": 259.42,
+    "excess_sum_before": 911.2068,
+    "pages_applied": 3,
+    "pages_considered": 3,
+    "pages_reverted": 0,
+    "paragraphs_moved": 22,
+    "shift_total_pt": 651.7868
+  },
+  "reflow_guards": {},
+  "reflow_notes": [],
+  "conservation": "examples\\output\\b10_5\\Courier-en\\conservation.json"
+}
+D:\Codes\BabelDOC\babeldoc\magazine\source_audit.py:138: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x000001B69AB495D0>
+  return "".join(char for char in folded if not char.isspace())
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+D:\Codes\BabelDOC\babeldoc\magazine\source_audit.py:138: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x000001B69AB49A80>
+  return "".join(char for char in folded if not char.isspace())
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+D:\Codes\BabelDOC\babeldoc\magazine\source_audit.py:138: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x000001B69AB497B0>
+  return "".join(char for char in folded if not char.isspace())
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is the same as input, fallback.
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: zVBtw
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is the same as input, fallback.
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: 7toFk
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is the same as input, fallback.
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: oWNf2
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is too long or too short. Input: 7, Output: 1
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: eu73n
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is the same as input, fallback.
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: PC79Z
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is the same as input, fallback.
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: Mz4fQ
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is too long or too short. Input: 11, Output: 1
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: ef18r
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is the same as input, fallback.
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: 1HXzt
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is the same as input, fallback.
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: tKVgy
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is the same as input, fallback.
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: KzwJq
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is the same as input, fallback.
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: cXKPR
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is the same as input, fallback.
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: XKQXt
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is the same as input, fallback.
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is the same as input, fallback.
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: 9NHKq
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: r21Xj
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is the same as input, fallback.
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: 4X96C
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is the same as input, fallback.
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: RXmAE
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is the same as input, fallback.
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: XidC7
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is the same as input, fallback.
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: do1z2
+WARNING:babeldoc.magazine.hitl:hitl: 3 ruled term(s) matched no input and changed nothing: 'Khir-bet Samra', 'Mehmet Darak\xe7\u0131o\u011flu', 'Ulugh Beg Madrasa'
+D:\Codes\BabelDOC\.venv\Lib\site-packages\xsdata\formats\dataclass\parsers\utils.py:130: ConverterWarning: Failed to convert value for `PdfCurve.debug_info`
+  `a` is not a valid `bool`
+  warnings.warn(message, ConverterWarning)
+C:\Users\Azphire\AppData\Roaming\uv\python\cpython-3.13.3-windows-x86_64-none\Lib\contextlib.py:447: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x000001B69AB4A020>
+  def __enter__(self):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+C:\Users\Azphire\AppData\Roaming\uv\python\cpython-3.13.3-windows-x86_64-none\Lib\contextlib.py:447: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x000001B6003D44F0>
+  def __enter__(self):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+C:\Users\Azphire\AppData\Roaming\uv\python\cpython-3.13.3-windows-x86_64-none\Lib\contextlib.py:447: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x000001B6003D46D0>
+  def __enter__(self):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+C:\Users\Azphire\AppData\Roaming\uv\python\cpython-3.13.3-windows-x86_64-none\Lib\contextlib.py:447: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x000001B6003D49A0>
+  def __enter__(self):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+C:\Users\Azphire\AppData\Roaming\uv\python\cpython-3.13.3-windows-x86_64-none\Lib\contextlib.py:447: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x000001B6003D4E50>
+  def __enter__(self):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+C:\Users\Azphire\AppData\Roaming\uv\python\cpython-3.13.3-windows-x86_64-none\Lib\contextlib.py:447: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x000001B6003D4F40>
+  def __enter__(self):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+C:\Users\Azphire\AppData\Roaming\uv\python\cpython-3.13.3-windows-x86_64-none\Lib\contextlib.py:447: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x000001B6003D66B0>
+  def __enter__(self):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+C:\Users\Azphire\AppData\Roaming\uv\python\cpython-3.13.3-windows-x86_64-none\Lib\contextlib.py:447: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x000001B6003D6A70>
+  def __enter__(self):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+WARNING:babeldoc.magazine.hitl:hitl: 3 ruled term(s) matched no input and changed nothing: 'Khir-bet Samra', 'Mehmet Darak\xe7\u0131o\u011flu', 'Ulugh Beg Madrasa'
+<string>:2: ResourceWarning: unclosed <ssl.SSLSocket fd=1892, family=2, type=1, proto=0, laddr=('10.132.129.3', 56547), raddr=('162.159.140.245', 443)>
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+D:\Codes\BabelDOC\.venv\Lib\site-packages\psutil\__init__.py:999: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x000001B69AB5C5E0>
+  reverse_ppid_map[ppid].append(pid)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+D:\Codes\BabelDOC\.venv\Lib\site-packages\psutil\__init__.py:999: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x000001B69AB5E020>
+  reverse_ppid_map[ppid].append(pid)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+D:\Codes\BabelDOC\.venv\Lib\site-packages\psutil\__init__.py:999: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x000001B69AB5C7C0>
+  reverse_ppid_map[ppid].append(pid)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+D:\Codes\BabelDOC\.venv\Lib\site-packages\psutil\__init__.py:999: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x000001B69AB5E2F0>
+  reverse_ppid_map[ppid].append(pid)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is too long or too short. Input: 7, Output: 1
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: exFob
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is the same as input, fallback.
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: Gaiax
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is the same as input, fallback.
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: hg5Zw
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is the same as input, fallback.
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: Ur9A5
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is the same as input, fallback.
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: bK3nJ
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is the same as input, fallback.
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: koM4a
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is the same as input, fallback.
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: 2H7yc
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is too long or too short. Input: 11, Output: 1
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: 1pt8p
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is the same as input, fallback.
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: iB7Jf
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is the same as input, fallback.
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: Ey3HV
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is the same as input, fallback.
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: 34Nv8
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is the same as input, fallback.
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: 8ziT8
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is the same as input, fallback.
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: D38um
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is the same as input, fallback.
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: bvC7g
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is the same as input, fallback.
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: zJPbk
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is the same as input, fallback.
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: P18Zz
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is the same as input, fallback.
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: dAxmX
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is the same as input, fallback.
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: SimRs
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is the same as input, fallback.
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: tLyBp
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is the same as input, fallback.
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: HfJ3s
+WARNING:babeldoc.magazine.hitl:hitl: 3 ruled term(s) matched no input and changed nothing: 'Khir-bet Samra', 'Mehmet Darak\xe7\u0131o\u011flu', 'Ulugh Beg Madrasa'
+D:\Codes\BabelDOC\babeldoc\format\pdf\document_il\utils\formular_helper.py:313: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x000001B69AB5C310>
+  min_x = min(char.visual_bbox.box.x for char in formula.pdf_character)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+D:\Codes\BabelDOC\babeldoc\format\pdf\document_il\utils\formular_helper.py:313: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x000001B69AB5F100>
+  min_x = min(char.visual_bbox.box.x for char in formula.pdf_character)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+D:\Codes\BabelDOC\babeldoc\format\pdf\document_il\utils\formular_helper.py:313: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x000001B67FEA8130>
+  min_x = min(char.visual_bbox.box.x for char in formula.pdf_character)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+D:\Codes\BabelDOC\babeldoc\format\pdf\document_il\utils\formular_helper.py:313: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x000001B67FEA8400>
+  min_x = min(char.visual_bbox.box.x for char in formula.pdf_character)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+D:\Codes\BabelDOC\babeldoc\format\pdf\document_il\utils\formular_helper.py:313: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x000001B67FEA8A90>
+  min_x = min(char.visual_bbox.box.x for char in formula.pdf_character)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+D:\Codes\BabelDOC\babeldoc\format\pdf\document_il\utils\formular_helper.py:313: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x000001B67FEA9B70>
+  min_x = min(char.visual_bbox.box.x for char in formula.pdf_character)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+D:\Codes\BabelDOC\babeldoc\format\pdf\document_il\utils\formular_helper.py:313: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x000001B67FEA9030>
+  min_x = min(char.visual_bbox.box.x for char in formula.pdf_character)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+D:\Codes\BabelDOC\.venv\Lib\site-packages\xsdata\formats\dataclass\parsers\utils.py:130: ConverterWarning: Failed to convert value for `PdfCurve.debug_info`
+  `a` is not a valid `bool`
+  warnings.warn(message, ConverterWarning)
+WARNING:babeldoc.magazine.hitl:hitl: 3 ruled term(s) matched no input and changed nothing: 'Khir-bet Samra', 'Mehmet Darak\xe7\u0131o\u011flu', 'Ulugh Beg Madrasa'
+{
+  "sample": "AramcoWorld-en-v2.pdf",
+  "model": "gpt-4o",
+  "lang_in": "en",
+  "lang_out": "zh",
+  "target_pages": [
+    4,
+    6,
+    7
+  ],
+  "pages_changed": [
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8
+  ],
+  "reflow_totals": {
+    "columns": 10,
+    "columns_applied": 5,
+    "columns_left": 5,
+    "excess_sum_after": 39.4871,
+    "excess_sum_before": 261.5048,
+    "pages_applied": 3,
+    "pages_considered": 3,
+    "pages_reverted": 0,
+    "paragraphs_moved": 19,
+    "shift_total_pt": 222.0177
+  },
+  "reflow_guards": {},
+  "reflow_notes": [],
+  "conservation": "examples\\output\\b10_5\\AramcoWorld-en-v2\\conservation.json"
+}
+<string>:2: ResourceWarning: unclosed <ssl.SSLSocket fd=1688, family=2, type=1, proto=0, laddr=('10.132.129.3', 50523), raddr=('162.159.140.245', 443)>
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+D:\Codes\BabelDOC\babeldoc\glossary.py:100: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x000001B69EEEF3D0>
+  expressions, ids = zip(*pattern_chunk, strict=False)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+D:\Codes\BabelDOC\babeldoc\glossary.py:100: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x000001B6001FD210>
+  expressions, ids = zip(*pattern_chunk, strict=False)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+D:\Codes\BabelDOC\babeldoc\glossary.py:100: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x000001B69EEEF5B0>
+  expressions, ids = zip(*pattern_chunk, strict=False)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+D:\Codes\BabelDOC\babeldoc\glossary.py:100: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x000001B6001FD300>
+  expressions, ids = zip(*pattern_chunk, strict=False)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is the same as input, fallback.
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: m7P2G
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is the same as input, fallback.
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: P5sPj
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is the same as input, fallback.
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: 4a6VJ
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is the same as input, fallback.
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: gTiAN
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is the same as input, fallback.
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: cTD7A
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is the same as input, fallback.
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: XS9JV
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is the same as input, fallback.
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: wztv7
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is the same as input, fallback.
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: CaQ1Y
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is the same as input, fallback.
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: 7tm35
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is the same as input, fallback.
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: 8mCYo
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is the same as input, fallback.
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: x12C6
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is the same as input, fallback.
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: BToRm
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is the same as input, fallback.
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: QYH5E
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is the same as input, fallback.
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: 5UjM6
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is the same as input, fallback.
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: Q4E8N
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is the same as input, fallback.
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: S5GHh
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is the same as input, fallback.
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: CfweX
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is the same as input, fallback.
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: kpwfd
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is too long or too short. Input: 4, Output: 16
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: e9BtL#L2
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is too long or too short. Input: 6, Output: 20
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: e9BtL#L5
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is too long or too short. Input: 7, Output: 1
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: J281w
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is too long or too short. Input: 4, Output: 1
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: Z97Vc
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is too long or too short. Input: 3, Output: 11
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: Y3xRq#L3
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is too long or too short. Input: 3, Output: 11
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: Y3xRq#L5
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is too long or too short. Input: 4, Output: 12
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: caYPf#L0
+WARNING:babeldoc.magazine.hitl:hitl: 2 ruled term(s) matched no input and changed nothing: 'Etam Noah', 'High-Luminosity LHC'
+D:\Codes\BabelDOC\.venv\Lib\site-packages\pymupdf\mupdf.py:62120: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x000001B69EEEF5B0>
+  _mupdf.ll_fz_encode_character_with_fallback_outparams_swiginit(self, _mupdf.new_ll_fz_encode_character_with_fallback_outparams())
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+D:\Codes\BabelDOC\.venv\Lib\site-packages\pymupdf\mupdf.py:62120: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x000001B696A3C220>
+  _mupdf.ll_fz_encode_character_with_fallback_outparams_swiginit(self, _mupdf.new_ll_fz_encode_character_with_fallback_outparams())
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+D:\Codes\BabelDOC\.venv\Lib\site-packages\pymupdf\mupdf.py:62120: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x000001B696A3D120>
+  _mupdf.ll_fz_encode_character_with_fallback_outparams_swiginit(self, _mupdf.new_ll_fz_encode_character_with_fallback_outparams())
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+D:\Codes\BabelDOC\.venv\Lib\site-packages\pymupdf\mupdf.py:62120: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x000001B696A3D990>
+  _mupdf.ll_fz_encode_character_with_fallback_outparams_swiginit(self, _mupdf.new_ll_fz_encode_character_with_fallback_outparams())
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+D:\Codes\BabelDOC\.venv\Lib\site-packages\pymupdf\mupdf.py:62120: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x000001B696A3E7A0>
+  _mupdf.ll_fz_encode_character_with_fallback_outparams_swiginit(self, _mupdf.new_ll_fz_encode_character_with_fallback_outparams())
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+D:\Codes\BabelDOC\.venv\Lib\site-packages\pymupdf\mupdf.py:62120: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x000001B67FBDC130>
+  _mupdf.ll_fz_encode_character_with_fallback_outparams_swiginit(self, _mupdf.new_ll_fz_encode_character_with_fallback_outparams())
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+D:\Codes\BabelDOC\.venv\Lib\site-packages\pymupdf\mupdf.py:62120: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x000001B67FBDC9A0>
+  _mupdf.ll_fz_encode_character_with_fallback_outparams_swiginit(self, _mupdf.new_ll_fz_encode_character_with_fallback_outparams())
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+D:\Codes\BabelDOC\.venv\Lib\site-packages\pymupdf\mupdf.py:62120: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x000001B67FBDD120>
+  _mupdf.ll_fz_encode_character_with_fallback_outparams_swiginit(self, _mupdf.new_ll_fz_encode_character_with_fallback_outparams())
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+D:\Codes\BabelDOC\.venv\Lib\site-packages\xsdata\formats\dataclass\parsers\utils.py:130: ConverterWarning: Failed to convert value for `PdfCurve.debug_info`
+  `a` is not a valid `bool`
+  warnings.warn(message, ConverterWarning)
+WARNING:babeldoc.magazine.hitl:hitl: 2 ruled term(s) matched no input and changed nothing: 'Etam Noah', 'High-Luminosity LHC'
+D:\Codes\BabelDOC\babeldoc\format\pdf\document_il\frontend\il_creater_active_support.py:24: ResourceWarning: unclosed <ssl.SSLSocket fd=1492, family=2, type=1, proto=0, laddr=('10.132.129.3', 50380), raddr=('162.159.140.245', 443)>
+  while batch := tuple(islice(iterator, n)):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+D:\Codes\BabelDOC\babeldoc\format\pdf\document_il\frontend\il_creater_active_support.py:24: ResourceWarning: unclosed <ssl.SSLSocket fd=2728, family=2, type=1, proto=0, laddr=('10.132.129.3', 50382), raddr=('162.159.140.245', 443)>
+  while batch := tuple(islice(iterator, n)):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+D:\Codes\BabelDOC\babeldoc\glossary.py:100: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x000001B60052C220>
+  expressions, ids = zip(*pattern_chunk, strict=False)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+D:\Codes\BabelDOC\babeldoc\glossary.py:100: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x000001B60052E020>
+  expressions, ids = zip(*pattern_chunk, strict=False)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+D:\Codes\BabelDOC\babeldoc\glossary.py:100: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x000001B60052E110>
+  expressions, ids = zip(*pattern_chunk, strict=False)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+D:\Codes\BabelDOC\babeldoc\glossary.py:100: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x000001B60052E2F0>
+  expressions, ids = zip(*pattern_chunk, strict=False)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is the same as input, fallback.
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: cD1W7
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is the same as input, fallback.
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: xvVDA
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is the same as input, fallback.
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: cbef5
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is the same as input, fallback.
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: misJz
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is the same as input, fallback.
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: RRbxD
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is the same as input, fallback.
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: JrRBa
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is the same as input, fallback.
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: P6SkX
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is the same as input, fallback.
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: PkxRk
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is the same as input, fallback.
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: XE1sf
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is the same as input, fallback.
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: qNK7i
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is the same as input, fallback.
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: HQK29
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is the same as input, fallback.
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: S5iv6
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is the same as input, fallback.
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: iKtP9
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is the same as input, fallback.
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: E9JBP
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is the same as input, fallback.
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: ZoykF
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is the same as input, fallback.
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: 47Bdi
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is the same as input, fallback.
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: 9HW1H
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is too long or too short. Input: 4, Output: 16
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: eyY9d#L2
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is too long or too short. Input: 6, Output: 20
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: eyY9d#L5
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is too long or too short. Input: 7, Output: 1
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: 6qTdU
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is the same as input, fallback.
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: u21rw
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is too long or too short. Input: 4, Output: 1
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: 7FM1Y
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is too long or too short. Input: 3, Output: 11
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: XdrPU#L3
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is too long or too short. Input: 3, Output: 11
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: XdrPU#L5
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is too long or too short. Input: 4, Output: 12
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: YTger#L0
+WARNING:babeldoc.magazine.hitl:hitl: 2 ruled term(s) matched no input and changed nothing: 'Etam Noah', 'High-Luminosity LHC'
+D:\Codes\BabelDOC\babeldoc\format\pdf\document_il\utils\fontmap.py:141: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x000001B6005147C0>
+  if not font.has_glyph(current_char):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+D:\Codes\BabelDOC\babeldoc\format\pdf\document_il\utils\fontmap.py:141: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x000001B600514E50>
+  if not font.has_glyph(current_char):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+D:\Codes\BabelDOC\babeldoc\format\pdf\document_il\utils\fontmap.py:141: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x000001B600516020>
+  if not font.has_glyph(current_char):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+D:\Codes\BabelDOC\babeldoc\format\pdf\document_il\utils\fontmap.py:141: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x000001B600516980>
+  if not font.has_glyph(current_char):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+D:\Codes\BabelDOC\babeldoc\format\pdf\document_il\utils\fontmap.py:141: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x000001B6005176A0>
+  if not font.has_glyph(current_char):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+D:\Codes\BabelDOC\babeldoc\format\pdf\document_il\utils\fontmap.py:141: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x000001B6A9438A90>
+  if not font.has_glyph(current_char):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+D:\Codes\BabelDOC\babeldoc\format\pdf\document_il\utils\fontmap.py:141: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x000001B6A9439300>
+  if not font.has_glyph(current_char):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+D:\Codes\BabelDOC\babeldoc\format\pdf\document_il\utils\fontmap.py:141: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x000001B6A94395D0>
+  if not font.has_glyph(current_char):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+D:\Codes\BabelDOC\.venv\Lib\site-packages\xsdata\formats\dataclass\parsers\utils.py:130: ConverterWarning: Failed to convert value for `PdfCurve.debug_info`
+  `a` is not a valid `bool`
+  warnings.warn(message, ConverterWarning)
+WARNING:babeldoc.magazine.hitl:hitl: 2 ruled term(s) matched no input and changed nothing: 'Etam Noah', 'High-Luminosity LHC'
+{
+  "sample": "CERNCourier-en.pdf",
+  "model": "gpt-4o",
+  "lang_in": "en",
+  "lang_out": "zh",
+  "target_pages": [
+    1,
+    4
+  ],
+  "pages_changed": [
+    1,
+    4
+  ],
+  "reflow_totals": {
+    "columns": 18,
+    "columns_applied": 5,
+    "columns_left": 13,
+    "excess_sum_after": 128.9454,
+    "excess_sum_before": 350.2412,
+    "pages_applied": 2,
+    "pages_considered": 2,
+    "pages_reverted": 0,
+    "paragraphs_moved": 12,
+    "shift_total_pt": 221.2958
+  },
+  "reflow_guards": {},
+  "reflow_notes": [],
+  "conservation": "examples\\output\\b10_5\\CERNCourier-en\\conservation.json"
+}
+D:\Codes\BabelDOC\.venv\Lib\site-packages\psutil\__init__.py:999: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x000001B67B8A2B60>
+  reverse_ppid_map[ppid].append(pid)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+D:\Codes\BabelDOC\.venv\Lib\site-packages\psutil\__init__.py:999: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x000001B67B8A3100>
+  reverse_ppid_map[ppid].append(pid)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+D:\Codes\BabelDOC\.venv\Lib\site-packages\psutil\__init__.py:999: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x000001B67B8A2A70>
+  reverse_ppid_map[ppid].append(pid)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is too long or too short. Input: 2, Output: 7
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: cBYnb#L2
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is too long or too short. Input: 1, Output: 7
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: pAsdq#L2
+WARNING:babeldoc.magazine.hitl:hitl: 10 ruled term(s) matched no input and changed nothing: 'Alexander McQueen', 'Boom Productions', 'Joey George', 'Peter Klein', 'Susie Sobol', 'Ground Sanaz Toossi', 'Looking Glass Sam McKinniss¡¯s', 'McGirr¡¯s McQueen Se¨¢n McGirr', 'Wire Adrien Brody', 'Zac Zac Posen¡¯s'
+<string>:2: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x000001B67B8A2D40>
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+<string>:2: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x000001B67B8A2E30>
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+<string>:2: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x000001B67B8A2890>
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+<string>:2: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x000001B67B8A25C0>
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+<string>:2: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x000001B67B8A31F0>
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+<string>:2: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x000001B67B8A2020>
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+D:\Codes\BabelDOC\.venv\Lib\site-packages\xsdata\formats\dataclass\parsers\utils.py:130: ConverterWarning: Failed to convert value for `PdfCurve.debug_info`
+  `a` is not a valid `bool`
+  warnings.warn(message, ConverterWarning)
+D:\Codes\BabelDOC\.venv\Lib\site-packages\psutil\__init__.py:999: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x000001B67B8A3880>
+  reverse_ppid_map[ppid].append(pid)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+D:\Codes\BabelDOC\.venv\Lib\site-packages\psutil\__init__.py:999: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x000001B67B8A0D60>
+  reverse_ppid_map[ppid].append(pid)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+D:\Codes\BabelDOC\.venv\Lib\site-packages\psutil\__init__.py:999: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x000001B67B8A17B0>
+  reverse_ppid_map[ppid].append(pid)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is too long or too short. Input: 1, Output: 7
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: UzFMw#L2
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is too long or too short. Input: 2, Output: 7
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: b8DRT#L2
+WARNING:babeldoc.magazine.hitl:hitl: 10 ruled term(s) matched no input and changed nothing: 'Alexander McQueen', 'Boom Productions', 'Joey George', 'Peter Klein', 'Susie Sobol', 'Ground Sanaz Toossi', 'Looking Glass Sam McKinniss¡¯s', 'McGirr¡¯s McQueen Se¨¢n McGirr', 'Wire Adrien Brody', 'Zac Zac Posen¡¯s'
+<frozen abc>:117: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x000001B67B8A3C40>
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+<frozen abc>:117: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x000001B67B8A3100>
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+<frozen abc>:117: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x000001B67B8A3B50>
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+<frozen abc>:117: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x000001B67B8A3A60>
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+<frozen abc>:117: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x000001B67B8A14E0>
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+<frozen abc>:117: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x000001B67B8A1030>
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+D:\Codes\BabelDOC\.venv\Lib\site-packages\xsdata\formats\dataclass\parsers\utils.py:130: ConverterWarning: Failed to convert value for `PdfCurve.debug_info`
+  `a` is not a valid `bool`
+  warnings.warn(message, ConverterWarning)
+{
+  "sample": "Vogue-en.pdf",
+  "model": "gpt-4o",
+  "lang_in": "en",
+  "lang_out": "zh",
+  "target_pages": [
+    3
+  ],
+  "pages_changed": [],
+  "reflow_totals": {
+    "columns": 0,
+    "columns_applied": 0,
+    "columns_left": 0,
+    "excess_sum_after": 0,
+    "excess_sum_before": 0,
+    "pages_applied": 0,
+    "pages_considered": 0,
+    "pages_reverted": 0,
+    "paragraphs_moved": 0,
+    "shift_total_pt": 0
+  },
+  "reflow_guards": {},
+  "reflow_notes": [],
+  "conservation": "examples\\output\\b10_5\\Vogue-en\\conservation.json"
+}
+D:\Codes\BabelDOC\.venv\Lib\site-packages\psutil\__init__.py:999: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x000001B67DDE85E0>
+  reverse_ppid_map[ppid].append(pid)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+D:\Codes\BabelDOC\.venv\Lib\site-packages\psutil\__init__.py:999: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x000001B67DDE8A90>
+  reverse_ppid_map[ppid].append(pid)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+D:\Codes\BabelDOC\.venv\Lib\site-packages\psutil\__init__.py:999: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x000001B67DDE8F40>
+  reverse_ppid_map[ppid].append(pid)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is too long or too short. Input: 3, Output: 9
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: G4sFK
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Error Translation results length mismatch. Expected: 6, Got: 4 during translation. try fallback
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is too long or too short. Input: 4, Output: 17
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: 4RsTG
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is too long or too short. Input: 23, Output: 5
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: WG1dd
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is the same as input, fallback.
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: 4DuRu
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is too long or too short. Input: 2, Output: 7
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: vZZh8#L1
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is too long or too short. Input: 2, Output: 7
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: X6nfw
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is too long or too short. Input: 3, Output: 9
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: d57AW
+WARNING:babeldoc.magazine.hitl:hitl: 3 ruled term(s) matched no input and changed nothing: 'Persian Gulf', 'ECONOMIC THEORY Robert Skidelsky', 'TRADE POLICY Jamieson Greer'
+D:\Codes\BabelDOC\.venv\Lib\site-packages\pymupdf\mupdf.py:62119: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x000001B67DDE93F0>
+  def __init__(self):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+D:\Codes\BabelDOC\.venv\Lib\site-packages\pymupdf\mupdf.py:62119: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x000001B67DDE84F0>
+  def __init__(self):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+D:\Codes\BabelDOC\.venv\Lib\site-packages\pymupdf\mupdf.py:62119: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x000001B67DDEB5B0>
+  def __init__(self):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+D:\Codes\BabelDOC\.venv\Lib\site-packages\pymupdf\mupdf.py:62119: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x000001B67DDEB880>
+  def __init__(self):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+D:\Codes\BabelDOC\.venv\Lib\site-packages\pymupdf\mupdf.py:62119: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x000001B67DDEBB50>
+  def __init__(self):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+D:\Codes\BabelDOC\.venv\Lib\site-packages\pymupdf\mupdf.py:62119: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x000001B60B404310>
+  def __init__(self):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+D:\Codes\BabelDOC\.venv\Lib\site-packages\pymupdf\mupdf.py:62119: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x000001B60B404400>
+  def __init__(self):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+D:\Codes\BabelDOC\.venv\Lib\site-packages\pymupdf\mupdf.py:62119: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x000001B60B404C70>
+  def __init__(self):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+WARNING:babeldoc.magazine.title_typeset:title typeset: laying out 8sDbq again failed; it is left as it was
+Traceback (most recent call last):
+  File "D:\Codes\BabelDOC\babeldoc\magazine\title_typeset.py", line 681, in _render
+    typesetting.render_paragraph(paragraph, page, fonts)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Codes\BabelDOC\babeldoc\format\pdf\document_il\midend\typesetting.py", line 1263, in render_paragraph
+    typesetting_units = self.create_typesetting_units(paragraph, fonts)
+  File "D:\Codes\BabelDOC\babeldoc\format\pdf\document_il\midend\typesetting.py", line 1526, in create_typesetting_units
+    font = get_font(font_id, paragraph.xobj_id)
+  File "D:\Codes\BabelDOC\babeldoc\format\pdf\document_il\midend\typesetting.py", line 1480, in get_font
+    font = fonts[xobj_id][font_id]
+           ~~~~~~~~~~~~~~^^^^^^^^^
+KeyError: 'NotoSerif-Bold.ttf'
+D:\Codes\BabelDOC\.venv\Lib\site-packages\xsdata\formats\dataclass\parsers\utils.py:130: ConverterWarning: Failed to convert value for `PdfCurve.debug_info`
+  `a` is not a valid `bool`
+  warnings.warn(message, ConverterWarning)
+WARNING:babeldoc.magazine.hitl:hitl: 3 ruled term(s) matched no input and changed nothing: 'Persian Gulf', 'ECONOMIC THEORY Robert Skidelsky', 'TRADE POLICY Jamieson Greer'
+D:\Codes\BabelDOC\.venv\Lib\site-packages\psutil\__init__.py:999: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x000001B602613E20>
+  reverse_ppid_map[ppid].append(pid)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+D:\Codes\BabelDOC\.venv\Lib\site-packages\psutil\__init__.py:999: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x000001B69EF6C310>
+  reverse_ppid_map[ppid].append(pid)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is too long or too short. Input: 3, Output: 9
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: oQMxi
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Error Translation results length mismatch. Expected: 6, Got: 4 during translation. try fallback
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is too long or too short. Input: 4, Output: 17
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: CLT71
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is too long or too short. Input: 23, Output: 5
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: iX9k7
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is too long or too short. Input: 2, Output: 7
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: dZJiZ#L1
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is the same as input, fallback.
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: wywPG
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is too long or too short. Input: 2, Output: 7
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: 2A9B2
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is too long or too short. Input: 3, Output: 9
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: cBzGf
+WARNING:babeldoc.magazine.hitl:hitl: 3 ruled term(s) matched no input and changed nothing: 'Persian Gulf', 'ECONOMIC THEORY Robert Skidelsky', 'TRADE POLICY Jamieson Greer'
+D:\Codes\BabelDOC\.venv\Lib\site-packages\pymupdf\mupdf.py:62119: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x000001B6029445E0>
+  def __init__(self):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+D:\Codes\BabelDOC\.venv\Lib\site-packages\pymupdf\mupdf.py:62119: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x000001B6029457B0>
+  def __init__(self):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+D:\Codes\BabelDOC\.venv\Lib\site-packages\pymupdf\mupdf.py:62119: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x000001B602945D50>
+  def __init__(self):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+D:\Codes\BabelDOC\.venv\Lib\site-packages\pymupdf\mupdf.py:62119: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x000001B602947010>
+  def __init__(self):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+D:\Codes\BabelDOC\.venv\Lib\site-packages\pymupdf\mupdf.py:62119: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x000001B6029474C0>
+  def __init__(self):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+D:\Codes\BabelDOC\.venv\Lib\site-packages\pymupdf\mupdf.py:62119: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x000001B602947E20>
+  def __init__(self):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+D:\Codes\BabelDOC\.venv\Lib\site-packages\pymupdf\mupdf.py:62119: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x000001B602947C40>
+  def __init__(self):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+D:\Codes\BabelDOC\.venv\Lib\site-packages\pymupdf\mupdf.py:62119: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x000001B60AF64040>
+  def __init__(self):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+WARNING:babeldoc.magazine.title_typeset:title typeset: laying out E7pQY again failed; it is left as it was
+Traceback (most recent call last):
+  File "D:\Codes\BabelDOC\babeldoc\magazine\title_typeset.py", line 681, in _render
+    typesetting.render_paragraph(paragraph, page, fonts)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Codes\BabelDOC\babeldoc\format\pdf\document_il\midend\typesetting.py", line 1263, in render_paragraph
+    typesetting_units = self.create_typesetting_units(paragraph, fonts)
+  File "D:\Codes\BabelDOC\babeldoc\format\pdf\document_il\midend\typesetting.py", line 1526, in create_typesetting_units
+    font = get_font(font_id, paragraph.xobj_id)
+  File "D:\Codes\BabelDOC\babeldoc\format\pdf\document_il\midend\typesetting.py", line 1480, in get_font
+    font = fonts[xobj_id][font_id]
+           ~~~~~~~~~~~~~~^^^^^^^^^
+KeyError: 'NotoSerif-Bold.ttf'
+D:\Codes\BabelDOC\.venv\Lib\site-packages\xsdata\formats\dataclass\parsers\utils.py:130: ConverterWarning: Failed to convert value for `PdfCurve.debug_info`
+  `a` is not a valid `bool`
+  warnings.warn(message, ConverterWarning)
+WARNING:babeldoc.magazine.hitl:hitl: 3 ruled term(s) matched no input and changed nothing: 'Persian Gulf', 'ECONOMIC THEORY Robert Skidelsky', 'TRADE POLICY Jamieson Greer'
+{
+  "sample": "FD-en-v2.pdf",
+  "model": "gpt-4o",
+  "lang_in": "en",
+  "lang_out": "zh",
+  "target_pages": [
+    3,
+    5
+  ],
+  "pages_changed": [],
+  "reflow_totals": {
+    "columns": 0,
+    "columns_applied": 0,
+    "columns_left": 0,
+    "excess_sum_after": 0,
+    "excess_sum_before": 0,
+    "pages_applied": 0,
+    "pages_considered": 0,
+    "pages_reverted": 0,
+    "paragraphs_moved": 0,
+    "shift_total_pt": 0
+  },
+  "reflow_guards": {},
+  "reflow_notes": [],
+  "conservation": "examples\\output\\b10_5\\FD-en-v2\\conservation.json"
+}
+D:\Codes\BabelDOC\.venv\Lib\site-packages\psutil\__init__.py:999: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x000001B67B97EE30>
+  reverse_ppid_map[ppid].append(pid)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+D:\Codes\BabelDOC\.venv\Lib\site-packages\psutil\__init__.py:999: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x000001B67B97C220>
+  reverse_ppid_map[ppid].append(pid)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+D:\Codes\BabelDOC\.venv\Lib\site-packages\psutil\__init__.py:999: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x000001B67B97ED40>
+  reverse_ppid_map[ppid].append(pid)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+D:\Codes\BabelDOC\.venv\Lib\site-packages\psutil\__init__.py:999: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x000001B67B97FD30>
+  reverse_ppid_map[ppid].append(pid)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is too long or too short. Input: 18, Output: 5
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: C7t9v
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is too long or too short. Input: 14, Output: 4
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: CioQF
+C:\Users\Azphire\AppData\Roaming\uv\python\cpython-3.13.3-windows-x86_64-none\Lib\copy.py:209: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x000001B67B97F6A0>
+  for k, j in zip(x, y):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+C:\Users\Azphire\AppData\Roaming\uv\python\cpython-3.13.3-windows-x86_64-none\Lib\copy.py:209: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x000001B67B97F3D0>
+  for k, j in zip(x, y):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+C:\Users\Azphire\AppData\Roaming\uv\python\cpython-3.13.3-windows-x86_64-none\Lib\copy.py:209: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x000001B67B97F4C0>
+  for k, j in zip(x, y):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+C:\Users\Azphire\AppData\Roaming\uv\python\cpython-3.13.3-windows-x86_64-none\Lib\copy.py:209: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x000001B67B97FE20>
+  for k, j in zip(x, y):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+C:\Users\Azphire\AppData\Roaming\uv\python\cpython-3.13.3-windows-x86_64-none\Lib\copy.py:209: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x000001B69F225D50>
+  for k, j in zip(x, y):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+WARNING:babeldoc.format.pdf.document_il.utils.fontmap:Can't find font for (26). Original font: NKLOHX+MYingHeiPRC-W7[C2_0]. Char unicode: . 
+WARNING:babeldoc.format.pdf.document_il.utils.fontmap:Can't find font for (26). Original font: NKLOHX+MYingHeiPRC-W7[C2_0]. Char unicode: . 
+D:\Codes\BabelDOC\.venv\Lib\site-packages\xsdata\formats\dataclass\parsers\utils.py:130: ConverterWarning: Failed to convert value for `PdfCurve.debug_info`
+  `a` is not a valid `bool`
+  warnings.warn(message, ConverterWarning)
+D:\Codes\BabelDOC\.venv\Lib\site-packages\psutil\__init__.py:999: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x000001B69EE518A0>
+  reverse_ppid_map[ppid].append(pid)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+D:\Codes\BabelDOC\.venv\Lib\site-packages\psutil\__init__.py:999: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x000001B69EE50310>
+  reverse_ppid_map[ppid].append(pid)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+D:\Codes\BabelDOC\.venv\Lib\site-packages\psutil\__init__.py:999: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x000001B69EE509A0>
+  reverse_ppid_map[ppid].append(pid)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is too long or too short. Input: 18, Output: 5
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: 9pPd5
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is too long or too short. Input: 14, Output: 4
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: oHivN
+C:\Users\Azphire\AppData\Roaming\uv\python\cpython-3.13.3-windows-x86_64-none\Lib\copy.py:209: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x000001B69EE50400>
+  for k, j in zip(x, y):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+C:\Users\Azphire\AppData\Roaming\uv\python\cpython-3.13.3-windows-x86_64-none\Lib\copy.py:209: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x000001B69EE50F40>
+  for k, j in zip(x, y):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+C:\Users\Azphire\AppData\Roaming\uv\python\cpython-3.13.3-windows-x86_64-none\Lib\copy.py:209: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x000001B69F225B70>
+  for k, j in zip(x, y):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+C:\Users\Azphire\AppData\Roaming\uv\python\cpython-3.13.3-windows-x86_64-none\Lib\copy.py:209: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x000001B69F224D60>
+  for k, j in zip(x, y):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+C:\Users\Azphire\AppData\Roaming\uv\python\cpython-3.13.3-windows-x86_64-none\Lib\copy.py:209: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x000001B69F227C40>
+  for k, j in zip(x, y):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+C:\Users\Azphire\AppData\Roaming\uv\python\cpython-3.13.3-windows-x86_64-none\Lib\copy.py:209: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x000001B69F225C60>
+  for k, j in zip(x, y):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+WARNING:babeldoc.format.pdf.document_il.utils.fontmap:Can't find font for (26). Original font: NKLOHX+MYingHeiPRC-W7[C2_0]. Char unicode: . 
+WARNING:babeldoc.format.pdf.document_il.utils.fontmap:Can't find font for (26). Original font: NKLOHX+MYingHeiPRC-W7[C2_0]. Char unicode: . 
+D:\Codes\BabelDOC\.venv\Lib\site-packages\xsdata\formats\dataclass\parsers\utils.py:130: ConverterWarning: Failed to convert value for `PdfCurve.debug_info`
+  `a` is not a valid `bool`
+  warnings.warn(message, ConverterWarning)
+{
+  "sample": "Courier-zh.pdf",
+  "model": "gpt-4o",
+  "lang_in": "zh",
+  "lang_out": "en",
+  "target_pages": [
+    4,
+    6,
+    8
+  ],
+  "pages_changed": [],
+  "reflow_totals": {
+    "columns": 0,
+    "columns_applied": 0,
+    "columns_left": 0,
+    "excess_sum_after": 0,
+    "excess_sum_before": 0,
+    "pages_applied": 0,
+    "pages_considered": 0,
+    "pages_reverted": 0,
+    "paragraphs_moved": 0,
+    "shift_total_pt": 0
+  },
+  "reflow_guards": {},
+  "reflow_notes": [
+    "the target language 'en' is outside ['zh']; no page was reflowed"
+  ],
+  "conservation": "examples\\output\\b10_5\\Courier-zh\\conservation.json"
+}
+<sys>:0: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x000001B64772F100>

@@ -1,0 +1,252 @@
+warning: The `fitz` API is deprecated and will be removed in future. Use `import pymupdf` instead.
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is the same as input, fallback.
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: GvrfL
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is the same as input, fallback.
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: FqhTv
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is too long or too short. Input: 7, Output: 1
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: sjmxr
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is the same as input, fallback.
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: TnTqv
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is the same as input, fallback.
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: zv5UY
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is too long or too short. Input: 11, Output: 1
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: QbgXL
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is the same as input, fallback.
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: NXdog
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is the same as input, fallback.
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: Ss7eN
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is the same as input, fallback.
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: wxTkx
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is the same as input, fallback.
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: FdwmM
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is the same as input, fallback.
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: yRniq
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is the same as input, fallback.
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: oMTmA
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is the same as input, fallback.
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: 9fD7s
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is the same as input, fallback.
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: E9qxp
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is the same as input, fallback.
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: mhYzg
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is the same as input, fallback.
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: ywV59
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is the same as input, fallback.
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: e2Ffj
+WARNING:babeldoc.magazine.hitl:hitl: 3 ruled term(s) matched no input and changed nothing: 'Khir-bet Samra', 'Mehmet Darak\xe7\u0131o\u011flu', 'Ulugh Beg Madrasa'
+D:\Codes\BabelDOC\.venv\Lib\site-packages\xsdata\formats\dataclass\parsers\utils.py:130: ConverterWarning: Failed to convert value for `PdfCurve.debug_info`
+  `a` is not a valid `bool`
+  warnings.warn(message, ConverterWarning)
+WARNING:babeldoc.magazine.hitl:hitl: 3 ruled term(s) matched no input and changed nothing: 'Khir-bet Samra', 'Mehmet Darak\xe7\u0131o\u011flu', 'Ulugh Beg Madrasa'
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is the same as input, fallback.
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: Zx4FT
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is the same as input, fallback.
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: WbseL
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is the same as input, fallback.
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: g8Ktm
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is too long or too short. Input: 7, Output: 1
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: bz9Uh
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is the same as input, fallback.
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: wBVEa
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is the same as input, fallback.
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: Sqr5v
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is too long or too short. Input: 11, Output: 1
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: KuBvw
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is the same as input, fallback.
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: Rdg8c
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is the same as input, fallback.
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is the same as input, fallback.
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: Np5UM
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: 94QCi
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is the same as input, fallback.
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: v1DcW
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is the same as input, fallback.
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: Yh6nM
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is the same as input, fallback.
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: xhw35
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is the same as input, fallback.
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: 6vY67
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is the same as input, fallback.
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: PkcoQ
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is the same as input, fallback.
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: U9MEM
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is the same as input, fallback.
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: iWx86
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is the same as input, fallback.
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: TPNev
+WARNING:babeldoc.magazine.hitl:hitl: 3 ruled term(s) matched no input and changed nothing: 'Khir-bet Samra', 'Mehmet Darak\xe7\u0131o\u011flu', 'Ulugh Beg Madrasa'
+D:\Codes\BabelDOC\.venv\Lib\site-packages\xsdata\formats\dataclass\parsers\utils.py:130: ConverterWarning: Failed to convert value for `PdfCurve.debug_info`
+  `a` is not a valid `bool`
+  warnings.warn(message, ConverterWarning)
+WARNING:babeldoc.magazine.hitl:hitl: 3 ruled term(s) matched no input and changed nothing: 'Khir-bet Samra', 'Mehmet Darak\xe7\u0131o\u011flu', 'Ulugh Beg Madrasa'
+{
+  "sample": "AramcoWorld-en-v2.pdf",
+  "model": "gpt-4o",
+  "lang_in": "en",
+  "lang_out": "zh",
+  "target_pages": [
+    4,
+    6,
+    7
+  ],
+  "pages_changed": [
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9
+  ],
+  "reflow_totals": {
+    "columns": 10,
+    "columns_applied": 5,
+    "columns_left": 5,
+    "excess_sum_after": 39.4871,
+    "excess_sum_before": 261.5048,
+    "pages_applied": 3,
+    "pages_considered": 3,
+    "pages_reverted": 0,
+    "paragraphs_moved": 19,
+    "shift_total_pt": 222.0177
+  },
+  "reflow_guards": {},
+  "reflow_notes": [],
+  "conservation": "examples\\output\\b10_5\\AramcoWorld-en-v2\\conservation.json"
+}
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is the same as input, fallback.
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: sBqFs
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is the same as input, fallback.
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: K13Wf
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is the same as input, fallback.
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: weCSi
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is the same as input, fallback.
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: NkRR8
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is the same as input, fallback.
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: ViwD8
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is the same as input, fallback.
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: 8uN6j
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is the same as input, fallback.
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: nMSqX
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is the same as input, fallback.
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: ky1xt
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is the same as input, fallback.
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: Y5SRf
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is the same as input, fallback.
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: mQeos
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is the same as input, fallback.
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: fJ4rA
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is the same as input, fallback.
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: 4PeiG
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is the same as input, fallback.
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: 2G8oR
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is the same as input, fallback.
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: WLgMM
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is the same as input, fallback.
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: sMUS6
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is the same as input, fallback.
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: Tdj5K
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is too long or too short. Input: 4, Output: 16
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: iSFg2#L2
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is the same as input, fallback.
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: YbcW8
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is too long or too short. Input: 6, Output: 20
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: iSFg2#L5
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is too long or too short. Input: 7, Output: 1
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: ZmeXc
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is too long or too short. Input: 4, Output: 1
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: jnaDM
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is too long or too short. Input: 3, Output: 11
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: UptKG#L3
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is too long or too short. Input: 3, Output: 11
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: UptKG#L5
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is too long or too short. Input: 4, Output: 12
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: nxAQJ#L0
+WARNING:babeldoc.magazine.hitl:hitl: 2 ruled term(s) matched no input and changed nothing: 'Etam Noah', 'High-Luminosity LHC'
+D:\Codes\BabelDOC\.venv\Lib\site-packages\xsdata\formats\dataclass\parsers\utils.py:130: ConverterWarning: Failed to convert value for `PdfCurve.debug_info`
+  `a` is not a valid `bool`
+  warnings.warn(message, ConverterWarning)
+WARNING:babeldoc.magazine.hitl:hitl: 2 ruled term(s) matched no input and changed nothing: 'Etam Noah', 'High-Luminosity LHC'
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is the same as input, fallback.
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: mnGB7
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is the same as input, fallback.
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: cvXkQ
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is the same as input, fallback.
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: rF1zg
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is the same as input, fallback.
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: H3gWu
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is the same as input, fallback.
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: awGFx
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is the same as input, fallback.
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: PFsLV
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is the same as input, fallback.
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: U1P1t
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is the same as input, fallback.
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: anBFg
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is the same as input, fallback.
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: pGYhz
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is the same as input, fallback.
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: x8VuS
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is the same as input, fallback.
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: NNvWn
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is the same as input, fallback.
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: giXqh
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is the same as input, fallback.
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: RHtuQ
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is the same as input, fallback.
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: n9BWg
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is the same as input, fallback.
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: 5cYyz
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is the same as input, fallback.
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: qRKHo
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is the same as input, fallback.
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: Y5Eua
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is too long or too short. Input: 4, Output: 16
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: kcmAi#L2
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is too long or too short. Input: 6, Output: 20
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: kcmAi#L5
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is too long or too short. Input: 7, Output: 1
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: hLxVt
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is too long or too short. Input: 4, Output: 1
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: FsrUg
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is too long or too short. Input: 3, Output: 11
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: 8YLzY#L3
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is too long or too short. Input: 3, Output: 11
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: 8YLzY#L5
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is too long or too short. Input: 4, Output: 12
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: mPYWA#L0
+WARNING:babeldoc.magazine.hitl:hitl: 2 ruled term(s) matched no input and changed nothing: 'Etam Noah', 'High-Luminosity LHC'
+D:\Codes\BabelDOC\.venv\Lib\site-packages\xsdata\formats\dataclass\parsers\utils.py:130: ConverterWarning: Failed to convert value for `PdfCurve.debug_info`
+  `a` is not a valid `bool`
+  warnings.warn(message, ConverterWarning)
+WARNING:babeldoc.magazine.hitl:hitl: 2 ruled term(s) matched no input and changed nothing: 'Etam Noah', 'High-Luminosity LHC'
+{
+  "sample": "CERNCourier-en.pdf",
+  "model": "gpt-4o",
+  "lang_in": "en",
+  "lang_out": "zh",
+  "target_pages": [
+    1,
+    4
+  ],
+  "pages_changed": [
+    1,
+    4
+  ],
+  "reflow_totals": {
+    "columns": 18,
+    "columns_applied": 5,
+    "columns_left": 13,
+    "excess_sum_after": 148.2304,
+    "excess_sum_before": 355.7262,
+    "pages_applied": 2,
+    "pages_considered": 2,
+    "pages_reverted": 0,
+    "paragraphs_moved": 11,
+    "shift_total_pt": 207.4958
+  },
+  "reflow_guards": {},
+  "reflow_notes": [],
+  "conservation": "examples\\output\\b10_5\\CERNCourier-en\\conservation.json"
+}

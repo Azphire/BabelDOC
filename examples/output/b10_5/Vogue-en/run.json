@@ -1,0 +1,76 @@
+{
+  "sample": "Vogue-en.pdf",
+  "model": "gpt-4o",
+  "lang_in": "en",
+  "lang_out": "zh",
+  "target_pages": [
+    3
+  ],
+  "arms": {
+    "off": {
+      "arm": "off",
+      "switch": false,
+      "seconds": 30.6,
+      "requests": 20,
+      "cache_hits": 20,
+      "api_calls": 0,
+      "pdf": "examples\\output\\b10_5\\Vogue-en\\off\\Vogue-en.b10_5.off.pdf",
+      "pdf_sha256": "391a8428c05b13463e2063df6fdef6471d9dc63713e438c2a7dcbe3db7940655",
+      "page_hashes": {
+        "1": "32a52662f6b1d210603d75dc70716808e5829162ae08ed4aae5305440d3edc75",
+        "2": "a795fcb37de4b4fd4b20fa73f7d7170b1c0cf7d210eedb821638e06eff64937d",
+        "3": "39d7dc959a0afa67fd46563b4e3adde52ca183e47da589cc0fd694dea0328cdf"
+      },
+      "raster": [
+        "examples\\output\\b10_5\\Vogue-en\\off\\raster\\Vogue-en.p3.png"
+      ],
+      "sidecars": [
+        "examples\\output\\b10_5\\Vogue-en\\off\\sidecars\\issues.json",
+        "examples\\output\\b10_5\\Vogue-en\\off\\sidecars\\react_repair.report.json",
+        "examples\\output\\b10_5\\Vogue-en\\off\\sidecars\\title_typeset.report.json"
+      ],
+      "working_dir": "examples\\output\\b10_5\\Vogue-en\\off\\work\\Vogue-en"
+    },
+    "on": {
+      "arm": "on",
+      "switch": true,
+      "seconds": 30.7,
+      "requests": 20,
+      "cache_hits": 20,
+      "api_calls": 0,
+      "pdf": "examples\\output\\b10_5\\Vogue-en\\on\\Vogue-en.b10_5.on.pdf",
+      "pdf_sha256": "c374d37f5ab8a6c59a4fdbdf92188cd36bab102a22d29282f20d8ca8c8c744e2",
+      "page_hashes": {
+        "1": "32a52662f6b1d210603d75dc70716808e5829162ae08ed4aae5305440d3edc75",
+        "2": "a795fcb37de4b4fd4b20fa73f7d7170b1c0cf7d210eedb821638e06eff64937d",
+        "3": "39d7dc959a0afa67fd46563b4e3adde52ca183e47da589cc0fd694dea0328cdf"
+      },
+      "raster": [
+        "examples\\output\\b10_5\\Vogue-en\\on\\raster\\Vogue-en.p3.png"
+      ],
+      "sidecars": [
+        "examples\\output\\b10_5\\Vogue-en\\on\\sidecars\\column_reflow.report.json",
+        "examples\\output\\b10_5\\Vogue-en\\on\\sidecars\\issues.json",
+        "examples\\output\\b10_5\\Vogue-en\\on\\sidecars\\react_repair.report.json",
+        "examples\\output\\b10_5\\Vogue-en\\on\\sidecars\\title_typeset.report.json"
+      ],
+      "working_dir": "examples\\output\\b10_5\\Vogue-en\\on\\work\\Vogue-en"
+    }
+  },
+  "pages_changed": [],
+  "reflow_totals": {
+    "columns": 0,
+    "columns_applied": 0,
+    "columns_left": 0,
+    "excess_sum_after": 0,
+    "excess_sum_before": 0,
+    "pages_applied": 0,
+    "pages_considered": 0,
+    "pages_reverted": 0,
+    "paragraphs_moved": 0,
+    "shift_total_pt": 0
+  },
+  "reflow_guards": {},
+  "reflow_notes": [],
+  "conservation": "examples\\output\\b10_5\\Vogue-en\\conservation.json"
+}

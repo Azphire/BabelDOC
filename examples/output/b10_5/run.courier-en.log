@@ -1,0 +1,73 @@
+warning: The `fitz` API is deprecated and will be removed in future. Use `import pymupdf` instead.
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is too long or too short. Input: 5, Output: 15
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: 8bdNH#L0
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is too long or too short. Input: 2, Output: 11
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: yHgf9
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is too long or too short. Input: 2, Output: 11
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: 9kVfa
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is too long or too short. Input: 4, Output: 12
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: xkgdq#L2
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is too long or too short. Input: 6, Output: 21
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: SFcfd
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is too long or too short. Input: 5, Output: 19
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: Lgozr#L1
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is too long or too short. Input: 5, Output: 15
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: daUGZ#L1
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is too long or too short. Input: 5, Output: 16
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: sqEie
+WARNING:babeldoc.magazine.hitl:hitl: 2 ruled term(s) matched no input and changed nothing: 'CourierT H E UNESCO', 'Katerina Markelova'
+D:\Codes\BabelDOC\.venv\Lib\site-packages\xsdata\formats\dataclass\parsers\utils.py:130: ConverterWarning: Failed to convert value for `PdfCurve.debug_info`
+  `a` is not a valid `bool`
+  warnings.warn(message, ConverterWarning)
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is too long or too short. Input: 5, Output: 15
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: M4ZPX#L0
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is too long or too short. Input: 2, Output: 11
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: tLwuC
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is too long or too short. Input: 2, Output: 11
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: 6Rg2Q
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is too long or too short. Input: 4, Output: 12
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: XjexR#L2
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is too long or too short. Input: 6, Output: 21
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: gckXM
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is too long or too short. Input: 5, Output: 19
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: 8XxWt#L1
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is too long or too short. Input: 5, Output: 15
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: 3bUgy#L1
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Translation result is too long or too short. Input: 5, Output: 16
+WARNING:babeldoc.format.pdf.document_il.midend.il_translator_llm_only:Fallback to simple translation. paragraph id: wtcwL
+WARNING:babeldoc.magazine.hitl:hitl: 2 ruled term(s) matched no input and changed nothing: 'CourierT H E UNESCO', 'Katerina Markelova'
+D:\Codes\BabelDOC\.venv\Lib\site-packages\xsdata\formats\dataclass\parsers\utils.py:130: ConverterWarning: Failed to convert value for `PdfCurve.debug_info`
+  `a` is not a valid `bool`
+  warnings.warn(message, ConverterWarning)
+{
+  "sample": "Courier-en.pdf",
+  "model": "gpt-4o",
+  "lang_in": "en",
+  "lang_out": "zh",
+  "target_pages": [
+    4,
+    6,
+    8
+  ],
+  "pages_changed": [
+    2,
+    4,
+    6,
+    8
+  ],
+  "reflow_totals": {
+    "columns": 10,
+    "columns_applied": 9,
+    "columns_left": 1,
+    "excess_sum_after": 246.0524,
+    "excess_sum_before": 911.2068,
+    "pages_applied": 3,
+    "pages_considered": 3,
+    "pages_reverted": 0,
+    "paragraphs_moved": 23,
+    "shift_total_pt": 665.1544
+  },
+  "reflow_guards": {},
+  "reflow_notes": [],
+  "conservation": "examples\\output\\b10_5\\Courier-en\\conservation.json"
+}

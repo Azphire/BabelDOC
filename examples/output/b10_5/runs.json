@@ -1,0 +1,541 @@
+[
+  {
+    "sample": "Courier-en.pdf",
+    "model": "gpt-4o",
+    "lang_in": "en",
+    "lang_out": "zh",
+    "target_pages": [
+      4,
+      6,
+      8
+    ],
+    "arms": {
+      "off": {
+        "arm": "off",
+        "switch": false,
+        "seconds": 55.0,
+        "requests": 66,
+        "cache_hits": 66,
+        "api_calls": 0,
+        "pdf": "examples\\output\\b10_5\\Courier-en\\off\\Courier-en.b10_5.off.pdf",
+        "pdf_sha256": "90acfc804ccee894b1e0f57a2e7aec39bcaf493518ca02210fe6571529f43c49",
+        "page_hashes": {
+          "1": "b19742cf80a5dbc2caac12834a8b59b620f67f323443df54e39939817d098af7",
+          "2": "2fe8eb3b1b6dcfbfea7d9f96ce130caf43f48010ac9b879c2373b012097039cb",
+          "3": "ebec7eefb3d7142e0c387c8f84c9ae4cd5d88a1c54a853774ceb4fdc1fb8549e",
+          "4": "b55fb87ebc2f62e22bb4828186e7fef0f9fe1f77943bccf2bb0aaa1c4e2423d6",
+          "5": "5a6bd322863c4d1fbadebb6c3ab99f83fc637073efde8cc63da0465d308660a6",
+          "6": "fc41525529bd89e8564bd75d3fa5be7938fd0d56f507c34efbfddac90339e44d",
+          "7": "6bd033985321f123dde9fc351f8d8100fc7dda7e2e4d3dfff080ec5945d988d3",
+          "8": "60ec8283c4e8247a4de322e425cbc5354b8841274d84e3ce80ba02af0f2d17d2"
+        },
+        "raster": [
+          "examples\\output\\b10_5\\Courier-en\\off\\raster\\Courier-en.p4.png",
+          "examples\\output\\b10_5\\Courier-en\\off\\raster\\Courier-en.p6.png",
+          "examples\\output\\b10_5\\Courier-en\\off\\raster\\Courier-en.p8.png"
+        ],
+        "sidecars": [
+          "examples\\output\\b10_5\\Courier-en\\off\\sidecars\\issues.json",
+          "examples\\output\\b10_5\\Courier-en\\off\\sidecars\\react_repair.report.json",
+          "examples\\output\\b10_5\\Courier-en\\off\\sidecars\\title_typeset.report.json"
+        ],
+        "working_dir": "examples\\output\\b10_5\\Courier-en\\off\\work\\Courier-en"
+      },
+      "on": {
+        "arm": "on",
+        "switch": true,
+        "seconds": 50.8,
+        "requests": 66,
+        "cache_hits": 66,
+        "api_calls": 0,
+        "pdf": "examples\\output\\b10_5\\Courier-en\\on\\Courier-en.b10_5.on.pdf",
+        "pdf_sha256": "a68f1c8ff5685446fa030b9001142dce7a8131273559944f59b2ba9f57e53b1f",
+        "page_hashes": {
+          "1": "b19742cf80a5dbc2caac12834a8b59b620f67f323443df54e39939817d098af7",
+          "2": "2fe8eb3b1b6dcfbfea7d9f96ce130caf43f48010ac9b879c2373b012097039cb",
+          "3": "ebec7eefb3d7142e0c387c8f84c9ae4cd5d88a1c54a853774ceb4fdc1fb8549e",
+          "4": "969cd5f77c6f91e30ecd5ebf23698624cf00d213c1acf0813e3ecd4668c3a219",
+          "5": "5a6bd322863c4d1fbadebb6c3ab99f83fc637073efde8cc63da0465d308660a6",
+          "6": "c0af5b8a37eee880ed75b8006a4430b08a7d1b9c75f93381560ab9b0664861b8",
+          "7": "6bd033985321f123dde9fc351f8d8100fc7dda7e2e4d3dfff080ec5945d988d3",
+          "8": "cec81c9c0e245bfb87933d8b039d481a619c19ef2f0d1905e79a58965d330654"
+        },
+        "raster": [
+          "examples\\output\\b10_5\\Courier-en\\on\\raster\\Courier-en.p4.png",
+          "examples\\output\\b10_5\\Courier-en\\on\\raster\\Courier-en.p6.png",
+          "examples\\output\\b10_5\\Courier-en\\on\\raster\\Courier-en.p8.png"
+        ],
+        "sidecars": [
+          "examples\\output\\b10_5\\Courier-en\\on\\sidecars\\column_reflow.report.json",
+          "examples\\output\\b10_5\\Courier-en\\on\\sidecars\\issues.json",
+          "examples\\output\\b10_5\\Courier-en\\on\\sidecars\\react_repair.report.json",
+          "examples\\output\\b10_5\\Courier-en\\on\\sidecars\\title_typeset.report.json"
+        ],
+        "working_dir": "examples\\output\\b10_5\\Courier-en\\on\\work\\Courier-en"
+      }
+    },
+    "pages_changed": [
+      4,
+      6,
+      8
+    ],
+    "reflow_totals": {
+      "columns": 10,
+      "columns_applied": 9,
+      "columns_left": 1,
+      "excess_sum_after": 259.42,
+      "excess_sum_before": 911.2068,
+      "pages_applied": 3,
+      "pages_considered": 3,
+      "pages_reverted": 0,
+      "paragraphs_moved": 22,
+      "shift_total_pt": 651.7868
+    },
+    "reflow_guards": {},
+    "reflow_notes": [],
+    "conservation": "examples\\output\\b10_5\\Courier-en\\conservation.json"
+  },
+  {
+    "sample": "AramcoWorld-en-v2.pdf",
+    "model": "gpt-4o",
+    "lang_in": "en",
+    "lang_out": "zh",
+    "target_pages": [
+      4,
+      6,
+      7
+    ],
+    "arms": {
+      "off": {
+        "arm": "off",
+        "switch": false,
+        "seconds": 83.0,
+        "requests": 80,
+        "cache_hits": 80,
+        "api_calls": 0,
+        "pdf": "examples\\output\\b10_5\\AramcoWorld-en-v2\\off\\AramcoWorld-en-v2.b10_5.off.pdf",
+        "pdf_sha256": "11d39b0efb1d0e6058916e4f1c3a56232d434d935ab38d393fe83737cf6cc5e6",
+        "page_hashes": {
+          "1": "58033b584be7395e802e58f4c6bb8f36132258c41f63ddfc1feec132f23a404c",
+          "2": "b1575c22f307e5675c95237de45853d5242022da76ba785f8a0a5cf7b2df5d8b",
+          "3": "2ab4e8c3de908f0dad903c3e00dadd78fed1bd6dc050546d3fa4b51ca9a6388f",
+          "4": "13dc20cb079d8ef416b21eadcb70b25d9fb89a63294f056a5abb1b9fff945941",
+          "5": "cd4ec63e71011dcd31c82ccb97ff5ba3a846589492bceebefe242542a928eb13",
+          "6": "f010464a29a6b633bf4722106761dd3d763ca2e1589cc72d808b69223cc99527",
+          "7": "5948a1da5a9cbe49451b17105513774a75ea74e452cad99963d96d70c09f822e",
+          "8": "c1100747ae8bb05ff5e83f4833a268781a6c312ee44b653f55cc6ba06974be9e",
+          "9": "d730010f2a767933ca0ea29fcbfce8f7b36379c24c8c3fc4c5187482e6fd0db0"
+        },
+        "raster": [
+          "examples\\output\\b10_5\\AramcoWorld-en-v2\\off\\raster\\AramcoWorld-en-v2.p4.png",
+          "examples\\output\\b10_5\\AramcoWorld-en-v2\\off\\raster\\AramcoWorld-en-v2.p6.png",
+          "examples\\output\\b10_5\\AramcoWorld-en-v2\\off\\raster\\AramcoWorld-en-v2.p7.png"
+        ],
+        "sidecars": [
+          "examples\\output\\b10_5\\AramcoWorld-en-v2\\off\\sidecars\\issues.json",
+          "examples\\output\\b10_5\\AramcoWorld-en-v2\\off\\sidecars\\react_repair.report.json",
+          "examples\\output\\b10_5\\AramcoWorld-en-v2\\off\\sidecars\\title_typeset.report.json"
+        ],
+        "working_dir": "examples\\output\\b10_5\\AramcoWorld-en-v2\\off\\work\\AramcoWorld-en-v2"
+      },
+      "on": {
+        "arm": "on",
+        "switch": true,
+        "seconds": 83.5,
+        "requests": 80,
+        "cache_hits": 80,
+        "api_calls": 0,
+        "pdf": "examples\\output\\b10_5\\AramcoWorld-en-v2\\on\\AramcoWorld-en-v2.b10_5.on.pdf",
+        "pdf_sha256": "4436161c63da80ee9e3b14d89cd17b3e06edb30f5a2e8001f6d9abe7bb39fca8",
+        "page_hashes": {
+          "1": "58033b584be7395e802e58f4c6bb8f36132258c41f63ddfc1feec132f23a404c",
+          "2": "b1575c22f307e5675c95237de45853d5242022da76ba785f8a0a5cf7b2df5d8b",
+          "3": "2ab4e8c3de908f0dad903c3e00dadd78fed1bd6dc050546d3fa4b51ca9a6388f",
+          "4": "dad949a243426c10fc456c7097527875f1c21ddc7a58028a5e9f3bb73c2137aa",
+          "5": "cd4ec63e71011dcd31c82ccb97ff5ba3a846589492bceebefe242542a928eb13",
+          "6": "86b463a13722f97679f489b73698cb00486fd1c356a1acc729366f39c7f4307a",
+          "7": "aae068973a1f6a26f1010b9792ba2bf40dc486b842cf67ddd8d91338303b8679",
+          "8": "c1100747ae8bb05ff5e83f4833a268781a6c312ee44b653f55cc6ba06974be9e",
+          "9": "d730010f2a767933ca0ea29fcbfce8f7b36379c24c8c3fc4c5187482e6fd0db0"
+        },
+        "raster": [
+          "examples\\output\\b10_5\\AramcoWorld-en-v2\\on\\raster\\AramcoWorld-en-v2.p4.png",
+          "examples\\output\\b10_5\\AramcoWorld-en-v2\\on\\raster\\AramcoWorld-en-v2.p6.png",
+          "examples\\output\\b10_5\\AramcoWorld-en-v2\\on\\raster\\AramcoWorld-en-v2.p7.png"
+        ],
+        "sidecars": [
+          "examples\\output\\b10_5\\AramcoWorld-en-v2\\on\\sidecars\\column_reflow.report.json",
+          "examples\\output\\b10_5\\AramcoWorld-en-v2\\on\\sidecars\\issues.json",
+          "examples\\output\\b10_5\\AramcoWorld-en-v2\\on\\sidecars\\react_repair.report.json",
+          "examples\\output\\b10_5\\AramcoWorld-en-v2\\on\\sidecars\\title_typeset.report.json"
+        ],
+        "working_dir": "examples\\output\\b10_5\\AramcoWorld-en-v2\\on\\work\\AramcoWorld-en-v2"
+      }
+    },
+    "pages_changed": [
+      4,
+      6,
+      7
+    ],
+    "reflow_totals": {
+      "columns": 10,
+      "columns_applied": 5,
+      "columns_left": 5,
+      "excess_sum_after": 39.4871,
+      "excess_sum_before": 261.5048,
+      "pages_applied": 3,
+      "pages_considered": 3,
+      "pages_reverted": 0,
+      "paragraphs_moved": 19,
+      "shift_total_pt": 222.0177
+    },
+    "reflow_guards": {},
+    "reflow_notes": [],
+    "conservation": "examples\\output\\b10_5\\AramcoWorld-en-v2\\conservation.json"
+  },
+  {
+    "sample": "CERNCourier-en.pdf",
+    "model": "gpt-4o",
+    "lang_in": "en",
+    "lang_out": "zh",
+    "target_pages": [
+      1,
+      4
+    ],
+    "arms": {
+      "off": {
+        "arm": "off",
+        "switch": false,
+        "seconds": 56.2,
+        "requests": 104,
+        "cache_hits": 104,
+        "api_calls": 0,
+        "pdf": "examples\\output\\b10_5\\CERNCourier-en\\off\\CERNCourier-en.b10_5.off.pdf",
+        "pdf_sha256": "f3f0f3cbf5fd0eb90a2c5e5b9a09c90dc336d45625aeadaf43023e58eca607c2",
+        "page_hashes": {
+          "1": "9e3273b7892eeaa89bab92e048dd9939b830dbf1ade1b46158d555a0e1124287",
+          "2": "b3a1c7b57e9f838e051de6aecf43904e6a3fd749c19aa05deeb6bc7c13e4ecb1",
+          "3": "4b2e7ec245b630f1cc13c071610bea5b91d05e896004d0a512ffff1a6c4bce3b",
+          "4": "3801cc0e6d94cde766a13583b7f039943764600fd09a93a70e2b0e16bdd2e829"
+        },
+        "raster": [
+          "examples\\output\\b10_5\\CERNCourier-en\\off\\raster\\CERNCourier-en.p1.png",
+          "examples\\output\\b10_5\\CERNCourier-en\\off\\raster\\CERNCourier-en.p4.png"
+        ],
+        "sidecars": [
+          "examples\\output\\b10_5\\CERNCourier-en\\off\\sidecars\\issues.json",
+          "examples\\output\\b10_5\\CERNCourier-en\\off\\sidecars\\react_repair.report.json",
+          "examples\\output\\b10_5\\CERNCourier-en\\off\\sidecars\\title_typeset.report.json"
+        ],
+        "working_dir": "examples\\output\\b10_5\\CERNCourier-en\\off\\work\\CERNCourier-en"
+      },
+      "on": {
+        "arm": "on",
+        "switch": true,
+        "seconds": 56.1,
+        "requests": 104,
+        "cache_hits": 104,
+        "api_calls": 0,
+        "pdf": "examples\\output\\b10_5\\CERNCourier-en\\on\\CERNCourier-en.b10_5.on.pdf",
+        "pdf_sha256": "14611800ae029afcc0c7c7323f190ef2e32ec68ee874b5da45f16e3e86ac5be3",
+        "page_hashes": {
+          "1": "8f811c5f7ec3db0cab9ec40f3495152c19a4c96e8d7e5494284b18828bffdb76",
+          "2": "b3a1c7b57e9f838e051de6aecf43904e6a3fd749c19aa05deeb6bc7c13e4ecb1",
+          "3": "4b2e7ec245b630f1cc13c071610bea5b91d05e896004d0a512ffff1a6c4bce3b",
+          "4": "6d94ce59f40334b8a20ba4234cb932cc5cd8fdd9fb84eb109ef01220d3087bee"
+        },
+        "raster": [
+          "examples\\output\\b10_5\\CERNCourier-en\\on\\raster\\CERNCourier-en.p1.png",
+          "examples\\output\\b10_5\\CERNCourier-en\\on\\raster\\CERNCourier-en.p4.png"
+        ],
+        "sidecars": [
+          "examples\\output\\b10_5\\CERNCourier-en\\on\\sidecars\\column_reflow.report.json",
+          "examples\\output\\b10_5\\CERNCourier-en\\on\\sidecars\\issues.json",
+          "examples\\output\\b10_5\\CERNCourier-en\\on\\sidecars\\react_repair.report.json",
+          "examples\\output\\b10_5\\CERNCourier-en\\on\\sidecars\\title_typeset.report.json"
+        ],
+        "working_dir": "examples\\output\\b10_5\\CERNCourier-en\\on\\work\\CERNCourier-en"
+      }
+    },
+    "pages_changed": [
+      1,
+      4
+    ],
+    "reflow_totals": {
+      "columns": 18,
+      "columns_applied": 5,
+      "columns_left": 13,
+      "excess_sum_after": 148.2304,
+      "excess_sum_before": 355.7262,
+      "pages_applied": 2,
+      "pages_considered": 2,
+      "pages_reverted": 0,
+      "paragraphs_moved": 11,
+      "shift_total_pt": 207.4958
+    },
+    "reflow_guards": {},
+    "reflow_notes": [],
+    "conservation": "examples\\output\\b10_5\\CERNCourier-en\\conservation.json"
+  },
+  {
+    "sample": "Vogue-en.pdf",
+    "model": "gpt-4o",
+    "lang_in": "en",
+    "lang_out": "zh",
+    "target_pages": [
+      3
+    ],
+    "arms": {
+      "off": {
+        "arm": "off",
+        "switch": false,
+        "seconds": 30.6,
+        "requests": 20,
+        "cache_hits": 20,
+        "api_calls": 0,
+        "pdf": "examples\\output\\b10_5\\Vogue-en\\off\\Vogue-en.b10_5.off.pdf",
+        "pdf_sha256": "391a8428c05b13463e2063df6fdef6471d9dc63713e438c2a7dcbe3db7940655",
+        "page_hashes": {
+          "1": "32a52662f6b1d210603d75dc70716808e5829162ae08ed4aae5305440d3edc75",
+          "2": "a795fcb37de4b4fd4b20fa73f7d7170b1c0cf7d210eedb821638e06eff64937d",
+          "3": "39d7dc959a0afa67fd46563b4e3adde52ca183e47da589cc0fd694dea0328cdf"
+        },
+        "raster": [
+          "examples\\output\\b10_5\\Vogue-en\\off\\raster\\Vogue-en.p3.png"
+        ],
+        "sidecars": [
+          "examples\\output\\b10_5\\Vogue-en\\off\\sidecars\\issues.json",
+          "examples\\output\\b10_5\\Vogue-en\\off\\sidecars\\react_repair.report.json",
+          "examples\\output\\b10_5\\Vogue-en\\off\\sidecars\\title_typeset.report.json"
+        ],
+        "working_dir": "examples\\output\\b10_5\\Vogue-en\\off\\work\\Vogue-en"
+      },
+      "on": {
+        "arm": "on",
+        "switch": true,
+        "seconds": 30.7,
+        "requests": 20,
+        "cache_hits": 20,
+        "api_calls": 0,
+        "pdf": "examples\\output\\b10_5\\Vogue-en\\on\\Vogue-en.b10_5.on.pdf",
+        "pdf_sha256": "c374d37f5ab8a6c59a4fdbdf92188cd36bab102a22d29282f20d8ca8c8c744e2",
+        "page_hashes": {
+          "1": "32a52662f6b1d210603d75dc70716808e5829162ae08ed4aae5305440d3edc75",
+          "2": "a795fcb37de4b4fd4b20fa73f7d7170b1c0cf7d210eedb821638e06eff64937d",
+          "3": "39d7dc959a0afa67fd46563b4e3adde52ca183e47da589cc0fd694dea0328cdf"
+        },
+        "raster": [
+          "examples\\output\\b10_5\\Vogue-en\\on\\raster\\Vogue-en.p3.png"
+        ],
+        "sidecars": [
+          "examples\\output\\b10_5\\Vogue-en\\on\\sidecars\\column_reflow.report.json",
+          "examples\\output\\b10_5\\Vogue-en\\on\\sidecars\\issues.json",
+          "examples\\output\\b10_5\\Vogue-en\\on\\sidecars\\react_repair.report.json",
+          "examples\\output\\b10_5\\Vogue-en\\on\\sidecars\\title_typeset.report.json"
+        ],
+        "working_dir": "examples\\output\\b10_5\\Vogue-en\\on\\work\\Vogue-en"
+      }
+    },
+    "pages_changed": [],
+    "reflow_totals": {
+      "columns": 0,
+      "columns_applied": 0,
+      "columns_left": 0,
+      "excess_sum_after": 0,
+      "excess_sum_before": 0,
+      "pages_applied": 0,
+      "pages_considered": 0,
+      "pages_reverted": 0,
+      "paragraphs_moved": 0,
+      "shift_total_pt": 0
+    },
+    "reflow_guards": {},
+    "reflow_notes": [],
+    "conservation": "examples\\output\\b10_5\\Vogue-en\\conservation.json"
+  },
+  {
+    "sample": "FD-en-v2.pdf",
+    "model": "gpt-4o",
+    "lang_in": "en",
+    "lang_out": "zh",
+    "target_pages": [
+      3,
+      5
+    ],
+    "arms": {
+      "off": {
+        "arm": "off",
+        "switch": false,
+        "seconds": 55.8,
+        "requests": 79,
+        "cache_hits": 79,
+        "api_calls": 0,
+        "pdf": "examples\\output\\b10_5\\FD-en-v2\\off\\FD-en-v2.b10_5.off.pdf",
+        "pdf_sha256": "e1c84f9fa0d20121c0a19e13003cb45cc1c8565ca497fb91cf0c7d439108a1a8",
+        "page_hashes": {
+          "1": "dbcd1bcd20f34d940ea14693d2c9815d64f1f492e2af9fd7b472e24274d73225",
+          "2": "025858d4714bcb8bdccfca92ab380fb3f16491656480d5adad1c15fbd8b7a09b",
+          "3": "1e545de62664be6eae4bc16f604dbb70648211d109b84ee3536de40fddf8d00c",
+          "4": "b4afadddba12443f49b5dc1067da9479333c79f2d3d34b9988e8d23841ac8a53",
+          "5": "82786d324e9f5b86b4a34ae4f2c49e9ece357ebdc79b50a9f39f2af21af81a11",
+          "6": "169bf07eaa609edfac555364363972c844bec76b0a9916c99ca85d08db91b7cc",
+          "7": "d6059e85a2689dcad118c3985f414c03aa640d1dda8e1363b2031954df76cd92",
+          "8": "56f86559449dc580a5c9d879a251627ae4a8a4459ddec651b25e5e12a0c4bba4",
+          "9": "477d5aa227d1e460d019658622fd40ca5ac36fbe87443023ed88fdd30dced871"
+        },
+        "raster": [
+          "examples\\output\\b10_5\\FD-en-v2\\off\\raster\\FD-en-v2.p3.png",
+          "examples\\output\\b10_5\\FD-en-v2\\off\\raster\\FD-en-v2.p5.png"
+        ],
+        "sidecars": [
+          "examples\\output\\b10_5\\FD-en-v2\\off\\sidecars\\issues.json",
+          "examples\\output\\b10_5\\FD-en-v2\\off\\sidecars\\react_repair.report.json",
+          "examples\\output\\b10_5\\FD-en-v2\\off\\sidecars\\title_typeset.report.json"
+        ],
+        "working_dir": "examples\\output\\b10_5\\FD-en-v2\\off\\work\\FD-en-v2"
+      },
+      "on": {
+        "arm": "on",
+        "switch": true,
+        "seconds": 55.1,
+        "requests": 79,
+        "cache_hits": 79,
+        "api_calls": 0,
+        "pdf": "examples\\output\\b10_5\\FD-en-v2\\on\\FD-en-v2.b10_5.on.pdf",
+        "pdf_sha256": "5dc7453ec60bb26a0a5bc4e2505ed030d50dd095a5d117a43d35cdd01f722683",
+        "page_hashes": {
+          "1": "dbcd1bcd20f34d940ea14693d2c9815d64f1f492e2af9fd7b472e24274d73225",
+          "2": "025858d4714bcb8bdccfca92ab380fb3f16491656480d5adad1c15fbd8b7a09b",
+          "3": "1e545de62664be6eae4bc16f604dbb70648211d109b84ee3536de40fddf8d00c",
+          "4": "b4afadddba12443f49b5dc1067da9479333c79f2d3d34b9988e8d23841ac8a53",
+          "5": "82786d324e9f5b86b4a34ae4f2c49e9ece357ebdc79b50a9f39f2af21af81a11",
+          "6": "169bf07eaa609edfac555364363972c844bec76b0a9916c99ca85d08db91b7cc",
+          "7": "d6059e85a2689dcad118c3985f414c03aa640d1dda8e1363b2031954df76cd92",
+          "8": "56f86559449dc580a5c9d879a251627ae4a8a4459ddec651b25e5e12a0c4bba4",
+          "9": "477d5aa227d1e460d019658622fd40ca5ac36fbe87443023ed88fdd30dced871"
+        },
+        "raster": [
+          "examples\\output\\b10_5\\FD-en-v2\\on\\raster\\FD-en-v2.p3.png",
+          "examples\\output\\b10_5\\FD-en-v2\\on\\raster\\FD-en-v2.p5.png"
+        ],
+        "sidecars": [
+          "examples\\output\\b10_5\\FD-en-v2\\on\\sidecars\\column_reflow.report.json",
+          "examples\\output\\b10_5\\FD-en-v2\\on\\sidecars\\issues.json",
+          "examples\\output\\b10_5\\FD-en-v2\\on\\sidecars\\react_repair.report.json",
+          "examples\\output\\b10_5\\FD-en-v2\\on\\sidecars\\title_typeset.report.json"
+        ],
+        "working_dir": "examples\\output\\b10_5\\FD-en-v2\\on\\work\\FD-en-v2"
+      }
+    },
+    "pages_changed": [],
+    "reflow_totals": {
+      "columns": 0,
+      "columns_applied": 0,
+      "columns_left": 0,
+      "excess_sum_after": 0,
+      "excess_sum_before": 0,
+      "pages_applied": 0,
+      "pages_considered": 0,
+      "pages_reverted": 0,
+      "paragraphs_moved": 0,
+      "shift_total_pt": 0
+    },
+    "reflow_guards": {},
+    "reflow_notes": [],
+    "conservation": "examples\\output\\b10_5\\FD-en-v2\\conservation.json"
+  },
+  {
+    "sample": "Courier-zh.pdf",
+    "model": "gpt-4o",
+    "lang_in": "zh",
+    "lang_out": "en",
+    "target_pages": [
+      4,
+      6,
+      8
+    ],
+    "arms": {
+      "off": {
+        "arm": "off",
+        "switch": false,
+        "seconds": 76.4,
+        "requests": 63,
+        "cache_hits": 63,
+        "api_calls": 0,
+        "pdf": "examples\\output\\b10_5\\Courier-zh\\off\\Courier-zh.b10_5.off.pdf",
+        "pdf_sha256": "d06ba3dc085040f3971bf63791049efbfd34d3a3946d789de09c55f658168185",
+        "page_hashes": {
+          "1": "b6ee677d41983e8abe64c700be6afb1deb338dd8c3de64cc45f282908a210c82",
+          "2": "55a3707c57f5887f647acba322c6750c5195227c8508182426b560a18af5c71f",
+          "3": "a480f988688ac14446a995a8aa927dbe5c33c9e3b8845798ce3ced0f9b830f01",
+          "4": "0ae6a0077ab463c97d8f2e2dbf82dc489abef3ac053de41634d295b221b332ec",
+          "5": "92e2654ef254a25402dc6844b0d60d3d32a8c34978f81d10ff31bdf2288c9d92",
+          "6": "c968c8768143bfbda85c87d6a1119b313cc2a13621301f9bd247ef4e8f37d082",
+          "7": "35a14e30bda15d1fbf77db0658e4fdface864104266998f7e278845a401934fa",
+          "8": "4a62ab47462d44556a2169f8cfe0019cbc3d93539cf57e3331bc450caf938cbf"
+        },
+        "raster": [
+          "examples\\output\\b10_5\\Courier-zh\\off\\raster\\Courier-zh.p4.png",
+          "examples\\output\\b10_5\\Courier-zh\\off\\raster\\Courier-zh.p6.png",
+          "examples\\output\\b10_5\\Courier-zh\\off\\raster\\Courier-zh.p8.png"
+        ],
+        "sidecars": [
+          "examples\\output\\b10_5\\Courier-zh\\off\\sidecars\\issues.json",
+          "examples\\output\\b10_5\\Courier-zh\\off\\sidecars\\react_repair.report.json",
+          "examples\\output\\b10_5\\Courier-zh\\off\\sidecars\\title_typeset.report.json"
+        ],
+        "working_dir": "examples\\output\\b10_5\\Courier-zh\\off\\work\\Courier-zh"
+      },
+      "on": {
+        "arm": "on",
+        "switch": true,
+        "seconds": 76.0,
+        "requests": 63,
+        "cache_hits": 63,
+        "api_calls": 0,
+        "pdf": "examples\\output\\b10_5\\Courier-zh\\on\\Courier-zh.b10_5.on.pdf",
+        "pdf_sha256": "342663da2912f19b6ac3b92146f9fa2391b67040ea824c3bcd3e1554b4c74956",
+        "page_hashes": {
+          "1": "b6ee677d41983e8abe64c700be6afb1deb338dd8c3de64cc45f282908a210c82",
+          "2": "55a3707c57f5887f647acba322c6750c5195227c8508182426b560a18af5c71f",
+          "3": "a480f988688ac14446a995a8aa927dbe5c33c9e3b8845798ce3ced0f9b830f01",
+          "4": "0ae6a0077ab463c97d8f2e2dbf82dc489abef3ac053de41634d295b221b332ec",
+          "5": "92e2654ef254a25402dc6844b0d60d3d32a8c34978f81d10ff31bdf2288c9d92",
+          "6": "c968c8768143bfbda85c87d6a1119b313cc2a13621301f9bd247ef4e8f37d082",
+          "7": "35a14e30bda15d1fbf77db0658e4fdface864104266998f7e278845a401934fa",
+          "8": "4a62ab47462d44556a2169f8cfe0019cbc3d93539cf57e3331bc450caf938cbf"
+        },
+        "raster": [
+          "examples\\output\\b10_5\\Courier-zh\\on\\raster\\Courier-zh.p4.png",
+          "examples\\output\\b10_5\\Courier-zh\\on\\raster\\Courier-zh.p6.png",
+          "examples\\output\\b10_5\\Courier-zh\\on\\raster\\Courier-zh.p8.png"
+        ],
+        "sidecars": [
+          "examples\\output\\b10_5\\Courier-zh\\on\\sidecars\\column_reflow.report.json",
+          "examples\\output\\b10_5\\Courier-zh\\on\\sidecars\\issues.json",
+          "examples\\output\\b10_5\\Courier-zh\\on\\sidecars\\react_repair.report.json",
+          "examples\\output\\b10_5\\Courier-zh\\on\\sidecars\\title_typeset.report.json"
+        ],
+        "working_dir": "examples\\output\\b10_5\\Courier-zh\\on\\work\\Courier-zh"
+      }
+    },
+    "pages_changed": [],
+    "reflow_totals": {
+      "columns": 0,
+      "columns_applied": 0,
+      "columns_left": 0,
+      "excess_sum_after": 0,
+      "excess_sum_before": 0,
+      "pages_applied": 0,
+      "pages_considered": 0,
+      "pages_reverted": 0,
+      "paragraphs_moved": 0,
+      "shift_total_pt": 0
+    },
+    "reflow_guards": {},
+    "reflow_notes": [
+      "the target language 'en' is outside ['zh']; no page was reflowed"
+    ],
+    "conservation": "examples\\output\\b10_5\\Courier-zh\\conservation.json"
+  }
+]

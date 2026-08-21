@@ -22,14 +22,14 @@ layout as the source drew it says so the same way, and is skipped on a run that
 kept no checkpoint to read it from: its finding is a claim about what the
 translation changed, and without the before there is no such claim to make.
 
-One pass that does change the document is called from here, before any of this
-runs: the heading policy in ``magazine/title_typeset.py``. It belongs in the
-same window -- after the geometry is final, before anything reads it -- and this
-call is the only extension owned code the pipeline runs in that window, so
-reaching the window through it is what keeps the pipeline itself unchanged. It
-carries its own switch and answers for its own sidecar; with that switch down it
-returns having read nothing, and detection then sees exactly the document it
-saw before.
+Two passes that do change the document are called from here, before any of this
+runs: the heading policy in ``magazine/title_typeset.py`` and the column reflow
+in ``magazine/column_reflow.py``. Both belong in the same window -- after the
+geometry is final, before anything reads it -- and this call is the only
+extension owned code the pipeline runs in that window, so reaching the window
+through it is what keeps the pipeline itself unchanged. Each carries its own
+switch and answers for its own sidecar; with those switches down they return
+having read nothing, and detection then sees exactly the document it saw before.
 """
 
 from __future__ import annotations
@@ -253,12 +253,17 @@ def detect_issues(translation_config, docs) -> list[Issue]:
     first saw. The import is local because that package reads this one.
 
     The heading policy runs first, and before the switch is consulted, so that
-    what is detected is the document as it will be written. Its import is local
-    for the same reason the controller's is.
+    what is detected is the document as it will be written. The column reflow
+    runs after it and on the same terms, because what it measures is the gap
+    between one paragraph and the next and the heading policy is the last pass
+    that moves either of them. Both imports are local for the same reason the
+    controller's is.
     """
+    from babeldoc.magazine import column_reflow
     from babeldoc.magazine import title_typeset
 
     title_typeset.apply(translation_config, docs)
+    column_reflow.apply(translation_config, docs)
     if not enabled(translation_config):
         return []
     from babeldoc.magazine.react import controller
