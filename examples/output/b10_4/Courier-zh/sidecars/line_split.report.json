@@ -1,7 +1,7 @@
 {
   "exemptions": [
     {
-      "debug_id": "SiAWa",
+      "debug_id": "dPXLS",
       "heterogeneous": false,
       "lines": 5,
       "mean_line_chars": 24.4,
@@ -10,7 +10,7 @@
       "reason": "uniform_styling"
     },
     {
-      "debug_id": "bYrgy",
+      "debug_id": "Fj5bu",
       "heterogeneous": false,
       "lines": 6,
       "mean_line_chars": 28.5,
@@ -19,7 +19,7 @@
       "reason": "uniform_styling"
     },
     {
-      "debug_id": "JVpHL",
+      "debug_id": "Lno9Q",
       "heterogeneous": false,
       "lines": 10,
       "mean_line_chars": 29.7,
@@ -28,7 +28,7 @@
       "reason": "uniform_styling"
     },
     {
-      "debug_id": "tsNu3",
+      "debug_id": "eXf84",
       "heterogeneous": false,
       "lines": 4,
       "mean_line_chars": 26.8,
@@ -37,7 +37,7 @@
       "reason": "uniform_styling"
     },
     {
-      "debug_id": "wN2UL",
+      "debug_id": "mMMfJ",
       "heterogeneous": false,
       "lines": 4,
       "mean_line_chars": 20.5,
@@ -46,7 +46,7 @@
       "reason": "uniform_styling"
     },
     {
-      "debug_id": "tf3We",
+      "debug_id": "PzgLX",
       "heterogeneous": false,
       "lines": 5,
       "mean_line_chars": 27.2,
@@ -55,7 +55,7 @@
       "reason": "uniform_styling"
     },
     {
-      "debug_id": "oUQ57",
+      "debug_id": "JbYrW",
       "heterogeneous": false,
       "lines": 2,
       "mean_line_chars": 6.0,
@@ -64,7 +64,7 @@
       "reason": "uniform_styling"
     },
     {
-      "debug_id": "YEsnh",
+      "debug_id": "6HbHd",
       "heterogeneous": false,
       "lines": 2,
       "mean_line_chars": 22.5,
@@ -73,7 +73,7 @@
       "reason": "uniform_styling"
     },
     {
-      "debug_id": "LTuES",
+      "debug_id": "DiTdz",
       "heterogeneous": false,
       "lines": 2,
       "mean_line_chars": 11.0,
@@ -167,10 +167,10 @@
   "splits": [
     {
       "characters": 72,
-      "debug_id": "q3gXw",
+      "debug_id": "G3MZP",
       "line_paragraphs": [
-        "q3gXw#L0",
-        "q3gXw#L1"
+        "G3MZP#L0",
+        "G3MZP#L1"
       ],
       "lines": 2,
       "mean_line_chars": 34.0,
@@ -185,10 +185,10 @@
     },
     {
       "characters": 35,
-      "debug_id": "6dgMs",
+      "debug_id": "2vfWN",
       "line_paragraphs": [
-        "6dgMs#L0",
-        "6dgMs#L1"
+        "2vfWN#L0",
+        "2vfWN#L1"
       ],
       "lines": 2,
       "mean_line_chars": 16.5,
@@ -203,10 +203,10 @@
     },
     {
       "characters": 45,
-      "debug_id": "6FyNC",
+      "debug_id": "xd9RA",
       "line_paragraphs": [
-        "6FyNC#L0",
-        "6FyNC#L1"
+        "xd9RA#L0",
+        "xd9RA#L1"
       ],
       "lines": 2,
       "mean_line_chars": 21.0,
@@ -221,11 +221,11 @@
     },
     {
       "characters": 88,
-      "debug_id": "uVbNF",
+      "debug_id": "rKfLq",
       "line_paragraphs": [
-        "uVbNF#L0",
-        "uVbNF#L1",
-        "uVbNF#L2"
+        "rKfLq#L0",
+        "rKfLq#L1",
+        "rKfLq#L2"
       ],
       "lines": 3,
       "mean_line_chars": 28.3,
@@ -241,10 +241,10 @@
     },
     {
       "characters": 54,
-      "debug_id": "aNsud",
+      "debug_id": "wUVSB",
       "line_paragraphs": [
-        "aNsud#L0",
-        "aNsud#L1"
+        "wUVSB#L0",
+        "wUVSB#L1"
       ],
       "lines": 2,
       "mean_line_chars": 26.0,
@@ -259,11 +259,11 @@
     },
     {
       "characters": 70,
-      "debug_id": "Z22pa",
+      "debug_id": "B8uD1",
       "line_paragraphs": [
-        "Z22pa#L0",
-        "Z22pa#L1",
-        "Z22pa#L2"
+        "B8uD1#L0",
+        "B8uD1#L1",
+        "B8uD1#L2"
       ],
       "lines": 3,
       "mean_line_chars": 22.3,
@@ -279,10 +279,10 @@
     },
     {
       "characters": 62,
-      "debug_id": "zqfRd",
+      "debug_id": "aQjTm",
       "line_paragraphs": [
-        "zqfRd#L0",
-        "zqfRd#L1"
+        "aQjTm#L0",
+        "aQjTm#L1"
       ],
       "lines": 2,
       "mean_line_chars": 30.0,

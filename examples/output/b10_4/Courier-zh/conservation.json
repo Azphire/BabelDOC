@@ -41,6 +41,26 @@
       "paragraphs": 13,
       "differing": [
         {
+          "reference": "p5#2",
+          "baseline": "For a long time, academic research and traditional knowledge have each followed their own paths without merging. Technicians use scientific methods, while indigenous communities rely on intuitive perception. A turning point emerged when both sides decided to \"join forces\"—this alliance was formed by Brazil's oldest indigenous peoples.",
+          "run": "For a long time, academic research and traditional knowledge have operated independently, without integration. Technicians employ scientific methods, while indigenous communities rely on intuitive perception. A turning point emerged when both sides decided to 'join forces'—this alliance was originally commemorated by Brazil's oldest institution to mark the 100th anniversary of the birth of quantum mechanics. "
+        },
+        {
+          "reference": "p5#4",
+          "baseline": "At dawn, the air is filled with a rusty, humid scent, intertwined with the smell of charcoal smoke. The Paumari people are an indigenous group of about two thousand, residing on the vast lands of Amazonas in northwestern Brazil. Their self-definition cannot be found in scientific textbooks: \"We are the Water People, the only ones truly living in the water.\"",
+          "run": "At dawn, the air is filled with a rusty, humid scent, intertwined with the smell of charcoal smoke. The Paumari are an indigenous group of about two thousand people, residing on the vast lands of Amazonas in northwestern Brazil. Their definition of themselves cannot be found in scientific textbooks: \"We are the Water People, the only ones truly living in the water."
+        },
+        {
+          "reference": "p5#5",
+          "baseline": "On the Purus River, as twilight fades, the heat still lingers over the water's surface, and an Arapaima emerges to gulp air. This deep, moist, ancient sound awakens the nearly extinct vitality of this land. \"Nature is calling for our help,\" recalls the young fisherman Chico Paumari, \"When we rushed to the lake, we found it empty. Our livelihood seemed to vanish before our eyes.\"",
+          "run": "On the Purus River, as twilight fades, the heat still lingers over the water's surface, and an Arapaima emerges, gulping air. This deep, moist, ancient sound awakens the nearly extinct vitality of this land. \"Nature is calling for our help,\" recalls the young fisherman Chico Paumari, \"When we rushed to the lake, we found it empty. Seeing our livelihood slipping away,"
+        },
+        {
+          "reference": "p5#7",
+          "baseline": "The Arapaima is crucial to the survival of the Paumari people, and its population once declined sharply. In response, the Paumari in Amazonas participated in a species recovery program that combines scientific knowledge with traditional wisdom. A few years later, the Purus River has once again seen the presence of this fish species.",
+          "run": "The Arapaima is crucial to the survival of the Paumari people, but its population once declined sharply. In response, the Paumari in Amazonas participated in a species recovery program that combines scientific knowledge with traditional wisdom. A few years later, the Purus River has once again seen the presence of this fish species."
+        },
+        {
           "reference": "p5#11",
           "baseline": "Marcelo Silva de Sousa (Marcelo Silva de Sousa)",
           "run": "Marcelo Silva de Sousa"

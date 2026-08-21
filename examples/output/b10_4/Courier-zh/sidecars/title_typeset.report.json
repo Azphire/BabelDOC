@@ -222,7 +222,7 @@
       "on_floor": "wrap",
       "page": 7,
       "reference": "p7#6",
-      "required_scale": 0.621,
+      "required_scale": 0.6063,
       "restored": true,
       "suppressed": false
     },
@@ -250,7 +250,7 @@
       "on_floor": "wrap",
       "page": 7,
       "reference": "p7#15",
-      "required_scale": 0.2813,
+      "required_scale": 0.2823,
       "restored": true,
       "suppressed": false
     },

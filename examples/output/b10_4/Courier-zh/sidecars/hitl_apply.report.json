@@ -9,18 +9,60 @@
       "page": 1
     },
     {
+      "kind": "article_opener",
+      "machine_conf": 0.8125,
+      "machine_kind": "article_opener",
+      "machine_source": "deterministic",
+      "page": 2
+    },
+    {
       "kind": "photo_spread",
       "machine_conf": 1.0,
       "machine_kind": "advertisement",
       "machine_source": "deterministic",
       "page": 3
+    },
+    {
+      "kind": "article_body",
+      "machine_conf": 1.0,
+      "machine_kind": "sidebar_heavy",
+      "machine_source": "deterministic",
+      "page": 4
+    },
+    {
+      "kind": "article_opener",
+      "machine_conf": 1.0,
+      "machine_kind": "article_opener",
+      "machine_source": "deterministic",
+      "page": 5
+    },
+    {
+      "kind": "article_body",
+      "machine_conf": 1.0,
+      "machine_kind": "sidebar_heavy",
+      "machine_source": "deterministic",
+      "page": 6
+    },
+    {
+      "kind": "article_opener",
+      "machine_conf": 1.0,
+      "machine_kind": "sidebar_heavy",
+      "machine_source": "deterministic",
+      "page": 7
+    },
+    {
+      "kind": "article_body",
+      "machine_conf": 1.0,
+      "machine_kind": "sidebar_heavy",
+      "machine_source": "deterministic",
+      "page": 8
     }
   ],
   "sample": "Courier-zh",
   "terms": {
     "auto_glossary_kept": 174,
     "auto_glossary_relocated": "auto_extracted_glossary",
-    "defaulted": 14,
+    "defaulted": 11,
     "dropped_from_auto": [],
     "entries": [
       {
@@ -77,21 +119,6 @@
         "decided_by": "policy",
         "source": "Sisco Auala",
         "target": "Sisco Auala"
-      },
-      {
-        "decided_by": "policy",
-        "source": "Delsie Betty Bosi",
-        "target": "Delsie Betty Bosi"
-      },
-      {
-        "decided_by": "policy",
-        "source": "Hindou Oumarou Ibrahim",
-        "target": "Hindou Oumarou Ibrahim"
-      },
-      {
-        "decided_by": "policy",
-        "source": "Salanieta Kitolelei",
-        "target": "Salanieta Kitolelei"
       }
     ],
     "glossary": "hitl_decisions",
@@ -188,30 +215,6 @@
         "matched_prompt_count": 1,
         "source": "Sisco Auala",
         "target": "Sisco Auala"
-      },
-      {
-        "matched_excerpts": [
-          "在所罗门群岛的陶马科岛,女性是陆地和海洋的守护 者。她们采摘并加工露兜树(这种小型树木广泛分布于波利 尼西亚、密克罗尼西亚等地区),编织出为航海提供动力的 船帆 —这项技艺已延续三千余年。正如岛民德尔西·贝 蒂·博西 (Delsie Betty Bosi) 所言:“男性负责建造大部"
-        ],
-        "matched_prompt_count": 1,
-        "source": "Delsie Betty Bosi",
-        "target": "Delsie Betty Bosi"
-      },
-      {
-        "matched_excerpts": [
-          "土 著人 民领 袖、联 合国 土著 问题 常设 论 坛第 二十 三届 会议 主席 欣杜· 奥马 鲁·易卜拉欣(Hindou Oumarou Ibrahim) 在 2024 年 4 月指出,“这些知识并非纸 上谈兵,而是历经数百年实践检验的智 慧结晶。”"
-        ],
-        "matched_prompt_count": 1,
-        "source": "Hindou Oumarou Ibrahim",
-        "target": "Hindou Oumarou Ibrahim"
-      },
-      {
-        "matched_excerpts": [
-          "学框架的价值。正如斐济研究学者萨拉尼埃塔·基托莱莱 (Salanieta Kitolelei) 在所罗门群岛霍尼亚拉举行的 2025 年第二届太平洋岛国海洋会议上所言:“本质并无二致— 我们只是用不同的语言描述同一件事。”"
-        ],
-        "matched_prompt_count": 1,
-        "source": "Salanieta Kitolelei",
-        "target": "Salanieta Kitolelei"
       }
     ],
     "overridden": [],

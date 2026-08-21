@@ -1685,7 +1685,7 @@
       "policy": "transliterate",
       "source": "Daniel Robinson",
       "translator_view": null,
-      "vote_count": 2
+      "vote_count": 1
     },
     {
       "auto_target": "David Jefferson",
@@ -1700,7 +1700,7 @@
       "policy": "transliterate",
       "source": "David Jefferson",
       "translator_view": null,
-      "vote_count": 2
+      "vote_count": 1
     },
     {
       "auto_target": null,
@@ -1819,141 +1819,6 @@
       "person_shaped": true,
       "policy": "transliterate",
       "source": "Sisco Auala",
-      "translator_view": null,
-      "vote_count": 1
-    },
-    {
-      "auto_target": "Delsie Betty Bosi",
-      "candidates": [
-        "Delsie Betty Bosi"
-      ],
-      "first_page": 4,
-      "is_person": true,
-      "observed_target": "Delsie Betty Bosi",
-      "origin": "name_harvest",
-      "person_shaped": true,
-      "policy": "transliterate",
-      "source": "Delsie Betty Bosi",
-      "translator_view": null,
-      "vote_count": 1
-    },
-    {
-      "auto_target": "Hindou Oumarou Ibrahim",
-      "candidates": [
-        "Hindou Oumarou Ibrahim"
-      ],
-      "first_page": 4,
-      "is_person": true,
-      "observed_target": "Hindou Oumarou Ibrahim",
-      "origin": "name_harvest",
-      "person_shaped": true,
-      "policy": "transliterate",
-      "source": "Hindou Oumarou Ibrahim",
-      "translator_view": null,
-      "vote_count": 1
-    },
-    {
-      "auto_target": "Salanieta Kitolelei",
-      "candidates": [
-        "Salanieta Kitolelei"
-      ],
-      "first_page": 4,
-      "is_person": true,
-      "observed_target": "Salanieta Kitolelei",
-      "origin": "name_harvest",
-      "person_shaped": true,
-      "policy": "transliterate",
-      "source": "Salanieta Kitolelei",
-      "translator_view": null,
-      "vote_count": 1
-    },
-    {
-      "auto_target": null,
-      "candidates": [
-        "Associated Traditional Knowledge"
-      ],
-      "first_page": 8,
-      "is_person": false,
-      "observed_target": null,
-      "origin": "name_harvest",
-      "person_shaped": true,
-      "policy": "transliterate",
-      "source": "Associated Traditional Knowledge",
-      "translator_view": null,
-      "vote_count": 1
-    },
-    {
-      "auto_target": null,
-      "candidates": [
-        "Benefit Sharing"
-      ],
-      "first_page": 8,
-      "is_person": false,
-      "observed_target": null,
-      "origin": "name_harvest",
-      "person_shaped": true,
-      "policy": "transliterate",
-      "source": "Benefit Sharing",
-      "translator_view": null,
-      "vote_count": 1
-    },
-    {
-      "auto_target": null,
-      "candidates": [
-        "Biological Diversity"
-      ],
-      "first_page": 8,
-      "is_person": false,
-      "observed_target": null,
-      "origin": "name_harvest",
-      "person_shaped": true,
-      "policy": "transliterate",
-      "source": "Biological Diversity",
-      "translator_view": null,
-      "vote_count": 1
-    },
-    {
-      "auto_target": null,
-      "candidates": [
-        "Genetic Resources"
-      ],
-      "first_page": 8,
-      "is_person": false,
-      "observed_target": null,
-      "origin": "name_harvest",
-      "person_shaped": true,
-      "policy": "transliterate",
-      "source": "Genetic Resources",
-      "translator_view": null,
-      "vote_count": 1
-    },
-    {
-      "auto_target": null,
-      "candidates": [
-        "Intellectual Property"
-      ],
-      "first_page": 8,
-      "is_person": false,
-      "observed_target": null,
-      "origin": "name_harvest",
-      "person_shaped": true,
-      "policy": "transliterate",
-      "source": "Intellectual Property",
-      "translator_view": null,
-      "vote_count": 1
-    },
-    {
-      "auto_target": null,
-      "candidates": [
-        "Nagoya Protocol"
-      ],
-      "first_page": 8,
-      "is_person": false,
-      "observed_target": null,
-      "origin": "name_harvest",
-      "person_shaped": true,
-      "policy": "transliterate",
-      "source": "Nagoya Protocol",
       "translator_view": null,
       "vote_count": 1
     }

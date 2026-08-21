@@ -3,7 +3,13 @@
   "sample": "Courier-zh",
   "page_kinds": {
     "1": "toc",
-    "3": "photo_spread"
+    "2": "article_opener",
+    "3": "photo_spread",
+    "4": "article_body",
+    "5": "article_opener",
+    "6": "article_body",
+    "7": "article_opener",
+    "8": "article_body"
   },
   "terms": []
 }

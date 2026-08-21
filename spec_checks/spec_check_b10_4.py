@@ -76,6 +76,7 @@ from spec_checks import harness  # noqa: E402
 GATE_SET = "fast"
 
 BATCH_TAG = "b10.4"
+PREVIOUS_TAG = "b10.3"
 
 BATCH_DIR = ROOT / "examples" / "output" / "b10_4"
 PREVIOUS_DIR = ROOT / "examples" / "output" / "b10_3"
@@ -150,13 +151,20 @@ NAME_SAMPLES = ("AramcoWorld-en-v2", "FD-en-v2", "Vogue-en", "Courier-zh")
 
 DRAFT_VERSION = 2
 
-# The sample a person ruled on this batch, the number of page boundaries it
-# holds, and the one boundary the ruling opened. F2 recorded none of the
-# seven as chain eligible, because no page carried a kind whose policy admits
-# a chain; the ruling gives page three a kind whose policy does.
+# The sample a person ruled on this batch, and what the ruling did to its chain
+# account. F2 recorded none of its seven page boundaries as chain eligible,
+# because the classifier gave five of its eight pages a kind whose policy admits
+# no chain. The ruling retypes them, and six of the seven boundaries become
+# askable; two of the six clear the link bound and are built.
+#
+# The one boundary that stays shut is page one to page two, whose tail is the
+# contents page: a contents page is not chain eligible under any ruling, which
+# is the policy doing its job rather than the ruling failing to reach it.
 RULED_SAMPLE = "Courier-zh"
 RULED_BOUNDARIES = 7
-RULED_OPENED_BOUNDARY = (2, 3)
+RULED_ELIGIBLE_BOUNDARIES = 6
+RULED_SHUT_BOUNDARY = (1, 2)
+RULED_CHAINS_BUILT = 2
 
 DECLARED_STITCH = {
     "sample": "Vogue-en",
@@ -265,10 +273,21 @@ def git_output(args: list[str]) -> tuple[int, str]:
 
 
 def changed_paths() -> list[str]:
-    """This batch's delta, anchored to its own tag once the tag exists."""
+    """This batch's delta, anchored to its own tag once the tag exists.
+
+    Spanned from the previous batch's tag rather than from this one's parent.
+    A batch with a person in it commits twice -- once before the ruling and once
+    after it, which is what CLAUDE.md section 5.11 asks for -- and reading only
+    the tagged commit would check the second half of the delta and call it the
+    whole. From tag to tag is the batch however many commits it took.
+    """
     code, _ = git_output(["rev-parse", "--verify", f"{BATCH_TAG}^{{commit}}"])
     if code == 0:
-        _, out = git_output(["diff", "--name-only", f"{BATCH_TAG}^..{BATCH_TAG}"])
+        span = f"{BATCH_TAG}^..{BATCH_TAG}"
+        previous, _ = git_output(["rev-parse", "--verify", f"{PREVIOUS_TAG}^{{commit}}"])
+        if previous == 0:
+            span = f"{PREVIOUS_TAG}..{BATCH_TAG}"
+        _, out = git_output(["diff", "--name-only", span])
         return [line.strip() for line in out.splitlines() if line.strip()]
     _, tracked = git_output(["diff", "--name-only", "HEAD"])
     _, untracked = git_output(["ls-files", "--others", "--exclude-standard"])
@@ -1534,16 +1553,21 @@ def check_05e_the_ruling_reached_the_pages_it_names() -> None:
     ruling gets, which is the ruling arriving at all.
 
     The boundary account moves with it. F2 recorded none of this sample's seven
-    page boundaries as chain eligible, because no page had a kind whose policy
-    admits a chain. After the ruling exactly one is: the boundary the ruling was
-    taken to open.
+    page boundaries as chain eligible, because the classifier gave five of its
+    eight pages a kind whose policy admits no chain. After the ruling six of the
+    seven are askable, and the one that is not is the boundary whose tail is the
+    contents page -- which no ruling would open, because a contents page is not
+    something an article runs out of.
 
-    And there the causal chain stops, measurably. The eligible boundary scores
-    below the link bound, so no chain is built across it. That is the chain
-    detector declining on paragraph level evidence, which is the layer this
-    project gives the last word to -- a page kind is a soft prior and a boundary
-    score is the evidence -- so what is asserted is that the boundary became
-    askable, not that the answer came back yes.
+    And the chains are built: two of the six boundaries clear the link bound and
+    are merged, each joining a sentence the page break cut in half. That is the
+    whole causal chain, from a person naming a page kind to a sentence being
+    translated as one unit, and it is asserted end to end.
+
+    What is not asserted is that every eligible boundary becomes a chain. Four of
+    the six score below the bound, which is the chain detector declining on
+    paragraph level evidence -- the layer this project gives the last word to. A
+    page kind is a soft prior; a boundary score is the evidence.
     """
     sample = RULED_SAMPLE
     faults = []
@@ -1587,10 +1611,33 @@ def check_05e_the_ruling_reached_the_pages_it_names() -> None:
             for item in boundaries
             if item.get("eligible")
         ]
+        shut = [
+            (item.get("tail_page"), item.get("head_page"))
+            for item in boundaries
+            if not item.get("eligible")
+        ]
         if len(boundaries) != RULED_BOUNDARIES:
-            faults.append(f"{len(boundaries)} boundaries, and F2 recorded {RULED_BOUNDARIES}")
-        if eligible != [RULED_OPENED_BOUNDARY]:
+            faults.append(
+                f"{len(boundaries)} boundaries, and F2 recorded {RULED_BOUNDARIES}"
+            )
+        if len(eligible) != RULED_ELIGIBLE_BOUNDARIES:
             faults.append(f"the eligible boundaries are {eligible}")
+        if shut != [RULED_SHUT_BOUNDARY]:
+            faults.append(f"the boundaries that stay shut are {shut}")
+
+    merged = sidecar(sample, "chain_translation.report.json")
+    if merged is None:
+        faults.append("no chain translation report beside the run")
+    else:
+        if merged["counts"]["merged"] != RULED_CHAINS_BUILT:
+            faults.append(
+                f"{merged['counts']['merged']} chain(s) merged, and the batch "
+                f"measured {RULED_CHAINS_BUILT}"
+            )
+        for chain in merged["chains"]:
+            pages = sorted({item["page_index"] + 1 for item in chain["members"]})
+            if len(pages) < 2:
+                faults.append("a merged chain does not cross a page break")
     record(
         "check_05e_the_ruling_reached_the_pages_it_names",
         not faults,

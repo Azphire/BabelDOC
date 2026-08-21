@@ -1,24 +1,20 @@
 {
   "counts": {
-    "defaulted": 14,
-    "harvested": 22,
-    "person_shaped": 22,
-    "rows": 196,
-    "said_person": 14
+    "defaulted": 11,
+    "harvested": 13,
+    "person_shaped": 13,
+    "rows": 187,
+    "said_person": 11
   },
   "pages": [
-    1,
-    4,
-    6,
-    7,
-    8
+    1
   ],
   "policy": "transliterate",
   "request": {
-    "answered": 22,
+    "answered": 13,
     "batches": 1,
-    "prompt_sha256": "d0d5f2979653fd57ebd93e9a16d23ffc645044e804f6ef3bbf875bfadb82678c",
-    "requested": 22
+    "prompt_sha256": "f655ad9129a00cbc2a8572d071c230f9e09400653fd47f75a3baef5e9990b659",
+    "requested": 13
   },
   "rows": [
     {
@@ -1467,7 +1463,7 @@
       "person_shaped": true,
       "policy": "transliterate",
       "source": "Daniel Robinson",
-      "vote_count": 2
+      "vote_count": 1
     },
     {
       "auto_target": "David Jefferson",
@@ -1481,7 +1477,7 @@
       "person_shaped": true,
       "policy": "transliterate",
       "source": "David Jefferson",
-      "vote_count": 2
+      "vote_count": 1
     },
     {
       "auto_target": null,
@@ -1593,132 +1589,6 @@
       "person_shaped": true,
       "policy": "transliterate",
       "source": "Sisco Auala",
-      "vote_count": 1
-    },
-    {
-      "auto_target": "Delsie Betty Bosi",
-      "candidates": [
-        "Delsie Betty Bosi"
-      ],
-      "first_page": 4,
-      "is_person": true,
-      "observed_target": "Delsie Betty Bosi",
-      "origin": "name_harvest",
-      "person_shaped": true,
-      "policy": "transliterate",
-      "source": "Delsie Betty Bosi",
-      "vote_count": 1
-    },
-    {
-      "auto_target": "Hindou Oumarou Ibrahim",
-      "candidates": [
-        "Hindou Oumarou Ibrahim"
-      ],
-      "first_page": 4,
-      "is_person": true,
-      "observed_target": "Hindou Oumarou Ibrahim",
-      "origin": "name_harvest",
-      "person_shaped": true,
-      "policy": "transliterate",
-      "source": "Hindou Oumarou Ibrahim",
-      "vote_count": 1
-    },
-    {
-      "auto_target": "Salanieta Kitolelei",
-      "candidates": [
-        "Salanieta Kitolelei"
-      ],
-      "first_page": 4,
-      "is_person": true,
-      "observed_target": "Salanieta Kitolelei",
-      "origin": "name_harvest",
-      "person_shaped": true,
-      "policy": "transliterate",
-      "source": "Salanieta Kitolelei",
-      "vote_count": 1
-    },
-    {
-      "auto_target": null,
-      "candidates": [
-        "Associated Traditional Knowledge"
-      ],
-      "first_page": 8,
-      "is_person": false,
-      "observed_target": null,
-      "origin": "name_harvest",
-      "person_shaped": true,
-      "policy": "transliterate",
-      "source": "Associated Traditional Knowledge",
-      "vote_count": 1
-    },
-    {
-      "auto_target": null,
-      "candidates": [
-        "Benefit Sharing"
-      ],
-      "first_page": 8,
-      "is_person": false,
-      "observed_target": null,
-      "origin": "name_harvest",
-      "person_shaped": true,
-      "policy": "transliterate",
-      "source": "Benefit Sharing",
-      "vote_count": 1
-    },
-    {
-      "auto_target": null,
-      "candidates": [
-        "Biological Diversity"
-      ],
-      "first_page": 8,
-      "is_person": false,
-      "observed_target": null,
-      "origin": "name_harvest",
-      "person_shaped": true,
-      "policy": "transliterate",
-      "source": "Biological Diversity",
-      "vote_count": 1
-    },
-    {
-      "auto_target": null,
-      "candidates": [
-        "Genetic Resources"
-      ],
-      "first_page": 8,
-      "is_person": false,
-      "observed_target": null,
-      "origin": "name_harvest",
-      "person_shaped": true,
-      "policy": "transliterate",
-      "source": "Genetic Resources",
-      "vote_count": 1
-    },
-    {
-      "auto_target": null,
-      "candidates": [
-        "Intellectual Property"
-      ],
-      "first_page": 8,
-      "is_person": false,
-      "observed_target": null,
-      "origin": "name_harvest",
-      "person_shaped": true,
-      "policy": "transliterate",
-      "source": "Intellectual Property",
-      "vote_count": 1
-    },
-    {
-      "auto_target": null,
-      "candidates": [
-        "Nagoya Protocol"
-      ],
-      "first_page": 8,
-      "is_person": false,
-      "observed_target": null,
-      "origin": "name_harvest",
-      "person_shaped": true,
-      "policy": "transliterate",
-      "source": "Nagoya Protocol",
       "vote_count": 1
     }
   ],

@@ -1,6 +1,19 @@
 {
-  "api_attributions": [],
-  "api_calls": 0,
+  "api_attributions": [
+    {
+      "attempt": 1,
+      "cache_key": "6f37b5ba4e13697926d99536f848d31bbc75d627b98e9ad9a9a723d24467c23b",
+      "cache_verdict": "no_stored_reply_under_this_key",
+      "engine_identity": "OpenAITranslator/openai/en",
+      "group": "orphan_translation",
+      "kind": "translate_orphan_lines",
+      "prompt_sha256": "cc3f132c251022995b1e6386450b2b6546d9481686074dd1adbe64af3d650fa4",
+      "request_chars": 2830,
+      "request_head": "You are translating one short line of a magazine page into en.\n\nThe line was recovered by the page parser outside every detected block, so it\nwas never offered ",
+      "request_sha256": "fbc4a474ae7f1816959255bd1ca1b9778eac38ef074611cd7790d94d54ec1835"
+    }
+  ],
+  "api_calls": 1,
   "applications": 0,
   "config": {
     "actions": [
@@ -158,10 +171,22 @@
       "executed": [
         {
           "accepted": false,
-          "attempts": 0,
-          "calls": [],
+          "attempts": 1,
+          "calls": [
+            {
+              "attempt": 1,
+              "cache_key": "6f37b5ba4e13697926d99536f848d31bbc75d627b98e9ad9a9a723d24467c23b",
+              "cache_verdict": "no_stored_reply_under_this_key",
+              "engine_identity": "OpenAITranslator/openai/en",
+              "group": "orphan_translation",
+              "prompt_sha256": "cc3f132c251022995b1e6386450b2b6546d9481686074dd1adbe64af3d650fa4",
+              "request_chars": 2830,
+              "request_head": "You are translating one short line of a magazine page into en.\n\nThe line was recovered by the page parser outside every detected block, so it\nwas never offered ",
+              "request_sha256": "fbc4a474ae7f1816959255bd1ca1b9778eac38ef074611cd7790d94d54ec1835"
+            }
+          ],
           "changed": false,
-          "from_cache": true,
+          "from_cache": false,
           "geometry": {},
           "glossary_entries": [],
           "issue_id": "untranslated_residue:p6:p6#14",
@@ -169,7 +194,7 @@
           "paragraph_ref": "p6#14",
           "reason": "retypesetting_needed_more_room_than_the_paragraph_had",
           "source_text": "作创》使信《织组文科教国合联为科亚尼",
-          "translated_text": "Creative Work by Xin Zhi Group, UNESCO Courier"
+          "translated_text": "Creative Work\" makes trust \"Weaving Group Culture and Science Education National Union for Science Asia Ni"
         }
       ],
       "iteration": 1,
@@ -199,10 +224,22 @@
           "executed": [
             {
               "accepted": false,
-              "attempts": 0,
-              "calls": [],
+              "attempts": 1,
+              "calls": [
+                {
+                  "attempt": 1,
+                  "cache_key": "6f37b5ba4e13697926d99536f848d31bbc75d627b98e9ad9a9a723d24467c23b",
+                  "cache_verdict": "no_stored_reply_under_this_key",
+                  "engine_identity": "OpenAITranslator/openai/en",
+                  "group": "orphan_translation",
+                  "prompt_sha256": "cc3f132c251022995b1e6386450b2b6546d9481686074dd1adbe64af3d650fa4",
+                  "request_chars": 2830,
+                  "request_head": "You are translating one short line of a magazine page into en.\n\nThe line was recovered by the page parser outside every detected block, so it\nwas never offered ",
+                  "request_sha256": "fbc4a474ae7f1816959255bd1ca1b9778eac38ef074611cd7790d94d54ec1835"
+                }
+              ],
               "changed": false,
-              "from_cache": true,
+              "from_cache": false,
               "geometry": {},
               "glossary_entries": [],
               "issue_id": "untranslated_residue:p6:p6#14",
@@ -210,7 +247,7 @@
               "paragraph_ref": "p6#14",
               "reason": "retypesetting_needed_more_room_than_the_paragraph_had",
               "source_text": "作创》使信《织组文科教国合联为科亚尼",
-              "translated_text": "Creative Work by Xin Zhi Group, UNESCO Courier"
+              "translated_text": "Creative Work\" makes trust \"Weaving Group Culture and Science Education National Union for Science Asia Ni"
             }
           ],
           "kind": "untranslated_residue",

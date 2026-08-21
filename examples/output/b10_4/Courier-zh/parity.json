@@ -13,7 +13,7 @@
   ],
   "requests": 124,
   "baseline_requests": 107,
-  "inputs_sha256": "40cb3a3dcb20304da64f2d0d807fb1221c28ad350e44979129d9d46eb2f67e00",
+  "inputs_sha256": "6ec9b76623f4a6d1fdb042be5a71827182f2287c59e59a2afe09c0b85fbf4e06",
   "baseline_inputs_sha256": "4a4f6b3b37d83a769be0b79955dcbb06ce6e7dc81c74cf3f855093ac4f853c02",
   "unchanged_requests": 93,
   "withdrawn": [
@@ -112,21 +112,12 @@
       ]
     },
     {
-      "input": "早在尚未有人造卫星环绕地球之前,波利尼西亚航海家便 已能通过观测星辰、涌浪、生物发光现象以及海鸟飞行轨 迹,横渡数千英里的茫茫大海。在撒哈拉沙漠,图阿雷格人 (Tuareg)历来依靠天体运行规律、日照、风向和地形特征 指引方向,尽管如今他们的现代导航方式已更多地依赖地标 且多在白天行进。认知科学研究揭示,这些导航系统通过多 样化的环境线索展现出高度复杂的空间推理能力,在综合性 方面远超实验室研究中使用的单一输入方法。",
-      "baseline": [
-        "Long before artificial satellites orbited the Earth, Polynesian navigators were already able to cross thousands of miles of open ocean by observing stars, swells, bioluminescence, and the flight paths of seabirds. In the Sahara Desert, the Tuareg have traditionally relied on celestial movements, sunlight, wind direction, and topographical features for navigation, although today their modern navigation methods rely more on landmarks and are mostly conducted during the day. Cognitive science research reveals that these navigation systems demonstrate highly complex spatial reasoning abilities through diverse environmental cues, far surpassing the single-input methods used in laboratory studies in terms of integration."
-      ],
-      "run": [
-        "Long before artificial satellites orbited the Earth, Polynesian navigators were already able to cross thousands of miles of open ocean by observing stars, swells, bioluminescence, and the flight paths of seabirds. In the Sahara Desert, the Tuareg have traditionally relied on celestial movements, sunlight, wind direction, and topographical features for navigation, although today their modern navigation methods rely more on landmarks and are mostly conducted during the day. Cognitive science research reveals that these navigation systems exhibit highly complex spatial reasoning abilities through diverse environmental cues, far surpassing the single-input methods used in laboratory studies in terms of integration."
-      ]
-    },
-    {
       "input": "这些实践代表着完整的知识体系。 它们将认知进行编码、加以保存并代代 相传。如今,世界各地的土著社区正 在捍卫保护此类文化遗产的权利,同 时积极阐明传统知识体系作为平行科",
       "baseline": [
         "These practices represent complete knowledge systems. They encode, preserve, and pass on cognition from generation to generation. Today, indigenous communities around the world are defending their rights to protect such cultural heritage while actively articulating the value of traditional knowledge systems as parallel scientific frameworks."
       ],
       "run": [
-        "These practices represent complete systems of knowledge. They encode, preserve, and pass on cognition from generation to generation. Today, indigenous communities around the world are defending their rights to protect such cultural heritage while actively demonstrating the value of traditional knowledge systems as parallel scientific frameworks."
+        "These practices represent comprehensive systems of knowledge. They encode, preserve, and pass on cognition from generation to generation. Today, indigenous communities around the world are defending their rights to protect such cultural heritage while actively demonstrating the value of traditional knowledge systems as parallel scientific frameworks."
       ]
     },
     {
@@ -135,7 +126,7 @@
         "As Fijian researcher Salanieta Kitolelei stated at the 2025 Second Pacific Islands Ocean Conference held in Honiara, Solomon Islands: 'In essence, there is no difference—we are merely describing the same thing in different languages.'"
       ],
       "run": [
-        "As Fijian researcher Salanieta Kitolelei stated at the second Pacific Islands Ocean Conference in Honiara, Solomon Islands, in 2025: \"In essence, there is no difference—we are just describing the same thing in different languages.\""
+        "As Fijian researcher Salanieta Kitolelei stated at the 2025 Second Pacific Islands Ocean Conference held in Honiara, Solomon Islands: \"In essence, there is no difference—we are merely describing the same thing in different languages.\""
       ]
     },
     {
@@ -153,7 +144,7 @@
         "Indigenous peoples' leader and Chair of the 23rd Session of the United Nations Permanent Forum on Indigenous Issues, Hindou Oumarou Ibrahim, pointed out in April 2024, \"This knowledge is not just theoretical but is the crystallization of wisdom tested through centuries of practice.\""
       ],
       "run": [
-        "Indigenous leader and Chair of the 23rd Session of the United Nations Permanent Forum on Indigenous Issues, Hindou Oumarou Ibrahim, pointed out in April 2024, \"This knowledge is not just theoretical; it is the crystallization of wisdom tested through centuries of practice.\""
+        "Indigenous leader and Chair of the 23rd Session of the United Nations Permanent Forum on Indigenous Issues, Hindou Oumarou Ibrahim, pointed out in April 2024, \"This knowledge is not theoretical but is the crystallization of wisdom tested through centuries of practice.\""
       ]
     },
     {
@@ -166,6 +157,24 @@
       ]
     },
     {
+      "input": "黎 明 时 分, 空 气 里 弥 漫 着 铁 锈 般的潮湿气息,与炭火烟味交织在一 起。保马里人是一个约有两千人的土 著族群,世居在巴西西北部亚马孙州 的 广 袤 土 地 上。 他 们 对 自 己 的 定 义, 在 科 学 教 科 书 里 无 从 寻 觅:“ 我 们 是 水之民族,是唯一真正生活在水中的",
+      "baseline": [
+        "At dawn, the air is filled with a rusty, humid scent, intertwined with the smell of charcoal smoke. The Paumari people are an indigenous group of about two thousand, residing on the vast lands of Amazonas in northwestern Brazil. Their self-definition cannot be found in scientific textbooks: \"We are the Water People, the only ones truly living in the water.\""
+      ],
+      "run": [
+        "At dawn, the air is filled with a rusty, humid scent, intertwined with the smell of charcoal smoke. The Paumari are an indigenous group of about two thousand people, residing on the vast lands of Amazonas in northwestern Brazil. Their definition of themselves cannot be found in scientific textbooks: \"We are the Water People, the only ones truly living in the water."
+      ]
+    },
+    {
+      "input": "在普鲁斯河上,暮光渐褪,热气仍在 水面萦绕,一条巨骨舌鱼浮出水面大 口吞吸着空气。这深沉、湿润、带着 古 老 气 息 的 声 响 唤 醒 了 这 片 土 地 几 近 断 绝 的 生 机。“ 大 自 然 在 向 我 们 求 救,”年轻渔民奇科·保马里 (Chico Paumari)回忆道,“我们赶到湖边时, 却发现空空如也。眼看生计没了着落,",
+      "baseline": [
+        "On the Purus River, as twilight fades, the heat still lingers over the water's surface, and an Arapaima emerges to gulp air. This deep, moist, ancient sound awakens the nearly extinct vitality of this land. \"Nature is calling for our help,\" recalls the young fisherman Chico Paumari, \"When we rushed to the lake, we found it empty. Our livelihood seemed to vanish before our eyes.\""
+      ],
+      "run": [
+        "On the Purus River, as twilight fades, the heat still lingers over the water's surface, and an Arapaima emerges, gulping air. This deep, moist, ancient sound awakens the nearly extinct vitality of this land. \"Nature is calling for our help,\" recalls the young fisherman Chico Paumari, \"When we rushed to the lake, we found it empty. Seeing our livelihood slipping away,"
+      ]
+    },
+    {
       "input": "驻巴西利亚(巴西)记者",
       "baseline": [
         "Correspondent in Brasília, Brazil"
@@ -175,12 +184,66 @@
       ]
     },
     {
+      "input": "其 中 一 项 技 术 便 是 量 子 传 感。 如 今, 我们已拥有量子传感设备,能够感知 地球重力变化中十亿分之一的微小差 异,这类设备不仅有助于研究地球气 候, 在 建 筑 行 业 也 有 诸 多 实 际 应 用。 甚至还有正在研发的量子传感器,用 于探寻暗物质 —这种神秘莫测的隐 形物质维系着星系的完整。",
+      "baseline": [
+        "One such technology is quantum sensing. Today, we have quantum sensing devices capable of detecting minute variations in Earth's gravity down to one billionth. These devices not only aid in studying Earth's climate but also have numerous practical applications in the construction industry. There are even quantum sensors under development for exploring dark matter—this mysterious and elusive substance that holds galaxies together."
+      ],
+      "run": [
+        "One such technology is quantum sensing. Today, we have quantum sensing devices capable of detecting minute variations in Earth's gravity down to one billionth of a change. These devices not only aid in studying Earth's climate but also have numerous practical applications in the construction industry. There are even quantum sensors under development aimed at exploring dark matter—this mysterious and invisible substance that holds galaxies together."
+      ]
+    },
+    {
+      "input": "甚至已经出现了能够读取人类思 想的量子传感器。有一种可以像自行 车 头 盔 一 样 佩 戴 的 特 殊 脑 部 扫 描 仪, 其灵敏度极高,能够探测患者大脑中 单个神经元的放电活动,研究人员能 够借此实时“观察”大脑的活动过程。 该设备已在分析孤独症、癫痫、痴呆 症和精神分裂症等多种神经系统疾病 方面展现出实用价值,而且相比功能 性核磁共振成像等传统成像技术更加 温和 —后者通常需要患者在嘈杂而 逼仄的机器中长时间保持不动。",
+      "baseline": [
+        "There are even quantum sensors capable of reading human thoughts. A special brain scanner, which can be worn like a bicycle helmet, is highly sensitive and can detect the firing activity of individual neurons in a patient's brain, allowing researchers to 'observe' brain activity in real-time. This device has proven valuable in analyzing various neurological disorders such as autism, epilepsy, dementia, and schizophrenia. It is also gentler compared to traditional imaging techniques like functional magnetic resonance imaging, which often require patients to remain still for long periods in noisy and confined machines."
+      ],
+      "run": [
+        "There are even quantum sensors capable of reading human thoughts. A special brain scanner, which can be worn like a bicycle helmet, is highly sensitive and can detect the firing activity of individual neurons in a patient's brain, allowing researchers to 'observe' brain activity in real-time. This device has proven useful in analyzing various neurological disorders such as autism, epilepsy, dementia, and schizophrenia, and is gentler compared to traditional imaging techniques like functional magnetic resonance imaging, which often require patients to remain still for long periods in noisy and confined machines."
+      ]
+    },
+    {
+      "input": "技术,目前正在稳步推进。毫无疑问, 这场革命将彻底改变我们的世界。",
+      "baseline": [
+        "Technology is currently advancing steadily. There is no doubt that this revolution will completely change our world."
+      ],
+      "run": [
+        "Technology is currently advancing steadily. There is no doubt that this revolution will completely transform our world."
+      ]
+    },
+    {
+      "input": "在此期间,全球科学家、教育工作者和公众受邀共同探索和庆祝量子领域取得 的创新成果。全球范围内举办的一系列活动提升了公众意识,促进了各方合作,凸 显了量子科学在推动可持续发展解决方案方面的巨大潜力。联合国教科文组织致力 于推动量子科学成果惠及全民和包容性发展,重点领域包括加强全球南方国家的能 力建设,促进科学、技术、工程和数学 (STEM) 领域的性别平等,以及应对日益 扩大的量子鸿沟问题。",
+      "baseline": [
+        "During this period, scientists, educators, and the public worldwide are invited to explore and celebrate the innovative achievements in the quantum domain. A series of global events have raised public awareness, fostered collaboration among various parties, and highlighted the immense potential of quantum science in advancing sustainable development solutions. UNESCO is committed to promoting the benefits of quantum science for all and inclusive development, with a focus on strengthening capacity building in Global South countries, promoting gender equality in the fields of science, technology, engineering, and mathematics (STEM), and addressing the growing issue of the quantum divide."
+      ],
+      "run": [
+        "During this period, scientists, educators, and the public worldwide are invited to explore and celebrate the innovative achievements in the quantum domain. A series of events held globally have raised public awareness, promoted collaboration among various parties, and highlighted the immense potential of quantum science in driving sustainable development solutions. UNESCO is committed to ensuring that the benefits of quantum science reach everyone and promote inclusive development, with a focus on strengthening capacity building in Global South countries, promoting gender equality in the fields of science, technology, engineering, and mathematics (STEM), and addressing the growing issue of the quantum divide."
+      ]
+    },
+    {
+      "input": "业化过程中未能获得充分认可,且知 识使用者未与祖传知识持有者合理分 享惠益时,这种行为便可被称为“生 物剽窃”。",
+      "baseline": [
+        "When the commercialization process fails to provide adequate recognition and the users of the knowledge do not reasonably share benefits with the holders of ancestral knowledge, such actions can be termed as \"biopiracy.\""
+      ],
+      "run": [
+        "When traditional knowledge holders are not adequately recognized during the commercialization process, and knowledge users do not reasonably share benefits with them, this behavior can be termed as 'biopiracy'."
+      ]
+    },
+    {
+      "input": "惠益分享之争",
+      "baseline": [
+        "The Dispute Over Benefit Sharing"
+      ],
+      "run": [
+        "The Battle Over Benefit Sharing"
+      ]
+    },
+    {
       "input": "卡瓦(学名:Piper methysticum)是 一种胡椒科植物,原产于太平洋地区, 其相关案例堪称土著人民和地方社群 知识遭不当侵占的典型代表。关于卡 瓦的专利申请已达数百项,其中多项 均与其抗焦虑和镇静功效相关,而太 平洋地区民众早已熟知这些功效。尽 管各方对卡瓦的关注度极高,但目前 在研究和专利申请的过程中,迄今却 未见任何为相关研究与专利主张获取 许可或落实惠益分享的协议。",
       "baseline": [
         "Kava (scientific name: Piper methysticum) is a plant from the pepper family, native to the Pacific region. It is a typical example of the improper appropriation of indigenous peoples' and local communities' knowledge. There have been hundreds of patent applications related to kava, many of which are associated with its anti-anxiety and sedative effects, which are already well-known to the people of the Pacific region. Despite the high level of interest in kava, there are currently no agreements in place to obtain permission or implement benefit sharing for the related research and patent claims."
       ],
       "run": [
-        "Kava (scientific name: Piper methysticum) is a plant from the pepper family, native to the Pacific region. It is a typical example of the improper appropriation of indigenous peoples' and local communities' knowledge. There have been hundreds of patent applications related to kava, many of which are associated with its anti-anxiety and sedative effects, which are already well-known among the people of the Pacific region. Despite the high level of interest in kava, there are currently no agreements in place to obtain permission for related research and patent claims or to implement benefit sharing."
+        "Kava (scientific name: Piper methysticum) is a plant from the pepper family, native to the Pacific region, and serves as a typical example of the improper appropriation of knowledge from indigenous peoples and local communities. There have been hundreds of patent applications related to kava, many of which are associated with its anti-anxiety and sedative effects, which are well-known to the people of the Pacific region. Despite the high level of attention kava has received, there are currently no agreements in place to obtain permission or implement benefit sharing for related research and patent claims."
       ]
     },
     {
@@ -189,7 +252,7 @@
         "Researchers and companies often seek indigenous knowledge of the characteristics of plants, animals, and other non-human elements within ecosystems to develop new technologies and innovations. This process, sometimes referred to as 'bioprospecting,' is common in fields such as agriculture and food, biotechnology, pharmaceuticals, cosmetics, and forestry, leading to the development of various products sold globally."
       ],
       "run": [
-        "Researchers and companies often seek indigenous knowledge of the characteristics of plants, animals, and other non-human elements in ecosystems to develop new technologies and innovations. This process is sometimes referred to as 'bioprospecting' and is common in fields such as agriculture and food, biotechnology, pharmaceuticals, cosmetics, and forestry, leading to the development of various products sold globally."
+        "Researchers and companies often seek indigenous knowledge about the characteristics of plants, animals, and other non-human elements within ecosystems to develop new technologies and innovations. This process is sometimes referred to as \"bioprospecting\" and is common in fields such as agriculture and food, biotechnology, pharmaceuticals, cosmetics, and forestry, through which various products are developed and sold globally."
       ]
     },
     {
@@ -198,7 +261,16 @@
         "With the help of bioprospecting, new product developers can gain numerous advantages. For example, in the pharmaceutical industry, the research and development and approval cycles are lengthy, the product development process is costly, and there are risks associated with intellectual property and regulatory protection strategies. Indigenous knowledge can help accelerate the product's entry into the market."
       ],
       "run": [
-        "With the help of bioprospecting, new product developers can gain numerous advantages. For example, in the pharmaceuticals industry, the research and development and approval cycles are lengthy, the product development process is costly, and there are risks associated with intellectual property and regulatory protection strategies. Indigenous knowledge can help accelerate the product's entry into the market."
+        "Through bioprospecting, new product developers can gain numerous advantages. For example, in the pharmaceutical industry, the research and approval cycles are lengthy, the product development process is costly, and there are risks associated with intellectual property and regulatory protection strategies. Indigenous knowledge can help accelerate the market launch of products."
+      ]
+    },
+    {
+      "input": "如 今, 许 多 国 家 要 求, 土 著 知 识 的 潜 在使 用者 必 须 首 先获 得 知识持有者的明确同意",
+      "baseline": [
+        "Nowadays, many countries require that potential users of indigenous knowledge must first obtain the explicit consent of the knowledge holders."
+      ],
+      "run": [
+        "Nowadays, many countries require that potential users of indigenous knowledge must first obtain the explicit consent of the knowledge holders"
       ]
     },
     {
@@ -216,7 +288,43 @@
         "Professor and Deputy Dean of Research at the Faculty of Arts, University of New South Wales (Australia), whose main research focus is on the regulatory mechanisms of nature and knowledge."
       ],
       "run": [
-        "Professor and Deputy Dean of Research at the Faculty of Arts, University of New South Wales (Australia), his main research focus is on the regulatory mechanisms of nature and knowledge."
+        "Professor and Deputy Dean of Research at the Faculty of Arts, University of New South Wales (Australia), with a primary research focus on the regulatory mechanisms of nature and knowledge."
+      ]
+    },
+    {
+      "input": "<style id='1'>11 </style>当生物剽窃滋生蔓延时 {v3}",
+      "baseline": [
+        "<style id='1'>11 </style>When biopiracy breeds and spreads {v3}"
+      ],
+      "run": [
+        "<style id='1'>11 </style>When Biopiracy Breeds and Spreads {v3}"
+      ]
+    },
+    {
+      "input": "此外,越来越多国家的法律要求 知识产权(特别是专利权)申请人披露 发明创造所用遗传资源或传统知识的 来源。随着 2024 年《世界知识产权组 织知识产权、遗传资源和相关传统知识 条 约 》(World Intellectual Property Organization Treaty on Intellectual Property, Genetic Resources and Associated Traditional Knowledge) 的最终敲定,或将有更多国家采纳此类 “来源披露”要求。",
+      "baseline": [
+        "In addition, the laws of an increasing number of countries require intellectual property (especially patent rights) applicants to disclose the source of genetic resources or traditional knowledge used in their inventions. With the finalization of the 2024 World Intellectual Property Organization Treaty on Intellectual Property, Genetic Resources and Associated Traditional Knowledge, more countries may adopt such 'source disclosure' requirements."
+      ],
+      "run": [
+        "In addition, the laws of an increasing number of countries require applicants for intellectual property (especially patent rights) to disclose the source of genetic resources or traditional knowledge used in their inventions. With the finalization of the 2024 World Intellectual Property Organization Treaty on Intellectual Property, Genetic Resources and Associated Traditional Knowledge, more countries may adopt such 'source disclosure' requirements."
+      ]
+    },
+    {
+      "input": "20 世 纪 90 年 代, 几 项 新 的 进 展彻底改变了这一局面。首先,世界 贸易组织 (WTO) 协定统一了知识 产权保护标准,改变了各国保护遗传 资源相关知识产权的方式。1992 年, 《生物多样性公约》(Convention on Biological Diversity) 将遗传资源纳 入国家主权范畴,同时也为防范传统 知 识 被 不 当 侵占 的体 系 奠定了 基 础。 此 后,2010 年《 获 取 和 惠 益 分 享 名 古 屋 议 定 书 》(Nagoya Protocol on Access and Benefit Sharing) 确立 了遗传资源及传统知识使用方与提供 方协商资产使用规则的国际范本。",
+      "baseline": [
+        "In the 1990s, several new developments completely changed this situation. First, the World Trade Organization (WTO) agreements standardized intellectual property protection standards, altering how countries protect intellectual property related to genetic resources. In 1992, the Convention on Biological Diversity brought genetic resources under national sovereignty and laid the foundation for systems to prevent the improper appropriation of traditional knowledge. Subsequently, the 2010 Nagoya Protocol on Access and Benefit Sharing established an international model for negotiating asset use rules between users and providers of genetic resources and traditional knowledge."
+      ],
+      "run": [
+        "In the 1990s, several new developments completely changed this situation. First, the World Trade Organization (WTO) agreements standardized intellectual property protection standards, altering how countries protect intellectual property related to genetic resources. In 1992, the Convention on Biological Diversity brought genetic resources under national sovereignty and laid the foundation for systems to prevent the improper appropriation of traditional knowledge. Subsequently, the 2010 Nagoya Protocol on Access and Benefit Sharing established an international model for negotiating the terms of use between users and providers of genetic resources and traditional knowledge."
+      ]
+    },
+    {
+      "input": "历经 30 年构建的强化版国际规则与 协议框架已带来积极变化。如今,许 多国家要求,土著知识的潜在使用者",
+      "baseline": [
+        "The enhanced international rules and agreement framework, built over 30 years, has brought about positive changes. Nowadays, many countries require potential users of indigenous knowledge"
+      ],
+      "run": [
+        "The enhanced international rules and agreement framework, constructed over 30 years, has brought about positive changes. Nowadays, many countries require potential users of indigenous knowledge"
       ]
     },
     {
@@ -229,6 +337,51 @@
       ]
     },
     {
+      "input": "生物多样性中的植物、动物及其 他组成部分在全球范围的流通,以及 不同族群间相关知识的共享,并非新 鲜事物。早在欧洲殖民时代之前,各 类物种及其培育和利用知识已在全球 范围内广泛传播。长期以来,人类跨 越遥远距离交易驯养动物、香料、草 药、食品饮品及纤维制品,并且往往 会借鉴其他族群创造的知识来掌握所 获物品的使用方法。",
+      "baseline": [
+        "The global circulation of plants, animals, and other components of biodiversity, as well as the sharing of related knowledge among different groups, is not a new phenomenon. Even before the European colonial era, various species and the knowledge of their cultivation and use were widely disseminated globally. For a long time, humans have traded domesticated animals, spices, medicinal herbs, food and beverages, and fiber products across great distances, often drawing on the knowledge created by other groups to understand how to use the acquired items."
+      ],
+      "run": [
+        "The global circulation of plants, animals, and other components of biodiversity, as well as the sharing of related knowledge among different groups, is not a new phenomenon. Even before the European colonial era, various species and the knowledge of their cultivation and use were widely disseminated globally. For a long time, humans have traded domesticated animals, spices, medicinal herbs, food and beverages, and fiber products over great distances, often drawing on the knowledge created by other groups to understand how to use the acquired items."
+      ]
+    },
+    {
+      "input": "长久以来,学术研究与传统知识 各行其道,互不交融。技术人员运用 科学方法,土著社区则依赖直觉感知。 转 折 点 出 现 在 双 方 决 定“ 同 舟 共 济 ” 之时 —这一联盟由巴西最古老的原",
+      "baseline": [
+        "For a long time, academic research and traditional knowledge have each followed their own paths without merging. Technicians use scientific methods, while indigenous communities rely on intuitive perception. A turning point emerged when both sides decided to \"join forces\"—this alliance was formed by Brazil's oldest indigenous peoples."
+      ],
+      "run": [
+        "For a long time, academic research and traditional knowledge have operated independently, without integration. Technicians employ scientific methods, while indigenous communities rely on intuitive perception. A turning point emerged when both sides decided to 'join forces'—this alliance was originally commemorated by Brazil's oldest institution to mark the 100th anniversary of the birth of quantum mechanics. "
+      ]
+    },
+    {
+      "input": "为纪念量子力学诞生 100 周年,联合国宣布将 2025 年定为国际量子科学技术年。 作为该倡议的牵头机构,联合国教科文组织于 2 月 4 日和 5 日在巴黎启动了这项为 期一年的活动,共吸引了1200 多名参与者,其中包括多位诺贝尔奖得主。",
+      "baseline": [
+        "To commemorate the 100th anniversary of the birth of quantum mechanics, the United Nations has declared 2025 as the International Year of Quantum Science and Technology. As the leading organization for this initiative, UNESCO launched this year-long event on February 4th and 5th in Paris, attracting over 1,200 participants, including several Nobel Prize laureates."
+      ],
+      "run": [
+        "To celebrate this, the United Nations declared 2025 as the International Year of Quantum Science and Technology. As the leading organization for this initiative, UNESCO launched this year-long event on February 4th and 5th in Paris, attracting over 1,200 participants, including several Nobel Prize laureates."
+      ]
+    },
+    {
+      "input": "并非所有与遗传 资源相关的土 著知识商业化利用行为都构成生物剽 窃;部分项目实现了互利共赢。以澳大 利亚的印贾兰吉 - 迪达努 (Indjalan- dji-Dhidhanu) 部族为例,该部族与 昆士兰大学的研究人员合作,根据其 关于三齿稃 (一种多年生丛生草本植 物,传统用途广泛) 的土著知识开展 研究。双方签订的合作研究协议中包",
+      "baseline": [
+        "Not all commercial uses of indigenous knowledge related to genetic resources constitute biopiracy; some projects achieve mutual benefits. For example, the Indjalangji-Dhidhanu tribe in Australia collaborated with researchers from the University of Queensland to conduct research based on their indigenous knowledge about three-awned grass (a perennial tufted herb with a wide range of traditional uses). The cooperative research agreement signed by both parties included"
+      ],
+      "run": [
+        "Not all commercial uses of indigenous knowledge related to genetic resources constitute biopiracy; some projects achieve mutual benefits. Take the Indjalangji-Dhidhanu tribe in Australia as an example. This tribe collaborated with researchers from the University of Queensland to conduct research based on their indigenous knowledge about three-awned grass (a perennial tufted herb with a wide range of traditional uses). The cooperative research agreement signed by both parties includes benefit-sharing clauses. "
+      ]
+    },
+    {
+      "input": "含惠益分享条款。一家衍生企业目前 正利用从三齿稃中提取的纤维素纳米 纤维开发医用凝胶,同时,该草本植 物制成的复合材料也已获得专利。根 据该协议,已实现的惠益分享包括为 第一民族青年提供就业机会,并为澳 大利亚土著群体提供培训与教育相关 的资金支持。",
+      "baseline": [
+        "to include benefit-sharing clauses. A spin-off company is currently developing a medical gel using cellulose nanofibers extracted from three-awned grass, and composite materials made from this herb have also been patented. According to the agreement, realized benefit-sharing includes providing employment opportunities for First Nations youth and funding support for training and education for Australian indigenous communities."
+      ],
+      "run": [
+        "A spin-off company is currently using cellulose nanofibers extracted from three-awned grass to develop medical gel, and composite materials made from this herb have also been patented. According to the agreement, realized benefit sharing includes providing employment opportunities for First Nations youth and funding support for training and education for the Australian indigenous community."
+      ]
+    },
+    {
       "input": "从原住民通过有控制的焚烧来预防 野火,到因纽特人的天气预测方法, 再 到 部 分 非 洲 国 家 采 用 的“ 扎 伊 ” (<style id='1'>zaï</style>) 集水技术,世界各地的土著 传统实践丰富多样且行之有效,凝 聚着土著人民的智慧。在气候变化 和 生 物 多 样 性 不 断 丧 失 的 背 景下, 这些知识显得尤为珍贵。",
       "baseline": [
         "From the controlled burning by indigenous peoples to prevent wildfires, to the Inuit methods of weather prediction, and the 'zaï' (<style id='1'>zaï</style>) water harvesting techniques used in some African countries, traditional indigenous practices around the world are diverse and effective, embodying the wisdom of indigenous peoples. In the context of climate change and the ongoing loss of biodiversity, this knowledge is particularly valuable."
@@ -238,12 +391,30 @@
       ]
     },
     {
+      "input": "巨骨舌鱼对保马里人的生存至关重要,而该鱼的数量一度急剧减少。为此,亚马孙州的 保马里人参与了一项融合科学知识与传统智慧的物种恢复计划。几年后,普鲁斯河已重 现此种鱼群的身影。",
+      "baseline": [
+        "The Arapaima is crucial to the survival of the Paumari people, and its population once declined sharply. In response, the Paumari in Amazonas participated in a species recovery program that combines scientific knowledge with traditional wisdom. A few years later, the Purus River has once again seen the presence of this fish species."
+      ],
+      "run": [
+        "The Arapaima is crucial to the survival of the Paumari people, but its population once declined sharply. In response, the Paumari in Amazonas participated in a species recovery program that combines scientific knowledge with traditional wisdom. A few years later, the Purus River has once again seen the presence of this fish species."
+      ]
+    },
+    {
+      "input": "是红外光,它非常适合生物成像,能 够轻松穿透组织内部;另一种是可见 光,它无法穿透组织,但能在相机中 生成更清晰的图像。这项技术能为我 们提供红外光探测过的组织样本的相 关信息。纠缠相机能够为肿瘤科医生 提供指导,快速判断女性在乳腺癌手 术后是否应接受化疗。",
+      "baseline": [
+        "It is infrared light, which is very suitable for biological imaging, as it can easily penetrate internal tissues; the other is visible light, which cannot penetrate tissues but can generate clearer images in the camera. This technology can provide us with relevant information about tissue samples detected by infrared light. The entangled camera can guide oncologists in quickly determining whether women should undergo chemotherapy after breast cancer surgery."
+      ],
+      "run": [
+        "It is infrared light, which is very suitable for biological imaging, as it can easily penetrate internal tissues; the other is visible light, which cannot penetrate tissues but can produce clearer images in the camera. This technology can provide us with relevant information about tissue samples detected by infrared light. The entangled camera can guide oncologists in quickly determining whether women should undergo chemotherapy after breast cancer surgery."
+      ]
+    },
+    {
       "input": "必 须 首 先 获 得 知 识 持 有 者 的 明 确 同 意,并签署详细载明惠益分享方式的 协议。",
       "baseline": [
         "It is necessary to first obtain the explicit consent of the knowledge holders and sign an agreement that clearly specifies the method of benefit-sharing."
       ],
       "run": [
-        "It is necessary to first obtain the explicit consent of the knowledge holders and sign an agreement that clearly outlines the method of benefit-sharing."
+        "It is essential to first obtain the explicit consent of the knowledge holders and sign an agreement that clearly specifies the method of benefit sharing."
       ]
     },
     {
@@ -256,12 +427,102 @@
       ]
     },
     {
+      "input": "近年来,传统土著知识获得了认可,这尤其得益于《联 合国土著人民权利宣言》等国际文书的推动,但文化与商业 层面的侵占行为仍对其构成威胁。",
+      "baseline": [
+        "In recent years, traditional indigenous knowledge has gained recognition, particularly due to the promotion of international instruments such as the United Nations Declaration on the Rights of Indigenous Peoples. However, cultural and commercial encroachments still pose a threat to it."
+      ],
+      "run": [
+        "In recent years, traditional indigenous knowledge has gained recognition, particularly due to the promotion by international instruments such as the United Nations Declaration on the Rights of Indigenous Peoples. However, cultural and commercial encroachments still pose a threat to it."
+      ]
+    },
+    {
+      "input": "随着气候危机加剧、生物多样性锐减,世界开始将目光投向 那些曾被忽视的知识体系。联合国数据显示,土著人民在全 球人口中占比不足 5%,却守护着地球上约 80% 的现存的 生物多样性。他们与周边自然环境紧密联结,孕育出值得深 入关注的宝贵知识。",
+      "baseline": [
+        "As the climate crisis intensifies and biodiversity sharply declines, the world is beginning to focus on knowledge systems that were once overlooked. According to United Nations data, indigenous peoples make up less than 5% of the global population, yet they safeguard about 80% of the world's remaining biodiversity. Their close connection with the surrounding natural environment has nurtured valuable knowledge worthy of in-depth attention."
+      ],
+      "run": [
+        "As the climate crisis intensifies and biodiversity sharply declines, the world is beginning to focus on knowledge systems that were once overlooked. According to United Nations data, indigenous peoples make up less than 5% of the global population, yet they safeguard approximately 80% of the world's remaining biodiversity. They are closely connected to their surrounding natural environments, nurturing valuable knowledge that deserves in-depth attention."
+      ]
+    },
+    {
       "input": "在所罗门群岛的陶马科岛,女性是陆地和海洋的守护 者。她们采摘并加工露兜树(这种小型树木广泛分布于波利 尼西亚、密克罗尼西亚等地区),编织出为航海提供动力的 船帆 —这项技艺已延续三千余年。正如岛民德尔西·贝 蒂·博西 (Delsie Betty Bosi) 所言:“男性负责建造大部",
       "baseline": [
         "On Taumako Island in the Solomon Islands, women are the guardians of the land and sea. They harvest and process the pandanus tree (a small tree widely distributed in Polynesia, Micronesia, and other regions) to weave sails that power navigation—a skill that has been passed down for over three thousand years. As islander Delsie Betty Bosi says, \"Men are responsible for building most of the..."
       ],
       "run": [
-        "On Taumako Island in the Solomon Islands, women are the guardians of both land and sea. They harvest and process the pandanus tree (a small tree widely distributed in Polynesia, Micronesia, and other regions) to weave sails that power seafaring vessels—a skill that has been passed down for over three thousand years. As islander Delsie Betty Bosi says, \"Men are responsible for building most of the..."
+        "On Taumako Island in the Solomon Islands, women are the guardians of both land and sea. They harvest and process the pandanus tree (a small tree widely distributed in regions such as Polynesia and Micronesia) to weave sails that power seafaring vessels—a skill that has been passed down for over three thousand years. As islander Delsie Betty Bosi states, \"Men are responsible for building most of the structures.\""
+      ]
+    },
+    {
+      "input": "该计划旨在促进土著和地方",
+      "baseline": [
+        "The plan aims to promote indigenous and local"
+      ],
+      "run": [
+        "The program aims to promote indigenous and local"
+      ]
+    },
+    {
+      "input": "量子传感器在医学领域的另一项 令 人 振 奋 的 应 用 是“ 纠 缠 相 机 ”, 目 前正被用于乳腺癌组织样本成像。其 背后的科学原理听起来简直如同魔法。 这种技术依赖两种光的量子纠缠:一种",
+      "baseline": [
+        "Another exciting application of quantum sensing in the medical field is the 'entangled camera,' which is currently being used for imaging breast cancer tissue samples. The scientific principle behind it sounds almost like magic. This technology relies on the quantum entanglement of two types of light: one"
+      ],
+      "run": [
+        "Another exciting application of quantum sensors in the medical field is the 'entangled camera,' which is currently being used for imaging breast cancer tissue samples. The scientific principle behind it sounds almost magical. This technology relies on the quantum entanglement of two types of light: one"
+      ]
+    },
+    {
+      "input": "在全球范围内,土著人民的族群、文 化、 语 言 及 知 识 体 系 极 为 丰 富 多 样。 这些历经数百年乃至数千年发展的知 识体系,对当今人类食用的作物、传 统与现代药物,以及家居服饰所用纤 维与材料的发展做出了巨大贡献。虽 然 常 被 称 作“ 传 统 知 识 ”, 土 著 知识 体 系 实 则 源 于 实 证 观 察 与 反 复 实 践, 并与其他知识体系一样,随着新信息 的吸纳和当地环境的变化而不断演变 发展。",
+      "baseline": [
+        "Globally, the ethnic groups, cultures, languages, and knowledge systems of indigenous peoples are extremely rich and diverse. These knowledge systems, developed over hundreds or even thousands of years, have made significant contributions to the crops consumed by humans today, traditional and modern medicines, as well as the fibers and materials used in home clothing. Although often referred to as \"traditional knowledge,\" indigenous knowledge systems are actually based on empirical observation and repeated practice, and like other knowledge systems, they continuously evolve with the assimilation of new information and changes in the local environment."
+      ],
+      "run": [
+        "Globally, the cultures, languages, and knowledge systems of indigenous peoples are extremely rich and diverse. These knowledge systems, developed over hundreds or even thousands of years, have made significant contributions to the crops consumed by humans today, traditional and modern medicines, as well as the fibers and materials used in home clothing. Although often referred to as \"traditional knowledge,\" indigenous knowledge systems are actually based on empirical observation and repeated practice, and like other knowledge systems, they continuously evolve with the assimilation of new information and changes in the local environment."
+      ]
+    },
+    {
+      "input": "然 而, 生 物 探 索 也 因“ 搭 便 车 ” 受到了批评,被指责无偿利用了土著 人民和其他当地族群的知识成果。当 土著知识在科学调研、产品开发或商",
+      "baseline": [
+        "However, biological exploration has been criticized for \"free-riding,\" accused of exploiting the knowledge achievements of indigenous peoples and other local groups without compensation. When indigenous knowledge is used in scientific research, product development, or commerce,"
+      ],
+      "run": [
+        "However, bioprospecting has been criticized for \"free-riding,\" accused of exploiting the knowledge achievements of indigenous peoples and other local communities without compensation. When indigenous knowledge is used in scientific research, product development, or commerce,"
+      ]
+    },
+    {
+      "input": "过去 30 年来,国际法规一直致力于限制产业界对土著知识的掠夺性利用,以防 止这类行为以损害当地民众利益为代价。然而,尽管已采取许多举措,不当侵占 土著知识的案例仍屡见不鲜。",
+      "baseline": [
+        "Over the past 30 years, international regulations have been committed to restricting the exploitative use of indigenous knowledge by industries to prevent such actions from harming the interests of local communities. However, despite many initiatives, cases of improper appropriation of indigenous knowledge remain common."
+      ],
+      "run": [
+        "Over the past 30 years, international regulations have been committed to restricting the exploitative use of indigenous knowledge by industries to prevent such actions from harming the interests of local populations. However, despite many initiatives, cases of improper appropriation of indigenous knowledge remain common."
+      ]
+    },
+    {
+      "input": "然 而, 尽 管 已 采 取 了 上 述 措 施, 但由于制度体系中仍存在可利用的漏 洞,生物剽窃现象依然不断发生。例 如,通过在尚未出台限制性立法的国 家获取遗传资源或传统知识,或通过 利用公约生效前留存的历史收藏获取 遗传资源,均可规避规则约束。此外, 尽 管专利 滥 用问 题已 受 到广泛 关 注, 植物育种者权利、商标等其他形式的 知识产权同样可能促成对土著知识的 不当侵占。若不进行重大变革,这些 漏洞会一直存在,这意味着生物剽窃 仍将是令人遗憾的现实。",
+      "baseline": [
+        "However, despite the implementation of the aforementioned measures, biopiracy continues to occur due to exploitable loopholes in the institutional system. For instance, genetic resources or traditional knowledge can be acquired in countries where restrictive legislation has not yet been enacted, or genetic resources can be obtained from historical collections preserved before the convention came into effect, thereby circumventing regulatory constraints. Moreover, while the issue of patent abuse has received widespread attention, other forms of intellectual property, such as plant breeders' rights and trademarks, may also contribute to the improper appropriation of indigenous knowledge. Without significant reforms, these loopholes will persist, meaning that biopiracy will remain an unfortunate reality."
+      ],
+      "run": [
+        "However, despite the implementation of the aforementioned measures, biopiracy continues to occur due to exploitable loopholes in the institutional system. For instance, one can circumvent regulatory constraints by acquiring genetic resources or traditional knowledge in countries where restrictive legislation has not yet been enacted, or by utilizing historical collections of genetic resources preserved before the convention came into effect. Moreover, while the issue of patent abuse has received widespread attention, other forms of intellectual property, such as plant breeders' rights and trademarks, may also contribute to the improper appropriation of indigenous knowledge. Without significant reforms, these loopholes will persist, meaning that biopiracy will remain an unfortunate reality."
+      ]
+    },
+    {
+      "input": "在人类历史的大部分时期,国际 法都将这类生物资源视为“人类共有 遗产”,这意味着任何人都可获取并",
+      "baseline": [
+        "For most of human history, international law has regarded such biological resources as the 'common heritage of mankind,' meaning that anyone could access and"
+      ],
+      "run": [
+        "For most of human history, international law has regarded such biological resources as the \"common heritage of mankind,\" meaning that anyone can access and"
+      ]
+    },
+    {
+      "input": "一 千 多 年 来, 阿马齐格妇女 一直沿用阿甘 油,如今这一 产品已在全球 实现商业化",
+      "baseline": [
+        "For over a thousand years, Amazigh women have been using argan oil, and today this product has been commercialized globally."
+      ],
+      "run": [
+        "For over a thousand years, Amazigh women have been using Argan oil, and today this product has been commercialized globally."
       ]
     }
   ]

@@ -1,15 +1,208 @@
 {
   "align_enabled": true,
   "applied": true,
-  "chains": [],
+  "chains": [
+    {
+      "chain_id": "H9nwz",
+      "members": [
+        {
+          "chain_index": 0,
+          "debug_id": "KEfsq",
+          "layout_label": "plain text",
+          "page_index": 4,
+          "segment": {
+            "chars": 412,
+            "end": 412,
+            "index": 0,
+            "sentence_end": 3,
+            "sentence_start": 0,
+            "start": 0
+          },
+          "source_chars": 97
+        },
+        {
+          "chain_index": 1,
+          "debug_id": "8uMN7",
+          "layout_label": "plain text",
+          "page_index": 5,
+          "segment": {
+            "chars": 309,
+            "end": 721,
+            "index": 1,
+            "sentence_end": 5,
+            "sentence_start": 3,
+            "start": 412
+          },
+          "source_chars": 121
+        }
+      ],
+      "merge": {
+        "chars": 218,
+        "dropped_hyphens": [],
+        "member_chars": [
+          97,
+          121
+        ],
+        "member_count": 2,
+        "separators": [
+          "",
+          ""
+        ]
+      },
+      "merged_source_chars": 218,
+      "merged_translation_chars": 721,
+      "pair_class": "body",
+      "redistribution": {
+        "alignment": {
+          "member_lengths": [],
+          "reason": "not_offered",
+          "source_shares": [
+            0.444954,
+            0.555046
+          ],
+          "used": false
+        },
+        "cuts": [
+          {
+            "estimate": 321,
+            "index": 0,
+            "mode": "sentence",
+            "moved_to": null,
+            "position": 412,
+            "snapped": true
+          }
+        ],
+        "fallback": null,
+        "members": [
+          {
+            "chars": 412,
+            "end": 412,
+            "index": 0,
+            "sentence_end": 3,
+            "sentence_start": 0,
+            "start": 0
+          },
+          {
+            "chars": 309,
+            "end": 721,
+            "index": 1,
+            "sentence_end": 5,
+            "sentence_start": 3,
+            "start": 412
+          }
+        ],
+        "profile": "latin",
+        "sentence_count": 5,
+        "strategy": "sentence_greedy"
+      },
+      "strategy": "sentence_greedy",
+      "translation": "For a long time, academic research and traditional knowledge have operated independently, without integration. Technicians employ scientific methods, while indigenous communities rely on intuitive perception. A turning point emerged when both sides decided to 'join forces'\u2014this alliance was originally commemorated by Brazil's oldest institution to mark the 100th anniversary of the birth of quantum mechanics. To celebrate this, the United Nations declared 2025 as the International Year of Quantum Science and Technology. As the leading organization for this initiative, UNESCO launched this year-long event on February 4th and 5th in Paris, attracting over 1,200 participants, including several Nobel Prize laureates."
+    },
+    {
+      "chain_id": "ouf8v",
+      "members": [
+        {
+          "chain_index": 0,
+          "debug_id": "WCp7U",
+          "layout_label": "plain text",
+          "page_index": 6,
+          "segment": {
+            "chars": 514,
+            "end": 514,
+            "index": 0,
+            "sentence_end": 4,
+            "sentence_start": 0,
+            "start": 0
+          },
+          "source_chars": 168
+        },
+        {
+          "chain_index": 1,
+          "debug_id": "RqUu8",
+          "layout_label": "plain text",
+          "page_index": 7,
+          "segment": {
+            "chars": 393,
+            "end": 907,
+            "index": 1,
+            "sentence_end": 6,
+            "sentence_start": 4,
+            "start": 514
+          },
+          "source_chars": 125
+        }
+      ],
+      "merge": {
+        "chars": 293,
+        "dropped_hyphens": [],
+        "member_chars": [
+          168,
+          125
+        ],
+        "member_count": 2,
+        "separators": [
+          "",
+          ""
+        ]
+      },
+      "merged_source_chars": 293,
+      "merged_translation_chars": 907,
+      "pair_class": "body",
+      "redistribution": {
+        "alignment": {
+          "member_lengths": [],
+          "reason": "not_offered",
+          "source_shares": [
+            0.573379,
+            0.426621
+          ],
+          "used": false
+        },
+        "cuts": [
+          {
+            "estimate": 520,
+            "index": 0,
+            "mode": "sentence",
+            "moved_to": null,
+            "position": 514,
+            "snapped": true
+          }
+        ],
+        "fallback": null,
+        "members": [
+          {
+            "chars": 514,
+            "end": 514,
+            "index": 0,
+            "sentence_end": 4,
+            "sentence_start": 0,
+            "start": 0
+          },
+          {
+            "chars": 393,
+            "end": 907,
+            "index": 1,
+            "sentence_end": 6,
+            "sentence_start": 4,
+            "start": 514
+          }
+        ],
+        "profile": "latin",
+        "sentence_count": 6,
+        "strategy": "sentence_greedy"
+      },
+      "strategy": "sentence_greedy",
+      "translation": "Not all commercial uses of indigenous knowledge related to genetic resources constitute biopiracy; some projects achieve mutual benefits. Take the Indjalangji-Dhidhanu tribe in Australia as an example. This tribe collaborated with researchers from the University of Queensland to conduct research based on their indigenous knowledge about three-awned grass (a perennial tufted herb with a wide range of traditional uses). The cooperative research agreement signed by both parties includes benefit-sharing clauses. A spin-off company is currently using cellulose nanofibers extracted from three-awned grass to develop medical gel, and composite materials made from this herb have also been patented. According to the agreement, realized benefit sharing includes providing employment opportunities for First Nations youth and funding support for training and education for the Australian indigenous community."
+    }
+  ],
   "counts": {
     "aligned_cuts": 0,
     "alignment_requests": 0,
-    "chains": 0,
+    "chains": 2,
     "escalated": 0,
-    "merged": 0,
-    "merged_members": 0,
-    "skips": 12
+    "merged": 2,
+    "merged_members": 4,
+    "skips": 16
   },
   "escalated": [],
   "language": "en",
@@ -20,9 +213,57 @@
   },
   "skips": [
     {
+      "chain_id": "H9nwz",
+      "chain_index": 0,
+      "debug_id": "KEfsq",
+      "declined_by": [
+        "cross_column",
+        "page_batch"
+      ],
+      "page_index": 4,
+      "reason": "chain_member",
+      "taken_by": "chain"
+    },
+    {
+      "chain_id": "H9nwz",
+      "chain_index": 1,
+      "debug_id": "8uMN7",
+      "declined_by": [
+        "cross_column",
+        "page_batch"
+      ],
+      "page_index": 5,
+      "reason": "chain_member",
+      "taken_by": "chain"
+    },
+    {
+      "chain_id": "ouf8v",
+      "chain_index": 0,
+      "debug_id": "WCp7U",
+      "declined_by": [
+        "cross_column",
+        "page_batch"
+      ],
+      "page_index": 6,
+      "reason": "chain_member",
+      "taken_by": "chain"
+    },
+    {
+      "chain_id": "ouf8v",
+      "chain_index": 1,
+      "debug_id": "RqUu8",
+      "declined_by": [
+        "cross_column",
+        "page_batch"
+      ],
+      "page_index": 7,
+      "reason": "chain_member",
+      "taken_by": "chain"
+    },
+    {
       "chain_id": "",
       "chain_index": null,
-      "debug_id": "DgZiq",
+      "debug_id": "DrTHY",
       "declined_by": [],
       "page_index": 0,
       "reason": "chain_member",
@@ -31,7 +272,7 @@
     {
       "chain_id": "",
       "chain_index": null,
-      "debug_id": "RVW5h",
+      "debug_id": "wuBu5",
       "declined_by": [],
       "page_index": 0,
       "reason": "chain_member",
@@ -40,7 +281,7 @@
     {
       "chain_id": "",
       "chain_index": null,
-      "debug_id": "7DweS",
+      "debug_id": "3pQ5Y",
       "declined_by": [],
       "page_index": 0,
       "reason": "chain_member",
@@ -49,7 +290,7 @@
     {
       "chain_id": "",
       "chain_index": null,
-      "debug_id": "UkyXw",
+      "debug_id": "dD8rU",
       "declined_by": [],
       "page_index": 0,
       "reason": "chain_member",
@@ -58,7 +299,7 @@
     {
       "chain_id": "",
       "chain_index": null,
-      "debug_id": "S15NQ",
+      "debug_id": "hSVB9",
       "declined_by": [],
       "page_index": 0,
       "reason": "chain_member",
@@ -67,7 +308,7 @@
     {
       "chain_id": "",
       "chain_index": null,
-      "debug_id": "oV2GK",
+      "debug_id": "e3XUg",
       "declined_by": [],
       "page_index": 0,
       "reason": "chain_member",
@@ -76,7 +317,7 @@
     {
       "chain_id": "",
       "chain_index": null,
-      "debug_id": "UjsLo",
+      "debug_id": "P8ZiC",
       "declined_by": [],
       "page_index": 0,
       "reason": "chain_member",
@@ -85,7 +326,7 @@
     {
       "chain_id": "",
       "chain_index": null,
-      "debug_id": "3owYA",
+      "debug_id": "CguxY",
       "declined_by": [],
       "page_index": 1,
       "reason": "chain_member",
@@ -94,7 +335,7 @@
     {
       "chain_id": "",
       "chain_index": null,
-      "debug_id": "bxEeY",
+      "debug_id": "Km8Jb",
       "declined_by": [],
       "page_index": 2,
       "reason": "chain_member",
@@ -103,7 +344,7 @@
     {
       "chain_id": "",
       "chain_index": null,
-      "debug_id": "jseNq",
+      "debug_id": "bGG9r",
       "declined_by": [],
       "page_index": 3,
       "reason": "chain_member",
@@ -112,7 +353,7 @@
     {
       "chain_id": "",
       "chain_index": null,
-      "debug_id": "zT1tA",
+      "debug_id": "DZ83T",
       "declined_by": [],
       "page_index": 5,
       "reason": "chain_member",
@@ -121,7 +362,7 @@
     {
       "chain_id": "",
       "chain_index": null,
-      "debug_id": "R5unX",
+      "debug_id": "fXRm7",
       "declined_by": [],
       "page_index": 6,
       "reason": "chain_member",
