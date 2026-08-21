@@ -1,0 +1,893 @@
+gate cache size: 15.97 GB of 16 GB allowed
+gates to run, in order (fast set, 18 of 36):
+  spec_check_b3_3.py
+  spec_check_b7_3.py
+  spec_check_b8_3.py
+  spec_check_b8_4.py
+  spec_check_b9_1.py
+  spec_check_b9_2.py
+  spec_check_e0.py
+  spec_check_e1.py
+  spec_check_e2.py
+  spec_check_b9_2r.py
+  spec_check_b9_3.py
+  spec_check_b9_4.py
+  spec_check_b9_5.py
+  spec_check_b9_6.py
+  spec_check_b9_7.py
+  spec_check_b10_1.py
+  spec_check_b10_2.py
+  spec_check_b10_3.py
+artifact cache: D:\Codes\BabelDOC\examples\output\gate_cache
+workspace fingerprint: dd75b6de6f443cde
+
+=== spec_check_b3_3.py start 01:06:38 ===
+    [PASS] 01a the token limit travels under whichever name the profile declares :: declared=['max_tokens', 'max_completion_tokens'] shapes={'max_tokens': ['max_tokens', 'model', 'temperature'], 'max_completion_tokens': ['max_completion_tokens', 'model', 'temperature']} problems=[]
+    [PASS] 01b a null temperature is left out of the request rather than sent :: null_keys=['max_tokens', 'model'] set_temperature=0.25
+    [PASS] 01c the profile is a closed declaration and a null temperature is legal :: refusals={'a third token parameter name': "probe: token_parameter must be one of ['max_tokens", 'a temperature outside its range': 'probe: temperature=99 outside allowed range 0.0..2', 'no token parameter at all': "probe: missing key 'token_parameter'"} null_temperature=None
+    [PASS] 02a either capability setting, changed, changes the cache key :: unmoved=[] distinct=3 of 3
+    [PASS] 02b the shipped configuration keys exactly as batch-b3.2 keyed it :: params={"max_output_tokens":512,"temperature":0.0} then={"max_output_tokens":512,"temperature":0.0} key=c82f0772fbc77e64 then=c82f0772fbc77e64
+    [PASS] 02c a setting at the value stored replies were produced under is elided :: implied={'token_parameter': 'max_tokens'} elided=['token_parameter'] key_parameters=['max_output_tokens', 'temperature']
+    [PASS] 03a the label set metric is correct in each of its three states :: states=['secondary covers a label the verdict misses: coverage=True single=False gain=True', 'secondary names nothing the page carries: coverage=False single=False gain=False', 'no secondary offered: coverage=True single=True gain=False'] unrouted_covers_another_label=False problems=[]
+    [PASS] 03b the prediction set is the verdict plus a second candidate, no more :: unrouted=['front_cover'] pair=['back_cover', 'front_cover']
+    D:\Codes\BabelDOC\.venv\Lib\site-packages\xsdata\formats\dataclass\parsers\utils.py:130: ConverterWarning: Failed to convert value for `PdfCurve.debug_info`
+      `a` is not a valid `bool`
+      warnings.warn(message, ConverterWarning)
+    model=gpt-4o-mini enabled=False dpi=150 rows=3
+    cost: routed=0 requests=0 pipeline_requests=0 cache_hits=0 attempts=0
+    fallback: accepted=0/0 refused=0 rate=0.0
+    routed_pages_deterministic: 0/0 = 0.0
+    routed_pages_combined: 0/0 = 0.0
+    agreement by publication (deterministic -> combined):
+      overall          31/41 (0.7561) -> 31/41 (0.7561)
+      aramcoworld      7/9 (0.7778) -> 7/9 (0.7778)
+      cern_courier     3/4 (0.75) -> 3/4 (0.75)
+      imf_fd           8/9 (0.8889) -> 8/9 (0.8889)
+      unesco_courier   10/16 (0.625) -> 10/16 (0.625)
+      vogue_us         3/3 (1.0) -> 3/3 (1.0)
+    pages the fallback moved: 0
+    
+    vlm_classify_eval: 41 page(s) -> C:\Users\Azphire\AppData\Local\Temp\spec_b3_3_1pdiusy7\eval_previous\vlm_eval.report.json
+    model=gpt-4o-mini enabled=False dpi=150 rows=3
+    setting: temperature=0.0 token_parameter=max_tokens max_output_tokens=512
+    cost: routed=0 requests=0 pipeline_requests=0 cache_hits=0 attempts=0
+    fallback: accepted=0/0 refused=0 rate=0.0
+    routed_pages_deterministic: 0/0 = 0.0 | coverage 0/0 = 0.0
+    routed_pages_combined: 0/0 = 0.0 | coverage 0/0 = 0.0
+    agreement by publication (deterministic -> combined) | label set coverage (deterministic -> combined):
+      overall          31/41 (0.7561) -> 31/41 (0.7561) | 31/41 (0.7561) -> 31/41 (0.7561)
+      aramcoworld      7/9 (0.7778) -> 7/9 (0.7778) | 7/9 (0.7778) -> 7/9 (0.7778)
+      cern_courier     3/4 (0.75) -> 3/4 (0.75) | 3/4 (0.75) -> 3/4 (0.75)
+      imf_fd           8/9 (0.8889) -> 8/9 (0.8889) | 8/9 (0.8889) -> 8/9 (0.8889)
+      unesco_courier   10/16 (0.625) -> 10/16 (0.625) | 10/16 (0.625) -> 10/16 (0.625)
+      vogue_us         3/3 (1.0) -> 3/3 (1.0) | 3/3 (1.0) -> 3/3 (1.0)
+    pages the second candidate alone covers: 0
+    pages the fallback moved: 0
+    
+    vlm_classify_eval: 41 page(s) -> C:\Users\Azphire\AppData\Local\Temp\spec_b3_3_1pdiusy7\eval_current\vlm_eval.report.json
+    [PASS] 03c every section batch-b3.2 wrote comes back byte for byte the same :: sections=['agreement', 'configuration', 'cost', 'fallback', 'pages', 'prompts', 'secondary_kinds'] differing=[] exits=(0, 0) added=['label_set_coverage', 'policy_agreement']
+    [PASS] 03d every per page single point column keeps the value it had :: pages=41 changed=[]
+    [PASS] 03e the deterministic column is its own control and coverage never loses :: control_columns_equal=True pooled_single=31/41 pooled_coverage=31/41 gain_pages=0
+    [PASS] 05a no refusal is read for a parameter to switch to :: markers=[] retry_path_mentions=[]
+    [PASS] 05b every retry asks for exactly the parameters the profile declares :: attempts=2 bodies=2 shapes=[['max_tokens', 'model', 'temperature'], ['max_tokens', 'model', 'temperature']] accepted=False
+    [PASS] 06a this batch changes only the paths the plan allows :: changed=['babeldoc/magazine/vlm_client.py', 'configs/vlm.json', 'plans/PLAN_B3_3.md', 'spec_checks/run_all.py', 'spec_checks/spec_check_b3_3.py', 'tools/vlm_classify_eval.py'] unexpected=[]
+    [PASS] 06b this batch touches no upstream file :: upstream=[]
+    [PASS] 06c no CJK characters in the code this batch changed :: files=5 offenders=[]
+    [PASS] 06d this gate ran with the credential removed and the switch off :: variable=OPENAI_API_KEY still_set=False enabled=False
+    SKIPPED: nested run suppressed :: 04a the full run_all sweep is green
+    
+    artifact cache spec_check_b3_3: hit=12 built=0 build_seconds=0.0
+    timing spec_check_b3_3: phases=1.1s assertions=24.7s
+      slow assertion     24.6s  03c every section batch-b3.2 wrote comes back byte for byte the same
+      slow assertion      0.1s  06a this batch changes only the paths the plan allows
+      slow assertion      0.1s  02b the shipped configuration keys exactly as batch-b3.2 keyed it
+      slow assertion      0.0s  05b every retry asks for exactly the parameters the profile declares
+      slow assertion      0.0s  06c no CJK characters in the code this batch changed
+    spec_check_b3_3: 17/17 passed
+=== spec_check_b3_3.py end 01:07:07 exit=0 elapsed=29.1s ===
+
+=== spec_check_b7_3.py start 01:07:07 ===
+    PASS: check_01_candidates_open_on_a_word (0.01s)
+    PASS: check_02a_artefacts_present (0.00s)
+    PASS: check_02b_evidence_is_self_consistent (0.00s)
+    PASS: check_02c_ruling_matches_the_file (0.00s)
+    PASS: check_03a_every_ruled_occurrence_moved (0.00s)
+    PASS: check_03b_unruled_terms_did_not_move (0.00s)
+    PASS: check_03c_page_kind_override_travels (0.00s)
+    PASS: check_03d_drop_cap_verdicts_written (0.00s)
+    PASS: check_04a_no_unexplained_perturbation (0.00s)
+    PASS: check_04b_second_draft_is_the_machine_verdict (0.00s)
+    PASS: check_05a_no_upstream_change (0.05s)
+    PASS: check_05b_nothing_writes_a_decisions_file (0.02s)
+    PASS: check_05c_no_vocabulary_literals (0.03s)
+    PASS: check_05d_ascii_prose (0.00s)
+    SKIPPED: check_06_sweep (the runner is performing the sweep)
+    
+    spec_check_b7_3: 14/14 assertions passed
+    timing spec_check_b7_3: phases=0.0s assertions=0.1s
+      slow assertion      0.0s  check_05a_no_upstream_change
+      slow assertion      0.0s  check_05c_no_vocabulary_literals
+      slow assertion      0.0s  check_05b_nothing_writes_a_decisions_file
+      slow assertion      0.0s  check_01_candidates_open_on_a_word
+      slow assertion      0.0s  check_05d_ascii_prose
+    artifact cache spec_check_b7_3: hit=0 built=0 build_seconds=0.0
+=== spec_check_b7_3.py end 01:07:10 exit=0 elapsed=3.2s ===
+
+=== spec_check_b8_3.py start 01:07:10 ===
+    PASS: check_01a_publish_sweeps_to_fit (0.01s)
+    PASS: check_01b_sweep_survives_what_it_cannot_remove (0.03s)
+    PASS: check_01c_build_publishes_through_the_seam (0.01s)
+    PASS: check_02_every_sidecar_is_declared (0.08s)
+    PASS: check_03a_artefacts_present (0.00s)
+    PASS: check_03b_every_sample_ran (0.00s)
+    PASS: check_03c_evidence_matches_the_sidecar (0.00s)
+    PASS: check_04a_the_standing_finding_was_detected_and_decided (0.00s)
+    PASS: check_04b_every_run_conserved_its_document (0.00s)
+    PASS: check_04c_rejections_are_recorded_with_a_reason (0.00s)
+    PASS: check_05a_nothing_moved_outside_the_repaired_set (0.00s)
+    PASS: check_05b_the_rendering_moved_only_where_the_document_did (0.00s)
+    PASS: check_05c_the_disputed_region_draws_as_it_did (0.00s)
+    PASS: check_06_prompt_rounds_are_recorded (0.00s)
+    PASS: check_07a_no_upstream_change (0.05s)
+    PASS: check_07b_no_vocabulary_literals (0.03s)
+    PASS: check_07c_ascii_prose (0.00s)
+    PASS: check_07d_the_driver_spends_no_credential_in_the_gate (0.01s)
+    PASS: check_07e_report_quotes_the_evidence (0.00s)
+    SKIPPED: check_08_sweep (the runner is performing the sweep)
+    
+    spec_check_b8_3: 19/19 assertions passed
+    timing spec_check_b8_3: phases=0.0s assertions=0.2s
+      slow assertion      0.1s  check_02_every_sidecar_is_declared
+      slow assertion      0.1s  check_07a_no_upstream_change
+      slow assertion      0.0s  check_07b_no_vocabulary_literals
+      slow assertion      0.0s  check_01b_sweep_survives_what_it_cannot_remove
+      slow assertion      0.0s  check_01a_publish_sweeps_to_fit
+    artifact cache spec_check_b8_3: hit=0 built=0 build_seconds=0.0
+=== spec_check_b8_3.py end 01:07:14 exit=0 elapsed=3.4s ===
+
+=== spec_check_b8_4.py start 01:07:14 ===
+    PASS: check_01a_the_subject_reads_as_its_line (0.02s)
+    PASS: check_01b_horizontal_paragraphs_are_byte_identical (0.02s)
+    PASS: check_01c_the_order_is_read_from_the_geometry (0.00s)
+    PASS: check_01d_one_reader_for_the_whole_package (0.11s)
+    PASS: check_02a_converged_with_residuals (0.90s)
+    react: iteration 1 left 2 untreated finding(s) against 2 before it; rolled back and stopped
+    PASS: check_02b_untreated_set_not_shrinking_rolls_back (1.67s)
+    PASS: check_02c_the_two_bounds_did_not_move (0.05s)
+    PASS: check_02d_progress_is_declared_not_assumed (0.00s)
+    PASS: check_03a_the_request_states_the_rule (0.00s)
+    react: no usable decision after 2 attempt(s); this iteration applies nothing. action 'translate_orphan_lines' was chosen with no findings to apply it to; action 'translate_orphan_lines' was chosen with no findings to apply it to
+    PASS: check_03b_the_known_correct_selection_is_refused_nothing (1.00s)
+    PASS: check_03c_naming_what_the_rule_refuses_costs_the_quota (1.32s)
+    PASS: check_03d_statements_are_declared_for_every_term (0.00s)
+    PASS: check_03e_prompt_rounds_are_recorded (0.02s)
+    PASS: check_04a_a_live_build_is_exempt_and_an_abandoned_one_is_not (0.03s)
+    PASS: check_04b_the_build_takes_and_drops_its_lock (0.01s)
+    PASS: check_04c_retention_keeps_what_it_declares (0.30s)
+    D:\Codes\BabelDOC\.venv\Lib\site-packages\xsdata\formats\dataclass\parsers\utils.py:130: ConverterWarning: Failed to convert value for `PdfCurve.debug_info`
+      `a` is not a valid `bool`
+      warnings.warn(message, ConverterWarning)
+    D:\Codes\BabelDOC\.venv\Lib\site-packages\xsdata\formats\dataclass\parsers\utils.py:130: ConverterWarning: Failed to convert value for `PdfCurve.debug_info`
+      `a` is not a valid `bool`
+      warnings.warn(message, ConverterWarning)
+    D:\Codes\BabelDOC\.venv\Lib\site-packages\xsdata\formats\dataclass\parsers\utils.py:130: ConverterWarning: Failed to convert value for `PdfCurve.debug_info`
+      `a` is not a valid `bool`
+      warnings.warn(message, ConverterWarning)
+    D:\Codes\BabelDOC\.venv\Lib\site-packages\xsdata\formats\dataclass\parsers\utils.py:130: ConverterWarning: Failed to convert value for `PdfCurve.debug_info`
+      `a` is not a valid `bool`
+      warnings.warn(message, ConverterWarning)
+    D:\Codes\BabelDOC\.venv\Lib\site-packages\xsdata\formats\dataclass\parsers\utils.py:130: ConverterWarning: Failed to convert value for `PdfCurve.debug_info`
+      `a` is not a valid `bool`
+      warnings.warn(message, ConverterWarning)
+    D:\Codes\BabelDOC\.venv\Lib\site-packages\xsdata\formats\dataclass\parsers\utils.py:130: ConverterWarning: Failed to convert value for `PdfCurve.debug_info`
+      `a` is not a valid `bool`
+      warnings.warn(message, ConverterWarning)
+    PASS: check_04d_baselines_are_archives_that_round_trip (57.20s)
+    PASS: check_04e_the_sweep_applies_the_policy (0.01s)
+    PASS: check_05a_artefacts_present (0.00s)
+    PASS: check_05b_the_subject_was_asked_the_right_question (0.00s)
+    PASS: check_05c_the_pixels_agree_with_the_document (0.00s)
+    PASS: check_05d_the_strip_is_still_a_strip (0.00s)
+    PASS: check_05e_every_run_conserved_its_document (0.00s)
+    PASS: check_05f_the_decision_quality_is_measured (0.00s)
+    PASS: check_05g_a_repair_landed_and_held_its_box (0.00s)
+    PASS: check_05h_the_strip_was_refused_rather_than_rearranged (0.00s)
+    PASS: check_06a_no_upstream_change (0.06s)
+    PASS: check_06b_no_vocabulary_literals (0.05s)
+    PASS: check_06c_ascii_prose (0.00s)
+    PASS: check_06d_the_gate_spends_no_credential (0.02s)
+    PASS: check_06e_report_quotes_the_evidence (0.00s)
+    PASS: check_06f_registered (0.00s)
+    SKIPPED: check_07_sweep (the runner is performing the sweep)
+    
+    spec_check_b8_4: 32/32 assertions passed
+    timing spec_check_b8_4: phases=0.0s assertions=62.8s
+      slow assertion     57.2s  check_04d_baselines_are_archives_that_round_trip
+      slow assertion      1.7s  check_02b_untreated_set_not_shrinking_rolls_back
+      slow assertion      1.3s  check_03c_naming_what_the_rule_refuses_costs_the_quota
+      slow assertion      1.0s  check_03b_the_known_correct_selection_is_refused_nothing
+      slow assertion      0.9s  check_02a_converged_with_residuals
+    artifact cache spec_check_b8_4: hit=0 built=0 build_seconds=0.0
+=== spec_check_b8_4.py end 01:08:20 exit=0 elapsed=66.0s ===
+
+=== spec_check_b9_1.py start 01:08:20 ===
+    PASS: check_01a_manifest_copies_the_registry_verbatim (0.00s)
+    PASS: check_01b_the_schema_refuses_a_bad_direction (0.01s)
+    PASS: check_01c_every_driver_reads_the_direction_per_sample (0.01s)
+    PASS: check_01d_no_constant_direction_reaches_a_translation (0.00s)
+    PASS: check_02a_the_policy_is_declared_with_its_vocabulary (0.01s)
+    PASS: check_02b_all_three_prompt_builders_carry_it (1.73s)
+    PASS: check_02c_the_three_layers_are_ordered_where_the_model_reads_it (1.63s)
+    PASS: check_02d_keep_source_writes_nothing (4.92s)
+    PASS: check_02e_a_callers_own_system_prompt_is_kept (1.73s)
+    PASS: check_03a_the_corrected_direction_produced_the_target_language (0.00s)
+    PASS: check_03b_the_contents_page_names_moved (0.00s)
+    PASS: check_03c_the_ruling_outranks_the_default (0.00s)
+    PASS: check_04a_no_upstream_change (0.05s)
+    PASS: check_04a2_the_registry_carries_only_the_owners_edit (0.09s)
+    PASS: check_04b_no_language_or_name_literals (0.03s)
+    PASS: check_04c_ascii_prose (0.00s)
+    PASS: check_04d_registered (0.00s)
+    PASS: check_04e_the_gate_spends_no_credential (0.01s)
+    SKIPPED: check_05_sweep (the runner is performing the sweep)
+    
+    spec_check_b9_1: 18/18 assertions passed
+    timing spec_check_b9_1: phases=0.0s assertions=10.2s
+      slow assertion      4.9s  check_02d_keep_source_writes_nothing
+      slow assertion      1.7s  check_02e_a_callers_own_system_prompt_is_kept
+      slow assertion      1.7s  check_02b_all_three_prompt_builders_carry_it
+      slow assertion      1.6s  check_02c_the_three_layers_are_ordered_where_the_model_reads_it
+      slow assertion      0.1s  check_04a2_the_registry_carries_only_the_owners_edit
+=== spec_check_b9_1.py end 01:08:34 exit=0 elapsed=13.5s ===
+
+=== spec_check_b9_2.py start 01:08:34 ===
+    PASS: check_01a_erasure_is_omission (0.01s)
+    PASS: check_01b_no_upstream_flag_forbids_a_break (0.02s)
+    PASS: check_01c_the_indent_is_an_attribute_the_layout_reads (0.80s)
+    PASS: check_01d_backfill_precedes_the_layout_precedes_this_pass (0.00s)
+    PASS: check_02a_an_over_wide_heading_is_set_on_one_line (0.77s)
+    PASS: check_02b_below_the_floor_is_raised_not_squeezed (0.88s)
+    PASS: check_02c_two_paints_of_one_headline_become_one (0.83s)
+    PASS: check_02d_overlapping_heading_paragraphs_become_one (0.81s)
+    PASS: check_02e_a_chain_member_is_scaled_after_its_backfill (0.81s)
+    PASS: check_02f_a_heading_with_nothing_to_answer_for_is_left_alone (0.83s)
+    PASS: check_03a_the_switch_down_changes_nothing (0.01s)
+    PASS: check_03b_conservation (0.86s)
+    PASS: check_03c_the_sidecar_says_what_was_done (0.84s)
+    PASS: check_04a_every_parameter_is_bounded (0.00s)
+    PASS: check_04b_a_bad_configuration_is_refused (0.00s)
+    PASS: check_04c_the_heading_labels_are_declared_elsewhere (0.00s)
+    PASS: check_04d_the_ruling_revision_is_the_owners_and_only_theirs (0.08s)
+    PASS: check_05a_no_upstream_change (0.06s)
+    PASS: check_05b_no_vocabulary_literals (0.03s)
+    PASS: check_05c_ascii_prose (0.00s)
+    PASS: check_05d_the_gate_spends_no_credential (0.02s)
+    PASS: check_05e_registered (0.00s)
+    PASS: check_05f_the_real_case_is_frozen (0.10s)
+    PASS: check_07a_the_arms_translated_one_document (0.00s)
+    PASS: check_07b_the_doubled_headline_is_drawn_once (0.15s)
+    PASS: check_07c_the_cover_headings_are_unwrapped_and_the_residue_is_named (0.10s)
+    PASS: check_07d_every_heading_is_on_one_line_or_raised (0.00s)
+    PASS: check_07e_the_floor_is_listed (0.00s)
+    PASS: check_07f_a_doubled_heading_does_not_reach_the_metric (0.00s)
+    PASS: check_07g_the_policy_asks_no_question (0.09s)
+    SKIPPED: check_06_sweep (the runner is performing the sweep)
+    
+    spec_check_b9_2: 30/30 assertions passed
+    timing spec_check_b9_2: phases=0.0s assertions=8.1s
+      slow assertion      0.9s  check_02b_below_the_floor_is_raised_not_squeezed
+      slow assertion      0.9s  check_03b_conservation
+      slow assertion      0.8s  check_03c_the_sidecar_says_what_was_done
+      slow assertion      0.8s  check_02c_two_paints_of_one_headline_become_one
+      slow assertion      0.8s  check_02f_a_heading_with_nothing_to_answer_for_is_left_alone
+    artifact cache spec_check_b9_2: hit=0 built=0 build_seconds=0.0
+=== spec_check_b9_2.py end 01:08:46 exit=0 elapsed=11.3s ===
+
+=== spec_check_e0.py start 01:08:46 ===
+    PASS: check_01a_the_three_documents_exist (0.00s)
+    PASS: check_01b_every_ledger_row_carries_its_provenance (0.00s)
+    PASS: check_01c_the_status_summary_agrees_with_the_rows (0.00s)
+    PASS: check_02_no_dead_link (0.01s)
+    PASS: check_02b_the_evidence_is_tiered (0.04s)
+    PASS: check_03_the_retired_register_is_actually_retired (0.00s)
+    PASS: check_04_every_equation_label_resolves (0.00s)
+    PASS: check_05_the_ledger_and_the_gap_register_close_over_each_other (0.00s)
+    PASS: check_06_sampled_numbers_are_in_the_files_they_cite (0.00s)
+    PASS: check_07a_no_code_and_no_configuration_changed (0.05s)
+    PASS: check_07b_the_runner_registers_this_gate (0.00s)
+    PASS: check_07c_ascii_prose_in_the_gate (0.00s)
+    PASS: check_07d_the_gate_runs_nothing (0.00s)
+    SKIPPED: check_08_sweep (the runner is performing the sweep)
+    
+    spec_check_e0: 13/13 assertions passed
+    timing spec_check_e0: phases=0.0s assertions=0.1s
+      slow assertion      0.0s  check_07a_no_code_and_no_configuration_changed
+      slow assertion      0.0s  check_02b_the_evidence_is_tiered
+      slow assertion      0.0s  check_02_no_dead_link
+      slow assertion      0.0s  check_06_sampled_numbers_are_in_the_files_they_cite
+      slow assertion      0.0s  check_05_the_ledger_and_the_gap_register_close_over_each_other
+    artifact cache spec_check_e0: hit=0 built=0 build_seconds=0.0
+=== spec_check_e0.py end 01:08:49 exit=0 elapsed=3.4s ===
+
+=== spec_check_e1.py start 01:08:49 ===
+    PASS: check_01a_every_parameter_is_bounded (0.00s)
+    PASS: check_01b_an_unbounded_parameter_is_refused (0.00s)
+    PASS: check_02a_verdicts_over_synthetic_pages (0.00s)
+    PASS: check_02b_the_last_line_is_read_not_the_string (0.00s)
+    PASS: check_02c_boundary_shapes (0.00s)
+    PASS: check_02d_the_column_series_is_separate (0.00s)
+    PASS: check_02e_the_ender_set_comes_from_the_detector (0.00s)
+    PASS: check_03a_the_three_levels_hold_and_fail (0.00s)
+    PASS: check_03b_absent_evidence_is_not_a_pass (0.00s)
+    PASS: check_04a_the_pairwise_count_is_the_definition (0.00s)
+    PASS: check_04b_the_relation_to_the_legacy_share (0.00s)
+    PASS: check_04c_the_unmeasurable_is_not_measured (0.00s)
+    PASS: check_04d_the_corpus_rule_sums_rather_than_averages (0.00s)
+    PASS: check_05a_overlap_against_hand_computed_values (0.00s)
+    PASS: check_05b_alignment_and_the_domain_of_g (0.00s)
+    PASS: check_05c_degenerate_elements_are_dropped (0.00s)
+    PASS: check_05d_image_pairing_and_the_unpaired_case (0.00s)
+    PASS: check_05e_the_deltas_over_a_whole_document (0.00s)
+    SKIPPED: check_06_the_entry_point_over_a_frozen_run (frozen dependency absent: examples/output/b8_4/smoke/Courier-en/work/Courier-en/checkpoint.08_chain_builder.xml, examples/output/b8_4/smoke/Courier-en/work/Courier-en/checkpoint.09_il_translated.xml, examples/output/b8_4/smoke/Courier-en/work/Courier-en/checkpoint.11_typesetting.xml)
+    PASS: check_10a_the_strata_are_read_from_the_ruling_and_the_note (0.00s)
+    PASS: check_10b_a_trap_cannot_move_the_headline (0.00s)
+    PASS: check_11a_the_fold_matrix_is_on_disk_and_adds_up (0.00s)
+    SKIPPED: check_11b_the_fold_matrix_recomputes_bit_for_bit (frozen dependency absent: examples/output/b8_4/smoke/AramcoWorld-en-v2/work/AramcoWorld-en-v2/checkpoint.06_styles_and_formulas.xml, examples/output/b8_4/smoke/CERNCourier-en/work/CERNCourier-en/checkpoint.06_styles_and_formulas.xml, examples/output/b8_4/smoke/Courier-en/work/Courier-en/checkpoint.06_styles_and_formulas.xml, examples/output/b8_4/smoke/Courier-zh/work/Courier-zh/checkpoint.06_styles_and_formulas.xml, and 2 more)
+    PASS: check_12a_the_paths_are_compared_where_both_can_read (0.00s)
+    PASS: check_12b_the_deviation_is_in_the_contract (0.00s)
+    PASS: check_13a_every_sample_in_every_configuration (0.00s)
+    PASS: check_13b_the_unmeasurable_boundaries_are_counted (0.00s)
+    PASS: check_14_the_policy_column_exists_for_every_tier (0.00s)
+    PASS: check_07a_no_upstream_and_no_ground_truth_change (0.12s)
+    PASS: check_07b_the_runner_registers_this_gate (0.00s)
+    PASS: check_07c_ascii_prose (0.00s)
+    PASS: check_07d_every_metric_carries_its_definition (0.00s)
+    PASS: check_08a_no_metric_can_spend_anything (0.00s)
+    PASS: check_08b_no_metric_names_a_publication (0.00s)
+    PASS: check_08c_the_metrics_are_not_on_the_translation_path (0.06s)
+    SKIPPED: check_09_sweep (the runner is performing the sweep)
+    
+    spec_check_e1: 33/33 assertions passed
+    timing spec_check_e1: phases=0.0s assertions=0.2s
+      slow assertion      0.1s  check_07a_no_upstream_and_no_ground_truth_change
+      slow assertion      0.1s  check_08c_the_metrics_are_not_on_the_translation_path
+      slow assertion      0.0s  check_08a_no_metric_can_spend_anything
+      slow assertion      0.0s  check_12a_the_paths_are_compared_where_both_can_read
+      slow assertion      0.0s  check_01b_an_unbounded_parameter_is_refused
+    artifact cache spec_check_e1: hit=0 built=0 build_seconds=0.0
+=== spec_check_e1.py end 01:08:53 exit=0 elapsed=3.5s ===
+
+=== spec_check_e2.py start 01:08:53 ===
+    PASS: check_01a_three_runs_with_registered_digests (0.00s)
+    PASS: check_01b_each_arm_left_the_checkpoints_the_metrics_read (0.00s)
+    PASS: check_02a_the_two_off_arms_carry_different_cache_keys (0.00s)
+    PASS: check_02b_the_off_arms_differ_in_text_and_agree_in_batching (0.00s)
+    PASS: check_03a_the_gap01_rule_recomputes_from_the_three_columns (0.00s)
+    PASS: check_03b_the_batch_evidence_only_moves_the_rows_it_may (0.00s)
+    Exception in thread Thread-1 (_readerthread):
+    Traceback (most recent call last):
+      File "C:\Users\Azphire\AppData\Roaming\uv\python\cpython-3.13.3-windows-x86_64-none\Lib\threading.py", line 1041, in _bootstrap_inner
+        self.run()
+        ~~~~~~~~^^
+      File "C:\Users\Azphire\AppData\Roaming\uv\python\cpython-3.13.3-windows-x86_64-none\Lib\threading.py", line 992, in run
+        self._target(*self._args, **self._kwargs)
+        ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+      File "C:\Users\Azphire\AppData\Roaming\uv\python\cpython-3.13.3-windows-x86_64-none\Lib\subprocess.py", line 1612, in _readerthread
+        buffer.append(fh.read())
+                      ~~~~~~~^^
+    UnicodeDecodeError: 'gbk' codec can't decode byte 0xa6 in position 1767: illegal multibyte sequence
+    PASS: check_03c_the_report_regenerates_byte_for_byte (6.49s)
+    PASS: check_04_the_chain_ab_is_measured_on_every_arm (0.00s)
+    PASS: check_05a_the_ledger_no_longer_needs_three_runs (0.00s)
+    PASS: check_05b_the_gap_register_closes_over_the_new_rows (0.00s)
+    PASS: check_05c_every_path_this_batch_cites_exists (0.00s)
+    PASS: check_06_no_upstream_and_no_ground_truth_change (0.12s)
+    PASS: check_07_the_runner_registers_this_gate (0.00s)
+    PASS: check_08a_only_the_runner_may_spend (0.00s)
+    PASS: check_08b_ascii_prose (0.00s)
+    PASS: check_10_every_judgement_answers_within_the_declared_vocabularies (0.00s)
+    PASS: check_11_the_test_points_are_the_adjudicated_positives (0.00s)
+    SKIPPED: check_12_the_judgements_replay_from_cache_byte_for_byte (frozen dependency absent: examples/output/b8_4/smoke/AramcoWorld-en-v2/work/AramcoWorld-en-v2/checkpoint.08_chain_builder.xml, examples/output/b8_4/smoke/AramcoWorld-en-v2/work/AramcoWorld-en-v2/checkpoint.11_typesetting.xml, examples/output/b8_4/smoke/Courier-zh/work/Courier-zh/checkpoint.08_chain_builder.xml, examples/output/b8_4/smoke/Courier-zh/work/Courier-zh/checkpoint.11_typesetting.xml)
+    PASS: check_13_the_manual_review_is_ruled_and_covers_every_row (0.01s)
+    PASS: check_14_the_agreement_is_recomputed_from_the_ruling (0.00s)
+    SKIPPED: check_09_sweep (the runner is performing the sweep)
+    
+    spec_check_e2: 19/19 assertions passed
+    timing spec_check_e2: phases=0.0s assertions=6.6s
+      slow assertion      6.5s  check_03c_the_report_regenerates_byte_for_byte
+      slow assertion      0.1s  check_06_no_upstream_and_no_ground_truth_change
+      slow assertion      0.0s  check_13_the_manual_review_is_ruled_and_covers_every_row
+      slow assertion      0.0s  check_01a_three_runs_with_registered_digests
+      slow assertion      0.0s  check_05c_every_path_this_batch_cites_exists
+    artifact cache spec_check_e2: hit=0 built=0 build_seconds=0.0
+=== spec_check_e2.py end 01:09:03 exit=0 elapsed=9.9s ===
+
+=== spec_check_b9_2r.py start 01:09:03 ===
+    PASS: check_01a_the_four_rows_carry_the_pruned_status (0.00s)
+    PASS: check_01b_the_gap_register_answers_for_all_four (0.00s)
+    PASS: check_01c_the_retired_paths_are_registered_and_absent (0.00s)
+    PASS: check_02a_the_accident_now_refuses (0.50s)
+    PASS: check_02b_the_evaluation_gates_write_no_frozen_file (13.96s)
+    PASS: check_02c_a_removed_dependency_still_writes_nothing (10.05s)
+    PASS: check_02d_no_gate_names_a_frozen_directory_as_an_output (0.37s)
+    PASS: check_02e_the_runner_digests_the_record_around_every_gate (0.02s)
+    PASS: check_03a_the_protection_list_covers_what_e0_registers (0.01s)
+    PASS: check_03b_no_registered_path_is_ever_selected (0.22s)
+    PASS: check_03c_the_archive_holds_the_evicted_batches (0.10s)
+    PASS: check_03d_the_bulk_is_still_removed (0.06s)
+    PASS: check_04a_a_second_sweep_is_refused (0.07s)
+    PASS: check_04b_the_runner_takes_the_lock_before_anything (0.00s)
+    PASS: check_04c_no_interrupted_build_is_still_on_the_disk (0.04s)
+    PASS: check_05a_no_upstream_no_ground_truth_no_ruling (0.06s)
+    PASS: check_05b_the_runner_registers_this_gate (0.00s)
+    PASS: check_05c_the_convention_is_in_claude_md_and_pinned (0.00s)
+    PASS: check_05d_ascii_prose_in_the_gate (0.00s)
+    PASS: check_05e_the_gate_spends_nothing (0.00s)
+    SKIPPED: check_06_sweep (the runner is performing the sweep)
+    
+    spec_check_b9_2r: 20/20 assertions passed
+    timing spec_check_b9_2r: phases=0.0s assertions=25.5s
+      slow assertion     14.0s  check_02b_the_evaluation_gates_write_no_frozen_file
+      slow assertion     10.1s  check_02c_a_removed_dependency_still_writes_nothing
+      slow assertion      0.5s  check_02a_the_accident_now_refuses
+      slow assertion      0.4s  check_02d_no_gate_names_a_frozen_directory_as_an_output
+      slow assertion      0.2s  check_03b_no_registered_path_is_ever_selected
+    artifact cache spec_check_b9_2r: hit=0 built=0 build_seconds=0.0
+=== spec_check_b9_2r.py end 01:09:32 exit=0 elapsed=28.8s ===
+
+=== spec_check_b9_3.py start 01:09:32 ===
+    PASS: check_01a_a_record_is_cut_at_its_source_line (0.00s)
+    PASS: check_01b_each_line_keeps_the_measure_and_its_own_band (0.00s)
+    PASS: check_01c_every_line_carries_the_parents_identity (0.00s)
+    PASS: check_02a_a_mixed_setting_inside_one_line_is_not_subdivided (0.01s)
+    PASS: check_02b_a_formula_is_never_cut (0.00s)
+    PASS: check_03a_an_undeclared_page_is_byte_identical (0.05s)
+    PASS: check_03b_a_declared_page_does_not_reach_its_neighbours (0.02s)
+    PASS: check_04a_the_page_holds_the_same_lines_after_the_split (0.00s)
+    PASS: check_04b_no_character_is_lost_or_duplicated (0.00s)
+    PASS: check_05a_the_split_runs_before_the_chain_builder (0.00s)
+    PASS: check_05b_a_declared_page_is_not_chain_eligible (0.00s)
+    PASS: check_06a_the_switch_is_down_by_default (0.03s)
+    PASS: check_07a_the_flag_is_declared_in_the_vocabulary (0.00s)
+    PASS: check_07b_the_pass_names_no_page_type (0.00s)
+    PASS: check_07c_a_page_with_no_policy_is_not_declared (0.00s)
+    PASS: check_07d_the_configuration_is_bounded (0.00s)
+    PASS: check_08a_the_report_has_the_declared_shape (0.01s)
+    PASS: check_08b_a_record_of_the_wrong_shape_is_refused (0.00s)
+    PASS: check_08c_the_short_line_inventory_is_reported (0.00s)
+    PASS: check_11a_the_two_bounds_are_an_and (0.01s)
+    PASS: check_11b_an_exemption_reaches_the_sidecar_with_its_reason (0.05s)
+    PASS: check_11c_each_bound_is_live_and_bounded (0.01s)
+    PASS: check_12a_the_calibration_replays_on_the_frozen_page (0.28s)
+    PASS: check_12b_the_acceptance_evidence_holds (0.00s)
+    PASS: check_09a_no_upstream_no_ground_truth_no_ruling (0.05s)
+    PASS: check_09b_the_runner_registers_this_gate (0.00s)
+    PASS: check_09c_the_frozen_guard_covers_the_output_evidence (0.29s)
+    PASS: check_09d_the_gate_spends_nothing (0.00s)
+    SKIPPED: check_10_sweep (the runner is performing the sweep)
+    
+    spec_check_b9_3: 28/28 assertions passed
+    timing spec_check_b9_3: phases=0.0s assertions=0.9s
+      slow assertion      0.3s  check_09c_the_frozen_guard_covers_the_output_evidence
+      slow assertion      0.3s  check_12a_the_calibration_replays_on_the_frozen_page
+      slow assertion      0.1s  check_03a_an_undeclared_page_is_byte_identical
+      slow assertion      0.1s  check_09a_no_upstream_no_ground_truth_no_ruling
+      slow assertion      0.1s  check_11b_an_exemption_reaches_the_sidecar_with_its_reason
+    artifact cache spec_check_b9_3: hit=0 built=0 build_seconds=0.0
+=== spec_check_b9_3.py end 01:09:37 exit=0 elapsed=4.1s ===
+
+=== spec_check_b9_4.py start 01:09:37 ===
+    PASS: check_01a_the_switch_is_down_by_default (0.06s)
+    PASS: check_01b_apply_without_marking_is_refused (0.01s)
+    PASS: check_02a_an_initial_in_a_style_run_is_read (0.00s)
+    PASS: check_02b_an_initial_inside_a_formula_is_read (0.00s)
+    D:\Codes\BabelDOC\.venv\Lib\site-packages\xsdata\formats\dataclass\parsers\utils.py:130: ConverterWarning: Failed to convert value for `PdfCurve.debug_info`
+      `a` is not a valid `bool`
+      warnings.warn(message, ConverterWarning)
+    PASS: check_02c_the_widening_is_additive_on_the_corpus (14.47s)
+    PASS: check_03a_a_style_run_initial_is_merged_and_the_word_closed (0.00s)
+    PASS: check_03b_a_formula_initial_is_merged_and_the_text_untouched (0.00s)
+    PASS: check_03c_a_drawn_space_is_never_dropped (0.00s)
+    PASS: check_03d_a_later_composition_is_left_alone (0.00s)
+    PASS: check_03e_keep_is_the_document_that_came_in (0.06s)
+    PASS: check_04a_the_flattened_paragraph_is_offered_whole (0.97s)
+    PASS: check_04b_before_the_merge_the_first_word_is_hidden (0.00s)
+    PASS: check_05a_the_default_is_per_target_language (0.04s)
+    PASS: check_05b_an_unclaimed_language_decides_nothing (0.03s)
+    PASS: check_05c_a_ruling_outranks_the_default (0.00s)
+    PASS: check_05d_a_paragraph_nobody_found_is_not_swept (0.05s)
+    PASS: check_06a_the_report_has_the_declared_shape (0.00s)
+    PASS: check_06b_a_record_of_the_wrong_shape_is_refused (0.00s)
+    PASS: check_06c_the_sidecar_is_in_the_inventory (0.00s)
+    PASS: check_06d_the_marking_report_names_its_consumer (0.00s)
+    PASS: check_07a_the_configuration_is_bounded (0.00s)
+    PASS: check_07b_a_broken_declaration_is_refused (0.00s)
+    PASS: check_07c_the_verdicts_come_from_one_file (0.00s)
+    PASS: check_07d_the_pass_runs_before_the_translator (0.00s)
+    PASS: check_10a_every_ruled_site_reached_the_request (0.00s)
+    PASS: check_10b_the_towering_initial_is_gone (0.00s)
+    PASS: check_10c_nothing_reached_an_unruled_paragraph (0.00s)
+    PASS: check_10d_the_found_candidate_and_the_draft (0.00s)
+    PASS: check_10e_the_residues_are_outside_the_signal (0.00s)
+    PASS: check_10f_the_evidence_is_committed (0.21s)
+    PASS: check_08a_no_upstream_no_ground_truth_no_ruling (0.05s)
+    PASS: check_08b_the_runner_registers_this_gate (0.00s)
+    PASS: check_08c_the_gate_spends_nothing (0.00s)
+    SKIPPED: check_09_sweep (the runner is performing the sweep)
+    
+    spec_check_b9_4: 33/33 assertions passed
+    timing spec_check_b9_4: phases=0.0s assertions=16.0s
+      slow assertion     14.5s  check_02c_the_widening_is_additive_on_the_corpus
+      slow assertion      1.0s  check_04a_the_flattened_paragraph_is_offered_whole
+      slow assertion      0.2s  check_10f_the_evidence_is_committed
+      slow assertion      0.1s  check_03e_keep_is_the_document_that_came_in
+      slow assertion      0.1s  check_01a_the_switch_is_down_by_default
+    artifact cache spec_check_b9_4: hit=0 built=0 build_seconds=0.0
+=== spec_check_b9_4.py end 01:09:56 exit=0 elapsed=19.3s ===
+
+=== spec_check_b9_5.py start 01:09:56 ===
+    PASS: check_01a_detector_bounds_are_declared (0.00s)
+    PASS: check_01b_detector_negative_probes (0.00s)
+    PASS: check_01c_the_vocabulary_gained_two_actions (0.00s)
+    PASS: check_01d_repair_negative_probes (0.00s)
+    PASS: check_01e_the_action_is_stricter_than_the_detector (0.00s)
+    PASS: check_02a_ink_past_the_frame_is_reported (0.00s)
+    PASS: check_02b_the_noise_floor_holds (0.00s)
+    PASS: check_02c_the_safety_margin_reports_ink_at_the_trim (0.00s)
+    PASS: check_02d_the_ink_is_measured_not_the_box (0.00s)
+    PASS: check_02e_a_page_with_no_frame_is_noted (0.00s)
+    PASS: check_03a_an_induced_collision_is_reported (0.04s)
+    PASS: check_03b_a_source_design_overlay_is_exempt (0.02s)
+    PASS: check_03c_an_overlap_below_the_bound_is_not_a_finding (0.02s)
+    PASS: check_03d_a_member_with_no_source_is_never_a_finding (0.03s)
+    PASS: check_03e_a_split_line_finds_its_parent (0.03s)
+    PASS: check_03f_without_the_source_the_detector_does_not_run (0.03s)
+    PASS: check_04a_a_heading_that_fits_is_slid (0.00s)
+    PASS: check_04b_a_heading_too_large_is_scaled (0.00s)
+    PASS: check_04c_a_heading_past_the_floor_is_escalated (0.00s)
+    PASS: check_04d_containment_refuses_what_it_may_not_move (0.00s)
+    react: no usable decision after 2 attempt(s); this iteration applies nothing. action 'contain_in_page' is outside the vocabulary; declared are ['translate_orphan_lines', 'none']; action 'contain_in_page' is outside the vocabulary; declared are ['translate_orphan_lines', 'none']
+    react: no usable decision after 2 attempt(s); this iteration applies nothing. action 'contain_in_page' is outside the vocabulary; declared are ['translate_orphan_lines', 'none']; action 'contain_in_page' is outside the vocabulary; declared are ['translate_orphan_lines', 'none']
+    PASS: check_04e_the_loop_carries_containment (0.04s)
+    react: no usable decision after 2 attempt(s); this iteration applies nothing. action 'resolve_collision' is outside the vocabulary; declared are ['translate_orphan_lines', 'none']; action 'resolve_collision' is outside the vocabulary; declared are ['translate_orphan_lines', 'none']
+    PASS: check_04f_the_collision_action_refuses_a_pair_of_equals (0.08s)
+    PASS: check_04g_a_slide_onto_a_neighbour_falls_back_to_shrinking (0.00s)
+    PASS: check_04h_a_heading_with_nowhere_to_go_is_escalated (0.00s)
+    PASS: check_04i_the_guard_reads_the_detectors_bound (0.00s)
+    PASS: check_05a_the_switch_is_down_by_default (0.00s)
+    PASS: check_05b_detection_changes_nothing (0.04s)
+    PASS: check_06_detection_is_deterministic (0.02s)
+    PASS: check_07a_this_session_changed_only_what_it_may (0.11s)
+    PASS: check_07b_no_vocabulary_literal_in_the_new_code (0.02s)
+    PASS: check_07c_the_gate_spends_nothing (0.00s)
+    PASS: check_07d_the_runner_registers_this_gate (0.00s)
+    PASS: check_08a_the_second_ruling_is_pinned (0.00s)
+    PASS: check_08b_the_stale_statements_are_corrected (0.00s)
+    PASS: check_08c_the_runner_declares_its_encoding (2.98s)
+    PASS: check_08d_the_contract_carries_the_replay_boundary (0.00s)
+    PASS: check_08e_the_census_no_longer_writes_frozen_evidence (0.05s)
+    PASS: check_10a_the_acceptance_left_its_evidence (0.00s)
+    D:\Codes\BabelDOC\.venv\Lib\site-packages\xsdata\formats\dataclass\parsers\utils.py:130: ConverterWarning: Failed to convert value for `PdfCurve.debug_info`
+      `a` is not a valid `bool`
+      warnings.warn(message, ConverterWarning)
+    PASS: check_10b_the_frozen_fixture_replays (3.90s)
+    PASS: check_10c_the_census_says_what_the_detector_raised (0.00s)
+    PASS: check_10d_nothing_moved_outside_the_contained_set (0.00s)
+    PASS: check_10e_the_scripted_arm_is_scripted_and_says_so (0.00s)
+    PASS: check_10f_the_register_carries_this_batchs_gaps (0.00s)
+    SKIPPED: check_09_sweep (the runner is performing the sweep)
+    
+    spec_check_b9_5: 43/43 assertions passed
+    timing spec_check_b9_5: phases=0.0s assertions=7.5s
+      slow assertion      3.9s  check_10b_the_frozen_fixture_replays
+      slow assertion      3.0s  check_08c_the_runner_declares_its_encoding
+      slow assertion      0.1s  check_07a_this_session_changed_only_what_it_may
+      slow assertion      0.1s  check_04f_the_collision_action_refuses_a_pair_of_equals
+      slow assertion      0.1s  check_08e_the_census_no_longer_writes_frozen_evidence
+    artifact cache spec_check_b9_5: hit=0 built=0 build_seconds=0.0
+=== spec_check_b9_5.py end 01:10:07 exit=0 elapsed=10.6s ===
+
+=== spec_check_b9_6.py start 01:10:07 ===
+    spec_check_b9_6: the decide prompt's selection of containment
+    
+    PASS: check_01a_no_code_moved (0.05s)
+    PASS: check_01b_only_a_description_changed_in_the_config (0.07s)
+    PASS: check_01c_the_prompt_was_reworked (0.02s)
+    PASS: check_02a_every_round_is_recorded (0.00s)
+    PASS: check_02b_no_two_rounds_ran_the_same_prompt (0.00s)
+    PASS: check_02c_the_tree_carries_the_last_round (0.02s)
+    PASS: check_03a_the_replays_reproduce_the_missed_decisions (0.05s)
+    PASS: check_03b_the_baseline_reproduced_what_b9_5_decided (0.00s)
+    PASS: check_04a_containment_is_selected_where_it_is_the_only_answer (0.00s)
+    PASS: check_04b_one_replayed_miss_was_recovered (0.00s)
+    PASS: check_04c_the_point_that_did_not_move_is_reported_as_such (0.00s)
+    PASS: check_04d_the_existing_action_did_not_regress (0.00s)
+    PASS: check_05a_the_report_carries_the_decisions (0.00s)
+    PASS: check_05b_the_gap_register_is_current (0.00s)
+    PASS: check_06a_the_rule_still_admits_what_was_selected (0.00s)
+    PASS: check_06b_the_request_still_states_the_rule (0.00s)
+    PASS: check_06c_the_driver_derives_its_expectations (0.00s)
+    PASS: check_07_history_is_green (0.00s)
+    
+    18/18 assertions passed
+=== spec_check_b9_6.py end 01:10:10 exit=0 elapsed=2.2s ===
+
+=== spec_check_b9_7.py start 01:10:10 ===
+    spec_check_b9_7: per kind decision rounds
+    
+    PASS: check_01a_the_delta_is_the_one_module_and_its_configuration (0.06s)
+    PASS: check_01b_the_prompt_and_the_vocabulary_did_not_move (0.14s)
+    PASS: check_02a_the_checkout_is_pinned (0.18s)
+    PASS: check_02b_the_working_tree_holds_what_the_pin_declares (0.22s)
+    PASS: check_02c_the_digest_assertions_hold_under_the_pin (0.00s)
+    PASS: check_03a_the_order_is_declared_and_complete (0.00s)
+    PASS: check_03b_an_incomplete_order_is_refused (0.03s)
+    PASS: check_03c_a_round_carries_one_kind_and_its_actions (0.00s)
+    PASS: check_03d_a_round_states_only_its_own_actions (0.00s)
+    PASS: check_03e_the_kind_reaches_the_cache_key (0.00s)
+    PASS: check_03f_an_iteration_is_every_round_once (0.06s)
+    PASS: check_04a_the_three_points_recovered (0.00s)
+    PASS: check_04b_the_expectations_are_derived_from_the_rule (0.00s)
+    PASS: check_04c_the_orphan_spectrum_did_not_regress (0.00s)
+    PASS: check_04d_the_containment_guard_did_not_regress (0.06s)
+    PASS: check_05a_the_report_carries_the_decisions (0.00s)
+    PASS: check_06_history_is_green (0.00s)
+    
+    17/17 assertions passed
+=== spec_check_b9_7.py end 01:10:14 exit=0 elapsed=4.1s ===
+
+=== spec_check_b10_1.py start 01:10:14 ===
+    spec_check_b10_1: geometry and display fixes
+    
+    PASS: check_01a_the_delta_is_the_three_modules_and_its_evidence (0.05s)
+    PASS: check_01b_no_truth_no_ruling_no_prompt (0.05s)
+    PASS: check_01c_one_upstream_file_and_it_is_registered (0.05s)
+    PASS: check_01d_the_evidence_is_present (0.00s)
+    PASS: check_02a_the_flattened_box_starts_where_the_text_does (0.00s)
+    SKIPPED: check_02b_the_flattened_column_starts_level_with_its_neighbour: evidence pruned: ['examples\\output\\b10_1\\Courier-en\\work\\Courier-en\\checkpoint.11_typesetting.json', 'examples\\output\\b10_1\\FD-en-v2\\work\\FD-en-v2\\checkpoint.11_typesetting.json'] (0.00s)
+    PASS: check_02c_the_start_edge_is_read_off_the_text (0.00s)
+    PASS: check_03a_the_single_line_branch_writes_the_kept_runs_back (0.01s)
+    PASS: check_03b_the_heading_never_reached_the_floor_branch (0.00s)
+    PASS: check_03c_the_heading_is_drawn_once_and_covered_by_a_graphic (0.11s)
+    PASS: check_04a_the_heading_policy_is_the_targets (0.00s)
+    PASS: check_04b_no_heading_of_the_english_run_is_squeezed_or_raised (0.00s)
+    PASS: check_04c_no_same_form_parenthetical_is_left_on_a_target_page (0.16s)
+    PASS: check_04d_a_translated_name_keeps_its_gloss (0.01s)
+    PASS: check_04e_a_long_parenthetical_is_left_alone (0.00s)
+    PASS: check_04f_a_refused_relayout_reaches_the_sidecar (0.00s)
+    PASS: check_05a_the_pages_and_paragraphs_are_the_f2_ones (0.74s)
+    PASS: check_05b_every_request_is_the_one_f2_built (0.02s)
+    PASS: check_05b2_text_moves_where_the_fold_says_or_where_the_model_resampled (0.00s)
+    PASS: check_05c_the_replay_spent_nothing_new (0.00s)
+    PASS: check_05d_the_folding_is_registered_as_a_sidecar (0.00s)
+    PASS: check_06_history_is_green (0.00s)
+    
+    21/22 assertions passed
+=== spec_check_b10_1.py end 01:10:18 exit=0 elapsed=3.2s ===
+
+=== spec_check_b10_2.py start 01:10:18 ===
+    spec_check_b10_2: collision criterion, action and cache key
+    
+    PASS: check_01a_the_delta_is_the_declared_surface (0.06s)
+    PASS: check_01b_no_upstream_no_prompt_no_truth (0.05s)
+    PASS: check_01c_the_rounds_are_untouched (0.03s)
+    PASS: check_02a_coverage_sees_what_the_union_ratio_cannot (0.00s)
+    PASS: check_02b_the_bounds_are_declared_and_bounded (0.00s)
+    PASS: check_02c_the_census_predicts_what_the_run_reports (0.00s)
+    PASS: check_02d_the_raised_pair_is_found_and_repaired (0.00s)
+    PASS: check_02f_the_shrunk_pair_is_no_longer_a_candidate (0.00s)
+    PASS: check_02e_the_source_design_pairs_stay_exempt (0.00s)
+    PASS: check_03a_a_pair_of_equals_is_refused (0.00s)
+    PASS: check_03b_the_shift_is_bounded (0.00s)
+    PASS: check_03c_the_escape_is_solved_from_the_edges (0.00s)
+    PASS: check_03d_the_rule_is_one_readable_condition (0.00s)
+    PASS: check_03e_the_guard_reads_both_measures (0.00s)
+    PASS: check_03g_the_bound_the_rule_omits_could_select_nothing (0.00s)
+    PASS: check_03f_conservation_holds_where_it_acted (0.00s)
+    D:\Codes\BabelDOC\spec_checks\spec_check_b10_2.py:900: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.
+      changed = sum(1 for value in difference.getdata() if value > 8)
+    PASS: check_03h_the_repair_moved_glyphs_and_only_those (0.05s)
+    PASS: check_04a_two_runs_reach_one_key (0.00s)
+    PASS: check_04b_the_key_rendering_drops_only_the_declared_fields (0.00s)
+    PASS: check_04c_what_is_sent_is_unchanged (0.00s)
+    PASS: check_04d_the_two_request_points_share_one_composition (0.00s)
+    PASS: check_04e_the_projection_is_a_blacklist (0.00s)
+    PASS: check_05a_the_ledger_equals_the_bill (0.00s)
+    PASS: check_05b_the_evidence_is_present (0.00s)
+    PASS: check_06_history_is_green (0.00s)
+    
+    25/25 assertions passed
+=== spec_check_b10_2.py end 01:10:20 exit=0 elapsed=2.2s ===
+
+=== spec_check_b10_3.py start 01:10:20 ===
+    spec_check_b10_3: fragment stitch, record grouping, record style
+    
+    PASS: check_01a_the_delta_is_the_declared_surface (0.13s)
+    PASS: check_01b_no_upstream_no_prompt_no_truth (0.10s)
+    PASS: check_01c_the_declaration_layer_is_untouched (0.10s)
+    PASS: check_01d_the_pass_names_no_page_type (0.00s)
+    PASS: check_01e_the_switch_is_down_by_default (0.00s)
+    PASS: check_01f_the_configuration_is_bounded (0.00s)
+    PASS: check_02a_the_inline_rule_joins_a_broken_word (0.00s)
+    PASS: check_02b_two_whole_paragraphs_are_not_joined (0.00s)
+    PASS: check_02c_the_face_is_read_by_name_not_by_id (0.00s)
+    PASS: check_02d_the_vertical_rule_chains_a_column (0.00s)
+    PASS: check_02e_a_declared_page_is_never_stitched (0.00s)
+    PASS: check_02f_page_furniture_is_not_stitched (0.00s)
+    PASS: check_03a_the_five_pieces_reach_the_translator_as_one_request (0.00s)
+    PASS: check_03b_the_stranded_initials_are_taken_into_the_body (0.00s)
+        initial candidates accepted across the corpus: 0
+    PASS: check_03c_the_initial_rule_reports_what_it_refused (0.00s)
+    PASS: check_04a_an_evenly_leaded_block_is_one_record_per_line (0.00s)
+    PASS: check_04b_a_block_set_apart_is_grouped_at_the_space (0.00s)
+        paragraphs whose records are not their lines: 10
+    PASS: check_04c_the_boundary_is_the_mechanism_and_nothing_else (0.00s)
+    PASS: check_04d_the_evenly_leaded_page_keeps_its_record_account (0.00s)
+        fragment clusters: AramcoWorld-en-v2: 4 -> 2; CERNCourier-en: 16 -> 9; Courier-en: 1 -> 0; FD-en-v2: 9 -> 8; Vogue-en: 8 -> 4
+        corpus total 38 -> 23, all survivors on exempt pages
+    PASS: check_04e_the_fragment_census_falls_and_what_is_left_is_the_rule (0.00s)
+    PASS: check_05a_a_record_carries_its_own_setting (0.00s)
+    D:\Codes\BabelDOC\.venv\Lib\site-packages\xsdata\formats\dataclass\parsers\utils.py:130: ConverterWarning: Failed to convert value for `PdfCurve.debug_info`
+      `a` is not a valid `bool`
+      warnings.warn(message, ConverterWarning)
+        records checked against their own characters: 61
+    PASS: check_05b_every_record_is_set_as_its_own_characters_are (2.18s)
+    PASS: check_05c_a_stitched_unit_is_one_style_throughout (0.01s)
+    PASS: check_06a_the_page_keeps_its_paragraphs (0.00s)
+        blanked members carrying nothing: 12
+    PASS: check_06a2_a_blanked_member_occupies_nothing (7.01s)
+        stitched paragraphs whose halves agree: 7
+    PASS: check_06b_the_two_halves_of_a_text_agree (7.07s)
+        requests withdrawn: 119, introduced: 56
+    PASS: check_06c_the_request_account_closes (0.01s)
+    PASS: check_06d_the_repair_ledger_equals_its_bill (0.00s)
+    PASS: check_06e_the_evidence_is_present (0.00s)
+    PASS: check_07_history_is_green (0.00s)
+    
+    30/30 assertions passed
+=== spec_check_b10_3.py end 01:10:39 exit=0 elapsed=18.4s ===
+
+run_all summary
+  [PASS] spec_check_b3_3.py    29.1s  spec_check_b3_3: 17/17 passed
+  [PASS] spec_check_b7_3.py     3.2s  spec_check_b7_3: 14/14 assertions passed
+  [PASS] spec_check_b8_3.py     3.4s  spec_check_b8_3: 19/19 assertions passed
+  [PASS] spec_check_b8_4.py    66.0s  spec_check_b8_4: 32/32 assertions passed
+  [PASS] spec_check_b9_1.py    13.5s  spec_check_b9_1: 18/18 assertions passed
+  [PASS] spec_check_b9_2.py    11.3s  spec_check_b9_2: 30/30 assertions passed
+  [PASS] spec_check_e0.py     3.4s  spec_check_e0: 13/13 assertions passed
+  [PASS] spec_check_e1.py     3.5s  spec_check_e1: 33/33 assertions passed
+  [PASS] spec_check_e2.py     9.9s  spec_check_e2: 19/19 assertions passed
+  [PASS] spec_check_b9_2r.py    28.8s  spec_check_b9_2r: 20/20 assertions passed
+  [PASS] spec_check_b9_3.py     4.1s  spec_check_b9_3: 28/28 assertions passed
+  [PASS] spec_check_b9_4.py    19.3s  spec_check_b9_4: 33/33 assertions passed
+  [PASS] spec_check_b9_5.py    10.6s  spec_check_b9_5: 43/43 assertions passed
+  [PASS] spec_check_b9_6.py     2.2s  spec_check_b9_6: the decide prompt's selection of containment
+  [PASS] spec_check_b9_7.py     4.1s  spec_check_b9_7: per kind decision rounds
+  [PASS] spec_check_b10_1.py     3.2s  spec_check_b10_1: geometry and display fixes
+  [PASS] spec_check_b10_2.py     2.2s  spec_check_b10_2: collision criterion, action and cache key
+  [PASS] spec_check_b10_3.py    18.4s  spec_check_b10_3: fragment stitch, record grouping, record style
+  18/18 gates passed in 236.1s
+  artifact cache: 12 hit / 0 built (100% served from cache), 0.0s spent building
+  in-sweep trims: 0 slot(s) dropped before publishing, 0.00 GB reclaimed; cache now 15.97 GB
+
+run_all timing
+  spec_check_b3_3.py: build=1.1s assertions=24.7s unattributed=3.3s
+      build      1.1s  warmup
+      assert    24.6s  03c every section batch-b3.2 wrote comes back byte for byte the same
+      assert     0.1s  06a this batch changes only the paths the plan allows
+      assert     0.1s  02b the shipped configuration keys exactly as batch-b3.2 keyed it
+      assert     0.0s  05b every retry asks for exactly the parameters the profile declares
+      assert     0.0s  06c no CJK characters in the code this batch changed
+  spec_check_b7_3.py: build=0.0s assertions=0.1s unattributed=3.1s
+      assert     0.0s  check_05a_no_upstream_change
+      assert     0.0s  check_05c_no_vocabulary_literals
+      assert     0.0s  check_05b_nothing_writes_a_decisions_file
+      assert     0.0s  check_01_candidates_open_on_a_word
+      assert     0.0s  check_05d_ascii_prose
+  spec_check_b8_3.py: build=0.0s assertions=0.2s unattributed=3.2s
+      assert     0.1s  check_02_every_sidecar_is_declared
+      assert     0.1s  check_07a_no_upstream_change
+      assert     0.0s  check_07b_no_vocabulary_literals
+      assert     0.0s  check_01b_sweep_survives_what_it_cannot_remove
+      assert     0.0s  check_01a_publish_sweeps_to_fit
+  spec_check_b8_4.py: build=0.0s assertions=62.8s unattributed=3.2s
+      assert    57.2s  check_04d_baselines_are_archives_that_round_trip
+      assert     1.7s  check_02b_untreated_set_not_shrinking_rolls_back
+      assert     1.3s  check_03c_naming_what_the_rule_refuses_costs_the_quota
+      assert     1.0s  check_03b_the_known_correct_selection_is_refused_nothing
+      assert     0.9s  check_02a_converged_with_residuals
+  spec_check_b9_1.py: build=0.0s assertions=10.2s unattributed=3.2s
+      assert     4.9s  check_02d_keep_source_writes_nothing
+      assert     1.7s  check_02e_a_callers_own_system_prompt_is_kept
+      assert     1.7s  check_02b_all_three_prompt_builders_carry_it
+      assert     1.6s  check_02c_the_three_layers_are_ordered_where_the_model_reads_it
+      assert     0.1s  check_04a2_the_registry_carries_only_the_owners_edit
+  spec_check_b9_2.py: build=0.0s assertions=8.1s unattributed=3.2s
+      assert     0.9s  check_02b_below_the_floor_is_raised_not_squeezed
+      assert     0.9s  check_03b_conservation
+      assert     0.8s  check_03c_the_sidecar_says_what_was_done
+      assert     0.8s  check_02c_two_paints_of_one_headline_become_one
+      assert     0.8s  check_02f_a_heading_with_nothing_to_answer_for_is_left_alone
+  spec_check_e0.py: build=0.0s assertions=0.1s unattributed=3.3s
+      assert     0.0s  check_07a_no_code_and_no_configuration_changed
+      assert     0.0s  check_02b_the_evidence_is_tiered
+      assert     0.0s  check_02_no_dead_link
+      assert     0.0s  check_06_sampled_numbers_are_in_the_files_they_cite
+      assert     0.0s  check_05_the_ledger_and_the_gap_register_close_over_each_other
+  spec_check_e1.py: build=0.0s assertions=0.2s unattributed=3.3s
+      assert     0.1s  check_07a_no_upstream_and_no_ground_truth_change
+      assert     0.1s  check_08c_the_metrics_are_not_on_the_translation_path
+      assert     0.0s  check_08a_no_metric_can_spend_anything
+      assert     0.0s  check_12a_the_paths_are_compared_where_both_can_read
+      assert     0.0s  check_04b_the_relation_to_the_legacy_share
+  spec_check_e2.py: build=0.0s assertions=6.6s unattributed=3.3s
+      assert     6.4s  check_03c_the_report_regenerates_byte_for_byte
+      assert     0.1s  check_06_no_upstream_and_no_ground_truth_change
+      assert     0.0s  check_13_the_manual_review_is_ruled_and_covers_every_row
+      assert     0.0s  check_01a_three_runs_with_registered_digests
+      assert     0.0s  check_05c_every_path_this_batch_cites_exists
+  spec_check_b9_2r.py: build=0.0s assertions=25.5s unattributed=3.3s
+      assert    14.0s  check_02b_the_evaluation_gates_write_no_frozen_file
+      assert    10.1s  check_02c_a_removed_dependency_still_writes_nothing
+      assert     0.5s  check_02a_the_accident_now_refuses
+      assert     0.4s  check_02d_no_gate_names_a_frozen_directory_as_an_output
+      assert     0.2s  check_03b_no_registered_path_is_ever_selected
+  spec_check_b9_3.py: build=0.0s assertions=0.9s unattributed=3.2s
+      assert     0.3s  check_09c_the_frozen_guard_covers_the_output_evidence
+      assert     0.3s  check_12a_the_calibration_replays_on_the_frozen_page
+      assert     0.1s  check_03a_an_undeclared_page_is_byte_identical
+      assert     0.1s  check_09a_no_upstream_no_ground_truth_no_ruling
+      assert     0.1s  check_11b_an_exemption_reaches_the_sidecar_with_its_reason
+  spec_check_b9_4.py: build=0.0s assertions=16.0s unattributed=3.3s
+      assert    14.5s  check_02c_the_widening_is_additive_on_the_corpus
+      assert     1.0s  check_04a_the_flattened_paragraph_is_offered_whole
+      assert     0.2s  check_10f_the_evidence_is_committed
+      assert     0.1s  check_03e_keep_is_the_document_that_came_in
+      assert     0.1s  check_01a_the_switch_is_down_by_default
+  spec_check_b9_5.py: build=0.0s assertions=7.5s unattributed=3.2s
+      assert     3.9s  check_10b_the_frozen_fixture_replays
+      assert     3.0s  check_08c_the_runner_declares_its_encoding
+      assert     0.1s  check_07a_this_session_changed_only_what_it_may
+      assert     0.1s  check_04f_the_collision_action_refuses_a_pair_of_equals
+      assert     0.1s  check_08e_the_census_no_longer_writes_frozen_evidence
+  spec_check_b9_6.py: build=0.0s assertions=0.2s unattributed=2.0s
+      assert     0.1s  check_01b_only_a_description_changed_in_the_config
+      assert     0.1s  check_01a_no_code_moved
+      assert     0.0s  check_03a_the_replays_reproduce_the_missed_decisions
+      assert     0.0s  check_01c_the_prompt_was_reworked
+      assert     0.0s  check_02c_the_tree_carries_the_last_round
+  spec_check_b9_7.py: build=0.0s assertions=0.8s unattributed=3.3s
+      assert     0.2s  check_02b_the_working_tree_holds_what_the_pin_declares
+      assert     0.2s  check_02a_the_checkout_is_pinned
+      assert     0.1s  check_01b_the_prompt_and_the_vocabulary_did_not_move
+      assert     0.1s  check_03f_an_iteration_is_every_round_once
+      assert     0.1s  check_01a_the_delta_is_the_one_module_and_its_configuration
+  spec_check_b10_1.py: build=0.0s assertions=1.2s unattributed=2.0s
+      assert     0.7s  check_05a_the_pages_and_paragraphs_are_the_f2_ones
+      assert     0.2s  check_04c_no_same_form_parenthetical_is_left_on_a_target_page
+      assert     0.1s  check_03c_the_heading_is_drawn_once_and_covered_by_a_graphic
+      assert     0.1s  check_01a_the_delta_is_the_three_modules_and_its_evidence
+      assert     0.0s  check_01c_one_upstream_file_and_it_is_registered
+  spec_check_b10_2.py: build=0.0s assertions=0.2s unattributed=2.0s
+      assert     0.1s  check_01a_the_delta_is_the_declared_surface
+      assert     0.0s  check_03h_the_repair_moved_glyphs_and_only_those
+      assert     0.0s  check_01b_no_upstream_no_prompt_no_truth
+      assert     0.0s  check_01c_the_rounds_are_untouched
+      assert     0.0s  check_03g_the_bound_the_rule_omits_could_select_nothing
+  spec_check_b10_3.py: build=0.0s assertions=16.6s unattributed=1.8s
+      assert     7.1s  check_06b_the_two_halves_of_a_text_agree
+      assert     7.0s  check_06a2_a_blanked_member_occupies_nothing
+      assert     2.2s  check_05b_every_record_is_set_as_its_own_characters_are
+      assert     0.1s  check_01a_the_delta_is_the_declared_surface
+      assert     0.1s  check_01b_no_upstream_no_prompt_no_truth
+  build total=1.1s assertion total=181.8s
+  slowest assertions across the sweep:
+          57.2s  spec_check_b8_4.py :: check_04d_baselines_are_archives_that_round_trip
+          24.6s  spec_check_b3_3.py :: 03c every section batch-b3.2 wrote comes back byte for byte the same
+          14.5s  spec_check_b9_4.py :: check_02c_the_widening_is_additive_on_the_corpus
+          14.0s  spec_check_b9_2r.py :: check_02b_the_evaluation_gates_write_no_frozen_file
+          10.1s  spec_check_b9_2r.py :: check_02c_a_removed_dependency_still_writes_nothing
+
+  output retention: 0 file(s), 0.00 GB, in batches older than [b10_3, b10_2]
+  output retention: 0 file(s) removed, 0.00 GB
+  completion marker: D:\Codes\BabelDOC\examples\output\run_all.done.json

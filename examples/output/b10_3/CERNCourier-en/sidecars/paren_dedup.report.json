@@ -1,0 +1,56 @@
+{
+  "closers": [
+    ")",
+    "）"
+  ],
+  "max_span_chars": 40,
+  "openers": [
+    "(",
+    "（"
+  ],
+  "pages": 4,
+  "paragraphs": [
+    {
+      "after": "“欧洲战略重申了高亮度大型强子对撞机（HiLumi LHC）的关键重要性，该项目将利用先进的加速器和探测器技术，在未来几年内充分挖掘这台令人难以置信的机器的科学潜力，”CERN总干事Mark Thomson说道。“在HiLumi LHC之后",
+      "before": "“欧洲战略重申了高亮度大型强子对撞机（HiLumi LHC）的关键重要性，该项目将利用先进的加速器和探测器技术，在未来几年内充分挖掘这台令人难以置信的机器的科学潜力，”CERN总干事Mark Thomson（Mark Thomson）说道。",
+      "debug_id": "rjLQX",
+      "page": 3,
+      "reference": "p3#11",
+      "removed_compositions": 1,
+      "removed_unicode": 1,
+      "spans": [
+        "Mark Thomson"
+      ]
+    },
+    {
+      "after": "旗舰项目，以保持欧洲核子研究中心在未来几十年对撞机物理和技术领域的世界领先地位，”理事会主席Costas Fountas表示。“我希望欧洲核子研究中心管理层在现在到2028年目标决策日期之间，成功实施理事会决议。”",
+      "before": "旗舰项目，以保持欧洲核子研究中心在未来几十年对撞机物理和技术领域的世界领先地位，”理事会主席Costas Fountas（Costas Fountas）表示。“我希望欧洲核子研究中心管理层在现在到2028年目标决策日期之间，成功实施理事会决",
+      "debug_id": "aRQDM",
+      "page": 3,
+      "reference": "p3#17",
+      "removed_compositions": 1,
+      "removed_unicode": 1,
+      "spans": [
+        "Costas Fountas"
+      ]
+    },
+    {
+      "after": "由全面的FCC可行性研究证明，其范围和成本已明确界定，”战略秘书Karl Jakobs说。“这也将为可能的未来强子对撞机铺平道路，重新利用隧道和大部分基础设施，提供远超10 TeV部分能量尺度的直接发现能力。”",
+      "before": "由全面的FCC可行性研究证明，其范围和成本已明确界定，”战略秘书Karl Jakobs（Karl Jakobs）说。“这也将为可能的未来强子对撞机铺平道路，重新利用隧道和大部分基础设施，提供远超10 TeV部分能量尺度的直接发现能力。”",
+      "debug_id": "HTRyu",
+      "page": 3,
+      "reference": "p3#41",
+      "removed_compositions": 1,
+      "removed_unicode": 1,
+      "spans": [
+        "Karl Jakobs"
+      ]
+    }
+  ],
+  "switch": "magazine_paren_dedup",
+  "totals": {
+    "paragraphs_folded": 3,
+    "spans_removed": 3,
+    "unicode_spans_removed": 3
+  }
+}

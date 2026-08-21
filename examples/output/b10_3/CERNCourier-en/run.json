@@ -1,0 +1,57 @@
+{
+  "sample": "CERNCourier-en.pdf",
+  "model": "gpt-4o",
+  "lang_in": "en",
+  "lang_out": "zh",
+  "seconds": 365.9,
+  "target_pages": [
+    2,
+    3
+  ],
+  "requests": 104,
+  "cache_hits": 102,
+  "api_calls": 2,
+  "prompt_tokens": 3676,
+  "completion_tokens": 132,
+  "pdf": "examples\\output\\b10_3\\CERNCourier-en\\CERNCourier-en.b10_3.pdf",
+  "pdf_sha256": "40281dad0e3c321a123f627b8feb08095f16ce6290318cae4ca115ab88c001fb",
+  "pages_pdf": "examples\\output\\b10_3\\CERNCourier-en\\CERNCourier-en.b10_3.pages.pdf",
+  "parity": "examples\\output\\b10_3\\CERNCourier-en\\parity.json",
+  "conservation": "examples\\output\\b10_3\\CERNCourier-en\\conservation.json",
+  "raster": [
+    "examples\\output\\b10_3\\CERNCourier-en\\raster\\CERNCourier-en.p2.png",
+    "examples\\output\\b10_3\\CERNCourier-en\\raster\\CERNCourier-en.p3.png"
+  ],
+  "sidecars": [
+    "examples\\output\\b10_3\\CERNCourier-en\\sidecars\\drop_cap_apply.report.json",
+    "examples\\output\\b10_3\\CERNCourier-en\\sidecars\\fragment_stitch.report.json",
+    "examples\\output\\b10_3\\CERNCourier-en\\sidecars\\issues.json",
+    "examples\\output\\b10_3\\CERNCourier-en\\sidecars\\line_split.report.json",
+    "examples\\output\\b10_3\\CERNCourier-en\\sidecars\\paren_dedup.report.json",
+    "examples\\output\\b10_3\\CERNCourier-en\\sidecars\\react_repair.report.json",
+    "examples\\output\\b10_3\\CERNCourier-en\\sidecars\\title_typeset.report.json"
+  ],
+  "working_dir": "examples\\output\\b10_3\\CERNCourier-en\\work\\CERNCourier-en",
+  "switches": {
+    "magazine_checkpoint": true,
+    "magazine_page_classify": true,
+    "magazine_chain_detect": true,
+    "magazine_chain_translate": true,
+    "magazine_article_group": true,
+    "magazine_article_context": true,
+    "magazine_hitl_export": false,
+    "magazine_hitl_apply": true,
+    "magazine_detect": true,
+    "magazine_drop_cap_mark": true,
+    "magazine_drop_cap_apply": true,
+    "magazine_title_typeset": true,
+    "magazine_line_structure": true,
+    "magazine_fragment_stitch": true,
+    "magazine_repair": true,
+    "magazine_paren_dedup": true
+  },
+  "translation_style": {
+    "person_names": "transliterate",
+    "system_prompt_sha256": "74666d7128c1c06127d9193db7b8d2b346866088f1ccabb4c33e69be1c586903"
+  }
+}

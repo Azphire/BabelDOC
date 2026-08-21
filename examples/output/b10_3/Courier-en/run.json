@@ -1,0 +1,57 @@
+{
+  "sample": "Courier-en.pdf",
+  "model": "gpt-4o",
+  "lang_in": "en",
+  "lang_out": "zh",
+  "seconds": 322.6,
+  "target_pages": [
+    1,
+    4
+  ],
+  "requests": 60,
+  "cache_hits": 60,
+  "api_calls": 0,
+  "prompt_tokens": 0,
+  "completion_tokens": 0,
+  "pdf": "examples\\output\\b10_3\\Courier-en\\Courier-en.b10_3.pdf",
+  "pdf_sha256": "5fd10c628b5ee51165519653c8e3cf886e6c6e310f26f5dde1061f733b21fa61",
+  "pages_pdf": "examples\\output\\b10_3\\Courier-en\\Courier-en.b10_3.pages.pdf",
+  "parity": "examples\\output\\b10_3\\Courier-en\\parity.json",
+  "conservation": "examples\\output\\b10_3\\Courier-en\\conservation.json",
+  "raster": [
+    "examples\\output\\b10_3\\Courier-en\\raster\\Courier-en.p1.png",
+    "examples\\output\\b10_3\\Courier-en\\raster\\Courier-en.p4.png"
+  ],
+  "sidecars": [
+    "examples\\output\\b10_3\\Courier-en\\sidecars\\drop_cap_apply.report.json",
+    "examples\\output\\b10_3\\Courier-en\\sidecars\\fragment_stitch.report.json",
+    "examples\\output\\b10_3\\Courier-en\\sidecars\\issues.json",
+    "examples\\output\\b10_3\\Courier-en\\sidecars\\line_split.report.json",
+    "examples\\output\\b10_3\\Courier-en\\sidecars\\paren_dedup.report.json",
+    "examples\\output\\b10_3\\Courier-en\\sidecars\\react_repair.report.json",
+    "examples\\output\\b10_3\\Courier-en\\sidecars\\title_typeset.report.json"
+  ],
+  "working_dir": "examples\\output\\b10_3\\Courier-en\\work\\Courier-en",
+  "switches": {
+    "magazine_checkpoint": true,
+    "magazine_page_classify": true,
+    "magazine_chain_detect": true,
+    "magazine_chain_translate": true,
+    "magazine_article_group": true,
+    "magazine_article_context": true,
+    "magazine_hitl_export": false,
+    "magazine_hitl_apply": true,
+    "magazine_detect": true,
+    "magazine_drop_cap_mark": true,
+    "magazine_drop_cap_apply": true,
+    "magazine_title_typeset": true,
+    "magazine_line_structure": true,
+    "magazine_fragment_stitch": true,
+    "magazine_repair": true,
+    "magazine_paren_dedup": true
+  },
+  "translation_style": {
+    "person_names": "transliterate",
+    "system_prompt_sha256": "74666d7128c1c06127d9193db7b8d2b346866088f1ccabb4c33e69be1c586903"
+  }
+}

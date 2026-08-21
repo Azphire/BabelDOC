@@ -1,0 +1,92 @@
+{
+  "closers": [
+    ")",
+    "）"
+  ],
+  "max_span_chars": 40,
+  "openers": [
+    "(",
+    "（"
+  ],
+  "pages": 3,
+  "paragraphs": [
+    {
+      "after": "承诺让时光倒流。Mattie Kahn进行调查",
+      "before": "承诺让时光倒流。Mattie Kahn（Mattie Kahn）进行调查",
+      "debug_id": "6yjhF",
+      "page": 3,
+      "reference": "p3#17",
+      "removed_compositions": 1,
+      "removed_unicode": 1,
+      "spans": [
+        "Mattie Kahn"
+      ]
+    },
+    {
+      "after": "<style id='1'>测试场</style> Sanaz Toossi带来",
+      "before": "<style id='1'>测试场</style> Sanaz Toossi（Sanaz Toossi）带来",
+      "debug_id": "eV7xC#L0",
+      "page": 3,
+      "reference": "p3#19",
+      "removed_compositions": 1,
+      "removed_unicode": 1,
+      "spans": [
+        "Sanaz Toossi"
+      ]
+    },
+    {
+      "after": "体育场作为T台？竞技场作为前排？时尚和运动无需介绍，但最近它们已经完全着迷。作者：Maya Singer",
+      "before": "体育场作为T台？竞技场作为前排？时尚和运动无需介绍，但最近它们已经完全着迷。作者：Maya Singer（Maya Singer）",
+      "debug_id": "t8Bdk#L3",
+      "page": 3,
+      "reference": "p3#37",
+      "removed_compositions": 1,
+      "removed_unicode": 1,
+      "spans": [
+        "Maya Singer"
+      ]
+    },
+    {
+      "after": "<style id='1'>走钢丝的人 </style>Adrien Brody被极端角色所吸引——但",
+      "before": "<style id='1'>走钢丝的人 </style>Adrien Brody（Adrien Brody）被极端角色所吸引——但",
+      "debug_id": "t8Cgy#L0",
+      "page": 3,
+      "reference": "p3#39",
+      "removed_compositions": 1,
+      "removed_unicode": 1,
+      "spans": [
+        "Adrien Brody"
+      ]
+    },
+    {
+      "after": "以及艺术家对流行文化的神奇幻想。作者：Chloe Schama",
+      "before": "以及艺术家对流行文化的神奇幻想。作者：Chloe Schama（Chloe Schama）",
+      "debug_id": "vkQty#L5",
+      "page": 3,
+      "reference": "p3#46",
+      "removed_compositions": 1,
+      "removed_unicode": 1,
+      "spans": [
+        "Chloe Schama"
+      ]
+    },
+    {
+      "after": "<style id='1'>麦吉尔的麦昆</style> Seán McGirr从无名小卒跃升为领导者",
+      "before": "<style id='1'>麦吉尔的麦昆</style> Seán McGirr（Seán McGirr）从无名小卒跃升为领导者",
+      "debug_id": "MEvmm#L1",
+      "page": 3,
+      "reference": "p3#48",
+      "removed_compositions": 1,
+      "removed_unicode": 1,
+      "spans": [
+        "Seán McGirr"
+      ]
+    }
+  ],
+  "switch": "magazine_paren_dedup",
+  "totals": {
+    "paragraphs_folded": 6,
+    "spans_removed": 6,
+    "unicode_spans_removed": 6
+  }
+}

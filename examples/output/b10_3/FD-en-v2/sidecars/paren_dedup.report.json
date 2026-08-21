@@ -1,0 +1,32 @@
+{
+  "closers": [
+    ")",
+    "）"
+  ],
+  "max_span_chars": 40,
+  "openers": [
+    "(",
+    "（"
+  ],
+  "pages": 9,
+  "paragraphs": [
+    {
+      "after": "经济政策与国家安全之间的界限正在消失 <style id='1'>Josh Lipsky</style>",
+      "before": "经济政策与国家安全之间的界限正在消失 <style id='1'>Josh Lipsky（Josh Lipsky）</style>",
+      "debug_id": "S6znA#L1",
+      "page": 3,
+      "reference": "p3#32",
+      "removed_compositions": 1,
+      "removed_unicode": 1,
+      "spans": [
+        "Josh Lipsky"
+      ]
+    }
+  ],
+  "switch": "magazine_paren_dedup",
+  "totals": {
+    "paragraphs_folded": 1,
+    "spans_removed": 1,
+    "unicode_spans_removed": 1
+  }
+}

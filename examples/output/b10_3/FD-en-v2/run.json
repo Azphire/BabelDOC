@@ -1,0 +1,55 @@
+{
+  "sample": "FD-en-v2.pdf",
+  "model": "gpt-4o",
+  "lang_in": "en",
+  "lang_out": "zh",
+  "seconds": 352.7,
+  "target_pages": [
+    3
+  ],
+  "requests": 61,
+  "cache_hits": 61,
+  "api_calls": 0,
+  "prompt_tokens": 0,
+  "completion_tokens": 0,
+  "pdf": "examples\\output\\b10_3\\FD-en-v2\\FD-en-v2.b10_3.pdf",
+  "pdf_sha256": "cbf8d05ffb71c670dd64e26de700c0d7e08a9153c69e7430fa3319871bb5241c",
+  "pages_pdf": "examples\\output\\b10_3\\FD-en-v2\\FD-en-v2.b10_3.pages.pdf",
+  "parity": "examples\\output\\b10_3\\FD-en-v2\\parity.json",
+  "conservation": "examples\\output\\b10_3\\FD-en-v2\\conservation.json",
+  "raster": [
+    "examples\\output\\b10_3\\FD-en-v2\\raster\\FD-en-v2.p3.png"
+  ],
+  "sidecars": [
+    "examples\\output\\b10_3\\FD-en-v2\\sidecars\\drop_cap_apply.report.json",
+    "examples\\output\\b10_3\\FD-en-v2\\sidecars\\fragment_stitch.report.json",
+    "examples\\output\\b10_3\\FD-en-v2\\sidecars\\issues.json",
+    "examples\\output\\b10_3\\FD-en-v2\\sidecars\\line_split.report.json",
+    "examples\\output\\b10_3\\FD-en-v2\\sidecars\\paren_dedup.report.json",
+    "examples\\output\\b10_3\\FD-en-v2\\sidecars\\react_repair.report.json",
+    "examples\\output\\b10_3\\FD-en-v2\\sidecars\\title_typeset.report.json"
+  ],
+  "working_dir": "examples\\output\\b10_3\\FD-en-v2\\work\\FD-en-v2",
+  "switches": {
+    "magazine_checkpoint": true,
+    "magazine_page_classify": true,
+    "magazine_chain_detect": true,
+    "magazine_chain_translate": true,
+    "magazine_article_group": true,
+    "magazine_article_context": true,
+    "magazine_hitl_export": false,
+    "magazine_hitl_apply": true,
+    "magazine_detect": true,
+    "magazine_drop_cap_mark": true,
+    "magazine_drop_cap_apply": true,
+    "magazine_title_typeset": true,
+    "magazine_line_structure": true,
+    "magazine_fragment_stitch": true,
+    "magazine_repair": true,
+    "magazine_paren_dedup": true
+  },
+  "translation_style": {
+    "person_names": "transliterate",
+    "system_prompt_sha256": "74666d7128c1c06127d9193db7b8d2b346866088f1ccabb4c33e69be1c586903"
+  }
+}

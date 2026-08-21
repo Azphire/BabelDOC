@@ -13,10 +13,20 @@ arrive at the translator as one stream, come back as one stream, and are laid
 out again as a wrapped block in which no line is the record it was.
 
 So on a page whose declared policy raises the flag, this pass cuts every
-paragraph back into its source lines and gives each line a paragraph of its own.
-Downstream, that is all it takes: the translator's unit is the paragraph, so one
-line is one request, and the typesetting stage lays each line out inside the
-band and measure that line occupied.
+paragraph back into the records it was assembled from and gives each record a
+paragraph of its own. Downstream, that is all it takes: the translator's unit is
+the paragraph, so one record is one request, and the typesetting stage lays each
+record out inside the band and measure it occupied.
+
+Which lines make one record is read off the paragraph rather than assumed. An
+entry is often one line, and on a grid where every entry is a line the line is
+the record. But an entry set over three tight lines with the next entry a full
+line's space below is one entry, and cutting it at its line breaks hands the
+translator a third of a sentence at a time. The distances between consecutive
+lines decide it: the lines inside one record are set close and the records are
+set apart, so a distance far above the paragraph's own median is a record
+boundary and a paragraph whose distances are all alike has none. See
+``record_groups``.
 
 What a line is here, and why it is recovered rather than read
 -------------------------------------------------------------
@@ -85,6 +95,7 @@ from __future__ import annotations
 import copy
 import json
 import logging
+import statistics
 from dataclasses import dataclass
 from functools import lru_cache
 from pathlib import Path
@@ -138,6 +149,7 @@ class LineSplitConfig:
     min_line_characters: int
     max_line_chars: float
     require_style_heterogeneity: bool
+    record_gap_ratio: float
     policy_flags: tuple[str, ...]
     sidecar_fields: tuple[str, ...]
     exemption_fields: tuple[str, ...]
@@ -208,6 +220,7 @@ def parse_line_split_config(raw: dict, source: str) -> LineSplitConfig:
         require_style_heterogeneity=bool(
             int(parameters["require_style_heterogeneity"])
         ),
+        record_gap_ratio=float(parameters["record_gap_ratio"]),
         policy_flags=flags,
         sidecar_fields=tuple(parameters[SIDECAR_FIELDS_KEY]),
         exemption_fields=tuple(parameters[EXEMPTION_FIELDS_KEY]),
@@ -444,6 +457,71 @@ def style_heterogeneous(characters, lines) -> bool:
     return len({line_faces(characters, line) for line in lines}) > 1
 
 
+def line_band(characters, line) -> tuple[float, float] | None:
+    """The vertical extent of one recovered line."""
+    bounds = [_bounds(characters[index]) for index in line]
+    bounds = [pair for pair in bounds if pair is not None]
+    if not bounds:
+        return None
+    return min(pair[0] for pair in bounds), max(pair[1] for pair in bounds)
+
+
+def line_gaps(characters, lines) -> list[float] | None:
+    """The vertical distance between each pair of consecutive lines.
+
+    None where a line cannot be measured, which is the answer that leaves the
+    record question undecided rather than deciding it on a partial reading.
+    Distances are never negative: two lines whose ascenders and descenders
+    interlock are as close as two lines get.
+    """
+    bands = [line_band(characters, line) for line in lines]
+    if any(band is None for band in bands):
+        return None
+    return [
+        max(0.0, bands[index][0] - bands[index + 1][1])
+        for index in range(len(bands) - 1)
+    ]
+
+
+def record_groups(characters, lines, config: LineSplitConfig) -> list[list[list[int]]]:
+    """The lines of one paragraph grouped into the records they set.
+
+    What separates two records is space, and what holds one together is the
+    absence of it: an entry set over three tight lines is one entry, and the
+    next entry begins after a distance the tight lines do not have. So the
+    distances between consecutive lines are measured, their median taken, and a
+    distance of at least ``record_gap_ratio`` of the median is where one record
+    ends and the next begins. The median is the paragraph's own leading, so the
+    bound is read against the way this paragraph is set rather than against a
+    figure carried in from another page.
+
+    A paragraph in which no distance reaches the bound has one peak and no
+    boundary in it. There the line is the record, which is the answer this pass
+    has always given, and the grouping returns the lines unchanged. Reading that
+    case as one record instead would be the other extreme and a worse one: a
+    grid of entries set one to a line would come back as one entry.
+    """
+    one_each = [[list(line)] for line in lines]
+    if len(lines) < 2:
+        return one_each
+    gaps = line_gaps(characters, lines)
+    if not gaps:
+        return one_each
+    median = statistics.median(gaps)
+    if median <= 0:
+        return one_each
+    bound = config.record_gap_ratio * median
+    if not any(gap >= bound for gap in gaps):
+        return one_each
+    groups: list[list[list[int]]] = [[list(lines[0])]]
+    for position, gap in enumerate(gaps):
+        if gap >= bound:
+            groups.append([list(lines[position + 1])])
+        else:
+            groups[-1].append(list(lines[position + 1]))
+    return groups
+
+
 @dataclass(frozen=True)
 class Examination:
     """What the bounds saw in one paragraph, and what they decided."""
@@ -539,21 +617,48 @@ def _compositions_of_line(paragraph, line: set[int]):
     return compositions
 
 
+def record_style(characters):
+    """The style most of a record's visible characters are set in.
+
+    A paragraph's base style is what its translation is laid out in, so a
+    record given the style of the paragraph it came out of is set in the style
+    of whatever that paragraph mostly was. On a contents page mostly bylines,
+    that prints every entry title at byline size. Whitespace carries a style and
+    no shape and is left out, so a record's setting is decided by what a reader
+    can see of it.
+    """
+    counts: dict[tuple, int] = {}
+    holder: dict[tuple, object] = {}
+    for character in characters:
+        style = character.pdf_style
+        if style is None or style.font_id is None or style.font_size is None:
+            continue
+        if not (character.char_unicode or "").strip():
+            continue
+        key = (style.font_id, round(float(style.font_size), 4))
+        counts[key] = counts.get(key, 0) + 1
+        holder.setdefault(key, style)
+    if not counts:
+        return None
+    return holder[max(counts.items(), key=lambda item: item[1])[0]]
+
+
 def _line_paragraph(paragraph, characters, compositions, ordinal: int):
-    """One line of a paragraph, as a paragraph of its own.
+    """One record of a paragraph, as a paragraph of its own.
 
     Copied from the paragraph rather than assembled field by field, and that is
     a property rather than a shorthand: every attribute a later stage reads off
     a paragraph -- its label, the chain it belongs to, the sentence range, a
-    verdict some other pass wrote on it -- reaches the line without this module
-    naming any of them, so a field added to the intermediate language later
-    carries by itself and this pass consumes none of them.
+    verdict some other pass wrote on it -- reaches the record without this
+    module naming any of them, so a field added to the intermediate language
+    later carries by itself and this pass consumes none of them.
 
-    Five are then set, and each is the paragraph's own rather than its parent's.
+    Six are then set, and each is the record's own rather than its parent's.
     The measure is the parent's: a record was set across the column it stood in,
     and a box drawn tight around the source characters would leave the
-    translation of a short byline nowhere to grow. The band is the line's own,
-    which is what puts each record back where it was.
+    translation of a short byline nowhere to grow. The band is the record's own,
+    which is what puts each record back where it was. So is the style, because
+    inheriting the parent's sets a title at the size of the byline under it.
     """
     band = character_union(characters)
     parent = paragraph.box
@@ -566,6 +671,13 @@ def _line_paragraph(paragraph, characters, compositions, ordinal: int):
 
     line = copy.copy(paragraph)
     line.box = box
+    style = record_style(characters)
+    if style is not None:
+        line.pdf_style = il_version_1.PdfStyle(
+            font_id=style.font_id,
+            font_size=style.font_size,
+            graphic_state=style.graphic_state,
+        )
     line.pdf_paragraph_composition = compositions
     line.unicode = get_char_unicode_string(characters) if characters else ""
     if paragraph.debug_id is not None:
@@ -579,27 +691,28 @@ def _line_paragraph(paragraph, characters, compositions, ordinal: int):
 
 
 def split_paragraph(paragraph, config: LineSplitConfig) -> list | None:
-    """One paragraph as one paragraph per source line, or None where it stays.
+    """One paragraph as one paragraph per record, or None where it stays.
 
     None rather than a single element list, so a caller can tell a paragraph
     this pass left alone from one it rebuilt into the same shape: a paragraph
-    of one line, or one the bounds exempt, is returned untouched and its object
-    identity is the record of that.
+    of one line, one whose records come back as one record, or one the bounds
+    exempt, is returned untouched and its object identity is the record of that.
     """
     examination = examine(paragraph, config)
     if examination is None or not examination.admitted:
         return None
     characters = paragraph_characters(paragraph)
     built = []
-    for ordinal, line in enumerate(examination.lines):
-        members = set(line)
+    for ordinal, group in enumerate(record_groups(characters, examination.lines, config)):
+        indices = sorted(index for line in group for index in line)
+        members = set(indices)
         compositions = _compositions_of_line(paragraph, members)
         if not compositions:
             continue
         built.append(
             _line_paragraph(
                 paragraph,
-                [characters[index] for index in line],
+                [characters[index] for index in indices],
                 compositions,
                 ordinal,
             )
@@ -608,6 +721,17 @@ def split_paragraph(paragraph, config: LineSplitConfig) -> list | None:
 
 
 # --- one page, one document ----------------------------------------------------
+
+
+def same_style(left, right) -> bool:
+    """Whether two styles set text the same way, either being absent."""
+    if left is None or right is None:
+        return left is right
+    return (
+        left.font_id == right.font_id
+        and left.font_size == right.font_size
+        and left.graphic_state == right.graphic_state
+    )
 
 
 def paragraph_reference(page_label: int, index: int) -> str:
@@ -646,14 +770,25 @@ def process_page(
                 )
             continue
         rebuilt.extend(lines)
+        characters = paragraph_characters(paragraph)
+        groups = record_groups(characters, examination.lines, config)
+        parent = paragraph.pdf_style
         records.append(
             {
                 "page": label,
                 "paragraph": paragraph_reference(label, index),
                 "debug_id": paragraph.debug_id,
-                "characters": len(paragraph_characters(paragraph)),
-                "lines": len(lines),
+                "characters": len(characters),
+                "lines": len(examination.lines),
                 "mean_line_chars": examination.mean_line_chars,
+                "records": len(groups),
+                "record_lines": [len(group) for group in groups],
+
+                "restyled_records": sum(
+                    1
+                    for line in lines
+                    if not same_style(line.pdf_style, parent)
+                ),
                 "line_paragraphs": [line.debug_id for line in lines],
             }
         )

@@ -52,10 +52,11 @@ is written back into the intermediate language as a verdict per paragraph. That
 verdict is the one thing a ruling can decide here that nothing in this batch
 acts on; see that module for why, and for the sidecar that records it.
 
-Line structure. ``magazine/line_split.py`` rides the page kind hook for the same
-reason the drop cap pass rides the term one: the window it must run in holds no
-other extension owned call. It runs after a ruling is applied, so it reads the
-kind the run settled on, and it is behind its own switch.
+Layout. ``magazine/fragment_stitch.py`` and ``magazine/line_split.py`` ride the
+page kind hook, the stitch first, for the same reason the drop cap pass rides
+the term one: the window they must run in holds no other extension owned call.
+Both run after a ruling is applied, so they read the kind the run settled on,
+and each is behind its own switch.
 
 A ruling that reaches nothing is the one failure the loop could not report on
 its own, and a third hook after the translator closes it. A paragraph is
@@ -91,6 +92,7 @@ from pathlib import Path
 from babeldoc.glossary import Glossary
 from babeldoc.glossary import GlossaryEntry
 from babeldoc.magazine import drop_cap
+from babeldoc.magazine import fragment_stitch
 from babeldoc.magazine import line_split
 from babeldoc.magazine.page_classifier import REPORT_NAME as CLASSIFY_REPORT_NAME
 from babeldoc.magazine.page_features import ConfigError
@@ -659,10 +661,17 @@ def after_page_classify(translation_config, docs) -> None:
     Placed before the checkpoint of that stage, so a checkpoint carries the kind
     the run went on to use rather than the one that was overruled.
 
-    The line structure pass runs here too, behind its own switch, and last: its
-    flag is a page policy, so it has to see the kind a ruling settled rather
-    than the one the classifier proposed, and it has to run before the chain
-    builder, which is the next thing the pipeline does.
+    Two layout passes run here too, each behind its own switch, and last: the
+    flag each reads is a page policy, so both have to see the kind a ruling
+    settled rather than the one the classifier proposed, and both have to run
+    before the chain builder, which is the next thing the pipeline does.
+
+    The fragment stitch runs before the line structure pass. It repairs the
+    paragraph finder's grouping, joining pieces of one written unit that were
+    left as several paragraphs, and the line structure pass then cuts the
+    paragraphs of a declared page into the records they set. The other order
+    would ask the stitch to read a page whose paragraphs are already records and
+    join two of them, which is the one thing neither pass wants.
     """
     if translation_config.magazine_hitl_export:
         draft = _draft(translation_config)
@@ -677,7 +686,9 @@ def after_page_classify(translation_config, docs) -> None:
                 report[PAGE_KINDS_SECTION] = applied
                 report["decisions_file"] = str(decisions.path)
                 _write_report(translation_config, report)
-    line_split.apply(translation_config, labeled_pages(docs))
+    pages = labeled_pages(docs)
+    fragment_stitch.apply(translation_config, pages)
+    line_split.apply(translation_config, pages)
 
 
 def after_term_extract(translation_config, docs) -> None:

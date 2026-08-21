@@ -1,0 +1,97 @@
+{
+  "by_rule": {
+    "initial": 0,
+    "inline": 0,
+    "vertical": 0
+  },
+  "initial_candidates": [],
+  "initial_max_chars": 3,
+  "initial_min_font_ratio": 1.6,
+  "max_fragment_chars": 40,
+  "pages": [
+    {
+      "blanked": 0,
+      "exempt": false,
+      "page": 1,
+      "paragraphs": 8,
+      "stitches": 0
+    },
+    {
+      "blanked": 0,
+      "exempt": false,
+      "page": 2,
+      "paragraphs": 9,
+      "stitches": 0
+    },
+    {
+      "blanked": 0,
+      "exempt": true,
+      "page": 3,
+      "paragraphs": 37,
+      "stitches": 0
+    },
+    {
+      "blanked": 0,
+      "exempt": false,
+      "page": 4,
+      "paragraphs": 4,
+      "stitches": 0
+    },
+    {
+      "blanked": 0,
+      "exempt": true,
+      "page": 5,
+      "paragraphs": 47,
+      "stitches": 0
+    },
+    {
+      "blanked": 0,
+      "exempt": false,
+      "page": 6,
+      "paragraphs": 15,
+      "stitches": 0
+    },
+    {
+      "blanked": 0,
+      "exempt": true,
+      "page": 7,
+      "paragraphs": 33,
+      "stitches": 0
+    },
+    {
+      "blanked": 0,
+      "exempt": false,
+      "page": 8,
+      "paragraphs": 13,
+      "stitches": 0
+    },
+    {
+      "blanked": 0,
+      "exempt": false,
+      "page": 9,
+      "paragraphs": 23,
+      "stitches": 0
+    }
+  ],
+  "policy_flags": [
+    "preserve_line_structure"
+  ],
+  "rules": [
+    "inline",
+    "vertical",
+    "initial"
+  ],
+  "stitches": [],
+  "switch": "magazine_fragment_stitch",
+  "totals": {
+    "blanked_paragraphs": 0,
+    "exempt_pages": 3,
+    "initial_accepted": 0,
+    "initial_candidates": 0,
+    "merged_paragraphs": 0,
+    "pages": 9,
+    "stitches": 0,
+    "style_normalized": 0
+  },
+  "window_switch": "magazine_page_classify"
+}

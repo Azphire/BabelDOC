@@ -1,0 +1,174 @@
+{
+  "by_rule": {
+    "initial": 0,
+    "inline": 4,
+    "vertical": 0
+  },
+  "initial_candidates": [
+    {
+      "accepted": false,
+      "body": "e European Strategy reiterates the criti",
+      "body_size": 6.233,
+      "characters": 1,
+      "font_ratio": 1.0,
+      "fragment": "h",
+      "left_offset": -4.73,
+      "page": 3,
+      "top_offset": 1.0,
+      "within_unit": true
+    },
+    {
+      "accepted": false,
+      "body": "e Strategy process has seen a very stron",
+      "body_size": 6.233,
+      "characters": 1,
+      "font_ratio": 1.0,
+      "fragment": "h",
+      "left_offset": -4.43,
+      "page": 3,
+      "top_offset": 1.19,
+      "within_unit": true
+    },
+    {
+      "accepted": false,
+      "body": "CJulAug26_HI",
+      "body_size": 5.088,
+      "characters": 1,
+      "font_ratio": 1.0,
+      "fragment": "C",
+      "left_offset": -3.67,
+      "page": 4,
+      "top_offset": 0.0,
+      "within_unit": true
+    },
+    {
+      "accepted": false,
+      "body": "CJulAug26_HI",
+      "body_size": 5.088,
+      "characters": 1,
+      "font_ratio": 1.0,
+      "fragment": "C",
+      "left_offset": -3.67,
+      "page": 4,
+      "top_offset": 0.0,
+      "within_unit": true
+    }
+  ],
+  "initial_max_chars": 3,
+  "initial_min_font_ratio": 1.6,
+  "max_fragment_chars": 40,
+  "pages": [
+    {
+      "blanked": 0,
+      "exempt": false,
+      "page": 1,
+      "paragraphs": 21,
+      "stitches": 0
+    },
+    {
+      "blanked": 0,
+      "exempt": true,
+      "page": 2,
+      "paragraphs": 84,
+      "stitches": 0
+    },
+    {
+      "blanked": 4,
+      "exempt": false,
+      "page": 3,
+      "paragraphs": 52,
+      "stitches": 2
+    },
+    {
+      "blanked": 2,
+      "exempt": false,
+      "page": 4,
+      "paragraphs": 45,
+      "stitches": 2
+    }
+  ],
+  "policy_flags": [
+    "preserve_line_structure"
+  ],
+  "rules": [
+    "inline",
+    "vertical",
+    "initial"
+  ],
+  "stitches": [
+    {
+      "characters": 633,
+      "debug_id": "rjLQX",
+      "member_debug_ids": [
+        "rjLQX",
+        "LGat4",
+        "qKrQT"
+      ],
+      "members": 3,
+      "page": 3,
+      "paragraph": "p3#11",
+      "restyled_characters": 106,
+      "rule": "inline",
+      "style_normalized": true,
+      "text": "The European Strategy reiterates the critical importance of the High- Luminosity LHC, which will use advanced accelerator and detector technologies to fully exploit the scientific potential of this incredible machine in the com- ing years,” said Mark Thomson, CERN Director-General. “Beyond HiLumi LHC, the FCC-ee would be a visionary global research infrastructure for the next decades that will deepen our knowledge of the fundamental building blocks of the universe through ultra-precise measurements of the Higgs boson and other elementary particles. CERN’s task now is to steer this unprecedented project towards a decision by the CERN Council.”"
+    },
+    {
+      "characters": 258,
+      "debug_id": "rYSRB",
+      "member_debug_ids": [
+        "rYSRB",
+        "UAJzB",
+        "7PvC8"
+      ],
+      "members": 3,
+      "page": 3,
+      "paragraph": "p3#22",
+      "restyled_characters": 188,
+      "rule": "inline",
+      "style_normalized": true,
+      "text": "The Strategy process has seen a very strong engagement of the particle- physics community and has led to a very clear conclusion: the FCC-ee, if approved, would deliver the world’s broadest high-precision particle-physics pro- gramme, its technical feasibility has"
+    },
+    {
+      "characters": 13,
+      "debug_id": "B2gof",
+      "member_debug_ids": [
+        "B2gof",
+        "skrZ5"
+      ],
+      "members": 2,
+      "page": 4,
+      "paragraph": "p4#39",
+      "restyled_characters": 0,
+      "rule": "inline",
+      "style_normalized": false,
+      "text": "CCJulAug26_HI"
+    },
+    {
+      "characters": 13,
+      "debug_id": "mDzpF",
+      "member_debug_ids": [
+        "mDzpF",
+        "MFwC8"
+      ],
+      "members": 2,
+      "page": 4,
+      "paragraph": "p4#42",
+      "restyled_characters": 0,
+      "rule": "inline",
+      "style_normalized": false,
+      "text": "CCJulAug26_HI"
+    }
+  ],
+  "switch": "magazine_fragment_stitch",
+  "totals": {
+    "blanked_paragraphs": 6,
+    "exempt_pages": 1,
+    "initial_accepted": 0,
+    "initial_candidates": 4,
+    "merged_paragraphs": 10,
+    "pages": 4,
+    "stitches": 4,
+    "style_normalized": 2
+  },
+  "window_switch": "magazine_page_classify"
+}

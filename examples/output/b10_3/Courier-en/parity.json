@@ -1,0 +1,134 @@
+{
+  "sample": "Courier-en",
+  "baseline": "examples\\output\\F2\\Courier-en\\work\\Courier-en\\translate_tracking.json",
+  "groups_read": [
+    "page",
+    "cross_page",
+    "cross_column"
+  ],
+  "groups_present": [
+    "cross_column",
+    "cross_page",
+    "page"
+  ],
+  "requests": 130,
+  "baseline_requests": 134,
+  "inputs_sha256": "7470f43aa76ba441de22124ddc2f14bceefef98fe5bc0f7c90bf9c4b74fe0598",
+  "baseline_inputs_sha256": "96113131da53411e1010d73e65fc951fe9ca9675f06c478970c19f535bf2fb59",
+  "unchanged_requests": 118,
+  "withdrawn": [
+    "<style id='1'>Brazil: lessons from the water people</style><style id='3'> ..... </style><style id='5'>9</style>",
+    "<style id='1'>Exile through a child’s eyes</style><style id='3'> ................. </style><style id='5'>26</style>",
+    "<style id='1'>The secret skies of Kalahari</style><style id='3'> ................. </style><style id='5'>17</style>",
+    "<style id='1'>When biopiracy takes root</style><style id='3'> .................. </style><style id='5'>12</style>",
+    "<style id='1'>frontier in honest storytelling”</style><style id='3'> ........... </style><style id='5'>40</style>",
+    "<style id='1'>guardians of climate change</style><style id='3'> ............... </style><style id='5'>20</style>",
+    "<style id='1'>of traditional Dai medicine</style><style id='3'> .................. </style><style id='5'>14</style>",
+    "There are many more examples of how t",
+    "a new page is turning<style id='1'> ........................ </style>44",
+    "agroforestry, health and fishing. Far more than a collection of techniques, these practices are also an expression of a worldview. Textile creation, for instance, has served as another form of navigation, this time in a spiritual sense. The woven skirts of Micronesia’s Outer Islands and the strip-weaving traditions of Ghana and Nigeria map community knowledge and cultural identity into symbolic pattern language.",
+    "has proven its worth, in areas as diverse as",
+    "knowledge <style id='1'> ....................................... </style>4",
+    "raditional knowledge",
+    "regarded as folklore”<style id='1'> ......................... </style>23",
+    "revolution<style id='1'> ........................................ </style>36",
+    "water management,"
+  ],
+  "introduced": [
+    "<style id='1'>a new page is turning</style> ........................ <style id='3'>44</style>",
+    "<style id='1'>knowledge </style> ....................................... <style id='3'>4</style>",
+    "<style id='1'>regarded as folklore”</style> ......................... <style id='3'>23</style>",
+    "<style id='1'>revolution</style> ........................................ <style id='3'>36</style>",
+    "Brazil: lessons from the water people<style id='1'> ..... </style>9",
+    "Exile through a child’s eyes<style id='1'> ................. </style>26",
+    "The secret skies of Kalahari<style id='1'> ................. </style>17",
+    "There are many more examples of how traditional knowledge has proven its worth, in areas as diverse as water management, agroforestry, health and fishing. Far more than a collection of techniques, these practices are also an expression of a worldview. Textile creation, for instance, has served as another form of navigation, this time in a spiritual sense. The woven skirts of Micronesia’s Outer Islands and the strip-weaving traditions of Ghana and Nigeria map community knowledge and cultural identity into symbolic pattern language.",
+    "When biopiracy takes root<style id='1'> .................. </style>12",
+    "frontier in honest storytelling”<style id='1'> ........... </style>40",
+    "guardians of climate change<style id='1'> ............... </style>20",
+    "of traditional Dai medicine<style id='1'> .................. </style>14"
+  ],
+  "answers_changed": [
+    {
+      "input": "Long before satellites orbited Earth, Polynesian navigators crossed thousands of miles of open ocean by reading stars, swells, bioluminescence, and seabird flight patterns. In the Sahara, Tuareg guides historically travelled by celestial patterns, the sun, wind, and terrain, although their modern navigation now relies more on landmarks and daytime travel. Cognitive science research has revealed that these navigation systems demonstrate sophisticated spatial reasoning through diverse environmental cues, far more integrated than the single-input methods used in laboratory studies.",
+      "baseline": [
+        "早在卫星环绕地球运行之前，波利尼西亚航海家就通过观察星星、海浪、生物发光现象和海鸟飞行模式，跨越了数千英里的开阔海洋。在撒哈拉，图阿雷格向导历史上通过天体模式、太阳、风和地形进行旅行，尽管他们现代的导航现在更多依赖于地标和白天旅行。认知科学研究揭示了这些导航系统通过多样的环境线索展示了复杂的空间推理，远比实验室研究中使用的单一输入方法更为综合。"
+      ],
+      "run": [
+        "早在卫星环绕地球运行之前，波利尼西亚航海家就通过阅读星星、海浪、生物发光和海鸟飞行模式，跨越了数千英里的开阔海洋。在撒哈拉，图阿雷格向导历史上通过天体模式、太阳、风和地形进行旅行，尽管他们现代的导航现在更多依赖于地标和白天旅行。认知科学研究揭示了这些导航系统通过多样的环境线索展示了复杂的空间推理，远比实验室研究中使用的单一输入方法更为综合。"
+      ]
+    },
+    {
+      "input": "These practices represent entire knowledge systems. They encode, preserve, and transmit understanding across generations. Today, Indigenous",
+      "baseline": [
+        "这些实践代表了完整的知识体系。它们编码、保存并传递跨代的理解。如今，土著"
+      ],
+      "run": [
+        "这些实践代表了完整的知识体系。它们在代际之间编码、保存和传递理解。如今，土著"
+      ]
+    },
+    {
+      "input": "communities worldwide are defending their rights to protect such cultural heritage while actively making the case of traditional knowledge systems as parallel scientific frameworks. As Fijian researcher Salanieta Kitolelei noted at the 2025 Second Pacific Island Ocean Conference in Honiara, Solomon Islands: “It is the same thing — we just use a different language to talk about the same thing.”",
+      "baseline": [
+        "社区在全球范围内捍卫其保护这种文化遗产的权利，同时积极证明传统知识体系作为平行科学框架的价值。正如斐济研究员Salanieta Kitolelei在2025年第二届太平洋岛国海洋会议上于所罗门群岛霍尼亚拉所指出的：“这是同一件事——我们只是用不同的语言来谈论同一件事。”"
+      ],
+      "run": [
+        "社区在全球范围内捍卫他们的权利，以保护这种文化遗产，同时积极主张将传统知识体系作为平行的科学框架。正如斐济研究员Salanieta Kitolelei在2025年第二届太平洋岛国海洋会议上于所罗门群岛霍尼亚拉所指出的：“这是一回事——我们只是用不同的语言来谈论同一件事。”"
+      ]
+    },
+    {
+      "input": "As the climate crisis intensifies and biodiversity collapses, the world turns to the very knowledge systems it once dismissed. According to the United Nations, Indigenous Peoples comprise less than 5 per cent of the global population yet steward lands containing about 80 per cent of Earth’s remaining biodiversity. From their close relationship with the surrounding natural world, they have derived valuable knowledge that merits greater attention.",
+      "baseline": [
+        "随着气候危机加剧和生物多样性崩溃，世界开始转向那些曾被忽视的知识体系。根据联合国的数据，土著人民占全球人口的不到5%，却管理着包含地球约80%剩余生物多样性的土地。通过与周围自然世界的密切关系，他们获得了值得更多关注的宝贵知识。"
+      ],
+      "run": [
+        "随着气候危机加剧和生物多样性崩溃，世界开始转向那些曾经被忽视的知识体系。根据联合国的数据，土著人民占全球人口的不到5%，但他们管理着包含地球上约80%剩余生物多样性的土地。通过与周围自然世界的密切关系，他们获得了值得更多关注的宝贵知识。"
+      ]
+    },
+    {
+      "input": "“We observe nature, our animals and plants. We are the guardians of nature and we possess an enormous amount of knowledge about our environment,” noted Hindou Oumarou Ibrahim, an Indigenous Mbororo leader from Chad and Chair of the 23rd Session of the United Nations Permanent Forum on Indigenous Issues, in April 2024. “This knowledge is not theoretical; it has been tried and tested for centuries.”",
+      "baseline": [
+        "“我们观察自然，我们的动物和植物。我们是自然的守护者，拥有关于我们环境的大量知识，”乍得的土著姆博罗罗领导者、联合国土著问题常设论坛第23届会议主席Hindou Oumarou Ibrahim在2024年4月指出。“这些知识不是理论上的；它们经过了几个世纪的实践和检验。”"
+      ],
+      "run": [
+        "“我们观察自然，我们的动物和植物。我们是自然的守护者，拥有关于我们环境的大量知识，”乍得的土著姆博罗罗领导人Hindou Oumarou Ibrahim在2024年4月担任联合国土著问题常设论坛第23届会议主席时指出。“这种知识不是理论性的；它已经经过了几个世纪的实践和检验。”"
+      ]
+    },
+    {
+      "input": "The accumulated skills and wisdom are not solely passed down mechanically from one generation to the next, but also codified to form complex systems of knowledge, as illustrated by the mastery of textile art in the Pacific and Africa. Pacific weavers understand plant ecology, sail dynamics, and cultural protocol. West African weavers master loom technologies, natural dyes, and symbolic pattern languages. In both regions, knowledge is transmitted through apprenticeship and cultural practice. The textiles themselves become living archives where knowledge resides in the hands, the patterns, and the process.",
+      "baseline": [
+        "积累的技能和智慧不仅仅是机械地从一代传递到下一代，还被编纂成复杂的知识体系，如太平洋和非洲的纺织艺术掌握所示。太平洋的编织者了解植物生态学、航行动力学和文化礼仪。西非的编织者精通织机技术、天然染料和象征性图案语言。在这两个地区，知识通过学徒制和文化实践传递。纺织品本身成为活的档案，知识存在于手中、图案中和过程之中。"
+      ],
+      "run": [
+        "积累的技能和智慧不仅仅是机械地从一代传递到下一代，还被编纂成复杂的知识体系，如太平洋和非洲的纺织艺术掌握所示。太平洋的编织者了解植物生态学、航行动力学和文化礼仪。西非的编织者精通织机技术、天然染料和象征性图案语言。在这两个地区，知识通过学徒制和文化实践进行传递。纺织品本身成为活的档案，知识存在于手中、图案中和过程之中。"
+      ]
+    },
+    {
+      "input": "Established in 2002, UNESCO’s Local and Indigenous Knowledge Systems (LINKS) programme mobilizes the knowledge, know-how and practices of local communities and Indigenous Peoples to support their inclusion in environmental decision- making, particularly with regard to biodiversity and climate change.",
+      "baseline": [
+        "联合国教科文组织的地方和土著知识系统（LINKS）计划成立于2002年，旨在动员地方社区和土著人民的知识、技能和实践，以支持他们在环境决策中的参与，特别是在生物多样性和气候变化方面。"
+      ],
+      "run": [
+        "联合国教科文组织的地方和土著知识系统（LINKS）计划成立于2002年，动员地方社区和土著人民的知识、技能和实践，以支持他们在环境决策中的参与，特别是在生物多样性和气候变化方面。"
+      ]
+    },
+    {
+      "input": "Among other roles, the LINKS programme currently hosts the Indigenous and",
+      "baseline": [
+        "LINKS计划目前在其他角色中还负责土著和"
+      ],
+      "run": [
+        "LINKS计划目前承担的其他角色中，包括土著和"
+      ]
+    },
+    {
+      "input": "From the Aboriginal practice of controlled burning to prevent wildfires to Inuit weather forecasting, and the <style id='1'>zaï</style>techniques used in some African countries to capture water, the world is rich with diverse, proven Indigenous wisdom. This knowledge is particularly valuable in the context of climate change and declining biodiversity.",
+      "baseline": [
+        "从土著的控制燃烧以防止野火的做法，到因纽特人的天气预报，以及一些非洲国家用于蓄水的<style id='1'>zaï</style>技术，世界充满了多样且经过验证的原住民智慧。在气候变化和生物多样性下降的背景下，这些知识尤为宝贵。"
+      ],
+      "run": [
+        "从土著的控制燃烧以防止野火的做法，到因纽特人的天气预报，以及一些非洲国家用于蓄水的<style id='1'>zaï</style>技术，世界充满了多样且经过验证的原住民智慧。这些知识在气候变化和生物多样性下降的背景下尤为珍贵。"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,377 @@
+{
+  "sample": "AramcoWorld-en-v2",
+  "baseline": "examples\\output\\F2\\AramcoWorld-en-v2\\work\\AramcoWorld-en-v2\\translate_tracking.json",
+  "groups_read": [
+    "page",
+    "cross_page",
+    "cross_column"
+  ],
+  "groups_present": [
+    "cross_column",
+    "cross_page",
+    "page"
+  ],
+  "requests": 149,
+  "baseline_requests": 166,
+  "inputs_sha256": "334ea002de0748b5e15824c5a07e93358694cb21c87cc512556a566a27806fa7",
+  "baseline_inputs_sha256": "c9b8c8076f8a21bad830c2a0be6bdd2c919c41129a23ec84ca887373d3363e41",
+  "unchanged_requests": 139,
+  "withdrawn": [
+    "<style id='1'>Content Editor: </style><style id='3'>Suzanne Garofalo</style>",
+    "<style id='1'>Contributing Editor:</style><style id='3'> Indlieb Farazi Saber</style>",
+    "<style id='1'>Director, Public Affairs (A): </style><style id='3'>Blain Rethmeier</style>",
+    "<style id='1'>Editor in Chief (A): </style><style id='3'>Amra Pasic</style>",
+    "<style id='1'>Editorial: </style><style id='3'>publications@aramcoamericas.com</style>",
+    "<style id='1'>ISSN: </style><style id='3'>2376-1083</style>",
+    "<style id='1'>President and CEO: </style><style id='3'>Ahmed AL-Mulhem</style>",
+    "<style id='1'>Print design: </style><style id='3'>Graphic Engine Design Studio</style>",
+    "<style id='1'>Printing: </style><style id='3'>RR Donnelley / Wetmore</style>",
+    "<style id='1'>Publisher: </style><style id='3'>Aramco Americas Company</style>",
+    "<style id='1'>Send address changes to </style><style id='3'>AramcoWorld</style><style id='5'>,</style>",
+    "<style id='1'>Specials Editor: </style><style id='3'>Alva Robinson</style>",
+    "<style id='1'>Visuals Editor: </style><style id='3'>Waleed Dashash</style>",
+    "<style id='1'>Web design: </style><style id='3'>eSiteful Corporation</style>",
+    "<style id='1'>and at additional mailing o</style><style id='3'>ffi</style><style id='5'>ces.</style>",
+    "<style id='1'>or </style><style id='3'>P.O. Box 2106, Houston, Texas 77252-2106,</style>",
+    "<style id='1'>or </style><style id='3'>P.O. Box 292348, Kettering, Ohio 45429 USA</style>",
+    "A R A B I A",
+    "Contracts Support:",
+    "Editorial Assistants:",
+    "Kymani J. Hill and Nicole E. Martinez",
+    "Mediterranean",
+    "P.O. Box 292348, Kettering, Ohio 45429.",
+    "POSTMASTER:",
+    "Periodicals postage paid at Houston, Texas,",
+    "S A U D I",
+    "Sarah Khan and Bianca Speranza"
+  ],
+  "introduced": [
+    "<style id='1'>Contracts Support:</style>Kymani J. Hill and Nicole E. Martinez<style id='3'>Print design: </style><style id='5'>Graphic Engine Design Studio</style><style id='7'>Printing: </style><style id='9'>RR Donnelley / Wetmore</style><style id='11'>Web design: </style><style id='13'>eSiteful Corporation</style>",
+    "<style id='1'>Editorial Assistants:</style>Sarah Khan and Bianca Speranza",
+    "<style id='1'>Editorial: </style>publications@aramcoamericas.com<style id='3'>or </style><style id='5'>P.O. Box 2106, Houston, Texas 77252-2106, USA</style>",
+    "<style id='1'>ISSN: </style>2376-1083",
+    "<style id='1'>POSTMASTER:</style>Send address changes to AramcoWorld, P.O. Box 292348, Kettering, Ohio 45429.",
+    "<style id='1'>or </style>P.O. Box 292348, Kettering, Ohio 45429 USA",
+    "MediterraneanSea",
+    "Periodicals postage paid at Houston, Texas, and at additional mailing offices.",
+    "Publisher: <style id='1'>Aramco Americas Company</style><style id='3'>President and CEO: </style><style id='5'>Ahmed AL-Mulhem</style><style id='7'>Director, Public Affairs (A): </style><style id='9'>Blain Rethmeier</style><style id='11'>Editor in Chief (A): </style><style id='13'>Amra Pasic</style><style id='15'>Specials Editor: </style><style id='17'>Alva Robinson</style><style id='19'>Visuals Editor: </style><style id='21'>Waleed Dashash</style><style id='23'>Content Editor: </style><style id='25'>Suzanne Garofalo</style><style id='27'>Contributing Editor:</style><style id='29'> Indlieb Farazi Saber</style>",
+    "S AU D I A R A B I A"
+  ],
+  "answers_changed": [
+    {
+      "input": "that broaden the appreciation of diverse",
+      "baseline": [
+        "以拓宽对多样文化的欣赏"
+      ],
+      "run": [
+        "以拓宽对多样化"
+      ]
+    },
+    {
+      "input": "cultures. We believe in celebrating our",
+      "baseline": [
+        "我们相信通过庆祝我们的"
+      ],
+      "run": [
+        "文化的欣赏。我们相信通过庆祝我们的"
+      ]
+    },
+    {
+      "input": "shared experiences through engaging",
+      "baseline": [
+        "共同体验来吸引人们"
+      ],
+      "run": [
+        "共同体验来进行互动"
+      ]
+    },
+    {
+      "input": "<style id='1'>AramcoWorld</style> (ISSN 2376-1083) is published",
+      "baseline": [
+        "<style id='1'>AramcoWorld</style> (ISSN 2376-1083) 由"
+      ],
+      "run": [
+        "<style id='1'>AramcoWorld</style>（国际标准连续出版物号 2376-1083）出版"
+      ]
+    },
+    {
+      "input": "bimonthly by Aramco Americas Company,",
+      "baseline": [
+        "阿美美洲公司双月出版，"
+      ],
+      "run": [
+        "由阿美美洲公司双月出版，"
+      ]
+    },
+    {
+      "input": "Two Allen Center, 1200 Smith Street,",
+      "baseline": [
+        "地址：Two Allen Center, 1200 Smith Street,"
+      ],
+      "run": [
+        "艾伦中心二号楼，1200 史密斯街，"
+      ]
+    },
+    {
+      "input": "©2026 Aramco Americas Company. All rights reserved.",
+      "baseline": [
+        "©2026 阿美美洲公司。保留所有权利。"
+      ],
+      "run": [
+        "©2026 阿美美洲公司。版权所有。"
+      ]
+    },
+    {
+      "input": "<style id='1'>Banjo on the Atlas </style><style id='3'>WRITTEN BY </style>BANNING EYRE How did an instrument with West African ancestors, entwined with Americana music, appear in the lineup of a North African orchestra? Two parallel narratives hold the answer.<style id='5'>8</style>",
+      "baseline": [
+        "<style id='1'>阿特拉斯上的班卓琴 </style><style id='3'>撰文 </style>Banning Eyre 一种拥有西非祖先并与美国音乐交织的乐器，如何出现在北非乐团的阵容中？两个平行的故事揭示了答案。<style id='5'>8</style>"
+      ],
+      "run": [
+        "<style id='1'>阿特拉斯上的班卓琴 </style><style id='3'>作者 </style>Banning Eyre 一种具有西非祖先、与美国音乐交织的乐器，如何出现在北非乐团的阵容中？两个平行的故事揭示了答案。<style id='5'>8</style>"
+      ]
+    },
+    {
+      "input": "<style id='1'>WRITTEN BY </style>AIBARSHYN AKHMETKALI, <style id='3'>PHOTOGRAPHED BY </style>DANIIL USMANOV With earthquakes, weather, tourism and time threatening some of the world’s most celebrated Islamic architecture, restorers ensure that the knowledge behind the monuments survives alongside the buildings themselves.",
+      "baseline": [
+        "<style id='1'>撰文 </style>Aibarshyn Akhmetkali，<style id='3'>摄影 </style>Daniil Usmanov 地震、天气、旅游和时间威胁着一些世界上最著名的伊斯兰建筑，修复者们确保这些古迹背后的知识与建筑本身一同存续。"
+      ],
+      "run": [
+        "<style id='1'>作者 </style>Aibarshyn Akhmetkali，<style id='3'>摄影 </style>Daniil Usmanov 地震、天气、旅游和时间威胁着一些世界上最著名的伊斯兰建筑，修复者们确保这些古迹背后的知识与建筑本身一同存续。"
+      ]
+    },
+    {
+      "input": "<style id='1'>WRITTEN AND PHOTOGRAPHED BY </style>LEON McCARRON",
+      "baseline": [
+        "<style id='1'>撰文和摄影：</style>Leon McCarron"
+      ],
+      "run": [
+        "<style id='1'>撰文和摄影： </style>Leon McCarron"
+      ]
+    },
+    {
+      "input": "<style id='1'>R</style> Intricate interior details of the Tilya-Kori Madrasa on the Registan complex in Samarkand, Uzbekistan, include its gilded",
+      "baseline": [
+        "<style id='1'>R</style> 撒马尔罕列吉斯坦建筑群中Tilya-Kori神学院的复杂内部细节，包括其镀金的"
+      ],
+      "run": [
+        "<style id='1'>R</style> 撒马尔罕雷吉斯坦建筑群中的Tilya-Kori神学院，其复杂的内部细节包括镀金的"
+      ]
+    },
+    {
+      "input": "wall patterns. Preservationists work ceaselessly to restore and maintain the examples of centuries-old Islamic architecture.",
+      "baseline": [
+        "墙壁图案。保护工作者不懈努力，修复和维护这些有着数百年历史的伊斯兰建筑实例。"
+      ],
+      "run": [
+        "墙壁图案。保护工作者不懈努力，修复和维护这些拥有数百年历史的伊斯兰建筑实例。"
+      ]
+    },
+    {
+      "input": "The ribbon of tarmac that we had started out on disappeared as the vehicle careered off-road, and Al Juhani swung us from one track to another. Eventual- ly, at the edge of the <style id='1'>wadi</style>, or dry riverbed, he stopped and got out. There, nestled into the low, dark hills, was a two-story building made of black basalt. Red sandstone bricks lined the edges in decorative trim.",
+      "baseline": [
+        "我们最初行驶的柏油路带消失了，车辆驶入了越野路段，阿尔·朱哈尼（Al Juhani）带着我们从一条轨道转到另一条。最终，在干河床（<style id='1'>wadi</style>）的边缘，他停了下来并下了车。在那里，低矮而黑暗的山丘中，坐落着一座由黑色玄武岩建成的两层建筑。红色砂岩砖在边缘形成装饰性镶边。"
+      ],
+      "run": [
+        "我们起步的那条柏油路消失了，车辆驶入了越野地带，阿尔·朱哈尼（Al Juhani）带着我们从一条小路转到另一条小路。最终，在干河床（<style id='1'>wadi</style>）的边缘，他停下车并下了车。在那里，低矮而黑暗的山丘中，坐落着一座由黑色玄武岩建成的两层建筑。红色砂岩砖在边缘形成装饰性镶边。"
+      ]
+    },
+    {
+      "input": "“This is the first railway station I remember,” Al Juhani told me. It was called Mudarraj, and much of its structure has survived the intervening years impressively. “I was first shown this place by my grandfather,” he continued. The old man had remem- bered the line and stations being built, and told his grandson stories of the Ottoman construction effort. “He was fascinated by the skill. And now I am too.”",
+      "baseline": [
+        "“这是我记得的第一座火车站，”阿尔·朱哈尼告诉我。它被称为穆达拉吉（Mudarraj），其大部分结构在这些年间令人印象深刻地保存了下来。“我第一次被带到这个地方是由我的祖父带来的，”他继续说道。老人记得这条线路和车站的建设，并给他的孙子讲述了奥斯曼帝国的建设努力的故事。“他对这种技艺着迷。现在我也是。”"
+      ],
+      "run": [
+        "“这是我记得的第一座火车站，”阿尔·朱哈尼告诉我。它被称为穆达拉吉（Mudarraj），其大部分结构在这些年间保存得相当完好。“我第一次看到这个地方是由我的祖父带我来的，”他继续说道。老人记得这条线路和车站的建设，并给他的孙子讲述了奥斯曼帝国的建设努力。“他对这种技艺着迷。现在我也是。”"
+      ]
+    },
+    {
+      "input": "I discovered that the story Al Juhani was telling has been largely forgotten in Saudi Arabia. Yet the Hi- jaz (Hejaz) Railway helped shape the modern region. Over two years, while researching my forthcoming book on the railway, I traveled across the surviving route to understand what remains of that lost world.",
+      "baseline": [
+        "我发现阿尔·朱哈尼所讲述的故事在沙特阿拉伯已被大部分遗忘。然而，希贾兹铁路帮助塑造了现代地区。在两年的时间里，为了研究我即将出版的关于这条铁路的书，我走遍了这条遗存的路线，以了解那个失落世界的遗迹。"
+      ],
+      "run": [
+        "我发现阿尔·朱哈尼所讲述的故事在沙特阿拉伯已被大部分遗忘。然而，希贾兹铁路帮助塑造了现代地区。在两年的时间里，为了研究我即将出版的关于这条铁路的书，我走遍了这条遗存的路线，以了解那失落世界的遗迹。"
+      ]
+    },
+    {
+      "input": "For some time after the untimely demise of the Hijaz route following World War I, part of its legacy endured. In Syria the line continued to be part of a broader railway network. Until 2011, it still crossed into Jordan, where it remained operational, if rarely used, all the way to the south of the country.",
+      "baseline": [
+        "在第一次世界大战后，希贾兹路线的不幸终结之后的一段时间里，它的部分遗产仍然存在。在叙利亚，这条线路继续成为更广泛铁路网络的一部分。直到2011年，它仍然延伸到约旦，虽然很少使用，但一直运行到该国南部。"
+      ],
+      "run": [
+        "在第一次世界大战后，希贾兹路线的不幸终结之后的一段时间里，它的部分遗产仍然存在。在叙利亚，这条线路继续成为更广泛铁路网络的一部分。直到2011年，它仍然延伸到约旦，在那里虽然很少使用，但一直运行到该国南部。"
+      ]
+    },
+    {
+      "input": "Today, however, no passenger services in the Mid- dle East cross an international border. That absence increasingly looks anomalous as Arabian Gulf gov- ernments revive plans for regional rail integration.",
+      "baseline": [
+        "然而，如今中东地区没有任何客运服务跨越国际边界。随着阿拉伯湾各国政府重新启动区域铁路一体化计划，这种缺失显得越来越不合常理。"
+      ],
+      "run": [
+        "然而，如今中东地区没有任何客运服务跨越国际边界。随着阿拉伯湾各国政府重新启动区域铁路一体化计划，这种缺失越来越显得不合常理。"
+      ]
+    },
+    {
+      "input": "Tawfiq Al Juhani drove at great speed, though it was hard to tell exactly how fast be-",
+      "baseline": [
+        "塔菲克·阿尔·朱哈尼（Tawfiq Al Juhani）高速驾驶，虽然很难确切知道他的速度有多快，"
+      ],
+      "run": [
+        "塔菲克·阿尔·朱哈尼高速驾驶，尽管很难确切知道他的速度有多快，"
+      ]
+    },
+    {
+      "input": "All three aims were important, said professor Zekeriya Kurşun, a specialist on the subject whose expertise I sought out in Istanbul, “but the religious reason was elevated above the others.” It was popu- lar with a majority of Ottoman subjects, and being the leader behind a sacred project was useful for the sultan. Journeys that once consumed weeks of hardship suddenly became predictable and compar- atively safe, reshaping the psychological geography of the region.",
+      "baseline": [
+        "所有三个目标都很重要，专门研究该主题的专家Zekeriya Kurşun（泽克里亚·库尔顺）教授在伊斯坦布尔我寻求他的专业意见时说道，“但宗教原因被提升到了其他之上。” 这在大多数奥斯曼臣民中很受欢迎，而作为一个神圣项目的领导者对苏丹来说是有用的。曾经需要数周艰辛的旅程突然变得可预测且相对安全，重塑了该地区的心理地理。"
+      ],
+      "run": [
+        "所有三个目标都很重要，专门研究该主题的专家Zekeriya Kurşun（泽克里亚·库尔顺）教授在我于伊斯坦布尔拜访他时说道，“但宗教原因被提升到了其他之上。” 这在大多数奥斯曼臣民中很受欢迎，而作为一个神圣项目的领导者对苏丹来说是有利的。曾经需要数周艰辛的旅程突然变得可预测且相对安全，重塑了该地区的心理地理。"
+      ]
+    },
+    {
+      "input": "“The most unique aspect of all was how it was funded,” Kurşun added. Abdul Hamid contributed personally, and taxes were levied within the empire, complemented by voluntary donations from the global Muslim community. Donations arrived from across the Muslim world, including British India, Singapore and South Africa, turning the railway into a rare pan-Islamic infrastructure project that extended far beyond Ottoman territory itself. The railway became the first in Ottoman territory that received no financing from foreign powers and was designated as <style id='1'>waqf</style>: an Islamic endowment whose assets could not be sold and charitable purpose not easily changed.",
+      "baseline": [
+        "“最独特的方面是它的资金来源，”库尔顺补充道。阿卜杜勒·哈米德亲自捐款，并在帝国内征税，同时还得到了全球穆斯林社区的自愿捐赠。捐款来自穆斯林世界各地，包括英属印度、新加坡和南非，使铁路成为一个罕见的泛伊斯兰基础设施项目，远远超出了奥斯曼帝国的领土。该铁路成为奥斯曼领土内第一个没有外国势力融资的铁路，并被指定为<style id='1'>宗教基金</style>：一种伊斯兰捐赠，其资产不能出售，慈善目的不易改变。"
+      ],
+      "run": [
+        "“最独特的方面是它的资金来源，”库尔顺补充道。阿卜杜勒·哈米德亲自捐款，并在帝国内征税，同时还得到了全球穆斯林社区的自愿捐赠。捐款来自穆斯林世界各地，包括英属印度、新加坡和南非，使铁路成为一个罕见的泛伊斯兰基础设施项目，远远超出了奥斯曼帝国的领土。铁路成为奥斯曼领土内第一个没有外国Powers融资的铁路，并被指定为<style id='1'>宗教基金</style>：一种伊斯兰捐赠，其资产不能出售，慈善目的不易改变。"
+      ]
+    },
+    {
+      "input": "Ottoman authorities deployed thousands of mil- itary conscripts to build the railway, said Kurşun, and the landscapes in which they worked were fierce, varied and often far from urban centers. In his com- prehensive 2005 history book <style id='1'>The Hejaz Railway</style>, author James Nicholson writes, “Winding its way through some of the most dramatic desert mountain scenery in the world...its construction was a tale of endurance and resolve made epic by the heat {v3}and{v4}the harsh conditions.”",
+      "baseline": [
+        "奥斯曼当局派遣了数千名军事征召兵来修建铁路，库尔顺说，他们工作的地形险峻多变，且往往远离城市中心。在他2005年出版的全面历史书籍《希贾兹铁路》中，作者James Nicholson（詹姆斯·尼科尔森）写道：“铁路蜿蜒穿过世界上一些最壮观的沙漠山地风景……其建设是一段因高温和恶劣条件而显得史诗般的耐力与决心的故事。”"
+      ],
+      "run": [
+        "奥斯曼当局派遣了数千名军事征召兵来修建铁路，库尔顺说，他们工作的地形险峻多变，且往往远离城市中心。在他2005年出版的全面历史书籍《希贾兹铁路》中，作者James Nicholson（詹姆斯·尼科尔森）写道：“铁路蜿蜒穿过世界上一些最壮观的沙漠山地风光……其建设是一段因高温{v3}和{v4}恶劣条件而显得史诗般的耐力与决心的故事。”"
+      ]
+    },
+    {
+      "input": "Another factor was the variation in terrain, which required very different skills for the construction. In Syria, the route passes through the volcanic plateau called the Hauran. There, some years can see vast quantities of rain, making the area green and fertile, and famed for its agricultural capacity—so much so that during Roman rule it was referred to as “the granary of Rome.”",
+      "baseline": [
+        "另一个因素是地形的变化，这需要非常不同的施工技能。在叙利亚，路线穿过一个名为豪兰的火山高原。在那里，有些年份会有大量降雨，使该地区变得绿意盎然，因其农业能力而闻名——以至于在罗马统治时期，它被称为“罗马的粮仓”。"
+      ],
+      "run": [
+        "另一个因素是地形的变化，这需要非常不同的施工技能。在叙利亚，路线穿过一个名为豪兰的火山高原。在那里，有些年份会有大量降雨，使得该地区绿意盎然，肥沃富饶，以至于在罗马统治时期被称为“罗马的粮仓”。"
+      ]
+    },
+    {
+      "input": "The advancement of the line here required hun- dreds of bridges, aqueducts and culverts to manage the drainage. In the Yarmouk Valley—a stunning, steep cleavage in the earth (now the border between Syria and Jordan) and through which the railway passed on a slightly later branch line on the way to the Mediterranean Sea—a series of highly complex stone and iron bridges was required to navigate the gorge.",
+      "baseline": [
+        "这里的线路推进需要数百座桥梁、水渠和涵洞来管理排水。在亚尔穆克山谷——一个令人惊叹的陡峭地裂（现在是叙利亚和约旦之间的边界），铁路通过一条稍晚的支线通往地中海——需要一系列高度复杂的石桥和铁桥来穿越峡谷。"
+      ],
+      "run": [
+        "这里的线路推进需要数百座桥梁、水渠和涵洞来管理排水。在亚尔穆克山谷——一个令人惊叹的陡峭地裂（现在是叙利亚和约旦的边界），铁路在通往地中海的稍后支线上穿过——需要一系列高度复杂的石桥和铁桥来穿越峡谷。"
+      ]
+    },
+    {
+      "input": "<style id='1'>beloW</style> Workers lay rails near Tabuk in 1906. Construc- tion of the Hijaz Railway required thousands of mil- itary conscripts who toiled for eight years in var- ied landscapes. <style id='3'>bottoM</style> Tracks run through the coun- tyside south of Daraa, Syria.",
+      "baseline": [
+        "<style id='1'>下方</style> 工人在1906年于塔布克（Tabuk）附近铺设铁路。希贾兹铁路的建设需要成千上万的军事征召人员，他们在各种地形中辛勤工作了八年。<style id='3'>底部</style> 铁轨穿过叙利亚德拉（Daraa）南部的乡村。"
+      ],
+      "run": [
+        "<style id='1'>下方</style> 工人在1906年于塔布克（Tabuk）附近铺设铁路。希贾兹铁路的建设需要成千上万的军事征召人员，他们在各种地形中辛勤工作了八年。<style id='3'>底部</style> 铁轨穿过德拉（Daraa）南部的叙利亚乡村。"
+      ]
+    },
+    {
+      "input": "Still, it was a great success for the ailing em- pire. In 1909 French explorer Charles-Eudes Bonin noted admiringly in the academic journal <style id='1'>Annales de Géographie</style>: “By reducing costs and journey times, and by protecting travellers ... the Hijaz Railway has restored the terrestrial pilgrimage to its former glory.”",
+      "baseline": [
+        "尽管如此，对于这个衰落的帝国来说，这仍然是一个巨大的成功。1909年，法国探险家Charles-Eudes Bonin在学术期刊《地理学年鉴》中赞赏地指出：“通过降低成本和缩短旅程时间，并保护旅行者……希贾兹铁路恢复了陆地朝圣的昔日辉煌。”"
+      ],
+      "run": [
+        "尽管如此，对于这个衰落的帝国来说，这仍然是一个巨大的成功。1909年，法国探险家Charles-Eudes Bonin在学术期刊<style id='1'>地理学年鉴</style>中钦佩地指出：“通过降低成本和旅行时间，并保护旅行者……希贾兹铁路恢复了陆地朝圣的昔日辉煌。”"
+      ]
+    },
+    {
+      "input": "Over the decades, various efforts were made to rehabilitate the Hijaz route. Most notably, in the 1960s, work in the north of Saudi Arabia involved rebuilding embankments and replacing dilapidated bridges and culverts. But cost spiraled, and that vision never fully materialized.",
+      "baseline": [
+        "几十年来，各种努力都在进行，以恢复希贾兹路线。最值得注意的是，在20世纪60年代，沙特阿拉伯北部的工作涉及重建路堤和更换破旧的桥梁和涵洞。但成本飙升，这一愿景从未完全实现。"
+      ],
+      "run": [
+        "几十年来，各种努力都在进行，以恢复希贾兹路线。最显著的是在20世纪60年代，沙特阿拉伯北部的工作涉及重建路堤和更换破旧的桥梁和涵洞。但成本飙升，这一愿景从未完全实现。"
+      ]
+    },
+    {
+      "input": "Since 2023 I have been exploring the route, re- turning multiple times to collect memories of a past era. Its starting point is marked by the grand Hijaz Railway Station in downtown Damascus, where a",
+      "baseline": [
+        "自2023年以来，我一直在探索这条路线，多次返回以收集过去时代的记忆。其起点由大马士革市中心宏伟的希贾兹火车站标志着，那里是一个"
+      ],
+      "run": [
+        "自2023年以来，我一直在探索这条路线，多次返回以收集过去时代的记忆。其起点由大马士革市中心宏伟的希贾兹火车站标志着，"
+      ]
+    },
+    {
+      "input": "The historic monuments also face constant threats from a buildup of moisture from heavy rains and other factors, and the natural aging of materials. Con- servationists like Khakimov monitor the buildings continuously, often searching for changes so subtle that visitors would never notice them.",
+      "baseline": [
+        "历史遗迹还面临着来自暴雨和其他因素导致的湿气积聚以及材料自然老化的持续威胁。像Khakimov（Khakimov）这样的保护主义者会持续监测这些建筑，常常寻找那些游客永远不会注意到的微妙变化。"
+      ],
+      "run": [
+        "这些历史遗迹还面临着来自暴雨和其他因素导致的湿气积聚以及材料自然老化的持续威胁。像Khakimov（Khakimov）这样的保护主义者会持续监测这些建筑，常常寻找那些游客永远不会注意到的微妙变化。"
+      ]
+    },
+    {
+      "input": "Light shows at night lend drama to the Registan complex, which has survivedearthquakes,heavy rains and natural agingthanks to thecontinual work of conservationists.",
+      "baseline": [
+        "夜间的灯光秀为列吉斯坦（Registan）建筑群增添了戏剧性，该建筑群在地震、暴雨和自然老化中幸存下来，这要归功于保护工作者的持续努力。"
+      ],
+      "run": [
+        "夜间的灯光秀为雷吉斯坦（Registan）建筑群增添了戏剧性，该建筑群在地震、暴雨和自然老化中幸存下来，这要归功于保护工作者的持续努力。"
+      ]
+    },
+    {
+      "input": "We were roughly 80 miles (129 km) south of Al- Ula in the west of Saudi Arabia. I traveled there in the spring of 2024 to research the Hijaz Railway, which, in the early years of the 20th century, ran for some 800 miles (1,287 km) from Damascus, Syria, to Madinah. On this day, looking at Hijaz, the rugged, mountainous region that extends in every direction, I found such a feat hard to imagine. Al Juhani, the head of his tribe in the area, had offered to show me what remained.",
+      "baseline": [
+        "我们大约在沙特阿拉伯西部的阿尔乌拉（Al-Ula）以南80英里（129公里）处。我于2024年春天前往那里，研究希贾兹铁路（HIJAZ RAILWAY），该铁路在20世纪初从叙利亚大马士革（Damascus）延伸至麦地那（Madinah），全长约800英里（1,287公里）。在这一天，看到希贾兹（Hijaz），这个向四面八方延伸的崎岖山地，我觉得这样的壮举难以想象。阿尔·朱哈尼（Al Juhani），该地区部落的首领，主动提出带我看看遗留的部分。"
+      ],
+      "run": [
+        "我们大约在沙特阿拉伯西部的阿尔乌拉（Al-Ula）以南80英里（129公里）处。我于2024年春天前往那里研究希贾兹铁路，这条铁路在20世纪初期从叙利亚大马士革延伸至麦地那，全长约800英里（1,287公里）。在这一天，看到希贾兹这个向四面八方延伸的崎岖山地，我很难想象这样的壮举。阿尔·朱哈尼（Al Juhani），该地区部落的首领，主动提出带我看看遗留的部分。"
+      ]
+    },
+    {
+      "input": "Since opening fully in 2018, Saudi Arabia’s Haramain high-speed railway has achieved what the Ottoman-era Hijaz Railway never did: a direct rail connection between Makkah and Madinah,",
+      "baseline": [
+        "自2018年全面开通以来，沙特阿拉伯的哈拉曼高速铁路实现了奥斯曼时代希贾兹铁路未曾实现的目标：在麦加和麦地那之间建立直接的铁路连接，"
+      ],
+      "run": [
+        "自2018年全面开通以来，沙特阿拉伯的哈拉曼高速铁路实现了奥斯曼时代希贾兹铁路未曾实现的目标：在麦加和麦地那之间建立了直接的铁路连接，"
+      ]
+    },
+    {
+      "input": "In December 2025, Saudi Arabia and Qatar signed an agreement for a high-speed electric railway linking Riyadh and Doha. In the spring of 2026, Türkiye and Saudi Arabia formally agreed to advance plans for a railway connecting the two countries through Jordan and Syria. More than a century later, some of the original ambitions behind the Hijaz Railway— including regional integration and the movement of people—are once again shaping infrastructure discussions across the region.",
+      "baseline": [
+        "2025年12月，沙特阿拉伯和卡塔尔签署了一项协议，计划建设一条连接利雅得和多哈的高速电气化铁路。到2026年春天，土耳其和沙特阿拉伯正式同意推进一项计划，通过约旦和叙利亚连接两国的铁路。一个多世纪后，希贾兹铁路背后的一些最初愿景——包括区域一体化和人员流动——再次在整个地区的基础设施讨论中发挥作用。"
+      ],
+      "run": [
+        "2025年12月，沙特阿拉伯和卡塔尔签署了一项协议，计划建设一条连接利雅得和多哈的高速电气化铁路。到2026年春天，土耳其和沙特阿拉伯正式同意推进一条通过约旦和叙利亚连接两国的铁路计划。一个多世纪后，希贾兹铁路背后的一些最初愿景——包括区域一体化和人员流动——再次在整个地区的基础设施讨论中发挥作用。"
+      ]
+    },
+    {
+      "input": "The railway was expected to serve three functions. Politically, Abdul Hamid wanted to connect the pe- riphery of Ottoman territory back to the center, where",
+      "baseline": [
+        "这条铁路预计将发挥三个功能。从政治上讲，阿卜杜勒·哈米德希望将奥斯曼帝国领土的边缘重新连接到控制最强的中心。"
+      ],
+      "run": [
+        "这条铁路预计将发挥三个功能。从政治上讲，阿卜杜勒·哈米德希望将奥斯曼帝国领土的边缘重新连接到中心，那里是他控制最强的地方。"
+      ]
+    },
+    {
+      "input": "The optimism surrounding the railway did not last long. Less than a decade later, during World War I, the railway was repeatedly attacked. Raiding par- ties destroyed large sections of the route—including the stretch Al Juhani showed me in the desert south of AlUla. The war eventually led to the Ottoman Empire’s collapse.",
+      "baseline": [
+        "围绕铁路的乐观情绪并没有持续多久。不到十年后，在第一次世界大战期间，铁路多次遭到袭击。袭击队摧毁了包括阿尔·朱哈尼在阿勒乌拉南部沙漠中向我展示的那段在内的大段路线。战争最终导致了奥斯曼帝国的崩溃。"
+      ],
+      "run": [
+        "围绕铁路的乐观情绪并没有持续多久。不到十年后，在第一次世界大战期间，铁路多次遭到袭击。袭击队摧毁了包括阿尔·朱哈尼在乌拉南部沙漠中向我展示的那段在内的大段路线。战争最终导致了奥斯曼帝国的崩溃。"
+      ]
+    },
+    {
+      "input": "The last train on the Hijaz line in what is now Saudi Arabia departed in 1925. By the middle of the past century, it fell into disrepair; even the rails had been removed.",
+      "baseline": [
+        "在现在的沙特阿拉伯境内，希贾兹铁路的最后一列火车于1925年出发。到上个世纪中叶，它已陷入失修状态，甚至连铁轨都被拆除。"
+      ],
+      "run": [
+        "在现在的沙特阿拉伯境内，希贾兹铁路的最后一列火车于1925年出发。到上个世纪中叶，它已破败不堪，甚至连铁轨都被拆除。"
+      ]
+    }
+  ]
+}

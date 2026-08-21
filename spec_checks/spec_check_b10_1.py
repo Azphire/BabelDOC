@@ -231,6 +231,22 @@ def missing(paths) -> list[str]:
     return [str(path.relative_to(ROOT)) for path in paths if not path.exists()]
 
 
+def skip(name: str, absent) -> None:
+    """Report an assertion whose evidence is no longer on disk, by name.
+
+    One assertion of this gate reads a stage checkpoint out of the run's working
+    directory, which is not part of the evidence the batch committed and which
+    the output retention policy takes once two later batches exist. A frozen
+    product that has been pruned may not be replaced by re-running the batch, so
+    what is left to do is say which path is gone rather than crash on it or
+    quietly pass.
+    """
+    global _total
+    _total += 1
+    seconds = _timer.mark(name)
+    print(f"SKIPPED: {name}: evidence pruned: {sorted(absent)} ({seconds:.2f}s)")
+
+
 def page_of(document: dict, label: int) -> dict | None:
     for page in document["page"]:
         if page["page_number"] + 1 == label:
@@ -428,6 +444,11 @@ def check_02b_the_flattened_column_starts_level_with_its_neighbour() -> None:
     neighbour to be level with, and there the assertion is that the pass left
     the paragraph's box exactly as it found it.
     """
+    name = "check_02b_the_flattened_column_starts_level_with_its_neighbour"
+    absent = missing({checkpoint(BATCH_DIR, sample) for sample, _, _ in FLATTENED})
+    if absent:
+        skip(name, absent)
+        return
     faults = []
     measured = []
     for sample, page, index in FLATTENED:
@@ -463,11 +484,7 @@ def check_02b_the_flattened_column_starts_level_with_its_neighbour() -> None:
         if gap > size:
             faults.append(f"{sample} p{page}: gap {gap:.2f} > font size {size:.2f}")
     print("    " + "; ".join(measured))
-    record(
-        "check_02b_the_flattened_column_starts_level_with_its_neighbour",
-        not faults,
-        "; ".join(faults),
-    )
+    record(name, not faults, "; ".join(faults))
 
 
 def check_02c_the_start_edge_is_read_off_the_text() -> None:

@@ -1,0 +1,395 @@
+{
+  "sample": "CERNCourier-en",
+  "baseline": "examples\\output\\F2\\CERNCourier-en\\work\\CERNCourier-en\\translate_tracking.json",
+  "groups_read": [
+    "page",
+    "cross_page",
+    "cross_column"
+  ],
+  "groups_present": [
+    "cross_column",
+    "cross_page",
+    "page"
+  ],
+  "requests": 220,
+  "baseline_requests": 230,
+  "inputs_sha256": "96fc046eb2bb6893be0301fe48d148ebbf7bfe956238d9ee09f72d083c3d9a3f",
+  "baseline_inputs_sha256": "4f5ed4f79a615b40a417d931ef7c229dd8e0f637db38220b8c4e9dda21f2fea3",
+  "unchanged_requests": 197,
+  "withdrawn": [
+    "<style id='1'>Physics. </style>22",
+    "<style id='1'>across the globe. </style>41",
+    "<style id='1'>baryon </style>{v3}<style id='4'>Collective flow</style>",
+    "<style id='1'>edge </style>{v3}<style id='4'>W boson decays</style>",
+    "<style id='1'>environment. </style>49",
+    "<style id='1'>for clusters. </style><style id='3'>7</style>",
+    "<style id='1'>framework. </style>33",
+    "<style id='1'>guide </style>{v3}<style id='4'>Islam and</style>",
+    "<style id='1'>in hypernuclei. </style>13",
+    "<style id='1'>pictured in July 1991. </style>22",
+    "<style id='1'>sector particles. </style>28",
+    "<style id='1'>the line </style>{v3}<style id='4'>Hot start</style>",
+    "A look back at NA64’s",
+    "CJulAug26_HI",
+    "CJulAug26_HI",
+    "How Xsuite brought the",
+    "Ten years at the",
+    "The Swiss Army",
+    "e European Strategy reiterates the critical importance of the High- Luminosity LHC, which will use advanced accelerator and detector technologies to fully exploit the scientific potential of this incredible machine in the com- ing years,” said Mark Thomson, CERN Director-General. “Beyond HiLumi LHC, the FCC-ee would be a visionary global research infrastructure for the next decades that will deepen our knowledge of the fundamental building blocks of the universe through ultra-precise measurements of the Higgs boson and other elementary particles. CERN’s task now is to steer this unprecedented project towards a decision by the CERN Council.”",
+    "e Strategy process has seen a very strong engagement of the particle- physics community and has led to a very clear conclusion: the FCC-ee, if approved, would deliver the world’s broadest high-precision particle-physics pro- gramme, its technical feasibility has",
+    "feebly interacting dark-",
+    "field’s beam-simulation",
+    "fixed-target search for",
+    "frontier",
+    "knife of beam",
+    "missing-energy",
+    "simulation",
+    "tools into a single",
+    "{v1}<style id='2'>Antihydrogen toes</style>",
+    "{v1}<style id='2'>Discordance </style>{v4}<style id='5'>Neutrino</style>",
+    "{v1}<style id='2'>IPAC’</style>{v4}<style id='5'>QCD</style>",
+    "{v1}<style id='2'>New doubly charmed</style>",
+    "{v1}<style id='2'>Partons at the nuclear</style>"
+  ],
+  "introduced": [
+    "<style id='1'>baryon </style>{v3}Collective flow",
+    "A look back at NA64’s fixed-target search for feebly interacting dark- sector particles. <style id='1'>28</style>",
+    "CCJulAug26_HI",
+    "CCJulAug26_HI",
+    "How Xsuite brought the field’s beam-simulation tools into a single framework. <style id='1'>33</style>",
+    "Physics. <style id='1'>22</style>",
+    "Ten years at the missing-energy frontier",
+    "The European Strategy reiterates the critical importance of the High- Luminosity LHC, which will use advanced accelerator and detector technologies to fully exploit the scientific potential of this incredible machine in the com- ing years,” said Mark Thomson, CERN Director-General. “Beyond HiLumi LHC, the FCC-ee would be a visionary global research infrastructure for the next decades that will deepen our knowledge of the fundamental building blocks of the universe through ultra-precise measurements of the Higgs boson and other elementary particles. CERN’s task now is to steer this unprecedented project towards a decision by the CERN Council.”",
+    "The Strategy process has seen a very strong engagement of the particle- physics community and has led to a very clear conclusion: the FCC-ee, if approved, would deliver the world’s broadest high-precision particle-physics pro- gramme, its technical feasibility has",
+    "The Swiss Army knife of beam simulation",
+    "across the globe. <style id='1'>41</style>",
+    "edge {v1}<style id='2'>W boson decays</style>",
+    "environment. <style id='1'>49</style>",
+    "for clusters. <style id='1'>7</style>",
+    "guide {v1}<style id='2'>Islam and</style>",
+    "in hypernuclei. <style id='1'>13</style>",
+    "pictured in July 1991. <style id='1'>22</style>",
+    "the line {v1}<style id='2'>Hot start</style>",
+    "{v1}Antihydrogen toes",
+    "{v1}Discordance {v2}<style id='3'>Neutrino</style>",
+    "{v1}IPAC’{v2}<style id='3'>QCD</style>",
+    "{v1}New doubly charmed",
+    "{v1}Partons at the nuclear"
+  ],
+  "answers_changed": [
+    {
+      "input": "<style id='1'>CERN</style><style id='3'>COURIER</style><style id='5'>July/August 2026</style><style id='7'> cerncourier.com </style><style id='9'>Reporting on international high-energy physics</style>",
+      "baseline": [
+        "<style id='1'>欧洲核子研究中心</style><style id='3'>快报</style><style id='5'>2026年7月/8月</style><style id='7'> CERNCOURIER.COM </style><style id='9'>国际高能物理报道</style>"
+      ],
+      "run": [
+        "<style id='1'>欧洲核子研究中心</style><style id='3'>快报</style><style id='5'>2026年7/8月</style><style id='7'> CERNCOURIER.COM </style><style id='9'>国际高能物理报道</style>"
+      ]
+    },
+    {
+      "input": "In May, the CERN Council updated the European Strategy for Particle Physics (p7). The preferred next flagship is once again an electron–positron collider, the FCC-ee. Council president Costas Fountas weighs what must fall into place before a decision, targeted for 2028 (p39).",
+      "baseline": [
+        "在五月，CERN理事会更新了欧洲粒子物理战略（第7页）。首选的下一个旗舰项目再次是电子-正电子对撞机，FCC-ee。理事会主席Costas Fountas权衡在2028年目标决策前必须到位的条件（第39页）。"
+      ],
+      "run": [
+        "今年五月，CERN理事会更新了欧洲粒子物理战略（第7页）。首选的下一个旗舰项目再次是电子-正电子对撞机，FCC-ee。理事会主席Costas Fountas权衡了在2028年做出决策之前必须到位的条件（第39页）。"
+      ]
+    },
+    {
+      "input": "<style id='1'>To subscribe to the magazine, please visit:</style>https://cerncourier.com/p/about-cern-courier",
+      "baseline": [
+        "<style id='1'>要订阅该杂志，请访问：</style>https://cerncourier.com/p/about-cern-courier"
+      ],
+      "run": [
+        "<style id='1'>要订阅本杂志，请访问：</style>https://cerncourier.com/p/about-cern-courier"
+      ]
+    },
+    {
+      "input": "<style id='1'>V </style><style id='3'>o l u m e </style><style id='5'> 6 6 N </style><style id='7'>u m b e r </style><style id='9'> 4 </style><style id='11'> </style> J <style id='13'>u l y </style>/ A <style id='15'>u g u s t </style> 2 0 2 6",
+      "baseline": [
+        "<style id='1'>第 </style><style id='3'>6 6 卷 </style><style id='5'>第 </style><style id='7'>4 期 </style><style id='9'> </style> 2 0 2 6 年 <style id='13'>7 月 </style>/ <style id='15'>8 月</style>",
+        "<style id='1'>第 </style><style id='3'>6 6 卷 </style><style id='5'>第 </style><style id='7'>4 期 </style><style id='9'> </style> 2 0 2 6 年 <style id='13'>7 月</style>/<style id='15'>8 月</style>",
+        "<style id='1'>第 </style><style id='3'>六十六卷 </style><style id='5'>第 </style><style id='7'>四期 </style><style id='9'> </style> 2026年 <style id='13'>七月 </style>/ <style id='15'>八月 </style>"
+      ],
+      "run": [
+        "<style id='1'>第 </style><style id='3'>6 6 卷 </style><style id='5'>第 </style><style id='7'>4 期 </style><style id='9'> </style> 2 0 2 6 年 <style id='13'>7 </style>/ <style id='15'>8 月</style>",
+        "<style id='1'>第 </style><style id='3'>6 6 卷 </style><style id='5'>第 </style><style id='7'>4 期 </style><style id='9'> </style> 2 0 2 6 年 <style id='13'>7 月 </style>/<style id='15'>8 月</style>",
+        "<style id='1'>第 </style><style id='3'>6 6 卷 </style><style id='5'>第 </style><style id='7'>4 期 </style><style id='9'> </style> 2 0 2 6 年 <style id='13'>7 月</style>/<style id='15'>8 月</style>"
+      ]
+    },
+    {
+      "input": "<style id='1'>CERN COURIER </style><style id='3'>JULY/AUGUST 2026</style>",
+      "baseline": [
+        "<style id='1'>CERN COURIER </style><style id='3'>2026年7月/8月</style>",
+        "<style id='1'>CERN Courier </style><style id='3'>2026年7月/8月</style>",
+        "<style id='1'>CERN快报 </style><style id='3'>2026年7月/8月</style>"
+      ],
+      "run": [
+        "<style id='1'>CERN COURIER </style><style id='3'>2026年7/8月</style>",
+        "<style id='1'>CERN Courier </style><style id='3'>2026年7/8月</style>",
+        "<style id='1'>CERN快报 </style><style id='3'>2026年7/8月</style>"
+      ]
+    },
+    {
+      "input": "mindset she honed at",
+      "baseline": [
+        "磨练出的分析思维"
+      ],
+      "run": [
+        "欧洲核子研究中心（CERN）磨练的分析思维"
+      ]
+    },
+    {
+      "input": "CERN to a very different",
+      "baseline": [
+        "欧洲核子研究中心到一个截然不同的"
+      ],
+      "run": [
+        "于一个截然不同的"
+      ]
+    },
+    {
+      "input": "FIELD NOTES",
+      "baseline": [
+        "现场笔记"
+      ],
+      "run": [
+        "实地笔记"
+      ]
+    },
+    {
+      "input": "Physics: a student’s",
+      "baseline": [
+        "物理学：一个学生的"
+      ],
+      "run": [
+        "物理学：学生的"
+      ]
+    },
+    {
+      "input": "<style id='1'>Strategy update</style><style id='3'> The CERN Council updated the European Strategy for Particle Physics. </style><style id='5'>7</style>",
+      "baseline": [
+        "<style id='1'>战略更新</style><style id='3'>CERN理事会更新了欧洲粒子物理战略。</style><style id='5'>7</style>"
+      ],
+      "run": [
+        "<style id='1'>战略更新</style><style id='3'> CERN理事会更新了欧洲粒子物理战略。 </style><style id='5'>7</style>"
+      ]
+    },
+    {
+      "input": "<style id='1'>Missing energy </style><style id='3'>NA64 marks a decade of searching for a dark sector. </style><style id='5'>28</style>",
+      "baseline": [
+        "<style id='1'>缺失能量</style><style id='3'>NA64标志着寻找暗物质领域的十年。</style><style id='5'>28</style>"
+      ],
+      "run": [
+        "<style id='1'>缺失能量</style><style id='3'>NA64标志着寻找暗物质领域的十年。 </style><style id='5'>28</style>"
+      ]
+    },
+    {
+      "input": "<style id='1'>Around the world </style><style id='3'>A cosmic-ray detector measured muons from pole to pole. </style><style id='5'>41</style>",
+      "baseline": [
+        "<style id='1'>世界各地</style><style id='3'>一个宇宙射线探测器从极地到极地测量了μ子。</style><style id='5'>41</style>"
+      ],
+      "run": [
+        "<style id='1'>全球范围内</style><style id='3'>一个宇宙射线探测器从南极到北极测量了μ子。</style><style id='5'>41</style>"
+      ]
+    },
+    {
+      "input": "Reflections on the",
+      "baseline": [
+        "对……的反思"
+      ],
+      "run": [
+        "关于的思考"
+      ]
+    },
+    {
+      "input": "Symposium on the",
+      "baseline": [
+        "粒子历史研讨会"
+      ],
+      "run": [
+        "第四届粒子物理史国际研讨会"
+      ]
+    },
+    {
+      "input": "Cosmic rays from",
+      "baseline": [
+        "来自宇宙射线"
+      ],
+      "run": [
+        "宇宙射线从"
+      ]
+    },
+    {
+      "input": "pole to pole",
+      "baseline": [
+        "从极地到极地"
+      ],
+      "run": [
+        "极地到极地"
+      ]
+    },
+    {
+      "input": "James Devine and Etam",
+      "baseline": [
+        "詹姆斯·德瓦恩 (James Devine) 和 Etam Noah"
+      ],
+      "run": [
+        "James Devine和埃塔姆"
+      ]
+    },
+    {
+      "input": "Noah on the detector",
+      "baseline": [
+        "诺亚 (Noah) 在探测器上"
+      ],
+      "run": [
+        "关于探测器"
+      ]
+    },
+    {
+      "input": "On 22 May, at a dedicated session in Budapest, the CERN Council updated the European Strategy for Particle Physics. The update confirms the full exploitation of the scientific potential of the LHC, through the completion of its high-luminosity upgrade (HiLumi), as the highest medium-term priority for European particle physics. For the longer term, it recommends the electron– positron Future Circular Collider (FCC-ee) as the preferred option for the next flagship project at CERN, thereby main- taining Europe’s leadership in the field. A decision on the FCC-ee itself is targeted for 2028.",
+      "baseline": [
+        "5月22日，在布达佩斯的一次专门会议上，CERN理事会更新了欧洲粒子物理战略。此次更新确认了通过完成大型强子对撞机的高亮度升级（HiLumi），充分发挥其科学潜力，作为欧洲粒子物理的最高中期优先事项。从长远来看，它推荐电子-正电子未来环形对撞机（FCC-ee）作为CERN下一个旗舰项目的首选方案，从而保持欧洲在该领域的领导地位。关于FCC-ee本身的决策目标定在2028年。"
+      ],
+      "run": [
+        "5月22日，在布达佩斯的一次专门会议上，CERN理事会更新了欧洲粒子物理战略。此次更新确认了充分利用大型强子对撞机（LHC）科学潜力的重要性，通过完成其高亮度升级（HiLumi），作为欧洲粒子物理中期的最高优先事项。从长远来看，它推荐电子-正电子未来环形对撞机（FCC-ee）作为CERN下一个旗舰项目的首选方案，从而保持欧洲在该领域的领导地位。关于FCC-ee本身的决策目标定在2028年。"
+      ]
+    },
+    {
+      "input": "According to the Strategy, the FCC-ee would offer the broadest exploratory programme in fundamental phys- ics. The feasibility study, published in March 2025 (<style id='1'>CERN Courier</style> May/June 2025 p9), describes a baseline machine in a 90.7-kilometre ring, running at four centre-of-mass energies: the Z pole, the WW threshold, the ZH production peak and the top-quark pair threshold. Over a 15-year programme, it would be expected to yield some {v3}Z bosons, 2.{v4}W-boson pairs, 2.{v5}Higgs bosons and{v6}top-quark–antiquark pairs.",
+      "baseline": [
+        "根据战略，FCC-ee将在基础物理学中提供最广泛的探索计划。2025年3月发布的可行性研究（<style id='1'>CERN Courier</style> 2025年5/6月，第9页）描述了一台基线机器，位于一个90.7公里的环形中，以四种质心能量运行：Z极、WW阈值、ZH生产峰值和顶夸克对阈值。在为期15年的计划中，预计将产生一些{v3}Z玻色子，2.{v4}W玻色子对，2.{v5}希格斯玻色子和{v6}顶夸克-反夸克对。"
+      ],
+      "run": [
+        "根据战略，FCC-ee将提供最广泛的基础物理探索计划。2025年3月发布的可行性研究（<style id='1'>CERN Courier</style> 2025年5/6月，第9页）描述了一台基线机器，位于一个90.7公里的环形加速器中，运行在四个质心能量：Z极、WW阈值、ZH生产峰值和顶夸克对阈值。在为期15年的计划中，预计将产生一些{v3}Z玻色子，2.{v4}W玻色子对，2.{v5}希格斯玻色子和{v6}顶夸克-反夸克对。"
+      ]
+    },
+    {
+      "input": "The 2026 update follows more than two years of intense work by the Euro- pean particle-physics community, under the auspices of the European Strategy Group. Initiated in March 2024, the pro- cess aimed to develop a concrete plan to advance fundamental physics by constructing a new flagship project at CERN, and drew on more than 260 writ- ten submissions. It builds on the 2020 update, which emphasised the impor- tance of ensuring Europe’s continued scientific and technological leadership, and recommended an electron–positron “Higgs factory” as the highest-priority next facility after the LHC reaches the end of its operational lifetime in 2041.",
+      "baseline": [
+        "2026年的更新是在欧洲粒子物理学界经过两年多的紧张工作后完成的，由欧洲战略小组主持。该过程始于2024年3月，旨在制定一个具体计划，通过在欧洲核子研究中心建设一个新的旗舰项目来推进基础物理学，并借鉴了260多份书面提交。它建立在2020年更新的基础上，强调了确保欧洲在科学和技术上持续领先的重要性，并推荐在大型强子对撞机于2041年结束其运行寿命后，优先建设一个电子-正电子“希格斯工厂”作为下一个设施。"
+      ],
+      "run": [
+        "2026年的更新是在欧洲战略小组的主持下，经过欧洲粒子物理学界两年多的密集工作后完成的。该过程始于2024年3月，旨在制定一个具体计划，通过在欧洲核子研究中心建设一个新的旗舰项目来推进基础物理学的发展，并借鉴了260多份书面提交。它建立在2020年更新的基础上，强调了确保欧洲在科学和技术上持续领先的重要性，并推荐在大型强子对撞机于2041年结束其运行寿命后，优先建设一个电子-正电子“希格斯工厂”作为下一个设施。"
+      ]
+    },
+    {
+      "input": "Bergoz Instrumentation goes digital",
+      "baseline": [
+        "Bergoz仪器数字化"
+      ],
+      "run": [
+        "Bergoz仪器走向数字化"
+      ]
+    },
+    {
+      "input": "been demonstrated by the comprehensive FCC feasibility study, and its scope and cost are well defined,” said Karl Jakobs, Strategy secretary. “It would also pave the way for a possible future hadron collider reusing the tunnel and much of the infrastructure, providing direct discovery reach well beyond the 10 TeV parton energy scale.”",
+      "baseline": [
+        "由全面的未来环形对撞机（FCC）可行性研究所证明，其范围和成本已明确界定，”战略秘书Karl Jakobs（卡尔·雅各布斯）说。“这也将为可能的未来强子对撞机铺平道路，重用隧道和大部分基础设施，提供远超10 TeV部分子能量尺度的直接发现能力。”"
+      ],
+      "run": [
+        "由全面的FCC可行性研究证明，其范围和成本已明确界定，”战略秘书Karl Jakobs（Karl Jakobs）说。“这也将为可能的未来强子对撞机铺平道路，重新利用隧道和大部分基础设施，提供远超10 TeV部分能量尺度的直接发现能力。”"
+      ]
+    },
+    {
+      "input": "<style id='1'>Strategy, updated</style> The CERN Council in Budapest for its dedicated session on the European Strategy for Particle Physics, on 22 May 2026.",
+      "baseline": [
+        "<style id='1'>战略，更新</style> 2026年5月22日，欧洲核子研究中心（CERN）理事会在布达佩斯举行关于欧洲粒子物理战略的专门会议。"
+      ],
+      "run": [
+        "<style id='1'>战略，更新</style> 欧洲核子研究中心理事会在布达佩斯举行关于欧洲粒子物理战略的专门会议，日期为2026年5月22日。"
+      ]
+    },
+    {
+      "input": "analysis were also reviewed. It was made clear that with- out tight international collaboration and knowledge flow extending from KEK and Novosibirsk through Europe to the USA and down to Antarctica, among many competing groups, such progress would have been extremely unlikely. The lesson for those now planning future colliders like the FCC (Future Circular Collider) was explicit: even more than for the LHC, pull together the centres of excellence well in advance and concretely prepare what is needed for the construction of both the accelerators and the detectors.",
+      "baseline": [
+        "分析也进行了审查。明确指出，如果没有从高能加速器研究机构和新西伯利亚通过欧洲到美国再到南极洲的紧密国际合作和知识流动，在众多竞争团体中，这样的进展几乎是不可能的。对于那些现在计划未来对撞机如未来环形对撞机的人来说，教训是明确的：甚至比大型强子对撞机更需要提前整合卓越中心，并具体准备加速器和探测器建设所需的一切。"
+      ],
+      "run": [
+        "分析也进行了审查。明确指出，如果没有从高能加速器研究机构（KEK）和新西伯利亚通过欧洲到美国再到南极洲的紧密国际合作和知识流动，在众多竞争团体中，这样的进展几乎是不可能的。对于那些现在计划未来对撞机如未来环形对撞机（FCC）的人来说，教训是明确的：甚至比大型强子对撞机（LHC）更需要提前整合卓越中心，并具体准备加速器和探测器建设所需的一切。"
+      ]
+    },
+    {
+      "input": "Technology was celebrated in its own right. Talks traced the development of the superconducting magnets and cooling methods that made the great colliders possible. One could hear of the Rutherford cables wound into the superconducting coils of the Tevatron, HERA, RHIC and the LHC, with precision collars and yoke structures containing the enormous magnetic forces. Impressive advances in detector technology, data management, computing and",
+      "baseline": [
+        "技术本身也受到赞誉。演讲追溯了使大型对撞机成为可能的超导磁体和冷却方法的发展。人们可以听到关于费米实验室质子-反质子对撞机、电子-质子对撞机、相对论重离子对撞机和大型强子对撞机中缠绕在超导线圈中的卢瑟福电缆的介绍，这些线圈配有精密的夹套和轭结构以承受巨大的磁力。在探测器技术、数据管理、计算机技术方面取得了令人印象深刻的进展，"
+      ],
+      "run": [
+        "技术本身也受到赞誉。演讲追溯了使大型对撞机成为可能的超导磁体和冷却方法的发展。人们可以听到关于费米实验室质子-反质子对撞机、电子-质子对撞机、相对论重离子对撞机和大型强子对撞机中缠绕在超导线圈中的卢瑟福电缆的介绍，这些线圈中包含了巨大的磁力，精密的夹套和轭结构。探测器技术、数据管理、计算机技术的显著进步，以及"
+      ]
+    },
+    {
+      "input": "<style id='1'>Sharing the ring</style> The multipurpose magnetic detector UA1 (left), integrating tracking, calorimetry and muon chambers for the widest possible coverage of the collision, and the calorimetric experiment UA2 (right), with high-granularity calorimetry optimised to detect electrons and hadronic jets. Together, they discovered the W and Z bosons at the SPS collider.",
+      "baseline": [
+        "<style id='1'>共享对撞环</style> 多功能磁探测器UA1（左），集成了跟踪、量热和μ子室，以实现对碰撞的最广泛覆盖；以及量热实验UA2（右），其高粒度量热器优化用于探测电子和强子喷流。它们共同在超质子同步加速器对撞机上发现了W和Z玻色子。"
+      ],
+      "run": [
+        "<style id='1'>共享环形加速器</style> 多功能磁探测器UA1（左），集成了跟踪、量热和μ子室，以尽可能广泛地覆盖碰撞区域；以及量热实验UA2（右），其高粒度量热器优化用于探测电子和强子喷流。它们共同在超质子同步加速器对撞机上发现了W和Z玻色子。"
+      ]
+    },
+    {
+      "input": "<style id='1'>The proton stays</style> The Kamiokande detector during construction in spring 1983, a kilometre beneath Mount Ikeno in Japan. Designed to detect proton decay, it found none, ruling out the simplest grand unified theories. Its successor, Super-Kamiokande, observed neutrino oscillations in 1998.",
+      "baseline": [
+        "<style id='1'>质子依然存在</style> 1983年春季，神冈探测器在日本池野山下方一公里处建设，旨在探测质子衰变，但未发现任何衰变，排除了最简单的大统一理论。其继任者超级神冈探测器在1998年观测到了中微子振荡。"
+      ],
+      "run": [
+        "<style id='1'>质子依然存在</style> 1983年春季，神冈探测器在日本池野山下方一公里处建设，旨在探测质子衰变，但未发现任何衰变，排除了最简单的大统一理论。其继任者超级神冈在1998年观测到了中微子振荡。"
+      ]
+    },
+    {
+      "input": "The FCC-ee would be a visionary global research infrastructure that will deepen our knowledge of the fundamental building blocks of the universe",
+      "baseline": [
+        "FCC-ee将成为一个具有远见的全球研究基础设施，它将加深我们对宇宙基本构成要素的认识"
+      ],
+      "run": [
+        "FCC-ee 将成为一个具有远见的全球研究基础设施，它将加深我们对宇宙基本构成要素的认识"
+      ]
+    },
+    {
+      "input": "Welcome to the digital edition of the July/August 2026 issue of <style id='1'>CERN Courier</style>.",
+      "baseline": [
+        "欢迎阅读2026年7月/8月期的<style id='1'>CERN Courier</style>数字版。"
+      ],
+      "run": [
+        "欢迎阅读2026年7/8月期<style id='1'>CERN Courier</style>的数字版。"
+      ]
+    },
+    {
+      "input": "Council president Costas",
+      "baseline": [
+        "理事会主席科斯塔斯 (Costas)"
+      ],
+      "run": [
+        "理事会主席 科斯塔斯 (Costas)"
+      ]
+    },
+    {
+      "input": "unity behind the FCC-ee.",
+      "baseline": [
+        "团结在FCC-ee背后。"
+      ],
+      "run": [
+        "在FCC-ee背后的团结。"
+      ]
+    },
+    {
+      "input": "In addition to updating the Strategy, the Council has invited CERN manage- ment to initiate discussions with the relevant authorities and entities in the Member and Associate Member States, as well as non-Member States and the Euro- pean Union, with a view to developing a",
+      "baseline": [
+        "除了更新战略外，理事会还邀请欧洲核子研究中心管理层与成员国和准成员国的相关当局和实体，以及非成员国和欧盟展开讨论，以期制定一个"
+      ],
+      "run": [
+        "除了更新战略之外，理事会还邀请欧洲核子研究中心管理层与成员国和准成员国的相关当局和实体，以及非成员国和欧盟展开讨论，以期制定一个"
+      ]
+    },
+    {
+      "input": "financially feasible funding plan for the possible FCC-ee project. In the next two years, CERN management will provide annual reports on the implementation of the Strategy update and the neces- sary information to support national decision-making processes so that the Council will be in a position, by 2028, to take a decision on the FCC-ee, taking into account elements such as the scientific, technical and financial feasibility of the project, as well as results from the pub- lic consultation exercises in CERN’s host states, France and Switzerland.",
+      "baseline": [
+        "在财政上可行的未来环形对撞机（FCC-ee）项目资助计划。在接下来的两年中，欧洲核子研究中心管理层将提供年度报告，说明战略更新的实施情况，并提供支持国家决策过程所需的信息，以便理事会能够在2028年就未来环形对撞机（FCC-ee）做出决定，考虑到项目的科学、技术和财政可行性，以及欧洲核子研究中心所在国法国和瑞士的公众咨询结果。"
+      ],
+      "run": [
+        "在财政上可行的资金计划，以支持可能的FCC-ee项目。在接下来的两年中，欧洲核子研究中心管理层将提供有关战略更新实施的年度报告，并提供必要的信息以支持国家决策过程，以便理事会能够在2028年之前就FCC-ee做出决定，考虑到项目的科学、技术和财政可行性，以及欧洲核子研究中心所在国法国和瑞士的公众咨询结果。"
+      ]
+    }
+  ]
+}

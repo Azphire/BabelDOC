@@ -1,0 +1,24 @@
+{
+  "sample": "FD-en-v2",
+  "baseline": "examples\\output\\F2\\FD-en-v2\\work\\FD-en-v2\\checkpoint.11_typesetting.json",
+  "baseline_pages": 9,
+  "pages": 9,
+  "target_pages": {
+    "3": {
+      "baseline_paragraphs": 52,
+      "paragraphs": 52,
+      "differing": [
+        {
+          "reference": "p3#32",
+          "baseline": "经济政策与国家安全之间的界限正在消失 <style id='1'>Josh Lipsky（Josh Lipsky）</style>",
+          "run": "经济政策与国家安全之间的界限正在消失 <style id='1'>Josh Lipsky</style>"
+        },
+        {
+          "reference": "p3#51",
+          "baseline": "<style id='1'>六月 </style>{v3}<style id='4'>第 </style>{v6}<style id='7'>第2期</style>",
+          "run": "6月 {v1}第{v2}卷第2期"
+        }
+      ]
+    }
+  }
+}

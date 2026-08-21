@@ -1,0 +1,158 @@
+{
+  "sample": "Vogue-en",
+  "baseline": "examples\\output\\F2\\Vogue-en\\work\\Vogue-en\\translate_tracking.json",
+  "groups_read": [
+    "page",
+    "cross_page",
+    "cross_column"
+  ],
+  "groups_present": [
+    "cross_column",
+    "cross_page",
+    "page"
+  ],
+  "requests": 42,
+  "baseline_requests": 74,
+  "inputs_sha256": "6d3ca1bdac54d891bddd6bc16f8fdc6dfdee66dab02fecc30a3e77b3af5b9306",
+  "baseline_inputs_sha256": "28b90f0763b59f52b55f261e6dc7de8dc98055f2dc9d8f1b2ecdadfc231126ec",
+  "unchanged_requests": 32,
+  "withdrawn": [
+    "<style id='1'>Everywhere You Look </style>A paradigm shift",
+    "<style id='1'>Man on Wire </style>Adrien Brody is",
+    "<style id='1'>McGirr’s McQueen </style>Seán McGirr",
+    "<style id='1'>Through the Looking Glass </style>Sam McKinniss’s",
+    "<style id='1'>When Sports Met Fashion... </style>Athletes as",
+    "By Maya Singer",
+    "Chloe Schama",
+    "Hayley Maitland",
+    "Irishman writing",
+    "McQueen, one of",
+    "Steavenson",
+    "The stadium as",
+    "and sport needed",
+    "and the artist’s",
+    "arena as front",
+    "as more and",
+    "came out of",
+    "color, throwback",
+    "culture. By",
+    "designers are",
+    "drawn to extreme",
+    "fashion’s most",
+    "for—big brands",
+    "home is a",
+    "is taking place",
+    "its next chapter",
+    "magical mash-",
+    "meets the young",
+    "more visionary",
+    "no introduction, but lately they’ve become totally",
+    "nothing compares",
+    "nowhere to lead",
+    "obsessed.",
+    "of popular",
+    "roles—but",
+    "row? Fashion",
+    "runway? The",
+    "storied houses.",
+    "to his work in <style id='1'>The Brutalist.</style>By Wendell",
+    "uncanny visions",
+    "up of riotous",
+    "working with—and"
+  ],
+  "introduced": [
+    "<style id='1'>Everywhere You Look </style>A paradigm shift is taking place as more and more visionary designers are working with—and for—big brands",
+    "<style id='1'>Man on Wire </style>Adrien Brody is drawn to extreme roles—but",
+    "<style id='1'>McGirr’s McQueen </style>Seán McGirr came out of nowhere to lead",
+    "McQueen, one of fashion’s most storied houses. Hayley Maitland meets the young Irishman writing its next chapter",
+    "The stadium as runway? The arena as front row? Fashion and sport needed no introduction, but lately they’ve become totally obsessed. By Maya Singer",
+    "Through the Looking Glass <style id='1'>Sam McKinniss’s</style>",
+    "When Sports Met Fashion... <style id='1'>Athletes as</style>",
+    "and the artist’s uncanny visions of popular culture. By Chloe Schama",
+    "home is a magical mash- up of riotous color, throwback",
+    "nothing compares to his work in <style id='1'>The Brutalist.</style>By Wendell Steavenson"
+  ],
+  "answers_changed": [
+    {
+      "input": "Go Time!",
+      "baseline": [
+        "行动时刻！"
+      ],
+      "run": [
+        "行动时间！"
+      ]
+    },
+    {
+      "input": "muses?",
+      "baseline": [
+        "灵感缪斯？"
+      ],
+      "run": [
+        "缪斯？"
+      ]
+    },
+    {
+      "input": "Connecticut",
+      "baseline": [
+        "康涅狄格"
+      ],
+      "run": [
+        "康涅狄格州"
+      ]
+    },
+    {
+      "input": "Americana,",
+      "baseline": [
+        "美国风情，"
+      ],
+      "run": [
+        "美国风，"
+      ]
+    },
+    {
+      "input": "winter are the",
+      "baseline": [
+        "冬天是"
+      ],
+      "run": [
+        "冬季是"
+      ]
+    },
+    {
+      "input": "to lean into",
+      "baseline": [
+        "倾注于"
+      ],
+      "run": [
+        "去深入"
+      ]
+    },
+    {
+      "input": "<style id='1'>22 </style>W I N T E R 2 0 2 5 VO G U E .C O M",
+      "baseline": [
+        "<style id='1'>22 </style>冬季2025 VOGUE.COM"
+      ],
+      "run": [
+        "<style id='1'>22 </style>冬季 2025 VOGUE.COM"
+      ]
+    },
+    {
+      "input": "<style id='1'>104The Get </style>The dog days of",
+      "baseline": [
+        "<style id='1'>104获取</style>三伏天"
+      ],
+      "run": [
+        "<style id='1'>104The Get </style>炎热的夏日"
+      ]
+    },
+    {
+      "input": "WNBA star Angel Reese of the Chicago Sky (above feft in a Versace dress) and American Olympic champion sprinter Gabby Thomas (above right in a Sportmax top) have skills, speed, and singular style. Photographed by<style id='1'> Norman Jean Roy, </style>who<style id='3'> </style>worked with fashion editors<style id='5'> Julia Sarr-Jamois </style>for the Angel Reese shoot and <style id='7'>Yohana Lebasi</style> for the Gabby Thomas shoot. Details, see In This Issue.",
+      "baseline": [
+        "WNBA明星芝加哥天空队的Angel Reese（上左，身穿范思哲连衣裙）和美国奥运冠军短跑运动员Gabby Thomas（上右，身穿Sportmax上衣）拥有技巧、速度和独特风格。由Norman Jean Roy拍摄，他与时尚编辑Julia Sarr-Jamois合作拍摄了Angel Reese，并与Yohana Lebasi合作拍摄了Gabby Thomas。详情请见本期内容。"
+      ],
+      "run": [
+        "芝加哥天空队（Chicago Sky）的WNBA明星Angel Reese（上左，身穿范思哲连衣裙）和美国奥运冠军短跑运动员Gabby Thomas（上右，身穿Sportmax上衣）拥有技巧、速度和独特风格。由Norman Jean Roy拍摄，他与时尚编辑Julia Sarr-Jamois合作拍摄了Angel Reese，而与Yohana Lebasi合作拍摄了Gabby Thomas。详情请参见本期内容。"
+      ]
+    }
+  ]
+}

@@ -59,6 +59,11 @@
       "switch": "magazine_drop_cap_apply"
     },
     {
+      "name": "fragment_stitch.report.json",
+      "stage": "page_classifier",
+      "switch": "magazine_fragment_stitch"
+    },
+    {
       "name": "line_split.report.json",
       "stage": "page_classifier",
       "switch": "magazine_line_structure"

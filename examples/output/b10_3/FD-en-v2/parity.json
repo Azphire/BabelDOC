@@ -1,0 +1,26 @@
+{
+  "sample": "FD-en-v2",
+  "baseline": "examples\\output\\F2\\FD-en-v2\\work\\FD-en-v2\\translate_tracking.json",
+  "groups_read": [
+    "page",
+    "cross_page",
+    "cross_column"
+  ],
+  "groups_present": [
+    "cross_column",
+    "cross_page",
+    "page"
+  ],
+  "requests": 161,
+  "baseline_requests": 161,
+  "inputs_sha256": "c054309e89ab9d90a0fc614c5030ad592a45019fe9ae9eed7de1b6fa4429abc7",
+  "baseline_inputs_sha256": "a4a972fe30ce07e2452c7e0eaff9adcfee7fce8d8508d3d2b6f6fc09abfc04d5",
+  "unchanged_requests": 160,
+  "withdrawn": [
+    "<style id='1'>June </style>{v3}<style id='4'>Volume </style>{v6}<style id='7'>Number 2</style>"
+  ],
+  "introduced": [
+    "June {v1}Volume {v2}Number 2"
+  ],
+  "answers_changed": []
+}

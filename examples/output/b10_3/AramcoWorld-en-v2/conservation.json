@@ -1,0 +1,39 @@
+{
+  "sample": "AramcoWorld-en-v2",
+  "baseline": "examples\\output\\F2\\AramcoWorld-en-v2\\work\\AramcoWorld-en-v2\\checkpoint.11_typesetting.json",
+  "baseline_pages": 9,
+  "pages": 9,
+  "target_pages": {
+    "3": {
+      "baseline_paragraphs": 21,
+      "paragraphs": 21,
+      "differing": [
+        {
+          "reference": "p3#0",
+          "baseline": "<style id='1'>阿特拉斯上的班卓琴 </style><style id='3'>撰文 </style>Banning Eyre 一种拥有西非祖先并与美国音乐交织的乐器，如何出现在北非乐团的阵容中？两个平行的故事揭示了答案。<style id='5'>8</style>",
+          "run": "<style id='1'>阿特拉斯上的班卓琴 </style><style id='3'>作者 </style>Banning Eyre 一种具有西非祖先、与美国音乐交织的乐器，如何出现在北非乐团的阵容中？两个平行的故事揭示了答案。<style id='5'>8</style>"
+        },
+        {
+          "reference": "p3#6",
+          "baseline": "<style id='1'>撰文 </style>Aibarshyn Akhmetkali，<style id='3'>摄影 </style>Daniil Usmanov 地震、天气、旅游和时间威胁着一些世界上最著名的伊斯兰建筑，修复者们确保这些古迹背后的知识与建筑本身一同存续。",
+          "run": "<style id='1'>作者 </style>Aibarshyn Akhmetkali，<style id='3'>摄影 </style>Daniil Usmanov 地震、天气、旅游和时间威胁着一些世界上最著名的伊斯兰建筑，修复者们确保这些古迹背后的知识与建筑本身一同存续。"
+        },
+        {
+          "reference": "p3#9",
+          "baseline": "<style id='1'>撰文和摄影：</style>Leon McCarron",
+          "run": "<style id='1'>撰文和摄影： </style>Leon McCarron"
+        },
+        {
+          "reference": "p3#13",
+          "baseline": "<style id='1'>R</style> 撒马尔罕列吉斯坦建筑群中Tilya-Kori神学院的复杂内部细节，包括其镀金的",
+          "run": "<style id='1'>R</style> 撒马尔罕雷吉斯坦建筑群中的Tilya-Kori神学院，其复杂的内部细节包括镀金的"
+        },
+        {
+          "reference": "p3#15",
+          "baseline": "墙壁图案。保护工作者不懈努力，修复和维护这些有着数百年历史的伊斯兰建筑实例。",
+          "run": "墙壁图案。保护工作者不懈努力，修复和维护这些拥有数百年历史的伊斯兰建筑实例。"
+        }
+      ]
+    }
+  }
+}

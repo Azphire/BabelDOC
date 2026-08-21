@@ -1,0 +1,13 @@
+{
+  "sample": "Vogue-en",
+  "baseline": "examples\\output\\F2\\Vogue-en\\work\\Vogue-en\\checkpoint.11_typesetting.json",
+  "baseline_pages": 3,
+  "pages": 3,
+  "target_pages": {
+    "3": {
+      "baseline_paragraphs": 93,
+      "paragraphs": 61,
+      "differing": []
+    }
+  }
+}

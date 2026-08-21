@@ -1,0 +1,370 @@
+{
+  "counts": {
+    "by_kind": {
+      "fragment_cluster": 4,
+      "untranslated_residue": 5
+    },
+    "issues": 9
+  },
+  "detector_records": {
+    "text_text_collision": [
+      {
+        "candidate_route": "coverage",
+        "coverage": 0.7178,
+        "exempt_route": "source_iou_and_source_coverage",
+        "iou": 0.0269,
+        "page": 3,
+        "paragraphs": [
+          "p3#29",
+          "p3#32"
+        ],
+        "source_coverage": 0.457,
+        "source_iou": 0.0831,
+        "verdict": "the_source_layout_already_overlapped"
+      },
+      {
+        "candidate_route": "coverage",
+        "coverage": 0.7211,
+        "exempt_route": "source_coverage",
+        "iou": 0.01,
+        "page": 3,
+        "paragraphs": [
+          "p3#30",
+          "p3#32"
+        ],
+        "source_coverage": 1.0,
+        "source_iou": 0.0109,
+        "verdict": "the_source_layout_already_overlapped"
+      },
+      {
+        "candidate_route": "coverage",
+        "coverage": 0.7211,
+        "exempt_route": "source_coverage",
+        "iou": 0.0171,
+        "page": 3,
+        "paragraphs": [
+          "p3#31",
+          "p3#32"
+        ],
+        "source_coverage": 1.0,
+        "source_iou": 0.0188,
+        "verdict": "the_source_layout_already_overlapped"
+      }
+    ]
+  },
+  "document_detectors": [
+    "escalation_surfacing"
+  ],
+  "issues": [
+    {
+      "detected_at_iteration": 0,
+      "detector": "fragment_cluster",
+      "evidence": {
+        "debug_ids": [
+          "xeMGY#L0",
+          "xeMGY#L1",
+          "xeMGY#L2"
+        ],
+        "excerpt": "32步伐一致 Margaux Anbouba / 在复古的新 / 前沿：鞋子",
+        "layout_labels": [
+          "plain text"
+        ],
+        "max_chars": 40,
+        "member_count": 3,
+        "min_cluster": 3
+      },
+      "geometry": {
+        "x": 56.16189999999994,
+        "x2": 120.75128879999994,
+        "y": 215.88422,
+        "y2": 258.29226
+      },
+      "id": "fragment_cluster:p3:p3#5+p3#6+p3#7",
+      "kind": "fragment_cluster",
+      "page": 3,
+      "paragraph_refs": [
+        "p3#5",
+        "p3#6",
+        "p3#7"
+      ],
+      "severity": "low"
+    },
+    {
+      "detected_at_iteration": 0,
+      "detector": "fragment_cluster",
+      "evidence": {
+        "debug_ids": [
+          "eV7xC#L0",
+          "eV7xC#L1",
+          "eV7xC#L2",
+          "jFYJY#L0",
+          "jFYJY#L1"
+        ],
+        "excerpt": "测试场 Sanaz Toossi带来 / 她的戏剧 英语 / 到百老汇 / 48从A到Zac Zac Posen的到来 / 在Gap是一件",
+        "layout_labels": [
+          "plain text"
+        ],
+        "max_chars": 40,
+        "member_count": 5,
+        "min_cluster": 3
+      },
+      "geometry": {
+        "x": 56.17589999999994,
+        "x2": 125.66091279999993,
+        "y": 54.379589999999986,
+        "y2": 133.00356999999997
+      },
+      "id": "fragment_cluster:p3:p3#19+p3#20+p3#21+p3#22+p3#23",
+      "kind": "fragment_cluster",
+      "page": 3,
+      "paragraph_refs": [
+        "p3#19",
+        "p3#20",
+        "p3#21",
+        "p3#22",
+        "p3#23"
+      ],
+      "severity": "low"
+    },
+    {
+      "detected_at_iteration": 0,
+      "detector": "fragment_cluster",
+      "evidence": {
+        "debug_ids": [
+          "vkQty#L2",
+          "vkQty#L3",
+          "vkQty#L4",
+          "vkQty#L5"
+        ],
+        "excerpt": "康涅狄格州 / 家是一个神奇的混合体，充满了喧闹的色彩，复古风格 / 美国风， / 以及艺术家对流行文化的神奇幻想。作者：Chloe Schama",
+        "layout_labels": [
+          "plain text"
+        ],
+        "max_chars": 40,
+        "member_count": 4,
+        "min_cluster": 3
+      },
+      "geometry": {
+        "x": 299.8499306199999,
+        "x2": 360.1820090199999,
+        "y": 181.91504000000003,
+        "y2": 274.5319400000001
+      },
+      "id": "fragment_cluster:p3:p3#43+p3#44+p3#45+p3#46",
+      "kind": "fragment_cluster",
+      "page": 3,
+      "paragraph_refs": [
+        "p3#43",
+        "p3#44",
+        "p3#45",
+        "p3#46"
+      ],
+      "severity": "low"
+    },
+    {
+      "detected_at_iteration": 0,
+      "detector": "fragment_cluster",
+      "evidence": {
+        "debug_ids": [
+          "Bmekq#L0",
+          "Bmekq#L1",
+          "Bmekq#L2",
+          "Bmekq#L3"
+        ],
+        "excerpt": "104The Get 炎热的夏日 / 冬季是 / 完美时刻 / 去深入",
+        "layout_labels": [
+          "plain text"
+        ],
+        "max_chars": 40,
+        "member_count": 4,
+        "min_cluster": 3
+      },
+      "geometry": {
+        "x": 375.6829306199999,
+        "x2": 433.34353702,
+        "y": 258.3817800000001,
+        "y2": 309.2800500000001
+      },
+      "id": "fragment_cluster:p3:p3#51+p3#52+p3#53+p3#54",
+      "kind": "fragment_cluster",
+      "page": 3,
+      "paragraph_refs": [
+        "p3#51",
+        "p3#52",
+        "p3#53",
+        "p3#54"
+      ],
+      "severity": "low"
+    },
+    {
+      "detected_at_iteration": 0,
+      "detector": "untranslated_residue",
+      "evidence": {
+        "debug_id": "e6sqa",
+        "excerpt": "FENDI BOUTIQUES  888291 0163FENDI.COM",
+        "layout_label": "abandon",
+        "min_ratio": 0.6,
+        "residue_chars": 22,
+        "residue_ratio": 1.0,
+        "residue_script": "latin",
+        "script_chars": 22
+      },
+      "geometry": {
+        "x": 19.8734586,
+        "x2": 28.8289986,
+        "y": 581.073,
+        "y2": 754.385985220834
+      },
+      "id": "untranslated_residue:p1:p1#0",
+      "kind": "untranslated_residue",
+      "page": 1,
+      "paragraph_refs": [
+        "p1#0"
+      ],
+      "severity": "high"
+    },
+    {
+      "detected_at_iteration": 0,
+      "detector": "untranslated_residue",
+      "evidence": {
+        "debug_id": "xeMGY#L0",
+        "excerpt": "32步伐一致 Margaux Anbouba",
+        "layout_label": "plain text",
+        "min_ratio": 0.6,
+        "residue_chars": 14,
+        "residue_ratio": 0.7778,
+        "residue_script": "latin",
+        "script_chars": 18
+      },
+      "geometry": {
+        "x": 56.16189999999994,
+        "x2": 120.75128879999994,
+        "y": 232.88031,
+        "y2": 258.29226
+      },
+      "id": "untranslated_residue:p3:p3#5",
+      "kind": "untranslated_residue",
+      "page": 3,
+      "paragraph_refs": [
+        "p3#5"
+      ],
+      "severity": "high"
+    },
+    {
+      "detected_at_iteration": 0,
+      "detector": "untranslated_residue",
+      "evidence": {
+        "debug_id": "jFYJY#L0",
+        "excerpt": "48从A到Zac Zac Posen的到来",
+        "layout_label": "plain text",
+        "min_ratio": 0.6,
+        "residue_chars": 12,
+        "residue_ratio": 0.7059,
+        "residue_script": "latin",
+        "script_chars": 17
+      },
+      "geometry": {
+        "x": 56.21589999999994,
+        "x2": 121.65318191999994,
+        "y": 62.87958999999998,
+        "y2": 88.31267999999999
+      },
+      "id": "untranslated_residue:p3:p3#22",
+      "kind": "untranslated_residue",
+      "page": 3,
+      "paragraph_refs": [
+        "p3#22"
+      ],
+      "severity": "high"
+    },
+    {
+      "detected_at_iteration": 0,
+      "detector": "untranslated_residue",
+      "evidence": {
+        "debug_id": "t8Cgy#L1",
+        "excerpt": "没有什么能与他在The Brutalist中的作品相比。作者：Wendell Steavenson",
+        "layout_label": "plain text",
+        "min_ratio": 0.6,
+        "residue_chars": 29,
+        "residue_ratio": 0.6444,
+        "residue_script": "latin",
+        "script_chars": 45
+      },
+      "geometry": {
+        "x": 220.91384061999992,
+        "x2": 284.386147284,
+        "y": 55.912410000000015,
+        "y2": 96.38438000000001
+      },
+      "id": "untranslated_residue:p3:p3#40",
+      "kind": "untranslated_residue",
+      "page": 3,
+      "paragraph_refs": [
+        "p3#40"
+      ],
+      "severity": "high"
+    },
+    {
+      "detected_at_iteration": 0,
+      "detector": "untranslated_residue",
+      "evidence": {
+        "debug_id": "xjGFQ",
+        "excerpt": "FASHION EDITOR: JULIA SARR-JAMOIS. HAIR SUSIE SOBOL.   PRODUCED BY BOOM PRODUCTI",
+        "layout_label": "abandon",
+        "min_ratio": 0.6,
+        "residue_chars": 125,
+        "residue_ratio": 1.0,
+        "residue_script": "latin",
+        "script_chars": 125
+      },
+      "geometry": {
+        "x": 548.099,
+        "x2": 558.91272,
+        "y": 56.0,
+        "y2": 299.7408129499996
+      },
+      "id": "untranslated_residue:p3:p3#60",
+      "kind": "untranslated_residue",
+      "page": 3,
+      "paragraph_refs": [
+        "p3#60"
+      ],
+      "severity": "high"
+    }
+  ],
+  "iteration": 0,
+  "language": "zh",
+  "notes": [
+    "text_text_collision: 3 overlapping pair(s) not raised: the_source_layout_already_overlapped"
+  ],
+  "pages_by_detector": {
+    "fragment_cluster": [
+      3
+    ],
+    "out_of_page": [
+      1,
+      2,
+      3
+    ],
+    "text_figure_overlap": [
+      1,
+      2
+    ],
+    "text_text_collision": [
+      1,
+      2,
+      3
+    ],
+    "untranslated_residue": [
+      1,
+      2,
+      3
+    ]
+  },
+  "source_geometry": {
+    "checkpoint": "checkpoint.06_styles_and_formulas.xml",
+    "paragraphs": 39,
+    "stage": "styles_and_formulas"
+  },
+  "translation_performed": true
+}
