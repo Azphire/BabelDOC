@@ -1,0 +1,196 @@
+{
+  "after": {
+    "box_x2": 360.2202,
+    "ref": "p3#25",
+    "rightmost_ink_x": 353.11,
+    "scale": 0.8999999999999999,
+    "spans": [
+      {
+        "bbox": [
+          213.79,
+          436.03,
+          223.51,
+          465.45
+        ],
+        "font": "Noto Serif Regular",
+        "size": 21.6,
+        "text": "“"
+      },
+      {
+        "bbox": [
+          223.51,
+          434.28,
+          353.11,
+          465.3
+        ],
+        "font": "Source Han Serif CN Regu",
+        "size": 21.6,
+        "text": "地缘政治的回"
+      },
+      {
+        "bbox": [
+          213.79,
+          466.68,
+          343.39,
+          497.7
+        ],
+        "font": "Source Han Serif CN Regu",
+        "size": 21.6,
+        "text": "归并不排除合"
+      },
+      {
+        "bbox": [
+          213.79,
+          499.08,
+          343.39,
+          530.1
+        ],
+        "font": "Source Han Serif CN Regu",
+        "size": 21.6,
+        "text": "作的可能性。"
+      },
+      {
+        "bbox": [
+          343.39,
+          500.83,
+          353.11,
+          530.25
+        ],
+        "font": "Noto Serif Regular",
+        "size": 21.6,
+        "text": "”"
+      }
+    ]
+  },
+  "baseline_pdf": "examples\\output\\F3\\cold\\FD-en-v2\\FD-en-v2.f3.pdf",
+  "before": {
+    "box_x2": 360.2202,
+    "column_rule_x": 378.5,
+    "column_rules": [
+      {
+        "x": 38.5,
+        "y": [
+          36.0,
+          732.0
+        ]
+      },
+      {
+        "x": 38.55,
+        "y": [
+          24.5,
+          720.5
+        ]
+      },
+      {
+        "x": 208.5,
+        "y": [
+          36.0,
+          732.0
+        ]
+      },
+      {
+        "x": 378.5,
+        "y": [
+          24.5,
+          720.5
+        ]
+      }
+    ],
+    "em": 22.8,
+    "font_size": 24.0,
+    "overflow_by_span": [
+      {
+        "crosses_rule": false,
+        "overflow": -136.18,
+        "text": "“",
+        "x1": 224.04
+      },
+      {
+        "crosses_rule": false,
+        "overflow": -22.18,
+        "text": "地缘政治的",
+        "x1": 338.04
+      },
+      {
+        "crosses_rule": false,
+        "overflow": -9.64,
+        "text": "回归并不排除",
+        "x1": 350.58
+      },
+      {
+        "crosses_rule": false,
+        "overflow": 13.16,
+        "text": "合作的可能性。",
+        "x1": 373.38
+      },
+      {
+        "crosses_rule": true,
+        "overflow": 23.43,
+        "text": "”",
+        "x1": 383.65
+      }
+    ],
+    "ref": "p3#25",
+    "rightmost_ink_x": 383.65,
+    "scale": 0.95,
+    "spans": [
+      {
+        "bbox": [
+          213.79,
+          435.95,
+          224.04,
+          467.0
+        ],
+        "font": "Noto Serif Regular",
+        "size": 22.8,
+        "text": "“"
+      },
+      {
+        "bbox": [
+          224.04,
+          434.1,
+          338.04,
+          466.84
+        ],
+        "font": "Source Han Serif CN Regu",
+        "size": 22.8,
+        "text": "地缘政治的"
+      },
+      {
+        "bbox": [
+          213.79,
+          468.3,
+          350.58,
+          501.04
+        ],
+        "font": "Source Han Serif CN Regu",
+        "size": 22.8,
+        "text": "回归并不排除"
+      },
+      {
+        "bbox": [
+          213.79,
+          502.5,
+          373.38,
+          535.24
+        ],
+        "font": "Source Han Serif CN Regu",
+        "size": 22.8,
+        "text": "合作的可能性。"
+      },
+      {
+        "bbox": [
+          373.39,
+          504.35,
+          383.65,
+          535.4
+        ],
+        "font": "Noto Serif Regular",
+        "size": 22.8,
+        "text": "”"
+      }
+    ]
+  },
+  "checkpoint": "checkpoint.11_typesetting.json",
+  "run_pdf": "examples\\output\\b11_1\\FD-en-v2\\FD-en-v2.b11_1.pdf"
+}

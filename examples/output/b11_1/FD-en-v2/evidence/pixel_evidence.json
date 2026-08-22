@@ -1,0 +1,320 @@
+{
+  "baseline_head_band": {
+    "5": [
+      {
+        "bbox": [
+          89.7,
+          27.86,
+          109.7,
+          42.22
+        ],
+        "font": "Source Han Serif CN Regu",
+        "size": 10.0,
+        "text": "报头"
+      },
+      {
+        "bbox": [
+          406.15,
+          51.87,
+          443.65,
+          62.64
+        ],
+        "font": "Source Han Serif CN Bold",
+        "size": 7.5,
+        "text": "金融与发展"
+      },
+      {
+        "bbox": [
+          36.96,
+          27.12,
+          48.05,
+          37.75
+        ],
+        "font": "Noto Serif Bold",
+        "size": 7.8,
+        "text": "F&"
+      },
+      {
+        "bbox": [
+          36.96,
+          38.82,
+          42.94,
+          49.45
+        ],
+        "font": "Noto Serif Bold",
+        "size": 7.8,
+        "text": "D"
+      }
+    ],
+    "6": [
+      {
+        "bbox": [
+          36.96,
+          27.12,
+          48.05,
+          37.75
+        ],
+        "font": "Noto Serif Bold",
+        "size": 7.8,
+        "text": "F&"
+      },
+      {
+        "bbox": [
+          36.96,
+          38.82,
+          42.94,
+          49.45
+        ],
+        "font": "Noto Serif Bold",
+        "size": 7.8,
+        "text": "D"
+      },
+      {
+        "bbox": [
+          39.88,
+          46.75,
+          183.88,
+          115.68
+        ],
+        "font": "Source Han Serif CN Regu",
+        "size": 48.0,
+        "text": "万花筒"
+      }
+    ],
+    "8": [
+      {
+        "bbox": [
+          36.96,
+          27.12,
+          48.05,
+          37.75
+        ],
+        "font": "Noto Serif Bold",
+        "size": 7.8,
+        "text": "F&"
+      },
+      {
+        "bbox": [
+          36.96,
+          38.82,
+          42.94,
+          49.45
+        ],
+        "font": "Noto Serif Bold",
+        "size": 7.8,
+        "text": "D"
+      },
+      {
+        "bbox": [
+          37.78,
+          51.06,
+          81.78,
+          82.65
+        ],
+        "font": "Source Han Serif CN Regu",
+        "size": 22.0,
+        "text": "观点"
+      }
+    ]
+  },
+  "baseline_name_annotations": {
+    "broad_pattern": [
+      {
+        "context": "利普斯基 (Josh Lipsky)30代价地缘经济胁迫各使的权杰国用目衡弗政关",
+        "page": 3
+      },
+      {
+        "context": "尼古拉斯·穆尔德 (Nicholas Mulder)34金国6融际月与货 发币2",
+        "page": 3
+      },
+      {
+        "context": "露西·莫拉莱斯 (Lucy Morales)A2communiquéRT DIR",
+        "page": 5
+      },
+      {
+        "context": "阿基布·阿斯拉姆詹姆斯·阿斯蒂尔 (James Astill)赫尔格·贝格尔扬·",
+        "page": 5
+      },
+      {
+        "context": "请通过在线表格（imf.org/external/terms.htm）或发送电子",
+        "page": 5
+      },
+      {
+        "context": "商业用途的许可也可通过版权许可中心（copyright.com）以象征性费用获得",
+        "page": 5
+      },
+      {
+        "context": "格奥尔基耶娃（Georgieva）表示，冲突已经削减了全球石油和天然气的流动，推",
+        "page": 6
+      },
+      {
+        "context": "艾莉森·罗伯特（Allison Robbert）。这些成本正在加剧贫困和粮食不安",
+        "page": 6
+      },
+      {
+        "context": "尚塔尔·贾赫昌 (Chantal Jahchan)COURTESY KIM RU",
+        "page": 8
+      },
+      {
+        "context": "·鲁尔 (Kim Ruhl)美国政策制定者在地缘政治风险上升的背景下，正在重新平",
+        "page": 8
+      },
+      {
+        "context": "总统唐纳德·特朗普（Donald Trump）的政府正在努力降低供应链的风险，并",
+        "page": 8
+      },
+      {
+        "context": "亚诺 (Andreas Adriano)法郎民主除了阿尔卑斯山，原始湖泊和以安静",
+        "page": 9
+      }
+    ],
+    "name_shaped": [
+      {
+        "match": "利普斯基 (Josh Lipsky)",
+        "page": 3
+      },
+      {
+        "match": "尼古拉斯·穆尔德 (Nicholas Mulder)",
+        "page": 3
+      },
+      {
+        "match": "露西·莫拉莱斯 (Lucy Morales)",
+        "page": 5
+      },
+      {
+        "match": "阿基布·阿斯拉姆詹姆斯·阿斯蒂尔 (James Astill)",
+        "page": 5
+      },
+      {
+        "match": "格奥尔基耶娃（Georgieva）",
+        "page": 6
+      },
+      {
+        "match": "艾莉森·罗伯特（Allison Robbert）",
+        "page": 6
+      },
+      {
+        "match": "尚塔尔·贾赫昌 (Chantal Jahchan)",
+        "page": 8
+      },
+      {
+        "match": "·鲁尔 (Kim Ruhl)",
+        "page": 8
+      },
+      {
+        "match": "总统唐纳德·特朗普（Donald Trump）",
+        "page": 8
+      },
+      {
+        "match": "亚诺 (Andreas Adriano)",
+        "page": 9
+      }
+    ]
+  },
+  "baseline_pdf": "examples\\output\\F3\\cold\\FD-en-v2\\FD-en-v2.f3.pdf",
+  "head_band_points": 60.0,
+  "head_pages": [
+    5,
+    6,
+    8
+  ],
+  "run_head_band": {
+    "5": [
+      {
+        "bbox": [
+          88.86,
+          26.64,
+          136.06,
+          38.34
+        ],
+        "font": "GTFlexa-Medium",
+        "size": 10.0,
+        "text": "Masthead"
+      },
+      {
+        "bbox": [
+          406.15,
+          51.87,
+          443.65,
+          62.64
+        ],
+        "font": "Source Han Serif CN Bold",
+        "size": 7.5,
+        "text": "金融与发展"
+      },
+      {
+        "bbox": [
+          36.07,
+          24.55,
+          57.31,
+          38.76
+        ],
+        "font": "GTFlexa-Bold",
+        "size": 12.0,
+        "text": "F&D"
+      }
+    ],
+    "6": [
+      {
+        "bbox": [
+          36.07,
+          24.55,
+          57.31,
+          38.76
+        ],
+        "font": "GTFlexa-Bold",
+        "size": 12.0,
+        "text": "F&D"
+      },
+      {
+        "bbox": [
+          39.88,
+          46.75,
+          183.88,
+          115.68
+        ],
+        "font": "Source Han Serif CN Regu",
+        "size": 48.0,
+        "text": "万花筒"
+      }
+    ],
+    "8": [
+      {
+        "bbox": [
+          36.07,
+          24.55,
+          57.31,
+          38.76
+        ],
+        "font": "GTFlexa-Bold",
+        "size": 12.0,
+        "text": "F&D"
+      },
+      {
+        "bbox": [
+          37.78,
+          51.06,
+          81.78,
+          82.65
+        ],
+        "font": "Source Han Serif CN Regu",
+        "size": 22.0,
+        "text": "观点"
+      }
+    ]
+  },
+  "run_name_annotations": {
+    "broad_pattern": [
+      {
+        "context": "请通过在线表格（imf.org/external/terms.htm）或发送电子",
+        "page": 5
+      },
+      {
+        "context": "商业用途的许可也可通过版权许可中心（copyright.com）以象征性费用获得",
+        "page": 5
+      }
+    ],
+    "name_shaped": []
+  },
+  "run_pdf": "examples\\output\\b11_1\\FD-en-v2\\FD-en-v2.b11_1.pdf"
+}

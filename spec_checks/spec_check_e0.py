@@ -168,6 +168,10 @@ NESTED_SUPPRESSED = os.environ.get("SPEC_NO_NESTED") == "1"
 # Batch b10.5 follows on the same terms again: its evidence is the pair of runs
 # its own batch froze under examples/output/b10_5, every other assertion it makes
 # is against a stub it builds itself, and it reads no document under docs/eval.
+# Batch b11.1 follows on the same terms once more: its evidence is the single
+# sample run its own batch froze under examples/output/b11_1 and the f3 run it
+# compares that against, every other assertion it makes is against a stub it
+# builds itself, and it reads no document under docs/eval.
 AFTER_THIS_GATE = (
     "spec_check_b9_2r.py",
     "spec_check_b9_3.py",
@@ -180,6 +184,7 @@ AFTER_THIS_GATE = (
     "spec_check_b10_3.py",
     "spec_check_b10_4.py",
     "spec_check_b10_5.py",
+    "spec_check_b11_1.py",
 )
 
 # Paths this batch may change. Nothing under babeldoc/, nothing under configs/,

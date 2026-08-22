@@ -1,0 +1,299 @@
+{
+  "baseline": "examples\\output\\b11_1\\FD-en-v2.probe",
+  "isolation": "examples\\output\\b11_1\\FD-en-v2.t12",
+  "paragraphs": [
+    {
+      "arm": "run",
+      "baseline_composition_rebuilt": true,
+      "baseline_written": "F&D",
+      "composition_sha256_after": "d91c778b4c91dc027e16d292b4068556b0ef0c7b7b87109fc3c6d81d97f190e4",
+      "composition_sha256_before": "d91c778b4c91dc027e16d292b4068556b0ef0c7b7b87109fc3c6d81d97f190e4",
+      "ref": "p3#0",
+      "source": "F&D",
+      "text_differs_from_baseline": false
+    },
+    {
+      "arm": "run",
+      "baseline_composition_rebuilt": true,
+      "baseline_written": "报头",
+      "composition_sha256_after": "3756432fb33f83f41918540fc0c8a27239bc7c2661ec5808184a2175ca787b5c",
+      "composition_sha256_before": "3756432fb33f83f41918540fc0c8a27239bc7c2661ec5808184a2175ca787b5c",
+      "ref": "p5#0",
+      "source": "Masthead",
+      "text_differs_from_baseline": true
+    },
+    {
+      "arm": "run",
+      "baseline_composition_rebuilt": true,
+      "baseline_written": "F&D",
+      "composition_sha256_after": "ac9c6f63b45edb82deeee681b335cb018acc103053619c8a2b64e2a877f2b95e",
+      "composition_sha256_before": "ac9c6f63b45edb82deeee681b335cb018acc103053619c8a2b64e2a877f2b95e",
+      "ref": "p5#3",
+      "source": "F&D",
+      "text_differs_from_baseline": false
+    },
+    {
+      "arm": "run",
+      "baseline_composition_rebuilt": true,
+      "baseline_written": "Huong (Vanessa) Le",
+      "composition_sha256_after": "052836313c2fe4492f753a7fbd4881a3154ecc2391d5892aac681a0b14f5410b",
+      "composition_sha256_before": "052836313c2fe4492f753a7fbd4881a3154ecc2391d5892aac681a0b14f5410b",
+      "ref": "p5#17",
+      "source": "Huong (Vanessa) Le",
+      "text_differs_from_baseline": false
+    },
+    {
+      "arm": "run",
+      "baseline_composition_rebuilt": true,
+      "baseline_written": "2communiqué",
+      "composition_sha256_after": "86a897f88d4b495d304d160d0743478ea30be9c1eaeeab98653109ede63638f9",
+      "composition_sha256_before": "86a897f88d4b495d304d160d0743478ea30be9c1eaeeab98653109ede63638f9",
+      "ref": "p5#23",
+      "source": "2communiqué",
+      "text_differs_from_baseline": false
+    },
+    {
+      "arm": "run",
+      "baseline_composition_rebuilt": true,
+      "baseline_written": "S M Ali Abbas",
+      "composition_sha256_after": "d12cc5f4b0a068ac104be4b88d2127f1516510f2c03419d94b384b54046a70a0",
+      "composition_sha256_before": "d12cc5f4b0a068ac104be4b88d2127f1516510f2c03419d94b384b54046a70a0",
+      "ref": "p5#25",
+      "source": "S M Ali Abbas",
+      "text_differs_from_baseline": false
+    },
+    {
+      "arm": "run",
+      "baseline_composition_rebuilt": true,
+      "baseline_written": "Léala en español",
+      "composition_sha256_after": "d15da3820eee8237cf4c2e85af38fb54171583ed2261429f8d0699f181c66e09",
+      "composition_sha256_before": "d15da3820eee8237cf4c2e85af38fb54171583ed2261429f8d0699f181c66e09",
+      "ref": "p5#39",
+      "source": "Léala en español",
+      "text_differs_from_baseline": false
+    },
+    {
+      "arm": "run",
+      "baseline_composition_rebuilt": true,
+      "baseline_written": "请阅读中文版！",
+      "composition_sha256_after": "4989fd46f65f859db3ec83f0eb9f833f4624b01abfc61b45d5261efd795c1b9c",
+      "composition_sha256_before": "4989fd46f65f859db3ec83f0eb9f833f4624b01abfc61b45d5261efd795c1b9c",
+      "ref": "p5#42",
+      "source": "请阅读中文版!",
+      "text_differs_from_baseline": true
+    },
+    {
+      "arm": "run",
+      "baseline_composition_rebuilt": true,
+      "baseline_written": "www.imf.org/fandd",
+      "composition_sha256_after": "aaea5eb85b7b3b68379ab68d6c4faf9f57813e221c31134f7e98b1675d241533",
+      "composition_sha256_before": "aaea5eb85b7b3b68379ab68d6c4faf9f57813e221c31134f7e98b1675d241533",
+      "ref": "p5#44",
+      "source": "www.imf.org/fandd",
+      "text_differs_from_baseline": false
+    },
+    {
+      "arm": "run",
+      "baseline_composition_rebuilt": true,
+      "baseline_written": "ةغللاب أرقا",
+      "composition_sha256_after": "27ec47750c9b5073d57901c4f13ad82466c267ac1c5d1883036a6a195643edeb",
+      "composition_sha256_before": "27ec47750c9b5073d57901c4f13ad82466c267ac1c5d1883036a6a195643edeb",
+      "ref": "p5#45",
+      "source": "ةغللاب أرقا",
+      "text_differs_from_baseline": false
+    },
+    {
+      "arm": "run",
+      "baseline_composition_rebuilt": true,
+      "baseline_written": "ةيبرعلا!",
+      "composition_sha256_after": "f57540719ed497c3e698f77b4f422e29d73d501435a0404f5261e00eb33b4507",
+      "composition_sha256_before": "f57540719ed497c3e698f77b4f422e29d73d501435a0404f5261e00eb33b4507",
+      "ref": "p5#46",
+      "source": "ةيبرعلا!",
+      "text_differs_from_baseline": false
+    },
+    {
+      "arm": "run",
+      "baseline_composition_rebuilt": true,
+      "baseline_written": "F&D",
+      "composition_sha256_after": "f5ad77becf5b4686a1fbc1ddaad1605df7690b61c29e9eeea1475223b9689185",
+      "composition_sha256_before": "f5ad77becf5b4686a1fbc1ddaad1605df7690b61c29e9eeea1475223b9689185",
+      "ref": "p6#1",
+      "source": "F&D",
+      "text_differs_from_baseline": false
+    },
+    {
+      "arm": "run",
+      "baseline_composition_rebuilt": true,
+      "baseline_written": "F&D",
+      "composition_sha256_after": "ebd4f530a475ff1c720b363db051c84750df6c633cbfd8e555b3befeec4b3dfa",
+      "composition_sha256_before": "ebd4f530a475ff1c720b363db051c84750df6c633cbfd8e555b3befeec4b3dfa",
+      "ref": "p7#1",
+      "source": "F&D",
+      "text_differs_from_baseline": false
+    },
+    {
+      "arm": "run",
+      "baseline_composition_rebuilt": true,
+      "baseline_written": "F&D",
+      "composition_sha256_after": "72cef8659cb222290861b0f5faaa262e0db3a49ed0269738f7ad00ebb8c1fe09",
+      "composition_sha256_before": "72cef8659cb222290861b0f5faaa262e0db3a49ed0269738f7ad00ebb8c1fe09",
+      "ref": "p8#1",
+      "source": "F&D",
+      "text_differs_from_baseline": false
+    },
+    {
+      "arm": "run",
+      "baseline_composition_rebuilt": true,
+      "baseline_written": "{v1}{v2}{v3}{v4}{v5}1,{v6}{v7}",
+      "composition_sha256_after": "5d3646cb2125a31f177c729f5cc2176dac679fc6c4c8c154d3113b4f0db8243a",
+      "composition_sha256_before": "5d3646cb2125a31f177c729f5cc2176dac679fc6c4c8c154d3113b4f0db8243a",
+      "ref": "p9#19",
+      "source": "A glacier buttercup appears on the front of the draft 1,000 franc note.",
+      "text_differs_from_baseline": true
+    },
+    {
+      "arm": "isolation",
+      "baseline_composition_rebuilt": true,
+      "baseline_written": "F&D",
+      "composition_sha256_after": "d91c778b4c91dc027e16d292b4068556b0ef0c7b7b87109fc3c6d81d97f190e4",
+      "composition_sha256_before": "d91c778b4c91dc027e16d292b4068556b0ef0c7b7b87109fc3c6d81d97f190e4",
+      "ref": "p3#0",
+      "source": "F&D",
+      "text_differs_from_baseline": false
+    },
+    {
+      "arm": "isolation",
+      "baseline_composition_rebuilt": true,
+      "baseline_written": "F&D",
+      "composition_sha256_after": "ac9c6f63b45edb82deeee681b335cb018acc103053619c8a2b64e2a877f2b95e",
+      "composition_sha256_before": "ac9c6f63b45edb82deeee681b335cb018acc103053619c8a2b64e2a877f2b95e",
+      "ref": "p5#3",
+      "source": "F&D",
+      "text_differs_from_baseline": false
+    },
+    {
+      "arm": "isolation",
+      "baseline_composition_rebuilt": true,
+      "baseline_written": "Huong (Vanessa) Le",
+      "composition_sha256_after": "052836313c2fe4492f753a7fbd4881a3154ecc2391d5892aac681a0b14f5410b",
+      "composition_sha256_before": "052836313c2fe4492f753a7fbd4881a3154ecc2391d5892aac681a0b14f5410b",
+      "ref": "p5#17",
+      "source": "Huong (Vanessa) Le",
+      "text_differs_from_baseline": false
+    },
+    {
+      "arm": "isolation",
+      "baseline_composition_rebuilt": true,
+      "baseline_written": "2communiqué",
+      "composition_sha256_after": "86a897f88d4b495d304d160d0743478ea30be9c1eaeeab98653109ede63638f9",
+      "composition_sha256_before": "86a897f88d4b495d304d160d0743478ea30be9c1eaeeab98653109ede63638f9",
+      "ref": "p5#23",
+      "source": "2communiqué",
+      "text_differs_from_baseline": false
+    },
+    {
+      "arm": "isolation",
+      "baseline_composition_rebuilt": true,
+      "baseline_written": "S M Ali Abbas",
+      "composition_sha256_after": "d12cc5f4b0a068ac104be4b88d2127f1516510f2c03419d94b384b54046a70a0",
+      "composition_sha256_before": "d12cc5f4b0a068ac104be4b88d2127f1516510f2c03419d94b384b54046a70a0",
+      "ref": "p5#25",
+      "source": "S M Ali Abbas",
+      "text_differs_from_baseline": false
+    },
+    {
+      "arm": "isolation",
+      "baseline_composition_rebuilt": true,
+      "baseline_written": "Léala en español",
+      "composition_sha256_after": "d15da3820eee8237cf4c2e85af38fb54171583ed2261429f8d0699f181c66e09",
+      "composition_sha256_before": "d15da3820eee8237cf4c2e85af38fb54171583ed2261429f8d0699f181c66e09",
+      "ref": "p5#39",
+      "source": "Léala en español",
+      "text_differs_from_baseline": false
+    },
+    {
+      "arm": "isolation",
+      "baseline_composition_rebuilt": true,
+      "baseline_written": "请阅读中文版！",
+      "composition_sha256_after": "4989fd46f65f859db3ec83f0eb9f833f4624b01abfc61b45d5261efd795c1b9c",
+      "composition_sha256_before": "4989fd46f65f859db3ec83f0eb9f833f4624b01abfc61b45d5261efd795c1b9c",
+      "ref": "p5#42",
+      "source": "请阅读中文版!",
+      "text_differs_from_baseline": true
+    },
+    {
+      "arm": "isolation",
+      "baseline_composition_rebuilt": true,
+      "baseline_written": "www.imf.org/fandd",
+      "composition_sha256_after": "aaea5eb85b7b3b68379ab68d6c4faf9f57813e221c31134f7e98b1675d241533",
+      "composition_sha256_before": "aaea5eb85b7b3b68379ab68d6c4faf9f57813e221c31134f7e98b1675d241533",
+      "ref": "p5#44",
+      "source": "www.imf.org/fandd",
+      "text_differs_from_baseline": false
+    },
+    {
+      "arm": "isolation",
+      "baseline_composition_rebuilt": true,
+      "baseline_written": "ةغللاب أرقا",
+      "composition_sha256_after": "27ec47750c9b5073d57901c4f13ad82466c267ac1c5d1883036a6a195643edeb",
+      "composition_sha256_before": "27ec47750c9b5073d57901c4f13ad82466c267ac1c5d1883036a6a195643edeb",
+      "ref": "p5#45",
+      "source": "ةغللاب أرقا",
+      "text_differs_from_baseline": false
+    },
+    {
+      "arm": "isolation",
+      "baseline_composition_rebuilt": true,
+      "baseline_written": "ةيبرعلا!",
+      "composition_sha256_after": "f57540719ed497c3e698f77b4f422e29d73d501435a0404f5261e00eb33b4507",
+      "composition_sha256_before": "f57540719ed497c3e698f77b4f422e29d73d501435a0404f5261e00eb33b4507",
+      "ref": "p5#46",
+      "source": "ةيبرعلا!",
+      "text_differs_from_baseline": false
+    },
+    {
+      "arm": "isolation",
+      "baseline_composition_rebuilt": true,
+      "baseline_written": "F&D",
+      "composition_sha256_after": "f5ad77becf5b4686a1fbc1ddaad1605df7690b61c29e9eeea1475223b9689185",
+      "composition_sha256_before": "f5ad77becf5b4686a1fbc1ddaad1605df7690b61c29e9eeea1475223b9689185",
+      "ref": "p6#1",
+      "source": "F&D",
+      "text_differs_from_baseline": false
+    },
+    {
+      "arm": "isolation",
+      "baseline_composition_rebuilt": true,
+      "baseline_written": "F&D",
+      "composition_sha256_after": "ebd4f530a475ff1c720b363db051c84750df6c633cbfd8e555b3befeec4b3dfa",
+      "composition_sha256_before": "ebd4f530a475ff1c720b363db051c84750df6c633cbfd8e555b3befeec4b3dfa",
+      "ref": "p7#1",
+      "source": "F&D",
+      "text_differs_from_baseline": false
+    },
+    {
+      "arm": "isolation",
+      "baseline_composition_rebuilt": true,
+      "baseline_written": "F&D",
+      "composition_sha256_after": "72cef8659cb222290861b0f5faaa262e0db3a49ed0269738f7ad00ebb8c1fe09",
+      "composition_sha256_before": "72cef8659cb222290861b0f5faaa262e0db3a49ed0269738f7ad00ebb8c1fe09",
+      "ref": "p8#1",
+      "source": "F&D",
+      "text_differs_from_baseline": false
+    },
+    {
+      "arm": "isolation",
+      "baseline_composition_rebuilt": true,
+      "baseline_written": "{v1}{v2}{v3}{v4}{v5}1,{v6}{v7}",
+      "composition_sha256_after": "5d3646cb2125a31f177c729f5cc2176dac679fc6c4c8c154d3113b4f0db8243a",
+      "composition_sha256_before": "5d3646cb2125a31f177c729f5cc2176dac679fc6c4c8c154d3113b4f0db8243a",
+      "ref": "p9#19",
+      "source": "A glacier buttercup appears on the front of the draft 1,000 franc note.",
+      "text_differs_from_baseline": true
+    }
+  ],
+  "post_checkpoint": "checkpoint.09_il_translated.json",
+  "pre_checkpoint": "checkpoint.08_chain_builder.json",
+  "run": "examples\\output\\b11_1\\FD-en-v2"
+}

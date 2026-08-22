@@ -1,0 +1,373 @@
+{
+  "articles": [
+    {
+      "article_id": "xJEJo",
+      "chains": [],
+      "merged_by_chain": false,
+      "pages": [
+        6
+      ],
+      "paragraphs": [
+        {
+          "debug_id": "Y8S1j",
+          "page": 6
+        },
+        {
+          "debug_id": "KuGCW",
+          "page": 6
+        },
+        {
+          "debug_id": "5aL85",
+          "page": 6
+        },
+        {
+          "debug_id": "NSCRU",
+          "page": 6
+        },
+        {
+          "debug_id": "ZhGBd",
+          "page": 6
+        },
+        {
+          "debug_id": "4fhk4",
+          "page": 6
+        },
+        {
+          "debug_id": "8BYDC",
+          "page": 6
+        },
+        {
+          "debug_id": "CYshE",
+          "page": 6
+        },
+        {
+          "debug_id": "1abhn",
+          "page": 6
+        },
+        {
+          "debug_id": "15tPj",
+          "page": 6
+        },
+        {
+          "debug_id": "w3chJ",
+          "page": 6
+        },
+        {
+          "debug_id": "aVXvV",
+          "page": 6
+        },
+        {
+          "debug_id": "hdCaa",
+          "page": 6
+        },
+        {
+          "debug_id": "Fyk7g",
+          "page": 6
+        },
+        {
+          "debug_id": "Kj3FU",
+          "page": 6
+        }
+      ],
+      "start_page": 6,
+      "title": {
+        "debug_id": "5aL85",
+        "layout_label": "title",
+        "text": "Kaleidoscope"
+      }
+    },
+    {
+      "article_id": "NHQDu",
+      "chains": [],
+      "merged_by_chain": false,
+      "pages": [
+        8
+      ],
+      "paragraphs": [
+        {
+          "debug_id": "dSi15",
+          "page": 8
+        },
+        {
+          "debug_id": "ptu8v",
+          "page": 8
+        },
+        {
+          "debug_id": "geo85",
+          "page": 8
+        },
+        {
+          "debug_id": "iggeD",
+          "page": 8
+        },
+        {
+          "debug_id": "hZhie",
+          "page": 8
+        },
+        {
+          "debug_id": "iVVSU",
+          "page": 8
+        },
+        {
+          "debug_id": "h5j58",
+          "page": 8
+        },
+        {
+          "debug_id": "Uh9sC",
+          "page": 8
+        },
+        {
+          "debug_id": "h4KZ3",
+          "page": 8
+        },
+        {
+          "debug_id": "rxJ6q",
+          "page": 8
+        },
+        {
+          "debug_id": "PwRmP",
+          "page": 8
+        },
+        {
+          "debug_id": "nTRaR",
+          "page": 8
+        },
+        {
+          "debug_id": "4sH3z",
+          "page": 8
+        }
+      ],
+      "start_page": 8,
+      "title": {
+        "debug_id": "geo85",
+        "layout_label": "title",
+        "text": "Point of View"
+      }
+    },
+    {
+      "article_id": "4VGjd",
+      "chains": [],
+      "merged_by_chain": false,
+      "pages": [
+        9
+      ],
+      "paragraphs": [
+        {
+          "debug_id": "oZwmj",
+          "page": 9
+        },
+        {
+          "debug_id": "7vmvW",
+          "page": 9
+        },
+        {
+          "debug_id": "6p1hB",
+          "page": 9
+        },
+        {
+          "debug_id": "dEdpk",
+          "page": 9
+        },
+        {
+          "debug_id": "r8oTK",
+          "page": 9
+        },
+        {
+          "debug_id": "YTvoC",
+          "page": 9
+        },
+        {
+          "debug_id": "axSTF",
+          "page": 9
+        },
+        {
+          "debug_id": "bs8n3",
+          "page": 9
+        },
+        {
+          "debug_id": "XgBA3",
+          "page": 9
+        },
+        {
+          "debug_id": "hMBga",
+          "page": 9
+        },
+        {
+          "debug_id": "jNLCA",
+          "page": 9
+        },
+        {
+          "debug_id": "BirWi",
+          "page": 9
+        },
+        {
+          "debug_id": "JGLRz",
+          "page": 9
+        },
+        {
+          "debug_id": "txRmm",
+          "page": 9
+        },
+        {
+          "debug_id": "9GrbS",
+          "page": 9
+        },
+        {
+          "debug_id": "ciivu",
+          "page": 9
+        },
+        {
+          "debug_id": "2PzPn",
+          "page": 9
+        },
+        {
+          "debug_id": "dNpGg",
+          "page": 9
+        },
+        {
+          "debug_id": "TvHAd",
+          "page": 9
+        },
+        {
+          "debug_id": "18Ejd",
+          "page": 9
+        },
+        {
+          "debug_id": "6VSZt",
+          "page": 9
+        },
+        {
+          "debug_id": "XjPev",
+          "page": 9
+        },
+        {
+          "debug_id": "4w3yt",
+          "page": 9
+        }
+      ],
+      "start_page": 9,
+      "title": {
+        "debug_id": "JGLRz",
+        "layout_label": "title",
+        "text": "Franc Democracy"
+      }
+    }
+  ],
+  "counts": {
+    "articles": 3,
+    "chains": 0,
+    "merged_by_chain": 0,
+    "pages": 9,
+    "unassigned": 6
+  },
+  "pages": [
+    {
+      "article_id": null,
+      "page": 1,
+      "page_kind": "front_cover",
+      "page_kind_conf": 1.0,
+      "reason": "not_chain_eligible",
+      "role": "unassigned"
+    },
+    {
+      "article_id": null,
+      "page": 2,
+      "page_kind": "advertisement",
+      "page_kind_conf": 1.0,
+      "reason": "not_chain_eligible",
+      "role": "unassigned"
+    },
+    {
+      "article_id": null,
+      "page": 3,
+      "page_kind": "toc",
+      "page_kind_conf": 0.875,
+      "reason": "not_chain_eligible",
+      "role": "unassigned"
+    },
+    {
+      "article_id": null,
+      "page": 4,
+      "page_kind": "advertisement",
+      "page_kind_conf": 1.0,
+      "reason": "not_chain_eligible",
+      "role": "unassigned"
+    },
+    {
+      "article_id": null,
+      "page": 5,
+      "page_kind": "masthead",
+      "page_kind_conf": 1.0,
+      "reason": "not_chain_eligible",
+      "role": "unassigned"
+    },
+    {
+      "article_id": "xJEJo",
+      "page": 6,
+      "page_kind": "article_opener",
+      "page_kind_conf": 1.0,
+      "reason": null,
+      "role": "opens"
+    },
+    {
+      "article_id": null,
+      "page": 7,
+      "page_kind": "masthead",
+      "page_kind_conf": 1.0,
+      "reason": "not_chain_eligible",
+      "role": "unassigned"
+    },
+    {
+      "article_id": "NHQDu",
+      "page": 8,
+      "page_kind": "article_opener",
+      "page_kind_conf": 1.0,
+      "reason": null,
+      "role": "opens"
+    },
+    {
+      "article_id": "4VGjd",
+      "page": 9,
+      "page_kind": "article_opener",
+      "page_kind_conf": 0.875,
+      "reason": null,
+      "role": "opens"
+    }
+  ],
+  "title_labels": [
+    "title",
+    "paragraph_title"
+  ],
+  "unassigned": [
+    {
+      "page": 1,
+      "page_kind": "front_cover",
+      "reason": "not_chain_eligible"
+    },
+    {
+      "page": 2,
+      "page_kind": "advertisement",
+      "reason": "not_chain_eligible"
+    },
+    {
+      "page": 3,
+      "page_kind": "toc",
+      "reason": "not_chain_eligible"
+    },
+    {
+      "page": 4,
+      "page_kind": "advertisement",
+      "reason": "not_chain_eligible"
+    },
+    {
+      "page": 5,
+      "page_kind": "masthead",
+      "reason": "not_chain_eligible"
+    },
+    {
+      "page": 7,
+      "page_kind": "masthead",
+      "reason": "not_chain_eligible"
+    }
+  ]
+}

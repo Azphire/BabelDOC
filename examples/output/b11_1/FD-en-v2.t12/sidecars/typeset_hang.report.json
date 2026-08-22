@@ -1,0 +1,249 @@
+{
+  "counts": {
+    "hung": 11,
+    "pulled_back": 6,
+    "unchanged": 0
+  },
+  "hang_max_em": 0.5,
+  "paragraphs": [
+    {
+      "box_x2": 216.256,
+      "lines": [
+        {
+          "limit": 6.032,
+          "line": 0,
+          "overflow": 3.475,
+          "text": "！",
+          "verdict": "hung"
+        }
+      ],
+      "page": 5,
+      "paragraph": "p5#38",
+      "scale": 1.0
+    },
+    {
+      "box_x2": 429.36,
+      "lines": [
+        {
+          "limit": 3.325,
+          "line": 3,
+          "overflow": 3.488,
+          "text": "。",
+          "verdict": "pulled_back"
+        }
+      ],
+      "page": 5,
+      "paragraph": "p5#59",
+      "scale": 0.95
+    },
+    {
+      "box_x2": 201.239,
+      "lines": [
+        {
+          "limit": 4.625,
+          "line": 2,
+          "overflow": 1.476,
+          "text": "，",
+          "verdict": "hung"
+        }
+      ],
+      "page": 6,
+      "paragraph": "p6#5",
+      "scale": 1.0
+    },
+    {
+      "box_x2": 378.692,
+      "lines": [
+        {
+          "limit": 4.625,
+          "line": 2,
+          "overflow": 6.042,
+          "text": "。",
+          "verdict": "pulled_back"
+        },
+        {
+          "limit": 4.625,
+          "line": 5,
+          "overflow": 4.405,
+          "text": "，",
+          "verdict": "hung"
+        }
+      ],
+      "page": 6,
+      "paragraph": "p6#8",
+      "scale": 1.0
+    },
+    {
+      "box_x2": 497.852,
+      "lines": [
+        {
+          "limit": 4.0,
+          "line": 0,
+          "overflow": 1.146,
+          "text": "。",
+          "verdict": "hung"
+        }
+      ],
+      "page": 6,
+      "paragraph": "p6#11",
+      "scale": 1.0
+    },
+    {
+      "box_x2": 530.828,
+      "lines": [
+        {
+          "limit": 4.625,
+          "line": 3,
+          "overflow": 5.447,
+          "text": "。",
+          "verdict": "pulled_back"
+        }
+      ],
+      "page": 6,
+      "paragraph": "p6#14",
+      "scale": 1.0
+    },
+    {
+      "box_x2": 457.982,
+      "lines": [
+        {
+          "limit": 2.634,
+          "line": 0,
+          "overflow": 2.551,
+          "text": "。",
+          "verdict": "hung"
+        }
+      ],
+      "page": 7,
+      "paragraph": "p7#7",
+      "scale": 0.75
+    },
+    {
+      "box_x2": 330.755,
+      "lines": [
+        {
+          "limit": 4.013,
+          "line": 0,
+          "overflow": 0.522,
+          "text": "）",
+          "verdict": "hung"
+        }
+      ],
+      "page": 7,
+      "paragraph": "p7#21",
+      "scale": 1.0
+    },
+    {
+      "box_x2": 300.205,
+      "lines": [
+        {
+          "limit": 6.3,
+          "line": 0,
+          "overflow": 0.51,
+          "text": "，",
+          "verdict": "hung"
+        }
+      ],
+      "page": 8,
+      "paragraph": "p8#7",
+      "scale": 0.9
+    },
+    {
+      "box_x2": 533.786,
+      "lines": [
+        {
+          "limit": 4.625,
+          "line": 4,
+          "overflow": 3.828,
+          "text": "，",
+          "verdict": "hung"
+        }
+      ],
+      "page": 8,
+      "paragraph": "p8#9",
+      "scale": 1.0
+    },
+    {
+      "box_x2": 531.541,
+      "lines": [
+        {
+          "limit": 4.625,
+          "line": 6,
+          "overflow": 2.217,
+          "text": "。",
+          "verdict": "hung"
+        }
+      ],
+      "page": 8,
+      "paragraph": "p8#10",
+      "scale": 1.0
+    },
+    {
+      "box_x2": 530.84,
+      "lines": [
+        {
+          "limit": 4.625,
+          "line": 4,
+          "overflow": 3.062,
+          "text": "。",
+          "verdict": "hung"
+        }
+      ],
+      "page": 8,
+      "paragraph": "p8#11",
+      "scale": 1.0
+    },
+    {
+      "box_x2": 278.372,
+      "lines": [
+        {
+          "limit": 4.625,
+          "line": 2,
+          "overflow": 4.753,
+          "text": "）",
+          "verdict": "pulled_back"
+        },
+        {
+          "limit": 4.625,
+          "line": 3,
+          "overflow": 7.74,
+          "text": "。",
+          "verdict": "pulled_back"
+        }
+      ],
+      "page": 9,
+      "paragraph": "p9#13",
+      "scale": 1.0
+    },
+    {
+      "box_x2": 275.839,
+      "lines": [
+        {
+          "limit": 4.625,
+          "line": 0,
+          "overflow": 3.693,
+          "text": "、",
+          "verdict": "hung"
+        }
+      ],
+      "page": 9,
+      "paragraph": "p9#14",
+      "scale": 1.0
+    },
+    {
+      "box_x2": 533.317,
+      "lines": [
+        {
+          "limit": 4.625,
+          "line": 2,
+          "overflow": 4.662,
+          "text": "，",
+          "verdict": "pulled_back"
+        }
+      ],
+      "page": 9,
+      "paragraph": "p9#21",
+      "scale": 1.0
+    }
+  ]
+}

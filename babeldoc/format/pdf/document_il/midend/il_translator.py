@@ -4,6 +4,7 @@ import json
 import logging
 import re
 import threading
+import unicodedata
 from pathlib import Path
 from string import Template
 
@@ -45,6 +46,30 @@ from babeldoc.translator.translator import BaseTranslator
 from babeldoc.utils.priority_thread_pool_executor import PriorityThreadPoolExecutor
 
 logger = logging.getLogger(__name__)
+
+
+def _normalised_for_identity(text: str) -> str:
+    """The form two texts are compared in when asking whether they say the same.
+
+    Compatibility composition folds the width and composition differences a
+    model can return an otherwise unchanged string through, and the surrounding
+    whitespace a reply may gain is not part of what was said. The result is used
+    for the comparison alone; no text is written back through this.
+    """
+    return unicodedata.normalize("NFKC", text).strip()
+
+
+def _is_identity_write_back(translated_text, translate_input) -> bool:
+    """Whether a translation says exactly what the source it was built from said.
+
+    ``translate_input`` carries the source text on ``unicode``; the object
+    itself is not a string and never compares equal to one. Anything that is not
+    one of these inputs falls back to the plain comparison rather than raising.
+    """
+    source = getattr(translate_input, "unicode", None)
+    if not isinstance(source, str) or not isinstance(translated_text, str):
+        return translated_text == translate_input
+    return _normalised_for_identity(translated_text) == _normalised_for_identity(source)
 
 
 PROMPT_TEMPLATE = Template(
@@ -997,7 +1022,7 @@ class ILTranslator:
     ):
         """Post-translation processing: update paragraph with translated text."""
         tracker.set_output(translated_text)
-        if translated_text == translate_input:
+        if _is_identity_write_back(translated_text, translate_input):
             if llm_translate_tracker := tracker.last_llm_translate_tracker():
                 llm_translate_tracker.set_placeholder_full_match()
             return False

@@ -1,0 +1,567 @@
+{
+  "exemptions": [
+    {
+      "debug_id": "bLY8i",
+      "heterogeneous": false,
+      "lines": 4,
+      "mean_line_chars": 3.2,
+      "page": 3,
+      "paragraph": "p3#5",
+      "reason": "uniform_styling"
+    },
+    {
+      "debug_id": "Z2Vsv",
+      "heterogeneous": false,
+      "lines": 2,
+      "mean_line_chars": 14.0,
+      "page": 3,
+      "paragraph": "p3#17",
+      "reason": "uniform_styling"
+    },
+    {
+      "debug_id": "FCZ5W",
+      "heterogeneous": false,
+      "lines": 2,
+      "mean_line_chars": 20.5,
+      "page": 3,
+      "paragraph": "p3#21",
+      "reason": "uniform_styling"
+    },
+    {
+      "debug_id": "VQAwK",
+      "heterogeneous": false,
+      "lines": 2,
+      "mean_line_chars": 18.0,
+      "page": 3,
+      "paragraph": "p3#31",
+      "reason": "uniform_styling"
+    },
+    {
+      "debug_id": "9iQhS",
+      "heterogeneous": true,
+      "lines": 2,
+      "mean_line_chars": 66.5,
+      "page": 3,
+      "paragraph": "p3#32",
+      "reason": "long_lines"
+    },
+    {
+      "debug_id": "h7ak3",
+      "heterogeneous": false,
+      "lines": 2,
+      "mean_line_chars": 25.5,
+      "page": 5,
+      "paragraph": "p5#2",
+      "reason": "uniform_styling"
+    },
+    {
+      "debug_id": "2Pvtg",
+      "heterogeneous": false,
+      "lines": 10,
+      "mean_line_chars": 13.4,
+      "page": 5,
+      "paragraph": "p5#25",
+      "reason": "uniform_styling"
+    },
+    {
+      "debug_id": "TyfHT",
+      "heterogeneous": false,
+      "lines": 5,
+      "mean_line_chars": 56.4,
+      "page": 5,
+      "paragraph": "p5#37",
+      "reason": "long_lines"
+    },
+    {
+      "debug_id": "bShtD",
+      "heterogeneous": false,
+      "lines": 2,
+      "mean_line_chars": 51.0,
+      "page": 5,
+      "paragraph": "p5#38",
+      "reason": "long_lines"
+    },
+    {
+      "debug_id": "498jG",
+      "heterogeneous": true,
+      "lines": 2,
+      "mean_line_chars": 57.0,
+      "page": 5,
+      "paragraph": "p5#41",
+      "reason": "long_lines"
+    },
+    {
+      "debug_id": "Qt3KS",
+      "heterogeneous": false,
+      "lines": 2,
+      "mean_line_chars": 32.0,
+      "page": 5,
+      "paragraph": "p5#42",
+      "reason": "uniform_styling"
+    },
+    {
+      "debug_id": "W9uSX",
+      "heterogeneous": false,
+      "lines": 6,
+      "mean_line_chars": 24.7,
+      "page": 5,
+      "paragraph": "p5#45",
+      "reason": "uniform_styling"
+    },
+    {
+      "debug_id": "eVBJq",
+      "heterogeneous": true,
+      "lines": 5,
+      "mean_line_chars": 63.8,
+      "page": 7,
+      "paragraph": "p7#26",
+      "reason": "long_lines"
+    },
+    {
+      "debug_id": "QrhRu",
+      "heterogeneous": false,
+      "lines": 2,
+      "mean_line_chars": 19.0,
+      "page": 7,
+      "paragraph": "p7#28",
+      "reason": "uniform_styling"
+    },
+    {
+      "debug_id": "EV682",
+      "heterogeneous": false,
+      "lines": 3,
+      "mean_line_chars": 34.0,
+      "page": 7,
+      "paragraph": "p7#29",
+      "reason": "uniform_styling"
+    },
+    {
+      "debug_id": "Q2jGc",
+      "heterogeneous": false,
+      "lines": 3,
+      "mean_line_chars": 15.7,
+      "page": 7,
+      "paragraph": "p7#30",
+      "reason": "uniform_styling"
+    },
+    {
+      "debug_id": "6cqxv",
+      "heterogeneous": false,
+      "lines": 3,
+      "mean_line_chars": 45.0,
+      "page": 7,
+      "paragraph": "p7#31",
+      "reason": "uniform_styling"
+    },
+    {
+      "debug_id": "MGqDH",
+      "heterogeneous": false,
+      "lines": 2,
+      "mean_line_chars": 19.0,
+      "page": 7,
+      "paragraph": "p7#32",
+      "reason": "uniform_styling"
+    }
+  ],
+  "max_line_chars": 47.0,
+  "min_line_characters": 1,
+  "min_text_length": 5,
+  "pages": [
+    {
+      "declared": false,
+      "exempt_paragraphs": 0,
+      "lines_after": 15,
+      "lines_before": 15,
+      "page": 1,
+      "paragraphs": 8,
+      "split_paragraphs": 0
+    },
+    {
+      "declared": false,
+      "exempt_paragraphs": 0,
+      "lines_after": 20,
+      "lines_before": 20,
+      "page": 2,
+      "paragraphs": 9,
+      "split_paragraphs": 0
+    },
+    {
+      "declared": true,
+      "exempt_paragraphs": 5,
+      "lines_after": 59,
+      "lines_before": 59,
+      "page": 3,
+      "paragraphs": 52,
+      "split_paragraphs": 8
+    },
+    {
+      "declared": false,
+      "exempt_paragraphs": 0,
+      "lines_after": 19,
+      "lines_before": 19,
+      "page": 4,
+      "paragraphs": 4,
+      "split_paragraphs": 0
+    },
+    {
+      "declared": true,
+      "exempt_paragraphs": 7,
+      "lines_after": 82,
+      "lines_before": 82,
+      "page": 5,
+      "paragraphs": 61,
+      "split_paragraphs": 7
+    },
+    {
+      "declared": false,
+      "exempt_paragraphs": 0,
+      "lines_after": 58,
+      "lines_before": 58,
+      "page": 6,
+      "paragraphs": 15,
+      "split_paragraphs": 0
+    },
+    {
+      "declared": true,
+      "exempt_paragraphs": 6,
+      "lines_after": 45,
+      "lines_before": 45,
+      "page": 7,
+      "paragraphs": 33,
+      "split_paragraphs": 0
+    },
+    {
+      "declared": false,
+      "exempt_paragraphs": 0,
+      "lines_after": 61,
+      "lines_before": 61,
+      "page": 8,
+      "paragraphs": 13,
+      "split_paragraphs": 0
+    },
+    {
+      "declared": false,
+      "exempt_paragraphs": 0,
+      "lines_after": 85,
+      "lines_before": 85,
+      "page": 9,
+      "paragraphs": 23,
+      "split_paragraphs": 0
+    }
+  ],
+  "policy_flags": [
+    "preserve_line_structure"
+  ],
+  "require_style_heterogeneity": true,
+  "short_lines": [],
+  "splits": [
+    {
+      "characters": 106,
+      "debug_id": "TDqEm",
+      "line_paragraphs": [
+        "TDqEm#L0",
+        "TDqEm#L1"
+      ],
+      "lines": 2,
+      "mean_line_chars": 47.0,
+      "page": 3,
+      "paragraph": "p3#9",
+      "record_lines": [
+        1,
+        1
+      ],
+      "records": 2,
+      "restyled_records": 0
+    },
+    {
+      "characters": 123,
+      "debug_id": "2kV6x",
+      "line_paragraphs": [
+        "2kV6x#L0",
+        "2kV6x#L1",
+        "2kV6x#L2"
+      ],
+      "lines": 3,
+      "mean_line_chars": 36.7,
+      "page": 3,
+      "paragraph": "p3#12",
+      "record_lines": [
+        1,
+        1,
+        1
+      ],
+      "records": 3,
+      "restyled_records": 0
+    },
+    {
+      "characters": 133,
+      "debug_id": "PQRvp",
+      "line_paragraphs": [
+        "PQRvp#L0",
+        "PQRvp#L1",
+        "PQRvp#L2"
+      ],
+      "lines": 3,
+      "mean_line_chars": 39.3,
+      "page": 3,
+      "paragraph": "p3#15",
+      "record_lines": [
+        1,
+        1,
+        1
+      ],
+      "records": 3,
+      "restyled_records": 0
+    },
+    {
+      "characters": 106,
+      "debug_id": "1M9zy",
+      "line_paragraphs": [
+        "1M9zy#L0",
+        "1M9zy#L1"
+      ],
+      "lines": 2,
+      "mean_line_chars": 46.0,
+      "page": 3,
+      "paragraph": "p3#18",
+      "record_lines": [
+        1,
+        1
+      ],
+      "records": 2,
+      "restyled_records": 0
+    },
+    {
+      "characters": 98,
+      "debug_id": "98Now",
+      "line_paragraphs": [
+        "98Now#L0",
+        "98Now#L1"
+      ],
+      "lines": 2,
+      "mean_line_chars": 43.0,
+      "page": 3,
+      "paragraph": "p3#25",
+      "record_lines": [
+        1,
+        1
+      ],
+      "records": 2,
+      "restyled_records": 0
+    },
+    {
+      "characters": 128,
+      "debug_id": "MQenS",
+      "line_paragraphs": [
+        "MQenS#L0",
+        "MQenS#L1",
+        "MQenS#L2",
+        "MQenS#L3",
+        "MQenS#L4"
+      ],
+      "lines": 5,
+      "mean_line_chars": 22.6,
+      "page": 3,
+      "paragraph": "p3#29",
+      "record_lines": [
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "records": 5,
+      "restyled_records": 1
+    },
+    {
+      "characters": 140,
+      "debug_id": "LbgoX",
+      "line_paragraphs": [
+        "LbgoX#L0",
+        "LbgoX#L1",
+        "LbgoX#L2"
+      ],
+      "lines": 3,
+      "mean_line_chars": 40.7,
+      "page": 3,
+      "paragraph": "p3#34",
+      "record_lines": [
+        1,
+        1,
+        1
+      ],
+      "records": 3,
+      "restyled_records": 1
+    },
+    {
+      "characters": 115,
+      "debug_id": "pnDcm",
+      "line_paragraphs": [
+        "pnDcm#L0",
+        "pnDcm#L1",
+        "pnDcm#L2"
+      ],
+      "lines": 3,
+      "mean_line_chars": 31.7,
+      "page": 3,
+      "paragraph": "p3#36",
+      "record_lines": [
+        1,
+        1,
+        1
+      ],
+      "records": 3,
+      "restyled_records": 3
+    },
+    {
+      "characters": 25,
+      "debug_id": "1NEzd",
+      "line_paragraphs": [
+        "1NEzd#L0",
+        "1NEzd#L1"
+      ],
+      "lines": 2,
+      "mean_line_chars": 12.0,
+      "page": 5,
+      "paragraph": "p5#4",
+      "record_lines": [
+        1,
+        1
+      ],
+      "records": 2,
+      "restyled_records": 1
+    },
+    {
+      "characters": 28,
+      "debug_id": "nW52j",
+      "line_paragraphs": [
+        "nW52j#L0",
+        "nW52j#L1"
+      ],
+      "lines": 2,
+      "mean_line_chars": 13.0,
+      "page": 5,
+      "paragraph": "p5#5",
+      "record_lines": [
+        1,
+        1
+      ],
+      "records": 2,
+      "restyled_records": 1
+    },
+    {
+      "characters": 52,
+      "debug_id": "CB9oB",
+      "line_paragraphs": [
+        "CB9oB#L0",
+        "CB9oB#L1",
+        "CB9oB#L2",
+        "CB9oB#L3"
+      ],
+      "lines": 4,
+      "mean_line_chars": 12.0,
+      "page": 5,
+      "paragraph": "p5#6",
+      "record_lines": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "records": 4,
+      "restyled_records": 1
+    },
+    {
+      "characters": 30,
+      "debug_id": "BtG6a",
+      "line_paragraphs": [
+        "BtG6a#L0",
+        "BtG6a#L1"
+      ],
+      "lines": 2,
+      "mean_line_chars": 14.0,
+      "page": 5,
+      "paragraph": "p5#7",
+      "record_lines": [
+        1,
+        1
+      ],
+      "records": 2,
+      "restyled_records": 1
+    },
+    {
+      "characters": 80,
+      "debug_id": "h4wRv",
+      "line_paragraphs": [
+        "h4wRv#L0",
+        "h4wRv#L1",
+        "h4wRv#L2",
+        "h4wRv#L3"
+      ],
+      "lines": 4,
+      "mean_line_chars": 18.2,
+      "page": 5,
+      "paragraph": "p5#8",
+      "record_lines": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "records": 4,
+      "restyled_records": 1
+    },
+    {
+      "characters": 35,
+      "debug_id": "dPVEQ",
+      "line_paragraphs": [
+        "dPVEQ#L0",
+        "dPVEQ#L1"
+      ],
+      "lines": 2,
+      "mean_line_chars": 16.0,
+      "page": 5,
+      "paragraph": "p5#13",
+      "record_lines": [
+        1,
+        1
+      ],
+      "records": 2,
+      "restyled_records": 1
+    },
+    {
+      "characters": 102,
+      "debug_id": "YybyA",
+      "line_paragraphs": [
+        "YybyA#L0",
+        "YybyA#L1",
+        "YybyA#L2",
+        "YybyA#L3",
+        "YybyA#L4"
+      ],
+      "lines": 5,
+      "mean_line_chars": 18.6,
+      "page": 5,
+      "paragraph": "p5#40",
+      "record_lines": [
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "records": 5,
+      "restyled_records": 1
+    }
+  ],
+  "switch": "magazine_line_structure",
+  "totals": {
+    "declared_pages": 3,
+    "exempt_paragraphs": 18,
+    "line_paragraphs": 44,
+    "pages": 9,
+    "short_lines": 0,
+    "split_paragraphs": 15
+  },
+  "window_switch": "magazine_page_classify"
+}

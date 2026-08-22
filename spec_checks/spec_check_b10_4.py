@@ -49,6 +49,7 @@ Tiers: every assertion is static, so the fast tier runs the whole gate.
 from __future__ import annotations
 
 import copy
+import dataclasses
 import hashlib
 import json
 import os
@@ -255,6 +256,26 @@ def record(name: str, ok: bool, detail: str = "") -> None:
         print(f"FAIL: {name}: {detail} ({seconds:.2f}s)")
 
 
+def skip(name: str, missing) -> None:
+    """A frozen product the retention policy took, named rather than re-made.
+
+    A pruned product may not be replaced by re-running the batch, so an
+    assertion that stands on one reports what it could not read instead of
+    failing as though the run had never produced it.
+    """
+    global _total
+    _total += 1
+    seconds = _timer.mark(name)
+    print(f"SKIPPED: {name}: evidence pruned: {sorted(missing)} ({seconds:.2f}s)")
+
+
+# The products of this batch a clone receives, and the ones it does not. The
+# whole translated documents and every run's working directory were never
+# committed, so they are what the output retention policy takes once two later
+# batches exist; b11.1 is the batch whose arrival took them.
+PRUNABLE_PRODUCTS = ("pdf",)
+
+
 def sample_target(sample: str) -> str:
     """The language one sample is translated into, as the registry declares."""
     return corpus.direction_of(sample)[1]
@@ -449,16 +470,21 @@ def check_02a_the_matrix_selects_the_text_it_declares() -> None:
 
 
 def check_02b_the_default_is_frozen_against_the_f2_ledger() -> None:
-    """Positive 2b: the selected default compiles to what F2 recorded, per language.
+    """Positive 2b: the frozen policy compiles to what F2 recorded, per language.
 
     The direct proof of the freeze. F2's ledger holds, per run, the digest of the
     system prompt that run carried; this batch restructured the file those texts
     live in, and the two digests are the same numbers or they are not.
+
+    The freeze is a property of the text, not of which text a run selects, and
+    the two came apart at b11.1, where the selection moved and the texts did not
+    (contract AC-09). So the comparison is made against the frozen policy's own
+    entry, whichever policy the tree currently selects.
     """
-    policy = translation_style.load_style_config()
+    policy = dataclasses.replace(
+        translation_style.load_style_config(), person_names=FROZEN_POLICY
+    )
     faults = []
-    if policy.person_names != FROZEN_POLICY:
-        faults.append(f"the selected policy is {policy.person_names!r}")
     ledger = BASELINE_DIR / "runs.json"
     if not ledger.exists():
         record(
@@ -724,15 +750,21 @@ def _draft_rows(sample: str) -> list[dict]:
 
 
 def check_03e_the_draft_defaults_to_the_run_s_policy() -> None:
-    """Positive 3e: every derived row defaults to what the selected policy says.
+    """Positive 3e: every derived row defaults to what its own policy says.
 
     The parameterised assertion. Nothing about the derivation is written against
-    a named policy, so what is checked is that each row's default *is* the
-    selected policy's own function of that row's observation -- computed here by
-    calling the same derivation, which is what makes this an assertion about the
+    a named policy, so what is checked is that each row's default *is* its
+    policy's own function of that row's observation -- computed here by calling
+    the same derivation, which is what makes this an assertion about the
     mechanism rather than a second copy of it.
+
+    A draft is exported once and then belongs to the person who rules on it, so
+    the policy it was derived under is the one it records rather than the one
+    the tree currently selects; the two came apart at b11.1 (contract AC-10).
+    The row's own policy is therefore what the derivation is driven with, and
+    what is asserted about it is that it is one the configuration declares.
     """
-    policy = translation_style.load_style_config()
+    declared = translation_style.load_style_config()
     faults = []
     counted = {}
     for sample in NAME_SAMPLES:
@@ -748,15 +780,18 @@ def check_03e_the_draft_defaults_to_the_run_s_policy() -> None:
         counted[sample] = len(shaped)
         if not shaped:
             faults.append(f"{sample}: no row was derived from the policy")
-        brackets = policy.brackets_for(sample_target(sample))
+        brackets = declared.brackets_for(sample_target(sample))
         for row in shaped:
             if "observed_target" not in row:
                 faults.append(f"{sample}: a derived row lost its observation")
                 break
+            if row.get("policy") not in declared.policies:
+                faults.append(f"{sample}: a row records policy {row.get('policy')!r}")
+                break
             auto, candidates = name_harvest.derive(
                 row["source"],
                 row.get("observed_target"),
-                policy.person_names,
+                row["policy"],
                 brackets,
             )
             if row.get("auto_target") != auto:
@@ -767,9 +802,6 @@ def check_03e_the_draft_defaults_to_the_run_s_policy() -> None:
                 break
             if row.get("candidates") != candidates:
                 faults.append(f"{sample}: a row offers {row.get('candidates')}")
-                break
-            if row.get("policy") != policy.person_names:
-                faults.append(f"{sample}: a row records policy {row.get('policy')!r}")
                 break
         for row in rows:
             if row.get("person_shaped"):
@@ -1337,7 +1369,13 @@ def check_04f_the_short_labels_reach_a_request_and_land() -> None:
         for unit in report["units"]
         if unit["page"] == FLOOR_LABEL_PAGE
     }
-    text = page_text(sample, FLOOR_LABEL_PAGE) or ""
+    text = page_text(sample, FLOOR_LABEL_PAGE)
+    if text is None:
+        skip(
+            "check_04f_the_short_labels_reach_a_request_and_land",
+            [str(BATCH_DIR / sample / "work" / sample / "checkpoint.11_typesetting.json")],
+        )
+        return
     for word in FLOOR_LABELS:
         if word not in admitted:
             faults.append(f"{word}: no request was built")
@@ -1595,43 +1633,41 @@ def check_05e_the_ruling_reached_the_pages_it_names() -> None:
     classified = (
         BATCH_DIR / sample / "work" / sample / "checkpoint.07_page_classifier.json"
     )
-    if not classified.exists():
-        faults.append("no classified checkpoint beside the run")
-    else:
-        for page in load_json(classified).get("page", ()):
-            label = page.get("page_number", -1) + 1
-            if label not in ruled:
-                continue
-            if page.get("page_kind") != ruled[label]:
-                faults.append(f"p{label} carries {page.get('page_kind')!r}")
-            if page.get("page_kind_source") != hitl.HUMAN_SOURCE:
-                faults.append(f"p{label} is not attributed to the human")
-            if page.get("page_kind_conf") != hitl.HUMAN_CONF:
-                faults.append(f"p{label} does not carry a ruling's confidence")
-
     report = BATCH_DIR / sample / "work" / sample / "chain_report.json"
-    if not report.exists():
-        faults.append("no chain report beside the run")
-    else:
-        boundaries = load_json(report)["boundaries"]
-        eligible = [
-            (item.get("tail_page"), item.get("head_page"))
-            for item in boundaries
-            if item.get("eligible")
-        ]
-        shut = [
-            (item.get("tail_page"), item.get("head_page"))
-            for item in boundaries
-            if not item.get("eligible")
-        ]
-        if len(boundaries) != RULED_BOUNDARIES:
-            faults.append(
-                f"{len(boundaries)} boundaries, and F2 recorded {RULED_BOUNDARIES}"
-            )
-        if len(eligible) != RULED_ELIGIBLE_BOUNDARIES:
-            faults.append(f"the eligible boundaries are {eligible}")
-        if shut != [RULED_SHUT_BOUNDARY]:
-            faults.append(f"the boundaries that stay shut are {shut}")
+    gone = [str(path) for path in (classified, report) if not path.exists()]
+    if gone:
+        skip("check_05e_the_ruling_reached_the_pages_it_names", gone)
+        return
+    for page in load_json(classified).get("page", ()):
+        label = page.get("page_number", -1) + 1
+        if label not in ruled:
+            continue
+        if page.get("page_kind") != ruled[label]:
+            faults.append(f"p{label} carries {page.get('page_kind')!r}")
+        if page.get("page_kind_source") != hitl.HUMAN_SOURCE:
+            faults.append(f"p{label} is not attributed to the human")
+        if page.get("page_kind_conf") != hitl.HUMAN_CONF:
+            faults.append(f"p{label} does not carry a ruling's confidence")
+
+    boundaries = load_json(report)["boundaries"]
+    eligible = [
+        (item.get("tail_page"), item.get("head_page"))
+        for item in boundaries
+        if item.get("eligible")
+    ]
+    shut = [
+        (item.get("tail_page"), item.get("head_page"))
+        for item in boundaries
+        if not item.get("eligible")
+    ]
+    if len(boundaries) != RULED_BOUNDARIES:
+        faults.append(
+            f"{len(boundaries)} boundaries, and F2 recorded {RULED_BOUNDARIES}"
+        )
+    if len(eligible) != RULED_ELIGIBLE_BOUNDARIES:
+        faults.append(f"the eligible boundaries are {eligible}")
+    if shut != [RULED_SHUT_BOUNDARY]:
+        faults.append(f"the boundaries that stay shut are {shut}")
 
     merged = sidecar(sample, "chain_translation.report.json")
     if merged is None:
@@ -1660,10 +1696,15 @@ def check_06a_the_evidence_is_present() -> None:
     if not ledger:
         record("check_06a_the_evidence_is_present", False, f"no ledger at {LEDGER}")
         return
+    pruned = []
     for row in ledger:
         for key in ("pdf", "pages_pdf", "parity", "conservation"):
             value = row.get(key)
-            if value and not (ROOT / value).exists():
+            if not value or (ROOT / value).exists():
+                continue
+            if key in PRUNABLE_PRODUCTS:
+                pruned.append(value)
+            else:
                 faults.append(f"{row['sample']}: {key} is missing")
         for path in row.get("raster", ()):
             if not (ROOT / path).exists():
@@ -1671,11 +1712,17 @@ def check_06a_the_evidence_is_present() -> None:
         for path in row.get("sidecars", ()):
             if not (ROOT / path).exists():
                 faults.append(f"{row['sample']}: a sidecar is missing")
-    record(
-        "check_06a_the_evidence_is_present",
-        not faults,
-        "; ".join(faults[:5]) + f" [{len(ledger)} run(s)]",
-    )
+    if faults:
+        record(
+            "check_06a_the_evidence_is_present",
+            False,
+            "; ".join(faults[:5]) + f" [{len(ledger)} run(s)]",
+        )
+        return
+    if pruned:
+        skip("check_06a_the_evidence_is_present", pruned)
+        return
+    record("check_06a_the_evidence_is_present", True)
 
 
 def check_06b_the_request_account_closes() -> None:

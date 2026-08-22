@@ -1,11 +1,14 @@
 from __future__ import annotations
 
 import copy
+import json
 import logging
 import re
 import statistics
 import unicodedata
 from functools import cache
+from functools import lru_cache
+from pathlib import Path
 
 import pymupdf
 import regex
@@ -25,8 +28,32 @@ from babeldoc.format.pdf.document_il.utils.formular_helper import update_formula
 from babeldoc.format.pdf.document_il.utils.layout_helper import box_to_tuple
 from babeldoc.format.pdf.translation_config import TranslationConfig
 from babeldoc.format.pdf.translation_config import WatermarkOutputMode
+from babeldoc.magazine.page_features import validate_bounded_config
 
 logger = logging.getLogger(__name__)
+
+# Where the bound on hung punctuation is declared, and the sidecar every hang
+# past the box edge is recorded in. The bound is read rather than written here:
+# no length in this file decides how far a mark may be set outside its box.
+HANG_CONFIG_PATH = (
+    Path(__file__).resolve().parents[5] / "configs" / "typeset_hang.json"
+)
+HANG_REPORT_NAME = "typeset_hang.report.json"
+
+# Verdicts a hang past the box edge is recorded under.
+HANG_KEPT = "hung"
+HANG_PULLED_BACK = "pulled_back"
+HANG_UNCHANGED = "unchanged"
+
+
+@lru_cache(maxsize=2)
+def load_hang_max_em(path: str | None = None) -> float:
+    """The declared ceiling, in ems, on how far a hung unit may pass the box."""
+    config_path = HANG_CONFIG_PATH if path is None else Path(path)
+    with config_path.open(encoding="utf-8") as f:
+        raw = json.load(f)
+    parameters = validate_bounded_config(raw, config_path)
+    return float(parameters["hang_max_em"])
 
 LINE_BREAK_REGEX = regex.compile(
     r"^["
@@ -850,6 +877,8 @@ class Typesetting:
         self.font_mapper = FontMapper(translation_config)
         self.translation_config = translation_config
         self.lang_code = self.translation_config.lang_out.upper()
+        # One entry per paragraph whose accepted layout hung a unit past its box.
+        self.hang_records: list[dict] = []
         self.is_cjk = (
             # Why zh-CN/zh-HK/zh-TW here but not zh-Hans and so on?
             # See https://funstory-ai.github.io/BabelDOC/supported_languages/
@@ -973,6 +1002,7 @@ class Typesetting:
         while scale >= min_scale:
             try:
                 # 尝试布局排版单元
+                hang_log: list[dict] = []
                 typeset_units, all_units_fit = self._layout_typesetting_units(
                     typesetting_units,
                     box,
@@ -980,11 +1010,13 @@ class Typesetting:
                     line_skip,
                     paragraph,
                     use_english_line_break,
+                    hang_log,
                 )
 
                 # 如果所有单元都放得下
                 if all_units_fit:
                     if apply_layout:
+                        self._record_hangs(page, paragraph, box, scale, hang_log)
                         # 实际应用排版结果
                         paragraph.scale = scale
                         paragraph.pdf_paragraph_composition = []
@@ -1115,7 +1147,68 @@ class Typesetting:
             apply_layout=True,
         )
 
+    def _record_hangs(
+        self,
+        page: il_version_1.Page,
+        paragraph: il_version_1.PdfParagraph,
+        box: Box,
+        scale: float,
+        hang_log: list[dict],
+    ) -> None:
+        """Keep the hangs of one accepted layout, under the paragraph's own name.
+
+        The scale search lays a paragraph out once per scale it tries, and only
+        the layout that is applied describes the page anyone sees, so nothing is
+        kept until a layout is accepted. The paragraph is named by its ordinal
+        within its page, which is the anchor that survives a rerun.
+        """
+        if not hang_log:
+            return
+        label = (page.page_number or 0) + 1
+        paragraphs = list(page.pdf_paragraph or ())
+        ordinal = next(
+            (
+                index
+                for index, candidate in enumerate(paragraphs)
+                if candidate is paragraph
+            ),
+            None,
+        )
+        self.hang_records.append(
+            {
+                "page": label,
+                "paragraph": None if ordinal is None else f"p{label}#{ordinal}",
+                "box_x2": round(box.x2, 3),
+                "scale": round(scale, 4),
+                "lines": hang_log,
+            }
+        )
+
+    def _write_hang_report(self) -> None:
+        """The run's hangs, beside the other sidecars, or nothing where none ran."""
+        try:
+            path = Path(
+                self.translation_config.get_working_file_path(HANG_REPORT_NAME)
+            )
+        except Exception:  # noqa: BLE001 - observation never fails a translation
+            return
+        counts = {HANG_KEPT: 0, HANG_PULLED_BACK: 0, HANG_UNCHANGED: 0}
+        for record in self.hang_records:
+            for line in record["lines"]:
+                counts[line["verdict"]] = counts.get(line["verdict"], 0) + 1
+        report = {
+            "hang_max_em": load_hang_max_em(),
+            "counts": counts,
+            "paragraphs": self.hang_records,
+        }
+        path.parent.mkdir(parents=True, exist_ok=True)
+        with path.open("w", encoding="utf-8") as f:
+            json.dump(report, f, indent=2, sort_keys=True, ensure_ascii=False)
+
     def typesetting_document(self, document: il_version_1.Document):
+        # The report describes the layout the document is left in, so a second
+        # pass over the same document replaces the first pass's account of it.
+        self.hang_records = []
         # 原有的排版逻辑
         if self.translation_config.progress_monitor:
             with self.translation_config.progress_monitor.stage_start(
@@ -1133,6 +1226,7 @@ class Typesetting:
             for page in document.page:
                 self.translation_config.raise_if_cancelled()
                 self.render_page(page)
+        self._write_hang_report()
 
     def render_page(self, page: il_version_1.Page):
         fonts: dict[
@@ -1305,6 +1399,7 @@ class Typesetting:
         line_skip: float,
         paragraph: il_version_1.PdfParagraph,
         use_english_line_break: bool = True,
+        hang_log: list[dict] | None = None,
     ) -> tuple[list[TypesettingUnit], bool]:
         """布局排版单元。
 
@@ -1312,10 +1407,16 @@ class Typesetting:
             typesetting_units: 要布局的排版单元列表
             box: 布局边界框
             scale: 缩放因子
+            hang_log: appended to for every hung unit that ends past the box
+                edge. This runs once per scale the search tries, so the caller
+                passes a fresh list and keeps only the one belonging to the
+                layout it accepts.
 
         Returns:
             tuple[list[TypesettingUnit], bool]: (已布局的排版单元列表，是否所有单元都放得下)
         """
+        if hang_log is None:
+            hang_log = []
         # 计算字号众数
         font_sizes = []
         for unit in typesetting_units:
@@ -1360,8 +1461,21 @@ class Typesetting:
         line_ys = [current_y]
         if paragraph.first_line_indent:
             current_x += space_width * 4
+
+        # How far past box.x2 a hung unit may end, in points at this scale. The
+        # ceiling is a declared number of ems of the paragraph's dominant size.
+        hang_limit = load_hang_max_em() * font_size * scale
+        # What stands on the line now, oldest first, so a run of hung units at
+        # its end can be identified and taken off it again.
+        line_placements: list[dict] = []
+        forced_break = False
+
         # 遍历所有排版单元
-        for i, unit in enumerate(typesetting_units):
+        i = 0
+        while i < len(typesetting_units):
+            unit = typesetting_units[i]
+            unit_index = i
+            i += 1
             # 计算当前单元在当前缩放下的尺寸
             unit_width = unit.width * scale
             unit_height = unit.height * scale
@@ -1370,6 +1484,7 @@ class Typesetting:
             if current_x == box.x and unit.is_space:
                 continue
 
+            x_before_unit = current_x
             if (
                 last_unit  # 有上一个单元
                 and last_unit.is_cjk_char ^ unit.is_cjk_char  # 中英文交界处
@@ -1398,23 +1513,59 @@ class Typesetting:
                 current_x += space_width * 0.5
             if use_english_line_break:
                 width_before_next_break_point = self._get_width_before_next_break_point(
-                    typesetting_units[i:], scale
+                    typesetting_units[unit_index:], scale
                 )
             else:
                 width_before_next_break_point = 0
 
+            # A hung unit is exempt from the width check below, but not without
+            # limit: a run of them accumulates past the box edge and can reach
+            # whatever the page draws beyond it. Past the ceiling the run is
+            # taken off this line together with the unit before it, so the line
+            # it moves to does not open with punctuation. The retreat is refused
+            # where it would empty the line, which is the case of a line holding
+            # nothing but punctuation, and a refusal leaves the mark hanging.
+            overflow = (current_x + unit_width) - box.x2
+            if unit.is_hung_punctuation and overflow > 0:
+                retreat = None
+                if not forced_break and overflow > hang_limit:
+                    retreat = self._hang_retreat(line_placements)
+                record = {
+                    "line": len(line_ys) - 1,
+                    "text": unit.try_get_unicode(),
+                    "overflow": round(overflow, 3),
+                    "limit": round(hang_limit, 3),
+                    "verdict": HANG_KEPT
+                    if overflow <= hang_limit
+                    else (HANG_PULLED_BACK if retreat else HANG_UNCHANGED),
+                }
+                hang_log.append(record)
+                if retreat:
+                    del typeset_units[retreat["typeset_length"] :]
+                    del current_line_heights[retreat["heights_length"] :]
+                    del line_placements[retreat["placement_index"] :]
+                    current_x = retreat["current_x"]
+                    i = retreat["unit_index"]
+                    forced_break = True
+                    continue
+
             # 如果当前行放不下这个元素，换行
-            if not unit.is_hung_punctuation and (
-                (current_x + unit_width > box.x2)
-                or (
-                    use_english_line_break
-                    and current_x + unit_width + width_before_next_break_point > box.x2
-                )
-                or (
-                    unit.is_cannot_appear_in_line_end_punctuation
-                    and current_x + unit_width * 2 > box.x2
+            if forced_break or (
+                not unit.is_hung_punctuation
+                and (
+                    (current_x + unit_width > box.x2)
+                    or (
+                        use_english_line_break
+                        and current_x + unit_width + width_before_next_break_point
+                        > box.x2
+                    )
+                    or (
+                        unit.is_cannot_appear_in_line_end_punctuation
+                        and current_x + unit_width * 2 > box.x2
+                    )
                 )
             ):
+                forced_break = False
                 # 换行
                 current_x = box.x
                 if not current_line_heights:
@@ -1436,6 +1587,7 @@ class Typesetting:
                 line_ys.append(current_y)
                 line_height = 0.0
                 current_line_heights = []  # 清空当前行高度列表
+                line_placements = []
 
                 # 检查是否超出底部边界
                 # if current_y - unit_height < box.y:
@@ -1448,6 +1600,16 @@ class Typesetting:
                     continue
 
             # 放置当前单元
+            line_placements.append(
+                {
+                    "unit_index": unit_index,
+                    "is_hung": bool(unit.is_hung_punctuation),
+                    "current_x": x_before_unit,
+                    "typeset_length": len(typeset_units),
+                    "heights_length": len(current_line_heights),
+                    "placement_index": len(line_placements),
+                }
+            )
             relocated_unit = unit.relocate(current_x, current_y, scale)
             typeset_units.append(relocated_unit)
 
@@ -1464,6 +1626,24 @@ class Typesetting:
             last_unit = relocated_unit
 
         return typeset_units, all_units_fit
+
+    @staticmethod
+    def _hang_retreat(line_placements: list[dict]) -> dict | None:
+        """Where the line has to be reopened to move a hung run off its end.
+
+        The set taken back is the run of hung units already standing at the end
+        of the line plus the one unit before it, so what moves is never longer
+        than that run plus one and the line it moves to opens with a unit that
+        is not punctuation. None where the line holds nothing else, since a line
+        emptied by its own retreat has nowhere to retreat to.
+        """
+        cut = len(line_placements)
+        while cut > 0 and line_placements[cut - 1]["is_hung"]:
+            cut -= 1
+        cut -= 1
+        if cut <= 0:
+            return None
+        return line_placements[cut]
 
     def create_typesetting_units(
         self,

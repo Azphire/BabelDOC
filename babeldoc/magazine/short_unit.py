@@ -263,6 +263,7 @@ class Unit:
     translated: str = ""
     translate_input: object = None
     tracker: object = None
+    identity_skipped: bool | None = None
 
     def as_record(self) -> dict:
         return {
@@ -272,6 +273,7 @@ class Unit:
             "shape": self.shape,
             "chars": len(self.source or ""),
             "source": self.source,
+            "identity_skipped": self.identity_skipped,
         }
 
 
@@ -529,11 +531,19 @@ def plan(translator, docs, tracker, article_context=None, config=None) -> ShortU
 
 
 def apply(translator, plan_result: ShortUnitPlan, pbar=None) -> None:
-    """Write every translated unit back through the pipeline's own writer."""
+    """Write every translated unit back through the pipeline's own writer.
+
+    The writer reports whether it rewrote the paragraph. A unit whose reply says
+    what its source said -- a label that reads the same in both languages -- is
+    left standing rather than recomposed, and which of the two happened is
+    recorded, because the difference is invisible in the text and visible on the
+    page.
+    """
     for unit in plan_result.units:
-        translator.il_translator.post_translate_paragraph(
+        rewritten = translator.il_translator.post_translate_paragraph(
             unit.paragraph, unit.tracker, unit.translate_input, unit.translated
         )
+        unit.identity_skipped = rewritten is False
         translator.total_count += 1
         translator.ok_count += 1
         if pbar:
