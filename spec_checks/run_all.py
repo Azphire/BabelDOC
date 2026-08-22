@@ -130,6 +130,7 @@ GATES = (
     "spec_check_b10_5.py",
     "spec_check_f3.py",
     "spec_check_b11_1.py",
+    "spec_check_b11_2.py",
 )
 
 
@@ -280,14 +281,27 @@ def govern_cache() -> None:
         )
 
 
-def prune_outputs() -> None:
-    """Apply the output retention policy, which is what bounds this directory.
+def prune_outputs(requested: bool) -> None:
+    """Apply the output retention policy, when the caller has asked for it.
 
     At the end rather than at the start: a sweep reads what earlier sweeps left
     and writes what this one produces, and both are inside the batches the
     policy keeps whole. Its failure is reported and is never the sweep's, since
     a policy that could not reclaim disk has not invalidated a gate result.
+
+    Asked for rather than automatic, because running the gates used to be the
+    only way the policy was ever applied and that made a gate sweep a destroying
+    action: whoever ran the gates to read a batch's evidence was, in the same
+    command, taking the evidence of the batch two behind it. Reading a record
+    must not be what erases another record, so reclaiming disk is now its own
+    request -- this flag, or tools/prune_outputs.py --apply directly.
     """
+    if not requested:
+        print(
+            "  output retention: not applied (pass --prune-outputs, or run "
+            "tools/prune_outputs.py --apply, to reclaim disk)"
+        )
+        return
     proc = subprocess.run(  # noqa: S603 - fixed argv built from repository paths
         [PYTHON, str(ROOT / "tools" / "prune_outputs.py"), "--apply"],
         cwd=ROOT,
@@ -350,6 +364,14 @@ def build_parser() -> argparse.ArgumentParser:
         "--clear-cache",
         action="store_true",
         help="drop every cached pipeline artefact before running",
+    )
+    parser.add_argument(
+        "--prune-outputs",
+        action="store_true",
+        help=(
+            "apply the output retention policy once the sweep has finished; "
+            "without it nothing under examples/output/ is removed"
+        ),
     )
     return parser
 
@@ -451,7 +473,7 @@ def _sweep(args: argparse.Namespace, gates: list[str]) -> int:
     print()
     report_timing(results)
     print()
-    prune_outputs()
+    prune_outputs(args.prune_outputs)
 
     exit_code = 1 if failed else 0
     marker = write_done(

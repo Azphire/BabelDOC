@@ -49,6 +49,7 @@ Usage:
 from __future__ import annotations
 
 import argparse
+import ast
 import json
 import re
 import shutil
@@ -168,6 +169,52 @@ def registered_paths(config: dict) -> tuple[set[Path], tuple[Path, ...]]:
     return files, tuple(directories)
 
 
+def gate_evidence() -> tuple[set[Path], tuple[Path, ...]]:
+    """What the gates themselves say they still read, split into files and dirs.
+
+    ``protected_paths`` answers for evidence a person registered by hand, which
+    means it answers a batch late: the b10.1, b10.3 and b10.4 gates each stood on
+    a working file nobody had thought to name, and the policy took all three
+    while every one of those gates was still in the sweep. A gate is the only
+    thing that knows what it reads, so it says so itself -- a module level
+    ``GATE_EVIDENCE`` naming repository relative paths, an entry ending in a
+    separator standing for everything below it.
+
+    Read out of the source rather than imported, for the reason ``GATE_SET`` is:
+    importing a gate runs its module body. A gate that declares nothing
+    contributes nothing, so this is additive to every gate that has not been
+    given a declaration yet.
+    """
+    files: set[Path] = set()
+    directories: list[Path] = []
+    gate_dir = ROOT / "spec_checks"
+    if not gate_dir.is_dir():
+        return files, ()
+    for gate in sorted(gate_dir.glob("spec_check_*.py")):
+        try:
+            tree = ast.parse(gate.read_text(encoding="utf-8"))
+        except (OSError, SyntaxError):
+            continue
+        for node in tree.body:
+            if not isinstance(node, ast.Assign) or len(node.targets) != 1:
+                continue
+            target = node.targets[0]
+            if not isinstance(target, ast.Name) or target.id != "GATE_EVIDENCE":
+                continue
+            try:
+                declared = ast.literal_eval(node.value)
+            except ValueError:
+                continue
+            for entry in declared:
+                text = str(entry)
+                resolved = (ROOT / text.rstrip("/")).resolve()
+                if text.endswith("/"):
+                    directories.append(resolved)
+                else:
+                    files.add(resolved)
+    return files, tuple(directories)
+
+
 def is_registered(path: Path, files: set[Path], directories: tuple[Path, ...]) -> bool:
     resolved = path.resolve()
     if resolved in files:
@@ -206,6 +253,9 @@ def prunable(root: Path, config: dict) -> tuple[list[Path], list[tuple[int, ...]
     recent = sorted(grouped, reverse=True)[:keep_recent]
     protected = tracked_paths(root) | manifest_paths()
     registered_files, registered_dirs = registered_paths(config)
+    declared_files, declared_dirs = gate_evidence()
+    registered_files = registered_files | declared_files
+    registered_dirs = registered_dirs + declared_dirs
     patterns = tuple(config[KEEP_PATTERNS_KEY])
 
     doomed: list[Path] = []

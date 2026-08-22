@@ -1,0 +1,108 @@
+{
+  "archives": {
+    "b10_1": 70,
+    "b10_3": 97,
+    "b10_4": 132
+  },
+  "assertions": {
+    "b10_1/check_02b_the_flattened_column_starts_level_with_its_neighbour": [
+      {
+        "path": "b10_1/Courier-en/work/Courier-en/checkpoint.11_typesetting.json",
+        "on_disk": false,
+        "in_archive": false
+      },
+      {
+        "path": "b10_1/FD-en-v2/work/FD-en-v2/checkpoint.11_typesetting.json",
+        "on_disk": false,
+        "in_archive": false
+      }
+    ],
+    "b10_3/check_05b_every_record_is_set_as_its_own_characters_are": [
+      {
+        "path": "b10_3/CERNCourier-en/work/CERNCourier-en/checkpoint.07_page_classifier.xml",
+        "on_disk": false,
+        "in_archive": false
+      }
+    ],
+    "b10_3/check_06a2_a_blanked_member_occupies_nothing": [],
+    "b10_3/check_06b_the_two_halves_of_a_text_agree": [],
+    "b10_3/check_06e_the_evidence_is_present": [
+      {
+        "path": "b10_3/AramcoWorld-en-v2/AramcoWorld-en-v2.b10_3.pdf",
+        "on_disk": false,
+        "in_archive": false
+      },
+      {
+        "path": "b10_3/CERNCourier-en/CERNCourier-en.b10_3.pdf",
+        "on_disk": false,
+        "in_archive": false
+      },
+      {
+        "path": "b10_3/Courier-en/Courier-en.b10_3.pdf",
+        "on_disk": false,
+        "in_archive": false
+      },
+      {
+        "path": "b10_3/FD-en-v2/FD-en-v2.b10_3.pdf",
+        "on_disk": false,
+        "in_archive": false
+      },
+      {
+        "path": "b10_3/Vogue-en/Vogue-en.b10_3.pdf",
+        "on_disk": false,
+        "in_archive": false
+      }
+    ],
+    "b10_4/check_04f_the_short_labels_reach_a_request_and_land": [
+      {
+        "path": "b10_4/Courier-zh/work/Courier-zh/checkpoint.11_typesetting.json",
+        "on_disk": false,
+        "in_archive": false
+      }
+    ],
+    "b10_4/check_05e_the_ruling_reached_the_pages_it_names": [
+      {
+        "path": "b10_4/Courier-zh/work/Courier-zh/chain_report.json",
+        "on_disk": false,
+        "in_archive": true
+      },
+      {
+        "path": "b10_4/Courier-zh/work/Courier-zh/checkpoint.07_page_classifier.json",
+        "on_disk": false,
+        "in_archive": false
+      }
+    ],
+    "b10_4/check_06a_the_evidence_is_present": [
+      {
+        "path": "b10_4/AramcoWorld-en-v2/AramcoWorld-en-v2.b10_4.pdf",
+        "on_disk": false,
+        "in_archive": false
+      },
+      {
+        "path": "b10_4/CERNCourier-en/CERNCourier-en.b10_4.pdf",
+        "on_disk": false,
+        "in_archive": false
+      },
+      {
+        "path": "b10_4/Courier-en/Courier-en.b10_4.pdf",
+        "on_disk": false,
+        "in_archive": false
+      },
+      {
+        "path": "b10_4/Courier-zh/Courier-zh.b10_4.pdf",
+        "on_disk": false,
+        "in_archive": false
+      },
+      {
+        "path": "b10_4/FD-en-v2/FD-en-v2.b10_4.pdf",
+        "on_disk": false,
+        "in_archive": false
+      },
+      {
+        "path": "b10_4/Vogue-en/Vogue-en.b10_4.pdf",
+        "on_disk": false,
+        "in_archive": false
+      }
+    ]
+  }
+}

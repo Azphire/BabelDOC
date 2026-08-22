@@ -138,3 +138,13 @@ caller, so an upstream rename is traceable to what it breaks.
 | `babeldoc/format/pdf/document_il/midend/typesetting.py` | `Typesetting._find_optimal_scale_and_layout` | `magazine/column_reflow.py`, `holds_formula` | Not called: the coupling is to what the stage does with a formula. It appends the curves and forms a formula unit renders to the *page* rather than to the paragraph, so a paragraph holding a formula cannot be moved without leaving its own artwork behind, and this pass anchors such a paragraph instead. Registered because the anchor is unnecessary the day that stops being true, and wrong the day it changes shape. | B10.5 |
 
 Batch b10.5 changes no upstream file. The column reflow pass reaches the pipeline through the `detect_issues` call the B8 row above already declares: that function runs the extension owned passes of the post typesetting window before it consults its own switch, and the heading policy of B10.1 arrived by the same door. The three rows above register what the new pass reads and writes in the intermediate language.
+
+## B11.2
+
+| 文件 | 符号 | 调用方 | 目的 | 批次 |
+| --- | --- | --- | --- | --- |
+| `babeldoc/format/pdf/document_il/midend/il_translator.py` | `_is_identity_write_back`,新增 `_is_nfkc_only_identity` 与 `ILTranslator._record_nfkc_only_identity` | `ILTranslator.post_translate_paragraph` 自身 | 把恒等写回的判据由**归一化相等**收紧为**逐字节相等**。归一化比较回答的是另一个问题——两串折叠掉宽度与合成差异之后是否长得一样——而在这里回答它,就让短路成了一个关于外观的决定:模型把半角标点改写成全角形式的回复被判为"未改变",源形被保留,模型的标点决定被一个只为发现"模型原样退回输入"而写的比较悄悄推翻。归一化保留下来但只用于**记录**:仅归一化相等的段落逐条记入 `identity_criterion.report.json`(计数键 `nfkc_equal_not_byte_equal`,每条含两串原文),不参与任何判定。 | B11.2 |
+
+除此一处,批次 b11.2 不改动任何上游文件。T4 的三项前瞻性修法全部落在扩展侧
+(`tools/prune_outputs.py`、`spec_checks/run_all.py`、新增 `spec_checks/evidence.py`);
+T3 的 `tools/column_continuity.py` 只读复用 `magazine/chain_signals.py`,不改动它。

@@ -1,0 +1,32 @@
+{
+  "closers": [
+    ")",
+    "）"
+  ],
+  "max_span_chars": 40,
+  "openers": [
+    "(",
+    "（"
+  ],
+  "pages": 8,
+  "paragraphs": [
+    {
+      "after": "由摩洛哥阿甘树（<style id='1'>阿甘树</style>）的坚果生产的油提供了另一个例子。阿甘油现在被用于全球的护发和护肤产品中，其用途与柏柏尔（或柏柏尔）妇女使用它已有超过1000年的历史基本相同。虽然一些拥有相关专利的国际大公",
+      "before": "由摩洛哥阿甘树（<style id='1'>阿甘树</style>）的坚果生产的油提供了另一个例子。阿甘油现在被用于全球的护发和护肤产品中，其用途与柏柏尔（或柏柏尔）妇女使用它已有超过1000年的历史基本相同。虽然一些拥有相关专利的国际大公",
+      "debug_id": "jxPco",
+      "page": 7,
+      "reference": "p7#3",
+      "removed_compositions": 1,
+      "removed_unicode": 0,
+      "spans": [
+        "阿甘树"
+      ]
+    }
+  ],
+  "switch": "magazine_paren_dedup",
+  "totals": {
+    "paragraphs_folded": 1,
+    "spans_removed": 1,
+    "unicode_spans_removed": 0
+  }
+}

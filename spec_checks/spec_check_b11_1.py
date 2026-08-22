@@ -367,7 +367,24 @@ def check_01c_the_whole_reached_set_is_accounted_for() -> None:
 
 
 def check_01d_the_comparison_reads_the_text() -> None:
-    """Negative 1d: the branch is reached by text and not by object identity."""
+    """Negative 1d: the branch is reached by text and not by object identity.
+
+    What this batch fixed was a comparison against the input *object*, which no
+    input could ever satisfy, so the branch was dead. That is what is asserted
+    here, and it is unchanged.
+
+    What is no longer asserted here is *which* text comparison. This batch chose
+    a normalising one; b11.2 overturned that choice and made the deciding
+    comparison byte equality, because normalising answers a different question
+    -- whether two strings would look alike once width and composition
+    differences are folded away -- and answering it here let a reply that had
+    rewritten a mark in its fullwidth form be declared unchanged, so the model's
+    punctuation decision was overruled by a comparison meant only to notice a
+    model returning its input. The two cases that turned on normalisation move
+    to the other side, and the near identities they name are counted and listed
+    by the writer instead. Registered as AC-14; b11.2 owns the current criterion
+    and asserts it.
+    """
     from babeldoc.format.pdf.document_il.midend.il_translator import (
         _is_identity_write_back,
     )
@@ -378,8 +395,8 @@ def check_01d_the_comparison_reads_the_text() -> None:
 
     cases = (
         ("F&D", Input("F&D"), True, "an unchanged reply is identity"),
-        (" F&D\n", Input("F&D"), True, "surrounding space is not what was said"),
-        ("！", Input("!"), True, "a width variant is the same mark"),
+        (" F&D\n", Input("F&D"), False, "surrounding space is a change"),
+        ("！", Input("!"), False, "a width variant is a different mark"),
         ("译文", Input("source"), False, "a translation is not identity"),
         ("", Input(""), True, "two empty texts are identity"),
         ("x", "x", True, "a non input falls back to the plain comparison"),

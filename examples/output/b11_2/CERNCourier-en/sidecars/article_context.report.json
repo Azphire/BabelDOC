@@ -1,0 +1,86 @@
+{
+  "articles": [
+    {
+      "article_id": "MFpwC",
+      "attempts": 0,
+      "brief": {
+        "names": [
+          {
+            "source": "CERNCOURIER",
+            "suggested_translation": "CERNCOURIER"
+          }
+        ],
+        "register": "文章采用正式的新闻报道风格，不直接与读者对话。",
+        "title_translation": "CERNCOURIER 2026年7/8月 国际高能物理报道"
+      },
+      "brief_failed": false,
+      "excerpt_chars": 59,
+      "from_cache": true,
+      "pages": [
+        1
+      ],
+      "reason": "",
+      "requested": true,
+      "start_page": 1,
+      "title_text": "CERNCOURIER July/August 2026 cerncourier.com Reporting on international high-energy physics"
+    },
+    {
+      "article_id": "3gc78",
+      "attempts": 0,
+      "brief": {
+        "names": [],
+        "register": "文章应以正式的语气翻译，可能是报告或论述风格，不直接与读者对话。",
+        "title_translation": "政策"
+      },
+      "brief_failed": false,
+      "excerpt_chars": 7,
+      "from_cache": true,
+      "pages": [
+        3
+      ],
+      "reason": "",
+      "requested": true,
+      "start_page": 3,
+      "title_text": "Policy"
+    },
+    {
+      "article_id": "xci5Q",
+      "attempts": 0,
+      "brief": {
+        "names": [],
+        "register": "文章应以正式的语气翻译，可能是报告或叙述风格，不直接与读者对话。",
+        "title_translation": "卷66 第4期 2026年7/8月"
+      },
+      "brief_failed": false,
+      "excerpt_chars": 59,
+      "from_cache": true,
+      "pages": [
+        4
+      ],
+      "reason": "",
+      "requested": true,
+      "start_page": 4,
+      "title_text": "C"
+    }
+  ],
+  "body_labels": [
+    "text",
+    "plain text",
+    "paragraph_hybrid"
+  ],
+  "counts": {
+    "articles": 3,
+    "briefs": 3,
+    "failed": 0,
+    "from_cache": 3,
+    "requested": 3,
+    "requests": 3
+  },
+  "title_labels": [
+    "title",
+    "paragraph_title"
+  ],
+  "unassigned_pages": [
+    2
+  ]
+}

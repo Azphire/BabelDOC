@@ -1,0 +1,614 @@
+{
+  "articles": [
+    {
+      "article_id": "ZoVnR",
+      "chains": [],
+      "merged_by_chain": false,
+      "pages": [
+        4
+      ],
+      "paragraphs": [
+        {
+          "debug_id": "wXLEe",
+          "page": 4
+        },
+        {
+          "debug_id": "ybe2R",
+          "page": 4
+        },
+        {
+          "debug_id": "bfcar",
+          "page": 4
+        },
+        {
+          "debug_id": "7iNy2",
+          "page": 4
+        },
+        {
+          "debug_id": "URQ5K",
+          "page": 4
+        },
+        {
+          "debug_id": "8x9SS",
+          "page": 4
+        },
+        {
+          "debug_id": "4Ys4Q",
+          "page": 4
+        },
+        {
+          "debug_id": "8fgRJ",
+          "page": 4
+        },
+        {
+          "debug_id": "bULCz",
+          "page": 4
+        },
+        {
+          "debug_id": "LnGA4",
+          "page": 4
+        },
+        {
+          "debug_id": "W8AKU",
+          "page": 4
+        },
+        {
+          "debug_id": "kuGsZ",
+          "page": 4
+        },
+        {
+          "debug_id": "MCCf6",
+          "page": 4
+        },
+        {
+          "debug_id": "zU9mx",
+          "page": 4
+        },
+        {
+          "debug_id": "hYmw2",
+          "page": 4
+        },
+        {
+          "debug_id": "FBgTG",
+          "page": 4
+        },
+        {
+          "debug_id": "2yMCk",
+          "page": 4
+        }
+      ],
+      "start_page": 4,
+      "title": {
+        "debug_id": "4Ys4Q",
+        "layout_label": "title",
+        "text": "PAINSTAKING RESTORATION IS A CALLING"
+      }
+    },
+    {
+      "article_id": "1c42h",
+      "chains": [
+        "nnFSA"
+      ],
+      "merged_by_chain": false,
+      "pages": [
+        5,
+        6,
+        7
+      ],
+      "paragraphs": [
+        {
+          "debug_id": "o6f4J",
+          "page": 5
+        },
+        {
+          "debug_id": "MGKY4",
+          "page": 5
+        },
+        {
+          "debug_id": "NPLZi",
+          "page": 5
+        },
+        {
+          "debug_id": "PmmRo",
+          "page": 5
+        },
+        {
+          "debug_id": "YL5zk",
+          "page": 5
+        },
+        {
+          "debug_id": "ceMuq",
+          "page": 5
+        },
+        {
+          "debug_id": "GdL9x",
+          "page": 5
+        },
+        {
+          "debug_id": "TgbA3",
+          "page": 5
+        },
+        {
+          "debug_id": "AYpbk",
+          "page": 5
+        },
+        {
+          "debug_id": "7VLii",
+          "page": 5
+        },
+        {
+          "debug_id": "F83JW",
+          "page": 5
+        },
+        {
+          "debug_id": "fe6R6",
+          "page": 5
+        },
+        {
+          "debug_id": "R5mSD",
+          "page": 5
+        },
+        {
+          "debug_id": "Re2iN",
+          "page": 5
+        },
+        {
+          "debug_id": "y9UP8",
+          "page": 5
+        },
+        {
+          "debug_id": "NCJbQ",
+          "page": 5
+        },
+        {
+          "debug_id": "KkMWJ",
+          "page": 5
+        },
+        {
+          "debug_id": "Wc9rf",
+          "page": 5
+        },
+        {
+          "debug_id": "oDi8N",
+          "page": 5
+        },
+        {
+          "debug_id": "sikFf",
+          "page": 5
+        },
+        {
+          "debug_id": "coA1R",
+          "page": 6
+        },
+        {
+          "debug_id": "ikKvx",
+          "page": 6
+        },
+        {
+          "debug_id": "e1gXN",
+          "page": 6
+        },
+        {
+          "debug_id": "bzfSm",
+          "page": 6
+        },
+        {
+          "debug_id": "8nQSi",
+          "page": 6
+        },
+        {
+          "debug_id": "Ve1Gw",
+          "page": 6
+        },
+        {
+          "debug_id": "TGyC2",
+          "page": 6
+        },
+        {
+          "debug_id": "4WvJy",
+          "page": 6
+        },
+        {
+          "debug_id": "JpaRa",
+          "page": 6
+        },
+        {
+          "debug_id": "1RLxh",
+          "page": 6
+        },
+        {
+          "debug_id": "GwhAf",
+          "page": 6
+        },
+        {
+          "debug_id": "2YDPB",
+          "page": 6
+        },
+        {
+          "debug_id": "w5uL2",
+          "page": 6
+        },
+        {
+          "debug_id": "t7A12",
+          "page": 6
+        },
+        {
+          "debug_id": "ABWzb",
+          "page": 7
+        },
+        {
+          "debug_id": "L8yyp",
+          "page": 7
+        },
+        {
+          "debug_id": "6geYg",
+          "page": 7
+        },
+        {
+          "debug_id": "NgE6H",
+          "page": 7
+        },
+        {
+          "debug_id": "R4U9F",
+          "page": 7
+        },
+        {
+          "debug_id": "NeRKL",
+          "page": 7
+        },
+        {
+          "debug_id": "Uf5hH",
+          "page": 7
+        },
+        {
+          "debug_id": "DKt6c",
+          "page": 7
+        },
+        {
+          "debug_id": "Se6Q5",
+          "page": 7
+        },
+        {
+          "debug_id": "vas8M",
+          "page": 7
+        },
+        {
+          "debug_id": "NZm7R",
+          "page": 7
+        },
+        {
+          "debug_id": "mywhf",
+          "page": 7
+        },
+        {
+          "debug_id": "RAFu8",
+          "page": 7
+        },
+        {
+          "debug_id": "JHjpU",
+          "page": 7
+        },
+        {
+          "debug_id": "xBF9Z",
+          "page": 7
+        },
+        {
+          "debug_id": "yaUTj",
+          "page": 7
+        },
+        {
+          "debug_id": "dx91d",
+          "page": 7
+        },
+        {
+          "debug_id": "FJhVv",
+          "page": 7
+        },
+        {
+          "debug_id": "MCg4h",
+          "page": 7
+        },
+        {
+          "debug_id": "XDd62",
+          "page": 7
+        },
+        {
+          "debug_id": "wgwhy",
+          "page": 7
+        }
+      ],
+      "start_page": 5,
+      "title": {
+        "debug_id": "fe6R6",
+        "layout_label": "title",
+        "text": "Tawfiq Al Juhani drove at great speed, though it was hard to tell exactly how fast be-"
+      }
+    },
+    {
+      "article_id": "FG8wV",
+      "chains": [],
+      "merged_by_chain": false,
+      "pages": [
+        8
+      ],
+      "paragraphs": [
+        {
+          "debug_id": "vxBQG",
+          "page": 8
+        },
+        {
+          "debug_id": "ySVVt",
+          "page": 8
+        },
+        {
+          "debug_id": "KmMAW",
+          "page": 8
+        },
+        {
+          "debug_id": "KNro9",
+          "page": 8
+        },
+        {
+          "debug_id": "JUtvr",
+          "page": 8
+        },
+        {
+          "debug_id": "58ui7",
+          "page": 8
+        },
+        {
+          "debug_id": "WCzny",
+          "page": 8
+        },
+        {
+          "debug_id": "8pE2n",
+          "page": 8
+        },
+        {
+          "debug_id": "C5Qy5",
+          "page": 8
+        },
+        {
+          "debug_id": "M8MTf",
+          "page": 8
+        },
+        {
+          "debug_id": "wsJSu",
+          "page": 8
+        },
+        {
+          "debug_id": "nY2SD",
+          "page": 8
+        },
+        {
+          "debug_id": "mDeEh",
+          "page": 8
+        },
+        {
+          "debug_id": "RWvUH",
+          "page": 8
+        },
+        {
+          "debug_id": "DjDbD",
+          "page": 8
+        },
+        {
+          "debug_id": "vuako",
+          "page": 8
+        },
+        {
+          "debug_id": "nf9Yz",
+          "page": 8
+        },
+        {
+          "debug_id": "vW2WG",
+          "page": 8
+        }
+      ],
+      "start_page": 8,
+      "title": {
+        "debug_id": "ySVVt",
+        "layout_label": "title",
+        "text": "Reviews"
+      }
+    },
+    {
+      "article_id": "gYxZk",
+      "chains": [],
+      "merged_by_chain": false,
+      "pages": [
+        9
+      ],
+      "paragraphs": [
+        {
+          "debug_id": "84mGL",
+          "page": 9
+        },
+        {
+          "debug_id": "MsMdP",
+          "page": 9
+        },
+        {
+          "debug_id": "rT9om",
+          "page": 9
+        },
+        {
+          "debug_id": "bbk1b",
+          "page": 9
+        },
+        {
+          "debug_id": "VqK4a",
+          "page": 9
+        },
+        {
+          "debug_id": "RirG4",
+          "page": 9
+        },
+        {
+          "debug_id": "cu8ok",
+          "page": 9
+        },
+        {
+          "debug_id": "EZLQF",
+          "page": 9
+        },
+        {
+          "debug_id": "1Li5f",
+          "page": 9
+        },
+        {
+          "debug_id": "hRsKo",
+          "page": 9
+        },
+        {
+          "debug_id": "YWZ7d",
+          "page": 9
+        },
+        {
+          "debug_id": "UkZE3",
+          "page": 9
+        },
+        {
+          "debug_id": "ryi9W",
+          "page": 9
+        },
+        {
+          "debug_id": "VDazz",
+          "page": 9
+        },
+        {
+          "debug_id": "rprc1",
+          "page": 9
+        },
+        {
+          "debug_id": "gYRWD",
+          "page": 9
+        },
+        {
+          "debug_id": "EmJ5N",
+          "page": 9
+        },
+        {
+          "debug_id": "J2DrQ",
+          "page": 9
+        },
+        {
+          "debug_id": "Y3pgs",
+          "page": 9
+        },
+        {
+          "debug_id": "ZE2py",
+          "page": 9
+        }
+      ],
+      "start_page": 9,
+      "title": {
+        "debug_id": "YWZ7d",
+        "layout_label": "title",
+        "text": "Reviews"
+      }
+    }
+  ],
+  "counts": {
+    "articles": 4,
+    "chains": 1,
+    "merged_by_chain": 0,
+    "pages": 9,
+    "unassigned": 3
+  },
+  "pages": [
+    {
+      "article_id": null,
+      "page": 1,
+      "page_kind": "front_cover",
+      "page_kind_conf": 1.0,
+      "reason": "not_chain_eligible",
+      "role": "unassigned"
+    },
+    {
+      "article_id": null,
+      "page": 2,
+      "page_kind": "masthead",
+      "page_kind_conf": 1.0,
+      "reason": "not_chain_eligible",
+      "role": "unassigned"
+    },
+    {
+      "article_id": null,
+      "page": 3,
+      "page_kind": "toc",
+      "page_kind_conf": 0.875,
+      "reason": "not_chain_eligible",
+      "role": "unassigned"
+    },
+    {
+      "article_id": "ZoVnR",
+      "page": 4,
+      "page_kind": "article_body",
+      "page_kind_conf": 1.0,
+      "reason": null,
+      "role": "member"
+    },
+    {
+      "article_id": "1c42h",
+      "page": 5,
+      "page_kind": "article_opener",
+      "page_kind_conf": 0.875,
+      "reason": null,
+      "role": "opens"
+    },
+    {
+      "article_id": "1c42h",
+      "page": 6,
+      "page_kind": "article_body",
+      "page_kind_conf": 1.0,
+      "reason": null,
+      "role": "member"
+    },
+    {
+      "article_id": "1c42h",
+      "page": 7,
+      "page_kind": "article_body",
+      "page_kind_conf": 1.0,
+      "reason": null,
+      "role": "member"
+    },
+    {
+      "article_id": "FG8wV",
+      "page": 8,
+      "page_kind": "article_opener",
+      "page_kind_conf": 0.875,
+      "reason": null,
+      "role": "opens"
+    },
+    {
+      "article_id": "gYxZk",
+      "page": 9,
+      "page_kind": "article_opener",
+      "page_kind_conf": 0.875,
+      "reason": null,
+      "role": "opens"
+    }
+  ],
+  "title_labels": [
+    "title",
+    "paragraph_title"
+  ],
+  "unassigned": [
+    {
+      "page": 1,
+      "page_kind": "front_cover",
+      "reason": "not_chain_eligible"
+    },
+    {
+      "page": 2,
+      "page_kind": "masthead",
+      "reason": "not_chain_eligible"
+    },
+    {
+      "page": 3,
+      "page_kind": "toc",
+      "reason": "not_chain_eligible"
+    }
+  ]
+}

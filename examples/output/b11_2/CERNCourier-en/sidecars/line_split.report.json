@@ -1,0 +1,521 @@
+{
+  "exemptions": [
+    {
+      "debug_id": "JT2q3",
+      "heterogeneous": false,
+      "lines": 2,
+      "mean_line_chars": 24.0,
+      "page": 2,
+      "paragraph": "p2#3",
+      "reason": "uniform_styling"
+    },
+    {
+      "debug_id": "pBRkD",
+      "heterogeneous": false,
+      "lines": 3,
+      "mean_line_chars": 39.3,
+      "page": 2,
+      "paragraph": "p2#5",
+      "reason": "uniform_styling"
+    },
+    {
+      "debug_id": "dmuPX",
+      "heterogeneous": false,
+      "lines": 5,
+      "mean_line_chars": 11.8,
+      "page": 2,
+      "paragraph": "p2#46",
+      "reason": "uniform_styling"
+    },
+    {
+      "debug_id": "GS7NK",
+      "heterogeneous": false,
+      "lines": 2,
+      "mean_line_chars": 15.5,
+      "page": 2,
+      "paragraph": "p2#63",
+      "reason": "uniform_styling"
+    },
+    {
+      "debug_id": "x3nMo",
+      "heterogeneous": false,
+      "lines": 2,
+      "mean_line_chars": 37.0,
+      "page": 2,
+      "paragraph": "p2#65",
+      "reason": "uniform_styling"
+    },
+    {
+      "debug_id": "AwHPN",
+      "heterogeneous": false,
+      "lines": 2,
+      "mean_line_chars": 28.5,
+      "page": 2,
+      "paragraph": "p2#67",
+      "reason": "uniform_styling"
+    },
+    {
+      "debug_id": "5oZxb",
+      "heterogeneous": false,
+      "lines": 2,
+      "mean_line_chars": 31.5,
+      "page": 2,
+      "paragraph": "p2#68",
+      "reason": "uniform_styling"
+    },
+    {
+      "debug_id": "bEKN4",
+      "heterogeneous": false,
+      "lines": 2,
+      "mean_line_chars": 10.0,
+      "page": 2,
+      "paragraph": "p2#70",
+      "reason": "uniform_styling"
+    }
+  ],
+  "max_line_chars": 47.0,
+  "min_line_characters": 1,
+  "min_text_length": 5,
+  "pages": [
+    {
+      "declared": false,
+      "exempt_paragraphs": 0,
+      "lines_after": 41,
+      "lines_before": 41,
+      "page": 1,
+      "paragraphs": 21,
+      "split_paragraphs": 0
+    },
+    {
+      "declared": true,
+      "exempt_paragraphs": 8,
+      "lines_after": 149,
+      "lines_before": 149,
+      "page": 2,
+      "paragraphs": 127,
+      "split_paragraphs": 18
+    },
+    {
+      "declared": false,
+      "exempt_paragraphs": 0,
+      "lines_after": 183,
+      "lines_before": 183,
+      "page": 3,
+      "paragraphs": 52,
+      "split_paragraphs": 0
+    },
+    {
+      "declared": false,
+      "exempt_paragraphs": 0,
+      "lines_after": 164,
+      "lines_before": 164,
+      "page": 4,
+      "paragraphs": 45,
+      "split_paragraphs": 0
+    }
+  ],
+  "policy_flags": [
+    "preserve_line_structure"
+  ],
+  "require_style_heterogeneity": true,
+  "short_lines": [
+    {
+      "debug_id": "j1XTc#L4",
+      "page": 2,
+      "paragraph": "p2#92",
+      "text": "45"
+    },
+    {
+      "debug_id": "fYvdk#L3",
+      "page": 2,
+      "paragraph": "p2#102",
+      "text": "39"
+    }
+  ],
+  "splits": [
+    {
+      "characters": 23,
+      "debug_id": "jCnQb",
+      "line_paragraphs": [
+        "jCnQb#L0",
+        "jCnQb#L1"
+      ],
+      "lines": 2,
+      "mean_line_chars": 11.5,
+      "page": 2,
+      "paragraph": "p2#6",
+      "record_lines": [
+        1,
+        1
+      ],
+      "records": 2,
+      "restyled_records": 1
+    },
+    {
+      "characters": 31,
+      "debug_id": "tSJXJ",
+      "line_paragraphs": [
+        "tSJXJ#L0",
+        "tSJXJ#L1"
+      ],
+      "lines": 2,
+      "mean_line_chars": 14.5,
+      "page": 2,
+      "paragraph": "p2#19",
+      "record_lines": [
+        1,
+        1
+      ],
+      "records": 2,
+      "restyled_records": 1
+    },
+    {
+      "characters": 52,
+      "debug_id": "ueeW7",
+      "line_paragraphs": [
+        "ueeW7#L0",
+        "ueeW7#L1",
+        "ueeW7#L2"
+      ],
+      "lines": 3,
+      "mean_line_chars": 15.7,
+      "page": 2,
+      "paragraph": "p2#20",
+      "record_lines": [
+        1,
+        1,
+        1
+      ],
+      "records": 3,
+      "restyled_records": 3
+    },
+    {
+      "characters": 22,
+      "debug_id": "MCePs",
+      "line_paragraphs": [
+        "MCePs#L0",
+        "MCePs#L1"
+      ],
+      "lines": 2,
+      "mean_line_chars": 10.0,
+      "page": 2,
+      "paragraph": "p2#21",
+      "record_lines": [
+        1,
+        1
+      ],
+      "records": 2,
+      "restyled_records": 1
+    },
+    {
+      "characters": 44,
+      "debug_id": "GFbwU",
+      "line_paragraphs": [
+        "GFbwU#L0",
+        "GFbwU#L1",
+        "GFbwU#L2"
+      ],
+      "lines": 3,
+      "mean_line_chars": 13.7,
+      "page": 2,
+      "paragraph": "p2#22",
+      "record_lines": [
+        1,
+        1,
+        1
+      ],
+      "records": 3,
+      "restyled_records": 3
+    },
+    {
+      "characters": 65,
+      "debug_id": "iJ1iy",
+      "line_paragraphs": [
+        "iJ1iy#L0",
+        "iJ1iy#L1",
+        "iJ1iy#L2"
+      ],
+      "lines": 3,
+      "mean_line_chars": 18.7,
+      "page": 2,
+      "paragraph": "p2#33",
+      "record_lines": [
+        1,
+        1,
+        1
+      ],
+      "records": 3,
+      "restyled_records": 3
+    },
+    {
+      "characters": 54,
+      "debug_id": "Nt6kW",
+      "line_paragraphs": [
+        "Nt6kW#L0",
+        "Nt6kW#L1",
+        "Nt6kW#L2"
+      ],
+      "lines": 3,
+      "mean_line_chars": 15.3,
+      "page": 2,
+      "paragraph": "p2#39",
+      "record_lines": [
+        1,
+        1,
+        1
+      ],
+      "records": 3,
+      "restyled_records": 3
+    },
+    {
+      "characters": 127,
+      "debug_id": "pve4c",
+      "line_paragraphs": [
+        "pve4c#L0",
+        "pve4c#L1",
+        "pve4c#L2",
+        "pve4c#L3",
+        "pve4c#L4",
+        "pve4c#L5",
+        "pve4c#L6"
+      ],
+      "lines": 7,
+      "mean_line_chars": 15.9,
+      "page": 2,
+      "paragraph": "p2#44",
+      "record_lines": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "records": 7,
+      "restyled_records": 7
+    },
+    {
+      "characters": 69,
+      "debug_id": "Gz5nq",
+      "line_paragraphs": [
+        "Gz5nq#L0",
+        "Gz5nq#L1",
+        "Gz5nq#L2"
+      ],
+      "lines": 3,
+      "mean_line_chars": 19.3,
+      "page": 2,
+      "paragraph": "p2#48",
+      "record_lines": [
+        1,
+        1,
+        1
+      ],
+      "records": 3,
+      "restyled_records": 3
+    },
+    {
+      "characters": 61,
+      "debug_id": "7qqdw",
+      "line_paragraphs": [
+        "7qqdw#L0",
+        "7qqdw#L1",
+        "7qqdw#L2"
+      ],
+      "lines": 3,
+      "mean_line_chars": 17.7,
+      "page": 2,
+      "paragraph": "p2#49",
+      "record_lines": [
+        1,
+        1,
+        1
+      ],
+      "records": 3,
+      "restyled_records": 3
+    },
+    {
+      "characters": 41,
+      "debug_id": "aQHWw",
+      "line_paragraphs": [
+        "aQHWw#L0",
+        "aQHWw#L1"
+      ],
+      "lines": 2,
+      "mean_line_chars": 18.5,
+      "page": 2,
+      "paragraph": "p2#51",
+      "record_lines": [
+        1,
+        1
+      ],
+      "records": 2,
+      "restyled_records": 0
+    },
+    {
+      "characters": 35,
+      "debug_id": "tYZdd",
+      "line_paragraphs": [
+        "tYZdd#L0",
+        "tYZdd#L1"
+      ],
+      "lines": 2,
+      "mean_line_chars": 15.5,
+      "page": 2,
+      "paragraph": "p2#53",
+      "record_lines": [
+        1,
+        1
+      ],
+      "records": 2,
+      "restyled_records": 2
+    },
+    {
+      "characters": 125,
+      "debug_id": "QHFQ5",
+      "line_paragraphs": [
+        "QHFQ5#L0",
+        "QHFQ5#L1"
+      ],
+      "lines": 7,
+      "mean_line_chars": 16.0,
+      "page": 2,
+      "paragraph": "p2#61",
+      "record_lines": [
+        3,
+        4
+      ],
+      "records": 2,
+      "restyled_records": 2
+    },
+    {
+      "characters": 80,
+      "debug_id": "j1XTc",
+      "line_paragraphs": [
+        "j1XTc#L0",
+        "j1XTc#L1",
+        "j1XTc#L2",
+        "j1XTc#L3",
+        "j1XTc#L4"
+      ],
+      "lines": 5,
+      "mean_line_chars": 14.2,
+      "page": 2,
+      "paragraph": "p2#64",
+      "record_lines": [
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "records": 5,
+      "restyled_records": 4
+    },
+    {
+      "characters": 73,
+      "debug_id": "fYvdk",
+      "line_paragraphs": [
+        "fYvdk#L0",
+        "fYvdk#L1",
+        "fYvdk#L2",
+        "fYvdk#L3"
+      ],
+      "lines": 4,
+      "mean_line_chars": 16.0,
+      "page": 2,
+      "paragraph": "p2#71",
+      "record_lines": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "records": 4,
+      "restyled_records": 3
+    },
+    {
+      "characters": 113,
+      "debug_id": "g7eQq",
+      "line_paragraphs": [
+        "g7eQq#L0",
+        "g7eQq#L1"
+      ],
+      "lines": 7,
+      "mean_line_chars": 14.4,
+      "page": 2,
+      "paragraph": "p2#72",
+      "record_lines": [
+        3,
+        4
+      ],
+      "records": 2,
+      "restyled_records": 2
+    },
+    {
+      "characters": 105,
+      "debug_id": "cYAqw",
+      "line_paragraphs": [
+        "cYAqw#L0",
+        "cYAqw#L1",
+        "cYAqw#L2",
+        "cYAqw#L3",
+        "cYAqw#L4",
+        "cYAqw#L5",
+        "cYAqw#L6"
+      ],
+      "lines": 7,
+      "mean_line_chars": 13.6,
+      "page": 2,
+      "paragraph": "p2#74",
+      "record_lines": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "records": 7,
+      "restyled_records": 7
+    },
+    {
+      "characters": 107,
+      "debug_id": "LxB39",
+      "line_paragraphs": [
+        "LxB39#L0",
+        "LxB39#L1",
+        "LxB39#L2",
+        "LxB39#L3",
+        "LxB39#L4",
+        "LxB39#L5"
+      ],
+      "lines": 6,
+      "mean_line_chars": 15.3,
+      "page": 2,
+      "paragraph": "p2#77",
+      "record_lines": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "records": 6,
+      "restyled_records": 6
+    }
+  ],
+  "switch": "magazine_line_structure",
+  "totals": {
+    "declared_pages": 1,
+    "exempt_paragraphs": 8,
+    "line_paragraphs": 71,
+    "pages": 4,
+    "short_lines": 2,
+    "split_paragraphs": 18
+  },
+  "window_switch": "magazine_page_classify"
+}

@@ -1,0 +1,1302 @@
+{
+  "counts": {
+    "by_kind": {
+      "fragment_cluster": 9,
+      "text_text_collision": 2,
+      "untranslated_residue": 21
+    },
+    "issues": 32
+  },
+  "detector_records": {
+    "text_text_collision": [
+      {
+        "candidate_route": "iou_and_coverage",
+        "coverage": 1.0,
+        "exempt_route": "source_iou_and_source_coverage",
+        "iou": 1.0,
+        "page": 1,
+        "paragraphs": [
+          "p1#7",
+          "p1#9"
+        ],
+        "source_coverage": 1.0,
+        "source_iou": 1.0,
+        "verdict": "the_source_layout_already_overlapped"
+      },
+      {
+        "candidate_route": "iou_and_coverage",
+        "coverage": 1.0,
+        "exempt_route": "source_iou_and_source_coverage",
+        "iou": 1.0,
+        "page": 1,
+        "paragraphs": [
+          "p1#8",
+          "p1#10"
+        ],
+        "source_coverage": 1.0,
+        "source_iou": 1.0,
+        "verdict": "the_source_layout_already_overlapped"
+      },
+      {
+        "candidate_route": "iou_and_coverage",
+        "coverage": 1.0,
+        "exempt_route": "source_iou_and_source_coverage",
+        "iou": 1.0,
+        "page": 2,
+        "paragraphs": [
+          "p2#30",
+          "p2#32"
+        ],
+        "source_coverage": 1.0,
+        "source_iou": 1.0,
+        "verdict": "the_source_layout_already_overlapped"
+      },
+      {
+        "candidate_route": "iou_and_coverage",
+        "coverage": 1.0,
+        "exempt_route": "source_iou_and_source_coverage",
+        "iou": 1.0,
+        "page": 2,
+        "paragraphs": [
+          "p2#121",
+          "p2#123"
+        ],
+        "source_coverage": 1.0,
+        "source_iou": 1.0,
+        "verdict": "the_source_layout_already_overlapped"
+      },
+      {
+        "candidate_route": "iou_and_coverage",
+        "coverage": 1.0,
+        "exempt_route": "source_iou_and_source_coverage",
+        "iou": 1.0,
+        "page": 2,
+        "paragraphs": [
+          "p2#122",
+          "p2#124"
+        ],
+        "source_coverage": 1.0,
+        "source_iou": 1.0,
+        "verdict": "the_source_layout_already_overlapped"
+      },
+      {
+        "candidate_route": "coverage",
+        "coverage": 0.7119,
+        "exempt_route": "source_iou_and_source_coverage",
+        "iou": 0.098,
+        "page": 3,
+        "paragraphs": [
+          "p3#2",
+          "p3#48"
+        ],
+        "source_coverage": 0.7119,
+        "source_iou": 0.098,
+        "verdict": "the_source_layout_already_overlapped"
+      },
+      {
+        "candidate_route": "coverage",
+        "coverage": 0.7119,
+        "exempt_route": "source_iou_and_source_coverage",
+        "iou": 0.098,
+        "page": 3,
+        "paragraphs": [
+          "p3#2",
+          "p3#50"
+        ],
+        "source_coverage": 0.7119,
+        "source_iou": 0.098,
+        "verdict": "the_source_layout_already_overlapped"
+      },
+      {
+        "candidate_route": "coverage",
+        "coverage": 0.4528,
+        "exempt_route": "source_iou_and_source_coverage",
+        "iou": 0.1476,
+        "page": 3,
+        "paragraphs": [
+          "p3#3",
+          "p3#51"
+        ],
+        "source_coverage": 0.5572,
+        "source_iou": 0.2901,
+        "verdict": "the_source_layout_already_overlapped"
+      },
+      {
+        "candidate_route": "iou_and_coverage",
+        "coverage": 0.9846,
+        "exempt_route": "source_iou_and_source_coverage",
+        "iou": 0.5165,
+        "page": 3,
+        "paragraphs": [
+          "p3#35",
+          "p3#40"
+        ],
+        "source_coverage": 1.0,
+        "source_iou": 0.7091,
+        "verdict": "the_source_layout_already_overlapped"
+      },
+      {
+        "candidate_route": "coverage",
+        "coverage": 0.4661,
+        "exempt_route": "source_iou_and_source_coverage",
+        "iou": 0.0172,
+        "page": 3,
+        "paragraphs": [
+          "p3#44",
+          "p3#46"
+        ],
+        "source_coverage": 1.0,
+        "source_iou": 0.0527,
+        "verdict": "the_source_layout_already_overlapped"
+      },
+      {
+        "candidate_route": "coverage",
+        "coverage": 0.4461,
+        "exempt_route": "source_iou_and_source_coverage",
+        "iou": 0.0556,
+        "page": 3,
+        "paragraphs": [
+          "p3#44",
+          "p3#51"
+        ],
+        "source_coverage": 0.4461,
+        "source_iou": 0.0556,
+        "verdict": "the_source_layout_already_overlapped"
+      },
+      {
+        "candidate_route": "iou_and_coverage",
+        "coverage": 1.0,
+        "exempt_route": "source_iou_and_source_coverage",
+        "iou": 1.0,
+        "page": 3,
+        "paragraphs": [
+          "p3#45",
+          "p3#47"
+        ],
+        "source_coverage": 1.0,
+        "source_iou": 1.0,
+        "verdict": "the_source_layout_already_overlapped"
+      },
+      {
+        "candidate_route": "iou_and_coverage",
+        "coverage": 1.0,
+        "exempt_route": "source_iou_and_source_coverage",
+        "iou": 1.0,
+        "page": 3,
+        "paragraphs": [
+          "p3#48",
+          "p3#50"
+        ],
+        "source_coverage": 1.0,
+        "source_iou": 1.0,
+        "verdict": "the_source_layout_already_overlapped"
+      },
+      {
+        "candidate_route": "coverage",
+        "coverage": 1.0,
+        "exempt_route": "source_coverage",
+        "iou": 0.0205,
+        "page": 3,
+        "paragraphs": [
+          "p3#49",
+          "p3#51"
+        ],
+        "source_coverage": 1.0,
+        "source_iou": 0.0205,
+        "verdict": "the_source_layout_already_overlapped"
+      },
+      {
+        "candidate_route": "coverage",
+        "coverage": 0.4736,
+        "exempt_route": "source_iou_and_source_coverage",
+        "iou": 0.1513,
+        "page": 4,
+        "paragraphs": [
+          "p4#2",
+          "p4#44"
+        ],
+        "source_coverage": 0.5756,
+        "source_iou": 0.295,
+        "verdict": "the_source_layout_already_overlapped"
+      },
+      {
+        "candidate_route": "coverage",
+        "coverage": 0.5548,
+        "exempt_route": "source_iou_and_source_coverage",
+        "iou": 0.0464,
+        "page": 4,
+        "paragraphs": [
+          "p4#23",
+          "p4#44"
+        ],
+        "source_coverage": 0.5325,
+        "source_iou": 0.065,
+        "verdict": "the_source_layout_already_overlapped"
+      },
+      {
+        "candidate_route": "iou_and_coverage",
+        "coverage": 1.0,
+        "exempt_route": "source_iou_and_source_coverage",
+        "iou": 1.0,
+        "page": 4,
+        "paragraphs": [
+          "p4#24",
+          "p4#26"
+        ],
+        "source_coverage": 1.0,
+        "source_iou": 1.0,
+        "verdict": "the_source_layout_already_overlapped"
+      },
+      {
+        "candidate_route": "iou_and_coverage",
+        "coverage": 1.0,
+        "exempt_route": "source_iou_and_source_coverage",
+        "iou": 1.0,
+        "page": 4,
+        "paragraphs": [
+          "p4#39",
+          "p4#42"
+        ],
+        "source_coverage": 1.0,
+        "source_iou": 1.0,
+        "verdict": "the_source_layout_already_overlapped"
+      },
+      {
+        "candidate_route": "coverage",
+        "coverage": 1.0,
+        "exempt_route": "source_coverage",
+        "iou": 0.0125,
+        "page": 4,
+        "paragraphs": [
+          "p4#41",
+          "p4#44"
+        ],
+        "source_coverage": 1.0,
+        "source_iou": 0.0125,
+        "verdict": "the_source_layout_already_overlapped"
+      }
+    ]
+  },
+  "document_detectors": [
+    "escalation_surfacing"
+  ],
+  "issues": [
+    {
+      "detected_at_iteration": 1,
+      "detector": "fragment_cluster",
+      "evidence": {
+        "debug_ids": [
+          "Xaw6R",
+          "3XvZ2",
+          "vqyV4",
+          "2CNrp",
+          "w7LH1",
+          "KQUUc",
+          "F6w2X",
+          "JCZNP",
+          "L9fRH"
+        ],
+        "excerpt": "• 束流电荷和电流监测器 / • 束流损失监测器和机器保护 / • 束流位置监测器 / • 横向轮廓和发射度监测器 / • 纵向诊断和同步 / • 反馈系统和束",
+        "layout_labels": [
+          "plain text"
+        ],
+        "max_chars": 40,
+        "member_count": 9,
+        "min_cluster": 3
+      },
+      "geometry": {
+        "x": 19.69246015625,
+        "x2": 264.16583334375,
+        "y": 239.21000000000018,
+        "y2": 368.57489999999996
+      },
+      "id": "fragment_cluster:p2:p2#10+p2#11+p2#12+p2#13+p2#14+p2#15+p2#16+p2#17+p2#18",
+      "kind": "fragment_cluster",
+      "page": 2,
+      "paragraph_refs": [
+        "p2#10",
+        "p2#11",
+        "p2#12",
+        "p2#13",
+        "p2#14",
+        "p2#15",
+        "p2#16",
+        "p2#17",
+        "p2#18"
+      ],
+      "severity": "low"
+    },
+    {
+      "detected_at_iteration": 1,
+      "detector": "fragment_cluster",
+      "evidence": {
+        "debug_ids": [
+          "Qw8Yy",
+          "rQQUe",
+          "eEiH2",
+          "Nt6kW#L0",
+          "Nt6kW#L1",
+          "Nt6kW#L2"
+        ],
+        "excerpt": "• 欧洲战略 / • 第三阶段的结束 / • arXiv关于人工智能的规则 / • 反氢脚趾 / 这行• 热启动 / 用于集群。7",
+        "layout_labels": [
+          "plain text"
+        ],
+        "max_chars": 40,
+        "member_count": 6,
+        "min_cluster": 3
+      },
+      "geometry": {
+        "x": 545.8393809261719,
+        "x2": 611.3240719789063,
+        "y": 383.4809452,
+        "y2": 436.8476428710938
+      },
+      "id": "fragment_cluster:p2:p2#45+p2#46+p2#47+p2#48+p2#49+p2#50",
+      "kind": "fragment_cluster",
+      "page": 2,
+      "paragraph_refs": [
+        "p2#45",
+        "p2#46",
+        "p2#47",
+        "p2#48",
+        "p2#49",
+        "p2#50"
+      ],
+      "severity": "low"
+    },
+    {
+      "detected_at_iteration": 1,
+      "detector": "fragment_cluster",
+      "evidence": {
+        "debug_ids": [
+          "pve4c#L2",
+          "pve4c#L3",
+          "pve4c#L4"
+        ],
+        "excerpt": "芭芭拉·斯托拉奇现在 / 应用她所磨练的分析 / 思维方式于",
+        "layout_labels": [
+          "plain text"
+        ],
+        "max_chars": 40,
+        "member_count": 3,
+        "min_cluster": 3
+      },
+      "geometry": {
+        "x": 818.5182116699218,
+        "x2": 896.734371283203,
+        "y": 392.1276191,
+        "y2": 417.9509759765625
+      },
+      "id": "fragment_cluster:p2:p2#57+p2#58+p2#59",
+      "kind": "fragment_cluster",
+      "page": 2,
+      "paragraph_refs": [
+        "p2#57",
+        "p2#58",
+        "p2#59"
+      ],
+      "severity": "low"
+    },
+    {
+      "detected_at_iteration": 1,
+      "detector": "fragment_cluster",
+      "evidence": {
+        "debug_ids": [
+          "Gz5nq#L0",
+          "Gz5nq#L1",
+          "Gz5nq#L2",
+          "7qqdw#L0"
+        ],
+        "excerpt": "• 核中的部分子 / 边缘 • W玻色子衰变 / 到三个带电强子 / • 新双粲",
+        "layout_labels": [
+          "plain text"
+        ],
+        "max_chars": 40,
+        "member_count": 4,
+        "min_cluster": 3
+      },
+      "geometry": {
+        "x": 636.434953586719,
+        "x2": 716.4442058964844,
+        "y": 402.02937130000004,
+        "y2": 437.1886849121094
+      },
+      "id": "fragment_cluster:p2:p2#65+p2#66+p2#67+p2#68",
+      "kind": "fragment_cluster",
+      "page": 2,
+      "paragraph_refs": [
+        "p2#65",
+        "p2#66",
+        "p2#67",
+        "p2#68"
+      ],
+      "severity": "low"
+    },
+    {
+      "detected_at_iteration": 1,
+      "detector": "fragment_cluster",
+      "evidence": {
+        "debug_ids": [
+          "aQHWw#L0",
+          "aQHWw#L1",
+          "FRE7s",
+          "tYZdd#L0",
+          "tYZdd#L1"
+        ],
+        "excerpt": "• 量子可观测量 / 用于对撞机物理 / • 普朗克会议 / • IPAC’26 • 量子色动力学 / 制图师聚集",
+        "layout_labels": [
+          "plain text"
+        ],
+        "max_chars": 40,
+        "member_count": 5,
+        "min_cluster": 3
+      },
+      "geometry": {
+        "x": 727.499216526172,
+        "x2": 803.0558373964844,
+        "y": 392.70384520000005,
+        "y2": 437.1886849121094
+      },
+      "id": "fragment_cluster:p2:p2#72+p2#73+p2#74+p2#75+p2#76",
+      "kind": "fragment_cluster",
+      "page": 2,
+      "paragraph_refs": [
+        "p2#72",
+        "p2#73",
+        "p2#74",
+        "p2#75",
+        "p2#76"
+      ],
+      "severity": "low"
+    },
+    {
+      "detected_at_iteration": 1,
+      "detector": "fragment_cluster",
+      "evidence": {
+        "debug_ids": [
+          "pWvCY",
+          "fdSUq",
+          "bP4Yv"
+        ],
+        "excerpt": "• 伯纳德·罗伊斯·弗伦奇 / • 马文·马沙克 / • 卢万基",
+        "layout_labels": [
+          "plain text"
+        ],
+        "max_chars": 40,
+        "member_count": 3,
+        "min_cluster": 3
+      },
+      "geometry": {
+        "x": 909.9361540039063,
+        "x2": 985.575496598047,
+        "y": 411.35727130000004,
+        "y2": 437.18547597656254
+      },
+      "id": "fragment_cluster:p2:p2#79+p2#80+p2#81",
+      "kind": "fragment_cluster",
+      "page": 2,
+      "paragraph_refs": [
+        "p2#79",
+        "p2#80",
+        "p2#81"
+      ],
+      "severity": "low"
+    },
+    {
+      "detected_at_iteration": 1,
+      "detector": "fragment_cluster",
+      "evidence": {
+        "debug_ids": [
+          "j1XTc#L0",
+          "j1XTc#L1",
+          "j1XTc#L2",
+          "j1XTc#L3"
+        ],
+        "excerpt": "• 不一致 • 中微子 / 物理学：学生的 / 指南 • 伊斯兰教与 / 现代宇宙学。",
+        "layout_labels": [
+          "plain text"
+        ],
+        "max_chars": 40,
+        "member_count": 4,
+        "min_cluster": 3
+      },
+      "geometry": {
+        "x": 727.3995951843751,
+        "x2": 808.1405268902344,
+        "y": 148.1171452,
+        "y2": 183.27077597656248
+      },
+      "id": "fragment_cluster:p2:p2#88+p2#89+p2#90+p2#91",
+      "kind": "fragment_cluster",
+      "page": 2,
+      "paragraph_refs": [
+        "p2#88",
+        "p2#89",
+        "p2#90",
+        "p2#91"
+      ],
+      "severity": "low"
+    },
+    {
+      "detected_at_iteration": 1,
+      "detector": "fragment_cluster",
+      "evidence": {
+        "debug_ids": [
+          "cYAqw#L3",
+          "cYAqw#L4",
+          "cYAqw#L5",
+          "cYAqw#L6"
+        ],
+        "excerpt": "第四届国际 / 关于研讨会 / 粒子历史 / 。22",
+        "layout_labels": [
+          "plain text"
+        ],
+        "max_chars": 40,
+        "member_count": 4,
+        "min_cluster": 3
+      },
+      "geometry": {
+        "x": 545.4979585937499,
+        "x2": 605.5365344667969,
+        "y": 260.4815669000001,
+        "y2": 295.63365881210945
+      },
+      "id": "fragment_cluster:p2:p2#109+p2#110+p2#111+p2#112",
+      "kind": "fragment_cluster",
+      "page": 2,
+      "paragraph_refs": [
+        "p2#109",
+        "p2#110",
+        "p2#111",
+        "p2#112"
+      ],
+      "severity": "low"
+    },
+    {
+      "detected_at_iteration": 1,
+      "detector": "fragment_cluster",
+      "evidence": {
+        "debug_ids": [
+          "LxB39#L2",
+          "LxB39#L3",
+          "LxB39#L4",
+          "LxB39#L5"
+        ],
+        "excerpt": "詹姆斯·德瓦恩和埃塔姆 / 诺亚谈探测器 / 追踪μ子的设备 / 在全球范围内。41",
+        "layout_labels": [
+          "plain text"
+        ],
+        "max_chars": 40,
+        "member_count": 4,
+        "min_cluster": 3
+      },
+      "geometry": {
+        "x": 636.3610731933594,
+        "x2": 711.7680755184375,
+        "y": 148.12189300000003,
+        "y2": 183.27077597656248
+      },
+      "id": "fragment_cluster:p2:p2#117+p2#118+p2#119+p2#120",
+      "kind": "fragment_cluster",
+      "page": 2,
+      "paragraph_refs": [
+        "p2#117",
+        "p2#118",
+        "p2#119",
+        "p2#120"
+      ],
+      "severity": "low"
+    },
+    {
+      "detected_at_iteration": 1,
+      "detector": "text_text_collision",
+      "evidence": {
+        "candidate_route": "coverage",
+        "coverage": 0.7427,
+        "debug_ids": [
+          "y9iHD",
+          "8p78k"
+        ],
+        "excerpt": "C",
+        "iou": 0.0986,
+        "layout_labels": [
+          "title",
+          "fallback_line"
+        ],
+        "min_coverage": 0.4,
+        "min_iou": 0.2,
+        "other_excerpt": "CCJulAug26_HI",
+        "source_checkpoint": "checkpoint.06_styles_and_formulas.xml",
+        "source_coverage": 0.0,
+        "source_iou": 0.0,
+        "source_min_coverage": 0.4,
+        "source_min_iou": 0.05,
+        "source_stage": "styles_and_formulas"
+      },
+      "geometry": {
+        "x": 8.4799,
+        "x2": 47.880300000000005,
+        "y": 42.5226,
+        "y2": 87.5226
+      },
+      "id": "text_text_collision:p4:p4#1+p4#39",
+      "kind": "text_text_collision",
+      "page": 4,
+      "paragraph_refs": [
+        "p4#1",
+        "p4#39"
+      ],
+      "severity": "medium"
+    },
+    {
+      "detected_at_iteration": 1,
+      "detector": "text_text_collision",
+      "evidence": {
+        "candidate_route": "coverage",
+        "coverage": 0.7427,
+        "debug_ids": [
+          "y9iHD",
+          "cfNNd"
+        ],
+        "excerpt": "C",
+        "iou": 0.0986,
+        "layout_labels": [
+          "title",
+          "fallback_line"
+        ],
+        "min_coverage": 0.4,
+        "min_iou": 0.2,
+        "other_excerpt": "CCJulAug26_HI",
+        "source_checkpoint": "checkpoint.06_styles_and_formulas.xml",
+        "source_coverage": 0.0,
+        "source_iou": 0.0,
+        "source_min_coverage": 0.4,
+        "source_min_iou": 0.05,
+        "source_stage": "styles_and_formulas"
+      },
+      "geometry": {
+        "x": 8.4799,
+        "x2": 47.880300000000005,
+        "y": 42.5226,
+        "y2": 87.5226
+      },
+      "id": "text_text_collision:p4:p4#1+p4#42",
+      "kind": "text_text_collision",
+      "page": 4,
+      "paragraph_refs": [
+        "p4#1",
+        "p4#42"
+      ],
+      "severity": "medium"
+    },
+    {
+      "detected_at_iteration": 1,
+      "detector": "untranslated_residue",
+      "evidence": {
+        "debug_id": "EE995",
+        "excerpt": "CCJulAug2626_Cover_v22.indd   1 1CCJulAug_Cover_v.indd",
+        "layout_label": "abandon",
+        "min_ratio": 0.6,
+        "residue_chars": 36,
+        "residue_ratio": 1.0,
+        "residue_script": "latin",
+        "script_chars": 36
+      },
+      "geometry": {
+        "x": 520.11752109375,
+        "x2": 592.3240000000001,
+        "y": 72.43220000000001,
+        "y2": 79.9853
+      },
+      "id": "untranslated_residue:p1:p1#6",
+      "kind": "untranslated_residue",
+      "page": 1,
+      "paragraph_refs": [
+        "p1#6"
+      ],
+      "severity": "high"
+    },
+    {
+      "detected_at_iteration": 1,
+      "detector": "untranslated_residue",
+      "evidence": {
+        "debug_id": "4XqZT",
+        "excerpt": "要订阅本杂志，请访问：https://cerncourier.com/p/about-cern-courier",
+        "layout_label": "plain text",
+        "min_ratio": 0.6,
+        "residue_chars": 36,
+        "residue_ratio": 0.8,
+        "residue_script": "latin",
+        "script_chars": 45
+      },
+      "geometry": {
+        "x": 57.91206249999999,
+        "x2": 284.2472781250003,
+        "y": 286.46274374999996,
+        "y2": 312.16196249999996
+      },
+      "id": "untranslated_residue:p1:p1#16",
+      "kind": "untranslated_residue",
+      "page": 1,
+      "paragraph_refs": [
+        "p1#16"
+      ],
+      "severity": "high"
+    },
+    {
+      "detected_at_iteration": 1,
+      "detector": "untranslated_residue",
+      "evidence": {
+        "debug_id": "jCnQb#L1",
+        "excerpt": "IBIC2026@triumf.ca",
+        "layout_label": "plain text",
+        "min_ratio": 0.6,
+        "residue_chars": 12,
+        "residue_ratio": 1.0,
+        "residue_script": "latin",
+        "script_chars": 12
+      },
+      "geometry": {
+        "x": 286.90916875,
+        "x2": 365.46727475625,
+        "y": 138.42155,
+        "y2": 147.77155
+      },
+      "id": "untranslated_residue:p2:p2#7",
+      "kind": "untranslated_residue",
+      "page": 2,
+      "paragraph_refs": [
+        "p2#7"
+      ],
+      "severity": "high"
+    },
+    {
+      "detected_at_iteration": 1,
+      "detector": "untranslated_residue",
+      "evidence": {
+        "debug_id": "o1paS",
+        "excerpt": "indico.jacow.org/event/113/",
+        "layout_label": "fallback_line",
+        "min_ratio": 0.6,
+        "residue_chars": 19,
+        "residue_ratio": 1.0,
+        "residue_script": "latin",
+        "script_chars": 19
+      },
+      "geometry": {
+        "x": 286.90916875,
+        "x2": 395.68548548125,
+        "y": 105.26645,
+        "y2": 115.223688671875
+      },
+      "id": "untranslated_residue:p2:p2#9",
+      "kind": "untranslated_residue",
+      "page": 2,
+      "paragraph_refs": [
+        "p2#9"
+      ],
+      "severity": "high"
+    },
+    {
+      "detected_at_iteration": 1,
+      "detector": "untranslated_residue",
+      "evidence": {
+        "debug_id": "oBaBt",
+        "excerpt": "CJulAug26_pIFC.indd   1",
+        "layout_label": "title",
+        "min_ratio": 0.6,
+        "residue_chars": 15,
+        "residue_ratio": 1.0,
+        "residue_script": "latin",
+        "script_chars": 15
+      },
+      "geometry": {
+        "x": 12.40632109375,
+        "x2": 68.129219921875,
+        "y": 71.56837812500001,
+        "y2": 77.414863671875
+      },
+      "id": "untranslated_residue:p2:p2#33",
+      "kind": "untranslated_residue",
+      "page": 2,
+      "paragraph_refs": [
+        "p2#33"
+      ],
+      "severity": "high"
+    },
+    {
+      "detected_at_iteration": 1,
+      "detector": "untranslated_residue",
+      "evidence": {
+        "debug_id": "81x4q",
+        "excerpt": "CERNCOURIER.COM",
+        "layout_label": "abandon",
+        "min_ratio": 0.6,
+        "residue_chars": 14,
+        "residue_ratio": 1.0,
+        "residue_script": "latin",
+        "script_chars": 14
+      },
+      "geometry": {
+        "x": 545.67236875,
+        "x2": 604.633174075,
+        "y": 747.3771760000001,
+        "y2": 752.589653125
+      },
+      "id": "untranslated_residue:p2:p2#37",
+      "kind": "untranslated_residue",
+      "page": 2,
+      "paragraph_refs": [
+        "p2#37"
+      ],
+      "severity": "high"
+    },
+    {
+      "detected_at_iteration": 1,
+      "detector": "untranslated_residue",
+      "evidence": {
+        "debug_id": "m8Y5T",
+        "excerpt": "P Dinault/CERN",
+        "layout_label": "fallback_line",
+        "min_ratio": 0.6,
+        "residue_chars": 12,
+        "residue_ratio": 1.0,
+        "residue_script": "latin",
+        "script_chars": 12
+      },
+      "geometry": {
+        "x": 814.8292953125001,
+        "x2": 817.9796120000001,
+        "y": 191.5391,
+        "y2": 213.305981375
+      },
+      "id": "untranslated_residue:p2:p2#94",
+      "kind": "untranslated_residue",
+      "page": 2,
+      "paragraph_refs": [
+        "p2#94"
+      ],
+      "severity": "high"
+    },
+    {
+      "detected_at_iteration": 1,
+      "detector": "untranslated_residue",
+      "evidence": {
+        "debug_id": "yW5S3",
+        "excerpt": "CCJulAug26_Conts_v3.in",
+        "layout_label": "abandon",
+        "min_ratio": 0.6,
+        "residue_chars": 16,
+        "residue_ratio": 1.0,
+        "residue_script": "latin",
+        "script_chars": 16
+      },
+      "geometry": {
+        "x": 520.70349375,
+        "x2": 578.400280875,
+        "y": 72.849872,
+        "y2": 79.046121875
+      },
+      "id": "untranslated_residue:p2:p2#121",
+      "kind": "untranslated_residue",
+      "page": 2,
+      "paragraph_refs": [
+        "p2#121"
+      ],
+      "severity": "high"
+    },
+    {
+      "detected_at_iteration": 1,
+      "detector": "untranslated_residue",
+      "evidence": {
+        "debug_id": "D3t2a",
+        "excerpt": "CCJulAug26_Conts_v3.in",
+        "layout_label": "abandon",
+        "min_ratio": 0.6,
+        "residue_chars": 16,
+        "residue_ratio": 1.0,
+        "residue_script": "latin",
+        "script_chars": 16
+      },
+      "geometry": {
+        "x": 520.70349375,
+        "x2": 578.400280875,
+        "y": 72.849872,
+        "y2": 79.046121875
+      },
+      "id": "untranslated_residue:p2:p2#123",
+      "kind": "untranslated_residue",
+      "page": 2,
+      "paragraph_refs": [
+        "p2#123"
+      ],
+      "severity": "high"
+    },
+    {
+      "detected_at_iteration": 1,
+      "detector": "untranslated_residue",
+      "evidence": {
+        "debug_id": "48V8N",
+        "excerpt": "CERNCOURIER.COM",
+        "layout_label": "abandon",
+        "min_ratio": 0.6,
+        "residue_chars": 14,
+        "residue_ratio": 1.0,
+        "residue_script": "latin",
+        "script_chars": 14
+      },
+      "geometry": {
+        "x": 545.67236875,
+        "x2": 604.633174075,
+        "y": 747.401276,
+        "y2": 752.613753125
+      },
+      "id": "untranslated_residue:p3:p3#5",
+      "kind": "untranslated_residue",
+      "page": 3,
+      "paragraph_refs": [
+        "p3#5"
+      ],
+      "severity": "high"
+    },
+    {
+      "detected_at_iteration": 1,
+      "detector": "untranslated_residue",
+      "evidence": {
+        "debug_id": "5oxKH",
+        "excerpt": "www.bergoz.com",
+        "layout_label": "plain text",
+        "min_ratio": 0.6,
+        "residue_chars": 12,
+        "residue_ratio": 1.0,
+        "residue_script": "latin",
+        "script_chars": 12
+      },
+      "geometry": {
+        "x": 394.67265,
+        "x2": 468.38804999999996,
+        "y": 242.35684999999998,
+        "y2": 252.97844999999998
+      },
+      "id": "untranslated_residue:p3:p3#28",
+      "kind": "untranslated_residue",
+      "page": 3,
+      "paragraph_refs": [
+        "p3#28"
+      ],
+      "severity": "high"
+    },
+    {
+      "detected_at_iteration": 1,
+      "detector": "untranslated_residue",
+      "evidence": {
+        "debug_id": "1d6yE",
+        "excerpt": "info@bergoz.com",
+        "layout_label": "abandon",
+        "min_ratio": 0.6,
+        "residue_chars": 13,
+        "residue_ratio": 1.0,
+        "residue_script": "latin",
+        "script_chars": 13
+      },
+      "geometry": {
+        "x": 338.04904999999997,
+        "x2": 411.76444999999995,
+        "y": 136.42134999999996,
+        "y2": 147.04294999999996
+      },
+      "id": "untranslated_residue:p3:p3#30",
+      "kind": "untranslated_residue",
+      "page": 3,
+      "paragraph_refs": [
+        "p3#30"
+      ],
+      "severity": "high"
+    },
+    {
+      "detected_at_iteration": 1,
+      "detector": "untranslated_residue",
+      "evidence": {
+        "debug_id": "x5QYg",
+        "excerpt": "CCJulAug2626_NewsAnalysis_v33.indd   7 7 03CCJulAug_NewsAnalysis_v.indd   /07/20",
+        "layout_label": "abandon",
+        "min_ratio": 0.6,
+        "residue_chars": 50,
+        "residue_ratio": 1.0,
+        "residue_script": "latin",
+        "script_chars": 50
+      },
+      "geometry": {
+        "x": 520.70349375,
+        "x2": 1003.471277125,
+        "y": 79.0757414375,
+        "y2": 80.3852
+      },
+      "id": "untranslated_residue:p3:p3#44",
+      "kind": "untranslated_residue",
+      "page": 3,
+      "paragraph_refs": [
+        "p3#44"
+      ],
+      "severity": "high"
+    },
+    {
+      "detected_at_iteration": 1,
+      "detector": "untranslated_residue",
+      "evidence": {
+        "debug_id": "c97wv",
+        "excerpt": "ul-Aug-Bergoz_colourRL.indd   1",
+        "layout_label": "abandon",
+        "min_ratio": 0.6,
+        "residue_chars": 23,
+        "residue_ratio": 1.0,
+        "residue_script": "latin",
+        "script_chars": 23
+      },
+      "geometry": {
+        "x": 45.21895,
+        "x2": 117.850619921875,
+        "y": 75.3371820625,
+        "y2": 78.13020546874999
+      },
+      "id": "untranslated_residue:p3:p3#49",
+      "kind": "untranslated_residue",
+      "page": 3,
+      "paragraph_refs": [
+        "p3#49"
+      ],
+      "severity": "high"
+    },
+    {
+      "detected_at_iteration": 1,
+      "detector": "untranslated_residue",
+      "evidence": {
+        "debug_id": "zNbY3",
+        "excerpt": "ul-Aug-Bergoz_colourRL.indd   1 30/0623 300623/2026   182026   18://:www.",
+        "layout_label": "abandon",
+        "min_ratio": 0.6,
+        "residue_chars": 26,
+        "residue_ratio": 1.0,
+        "residue_script": "latin",
+        "script_chars": 26
+      },
+      "geometry": {
+        "x": 45.21895,
+        "x2": 777.1921288,
+        "y": 68.70953818359375,
+        "y2": 73.3371820625
+      },
+      "id": "untranslated_residue:p3:p3#51",
+      "kind": "untranslated_residue",
+      "page": 3,
+      "paragraph_refs": [
+        "p3#51"
+      ],
+      "severity": "high"
+    },
+    {
+      "detected_at_iteration": 1,
+      "detector": "untranslated_residue",
+      "evidence": {
+        "debug_id": "qCC2g",
+        "excerpt": "CERNCOURIER.COM",
+        "layout_label": "abandon",
+        "min_ratio": 0.6,
+        "residue_chars": 14,
+        "residue_ratio": 1.0,
+        "residue_script": "latin",
+        "script_chars": 14
+      },
+      "geometry": {
+        "x": 931.38116875,
+        "x2": 990.341974075,
+        "y": 747.4250760000001,
+        "y2": 752.6375531250001
+      },
+      "id": "untranslated_residue:p4:p4#6",
+      "kind": "untranslated_residue",
+      "page": 4,
+      "paragraph_refs": [
+        "p4#6"
+      ],
+      "severity": "high"
+    },
+    {
+      "detected_at_iteration": 1,
+      "detector": "untranslated_residue",
+      "evidence": {
+        "debug_id": "P1BuR",
+        "excerpt": "https://indico.cern.ch/event/1480892/.",
+        "layout_label": "plain text",
+        "min_ratio": 0.6,
+        "residue_chars": 22,
+        "residue_ratio": 1.0,
+        "residue_script": "latin",
+        "script_chars": 22
+      },
+      "geometry": {
+        "x": 739.381319810547,
+        "x2": 866.5342696600001,
+        "y": 131.63976540000002,
+        "y2": 138.90461735156254
+      },
+      "id": "untranslated_residue:p4:p4#20",
+      "kind": "untranslated_residue",
+      "page": 4,
+      "paragraph_refs": [
+        "p4#20"
+      ],
+      "severity": "high"
+    },
+    {
+      "detected_at_iteration": 1,
+      "detector": "untranslated_residue",
+      "evidence": {
+        "debug_id": "M29Et",
+        "excerpt": "CCJulAug2626_HISTORY_v44.indd   25 25 03CCJulAug_HISTORY_v.indd   2026年7月3日",
+        "layout_label": "abandon",
+        "min_ratio": 0.6,
+        "residue_chars": 40,
+        "residue_ratio": 0.9302,
+        "residue_script": "latin",
+        "script_chars": 43
+      },
+      "geometry": {
+        "x": 520.70349375,
+        "x2": 1003.471277125,
+        "y": 72.849572,
+        "y2": 80.38489999999999
+      },
+      "id": "untranslated_residue:p4:p4#23",
+      "kind": "untranslated_residue",
+      "page": 4,
+      "paragraph_refs": [
+        "p4#23"
+      ],
+      "severity": "high"
+    },
+    {
+      "detected_at_iteration": 1,
+      "detector": "untranslated_residue",
+      "evidence": {
+        "debug_id": "w2NSB",
+        "excerpt": "CERNCOURIER.COM",
+        "layout_label": "abandon",
+        "min_ratio": 0.6,
+        "residue_chars": 14,
+        "residue_ratio": 1.0,
+        "residue_script": "latin",
+        "script_chars": 14
+      },
+      "geometry": {
+        "x": 33.64836875,
+        "x2": 92.60917407499998,
+        "y": 747.401276,
+        "y2": 752.613753125
+      },
+      "id": "untranslated_residue:p4:p4#30",
+      "kind": "untranslated_residue",
+      "page": 4,
+      "paragraph_refs": [
+        "p4#30"
+      ],
+      "severity": "high"
+    },
+    {
+      "detected_at_iteration": 1,
+      "detector": "untranslated_residue",
+      "evidence": {
+        "debug_id": "pUJYj",
+        "excerpt": "R Hahn, Fermilab",
+        "layout_label": "fallback_line",
+        "min_ratio": 0.6,
+        "residue_chars": 13,
+        "residue_ratio": 1.0,
+        "residue_script": "latin",
+        "script_chars": 13
+      },
+      "geometry": {
+        "x": 29.0275046875,
+        "x2": 32.814463999999994,
+        "y": 413.8221,
+        "y2": 442.935981825
+      },
+      "id": "untranslated_residue:p4:p4#38",
+      "kind": "untranslated_residue",
+      "page": 4,
+      "paragraph_refs": [
+        "p4#38"
+      ],
+      "severity": "high"
+    },
+    {
+      "detected_at_iteration": 1,
+      "detector": "untranslated_residue",
+      "evidence": {
+        "debug_id": "xE4ED",
+        "excerpt": "STORY_v4.indd   24 03/0743 030743/2026   162026   16://:www.",
+        "layout_label": "abandon",
+        "min_ratio": 0.6,
+        "residue_chars": 13,
+        "residue_ratio": 1.0,
+        "residue_script": "latin",
+        "script_chars": 13
+      },
+      "geometry": {
+        "x": 45.201725125,
+        "x2": 777.1921288,
+        "y": 69.2724053046875,
+        "y2": 80.3851
+      },
+      "id": "untranslated_residue:p4:p4#44",
+      "kind": "untranslated_residue",
+      "page": 4,
+      "paragraph_refs": [
+        "p4#44"
+      ],
+      "severity": "high"
+    }
+  ],
+  "iteration": 1,
+  "language": "zh",
+  "notes": [
+    "text_text_collision: 19 overlapping pair(s) not raised: the_source_layout_already_overlapped"
+  ],
+  "pages_by_detector": {
+    "fragment_cluster": [
+      1,
+      2,
+      4
+    ],
+    "out_of_page": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "text_figure_overlap": [
+      1,
+      3,
+      4
+    ],
+    "text_text_collision": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "untranslated_residue": [
+      1,
+      2,
+      3,
+      4
+    ]
+  },
+  "source_geometry": {
+    "checkpoint": "checkpoint.06_styles_and_formulas.xml",
+    "paragraphs": 202,
+    "stage": "styles_and_formulas"
+  },
+  "translation_performed": true
+}

@@ -1,0 +1,62 @@
+{
+  "observation_1_count_moved": {
+    "b10_5_on_residues": 18,
+    "b11_1_residues": 16,
+    "excerpts_no_longer_present": [
+      "Léala en español",
+      "安德鲁·斯坦利 (Andrew Stanley)",
+      "插图：尚塔尔·贾赫昌 (Chantal Jahchan)"
+    ],
+    "finding": "Two of the three went because they were translated differently, not because anything swallowed them. b11.1 switched person_names from transliterate to translate, and under translate the model no longer appends the source form in parentheses, so the Latin script the residue detector was firing on is simply not written any more. The third is not gone at all: it is the same paragraph carrying one more space, which is observation 2.",
+    "evidence": {
+      "b10_5_on p5 name line": "安德鲁·斯坦利 (Andrew Stanley)",
+      "b11_1 p5 same line": "安德鲁·斯坦利",
+      "b10_5_on p8 credit": "插图：尚塔尔·贾赫昌 (Chantal Jahchan)",
+      "b11_1 p8 same credit": "插图：尚塔尔·贾赫昌"
+    },
+    "classified_as": "both were class E in the T1 table -- correctly translated paragraphs the residue detector reads as residue because a name is kept in its source form. Removing the parenthetical removed the false positive."
+  },
+  "observation_2_double_space": {
+    "excerpt_b10_5_on": "Léala en español",
+    "excerpt_b11_1": "Léala en  español",
+    "trace": {
+      "b10_5_on": {
+        "08_chain_builder": {
+          "compositions": 1,
+          "composed_text": "Léala en  español",
+          "unicode_field": "Léala en español"
+        },
+        "09_il_translated": {
+          "compositions": 1,
+          "composed_text": "",
+          "unicode_field": "Léala en español"
+        },
+        "11_typesetting": {
+          "compositions": 16,
+          "composed_text": "Léala en español",
+          "unicode_field": "Léala en español"
+        }
+      },
+      "b11_1": {
+        "08_chain_builder": {
+          "compositions": 1,
+          "composed_text": "Léala en  español",
+          "unicode_field": "Léala en español"
+        },
+        "09_il_translated": {
+          "compositions": 1,
+          "composed_text": "Léala en  español",
+          "unicode_field": "Léala en español"
+        },
+        "11_typesetting": {
+          "compositions": 17,
+          "composed_text": "Léala en  español",
+          "unicode_field": "Léala en español"
+        }
+      }
+    },
+    "finding": "The second space is in the source. At stage 08 both runs carry the same paragraph whose compositions spell \"Léala en  español\" with two spaces, while the paragraph unicode field reads \"Léala en español\" with one -- the unicode field is built by a reader that collapses runs of spaces and the compositions are not. In b10.5 the write back replaced the compositions, so the paragraph was recomposed from the unicode field and came out of stage 11 with sixteen characters and one space. In b11.1 the revived identity short circuit returns before replacing them, so the source compositions survive to stage 11 with seventeen characters and two spaces. b11.1 did not add a space; it stopped deleting one the source had.",
+    "write_back_is_not_the_source": "identity_writeback.json records composition_sha256_before equal to composition_sha256_after for this paragraph in both the run and the isolation arm, so nothing rewrote the compositions at the translator.",
+    "open_question_not_decided_here": "whether a page should render the source spacing or the collapsed spacing is a separate decision; T1 determines only where the space comes from."
+  }
+}

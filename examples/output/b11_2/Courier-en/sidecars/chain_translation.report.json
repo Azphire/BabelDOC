@@ -1,0 +1,274 @@
+{
+  "align_enabled": true,
+  "applied": true,
+  "chains": [
+    {
+      "chain_id": "TzZK1",
+      "members": [
+        {
+          "chain_index": 0,
+          "debug_id": "F2deQ",
+          "layout_label": "title",
+          "page_index": 1,
+          "segment": {
+            "chars": 8,
+            "end": 8,
+            "index": 0,
+            "sentence_end": -1,
+            "sentence_start": -1,
+            "start": 0
+          },
+          "source_chars": 31
+        },
+        {
+          "chain_index": 1,
+          "debug_id": "Bu6gL",
+          "layout_label": "title",
+          "page_index": 2,
+          "segment": {
+            "chars": 4,
+            "end": 12,
+            "index": 1,
+            "sentence_end": -1,
+            "sentence_start": -1,
+            "start": 8
+          },
+          "source_chars": 21
+        }
+      ],
+      "merge": {
+        "chars": 53,
+        "dropped_hyphens": [],
+        "member_chars": [
+          31,
+          21
+        ],
+        "member_count": 2,
+        "separators": [
+          "",
+          " "
+        ]
+      },
+      "merged_source_chars": 53,
+      "merged_translation_chars": 12,
+      "pair_class": "title",
+      "redistribution": {
+        "alignment": {
+          "member_lengths": [
+            8,
+            4
+          ],
+          "reason": null,
+          "source_shares": [
+            0.596154,
+            0.403846
+          ],
+          "used": true
+        },
+        "cuts": [
+          {
+            "estimate": 8,
+            "index": 0,
+            "mode": "proportional",
+            "moved_to": null,
+            "position": 8,
+            "snapped": true
+          }
+        ],
+        "fallback": null,
+        "members": [
+          {
+            "chars": 8,
+            "end": 8,
+            "index": 0,
+            "sentence_end": -1,
+            "sentence_start": -1,
+            "start": 0
+          },
+          {
+            "chars": 4,
+            "end": 12,
+            "index": 1,
+            "sentence_end": -1,
+            "sentence_start": -1,
+            "start": 8
+          }
+        ],
+        "profile": "cjk",
+        "sentence_count": 1,
+        "strategy": "proportional"
+      },
+      "strategy": "proportional",
+      "translation": "\u571f\u8457\u77e5\u8bc6\u5982\u4f55\u63a8\u52a8\u79d1\u5b66\u53d1\u73b0"
+    },
+    {
+      "chain_id": "YCUTK",
+      "members": [
+        {
+          "chain_index": 0,
+          "debug_id": "zrjg6",
+          "layout_label": "plain text",
+          "page_index": 6,
+          "segment": {
+            "chars": 189,
+            "end": 189,
+            "index": 0,
+            "sentence_end": 4,
+            "sentence_start": 0,
+            "start": 0
+          },
+          "source_chars": 598
+        },
+        {
+          "chain_index": 1,
+          "debug_id": "mfu5L",
+          "layout_label": "plain text",
+          "page_index": 7,
+          "segment": {
+            "chars": 48,
+            "end": 237,
+            "index": 1,
+            "sentence_end": 5,
+            "sentence_start": 4,
+            "start": 189
+          },
+          "source_chars": 227
+        }
+      ],
+      "merge": {
+        "chars": 826,
+        "dropped_hyphens": [],
+        "member_chars": [
+          598,
+          227
+        ],
+        "member_count": 2,
+        "separators": [
+          "",
+          " "
+        ]
+      },
+      "merged_source_chars": 826,
+      "merged_translation_chars": 237,
+      "pair_class": "body",
+      "redistribution": {
+        "alignment": {
+          "member_lengths": [],
+          "reason": "not_offered",
+          "source_shares": [
+            0.724848,
+            0.275152
+          ],
+          "used": false
+        },
+        "cuts": [
+          {
+            "estimate": 172,
+            "index": 0,
+            "mode": "sentence",
+            "moved_to": null,
+            "position": 189,
+            "snapped": true
+          }
+        ],
+        "fallback": null,
+        "members": [
+          {
+            "chars": 189,
+            "end": 189,
+            "index": 0,
+            "sentence_end": 4,
+            "sentence_start": 0,
+            "start": 0
+          },
+          {
+            "chars": 48,
+            "end": 237,
+            "index": 1,
+            "sentence_end": 5,
+            "sentence_start": 4,
+            "start": 189
+          }
+        ],
+        "profile": "cjk",
+        "sentence_count": 5,
+        "strategy": "sentence_greedy"
+      },
+      "strategy": "sentence_greedy",
+      "translation": "\u5e76\u975e\u6240\u6709\u4e0e\u9057\u4f20\u8d44\u6e90\u76f8\u5173\u7684\u571f\u8457\u77e5\u8bc6\u7684\u5546\u4e1a\u4f7f\u7528\u90fd\u6784\u6210\u751f\u7269\u76d7\u7a83\uff1b\u6709\u4e9b\u9879\u76ee\u662f\u4e92\u5229\u7684\u3002\u4f8b\u5982\uff0c\u6fb3\u5927\u5229\u4e9a\u7684Indjalandji-Dhidhanu\u4eba\u5df2\u7ecf\u4e0e\u6606\u58eb\u5170\u5927\u5b66\u7684\u7814\u7a76\u4eba\u5458\u5408\u4f5c\uff0c\u57fa\u4e8e\u4ed6\u4eec\u5bf9\u4f20\u7edf\u4e0a\u7528\u4e8e\u591a\u79cd\u7528\u9014\u7684\u9488\u8305\u8fd9\u79cd\u8010\u5bd2\u591a\u5e74\u751f\u4e1b\u751f\u8349\u7684\u571f\u8457\u77e5\u8bc6\u8fdb\u884c\u7814\u7a76\u3002\u8be5\u5408\u4f5c\u7814\u7a76\u534f\u8bae\u5305\u62ec\u5229\u76ca\u5206\u4eab\u7684\u6761\u6b3e\u3002\u73b0\u5728\uff0c\u4e00\u5bb6\u884d\u751f\u516c\u53f8\u6b63\u5728\u5f00\u53d1\u4ece\u9488\u8305\u4e2d\u63d0\u53d6\u7684\u7ea4\u7ef4\u7d20\u7eb3\u7c73\u7ea4\u7ef4\u5236\u6210\u7684\u533b\u7528\u51dd\u80f6\uff0c\u5e76\u5df2\u4e3a\u8fd9\u79cd\u8349\u7684\u590d\u5408\u6750\u6599\u7533\u8bf7\u4e86\u4e13\u5229\u3002\u6839\u636e\u534f\u8bae\u5df2\u7ecf\u5206\u4eab\u7684\u5229\u76ca\u5305\u62ec\u4e3a\u7b2c\u4e00\u6c11\u65cf\u9752\u5e74\u63d0\u4f9b\u5c31\u4e1a\u673a\u4f1a\u4ee5\u53ca\u4e3a\u6fb3\u5927\u5229\u4e9a\u571f\u8457\u63d0\u4f9b\u57f9\u8bad\u548c\u6559\u80b2\u673a\u4f1a\u7684\u8d44\u91d1\u3002"
+    }
+  ],
+  "counts": {
+    "aligned_cuts": 1,
+    "alignment_requests": 2,
+    "chains": 2,
+    "escalated": 0,
+    "merged": 2,
+    "merged_members": 4,
+    "skips": 5
+  },
+  "escalated": [],
+  "language": "zh",
+  "short_units": {
+    "admitted": 1,
+    "refused": 0,
+    "requests": 1
+  },
+  "skips": [
+    {
+      "chain_id": "TzZK1",
+      "chain_index": 0,
+      "debug_id": "F2deQ",
+      "declined_by": [
+        "page_batch"
+      ],
+      "page_index": 1,
+      "reason": "chain_member",
+      "taken_by": "chain"
+    },
+    {
+      "chain_id": "TzZK1",
+      "chain_index": 1,
+      "debug_id": "Bu6gL",
+      "declined_by": [
+        "page_batch"
+      ],
+      "page_index": 2,
+      "reason": "chain_member",
+      "taken_by": "chain"
+    },
+    {
+      "chain_id": "YCUTK",
+      "chain_index": 0,
+      "debug_id": "zrjg6",
+      "declined_by": [
+        "cross_column",
+        "page_batch"
+      ],
+      "page_index": 6,
+      "reason": "chain_member",
+      "taken_by": "chain"
+    },
+    {
+      "chain_id": "YCUTK",
+      "chain_index": 1,
+      "debug_id": "mfu5L",
+      "declined_by": [
+        "cross_column",
+        "page_batch"
+      ],
+      "page_index": 7,
+      "reason": "chain_member",
+      "taken_by": "chain"
+    },
+    {
+      "chain_id": "",
+      "chain_index": null,
+      "debug_id": "VUYXt",
+      "declined_by": [],
+      "page_index": 0,
+      "reason": "chain_member",
+      "taken_by": "short_unit"
+    }
+  ]
+}

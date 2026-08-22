@@ -1,0 +1,27 @@
+{
+  "body_labels": [
+    "text",
+    "plain text",
+    "paragraph_hybrid"
+  ],
+  "candidates": [],
+  "counts": {
+    "articles": 0,
+    "candidates": 0,
+    "pages": 0
+  },
+  "decision_consumers": [
+    {
+      "pass": "drop_cap.apply",
+      "report": "drop_cap_apply.report.json",
+      "switch": "magazine_drop_cap_apply"
+    }
+  ],
+  "parameters": {
+    "excerpt_chars": 80,
+    "max_body_rank_in_article": 5,
+    "max_first_run_chars": 2,
+    "min_first_run_size_ratio": 2.0
+  },
+  "reference_format": "p{page}#{index}"
+}

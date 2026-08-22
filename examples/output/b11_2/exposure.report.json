@@ -1,0 +1,823 @@
+{
+  "baseline": "examples/output/b10_5/<sample>/on",
+  "hang_max_em": 0.5,
+  "hung_character_count": 41,
+  "note": "the identity count is a lower bound: b10.5 ran under person_names=transliterate and b11.1 switched to translate, so the set of paragraphs whose answer equals the request can move with the policy (W-B11-05)",
+  "samples": {
+    "AramcoWorld-en-v2": {
+      "identity_exposure": 11,
+      "hang_exposure": 15,
+      "must_run": true,
+      "identity_rows": [
+        {
+          "group": "page",
+          "text": "16344araD1R1.Cvr.indd 1-3",
+          "chars": 25,
+          "pdf_unicode_equals_input": true
+        },
+        {
+          "group": "page",
+          "text": "AramcoWorld.com",
+          "chars": 15,
+          "pdf_unicode_equals_input": true
+        },
+        {
+          "group": "page",
+          "text": "aramcoworld@sfsdayton.com",
+          "chars": 25,
+          "pdf_unicode_equals_input": true
+        },
+        {
+          "group": "page",
+          "text": "16344araD2R1.indd 2",
+          "chars": 19,
+          "pdf_unicode_equals_input": true
+        },
+        {
+          "group": "page",
+          "text": "16344araD8R1.indd 30",
+          "chars": 20,
+          "pdf_unicode_equals_input": true
+        },
+        {
+          "group": "page",
+          "text": "16344araD9R1.indd 33",
+          "chars": 20,
+          "pdf_unicode_equals_input": true
+        },
+        {
+          "group": "page",
+          "text": "6/{v1}/{v2}:{v3}M",
+          "chars": 17,
+          "pdf_unicode_equals_input": false
+        },
+        {
+          "group": "page",
+          "text": "16344araD9R1.indd 34",
+          "chars": 20,
+          "pdf_unicode_equals_input": true
+        },
+        {
+          "group": "page",
+          "text": "16344araD9R1.indd 35",
+          "chars": 20,
+          "pdf_unicode_equals_input": true
+        },
+        {
+          "group": "page",
+          "text": "16344araD11R1.indd 40",
+          "chars": 21,
+          "pdf_unicode_equals_input": true
+        },
+        {
+          "group": "page",
+          "text": "16344araD11R1.indd 41",
+          "chars": 21,
+          "pdf_unicode_equals_input": true
+        }
+      ],
+      "hang_rows": [
+        {
+          "page": 2,
+          "paragraph_text_head": "本出版物的内容受集体作品保护。单篇文章、照片和其他材料可能受单独版权保护，并经许",
+          "baseline_y": 194.2,
+          "hung_run": "，",
+          "font_size": 7.0,
+          "ceiling_pt": 3.5,
+          "excess_pt": 3.68
+        },
+        {
+          "page": 3,
+          "paragraph_text_head": "<style id='1'>撰稿人 </style>拉明·加内什拉姆，<styl",
+          "baseline_y": 544.6,
+          "hung_run": "、",
+          "font_size": 8.0,
+          "ceiling_pt": 4.0,
+          "excess_pt": 8.0
+        },
+        {
+          "page": 4,
+          "paragraph_text_head": "夜间的灯光秀为列吉斯坦（Registan）建筑群增添了戏剧性，该建筑群在地震、暴",
+          "baseline_y": 296.1,
+          "hung_run": "。",
+          "font_size": 8.0,
+          "ceiling_pt": 4.0,
+          "excess_pt": 6.21
+        },
+        {
+          "page": 5,
+          "paragraph_text_head": "我们最初行驶的柏油路带消失了，车辆驶入了越野路段，阿尔·朱哈尼（Al Juhan",
+          "baseline_y": 406.3,
+          "hung_run": "，",
+          "font_size": 9.25,
+          "ceiling_pt": 4.62,
+          "excess_pt": 6.95
+        },
+        {
+          "page": 5,
+          "paragraph_text_head": "<style id='1'>对面</style> 一条铁路隧道穿过沙特阿拉伯塔布",
+          "baseline_y": 460.2,
+          "hung_run": "）",
+          "font_size": 8.0,
+          "ceiling_pt": 4.0,
+          "excess_pt": 5.38
+        },
+        {
+          "page": 6,
+          "paragraph_text_head": "<style id='1'>下方</style> 工人在1906年于塔布克附近铺",
+          "baseline_y": 694.5,
+          "hung_run": "，",
+          "font_size": 8.0,
+          "ceiling_pt": 4.0,
+          "excess_pt": 5.42
+        },
+        {
+          "page": 6,
+          "paragraph_text_head": "<style id='1'>下方</style> 工人在1906年于塔布克附近铺",
+          "baseline_y": 646.5,
+          "hung_run": "。",
+          "font_size": 8.0,
+          "ceiling_pt": 4.0,
+          "excess_pt": 5.42
+        },
+        {
+          "page": 7,
+          "paragraph_text_head": "在现在的沙特阿拉伯境内，希贾兹铁路的最后一列火车于1925年出发。到上个世纪中叶",
+          "baseline_y": 448.7,
+          "hung_run": "，",
+          "font_size": 9.25,
+          "ceiling_pt": 4.62,
+          "excess_pt": 6.55
+        },
+        {
+          "page": 9,
+          "paragraph_text_head": "Powers和Tagliacozzo长期以来致力于伊斯兰历史和文化的研究，他们汇",
+          "baseline_y": 606.5,
+          "hung_run": "。",
+          "font_size": 7.0,
+          "ceiling_pt": 3.5,
+          "excess_pt": 5.5
+        },
+        {
+          "page": 9,
+          "paragraph_text_head": "特别是三篇文章因其有效地阐明了伊斯兰“世界”的不同角度而脱颖而出——智力的多样性",
+          "baseline_y": 487.9,
+          "hung_run": "——",
+          "font_size": 7.0,
+          "ceiling_pt": 3.5,
+          "excess_pt": 4.9
+        },
+        {
+          "page": 9,
+          "paragraph_text_head": "历史学家詹姆斯·皮克特（James Pickett）对19世纪布哈拉伊利（mad",
+          "baseline_y": 360.4,
+          "hung_run": "。",
+          "font_size": 7.0,
+          "ceiling_pt": 3.5,
+          "excess_pt": 5.87
+        },
+        {
+          "page": 9,
+          "paragraph_text_head": "转向国家控制机制，本杰明·克劳德·布劳尔（Benjamin Claude Bro",
+          "baseline_y": 248.6,
+          "hung_run": "——",
+          "font_size": 7.0,
+          "ceiling_pt": 3.5,
+          "excess_pt": 10.66
+        },
+        {
+          "page": 9,
+          "paragraph_text_head": "最后，中东历史学家穆罕默德·达拉克乔格鲁（Mehmet Darakçıoğlu）",
+          "baseline_y": 467.7,
+          "hung_run": "。",
+          "font_size": 7.0,
+          "ceiling_pt": 3.5,
+          "excess_pt": 5.31
+        },
+        {
+          "page": 9,
+          "paragraph_text_head": "随着这些文章的交汇，一个核心见解浮现：穆斯林社会并不是如同一条单一的河流，而是如",
+          "baseline_y": 369.8,
+          "hung_run": "、",
+          "font_size": 7.0,
+          "ceiling_pt": 3.5,
+          "excess_pt": 5.3
+        },
+        {
+          "page": 9,
+          "paragraph_text_head": "<style id='1'>伊斯兰教会</style>以一个坚定的拒绝开篇：伊斯",
+          "baseline_y": 370.8,
+          "hung_run": "。",
+          "font_size": 9.25,
+          "ceiling_pt": 4.62,
+          "excess_pt": 5.41
+        }
+      ]
+    },
+    "CERNCourier-en": {
+      "identity_exposure": 38,
+      "hang_exposure": 4,
+      "must_run": true,
+      "identity_rows": [
+        {
+          "group": "page",
+          "text": "<style id='1'>CCJulAug26</style><style id='3'>26</style><style id='5'>_Cover_v2</style><style id='7'>2</style><style id='9'>.indd 1 </style><style id='11'>1 CCJulAug _Cover_v.indd </style>",
+          "chars": 188,
+          "pdf_unicode_equals_input": false
+        },
+        {
+          "group": "page",
+          "text": "16:06",
+          "chars": 5,
+          "pdf_unicode_equals_input": true
+        },
+        {
+          "group": "page",
+          "text": "16:06",
+          "chars": 5,
+          "pdf_unicode_equals_input": true
+        },
+        {
+          "group": "page",
+          "text": "IBIC 2026",
+          "chars": 9,
+          "pdf_unicode_equals_input": true
+        },
+        {
+          "group": "page",
+          "text": "indico.jacow.org/event/113/",
+          "chars": 27,
+          "pdf_unicode_equals_input": true
+        },
+        {
+          "group": "page",
+          "text": "CJulAug26_pIFC.indd 1",
+          "chars": 21,
+          "pdf_unicode_equals_input": true
+        },
+        {
+          "group": "page",
+          "text": "CJulAug26_pIFC.indd 1",
+          "chars": 21,
+          "pdf_unicode_equals_input": true
+        },
+        {
+          "group": "page",
+          "text": "<style id='1'>03 48 </style><style id='3'>03</style><style id='5'>07</style><style id='7'>07 48</style><style id='9'>//2026 11</style><style id='11'>2026 11</style><style id='13'>:</style><style id='15'>// :</style>",
+          "chars": 215,
+          "pdf_unicode_equals_input": false
+        },
+        {
+          "group": "page",
+          "text": "CERNCOURIER.COM",
+          "chars": 15,
+          "pdf_unicode_equals_input": true
+        },
+        {
+          "group": "page",
+          "text": "<style id='1'>V</style>{v3}<style id='4'>N</style>{v6}<style id='7'>J</style>{v9}<style id='10'>/A</style>{v12}",
+          "chars": 111,
+          "pdf_unicode_equals_input": false
+        },
+        {
+          "group": "page",
+          "text": "CAREERS",
+          "chars": 7,
+          "pdf_unicode_equals_input": true
+        },
+        {
+          "group": "page",
+          "text": "CCJulAug26_Conts_v3.in",
+          "chars": 22,
+          "pdf_unicode_equals_input": true
+        },
+        {
+          "group": "page",
+          "text": "CCJulAug26_Conts_v3.in",
+          "chars": 22,
+          "pdf_unicode_equals_input": true
+        },
+        {
+          "group": "page",
+          "text": "<style id='1'>03 12 </style><style id='3'>03</style><style id='5'>07</style><style id='7'>07 12</style><style id='9'>//2026 16</style><style id='11'>2026 16</style><style id='13'>:</style><style id='15'>// :</style>",
+          "chars": 215,
+          "pdf_unicode_equals_input": false
+        },
+        {
+          "group": "page",
+          "text": "CERNCOURIER.COM",
+          "chars": 15,
+          "pdf_unicode_equals_input": true
+        },
+        {
+          "group": "page",
+          "text": "P{v1}",
+          "chars": 5,
+          "pdf_unicode_equals_input": false
+        },
+        {
+          "group": "page",
+          "text": "Linkedin",
+          "chars": 8,
+          "pdf_unicode_equals_input": true
+        },
+        {
+          "group": "page",
+          "text": "info@bergoz.com",
+          "chars": 15,
+          "pdf_unicode_equals_input": true
+        },
+        {
+          "group": "page",
+          "text": "<style id='1'>CCJulAug26</style><style id='3'>26</style><style id='5'>_NewsAnalysis_v3</style><style id='7'>3</style><style id='9'>.indd 7 </style><style id='11'>7 </style><style id='13'>03</style><style id='15'>CCJulAug _NewsAnalysis_v.indd </style><style id='17'>/07/2026</style>",
+          "chars": 281,
+          "pdf_unicode_equals_input": false
+        },
+        {
+          "group": "page",
+          "text": "16:22",
+          "chars": 5,
+          "pdf_unicode_equals_input": true
+        },
+        {
+          "group": "page",
+          "text": "16:22",
+          "chars": 5,
+          "pdf_unicode_equals_input": true
+        },
+        {
+          "group": "page",
+          "text": "Pub_CERN-26-J",
+          "chars": 13,
+          "pdf_unicode_equals_input": true
+        },
+        {
+          "group": "page",
+          "text": "ul-Aug-Bergoz_colourRL.indd 1",
+          "chars": 29,
+          "pdf_unicode_equals_input": true
+        },
+        {
+          "group": "page",
+          "text": "Pub_CERN-26-J",
+          "chars": 13,
+          "pdf_unicode_equals_input": true
+        },
+        {
+          "group": "page",
+          "text": "<style id='1'>ul-Aug-Bergoz_colourRL.indd 1 </style><style id='3'>30/06 23 </style><style id='5'>3006 23</style><style id='7'>/2026 18</style><style id='9'>2026 18</style><style id='11'>:</style><style id='13'>/ / :</style><style id='15'>www</style><style id='17'>.</style>",
+          "chars": 273,
+          "pdf_unicode_equals_input": false
+        },
+        {
+          "group": "page",
+          "text": "CERNCOURIER.COM",
+          "chars": 15,
+          "pdf_unicode_equals_input": true
+        },
+        {
+          "group": "page",
+          "text": "<style id='1'>CCJulAug26</style><style id='3'>26</style><style id='5'>_HISTORY_v4</style><style id='7'>4</style><style id='9'>.indd 25 </style><style id='11'>25 </style><style id='13'>03</style><style id='15'>CCJulAug _HISTORY_v.indd </style><style id='17'>/07/2026</style>",
+          "chars": 273,
+          "pdf_unicode_equals_input": false
+        },
+        {
+          "group": "page",
+          "text": "16:44",
+          "chars": 5,
+          "pdf_unicode_equals_input": true
+        },
+        {
+          "group": "page",
+          "text": "16:44",
+          "chars": 5,
+          "pdf_unicode_equals_input": true
+        },
+        {
+          "group": "page",
+          "text": "CERNCOURIER.COM",
+          "chars": 15,
+          "pdf_unicode_equals_input": true
+        },
+        {
+          "group": "page",
+          "text": "CCJulAug26_HI",
+          "chars": 13,
+          "pdf_unicode_equals_input": true
+        },
+        {
+          "group": "page",
+          "text": "STORY_v4.indd 24",
+          "chars": 16,
+          "pdf_unicode_equals_input": true
+        },
+        {
+          "group": "page",
+          "text": "CCJulAug26_HI",
+          "chars": 13,
+          "pdf_unicode_equals_input": true
+        },
+        {
+          "group": "page",
+          "text": "<style id='1'>STORY_v4.indd 24 </style><style id='3'>03/07 43 </style><style id='5'>0307 43</style><style id='7'>/2026 16</style><style id='9'>2026 16</style><style id='11'>:</style><style id='13'>/ / :</style><style id='15'>www</style><style id='17'>.</style>",
+          "chars": 260,
+          "pdf_unicode_equals_input": false
+        },
+        {
+          "group": "cross_page",
+          "text": "<style id='1'>V </style>o l u",
+          "chars": 29,
+          "pdf_unicode_equals_input": false
+        },
+        {
+          "group": "cross_column",
+          "text": "IBIC2026@triumf.ca",
+          "chars": 18,
+          "pdf_unicode_equals_input": true
+        },
+        {
+          "group": "cross_column",
+          "text": "www.bergoz.com",
+          "chars": 14,
+          "pdf_unicode_equals_input": true
+        },
+        {
+          "group": "cross_column",
+          "text": "https://indico.cern.ch/event/1480892/.",
+          "chars": 38,
+          "pdf_unicode_equals_input": true
+        }
+      ],
+      "hang_rows": [
+        {
+          "page": 1,
+          "paragraph_text_head": "今年五月，CERN理事会更新了欧洲粒子物理战略（第7页）。首选的下一个旗舰项目再",
+          "baseline_y": 296.6,
+          "hung_run": "）。",
+          "font_size": 12.0,
+          "ceiling_pt": 6.0,
+          "excess_pt": 17.73
+        },
+        {
+          "page": 4,
+          "paragraph_text_head": "20世纪80年代和90年代是加速器实验室开香槟庆祝的好时光。富有洞察力的演讲强调",
+          "baseline_y": 530.7,
+          "hung_run": "，",
+          "font_size": 6.66,
+          "ceiling_pt": 3.33,
+          "excess_pt": 5.13
+        },
+        {
+          "page": 4,
+          "paragraph_text_head": "正如温斯顿·丘吉尔在下议院所说，“最好由各方将过去留给历史，尤其是因为我打算亲自",
+          "baseline_y": 418.5,
+          "hung_run": "，",
+          "font_size": 6.66,
+          "ceiling_pt": 3.33,
+          "excess_pt": 4.46
+        },
+        {
+          "page": 4,
+          "paragraph_text_head": "正如温斯顿·丘吉尔在下议院所说，“最好由各方将过去留给历史，尤其是因为我打算亲自",
+          "baseline_y": 358.6,
+          "hung_run": "，",
+          "font_size": 6.66,
+          "ceiling_pt": 3.33,
+          "excess_pt": 5.79
+        }
+      ]
+    },
+    "Courier-en": {
+      "identity_exposure": 1,
+      "hang_exposure": 15,
+      "must_run": true,
+      "identity_rows": [
+        {
+          "group": "page",
+          "text": "IDEAS",
+          "chars": 5,
+          "pdf_unicode_equals_input": true
+        }
+      ],
+      "hang_rows": [
+        {
+          "page": 4,
+          "paragraph_text_head": "这些实践代表了完整的知识体系。它们在代际之间编码、保存和传递理解。如今，土著",
+          "baseline_y": 485.3,
+          "hung_run": "。",
+          "font_size": 9.2,
+          "ceiling_pt": 4.6,
+          "excess_pt": 4.67
+        },
+        {
+          "page": 4,
+          "paragraph_text_head": "世界各地的社区正在捍卫他们的权利来保护这种文化遗产，同时积极主张将传统知识体系作",
+          "baseline_y": 437.3,
+          "hung_run": "，",
+          "font_size": 9.2,
+          "ceiling_pt": 4.6,
+          "excess_pt": 6.36
+        },
+        {
+          "page": 5,
+          "paragraph_text_head": "看到我们的食物供应耗尽，令人心碎。我们不知道如何养活我们的孩子。",
+          "baseline_y": 521.2,
+          "hung_run": "。",
+          "font_size": 9.2,
+          "ceiling_pt": 4.6,
+          "excess_pt": 6.4
+        },
+        {
+          "page": 5,
+          "paragraph_text_head": "黎明散发出一种铁锈般的潮湿气味，夹杂着火盆的烟雾。保马里族（Paumari）是一",
+          "baseline_y": 461.3,
+          "hung_run": "，",
+          "font_size": 9.2,
+          "ceiling_pt": 4.6,
+          "excess_pt": 7.45
+        },
+        {
+          "page": 6,
+          "paragraph_text_head": "在量子领域中不断与其他事物纠缠和解纠缠。涉及直接利用量子叠加和纠缠的技术的新量子",
+          "baseline_y": 469.6,
+          "hung_run": "，",
+          "font_size": 9.2,
+          "ceiling_pt": 4.6,
+          "excess_pt": 6.0
+        },
+        {
+          "page": 6,
+          "paragraph_text_head": "甚至有一些量子传感器可以读取你的想法。一种可以像自行车头盔一样佩戴的特殊脑扫描仪",
+          "baseline_y": 124.6,
+          "hung_run": "，",
+          "font_size": 9.2,
+          "ceiling_pt": 4.6,
+          "excess_pt": 6.21
+        },
+        {
+          "page": 7,
+          "paragraph_text_head": "由摩洛哥阿甘树（<style id='1'>阿甘树</style>）的坚果生产的",
+          "baseline_y": 410.8,
+          "hung_run": "。",
+          "font_size": 9.2,
+          "ceiling_pt": 4.6,
+          "excess_pt": 6.42
+        },
+        {
+          "page": 7,
+          "paragraph_text_head": "并非所有与遗传资源相关的土著知识的商业使用都构成生物盗窃；有些项目是互利的。例如",
+          "baseline_y": 268.1,
+          "hung_run": "。",
+          "font_size": 9.2,
+          "ceiling_pt": 4.6,
+          "excess_pt": 5.66
+        },
+        {
+          "page": 7,
+          "paragraph_text_head": "然而，生物发现被批评为对土著和其他地方人民开发的知识“搭便车”。当他们的知识在科",
+          "baseline_y": 507.5,
+          "hung_run": "”。",
+          "font_size": 9.2,
+          "ceiling_pt": 4.6,
+          "excess_pt": 5.3
+        },
+        {
+          "page": 7,
+          "paragraph_text_head": "研究人员和公司经常寻求土著对植物、动物和生态系统中其他非人类居民特性的见解，以开",
+          "baseline_y": 273.6,
+          "hung_run": "”，",
+          "font_size": 9.2,
+          "ceiling_pt": 4.6,
+          "excess_pt": 5.21
+        },
+        {
+          "page": 8,
+          "paragraph_text_head": "在1990年代，由于一些发展，情况发生了巨大变化。首先，知识产权在世界贸易组织（",
+          "baseline_y": 322.0,
+          "hung_run": "，",
+          "font_size": 9.2,
+          "ceiling_pt": 4.6,
+          "excess_pt": 7.96
+        },
+        {
+          "page": 8,
+          "paragraph_text_head": "过去30年间建立的强化国际规则和协议框架带来了一些积极的变化。如今，许多国家",
+          "baseline_y": 87.4,
+          "hung_run": "，",
+          "font_size": 9.2,
+          "ceiling_pt": 4.6,
+          "excess_pt": 5.84
+        },
+        {
+          "page": 8,
+          "paragraph_text_head": "生物盗窃问题的根源在于一个历史性的转变：全球社会开始将生物资源视为专有资产，而非",
+          "baseline_y": 337.6,
+          "hung_run": "。",
+          "font_size": 9.2,
+          "ceiling_pt": 4.6,
+          "excess_pt": 6.17
+        },
+        {
+          "page": 8,
+          "paragraph_text_head": "植物、动物和其他生物多样性成分在全球范围内的流通，以及不同人群之间相关知识的共享",
+          "baseline_y": 181.0,
+          "hung_run": "。",
+          "font_size": 9.2,
+          "ceiling_pt": 4.6,
+          "excess_pt": 6.31
+        },
+        {
+          "page": 8,
+          "paragraph_text_head": "一千多年来，阿马兹格（Amazigh）女性一直使用阿甘油，这种产品现在已在全球范",
+          "baseline_y": 572.7,
+          "hung_run": "。",
+          "font_size": 15.0,
+          "ceiling_pt": 7.5,
+          "excess_pt": 12.62
+        }
+      ]
+    },
+    "Courier-zh": {
+      "identity_exposure": 0,
+      "hang_exposure": 0,
+      "must_run": false,
+      "identity_rows": [],
+      "hang_rows": []
+    },
+    "FD-en-v2": {
+      "identity_exposure": 13,
+      "hang_exposure": 6,
+      "must_run": true,
+      "identity_rows": [
+        {
+          "group": "page",
+          "text": "F&D",
+          "chars": 3,
+          "pdf_unicode_equals_input": true
+        },
+        {
+          "group": "page",
+          "text": "F&D",
+          "chars": 3,
+          "pdf_unicode_equals_input": true
+        },
+        {
+          "group": "page",
+          "text": "F&D",
+          "chars": 3,
+          "pdf_unicode_equals_input": true
+        },
+        {
+          "group": "page",
+          "text": "F&D",
+          "chars": 3,
+          "pdf_unicode_equals_input": true
+        },
+        {
+          "group": "page",
+          "text": "F&D",
+          "chars": 3,
+          "pdf_unicode_equals_input": true
+        },
+        {
+          "group": "page",
+          "text": "Huong (Vanessa) Le",
+          "chars": 18,
+          "pdf_unicode_equals_input": true
+        },
+        {
+          "group": "page",
+          "text": "2communiqué",
+          "chars": 11,
+          "pdf_unicode_equals_input": true
+        },
+        {
+          "group": "page",
+          "text": "S M Ali Abbas",
+          "chars": 13,
+          "pdf_unicode_equals_input": true
+        },
+        {
+          "group": "page",
+          "text": "Léala en español",
+          "chars": 16,
+          "pdf_unicode_equals_input": true
+        },
+        {
+          "group": "page",
+          "text": "ةغللاب أرقا",
+          "chars": 11,
+          "pdf_unicode_equals_input": true
+        },
+        {
+          "group": "page",
+          "text": "ةيبرعلا!",
+          "chars": 8,
+          "pdf_unicode_equals_input": true
+        },
+        {
+          "group": "cross_column",
+          "text": "www.imf.org/fandd",
+          "chars": 17,
+          "pdf_unicode_equals_input": true
+        },
+        {
+          "group": "cross_column",
+          "text": "{v1}{v2}{v3}{v4}{v5}1,{v6}{v7}",
+          "chars": 30,
+          "pdf_unicode_equals_input": false
+        }
+      ],
+      "hang_rows": [
+        {
+          "page": 3,
+          "paragraph_text_head": "“地缘政治的回归并不排除合作的可能性。”",
+          "baseline_y": 245.3,
+          "hung_run": "。”",
+          "font_size": 24.0,
+          "ceiling_pt": 12.0,
+          "excess_pt": 23.42
+        },
+        {
+          "page": 5,
+          "paragraph_text_head": "请阅读中文版！",
+          "baseline_y": 235.0,
+          "hung_run": "！",
+          "font_size": 10.05,
+          "ceiling_pt": 5.03,
+          "excess_pt": 5.23
+        },
+        {
+          "page": 6,
+          "paragraph_text_head": "这些评论发表之际，国际货币基金组织将其今年全球增长的参考预测下调至3.1%，比一",
+          "baseline_y": 194.2,
+          "hung_run": "。",
+          "font_size": 9.25,
+          "ceiling_pt": 4.62,
+          "excess_pt": 6.04
+        },
+        {
+          "page": 6,
+          "paragraph_text_head": "“公共债务普遍比20年前高得多——包括在大多数二十国集团国家——这反映了在条件允",
+          "baseline_y": 96.4,
+          "hung_run": "。",
+          "font_size": 9.25,
+          "ceiling_pt": 4.62,
+          "excess_pt": 5.45
+        },
+        {
+          "page": 9,
+          "paragraph_text_head": "<style id='1'>除了阿尔卑斯山，</style><style id=",
+          "baseline_y": 506.2,
+          "hung_run": "）",
+          "font_size": 9.25,
+          "ceiling_pt": 4.62,
+          "excess_pt": 4.75
+        },
+        {
+          "page": 9,
+          "paragraph_text_head": "<style id='1'>大多数国家已经停止使用大额纸币，因为这些纸币被认为主",
+          "baseline_y": 158.2,
+          "hung_run": "，",
+          "font_size": 7.0,
+          "ceiling_pt": 3.5,
+          "excess_pt": 4.66
+        }
+      ]
+    },
+    "Vogue-en": {
+      "identity_exposure": 1,
+      "hang_exposure": 1,
+      "must_run": true,
+      "identity_rows": [
+        {
+          "group": "page",
+          "text": "FLEX PACE",
+          "chars": 9,
+          "pdf_unicode_equals_input": true
+        }
+      ],
+      "hang_rows": [
+        {
+          "page": 3,
+          "paragraph_text_head": "当体育遇上时尚... <style id='1'>运动员作为</style>",
+          "baseline_y": 258.1,
+          "hung_run": "...",
+          "font_size": 9.0,
+          "ceiling_pt": 4.5,
+          "excess_pt": 6.51
+        }
+      ]
+    }
+  },
+  "must_run": [
+    "AramcoWorld-en-v2",
+    "CERNCourier-en",
+    "Courier-en",
+    "FD-en-v2",
+    "Vogue-en"
+  ],
+  "zero_exposure": [
+    "Courier-zh"
+  ]
+}

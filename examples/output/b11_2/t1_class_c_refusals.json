@@ -1,0 +1,88 @@
+{
+  "CzRTe#L0": {
+    "page": 5,
+    "unicode": "CREATIVE AND MARKETING",
+    "layout_label": "plain text",
+    "refused_by": [
+      "il_translator_llm_only.py:642 is_placeholder_only_paragraph"
+    ]
+  },
+  "Hs6r7#L0": {
+    "page": 5,
+    "unicode": "SENIOR EDITORS",
+    "layout_label": "plain text",
+    "refused_by": [
+      "il_translator_llm_only.py:642 is_placeholder_only_paragraph"
+    ]
+  },
+  "JNc6s": {
+    "page": 4,
+    "unicode": "AN H C H JA L TA AN H C , RD IFFO G RTER PO",
+    "layout_label": "fallback_line",
+    "refused_by": []
+  },
+  "Lhy8n#L0": {
+    "page": 5,
+    "unicode": "EDITOR-IN-CHIEF",
+    "layout_label": "plain text",
+    "refused_by": [
+      "il_translator_llm_only.py:642 is_placeholder_only_paragraph"
+    ]
+  },
+  "NAn3y": {
+    "page": 8,
+    "unicode": "L H RU KIM RTESY U O C",
+    "layout_label": "abandon",
+    "refused_by": [
+      "il_translator_llm_only.py:642 is_placeholder_only_paragraph"
+    ]
+  },
+  "SHdB5": {
+    "page": 2,
+    "unicode": "FFER STAU N BRIA",
+    "layout_label": "fallback_line",
+    "refused_by": [
+      "il_translator_llm_only.py:642 is_placeholder_only_paragraph"
+    ]
+  },
+  "dhayc#L0": {
+    "page": 5,
+    "unicode": "ASSISTANT EDITOR",
+    "layout_label": "plain text",
+    "refused_by": [
+      "il_translator_llm_only.py:642 is_placeholder_only_paragraph"
+    ]
+  },
+  "dpDRz": {
+    "page": 9,
+    "unicode": "K N BA L A N ATIO N ISS SW RTESY U O C",
+    "layout_label": "abandon",
+    "refused_by": [
+      "il_translator_llm_only.py:642 is_placeholder_only_paragraph"
+    ]
+  },
+  "odhJz": {
+    "page": 3,
+    "unicode": "FFER STAU N BRIA",
+    "layout_label": "abandon",
+    "refused_by": [
+      "il_translator_llm_only.py:642 is_placeholder_only_paragraph"
+    ]
+  },
+  "pGhh7#L0": {
+    "page": 5,
+    "unicode": "ART DIRECTION AND DESIGN",
+    "layout_label": "plain text",
+    "refused_by": [
+      "il_translator_llm_only.py:642 is_placeholder_only_paragraph"
+    ]
+  },
+  "u7vqK#L0": {
+    "page": 5,
+    "unicode": "MANAGING EDITOR",
+    "layout_label": "plain text",
+    "refused_by": [
+      "il_translator_llm_only.py:642 is_placeholder_only_paragraph"
+    ]
+  }
+}

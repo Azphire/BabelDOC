@@ -1,0 +1,32 @@
+{
+  "closers": [
+    ")",
+    "）"
+  ],
+  "max_span_chars": 40,
+  "openers": [
+    "(",
+    "（"
+  ],
+  "pages": 4,
+  "paragraphs": [
+    {
+      "after": "5月22日，在布达佩斯的一次专门会议上，CERN理事会更新了欧洲粒子物理战略。此次更新确认了充分利用大型强子对撞机的科学潜力，通过完成其高亮度升级，作为欧洲粒子物理的最高中期优先事项。对于长期而言，建议将电子-正电子未来环形对撞机（FCC-",
+      "before": "5月22日，在布达佩斯的一次专门会议上，CERN理事会更新了欧洲粒子物理战略。此次更新确认了充分利用大型强子对撞机的科学潜力，通过完成其高亮度升级（高亮度升级），作为欧洲粒子物理的最高中期优先事项。对于长期而言，建议将电子-正电子未来环形对",
+      "debug_id": "PoKSh",
+      "page": 3,
+      "reference": "p3#9",
+      "removed_compositions": 1,
+      "removed_unicode": 1,
+      "spans": [
+        "高亮度升级"
+      ]
+    }
+  ],
+  "switch": "magazine_paren_dedup",
+  "totals": {
+    "paragraphs_folded": 1,
+    "spans_removed": 1,
+    "unicode_spans_removed": 1
+  }
+}

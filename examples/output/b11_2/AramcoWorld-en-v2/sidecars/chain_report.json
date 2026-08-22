@@ -1,0 +1,460 @@
+{
+  "boundaries": [
+    {
+      "boundary": "1->2",
+      "eligible": false,
+      "head_debug_id": null,
+      "head_label": null,
+      "head_page": 2,
+      "head_text": null,
+      "linked": false,
+      "pair": null,
+      "pairs": [],
+      "reason": "not_chain_eligible:tail,head",
+      "score": null,
+      "signals": {
+        "body_label_pair": null,
+        "column_position": null,
+        "opener_prior": null,
+        "style_continuity": null,
+        "tail_line_fill": null,
+        "tail_no_terminal_punct": null
+      },
+      "tail_debug_id": null,
+      "tail_fill_ratio": null,
+      "tail_label": null,
+      "tail_page": 1,
+      "tail_text": null
+    },
+    {
+      "boundary": "2->3",
+      "eligible": false,
+      "head_debug_id": null,
+      "head_label": null,
+      "head_page": 3,
+      "head_text": null,
+      "linked": false,
+      "pair": null,
+      "pairs": [],
+      "reason": "not_chain_eligible:tail,head",
+      "score": null,
+      "signals": {
+        "body_label_pair": null,
+        "column_position": null,
+        "opener_prior": null,
+        "style_continuity": null,
+        "tail_line_fill": null,
+        "tail_no_terminal_punct": null
+      },
+      "tail_debug_id": null,
+      "tail_fill_ratio": null,
+      "tail_label": null,
+      "tail_page": 2,
+      "tail_text": null
+    },
+    {
+      "boundary": "3->4",
+      "eligible": false,
+      "head_debug_id": null,
+      "head_label": null,
+      "head_page": 4,
+      "head_text": null,
+      "linked": false,
+      "pair": null,
+      "pairs": [],
+      "reason": "not_chain_eligible:tail",
+      "score": null,
+      "signals": {
+        "body_label_pair": null,
+        "column_position": null,
+        "opener_prior": null,
+        "style_continuity": null,
+        "tail_line_fill": null,
+        "tail_no_terminal_punct": null
+      },
+      "tail_debug_id": null,
+      "tail_fill_ratio": null,
+      "tail_label": null,
+      "tail_page": 3,
+      "tail_text": null
+    },
+    {
+      "boundary": "4->5",
+      "eligible": true,
+      "head_debug_id": "Wc9rf",
+      "head_label": "title",
+      "head_page": 5,
+      "head_text": "RAILWAY?RAILWAY?",
+      "linked": false,
+      "pair": "title->title",
+      "pairs": [
+        {
+          "head_debug_id": "R5mSD",
+          "head_label": "plain text",
+          "head_text": "cause none of the dials in his battered old SUV worked. He rested one hand on the",
+          "linked": false,
+          "pair": "body->body",
+          "score": 0.06874999999999999,
+          "signals": {
+            "body_label_pair": 1.0,
+            "column_position": 0.5,
+            "opener_prior": 0.875,
+            "style_continuity": 0.0,
+            "tail_line_fill": 0.0,
+            "tail_no_terminal_punct": 0.0
+          },
+          "tail_debug_id": "kuGsZ",
+          "tail_fill_ratio": 0.702845848689393,
+          "tail_label": "plain text",
+          "tail_text": "though it has always been that way.\u201d"
+        },
+        {
+          "head_debug_id": "Wc9rf",
+          "head_label": "title",
+          "head_text": "RAILWAY?RAILWAY?",
+          "linked": false,
+          "pair": "title->title",
+          "score": 0.36875,
+          "signals": {
+            "body_label_pair": 0.0,
+            "column_position": 0.5,
+            "opener_prior": 0.875,
+            "style_continuity": 0.0,
+            "tail_line_fill": 1.0,
+            "tail_no_terminal_punct": 1.0
+          },
+          "tail_debug_id": "4Ys4Q",
+          "tail_fill_ratio": 2.0292396111979225,
+          "tail_label": "title",
+          "tail_text": "RESTORATION IS A CALLING"
+        }
+      ],
+      "reason": null,
+      "score": 0.36875,
+      "signals": {
+        "body_label_pair": 0.0,
+        "column_position": 0.5,
+        "opener_prior": 0.875,
+        "style_continuity": 0.0,
+        "tail_line_fill": 1.0,
+        "tail_no_terminal_punct": 1.0
+      },
+      "tail_debug_id": "4Ys4Q",
+      "tail_fill_ratio": 2.0292396111979225,
+      "tail_label": "title",
+      "tail_page": 4,
+      "tail_text": "RESTORATION IS A CALLING"
+    },
+    {
+      "boundary": "5->6",
+      "eligible": true,
+      "head_debug_id": "e1gXN",
+      "head_label": "plain text",
+      "head_page": 6,
+      "head_text": "Construction of the Hijaz Railway began on Septem- ber 1, 1900, on the orders of Ottoman Sultan Abdul Hamid II, amid the waning years of the empire. The Ottomans had already lost the Balkans and North Af- rica and were faced with growing internal opposition.",
+      "linked": false,
+      "pair": "body->body",
+      "pairs": [
+        {
+          "head_debug_id": "e1gXN",
+          "head_label": "plain text",
+          "head_text": "Construction of the Hijaz Railway began on Septem- ber 1, 1900, on the orders of Ottoman Sultan Abdul Hamid II, amid the waning years of the empire. The Ottomans had already lost the Balkans and North Af- rica and were faced with growing internal opposition.",
+          "linked": false,
+          "pair": "body->body",
+          "score": 0.5499999999999999,
+          "signals": {
+            "body_label_pair": 1.0,
+            "column_position": 0.5,
+            "opener_prior": 0.0,
+            "style_continuity": 1.0,
+            "tail_line_fill": 0.0,
+            "tail_no_terminal_punct": 0.0
+          },
+          "tail_debug_id": "F83JW",
+          "tail_fill_ratio": 0.5700291425486947,
+          "tail_label": "plain text",
+          "tail_text": "discussions across the region."
+        },
+        {
+          "head_debug_id": "ikKvx",
+          "head_label": "title",
+          "head_text": "ORIGINS OF THE HIJAZ RAILWAY",
+          "linked": false,
+          "pair": "title->title",
+          "score": 0.0,
+          "signals": {
+            "body_label_pair": 0.0,
+            "column_position": 0.0,
+            "opener_prior": 0.0,
+            "style_continuity": 0.0,
+            "tail_line_fill": null,
+            "tail_no_terminal_punct": 0.0
+          },
+          "tail_debug_id": "y9UP8",
+          "tail_fill_ratio": null,
+          "tail_label": "title",
+          "tail_text": "between the clutch and the accelerator, rarely stepping over to the brake."
+        }
+      ],
+      "reason": null,
+      "score": 0.5499999999999999,
+      "signals": {
+        "body_label_pair": 1.0,
+        "column_position": 0.5,
+        "opener_prior": 0.0,
+        "style_continuity": 1.0,
+        "tail_line_fill": 0.0,
+        "tail_no_terminal_punct": 0.0
+      },
+      "tail_debug_id": "F83JW",
+      "tail_fill_ratio": 0.5700291425486947,
+      "tail_label": "plain text",
+      "tail_page": 5,
+      "tail_text": "discussions across the region."
+    },
+    {
+      "boundary": "6->7",
+      "eligible": true,
+      "head_debug_id": "L8yyp",
+      "head_label": "plain text",
+      "head_page": 7,
+      "head_text": "the route south of the Hauran and a severe shortage of locally available fuel sources.",
+      "linked": true,
+      "pair": "body->body",
+      "pairs": [
+        {
+          "head_debug_id": "L8yyp",
+          "head_label": "plain text",
+          "head_text": "the route south of the Hauran and a severe shortage of locally available fuel sources.",
+          "linked": true,
+          "pair": "body->body",
+          "score": 1.0,
+          "signals": {
+            "body_label_pair": 1.0,
+            "column_position": 1.0,
+            "opener_prior": 0.0,
+            "style_continuity": 1.0,
+            "tail_line_fill": 1.0,
+            "tail_no_terminal_punct": 1.0
+          },
+          "tail_debug_id": "GwhAf",
+          "tail_fill_ratio": 0.9998567765095937,
+          "tail_label": "plain text",
+          "tail_text": "ically, also included a scarcity of water along much of"
+        },
+        {
+          "head_debug_id": "DKt6c",
+          "head_label": "title",
+          "head_text": "STEAMING AHEAD FROM PAST TO FUTURE",
+          "linked": true,
+          "pair": "title->title",
+          "score": 0.9,
+          "signals": {
+            "body_label_pair": 0.0,
+            "column_position": 0.0,
+            "opener_prior": 0.0,
+            "style_continuity": 1.0,
+            "tail_line_fill": 1.0,
+            "tail_no_terminal_punct": 1.0
+          },
+          "tail_debug_id": "ikKvx",
+          "tail_fill_ratio": 1.623953855981291,
+          "tail_label": "title",
+          "tail_text": "THE HIJAZ RAILWAY"
+        }
+      ],
+      "reason": null,
+      "score": 1.0,
+      "signals": {
+        "body_label_pair": 1.0,
+        "column_position": 1.0,
+        "opener_prior": 0.0,
+        "style_continuity": 1.0,
+        "tail_line_fill": 1.0,
+        "tail_no_terminal_punct": 1.0
+      },
+      "tail_debug_id": "GwhAf",
+      "tail_fill_ratio": 0.9998567765095937,
+      "tail_label": "plain text",
+      "tail_page": 6,
+      "tail_text": "ically, also included a scarcity of water along much of"
+    },
+    {
+      "boundary": "7->8",
+      "eligible": true,
+      "head_debug_id": "WCzny",
+      "head_label": "plain text",
+      "head_page": 8,
+      "head_text": "modern Spain, generates often conflicting meanings at the same time\u2014 meanings actively constructed and sometimes misread. Edhem Eldem, an Istanbul-based history professor, traces its role in shaping social and cultural identities across imperial Europe, Arab North Africa and Ottoman T\u00fcrkiye from the 18th to the early 20th centuries. He builds his analysis like a layered confection, drawing on sources ranging from architectural history and travelogue to photographs and diplomatic correspondence. This approach both confirms and unsettles earlier assumptions about the Alhambra\u2019s significance. One resource stands out and disrupts expectations. A multivolume register of visitors started in 1829 but long overlooked by scholars reveals recurring expressions of admiration and dissatisfaction shaped by shared expectations among travelers locally from Europe to the Maghreb of North Africa and farther east to the Levant. Eldem invokes the image of Russian matryoshka dolls to describe these layered reinter- pretations. Figures as different as a Moroccan diplomat and a European architect expressed admiration, even as shifting fashions rendered Ottoman observers increasingly indifferent. Then again, Spanish Orientalists reap- propriated Andalusian Islamic features copied elsewhere in Europe, while in Istanbul similar structures echoed both the Alhambra and its imitators. In each case, the monument becomes a site where meaning is continually reconfi ured through inherited cultural frameworks.\u2014JAMIE S. SCOTT",
+      "linked": false,
+      "pair": "body->body",
+      "pairs": [
+        {
+          "head_debug_id": "WCzny",
+          "head_label": "plain text",
+          "head_text": "modern Spain, generates often conflicting meanings at the same time\u2014 meanings actively constructed and sometimes misread. Edhem Eldem, an Istanbul-based history professor, traces its role in shaping social and cultural identities across imperial Europe, Arab North Africa and Ottoman T\u00fcrkiye from the 18th to the early 20th centuries. He builds his analysis like a layered confection, drawing on sources ranging from architectural history and travelogue to photographs and diplomatic correspondence. This approach both confirms and unsettles earlier assumptions about the Alhambra\u2019s significance. One resource stands out and disrupts expectations. A multivolume register of visitors started in 1829 but long overlooked by scholars reveals recurring expressions of admiration and dissatisfaction shaped by shared expectations among travelers locally from Europe to the Maghreb of North Africa and farther east to the Levant. Eldem invokes the image of Russian matryoshka dolls to describe these layered reinter- pretations. Figures as different as a Moroccan diplomat and a European architect expressed admiration, even as shifting fashions rendered Ottoman observers increasingly indifferent. Then again, Spanish Orientalists reap- propriated Andalusian Islamic features copied elsewhere in Europe, while in Istanbul similar structures echoed both the Alhambra and its imitators. In each case, the monument becomes a site where meaning is continually reconfi ured through inherited cultural frameworks.\u2014JAMIE S. SCOTT",
+          "linked": false,
+          "pair": "body->body",
+          "score": 0.46875,
+          "signals": {
+            "body_label_pair": 1.0,
+            "column_position": 0.5,
+            "opener_prior": 0.875,
+            "style_continuity": 0.0,
+            "tail_line_fill": 1.0,
+            "tail_no_terminal_punct": 1.0
+          },
+          "tail_debug_id": "NZm7R",
+          "tail_fill_ratio": 0.9944943772923648,
+          "tail_label": "plain text",
+          "tail_text": "Railway Station in downtown Damascus, where a"
+        },
+        {
+          "head_debug_id": "KNro9",
+          "head_label": "title",
+          "head_text": "Th Alhambra at the Crossroads of History: Eastern and Western Visions in the Long Nineteenth Century.",
+          "linked": false,
+          "pair": "title->title",
+          "score": 0.31875,
+          "signals": {
+            "body_label_pair": 0.0,
+            "column_position": 0.0,
+            "opener_prior": 0.875,
+            "style_continuity": 0.0,
+            "tail_line_fill": 1.0,
+            "tail_no_terminal_punct": 1.0
+          },
+          "tail_debug_id": "DKt6c",
+          "tail_fill_ratio": 1.2612722218932422,
+          "tail_label": "title",
+          "tail_text": "FROM PAST TO FUTURE"
+        }
+      ],
+      "reason": null,
+      "score": 0.46875,
+      "signals": {
+        "body_label_pair": 1.0,
+        "column_position": 0.5,
+        "opener_prior": 0.875,
+        "style_continuity": 0.0,
+        "tail_line_fill": 1.0,
+        "tail_no_terminal_punct": 1.0
+      },
+      "tail_debug_id": "NZm7R",
+      "tail_fill_ratio": 0.9944943772923648,
+      "tail_label": "plain text",
+      "tail_page": 7,
+      "tail_text": "Railway Station in downtown Damascus, where a"
+    },
+    {
+      "boundary": "8->9",
+      "eligible": true,
+      "head_debug_id": "hRsKo",
+      "head_label": "plain text",
+      "head_page": 9,
+      "head_text": "Islamic Ecumene opens with a firm refusal: Islam cannot be contained within a single geography, tra- dition or political form. Edited by David S. Powers and Eric Tagliacozzo, both professors of history at Cornell University, this collection of 22 essays advances a simple yet consequential claim. The Muslim world is not a unified or monolithic civi- lization but rather a historically layered ecumene shaped by centuries of regional choice, encounter, translation and experience. This insistence that Is- lamic life has always emerged not through sameness but through plurality binds this volume together.",
+      "linked": false,
+      "pair": "body->body",
+      "pairs": [
+        {
+          "head_debug_id": "hRsKo",
+          "head_label": "plain text",
+          "head_text": "Islamic Ecumene opens with a firm refusal: Islam cannot be contained within a single geography, tra- dition or political form. Edited by David S. Powers and Eric Tagliacozzo, both professors of history at Cornell University, this collection of 22 essays advances a simple yet consequential claim. The Muslim world is not a unified or monolithic civi- lization but rather a historically layered ecumene shaped by centuries of regional choice, encounter, translation and experience. This insistence that Is- lamic life has always emerged not through sameness but through plurality binds this volume together.",
+          "linked": false,
+          "pair": "body->body",
+          "score": 0.01874999999999999,
+          "signals": {
+            "body_label_pair": 1.0,
+            "column_position": 0.0,
+            "opener_prior": 0.875,
+            "style_continuity": 0.0,
+            "tail_line_fill": null,
+            "tail_no_terminal_punct": 0.0
+          },
+          "tail_debug_id": "DjDbD",
+          "tail_fill_ratio": null,
+          "tail_label": "plain text",
+          "tail_text": "Andrew Collins. Bear & Company, 2023."
+        },
+        {
+          "head_debug_id": "VDazz",
+          "head_label": "title",
+          "head_text": "Work Reveals a Layered, Complex Islamic Polity",
+          "linked": false,
+          "pair": "title->title",
+          "score": 0.0,
+          "signals": {
+            "body_label_pair": 0.0,
+            "column_position": 0.0,
+            "opener_prior": 0.875,
+            "style_continuity": 0.0,
+            "tail_line_fill": 1.0,
+            "tail_no_terminal_punct": 0.0
+          },
+          "tail_debug_id": "nY2SD",
+          "tail_fill_ratio": 0.9064835914481035,
+          "tail_label": "title",
+          "tail_text": "a veil of mystery and imagination.\u201d"
+        }
+      ],
+      "reason": null,
+      "score": 0.01874999999999999,
+      "signals": {
+        "body_label_pair": 1.0,
+        "column_position": 0.0,
+        "opener_prior": 0.875,
+        "style_continuity": 0.0,
+        "tail_line_fill": null,
+        "tail_no_terminal_punct": 0.0
+      },
+      "tail_debug_id": "DjDbD",
+      "tail_fill_ratio": null,
+      "tail_label": "plain text",
+      "tail_page": 8,
+      "tail_text": "Andrew Collins. Bear & Company, 2023."
+    }
+  ],
+  "chains": [
+    {
+      "chain_id": "nnFSA",
+      "length": 2,
+      "members": [
+        {
+          "chain_index": 0,
+          "debug_id": "GwhAf"
+        },
+        {
+          "chain_index": 1,
+          "debug_id": "L8yyp"
+        }
+      ]
+    }
+  ],
+  "link_min_score": 0.8,
+  "pair_weights": {
+    "body->body": {
+      "body_label_pair": 0.15,
+      "column_position": 0.1,
+      "opener_prior": -0.15,
+      "style_continuity": 0.35,
+      "tail_line_fill": 0.15,
+      "tail_no_terminal_punct": 0.25
+    },
+    "title->title": {
+      "body_label_pair": 0.0,
+      "column_position": 0.1,
+      "opener_prior": -0.15,
+      "style_continuity": 0.45,
+      "tail_line_fill": 0.0,
+      "tail_no_terminal_punct": 0.45
+    }
+  },
+  "weights": {
+    "weight_body_label_pair": 0.15,
+    "weight_column_position": 0.1,
+    "weight_opener_prior": -0.15,
+    "weight_style_continuity": 0.35,
+    "weight_tail_line_fill": 0.15,
+    "weight_tail_no_terminal_punct": 0.25
+  }
+}

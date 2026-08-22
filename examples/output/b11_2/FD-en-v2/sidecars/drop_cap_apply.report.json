@@ -1,0 +1,56 @@
+{
+  "decision_sources": [
+    "ruled",
+    "default"
+  ],
+  "decisions": [
+    {
+      "box_after": [
+        375.997573,
+        459.66249999999997,
+        533.785531,
+        663.25
+      ],
+      "box_before": [
+        375.997573,
+        459.66249999999997,
+        533.785531,
+        663.25
+      ],
+      "characters_merged": 632,
+      "debug_id": "edFv1",
+      "decision": "flatten",
+      "initial": "W",
+      "merged": true,
+      "page": 8,
+      "paragraph": "p8#9",
+      "separator_dropped": 0,
+      "size_ratio": 4.255,
+      "source": "ruled",
+      "unicode_after": "When it comes to international trade, countries have always weighed economic eff",
+      "unicode_before": "When it comes to international trade, countries have always weighed economic eff",
+      "was_candidate": true
+    }
+  ],
+  "default_decision": "flatten",
+  "separator_policy": "drop_synthesized",
+  "switch": "magazine_drop_cap_apply",
+  "target_lang": "zh",
+  "totals": {
+    "by_decision": {
+      "flatten": 1,
+      "keep": 0
+    },
+    "by_source": {
+      "default": 0,
+      "ruled": 1
+    },
+    "decided": 1,
+    "merged": 1,
+    "separators_dropped": 0
+  },
+  "verdicts": [
+    "keep",
+    "flatten"
+  ]
+}

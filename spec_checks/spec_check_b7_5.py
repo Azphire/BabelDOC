@@ -163,8 +163,14 @@ TRUTH_DIGESTS = {
     # carried the b9.4 draft out to a human. Pinned here at the digest that
     # commit delivered, for the same reason the first one is: the batches that
     # follow read it, apply it and report on it, and write none of it.
+    # Re-pinned at b11.2. That batch was told to write one glossary term into
+    # this file -- ``Masthead`` to its target form -- and the term was signed off
+    # before it was written, which is what CLAUDE.md 4.12 means by an authorised
+    # update: the pin anchors "no machine edited this file on its own", not
+    # "this file never changes". The batch report carries the digest either side
+    # of the write. The drop cap ruling in it is untouched.
     "reviews/FD-en-v2.decisions.json": (
-        "8850413eca6e0f3fecd1e901841a447caff41e251053565432176015d94ac470"
+        "6413251828b9d856b4ca41e86ccd61cc883a2d9d70240aff8b94cf19196d4b78"
     ),
     # The third ruling, pinned at F3. It arrived during b10.4 -- two pages at the
     # pause, then all eight when it settled -- and was applied and reported on by

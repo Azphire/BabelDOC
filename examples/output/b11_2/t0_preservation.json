@@ -1,0 +1,26 @@
+{
+  "condition": "examples/output/b11_2/ exists on disk, so b10_5 leaves the keep window",
+  "keep_recent_batches": 2,
+  "keep_window": [
+    "b11_2",
+    "b11_1"
+  ],
+  "b10_5_evicted": true,
+  "registered_files": 30,
+  "registered_bytes": 291123509,
+  "registered_all_present": true,
+  "registered_selected_for_removal": [],
+  "control_other_b10_5_files_selected": 528,
+  "b10_5_files_git_tracks": 90,
+  "verdict": "PASS",
+  "live_sweep_acceptance": {
+    "condition": "examples/output/b11_2/ present on disk with this batch's products, run_all --set fast executed end to end",
+    "log": "examples/output/run_all.b11_2.fast.log",
+    "gates": "23/23 passed in 265.4s",
+    "retention_line": "output retention: not applied (pass --prune-outputs, or run tools/prune_outputs.py --apply, to reclaim disk)",
+    "registered_files_checked": 30,
+    "missing_after_the_sweep": 0,
+    "size_changed_after_the_sweep": 0,
+    "verdict": "PASS"
+  }
+}

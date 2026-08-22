@@ -48,19 +48,35 @@ from babeldoc.utils.priority_thread_pool_executor import PriorityThreadPoolExecu
 logger = logging.getLogger(__name__)
 
 
+# Where the paragraphs that only a normalising comparison would have called
+# unchanged are recorded, and the count of them.
+IDENTITY_REPORT_NAME = "identity_criterion.report.json"
+NFKC_ONLY_COUNT_KEY = "nfkc_equal_not_byte_equal"
+
+
 def _normalised_for_identity(text: str) -> str:
-    """The form two texts are compared in when asking whether they say the same.
+    """The form two texts are compared in when recording a near identity.
 
     Compatibility composition folds the width and composition differences a
     model can return an otherwise unchanged string through, and the surrounding
-    whitespace a reply may gain is not part of what was said. The result is used
-    for the comparison alone; no text is written back through this.
+    whitespace a reply may gain is not part of what was said. This is used for
+    the record alone: it decides nothing, and no text is written back through it.
     """
     return unicodedata.normalize("NFKC", text).strip()
 
 
 def _is_identity_write_back(translated_text, translate_input) -> bool:
-    """Whether a translation says exactly what the source it was built from said.
+    """Whether a translation is byte for byte what the source it was built from said.
+
+    Byte for byte rather than normalised. A normalising comparison answers a
+    different question -- whether two strings would look the same once width and
+    composition differences are folded away -- and answering that one here made
+    the write back a decision about appearance: a reply that had rewritten a
+    halfwidth mark as its fullwidth form was declared unchanged and the source
+    form was kept, so the model's punctuation decision was silently overruled by
+    a comparison that was only ever meant to notice a model returning its input.
+    What the short circuit exists to catch is exactly that, and it is byte
+    equality.
 
     ``translate_input`` carries the source text on ``unicode``; the object
     itself is not a string and never compares equal to one. Anything that is not
@@ -69,6 +85,21 @@ def _is_identity_write_back(translated_text, translate_input) -> bool:
     source = getattr(translate_input, "unicode", None)
     if not isinstance(source, str) or not isinstance(translated_text, str):
         return translated_text == translate_input
+    return translated_text == source
+
+
+def _is_nfkc_only_identity(translated_text, translate_input) -> bool:
+    """Whether a normalising comparison would have called this pair unchanged.
+
+    The cases the tightening above changed the answer for. They are counted and
+    listed rather than acted on, so that a batch can see what the looser
+    criterion had been folding together.
+    """
+    source = getattr(translate_input, "unicode", None)
+    if not isinstance(source, str) or not isinstance(translated_text, str):
+        return False
+    if translated_text == source:
+        return False
     return _normalised_for_identity(translated_text) == _normalised_for_identity(source)
 
 
@@ -363,6 +394,11 @@ class ILTranslator:
         self.translate_engine = translate_engine
         self.translation_config = translation_config
         self.font_mapper = FontMapper(translation_config)
+        # Paragraphs a normalising comparison would have called unchanged and a
+        # byte comparison does not. Kept so the tightening is visible rather
+        # than inferred; written out as they are found, because the two
+        # translator front ends end a run in different places.
+        self._nfkc_only_identities: list[dict] = []
         self.shared_context_cross_split_part = (
             translation_config.shared_context_cross_split_part
         )
@@ -449,6 +485,26 @@ class ILTranslator:
             logger.debug(f"save translate tracking to {path}")
             with Path(path).open("w", encoding="utf-8") as f:
                 f.write(tracker.to_json())
+
+    def _record_nfkc_only_identity(self, paragraph, translated_text, source) -> None:
+        """Record one near identity and rewrite the sidecar that lists them."""
+        self._nfkc_only_identities.append(
+            {
+                "page": getattr(paragraph, "page_number", None),
+                "layout_label": getattr(paragraph, "layout_label", None),
+                "source": source,
+                "translated": translated_text,
+            }
+        )
+        path = self.translation_config.get_working_file_path(IDENTITY_REPORT_NAME)
+        payload = {
+            "criterion": "byte equality",
+            NFKC_ONLY_COUNT_KEY: len(self._nfkc_only_identities),
+            "paragraphs": self._nfkc_only_identities,
+        }
+        with Path(path).open("w", encoding="utf-8") as f:
+            json.dump(payload, f, ensure_ascii=False, indent=2)
+            f.write("\n")
 
     def find_title_paragraph(self, docs: Document) -> PdfParagraph | None:
         """Find the first paragraph with layout_label 'title' in the document.
@@ -1022,6 +1078,10 @@ class ILTranslator:
     ):
         """Post-translation processing: update paragraph with translated text."""
         tracker.set_output(translated_text)
+        if _is_nfkc_only_identity(translated_text, translate_input):
+            self._record_nfkc_only_identity(
+                paragraph, translated_text, translate_input.unicode
+            )
         if _is_identity_write_back(translated_text, translate_input):
             if llm_translate_tracker := tracker.last_llm_translate_tracker():
                 llm_translate_tracker.set_placeholder_full_match()

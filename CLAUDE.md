@@ -67,6 +67,11 @@ WAIVERS.md                  # 偏离/豁免登记表
 12. 裁决文件哈希钉仅锚定'机器零改动';用户更新裁决时,钉随重钉条款更新并留变更记录,不构成门禁失败。
 13. **冻结证据只读**:凡 git 跟踪的产出证据(`docs/eval/results_*` 及其同类),门禁与工具一律只读校验——重算写入临时目录再逐字节比对,依赖产物缺失时报 SKIPPED/FAIL 并指明缺失路径,严禁就地重算覆写。**保留策略永不淘汰四类路径**:git 跟踪的文件、`corpus/manifest.json` 命名的文件、`configs/output_retention.json` 的 `protected_paths` 登记的路径(与 `spec_checks/spec_check_e0.py` 的分级入库清单同步)、以及非批次目录。**淘汰前必先归档**:被淘汰批次匹配 `archive_patterns` 且不超过 `archive_max_file_kb` 的文件自动打包进 `docs/reports/archive/<batch>.zip` 并入库,大件仍删除;一次淘汰不得等于一次丢失。冻结产物一经淘汰不得以重跑顶替,受影响台账条目改记 `artifact pruned, sha recorded` 并在缺口登记中说明。
 
+14. **单臂默认**:凡跑批,**未在 PLAN 中明写要求双臂时,只跑 on 臂**(标准 run config 全开关生效的那一臂),不跑 off 臂。off 臂只在该批的证据本身**就是两臂之差**时才跑(b10.5 的 reflow 施加/不施加即属此类),且须在 PLAN 里点名说明理由与用途。理由:双臂成本翻倍、产物翻倍、保留策略压力翻倍,而绝大多数批次的断言锚在终态而非差值上。
+15. **会话不得静默丢弃自己的产出**:任何会话在删除自身产出前,须先归档(打包进 `docs/reports/archive/`)或在 `WAIVERS.md` 登记豁免并写明理由。保留策略只认批次目录(`tools/prune_outputs.py` 的 `^b(\d+)`),`F3` 一类非批次目录它按构造够不到,所以那里的删除**没有任何机制在看**——F3 会话自愿删掉两臂 work/ 与 out/ 约 4.5 GB,一个批次之后 b11.2 需要它作基线时才发现,而归档里没有 F3.zip。"可重放所以可再生"不是丢弃的理由:可再生的是字节,不可再生的是"这些字节是那次运行产出的"这件事。
+16. **门禁证据由批次在跑时提取为衍生件**:门禁不得直接读 stage checkpoint 或完整 PDF。批次须在跑时把断言所需的量提取成**小体积衍生件**——体积与扩展名落在 `archive_patterns` 与 `archive_max_file_kb` 之内(现值:`*.report.md` / `*.json` / `*.log`,≤ 2048 KB)——门禁读衍生件。理由:checkpoint 是几 MB 到几十 MB 的 `.json` 与 `.xml`,两项归档条件一项都不满足,所以它**从来就进不了归档**;b10.1 / b10.3 / b10.4 共八条断言正是这样在证据被淘汰后永久失去了执行能力(见缺口登记 GAP-31),而它们要的其实只是几个数。门禁另须用 `spec_checks/evidence.py` 读证据,工作区缺失时自动回落读 `docs/reports/archive/<batch>.zip`;门禁自身读的路径由模块级 `GATE_EVIDENCE` 声明,保留策略据此绕行(`tools/prune_outputs.py` 的 `gate_evidence`)。本条自 b11.2 起对**新门禁**生效,既有门禁的回溯改写登记为缺口,不在本批回溯。
+
+
 ## 5. 会话执行协议
 
 1. 一个会话只执行一个 PLAN 文件中的一个任务批次;不顺手做计划外改动。

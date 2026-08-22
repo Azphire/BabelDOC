@@ -1,0 +1,128 @@
+{
+  "articles": [
+    {
+      "article_id": "7LrPJ",
+      "attempts": 0,
+      "brief": {
+        "names": [
+          {
+            "source": "Aboriginal",
+            "suggested_translation": "原住民"
+          },
+          {
+            "source": "Inuit",
+            "suggested_translation": "因纽特人"
+          },
+          {
+            "source": "zaï",
+            "suggested_translation": "扎伊"
+          }
+        ],
+        "register": "文章采用正式的报道风格，旨在介绍和分析土著知识在应对气候变化和生物多样性下降中的重要性。",
+        "title_translation": "土著知识的驱动力"
+      },
+      "brief_failed": false,
+      "excerpt_chars": 332,
+      "from_cache": true,
+      "pages": [
+        2,
+        3,
+        4
+      ],
+      "reason": "",
+      "requested": true,
+      "start_page": 2,
+      "title_text": "How Indigenous knowledge drives"
+    },
+    {
+      "article_id": "m4fhK",
+      "attempts": 0,
+      "brief": {
+        "names": [
+          {
+            "source": "pirarucus",
+            "suggested_translation": "巨骨舌鱼"
+          },
+          {
+            "source": "Paumari",
+            "suggested_translation": "保马里族"
+          }
+        ],
+        "register": "这篇文章采用叙述性风格，语气较为正式，旨在向读者介绍巴西水上人家的生活和挑战。",
+        "title_translation": "巴西：水上人家的启示"
+      },
+      "brief_failed": false,
+      "excerpt_chars": 255,
+      "from_cache": true,
+      "pages": [
+        5,
+        6
+      ],
+      "reason": "",
+      "requested": true,
+      "start_page": 5,
+      "title_text": "Brazil: lessons from the water people"
+    },
+    {
+      "article_id": "HJmCj",
+      "attempts": 0,
+      "brief": {
+        "names": [
+          {
+            "source": "Moroccan",
+            "suggested_translation": "摩洛哥"
+          },
+          {
+            "source": "argan",
+            "suggested_translation": "阿甘"
+          },
+          {
+            "source": "Argania spinosa L.",
+            "suggested_translation": "阿甘树（Argania spinosa L.）"
+          },
+          {
+            "source": "Amazigh",
+            "suggested_translation": "阿马兹格"
+          },
+          {
+            "source": "Berber",
+            "suggested_translation": "柏柏尔"
+          }
+        ],
+        "register": "文章采用正式的报道风格，描述了有关阿甘油利益分享的现状，适合使用客观和中立的语气。",
+        "title_translation": "利益分享的斗争"
+      },
+      "brief_failed": false,
+      "excerpt_chars": 506,
+      "from_cache": true,
+      "pages": [
+        7,
+        8
+      ],
+      "reason": "",
+      "requested": true,
+      "start_page": 7,
+      "title_text": "The struggle for benefit-sharing"
+    }
+  ],
+  "body_labels": [
+    "text",
+    "plain text",
+    "paragraph_hybrid"
+  ],
+  "counts": {
+    "articles": 3,
+    "briefs": 3,
+    "failed": 0,
+    "from_cache": 3,
+    "requested": 3,
+    "requests": 3
+  },
+  "title_labels": [
+    "title",
+    "paragraph_title"
+  ],
+  "unassigned_pages": [
+    1
+  ]
+}

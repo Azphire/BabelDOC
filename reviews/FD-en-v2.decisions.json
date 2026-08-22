@@ -1,1 +1,9 @@
-{ "drop_caps": { "p8#9": "flatten" }, "page_kinds": {}, "terms": {} }
+{
+ "drop_caps": {
+  "p8#9": "flatten"
+ },
+ "page_kinds": {},
+ "terms": {
+  "Masthead": "报头"
+ }
+}

@@ -798,3 +798,72 @@ F2 引用时不将其误读为静默失败。
 | `keep` / `annotate` 两条人名策略的**行为级**验证 | 两条策略的文本已声明、已按 SHA-256 钉住、编译层已断言;**行为级验证要一整轮语料重跑**,而 b10.4 的作用面是策略矩阵本身 | 需要在论文里主张这两条策略的效果时 | `examples/output/b10_4/b10_4.report.md` §2 |
 | 检测器豁免记录块(GAP-28) | 属检测器语义修订,b10.4/b10.5 均不动检测器 | 下一次动检测器语义的批次 | 见 GAP-28 |
 | 解析层进常规检出面(GAP-29) | 审计是本项目最贵的确定性通道,进常规轮次前须先量耗时 | 有了 F3 的阶段计时基线之后 | 见 GAP-29 |
+
+---
+
+## 8. 保留策略与锚定口径开出的缺口(batch-b11.2 追加)
+
+### GAP-31 八条门禁断言的证据不可恢复,既有门禁的衍生件回溯改写未做
+
+- **事实**:`b10.1` / `b10.3` / `b10.4` 三份门禁共**八条**断言处于 SKIPPED,
+  逐条为——b10_1 `check_02b_the_flattened_column_starts_level_with_its_neighbour`;
+  b10_3 `check_05b_every_record_is_set_as_its_own_characters_are`、
+  `check_06a2_a_blanked_member_occupies_nothing`、
+  `check_06b_the_two_halves_of_a_text_agree`、`check_06e_the_evidence_is_present`;
+  b10_4 `check_04f_the_short_labels_reach_a_request_and_land`、
+  `check_05e_the_ruling_reached_the_pages_it_names`、
+  `check_06a_the_evidence_is_present`。
+- **为什么不可恢复**:这八条要读的 **19 条路径**中,工作区或归档里存在的**只有 1 条**
+  (`b10_4/Courier-zh/work/Courier-zh/chain_report.json`,17 381 bytes,在
+  `b10_4.zip` 内),而它只是 `check_05e` 所需两条中的一条 —— **没有任何一条断言的证据
+  是齐的**(逐条矩阵:`examples/output/b11_2/t4_recoverability.json`)。
+  成因是构造性的而非偶然:`archive_patterns` 不含 `.xml` 与 PDF,
+  `archive_max_file_kb = 2048` 而这些 checkpoint 是 MB 到几十 MB 级(同规格参照:
+  b10_5 的 Courier-zh `checkpoint.07_page_classifier.json` 27 285 KB、
+  `checkpoint.11_typesetting.json` 47 307 KB),**两项归档条件一项都不满足**。
+  故 `b10_1.zip`(70 件)/ `b10_3.zip`(97 件)/ `b10_4.zip`(132 件)里一个 checkpoint
+  都没有、一份完整 PDF 都没有。
+- **两条修法各恢复几条**:**都是零条**。(b)"门禁读归档"够不着不在归档里的东西;
+  (a)"豁免在用证据"是前瞻性的,阻止将来被淘汰而不能让已删的文件回来。
+  §4.13 明文禁止以重跑顶替冻结产物,`examples/output/gate_cache/` 里的同名 checkpoint
+  是门禁按自身 fingerprint 现建的产物,不是这三批冻结的那一份。
+- **裁定(b11.2)**:八条**维持 SKIPPED**,不以任何形式伪装成执行。
+  前瞻性修法照做且已在树上:(a) `tools/prune_outputs.py` 的 `gate_evidence`
+  读各门禁的 `GATE_EVIDENCE` 声明并绕行淘汰;(b) `spec_checks/evidence.py` 在工作区
+  缺失时回落读 `docs/reports/archive/` 下该批次的 zip;(c) `spec_checks/run_all.py` 的
+  淘汰由无条件改为 `--prune-outputs`(默认关),门禁运行不再是销毁动作;
+  (e) CLAUDE.md §4.16 立"门禁证据由批次在跑时提取为衍生件"之规。
+- **本缺口的未补部分**:§4.16 只对**新门禁**生效。**既有门禁按衍生件重写的回溯工作
+  未做**——那要求逐条判定每条断言真正需要的那几个数,再补一份提取器,作用面是
+  b1~b11 全部门禁。八条已失的断言即便回溯改写也回不来(证据已不存在),回溯的收益
+  是**其余仍在执行的断言不再重蹈**。
+- **补法**:逐门禁把 checkpoint 读改为衍生件读,并给每份门禁补 `GATE_EVIDENCE` 声明。
+- **成本**:中。纯离线,零 API,但面广。
+- **不补的措辞**:
+  > 本文的门禁体系在 b11.2 之前直接读取流水线的中间产物,而这些产物的体积使其无法
+  > 进入版本库的归档通道;三个批次共八条断言因此在证据被保留策略淘汰后永久失去执行
+  > 能力。b11.2 起门禁证据改由批次提取为小体积衍生件,但既有门禁未回溯改写,故
+  > "全部门禁可在任意检出上复跑"这一性质本文不主张。
+- **相关**:`docs/reports/assertion_contracts.md` AC-11(b10.4 三条转 SKIPPED 的登记)
+  与 AC-12(淘汰改为可声明);GAP-19(同类问题的上一次发作)。
+
+### GAP-32 `pN#k` 只在同一 stage 内稳定,跨 sidecar 配对不成立
+
+- **事实**:同一个段落在 `source_audit.report.json` 中记为 **`p5#5`**、在
+  `issues.json` 中记为 **`p5#6`**(FD-en-v2,文本 `MANAGINGEDITOR` /
+  `MANAGING EDITOR`)。两份 sidecar 产于不同 stage —— `source_audit` 在行切分之前,
+  `issues.json` 在其后 —— 而 `#k` 是**页内段落列表的位置序号**,任何插入或切分段落的
+  stage 都会把它整体移位。
+- **影响面**:CLAUDE.md §5.13 为躲开 `debug_id` 的不稳定而规定"段落一律用页内序号
+  (`p<页>#<序>`)或文本本身锚定"。该规定在**单份 sidecar 内**成立,**跨 sidecar 配对
+  时不成立**。b11.2 的 T1 判定表因此改按 **`debug_id` 或文本**对齐,并禁止按 `pN#k`
+  跨 sidecar 配对。
+- **未补部分**:既有门禁与工具中是否存在跨 sidecar 的 `pN#k` 配对,**未逐条审查**。
+- **补法**:给段落一个**跨 stage 稳定的标识**(例如在 IL 上落一个只增不改的段落序号),
+  或给每份 sidecar 记下它所处的 stage 与该 stage 的段落列表快照,使配对有据可依。
+  前者须动 IL schema(受 §4.10 冻结条款约束),后者是 sidecar 层的加法。
+- **成本**:小到中,取决于选哪条。
+- **不补的措辞**:
+  > 本文引用的段落编号是页内位置序号,只在产出它的那一个流水线阶段内稳定;不同阶段
+  > 的 sidecar 之间不能按该编号对齐段落,本文的逐段对照一律按文本内容配对。
+- **相关**:CLAUDE.md §5.13;`examples/output/b11_2/b11_2.report.md` §1 前提 4。

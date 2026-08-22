@@ -84,6 +84,7 @@ from babeldoc.magazine.react import decide  # noqa: E402
 from babeldoc.magazine.taxonomy import load_taxonomy  # noqa: E402
 from spec_checks import artifacts  # noqa: E402
 from spec_checks import harness  # noqa: E402
+from spec_checks import run_all as runner  # noqa: E402
 
 # Which set of the sweep this gate belongs to. It drives no pipeline build:
 # every document it asserts on is a stub it builds itself or evidence a
@@ -1490,10 +1491,18 @@ def check_04d_baselines_are_archives_that_round_trip() -> None:
 
 
 def check_04e_the_sweep_applies_the_policy() -> None:
-    """Positive 4e: the runner ends by applying the retention policy.
+    """Positive 4e: the runner reaches the policy, and only when it is asked to.
 
     After the gates rather than before them, because a sweep reads what earlier
     sweeps left, and with --apply rather than as a report nobody acts on.
+
+    Guarded rather than automatic. This assertion used to read the retention
+    step as unconditional, which is how running the gates became the only way
+    the policy was ever applied, and so how reading one batch's evidence became
+    the act that took the evidence of the batch two behind it. The step is still
+    here, still after the gates and still --apply; what is asserted beside that
+    now is that it does nothing until a caller asks, and that a caller has a way
+    to ask. Registered as AC-12.
 
     The function inspected is whichever one drives the gates, found by looking
     for the ``run_gate`` calls rather than by name: batch b9.2r moved the sweep
@@ -1526,8 +1535,8 @@ def check_04e_the_sweep_applies_the_policy() -> None:
     # The innermost one: an outer wrapper contains the driver's source too.
     driver = min(drivers, key=lambda node: len(ast.unparse(node)))
     body = ast.unparse(driver)
-    if "prune_outputs()" not in body:
-        faults.append("the runner does not apply the retention policy")
+    if "prune_outputs(" not in body:
+        faults.append("the runner does not reach the retention policy")
     prune = next(
         (
             node
@@ -1540,11 +1549,38 @@ def check_04e_the_sweep_applies_the_policy() -> None:
         faults.append("the runner declares no retention step")
     elif "--apply" not in ast.unparse(prune):
         faults.append("the retention step is a dry run")
+    elif not prune.args.args:
+        faults.append("the retention step takes no request and so is unconditional")
     lines = body.splitlines()
-    applied = [index for index, line in enumerate(lines) if "prune_outputs()" in line]
+    applied = [index for index, line in enumerate(lines) if "prune_outputs(" in line]
     ran = [index for index, line in enumerate(lines) if "run_gate(" in line]
     if applied and ran and min(applied) < max(ran):
         faults.append("the policy is applied before the gates have run")
+
+    # The guard, exercised rather than read: the step called without a request
+    # must run nothing, and the runner must declare the flag that asks for it.
+    calls: list[list[str]] = []
+
+    def record_call(argv, **kwargs):
+        calls.append(list(argv))
+        return subprocess.CompletedProcess(argv, 0, "", "")
+
+    original = runner.subprocess.run
+    runner.subprocess.run = record_call
+    try:
+        runner.prune_outputs(False)
+        if calls:
+            faults.append("the retention step ran without being asked")
+        runner.prune_outputs(True)
+        if not calls:
+            faults.append("the retention step does not run when it is asked")
+    finally:
+        runner.subprocess.run = original
+    flags = runner.build_parser().parse_args([])
+    if not hasattr(flags, "prune_outputs"):
+        faults.append("the runner declares no way to ask for the policy")
+    elif flags.prune_outputs:
+        faults.append("the runner asks for the policy by default")
     record("check_04e_the_sweep_applies_the_policy", not faults, "; ".join(faults))
 
 

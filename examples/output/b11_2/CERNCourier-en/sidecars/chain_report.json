@@ -1,0 +1,131 @@
+{
+  "boundaries": [
+    {
+      "boundary": "1->2",
+      "eligible": false,
+      "head_debug_id": null,
+      "head_label": null,
+      "head_page": 2,
+      "head_text": null,
+      "linked": false,
+      "pair": null,
+      "pairs": [],
+      "reason": "not_chain_eligible:head",
+      "score": null,
+      "signals": {
+        "body_label_pair": null,
+        "column_position": null,
+        "opener_prior": null,
+        "style_continuity": null,
+        "tail_line_fill": null,
+        "tail_no_terminal_punct": null
+      },
+      "tail_debug_id": null,
+      "tail_fill_ratio": null,
+      "tail_label": null,
+      "tail_page": 1,
+      "tail_text": null
+    },
+    {
+      "boundary": "2->3",
+      "eligible": false,
+      "head_debug_id": null,
+      "head_label": null,
+      "head_page": 3,
+      "head_text": null,
+      "linked": false,
+      "pair": null,
+      "pairs": [],
+      "reason": "not_chain_eligible:tail",
+      "score": null,
+      "signals": {
+        "body_label_pair": null,
+        "column_position": null,
+        "opener_prior": null,
+        "style_continuity": null,
+        "tail_line_fill": null,
+        "tail_no_terminal_punct": null
+      },
+      "tail_debug_id": null,
+      "tail_fill_ratio": null,
+      "tail_label": null,
+      "tail_page": 2,
+      "tail_text": null
+    },
+    {
+      "boundary": "3->4",
+      "eligible": true,
+      "head_debug_id": "fHzxX",
+      "head_label": "plain text",
+      "head_page": 4,
+      "head_text": "V o l u m e 6 6 N u m b e r 4 J u l y / A u g u s t 2 0 2 6",
+      "linked": false,
+      "pair": "body->body",
+      "pairs": [
+        {
+          "head_debug_id": "fHzxX",
+          "head_label": "plain text",
+          "head_text": "V o l u m e 6 6 N u m b e r 4 J u l y / A u g u s t 2 0 2 6",
+          "linked": false,
+          "pair": "body->body",
+          "score": 0.0,
+          "signals": {
+            "body_label_pair": 1.0,
+            "column_position": 0.0,
+            "opener_prior": 1.0,
+            "style_continuity": 0.0,
+            "tail_line_fill": 0.0,
+            "tail_no_terminal_punct": 0.0
+          },
+          "tail_debug_id": "AEVc8",
+          "tail_fill_ratio": 0.4419933655006031,
+          "tail_label": "plain text",
+          "tail_text": "and  will soon be released."
+        }
+      ],
+      "reason": null,
+      "score": 0.0,
+      "signals": {
+        "body_label_pair": 1.0,
+        "column_position": 0.0,
+        "opener_prior": 1.0,
+        "style_continuity": 0.0,
+        "tail_line_fill": 0.0,
+        "tail_no_terminal_punct": 0.0
+      },
+      "tail_debug_id": "AEVc8",
+      "tail_fill_ratio": 0.4419933655006031,
+      "tail_label": "plain text",
+      "tail_page": 3,
+      "tail_text": "and  will soon be released."
+    }
+  ],
+  "chains": [],
+  "link_min_score": 0.8,
+  "pair_weights": {
+    "body->body": {
+      "body_label_pair": 0.15,
+      "column_position": 0.1,
+      "opener_prior": -0.15,
+      "style_continuity": 0.35,
+      "tail_line_fill": 0.15,
+      "tail_no_terminal_punct": 0.25
+    },
+    "title->title": {
+      "body_label_pair": 0.0,
+      "column_position": 0.1,
+      "opener_prior": -0.15,
+      "style_continuity": 0.45,
+      "tail_line_fill": 0.0,
+      "tail_no_terminal_punct": 0.45
+    }
+  },
+  "weights": {
+    "weight_body_label_pair": 0.15,
+    "weight_column_position": 0.1,
+    "weight_opener_prior": -0.15,
+    "weight_style_continuity": 0.35,
+    "weight_tail_line_fill": 0.15,
+    "weight_tail_no_terminal_punct": 0.25
+  }
+}

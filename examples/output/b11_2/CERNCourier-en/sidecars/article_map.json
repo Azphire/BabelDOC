@@ -1,0 +1,576 @@
+{
+  "articles": [
+    {
+      "article_id": "1qudX",
+      "chains": [],
+      "merged_by_chain": false,
+      "pages": [
+        1
+      ],
+      "paragraphs": [
+        {
+          "debug_id": "EdfZD",
+          "page": 1
+        },
+        {
+          "debug_id": "YtkMm",
+          "page": 1
+        },
+        {
+          "debug_id": "zETWk",
+          "page": 1
+        },
+        {
+          "debug_id": "3roEv",
+          "page": 1
+        },
+        {
+          "debug_id": "1yYHH",
+          "page": 1
+        },
+        {
+          "debug_id": "J5EQU",
+          "page": 1
+        },
+        {
+          "debug_id": "EE995",
+          "page": 1
+        },
+        {
+          "debug_id": "mmns9",
+          "page": 1
+        },
+        {
+          "debug_id": "3Cn2C",
+          "page": 1
+        },
+        {
+          "debug_id": "J6kFD",
+          "page": 1
+        },
+        {
+          "debug_id": "jhWcF",
+          "page": 1
+        },
+        {
+          "debug_id": "6rSTU",
+          "page": 1
+        },
+        {
+          "debug_id": "qa87P",
+          "page": 1
+        },
+        {
+          "debug_id": "SVBjX",
+          "page": 1
+        },
+        {
+          "debug_id": "fa3Wp",
+          "page": 1
+        },
+        {
+          "debug_id": "Qi4HH",
+          "page": 1
+        },
+        {
+          "debug_id": "4XqZT",
+          "page": 1
+        },
+        {
+          "debug_id": "HFEVM",
+          "page": 1
+        },
+        {
+          "debug_id": "Yh8e9",
+          "page": 1
+        },
+        {
+          "debug_id": "KL3Vw",
+          "page": 1
+        },
+        {
+          "debug_id": "o7M47",
+          "page": 1
+        }
+      ],
+      "start_page": 1,
+      "title": {
+        "debug_id": "zETWk",
+        "layout_label": "title",
+        "text": "CERNCOURIER July/August 2026 cerncourier.com Reporting on international high-energy physics"
+      }
+    },
+    {
+      "article_id": "fVX9Y",
+      "chains": [],
+      "merged_by_chain": false,
+      "pages": [
+        3
+      ],
+      "paragraphs": [
+        {
+          "debug_id": "hdV1s",
+          "page": 3
+        },
+        {
+          "debug_id": "1rQj2",
+          "page": 3
+        },
+        {
+          "debug_id": "362UK",
+          "page": 3
+        },
+        {
+          "debug_id": "Xj6Tf",
+          "page": 3
+        },
+        {
+          "debug_id": "t2oxx",
+          "page": 3
+        },
+        {
+          "debug_id": "48V8N",
+          "page": 3
+        },
+        {
+          "debug_id": "DRHZp",
+          "page": 3
+        },
+        {
+          "debug_id": "ndfCX",
+          "page": 3
+        },
+        {
+          "debug_id": "YbyYb",
+          "page": 3
+        },
+        {
+          "debug_id": "PoKSh",
+          "page": 3
+        },
+        {
+          "debug_id": "MpJVo",
+          "page": 3
+        },
+        {
+          "debug_id": "je7Jg",
+          "page": 3
+        },
+        {
+          "debug_id": "Mbzp9",
+          "page": 3
+        },
+        {
+          "debug_id": "zRk4R",
+          "page": 3
+        },
+        {
+          "debug_id": "pSjxG",
+          "page": 3
+        },
+        {
+          "debug_id": "U3pnu",
+          "page": 3
+        },
+        {
+          "debug_id": "V1RZh",
+          "page": 3
+        },
+        {
+          "debug_id": "hxLR7",
+          "page": 3
+        },
+        {
+          "debug_id": "2ceP6",
+          "page": 3
+        },
+        {
+          "debug_id": "2FcHv",
+          "page": 3
+        },
+        {
+          "debug_id": "CUPJX",
+          "page": 3
+        },
+        {
+          "debug_id": "Rv2Wq",
+          "page": 3
+        },
+        {
+          "debug_id": "fBtyW",
+          "page": 3
+        },
+        {
+          "debug_id": "DXJr9",
+          "page": 3
+        },
+        {
+          "debug_id": "hpDWe",
+          "page": 3
+        },
+        {
+          "debug_id": "LNWB1",
+          "page": 3
+        },
+        {
+          "debug_id": "25UHA",
+          "page": 3
+        },
+        {
+          "debug_id": "ziJGz",
+          "page": 3
+        },
+        {
+          "debug_id": "5oxKH",
+          "page": 3
+        },
+        {
+          "debug_id": "gQAmh",
+          "page": 3
+        },
+        {
+          "debug_id": "1d6yE",
+          "page": 3
+        },
+        {
+          "debug_id": "7NJ54",
+          "page": 3
+        },
+        {
+          "debug_id": "U439f",
+          "page": 3
+        },
+        {
+          "debug_id": "MGGsM",
+          "page": 3
+        },
+        {
+          "debug_id": "1rYsh",
+          "page": 3
+        },
+        {
+          "debug_id": "t77Nw",
+          "page": 3
+        },
+        {
+          "debug_id": "e6afa",
+          "page": 3
+        },
+        {
+          "debug_id": "1jbGb",
+          "page": 3
+        },
+        {
+          "debug_id": "BmM2L",
+          "page": 3
+        },
+        {
+          "debug_id": "AEVc8",
+          "page": 3
+        },
+        {
+          "debug_id": "52LBx",
+          "page": 3
+        },
+        {
+          "debug_id": "hodSp",
+          "page": 3
+        },
+        {
+          "debug_id": "Pjz8k",
+          "page": 3
+        },
+        {
+          "debug_id": "9prvp",
+          "page": 3
+        },
+        {
+          "debug_id": "x5QYg",
+          "page": 3
+        },
+        {
+          "debug_id": "hPu3v",
+          "page": 3
+        },
+        {
+          "debug_id": "deUd6",
+          "page": 3
+        },
+        {
+          "debug_id": "UPEix",
+          "page": 3
+        },
+        {
+          "debug_id": "UhEHW",
+          "page": 3
+        },
+        {
+          "debug_id": "c97wv",
+          "page": 3
+        },
+        {
+          "debug_id": "d9ua6",
+          "page": 3
+        },
+        {
+          "debug_id": "zNbY3",
+          "page": 3
+        }
+      ],
+      "start_page": 3,
+      "title": {
+        "debug_id": "YbyYb",
+        "layout_label": "title",
+        "text": "Policy"
+      }
+    },
+    {
+      "article_id": "WJiDC",
+      "chains": [],
+      "merged_by_chain": false,
+      "pages": [
+        4
+      ],
+      "paragraphs": [
+        {
+          "debug_id": "fHzxX",
+          "page": 4
+        },
+        {
+          "debug_id": "y9iHD",
+          "page": 4
+        },
+        {
+          "debug_id": "a69mK",
+          "page": 4
+        },
+        {
+          "debug_id": "EAjSi",
+          "page": 4
+        },
+        {
+          "debug_id": "WvWCd",
+          "page": 4
+        },
+        {
+          "debug_id": "cymVP",
+          "page": 4
+        },
+        {
+          "debug_id": "qCC2g",
+          "page": 4
+        },
+        {
+          "debug_id": "weyAn",
+          "page": 4
+        },
+        {
+          "debug_id": "UQPKh",
+          "page": 4
+        },
+        {
+          "debug_id": "otcUH",
+          "page": 4
+        },
+        {
+          "debug_id": "uvbHW",
+          "page": 4
+        },
+        {
+          "debug_id": "xP7k9",
+          "page": 4
+        },
+        {
+          "debug_id": "S61YG",
+          "page": 4
+        },
+        {
+          "debug_id": "5QbF5",
+          "page": 4
+        },
+        {
+          "debug_id": "BsyeN",
+          "page": 4
+        },
+        {
+          "debug_id": "QXgNx",
+          "page": 4
+        },
+        {
+          "debug_id": "7ENdk",
+          "page": 4
+        },
+        {
+          "debug_id": "Wexse",
+          "page": 4
+        },
+        {
+          "debug_id": "k38XY",
+          "page": 4
+        },
+        {
+          "debug_id": "WRr7N",
+          "page": 4
+        },
+        {
+          "debug_id": "P1BuR",
+          "page": 4
+        },
+        {
+          "debug_id": "Rxxo3",
+          "page": 4
+        },
+        {
+          "debug_id": "msK2z",
+          "page": 4
+        },
+        {
+          "debug_id": "M29Et",
+          "page": 4
+        },
+        {
+          "debug_id": "kConP",
+          "page": 4
+        },
+        {
+          "debug_id": "eU1Pr",
+          "page": 4
+        },
+        {
+          "debug_id": "1bB5P",
+          "page": 4
+        },
+        {
+          "debug_id": "ZEsJF",
+          "page": 4
+        },
+        {
+          "debug_id": "GR6Wn",
+          "page": 4
+        },
+        {
+          "debug_id": "Do9vU",
+          "page": 4
+        },
+        {
+          "debug_id": "w2NSB",
+          "page": 4
+        },
+        {
+          "debug_id": "p9fcR",
+          "page": 4
+        },
+        {
+          "debug_id": "b6w91",
+          "page": 4
+        },
+        {
+          "debug_id": "uVS1H",
+          "page": 4
+        },
+        {
+          "debug_id": "bRJQn",
+          "page": 4
+        },
+        {
+          "debug_id": "X5iHN",
+          "page": 4
+        },
+        {
+          "debug_id": "SzYNW",
+          "page": 4
+        },
+        {
+          "debug_id": "tFYF2",
+          "page": 4
+        },
+        {
+          "debug_id": "pUJYj",
+          "page": 4
+        },
+        {
+          "debug_id": "8p78k",
+          "page": 4
+        },
+        {
+          "debug_id": "U5UtT",
+          "page": 4
+        },
+        {
+          "debug_id": "PkfmP",
+          "page": 4
+        },
+        {
+          "debug_id": "cfNNd",
+          "page": 4
+        },
+        {
+          "debug_id": "zShdy",
+          "page": 4
+        },
+        {
+          "debug_id": "xE4ED",
+          "page": 4
+        }
+      ],
+      "start_page": 4,
+      "title": {
+        "debug_id": "y9iHD",
+        "layout_label": "title",
+        "text": "C"
+      }
+    }
+  ],
+  "counts": {
+    "articles": 3,
+    "chains": 0,
+    "merged_by_chain": 0,
+    "pages": 4,
+    "unassigned": 1
+  },
+  "pages": [
+    {
+      "article_id": "1qudX",
+      "page": 1,
+      "page_kind": "editorial",
+      "page_kind_conf": 1.0,
+      "reason": null,
+      "role": "opens"
+    },
+    {
+      "article_id": null,
+      "page": 2,
+      "page_kind": "toc",
+      "page_kind_conf": 0.875,
+      "reason": "not_chain_eligible",
+      "role": "unassigned"
+    },
+    {
+      "article_id": "fVX9Y",
+      "page": 3,
+      "page_kind": "article_opener",
+      "page_kind_conf": 0.875,
+      "reason": null,
+      "role": "opens"
+    },
+    {
+      "article_id": "WJiDC",
+      "page": 4,
+      "page_kind": "interview",
+      "page_kind_conf": 1.0,
+      "reason": null,
+      "role": "opens"
+    }
+  ],
+  "title_labels": [
+    "title",
+    "paragraph_title"
+  ],
+  "unassigned": [
+    {
+      "page": 2,
+      "page_kind": "toc",
+      "reason": "not_chain_eligible"
+    }
+  ]
+}

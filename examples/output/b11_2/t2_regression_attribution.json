@@ -1,0 +1,79 @@
+{
+  "samples": {
+    "CERNCourier-en": {
+      "text_text_collision": {
+        "baseline": 1,
+        "now": 2,
+        "new_findings": [
+          {
+            "issue_id": "text_text_collision:p4:p4#1+p4#39",
+            "evidence": {
+              "candidate_route": "coverage",
+              "coverage": 0.7427,
+              "excerpt": "C",
+              "iou": 0.0986,
+              "layout_labels": [
+                "title",
+                "fallback_line"
+              ],
+              "min_coverage": 0.4,
+              "min_iou": 0.2,
+              "other_excerpt": "CCJulAug26_HI",
+              "source_checkpoint": "checkpoint.06_styles_and_formulas.xml",
+              "source_coverage": 0.0,
+              "source_iou": 0.0,
+              "source_min_coverage": 0.4,
+              "source_min_iou": 0.05,
+              "source_stage": "styles_and_formulas"
+            },
+            "paragraphs": [
+              {
+                "ref": "p4#1",
+                "layout_label": "title",
+                "text": "C",
+                "text_unchanged": true,
+                "box_now": {
+                  "x": 18.98590546875,
+                  "y": 41.7755296875,
+                  "x2": 46.341862500000005,
+                  "y2": 62.653546484375
+                },
+                "box_baseline": {
+                  "x": 18.98590546875,
+                  "y": 41.7755296875,
+                  "x2": 46.341862500000005,
+                  "y2": 62.653546484375
+                },
+                "box_unchanged": true,
+                "scale_now": 1.0,
+                "scale_baseline": 1.0
+              },
+              {
+                "ref": "p4#39",
+                "layout_label": "fallback_line",
+                "text": "CCJulAug26_HI",
+                "text_unchanged": true,
+                "box_now": {
+                  "x": 8.70349375,
+                  "y": 72.849772,
+                  "x2": 44.54002675,
+                  "y2": 79.046021875
+                },
+                "box_baseline": {
+                  "x": 8.70349375,
+                  "y": 72.849772,
+                  "x2": 44.54002675,
+                  "y2": 79.046021875
+                },
+                "box_unchanged": true,
+                "scale_now": 1.0,
+                "scale_baseline": 0.8499999999999999
+              }
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "finding": "One count rose across the five runs. On CERNCourier-en a second text_text_collision is reported for the same pair of source paragraphs that produced the first: both carry the same filename string, both stand in exactly the box they stood in for the baseline, and both carry exactly the text they carried. What changed is their scale, from 0.85 to 1.0, because the translator returns a filename unchanged and b11.1's revived identity short circuit no longer recomposes a paragraph whose answer equals its request -- so the paragraph keeps the scale it was set at instead of the one a recomposition would have fitted it to. The collision detector measures rendered ink rather than the box, so larger glyphs in an unchanged box cover more of the title beside them: coverage moves from 0.7035 to 0.7427 and the second paragraph crosses the 0.4 admission the first was already over. No paragraph moved, no text changed, and no new overlap was created; a pair that was already being reported once is now reported twice. This is the exposure T2 measured, landing."
+}

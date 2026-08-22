@@ -155,10 +155,12 @@ NESTED_SUPPRESSED = os.environ.get("SPEC_NO_NESTED") == "1"
 
 LANGUAGE = "zh"
 
-# The ruling the corpus owner filed after b9.4, and the digest T9.5.0 pins it at.
+# The ruling the corpus owner filed after b9.4, and the digest it is pinned at.
+# Moved once, at b11.2, when that batch wrote a signed off glossary term into
+# the file; see the note beside the pin in spec_check_b7_5.py.
 FD_RULING = "reviews/FD-en-v2.decisions.json"
 FD_RULING_DIGEST = (
-    "8850413eca6e0f3fecd1e901841a447caff41e251053565432176015d94ac470"
+    "6413251828b9d856b4ca41e86ccd61cc883a2d9d70240aff8b94cf19196d4b78"
 )
 
 # Every sample of the corpus, read from the register rather than listed here.
