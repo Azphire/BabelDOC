@@ -1,0 +1,1458 @@
+{
+  "what_this_is": "the annotation stage run twice over the frozen stage-05 checkpoints, differing only in the broad font pattern",
+  "landing_site": "babeldoc/format/pdf/document_il/utils/formular_helper.py, is_formulas_font, the broad formula-font pattern",
+  "criterion_sha256": "55e51adc67f79190a1bca510f69ccb7e0b0c9083ec9542517f6e91e0f580e740",
+  "reference_items_sha256": "91b0531080e5e4ccdbdec5a122094e7bb5636a454915f246ee6c2c732af574be",
+  "harness_control": {
+    "question": "does the before arm reproduce the frozen stage-06 annotation",
+    "mismatches": [],
+    "passed": true
+  },
+  "before": {
+    "by_sample": {
+      "AramcoWorld-en-v2": {
+        "mislabels": 8,
+        "formula_compositions": 39
+      },
+      "CERNCourier-en": {
+        "mislabels": 9,
+        "formula_compositions": 48
+      },
+      "Courier-en": {
+        "mislabels": 7,
+        "formula_compositions": 19
+      },
+      "Courier-zh": {
+        "mislabels": 5,
+        "formula_compositions": 62
+      },
+      "FD-en-v2": {
+        "mislabels": 36,
+        "formula_compositions": 72
+      },
+      "Vogue-en": {
+        "mislabels": 3,
+        "formula_compositions": 12
+      }
+    },
+    "by_annotation_path": {
+      "vertical": 39,
+      "corner_mark": 5,
+      "formula_font": 24
+    },
+    "mislabels": 68,
+    "rows": [
+      {
+        "sample": "AramcoWorld-en-v2",
+        "page": 3,
+        "anchor": "p3#18",
+        "composition_slot": 0,
+        "text": "cCARRON",
+        "reason": "a word-bearing run with no mathematics and no independent formula evidence",
+        "longest_letter_run": 7,
+        "annotation_path": "vertical"
+      },
+      {
+        "sample": "AramcoWorld-en-v2",
+        "page": 3,
+        "anchor": "p3#18",
+        "composition_slot": 1,
+        "text": "ANOV; LEON M",
+        "reason": "a word-bearing run with no mathematics and no independent formula evidence",
+        "longest_letter_run": 4,
+        "annotation_path": "vertical"
+      },
+      {
+        "sample": "AramcoWorld-en-v2",
+        "page": 3,
+        "anchor": "p3#18",
+        "composition_slot": 2,
+        "text": "OPPOSITE: BANNING EYRE; THIS PAGE",
+        "reason": "a word-bearing run with no mathematics and no independent formula evidence",
+        "longest_letter_run": 8,
+        "annotation_path": "vertical"
+      },
+      {
+        "sample": "AramcoWorld-en-v2",
+        "page": 3,
+        "anchor": "p3#18",
+        "composition_slot": 4,
+        "text": " FROM TOP: IVY JOHNSON; DANIIL USM",
+        "reason": "a word-bearing run with no mathematics and no independent formula evidence",
+        "longest_letter_run": 7,
+        "annotation_path": "vertical"
+      },
+      {
+        "sample": "AramcoWorld-en-v2",
+        "page": 7,
+        "anchor": "p7#12",
+        "composition_slot": 0,
+        "text": "ORITZ/LIBRARY OF CONGRESS",
+        "reason": "a word-bearing run with no mathematics and no independent formula evidence",
+        "longest_letter_run": 8,
+        "annotation_path": "vertical"
+      },
+      {
+        "sample": "AramcoWorld-en-v2",
+        "page": 7,
+        "anchor": "p7#12",
+        "composition_slot": 1,
+        "text": "OPPOSITE TOP: B.M",
+        "reason": "a word-bearing run with no mathematics and no independent formula evidence",
+        "longest_letter_run": 8,
+        "annotation_path": "vertical"
+      },
+      {
+        "sample": "AramcoWorld-en-v2",
+        "page": 9,
+        "anchor": "p9#14",
+        "composition_slot": 0,
+        "text": "AGES",
+        "reason": "a word-bearing run with no mathematics and no independent formula evidence",
+        "longest_letter_run": 4,
+        "annotation_path": "vertical"
+      },
+      {
+        "sample": "AramcoWorld-en-v2",
+        "page": 9,
+        "anchor": "p9#14",
+        "composition_slot": 1,
+        "text": "TOP: UNIVERSITY HISTORY ARCHIVE / GETTY IM",
+        "reason": "a word-bearing run with no mathematics and no independent formula evidence",
+        "longest_letter_run": 10,
+        "annotation_path": "vertical"
+      },
+      {
+        "sample": "CERNCourier-en",
+        "page": 2,
+        "anchor": "p2#32",
+        "composition_slot": 1,
+        "text": "olume 66 ",
+        "reason": "a word-bearing run with no mathematics and no independent formula evidence",
+        "longest_letter_run": 5,
+        "annotation_path": "corner_mark"
+      },
+      {
+        "sample": "CERNCourier-en",
+        "page": 2,
+        "anchor": "p2#32",
+        "composition_slot": 3,
+        "text": "umber 4  ",
+        "reason": "a word-bearing run with no mathematics and no independent formula evidence",
+        "longest_letter_run": 5,
+        "annotation_path": "corner_mark"
+      },
+      {
+        "sample": "CERNCourier-en",
+        "page": 2,
+        "anchor": "p2#32",
+        "composition_slot": 7,
+        "text": "ugust 2026",
+        "reason": "a word-bearing run with no mathematics and no independent formula evidence",
+        "longest_letter_run": 5,
+        "annotation_path": "corner_mark"
+      },
+      {
+        "sample": "CERNCourier-en",
+        "page": 2,
+        "anchor": "p2#66",
+        "composition_slot": 0,
+        "text": "P Dinault/CERN",
+        "reason": "a word-bearing run with no mathematics and no independent formula evidence",
+        "longest_letter_run": 7,
+        "annotation_path": "vertical"
+      },
+      {
+        "sample": "CERNCourier-en",
+        "page": 3,
+        "anchor": "p3#8",
+        "composition_slot": 1,
+        "text": "olicy",
+        "reason": "a word-bearing run with no mathematics and no independent formula evidence",
+        "longest_letter_run": 5,
+        "annotation_path": "corner_mark"
+      },
+      {
+        "sample": "CERNCourier-en",
+        "page": 4,
+        "anchor": "p4#35",
+        "composition_slot": 0,
+        "text": "CERN",
+        "reason": "a word-bearing run with no mathematics and no independent formula evidence",
+        "longest_letter_run": 4,
+        "annotation_path": "vertical"
+      },
+      {
+        "sample": "CERNCourier-en",
+        "page": 4,
+        "anchor": "p4#38",
+        "composition_slot": 0,
+        "text": "ilab",
+        "reason": "a word-bearing run with no mathematics and no independent formula evidence",
+        "longest_letter_run": 4,
+        "annotation_path": "vertical"
+      },
+      {
+        "sample": "CERNCourier-en",
+        "page": 4,
+        "anchor": "p4#38",
+        "composition_slot": 1,
+        "text": "R Hahn",
+        "reason": "a word-bearing run with no mathematics and no independent formula evidence",
+        "longest_letter_run": 4,
+        "annotation_path": "vertical"
+      },
+      {
+        "sample": "CERNCourier-en",
+        "page": 4,
+        "anchor": "p4#38",
+        "composition_slot": 3,
+        "text": " Ferm",
+        "reason": "a word-bearing run with no mathematics and no independent formula evidence",
+        "longest_letter_run": 4,
+        "annotation_path": "vertical"
+      },
+      {
+        "sample": "Courier-en",
+        "page": 3,
+        "anchor": "p3#2",
+        "composition_slot": 0,
+        "text": "brano",
+        "reason": "a word-bearing run with no mathematics and no independent formula evidence",
+        "longest_letter_run": 5,
+        "annotation_path": "vertical"
+      },
+      {
+        "sample": "Courier-en",
+        "page": 3,
+        "anchor": "p3#2",
+        "composition_slot": 1,
+        "text": "© Carolina Zam",
+        "reason": "a word-bearing run with no mathematics and no independent formula evidence",
+        "longest_letter_run": 8,
+        "annotation_path": "vertical"
+      },
+      {
+        "sample": "Courier-en",
+        "page": 5,
+        "anchor": "p5#10",
+        "composition_slot": 0,
+        "text": "barini / OPAN",
+        "reason": "a word-bearing run with no mathematics and no independent formula evidence",
+        "longest_letter_run": 6,
+        "annotation_path": "vertical"
+      },
+      {
+        "sample": "Courier-en",
+        "page": 5,
+        "anchor": "p5#10",
+        "composition_slot": 1,
+        "text": "© Adriano Gam",
+        "reason": "a word-bearing run with no mathematics and no independent formula evidence",
+        "longest_letter_run": 7,
+        "annotation_path": "vertical"
+      },
+      {
+        "sample": "Courier-en",
+        "page": 6,
+        "anchor": "p6#15",
+        "composition_slot": 0,
+        "text": "r The UNESCO Courier",
+        "reason": "a word-bearing run with no mathematics and no independent formula evidence",
+        "longest_letter_run": 7,
+        "annotation_path": "vertical"
+      },
+      {
+        "sample": "Courier-en",
+        "page": 6,
+        "anchor": "p6#15",
+        "composition_slot": 1,
+        "text": "éniako fo",
+        "reason": "a word-bearing run with no mathematics and no independent formula evidence",
+        "longest_letter_run": 6,
+        "annotation_path": "vertical"
+      },
+      {
+        "sample": "Courier-en",
+        "page": 6,
+        "anchor": "p6#15",
+        "composition_slot": 2,
+        "text": "© Boris Sém",
+        "reason": "a word-bearing run with no mathematics and no independent formula evidence",
+        "longest_letter_run": 5,
+        "annotation_path": "vertical"
+      },
+      {
+        "sample": "Courier-zh",
+        "page": 3,
+        "anchor": "p3#2",
+        "composition_slot": 0,
+        "text": "brano）",
+        "reason": "a word-bearing run with no mathematics and no independent formula evidence",
+        "longest_letter_run": 5,
+        "annotation_path": "vertical"
+      },
+      {
+        "sample": "Courier-zh",
+        "page": 3,
+        "anchor": "p3#2",
+        "composition_slot": 1,
+        "text": "lina Zam",
+        "reason": "a word-bearing run with no mathematics and no independent formula evidence",
+        "longest_letter_run": 4,
+        "annotation_path": "vertical"
+      },
+      {
+        "sample": "Courier-zh",
+        "page": 3,
+        "anchor": "p3#2",
+        "composition_slot": 2,
+        "text": "Caro",
+        "reason": "a word-bearing run with no mathematics and no independent formula evidence",
+        "longest_letter_run": 4,
+        "annotation_path": "vertical"
+      },
+      {
+        "sample": "Courier-zh",
+        "page": 5,
+        "anchor": "p5#8",
+        "composition_slot": 10,
+        "text": "barini）",
+        "reason": "a word-bearing run with no mathematics and no independent formula evidence",
+        "longest_letter_run": 6,
+        "annotation_path": "vertical"
+      },
+      {
+        "sample": "Courier-zh",
+        "page": 5,
+        "anchor": "p5#8",
+        "composition_slot": 11,
+        "text": "Adriano Gam",
+        "reason": "a word-bearing run with no mathematics and no independent formula evidence",
+        "longest_letter_run": 7,
+        "annotation_path": "vertical"
+      },
+      {
+        "sample": "FD-en-v2",
+        "page": 2,
+        "anchor": "p2#8",
+        "composition_slot": 0,
+        "text": "FFER",
+        "reason": "a word-bearing run with no mathematics and no independent formula evidence",
+        "longest_letter_run": 4,
+        "annotation_path": "vertical"
+      },
+      {
+        "sample": "FD-en-v2",
+        "page": 2,
+        "anchor": "p2#8",
+        "composition_slot": 1,
+        "text": "STAU",
+        "reason": "a word-bearing run with no mathematics and no independent formula evidence",
+        "longest_letter_run": 4,
+        "annotation_path": "vertical"
+      },
+      {
+        "sample": "FD-en-v2",
+        "page": 2,
+        "anchor": "p2#8",
+        "composition_slot": 3,
+        "text": "BRIA",
+        "reason": "a word-bearing run with no mathematics and no independent formula evidence",
+        "longest_letter_run": 4,
+        "annotation_path": "vertical"
+      },
+      {
+        "sample": "FD-en-v2",
+        "page": 3,
+        "anchor": "p3#1",
+        "composition_slot": 0,
+        "text": "JUNE 2026",
+        "reason": "a word-bearing run with no mathematics and no independent formula evidence",
+        "longest_letter_run": 4,
+        "annotation_path": "formula_font"
+      },
+      {
+        "sample": "FD-en-v2",
+        "page": 3,
+        "anchor": "p3#5",
+        "composition_slot": 0,
+        "text": "FFER",
+        "reason": "a word-bearing run with no mathematics and no independent formula evidence",
+        "longest_letter_run": 4,
+        "annotation_path": "vertical"
+      },
+      {
+        "sample": "FD-en-v2",
+        "page": 3,
+        "anchor": "p3#5",
+        "composition_slot": 1,
+        "text": "STAU",
+        "reason": "a word-bearing run with no mathematics and no independent formula evidence",
+        "longest_letter_run": 4,
+        "annotation_path": "vertical"
+      },
+      {
+        "sample": "FD-en-v2",
+        "page": 3,
+        "anchor": "p3#5",
+        "composition_slot": 3,
+        "text": "BRIA",
+        "reason": "a word-bearing run with no mathematics and no independent formula evidence",
+        "longest_letter_run": 4,
+        "annotation_path": "vertical"
+      },
+      {
+        "sample": "FD-en-v2",
+        "page": 4,
+        "anchor": "p4#3",
+        "composition_slot": 12,
+        "text": "IFFO",
+        "reason": "a word-bearing run with no mathematics and no independent formula evidence",
+        "longest_letter_run": 4,
+        "annotation_path": "vertical"
+      },
+      {
+        "sample": "FD-en-v2",
+        "page": 4,
+        "anchor": "p4#3",
+        "composition_slot": 14,
+        "text": "RTER",
+        "reason": "a word-bearing run with no mathematics and no independent formula evidence",
+        "longest_letter_run": 4,
+        "annotation_path": "vertical"
+      },
+      {
+        "sample": "FD-en-v2",
+        "page": 5,
+        "anchor": "p5#4",
+        "composition_slot": 0,
+        "text": "EDITOR-IN-CHIEF",
+        "reason": "a word-bearing run with no mathematics and no independent formula evidence",
+        "longest_letter_run": 6,
+        "annotation_path": "formula_font"
+      },
+      {
+        "sample": "FD-en-v2",
+        "page": 5,
+        "anchor": "p5#5",
+        "composition_slot": 0,
+        "text": "MANAGING EDITOR",
+        "reason": "a word-bearing run with no mathematics and no independent formula evidence",
+        "longest_letter_run": 8,
+        "annotation_path": "formula_font"
+      },
+      {
+        "sample": "FD-en-v2",
+        "page": 5,
+        "anchor": "p5#6",
+        "composition_slot": 0,
+        "text": "SENIOR EDITORS",
+        "reason": "a word-bearing run with no mathematics and no independent formula evidence",
+        "longest_letter_run": 7,
+        "annotation_path": "formula_font"
+      },
+      {
+        "sample": "FD-en-v2",
+        "page": 5,
+        "anchor": "p5#7",
+        "composition_slot": 0,
+        "text": "ASSISTANT EDITOR",
+        "reason": "a word-bearing run with no mathematics and no independent formula evidence",
+        "longest_letter_run": 9,
+        "annotation_path": "formula_font"
+      },
+      {
+        "sample": "FD-en-v2",
+        "page": 5,
+        "anchor": "p5#8",
+        "composition_slot": 0,
+        "text": "CREATIVE AND MARKETING",
+        "reason": "a word-bearing run with no mathematics and no independent formula evidence",
+        "longest_letter_run": 9,
+        "annotation_path": "formula_font"
+      },
+      {
+        "sample": "FD-en-v2",
+        "page": 5,
+        "anchor": "p5#9",
+        "composition_slot": 0,
+        "text": "PRODUCTION MANAGER",
+        "reason": "a word-bearing run with no mathematics and no independent formula evidence",
+        "longest_letter_run": 10,
+        "annotation_path": "formula_font"
+      },
+      {
+        "sample": "FD-en-v2",
+        "page": 5,
+        "anchor": "p5#11",
+        "composition_slot": 0,
+        "text": "COPY EDITOR",
+        "reason": "a word-bearing run with no mathematics and no independent formula evidence",
+        "longest_letter_run": 6,
+        "annotation_path": "formula_font"
+      },
+      {
+        "sample": "FD-en-v2",
+        "page": 5,
+        "anchor": "p5#13",
+        "composition_slot": 0,
+        "text": "ART DIRECTION AND DESIGN",
+        "reason": "a word-bearing run with no mathematics and no independent formula evidence",
+        "longest_letter_run": 9,
+        "annotation_path": "formula_font"
+      },
+      {
+        "sample": "FD-en-v2",
+        "page": 5,
+        "anchor": "p5#14",
+        "composition_slot": 0,
+        "text": "ADVISORS TO THE EDITOR",
+        "reason": "a word-bearing run with no mathematics and no independent formula evidence",
+        "longest_letter_run": 8,
+        "annotation_path": "formula_font"
+      },
+      {
+        "sample": "FD-en-v2",
+        "page": 5,
+        "anchor": "p5#26",
+        "composition_slot": 0,
+        "text": "JUNE 2026",
+        "reason": "a word-bearing run with no mathematics and no independent formula evidence",
+        "longest_letter_run": 4,
+        "annotation_path": "formula_font"
+      },
+      {
+        "sample": "FD-en-v2",
+        "page": 6,
+        "anchor": "p6#0",
+        "composition_slot": 0,
+        "text": "JUNE 2026",
+        "reason": "a word-bearing run with no mathematics and no independent formula evidence",
+        "longest_letter_run": 4,
+        "annotation_path": "formula_font"
+      },
+      {
+        "sample": "FD-en-v2",
+        "page": 7,
+        "anchor": "p7#0",
+        "composition_slot": 0,
+        "text": "JUNE 2026",
+        "reason": "a word-bearing run with no mathematics and no independent formula evidence",
+        "longest_letter_run": 4,
+        "annotation_path": "formula_font"
+      },
+      {
+        "sample": "FD-en-v2",
+        "page": 8,
+        "anchor": "p8#0",
+        "composition_slot": 0,
+        "text": "JUNE 2026",
+        "reason": "a word-bearing run with no mathematics and no independent formula evidence",
+        "longest_letter_run": 4,
+        "annotation_path": "formula_font"
+      },
+      {
+        "sample": "FD-en-v2",
+        "page": 8,
+        "anchor": "p8#5",
+        "composition_slot": 4,
+        "text": "RTESY",
+        "reason": "a word-bearing run with no mathematics and no independent formula evidence",
+        "longest_letter_run": 5,
+        "annotation_path": "vertical"
+      },
+      {
+        "sample": "FD-en-v2",
+        "page": 8,
+        "anchor": "p8#9",
+        "composition_slot": 0,
+        "text": "When ",
+        "reason": "a word-bearing run with no mathematics and no independent formula evidence",
+        "longest_letter_run": 4,
+        "annotation_path": "corner_mark"
+      },
+      {
+        "sample": "FD-en-v2",
+        "page": 9,
+        "anchor": "p9#0",
+        "composition_slot": 0,
+        "text": "MONTH 202",
+        "reason": "a word-bearing run with no mathematics and no independent formula evidence",
+        "longest_letter_run": 5,
+        "annotation_path": "formula_font"
+      },
+      {
+        "sample": "FD-en-v2",
+        "page": 9,
+        "anchor": "p9#3",
+        "composition_slot": 0,
+        "text": "DECEMBER 2",
+        "reason": "a word-bearing run with no mathematics and no independent formula evidence",
+        "longest_letter_run": 8,
+        "annotation_path": "formula_font"
+      },
+      {
+        "sample": "FD-en-v2",
+        "page": 9,
+        "anchor": "p9#6",
+        "composition_slot": 0,
+        "text": "JUNE 2026",
+        "reason": "a word-bearing run with no mathematics and no independent formula evidence",
+        "longest_letter_run": 4,
+        "annotation_path": "formula_font"
+      },
+      {
+        "sample": "FD-en-v2",
+        "page": 9,
+        "anchor": "p9#9",
+        "composition_slot": 6,
+        "text": "ATIO",
+        "reason": "a word-bearing run with no mathematics and no independent formula evidence",
+        "longest_letter_run": 4,
+        "annotation_path": "vertical"
+      },
+      {
+        "sample": "FD-en-v2",
+        "page": 9,
+        "anchor": "p9#9",
+        "composition_slot": 10,
+        "text": "RTESY",
+        "reason": "a word-bearing run with no mathematics and no independent formula evidence",
+        "longest_letter_run": 5,
+        "annotation_path": "vertical"
+      },
+      {
+        "sample": "FD-en-v2",
+        "page": 9,
+        "anchor": "p9#19",
+        "composition_slot": 0,
+        "text": "A glacier",
+        "reason": "a word-bearing run with no mathematics and no independent formula evidence",
+        "longest_letter_run": 7,
+        "annotation_path": "formula_font"
+      },
+      {
+        "sample": "FD-en-v2",
+        "page": 9,
+        "anchor": "p9#19",
+        "composition_slot": 1,
+        "text": "buttercup",
+        "reason": "a word-bearing run with no mathematics and no independent formula evidence",
+        "longest_letter_run": 9,
+        "annotation_path": "formula_font"
+      },
+      {
+        "sample": "FD-en-v2",
+        "page": 9,
+        "anchor": "p9#19",
+        "composition_slot": 2,
+        "text": "appears on",
+        "reason": "a word-bearing run with no mathematics and no independent formula evidence",
+        "longest_letter_run": 7,
+        "annotation_path": "formula_font"
+      },
+      {
+        "sample": "FD-en-v2",
+        "page": 9,
+        "anchor": "p9#19",
+        "composition_slot": 3,
+        "text": "the front",
+        "reason": "a word-bearing run with no mathematics and no independent formula evidence",
+        "longest_letter_run": 5,
+        "annotation_path": "formula_font"
+      },
+      {
+        "sample": "FD-en-v2",
+        "page": 9,
+        "anchor": "p9#19",
+        "composition_slot": 4,
+        "text": "of the draft",
+        "reason": "a word-bearing run with no mathematics and no independent formula evidence",
+        "longest_letter_run": 5,
+        "annotation_path": "formula_font"
+      },
+      {
+        "sample": "FD-en-v2",
+        "page": 9,
+        "anchor": "p9#19",
+        "composition_slot": 6,
+        "text": "000 franc",
+        "reason": "a word-bearing run with no mathematics and no independent formula evidence",
+        "longest_letter_run": 5,
+        "annotation_path": "formula_font"
+      },
+      {
+        "sample": "FD-en-v2",
+        "page": 9,
+        "anchor": "p9#19",
+        "composition_slot": 7,
+        "text": "note.",
+        "reason": "a word-bearing run with no mathematics and no independent formula evidence",
+        "longest_letter_run": 4,
+        "annotation_path": "formula_font"
+      },
+      {
+        "sample": "Vogue-en",
+        "page": 1,
+        "anchor": "p1#0",
+        "composition_slot": 6,
+        "text": "I BOUTIQ",
+        "reason": "a word-bearing run with no mathematics and no independent formula evidence",
+        "longest_letter_run": 6,
+        "annotation_path": "vertical"
+      },
+      {
+        "sample": "Vogue-en",
+        "page": 3,
+        "anchor": "p3#37",
+        "composition_slot": 1,
+        "text": "IS ISSU",
+        "reason": "a word-bearing run with no mathematics and no independent formula evidence",
+        "longest_letter_run": 4,
+        "annotation_path": "vertical"
+      },
+      {
+        "sample": "Vogue-en",
+        "page": 3,
+        "anchor": "p3#37",
+        "composition_slot": 2,
+        "text": "FASHION EDITOR: JULIA SARR-JAMOIS. HAIR SUSIE SOBOL.   PRODUCED BY BOOM PRODUCTIONS. PROP STYLIST: PETER KLEIN. DETAILS JOEY GEORGE; MAKEUP SEE IN TH",
+        "reason": "a word-bearing run with no mathematics and no independent formula evidence",
+        "longest_letter_run": 11,
+        "annotation_path": "vertical"
+      }
+    ]
+  },
+  "after": {
+    "by_sample": {
+      "AramcoWorld-en-v2": {
+        "mislabels": 8,
+        "formula_compositions": 39
+      },
+      "CERNCourier-en": {
+        "mislabels": 9,
+        "formula_compositions": 48
+      },
+      "Courier-en": {
+        "mislabels": 7,
+        "formula_compositions": 19
+      },
+      "Courier-zh": {
+        "mislabels": 5,
+        "formula_compositions": 62
+      },
+      "FD-en-v2": {
+        "mislabels": 11,
+        "formula_compositions": 48
+      },
+      "Vogue-en": {
+        "mislabels": 3,
+        "formula_compositions": 12
+      }
+    },
+    "by_annotation_path": {
+      "vertical": 39,
+      "corner_mark": 4
+    },
+    "mislabels": 43,
+    "rows": [
+      {
+        "sample": "AramcoWorld-en-v2",
+        "page": 3,
+        "anchor": "p3#18",
+        "composition_slot": 0,
+        "text": "cCARRON",
+        "reason": "a word-bearing run with no mathematics and no independent formula evidence",
+        "longest_letter_run": 7,
+        "annotation_path": "vertical"
+      },
+      {
+        "sample": "AramcoWorld-en-v2",
+        "page": 3,
+        "anchor": "p3#18",
+        "composition_slot": 1,
+        "text": "ANOV; LEON M",
+        "reason": "a word-bearing run with no mathematics and no independent formula evidence",
+        "longest_letter_run": 4,
+        "annotation_path": "vertical"
+      },
+      {
+        "sample": "AramcoWorld-en-v2",
+        "page": 3,
+        "anchor": "p3#18",
+        "composition_slot": 2,
+        "text": "OPPOSITE: BANNING EYRE; THIS PAGE",
+        "reason": "a word-bearing run with no mathematics and no independent formula evidence",
+        "longest_letter_run": 8,
+        "annotation_path": "vertical"
+      },
+      {
+        "sample": "AramcoWorld-en-v2",
+        "page": 3,
+        "anchor": "p3#18",
+        "composition_slot": 4,
+        "text": " FROM TOP: IVY JOHNSON; DANIIL USM",
+        "reason": "a word-bearing run with no mathematics and no independent formula evidence",
+        "longest_letter_run": 7,
+        "annotation_path": "vertical"
+      },
+      {
+        "sample": "AramcoWorld-en-v2",
+        "page": 7,
+        "anchor": "p7#12",
+        "composition_slot": 0,
+        "text": "ORITZ/LIBRARY OF CONGRESS",
+        "reason": "a word-bearing run with no mathematics and no independent formula evidence",
+        "longest_letter_run": 8,
+        "annotation_path": "vertical"
+      },
+      {
+        "sample": "AramcoWorld-en-v2",
+        "page": 7,
+        "anchor": "p7#12",
+        "composition_slot": 1,
+        "text": "OPPOSITE TOP: B.M",
+        "reason": "a word-bearing run with no mathematics and no independent formula evidence",
+        "longest_letter_run": 8,
+        "annotation_path": "vertical"
+      },
+      {
+        "sample": "AramcoWorld-en-v2",
+        "page": 9,
+        "anchor": "p9#14",
+        "composition_slot": 0,
+        "text": "AGES",
+        "reason": "a word-bearing run with no mathematics and no independent formula evidence",
+        "longest_letter_run": 4,
+        "annotation_path": "vertical"
+      },
+      {
+        "sample": "AramcoWorld-en-v2",
+        "page": 9,
+        "anchor": "p9#14",
+        "composition_slot": 1,
+        "text": "TOP: UNIVERSITY HISTORY ARCHIVE / GETTY IM",
+        "reason": "a word-bearing run with no mathematics and no independent formula evidence",
+        "longest_letter_run": 10,
+        "annotation_path": "vertical"
+      },
+      {
+        "sample": "CERNCourier-en",
+        "page": 2,
+        "anchor": "p2#32",
+        "composition_slot": 1,
+        "text": "olume 66 ",
+        "reason": "a word-bearing run with no mathematics and no independent formula evidence",
+        "longest_letter_run": 5,
+        "annotation_path": "corner_mark"
+      },
+      {
+        "sample": "CERNCourier-en",
+        "page": 2,
+        "anchor": "p2#32",
+        "composition_slot": 3,
+        "text": "umber 4  ",
+        "reason": "a word-bearing run with no mathematics and no independent formula evidence",
+        "longest_letter_run": 5,
+        "annotation_path": "corner_mark"
+      },
+      {
+        "sample": "CERNCourier-en",
+        "page": 2,
+        "anchor": "p2#32",
+        "composition_slot": 7,
+        "text": "ugust 2026",
+        "reason": "a word-bearing run with no mathematics and no independent formula evidence",
+        "longest_letter_run": 5,
+        "annotation_path": "corner_mark"
+      },
+      {
+        "sample": "CERNCourier-en",
+        "page": 2,
+        "anchor": "p2#66",
+        "composition_slot": 0,
+        "text": "P Dinault/CERN",
+        "reason": "a word-bearing run with no mathematics and no independent formula evidence",
+        "longest_letter_run": 7,
+        "annotation_path": "vertical"
+      },
+      {
+        "sample": "CERNCourier-en",
+        "page": 3,
+        "anchor": "p3#8",
+        "composition_slot": 1,
+        "text": "olicy",
+        "reason": "a word-bearing run with no mathematics and no independent formula evidence",
+        "longest_letter_run": 5,
+        "annotation_path": "corner_mark"
+      },
+      {
+        "sample": "CERNCourier-en",
+        "page": 4,
+        "anchor": "p4#35",
+        "composition_slot": 0,
+        "text": "CERN",
+        "reason": "a word-bearing run with no mathematics and no independent formula evidence",
+        "longest_letter_run": 4,
+        "annotation_path": "vertical"
+      },
+      {
+        "sample": "CERNCourier-en",
+        "page": 4,
+        "anchor": "p4#38",
+        "composition_slot": 0,
+        "text": "ilab",
+        "reason": "a word-bearing run with no mathematics and no independent formula evidence",
+        "longest_letter_run": 4,
+        "annotation_path": "vertical"
+      },
+      {
+        "sample": "CERNCourier-en",
+        "page": 4,
+        "anchor": "p4#38",
+        "composition_slot": 1,
+        "text": "R Hahn",
+        "reason": "a word-bearing run with no mathematics and no independent formula evidence",
+        "longest_letter_run": 4,
+        "annotation_path": "vertical"
+      },
+      {
+        "sample": "CERNCourier-en",
+        "page": 4,
+        "anchor": "p4#38",
+        "composition_slot": 3,
+        "text": " Ferm",
+        "reason": "a word-bearing run with no mathematics and no independent formula evidence",
+        "longest_letter_run": 4,
+        "annotation_path": "vertical"
+      },
+      {
+        "sample": "Courier-en",
+        "page": 3,
+        "anchor": "p3#2",
+        "composition_slot": 0,
+        "text": "brano",
+        "reason": "a word-bearing run with no mathematics and no independent formula evidence",
+        "longest_letter_run": 5,
+        "annotation_path": "vertical"
+      },
+      {
+        "sample": "Courier-en",
+        "page": 3,
+        "anchor": "p3#2",
+        "composition_slot": 1,
+        "text": "© Carolina Zam",
+        "reason": "a word-bearing run with no mathematics and no independent formula evidence",
+        "longest_letter_run": 8,
+        "annotation_path": "vertical"
+      },
+      {
+        "sample": "Courier-en",
+        "page": 5,
+        "anchor": "p5#10",
+        "composition_slot": 0,
+        "text": "barini / OPAN",
+        "reason": "a word-bearing run with no mathematics and no independent formula evidence",
+        "longest_letter_run": 6,
+        "annotation_path": "vertical"
+      },
+      {
+        "sample": "Courier-en",
+        "page": 5,
+        "anchor": "p5#10",
+        "composition_slot": 1,
+        "text": "© Adriano Gam",
+        "reason": "a word-bearing run with no mathematics and no independent formula evidence",
+        "longest_letter_run": 7,
+        "annotation_path": "vertical"
+      },
+      {
+        "sample": "Courier-en",
+        "page": 6,
+        "anchor": "p6#15",
+        "composition_slot": 0,
+        "text": "r The UNESCO Courier",
+        "reason": "a word-bearing run with no mathematics and no independent formula evidence",
+        "longest_letter_run": 7,
+        "annotation_path": "vertical"
+      },
+      {
+        "sample": "Courier-en",
+        "page": 6,
+        "anchor": "p6#15",
+        "composition_slot": 1,
+        "text": "éniako fo",
+        "reason": "a word-bearing run with no mathematics and no independent formula evidence",
+        "longest_letter_run": 6,
+        "annotation_path": "vertical"
+      },
+      {
+        "sample": "Courier-en",
+        "page": 6,
+        "anchor": "p6#15",
+        "composition_slot": 2,
+        "text": "© Boris Sém",
+        "reason": "a word-bearing run with no mathematics and no independent formula evidence",
+        "longest_letter_run": 5,
+        "annotation_path": "vertical"
+      },
+      {
+        "sample": "Courier-zh",
+        "page": 3,
+        "anchor": "p3#2",
+        "composition_slot": 0,
+        "text": "brano）",
+        "reason": "a word-bearing run with no mathematics and no independent formula evidence",
+        "longest_letter_run": 5,
+        "annotation_path": "vertical"
+      },
+      {
+        "sample": "Courier-zh",
+        "page": 3,
+        "anchor": "p3#2",
+        "composition_slot": 1,
+        "text": "lina Zam",
+        "reason": "a word-bearing run with no mathematics and no independent formula evidence",
+        "longest_letter_run": 4,
+        "annotation_path": "vertical"
+      },
+      {
+        "sample": "Courier-zh",
+        "page": 3,
+        "anchor": "p3#2",
+        "composition_slot": 2,
+        "text": "Caro",
+        "reason": "a word-bearing run with no mathematics and no independent formula evidence",
+        "longest_letter_run": 4,
+        "annotation_path": "vertical"
+      },
+      {
+        "sample": "Courier-zh",
+        "page": 5,
+        "anchor": "p5#8",
+        "composition_slot": 10,
+        "text": "barini）",
+        "reason": "a word-bearing run with no mathematics and no independent formula evidence",
+        "longest_letter_run": 6,
+        "annotation_path": "vertical"
+      },
+      {
+        "sample": "Courier-zh",
+        "page": 5,
+        "anchor": "p5#8",
+        "composition_slot": 11,
+        "text": "Adriano Gam",
+        "reason": "a word-bearing run with no mathematics and no independent formula evidence",
+        "longest_letter_run": 7,
+        "annotation_path": "vertical"
+      },
+      {
+        "sample": "FD-en-v2",
+        "page": 2,
+        "anchor": "p2#8",
+        "composition_slot": 0,
+        "text": "FFER",
+        "reason": "a word-bearing run with no mathematics and no independent formula evidence",
+        "longest_letter_run": 4,
+        "annotation_path": "vertical"
+      },
+      {
+        "sample": "FD-en-v2",
+        "page": 2,
+        "anchor": "p2#8",
+        "composition_slot": 1,
+        "text": "STAU",
+        "reason": "a word-bearing run with no mathematics and no independent formula evidence",
+        "longest_letter_run": 4,
+        "annotation_path": "vertical"
+      },
+      {
+        "sample": "FD-en-v2",
+        "page": 2,
+        "anchor": "p2#8",
+        "composition_slot": 3,
+        "text": "BRIA",
+        "reason": "a word-bearing run with no mathematics and no independent formula evidence",
+        "longest_letter_run": 4,
+        "annotation_path": "vertical"
+      },
+      {
+        "sample": "FD-en-v2",
+        "page": 3,
+        "anchor": "p3#5",
+        "composition_slot": 0,
+        "text": "FFER",
+        "reason": "a word-bearing run with no mathematics and no independent formula evidence",
+        "longest_letter_run": 4,
+        "annotation_path": "vertical"
+      },
+      {
+        "sample": "FD-en-v2",
+        "page": 3,
+        "anchor": "p3#5",
+        "composition_slot": 1,
+        "text": "STAU",
+        "reason": "a word-bearing run with no mathematics and no independent formula evidence",
+        "longest_letter_run": 4,
+        "annotation_path": "vertical"
+      },
+      {
+        "sample": "FD-en-v2",
+        "page": 3,
+        "anchor": "p3#5",
+        "composition_slot": 3,
+        "text": "BRIA",
+        "reason": "a word-bearing run with no mathematics and no independent formula evidence",
+        "longest_letter_run": 4,
+        "annotation_path": "vertical"
+      },
+      {
+        "sample": "FD-en-v2",
+        "page": 4,
+        "anchor": "p4#3",
+        "composition_slot": 12,
+        "text": "IFFO",
+        "reason": "a word-bearing run with no mathematics and no independent formula evidence",
+        "longest_letter_run": 4,
+        "annotation_path": "vertical"
+      },
+      {
+        "sample": "FD-en-v2",
+        "page": 4,
+        "anchor": "p4#3",
+        "composition_slot": 14,
+        "text": "RTER",
+        "reason": "a word-bearing run with no mathematics and no independent formula evidence",
+        "longest_letter_run": 4,
+        "annotation_path": "vertical"
+      },
+      {
+        "sample": "FD-en-v2",
+        "page": 8,
+        "anchor": "p8#5",
+        "composition_slot": 4,
+        "text": "RTESY",
+        "reason": "a word-bearing run with no mathematics and no independent formula evidence",
+        "longest_letter_run": 5,
+        "annotation_path": "vertical"
+      },
+      {
+        "sample": "FD-en-v2",
+        "page": 9,
+        "anchor": "p9#9",
+        "composition_slot": 6,
+        "text": "ATIO",
+        "reason": "a word-bearing run with no mathematics and no independent formula evidence",
+        "longest_letter_run": 4,
+        "annotation_path": "vertical"
+      },
+      {
+        "sample": "FD-en-v2",
+        "page": 9,
+        "anchor": "p9#9",
+        "composition_slot": 10,
+        "text": "RTESY",
+        "reason": "a word-bearing run with no mathematics and no independent formula evidence",
+        "longest_letter_run": 5,
+        "annotation_path": "vertical"
+      },
+      {
+        "sample": "Vogue-en",
+        "page": 1,
+        "anchor": "p1#0",
+        "composition_slot": 6,
+        "text": "I BOUTIQ",
+        "reason": "a word-bearing run with no mathematics and no independent formula evidence",
+        "longest_letter_run": 6,
+        "annotation_path": "vertical"
+      },
+      {
+        "sample": "Vogue-en",
+        "page": 3,
+        "anchor": "p3#37",
+        "composition_slot": 1,
+        "text": "IS ISSU",
+        "reason": "a word-bearing run with no mathematics and no independent formula evidence",
+        "longest_letter_run": 4,
+        "annotation_path": "vertical"
+      },
+      {
+        "sample": "Vogue-en",
+        "page": 3,
+        "anchor": "p3#37",
+        "composition_slot": 2,
+        "text": "FASHION EDITOR: JULIA SARR-JAMOIS. HAIR SUSIE SOBOL.   PRODUCED BY BOOM PRODUCTIONS. PROP STYLIST: PETER KLEIN. DETAILS JOEY GEORGE; MAKEUP SEE IN TH",
+        "reason": "a word-bearing run with no mathematics and no independent formula evidence",
+        "longest_letter_run": 11,
+        "annotation_path": "vertical"
+      }
+    ]
+  },
+  "delta": {
+    "mislabels_before": 68,
+    "mislabels_after": 43,
+    "removed": 25,
+    "introduced": 0,
+    "introduced_rows": [],
+    "fixed_rows": [
+      {
+        "sample": "FD-en-v2",
+        "page": 3,
+        "anchor": "p3#1",
+        "composition_slot": 0,
+        "text": "JUNE 2026",
+        "reason": "a word-bearing run with no mathematics and no independent formula evidence",
+        "longest_letter_run": 4,
+        "annotation_path": "formula_font"
+      },
+      {
+        "sample": "FD-en-v2",
+        "page": 5,
+        "anchor": "p5#4",
+        "composition_slot": 0,
+        "text": "EDITOR-IN-CHIEF",
+        "reason": "a word-bearing run with no mathematics and no independent formula evidence",
+        "longest_letter_run": 6,
+        "annotation_path": "formula_font"
+      },
+      {
+        "sample": "FD-en-v2",
+        "page": 5,
+        "anchor": "p5#5",
+        "composition_slot": 0,
+        "text": "MANAGING EDITOR",
+        "reason": "a word-bearing run with no mathematics and no independent formula evidence",
+        "longest_letter_run": 8,
+        "annotation_path": "formula_font"
+      },
+      {
+        "sample": "FD-en-v2",
+        "page": 5,
+        "anchor": "p5#6",
+        "composition_slot": 0,
+        "text": "SENIOR EDITORS",
+        "reason": "a word-bearing run with no mathematics and no independent formula evidence",
+        "longest_letter_run": 7,
+        "annotation_path": "formula_font"
+      },
+      {
+        "sample": "FD-en-v2",
+        "page": 5,
+        "anchor": "p5#7",
+        "composition_slot": 0,
+        "text": "ASSISTANT EDITOR",
+        "reason": "a word-bearing run with no mathematics and no independent formula evidence",
+        "longest_letter_run": 9,
+        "annotation_path": "formula_font"
+      },
+      {
+        "sample": "FD-en-v2",
+        "page": 5,
+        "anchor": "p5#8",
+        "composition_slot": 0,
+        "text": "CREATIVE AND MARKETING",
+        "reason": "a word-bearing run with no mathematics and no independent formula evidence",
+        "longest_letter_run": 9,
+        "annotation_path": "formula_font"
+      },
+      {
+        "sample": "FD-en-v2",
+        "page": 5,
+        "anchor": "p5#9",
+        "composition_slot": 0,
+        "text": "PRODUCTION MANAGER",
+        "reason": "a word-bearing run with no mathematics and no independent formula evidence",
+        "longest_letter_run": 10,
+        "annotation_path": "formula_font"
+      },
+      {
+        "sample": "FD-en-v2",
+        "page": 5,
+        "anchor": "p5#11",
+        "composition_slot": 0,
+        "text": "COPY EDITOR",
+        "reason": "a word-bearing run with no mathematics and no independent formula evidence",
+        "longest_letter_run": 6,
+        "annotation_path": "formula_font"
+      },
+      {
+        "sample": "FD-en-v2",
+        "page": 5,
+        "anchor": "p5#13",
+        "composition_slot": 0,
+        "text": "ART DIRECTION AND DESIGN",
+        "reason": "a word-bearing run with no mathematics and no independent formula evidence",
+        "longest_letter_run": 9,
+        "annotation_path": "formula_font"
+      },
+      {
+        "sample": "FD-en-v2",
+        "page": 5,
+        "anchor": "p5#14",
+        "composition_slot": 0,
+        "text": "ADVISORS TO THE EDITOR",
+        "reason": "a word-bearing run with no mathematics and no independent formula evidence",
+        "longest_letter_run": 8,
+        "annotation_path": "formula_font"
+      },
+      {
+        "sample": "FD-en-v2",
+        "page": 5,
+        "anchor": "p5#26",
+        "composition_slot": 0,
+        "text": "JUNE 2026",
+        "reason": "a word-bearing run with no mathematics and no independent formula evidence",
+        "longest_letter_run": 4,
+        "annotation_path": "formula_font"
+      },
+      {
+        "sample": "FD-en-v2",
+        "page": 6,
+        "anchor": "p6#0",
+        "composition_slot": 0,
+        "text": "JUNE 2026",
+        "reason": "a word-bearing run with no mathematics and no independent formula evidence",
+        "longest_letter_run": 4,
+        "annotation_path": "formula_font"
+      },
+      {
+        "sample": "FD-en-v2",
+        "page": 7,
+        "anchor": "p7#0",
+        "composition_slot": 0,
+        "text": "JUNE 2026",
+        "reason": "a word-bearing run with no mathematics and no independent formula evidence",
+        "longest_letter_run": 4,
+        "annotation_path": "formula_font"
+      },
+      {
+        "sample": "FD-en-v2",
+        "page": 8,
+        "anchor": "p8#0",
+        "composition_slot": 0,
+        "text": "JUNE 2026",
+        "reason": "a word-bearing run with no mathematics and no independent formula evidence",
+        "longest_letter_run": 4,
+        "annotation_path": "formula_font"
+      },
+      {
+        "sample": "FD-en-v2",
+        "page": 8,
+        "anchor": "p8#9",
+        "composition_slot": 0,
+        "text": "When ",
+        "reason": "a word-bearing run with no mathematics and no independent formula evidence",
+        "longest_letter_run": 4,
+        "annotation_path": "corner_mark"
+      },
+      {
+        "sample": "FD-en-v2",
+        "page": 9,
+        "anchor": "p9#0",
+        "composition_slot": 0,
+        "text": "MONTH 202",
+        "reason": "a word-bearing run with no mathematics and no independent formula evidence",
+        "longest_letter_run": 5,
+        "annotation_path": "formula_font"
+      },
+      {
+        "sample": "FD-en-v2",
+        "page": 9,
+        "anchor": "p9#3",
+        "composition_slot": 0,
+        "text": "DECEMBER 2",
+        "reason": "a word-bearing run with no mathematics and no independent formula evidence",
+        "longest_letter_run": 8,
+        "annotation_path": "formula_font"
+      },
+      {
+        "sample": "FD-en-v2",
+        "page": 9,
+        "anchor": "p9#6",
+        "composition_slot": 0,
+        "text": "JUNE 2026",
+        "reason": "a word-bearing run with no mathematics and no independent formula evidence",
+        "longest_letter_run": 4,
+        "annotation_path": "formula_font"
+      },
+      {
+        "sample": "FD-en-v2",
+        "page": 9,
+        "anchor": "p9#19",
+        "composition_slot": 0,
+        "text": "A glacier",
+        "reason": "a word-bearing run with no mathematics and no independent formula evidence",
+        "longest_letter_run": 7,
+        "annotation_path": "formula_font"
+      },
+      {
+        "sample": "FD-en-v2",
+        "page": 9,
+        "anchor": "p9#19",
+        "composition_slot": 1,
+        "text": "buttercup",
+        "reason": "a word-bearing run with no mathematics and no independent formula evidence",
+        "longest_letter_run": 9,
+        "annotation_path": "formula_font"
+      },
+      {
+        "sample": "FD-en-v2",
+        "page": 9,
+        "anchor": "p9#19",
+        "composition_slot": 2,
+        "text": "appears on",
+        "reason": "a word-bearing run with no mathematics and no independent formula evidence",
+        "longest_letter_run": 7,
+        "annotation_path": "formula_font"
+      },
+      {
+        "sample": "FD-en-v2",
+        "page": 9,
+        "anchor": "p9#19",
+        "composition_slot": 3,
+        "text": "the front",
+        "reason": "a word-bearing run with no mathematics and no independent formula evidence",
+        "longest_letter_run": 5,
+        "annotation_path": "formula_font"
+      },
+      {
+        "sample": "FD-en-v2",
+        "page": 9,
+        "anchor": "p9#19",
+        "composition_slot": 4,
+        "text": "of the draft",
+        "reason": "a word-bearing run with no mathematics and no independent formula evidence",
+        "longest_letter_run": 5,
+        "annotation_path": "formula_font"
+      },
+      {
+        "sample": "FD-en-v2",
+        "page": 9,
+        "anchor": "p9#19",
+        "composition_slot": 6,
+        "text": "000 franc",
+        "reason": "a word-bearing run with no mathematics and no independent formula evidence",
+        "longest_letter_run": 5,
+        "annotation_path": "formula_font"
+      },
+      {
+        "sample": "FD-en-v2",
+        "page": 9,
+        "anchor": "p9#19",
+        "composition_slot": 7,
+        "text": "note.",
+        "reason": "a word-bearing run with no mathematics and no independent formula evidence",
+        "longest_letter_run": 4,
+        "annotation_path": "formula_font"
+      }
+    ]
+  },
+  "reference_regression": {
+    "pinned": 20,
+    "still_annotated_as_formula": 20,
+    "lost": [],
+    "wrongly_flagged_as_mislabel": [],
+    "passed": true
+  }
+}

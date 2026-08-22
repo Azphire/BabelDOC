@@ -80,3 +80,10 @@ b10.3 写法报 SKIPPED 并指名缺失路径。
 在 `issues.json` 中记为 `p5#6` —— `pN#k` 是段落在其页内列表中的位置序号,只在**产出它的
 那一个 stage 内**稳定。故 T1 的判定表一律按 `debug_id`(同一次运行内)或**文本**对齐,
 禁止按 `pN#k` 跨 sidecar 配对。这不是豁免而是口径,登记为 GAP-32。
+
+## B11.3
+
+| id | 内容 | 理由 | 失效条件 |
+| --- | --- | --- | --- |
+| W-B11-10 | 改动面超出 `PLAN_B11_3.md` §7 一条:`configs/output_retention.json` 纳入本批声明面,登记 b10.5 on 臂的 **12 条 stage-06 checkpoint** 为受保护路径 | 用户裁决。本批 T1/T2 读的正是 `checkpoint.06_styles_and_formulas.*`——formula 标注写在那一档,它是唯一能说清"为什么这条 composition 被标注"的 stage——而 b11.2 的 T0 只登记了 09/11 与 `translate_tracking.json`。中期修订三条件全占:**(a) 只涉尚未执行的路径**(淘汰自 b11.2 T4(c) 起需显式请求,至今未发生,尚无证据丢失、无断言依赖旧面);**(b) 有显式裁决记录**(`examples/output/b11_3/midcycle_revision.json`,REV-B11-3-01);**(c) 只收紧不放宽**(登记受保护路径只会**减少**策略被允许删除的文件;`keep_recent_batches` / `archive_patterns` / `archive_max_file_kb` 一律未动,**归档上限未抬**,b11.2 的那次拒绝原样成立)。"读的东西不受保护"正是 GAP-31 已经让本项目付出八条断言的那个形态,不等它再咬一次 | 该批次交付且无人再指向 b10.5 时,按 b11.2 为该类条目写下的退出条款移除 |
+| W-B11-11 | 修法落点由 PLAN 候选表所写的 `StylesAndFormulas 的标注条件` 订正为 `formular_helper.is_formulas_font` 的 broad 模式 | 用户裁决第 (3) 条:「若你判断落点实际在 `formular_helper.py` 而非 `styles_and_formulas.py`,以代码为准记录,PLAN 表里的候选名称按实际落点订正即可——那张表写的是意图,不是路径」。`styles_and_formulas.py:445` 的字体分支本身只是一次集合成员判断,做判定的是 `formular_helper.is_formulas_font`;在 445 处改会把一个字体名问题写成一个分类器问题 | 永久 |

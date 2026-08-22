@@ -1,0 +1,153 @@
+{
+  "what_this_is": "The genuine formula annotations this batch must not break. Pinned BEFORE the repair was written, so that it cannot be trimmed to whatever the repair happens to leave standing. The gate re-evaluates every entry against the post-repair tree and requires that each is still annotated as a formula and still judged not-a-mislabel by the criterion.",
+  "assembled_from": [
+    "t1_formula_criterion.json self_check.genuine_formulas",
+    "t2_reverse_sample_review.json rows with verdict genuine"
+  ],
+  "anchoring": "sample, one-based page, and the composition's own text. No debug_id (CLAUDE.md 5.13).",
+  "read_from": "examples/output/<batch>/<sample>/.../checkpoint.06_styles_and_formulas.xml",
+  "count": 20,
+  "items": [
+    {
+      "sample": "CERNCourier-en",
+      "page": 3,
+      "text": "6 × 1012 ",
+      "why_genuine": "six times ten to the twelfth",
+      "source": "t1_formula_criterion.json"
+    },
+    {
+      "sample": "CERNCourier-en",
+      "page": 3,
+      "text": "4 × 108",
+      "why_genuine": "four times ten to the eighth",
+      "source": "t1_formula_criterion.json"
+    },
+    {
+      "sample": "CERNCourier-en",
+      "page": 3,
+      "text": "7 × 106 ",
+      "why_genuine": "seven times ten to the sixth",
+      "source": "t1_formula_criterion.json"
+    },
+    {
+      "sample": "CERNCourier-en",
+      "page": 4,
+      "text": "3 + 3 ",
+      "why_genuine": "arithmetic expression",
+      "source": "t1_formula_criterion.json"
+    },
+    {
+      "sample": "CERNCourier-en",
+      "page": 1,
+      "text": "   ",
+      "why_genuine": "private-use dingbat glyph",
+      "source": "t1_formula_criterion.json"
+    },
+    {
+      "sample": "CERNCourier-en",
+      "page": 4,
+      "text": "",
+      "why_genuine": "private-use dingbat glyph",
+      "source": "t1_formula_criterion.json"
+    },
+    {
+      "sample": "CERNCourier-en",
+      "page": 2,
+      "text": "• ",
+      "why_genuine": "bullet",
+      "source": "t1_formula_criterion.json"
+    },
+    {
+      "sample": "Courier-en",
+      "page": 2,
+      "text": "• ",
+      "why_genuine": "bullet",
+      "source": "t1_formula_criterion.json"
+    },
+    {
+      "sample": "Vogue-en",
+      "page": 3,
+      "text": "+",
+      "why_genuine": "bare mathematical operator",
+      "source": "t1_formula_criterion.json"
+    },
+    {
+      "sample": "AramcoWorld-en-v2",
+      "page": 3,
+      "text": "(cid:23)(cid:19) ",
+      "why_genuine": "undecodable CID glyph run",
+      "source": "t1_formula_criterion.json"
+    },
+    {
+      "sample": "AramcoWorld-en-v2",
+      "page": 5,
+      "text": "(cid:20)(cid:20)",
+      "why_genuine": "undecodable CID glyph run",
+      "source": "t1_formula_criterion.json"
+    },
+    {
+      "sample": "AramcoWorld-en-v2",
+      "page": 8,
+      "text": "(cid:23)",
+      "why_genuine": "undecodable glyph; nothing can be translated out of it",
+      "source": "t2_reverse_sample_review.json"
+    },
+    {
+      "sample": "CERNCourier-en",
+      "page": 1,
+      "text": "3      ",
+      "why_genuine": "private-use dingbat with a digit",
+      "source": "t2_reverse_sample_review.json"
+    },
+    {
+      "sample": "AramcoWorld-en-v2",
+      "page": 1,
+      "text": "2026  |  ",
+      "why_genuine": "a year and a rule character in a folio",
+      "source": "t2_reverse_sample_review.json"
+    },
+    {
+      "sample": "AramcoWorld-en-v2",
+      "page": 5,
+      "text": "(cid:19)(cid:19) (cid:36)",
+      "why_genuine": "undecodable glyph run",
+      "source": "t2_reverse_sample_review.json"
+    },
+    {
+      "sample": "AramcoWorld-en-v2",
+      "page": 3,
+      "text": "| 38 ",
+      "why_genuine": "rule character and folio number",
+      "source": "t2_reverse_sample_review.json"
+    },
+    {
+      "sample": "AramcoWorld-en-v2",
+      "page": 4,
+      "text": "[",
+      "why_genuine": "bracket alone",
+      "source": "t2_reverse_sample_review.json"
+    },
+    {
+      "sample": "AramcoWorld-en-v2",
+      "page": 7,
+      "text": "(cid:23)(cid:23) ",
+      "why_genuine": "undecodable glyph run",
+      "source": "t2_reverse_sample_review.json"
+    },
+    {
+      "sample": "AramcoWorld-en-v2",
+      "page": 3,
+      "text": "| 6 ",
+      "why_genuine": "rule character and folio number",
+      "source": "t2_reverse_sample_review.json"
+    },
+    {
+      "sample": "AramcoWorld-en-v2",
+      "page": 3,
+      "text": "| 42 ",
+      "why_genuine": "rule character and folio number",
+      "source": "t2_reverse_sample_review.json"
+    }
+  ],
+  "items_sha256": "91b0531080e5e4ccdbdec5a122094e7bb5636a454915f246ee6c2c732af574be"
+}

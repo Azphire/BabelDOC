@@ -267,6 +267,13 @@ def is_formulas_font(font_name: str, formular_font_pattern: str | None) -> bool:
     if formular_font_pattern:
         broad_formula_font_pattern = formular_font_pattern
     else:
+        # Every alternative here names a family, a foundry prefix or a word that
+        # means mathematics or symbols. A name describing a face's metrics does
+        # not belong among them: fixed advance width says how a face is spaced
+        # and nothing about what is set in it, and a text face is drawn
+        # monospaced as readily as a notation is. Faces that are genuinely
+        # mathematical and monospaced are named one by one in the precise
+        # pattern above, which is consulted first and still answers for them.
         broad_formula_font_pattern = (
             r"(CM[^RB]"
             r"|(MS|XY|MT|BL|RM|EU|LA|RS)[A-Z]"
@@ -277,7 +284,6 @@ def is_formulas_font(font_name: str, formular_font_pattern: str | None) -> bool:
             r"|txsy"
             r"|wasy"
             r"|stmary"
-            r"|.*Mono"
             r"|.*Code"
             # r"|.*Ital"
             r"|.*Sym"

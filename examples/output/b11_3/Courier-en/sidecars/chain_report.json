@@ -1,0 +1,429 @@
+{
+  "boundaries": [
+    {
+      "boundary": "1->2",
+      "eligible": false,
+      "head_debug_id": null,
+      "head_label": null,
+      "head_page": 2,
+      "head_text": null,
+      "linked": false,
+      "pair": null,
+      "pairs": [],
+      "reason": "not_chain_eligible:tail",
+      "score": null,
+      "signals": {
+        "body_label_pair": null,
+        "column_position": null,
+        "opener_prior": null,
+        "style_continuity": null,
+        "tail_line_fill": null,
+        "tail_no_terminal_punct": null
+      },
+      "tail_debug_id": null,
+      "tail_fill_ratio": null,
+      "tail_label": null,
+      "tail_page": 1,
+      "tail_text": null
+    },
+    {
+      "boundary": "2->3",
+      "eligible": true,
+      "head_debug_id": "6r3z5",
+      "head_label": "title",
+      "head_page": 3,
+      "head_text": "scientific discover y",
+      "linked": true,
+      "pair": "title->title",
+      "pairs": [
+        {
+          "head_debug_id": "6r3z5",
+          "head_label": "title",
+          "head_text": "scientific discover y",
+          "linked": true,
+          "pair": "title->title",
+          "score": 0.9500000000000001,
+          "signals": {
+            "body_label_pair": 0.0,
+            "column_position": 0.5,
+            "opener_prior": 0.0,
+            "style_continuity": 1.0,
+            "tail_line_fill": 1.0,
+            "tail_no_terminal_punct": 1.0
+          },
+          "tail_debug_id": "9Amxk",
+          "tail_fill_ratio": 1.016632031421171,
+          "tail_label": "title",
+          "tail_text": "knowledge drives"
+        }
+      ],
+      "reason": null,
+      "score": 0.9500000000000001,
+      "signals": {
+        "body_label_pair": 0.0,
+        "column_position": 0.5,
+        "opener_prior": 0.0,
+        "style_continuity": 1.0,
+        "tail_line_fill": 1.0,
+        "tail_no_terminal_punct": 1.0
+      },
+      "tail_debug_id": "9Amxk",
+      "tail_fill_ratio": 1.016632031421171,
+      "tail_label": "title",
+      "tail_page": 2,
+      "tail_text": "knowledge drives"
+    },
+    {
+      "boundary": "3->4",
+      "eligible": true,
+      "head_debug_id": "1s7SP",
+      "head_label": "title",
+      "head_page": 4,
+      "head_text": "LINKS programme: promoting Indigenous knowledge",
+      "linked": false,
+      "pair": "title->title",
+      "pairs": [
+        {
+          "head_debug_id": "1s7SP",
+          "head_label": "title",
+          "head_text": "LINKS programme: promoting Indigenous knowledge",
+          "linked": false,
+          "pair": "title->title",
+          "score": 0.5,
+          "signals": {
+            "body_label_pair": 0.0,
+            "column_position": 0.5,
+            "opener_prior": 0.0,
+            "style_continuity": 0.0,
+            "tail_line_fill": null,
+            "tail_no_terminal_punct": 1.0
+          },
+          "tail_debug_id": "6r3z5",
+          "tail_fill_ratio": null,
+          "tail_label": "title",
+          "tail_text": "scientific discover y"
+        }
+      ],
+      "reason": null,
+      "score": 0.5,
+      "signals": {
+        "body_label_pair": 0.0,
+        "column_position": 0.5,
+        "opener_prior": 0.0,
+        "style_continuity": 0.0,
+        "tail_line_fill": null,
+        "tail_no_terminal_punct": 1.0
+      },
+      "tail_debug_id": "6r3z5",
+      "tail_fill_ratio": null,
+      "tail_label": "title",
+      "tail_page": 3,
+      "tail_text": "scientific discover y"
+    },
+    {
+      "boundary": "4->5",
+      "eligible": true,
+      "head_debug_id": "atafX",
+      "head_label": "title",
+      "head_page": 5,
+      "head_text": "Brazil: lessons from the water people",
+      "linked": false,
+      "pair": "title->title",
+      "pairs": [
+        {
+          "head_debug_id": "sNww2",
+          "head_label": "plain text",
+          "head_text": "Faced with a dramatic decline in pirarucu, a fish that is essential to their survival, the Paumari people of Amazonas state took part in a programme to restore the species, combining scientific and traditional knowledge. After a few years, the fish are once again populating the Purus River.",
+          "linked": false,
+          "pair": "body->body",
+          "score": 0.1,
+          "signals": {
+            "body_label_pair": 1.0,
+            "column_position": 1.0,
+            "opener_prior": 1.0,
+            "style_continuity": 0.0,
+            "tail_line_fill": 0.0,
+            "tail_no_terminal_punct": 0.0
+          },
+          "tail_debug_id": "xwMmy",
+          "tail_fill_ratio": 0.40983929600765967,
+          "tail_label": "plain text",
+          "tail_text": "assessments."
+        },
+        {
+          "head_debug_id": "atafX",
+          "head_label": "title",
+          "head_text": "Brazil: lessons from the water people",
+          "linked": false,
+          "pair": "title->title",
+          "score": 0.35000000000000003,
+          "signals": {
+            "body_label_pair": 0.0,
+            "column_position": 0.5,
+            "opener_prior": 1.0,
+            "style_continuity": 0.0,
+            "tail_line_fill": null,
+            "tail_no_terminal_punct": 1.0
+          },
+          "tail_debug_id": "H19M3",
+          "tail_fill_ratio": null,
+          "tail_label": "title",
+          "tail_text": "Guardians of biodiversity"
+        }
+      ],
+      "reason": null,
+      "score": 0.35000000000000003,
+      "signals": {
+        "body_label_pair": 0.0,
+        "column_position": 0.5,
+        "opener_prior": 1.0,
+        "style_continuity": 0.0,
+        "tail_line_fill": null,
+        "tail_no_terminal_punct": 1.0
+      },
+      "tail_debug_id": "H19M3",
+      "tail_fill_ratio": null,
+      "tail_label": "title",
+      "tail_page": 4,
+      "tail_text": "Guardians of biodiversity"
+    },
+    {
+      "boundary": "5->6",
+      "eligible": true,
+      "head_debug_id": "TJDBJ",
+      "head_label": "plain text",
+      "head_page": 6,
+      "head_text": "To mark the centennial of quantum mechanics, the United Nations declared 2025 the International Year of Quantum Science and Technology. As the lead agency of the initiative, UNESCO inaugurated the year-long initiative in Paris on 4 and 5 February, attracting over 1,200 participants, including several Nobel Prize laureates.",
+      "linked": false,
+      "pair": "body->body",
+      "pairs": [
+        {
+          "head_debug_id": "TJDBJ",
+          "head_label": "plain text",
+          "head_text": "To mark the centennial of quantum mechanics, the United Nations declared 2025 the International Year of Quantum Science and Technology. As the lead agency of the initiative, UNESCO inaugurated the year-long initiative in Paris on 4 and 5 February, attracting over 1,200 participants, including several Nobel Prize laureates.",
+          "linked": false,
+          "pair": "body->body",
+          "score": 0.6,
+          "signals": {
+            "body_label_pair": 1.0,
+            "column_position": 0.5,
+            "opener_prior": 0.0,
+            "style_continuity": 0.0,
+            "tail_line_fill": 1.0,
+            "tail_no_terminal_punct": 1.0
+          },
+          "tail_debug_id": "rik34",
+          "tail_fill_ratio": 0.9997498531114191,
+          "tail_label": "plain text",
+          "tail_text": "without ever meeting. Technicians arrived"
+        },
+        {
+          "head_debug_id": "dBR7Q",
+          "head_label": "title",
+          "head_text": "The 2025 international year of quantum",
+          "linked": false,
+          "pair": "title->title",
+          "score": 0.5,
+          "signals": {
+            "body_label_pair": 0.0,
+            "column_position": 0.5,
+            "opener_prior": 0.0,
+            "style_continuity": 0.0,
+            "tail_line_fill": 1.0,
+            "tail_no_terminal_punct": 1.0
+          },
+          "tail_debug_id": "atafX",
+          "tail_fill_ratio": 0.8958835374508967,
+          "tail_label": "title",
+          "tail_text": "the water people"
+        }
+      ],
+      "reason": null,
+      "score": 0.6,
+      "signals": {
+        "body_label_pair": 1.0,
+        "column_position": 0.5,
+        "opener_prior": 0.0,
+        "style_continuity": 0.0,
+        "tail_line_fill": 1.0,
+        "tail_no_terminal_punct": 1.0
+      },
+      "tail_debug_id": "rik34",
+      "tail_fill_ratio": 0.9997498531114191,
+      "tail_label": "plain text",
+      "tail_page": 5,
+      "tail_text": "without ever meeting. Technicians arrived"
+    },
+    {
+      "boundary": "6->7",
+      "eligible": true,
+      "head_debug_id": "eqTh4",
+      "head_label": "plain text",
+      "head_page": 7,
+      "head_text": "For the past thirty years, international regulations have sought to limit the exploitation of Indigenous knowledge by industry so that it does not occur at the expense of local populations. But despite these measures, cases of misappropriation remain widespread.",
+      "linked": false,
+      "pair": "body->body",
+      "pairs": [
+        {
+          "head_debug_id": "eqTh4",
+          "head_label": "plain text",
+          "head_text": "For the past thirty years, international regulations have sought to limit the exploitation of Indigenous knowledge by industry so that it does not occur at the expense of local populations. But despite these measures, cases of misappropriation remain widespread.",
+          "linked": false,
+          "pair": "body->body",
+          "score": 0.51875,
+          "signals": {
+            "body_label_pair": 1.0,
+            "column_position": 1.0,
+            "opener_prior": 0.875,
+            "style_continuity": 0.0,
+            "tail_line_fill": 1.0,
+            "tail_no_terminal_punct": 1.0
+          },
+          "tail_debug_id": "rb4t9",
+          "tail_fill_ratio": 0.999872081867604,
+          "tail_label": "plain text",
+          "tail_text": "images  in  a  camera. This  technology"
+        },
+        {
+          "head_debug_id": "keidn",
+          "head_label": "title",
+          "head_text": "When biopiracy takes root",
+          "linked": false,
+          "pair": "title->title",
+          "score": 0.36875,
+          "signals": {
+            "body_label_pair": 0.0,
+            "column_position": 0.5,
+            "opener_prior": 0.875,
+            "style_continuity": 0.0,
+            "tail_line_fill": null,
+            "tail_no_terminal_punct": 1.0
+          },
+          "tail_debug_id": "dBR7Q",
+          "tail_fill_ratio": null,
+          "tail_label": "title",
+          "tail_text": "The 2025 international year of quantum"
+        }
+      ],
+      "reason": null,
+      "score": 0.51875,
+      "signals": {
+        "body_label_pair": 1.0,
+        "column_position": 1.0,
+        "opener_prior": 0.875,
+        "style_continuity": 0.0,
+        "tail_line_fill": 1.0,
+        "tail_no_terminal_punct": 1.0
+      },
+      "tail_debug_id": "rb4t9",
+      "tail_fill_ratio": 0.999872081867604,
+      "tail_label": "plain text",
+      "tail_page": 6,
+      "tail_text": "images  in  a  camera. This  technology"
+    },
+    {
+      "boundary": "7->8",
+      "eligible": true,
+      "head_debug_id": "LHdqb",
+      "head_label": "plain text",
+      "head_page": 8,
+      "head_text": "the grass has been patented. Benefits that have already been shared under the agreement include employment opportunities for First Nations youth and funding for training and educational opportunities for Indigenous Australians.",
+      "linked": true,
+      "pair": "body->body",
+      "pairs": [
+        {
+          "head_debug_id": "LHdqb",
+          "head_label": "plain text",
+          "head_text": "the grass has been patented. Benefits that have already been shared under the agreement include employment opportunities for First Nations youth and funding for training and educational opportunities for Indigenous Australians.",
+          "linked": true,
+          "pair": "body->body",
+          "score": 0.95,
+          "signals": {
+            "body_label_pair": 1.0,
+            "column_position": 0.5,
+            "opener_prior": 0.0,
+            "style_continuity": 1.0,
+            "tail_line_fill": 1.0,
+            "tail_no_terminal_punct": 1.0
+          },
+          "tail_debug_id": "jVsJA",
+          "tail_fill_ratio": 0.9988896381731911,
+          "tail_label": "plain text",
+          "tail_text": "spinifex, and a composite material from"
+        }
+      ],
+      "reason": null,
+      "score": 0.95,
+      "signals": {
+        "body_label_pair": 1.0,
+        "column_position": 0.5,
+        "opener_prior": 0.0,
+        "style_continuity": 1.0,
+        "tail_line_fill": 1.0,
+        "tail_no_terminal_punct": 1.0
+      },
+      "tail_debug_id": "jVsJA",
+      "tail_fill_ratio": 0.9988896381731911,
+      "tail_label": "plain text",
+      "tail_page": 7,
+      "tail_text": "spinifex, and a composite material from"
+    }
+  ],
+  "chains": [
+    {
+      "chain_id": "jQRVe",
+      "length": 2,
+      "members": [
+        {
+          "chain_index": 0,
+          "debug_id": "9Amxk"
+        },
+        {
+          "chain_index": 1,
+          "debug_id": "6r3z5"
+        }
+      ]
+    },
+    {
+      "chain_id": "fjHep",
+      "length": 2,
+      "members": [
+        {
+          "chain_index": 0,
+          "debug_id": "jVsJA"
+        },
+        {
+          "chain_index": 1,
+          "debug_id": "LHdqb"
+        }
+      ]
+    }
+  ],
+  "link_min_score": 0.8,
+  "pair_weights": {
+    "body->body": {
+      "body_label_pair": 0.15,
+      "column_position": 0.1,
+      "opener_prior": -0.15,
+      "style_continuity": 0.35,
+      "tail_line_fill": 0.15,
+      "tail_no_terminal_punct": 0.25
+    },
+    "title->title": {
+      "body_label_pair": 0.0,
+      "column_position": 0.1,
+      "opener_prior": -0.15,
+      "style_continuity": 0.45,
+      "tail_line_fill": 0.0,
+      "tail_no_terminal_punct": 0.45
+    }
+  },
+  "weights": {
+    "weight_body_label_pair": 0.15,
+    "weight_column_position": 0.1,
+    "weight_opener_prior": -0.15,
+    "weight_style_continuity": 0.35,
+    "weight_tail_line_fill": 0.15,
+    "weight_tail_no_terminal_punct": 0.25
+  }
+}

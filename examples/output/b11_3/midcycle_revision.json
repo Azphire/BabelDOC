@@ -1,0 +1,39 @@
+{
+  "what_this_is": "The explicit adjudication record for a mid-cycle revision to this batch's declared surface. PLAN_B11_3.md section 7 bounds the change surface to StylesAndFormulas and/or paragraph_helper.py, the new gate, and the report and registry files. configs/output_retention.json was not among them. This record is what makes the addition a revision rather than a drift.",
+  "revision": {
+    "id": "REV-B11-3-01",
+    "date": "2026-08-22",
+    "what": "configs/output_retention.json enters this batch's declared surface, and the twelve stage-06 checkpoints of the b10.5 on arm are registered in protected_paths.",
+    "authorised_by": "user adjudication, this session, on the batch's halt report",
+    "raised_by": "the halt report's leftover 1: this batch's T1 and T2 read examples/output/b10_5/<sample>/on/work/<sample>/checkpoint.06_styles_and_formulas.xml, and b11.2's T0 registered the stage 09 and 11 checkpoints and the translation tracking but not stage 06."
+  },
+  "conditions": {
+    "only_a_path_not_yet_taken": {
+      "holds": true,
+      "how": "nothing in the batch has been pruned and pruning has been opt-in since b11.2's T4(c), so no evidence has yet been lost and no assertion yet depends on the old surface. The revision changes what may happen next, not what already happened."
+    },
+    "explicit_adjudication_record": {
+      "holds": true,
+      "how": "this file, plus WAIVERS.md W-B11-10, plus the report section that carries it. The record names what changed, who authorised it and on what evidence."
+    },
+    "narrows_only_never_widens": {
+      "holds": true,
+      "how": "registering a protected path can only remove files from what the retention policy is permitted to delete. protected_paths is consulted as an exemption from pruning; adding entries adds exemptions. No threshold moved: keep_recent_batches, archive_patterns and archive_max_file_kb are untouched, and in particular the archive ceiling was NOT raised -- the same refusal b11.2 recorded stands, for the same reason.",
+      "checked": {
+        "keep_recent_batches": "unchanged",
+        "archive_patterns": "unchanged",
+        "archive_max_file_kb": "unchanged",
+        "protected_paths": "54 -> 66, additions only, no removals"
+      }
+    }
+  },
+  "registered_paths": {
+    "count": 12,
+    "shape": "examples/output/b10_5/<sample>/on/work/<sample>/checkpoint.06_styles_and_formulas.{json,xml}",
+    "samples": ["AramcoWorld-en-v2", "CERNCourier-en", "Courier-en",
+                "Courier-zh", "FD-en-v2", "Vogue-en"],
+    "both_forms_registered_because": "b11.2 registered both forms for stages 09 and 11 and the class is kept symmetric. This batch reads the xml, which is the round-trip form; the json is the inspection form a later reader may reach for.",
+    "all_present_on_disk_at_registration": true
+  },
+  "exit_condition": "the same as the class b11.2 wrote: an entry comes out when the batch that named this run as its baseline is delivered and nothing points at it any more."
+}

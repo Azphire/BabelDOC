@@ -1,0 +1,205 @@
+{
+  "counts": {
+    "by_kind": {
+      "untranslated_residue": 5
+    },
+    "issues": 5
+  },
+  "detector_records": {},
+  "document_detectors": [
+    "escalation_surfacing"
+  ],
+  "issues": [
+    {
+      "detected_at_iteration": 1,
+      "detector": "untranslated_residue",
+      "evidence": {
+        "debug_id": "y8FZM#L1",
+        "excerpt": "照片：Fotohane DARKROOM",
+        "layout_label": "plain text",
+        "min_ratio": 0.6,
+        "residue_chars": 16,
+        "residue_ratio": 0.8889,
+        "residue_script": "latin",
+        "script_chars": 18
+      },
+      "geometry": {
+        "x": 78.48469999999999,
+        "x2": 256.2315,
+        "y": 277.7982,
+        "y2": 284.7982
+      },
+      "id": "untranslated_residue:p1:p1#33",
+      "kind": "untranslated_residue",
+      "page": 1,
+      "paragraph_refs": [
+        "p1#33"
+      ],
+      "severity": "high"
+    },
+    {
+      "detected_at_iteration": 1,
+      "detector": "untranslated_residue",
+      "evidence": {
+        "debug_id": "kvadk",
+        "excerpt": "© Carolina Zambrano",
+        "layout_label": "fallback_line",
+        "min_ratio": 0.6,
+        "residue_chars": 16,
+        "residue_ratio": 1.0,
+        "residue_script": "latin",
+        "script_chars": 16
+      },
+      "geometry": {
+        "x": 540.9262,
+        "x2": 547.4262,
+        "y": 583.6095,
+        "y2": 640.894
+      },
+      "id": "untranslated_residue:p3:p3#2",
+      "kind": "untranslated_residue",
+      "page": 3,
+      "paragraph_refs": [
+        "p3#2"
+      ],
+      "severity": "high"
+    },
+    {
+      "detected_at_iteration": 1,
+      "detector": "untranslated_residue",
+      "evidence": {
+        "debug_id": "V59SL",
+        "excerpt": "© Adriano Gambarini / OPAN",
+        "layout_label": "fallback_line",
+        "min_ratio": 0.6,
+        "residue_chars": 20,
+        "residue_ratio": 1.0,
+        "residue_script": "latin",
+        "script_chars": 20
+      },
+      "geometry": {
+        "x": 24.305500000000002,
+        "x2": 30.812,
+        "y": 298.3919,
+        "y2": 376.5934
+      },
+      "id": "untranslated_residue:p5:p5#10",
+      "kind": "untranslated_residue",
+      "page": 5,
+      "paragraph_refs": [
+        "p5#10"
+      ],
+      "severity": "high"
+    },
+    {
+      "detected_at_iteration": 1,
+      "detector": "untranslated_residue",
+      "evidence": {
+        "debug_id": "fBTRM",
+        "excerpt": "© Boris Séméniako for The UNESCO Courier",
+        "layout_label": "fallback_line",
+        "min_ratio": 0.6,
+        "residue_chars": 33,
+        "residue_ratio": 1.0,
+        "residue_script": "latin",
+        "script_chars": 33
+      },
+      "geometry": {
+        "x": 413.3671,
+        "x2": 419.8671,
+        "y": 711.2186,
+        "y2": 826.0346
+      },
+      "id": "untranslated_residue:p6:p6#15",
+      "kind": "untranslated_residue",
+      "page": 6,
+      "paragraph_refs": [
+        "p6#15"
+      ],
+      "severity": "high"
+    },
+    {
+      "detected_at_iteration": 1,
+      "detector": "untranslated_residue",
+      "evidence": {
+        "debug_id": "HhYoM",
+        "excerpt": "© 克里斯蒂安·古皮 / robertharding.com",
+        "layout_label": "abandon",
+        "min_ratio": 0.6,
+        "residue_chars": 16,
+        "residue_ratio": 0.6957,
+        "residue_script": "latin",
+        "script_chars": 23
+      },
+      "geometry": {
+        "x": 17.2419,
+        "x2": 120.18239999999997,
+        "y": 802.6325999999999,
+        "y2": 810.4911
+      },
+      "id": "untranslated_residue:p8:p8#15",
+      "kind": "untranslated_residue",
+      "page": 8,
+      "paragraph_refs": [
+        "p8#15"
+      ],
+      "severity": "high"
+    }
+  ],
+  "iteration": 1,
+  "language": "zh",
+  "notes": [],
+  "pages_by_detector": {
+    "fragment_cluster": [
+      1,
+      4,
+      6,
+      8
+    ],
+    "out_of_page": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8
+    ],
+    "text_figure_overlap": [
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8
+    ],
+    "text_text_collision": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8
+    ],
+    "untranslated_residue": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8
+    ]
+  },
+  "source_geometry": {
+    "checkpoint": "checkpoint.06_styles_and_formulas.xml",
+    "paragraphs": 132,
+    "stage": "styles_and_formulas"
+  },
+  "translation_performed": true
+}

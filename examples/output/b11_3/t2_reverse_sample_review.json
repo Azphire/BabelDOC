@@ -1,0 +1,42 @@
+{
+  "what_this_is": "The plan asks that a random draw of formula compositions the criterion did NOT flag be reviewed by hand, so that a criterion which simply misses things cannot pass as a criterion which finds nothing to find. Thirty were drawn from the 184 unflagged compositions with seed 20260822, recorded in t2_measurement_before.json. Each is judged below by reading its text.",
+  "verdict_vocabulary": {
+    "genuine": "the annotation is correct; this is mathematics, a symbol, a rule, a bullet or an undecodable glyph run, and it should not be translated",
+    "missed_text_fragment": "the annotation is wrong -- this is ordinary text -- but the composition is too short for the criterion's word test to reach it"
+  },
+  "headline": "17 of the 30 are text the criterion missed and 13 are genuine. Every one of the 17 is one or two characters, or a two-to-three letter piece of a rotated credit that the annotation cut into several compositions. None of the 30 is a genuine formula that the criterion wrongly flagged, because none of the 30 was flagged at all: this draw measures recall, and the self-check measures precision.",
+  "consequence": "the mislabel count of 68 is a LOWER BOUND. It is honest about what it finds and silent about short fragments. For this batch's purpose that is the safe direction: the repair is judged by whether the count falls, and a conservative counter cannot manufacture a fall.",
+  "rows": [
+    {"sample": "Courier-zh", "page": 6, "text": "里", "verdict": "missed_text_fragment", "note": "a single Chinese character of running text"},
+    {"sample": "AramcoWorld-en-v2", "page": 8, "text": "(cid:23)", "verdict": "genuine", "note": "undecodable glyph; nothing can be translated out of it"},
+    {"sample": "CERNCourier-en", "page": 1, "text": "3      ", "verdict": "genuine", "note": "private-use dingbat with a digit"},
+    {"sample": "FD-en-v2", "page": 4, "text": "H", "verdict": "missed_text_fragment", "note": "one letter of a rotated credit"},
+    {"sample": "Vogue-en", "page": 1, "text": "FEN", "verdict": "missed_text_fragment", "note": "three letters of a rotated boutique credit"},
+    {"sample": "CERNCourier-en", "page": 2, "text": "• ", "verdict": "genuine", "note": "bullet"},
+    {"sample": "Vogue-en", "page": 1, "text": "UES  888", "verdict": "missed_text_fragment", "note": "tail of a rotated credit with a telephone number"},
+    {"sample": "AramcoWorld-en-v2", "page": 1, "text": "2026  |  ", "verdict": "genuine", "note": "a year and a rule character in a folio"},
+    {"sample": "CERNCourier-en", "page": 4, "text": "3 + 3 ", "verdict": "genuine", "note": "arithmetic"},
+    {"sample": "Courier-zh", "page": 3, "text": "·赞布拉", "verdict": "missed_text_fragment", "note": "part of a transliterated personal name"},
+    {"sample": "FD-en-v2", "page": 8, "text": "O", "verdict": "missed_text_fragment", "note": "one letter of a rotated credit"},
+    {"sample": "CERNCourier-en", "page": 2, "text": "• ", "verdict": "genuine", "note": "bullet"},
+    {"sample": "AramcoWorld-en-v2", "page": 5, "text": "(cid:19)(cid:19) (cid:36)", "verdict": "genuine", "note": "undecodable glyph run"},
+    {"sample": "Courier-zh", "page": 6, "text": "国", "verdict": "missed_text_fragment", "note": "a single Chinese character of running text"},
+    {"sample": "Courier-zh", "page": 6, "text": "为", "verdict": "missed_text_fragment", "note": "a single Chinese character of running text"},
+    {"sample": "FD-en-v2", "page": 9, "text": "BA", "verdict": "missed_text_fragment", "note": "two letters of a rotated credit"},
+    {"sample": "FD-en-v2", "page": 4, "text": "PO", "verdict": "missed_text_fragment", "note": "two letters of a rotated credit"},
+    {"sample": "AramcoWorld-en-v2", "page": 3, "text": "| 38 ", "verdict": "genuine", "note": "rule character and folio number"},
+    {"sample": "Courier-zh", "page": 3, "text": "© 卡", "verdict": "missed_text_fragment", "note": "copyright sign and the first character of a name"},
+    {"sample": "Courier-zh", "page": 5, "text": "动", "verdict": "missed_text_fragment", "note": "a single Chinese character of running text"},
+    {"sample": "AramcoWorld-en-v2", "page": 4, "text": "[", "verdict": "genuine", "note": "bracket alone"},
+    {"sample": "Vogue-en", "page": 1, "text": "D", "verdict": "missed_text_fragment", "note": "one letter of a rotated credit"},
+    {"sample": "Vogue-en", "page": 1, "text": "FEN", "verdict": "missed_text_fragment", "note": "three letters of a rotated credit"},
+    {"sample": "FD-en-v2", "page": 9, "text": "C", "verdict": "missed_text_fragment", "note": "one letter of a rotated credit"},
+    {"sample": "AramcoWorld-en-v2", "page": 7, "text": "(cid:23)(cid:23) ", "verdict": "genuine", "note": "undecodable glyph run"},
+    {"sample": "CERNCourier-en", "page": 3, "text": "6 × 1012 ", "verdict": "genuine", "note": "six times ten to the twelfth"},
+    {"sample": "Courier-zh", "page": 6, "text": "科", "verdict": "missed_text_fragment", "note": "a single Chinese character of running text"},
+    {"sample": "AramcoWorld-en-v2", "page": 3, "text": "| 6 ", "verdict": "genuine", "note": "rule character and folio number"},
+    {"sample": "Courier-zh", "page": 5, "text": "民", "verdict": "missed_text_fragment", "note": "a single Chinese character of running text"},
+    {"sample": "AramcoWorld-en-v2", "page": 3, "text": "| 42 ", "verdict": "genuine", "note": "rule character and folio number"}
+  ],
+  "counts": {"genuine": 13, "missed_text_fragment": 17, "wrongly_flagged_genuine_formula": 0}
+}

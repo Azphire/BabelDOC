@@ -1,0 +1,124 @@
+{
+  "by_rule": {
+    "initial": 0,
+    "inline": 0,
+    "vertical": 1
+  },
+  "declared_page_rules": [
+    "inline"
+  ],
+  "declared_page_switch": "magazine_stitch_declared",
+  "declared_pages_unblocked": true,
+  "duplicate_blanked": [],
+  "initial_candidates": [],
+  "initial_max_chars": 3,
+  "initial_min_font_ratio": 1.6,
+  "max_fragment_chars": 40,
+  "pages": [
+    {
+      "blanked": 0,
+      "exempt": true,
+      "page": 1,
+      "paragraphs": 35,
+      "stitches": 0,
+      "unblocked": true
+    },
+    {
+      "blanked": 0,
+      "exempt": false,
+      "page": 2,
+      "paragraphs": 8,
+      "stitches": 0,
+      "unblocked": false
+    },
+    {
+      "blanked": 0,
+      "exempt": false,
+      "page": 3,
+      "paragraphs": 3,
+      "stitches": 0,
+      "unblocked": false
+    },
+    {
+      "blanked": 4,
+      "exempt": false,
+      "page": 4,
+      "paragraphs": 24,
+      "stitches": 1,
+      "unblocked": false
+    },
+    {
+      "blanked": 0,
+      "exempt": false,
+      "page": 5,
+      "paragraphs": 12,
+      "stitches": 0,
+      "unblocked": false
+    },
+    {
+      "blanked": 0,
+      "exempt": false,
+      "page": 6,
+      "paragraphs": 16,
+      "stitches": 0,
+      "unblocked": false
+    },
+    {
+      "blanked": 0,
+      "exempt": false,
+      "page": 7,
+      "paragraphs": 18,
+      "stitches": 0,
+      "unblocked": false
+    },
+    {
+      "blanked": 0,
+      "exempt": false,
+      "page": 8,
+      "paragraphs": 16,
+      "stitches": 0,
+      "unblocked": false
+    }
+  ],
+  "policy_flags": [
+    "preserve_line_structure"
+  ],
+  "rules": [
+    "inline",
+    "vertical",
+    "initial"
+  ],
+  "stitches": [
+    {
+      "characters": 538,
+      "debug_id": "SjyUY",
+      "member_debug_ids": [
+        "SjyUY",
+        "anceE",
+        "Q5TwY",
+        "ARFYp",
+        "H4wFW"
+      ],
+      "members": 5,
+      "page": 4,
+      "paragraph": "p4#4",
+      "restyled_characters": 9,
+      "rule": "vertical",
+      "style_normalized": true,
+      "text": "There are many more examples of how traditional knowledge has proven its worth, in areas as diverse as water management, agroforestry, health and fishing. Far more than a collection of techniques, these practices are also an expression of a worldview. Textile creation, for instance, has served as another form of navigation, this time in a spiritual sense. The woven skirts of Micronesia’s Outer Islands and the strip-weaving traditions of Ghana and Nigeria map community knowledge and cultural identity into symbolic pattern language."
+    }
+  ],
+  "switch": "magazine_fragment_stitch",
+  "totals": {
+    "blanked_paragraphs": 4,
+    "duplicate_blanked": 0,
+    "exempt_pages": 1,
+    "initial_accepted": 0,
+    "initial_candidates": 0,
+    "merged_paragraphs": 5,
+    "pages": 8,
+    "stitches": 1,
+    "style_normalized": 1
+  },
+  "window_switch": "magazine_page_classify"
+}

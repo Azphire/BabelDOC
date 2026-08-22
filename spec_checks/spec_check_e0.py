@@ -186,6 +186,7 @@ AFTER_THIS_GATE = (
     "spec_check_b10_5.py",
     "spec_check_b11_1.py",
     "spec_check_b11_2.py",
+    "spec_check_b11_3.py",
 )
 
 # Paths this batch may change. Nothing under babeldoc/, nothing under configs/,

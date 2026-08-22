@@ -148,3 +148,42 @@ Batch b10.5 changes no upstream file. The column reflow pass reaches the pipelin
 除此一处,批次 b11.2 不改动任何上游文件。T4 的三项前瞻性修法全部落在扩展侧
 (`tools/prune_outputs.py`、`spec_checks/run_all.py`、新增 `spec_checks/evidence.py`);
 T3 的 `tools/column_continuity.py` 只读复用 `magazine/chain_signals.py`,不改动它。
+
+## B11.3
+
+| 文件 | 符号 | 调用方 | 目的 | 批次 |
+| --- | --- | --- | --- | --- |
+| `babeldoc/format/pdf/document_il/utils/formular_helper.py` | `is_formulas_font`,其 `broad_formula_font_pattern` 分支 | `collect_page_formula_font_ids` → `StylesAndFormulas.process_page_formulas`(`styles_and_formulas.py:571-576`),再经 `_classify_characters_in_composition:445` 的字体分支 | 见下方逐函数登记 | B11.3 |
+
+### 逐函数登记
+
+**`is_formulas_font(font_name, formular_font_pattern)`**
+
+- **上游原行为**:当调用方不提供 `formular_font_pattern` 时,使用内建的 broad 模式判定
+  字体是否为公式字体。该模式含 `.*Mono` 一项,即**字体族名中出现 "Mono" 即判为公式字体**。
+  判定顺序为:precise(真数学字体)→ True;`pattern_text`(正文字体白名单)→ False;
+  broad → True;否则 False。
+- **本项目改后行为**:broad 模式中**移除 `.*Mono` 一项**,其余十四项(`CM[^RB]`、
+  `(MS|XY|MT|BL|RM|EU|LA|RS)[A-Z]`、`LINE`、`LCIRCLE`、`TeX-`、`rsfs`、`txsy`、`wasy`、
+  `stmary`、`.*Code`、`.*Sym`、`.*Math`、`AdvP4C4E74`、`AdvPSSym`、`AdvP4C4E59`)与三层
+  判定顺序**一律不动**。precise 模式不动,`pattern_text` 白名单不动,
+  `formular_font_pattern` 的配置通道语义(提供即整体替换 broad)不动。
+- **理由**:`.*Mono` 描述的是字体的**度量**(等宽),不是它的**内容**。等宽只说明字面如何
+  排布,不说明排的是什么;正文字体做成等宽与记号做成等宽一样常见。broad 模式的其余各项
+  要么点名一个数学/符号字族(`.*Math`、`.*Sym`、`rsfs`、`txsy`、`wasy`、`stmary`、
+  `TeX-`、`CM[^RB]`),要么点名一个铸字厂前缀,**只有 `.*Mono` 是纯度量描述**。真正既是
+  数学字体又是等宽的那些面(`MiriamMonoCLM` 等)在 precise 模式里**逐个点名**,而 precise
+  先于 broad 被查,故它们的判定不受影响。
+  实测:全语料 133 个字体名中**仅 3 个**判定改变(`GTFlexaMono-Thin` /
+  `-Light` / `-Regular`),且改后**全语料无一字体仍靠 broad 模式被判为公式字体**——
+  即该分支在本语料上不再贡献任何标注。误标 **68 → 43**,新增 **0**;
+  钉住的 **20 条真公式全部仍被正确标注**(`t3_repair.json`)。
+- **改动只以 T1 判据词汇表述**:所用信号只有"字体名描述度量还是描述数学",不含刊物名、
+  页码、段落 id 或任何取自样张的字符串。落点选定见 `t3_consumer_inventory.json`
+  与本批报告 §7。
+
+**落点与 PLAN 候选名的差异(用户裁决第 (3) 条)**:`PLAN_B11_3.md` 的候选表把 (A) 写作
+「StylesAndFormulas 的标注条件」。以代码为准,做判定的是 `formular_helper.is_formulas_font`;
+`styles_and_formulas.py:445` 只是一次集合成员判断(`font_id in formula_font_ids`),
+在那里改会把一个**字体名**问题写成一个**分类器**问题。故落点订正为 `formular_helper.py`,
+登记 W-B11-11。`styles_and_formulas.py` **本批未改动一行**。

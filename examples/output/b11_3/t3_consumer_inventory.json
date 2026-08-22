@@ -1,0 +1,109 @@
+{
+  "why_this_exists": "The adjudication made this a precondition of touching the annotation: an annotation read in many places cannot be narrowed until it is known who reads it. Each entry records where the read happens, what it reads, and -- the column that matters -- what changes for that reader when a composition that used to be a formula becomes a text line instead.",
+  "scope": "every site outside StylesAndFormulas itself that reads the pdf_formula member of a composition, or a PdfFormula reached through one. Collected from the tree at 6ea160d.",
+  "direction_of_the_change": "this batch's repair only ever turns formula into text; it never turns text into formula. So each row is read as: what does this consumer do differently when it sees one fewer formula.",
+  "consumers": [
+    {
+      "group": "translation dispatch",
+      "sites": [
+        {"file": "babeldoc/format/pdf/document_il/utils/paragraph_helper.py", "line": "69-71",
+         "in": "is_placeholder_only_paragraph",
+         "reads": "treats a formula composition as permitted and continues, so an all-formula paragraph reads as placeholder only",
+         "effect_of_one_fewer_formula": "the paragraph stops being all-formula and is no longer refused. THIS IS THE INTENDED EFFECT for exposure class (i): 43 compositions in 29 paragraphs."},
+        {"file": "babeldoc/format/pdf/document_il/utils/paragraph_helper.py", "line": "19-20",
+         "in": "is_cid_paragraph",
+         "reads": "collects a formula's characters into the cid ratio",
+         "effect_of_one_fewer_formula": "none. The same characters are collected through the pdf_line branch instead; the ratio is over the same set."},
+        {"file": "babeldoc/format/pdf/document_il/midend/il_translator.py", "line": "164, 585, 614, 877, 909, 964-983",
+         "in": "FormulaPlaceholder and the request/reply machinery",
+         "reads": "each formula composition becomes a {vN} placeholder in the request and is restored from it in the reply",
+         "effect_of_one_fewer_formula": "the words go into the request as words instead of as placeholders. THIS IS THE INTENDED EFFECT for exposure class (ii): 11 compositions in 3 paragraphs. It also removes the inter-placeholder space loss recorded in b11.2 section 4.4."},
+        {"file": "babeldoc/format/pdf/document_il/midend/il_translator.py", "line": "705, 731-733, 976",
+         "in": "paragraph text assembly and write-back",
+         "reads": "branches on the composition kind when building text and when writing a placeholder's formula back",
+         "effect_of_one_fewer_formula": "the composition is assembled through the line branch; write-back has one less formula to restore"}
+      ]
+    },
+    {
+      "group": "layout and typesetting",
+      "sites": [
+        {"file": "babeldoc/format/pdf/document_il/midend/typesetting.py", "line": "1727-1728, 137, 209, 256, 334, 347, 415, 445-447, 1763",
+         "in": "TypesettingUnit(formular=...)",
+         "reads": "a formula becomes one indivisible typesetting unit with its own scaling and offset rules, and its curves and forms are handed to the page rather than the paragraph",
+         "effect_of_one_fewer_formula": "the characters are typeset as text: they may be broken across lines, and they take the paragraph's font handling instead of being kept as-is. This is the largest behavioural change of the repair and the reason T4 measures conservation."},
+        {"file": "babeldoc/format/pdf/document_il/utils/layout_helper.py", "line": "188-189, 209-210, 329-331, 410-411, 454-455, 468-469, 485-486, 982-983",
+         "in": "composition length, character collection, height, first and last character, space insertion, box",
+         "reads": "the formula's box and characters in each of these measurements",
+         "effect_of_one_fewer_formula": "each measurement takes the line branch; the same characters and boxes are involved, so the measured quantities are unchanged in kind"},
+        {"file": "babeldoc/format/pdf/document_il/midend/remove_descent.py", "line": "133-134",
+         "in": "descent removal",
+         "reads": "the formula's characters",
+         "effect_of_one_fewer_formula": "the same characters are reached through the line branch"},
+        {"file": "babeldoc/format/pdf/document_il/midend/paragraph_finder.py", "line": "132-133, 337-338",
+         "in": "paragraph character collection",
+         "reads": "the formula's characters",
+         "effect_of_one_fewer_formula": "runs before StylesAndFormulas in the pipeline order, so it does not see this batch's change at all"}
+      ]
+    },
+    {
+      "group": "magazine passes",
+      "sites": [
+        {"file": "babeldoc/magazine/line_split.py", "line": "291-320, 334, 616-622",
+         "in": "SPLITTABLE / ATOMIC / composition_kind / holds_formula",
+         "reads": "a formula is ATOMIC: a line split may not cut it",
+         "effect_of_one_fewer_formula": "the composition becomes SPLITTABLE, so line splitting may now cut where it previously could not. This is how the masthead heading comes to stand as its own paragraph, and the repair changes what that paragraph contains."},
+        {"file": "babeldoc/magazine/column_reflow.py", "line": "519, 620, 145",
+         "in": "movable / REASON_FORMULA",
+         "reads": "a paragraph holding a formula is not movable, because typesetting hands the formula's artwork to the page and the paragraph cannot take it along",
+         "effect_of_one_fewer_formula": "a paragraph that held only this formula becomes movable, so column reflow may now move it. Conservation in T4 must therefore include the reflow report."},
+        {"file": "babeldoc/magazine/fragment_stitch.py", "line": "425",
+         "in": "composition_kind not in SPLITTABLE disqualifies the group",
+         "reads": "a formula member disqualifies its stitch group",
+         "effect_of_one_fewer_formula": "groups that were disqualified may now stitch"},
+        {"file": "babeldoc/magazine/drop_cap.py", "line": "384, 744-745",
+         "in": "median character size, and the head/tail kinds of a two-composition paragraph",
+         "reads": "the formula as a character holder, and its kind when deciding an initial",
+         "effect_of_one_fewer_formula": "the median is over the same characters; the head/tail kind changes, so a paragraph whose initial was grouped into a formula is now read through the style-run path"},
+        {"file": "babeldoc/magazine/paren_dedup.py", "line": "251",
+         "in": "composition_kind",
+         "reads": "the kind when deciding whether a parenthesis run may be removed",
+         "effect_of_one_fewer_formula": "one more composition becomes eligible for the pass"},
+        {"file": "babeldoc/magazine/chain_signals.py", "line": "387-388",
+         "in": "character collection for chain signals",
+         "reads": "the formula's characters",
+         "effect_of_one_fewer_formula": "the same characters are reached through another branch"},
+        {"file": "babeldoc/magazine/reading_order.py", "line": "31",
+         "in": "_CHARACTER_HOLDERS",
+         "reads": "the formula as one of the holders it walks",
+         "effect_of_one_fewer_formula": "the same characters are reached through another holder"},
+        {"file": "babeldoc/magazine/react/writeback.py", "line": "48",
+         "in": "_CHARACTER_HOLDERS",
+         "reads": "the formula as one of the holders it writes back through",
+         "effect_of_one_fewer_formula": "the same characters are reached through another holder"},
+        {"file": "babeldoc/magazine/detectors/residue.py", "line": "21",
+         "in": "module prose only",
+         "reads": "nothing; the file names the mechanism in a comment and does not branch on it",
+         "effect_of_one_fewer_formula": "none in code. The detector's counts do change, because the paragraphs now carry translated text; that is measured in T4."}
+      ]
+    },
+    {
+      "group": "rendering and tooling",
+      "sites": [
+        {"file": "babeldoc/format/pdf/document_il/backend/pdf_creater.py", "line": "818-820, 866-867, 903-904",
+         "in": "character, form and curve collection when writing the page",
+         "reads": "a formula's characters, its pdf_form and its pdf_curve",
+         "effect_of_one_fewer_formula": "a PdfLine carries no pdf_form and no pdf_curve. Any drawing that was attached to the formula would no longer be emitted, so the repair must not be applied to a composition that carries artwork. This is the one consumer that can lose something, and it is why the repair's condition is checked against compositions that hold characters only."},
+        {"file": "babeldoc/format/pdf/document_il/midend/add_debug_information.py", "line": "124-138",
+         "in": "debug boxes",
+         "reads": "the formula's box and characters to draw debug rectangles",
+         "effect_of_one_fewer_formula": "one fewer formula rectangle in debug output; no effect on the produced document"},
+        {"file": "babeldoc/tools/italic_assistance.py", "line": "83-84",
+         "in": "a standalone tool reading the JSON form",
+         "reads": "the pdf_formula key of a serialised composition",
+         "effect_of_one_fewer_formula": "the tool sees one fewer formula; it is not part of the pipeline"}
+      ]
+    }
+  ],
+  "counts": {"groups": 4, "sites": 21},
+  "the_one_that_can_lose_something": "pdf_creater.py:866-867 and 903-904. PdfLine has no pdf_form and no pdf_curve member, so a formula that carries artwork must not be turned into a line. The repair is therefore conditioned on compositions whose formula carries characters only, and the gate asserts it."
+}

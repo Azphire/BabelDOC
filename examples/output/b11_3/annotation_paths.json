@@ -1,0 +1,56 @@
+{
+  "originating_site": {
+    "file": "babeldoc/format/pdf/document_il/midend/styles_and_formulas.py",
+    "function": "create_composition",
+    "lines": "933-945",
+    "note": "the only place a PdfFormula is made out of characters that were text. Its is_formula argument is the disjunction below, computed in _classify_characters_in_composition (391-523) and consumed through process_page_formulas (570-620)."
+  },
+  "non_originating_sites": [
+    {"function": "merge_formulas", "lines": "1010-1021", "why_not_originating": "joins two existing formulas; both operands are already formulas"},
+    {"function": "process_comma_formulas", "lines": "1185-1210", "why_not_originating": "splits one existing formula at commas; the pieces were already formula"}
+  ],
+  "un_marking_site": {
+    "function": "process_translatable_formulas",
+    "lines": "621-648",
+    "predicate": "is_translatable_formula (950-956), text matching ^[0-9, .]+$",
+    "note": "the one route back from formula to text. It is why the digits 1, in the caption paragraph survived as a text composition while the words around them did not."
+  },
+  "branches": [
+    {"id": "layout_formula", "line": 427, "expression": "char.formula_layout_id",
+     "input_origin": "set at paragraph_finder.py:450 by is_character_in_formula_layout, from the layout model's boxes",
+     "config_channel": null, "config_note": "no configuration channel"},
+    {"id": "character_class_start", "lines": "429-434", "expression": "is_formulas_start_char(...) and not in_formula_state",
+     "input_origin": "formular_helper.py:16-50: unresolvable glyphs, (cid:, unicode categories Mn/Sk/Sm/Zl/Zp/Zs/Co, the Greek block, and the digits, square brackets and bullet",
+     "config_channel": "formular_char_pattern",
+     "config_actual": {"value": null, "source": "TranslationConfig default, translation_config.py:176; the run driver passes no value"},
+     "config_note": "widening only. A match forces the character to formula; there is no value of this item that removes a character from the formula class."},
+    {"id": "character_class_middle", "lines": "437-442", "expression": "is_formulas_middle_char(...) and in_formula_state",
+     "input_origin": "formular_helper.py:54-64: the start-char test, plus a comma",
+     "config_channel": "formular_char_pattern",
+     "config_actual": {"value": null, "source": "TranslationConfig default, translation_config.py:176"},
+     "config_note": "widening only, as above"},
+    {"id": "formula_font", "line": 445, "expression": "char.pdf_style.font_id in formula_font_ids",
+     "input_origin": "formular_helper.py:68-107 collects the ids, is_formulas_font (111-307) decides: a precise mathematics-typeface pattern returns true, an allow-list of text faces returns false, and a broad heuristic pattern returns true",
+     "config_channel": "formular_font_pattern",
+     "config_actual": {"value": null, "source": "TranslationConfig default, translation_config.py:175; the run driver passes no value, so the built-in broad pattern at formular_helper.py:271-291 is in force"},
+     "config_note": "the only branch whose configuration item can narrow anything, and it narrows by wholesale replacement: a supplied pattern replaces the entire broad heuristic rather than amending it."},
+    {"id": "vertical", "line": 446, "expression": "char.vertical",
+     "input_origin": "the character's own writing direction, set when the page is read",
+     "config_channel": null, "config_note": "no configuration channel"},
+    {"id": "dummy_space", "lines": "449-450", "expression": "char.char_unicode is None and in_formula_state",
+     "input_origin": "spaces the pipeline inserted itself", "config_channel": null, "config_note": "no configuration channel"},
+    {"id": "visual_bbox_disjoint", "lines": "453-456", "expression": "the character box and its visual box do not overlap on either axis",
+     "input_origin": "character geometry", "config_channel": null, "config_note": "no configuration channel"},
+    {"id": "corner_mark", "lines": "471-505, or-ed in at 505", "expression": "font size below 0.79 of the neighbour's, or below 1.1 of it while already in a corner mark",
+     "input_origin": "the two ratios are literals in the source", "config_channel": null,
+     "config_note": "no configuration channel; the ratios cannot be reached from configuration"},
+    {"id": "space_inherits", "lines": "507-508", "expression": "a space takes the surrounding formula state",
+     "input_origin": "internal state", "config_channel": null, "config_note": "no configuration channel"}
+  ],
+  "config_channel_summary": {
+    "branches_total": 9,
+    "with_any_config_channel": 3,
+    "with_a_narrowing_config_channel": 1,
+    "statement": "Of the nine branches, only formula_font can be narrowed from configuration, and only by replacing the whole broad pattern. character_class_start and character_class_middle have a configuration item but it can only widen. The remaining six have no configuration channel at all. The upstream configurable surface therefore does not cover this failure mode except at one branch, and there only bluntly."
+  }
+}

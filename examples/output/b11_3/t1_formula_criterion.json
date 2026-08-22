@@ -1,0 +1,475 @@
+{
+  "criterion": {
+    "criterion_version": "b11.3-t1",
+    "statement": "A pdf_formula composition is MISLABELLED when its character content is running text rather than mathematical or symbolic material. The judgement is made on the composition's characters alone, using only font, unicode-category and geometric signals. No publication, page, paragraph identifier or literal string of any sample takes part.",
+    "evaluated_on": "each PdfParagraphComposition whose pdf_formula is set, as written by StylesAndFormulas",
+    "exemptions": {
+      "layout_formula": {
+        "signal": "any character carries formula_layout_id",
+        "why": "the layout model is a detector independent of StylesAndFormulas; when it has independently called the region a formula, this criterion defers to it"
+      },
+      "precise_math_font": {
+        "signal": "the character's font matches formular_helper.precise_formula_font_pattern",
+        "why": "that pattern names actual mathematics typefaces (STIX Math, Latin Modern Math, TeX Gyre ... Math). Text set in them is mathematics by construction"
+      }
+    },
+    "not_an_exemption": {
+      "corner_mark": {
+        "signal": "PdfFormula.is_corner_mark",
+        "why": "measured, not assumed. The corner-mark rule is a font-size-ratio mechanism, not evidence about content: it fires both on genuine superscripts and on ordinary small-caps running text, where the full-size initial makes every following letter look like a corner mark. Exempting it would have excused a whole class of mislabel. Content decides instead."
+      },
+      "vertical": {
+        "signal": "every character has vertical set",
+        "why": "rotated text is still text; the rotation says how it is set on the page, not what it is"
+      }
+    },
+    "conditions": {
+      "min_word_len": {
+        "value": 4,
+        "range": [
+          3,
+          8
+        ],
+        "means": "the composition holds a maximal run of at least this many unicode letters",
+        "why": "mathematics names its variables in one to three characters, and its function names (sin, cos, log, exp, tan, max) are three. Four is the first length at which a run is a word of a language rather than a symbol of a notation. Chosen above the longest function name, not fitted to any sample."
+      },
+      "max_math_ratio": {
+        "value": 0.05,
+        "range": [
+          0.0,
+          0.5
+        ],
+        "means": "share of non-space characters in unicode categories Sm, Sk, Mn, Co, or in the Greek block, must not exceed this",
+        "why": "one genuine mathematical symbol is enough to make a run of letters part of a notation. The bound is set just above zero so that a composition carrying any real mathematics is left alone."
+      },
+      "min_letter_ratio": {
+        "value": 0.5,
+        "range": [
+          0.0,
+          1.0
+        ],
+        "means": "share of non-space characters that are unicode letters must be at least this",
+        "why": "secondary guard, so that a long letter run embedded in mostly numeric material is not read as prose."
+      }
+    },
+    "verdict_rule": "MISLABEL if and only if: no exemption holds, AND longest_letter_run >= min_word_len, AND math_ratio <= max_math_ratio, AND letter_ratio >= min_letter_ratio"
+  },
+  "criterion_sha256": "55e51adc67f79190a1bca510f69ccb7e0b0c9083ec9542517f6e91e0f580e740",
+  "config_sha256": "46f926d18f08d5418cbd4ae395e74ecfbe4844a1ac9b20bb967094793b1e0844",
+  "read_from": "examples/output/b10_5/<sample>/on/work/<sample>/checkpoint.06_styles_and_formulas.xml",
+  "self_check": {
+    "genuine_formulas": [
+      {
+        "sample": "CERNCourier-en",
+        "page": 3,
+        "text": "6 × 1012 ",
+        "why_genuine": "six times ten to the twelfth",
+        "is_mislabel": false,
+        "reason": "no letter run long enough to be a word",
+        "longest_letter_run": 0,
+        "math_ratio": 0.1667
+      },
+      {
+        "sample": "CERNCourier-en",
+        "page": 3,
+        "text": "4 × 108",
+        "why_genuine": "four times ten to the eighth",
+        "is_mislabel": false,
+        "reason": "no letter run long enough to be a word",
+        "longest_letter_run": 0,
+        "math_ratio": 0.2
+      },
+      {
+        "sample": "CERNCourier-en",
+        "page": 3,
+        "text": "7 × 106 ",
+        "why_genuine": "seven times ten to the sixth",
+        "is_mislabel": false,
+        "reason": "no letter run long enough to be a word",
+        "longest_letter_run": 0,
+        "math_ratio": 0.2
+      },
+      {
+        "sample": "CERNCourier-en",
+        "page": 4,
+        "text": "3 + 3 ",
+        "why_genuine": "arithmetic expression",
+        "is_mislabel": false,
+        "reason": "no letter run long enough to be a word",
+        "longest_letter_run": 0,
+        "math_ratio": 0.3333
+      },
+      {
+        "sample": "CERNCourier-en",
+        "page": 1,
+        "text": "   ",
+        "why_genuine": "private-use dingbat glyph",
+        "is_mislabel": false,
+        "reason": "no letter run long enough to be a word",
+        "longest_letter_run": 0,
+        "math_ratio": 1.0
+      },
+      {
+        "sample": "CERNCourier-en",
+        "page": 4,
+        "text": "",
+        "why_genuine": "private-use dingbat glyph",
+        "is_mislabel": false,
+        "reason": "no letter run long enough to be a word",
+        "longest_letter_run": 0,
+        "math_ratio": 1.0
+      },
+      {
+        "sample": "CERNCourier-en",
+        "page": 2,
+        "text": "• ",
+        "why_genuine": "bullet",
+        "is_mislabel": false,
+        "reason": "no letter run long enough to be a word",
+        "longest_letter_run": 0,
+        "math_ratio": 0.0
+      },
+      {
+        "sample": "Courier-en",
+        "page": 2,
+        "text": "• ",
+        "why_genuine": "bullet",
+        "is_mislabel": false,
+        "reason": "no letter run long enough to be a word",
+        "longest_letter_run": 0,
+        "math_ratio": 0.0
+      },
+      {
+        "sample": "Vogue-en",
+        "page": 3,
+        "text": "+",
+        "why_genuine": "bare mathematical operator",
+        "is_mislabel": false,
+        "reason": "no letter run long enough to be a word",
+        "longest_letter_run": 0,
+        "math_ratio": 1.0
+      },
+      {
+        "sample": "AramcoWorld-en-v2",
+        "page": 3,
+        "text": "(cid:23)(cid:19) ",
+        "why_genuine": "undecodable CID glyph run",
+        "is_mislabel": false,
+        "reason": "no letter run long enough to be a word",
+        "longest_letter_run": 3,
+        "math_ratio": 0.0
+      },
+      {
+        "sample": "AramcoWorld-en-v2",
+        "page": 5,
+        "text": "(cid:20)(cid:20)",
+        "why_genuine": "undecodable CID glyph run",
+        "is_mislabel": false,
+        "reason": "no letter run long enough to be a word",
+        "longest_letter_run": 3,
+        "math_ratio": 0.0
+      }
+    ],
+    "genuine_faults": [],
+    "mislabel_examples": [
+      {
+        "sample": "FD-en-v2",
+        "page": 5,
+        "text": "MANAGING EDITOR",
+        "why_mislabel": "masthead heading, formula font",
+        "is_mislabel": true,
+        "reason": "a word-bearing run with no mathematics and no independent formula evidence",
+        "longest_letter_run": 8,
+        "letter_ratio": 1.0
+      },
+      {
+        "sample": "FD-en-v2",
+        "page": 5,
+        "text": "EDITOR-IN-CHIEF",
+        "why_mislabel": "masthead heading, formula font",
+        "is_mislabel": true,
+        "reason": "a word-bearing run with no mathematics and no independent formula evidence",
+        "longest_letter_run": 6,
+        "letter_ratio": 0.8667
+      },
+      {
+        "sample": "FD-en-v2",
+        "page": 9,
+        "text": "buttercup",
+        "why_mislabel": "caption word, formula font",
+        "is_mislabel": true,
+        "reason": "a word-bearing run with no mathematics and no independent formula evidence",
+        "longest_letter_run": 9,
+        "letter_ratio": 1.0
+      },
+      {
+        "sample": "FD-en-v2",
+        "page": 2,
+        "text": "STAU",
+        "why_mislabel": "rotated photo credit",
+        "is_mislabel": true,
+        "reason": "a word-bearing run with no mathematics and no independent formula evidence",
+        "longest_letter_run": 4,
+        "letter_ratio": 1.0
+      },
+      {
+        "sample": "CERNCourier-en",
+        "page": 2,
+        "text": "olume 66 ",
+        "why_mislabel": "small-caps volume line, corner-mark path",
+        "is_mislabel": true,
+        "reason": "a word-bearing run with no mathematics and no independent formula evidence",
+        "longest_letter_run": 5,
+        "letter_ratio": 0.7143
+      },
+      {
+        "sample": "CERNCourier-en",
+        "page": 2,
+        "text": "P Dinault/CERN",
+        "why_mislabel": "rotated photo credit",
+        "is_mislabel": true,
+        "reason": "a word-bearing run with no mathematics and no independent formula evidence",
+        "longest_letter_run": 7,
+        "letter_ratio": 0.9231
+      },
+      {
+        "sample": "AramcoWorld-en-v2",
+        "page": 3,
+        "text": "cCARRON",
+        "why_mislabel": "rotated photo credit",
+        "is_mislabel": true,
+        "reason": "a word-bearing run with no mathematics and no independent formula evidence",
+        "longest_letter_run": 7,
+        "letter_ratio": 1.0
+      },
+      {
+        "sample": "Courier-en",
+        "page": 3,
+        "text": "brano",
+        "why_mislabel": "rotated photo credit",
+        "is_mislabel": true,
+        "reason": "a word-bearing run with no mathematics and no independent formula evidence",
+        "longest_letter_run": 5,
+        "letter_ratio": 1.0
+      },
+      {
+        "sample": "Courier-zh",
+        "page": 5,
+        "text": "Adriano Gam",
+        "why_mislabel": "rotated photo credit",
+        "is_mislabel": true,
+        "reason": "a word-bearing run with no mathematics and no independent formula evidence",
+        "longest_letter_run": 7,
+        "letter_ratio": 1.0
+      },
+      {
+        "sample": "Vogue-en",
+        "page": 1,
+        "text": "I BOUTIQ",
+        "why_mislabel": "rotated boutique credit",
+        "is_mislabel": true,
+        "reason": "a word-bearing run with no mathematics and no independent formula evidence",
+        "longest_letter_run": 6,
+        "letter_ratio": 1.0
+      }
+    ],
+    "mislabel_faults": [],
+    "passed": true
+  },
+  "corpus_totals": {
+    "AramcoWorld-en-v2": {
+      "compositions": 39,
+      "mislabels": 8
+    },
+    "CERNCourier-en": {
+      "compositions": 48,
+      "mislabels": 9
+    },
+    "Courier-en": {
+      "compositions": 19,
+      "mislabels": 7
+    },
+    "Courier-zh": {
+      "compositions": 62,
+      "mislabels": 5
+    },
+    "FD-en-v2": {
+      "compositions": 72,
+      "mislabels": 36
+    },
+    "Vogue-en": {
+      "compositions": 12,
+      "mislabels": 3
+    }
+  },
+  "path_attribution": {
+    "over_all_mislabels": {
+      "vertical": 39,
+      "corner_mark": 5,
+      "character_class": 24
+    },
+    "per_sample": {
+      "AramcoWorld-en-v2": {
+        "vertical": 8
+      },
+      "CERNCourier-en": {
+        "corner_mark": 4,
+        "vertical": 5
+      },
+      "Courier-en": {
+        "vertical": 7
+      },
+      "Courier-zh": {
+        "vertical": 5
+      },
+      "FD-en-v2": {
+        "vertical": 11,
+        "character_class": 24,
+        "corner_mark": 1
+      },
+      "Vogue-en": {
+        "vertical": 3
+      }
+    },
+    "note": "the branch explaining the most characters of the composition; see annotation_paths.json for what each branch is"
+  },
+  "in_scope_attribution": [
+    {
+      "sample": "FD-en-v2",
+      "page": 2,
+      "anchor_text": "FFER STAU N BRIA",
+      "b11_2_class": "C",
+      "compositions_all_formula": true,
+      "mislabelled_compositions": 3,
+      "dominant_path": "vertical",
+      "paths": {
+        "vertical": 3
+      }
+    },
+    {
+      "sample": "FD-en-v2",
+      "page": 3,
+      "anchor_text": "FFER STAU N BRIA",
+      "b11_2_class": "C",
+      "compositions_all_formula": true,
+      "mislabelled_compositions": 3,
+      "dominant_path": "vertical",
+      "paths": {
+        "vertical": 3
+      }
+    },
+    {
+      "sample": "FD-en-v2",
+      "page": 5,
+      "anchor_text": "EDITOR-IN-CHIEF Gita Bhatt",
+      "b11_2_class": "C",
+      "compositions_all_formula": false,
+      "mislabelled_compositions": 1,
+      "dominant_path": "character_class",
+      "paths": {
+        "character_class": 1
+      }
+    },
+    {
+      "sample": "FD-en-v2",
+      "page": 5,
+      "anchor_text": "MANAGING EDITOR Nicholas Owen",
+      "b11_2_class": "C",
+      "compositions_all_formula": false,
+      "mislabelled_compositions": 1,
+      "dominant_path": "character_class",
+      "paths": {
+        "character_class": 1
+      }
+    },
+    {
+      "sample": "FD-en-v2",
+      "page": 5,
+      "anchor_text": "SENIOR EDITORS Andreas Adriano Jeff Kearns Peter Walker",
+      "b11_2_class": "C",
+      "compositions_all_formula": false,
+      "mislabelled_compositions": 1,
+      "dominant_path": "character_class",
+      "paths": {
+        "character_class": 1
+      }
+    },
+    {
+      "sample": "FD-en-v2",
+      "page": 5,
+      "anchor_text": "ASSISTANT EDITOR Andrew Stanley",
+      "b11_2_class": "C",
+      "compositions_all_formula": false,
+      "mislabelled_compositions": 1,
+      "dominant_path": "character_class",
+      "paths": {
+        "character_class": 1
+      }
+    },
+    {
+      "sample": "FD-en-v2",
+      "page": 5,
+      "anchor_text": "CREATIVE AND MARKETING",
+      "b11_2_class": "C",
+      "compositions_all_formula": false,
+      "mislabelled_compositions": 1,
+      "dominant_path": "character_class",
+      "paths": {
+        "character_class": 1
+      }
+    },
+    {
+      "sample": "FD-en-v2",
+      "page": 5,
+      "anchor_text": "ART DIRECTION AND DESIGN",
+      "b11_2_class": "C",
+      "compositions_all_formula": false,
+      "mislabelled_compositions": 1,
+      "dominant_path": "character_class",
+      "paths": {
+        "character_class": 1
+      }
+    },
+    {
+      "sample": "FD-en-v2",
+      "page": 8,
+      "anchor_text": "L H RU KIM RTESY U O C",
+      "b11_2_class": "C",
+      "compositions_all_formula": true,
+      "mislabelled_compositions": 1,
+      "dominant_path": "vertical",
+      "paths": {
+        "vertical": 1
+      }
+    },
+    {
+      "sample": "FD-en-v2",
+      "page": 9,
+      "anchor_text": "K N BA L A N ATIO N ISS SW RTESY U O C",
+      "b11_2_class": "C",
+      "compositions_all_formula": true,
+      "mislabelled_compositions": 2,
+      "dominant_path": "vertical",
+      "paths": {
+        "vertical": 2
+      }
+    },
+    {
+      "sample": "FD-en-v2",
+      "page": 9,
+      "anchor_text": "A glacier buttercup appears on the front of the draft 1,000 franc note.",
+      "b11_2_class": "D",
+      "compositions_all_formula": false,
+      "mislabelled_compositions": 7,
+      "dominant_path": "character_class",
+      "paths": {
+        "character_class": 7
+      }
+    }
+  ],
+  "known_boundary_misses": {
+    "statement": "cases the criterion does not flag although the text is ordinary. Recorded here rather than repaired, because the thresholds were fixed before any measurement was taken and moving them afterwards is what this batch's plan forbids.",
+    "short_fragments": "the rotated credits are cut into compositions of two and three letters, which fall under min_word_len and so are not each flagged, although the longer fragments of the same credit are",
+    "one_symbol_is_enough": "a composition of ordinary words carrying a single character in a mathematical category is exempted by max_math_ratio"
+  }
+}

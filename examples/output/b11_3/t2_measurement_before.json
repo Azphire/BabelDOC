@@ -1,0 +1,2407 @@
+{
+  "criterion_sha256": "55e51adc67f79190a1bca510f69ccb7e0b0c9083ec9542517f6e91e0f580e740",
+  "config_sha256": "46f926d18f08d5418cbd4ae395e74ecfbe4844a1ac9b20bb967094793b1e0844",
+  "read_from": "examples/output/b10_5/<sample>/on/work/<sample>",
+  "stage": "checkpoint.08_chain_builder.xml",
+  "min_text_length_in_force": 5,
+  "totals": {
+    "mislabels": 68,
+    "formula_compositions_not_flagged": 184
+  },
+  "by_sample": {
+    "AramcoWorld-en-v2": 8,
+    "CERNCourier-en": 9,
+    "Courier-en": 7,
+    "Courier-zh": 5,
+    "FD-en-v2": 36,
+    "Vogue-en": 3
+  },
+  "by_paragraph_label": {
+    "abandon": 27,
+    "fallback_line": 26,
+    "title": 1,
+    "plain text": 14
+  },
+  "by_annotation_path": {
+    "vertical": 39,
+    "corner_mark": 5,
+    "formula_font": 24
+  },
+  "exposure": {
+    "counts": {
+      "iii_not_sent_for_another_reason": 13,
+      "i_paragraph_refused_as_placeholder_only": 43,
+      "ii_sent_with_placeholders_in_the_request": 11,
+      "iv_no_observable_consequence": 1
+    },
+    "sites": {
+      "i_paragraph_refused_as_placeholder_only": "il_translator_llm_only.py:641-645 -> paragraph_helper.py:69-71",
+      "ii_sent_with_placeholders_in_the_request": "il_translator_llm_only.py:736 -> il_translator.pre_translate_paragraph",
+      "iii_not_sent_for_another_reason": "filled by measurement; the site is recorded on each row",
+      "iv_no_observable_consequence": "the paragraph was sent and its request carries no formula placeholder"
+    },
+    "paragraphs": {
+      "distinct_affected": 39,
+      "by_class": {
+        "i_paragraph_refused_as_placeholder_only": 29,
+        "ii_sent_with_placeholders_in_the_request": 3,
+        "iii_not_sent_for_another_reason": 6,
+        "iv_no_observable_consequence": 1
+      },
+      "by_sample": {
+        "CERNCourier-en": 5,
+        "FD-en-v2": 24,
+        "Courier-zh": 2,
+        "Courier-en": 3,
+        "AramcoWorld-en-v2": 3,
+        "Vogue-en": 2
+      }
+    }
+  },
+  "reverse_sample": {
+    "n": 30,
+    "seed": 20260822,
+    "drawn_from": 184,
+    "rows": [
+      {
+        "sample": "Courier-zh",
+        "page": 6,
+        "anchor": "p6#15",
+        "composition_slot": 2,
+        "text": "里",
+        "reason": "no letter run long enough to be a word",
+        "exemption": null,
+        "longest_letter_run": 1,
+        "math_ratio": 0.0
+      },
+      {
+        "sample": "AramcoWorld-en-v2",
+        "page": 8,
+        "anchor": "p8#17",
+        "composition_slot": 1,
+        "text": "(cid:23)",
+        "reason": "no letter run long enough to be a word",
+        "exemption": null,
+        "longest_letter_run": 3,
+        "math_ratio": 0.0
+      },
+      {
+        "sample": "CERNCourier-en",
+        "page": 1,
+        "anchor": "p1#5",
+        "composition_slot": 3,
+        "text": "3      ",
+        "reason": "no letter run long enough to be a word",
+        "exemption": null,
+        "longest_letter_run": 0,
+        "math_ratio": 0.5
+      },
+      {
+        "sample": "FD-en-v2",
+        "page": 4,
+        "anchor": "p4#3",
+        "composition_slot": 3,
+        "text": "H",
+        "reason": "no letter run long enough to be a word",
+        "exemption": null,
+        "longest_letter_run": 1,
+        "math_ratio": 0.0
+      },
+      {
+        "sample": "Vogue-en",
+        "page": 1,
+        "anchor": "p1#0",
+        "composition_slot": 3,
+        "text": "FEN",
+        "reason": "no letter run long enough to be a word",
+        "exemption": null,
+        "longest_letter_run": 3,
+        "math_ratio": 0.0
+      },
+      {
+        "sample": "CERNCourier-en",
+        "page": 2,
+        "anchor": "p2#13",
+        "composition_slot": 0,
+        "text": "• ",
+        "reason": "no letter run long enough to be a word",
+        "exemption": null,
+        "longest_letter_run": 0,
+        "math_ratio": 0.0
+      },
+      {
+        "sample": "Vogue-en",
+        "page": 1,
+        "anchor": "p1#0",
+        "composition_slot": 5,
+        "text": "UES  888",
+        "reason": "no letter run long enough to be a word",
+        "exemption": null,
+        "longest_letter_run": 3,
+        "math_ratio": 0.0
+      },
+      {
+        "sample": "AramcoWorld-en-v2",
+        "page": 1,
+        "anchor": "p1#0",
+        "composition_slot": 1,
+        "text": "2026  |  ",
+        "reason": "no letter run long enough to be a word",
+        "exemption": null,
+        "longest_letter_run": 0,
+        "math_ratio": 0.2
+      },
+      {
+        "sample": "CERNCourier-en",
+        "page": 4,
+        "anchor": "p4#12",
+        "composition_slot": 1,
+        "text": "3 + 3 ",
+        "reason": "no letter run long enough to be a word",
+        "exemption": null,
+        "longest_letter_run": 0,
+        "math_ratio": 0.3333
+      },
+      {
+        "sample": "Courier-zh",
+        "page": 3,
+        "anchor": "p3#3",
+        "composition_slot": 0,
+        "text": "·赞布拉",
+        "reason": "no letter run long enough to be a word",
+        "exemption": null,
+        "longest_letter_run": 3,
+        "math_ratio": 0.0
+      },
+      {
+        "sample": "FD-en-v2",
+        "page": 8,
+        "anchor": "p8#5",
+        "composition_slot": 6,
+        "text": "O",
+        "reason": "no letter run long enough to be a word",
+        "exemption": null,
+        "longest_letter_run": 1,
+        "math_ratio": 0.0
+      },
+      {
+        "sample": "CERNCourier-en",
+        "page": 2,
+        "anchor": "p2#80",
+        "composition_slot": 0,
+        "text": "• ",
+        "reason": "no letter run long enough to be a word",
+        "exemption": null,
+        "longest_letter_run": 0,
+        "math_ratio": 0.0
+      },
+      {
+        "sample": "AramcoWorld-en-v2",
+        "page": 5,
+        "anchor": "p5#19",
+        "composition_slot": 5,
+        "text": "(cid:19)(cid:19) (cid:36)",
+        "reason": "no letter run long enough to be a word",
+        "exemption": null,
+        "longest_letter_run": 3,
+        "math_ratio": 0.0
+      },
+      {
+        "sample": "Courier-zh",
+        "page": 6,
+        "anchor": "p6#14",
+        "composition_slot": 11,
+        "text": "国",
+        "reason": "no letter run long enough to be a word",
+        "exemption": null,
+        "longest_letter_run": 1,
+        "math_ratio": 0.0
+      },
+      {
+        "sample": "Courier-zh",
+        "page": 6,
+        "anchor": "p6#14",
+        "composition_slot": 14,
+        "text": "为",
+        "reason": "no letter run long enough to be a word",
+        "exemption": null,
+        "longest_letter_run": 1,
+        "math_ratio": 0.0
+      },
+      {
+        "sample": "FD-en-v2",
+        "page": 9,
+        "anchor": "p9#9",
+        "composition_slot": 2,
+        "text": "BA",
+        "reason": "no letter run long enough to be a word",
+        "exemption": null,
+        "longest_letter_run": 2,
+        "math_ratio": 0.0
+      },
+      {
+        "sample": "FD-en-v2",
+        "page": 4,
+        "anchor": "p4#3",
+        "composition_slot": 15,
+        "text": "PO",
+        "reason": "no letter run long enough to be a word",
+        "exemption": null,
+        "longest_letter_run": 2,
+        "math_ratio": 0.0
+      },
+      {
+        "sample": "AramcoWorld-en-v2",
+        "page": 3,
+        "anchor": "p3#16",
+        "composition_slot": 6,
+        "text": "| 38 ",
+        "reason": "no letter run long enough to be a word",
+        "exemption": null,
+        "longest_letter_run": 0,
+        "math_ratio": 0.3333
+      },
+      {
+        "sample": "Courier-zh",
+        "page": 3,
+        "anchor": "p3#3",
+        "composition_slot": 4,
+        "text": "© 卡",
+        "reason": "no letter run long enough to be a word",
+        "exemption": null,
+        "longest_letter_run": 1,
+        "math_ratio": 0.0
+      },
+      {
+        "sample": "Courier-zh",
+        "page": 5,
+        "anchor": "p5#8",
+        "composition_slot": 2,
+        "text": "动",
+        "reason": "no letter run long enough to be a word",
+        "exemption": null,
+        "longest_letter_run": 1,
+        "math_ratio": 0.0
+      },
+      {
+        "sample": "AramcoWorld-en-v2",
+        "page": 4,
+        "anchor": "p4#5",
+        "composition_slot": 1,
+        "text": "[",
+        "reason": "no letter run long enough to be a word",
+        "exemption": null,
+        "longest_letter_run": 0,
+        "math_ratio": 0.0
+      },
+      {
+        "sample": "Vogue-en",
+        "page": 1,
+        "anchor": "p1#0",
+        "composition_slot": 7,
+        "text": "D",
+        "reason": "no letter run long enough to be a word",
+        "exemption": null,
+        "longest_letter_run": 1,
+        "math_ratio": 0.0
+      },
+      {
+        "sample": "Vogue-en",
+        "page": 1,
+        "anchor": "p1#0",
+        "composition_slot": 8,
+        "text": "FEN",
+        "reason": "no letter run long enough to be a word",
+        "exemption": null,
+        "longest_letter_run": 3,
+        "math_ratio": 0.0
+      },
+      {
+        "sample": "FD-en-v2",
+        "page": 9,
+        "anchor": "p9#9",
+        "composition_slot": 13,
+        "text": "C",
+        "reason": "no letter run long enough to be a word",
+        "exemption": null,
+        "longest_letter_run": 1,
+        "math_ratio": 0.0
+      },
+      {
+        "sample": "AramcoWorld-en-v2",
+        "page": 7,
+        "anchor": "p7#20",
+        "composition_slot": 5,
+        "text": "(cid:23)(cid:23) ",
+        "reason": "no letter run long enough to be a word",
+        "exemption": null,
+        "longest_letter_run": 3,
+        "math_ratio": 0.0
+      },
+      {
+        "sample": "CERNCourier-en",
+        "page": 3,
+        "anchor": "p3#14",
+        "composition_slot": 7,
+        "text": "6 × 1012 ",
+        "reason": "no letter run long enough to be a word",
+        "exemption": null,
+        "longest_letter_run": 0,
+        "math_ratio": 0.1667
+      },
+      {
+        "sample": "Courier-zh",
+        "page": 6,
+        "anchor": "p6#14",
+        "composition_slot": 15,
+        "text": "科",
+        "reason": "no letter run long enough to be a word",
+        "exemption": null,
+        "longest_letter_run": 1,
+        "math_ratio": 0.0
+      },
+      {
+        "sample": "AramcoWorld-en-v2",
+        "page": 3,
+        "anchor": "p3#16",
+        "composition_slot": 4,
+        "text": "| 6 ",
+        "reason": "no letter run long enough to be a word",
+        "exemption": null,
+        "longest_letter_run": 0,
+        "math_ratio": 0.5
+      },
+      {
+        "sample": "Courier-zh",
+        "page": 5,
+        "anchor": "p5#8",
+        "composition_slot": 4,
+        "text": "民",
+        "reason": "no letter run long enough to be a word",
+        "exemption": null,
+        "longest_letter_run": 1,
+        "math_ratio": 0.0
+      },
+      {
+        "sample": "AramcoWorld-en-v2",
+        "page": 3,
+        "anchor": "p3#16",
+        "composition_slot": 10,
+        "text": "| 42 ",
+        "reason": "no letter run long enough to be a word",
+        "exemption": null,
+        "longest_letter_run": 0,
+        "math_ratio": 0.3333
+      }
+    ]
+  },
+  "rows": [
+    {
+      "sample": "AramcoWorld-en-v2",
+      "page": 3,
+      "anchor": "p3#18",
+      "debug_id_this_run": "r3ivr",
+      "composition_slot": 0,
+      "composition_type": "pdf_formula",
+      "paragraph_label": "abandon",
+      "paragraph_vertical": true,
+      "text": "cCARRON",
+      "paragraph_excerpt": "cCARRON ANOV; LEON M OPPOSITE: BANNING EYRE; THIS PAGE, FROM TOP: IVY JOHNSON; DANIIL USM",
+      "conditions_met": {
+        "longest_letter_run": 7,
+        "letter_ratio": 1.0,
+        "math_ratio": 0.0,
+        "exemption": null
+      },
+      "annotation_path": "vertical",
+      "annotation_path_tally": {
+        "layout_formula": 0,
+        "formula_font": 0,
+        "vertical": 7,
+        "visual_bbox_disjoint": 0,
+        "corner_mark": 0,
+        "character_class": 0
+      },
+      "exposure_class": "iii_not_sent_for_another_reason",
+      "exposure_site": "il_translator.py:1043-1044 pre_translate_paragraph returns on paragraph.vertical"
+    },
+    {
+      "sample": "AramcoWorld-en-v2",
+      "page": 3,
+      "anchor": "p3#18",
+      "debug_id_this_run": "r3ivr",
+      "composition_slot": 1,
+      "composition_type": "pdf_formula",
+      "paragraph_label": "abandon",
+      "paragraph_vertical": true,
+      "text": "ANOV; LEON M",
+      "paragraph_excerpt": "cCARRON ANOV; LEON M OPPOSITE: BANNING EYRE; THIS PAGE, FROM TOP: IVY JOHNSON; DANIIL USM",
+      "conditions_met": {
+        "longest_letter_run": 4,
+        "letter_ratio": 0.9,
+        "math_ratio": 0.0,
+        "exemption": null
+      },
+      "annotation_path": "vertical",
+      "annotation_path_tally": {
+        "layout_formula": 0,
+        "formula_font": 0,
+        "vertical": 12,
+        "visual_bbox_disjoint": 0,
+        "corner_mark": 0,
+        "character_class": 0
+      },
+      "exposure_class": "iii_not_sent_for_another_reason",
+      "exposure_site": "il_translator.py:1043-1044 pre_translate_paragraph returns on paragraph.vertical"
+    },
+    {
+      "sample": "AramcoWorld-en-v2",
+      "page": 3,
+      "anchor": "p3#18",
+      "debug_id_this_run": "r3ivr",
+      "composition_slot": 2,
+      "composition_type": "pdf_formula",
+      "paragraph_label": "abandon",
+      "paragraph_vertical": true,
+      "text": "OPPOSITE: BANNING EYRE; THIS PAGE",
+      "paragraph_excerpt": "cCARRON ANOV; LEON M OPPOSITE: BANNING EYRE; THIS PAGE, FROM TOP: IVY JOHNSON; DANIIL USM",
+      "conditions_met": {
+        "longest_letter_run": 8,
+        "letter_ratio": 0.931,
+        "math_ratio": 0.0,
+        "exemption": null
+      },
+      "annotation_path": "vertical",
+      "annotation_path_tally": {
+        "layout_formula": 0,
+        "formula_font": 0,
+        "vertical": 33,
+        "visual_bbox_disjoint": 0,
+        "corner_mark": 0,
+        "character_class": 0
+      },
+      "exposure_class": "iii_not_sent_for_another_reason",
+      "exposure_site": "il_translator.py:1043-1044 pre_translate_paragraph returns on paragraph.vertical"
+    },
+    {
+      "sample": "AramcoWorld-en-v2",
+      "page": 3,
+      "anchor": "p3#18",
+      "debug_id_this_run": "r3ivr",
+      "composition_slot": 4,
+      "composition_type": "pdf_formula",
+      "paragraph_label": "abandon",
+      "paragraph_vertical": true,
+      "text": " FROM TOP: IVY JOHNSON; DANIIL USM",
+      "paragraph_excerpt": "cCARRON ANOV; LEON M OPPOSITE: BANNING EYRE; THIS PAGE, FROM TOP: IVY JOHNSON; DANIIL USM",
+      "conditions_met": {
+        "longest_letter_run": 7,
+        "letter_ratio": 0.9286,
+        "math_ratio": 0.0,
+        "exemption": null
+      },
+      "annotation_path": "vertical",
+      "annotation_path_tally": {
+        "layout_formula": 0,
+        "formula_font": 0,
+        "vertical": 34,
+        "visual_bbox_disjoint": 0,
+        "corner_mark": 0,
+        "character_class": 0
+      },
+      "exposure_class": "iii_not_sent_for_another_reason",
+      "exposure_site": "il_translator.py:1043-1044 pre_translate_paragraph returns on paragraph.vertical"
+    },
+    {
+      "sample": "AramcoWorld-en-v2",
+      "page": 7,
+      "anchor": "p7#12",
+      "debug_id_this_run": "tzPNE",
+      "composition_slot": 0,
+      "composition_type": "pdf_formula",
+      "paragraph_label": "abandon",
+      "paragraph_vertical": true,
+      "text": "ORITZ/LIBRARY OF CONGRESS",
+      "paragraph_excerpt": "ORITZ/LIBRARY OF CONGRESS OPPOSITE TOP: B.M",
+      "conditions_met": {
+        "longest_letter_run": 8,
+        "letter_ratio": 0.9565,
+        "math_ratio": 0.0,
+        "exemption": null
+      },
+      "annotation_path": "vertical",
+      "annotation_path_tally": {
+        "layout_formula": 0,
+        "formula_font": 0,
+        "vertical": 25,
+        "visual_bbox_disjoint": 0,
+        "corner_mark": 0,
+        "character_class": 0
+      },
+      "exposure_class": "i_paragraph_refused_as_placeholder_only",
+      "exposure_site": "il_translator_llm_only.py:641-645 -> paragraph_helper.py:69-71"
+    },
+    {
+      "sample": "AramcoWorld-en-v2",
+      "page": 7,
+      "anchor": "p7#12",
+      "debug_id_this_run": "tzPNE",
+      "composition_slot": 1,
+      "composition_type": "pdf_formula",
+      "paragraph_label": "abandon",
+      "paragraph_vertical": true,
+      "text": "OPPOSITE TOP: B.M",
+      "paragraph_excerpt": "ORITZ/LIBRARY OF CONGRESS OPPOSITE TOP: B.M",
+      "conditions_met": {
+        "longest_letter_run": 8,
+        "letter_ratio": 0.8667,
+        "math_ratio": 0.0,
+        "exemption": null
+      },
+      "annotation_path": "vertical",
+      "annotation_path_tally": {
+        "layout_formula": 0,
+        "formula_font": 0,
+        "vertical": 17,
+        "visual_bbox_disjoint": 0,
+        "corner_mark": 0,
+        "character_class": 0
+      },
+      "exposure_class": "i_paragraph_refused_as_placeholder_only",
+      "exposure_site": "il_translator_llm_only.py:641-645 -> paragraph_helper.py:69-71"
+    },
+    {
+      "sample": "AramcoWorld-en-v2",
+      "page": 9,
+      "anchor": "p9#14",
+      "debug_id_this_run": "ZjXXc",
+      "composition_slot": 0,
+      "composition_type": "pdf_formula",
+      "paragraph_label": "abandon",
+      "paragraph_vertical": true,
+      "text": "AGES",
+      "paragraph_excerpt": "AGES TOP: UNIVERSITY HISTORY ARCHIVE / GETTY IM",
+      "conditions_met": {
+        "longest_letter_run": 4,
+        "letter_ratio": 1.0,
+        "math_ratio": 0.0,
+        "exemption": null
+      },
+      "annotation_path": "vertical",
+      "annotation_path_tally": {
+        "layout_formula": 0,
+        "formula_font": 0,
+        "vertical": 4,
+        "visual_bbox_disjoint": 0,
+        "corner_mark": 0,
+        "character_class": 0
+      },
+      "exposure_class": "i_paragraph_refused_as_placeholder_only",
+      "exposure_site": "il_translator_llm_only.py:641-645 -> paragraph_helper.py:69-71"
+    },
+    {
+      "sample": "AramcoWorld-en-v2",
+      "page": 9,
+      "anchor": "p9#14",
+      "debug_id_this_run": "ZjXXc",
+      "composition_slot": 1,
+      "composition_type": "pdf_formula",
+      "paragraph_label": "abandon",
+      "paragraph_vertical": true,
+      "text": "TOP: UNIVERSITY HISTORY ARCHIVE / GETTY IM",
+      "paragraph_excerpt": "AGES TOP: UNIVERSITY HISTORY ARCHIVE / GETTY IM",
+      "conditions_met": {
+        "longest_letter_run": 10,
+        "letter_ratio": 0.9444,
+        "math_ratio": 0.0,
+        "exemption": null
+      },
+      "annotation_path": "vertical",
+      "annotation_path_tally": {
+        "layout_formula": 0,
+        "formula_font": 0,
+        "vertical": 42,
+        "visual_bbox_disjoint": 0,
+        "corner_mark": 0,
+        "character_class": 0
+      },
+      "exposure_class": "i_paragraph_refused_as_placeholder_only",
+      "exposure_site": "il_translator_llm_only.py:641-645 -> paragraph_helper.py:69-71"
+    },
+    {
+      "sample": "CERNCourier-en",
+      "page": 2,
+      "anchor": "p2#39",
+      "debug_id_this_run": "nCuHD",
+      "composition_slot": 1,
+      "composition_type": "pdf_formula",
+      "paragraph_label": "fallback_line",
+      "paragraph_vertical": false,
+      "text": "olume 66 ",
+      "paragraph_excerpt": "Volume 66 Number 4 July/August 2026",
+      "conditions_met": {
+        "longest_letter_run": 5,
+        "letter_ratio": 0.7143,
+        "math_ratio": 0.0,
+        "exemption": null
+      },
+      "annotation_path": "corner_mark",
+      "annotation_path_tally": {
+        "layout_formula": 0,
+        "formula_font": 0,
+        "vertical": 0,
+        "visual_bbox_disjoint": 0,
+        "corner_mark": 7,
+        "character_class": 0
+      },
+      "exposure_class": "ii_sent_with_placeholders_in_the_request",
+      "exposure_site": "il_translator_llm_only.py:736 -> il_translator.pre_translate_paragraph",
+      "request": "<style id='1'>V</style>{v3}<style id='4'>N</style>{v6}<style id='7'>J</style>{v9}<style id='10'>/A</style>{v12}",
+      "reply": "<style id='1'>V</style>{v3}<style id='4'>N</style>{v6}<style id='7'>J</style>{v9}<style id='10'>/A</style>{v12}",
+      "ambiguous_join": false
+    },
+    {
+      "sample": "CERNCourier-en",
+      "page": 2,
+      "anchor": "p2#39",
+      "debug_id_this_run": "nCuHD",
+      "composition_slot": 3,
+      "composition_type": "pdf_formula",
+      "paragraph_label": "fallback_line",
+      "paragraph_vertical": false,
+      "text": "umber 4  ",
+      "paragraph_excerpt": "Volume 66 Number 4 July/August 2026",
+      "conditions_met": {
+        "longest_letter_run": 5,
+        "letter_ratio": 0.8333,
+        "math_ratio": 0.0,
+        "exemption": null
+      },
+      "annotation_path": "corner_mark",
+      "annotation_path_tally": {
+        "layout_formula": 0,
+        "formula_font": 0,
+        "vertical": 0,
+        "visual_bbox_disjoint": 0,
+        "corner_mark": 6,
+        "character_class": 0
+      },
+      "exposure_class": "ii_sent_with_placeholders_in_the_request",
+      "exposure_site": "il_translator_llm_only.py:736 -> il_translator.pre_translate_paragraph",
+      "request": "<style id='1'>V</style>{v3}<style id='4'>N</style>{v6}<style id='7'>J</style>{v9}<style id='10'>/A</style>{v12}",
+      "reply": "<style id='1'>V</style>{v3}<style id='4'>N</style>{v6}<style id='7'>J</style>{v9}<style id='10'>/A</style>{v12}",
+      "ambiguous_join": false
+    },
+    {
+      "sample": "CERNCourier-en",
+      "page": 2,
+      "anchor": "p2#39",
+      "debug_id_this_run": "nCuHD",
+      "composition_slot": 7,
+      "composition_type": "pdf_formula",
+      "paragraph_label": "fallback_line",
+      "paragraph_vertical": false,
+      "text": "ugust 2026",
+      "paragraph_excerpt": "Volume 66 Number 4 July/August 2026",
+      "conditions_met": {
+        "longest_letter_run": 5,
+        "letter_ratio": 0.5556,
+        "math_ratio": 0.0,
+        "exemption": null
+      },
+      "annotation_path": "corner_mark",
+      "annotation_path_tally": {
+        "layout_formula": 0,
+        "formula_font": 0,
+        "vertical": 0,
+        "visual_bbox_disjoint": 0,
+        "corner_mark": 9,
+        "character_class": 0
+      },
+      "exposure_class": "ii_sent_with_placeholders_in_the_request",
+      "exposure_site": "il_translator_llm_only.py:736 -> il_translator.pre_translate_paragraph",
+      "request": "<style id='1'>V</style>{v3}<style id='4'>N</style>{v6}<style id='7'>J</style>{v9}<style id='10'>/A</style>{v12}",
+      "reply": "<style id='1'>V</style>{v3}<style id='4'>N</style>{v6}<style id='7'>J</style>{v9}<style id='10'>/A</style>{v12}",
+      "ambiguous_join": false
+    },
+    {
+      "sample": "CERNCourier-en",
+      "page": 2,
+      "anchor": "p2#94",
+      "debug_id_this_run": "nCMXb",
+      "composition_slot": 0,
+      "composition_type": "pdf_formula",
+      "paragraph_label": "fallback_line",
+      "paragraph_vertical": true,
+      "text": "P Dinault/CERN",
+      "paragraph_excerpt": "P Dinault/CERN",
+      "conditions_met": {
+        "longest_letter_run": 7,
+        "letter_ratio": 0.9231,
+        "math_ratio": 0.0,
+        "exemption": null
+      },
+      "annotation_path": "vertical",
+      "annotation_path_tally": {
+        "layout_formula": 0,
+        "formula_font": 0,
+        "vertical": 14,
+        "visual_bbox_disjoint": 0,
+        "corner_mark": 0,
+        "character_class": 0
+      },
+      "exposure_class": "i_paragraph_refused_as_placeholder_only",
+      "exposure_site": "il_translator_llm_only.py:641-645 -> paragraph_helper.py:69-71"
+    },
+    {
+      "sample": "CERNCourier-en",
+      "page": 3,
+      "anchor": "p3#8",
+      "debug_id_this_run": "cvshv",
+      "composition_slot": 1,
+      "composition_type": "pdf_formula",
+      "paragraph_label": "title",
+      "paragraph_vertical": false,
+      "text": "olicy",
+      "paragraph_excerpt": "Policy",
+      "conditions_met": {
+        "longest_letter_run": 5,
+        "letter_ratio": 1.0,
+        "math_ratio": 0.0,
+        "exemption": null
+      },
+      "annotation_path": "corner_mark",
+      "annotation_path_tally": {
+        "layout_formula": 0,
+        "formula_font": 0,
+        "vertical": 0,
+        "visual_bbox_disjoint": 0,
+        "corner_mark": 5,
+        "character_class": 0
+      },
+      "exposure_class": "ii_sent_with_placeholders_in_the_request",
+      "exposure_site": "il_translator_llm_only.py:736 -> il_translator.pre_translate_paragraph",
+      "request": "P{v1}",
+      "reply": "P{v1}",
+      "ambiguous_join": false
+    },
+    {
+      "sample": "CERNCourier-en",
+      "page": 4,
+      "anchor": "p4#35",
+      "debug_id_this_run": "P4zBj",
+      "composition_slot": 0,
+      "composition_type": "pdf_formula",
+      "paragraph_label": "fallback_line",
+      "paragraph_vertical": true,
+      "text": "CERN",
+      "paragraph_excerpt": "CERN",
+      "conditions_met": {
+        "longest_letter_run": 4,
+        "letter_ratio": 1.0,
+        "math_ratio": 0.0,
+        "exemption": null
+      },
+      "annotation_path": "vertical",
+      "annotation_path_tally": {
+        "layout_formula": 0,
+        "formula_font": 0,
+        "vertical": 4,
+        "visual_bbox_disjoint": 0,
+        "corner_mark": 0,
+        "character_class": 0
+      },
+      "exposure_class": "iii_not_sent_for_another_reason",
+      "exposure_site": "il_translator_llm_only.py:631-635 min_text_length=5"
+    },
+    {
+      "sample": "CERNCourier-en",
+      "page": 4,
+      "anchor": "p4#38",
+      "debug_id_this_run": "2qrQi",
+      "composition_slot": 0,
+      "composition_type": "pdf_formula",
+      "paragraph_label": "fallback_line",
+      "paragraph_vertical": true,
+      "text": "ilab",
+      "paragraph_excerpt": "ilab R Hahn, Ferm",
+      "conditions_met": {
+        "longest_letter_run": 4,
+        "letter_ratio": 1.0,
+        "math_ratio": 0.0,
+        "exemption": null
+      },
+      "annotation_path": "vertical",
+      "annotation_path_tally": {
+        "layout_formula": 0,
+        "formula_font": 0,
+        "vertical": 4,
+        "visual_bbox_disjoint": 0,
+        "corner_mark": 0,
+        "character_class": 0
+      },
+      "exposure_class": "iii_not_sent_for_another_reason",
+      "exposure_site": "il_translator.py:1043-1044 pre_translate_paragraph returns on paragraph.vertical"
+    },
+    {
+      "sample": "CERNCourier-en",
+      "page": 4,
+      "anchor": "p4#38",
+      "debug_id_this_run": "2qrQi",
+      "composition_slot": 1,
+      "composition_type": "pdf_formula",
+      "paragraph_label": "fallback_line",
+      "paragraph_vertical": true,
+      "text": "R Hahn",
+      "paragraph_excerpt": "ilab R Hahn, Ferm",
+      "conditions_met": {
+        "longest_letter_run": 4,
+        "letter_ratio": 1.0,
+        "math_ratio": 0.0,
+        "exemption": null
+      },
+      "annotation_path": "vertical",
+      "annotation_path_tally": {
+        "layout_formula": 0,
+        "formula_font": 0,
+        "vertical": 6,
+        "visual_bbox_disjoint": 0,
+        "corner_mark": 0,
+        "character_class": 0
+      },
+      "exposure_class": "iii_not_sent_for_another_reason",
+      "exposure_site": "il_translator.py:1043-1044 pre_translate_paragraph returns on paragraph.vertical"
+    },
+    {
+      "sample": "CERNCourier-en",
+      "page": 4,
+      "anchor": "p4#38",
+      "debug_id_this_run": "2qrQi",
+      "composition_slot": 3,
+      "composition_type": "pdf_formula",
+      "paragraph_label": "fallback_line",
+      "paragraph_vertical": true,
+      "text": " Ferm",
+      "paragraph_excerpt": "ilab R Hahn, Ferm",
+      "conditions_met": {
+        "longest_letter_run": 4,
+        "letter_ratio": 1.0,
+        "math_ratio": 0.0,
+        "exemption": null
+      },
+      "annotation_path": "vertical",
+      "annotation_path_tally": {
+        "layout_formula": 0,
+        "formula_font": 0,
+        "vertical": 5,
+        "visual_bbox_disjoint": 0,
+        "corner_mark": 0,
+        "character_class": 0
+      },
+      "exposure_class": "iii_not_sent_for_another_reason",
+      "exposure_site": "il_translator.py:1043-1044 pre_translate_paragraph returns on paragraph.vertical"
+    },
+    {
+      "sample": "Courier-en",
+      "page": 3,
+      "anchor": "p3#2",
+      "debug_id_this_run": "X8bNy",
+      "composition_slot": 0,
+      "composition_type": "pdf_formula",
+      "paragraph_label": "fallback_line",
+      "paragraph_vertical": true,
+      "text": "brano",
+      "paragraph_excerpt": "brano © Carolina Zam",
+      "conditions_met": {
+        "longest_letter_run": 5,
+        "letter_ratio": 1.0,
+        "math_ratio": 0.0,
+        "exemption": null
+      },
+      "annotation_path": "vertical",
+      "annotation_path_tally": {
+        "layout_formula": 0,
+        "formula_font": 0,
+        "vertical": 5,
+        "visual_bbox_disjoint": 0,
+        "corner_mark": 0,
+        "character_class": 0
+      },
+      "exposure_class": "i_paragraph_refused_as_placeholder_only",
+      "exposure_site": "il_translator_llm_only.py:641-645 -> paragraph_helper.py:69-71"
+    },
+    {
+      "sample": "Courier-en",
+      "page": 3,
+      "anchor": "p3#2",
+      "debug_id_this_run": "X8bNy",
+      "composition_slot": 1,
+      "composition_type": "pdf_formula",
+      "paragraph_label": "fallback_line",
+      "paragraph_vertical": true,
+      "text": "© Carolina Zam",
+      "paragraph_excerpt": "brano © Carolina Zam",
+      "conditions_met": {
+        "longest_letter_run": 8,
+        "letter_ratio": 0.9167,
+        "math_ratio": 0.0,
+        "exemption": null
+      },
+      "annotation_path": "vertical",
+      "annotation_path_tally": {
+        "layout_formula": 0,
+        "formula_font": 0,
+        "vertical": 14,
+        "visual_bbox_disjoint": 0,
+        "corner_mark": 0,
+        "character_class": 0
+      },
+      "exposure_class": "i_paragraph_refused_as_placeholder_only",
+      "exposure_site": "il_translator_llm_only.py:641-645 -> paragraph_helper.py:69-71"
+    },
+    {
+      "sample": "Courier-en",
+      "page": 5,
+      "anchor": "p5#10",
+      "debug_id_this_run": "YmcL5",
+      "composition_slot": 0,
+      "composition_type": "pdf_formula",
+      "paragraph_label": "fallback_line",
+      "paragraph_vertical": true,
+      "text": "barini / OPAN",
+      "paragraph_excerpt": "barini / OPAN © Adriano Gam",
+      "conditions_met": {
+        "longest_letter_run": 6,
+        "letter_ratio": 0.9091,
+        "math_ratio": 0.0,
+        "exemption": null
+      },
+      "annotation_path": "vertical",
+      "annotation_path_tally": {
+        "layout_formula": 0,
+        "formula_font": 0,
+        "vertical": 13,
+        "visual_bbox_disjoint": 0,
+        "corner_mark": 0,
+        "character_class": 0
+      },
+      "exposure_class": "i_paragraph_refused_as_placeholder_only",
+      "exposure_site": "il_translator_llm_only.py:641-645 -> paragraph_helper.py:69-71"
+    },
+    {
+      "sample": "Courier-en",
+      "page": 5,
+      "anchor": "p5#10",
+      "debug_id_this_run": "YmcL5",
+      "composition_slot": 1,
+      "composition_type": "pdf_formula",
+      "paragraph_label": "fallback_line",
+      "paragraph_vertical": true,
+      "text": "© Adriano Gam",
+      "paragraph_excerpt": "barini / OPAN © Adriano Gam",
+      "conditions_met": {
+        "longest_letter_run": 7,
+        "letter_ratio": 0.9091,
+        "math_ratio": 0.0,
+        "exemption": null
+      },
+      "annotation_path": "vertical",
+      "annotation_path_tally": {
+        "layout_formula": 0,
+        "formula_font": 0,
+        "vertical": 13,
+        "visual_bbox_disjoint": 0,
+        "corner_mark": 0,
+        "character_class": 0
+      },
+      "exposure_class": "i_paragraph_refused_as_placeholder_only",
+      "exposure_site": "il_translator_llm_only.py:641-645 -> paragraph_helper.py:69-71"
+    },
+    {
+      "sample": "Courier-en",
+      "page": 6,
+      "anchor": "p6#15",
+      "debug_id_this_run": "imKZ7",
+      "composition_slot": 0,
+      "composition_type": "pdf_formula",
+      "paragraph_label": "fallback_line",
+      "paragraph_vertical": true,
+      "text": "r The UNESCO Courier",
+      "paragraph_excerpt": "r The UNESCO Courier éniako fo © Boris Sém",
+      "conditions_met": {
+        "longest_letter_run": 7,
+        "letter_ratio": 1.0,
+        "math_ratio": 0.0,
+        "exemption": null
+      },
+      "annotation_path": "vertical",
+      "annotation_path_tally": {
+        "layout_formula": 0,
+        "formula_font": 0,
+        "vertical": 20,
+        "visual_bbox_disjoint": 0,
+        "corner_mark": 0,
+        "character_class": 0
+      },
+      "exposure_class": "i_paragraph_refused_as_placeholder_only",
+      "exposure_site": "il_translator_llm_only.py:641-645 -> paragraph_helper.py:69-71"
+    },
+    {
+      "sample": "Courier-en",
+      "page": 6,
+      "anchor": "p6#15",
+      "debug_id_this_run": "imKZ7",
+      "composition_slot": 1,
+      "composition_type": "pdf_formula",
+      "paragraph_label": "fallback_line",
+      "paragraph_vertical": true,
+      "text": "éniako fo",
+      "paragraph_excerpt": "r The UNESCO Courier éniako fo © Boris Sém",
+      "conditions_met": {
+        "longest_letter_run": 6,
+        "letter_ratio": 1.0,
+        "math_ratio": 0.0,
+        "exemption": null
+      },
+      "annotation_path": "vertical",
+      "annotation_path_tally": {
+        "layout_formula": 0,
+        "formula_font": 0,
+        "vertical": 9,
+        "visual_bbox_disjoint": 0,
+        "corner_mark": 0,
+        "character_class": 0
+      },
+      "exposure_class": "i_paragraph_refused_as_placeholder_only",
+      "exposure_site": "il_translator_llm_only.py:641-645 -> paragraph_helper.py:69-71"
+    },
+    {
+      "sample": "Courier-en",
+      "page": 6,
+      "anchor": "p6#15",
+      "debug_id_this_run": "imKZ7",
+      "composition_slot": 2,
+      "composition_type": "pdf_formula",
+      "paragraph_label": "fallback_line",
+      "paragraph_vertical": true,
+      "text": "© Boris Sém",
+      "paragraph_excerpt": "r The UNESCO Courier éniako fo © Boris Sém",
+      "conditions_met": {
+        "longest_letter_run": 5,
+        "letter_ratio": 0.8889,
+        "math_ratio": 0.0,
+        "exemption": null
+      },
+      "annotation_path": "vertical",
+      "annotation_path_tally": {
+        "layout_formula": 0,
+        "formula_font": 0,
+        "vertical": 11,
+        "visual_bbox_disjoint": 0,
+        "corner_mark": 0,
+        "character_class": 0
+      },
+      "exposure_class": "i_paragraph_refused_as_placeholder_only",
+      "exposure_site": "il_translator_llm_only.py:641-645 -> paragraph_helper.py:69-71"
+    },
+    {
+      "sample": "Courier-zh",
+      "page": 3,
+      "anchor": "p3#2",
+      "debug_id_this_run": "Cuy8a",
+      "composition_slot": 0,
+      "composition_type": "pdf_formula",
+      "paragraph_label": "fallback_line",
+      "paragraph_vertical": true,
+      "text": "brano）",
+      "paragraph_excerpt": "brano) lina Zam Caro (诺",
+      "conditions_met": {
+        "longest_letter_run": 5,
+        "letter_ratio": 0.8333,
+        "math_ratio": 0.0,
+        "exemption": null
+      },
+      "annotation_path": "vertical",
+      "annotation_path_tally": {
+        "layout_formula": 0,
+        "formula_font": 0,
+        "vertical": 6,
+        "visual_bbox_disjoint": 0,
+        "corner_mark": 0,
+        "character_class": 0
+      },
+      "exposure_class": "i_paragraph_refused_as_placeholder_only",
+      "exposure_site": "il_translator_llm_only.py:641-645 -> paragraph_helper.py:69-71"
+    },
+    {
+      "sample": "Courier-zh",
+      "page": 3,
+      "anchor": "p3#2",
+      "debug_id_this_run": "Cuy8a",
+      "composition_slot": 1,
+      "composition_type": "pdf_formula",
+      "paragraph_label": "fallback_line",
+      "paragraph_vertical": true,
+      "text": "lina Zam",
+      "paragraph_excerpt": "brano) lina Zam Caro (诺",
+      "conditions_met": {
+        "longest_letter_run": 4,
+        "letter_ratio": 1.0,
+        "math_ratio": 0.0,
+        "exemption": null
+      },
+      "annotation_path": "vertical",
+      "annotation_path_tally": {
+        "layout_formula": 0,
+        "formula_font": 0,
+        "vertical": 8,
+        "visual_bbox_disjoint": 0,
+        "corner_mark": 0,
+        "character_class": 0
+      },
+      "exposure_class": "i_paragraph_refused_as_placeholder_only",
+      "exposure_site": "il_translator_llm_only.py:641-645 -> paragraph_helper.py:69-71"
+    },
+    {
+      "sample": "Courier-zh",
+      "page": 3,
+      "anchor": "p3#2",
+      "debug_id_this_run": "Cuy8a",
+      "composition_slot": 2,
+      "composition_type": "pdf_formula",
+      "paragraph_label": "fallback_line",
+      "paragraph_vertical": true,
+      "text": "Caro",
+      "paragraph_excerpt": "brano) lina Zam Caro (诺",
+      "conditions_met": {
+        "longest_letter_run": 4,
+        "letter_ratio": 1.0,
+        "math_ratio": 0.0,
+        "exemption": null
+      },
+      "annotation_path": "vertical",
+      "annotation_path_tally": {
+        "layout_formula": 0,
+        "formula_font": 0,
+        "vertical": 4,
+        "visual_bbox_disjoint": 0,
+        "corner_mark": 0,
+        "character_class": 0
+      },
+      "exposure_class": "i_paragraph_refused_as_placeholder_only",
+      "exposure_site": "il_translator_llm_only.py:641-645 -> paragraph_helper.py:69-71"
+    },
+    {
+      "sample": "Courier-zh",
+      "page": 5,
+      "anchor": "p5#8",
+      "debug_id_this_run": "kyLNN",
+      "composition_slot": 10,
+      "composition_type": "pdf_formula",
+      "paragraph_label": "abandon",
+      "paragraph_vertical": true,
+      "text": "barini）",
+      "paragraph_excerpt": "织组动行民住原孙马 /亚 barini) Adriano Gam (尼里巴",
+      "conditions_met": {
+        "longest_letter_run": 6,
+        "letter_ratio": 0.8571,
+        "math_ratio": 0.0,
+        "exemption": null
+      },
+      "annotation_path": "vertical",
+      "annotation_path_tally": {
+        "layout_formula": 0,
+        "formula_font": 0,
+        "vertical": 7,
+        "visual_bbox_disjoint": 0,
+        "corner_mark": 0,
+        "character_class": 0
+      },
+      "exposure_class": "i_paragraph_refused_as_placeholder_only",
+      "exposure_site": "il_translator_llm_only.py:641-645 -> paragraph_helper.py:69-71"
+    },
+    {
+      "sample": "Courier-zh",
+      "page": 5,
+      "anchor": "p5#8",
+      "debug_id_this_run": "kyLNN",
+      "composition_slot": 11,
+      "composition_type": "pdf_formula",
+      "paragraph_label": "abandon",
+      "paragraph_vertical": true,
+      "text": "Adriano Gam",
+      "paragraph_excerpt": "织组动行民住原孙马 /亚 barini) Adriano Gam (尼里巴",
+      "conditions_met": {
+        "longest_letter_run": 7,
+        "letter_ratio": 1.0,
+        "math_ratio": 0.0,
+        "exemption": null
+      },
+      "annotation_path": "vertical",
+      "annotation_path_tally": {
+        "layout_formula": 0,
+        "formula_font": 0,
+        "vertical": 11,
+        "visual_bbox_disjoint": 0,
+        "corner_mark": 0,
+        "character_class": 0
+      },
+      "exposure_class": "i_paragraph_refused_as_placeholder_only",
+      "exposure_site": "il_translator_llm_only.py:641-645 -> paragraph_helper.py:69-71"
+    },
+    {
+      "sample": "FD-en-v2",
+      "page": 2,
+      "anchor": "p2#8",
+      "debug_id_this_run": "SHdB5",
+      "composition_slot": 0,
+      "composition_type": "pdf_formula",
+      "paragraph_label": "fallback_line",
+      "paragraph_vertical": true,
+      "text": "FFER",
+      "paragraph_excerpt": "FFER STAU N BRIA",
+      "conditions_met": {
+        "longest_letter_run": 4,
+        "letter_ratio": 1.0,
+        "math_ratio": 0.0,
+        "exemption": null
+      },
+      "annotation_path": "vertical",
+      "annotation_path_tally": {
+        "layout_formula": 0,
+        "formula_font": 0,
+        "vertical": 4,
+        "visual_bbox_disjoint": 0,
+        "corner_mark": 0,
+        "character_class": 0
+      },
+      "exposure_class": "i_paragraph_refused_as_placeholder_only",
+      "exposure_site": "il_translator_llm_only.py:641-645 -> paragraph_helper.py:69-71"
+    },
+    {
+      "sample": "FD-en-v2",
+      "page": 2,
+      "anchor": "p2#8",
+      "debug_id_this_run": "SHdB5",
+      "composition_slot": 1,
+      "composition_type": "pdf_formula",
+      "paragraph_label": "fallback_line",
+      "paragraph_vertical": true,
+      "text": "STAU",
+      "paragraph_excerpt": "FFER STAU N BRIA",
+      "conditions_met": {
+        "longest_letter_run": 4,
+        "letter_ratio": 1.0,
+        "math_ratio": 0.0,
+        "exemption": null
+      },
+      "annotation_path": "vertical",
+      "annotation_path_tally": {
+        "layout_formula": 0,
+        "formula_font": 0,
+        "vertical": 4,
+        "visual_bbox_disjoint": 0,
+        "corner_mark": 0,
+        "character_class": 0
+      },
+      "exposure_class": "i_paragraph_refused_as_placeholder_only",
+      "exposure_site": "il_translator_llm_only.py:641-645 -> paragraph_helper.py:69-71"
+    },
+    {
+      "sample": "FD-en-v2",
+      "page": 2,
+      "anchor": "p2#8",
+      "debug_id_this_run": "SHdB5",
+      "composition_slot": 3,
+      "composition_type": "pdf_formula",
+      "paragraph_label": "fallback_line",
+      "paragraph_vertical": true,
+      "text": "BRIA",
+      "paragraph_excerpt": "FFER STAU N BRIA",
+      "conditions_met": {
+        "longest_letter_run": 4,
+        "letter_ratio": 1.0,
+        "math_ratio": 0.0,
+        "exemption": null
+      },
+      "annotation_path": "vertical",
+      "annotation_path_tally": {
+        "layout_formula": 0,
+        "formula_font": 0,
+        "vertical": 4,
+        "visual_bbox_disjoint": 0,
+        "corner_mark": 0,
+        "character_class": 0
+      },
+      "exposure_class": "i_paragraph_refused_as_placeholder_only",
+      "exposure_site": "il_translator_llm_only.py:641-645 -> paragraph_helper.py:69-71"
+    },
+    {
+      "sample": "FD-en-v2",
+      "page": 3,
+      "anchor": "p3#1",
+      "debug_id_this_run": "pSCFJ",
+      "composition_slot": 0,
+      "composition_type": "pdf_formula",
+      "paragraph_label": "abandon",
+      "paragraph_vertical": false,
+      "text": "JUNE 2026",
+      "paragraph_excerpt": "JUNE 2026",
+      "conditions_met": {
+        "longest_letter_run": 4,
+        "letter_ratio": 0.5,
+        "math_ratio": 0.0,
+        "exemption": null
+      },
+      "annotation_path": "formula_font",
+      "annotation_path_tally": {
+        "layout_formula": 0,
+        "formula_font": 9,
+        "vertical": 0,
+        "visual_bbox_disjoint": 0,
+        "corner_mark": 0,
+        "character_class": 0
+      },
+      "exposure_class": "i_paragraph_refused_as_placeholder_only",
+      "exposure_site": "il_translator_llm_only.py:641-645 -> paragraph_helper.py:69-71"
+    },
+    {
+      "sample": "FD-en-v2",
+      "page": 3,
+      "anchor": "p3#5",
+      "debug_id_this_run": "odhJz",
+      "composition_slot": 0,
+      "composition_type": "pdf_formula",
+      "paragraph_label": "abandon",
+      "paragraph_vertical": true,
+      "text": "FFER",
+      "paragraph_excerpt": "FFER STAU N BRIA",
+      "conditions_met": {
+        "longest_letter_run": 4,
+        "letter_ratio": 1.0,
+        "math_ratio": 0.0,
+        "exemption": null
+      },
+      "annotation_path": "vertical",
+      "annotation_path_tally": {
+        "layout_formula": 0,
+        "formula_font": 0,
+        "vertical": 4,
+        "visual_bbox_disjoint": 0,
+        "corner_mark": 0,
+        "character_class": 0
+      },
+      "exposure_class": "i_paragraph_refused_as_placeholder_only",
+      "exposure_site": "il_translator_llm_only.py:641-645 -> paragraph_helper.py:69-71"
+    },
+    {
+      "sample": "FD-en-v2",
+      "page": 3,
+      "anchor": "p3#5",
+      "debug_id_this_run": "odhJz",
+      "composition_slot": 1,
+      "composition_type": "pdf_formula",
+      "paragraph_label": "abandon",
+      "paragraph_vertical": true,
+      "text": "STAU",
+      "paragraph_excerpt": "FFER STAU N BRIA",
+      "conditions_met": {
+        "longest_letter_run": 4,
+        "letter_ratio": 1.0,
+        "math_ratio": 0.0,
+        "exemption": null
+      },
+      "annotation_path": "vertical",
+      "annotation_path_tally": {
+        "layout_formula": 0,
+        "formula_font": 0,
+        "vertical": 4,
+        "visual_bbox_disjoint": 0,
+        "corner_mark": 0,
+        "character_class": 0
+      },
+      "exposure_class": "i_paragraph_refused_as_placeholder_only",
+      "exposure_site": "il_translator_llm_only.py:641-645 -> paragraph_helper.py:69-71"
+    },
+    {
+      "sample": "FD-en-v2",
+      "page": 3,
+      "anchor": "p3#5",
+      "debug_id_this_run": "odhJz",
+      "composition_slot": 3,
+      "composition_type": "pdf_formula",
+      "paragraph_label": "abandon",
+      "paragraph_vertical": true,
+      "text": "BRIA",
+      "paragraph_excerpt": "FFER STAU N BRIA",
+      "conditions_met": {
+        "longest_letter_run": 4,
+        "letter_ratio": 1.0,
+        "math_ratio": 0.0,
+        "exemption": null
+      },
+      "annotation_path": "vertical",
+      "annotation_path_tally": {
+        "layout_formula": 0,
+        "formula_font": 0,
+        "vertical": 4,
+        "visual_bbox_disjoint": 0,
+        "corner_mark": 0,
+        "character_class": 0
+      },
+      "exposure_class": "i_paragraph_refused_as_placeholder_only",
+      "exposure_site": "il_translator_llm_only.py:641-645 -> paragraph_helper.py:69-71"
+    },
+    {
+      "sample": "FD-en-v2",
+      "page": 4,
+      "anchor": "p4#3",
+      "debug_id_this_run": "JNc6s",
+      "composition_slot": 12,
+      "composition_type": "pdf_formula",
+      "paragraph_label": "fallback_line",
+      "paragraph_vertical": true,
+      "text": "IFFO",
+      "paragraph_excerpt": "AN H C H JA L TA AN H C , RD IFFO G RTER PO",
+      "conditions_met": {
+        "longest_letter_run": 4,
+        "letter_ratio": 1.0,
+        "math_ratio": 0.0,
+        "exemption": null
+      },
+      "annotation_path": "vertical",
+      "annotation_path_tally": {
+        "layout_formula": 0,
+        "formula_font": 0,
+        "vertical": 4,
+        "visual_bbox_disjoint": 0,
+        "corner_mark": 0,
+        "character_class": 0
+      },
+      "exposure_class": "iii_not_sent_for_another_reason",
+      "exposure_site": "il_translator.py:1043-1044 pre_translate_paragraph returns on paragraph.vertical"
+    },
+    {
+      "sample": "FD-en-v2",
+      "page": 4,
+      "anchor": "p4#3",
+      "debug_id_this_run": "JNc6s",
+      "composition_slot": 14,
+      "composition_type": "pdf_formula",
+      "paragraph_label": "fallback_line",
+      "paragraph_vertical": true,
+      "text": "RTER",
+      "paragraph_excerpt": "AN H C H JA L TA AN H C , RD IFFO G RTER PO",
+      "conditions_met": {
+        "longest_letter_run": 4,
+        "letter_ratio": 1.0,
+        "math_ratio": 0.0,
+        "exemption": null
+      },
+      "annotation_path": "vertical",
+      "annotation_path_tally": {
+        "layout_formula": 0,
+        "formula_font": 0,
+        "vertical": 4,
+        "visual_bbox_disjoint": 0,
+        "corner_mark": 0,
+        "character_class": 0
+      },
+      "exposure_class": "iii_not_sent_for_another_reason",
+      "exposure_site": "il_translator.py:1043-1044 pre_translate_paragraph returns on paragraph.vertical"
+    },
+    {
+      "sample": "FD-en-v2",
+      "page": 5,
+      "anchor": "p5#4",
+      "debug_id_this_run": "Lhy8n#L0",
+      "composition_slot": 0,
+      "composition_type": "pdf_formula",
+      "paragraph_label": "plain text",
+      "paragraph_vertical": false,
+      "text": "EDITOR-IN-CHIEF",
+      "paragraph_excerpt": "EDITOR-IN-CHIEF",
+      "conditions_met": {
+        "longest_letter_run": 6,
+        "letter_ratio": 0.8667,
+        "math_ratio": 0.0,
+        "exemption": null
+      },
+      "annotation_path": "formula_font",
+      "annotation_path_tally": {
+        "layout_formula": 0,
+        "formula_font": 15,
+        "vertical": 0,
+        "visual_bbox_disjoint": 0,
+        "corner_mark": 0,
+        "character_class": 0
+      },
+      "exposure_class": "i_paragraph_refused_as_placeholder_only",
+      "exposure_site": "il_translator_llm_only.py:641-645 -> paragraph_helper.py:69-71"
+    },
+    {
+      "sample": "FD-en-v2",
+      "page": 5,
+      "anchor": "p5#6",
+      "debug_id_this_run": "u7vqK#L0",
+      "composition_slot": 0,
+      "composition_type": "pdf_formula",
+      "paragraph_label": "plain text",
+      "paragraph_vertical": false,
+      "text": "MANAGING EDITOR",
+      "paragraph_excerpt": "MANAGING EDITOR",
+      "conditions_met": {
+        "longest_letter_run": 8,
+        "letter_ratio": 1.0,
+        "math_ratio": 0.0,
+        "exemption": null
+      },
+      "annotation_path": "formula_font",
+      "annotation_path_tally": {
+        "layout_formula": 0,
+        "formula_font": 15,
+        "vertical": 0,
+        "visual_bbox_disjoint": 0,
+        "corner_mark": 0,
+        "character_class": 0
+      },
+      "exposure_class": "i_paragraph_refused_as_placeholder_only",
+      "exposure_site": "il_translator_llm_only.py:641-645 -> paragraph_helper.py:69-71"
+    },
+    {
+      "sample": "FD-en-v2",
+      "page": 5,
+      "anchor": "p5#8",
+      "debug_id_this_run": "Hs6r7#L0",
+      "composition_slot": 0,
+      "composition_type": "pdf_formula",
+      "paragraph_label": "plain text",
+      "paragraph_vertical": false,
+      "text": "SENIOR EDITORS",
+      "paragraph_excerpt": "SENIOR EDITORS",
+      "conditions_met": {
+        "longest_letter_run": 7,
+        "letter_ratio": 1.0,
+        "math_ratio": 0.0,
+        "exemption": null
+      },
+      "annotation_path": "formula_font",
+      "annotation_path_tally": {
+        "layout_formula": 0,
+        "formula_font": 14,
+        "vertical": 0,
+        "visual_bbox_disjoint": 0,
+        "corner_mark": 0,
+        "character_class": 0
+      },
+      "exposure_class": "i_paragraph_refused_as_placeholder_only",
+      "exposure_site": "il_translator_llm_only.py:641-645 -> paragraph_helper.py:69-71"
+    },
+    {
+      "sample": "FD-en-v2",
+      "page": 5,
+      "anchor": "p5#12",
+      "debug_id_this_run": "dhayc#L0",
+      "composition_slot": 0,
+      "composition_type": "pdf_formula",
+      "paragraph_label": "plain text",
+      "paragraph_vertical": false,
+      "text": "ASSISTANT EDITOR",
+      "paragraph_excerpt": "ASSISTANT EDITOR",
+      "conditions_met": {
+        "longest_letter_run": 9,
+        "letter_ratio": 1.0,
+        "math_ratio": 0.0,
+        "exemption": null
+      },
+      "annotation_path": "formula_font",
+      "annotation_path_tally": {
+        "layout_formula": 0,
+        "formula_font": 16,
+        "vertical": 0,
+        "visual_bbox_disjoint": 0,
+        "corner_mark": 0,
+        "character_class": 0
+      },
+      "exposure_class": "i_paragraph_refused_as_placeholder_only",
+      "exposure_site": "il_translator_llm_only.py:641-645 -> paragraph_helper.py:69-71"
+    },
+    {
+      "sample": "FD-en-v2",
+      "page": 5,
+      "anchor": "p5#14",
+      "debug_id_this_run": "CzRTe#L0",
+      "composition_slot": 0,
+      "composition_type": "pdf_formula",
+      "paragraph_label": "plain text",
+      "paragraph_vertical": false,
+      "text": "CREATIVE AND MARKETING",
+      "paragraph_excerpt": "CREATIVE AND MARKETING",
+      "conditions_met": {
+        "longest_letter_run": 9,
+        "letter_ratio": 1.0,
+        "math_ratio": 0.0,
+        "exemption": null
+      },
+      "annotation_path": "formula_font",
+      "annotation_path_tally": {
+        "layout_formula": 0,
+        "formula_font": 22,
+        "vertical": 0,
+        "visual_bbox_disjoint": 0,
+        "corner_mark": 0,
+        "character_class": 0
+      },
+      "exposure_class": "i_paragraph_refused_as_placeholder_only",
+      "exposure_site": "il_translator_llm_only.py:641-645 -> paragraph_helper.py:69-71"
+    },
+    {
+      "sample": "FD-en-v2",
+      "page": 5,
+      "anchor": "p5#18",
+      "debug_id_this_run": "NztEv",
+      "composition_slot": 0,
+      "composition_type": "pdf_formula",
+      "paragraph_label": "fallback_line",
+      "paragraph_vertical": false,
+      "text": "PRODUCTION MANAGER",
+      "paragraph_excerpt": "PRODUCTION MANAGER",
+      "conditions_met": {
+        "longest_letter_run": 10,
+        "letter_ratio": 1.0,
+        "math_ratio": 0.0,
+        "exemption": null
+      },
+      "annotation_path": "formula_font",
+      "annotation_path_tally": {
+        "layout_formula": 0,
+        "formula_font": 18,
+        "vertical": 0,
+        "visual_bbox_disjoint": 0,
+        "corner_mark": 0,
+        "character_class": 0
+      },
+      "exposure_class": "i_paragraph_refused_as_placeholder_only",
+      "exposure_site": "il_translator_llm_only.py:641-645 -> paragraph_helper.py:69-71"
+    },
+    {
+      "sample": "FD-en-v2",
+      "page": 5,
+      "anchor": "p5#20",
+      "debug_id_this_run": "znLrX",
+      "composition_slot": 0,
+      "composition_type": "pdf_formula",
+      "paragraph_label": "fallback_line",
+      "paragraph_vertical": false,
+      "text": "COPY EDITOR",
+      "paragraph_excerpt": "COPY EDITOR",
+      "conditions_met": {
+        "longest_letter_run": 6,
+        "letter_ratio": 1.0,
+        "math_ratio": 0.0,
+        "exemption": null
+      },
+      "annotation_path": "formula_font",
+      "annotation_path_tally": {
+        "layout_formula": 0,
+        "formula_font": 11,
+        "vertical": 0,
+        "visual_bbox_disjoint": 0,
+        "corner_mark": 0,
+        "character_class": 0
+      },
+      "exposure_class": "i_paragraph_refused_as_placeholder_only",
+      "exposure_site": "il_translator_llm_only.py:641-645 -> paragraph_helper.py:69-71"
+    },
+    {
+      "sample": "FD-en-v2",
+      "page": 5,
+      "anchor": "p5#22",
+      "debug_id_this_run": "pGhh7#L0",
+      "composition_slot": 0,
+      "composition_type": "pdf_formula",
+      "paragraph_label": "plain text",
+      "paragraph_vertical": false,
+      "text": "ART DIRECTION AND DESIGN",
+      "paragraph_excerpt": "ART DIRECTION AND DESIGN",
+      "conditions_met": {
+        "longest_letter_run": 9,
+        "letter_ratio": 1.0,
+        "math_ratio": 0.0,
+        "exemption": null
+      },
+      "annotation_path": "formula_font",
+      "annotation_path_tally": {
+        "layout_formula": 0,
+        "formula_font": 24,
+        "vertical": 0,
+        "visual_bbox_disjoint": 0,
+        "corner_mark": 0,
+        "character_class": 0
+      },
+      "exposure_class": "i_paragraph_refused_as_placeholder_only",
+      "exposure_site": "il_translator_llm_only.py:641-645 -> paragraph_helper.py:69-71"
+    },
+    {
+      "sample": "FD-en-v2",
+      "page": 5,
+      "anchor": "p5#24",
+      "debug_id_this_run": "QdsMq",
+      "composition_slot": 0,
+      "composition_type": "pdf_formula",
+      "paragraph_label": "fallback_line",
+      "paragraph_vertical": false,
+      "text": "ADVISORS TO THE EDITOR",
+      "paragraph_excerpt": "ADVISORS TO THE EDITOR",
+      "conditions_met": {
+        "longest_letter_run": 8,
+        "letter_ratio": 1.0,
+        "math_ratio": 0.0,
+        "exemption": null
+      },
+      "annotation_path": "formula_font",
+      "annotation_path_tally": {
+        "layout_formula": 0,
+        "formula_font": 22,
+        "vertical": 0,
+        "visual_bbox_disjoint": 0,
+        "corner_mark": 0,
+        "character_class": 0
+      },
+      "exposure_class": "i_paragraph_refused_as_placeholder_only",
+      "exposure_site": "il_translator_llm_only.py:641-645 -> paragraph_helper.py:69-71"
+    },
+    {
+      "sample": "FD-en-v2",
+      "page": 5,
+      "anchor": "p5#36",
+      "debug_id_this_run": "v8Djw",
+      "composition_slot": 0,
+      "composition_type": "pdf_formula",
+      "paragraph_label": "abandon",
+      "paragraph_vertical": false,
+      "text": "JUNE 2026",
+      "paragraph_excerpt": "JUNE 2026",
+      "conditions_met": {
+        "longest_letter_run": 4,
+        "letter_ratio": 0.5,
+        "math_ratio": 0.0,
+        "exemption": null
+      },
+      "annotation_path": "formula_font",
+      "annotation_path_tally": {
+        "layout_formula": 0,
+        "formula_font": 9,
+        "vertical": 0,
+        "visual_bbox_disjoint": 0,
+        "corner_mark": 0,
+        "character_class": 0
+      },
+      "exposure_class": "i_paragraph_refused_as_placeholder_only",
+      "exposure_site": "il_translator_llm_only.py:641-645 -> paragraph_helper.py:69-71"
+    },
+    {
+      "sample": "FD-en-v2",
+      "page": 6,
+      "anchor": "p6#0",
+      "debug_id_this_run": "MoUJw",
+      "composition_slot": 0,
+      "composition_type": "pdf_formula",
+      "paragraph_label": "abandon",
+      "paragraph_vertical": false,
+      "text": "JUNE 2026",
+      "paragraph_excerpt": "JUNE 2026",
+      "conditions_met": {
+        "longest_letter_run": 4,
+        "letter_ratio": 0.5,
+        "math_ratio": 0.0,
+        "exemption": null
+      },
+      "annotation_path": "formula_font",
+      "annotation_path_tally": {
+        "layout_formula": 0,
+        "formula_font": 9,
+        "vertical": 0,
+        "visual_bbox_disjoint": 0,
+        "corner_mark": 0,
+        "character_class": 0
+      },
+      "exposure_class": "i_paragraph_refused_as_placeholder_only",
+      "exposure_site": "il_translator_llm_only.py:641-645 -> paragraph_helper.py:69-71"
+    },
+    {
+      "sample": "FD-en-v2",
+      "page": 7,
+      "anchor": "p7#0",
+      "debug_id_this_run": "YBShy",
+      "composition_slot": 0,
+      "composition_type": "pdf_formula",
+      "paragraph_label": "abandon",
+      "paragraph_vertical": false,
+      "text": "JUNE 2026",
+      "paragraph_excerpt": "JUNE 2026",
+      "conditions_met": {
+        "longest_letter_run": 4,
+        "letter_ratio": 0.5,
+        "math_ratio": 0.0,
+        "exemption": null
+      },
+      "annotation_path": "formula_font",
+      "annotation_path_tally": {
+        "layout_formula": 0,
+        "formula_font": 9,
+        "vertical": 0,
+        "visual_bbox_disjoint": 0,
+        "corner_mark": 0,
+        "character_class": 0
+      },
+      "exposure_class": "i_paragraph_refused_as_placeholder_only",
+      "exposure_site": "il_translator_llm_only.py:641-645 -> paragraph_helper.py:69-71"
+    },
+    {
+      "sample": "FD-en-v2",
+      "page": 8,
+      "anchor": "p8#0",
+      "debug_id_this_run": "PFNWb",
+      "composition_slot": 0,
+      "composition_type": "pdf_formula",
+      "paragraph_label": "abandon",
+      "paragraph_vertical": false,
+      "text": "JUNE 2026",
+      "paragraph_excerpt": "JUNE 2026",
+      "conditions_met": {
+        "longest_letter_run": 4,
+        "letter_ratio": 0.5,
+        "math_ratio": 0.0,
+        "exemption": null
+      },
+      "annotation_path": "formula_font",
+      "annotation_path_tally": {
+        "layout_formula": 0,
+        "formula_font": 9,
+        "vertical": 0,
+        "visual_bbox_disjoint": 0,
+        "corner_mark": 0,
+        "character_class": 0
+      },
+      "exposure_class": "i_paragraph_refused_as_placeholder_only",
+      "exposure_site": "il_translator_llm_only.py:641-645 -> paragraph_helper.py:69-71"
+    },
+    {
+      "sample": "FD-en-v2",
+      "page": 8,
+      "anchor": "p8#5",
+      "debug_id_this_run": "NAn3y",
+      "composition_slot": 4,
+      "composition_type": "pdf_formula",
+      "paragraph_label": "abandon",
+      "paragraph_vertical": true,
+      "text": "RTESY",
+      "paragraph_excerpt": "L H RU KIM RTESY U O C",
+      "conditions_met": {
+        "longest_letter_run": 5,
+        "letter_ratio": 1.0,
+        "math_ratio": 0.0,
+        "exemption": null
+      },
+      "annotation_path": "vertical",
+      "annotation_path_tally": {
+        "layout_formula": 0,
+        "formula_font": 0,
+        "vertical": 5,
+        "visual_bbox_disjoint": 0,
+        "corner_mark": 0,
+        "character_class": 0
+      },
+      "exposure_class": "i_paragraph_refused_as_placeholder_only",
+      "exposure_site": "il_translator_llm_only.py:641-645 -> paragraph_helper.py:69-71"
+    },
+    {
+      "sample": "FD-en-v2",
+      "page": 8,
+      "anchor": "p8#9",
+      "debug_id_this_run": "QxipN",
+      "composition_slot": 0,
+      "composition_type": "pdf_formula",
+      "paragraph_label": "plain text",
+      "paragraph_vertical": false,
+      "text": "When ",
+      "paragraph_excerpt": "When it comes to international trade, countries have always weighed economic efficiency against national security. After",
+      "conditions_met": {
+        "longest_letter_run": 4,
+        "letter_ratio": 1.0,
+        "math_ratio": 0.0,
+        "exemption": null
+      },
+      "annotation_path": "corner_mark",
+      "annotation_path_tally": {
+        "layout_formula": 0,
+        "formula_font": 1,
+        "vertical": 0,
+        "visual_bbox_disjoint": 0,
+        "corner_mark": 3,
+        "character_class": 0
+      },
+      "exposure_class": "iv_no_observable_consequence",
+      "exposure_site": "the paragraph was sent and its request carries no formula placeholder",
+      "request": "When it comes to international trade, countries have always weighed economic efficiency against national security. After World War II, they pursued free international trade through low tariffs in the ",
+      "ambiguous_join": false
+    },
+    {
+      "sample": "FD-en-v2",
+      "page": 9,
+      "anchor": "p9#0",
+      "debug_id_this_run": "KSbnu",
+      "composition_slot": 0,
+      "composition_type": "pdf_formula",
+      "paragraph_label": "abandon",
+      "paragraph_vertical": false,
+      "text": "MONTH 202",
+      "paragraph_excerpt": "MONTH 202",
+      "conditions_met": {
+        "longest_letter_run": 5,
+        "letter_ratio": 0.625,
+        "math_ratio": 0.0,
+        "exemption": null
+      },
+      "annotation_path": "formula_font",
+      "annotation_path_tally": {
+        "layout_formula": 0,
+        "formula_font": 9,
+        "vertical": 0,
+        "visual_bbox_disjoint": 0,
+        "corner_mark": 0,
+        "character_class": 0
+      },
+      "exposure_class": "i_paragraph_refused_as_placeholder_only",
+      "exposure_site": "il_translator_llm_only.py:641-645 -> paragraph_helper.py:69-71"
+    },
+    {
+      "sample": "FD-en-v2",
+      "page": 9,
+      "anchor": "p9#3",
+      "debug_id_this_run": "pZuka",
+      "composition_slot": 0,
+      "composition_type": "pdf_formula",
+      "paragraph_label": "abandon",
+      "paragraph_vertical": false,
+      "text": "DECEMBER 2",
+      "paragraph_excerpt": "DECEMBER 2",
+      "conditions_met": {
+        "longest_letter_run": 8,
+        "letter_ratio": 0.8889,
+        "math_ratio": 0.0,
+        "exemption": null
+      },
+      "annotation_path": "formula_font",
+      "annotation_path_tally": {
+        "layout_formula": 0,
+        "formula_font": 10,
+        "vertical": 0,
+        "visual_bbox_disjoint": 0,
+        "corner_mark": 0,
+        "character_class": 0
+      },
+      "exposure_class": "i_paragraph_refused_as_placeholder_only",
+      "exposure_site": "il_translator_llm_only.py:641-645 -> paragraph_helper.py:69-71"
+    },
+    {
+      "sample": "FD-en-v2",
+      "page": 9,
+      "anchor": "p9#6",
+      "debug_id_this_run": "pxKPp",
+      "composition_slot": 0,
+      "composition_type": "pdf_formula",
+      "paragraph_label": "abandon",
+      "paragraph_vertical": false,
+      "text": "JUNE 2026",
+      "paragraph_excerpt": "JUNE 2026",
+      "conditions_met": {
+        "longest_letter_run": 4,
+        "letter_ratio": 0.5,
+        "math_ratio": 0.0,
+        "exemption": null
+      },
+      "annotation_path": "formula_font",
+      "annotation_path_tally": {
+        "layout_formula": 0,
+        "formula_font": 9,
+        "vertical": 0,
+        "visual_bbox_disjoint": 0,
+        "corner_mark": 0,
+        "character_class": 0
+      },
+      "exposure_class": "i_paragraph_refused_as_placeholder_only",
+      "exposure_site": "il_translator_llm_only.py:641-645 -> paragraph_helper.py:69-71"
+    },
+    {
+      "sample": "FD-en-v2",
+      "page": 9,
+      "anchor": "p9#9",
+      "debug_id_this_run": "dpDRz",
+      "composition_slot": 6,
+      "composition_type": "pdf_formula",
+      "paragraph_label": "abandon",
+      "paragraph_vertical": true,
+      "text": "ATIO",
+      "paragraph_excerpt": "K N BA L A N ATIO N ISS SW RTESY U O C",
+      "conditions_met": {
+        "longest_letter_run": 4,
+        "letter_ratio": 1.0,
+        "math_ratio": 0.0,
+        "exemption": null
+      },
+      "annotation_path": "vertical",
+      "annotation_path_tally": {
+        "layout_formula": 0,
+        "formula_font": 0,
+        "vertical": 4,
+        "visual_bbox_disjoint": 0,
+        "corner_mark": 0,
+        "character_class": 0
+      },
+      "exposure_class": "i_paragraph_refused_as_placeholder_only",
+      "exposure_site": "il_translator_llm_only.py:641-645 -> paragraph_helper.py:69-71"
+    },
+    {
+      "sample": "FD-en-v2",
+      "page": 9,
+      "anchor": "p9#9",
+      "debug_id_this_run": "dpDRz",
+      "composition_slot": 10,
+      "composition_type": "pdf_formula",
+      "paragraph_label": "abandon",
+      "paragraph_vertical": true,
+      "text": "RTESY",
+      "paragraph_excerpt": "K N BA L A N ATIO N ISS SW RTESY U O C",
+      "conditions_met": {
+        "longest_letter_run": 5,
+        "letter_ratio": 1.0,
+        "math_ratio": 0.0,
+        "exemption": null
+      },
+      "annotation_path": "vertical",
+      "annotation_path_tally": {
+        "layout_formula": 0,
+        "formula_font": 0,
+        "vertical": 5,
+        "visual_bbox_disjoint": 0,
+        "corner_mark": 0,
+        "character_class": 0
+      },
+      "exposure_class": "i_paragraph_refused_as_placeholder_only",
+      "exposure_site": "il_translator_llm_only.py:641-645 -> paragraph_helper.py:69-71"
+    },
+    {
+      "sample": "FD-en-v2",
+      "page": 9,
+      "anchor": "p9#19",
+      "debug_id_this_run": "xg7R3",
+      "composition_slot": 0,
+      "composition_type": "pdf_formula",
+      "paragraph_label": "plain text",
+      "paragraph_vertical": false,
+      "text": "A glacier",
+      "paragraph_excerpt": "A glacier buttercup appears on the front of the draft 1,000 franc note.",
+      "conditions_met": {
+        "longest_letter_run": 7,
+        "letter_ratio": 1.0,
+        "math_ratio": 0.0,
+        "exemption": null
+      },
+      "annotation_path": "formula_font",
+      "annotation_path_tally": {
+        "layout_formula": 0,
+        "formula_font": 9,
+        "vertical": 0,
+        "visual_bbox_disjoint": 0,
+        "corner_mark": 0,
+        "character_class": 0
+      },
+      "exposure_class": "ii_sent_with_placeholders_in_the_request",
+      "exposure_site": "il_translator_llm_only.py:736 -> il_translator.pre_translate_paragraph",
+      "request": "{v1}{v2}{v3}{v4}{v5}1,{v6}{v7}",
+      "reply": "{v1}{v2}{v3}{v4}{v5}1,{v6}{v7}",
+      "ambiguous_join": false
+    },
+    {
+      "sample": "FD-en-v2",
+      "page": 9,
+      "anchor": "p9#19",
+      "debug_id_this_run": "xg7R3",
+      "composition_slot": 1,
+      "composition_type": "pdf_formula",
+      "paragraph_label": "plain text",
+      "paragraph_vertical": false,
+      "text": "buttercup",
+      "paragraph_excerpt": "A glacier buttercup appears on the front of the draft 1,000 franc note.",
+      "conditions_met": {
+        "longest_letter_run": 9,
+        "letter_ratio": 1.0,
+        "math_ratio": 0.0,
+        "exemption": null
+      },
+      "annotation_path": "formula_font",
+      "annotation_path_tally": {
+        "layout_formula": 0,
+        "formula_font": 9,
+        "vertical": 0,
+        "visual_bbox_disjoint": 0,
+        "corner_mark": 0,
+        "character_class": 0
+      },
+      "exposure_class": "ii_sent_with_placeholders_in_the_request",
+      "exposure_site": "il_translator_llm_only.py:736 -> il_translator.pre_translate_paragraph",
+      "request": "{v1}{v2}{v3}{v4}{v5}1,{v6}{v7}",
+      "reply": "{v1}{v2}{v3}{v4}{v5}1,{v6}{v7}",
+      "ambiguous_join": false
+    },
+    {
+      "sample": "FD-en-v2",
+      "page": 9,
+      "anchor": "p9#19",
+      "debug_id_this_run": "xg7R3",
+      "composition_slot": 2,
+      "composition_type": "pdf_formula",
+      "paragraph_label": "plain text",
+      "paragraph_vertical": false,
+      "text": "appears on",
+      "paragraph_excerpt": "A glacier buttercup appears on the front of the draft 1,000 franc note.",
+      "conditions_met": {
+        "longest_letter_run": 7,
+        "letter_ratio": 1.0,
+        "math_ratio": 0.0,
+        "exemption": null
+      },
+      "annotation_path": "formula_font",
+      "annotation_path_tally": {
+        "layout_formula": 0,
+        "formula_font": 10,
+        "vertical": 0,
+        "visual_bbox_disjoint": 0,
+        "corner_mark": 0,
+        "character_class": 0
+      },
+      "exposure_class": "ii_sent_with_placeholders_in_the_request",
+      "exposure_site": "il_translator_llm_only.py:736 -> il_translator.pre_translate_paragraph",
+      "request": "{v1}{v2}{v3}{v4}{v5}1,{v6}{v7}",
+      "reply": "{v1}{v2}{v3}{v4}{v5}1,{v6}{v7}",
+      "ambiguous_join": false
+    },
+    {
+      "sample": "FD-en-v2",
+      "page": 9,
+      "anchor": "p9#19",
+      "debug_id_this_run": "xg7R3",
+      "composition_slot": 3,
+      "composition_type": "pdf_formula",
+      "paragraph_label": "plain text",
+      "paragraph_vertical": false,
+      "text": "the front",
+      "paragraph_excerpt": "A glacier buttercup appears on the front of the draft 1,000 franc note.",
+      "conditions_met": {
+        "longest_letter_run": 5,
+        "letter_ratio": 1.0,
+        "math_ratio": 0.0,
+        "exemption": null
+      },
+      "annotation_path": "formula_font",
+      "annotation_path_tally": {
+        "layout_formula": 0,
+        "formula_font": 9,
+        "vertical": 0,
+        "visual_bbox_disjoint": 0,
+        "corner_mark": 0,
+        "character_class": 0
+      },
+      "exposure_class": "ii_sent_with_placeholders_in_the_request",
+      "exposure_site": "il_translator_llm_only.py:736 -> il_translator.pre_translate_paragraph",
+      "request": "{v1}{v2}{v3}{v4}{v5}1,{v6}{v7}",
+      "reply": "{v1}{v2}{v3}{v4}{v5}1,{v6}{v7}",
+      "ambiguous_join": false
+    },
+    {
+      "sample": "FD-en-v2",
+      "page": 9,
+      "anchor": "p9#19",
+      "debug_id_this_run": "xg7R3",
+      "composition_slot": 4,
+      "composition_type": "pdf_formula",
+      "paragraph_label": "plain text",
+      "paragraph_vertical": false,
+      "text": "of the draft",
+      "paragraph_excerpt": "A glacier buttercup appears on the front of the draft 1,000 franc note.",
+      "conditions_met": {
+        "longest_letter_run": 5,
+        "letter_ratio": 1.0,
+        "math_ratio": 0.0,
+        "exemption": null
+      },
+      "annotation_path": "formula_font",
+      "annotation_path_tally": {
+        "layout_formula": 0,
+        "formula_font": 12,
+        "vertical": 0,
+        "visual_bbox_disjoint": 0,
+        "corner_mark": 0,
+        "character_class": 0
+      },
+      "exposure_class": "ii_sent_with_placeholders_in_the_request",
+      "exposure_site": "il_translator_llm_only.py:736 -> il_translator.pre_translate_paragraph",
+      "request": "{v1}{v2}{v3}{v4}{v5}1,{v6}{v7}",
+      "reply": "{v1}{v2}{v3}{v4}{v5}1,{v6}{v7}",
+      "ambiguous_join": false
+    },
+    {
+      "sample": "FD-en-v2",
+      "page": 9,
+      "anchor": "p9#19",
+      "debug_id_this_run": "xg7R3",
+      "composition_slot": 6,
+      "composition_type": "pdf_formula",
+      "paragraph_label": "plain text",
+      "paragraph_vertical": false,
+      "text": "000 franc",
+      "paragraph_excerpt": "A glacier buttercup appears on the front of the draft 1,000 franc note.",
+      "conditions_met": {
+        "longest_letter_run": 5,
+        "letter_ratio": 0.625,
+        "math_ratio": 0.0,
+        "exemption": null
+      },
+      "annotation_path": "formula_font",
+      "annotation_path_tally": {
+        "layout_formula": 0,
+        "formula_font": 9,
+        "vertical": 0,
+        "visual_bbox_disjoint": 0,
+        "corner_mark": 0,
+        "character_class": 0
+      },
+      "exposure_class": "ii_sent_with_placeholders_in_the_request",
+      "exposure_site": "il_translator_llm_only.py:736 -> il_translator.pre_translate_paragraph",
+      "request": "{v1}{v2}{v3}{v4}{v5}1,{v6}{v7}",
+      "reply": "{v1}{v2}{v3}{v4}{v5}1,{v6}{v7}",
+      "ambiguous_join": false
+    },
+    {
+      "sample": "FD-en-v2",
+      "page": 9,
+      "anchor": "p9#19",
+      "debug_id_this_run": "xg7R3",
+      "composition_slot": 7,
+      "composition_type": "pdf_formula",
+      "paragraph_label": "plain text",
+      "paragraph_vertical": false,
+      "text": "note.",
+      "paragraph_excerpt": "A glacier buttercup appears on the front of the draft 1,000 franc note.",
+      "conditions_met": {
+        "longest_letter_run": 4,
+        "letter_ratio": 0.8,
+        "math_ratio": 0.0,
+        "exemption": null
+      },
+      "annotation_path": "formula_font",
+      "annotation_path_tally": {
+        "layout_formula": 0,
+        "formula_font": 5,
+        "vertical": 0,
+        "visual_bbox_disjoint": 0,
+        "corner_mark": 0,
+        "character_class": 0
+      },
+      "exposure_class": "ii_sent_with_placeholders_in_the_request",
+      "exposure_site": "il_translator_llm_only.py:736 -> il_translator.pre_translate_paragraph",
+      "request": "{v1}{v2}{v3}{v4}{v5}1,{v6}{v7}",
+      "reply": "{v1}{v2}{v3}{v4}{v5}1,{v6}{v7}",
+      "ambiguous_join": false
+    },
+    {
+      "sample": "Vogue-en",
+      "page": 1,
+      "anchor": "p1#0",
+      "debug_id_this_run": "B1zn5",
+      "composition_slot": 6,
+      "composition_type": "pdf_formula",
+      "paragraph_label": "abandon",
+      "paragraph_vertical": true,
+      "text": "I BOUTIQ",
+      "paragraph_excerpt": "M I.CO D FEN 291 0163 UES 888 I BOUTIQ D FEN",
+      "conditions_met": {
+        "longest_letter_run": 6,
+        "letter_ratio": 1.0,
+        "math_ratio": 0.0,
+        "exemption": null
+      },
+      "annotation_path": "vertical",
+      "annotation_path_tally": {
+        "layout_formula": 0,
+        "formula_font": 0,
+        "vertical": 8,
+        "visual_bbox_disjoint": 0,
+        "corner_mark": 0,
+        "character_class": 0
+      },
+      "exposure_class": "iii_not_sent_for_another_reason",
+      "exposure_site": "il_translator.py:1043-1044 pre_translate_paragraph returns on paragraph.vertical"
+    },
+    {
+      "sample": "Vogue-en",
+      "page": 3,
+      "anchor": "p3#59",
+      "debug_id_this_run": "4AVgt",
+      "composition_slot": 1,
+      "composition_type": "pdf_formula",
+      "paragraph_label": "abandon",
+      "paragraph_vertical": true,
+      "text": "IS ISSU",
+      "paragraph_excerpt": "E. IS ISSU FASHION EDITOR: JULIA SARR-JAMOIS. HAIR, JOEY GEORGE; MAKEUP, SUSIE SOBOL. PRODUCED BY BOOM PRODUCTIONS. PROP",
+      "conditions_met": {
+        "longest_letter_run": 4,
+        "letter_ratio": 1.0,
+        "math_ratio": 0.0,
+        "exemption": null
+      },
+      "annotation_path": "vertical",
+      "annotation_path_tally": {
+        "layout_formula": 0,
+        "formula_font": 0,
+        "vertical": 7,
+        "visual_bbox_disjoint": 0,
+        "corner_mark": 0,
+        "character_class": 0
+      },
+      "exposure_class": "iii_not_sent_for_another_reason",
+      "exposure_site": "il_translator.py:1043-1044 pre_translate_paragraph returns on paragraph.vertical"
+    },
+    {
+      "sample": "Vogue-en",
+      "page": 3,
+      "anchor": "p3#59",
+      "debug_id_this_run": "4AVgt",
+      "composition_slot": 2,
+      "composition_type": "pdf_formula",
+      "paragraph_label": "abandon",
+      "paragraph_vertical": true,
+      "text": "FASHION EDITOR: JULIA SARR-JAMOIS. HAIR SUSIE SOBOL.   PRODUCED BY BOOM PRODUCTIONS. PROP STYLIST: PETER KLEIN. DETAILS JOEY GEORGE; MAKEUP SEE IN TH",
+      "paragraph_excerpt": "E. IS ISSU FASHION EDITOR: JULIA SARR-JAMOIS. HAIR, JOEY GEORGE; MAKEUP, SUSIE SOBOL. PRODUCED BY BOOM PRODUCTIONS. PROP",
+      "conditions_met": {
+        "longest_letter_run": 11,
+        "letter_ratio": 0.9365,
+        "math_ratio": 0.0,
+        "exemption": null
+      },
+      "annotation_path": "vertical",
+      "annotation_path_tally": {
+        "layout_formula": 0,
+        "formula_font": 0,
+        "vertical": 148,
+        "visual_bbox_disjoint": 0,
+        "corner_mark": 0,
+        "character_class": 0
+      },
+      "exposure_class": "iii_not_sent_for_another_reason",
+      "exposure_site": "il_translator.py:1043-1044 pre_translate_paragraph returns on paragraph.vertical"
+    }
+  ]
+}

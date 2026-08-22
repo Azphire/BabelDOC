@@ -1,0 +1,46 @@
+{
+  "criterion_version": "b11.3-t1",
+  "statement": "A pdf_formula composition is MISLABELLED when its character content is running text rather than mathematical or symbolic material. The judgement is made on the composition's characters alone, using only font, unicode-category and geometric signals. No publication, page, paragraph identifier or literal string of any sample takes part.",
+  "evaluated_on": "each PdfParagraphComposition whose pdf_formula is set, as written by StylesAndFormulas",
+  "exemptions": {
+    "layout_formula": {
+      "signal": "any character carries formula_layout_id",
+      "why": "the layout model is a detector independent of StylesAndFormulas; when it has independently called the region a formula, this criterion defers to it"
+    },
+    "precise_math_font": {
+      "signal": "the character's font matches formular_helper.precise_formula_font_pattern",
+      "why": "that pattern names actual mathematics typefaces (STIX Math, Latin Modern Math, TeX Gyre ... Math). Text set in them is mathematics by construction"
+    }
+  },
+  "not_an_exemption": {
+    "corner_mark": {
+      "signal": "PdfFormula.is_corner_mark",
+      "why": "measured, not assumed. The corner-mark rule is a font-size-ratio mechanism, not evidence about content: it fires both on genuine superscripts and on ordinary small-caps running text, where the full-size initial makes every following letter look like a corner mark. Exempting it would have excused a whole class of mislabel. Content decides instead."
+    },
+    "vertical": {
+      "signal": "every character has vertical set",
+      "why": "rotated text is still text; the rotation says how it is set on the page, not what it is"
+    }
+  },
+  "conditions": {
+    "min_word_len": {
+      "value": 4,
+      "range": [3, 8],
+      "means": "the composition holds a maximal run of at least this many unicode letters",
+      "why": "mathematics names its variables in one to three characters, and its function names (sin, cos, log, exp, tan, max) are three. Four is the first length at which a run is a word of a language rather than a symbol of a notation. Chosen above the longest function name, not fitted to any sample."
+    },
+    "max_math_ratio": {
+      "value": 0.05,
+      "range": [0.0, 0.5],
+      "means": "share of non-space characters in unicode categories Sm, Sk, Mn, Co, or in the Greek block, must not exceed this",
+      "why": "one genuine mathematical symbol is enough to make a run of letters part of a notation. The bound is set just above zero so that a composition carrying any real mathematics is left alone."
+    },
+    "min_letter_ratio": {
+      "value": 0.5,
+      "range": [0.0, 1.0],
+      "means": "share of non-space characters that are unicode letters must be at least this",
+      "why": "secondary guard, so that a long letter run embedded in mostly numeric material is not read as prose."
+    }
+  },
+  "verdict_rule": "MISLABEL if and only if: no exemption holds, AND longest_letter_run >= min_word_len, AND math_ratio <= max_math_ratio, AND letter_ratio >= min_letter_ratio"
+}

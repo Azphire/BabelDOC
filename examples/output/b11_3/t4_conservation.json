@@ -1,0 +1,1125 @@
+{
+  "baseline": "examples/output/b10_5/<sample>/on",
+  "previous_tree": "examples/output/b11_2/<sample>",
+  "matched_by": "residue excerpt text, never debug_id",
+  "samples": {
+    "AramcoWorld-en-v2": {
+      "conservation": {
+        "present": true,
+        "pages": 9,
+        "baseline_pages": 9,
+        "page_count_conserved": true,
+        "paragraph_counts_conserved": true,
+        "paragraph_count_differences": [],
+        "anchor_sets_conserved": true,
+        "pages_whose_anchor_set_moved": []
+      },
+      "detector_counts": {
+        "baseline_b10_5": {
+          "fragment_cluster": 2,
+          "out_of_page": 3,
+          "untranslated_residue": 18
+        },
+        "previous_b11_2": {
+          "fragment_cluster": 2,
+          "out_of_page": 3,
+          "untranslated_residue": 18
+        },
+        "now_b11_3": {
+          "fragment_cluster": 2,
+          "out_of_page": 3,
+          "untranslated_residue": 18
+        }
+      },
+      "kinds_that_rose_against_the_previous_tree": {},
+      "residue_disposition_vs_b10_5": {
+        "against": "baseline",
+        "baseline_total": 18,
+        "now_total": 18,
+        "rows": [
+          {
+            "excerpt": "7月 – 8月 2026  |  第77卷 第4   |  期 AramcoWorld.com",
+            "page": 1,
+            "layout_label": "abandon",
+            "verdict": "still_a_residue"
+          },
+          {
+            "excerpt": "16344araD1R1.Cvr.indd 1-3",
+            "page": 1,
+            "layout_label": "fallback_line",
+            "verdict": "still_a_residue"
+          },
+          {
+            "excerpt": "(cid:25)(cid:18)(cid:23)(cid:18)(cid:21)(cid:25)(cid:3)(cid:3)(cid:3)(cid:23)(ci",
+            "page": 1,
+            "layout_label": "fallback_line",
+            "verdict": "still_a_residue"
+          },
+          {
+            "excerpt": "AramcoWorld.com",
+            "page": 2,
+            "layout_label": "title",
+            "verdict": "still_a_residue"
+          },
+          {
+            "excerpt": "编辑助理：萨拉·汗（Sarah Khan）和比安卡·斯佩兰扎（Bianca Speranza）",
+            "page": 2,
+            "layout_label": "plain text",
+            "verdict": "gone"
+          },
+          {
+            "excerpt": "合同支持：Kymani J. Hill 和 Nicole E. Martinez印刷设计：Graphic Engine Design Studio印刷：RR D",
+            "page": 2,
+            "layout_label": "plain text",
+            "verdict": "still_a_residue"
+          },
+          {
+            "excerpt": "在线订阅：AramcoWorld.com",
+            "page": 2,
+            "layout_label": "plain text",
+            "verdict": "still_a_residue"
+          },
+          {
+            "excerpt": "aramcoworld@sfsdayton.com",
+            "page": 2,
+            "layout_label": "plain text",
+            "verdict": "still_a_residue"
+          },
+          {
+            "excerpt": "编辑部：publications@aramcoamericas.com或邮政信箱 2106, 休斯顿, 德克萨斯州 77252-2106, 美国",
+            "page": 2,
+            "layout_label": "plain text",
+            "verdict": "still_a_residue"
+          },
+          {
+            "excerpt": "OPPOSITE: BANNING EYRE; THIS PAGE, FROM TOP: IVY JOHNSON; DANIIL USMANOV; LEON M",
+            "page": 3,
+            "layout_label": "abandon",
+            "verdict": "still_a_residue"
+          },
+          {
+            "excerpt": "—— B A K H O D I R B A LTAY E V",
+            "page": 4,
+            "layout_label": "plain text",
+            "verdict": "gone"
+          },
+          {
+            "excerpt": "6/(cid:23)/26   (cid:24):(cid:23)(cid:19) 下午",
+            "page": 4,
+            "layout_label": "abandon",
+            "verdict": "still_a_residue"
+          },
+          {
+            "excerpt": "6/(cid:20)(cid:20)/26   (cid:20)(cid:19):(cid:19)(cid:19) (cid:36)M",
+            "page": 5,
+            "layout_label": "fallback_line",
+            "verdict": "still_a_residue"
+          },
+          {
+            "excerpt": "6/(cid:23)/26   (cid:24):(cid:23)(cid:23) 下午",
+            "page": 6,
+            "layout_label": "abandon",
+            "verdict": "still_a_residue"
+          },
+          {
+            "excerpt": "OPPOSITE TOP: B.MORITZ/LIBRARY OF CONGRESS",
+            "page": 7,
+            "layout_label": "abandon",
+            "verdict": "still_a_residue"
+          },
+          {
+            "excerpt": "6/(cid:23)/26   (cid:24):(cid:23)(cid:23) 下午",
+            "page": 7,
+            "layout_label": "abandon",
+            "verdict": "still_a_residue"
+          },
+          {
+            "excerpt": "评论者：ADIL ZHAN ANAY",
+            "page": 9,
+            "layout_label": "plain text",
+            "verdict": "gone"
+          },
+          {
+            "excerpt": "TOP: UNIVERSITY HISTORY ARCHIVE / GETTY IMAGES",
+            "page": 9,
+            "layout_label": "abandon",
+            "verdict": "still_a_residue"
+          }
+        ],
+        "appeared": [
+          {
+            "excerpt": "— BA K H O D I R BA LTAY E V",
+            "verdict": "new_since_baseline"
+          },
+          {
+            "excerpt": "40 40 AramcoWorld AramcoWorld",
+            "verdict": "new_since_baseline"
+          },
+          {
+            "excerpt": "评论者 ADIL ZHAN ANAY",
+            "verdict": "new_since_baseline"
+          }
+        ],
+        "gone": 3,
+        "still": 15
+      },
+      "residue_disposition_vs_b11_2": {
+        "against": "previous",
+        "baseline_total": 18,
+        "now_total": 18,
+        "rows": [
+          {
+            "excerpt": "7月 – 8月 2026  |  第77卷 第4   |  期 AramcoWorld.com",
+            "page": 1,
+            "layout_label": "abandon",
+            "verdict": "still_a_residue"
+          },
+          {
+            "excerpt": "16344araD1R1.Cvr.indd 1-3",
+            "page": 1,
+            "layout_label": "fallback_line",
+            "verdict": "still_a_residue"
+          },
+          {
+            "excerpt": "(cid:25)(cid:18)(cid:23)(cid:18)(cid:21)(cid:25)(cid:3)(cid:3)(cid:3)(cid:23)(ci",
+            "page": 1,
+            "layout_label": "fallback_line",
+            "verdict": "still_a_residue"
+          },
+          {
+            "excerpt": "AramcoWorld.com",
+            "page": 2,
+            "layout_label": "title",
+            "verdict": "still_a_residue"
+          },
+          {
+            "excerpt": "合同支持：Kymani J. Hill 和 Nicole E. Martinez印刷设计：Graphic Engine Design Studio印刷：RR D",
+            "page": 2,
+            "layout_label": "plain text",
+            "verdict": "still_a_residue"
+          },
+          {
+            "excerpt": "在线订阅：AramcoWorld.com",
+            "page": 2,
+            "layout_label": "plain text",
+            "verdict": "still_a_residue"
+          },
+          {
+            "excerpt": "aramcoworld@sfsdayton.com",
+            "page": 2,
+            "layout_label": "plain text",
+            "verdict": "still_a_residue"
+          },
+          {
+            "excerpt": "编辑部：publications@aramcoamericas.com或邮政信箱 2106, 休斯顿, 德克萨斯州 77252-2106, 美国",
+            "page": 2,
+            "layout_label": "plain text",
+            "verdict": "still_a_residue"
+          },
+          {
+            "excerpt": "OPPOSITE: BANNING EYRE; THIS PAGE, FROM TOP: IVY JOHNSON; DANIIL USMANOV; LEON M",
+            "page": 3,
+            "layout_label": "abandon",
+            "verdict": "still_a_residue"
+          },
+          {
+            "excerpt": "— BA K H O D I R BA LTAY E V",
+            "page": 4,
+            "layout_label": "plain text",
+            "verdict": "still_a_residue"
+          },
+          {
+            "excerpt": "6/(cid:23)/26   (cid:24):(cid:23)(cid:19) 下午",
+            "page": 4,
+            "layout_label": "abandon",
+            "verdict": "still_a_residue"
+          },
+          {
+            "excerpt": "6/(cid:20)(cid:20)/26   (cid:20)(cid:19):(cid:19)(cid:19) (cid:36)M",
+            "page": 5,
+            "layout_label": "fallback_line",
+            "verdict": "still_a_residue"
+          },
+          {
+            "excerpt": "6/(cid:23)/26   (cid:24):(cid:23)(cid:23) 下午",
+            "page": 6,
+            "layout_label": "abandon",
+            "verdict": "still_a_residue"
+          },
+          {
+            "excerpt": "OPPOSITE TOP: B.MORITZ/LIBRARY OF CONGRESS",
+            "page": 7,
+            "layout_label": "abandon",
+            "verdict": "still_a_residue"
+          },
+          {
+            "excerpt": "6/(cid:23)/26   (cid:24):(cid:23)(cid:23) 下午",
+            "page": 7,
+            "layout_label": "abandon",
+            "verdict": "still_a_residue"
+          },
+          {
+            "excerpt": "40 40 AramcoWorld AramcoWorld",
+            "page": 8,
+            "layout_label": "abandon",
+            "verdict": "still_a_residue"
+          },
+          {
+            "excerpt": "评论者 ADIL ZHAN ANAY",
+            "page": 9,
+            "layout_label": "plain text",
+            "verdict": "still_a_residue"
+          },
+          {
+            "excerpt": "TOP: UNIVERSITY HISTORY ARCHIVE / GETTY IMAGES",
+            "page": 9,
+            "layout_label": "abandon",
+            "verdict": "still_a_residue"
+          }
+        ],
+        "appeared": [],
+        "gone": 0,
+        "still": 18
+      }
+    },
+    "CERNCourier-en": {
+      "conservation": {
+        "present": true,
+        "pages": 4,
+        "baseline_pages": 4,
+        "page_count_conserved": true,
+        "paragraph_counts_conserved": true,
+        "paragraph_count_differences": [],
+        "anchor_sets_conserved": true,
+        "pages_whose_anchor_set_moved": []
+      },
+      "detector_counts": {
+        "baseline_b10_5": {
+          "fragment_cluster": 9,
+          "text_text_collision": 1,
+          "untranslated_residue": 24
+        },
+        "previous_b11_2": {
+          "fragment_cluster": 9,
+          "text_text_collision": 2,
+          "untranslated_residue": 21
+        },
+        "now_b11_3": {
+          "fragment_cluster": 9,
+          "text_text_collision": 2,
+          "untranslated_residue": 21
+        }
+      },
+      "kinds_that_rose_against_the_previous_tree": {},
+      "residue_disposition_vs_b10_5": {
+        "against": "baseline",
+        "baseline_total": 24,
+        "now_total": 21,
+        "rows": [
+          {
+            "excerpt": "CCJulAug2626_Cover_v22.indd   1 1CCJulAug_Cover_v.indd",
+            "page": 1,
+            "layout_label": "abandon",
+            "verdict": "still_a_residue"
+          },
+          {
+            "excerpt": "要订阅该杂志，请访问：https://cerncourier.com/p/about-cern-courier",
+            "page": 1,
+            "layout_label": "plain text",
+            "verdict": "still_a_residue"
+          },
+          {
+            "excerpt": "IBIC2026@triumf.ca",
+            "page": 2,
+            "layout_label": "plain text",
+            "verdict": "still_a_residue"
+          },
+          {
+            "excerpt": "indico.jacow.org/event/113/",
+            "page": 2,
+            "layout_label": "fallback_line",
+            "verdict": "still_a_residue"
+          },
+          {
+            "excerpt": "克洛伊·博米耶-马丁 (Chloe Beaumier-Martin)",
+            "page": 2,
+            "layout_label": "plain text",
+            "verdict": "gone"
+          },
+          {
+            "excerpt": "CJulAug26_pIFC.indd 1",
+            "page": 2,
+            "layout_label": "title",
+            "verdict": "gone"
+          },
+          {
+            "excerpt": "CERNCOURIER.COM",
+            "page": 2,
+            "layout_label": "abandon",
+            "verdict": "still_a_residue"
+          },
+          {
+            "excerpt": "芭芭拉·斯托拉奇 (Barbara Storaci) 现在",
+            "page": 2,
+            "layout_label": "plain text",
+            "verdict": "gone"
+          },
+          {
+            "excerpt": "• 伯纳德·罗伊斯·弗伦奇 (Bernard Royce French)",
+            "page": 2,
+            "layout_label": "plain text",
+            "verdict": "gone"
+          },
+          {
+            "excerpt": "P Dinault/CERN",
+            "page": 2,
+            "layout_label": "fallback_line",
+            "verdict": "still_a_residue"
+          },
+          {
+            "excerpt": "CCJulAug26_Conts_v3.in",
+            "page": 2,
+            "layout_label": "abandon",
+            "verdict": "still_a_residue"
+          },
+          {
+            "excerpt": "CCJulAug26_Conts_v3.in",
+            "page": 2,
+            "layout_label": "abandon",
+            "verdict": "still_a_residue"
+          },
+          {
+            "excerpt": "CERNCOURIER.COM",
+            "page": 3,
+            "layout_label": "abandon",
+            "verdict": "still_a_residue"
+          },
+          {
+            "excerpt": "www.bergoz.com",
+            "page": 3,
+            "layout_label": "plain text",
+            "verdict": "still_a_residue"
+          },
+          {
+            "excerpt": "info@bergoz.com",
+            "page": 3,
+            "layout_label": "abandon",
+            "verdict": "still_a_residue"
+          },
+          {
+            "excerpt": "CCJulAug2626_NewsAnalysis_v33.indd   7 7 03CCJulAug_NewsAnalysis_v.indd   /07/20",
+            "page": 3,
+            "layout_label": "abandon",
+            "verdict": "still_a_residue"
+          },
+          {
+            "excerpt": "ul-Aug-Bergoz_colourRL.indd 1",
+            "page": 3,
+            "layout_label": "abandon",
+            "verdict": "gone"
+          },
+          {
+            "excerpt": "ul-Aug-Bergoz_colourRL.indd   1 30/0623 300623/2026   182026   18://:www.",
+            "page": 3,
+            "layout_label": "abandon",
+            "verdict": "still_a_residue"
+          },
+          {
+            "excerpt": "CERNCOURIER.COM",
+            "page": 4,
+            "layout_label": "abandon",
+            "verdict": "still_a_residue"
+          },
+          {
+            "excerpt": "https://indico.cern.ch/event/1480892/.",
+            "page": 4,
+            "layout_label": "plain text",
+            "verdict": "still_a_residue"
+          },
+          {
+            "excerpt": "CCJulAug2626_HISTORY_v44.indd   25 25 03CCJulAug_HISTORY_v.indd   /07/2026",
+            "page": 4,
+            "layout_label": "abandon",
+            "verdict": "gone"
+          },
+          {
+            "excerpt": "CERNCOURIER.COM",
+            "page": 4,
+            "layout_label": "abandon",
+            "verdict": "still_a_residue"
+          },
+          {
+            "excerpt": "R Hahn, Fermilab",
+            "page": 4,
+            "layout_label": "fallback_line",
+            "verdict": "still_a_residue"
+          },
+          {
+            "excerpt": "STORY_v4.indd   24 03/0743 030743/2026   162026   16://:www.",
+            "page": 4,
+            "layout_label": "abandon",
+            "verdict": "still_a_residue"
+          }
+        ],
+        "appeared": [
+          {
+            "excerpt": "CJulAug26_pIFC.indd   1",
+            "verdict": "new_since_baseline"
+          },
+          {
+            "excerpt": "ul-Aug-Bergoz_colourRL.indd   1",
+            "verdict": "new_since_baseline"
+          },
+          {
+            "excerpt": "CCJulAug2626_HISTORY_v44.indd   25 25 03CCJulAug_HISTORY_v.indd   2026年7月3日",
+            "verdict": "new_since_baseline"
+          }
+        ],
+        "gone": 6,
+        "still": 18
+      },
+      "residue_disposition_vs_b11_2": {
+        "against": "previous",
+        "baseline_total": 21,
+        "now_total": 21,
+        "rows": [
+          {
+            "excerpt": "CCJulAug2626_Cover_v22.indd   1 1CCJulAug_Cover_v.indd",
+            "page": 1,
+            "layout_label": "abandon",
+            "verdict": "still_a_residue"
+          },
+          {
+            "excerpt": "要订阅本杂志，请访问：https://cerncourier.com/p/about-cern-courier",
+            "page": 1,
+            "layout_label": "plain text",
+            "verdict": "gone"
+          },
+          {
+            "excerpt": "IBIC2026@triumf.ca",
+            "page": 2,
+            "layout_label": "plain text",
+            "verdict": "still_a_residue"
+          },
+          {
+            "excerpt": "indico.jacow.org/event/113/",
+            "page": 2,
+            "layout_label": "fallback_line",
+            "verdict": "still_a_residue"
+          },
+          {
+            "excerpt": "CJulAug26_pIFC.indd   1",
+            "page": 2,
+            "layout_label": "title",
+            "verdict": "still_a_residue"
+          },
+          {
+            "excerpt": "CERNCOURIER.COM",
+            "page": 2,
+            "layout_label": "abandon",
+            "verdict": "still_a_residue"
+          },
+          {
+            "excerpt": "P Dinault/CERN",
+            "page": 2,
+            "layout_label": "fallback_line",
+            "verdict": "still_a_residue"
+          },
+          {
+            "excerpt": "CCJulAug26_Conts_v3.in",
+            "page": 2,
+            "layout_label": "abandon",
+            "verdict": "still_a_residue"
+          },
+          {
+            "excerpt": "CCJulAug26_Conts_v3.in",
+            "page": 2,
+            "layout_label": "abandon",
+            "verdict": "still_a_residue"
+          },
+          {
+            "excerpt": "CERNCOURIER.COM",
+            "page": 3,
+            "layout_label": "abandon",
+            "verdict": "still_a_residue"
+          },
+          {
+            "excerpt": "www.bergoz.com",
+            "page": 3,
+            "layout_label": "plain text",
+            "verdict": "still_a_residue"
+          },
+          {
+            "excerpt": "info@bergoz.com",
+            "page": 3,
+            "layout_label": "abandon",
+            "verdict": "still_a_residue"
+          },
+          {
+            "excerpt": "CCJulAug2626_NewsAnalysis_v33.indd   7 7 03CCJulAug_NewsAnalysis_v.indd   /07/20",
+            "page": 3,
+            "layout_label": "abandon",
+            "verdict": "still_a_residue"
+          },
+          {
+            "excerpt": "ul-Aug-Bergoz_colourRL.indd   1",
+            "page": 3,
+            "layout_label": "abandon",
+            "verdict": "still_a_residue"
+          },
+          {
+            "excerpt": "ul-Aug-Bergoz_colourRL.indd   1 30/0623 300623/2026   182026   18://:www.",
+            "page": 3,
+            "layout_label": "abandon",
+            "verdict": "still_a_residue"
+          },
+          {
+            "excerpt": "CERNCOURIER.COM",
+            "page": 4,
+            "layout_label": "abandon",
+            "verdict": "still_a_residue"
+          },
+          {
+            "excerpt": "https://indico.cern.ch/event/1480892/.",
+            "page": 4,
+            "layout_label": "plain text",
+            "verdict": "still_a_residue"
+          },
+          {
+            "excerpt": "CCJulAug2626_HISTORY_v44.indd   25 25 03CCJulAug_HISTORY_v.indd   2026年7月3日",
+            "page": 4,
+            "layout_label": "abandon",
+            "verdict": "still_a_residue"
+          },
+          {
+            "excerpt": "CERNCOURIER.COM",
+            "page": 4,
+            "layout_label": "abandon",
+            "verdict": "still_a_residue"
+          },
+          {
+            "excerpt": "R Hahn, Fermilab",
+            "page": 4,
+            "layout_label": "fallback_line",
+            "verdict": "still_a_residue"
+          },
+          {
+            "excerpt": "STORY_v4.indd   24 03/0743 030743/2026   162026   16://:www.",
+            "page": 4,
+            "layout_label": "abandon",
+            "verdict": "still_a_residue"
+          }
+        ],
+        "appeared": [
+          {
+            "excerpt": "要订阅该杂志，请访问：https://cerncourier.com/p/about-cern-courier",
+            "verdict": "new_since_baseline"
+          }
+        ],
+        "gone": 1,
+        "still": 20
+      }
+    },
+    "Courier-en": {
+      "conservation": {
+        "present": true,
+        "pages": 8,
+        "baseline_pages": 8,
+        "page_count_conserved": true,
+        "paragraph_counts_conserved": true,
+        "paragraph_count_differences": [],
+        "anchor_sets_conserved": true,
+        "pages_whose_anchor_set_moved": []
+      },
+      "detector_counts": {
+        "baseline_b10_5": {
+          "untranslated_residue": 12
+        },
+        "previous_b11_2": {
+          "untranslated_residue": 5
+        },
+        "now_b11_3": {
+          "untranslated_residue": 5
+        }
+      },
+      "kinds_that_rose_against_the_previous_tree": {},
+      "residue_disposition_vs_b10_5": {
+        "against": "baseline",
+        "baseline_total": 12,
+        "now_total": 5,
+        "rows": [
+          {
+            "excerpt": "拉吉波伊瓦·谢雷尔·杰克逊 (Lagipoiva Cherelle Jackson)",
+            "page": 1,
+            "layout_label": "plain text",
+            "verdict": "gone"
+          },
+          {
+            "excerpt": "马塞洛·席尔瓦·德·索萨 (Marcelo Silva de Sousa)",
+            "page": 1,
+            "layout_label": "plain text",
+            "verdict": "gone"
+          },
+          {
+            "excerpt": "安娜·罗霍宁 (Anna Ruohonen)",
+            "page": 1,
+            "layout_label": "plain text",
+            "verdict": "gone"
+          },
+          {
+            "excerpt": "照片：Fotohane DARKROOM",
+            "page": 1,
+            "layout_label": "plain text",
+            "verdict": "still_a_residue"
+          },
+          {
+            "excerpt": "吉姆·艾尔-哈利利 (Jim Al-Khalili)",
+            "page": 1,
+            "layout_label": "plain text",
+            "verdict": "gone"
+          },
+          {
+            "excerpt": "与奇玛曼达·恩戈兹·阿迪契（Chimamanda Ngozi Adichie）的访谈",
+            "page": 1,
+            "layout_label": "plain text",
+            "verdict": "gone"
+          },
+          {
+            "excerpt": "© Carolina Zambrano",
+            "page": 3,
+            "layout_label": "fallback_line",
+            "verdict": "still_a_residue"
+          },
+          {
+            "excerpt": "© Adriano Gambarini / OPAN",
+            "page": 5,
+            "layout_label": "fallback_line",
+            "verdict": "still_a_residue"
+          },
+          {
+            "excerpt": "© Boris Séméniako for The UNESCO Courier",
+            "page": 6,
+            "layout_label": "fallback_line",
+            "verdict": "still_a_residue"
+          },
+          {
+            "excerpt": "丹尼尔·罗宾逊 (Daniel Robinson)",
+            "page": 7,
+            "layout_label": "abandon",
+            "verdict": "gone"
+          },
+          {
+            "excerpt": "大卫·杰斐逊 (David Jefferson)",
+            "page": 7,
+            "layout_label": "title",
+            "verdict": "gone"
+          },
+          {
+            "excerpt": "© 克里斯蒂安·古皮（Christian goupi） / robertharding.com",
+            "page": 8,
+            "layout_label": "abandon",
+            "verdict": "gone"
+          }
+        ],
+        "appeared": [
+          {
+            "excerpt": "© 克里斯蒂安·古皮 / robertharding.com",
+            "verdict": "new_since_baseline"
+          }
+        ],
+        "gone": 8,
+        "still": 4
+      },
+      "residue_disposition_vs_b11_2": {
+        "against": "previous",
+        "baseline_total": 5,
+        "now_total": 5,
+        "rows": [
+          {
+            "excerpt": "照片：Fotohane DARKROOM",
+            "page": 1,
+            "layout_label": "plain text",
+            "verdict": "still_a_residue"
+          },
+          {
+            "excerpt": "© Carolina Zambrano",
+            "page": 3,
+            "layout_label": "fallback_line",
+            "verdict": "still_a_residue"
+          },
+          {
+            "excerpt": "© Adriano Gambarini / OPAN",
+            "page": 5,
+            "layout_label": "fallback_line",
+            "verdict": "still_a_residue"
+          },
+          {
+            "excerpt": "© Boris Séméniako for The UNESCO Courier",
+            "page": 6,
+            "layout_label": "fallback_line",
+            "verdict": "still_a_residue"
+          },
+          {
+            "excerpt": "© 克里斯蒂安·古皮 / robertharding.com",
+            "page": 8,
+            "layout_label": "abandon",
+            "verdict": "still_a_residue"
+          }
+        ],
+        "appeared": [],
+        "gone": 0,
+        "still": 5
+      }
+    },
+    "FD-en-v2": {
+      "conservation": {
+        "present": true,
+        "pages": 9,
+        "baseline_pages": 9,
+        "page_count_conserved": true,
+        "paragraph_counts_conserved": true,
+        "paragraph_count_differences": [],
+        "anchor_sets_conserved": true,
+        "pages_whose_anchor_set_moved": []
+      },
+      "detector_counts": {
+        "baseline_b10_5": {
+          "fragment_cluster": 8,
+          "out_of_page": 2,
+          "untranslated_residue": 18
+        },
+        "previous_b11_2": {
+          "fragment_cluster": 8,
+          "out_of_page": 2,
+          "untranslated_residue": 16
+        },
+        "now_b11_3": {
+          "fragment_cluster": 8,
+          "out_of_page": 2,
+          "untranslated_residue": 9
+        }
+      },
+      "kinds_that_rose_against_the_previous_tree": {},
+      "residue_disposition_vs_b10_5": {
+        "against": "baseline",
+        "baseline_total": 18,
+        "now_total": 9,
+        "rows": [
+          {
+            "excerpt": "BRIANSTAUFFER",
+            "page": 2,
+            "layout_label": "fallback_line",
+            "verdict": "still_a_residue"
+          },
+          {
+            "excerpt": "BRIANSTAUFFER",
+            "page": 3,
+            "layout_label": "abandon",
+            "verdict": "still_a_residue"
+          },
+          {
+            "excerpt": "PORTERGIFFORD,CHANTALJAHCHAN",
+            "page": 4,
+            "layout_label": "fallback_line",
+            "verdict": "still_a_residue"
+          },
+          {
+            "excerpt": "EDITOR-IN-CHIEF",
+            "page": 5,
+            "layout_label": "plain text",
+            "verdict": "gone"
+          },
+          {
+            "excerpt": "MANAGING EDITOR",
+            "page": 5,
+            "layout_label": "plain text",
+            "verdict": "gone"
+          },
+          {
+            "excerpt": "SENIOR EDITORS",
+            "page": 5,
+            "layout_label": "plain text",
+            "verdict": "gone"
+          },
+          {
+            "excerpt": "ASSISTANT EDITOR",
+            "page": 5,
+            "layout_label": "plain text",
+            "verdict": "gone"
+          },
+          {
+            "excerpt": "安德鲁·斯坦利 (Andrew Stanley)",
+            "page": 5,
+            "layout_label": "plain text",
+            "verdict": "gone"
+          },
+          {
+            "excerpt": "CREATIVE AND MARKETING",
+            "page": 5,
+            "layout_label": "plain text",
+            "verdict": "gone"
+          },
+          {
+            "excerpt": "Huong (Vanessa) Le",
+            "page": 5,
+            "layout_label": "plain text",
+            "verdict": "still_a_residue"
+          },
+          {
+            "excerpt": "ART DIRECTION AND DESIGN",
+            "page": 5,
+            "layout_label": "plain text",
+            "verdict": "gone"
+          },
+          {
+            "excerpt": "Léala en español",
+            "page": 5,
+            "layout_label": "title",
+            "verdict": "gone"
+          },
+          {
+            "excerpt": "www.imf.org/fandd",
+            "page": 5,
+            "layout_label": "plain text",
+            "verdict": "still_a_residue"
+          },
+          {
+            "excerpt": "电子邮件：publications@IMF.org",
+            "page": 5,
+            "layout_label": "plain text",
+            "verdict": "still_a_residue"
+          },
+          {
+            "excerpt": "插图：尚塔尔·贾赫昌 (Chantal Jahchan)",
+            "page": 8,
+            "layout_label": "abandon",
+            "verdict": "gone"
+          },
+          {
+            "excerpt": "COURTESYKIMRUHL",
+            "page": 8,
+            "layout_label": "abandon",
+            "verdict": "still_a_residue"
+          },
+          {
+            "excerpt": "COURTESYSWISSNATIONALBANK",
+            "page": 9,
+            "layout_label": "abandon",
+            "verdict": "still_a_residue"
+          },
+          {
+            "excerpt": "A glacierbuttercupappears onthe frontof the draft1,000 francnote.",
+            "page": 9,
+            "layout_label": "plain text",
+            "verdict": "gone"
+          }
+        ],
+        "appeared": [
+          {
+            "excerpt": "Léala en  español",
+            "verdict": "new_since_baseline"
+          }
+        ],
+        "gone": 10,
+        "still": 8
+      },
+      "residue_disposition_vs_b11_2": {
+        "against": "previous",
+        "baseline_total": 16,
+        "now_total": 9,
+        "rows": [
+          {
+            "excerpt": "BRIANSTAUFFER",
+            "page": 2,
+            "layout_label": "fallback_line",
+            "verdict": "still_a_residue"
+          },
+          {
+            "excerpt": "BRIANSTAUFFER",
+            "page": 3,
+            "layout_label": "abandon",
+            "verdict": "still_a_residue"
+          },
+          {
+            "excerpt": "PORTERGIFFORD,CHANTALJAHCHAN",
+            "page": 4,
+            "layout_label": "fallback_line",
+            "verdict": "still_a_residue"
+          },
+          {
+            "excerpt": "EDITOR-IN-CHIEF",
+            "page": 5,
+            "layout_label": "plain text",
+            "verdict": "gone"
+          },
+          {
+            "excerpt": "MANAGING EDITOR",
+            "page": 5,
+            "layout_label": "plain text",
+            "verdict": "gone"
+          },
+          {
+            "excerpt": "SENIOR EDITORS",
+            "page": 5,
+            "layout_label": "plain text",
+            "verdict": "gone"
+          },
+          {
+            "excerpt": "ASSISTANT EDITOR",
+            "page": 5,
+            "layout_label": "plain text",
+            "verdict": "gone"
+          },
+          {
+            "excerpt": "CREATIVE AND MARKETING",
+            "page": 5,
+            "layout_label": "plain text",
+            "verdict": "gone"
+          },
+          {
+            "excerpt": "Huong (Vanessa) Le",
+            "page": 5,
+            "layout_label": "plain text",
+            "verdict": "still_a_residue"
+          },
+          {
+            "excerpt": "ART DIRECTION AND DESIGN",
+            "page": 5,
+            "layout_label": "plain text",
+            "verdict": "gone"
+          },
+          {
+            "excerpt": "Léala en  español",
+            "page": 5,
+            "layout_label": "title",
+            "verdict": "still_a_residue"
+          },
+          {
+            "excerpt": "www.imf.org/fandd",
+            "page": 5,
+            "layout_label": "plain text",
+            "verdict": "still_a_residue"
+          },
+          {
+            "excerpt": "电子邮件：publications@IMF.org",
+            "page": 5,
+            "layout_label": "plain text",
+            "verdict": "still_a_residue"
+          },
+          {
+            "excerpt": "COURTESYKIMRUHL",
+            "page": 8,
+            "layout_label": "abandon",
+            "verdict": "still_a_residue"
+          },
+          {
+            "excerpt": "COURTESYSWISSNATIONALBANK",
+            "page": 9,
+            "layout_label": "abandon",
+            "verdict": "still_a_residue"
+          },
+          {
+            "excerpt": "A glacierbuttercupappears onthe frontof the draft1,000 francnote.",
+            "page": 9,
+            "layout_label": "plain text",
+            "verdict": "gone"
+          }
+        ],
+        "appeared": [],
+        "gone": 7,
+        "still": 9
+      }
+    },
+    "Vogue-en": {
+      "conservation": {
+        "present": true,
+        "pages": 3,
+        "baseline_pages": 3,
+        "page_count_conserved": true,
+        "paragraph_counts_conserved": true,
+        "paragraph_count_differences": [],
+        "anchor_sets_conserved": true,
+        "pages_whose_anchor_set_moved": []
+      },
+      "detector_counts": {
+        "baseline_b10_5": {
+          "fragment_cluster": 4,
+          "text_text_collision": 1,
+          "untranslated_residue": 2
+        },
+        "previous_b11_2": {
+          "fragment_cluster": 4,
+          "text_text_collision": 1,
+          "untranslated_residue": 2
+        },
+        "now_b11_3": {
+          "fragment_cluster": 4,
+          "text_text_collision": 1,
+          "untranslated_residue": 2
+        }
+      },
+      "kinds_that_rose_against_the_previous_tree": {},
+      "residue_disposition_vs_b10_5": {
+        "against": "baseline",
+        "baseline_total": 2,
+        "now_total": 2,
+        "rows": [
+          {
+            "excerpt": "FENDI BOUTIQUES  888291 0163FENDI.COM",
+            "page": 1,
+            "layout_label": "abandon",
+            "verdict": "still_a_residue"
+          },
+          {
+            "excerpt": "FASHION EDITOR: JULIA SARR-JAMOIS. HAIR SUSIE SOBOL.   PRODUCED BY BOOM PRODUCTI",
+            "page": 3,
+            "layout_label": "abandon",
+            "verdict": "still_a_residue"
+          }
+        ],
+        "appeared": [],
+        "gone": 0,
+        "still": 2
+      },
+      "residue_disposition_vs_b11_2": {
+        "against": "previous",
+        "baseline_total": 2,
+        "now_total": 2,
+        "rows": [
+          {
+            "excerpt": "FENDI BOUTIQUES  888291 0163FENDI.COM",
+            "page": 1,
+            "layout_label": "abandon",
+            "verdict": "still_a_residue"
+          },
+          {
+            "excerpt": "FASHION EDITOR: JULIA SARR-JAMOIS. HAIR SUSIE SOBOL.   PRODUCED BY BOOM PRODUCTI",
+            "page": 3,
+            "layout_label": "abandon",
+            "verdict": "still_a_residue"
+          }
+        ],
+        "appeared": [],
+        "gone": 0,
+        "still": 2
+      }
+    }
+  },
+  "caption": {
+    "present": true,
+    "records": [
+      {
+        "root": "cross_column",
+        "source": "A glacier buttercup appears on the front of the draft 1,000 franc note.",
+        "request": "A glacier buttercup appears on the front of the draft 1,000 franc note.",
+        "reply": "冰川毛茛出现在1000法郎纸币草稿的正面。"
+      }
+    ],
+    "request_is_placeholders": false,
+    "request_carries_the_words": true
+  },
+  "totals": {
+    "kinds_that_rose_anywhere": {},
+    "conservation_holds_everywhere": true
+  }
+}
