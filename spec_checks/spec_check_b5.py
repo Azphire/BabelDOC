@@ -1980,7 +1980,16 @@ def check_13_escalation() -> None:
     def refusing(stage) -> None:  # noqa: ARG001 - the hook takes the stage
         """Make every redistribution fail the conservation law."""
 
-        def patched(merge, translated, language, strategy, backfill_config=None):  # noqa: ARG001 - stands in for the real signature
+        def patched(*args, **kwargs):  # noqa: ARG001 - it refuses whatever it is asked
+            """Stand in for ``redistribute``, whatever its signature has become.
+
+            It was written out in full and broke the day b10.4 gave the real
+            function two more keyword arguments: a stub that mirrors a
+            signature is a second declaration of it, and the two drift. What
+            this one asserts is that a redistribution which raises is escalated
+            and never written, and that is true of every call, so it takes
+            every call.
+            """
             refusing_calls["count"] += 1
             raise backfill.ChainBackfillError("injected conservation failure")
 

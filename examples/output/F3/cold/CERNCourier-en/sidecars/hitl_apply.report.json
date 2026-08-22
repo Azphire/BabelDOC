@@ -1,0 +1,760 @@
+{
+  "sample": "CERNCourier-en",
+  "terms": {
+    "auto_glossary_kept": 147,
+    "auto_glossary_relocated": "auto_extracted_glossary",
+    "defaulted": 41,
+    "dropped_from_auto": [
+      {
+        "auto_target": "大型强子对撞机",
+        "source": "Large Hadron Collider",
+        "user_target": "大型强子对撞机"
+      },
+      {
+        "auto_target": "束流位置监测器",
+        "source": "Beam Position Monitors",
+        "user_target": "束流位置监测器"
+      },
+      {
+        "auto_target": "CERN Courier",
+        "source": "CERN Courier",
+        "user_target": "CERN Courier"
+      },
+      {
+        "auto_target": "Costas Fountas",
+        "source": "Costas Fountas",
+        "user_target": "科斯塔斯·丰塔斯"
+      },
+      {
+        "auto_target": "DAVIDE DE BIASIO",
+        "source": "DAVIDE DE BIASIO",
+        "user_target": "达维德·德·比亚西奥"
+      },
+      {
+        "auto_target": "Tiffany Angus",
+        "source": "Tiffany Angus",
+        "user_target": "蒂芙尼·安格斯"
+      },
+      {
+        "auto_target": "LOC 联合主席",
+        "source": "LOC Co-Chairs",
+        "user_target": "LOC 联合主席"
+      },
+      {
+        "auto_target": "Hanna Dahl",
+        "source": "Hanna Dahl",
+        "user_target": "汉娜·达尔"
+      },
+      {
+        "auto_target": "Chloe Beaumier-Martin",
+        "source": "Chloe Beaumier-Martin",
+        "user_target": "克洛伊·博米耶-马丁"
+      },
+      {
+        "auto_target": "欧洲战略",
+        "source": "European Strategy",
+        "user_target": "欧洲战略"
+      },
+      {
+        "auto_target": "Barbara Storaci",
+        "source": "Barbara Storaci",
+        "user_target": "芭芭拉·斯托拉奇"
+      },
+      {
+        "auto_target": "机器参数测量",
+        "source": "Machine Parameter Measurements",
+        "user_target": "机器参数测量"
+      },
+      {
+        "auto_target": "会议主席",
+        "source": "Conference Chair",
+        "user_target": "会议主席"
+      },
+      {
+        "auto_target": "Marco Marchetto",
+        "source": "Marco Marchetto",
+        "user_target": "马尔科·马尔凯托"
+      },
+      {
+        "auto_target": "SPC联合主席",
+        "source": "SPC Co-Chairs",
+        "user_target": "SPC联合主席"
+      },
+      {
+        "auto_target": "Paul Dirksen",
+        "source": "Paul Dirksen",
+        "user_target": "保罗·德克森"
+      },
+      {
+        "auto_target": "Tonia Batten",
+        "source": "Tonia Batten",
+        "user_target": "托尼娅·巴滕"
+      },
+      {
+        "auto_target": "LOC主席",
+        "source": "LOC Chair",
+        "user_target": "LOC主席"
+      },
+      {
+        "auto_target": "James Devine",
+        "source": "James Devine",
+        "user_target": "詹姆斯·德瓦恩"
+      },
+      {
+        "auto_target": "Etam Noah",
+        "source": "Etam Noah",
+        "user_target": "埃塔姆·诺亚"
+      },
+      {
+        "auto_target": "Bernard Royce French",
+        "source": "Bernard Royce French",
+        "user_target": "伯纳德·罗伊斯·弗伦奇"
+      },
+      {
+        "auto_target": "Marvin Marshak",
+        "source": "Marvin Marshak",
+        "user_target": "马文·马沙克"
+      },
+      {
+        "auto_target": "Mannque Rho",
+        "source": "Mannque Rho",
+        "user_target": "卢万基"
+      },
+      {
+        "auto_target": "Mick Storr",
+        "source": "Mick Storr",
+        "user_target": "米克·斯托尔"
+      },
+      {
+        "auto_target": "未来环形对撞机",
+        "source": "Future Circular Collider",
+        "user_target": "未来环形对撞机"
+      },
+      {
+        "auto_target": "Mark Thomson",
+        "source": "Mark Thomson",
+        "user_target": "马克·汤姆森"
+      },
+      {
+        "auto_target": "CERN总干事",
+        "source": "CERN Director-General",
+        "user_target": "CERN总干事"
+      },
+      {
+        "auto_target": "高亮度大型强子对撞机",
+        "source": "High-Luminosity LHC",
+        "user_target": "高亮度大型强子对撞机"
+      },
+      {
+        "auto_target": "Bergoz仪器",
+        "source": "Bergoz Instrumentation",
+        "user_target": "Bergoz仪器"
+      },
+      {
+        "auto_target": "模块化数字解决方案",
+        "source": "Modular Digital Solution",
+        "user_target": "模块化数字解决方案"
+      },
+      {
+        "auto_target": "Karl Jakobs",
+        "source": "Karl Jakobs",
+        "user_target": "卡尔·雅各布斯"
+      },
+      {
+        "auto_target": "大爆炸",
+        "source": "Big Bang",
+        "user_target": "大爆炸"
+      },
+      {
+        "auto_target": "超导超级对撞机",
+        "source": "Superconducting Super Collider",
+        "user_target": "超导超级对撞机"
+      },
+      {
+        "auto_target": "美国国会",
+        "source": "US Congress",
+        "user_target": "美国国会"
+      },
+      {
+        "auto_target": "普罗特维诺高能物理研究所",
+        "source": "IHEP Protvino",
+        "user_target": "普罗特维诺高能物理研究所"
+      },
+      {
+        "auto_target": "温斯顿·丘吉尔",
+        "source": "Winston Churchill",
+        "user_target": "温斯顿·丘吉尔"
+      },
+      {
+        "auto_target": "赫尔维格·肖普",
+        "source": "Herwig Schopper",
+        "user_target": "赫尔维格·肖普"
+      },
+      {
+        "auto_target": "相对论重离子对撞机",
+        "source": "Relativistic Heavy Ion Collider",
+        "user_target": "相对论重离子对撞机"
+      },
+      {
+        "auto_target": "拉姆齐礼堂",
+        "source": "Ramsey Auditorium",
+        "user_target": "拉姆齐礼堂"
+      },
+      {
+        "auto_target": "池野山",
+        "source": "Mount Ikeno",
+        "user_target": "池野山"
+      }
+    ],
+    "entries": [
+      {
+        "decided_by": "policy",
+        "source": "CERN Courier",
+        "target": "CERN Courier"
+      },
+      {
+        "decided_by": "policy",
+        "source": "Costas Fountas",
+        "target": "科斯塔斯·丰塔斯"
+      },
+      {
+        "decided_by": "policy",
+        "source": "DAVIDE DE BIASIO",
+        "target": "达维德·德·比亚西奥"
+      },
+      {
+        "decided_by": "policy",
+        "source": "European Strategy",
+        "target": "欧洲战略"
+      },
+      {
+        "decided_by": "policy",
+        "source": "Large Hadron Collider",
+        "target": "大型强子对撞机"
+      },
+      {
+        "decided_by": "policy",
+        "source": "Barbara Storaci",
+        "target": "芭芭拉·斯托拉奇"
+      },
+      {
+        "decided_by": "policy",
+        "source": "Beam Position Monitors",
+        "target": "束流位置监测器"
+      },
+      {
+        "decided_by": "policy",
+        "source": "Bernard Royce French",
+        "target": "伯纳德·罗伊斯·弗伦奇"
+      },
+      {
+        "decided_by": "policy",
+        "source": "CERN COURIER",
+        "target": "CERN Courier"
+      },
+      {
+        "decided_by": "policy",
+        "source": "Chloe Beaumier-Martin",
+        "target": "克洛伊·博米耶-马丁"
+      },
+      {
+        "decided_by": "policy",
+        "source": "Conference Chair",
+        "target": "会议主席"
+      },
+      {
+        "decided_by": "policy",
+        "source": "Hanna Dahl",
+        "target": "汉娜·达尔"
+      },
+      {
+        "decided_by": "policy",
+        "source": "James Devine",
+        "target": "詹姆斯·德瓦恩"
+      },
+      {
+        "decided_by": "policy",
+        "source": "LOC Chair",
+        "target": "LOC主席"
+      },
+      {
+        "decided_by": "policy",
+        "source": "LOC Co-Chairs",
+        "target": "LOC 联合主席"
+      },
+      {
+        "decided_by": "policy",
+        "source": "Machine Parameter Measurements",
+        "target": "机器参数测量"
+      },
+      {
+        "decided_by": "policy",
+        "source": "Mannque Rho",
+        "target": "卢万基"
+      },
+      {
+        "decided_by": "policy",
+        "source": "Marco Marchetto",
+        "target": "马尔科·马尔凯托"
+      },
+      {
+        "decided_by": "policy",
+        "source": "Marvin Marshak",
+        "target": "马文·马沙克"
+      },
+      {
+        "decided_by": "policy",
+        "source": "Mick Storr",
+        "target": "米克·斯托尔"
+      },
+      {
+        "decided_by": "policy",
+        "source": "Paul Dirksen",
+        "target": "保罗·德克森"
+      },
+      {
+        "decided_by": "policy",
+        "source": "SPC Co-Chairs",
+        "target": "SPC联合主席"
+      },
+      {
+        "decided_by": "policy",
+        "source": "Tiffany Angus",
+        "target": "蒂芙尼·安格斯"
+      },
+      {
+        "decided_by": "policy",
+        "source": "Tonia Batten",
+        "target": "托尼娅·巴滕"
+      },
+      {
+        "decided_by": "policy",
+        "source": "Bergoz Instrumentation",
+        "target": "Bergoz仪器"
+      },
+      {
+        "decided_by": "policy",
+        "source": "CERN Director-General",
+        "target": "CERN总干事"
+      },
+      {
+        "decided_by": "policy",
+        "source": "Future Circular Collider",
+        "target": "未来环形对撞机"
+      },
+      {
+        "decided_by": "policy",
+        "source": "Karl Jakobs",
+        "target": "卡尔·雅各布斯"
+      },
+      {
+        "decided_by": "policy",
+        "source": "Mark Thomson",
+        "target": "马克·汤姆森"
+      },
+      {
+        "decided_by": "policy",
+        "source": "Modular Digital Solution",
+        "target": "模块化数字解决方案"
+      },
+      {
+        "decided_by": "policy",
+        "source": "Big Bang",
+        "target": "大爆炸"
+      },
+      {
+        "decided_by": "policy",
+        "source": "Herwig Schopper",
+        "target": "赫尔维格·肖普"
+      },
+      {
+        "decided_by": "policy",
+        "source": "IHEP Protvino",
+        "target": "普罗特维诺高能物理研究所"
+      },
+      {
+        "decided_by": "policy",
+        "source": "Mount Ikeno",
+        "target": "池野山"
+      },
+      {
+        "decided_by": "policy",
+        "source": "Ramsey Auditorium",
+        "target": "拉姆齐礼堂"
+      },
+      {
+        "decided_by": "policy",
+        "source": "Relativistic Heavy Ion Collider",
+        "target": "相对论重离子对撞机"
+      },
+      {
+        "decided_by": "policy",
+        "source": "Superconducting Super Collider",
+        "target": "超导超级对撞机"
+      },
+      {
+        "decided_by": "policy",
+        "source": "US Congress",
+        "target": "美国国会"
+      },
+      {
+        "decided_by": "policy",
+        "source": "Winston Churchill",
+        "target": "温斯顿·丘吉尔"
+      },
+      {
+        "decided_by": "policy",
+        "source": "Etam Noah",
+        "target": "埃塔姆·诺亚"
+      },
+      {
+        "decided_by": "policy",
+        "source": "High-Luminosity LHC",
+        "target": "高亮度大型强子对撞机"
+      }
+    ],
+    "glossary": "hitl_decisions",
+    "match_definition": "how many inputs -- the text a paragraph was offered as, which is what the glossary is matched against -- activate this entry, by the matcher the translation prompt itself uses; counted over every request this run built from the document, the repair loop's included",
+    "matches": [
+      {
+        "matched_excerpts": [
+          "This edition of <style id='1'>CERN Courier</style> also explores Xsuite, the open-source framework that gathered the field’s scattered beam-simulation tools. Today, it designs the colliders to come, tunes those already running and models synchrotrons to treat cancer (p33).",
+          "CERN Courier – digital edition",
+          "<style id='1'>CERN COURIER </style><style id='3'>JULY/AUGUST 2026</style>"
+        ],
+        "matched_prompt_count": 9,
+        "source": "CERN Courier",
+        "target": "CERN Courier"
+      },
+      {
+        "matched_excerpts": [
+          "In May, the CERN Council updated the European Strategy for Particle Physics (p7). The preferred next flagship is once again an electron–positron collider, the FCC-ee. Council president Costas Fountas weighs what must fall into place before a decision, targeted for 2028 (p39).",
+          "flagship project to maintain CERN’s world-leading role in collider physics and technology in the decades to come,” said Costas Fountas, Council president. “I wish the CERN management the great- est success in implementing the Council resolution between now and the 2028 target decision date.”"
+        ],
+        "matched_prompt_count": 2,
+        "source": "Costas Fountas",
+        "target": "科斯塔斯·丰塔斯"
+      },
+      {
+        "matched_excerpts": [
+          "ASSOCIATE EDITOR: DAVIDE DE BIASIO"
+        ],
+        "matched_prompt_count": 1,
+        "source": "DAVIDE DE BIASIO",
+        "target": "达维德·德·比亚西奥"
+      },
+      {
+        "matched_excerpts": [
+          "In May, the CERN Council updated the European Strategy for Particle Physics (p7). The preferred next flagship is once again an electron–positron collider, the FCC-ee. Council president Costas Fountas weighs what must fall into place before a decision, targeted for 2028 (p39).",
+          "<style id='1'>Strategy update</style><style id='3'> The CERN Council updated the European Strategy for Particle Physics. </style><style id='5'>7</style>",
+          "On 22 May, at a dedicated session in Budapest, the CERN Council updated the European Strategy for Particle Physics. The update confirms the full exploitation of the scientific potential of the LHC, through the completion of its high-luminosity upgrade (HiLumi), as the highest medium-term priority for European particle physics. For the longer term, it recommends the electron– positron Future Circular Collider (FCC-ee) as the preferred option for the next flagship project at CERN, thereby main- taining Europe’s leadership in the field. A decision on the FCC-ee itself is targeted for 2028."
+        ],
+        "matched_prompt_count": 9,
+        "source": "European Strategy",
+        "target": "欧洲战略"
+      },
+      {
+        "matched_excerpts": [
+          "When the Large Electron–Positron collider (LEP) switched on, in 1989, the field had never worked at such a scale. Approved eight years earlier, it collided electrons and positrons until the turn of the century, marking two decades in which discovery truly turned global. Last November, some 200 physicists and historians gathered at CERN to take stock of those years (p22), while the Large Hadron Collider, built in LEP’s tunnel, delivered its final collisions in June (p8)."
+        ],
+        "matched_prompt_count": 1,
+        "source": "Large Hadron Collider",
+        "target": "大型强子对撞机"
+      },
+      {
+        "matched_excerpts": [
+          "Barbara Storaci now"
+        ],
+        "matched_prompt_count": 1,
+        "source": "Barbara Storaci",
+        "target": "芭芭拉·斯托拉奇"
+      },
+      {
+        "matched_excerpts": [
+          "{v1}Beam Position Monitors"
+        ],
+        "matched_prompt_count": 1,
+        "source": "Beam Position Monitors",
+        "target": "束流位置监测器"
+      },
+      {
+        "matched_excerpts": [
+          "{v1}Bernard Royce French"
+        ],
+        "matched_prompt_count": 1,
+        "source": "Bernard Royce French",
+        "target": "伯纳德·罗伊斯·弗伦奇"
+      },
+      {
+        "matched_excerpts": [
+          "This edition of <style id='1'>CERN Courier</style> also explores Xsuite, the open-source framework that gathered the field’s scattered beam-simulation tools. Today, it designs the colliders to come, tunes those already running and models synchrotrons to treat cancer (p33).",
+          "CERN Courier – digital edition",
+          "<style id='1'>CERN COURIER </style><style id='3'>JULY/AUGUST 2026</style>"
+        ],
+        "matched_prompt_count": 9,
+        "source": "CERN COURIER",
+        "target": "CERN Courier"
+      },
+      {
+        "matched_excerpts": [
+          "Chloe Beaumier-Martin"
+        ],
+        "matched_prompt_count": 1,
+        "source": "Chloe Beaumier-Martin",
+        "target": "克洛伊·博米耶-马丁"
+      },
+      {
+        "matched_excerpts": [
+          "Conference Chair"
+        ],
+        "matched_prompt_count": 1,
+        "source": "Conference Chair",
+        "target": "会议主席"
+      },
+      {
+        "matched_excerpts": [
+          "Hanna Dahl"
+        ],
+        "matched_prompt_count": 1,
+        "source": "Hanna Dahl",
+        "target": "汉娜·达尔"
+      },
+      {
+        "matched_excerpts": [
+          "James Devine and Etam"
+        ],
+        "matched_prompt_count": 1,
+        "source": "James Devine",
+        "target": "詹姆斯·德瓦恩"
+      },
+      {
+        "matched_excerpts": [
+          "LOC Chair"
+        ],
+        "matched_prompt_count": 1,
+        "source": "LOC Chair",
+        "target": "LOC主席"
+      },
+      {
+        "matched_excerpts": [
+          "LOC Co-Chairs"
+        ],
+        "matched_prompt_count": 1,
+        "source": "LOC Co-Chairs",
+        "target": "LOC 联合主席"
+      },
+      {
+        "matched_excerpts": [
+          "{v1}Machine Parameter Measurements"
+        ],
+        "matched_prompt_count": 1,
+        "source": "Machine Parameter Measurements",
+        "target": "机器参数测量"
+      },
+      {
+        "matched_excerpts": [
+          "{v1}Mannque Rho"
+        ],
+        "matched_prompt_count": 1,
+        "source": "Mannque Rho",
+        "target": "卢万基"
+      },
+      {
+        "matched_excerpts": [
+          "Marco Marchetto"
+        ],
+        "matched_prompt_count": 1,
+        "source": "Marco Marchetto",
+        "target": "马尔科·马尔凯托"
+      },
+      {
+        "matched_excerpts": [
+          "{v1}Marvin Marshak"
+        ],
+        "matched_prompt_count": 1,
+        "source": "Marvin Marshak",
+        "target": "马文·马沙克"
+      },
+      {
+        "matched_excerpts": [
+          "{v1}<style id='2'>Mick Storr. </style>51"
+        ],
+        "matched_prompt_count": 1,
+        "source": "Mick Storr",
+        "target": "米克·斯托尔"
+      },
+      {
+        "matched_excerpts": [
+          "Paul Dirksen (TRIUMF)"
+        ],
+        "matched_prompt_count": 1,
+        "source": "Paul Dirksen",
+        "target": "保罗·德克森"
+      },
+      {
+        "matched_excerpts": [
+          "SPC Co-Chairs"
+        ],
+        "matched_prompt_count": 1,
+        "source": "SPC Co-Chairs",
+        "target": "SPC联合主席"
+      },
+      {
+        "matched_excerpts": [
+          "Tiffany Angus"
+        ],
+        "matched_prompt_count": 1,
+        "source": "Tiffany Angus",
+        "target": "蒂芙尼·安格斯"
+      },
+      {
+        "matched_excerpts": [
+          "Tonia Batten (CLS)"
+        ],
+        "matched_prompt_count": 1,
+        "source": "Tonia Batten",
+        "target": "托尼娅·巴滕"
+      },
+      {
+        "matched_excerpts": [
+          "Bergoz Instrumentation goes digital",
+          "For more than 45 years, Bergoz Instrumentation is providing non-destructive current measurement solutions to particle accelerators worldwide.",
+          "Each MDS variant is dedicated to specific Bergoz Instrumentation measurement system to best interface their analog signals with accelerator control systems."
+        ],
+        "matched_prompt_count": 3,
+        "source": "Bergoz Instrumentation",
+        "target": "Bergoz仪器"
+      },
+      {
+        "matched_excerpts": [
+          "The European Strategy reiterates the critical importance of the High- Luminosity LHC, which will use advanced accelerator and detector technologies to fully exploit the scientific potential of this incredible machine in the com- ing years,” said Mark Thomson, CERN Director-General. “Beyond HiLumi LHC, the FCC-ee would be a visionary global research infrastructure for the next decades that will deepen our knowledge of the fundamental building blocks of the universe through ultra-precise measurements of the Higgs boson and other elementary particles. CERN’s task now is to steer this unprecedented project towards a decision by the CERN Council.”",
+          "The symposium was dedicated to the memory of Herwig Schopper, who passed away in August 2025 at the age of 101 (<style id='1'>CERN Courier </style>November/December 2025 p32). He was CERN Director-General from 1981 to 1988, in the years of the SPS collider, of LEP’s approval and of the early conception of the LHC. {v3}"
+        ],
+        "matched_prompt_count": 2,
+        "source": "CERN Director-General",
+        "target": "CERN总干事"
+      },
+      {
+        "matched_excerpts": [
+          "On 22 May, at a dedicated session in Budapest, the CERN Council updated the European Strategy for Particle Physics. The update confirms the full exploitation of the scientific potential of the LHC, through the completion of its high-luminosity upgrade (HiLumi), as the highest medium-term priority for European particle physics. For the longer term, it recommends the electron– positron Future Circular Collider (FCC-ee) as the preferred option for the next flagship project at CERN, thereby main- taining Europe’s leadership in the field. A decision on the FCC-ee itself is targeted for 2028.",
+          "analysis were also reviewed. It was made clear that with- out tight international collaboration and knowledge flow extending from KEK and Novosibirsk through Europe to the USA and down to Antarctica, among many competing groups, such progress would have been extremely unlikely. The lesson for those now planning future colliders like the FCC (Future Circular Collider) was explicit: even more than for the LHC, pull together the centres of excellence well in advance and concretely prepare what is needed for the construction of both the accelerators and the detectors."
+        ],
+        "matched_prompt_count": 2,
+        "source": "Future Circular Collider",
+        "target": "未来环形对撞机"
+      },
+      {
+        "matched_excerpts": [
+          "been demonstrated by the comprehensive FCC feasibility study, and its scope and cost are well defined,” said Karl Jakobs, Strategy secretary. “It would also pave the way for a possible future hadron collider reusing the tunnel and much of the infrastructure, providing direct discovery reach well beyond the 10 TeV parton energy scale.”"
+        ],
+        "matched_prompt_count": 1,
+        "source": "Karl Jakobs",
+        "target": "卡尔·雅各布斯"
+      },
+      {
+        "matched_excerpts": [
+          "The European Strategy reiterates the critical importance of the High- Luminosity LHC, which will use advanced accelerator and detector technologies to fully exploit the scientific potential of this incredible machine in the com- ing years,” said Mark Thomson, CERN Director-General. “Beyond HiLumi LHC, the FCC-ee would be a visionary global research infrastructure for the next decades that will deepen our knowledge of the fundamental building blocks of the universe through ultra-precise measurements of the Higgs boson and other elementary particles. CERN’s task now is to steer this unprecedented project towards a decision by the CERN Council.”"
+        ],
+        "matched_prompt_count": 1,
+        "source": "Mark Thomson",
+        "target": "马克·汤姆森"
+      },
+      {
+        "matched_excerpts": [
+          "To meet these challenges, the Modular Digital Solution (MDS) suite has been designed to integrate with our existing products, providing a complete, end-to-end solution."
+        ],
+        "matched_prompt_count": 1,
+        "source": "Modular Digital Solution",
+        "target": "模块化数字解决方案"
+      },
+      {
+        "matched_excerpts": [
+          "A very telling story was that of ISABELLE, a high-energy proton collider planned at Brookhaven National Laboratory that ran into magnet trouble in the early 1980s. A proposal to double the energy fared no better, especially after the discoveries of the W and Z at CERN made the original physics case less compelling. Yet its rebirth as RHIC, the Relativistic Heavy Ion Collider, opened a whole new field of research for the community (see “Second life” image), allowing physicists to recreate and study the quark–gluon plasma that filled the universe microseconds after the Big Bang. A case of snatching victory from the jaws of defeat, and an important trajectory to keep in mind for the future."
+        ],
+        "matched_prompt_count": 1,
+        "source": "Big Bang",
+        "target": "大爆炸"
+      },
+      {
+        "matched_excerpts": [
+          "The symposium was dedicated to the memory of Herwig Schopper, who passed away in August 2025 at the age of 101 (<style id='1'>CERN Courier </style>November/December 2025 p32). He was CERN Director-General from 1981 to 1988, in the years of the SPS collider, of LEP’s approval and of the early conception of the LHC. {v3}"
+        ],
+        "matched_prompt_count": 1,
+        "source": "Herwig Schopper",
+        "target": "赫尔维格·肖普"
+      },
+      {
+        "matched_excerpts": [
+          "The dissolution of the Soviet Union terminated the UNK programme, which envisaged a {v1}TeV proton collider at IHEP Protvino. The impact on high-energy research in Rus- sia was profound, yet the community showed remarkable resilience, sustaining the heavy-ion programme at JINR in Dubna and continuing neutrino experiments in politically challenging times. A silver lining was the international call for scientific solidarity that crossed geopolitical lines, helping keep Soviet colleagues part of the high-energy physics community."
+        ],
+        "matched_prompt_count": 1,
+        "source": "IHEP Protvino",
+        "target": "普罗特维诺高能物理研究所"
+      },
+      {
+        "matched_excerpts": [
+          "<style id='1'>The proton stays</style> The Kamiokande detector during construction in spring 1983, a kilometre beneath Mount Ikeno in Japan. Designed to detect proton decay, it found none, ruling out the simplest grand unified theories. Its successor, Super-Kamiokande, observed neutrino oscillations in 1998."
+        ],
+        "matched_prompt_count": 1,
+        "source": "Mount Ikeno",
+        "target": "池野山"
+      },
+      {
+        "matched_excerpts": [
+          "<style id='1'>Top, at last</style> The audience in Fermilab’s Ramsey Auditorium on 2 March 1995, gathered to hear the joint CDF and D0 announcement of the discovery of the top quark."
+        ],
+        "matched_prompt_count": 1,
+        "source": "Ramsey Auditorium",
+        "target": "拉姆齐礼堂"
+      },
+      {
+        "matched_excerpts": [
+          "A very telling story was that of ISABELLE, a high-energy proton collider planned at Brookhaven National Laboratory that ran into magnet trouble in the early 1980s. A proposal to double the energy fared no better, especially after the discoveries of the W and Z at CERN made the original physics case less compelling. Yet its rebirth as RHIC, the Relativistic Heavy Ion Collider, opened a whole new field of research for the community (see “Second life” image), allowing physicists to recreate and study the quark–gluon plasma that filled the universe microseconds after the Big Bang. A case of snatching victory from the jaws of defeat, and an important trajectory to keep in mind for the future.",
+          "<style id='1'>Second life</style> The construction of BNL’s Relativistic Heavy Ion Collider began in 1991, in the tunnel left by the cancellation of the ISABELLE proton collider eight years earlier. The machine would come into operation in 2000 and establish the quark–gluon plasma as a near-perfect liquid."
+        ],
+        "matched_prompt_count": 2,
+        "source": "Relativistic Heavy Ion Collider",
+        "target": "相对论重离子对撞机"
+      },
+      {
+        "matched_excerpts": [
+          "A different story was that of the Superconducting Super Collider (SSC), cancelled by the US Congress in 1993 after construction began in Texas. Understanding all the causes of this failure and appreciating its full impact on both the US and the CERN programmes is still fertile ground for historians, and should be required reading for those planning new frontier colliders."
+        ],
+        "matched_prompt_count": 1,
+        "source": "Superconducting Super Collider",
+        "target": "超导超级对撞机"
+      },
+      {
+        "matched_excerpts": [
+          "A different story was that of the Superconducting Super Collider (SSC), cancelled by the US Congress in 1993 after construction began in Texas. Understanding all the causes of this failure and appreciating its full impact on both the US and the CERN programmes is still fertile ground for historians, and should be required reading for those planning new frontier colliders."
+        ],
+        "matched_prompt_count": 1,
+        "source": "US Congress",
+        "target": "美国国会"
+      },
+      {
+        "matched_excerpts": [
+          "As Winston Churchill himself put it in the House of Commons, it is “much better by all parties to leave the past to history, especially as I propose to write that history myself.” Inevitably, those who lived through the events are not always best placed to write the conclusive story. Future editions would benefit from a larger contribution by historians of science, offering independent analysis of the processes, credits and timelines to which the phys- icists themselves may be too close. Still, many words of wisdom emerged from the combined experience of the speakers. Among them, a remark redefined “free energy” as the small reserve of discretionary funds that a visionary director-general can deploy to test major breakthrough ideas, free from the scrutiny of funding agencies."
+        ],
+        "matched_prompt_count": 1,
+        "source": "Winston Churchill",
+        "target": "温斯顿·丘吉尔"
+      },
+      {
+        "matched_excerpts": [],
+        "matched_prompt_count": 0,
+        "source": "Etam Noah",
+        "target": "埃塔姆·诺亚"
+      },
+      {
+        "matched_excerpts": [],
+        "matched_prompt_count": 0,
+        "source": "High-Luminosity LHC",
+        "target": "高亮度大型强子对撞机"
+      }
+    ],
+    "overridden": [],
+    "repair_inputs": 6,
+    "ruled": 0
+  }
+}

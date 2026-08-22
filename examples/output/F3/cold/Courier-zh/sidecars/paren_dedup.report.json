@@ -1,0 +1,117 @@
+{
+  "closers": [
+    ")",
+    "）"
+  ],
+  "max_span_chars": 40,
+  "openers": [
+    "(",
+    "（"
+  ],
+  "pages": 8,
+  "paragraphs": [
+    {
+      "after": "Agnes Bardon",
+      "before": "Agnes Bardon (Agnes Bardon)",
+      "debug_id": "cHD3V",
+      "page": 1,
+      "reference": "p1#8",
+      "removed_compositions": 1,
+      "removed_unicode": 1,
+      "spans": [
+        "Agnes Bardon"
+      ]
+    },
+    {
+      "after": "Lagipoiva Cherelle Jackson",
+      "before": "Lagipoiva Cherelle Jackson (Lagipoiva Cherelle Jackson)",
+      "debug_id": "Ruzji#L1",
+      "page": 1,
+      "reference": "p1#12",
+      "removed_compositions": 1,
+      "removed_unicode": 1,
+      "spans": [
+        "Lagipoiva Cherelle Jackson"
+      ]
+    },
+    {
+      "after": "Marcelo Silva de Sousa",
+      "before": "Marcelo Silva de Sousa (Marcelo Silva de Sousa)",
+      "debug_id": "eZHhh",
+      "page": 1,
+      "reference": "p1#14",
+      "removed_compositions": 1,
+      "removed_unicode": 1,
+      "spans": [
+        "Marcelo Silva de Sousa"
+      ]
+    },
+    {
+      "after": "Daniel Robinson and David Jefferson",
+      "before": "Daniel Robinson (Daniel Robinson) and David Jefferson (David Jefferson)",
+      "debug_id": "vwFg4",
+      "page": 1,
+      "reference": "p1#16",
+      "removed_compositions": 2,
+      "removed_unicode": 2,
+      "spans": [
+        "Daniel Robinson",
+        "David Jefferson"
+      ]
+    },
+    {
+      "after": "Sisco Auala",
+      "before": "Sisco Auala (Sisco Auala)",
+      "debug_id": "6t48p",
+      "page": 1,
+      "reference": "p1#20",
+      "removed_compositions": 1,
+      "removed_unicode": 1,
+      "spans": [
+        "Sisco Auala"
+      ]
+    },
+    {
+      "after": "Anna Ruohonen",
+      "before": "Anna Ruohonen (Anna Ruohonen)",
+      "debug_id": "gzk4h#L1",
+      "page": 1,
+      "reference": "p1#22",
+      "removed_compositions": 1,
+      "removed_unicode": 1,
+      "spans": [
+        "Anna Ruohonen"
+      ]
+    },
+    {
+      "after": "Marcelo Silva de Sousa",
+      "before": "Marcelo Silva de Sousa (Marcelo Silva de Sousa)",
+      "debug_id": "YRDhJ",
+      "page": 5,
+      "reference": "p5#11",
+      "removed_compositions": 1,
+      "removed_unicode": 1,
+      "spans": [
+        "Marcelo Silva de Sousa"
+      ]
+    },
+    {
+      "after": "Daniel Robinson",
+      "before": "Daniel Robinson (Daniel Robinson)",
+      "debug_id": "2G3HV",
+      "page": 7,
+      "reference": "p7#16",
+      "removed_compositions": 1,
+      "removed_unicode": 1,
+      "spans": [
+        "Daniel Robinson"
+      ]
+    }
+  ],
+  "switch": "magazine_paren_dedup",
+  "totals": {
+    "paragraphs_folded": 8,
+    "spans_removed": 9,
+    "unicode_spans_removed": 9
+  }
+}

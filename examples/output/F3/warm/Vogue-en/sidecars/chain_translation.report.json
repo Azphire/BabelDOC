@@ -1,0 +1,22 @@
+{
+  "align_enabled": true,
+  "applied": true,
+  "chains": [],
+  "counts": {
+    "aligned_cuts": 0,
+    "alignment_requests": 0,
+    "chains": 0,
+    "escalated": 0,
+    "merged": 0,
+    "merged_members": 0,
+    "skips": 0
+  },
+  "escalated": [],
+  "language": "zh",
+  "short_units": {
+    "admitted": 0,
+    "refused": 0,
+    "requests": 0
+  },
+  "skips": []
+}

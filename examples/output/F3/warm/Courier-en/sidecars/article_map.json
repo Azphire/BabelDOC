@@ -1,0 +1,532 @@
+{
+  "articles": [
+    {
+      "article_id": "Xj8V3",
+      "chains": [
+        "NB59P"
+      ],
+      "merged_by_chain": false,
+      "pages": [
+        2,
+        3,
+        4
+      ],
+      "paragraphs": [
+        {
+          "debug_id": "YCK65",
+          "page": 2
+        },
+        {
+          "debug_id": "zEQnE",
+          "page": 2
+        },
+        {
+          "debug_id": "CBApE",
+          "page": 2
+        },
+        {
+          "debug_id": "5HbF6",
+          "page": 2
+        },
+        {
+          "debug_id": "2Spqb",
+          "page": 2
+        },
+        {
+          "debug_id": "BMdYw",
+          "page": 2
+        },
+        {
+          "debug_id": "7L9Hw",
+          "page": 2
+        },
+        {
+          "debug_id": "64eqg",
+          "page": 2
+        },
+        {
+          "debug_id": "UEtA5",
+          "page": 3
+        },
+        {
+          "debug_id": "CJ7Li",
+          "page": 3
+        },
+        {
+          "debug_id": "dHeMJ",
+          "page": 3
+        },
+        {
+          "debug_id": "pTHm9",
+          "page": 4
+        },
+        {
+          "debug_id": "8m9Ra",
+          "page": 4
+        },
+        {
+          "debug_id": "Eivmy",
+          "page": 4
+        },
+        {
+          "debug_id": "dkhSb",
+          "page": 4
+        },
+        {
+          "debug_id": "qJtFu",
+          "page": 4
+        },
+        {
+          "debug_id": "KCjAi",
+          "page": 4
+        },
+        {
+          "debug_id": "TjBwc",
+          "page": 4
+        },
+        {
+          "debug_id": "zTUa2",
+          "page": 4
+        },
+        {
+          "debug_id": "empUY",
+          "page": 4
+        },
+        {
+          "debug_id": "XSfqx",
+          "page": 4
+        },
+        {
+          "debug_id": "gW7NL",
+          "page": 4
+        },
+        {
+          "debug_id": "UXuyb",
+          "page": 4
+        },
+        {
+          "debug_id": "NCqWL",
+          "page": 4
+        },
+        {
+          "debug_id": "BfZmA",
+          "page": 4
+        },
+        {
+          "debug_id": "ZCCuH",
+          "page": 4
+        },
+        {
+          "debug_id": "japdm",
+          "page": 4
+        },
+        {
+          "debug_id": "Tu1y9",
+          "page": 4
+        },
+        {
+          "debug_id": "Ro5HJ",
+          "page": 4
+        },
+        {
+          "debug_id": "wfxdo",
+          "page": 4
+        },
+        {
+          "debug_id": "d5WDu",
+          "page": 4
+        },
+        {
+          "debug_id": "QmNDa",
+          "page": 4
+        },
+        {
+          "debug_id": "nhiA3",
+          "page": 4
+        },
+        {
+          "debug_id": "CnWzH",
+          "page": 4
+        },
+        {
+          "debug_id": "s1wbS",
+          "page": 4
+        }
+      ],
+      "start_page": 2,
+      "title": {
+        "debug_id": "5HbF6",
+        "layout_label": "title",
+        "text": "How Indigenous knowledge drives"
+      }
+    },
+    {
+      "article_id": "85bRu",
+      "chains": [],
+      "merged_by_chain": false,
+      "pages": [
+        5,
+        6
+      ],
+      "paragraphs": [
+        {
+          "debug_id": "Nap2R",
+          "page": 5
+        },
+        {
+          "debug_id": "zRJw7",
+          "page": 5
+        },
+        {
+          "debug_id": "EqA3k",
+          "page": 5
+        },
+        {
+          "debug_id": "96ggc",
+          "page": 5
+        },
+        {
+          "debug_id": "YbwiZ",
+          "page": 5
+        },
+        {
+          "debug_id": "MEE8i",
+          "page": 5
+        },
+        {
+          "debug_id": "X5Xb7",
+          "page": 5
+        },
+        {
+          "debug_id": "8E4wB",
+          "page": 5
+        },
+        {
+          "debug_id": "9WQ2M",
+          "page": 5
+        },
+        {
+          "debug_id": "3SeVq",
+          "page": 5
+        },
+        {
+          "debug_id": "6eaz1",
+          "page": 5
+        },
+        {
+          "debug_id": "XFqVz",
+          "page": 5
+        },
+        {
+          "debug_id": "aYLES",
+          "page": 6
+        },
+        {
+          "debug_id": "tt47e",
+          "page": 6
+        },
+        {
+          "debug_id": "NHBm5",
+          "page": 6
+        },
+        {
+          "debug_id": "UU2ic",
+          "page": 6
+        },
+        {
+          "debug_id": "6j5k8",
+          "page": 6
+        },
+        {
+          "debug_id": "E6PFm",
+          "page": 6
+        },
+        {
+          "debug_id": "nhc32",
+          "page": 6
+        },
+        {
+          "debug_id": "FxEAK",
+          "page": 6
+        },
+        {
+          "debug_id": "GZVq4",
+          "page": 6
+        },
+        {
+          "debug_id": "u5dPM",
+          "page": 6
+        },
+        {
+          "debug_id": "qrkU7",
+          "page": 6
+        },
+        {
+          "debug_id": "gh9C5",
+          "page": 6
+        },
+        {
+          "debug_id": "9JenY",
+          "page": 6
+        },
+        {
+          "debug_id": "iZupb",
+          "page": 6
+        },
+        {
+          "debug_id": "T1yyL",
+          "page": 6
+        },
+        {
+          "debug_id": "UUtEP",
+          "page": 6
+        }
+      ],
+      "start_page": 5,
+      "title": {
+        "debug_id": "X5Xb7",
+        "layout_label": "title",
+        "text": "Brazil: lessons from the water people"
+      }
+    },
+    {
+      "article_id": "r6FBc",
+      "chains": [
+        "X9D6z"
+      ],
+      "merged_by_chain": false,
+      "pages": [
+        7,
+        8
+      ],
+      "paragraphs": [
+        {
+          "debug_id": "zoHrF",
+          "page": 7
+        },
+        {
+          "debug_id": "kDSv2",
+          "page": 7
+        },
+        {
+          "debug_id": "kDgYn",
+          "page": 7
+        },
+        {
+          "debug_id": "DQNSv",
+          "page": 7
+        },
+        {
+          "debug_id": "hyUFw",
+          "page": 7
+        },
+        {
+          "debug_id": "KhYhy",
+          "page": 7
+        },
+        {
+          "debug_id": "3Kg8G",
+          "page": 7
+        },
+        {
+          "debug_id": "7HgNN",
+          "page": 7
+        },
+        {
+          "debug_id": "xVbTX",
+          "page": 7
+        },
+        {
+          "debug_id": "EiBxe",
+          "page": 7
+        },
+        {
+          "debug_id": "uZf7U",
+          "page": 7
+        },
+        {
+          "debug_id": "bu5dW",
+          "page": 7
+        },
+        {
+          "debug_id": "a8UqS",
+          "page": 7
+        },
+        {
+          "debug_id": "XzyTa",
+          "page": 7
+        },
+        {
+          "debug_id": "GCArL",
+          "page": 7
+        },
+        {
+          "debug_id": "5UASm",
+          "page": 7
+        },
+        {
+          "debug_id": "ydYG9",
+          "page": 7
+        },
+        {
+          "debug_id": "4fMG2",
+          "page": 7
+        },
+        {
+          "debug_id": "oPLXP",
+          "page": 8
+        },
+        {
+          "debug_id": "MHakA",
+          "page": 8
+        },
+        {
+          "debug_id": "HqFTG",
+          "page": 8
+        },
+        {
+          "debug_id": "oPKbP",
+          "page": 8
+        },
+        {
+          "debug_id": "Faxv9",
+          "page": 8
+        },
+        {
+          "debug_id": "yscUg",
+          "page": 8
+        },
+        {
+          "debug_id": "oRENB",
+          "page": 8
+        },
+        {
+          "debug_id": "e81V3",
+          "page": 8
+        },
+        {
+          "debug_id": "UAxYq",
+          "page": 8
+        },
+        {
+          "debug_id": "6WRve",
+          "page": 8
+        },
+        {
+          "debug_id": "wncbT",
+          "page": 8
+        },
+        {
+          "debug_id": "Xhvt6",
+          "page": 8
+        },
+        {
+          "debug_id": "KVLw8",
+          "page": 8
+        },
+        {
+          "debug_id": "6xS4x",
+          "page": 8
+        },
+        {
+          "debug_id": "wYEsZ",
+          "page": 8
+        },
+        {
+          "debug_id": "JWgr7",
+          "page": 8
+        }
+      ],
+      "start_page": 7,
+      "title": {
+        "debug_id": "3Kg8G",
+        "layout_label": "title",
+        "text": "The struggle for benefit-sharing"
+      }
+    }
+  ],
+  "counts": {
+    "articles": 3,
+    "chains": 2,
+    "merged_by_chain": 0,
+    "pages": 8,
+    "unassigned": 1
+  },
+  "pages": [
+    {
+      "article_id": null,
+      "page": 1,
+      "page_kind": "toc",
+      "page_kind_conf": 1.0,
+      "reason": "not_chain_eligible",
+      "role": "unassigned"
+    },
+    {
+      "article_id": "Xj8V3",
+      "page": 2,
+      "page_kind": "article_opener",
+      "page_kind_conf": 1.0,
+      "reason": null,
+      "role": "opens"
+    },
+    {
+      "article_id": "Xj8V3",
+      "page": 3,
+      "page_kind": "photo_spread",
+      "page_kind_conf": 1.0,
+      "reason": null,
+      "role": "member"
+    },
+    {
+      "article_id": "Xj8V3",
+      "page": 4,
+      "page_kind": "article_body",
+      "page_kind_conf": 1.0,
+      "reason": null,
+      "role": "member"
+    },
+    {
+      "article_id": "85bRu",
+      "page": 5,
+      "page_kind": "article_opener",
+      "page_kind_conf": 1.0,
+      "reason": null,
+      "role": "opens"
+    },
+    {
+      "article_id": "85bRu",
+      "page": 6,
+      "page_kind": "article_body",
+      "page_kind_conf": 1.0,
+      "reason": null,
+      "role": "member"
+    },
+    {
+      "article_id": "r6FBc",
+      "page": 7,
+      "page_kind": "article_opener",
+      "page_kind_conf": 0.875,
+      "reason": null,
+      "role": "opens"
+    },
+    {
+      "article_id": "r6FBc",
+      "page": 8,
+      "page_kind": "article_body",
+      "page_kind_conf": 1.0,
+      "reason": null,
+      "role": "member"
+    }
+  ],
+  "title_labels": [
+    "title",
+    "paragraph_title"
+  ],
+  "unassigned": [
+    {
+      "page": 1,
+      "page_kind": "toc",
+      "reason": "not_chain_eligible"
+    }
+  ]
+}

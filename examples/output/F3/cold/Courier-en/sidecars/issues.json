@@ -1,0 +1,394 @@
+{
+  "counts": {
+    "by_kind": {
+      "untranslated_residue": 12
+    },
+    "issues": 12
+  },
+  "detector_records": {},
+  "document_detectors": [
+    "escalation_surfacing"
+  ],
+  "issues": [
+    {
+      "detected_at_iteration": 1,
+      "detector": "untranslated_residue",
+      "evidence": {
+        "debug_id": "WC3Hh",
+        "excerpt": "拉吉波伊瓦·谢雷尔·杰克逊 (Lagipoiva Cherelle Jackson)",
+        "layout_label": "plain text",
+        "min_ratio": 0.6,
+        "residue_chars": 24,
+        "residue_ratio": 0.6857,
+        "residue_script": "latin",
+        "script_chars": 35
+      },
+      "geometry": {
+        "x": 78.4778,
+        "x2": 159.75970000000004,
+        "y": 538.6475,
+        "y2": 551.8502
+      },
+      "id": "untranslated_residue:p1:p1#15",
+      "kind": "untranslated_residue",
+      "page": 1,
+      "paragraph_refs": [
+        "p1#15"
+      ],
+      "severity": "high"
+    },
+    {
+      "detected_at_iteration": 1,
+      "detector": "untranslated_residue",
+      "evidence": {
+        "debug_id": "z19kD#L1",
+        "excerpt": "马塞洛·席尔瓦·德·索萨 (Marcelo Silva de Sousa)",
+        "layout_label": "plain text",
+        "min_ratio": 0.6,
+        "residue_chars": 19,
+        "residue_ratio": 0.6786,
+        "residue_script": "latin",
+        "script_chars": 28
+      },
+      "geometry": {
+        "x": 78.3588,
+        "x2": 256.1955,
+        "y": 516.7966,
+        "y2": 523.7966
+      },
+      "id": "untranslated_residue:p1:p1#17",
+      "kind": "untranslated_residue",
+      "page": 1,
+      "paragraph_refs": [
+        "p1#17"
+      ],
+      "severity": "high"
+    },
+    {
+      "detected_at_iteration": 1,
+      "detector": "untranslated_residue",
+      "evidence": {
+        "debug_id": "i2By9#L2",
+        "excerpt": "安娜·罗霍宁 (Anna Ruohonen)",
+        "layout_label": "plain text",
+        "min_ratio": 0.6,
+        "residue_chars": 12,
+        "residue_ratio": 0.7059,
+        "residue_script": "latin",
+        "script_chars": 17
+      },
+      "geometry": {
+        "x": 78.03269999999999,
+        "x2": 256.1975,
+        "y": 380.5824,
+        "y2": 387.5824
+      },
+      "id": "untranslated_residue:p1:p1#27",
+      "kind": "untranslated_residue",
+      "page": 1,
+      "paragraph_refs": [
+        "p1#27"
+      ],
+      "severity": "high"
+    },
+    {
+      "detected_at_iteration": 1,
+      "detector": "untranslated_residue",
+      "evidence": {
+        "debug_id": "Q4Dwc#L1",
+        "excerpt": "照片：Fotohane DARKROOM",
+        "layout_label": "plain text",
+        "min_ratio": 0.6,
+        "residue_chars": 16,
+        "residue_ratio": 0.8889,
+        "residue_script": "latin",
+        "script_chars": 18
+      },
+      "geometry": {
+        "x": 78.48469999999999,
+        "x2": 256.2315,
+        "y": 277.7982,
+        "y2": 284.7982
+      },
+      "id": "untranslated_residue:p1:p1#33",
+      "kind": "untranslated_residue",
+      "page": 1,
+      "paragraph_refs": [
+        "p1#33"
+      ],
+      "severity": "high"
+    },
+    {
+      "detected_at_iteration": 1,
+      "detector": "untranslated_residue",
+      "evidence": {
+        "debug_id": "8tbUJ",
+        "excerpt": "吉姆·艾尔-哈利利 (Jim Al-Khalili)",
+        "layout_label": "plain text",
+        "min_ratio": 0.6,
+        "residue_chars": 12,
+        "residue_ratio": 0.6316,
+        "residue_script": "latin",
+        "script_chars": 19
+      },
+      "geometry": {
+        "x": 77.9807,
+        "x2": 116.8237,
+        "y": 179.6403,
+        "y2": 210.0675
+      },
+      "id": "untranslated_residue:p1:p1#37",
+      "kind": "untranslated_residue",
+      "page": 1,
+      "paragraph_refs": [
+        "p1#37"
+      ],
+      "severity": "high"
+    },
+    {
+      "detected_at_iteration": 1,
+      "detector": "untranslated_residue",
+      "evidence": {
+        "debug_id": "nxtcQ#L2",
+        "excerpt": "与奇玛曼达·恩戈兹·阿迪契（Chimamanda Ngozi Adichie）的访谈",
+        "layout_label": "plain text",
+        "min_ratio": 0.6,
+        "residue_chars": 22,
+        "residue_ratio": 0.6111,
+        "residue_script": "latin",
+        "script_chars": 36
+      },
+      "geometry": {
+        "x": 78.0927,
+        "x2": 256.19149999999996,
+        "y": 128.3367,
+        "y2": 135.3367
+      },
+      "id": "untranslated_residue:p1:p1#41",
+      "kind": "untranslated_residue",
+      "page": 1,
+      "paragraph_refs": [
+        "p1#41"
+      ],
+      "severity": "high"
+    },
+    {
+      "detected_at_iteration": 1,
+      "detector": "untranslated_residue",
+      "evidence": {
+        "debug_id": "LdDFF",
+        "excerpt": "© Carolina Zambrano",
+        "layout_label": "fallback_line",
+        "min_ratio": 0.6,
+        "residue_chars": 16,
+        "residue_ratio": 1.0,
+        "residue_script": "latin",
+        "script_chars": 16
+      },
+      "geometry": {
+        "x": 540.9262,
+        "x2": 547.4262,
+        "y": 583.6095,
+        "y2": 640.894
+      },
+      "id": "untranslated_residue:p3:p3#2",
+      "kind": "untranslated_residue",
+      "page": 3,
+      "paragraph_refs": [
+        "p3#2"
+      ],
+      "severity": "high"
+    },
+    {
+      "detected_at_iteration": 1,
+      "detector": "untranslated_residue",
+      "evidence": {
+        "debug_id": "u4DTm",
+        "excerpt": "© Adriano Gambarini / OPAN",
+        "layout_label": "fallback_line",
+        "min_ratio": 0.6,
+        "residue_chars": 20,
+        "residue_ratio": 1.0,
+        "residue_script": "latin",
+        "script_chars": 20
+      },
+      "geometry": {
+        "x": 24.305500000000002,
+        "x2": 30.812,
+        "y": 298.3919,
+        "y2": 376.5934
+      },
+      "id": "untranslated_residue:p5:p5#10",
+      "kind": "untranslated_residue",
+      "page": 5,
+      "paragraph_refs": [
+        "p5#10"
+      ],
+      "severity": "high"
+    },
+    {
+      "detected_at_iteration": 1,
+      "detector": "untranslated_residue",
+      "evidence": {
+        "debug_id": "KB4md",
+        "excerpt": "© Boris Séméniako for The UNESCO Courier",
+        "layout_label": "fallback_line",
+        "min_ratio": 0.6,
+        "residue_chars": 33,
+        "residue_ratio": 1.0,
+        "residue_script": "latin",
+        "script_chars": 33
+      },
+      "geometry": {
+        "x": 413.3671,
+        "x2": 419.8671,
+        "y": 711.2186,
+        "y2": 826.0346
+      },
+      "id": "untranslated_residue:p6:p6#15",
+      "kind": "untranslated_residue",
+      "page": 6,
+      "paragraph_refs": [
+        "p6#15"
+      ],
+      "severity": "high"
+    },
+    {
+      "detected_at_iteration": 1,
+      "detector": "untranslated_residue",
+      "evidence": {
+        "debug_id": "zNPbn",
+        "excerpt": "丹尼尔·罗宾逊 (Daniel Robinson)",
+        "layout_label": "abandon",
+        "min_ratio": 0.6,
+        "residue_chars": 14,
+        "residue_ratio": 0.7,
+        "residue_script": "latin",
+        "script_chars": 20
+      },
+      "geometry": {
+        "x": 495.3777,
+        "x2": 559.1377,
+        "y": 797.4567,
+        "y2": 813.5433
+      },
+      "id": "untranslated_residue:p7:p7#13",
+      "kind": "untranslated_residue",
+      "page": 7,
+      "paragraph_refs": [
+        "p7#13"
+      ],
+      "severity": "high"
+    },
+    {
+      "detected_at_iteration": 1,
+      "detector": "untranslated_residue",
+      "evidence": {
+        "debug_id": "YiXzC",
+        "excerpt": "大卫·杰斐逊 (David Jefferson)",
+        "layout_label": "title",
+        "min_ratio": 0.6,
+        "residue_chars": 14,
+        "residue_ratio": 0.7368,
+        "residue_script": "latin",
+        "script_chars": 19
+      },
+      "geometry": {
+        "x": 499.5099,
+        "x2": 559.1374000000001,
+        "y": 683.0945,
+        "y2": 699.1812
+      },
+      "id": "untranslated_residue:p7:p7#15",
+      "kind": "untranslated_residue",
+      "page": 7,
+      "paragraph_refs": [
+        "p7#15"
+      ],
+      "severity": "high"
+    },
+    {
+      "detected_at_iteration": 1,
+      "detector": "untranslated_residue",
+      "evidence": {
+        "debug_id": "EEtXt",
+        "excerpt": "© 克里斯蒂安·古皮（Christian goupi） / robertharding.com",
+        "layout_label": "abandon",
+        "min_ratio": 0.6,
+        "residue_chars": 30,
+        "residue_ratio": 0.8108,
+        "residue_script": "latin",
+        "script_chars": 37
+      },
+      "geometry": {
+        "x": 17.2419,
+        "x2": 120.18239999999997,
+        "y": 496.40489999999994,
+        "y2": 810.4911
+      },
+      "id": "untranslated_residue:p8:p8#15",
+      "kind": "untranslated_residue",
+      "page": 8,
+      "paragraph_refs": [
+        "p8#15"
+      ],
+      "severity": "high"
+    }
+  ],
+  "iteration": 1,
+  "language": "zh",
+  "notes": [],
+  "pages_by_detector": {
+    "fragment_cluster": [
+      1,
+      4,
+      6,
+      8
+    ],
+    "out_of_page": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8
+    ],
+    "text_figure_overlap": [
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8
+    ],
+    "text_text_collision": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8
+    ],
+    "untranslated_residue": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8
+    ]
+  },
+  "source_geometry": {
+    "checkpoint": "checkpoint.06_styles_and_formulas.xml",
+    "paragraphs": 132,
+    "stage": "styles_and_formulas"
+  },
+  "translation_performed": true
+}

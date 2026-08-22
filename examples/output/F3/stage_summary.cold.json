@@ -1,0 +1,106 @@
+{
+  "arm": "cold",
+  "wall_seconds": 384.5,
+  "attributed_seconds": 88.8,
+  "unattributed_seconds": 295.7,
+  "stages": [
+    {
+      "stage": "Parse Page Layout",
+      "seconds": 25.1,
+      "runs": 6
+    },
+    {
+      "stage": "Subset font",
+      "seconds": 20.5,
+      "runs": 6
+    },
+    {
+      "stage": "Save PDF",
+      "seconds": 20.3,
+      "runs": 6
+    },
+    {
+      "stage": "Translate Paragraphs",
+      "seconds": 8.0,
+      "runs": 6
+    },
+    {
+      "stage": "Parse PDF and Create Intermediate Representation",
+      "seconds": 5.4,
+      "runs": 6
+    },
+    {
+      "stage": "Parse Paragraphs",
+      "seconds": 3.2,
+      "runs": 6
+    },
+    {
+      "stage": "DetectScannedFile",
+      "seconds": 1.8,
+      "runs": 6
+    },
+    {
+      "stage": "Typesetting",
+      "seconds": 1.7,
+      "runs": 6
+    },
+    {
+      "stage": "Generate drawing instructions",
+      "seconds": 1.5,
+      "runs": 6
+    },
+    {
+      "stage": "Add Fonts",
+      "seconds": 0.9,
+      "runs": 6
+    },
+    {
+      "stage": "Parse Formulas and Styles",
+      "seconds": 0.4,
+      "runs": 6
+    },
+    {
+      "stage": "Automatic Term Extraction",
+      "seconds": 0.1,
+      "runs": 6
+    }
+  ],
+  "samples": [
+    {
+      "sample": "Courier-en",
+      "seconds": 58.4,
+      "stage_seconds": 19.146,
+      "pages": 8
+    },
+    {
+      "sample": "Vogue-en",
+      "seconds": 30.9,
+      "stage_seconds": 8.388,
+      "pages": 3
+    },
+    {
+      "sample": "CERNCourier-en",
+      "seconds": 58.9,
+      "stage_seconds": 13.813,
+      "pages": 4
+    },
+    {
+      "sample": "AramcoWorld-en-v2",
+      "seconds": 89.8,
+      "stage_seconds": 17.848,
+      "pages": 9
+    },
+    {
+      "sample": "FD-en-v2",
+      "seconds": 60.2,
+      "stage_seconds": 14.235,
+      "pages": 9
+    },
+    {
+      "sample": "Courier-zh",
+      "seconds": 86.3,
+      "stage_seconds": 15.376,
+      "pages": 8
+    }
+  ]
+}

@@ -1,0 +1,301 @@
+{
+  "exemptions": [
+    {
+      "debug_id": "oWxWZ",
+      "heterogeneous": false,
+      "lines": 2,
+      "mean_line_chars": 11.0,
+      "page": 2,
+      "paragraph": "p2#1",
+      "reason": "uniform_styling"
+    },
+    {
+      "debug_id": "Rj6dk",
+      "heterogeneous": false,
+      "lines": 2,
+      "mean_line_chars": 22.5,
+      "page": 2,
+      "paragraph": "p2#9",
+      "reason": "uniform_styling"
+    },
+    {
+      "debug_id": "PhTt4",
+      "heterogeneous": false,
+      "lines": 5,
+      "mean_line_chars": 32.2,
+      "page": 2,
+      "paragraph": "p2#10",
+      "reason": "uniform_styling"
+    },
+    {
+      "debug_id": "unvFV",
+      "heterogeneous": true,
+      "lines": 5,
+      "mean_line_chars": 53.6,
+      "page": 3,
+      "paragraph": "p3#2",
+      "reason": "long_lines"
+    },
+    {
+      "debug_id": "hVDTb",
+      "heterogeneous": false,
+      "lines": 2,
+      "mean_line_chars": 24.5,
+      "page": 3,
+      "paragraph": "p3#5",
+      "reason": "uniform_styling"
+    },
+    {
+      "debug_id": "xT6kD",
+      "heterogeneous": true,
+      "lines": 4,
+      "mean_line_chars": 61.0,
+      "page": 3,
+      "paragraph": "p3#6",
+      "reason": "long_lines"
+    },
+    {
+      "debug_id": "u8MjK",
+      "heterogeneous": false,
+      "lines": 3,
+      "mean_line_chars": 53.3,
+      "page": 3,
+      "paragraph": "p3#10",
+      "reason": "long_lines"
+    },
+    {
+      "debug_id": "jfpQi",
+      "heterogeneous": false,
+      "lines": 3,
+      "mean_line_chars": 25.0,
+      "page": 3,
+      "paragraph": "p3#18",
+      "reason": "uniform_styling"
+    }
+  ],
+  "max_line_chars": 47.0,
+  "min_line_characters": 1,
+  "min_text_length": 5,
+  "pages": [
+    {
+      "declared": false,
+      "exempt_paragraphs": 0,
+      "lines_after": 3,
+      "lines_before": 3,
+      "page": 1,
+      "paragraphs": 3,
+      "split_paragraphs": 0
+    },
+    {
+      "declared": true,
+      "exempt_paragraphs": 3,
+      "lines_after": 48,
+      "lines_before": 48,
+      "page": 2,
+      "paragraphs": 25,
+      "split_paragraphs": 6
+    },
+    {
+      "declared": true,
+      "exempt_paragraphs": 5,
+      "lines_after": 33,
+      "lines_before": 33,
+      "page": 3,
+      "paragraphs": 21,
+      "split_paragraphs": 0
+    },
+    {
+      "declared": false,
+      "exempt_paragraphs": 0,
+      "lines_after": 25,
+      "lines_before": 25,
+      "page": 4,
+      "paragraphs": 17,
+      "split_paragraphs": 0
+    },
+    {
+      "declared": false,
+      "exempt_paragraphs": 0,
+      "lines_after": 24,
+      "lines_before": 24,
+      "page": 5,
+      "paragraphs": 20,
+      "split_paragraphs": 0
+    },
+    {
+      "declared": false,
+      "exempt_paragraphs": 0,
+      "lines_after": 18,
+      "lines_before": 18,
+      "page": 6,
+      "paragraphs": 14,
+      "split_paragraphs": 0
+    },
+    {
+      "declared": false,
+      "exempt_paragraphs": 0,
+      "lines_after": 24,
+      "lines_before": 24,
+      "page": 7,
+      "paragraphs": 21,
+      "split_paragraphs": 0
+    },
+    {
+      "declared": false,
+      "exempt_paragraphs": 0,
+      "lines_after": 64,
+      "lines_before": 64,
+      "page": 8,
+      "paragraphs": 18,
+      "split_paragraphs": 0
+    },
+    {
+      "declared": false,
+      "exempt_paragraphs": 0,
+      "lines_after": 94,
+      "lines_before": 94,
+      "page": 9,
+      "paragraphs": 20,
+      "split_paragraphs": 0
+    }
+  ],
+  "policy_flags": [
+    "preserve_line_structure"
+  ],
+  "require_style_heterogeneity": true,
+  "short_lines": [],
+  "splits": [
+    {
+      "characters": 189,
+      "debug_id": "tfys5",
+      "line_paragraphs": [
+        "tfys5#L0",
+        "tfys5#L1",
+        "tfys5#L2",
+        "tfys5#L3",
+        "tfys5#L4"
+      ],
+      "lines": 5,
+      "mean_line_chars": 33.8,
+      "page": 2,
+      "paragraph": "p2#0",
+      "record_lines": [
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "records": 5,
+      "restyled_records": 0
+    },
+    {
+      "characters": 489,
+      "debug_id": "mniwq",
+      "line_paragraphs": [
+        "mniwq#L0",
+        "mniwq#L1",
+        "mniwq#L2"
+      ],
+      "lines": 15,
+      "mean_line_chars": 29.0,
+      "page": 2,
+      "paragraph": "p2#4",
+      "record_lines": [
+        8,
+        2,
+        5
+      ],
+      "records": 3,
+      "restyled_records": 3
+    },
+    {
+      "characters": 92,
+      "debug_id": "zBKJN",
+      "line_paragraphs": [
+        "zBKJN#L0",
+        "zBKJN#L1",
+        "zBKJN#L2"
+      ],
+      "lines": 3,
+      "mean_line_chars": 28.0,
+      "page": 2,
+      "paragraph": "p2#6",
+      "record_lines": [
+        1,
+        1,
+        1
+      ],
+      "records": 3,
+      "restyled_records": 3
+    },
+    {
+      "characters": 104,
+      "debug_id": "ZBaFS",
+      "line_paragraphs": [
+        "ZBaFS#L0",
+        "ZBaFS#L1"
+      ],
+      "lines": 4,
+      "mean_line_chars": 24.0,
+      "page": 2,
+      "paragraph": "p2#7",
+      "record_lines": [
+        3,
+        1
+      ],
+      "records": 2,
+      "restyled_records": 2
+    },
+    {
+      "characters": 136,
+      "debug_id": "DAAzS",
+      "line_paragraphs": [
+        "DAAzS#L0",
+        "DAAzS#L1",
+        "DAAzS#L2",
+        "DAAzS#L3"
+      ],
+      "lines": 4,
+      "mean_line_chars": 30.0,
+      "page": 2,
+      "paragraph": "p2#8",
+      "record_lines": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "records": 4,
+      "restyled_records": 1
+    },
+    {
+      "characters": 161,
+      "debug_id": "5xFyW",
+      "line_paragraphs": [
+        "5xFyW#L0",
+        "5xFyW#L1"
+      ],
+      "lines": 5,
+      "mean_line_chars": 28.6,
+      "page": 2,
+      "paragraph": "p2#11",
+      "record_lines": [
+        2,
+        3
+      ],
+      "records": 2,
+      "restyled_records": 2
+    }
+  ],
+  "switch": "magazine_line_structure",
+  "totals": {
+    "declared_pages": 2,
+    "exempt_paragraphs": 8,
+    "line_paragraphs": 36,
+    "pages": 9,
+    "short_lines": 0,
+    "split_paragraphs": 6
+  },
+  "window_switch": "magazine_page_classify"
+}

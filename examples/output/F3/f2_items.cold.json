@@ -1,0 +1,502 @@
+[
+  {
+    "id": "c.GAP-24",
+    "kind": "findings",
+    "by_kind": {
+      "AramcoWorld-en-v2": {
+        "fragment_cluster": 2,
+        "out_of_page": 3,
+        "untranslated_residue": 18
+      },
+      "CERNCourier-en": {
+        "fragment_cluster": 9,
+        "text_text_collision": 1,
+        "untranslated_residue": 24
+      },
+      "Courier-en": {
+        "untranslated_residue": 12
+      },
+      "Courier-zh": {
+        "text_figure_overlap": 1,
+        "untranslated_residue": 2
+      },
+      "FD-en-v2": {
+        "fragment_cluster": 8,
+        "out_of_page": 2,
+        "untranslated_residue": 18
+      },
+      "Vogue-en": {
+        "fragment_cluster": 4,
+        "text_text_collision": 1,
+        "untranslated_residue": 2
+      }
+    },
+    "findings": [
+      {
+        "sample": "AramcoWorld-en-v2",
+        "kind": "out_of_page",
+        "refs": [
+          "p1#1"
+        ],
+        "labels": null
+      },
+      {
+        "sample": "AramcoWorld-en-v2",
+        "kind": "out_of_page",
+        "refs": [
+          "p1#2"
+        ],
+        "labels": null
+      },
+      {
+        "sample": "AramcoWorld-en-v2",
+        "kind": "out_of_page",
+        "refs": [
+          "p5#16"
+        ],
+        "labels": null
+      },
+      {
+        "sample": "FD-en-v2",
+        "kind": "out_of_page",
+        "refs": [
+          "p2#8"
+        ],
+        "labels": null
+      },
+      {
+        "sample": "FD-en-v2",
+        "kind": "out_of_page",
+        "refs": [
+          "p4#3"
+        ],
+        "labels": null
+      }
+    ]
+  },
+  {
+    "id": "c.GAP-22/23",
+    "kind": "findings",
+    "by_kind": {
+      "AramcoWorld-en-v2": {
+        "fragment_cluster": 2,
+        "out_of_page": 3,
+        "untranslated_residue": 18
+      },
+      "CERNCourier-en": {
+        "fragment_cluster": 9,
+        "text_text_collision": 1,
+        "untranslated_residue": 24
+      },
+      "Courier-en": {
+        "untranslated_residue": 12
+      },
+      "Courier-zh": {
+        "text_figure_overlap": 1,
+        "untranslated_residue": 2
+      },
+      "FD-en-v2": {
+        "fragment_cluster": 8,
+        "out_of_page": 2,
+        "untranslated_residue": 18
+      },
+      "Vogue-en": {
+        "fragment_cluster": 4,
+        "text_text_collision": 1,
+        "untranslated_residue": 2
+      }
+    },
+    "findings": [
+      {
+        "sample": "CERNCourier-en",
+        "kind": "text_text_collision",
+        "refs": [
+          "p4#1",
+          "p4#42"
+        ],
+        "labels": [
+          "title",
+          "fallback_line"
+        ]
+      },
+      {
+        "sample": "Vogue-en",
+        "kind": "text_text_collision",
+        "refs": [
+          "p3#11",
+          "p3#12"
+        ],
+        "labels": [
+          "plain text",
+          "title"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "c.GAP-25",
+    "kind": "repair",
+    "repair": [
+      {
+        "sample": "AramcoWorld-en-v2",
+        "rounds": 2,
+        "chosen": [
+          {
+            "action": "resolve_collision",
+            "from_cache": true,
+            "issues": [
+              "text_text_collision:p3:p3#0+p3#4"
+            ]
+          },
+          {
+            "action": "none",
+            "from_cache": true,
+            "issues": []
+          }
+        ],
+        "applications": 1,
+        "final": 2,
+        "api_calls": 0
+      },
+      {
+        "sample": "CERNCourier-en",
+        "rounds": 2,
+        "chosen": [
+          {
+            "action": "contain_in_page",
+            "from_cache": true,
+            "issues": [
+              "out_of_page:p1:p1#2"
+            ]
+          },
+          {
+            "action": "resolve_collision",
+            "from_cache": true,
+            "issues": [
+              "text_text_collision:p4:p4#1+p4#42"
+            ]
+          }
+        ],
+        "applications": 3,
+        "final": 2,
+        "api_calls": 0
+      },
+      {
+        "sample": "Courier-en",
+        "rounds": 2,
+        "chosen": [
+          {
+            "action": "contain_in_page",
+            "from_cache": true,
+            "issues": [
+              "out_of_page:p1:p1#10"
+            ]
+          },
+          {
+            "action": "none",
+            "from_cache": true,
+            "issues": []
+          }
+        ],
+        "applications": 1,
+        "final": 2,
+        "api_calls": 0
+      },
+      {
+        "sample": "Courier-zh",
+        "rounds": 1,
+        "chosen": [
+          {
+            "action": "translate_orphan_lines",
+            "from_cache": true,
+            "issues": [
+              "untranslated_residue:p6:p6#14"
+            ]
+          }
+        ],
+        "applications": 0,
+        "final": 2,
+        "api_calls": 0
+      },
+      {
+        "sample": "FD-en-v2",
+        "rounds": 3,
+        "chosen": [
+          {
+            "action": "translate_orphan_lines",
+            "from_cache": true,
+            "issues": [
+              "untranslated_residue:p2:p2#8",
+              "untranslated_residue:p4:p4#3",
+              "untranslated_residue:p5:p5#24"
+            ]
+          },
+          {
+            "action": "translate_orphan_lines",
+            "from_cache": true,
+            "issues": [
+              "untranslated_residue:p2:p2#8",
+              "untranslated_residue:p4:p4#3",
+              "untranslated_residue:p5:p5#18"
+            ]
+          },
+          {
+            "action": "none",
+            "from_cache": true,
+            "issues": []
+          }
+        ],
+        "applications": 2,
+        "final": 2,
+        "api_calls": 0
+      },
+      {
+        "sample": "Vogue-en",
+        "rounds": 1,
+        "chosen": [
+          {
+            "action": "resolve_collision",
+            "from_cache": true,
+            "issues": [
+              "text_text_collision:p3:p3#11+p3#12"
+            ]
+          }
+        ],
+        "applications": 0,
+        "final": 2,
+        "api_calls": 0
+      }
+    ]
+  },
+  {
+    "id": "c.GAP-26",
+    "kind": "text",
+    "sample": "CERNCourier-en p1",
+    "characters": 845,
+    "present": {
+      "快报": true
+    },
+    "absent": {}
+  },
+  {
+    "id": "c.leader-dots",
+    "kind": "text",
+    "sample": "Courier-en p1",
+    "characters": 1654,
+    "present": {
+      ".4": true,
+      ".12": false,
+      ".14": false,
+      ".36": false,
+      ".44": true
+    },
+    "absent": {}
+  },
+  {
+    "id": "c.short-lines",
+    "kind": "text",
+    "sample": "Courier-zh p1",
+    "characters": 4491,
+    "present": {},
+    "absent": {
+      "社论": true,
+      "总编辑": true,
+      "广角": true,
+      "聚焦": true,
+      "观点": true,
+      "嘉宾": true,
+      "深度阅读": true
+    }
+  },
+  {
+    "id": "c.short-lines.p3",
+    "kind": "text",
+    "sample": "Courier-zh p3",
+    "characters": 109,
+    "present": {},
+    "absent": {
+      "土著知识": true
+    }
+  },
+  {
+    "id": "c.font-failure",
+    "kind": "title",
+    "escalated": [
+      {
+        "reference": "p3#25",
+        "disposition": "floor_reached",
+        "scale": null
+      },
+      {
+        "reference": "p5#39",
+        "disposition": "floor_reached",
+        "scale": null
+      },
+      {
+        "reference": "p6#10",
+        "disposition": "floor_reached",
+        "scale": null
+      }
+    ]
+  },
+  {
+    "id": "d.A1",
+    "kind": "text",
+    "sample": "Courier-en p4",
+    "characters": 1392,
+    "present": {},
+    "absent": {
+      "There are many more examples of how t": true,
+      "raditional knowledge": true
+    }
+  },
+  {
+    "id": "d.A2",
+    "kind": "text",
+    "sample": "Courier-zh p1",
+    "characters": 4491,
+    "present": {
+      "ecosyste": true,
+      "this ty": true
+    },
+    "absent": {}
+  },
+  {
+    "id": "d.A3",
+    "kind": "empty-page",
+    "sample": "Vogue-en p2",
+    "characters": 0,
+    "present": {},
+    "absent": {}
+  },
+  {
+    "id": "d.A4",
+    "kind": "text",
+    "sample": "AramcoWorld-en-v2 p9",
+    "characters": 1551,
+    "present": {
+      "lamic life has always emerged not through sameness": true
+    },
+    "absent": {}
+  },
+  {
+    "id": "d.A5",
+    "kind": "text",
+    "sample": "Courier-en p1",
+    "characters": 1654,
+    "present": {
+      "传统傣医学": false
+    },
+    "absent": {}
+  },
+  {
+    "id": "d.A6",
+    "kind": "text",
+    "sample": "CERNCourier-en p1",
+    "characters": 845,
+    "present": {
+      "DAVIDE DE BIASIO": false,
+      "DE BIASIO": false
+    },
+    "absent": {}
+  },
+  {
+    "id": "d.A7.cern",
+    "kind": "text",
+    "sample": "CERNCourier-en p3",
+    "characters": 2505,
+    "present": {
+      "“Th": false
+    },
+    "absent": {}
+  },
+  {
+    "id": "d.A7.vogue",
+    "kind": "fragments",
+    "totals": {
+      "blanked_paragraphs": 8,
+      "duplicate_blanked": 0,
+      "exempt_pages": 1,
+      "initial_accepted": 0,
+      "initial_candidates": 6,
+      "merged_paragraphs": 10,
+      "pages": 3,
+      "stitches": 2,
+      "style_normalized": 1
+    },
+    "census": null
+  },
+  {
+    "id": "d.A8",
+    "kind": "text",
+    "sample": "FD-en-v2 p5",
+    "characters": 1171,
+    "present": {
+      "اقرأ": true,
+      "اللغة": true
+    },
+    "absent": {}
+  },
+  {
+    "id": "d.A9",
+    "kind": "text",
+    "sample": "Courier-zh p5",
+    "characters": 1999,
+    "present": {
+      "heartbreaking": true
+    },
+    "absent": {}
+  },
+  {
+    "id": "d.A10",
+    "kind": "text",
+    "sample": "Courier-zh p5",
+    "characters": 1999,
+    "present": {
+      "巴西": true
+    },
+    "absent": {}
+  },
+  {
+    "id": "d.A11",
+    "kind": "text",
+    "sample": "AramcoWorld-en-v2 p3",
+    "characters": 630,
+    "present": {
+      "Tilya-Kori": false,
+      "封面": true
+    },
+    "absent": {}
+  },
+  {
+    "id": "d.A12",
+    "kind": "text",
+    "sample": "AramcoWorld-en-v2 p8",
+    "characters": 1887,
+    "present": {
+      "JAMIE S. SCOT T": false,
+      "JAMIE S. SCOTT": false
+    },
+    "absent": {}
+  },
+  {
+    "id": "d.A13",
+    "kind": "text",
+    "sample": "Courier-en p5",
+    "characters": 639,
+    "present": {
+      "发现什么都没有了": false
+    },
+    "absent": {}
+  },
+  {
+    "id": "d.A14",
+    "kind": "text",
+    "sample": "CERNCourier-en p1",
+    "characters": 845,
+    "present": {
+      "CCJulAug26_Cover": true
+    },
+    "absent": {}
+  }
+]

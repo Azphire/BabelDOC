@@ -369,14 +369,19 @@ def negative_probes() -> tuple:
     return (
         ("not an object", [], "top level"),
         ("unknown section", {"termz": {}}, "declared sections"),
-        ("terms not an object", {"terms": []}, "must be an object"),
+        # A section written as a *non-empty* list. b10.4 made ``[]`` an empty
+        # section on purpose -- a ruling is written by hand from a draft whose
+        # sections are lists, so that is what an empty one comes out as -- and
+        # a list holding anything is still refused, because what its entries
+        # would mean is decided nowhere. The probe therefore carries a member.
+        ("terms not an object", {"terms": [{"a": "b"}]}, "must be an object"),
         ("terms target not a string", {"terms": {"a": 3}}, "must be a string"),
         ("terms empty source", {"terms": {"": "x"}}, "non-empty"),
         ("terms empty target", {"terms": {"a": "  "}}, "non-empty"),
         ("terms padded source", {"terms": {" a": "x"}}, "padded"),
         ("terms padded target", {"terms": {"a": "x "}}, "padded"),
         ("terms normalised collision", {"terms": {"A b": "x", "a  B": "y"}}, "collides"),
-        ("page kinds not an object", {"page_kinds": []}, "must be an object"),
+        ("page kinds not an object", {"page_kinds": [1]}, "must be an object"),
         ("page kind not a number", {"page_kinds": {"one": kind}}, "decimal integer"),
         ("page kind padded number", {"page_kinds": {"01": kind}}, "written as 1"),
         ("page kind unknown page", {"page_kinds": {"9": kind}}, "no such page"),
@@ -386,14 +391,21 @@ def negative_probes() -> tuple:
             {"page_kinds": {"1": "not_a_kind"}},
             "declared page type",
         ),
-        ("drop caps not an object", {"drop_caps": []}, "must be an object"),
+        ("drop caps not an object", {"drop_caps": ["p"]}, "must be an object"),
         ("drop caps empty ref", {"drop_caps": {" ": "keep"}}, "non-empty"),
         ("drop caps unknown verdict", {"drop_caps": {"p": "burn"}}, "one of"),
     )
 
 
 def check_02a_negative_probes() -> None:
-    """Negative 2a: every malformed shape refuses the whole file, saying why."""
+    """Negative 2a: every malformed shape refuses the whole file, saying why.
+
+    And the one shape that is *not* malformed, added when b10.4 declared it: a
+    section written as an empty list is a section a person ruled nothing in,
+    and is read as empty rather than refused. It is asserted here beside the
+    refusals so that the boundary between the two is one assertion rather than
+    a gap between two.
+    """
     faults = []
     for label, payload, expected in negative_probes():
         try:
@@ -403,6 +415,14 @@ def check_02a_negative_probes() -> None:
                 faults.append(f"{label}: message does not mention {expected!r}")
             continue
         faults.append(f"{label}: accepted")
+    for section in hitl.sections():
+        try:
+            empty = hitl.parse_decisions({section: []}, Path("probe.json"), PAGES)
+        except hitl.HitlError as exc:
+            faults.append(f"an empty {section} list was refused: {exc}")
+            continue
+        if any(getattr(empty, name) for name in ("terms", "page_kinds", "drop_caps")):
+            faults.append(f"an empty {section} list decided something")
     record("check_02a_negative_probes", not faults, "; ".join(faults))
 
 
@@ -496,12 +516,18 @@ def check_03a_terms_section() -> None:
         faults.append(f"biopiracy first page {by_source.get('biopiracy')}")
     if by_source.get("absent term", {}).get("first_page") is not None:
         faults.append("a term no page carries got a page")
-    if by_source.get("spinifex", {}).get("auto_target") != "A":
-        faults.append("the finalised target is not the one reported")
+    # b10.4 split the two halves of what this field used to hold. What the
+    # export reports is what the extractor *observed*; what a row lands as is
+    # derived from the declared person-name policy one layer up, in
+    # ``name_harvest.derive``, and is asserted there (spec_check_b10_4's 03e
+    # re-derives every row and compares). So this assertion follows the
+    # observation, which is the half this export owns.
+    if by_source.get("spinifex", {}).get("observed_target") != "A":
+        faults.append("the observed target is not the one reported")
     if [row["source"] for row in rows] != ["spinifex", "biopiracy", "absent term"]:
         faults.append(f"rows are not in reading order: {[r['source'] for r in rows]}")
     for row in rows:
-        if set(row) != {"source", "auto_target", "vote_count", "first_page"}:
+        if set(row) != {"source", "observed_target", "vote_count", "first_page"}:
             faults.append(f"row fields are {sorted(row)}")
             break
     record("check_03a_terms_section", not faults, "; ".join(faults))
@@ -1164,7 +1190,22 @@ def check_09a_never_writes_decisions() -> None:
 
 
 def ruling_disagrees_with_draft(sample: str) -> list[str]:
-    """Faults where a committed ruling merely restates the machine's own draft."""
+    """Faults where a committed ruling is a *wholesale* restatement of the draft.
+
+    This used to be per entry: a ruled term agreeing with the draft's own
+    suggestion was a fault. b10.4 made that test unsound in the direction of
+    false alarms. The draft's suggestion for a person-shaped row is now derived
+    from the declared person-name policy rather than observed from the model,
+    and the human rules by the same policy -- so agreement on such a row is the
+    policy working, not the machine adopting its own draft. On the Courier-en
+    ruling six of fourteen terms now agree for exactly that reason, and eight
+    still disagree.
+
+    What the original was protecting is untouched and is what is asserted now:
+    a machine that adopted its own draft as a ruling would agree with it
+    **everywhere**. So a ruling that has at least one disagreement is a ruling
+    a person wrote; one that agrees on every entry it carries is the failure.
+    """
     ruling_path = ROOT / "reviews" / f"{sample}{hitl.DECISIONS_SUFFIX}"
     draft_path = ROOT / "reviews" / f"{sample}{hitl.REVIEW_SUFFIX}"
     if not ruling_path.exists():
@@ -1183,14 +1224,20 @@ def ruling_disagrees_with_draft(sample: str) -> list[str]:
         str(row["page"]): row.get("machine_kind")
         for row in draft.get(hitl.PAGE_KINDS_SECTION, ())
     }
-    faults = []
+    agreements = 0
+    entries = 0
     for source, target in (ruling.get(hitl.TERMS_SECTION) or {}).items():
-        if source in auto and auto[source] == target:
-            faults.append(f"ruled term {source!r} restates the draft")
+        entries += 1
+        agreements += source in auto and auto[source] == target
     for page, kind in (ruling.get(hitl.PAGE_KINDS_SECTION) or {}).items():
-        if machine.get(page) == kind:
-            faults.append(f"ruled page {page} restates the draft")
-    return faults
+        entries += 1
+        agreements += machine.get(page) == kind
+    if entries and agreements == entries:
+        return [
+            f"{ruling_path.name} agrees with the draft on all {entries} entries, "
+            "which is what a machine adopting its own draft would produce"
+        ]
+    return []
 
 
 def check_09b_comments_ascii() -> None:

@@ -1,0 +1,28 @@
+{
+  "guards": {},
+  "max_shift_ratio": 0.25,
+  "min_excess_pt": 4.0,
+  "notes": [],
+  "pages": [],
+  "profiles": [
+    "flow"
+  ],
+  "switch": "magazine_column_reflow",
+  "target_lang": "zh",
+  "target_languages": [
+    "zh"
+  ],
+  "totals": {
+    "columns": 0,
+    "columns_applied": 0,
+    "columns_left": 0,
+    "excess_sum_after": 0,
+    "excess_sum_before": 0,
+    "pages_applied": 0,
+    "pages_considered": 0,
+    "pages_reverted": 0,
+    "paragraphs_moved": 0,
+    "shift_total_pt": 0
+  },
+  "window_switch": "magazine_detect"
+}

@@ -1,0 +1,68 @@
+{
+  "align_enabled": true,
+  "applied": true,
+  "chains": [],
+  "counts": {
+    "aligned_cuts": 0,
+    "alignment_requests": 0,
+    "chains": 0,
+    "escalated": 0,
+    "merged": 0,
+    "merged_members": 0,
+    "skips": 5
+  },
+  "escalated": [],
+  "language": "zh",
+  "short_units": {
+    "admitted": 5,
+    "refused": 0,
+    "requests": 5
+  },
+  "skips": [
+    {
+      "chain_id": "",
+      "chain_index": null,
+      "debug_id": "JMuKA",
+      "declined_by": [],
+      "page_index": 2,
+      "reason": "chain_member",
+      "taken_by": "short_unit"
+    },
+    {
+      "chain_id": "",
+      "chain_index": null,
+      "debug_id": "sRDfj",
+      "declined_by": [],
+      "page_index": 4,
+      "reason": "chain_member",
+      "taken_by": "short_unit"
+    },
+    {
+      "chain_id": "",
+      "chain_index": null,
+      "debug_id": "21UEL",
+      "declined_by": [],
+      "page_index": 5,
+      "reason": "chain_member",
+      "taken_by": "short_unit"
+    },
+    {
+      "chain_id": "",
+      "chain_index": null,
+      "debug_id": "mbs3c",
+      "declined_by": [],
+      "page_index": 6,
+      "reason": "chain_member",
+      "taken_by": "short_unit"
+    },
+    {
+      "chain_id": "",
+      "chain_index": null,
+      "debug_id": "qY5v3",
+      "declined_by": [],
+      "page_index": 7,
+      "reason": "chain_member",
+      "taken_by": "short_unit"
+    }
+  ]
+}

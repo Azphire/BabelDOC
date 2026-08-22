@@ -166,6 +166,25 @@ TRUTH_DIGESTS = {
     "reviews/FD-en-v2.decisions.json": (
         "8850413eca6e0f3fecd1e901841a447caff41e251053565432176015d94ac470"
     ),
+    # The third ruling, pinned at F3. It arrived during b10.4 -- two pages at the
+    # pause, then all eight when it settled -- and was applied and reported on by
+    # that batch, but no session pinned it, so between b10.4 and here the only
+    # ruling the corpus owner wrote this cycle was the one file this assertion
+    # could not see. Pinned now at the digest the settled ruling carries, which
+    # is what CLAUDE.md 4.12 asks of a pin: it anchors "no machine edited this
+    # file", not "this file never changes again".
+    #   what: page_kinds for all eight pages of Courier-zh, six of them against
+    #         what the classifier decided; format_version 2; terms empty
+    #   who:  the corpus owner, in the ruling commit of batch b10.4, which
+    #         carries no machine edit to this file
+    #   why:  the page kind channel had given five of eight pages a kind whose
+    #         policy admits no chain, so none of the sample's seven boundaries
+    #         was chain eligible
+    # What the ruling then reached is asserted separately, by spec_check_b10_4's
+    # 05e, which reads the eligibility and the two chains it produced.
+    "reviews/Courier-zh.decisions.json": (
+        "93339f5dc36b42abda36945b55de07336fc3cd52f3868240f071d1261398fbda"
+    ),
 }
 
 # The samples this refresh retired. They are named here and nowhere else: what

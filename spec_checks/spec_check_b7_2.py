@@ -821,7 +821,9 @@ def check_05b_negative_probes() -> None:
     verdicts = tuple(hitl.load_hitl_config()["drop_cap_decisions"])
     references = {"p1#0", "p1#1"}
     probes = (
-        ("section not an object", {"drop_caps": []}, "must be an object"),
+        # Non-empty: b10.4 reads ``[]`` as a section ruled empty (see
+        # spec_check_b7's 02a, which asserts both sides of that boundary).
+        ("section not an object", {"drop_caps": ["p1#0"]}, "must be an object"),
         ("empty reference", {"drop_caps": {"  ": verdicts[0]}}, "non-empty"),
         ("unknown verdict", {"drop_caps": {"p1#0": "burn"}}, "one of"),
         ("verdict not a string", {"drop_caps": {"p1#0": 3}}, "one of"),

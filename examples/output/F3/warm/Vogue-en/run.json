@@ -1,0 +1,138 @@
+{
+  "sample": "Vogue-en.pdf",
+  "arm": "warm",
+  "model": "gpt-4o",
+  "lang_in": "en",
+  "lang_out": "zh",
+  "seconds": 29.9,
+  "requests": 20,
+  "cache_hits": 20,
+  "api_calls": 0,
+  "prompt_tokens": 0,
+  "completion_tokens": 0,
+  "input_pages": 3,
+  "output_pages": 3,
+  "pdf": "examples\\output\\F3\\warm\\Vogue-en\\Vogue-en.f3.pdf",
+  "pdf_sha256": "5278eac717d76b23852a04ca70d4ff51563b8b80bb489d41b39b9c40e6c9c2df",
+  "working_dir": "examples\\output\\F3\\warm\\Vogue-en\\work\\Vogue-en",
+  "ruling": {
+    "path": null,
+    "sha256": null,
+    "present": false
+  },
+  "switches": {
+    "magazine_checkpoint": true,
+    "magazine_page_classify": true,
+    "magazine_chain_detect": true,
+    "magazine_chain_translate": true,
+    "magazine_article_group": true,
+    "magazine_article_context": true,
+    "magazine_hitl_export": false,
+    "magazine_hitl_apply": true,
+    "magazine_detect": true,
+    "magazine_drop_cap_mark": true,
+    "magazine_drop_cap_apply": true,
+    "magazine_title_typeset": true,
+    "magazine_line_structure": true,
+    "magazine_fragment_stitch": true,
+    "magazine_repair": true,
+    "magazine_paren_dedup": true,
+    "magazine_column_reflow": true,
+    "magazine_chain_cut_align": true,
+    "magazine_stitch_declared": true,
+    "magazine_short_unit": true,
+    "magazine_name_harvest": true
+  },
+  "stages": [
+    {
+      "stage": "Parse PDF and Create Intermediate Representation",
+      "seconds": 0.236,
+      "runs": 1
+    },
+    {
+      "stage": "DetectScannedFile",
+      "seconds": 0.311,
+      "runs": 1
+    },
+    {
+      "stage": "Parse Page Layout",
+      "seconds": 1.086,
+      "runs": 1
+    },
+    {
+      "stage": "Parse Paragraphs",
+      "seconds": 0.077,
+      "runs": 1
+    },
+    {
+      "stage": "Parse Formulas and Styles",
+      "seconds": 0.008,
+      "runs": 1
+    },
+    {
+      "stage": "Automatic Term Extraction",
+      "seconds": 0.006,
+      "runs": 1
+    },
+    {
+      "stage": "Translate Paragraphs",
+      "seconds": 0.169,
+      "runs": 1
+    },
+    {
+      "stage": "Typesetting",
+      "seconds": 0.051,
+      "runs": 1
+    },
+    {
+      "stage": "Add Fonts",
+      "seconds": 0.111,
+      "runs": 1
+    },
+    {
+      "stage": "Generate drawing instructions",
+      "seconds": 0.142,
+      "runs": 1
+    },
+    {
+      "stage": "Subset font",
+      "seconds": 3.096,
+      "runs": 1
+    },
+    {
+      "stage": "Save PDF",
+      "seconds": 3.049,
+      "runs": 1
+    }
+  ],
+  "stage_seconds_total": 8.342,
+  "raster": [
+    "examples\\output\\F3\\warm\\Vogue-en\\raster\\Vogue-en.p1.png",
+    "examples\\output\\F3\\warm\\Vogue-en\\raster\\Vogue-en.p2.png",
+    "examples\\output\\F3\\warm\\Vogue-en\\raster\\Vogue-en.p3.png"
+  ],
+  "sidecars": [
+    "examples\\output\\F3\\warm\\Vogue-en\\sidecars\\article_context.report.json",
+    "examples\\output\\F3\\warm\\Vogue-en\\sidecars\\article_map.json",
+    "examples\\output\\F3\\warm\\Vogue-en\\sidecars\\chain_report.json",
+    "examples\\output\\F3\\warm\\Vogue-en\\sidecars\\chain_translation.report.json",
+    "examples\\output\\F3\\warm\\Vogue-en\\sidecars\\column_reflow.report.json",
+    "examples\\output\\F3\\warm\\Vogue-en\\sidecars\\drop_cap.report.json",
+    "examples\\output\\F3\\warm\\Vogue-en\\sidecars\\drop_cap_apply.report.json",
+    "examples\\output\\F3\\warm\\Vogue-en\\sidecars\\fragment_stitch.report.json",
+    "examples\\output\\F3\\warm\\Vogue-en\\sidecars\\hitl_apply.report.json",
+    "examples\\output\\F3\\warm\\Vogue-en\\sidecars\\issues.json",
+    "examples\\output\\F3\\warm\\Vogue-en\\sidecars\\line_split.report.json",
+    "examples\\output\\F3\\warm\\Vogue-en\\sidecars\\name_harvest.report.json",
+    "examples\\output\\F3\\warm\\Vogue-en\\sidecars\\page_classify.report.json",
+    "examples\\output\\F3\\warm\\Vogue-en\\sidecars\\paren_dedup.report.json",
+    "examples\\output\\F3\\warm\\Vogue-en\\sidecars\\react_repair.report.json",
+    "examples\\output\\F3\\warm\\Vogue-en\\sidecars\\short_unit.report.json",
+    "examples\\output\\F3\\warm\\Vogue-en\\sidecars\\source_audit.report.json",
+    "examples\\output\\F3\\warm\\Vogue-en\\sidecars\\title_typeset.report.json"
+  ],
+  "translation_style": {
+    "person_names": "transliterate",
+    "system_prompt_sha256": "74666d7128c1c06127d9193db7b8d2b346866088f1ccabb4c33e69be1c586903"
+  }
+}

@@ -1,0 +1,303 @@
+{
+  "counts": {
+    "by_kind": {
+      "fragment_cluster": 4,
+      "text_text_collision": 1,
+      "untranslated_residue": 2
+    },
+    "issues": 7
+  },
+  "detector_records": {
+    "text_text_collision": [
+      {
+        "candidate_route": "coverage",
+        "coverage": 0.964,
+        "exempt_route": "source_coverage",
+        "iou": 0.0521,
+        "page": 3,
+        "paragraphs": [
+          "p3#10",
+          "p3#12"
+        ],
+        "source_coverage": 1.0,
+        "source_iou": 0.0183,
+        "verdict": "the_source_layout_already_overlapped"
+      }
+    ]
+  },
+  "document_detectors": [
+    "escalation_surfacing"
+  ],
+  "issues": [
+    {
+      "detected_at_iteration": 0,
+      "detector": "fragment_cluster",
+      "evidence": {
+        "debug_ids": [
+          "mZ8xV#L0",
+          "mZ8xV#L1",
+          "mZ8xV#L2"
+        ],
+        "excerpt": "32步伐一致 玛戈·安布巴 / 关于复古风格的新 / 前沿：鞋子",
+        "layout_labels": [
+          "plain text"
+        ],
+        "max_chars": 40,
+        "member_count": 3,
+        "min_cluster": 3
+      },
+      "geometry": {
+        "x": 56.16189999999994,
+        "x2": 120.75128879999994,
+        "y": 215.88422,
+        "y2": 258.29226
+      },
+      "id": "fragment_cluster:p3:p3#5+p3#6+p3#7",
+      "kind": "fragment_cluster",
+      "page": 3,
+      "paragraph_refs": [
+        "p3#5",
+        "p3#6",
+        "p3#7"
+      ],
+      "severity": "low"
+    },
+    {
+      "detected_at_iteration": 0,
+      "detector": "fragment_cluster",
+      "evidence": {
+        "debug_ids": [
+          "4iGD6#L0",
+          "4iGD6#L1",
+          "4iGD6#L2",
+          "8wL7K#L0",
+          "8wL7K#L1"
+        ],
+        "excerpt": "试验场萨纳兹·图西（Sanaz Toossi）带来 / 她的戏剧英语 / 到百老汇 / 48从A到扎克 扎克·珀森的到来 / 在Gap是一",
+        "layout_labels": [
+          "plain text"
+        ],
+        "max_chars": 40,
+        "member_count": 5,
+        "min_cluster": 3
+      },
+      "geometry": {
+        "x": 56.17589999999994,
+        "x2": 125.66091279999993,
+        "y": 54.379589999999986,
+        "y2": 133.00356999999997
+      },
+      "id": "fragment_cluster:p3:p3#19+p3#20+p3#21+p3#22+p3#23",
+      "kind": "fragment_cluster",
+      "page": 3,
+      "paragraph_refs": [
+        "p3#19",
+        "p3#20",
+        "p3#21",
+        "p3#22",
+        "p3#23"
+      ],
+      "severity": "low"
+    },
+    {
+      "detected_at_iteration": 0,
+      "detector": "fragment_cluster",
+      "evidence": {
+        "debug_ids": [
+          "BGg6Q#L2",
+          "BGg6Q#L3",
+          "BGg6Q#L4",
+          "BGg6Q#L5"
+        ],
+        "excerpt": "康涅狄格州 / 家是一个神奇的色彩缤纷、怀旧风格的混合体， / 美国风， / 以及艺术家对流行文化的非凡幻想。作者：克洛伊·沙玛（Chloe Schama）",
+        "layout_labels": [
+          "plain text"
+        ],
+        "max_chars": 40,
+        "member_count": 4,
+        "min_cluster": 3
+      },
+      "geometry": {
+        "x": 299.8499306199999,
+        "x2": 360.1820090199999,
+        "y": 181.91504000000003,
+        "y2": 274.5319400000001
+      },
+      "id": "fragment_cluster:p3:p3#42+p3#43+p3#44+p3#45",
+      "kind": "fragment_cluster",
+      "page": 3,
+      "paragraph_refs": [
+        "p3#42",
+        "p3#43",
+        "p3#44",
+        "p3#45"
+      ],
+      "severity": "low"
+    },
+    {
+      "detected_at_iteration": 0,
+      "detector": "fragment_cluster",
+      "evidence": {
+        "debug_ids": [
+          "EBjag#L0",
+          "EBjag#L1",
+          "EBjag#L2",
+          "EBjag#L3"
+        ],
+        "excerpt": "104The Get 炎热的夏日 / 冬天是 / 完美时刻 / 去倾注于",
+        "layout_labels": [
+          "plain text"
+        ],
+        "max_chars": 40,
+        "member_count": 4,
+        "min_cluster": 3
+      },
+      "geometry": {
+        "x": 375.6829306199999,
+        "x2": 433.34353702,
+        "y": 258.3817800000001,
+        "y2": 309.2800500000001
+      },
+      "id": "fragment_cluster:p3:p3#50+p3#51+p3#52+p3#53",
+      "kind": "fragment_cluster",
+      "page": 3,
+      "paragraph_refs": [
+        "p3#50",
+        "p3#51",
+        "p3#52",
+        "p3#53"
+      ],
+      "severity": "low"
+    },
+    {
+      "detected_at_iteration": 0,
+      "detector": "text_text_collision",
+      "evidence": {
+        "candidate_route": "coverage",
+        "coverage": 1.0,
+        "debug_ids": [
+          "bJdWH",
+          "Y9nzX"
+        ],
+        "excerpt": "+",
+        "iou": 0.0163,
+        "layout_labels": [
+          "plain text",
+          "title"
+        ],
+        "min_coverage": 0.4,
+        "min_iou": 0.2,
+        "other_excerpt": "注射承诺逆转时光。马蒂·卡恩（Mattie Kahn）调查",
+        "source_checkpoint": "checkpoint.06_styles_and_formulas.xml",
+        "source_coverage": 0.0,
+        "source_iou": 0.0,
+        "source_min_coverage": 0.4,
+        "source_min_iou": 0.05,
+        "source_stage": "styles_and_formulas"
+      },
+      "geometry": {
+        "x": 56.60789999999994,
+        "x2": 116.36670026817315,
+        "y": 149.70002,
+        "y2": 191.50002
+      },
+      "id": "text_text_collision:p3:p3#11+p3#12",
+      "kind": "text_text_collision",
+      "page": 3,
+      "paragraph_refs": [
+        "p3#11",
+        "p3#12"
+      ],
+      "severity": "medium"
+    },
+    {
+      "detected_at_iteration": 0,
+      "detector": "untranslated_residue",
+      "evidence": {
+        "debug_id": "nBpF3",
+        "excerpt": "FENDI BOUTIQUES  888291 0163FENDI.COM",
+        "layout_label": "abandon",
+        "min_ratio": 0.6,
+        "residue_chars": 22,
+        "residue_ratio": 1.0,
+        "residue_script": "latin",
+        "script_chars": 22
+      },
+      "geometry": {
+        "x": 19.8734586,
+        "x2": 28.8289986,
+        "y": 581.073,
+        "y2": 754.385985220834
+      },
+      "id": "untranslated_residue:p1:p1#0",
+      "kind": "untranslated_residue",
+      "page": 1,
+      "paragraph_refs": [
+        "p1#0"
+      ],
+      "severity": "high"
+    },
+    {
+      "detected_at_iteration": 0,
+      "detector": "untranslated_residue",
+      "evidence": {
+        "debug_id": "Hatx3",
+        "excerpt": "FASHION EDITOR: JULIA SARR-JAMOIS. HAIR SUSIE SOBOL.   PRODUCED BY BOOM PRODUCTI",
+        "layout_label": "abandon",
+        "min_ratio": 0.6,
+        "residue_chars": 125,
+        "residue_ratio": 1.0,
+        "residue_script": "latin",
+        "script_chars": 125
+      },
+      "geometry": {
+        "x": 548.099,
+        "x2": 558.91272,
+        "y": 56.0,
+        "y2": 299.7408129499996
+      },
+      "id": "untranslated_residue:p3:p3#59",
+      "kind": "untranslated_residue",
+      "page": 3,
+      "paragraph_refs": [
+        "p3#59"
+      ],
+      "severity": "high"
+    }
+  ],
+  "iteration": 0,
+  "language": "zh",
+  "notes": [
+    "text_text_collision: 1 overlapping pair(s) not raised: the_source_layout_already_overlapped"
+  ],
+  "pages_by_detector": {
+    "fragment_cluster": [
+      3
+    ],
+    "out_of_page": [
+      1,
+      2,
+      3
+    ],
+    "text_figure_overlap": [
+      1,
+      2
+    ],
+    "text_text_collision": [
+      1,
+      2,
+      3
+    ],
+    "untranslated_residue": [
+      1,
+      2,
+      3
+    ]
+  },
+  "source_geometry": {
+    "checkpoint": "checkpoint.06_styles_and_formulas.xml",
+    "paragraphs": 39,
+    "stage": "styles_and_formulas"
+  },
+  "translation_performed": true
+}

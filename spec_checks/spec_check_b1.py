@@ -171,6 +171,23 @@ NAME_REFERENCE_ALLOW_LIST = NAME_DEFINITION_FILES | {
     # verdict, because what it asserts is which of the two decides and that a
     # paragraph carrying neither is left alone.
     "spec_checks/spec_check_b9_4.py",
+    # B10.3 exempts a page whose lines are records from the stitch, and B10.5
+    # reaches a page's reflow profile the same way: both read the page kind to
+    # reach that page's declared policy and neither writes a field. Their gates
+    # set a kind on a page they build, because the property each asserts is that
+    # the policy of the page decides, not the pass.
+    "babeldoc/magazine/fragment_stitch.py",
+    "babeldoc/magazine/column_reflow.py",
+    "spec_checks/spec_check_b10_3.py",
+    "spec_checks/spec_check_b10_5.py",
+    # B10.4 applies a human ruling that retypes whole pages. The kind it names
+    # travels in the ruling file and in the apply report, both of which are read
+    # here by their own key names; the gate writes no IL field.
+    "spec_checks/spec_check_b10_4.py",
+    # F3 closes the cycle and reads the same two files to state what the ruling
+    # recovered: the ruled kinds and the apply report's account of which of them
+    # the classifier had agreed with. It opens no document.
+    "spec_checks/spec_check_f3.py",
 }
 
 # Upstream files carried over from B0, still uncommitted in the working tree.

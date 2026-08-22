@@ -1,0 +1,224 @@
+{
+  "decisions_file": "D:\\Codes\\BabelDOC\\reviews\\Courier-zh.decisions.json",
+  "page_kinds": [
+    {
+      "kind": "toc",
+      "machine_conf": 1.0,
+      "machine_kind": "sidebar_heavy",
+      "machine_source": "deterministic",
+      "page": 1
+    },
+    {
+      "kind": "article_opener",
+      "machine_conf": 0.8125,
+      "machine_kind": "article_opener",
+      "machine_source": "deterministic",
+      "page": 2
+    },
+    {
+      "kind": "photo_spread",
+      "machine_conf": 1.0,
+      "machine_kind": "advertisement",
+      "machine_source": "deterministic",
+      "page": 3
+    },
+    {
+      "kind": "article_body",
+      "machine_conf": 1.0,
+      "machine_kind": "sidebar_heavy",
+      "machine_source": "deterministic",
+      "page": 4
+    },
+    {
+      "kind": "article_opener",
+      "machine_conf": 1.0,
+      "machine_kind": "article_opener",
+      "machine_source": "deterministic",
+      "page": 5
+    },
+    {
+      "kind": "article_body",
+      "machine_conf": 1.0,
+      "machine_kind": "sidebar_heavy",
+      "machine_source": "deterministic",
+      "page": 6
+    },
+    {
+      "kind": "article_opener",
+      "machine_conf": 1.0,
+      "machine_kind": "sidebar_heavy",
+      "machine_source": "deterministic",
+      "page": 7
+    },
+    {
+      "kind": "article_body",
+      "machine_conf": 1.0,
+      "machine_kind": "sidebar_heavy",
+      "machine_source": "deterministic",
+      "page": 8
+    }
+  ],
+  "sample": "Courier-zh",
+  "terms": {
+    "auto_glossary_kept": 174,
+    "auto_glossary_relocated": "auto_extracted_glossary",
+    "defaulted": 11,
+    "dropped_from_auto": [],
+    "entries": [
+      {
+        "decided_by": "policy",
+        "source": "Agnès Bardon",
+        "target": "Agnes Bardon"
+      },
+      {
+        "decided_by": "policy",
+        "source": "Anna Ruohonen",
+        "target": "Anna Ruohonen"
+      },
+      {
+        "decided_by": "policy",
+        "source": "Anuliina Savolainen",
+        "target": "Anuliina Savolainen"
+      },
+      {
+        "decided_by": "policy",
+        "source": "Daniel Robinson",
+        "target": "Daniel Robinson"
+      },
+      {
+        "decided_by": "policy",
+        "source": "David Jefferson",
+        "target": "David Jefferson"
+      },
+      {
+        "decided_by": "policy",
+        "source": "Jim Al-Khalili",
+        "target": "Jim Al-Khalili"
+      },
+      {
+        "decided_by": "policy",
+        "source": "Katerina Markelova",
+        "target": "Katerina Markelova"
+      },
+      {
+        "decided_by": "policy",
+        "source": "Laetitia Kaci",
+        "target": "Laetitia Kaci"
+      },
+      {
+        "decided_by": "policy",
+        "source": "Lagipoiva Cherelle Jackson",
+        "target": "Lagipoiva Cherelle Jackson"
+      },
+      {
+        "decided_by": "policy",
+        "source": "Marcelo Silva de Sousa",
+        "target": "Marcelo Silva de Sousa"
+      },
+      {
+        "decided_by": "policy",
+        "source": "Sisco Auala",
+        "target": "Sisco Auala"
+      }
+    ],
+    "glossary": "hitl_decisions",
+    "match_definition": "how many inputs -- the text a paragraph was offered as, which is what the glossary is matched against -- activate this entry, by the matcher the translation prompt itself uses; counted over every request this run built from the document, the repair loop's included",
+    "matches": [
+      {
+        "matched_excerpts": [
+          "阿涅丝·巴尔东(Agnès Bardon)"
+        ],
+        "matched_prompt_count": 1,
+        "source": "Agnès Bardon",
+        "target": "Agnes Bardon"
+      },
+      {
+        "matched_excerpts": [
+          "安娜·罗霍宁(Anna Ruohonen)"
+        ],
+        "matched_prompt_count": 1,
+        "source": "Anna Ruohonen",
+        "target": "Anna Ruohonen"
+      },
+      {
+        "matched_excerpts": [
+          "阿努利那·萨沃莱宁(Anuliina Savolainen)"
+        ],
+        "matched_prompt_count": 1,
+        "source": "Anuliina Savolainen",
+        "target": "Anuliina Savolainen"
+      },
+      {
+        "matched_excerpts": [
+          "丹尼尔·鲁滨逊(Daniel Robinson)和戴维·杰斐逊(David Jefferson)",
+          "丹尼尔·鲁滨逊 (Daniel Robinson)"
+        ],
+        "matched_prompt_count": 2,
+        "source": "Daniel Robinson",
+        "target": "Daniel Robinson"
+      },
+      {
+        "matched_excerpts": [
+          "丹尼尔·鲁滨逊(Daniel Robinson)和戴维·杰斐逊(David Jefferson)",
+          "戴维·杰斐逊 (David Jefferson) 坎特伯雷大学(新西 兰)副教授,其主要 研究方向为生物多样 性、知识产权与土著知 识体系的交叉领域。"
+        ],
+        "matched_prompt_count": 2,
+        "source": "David Jefferson",
+        "target": "David Jefferson"
+      },
+      {
+        "matched_excerpts": [
+          "吉姆·艾尔-哈利利(Jim Al-Khalili)"
+        ],
+        "matched_prompt_count": 1,
+        "source": "Jim Al-Khalili",
+        "target": "Jim Al-Khalili"
+      },
+      {
+        "matched_excerpts": [
+          "卡特琳娜·马尔可洛娃(Katerina Markelova)担任采访"
+        ],
+        "matched_prompt_count": 1,
+        "source": "Katerina Markelova",
+        "target": "Katerina Markelova"
+      },
+      {
+        "matched_excerpts": [
+          "蕾蒂西亚·凯西(Laetitia Kaci)担任采访"
+        ],
+        "matched_prompt_count": 1,
+        "source": "Laetitia Kaci",
+        "target": "Laetitia Kaci"
+      },
+      {
+        "matched_excerpts": [
+          "拉吉波瓦·谢雷尔·杰克逊(Lagipoiva Cherelle Jackson)",
+          "拉吉波瓦·谢雷尔·杰克逊 {v1}Lagipoiva Cherelle Jackson)"
+        ],
+        "matched_prompt_count": 2,
+        "source": "Lagipoiva Cherelle Jackson",
+        "target": "Lagipoiva Cherelle Jackson"
+      },
+      {
+        "matched_excerpts": [
+          "马塞洛·席尔瓦·德索萨(Marcelo Silva de Sousa)",
+          "马塞洛·席尔瓦·德索萨 (Marcelo Silva de Sousa)"
+        ],
+        "matched_prompt_count": 2,
+        "source": "Marcelo Silva de Sousa",
+        "target": "Marcelo Silva de Sousa"
+      },
+      {
+        "matched_excerpts": [
+          "西斯科·阿瓦拉(Sisco Auala)"
+        ],
+        "matched_prompt_count": 1,
+        "source": "Sisco Auala",
+        "target": "Sisco Auala"
+      }
+    ],
+    "overridden": [],
+    "repair_inputs": 1,
+    "ruled": 0
+  }
+}

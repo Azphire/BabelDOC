@@ -1,0 +1,128 @@
+{
+  "adjacent_gap_ratio": 1.0,
+  "counts": {
+    "admitted": 12,
+    "by_shape": {
+      "label_shaped": 12,
+      "name_shaped": 0
+    },
+    "refused": 0,
+    "requests": 6
+  },
+  "enabled": true,
+  "min_text_length": 5,
+  "refused_units": [],
+  "shape_exception_floor": 2,
+  "short_label_max_chars": 8,
+  "switch": "magazine_short_unit",
+  "units": [
+    {
+      "chars": 2,
+      "debug_id": "pqYz4",
+      "page": 1,
+      "paragraph": "p1#0",
+      "shape": "label_shaped",
+      "source": "社论",
+      "translated": "Editorial"
+    },
+    {
+      "chars": 3,
+      "debug_id": "LdULd",
+      "page": 1,
+      "paragraph": "p1#7",
+      "shape": "label_shaped",
+      "source": "总编辑",
+      "translated": "Editor-in-Chief"
+    },
+    {
+      "chars": 2,
+      "debug_id": "mfPM6",
+      "page": 1,
+      "paragraph": "p1#9",
+      "shape": "label_shaped",
+      "source": "广角",
+      "translated": "Wide Angle"
+    },
+    {
+      "chars": 2,
+      "debug_id": "fGdb3",
+      "page": 1,
+      "paragraph": "p1#26",
+      "shape": "label_shaped",
+      "source": "聚焦",
+      "translated": "Focus"
+    },
+    {
+      "chars": 2,
+      "debug_id": "QwH6o",
+      "page": 1,
+      "paragraph": "p1#29",
+      "shape": "label_shaped",
+      "source": "观点",
+      "translated": "Viewpoint"
+    },
+    {
+      "chars": 2,
+      "debug_id": "LeGSv",
+      "page": 1,
+      "paragraph": "p1#32",
+      "shape": "label_shaped",
+      "source": "嘉宾",
+      "translated": "Guest"
+    },
+    {
+      "chars": 4,
+      "debug_id": "7n4Hp",
+      "page": 1,
+      "paragraph": "p1#36",
+      "shape": "label_shaped",
+      "source": "深度阅读",
+      "translated": "Deep Reading"
+    },
+    {
+      "chars": 2,
+      "debug_id": "ykjT6",
+      "page": 2,
+      "paragraph": "p2#0",
+      "shape": "label_shaped",
+      "source": "广角",
+      "translated": "Wide Angle"
+    },
+    {
+      "chars": 4,
+      "debug_id": "2Nf2n",
+      "page": 3,
+      "paragraph": "p3#1",
+      "shape": "label_shaped",
+      "source": "土著知识",
+      "translated": "Indigenous Knowledge"
+    },
+    {
+      "chars": 2,
+      "debug_id": "fpTeK",
+      "page": 4,
+      "paragraph": "p4#0",
+      "shape": "label_shaped",
+      "source": "广角",
+      "translated": "Wide Angle"
+    },
+    {
+      "chars": 2,
+      "debug_id": "uFxfC",
+      "page": 6,
+      "paragraph": "p6#1",
+      "shape": "label_shaped",
+      "source": "观点",
+      "translated": "Opinion"
+    },
+    {
+      "chars": 2,
+      "debug_id": "gHv5r",
+      "page": 7,
+      "paragraph": "p7#0",
+      "shape": "label_shaped",
+      "source": "广角",
+      "translated": "Wide Angle"
+    }
+  ]
+}

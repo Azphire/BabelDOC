@@ -1,0 +1,48 @@
+{
+  "adjacent_gap_ratio": 1.0,
+  "counts": {
+    "admitted": 1,
+    "by_shape": {
+      "label_shaped": 1,
+      "name_shaped": 0
+    },
+    "refused": 2,
+    "requests": 1
+  },
+  "enabled": true,
+  "min_text_length": 5,
+  "refused_units": [
+    {
+      "chars": 0,
+      "debug_id": "aE74y",
+      "page": 1,
+      "paragraph": "p1#20",
+      "reason": "placeholder_bearing",
+      "shape": "label_shaped",
+      "source": ""
+    },
+    {
+      "chars": 0,
+      "debug_id": "UyMph",
+      "page": 2,
+      "paragraph": "p2#126",
+      "reason": "placeholder_bearing",
+      "shape": "label_shaped",
+      "source": ""
+    }
+  ],
+  "shape_exception_floor": 2,
+  "short_label_max_chars": 8,
+  "switch": "magazine_short_unit",
+  "units": [
+    {
+      "chars": 4,
+      "debug_id": "1UjK5",
+      "page": 2,
+      "paragraph": "p2#51",
+      "shape": "label_shaped",
+      "source": "NeWs",
+      "translated": "新闻"
+    }
+  ]
+}

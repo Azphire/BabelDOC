@@ -1,0 +1,923 @@
+{
+  "api_attributions": [],
+  "api_calls": 0,
+  "applications": 2,
+  "config": {
+    "actions": [
+      {
+        "applicability": {
+          "contain_layout_labels": [
+            "title",
+            "paragraph_title"
+          ],
+          "min_overflow_ratio": 0.01
+        },
+        "bounds": {
+          "contain_margin_ratio": 0.01,
+          "contain_min_scale": 0.5
+        },
+        "conditions": [
+          "its evidence reports layout_label as one of: title, paragraph_title",
+          "its evidence reports overflow_ratio at or above 0.01"
+        ],
+        "description": "Put a paragraph that is printing off the edge of its page back inside the page. It moves ink and never changes a character of text: it slides the paragraph inside the frame, shrinks it about the centre of its own extent only where sliding alone cannot fit it, and escalates instead of shrinking past the declared floor.",
+        "issue_kinds": [
+          "out_of_page"
+        ],
+        "max_applications": 8,
+        "name": "contain_in_page",
+        "parameters": [
+          {
+            "allowed_range": "1.0..20.0",
+            "default": 3.0,
+            "name": "max_paragraphs"
+          }
+        ]
+      },
+      {
+        "applicability": {
+          "min_collision_coverage": 0.4
+        },
+        "bounds": {
+          "resolve_margin": 0.05,
+          "resolve_max_area_ratio": 0.5,
+          "resolve_max_shift_ratio": 0.08
+        },
+        "conditions": [
+          "its evidence reports coverage at or above 0.4"
+        ],
+        "description": "Slide the smaller of two paragraphs standing in one place clear of the larger, along the axis on which they overlap least. It moves ink and never changes a character of text, it moves only the paragraph its rule can name as the smaller, and it escalates rather than acting where the two are of comparable size or where clearing the overlap would take more movement than a paragraph that merely drifted would need.",
+        "issue_kinds": [
+          "text_text_collision"
+        ],
+        "max_applications": 8,
+        "name": "resolve_collision",
+        "parameters": [
+          {
+            "allowed_range": "1.0..20.0",
+            "default": 3.0,
+            "name": "max_paragraphs"
+          }
+        ]
+      },
+      {
+        "applicability": {
+          "min_residue_ratio": 0.9,
+          "min_source_chars": 12,
+          "orphan_layout_labels": [
+            "fallback_line"
+          ]
+        },
+        "bounds": {},
+        "conditions": [
+          "its evidence reports residue_ratio at or above 0.9",
+          "the text the page renders for it is at least 12 characters long",
+          "its evidence reports layout_label as one of: fallback_line"
+        ],
+        "description": "Send the text of an orphan line through the translation engine and write the answer back into the paragraph, then lay that paragraph out again.",
+        "issue_kinds": [
+          "untranslated_residue"
+        ],
+        "max_applications": 12,
+        "name": "translate_orphan_lines",
+        "parameters": [
+          {
+            "allowed_range": "1.0..20.0",
+            "default": 3.0,
+            "name": "max_paragraphs"
+          }
+        ]
+      }
+    ],
+    "decide_max_attempts": 2,
+    "issue_excerpt_chars": 120,
+    "max_glossary_entries": 24,
+    "max_issues_offered": 40,
+    "max_iterations": 3,
+    "page_context_chars": 1200,
+    "volatile_evidence_keys": [
+      "debug_id",
+      "debug_ids",
+      "source_checkpoint"
+    ]
+  },
+  "conservation": {
+    "changed_outside_touched": [],
+    "changed_refs": [
+      "p5#18",
+      "p5#24"
+    ],
+    "pages_after": 9,
+    "pages_before": 9,
+    "paragraphs_after": 218,
+    "paragraphs_before": 218,
+    "touched_refs": [
+      "p5#18",
+      "p5#24"
+    ],
+    "verdict": "conserved"
+  },
+  "engine_configured": true,
+  "final": {
+    "by_kind": {
+      "fragment_cluster": 8,
+      "out_of_page": 2,
+      "untranslated_residue": 18
+    },
+    "total": 28
+  },
+  "final_untreated": {
+    "by_kind": {
+      "fragment_cluster": 8,
+      "out_of_page": 2,
+      "untranslated_residue": 18
+    },
+    "total": 28
+  },
+  "iterations": [
+    {
+      "applicability": [],
+      "decision": {
+        "action": "translate_orphan_lines",
+        "attempts": 0,
+        "from_cache": true,
+        "issue_ids": [
+          "untranslated_residue:p2:p2#8",
+          "untranslated_residue:p4:p4#3",
+          "untranslated_residue:p5:p5#24"
+        ],
+        "parameters": {
+          "max_paragraphs": 3.0
+        },
+        "raw": "{\"action\": \"translate_orphan_lines\", \"issue_ids\": [\"untranslated_residue:p2:p2#8\", \"untranslated_residue:p4:p4#3\", \"untranslated_residue:p5:p5#24\"], \"parameters\": {}, \"reason\": \"These findings have a residue_ratio of 1.0, text length of at least 12 characters, and layout_label 'fallback_line', meeting all conditions for the action.\"}",
+        "reason": "These findings have a residue_ratio of 1.0, text length of at least 12 characters, and layout_label 'fallback_line', meeting all conditions for the action.",
+        "violations": []
+      },
+      "detected": {
+        "by_kind": {
+          "fragment_cluster": 8,
+          "out_of_page": 2,
+          "untranslated_residue": 20
+        },
+        "total": 30
+      },
+      "detected_ids": [
+        "fragment_cluster:p3:p3#13+p3#14+p3#15",
+        "fragment_cluster:p3:p3#18+p3#19+p3#20",
+        "fragment_cluster:p3:p3#36+p3#37+p3#38+p3#39",
+        "fragment_cluster:p5:p5#9+p5#10+p5#11",
+        "fragment_cluster:p5:p5#15+p5#16+p5#17",
+        "fragment_cluster:p5:p5#25+p5#26+p5#27+p5#28+p5#29+p5#30+p5#31+p5#32+p5#33+p5#34",
+        "fragment_cluster:p5:p5#48+p5#49+p5#50",
+        "fragment_cluster:p5:p5#52+p5#53+p5#54",
+        "out_of_page:p2:p2#8",
+        "out_of_page:p4:p4#3",
+        "untranslated_residue:p2:p2#8",
+        "untranslated_residue:p3:p3#5",
+        "untranslated_residue:p4:p4#3",
+        "untranslated_residue:p5:p5#4",
+        "untranslated_residue:p5:p5#6",
+        "untranslated_residue:p5:p5#8",
+        "untranslated_residue:p5:p5#12",
+        "untranslated_residue:p5:p5#13",
+        "untranslated_residue:p5:p5#14",
+        "untranslated_residue:p5:p5#17",
+        "untranslated_residue:p5:p5#18",
+        "untranslated_residue:p5:p5#22",
+        "untranslated_residue:p5:p5#24",
+        "untranslated_residue:p5:p5#39",
+        "untranslated_residue:p5:p5#44",
+        "untranslated_residue:p5:p5#54",
+        "untranslated_residue:p8:p8#3",
+        "untranslated_residue:p8:p8#5",
+        "untranslated_residue:p9:p9#9",
+        "untranslated_residue:p9:p9#19"
+      ],
+      "executed": [
+        {
+          "accepted": false,
+          "attempts": 0,
+          "calls": [],
+          "changed": false,
+          "from_cache": true,
+          "geometry": {},
+          "glossary_entries": [],
+          "issue_id": "untranslated_residue:p2:p2#8",
+          "offered_text": "BRIANSTAUFFER",
+          "paragraph_ref": "p2#8",
+          "reason": "translation_equals_source",
+          "source_text": "BRIANSTAUFFER",
+          "translated_text": "BRIANSTAUFFER"
+        },
+        {
+          "accepted": false,
+          "attempts": 0,
+          "calls": [],
+          "changed": false,
+          "from_cache": true,
+          "geometry": {},
+          "glossary_entries": [],
+          "issue_id": "untranslated_residue:p4:p4#3",
+          "offered_text": "PORTERGIFFORD,CHANTALJAHCHAN",
+          "paragraph_ref": "p4#3",
+          "reason": "translation_equals_source",
+          "source_text": "PORTERGIFFORD,CHANTALJAHCHAN",
+          "translated_text": "PORTERGIFFORD,CHANTALJAHCHAN"
+        },
+        {
+          "accepted": true,
+          "attempts": 0,
+          "calls": [],
+          "changed": true,
+          "from_cache": true,
+          "geometry": {},
+          "glossary_entries": [],
+          "issue_id": "untranslated_residue:p5:p5#24",
+          "offered_text": "ADVISORS TO THE EDITOR",
+          "paragraph_ref": "p5#24",
+          "reason": "accepted",
+          "source_text": "ADVISORS TO THE EDITOR",
+          "translated_text": "编辑顾问"
+        }
+      ],
+      "iteration": 1,
+      "new_ids": [],
+      "outcome": "advanced",
+      "recheck": {
+        "by_kind": {
+          "fragment_cluster": 8,
+          "out_of_page": 2,
+          "untranslated_residue": 19
+        },
+        "total": 29
+      },
+      "request": {
+        "cache_key": "4db6cf95e0b7af6c41696a242b4fe43a10c0ea0a5146559a21961aa0160d41ad",
+        "calls": [],
+        "prompt_sha256": "94f390049cd07156b3290170062939ad88b1103e9f207335b41769a0a4ba1a03"
+      },
+      "resolved_ids": [
+        "untranslated_residue:p5:p5#24"
+      ],
+      "rounds": [
+        {
+          "applicability": [],
+          "decision": {
+            "action": "none",
+            "attempts": 0,
+            "from_cache": true,
+            "issue_ids": [],
+            "parameters": {},
+            "raw": "{\"action\": \"none\", \"issue_ids\": [], \"parameters\": {}, \"reason\": \"No findings meet the conditions for any action, as none have the required layout_label.\"}",
+            "reason": "No findings meet the conditions for any action, as none have the required layout_label.",
+            "violations": []
+          },
+          "executed": [],
+          "kind": "out_of_page",
+          "offered": 2,
+          "offered_ids": [
+            "out_of_page:p2:p2#8",
+            "out_of_page:p4:p4#3"
+          ],
+          "reason": "decision_applied_nothing",
+          "request": {
+            "cache_key": "4462340169dad9da53a9942f97fa978df83aae6fd96093b38bb4ea543e7e933b",
+            "calls": [],
+            "prompt_sha256": "94f390049cd07156b3290170062939ad88b1103e9f207335b41769a0a4ba1a03"
+          },
+          "vocabulary": [
+            "contain_in_page"
+          ],
+          "written": []
+        },
+        {
+          "applicability": [],
+          "decision": {
+            "action": "translate_orphan_lines",
+            "attempts": 0,
+            "from_cache": true,
+            "issue_ids": [
+              "untranslated_residue:p2:p2#8",
+              "untranslated_residue:p4:p4#3",
+              "untranslated_residue:p5:p5#24"
+            ],
+            "parameters": {
+              "max_paragraphs": 3.0
+            },
+            "raw": "{\"action\": \"translate_orphan_lines\", \"issue_ids\": [\"untranslated_residue:p2:p2#8\", \"untranslated_residue:p4:p4#3\", \"untranslated_residue:p5:p5#24\"], \"parameters\": {}, \"reason\": \"These findings have a residue_ratio of 1.0, text length of at least 12 characters, and layout_label 'fallback_line', meeting all conditions for the action.\"}",
+            "reason": "These findings have a residue_ratio of 1.0, text length of at least 12 characters, and layout_label 'fallback_line', meeting all conditions for the action.",
+            "violations": []
+          },
+          "executed": [
+            {
+              "accepted": false,
+              "attempts": 0,
+              "calls": [],
+              "changed": false,
+              "from_cache": true,
+              "geometry": {},
+              "glossary_entries": [],
+              "issue_id": "untranslated_residue:p2:p2#8",
+              "offered_text": "BRIANSTAUFFER",
+              "paragraph_ref": "p2#8",
+              "reason": "translation_equals_source",
+              "source_text": "BRIANSTAUFFER",
+              "translated_text": "BRIANSTAUFFER"
+            },
+            {
+              "accepted": false,
+              "attempts": 0,
+              "calls": [],
+              "changed": false,
+              "from_cache": true,
+              "geometry": {},
+              "glossary_entries": [],
+              "issue_id": "untranslated_residue:p4:p4#3",
+              "offered_text": "PORTERGIFFORD,CHANTALJAHCHAN",
+              "paragraph_ref": "p4#3",
+              "reason": "translation_equals_source",
+              "source_text": "PORTERGIFFORD,CHANTALJAHCHAN",
+              "translated_text": "PORTERGIFFORD,CHANTALJAHCHAN"
+            },
+            {
+              "accepted": true,
+              "attempts": 0,
+              "calls": [],
+              "changed": true,
+              "from_cache": true,
+              "geometry": {},
+              "glossary_entries": [],
+              "issue_id": "untranslated_residue:p5:p5#24",
+              "offered_text": "ADVISORS TO THE EDITOR",
+              "paragraph_ref": "p5#24",
+              "reason": "accepted",
+              "source_text": "ADVISORS TO THE EDITOR",
+              "translated_text": "编辑顾问"
+            }
+          ],
+          "kind": "untranslated_residue",
+          "offered": 20,
+          "offered_ids": [
+            "untranslated_residue:p2:p2#8",
+            "untranslated_residue:p3:p3#5",
+            "untranslated_residue:p4:p4#3",
+            "untranslated_residue:p5:p5#4",
+            "untranslated_residue:p5:p5#6",
+            "untranslated_residue:p5:p5#8",
+            "untranslated_residue:p5:p5#12",
+            "untranslated_residue:p5:p5#13",
+            "untranslated_residue:p5:p5#14",
+            "untranslated_residue:p5:p5#17",
+            "untranslated_residue:p5:p5#18",
+            "untranslated_residue:p5:p5#22",
+            "untranslated_residue:p5:p5#24",
+            "untranslated_residue:p5:p5#39",
+            "untranslated_residue:p5:p5#44",
+            "untranslated_residue:p5:p5#54",
+            "untranslated_residue:p8:p8#3",
+            "untranslated_residue:p8:p8#5",
+            "untranslated_residue:p9:p9#9",
+            "untranslated_residue:p9:p9#19"
+          ],
+          "reason": "",
+          "request": {
+            "cache_key": "4db6cf95e0b7af6c41696a242b4fe43a10c0ea0a5146559a21961aa0160d41ad",
+            "calls": [],
+            "prompt_sha256": "94f390049cd07156b3290170062939ad88b1103e9f207335b41769a0a4ba1a03"
+          },
+          "vocabulary": [
+            "translate_orphan_lines"
+          ],
+          "written": [
+            "p5#24"
+          ]
+        }
+      ],
+      "treated_ids": [],
+      "untreated": {
+        "by_kind": {
+          "fragment_cluster": 8,
+          "out_of_page": 2,
+          "untranslated_residue": 20
+        },
+        "total": 30
+      },
+      "untreated_after": {
+        "by_kind": {
+          "fragment_cluster": 8,
+          "out_of_page": 2,
+          "untranslated_residue": 19
+        },
+        "total": 29
+      }
+    },
+    {
+      "applicability": [],
+      "decision": {
+        "action": "translate_orphan_lines",
+        "attempts": 0,
+        "from_cache": true,
+        "issue_ids": [
+          "untranslated_residue:p2:p2#8",
+          "untranslated_residue:p4:p4#3",
+          "untranslated_residue:p5:p5#18"
+        ],
+        "parameters": {
+          "max_paragraphs": 3.0
+        },
+        "raw": "{\"action\": \"translate_orphan_lines\", \"issue_ids\": [\"untranslated_residue:p2:p2#8\", \"untranslated_residue:p4:p4#3\", \"untranslated_residue:p5:p5#18\"], \"parameters\": {}, \"reason\": \"These findings have a residue_ratio of 1.0, text length of at least 12 characters, and layout_label 'fallback_line', meeting all conditions for translation.\"}",
+        "reason": "These findings have a residue_ratio of 1.0, text length of at least 12 characters, and layout_label 'fallback_line', meeting all conditions for translation.",
+        "violations": []
+      },
+      "detected": {
+        "by_kind": {
+          "fragment_cluster": 8,
+          "out_of_page": 2,
+          "untranslated_residue": 19
+        },
+        "total": 29
+      },
+      "detected_ids": [
+        "fragment_cluster:p3:p3#13+p3#14+p3#15",
+        "fragment_cluster:p3:p3#18+p3#19+p3#20",
+        "fragment_cluster:p3:p3#36+p3#37+p3#38+p3#39",
+        "fragment_cluster:p5:p5#9+p5#10+p5#11",
+        "fragment_cluster:p5:p5#15+p5#16+p5#17",
+        "fragment_cluster:p5:p5#25+p5#26+p5#27+p5#28+p5#29+p5#30+p5#31+p5#32+p5#33+p5#34",
+        "fragment_cluster:p5:p5#48+p5#49+p5#50",
+        "fragment_cluster:p5:p5#52+p5#53+p5#54",
+        "out_of_page:p2:p2#8",
+        "out_of_page:p4:p4#3",
+        "untranslated_residue:p2:p2#8",
+        "untranslated_residue:p3:p3#5",
+        "untranslated_residue:p4:p4#3",
+        "untranslated_residue:p5:p5#4",
+        "untranslated_residue:p5:p5#6",
+        "untranslated_residue:p5:p5#8",
+        "untranslated_residue:p5:p5#12",
+        "untranslated_residue:p5:p5#13",
+        "untranslated_residue:p5:p5#14",
+        "untranslated_residue:p5:p5#17",
+        "untranslated_residue:p5:p5#18",
+        "untranslated_residue:p5:p5#22",
+        "untranslated_residue:p5:p5#39",
+        "untranslated_residue:p5:p5#44",
+        "untranslated_residue:p5:p5#54",
+        "untranslated_residue:p8:p8#3",
+        "untranslated_residue:p8:p8#5",
+        "untranslated_residue:p9:p9#9",
+        "untranslated_residue:p9:p9#19"
+      ],
+      "executed": [
+        {
+          "accepted": false,
+          "attempts": 0,
+          "calls": [],
+          "changed": false,
+          "from_cache": true,
+          "geometry": {},
+          "glossary_entries": [],
+          "issue_id": "untranslated_residue:p2:p2#8",
+          "offered_text": "BRIANSTAUFFER",
+          "paragraph_ref": "p2#8",
+          "reason": "translation_equals_source",
+          "source_text": "BRIANSTAUFFER",
+          "translated_text": "BRIANSTAUFFER"
+        },
+        {
+          "accepted": false,
+          "attempts": 0,
+          "calls": [],
+          "changed": false,
+          "from_cache": true,
+          "geometry": {},
+          "glossary_entries": [],
+          "issue_id": "untranslated_residue:p4:p4#3",
+          "offered_text": "PORTERGIFFORD,CHANTALJAHCHAN",
+          "paragraph_ref": "p4#3",
+          "reason": "translation_equals_source",
+          "source_text": "PORTERGIFFORD,CHANTALJAHCHAN",
+          "translated_text": "PORTERGIFFORD,CHANTALJAHCHAN"
+        },
+        {
+          "accepted": true,
+          "attempts": 0,
+          "calls": [],
+          "changed": true,
+          "from_cache": true,
+          "geometry": {},
+          "glossary_entries": [],
+          "issue_id": "untranslated_residue:p5:p5#18",
+          "offered_text": "PRODUCTION MANAGER",
+          "paragraph_ref": "p5#18",
+          "reason": "accepted",
+          "source_text": "PRODUCTION MANAGER",
+          "translated_text": "制作经理"
+        }
+      ],
+      "iteration": 2,
+      "new_ids": [],
+      "outcome": "advanced",
+      "recheck": {
+        "by_kind": {
+          "fragment_cluster": 8,
+          "out_of_page": 2,
+          "untranslated_residue": 18
+        },
+        "total": 28
+      },
+      "request": {
+        "cache_key": "472ba4a10d5340cfbbe7010d0dbe30b6b36d5a951e4275db53ed88fe964fd55c",
+        "calls": [],
+        "prompt_sha256": "94f390049cd07156b3290170062939ad88b1103e9f207335b41769a0a4ba1a03"
+      },
+      "resolved_ids": [
+        "untranslated_residue:p5:p5#18"
+      ],
+      "rounds": [
+        {
+          "applicability": [],
+          "decision": {
+            "action": "none",
+            "attempts": 0,
+            "from_cache": true,
+            "issue_ids": [],
+            "parameters": {},
+            "raw": "{\"action\": \"none\", \"issue_ids\": [], \"parameters\": {}, \"reason\": \"No findings meet the conditions for any action, as none have the required layout_label.\"}",
+            "reason": "No findings meet the conditions for any action, as none have the required layout_label.",
+            "violations": []
+          },
+          "executed": [],
+          "kind": "out_of_page",
+          "offered": 2,
+          "offered_ids": [
+            "out_of_page:p2:p2#8",
+            "out_of_page:p4:p4#3"
+          ],
+          "reason": "decision_applied_nothing",
+          "request": {
+            "cache_key": "4462340169dad9da53a9942f97fa978df83aae6fd96093b38bb4ea543e7e933b",
+            "calls": [],
+            "prompt_sha256": "94f390049cd07156b3290170062939ad88b1103e9f207335b41769a0a4ba1a03"
+          },
+          "vocabulary": [
+            "contain_in_page"
+          ],
+          "written": []
+        },
+        {
+          "applicability": [],
+          "decision": {
+            "action": "translate_orphan_lines",
+            "attempts": 0,
+            "from_cache": true,
+            "issue_ids": [
+              "untranslated_residue:p2:p2#8",
+              "untranslated_residue:p4:p4#3",
+              "untranslated_residue:p5:p5#18"
+            ],
+            "parameters": {
+              "max_paragraphs": 3.0
+            },
+            "raw": "{\"action\": \"translate_orphan_lines\", \"issue_ids\": [\"untranslated_residue:p2:p2#8\", \"untranslated_residue:p4:p4#3\", \"untranslated_residue:p5:p5#18\"], \"parameters\": {}, \"reason\": \"These findings have a residue_ratio of 1.0, text length of at least 12 characters, and layout_label 'fallback_line', meeting all conditions for translation.\"}",
+            "reason": "These findings have a residue_ratio of 1.0, text length of at least 12 characters, and layout_label 'fallback_line', meeting all conditions for translation.",
+            "violations": []
+          },
+          "executed": [
+            {
+              "accepted": false,
+              "attempts": 0,
+              "calls": [],
+              "changed": false,
+              "from_cache": true,
+              "geometry": {},
+              "glossary_entries": [],
+              "issue_id": "untranslated_residue:p2:p2#8",
+              "offered_text": "BRIANSTAUFFER",
+              "paragraph_ref": "p2#8",
+              "reason": "translation_equals_source",
+              "source_text": "BRIANSTAUFFER",
+              "translated_text": "BRIANSTAUFFER"
+            },
+            {
+              "accepted": false,
+              "attempts": 0,
+              "calls": [],
+              "changed": false,
+              "from_cache": true,
+              "geometry": {},
+              "glossary_entries": [],
+              "issue_id": "untranslated_residue:p4:p4#3",
+              "offered_text": "PORTERGIFFORD,CHANTALJAHCHAN",
+              "paragraph_ref": "p4#3",
+              "reason": "translation_equals_source",
+              "source_text": "PORTERGIFFORD,CHANTALJAHCHAN",
+              "translated_text": "PORTERGIFFORD,CHANTALJAHCHAN"
+            },
+            {
+              "accepted": true,
+              "attempts": 0,
+              "calls": [],
+              "changed": true,
+              "from_cache": true,
+              "geometry": {},
+              "glossary_entries": [],
+              "issue_id": "untranslated_residue:p5:p5#18",
+              "offered_text": "PRODUCTION MANAGER",
+              "paragraph_ref": "p5#18",
+              "reason": "accepted",
+              "source_text": "PRODUCTION MANAGER",
+              "translated_text": "制作经理"
+            }
+          ],
+          "kind": "untranslated_residue",
+          "offered": 19,
+          "offered_ids": [
+            "untranslated_residue:p2:p2#8",
+            "untranslated_residue:p3:p3#5",
+            "untranslated_residue:p4:p4#3",
+            "untranslated_residue:p5:p5#4",
+            "untranslated_residue:p5:p5#6",
+            "untranslated_residue:p5:p5#8",
+            "untranslated_residue:p5:p5#12",
+            "untranslated_residue:p5:p5#13",
+            "untranslated_residue:p5:p5#14",
+            "untranslated_residue:p5:p5#17",
+            "untranslated_residue:p5:p5#18",
+            "untranslated_residue:p5:p5#22",
+            "untranslated_residue:p5:p5#39",
+            "untranslated_residue:p5:p5#44",
+            "untranslated_residue:p5:p5#54",
+            "untranslated_residue:p8:p8#3",
+            "untranslated_residue:p8:p8#5",
+            "untranslated_residue:p9:p9#9",
+            "untranslated_residue:p9:p9#19"
+          ],
+          "reason": "",
+          "request": {
+            "cache_key": "472ba4a10d5340cfbbe7010d0dbe30b6b36d5a951e4275db53ed88fe964fd55c",
+            "calls": [],
+            "prompt_sha256": "94f390049cd07156b3290170062939ad88b1103e9f207335b41769a0a4ba1a03"
+          },
+          "vocabulary": [
+            "translate_orphan_lines"
+          ],
+          "written": [
+            "p5#18"
+          ]
+        }
+      ],
+      "treated_ids": [],
+      "untreated": {
+        "by_kind": {
+          "fragment_cluster": 8,
+          "out_of_page": 2,
+          "untranslated_residue": 19
+        },
+        "total": 29
+      },
+      "untreated_after": {
+        "by_kind": {
+          "fragment_cluster": 8,
+          "out_of_page": 2,
+          "untranslated_residue": 18
+        },
+        "total": 28
+      }
+    },
+    {
+      "applicability": [],
+      "decision": {
+        "action": "none",
+        "attempts": 0,
+        "from_cache": true,
+        "issue_ids": [],
+        "parameters": {},
+        "raw": "{\"action\": \"none\", \"issue_ids\": [], \"parameters\": {}, \"reason\": \"No findings meet the conditions for any action, as none have the required layout_label.\"}",
+        "reason": "No findings meet the conditions for any action, as none have the required layout_label.",
+        "violations": []
+      },
+      "detected": {
+        "by_kind": {
+          "fragment_cluster": 8,
+          "out_of_page": 2,
+          "untranslated_residue": 18
+        },
+        "total": 28
+      },
+      "detected_ids": [
+        "fragment_cluster:p3:p3#13+p3#14+p3#15",
+        "fragment_cluster:p3:p3#18+p3#19+p3#20",
+        "fragment_cluster:p3:p3#36+p3#37+p3#38+p3#39",
+        "fragment_cluster:p5:p5#9+p5#10+p5#11",
+        "fragment_cluster:p5:p5#15+p5#16+p5#17",
+        "fragment_cluster:p5:p5#25+p5#26+p5#27+p5#28+p5#29+p5#30+p5#31+p5#32+p5#33+p5#34",
+        "fragment_cluster:p5:p5#48+p5#49+p5#50",
+        "fragment_cluster:p5:p5#52+p5#53+p5#54",
+        "out_of_page:p2:p2#8",
+        "out_of_page:p4:p4#3",
+        "untranslated_residue:p2:p2#8",
+        "untranslated_residue:p3:p3#5",
+        "untranslated_residue:p4:p4#3",
+        "untranslated_residue:p5:p5#4",
+        "untranslated_residue:p5:p5#6",
+        "untranslated_residue:p5:p5#8",
+        "untranslated_residue:p5:p5#12",
+        "untranslated_residue:p5:p5#13",
+        "untranslated_residue:p5:p5#14",
+        "untranslated_residue:p5:p5#17",
+        "untranslated_residue:p5:p5#22",
+        "untranslated_residue:p5:p5#39",
+        "untranslated_residue:p5:p5#44",
+        "untranslated_residue:p5:p5#54",
+        "untranslated_residue:p8:p8#3",
+        "untranslated_residue:p8:p8#5",
+        "untranslated_residue:p9:p9#9",
+        "untranslated_residue:p9:p9#19"
+      ],
+      "executed": [
+        {
+          "accepted": false,
+          "attempts": 0,
+          "calls": [],
+          "changed": false,
+          "from_cache": true,
+          "geometry": {},
+          "glossary_entries": [],
+          "issue_id": "untranslated_residue:p2:p2#8",
+          "offered_text": "BRIANSTAUFFER",
+          "paragraph_ref": "p2#8",
+          "reason": "translation_equals_source",
+          "source_text": "BRIANSTAUFFER",
+          "translated_text": "BRIANSTAUFFER"
+        },
+        {
+          "accepted": false,
+          "attempts": 0,
+          "calls": [],
+          "changed": false,
+          "from_cache": true,
+          "geometry": {},
+          "glossary_entries": [],
+          "issue_id": "untranslated_residue:p4:p4#3",
+          "offered_text": "PORTERGIFFORD,CHANTALJAHCHAN",
+          "paragraph_ref": "p4#3",
+          "reason": "translation_equals_source",
+          "source_text": "PORTERGIFFORD,CHANTALJAHCHAN",
+          "translated_text": "PORTERGIFFORD,CHANTALJAHCHAN"
+        }
+      ],
+      "iteration": 3,
+      "outcome": "applied_nothing",
+      "request": {
+        "cache_key": "4462340169dad9da53a9942f97fa978df83aae6fd96093b38bb4ea543e7e933b",
+        "calls": [],
+        "prompt_sha256": "94f390049cd07156b3290170062939ad88b1103e9f207335b41769a0a4ba1a03"
+      },
+      "rounds": [
+        {
+          "applicability": [],
+          "decision": {
+            "action": "none",
+            "attempts": 0,
+            "from_cache": true,
+            "issue_ids": [],
+            "parameters": {},
+            "raw": "{\"action\": \"none\", \"issue_ids\": [], \"parameters\": {}, \"reason\": \"No findings meet the conditions for any action, as none have the required layout_label.\"}",
+            "reason": "No findings meet the conditions for any action, as none have the required layout_label.",
+            "violations": []
+          },
+          "executed": [],
+          "kind": "out_of_page",
+          "offered": 2,
+          "offered_ids": [
+            "out_of_page:p2:p2#8",
+            "out_of_page:p4:p4#3"
+          ],
+          "reason": "decision_applied_nothing",
+          "request": {
+            "cache_key": "4462340169dad9da53a9942f97fa978df83aae6fd96093b38bb4ea543e7e933b",
+            "calls": [],
+            "prompt_sha256": "94f390049cd07156b3290170062939ad88b1103e9f207335b41769a0a4ba1a03"
+          },
+          "vocabulary": [
+            "contain_in_page"
+          ],
+          "written": []
+        },
+        {
+          "applicability": [],
+          "decision": {
+            "action": "translate_orphan_lines",
+            "attempts": 0,
+            "from_cache": true,
+            "issue_ids": [
+              "untranslated_residue:p2:p2#8",
+              "untranslated_residue:p4:p4#3"
+            ],
+            "parameters": {
+              "max_paragraphs": 3.0
+            },
+            "raw": "{\"action\": \"translate_orphan_lines\", \"issue_ids\": [\"untranslated_residue:p2:p2#8\", \"untranslated_residue:p4:p4#3\"], \"parameters\": {}, \"reason\": \"The findings have a residue_ratio of 1.0, text length of at least 12 characters, and layout_label 'fallback_line'.\"}",
+            "reason": "The findings have a residue_ratio of 1.0, text length of at least 12 characters, and layout_label 'fallback_line'.",
+            "violations": []
+          },
+          "executed": [
+            {
+              "accepted": false,
+              "attempts": 0,
+              "calls": [],
+              "changed": false,
+              "from_cache": true,
+              "geometry": {},
+              "glossary_entries": [],
+              "issue_id": "untranslated_residue:p2:p2#8",
+              "offered_text": "BRIANSTAUFFER",
+              "paragraph_ref": "p2#8",
+              "reason": "translation_equals_source",
+              "source_text": "BRIANSTAUFFER",
+              "translated_text": "BRIANSTAUFFER"
+            },
+            {
+              "accepted": false,
+              "attempts": 0,
+              "calls": [],
+              "changed": false,
+              "from_cache": true,
+              "geometry": {},
+              "glossary_entries": [],
+              "issue_id": "untranslated_residue:p4:p4#3",
+              "offered_text": "PORTERGIFFORD,CHANTALJAHCHAN",
+              "paragraph_ref": "p4#3",
+              "reason": "translation_equals_source",
+              "source_text": "PORTERGIFFORD,CHANTALJAHCHAN",
+              "translated_text": "PORTERGIFFORD,CHANTALJAHCHAN"
+            }
+          ],
+          "kind": "untranslated_residue",
+          "offered": 18,
+          "offered_ids": [
+            "untranslated_residue:p2:p2#8",
+            "untranslated_residue:p3:p3#5",
+            "untranslated_residue:p4:p4#3",
+            "untranslated_residue:p5:p5#4",
+            "untranslated_residue:p5:p5#6",
+            "untranslated_residue:p5:p5#8",
+            "untranslated_residue:p5:p5#12",
+            "untranslated_residue:p5:p5#13",
+            "untranslated_residue:p5:p5#14",
+            "untranslated_residue:p5:p5#17",
+            "untranslated_residue:p5:p5#22",
+            "untranslated_residue:p5:p5#39",
+            "untranslated_residue:p5:p5#44",
+            "untranslated_residue:p5:p5#54",
+            "untranslated_residue:p8:p8#3",
+            "untranslated_residue:p8:p8#5",
+            "untranslated_residue:p9:p9#9",
+            "untranslated_residue:p9:p9#19"
+          ],
+          "reason": "no_paragraph_was_written",
+          "request": {
+            "cache_key": "6a78b1a9465724e78980d6bffe3d4af1ab785497a71ea2cc9eb2bd5012434d7c",
+            "calls": [],
+            "prompt_sha256": "94f390049cd07156b3290170062939ad88b1103e9f207335b41769a0a4ba1a03"
+          },
+          "vocabulary": [
+            "translate_orphan_lines"
+          ],
+          "written": []
+        }
+      ],
+      "untreated": {
+        "by_kind": {
+          "fragment_cluster": 8,
+          "out_of_page": 2,
+          "untranslated_residue": 18
+        },
+        "total": 28
+      }
+    }
+  ],
+  "iterations_run": 3,
+  "kind_order": [
+    "out_of_page",
+    "text_text_collision",
+    "text_figure_overlap",
+    "fragment_cluster",
+    "chain_escalation",
+    "untranslated_residue"
+  ],
+  "offered_texts": [
+    "BRIANSTAUFFER",
+    "PORTERGIFFORD,CHANTALJAHCHAN",
+    "ADVISORS TO THE EDITOR",
+    "BRIANSTAUFFER",
+    "PORTERGIFFORD,CHANTALJAHCHAN",
+    "PRODUCTION MANAGER",
+    "BRIANSTAUFFER",
+    "PORTERGIFFORD,CHANTALJAHCHAN"
+  ],
+  "stopped_because": "no_paragraph_was_written",
+  "switch": "magazine_repair",
+  "treated": []
+}

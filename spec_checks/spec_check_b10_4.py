@@ -99,6 +99,14 @@ TRANSLITERATE_PROMPT = ROOT / "prompts" / "name_transliterate.md"
 # than retyped here.
 FROZEN_POLICY = "transliterate"
 
+# Every Chinese string in this file is written as escapes rather than as the
+# characters themselves. The gate anchors a paragraph by its text (CLAUDE.md
+# section 5.13) and half this corpus is Chinese, so the anchors have to be
+# here; the gate scripts are also held to ASCII, which spec_check_b0's CJK
+# assertion enforces over every file under spec_checks/. Escapes satisfy both,
+# and the value a reader gets is the same string either way. This is the
+# convention spec_check_e0.py already uses for the phrases it reads out of a
+# Chinese document.
 # The one display line chain in the corpus, and where its cut is to land. The
 # source breaks at an English word boundary and the translation is Chinese, so
 # a cut placed by the source's share lands one character early and cuts the verb
@@ -111,12 +119,12 @@ DISPLAY_CHAIN = {
         "How Indigenous knowledge drives",
         "scientific discover y",
     ),
-    "joint": "土著知识如何推动科学发现",
+    "joint": "\u571f\u8457\u77e5\u8bc6\u5982\u4f55\u63a8\u52a8\u79d1\u5b66\u53d1\u73b0",
     "aligned_lengths": (8, 4),
-    "aligned_pieces": ("土著知识如何推动", "科学发现"),
+    "aligned_pieces": ("\u571f\u8457\u77e5\u8bc6\u5982\u4f55\u63a8\u52a8", "\u79d1\u5b66\u53d1\u73b0"),
     "proportional_pieces": (
-        "土著知识如何推",
-        "动科学发现",
+        "\u571f\u8457\u77e5\u8bc6\u5982\u4f55\u63a8",
+        "\u52a8\u79d1\u5b66\u53d1\u73b0",
     ),
 }
 
@@ -127,13 +135,13 @@ DISPLAY_CHAIN = {
 FLOOR_LABEL_PAGE = 1
 
 FLOOR_LABELS = (
-    "社论",
-    "总编辑",
-    "广角",
-    "聚焦",
-    "观点",
-    "嘉宾",
-    "深度阅读",
+    "\u793e\u8bba",
+    "\u603b\u7f16\u8f91",
+    "\u5e7f\u89d2",
+    "\u805a\u7126",
+    "\u89c2\u70b9",
+    "\u5609\u5bbe",
+    "\u6df1\u5ea6\u9605\u8bfb",
 )
 
 # The two pages whose record account this batch may not move. Letting the
@@ -685,7 +693,7 @@ def check_03c_a_ruled_pair_travels_the_one_channel() -> None:
     config = _Config(_Shared(auto=auto))
     decisions = hitl.Decisions(
         path=Path("probe"),
-        terms={"Margaux Anbouba": "玛格"},
+        terms={"Margaux Anbouba": "\u739b\u683c"},
         page_kinds={},
         drop_caps={},
     )
@@ -699,7 +707,7 @@ def check_03c_a_ruled_pair_travels_the_one_channel() -> None:
         for glossary in shared.user_glossaries
         for entry in glossary.entries
     }
-    if landed.get("Margaux Anbouba") != "玛格":
+    if landed.get("Margaux Anbouba") != "\u739b\u683c":
         faults.append(f"the ruled target did not land: {landed}")
     if landed.get("quantum sensing") != "kept":
         faults.append("an unruled automatic entry was lost")
@@ -994,9 +1002,9 @@ def check_04a_the_floor_exception_admits_only_a_declared_shape() -> None:
     short phrase over the label bound is not; and a figure is not.
     """
     config = short_unit.load_short_unit_config()
-    label = _paragraph("聚焦", (60.0, 700.0, 76.0, 708.0))
-    beside = _paragraph("忽", (77.0, 700.0, 85.0, 708.0))
-    far = _paragraph("另一栏", (300.0, 700.0, 340.0, 708.0))
+    label = _paragraph("\u805a\u7126", (60.0, 700.0, 76.0, 708.0))
+    beside = _paragraph("\u5ffd", (77.0, 700.0, 85.0, 708.0))
+    far = _paragraph("\u53e6\u4e00\u680f", (300.0, 700.0, 340.0, 708.0))
     long_phrase = _paragraph("a short sentence", (60.0, 600.0, 200.0, 608.0))
     figure = _paragraph("6%", (60.0, 500.0, 76.0, 508.0))
 
@@ -1015,9 +1023,9 @@ def check_04a_the_floor_exception_admits_only_a_declared_shape() -> None:
         return [unit.paragraph.unicode for unit in found]
 
     solitary = admitted([label, far, long_phrase, figure])
-    if "聚焦" not in solitary:
+    if "\u805a\u7126" not in solitary:
         faults.append(f"a label alone on its band was refused: {solitary}")
-    if "另一栏" not in solitary:
+    if "\u53e6\u4e00\u680f" not in solitary:
         faults.append("a label in another column of the same band was refused")
     if "a short sentence" in solitary:
         faults.append("an ordinary short phrase was admitted")
@@ -1433,7 +1441,7 @@ def check_05b_the_snap_moves_a_cut_onto_a_clause_end() -> None:
         faults.append("the Latin profile declares markers, so the target side moved")
 
     # A marker one character from the estimate: the cut moves onto it.
-    text = "美丽的风景很好"
+    text = "\u7f8e\u4e3d\u7684\u98ce\u666f\u5f88\u597d"
     moved = backfill._snap_to_boundary(text, 4, 1, len(text) - 1, cjk, config)
     if moved is None or moved[0] != 3:
         faults.append(f"the cut did not move onto the marker: {moved}")
@@ -1441,7 +1449,7 @@ def check_05b_the_snap_moves_a_cut_onto_a_clause_end() -> None:
         faults.append(f"the move was recorded as {moved[1]!r}")
 
     # Punctuation is preferred and is language independent.
-    punctuated = "一二，三四五"
+    punctuated = "\u4e00\u4e8c\uff0c\u4e09\u56db\u4e94"
     at_stop = backfill._snap_to_boundary(punctuated, 4, 1, len(punctuated) - 1, cjk, config)
     if at_stop is None or at_stop[1] != backfill.MOVED_TO_PUNCTUATION:
         faults.append(f"a cut beside a full stop reports {at_stop}")

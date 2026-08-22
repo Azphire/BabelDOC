@@ -1,0 +1,139 @@
+{
+  "sample": "CERNCourier-en.pdf",
+  "arm": "cold",
+  "model": "gpt-4o",
+  "lang_in": "en",
+  "lang_out": "zh",
+  "seconds": 58.9,
+  "requests": 104,
+  "cache_hits": 104,
+  "api_calls": 0,
+  "prompt_tokens": 0,
+  "completion_tokens": 0,
+  "input_pages": 4,
+  "output_pages": 4,
+  "pdf": "examples\\output\\F3\\cold\\CERNCourier-en\\CERNCourier-en.f3.pdf",
+  "pdf_sha256": "7ae3f3a4882718486f76496e79fd9d75d2df91fea60c2fad51752837c8085a6d",
+  "working_dir": "examples\\output\\F3\\cold\\CERNCourier-en\\work\\CERNCourier-en",
+  "ruling": {
+    "path": null,
+    "sha256": null,
+    "present": false
+  },
+  "switches": {
+    "magazine_checkpoint": true,
+    "magazine_page_classify": true,
+    "magazine_chain_detect": true,
+    "magazine_chain_translate": true,
+    "magazine_article_group": true,
+    "magazine_article_context": true,
+    "magazine_hitl_export": false,
+    "magazine_hitl_apply": true,
+    "magazine_detect": true,
+    "magazine_drop_cap_mark": true,
+    "magazine_drop_cap_apply": true,
+    "magazine_title_typeset": true,
+    "magazine_line_structure": true,
+    "magazine_fragment_stitch": true,
+    "magazine_repair": true,
+    "magazine_paren_dedup": true,
+    "magazine_column_reflow": true,
+    "magazine_chain_cut_align": true,
+    "magazine_stitch_declared": true,
+    "magazine_short_unit": true,
+    "magazine_name_harvest": true
+  },
+  "stages": [
+    {
+      "stage": "Parse PDF and Create Intermediate Representation",
+      "seconds": 0.534,
+      "runs": 1
+    },
+    {
+      "stage": "DetectScannedFile",
+      "seconds": 0.152,
+      "runs": 1
+    },
+    {
+      "stage": "Parse Page Layout",
+      "seconds": 2.019,
+      "runs": 1
+    },
+    {
+      "stage": "Parse Paragraphs",
+      "seconds": 0.727,
+      "runs": 1
+    },
+    {
+      "stage": "Parse Formulas and Styles",
+      "seconds": 0.076,
+      "runs": 1
+    },
+    {
+      "stage": "Automatic Term Extraction",
+      "seconds": 0.015,
+      "runs": 1
+    },
+    {
+      "stage": "Translate Paragraphs",
+      "seconds": 2.589,
+      "runs": 1
+    },
+    {
+      "stage": "Typesetting",
+      "seconds": 0.198,
+      "runs": 1
+    },
+    {
+      "stage": "Add Fonts",
+      "seconds": 0.177,
+      "runs": 1
+    },
+    {
+      "stage": "Generate drawing instructions",
+      "seconds": 0.166,
+      "runs": 1
+    },
+    {
+      "stage": "Subset font",
+      "seconds": 3.601,
+      "runs": 1
+    },
+    {
+      "stage": "Save PDF",
+      "seconds": 3.559,
+      "runs": 1
+    }
+  ],
+  "stage_seconds_total": 13.813,
+  "raster": [
+    "examples\\output\\F3\\cold\\CERNCourier-en\\raster\\CERNCourier-en.p1.png",
+    "examples\\output\\F3\\cold\\CERNCourier-en\\raster\\CERNCourier-en.p2.png",
+    "examples\\output\\F3\\cold\\CERNCourier-en\\raster\\CERNCourier-en.p3.png",
+    "examples\\output\\F3\\cold\\CERNCourier-en\\raster\\CERNCourier-en.p4.png"
+  ],
+  "sidecars": [
+    "examples\\output\\F3\\cold\\CERNCourier-en\\sidecars\\article_context.report.json",
+    "examples\\output\\F3\\cold\\CERNCourier-en\\sidecars\\article_map.json",
+    "examples\\output\\F3\\cold\\CERNCourier-en\\sidecars\\chain_report.json",
+    "examples\\output\\F3\\cold\\CERNCourier-en\\sidecars\\chain_translation.report.json",
+    "examples\\output\\F3\\cold\\CERNCourier-en\\sidecars\\column_reflow.report.json",
+    "examples\\output\\F3\\cold\\CERNCourier-en\\sidecars\\drop_cap.report.json",
+    "examples\\output\\F3\\cold\\CERNCourier-en\\sidecars\\drop_cap_apply.report.json",
+    "examples\\output\\F3\\cold\\CERNCourier-en\\sidecars\\fragment_stitch.report.json",
+    "examples\\output\\F3\\cold\\CERNCourier-en\\sidecars\\hitl_apply.report.json",
+    "examples\\output\\F3\\cold\\CERNCourier-en\\sidecars\\issues.json",
+    "examples\\output\\F3\\cold\\CERNCourier-en\\sidecars\\line_split.report.json",
+    "examples\\output\\F3\\cold\\CERNCourier-en\\sidecars\\name_harvest.report.json",
+    "examples\\output\\F3\\cold\\CERNCourier-en\\sidecars\\page_classify.report.json",
+    "examples\\output\\F3\\cold\\CERNCourier-en\\sidecars\\paren_dedup.report.json",
+    "examples\\output\\F3\\cold\\CERNCourier-en\\sidecars\\react_repair.report.json",
+    "examples\\output\\F3\\cold\\CERNCourier-en\\sidecars\\short_unit.report.json",
+    "examples\\output\\F3\\cold\\CERNCourier-en\\sidecars\\source_audit.report.json",
+    "examples\\output\\F3\\cold\\CERNCourier-en\\sidecars\\title_typeset.report.json"
+  ],
+  "translation_style": {
+    "person_names": "transliterate",
+    "system_prompt_sha256": "74666d7128c1c06127d9193db7b8d2b346866088f1ccabb4c33e69be1c586903"
+  }
+}

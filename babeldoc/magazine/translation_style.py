@@ -36,7 +36,7 @@ What a policy is
 ----------------
 
 There is more than one defensible answer to what a magazine should do with a
-personal name, and which one is right is an editorial decision rather than a
+personal name, and which one is right is a house style decision rather than a
 technical one. So the configuration declares a matrix -- one whole role text per
 policy per target language -- and the run selects a row of it. ``translate``
 renders the name and says nothing further; ``keep`` leaves it in its source

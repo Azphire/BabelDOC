@@ -4,9 +4,9 @@ Where the names are
 -------------------
 
 A magazine prints most of its names in the two places it prints least of its
-prose: the contents page and the masthead. Those are also the pages the grouping
-walk leaves unassigned, so they carry no article brief, and a name on them
-reaches the model with less context than a name anywhere else in the document.
+prose: the contents page and the imprint block. Those are also the pages the
+grouping walk leaves unassigned, so they carry no article brief, and a name
+on them reaches the model with less context than anywhere else in the document.
 The F1 and F2 reviews found personal names surviving in their source script
 there more often than anywhere else.
 

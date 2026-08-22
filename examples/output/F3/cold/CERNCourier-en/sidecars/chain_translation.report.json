@@ -1,0 +1,32 @@
+{
+  "align_enabled": true,
+  "applied": true,
+  "chains": [],
+  "counts": {
+    "aligned_cuts": 0,
+    "alignment_requests": 0,
+    "chains": 0,
+    "escalated": 0,
+    "merged": 0,
+    "merged_members": 0,
+    "skips": 1
+  },
+  "escalated": [],
+  "language": "zh",
+  "short_units": {
+    "admitted": 1,
+    "refused": 2,
+    "requests": 1
+  },
+  "skips": [
+    {
+      "chain_id": "",
+      "chain_index": null,
+      "debug_id": "mEWKE",
+      "declined_by": [],
+      "page_index": 1,
+      "reason": "chain_member",
+      "taken_by": "short_unit"
+    }
+  ]
+}

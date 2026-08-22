@@ -411,7 +411,7 @@ def _eligible(paragraph, config: StitchConfig) -> bool:
     """Whether one paragraph may take part in a stitch at all.
 
     Page furniture is fragmented as readily as running text -- a printing slug
-    split at a hyphen, a masthead drawn letter by letter -- and putting it back
+    split at a hyphen, a wordmark drawn letter by letter -- and putting it back
     together repairs nothing, because nothing translates it. A composition this
     pass cannot rebuild without changing what the paragraph says disqualifies it
     as well.

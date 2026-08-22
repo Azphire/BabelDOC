@@ -1,0 +1,19 @@
+{
+  "closers": [
+    ")",
+    "）"
+  ],
+  "max_span_chars": 40,
+  "openers": [
+    "(",
+    "（"
+  ],
+  "pages": 4,
+  "paragraphs": [],
+  "switch": "magazine_paren_dedup",
+  "totals": {
+    "paragraphs_folded": 0,
+    "spans_removed": 0,
+    "unicode_spans_removed": 0
+  }
+}

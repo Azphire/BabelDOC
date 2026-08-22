@@ -1,0 +1,513 @@
+{
+  "sample": "Vogue-en",
+  "terms": {
+    "auto_glossary_kept": 20,
+    "auto_glossary_relocated": "auto_extracted_glossary",
+    "defaulted": 30,
+    "dropped_from_auto": [
+      {
+        "auto_target": "路易威登",
+        "source": "LOUIS VUITTON",
+        "user_target": "路易威登"
+      },
+      {
+        "auto_target": "Daniel Arnold",
+        "source": "DANIEL ARNOLD",
+        "user_target": "丹尼尔·阿诺德"
+      },
+      {
+        "auto_target": "Margaux Anbouba",
+        "source": "Margaux Anbouba",
+        "user_target": "玛戈·安布巴"
+      },
+      {
+        "auto_target": "Mattie Kahn",
+        "source": "Mattie Kahn",
+        "user_target": "马蒂·卡恩"
+      },
+      {
+        "auto_target": "Seán McGirr",
+        "source": "Seán McGirr",
+        "user_target": "肖恩·麦吉尔"
+      },
+      {
+        "auto_target": "Alexander McQueen",
+        "source": "Alexander McQueen",
+        "user_target": "Alexander McQueen"
+      },
+      {
+        "auto_target": "Hayley Maitland",
+        "source": "Hayley Maitland",
+        "user_target": "海莉·梅特兰"
+      },
+      {
+        "auto_target": "Angel Reese",
+        "source": "Angel Reese",
+        "user_target": "安吉尔·里斯"
+      },
+      {
+        "auto_target": "Chicago Sky",
+        "source": "Chicago Sky",
+        "user_target": "Chicago Sky"
+      },
+      {
+        "auto_target": "Gabby Thomas",
+        "source": "Gabby Thomas",
+        "user_target": "加比·托马斯"
+      },
+      {
+        "auto_target": "Norman Jean Roy",
+        "source": "Norman Jean Roy",
+        "user_target": "诺曼·让·罗伊"
+      },
+      {
+        "auto_target": "Julia Sarr-Jamois",
+        "source": "Julia Sarr-Jamois",
+        "user_target": "朱莉娅·萨尔-贾莫伊斯"
+      },
+      {
+        "auto_target": "Yohana Lebasi",
+        "source": "Yohana Lebasi",
+        "user_target": "约哈娜·勒巴西"
+      },
+      {
+        "auto_target": "冠军联赛",
+        "source": "Champions League",
+        "user_target": "冠军联赛"
+      },
+      {
+        "auto_target": "Joey George",
+        "source": "Joey George",
+        "user_target": "乔伊·乔治"
+      },
+      {
+        "auto_target": "Susie Sobol",
+        "source": "Susie Sobol",
+        "user_target": "苏西·索博尔"
+      },
+      {
+        "auto_target": "Boom Productions",
+        "source": "Boom Productions",
+        "user_target": "Boom Productions"
+      },
+      {
+        "auto_target": "Peter Klein",
+        "source": "Peter Klein",
+        "user_target": "彼得·克莱因"
+      },
+      {
+        "auto_target": "Sanaz Toossi",
+        "source": "Sanaz Toossi",
+        "user_target": "萨纳兹·图西"
+      },
+      {
+        "auto_target": "Zac Posen",
+        "source": "Zac Posen",
+        "user_target": "扎克·珀森"
+      },
+      {
+        "auto_target": "Irina Aleksander",
+        "source": "Irina Aleksander",
+        "user_target": "伊琳娜·亚历山大"
+      },
+      {
+        "auto_target": "Maya Singer",
+        "source": "Maya Singer",
+        "user_target": "玛雅·辛格"
+      },
+      {
+        "auto_target": "Adrien Brody",
+        "source": "Adrien Brody",
+        "user_target": "艾德里安·布罗迪"
+      },
+      {
+        "auto_target": "Wendell Steavenson",
+        "source": "Wendell Steavenson",
+        "user_target": "温德尔·斯蒂文森"
+      },
+      {
+        "auto_target": "Sam McKinniss",
+        "source": "Sam McKinniss",
+        "user_target": "萨姆·麦金尼斯"
+      }
+    ],
+    "entries": [
+      {
+        "decided_by": "policy",
+        "source": "Adrien Brody",
+        "target": "艾德里安·布罗迪"
+      },
+      {
+        "decided_by": "policy",
+        "source": "Angel Reese",
+        "target": "安吉尔·里斯"
+      },
+      {
+        "decided_by": "policy",
+        "source": "Champions League",
+        "target": "冠军联赛"
+      },
+      {
+        "decided_by": "policy",
+        "source": "Chicago Sky",
+        "target": "Chicago Sky"
+      },
+      {
+        "decided_by": "policy",
+        "source": "DANIEL ARNOLD",
+        "target": "丹尼尔·阿诺德"
+      },
+      {
+        "decided_by": "policy",
+        "source": "Gabby Thomas",
+        "target": "加比·托马斯"
+      },
+      {
+        "decided_by": "policy",
+        "source": "Hayley Maitland",
+        "target": "海莉·梅特兰"
+      },
+      {
+        "decided_by": "policy",
+        "source": "Irina Aleksander",
+        "target": "伊琳娜·亚历山大"
+      },
+      {
+        "decided_by": "policy",
+        "source": "Julia Sarr-Jamois",
+        "target": "朱莉娅·萨尔-贾莫伊斯"
+      },
+      {
+        "decided_by": "policy",
+        "source": "LOUIS VUITTON",
+        "target": "路易威登"
+      },
+      {
+        "decided_by": "policy",
+        "source": "Margaux Anbouba",
+        "target": "玛戈·安布巴"
+      },
+      {
+        "decided_by": "policy",
+        "source": "Mattie Kahn",
+        "target": "马蒂·卡恩"
+      },
+      {
+        "decided_by": "policy",
+        "source": "Maya Singer",
+        "target": "玛雅·辛格"
+      },
+      {
+        "decided_by": "policy",
+        "source": "Norman Jean Roy",
+        "target": "诺曼·让·罗伊"
+      },
+      {
+        "decided_by": "policy",
+        "source": "Sam McKinniss",
+        "target": "萨姆·麦金尼斯"
+      },
+      {
+        "decided_by": "policy",
+        "source": "Sanaz Toossi",
+        "target": "萨纳兹·图西"
+      },
+      {
+        "decided_by": "policy",
+        "source": "Seán McGirr",
+        "target": "肖恩·麦吉尔"
+      },
+      {
+        "decided_by": "policy",
+        "source": "Wendell Steavenson",
+        "target": "温德尔·斯蒂文森"
+      },
+      {
+        "decided_by": "policy",
+        "source": "Yohana Lebasi",
+        "target": "约哈娜·勒巴西"
+      },
+      {
+        "decided_by": "policy",
+        "source": "Zac Posen",
+        "target": "扎克·珀森"
+      },
+      {
+        "decided_by": "policy",
+        "source": "Alexander McQueen",
+        "target": "Alexander McQueen"
+      },
+      {
+        "decided_by": "policy",
+        "source": "Boom Productions",
+        "target": "Boom Productions"
+      },
+      {
+        "decided_by": "policy",
+        "source": "Joey George",
+        "target": "乔伊·乔治"
+      },
+      {
+        "decided_by": "policy",
+        "source": "Peter Klein",
+        "target": "彼得·克莱因"
+      },
+      {
+        "decided_by": "policy",
+        "source": "Susie Sobol",
+        "target": "苏西·索博尔"
+      },
+      {
+        "decided_by": "policy",
+        "source": "Ground Sanaz Toossi",
+        "target": "萨纳兹·图西"
+      },
+      {
+        "decided_by": "policy",
+        "source": "Looking Glass Sam McKinniss’s",
+        "target": "萨姆·麦金尼斯"
+      },
+      {
+        "decided_by": "policy",
+        "source": "McGirr’s McQueen Seán McGirr",
+        "target": "肖恩·麦吉尔"
+      },
+      {
+        "decided_by": "policy",
+        "source": "Wire Adrien Brody",
+        "target": "艾德里安·布罗迪"
+      },
+      {
+        "decided_by": "policy",
+        "source": "Zac Zac Posen’s",
+        "target": "扎克·波森"
+      }
+    ],
+    "glossary": "hitl_decisions",
+    "match_definition": "how many inputs -- the text a paragraph was offered as, which is what the glossary is matched against -- activate this entry, by the matcher the translation prompt itself uses; counted over every request this run built from the document, the repair loop's included",
+    "matches": [
+      {
+        "matched_excerpts": [
+          "<style id='1'>Man on Wire </style>Adrien Brody is drawn to extreme roles—but"
+        ],
+        "matched_prompt_count": 1,
+        "source": "Adrien Brody",
+        "target": "艾德里安·布罗迪"
+      },
+      {
+        "matched_excerpts": [
+          "WNBA star Angel Reese of the Chicago Sky (above feft in a Versace dress) and American Olympic champion sprinter Gabby Thomas (above right in a Sportmax top) have skills, speed, and singular style. Photographed by<style id='1'> Norman Jean Roy, </style>who<style id='3'> </style>worked with fashion editors<style id='5'> Julia Sarr-Jamois </style>for the Angel Reese shoot and <style id='7'>Yohana Lebasi</style> for the Gabby Thomas shoot. Details, see In This Issue."
+        ],
+        "matched_prompt_count": 1,
+        "source": "Angel Reese",
+        "target": "安吉尔·里斯"
+      },
+      {
+        "matched_excerpts": [
+          "<style id='1'>Cover Look </style><style id='3'>Champions League</style>"
+        ],
+        "matched_prompt_count": 1,
+        "source": "Champions League",
+        "target": "冠军联赛"
+      },
+      {
+        "matched_excerpts": [
+          "WNBA star Angel Reese of the Chicago Sky (above feft in a Versace dress) and American Olympic champion sprinter Gabby Thomas (above right in a Sportmax top) have skills, speed, and singular style. Photographed by<style id='1'> Norman Jean Roy, </style>who<style id='3'> </style>worked with fashion editors<style id='5'> Julia Sarr-Jamois </style>for the Angel Reese shoot and <style id='7'>Yohana Lebasi</style> for the Gabby Thomas shoot. Details, see In This Issue."
+        ],
+        "matched_prompt_count": 1,
+        "source": "Chicago Sky",
+        "target": "Chicago Sky"
+      },
+      {
+        "matched_excerpts": [
+          "MODEL GRACE ELIZABETH COVERS THE WATERFRONT IN A JACKET, JUMPSUIT, AND BAG FROM LOUIS VUITTON AND NIKE SNEAKERS. PHOTOGRAPHED BY DANIEL ARNOLD."
+        ],
+        "matched_prompt_count": 1,
+        "source": "DANIEL ARNOLD",
+        "target": "丹尼尔·阿诺德"
+      },
+      {
+        "matched_excerpts": [
+          "WNBA star Angel Reese of the Chicago Sky (above feft in a Versace dress) and American Olympic champion sprinter Gabby Thomas (above right in a Sportmax top) have skills, speed, and singular style. Photographed by<style id='1'> Norman Jean Roy, </style>who<style id='3'> </style>worked with fashion editors<style id='5'> Julia Sarr-Jamois </style>for the Angel Reese shoot and <style id='7'>Yohana Lebasi</style> for the Gabby Thomas shoot. Details, see In This Issue."
+        ],
+        "matched_prompt_count": 1,
+        "source": "Gabby Thomas",
+        "target": "加比·托马斯"
+      },
+      {
+        "matched_excerpts": [
+          "McQueen, one of fashion’s most storied houses. Hayley Maitland meets the young Irishman writing its next chapter"
+        ],
+        "matched_prompt_count": 1,
+        "source": "Hayley Maitland",
+        "target": "海莉·梅特兰"
+      },
+      {
+        "matched_excerpts": [
+          "surprise to many, yet the former wunderkind of New York fashion is loving every minute of it. Irina Aleksander meets Posen as he gets ready to dress America"
+        ],
+        "matched_prompt_count": 1,
+        "source": "Irina Aleksander",
+        "target": "伊琳娜·亚历山大"
+      },
+      {
+        "matched_excerpts": [
+          "WNBA star Angel Reese of the Chicago Sky (above feft in a Versace dress) and American Olympic champion sprinter Gabby Thomas (above right in a Sportmax top) have skills, speed, and singular style. Photographed by<style id='1'> Norman Jean Roy, </style>who<style id='3'> </style>worked with fashion editors<style id='5'> Julia Sarr-Jamois </style>for the Angel Reese shoot and <style id='7'>Yohana Lebasi</style> for the Gabby Thomas shoot. Details, see In This Issue."
+        ],
+        "matched_prompt_count": 1,
+        "source": "Julia Sarr-Jamois",
+        "target": "朱莉娅·萨尔-贾莫伊斯"
+      },
+      {
+        "matched_excerpts": [
+          "MODEL GRACE ELIZABETH COVERS THE WATERFRONT IN A JACKET, JUMPSUIT, AND BAG FROM LOUIS VUITTON AND NIKE SNEAKERS. PHOTOGRAPHED BY DANIEL ARNOLD."
+        ],
+        "matched_prompt_count": 1,
+        "source": "LOUIS VUITTON",
+        "target": "路易威登"
+      },
+      {
+        "matched_excerpts": [
+          "<style id='1'>32In Step </style>Margaux Anbouba"
+        ],
+        "matched_prompt_count": 1,
+        "source": "Margaux Anbouba",
+        "target": "玛戈·安布巴"
+      },
+      {
+        "matched_excerpts": [
+          "infusions promise to turn back the clock. Mattie Kahn investigates"
+        ],
+        "matched_prompt_count": 1,
+        "source": "Mattie Kahn",
+        "target": "马蒂·卡恩"
+      },
+      {
+        "matched_excerpts": [
+          "The stadium as runway? The arena as front row? Fashion and sport needed no introduction, but lately they’ve become totally obsessed. By Maya Singer"
+        ],
+        "matched_prompt_count": 1,
+        "source": "Maya Singer",
+        "target": "玛雅·辛格"
+      },
+      {
+        "matched_excerpts": [
+          "WNBA star Angel Reese of the Chicago Sky (above feft in a Versace dress) and American Olympic champion sprinter Gabby Thomas (above right in a Sportmax top) have skills, speed, and singular style. Photographed by<style id='1'> Norman Jean Roy, </style>who<style id='3'> </style>worked with fashion editors<style id='5'> Julia Sarr-Jamois </style>for the Angel Reese shoot and <style id='7'>Yohana Lebasi</style> for the Gabby Thomas shoot. Details, see In This Issue."
+        ],
+        "matched_prompt_count": 1,
+        "source": "Norman Jean Roy",
+        "target": "诺曼·让·罗伊"
+      },
+      {
+        "matched_excerpts": [
+          "Through the Looking Glass <style id='1'>Sam McKinniss’s</style>"
+        ],
+        "matched_prompt_count": 1,
+        "source": "Sam McKinniss",
+        "target": "萨姆·麦金尼斯"
+      },
+      {
+        "matched_excerpts": [
+          "<style id='1'>esting Ground </style>Sanaz Toossi brings"
+        ],
+        "matched_prompt_count": 1,
+        "source": "Sanaz Toossi",
+        "target": "萨纳兹·图西"
+      },
+      {
+        "matched_excerpts": [
+          "<style id='1'>McGirr’s McQueen </style>Seán McGirr came out of nowhere to lead"
+        ],
+        "matched_prompt_count": 1,
+        "source": "Seán McGirr",
+        "target": "肖恩·麦吉尔"
+      },
+      {
+        "matched_excerpts": [
+          "nothing compares to his work in <style id='1'>The Brutalist.</style>By Wendell Steavenson"
+        ],
+        "matched_prompt_count": 1,
+        "source": "Wendell Steavenson",
+        "target": "温德尔·斯蒂文森"
+      },
+      {
+        "matched_excerpts": [
+          "WNBA star Angel Reese of the Chicago Sky (above feft in a Versace dress) and American Olympic champion sprinter Gabby Thomas (above right in a Sportmax top) have skills, speed, and singular style. Photographed by<style id='1'> Norman Jean Roy, </style>who<style id='3'> </style>worked with fashion editors<style id='5'> Julia Sarr-Jamois </style>for the Angel Reese shoot and <style id='7'>Yohana Lebasi</style> for the Gabby Thomas shoot. Details, see In This Issue."
+        ],
+        "matched_prompt_count": 1,
+        "source": "Yohana Lebasi",
+        "target": "约哈娜·勒巴西"
+      },
+      {
+        "matched_excerpts": [
+          "<style id='1'>48From A to Zac </style>Zac Posen’s arrival"
+        ],
+        "matched_prompt_count": 1,
+        "source": "Zac Posen",
+        "target": "扎克·珀森"
+      },
+      {
+        "matched_excerpts": [],
+        "matched_prompt_count": 0,
+        "source": "Alexander McQueen",
+        "target": "Alexander McQueen"
+      },
+      {
+        "matched_excerpts": [],
+        "matched_prompt_count": 0,
+        "source": "Boom Productions",
+        "target": "Boom Productions"
+      },
+      {
+        "matched_excerpts": [],
+        "matched_prompt_count": 0,
+        "source": "Joey George",
+        "target": "乔伊·乔治"
+      },
+      {
+        "matched_excerpts": [],
+        "matched_prompt_count": 0,
+        "source": "Peter Klein",
+        "target": "彼得·克莱因"
+      },
+      {
+        "matched_excerpts": [],
+        "matched_prompt_count": 0,
+        "source": "Susie Sobol",
+        "target": "苏西·索博尔"
+      },
+      {
+        "matched_excerpts": [],
+        "matched_prompt_count": 0,
+        "source": "Ground Sanaz Toossi",
+        "target": "萨纳兹·图西"
+      },
+      {
+        "matched_excerpts": [],
+        "matched_prompt_count": 0,
+        "source": "Looking Glass Sam McKinniss’s",
+        "target": "萨姆·麦金尼斯"
+      },
+      {
+        "matched_excerpts": [],
+        "matched_prompt_count": 0,
+        "source": "McGirr’s McQueen Seán McGirr",
+        "target": "肖恩·麦吉尔"
+      },
+      {
+        "matched_excerpts": [],
+        "matched_prompt_count": 0,
+        "source": "Wire Adrien Brody",
+        "target": "艾德里安·布罗迪"
+      },
+      {
+        "matched_excerpts": [],
+        "matched_prompt_count": 0,
+        "source": "Zac Zac Posen’s",
+        "target": "扎克·波森"
+      }
+    ],
+    "overridden": [],
+    "ruled": 0
+  }
+}

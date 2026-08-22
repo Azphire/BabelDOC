@@ -1,0 +1,151 @@
+{
+  "counts": {
+    "by_kind": {
+      "text_figure_overlap": 1,
+      "untranslated_residue": 2
+    },
+    "issues": 3
+  },
+  "detector_records": {},
+  "document_detectors": [
+    "escalation_surfacing"
+  ],
+  "issues": [
+    {
+      "detected_at_iteration": 0,
+      "detector": "text_figure_overlap",
+      "evidence": {
+        "artwork_index": 0,
+        "artwork_source": "pdf_xobject",
+        "debug_id": "gJVms",
+        "excerpt": "Indigenous Knowledge",
+        "iou": 0.2778,
+        "layout_label": "title",
+        "min_iou": 0.2
+      },
+      "geometry": {
+        "x": 0.0,
+        "x2": 595.276,
+        "y": 0.0,
+        "y2": 841.89
+      },
+      "id": "text_figure_overlap:p3:p3#1",
+      "kind": "text_figure_overlap",
+      "page": 3,
+      "paragraph_refs": [
+        "p3#1"
+      ],
+      "severity": "low"
+    },
+    {
+      "detected_at_iteration": 0,
+      "detector": "untranslated_residue",
+      "evidence": {
+        "debug_id": "wkG7u",
+        "excerpt": "巴里尼（Adriano Gambarini）/亚马孙原住民行动组织",
+        "layout_label": "abandon",
+        "min_ratio": 0.4,
+        "residue_chars": 13,
+        "residue_ratio": 0.4483,
+        "residue_script": "han",
+        "script_chars": 29
+      },
+      "geometry": {
+        "x": 24.312,
+        "x2": 30.812,
+        "y": 226.887559375,
+        "y2": 375.087715625
+      },
+      "id": "untranslated_residue:p5:p5#8",
+      "kind": "untranslated_residue",
+      "page": 5,
+      "paragraph_refs": [
+        "p5#8"
+      ],
+      "severity": "high"
+    },
+    {
+      "detected_at_iteration": 0,
+      "detector": "untranslated_residue",
+      "evidence": {
+        "debug_id": "ELnUt",
+        "excerpt": "作创》使信《织组文科教国合联为科亚尼",
+        "layout_label": "fallback_line",
+        "min_ratio": 0.4,
+        "residue_chars": 16,
+        "residue_ratio": 1.0,
+        "residue_script": "han",
+        "script_chars": 16
+      },
+      "geometry": {
+        "x": 413.392490625,
+        "x2": 419.841709375,
+        "y": 709.71413125,
+        "y2": 823.61256875
+      },
+      "id": "untranslated_residue:p6:p6#14",
+      "kind": "untranslated_residue",
+      "page": 6,
+      "paragraph_refs": [
+        "p6#14"
+      ],
+      "severity": "high"
+    }
+  ],
+  "iteration": 0,
+  "language": "en",
+  "notes": [],
+  "pages_by_detector": {
+    "fragment_cluster": [
+      1,
+      4,
+      6,
+      8
+    ],
+    "out_of_page": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8
+    ],
+    "text_figure_overlap": [
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8
+    ],
+    "text_text_collision": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8
+    ],
+    "untranslated_residue": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8
+    ]
+  },
+  "source_geometry": {
+    "checkpoint": "checkpoint.06_styles_and_formulas.xml",
+    "paragraphs": 135,
+    "stage": "styles_and_formulas"
+  },
+  "translation_performed": true
+}

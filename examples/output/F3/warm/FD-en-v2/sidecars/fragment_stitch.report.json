@@ -1,0 +1,262 @@
+{
+  "by_rule": {
+    "initial": 0,
+    "inline": 1,
+    "vertical": 0
+  },
+  "declared_page_rules": [
+    "inline"
+  ],
+  "declared_page_switch": "magazine_stitch_declared",
+  "declared_pages_unblocked": true,
+  "duplicate_blanked": [],
+  "initial_candidates": [
+    {
+      "accepted": false,
+      "body": "Righting Globalization’s Wrongs",
+      "body_size": 9.25,
+      "characters": 2,
+      "font_ratio": 1.9459,
+      "fragment": "42",
+      "left_offset": -0.82,
+      "page": 3,
+      "top_offset": -18.78,
+      "within_unit": true
+    },
+    {
+      "accepted": false,
+      "body": "Keynes for Our Times",
+      "body_size": 9.25,
+      "characters": 2,
+      "font_ratio": 1.9459,
+      "fragment": "46",
+      "left_offset": -0.82,
+      "page": 3,
+      "top_offset": -18.78,
+      "within_unit": true
+    },
+    {
+      "accepted": false,
+      "body": "How Much Does the World Work?",
+      "body_size": 9.25,
+      "characters": 2,
+      "font_ratio": 1.9459,
+      "fragment": "50",
+      "left_offset": -0.45,
+      "page": 3,
+      "top_offset": -18.78,
+      "within_unit": true
+    },
+    {
+      "accepted": false,
+      "body": "Revisiting the Wealth of Nations",
+      "body_size": 9.25,
+      "characters": 2,
+      "font_ratio": 1.9459,
+      "fragment": "54",
+      "left_offset": -0.45,
+      "page": 3,
+      "top_offset": -18.65,
+      "within_unit": true
+    },
+    {
+      "accepted": false,
+      "body": "Understanding Geoeconomics in a Volatile",
+      "body_size": 9.25,
+      "characters": 2,
+      "font_ratio": 1.9459,
+      "fragment": "20",
+      "left_offset": -0.5,
+      "page": 3,
+      "top_offset": -18.78,
+      "within_unit": true
+    },
+    {
+      "accepted": false,
+      "body": "Geoeconomics, Rediscovered",
+      "body_size": 9.25,
+      "characters": 2,
+      "font_ratio": 1.9459,
+      "fragment": "26",
+      "left_offset": -0.23,
+      "page": 3,
+      "top_offset": -18.78,
+      "within_unit": true
+    },
+    {
+      "accepted": false,
+      "body": "The Cost of",
+      "body_size": 9.25,
+      "characters": 2,
+      "font_ratio": 1.9459,
+      "fragment": "30",
+      "left_offset": 0.58,
+      "page": 3,
+      "top_offset": -18.78,
+      "within_unit": true
+    },
+    {
+      "accepted": false,
+      "body": "Trade Cooperation in an Age of Geopoliti",
+      "body_size": 9.25,
+      "characters": 2,
+      "font_ratio": 1.9459,
+      "fragment": "34",
+      "left_offset": 0.58,
+      "page": 3,
+      "top_offset": -18.78,
+      "within_unit": true
+    },
+    {
+      "accepted": false,
+      "body": "The New Wave of Nationalization Historic",
+      "body_size": 9.25,
+      "characters": 2,
+      "font_ratio": 1.9459,
+      "fragment": "38",
+      "left_offset": 0.58,
+      "page": 3,
+      "top_offset": -18.82,
+      "within_unit": true
+    },
+    {
+      "accepted": false,
+      "body": "Kaleidoscope",
+      "body_size": 10.0,
+      "characters": 3,
+      "font_ratio": 1.2,
+      "fragment": "F&D",
+      "left_offset": 93.3,
+      "page": 7,
+      "top_offset": -1.34,
+      "within_unit": true
+    },
+    {
+      "accepted": false,
+      "body": "2026",
+      "body_size": 8.026,
+      "characters": 2,
+      "font_ratio": 1.0,
+      "fragment": "6%",
+      "left_offset": -36.78,
+      "page": 7,
+      "top_offset": -147.08,
+      "within_unit": true
+    }
+  ],
+  "initial_max_chars": 3,
+  "initial_min_font_ratio": 1.6,
+  "max_fragment_chars": 40,
+  "pages": [
+    {
+      "blanked": 0,
+      "exempt": false,
+      "page": 1,
+      "paragraphs": 8,
+      "stitches": 0,
+      "unblocked": false
+    },
+    {
+      "blanked": 0,
+      "exempt": false,
+      "page": 2,
+      "paragraphs": 9,
+      "stitches": 0,
+      "unblocked": false
+    },
+    {
+      "blanked": 0,
+      "exempt": true,
+      "page": 3,
+      "paragraphs": 37,
+      "stitches": 0,
+      "unblocked": true
+    },
+    {
+      "blanked": 0,
+      "exempt": false,
+      "page": 4,
+      "paragraphs": 4,
+      "stitches": 0,
+      "unblocked": false
+    },
+    {
+      "blanked": 1,
+      "exempt": true,
+      "page": 5,
+      "paragraphs": 47,
+      "stitches": 1,
+      "unblocked": true
+    },
+    {
+      "blanked": 0,
+      "exempt": false,
+      "page": 6,
+      "paragraphs": 15,
+      "stitches": 0,
+      "unblocked": false
+    },
+    {
+      "blanked": 0,
+      "exempt": true,
+      "page": 7,
+      "paragraphs": 33,
+      "stitches": 0,
+      "unblocked": true
+    },
+    {
+      "blanked": 0,
+      "exempt": false,
+      "page": 8,
+      "paragraphs": 13,
+      "stitches": 0,
+      "unblocked": false
+    },
+    {
+      "blanked": 0,
+      "exempt": false,
+      "page": 9,
+      "paragraphs": 23,
+      "stitches": 0,
+      "unblocked": false
+    }
+  ],
+  "policy_flags": [
+    "preserve_line_structure"
+  ],
+  "rules": [
+    "inline",
+    "vertical",
+    "initial"
+  ],
+  "stitches": [
+    {
+      "characters": 51,
+      "debug_id": "f5Gz1",
+      "member_debug_ids": [
+        "f5Gz1",
+        "whasb"
+      ],
+      "members": 2,
+      "page": 5,
+      "paragraph": "p5#43",
+      "restyled_characters": 21,
+      "rule": "inline",
+      "style_normalized": true,
+      "text": "Finance & Development is published quarterly by the"
+    }
+  ],
+  "switch": "magazine_fragment_stitch",
+  "totals": {
+    "blanked_paragraphs": 1,
+    "duplicate_blanked": 0,
+    "exempt_pages": 3,
+    "initial_accepted": 0,
+    "initial_candidates": 11,
+    "merged_paragraphs": 2,
+    "pages": 9,
+    "stitches": 1,
+    "style_normalized": 1
+  },
+  "window_switch": "magazine_page_classify"
+}
