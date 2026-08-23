@@ -366,6 +366,14 @@ def check_01c_the_whole_reached_set_is_accounted_for() -> None:
     )
 
 
+# CJK test fixtures, written as escapes so this file stays pure ASCII: b0's 09,
+# b1's 09d and b2's 11c all scan spec_checks/*.py for CJK. The escapes are the
+# same characters, so every case below asks exactly what it asked before.
+FULLWIDTH_BANG = "\uff01"  # fullwidth exclamation mark
+TRANSLATED_TEXT = "\u8bd1\u6587"  # a two-character Chinese word
+IDEOGRAPHIC_FULL_STOP = "\u3002"  # ideographic full stop
+HAN_CHARACTER = "\u5b57"  # one Han character, used as a body glyph
+
 def check_01d_the_comparison_reads_the_text() -> None:
     """Negative 1d: the branch is reached by text and not by object identity.
 
@@ -396,8 +404,8 @@ def check_01d_the_comparison_reads_the_text() -> None:
     cases = (
         ("F&D", Input("F&D"), True, "an unchanged reply is identity"),
         (" F&D\n", Input("F&D"), False, "surrounding space is a change"),
-        ("！", Input("!"), False, "a width variant is a different mark"),
-        ("译文", Input("source"), False, "a translation is not identity"),
+        (FULLWIDTH_BANG, Input("!"), False, "a width variant is a different mark"),
+        (TRANSLATED_TEXT, Input("source"), False, "a translation is not identity"),
         ("", Input(""), True, "two empty texts are identity"),
         ("x", "x", True, "a non input falls back to the plain comparison"),
         ("x", "y", False, "a non input that differs is not identity"),
@@ -565,7 +573,8 @@ def check_02c_a_line_of_punctuation_alone_keeps_the_old_behaviour() -> None:
 
     em = typesetting.load_hang_max_em()
     hang_log: list[dict] = []
-    units = [StubUnit("。", 10.0, True), StubUnit("。", 10.0, True)]
+    units = [StubUnit(IDEOGRAPHIC_FULL_STOP, 10.0, True),
+             StubUnit(IDEOGRAPHIC_FULL_STOP, 10.0, True)]
     lay_out(units, 5.0, hang_log)
     verdicts = [line["verdict"] for line in hang_log]
     if typesetting.HANG_PULLED_BACK in verdicts:
@@ -597,9 +606,10 @@ def check_02d_a_hang_inside_the_bound_is_not_pulled_back() -> None:
         (em * body_width * 1.1, typesetting.HANG_PULLED_BACK),
     ):
         units = [
-            StubUnit("字", body_width, False),
-            StubUnit("字", body_width, False),
-            StubUnit("。", box_width - 2 * body_width + mark, True),
+            StubUnit(HAN_CHARACTER, body_width, False),
+            StubUnit(HAN_CHARACTER, body_width, False),
+            StubUnit(IDEOGRAPHIC_FULL_STOP,
+                     box_width - 2 * body_width + mark, True),
         ]
         hang_log: list[dict] = []
         lay_out(units, box_width, hang_log)

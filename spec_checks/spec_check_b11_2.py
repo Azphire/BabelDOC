@@ -149,7 +149,7 @@ DECISIONS = ROOT / "reviews" / "FD-en-v2.decisions.json"
 
 # The term this batch pinned, and where it has to show on the page.
 PINNED_TERM = "Masthead"
-PINNED_TARGET = "报头"
+PINNED_TARGET = "\u62a5\u5934"  # the ruled rendering of Masthead
 MASTHEAD_PAGE = 5
 
 # The label that must still stand on one line after the criterion was tightened,
@@ -190,6 +190,9 @@ ALLOWED_PREFIXES = (
 READ_ONLY_TREES = ("prompts/", "corpus/", "babeldoc/magazine/chain_builder.py",
                    "babeldoc/magazine/chain_signals.py")
 
+# Chinese tokens this gate matches are written as escapes so the file stays
+# pure ASCII: b0's 09, b1's 09d and b2's 11c all scan spec_checks/*.py for
+# CJK. Each escape is the character it replaced, glossed in English beside it.
 _failures: list[str] = []
 _passed = 0
 _total = 0
@@ -553,9 +556,9 @@ def check_02c_no_off_arm_was_produced() -> None:
         faults.append("CLAUDE.md carries no clause 14")
     else:
         body = clause[0]
-        if "未在 PLAN 中明写要求双臂时" not in body:
+        if "\u672a\u5728 PLAN \u4e2d\u660e\u5199\u8981\u6c42\u53cc\u81c2\u65f6" not in body:  # "unless the plan asks for two arms"
             faults.append("the clause does not cover the unstated case")
-        if "点名说明理由" not in body:
+        if "\u70b9\u540d\u8bf4\u660e\u7406\u7531" not in body:  # "name the reason explicitly"
             faults.append("the clause does not require two arms to be asked for")
     record("check_02c_no_off_arm_was_produced", not faults, "; ".join(faults[:4]))
 
@@ -996,9 +999,9 @@ def check_05e_the_three_rules_are_written_down() -> None:
     faults = []
     text = CLAUDE.read_text(encoding="utf-8")
     wanted = {
-        "14": ("单臂默认",),
-        "15": ("归档", "豁免"),
-        "16": ("衍生件", "GATE_EVIDENCE", "spec_checks/evidence.py"),
+        "14": ("\u5355\u81c2\u9ed8\u8ba4",),  # single arm by default
+        "15": ("\u5f52\u6863", "\u8c41\u514d"),  # archive, waiver
+        "16": ("\u884d\u751f\u4ef6", "GATE_EVIDENCE", "spec_checks/evidence.py"),  # derived file
     }
     for number, anchors in wanted.items():
         clause = [line for line in text.splitlines() if line.startswith(f"{number}. ")]
@@ -1066,9 +1069,9 @@ def check_06b_the_identity_criterion_is_byte_equality() -> None:
     faults = []
     cases = (
         ("F&D", "F&D", True, False),
-        ("请阅读中文版!", "请阅读中文版！", False, True),
+        ("\u8bf7\u9605\u8bfb\u4e2d\u6587\u7248!", "\u8bf7\u9605\u8bfb\u4e2d\u6587\u7248\uff01", False, True),  # halfwidth vs fullwidth final mark
         ("F&D", " F&D ", False, True),
-        ("F&D", "金融与发展", False, False),
+        ("F&D", "\u91d1\u878d\u4e0e\u53d1\u5c55", False, False),  # the masthead rendered in Chinese
     )
     for source, translated, identical, nfkc_only in cases:
         got = il_translator._is_identity_write_back(translated, Input(source))

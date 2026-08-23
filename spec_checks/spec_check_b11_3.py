@@ -161,6 +161,9 @@ READ_ONLY_TREES = ("prompts/", "corpus/", "reviews/",
                    "babeldoc/format/pdf/document_il/midend/il_translator.py",
                    "babeldoc/format/pdf/document_il/midend/il_translator_llm_only.py")
 
+# Chinese tokens this gate matches are written as escapes so the file stays
+# pure ASCII: b0's 09, b1's 09d and b2's 11c all scan spec_checks/*.py for
+# CJK. Each escape is the character it replaced, glossed in English beside it.
 _failures: list[str] = []
 _passed = 0
 _total = 0
@@ -707,7 +710,7 @@ def check_04g_the_annotator_itself_was_not_touched() -> None:
     register = (ROOT / "UPSTREAM_DIFF.md").read_text(encoding="utf-8")
     if "formular_helper.py" not in register:
         faults.append("the repaired file is not on the upstream register")
-    for needed in ("上游原行为", "本项目改后行为"):
+    for needed in ("\u4e0a\u6e38\u539f\u884c\u4e3a", "\u672c\u9879\u76ee\u6539\u540e\u884c\u4e3a"):  # upstream behaviour, behaviour after this project
         if needed not in register:
             faults.append(f"the register does not record {needed}")
     waivers = (ROOT / "WAIVERS.md").read_text(encoding="utf-8")
