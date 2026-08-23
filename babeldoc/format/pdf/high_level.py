@@ -57,6 +57,7 @@ from babeldoc.magazine.chain_builder import ChainBuilder
 from babeldoc.magazine import detectors
 from babeldoc.magazine import hitl
 from babeldoc.magazine.checkpoint import dump_checkpoint
+from babeldoc.magazine import indent_policy
 from babeldoc.magazine import paren_dedup
 from babeldoc.magazine.page_classifier import PageClassifier
 from babeldoc.progress_monitor import ProgressMonitor
@@ -1056,6 +1057,9 @@ def _do_translate_single(
     # The translation is written back and the stage has not laid it out, which is
     # the one window in which shortening a paragraph's text costs nothing.
     paren_dedup.apply(translation_config, docs)
+    # Same window, and after the text is final: the flag this decides is read by
+    # the stage below and by nothing between here and it.
+    indent_policy.apply(translation_config, docs)
 
     if translation_config.debug:
         xml_converter.write_json(

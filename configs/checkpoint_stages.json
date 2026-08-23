@@ -88,6 +88,11 @@
       "switch": "magazine_paren_dedup"
     },
     {
+      "name": "indent_policy.report.json",
+      "stage": "il_translated",
+      "switch": "magazine_indent_policy"
+    },
+    {
       "name": "source_audit.report.json",
       "stage": "page_classifier",
       "switch": "magazine_stitch_declared"

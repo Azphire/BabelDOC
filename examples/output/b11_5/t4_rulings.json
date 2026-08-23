@@ -1,0 +1,49 @@
+{
+ "task": "b11.5 T4",
+ "sample": "FD-en-v2",
+ "paused_for": "user ruling on two personal names and one brand",
+ "prompt": "prompts/name_transliterate.md",
+ "prompt_sha256": "f655ad9129a00cbc2a8572d071c230f9e09400653fd47f75a3baef5e9990b659",
+ "api_calls": 3,
+ "rulings": [
+  {
+   "source": "Huong (Vanessa) Le",
+   "verdict": "香（凡妮莎）·黎",
+   "candidate_from_model": "黎香（凡妮莎）",
+   "followed_model": false,
+   "note": "Source order kept, interpunct before the family name, matching how the rest of this masthead column is set."
+  },
+  {
+   "source": "S M Ali Abbas",
+   "verdict": "S·M·阿里·阿巴斯",
+   "candidate_from_model": "S M 阿里·阿巴斯",
+   "followed_model": false,
+   "note": "The full form: initials kept as letters, joined by the same interpunct the rest of the name uses. Consistent with the library entry Ali Abbas -> 阿里·阿巴斯 and keeps what the page prints."
+  },
+  {
+   "source": "2communiqué",
+   "verdict": "二号公报",
+   "candidate_from_model": "",
+   "followed_model": false,
+   "note": "The plan's default was to keep the source form; the ruling overrides it. Both halves rendered: 二号 for the numeral, 公报 for communiqué."
+  }
+ ],
+ "plan_default_overridden": [
+  {
+   "source": "2communiqué",
+   "plan_said": "默认不动（品牌，保留原文为正确行为）；用户若在裁定时要求翻译，按裁定执行",
+   "user_said": "render it into Chinese, form 二号公报",
+   "note": "The plan provided for exactly this override."
+  }
+ ],
+ "decisions_file": "reviews/FD-en-v2.decisions.json",
+ "decisions_sha256_before": "dcee93ec73e9d59fce728eac5097db532c7d495eb50ebe6176060ec16ca6ffbc",
+ "decisions_sha256_after": "5f691ea3cc8d371a7d01824acdda640cecc2478787f37a3679d9562e07060415",
+ "terms_after": {
+  "2communiqué": "二号公报",
+  "F&D": "F&D",
+  "Huong (Vanessa) Le": "香（凡妮莎）·黎",
+  "Masthead": "报头",
+  "S M Ali Abbas": "S·M·阿里·阿巴斯"
+ }
+}

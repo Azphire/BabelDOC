@@ -930,12 +930,25 @@ def check_06b_the_ruled_term_reached_the_page() -> None:
         faults.append("the ruling hash is not on the run record")
     ruling = ROOT / "reviews" / "FD-en-v2.decisions.json"
     if ruling.is_file():
-        actual = hashlib.sha256(ruling.read_bytes()).hexdigest()
-        if actual != term.get("ruling_sha256"):
-            faults.append("the ruling on disk is not the one the run read")
+        # The row this batch verified, and only that row. The whole file's
+        # digest was compared here until b11.5, which is one batch too long: a
+        # ruling is a living document that gains rows as its owner rules, so a
+        # digest of the whole of it fails the next time the owner writes one and
+        # says nothing about the row this assertion is about. The question the
+        # digest was asking -- did a machine edit this file on its own -- is
+        # asked where it belongs, against the pin that carries a change record
+        # for every move (spec_check_b7_5's TRUTH_DIGESTS, CLAUDE.md 4.12).
+        from spec_checks import spec_check_b7_5
+
         terms = json.loads(ruling.read_text(encoding="utf-8")).get("terms") or {}
         if terms.get("Masthead") != term.get("expected"):
             faults.append("the ruling does not carry the term the plan names")
+        pinned = spec_check_b7_5.TRUTH_DIGESTS.get("reviews/FD-en-v2.decisions.json")
+        actual = hashlib.sha256(ruling.read_bytes()).hexdigest()
+        if pinned != actual:
+            faults.append("the ruling on disk is not the one that is pinned")
+        if not term.get("ruling_sha256"):
+            faults.append("the run did not record which ruling it read")
     else:
         faults.append("the ruling file is missing")
     record("check_06b_the_ruled_term_reached_the_page", not faults,

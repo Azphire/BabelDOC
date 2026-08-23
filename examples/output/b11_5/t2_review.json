@@ -1,0 +1,94 @@
+{
+ "task": "T2.2 bidirectional review",
+ "stopping_condition": "If any reclassified run is a real superscript or a real formula, the task stops, the finding is registered, and T2 is cut with a gap recorded.",
+ "verdict": "not triggered; T2 proceeds",
+ "reclassified": [
+  {
+   "sample": "FD-en-v2",
+   "paragraph": "p8#9",
+   "text": "hen ",
+   "font": "DXJTZM+LyonText-Regular",
+   "size": 9.25,
+   "paragraph_opens": "When it comes to international trade, ...",
+   "judgement": "Not a superscript and not a formula. It is the second, third and fourth letter of the word 'When', set in the paragraph's own body font at the paragraph's own body size, split off only because the letter before it is the 39.36pt drop cap 'W'. The rule fired on the size step down that a drop cap creates by definition.",
+   "is_true_superscript": false
+  },
+  {
+   "sample": "Courier-en",
+   "paragraph": "p1#9",
+   "text": "T ",
+   "font": "UKDOBJ+MyriadPro-Regular",
+   "size": 6.65,
+   "paragraph_opens": "CourierT H E UNESCO",
+   "judgement": "Not a superscript and not a formula. The masthead sets the logotype 'Courier' at 55.31pt and the line 'T H E UNESCO ...' at 6.65pt beside it. Every character of that line is one font at one size; the rule split off the first letter alone because it is the one that follows the logotype. 'H E UNESCO' was already text, so the split was internally inconsistent as well as wrong.",
+   "is_true_superscript": false
+  }
+ ],
+ "reverse_direction": {
+  "text_to_formula": 0,
+  "page_level_graphics_moved": 0,
+  "note": "Nothing moved the other way and no graphic changed hands, which is what makes the change one directional rather than merely net positive."
+ },
+ "spans_that_reclassified_nothing": [
+  {
+   "sample": "CERNCourier-en",
+   "paragraph": "p1#2",
+   "ratio": 10.222,
+   "why": "No corner mark stood in the span; nothing to exempt."
+  },
+  {
+   "sample": "Courier-en",
+   "paragraph": "p4#3",
+   "ratio": 6.668,
+   "why": "The drop cap 'L' is followed by a space, and all three corner mark branches require the previous character not to be a space, so the rule never fired here. Same for p5#5 and p7#8."
+  },
+  {
+   "sample": "Courier-en",
+   "paragraph": "p5#5",
+   "ratio": 6.668,
+   "why": "As p4#3."
+  },
+  {
+   "sample": "Courier-en",
+   "paragraph": "p7#8",
+   "ratio": 6.668,
+   "why": "As p4#3."
+  }
+ ],
+ "intersection_with_b11_3_corner_mark_tally": {
+  "source": "examples/output/b11_3/t2_measurement_before.json, annotation_path == corner_mark",
+  "rows_there": 5,
+  "in_this_family": 1,
+  "in_family": [
+   "FD-en-v2 p8#9 'When '"
+  ],
+  "out_of_family": [
+   {
+    "row": "CERNCourier-en p2#39 slots 1/3/7, 'Volume 66 Number 4 July/August 2026'",
+    "paragraph_in_b10_5": "p2#32",
+    "opening_size": 6.148,
+    "median_size": 5.226,
+    "ratio": 1.176,
+    "why_out": "Small caps, not an enlarged initial: the ratio is 1.18, far under the declared 2.0. Two of the three slots are not at the paragraph opening at all, and this exemption reaches the opening run only."
+   },
+   {
+    "row": "CERNCourier-en p3#8, 'Policy'",
+    "paragraph_in_b10_5": "p3#8",
+    "opening_size": 7.844,
+    "median_size": 5.491,
+    "ratio": 1.429,
+    "why_out": "Small caps; ratio 1.43, under 2.0."
+   }
+  ],
+  "reading": "The two CERNCourier shapes are exactly the small caps body text the scope declaration names as the reason not to repair corner_mark as a class. They stay untouched, which is the narrowing working as declared rather than an omission."
+ },
+ "totals": {
+  "samples": 6,
+  "paragraphs_with_span": 6,
+  "reclassified": 2,
+  "reverse": 0,
+  "carrying_pdf_form_or_curve": 0,
+  "corner_mark_among_reclassified": 2,
+  "pages_with_graphics_moved": 0
+ }
+}

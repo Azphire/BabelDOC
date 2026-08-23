@@ -187,3 +187,42 @@ T3 的 `tools/column_continuity.py` 只读复用 `magazine/chain_signals.py`,不
 `styles_and_formulas.py:445` 只是一次集合成员判断(`font_id in formula_font_ids`),
 在那里改会把一个**字体名**问题写成一个**分类器**问题。故落点订正为 `formular_helper.py`,
 登记 W-B11-11。`styles_and_formulas.py` **本批未改动一行**。
+
+## B11.5
+
+| 文件 | 符号 | 调用方 | 目的 | 批次 |
+| --- | --- | --- | --- | --- |
+| `babeldoc/format/pdf/high_level.py` | `_do_translate_single`(译后、Typesetting 前一行调用)、模块级 import | 流水线主干 | 让 T3 的 `indent_policy` pass 在其声明窗口内运行:该窗口(`paren_dedup.apply` 之后、`dump_checkpoint("il_translated")` 之前)在主干上,magazine 侧无既有钩子够得到。两行:一行 import,一行调用。pass 自身默认关(`magazine_indent_policy` 缺省为假),故本改动在开关抬起前逐位无行为差异。计划的负向范围未列本文件,登记 W-B11-15 | B11.5 |
+| `babeldoc/format/pdf/document_il/midend/styles_and_formulas.py` | 模块级 `load_initial_adjacent` / `paragraph_character_sizes` / `initial_adjacent_exemption`(新增);`StylesAndFormulas._classify_characters_in_composition`(新增形参 `exempt_span` 与一处 `is_corner_mark` 抑制);`StylesAndFormulas.process_page_formulas`(每段计算一次 `exempt_span` 并传下) | `process_page` → `process_page_formulas` → `_classify_characters_in_composition` | 见下方逐函数登记 | B11.5 |
+
+### 逐函数登记
+
+**`_classify_characters_in_composition(..., exempt_span=(0, 0))`**
+
+- **上游原行为**:逐字符判角标。三个分支中最先触发的一个是"当前字号 < 前一字符字号 ×
+  0.79 且前后皆非空格" —— 它把一个**字号台阶**读作"上标挂在正文上"。该处上游注释自称
+  "同时考虑首字母放大的情况",而首字母放大**正是**制造这个台阶的排版手法:段首放大字之后
+  紧跟的正文字母,恒满足该分支。命中即 `is_formula = is_formula or is_corner_mark`,于是
+  开头单词的后几个字母被当作公式原样带过,不进翻译。
+- **本项目改后行为**:新增形参 `exempt_span`,为段首放大 run 之后的一段**首行**字符下标
+  区间。落在该区间内的字符,`is_corner_mark` 置假。**只抑制这一个谓词** ——
+  `is_formula` 的其余各条(公式版面 id、公式字体、竖排、dummy 空格、视觉框错位、公式起始/
+  中间字符)一律照原样计算,所以区间内的真公式仍是公式。区间外、非首行、以及不带放大首字的
+  段落,行为逐位不变。
+- **区间的取法**:`initial_adjacent_exemption(paragraph)` 只读几何与顺序 ——
+  段内首字符的字号、段内字号中位数、以及同字号 run 的长度。放大判据为
+  `首字号 ≥ 中位数 × initial_adjacent_ratio`,区间自 run 末尾起、长
+  `initial_adjacent_chars` 个字符;run 归属容差为 `initial_adjacent_tolerance`。
+  三个数全部声明在 `configs/initial_adjacent.json`(带允许范围),代码内无裸字面量。
+  比值与容差与 `configs/drop_cap.json` 的候选阈同源,不是同一形状的第二个数。
+- **理由**:这不是 corner_mark 全类修复。修的是一族**自反讽假阳** —— 规则自称考虑了首字母
+  放大,却恰被首字母放大触发。全类修复留在缓议中,因为同一分支也命中真上标与小型大写正文;
+  实测的两条小型大写(CERNCourier `Volume 66 …` 比值 1.18、`Policy` 比值 1.43)正落在
+  2.0 之下,不被本豁免触及。
+- **实测**(`t2_measurement.json`,以真实 stage 对 b10.5 stage-05 checkpoint 跑两遍取差):
+  全语料 6 样张,命中放大区间的段 **6** 个,改判 **2** 处(FD-en-v2 p8#9 `hen `、
+  Courier-en p1#9 `T `),反向改判 **0**,页级 curve/form 计数变动 **0 页**,
+  改判者携带 `pdf_form`/`pdf_curve` **0** 个。消费者清单见 `t2_consumer_inventory.json`
+  (22 站点,本批新做,逐站点以锚文本在当前树上定位)。
+- **通用信号约束**:所用信号只有字号比、同字号 run 长度与字符顺序;不含刊物名、字体名、
+  页码、段落 id 或任何取自样张的字符串。

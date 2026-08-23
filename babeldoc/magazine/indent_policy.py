@@ -1,0 +1,336 @@
+"""The first line indent of a translated body paragraph, decided rather than copied.
+
+Two facts about the pipeline meet here. The paragraph finder writes
+``first_line_indent`` per paragraph by measuring the source: a paragraph whose
+first character starts more than a point right of its own box is indented, and
+one that does not is not. The typesetting stage reads that flag and, where it is
+up, moves the pen in by a fixed multiple of a space width before setting the
+first line. Between the two there was nowhere to state a rule, so a translated
+page inherited the source language's paragraph convention one box at a time.
+
+That is a defect once the two languages differ on the convention, and they do.
+English magazine setting runs the opening paragraph of a section flush and
+indents what follows, or runs everything flush with vertical space between
+paragraphs; Chinese setting indents every paragraph, the first included. A
+Chinese page built by copying English geometry is therefore wrong in a way no
+amount of care in the copying can fix, because the copying is the error.
+
+What this pass does is small: it overwrites the flag, on body paragraphs only,
+according to a mode declared per target language. It computes no geometry and it
+sets no text. The stage that acts on the flag is not touched, which is why the
+indent still moves the pen by the amount the stage has always moved it -- the
+configuration pins that amount rather than setting it, and a gate holds the
+stage to the pin.
+
+Where this sits
+---------------
+
+After the translation is written back and before the typesetting stage lays it
+out, the same window the bracket folding pass uses. Earlier would be wrong twice
+over: the flag would be read off a document whose paragraphs are still the
+source's, and the line splitting pass writes the flag itself on the fragments it
+makes, so a decision taken before it would be quietly undone.
+
+What it does not touch
+----------------------
+
+Anything outside the declared body labels. A title, a caption, a table of
+contents record and a masthead list each have their own setting, and a rule
+written for running text is wrong for all four. The title pass writes the flag
+too, after the stage rather than before it, and only on titles; the two do not
+meet, which the gate asserts from both ends.
+"""
+
+from __future__ import annotations
+
+import json
+import logging
+from dataclasses import dataclass
+from functools import lru_cache
+from pathlib import Path
+from types import MappingProxyType
+
+from babeldoc.magazine import hitl
+from babeldoc.magazine.drop_cap import paragraph_reference
+from babeldoc.magazine.drop_cap import read_article_map
+from babeldoc.magazine.page_features import ConfigError
+from babeldoc.magazine.page_features import validate_bounded_config
+from babeldoc.magazine.taxonomy import record_config_manifest
+
+logger = logging.getLogger(__name__)
+
+CONFIG_PATH = Path(__file__).resolve().parents[2] / "configs" / "indent_policy.json"
+
+REPORT_NAME = "indent_policy.report.json"
+ARTICLE_MAP_NAME = "article_map.json"
+
+# The switch, by the name the caller sets on the translation config. Down unless
+# something puts it up: this pass changes how every body paragraph of a document
+# is set, which is not something a run should acquire by upgrading.
+SWITCH = "magazine_indent_policy"
+
+MODE_SOURCE = "source"
+MODE_ALL = "all"
+MODE_NONE = "none"
+MODE_ALL_BUT_FIRST = "all_but_first"
+
+BY_TARGET_KEY = "indent_mode_by_target"
+FALLBACK_KEY = "fallback_mode"
+VOCABULARY_KEY = "indent_mode_vocabulary"
+ENTRIES_KEY = "entries"
+_STRUCTURAL_KEYS = (BY_TARGET_KEY, FALLBACK_KEY)
+
+
+class IndentPolicyError(ConfigError):
+    """Raised when the indent policy configuration is malformed."""
+
+
+@dataclass(frozen=True)
+class IndentConfig:
+    """Everything declared about deciding one paragraph's first line indent."""
+
+    modes: tuple[str, ...]
+    by_target: MappingProxyType
+    fallback: str
+    body_labels: tuple[str, ...]
+    article_opening_rank: int
+    indent_em: int
+    excerpt_chars: int
+
+    def mode_for(self, target_lang: str) -> tuple[str, str]:
+        """The mode one run is laid out under, and where it came from.
+
+        Matched by longest declared prefix rather than by equality, because a
+        target language reaches this project as a tag and a tag carries a
+        region: a rule for a language is a rule for every variety of it. A tag
+        no entry claims takes the declared fallback, which reproduces the
+        source, because a layout convention guessed for an unnamed language is
+        worse than none.
+        """
+        tag = (target_lang or "").strip().lower()
+        claimed = [key for key in self.by_target if tag.startswith(key.lower())]
+        if not claimed:
+            return self.fallback, "fallback"
+        return self.by_target[max(claimed, key=len)], "declared"
+
+
+def _require(condition: bool, message: str) -> None:
+    if not condition:
+        raise IndentPolicyError(message)
+
+
+def _read_by_target(raw: object, source: str, modes: tuple[str, ...]):
+    """The table of per target language modes, checked against the vocabulary."""
+    _require(isinstance(raw, dict), f"{source}: {BY_TARGET_KEY} must be an object")
+    entries = raw.get(ENTRIES_KEY)
+    _require(
+        isinstance(entries, dict) and bool(entries),
+        f"{source}: {BY_TARGET_KEY}.{ENTRIES_KEY} must be a non-empty object",
+    )
+    for key, value in entries.items():
+        _require(
+            isinstance(key, str) and bool(key.strip()),
+            f"{source}: {BY_TARGET_KEY}.{ENTRIES_KEY} has a key that is not a "
+            f"language tag: {key!r}",
+        )
+        _require(
+            value in modes,
+            f"{source}: {BY_TARGET_KEY}.{ENTRIES_KEY}[{key!r}]={value!r} is "
+            f"outside the declared modes {sorted(modes)}",
+        )
+    return MappingProxyType({key.strip(): value for key, value in entries.items()})
+
+
+def parse_indent_config(raw: dict, source: str) -> IndentConfig:
+    """Validate one configuration mapping into the policy it declares."""
+    flat = {key: value for key, value in raw.items() if key not in _STRUCTURAL_KEYS}
+    try:
+        parameters = dict(validate_bounded_config(flat, CONFIG_PATH))
+    except ConfigError as exc:
+        raise IndentPolicyError(str(exc)) from exc
+
+    modes = tuple(parameters.get(VOCABULARY_KEY, ()))
+    _require(bool(modes), f"{source}: missing {VOCABULARY_KEY}")
+    for name in (MODE_SOURCE, MODE_ALL, MODE_NONE, MODE_ALL_BUT_FIRST):
+        _require(
+            name in modes,
+            f"{source}: {VOCABULARY_KEY} omits {name!r}, which this pass acts on",
+        )
+    fallback = raw.get(FALLBACK_KEY)
+    _require(
+        fallback in modes,
+        f"{source}: {FALLBACK_KEY}={fallback!r} is outside {sorted(modes)}",
+    )
+    labels = tuple(parameters.get("body_labels", ()))
+    _require(bool(labels), f"{source}: missing body_labels")
+    numbers = ("article_opening_rank", "indent_em", "excerpt_chars")
+    missing = sorted(set(numbers) - set(parameters))
+    _require(not missing, f"{source}: missing parameters {missing}")
+    return IndentConfig(
+        modes=modes,
+        by_target=_read_by_target(raw.get(BY_TARGET_KEY), source, modes),
+        fallback=str(fallback),
+        body_labels=labels,
+        article_opening_rank=int(parameters["article_opening_rank"]),
+        indent_em=int(parameters["indent_em"]),
+        excerpt_chars=int(parameters["excerpt_chars"]),
+    )
+
+
+@lru_cache(maxsize=1)
+def load_indent_config(path: str | None = None) -> IndentConfig:
+    """Load and validate ``configs/indent_policy.json``."""
+    config_path = CONFIG_PATH if path is None else Path(path)
+    with config_path.open(encoding="utf-8") as f:
+        raw = json.load(f)
+    if not isinstance(raw, dict):
+        raise IndentPolicyError(f"{config_path.name}: root must be an object")
+    return parse_indent_config(raw, config_path.name)
+
+
+def enabled(translation_config) -> bool:
+    return bool(getattr(translation_config, SWITCH, False))
+
+
+def article_of_page(translation_config) -> dict[int, str]:
+    """Which article each page belongs to, or an empty map where none was written.
+
+    Read from the grouping pass's own sidecar rather than recomputed. A run with
+    grouping down has no map, and a mode that needs one says so by leaving every
+    paragraph alone rather than by inventing article boundaries here.
+    """
+    path = Path(translation_config.get_working_file_path(ARTICLE_MAP_NAME))
+    if not path.is_file():
+        return {}
+    pages, _ = read_article_map(path)
+    return pages
+
+
+def decide(
+    label: str | None,
+    mode: str,
+    source_value: bool,
+    body_rank: int | None,
+    config: IndentConfig,
+) -> bool | None:
+    """What one paragraph's flag becomes, or None where this pass leaves it.
+
+    None rather than the unchanged value, so a caller can tell a paragraph this
+    pass decided to leave alone from one it decided and happened to agree with.
+    """
+    if label not in config.body_labels:
+        return None
+    if mode == MODE_SOURCE:
+        return None
+    if mode == MODE_ALL:
+        return True
+    if mode == MODE_NONE:
+        return False
+    if mode == MODE_ALL_BUT_FIRST:
+        if body_rank is None:
+            # Outside every article there is no first paragraph to be, so the
+            # rule has nothing to say and the source geometry stands.
+            return None
+        return body_rank != config.article_opening_rank
+    return None
+
+
+def as_record(
+    config: IndentConfig,
+    mode: str,
+    origin: str,
+    target_lang: str,
+    rows: list[dict],
+    pages: int,
+) -> dict:
+    changed = [row for row in rows if row["before"] != row["after"]]
+    return {
+        "switch": SWITCH,
+        "target_lang": target_lang,
+        "mode": mode,
+        "mode_source": origin,
+        "modes": list(config.modes),
+        "fallback_mode": config.fallback,
+        "body_labels": list(config.body_labels),
+        "article_opening_rank": config.article_opening_rank,
+        "indent_em": config.indent_em,
+        "pages": pages,
+        "totals": {
+            "paragraphs": len(rows),
+            "decided": sum(1 for row in rows if row["decided"]),
+            "left_alone": sum(1 for row in rows if not row["decided"]),
+            "changed": len(changed),
+            "indented_after": sum(1 for row in rows if row["after"]),
+        },
+        "paragraphs": rows,
+    }
+
+
+def write_report(working_dir: Path, record: dict) -> Path:
+    path = Path(working_dir) / REPORT_NAME
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with path.open("w", encoding="utf-8") as f:
+        json.dump(record, f, indent=2, sort_keys=True, ensure_ascii=False)
+    record_config_manifest(path.parent, [CONFIG_PATH])
+    return path
+
+
+def apply(translation_config, docs) -> dict | None:
+    """Decide the first line indent of every paragraph. None where the switch is down.
+
+    Returns the record it wrote, so a caller holding the document can assert
+    about the pass without reading the sidecar back.
+    """
+    if not enabled(translation_config):
+        return None
+    config = load_indent_config()
+    target_lang = getattr(translation_config, "lang_out", "") or ""
+    mode, origin = config.mode_for(target_lang)
+    pages = hitl.labeled_pages(docs)
+    of_page = article_of_page(translation_config)
+
+    rank_of_article: dict[str, int] = {}
+    rows: list[dict] = []
+    for label, page in pages:
+        article_id = of_page.get(label)
+        for index, paragraph in enumerate(page.pdf_paragraph or ()):
+            layout_label = paragraph.layout_label
+            body_rank = None
+            # Counted over body paragraphs carrying text, in document order
+            # within the article, which is the rank the drop cap pass counts.
+            # A paragraph with no text is not a paragraph a reader numbers.
+            if (
+                layout_label in config.body_labels
+                and article_id is not None
+                and (paragraph.unicode or "").strip()
+            ):
+                body_rank = rank_of_article.get(article_id, 0) + 1
+                rank_of_article[article_id] = body_rank
+            before = bool(paragraph.first_line_indent)
+            decision = decide(layout_label, mode, before, body_rank, config)
+            if decision is not None:
+                paragraph.first_line_indent = decision
+            rows.append(
+                {
+                    "page": label,
+                    "reference": paragraph_reference(label, index),
+                    "layout_label": layout_label,
+                    "article_id": article_id,
+                    "body_rank": body_rank,
+                    "before": before,
+                    "after": bool(paragraph.first_line_indent),
+                    "decided": decision is not None,
+                    "excerpt": (paragraph.unicode or "")[: config.excerpt_chars],
+                }
+            )
+
+    record = as_record(config, mode, origin, target_lang, rows, len(pages))
+    working_dir = Path(translation_config.get_working_file_path(REPORT_NAME)).parent
+    write_report(working_dir, record)
+    logger.debug(
+        "indent policy: mode %s, %d paragraph(s) decided, %d changed",
+        mode,
+        record["totals"]["decided"],
+        record["totals"]["changed"],
+    )
+    return record

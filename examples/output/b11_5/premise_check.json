@@ -1,0 +1,159 @@
+{
+ "batch": "b11.5",
+ "status": "HALTED-ON-PREMISE-MISMATCH",
+ "rule": "CLAUDE.md 5.2",
+ "source_plan": "plans/PLAN_B11_5.md",
+ "evidence_inputs": [
+  "examples/output/b11_4/FD-en-v2/sidecars/short_unit.report.json",
+  "examples/output/b11_4/FD-en-v2/sidecars/drop_cap.report.json",
+  "examples/output/b11_4/FD-en-v2/sidecars/drop_cap_apply.report.json",
+  "examples/output/b11_4/FD-en-v2/sidecars/name_harvest.report.json",
+  "examples/output/b11_4/FD-en-v2/out/FD-en-v2.no_watermark.zh.mono.pdf",
+  "examples/output/b11_4/FD-en-v2/work/FD-en-v2/checkpoint.06_styles_and_formulas.xml",
+  "examples/output/b11_4/FD-en-v2/work/FD-en-v2/checkpoint.08_chain_builder.xml",
+  "examples/output/b11_4/FD-en-v2/work/FD-en-v2/checkpoint.09_il_translated.xml",
+  "examples/output/b11_4/FD-en-v2/work/FD-en-v2/translate_tracking.json",
+  "reviews/FD-en-v2.decisions.json",
+  "configs/translation_style.json"
+ ],
+ "premises": {
+  "1": {
+   "verdict": "PASS",
+   "detail": "short_unit.report.json units: 5 rows source='F&D' translated='财政与发展' identity_skipped=false at p3#0,p5#3,p6#1,p7#1,p8#1. GAP-36 present at docs/eval/gap_register.md:952."
+  },
+  "2": {
+   "verdict": "PASS-with-note",
+   "detail": "reviews/FD-en-v2.decisions.json terms = {'Masthead':'报头'} (single entry). Glossary-outranks-policy is stated in configs/translation_style.json description; plan says three role texts, config declares four policies that state something plus keep_source that states nothing. Wording drift only, not material."
+  },
+  "3": {
+   "verdict": "PASS",
+   "detail": "drop_cap.report.json candidate debug BpaLV p8#9 first_run 'W' size_ratio 4.255. drop_cap_apply.report.json decision=flatten source=ruled default_decision=flatten characters_merged=0 merged=false box_before==box_after. Output PDF p8: span 39.36pt '当' bbox [376.0,74.74,415.36,131.26]; first line y=109.36, next line y=150.69, delta 41.33 with 13.87 line height -> 27.5pt hole."
+  },
+  "4": {
+   "verdict": "FAIL",
+   "detail": "See mismatch_4."
+  },
+  "5": {
+   "verdict": "PARTIAL",
+   "detail": "paragraph_finder.py:160-170 confirmed (first_line_indent inferred per paragraph from source geometry). Consumer is typesetting.py:1462-1463 ('if paragraph.first_line_indent: current_x += space_width * 4'), NOT 1361. Also 'no global control' overstates: title_typeset.py:816 and line_split.py:705 already write the field False on the magazine side."
+  },
+  "6": {
+   "verdict": "PASS",
+   "detail": "name_harvest.report.json rows: 'Huong (Vanessa) Le', 'S M Ali Abbas', '2communiqué' all person_shaped=false, auto_target==source. 'Ali Abbas' -> '阿里·阿巴斯' person_shaped=true is_person=true present."
+  },
+  "7": {
+   "verdict": "PASS",
+   "detail": "b11_4.report.md: spec_check_b11_4 30/30, other 41 gates green, spec_check_b11_2 30/32 (check_06d GAP-36, check_00b GAP-37)."
+  }
+ },
+ "mismatch_4": {
+  "plan_claim": "drop_cap.py flatten path and merged_style only cover the standalone-paragraph merge case; an in-paragraph large-font style run has no normalization branch. T2 further claims the request text is \"<style id='1'>W</style>hen...\" and that characters_merged==0 is a silent pass on an in-paragraph style run.",
+  "measured": {
+   "p8#9_composition_at_stage_06": [
+    {
+     "index": 0,
+     "kind": "pdf_same_style_characters",
+     "font_id": "T1_5",
+     "font_name": "DXJTZM+GTFlexaMono-Thin",
+     "font_size": 39.3591,
+     "n_chars": 1,
+     "text": "W"
+    },
+    {
+     "index": 1,
+     "kind": "pdf_formula",
+     "n_chars": 4,
+     "text": "hen ",
+     "font_id": "T1_6",
+     "font_size": 9.25,
+     "pdf_curve": 0,
+     "pdf_form": 0,
+     "x_offset": 0.649658,
+     "y_offset": 21.852
+    },
+    {
+     "index": 2,
+     "kind": "pdf_same_style_characters",
+     "font_id": "T1_6",
+     "font_name": "DXJTZM+LyonText-Regular",
+     "font_size": 9.25,
+     "n_chars": 627,
+     "text_head": "it comes to international trade, "
+    }
+   ],
+   "composition_identical_at_stages": [
+    "06_styles_and_formulas",
+    "07_page_classifier",
+    "08_chain_builder"
+   ],
+   "actual_request_text": "<style id='1'>W</style>{v3}it comes to international trade, countries have always weighed economic efficiency against national security. ...",
+   "actual_translated_composition_at_09": [
+    {
+     "index": 0,
+     "kind": "pdf_same_style_unicode_characters",
+     "font_size": 39.3591,
+     "unicode": "当"
+    },
+    {
+     "index": 1,
+     "kind": "pdf_formula",
+     "text": "hen ",
+     "note": "carried across untranslated"
+    },
+    {
+     "index": 2,
+     "kind": "pdf_same_style_unicode_characters",
+     "font_size": 9.25,
+     "unicode_head": "涉及国际贸易时，各国"
+    }
+   ],
+   "rendered_p8_lines_in_column": [
+    {
+     "y": 74.74,
+     "x": 376.0,
+     "size": 39.36,
+     "text": "当"
+    },
+    {
+     "y": 87.84,
+     "x": 415.8,
+     "size": 9.25,
+     "text": "hen "
+    },
+    {
+     "y": 109.36,
+     "x": 432.26,
+     "size": 9.25,
+     "text": "涉及国际贸易时，各国"
+    },
+    {
+     "y": 150.69,
+     "x": 376.0,
+     "size": 9.25,
+     "text": "一直在经济效率与国家安全之间权衡。"
+    }
+   ]
+  },
+  "real_cause_chain": [
+   "styles_and_formulas.py:471-505 corner-mark rule: char 'h' (9.25pt) follows 'W' (39.36pt), 9.25 < 39.36*0.79 -> is_corner_mark -> is_formula.",
+   "styles_and_formulas.py:481-491 state branch keeps 'e','n' in corner-mark state (9.25 < 9.25*1.1); the trailing space is carried by in_formula_state -> exactly 'hen ' becomes one pdf_formula.",
+   "drop_cap.py:744-747: tail_kind == 'pdf_formula' is not in _MERGEABLE (= line_split.SPLITTABLE = ('pdf_line','pdf_same_style_characters')); flatten returns _unchanged -> characters_merged == 0. This is a documented deliberate guard (drop_cap.py:147-151), not a missing branch.",
+   "The 39.36pt run therefore survives as a style span AND a formula placeholder {v3} is emitted; the model maps '当' into style 1 and {v3} restores 'hen ' untranslated."
+  ],
+  "why_T2_as_written_cannot_work": [
+   "flatten() returns at drop_cap.py:746-747, before any style handling; a normalization branch placed after that guard is unreachable for this candidate.",
+   "Normalizing composition[0]'s style ahead of the guard removes the <style> span but leaves the {v3} formula, so 'hen ' still restores untranslated. Rendered text would become '当hen 涉及国际贸易...' -- gate assertion 3 ('extracted text starts with 当涉及国际贸易') is unsatisfiable by the prescribed fix.",
+   "The repair that would actually work is a reclassification of the corner-mark false positive, which lands upstream in styles_and_formulas.py -- excluded by the plan's negative scope ('upstream zero change') and by its own 'explicitly not doing: corner_mark'. CLAUDE.md 4.18 also makes a fresh consumer inventory a precondition for any such reclassification."
+  ]
+ },
+ "unblocked_tasks": [
+  "T1",
+  "T3",
+  "T4",
+  "T5"
+ ],
+ "blocked_tasks": [
+  "T2",
+  "gate assertion 3"
+ ]
+}

@@ -1,0 +1,16 @@
+{
+ "task": "T2.1",
+ "what": "the exemption predicate, frozen before any measurement was taken",
+ "config": "configs/initial_adjacent.json",
+ "sha256": "ec590f8b27ea6921462f38ec32958ce9c7b46852ca9239df10e907bd25114f5f",
+ "parameters": {
+  "initial_adjacent_ratio": 2.0,
+  "initial_adjacent_ratio_allowed_range": "1.1..10.0",
+  "initial_adjacent_chars": 8,
+  "initial_adjacent_chars_allowed_range": "0..64",
+  "initial_adjacent_tolerance": 0.02,
+  "initial_adjacent_tolerance_allowed_range": "0.0..2.0"
+ },
+ "predicate": "In the first line of a paragraph whose opening run of equally sized characters is at least initial_adjacent_ratio times the paragraph's median character size, the corner mark predicate does not fire for the initial_adjacent_chars characters that follow that run. Run membership is decided by initial_adjacent_tolerance. Geometry and order only; no content, font name or publication is read.",
+ "order_note": "Frozen and hashed before the measurement of T2.2 was run and before the code change of T2.4 was written, so the numbers cannot have been chosen to make a measurement come out."
+}

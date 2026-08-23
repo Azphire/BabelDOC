@@ -1,0 +1,18 @@
+{
+  "article_context.json": "870025c793ed284075092ff2d7e8d6a107692f9d904efdda69df7f139c434bac",
+  "article_grouping.json": "1e3067ab8fd4a9f6662b5c72e00e9c3d9d8714d259491a887b774cd6f68eea54",
+  "chain_detection.json": "95a837182ee44867e55639aede3af6a4cfc15d1cc42e21dd3833814d9eeb3e63",
+  "column_reflow.json": "e036b42cb23c3884a84428fb63cb5d24df01b483fc54b159f770795220ef6938",
+  "decision_rounds.json": "19a5e4791a6d157be26cbd28f4033c7c4194853fecfb5bc72bd815d845892447",
+  "detectors.json": "dec9a3cb07e55a183ca3b5600173df3c93bc90b7f0d14fd98baf9e61810b9b1d",
+  "drop_cap.json": "77e972bf70f07b36671307a733f7affc8b6377da95f6e40d83072c9da0179bde",
+  "fragment_stitch.json": "e7fee7959af389a1c07658e3ebf357046d973cbbad4910dbcf29233e1bc5658b",
+  "hitl.json": "ebad25a2c83716b2cbc313623fd60aefa985c8cf34ae9937c20729d7d9a6c203",
+  "indent_policy.json": "478267b32270297642007a5637ac8bf5035e270d9f3e85aed2a8de326032916b",
+  "line_split.json": "de6813fda2f4c033236a34ec702186c149610ed0463210dc0af893890695e991",
+  "page_features.json": "2fa5ce652a956940a131000f516360872fdca51cdd073fc1bffb4bd870c12d48",
+  "page_types.json": "56b32ac5280b6dd6dd938e86ae62d4e13cd33f558b3803096be421dfcfcb84b0",
+  "paren_dedup.json": "632107a85c2d5d70a443c513fbbf5b55c8bbc8354cc0f675979d806b10c9365c",
+  "repair_actions.json": "386e520058d00b146c881c6e2b53546e08d9ccbc82d52f3a8e989af927c4f4dd",
+  "title_typeset.json": "49566f3e0dc84581d552c1eb980d5d84db5486c51827eba9e6cec75c7be2cbeb"
+}

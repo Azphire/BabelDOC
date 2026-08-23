@@ -169,8 +169,23 @@ TRUTH_DIGESTS = {
     # update: the pin anchors "no machine edited this file on its own", not
     # "this file never changes". The batch report carries the digest either side
     # of the write. The drop cap ruling in it is untouched.
+    #
+    # Re-pinned again at b11.5, on the same clause.
+    #   was: 6413251828b9d856b4ca41e86ccd61cc883a2d9d70240aff8b94cf19196d4b78
+    #   now: 5f691ea3cc8d371a7d01824acdda640cecc2478787f37a3679d9562e07060415
+    #   what: four glossary rows added, and nothing else. ``F&D`` pinned to
+    #         itself, and the three masthead entries the name harvest could not
+    #         shape-match to a person.
+    #   who:  the corpus owner, ruling at the batch's pause point; the drafted
+    #         candidates and the verdicts are in
+    #         examples/output/b11_5/t4_draft.json and t4_rulings.json, which
+    #         carry the digest either side of the write.
+    #   why:  b11.5 T1 and T4. The label was being translated on the masthead
+    #         after b11.3 changed what counts as a formula font (GAP-36), and
+    #         the three names were left in Latin among rendered ones (GAP-39).
+    # The drop cap ruling and the page kind section are untouched.
     "reviews/FD-en-v2.decisions.json": (
-        "6413251828b9d856b4ca41e86ccd61cc883a2d9d70240aff8b94cf19196d4b78"
+        "5f691ea3cc8d371a7d01824acdda640cecc2478787f37a3679d9562e07060415"
     ),
     # The third ruling, pinned at F3. It arrived during b10.4 -- two pages at the
     # pause, then all eight when it settled -- and was applied and reported on by

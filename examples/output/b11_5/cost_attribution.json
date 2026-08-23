@@ -1,0 +1,127 @@
+{
+ "sample": "FD-en-v2",
+ "compared_against": "examples/output/b11_4/FD-en-v2/work/FD-en-v2/translate_tracking.json",
+ "ledger": {
+  "requests": 88,
+  "cache_hits": 74,
+  "api_calls": 14
+ },
+ "method": "A request text present in this run and absent from the b11.4 run of the same sample is a text this batch caused. The comparison is over the tracking files both runs wrote, not over the cache.",
+ "prompts_this_run": 195,
+ "prompts_distinct_this_run": 64,
+ "prompts_new_to_this_run": 17,
+ "by_cause": {
+  "T1 ruled glossary row(s) ['F&D'] entered the table": 10,
+  "T1/T4 the glossary table changed under an unchanged paragraph: ruling a row moves it out of the extracted glossary": 4,
+  "T4 ruled glossary row(s) ['Huong (Vanessa) Le'] entered the table": 1,
+  "T4 ruled glossary row(s) ['2communiqué', 'S M Ali Abbas'] entered the table": 1,
+  "T2 drop cap paragraph: the placeholder left the request": 1
+ },
+ "unattributed": [],
+ "rows": [
+  {
+   "section": "cross_column",
+   "cause": "T1 ruled glossary row(s) ['F&D'] entered the table",
+   "chars": 3735,
+   "excerpt": "You are a professional Chinese native translator who needs to fluently translate text into Chinese.\n\nPersonal names: wri"
+  },
+  {
+   "section": "page",
+   "cause": "T1 ruled glossary row(s) ['F&D'] entered the table",
+   "chars": 3098,
+   "excerpt": "You are a professional Chinese native translator who needs to fluently translate text into Chinese.\n\nPersonal names: wri"
+  },
+  {
+   "section": "page",
+   "cause": "T1 ruled glossary row(s) ['F&D'] entered the table",
+   "chars": 3095,
+   "excerpt": "You are a professional Chinese native translator who needs to fluently translate text into Chinese.\n\nPersonal names: wri"
+  },
+  {
+   "section": "page",
+   "cause": "T1 ruled glossary row(s) ['F&D'] entered the table",
+   "chars": 4283,
+   "excerpt": "You are a professional Chinese native translator who needs to fluently translate text into Chinese.\n\nPersonal names: wri"
+  },
+  {
+   "section": "page",
+   "cause": "T1 ruled glossary row(s) ['F&D'] entered the table",
+   "chars": 3101,
+   "excerpt": "You are a professional Chinese native translator who needs to fluently translate text into Chinese.\n\nPersonal names: wri"
+  },
+  {
+   "section": "page",
+   "cause": "T1 ruled glossary row(s) ['F&D'] entered the table",
+   "chars": 4241,
+   "excerpt": "You are a professional Chinese native translator who needs to fluently translate text into Chinese.\n\nPersonal names: wri"
+  },
+  {
+   "section": "page",
+   "cause": "T1/T4 the glossary table changed under an unchanged paragraph: ruling a row moves it out of the extracted glossary",
+   "chars": 4135,
+   "excerpt": "You are a professional Chinese native translator who needs to fluently translate text into Chinese.\n\nPersonal names: wri"
+  },
+  {
+   "section": "page",
+   "cause": "T1/T4 the glossary table changed under an unchanged paragraph: ruling a row moves it out of the extracted glossary",
+   "chars": 3823,
+   "excerpt": "You are a professional Chinese native translator who needs to fluently translate text into Chinese.\n\nPersonal names: wri"
+  },
+  {
+   "section": "page",
+   "cause": "T1/T4 the glossary table changed under an unchanged paragraph: ruling a row moves it out of the extracted glossary",
+   "chars": 4088,
+   "excerpt": "You are a professional Chinese native translator who needs to fluently translate text into Chinese.\n\nPersonal names: wri"
+  },
+  {
+   "section": "page",
+   "cause": "T1/T4 the glossary table changed under an unchanged paragraph: ruling a row moves it out of the extracted glossary",
+   "chars": 3900,
+   "excerpt": "You are a professional Chinese native translator who needs to fluently translate text into Chinese.\n\nPersonal names: wri"
+  },
+  {
+   "section": "page",
+   "cause": "T4 ruled glossary row(s) ['Huong (Vanessa) Le'] entered the table",
+   "chars": 3747,
+   "excerpt": "You are a professional Chinese native translator who needs to fluently translate text into Chinese.\n\nPersonal names: wri"
+  },
+  {
+   "section": "page",
+   "cause": "T4 ruled glossary row(s) ['2communiqué', 'S M Ali Abbas'] entered the table",
+   "chars": 3701,
+   "excerpt": "You are a professional Chinese native translator who needs to fluently translate text into Chinese.\n\nPersonal names: wri"
+  },
+  {
+   "section": "page",
+   "cause": "T2 drop cap paragraph: the placeholder left the request",
+   "chars": 5618,
+   "excerpt": "You are a professional Chinese native translator who needs to fluently translate text into Chinese.\n\nPersonal names: wri"
+  },
+  {
+   "section": "page",
+   "cause": "T1 ruled glossary row(s) ['F&D'] entered the table",
+   "chars": 4829,
+   "excerpt": "You are a professional Chinese native translator who needs to fluently translate text into Chinese.\n\nPersonal names: wri"
+  },
+  {
+   "section": "page",
+   "cause": "T1 ruled glossary row(s) ['F&D'] entered the table",
+   "chars": 2194,
+   "excerpt": "You are a professional Chinese native translator who needs to fluently translate text into Chinese.\n\nPersonal names: wri"
+  },
+  {
+   "section": "page",
+   "cause": "T1 ruled glossary row(s) ['F&D'] entered the table",
+   "chars": 6218,
+   "excerpt": "You are a professional Chinese native translator who needs to fluently translate text into Chinese.\n\nPersonal names: wri"
+  },
+  {
+   "section": "page",
+   "cause": "T1 ruled glossary row(s) ['F&D'] entered the table",
+   "chars": 5582,
+   "excerpt": "You are a professional Chinese native translator who needs to fluently translate text into Chinese.\n\nPersonal names: wri"
+  }
+ ],
+ "covers_api_calls": true,
+ "note": "Every new prompt is a prompt this batch caused, and every API call the run made was a prompt the cache did not hold. The count of new prompts is at or above the call count rather than equal to it, for two reasons that are both one directional: a prompt new to this sample may still have been cached from an earlier session, and the name harvest and short unit paths call the engine without writing to this file. So what is asserted is that the ledger identity holds, that the new prompts cover the calls, and that not one new prompt is unattributed."
+}

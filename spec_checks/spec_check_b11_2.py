@@ -55,6 +55,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import re
 import shutil
 import subprocess
 import sys
@@ -99,6 +100,9 @@ GATE_EVIDENCE = (
     "examples/output/b11_2/t4_recoverability.json",
     "examples/output/b11_2/t2_regression_attribution.json",
     "examples/output/b11_2/runs.json",
+    # Read by 6d, which no longer stands on this batch's frozen document. The
+    # newest batch that wrote one is what it reads; this is that batch today.
+    "examples/output/b11_5/FD-en-v2/render_evidence.json",
 )
 
 CORPUS = (
@@ -159,6 +163,10 @@ SINGLE_LINE_PAGES = (5, 6, 8)
 SAME_LEFT_EDGE = 0.5
 LINE_APART = 8.0
 
+# The derived file 6d reads, by the name every batch writes it under. Named
+# rather than pinned to one batch: see newest_render_evidence.
+RENDER_EVIDENCE_NAME = "render_evidence.json"
+
 # The delta this batch is allowed.
 ALLOWED_PREFIXES = (
     "babeldoc/format/pdf/document_il/midend/il_translator.py",
@@ -209,6 +217,13 @@ def record(name: str, ok: bool, detail: str = "") -> None:
     else:
         _failures.append(f"{name}: {detail}")
         print(f"FAIL: {name}: {detail} ({seconds:.2f}s)")
+
+
+def skip(name: str, missing) -> None:
+    global _total
+    _total += 1
+    seconds = _timer.mark(name)
+    print(f"SKIPPED: {name}: evidence absent: {sorted(missing)} ({seconds:.2f}s)")
 
 
 def load(path: Path):
@@ -291,7 +306,17 @@ def check_00b_the_policy_would_not_remove_them() -> None:
         faults.append(f"would remove {trespass[:3]}")
     control = [p for p in doomed if "b10_5" in p.parts]
     if not control:
-        faults.append("the policy selected nothing at all in b10.5")
+        # The control is gone and cannot come back. b11.4's prune took every
+        # prunable file of b10.5 (GAP-37), so what remains there is protected or
+        # kept by pattern, and b10.5 will never receive a new file. Without a
+        # control this assertion cannot distinguish a policy that spares these
+        # files from a policy that has stopped selecting anything, which is the
+        # whole reason the control was written. It is reported SKIPPED with its
+        # cause rather than passed on its positive half alone: a half assertion
+        # that reads as green is how GAP-36 survived two batches.
+        skip("check_00b_the_policy_would_not_remove_them",
+             ["examples/output/b10_5/<a prunable file> (control, GAP-37)"])
+        return
     record("check_00b_the_policy_would_not_remove_them", not faults,
            "; ".join(faults[:4]))
 
@@ -1126,43 +1151,75 @@ def check_06c_the_near_identities_are_recorded() -> None:
            "; ".join(faults[:4]))
 
 
+def newest_render_evidence() -> Path | None:
+    """The most recent batch's extracted render evidence for this sample.
+
+    Newest rather than a fixed batch, because of what this assertion is for.
+    It was written against b11.2's frozen document and passed for two batches
+    after the behaviour it describes had already changed: a frozen artefact
+    proves what was produced then, never what the tree produces now (GAP-36).
+    So it reads whatever the latest batch extracted while it ran, and it goes on
+    reading the latest one as batches arrive. A batch that stops extracting the
+    file leaves this standing on the last one that did, which is visible in the
+    detail line rather than silent.
+    """
+    found = []
+    for directory in sorted((ROOT / "examples" / "output").glob("b*")):
+        if not directory.is_dir():
+            continue
+        match = re.fullmatch(r"b(\d+)_(\d+)", directory.name)
+        if match is None:
+            continue
+        path = directory / "FD-en-v2" / RENDER_EVIDENCE_NAME
+        if path.is_file():
+            found.append((int(match.group(1)), int(match.group(2)), path))
+    if not found:
+        return None
+    return max(found)[2]
+
+
 def check_06d_the_short_label_is_still_one_line() -> None:
-    """Negative 6d: tightening the criterion did not refold the label.
+    """Negative 6d: the tree still sets this label on one line, today.
 
     b11.1's whole first task was to stop this label being recomposed on to two
-    lines. A stricter criterion sends more paragraphs down the recomposing path,
-    so the label is measured again on every page it stands on.
+    lines. What that task fixed is a property of the code, not an event in
+    b11.2, so the measurement is taken on the newest run's own extracted
+    evidence rather than on a document frozen two batches ago. CLAUDE.md
+    section 4.16 is the writing half of that; this is the reading half.
     """
-    import pymupdf
-
     faults = []
-    pdf = BATCH_DIR / "FD-en-v2" / "FD-en-v2.b11_2.pdf"
-    if not pdf.is_file():
-        record("check_06d_the_short_label_is_still_one_line", False,
-               f"no produced document at {pdf.name}")
+    path = newest_render_evidence()
+    if path is None:
+        skip("check_06d_the_short_label_is_still_one_line",
+             [f"*/FD-en-v2/{RENDER_EVIDENCE_NAME}"])
         return
-    with pymupdf.open(pdf) as document:
-        for label in SINGLE_LINE_PAGES:
-            spans = []
-            for block in document[label - 1].get_text("dict")["blocks"]:
-                for line in block.get("lines", []):
-                    for span in line["spans"]:
-                        if span["text"].strip() == SINGLE_LINE_LABEL:
-                            spans.append(span)
-            if not spans:
-                faults.append(f"p{label}: the label is not on the page")
-                continue
-            for one in spans:
-                for other in spans:
-                    if one is other:
-                        continue
-                    if abs(one["bbox"][0] - other["bbox"][0]) > SAME_LEFT_EDGE:
-                        continue
-                    if abs(one["bbox"][1] - other["bbox"][1]) < LINE_APART:
-                        continue
-                    faults.append(f"p{label}: the label stands on two lines")
+    document = load(path)
+    pages = {page["page"]: page for page in document["per_page"]}
+    for label in SINGLE_LINE_PAGES:
+        page = pages.get(label)
+        if page is None:
+            faults.append(f"p{label}: absent from {path.parent.parent.name}")
+            continue
+        spans = [
+            span
+            for line in page["lines"]
+            for span in line["spans"]
+            if span["text"].strip() == SINGLE_LINE_LABEL
+        ]
+        if not spans:
+            faults.append(f"p{label}: the label is not on the page")
+            continue
+        for one in spans:
+            for other in spans:
+                if one is other:
+                    continue
+                if abs(one["bbox"][0] - other["bbox"][0]) > SAME_LEFT_EDGE:
+                    continue
+                if abs(one["bbox"][1] - other["bbox"][1]) < LINE_APART:
+                    continue
+                faults.append(f"p{label}: the label stands on two lines")
     record("check_06d_the_short_label_is_still_one_line", not faults,
-           "; ".join(faults[:4]))
+           "; ".join(faults[:4]) or f"read {path.parent.parent.name}")
 
 
 # --- 07 cost and scope --------------------------------------------------------

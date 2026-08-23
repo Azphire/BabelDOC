@@ -1,0 +1,143 @@
+{
+ "set": "fast",
+ "exit_code": 0,
+ "started_at": "2026-08-23T19:28:12.714275+01:00",
+ "finished_at": "2026-08-23T19:40:24.741085+01:00",
+ "elapsed_seconds": 732.026,
+ "gates_run": 26,
+ "gates_declared": 26,
+ "missing": [],
+ "failing": [],
+ "gates": [
+  {
+   "gate": "spec_check_b3_3.py",
+   "exit_code": 0,
+   "seconds": 407.045
+  },
+  {
+   "gate": "spec_check_b7_3.py",
+   "exit_code": 0,
+   "seconds": 4.937
+  },
+  {
+   "gate": "spec_check_b8_3.py",
+   "exit_code": 0,
+   "seconds": 5.161
+  },
+  {
+   "gate": "spec_check_b8_4.py",
+   "exit_code": 0,
+   "seconds": 106.394
+  },
+  {
+   "gate": "spec_check_b9_1.py",
+   "exit_code": 0,
+   "seconds": 18.87
+  },
+  {
+   "gate": "spec_check_b9_2.py",
+   "exit_code": 0,
+   "seconds": 17.233
+  },
+  {
+   "gate": "spec_check_b11_4.py",
+   "exit_code": 0,
+   "seconds": 5.44
+  },
+  {
+   "gate": "spec_check_b11_5.py",
+   "exit_code": 0,
+   "seconds": 3.024
+  },
+  {
+   "gate": "spec_check_e0.py",
+   "exit_code": 0,
+   "seconds": 4.694
+  },
+  {
+   "gate": "spec_check_e1.py",
+   "exit_code": 0,
+   "seconds": 4.951
+  },
+  {
+   "gate": "spec_check_e2.py",
+   "exit_code": 0,
+   "seconds": 12.766
+  },
+  {
+   "gate": "spec_check_b9_2r.py",
+   "exit_code": 0,
+   "seconds": 41.276
+  },
+  {
+   "gate": "spec_check_b9_3.py",
+   "exit_code": 0,
+   "seconds": 5.774
+  },
+  {
+   "gate": "spec_check_b9_4.py",
+   "exit_code": 0,
+   "seconds": 6.112
+  },
+  {
+   "gate": "spec_check_b9_5.py",
+   "exit_code": 0,
+   "seconds": 13.121
+  },
+  {
+   "gate": "spec_check_b9_6.py",
+   "exit_code": 0,
+   "seconds": 3.404
+  },
+  {
+   "gate": "spec_check_b9_7.py",
+   "exit_code": 0,
+   "seconds": 5.556
+  },
+  {
+   "gate": "spec_check_b10_1.py",
+   "exit_code": 0,
+   "seconds": 4.288
+  },
+  {
+   "gate": "spec_check_b10_2.py",
+   "exit_code": 0,
+   "seconds": 3.06
+  },
+  {
+   "gate": "spec_check_b10_3.py",
+   "exit_code": 0,
+   "seconds": 3.188
+  },
+  {
+   "gate": "spec_check_b10_4.py",
+   "exit_code": 0,
+   "seconds": 3.375
+  },
+  {
+   "gate": "spec_check_b10_5.py",
+   "exit_code": 0,
+   "seconds": 3.225
+  },
+  {
+   "gate": "spec_check_f3.py",
+   "exit_code": 0,
+   "seconds": 1.552
+  },
+  {
+   "gate": "spec_check_b11_1.py",
+   "exit_code": 0,
+   "seconds": 2.955
+  },
+  {
+   "gate": "spec_check_b11_2.py",
+   "exit_code": 0,
+   "seconds": 15.074
+  },
+  {
+   "gate": "spec_check_b11_3.py",
+   "exit_code": 0,
+   "seconds": 1.425
+  }
+ ]
+}

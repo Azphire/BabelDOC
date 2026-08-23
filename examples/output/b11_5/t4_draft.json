@@ -1,0 +1,100 @@
+{
+ "task": "b11.5 T4",
+ "sample": "FD-en-v2",
+ "target_lang": "zh",
+ "prompt": "prompts/name_transliterate.md",
+ "prompt_sha256": "f655ad9129a00cbc2a8572d071c230f9e09400653fd47f75a3baef5e9990b659",
+ "model": "gpt-4o",
+ "how_to_rule": "Write the target form you want into verdict for each row -- one of the alternatives, or anything else. Write the source string itself to keep the entry in its source form. Leave verdict empty on no row: an empty verdict is an unruled row and the batch will not proceed past it. verdict_note is yours and is not read by anything.",
+ "what_a_ruling_does": "Each ruled row becomes a terms entry in reviews/FD-en-v2.decisions.json, which outranks the naming policy wherever the string appears in the document.",
+ "requests": 3,
+ "api_calls": 3,
+ "cache_hits": 0,
+ "rows": [
+  {
+   "source": "Huong (Vanessa) Le",
+   "page": 5,
+   "blind_spot": "parenthetical nickname between the given and family name",
+   "expected_person": true,
+   "candidate": "黎香（凡妮莎）",
+   "is_person_says_model": true,
+   "harvest_said_person_shaped": false,
+   "verdict": "香（凡妮莎）·黎",
+   "verdict_note": "Source order kept, interpunct before the family name, matching how the rest of this masthead column is set.",
+   "alternatives": [
+    {
+     "form": "黎香（凡妮莎）",
+     "origin": "model",
+     "note": "Family name first, which is how Chinese writes a Vietnamese name; the nickname keeps its brackets and is rendered."
+    },
+    {
+     "form": "香（凡妮莎）·黎",
+     "origin": "constructed",
+     "note": "Source order kept, interpunct before the family name, which is how the rest of this masthead is set (安德鲁·斯坦利)."
+    },
+    {
+     "form": "Huong (Vanessa) Le",
+     "origin": "constructed",
+     "note": "Keep the source form, as the harvest pass already does today."
+    }
+   ],
+   "ruled": true
+  },
+  {
+   "source": "S M Ali Abbas",
+   "page": 5,
+   "blind_spot": "run of single letter initials with no stops",
+   "expected_person": true,
+   "candidate": "S M 阿里·阿巴斯",
+   "is_person_says_model": true,
+   "harvest_said_person_shaped": false,
+   "verdict": "S·M·阿里·阿巴斯",
+   "verdict_note": "The full form: initials kept as letters, joined by the same interpunct the rest of the name uses. Consistent with the library entry Ali Abbas -> 阿里·阿巴斯 and keeps what the page prints.",
+   "alternatives": [
+    {
+     "form": "S M 阿里·阿巴斯",
+     "origin": "model",
+     "note": "Initials left in Latin, the rest rendered. Mixes scripts inside one name."
+    },
+    {
+     "form": "S·M·阿里·阿巴斯",
+     "origin": "constructed",
+     "note": "The full form the plan names: initials kept as letters but joined by the same interpunct the rest of the name uses."
+    },
+    {
+     "form": "阿里·阿巴斯",
+     "origin": "constructed",
+     "note": "Initials dropped. Agrees with the `Ali Abbas` entry already in the library, at the cost of losing what the page prints."
+    },
+    {
+     "form": "S M Ali Abbas",
+     "origin": "constructed",
+     "note": "Keep the source form."
+    }
+   ],
+   "ruled": true
+  },
+  {
+   "source": "2communiqué",
+   "page": 5,
+   "blind_spot": "leading digit",
+   "expected_person": false,
+   "candidate": "",
+   "is_person_says_model": false,
+   "harvest_said_person_shaped": false,
+   "verdict": "二号公报",
+   "verdict_note": "The plan's default was to keep the source form; the ruling overrides it. Both halves rendered: 二号 for the numeral, 公报 for communiqué.",
+   "alternatives": [
+    {
+     "form": "2communiqué",
+     "origin": "default",
+     "note": "Keep the source form. A design studio's name; the model agrees it is not a personal name."
+    }
+   ],
+   "ruled": true
+  }
+ ],
+ "alternatives_note": "Only the form marked origin=model came from the prompt. The others are constructed here so the choice is a choice; none of them cost a call.",
+ "ruled_at_batch": "b11.5",
+ "ruled_by": "user"
+}

@@ -1,0 +1,184 @@
+{
+ "predicate_config": "configs/initial_adjacent.json",
+ "predicate_sha256": "ec590f8b27ea6921462f38ec32958ce9c7b46852ca9239df10e907bd25114f5f",
+ "method": "The real StylesAndFormulas.process_page_formulas is driven twice over the same stage-05 checkpoint, once with the exemption as declared and once with it suppressed, and the two documents are compared. Nothing reimplements the rule.",
+ "baseline": "examples/output/b10_5/<sample>/on/work/<sample>/checkpoint.05_paragraph_finder.xml",
+ "totals": {
+  "samples": 6,
+  "paragraphs_with_span": 6,
+  "reclassified": 2,
+  "reverse": 0,
+  "carrying_pdf_form_or_curve": 0,
+  "corner_mark_among_reclassified": 2,
+  "pages_with_graphics_moved": 0
+ },
+ "reclassified": [
+  {
+   "is_corner_mark": true,
+   "page": 1,
+   "paragraph_index": 9,
+   "text": "T ",
+   "characters": 2,
+   "font_ids": [
+    "T1_6"
+   ],
+   "font_size": 6.65,
+   "pdf_curve": 0,
+   "pdf_form": 0,
+   "sample": "Courier-en",
+   "font_names": [
+    "UKDOBJ+MyriadPro-Regular"
+   ]
+  },
+  {
+   "is_corner_mark": true,
+   "page": 8,
+   "paragraph_index": 9,
+   "text": "hen ",
+   "characters": 4,
+   "font_ids": [
+    "T1_6"
+   ],
+   "font_size": 9.25,
+   "pdf_curve": 0,
+   "pdf_form": 0,
+   "sample": "FD-en-v2",
+   "font_names": [
+    "DXJTZM+LyonText-Regular"
+   ]
+  }
+ ],
+ "reverse": [],
+ "graphics_moved": [],
+ "per_sample": [
+  {
+   "sample": "AramcoWorld-en-v2",
+   "pages": 9,
+   "pages_unchanged": 9,
+   "paragraphs_with_span": 0,
+   "spans": []
+  },
+  {
+   "sample": "CERNCourier-en",
+   "pages": 4,
+   "pages_unchanged": 4,
+   "paragraphs_with_span": 1,
+   "spans": [
+    {
+     "sample": "CERNCourier-en",
+     "page": 1,
+     "paragraph": "p1#2",
+     "opening_size": 78.2,
+     "median_size": 7.65,
+     "ratio": 10.222,
+     "run_length": 11,
+     "span": [
+      11,
+      19
+     ],
+     "opening_text": "CERNCOURIER July/August 2026 cerncourier.com Reporting on in"
+    }
+   ]
+  },
+  {
+   "sample": "Courier-en",
+   "pages": 8,
+   "pages_unchanged": 7,
+   "paragraphs_with_span": 4,
+   "spans": [
+    {
+     "sample": "Courier-en",
+     "page": 1,
+     "paragraph": "p1#9",
+     "opening_size": 55.312,
+     "median_size": 6.65,
+     "ratio": 8.318,
+     "run_length": 7,
+     "span": [
+      7,
+      15
+     ],
+     "opening_text": "CourierT H E UNESCO"
+    },
+    {
+     "sample": "Courier-en",
+     "page": 4,
+     "paragraph": "p4#3",
+     "opening_size": 61.348,
+     "median_size": 9.2,
+     "ratio": 6.668,
+     "run_length": 2,
+     "span": [
+      2,
+      10
+     ],
+     "opening_text": "L ong before satellites orbited Earth, Polynesian navigators"
+    },
+    {
+     "sample": "Courier-en",
+     "page": 5,
+     "paragraph": "p5#5",
+     "opening_size": 61.348,
+     "median_size": 9.2,
+     "ratio": 6.668,
+     "run_length": 2,
+     "span": [
+      2,
+      10
+     ],
+     "opening_text": "O n the Purus River, as the light fades and the heat lingers"
+    },
+    {
+     "sample": "Courier-en",
+     "page": 7,
+     "paragraph": "p7#8",
+     "opening_size": 61.348,
+     "median_size": 9.2,
+     "ratio": 6.668,
+     "run_length": 2,
+     "span": [
+      2,
+      10
+     ],
+     "opening_text": "T here is a huge diversity of Indigenous Peoples, cultures, "
+    }
+   ]
+  },
+  {
+   "sample": "Courier-zh",
+   "pages": 8,
+   "pages_unchanged": 8,
+   "paragraphs_with_span": 0,
+   "spans": []
+  },
+  {
+   "sample": "FD-en-v2",
+   "pages": 9,
+   "pages_unchanged": 8,
+   "paragraphs_with_span": 1,
+   "spans": [
+    {
+     "sample": "FD-en-v2",
+     "page": 8,
+     "paragraph": "p8#9",
+     "opening_size": 39.359,
+     "median_size": 9.25,
+     "ratio": 4.255,
+     "run_length": 1,
+     "span": [
+      1,
+      9
+     ],
+     "opening_text": "When it comes to international trade, countries have always "
+    }
+   ]
+  },
+  {
+   "sample": "Vogue-en",
+   "pages": 3,
+   "pages_unchanged": 3,
+   "paragraphs_with_span": 0,
+   "spans": []
+  }
+ ]
+}
