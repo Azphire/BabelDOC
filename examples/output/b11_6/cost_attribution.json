@@ -1,0 +1,742 @@
+{
+ "batch": "b11_6",
+ "method": "A request present in this run and absent from the prior run of the same sample is a request that run did not send. It is claimed for this batch where its source is a chain's merged source, or where the prior run sent a request whose source contained both this request's source and a member the chain pass has since claimed. Otherwise it is recorded with the batches standing between the two runs, because a difference against a run several batches old is not this batch's to claim. FD-en-v2's prior run is the batch immediately before, so it is the sample on which every new request has to be this batch's.",
+ "sharp_sample": "FD-en-v2",
+ "sharp_sample_is_wholly_attributed": true,
+ "every_ledger_identity_holds": true,
+ "every_new_chain_sent_a_request": true,
+ "note": "requests counts every call the engine made; tracked_requests counts the ones the translation tracking file records. The difference is the glossary extraction and the name harvest, which call the engine on their own paths. So requests_new_to_this_run is not expected to equal api_calls, and the identity asserted is the ledger's -- api_calls = requests - cache_hits -- together with every new tracked request carrying a named cause.",
+ "totals": {
+  "requests": 306,
+  "cache_hits": 231,
+  "api_calls": 75,
+  "requests_new_to_this_run": 70,
+  "merge_rows": 18,
+  "claim_rows": 22,
+  "carried_over_rows": 30,
+  "chains_built": 22,
+  "chains_in_page": 17
+ },
+ "unattributed": [],
+ "samples": {
+  "Courier-en": {
+   "sample": "Courier-en",
+   "compared_against": "examples/output/b11_3/Courier-en/work/Courier-en/translate_tracking.json",
+   "prior_batch": "b11.3",
+   "batches_between": [
+    "b11.4",
+    "b11.5"
+   ],
+   "chains": {
+    "built": 7,
+    "in_page": 5,
+    "merged_source_new_to_this_run": 5,
+    "escalated": 1,
+    "pages": [
+     [
+      2,
+      3
+     ],
+     [
+      5
+     ],
+     [
+      6
+     ],
+     [
+      6
+     ],
+     [
+      7,
+      8
+     ],
+     [
+      8
+     ],
+     [
+      8
+     ]
+    ]
+   },
+   "ledger": {
+    "requests": 70,
+    "cache_hits": 53,
+    "api_calls": 17
+   },
+   "ledger_identity_holds": true,
+   "tracked_requests": 48,
+   "untracked_requests": 22,
+   "requests_new_to_this_run": 14,
+   "by_cause": {
+    "T2 a column chain was sent to the engine as one request": 4,
+    "T2 a page batch was recomposed around a member the chain pass claimed": 7,
+    "carried over: the prior run of this sample is b11.3, with b11.4, b11.5 between": 3
+   },
+   "merge_rows": 4,
+   "claim_rows": 7,
+   "chains_with_a_new_request": 4,
+   "chains_expected_to_send_one": 4,
+   "every_new_chain_sent_a_request": true,
+   "carried_over_rows": 3,
+   "unattributed": [],
+   "rows": [
+    {
+     "section": "cross_page",
+     "cause": "T2 a column chain was sent to the engine as one request",
+     "chars": 4825,
+     "paragraphs": 2,
+     "source_excerpt": "Dawn gives off an odour of ferrous humidity mingled with brazier smoke. The Paumari, an Indigenous people of about two thousand souls living"
+    },
+    {
+     "section": "cross_page",
+     "cause": "T2 a column chain was sent to the engine as one request",
+     "chars": 5008,
+     "paragraphs": 2,
+     "source_excerpt": "There are even quantum sensors that can read your thoughts. A special brain scanner that can be worn like a cycle helmet is so sensitive it "
+    },
+    {
+     "section": "cross_page",
+     "cause": "T2 a column chain was sent to the engine as one request",
+     "chars": 4663,
+     "paragraphs": 2,
+     "source_excerpt": "The reinforced international framework of rules and agreements, built over the past 30 years, has brought about some positive change. Today,"
+    },
+    {
+     "section": "cross_page",
+     "cause": "T2 a column chain was sent to the engine as one request",
+     "chars": 4938,
+     "paragraphs": 2,
+     "source_excerpt": "For most of human history, interna- tion al law treated such biological resources as the “common heritage of humankind”, meaning that anyone"
+    },
+    {
+     "section": "cross_column",
+     "cause": "T2 a page batch was recomposed around a member the chain pass claimed",
+     "chars": 4776,
+     "paragraphs": 2,
+     "source_excerpt": "Among other roles, the LINKS programme currently hosts the Indigenous and"
+    },
+    {
+     "section": "cross_column",
+     "cause": "T2 a page batch was recomposed around a member the chain pass claimed",
+     "chars": 5147,
+     "paragraphs": 2,
+     "source_excerpt": "On the Purus River, as the light fades and the heat lingers over the water, a pirarucu fish comes to the surface to gulp some air. This soun"
+    },
+    {
+     "section": "page",
+     "cause": "carried over: the prior run of this sample is b11.3, with b11.4, b11.5 between",
+     "chars": 4557,
+     "paragraphs": 6,
+     "source_excerpt": "Beyond providing empirical data, Indigenous knowledge challenges the very foundations of the scientific approach, whether in terms of the pl"
+    },
+    {
+     "section": "page",
+     "cause": "carried over: the prior run of this sample is b11.3, with b11.4, b11.5 between",
+     "chars": 6065,
+     "paragraphs": 4,
+     "source_excerpt": "The accumulated skills and wisdom are not solely passed down mechanically from one generation to the next, but also codified to form complex"
+    },
+    {
+     "section": "page",
+     "cause": "T2 a page batch was recomposed around a member the chain pass claimed",
+     "chars": 5826,
+     "paragraphs": 6,
+     "source_excerpt": "| The UNESCO Courier • January-March 2026"
+    },
+    {
+     "section": "page",
+     "cause": "carried over: the prior run of this sample is b11.3, with b11.4, b11.5 between",
+     "chars": 4981,
+     "paragraphs": 1,
+     "source_excerpt": "Throughout the year, scientists, educators, and citizens worldwide were invited to explore and celebrate quantum innovations. Global events "
+    },
+    {
+     "section": "page",
+     "cause": "T2 a page batch was recomposed around a member the chain pass claimed",
+     "chars": 5630,
+     "paragraphs": 5,
+     "source_excerpt": "Daniel Robinson"
+    },
+    {
+     "section": "page",
+     "cause": "T2 a page batch was recomposed around a member the chain pass claimed",
+     "chars": 6251,
+     "paragraphs": 3,
+     "source_excerpt": "When biopiracy takes root | 13"
+    },
+    {
+     "section": "page",
+     "cause": "T2 a page batch was recomposed around a member the chain pass claimed",
+     "chars": 6507,
+     "paragraphs": 5,
+     "source_excerpt": "The situation changed dramatically in the 1990s with a few developments. First, intellectual property rights were harmonized under the World"
+    },
+    {
+     "section": "page",
+     "cause": "T2 a page batch was recomposed around a member the chain pass claimed",
+     "chars": 4828,
+     "paragraphs": 3,
+     "source_excerpt": "For over a thousand years, Amazigh women have used argan oil, a product that is now commercialized globally"
+    }
+   ]
+  },
+  "AramcoWorld-en-v2": {
+   "sample": "AramcoWorld-en-v2",
+   "compared_against": "examples/output/b11_3/AramcoWorld-en-v2/work/AramcoWorld-en-v2/translate_tracking.json",
+   "prior_batch": "b11.3",
+   "batches_between": [
+    "b11.4",
+    "b11.5"
+   ],
+   "chains": {
+    "built": 3,
+    "in_page": 2,
+    "merged_source_new_to_this_run": 2,
+    "escalated": 0,
+    "pages": [
+     [
+      5
+     ],
+     [
+      6
+     ],
+     [
+      6,
+      7
+     ]
+    ]
+   },
+   "ledger": {
+    "requests": 82,
+    "cache_hits": 77,
+    "api_calls": 5
+   },
+   "ledger_identity_holds": true,
+   "tracked_requests": 61,
+   "untracked_requests": 21,
+   "requests_new_to_this_run": 4,
+   "by_cause": {
+    "T2 a column chain was sent to the engine as one request": 2,
+    "carried over: the prior run of this sample is b11.3, with b11.4, b11.5 between": 2
+   },
+   "merge_rows": 2,
+   "claim_rows": 0,
+   "chains_with_a_new_request": 2,
+   "chains_expected_to_send_one": 2,
+   "every_new_chain_sent_a_request": true,
+   "carried_over_rows": 2,
+   "unattributed": [],
+   "rows": [
+    {
+     "section": "cross_page",
+     "cause": "T2 a column chain was sent to the engine as one request",
+     "chars": 5105,
+     "paragraphs": 2,
+     "source_excerpt": "Since opening fully in 2018, Saudi Arabia’s Haramain high-speed railway has achieved what the Ottoman-era Hijaz Railway never did: a direct "
+    },
+    {
+     "section": "cross_page",
+     "cause": "T2 a column chain was sent to the engine as one request",
+     "chars": 5087,
+     "paragraphs": 2,
+     "source_excerpt": "The railway was expected to serve three functions. Politically, Abdul Hamid wanted to connect the pe- riphery of Ottoman territory back to t"
+    },
+    {
+     "section": "page",
+     "cause": "carried over: the prior run of this sample is b11.3, with b11.4, b11.5 between",
+     "chars": 4471,
+     "paragraphs": 6,
+     "source_excerpt": "WRITTEN AND PHOTOGRAPHED BY LEON McCARRON"
+    },
+    {
+     "section": "page",
+     "cause": "carried over: the prior run of this sample is b11.3, with b11.4, b11.5 between",
+     "chars": 5464,
+     "paragraphs": 6,
+     "source_excerpt": "30 ARAMCOWORLD"
+    }
+   ]
+  },
+  "FD-en-v2": {
+   "sample": "FD-en-v2",
+   "compared_against": "examples/output/b11_5/FD-en-v2/work/FD-en-v2/translate_tracking.json",
+   "prior_batch": "b11.5",
+   "batches_between": [],
+   "chains": {
+    "built": 3,
+    "in_page": 3,
+    "merged_source_new_to_this_run": 3,
+    "escalated": 0,
+    "pages": [
+     [
+      6
+     ],
+     [
+      6
+     ],
+     [
+      9
+     ]
+    ]
+   },
+   "ledger": {
+    "requests": 87,
+    "cache_hits": 83,
+    "api_calls": 4
+   },
+   "ledger_identity_holds": true,
+   "tracked_requests": 64,
+   "untracked_requests": 23,
+   "requests_new_to_this_run": 4,
+   "by_cause": {
+    "T2 a column chain was sent to the engine as one request": 3,
+    "T2 a page batch was recomposed around a member the chain pass claimed": 1
+   },
+   "merge_rows": 3,
+   "claim_rows": 1,
+   "chains_with_a_new_request": 3,
+   "chains_expected_to_send_one": 3,
+   "every_new_chain_sent_a_request": true,
+   "carried_over_rows": 0,
+   "unattributed": [],
+   "rows": [
+    {
+     "section": "cross_page",
+     "cause": "T2 a column chain was sent to the engine as one request",
+     "chars": 4689,
+     "paragraphs": 2,
+     "source_excerpt": "As well as war-hit countries in the Per- sian Gulf, Georgieva said that sub-Saharan Africa and small island states were among the most expos"
+    },
+    {
+     "section": "cross_page",
+     "cause": "T2 a column chain was sent to the engine as one request",
+     "chars": 4689,
+     "paragraphs": 2,
+     "source_excerpt": "Speaking ahead of the IMF’s spring meetings in April, Georgieva said the con- flict had cut global oil and gas flows, driv- ing up energy pr"
+    },
+    {
+     "section": "cross_page",
+     "cause": "T2 a column chain was sent to the engine as one request",
+     "chars": 4468,
+     "paragraphs": 2,
+     "source_excerpt": "Switzerland replaces its banknotes every 15–20 years. The"
+    },
+    {
+     "section": "page",
+     "cause": "T2 a page batch was recomposed around a member the chain pass claimed",
+     "chars": 5533,
+     "paragraphs": 3,
+     "source_excerpt": "A glacier buttercup appears on the front of the draft 1,000 franc note."
+    }
+   ]
+  },
+  "Courier-zh": {
+   "sample": "Courier-zh",
+   "compared_against": "examples/output/b10_5/Courier-zh/on/work/Courier-zh/translate_tracking.json",
+   "prior_batch": "b10.5",
+   "batches_between": [
+    "b11.1",
+    "b11.2",
+    "b11.3",
+    "b11.4",
+    "b11.5"
+   ],
+   "chains": {
+    "built": 9,
+    "in_page": 7,
+    "merged_source_new_to_this_run": 7,
+    "escalated": 0,
+    "pages": [
+     [
+      4
+     ],
+     [
+      5
+     ],
+     [
+      5
+     ],
+     [
+      5,
+      6
+     ],
+     [
+      6
+     ],
+     [
+      7
+     ],
+     [
+      7,
+      8
+     ],
+     [
+      8
+     ],
+     [
+      8
+     ]
+    ]
+   },
+   "ledger": {
+    "requests": 67,
+    "cache_hits": 18,
+    "api_calls": 49
+   },
+   "ledger_identity_holds": true,
+   "tracked_requests": 48,
+   "untracked_requests": 19,
+   "requests_new_to_this_run": 48,
+   "by_cause": {
+    "T2 a column chain was sent to the engine as one request": 9,
+    "carried over: the prior run of this sample is b10.5, with b11.1, b11.2, b11.3, b11.4, b11.5 between": 25,
+    "T2 a page batch was recomposed around a member the chain pass claimed": 14
+   },
+   "merge_rows": 9,
+   "claim_rows": 14,
+   "chains_with_a_new_request": 7,
+   "chains_expected_to_send_one": 7,
+   "every_new_chain_sent_a_request": true,
+   "carried_over_rows": 25,
+   "unattributed": [],
+   "rows": [
+    {
+     "section": "cross_page",
+     "cause": "T2 a column chain was sent to the engine as one request",
+     "chars": 4600,
+     "paragraphs": 2,
+     "source_excerpt": "在所罗门群岛的陶马科岛,女性是陆地和海洋的守护 者。她们采摘并加工露兜树(这种小型树木广泛分布于波利 尼西亚、密克罗尼西亚等地区),编织出为航海提供动力的 船帆 —这项技艺已延续三千余年。正如岛民德尔西·贝 蒂·博西 (Delsie Betty Bosi) 所言:“男性负责建造大"
+    },
+    {
+     "section": "cross_page",
+     "cause": "T2 a column chain was sent to the engine as one request",
+     "chars": 4461,
+     "paragraphs": 2,
+     "source_excerpt": "黎 明 时 分, 空 气 里 弥 漫 着 铁 锈 般的潮湿气息,与炭火烟味交织在一 起。保马里人是一个约有两千人的土 著族群,世居在巴西西北部亚马孙州 的 广 袤 土 地 上。 他 们 对 自 己 的 定 义, 在 科 学 教 科 书 里 无 从 寻 觅:“ 我 们 是 水之民族"
+    },
+    {
+     "section": "cross_page",
+     "cause": "T2 a column chain was sent to the engine as one request",
+     "chars": 4527,
+     "paragraphs": 2,
+     "source_excerpt": "长久以来,学术研究与传统知识 各行其道,互不交融。技术人员运用 科学方法,土著社区则依赖直觉感知。 转 折 点 出 现 在 双 方 决 定“ 同 舟 共 济 ” 之时 —这一联盟由巴西最古老的原"
+    },
+    {
+     "section": "cross_page",
+     "cause": "T2 a column chain was sent to the engine as one request",
+     "chars": 4406,
+     "paragraphs": 2,
+     "source_excerpt": "在普鲁斯河上,暮光渐褪,热气仍在 水面萦绕,一条巨骨舌鱼浮出水面大 口吞吸着空气。这深沉、湿润、带着 古 老 气 息 的 声 响 唤 醒 了 这 片 土 地 几 近 断 绝 的 生 机。“ 大 自 然 在 向 我 们 求 救,”年轻渔民奇科·保马里 (Chico Paumari)"
+    },
+    {
+     "section": "cross_page",
+     "cause": "T2 a column chain was sent to the engine as one request",
+     "chars": 4584,
+     "paragraphs": 2,
+     "source_excerpt": "量子传感器在医学领域的另一项 令 人 振 奋 的 应 用 是“ 纠 缠 相 机 ”, 目 前正被用于乳腺癌组织样本成像。其 背后的科学原理听起来简直如同魔法。 这种技术依赖两种光的量子纠缠:一种"
+    },
+    {
+     "section": "cross_page",
+     "cause": "T2 a column chain was sent to the engine as one request",
+     "chars": 4699,
+     "paragraphs": 2,
+     "source_excerpt": "并非所有与遗传 资源相关的土 著知识商业化利用行为都构成生物剽 窃;部分项目实现了互利共赢。以澳大 利亚的印贾兰吉 - 迪达努 (Indjalan- dji-Dhidhanu) 部族为例,该部族与 昆士兰大学的研究人员合作,根据其 关于三齿稃 (一种多年生丛生草本植 物,传统用途"
+    },
+    {
+     "section": "cross_page",
+     "cause": "T2 a column chain was sent to the engine as one request",
+     "chars": 4395,
+     "paragraphs": 2,
+     "source_excerpt": "然 而, 生 物 探 索 也 因“ 搭 便 车 ” 受到了批评,被指责无偿利用了土著 人民和其他当地族群的知识成果。当 土著知识在科学调研、产品开发或商"
+    },
+    {
+     "section": "cross_page",
+     "cause": "T2 a column chain was sent to the engine as one request",
+     "chars": 4365,
+     "paragraphs": 2,
+     "source_excerpt": "历经 30 年构建的强化版国际规则与 协议框架已带来积极变化。如今,许 多国家要求,土著知识的潜在使用者"
+    },
+    {
+     "section": "cross_page",
+     "cause": "T2 a column chain was sent to the engine as one request",
+     "chars": 4530,
+     "paragraphs": 2,
+     "source_excerpt": "在人类历史的大部分时期,国际 法都将这类生物资源视为“人类共有 遗产”,这意味着任何人都可获取并"
+    },
+    {
+     "section": "cross_page",
+     "cause": "carried over: the prior run of this sample is b10.5, with b11.1, b11.2, b11.3, b11.4, b11.5 between",
+     "chars": 3378,
+     "paragraphs": 2,
+     "source_excerpt": "阿努利那·萨沃莱宁(Anuliina Savolainen)"
+    },
+    {
+     "section": "cross_page",
+     "cause": "carried over: the prior run of this sample is b10.5, with b11.1, b11.2, b11.3, b11.4, b11.5 between",
+     "chars": 3213,
+     "paragraphs": 2,
+     "source_excerpt": "在量子领域 里,一切事 物时时刻刻 都在不断地 与其他事物 发生纠缠与 解纠缠,从 未停息"
+    },
+    {
+     "section": "cross_column",
+     "cause": "carried over: the prior run of this sample is b10.5, with b11.1, b11.2, b11.3, b11.4, b11.5 between",
+     "chars": 3207,
+     "paragraphs": 2,
+     "source_excerpt": "阿涅丝·巴尔东(Agnès Bardon)"
+    },
+    {
+     "section": "cross_column",
+     "cause": "carried over: the prior run of this sample is b10.5, with b11.1, b11.2, b11.3, b11.4, b11.5 between",
+     "chars": 2096,
+     "paragraphs": 1,
+     "source_excerpt": "阿涅丝·巴尔东(Agnès Bardon)"
+    },
+    {
+     "section": "cross_column",
+     "cause": "carried over: the prior run of this sample is b10.5, with b11.1, b11.2, b11.3, b11.4, b11.5 between",
+     "chars": 4584,
+     "paragraphs": 2,
+     "source_excerpt": "近年来,传统土著知识获得了认可,这尤其得益于《联 合国土著人民权利宣言》等国际文书的推动,但文化与商业 层面的侵占行为仍对其构成威胁。"
+    },
+    {
+     "section": "cross_column",
+     "cause": "carried over: the prior run of this sample is b10.5, with b11.1, b11.2, b11.3, b11.4, b11.5 between",
+     "chars": 4435,
+     "paragraphs": 2,
+     "source_excerpt": "该计划旨在促进土著和地方"
+    },
+    {
+     "section": "cross_column",
+     "cause": "carried over: the prior run of this sample is b10.5, with b11.1, b11.2, b11.3, b11.4, b11.5 between",
+     "chars": 4597,
+     "paragraphs": 2,
+     "source_excerpt": "由摩洛哥阿甘树 (学名:Argania"
+    },
+    {
+     "section": "cross_column",
+     "cause": "T2 a page batch was recomposed around a member the chain pass claimed",
+     "chars": 4577,
+     "paragraphs": 2,
+     "source_excerpt": "过去 30 年来,国际法规一直致力于限制产业界对土著知识的掠夺性利用,以防 止这类行为以损害当地民众利益为代价。然而,尽管已采取许多举措,不当侵占 土著知识的案例仍屡见不鲜。"
+    },
+    {
+     "section": "cross_column",
+     "cause": "T2 a page batch was recomposed around a member the chain pass claimed",
+     "chars": 4505,
+     "paragraphs": 2,
+     "source_excerpt": "一 千 多 年 来, 阿马齐格妇女 一直沿用阿甘 油,如今这一 产品已在全球 实现商业化"
+    },
+    {
+     "section": "page",
+     "cause": "carried over: the prior run of this sample is b10.5, with b11.1, b11.2, b11.3, b11.4, b11.5 between",
+     "chars": 3299,
+     "paragraphs": 7,
+     "source_excerpt": "社论"
+    },
+    {
+     "section": "page",
+     "cause": "carried over: the prior run of this sample is b10.5, with b11.1, b11.2, b11.3, b11.4, b11.5 between",
+     "chars": 3875,
+     "paragraphs": 1,
+     "source_excerpt": "广角"
+    },
+    {
+     "section": "page",
+     "cause": "carried over: the prior run of this sample is b10.5, with b11.1, b11.2, b11.3, b11.4, b11.5 between",
+     "chars": 4244,
+     "paragraphs": 1,
+     "source_excerpt": "土著知识"
+    },
+    {
+     "section": "page",
+     "cause": "carried over: the prior run of this sample is b10.5, with b11.1, b11.2, b11.3, b11.4, b11.5 between",
+     "chars": 3808,
+     "paragraphs": 1,
+     "source_excerpt": "观点"
+    },
+    {
+     "section": "page",
+     "cause": "carried over: the prior run of this sample is b10.5, with b11.1, b11.2, b11.3, b11.4, b11.5 between",
+     "chars": 3893,
+     "paragraphs": 1,
+     "source_excerpt": "广角"
+    },
+    {
+     "section": "page",
+     "cause": "carried over: the prior run of this sample is b10.5, with b11.1, b11.2, b11.3, b11.4, b11.5 between",
+     "chars": 3420,
+     "paragraphs": 2,
+     "source_excerpt": "长久以来,本土知识一直被科学界忽视,有时甚至遭到抵制。 而如今,它正重新引发人们的关注,这一转变可谓恰逢其时:全 球机械化进程带来的种种后果,以及与气候变化和健康问题相 关的危机,正促使我们重新审视那些长期以来被边缘化的知识 体系、实践经验和专业技能。"
+    },
+    {
+     "section": "page",
+     "cause": "carried over: the prior run of this sample is b10.5, with b11.1, b11.2, b11.3, b11.4, b11.5 between",
+     "chars": 3733,
+     "paragraphs": 2,
+     "source_excerpt": "联合国教科文组织在这一领域长期发挥着先锋作用。通过 “地方和土著知识系统”(LINKS) 计划,本组织积极推动土著 知识持有者与科学家之间的交流,特别是在生态保护、水资源 管理和自然灾害防治等领域。生物圈保护区正是这一理念的具 体范例—这里汇聚科研人员与当地社区,他们共同探索因地"
+    },
+    {
+     "section": "page",
+     "cause": "carried over: the prior run of this sample is b10.5, with b11.1, b11.2, b11.3, b11.4, b11.5 between",
+     "chars": 3659,
+     "paragraphs": 4,
+     "source_excerpt": "然而,这种认可必须伴随保障措施—确保社区自由且充 分知情同意、实现利益公平分配、防范滥用性掠夺。我们的目 标绝非将本土知识简单纳入主流科学体系,而是推动惠及各方 的合作。"
+    },
+    {
+     "section": "page",
+     "cause": "carried over: the prior run of this sample is b10.5, with b11.1, b11.2, b11.3, b11.4, b11.5 between",
+     "chars": 2205,
+     "paragraphs": 1,
+     "source_excerpt": "拉吉波瓦·谢雷尔·杰克逊(Lagipoiva Cherelle Jackson)"
+    },
+    {
+     "section": "page",
+     "cause": "carried over: the prior run of this sample is b10.5, with b11.1, b11.2, b11.3, b11.4, b11.5 between",
+     "chars": 4028,
+     "paragraphs": 6,
+     "source_excerpt": "巴西:水之民族的启示 ......................... 7"
+    },
+    {
+     "section": "page",
+     "cause": "carried over: the prior run of this sample is b10.5, with b11.1, b11.2, b11.3, b11.4, b11.5 between",
+     "chars": 2187,
+     "paragraphs": 1,
+     "source_excerpt": "马塞洛·席尔瓦·德索萨(Marcelo Silva de Sousa)"
+    },
+    {
+     "section": "page",
+     "cause": "carried over: the prior run of this sample is b10.5, with b11.1, b11.2, b11.3, b11.4, b11.5 between",
+     "chars": 2242,
+     "paragraphs": 1,
+     "source_excerpt": "丹尼尔·鲁滨逊(Daniel Robinson)和戴维·杰斐逊(David Jefferson)"
+    },
+    {
+     "section": "page",
+     "cause": "carried over: the prior run of this sample is b10.5, with b11.1, b11.2, b11.3, b11.4, b11.5 between",
+     "chars": 3862,
+     "paragraphs": 6,
+     "source_excerpt": "卡拉哈里的神秘苍穹 .......................... 15"
+    },
+    {
+     "section": "page",
+     "cause": "carried over: the prior run of this sample is b10.5, with b11.1, b11.2, b11.3, b11.4, b11.5 between",
+     "chars": 3881,
+     "paragraphs": 6,
+     "source_excerpt": "卡特琳娜·马尔可洛娃(Katerina Markelova)担任采访"
+    },
+    {
+     "section": "page",
+     "cause": "carried over: the prior run of this sample is b10.5, with b11.1, b11.2, b11.3, b11.4, b11.5 between",
+     "chars": 3417,
+     "paragraphs": 3,
+     "source_excerpt": "诚实叙事领域最后的集体探索疆界” .... 39"
+    },
+    {
+     "section": "page",
+     "cause": "T2 a page batch was recomposed around a member the chain pass claimed",
+     "chars": 5281,
+     "paragraphs": 5,
+     "source_excerpt": "| 联合国教科文组织《信使》·2026年1—3月"
+    },
+    {
+     "section": "page",
+     "cause": "carried over: the prior run of this sample is b10.5, with b11.1, b11.2, b11.3, b11.4, b11.5 between",
+     "chars": 4355,
+     "paragraphs": 1,
+     "source_excerpt": "3 时代变迁背景下的土著知识 |"
+    },
+    {
+     "section": "page",
+     "cause": "T2 a page batch was recomposed around a member the chain pass claimed",
+     "chars": 5159,
+     "paragraphs": 3,
+     "source_excerpt": "| 联合国教科文组织《信使》·2026年1—3月"
+    },
+    {
+     "section": "page",
+     "cause": "T2 a page batch was recomposed around a member the chain pass claimed",
+     "chars": 5286,
+     "paragraphs": 5,
+     "source_excerpt": "这些实践代表着完整的知识体系。 它们将认知进行编码、加以保存并代代 相传。如今,世界各地的土著社区正 在捍卫保护此类文化遗产的权利,同 时积极阐明传统知识体系作为平行科"
+    },
+    {
+     "section": "page",
+     "cause": "T2 a page batch was recomposed around a member the chain pass claimed",
+     "chars": 5028,
+     "paragraphs": 4,
+     "source_excerpt": "土著人民积累 的技艺与智慧 被系统化地编 纂成复杂的知 识体系"
+    },
+    {
+     "section": "page",
+     "cause": "T2 a page batch was recomposed around a member the chain pass claimed",
+     "chars": 4966,
+     "paragraphs": 5,
+     "source_excerpt": "巴西:水之民族的 启示"
+    },
+    {
+     "section": "page",
+     "cause": "carried over: the prior run of this sample is b10.5, with b11.1, b11.2, b11.3, b11.4, b11.5 between",
+     "chars": 2186,
+     "paragraphs": 1,
+     "source_excerpt": "马塞洛·席尔瓦·德索萨 (Marcelo Silva de Sousa)"
+    },
+    {
+     "section": "page",
+     "cause": "T2 a page batch was recomposed around a member the chain pass claimed",
+     "chars": 5085,
+     "paragraphs": 4,
+     "source_excerpt": "| 联合国教科文组织《信使》·2026年1—3月"
+    },
+    {
+     "section": "page",
+     "cause": "T2 a page batch was recomposed around a member the chain pass claimed",
+     "chars": 5090,
+     "paragraphs": 4,
+     "source_excerpt": "恰恰相反,即便不能称其为“无处不 在”,量子纠缠也是整个宇宙中最为普 遍的现象。在量子领域里,一切事物 时时刻刻都在不断地与其他事物发生 纠缠与解纠缠,从未停息。新的量子 革命涉及直接利用量子叠加与纠缠的"
+    },
+    {
+     "section": "page",
+     "cause": "T2 a page batch was recomposed around a member the chain pass claimed",
+     "chars": 5180,
+     "paragraphs": 4,
+     "source_excerpt": "| 联合国教科文组织《信使》·2026年1—3月"
+    },
+    {
+     "section": "page",
+     "cause": "T2 a page batch was recomposed around a member the chain pass claimed",
+     "chars": 5254,
+     "paragraphs": 5,
+     "source_excerpt": "借助生物探索,新产品开发者能 够获得诸多优势。例如,在制药行业, 研发与审批周期漫长,产品开发流程 成本高昂,且知识产权和监管保护策 略存在风险,而土著知识则可助力产 品加速推向市场。"
+    },
+    {
+     "section": "page",
+     "cause": "carried over: the prior run of this sample is b10.5, with b11.1, b11.2, b11.3, b11.4, b11.5 between",
+     "chars": 2196,
+     "paragraphs": 1,
+     "source_excerpt": "丹尼尔·鲁滨逊 (Daniel Robinson)"
+    },
+    {
+     "section": "page",
+     "cause": "T2 a page batch was recomposed around a member the chain pass claimed",
+     "chars": 5260,
+     "paragraphs": 3,
+     "source_excerpt": "11 当生物剽窃滋生蔓延时 |"
+    },
+    {
+     "section": "page",
+     "cause": "T2 a page batch was recomposed around a member the chain pass claimed",
+     "chars": 5237,
+     "paragraphs": 4,
+     "source_excerpt": "20 世 纪 90 年 代, 几 项 新 的 进 展彻底改变了这一局面。首先,世界 贸易组织 (WTO) 协定统一了知识 产权保护标准,改变了各国保护遗传 资源相关知识产权的方式。1992 年, 《生物多样性公约》(Convention on Biological Diversi"
+    },
+    {
+     "section": "page",
+     "cause": "T2 a page batch was recomposed around a member the chain pass claimed",
+     "chars": 4643,
+     "paragraphs": 2,
+     "source_excerpt": "生物多样性中的植物、动物及其 他组成部分在全球范围的流通,以及 不同族群间相关知识的共享,并非新 鲜事物。早在欧洲殖民时代之前,各 类物种及其培育和利用知识已在全球 范围内广泛传播。长期以来,人类跨 越遥远距离交易驯养动物、香料、草 药、食品饮品及纤维制品,并且往往 会借鉴其他族"
+    }
+   ]
+  }
+ }
+}

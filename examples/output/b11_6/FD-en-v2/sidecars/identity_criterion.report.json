@@ -1,0 +1,12 @@
+{
+  "criterion": "byte equality",
+  "nfkc_equal_not_byte_equal": 1,
+  "paragraphs": [
+    {
+      "page": null,
+      "layout_label": "figure_caption",
+      "source": "请阅读中文版!",
+      "translated": "请阅读中文版！"
+    }
+  ]
+}

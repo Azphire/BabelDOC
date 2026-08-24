@@ -1,0 +1,120 @@
+{
+  "articles": [
+    {
+      "article_id": "A5eq5",
+      "attempts": 0,
+      "brief": {
+        "names": [
+          {
+            "source": "因纽特人",
+            "suggested_translation": "Inuit"
+          },
+          {
+            "source": "扎伊",
+            "suggested_translation": "zaï"
+          }
+        ],
+        "register": "The article should be translated in a formal register, presenting a narrative that highlights the effectiveness and wisdom of indigenous practices in the context of climate change and biodiversity loss.",
+        "title_translation": "Indigenous Practices in the Context of Changing Times"
+      },
+      "brief_failed": false,
+      "excerpt_chars": 152,
+      "from_cache": true,
+      "pages": [
+        2,
+        3,
+        4
+      ],
+      "reason": "",
+      "requested": true,
+      "start_page": 2,
+      "title_text": "时代变迁背景下的"
+    },
+    {
+      "article_id": "Yzs4G",
+      "attempts": 0,
+      "brief": {
+        "names": [
+          {
+            "source": "巨骨舌鱼",
+            "suggested_translation": "Arapaima"
+          },
+          {
+            "source": "保马里人",
+            "suggested_translation": "Pomarí people"
+          }
+        ],
+        "register": "The article is written in a formal, reportage style, providing factual information and analysis without directly addressing the reader.",
+        "title_translation": "Brazil: Insights from the Water People"
+      },
+      "brief_failed": false,
+      "excerpt_chars": 53,
+      "from_cache": true,
+      "pages": [
+        5,
+        6
+      ],
+      "reason": "",
+      "requested": true,
+      "start_page": 5,
+      "title_text": "巴西:水之民族的 启示"
+    },
+    {
+      "article_id": "cbfEM",
+      "attempts": 0,
+      "brief": {
+        "names": [
+          {
+            "source": "spinosa L.",
+            "suggested_translation": "spinosa L."
+          },
+          {
+            "source": "阿甘油",
+            "suggested_translation": "Argan oil"
+          },
+          {
+            "source": "阿马齐格",
+            "suggested_translation": "Amazigh"
+          },
+          {
+            "source": "柏柏尔",
+            "suggested_translation": "Berber"
+          }
+        ],
+        "register": "The article is written in a formal register, presenting an argument about the ethical and legal aspects of benefit sharing related to natural resources, without directly addressing the reader.",
+        "title_translation": "The Battle Over Benefit Sharing"
+      },
+      "brief_failed": false,
+      "excerpt_chars": 175,
+      "from_cache": true,
+      "pages": [
+        7,
+        8
+      ],
+      "reason": "",
+      "requested": true,
+      "start_page": 7,
+      "title_text": "惠益分享之争"
+    }
+  ],
+  "body_labels": [
+    "text",
+    "plain text",
+    "paragraph_hybrid"
+  ],
+  "counts": {
+    "articles": 3,
+    "briefs": 3,
+    "failed": 0,
+    "from_cache": 3,
+    "requested": 3,
+    "requests": 3
+  },
+  "title_labels": [
+    "title",
+    "paragraph_title"
+  ],
+  "unassigned_pages": [
+    1
+  ]
+}

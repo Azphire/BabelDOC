@@ -846,7 +846,17 @@ def check_04c_the_known_true_positive_is_on_record() -> None:
 
 
 def check_04d_the_chain_stage_was_not_touched() -> None:
-    """Negative 4d: T3 reused the detector and did not modify it."""
+    """Negative 4d: T3 reused the detector and did not modify it.
+
+    The first half reads this batch's own delta and is fixed. The second half
+    reads the tool as it stands now, and what it looks for moved in b11.6: the
+    banding this tool performed by calling the detector's candidate walk and
+    then banding the result itself became one shared function, ``page_columns``,
+    which the detector's own in-page boundary walk calls too. Reusing that is a
+    stronger form of the same property, so the check asks for it and for the
+    shared pairing beside it, and additionally refuses a tool that has gone back
+    to deriving bands of its own. AC-19 registers the move.
+    """
     faults = []
     changed = set(changed_paths())
     for path in ("babeldoc/magazine/chain_builder.py",
@@ -855,8 +865,12 @@ def check_04d_the_chain_stage_was_not_touched() -> None:
         if path in changed:
             faults.append(f"{path} was modified")
     source = (ROOT / "tools" / "column_continuity.py").read_text(encoding="utf-8")
-    if "chain_signals.page_candidates" not in source:
-        faults.append("the tool does not reuse the detector's candidate walk")
+    for name in ("page_columns", "column_pairings", "build_endpoint"):
+        if f"chain_signals.{name}" not in source:
+            faults.append(f"the tool does not reuse chain_signals.{name}")
+    for private in ("_column_bands", "_band_index", "_font_families"):
+        if private in source:
+            faults.append(f"the tool derives {private} of its own")
     record("check_04d_the_chain_stage_was_not_touched", not faults,
            "; ".join(faults[:4]))
 

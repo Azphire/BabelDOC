@@ -396,12 +396,33 @@ class StubConfig:
         return str(self._working / name)
 
 
-def labeled_document(paragraphs):
+def an_indent_eligible_kind() -> str:
+    """A page kind whose declared policy admits the indent pass.
+
+    Read out of the vocabulary rather than typed in, so this fixture states the
+    property it needs -- a page the pass is allowed to act on -- instead of a
+    name that could stop having that property without the fixture noticing. The
+    page gate b11.6 added is why a stub needs a kind at all: an undeclared page
+    is not eligible, and a document built without one would send this check's
+    positive half through the gate rather than through the mode.
+    """
+    from babeldoc.magazine.indent_policy import PAGE_ELIGIBILITY_POLICY_FLAG
+    from babeldoc.magazine.taxonomy import load_taxonomy
+
+    for page_type in load_taxonomy().page_types:
+        if page_type.policy.get(PAGE_ELIGIBILITY_POLICY_FLAG, False):
+            return page_type.name
+    raise AssertionError("no page type declares the indent policy flag")
+
+
+def labeled_document(paragraphs, kind: str | None = None):
     return il_version_1.Document(
         page=[
             il_version_1.Page(
                 page_number=0,
                 pdf_paragraph=list(paragraphs),
+                page_kind=an_indent_eligible_kind() if kind is None else kind,
+                page_kind_conf=1.0,
                 mediabox=il_version_1.Mediabox(
                     box=il_version_1.Box(x=0.0, y=0.0, x2=600.0, y2=800.0)
                 ),
@@ -622,18 +643,39 @@ def check_02d_the_fast_sweep_is_recorded_green() -> None:
 
     Read from the record the sweep wrote rather than by launching a sweep from
     inside a gate, which would nest and can orphan the sweep lock.
+
+    The record is of the fast set as it stood when this batch was delivered, and
+    the set grows: every later batch adds its own gate to it. So equality with
+    today's set is not the property and cannot be -- it would make this assertion
+    fail on the next batch for a reason that says nothing about this one. What is
+    asserted instead is that the record names no gate that has since left the
+    fast set, and that every gate missing from it is one that did not exist at
+    this batch's tag. That keeps the exception verifiable rather than a
+    tolerance: a gate quietly dropped from the record still fails. AC-22.
     """
     if not SWEEP.is_file():
         skip("check_02d_the_fast_sweep_is_recorded_green", [str(SWEEP)])
         return
+    import subprocess
+
     from spec_checks import run_all as runner
 
     faults = []
     summary = load(SWEEP)
     ran = {row["gate"] for row in summary["gates"]}
     expected = set(runner.selected_gates("fast"))
-    if ran != expected:
-        faults.append(f"the record covers {len(ran)} of {len(expected)} fast gates")
+    stale = sorted(ran - expected)
+    if stale:
+        faults.append(f"the record names {stale[:3]}, no longer in the fast set")
+    for gate in sorted(expected - ran):
+        existed = subprocess.run(  # noqa: S603
+            ["git", "cat-file", "-e", f"{BATCH_TAG}:spec_checks/{gate}"],  # noqa: S607
+            cwd=ROOT,
+            capture_output=True,
+            check=False,
+        )
+        if existed.returncode == 0:
+            faults.append(f"{gate} existed at {BATCH_TAG} and is not in the record")
     failing = [
         row["gate"] for row in summary["gates"]
         if row["exit_code"] != 0 and row["gate"] != Path(__file__).name

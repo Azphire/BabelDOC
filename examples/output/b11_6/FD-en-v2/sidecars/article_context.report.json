@@ -1,0 +1,109 @@
+{
+  "articles": [
+    {
+      "article_id": "tMUpd",
+      "attempts": 0,
+      "brief": {
+        "names": [
+          {
+            "source": "Middle East",
+            "suggested_translation": "中东"
+          },
+          {
+            "source": "IMF",
+            "suggested_translation": "国际货币基金组织"
+          },
+          {
+            "source": "Kristalina Georgieva",
+            "suggested_translation": "克里斯塔利娜·格奥尔基耶娃"
+          }
+        ],
+        "register": "这篇文章采用正式的新闻报道风格，分析全球经济形势，不直接与读者对话。",
+        "title_translation": "万花筒"
+      },
+      "brief_failed": false,
+      "excerpt_chars": 243,
+      "from_cache": true,
+      "pages": [
+        6
+      ],
+      "reason": "",
+      "requested": true,
+      "start_page": 6,
+      "title_text": "Kaleidoscope"
+    },
+    {
+      "article_id": "kyXVX",
+      "attempts": 0,
+      "brief": {
+        "names": [
+          {
+            "source": "US",
+            "suggested_translation": "美国"
+          }
+        ],
+        "register": "文章采用正式的语体，属于报道性质，分析美国政策制定者在地缘政治风险上升的背景下如何在经济效率与国家安全之间重新平衡。",
+        "title_translation": "观点"
+      },
+      "brief_failed": false,
+      "excerpt_chars": 104,
+      "from_cache": true,
+      "pages": [
+        8
+      ],
+      "reason": "",
+      "requested": true,
+      "start_page": 8,
+      "title_text": "Point of View"
+    },
+    {
+      "article_id": "ibaNk",
+      "attempts": 0,
+      "brief": {
+        "names": [
+          {
+            "source": "Swiss",
+            "suggested_translation": "瑞士"
+          }
+        ],
+        "register": "这篇文章采用报道风格，语气正式，不直接与读者对话。",
+        "title_translation": "瑞士民主"
+      },
+      "brief_failed": false,
+      "excerpt_chars": 61,
+      "from_cache": true,
+      "pages": [
+        9
+      ],
+      "reason": "",
+      "requested": true,
+      "start_page": 9,
+      "title_text": "Franc Democracy"
+    }
+  ],
+  "body_labels": [
+    "text",
+    "plain text",
+    "paragraph_hybrid"
+  ],
+  "counts": {
+    "articles": 3,
+    "briefs": 3,
+    "failed": 0,
+    "from_cache": 3,
+    "requested": 3,
+    "requests": 3
+  },
+  "title_labels": [
+    "title",
+    "paragraph_title"
+  ],
+  "unassigned_pages": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    7
+  ]
+}

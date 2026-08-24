@@ -2068,10 +2068,26 @@ def check_13_escalation() -> None:
             "diverged": diverged,
         }
 
+    # Which reasons a run under one hook may show. The hook forces its own, and
+    # one other may appear beside it: the placeholder guard stands in front of
+    # everything else in the pass, so a chain carrying a placeholder never
+    # reaches the budget test or the redistribution and escalates for the
+    # placeholder instead. That is an ordering in the source rather than a
+    # tolerance, and it is asserted as one below. Every other reason is a
+    # failure. AC-21 registers the narrowing: b11.6 gave the detector in-page
+    # column boundaries, so the document this fixture drives now carries several
+    # chains where it carried one, and one of them bears a placeholder.
+    def reasons_admissible(outcome: dict) -> bool:
+        allowed = {outcome["expected"], chain_translation.ESCALATION_PLACEHOLDER}
+        return (
+            outcome["expected"] in outcome["reasons"]
+            and set(outcome["reasons"]) <= allowed
+        )
+
     broken = [
         f"{label}: {outcome}"
         for label, outcome in outcomes.items()
-        if outcome["reasons"] != [outcome["expected"]]
+        if not reasons_admissible(outcome)
         or outcome["counts"]["merged"] != 0
         or outcome["counts"]["escalated"] != outcome["counts"]["chains"]
         or outcome["repeated"]
@@ -2079,10 +2095,23 @@ def check_13_escalation() -> None:
         or outcome["untranslated"]
         or outcome["diverged"]
     ]
+    # The ordering the exception rests on, read out of the pass rather than
+    # assumed: preparing the members -- which is where a placeholder is found --
+    # happens before the budget test and before the redistribution.
+    pass_source = (ROOT / "babeldoc" / "magazine" / "chain_translation.py").read_text(
+        encoding="utf-8"
+    )
+    prepare_at = pass_source.find("prepared, reason, detail = self._prepare(")
+    budget_at = pass_source.find("if backfill.over_output_token_budget(")
+    cut_at = pass_source.find("redistribution = backfill.redistribute(")
+    ordered = 0 < prepare_at < budget_at < cut_at
     record(
         "13a an unmergeable chain is escalated by reason and left to the old path",
-        not broken and refusing_calls["count"] > 0 and bool(off_texts),
-        f"outcomes={ascii_only(json.dumps(outcomes))[:400]}",
+        not broken
+        and ordered
+        and refusing_calls["count"] > 0
+        and bool(off_texts),
+        f"ordered={ordered} outcomes={ascii_only(json.dumps(outcomes))[:400]}",
     )
 
     # The oversized case specifically: the chain is handed back whole, and its
@@ -2091,7 +2120,7 @@ def check_13_escalation() -> None:
     budget = outcomes[chain_translation.ESCALATION_TOKEN_BUDGET]
     record(
         "13b a chain too large to answer in one piece is exempted, not truncated",
-        budget["reasons"] == [chain_translation.ESCALATION_TOKEN_BUDGET]
+        reasons_admissible(budget)
         and budget["counts"]["merged"] == 0
         and budget["counts"]["escalated"] > 0
         and not budget["diverged"]

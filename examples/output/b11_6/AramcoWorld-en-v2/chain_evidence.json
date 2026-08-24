@@ -1,0 +1,1246 @@
+{
+ "sample": "AramcoWorld-en-v2",
+ "read_from": "checkpoint.08_chain_builder.xml",
+ "link_min_score": 0.8,
+ "boundary_priority": [
+  "page",
+  "column_adjacent",
+  "body_next"
+ ],
+ "boundaries": [
+  {
+   "boundary": "p1:columns",
+   "kind": "column",
+   "pairing": null,
+   "tail_page": 1,
+   "head_page": 1,
+   "tail_column": null,
+   "head_column": null,
+   "column_count": null,
+   "eligible": false,
+   "reason": "one_column",
+   "pair": null,
+   "score": null,
+   "linked": false,
+   "tail_ends_on_hyphen": false,
+   "tail_last_line": null,
+   "head_first_line": "",
+   "tail": null,
+   "head": null
+  },
+  {
+   "boundary": "1->2",
+   "kind": "page",
+   "pairing": null,
+   "tail_page": 1,
+   "head_page": 2,
+   "tail_column": null,
+   "head_column": null,
+   "column_count": null,
+   "eligible": false,
+   "reason": "not_chain_eligible:tail,head",
+   "pair": null,
+   "score": null,
+   "linked": false,
+   "tail_ends_on_hyphen": false,
+   "tail_last_line": null,
+   "head_first_line": "",
+   "tail": null,
+   "head": null
+  },
+  {
+   "boundary": "p2:columns",
+   "kind": "column",
+   "pairing": null,
+   "tail_page": 2,
+   "head_page": 2,
+   "tail_column": null,
+   "head_column": null,
+   "column_count": null,
+   "eligible": false,
+   "reason": "preserve_line_structure",
+   "pair": null,
+   "score": null,
+   "linked": false,
+   "tail_ends_on_hyphen": false,
+   "tail_last_line": null,
+   "head_first_line": "",
+   "tail": null,
+   "head": null
+  },
+  {
+   "boundary": "2->3",
+   "kind": "page",
+   "pairing": null,
+   "tail_page": 2,
+   "head_page": 3,
+   "tail_column": null,
+   "head_column": null,
+   "column_count": null,
+   "eligible": false,
+   "reason": "not_chain_eligible:tail,head",
+   "pair": null,
+   "score": null,
+   "linked": false,
+   "tail_ends_on_hyphen": false,
+   "tail_last_line": null,
+   "head_first_line": "",
+   "tail": null,
+   "head": null
+  },
+  {
+   "boundary": "p3:columns",
+   "kind": "column",
+   "pairing": null,
+   "tail_page": 3,
+   "head_page": 3,
+   "tail_column": null,
+   "head_column": null,
+   "column_count": null,
+   "eligible": false,
+   "reason": "preserve_line_structure",
+   "pair": null,
+   "score": null,
+   "linked": false,
+   "tail_ends_on_hyphen": false,
+   "tail_last_line": null,
+   "head_first_line": "",
+   "tail": null,
+   "head": null
+  },
+  {
+   "boundary": "3->4",
+   "kind": "page",
+   "pairing": null,
+   "tail_page": 3,
+   "head_page": 4,
+   "tail_column": null,
+   "head_column": null,
+   "column_count": null,
+   "eligible": false,
+   "reason": "not_chain_eligible:tail",
+   "pair": null,
+   "score": null,
+   "linked": false,
+   "tail_ends_on_hyphen": false,
+   "tail_last_line": null,
+   "head_first_line": "",
+   "tail": null,
+   "head": null
+  },
+  {
+   "boundary": "p4:c0->c1",
+   "kind": "column",
+   "pairing": "column_adjacent",
+   "tail_page": 4,
+   "head_page": 4,
+   "tail_column": 0,
+   "head_column": 1,
+   "column_count": 4,
+   "eligible": false,
+   "reason": "no_endpoint",
+   "pair": null,
+   "score": null,
+   "linked": false,
+   "tail_ends_on_hyphen": false,
+   "tail_last_line": "technology, this all will die.”",
+   "head_first_line": "— B A K H O D I R B A LTAY E V",
+   "tail": {
+    "reference": "p4#12",
+    "page": 4,
+    "text": "“You can use modern tools, but the restoration technology is better to stay the same. If we change the technology, this all will die.”"
+   },
+   "head": {
+    "reference": "p4#13",
+    "page": 4,
+    "text": "— B A K H O D I R B A LTAY E V"
+   }
+  },
+  {
+   "boundary": "p4:c0->c2",
+   "kind": "column",
+   "pairing": "body_next",
+   "tail_page": 4,
+   "head_page": 4,
+   "tail_column": 0,
+   "head_column": 2,
+   "column_count": 4,
+   "eligible": false,
+   "reason": "no_endpoint",
+   "pair": null,
+   "score": null,
+   "linked": false,
+   "tail_ends_on_hyphen": false,
+   "tail_last_line": "technology, this all will die.”",
+   "head_first_line": "He explains that the foundations beneath some monuments contain layers of reeds designed to ab- sorb vibrations during earthquakes.",
+   "tail": {
+    "reference": "p4#12",
+    "page": 4,
+    "text": "“You can use modern tools, but the restoration technology is better to stay the same. If we change the technology, this all will die.”"
+   },
+   "head": {
+    "reference": "p4#4",
+    "page": 4,
+    "text": "He explains that the foundations beneath some monuments contain layers of reeds designed to ab- sorb vibrations during earthquakes."
+   }
+  },
+  {
+   "boundary": "p4:c1->c2",
+   "kind": "column",
+   "pairing": "column_adjacent",
+   "tail_page": 4,
+   "head_page": 4,
+   "tail_column": 1,
+   "head_column": 2,
+   "column_count": 4,
+   "eligible": true,
+   "reason": null,
+   "pair": "body->body",
+   "score": 0.5,
+   "linked": false,
+   "tail_ends_on_hyphen": false,
+   "tail_last_line": "— BA K H O D I R BA LTAY E V",
+   "head_first_line": "He explains that the foundations beneath some monuments contain layers of reeds designed to ab- sorb vibrations during earthquakes.",
+   "tail": {
+    "reference": "p4#13",
+    "page": 4,
+    "text": "— B A K H O D I R B A LTAY E V"
+   },
+   "head": {
+    "reference": "p4#4",
+    "page": 4,
+    "text": "He explains that the foundations beneath some monuments contain layers of reeds designed to ab- sorb vibrations during earthquakes."
+   }
+  },
+  {
+   "boundary": "p4:c1->c3",
+   "kind": "column",
+   "pairing": "body_next",
+   "tail_page": 4,
+   "head_page": 4,
+   "tail_column": 1,
+   "head_column": 3,
+   "column_count": 4,
+   "eligible": false,
+   "reason": "no_endpoint",
+   "pair": null,
+   "score": null,
+   "linked": false,
+   "tail_ends_on_hyphen": false,
+   "tail_last_line": "— BA K H O D I R BA LTAY E V",
+   "head_first_line": "PAINSTAKING RESTORATION IS A CALLING",
+   "tail": {
+    "reference": "p4#13",
+    "page": 4,
+    "text": "— B A K H O D I R B A LTAY E V"
+   },
+   "head": {
+    "reference": "p4#6",
+    "page": 4,
+    "text": "PAINSTAKING RESTORATION IS A CALLING"
+   }
+  },
+  {
+   "boundary": "p4:c2->c3",
+   "kind": "column",
+   "pairing": "column_adjacent",
+   "tail_page": 4,
+   "head_page": 4,
+   "tail_column": 2,
+   "head_column": 3,
+   "column_count": 4,
+   "eligible": false,
+   "reason": "no_endpoint",
+   "pair": null,
+   "score": null,
+   "linked": false,
+   "tail_ends_on_hyphen": false,
+   "tail_last_line": "though it has always been that way.”",
+   "head_first_line": "PAINSTAKING RESTORATION IS A CALLING",
+   "tail": {
+    "reference": "p4#11",
+    "page": 4,
+    "text": "“We’ve completely restored the Ulugh Beg Ma- drasa,” he says. “Now, when you walk in, it feels as though it has always been that way.”"
+   },
+   "head": {
+    "reference": "p4#6",
+    "page": 4,
+    "text": "PAINSTAKING RESTORATION IS A CALLING"
+   }
+  },
+  {
+   "boundary": "4->5",
+   "kind": "page",
+   "pairing": null,
+   "tail_page": 4,
+   "head_page": 5,
+   "tail_column": 3,
+   "head_column": 0,
+   "column_count": null,
+   "eligible": true,
+   "reason": null,
+   "pair": "title->title",
+   "score": 0.36875,
+   "linked": false,
+   "tail_ends_on_hyphen": false,
+   "tail_last_line": "RESTORATION IS A CALLING",
+   "head_first_line": "RAILWAY?RAILWAY?",
+   "tail": {
+    "reference": "p4#6",
+    "page": 4,
+    "text": "PAINSTAKING RESTORATION IS A CALLING"
+   },
+   "head": {
+    "reference": "p5#17",
+    "page": 5,
+    "text": "RAILWAY?RAILWAY?"
+   }
+  },
+  {
+   "boundary": "p5:c0->c1",
+   "kind": "column",
+   "pairing": "column_adjacent",
+   "tail_page": 5,
+   "head_page": 5,
+   "tail_column": 0,
+   "head_column": 1,
+   "column_count": 3,
+   "eligible": false,
+   "reason": "no_endpoint",
+   "pair": null,
+   "score": null,
+   "linked": false,
+   "tail_ends_on_hyphen": false,
+   "tail_last_line": "between the clutch and the accelerator, rarely stepping over to the brake.",
+   "head_first_line": "We were roughly 80 miles (129 km) south of Al- Ula in the west of Saudi Arabia. I traveled there in the spring of 2024 to research the Hijaz Railway, which, in ",
+   "tail": {
+    "reference": "p5#14",
+    "page": 5,
+    "text": "between the clutch and the accelerator, rarely stepping over to the brake."
+   },
+   "head": {
+    "reference": "p5#1",
+    "page": 5,
+    "text": "We were roughly 80 miles (129 km) south of Al- Ula in the west of Saudi Arabia. I traveled there in the spring of 2024 to research the Hijaz Railway, which, in the early years of the 20th century, ran for some 800 miles (1,287 km) from Dama"
+   }
+  },
+  {
+   "boundary": "p5:c0->c2",
+   "kind": "column",
+   "pairing": "body_next",
+   "tail_page": 5,
+   "head_page": 5,
+   "tail_column": 0,
+   "head_column": 2,
+   "column_count": 3,
+   "eligible": false,
+   "reason": "no_endpoint",
+   "pair": null,
+   "score": null,
+   "linked": false,
+   "tail_ends_on_hyphen": false,
+   "tail_last_line": "between the clutch and the accelerator, rarely stepping over to the brake.",
+   "head_first_line": "dramatically reducing journey times for millions of Hajj pilgrims. In a very different technological and political era, it nevertheless echoes one of the centra",
+   "tail": {
+    "reference": "p5#14",
+    "page": 5,
+    "text": "between the clutch and the accelerator, rarely stepping over to the brake."
+   },
+   "head": {
+    "reference": "p5#8",
+    "page": 5,
+    "text": "dramatically reducing journey times for millions of Hajj pilgrims. In a very different technological and political era, it nevertheless echoes one of the central ambitions behind the original project: shrinking distance across the Hijaz."
+   }
+  },
+  {
+   "boundary": "p5:c1->c2",
+   "kind": "column",
+   "pairing": "column_adjacent",
+   "tail_page": 5,
+   "head_page": 5,
+   "tail_column": 1,
+   "head_column": 2,
+   "column_count": 3,
+   "eligible": true,
+   "reason": null,
+   "pair": "body->body",
+   "score": 1.0,
+   "linked": true,
+   "tail_ends_on_hyphen": false,
+   "tail_last_line": "rail connection between Makkah and Madinah,",
+   "head_first_line": "dramatically reducing journey times for millions of Hajj pilgrims. In a very different technological and political era, it nevertheless echoes one of the centra",
+   "tail": {
+    "reference": "p5#7",
+    "page": 5,
+    "text": "Since opening fully in 2018, Saudi Arabia’s Haramain high-speed railway has achieved what the Ottoman-era Hijaz Railway never did: a direct rail connection between Makkah and Madinah,"
+   },
+   "head": {
+    "reference": "p5#8",
+    "page": 5,
+    "text": "dramatically reducing journey times for millions of Hajj pilgrims. In a very different technological and political era, it nevertheless echoes one of the central ambitions behind the original project: shrinking distance across the Hijaz."
+   }
+  },
+  {
+   "boundary": "5->6",
+   "kind": "page",
+   "pairing": null,
+   "tail_page": 5,
+   "head_page": 6,
+   "tail_column": 2,
+   "head_column": 0,
+   "column_count": null,
+   "eligible": true,
+   "reason": null,
+   "pair": "body->body",
+   "score": 0.5499999999999999,
+   "linked": false,
+   "tail_ends_on_hyphen": false,
+   "tail_last_line": "discussions across the region.",
+   "head_first_line": "Construction of the Hijaz Railway began on Septem- ber 1, 1900, on the orders of Ottoman Sultan Abdul Hamid II, amid the waning years of the empire. The Ottoman",
+   "tail": {
+    "reference": "p5#10",
+    "page": 5,
+    "text": "In December 2025, Saudi Arabia and Qatar signed an agreement for a high-speed electric railway linking Riyadh and Doha. In the spring of 2026, Türkiye and Saudi Arabia formally agreed to advance plans for a railway connecting the two countr"
+   },
+   "head": {
+    "reference": "p6#2",
+    "page": 6,
+    "text": "Construction of the Hijaz Railway began on Septem- ber 1, 1900, on the orders of Ottoman Sultan Abdul Hamid II, amid the waning years of the empire. The Ottomans had already lost the Balkans and North Af- rica and were faced with growing in"
+   }
+  },
+  {
+   "boundary": "p6:c0->c1",
+   "kind": "column",
+   "pairing": "column_adjacent",
+   "tail_page": 6,
+   "head_page": 6,
+   "tail_column": 0,
+   "head_column": 1,
+   "column_count": 3,
+   "eligible": false,
+   "reason": "no_endpoint",
+   "pair": null,
+   "score": null,
+   "linked": false,
+   "tail_ends_on_hyphen": false,
+   "tail_last_line": "riphery of Ottoman territory back to the center, where",
+   "head_first_line": "ORIGINS OF THE HIJAZ RAILWAY",
+   "tail": {
+    "reference": "p6#3",
+    "page": 6,
+    "text": "The railway was expected to serve three functions. Politically, Abdul Hamid wanted to connect the pe- riphery of Ottoman territory back to the center, where"
+   },
+   "head": {
+    "reference": "p6#1",
+    "page": 6,
+    "text": "ORIGINS OF THE HIJAZ RAILWAY"
+   }
+  },
+  {
+   "boundary": "p6:c0->c2",
+   "kind": "column",
+   "pairing": "body_next",
+   "tail_page": 6,
+   "head_page": 6,
+   "tail_column": 0,
+   "head_column": 2,
+   "column_count": 3,
+   "eligible": true,
+   "reason": null,
+   "pair": "body->body",
+   "score": 1.0,
+   "linked": true,
+   "tail_ends_on_hyphen": false,
+   "tail_last_line": "riphery of Ottoman territory back to the center, where",
+   "head_first_line": "his control was strongest. Militarily, the railway would act as a bulwark against European imperial- ism, allowing for reinforcement of defensive positions on t",
+   "tail": {
+    "reference": "p6#3",
+    "page": 6,
+    "text": "The railway was expected to serve three functions. Politically, Abdul Hamid wanted to connect the pe- riphery of Ottoman territory back to the center, where"
+   },
+   "head": {
+    "reference": "p6#4",
+    "page": 6,
+    "text": "his control was strongest. Militarily, the railway would act as a bulwark against European imperial- ism, allowing for reinforcement of defensive positions on the Mediterranean and Red seas. Religiously, it would replace the traditional Haj"
+   }
+  },
+  {
+   "boundary": "p6:c1->c2",
+   "kind": "column",
+   "pairing": "column_adjacent",
+   "tail_page": 6,
+   "head_page": 6,
+   "tail_column": 1,
+   "head_column": 2,
+   "column_count": 3,
+   "eligible": false,
+   "reason": "no_endpoint",
+   "pair": null,
+   "score": null,
+   "linked": false,
+   "tail_ends_on_hyphen": false,
+   "tail_last_line": "THE HIJAZ RAILWAY",
+   "head_first_line": "his control was strongest. Militarily, the railway would act as a bulwark against European imperial- ism, allowing for reinforcement of defensive positions on t",
+   "tail": {
+    "reference": "p6#1",
+    "page": 6,
+    "text": "ORIGINS OF THE HIJAZ RAILWAY"
+   },
+   "head": {
+    "reference": "p6#4",
+    "page": 6,
+    "text": "his control was strongest. Militarily, the railway would act as a bulwark against European imperial- ism, allowing for reinforcement of defensive positions on the Mediterranean and Red seas. Religiously, it would replace the traditional Haj"
+   }
+  },
+  {
+   "boundary": "6->7",
+   "kind": "page",
+   "pairing": null,
+   "tail_page": 6,
+   "head_page": 7,
+   "tail_column": 2,
+   "head_column": 0,
+   "column_count": null,
+   "eligible": true,
+   "reason": null,
+   "pair": "body->body",
+   "score": 1.0,
+   "linked": true,
+   "tail_ends_on_hyphen": false,
+   "tail_last_line": "ically, also included a scarcity of water along much of",
+   "head_first_line": "the route south of the Hauran and a severe shortage of locally available fuel sources.",
+   "tail": {
+    "reference": "p6#10",
+    "page": 6,
+    "text": "“The railway workers had to overcome many technical difficulties,” writes Nicholson. These, iron- ically, also included a scarcity of water along much of"
+   },
+   "head": {
+    "reference": "p7#1",
+    "page": 7,
+    "text": "the route south of the Hauran and a severe shortage of locally available fuel sources."
+   }
+  },
+  {
+   "boundary": "p7:c0->c1",
+   "kind": "column",
+   "pairing": "column_adjacent",
+   "tail_page": 7,
+   "head_page": 7,
+   "tail_column": 0,
+   "head_column": 1,
+   "column_count": 3,
+   "eligible": true,
+   "reason": null,
+   "pair": "body->body",
+   "score": 0.6,
+   "linked": false,
+   "tail_ends_on_hyphen": false,
+   "tail_last_line": "Empire’s collapse.",
+   "head_first_line": "The last train on the Hijaz line in what is now Saudi Arabia departed in 1925. By the middle of the past century, it fell into disrepair; even the rails had bee",
+   "tail": {
+    "reference": "p7#5",
+    "page": 7,
+    "text": "The optimism surrounding the railway did not last long. Less than a decade later, during World War I, the railway was repeatedly attacked. Raiding par- ties destroyed large sections of the route—including the stretch Al Juhani showed me in "
+   },
+   "head": {
+    "reference": "p7#6",
+    "page": 7,
+    "text": "The last train on the Hijaz line in what is now Saudi Arabia departed in 1925. By the middle of the past century, it fell into disrepair; even the rails had been removed."
+   }
+  },
+  {
+   "boundary": "p7:c0->c2",
+   "kind": "column",
+   "pairing": "body_next",
+   "tail_page": 7,
+   "head_page": 7,
+   "tail_column": 0,
+   "head_column": 2,
+   "column_count": 3,
+   "eligible": false,
+   "reason": "no_endpoint",
+   "pair": null,
+   "score": null,
+   "linked": false,
+   "tail_ends_on_hyphen": false,
+   "tail_last_line": "Empire’s collapse.",
+   "head_first_line": "STEAMING AHEAD FROM PAST TO FUTURE",
+   "tail": {
+    "reference": "p7#5",
+    "page": 7,
+    "text": "The optimism surrounding the railway did not last long. Less than a decade later, during World War I, the railway was repeatedly attacked. Raiding par- ties destroyed large sections of the route—including the stretch Al Juhani showed me in "
+   },
+   "head": {
+    "reference": "p7#7",
+    "page": 7,
+    "text": "STEAMING AHEAD FROM PAST TO FUTURE"
+   }
+  },
+  {
+   "boundary": "p7:c1->c2",
+   "kind": "column",
+   "pairing": "column_adjacent",
+   "tail_page": 7,
+   "head_page": 7,
+   "tail_column": 1,
+   "head_column": 2,
+   "column_count": 3,
+   "eligible": false,
+   "reason": "no_endpoint",
+   "pair": null,
+   "score": null,
+   "linked": false,
+   "tail_ends_on_hyphen": false,
+   "tail_last_line": "Railway Station in downtown Damascus, where a",
+   "head_first_line": "STEAMING AHEAD FROM PAST TO FUTURE",
+   "tail": {
+    "reference": "p7#10",
+    "page": 7,
+    "text": "Since 2023 I have been exploring the route, re- turning multiple times to collect memories of a past era. Its starting point is marked by the grand Hijaz Railway Station in downtown Damascus, where a"
+   },
+   "head": {
+    "reference": "p7#7",
+    "page": 7,
+    "text": "STEAMING AHEAD FROM PAST TO FUTURE"
+   }
+  },
+  {
+   "boundary": "7->8",
+   "kind": "page",
+   "pairing": null,
+   "tail_page": 7,
+   "head_page": 8,
+   "tail_column": 1,
+   "head_column": 0,
+   "column_count": null,
+   "eligible": true,
+   "reason": null,
+   "pair": "body->body",
+   "score": 0.46875,
+   "linked": false,
+   "tail_ends_on_hyphen": false,
+   "tail_last_line": "Railway Station in downtown Damascus, where a",
+   "head_first_line": "modern Spain, generates often conflicting meanings at the same time— meanings actively constructed and sometimes misread. Edhem Eldem, an Istanbul-based history",
+   "tail": {
+    "reference": "p7#10",
+    "page": 7,
+    "text": "Since 2023 I have been exploring the route, re- turning multiple times to collect memories of a past era. Its starting point is marked by the grand Hijaz Railway Station in downtown Damascus, where a"
+   },
+   "head": {
+    "reference": "p8#6",
+    "page": 8,
+    "text": "modern Spain, generates often conflicting meanings at the same time— meanings actively constructed and sometimes misread. Edhem Eldem, an Istanbul-based history professor, traces its role in shaping social and cultural identities across imp"
+   }
+  },
+  {
+   "boundary": "p8:c0->c1",
+   "kind": "column",
+   "pairing": "column_adjacent",
+   "tail_page": 8,
+   "head_page": 8,
+   "tail_column": 0,
+   "head_column": 1,
+   "column_count": 4,
+   "eligible": false,
+   "reason": "no_endpoint",
+   "pair": null,
+   "score": null,
+   "linked": false,
+   "tail_ends_on_hyphen": false,
+   "tail_last_line": "spaces that act upon those who enter them. —JAMIE S. SCOTT",
+   "head_first_line": "Th Alhambra at the Crossroads of History: Eastern and Western Visions in the Long Nineteenth Century.",
+   "tail": {
+    "reference": "p8#10",
+    "page": 8,
+    "text": "it actively shaped how it was perceived and felt. Drawing on classical, biblical and medieval texts, Binski, a professor emeritus of medieval art history at the University of Cambridge, shows how language and symbolism informed the way thes"
+   },
+   "head": {
+    "reference": "p8#3",
+    "page": 8,
+    "text": "Th Alhambra at the Crossroads of History: Eastern and Western Visions in the Long Nineteenth Century."
+   }
+  },
+  {
+   "boundary": "p8:c0->c2",
+   "kind": "column",
+   "pairing": "body_next",
+   "tail_page": 8,
+   "head_page": 8,
+   "tail_column": 0,
+   "head_column": 2,
+   "column_count": 4,
+   "eligible": false,
+   "reason": "no_endpoint",
+   "pair": null,
+   "score": null,
+   "linked": false,
+   "tail_ends_on_hyphen": false,
+   "tail_last_line": "spaces that act upon those who enter them. —JAMIE S. SCOTT",
+   "head_first_line": "The First Female Pharoah: Sobekneferu, Goddess of the Seven Stars.",
+   "tail": {
+    "reference": "p8#10",
+    "page": 8,
+    "text": "it actively shaped how it was perceived and felt. Drawing on classical, biblical and medieval texts, Binski, a professor emeritus of medieval art history at the University of Cambridge, shows how language and symbolism informed the way thes"
+   },
+   "head": {
+    "reference": "p8#13",
+    "page": 8,
+    "text": "The First Female Pharoah: Sobekneferu, Goddess of the Seven Stars."
+   }
+  },
+  {
+   "boundary": "p8:c1->c2",
+   "kind": "column",
+   "pairing": "column_adjacent",
+   "tail_page": 8,
+   "head_page": 8,
+   "tail_column": 1,
+   "head_column": 2,
+   "column_count": 4,
+   "eligible": false,
+   "reason": "no_endpoint",
+   "pair": null,
+   "score": null,
+   "linked": false,
+   "tail_ends_on_hyphen": false,
+   "tail_last_line": "Medieval architecture did not merely surround worship;",
+   "head_first_line": "The First Female Pharoah: Sobekneferu, Goddess of the Seven Stars.",
+   "tail": {
+    "reference": "p8#9",
+    "page": 8,
+    "text": "From the opening pages, Paul Binski’s Architecture and Affect in the Middle Ages immerses the reader in a dense, multisensory world. It reveals a central claim: Medieval architecture did not merely surround worship;"
+   },
+   "head": {
+    "reference": "p8#13",
+    "page": 8,
+    "text": "The First Female Pharoah: Sobekneferu, Goddess of the Seven Stars."
+   }
+  },
+  {
+   "boundary": "p8:c1->c3",
+   "kind": "column",
+   "pairing": "body_next",
+   "tail_page": 8,
+   "head_page": 8,
+   "tail_column": 1,
+   "head_column": 3,
+   "column_count": 4,
+   "eligible": true,
+   "reason": "head_not_clear",
+   "pair": "body->body",
+   "score": 1.0,
+   "linked": false,
+   "tail_ends_on_hyphen": false,
+   "tail_last_line": "Medieval architecture did not merely surround worship;",
+   "head_first_line": "Andrew Collins. Bear & Company, 2023.",
+   "tail": {
+    "reference": "p8#9",
+    "page": 8,
+    "text": "From the opening pages, Paul Binski’s Architecture and Affect in the Middle Ages immerses the reader in a dense, multisensory world. It reveals a central claim: Medieval architecture did not merely surround worship;"
+   },
+   "head": {
+    "reference": "p8#14",
+    "page": 8,
+    "text": "Andrew Collins. Bear & Company, 2023."
+   }
+  },
+  {
+   "boundary": "p8:c2->c3",
+   "kind": "column",
+   "pairing": "column_adjacent",
+   "tail_page": 8,
+   "head_page": 8,
+   "tail_column": 2,
+   "head_column": 3,
+   "column_count": 4,
+   "eligible": false,
+   "reason": "no_endpoint",
+   "pair": null,
+   "score": null,
+   "linked": false,
+   "tail_ends_on_hyphen": false,
+   "tail_last_line": "a veil of mystery and imagination.”",
+   "head_first_line": "Andrew Collins. Bear & Company, 2023.",
+   "tail": {
+    "reference": "p8#11",
+    "page": 8,
+    "text": "“Sobekneferu exists like a ghost in the darkness, her story ever hidden behind a veil of mystery and imagination.”"
+   },
+   "head": {
+    "reference": "p8#14",
+    "page": 8,
+    "text": "Andrew Collins. Bear & Company, 2023."
+   }
+  },
+  {
+   "boundary": "8->9",
+   "kind": "page",
+   "pairing": null,
+   "tail_page": 8,
+   "head_page": 9,
+   "tail_column": 3,
+   "head_column": 0,
+   "column_count": null,
+   "eligible": true,
+   "reason": null,
+   "pair": "body->body",
+   "score": 0.01874999999999999,
+   "linked": false,
+   "tail_ends_on_hyphen": false,
+   "tail_last_line": "Andrew Collins. Bear & Company, 2023.",
+   "head_first_line": "Islamic Ecumene opens with a firm refusal: Islam cannot be contained within a single geography, tra- dition or political form. Edited by David S. Powers and Eri",
+   "tail": {
+    "reference": "p8#14",
+    "page": 8,
+    "text": "Andrew Collins. Bear & Company, 2023."
+   },
+   "head": {
+    "reference": "p9#9",
+    "page": 9,
+    "text": "Islamic Ecumene opens with a firm refusal: Islam cannot be contained within a single geography, tra- dition or political form. Edited by David S. Powers and Eric Tagliacozzo, both professors of history at Cornell University, this collection"
+   }
+  },
+  {
+   "boundary": "p9:c0->c1",
+   "kind": "column",
+   "pairing": "column_adjacent",
+   "tail_page": 9,
+   "head_page": 9,
+   "tail_column": 0,
+   "head_column": 1,
+   "column_count": 5,
+   "eligible": false,
+   "reason": "no_endpoint",
+   "pair": null,
+   "score": null,
+   "linked": false,
+   "tail_ends_on_hyphen": false,
+   "tail_last_line": "Cornell University Press, 2023.",
+   "head_first_line": "Work Reveals a Layered, Complex Islamic Polity",
+   "tail": {
+    "reference": "p9#17",
+    "page": 9,
+    "text": "Islamic Ecumene: Comparing Muslim Societies David S. Powers and Eric Tagliacozzo, eds. Cornell University Press, 2023."
+   },
+   "head": {
+    "reference": "p9#13",
+    "page": 9,
+    "text": "Work Reveals a Layered, Complex Islamic Polity"
+   }
+  },
+  {
+   "boundary": "p9:c0->c2",
+   "kind": "column",
+   "pairing": "body_next",
+   "tail_page": 9,
+   "head_page": 9,
+   "tail_column": 0,
+   "head_column": 2,
+   "column_count": 5,
+   "eligible": false,
+   "reason": "no_endpoint",
+   "pair": null,
+   "score": null,
+   "linked": false,
+   "tail_ends_on_hyphen": false,
+   "tail_last_line": "Cornell University Press, 2023.",
+   "head_first_line": "Find more reviews like this online at AramcoWorld.com.",
+   "tail": {
+    "reference": "p9#17",
+    "page": 9,
+    "text": "Islamic Ecumene: Comparing Muslim Societies David S. Powers and Eric Tagliacozzo, eds. Cornell University Press, 2023."
+   },
+   "head": {
+    "reference": "p9#11",
+    "page": 9,
+    "text": "Find more reviews like this online at AramcoWorld.com."
+   }
+  },
+  {
+   "boundary": "p9:c1->c2",
+   "kind": "column",
+   "pairing": "column_adjacent",
+   "tail_page": 9,
+   "head_page": 9,
+   "tail_column": 1,
+   "head_column": 2,
+   "column_count": 5,
+   "eligible": false,
+   "reason": "no_endpoint",
+   "pair": null,
+   "score": null,
+   "linked": false,
+   "tail_ends_on_hyphen": false,
+   "tail_last_line": "Complex Islamic Polity",
+   "head_first_line": "Find more reviews like this online at AramcoWorld.com.",
+   "tail": {
+    "reference": "p9#13",
+    "page": 9,
+    "text": "Work Reveals a Layered, Complex Islamic Polity"
+   },
+   "head": {
+    "reference": "p9#11",
+    "page": 9,
+    "text": "Find more reviews like this online at AramcoWorld.com."
+   }
+  },
+  {
+   "boundary": "p9:c1->c3",
+   "kind": "column",
+   "pairing": "body_next",
+   "tail_page": 9,
+   "head_page": 9,
+   "tail_column": 1,
+   "head_column": 3,
+   "column_count": 5,
+   "eligible": false,
+   "reason": "no_endpoint",
+   "pair": null,
+   "score": null,
+   "linked": false,
+   "tail_ends_on_hyphen": false,
+   "tail_last_line": "Complex Islamic Polity",
+   "head_first_line": "Powers and Tagliacozzo, both long de- voted to the study of Islamic history and culture, bring together scholars from historical, anthropological and political ",
+   "tail": {
+    "reference": "p9#13",
+    "page": 9,
+    "text": "Work Reveals a Layered, Complex Islamic Polity"
+   },
+   "head": {
+    "reference": "p9#1",
+    "page": 9,
+    "text": "Powers and Tagliacozzo, both long de- voted to the study of Islamic history and culture, bring together scholars from historical, anthropological and political thought. Rather than narrowly define Islam, the editors allow the collection to "
+   }
+  },
+  {
+   "boundary": "p9:c2->c3",
+   "kind": "column",
+   "pairing": "column_adjacent",
+   "tail_page": 9,
+   "head_page": 9,
+   "tail_column": 2,
+   "head_column": 3,
+   "column_count": 5,
+   "eligible": true,
+   "reason": null,
+   "pair": "body->body",
+   "score": 0.25,
+   "linked": false,
+   "tail_ends_on_hyphen": false,
+   "tail_last_line": "Find more reviews like this online at AramcoWorld.com.",
+   "head_first_line": "Powers and Tagliacozzo, both long de- voted to the study of Islamic history and culture, bring together scholars from historical, anthropological and political ",
+   "tail": {
+    "reference": "p9#11",
+    "page": 9,
+    "text": "Find more reviews like this online at AramcoWorld.com."
+   },
+   "head": {
+    "reference": "p9#1",
+    "page": 9,
+    "text": "Powers and Tagliacozzo, both long de- voted to the study of Islamic history and culture, bring together scholars from historical, anthropological and political thought. Rather than narrowly define Islam, the editors allow the collection to "
+   }
+  },
+  {
+   "boundary": "p9:c2->c4",
+   "kind": "column",
+   "pairing": "body_next",
+   "tail_page": 9,
+   "head_page": 9,
+   "tail_column": 2,
+   "head_column": 4,
+   "column_count": 5,
+   "eligible": true,
+   "reason": null,
+   "pair": "body->body",
+   "score": 0.25,
+   "linked": false,
+   "tail_ends_on_hyphen": false,
+   "tail_last_line": "Find more reviews like this online at AramcoWorld.com.",
+   "head_first_line": "names—stripped of familial, tribal and spiritual meaning—appears at first as administrative routine, but Brower re- veals it as identity erasure. The histo- ria",
+   "tail": {
+    "reference": "p9#11",
+    "page": 9,
+    "text": "Find more reviews like this online at AramcoWorld.com."
+   },
+   "head": {
+    "reference": "p9#5",
+    "page": 9,
+    "text": "names—stripped of familial, tribal and spiritual meaning—appears at first as administrative routine, but Brower re- veals it as identity erasure. The histo- rian contends that colonization begins not with gunfire but the filing cabinet, sho"
+   }
+  },
+  {
+   "boundary": "p9:c3->c4",
+   "kind": "column",
+   "pairing": "column_adjacent",
+   "tail_page": 9,
+   "head_page": 9,
+   "tail_column": 3,
+   "head_column": 4,
+   "column_count": 5,
+   "eligible": true,
+   "reason": null,
+   "pair": "body->body",
+   "score": 0.4,
+   "linked": false,
+   "tail_ends_on_hyphen": false,
+   "tail_last_line": "view of the ties that bind Muslim societies.”",
+   "head_first_line": "names—stripped of familial, tribal and spiritual meaning—appears at first as administrative routine, but Brower re- veals it as identity erasure. The histo- ria",
+   "tail": {
+    "reference": "p9#15",
+    "page": 9,
+    "text": "“By transcending geographic and temporal boundaries, we hope to offer a longer and broader view of the ties that bind Muslim societies.”"
+   },
+   "head": {
+    "reference": "p9#5",
+    "page": 9,
+    "text": "names—stripped of familial, tribal and spiritual meaning—appears at first as administrative routine, but Brower re- veals it as identity erasure. The histo- rian contends that colonization begins not with gunfire but the filing cabinet, sho"
+   }
+  }
+ ],
+ "edges": [
+  {
+   "boundary": "p5:c1->c2",
+   "kind": "column",
+   "pairing": "column_adjacent",
+   "score": 1.0
+  },
+  {
+   "boundary": "p6:c0->c2",
+   "kind": "column",
+   "pairing": "body_next",
+   "score": 1.0
+  },
+  {
+   "boundary": "6->7",
+   "kind": "page",
+   "pairing": null,
+   "score": 1.0
+  }
+ ],
+ "dropped_edges": [],
+ "chains": [
+  {
+   "length": 2,
+   "pages": [
+    5
+   ],
+   "members": [
+    {
+     "chain_index": 0,
+     "reference_at_build": "p5#7",
+     "page": 5,
+     "source": "Since opening fully in 2018, Saudi Arabia’s Haramain high-speed railway has achieved what the Ottoman-era Hijaz Railway never did: a direct rail connection between Makkah and Madinah,",
+     "box_at_build": [
+      78.16,
+      85.11,
+      270.7,
+      126.27
+     ],
+     "laid_out": {
+      "reference": "p5#7",
+      "box": [
+       78.16,
+       85.11,
+       270.7,
+       126.27
+      ],
+      "text": "自2018年全面开通以来，沙特阿拉伯的哈拉曼高速铁路实现了奥斯曼时代希贾兹铁路未曾实现的目标：在麦加和麦地那之间建立直接的铁路连接，大幅缩短了数百万朝觐者的旅程时间。"
+     }
+    },
+    {
+     "chain_index": 1,
+     "reference_at_build": "p5#8",
+     "page": 5,
+     "source": "dramatically reducing journey times for millions of Hajj pilgrims. In a very different technological and political era, it nevertheless echoes one of the central ambitions behind the original project: shrinking distance across the Hijaz.",
+     "box_at_build": [
+      285.16,
+      493.94,
+      477.12,
+      547.15
+     ],
+     "laid_out": {
+      "reference": "p5#8",
+      "box": [
+       285.16,
+       494.94,
+       477.12,
+       547.15
+      ],
+      "text": "在一个截然不同的技术和政治时代，它仍然呼应了最初项目背后的一个核心目标：缩短希贾兹的距离。"
+     }
+    }
+   ],
+   "joint_translation": "自2018年全面开通以来，沙特阿拉伯的哈拉曼高速铁路实现了奥斯曼时代希贾兹铁路未曾实现的目标：在麦加和麦地那之间建立直接的铁路连接，大幅缩短了数百万朝觐者的旅程时间。在一个截然不同的技术和政治时代，它仍然呼应了最初项目背后的一个核心目标：缩短希贾兹的距离。",
+   "joint_segments": [
+    {
+     "chars": 83,
+     "end": 83,
+     "index": 0,
+     "sentence_end": 1,
+     "sentence_start": 0,
+     "start": 0
+    },
+    {
+     "chars": 45,
+     "end": 128,
+     "index": 1,
+     "sentence_end": 2,
+     "sentence_start": 1,
+     "start": 83
+    }
+   ]
+  },
+  {
+   "length": 2,
+   "pages": [
+    6
+   ],
+   "members": [
+    {
+     "chain_index": 0,
+     "reference_at_build": "p6#3",
+     "page": 6,
+     "source": "The railway was expected to serve three functions. Politically, Abdul Hamid wanted to connect the pe- riphery of Ottoman territory back to the center, where",
+     "box_at_build": [
+      181.81,
+      632.32,
+      373.54,
+      664.02
+     ],
+     "laid_out": {
+      "reference": "p6#3",
+      "box": [
+       181.81,
+       632.32,
+       373.54,
+       664.02
+      ],
+      "text": "这条铁路预计将发挥三个功能。从政治上讲，阿卜杜勒·哈米德希望将奥斯曼帝国领土的边缘重新连接到他的控制最强的中心。"
+     }
+    },
+    {
+     "chain_index": 1,
+     "reference_at_build": "p6#4",
+     "page": 6,
+     "source": "his control was strongest. Militarily, the railway would act as a bulwark against European imperial- ism, allowing for reinforcement of defensive positions on the Mediterranean and Red seas. Religiously, it would replace the traditional Hajj camel caravan to Makkah and Madinah. By reducing the pilgrim- age from 40 days—one way—to as few as three in a carriage, the sultan stood to gain much-needed legitimacy in trying times.",
+     "box_at_build": [
+      388.58,
+      655.26,
+      580.63,
+      751.5
+     ],
+     "laid_out": {
+      "reference": "p6#4",
+      "box": [
+       388.58,
+       656.26,
+       580.63,
+       751.5
+      ],
+      "text": "从军事上讲，这条铁路将作为对抗欧洲帝国主义的堡垒，允许在地中海和红海的防御阵地进行增援。从宗教上讲，它将取代传统的前往麦加和麦地那的朝觐骆驼商队。通过将朝觐时间从单程40天缩短到仅需三天，苏丹在艰难时期可以获得急需的合法性。"
+     }
+    }
+   ],
+   "joint_translation": "这条铁路预计将发挥三个功能。从政治上讲，阿卜杜勒·哈米德希望将奥斯曼帝国领土的边缘重新连接到他的控制最强的中心。从军事上讲，这条铁路将作为对抗欧洲帝国主义的堡垒，允许在地中海和红海的防御阵地进行增援。从宗教上讲，它将取代传统的前往麦加和麦地那的朝觐骆驼商队。通过将朝觐时间从单程40天缩短到仅需三天，苏丹在艰难时期可以获得急需的合法性。",
+   "joint_segments": [
+    {
+     "chars": 56,
+     "end": 56,
+     "index": 0,
+     "sentence_end": 2,
+     "sentence_start": 0,
+     "start": 0
+    },
+    {
+     "chars": 112,
+     "end": 168,
+     "index": 1,
+     "sentence_end": 5,
+     "sentence_start": 2,
+     "start": 56
+    }
+   ]
+  },
+  {
+   "length": 2,
+   "pages": [
+    6,
+    7
+   ],
+   "members": [
+    {
+     "chain_index": 0,
+     "reference_at_build": "p6#10",
+     "page": 6,
+     "source": "“The railway workers had to overcome many technical difficulties,” writes Nicholson. These, iron- ically, also included a scarcity of water along much of",
+     "box_at_build": [
+      388.66,
+      83.81,
+      580.66,
+      115.51
+     ],
+     "laid_out": {
+      "reference": "p6#10",
+      "box": [
+       388.66,
+       83.81,
+       580.66,
+       115.51
+      ],
+      "text": "“铁路工人必须克服许多技术困难，”Nicholson写道。"
+     }
+    },
+    {
+     "chain_index": 1,
+     "reference_at_build": "p7#1",
+     "page": 7,
+     "source": "the route south of the Hauran and a severe shortage of locally available fuel sources.",
+     "box_at_build": [
+      78.16,
+      450.92,
+      267.96,
+      471.87
+     ],
+     "laid_out": {
+      "reference": "p7#1",
+      "box": [
+       78.16,
+       450.92,
+       267.96,
+       471.87
+      ],
+      "text": "具有讽刺意味的是，这些困难还包括豪兰以南大部分路段缺乏水源，以及当地可用燃料资源的严重短缺。"
+     }
+    }
+   ],
+   "joint_translation": "“铁路工人必须克服许多技术困难，”Nicholson写道。具有讽刺意味的是，这些困难还包括豪兰以南大部分路段缺乏水源，以及当地可用燃料资源的严重短缺。",
+   "joint_segments": [
+    {
+     "chars": 29,
+     "end": 29,
+     "index": 0,
+     "sentence_end": 1,
+     "sentence_start": 0,
+     "start": 0
+    },
+    {
+     "chars": 46,
+     "end": 75,
+     "index": 1,
+     "sentence_end": 2,
+     "sentence_start": 1,
+     "start": 29
+    }
+   ]
+  }
+ ],
+ "escalated": [],
+ "totals": {
+  "boundaries": 37,
+  "linked": 3,
+  "column_linked": 2,
+  "edges": 3,
+  "dropped_edges": 0,
+  "chains": 3
+ }
+}

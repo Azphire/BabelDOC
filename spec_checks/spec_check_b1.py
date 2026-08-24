@@ -188,6 +188,15 @@ NAME_REFERENCE_ALLOW_LIST = NAME_DEFINITION_FILES | {
     # recovered: the ruled kinds and the apply report's account of which of them
     # the classifier had agreed with. It opens no document.
     "spec_checks/spec_check_f3.py",
+    # B11.6 gives the indent policy a page level gate. The pass reads the page
+    # kind to reach that page's declared policy and writes no field: the flag it
+    # sets is first_line_indent, which is not one of the nine. Its gate builds
+    # pages carrying a kind, and so does b11.5's, because what both assert is
+    # that the policy of the page decides and not the pass -- the same reason
+    # b10.3 and b10.5 are on this list.
+    "babeldoc/magazine/indent_policy.py",
+    "spec_checks/spec_check_b11_5.py",
+    "spec_checks/spec_check_b11_6.py",
 }
 
 # Upstream files carried over from B0, still uncommitted in the working tree.

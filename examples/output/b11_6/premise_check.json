@@ -1,0 +1,129 @@
+{
+ "batch": "b11_6",
+ "base_tag": "b11.5",
+ "premises": {
+  "1": {
+   "premise": "configs/indent_policy.json reaches only body_labels; it declares no page level gate and no boxed exclusion",
+   "body_labels_line": 16,
+   "body_labels": [
+    "text",
+    "plain text",
+    "paragraph_hybrid"
+   ],
+   "keys": [
+    "article_opening_rank",
+    "article_opening_rank_allowed_range",
+    "body_labels",
+    "description",
+    "excerpt_chars",
+    "excerpt_chars_allowed_range",
+    "fallback_mode",
+    "indent_em",
+    "indent_em_allowed_range",
+    "indent_mode_by_target",
+    "indent_mode_vocabulary"
+   ],
+   "page_gate_keys": [],
+   "boxed_keys": [],
+   "holds": true
+  },
+  "2": {
+   "premise": "the page type policy takes boolean flags, with chain_eligible and preserve_line_structure as precedents, and no code names a type",
+   "optional_defaults_line": 75,
+   "optional_boolean_line": 82,
+   "declared_policy_keys": [
+    "chain_eligible",
+    "opens_article",
+    "preserve_line_structure",
+    "repair_profile",
+    "starts_article",
+    "translate"
+   ],
+   "precedents": [
+    "chain_eligible",
+    "preserve_line_structure"
+   ],
+   "page_type_names_in_code": [],
+   "holds": true
+  },
+  "3": {
+   "premise": "107 pairs, 24 would link, the FD p6 true positives are both caught, and the three honest treatments are in place",
+   "pairs": 107,
+   "would_link": 24,
+   "fertilizer_costs_score": 1.0,
+   "fertilizer_costs_signals": {
+    "tail_no_terminal_punct": 1.0,
+    "tail_line_fill": 1.0,
+    "style_continuity": 1.0,
+    "body_label_pair": 1.0,
+    "column_position": 1.0,
+    "opener_prior": 0.0
+   },
+   "supply_chains_hyphen": true,
+   "constants": {
+    "column_position": 1.0,
+    "opener_prior": 0.0
+   },
+   "unweighed_signal": "tail_ends_on_hyphen",
+   "holds": true
+  },
+  "4": {
+   "premise": "24 ruled pairs: 16 true, 8 false = 5 skips + 1 contents page + 2 hard",
+   "counts": {
+    "pairs": 24,
+    "continues": 16,
+    "does_not_continue": 8
+   },
+   "false_by_reason": {
+    "a contents page hands nothing over between its columns": 1,
+    "the content is covered by the adjacent edge": 5,
+    "the head is a credit block rather than a continuation": 1,
+    "the two columns are separate review units": 1
+   },
+   "hard_cases": [
+    "AramcoWorld-en-v2 p8 c1->c3",
+    "Courier-zh p4 c3->c4"
+   ],
+   "holds": true
+  },
+  "5": {
+   "premise": "the builder walks adjacent page pairs, and joint translation, backfill and the conservation law already exist",
+   "adjacent_pair_walk_line": 76,
+   "chain_plan_line": 278,
+   "redistribute_line": 1079,
+   "verify_redistribution_line": 1191,
+   "holds": true
+  },
+  "6": {
+   "premise": "the reflow pass reads declared page level collections as obstacles",
+   "obstacle_boxes_line": 436,
+   "obstacle_collections": [
+    "pdf_figure",
+    "pdf_rectangle",
+    "pdf_curve",
+    "pdf_form",
+    "pdf_character"
+   ],
+   "holds": true
+  },
+  "7": {
+   "premise": "b11.5 decided 103 paragraphs on FD-en-v2, and page 3 -- the contents page -- is among them, which is the page gate's absence as evidence",
+   "decided_total": 103,
+   "decided_by_page": {
+    "1": 4,
+    "2": 3,
+    "3": 29,
+    "4": 2,
+    "5": 34,
+    "6": 8,
+    "7": 7,
+    "8": 5,
+    "9": 11
+   },
+   "page_3_decided": 29,
+   "page_3_changed": 26,
+   "holds": true
+  }
+ },
+ "all_hold": true
+}

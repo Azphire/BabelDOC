@@ -1,0 +1,110 @@
+{
+  "decision_sources": [
+    "ruled",
+    "default"
+  ],
+  "decisions": [
+    {
+      "box_after": [
+        56.85553999999999,
+        651.2017,
+        292.3605440000002,
+        770.3969000000001
+      ],
+      "box_before": [
+        56.85553999999999,
+        651.2017,
+        292.3605440000002,
+        786.5450000000001
+      ],
+      "characters_merged": 599,
+      "debug_id": "yyZBE",
+      "decision": "flatten",
+      "initial": "L",
+      "merged": true,
+      "page": 4,
+      "paragraph": "p4#3",
+      "separator_dropped": 1,
+      "size_ratio": 6.6683,
+      "source": "ruled",
+      "unicode_after": "Long before satellites orbited Earth, Polynesian navigators crossed thousands of",
+      "unicode_before": "L ong before satellites orbited Earth, Polynesian navigators crossed thousands o",
+      "was_candidate": true
+    },
+    {
+      "box_after": [
+        56.7997316,
+        411.30289999999997,
+        209.865336,
+        530.3969000000001
+      ],
+      "box_before": [
+        56.7997316,
+        411.30289999999997,
+        209.865336,
+        546.5450000000001
+      ],
+      "characters_merged": 369,
+      "debug_id": "5H5qX",
+      "decision": "flatten",
+      "initial": "O",
+      "merged": true,
+      "page": 5,
+      "paragraph": "p5#5",
+      "separator_dropped": 1,
+      "size_ratio": 6.6683,
+      "source": "ruled",
+      "unicode_after": "On the Purus River, as the light fades and the heat lingers over the water, a pi",
+      "unicode_before": "O n the Purus River, as the light fades and the heat lingers over the water, a p",
+      "was_candidate": true
+    },
+    {
+      "box_after": [
+        56.684920000000005,
+        326.9480999999999,
+        211.93836999999996,
+        530.3969000000001
+      ],
+      "box_before": [
+        56.684920000000005,
+        326.9480999999999,
+        211.93836999999996,
+        546.5450000000001
+      ],
+      "characters_merged": 613,
+      "debug_id": "TnLrK",
+      "decision": "flatten",
+      "initial": "T",
+      "merged": true,
+      "page": 7,
+      "paragraph": "p7#8",
+      "separator_dropped": 1,
+      "size_ratio": 6.6683,
+      "source": "ruled",
+      "unicode_after": "There is a huge diversity of Indigenous Peoples, cultures, languages, and knowle",
+      "unicode_before": "T here is a huge diversity of Indigenous Peoples, cultures, languages, and knowl",
+      "was_candidate": true
+    }
+  ],
+  "default_decision": "flatten",
+  "separator_policy": "drop_synthesized",
+  "switch": "magazine_drop_cap_apply",
+  "target_lang": "zh",
+  "totals": {
+    "by_decision": {
+      "flatten": 3,
+      "keep": 0
+    },
+    "by_source": {
+      "default": 0,
+      "ruled": 3
+    },
+    "decided": 3,
+    "merged": 3,
+    "separators_dropped": 3
+  },
+  "verdicts": [
+    "keep",
+    "flatten"
+  ]
+}

@@ -1,0 +1,757 @@
+{
+ "sample": "FD-en-v2",
+ "read_from": "checkpoint.08_chain_builder.xml",
+ "link_min_score": 0.8,
+ "boundary_priority": [
+  "page",
+  "column_adjacent",
+  "body_next"
+ ],
+ "boundaries": [
+  {
+   "boundary": "p1:c0->c1",
+   "kind": "column",
+   "pairing": "column_adjacent",
+   "tail_page": 1,
+   "head_page": 1,
+   "tail_column": 0,
+   "head_column": 1,
+   "column_count": 2,
+   "eligible": false,
+   "reason": "no_endpoint",
+   "pair": null,
+   "score": null,
+   "linked": false,
+   "tail_ends_on_hyphen": false,
+   "tail_last_line": "economic statecraft",
+   "head_first_line": "FINANCE & DEVELOPMENT",
+   "tail": {
+    "reference": "p1#6",
+    "page": 1,
+    "text": "And the return of economic statecraft"
+   },
+   "head": {
+    "reference": "p1#4",
+    "page": 1,
+    "text": "FINANCE & DEVELOPMENT"
+   }
+  },
+  {
+   "boundary": "1->2",
+   "kind": "page",
+   "pairing": null,
+   "tail_page": 1,
+   "head_page": 2,
+   "tail_column": null,
+   "head_column": null,
+   "column_count": null,
+   "eligible": false,
+   "reason": "not_chain_eligible:tail,head",
+   "pair": null,
+   "score": null,
+   "linked": false,
+   "tail_ends_on_hyphen": false,
+   "tail_last_line": null,
+   "head_first_line": "",
+   "tail": null,
+   "head": null
+  },
+  {
+   "boundary": "p2:c0->c1",
+   "kind": "column",
+   "pairing": "column_adjacent",
+   "tail_page": 2,
+   "head_page": 2,
+   "tail_column": 0,
+   "head_column": 1,
+   "column_count": 2,
+   "eligible": false,
+   "reason": "no_endpoint",
+   "pair": null,
+   "score": null,
+   "linked": false,
+   "tail_ends_on_hyphen": false,
+   "tail_last_line": "conflicts to assess the economic implications of wars.",
+   "head_first_line": "World EconomicOutlook",
+   "tail": {
+    "reference": "p2#5",
+    "page": 2,
+    "text": "Armed conflicts generate profound macroeconomic consequences beyond their devastating human toll. This chapter leverages global data on post–World War II conflicts to assess the economic implications of wars."
+   },
+   "head": {
+    "reference": "p2#0",
+    "page": 2,
+    "text": "World EconomicOutlook"
+   }
+  },
+  {
+   "boundary": "2->3",
+   "kind": "page",
+   "pairing": null,
+   "tail_page": 2,
+   "head_page": 3,
+   "tail_column": null,
+   "head_column": null,
+   "column_count": null,
+   "eligible": false,
+   "reason": "not_chain_eligible:tail,head",
+   "pair": null,
+   "score": null,
+   "linked": false,
+   "tail_ends_on_hyphen": false,
+   "tail_last_line": null,
+   "head_first_line": "",
+   "tail": null,
+   "head": null
+  },
+  {
+   "boundary": "p3:columns",
+   "kind": "column",
+   "pairing": null,
+   "tail_page": 3,
+   "head_page": 3,
+   "tail_column": null,
+   "head_column": null,
+   "column_count": null,
+   "eligible": false,
+   "reason": "preserve_line_structure",
+   "pair": null,
+   "score": null,
+   "linked": false,
+   "tail_ends_on_hyphen": false,
+   "tail_last_line": null,
+   "head_first_line": "",
+   "tail": null,
+   "head": null
+  },
+  {
+   "boundary": "3->4",
+   "kind": "page",
+   "pairing": null,
+   "tail_page": 3,
+   "head_page": 4,
+   "tail_column": null,
+   "head_column": null,
+   "column_count": null,
+   "eligible": false,
+   "reason": "not_chain_eligible:tail,head",
+   "pair": null,
+   "score": null,
+   "linked": false,
+   "tail_ends_on_hyphen": false,
+   "tail_last_line": null,
+   "head_first_line": "",
+   "tail": null,
+   "head": null
+  },
+  {
+   "boundary": "p4:columns",
+   "kind": "column",
+   "pairing": null,
+   "tail_page": 4,
+   "head_page": 4,
+   "tail_column": null,
+   "head_column": null,
+   "column_count": null,
+   "eligible": false,
+   "reason": "one_column",
+   "pair": null,
+   "score": null,
+   "linked": false,
+   "tail_ends_on_hyphen": false,
+   "tail_last_line": null,
+   "head_first_line": "",
+   "tail": null,
+   "head": null
+  },
+  {
+   "boundary": "4->5",
+   "kind": "page",
+   "pairing": null,
+   "tail_page": 4,
+   "head_page": 5,
+   "tail_column": null,
+   "head_column": null,
+   "column_count": null,
+   "eligible": false,
+   "reason": "not_chain_eligible:tail,head",
+   "pair": null,
+   "score": null,
+   "linked": false,
+   "tail_ends_on_hyphen": false,
+   "tail_last_line": null,
+   "head_first_line": "",
+   "tail": null,
+   "head": null
+  },
+  {
+   "boundary": "p5:columns",
+   "kind": "column",
+   "pairing": null,
+   "tail_page": 5,
+   "head_page": 5,
+   "tail_column": null,
+   "head_column": null,
+   "column_count": null,
+   "eligible": false,
+   "reason": "preserve_line_structure",
+   "pair": null,
+   "score": null,
+   "linked": false,
+   "tail_ends_on_hyphen": false,
+   "tail_last_line": null,
+   "head_first_line": "",
+   "tail": null,
+   "head": null
+  },
+  {
+   "boundary": "5->6",
+   "kind": "page",
+   "pairing": null,
+   "tail_page": 5,
+   "head_page": 6,
+   "tail_column": null,
+   "head_column": null,
+   "column_count": null,
+   "eligible": false,
+   "reason": "not_chain_eligible:tail",
+   "pair": null,
+   "score": null,
+   "linked": false,
+   "tail_ends_on_hyphen": false,
+   "tail_last_line": null,
+   "head_first_line": "",
+   "tail": null,
+   "head": null
+  },
+  {
+   "boundary": "p6:c0->c1",
+   "kind": "column",
+   "pairing": "column_adjacent",
+   "tail_page": 6,
+   "head_page": 6,
+   "tail_column": 0,
+   "head_column": 1,
+   "column_count": 4,
+   "eligible": true,
+   "reason": null,
+   "pair": "body->body",
+   "score": 1.0,
+   "linked": true,
+   "tail_ends_on_hyphen": true,
+   "tail_last_line": "ing up energy prices and disrupting sup-",
+   "head_first_line": "ply chains. “A resilient world economy is being tested again by the war in the Mid- dle East,” she said. She warned that there would be “no neat and clean retur",
+   "tail": {
+    "reference": "p6#6",
+    "page": 6,
+    "text": "Speaking ahead of the IMF’s spring meetings in April, Georgieva said the con- flict had cut global oil and gas flows, driv- ing up energy prices and disrupting sup-"
+   },
+   "head": {
+    "reference": "p6#7",
+    "page": 6,
+    "text": "ply chains. “A resilient world economy is being tested again by the war in the Mid- dle East,” she said. She warned that there would be “no neat and clean return” to the prewar situation."
+   }
+  },
+  {
+   "boundary": "p6:c0->c2",
+   "kind": "column",
+   "pairing": "body_next",
+   "tail_page": 6,
+   "head_page": 6,
+   "tail_column": 0,
+   "head_column": 2,
+   "column_count": 4,
+   "eligible": false,
+   "reason": "no_endpoint",
+   "pair": null,
+   "score": null,
+   "linked": false,
+   "tail_ends_on_hyphen": true,
+   "tail_last_line": "ing up energy prices and disrupting sup-",
+   "head_first_line": "A global view, in brief",
+   "tail": {
+    "reference": "p6#6",
+    "page": 6,
+    "text": "Speaking ahead of the IMF’s spring meetings in April, Georgieva said the con- flict had cut global oil and gas flows, driv- ing up energy prices and disrupting sup-"
+   },
+   "head": {
+    "reference": "p6#3",
+    "page": 6,
+    "text": "A global view, in brief"
+   }
+  },
+  {
+   "boundary": "p6:c1->c2",
+   "kind": "column",
+   "pairing": "column_adjacent",
+   "tail_page": 6,
+   "head_page": 6,
+   "tail_column": 1,
+   "head_column": 2,
+   "column_count": 4,
+   "eligible": false,
+   "reason": "no_endpoint",
+   "pair": null,
+   "score": null,
+   "linked": false,
+   "tail_ends_on_hyphen": false,
+   "tail_last_line": "fuel imports and rising food and fertilizer",
+   "head_first_line": "A global view, in brief",
+   "tail": {
+    "reference": "p6#9",
+    "page": 6,
+    "text": "As well as war-hit countries in the Per- sian Gulf, Georgieva said that sub-Saharan Africa and small island states were among the most exposed, citing heavy reliance on fuel imports and rising food and fertilizer"
+   },
+   "head": {
+    "reference": "p6#3",
+    "page": 6,
+    "text": "A global view, in brief"
+   }
+  },
+  {
+   "boundary": "p6:c1->c3",
+   "kind": "column",
+   "pairing": "body_next",
+   "tail_page": 6,
+   "head_page": 6,
+   "tail_column": 1,
+   "head_column": 3,
+   "column_count": 4,
+   "eligible": true,
+   "reason": null,
+   "pair": "body->body",
+   "score": 1.0,
+   "linked": true,
+   "tail_ends_on_hyphen": false,
+   "tail_last_line": "fuel imports and rising food and fertilizer",
+   "head_first_line": "costs that are worsening poverty and food insecurity. Island econo- mies at the end of global shipping routes also face heightened risks of fuel shortages, she ",
+   "tail": {
+    "reference": "p6#9",
+    "page": 6,
+    "text": "As well as war-hit countries in the Per- sian Gulf, Georgieva said that sub-Saharan Africa and small island states were among the most exposed, citing heavy reliance on fuel imports and rising food and fertilizer"
+   },
+   "head": {
+    "reference": "p6#12",
+    "page": 6,
+    "text": "costs that are worsening poverty and food insecurity. Island econo- mies at the end of global shipping routes also face heightened risks of fuel shortages, she said."
+   }
+  },
+  {
+   "boundary": "p6:c2->c3",
+   "kind": "column",
+   "pairing": "column_adjacent",
+   "tail_page": 6,
+   "head_page": 6,
+   "tail_column": 2,
+   "head_column": 3,
+   "column_count": 4,
+   "eligible": false,
+   "reason": "no_endpoint",
+   "pair": null,
+   "score": null,
+   "linked": false,
+   "tail_ends_on_hyphen": false,
+   "tail_last_line": "A global view, in brief",
+   "head_first_line": "costs that are worsening poverty and food insecurity. Island econo- mies at the end of global shipping routes also face heightened risks of fuel shortages, she ",
+   "tail": {
+    "reference": "p6#3",
+    "page": 6,
+    "text": "A global view, in brief"
+   },
+   "head": {
+    "reference": "p6#12",
+    "page": 6,
+    "text": "costs that are worsening poverty and food insecurity. Island econo- mies at the end of global shipping routes also face heightened risks of fuel shortages, she said."
+   }
+  },
+  {
+   "boundary": "6->7",
+   "kind": "page",
+   "pairing": null,
+   "tail_page": 6,
+   "head_page": 7,
+   "tail_column": null,
+   "head_column": null,
+   "column_count": null,
+   "eligible": false,
+   "reason": "not_chain_eligible:head",
+   "pair": null,
+   "score": null,
+   "linked": false,
+   "tail_ends_on_hyphen": false,
+   "tail_last_line": null,
+   "head_first_line": "",
+   "tail": null,
+   "head": null
+  },
+  {
+   "boundary": "p7:columns",
+   "kind": "column",
+   "pairing": null,
+   "tail_page": 7,
+   "head_page": 7,
+   "tail_column": null,
+   "head_column": null,
+   "column_count": null,
+   "eligible": false,
+   "reason": "preserve_line_structure",
+   "pair": null,
+   "score": null,
+   "linked": false,
+   "tail_ends_on_hyphen": false,
+   "tail_last_line": null,
+   "head_first_line": "",
+   "tail": null,
+   "head": null
+  },
+  {
+   "boundary": "7->8",
+   "kind": "page",
+   "pairing": null,
+   "tail_page": 7,
+   "head_page": 8,
+   "tail_column": null,
+   "head_column": null,
+   "column_count": null,
+   "eligible": false,
+   "reason": "not_chain_eligible:tail",
+   "pair": null,
+   "score": null,
+   "linked": false,
+   "tail_ends_on_hyphen": false,
+   "tail_last_line": null,
+   "head_first_line": "",
+   "tail": null,
+   "head": null
+  },
+  {
+   "boundary": "p8:c0->c1",
+   "kind": "column",
+   "pairing": "column_adjacent",
+   "tail_page": 8,
+   "head_page": 8,
+   "tail_column": 0,
+   "head_column": 1,
+   "column_count": 2,
+   "eligible": true,
+   "reason": null,
+   "pair": "body->body",
+   "score": 0.65,
+   "linked": false,
+   "tail_ends_on_hyphen": false,
+   "tail_last_line": "with national security amid rising geopolitical risk",
+   "head_first_line": "When it comes to international trade, countries have always weighed economic efficiency against national security. After World War II, they pursued free interna",
+   "tail": {
+    "reference": "p8#7",
+    "page": 8,
+    "text": "US policymakers are rebalancing economic efficiency with national security amid rising geopolitical risk"
+   },
+   "head": {
+    "reference": "p8#9",
+    "page": 8,
+    "text": "When it comes to international trade, countries have always weighed economic efficiency against national security. After World War II, they pursued free international trade through low tariffs in the belief that it was both economically eff"
+   }
+  },
+  {
+   "boundary": "8->9",
+   "kind": "page",
+   "pairing": null,
+   "tail_page": 8,
+   "head_page": 9,
+   "tail_column": 0,
+   "head_column": 0,
+   "column_count": null,
+   "eligible": true,
+   "reason": null,
+   "pair": "title->title",
+   "score": 0.36875,
+   "linked": false,
+   "tail_ends_on_hyphen": false,
+   "tail_last_line": "Free Trade",
+   "head_first_line": "Franc Democracy",
+   "tail": {
+    "reference": "p8#8",
+    "page": 8,
+    "text": "Rethinking Free Trade"
+   },
+   "head": {
+    "reference": "p9#12",
+    "page": 9,
+    "text": "Franc Democracy"
+   }
+  },
+  {
+   "boundary": "p9:c0->c1",
+   "kind": "column",
+   "pairing": "column_adjacent",
+   "tail_page": 9,
+   "head_page": 9,
+   "tail_column": 0,
+   "head_column": 1,
+   "column_count": 2,
+   "eligible": true,
+   "reason": null,
+   "pair": "body->body",
+   "score": 0.85,
+   "linked": true,
+   "tail_ends_on_hyphen": false,
+   "tail_last_line": "Switzerland replaces its banknotes every 15–20 years. The",
+   "head_first_line": "forthcoming series—the bank’s 10th—preserves another Swiss peculiarity, the 1,000 franc bill (about $1,250), the world’s larg- est denomination in active circul",
+   "tail": {
+    "reference": "p9#18",
+    "page": 9,
+    "text": "Switzerland replaces its banknotes every 15–20 years. The"
+   },
+   "head": {
+    "reference": "p9#20",
+    "page": 9,
+    "text": "forthcoming series—the bank’s 10th—preserves another Swiss peculiarity, the 1,000 franc bill (about $1,250), the world’s larg- est denomination in active circulation."
+   }
+  }
+ ],
+ "edges": [
+  {
+   "boundary": "p6:c0->c1",
+   "kind": "column",
+   "pairing": "column_adjacent",
+   "score": 1.0
+  },
+  {
+   "boundary": "p6:c1->c3",
+   "kind": "column",
+   "pairing": "body_next",
+   "score": 1.0
+  },
+  {
+   "boundary": "p9:c0->c1",
+   "kind": "column",
+   "pairing": "column_adjacent",
+   "score": 0.85
+  }
+ ],
+ "dropped_edges": [],
+ "chains": [
+  {
+   "length": 2,
+   "pages": [
+    6
+   ],
+   "members": [
+    {
+     "chain_index": 0,
+     "reference_at_build": "p6#6",
+     "page": 6,
+     "source": "Speaking ahead of the IMF’s spring meetings in April, Georgieva said the con- flict had cut global oil and gas flows, driv- ing up energy prices and disrupting sup-",
+     "box_at_build": [
+      36.51,
+      51.64,
+      199.83,
+      99.25
+     ],
+     "laid_out": {
+      "reference": "p6#6",
+      "box": [
+       36.51,
+       51.64,
+       199.83,
+       99.25
+      ],
+      "text": "在国际货币基金组织四月春季会议之前，格奥尔基耶娃表示，冲突已经削减了全球石油和天然气的流动，推高了能源价格并扰乱了供应链。"
+     }
+    },
+    {
+     "chain_index": 1,
+     "reference_at_build": "p6#7",
+     "page": 6,
+     "source": "ply chains. “A resilient world economy is being tested again by the war in the Mid- dle East,” she said. She warned that there would be “no neat and clean return” to the prewar situation.",
+     "box_at_build": [
+      215.36,
+      231.78,
+      377.82,
+      291.25
+     ],
+     "laid_out": {
+      "reference": "p6#7",
+      "box": [
+       215.36,
+       234.25,
+       377.82,
+       291.25
+      ],
+      "text": "她说：“一个有韧性的世界经济再次受到中东战争的考验。”她警告说，不会有“整洁和干净的回归”到战前的局面。"
+     }
+    }
+   ],
+   "joint_translation": "在国际货币基金组织四月春季会议之前，格奥尔基耶娃表示，冲突已经削减了全球石油和天然气的流动，推高了能源价格并扰乱了供应链。她说：“一个有韧性的世界经济再次受到中东战争的考验。”她警告说，不会有“整洁和干净的回归”到战前的局面。",
+   "joint_segments": [
+    {
+     "chars": 61,
+     "end": 61,
+     "index": 0,
+     "sentence_end": 1,
+     "sentence_start": 0,
+     "start": 0
+    },
+    {
+     "chars": 52,
+     "end": 113,
+     "index": 1,
+     "sentence_end": 3,
+     "sentence_start": 1,
+     "start": 61
+    }
+   ]
+  },
+  {
+   "length": 2,
+   "pages": [
+    6
+   ],
+   "members": [
+    {
+     "chain_index": 0,
+     "reference_at_build": "p6#9",
+     "page": 6,
+     "source": "As well as war-hit countries in the Per- sian Gulf, Georgieva said that sub-Saharan Africa and small island states were among the most exposed, citing heavy reliance on fuel imports and rising food and fertilizer",
+     "box_at_build": [
+      214.76,
+      51.64,
+      377.85,
+      111.26
+     ],
+     "laid_out": {
+      "reference": "p6#9",
+      "box": [
+       214.76,
+       51.64,
+       377.85,
+       111.26
+      ],
+      "text": "克里斯塔利娜·格奥尔基耶娃表示，除了受战争影响的波斯湾国家外，撒哈拉以南非洲和小岛屿国家也是最容易受到影响的地区之一。"
+     }
+    },
+    {
+     "chain_index": 1,
+     "reference_at_build": "p6#12",
+     "page": 6,
+     "source": "costs that are worsening poverty and food insecurity. Island econo- mies at the end of global shipping routes also face heightened risks of fuel shortages, she said.",
+     "box_at_build": [
+      393.65,
+      231.64,
+      530.81,
+      291.25
+     ],
+     "laid_out": {
+      "reference": "p6#12",
+      "box": [
+       393.65,
+       234.25,
+       530.81,
+       291.25
+      ],
+      "text": "她指出，这些地区严重依赖燃料进口，食品和化肥成本上升，加剧了贫困和粮食不安全。她还表示，位于全球航运路线末端的岛屿经济体也面临燃料短缺的更大风险。"
+     }
+    }
+   ],
+   "joint_translation": "克里斯塔利娜·格奥尔基耶娃表示，除了受战争影响的波斯湾国家外，撒哈拉以南非洲和小岛屿国家也是最容易受到影响的地区之一。她指出，这些地区严重依赖燃料进口，食品和化肥成本上升，加剧了贫困和粮食不安全。她还表示，位于全球航运路线末端的岛屿经济体也面临燃料短缺的更大风险。",
+   "joint_segments": [
+    {
+     "chars": 59,
+     "end": 59,
+     "index": 0,
+     "sentence_end": 1,
+     "sentence_start": 0,
+     "start": 0
+    },
+    {
+     "chars": 73,
+     "end": 132,
+     "index": 1,
+     "sentence_end": 3,
+     "sentence_start": 1,
+     "start": 59
+    }
+   ]
+  },
+  {
+   "length": 2,
+   "pages": [
+    9
+   ],
+   "members": [
+    {
+     "chain_index": 0,
+     "reference_at_build": "p9#18",
+     "page": 9,
+     "source": "Switzerland replaces its banknotes every 15–20 years. The",
+     "box_at_build": [
+      48.93,
+      51.66,
+      273.13,
+      63.25
+     ],
+     "laid_out": {
+      "reference": "p9#18",
+      "box": [
+       48.93,
+       51.66,
+       273.13,
+       63.25
+      ],
+      "text": "瑞士每15到20年更换一次纸币。"
+     }
+    },
+    {
+     "chain_index": 1,
+     "reference_at_build": "p9#20",
+     "page": 9,
+     "source": "forthcoming series—the bank’s 10th—preserves another Swiss peculiarity, the 1,000 franc bill (about $1,250), the world’s larg- est denomination in active circulation.",
+     "box_at_build": [
+      291.65,
+      197.82,
+      530.85,
+      231.25
+     ],
+     "laid_out": {
+      "reference": "p9#20",
+      "box": [
+       291.65,
+       197.82,
+       530.85,
+       231.25
+      ],
+      "text": "即将发行的新系列——瑞士银行的第十套纸币——保留了另一个瑞士的独特之处，即1000法郎（约1250美元）的钞票，这是世界上流通中面额最大的纸币。"
+     }
+    }
+   ],
+   "joint_translation": "瑞士每15到20年更换一次纸币。即将发行的新系列——瑞士银行的第十套纸币——保留了另一个瑞士的独特之处，即1000法郎（约1250美元）的钞票，这是世界上流通中面额最大的纸币。",
+   "joint_segments": [
+    {
+     "chars": 16,
+     "end": 16,
+     "index": 0,
+     "sentence_end": 1,
+     "sentence_start": 0,
+     "start": 0
+    },
+    {
+     "chars": 72,
+     "end": 88,
+     "index": 1,
+     "sentence_end": 2,
+     "sentence_start": 1,
+     "start": 16
+    }
+   ]
+  }
+ ],
+ "escalated": [],
+ "totals": {
+  "boundaries": 21,
+  "linked": 3,
+  "column_linked": 3,
+  "edges": 3,
+  "dropped_edges": 0,
+  "chains": 3
+ }
+}

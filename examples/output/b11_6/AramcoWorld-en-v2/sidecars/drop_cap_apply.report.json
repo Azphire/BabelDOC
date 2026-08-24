@@ -1,0 +1,28 @@
+{
+  "decision_sources": [
+    "ruled",
+    "default"
+  ],
+  "decisions": [],
+  "default_decision": "flatten",
+  "separator_policy": "drop_synthesized",
+  "switch": "magazine_drop_cap_apply",
+  "target_lang": "zh",
+  "totals": {
+    "by_decision": {
+      "flatten": 0,
+      "keep": 0
+    },
+    "by_source": {
+      "default": 0,
+      "ruled": 0
+    },
+    "decided": 0,
+    "merged": 0,
+    "separators_dropped": 0
+  },
+  "verdicts": [
+    "keep",
+    "flatten"
+  ]
+}

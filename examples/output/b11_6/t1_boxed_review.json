@@ -1,0 +1,238 @@
+{
+ "batch": "b11_6",
+ "task": "T1 step 2b: the reading of the catch, and the determination",
+ "measurement": "examples/output/b11_6/t1_boxed_measure.json",
+ "ground_ratio": 0.9,
+ "totals": {
+  "body_paragraphs": 428,
+  "inside": 230,
+  "inside_a_full_page_panel": 208,
+  "reviewed": 22,
+  "furniture": 22,
+  "running_text": 0
+ },
+ "boxed_exclusion_ships": false,
+ "determination": "The box level gate does not ship. The mechanism it rests on is sound: every one of the 22 instances whose panel is smaller than the page is furniture, and not one of them is the article's running text, so a gate that fired on those and only those would be right every time. What does not hold is the predicate as declared. The rule declares a floor on the panel's area and no ceiling, and a filled curve covering the whole sheet clears that floor by the widest margin of any panel in the corpus. So the declared rule catches 230 of the corpus's 428 body paragraphs, 208 of them inside a panel that is the page's own ground -- every one of CERNCourier-en's 90 body paragraphs among them. That is the catch this step exists to look at, and it is running text, so step 2b's second branch applies: stop the sub-item, ship the page gate alone, and register the box level gate as a gap. The term that separates a panel from the paper is not written into the rule this batch was given, and writing one in here to make the number come out would be tuning a knob so that a predicted result holds, which CLAUDE.md section 5.14 forbids.",
+ "reviewed": [
+  {
+   "sample": "Courier-en",
+   "reference": "p6#12",
+   "page_kind": "article_body",
+   "indent_eligible_page": true,
+   "panel_page_area_ratio": 0.1638,
+   "verdict": "furniture",
+   "note": "the tinted box on the quantum year, set apart from the article",
+   "excerpt": "To mark the centennial of quantum mechanics, the United Nations declared 2025 th"
+  },
+  {
+   "sample": "Courier-en",
+   "reference": "p6#13",
+   "page_kind": "article_body",
+   "indent_eligible_page": true,
+   "panel_page_area_ratio": 0.1638,
+   "verdict": "furniture",
+   "note": "the second paragraph of the same tinted box",
+   "excerpt": "Throughout the year, scientists, educators, and citizens worldwide were invited "
+  },
+  {
+   "sample": "AramcoWorld-en-v2",
+   "reference": "p3#13",
+   "page_kind": "toc",
+   "indent_eligible_page": false,
+   "panel_page_area_ratio": 0.0943,
+   "verdict": "furniture",
+   "note": "a caption panel on the contents page",
+   "excerpt": "R Intricate interior details of the Tilya-Kori Madrasa on the Registan complex i"
+  },
+  {
+   "sample": "AramcoWorld-en-v2",
+   "reference": "p3#15",
+   "page_kind": "toc",
+   "indent_eligible_page": false,
+   "panel_page_area_ratio": 0.0943,
+   "verdict": "furniture",
+   "note": "the continuation of that caption panel",
+   "excerpt": "wall patterns. Preservationists work ceaselessly to restore and maintain the exa"
+  },
+  {
+   "sample": "AramcoWorld-en-v2",
+   "reference": "p3#16",
+   "page_kind": "toc",
+   "indent_eligible_page": false,
+   "panel_page_area_ratio": 0.0943,
+   "verdict": "furniture",
+   "note": "the contents strip along the foot of the page",
+   "excerpt": "2 FirstLook | 4 Flavors | 6 Q&A | 38 Author’s Corner | 40 Reviews | 42 Events | "
+  },
+  {
+   "sample": "AramcoWorld-en-v2",
+   "reference": "p9#15",
+   "page_kind": "article_opener",
+   "indent_eligible_page": true,
+   "panel_page_area_ratio": 0.1023,
+   "verdict": "furniture",
+   "note": "a pull quote set in its own tint panel",
+   "excerpt": "“By transcending geographic and temporal boundaries, we hope to offer a longer a"
+  },
+  {
+   "sample": "AramcoWorld-en-v2",
+   "reference": "p9#16",
+   "page_kind": "article_opener",
+   "indent_eligible_page": true,
+   "panel_page_area_ratio": 0.1023,
+   "verdict": "furniture",
+   "note": "the attribution line of that pull quote",
+   "excerpt": "—Islamic Ecumene"
+  },
+  {
+   "sample": "FD-en-v2",
+   "reference": "p4#0",
+   "page_kind": "advertisement",
+   "indent_eligible_page": false,
+   "panel_page_area_ratio": 0.4816,
+   "verdict": "furniture",
+   "note": "the body of a subscription advertisement panel",
+   "excerpt": "Sign up now for cutting-edge research and analysis of key economic, finance, dev"
+  },
+  {
+   "sample": "FD-en-v2",
+   "reference": "p4#1",
+   "page_kind": "advertisement",
+   "indent_eligible_page": false,
+   "panel_page_area_ratio": 0.4816,
+   "verdict": "furniture",
+   "note": "the call to action of that advertisement",
+   "excerpt": "SIGN UP TODAY!"
+  },
+  {
+   "sample": "FD-en-v2",
+   "reference": "p5#27",
+   "page_kind": "masthead",
+   "indent_eligible_page": false,
+   "panel_page_area_ratio": 0.4241,
+   "verdict": "furniture",
+   "note": "a promotion panel on the imprint page",
+   "excerpt": "Online editions in seven languages"
+  },
+  {
+   "sample": "FD-en-v2",
+   "reference": "p5#28",
+   "page_kind": "masthead",
+   "indent_eligible_page": false,
+   "panel_page_area_ratio": 0.4241,
+   "verdict": "furniture",
+   "note": "a line of that promotion panel",
+   "excerpt": "Disponible en français !"
+  },
+  {
+   "sample": "FD-en-v2",
+   "reference": "p5#33",
+   "page_kind": "masthead",
+   "indent_eligible_page": false,
+   "panel_page_area_ratio": 0.4241,
+   "verdict": "furniture",
+   "note": "a line of that promotion panel",
+   "excerpt": "日本語はこちら!"
+  },
+  {
+   "sample": "FD-en-v2",
+   "reference": "p5#34",
+   "page_kind": "masthead",
+   "indent_eligible_page": false,
+   "panel_page_area_ratio": 0.4241,
+   "verdict": "furniture",
+   "note": "the address line of that panel",
+   "excerpt": "www.imf.org/fandd"
+  },
+  {
+   "sample": "FD-en-v2",
+   "reference": "p7#6",
+   "page_kind": "masthead",
+   "indent_eligible_page": false,
+   "panel_page_area_ratio": 0.2294,
+   "verdict": "furniture",
+   "note": "a highlighted statement set in its own panel",
+   "excerpt": "The duration and scale of the conflict will shape the global outlook."
+  },
+  {
+   "sample": "FD-en-v2",
+   "reference": "p7#27",
+   "page_kind": "masthead",
+   "indent_eligible_page": false,
+   "panel_page_area_ratio": 0.1989,
+   "verdict": "furniture",
+   "note": "a quotation in a tint panel",
+   "excerpt": "“The response to fragmentation should not be isolation, but deeper regional inte"
+  },
+  {
+   "sample": "FD-en-v2",
+   "reference": "p7#28",
+   "page_kind": "masthead",
+   "indent_eligible_page": false,
+   "panel_page_area_ratio": 0.1989,
+   "verdict": "furniture",
+   "note": "its attribution line",
+   "excerpt": "—Mehmet Şimşek, minister of finance, Türkiye"
+  },
+  {
+   "sample": "FD-en-v2",
+   "reference": "p7#29",
+   "page_kind": "masthead",
+   "indent_eligible_page": false,
+   "panel_page_area_ratio": 0.1989,
+   "verdict": "furniture",
+   "note": "a quotation in a tint panel",
+   "excerpt": "“Resilience is not built when there is a shock. Resilience is built in good time"
+  },
+  {
+   "sample": "FD-en-v2",
+   "reference": "p7#30",
+   "page_kind": "masthead",
+   "indent_eligible_page": false,
+   "panel_page_area_ratio": 0.1989,
+   "verdict": "furniture",
+   "note": "its attribution line",
+   "excerpt": "—Mohammed Al-Jadaan, minister of finance, Saudi Arabia"
+  },
+  {
+   "sample": "FD-en-v2",
+   "reference": "p7#31",
+   "page_kind": "masthead",
+   "indent_eligible_page": false,
+   "panel_page_area_ratio": 0.1989,
+   "verdict": "furniture",
+   "note": "a quotation in a tint panel",
+   "excerpt": "“Some might wonder why the Fund is spending time on these issues...but the truth"
+  },
+  {
+   "sample": "FD-en-v2",
+   "reference": "p7#32",
+   "page_kind": "masthead",
+   "indent_eligible_page": false,
+   "panel_page_area_ratio": 0.1989,
+   "verdict": "furniture",
+   "note": "its attribution line",
+   "excerpt": "—IMF First Deputy Managing Director Dan Katz"
+  },
+  {
+   "sample": "Courier-zh",
+   "reference": "p6#11",
+   "page_kind": "article_body",
+   "indent_eligible_page": true,
+   "panel_page_area_ratio": 0.1638,
+   "verdict": "furniture",
+   "note": "the same tinted box in the Chinese edition of the same page",
+   "excerpt": "为纪念量子力学诞生 100 周年,联合国宣布将 2025 年定为国际量子科学技术年。 作为该倡议的牵头机构,联合国教科文组织于 2 月 4 日和 5 日在巴黎启"
+  },
+  {
+   "sample": "Courier-zh",
+   "reference": "p6#12",
+   "page_kind": "article_body",
+   "indent_eligible_page": true,
+   "panel_page_area_ratio": 0.1638,
+   "verdict": "furniture",
+   "note": "the second paragraph of that box",
+   "excerpt": "在此期间,全球科学家、教育工作者和公众受邀共同探索和庆祝量子领域取得 的创新成果。全球范围内举办的一系列活动提升了公众意识,促进了各方合作,凸 显了量子科学在推"
+  }
+ ]
+}

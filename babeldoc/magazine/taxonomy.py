@@ -72,15 +72,27 @@ POLICY_KEYS = frozenset({"chain_eligible", "translate", "repair_profile"})
 # says the page sets records, one to a line, so a paragraph assembled out of
 # several of them is not a translation unit. It is off everywhere it is not
 # declared, which is what keeps a page nobody has thought about flowing.
+# ``indent_eligible`` is a layout flag too, and the narrowest of them: it says
+# the page sets running body text whose first line a paragraph convention may be
+# written for. It defaults off rather than on because the convention is written
+# for prose and is wrong for a page of records, a credit list or a caption
+# field, and a page nobody has declared is more likely to be one of those than
+# to be an article.
 OPTIONAL_POLICY_DEFAULTS: dict[str, object] = {
     "starts_article": False,
     "opens_article": False,
     "preserve_line_structure": False,
+    "indent_eligible": False,
 }
 
 # Optional flags whose value is a boolean, validated as such when declared.
 OPTIONAL_BOOLEAN_POLICY_KEYS = frozenset(
-    {"starts_article", "opens_article", "preserve_line_structure"}
+    {
+        "starts_article",
+        "opens_article",
+        "preserve_line_structure",
+        "indent_eligible",
+    }
 )
 
 

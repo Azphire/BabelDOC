@@ -1,0 +1,541 @@
+{
+  "band_overlap_ratio": 0.5,
+  "counts": {
+    "dropped_text": 0,
+    "duplicate_layer": 0,
+    "extraction_order_fault": 0,
+    "true_fracture": 0,
+    "undetermined": 17
+  },
+  "fragments": [
+    {
+      "band_evidence": {
+        "deleted_spans": [],
+        "il_chars": 11,
+        "independent_chars": 11,
+        "inserted_spans": []
+      },
+      "band_members": 1,
+      "band_span": [
+        0,
+        11
+      ],
+      "band_verdict": "true_fracture",
+      "chars": 11,
+      "class": "undetermined",
+      "detail": "the independent reading holds these characters in the same order and this paragraph's span is a whole word of it",
+      "independent_span": [
+        0,
+        11
+      ],
+      "page": 2,
+      "paragraph": "p2#1",
+      "text": "July/August"
+    },
+    {
+      "band_evidence": {
+        "deleted_spans": [],
+        "il_chars": 11,
+        "independent_chars": 11,
+        "inserted_spans": []
+      },
+      "band_members": 1,
+      "band_span": [
+        0,
+        11
+      ],
+      "band_verdict": "true_fracture",
+      "chars": 11,
+      "class": "undetermined",
+      "detail": "the independent reading holds these characters in the same order and this paragraph's span is a whole word of it",
+      "independent_span": [
+        0,
+        11
+      ],
+      "page": 2,
+      "paragraph": "p2#1",
+      "text": "Vol.77,No.4"
+    },
+    {
+      "band_evidence": {
+        "deleted_spans": [],
+        "il_chars": 4,
+        "independent_chars": 4,
+        "inserted_spans": []
+      },
+      "band_members": 1,
+      "band_span": [
+        0,
+        4
+      ],
+      "band_verdict": "true_fracture",
+      "chars": 4,
+      "class": "undetermined",
+      "detail": "the independent reading holds these characters in the same order and this paragraph's span is a whole word of it",
+      "independent_span": [
+        0,
+        4
+      ],
+      "page": 2,
+      "paragraph": "p2#2",
+      "text": "2026"
+    },
+    {
+      "band_evidence": {
+        "deleted_spans": [],
+        "il_chars": 15,
+        "independent_chars": 15,
+        "inserted_spans": []
+      },
+      "band_members": 1,
+      "band_span": [
+        0,
+        15
+      ],
+      "band_verdict": "true_fracture",
+      "chars": 15,
+      "class": "undetermined",
+      "detail": "the independent reading holds these characters in the same order and this paragraph's span is a whole word of it",
+      "independent_span": [
+        0,
+        15
+      ],
+      "page": 2,
+      "paragraph": "p2#3",
+      "text": "AramcoWorld.com"
+    },
+    {
+      "band_evidence": {
+        "deleted_spans": [],
+        "il_chars": 31,
+        "independent_chars": 31,
+        "inserted_spans": []
+      },
+      "band_members": 1,
+      "band_span": [
+        0,
+        31
+      ],
+      "band_verdict": "true_fracture",
+      "chars": 31,
+      "class": "undetermined",
+      "detail": "the independent reading holds these characters in the same order and this paragraph's span is a whole word of it",
+      "independent_span": [
+        0,
+        31
+      ],
+      "page": 2,
+      "paragraph": "p2#5",
+      "text": "Subscribeonline:AramcoWorld.com"
+    },
+    {
+      "band_evidence": {
+        "deleted_spans": [],
+        "il_chars": 36,
+        "independent_chars": 0,
+        "inserted_spans": [
+          [
+            0,
+            36
+          ]
+        ]
+      },
+      "band_members": 1,
+      "band_span": [
+        0,
+        36
+      ],
+      "band_verdict": "duplicate_layer",
+      "chars": 36,
+      "class": "undetermined",
+      "detail": "the independent reading holds nothing in this band, so there is no second reading to place this paragraph against",
+      "independent_span": null,
+      "page": 3,
+      "paragraph": "p3#1",
+      "text": "EarlyAmerica’sLoveofFoodsFromtheEast"
+    },
+    {
+      "band_evidence": {
+        "deleted_spans": [],
+        "il_chars": 2,
+        "independent_chars": 0,
+        "inserted_spans": [
+          [
+            0,
+            2
+          ]
+        ]
+      },
+      "band_members": 1,
+      "band_span": [
+        0,
+        2
+      ],
+      "band_verdict": "duplicate_layer",
+      "chars": 2,
+      "class": "undetermined",
+      "detail": "the independent reading holds nothing in this band, so there is no second reading to place this paragraph against",
+      "independent_span": null,
+      "page": 3,
+      "paragraph": "p3#3",
+      "text": "14"
+    },
+    {
+      "band_evidence": {
+        "deleted_spans": [],
+        "il_chars": 8,
+        "independent_chars": 0,
+        "inserted_spans": [
+          [
+            0,
+            8
+          ]
+        ]
+      },
+      "band_members": 1,
+      "band_span": [
+        0,
+        8
+      ],
+      "band_verdict": "duplicate_layer",
+      "chars": 8,
+      "class": "undetermined",
+      "detail": "the independent reading holds nothing in this band, so there is no second reading to place this paragraph against",
+      "independent_span": null,
+      "page": 3,
+      "paragraph": "p3#4",
+      "text": "FEATURES"
+    },
+    {
+      "band_evidence": {
+        "deleted_spans": [],
+        "il_chars": 2,
+        "independent_chars": 0,
+        "inserted_spans": [
+          [
+            0,
+            2
+          ]
+        ]
+      },
+      "band_members": 1,
+      "band_span": [
+        0,
+        2
+      ],
+      "band_verdict": "duplicate_layer",
+      "chars": 2,
+      "class": "undetermined",
+      "detail": "the independent reading holds nothing in this band, so there is no second reading to place this paragraph against",
+      "independent_span": null,
+      "page": 3,
+      "paragraph": "p3#7",
+      "text": "20"
+    },
+    {
+      "band_evidence": {
+        "deleted_spans": [
+          [
+            0,
+            4
+          ]
+        ],
+        "il_chars": 31,
+        "independent_chars": 4,
+        "inserted_spans": [
+          [
+            0,
+            31
+          ]
+        ]
+      },
+      "band_members": 1,
+      "band_span": [
+        0,
+        31
+      ],
+      "band_verdict": "undetermined",
+      "chars": 31,
+      "class": "undetermined",
+      "detail": "these characters are ones the independent reading of the band does not hold, but no other paragraph of the band holds them either, so what the surplus is has not been established",
+      "independent_span": null,
+      "page": 3,
+      "paragraph": "p3#8",
+      "text": "WhatHasBecomeoftheHijazRailway?"
+    },
+    {
+      "band_evidence": {
+        "deleted_spans": [],
+        "il_chars": 36,
+        "independent_chars": 0,
+        "inserted_spans": [
+          [
+            0,
+            36
+          ]
+        ]
+      },
+      "band_members": 1,
+      "band_span": [
+        0,
+        36
+      ],
+      "band_verdict": "duplicate_layer",
+      "chars": 36,
+      "class": "undetermined",
+      "detail": "the independent reading holds nothing in this band, so there is no second reading to place this paragraph against",
+      "independent_span": null,
+      "page": 3,
+      "paragraph": "p3#9",
+      "text": "WRITTENANDPHOTOGRAPHEDBYLEONMcCARRON"
+    },
+    {
+      "band_evidence": {
+        "deleted_spans": [],
+        "il_chars": 2,
+        "independent_chars": 0,
+        "inserted_spans": [
+          [
+            0,
+            2
+          ]
+        ]
+      },
+      "band_members": 1,
+      "band_span": [
+        0,
+        2
+      ],
+      "band_verdict": "duplicate_layer",
+      "chars": 2,
+      "class": "undetermined",
+      "detail": "the independent reading holds nothing in this band, so there is no second reading to place this paragraph against",
+      "independent_span": null,
+      "page": 3,
+      "paragraph": "p3#11",
+      "text": "32"
+    },
+    {
+      "band_evidence": {
+        "deleted_spans": [
+          [
+            5,
+            6
+          ],
+          [
+            7,
+            8
+          ],
+          [
+            9,
+            11
+          ],
+          [
+            12,
+            23
+          ],
+          [
+            24,
+            34
+          ],
+          [
+            35,
+            40
+          ],
+          [
+            41,
+            49
+          ],
+          [
+            51,
+            60
+          ],
+          [
+            61,
+            63
+          ],
+          [
+            64,
+            70
+          ]
+        ],
+        "il_chars": 115,
+        "independent_chars": 70,
+        "inserted_spans": [
+          [
+            1,
+            14
+          ],
+          [
+            15,
+            23
+          ],
+          [
+            24,
+            65
+          ],
+          [
+            67,
+            70
+          ],
+          [
+            71,
+            83
+          ],
+          [
+            84,
+            102
+          ],
+          [
+            104,
+            105
+          ],
+          [
+            109,
+            111
+          ],
+          [
+            112,
+            113
+          ],
+          [
+            114,
+            115
+          ]
+        ]
+      },
+      "band_members": 2,
+      "band_span": [
+        0,
+        9
+      ],
+      "band_verdict": "undetermined",
+      "chars": 9,
+      "class": "undetermined",
+      "detail": "these characters are ones the independent reading of the band does not hold, but no other paragraph of the band holds them either, so what the surplus is has not been established",
+      "independent_span": null,
+      "page": 3,
+      "paragraph": "p3#12",
+      "text": "FRONTCOVE"
+    },
+    {
+      "band_evidence": {
+        "deleted_spans": [],
+        "il_chars": 117,
+        "independent_chars": 0,
+        "inserted_spans": [
+          [
+            0,
+            117
+          ]
+        ]
+      },
+      "band_members": 2,
+      "band_span": [
+        0,
+        7
+      ],
+      "band_verdict": "duplicate_layer",
+      "chars": 7,
+      "class": "undetermined",
+      "detail": "the independent reading holds nothing in this band, so there is no second reading to place this paragraph against",
+      "independent_span": null,
+      "page": 3,
+      "paragraph": "p3#14",
+      "text": "domeand"
+    },
+    {
+      "band_evidence": {
+        "deleted_spans": [
+          [
+            1,
+            4
+          ]
+        ],
+        "il_chars": 11,
+        "independent_chars": 4,
+        "inserted_spans": [
+          [
+            0,
+            5
+          ],
+          [
+            6,
+            11
+          ]
+        ]
+      },
+      "band_members": 1,
+      "band_span": [
+        0,
+        11
+      ],
+      "band_verdict": "undetermined",
+      "chars": 11,
+      "class": "undetermined",
+      "detail": "these characters are ones the independent reading of the band does not hold, but no other paragraph of the band holds them either, so what the surplus is has not been established",
+      "independent_span": null,
+      "page": 3,
+      "paragraph": "p3#17",
+      "text": "DEPARTMENTS"
+    },
+    {
+      "band_evidence": {
+        "deleted_spans": [],
+        "il_chars": 44,
+        "independent_chars": 0,
+        "inserted_spans": [
+          [
+            0,
+            44
+          ]
+        ]
+      },
+      "band_members": 2,
+      "band_span": [
+        0,
+        18
+      ],
+      "band_verdict": "duplicate_layer",
+      "chars": 18,
+      "class": "undetermined",
+      "detail": "the independent reading holds nothing in this band, so there is no second reading to place this paragraph against",
+      "independent_span": null,
+      "page": 3,
+      "paragraph": "p3#19",
+      "text": "16344araD2R1.indd2"
+    },
+    {
+      "band_evidence": {
+        "deleted_spans": [],
+        "il_chars": 44,
+        "independent_chars": 0,
+        "inserted_spans": [
+          [
+            0,
+            44
+          ]
+        ]
+      },
+      "band_members": 2,
+      "band_span": [
+        18,
+        44
+      ],
+      "band_verdict": "duplicate_layer",
+      "chars": 26,
+      "class": "undetermined",
+      "detail": "the independent reading holds nothing in this band, so there is no second reading to place this paragraph against",
+      "independent_span": null,
+      "page": 3,
+      "paragraph": "p3#20",
+      "text": "6/9/266:(cid:23)(cid:19)PM"
+    }
+  ],
+  "max_fragment_chars": 40,
+  "min_evidence_chars": 1,
+  "pages": [
+    2,
+    3
+  ]
+}

@@ -1,0 +1,5839 @@
+{
+ "batch": "b11_6",
+ "task": "T1 step 2a: body paragraphs inside a filled panel",
+ "baseline": "b10_5",
+ "arm": "on",
+ "stage": "checkpoint.06_styles_and_formulas.xml",
+ "panel_collections": [
+  "pdf_rectangle",
+  "pdf_curve",
+  "pdf_form",
+  "pdf_figure"
+ ],
+ "ground_ratio": 0.9,
+ "boxed_min_area_ratio": 0.02,
+ "boxed_containment_ratio": 0.9,
+ "samples": {
+  "Courier-en": {
+   "source": "examples/output/b10_5/Courier-en/on/work/Courier-en/checkpoint.06_styles_and_formulas.xml",
+   "counts": {
+    "body_paragraphs": 75,
+    "panels": 8,
+    "inside": 20,
+    "inside_on_eligible_pages": 20,
+    "inside_a_full_page_panel": 18
+   },
+   "instances": [
+    {
+     "page": 2,
+     "reference": "p2#5",
+     "page_kind": "article_opener",
+     "indent_eligible_page": true,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      56.95,
+      211.7,
+      226.51,
+      518.43
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       0.0,
+       0.0,
+       595.27,
+       841.89
+      ],
+      "page_area_ratio": 1.0
+     },
+     "containment": 1.0,
+     "excerpt": "From the Aboriginal practice of controlled burning to prevent wildfires to Inuit"
+    },
+    {
+     "page": 2,
+     "reference": "p2#7",
+     "page_kind": "article_opener",
+     "indent_eligible_page": true,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      56.81,
+      579.54,
+      226.56,
+      622.54
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       0.0,
+       0.0,
+       595.27,
+       841.89
+      ],
+      "page_area_ratio": 1.0
+     },
+     "containment": 1.0,
+     "excerpt": "Indigenous climate journalist from Samoa reporting for The Guardian on Pacific I"
+    },
+    {
+     "page": 4,
+     "reference": "p4#3",
+     "page_kind": "article_body",
+     "indent_eligible_page": true,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      56.86,
+      651.2,
+      292.36,
+      786.55
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       0.0,
+       0.0,
+       595.27,
+       841.89
+      ],
+      "page_area_ratio": 1.0
+     },
+     "containment": 1.0,
+     "excerpt": "L ong before satellites orbited Earth, Polynesian navigators crossed thousands o"
+    },
+    {
+     "page": 4,
+     "reference": "p4#4",
+     "page_kind": "article_body",
+     "indent_eligible_page": true,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      68.02,
+      639.2,
+      211.91,
+      650.43
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       0.0,
+       0.0,
+       595.27,
+       841.89
+      ],
+      "page_area_ratio": 1.0
+     },
+     "containment": 1.0,
+     "excerpt": "There are many more examples of how t"
+    },
+    {
+     "page": 4,
+     "reference": "p4#6",
+     "page_kind": "article_body",
+     "indent_eligible_page": true,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      57.36,
+      627.41,
+      212.71,
+      638.43
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       0.0,
+       0.0,
+       595.27,
+       841.89
+      ],
+      "page_area_ratio": 1.0
+     },
+     "containment": 1.0,
+     "excerpt": "has proven its worth, in areas as diverse as"
+    },
+    {
+     "page": 4,
+     "reference": "p4#8",
+     "page_kind": "article_body",
+     "indent_eligible_page": true,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      56.86,
+      495.34,
+      208.69,
+      626.44
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       0.0,
+       0.0,
+       595.27,
+       841.89
+      ],
+      "page_area_ratio": 1.0
+     },
+     "containment": 1.0,
+     "excerpt": "agroforestry, health and fishing. Far more than a collection of techniques, thes"
+    },
+    {
+     "page": 4,
+     "reference": "p4#9",
+     "page_kind": "article_body",
+     "indent_eligible_page": true,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      57.01,
+      447.26,
+      208.74,
+      494.47
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       0.0,
+       0.0,
+       595.27,
+       841.89
+      ],
+      "page_area_ratio": 1.0
+     },
+     "containment": 1.0,
+     "excerpt": "These practices represent entire knowledge systems. They encode, preserve, and t"
+    },
+    {
+     "page": 4,
+     "reference": "p4#10",
+     "page_kind": "article_body",
+     "indent_eligible_page": true,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      56.86,
+      363.38,
+      289.69,
+      446.48
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       0.0,
+       0.0,
+       595.27,
+       841.89
+      ],
+      "page_area_ratio": 1.0
+     },
+     "containment": 1.0,
+     "excerpt": "communities worldwide are defending their rights to protect such cultural herita"
+    },
+    {
+     "page": 4,
+     "reference": "p4#11",
+     "page_kind": "article_body",
+     "indent_eligible_page": true,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      57.32,
+      339.28,
+      289.01,
+      362.51
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       0.0,
+       0.0,
+       595.27,
+       841.89
+      ],
+      "page_area_ratio": 1.0
+     },
+     "containment": 1.0,
+     "excerpt": "Traditional Indigenous knowledge has gained recognition in recent years, thanks "
+    },
+    {
+     "page": 4,
+     "reference": "p4#12",
+     "page_kind": "article_body",
+     "indent_eligible_page": true,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      306.41,
+      735.49,
+      538.4,
+      770.51
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       0.0,
+       0.0,
+       595.27,
+       841.89
+      ],
+      "page_area_ratio": 1.0
+     },
+     "containment": 1.0,
+     "excerpt": "United Nations Declaration on the Rights of Indigenous Peoples — but it is nonet"
+    },
+    {
+     "page": 4,
+     "reference": "p4#14",
+     "page_kind": "article_body",
+     "indent_eligible_page": true,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      306.31,
+      603.3,
+      538.57,
+      698.4
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       0.0,
+       0.0,
+       595.27,
+       841.89
+      ],
+      "page_area_ratio": 1.0
+     },
+     "containment": 1.0,
+     "excerpt": "As the climate crisis intensifies and biodiversity collapses, the world turns to"
+    },
+    {
+     "page": 4,
+     "reference": "p4#15",
+     "page_kind": "article_body",
+     "indent_eligible_page": true,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      381.9,
+      473.15,
+      539.02,
+      602.42
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       0.0,
+       0.0,
+       595.27,
+       841.89
+      ],
+      "page_area_ratio": 1.0
+     },
+     "containment": 1.0,
+     "excerpt": "“We observe nature, our animals and plants. We are the guardians of nature and w"
+    },
+    {
+     "page": 4,
+     "reference": "p4#16",
+     "page_kind": "article_body",
+     "indent_eligible_page": true,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      306.31,
+      339.47,
+      538.63,
+      470.46
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       0.0,
+       0.0,
+       595.27,
+       841.89
+      ],
+      "page_area_ratio": 1.0
+     },
+     "containment": 1.0,
+     "excerpt": "The accumulated skills and wisdom are not solely passed down mechanically from o"
+    },
+    {
+     "page": 4,
+     "reference": "p4#19",
+     "page_kind": "article_body",
+     "indent_eligible_page": true,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      71.11,
+      119.29,
+      207.01,
+      263.0
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       0.0,
+       0.0,
+       595.27,
+       841.89
+      ],
+      "page_area_ratio": 1.0
+     },
+     "containment": 1.0,
+     "excerpt": "Established in 2002, UNESCO’s Local and Indigenous Knowledge Systems (LINKS) pro"
+    },
+    {
+     "page": 4,
+     "reference": "p4#20",
+     "page_kind": "article_body",
+     "indent_eligible_page": true,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      71.14,
+      77.62,
+      201.63,
+      113.34
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       0.0,
+       0.0,
+       595.27,
+       841.89
+      ],
+      "page_area_ratio": 1.0
+     },
+     "containment": 1.0,
+     "excerpt": "LINKS aims to build dialogue among Indigenous and local knowledge holders,"
+    },
+    {
+     "page": 4,
+     "reference": "p4#21",
+     "page_kind": "article_body",
+     "indent_eligible_page": true,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      228.0,
+      119.3,
+      362.85,
+      263.01
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       0.0,
+       0.0,
+       595.27,
+       841.89
+      ],
+      "page_area_ratio": 1.0
+     },
+     "containment": 1.0,
+     "excerpt": "natural and social scientists, resource managers and decision-makers to secure a"
+    },
+    {
+     "page": 4,
+     "reference": "p4#22",
+     "page_kind": "article_body",
+     "indent_eligible_page": true,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      227.89,
+      77.63,
+      352.36,
+      113.35
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       0.0,
+       0.0,
+       595.27,
+       841.89
+      ],
+      "page_area_ratio": 1.0
+     },
+     "containment": 1.0,
+     "excerpt": "Among other roles, the LINKS programme currently hosts the Indigenous and"
+    },
+    {
+     "page": 4,
+     "reference": "p4#23",
+     "page_kind": "article_body",
+     "indent_eligible_page": true,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      384.83,
+      145.23,
+      526.35,
+      263.02
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       0.0,
+       0.0,
+       595.27,
+       841.89
+      ],
+      "page_area_ratio": 1.0
+     },
+     "containment": 1.0,
+     "excerpt": "Local Knowledge Technical Support Unit of IPBES (the Intergovernmental Science- "
+    },
+    {
+     "page": 6,
+     "reference": "p6#12",
+     "page_kind": "article_body",
+     "indent_eligible_page": true,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      48.43,
+      670.78,
+      373.42,
+      730.5
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       34.02,
+       541.06,
+       388.35,
+       772.7
+      ],
+      "page_area_ratio": 0.1638
+     },
+     "containment": 1.0,
+     "excerpt": "To mark the centennial of quantum mechanics, the United Nations declared 2025 th"
+    },
+    {
+     "page": 6,
+     "reference": "p6#13",
+     "page_kind": "article_body",
+     "indent_eligible_page": true,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      48.49,
+      559.04,
+      374.16,
+      664.83
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       34.02,
+       541.06,
+       388.35,
+       772.7
+      ],
+      "page_area_ratio": 0.1638
+     },
+     "containment": 1.0,
+     "excerpt": "Throughout the year, scientists, educators, and citizens worldwide were invited "
+    }
+   ]
+  },
+  "Vogue-en": {
+   "source": "examples/output/b10_5/Vogue-en/on/work/Vogue-en/checkpoint.06_styles_and_formulas.xml",
+   "counts": {
+    "body_paragraphs": 24,
+    "panels": 0,
+    "inside": 0,
+    "inside_on_eligible_pages": 0,
+    "inside_a_full_page_panel": 0
+   },
+   "instances": []
+  },
+  "CERNCourier-en": {
+   "source": "examples/output/b10_5/CERNCourier-en/on/work/CERNCourier-en/checkpoint.06_styles_and_formulas.xml",
+   "counts": {
+    "body_paragraphs": 90,
+    "panels": 19,
+    "inside": 90,
+    "inside_on_eligible_pages": 26,
+    "inside_a_full_page_panel": 90
+   },
+   "instances": [
+    {
+     "page": 1,
+     "reference": "p1#0",
+     "page_kind": "editorial",
+     "indent_eligible_page": false,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      19.57,
+      14.2,
+      275.69,
+      29.13
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       -0.36,
+       0.0,
+       1023.64,
+       768.0
+      ],
+      "page_area_ratio": 1.0
+     },
+     "containment": 1.0,
+     "excerpt": "V o l u m e 6 6 N u m b e r 4 J u l y / A u g u s t 2 0 2 6"
+    },
+    {
+     "page": 1,
+     "reference": "p1#11",
+     "page_kind": "editorial",
+     "indent_eligible_page": false,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      57.8,
+      626.4,
+      420.8,
+      639.76
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       -0.36,
+       0.0,
+       1023.64,
+       768.0
+      ],
+      "page_area_ratio": 1.0
+     },
+     "containment": 1.0,
+     "excerpt": "Welcome to the digital edition of the July/August 2026 issue of CERN Courier."
+    },
+    {
+     "page": 1,
+     "reference": "p1#12",
+     "page_kind": "editorial",
+     "indent_eligible_page": false,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      57.8,
+      506.4,
+      415.09,
+      609.76
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       -0.36,
+       0.0,
+       1023.64,
+       768.0
+      ],
+      "page_area_ratio": 1.0
+     },
+     "containment": 1.0,
+     "excerpt": "When the Large Electron–Positron collider (LEP) switched on, in 1989, the field "
+    },
+    {
+     "page": 1,
+     "reference": "p1#13",
+     "page_kind": "editorial",
+     "indent_eligible_page": false,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      57.88,
+      431.4,
+      414.97,
+      489.74
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       -0.36,
+       0.0,
+       1023.64,
+       768.0
+      ],
+      "page_area_ratio": 1.0
+     },
+     "containment": 1.0,
+     "excerpt": "For 10 years, NA64 has fired probes onto a target and watched for missing energy"
+    },
+    {
+     "page": 1,
+     "reference": "p1#14",
+     "page_kind": "editorial",
+     "indent_eligible_page": false,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      57.91,
+      356.4,
+      405.8,
+      414.76
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       -0.36,
+       0.0,
+       1023.64,
+       768.0
+      ],
+      "page_area_ratio": 1.0
+     },
+     "containment": 1.0,
+     "excerpt": "This edition of CERN Courier also explores Xsuite, the open-source framework tha"
+    },
+    {
+     "page": 1,
+     "reference": "p1#15",
+     "page_kind": "editorial",
+     "indent_eligible_page": false,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      57.79,
+      281.4,
+      422.76,
+      339.76
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       -0.36,
+       0.0,
+       1023.64,
+       768.0
+      ],
+      "page_area_ratio": 1.0
+     },
+     "containment": 1.0,
+     "excerpt": "In May, the CERN Council updated the European Strategy for Particle Physics (p7)"
+    },
+    {
+     "page": 1,
+     "reference": "p1#16",
+     "page_kind": "editorial",
+     "indent_eligible_page": false,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      57.91,
+      239.06,
+      284.25,
+      264.76
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       -0.36,
+       0.0,
+       1023.64,
+       768.0
+      ],
+      "page_area_ratio": 1.0
+     },
+     "containment": 1.0,
+     "excerpt": "To subscribe to the magazine, please visit: https://cerncourier.com/p/about-cern"
+    },
+    {
+     "page": 1,
+     "reference": "p1#18",
+     "page_kind": "editorial",
+     "indent_eligible_page": false,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      58.21,
+      694.63,
+      124.12,
+      706.76
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       -0.36,
+       0.0,
+       1023.64,
+       768.0
+      ],
+      "page_area_ratio": 1.0
+     },
+     "containment": 1.0,
+     "excerpt": "W E L C O M E"
+    },
+    {
+     "page": 2,
+     "reference": "p2#3",
+     "page_kind": "toc",
+     "indent_eligible_page": false,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      18.29,
+      563.41,
+      289.24,
+      606.42
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       -0.36,
+       0.0,
+       1023.64,
+       768.0
+      ],
+      "page_area_ratio": 1.0
+     },
+     "containment": 1.0,
+     "excerpt": "August 30 - September 3, 2026 Whistler, British Columbia"
+    },
+    {
+     "page": 2,
+     "reference": "p2#5",
+     "page_kind": "toc",
+     "indent_eligible_page": false,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      19.81,
+      462.88,
+      358.74,
+      520.68
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       -0.36,
+       0.0,
+       1023.64,
+       768.0
+      ],
+      "page_area_ratio": 1.0
+     },
+     "containment": 1.0,
+     "excerpt": "Abstract Submission Deadline - June 30, 2026 Delegate Registration Deadline - Ju"
+    },
+    {
+     "page": 2,
+     "reference": "p2#6",
+     "page_kind": "toc",
+     "indent_eligible_page": false,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      286.91,
+      138.42,
+      365.47,
+      158.65
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       -0.36,
+       0.0,
+       1023.64,
+       768.0
+      ],
+      "page_area_ratio": 1.0
+     },
+     "containment": 1.0,
+     "excerpt": "Email IBIC2026@triumf.ca"
+    },
+    {
+     "page": 2,
+     "reference": "p2#9",
+     "page_kind": "toc",
+     "indent_eligible_page": false,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      19.69,
+      354.87,
+      213.61,
+      368.57
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       -0.36,
+       0.0,
+       1023.64,
+       768.0
+      ],
+      "page_area_ratio": 1.0
+     },
+     "containment": 1.0,
+     "excerpt": "• Beam Charge and Current Monitors"
+    },
+    {
+     "page": 2,
+     "reference": "p2#10",
+     "page_kind": "toc",
+     "indent_eligible_page": false,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      19.69,
+      340.59,
+      259.74,
+      352.87
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       -0.36,
+       0.0,
+       1023.64,
+       768.0
+      ],
+      "page_area_ratio": 1.0
+     },
+     "containment": 1.0,
+     "excerpt": "• Beam Loss Monitors and Machine Protection"
+    },
+    {
+     "page": 2,
+     "reference": "p2#11",
+     "page_kind": "toc",
+     "indent_eligible_page": false,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      19.69,
+      326.31,
+      154.41,
+      338.59
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       -0.36,
+       0.0,
+       1023.64,
+       768.0
+      ],
+      "page_area_ratio": 1.0
+     },
+     "containment": 1.0,
+     "excerpt": "• Beam Position Monitors"
+    },
+    {
+     "page": 2,
+     "reference": "p2#12",
+     "page_kind": "toc",
+     "indent_eligible_page": false,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      19.69,
+      312.03,
+      250.08,
+      324.31
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       -0.36,
+       0.0,
+       1023.64,
+       768.0
+      ],
+      "page_area_ratio": 1.0
+     },
+     "containment": 1.0,
+     "excerpt": "• Transverse Profile and Emittance Monitors"
+    },
+    {
+     "page": 2,
+     "reference": "p2#13",
+     "page_kind": "toc",
+     "indent_eligible_page": false,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      19.69,
+      297.75,
+      264.17,
+      310.03
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       -0.36,
+       0.0,
+       1023.64,
+       768.0
+      ],
+      "page_area_ratio": 1.0
+     },
+     "containment": 1.0,
+     "excerpt": "• Longitudinal Diagnostics and Synchronization"
+    },
+    {
+     "page": 2,
+     "reference": "p2#14",
+     "page_kind": "toc",
+     "indent_eligible_page": false,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      19.69,
+      283.47,
+      227.14,
+      295.75
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       -0.36,
+       0.0,
+       1023.64,
+       768.0
+      ],
+      "page_area_ratio": 1.0
+     },
+     "containment": 1.0,
+     "excerpt": "• Feedback Systems and Beam Stability"
+    },
+    {
+     "page": 2,
+     "reference": "p2#15",
+     "page_kind": "toc",
+     "indent_eligible_page": false,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      19.69,
+      269.19,
+      250.18,
+      281.47
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       -0.36,
+       0.0,
+       1023.64,
+       768.0
+      ],
+      "page_area_ratio": 1.0
+     },
+     "containment": 1.0,
+     "excerpt": "• Data Acquisition and Processing Platforms"
+    },
+    {
+     "page": 2,
+     "reference": "p2#16",
+     "page_kind": "toc",
+     "indent_eligible_page": false,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      19.69,
+      254.91,
+      211.53,
+      267.19
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       -0.36,
+       0.0,
+       1023.64,
+       768.0
+      ],
+      "page_area_ratio": 1.0
+     },
+     "containment": 1.0,
+     "excerpt": "• Machine Parameter Measurements"
+    },
+    {
+     "page": 2,
+     "reference": "p2#17",
+     "page_kind": "toc",
+     "indent_eligible_page": false,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      19.69,
+      239.21,
+      182.84,
+      252.91
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       -0.36,
+       0.0,
+       1023.64,
+       768.0
+      ],
+      "page_area_ratio": 1.0
+     },
+     "containment": 1.0,
+     "excerpt": "• Overview and Commissioning"
+    },
+    {
+     "page": 2,
+     "reference": "p2#19",
+     "page_kind": "toc",
+     "indent_eligible_page": false,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      34.89,
+      154.69,
+      120.0,
+      177.13
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       -0.36,
+       0.0,
+       1023.64,
+       768.0
+      ],
+      "page_area_ratio": 1.0
+     },
+     "containment": 1.0,
+     "excerpt": "Conference Chair Marco Marchetto"
+    },
+    {
+     "page": 2,
+     "reference": "p2#20",
+     "page_kind": "toc",
+     "indent_eligible_page": false,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      34.14,
+      105.73,
+      144.62,
+      140.41
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       -0.36,
+       0.0,
+       1023.64,
+       768.0
+      ],
+      "page_area_ratio": 1.0
+     },
+     "containment": 1.0,
+     "excerpt": "SPC Co-Chairs Paul Dirksen (TRIUMF) Tonia Batten (CLS)"
+    },
+    {
+     "page": 2,
+     "reference": "p2#21",
+     "page_kind": "toc",
+     "indent_eligible_page": false,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      150.77,
+      154.69,
+      216.55,
+      177.13
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       -0.36,
+       0.0,
+       1023.64,
+       768.0
+      ],
+      "page_area_ratio": 1.0
+     },
+     "containment": 1.0,
+     "excerpt": "LOC Chair Tiffany Angus"
+    },
+    {
+     "page": 2,
+     "reference": "p2#22",
+     "page_kind": "toc",
+     "indent_eligible_page": false,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      151.62,
+      105.73,
+      265.8,
+      140.41
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       -0.36,
+       0.0,
+       1023.64,
+       768.0
+      ],
+      "page_area_ratio": 1.0
+     },
+     "containment": 1.0,
+     "excerpt": "LOC Co-Chairs Hanna Dahl Chloe Beaumier-Martin"
+    },
+    {
+     "page": 2,
+     "reference": "p2#33",
+     "page_kind": "toc",
+     "indent_eligible_page": false,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      818.39,
+      140.65,
+      899.44,
+      163.06
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       -0.36,
+       0.0,
+       1023.64,
+       768.0
+      ],
+      "page_area_ratio": 1.0
+     },
+     "containment": 1.0,
+     "excerpt": "On the cover The 27-kilometre LEP tunnel, pictured in July 1991. 22"
+    },
+    {
+     "page": 2,
+     "reference": "p2#36",
+     "page_kind": "toc",
+     "indent_eligible_page": false,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      546.52,
+      430.12,
+      611.32,
+      436.85
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       -0.36,
+       0.0,
+       1023.64,
+       768.0
+      ],
+      "page_area_ratio": 1.0
+     },
+     "containment": 1.0,
+     "excerpt": "• European Strategy"
+    },
+    {
+     "page": 2,
+     "reference": "p2#37",
+     "page_kind": "toc",
+     "indent_eligible_page": false,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      546.52,
+      420.79,
+      604.98,
+      427.99
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       -0.36,
+       0.0,
+       1023.64,
+       768.0
+      ],
+      "page_area_ratio": 1.0
+     },
+     "containment": 1.0,
+     "excerpt": "• The end of Run 3"
+    },
+    {
+     "page": 2,
+     "reference": "p2#38",
+     "page_kind": "toc",
+     "indent_eligible_page": false,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      546.52,
+      411.46,
+      607.16,
+      418.71
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       -0.36,
+       0.0,
+       1023.64,
+       768.0
+      ],
+      "page_area_ratio": 1.0
+     },
+     "containment": 1.0,
+     "excerpt": "• arXiv’s rule on AI"
+    },
+    {
+     "page": 2,
+     "reference": "p2#39",
+     "page_kind": "toc",
+     "indent_eligible_page": false,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      545.84,
+      383.48,
+      610.96,
+      409.31
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       -0.36,
+       0.0,
+       1023.64,
+       768.0
+      ],
+      "page_area_ratio": 1.0
+     },
+     "containment": 1.0,
+     "excerpt": "• Antihydrogen toes the line • Hot start for clusters. 7"
+    },
+    {
+     "page": 2,
+     "reference": "p2#44",
+     "page_kind": "toc",
+     "indent_eligible_page": false,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      818.52,
+      373.48,
+      896.73,
+      437.68
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       -0.36,
+       0.0,
+       1023.64,
+       768.0
+      ],
+      "page_area_ratio": 1.0
+     },
+     "containment": 1.0,
+     "excerpt": "Field theory at CERN and UEFA Barbara Storaci now applies the analytical mindset"
+    },
+    {
+     "page": 2,
+     "reference": "p2#46",
+     "page_kind": "toc",
+     "indent_eligible_page": false,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      908.94,
+      162.06,
+      990.12,
+      214.94
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       -0.36,
+       0.0,
+       1023.64,
+       768.0
+      ],
+      "page_area_ratio": 1.0
+     },
+     "containment": 1.0,
+     "excerpt": "FROM THE EDITOR 5 NEWS DIGEST 12 APPOINTMENTS 50 & AWARDS BACKGROUND 54"
+    },
+    {
+     "page": 2,
+     "reference": "p2#48",
+     "page_kind": "toc",
+     "indent_eligible_page": false,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      636.68,
+      411.36,
+      716.44,
+      437.19
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       -0.36,
+       0.0,
+       1023.64,
+       768.0
+      ],
+      "page_area_ratio": 1.0
+     },
+     "containment": 1.0,
+     "excerpt": "• Partons at the nuclear edge • W boson decays to three charged hadrons"
+    },
+    {
+     "page": 2,
+     "reference": "p2#49",
+     "page_kind": "toc",
+     "indent_eligible_page": false,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      636.43,
+      383.38,
+      714.21,
+      409.2
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       -0.36,
+       0.0,
+       1023.64,
+       768.0
+      ],
+      "page_area_ratio": 1.0
+     },
+     "containment": 1.0,
+     "excerpt": "• New doubly charmed baryon • Collective flow in hypernuclei. 13"
+    },
+    {
+     "page": 2,
+     "reference": "p2#51",
+     "page_kind": "toc",
+     "indent_eligible_page": false,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      727.5,
+      420.69,
+      803.06,
+      437.19
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       -0.36,
+       0.0,
+       1023.64,
+       768.0
+      ],
+      "page_area_ratio": 1.0
+     },
+     "containment": 1.0,
+     "excerpt": "• Quantum observables for collider physics"
+    },
+    {
+     "page": 2,
+     "reference": "p2#52",
+     "page_kind": "toc",
+     "indent_eligible_page": false,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      728.18,
+      411.36,
+      797.27,
+      418.56
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       -0.36,
+       0.0,
+       1023.64,
+       768.0
+      ],
+      "page_area_ratio": 1.0
+     },
+     "containment": 1.0,
+     "excerpt": "• PLANCK conference"
+    },
+    {
+     "page": 2,
+     "reference": "p2#53",
+     "page_kind": "toc",
+     "indent_eligible_page": false,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      727.65,
+      392.7,
+      794.93,
+      409.28
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       -0.36,
+       0.0,
+       1023.64,
+       768.0
+      ],
+      "page_area_ratio": 1.0
+     },
+     "containment": 1.0,
+     "excerpt": "• IPAC’26 • QCD cartographers gather"
+    },
+    {
+     "page": 2,
+     "reference": "p2#54",
+     "page_kind": "toc",
+     "indent_eligible_page": false,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      728.18,
+      383.37,
+      793.23,
+      390.55
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       -0.36,
+       0.0,
+       1023.64,
+       768.0
+      ],
+      "page_area_ratio": 1.0
+     },
+     "containment": 1.0,
+     "excerpt": "• Precision loops. 17"
+    },
+    {
+     "page": 2,
+     "reference": "p2#56",
+     "page_kind": "toc",
+     "indent_eligible_page": false,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      909.94,
+      430.01,
+      985.58,
+      437.19
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       -0.36,
+       0.0,
+       1023.64,
+       768.0
+      ],
+      "page_area_ratio": 1.0
+     },
+     "containment": 1.0,
+     "excerpt": "• Bernard Royce French"
+    },
+    {
+     "page": 2,
+     "reference": "p2#57",
+     "page_kind": "toc",
+     "indent_eligible_page": false,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      909.94,
+      420.69,
+      968.38,
+      427.86
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       -0.36,
+       0.0,
+       1023.64,
+       768.0
+      ],
+      "page_area_ratio": 1.0
+     },
+     "containment": 1.0,
+     "excerpt": "• Marvin Marshak"
+    },
+    {
+     "page": 2,
+     "reference": "p2#58",
+     "page_kind": "toc",
+     "indent_eligible_page": false,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      909.94,
+      411.36,
+      959.8,
+      418.53
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       -0.36,
+       0.0,
+       1023.64,
+       768.0
+      ],
+      "page_area_ratio": 1.0
+     },
+     "containment": 1.0,
+     "excerpt": "• Mannque Rho"
+    },
+    {
+     "page": 2,
+     "reference": "p2#59",
+     "page_kind": "toc",
+     "indent_eligible_page": false,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      909.94,
+      402.03,
+      960.04,
+      409.2
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       -0.36,
+       0.0,
+       1023.64,
+       768.0
+      ],
+      "page_area_ratio": 1.0
+     },
+     "containment": 1.0,
+     "excerpt": "• Mick Storr. 51"
+    },
+    {
+     "page": 2,
+     "reference": "p2#61",
+     "page_kind": "toc",
+     "indent_eligible_page": false,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      727.29,
+      260.48,
+      804.11,
+      324.67
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       -0.36,
+       0.0,
+       1023.64,
+       768.0
+      ],
+      "page_area_ratio": 1.0
+     },
+     "containment": 1.0,
+     "excerpt": "Ten years at the missing-energy frontier A look back at NA64’s fixed-target sear"
+    },
+    {
+     "page": 2,
+     "reference": "p2#63",
+     "page_kind": "toc",
+     "indent_eligible_page": false,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      727.59,
+      185.08,
+      806.7,
+      202.98
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       -0.36,
+       0.0,
+       1023.64,
+       768.0
+      ],
+      "page_area_ratio": 1.0
+     },
+     "containment": 1.0,
+     "excerpt": "From the golden age to the Hubble wars"
+    },
+    {
+     "page": 2,
+     "reference": "p2#64",
+     "page_kind": "toc",
+     "indent_eligible_page": false,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      727.4,
+      139.34,
+      808.14,
+      183.27
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       -0.36,
+       0.0,
+       1023.64,
+       768.0
+      ],
+      "page_area_ratio": 1.0
+     },
+     "containment": 1.0,
+     "excerpt": "• Discordance • Neutrino Physics: a student’s guide • Islam and Modern Cosmology"
+    },
+    {
+     "page": 2,
+     "reference": "p2#71",
+     "page_kind": "toc",
+     "indent_eligible_page": false,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      545.88,
+      148.77,
+      626.4,
+      183.27
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       -0.36,
+       0.0,
+       1023.64,
+       768.0
+      ],
+      "page_area_ratio": 1.0
+     },
+     "containment": 1.0,
+     "excerpt": "Council president Costas Fountas on the case for unity behind the FCC-ee. 39"
+    },
+    {
+     "page": 2,
+     "reference": "p2#72",
+     "page_kind": "toc",
+     "indent_eligible_page": false,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      909.24,
+      260.48,
+      988.11,
+      324.69
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       -0.36,
+       0.0,
+       1023.64,
+       768.0
+      ],
+      "page_area_ratio": 1.0
+     },
+     "containment": 1.0,
+     "excerpt": "The Swiss Army knife of beam simulation How Xsuite brought the field’s beam-simu"
+    },
+    {
+     "page": 2,
+     "reference": "p2#74",
+     "page_kind": "toc",
+     "indent_eligible_page": false,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      545.5,
+      260.48,
+      605.54,
+      324.69
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       -0.36,
+       0.0,
+       1023.64,
+       768.0
+      ],
+      "page_area_ratio": 1.0
+     },
+     "containment": 1.0,
+     "excerpt": "When particles went global Reflections on the 4th International Symposium on the"
+    },
+    {
+     "page": 2,
+     "reference": "p2#77",
+     "page_kind": "toc",
+     "indent_eligible_page": false,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      636.36,
+      148.12,
+      711.77,
+      203.09
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       -0.36,
+       0.0,
+       1023.64,
+       768.0
+      ],
+      "page_area_ratio": 1.0
+     },
+     "containment": 1.0,
+     "excerpt": "Cosmic rays from pole to pole James Devine and Etam Noah on the detector that tr"
+    },
+    {
+     "page": 3,
+     "reference": "p3#0",
+     "page_kind": "article_opener",
+     "indent_eligible_page": true,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      19.57,
+      18.05,
+      45.17,
+      29.13
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       -0.36,
+       0.0,
+       1023.64,
+       768.0
+      ],
+      "page_area_ratio": 1.0
+     },
+     "containment": 1.0,
+     "excerpt": "V o l u"
+    },
+    {
+     "page": 3,
+     "reference": "p3#9",
+     "page_kind": "article_opener",
+     "indent_eligible_page": true,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      545.57,
+      463.3,
+      667.58,
+      600.5
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       -0.36,
+       0.0,
+       1023.64,
+       768.0
+      ],
+      "page_area_ratio": 1.0
+     },
+     "containment": 1.0,
+     "excerpt": "On 22 May, at a dedicated session in Budapest, the CERN Council updated the Euro"
+    },
+    {
+     "page": 3,
+     "reference": "p3#11",
+     "page_kind": "article_opener",
+     "indent_eligible_page": true,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      550.02,
+      438.94,
+      553.97,
+      441.66
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       -0.36,
+       0.0,
+       1023.64,
+       768.0
+      ],
+      "page_area_ratio": 1.0
+     },
+     "containment": 1.0,
+     "excerpt": "T"
+    },
+    {
+     "page": 3,
+     "reference": "p3#13",
+     "page_kind": "article_opener",
+     "indent_eligible_page": true,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      545.87,
+      298.14,
+      667.59,
+      443.85
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       -0.36,
+       0.0,
+       1023.64,
+       768.0
+      ],
+      "page_area_ratio": 1.0
+     },
+     "containment": 1.0,
+     "excerpt": "e European Strategy reiterates the critical importance of the High- Luminosity L"
+    },
+    {
+     "page": 3,
+     "reference": "p3#14",
+     "page_kind": "article_opener",
+     "indent_eligible_page": true,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      545.53,
+      176.48,
+      667.56,
+      296.25
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       -0.36,
+       0.0,
+       1023.64,
+       768.0
+      ],
+      "page_area_ratio": 1.0
+     },
+     "containment": 1.0,
+     "excerpt": "According to the Strategy, the FCC-ee would offer the broadest exploratory progr"
+    },
+    {
+     "page": 3,
+     "reference": "p3#15",
+     "page_kind": "article_opener",
+     "indent_eligible_page": true,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      545.83,
+      133.01,
+      667.51,
+      174.74
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       -0.36,
+       0.0,
+       1023.64,
+       768.0
+      ],
+      "page_area_ratio": 1.0
+     },
+     "containment": 1.0,
+     "excerpt": "“The high-energy physics community and the CERN Council have been united for thi"
+    },
+    {
+     "page": 3,
+     "reference": "p3#17",
+     "page_kind": "article_opener",
+     "indent_eligible_page": true,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      674.79,
+      341.62,
+      796.67,
+      409.35
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       -0.36,
+       0.0,
+       1023.64,
+       768.0
+      ],
+      "page_area_ratio": 1.0
+     },
+     "containment": 1.0,
+     "excerpt": "flagship project to maintain CERN’s world-leading role in collider physics and t"
+    },
+    {
+     "page": 3,
+     "reference": "p3#18",
+     "page_kind": "article_opener",
+     "indent_eligible_page": true,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      674.93,
+      193.83,
+      796.67,
+      339.75
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       -0.36,
+       0.0,
+       1023.64,
+       768.0
+      ],
+      "page_area_ratio": 1.0
+     },
+     "containment": 1.0,
+     "excerpt": "The 2026 update follows more than two years of intense work by the Euro- pean pa"
+    },
+    {
+     "page": 3,
+     "reference": "p3#19",
+     "page_kind": "article_opener",
+     "indent_eligible_page": true,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      674.79,
+      133.0,
+      796.67,
+      191.94
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       -0.36,
+       0.0,
+       1023.64,
+       768.0
+      ],
+      "page_area_ratio": 1.0
+     },
+     "containment": 1.0,
+     "excerpt": "In addition to updating the Strategy, the Council has invited CERN manage- ment "
+    },
+    {
+     "page": 3,
+     "reference": "p3#20",
+     "page_kind": "article_opener",
+     "indent_eligible_page": true,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      868.46,
+      289.44,
+      990.35,
+      409.27
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       -0.36,
+       0.0,
+       1023.64,
+       768.0
+      ],
+      "page_area_ratio": 1.0
+     },
+     "containment": 1.0,
+     "excerpt": "financially feasible funding plan for the possible FCC-ee project. In the next t"
+    },
+    {
+     "page": 3,
+     "reference": "p3#22",
+     "page_kind": "article_opener",
+     "indent_eligible_page": true,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      872.51,
+      265.1,
+      876.46,
+      267.82
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       -0.36,
+       0.0,
+       1023.64,
+       768.0
+      ],
+      "page_area_ratio": 1.0
+     },
+     "containment": 1.0,
+     "excerpt": "T"
+    },
+    {
+     "page": 3,
+     "reference": "p3#24",
+     "page_kind": "article_opener",
+     "indent_eligible_page": true,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      868.46,
+      211.24,
+      990.35,
+      270.2
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       -0.36,
+       0.0,
+       1023.64,
+       768.0
+      ],
+      "page_area_ratio": 1.0
+     },
+     "containment": 1.0,
+     "excerpt": "e Strategy process has seen a very strong engagement of the particle- physics co"
+    },
+    {
+     "page": 3,
+     "reference": "p3#27",
+     "page_kind": "article_opener",
+     "indent_eligible_page": true,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      300.98,
+      245.96,
+      335.59,
+      252.98
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       -0.36,
+       0.0,
+       1023.64,
+       768.0
+      ],
+      "page_area_ratio": 1.0
+     },
+     "containment": 1.0,
+     "excerpt": "Linkedin"
+    },
+    {
+     "page": 3,
+     "reference": "p3#28",
+     "page_kind": "article_opener",
+     "indent_eligible_page": true,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      394.67,
+      242.36,
+      468.39,
+      252.98
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       -0.36,
+       0.0,
+       1023.64,
+       768.0
+      ],
+      "page_area_ratio": 1.0
+     },
+     "containment": 1.0,
+     "excerpt": "www.bergoz.com"
+    },
+    {
+     "page": 3,
+     "reference": "p3#31",
+     "page_kind": "article_opener",
+     "indent_eligible_page": true,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      23.37,
+      388.03,
+      251.85,
+      418.81
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       -0.36,
+       0.0,
+       1023.64,
+       768.0
+      ],
+      "page_area_ratio": 1.0
+     },
+     "containment": 1.0,
+     "excerpt": "For more than 45 years, Bergoz Instrumentation is providing non-destructive curr"
+    },
+    {
+     "page": 3,
+     "reference": "p3#32",
+     "page_kind": "article_opener",
+     "indent_eligible_page": true,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      23.12,
+      310.68,
+      251.84,
+      376.73
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       -0.36,
+       0.0,
+       1023.64,
+       768.0
+      ],
+      "page_area_ratio": 1.0
+     },
+     "containment": 1.0,
+     "excerpt": "To integrate the signals of our beam current transformers into accelerator contr"
+    },
+    {
+     "page": 3,
+     "reference": "p3#33",
+     "page_kind": "article_opener",
+     "indent_eligible_page": true,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      23.12,
+      266.48,
+      251.59,
+      299.38
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       -0.36,
+       0.0,
+       1023.64,
+       768.0
+      ],
+      "page_area_ratio": 1.0
+     },
+     "containment": 1.0,
+     "excerpt": "To meet these challenges, the Modular Digital Solution (MDS) suite has been desi"
+    },
+    {
+     "page": 3,
+     "reference": "p3#34",
+     "page_kind": "article_opener",
+     "indent_eligible_page": true,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      23.12,
+      244.38,
+      210.7,
+      253.06
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       -0.36,
+       0.0,
+       1023.64,
+       768.0
+      ],
+      "page_area_ratio": 1.0
+     },
+     "containment": 1.0,
+     "excerpt": "Their designs are guided by three main objectives:"
+    },
+    {
+     "page": 3,
+     "reference": "p3#35",
+     "page_kind": "article_opener",
+     "indent_eligible_page": true,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      23.3,
+      177.42,
+      252.15,
+      243.91
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       -0.36,
+       0.0,
+       1023.64,
+       768.0
+      ],
+      "page_area_ratio": 1.0
+     },
+     "containment": 1.0,
+     "excerpt": "Preserving the integrity of the analog signal during digitiza Ensuring long-term"
+    },
+    {
+     "page": 3,
+     "reference": "p3#36",
+     "page_kind": "article_opener",
+     "indent_eligible_page": true,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      23.17,
+      133.22,
+      251.84,
+      166.13
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       -0.36,
+       0.0,
+       1023.64,
+       768.0
+      ],
+      "page_area_ratio": 1.0
+     },
+     "containment": 1.0,
+     "excerpt": "Beyond waveform acquisition, the MDS can provide extra features such as pulse ch"
+    },
+    {
+     "page": 3,
+     "reference": "p3#37",
+     "page_kind": "article_opener",
+     "indent_eligible_page": true,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      261.66,
+      387.94,
+      486.82,
+      420.84
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       -0.36,
+       0.0,
+       1023.64,
+       768.0
+      ],
+      "page_area_ratio": 1.0
+     },
+     "containment": 1.0,
+     "excerpt": "Each MDS variant is dedicated to specific Bergoz Instrumentation measurement sys"
+    },
+    {
+     "page": 3,
+     "reference": "p3#38",
+     "page_kind": "article_opener",
+     "indent_eligible_page": true,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      262.02,
+      343.74,
+      486.69,
+      376.64
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       -0.36,
+       0.0,
+       1023.64,
+       768.0
+      ],
+      "page_area_ratio": 1.0
+     },
+     "containment": 1.0,
+     "excerpt": "Communication is implemented over Ethernet through a simple command protocol, an"
+    },
+    {
+     "page": 3,
+     "reference": "p3#39",
+     "page_kind": "article_opener",
+     "indent_eligible_page": true,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      261.83,
+      288.49,
+      486.49,
+      332.44
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       -0.36,
+       0.0,
+       1023.64,
+       768.0
+      ],
+      "page_area_ratio": 1.0
+     },
+     "containment": 1.0,
+     "excerpt": "The MDS-ACCT, based on a 16-bit analog-to-digital converter (ADC) operating at 1"
+    },
+    {
+     "page": 3,
+     "reference": "p3#40",
+     "page_kind": "article_opener",
+     "indent_eligible_page": true,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      34.72,
+      177.46,
+      230.09,
+      230.84
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       -0.36,
+       0.0,
+       1023.64,
+       768.0
+      ],
+      "page_area_ratio": 1.0
+     },
+     "containment": 1.0,
+     "excerpt": "digitization; high-performance and widely available components; can adapt to dif"
+    },
+    {
+     "page": 3,
+     "reference": "p3#41",
+     "page_kind": "article_opener",
+     "indent_eligible_page": true,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      868.42,
+      133.0,
+      990.45,
+      209.35
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       -0.36,
+       0.0,
+       1023.64,
+       768.0
+      ],
+      "page_area_ratio": 1.0
+     },
+     "containment": 1.0,
+     "excerpt": "been demonstrated by the comprehensive FCC feasibility study, and its scope and "
+    },
+    {
+     "page": 3,
+     "reference": "p3#43",
+     "page_kind": "article_opener",
+     "indent_eligible_page": true,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      802.99,
+      132.66,
+      863.89,
+      242.74
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       -0.36,
+       0.0,
+       1023.64,
+       768.0
+      ],
+      "page_area_ratio": 1.0
+     },
+     "containment": 1.0,
+     "excerpt": "The FCC-ee would be a visionary global research infrastructure that will deepen "
+    },
+    {
+     "page": 4,
+     "reference": "p4#0",
+     "page_kind": "interview",
+     "indent_eligible_page": false,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      19.57,
+      18.01,
+      275.69,
+      29.13
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       -0.36,
+       0.0,
+       1023.64,
+       768.0
+      ],
+      "page_area_ratio": 1.0
+     },
+     "containment": 1.0,
+     "excerpt": "V o l u m e 6 6 N u m b e r 4 J u l y / A u g u s t 2 0 2 6"
+    },
+    {
+     "page": 4,
+     "reference": "p4#7",
+     "page_kind": "interview",
+     "indent_eligible_page": false,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      545.78,
+      608.64,
+      732.12,
+      701.76
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       -0.36,
+       0.0,
+       1023.64,
+       768.0
+      ],
+      "page_area_ratio": 1.0
+     },
+     "containment": 1.0,
+     "excerpt": "analysis were also reviewed. It was made clear that with- out tight internationa"
+    },
+    {
+     "page": 4,
+     "reference": "p4#9",
+     "page_kind": "interview",
+     "indent_eligible_page": false,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      545.67,
+      456.0,
+      732.13,
+      587.31
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       -0.36,
+       0.0,
+       1023.64,
+       768.0
+      ],
+      "page_area_ratio": 1.0
+     },
+     "containment": 1.0,
+     "excerpt": "The 1980s and 1990s were good years for opening cham- pagne bottles in accelerat"
+    },
+    {
+     "page": 4,
+     "reference": "p4#10",
+     "page_kind": "interview",
+     "indent_eligible_page": false,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      545.82,
+      341.52,
+      732.13,
+      453.76
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       -0.36,
+       0.0,
+       1023.64,
+       768.0
+      ],
+      "page_area_ratio": 1.0
+     },
+     "containment": 1.0,
+     "excerpt": "A very telling story was that of ISABELLE, a high-energy proton collider planned"
+    },
+    {
+     "page": 4,
+     "reference": "p4#11",
+     "page_kind": "interview",
+     "indent_eligible_page": false,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      545.82,
+      274.75,
+      731.97,
+      339.28
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       -0.36,
+       0.0,
+       1023.64,
+       768.0
+      ],
+      "page_area_ratio": 1.0
+     },
+     "containment": 1.0,
+     "excerpt": "A different story was that of the Superconducting Super Collider (SSC), cancelle"
+    },
+    {
+     "page": 4,
+     "reference": "p4#12",
+     "page_kind": "interview",
+     "indent_eligible_page": false,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      545.71,
+      179.34,
+      732.08,
+      272.5
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       -0.36,
+       0.0,
+       1023.64,
+       768.0
+      ],
+      "page_area_ratio": 1.0
+     },
+     "containment": 1.0,
+     "excerpt": "The dissolution of the Soviet Union terminated the UNK programme, which envisage"
+    },
+    {
+     "page": 4,
+     "reference": "p4#13",
+     "page_kind": "interview",
+     "indent_eligible_page": false,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      545.71,
+      131.64,
+      732.06,
+      177.09
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       -0.36,
+       0.0,
+       1023.64,
+       768.0
+      ],
+      "page_area_ratio": 1.0
+     },
+     "containment": 1.0,
+     "excerpt": "The protagonists of the 1980s and 1990s fulfilled, with honour, their duty – pas"
+    },
+    {
+     "page": 4,
+     "reference": "p4#14",
+     "page_kind": "interview",
+     "indent_eligible_page": false,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      739.63,
+      446.46,
+      925.58,
+      472.8
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       -0.36,
+       0.0,
+       1023.64,
+       768.0
+      ],
+      "page_area_ratio": 1.0
+     },
+     "containment": 1.0,
+     "excerpt": "overcame the obstacles and reaped success, some had to reconcile themselves with"
+    },
+    {
+     "page": 4,
+     "reference": "p4#16",
+     "page_kind": "interview",
+     "indent_eligible_page": false,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      739.24,
+      293.81,
+      925.83,
+      425.13
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       -0.36,
+       0.0,
+       1023.64,
+       768.0
+      ],
+      "page_area_ratio": 1.0
+     },
+     "containment": 1.0,
+     "excerpt": "As Winston Churchill himself put it in the House of Commons, it is “much better "
+    },
+    {
+     "page": 4,
+     "reference": "p4#17",
+     "page_kind": "interview",
+     "indent_eligible_page": false,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      739.3,
+      217.5,
+      925.61,
+      291.57
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       -0.36,
+       0.0,
+       1023.64,
+       768.0
+      ],
+      "page_area_ratio": 1.0
+     },
+     "containment": 1.0,
+     "excerpt": "Various flavours of human behaviour in competition and in collaboration found ex"
+    },
+    {
+     "page": 4,
+     "reference": "p4#18",
+     "page_kind": "interview",
+     "indent_eligible_page": false,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      739.57,
+      160.26,
+      925.82,
+      215.25
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       -0.36,
+       0.0,
+       1023.64,
+       768.0
+      ],
+      "page_area_ratio": 1.0
+     },
+     "containment": 1.0,
+     "excerpt": "The symposium was dedicated to the memory of Herwig Schopper, who passed away in"
+    },
+    {
+     "page": 4,
+     "reference": "p4#20",
+     "page_kind": "interview",
+     "indent_eligible_page": false,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      739.38,
+      131.64,
+      866.53,
+      138.9
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       -0.36,
+       0.0,
+       1023.64,
+       768.0
+      ],
+      "page_area_ratio": 1.0
+     },
+     "containment": 1.0,
+     "excerpt": "https://indico.cern.ch/event/1480892/."
+    },
+    {
+     "page": 4,
+     "reference": "p4#22",
+     "page_kind": "interview",
+     "indent_eligible_page": false,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      932.97,
+      131.28,
+      991.69,
+      210.84
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       -0.36,
+       0.0,
+       1023.64,
+       768.0
+      ],
+      "page_area_ratio": 1.0
+     },
+     "containment": 1.0,
+     "excerpt": "The 1980s and 1990s were good years for opening champagne bottles in accelerator"
+    },
+    {
+     "page": 4,
+     "reference": "p4#31",
+     "page_kind": "interview",
+     "indent_eligible_page": false,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      98.38,
+      131.64,
+      284.73,
+      253.41
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       -0.36,
+       0.0,
+       1023.64,
+       768.0
+      ],
+      "page_area_ratio": 1.0
+     },
+     "containment": 1.0,
+     "excerpt": "of anyway. The mid 1990s brought matrix models, the non-local objects called D-b"
+    },
+    {
+     "page": 4,
+     "reference": "p4#32",
+     "page_kind": "interview",
+     "indent_eligible_page": false,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      291.87,
+      207.96,
+      478.38,
+      253.41
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       -0.36,
+       0.0,
+       1023.64,
+       768.0
+      ],
+      "page_area_ratio": 1.0
+     },
+     "containment": 1.0,
+     "excerpt": "joining forces, giving rise to the new field of particle cos- mology. The absenc"
+    },
+    {
+     "page": 4,
+     "reference": "p4#33",
+     "page_kind": "interview",
+     "indent_eligible_page": false,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      292.12,
+      131.64,
+      478.34,
+      205.68
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       -0.36,
+       0.0,
+       1023.64,
+       768.0
+      ],
+      "page_area_ratio": 1.0
+     },
+     "containment": 1.0,
+     "excerpt": "Technology was celebrated in its own right. Talks traced the development of the "
+    }
+   ]
+  },
+  "AramcoWorld-en-v2": {
+   "source": "examples/output/b10_5/AramcoWorld-en-v2/on/work/AramcoWorld-en-v2/checkpoint.06_styles_and_formulas.xml",
+   "counts": {
+    "body_paragraphs": 83,
+    "panels": 26,
+    "inside": 72,
+    "inside_on_eligible_pages": 66,
+    "inside_a_full_page_panel": 67
+   },
+   "instances": [
+    {
+     "page": 3,
+     "reference": "p3#2",
+     "page_kind": "toc",
+     "indent_eligible_page": false,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      316.35,
+      511.13,
+      569.77,
+      564.57
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       0.0,
+       0.0,
+       655.5,
+       831.0
+      ],
+      "page_area_ratio": 1.0689
+     },
+     "containment": 1.0,
+     "excerpt": "WRITTEN BY RAMIN GANESHRAM, ILLUSTRATEDBY IVY JOHNSON As the United States marks"
+    },
+    {
+     "page": 3,
+     "reference": "p3#6",
+     "page_kind": "toc",
+     "indent_eligible_page": false,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      316.6,
+      353.72,
+      582.1,
+      396.24
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       0.0,
+       0.0,
+       655.5,
+       831.0
+      ],
+      "page_area_ratio": 1.0689
+     },
+     "containment": 1.0,
+     "excerpt": "WRITTEN BY AIBARSHYN AKHMETKALI, PHOTOGRAPHEDBY DANIIL USMANOV With earthquakes,"
+    },
+    {
+     "page": 3,
+     "reference": "p3#10",
+     "page_kind": "toc",
+     "indent_eligible_page": false,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      316.28,
+      196.4,
+      580.17,
+      227.92
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       0.0,
+       0.0,
+       655.5,
+       831.0
+      ],
+      "page_area_ratio": 1.0689
+     },
+     "containment": 1.0,
+     "excerpt": "The legacy of an Ottoman-era project to connect Damascas, Syria, to the holy sit"
+    },
+    {
+     "page": 3,
+     "reference": "p3#13",
+     "page_kind": "toc",
+     "indent_eligible_page": false,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      155.86,
+      102.67,
+      535.86,
+      110.78
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       78.03,
+       83.22,
+       582.9,
+       178.37
+      ],
+      "page_area_ratio": 0.0943
+     },
+     "containment": 1.0,
+     "excerpt": "R Intricate interior details of the Tilya-Kori Madrasa on the Registan complex i"
+    },
+    {
+     "page": 3,
+     "reference": "p3#15",
+     "page_kind": "toc",
+     "indent_eligible_page": false,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      156.89,
+      92.56,
+      536.21,
+      100.67
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       78.03,
+       83.22,
+       582.9,
+       178.37
+      ],
+      "page_area_ratio": 0.0943
+     },
+     "containment": 1.0,
+     "excerpt": "wall patterns. Preservationists work ceaselessly to restore and maintain the exa"
+    },
+    {
+     "page": 3,
+     "reference": "p3#16",
+     "page_kind": "toc",
+     "indent_eligible_page": false,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      93.69,
+      127.93,
+      566.98,
+      142.93
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       78.03,
+       83.22,
+       582.9,
+       178.37
+      ],
+      "page_area_ratio": 0.0943
+     },
+     "containment": 1.0,
+     "excerpt": "2 FirstLook | 4 Flavors | 6 Q&A | 38 Author’s Corner | 40 Reviews | 42 Events | "
+    },
+    {
+     "page": 4,
+     "reference": "p4#1",
+     "page_kind": "article_body",
+     "indent_eligible_page": true,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      181.65,
+      301.17,
+      371.51,
+      364.31
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       0.0,
+       0.0,
+       655.5,
+       831.0
+      ],
+      "page_area_ratio": 1.0689
+     },
+     "containment": 1.0,
+     "excerpt": "The historic monuments also face constant threats from a buildup of moisture fro"
+    },
+    {
+     "page": 4,
+     "reference": "p4#2",
+     "page_kind": "article_body",
+     "indent_eligible_page": true,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      181.86,
+      268.08,
+      371.5,
+      299.79
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       0.0,
+       0.0,
+       655.5,
+       831.0
+      ],
+      "page_area_ratio": 1.0689
+     },
+     "containment": 1.0,
+     "excerpt": "Yet many of the engineering techniques that have allowed the structures to survi"
+    },
+    {
+     "page": 4,
+     "reference": "p4#3",
+     "page_kind": "article_body",
+     "indent_eligible_page": true,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      181.51,
+      236.65,
+      371.58,
+      266.08
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       0.0,
+       0.0,
+       655.5,
+       831.0
+      ],
+      "page_area_ratio": 1.0689
+     },
+     "containment": 1.0,
+     "excerpt": "“Any architectural monument over a hundred years old is like a wise elder,” says"
+    },
+    {
+     "page": 4,
+     "reference": "p4#4",
+     "page_kind": "article_body",
+     "indent_eligible_page": true,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      388.75,
+      332.61,
+      578.52,
+      364.32
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       0.0,
+       0.0,
+       655.5,
+       831.0
+      ],
+      "page_area_ratio": 1.0689
+     },
+     "containment": 1.0,
+     "excerpt": "He explains that the foundations beneath some monuments contain layers of reeds "
+    },
+    {
+     "page": 4,
+     "reference": "p4#5",
+     "page_kind": "article_body",
+     "indent_eligible_page": true,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      388.66,
+      279.64,
+      578.52,
+      330.61
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       0.0,
+       0.0,
+       655.5,
+       831.0
+      ],
+      "page_area_ratio": 1.0689
+     },
+     "containment": 1.0,
+     "excerpt": "“For example, this monument [the Tilya-Kori Madrasa] sits on a 9-meter foundatio"
+    },
+    {
+     "page": 4,
+     "reference": "p4#7",
+     "page_kind": "article_body",
+     "indent_eligible_page": true,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      388.69,
+      215.14,
+      578.54,
+      235.25
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       0.0,
+       0.0,
+       655.5,
+       831.0
+      ],
+      "page_area_ratio": 1.0689
+     },
+     "containment": 1.0,
+     "excerpt": "Another challenge facing restorers is deciding how much to reconstruct."
+    },
+    {
+     "page": 4,
+     "reference": "p4#8",
+     "page_kind": "article_body",
+     "indent_eligible_page": true,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      388.85,
+      182.04,
+      578.5,
+      213.75
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       0.0,
+       0.0,
+       655.5,
+       831.0
+      ],
+      "page_area_ratio": 1.0689
+     },
+     "containment": 1.0,
+     "excerpt": "Inside the Tilya-Kori Madrasa, visitors now walk alongside large brick surfaces "
+    },
+    {
+     "page": 4,
+     "reference": "p4#9",
+     "page_kind": "article_body",
+     "indent_eligible_page": true,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      388.66,
+      149.78,
+      578.5,
+      180.04
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       0.0,
+       0.0,
+       655.5,
+       831.0
+      ],
+      "page_area_ratio": 1.0689
+     },
+     "containment": 1.0,
+     "excerpt": "“These burnt bricks are conserved areas. Before, there was astonishing stone car"
+    },
+    {
+     "page": 4,
+     "reference": "p4#10",
+     "page_kind": "article_body",
+     "indent_eligible_page": true,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      388.75,
+      117.51,
+      578.5,
+      147.78
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       0.0,
+       0.0,
+       655.5,
+       831.0
+      ],
+      "page_area_ratio": 1.0689
+     },
+     "containment": 1.0,
+     "excerpt": "Restoration work attempts to preserve surviv- ing fragments while re-creating mi"
+    },
+    {
+     "page": 4,
+     "reference": "p4#11",
+     "page_kind": "article_body",
+     "indent_eligible_page": true,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      388.67,
+      83.8,
+      578.52,
+      115.51
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       0.0,
+       0.0,
+       655.5,
+       831.0
+      ],
+      "page_area_ratio": 1.0689
+     },
+     "containment": 1.0,
+     "excerpt": "“We’ve completely restored the Ulugh Beg Ma- drasa,” he says. “Now, when you wal"
+    },
+    {
+     "page": 4,
+     "reference": "p4#13",
+     "page_kind": "article_body",
+     "indent_eligible_page": true,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      237.1,
+      83.9,
+      370.46,
+      96.19
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       0.0,
+       0.0,
+       655.5,
+       831.0
+      ],
+      "page_area_ratio": 1.0689
+     },
+     "containment": 1.0,
+     "excerpt": "— B A K H O D I R B A LTAY E V"
+    },
+    {
+     "page": 4,
+     "reference": "p4#14",
+     "page_kind": "article_body",
+     "indent_eligible_page": true,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      78.31,
+      276.04,
+      140.1,
+      364.12
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       0.0,
+       0.0,
+       655.5,
+       831.0
+      ],
+      "page_area_ratio": 1.0689
+     },
+     "containment": 1.0,
+     "excerpt": "Light shows at night lend drama to the Registan complex, which has survivedearth"
+    },
+    {
+     "page": 5,
+     "reference": "p5#1",
+     "page_kind": "article_opener",
+     "indent_eligible_page": true,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      78.08,
+      440.99,
+      270.16,
+      547.15
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       0.0,
+       0.0,
+       655.5,
+       831.0
+      ],
+      "page_area_ratio": 1.0689
+     },
+     "containment": 1.0,
+     "excerpt": "We were roughly 80 miles (129 km) south of Al- Ula in the west of Saudi Arabia. "
+    },
+    {
+     "page": 5,
+     "reference": "p5#2",
+     "page_kind": "article_opener",
+     "indent_eligible_page": true,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      78.08,
+      364.87,
+      270.14,
+      439.59
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       0.0,
+       0.0,
+       655.5,
+       831.0
+      ],
+      "page_area_ratio": 1.0689
+     },
+     "containment": 1.0,
+     "excerpt": "The ribbon of tarmac that we had started out on disappeared as the vehicle caree"
+    },
+    {
+     "page": 5,
+     "reference": "p5#3",
+     "page_kind": "article_opener",
+     "indent_eligible_page": true,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      78.06,
+      278.84,
+      270.17,
+      362.87
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       0.0,
+       0.0,
+       655.5,
+       831.0
+      ],
+      "page_area_ratio": 1.0689
+     },
+     "containment": 1.0,
+     "excerpt": "“This is the first railway station I remember,” Al Juhani told me. It was called"
+    },
+    {
+     "page": 5,
+     "reference": "p5#4",
+     "page_kind": "article_opener",
+     "indent_eligible_page": true,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      77.77,
+      215.14,
+      270.13,
+      276.84
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       0.0,
+       0.0,
+       655.5,
+       831.0
+      ],
+      "page_area_ratio": 1.0689
+     },
+     "containment": 1.0,
+     "excerpt": "I discovered that the story Al Juhani was telling has been largely forgotten in "
+    },
+    {
+     "page": 5,
+     "reference": "p5#5",
+     "page_kind": "article_opener",
+     "indent_eligible_page": true,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      78.25,
+      192.8,
+      270.13,
+      213.75
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       0.0,
+       0.0,
+       655.5,
+       831.0
+      ],
+      "page_area_ratio": 1.0689
+     },
+     "containment": 1.0,
+     "excerpt": "What began as a journey into the region’s past felt increasingly tied to its fut"
+    },
+    {
+     "page": 5,
+     "reference": "p5#6",
+     "page_kind": "article_opener",
+     "indent_eligible_page": true,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      78.06,
+      128.27,
+      270.12,
+      190.8
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       0.0,
+       0.0,
+       655.5,
+       831.0
+      ],
+      "page_area_ratio": 1.0689
+     },
+     "containment": 1.0,
+     "excerpt": "For some time after the untimely demise of the Hijaz route following World War I"
+    },
+    {
+     "page": 5,
+     "reference": "p5#7",
+     "page_kind": "article_opener",
+     "indent_eligible_page": true,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      78.16,
+      85.11,
+      270.7,
+      126.27
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       0.0,
+       0.0,
+       655.5,
+       831.0
+      ],
+      "page_area_ratio": 1.0689
+     },
+     "containment": 1.0,
+     "excerpt": "Since opening fully in 2018, Saudi Arabia’s Haramain high-speed railway has achi"
+    },
+    {
+     "page": 5,
+     "reference": "p5#8",
+     "page_kind": "article_opener",
+     "indent_eligible_page": true,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      285.16,
+      493.94,
+      477.12,
+      547.15
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       0.0,
+       0.0,
+       655.5,
+       831.0
+      ],
+      "page_area_ratio": 1.0689
+     },
+     "containment": 1.0,
+     "excerpt": "dramatically reducing journey times for millions of Hajj pilgrims. In a very dif"
+    },
+    {
+     "page": 5,
+     "reference": "p5#9",
+     "page_kind": "article_opener",
+     "indent_eligible_page": true,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      285.3,
+      450.92,
+      475.0,
+      491.94
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       0.0,
+       0.0,
+       655.5,
+       831.0
+      ],
+      "page_area_ratio": 1.0689
+     },
+     "containment": 1.0,
+     "excerpt": "Today, however, no passenger services in the Mid- dle East cross an internationa"
+    },
+    {
+     "page": 5,
+     "reference": "p5#10",
+     "page_kind": "article_opener",
+     "indent_eligible_page": true,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      285.16,
+      341.93,
+      477.12,
+      448.92
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       0.0,
+       0.0,
+       655.5,
+       831.0
+      ],
+      "page_area_ratio": 1.0689
+     },
+     "containment": 1.0,
+     "excerpt": "In December 2025, Saudi Arabia and Qatar signed an agreement for a high-speed el"
+    },
+    {
+     "page": 5,
+     "reference": "p5#12",
+     "page_kind": "article_opener",
+     "indent_eligible_page": true,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      78.63,
+      628.73,
+      576.96,
+      641.66
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       0.0,
+       0.0,
+       655.5,
+       831.0
+      ],
+      "page_area_ratio": 1.0689
+     },
+     "containment": 1.0,
+     "excerpt": "cause none of the dials in his battered old SUV worked. He rested one hand on th"
+    },
+    {
+     "page": 5,
+     "reference": "p5#15",
+     "page_kind": "article_opener",
+     "indent_eligible_page": true,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      510.18,
+      344.91,
+      578.5,
+      488.99
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       0.0,
+       0.0,
+       655.5,
+       831.0
+      ],
+      "page_area_ratio": 1.0689
+     },
+     "containment": 1.0,
+     "excerpt": "opposite A rail-way tunnel cuts through a steep and rocky section of the landsca"
+    },
+    {
+     "page": 6,
+     "reference": "p6#2",
+     "page_kind": "article_body",
+     "indent_eligible_page": true,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      181.56,
+      666.02,
+      373.54,
+      719.23
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       0.0,
+       0.0,
+       655.5,
+       831.0
+      ],
+      "page_area_ratio": 1.0689
+     },
+     "containment": 1.0,
+     "excerpt": "Construction of the Hijaz Railway began on Septem- ber 1, 1900, on the orders of"
+    },
+    {
+     "page": 6,
+     "reference": "p6#3",
+     "page_kind": "article_body",
+     "indent_eligible_page": true,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      181.81,
+      632.32,
+      373.54,
+      664.02
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       0.0,
+       0.0,
+       655.5,
+       831.0
+      ],
+      "page_area_ratio": 1.0689
+     },
+     "containment": 1.0,
+     "excerpt": "The railway was expected to serve three functions. Politically, Abdul Hamid want"
+    },
+    {
+     "page": 6,
+     "reference": "p6#4",
+     "page_kind": "article_body",
+     "indent_eligible_page": true,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      388.58,
+      655.26,
+      580.63,
+      751.5
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       0.0,
+       0.0,
+       655.5,
+       831.0
+      ],
+      "page_area_ratio": 1.0689
+     },
+     "containment": 1.0,
+     "excerpt": "his control was strongest. Militarily, the railway would act as a bulwark agains"
+    },
+    {
+     "page": 6,
+     "reference": "p6#5",
+     "page_kind": "article_body",
+     "indent_eligible_page": true,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      388.64,
+      547.71,
+      580.65,
+      653.26
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       0.0,
+       0.0,
+       655.5,
+       831.0
+      ],
+      "page_area_ratio": 1.0689
+     },
+     "containment": 1.0,
+     "excerpt": "All three aims were important, said professor Zekeriya Kurşun, a specialist on t"
+    },
+    {
+     "page": 6,
+     "reference": "p6#6",
+     "page_kind": "article_body",
+     "indent_eligible_page": true,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      388.66,
+      397.14,
+      580.68,
+      545.71
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       0.0,
+       0.0,
+       655.5,
+       831.0
+      ],
+      "page_area_ratio": 1.0689
+     },
+     "containment": 1.0,
+     "excerpt": "“The most unique aspect of all was how it was funded,” Kurşun added. Abdul Hamid"
+    },
+    {
+     "page": 6,
+     "reference": "p6#7",
+     "page_kind": "article_body",
+     "indent_eligible_page": true,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      388.48,
+      290.42,
+      580.63,
+      395.14
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       0.0,
+       0.0,
+       655.5,
+       831.0
+      ],
+      "page_area_ratio": 1.0689
+     },
+     "containment": 1.0,
+     "excerpt": "Ottoman authorities deployed thousands of mil- itary conscripts to build the rai"
+    },
+    {
+     "page": 6,
+     "reference": "p6#8",
+     "page_kind": "article_body",
+     "indent_eligible_page": true,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      388.77,
+      203.55,
+      580.65,
+      289.03
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       0.0,
+       0.0,
+       655.5,
+       831.0
+      ],
+      "page_area_ratio": 1.0689
+     },
+     "containment": 1.0,
+     "excerpt": "Another factor was the variation in terrain, which required very different skill"
+    },
+    {
+     "page": 6,
+     "reference": "p6#9",
+     "page_kind": "article_body",
+     "indent_eligible_page": true,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      388.66,
+      117.51,
+      580.63,
+      201.55
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       0.0,
+       0.0,
+       655.5,
+       831.0
+      ],
+      "page_area_ratio": 1.0689
+     },
+     "containment": 1.0,
+     "excerpt": "The advancement of the line here required hun- dreds of bridges, aqueducts and c"
+    },
+    {
+     "page": 6,
+     "reference": "p6#10",
+     "page_kind": "article_body",
+     "indent_eligible_page": true,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      388.66,
+      83.81,
+      580.66,
+      115.51
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       0.0,
+       0.0,
+       655.5,
+       831.0
+      ],
+      "page_area_ratio": 1.0689
+     },
+     "containment": 1.0,
+     "excerpt": "“The railway workers had to overcome many technical difficulties,” writes Nichol"
+    },
+    {
+     "page": 6,
+     "reference": "p6#11",
+     "page_kind": "article_body",
+     "indent_eligible_page": true,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      78.31,
+      637.06,
+      144.89,
+      750.5
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       0.0,
+       0.0,
+       655.5,
+       831.0
+      ],
+      "page_area_ratio": 1.0689
+     },
+     "containment": 1.0,
+     "excerpt": "beloW Workers lay rails near Tabuk in 1906. Construc- tion of the Hijaz Railway "
+    },
+    {
+     "page": 7,
+     "reference": "p7#1",
+     "page_kind": "article_body",
+     "indent_eligible_page": true,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      78.16,
+      450.92,
+      267.96,
+      471.87
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       0.0,
+       0.0,
+       655.5,
+       831.0
+      ],
+      "page_area_ratio": 1.0689
+     },
+     "containment": 1.0,
+     "excerpt": "the route south of the Hauran and a severe shortage of locally available fuel so"
+    },
+    {
+     "page": 7,
+     "reference": "p7#2",
+     "page_kind": "article_body",
+     "indent_eligible_page": true,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      78.08,
+      311.1,
+      268.04,
+      448.92
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       0.0,
+       0.0,
+       655.5,
+       831.0
+      ],
+      "page_area_ratio": 1.0689
+     },
+     "containment": 1.0,
+     "excerpt": "Even in this era, the journey along the route is challenging. I passed through S"
+    },
+    {
+     "page": 7,
+     "reference": "p7#3",
+     "page_kind": "article_body",
+     "indent_eligible_page": true,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      78.15,
+      235.82,
+      268.05,
+      309.1
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       0.0,
+       0.0,
+       655.5,
+       831.0
+      ],
+      "page_area_ratio": 1.0689
+     },
+     "containment": 1.0,
+     "excerpt": "By 1908 engineers had extended the rails to Ma- dinah, and six years later they "
+    },
+    {
+     "page": 7,
+     "reference": "p7#4",
+     "page_kind": "article_body",
+     "indent_eligible_page": true,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      78.16,
+      160.53,
+      268.95,
+      233.82
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       0.0,
+       0.0,
+       655.5,
+       831.0
+      ],
+      "page_area_ratio": 1.0689
+     },
+     "containment": 1.0,
+     "excerpt": "Still, it was a great success for the ailing em- pire. In 1909 French explorer C"
+    },
+    {
+     "page": 7,
+     "reference": "p7#5",
+     "page_kind": "article_body",
+     "indent_eligible_page": true,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      78.14,
+      83.97,
+      268.04,
+      158.53
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       0.0,
+       0.0,
+       655.5,
+       831.0
+      ],
+      "page_area_ratio": 1.0689
+     },
+     "containment": 1.0,
+     "excerpt": "The optimism surrounding the railway did not last long. Less than a decade later"
+    },
+    {
+     "page": 7,
+     "reference": "p7#6",
+     "page_kind": "article_body",
+     "indent_eligible_page": true,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      285.16,
+      430.24,
+      475.04,
+      471.87
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       0.0,
+       0.0,
+       655.5,
+       831.0
+      ],
+      "page_area_ratio": 1.0689
+     },
+     "containment": 1.0,
+     "excerpt": "The last train on the Hijaz line in what is now Saudi Arabia departed in 1925. B"
+    },
+    {
+     "page": 7,
+     "reference": "p7#8",
+     "page_kind": "article_body",
+     "indent_eligible_page": true,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      284.98,
+      321.86,
+      475.02,
+      385.82
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       0.0,
+       0.0,
+       655.5,
+       831.0
+      ],
+      "page_area_ratio": 1.0689
+     },
+     "containment": 1.0,
+     "excerpt": "Over the decades, various efforts were made to rehabilitate the Hijaz route. Mos"
+    },
+    {
+     "page": 7,
+     "reference": "p7#9",
+     "page_kind": "article_body",
+     "indent_eligible_page": true,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      285.31,
+      290.42,
+      475.0,
+      319.86
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       0.0,
+       0.0,
+       655.5,
+       831.0
+      ],
+      "page_area_ratio": 1.0689
+     },
+     "containment": 1.0,
+     "excerpt": "Yet traces of the Hijaz still survive across the region, scattered through deser"
+    },
+    {
+     "page": 7,
+     "reference": "p7#10",
+     "page_kind": "article_body",
+     "indent_eligible_page": true,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      285.16,
+      245.13,
+      475.03,
+      289.03
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       0.0,
+       0.0,
+       655.5,
+       831.0
+      ],
+      "page_area_ratio": 1.0689
+     },
+     "containment": 1.0,
+     "excerpt": "Since 2023 I have been exploring the route, re- turning multiple times to collec"
+    },
+    {
+     "page": 7,
+     "reference": "p7#11",
+     "page_kind": "article_body",
+     "indent_eligible_page": true,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      510.18,
+      384.43,
+      577.19,
+      472.51
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       0.0,
+       0.0,
+       655.5,
+       831.0
+      ],
+      "page_area_ratio": 1.0689
+     },
+     "containment": 1.0,
+     "excerpt": "The Hijaz Railway passed through the station at Khir- bet Samra in the north of "
+    },
+    {
+     "page": 8,
+     "reference": "p8#4",
+     "page_kind": "article_opener",
+     "indent_eligible_page": true,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      133.47,
+      647.63,
+      282.44,
+      655.96
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       24.0,
+       24.0,
+       631.5,
+       807.0
+      ],
+      "page_area_ratio": 0.9334
+     },
+     "containment": 1.0,
+     "excerpt": "Edhem Eldem. Edinburgh University Press, 2024."
+    },
+    {
+     "page": 8,
+     "reference": "p8#5",
+     "page_kind": "article_opener",
+     "indent_eligible_page": true,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      133.06,
+      615.44,
+      301.86,
+      634.45
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       24.0,
+       24.0,
+       631.5,
+       807.0
+      ],
+      "page_area_ratio": 0.9334
+     },
+     "containment": 1.0,
+     "excerpt": "The Alhambra at the Crossroads of History shows how the 13th-century Andalusi pa"
+    },
+    {
+     "page": 8,
+     "reference": "p8#6",
+     "page_kind": "article_opener",
+     "indent_eligible_page": true,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      78.15,
+      389.5,
+      301.91,
+      612.94
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       24.0,
+       24.0,
+       631.5,
+       807.0
+      ],
+      "page_area_ratio": 0.9334
+     },
+     "containment": 1.0,
+     "excerpt": "modern Spain, generates often conflicting meanings at the same time— meanings ac"
+    },
+    {
+     "page": 8,
+     "reference": "p8#8",
+     "page_kind": "article_opener",
+     "indent_eligible_page": true,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      138.02,
+      357.31,
+      284.19,
+      365.57
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       24.0,
+       24.0,
+       631.5,
+       807.0
+      ],
+      "page_area_ratio": 0.9334
+     },
+     "containment": 1.0,
+     "excerpt": "Paul Binski. University of California Press, 2024."
+    },
+    {
+     "page": 8,
+     "reference": "p8#9",
+     "page_kind": "article_opener",
+     "indent_eligible_page": true,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      137.63,
+      303.54,
+      301.52,
+      344.06
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       24.0,
+       24.0,
+       631.5,
+       807.0
+      ],
+      "page_area_ratio": 0.9334
+     },
+     "containment": 1.0,
+     "excerpt": "From the opening pages, Paul Binski’s Architecture and Affect in the Middle Ages"
+    },
+    {
+     "page": 8,
+     "reference": "p8#10",
+     "page_kind": "article_opener",
+     "indent_eligible_page": true,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      78.25,
+      131.47,
+      301.91,
+      301.05
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       24.0,
+       24.0,
+       631.5,
+       807.0
+      ],
+      "page_area_ratio": 0.9334
+     },
+     "containment": 1.0,
+     "excerpt": "it actively shaped how it was perceived and felt. Drawing on classical, biblical"
+    },
+    {
+     "page": 8,
+     "reference": "p8#12",
+     "page_kind": "article_opener",
+     "indent_eligible_page": true,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      413.69,
+      131.13,
+      500.38,
+      138.63
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       24.0,
+       24.0,
+       631.5,
+       807.0
+      ],
+      "page_area_ratio": 0.9334
+     },
+     "containment": 1.0,
+     "excerpt": "—The First Female Pharoah"
+    },
+    {
+     "page": 8,
+     "reference": "p8#14",
+     "page_kind": "article_opener",
+     "indent_eligible_page": true,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      397.06,
+      593.92,
+      516.87,
+      602.18
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       24.0,
+       24.0,
+       631.5,
+       807.0
+      ],
+      "page_area_ratio": 0.9334
+     },
+     "containment": 1.0,
+     "excerpt": "Andrew Collins. Bear & Company, 2023."
+    },
+    {
+     "page": 8,
+     "reference": "p8#15",
+     "page_kind": "article_opener",
+     "indent_eligible_page": true,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      353.69,
+      227.14,
+      563.05,
+      582.92
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       24.0,
+       24.0,
+       631.5,
+       807.0
+      ],
+      "page_area_ratio": 0.9334
+     },
+     "containment": 1.0,
+     "excerpt": "In The First Female Pharoah: Sobekneferu, Goddess of the Seven Stars, historian "
+    },
+    {
+     "page": 9,
+     "reference": "p9#1",
+     "page_kind": "article_opener",
+     "indent_eligible_page": true,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      302.06,
+      507.88,
+      422.55,
+      634.45
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       0.0,
+       0.0,
+       655.5,
+       831.0
+      ],
+      "page_area_ratio": 1.0689
+     },
+     "containment": 1.0,
+     "excerpt": "Powers and Tagliacozzo, both long de- voted to the study of Islamic history and "
+    },
+    {
+     "page": 9,
+     "reference": "p9#2",
+     "page_kind": "article_opener",
+     "indent_eligible_page": true,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      302.24,
+      444.54,
+      422.64,
+      505.39
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       0.0,
+       0.0,
+       655.5,
+       831.0
+      ],
+      "page_area_ratio": 1.0689
+     },
+     "containment": 1.0,
+     "excerpt": "Three essays in particular stand out for how effectively each illuminates a diff"
+    },
+    {
+     "page": 9,
+     "reference": "p9#3",
+     "page_kind": "article_opener",
+     "indent_eligible_page": true,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      302.69,
+      292.71,
+      422.82,
+      440.86
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       0.0,
+       0.0,
+       655.5,
+       831.0
+      ],
+      "page_area_ratio": 1.0689
+     },
+     "containment": 1.0,
+     "excerpt": "Historian James Pickett’s study of 19th-century Bukharan madrasas, for example, "
+    },
+    {
+     "page": 9,
+     "reference": "p9#4",
+     "page_kind": "article_opener",
+     "indent_eligible_page": true,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      302.2,
+      228.25,
+      422.44,
+      290.29
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       0.0,
+       0.0,
+       655.5,
+       831.0
+      ],
+      "page_area_ratio": 1.0689
+     },
+     "containment": 1.0,
+     "excerpt": "Shifting to the mechanisms of state control, Benjamin Claude Brower’s essay on “"
+    },
+    {
+     "page": 9,
+     "reference": "p9#5",
+     "page_kind": "article_opener",
+     "indent_eligible_page": true,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      456.75,
+      540.07,
+      577.47,
+      634.45
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       0.0,
+       0.0,
+       655.5,
+       831.0
+      ],
+      "page_area_ratio": 1.0689
+     },
+     "containment": 1.0,
+     "excerpt": "names—stripped of familial, tribal and spiritual meaning—appears at first as adm"
+    },
+    {
+     "page": 9,
+     "reference": "p9#6",
+     "page_kind": "article_opener",
+     "indent_eligible_page": true,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      456.82,
+      401.52,
+      577.51,
+      537.65
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       0.0,
+       0.0,
+       655.5,
+       831.0
+      ],
+      "page_area_ratio": 1.0689
+     },
+     "containment": 1.0,
+     "excerpt": "Finally, Middle East historian Meh- met Darakçıoğlu’s evaluation of the Ot- toma"
+    },
+    {
+     "page": 9,
+     "reference": "p9#7",
+     "page_kind": "article_opener",
+     "indent_eligible_page": true,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      456.82,
+      303.47,
+      577.51,
+      397.84
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       0.0,
+       0.0,
+       655.5,
+       831.0
+      ],
+      "page_area_ratio": 1.0689
+     },
+     "containment": 1.0,
+     "excerpt": "As these essays intersect, a cen- tral insight emerges: Muslim societies do not "
+    },
+    {
+     "page": 9,
+     "reference": "p9#8",
+     "page_kind": "article_opener",
+     "indent_eligible_page": true,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      456.97,
+      229.44,
+      577.49,
+      301.05
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       0.0,
+       0.0,
+       655.5,
+       831.0
+      ],
+      "page_area_ratio": 1.0689
+     },
+     "containment": 1.0,
+     "excerpt": "In an age that rewards simplification and loud certainty, this volume offers a r"
+    },
+    {
+     "page": 9,
+     "reference": "p9#9",
+     "page_kind": "article_opener",
+     "indent_eligible_page": true,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      97.55,
+      302.42,
+      285.47,
+      432.36
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       0.0,
+       0.0,
+       655.5,
+       831.0
+      ],
+      "page_area_ratio": 1.0689
+     },
+     "containment": 1.0,
+     "excerpt": "Islamic Ecumene opens with a firm refusal: Islam cannot be contained within a si"
+    },
+    {
+     "page": 9,
+     "reference": "p9#11",
+     "page_kind": "article_opener",
+     "indent_eligible_page": true,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      229.18,
+      89.82,
+      425.69,
+      98.42
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       0.0,
+       0.0,
+       655.5,
+       831.0
+      ],
+      "page_area_ratio": 1.0689
+     },
+     "containment": 1.0,
+     "excerpt": "Find more reviews like this online at AramcoWorld.com."
+    },
+    {
+     "page": 9,
+     "reference": "p9#12",
+     "page_kind": "article_opener",
+     "indent_eligible_page": true,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      142.2,
+      454.11,
+      239.9,
+      462.37
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       0.0,
+       0.0,
+       655.5,
+       831.0
+      ],
+      "page_area_ratio": 1.0689
+     },
+     "containment": 1.0,
+     "excerpt": "Reviewed by ADIL ZHAN ANAY"
+    },
+    {
+     "page": 9,
+     "reference": "p9#15",
+     "page_kind": "article_opener",
+     "indent_eligible_page": true,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      310.52,
+      139.89,
+      565.86,
+      200.5
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       78.0,
+       107.37,
+       577.5,
+       211.74
+      ],
+      "page_area_ratio": 0.1023
+     },
+     "containment": 1.0,
+     "excerpt": "“By transcending geographic and temporal boundaries, we hope to offer a longer a"
+    },
+    {
+     "page": 9,
+     "reference": "p9#16",
+     "page_kind": "article_opener",
+     "indent_eligible_page": true,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      408.56,
+      121.88,
+      468.25,
+      129.47
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       78.0,
+       107.37,
+       577.5,
+       211.74
+      ],
+      "page_area_ratio": 0.1023
+     },
+     "containment": 1.0,
+     "excerpt": "—Islamic Ecumene"
+    }
+   ]
+  },
+  "FD-en-v2": {
+   "source": "examples/output/b10_5/FD-en-v2/on/work/FD-en-v2/checkpoint.06_styles_and_formulas.xml",
+   "counts": {
+    "body_paragraphs": 74,
+    "panels": 27,
+    "inside": 27,
+    "inside_on_eligible_pages": 11,
+    "inside_a_full_page_panel": 14
+   },
+   "instances": [
+    {
+     "page": 2,
+     "reference": "p2#2",
+     "page_kind": "advertisement",
+     "indent_eligible_page": false,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      26.33,
+      244.66,
+      387.67,
+      278.99
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       0.0,
+       0.0,
+       576.0,
+       774.0
+      ],
+      "page_area_ratio": 1.0
+     },
+     "containment": 1.0,
+     "excerpt": "The global economy is again disrupted, this time with the outbreak of war in the"
+    },
+    {
+     "page": 2,
+     "reference": "p2#3",
+     "page_kind": "advertisement",
+     "indent_eligible_page": false,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      26.33,
+      182.87,
+      395.47,
+      230.14
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       0.0,
+       0.0,
+       576.0,
+       774.0
+      ],
+      "page_area_ratio": 1.0
+     },
+     "containment": 1.0,
+     "excerpt": "Chapter 2: Defense Spending: Macroeconomic Consequences & Trade-Offs Defense spe"
+    },
+    {
+     "page": 2,
+     "reference": "p2#5",
+     "page_kind": "advertisement",
+     "indent_eligible_page": false,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      26.31,
+      119.8,
+      392.45,
+      154.13
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       0.0,
+       0.0,
+       576.0,
+       774.0
+      ],
+      "page_area_ratio": 1.0
+     },
+     "containment": 1.0,
+     "excerpt": "Armed conflicts generate profound macroeconomic consequences beyond their devast"
+    },
+    {
+     "page": 4,
+     "reference": "p4#0",
+     "page_kind": "advertisement",
+     "indent_eligible_page": false,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      36.45,
+      138.52,
+      320.9,
+      184.56
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       -8.87,
+       -13.32,
+       585.13,
+       348.12
+      ],
+      "page_area_ratio": 0.4816
+     },
+     "containment": 1.0,
+     "excerpt": "Sign up now for cutting-edge research and analysis of key economic, finance, dev"
+    },
+    {
+     "page": 4,
+     "reference": "p4#1",
+     "page_kind": "advertisement",
+     "indent_eligible_page": false,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      36.87,
+      83.24,
+      192.26,
+      106.48
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       -8.87,
+       -13.32,
+       585.13,
+       348.12
+      ],
+      "page_area_ratio": 0.4816
+     },
+     "containment": 1.0,
+     "excerpt": "SIGN UP TODAY!"
+    },
+    {
+     "page": 5,
+     "reference": "p5#27",
+     "page_kind": "masthead",
+     "indent_eligible_page": false,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      51.45,
+      631.59,
+      187.77,
+      641.58
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       36.0,
+       52.95,
+       316.5,
+       727.05
+      ],
+      "page_area_ratio": 0.4241
+     },
+     "containment": 1.0,
+     "excerpt": "Online editions in seven languages"
+    },
+    {
+     "page": 5,
+     "reference": "p5#28",
+     "page_kind": "masthead",
+     "indent_eligible_page": false,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      147.34,
+      490.65,
+      216.26,
+      523.05
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       36.0,
+       52.95,
+       316.5,
+       727.05
+      ],
+      "page_area_ratio": 0.4241
+     },
+     "containment": 1.0,
+     "excerpt": "Disponible en français !"
+    },
+    {
+     "page": 5,
+     "reference": "p5#33",
+     "page_kind": "masthead",
+     "indent_eligible_page": false,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      165.44,
+      144.55,
+      239.24,
+      153.86
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       36.0,
+       52.95,
+       316.5,
+       727.05
+      ],
+      "page_area_ratio": 0.4241
+     },
+     "containment": 1.0,
+     "excerpt": "日本語はこちら!"
+    },
+    {
+     "page": 5,
+     "reference": "p5#34",
+     "page_kind": "masthead",
+     "indent_eligible_page": false,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      61.0,
+      72.29,
+      177.3,
+      84.54
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       36.0,
+       52.95,
+       316.5,
+       727.05
+      ],
+      "page_area_ratio": 0.4241
+     },
+     "containment": 1.0,
+     "excerpt": "www.imf.org/fandd"
+    },
+    {
+     "page": 7,
+     "reference": "p7#6",
+     "page_kind": "masthead",
+     "indent_eligible_page": false,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      240.45,
+      328.43,
+      502.47,
+      337.83
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       216.41,
+       54.0,
+       540.0,
+       370.04
+      ],
+      "page_area_ratio": 0.2294
+     },
+     "containment": 1.0,
+     "excerpt": "The duration and scale of the conflict will shape the global outlook."
+    },
+    {
+     "page": 7,
+     "reference": "p7#27",
+     "page_kind": "masthead",
+     "indent_eligible_page": false,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      60.39,
+      503.98,
+      167.62,
+      551.9
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       47.0,
+       54.0,
+       182.0,
+       711.0
+      ],
+      "page_area_ratio": 0.1989
+     },
+     "containment": 1.0,
+     "excerpt": "“The response to fragmentation should not be isolation, but deeper regional inte"
+    },
+    {
+     "page": 7,
+     "reference": "p7#28",
+     "page_kind": "masthead",
+     "indent_eligible_page": false,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      60.39,
+      476.86,
+      164.02,
+      496.4
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       47.0,
+       54.0,
+       182.0,
+       711.0
+      ],
+      "page_area_ratio": 0.1989
+     },
+     "containment": 1.0,
+     "excerpt": "—Mehmet Şimşek, minister of finance, Türkiye"
+    },
+    {
+     "page": 7,
+     "reference": "p7#29",
+     "page_kind": "masthead",
+     "indent_eligible_page": false,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      60.14,
+      313.53,
+      171.7,
+      371.2
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       47.0,
+       54.0,
+       182.0,
+       711.0
+      ],
+      "page_area_ratio": 0.1989
+     },
+     "containment": 1.0,
+     "excerpt": "“Resilience is not built when there is a shock. Resilience is built in good time"
+    },
+    {
+     "page": 7,
+     "reference": "p7#30",
+     "page_kind": "masthead",
+     "indent_eligible_page": false,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      60.14,
+      275.58,
+      153.8,
+      303.7
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       47.0,
+       54.0,
+       182.0,
+       711.0
+      ],
+      "page_area_ratio": 0.1989
+     },
+     "containment": 1.0,
+     "excerpt": "—Mohammed Al-Jadaan, minister of finance, Saudi Arabia"
+    },
+    {
+     "page": 7,
+     "reference": "p7#31",
+     "page_kind": "masthead",
+     "indent_eligible_page": false,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      60.14,
+      88.26,
+      169.81,
+      169.9
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       47.0,
+       54.0,
+       182.0,
+       711.0
+      ],
+      "page_area_ratio": 0.1989
+     },
+     "containment": 1.0,
+     "excerpt": "“Some might wonder why the Fund is spending time on these issues...but the truth"
+    },
+    {
+     "page": 7,
+     "reference": "p7#32",
+     "page_kind": "masthead",
+     "indent_eligible_page": false,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      60.14,
+      60.29,
+      170.24,
+      78.4
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       47.0,
+       54.0,
+       182.0,
+       711.0
+      ],
+      "page_area_ratio": 0.1989
+     },
+     "containment": 1.0,
+     "excerpt": "—IMF First Deputy Managing Director Dan Katz"
+    },
+    {
+     "page": 9,
+     "reference": "p9#10",
+     "page_kind": "article_opener",
+     "indent_eligible_page": true,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      36.28,
+      564.04,
+      263.88,
+      596.0
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       -9.0,
+       -9.0,
+       576.0,
+       783.0
+      ],
+      "page_area_ratio": 1.0392
+     },
+     "containment": 1.0,
+     "excerpt": "Swiss people helped choose the design of their next banknotes"
+    },
+    {
+     "page": 9,
+     "reference": "p9#11",
+     "page_kind": "article_opener",
+     "indent_eligible_page": true,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      35.76,
+      617.83,
+      135.8,
+      630.0
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       -9.0,
+       -9.0,
+       576.0,
+       783.0
+      ],
+      "page_area_ratio": 1.0392
+     },
+     "containment": 1.0,
+     "excerpt": "Andreas Adriano"
+    },
+    {
+     "page": 9,
+     "reference": "p9#13",
+     "page_kind": "article_opener",
+     "indent_eligible_page": true,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      36.36,
+      461.84,
+      278.37,
+      543.25
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       -9.0,
+       -9.0,
+       576.0,
+       783.0
+      ],
+      "page_area_ratio": 1.0392
+     },
+     "containment": 1.0,
+     "excerpt": "besides the alps, pristine lakes, and a reputation for quiet precision, Switzerl"
+    },
+    {
+     "page": 9,
+     "reference": "p9#14",
+     "page_kind": "article_opener",
+     "indent_eligible_page": true,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      35.76,
+      351.66,
+      275.84,
+      459.25
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       -9.0,
+       -9.0,
+       576.0,
+       783.0
+      ],
+      "page_area_ratio": 1.0392
+     },
+     "containment": 1.0,
+     "excerpt": "About 100,000 people voted online on 12 sets of designs for banknotes of 10, 20,"
+    },
+    {
+     "page": 9,
+     "reference": "p9#15",
+     "page_kind": "article_opener",
+     "indent_eligible_page": true,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      36.65,
+      233.84,
+      275.85,
+      351.25
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       -9.0,
+       -9.0,
+       576.0,
+       783.0
+      ],
+      "page_area_ratio": 1.0392
+     },
+     "containment": 1.0,
+     "excerpt": "The Swiss National Bank (SNB) announced the winner in March. The designs by Emph"
+    },
+    {
+     "page": 9,
+     "reference": "p9#16",
+     "page_kind": "article_opener",
+     "indent_eligible_page": true,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      36.36,
+      159.64,
+      275.81,
+      231.25
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       -9.0,
+       -9.0,
+       576.0,
+       783.0
+      ],
+      "page_area_ratio": 1.0392
+     },
+     "containment": 1.0,
+     "excerpt": "The new notes will not circulate until after 2030, following more development an"
+    },
+    {
+     "page": 9,
+     "reference": "p9#17",
+     "page_kind": "article_opener",
+     "indent_eligible_page": true,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      36.07,
+      63.66,
+      275.87,
+      159.25
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       -9.0,
+       -9.0,
+       576.0,
+       783.0
+      ],
+      "page_area_ratio": 1.0392
+     },
+     "containment": 1.0,
+     "excerpt": "Meanwhile, a recent referendum enshrined access to cash in the Swiss Constitutio"
+    },
+    {
+     "page": 9,
+     "reference": "p9#18",
+     "page_kind": "article_opener",
+     "indent_eligible_page": true,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      48.93,
+      51.66,
+      273.13,
+      63.25
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       -9.0,
+       -9.0,
+       576.0,
+       783.0
+      ],
+      "page_area_ratio": 1.0392
+     },
+     "containment": 1.0,
+     "excerpt": "Switzerland replaces its banknotes every 15–20 years. The"
+    },
+    {
+     "page": 9,
+     "reference": "p9#19",
+     "page_kind": "article_opener",
+     "indent_eligible_page": true,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      444.36,
+      478.39,
+      495.47,
+      539.4
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       -9.0,
+       -9.0,
+       576.0,
+       783.0
+      ],
+      "page_area_ratio": 1.0392
+     },
+     "containment": 1.0,
+     "excerpt": "A glacier buttercup appears on the front of the draft 1,000 franc note."
+    },
+    {
+     "page": 9,
+     "reference": "p9#20",
+     "page_kind": "article_opener",
+     "indent_eligible_page": true,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      291.65,
+      197.82,
+      530.85,
+      231.25
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       -9.0,
+       -9.0,
+       576.0,
+       783.0
+      ],
+      "page_area_ratio": 1.0392
+     },
+     "containment": 1.0,
+     "excerpt": "forthcoming series—the bank’s 10th—preserves another Swiss peculiarity, the 1,00"
+    },
+    {
+     "page": 9,
+     "reference": "p9#21",
+     "page_kind": "article_opener",
+     "indent_eligible_page": true,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      291.22,
+      88.11,
+      533.32,
+      195.25
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       -9.0,
+       -9.0,
+       576.0,
+       783.0
+      ],
+      "page_area_ratio": 1.0392
+     },
+     "containment": 1.0,
+     "excerpt": "Most countries have discontinued large bills, which are seen as mostly facilitat"
+    }
+   ]
+  },
+  "Courier-zh": {
+   "source": "examples/output/b10_5/Courier-zh/on/work/Courier-zh/checkpoint.06_styles_and_formulas.xml",
+   "counts": {
+    "body_paragraphs": 82,
+    "panels": 8,
+    "inside": 21,
+    "inside_on_eligible_pages": 21,
+    "inside_a_full_page_panel": 19
+   },
+   "instances": [
+    {
+     "page": 2,
+     "reference": "p2#5",
+     "page_kind": "article_opener",
+     "indent_eligible_page": true,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      55.83,
+      357.39,
+      231.21,
+      514.74
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       0.0,
+       0.0,
+       595.27,
+       841.89
+      ],
+      "page_area_ratio": 1.0
+     },
+     "containment": 1.0,
+     "excerpt": "从原住民通过有控制的焚烧来预防 野火,到因纽特人的天气预测方法, 再 到 部 分 非 洲 国 家 采 用 的“ 扎 伊 ” (zaï) 集水技术,世界各地的土著"
+    },
+    {
+     "page": 2,
+     "reference": "p2#7",
+     "page_kind": "article_opener",
+     "indent_eligible_page": true,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      57.01,
+      570.0,
+      234.57,
+      614.21
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       0.0,
+       0.0,
+       595.27,
+       841.89
+      ],
+      "page_area_ratio": 1.0
+     },
+     "containment": 1.0,
+     "excerpt": "这位来自萨摩亚的原住民气候记者,长 期为《卫报》(The Guardian)报道 太平洋岛国相关议题,目前担任美国波 特兰州立大学太平洋岛屿研究教授。"
+    },
+    {
+     "page": 4,
+     "reference": "p4#3",
+     "page_kind": "article_body",
+     "indent_eligible_page": true,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      56.18,
+      650.94,
+      289.03,
+      773.41
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       0.0,
+       0.0,
+       595.27,
+       841.89
+      ],
+      "page_area_ratio": 1.0
+     },
+     "containment": 1.0,
+     "excerpt": "早在尚未有人造卫星环绕地球之前,波利尼西亚航海家便 已能通过观测星辰、涌浪、生物发光现象以及海鸟飞行轨 迹,横渡数千英里的茫茫大海。在撒哈拉沙漠,图阿雷格人 ("
+    },
+    {
+     "page": 4,
+     "reference": "p4#4",
+     "page_kind": "article_body",
+     "indent_eligible_page": true,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      75.36,
+      628.99,
+      217.51,
+      637.26
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       0.0,
+       0.0,
+       595.27,
+       841.89
+      ],
+      "page_area_ratio": 1.0
+     },
+     "containment": 1.0,
+     "excerpt": "传统知识价值得到印证的案例不胜枚"
+    },
+    {
+     "page": 4,
+     "reference": "p4#6",
+     "page_kind": "article_body",
+     "indent_eligible_page": true,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      56.83,
+      498.51,
+      208.62,
+      620.99
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       0.0,
+       0.0,
+       595.27,
+       841.89
+      ],
+      "page_area_ratio": 1.0
+     },
+     "containment": 1.0,
+     "excerpt": "理、农林业、医疗保健及渔业等多个领 域。这些实践远非单纯的技术集合,更 是一种世界观的体现。例如,纺织工艺 便是另一种形式的“导航”,是精神层 面的引领。密克罗"
+    },
+    {
+     "page": 4,
+     "reference": "p4#7",
+     "page_kind": "article_body",
+     "indent_eligible_page": true,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      56.86,
+      411.26,
+      208.59,
+      484.77
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       0.0,
+       0.0,
+       595.27,
+       841.89
+      ],
+      "page_area_ratio": 1.0
+     },
+     "containment": 1.0,
+     "excerpt": "这些实践代表着完整的知识体系。 它们将认知进行编码、加以保存并代代 相传。如今,世界各地的土著社区正 在捍卫保护此类文化遗产的权利,同 时积极阐明传统知识体系作"
+    },
+    {
+     "page": 4,
+     "reference": "p4#8",
+     "page_kind": "article_body",
+     "indent_eligible_page": true,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      56.18,
+      346.06,
+      288.84,
+      404.76
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       0.0,
+       0.0,
+       595.27,
+       841.89
+      ],
+      "page_area_ratio": 1.0
+     },
+     "containment": 1.0,
+     "excerpt": "学框架的价值。正如斐济研究学者萨拉尼埃塔·基托莱莱 (Salanieta Kitolelei) 在所罗门群岛霍尼亚拉举行的 2025 年第二届太平洋岛国海洋会议"
+    },
+    {
+     "page": 4,
+     "reference": "p4#9",
+     "page_kind": "article_body",
+     "indent_eligible_page": true,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      56.9,
+      291.43,
+      288.96,
+      332.46
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       0.0,
+       0.0,
+       595.27,
+       841.89
+      ],
+      "page_area_ratio": 1.0
+     },
+     "containment": 1.0,
+     "excerpt": "近年来,传统土著知识获得了认可,这尤其得益于《联 合国土著人民权利宣言》等国际文书的推动,但文化与商业 层面的侵占行为仍对其构成威胁。"
+    },
+    {
+     "page": 4,
+     "reference": "p4#11",
+     "page_kind": "article_body",
+     "indent_eligible_page": true,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      306.38,
+      670.22,
+      538.42,
+      738.83
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       0.0,
+       0.0,
+       595.27,
+       841.89
+      ],
+      "page_area_ratio": 1.0
+     },
+     "containment": 1.0,
+     "excerpt": "随着气候危机加剧、生物多样性锐减,世界开始将目光投向 那些曾被忽视的知识体系。联合国数据显示,土著人民在全 球人口中占比不足 5%,却守护着地球上约 80% 的"
+    },
+    {
+     "page": 4,
+     "reference": "p4#12",
+     "page_kind": "article_body",
+     "indent_eligible_page": true,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      306.31,
+      634.26,
+      539.04,
+      657.88
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       0.0,
+       0.0,
+       595.27,
+       841.89
+      ],
+      "page_area_ratio": 1.0
+     },
+     "containment": 1.0,
+     "excerpt": "“我们观察自然,观察动植物。我们是自然的守护者,对 所处环境拥有深厚的知识储备。”乍得姆博罗罗 (Mbororo)"
+    },
+    {
+     "page": 4,
+     "reference": "p4#13",
+     "page_kind": "article_body",
+     "indent_eligible_page": true,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      381.97,
+      543.97,
+      540.45,
+      629.1
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       0.0,
+       0.0,
+       595.27,
+       841.89
+      ],
+      "page_area_ratio": 1.0
+     },
+     "containment": 1.0,
+     "excerpt": "土 著人 民领 袖、联 合国 土著 问题 常设 论 坛第 二十 三届 会议 主席 欣杜· 奥马 鲁·易卜拉欣(Hindou Oumarou Ibrahim) 在"
+    },
+    {
+     "page": 4,
+     "reference": "p4#14",
+     "page_kind": "article_body",
+     "indent_eligible_page": true,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      381.94,
+      402.55,
+      538.33,
+      531.47
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       0.0,
+       0.0,
+       595.27,
+       841.89
+      ],
+      "page_area_ratio": 1.0
+     },
+     "containment": 1.0,
+     "excerpt": "土著人民积累的技艺与智慧并非只 是简单地代代相传,而是被系统化地编 纂成复杂的知识体系,太平洋与非洲的 纺织技艺便是有力例证。太平洋地区的 织工深谙植物生态学、"
+    },
+    {
+     "page": 4,
+     "reference": "p4#15",
+     "page_kind": "article_body",
+     "indent_eligible_page": true,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      306.42,
+      372.47,
+      538.27,
+      395.85
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       0.0,
+       0.0,
+       595.27,
+       841.89
+      ],
+      "page_area_ratio": 1.0
+     },
+     "containment": 1.0,
+     "excerpt": "案”,其纹样、制作过程以及匠人的技艺都凝结着土著人民 的智慧。"
+    },
+    {
+     "page": 4,
+     "reference": "p4#16",
+     "page_kind": "article_body",
+     "indent_eligible_page": true,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      306.35,
+      290.47,
+      537.95,
+      359.96
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       0.0,
+       0.0,
+       595.27,
+       841.89
+      ],
+      "page_area_ratio": 1.0
+     },
+     "containment": 1.0,
+     "excerpt": "在所罗门群岛的陶马科岛,女性是陆地和海洋的守护 者。她们采摘并加工露兜树(这种小型树木广泛分布于波利 尼西亚、密克罗尼西亚等地区),编织出为航海提供动力的 船帆"
+    },
+    {
+     "page": 4,
+     "reference": "p4#17",
+     "page_kind": "article_body",
+     "indent_eligible_page": true,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      228.69,
+      436.26,
+      361.69,
+      576.83
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       0.0,
+       0.0,
+       595.27,
+       841.89
+      ],
+      "page_area_ratio": 1.0
+     },
+     "containment": 1.0,
+     "excerpt": "土著人民积累 的技艺与智慧 被系统化地编 纂成复杂的知 识体系"
+    },
+    {
+     "page": 4,
+     "reference": "p4#19",
+     "page_kind": "article_body",
+     "indent_eligible_page": true,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      71.04,
+      102.33,
+      202.91,
+      197.28
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       0.0,
+       0.0,
+       595.27,
+       841.89
+      ],
+      "page_area_ratio": 1.0
+     },
+     "containment": 1.0,
+     "excerpt": "联合国教科文组织于 2002 年制定 的地方和土著知识体系计划,旨在 调动地方社区和土著人民的知识、 技能与实践,支持他们参与环境 决策,特别是在生物多样性和气"
+    },
+    {
+     "page": 4,
+     "reference": "p4#20",
+     "page_kind": "article_body",
+     "indent_eligible_page": true,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      89.5,
+      79.67,
+      202.81,
+      87.87
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       0.0,
+       0.0,
+       595.27,
+       841.89
+      ],
+      "page_area_ratio": 1.0
+     },
+     "containment": 1.0,
+     "excerpt": "该计划旨在促进土著和地方"
+    },
+    {
+     "page": 4,
+     "reference": "p4#21",
+     "page_kind": "article_body",
+     "indent_eligible_page": true,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      231.64,
+      79.56,
+      363.58,
+      195.77
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       0.0,
+       0.0,
+       595.27,
+       841.89
+      ],
+      "page_area_ratio": 1.0
+     },
+     "containment": 1.0,
+     "excerpt": "知识掌握者、自然和社会科学家、 资 源 管 理 者 和 决 策 者 进 行 对 话, 确保地方社区在治理领域发挥积 极且公平的作用;同时着力于加强 长者知识传承"
+    },
+    {
+     "page": 4,
+     "reference": "p4#22",
+     "page_kind": "article_body",
+     "indent_eligible_page": true,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      392.29,
+      79.55,
+      524.17,
+      197.27
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       0.0,
+       0.0,
+       595.27,
+       841.89
+      ],
+      "page_area_ratio": 1.0
+     },
+     "containment": 1.0,
+     "excerpt": "目前,LINKS 计划承担着生 物多样性和生态系统服务政府间 科学政策平台 (IPBES) 土著和 地方知识技 术支持部门的职能, 通过提供支持和专家建议,帮助"
+    },
+    {
+     "page": 6,
+     "reference": "p6#11",
+     "page_kind": "article_body",
+     "indent_eligible_page": true,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      48.39,
+      675.12,
+      373.55,
+      723.02
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       34.02,
+       541.06,
+       388.35,
+       772.7
+      ],
+      "page_area_ratio": 0.1638
+     },
+     "containment": 1.0,
+     "excerpt": "为纪念量子力学诞生 100 周年,联合国宣布将 2025 年定为国际量子科学技术年。 作为该倡议的牵头机构,联合国教科文组织于 2 月 4 日和 5 日在巴黎启"
+    },
+    {
+     "page": 6,
+     "reference": "p6#12",
+     "page_kind": "article_body",
+     "indent_eligible_page": true,
+     "layout_label": "plain text",
+     "paragraph_box": [
+      48.39,
+      555.5,
+      373.99,
+      658.81
+     ],
+     "panel": {
+      "collection": "pdf_curve",
+      "box": [
+       34.02,
+       541.06,
+       388.35,
+       772.7
+      ],
+      "page_area_ratio": 0.1638
+     },
+     "containment": 1.0,
+     "excerpt": "在此期间,全球科学家、教育工作者和公众受邀共同探索和庆祝量子领域取得 的创新成果。全球范围内举办的一系列活动提升了公众意识,促进了各方合作,凸 显了量子科学在推"
+    }
+   ]
+  }
+ }
+}

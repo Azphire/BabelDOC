@@ -10,8 +10,16 @@ Needs no API key and makes no network request: chain detection is deterministic
 geometry, and the pipeline runs it with skip_translation.
 
 The assertions this batch exists for are 01 and 02. 01 is the shape of what was
-written: an id appears on a paragraph exactly when a scored boundary linked it,
-indices run from zero without a gap, and a chain walks consecutive pages. 02 is
+written: an id appears on a paragraph exactly when an edge assembly took reaches
+it, indices run from zero without a gap, and a chain walks the document without
+going back. Two of those three were narrower when this gate was written, because
+a boundary was then only a page break and every linked boundary was an edge.
+b11.6 gave the detector in-page column boundaries and made assembly exclusive,
+so a boundary can now be linked and still not be an edge -- it wanted an end
+another edge already held -- and a chain can now hold two paragraphs of one page.
+01a therefore reads the report's edge list rather than its linked boundaries, and
+adds that every linked boundary which is not an edge says why; 01c allows a step
+inside a page and refuses one backwards. AC-18 registers both. 02 is
 what was not written: the stage is handed the document the classifier produced
 and hands back the same document with two attributes more, so the checkpoints
 either side of it are compared field by field and only the chain pair may
@@ -318,12 +326,30 @@ def check_01_chain_shape(runs: dict[str, dict]) -> None:
             continue
         docs = read_checkpoint(checkpoint)
 
-        # Paragraphs the report says were linked, against paragraphs carrying an id.
+        # Paragraphs the report says are the ends of an edge assembly took,
+        # against paragraphs carrying an id. Not the linked boundaries: exclusive
+        # assembly gives a paragraph one edge in each role, so a linked boundary
+        # whose end another edge already held is not an edge and marks nothing.
+        rows = {entry["boundary"]: entry for entry in report["boundaries"]}
+        taken = {edge["boundary"] for edge in report.get("edges", ())}
+        dropped = {edge["boundary"] for edge in report.get("dropped_edges", ())}
         expected: set[str] = set()
-        for entry in report["boundaries"]:
-            if entry.get("linked"):
-                expected.add(entry["tail_debug_id"])
-                expected.add(entry["head_debug_id"])
+        for boundary in taken:
+            entry = rows.get(boundary)
+            if entry is None:
+                id_problems.append(f"{stem}: edge {boundary} is not a boundary row")
+                continue
+            expected.add(entry["tail_debug_id"])
+            expected.add(entry["head_debug_id"])
+        unaccounted = sorted(
+            boundary
+            for boundary, entry in rows.items()
+            if entry.get("linked") and boundary not in taken and boundary not in dropped
+        )
+        if unaccounted:
+            id_problems.append(
+                f"{stem}: linked but neither taken nor dropped: {unaccounted[:3]}"
+            )
 
         by_chain: dict[str, list[tuple[int, int, str]]] = {}
         carrying: set[str] = set()
@@ -351,7 +377,7 @@ def check_01_chain_shape(runs: dict[str, dict]) -> None:
             if indices != list(range(len(members))):
                 index_problems.append(f"{stem}/{chain_id}: indices {indices}")
             pages = [page for _, page, _ in members]
-            if any(b - a != 1 for a, b in zip(pages, pages[1:], strict=False)):
+            if any(b - a not in (0, 1) for a, b in zip(pages, pages[1:], strict=False)):
                 page_problems.append(f"{stem}/{chain_id}: pages {pages}")
             if len(members) < 2:
                 index_problems.append(f"{stem}/{chain_id}: chain of one")
@@ -367,7 +393,7 @@ def check_01_chain_shape(runs: dict[str, dict]) -> None:
         f"problems={index_problems[:3]}",
     )
     record(
-        "01c members of a chain sit on consecutive pages",
+        "01c a chain steps to the next page or stays on this one, never back",
         not page_problems,
         f"problems={page_problems[:3]}",
     )
@@ -383,7 +409,9 @@ def check_01d_closure_shape() -> None:
     way two edges meet and therefore the only path that produces a chain of more
     than two. The indices, the page walk and the closure are read off that.
     """
+    from babeldoc.magazine.chain_builder import _accepted_edges
     from babeldoc.magazine.chain_builder import _chains_from
+    from babeldoc.magazine.chain_signals import BOUNDARY_PRIORITY_KEY
 
     config = load_chain_config()
     pages = [
@@ -395,7 +423,8 @@ def check_01d_closure_shape() -> None:
         evaluate_boundary(pages[i], pages[i + 1], i, i + 1, _policy(), config)
         for i in range(len(pages) - 1)
     ]
-    chains = _chains_from(verdicts)
+    edges, _dropped = _accepted_edges(verdicts, config[BOUNDARY_PRIORITY_KEY])
+    chains = _chains_from(edges)
     for chain in chains:
         for index, paragraph in enumerate(chain):
             paragraph.chain_id = "synthetic"

@@ -1,0 +1,61 @@
+{
+  "body_labels": [
+    "text",
+    "plain text",
+    "paragraph_hybrid"
+  ],
+  "candidates": [
+    {
+      "article_id": "1TYvr",
+      "body_rank": 3,
+      "debug_id": "yyZBE",
+      "excerpt": "L ong before satellites orbited Earth, Polynesian navigators crossed thousands o",
+      "first_run": "L",
+      "opens_article": false,
+      "page": 4,
+      "paragraph": "p4#3",
+      "size_ratio": 6.6683
+    },
+    {
+      "article_id": "KzGB3",
+      "body_rank": 5,
+      "debug_id": "5H5qX",
+      "excerpt": "O n the Purus River, as the light fades and the heat lingers over the water, a p",
+      "first_run": "O",
+      "opens_article": true,
+      "page": 5,
+      "paragraph": "p5#5",
+      "size_ratio": 6.6683
+    },
+    {
+      "article_id": "JfMiK",
+      "body_rank": 5,
+      "debug_id": "TnLrK",
+      "excerpt": "T here is a huge diversity of Indigenous Peoples, cultures, languages, and knowl",
+      "first_run": "T",
+      "opens_article": true,
+      "page": 7,
+      "paragraph": "p7#8",
+      "size_ratio": 6.6683
+    }
+  ],
+  "counts": {
+    "articles": 3,
+    "candidates": 3,
+    "pages": 3
+  },
+  "decision_consumers": [
+    {
+      "pass": "drop_cap.apply",
+      "report": "drop_cap_apply.report.json",
+      "switch": "magazine_drop_cap_apply"
+    }
+  ],
+  "parameters": {
+    "excerpt_chars": 80,
+    "max_body_rank_in_article": 5,
+    "max_first_run_chars": 2,
+    "min_first_run_size_ratio": 2.0
+  },
+  "reference_format": "p{page}#{index}"
+}

@@ -1,0 +1,1612 @@
+{
+  "boundaries": [
+    {
+      "boundary": "p1:columns",
+      "column_count": null,
+      "constant_share_of_score": null,
+      "eligible": false,
+      "head_column": null,
+      "head_debug_id": null,
+      "head_label": null,
+      "head_page": 1,
+      "head_text": null,
+      "kind": "column",
+      "linked": false,
+      "pair": null,
+      "pairing": null,
+      "pairs": [],
+      "reason": "preserve_line_structure",
+      "score": null,
+      "signals": {
+        "body_label_pair": null,
+        "column_position": null,
+        "opener_prior": null,
+        "style_continuity": null,
+        "tail_line_fill": null,
+        "tail_no_terminal_punct": null
+      },
+      "tail_column": null,
+      "tail_debug_id": null,
+      "tail_ends_on_hyphen": false,
+      "tail_fill_ratio": null,
+      "tail_label": null,
+      "tail_page": 1,
+      "tail_text": null
+    },
+    {
+      "boundary": "1->2",
+      "column_count": null,
+      "constant_share_of_score": null,
+      "eligible": false,
+      "head_column": null,
+      "head_debug_id": null,
+      "head_label": null,
+      "head_page": 2,
+      "head_text": null,
+      "kind": "page",
+      "linked": false,
+      "pair": null,
+      "pairing": null,
+      "pairs": [],
+      "reason": "not_chain_eligible:tail",
+      "score": null,
+      "signals": {
+        "body_label_pair": null,
+        "column_position": null,
+        "opener_prior": null,
+        "style_continuity": null,
+        "tail_line_fill": null,
+        "tail_no_terminal_punct": null
+      },
+      "tail_column": null,
+      "tail_debug_id": null,
+      "tail_ends_on_hyphen": false,
+      "tail_fill_ratio": null,
+      "tail_label": null,
+      "tail_page": 1,
+      "tail_text": null
+    },
+    {
+      "boundary": "p2:c0->c1",
+      "column_count": 2,
+      "constant_share_of_score": null,
+      "eligible": false,
+      "head_column": 1,
+      "head_debug_id": "He3Ww",
+      "head_label": "figure_caption",
+      "head_page": 2,
+      "head_text": "Work by Ecuadorian photographer Carolina Zambrano, embroidered with chambira fibres, a palm tree emblematic of Indigenous Amazonian craftsmanship.",
+      "kind": "column",
+      "linked": false,
+      "pair": null,
+      "pairing": "column_adjacent",
+      "pairs": [],
+      "reason": "no_endpoint",
+      "score": null,
+      "signals": {
+        "body_label_pair": null,
+        "column_position": null,
+        "opener_prior": null,
+        "style_continuity": null,
+        "tail_line_fill": null,
+        "tail_no_terminal_punct": null
+      },
+      "tail_column": 0,
+      "tail_debug_id": "6EGw2",
+      "tail_ends_on_hyphen": false,
+      "tail_fill_ratio": null,
+      "tail_label": "plain text",
+      "tail_page": 2,
+      "tail_text": "declining biodiversity."
+    },
+    {
+      "boundary": "2->3",
+      "column_count": null,
+      "constant_share_of_score": null,
+      "eligible": true,
+      "head_column": 0,
+      "head_debug_id": "rBtJ8",
+      "head_label": "title",
+      "head_page": 3,
+      "head_text": "scientific discover y",
+      "kind": "page",
+      "linked": true,
+      "pair": "title->title",
+      "pairing": null,
+      "pairs": [
+        {
+          "head_debug_id": "rBtJ8",
+          "head_label": "title",
+          "head_text": "scientific discover y",
+          "linked": true,
+          "pair": "title->title",
+          "score": 0.9500000000000001,
+          "signals": {
+            "body_label_pair": 0.0,
+            "column_position": 0.5,
+            "opener_prior": 0.0,
+            "style_continuity": 1.0,
+            "tail_line_fill": 1.0,
+            "tail_no_terminal_punct": 1.0
+          },
+          "tail_debug_id": "kHj2L",
+          "tail_fill_ratio": 1.016632031421171,
+          "tail_label": "title",
+          "tail_text": "knowledge drives"
+        }
+      ],
+      "reason": null,
+      "score": 0.9500000000000001,
+      "signals": {
+        "body_label_pair": 0.0,
+        "column_position": 0.5,
+        "opener_prior": 0.0,
+        "style_continuity": 1.0,
+        "tail_line_fill": 1.0,
+        "tail_no_terminal_punct": 1.0
+      },
+      "tail_column": 0,
+      "tail_debug_id": "kHj2L",
+      "tail_ends_on_hyphen": false,
+      "tail_fill_ratio": 1.016632031421171,
+      "tail_label": "title",
+      "tail_page": 2,
+      "tail_text": "knowledge drives"
+    },
+    {
+      "boundary": "p3:columns",
+      "column_count": null,
+      "constant_share_of_score": null,
+      "eligible": false,
+      "head_column": null,
+      "head_debug_id": null,
+      "head_label": null,
+      "head_page": 3,
+      "head_text": null,
+      "kind": "column",
+      "linked": false,
+      "pair": null,
+      "pairing": null,
+      "pairs": [],
+      "reason": "one_column",
+      "score": null,
+      "signals": {
+        "body_label_pair": null,
+        "column_position": null,
+        "opener_prior": null,
+        "style_continuity": null,
+        "tail_line_fill": null,
+        "tail_no_terminal_punct": null
+      },
+      "tail_column": null,
+      "tail_debug_id": null,
+      "tail_ends_on_hyphen": false,
+      "tail_fill_ratio": null,
+      "tail_label": null,
+      "tail_page": 3,
+      "tail_text": null
+    },
+    {
+      "boundary": "3->4",
+      "column_count": null,
+      "constant_share_of_score": null,
+      "eligible": true,
+      "head_column": 0,
+      "head_debug_id": "DFFWp",
+      "head_label": "title",
+      "head_page": 4,
+      "head_text": "LINKS programme: promoting Indigenous knowledge",
+      "kind": "page",
+      "linked": false,
+      "pair": "title->title",
+      "pairing": null,
+      "pairs": [
+        {
+          "head_debug_id": "DFFWp",
+          "head_label": "title",
+          "head_text": "LINKS programme: promoting Indigenous knowledge",
+          "linked": false,
+          "pair": "title->title",
+          "score": 0.5,
+          "signals": {
+            "body_label_pair": 0.0,
+            "column_position": 0.5,
+            "opener_prior": 0.0,
+            "style_continuity": 0.0,
+            "tail_line_fill": null,
+            "tail_no_terminal_punct": 1.0
+          },
+          "tail_debug_id": "rBtJ8",
+          "tail_fill_ratio": null,
+          "tail_label": "title",
+          "tail_text": "scientific discover y"
+        }
+      ],
+      "reason": null,
+      "score": 0.5,
+      "signals": {
+        "body_label_pair": 0.0,
+        "column_position": 0.5,
+        "opener_prior": 0.0,
+        "style_continuity": 0.0,
+        "tail_line_fill": null,
+        "tail_no_terminal_punct": 1.0
+      },
+      "tail_column": 0,
+      "tail_debug_id": "rBtJ8",
+      "tail_ends_on_hyphen": false,
+      "tail_fill_ratio": null,
+      "tail_label": "title",
+      "tail_page": 3,
+      "tail_text": "scientific discover y"
+    },
+    {
+      "boundary": "p4:c0->c1",
+      "column_count": 4,
+      "constant_share_of_score": null,
+      "eligible": false,
+      "head_column": 1,
+      "head_debug_id": "uUhBh",
+      "head_label": "title",
+      "head_page": 4,
+      "head_text": "Indigenous skills and wisdom are codified to form complex systems of knowledge",
+      "kind": "column",
+      "linked": false,
+      "pair": null,
+      "pairing": "column_adjacent",
+      "pairs": [],
+      "reason": "no_endpoint",
+      "score": null,
+      "signals": {
+        "body_label_pair": null,
+        "column_position": null,
+        "opener_prior": null,
+        "style_continuity": null,
+        "tail_line_fill": null,
+        "tail_no_terminal_punct": null
+      },
+      "tail_column": 0,
+      "tail_debug_id": "QBYco",
+      "tail_ends_on_hyphen": false,
+      "tail_fill_ratio": null,
+      "tail_label": "plain text",
+      "tail_page": 4,
+      "tail_text": "local knowledge holders,"
+    },
+    {
+      "boundary": "p4:c0->c2",
+      "column_count": 4,
+      "constant_share_of_score": 0.1,
+      "eligible": true,
+      "head_column": 2,
+      "head_debug_id": "syNB6",
+      "head_label": "plain text",
+      "head_page": 4,
+      "head_text": "United Nations Declaration on the Rights of Indigenous Peoples \u2014 but it is nonetheless threatened by cultural and commercial appropriation.",
+      "kind": "column",
+      "linked": false,
+      "pair": "body->body",
+      "pairing": "body_next",
+      "pairs": [
+        {
+          "head_debug_id": "syNB6",
+          "head_label": "plain text",
+          "head_text": "United Nations Declaration on the Rights of Indigenous Peoples \u2014 but it is nonetheless threatened by cultural and commercial appropriation.",
+          "linked": false,
+          "pair": "body->body",
+          "score": 0.5,
+          "signals": {
+            "body_label_pair": 1.0,
+            "column_position": 1.0,
+            "opener_prior": 0.0,
+            "style_continuity": 0.0,
+            "tail_line_fill": 0.0,
+            "tail_no_terminal_punct": 1.0
+          },
+          "tail_debug_id": "QBYco",
+          "tail_fill_ratio": 0.8359102464462564,
+          "tail_label": "plain text",
+          "tail_text": "local knowledge holders,"
+        }
+      ],
+      "reason": null,
+      "score": 0.5,
+      "signals": {
+        "body_label_pair": 1.0,
+        "column_position": 1.0,
+        "opener_prior": 0.0,
+        "style_continuity": 0.0,
+        "tail_line_fill": 0.0,
+        "tail_no_terminal_punct": 1.0
+      },
+      "tail_column": 0,
+      "tail_debug_id": "QBYco",
+      "tail_ends_on_hyphen": false,
+      "tail_fill_ratio": 0.8359102464462564,
+      "tail_label": "plain text",
+      "tail_page": 4,
+      "tail_text": "local knowledge holders,"
+    },
+    {
+      "boundary": "p4:c1->c2",
+      "column_count": 4,
+      "constant_share_of_score": 0.1,
+      "eligible": true,
+      "head_column": 2,
+      "head_debug_id": "syNB6",
+      "head_label": "plain text",
+      "head_page": 4,
+      "head_text": "United Nations Declaration on the Rights of Indigenous Peoples \u2014 but it is nonetheless threatened by cultural and commercial appropriation.",
+      "kind": "column",
+      "linked": false,
+      "pair": "body->body",
+      "pairing": "column_adjacent",
+      "pairs": [
+        {
+          "head_debug_id": "syNB6",
+          "head_label": "plain text",
+          "head_text": "United Nations Declaration on the Rights of Indigenous Peoples \u2014 but it is nonetheless threatened by cultural and commercial appropriation.",
+          "linked": false,
+          "pair": "body->body",
+          "score": 0.65,
+          "signals": {
+            "body_label_pair": 1.0,
+            "column_position": 1.0,
+            "opener_prior": 0.0,
+            "style_continuity": 0.0,
+            "tail_line_fill": 1.0,
+            "tail_no_terminal_punct": 1.0
+          },
+          "tail_debug_id": "i4SB5",
+          "tail_fill_ratio": 0.8809362000024549,
+          "tail_label": "plain text",
+          "tail_text": "hosts the Indigenous and"
+        }
+      ],
+      "reason": null,
+      "score": 0.65,
+      "signals": {
+        "body_label_pair": 1.0,
+        "column_position": 1.0,
+        "opener_prior": 0.0,
+        "style_continuity": 0.0,
+        "tail_line_fill": 1.0,
+        "tail_no_terminal_punct": 1.0
+      },
+      "tail_column": 1,
+      "tail_debug_id": "i4SB5",
+      "tail_ends_on_hyphen": false,
+      "tail_fill_ratio": 0.8809362000024549,
+      "tail_label": "plain text",
+      "tail_page": 4,
+      "tail_text": "hosts the Indigenous and"
+    },
+    {
+      "boundary": "p4:c1->c3",
+      "column_count": 4,
+      "constant_share_of_score": 0.1,
+      "eligible": true,
+      "head_column": 3,
+      "head_debug_id": "VLxrn",
+      "head_label": "plain text",
+      "head_page": 4,
+      "head_text": "\u201cWe observe nature, our animals and plants. We are the guardians of nature and we possess an enormous amount of knowledge about our environment,\u201d noted Hindou Oumarou Ibrahim, an Indigenous Mbororo leader from Chad and Chair of the 23rd Session of the United Nations Permanent Forum on Indigenous Issues, in April 2024. \u201cThis knowledge is not theoretical; it has been tried and tested for centuries.\u201d",
+      "kind": "column",
+      "linked": false,
+      "pair": "body->body",
+      "pairing": "body_next",
+      "pairs": [
+        {
+          "head_debug_id": "VLxrn",
+          "head_label": "plain text",
+          "head_text": "\u201cWe observe nature, our animals and plants. We are the guardians of nature and we possess an enormous amount of knowledge about our environment,\u201d noted Hindou Oumarou Ibrahim, an Indigenous Mbororo leader from Chad and Chair of the 23rd Session of the United Nations Permanent Forum on Indigenous Issues, in April 2024. \u201cThis knowledge is not theoretical; it has been tried and tested for centuries.\u201d",
+          "linked": false,
+          "pair": "body->body",
+          "score": 0.65,
+          "signals": {
+            "body_label_pair": 1.0,
+            "column_position": 1.0,
+            "opener_prior": 0.0,
+            "style_continuity": 0.0,
+            "tail_line_fill": 1.0,
+            "tail_no_terminal_punct": 1.0
+          },
+          "tail_debug_id": "i4SB5",
+          "tail_fill_ratio": 0.8809362000024549,
+          "tail_label": "plain text",
+          "tail_text": "hosts the Indigenous and"
+        }
+      ],
+      "reason": null,
+      "score": 0.65,
+      "signals": {
+        "body_label_pair": 1.0,
+        "column_position": 1.0,
+        "opener_prior": 0.0,
+        "style_continuity": 0.0,
+        "tail_line_fill": 1.0,
+        "tail_no_terminal_punct": 1.0
+      },
+      "tail_column": 1,
+      "tail_debug_id": "i4SB5",
+      "tail_ends_on_hyphen": false,
+      "tail_fill_ratio": 0.8809362000024549,
+      "tail_label": "plain text",
+      "tail_page": 4,
+      "tail_text": "hosts the Indigenous and"
+    },
+    {
+      "boundary": "p4:c2->c3",
+      "column_count": 4,
+      "constant_share_of_score": 0.1,
+      "eligible": true,
+      "head_column": 3,
+      "head_debug_id": "VLxrn",
+      "head_label": "plain text",
+      "head_page": 4,
+      "head_text": "\u201cWe observe nature, our animals and plants. We are the guardians of nature and we possess an enormous amount of knowledge about our environment,\u201d noted Hindou Oumarou Ibrahim, an Indigenous Mbororo leader from Chad and Chair of the 23rd Session of the United Nations Permanent Forum on Indigenous Issues, in April 2024. \u201cThis knowledge is not theoretical; it has been tried and tested for centuries.\u201d",
+      "kind": "column",
+      "linked": false,
+      "pair": "body->body",
+      "pairing": "column_adjacent",
+      "pairs": [
+        {
+          "head_debug_id": "VLxrn",
+          "head_label": "plain text",
+          "head_text": "\u201cWe observe nature, our animals and plants. We are the guardians of nature and we possess an enormous amount of knowledge about our environment,\u201d noted Hindou Oumarou Ibrahim, an Indigenous Mbororo leader from Chad and Chair of the 23rd Session of the United Nations Permanent Forum on Indigenous Issues, in April 2024. \u201cThis knowledge is not theoretical; it has been tried and tested for centuries.\u201d",
+          "linked": false,
+          "pair": "body->body",
+          "score": 0.6,
+          "signals": {
+            "body_label_pair": 1.0,
+            "column_position": 1.0,
+            "opener_prior": 0.0,
+            "style_continuity": 1.0,
+            "tail_line_fill": 0.0,
+            "tail_no_terminal_punct": 0.0
+          },
+          "tail_debug_id": "KUoeq",
+          "tail_fill_ratio": 0.38009078679382813,
+          "tail_label": "plain text",
+          "tail_text": "merits greater attention."
+        }
+      ],
+      "reason": null,
+      "score": 0.6,
+      "signals": {
+        "body_label_pair": 1.0,
+        "column_position": 1.0,
+        "opener_prior": 0.0,
+        "style_continuity": 1.0,
+        "tail_line_fill": 0.0,
+        "tail_no_terminal_punct": 0.0
+      },
+      "tail_column": 2,
+      "tail_debug_id": "KUoeq",
+      "tail_ends_on_hyphen": false,
+      "tail_fill_ratio": 0.38009078679382813,
+      "tail_label": "plain text",
+      "tail_page": 4,
+      "tail_text": "merits greater attention."
+    },
+    {
+      "boundary": "4->5",
+      "column_count": null,
+      "constant_share_of_score": null,
+      "eligible": true,
+      "head_column": 0,
+      "head_debug_id": "qBE2Q",
+      "head_label": "title",
+      "head_page": 5,
+      "head_text": "Brazil: lessons from the water people",
+      "kind": "page",
+      "linked": false,
+      "pair": "title->title",
+      "pairing": null,
+      "pairs": [
+        {
+          "head_debug_id": "4f8QB",
+          "head_label": "plain text",
+          "head_text": "Faced with a dramatic decline in pirarucu, a fish that is essential to their survival, the Paumari people of Amazonas state took part in a programme to restore the species, combining scientific and traditional knowledge. After a few years, the fish are once again populating the Purus River.",
+          "linked": false,
+          "pair": "body->body",
+          "score": 0.1,
+          "signals": {
+            "body_label_pair": 1.0,
+            "column_position": 1.0,
+            "opener_prior": 1.0,
+            "style_continuity": 0.0,
+            "tail_line_fill": 0.0,
+            "tail_no_terminal_punct": 0.0
+          },
+          "tail_debug_id": "ASH1M",
+          "tail_fill_ratio": 0.40983929600765967,
+          "tail_label": "plain text",
+          "tail_text": "assessments."
+        },
+        {
+          "head_debug_id": "qBE2Q",
+          "head_label": "title",
+          "head_text": "Brazil: lessons from the water people",
+          "linked": false,
+          "pair": "title->title",
+          "score": 0.35000000000000003,
+          "signals": {
+            "body_label_pair": 0.0,
+            "column_position": 0.5,
+            "opener_prior": 1.0,
+            "style_continuity": 0.0,
+            "tail_line_fill": null,
+            "tail_no_terminal_punct": 1.0
+          },
+          "tail_debug_id": "oDRR6",
+          "tail_fill_ratio": null,
+          "tail_label": "title",
+          "tail_text": "Guardians of biodiversity"
+        }
+      ],
+      "reason": null,
+      "score": 0.35000000000000003,
+      "signals": {
+        "body_label_pair": 0.0,
+        "column_position": 0.5,
+        "opener_prior": 1.0,
+        "style_continuity": 0.0,
+        "tail_line_fill": null,
+        "tail_no_terminal_punct": 1.0
+      },
+      "tail_column": 2,
+      "tail_debug_id": "oDRR6",
+      "tail_ends_on_hyphen": false,
+      "tail_fill_ratio": null,
+      "tail_label": "title",
+      "tail_page": 4,
+      "tail_text": "Guardians of biodiversity"
+    },
+    {
+      "boundary": "p5:c0->c1",
+      "column_count": 3,
+      "constant_share_of_score": null,
+      "eligible": false,
+      "head_column": 1,
+      "head_debug_id": "omXMa",
+      "head_label": "plain text",
+      "head_page": 5,
+      "head_text": "heartbreaking to see our food supply exhausted. We didn\u2019t know how to feed our children.\u201d",
+      "kind": "column",
+      "linked": false,
+      "pair": null,
+      "pairing": "column_adjacent",
+      "pairs": [],
+      "reason": "no_endpoint",
+      "score": null,
+      "signals": {
+        "body_label_pair": null,
+        "column_position": null,
+        "opener_prior": null,
+        "style_continuity": null,
+        "tail_line_fill": null,
+        "tail_no_terminal_punct": null
+      },
+      "tail_column": 0,
+      "tail_debug_id": "UkcDv",
+      "tail_ends_on_hyphen": false,
+      "tail_fill_ratio": null,
+      "tail_label": "figure_caption",
+      "tail_page": 5,
+      "tail_text": "pirarucu from the lakes to the cold chain."
+    },
+    {
+      "boundary": "p5:c0->c2",
+      "column_count": 3,
+      "constant_share_of_score": null,
+      "eligible": false,
+      "head_column": 2,
+      "head_debug_id": "o7iFD",
+      "head_label": "plain text",
+      "head_page": 5,
+      "head_text": "in any scientific textbook: \u201cWe are the people of the water, the only ones who truly live within it.\u201d When the population of pirarucus, the world\u2019s largest freshwater fish, fell to just 266 adult specimens in 2009, the Paumari faced an existential threat.",
+      "kind": "column",
+      "linked": false,
+      "pair": null,
+      "pairing": "body_next",
+      "pairs": [],
+      "reason": "no_endpoint",
+      "score": null,
+      "signals": {
+        "body_label_pair": null,
+        "column_position": null,
+        "opener_prior": null,
+        "style_continuity": null,
+        "tail_line_fill": null,
+        "tail_no_terminal_punct": null
+      },
+      "tail_column": 0,
+      "tail_debug_id": "UkcDv",
+      "tail_ends_on_hyphen": false,
+      "tail_fill_ratio": null,
+      "tail_label": "figure_caption",
+      "tail_page": 5,
+      "tail_text": "pirarucu from the lakes to the cold chain."
+    },
+    {
+      "boundary": "p5:c1->c2",
+      "column_count": 3,
+      "constant_share_of_score": 0.1,
+      "eligible": true,
+      "head_column": 2,
+      "head_debug_id": "o7iFD",
+      "head_label": "plain text",
+      "head_page": 5,
+      "head_text": "in any scientific textbook: \u201cWe are the people of the water, the only ones who truly live within it.\u201d When the population of pirarucus, the world\u2019s largest freshwater fish, fell to just 266 adult specimens in 2009, the Paumari faced an existential threat.",
+      "kind": "column",
+      "linked": true,
+      "pair": "body->body",
+      "pairing": "column_adjacent",
+      "pairs": [
+        {
+          "head_debug_id": "o7iFD",
+          "head_label": "plain text",
+          "head_text": "in any scientific textbook: \u201cWe are the people of the water, the only ones who truly live within it.\u201d When the population of pirarucus, the world\u2019s largest freshwater fish, fell to just 266 adult specimens in 2009, the Paumari faced an existential threat.",
+          "linked": true,
+          "pair": "body->body",
+          "score": 1.0,
+          "signals": {
+            "body_label_pair": 1.0,
+            "column_position": 1.0,
+            "opener_prior": 0.0,
+            "style_continuity": 1.0,
+            "tail_line_fill": 1.0,
+            "tail_no_terminal_punct": 1.0
+          },
+          "tail_debug_id": "aSmgX",
+          "tail_fill_ratio": 1.0002152013586774,
+          "tail_label": "plain text",
+          "tail_text": "defining themselves that can\u2019t be found"
+        }
+      ],
+      "reason": null,
+      "score": 1.0,
+      "signals": {
+        "body_label_pair": 1.0,
+        "column_position": 1.0,
+        "opener_prior": 0.0,
+        "style_continuity": 1.0,
+        "tail_line_fill": 1.0,
+        "tail_no_terminal_punct": 1.0
+      },
+      "tail_column": 1,
+      "tail_debug_id": "aSmgX",
+      "tail_ends_on_hyphen": false,
+      "tail_fill_ratio": 1.0002152013586774,
+      "tail_label": "plain text",
+      "tail_page": 5,
+      "tail_text": "defining themselves that can\u2019t be found"
+    },
+    {
+      "boundary": "5->6",
+      "column_count": null,
+      "constant_share_of_score": null,
+      "eligible": true,
+      "head_column": 0,
+      "head_debug_id": "MpmEb",
+      "head_label": "plain text",
+      "head_page": 6,
+      "head_text": "To mark the centennial of quantum mechanics, the United Nations declared 2025 the International Year of Quantum Science and Technology. As the lead agency of the initiative, UNESCO inaugurated the year-long initiative in Paris on 4 and 5 February, attracting over 1,200 participants, including several Nobel Prize laureates.",
+      "kind": "page",
+      "linked": false,
+      "pair": "body->body",
+      "pairing": null,
+      "pairs": [
+        {
+          "head_debug_id": "MpmEb",
+          "head_label": "plain text",
+          "head_text": "To mark the centennial of quantum mechanics, the United Nations declared 2025 the International Year of Quantum Science and Technology. As the lead agency of the initiative, UNESCO inaugurated the year-long initiative in Paris on 4 and 5 February, attracting over 1,200 participants, including several Nobel Prize laureates.",
+          "linked": false,
+          "pair": "body->body",
+          "score": 0.6,
+          "signals": {
+            "body_label_pair": 1.0,
+            "column_position": 0.5,
+            "opener_prior": 0.0,
+            "style_continuity": 0.0,
+            "tail_line_fill": 1.0,
+            "tail_no_terminal_punct": 1.0
+          },
+          "tail_debug_id": "8ezgv",
+          "tail_fill_ratio": 0.9997498531114191,
+          "tail_label": "plain text",
+          "tail_text": "without ever meeting. Technicians arrived"
+        },
+        {
+          "head_debug_id": "AzVrZ",
+          "head_label": "title",
+          "head_text": "The 2025 international year of quantum",
+          "linked": false,
+          "pair": "title->title",
+          "score": 0.5,
+          "signals": {
+            "body_label_pair": 0.0,
+            "column_position": 0.5,
+            "opener_prior": 0.0,
+            "style_continuity": 0.0,
+            "tail_line_fill": 1.0,
+            "tail_no_terminal_punct": 1.0
+          },
+          "tail_debug_id": "qBE2Q",
+          "tail_fill_ratio": 0.8958835374508967,
+          "tail_label": "title",
+          "tail_text": "the water people"
+        }
+      ],
+      "reason": null,
+      "score": 0.6,
+      "signals": {
+        "body_label_pair": 1.0,
+        "column_position": 0.5,
+        "opener_prior": 0.0,
+        "style_continuity": 0.0,
+        "tail_line_fill": 1.0,
+        "tail_no_terminal_punct": 1.0
+      },
+      "tail_column": 2,
+      "tail_debug_id": "8ezgv",
+      "tail_ends_on_hyphen": false,
+      "tail_fill_ratio": 0.9997498531114191,
+      "tail_label": "plain text",
+      "tail_page": 5,
+      "tail_text": "without ever meeting. Technicians arrived"
+    },
+    {
+      "boundary": "p6:c0->c1",
+      "column_count": 3,
+      "constant_share_of_score": 0.1,
+      "eligible": true,
+      "head_column": 1,
+      "head_debug_id": "Ruirh",
+      "head_label": "plain text",
+      "head_page": 6,
+      "head_text": "down in the quantum realm is constantly getting entangled and unentangled with everything else, all the time. The new quantum revolution, which involves technologies that make direct use of quantum superposition and entanglement, is already well underway and will without doubt transform our world.",
+      "kind": "column",
+      "linked": true,
+      "pair": "body->body",
+      "pairing": "column_adjacent",
+      "pairs": [
+        {
+          "head_debug_id": "Ruirh",
+          "head_label": "plain text",
+          "head_text": "down in the quantum realm is constantly getting entangled and unentangled with everything else, all the time. The new quantum revolution, which involves technologies that make direct use of quantum superposition and entanglement, is already well underway and will without doubt transform our world.",
+          "linked": true,
+          "pair": "body->body",
+          "score": 1.0,
+          "signals": {
+            "body_label_pair": 1.0,
+            "column_position": 1.0,
+            "opener_prior": 0.0,
+            "style_continuity": 1.0,
+            "tail_line_fill": 1.0,
+            "tail_no_terminal_punct": 1.0
+          },
+          "tail_debug_id": "d5JT4",
+          "tail_fill_ratio": 0.9994417371279708,
+          "tail_label": "plain text",
+          "tail_text": "entire  Universe.  Everything  everywhere"
+        }
+      ],
+      "reason": null,
+      "score": 1.0,
+      "signals": {
+        "body_label_pair": 1.0,
+        "column_position": 1.0,
+        "opener_prior": 0.0,
+        "style_continuity": 1.0,
+        "tail_line_fill": 1.0,
+        "tail_no_terminal_punct": 1.0
+      },
+      "tail_column": 0,
+      "tail_debug_id": "d5JT4",
+      "tail_ends_on_hyphen": false,
+      "tail_fill_ratio": 0.9994417371279708,
+      "tail_label": "plain text",
+      "tail_page": 6,
+      "tail_text": "entire  Universe.  Everything  everywhere"
+    },
+    {
+      "boundary": "p6:c0->c2",
+      "column_count": 3,
+      "constant_share_of_score": 0.1,
+      "eligible": true,
+      "head_column": 2,
+      "head_debug_id": "J7LAt",
+      "head_label": "plain text",
+      "head_page": 6,
+      "head_text": "still for a lengthy period inside a noisy, claustrophobic machine.",
+      "kind": "column",
+      "linked": true,
+      "pair": "body->body",
+      "pairing": "body_next",
+      "pairs": [
+        {
+          "head_debug_id": "J7LAt",
+          "head_label": "plain text",
+          "head_text": "still for a lengthy period inside a noisy, claustrophobic machine.",
+          "linked": true,
+          "pair": "body->body",
+          "score": 1.0,
+          "signals": {
+            "body_label_pair": 1.0,
+            "column_position": 1.0,
+            "opener_prior": 0.0,
+            "style_continuity": 1.0,
+            "tail_line_fill": 1.0,
+            "tail_no_terminal_punct": 1.0
+          },
+          "tail_debug_id": "d5JT4",
+          "tail_fill_ratio": 0.9994417371279708,
+          "tail_label": "plain text",
+          "tail_text": "entire  Universe.  Everything  everywhere"
+        }
+      ],
+      "reason": null,
+      "score": 1.0,
+      "signals": {
+        "body_label_pair": 1.0,
+        "column_position": 1.0,
+        "opener_prior": 0.0,
+        "style_continuity": 1.0,
+        "tail_line_fill": 1.0,
+        "tail_no_terminal_punct": 1.0
+      },
+      "tail_column": 0,
+      "tail_debug_id": "d5JT4",
+      "tail_ends_on_hyphen": false,
+      "tail_fill_ratio": 0.9994417371279708,
+      "tail_label": "plain text",
+      "tail_page": 6,
+      "tail_text": "entire  Universe.  Everything  everywhere"
+    },
+    {
+      "boundary": "p6:c1->c2",
+      "column_count": 3,
+      "constant_share_of_score": 0.1,
+      "eligible": true,
+      "head_column": 2,
+      "head_debug_id": "J7LAt",
+      "head_label": "plain text",
+      "head_page": 6,
+      "head_text": "still for a lengthy period inside a noisy, claustrophobic machine.",
+      "kind": "column",
+      "linked": true,
+      "pair": "body->body",
+      "pairing": "column_adjacent",
+      "pairs": [
+        {
+          "head_debug_id": "J7LAt",
+          "head_label": "plain text",
+          "head_text": "still for a lengthy period inside a noisy, claustrophobic machine.",
+          "linked": true,
+          "pair": "body->body",
+          "score": 1.0,
+          "signals": {
+            "body_label_pair": 1.0,
+            "column_position": 1.0,
+            "opener_prior": 0.0,
+            "style_continuity": 1.0,
+            "tail_line_fill": 1.0,
+            "tail_no_terminal_punct": 1.0
+          },
+          "tail_debug_id": "cZyFB",
+          "tail_fill_ratio": 0.9991744090047567,
+          "tail_label": "plain text",
+          "tail_text": "MRI  where the  patient  has to lie very"
+        }
+      ],
+      "reason": null,
+      "score": 1.0,
+      "signals": {
+        "body_label_pair": 1.0,
+        "column_position": 1.0,
+        "opener_prior": 0.0,
+        "style_continuity": 1.0,
+        "tail_line_fill": 1.0,
+        "tail_no_terminal_punct": 1.0
+      },
+      "tail_column": 1,
+      "tail_debug_id": "cZyFB",
+      "tail_ends_on_hyphen": false,
+      "tail_fill_ratio": 0.9991744090047567,
+      "tail_label": "plain text",
+      "tail_page": 6,
+      "tail_text": "MRI  where the  patient  has to lie very"
+    },
+    {
+      "boundary": "6->7",
+      "column_count": null,
+      "constant_share_of_score": null,
+      "eligible": true,
+      "head_column": 0,
+      "head_debug_id": "6mB6s",
+      "head_label": "plain text",
+      "head_page": 7,
+      "head_text": "For the past thirty years, international regulations have sought to limit the exploitation of Indigenous knowledge by industry so that it does not occur at the expense of local populations. But despite these measures, cases of misappropriation remain widespread.",
+      "kind": "page",
+      "linked": false,
+      "pair": "body->body",
+      "pairing": null,
+      "pairs": [
+        {
+          "head_debug_id": "6mB6s",
+          "head_label": "plain text",
+          "head_text": "For the past thirty years, international regulations have sought to limit the exploitation of Indigenous knowledge by industry so that it does not occur at the expense of local populations. But despite these measures, cases of misappropriation remain widespread.",
+          "linked": false,
+          "pair": "body->body",
+          "score": 0.51875,
+          "signals": {
+            "body_label_pair": 1.0,
+            "column_position": 1.0,
+            "opener_prior": 0.875,
+            "style_continuity": 0.0,
+            "tail_line_fill": 1.0,
+            "tail_no_terminal_punct": 1.0
+          },
+          "tail_debug_id": "Ehjed",
+          "tail_fill_ratio": 0.999872081867604,
+          "tail_label": "plain text",
+          "tail_text": "images  in  a  camera. This  technology"
+        },
+        {
+          "head_debug_id": "9gcm1",
+          "head_label": "title",
+          "head_text": "When biopiracy takes root",
+          "linked": false,
+          "pair": "title->title",
+          "score": 0.36875,
+          "signals": {
+            "body_label_pair": 0.0,
+            "column_position": 0.5,
+            "opener_prior": 0.875,
+            "style_continuity": 0.0,
+            "tail_line_fill": null,
+            "tail_no_terminal_punct": 1.0
+          },
+          "tail_debug_id": "AzVrZ",
+          "tail_fill_ratio": null,
+          "tail_label": "title",
+          "tail_text": "The 2025 international year of quantum"
+        }
+      ],
+      "reason": null,
+      "score": 0.51875,
+      "signals": {
+        "body_label_pair": 1.0,
+        "column_position": 1.0,
+        "opener_prior": 0.875,
+        "style_continuity": 0.0,
+        "tail_line_fill": 1.0,
+        "tail_no_terminal_punct": 1.0
+      },
+      "tail_column": 2,
+      "tail_debug_id": "Ehjed",
+      "tail_ends_on_hyphen": false,
+      "tail_fill_ratio": 0.999872081867604,
+      "tail_label": "plain text",
+      "tail_page": 6,
+      "tail_text": "images  in  a  camera. This  technology"
+    },
+    {
+      "boundary": "p7:c0->c1",
+      "column_count": 3,
+      "constant_share_of_score": 0.1,
+      "eligible": true,
+      "head_column": 1,
+      "head_debug_id": "21SK1",
+      "head_label": "plain text",
+      "head_page": 7,
+      "head_text": "However, there is criticism against biodiscovery as \u201cfree riding\u201d on knowledge developed by Indigenous and other local peoples. When the role of their knowledge is not sufficiently recognized in scientific investigation, product development, or commercialization, and where the users of this knowledge do not appropriately share benefits with ancestral knowledge holders, it can be called \u201cbiopiracy\u201d.",
+      "kind": "column",
+      "linked": false,
+      "pair": "body->body",
+      "pairing": "column_adjacent",
+      "pairs": [
+        {
+          "head_debug_id": "21SK1",
+          "head_label": "plain text",
+          "head_text": "However, there is criticism against biodiscovery as \u201cfree riding\u201d on knowledge developed by Indigenous and other local peoples. When the role of their knowledge is not sufficiently recognized in scientific investigation, product development, or commercialization, and where the users of this knowledge do not appropriately share benefits with ancestral knowledge holders, it can be called \u201cbiopiracy\u201d.",
+          "linked": false,
+          "pair": "body->body",
+          "score": 0.6,
+          "signals": {
+            "body_label_pair": 1.0,
+            "column_position": 1.0,
+            "opener_prior": 0.0,
+            "style_continuity": 1.0,
+            "tail_line_fill": 0.0,
+            "tail_no_terminal_punct": 0.0
+          },
+          "tail_debug_id": "A2Qq2",
+          "tail_fill_ratio": 0.8008132682563599,
+          "tail_label": "plain text",
+          "tail_text": "products to market more quickly."
+        }
+      ],
+      "reason": null,
+      "score": 0.6,
+      "signals": {
+        "body_label_pair": 1.0,
+        "column_position": 1.0,
+        "opener_prior": 0.0,
+        "style_continuity": 1.0,
+        "tail_line_fill": 0.0,
+        "tail_no_terminal_punct": 0.0
+      },
+      "tail_column": 0,
+      "tail_debug_id": "A2Qq2",
+      "tail_ends_on_hyphen": false,
+      "tail_fill_ratio": 0.8008132682563599,
+      "tail_label": "plain text",
+      "tail_page": 7,
+      "tail_text": "products to market more quickly."
+    },
+    {
+      "boundary": "p7:c0->c2",
+      "column_count": 3,
+      "constant_share_of_score": 0.1,
+      "eligible": true,
+      "head_column": 2,
+      "head_debug_id": "7VEBF",
+      "head_label": "plain text",
+      "head_page": 7,
+      "head_text": "Oil produced from the nuts of the Moroccan argan tree (Argania spinosa L.) provides another example. Argan oil is now used in hair and skin care products around the world for essentially the same purposes for which Amazigh (or Berber) women used it for over 1,000 years. While some major international companies with relevant patents selling argan-based products have set up benefit-sharing agreements with Amazigh women\u2019s cooperatives, others appear never to have shared benefits with Amazigh communities.",
+      "kind": "column",
+      "linked": false,
+      "pair": "body->body",
+      "pairing": "body_next",
+      "pairs": [
+        {
+          "head_debug_id": "7VEBF",
+          "head_label": "plain text",
+          "head_text": "Oil produced from the nuts of the Moroccan argan tree (Argania spinosa L.) provides another example. Argan oil is now used in hair and skin care products around the world for essentially the same purposes for which Amazigh (or Berber) women used it for over 1,000 years. While some major international companies with relevant patents selling argan-based products have set up benefit-sharing agreements with Amazigh women\u2019s cooperatives, others appear never to have shared benefits with Amazigh communities.",
+          "linked": false,
+          "pair": "body->body",
+          "score": 0.6,
+          "signals": {
+            "body_label_pair": 1.0,
+            "column_position": 1.0,
+            "opener_prior": 0.0,
+            "style_continuity": 1.0,
+            "tail_line_fill": 0.0,
+            "tail_no_terminal_punct": 0.0
+          },
+          "tail_debug_id": "A2Qq2",
+          "tail_fill_ratio": 0.8008132682563599,
+          "tail_label": "plain text",
+          "tail_text": "products to market more quickly."
+        }
+      ],
+      "reason": null,
+      "score": 0.6,
+      "signals": {
+        "body_label_pair": 1.0,
+        "column_position": 1.0,
+        "opener_prior": 0.0,
+        "style_continuity": 1.0,
+        "tail_line_fill": 0.0,
+        "tail_no_terminal_punct": 0.0
+      },
+      "tail_column": 0,
+      "tail_debug_id": "A2Qq2",
+      "tail_ends_on_hyphen": false,
+      "tail_fill_ratio": 0.8008132682563599,
+      "tail_label": "plain text",
+      "tail_page": 7,
+      "tail_text": "products to market more quickly."
+    },
+    {
+      "boundary": "p7:c1->c2",
+      "column_count": 3,
+      "constant_share_of_score": null,
+      "eligible": false,
+      "head_column": 2,
+      "head_debug_id": "7VEBF",
+      "head_label": "plain text",
+      "head_page": 7,
+      "head_text": "Oil produced from the nuts of the Moroccan argan tree (Argania spinosa L.) provides another example. Argan oil is now used in hair and skin care products around the world for essentially the same purposes for which Amazigh (or Berber) women used it for over 1,000 years. While some major international companies with relevant patents selling argan-based products have set up benefit-sharing agreements with Amazigh women\u2019s cooperatives, others appear never to have shared benefits with Amazigh communities.",
+      "kind": "column",
+      "linked": false,
+      "pair": null,
+      "pairing": "column_adjacent",
+      "pairs": [],
+      "reason": "no_endpoint",
+      "score": null,
+      "signals": {
+        "body_label_pair": null,
+        "column_position": null,
+        "opener_prior": null,
+        "style_continuity": null,
+        "tail_line_fill": null,
+        "tail_no_terminal_punct": null
+      },
+      "tail_column": 1,
+      "tail_debug_id": "FdDxj",
+      "tail_ends_on_hyphen": false,
+      "tail_fill_ratio": null,
+      "tail_label": "title",
+      "tail_page": 7,
+      "tail_text": "from the knowledge holders"
+    },
+    {
+      "boundary": "7->8",
+      "column_count": null,
+      "constant_share_of_score": null,
+      "eligible": true,
+      "head_column": 0,
+      "head_debug_id": "tr5Kw",
+      "head_label": "plain text",
+      "head_page": 8,
+      "head_text": "the grass has been patented. Benefits that have already been shared under the agreement include employment opportunities for First Nations youth and funding for training and educational opportunities for Indigenous Australians.",
+      "kind": "page",
+      "linked": true,
+      "pair": "body->body",
+      "pairing": null,
+      "pairs": [
+        {
+          "head_debug_id": "tr5Kw",
+          "head_label": "plain text",
+          "head_text": "the grass has been patented. Benefits that have already been shared under the agreement include employment opportunities for First Nations youth and funding for training and educational opportunities for Indigenous Australians.",
+          "linked": true,
+          "pair": "body->body",
+          "score": 0.95,
+          "signals": {
+            "body_label_pair": 1.0,
+            "column_position": 0.5,
+            "opener_prior": 0.0,
+            "style_continuity": 1.0,
+            "tail_line_fill": 1.0,
+            "tail_no_terminal_punct": 1.0
+          },
+          "tail_debug_id": "rp9az",
+          "tail_fill_ratio": 0.9988896381731911,
+          "tail_label": "plain text",
+          "tail_text": "spinifex, and a composite material from"
+        }
+      ],
+      "reason": null,
+      "score": 0.95,
+      "signals": {
+        "body_label_pair": 1.0,
+        "column_position": 0.5,
+        "opener_prior": 0.0,
+        "style_continuity": 1.0,
+        "tail_line_fill": 1.0,
+        "tail_no_terminal_punct": 1.0
+      },
+      "tail_column": 2,
+      "tail_debug_id": "rp9az",
+      "tail_ends_on_hyphen": false,
+      "tail_fill_ratio": 0.9988896381731911,
+      "tail_label": "plain text",
+      "tail_page": 7,
+      "tail_text": "spinifex, and a composite material from"
+    },
+    {
+      "boundary": "p8:c0->c1",
+      "column_count": 4,
+      "constant_share_of_score": 0.1,
+      "eligible": true,
+      "head_column": 1,
+      "head_debug_id": "bhypk",
+      "head_label": "plain text",
+      "head_page": 8,
+      "head_text": "with resource providers. However, with new developments in the science of genetics starting in the mid-twentieth century, products based on or derived from biodiversity came to be understood as \u201cgenetic resources\u201d. This corresponded with new ways of assigning value to the components of biodiversity based on potential, rather than only actual uses.",
+      "kind": "column",
+      "linked": true,
+      "pair": "body->body",
+      "pairing": "column_adjacent",
+      "pairs": [
+        {
+          "head_debug_id": "bhypk",
+          "head_label": "plain text",
+          "head_text": "with resource providers. However, with new developments in the science of genetics starting in the mid-twentieth century, products based on or derived from biodiversity came to be understood as \u201cgenetic resources\u201d. This corresponded with new ways of assigning value to the components of biodiversity based on potential, rather than only actual uses.",
+          "linked": true,
+          "pair": "body->body",
+          "score": 1.0,
+          "signals": {
+            "body_label_pair": 1.0,
+            "column_position": 1.0,
+            "opener_prior": 0.0,
+            "style_continuity": 1.0,
+            "tail_line_fill": 1.0,
+            "tail_no_terminal_punct": 1.0
+          },
+          "tail_debug_id": "JmztK",
+          "tail_fill_ratio": 0.999028617961842,
+          "tail_label": "plain text",
+          "tail_text": "obtain  permission or to  share  benefits"
+        }
+      ],
+      "reason": null,
+      "score": 1.0,
+      "signals": {
+        "body_label_pair": 1.0,
+        "column_position": 1.0,
+        "opener_prior": 0.0,
+        "style_continuity": 1.0,
+        "tail_line_fill": 1.0,
+        "tail_no_terminal_punct": 1.0
+      },
+      "tail_column": 0,
+      "tail_debug_id": "JmztK",
+      "tail_ends_on_hyphen": false,
+      "tail_fill_ratio": 0.999028617961842,
+      "tail_label": "plain text",
+      "tail_page": 8,
+      "tail_text": "obtain  permission or to  share  benefits"
+    },
+    {
+      "boundary": "p8:c0->c2",
+      "column_count": 4,
+      "constant_share_of_score": 0.1,
+      "eligible": true,
+      "head_column": 2,
+      "head_debug_id": "rHFVD",
+      "head_label": "plain text",
+      "head_page": 8,
+      "head_text": "require prospective users of Indigenous knowledge to first secure clear consent from the knowledge holders and sign agreements detailing how benefits will be shared.",
+      "kind": "column",
+      "linked": true,
+      "pair": "body->body",
+      "pairing": "body_next",
+      "pairs": [
+        {
+          "head_debug_id": "rHFVD",
+          "head_label": "plain text",
+          "head_text": "require prospective users of Indigenous knowledge to first secure clear consent from the knowledge holders and sign agreements detailing how benefits will be shared.",
+          "linked": true,
+          "pair": "body->body",
+          "score": 1.0,
+          "signals": {
+            "body_label_pair": 1.0,
+            "column_position": 1.0,
+            "opener_prior": 0.0,
+            "style_continuity": 1.0,
+            "tail_line_fill": 1.0,
+            "tail_no_terminal_punct": 1.0
+          },
+          "tail_debug_id": "JmztK",
+          "tail_fill_ratio": 0.999028617961842,
+          "tail_label": "plain text",
+          "tail_text": "obtain  permission or to  share  benefits"
+        }
+      ],
+      "reason": null,
+      "score": 1.0,
+      "signals": {
+        "body_label_pair": 1.0,
+        "column_position": 1.0,
+        "opener_prior": 0.0,
+        "style_continuity": 1.0,
+        "tail_line_fill": 1.0,
+        "tail_no_terminal_punct": 1.0
+      },
+      "tail_column": 0,
+      "tail_debug_id": "JmztK",
+      "tail_ends_on_hyphen": false,
+      "tail_fill_ratio": 0.999028617961842,
+      "tail_label": "plain text",
+      "tail_page": 8,
+      "tail_text": "obtain  permission or to  share  benefits"
+    },
+    {
+      "boundary": "p8:c1->c2",
+      "column_count": 4,
+      "constant_share_of_score": 0.1,
+      "eligible": true,
+      "head_column": 2,
+      "head_debug_id": "rHFVD",
+      "head_label": "plain text",
+      "head_page": 8,
+      "head_text": "require prospective users of Indigenous knowledge to first secure clear consent from the knowledge holders and sign agreements detailing how benefits will be shared.",
+      "kind": "column",
+      "linked": true,
+      "pair": "body->body",
+      "pairing": "column_adjacent",
+      "pairs": [
+        {
+          "head_debug_id": "rHFVD",
+          "head_label": "plain text",
+          "head_text": "require prospective users of Indigenous knowledge to first secure clear consent from the knowledge holders and sign agreements detailing how benefits will be shared.",
+          "linked": true,
+          "pair": "body->body",
+          "score": 1.0,
+          "signals": {
+            "body_label_pair": 1.0,
+            "column_position": 1.0,
+            "opener_prior": 0.0,
+            "style_continuity": 1.0,
+            "tail_line_fill": 1.0,
+            "tail_no_terminal_punct": 1.0
+          },
+          "tail_debug_id": "MWtkT",
+          "tail_fill_ratio": 1.0000581594849396,
+          "tail_label": "plain text",
+          "tail_text": "positive change. Today, many countries"
+        }
+      ],
+      "reason": null,
+      "score": 1.0,
+      "signals": {
+        "body_label_pair": 1.0,
+        "column_position": 1.0,
+        "opener_prior": 0.0,
+        "style_continuity": 1.0,
+        "tail_line_fill": 1.0,
+        "tail_no_terminal_punct": 1.0
+      },
+      "tail_column": 1,
+      "tail_debug_id": "MWtkT",
+      "tail_ends_on_hyphen": false,
+      "tail_fill_ratio": 1.0000581594849396,
+      "tail_label": "plain text",
+      "tail_page": 8,
+      "tail_text": "positive change. Today, many countries"
+    },
+    {
+      "boundary": "p8:c1->c3",
+      "column_count": 4,
+      "constant_share_of_score": null,
+      "eligible": false,
+      "head_column": 3,
+      "head_debug_id": "B4kjh",
+      "head_label": "figure_caption",
+      "head_page": 8,
+      "head_text": "Argan oil production workshop at a women\u2019s cooperative in Tafraout, southwestern Morocco.",
+      "kind": "column",
+      "linked": false,
+      "pair": null,
+      "pairing": "body_next",
+      "pairs": [],
+      "reason": "no_endpoint",
+      "score": null,
+      "signals": {
+        "body_label_pair": null,
+        "column_position": null,
+        "opener_prior": null,
+        "style_continuity": null,
+        "tail_line_fill": null,
+        "tail_no_terminal_punct": null
+      },
+      "tail_column": 1,
+      "tail_debug_id": "MWtkT",
+      "tail_ends_on_hyphen": false,
+      "tail_fill_ratio": null,
+      "tail_label": "plain text",
+      "tail_page": 8,
+      "tail_text": "positive change. Today, many countries"
+    },
+    {
+      "boundary": "p8:c2->c3",
+      "column_count": 4,
+      "constant_share_of_score": null,
+      "eligible": false,
+      "head_column": 3,
+      "head_debug_id": "B4kjh",
+      "head_label": "figure_caption",
+      "head_page": 8,
+      "head_text": "Argan oil production workshop at a women\u2019s cooperative in Tafraout, southwestern Morocco.",
+      "kind": "column",
+      "linked": false,
+      "pair": null,
+      "pairing": "column_adjacent",
+      "pairs": [],
+      "reason": "no_endpoint",
+      "score": null,
+      "signals": {
+        "body_label_pair": null,
+        "column_position": null,
+        "opener_prior": null,
+        "style_continuity": null,
+        "tail_line_fill": null,
+        "tail_no_terminal_punct": null
+      },
+      "tail_column": 2,
+      "tail_debug_id": "Tn2QN",
+      "tail_ends_on_hyphen": false,
+      "tail_fill_ratio": null,
+      "tail_label": "plain text",
+      "tail_page": 8,
+      "tail_text": "unfortunate reality."
+    }
+  ],
+  "boundary_priority": [
+    "page",
+    "column_adjacent",
+    "body_next"
+  ],
+  "chains": [
+    {
+      "chain_id": "6wgRp",
+      "length": 2,
+      "members": [
+        {
+          "chain_index": 0,
+          "debug_id": "kHj2L"
+        },
+        {
+          "chain_index": 1,
+          "debug_id": "rBtJ8"
+        }
+      ]
+    },
+    {
+      "chain_id": "DMHk3",
+      "length": 2,
+      "members": [
+        {
+          "chain_index": 0,
+          "debug_id": "aSmgX"
+        },
+        {
+          "chain_index": 1,
+          "debug_id": "o7iFD"
+        }
+      ]
+    },
+    {
+      "chain_id": "FJjzM",
+      "length": 2,
+      "members": [
+        {
+          "chain_index": 0,
+          "debug_id": "d5JT4"
+        },
+        {
+          "chain_index": 1,
+          "debug_id": "Ruirh"
+        }
+      ]
+    },
+    {
+      "chain_id": "XTTbk",
+      "length": 2,
+      "members": [
+        {
+          "chain_index": 0,
+          "debug_id": "cZyFB"
+        },
+        {
+          "chain_index": 1,
+          "debug_id": "J7LAt"
+        }
+      ]
+    },
+    {
+      "chain_id": "1YgbY",
+      "length": 2,
+      "members": [
+        {
+          "chain_index": 0,
+          "debug_id": "rp9az"
+        },
+        {
+          "chain_index": 1,
+          "debug_id": "tr5Kw"
+        }
+      ]
+    },
+    {
+      "chain_id": "svxCB",
+      "length": 2,
+      "members": [
+        {
+          "chain_index": 0,
+          "debug_id": "JmztK"
+        },
+        {
+          "chain_index": 1,
+          "debug_id": "bhypk"
+        }
+      ]
+    },
+    {
+      "chain_id": "cVnQ7",
+      "length": 2,
+      "members": [
+        {
+          "chain_index": 0,
+          "debug_id": "MWtkT"
+        },
+        {
+          "chain_index": 1,
+          "debug_id": "rHFVD"
+        }
+      ]
+    }
+  ],
+  "dropped_edges": [
+    {
+      "boundary": "p6:c0->c2",
+      "dropped_reason": "tail_already_handed_on",
+      "kind": "column",
+      "pairing": "body_next",
+      "score": 1.0
+    },
+    {
+      "boundary": "p8:c0->c2",
+      "dropped_reason": "tail_already_handed_on",
+      "kind": "column",
+      "pairing": "body_next",
+      "score": 1.0
+    }
+  ],
+  "edges": [
+    {
+      "boundary": "2->3",
+      "kind": "page",
+      "pairing": null,
+      "score": 0.9500000000000001
+    },
+    {
+      "boundary": "p5:c1->c2",
+      "kind": "column",
+      "pairing": "column_adjacent",
+      "score": 1.0
+    },
+    {
+      "boundary": "p6:c0->c1",
+      "kind": "column",
+      "pairing": "column_adjacent",
+      "score": 1.0
+    },
+    {
+      "boundary": "p6:c1->c2",
+      "kind": "column",
+      "pairing": "column_adjacent",
+      "score": 1.0
+    },
+    {
+      "boundary": "7->8",
+      "kind": "page",
+      "pairing": null,
+      "score": 0.95
+    },
+    {
+      "boundary": "p8:c0->c1",
+      "kind": "column",
+      "pairing": "column_adjacent",
+      "score": 1.0
+    },
+    {
+      "boundary": "p8:c1->c2",
+      "kind": "column",
+      "pairing": "column_adjacent",
+      "score": 1.0
+    }
+  ],
+  "link_min_score": 0.8,
+  "pair_weights": {
+    "body->body": {
+      "body_label_pair": 0.15,
+      "column_position": 0.1,
+      "opener_prior": -0.15,
+      "style_continuity": 0.35,
+      "tail_line_fill": 0.15,
+      "tail_no_terminal_punct": 0.25
+    },
+    "title->title": {
+      "body_label_pair": 0.0,
+      "column_position": 0.1,
+      "opener_prior": -0.15,
+      "style_continuity": 0.45,
+      "tail_line_fill": 0.0,
+      "tail_no_terminal_punct": 0.45
+    }
+  },
+  "weights": {
+    "weight_body_label_pair": 0.15,
+    "weight_column_position": 0.1,
+    "weight_opener_prior": -0.15,
+    "weight_style_continuity": 0.35,
+    "weight_tail_line_fill": 0.15,
+    "weight_tail_no_terminal_punct": 0.25
+  }
+}

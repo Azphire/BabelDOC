@@ -34,11 +34,21 @@ makes, so a decision taken before it would be quietly undone.
 What it does not touch
 ----------------------
 
-Anything outside the declared body labels. A title, a caption, a table of
-contents record and a masthead list each have their own setting, and a rule
+Anything outside the declared body labels. A title, a caption, a record in a
+contents list and a line of an imprint each have their own setting, and a rule
 written for running text is wrong for all four. The title pass writes the flag
 too, after the stage rather than before it, and only on titles; the two do not
 meet, which the gate asserts from both ends.
+
+Anything on a page the vocabulary does not declare ``indent_eligible``. The
+label surface alone was not enough, because a page of records sets those records
+under a body label: a line of a contents list and a line of an imprint are both
+running text as far as the layout model is concerned, and a paragraph convention
+written for an article reached every one of them. The page kind is where that is stated, and the flag is read
+off the declared policy rather than off the kind's name, so this pass names no
+page type. A page carrying no kind, or a kind the vocabulary does not hold, is
+not eligible either: an undeclared page is left as the source set it, which is
+the answer that cannot be wrong twice.
 """
 
 from __future__ import annotations
@@ -55,6 +65,8 @@ from babeldoc.magazine.drop_cap import paragraph_reference
 from babeldoc.magazine.drop_cap import read_article_map
 from babeldoc.magazine.page_features import ConfigError
 from babeldoc.magazine.page_features import validate_bounded_config
+from babeldoc.magazine.taxonomy import TAXONOMY_PATH
+from babeldoc.magazine.taxonomy import load_taxonomy
 from babeldoc.magazine.taxonomy import record_config_manifest
 
 logger = logging.getLogger(__name__)
@@ -68,6 +80,18 @@ ARTICLE_MAP_NAME = "article_map.json"
 # something puts it up: this pass changes how every body paragraph of a document
 # is set, which is not something a run should acquire by upgrading.
 SWITCH = "magazine_indent_policy"
+
+# The policy flag a page is qualified by. Declared in the page type vocabulary
+# and read by name here, which is what keeps page type names out of this module.
+PAGE_ELIGIBILITY_POLICY_FLAG = "indent_eligible"
+
+# Why a paragraph this pass saw was left alone. One reason per way of being
+# left alone, declared here rather than written at each site, so a reader of the
+# sidecar meets a closed set.
+SKIP_PAGE_INELIGIBLE = "page_ineligible"
+SKIP_OUTSIDE_BODY = "outside_body_labels"
+SKIP_MODE = "mode_decides_nothing"
+SKIP_REASONS = (SKIP_PAGE_INELIGIBLE, SKIP_OUTSIDE_BODY, SKIP_MODE)
 
 MODE_SOURCE = "source"
 MODE_ALL = "all"
@@ -241,7 +265,7 @@ def as_record(
     origin: str,
     target_lang: str,
     rows: list[dict],
-    pages: int,
+    pages: list[dict],
 ) -> dict:
     changed = [row for row in rows if row["before"] != row["after"]]
     return {
@@ -254,13 +278,24 @@ def as_record(
         "body_labels": list(config.body_labels),
         "article_opening_rank": config.article_opening_rank,
         "indent_em": config.indent_em,
-        "pages": pages,
+        "page_eligibility_flag": PAGE_ELIGIBILITY_POLICY_FLAG,
+        "skip_reasons": list(SKIP_REASONS),
+        "pages": len(pages),
+        "page_records": pages,
         "totals": {
             "paragraphs": len(rows),
             "decided": sum(1 for row in rows if row["decided"]),
             "left_alone": sum(1 for row in rows if not row["decided"]),
             "changed": len(changed),
             "indented_after": sum(1 for row in rows if row["after"]),
+            "pages_eligible": sum(1 for page in pages if page["indent_eligible"]),
+            "pages_ineligible": sum(
+                1 for page in pages if not page["indent_eligible"]
+            ),
+            "skipped": {
+                reason: sum(1 for row in rows if row["skipped"] == reason)
+                for reason in SKIP_REASONS
+            },
         },
         "paragraphs": rows,
     }
@@ -271,8 +306,24 @@ def write_report(working_dir: Path, record: dict) -> Path:
     path.parent.mkdir(parents=True, exist_ok=True)
     with path.open("w", encoding="utf-8") as f:
         json.dump(record, f, indent=2, sort_keys=True, ensure_ascii=False)
-    record_config_manifest(path.parent, [CONFIG_PATH])
+    record_config_manifest(path.parent, [CONFIG_PATH, TAXONOMY_PATH])
     return path
+
+
+def page_is_eligible(page, taxonomy) -> tuple[bool, str | None]:
+    """Whether one page's declared policy admits a paragraph convention.
+
+    Returns the answer and the kind it was read from, so the record can say
+    which page the answer belongs to without this module naming a type. A kind
+    the vocabulary does not hold has no policy to consume and is not eligible:
+    the caller states what an absent policy means rather than the vocabulary
+    handing back a default that looks declared.
+    """
+    kind = getattr(page, "page_kind", None)
+    policy = taxonomy.policy_of(kind)
+    if policy is None:
+        return False, kind
+    return bool(policy.get(PAGE_ELIGIBILITY_POLICY_FLAG, False)), kind
 
 
 def apply(translation_config, docs) -> dict | None:
@@ -280,10 +331,19 @@ def apply(translation_config, docs) -> dict | None:
 
     Returns the record it wrote, so a caller holding the document can assert
     about the pass without reading the sidecar back.
+
+    Two gates stand in front of the decision and both are declarative. The page
+    gate asks the page type vocabulary whether this page sets the kind of text a
+    paragraph convention is written for; the label gate asks whether this
+    paragraph is running body text. A paragraph that fails either is recorded
+    with the reason it failed by, because a paragraph left alone by the page it
+    sits on and one left alone by its own label are two different findings and a
+    sidecar that could not tell them apart would answer neither.
     """
     if not enabled(translation_config):
         return None
     config = load_indent_config()
+    taxonomy = load_taxonomy()
     target_lang = getattr(translation_config, "lang_out", "") or ""
     mode, origin = config.mode_for(target_lang)
     pages = hitl.labeled_pages(docs)
@@ -291,45 +351,75 @@ def apply(translation_config, docs) -> dict | None:
 
     rank_of_article: dict[str, int] = {}
     rows: list[dict] = []
+    page_rows: list[dict] = []
     for label, page in pages:
         article_id = of_page.get(label)
+        eligible, kind = page_is_eligible(page, taxonomy)
+        decided_here = 0
         for index, paragraph in enumerate(page.pdf_paragraph or ()):
             layout_label = paragraph.layout_label
+            in_body = layout_label in config.body_labels
             body_rank = None
             # Counted over body paragraphs carrying text, in document order
             # within the article, which is the rank the drop cap pass counts.
             # A paragraph with no text is not a paragraph a reader numbers.
-            if (
-                layout_label in config.body_labels
-                and article_id is not None
-                and (paragraph.unicode or "").strip()
-            ):
+            # Counted on every page, eligible or not, because the rank belongs
+            # to that pass and not to this one: withholding a decision here may
+            # not renumber the article for the pass that shares the count.
+            if in_body and article_id is not None and (paragraph.unicode or "").strip():
                 body_rank = rank_of_article.get(article_id, 0) + 1
                 rank_of_article[article_id] = body_rank
             before = bool(paragraph.first_line_indent)
-            decision = decide(layout_label, mode, before, body_rank, config)
+            decision = (
+                decide(layout_label, mode, before, body_rank, config)
+                if eligible
+                else None
+            )
             if decision is not None:
                 paragraph.first_line_indent = decision
+                decided_here += 1
+                skipped = None
+            elif not eligible:
+                skipped = SKIP_PAGE_INELIGIBLE
+            elif not in_body:
+                skipped = SKIP_OUTSIDE_BODY
+            else:
+                skipped = SKIP_MODE
             rows.append(
                 {
                     "page": label,
                     "reference": paragraph_reference(label, index),
                     "layout_label": layout_label,
+                    "page_kind": kind,
+                    "indent_eligible_page": eligible,
                     "article_id": article_id,
                     "body_rank": body_rank,
                     "before": before,
                     "after": bool(paragraph.first_line_indent),
                     "decided": decision is not None,
+                    "skipped": skipped,
                     "excerpt": (paragraph.unicode or "")[: config.excerpt_chars],
                 }
             )
+        page_rows.append(
+            {
+                "page": label,
+                "page_kind": kind,
+                "indent_eligible": eligible,
+                "paragraphs": len(page.pdf_paragraph or ()),
+                "decided": decided_here,
+            }
+        )
 
-    record = as_record(config, mode, origin, target_lang, rows, len(pages))
+    record = as_record(config, mode, origin, target_lang, rows, page_rows)
     working_dir = Path(translation_config.get_working_file_path(REPORT_NAME)).parent
     write_report(working_dir, record)
     logger.debug(
-        "indent policy: mode %s, %d paragraph(s) decided, %d changed",
+        "indent policy: mode %s, %d of %d page(s) eligible, %d paragraph(s) "
+        "decided, %d changed",
         mode,
+        record["totals"]["pages_eligible"],
+        record["pages"],
         record["totals"]["decided"],
         record["totals"]["changed"],
     )
