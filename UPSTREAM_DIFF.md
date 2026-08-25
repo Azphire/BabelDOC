@@ -252,3 +252,63 @@ T3 的 `tools/column_continuity.py` 只读复用 `magazine/chain_signals.py`,不
 `il_translator.py` 的行为,故**一字未改**,并按 §2 停止并报告(报告见批次交付报告 §3.4)。
 用户裁决:走既有 react 孤行动作的第二类管辖(段落 `vertical`),不动该文件。该文件在本批的
 `git diff` 中不出现。
+
+
+## B11.8
+
+| 文件 | 符号 | 调用方 | 目的 | 批次 |
+| --- | --- | --- | --- | --- |
+| `babeldoc/format/pdf/high_level.py` | `_do_translate_single`(一行调用)、模块级 import | 流水线主干 | 新 pass `drop_cap_render.apply` 的挂点。窗口:`dump_checkpoint("typesetting")` **之后**、`detectors.detect_issues` **之前**。在 checkpoint 之后,是为了让 `checkpoint.11_typesetting` 继续只表示"排版 stage 留下的样子";在检测之前,是为了让被检测的文档就是最终写进 PDF 的那一份。pass 默认关(`magazine_drop_cap_render` 缺省为假),开关抬起前逐位无行为差异。**计划的负向范围未列本文件**:计划把挂点写成"双向试装模块(新)",而一个排后 pass 需要一个主干调用点,magazine 侧唯一够得到的窗口是 `detectors.detect_issues` 头部。用户裁决取 high_level.py 而非 detectors/__init__.py,理由是位置直白且与既有 B8/B10.1/B11.5/B11.7 四处同类挂点同形。登记 W-B11-24 | B11.8 |
+| `babeldoc/format/pdf/document_il/xml_converter.py` | 模块级 `_LazyPassthroughConverter`(新增)与一次 `converter.register_converter` 调用;`XMLConverter.to_xml` 与 `from_xml` **一字未改** | xsdata 序列化器的类型派发 | 见下方逐函数登记 | B11.8 |
+
+### 逐函数登记(B11.8)
+
+**`_LazyPassthroughConverter`(新增,模块级)**
+
+`Converter` 子类,两个方法:`serialize(value)` 返回 `value.materialize()`;
+`deserialize(value)` 原样返回。注册一次:
+`converter.register_converter(LazyPassthroughInstruction, _LazyPassthroughConverter())`。
+
+**为什么必须改**:`il_version_1.py:58` 把 `passthrough_per_char_instruction` 声明为
+`str | None`,而前端在 `can_lazy_render` 分支里填进去的是 `LazyPassthroughInstruction`
+—— 一个自述为「String-compatible wrapper」、`materialize()` 即那个字符串的包装。
+同一文件里的 **JSON 写盘早就问了这个问题**(`_orjson_default` 调 `materialize()`),
+**XML 写盘没问**,因为 xsdata 按具体类派发而该类没有注册转换器。后果是:一份持有
+延迟指令的文档**能写成 JSON、写不成 XML**,而 checkpoint 走 XML —— 同一个字段的两个
+reader 对「这份文档能不能写出来」给出相反答案。判例同 b8.4「一个 reader」:两路分歧
+不存活。
+
+**为什么现在才暴露**:旧六份样张都不进 `can_lazy_render` 分支;本批期间语料所有者
+引入的中文源样张进。故这是**新语料触发的上游既有缺口**,不是 b11.8 的改动造成的。
+表现为 `spec_check_b3_3` 在构建 artifact 时崩于
+`ConverterError: No converter registered for 'LazyPassthroughInstruction'`。
+
+**作用面**:仅当被序列化的值确为 `LazyPassthroughInstruction` 时才走到该转换器。
+两条断言各自兑现一半 —— `spec_check_b11_8` 的 `07e` 断言含 lazy 字段的桩在 JSON 与
+XML 两路上 materialize 后逐字节一致(**断言对称本身**);`07f` 断言不含 lazy 字段的桩
+的 XML 渲染**修前修后逐字节相同**(修前基准在改动之前冻结,见
+`examples/output/b11_8/xml_symmetry.json` 的 `plain`)。
+
+**往返**:`deserialize` 原样返回。从 XML 读回来的已经是 materialize 之后的字符串,
+与非 lazy 路径产出的类型相同,故经任一写盘往返都落在同一类型上。
+
+### 未做的改动,与为什么
+
+**`babeldoc/magazine/react/controller.py` 的 `_candidates` 过滤**
+
+修复回路跑在本车道之后。若它挑中一个已被车道排好的段并重排之,首字放大会**静默丢失**。
+预防的写法是在 `_candidates` 里按车道段引过滤,并在 `actions.py` 添一个拒绝理由常量 ——
+两个文件,均在计划负向范围之外。用户裁决取**检测而非预防**:车道记下自己排过的段引,
+门禁 `check_01g` 断言这些段引不出现在 `react_repair.report.json` 的 executed 段引里,
+一旦相碰即红。理由是 CLAUDE.md §4.18 要防的是"改判即丢且无任何报错"里的**无报错**,
+而红灯不是无报错。b11.7 实测两样张的修复回路都未触及这四段(Courier-en 触及
+p1#10/p3#2/p5#10/p6#15,FD-en-v2 触及 p2#8/p4#3/p8#5/p9#9,与四条锚零交集)。
+编码排除登记为 GAP-48。
+
+**`babeldoc/format/pdf/document_il/midend/typesetting.py` 的行距**
+
+首字字号 = 行数 × 行距,而行距在上游 `_layout_typesetting_units` 内部算出
+(`max(font_size*scale*line_skip, mode_height*line_skip, max_height*1.05)`,
+`line_skip` 为 1.50/1.3 两个裸字面量)。把 `line_skip` 提到模块级或抄进
+`configs/drop_cap_render.json`,都会在树上留两份同一个数 —— 正是 W-B11-18 认定为违规的形态。
+本批改为**从段落自身的基线实测行进量**,故上游一字未改,且任意正文字号的栏都得到成比例的首字。

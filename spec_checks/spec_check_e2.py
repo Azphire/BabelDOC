@@ -841,6 +841,22 @@ def check_10_every_judgement_answers_within_the_declared_vocabularies() -> None:
     )
 
 
+# The corpus this batch's frozen judgements were made over: the six samples the
+# F2 refresh left, which is what "the ground truth" meant while this batch ran.
+# Read as a fixed list rather than off today's adjudication file. A batch's
+# judgements can only ever cover the points that existed when it made them, and
+# a ground truth that grows afterwards does not make them incomplete. What is
+# still asserted is that no point of these six was dropped. AC-34, GAP-53.
+CORPUS_WHEN_THIS_RAN = (
+    "AramcoWorld-en-v2",
+    "CERNCourier-en",
+    "Courier-en",
+    "Courier-zh",
+    "FD-en-v2",
+    "Vogue-en",
+)
+
+
 def check_11_the_test_points_are_the_adjudicated_positives() -> None:
     """Positive 11: the point set is the ground truth's, and the seam has its arms.
 
@@ -855,9 +871,15 @@ def check_11_the_test_points_are_the_adjudicated_positives() -> None:
     for sample, entry in labels.items():
         if not isinstance(entry, dict):
             continue
+        if Path(sample).stem not in CORPUS_WHEN_THIS_RAN:
+            continue
         for boundary, ruling in entry.items():
             if isinstance(ruling, dict) and ruling.get("link"):
                 expected.add(f"{Path(sample).stem} {boundary}")
+    adjudicated = {Path(sample).stem for sample in labels}
+    dropped = sorted(set(CORPUS_WHEN_THIS_RAN) - adjudicated)
+    if dropped:
+        faults.append(f"no longer adjudicated: {dropped}")
     report = read_json(JUDGEMENTS)
     measured = {row["point"] for row in report["rows"]}
     missing = sorted(expected - measured)

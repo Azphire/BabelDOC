@@ -156,12 +156,14 @@ NESTED_SUPPRESSED = os.environ.get("SPEC_NO_NESTED") == "1"
 LANGUAGE = "zh"
 
 # The ruling the corpus owner filed after b9.4, and the digest it is pinned at.
-# Moved twice, at b11.2 and again at b11.5, each time because the owner ruled
-# further glossary rows into it; the change record for both is beside the pin in
-# spec_check_b7_5.py, which is where this digest is checked against.
+# Moved three times, at b11.2, b11.5 and b11.8; the first two because the owner
+# ruled further glossary rows into it, the third because the owner moved its
+# drop cap verdict from flatten to keep before b11.8 began. The change record
+# for all three is beside the pin in spec_check_b7_5.py, which is where this
+# digest is checked against.
 FD_RULING = "reviews/FD-en-v2.decisions.json"
 FD_RULING_DIGEST = (
-    "5f691ea3cc8d371a7d01824acdda640cecc2478787f37a3679d9562e07060415"
+    "12d36bcdda18664671da7073b8ad6d8658ec1d374af25b7bf942ff6a33a53163"
 )
 
 # Every sample of the corpus, read from the register rather than listed here.
@@ -171,6 +173,25 @@ CORPUS_SAMPLES = {
         (ROOT / "corpus" / "manifest.json").read_text(encoding="utf-8")
     )["samples"]
 }
+
+# The corpus this batch's frozen evidence was built over: the six samples the
+# F2 refresh left, which is what "the whole corpus" meant while this batch ran.
+# Read as a fixed list rather than off today's manifest. A batch's evidence can
+# only ever cover the samples that existed when it ran, and a corpus that grows
+# afterwards does not make that evidence incomplete -- reading the live manifest
+# here made every later registration retro-invalidate a batch that had in fact
+# covered everything there was. What is still asserted is the guarantee that was
+# ever available: none of these six was quietly dropped, and every one of them
+# ran. AC-34, GAP-53.
+CORPUS_WHEN_THIS_RAN = (
+    "AramcoWorld-en-v2.pdf",
+    "CERNCourier-en.pdf",
+    "Courier-en.pdf",
+    "Courier-zh.pdf",
+    "FD-en-v2.pdf",
+    "Vogue-en.pdf",
+)
+
 
 # The acceptance session's own tree: the arms, the report every figure is in,
 # and the fixture the geometry can be replayed from without a run.
@@ -1859,16 +1880,20 @@ def acceptance_evidence() -> dict | None:
 def check_10a_the_acceptance_left_its_evidence() -> None:
     """Positive 10a: the arms, the report and the fixture are all on disk."""
     faults = []
+    accepted = {name.removesuffix(".pdf") for name in CORPUS_WHEN_THIS_RAN}
+    dropped = sorted(accepted - CORPUS_SAMPLES)
+    if dropped:
+        faults.append(f"no longer registered: {dropped}")
     for arm in ACCEPTANCE_ARMS:
         path = ACCEPTANCE_DIR / f"runs.{arm}.json"
         if not path.exists():
             faults.append(f"no ledger for the {arm} arm")
             continue
         rows = load_json(path)
-        if len(rows) != len(CORPUS_SAMPLES):
-            faults.append(f"the {arm} arm ran {len(rows)} of {len(CORPUS_SAMPLES)}")
+        if len(rows) != len(accepted):
+            faults.append(f"the {arm} arm ran {len(rows)} of {len(accepted)}")
         missing = sorted(
-            CORPUS_SAMPLES - {row["sample"].removesuffix(".pdf") for row in rows}
+            accepted - {row["sample"].removesuffix(".pdf") for row in rows}
         )
         if missing:
             faults.append(f"the {arm} arm did not run {missing}")

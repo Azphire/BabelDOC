@@ -49,13 +49,18 @@ What consumes the ruling
 
 ``apply``, behind ``magazine_drop_cap_apply`` and down by default, run after the
 ruling is injected and before the translator is built. It is the reader of the
-``dropCapDecision`` attribute B1 added to the schema, and the only one.
-``flatten`` merges the enlarged initial into the text it opens, so the first word
-reaches the engine as a word; ``keep`` leaves the paragraph exactly as an unruled
-one is left. A
-candidate nobody ruled takes the default its target language declares in
-``configs/drop_cap.json``, which is how a run with no human in it still decides,
-and only a marked candidate is decided that way.
+``dropCapDecision`` attribute B1 added to the schema, and it merges under either
+verdict: the enlarged initial goes into the text it opens, so the first word
+reaches the engine as a word. Both verdicts, because an initial the engine meets
+as a style run of its own is an initial it can carry across untranslated, and
+that is true whichever way the finished page is set. What a verdict decides is
+therefore only what is done once the translation is back -- ``flatten`` leaves
+the paragraph set as one run of body text, ``keep`` has the render lane beside
+this one set the opening character the way the target language sets one -- and
+the two hand the engine byte identical text. A candidate nobody ruled takes the
+default its target language declares in ``configs/drop_cap.json``, which is how a
+run with no human in it still decides, and only a marked candidate is decided
+that way.
 
 The merge is the whole of the mechanism, and the typographic downgrade follows
 from it rather than from a rewrite of the characters. One composition carrying
@@ -843,11 +848,12 @@ def apply(translation_config, labeled_pages) -> dict | None:
                 )
             run = leading_run(paragraph, config.initial_size_tolerance)
             median = median_font_size(paragraph)
-            outcome = (
-                flatten(paragraph, config)
-                if decision == DECISION_FLATTEN
-                else _unchanged(paragraph, config)
-            )
+            # Under either verdict. What the engine is offered is not what a
+            # verdict is about: an initial standing in a style run of its own is
+            # an initial the engine can carry across untranslated whichever way
+            # the finished page is set, so the merge happens first and the
+            # verdict is answered afterwards, by the render lane.
+            outcome = flatten(paragraph, config)
             records.append(
                 {
                     "paragraph": paragraph_reference(label, index),

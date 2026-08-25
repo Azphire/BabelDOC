@@ -843,10 +843,16 @@ def check_03d_a_later_composition_is_left_alone() -> None:
 
 
 def check_03e_keep_is_the_document_that_came_in() -> None:
-    """Positive 3e: a paragraph ruled keep is byte for byte an unruled one.
+    """Positive 3e: the two verdicts leave byte for byte the same document.
 
-    Asserted against the document a run with no verdict at all leaves, which is
-    the only definition of unchanged that means anything here.
+    Re-pointed at b11.8 (AC-29). The original proposition was that a paragraph
+    ruled keep is byte for byte an unruled one, which b11.8 overturned on
+    purpose: the merge now runs under either verdict, because an initial the
+    engine meets as a style run of its own is one it can carry across
+    untranslated whichever way the finished page is later set. What survives,
+    and is the stronger statement, is that the two verdicts are
+    indistinguishable at this layer -- so a ruling cannot move a translation
+    request, which is what the pass was ever able to promise about keep.
     """
     faults = []
     verdicts = drop_cap.decision_vocabulary()
@@ -859,17 +865,21 @@ def check_03e_keep_is_the_document_that_came_in() -> None:
         paragraph.drop_cap_decision = decision
         return docs
 
-    ruled = built(keep)
-    result, directory = apply_to(ruled)
-    reference = built(keep)
-    # The reference is the same document with the pass never run over it, minus
-    # the attribute the ruling wrote, which is on both.
-    if canonical(ruled) != canonical(reference):
-        faults.append("a paragraph ruled keep was changed")
-    if result is None or result["totals"]["merged"] != 0:
-        faults.append(f"the record reports {result and result['totals']}")
-    if result is not None and result["totals"]["decided"] != 1:
-        faults.append("the verdict was not recorded")
+    kept = built(keep)
+    kept_result, directory = apply_to(kept)
+    flattened = built(drop_cap.DECISION_FLATTEN)
+    flattened_result, _ = apply_to(flattened)
+    # The verdict itself is the one attribute the two documents differ by, so
+    # it is taken off both before the comparison; everything else has to match.
+    for docs in (kept, flattened):
+        docs.page[0].pdf_paragraph[0].drop_cap_decision = None
+    if canonical(kept) != canonical(flattened):
+        faults.append("the two verdicts left different documents")
+    for name, result in (("keep", kept_result), ("flatten", flattened_result)):
+        if result is None or result["totals"]["merged"] != 1:
+            faults.append(f"{name}: the record reports {result and result['totals']}")
+        if result is not None and result["totals"]["decided"] != 1:
+            faults.append(f"{name}: the verdict was not recorded")
     if not (directory / drop_cap.APPLY_REPORT_NAME).exists():
         faults.append("no sidecar was written")
     record("check_03e_keep_is_the_document_that_came_in", not faults, "; ".join(faults))
@@ -973,31 +983,33 @@ def check_05a_the_default_is_per_target_language() -> None:
     """Positive 5a: the declared table decides, matched by longest prefix."""
     faults = []
     config = settings()
-    flattening = [
-        tag for tag in config.defaults if config.defaults[tag] == drop_cap.DECISION_FLATTEN
-    ]
-    if not flattening:
-        faults.append("no target language declares the verdict this pass acts on")
-    for tag in flattening:
+    if not config.defaults:
+        faults.append("the table declares no target language at all")
+    # Every declared tag, rather than the two the table used to be split into by
+    # verdict. Re-pointed at b11.8 (AC-30): the original assertion required some
+    # language to declare the merging verdict and some other to declare a
+    # verdict under which nothing moved, and b11.8 made both verdicts merge, so
+    # the split no longer names two behaviours. What the table decides is which
+    # verdict a run lands under and where that verdict came from, and that is
+    # what is read here -- for every entry, matched through a region tag so the
+    # longest prefix rule is exercised rather than assumed.
+    for tag, declared in config.defaults.items():
         docs = document_of([page_of([style_run_initial()], number=0)])
         docs.page[0].pdf_paragraph[0].drop_cap_candidate = True
         result, _ = apply_to(docs, lang_out=f"{tag}-Hant")
-        if result is None or result["totals"]["merged"] != 1:
+        if result is None:
+            faults.append(f"{tag}: the pass decided nothing")
+            continue
+        if result["totals"]["decided"] != 1:
+            faults.append(f"{tag}: {result['totals']['decided']} verdicts recorded")
+            continue
+        decision = result["decisions"][0]
+        if decision["decision"] != declared:
+            faults.append(f"{tag}: landed under {decision['decision']!r}, not {declared!r}")
+        if decision["source"] != drop_cap.SOURCE_DEFAULT:
+            faults.append(f"{tag}: the source is {decision['source']}")
+        if result["totals"]["merged"] != 1:
             faults.append(f"{tag}: nothing was merged under the declared default")
-        if result is not None and result["decisions"][0]["source"] != drop_cap.SOURCE_DEFAULT:
-            faults.append(f"{tag}: the source is {result['decisions'][0]['source']}")
-    keeping = [
-        tag for tag in config.defaults if config.defaults[tag] != drop_cap.DECISION_FLATTEN
-    ]
-    for tag in keeping:
-        docs = document_of([page_of([style_run_initial()], number=0)])
-        docs.page[0].pdf_paragraph[0].drop_cap_candidate = True
-        before = canonical(docs)
-        result, _ = apply_to(docs, lang_out=tag)
-        if canonical(docs) != before:
-            faults.append(f"{tag}: the document changed under a keeping default")
-        if result is None or result["totals"]["merged"] != 0:
-            faults.append(f"{tag}: something was merged")
     record("check_05a_the_default_is_per_target_language", not faults, "; ".join(faults))
 
 
@@ -1022,14 +1034,26 @@ def check_05b_an_unclaimed_language_decides_nothing() -> None:
 def check_05c_a_ruling_outranks_the_default() -> None:
     """Positive 5c: the human answer wins, and reaches a non candidate too."""
     faults = []
-    verdicts = drop_cap.decision_vocabulary()
-    keep = next(item for item in verdicts if item != drop_cap.DECISION_FLATTEN)
+    config = settings()
+    # Re-pointed at b11.8 (AC-31). The original evidence that a ruling outranked
+    # the default was that a paragraph ruled keep was not merged under a
+    # flattening default, and b11.8 made both verdicts merge, so a merge count
+    # can no longer tell the two apart. The evidence is now the verdict itself:
+    # the paragraph is ruled the opposite of whatever its target language
+    # declares, and the record has to name the ruled verdict and the ruled
+    # source. Where the table declares no verdict for the tag there is nothing
+    # to outrank, so the tag is chosen from the table.
+    tag = next(iter(config.defaults))
+    declared = config.defaults[tag]
+    contrary = next(
+        item for item in drop_cap.decision_vocabulary() if item != declared
+    )
     docs = document_of([page_of([style_run_initial()], number=0)])
     paragraph = docs.page[0].pdf_paragraph[0]
     paragraph.drop_cap_candidate = True
-    paragraph.drop_cap_decision = keep
-    result, _ = apply_to(docs, lang_out="zh")
-    if result is None or result["totals"]["merged"] != 0:
+    paragraph.drop_cap_decision = contrary
+    result, _ = apply_to(docs, lang_out=tag)
+    if result is None or result["decisions"][0]["decision"] != contrary:
         faults.append("the default overrode the ruling")
     if result is not None and result["decisions"][0]["source"] != drop_cap.SOURCE_RULED:
         faults.append(f"the source is {result['decisions'][0]['source']}")

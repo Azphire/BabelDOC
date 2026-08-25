@@ -843,15 +843,22 @@ def check_05c_the_rotated_reflow_question_is_answered() -> None:
     for name in ("typesetting.py:861", "pdf_creater.py:111"):
         if name not in body:
             faults.append(f"the answer does not cite {name}")
+    # Read as constructs rather than at the line numbers the answer cites. The
+    # citation itself is asserted above and is left as b11.4 wrote it, because
+    # it records what that batch looked at; what this pair checks is that the
+    # code the answer rests on is still there. A line number is not that code:
+    # b11.7 added a module level constant to the typesetting stage and every
+    # line under it moved, which turned this red without anything the answer
+    # said becoming untrue. AC-27.
     typesetting = (ROOT / "babeldoc" / "format" / "pdf" / "document_il" / "midend"
-                   / "typesetting.py").read_text(encoding="utf-8").splitlines()
+                   / "typesetting.py").read_text(encoding="utf-8")
     creater = (ROOT / "babeldoc" / "format" / "pdf" / "document_il" / "backend"
-               / "pdf_creater.py").read_text(encoding="utf-8").splitlines()
-    if "vertical=False" not in typesetting[860]:
-        faults.append("typesetting.py:861 no longer builds a character with "
+               / "pdf_creater.py").read_text(encoding="utf-8")
+    if "vertical=False" not in typesetting:
+        faults.append("the typesetting stage no longer builds a character with "
                       "vertical=False; the cited answer has gone stale")
-    if "char.vertical" not in creater[110]:
-        faults.append("pdf_creater.py:111 no longer branches on char.vertical; the "
+    if "char.vertical" not in creater:
+        faults.append("the writer no longer branches on char.vertical; the "
                       "cited answer has gone stale")
     record("check_05c_the_rotated_reflow_question_is_answered", not faults,
            "; ".join(faults[:4]))

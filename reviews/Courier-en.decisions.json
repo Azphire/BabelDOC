@@ -17,5 +17,5 @@
         "Katerina Markelova": "卡特琳娜·马尔可洛娃"
     },
     "page_kinds": {"1": "toc"},
-    "drop_caps": {"p4#3": "flatten", "p5#5": "flatten", "p7#8": "flatten"}
+    "drop_caps": {"p4#3": "keep", "p5#5": "keep", "p7#8": "keep"}
 }

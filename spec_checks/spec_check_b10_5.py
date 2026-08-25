@@ -653,6 +653,25 @@ def _coordinates(page) -> list:
 # --- 03 the run -------------------------------------------------------------
 
 
+# The corpus this batch's frozen evidence was built over: the six samples the
+# F2 refresh left, which is what "the whole corpus" meant while this batch ran.
+# Read as a fixed list rather than off today's manifest. A batch's evidence can
+# only ever cover the samples that existed when it ran, and a corpus that grows
+# afterwards does not make that evidence incomplete -- reading the live manifest
+# here made every later registration retro-invalidate a batch that had in fact
+# covered everything there was. What is still asserted is the guarantee that was
+# ever available: none of these six was quietly dropped, and every one of them
+# ran. AC-34, GAP-53.
+CORPUS_WHEN_THIS_RAN = (
+    "AramcoWorld-en-v2.pdf",
+    "CERNCourier-en.pdf",
+    "Courier-en.pdf",
+    "Courier-zh.pdf",
+    "FD-en-v2.pdf",
+    "Vogue-en.pdf",
+)
+
+
 def check_03a_the_evidence_is_present() -> None:
     """Positive 3a: every sample of the corpus was run in both arms and left
     the artefacts the rest of this gate reads."""
@@ -660,7 +679,11 @@ def check_03a_the_evidence_is_present() -> None:
     ledger = run_ledger()
     if not ledger:
         faults.append(f"no ledger at {LEDGER.relative_to(ROOT)}")
-    expected = {entry["file"] for entry in corpus.load_manifest()["samples"]}
+    registered = {entry["file"] for entry in corpus.load_manifest()["samples"]}
+    expected = set(CORPUS_WHEN_THIS_RAN)
+    dropped = sorted(expected - registered)
+    if dropped:
+        faults.append(f"no longer registered: {dropped}")
     present = {row["sample"] for row in ledger}
     missing = sorted(expected - present)
     if missing:

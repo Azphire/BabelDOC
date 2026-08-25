@@ -1,7 +1,7 @@
 {
-    "_semantics": "link=true iff a semantic unit (sentence or display phrase) is cut by the page boundary; content affinity across a clean per-page layout is false",
+  "_semantics": "link=true iff a semantic unit (sentence or display phrase) is cut by the page boundary; content affinity across a clean per-page layout is false",
 
-    "Courier-en.pdf": {
+  "Courier-en.pdf": {
     "1->2": {"link": false, "note": "contents/editorial -> article opener; no shared flow"},
     "2->3": {"link": true, "note": "DISPLAY-TITLE SPLIT: 'How Indigenous knowledge drives' / 'scientific discovery' is one phrase cut across the spread; a split semantic unit, same class as a mid-sentence body split"},
     "3->4": {"link": false, "note": "title-continuation page has no body tail; p4 body starts fresh with drop cap. Same article, no paragraph flow across"},
@@ -9,7 +9,7 @@
     "5->6": {"link": false, "note": "TRAP: p5 tail dangles mid-sentence ('Technicians arrived ->' continues on issue p10, absent from excerpt) but next PDF page is issue p38, a different article. Known false positive under open mask (scored 0.55)"},
     "6->7": {"link": false, "note": "TRAP: p6 tail dangles mid-sentence ('This technology' continues on issue p39, absent); next PDF page is issue p12, different article"},
     "7->8": {"link": true, "note": "MID-SENTENCE BODY SPLIT: 'a composite material from' -> 'the grass has been patented'; issue pp.12-13"}
-    },
+  },
   "Vogue-en.pdf": {
     "1->2": {"link": false, "note": "ad -> ad, unrelated"},
     "2->3": {"link": false, "note": "ad -> contents"}
@@ -20,32 +20,82 @@
     "3->4": {"link": false, "note": "News Analysis (issue p7) ends complete; next sheet is feature pp.24-25, non-adjacent. NB: the real continuation on p4 is INTRA-sheet (p24 col 3 -> p25 col 1), invisible to page-boundary chaining - spread limitation, flagged"}
   },
   "AramcoWorld-en-v2.pdf": {
-  "1->2": {"link": false, "note": "cover -> masthead"},
+    "1->2": {"link": false, "note": "cover -> masthead"},
     "2->3": {"link": false, "note": "masthead -> contents"},
     "3->4": {"link": false, "note": "contents -> feature p30, non-adjacent"},
     "4->5": {"link": false, "note": "Samarkand feature (issue p30) ends complete; Railway opener is issue p33, non-adjacent, different article"},
     "5->6": {"link": false, "note": "same article, adjacent issue pages, but CLEAN paragraph boundary; per semantics, per-page layout is respected, no unit is cut"},
-  "6->7": {"link": true,  "note": "MID-SENTENCE SPLIT #2: issue p34->p35 adjacent, 'a scarcity of water along much of' -> 'the route south of the Hauran...'"},
-  "7->8": {"link": false, "note": "NEW TRAP: p35 tail dangles mid-sentence ('...where a', p36 absent); next is Reviews p40, non-adjacent"},
-  "8->9": {"link": false, "note": "Reviews p40->p41, nothing crosses (v1 7->8 ruling carried)"}
-},
-"FD-en-v2.pdf": {
-  "1->2": {"link": false, "note": "cover -> house ad"},
+    "6->7": {"link": true, "note": "MID-SENTENCE SPLIT #2: issue p34->p35 adjacent, 'a scarcity of water along much of' -> 'the route south of the Hauran...'"},
+    "7->8": {"link": false, "note": "NEW TRAP: p35 tail dangles mid-sentence ('...where a', p36 absent); next is Reviews p40, non-adjacent"},
+    "8->9": {"link": false, "note": "Reviews p40->p41, nothing crosses (v1 7->8 ruling carried)"}
+  },
+  "FD-en-v2.pdf": {
+    "1->2": {"link": false, "note": "cover -> house ad"},
     "2->3": {"link": false, "note": "ad -> contents"},
     "3->4": {"link": false, "note": "contents -> house ad"},
     "4->5": {"link": false, "note": "ad -> masthead"},
     "5->6": {"link": false, "note": "masthead -> Kaleidoscope briefs"},
-  "6->7": {"link": false, "note": "issue p6->p7 ADJACENT, same Kaleidoscope department, but p6 ends with a complete quoted sentence - clean boundary, content affinity only, per _semantics"},
-  "7->8": {"link": false, "note": "issue p7->p10 non-adjacent"},
-  "8->9": {"link": false, "note": "PoV ends complete; p10->p72 non-adjacent (v1 7->8 carried)"}
-},
-"Courier-zh.pdf": {
-  "1->2": {"link": false, "note": "contents/editorial -> opener"},
-  "2->3": {"link": true,  "note": "DISPLAY-TITLE SPLIT (zh): 时代变迁背景下的 / 土著知识 cut across the spread"},
-  "3->4": {"link": false, "note": "title-continuation page has no body tail; p4 body starts fresh"},
-  "4->5": {"link": false, "note": "zh p4 -> p7 non-adjacent"},
-  "5->6": {"link": false, "note": "TRAP: zh p7 tail dangles mid-sentence (这一联盟由巴西最古老的原->, p8 absent); next is zh p36"},
-  "6->7": {"link": false, "note": "zh p36 ends complete (是否应接受化疗。); next zh p10 non-adjacent"},
-  "7->8": {"link": true,  "note": "MID-WORD SPLIT (official): zh p10->p11 adjacent, 协议中包 / 含惠益分享条款 - the acute zh positive, same site as the b5.3 official-edition citation"}
-}
+    "6->7": {"link": false, "note": "issue p6->p7 ADJACENT, same Kaleidoscope department, but p6 ends with a complete quoted sentence - clean boundary, content affinity only, per _semantics"},
+    "7->8": {"link": false, "note": "issue p7->p10 non-adjacent"},
+    "8->9": {"link": false, "note": "PoV ends complete; p10->p72 non-adjacent (v1 7->8 carried)"}
+  },
+  "Courier-zh.pdf": {
+    "1->2": {"link": false, "note": "contents/editorial -> opener"},
+    "2->3": {"link": true, "note": "DISPLAY-TITLE SPLIT (zh): 时代变迁背景下的 / 土著知识 cut across the spread"},
+    "3->4": {"link": false, "note": "title-continuation page has no body tail; p4 body starts fresh"},
+    "4->5": {"link": false, "note": "zh p4 -> p7 non-adjacent"},
+    "5->6": {"link": false, "note": "TRAP: zh p7 tail dangles mid-sentence (这一联盟由巴西最古老的原->, p8 absent); next is zh p36"},
+    "6->7": {"link": false, "note": "zh p36 ends complete (是否应接受化疗。); next zh p10 non-adjacent"},
+    "7->8": {"link": true, "note": "MID-WORD SPLIT (official): zh p10->p11 adjacent, 协议中包 / 含惠益分享条款 - the acute zh positive, same site as the b5.3 official-edition citation"}
+  },
+  "ABB-zh.pdf": {
+    "1->2": {"link": false, "note": "cover -> graphical contents; no semantic unit crosses"},
+    "2->3": {"link": false, "note": "graphical contents -> conventional contents; related department, but no unit is cut"},
+    "3->4": {"link": false, "note": "contents -> section divider"},
+    "4->5": {"link": false, "note": "section divider -> editorial; fresh text flow"},
+    "5->6": {"link": false, "note": "editorial ends complete -> section divider"},
+    "6->7": {"link": false, "note": "section divider -> innovation index"},
+    "7->8": {"link": false, "note": "innovation index -> standalone brief"},
+    "8->9": {"link": false, "note": "separate one-page briefs (ABB Dynafin -> 800xA Simulator What-if); no cross-boundary unit"}
+  },
+  "bull-zh.pdf": {
+    "1->2": {"link": false, "note": "cover -> masthead"},
+    "2->3": {"link": false, "note": "masthead/profile -> foreword"},
+    "3->4": {"link": false, "note": "foreword ends complete -> contents"},
+    "4->5": {"link": false, "note": "contents continue with separate entries; no semantic unit is cut"},
+    "5->6": {"link": false, "note": "contents -> illustrated explainer opener"},
+    "6->7": {"link": true, "note": "MID-SENTENCE BODY SPLIT: 从实物保护到 / 核安保文化。这些系统和措施..."},
+    "7->8": {"link": false, "note": "explainer ends complete -> separate Senegal feature"},
+    "8->9": {"link": true, "note": "PROPER-NAME SPLIT: Zéphirin / Ouédraogo说。..."}
+  },
+  "fd-zh.pdf": {
+    "1->2": {"link": false, "note": "cover -> imprint/contents"},
+    "2->3": {"link": false, "note": "contents continue with complete entries; editor's letter starts fresh"},
+    "3->4": {"link": false, "note": "contents/editorial -> feature opener"},
+    "4->5": {"link": true, "note": "MID-SENTENCE BODY SPLIT: 如果这种情况持续下去，疲弱 / 的生产力增长将严重威胁到..."},
+    "5->6": {"link": false, "note": "same article, but p5 ends a complete sentence and p6 starts a new paragraph"}
+  },
+  "ITU-zh.pdf": {
+    "1->2": {"link": false, "note": "cover -> editorial"},
+    "2->3": {"link": false, "note": "editorial ends complete -> contents/imprint"},
+    "3->4": {"link": false, "note": "contents -> conference-highlights opener"},
+    "4->5": {"link": false, "note": "same conference gallery, but no semantic unit crosses the boundary"},
+    "5->6": {"link": false, "note": "separate complete quotation/caption pages; no cut unit"},
+    "6->7": {"link": false, "note": "portrait quotation page -> new article opener"},
+    "7->8": {"link": false, "note": "same article, but the quoted sentence ends on p7 and p8 begins a new paragraph"}
+  },
+  "WIPO-zh.pdf": {
+    "1->2": {"link": false, "note": "feature display opener/standfirst -> article body; no cut unit"},
+    "2->3": {"link": true, "note": "MID-SENTENCE BODY SPLIT: 他还与多个品牌合作， / 在观众中推广它们的产品。..."},
+    "3->4": {"link": false, "note": "body text ends complete -> pull-quote/photo page"},
+    "4->5": {"link": false, "note": "V'ghn profile -> separate music-merchandise feature"},
+    "5->6": {"link": false, "note": "feature opener/standfirst -> article body begins cleanly"}
+  },
+  "HuaweiTech-zh.pdf": {
+    "1->2": {"link": false, "note": "imprint/editorial spread -> contents spread; no semantic unit crosses"},
+    "2->3": {"link": false, "note": "contents spread -> section divider"},
+    "3->4": {"link": false, "note": "section divider -> AItoB feature opener"},
+    "4->5": {"link": false, "note": "same AItoB article, but p4 ends a complete sentence and p5 begins a new section"},
+    "5->6": {"link": false, "note": "article conclusion/references -> separate feature opener"}
+  }
 }

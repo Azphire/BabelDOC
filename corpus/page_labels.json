@@ -38,5 +38,59 @@
   "1": ["toc", "editorial"], "2": ["article_opener"], "3": ["photo_spread"],
   "4": ["article_body"], "5": ["article_opener"], "6": ["article_body"],
   "7": ["article_opener"], "8": ["article_body"]
-}
+},
+  "HuaweiTech-zh.pdf": {
+    "1": ["masthead", "article_opener"],
+    "2": ["photo_spread"],
+    "3": ["article_opener", "article_body"],
+    "4": ["article_body"],
+    "5": ["article_opener", "article_body"]
+  },
+  "ABB-zh.pdf": {
+    "1": ["front_cover"],
+    "2": ["toc"],
+    "3": ["toc"],
+    "4": ["section_divider"],
+    "5": ["editorial"],
+    "6": ["section_divider"],
+    "7": ["toc"],
+    "8": ["article_opener"],
+    "9": ["article_opener", "infographic"]
+  },
+  "bull-zh.pdf": {
+    "1": ["front_cover"],
+    "2": ["masthead"],
+    "3": ["editorial"],
+    "4": ["toc"],
+    "5": ["toc"],
+    "6": ["infographic", "article_opener"],
+    "7": ["infographic", "article_body"],
+    "8": ["article_opener"],
+    "9": ["article_body"]
+  },
+  "fd-zh.pdf": {
+    "1": ["front_cover"],
+    "2": ["toc", "masthead"],
+    "3": ["toc", "editorial"],
+    "4": ["article_opener"],
+    "5": ["article_body", "infographic"],
+    "6": ["article_body"]
+  },
+  "ITU-zh.pdf": {
+    "1": ["front_cover"],
+    "2": ["editorial"],
+    "3": ["toc", "masthead"],
+    "4": ["article_opener"],
+    "5": ["photo_spread"],
+    "6": ["photo_spread"],
+    "7": ["article_opener"],
+    "8": ["article_body", "sidebar_heavy"]
+  },
+  "WIPO-zh.pdf": {
+    "1": ["article_opener"],
+    "2": ["article_body"],
+    "3": ["article_body"],
+    "4": ["photo_spread"],
+    "5": ["article_opener"],
+    "6": ["article_body"]}
 }

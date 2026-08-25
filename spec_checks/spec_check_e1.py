@@ -1356,6 +1356,25 @@ def check_12b_the_deviation_is_in_the_contract() -> None:
 # --- 13 the corpus sweep --------------------------------------------------------
 
 
+# The corpus this batch's frozen evidence was built over: the six samples the
+# F2 refresh left, which is what "the whole corpus" meant while this batch ran.
+# Read as a fixed list rather than off today's manifest. A batch's evidence can
+# only ever cover the samples that existed when it ran, and a corpus that grows
+# afterwards does not make that evidence incomplete -- reading the live manifest
+# here made every later registration retro-invalidate a batch that had in fact
+# covered everything there was. What is still asserted is the guarantee that was
+# ever available: none of these six was quietly dropped, and every one of them
+# ran. AC-34, GAP-53.
+CORPUS_WHEN_THIS_RAN = (
+    "AramcoWorld-en-v2.pdf",
+    "CERNCourier-en.pdf",
+    "Courier-en.pdf",
+    "Courier-zh.pdf",
+    "FD-en-v2.pdf",
+    "Vogue-en.pdf",
+)
+
+
 def check_13a_every_sample_in_every_configuration() -> None:
     """Positive 13a: the sweep covers the registered corpus, or says why it does not.
 
@@ -1374,9 +1393,13 @@ def check_13a_every_sample_in_every_configuration() -> None:
     with CORPUS_RESULT.open(encoding="utf-8") as f:
         report = json.load(f)
     manifest = corpus_module.load_manifest()
-    registered = {entry["file"] for entry in manifest["samples"]}
+    live = {entry["file"] for entry in manifest["samples"]}
+    registered = set(CORPUS_WHEN_THIS_RAN)
+    dropped = sorted(registered - live)
     measured = {sample["sample"] for sample in report["samples"]}
     faults = []
+    if dropped:
+        faults.append(f"no longer registered: {dropped}")
     if measured != registered:
         faults.append(f"measured {sorted(measured)} against {sorted(registered)}")
     for sample in report["samples"]:

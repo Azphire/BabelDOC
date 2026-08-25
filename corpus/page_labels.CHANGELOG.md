@@ -1,2 +1,3 @@
 - 2026.08.08，Courier-en.pdf：page3，修改前：["photo_spread"]，修改后：["photo_spread", "section_divider"]，理由：栏目开卷跨页右半,整版图与栏目分隔双语义并立;依据页面版式本身裁定,先于并独立于其对模型评估的影响
 - 2026.08.15，p4#3 keep→flatten，中文首字过大不符合中文排版。
+- 2026.08.25，修改keep含义后默认keep，新增语料

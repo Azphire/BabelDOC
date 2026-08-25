@@ -1481,13 +1481,44 @@ def check_04d_baselines_are_archives_that_round_trip() -> None:
     if not checked:
         faults.append("no archived checkpoint was read")
 
+    # Every sample that declares a baseline, and every sample this batch was
+    # written over has to declare one. A sample registered later carries no
+    # baseline until its own acceptance builds it, and reading the live manifest
+    # as though it must made a corpus that grew look like a corpus whose
+    # baselines had gone missing. AC-34.
+    declaring = set()
     for entry in corpus.load_manifest()["samples"]:
+        if "baseline" not in entry:
+            continue
+        declaring.add(entry["file"])
         named = ROOT / entry["baseline"]["checkpoints"]
         if not checkpoint_module.checkpoint_paths(named, "*.xml"):
             faults.append(f"{entry['file']}: the manifest baseline resolves to nothing")
+    undeclared = sorted(set(CORPUS_WHEN_THIS_RAN) - declaring)
+    if undeclared:
+        faults.append(f"no baseline is declared for {undeclared}")
     record(
         "check_04d_baselines_are_archives_that_round_trip", not faults, "; ".join(faults)
     )
+
+
+# The corpus this batch's frozen evidence was built over: the six samples the
+# F2 refresh left, which is what "the whole corpus" meant while this batch ran.
+# Read as a fixed list rather than off today's manifest. A batch's evidence can
+# only ever cover the samples that existed when it ran, and a corpus that grows
+# afterwards does not make that evidence incomplete -- reading the live manifest
+# here made every later registration retro-invalidate a batch that had in fact
+# covered everything there was. What is still asserted is the guarantee that was
+# ever available: none of these six was quietly dropped, and every one of them
+# ran. AC-34, GAP-53.
+CORPUS_WHEN_THIS_RAN = (
+    "AramcoWorld-en-v2.pdf",
+    "CERNCourier-en.pdf",
+    "Courier-en.pdf",
+    "Courier-zh.pdf",
+    "FD-en-v2.pdf",
+    "Vogue-en.pdf",
+)
 
 
 def check_04e_the_sweep_applies_the_policy() -> None:

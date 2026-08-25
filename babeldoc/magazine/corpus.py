@@ -66,8 +66,20 @@ DIRECTION_FIELDS: tuple[str, str] = ("source_lang", "target_lang")
 # Fields measured from the sample file, which the registry never states.
 MECHANICAL_FIELDS: tuple[str, ...] = ("sha256", "pages")
 
-# Closed vocabulary for the corpus_role list.
-CORPUS_ROLES: frozenset[str] = frozenset({"translation_eval", "layout_generalization"})
+# Closed vocabulary for the corpus_role list. The last two name what a Chinese
+# source sample is held for: one widens the corpus in the direction the pipeline
+# had only a single sample of, and the other is the density of Latin forms set
+# inside Chinese running text. Neither is the constrained role below, so neither
+# brings a gate: they name what a sample is for, and what it is measured against
+# is decided by whether it claims the constrained role.
+CORPUS_ROLES: frozenset[str] = frozenset(
+    {
+        "translation_eval",
+        "layout_generalization",
+        "zh_source_expansion",
+        "mixed_script_stress",
+    }
+)
 
 # The role whose samples the agreement rate assertions are binding on. Every
 # sample is measured and reported the same way; a sample outside this role

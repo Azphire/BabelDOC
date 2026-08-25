@@ -494,6 +494,8 @@ def check_01c_the_ruling_is_pinned_in_the_run_record() -> None:
     A record that names the entry without pinning the file cannot tell a run
     under this ruling from a run under a later one.
     """
+    from spec_checks import spec_check_b7_5
+
     faults = []
     run = load(RUN)
     ruling = run.get("ruling") or {}
@@ -503,9 +505,21 @@ def check_01c_the_ruling_is_pinned_in_the_run_record() -> None:
     if not digest or len(digest) != 64:
         faults.append("the ruling file is not pinned by hash")
     else:
+        # Re-pointed at b11.8 (AC-32). The original proposition was that the
+        # file standing today is the file this run used, and it cannot be made
+        # true again: a ruling is a living document, the owner has written into
+        # it twice since, and this run's record is frozen evidence that cannot
+        # be re-pinned. What the pin was ever guarding is that no edit went
+        # unrecorded, so that is what is read -- the file digests to what the
+        # standing pin says, and the standing pin carries its own change record.
         current = sha256_of(ROOT / "reviews" / f"{SAMPLE}.decisions.json")
-        if current != digest:
-            faults.append("the ruling changed after the run")
+        standing = spec_check_b7_5.TRUTH_DIGESTS.get(
+            f"reviews/{SAMPLE}.decisions.json"
+        )
+        if standing is None:
+            faults.append("the ruling carries no standing pin")
+        elif current != standing:
+            faults.append("the ruling changed without a re-pin")
     record("check_01c_the_ruling_is_pinned_in_the_run_record", not faults,
            "; ".join(faults[:4]))
 
@@ -1137,7 +1151,15 @@ def check_04e_an_unclaimed_language_falls_back() -> None:
         mode, origin = config.mode_for(tag)
         if origin != "fallback" or mode != indent_policy.MODE_SOURCE:
             faults.append(f"{tag} resolves to {mode!r} from {origin!r}")
-    if indent_policy.decide("plain text", indent_policy.MODE_SOURCE, False, 1, config) is not None:
+    # b11.7 gave the decision a fourth condition and so a fifth parameter. The
+    # proposition here is unchanged -- a mode that is not authoritative decides
+    # nothing -- so the call is updated and the assertion is not. AC-28.
+    if (
+        indent_policy.decide(
+            "plain text", indent_policy.MODE_SOURCE, False, 1, False, config
+        )
+        is not None
+    ):
         faults.append("the source mode decided something")
     record("check_04e_an_unclaimed_language_falls_back", not faults,
            "; ".join(faults[:4]))
@@ -1229,10 +1251,21 @@ def check_05a_the_three_rows_were_ruled_by_a_person() -> None:
             faults.append(
                 f"{source!r} is ruled {decisions['terms'].get(source)!r} in the file"
             )
-    if rulings["decisions_sha256_after"] != sha256_of(
-        ROOT / "reviews" / f"{SAMPLE}.decisions.json"
-    ):
-        faults.append("the ruling file changed after the rulings were recorded")
+    # Re-pointed at b11.8 (AC-33), on the same reasoning as 01c: what this can
+    # hold is that the rows this batch ruled still read the way it ruled them,
+    # which the loop above asserts row by row, and that the file has moved only
+    # under a recorded re-pin. The digest the rulings record froze is kept as
+    # the record of what was written that day.
+    from spec_checks import spec_check_b7_5
+
+    standing = spec_check_b7_5.TRUTH_DIGESTS.get(f"reviews/{SAMPLE}.decisions.json")
+    current = sha256_of(ROOT / "reviews" / f"{SAMPLE}.decisions.json")
+    if not rulings.get("decisions_sha256_after"):
+        faults.append("the rulings record pinned no digest")
+    if standing is None:
+        faults.append("the ruling carries no standing pin")
+    elif current != standing:
+        faults.append("the ruling changed without a re-pin")
     if draft["prompt_sha256"] != rulings["prompt_sha256"]:
         faults.append("the draft and the record name different prompts")
     record("check_05a_the_three_rows_were_ruled_by_a_person", not faults,

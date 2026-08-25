@@ -75,6 +75,94 @@
         "source_lang": "zh",
         "target_lang": "en",
         "notes": "Official Chinese edition of UNESCO Courier Jan-Mar 2026; page-for-page parallel of Courier-en.pdf (zh issue folio = en folio - 2: en p4<->zh p2, en p12<->zh p10, en p38<->zh p36). 8 pages mirroring Courier-en structure: contents+editorial, opener (display title split across pp.2-3), body with LINKS box, Brazil opener (zh p7), quantum body (zh p36), biopiracy opener (zh p10), biopiracy continuation (zh p11). Contains the official MID-WORD page split at zh p10->p11 ('...协议中包' / '含惠益分享条款') cited in the b5.3 evidence set. Official renderings for reference: biopiracy=生物剽窃, spinifex=三齿稃, masthead=联合国教科文组织《信使》. Serves as parallel reference for translation_eval; zh-source chain testing (zh->en) is a future use."
-        }
+        },
+
+{
+    "file": "HuaweiTech-zh.pdf",
+    "publication": "huawei_tech",
+    "magazine": true,
+    "toc_pages": [
+        1
+    ],
+    "corpus_role": [
+        "zh_source_expansion",
+        "layout_generalization"
+    ],
+    "source_lang": "zh",
+    "target_lang": "en",
+    "notes": "HuaweiTech 2026 No.1 (华为技术有限公司内刊), digital-edition excerpt, 5 pages. CAUTION: paginated as landscape TWO-PAGE SPREADS (two logical pages, two folios and running heads per PDF page), the corpus's second spread sample and its first zh-source one. p1 spread: masthead panel (staff list of ~30 Chinese names in dense rows, copyright block, no-warranty legal boilerplate, QR code, contact block) + foreword 刊首语 by 马海旭 with portrait, sunk initial, and a handwritten signature drawn as an image (image-layer, no-OCR scope exclusion, same family as Courier-zh p1); the issue's TOC grid (article titles, authors, page numbers grouped by section) shares this opening spread. p2: section divider, image-dominant orange graphic with the section title and a corner note marking the artwork as AI-assisted. p3 spread: article opener 电信运营商AItoB发展策略演进研究 by 许志远 with byline photo, abstract box, banner photo across the top, two-column body on both logical pages, sunk initial (目); a column boundary on the right logical page cuts a sentence mid-word (各 | 行各业), a ground-truth positive chain. p4 spread: article body continuation both sides, dense two-column technical prose, numbered references [1][2] with superscript citation marks in the body, article closes with an end-mark. p5 spread: second article opener 超越连接 by Brian Washburn with sunk initial (过), two statistics charts whose axis labels, legends and data labels are vector text, numbered figure captions. Technical/corporate-journal pole of the zh side; exercises spread column-band handling, superscript-citation handling, terminology consistency pinning (算力/Token/AItoB) and bulk pinyin romanization of the staff list."
+},
+    {
+      "file": "ABB-zh.pdf",
+      "publication": "abb_review",
+      "magazine": true,
+      "toc_pages": [
+        2,
+        3,
+        7
+      ],
+      "corpus_role": [
+        "translation_eval"
+      ],
+      "source_lang": "zh",
+      "target_lang": "en",
+      "notes": "Official Chinese edition of ABB Review 01/2024, 9-page excerpt. p1: cover with section teasers. pp2-3: graphical and conventional issue contents. p4: Innovation section divider. p5: CEO editorial. p6: Innovation divider with two photo teasers. p7: numbered index of selected innovation briefs. p8: self-contained ABB Dynafin brief with two-column body and product image. p9: separate self-contained 800xA Simulator What-if brief with two-column body and process diagram; p8->p9 is NOT a chain. Branded industrial-technology layout with sparse dividers, dense indexes, diagrams and mixed Chinese/Latin product names. Chinese-source zh->en baseline only; the official English edition supplies terminology reference."
+    },
+    {
+      "file": "bull-zh.pdf",
+      "publication": "iaea_bulletin",
+      "magazine": true,
+      "toc_pages": [
+        4,
+        5
+      ],
+      "corpus_role": [
+        "translation_eval"
+      ],
+      "source_lang": "zh",
+      "target_lang": "en",
+      "notes": "Official Chinese edition of IAEA Bulletin, February 2020, Nuclear Security, 9-page excerpt. p1: front cover. p2: imprint and institutional profile. p3: Director General foreword with drop cap, pull quote and image strip. pp4-5: two-page contents sequence. pp6-7: full-page illustrated explainer with sparse running text and labelled sectors. pp8-9: Senegal feature opener and dense continuation. REAL semantic cuts: p6->p7 ('从实物保护到' -> '核安保文化') and p8->p9 (the personal name 'Zéphirin' -> 'Ouédraogo说'). Strong infographic, editorial and technical-feature coverage. Chinese-source zh->en baseline only; the official English edition supplies terminology reference."
+    },
+    {
+      "file": "fd-zh.pdf",
+      "publication": "imf_fd",
+      "magazine": true,
+      "toc_pages": [
+        2,
+        3
+      ],
+      "corpus_role": [
+        "translation_eval"
+      ],
+      "source_lang": "zh",
+      "target_lang": "en",
+      "notes": "Official Chinese edition of Finance & Development, March 2017 (Vol. 54 No. 1), 6-page excerpt. p1: Growth Conundrum cover. p2: imprint rail sharing the page with the main contents. p3: contents continuation sharing the page with the editor's letter. p4: 'Stuck in a Rut' feature opener with standfirst, three-column body and a large bottom photo. pp5-6: chart-heavy three-column article body. REAL mid-sentence split p4->p5 ('疲弱' -> '的生产力增长将严重威胁...'); p5->p6 is the same article but a clean paragraph boundary. Economics magazine pole with dense prose, captions and quantitative charts. Chinese-source zh->en baseline only; the official English edition supplies terminology reference."
+    },
+    {
+      "file": "ITU-zh.pdf",
+      "publication": "itu_news",
+      "magazine": true,
+      "toc_pages": [
+        3
+      ],
+      "corpus_role": [
+        "translation_eval"
+      ],
+      "source_lang": "zh",
+      "target_lang": "en",
+      "notes": "Official Chinese edition of ITU News Magazine 06/2019, 8-page excerpt on WRC-19. p1: front cover. p2: editorial with narrow body column and large pull quote. p3: contents plus imprint rail. p4: WRC-19 highlights opener with title, captions and photo collage. pp5-6: full-page portrait-and-quotation pages. p7: 'Reaching consensus in Egypt for future digital communications' opener with drop cap, photograph and two-column body. p8: clean continuation with a body column and stacked memorial/video sidebars. The p4->p5 and p5->p6 boundaries are related gallery pages but contain no cut semantic unit; p7->p8 is the same article at a clean boundary. Chinese-source zh->en baseline only; the official English edition supplies terminology reference."
+    },
+    {
+      "file": "WIPO-zh.pdf",
+      "publication": "wipo_magazine",
+      "magazine": true,
+      "toc_pages": [],
+      "corpus_role": [
+        "translation_eval"
+      ],
+      "source_lang": "zh",
+      "target_lang": "en",
+      "notes": "Official Chinese WIPO Magazine Focus Music excerpt, 6 pages. pp1-4: V'ghn profile - display-title opener, two-column body, pull quotes, halftone portrait treatment and a quotation/photo page. pp5-6: separate 'Music merchandise: the new key to branding for musicians' feature opener and single-column body with large imagery. REAL mid-sentence split p2->p3 ('还与多个品牌合作，' -> '在观众中推广它们的产品。'). p3->p4 contains no cut unit, and p4->p5 is a different article. Adds cultural and entertainment subject matter plus highly designed portrait and photo-led pages. Chinese-source zh->en baseline only; official English articles supply terminology reference."
+    }
     ]
 }

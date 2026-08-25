@@ -57,6 +57,7 @@ from babeldoc.magazine.chain_builder import ChainBuilder
 from babeldoc.magazine import detectors
 from babeldoc.magazine import hitl
 from babeldoc.magazine.checkpoint import dump_checkpoint
+from babeldoc.magazine import drop_cap_render
 from babeldoc.magazine import formula_reclass
 from babeldoc.magazine import indent_policy
 from babeldoc.magazine import paren_dedup
@@ -1117,6 +1118,12 @@ def _do_translate_single(
         )
     if translation_config.magazine_checkpoint:
         dump_checkpoint(docs, translation_config, "typesetting")
+
+    # After the checkpoint, so that the checkpoint keeps meaning "as the
+    # typesetting stage left it", and before detection, so that what is detected
+    # is the document the PDF is written from. The pass re-packs one paragraph
+    # inside its own box and reaches nothing else on the page.
+    drop_cap_render.apply(translation_config, docs)
 
     # The one point where the translation is written back and the geometry it
     # will be rendered at is final. Reads the document, writes a sidecar.

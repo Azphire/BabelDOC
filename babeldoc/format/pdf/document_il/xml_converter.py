@@ -2,6 +2,8 @@ import copy
 from pathlib import Path
 
 import orjson
+from xsdata.formats.converter import Converter
+from xsdata.formats.converter import converter
 from xsdata.formats.dataclass.context import XmlContext
 from xsdata.formats.dataclass.parsers import XmlParser
 from xsdata.formats.dataclass.serializers import XmlSerializer
@@ -17,6 +19,33 @@ def _orjson_default(value):
     if isinstance(value, LazyPassthroughInstruction):
         return value.materialize()
     raise TypeError
+
+
+class _LazyPassthroughConverter(Converter):
+    """Write a deferred passthrough instruction as the string it stands for.
+
+    The schema declares ``passthroughPerCharInstruction`` a string, and the
+    frontend sometimes fills it with a wrapper that renders that string only
+    when something asks. The JSON writer above asks; this is the XML writer
+    asking the same question, because xsdata dispatches on the concrete class
+    and had no answer for this one. Without it a document holding a deferred
+    instruction can be written as JSON and not as XML, and the checkpoint is
+    XML -- one reader of the same field disagreeing with the other about
+    whether the document can be written at all.
+
+    Deserialisation returns the value untouched: what comes back from XML is
+    already the materialised string, which is what the eager path produces too,
+    so a round trip through either writer lands on the same type.
+    """
+
+    def deserialize(self, value, **kwargs):
+        return value
+
+    def serialize(self, value, **kwargs) -> str:
+        return value.materialize()
+
+
+converter.register_converter(LazyPassthroughInstruction, _LazyPassthroughConverter())
 
 
 class XMLConverter:

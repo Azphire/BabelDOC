@@ -400,6 +400,25 @@ def check_01c_build_publishes_through_the_seam() -> None:
 # --- 02 the run inventory -----------------------------------------------------
 
 
+# The corpus this batch's frozen evidence was built over: the six samples the
+# F2 refresh left, which is what "the whole corpus" meant while this batch ran.
+# Read as a fixed list rather than off today's manifest. A batch's evidence can
+# only ever cover the samples that existed when it ran, and a corpus that grows
+# afterwards does not make that evidence incomplete -- reading the live manifest
+# here made every later registration retro-invalidate a batch that had in fact
+# covered everything there was. What is still asserted is the guarantee that was
+# ever available: none of these six was quietly dropped, and every one of them
+# ran. AC-34, GAP-53.
+CORPUS_WHEN_THIS_RAN = (
+    "AramcoWorld-en-v2.pdf",
+    "CERNCourier-en.pdf",
+    "Courier-en.pdf",
+    "Courier-zh.pdf",
+    "FD-en-v2.pdf",
+    "Vogue-en.pdf",
+)
+
+
 def check_02_every_sidecar_is_declared() -> None:
     """Positive 2: every module that writes a sidecar has it in the inventory.
 
@@ -467,9 +486,13 @@ def check_03b_every_sample_ran() -> None:
     from babeldoc.magazine import corpus
 
     registered = {entry["file"] for entry in corpus.load_manifest()["samples"]}
+    covered = set(CORPUS_WHEN_THIS_RAN)
     ledger = {entry["sample"]: entry for entry in load_json(LEDGER)}
     faults = []
-    missing = sorted(registered - set(ledger))
+    dropped = sorted(covered - registered)
+    if dropped:
+        faults.append(f"no longer registered: {dropped}")
+    missing = sorted(covered - set(ledger))
     if missing:
         faults.append(f"never run: {missing}")
     for name, entry in sorted(ledger.items()):

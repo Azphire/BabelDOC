@@ -353,8 +353,14 @@ def check_01c_every_driver_reads_the_direction_per_sample() -> None:
         )
         for entry in registry_entries()
     }
-    if len(declared) != 6:
-        faults.append(f"{len(declared)} sample(s) registered, expected 6")
+    # The six this batch was written over have to still be registered; a corpus
+    # that has grown since is not this batch's business, and every registered
+    # sample is checked for the property below whatever its vintage. AC-34.
+    missing = sorted(
+        name for name in CORPUS_WHEN_THIS_RAN if Path(name).stem not in declared
+    )
+    if missing:
+        faults.append(f"no longer registered: {missing}")
     for sample, direction in declared.items():
         resolved = corpus.direction_of(sample)
         if resolved != direction:
@@ -842,8 +848,14 @@ def check_04a2_the_registry_carries_only_the_owners_edit() -> None:
             "the registry did not move",
         )
         return
+    # Both sides read at this batch's own tag, so what is compared is the edit
+    # this batch's session made. Reading the later side off the working tree
+    # made every corpus registration since b9.1 read as an edit b9.1 had made,
+    # which is a proposition about a session that ended long ago and cannot be
+    # re-decided by anything the corpus does afterwards. AC-34.
     code, _ = git_output(["rev-parse", "--verify", f"{BATCH_TAG}^{{commit}}"])
-    revision = f"{BATCH_TAG}^" if code == 0 else "HEAD"
+    tagged = code == 0
+    revision = f"{BATCH_TAG}^" if tagged else "HEAD"
     code, before_text = git_text(["show", f"{revision}:{relative}"])
     faults = []
     if code != 0:
@@ -855,7 +867,18 @@ def check_04a2_the_registry_carries_only_the_owners_edit() -> None:
         )
         return
     before = {entry["file"]: entry for entry in json.loads(before_text)["entries"]}
-    after = {entry["file"]: entry for entry in registry_entries()}
+    if tagged:
+        code, after_text = git_text(["show", f"{BATCH_TAG}:{relative}"])
+        if code != 0:
+            record(
+                "check_04a2_the_registry_carries_only_the_owners_edit",
+                False,
+                f"cannot read {relative} at {BATCH_TAG}",
+            )
+            return
+        after = {entry["file"]: entry for entry in json.loads(after_text)["entries"]}
+    else:
+        after = {entry["file"]: entry for entry in registry_entries()}
     if set(before) != set(after):
         faults.append(f"the sample set moved: {sorted(set(before) ^ set(after))}")
     for name in sorted(set(before) & set(after)):
@@ -873,6 +896,25 @@ def check_04a2_the_registry_carries_only_the_owners_edit() -> None:
         not faults,
         "; ".join(faults[:5]),
     )
+
+
+# The corpus this batch's frozen evidence was built over: the six samples the
+# F2 refresh left, which is what "the whole corpus" meant while this batch ran.
+# Read as a fixed list rather than off today's manifest. A batch's evidence can
+# only ever cover the samples that existed when it ran, and a corpus that grows
+# afterwards does not make that evidence incomplete -- reading the live manifest
+# here made every later registration retro-invalidate a batch that had in fact
+# covered everything there was. What is still asserted is the guarantee that was
+# ever available: none of these six was quietly dropped, and every one of them
+# ran. AC-34, GAP-53.
+CORPUS_WHEN_THIS_RAN = (
+    "AramcoWorld-en-v2.pdf",
+    "CERNCourier-en.pdf",
+    "Courier-en.pdf",
+    "Courier-zh.pdf",
+    "FD-en-v2.pdf",
+    "Vogue-en.pdf",
+)
 
 
 def check_04b_no_language_or_name_literals() -> None:

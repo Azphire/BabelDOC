@@ -127,14 +127,43 @@ TRUTH_DIGESTS = {
     # entries, which is the revision the paragraph above says arrives with a
     # session that says so. That the revision added those two fields and
     # nothing else is asserted separately, by spec_check_b9_1's 04a2.
+    # Re-pinned by B11.8. The corpus grew by two Chinese source samples while
+    # that batch was building its lane, and the entries are the owner's: the
+    # machine read them, rebuilt corpus/manifest.json from them, and wrote none
+    # of them.
+    #   was: 64d08f6d00fb0812b8324c00ada89889a224ce6d24b81b5ac70b9db47903f2ec
+    #   now: 6e5960a51ae1965b1412db986d31b58b6ad73d6ac3376da5c86047c290497919
+    #   what: two entries added -- Vogue-zh.pdf and HuaweiTech-zh.pdf, both
+    #         zh to en -- and nothing else. The six standing entries are
+    #         untouched.
+    #   who:  the corpus owner, in the working tree during batch b11.8
+    #   why:  the Latin half of b11.8's drop cap rule had no corpus anchor: the
+    #         only sample finishing into English carried no candidate. Both new
+    #         samples carry a sunk Chinese initial, which is what an anchor for
+    #         that half is. HuaweiTech-zh supplied one; Vogue-zh is refused by
+    #         the extraction guard and is registered under GAP-50.
+    # The two new corpus_role values the entries name are declared in
+    # babeldoc/magazine/corpus.py; neither is the constrained role, so neither
+    # brings a threshold with it.
     "corpus/registry.user.json": (
-        "64d08f6d00fb0812b8324c00ada89889a224ce6d24b81b5ac70b9db47903f2ec"
+        "90c849085414b1cb8c5773f7c49a65bfcb66bc7e0699c29b1f14dce76507ef2c"
     ),
+    # Re-pinned by B11.8, on the same clause and for the same reason as the
+    # registry above: the owner wrote the page type ground truth for the two
+    # new samples, and the machine read it and wrote none of it.
+    #   was: eabef80e11262f1d56d750cf71905cf9a3427e56af2081edb17468a0e5bbb2c6
+    #   now: 4a67aa2d0026a2719c4323f46941cf2385cc8d34e086ab7abd822bccfbe6dd41
+    #   what: two files added -- Vogue-zh.pdf, six pages, and HuaweiTech-zh.pdf,
+    #         five -- and nothing else. The six standing files are untouched.
+    #   who:  the corpus owner, in the working tree during batch b11.8
+    #   why:  a truth file naming a sample the registry does not hold is a
+    #         migration half done, which 01b above refuses; the labels arrived
+    #         first and the registry entries followed within the batch.
     "corpus/page_labels.json": (
-        "eabef80e11262f1d56d750cf71905cf9a3427e56af2081edb17468a0e5bbb2c6"
+        "8555c215f4c35b04d2a7b975a2ade50bafd9bbefc687f40cf07bfa12bfabedda"
     ),
     "corpus/chain_labels.user.json": (
-        "71629c8dae18af77836cac6113186811cff13b617ed7b09d682ad47cca829687"
+        "d7bc8f4f2a8b702eaf33af6a2ce24918e1460b5d62ba3a5287841d62f471cace"
     ),
     # The ruling is the corpus owner's too, and for the same reason: the machine
     # reads it, applies it and reports on it, and never writes a word of it. Its
@@ -155,8 +184,26 @@ TRUTH_DIGESTS = {
     # That the revision is those two things and nothing else is asserted
     # separately, by spec_check_b9_2's 04d, which also revalidates the whole
     # file against the loader that will read it.
+    #
+    # Re-pinned again at b11.8, on the same clause. The corpus owner rewrote the
+    # three drop cap verdicts before that batch began, and the batch wrote none
+    # of this file: what it did to it was re-pin this digest.
+    #   was: 372a6f7cbcdd942ffa971cfa5184689510b53089ace10e73920a195bb07a4fc4
+    #   now: 6b3df86f54a060790aa62ab3b37eb70b491937d7bda844b6d7098c95acef4535
+    #   what: the three drop cap verdicts moved from flatten to keep, and
+    #         nothing else. The terms and the page kind section are untouched.
+    #   who:  the corpus owner, in the working tree before batch b11.8 began;
+    #         the digest either side of the change is in that batch's
+    #         examples/output/b11_8/premise_check.json, premise 1
+    #   why:  b11.8 redefined keep. Both verdicts now merge before the
+    #         translator is built, so the engine is offered the same bytes
+    #         either way, and keep additionally has the render lane set the
+    #         opening character the way the target language sets one. Under the
+    #         old keep the verdict was a no-op and the enlarged run survived
+    #         into the request, which is the shape b11.5 recorded; under the new
+    #         one it is the design the source drew, reproduced.
     "reviews/Courier-en.decisions.json": (
-        "372a6f7cbcdd942ffa971cfa5184689510b53089ace10e73920a195bb07a4fc4"
+        "6b3df86f54a060790aa62ab3b37eb70b491937d7bda844b6d7098c95acef4535"
     ),
     # The second ruling, filed by the corpus owner in commit "reviews: the
     # FD-en-v2 drop cap ruling, filed by the corpus owner" after batch b9.4
@@ -184,8 +231,17 @@ TRUTH_DIGESTS = {
     #         after b11.3 changed what counts as a formula font (GAP-36), and
     #         the three names were left in Latin among rendered ones (GAP-39).
     # The drop cap ruling and the page kind section are untouched.
+    #
+    # Re-pinned again at b11.8, on the same clause and for the same reason as
+    # the first ruling above.
+    #   was: 5f691ea3cc8d371a7d01824acdda640cecc2478787f37a3679d9562e07060415
+    #   now: 12d36bcdda18664671da7073b8ad6d8658ec1d374af25b7bf942ff6a33a53163
+    #   what: the p8#9 drop cap verdict moved from flatten to keep, and nothing
+    #         else. The glossary and the page kind section are untouched.
+    #   who:  the corpus owner, in the working tree before batch b11.8 began
+    #   why:  b11.8 T1, as above
     "reviews/FD-en-v2.decisions.json": (
-        "5f691ea3cc8d371a7d01824acdda640cecc2478787f37a3679d9562e07060415"
+        "12d36bcdda18664671da7073b8ad6d8658ec1d374af25b7bf942ff6a33a53163"
     ),
     # The third ruling, pinned at F3. It arrived during b10.4 -- two pages at the
     # pause, then all eight when it settled -- and was applied and reported on by

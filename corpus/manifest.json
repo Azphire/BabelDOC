@@ -127,6 +127,110 @@
         "sha256": "c1f8863064ae5959c3a67f4d46786ade4f639c83885ecca6039d83998475dc01",
         "checkpoints": "examples/output/baseline/Courier-zh.checkpoints"
       }
+    },
+    {
+      "file": "HuaweiTech-zh.pdf",
+      "sha256": "2b94ce0595b233eefe12b3baa2dbcee83ae18843ace427bcd6e70cdbe6876633",
+      "pages": 6,
+      "publication": "huawei_tech",
+      "magazine": true,
+      "toc_pages": [
+        1
+      ],
+      "corpus_role": [
+        "zh_source_expansion",
+        "layout_generalization"
+      ],
+      "source_lang": "zh",
+      "target_lang": "en",
+      "notes": "HuaweiTech 2026 No.1 (\u534e\u4e3a\u6280\u672f\u6709\u9650\u516c\u53f8\u5185\u520a), digital-edition excerpt, 5 pages. CAUTION: paginated as landscape TWO-PAGE SPREADS (two logical pages, two folios and running heads per PDF page), the corpus's second spread sample and its first zh-source one. p1 spread: masthead panel (staff list of ~30 Chinese names in dense rows, copyright block, no-warranty legal boilerplate, QR code, contact block) + foreword \u520a\u9996\u8bed by \u9a6c\u6d77\u65ed with portrait, sunk initial, and a handwritten signature drawn as an image (image-layer, no-OCR scope exclusion, same family as Courier-zh p1); the issue's TOC grid (article titles, authors, page numbers grouped by section) shares this opening spread. p2: section divider, image-dominant orange graphic with the section title and a corner note marking the artwork as AI-assisted. p3 spread: article opener \u7535\u4fe1\u8fd0\u8425\u5546AItoB\u53d1\u5c55\u7b56\u7565\u6f14\u8fdb\u7814\u7a76 by \u8bb8\u5fd7\u8fdc with byline photo, abstract box, banner photo across the top, two-column body on both logical pages, sunk initial (\u76ee); a column boundary on the right logical page cuts a sentence mid-word (\u5404 | \u884c\u5404\u4e1a), a ground-truth positive chain. p4 spread: article body continuation both sides, dense two-column technical prose, numbered references [1][2] with superscript citation marks in the body, article closes with an end-mark. p5 spread: second article opener \u8d85\u8d8a\u8fde\u63a5 by Brian Washburn with sunk initial (\u8fc7), two statistics charts whose axis labels, legends and data labels are vector text, numbered figure captions. Technical/corporate-journal pole of the zh side; exercises spread column-band handling, superscript-citation handling, terminology consistency pinning (\u7b97\u529b/Token/AItoB) and bulk pinyin romanization of the staff list.",
+      "baseline": {
+        "pdf": "examples/output/baseline/HuaweiTech-zh.b2_2.pdf",
+        "sha256": "628f6f00ba3777c31e7428c4ab6e87ecb33b8c79825553d016c3e4adb0fa1c0f",
+        "checkpoints": "examples/output/baseline/HuaweiTech-zh.checkpoints"
+      }
+    },
+    {
+      "file": "ABB-zh.pdf",
+      "sha256": "e8249e884bea2f35239f708247367105aac029e1b758d1905eda6d5f90802f97",
+      "pages": 9,
+      "publication": "abb_review",
+      "magazine": true,
+      "toc_pages": [
+        2,
+        3,
+        7
+      ],
+      "corpus_role": [
+        "translation_eval"
+      ],
+      "source_lang": "zh",
+      "target_lang": "en",
+      "notes": "Official Chinese edition of ABB Review 01/2024, 9-page excerpt. p1: cover with section teasers. pp2-3: graphical and conventional issue contents. p4: Innovation section divider. p5: CEO editorial. p6: Innovation divider with two photo teasers. p7: numbered index of selected innovation briefs. p8: self-contained ABB Dynafin brief with two-column body and product image. p9: separate self-contained 800xA Simulator What-if brief with two-column body and process diagram; p8->p9 is NOT a chain. Branded industrial-technology layout with sparse dividers, dense indexes, diagrams and mixed Chinese/Latin product names. Chinese-source zh->en baseline only; the official English edition supplies terminology reference."
+    },
+    {
+      "file": "bull-zh.pdf",
+      "sha256": "c558d56210f59d35ef6ab52a7ae8e995ba7e7c82c2e400ecbf64033fe7970ce5",
+      "pages": 9,
+      "publication": "iaea_bulletin",
+      "magazine": true,
+      "toc_pages": [
+        4,
+        5
+      ],
+      "corpus_role": [
+        "translation_eval"
+      ],
+      "source_lang": "zh",
+      "target_lang": "en",
+      "notes": "Official Chinese edition of IAEA Bulletin, February 2020, Nuclear Security, 9-page excerpt. p1: front cover. p2: imprint and institutional profile. p3: Director General foreword with drop cap, pull quote and image strip. pp4-5: two-page contents sequence. pp6-7: full-page illustrated explainer with sparse running text and labelled sectors. pp8-9: Senegal feature opener and dense continuation. REAL semantic cuts: p6->p7 ('\u4ece\u5b9e\u7269\u4fdd\u62a4\u5230' -> '\u6838\u5b89\u4fdd\u6587\u5316') and p8->p9 (the personal name 'Z\u00e9phirin' -> 'Ou\u00e9draogo\u8bf4'). Strong infographic, editorial and technical-feature coverage. Chinese-source zh->en baseline only; the official English edition supplies terminology reference."
+    },
+    {
+      "file": "fd-zh.pdf",
+      "sha256": "d35732f1e72066e454be895feb5df1342d762a8a9ca84438914312c30dba473d",
+      "pages": 6,
+      "publication": "imf_fd",
+      "magazine": true,
+      "toc_pages": [
+        2,
+        3
+      ],
+      "corpus_role": [
+        "translation_eval"
+      ],
+      "source_lang": "zh",
+      "target_lang": "en",
+      "notes": "Official Chinese edition of Finance & Development, March 2017 (Vol. 54 No. 1), 6-page excerpt. p1: Growth Conundrum cover. p2: imprint rail sharing the page with the main contents. p3: contents continuation sharing the page with the editor's letter. p4: 'Stuck in a Rut' feature opener with standfirst, three-column body and a large bottom photo. pp5-6: chart-heavy three-column article body. REAL mid-sentence split p4->p5 ('\u75b2\u5f31' -> '\u7684\u751f\u4ea7\u529b\u589e\u957f\u5c06\u4e25\u91cd\u5a01\u80c1...'); p5->p6 is the same article but a clean paragraph boundary. Economics magazine pole with dense prose, captions and quantitative charts. Chinese-source zh->en baseline only; the official English edition supplies terminology reference."
+    },
+    {
+      "file": "ITU-zh.pdf",
+      "sha256": "7439fda916c675e26b57b11fdcf66b4aa8f15324bf48f8cc980afa66a75c25f3",
+      "pages": 8,
+      "publication": "itu_news",
+      "magazine": true,
+      "toc_pages": [
+        3
+      ],
+      "corpus_role": [
+        "translation_eval"
+      ],
+      "source_lang": "zh",
+      "target_lang": "en",
+      "notes": "Official Chinese edition of ITU News Magazine 06/2019, 8-page excerpt on WRC-19. p1: front cover. p2: editorial with narrow body column and large pull quote. p3: contents plus imprint rail. p4: WRC-19 highlights opener with title, captions and photo collage. pp5-6: full-page portrait-and-quotation pages. p7: 'Reaching consensus in Egypt for future digital communications' opener with drop cap, photograph and two-column body. p8: clean continuation with a body column and stacked memorial/video sidebars. The p4->p5 and p5->p6 boundaries are related gallery pages but contain no cut semantic unit; p7->p8 is the same article at a clean boundary. Chinese-source zh->en baseline only; the official English edition supplies terminology reference."
+    },
+    {
+      "file": "WIPO-zh.pdf",
+      "sha256": "7f3d8f31f17aab47464690c7d1c4aaaa3970525ed006ffaeec579214e3562800",
+      "pages": 6,
+      "publication": "wipo_magazine",
+      "magazine": true,
+      "toc_pages": [],
+      "corpus_role": [
+        "translation_eval"
+      ],
+      "source_lang": "zh",
+      "target_lang": "en",
+      "notes": "Official Chinese WIPO Magazine Focus Music excerpt, 6 pages. pp1-4: V'ghn profile - display-title opener, two-column body, pull quotes, halftone portrait treatment and a quotation/photo page. pp5-6: separate 'Music merchandise: the new key to branding for musicians' feature opener and single-column body with large imagery. REAL mid-sentence split p2->p3 ('\u8fd8\u4e0e\u591a\u4e2a\u54c1\u724c\u5408\u4f5c\uff0c' -> '\u5728\u89c2\u4f17\u4e2d\u63a8\u5e7f\u5b83\u4eec\u7684\u4ea7\u54c1\u3002'). p3->p4 contains no cut unit, and p4->p5 is a different article. Adds cultural and entertainment subject matter plus highly designed portrait and photo-led pages. Chinese-source zh->en baseline only; official English articles supply terminology reference."
     }
   ]
 }

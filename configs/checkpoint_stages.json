@@ -126,6 +126,11 @@
       "name": "rotated_lane.report.json",
       "stage": "typesetting",
       "switch": "magazine_rotated_lane"
+    },
+    {
+      "name": "drop_cap_render.report.json",
+      "stage": "typesetting",
+      "switch": "magazine_drop_cap_render"
     }
   ]
 }

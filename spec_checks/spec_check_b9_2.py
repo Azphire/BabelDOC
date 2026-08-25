@@ -654,7 +654,11 @@ def check_01d_backfill_precedes_the_layout_precedes_this_pass() -> None:
     positions = {}
     for name, needle in (
         ("translate", "il_translator.translate(docs)"),
-        ("typeset", "Typesetting(translation_config).typesetting_document(docs)"),
+        # The call rather than one spelling of it. b11.7 split the stage into
+        # a construction and a call on it, and a needle written as one statement
+        # stopped matching a pipeline whose order had not moved. What this
+        # assertion is about is the order, so it reads the call. AC-26.
+        ("typeset", "typesetting_document(docs)"),
         ("detect", "detectors.detect_issues(translation_config, docs)"),
     ):
         found = [index for index, line in enumerate(source) if needle in line]
