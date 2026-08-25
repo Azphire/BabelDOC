@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import json
 from dataclasses import dataclass
+from dataclasses import field
 from types import MappingProxyType
 from typing import Mapping
 
@@ -144,6 +145,7 @@ class ArticleDocumentIR:
     by_page: Mapping[int, str]
     by_element: Mapping[str, str]
     by_chain: Mapping[str, str]
+    by_chain_member: Mapping[str, str] = field(default_factory=dict)
     unsupported_pages: tuple[UnsupportedArticlePage, ...] = ()
     issues: tuple[ArticleIssue, ...] = ()
 
@@ -158,6 +160,11 @@ class ArticleDocumentIR:
         )
         object.__setattr__(
             self, "by_chain", MappingProxyType(dict(sorted(self.by_chain.items())))
+        )
+        object.__setattr__(
+            self,
+            "by_chain_member",
+            MappingProxyType(dict(sorted(self.by_chain_member.items()))),
         )
         self._validate()
 
@@ -211,6 +218,11 @@ class ArticleDocumentIR:
         actual = (self.by_page, self.by_element, self.by_chain)
         if any(dict(index) != wanted for index, wanted in zip(actual, expected)):
             raise ValueError("article indexes must exactly describe canonical articles")
+        for source_ref, chain_id in self.by_chain_member.items():
+            if source_ref not in expected_by_element:
+                raise ValueError("chain member must be a canonical source element")
+            if chain_id not in expected_by_chain:
+                raise ValueError("chain member points to an unknown canonical chain")
 
     def article(self, article_id: str) -> ArticleIR | None:
         return next(
@@ -228,6 +240,7 @@ class ArticleDocumentIR:
             "by_page": {str(page): value for page, value in self.by_page.items()},
             "by_element": dict(self.by_element),
             "by_chain": dict(self.by_chain),
+            "by_chain_member": dict(self.by_chain_member),
             "unsupported_pages": [item.to_record() for item in self.unsupported_pages],
             "issues": [issue.to_record() for issue in self.issues],
         }

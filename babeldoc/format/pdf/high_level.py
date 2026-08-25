@@ -64,6 +64,8 @@ from babeldoc.magazine import paren_dedup
 from babeldoc.magazine import rotated_lane
 from babeldoc.magazine.page_classifier import PageClassifier
 from babeldoc.magazine.runtime_profile import preflight_magazine_runtime
+from babeldoc.magazine.run_trace import REPORT_NAME as RUN_TRACE_REPORT_NAME
+from babeldoc.magazine.run_trace import RunTrace
 from babeldoc.progress_monitor import ProgressMonitor
 from babeldoc.utils import memory
 
@@ -1030,6 +1032,11 @@ def _do_translate_single(
     if translation_config.magazine_article_group:
         article_document_ir = ArticleBuilder(translation_config).process(docs)
         logger.debug(f"finish article builder from {temp_pdf_path}")
+    run_trace = (
+        None
+        if article_document_ir is None
+        else RunTrace.from_document(docs, article_document_ir)
+    )
 
     translate_engine = translation_config.translator
     term_extraction_engine = translation_config.get_term_extraction_translator()
@@ -1052,6 +1059,7 @@ def _do_translate_single(
                 translate_engine,
                 translation_config,
                 article_document_ir=article_document_ir,
+                run_trace=run_trace,
             )
         else:
             il_translator = ILTranslator(translate_engine, translation_config)
@@ -1106,7 +1114,7 @@ def _do_translate_single(
         mono_watermark_first_page_doc_bytes = None
         dual_watermark_first_page_doc_bytes = None
 
-    typesetting_stage = Typesetting(translation_config)
+    typesetting_stage = Typesetting(translation_config, run_trace=run_trace)
     typesetting_stage.typesetting_document(docs)
     logger.debug(f"finish typsetting from {temp_pdf_path}")
 
@@ -1133,7 +1141,12 @@ def _do_translate_single(
     # will be rendered at is final. Reads the document, writes a sidecar.
     if translation_config.magazine_detect:
         rotated_lane.reset()
-        detectors.detect_issues(translation_config, docs)
+        if run_trace is None:
+            detectors.detect_issues(translation_config, docs)
+        else:
+            detectors.detect_issues(
+                translation_config, docs, run_trace=run_trace
+            )
         # The lane sets a strip during the repair loop, so its record is written
         # once the loop is done rather than at a stage of its own.
         rotated_lane.write_report(translation_config)
@@ -1162,6 +1175,13 @@ def _do_translate_single(
     except Exception:
         result.dual_pdf_path = result.no_watermark_dual_pdf_path
 
+    if run_trace is not None:
+        run_trace.capture_final_document(docs)
+        run_trace.finalize_sources()
+        run_trace.write(
+            translation_config.get_working_file_path(RUN_TRACE_REPORT_NAME),
+            require_terminal=True,
+        )
     result.original_pdf_path = translation_config.input_file
 
     return result

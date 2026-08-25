@@ -241,7 +241,7 @@ def enabled(translation_config) -> bool:
     return bool(getattr(translation_config, SWITCH, False))
 
 
-def detect_issues(translation_config, docs) -> list[Issue]:
+def detect_issues(translation_config, docs, run_trace=None) -> list[Issue]:
     """Find every issue of one finished document and write the sidecar.
 
     Returns them in report order, empty where the switch is down, in which case
@@ -263,13 +263,20 @@ def detect_issues(translation_config, docs) -> list[Issue]:
     from babeldoc.magazine import title_typeset
 
     title_typeset.apply(translation_config, docs)
-    column_reflow.apply(translation_config, docs)
+    if run_trace is None:
+        column_reflow.apply(translation_config, docs)
+    else:
+        column_reflow.apply(translation_config, docs, run_trace=run_trace)
     if not enabled(translation_config):
         return []
     from babeldoc.magazine.react import controller
 
     if controller.enabled(translation_config):
-        return controller.repair_document(translation_config, docs)
+        if run_trace is None:
+            return controller.repair_document(translation_config, docs)
+        return controller.repair_document(
+            translation_config, docs, run_trace=run_trace
+        )
     config = detector_config()
     working_dir = Path(translation_config.get_working_file_path(REPORT_NAME)).parent
     context = build_context(

@@ -481,10 +481,24 @@ def plan(translator, docs, tracker, article_context=None, config=None) -> ShortU
             batch_text_for_glossary_matching="\n".join(unit.source for unit in batch),
             **extra,
         )
+        trace = getattr(translator, "run_trace", None)
+        trace_request_id = None
+        if trace is not None:
+            references = [trace.source_ref_for(unit.paragraph) for unit in batch]
+            if any(reference is None for reference in references):
+                raise ValueError("short unit batch contains an unfrozen source")
+            trace_request_id = trace.open_request(
+                "short_unit_batch",
+                references,
+                "\n".join(unit.source for unit in batch),
+                translator._trace_prompt_config(prompt),
+            )
         llm_trackers = [unit.tracker.new_llm_translate_tracker() for unit in batch]
         for llm_tracker in llm_trackers:
             llm_tracker.set_input(prompt)
         try:
+            if trace_request_id is not None:
+                trace.record_translator_call(trace_request_id)
             raw = translator.translate_engine.llm_translate(
                 prompt,
                 rate_limit_params={
@@ -495,6 +509,8 @@ def plan(translator, docs, tracker, article_context=None, config=None) -> ShortU
                 },
             )
         except Exception as error:  # the engine and its output are both foreign
+            if trace_request_id is not None:
+                trace.fail_request(trace_request_id, str(error))
             logger.warning("short unit: a batch could not be translated: %s", error)
             for unit in batch:
                 result.refused.append(
@@ -507,6 +523,8 @@ def plan(translator, docs, tracker, article_context=None, config=None) -> ShortU
         try:
             parsed = json.loads(translator._clean_json_output(raw.strip()))
         except ValueError as error:
+            if trace_request_id is not None:
+                trace.fail_request(trace_request_id, str(error))
             logger.warning("short unit: a reply could not be read: %s", error)
             for unit in batch:
                 result.refused.append(
@@ -520,6 +538,7 @@ def plan(translator, docs, tracker, article_context=None, config=None) -> ShortU
             for item in parsed
             if isinstance(item, dict) and _ID_KEY in item
         }
+        trace_fragments = []
         for position, unit in enumerate(batch):
             answer = answers.get(position)
             if not isinstance(answer, str) or not answer.strip():
@@ -527,6 +546,17 @@ def plan(translator, docs, tracker, article_context=None, config=None) -> ShortU
                 continue
             unit.translated = answer
             result.units.append(unit)
+            if trace_request_id is not None:
+                trace_fragments.append(
+                    (trace.source_ref_for(unit.paragraph), answer)
+                )
+        if trace_request_id is not None:
+            if trace_fragments:
+                trace.complete_request_with_fragments(
+                    trace_request_id, trace_fragments
+                )
+            else:
+                trace.fail_request(trace_request_id, "batch_returned_no_answers")
     return result
 
 

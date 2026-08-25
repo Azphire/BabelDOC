@@ -38,6 +38,11 @@
       "switch": "magazine_article_group"
     },
     {
+      "name": "run_trace.report.json",
+      "stage": "pdf_created",
+      "switch": "magazine_article_group"
+    },
+    {
       "name": "chain_translation.report.json",
       "stage": "il_translated",
       "switch": "magazine_chain_translate"

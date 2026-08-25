@@ -355,7 +355,14 @@ class Handler:
 class RepairLoop:
     """One document, one run of the loop."""
 
-    def __init__(self, translation_config, docs, decision_client=None, translator=None):
+    def __init__(
+        self,
+        translation_config,
+        docs,
+        decision_client=None,
+        translator=None,
+        run_trace=None,
+    ):
         self.translation_config = translation_config
         self.docs = docs
         self.detector_config = detectors.detector_config()
@@ -370,6 +377,8 @@ class RepairLoop:
         self.ignore_cache = bool(getattr(translation_config, "ignore_cache", False))
         self.decision_client = decision_client
         self.translator = translator
+        self.run_trace = run_trace
+        self.trace_base_generation = None
         self.typesetting = None
         self.iterations: list[dict] = []
         self.offered_texts: list[str] = []
@@ -454,7 +463,12 @@ class RepairLoop:
 
     def _typesetting(self):
         if self.typesetting is None:
-            self.typesetting = Typesetting(self.translation_config)
+            if self.run_trace is None:
+                self.typesetting = Typesetting(self.translation_config)
+            else:
+                self.typesetting = Typesetting(
+                    self.translation_config, run_trace=self.run_trace
+                )
         return self.typesetting
 
     def _handlers(self) -> dict[str, Handler]:
@@ -825,6 +839,14 @@ class RepairLoop:
             record["rounds"] = []
             return OUTCOME_INERT, STOP_NO_ENGINE, issues
 
+        generation = (
+            None
+            if self.run_trace is None
+            else self.run_trace.begin_repair_generation(
+                f"react_iteration_{iteration}"
+            )
+        )
+
         snapshot = Snapshot()
         rounds: list[dict] = []
         written: list = []
@@ -855,6 +877,8 @@ class RepairLoop:
         if not written:
             record["outcome"] = OUTCOME_INERT
             snapshot.restore(self.docs)
+            if generation is not None:
+                self.run_trace.rollback_generation(generation)
             if halted:
                 return OUTCOME_INERT, halted, issues
             reasons = [entry["reason"] for entry in rounds if entry["reason"]]
@@ -884,6 +908,13 @@ class RepairLoop:
         record["new_ids"] = sorted(after - before)
         record["treated_ids"] = sorted(newly)
 
+        if generation is not None:
+            self.run_trace.capture_repair_document(
+                self.docs,
+                generation,
+                (item.reference for item in written),
+            )
+
         if len(untreated) >= len(working):
             # Not strictly decreasing: undo this iteration and stop. A repair
             # that trades one finding for another is not progress, and a loop
@@ -895,6 +926,8 @@ class RepairLoop:
             for issue_id in newly:
                 self.treated.pop(issue_id, None)
             snapshot.restore(self.docs)
+            if generation is not None:
+                self.run_trace.rollback_generation(generation)
             for item in written:
                 self.touched.discard(item.reference)
                 self.applications -= 1
@@ -910,6 +943,8 @@ class RepairLoop:
             )
             return OUTCOME_ROLLED_BACK, STOP_NOT_CONVERGING, issues
 
+        if generation is not None:
+            self.run_trace.commit_generation(generation)
         record["outcome"] = OUTCOME_ADVANCED
         return OUTCOME_ADVANCED, "", (rechecked, new_context)
 
@@ -930,6 +965,8 @@ class RepairLoop:
         return STOP_CEILING
 
     def run(self):
+        if self.run_trace is not None:
+            self.trace_base_generation = self.run_trace.current_generation
         before_digests = paragraph_digests(self.docs)
         before_shape = shape(self.docs)
         before_document = copy.deepcopy(self.docs)
@@ -982,6 +1019,10 @@ class RepairLoop:
                 len(outside),
             )
             self.docs.page = before_document.page
+            if self.run_trace is not None:
+                self.run_trace.rollback_generations_after(
+                    self.trace_base_generation
+                )
             self.touched.clear()
             self.treated.clear()
             stop = f"{VIOLATED}: conservation"
@@ -1046,7 +1087,7 @@ class RepairLoop:
         )
 
 
-def repair_document(translation_config, docs):
+def repair_document(translation_config, docs, run_trace=None):
     """Run the loop over one finished document and return what it left standing.
 
     A failure anywhere in the loop puts the document back as typesetting left it
@@ -1055,7 +1096,7 @@ def repair_document(translation_config, docs):
     not repair has to produce the PDF it would have produced with the switch
     down, rather than no PDF at all.
     """
-    loop = RepairLoop(translation_config, docs)
+    loop = RepairLoop(translation_config, docs, run_trace=run_trace)
     try:
         return loop.run()
     except Exception:  # noqa: BLE001 - the loop never stops a translation
@@ -1065,6 +1106,13 @@ def repair_document(translation_config, docs):
         )
         if loop.baseline is not None:
             docs.page = loop.baseline.page
+        if run_trace is not None:
+            if loop.trace_base_generation is None:
+                run_trace.rollback_open_generations()
+            else:
+                run_trace.rollback_generations_after(
+                    loop.trace_base_generation
+                )
         config = detectors.detector_config()
         issues, context = detect(
             translation_config,

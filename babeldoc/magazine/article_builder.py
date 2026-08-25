@@ -662,11 +662,19 @@ def _document_ir(docs, grouping, provisional, elements_by_page, chains, labels):
         for article in articles
         for chain_id in article.chain_ids
     }
+    by_chain_member = {
+        source_ref: canonical_id
+        for canonical_id, source_refs, _pages in chains.values()
+        if canonical_id in by_chain
+        for source_ref in source_refs
+        if source_ref in by_element
+    }
     return ArticleDocumentIR(
         articles=articles,
         by_page=by_page,
         by_element=by_element,
         by_chain=by_chain,
+        by_chain_member=by_chain_member,
         unsupported_pages=unsupported,
         issues=_chain_issues(provisional, chains),
     )

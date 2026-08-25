@@ -880,9 +880,10 @@ class TypesettingUnit:
 class Typesetting:
     stage_name = "Typesetting"
 
-    def __init__(self, translation_config: TranslationConfig):
+    def __init__(self, translation_config: TranslationConfig, run_trace=None):
         self.font_mapper = FontMapper(translation_config)
         self.translation_config = translation_config
+        self.run_trace = run_trace
         self.lang_code = self.translation_config.lang_out.upper()
         # One entry per paragraph whose accepted layout hung a unit past its box.
         self.hang_records: list[dict] = []
@@ -1234,6 +1235,8 @@ class Typesetting:
                 self.translation_config.raise_if_cancelled()
                 self.render_page(page)
         self._write_hang_report()
+        if self.run_trace is not None:
+            self.run_trace.capture_typeset_document(document)
 
     def render_page(self, page: il_version_1.Page):
         fonts: dict[

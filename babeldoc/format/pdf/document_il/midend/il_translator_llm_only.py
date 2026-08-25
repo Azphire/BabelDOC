@@ -38,6 +38,7 @@ from babeldoc.magazine.article_ir import ArticleDocumentIR
 from babeldoc.magazine.chain_translation import EMPTY_CLAIM
 from babeldoc.magazine.chain_translation import ChainClaim
 from babeldoc.magazine.chain_translation import plan_chain_translation
+from babeldoc.magazine.run_trace import RunTrace
 from babeldoc.translator.translator import BaseTranslator
 from babeldoc.utils.priority_thread_pool_executor import PriorityThreadPoolExecutor
 
@@ -108,9 +109,11 @@ class BatchParagraph:
         paragraphs: list[PdfParagraph],
         pages: list[Page],
         page_tracker: PageTranslateTracker,
+        request_kind: str = "paragraph_batch",
     ):
         self.paragraphs = paragraphs
         self.pages = pages
+        self.request_kind = request_kind
         self.trackers = [page_tracker.new_paragraph() for _ in paragraphs]
 
 
@@ -123,10 +126,12 @@ class ILTranslatorLLMOnly:
         translation_config: TranslationConfig,
         tokenizer=None,
         article_document_ir: ArticleDocumentIR | None = None,
+        run_trace: RunTrace | None = None,
     ):
         self.translate_engine = translate_engine
         self.translation_config = translation_config
         self.article_document_ir = article_document_ir
+        self.run_trace = run_trace
         self.font_mapper = FontMapper(translation_config)
         self.shared_context_cross_split_part = (
             translation_config.shared_context_cross_split_part
@@ -164,6 +169,20 @@ class ILTranslatorLLMOnly:
             return len(self.tokenizer.encode(text, disallowed_special=()))
         except Exception:
             return 0
+
+    def _trace_prompt_config(self, prompt: str) -> dict:
+        """Material hashed by RunTrace without retaining the prompt text."""
+        cache = getattr(self.translate_engine, "cache", None)
+        return {
+            "prompt": prompt,
+            "lang_in": getattr(self.translation_config, "lang_in", None),
+            "lang_out": getattr(self.translation_config, "lang_out", None),
+            "translator_name": getattr(self.translate_engine, "name", None),
+            "translator_params": getattr(
+                cache, "translate_engine_params", None
+            ),
+            "translator_type": type(self.translate_engine).__qualname__,
+        }
 
     def find_title_paragraph(self, docs: Document) -> PdfParagraph | None:
         """Find the first paragraph with layout_label 'title' in the document.
@@ -483,7 +502,10 @@ class ILTranslatorLLMOnly:
             cross_page_paragraphs = [last_curr_paragraph, first_next_paragraph]
             cross_page_pages = [page_curr, page_next]
             batch_paragraph = BatchParagraph(
-                cross_page_paragraphs, cross_page_pages, tracker.new_cross_page()
+                cross_page_paragraphs,
+                cross_page_pages,
+                tracker.new_cross_page(),
+                request_kind="cross_page_batch",
             )
 
             self.mid += 1
@@ -572,7 +594,12 @@ class ILTranslatorLLMOnly:
                 p1.unicode
             ) + self.calc_token_count(p2.unicode)
 
-            batch = BatchParagraph([p1, p2], [page, page], tracker.new_cross_column())
+            batch = BatchParagraph(
+                [p1, p2],
+                [page, page],
+                tracker.new_cross_column(),
+                request_kind="cross_column_batch",
+            )
             self.mid += 1
             executor.submit(
                 self.translate_paragraph,
@@ -735,6 +762,9 @@ class ILTranslatorLLMOnly:
         """Translate a paragraph using pre and post processing functions."""
         self.translation_config.raise_if_cancelled()
         should_translate_paragraph = []
+        trace_request_id = None
+        trace_finalized = False
+        trace_outputs: dict[int, str] = {}
         try:
             inputs = []
             llm_translate_trackers = []
@@ -802,8 +832,23 @@ class ILTranslatorLLMOnly:
                 article_brief=article_brief,
             )
 
+            if self.run_trace is not None:
+                trace_source_refs = [
+                    self.run_trace.source_ref_for(item[2]) for item in inputs
+                ]
+                if any(reference is None for reference in trace_source_refs):
+                    raise ValueError("translation batch contains an unfrozen source")
+                trace_request_id = self.run_trace.open_request(
+                    batch_paragraph.request_kind,
+                    trace_source_refs,
+                    batch_text_for_glossary_matching,
+                    self._trace_prompt_config(final_input),
+                )
+
             for llm_translate_tracker in llm_translate_trackers:
                 llm_translate_tracker.set_input(final_input)
+            if trace_request_id is not None:
+                self.run_trace.record_translator_call(trace_request_id)
             llm_output = self.translate_engine.llm_translate(
                 final_input,
                 rate_limit_params={
@@ -908,6 +953,7 @@ class ILTranslatorLLMOnly:
                         translate_input,
                         translated_text,
                     )
+                    trace_outputs[id_] = translated_text
                     should_fallback = False
                     if pbar:
                         pbar.advance(1)
@@ -947,9 +993,32 @@ class ILTranslatorLLMOnly:
                     else:
                         self.ok_count += 1
 
+            if trace_request_id is not None:
+                if trace_outputs:
+                    self.run_trace.complete_request_with_fragments(
+                        trace_request_id,
+                        [
+                            (
+                                self.run_trace.source_ref_for(item[2]),
+                                trace_outputs[index],
+                            )
+                            for index, item in enumerate(inputs)
+                            if index in trace_outputs
+                        ],
+                    )
+                else:
+                    self.run_trace.fail_request(
+                        trace_request_id,
+                        "all_batch_items_fell_back",
+                    )
+                trace_finalized = True
+
         except Exception as e:
             error_message = f"Error {e} during translation. try fallback"
             logger.warning(error_message)
+            if trace_request_id is not None and not trace_finalized:
+                self.run_trace.fail_request(trace_request_id, error_message)
+                trace_finalized = True
             for llm_translate_tracker in llm_translate_trackers:
                 llm_translate_tracker.set_error_message(error_message)
                 llm_translate_tracker.set_fallback_to_translate()

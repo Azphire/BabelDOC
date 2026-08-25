@@ -787,7 +787,9 @@ def write_report(working_dir: Path, record: dict) -> Path:
     return path
 
 
-def apply(translation_config, docs, source_geometry=None) -> dict | None:
+def apply(
+    translation_config, docs, source_geometry=None, *, run_trace=None
+) -> dict | None:
     """Close the excess of every reflowable column. None where the switch is down.
 
     Returns the record it wrote, so a caller that already holds the document can
@@ -818,6 +820,11 @@ def apply(translation_config, docs, source_geometry=None) -> dict | None:
         source_geometry = detectors.source_geometry_of(
             working_dir, detectors.detector_config()
         )
+    generation = (
+        None
+        if run_trace is None
+        else run_trace.begin_repair_generation("column_reflow")
+    )
     for label, page in hitl.labeled_pages(docs):
         if not config.selects(taxonomy.policy_of(getattr(page, "page_kind", None))):
             continue
@@ -844,6 +851,18 @@ def apply(translation_config, docs, source_geometry=None) -> dict | None:
         )
     record = as_record(config, pages, target_lang, notes)
     write_report(working_dir, record)
+    if generation is not None:
+        touched = {
+            row["reference"]
+            for page in pages
+            if page["applied"]
+            for column in page["columns"]
+            if column["applied"]
+            for row in column["rows"]
+            if row["shift"] > 0
+        }
+        run_trace.capture_repair_document(docs, generation, touched)
+        run_trace.commit_generation(generation)
     logger.debug(
         "column reflow: %d page(s), %d column(s) closed, %.1fpt recovered",
         record["totals"]["pages_considered"],

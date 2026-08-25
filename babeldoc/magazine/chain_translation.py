@@ -112,6 +112,7 @@ class ChainEntry:
     merge: backfill.ChainMerge
     translated: str
     redistribution: backfill.Redistribution
+    request_id: str | None = None
     capacity: list[dict] = field(default_factory=list)
 
     @property
@@ -131,7 +132,7 @@ class ChainEntry:
         ]
 
     def as_record(self) -> dict:
-        return {
+        record = {
             "chain_id": self.chain_id,
             "pair_class": self.pair_class,
             "strategy": self.strategy,
@@ -163,6 +164,9 @@ class ChainEntry:
                 )
             ],
         }
+        if self.request_id is not None:
+            record["request_id"] = self.request_id
+        return record
 
 
 @dataclass
@@ -469,7 +473,9 @@ class ChainPlan:
             )
             return
         try:
-            translated = self._translate(merge.text, prepared, chain_tracker)
+            translated, request_id = self._translate(
+                merge.text, prepared, chain_tracker
+            )
         except Exception as error:  # the engine and its output are both foreign
             logger.warning("chain %s could not be translated: %s", chain_id, error)
             self._escalate(chain_id, members, ESCALATION_TRANSLATION, str(error))
@@ -486,8 +492,43 @@ class ChainPlan:
                 capacities=self._capacities(prepared, strategy),
             )
         except backfill.ChainBackfillError as error:
+            if request_id is not None:
+                self.translator.run_trace.fail_request(
+                    request_id, f"redistribution failed: {error}"
+                )
             self._escalate(chain_id, members, ESCALATION_CONSERVATION, str(error))
             return
+
+        if request_id is not None:
+            try:
+                for member, segment in zip(
+                    prepared, redistribution.segments, strict=True
+                ):
+                    reference = self.translator.run_trace.source_ref_for(
+                        member.paragraph
+                    )
+                    if reference is None:
+                        raise ValueError("chain member has no frozen source ref")
+                    self.translator.run_trace.allocate_target_fragment(
+                        request_id,
+                        reference,
+                        order=segment.index,
+                        text_start=segment.start,
+                        text_end=segment.end,
+                        text=segment.text,
+                    )
+                self.translator.run_trace.complete_request(request_id)
+            except Exception as error:
+                self.translator.run_trace.fail_request(
+                    request_id, f"fragment allocation failed: {error}"
+                )
+                self._escalate(
+                    chain_id,
+                    members,
+                    ESCALATION_CONSERVATION,
+                    str(error),
+                )
+                return
 
         entry = ChainEntry(
             chain_id=chain_id,
@@ -497,6 +538,7 @@ class ChainPlan:
             merge=merge,
             translated=translated,
             redistribution=redistribution,
+            request_id=request_id,
             capacity=self._capacity_record(prepared)
             if strategy == backfill.STRATEGY_CAPACITY
             else [],
@@ -619,7 +661,9 @@ class ChainPlan:
             lengths.append(len(answer))
         return lengths
 
-    def _translate(self, merged: str, members: list[MemberPlan], chain_tracker) -> str:
+    def _translate(
+        self, merged: str, members: list[MemberPlan], chain_tracker
+    ) -> tuple[str, str | None]:
         """Send one merged chain through the machinery a batch already uses."""
         translator = self.translator
         shared = translator.translation_config.shared_context_cross_split_part
@@ -644,36 +688,60 @@ class ChainPlan:
             batch_text_for_glossary_matching=merged,
             **extra,
         )
+        trace_request_id = None
+        trace = getattr(translator, "run_trace", None)
+        if trace is not None:
+            references = [
+                trace.source_ref_for(member.paragraph)
+                for member in members
+            ]
+            if any(reference is None for reference in references):
+                raise ChainTranslationError("chain member has no frozen source ref")
+            trace_request_id = trace.open_request(
+                "continuity_chain",
+                references,
+                merged,
+                translator._trace_prompt_config(prompt),
+            )
         llm_trackers = [
             member.tracker.new_llm_translate_tracker() for member in members
         ]
         for llm_tracker in llm_trackers:
             llm_tracker.set_input(prompt)
         token_count = translator.calc_token_count(merged)
-        raw = translator.translate_engine.llm_translate(
-            prompt,
-            rate_limit_params={
-                "paragraph_token_count": token_count,
-                "request_json_mode": True,
-            },
-        )
-        for llm_tracker in llm_trackers:
-            llm_tracker.set_output(raw)
-        parsed = json.loads(translator._clean_json_output(raw.strip()))
-        if isinstance(parsed, dict):
-            parsed = [parsed]
-        results = {
-            int(item["id"]): item.get("output", item.get("input"))
-            for item in parsed
-            if isinstance(item, dict) and "id" in item
-        }
-        translated = results.get(_SINGLE_ITEM_ID)
-        if not isinstance(translated, str) or not translated.strip():
-            raise ChainTranslationError(
-                f"the engine returned {type(translated).__name__} for a chain of "
-                f"{len(members)} members"
+        try:
+            if trace_request_id is not None:
+                trace.record_translator_call(trace_request_id)
+            raw = translator.translate_engine.llm_translate(
+                prompt,
+                rate_limit_params={
+                    "paragraph_token_count": token_count,
+                    "request_json_mode": True,
+                },
             )
-        return translated
+            for llm_tracker in llm_trackers:
+                llm_tracker.set_output(raw)
+            parsed = json.loads(translator._clean_json_output(raw.strip()))
+            if isinstance(parsed, dict):
+                parsed = [parsed]
+            results = {
+                int(item["id"]): item.get("output", item.get("input"))
+                for item in parsed
+                if isinstance(item, dict) and "id" in item
+            }
+            translated = results.get(_SINGLE_ITEM_ID)
+            if not isinstance(translated, str) or not translated.strip():
+                raise ChainTranslationError(
+                    f"the engine returned {type(translated).__name__} for a chain of "
+                    f"{len(members)} members"
+                )
+            if trace_request_id is not None:
+                trace.register_whole_target(trace_request_id, translated)
+            return translated, trace_request_id
+        except Exception as error:
+            if trace_request_id is not None:
+                trace.fail_request(trace_request_id, str(error))
+            raise
 
     # --- application --------------------------------------------------------
 
