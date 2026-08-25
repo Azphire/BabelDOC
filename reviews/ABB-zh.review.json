@@ -1,0 +1,71 @@
+{
+  "drop_caps": [],
+  "format_version": 2,
+  "page_kinds": [
+    {
+      "ambiguous": true,
+      "conf": 1.0,
+      "machine_kind": "front_cover",
+      "page": 1,
+      "source": "deterministic"
+    },
+    {
+      "ambiguous": true,
+      "conf": 1.0,
+      "machine_kind": "infographic",
+      "page": 2,
+      "source": "deterministic"
+    },
+    {
+      "ambiguous": true,
+      "conf": 0.875,
+      "machine_kind": "toc",
+      "page": 3,
+      "source": "deterministic"
+    },
+    {
+      "ambiguous": true,
+      "conf": 0.7777777777777778,
+      "machine_kind": "advertisement",
+      "page": 4,
+      "source": "deterministic"
+    },
+    {
+      "ambiguous": true,
+      "conf": 0.75,
+      "machine_kind": "masthead",
+      "page": 5,
+      "source": "deterministic"
+    },
+    {
+      "ambiguous": true,
+      "conf": 1.0,
+      "machine_kind": "advertisement",
+      "page": 6,
+      "source": "deterministic"
+    },
+    {
+      "ambiguous": true,
+      "conf": 1.0,
+      "machine_kind": "contributors",
+      "page": 7,
+      "source": "deterministic"
+    },
+    {
+      "ambiguous": true,
+      "conf": 1.0,
+      "machine_kind": "masthead",
+      "page": 8,
+      "source": "deterministic"
+    },
+    {
+      "ambiguous": true,
+      "conf": 0.8461538461538461,
+      "machine_kind": "contributors",
+      "page": 9,
+      "source": "deterministic"
+    }
+  ],
+  "sample": "ABB-zh",
+  "terms": []
+}

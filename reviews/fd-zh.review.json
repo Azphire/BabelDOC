@@ -1,0 +1,50 @@
+{
+  "drop_caps": [],
+  "format_version": 2,
+  "page_kinds": [
+    {
+      "ambiguous": true,
+      "conf": 0.8888888888888888,
+      "machine_kind": "infographic",
+      "page": 1,
+      "source": "deterministic"
+    },
+    {
+      "ambiguous": false,
+      "conf": 1.0,
+      "machine_kind": "sidebar_heavy",
+      "page": 2,
+      "source": "deterministic"
+    },
+    {
+      "ambiguous": true,
+      "conf": 0.8333333333333334,
+      "machine_kind": "masthead",
+      "page": 3,
+      "source": "deterministic"
+    },
+    {
+      "ambiguous": false,
+      "conf": 1.0,
+      "machine_kind": "masthead",
+      "page": 4,
+      "source": "deterministic"
+    },
+    {
+      "ambiguous": false,
+      "conf": 1.0,
+      "machine_kind": "sidebar_heavy",
+      "page": 5,
+      "source": "deterministic"
+    },
+    {
+      "ambiguous": true,
+      "conf": 0.8461538461538461,
+      "machine_kind": "contributors",
+      "page": 6,
+      "source": "deterministic"
+    }
+  ],
+  "sample": "fd-zh",
+  "terms": []
+}

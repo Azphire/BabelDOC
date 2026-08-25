@@ -1,0 +1,64 @@
+{
+  "drop_caps": [],
+  "format_version": 2,
+  "page_kinds": [
+    {
+      "ambiguous": true,
+      "conf": 1.0,
+      "machine_kind": "front_cover",
+      "page": 1,
+      "source": "deterministic"
+    },
+    {
+      "ambiguous": true,
+      "conf": 1.0,
+      "machine_kind": "sidebar_heavy",
+      "page": 2,
+      "source": "deterministic"
+    },
+    {
+      "ambiguous": true,
+      "conf": 1.0,
+      "machine_kind": "masthead",
+      "page": 3,
+      "source": "deterministic"
+    },
+    {
+      "ambiguous": true,
+      "conf": 1.0,
+      "machine_kind": "photo_spread",
+      "page": 4,
+      "source": "deterministic"
+    },
+    {
+      "ambiguous": true,
+      "conf": 1.0,
+      "machine_kind": "photo_spread",
+      "page": 5,
+      "source": "deterministic"
+    },
+    {
+      "ambiguous": false,
+      "conf": 1.0,
+      "machine_kind": "contributors",
+      "page": 6,
+      "source": "deterministic"
+    },
+    {
+      "ambiguous": false,
+      "conf": 1.0,
+      "machine_kind": "contributors",
+      "page": 7,
+      "source": "deterministic"
+    },
+    {
+      "ambiguous": false,
+      "conf": 0.875,
+      "machine_kind": "toc",
+      "page": 8,
+      "source": "deterministic"
+    }
+  ],
+  "sample": "ITU-zh",
+  "terms": []
+}

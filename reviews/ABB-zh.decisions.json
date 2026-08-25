@@ -1,0 +1,19 @@
+{
+  "format_version": 2,
+  "sample": "ABB-zh",
+  "page_kinds": {
+    "1": "front_cover",
+    "2": "toc",
+    "3": "toc",
+    "4": "section_divider",
+    "5": "editorial",
+    "6": "section_divider",
+    "7": "toc",
+    "8": "article_opener",
+    "9": "article_opener"
+  },
+  "drop_caps": {},
+  "terms": {
+    "ABB 评论": "ABB Review"
+  }
+}

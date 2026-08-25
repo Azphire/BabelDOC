@@ -1,0 +1,59 @@
+{
+  "drop_caps": [
+    {
+      "article_id": "DhEuL",
+      "excerpt": "目前,人工智能产业正处于从“技术可用”到 “场景好用”的转换时期,进一步推动各 行各业新型工业化转型。根据中国信通院测算, 2024年我国人工智能核心产业规模已",
+      "first_run": "目",
+      "page": 4,
+      "paragraph": "p4#11",
+      "size_ratio": 2.647
+    }
+  ],
+  "format_version": 2,
+  "page_kinds": [
+    {
+      "ambiguous": true,
+      "conf": 1.0,
+      "machine_kind": "article_opener",
+      "page": 1,
+      "source": "deterministic"
+    },
+    {
+      "ambiguous": true,
+      "conf": 0.8333333333333334,
+      "machine_kind": "masthead",
+      "page": 2,
+      "source": "deterministic"
+    },
+    {
+      "ambiguous": true,
+      "conf": 1.0,
+      "machine_kind": "photo_spread",
+      "page": 3,
+      "source": "deterministic"
+    },
+    {
+      "ambiguous": true,
+      "conf": 1.0,
+      "machine_kind": "article_opener",
+      "page": 4,
+      "source": "deterministic"
+    },
+    {
+      "ambiguous": true,
+      "conf": 0.7222222222222222,
+      "machine_kind": "infographic",
+      "page": 5,
+      "source": "deterministic"
+    },
+    {
+      "ambiguous": false,
+      "conf": 1.0,
+      "machine_kind": "sidebar_heavy",
+      "page": 6,
+      "source": "deterministic"
+    }
+  ],
+  "sample": "HuaweiTech-zh",
+  "terms": []
+}

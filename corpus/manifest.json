@@ -166,7 +166,12 @@
       ],
       "source_lang": "zh",
       "target_lang": "en",
-      "notes": "Official Chinese edition of ABB Review 01/2024, 9-page excerpt. p1: cover with section teasers. pp2-3: graphical and conventional issue contents. p4: Innovation section divider. p5: CEO editorial. p6: Innovation divider with two photo teasers. p7: numbered index of selected innovation briefs. p8: self-contained ABB Dynafin brief with two-column body and product image. p9: separate self-contained 800xA Simulator What-if brief with two-column body and process diagram; p8->p9 is NOT a chain. Branded industrial-technology layout with sparse dividers, dense indexes, diagrams and mixed Chinese/Latin product names. Chinese-source zh->en baseline only; the official English edition supplies terminology reference."
+      "notes": "Official Chinese edition of ABB Review 01/2024, 9-page excerpt. p1: cover with section teasers. pp2-3: graphical and conventional issue contents. p4: Innovation section divider. p5: CEO editorial. p6: Innovation divider with two photo teasers. p7: numbered index of selected innovation briefs. p8: self-contained ABB Dynafin brief with two-column body and product image. p9: separate self-contained 800xA Simulator What-if brief with two-column body and process diagram; p8->p9 is NOT a chain. Branded industrial-technology layout with sparse dividers, dense indexes, diagrams and mixed Chinese/Latin product names. Chinese-source zh->en baseline only; the official English edition supplies terminology reference.",
+      "baseline": {
+        "pdf": "examples/output/baseline/ABB-zh.b11_9.pdf",
+        "sha256": "6641e584b165dd1f6dcd9ea80d4051a55e9daade0e05defc31a9c2dba63eabc3",
+        "checkpoints": "examples/output/baseline/ABB-zh.checkpoints"
+      }
     },
     {
       "file": "bull-zh.pdf",
@@ -183,7 +188,12 @@
       ],
       "source_lang": "zh",
       "target_lang": "en",
-      "notes": "Official Chinese edition of IAEA Bulletin, February 2020, Nuclear Security, 9-page excerpt. p1: front cover. p2: imprint and institutional profile. p3: Director General foreword with drop cap, pull quote and image strip. pp4-5: two-page contents sequence. pp6-7: full-page illustrated explainer with sparse running text and labelled sectors. pp8-9: Senegal feature opener and dense continuation. REAL semantic cuts: p6->p7 ('\u4ece\u5b9e\u7269\u4fdd\u62a4\u5230' -> '\u6838\u5b89\u4fdd\u6587\u5316') and p8->p9 (the personal name 'Z\u00e9phirin' -> 'Ou\u00e9draogo\u8bf4'). Strong infographic, editorial and technical-feature coverage. Chinese-source zh->en baseline only; the official English edition supplies terminology reference."
+      "notes": "Official Chinese edition of IAEA Bulletin, February 2020, Nuclear Security, 9-page excerpt. p1: front cover. p2: imprint and institutional profile. p3: Director General foreword with drop cap, pull quote and image strip. pp4-5: two-page contents sequence. pp6-7: full-page illustrated explainer with sparse running text and labelled sectors. pp8-9: Senegal feature opener and dense continuation. REAL semantic cuts: p6->p7 ('\u4ece\u5b9e\u7269\u4fdd\u62a4\u5230' -> '\u6838\u5b89\u4fdd\u6587\u5316') and p8->p9 (the personal name 'Z\u00e9phirin' -> 'Ou\u00e9draogo\u8bf4'). Strong infographic, editorial and technical-feature coverage. Chinese-source zh->en baseline only; the official English edition supplies terminology reference.",
+      "baseline": {
+        "pdf": "examples/output/baseline/bull-zh.b11_9.pdf",
+        "sha256": "de0818af0a8fc0ef714f33a8c09f8191192e667976864d8c79e2a6610647267c",
+        "checkpoints": "examples/output/baseline/bull-zh.checkpoints"
+      }
     },
     {
       "file": "fd-zh.pdf",
@@ -200,7 +210,12 @@
       ],
       "source_lang": "zh",
       "target_lang": "en",
-      "notes": "Official Chinese edition of Finance & Development, March 2017 (Vol. 54 No. 1), 6-page excerpt. p1: Growth Conundrum cover. p2: imprint rail sharing the page with the main contents. p3: contents continuation sharing the page with the editor's letter. p4: 'Stuck in a Rut' feature opener with standfirst, three-column body and a large bottom photo. pp5-6: chart-heavy three-column article body. REAL mid-sentence split p4->p5 ('\u75b2\u5f31' -> '\u7684\u751f\u4ea7\u529b\u589e\u957f\u5c06\u4e25\u91cd\u5a01\u80c1...'); p5->p6 is the same article but a clean paragraph boundary. Economics magazine pole with dense prose, captions and quantitative charts. Chinese-source zh->en baseline only; the official English edition supplies terminology reference."
+      "notes": "Official Chinese edition of Finance & Development, March 2017 (Vol. 54 No. 1), 6-page excerpt. p1: Growth Conundrum cover. p2: imprint rail sharing the page with the main contents. p3: contents continuation sharing the page with the editor's letter. p4: 'Stuck in a Rut' feature opener with standfirst, three-column body and a large bottom photo. pp5-6: chart-heavy three-column article body. REAL mid-sentence split p4->p5 ('\u75b2\u5f31' -> '\u7684\u751f\u4ea7\u529b\u589e\u957f\u5c06\u4e25\u91cd\u5a01\u80c1...'); p5->p6 is the same article but a clean paragraph boundary. Economics magazine pole with dense prose, captions and quantitative charts. Chinese-source zh->en baseline only; the official English edition supplies terminology reference.",
+      "baseline": {
+        "pdf": "examples/output/baseline/fd-zh.b11_9.pdf",
+        "sha256": "68b3c435b90b6b3217d3a9879cc00100cd1637669bb0e1714fdbd2cc5c10dfc9",
+        "checkpoints": "examples/output/baseline/fd-zh.checkpoints"
+      }
     },
     {
       "file": "ITU-zh.pdf",
@@ -216,7 +231,12 @@
       ],
       "source_lang": "zh",
       "target_lang": "en",
-      "notes": "Official Chinese edition of ITU News Magazine 06/2019, 8-page excerpt on WRC-19. p1: front cover. p2: editorial with narrow body column and large pull quote. p3: contents plus imprint rail. p4: WRC-19 highlights opener with title, captions and photo collage. pp5-6: full-page portrait-and-quotation pages. p7: 'Reaching consensus in Egypt for future digital communications' opener with drop cap, photograph and two-column body. p8: clean continuation with a body column and stacked memorial/video sidebars. The p4->p5 and p5->p6 boundaries are related gallery pages but contain no cut semantic unit; p7->p8 is the same article at a clean boundary. Chinese-source zh->en baseline only; the official English edition supplies terminology reference."
+      "notes": "Official Chinese edition of ITU News Magazine 06/2019, 8-page excerpt on WRC-19. p1: front cover. p2: editorial with narrow body column and large pull quote. p3: contents plus imprint rail. p4: WRC-19 highlights opener with title, captions and photo collage. pp5-6: full-page portrait-and-quotation pages. p7: 'Reaching consensus in Egypt for future digital communications' opener with drop cap, photograph and two-column body. p8: clean continuation with a body column and stacked memorial/video sidebars. The p4->p5 and p5->p6 boundaries are related gallery pages but contain no cut semantic unit; p7->p8 is the same article at a clean boundary. Chinese-source zh->en baseline only; the official English edition supplies terminology reference.",
+      "baseline": {
+        "pdf": "examples/output/baseline/ITU-zh.b11_9.pdf",
+        "sha256": "25e134f4f66eefec3c8ba4933341311a244736a2d892473c1f91029331f61100",
+        "checkpoints": "examples/output/baseline/ITU-zh.checkpoints"
+      }
     },
     {
       "file": "WIPO-zh.pdf",
@@ -230,7 +250,12 @@
       ],
       "source_lang": "zh",
       "target_lang": "en",
-      "notes": "Official Chinese WIPO Magazine Focus Music excerpt, 6 pages. pp1-4: V'ghn profile - display-title opener, two-column body, pull quotes, halftone portrait treatment and a quotation/photo page. pp5-6: separate 'Music merchandise: the new key to branding for musicians' feature opener and single-column body with large imagery. REAL mid-sentence split p2->p3 ('\u8fd8\u4e0e\u591a\u4e2a\u54c1\u724c\u5408\u4f5c\uff0c' -> '\u5728\u89c2\u4f17\u4e2d\u63a8\u5e7f\u5b83\u4eec\u7684\u4ea7\u54c1\u3002'). p3->p4 contains no cut unit, and p4->p5 is a different article. Adds cultural and entertainment subject matter plus highly designed portrait and photo-led pages. Chinese-source zh->en baseline only; official English articles supply terminology reference."
+      "notes": "Official Chinese WIPO Magazine Focus Music excerpt, 6 pages. pp1-4: V'ghn profile - display-title opener, two-column body, pull quotes, halftone portrait treatment and a quotation/photo page. pp5-6: separate 'Music merchandise: the new key to branding for musicians' feature opener and single-column body with large imagery. REAL mid-sentence split p2->p3 ('\u8fd8\u4e0e\u591a\u4e2a\u54c1\u724c\u5408\u4f5c\uff0c' -> '\u5728\u89c2\u4f17\u4e2d\u63a8\u5e7f\u5b83\u4eec\u7684\u4ea7\u54c1\u3002'). p3->p4 contains no cut unit, and p4->p5 is a different article. Adds cultural and entertainment subject matter plus highly designed portrait and photo-led pages. Chinese-source zh->en baseline only; official English articles supply terminology reference.",
+      "baseline": {
+        "pdf": "examples/output/baseline/WIPO-zh.b11_9.pdf",
+        "sha256": "28446ef8aa870eb785207b5976e43fad92bfd45e881210c84d86b20e61db2877",
+        "checkpoints": "examples/output/baseline/WIPO-zh.checkpoints"
+      }
     }
   ]
 }

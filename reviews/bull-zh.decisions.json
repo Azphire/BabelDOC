@@ -1,0 +1,29 @@
+{
+  "format_version": 2,
+  "sample": "bull-zh",
+  "page_kinds": {
+    "1": "front_cover",
+    "2": "masthead",
+    "3": "editorial",
+    "4": "toc",
+    "5": "toc",
+    "6": "article_opener",
+    "7": "article_body",
+    "8": "article_opener",
+    "9": "article_body"
+  },
+  "drop_caps": {},
+  "terms": {
+    "国际原子能机构通报": "IAEA Bulletin",
+    "国际原子能机构": "International Atomic Energy Agency",
+    "原子能机构": "IAEA",
+    "核安保丛书": "Nuclear Security Series",
+    "核安保综合支助计划": "Integrated Nuclear Security Support Plan",
+    "不扩散核武器条约": "Treaty on the Non-Proliferation of Nuclear Weapons",
+    "核材料实物保护公约": "Convention on the Physical Protection of Nuclear Material",
+    "中国国家核安保技术中心": "State Nuclear Security Technology Center",
+    "阿布杜斯·萨拉姆国际理论物理中心": "Abdus Salam International Centre for Theoretical Physics",
+    "维也纳国际中心": "Vienna International Centre",
+    "拉斐尔·马里亚诺·格罗西": "Rafael Mariano Grossi"
+  }
+}

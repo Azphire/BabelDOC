@@ -1,0 +1,28 @@
+{
+  "format_version": 2,
+  "sample": "ITU-zh",
+  "page_kinds": {
+    "1": "front_cover",
+    "2": "editorial",
+    "3": "toc",
+    "4": "article_opener",
+    "5": "photo_spread",
+    "6": "photo_spread",
+    "7": "article_opener",
+    "8": "article_body"
+  },
+  "drop_caps": {},
+  "terms": {
+    "国际电联新闻杂志": "ITU News Magazine",
+    "国际电联无线电通信局": "the ITU Radiocommunication Bureau",
+    "国际电联": "ITU",
+    "世界无线电通信大会": "World Radiocommunication Conference",
+    "无线电规则": "Radio Regulations",
+    "埃及通信和信息技术部": "the Egyptian Ministry of Communications and Information Technology",
+    "马里奥·马尼维奇": "Mario Maniewicz",
+    "马里奥•马尼维奇": "Mario Maniewicz",
+    "马尼维奇": "Maniewicz",
+    "安东尼奥·古特雷斯": "António Guterres",
+    "阿卜杜勒·法塔赫·塞西": "Abdel Fattah el-Sisi"
+  }
+}

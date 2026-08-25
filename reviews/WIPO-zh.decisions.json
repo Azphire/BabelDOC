@@ -1,0 +1,25 @@
+{
+  "format_version": 2,
+  "sample": "WIPO-zh",
+  "page_kinds": {
+    "1": "article_opener",
+    "2": "article_body",
+    "3": "article_body",
+    "4": "photo_spread",
+    "5": "article_opener",
+    "6": "article_body"
+  },
+  "drop_caps": {},
+  "terms": {
+    "世界知识产权组织": "World Intellectual Property Organization",
+    "产权组织": "WIPO",
+    "WIPO杂志": "WIPO Magazine",
+    "东加勒比音乐版权集体组织": "Eastern Caribbean Collective Organisation for Music Rights",
+    "知识产权青年大使": "IP Youth Ambassador",
+    "维珍唱片": "Virgin Records",
+    "布鲁内尔大学": "Brunel University London",
+    "索卡": "soca",
+    "泰勒•斯威夫特": "Taylor Swift",
+    "蕾哈娜": "Rihanna"
+  }
+}
