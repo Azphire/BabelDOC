@@ -43,6 +43,8 @@ from pathlib import Path
 from babeldoc.magazine import chain_backfill as backfill
 from babeldoc.magazine import short_unit
 from babeldoc.magazine.article_context import EMPTY_CONTEXT
+from babeldoc.magazine.chain_signals import BOUNDARY_COLUMN
+from babeldoc.magazine.chain_signals import BOUNDARY_PAGE
 from babeldoc.magazine.chain_signals import CLASS_LABELS_KEY
 from babeldoc.magazine.chain_signals import load_chain_config
 
@@ -110,12 +112,35 @@ class ChainEntry:
     merge: backfill.ChainMerge
     translated: str
     redistribution: backfill.Redistribution
+    capacity: list[dict] = field(default_factory=list)
+
+    @property
+    def boundary_kinds(self) -> list[str]:
+        """What broke the chain between each pair of consecutive members.
+
+        Read off the pages the two members sit on rather than off the detector's
+        verdicts: a handover inside one page is a column edge and a handover
+        between two is a page edge, and that is the whole of the distinction.
+        It is recorded and not acted on -- a running paragraph is cut the same
+        way whichever edge interrupted it -- so that the record can show the
+        two kinds were treated alike instead of asserting it.
+        """
+        return [
+            BOUNDARY_COLUMN if left.page_index == right.page_index else BOUNDARY_PAGE
+            for left, right in zip(self.members, self.members[1:], strict=False)
+        ]
 
     def as_record(self) -> dict:
         return {
             "chain_id": self.chain_id,
             "pair_class": self.pair_class,
             "strategy": self.strategy,
+            "boundary_kinds": self.boundary_kinds,
+            "capacity": self.capacity,
+            "cut_displacement": [
+                None if cut.estimate is None else cut.position - cut.estimate
+                for cut in self.redistribution.cuts
+            ],
             "merged_source_chars": len(self.merge.text),
             "merged_translation_chars": len(self.translated),
             # Written out whole so that the conservation law can be stated over
@@ -458,6 +483,7 @@ class ChainPlan:
                 self.config,
                 aligned_lengths=self._aligned_lengths(prepared, strategy),
                 align_enabled=self.align_enabled,
+                capacities=self._capacities(prepared, strategy),
             )
         except backfill.ChainBackfillError as error:
             self._escalate(chain_id, members, ESCALATION_CONSERVATION, str(error))
@@ -471,6 +497,9 @@ class ChainPlan:
             merge=merge,
             translated=translated,
             redistribution=redistribution,
+            capacity=self._capacity_record(prepared)
+            if strategy == backfill.STRATEGY_CAPACITY
+            else [],
         )
         self.entries.append(entry)
         for member in prepared:
@@ -483,6 +512,75 @@ class ChainPlan:
                     page_index=member.page_index,
                 ),
             )
+
+    def _capacities(
+        self, members: list[MemberPlan], strategy: str
+    ) -> list[int] | None:
+        """How many characters of the target language each member's box holds.
+
+        This is the half of the capacity cut that needs the document, which is
+        why it lives here and not in the pure module: the boxes are on the
+        paragraphs and the estimate is arithmetic over them.
+
+        The typesetting stage's own packer was the first candidate and it
+        cannot serve. It is a method of the stage, it needs the mapped font and
+        a list of typesetting units built from laid out characters, and at this
+        point in the run the translation is a string with no characters behind
+        it -- there is nothing for that packer to pack. The grid is declared in
+        the configuration and measured against the frozen runs instead.
+
+        Returns None where any member cannot be measured, so a chain is cut by
+        one method throughout: a mixture of measured and estimated cuts in one
+        chain would put a boundary of unknown provenance in the middle of it.
+        """
+        if strategy != backfill.STRATEGY_CAPACITY:
+            return None
+        grid = self.config.capacity
+        capacities = []
+        for member in members:
+            box = getattr(member.paragraph, "box", None)
+            style = getattr(member.paragraph, "pdf_style", None)
+            font_size = getattr(style, "font_size", None) if style else None
+            if box is None or font_size is None:
+                return None
+            try:
+                width = float(box.x2) - float(box.x)
+                height = float(box.y2) - float(box.y)
+            except TypeError:
+                return None
+            characters = grid.characters_in(width, height, float(font_size), self.language)
+            if characters <= 0:
+                return None
+            capacities.append(characters)
+        return capacities
+
+    def _capacity_record(self, members: list[MemberPlan]) -> list[dict]:
+        """What each member's box was measured as, for the sidecar."""
+        grid = self.config.capacity
+        rows = []
+        for member in members:
+            box = getattr(member.paragraph, "box", None)
+            style = getattr(member.paragraph, "pdf_style", None)
+            font_size = getattr(style, "font_size", None) if style else None
+            if box is None or font_size is None:
+                rows.append({"chain_index": member.chain_index, "measurable": False})
+                continue
+            width = float(box.x2) - float(box.x)
+            height = float(box.y2) - float(box.y)
+            rows.append(
+                {
+                    "chain_index": member.chain_index,
+                    "measurable": True,
+                    "page_index": member.page_index,
+                    "box": [round(float(v), 2) for v in (box.x, box.y, box.x2, box.y2)],
+                    "font_size": round(float(font_size), 3),
+                    "fitted_lines": grid.lines_in(height, float(font_size), self.language),
+                    "capacity_chars": grid.characters_in(
+                        width, height, float(font_size), self.language
+                    ),
+                }
+            )
+        return rows
 
     def _aligned_lengths(
         self, members: list[MemberPlan], strategy: str

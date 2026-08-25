@@ -1,0 +1,30 @@
+{
+  "adjacent_gap_ratio": 1.0,
+  "counts": {
+    "admitted": 1,
+    "by_shape": {
+      "label_shaped": 1,
+      "name_shaped": 0
+    },
+    "refused": 0,
+    "requests": 1
+  },
+  "enabled": true,
+  "min_text_length": 5,
+  "refused_units": [],
+  "shape_exception_floor": 2,
+  "short_label_max_chars": 8,
+  "switch": "magazine_short_unit",
+  "units": [
+    {
+      "chars": 4,
+      "debug_id": "nFR8V",
+      "identity_skipped": false,
+      "page": 1,
+      "paragraph": "p1#31",
+      "shape": "label_shaped",
+      "source": "ZOOM",
+      "translated": "缩放"
+    }
+  ]
+}

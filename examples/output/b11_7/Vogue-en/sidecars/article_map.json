@@ -1,0 +1,57 @@
+{
+  "articles": [],
+  "counts": {
+    "articles": 0,
+    "chains": 0,
+    "merged_by_chain": 0,
+    "pages": 3,
+    "unassigned": 3
+  },
+  "pages": [
+    {
+      "article_id": null,
+      "page": 1,
+      "page_kind": "advertisement",
+      "page_kind_conf": 1.0,
+      "reason": "not_chain_eligible",
+      "role": "unassigned"
+    },
+    {
+      "article_id": null,
+      "page": 2,
+      "page_kind": "advertisement",
+      "page_kind_conf": 1.0,
+      "reason": "not_chain_eligible",
+      "role": "unassigned"
+    },
+    {
+      "article_id": null,
+      "page": 3,
+      "page_kind": "toc",
+      "page_kind_conf": 0.875,
+      "reason": "not_chain_eligible",
+      "role": "unassigned"
+    }
+  ],
+  "title_labels": [
+    "title",
+    "paragraph_title"
+  ],
+  "unassigned": [
+    {
+      "page": 1,
+      "page_kind": "advertisement",
+      "reason": "not_chain_eligible"
+    },
+    {
+      "page": 2,
+      "page_kind": "advertisement",
+      "reason": "not_chain_eligible"
+    },
+    {
+      "page": 3,
+      "page_kind": "toc",
+      "reason": "not_chain_eligible"
+    }
+  ]
+}

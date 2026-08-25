@@ -63,8 +63,23 @@ MAX_PARAGRAPHS = "max_paragraphs"
 
 # Applicability keys the orphan action is built from.
 MIN_RATIO_KEY = "min_residue_ratio"
+# The same bound, declared for one target language and overriding the general
+# one there. Named by the direction it governs, as the detector's own residue
+# bounds are, so the two files spell a direction the same way.
+MIN_RATIO_BY_LANGUAGE_FORMAT = "min_residue_ratio_into_{language}"
+
+# What separates a general applicability term from the language it is declared
+# for. One spelling, so a term overriding another is recognised by shape rather
+# than by being listed somewhere.
+LANGUAGE_INFIX = "_into_"
 MIN_CHARS_KEY = "min_source_chars"
 ORPHAN_LABELS_KEY = "orphan_layout_labels"
+# The second jurisdiction, and optional rather than required: a configuration an
+# earlier batch froze declares only the first, and a parser that refuses last
+# year's file makes last year's run unreplayable. Absent, it is false, which is
+# what those configurations meant.
+ORPHAN_VERTICAL_KEY = "orphan_accepts_vertical"
+ORPHAN_VERTICAL_DEFAULT = False
 
 # Applicability keys the containment action is built from.
 CONTAIN_LABELS_KEY = "contain_layout_labels"
@@ -173,17 +188,62 @@ class Action:
     def answers_for(self, kind: str) -> bool:
         return kind in self.issue_kinds
 
-    def conditions(self) -> list[str]:
+    def overridden_by(self, language: str | None) -> dict[str, str]:
+        """Which general terms this run's target language replaces, and with what.
+
+        A term named ``<term>_into_<language>`` overrides ``<term>`` for a run
+        finishing into that language, by the same longest declared prefix match
+        every other per language rule in this project uses.
+        """
+        tag = (language or "").strip().lower()
+        taken: dict[str, str] = {}
+        for key in self.applicability:
+            general, separator, suffix = key.partition(LANGUAGE_INFIX)
+            if not separator or general not in self.applicability:
+                continue
+            if not tag.startswith(suffix):
+                continue
+            if general not in taken or len(suffix) > len(
+                taken[general].partition(LANGUAGE_INFIX)[2]
+            ):
+                taken[general] = key
+        return taken
+
+    def conditions(self, language: str | None = None) -> list[str]:
         """Each applicability term as one sentence, its own value substituted.
 
         In the file's own order, so the sentences read the way the rule is
         written rather than in an order chosen here.
+
+        A term the run's target language overrides is rendered with the value
+        that actually governs, and the override's own sentence is dropped. Both
+        would be worse than either: the decision this list is written for is
+        taken by a model reading it, and a rule stated as "at or above 0.9,
+        unless" followed by "into English it is 0.05" is read as 0.9 -- which is
+        not the rule, and the finding it refuses is one the code would have
+        admitted.
         """
+        overrides = self.overridden_by(language)
+        # Every term declared for a language is rendered through the general
+        # term it overrides, never beside it. A run that takes the override sees
+        # the general sentence carrying the override's value; a run that does
+        # not sees the general sentence carrying the general value. Either way
+        # exactly one share is stated, which is the number that governs.
+        suffixed = {
+            key
+            for key in self.applicability
+            if LANGUAGE_INFIX in key
+            and key.partition(LANGUAGE_INFIX)[0] in self.applicability
+        }
         rendered: list[str] = []
         for key, value in self.applicability.items():
+            if key in suffixed:
+                continue
             statement = self.statements.get(key)
             if statement is None:
                 continue
+            if key in overrides:
+                value = self.applicability[overrides[key]]
             shown = (
                 ", ".join(str(item) for item in value)
                 if isinstance(value, list | tuple)
@@ -312,7 +372,19 @@ def _parse_applicability(
     """
     _require(isinstance(raw, dict) and raw, f"{source}: {APPLICABILITY_KEY} is empty")
     flat = {key: value for key, value in raw.items() if key != STATEMENTS_KEY}
-    parameters = _bounded(flat, f"{source}.{APPLICABILITY_KEY}")
+    # A term that switches a whole jurisdiction on or off is a boolean, and a
+    # boolean is its own bound: there is no range to declare and none to check.
+    # Taken out before the numeric validation rather than given a range that
+    # would be a fiction, which is the same treatment the page type vocabulary
+    # gives an optional boolean policy flag.
+    switches = {
+        key: value for key, value in flat.items() if isinstance(value, bool)
+    }
+    parameters = _bounded(
+        {key: value for key, value in flat.items() if key not in switches},
+        f"{source}.{APPLICABILITY_KEY}",
+    )
+    parameters.update(switches)
     for key in required:
         _require(
             key in parameters,

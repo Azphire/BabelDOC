@@ -1,0 +1,6 @@
+{
+  "description": "Which translation directions hand a residue bearing formula composition back to the translator, and nothing else. The style and formula stage groups characters carrying no paragraph style as a formula, and a formula is never offered for translation; where the grouped characters are the target document's residue script that grouping is the reason the text stands untranslated. Whether to undo it is a question about the direction, not about the page: 'directions' lists the target languages this pass acts in, and a target language absent from it is left exactly as the stage left it. Into English it acts, because a Chinese character in a document finished into English has no legitimate untranslated use. Into Chinese it does not, because a Latin run may be a brand, a URL, an address or a name that is meant to stand as it is, and handing every one of them to the translator would rewrite text nobody asked to have rewritten. Which script counts as residue in a direction is not restated here: it is read from residue_directions in detectors.json, so the detector that reports the residue and the pass that repairs it cannot disagree about what residue is.",
+  "directions": [
+    "en"
+  ]
+}

@@ -1,0 +1,561 @@
+{
+ "batch": "b11.7",
+ "annotation": "a composition's holder, from pdf_formula to pdf_line",
+ "absolute_rule": "A composition carrying pdf_form or pdf_curve is never converted. PdfLine holds neither field and pdf_creater.py is the only renderer of both, so a converted carrier drops its artwork with no error raised and nothing missing from any report -- an image simply absent from the page.",
+ "sites": [
+  {
+   "file": "babeldoc/format/pdf/document_il/backend/pdf_creater.py",
+   "line": 818,
+   "source": "elif composition.pdf_formula:",
+   "reads": "the characters of a composition, and separately its pdf_form and pdf_curve, which are the writer's only route to vector artwork",
+   "after_reclassification": "A converted composition is a line and the writer takes its characters through the line branch, which draws the same glyphs. The form and curve branches no longer see it, which is why a composition carrying either is never converted -- that is the absolute rule, and the carrier count below is what shows it was not merely assumed."
+  },
+  {
+   "file": "babeldoc/format/pdf/document_il/backend/pdf_creater.py",
+   "line": 820,
+   "source": "chars.extend(composition.pdf_formula.pdf_character)",
+   "reads": "the characters of a composition, and separately its pdf_form and pdf_curve, which are the writer's only route to vector artwork",
+   "after_reclassification": "A converted composition is a line and the writer takes its characters through the line branch, which draws the same glyphs. The form and curve branches no longer see it, which is why a composition carrying either is never converted -- that is the absolute rule, and the carrier count below is what shows it was not merely assumed."
+  },
+  {
+   "file": "babeldoc/format/pdf/document_il/backend/pdf_creater.py",
+   "line": 866,
+   "source": "if composition.pdf_formula:",
+   "reads": "the characters of a composition, and separately its pdf_form and pdf_curve, which are the writer's only route to vector artwork",
+   "after_reclassification": "A converted composition is a line and the writer takes its characters through the line branch, which draws the same glyphs. The form and curve branches no longer see it, which is why a composition carrying either is never converted -- that is the absolute rule, and the carrier count below is what shows it was not merely assumed."
+  },
+  {
+   "file": "babeldoc/format/pdf/document_il/backend/pdf_creater.py",
+   "line": 867,
+   "source": "formula_forms.extend(composition.pdf_formula.pdf_form)",
+   "reads": "the characters of a composition, and separately its pdf_form and pdf_curve, which are the writer's only route to vector artwork",
+   "after_reclassification": "A converted composition is a line and the writer takes its characters through the line branch, which draws the same glyphs. The form and curve branches no longer see it, which is why a composition carrying either is never converted -- that is the absolute rule, and the carrier count below is what shows it was not merely assumed."
+  },
+  {
+   "file": "babeldoc/format/pdf/document_il/backend/pdf_creater.py",
+   "line": 903,
+   "source": "if composition.pdf_formula:",
+   "reads": "the characters of a composition, and separately its pdf_form and pdf_curve, which are the writer's only route to vector artwork",
+   "after_reclassification": "A converted composition is a line and the writer takes its characters through the line branch, which draws the same glyphs. The form and curve branches no longer see it, which is why a composition carrying either is never converted -- that is the absolute rule, and the carrier count below is what shows it was not merely assumed."
+  },
+  {
+   "file": "babeldoc/format/pdf/document_il/backend/pdf_creater.py",
+   "line": 904,
+   "source": "formula_curves.extend(composition.pdf_formula.pdf_curve)",
+   "reads": "the characters of a composition, and separately its pdf_form and pdf_curve, which are the writer's only route to vector artwork",
+   "after_reclassification": "A converted composition is a line and the writer takes its characters through the line branch, which draws the same glyphs. The form and curve branches no longer see it, which is why a composition carrying either is never converted -- that is the absolute rule, and the carrier count below is what shows it was not merely assumed."
+  },
+  {
+   "file": "babeldoc/format/pdf/document_il/midend/add_debug_information.py",
+   "line": 124,
+   "source": "if composition.pdf_formula:",
+   "reads": "a formula's box and characters, to draw a debug frame",
+   "after_reclassification": "Debug output only, and it runs under the debug switch. A converted composition draws no formula frame; its characters are still drawn by the line branch. Nothing a produced document shows depends on it."
+  },
+  {
+   "file": "babeldoc/format/pdf/document_il/midend/add_debug_information.py",
+   "line": 129,
+   "source": "composition.pdf_formula.box,",
+   "reads": "a formula's box and characters, to draw a debug frame",
+   "after_reclassification": "Debug output only, and it runs under the debug switch. A converted composition draws no formula frame; its characters are still drawn by the line branch. Nothing a produced document shows depends on it."
+  },
+  {
+   "file": "babeldoc/format/pdf/document_il/midend/add_debug_information.py",
+   "line": 134,
+   "source": "composition.pdf_formula.box,",
+   "reads": "a formula's box and characters, to draw a debug frame",
+   "after_reclassification": "Debug output only, and it runs under the debug switch. A converted composition draws no formula frame; its characters are still drawn by the line branch. Nothing a produced document shows depends on it."
+  },
+  {
+   "file": "babeldoc/format/pdf/document_il/midend/add_debug_information.py",
+   "line": 138,
+   "source": "for char in composition.pdf_formula.pdf_character:",
+   "reads": "a formula's box and characters, to draw a debug frame",
+   "after_reclassification": "Debug output only, and it runs under the debug switch. A converted composition draws no formula frame; its characters are still drawn by the line branch. Nothing a produced document shows depends on it."
+  },
+  {
+   "file": "babeldoc/format/pdf/document_il/midend/il_translator.py",
+   "line": 705,
+   "source": "elif composition.pdf_formula:",
+   "reads": "a formula, to replace it with a placeholder in the request and to restore it in the answer",
+   "after_reclassification": "This is the point of the change. A converted composition is no longer replaced by a placeholder, so its characters reach the request as text and are translated. Nothing in this file is modified; what changes is which compositions arrive carrying a formula."
+  },
+  {
+   "file": "babeldoc/format/pdf/document_il/midend/il_translator.py",
+   "line": 731,
+   "source": "elif composition.pdf_formula:",
+   "reads": "a formula, to replace it with a placeholder in the request and to restore it in the answer",
+   "after_reclassification": "This is the point of the change. A converted composition is no longer replaced by a placeholder, so its characters reach the request as text and are translated. Nothing in this file is modified; what changes is which compositions arrive carrying a formula."
+  },
+  {
+   "file": "babeldoc/format/pdf/document_il/midend/il_translator.py",
+   "line": 733,
+   "source": "composition.pdf_formula,",
+   "reads": "a formula, to replace it with a placeholder in the request and to restore it in the answer",
+   "after_reclassification": "This is the point of the change. A converted composition is no longer replaced by a placeholder, so its characters reach the request as text and are translated. Nothing in this file is modified; what changes is which compositions arrive carrying a formula."
+  },
+  {
+   "file": "babeldoc/format/pdf/document_il/midend/il_translator.py",
+   "line": 976,
+   "source": "comp.pdf_formula = placeholder.formula",
+   "reads": "a formula, to replace it with a placeholder in the request and to restore it in the answer",
+   "after_reclassification": "This is the point of the change. A converted composition is no longer replaced by a placeholder, so its characters reach the request as text and are translated. Nothing in this file is modified; what changes is which compositions arrive carrying a formula."
+  },
+  {
+   "file": "babeldoc/format/pdf/document_il/midend/paragraph_finder.py",
+   "line": 132,
+   "source": "elif composition.pdf_formula:",
+   "reads": "a formula's characters, when gathering a paragraph's",
+   "after_reclassification": "The stage runs before this pass and never sees a converted composition."
+  },
+  {
+   "file": "babeldoc/format/pdf/document_il/midend/paragraph_finder.py",
+   "line": 133,
+   "source": "chars.extend(composition.pdf_formula.pdf_character)",
+   "reads": "a formula's characters, when gathering a paragraph's",
+   "after_reclassification": "The stage runs before this pass and never sees a converted composition."
+  },
+  {
+   "file": "babeldoc/format/pdf/document_il/midend/paragraph_finder.py",
+   "line": 337,
+   "source": "elif composition.pdf_formula:",
+   "reads": "a formula's characters, when gathering a paragraph's",
+   "after_reclassification": "The stage runs before this pass and never sees a converted composition."
+  },
+  {
+   "file": "babeldoc/format/pdf/document_il/midend/paragraph_finder.py",
+   "line": 338,
+   "source": "for char in composition.pdf_formula.pdf_character:",
+   "reads": "a formula's characters, when gathering a paragraph's",
+   "after_reclassification": "The stage runs before this pass and never sees a converted composition."
+  },
+  {
+   "file": "babeldoc/format/pdf/document_il/midend/remove_descent.py",
+   "line": 133,
+   "source": "elif comp.pdf_formula:",
+   "reads": "a formula's characters, to shift them off the descent",
+   "after_reclassification": "It handles the line branch the same way, so a converted composition is shifted identically."
+  },
+  {
+   "file": "babeldoc/format/pdf/document_il/midend/remove_descent.py",
+   "line": 134,
+   "source": "for char in comp.pdf_formula.pdf_character:",
+   "reads": "a formula's characters, to shift them off the descent",
+   "after_reclassification": "It handles the line branch the same way, so a converted composition is shifted identically."
+  },
+  {
+   "file": "babeldoc/format/pdf/document_il/midend/styles_and_formulas.py",
+   "line": 82,
+   "source": "composition.pdf_formula,",
+   "reads": "everything about a formula: is_corner_mark, line_id, the offsets, and the merge and split of formulas within a paragraph",
+   "after_reclassification": "The stage that writes all of them, and it has finished before this pass runs. is_corner_mark and line_id are read nowhere else in the tree, which is why converting a corner mark loses nothing downstream. This pass converts by the same rewrite that stage already performs on the formulas it judges translatable."
+  },
+  {
+   "file": "babeldoc/format/pdf/document_il/midend/styles_and_formulas.py",
+   "line": 141,
+   "source": "if comp.pdf_formula:",
+   "reads": "everything about a formula: is_corner_mark, line_id, the offsets, and the merge and split of formulas within a paragraph",
+   "after_reclassification": "The stage that writes all of them, and it has finished before this pass runs. is_corner_mark and line_id are read nowhere else in the tree, which is why converting a corner mark loses nothing downstream. This pass converts by the same rewrite that stage already performs on the formulas it judges translatable."
+  },
+  {
+   "file": "babeldoc/format/pdf/document_il/midend/styles_and_formulas.py",
+   "line": 142,
+   "source": "self.update_formula_data(comp.pdf_formula)",
+   "reads": "everything about a formula: is_corner_mark, line_id, the offsets, and the merge and split of formulas within a paragraph",
+   "after_reclassification": "The stage that writes all of them, and it has finished before this pass runs. is_corner_mark and line_id are read nowhere else in the tree, which is why converting a corner mark loses nothing downstream. This pass converts by the same rewrite that stage already performs on the formulas it judges translatable."
+  },
+  {
+   "file": "babeldoc/format/pdf/document_il/midend/styles_and_formulas.py",
+   "line": 262,
+   "source": "if composition.pdf_formula:",
+   "reads": "everything about a formula: is_corner_mark, line_id, the offsets, and the merge and split of formulas within a paragraph",
+   "after_reclassification": "The stage that writes all of them, and it has finished before this pass runs. is_corner_mark and line_id are read nowhere else in the tree, which is why converting a corner mark loses nothing downstream. This pass converts by the same rewrite that stage already performs on the formulas it judges translatable."
+  },
+  {
+   "file": "babeldoc/format/pdf/document_il/midend/styles_and_formulas.py",
+   "line": 263,
+   "source": "all_formulas.append((composition.pdf_formula, paragraph.xobj_id))",
+   "reads": "everything about a formula: is_corner_mark, line_id, the offsets, and the merge and split of formulas within a paragraph",
+   "after_reclassification": "The stage that writes all of them, and it has finished before this pass runs. is_corner_mark and line_id are read nowhere else in the tree, which is why converting a corner mark loses nothing downstream. This pass converts by the same rewrite that stage already performs on the formulas it judges translatable."
+  },
+  {
+   "file": "babeldoc/format/pdf/document_il/midend/styles_and_formulas.py",
+   "line": 720,
+   "source": "composition.pdf_formula is not None",
+   "reads": "everything about a formula: is_corner_mark, line_id, the offsets, and the merge and split of formulas within a paragraph",
+   "after_reclassification": "The stage that writes all of them, and it has finished before this pass runs. is_corner_mark and line_id are read nowhere else in the tree, which is why converting a corner mark loses nothing downstream. This pass converts by the same rewrite that stage already performs on the formulas it judges translatable."
+  },
+  {
+   "file": "babeldoc/format/pdf/document_il/midend/styles_and_formulas.py",
+   "line": 721,
+   "source": "and not composition.pdf_formula.is_corner_mark",
+   "reads": "everything about a formula: is_corner_mark, line_id, the offsets, and the merge and split of formulas within a paragraph",
+   "after_reclassification": "The stage that writes all of them, and it has finished before this pass runs. is_corner_mark and line_id are read nowhere else in the tree, which is why converting a corner mark loses nothing downstream. This pass converts by the same rewrite that stage already performs on the formulas it judges translatable."
+  },
+  {
+   "file": "babeldoc/format/pdf/document_il/midend/styles_and_formulas.py",
+   "line": 723,
+   "source": "composition.pdf_formula,",
+   "reads": "everything about a formula: is_corner_mark, line_id, the offsets, and the merge and split of formulas within a paragraph",
+   "after_reclassification": "The stage that writes all of them, and it has finished before this pass runs. is_corner_mark and line_id are read nowhere else in the tree, which is why converting a corner mark loses nothing downstream. This pass converts by the same rewrite that stage already performs on the formulas it judges translatable."
+  },
+  {
+   "file": "babeldoc/format/pdf/document_il/midend/styles_and_formulas.py",
+   "line": 728,
+   "source": "pdf_character=composition.pdf_formula.pdf_character,",
+   "reads": "everything about a formula: is_corner_mark, line_id, the offsets, and the merge and split of formulas within a paragraph",
+   "after_reclassification": "The stage that writes all of them, and it has finished before this pass runs. is_corner_mark and line_id are read nowhere else in the tree, which is why converting a corner mark loses nothing downstream. This pass converts by the same rewrite that stage already performs on the formulas it judges translatable."
+  },
+  {
+   "file": "babeldoc/format/pdf/document_il/midend/styles_and_formulas.py",
+   "line": 756,
+   "source": "if comp.pdf_formula is not None:",
+   "reads": "everything about a formula: is_corner_mark, line_id, the offsets, and the merge and split of formulas within a paragraph",
+   "after_reclassification": "The stage that writes all of them, and it has finished before this pass runs. is_corner_mark and line_id are read nowhere else in the tree, which is why converting a corner mark loses nothing downstream. This pass converts by the same rewrite that stage already performs on the formulas it judges translatable."
+  },
+  {
+   "file": "babeldoc/format/pdf/document_il/midend/styles_and_formulas.py",
+   "line": 910,
+   "source": "if not composition.pdf_formula:",
+   "reads": "everything about a formula: is_corner_mark, line_id, the offsets, and the merge and split of formulas within a paragraph",
+   "after_reclassification": "The stage that writes all of them, and it has finished before this pass runs. is_corner_mark and line_id are read nowhere else in the tree, which is why converting a corner mark loses nothing downstream. This pass converts by the same rewrite that stage already performs on the formulas it judges translatable."
+  },
+  {
+   "file": "babeldoc/format/pdf/document_il/midend/styles_and_formulas.py",
+   "line": 913,
+   "source": "formula = composition.pdf_formula",
+   "reads": "everything about a formula: is_corner_mark, line_id, the offsets, and the merge and split of formulas within a paragraph",
+   "after_reclassification": "The stage that writes all of them, and it has finished before this pass runs. is_corner_mark and line_id are read nowhere else in the tree, which is why converting a corner mark loses nothing downstream. This pass converts by the same rewrite that stage already performs on the formulas it judges translatable."
+  },
+  {
+   "file": "babeldoc/format/pdf/document_il/midend/styles_and_formulas.py",
+   "line": 1031,
+   "source": "return PdfParagraphComposition(pdf_formula=formula)",
+   "reads": "everything about a formula: is_corner_mark, line_id, the offsets, and the merge and split of formulas within a paragraph",
+   "after_reclassification": "The stage that writes all of them, and it has finished before this pass runs. is_corner_mark and line_id are read nowhere else in the tree, which is why converting a corner mark loses nothing downstream. This pass converts by the same rewrite that stage already performs on the formulas it judges translatable."
+  },
+  {
+   "file": "babeldoc/format/pdf/document_il/midend/styles_and_formulas.py",
+   "line": 1175,
+   "source": "if comp1.pdf_formula is None:",
+   "reads": "everything about a formula: is_corner_mark, line_id, the offsets, and the merge and split of formulas within a paragraph",
+   "after_reclassification": "The stage that writes all of them, and it has finished before this pass runs. is_corner_mark and line_id are read nowhere else in the tree, which is why converting a corner mark loses nothing downstream. This pass converts by the same rewrite that stage already performs on the formulas it judges translatable."
+  },
+  {
+   "file": "babeldoc/format/pdf/document_il/midend/styles_and_formulas.py",
+   "line": 1180,
+   "source": "if comp2.pdf_formula is None:",
+   "reads": "everything about a formula: is_corner_mark, line_id, the offsets, and the merge and split of formulas within a paragraph",
+   "after_reclassification": "The stage that writes all of them, and it has finished before this pass runs. is_corner_mark and line_id are read nowhere else in the tree, which is why converting a corner mark loses nothing downstream. This pass converts by the same rewrite that stage already performs on the formulas it judges translatable."
+  },
+  {
+   "file": "babeldoc/format/pdf/document_il/midend/styles_and_formulas.py",
+   "line": 1183,
+   "source": "formula1 = comp1.pdf_formula",
+   "reads": "everything about a formula: is_corner_mark, line_id, the offsets, and the merge and split of formulas within a paragraph",
+   "after_reclassification": "The stage that writes all of them, and it has finished before this pass runs. is_corner_mark and line_id are read nowhere else in the tree, which is why converting a corner mark loses nothing downstream. This pass converts by the same rewrite that stage already performs on the formulas it judges translatable."
+  },
+  {
+   "file": "babeldoc/format/pdf/document_il/midend/styles_and_formulas.py",
+   "line": 1184,
+   "source": "formula2 = comp2.pdf_formula",
+   "reads": "everything about a formula: is_corner_mark, line_id, the offsets, and the merge and split of formulas within a paragraph",
+   "after_reclassification": "The stage that writes all of them, and it has finished before this pass runs. is_corner_mark and line_id are read nowhere else in the tree, which is why converting a corner mark loses nothing downstream. This pass converts by the same rewrite that stage already performs on the formulas it judges translatable."
+  },
+  {
+   "file": "babeldoc/format/pdf/document_il/midend/styles_and_formulas.py",
+   "line": 1235,
+   "source": "pdf_formula=merged_formula,",
+   "reads": "everything about a formula: is_corner_mark, line_id, the offsets, and the merge and split of formulas within a paragraph",
+   "after_reclassification": "The stage that writes all of them, and it has finished before this pass runs. is_corner_mark and line_id are read nowhere else in the tree, which is why converting a corner mark loses nothing downstream. This pass converts by the same rewrite that stage already performs on the formulas it judges translatable."
+  },
+  {
+   "file": "babeldoc/format/pdf/document_il/midend/styles_and_formulas.py",
+   "line": 1283,
+   "source": "if composition.pdf_formula is not None and self.should_split_formula(",
+   "reads": "everything about a formula: is_corner_mark, line_id, the offsets, and the merge and split of formulas within a paragraph",
+   "after_reclassification": "The stage that writes all of them, and it has finished before this pass runs. is_corner_mark and line_id are read nowhere else in the tree, which is why converting a corner mark loses nothing downstream. This pass converts by the same rewrite that stage already performs on the formulas it judges translatable."
+  },
+  {
+   "file": "babeldoc/format/pdf/document_il/midend/styles_and_formulas.py",
+   "line": 1284,
+   "source": "composition.pdf_formula,",
+   "reads": "everything about a formula: is_corner_mark, line_id, the offsets, and the merge and split of formulas within a paragraph",
+   "after_reclassification": "The stage that writes all of them, and it has finished before this pass runs. is_corner_mark and line_id are read nowhere else in the tree, which is why converting a corner mark loses nothing downstream. This pass converts by the same rewrite that stage already performs on the formulas it judges translatable."
+  },
+  {
+   "file": "babeldoc/format/pdf/document_il/midend/styles_and_formulas.py",
+   "line": 1287,
+   "source": "char_groups = self.split_formula_by_comma(composition.pdf_formula)",
+   "reads": "everything about a formula: is_corner_mark, line_id, the offsets, and the merge and split of formulas within a paragraph",
+   "after_reclassification": "The stage that writes all of them, and it has finished before this pass runs. is_corner_mark and line_id are read nowhere else in the tree, which is why converting a corner mark loses nothing downstream. This pass converts by the same rewrite that stage already performs on the formulas it judges translatable."
+  },
+  {
+   "file": "babeldoc/format/pdf/document_il/midend/styles_and_formulas.py",
+   "line": 1293,
+   "source": "line_id=composition.pdf_formula.line_id,",
+   "reads": "everything about a formula: is_corner_mark, line_id, the offsets, and the merge and split of formulas within a paragraph",
+   "after_reclassification": "The stage that writes all of them, and it has finished before this pass runs. is_corner_mark and line_id are read nowhere else in the tree, which is why converting a corner mark loses nothing downstream. This pass converts by the same rewrite that stage already performs on the formulas it judges translatable."
+  },
+  {
+   "file": "babeldoc/format/pdf/document_il/midend/styles_and_formulas.py",
+   "line": 1297,
+   "source": "PdfParagraphComposition(pdf_formula=formula),",
+   "reads": "everything about a formula: is_corner_mark, line_id, the offsets, and the merge and split of formulas within a paragraph",
+   "after_reclassification": "The stage that writes all of them, and it has finished before this pass runs. is_corner_mark and line_id are read nowhere else in the tree, which is why converting a corner mark loses nothing downstream. This pass converts by the same rewrite that stage already performs on the formulas it judges translatable."
+  },
+  {
+   "file": "babeldoc/format/pdf/document_il/midend/typesetting.py",
+   "line": 1734,
+   "source": "elif composition.pdf_formula:",
+   "reads": "a formula, to build one typesetting unit carrying it whole, and its x_advance and offsets when placing it",
+   "after_reclassification": "A converted composition becomes ordinary character units instead of one formula unit, so it is line broken like text rather than carried as an atom -- which is what a credit line should be. It loses the formula's padding advance and takes its own characters' advances instead."
+  },
+  {
+   "file": "babeldoc/format/pdf/document_il/midend/typesetting.py",
+   "line": 1735,
+   "source": "result.extend([TypesettingUnit(formular=composition.pdf_formula)])",
+   "reads": "a formula, to build one typesetting unit carrying it whole, and its x_advance and offsets when placing it",
+   "after_reclassification": "A converted composition becomes ordinary character units instead of one formula unit, so it is line broken like text rather than carried as an atom -- which is what a credit line should be. It loses the formula's padding advance and takes its own characters' advances instead."
+  },
+  {
+   "file": "babeldoc/format/pdf/document_il/midend/typesetting.py",
+   "line": 1770,
+   "source": "composition.append(PdfParagraphComposition(pdf_formula=unit.formular))",
+   "reads": "a formula, to build one typesetting unit carrying it whole, and its x_advance and offsets when placing it",
+   "after_reclassification": "A converted composition becomes ordinary character units instead of one formula unit, so it is line broken like text rather than carried as an atom -- which is what a credit line should be. It loses the formula's padding advance and takes its own characters' advances instead."
+  },
+  {
+   "file": "babeldoc/format/pdf/document_il/utils/layout_helper.py",
+   "line": 188,
+   "source": "elif composition.pdf_formula:",
+   "reads": "a formula's width, height, characters, and its first and last character, for the layout measurements shared across stages",
+   "after_reclassification": "Every one of those has a line branch beside the formula branch, computing the same quantity from the same characters. The measurements are unchanged."
+  },
+  {
+   "file": "babeldoc/format/pdf/document_il/utils/layout_helper.py",
+   "line": 189,
+   "source": "length += composition.pdf_formula.box.x2 - composition.pdf_formula.box.x",
+   "reads": "a formula's width, height, characters, and its first and last character, for the layout measurements shared across stages",
+   "after_reclassification": "Every one of those has a line branch beside the formula branch, computing the same quantity from the same characters. The measurements are unchanged."
+  },
+  {
+   "file": "babeldoc/format/pdf/document_il/utils/layout_helper.py",
+   "line": 209,
+   "source": "elif composition.pdf_formula:",
+   "reads": "a formula's width, height, characters, and its first and last character, for the layout measurements shared across stages",
+   "after_reclassification": "Every one of those has a line branch beside the formula branch, computing the same quantity from the same characters. The measurements are unchanged."
+  },
+  {
+   "file": "babeldoc/format/pdf/document_il/utils/layout_helper.py",
+   "line": 210,
+   "source": "chars.extend(composition.pdf_formula.pdf_character)",
+   "reads": "a formula's width, height, characters, and its first and last character, for the layout measurements shared across stages",
+   "after_reclassification": "Every one of those has a line branch beside the formula branch, computing the same quantity from the same characters. The measurements are unchanged."
+  },
+  {
+   "file": "babeldoc/format/pdf/document_il/utils/layout_helper.py",
+   "line": 329,
+   "source": "elif composition.pdf_formula:",
+   "reads": "a formula's width, height, characters, and its first and last character, for the layout measurements shared across stages",
+   "after_reclassification": "Every one of those has a line branch beside the formula branch, computing the same quantity from the same characters. The measurements are unchanged."
+  },
+  {
+   "file": "babeldoc/format/pdf/document_il/utils/layout_helper.py",
+   "line": 331,
+   "source": "composition.pdf_formula.box.y2 - composition.pdf_formula.box.y",
+   "reads": "a formula's width, height, characters, and its first and last character, for the layout measurements shared across stages",
+   "after_reclassification": "Every one of those has a line branch beside the formula branch, computing the same quantity from the same characters. The measurements are unchanged."
+  },
+  {
+   "file": "babeldoc/format/pdf/document_il/utils/layout_helper.py",
+   "line": 410,
+   "source": "elif composition.pdf_formula:",
+   "reads": "a formula's width, height, characters, and its first and last character, for the layout measurements shared across stages",
+   "after_reclassification": "Every one of those has a line branch beside the formula branch, computing the same quantity from the same characters. The measurements are unchanged."
+  },
+  {
+   "file": "babeldoc/format/pdf/document_il/utils/layout_helper.py",
+   "line": 411,
+   "source": "chars = composition.pdf_formula.pdf_character",
+   "reads": "a formula's width, height, characters, and its first and last character, for the layout measurements shared across stages",
+   "after_reclassification": "Every one of those has a line branch beside the formula branch, computing the same quantity from the same characters. The measurements are unchanged."
+  },
+  {
+   "file": "babeldoc/format/pdf/document_il/utils/layout_helper.py",
+   "line": 454,
+   "source": "elif curr_comp.pdf_formula:",
+   "reads": "a formula's width, height, characters, and its first and last character, for the layout measurements shared across stages",
+   "after_reclassification": "Every one of those has a line branch beside the formula branch, computing the same quantity from the same characters. The measurements are unchanged."
+  },
+  {
+   "file": "babeldoc/format/pdf/document_il/utils/layout_helper.py",
+   "line": 455,
+   "source": "curr_comp.pdf_formula.pdf_character.append(space_char)",
+   "reads": "a formula's width, height, characters, and its first and last character, for the layout measurements shared across stages",
+   "after_reclassification": "Every one of those has a line branch beside the formula branch, computing the same quantity from the same characters. The measurements are unchanged."
+  },
+  {
+   "file": "babeldoc/format/pdf/document_il/utils/layout_helper.py",
+   "line": 468,
+   "source": "elif comp.pdf_formula and comp.pdf_formula.pdf_character:",
+   "reads": "a formula's width, height, characters, and its first and last character, for the layout measurements shared across stages",
+   "after_reclassification": "Every one of those has a line branch beside the formula branch, computing the same quantity from the same characters. The measurements are unchanged."
+  },
+  {
+   "file": "babeldoc/format/pdf/document_il/utils/layout_helper.py",
+   "line": 469,
+   "source": "return comp.pdf_formula.pdf_character[0]",
+   "reads": "a formula's width, height, characters, and its first and last character, for the layout measurements shared across stages",
+   "after_reclassification": "Every one of those has a line branch beside the formula branch, computing the same quantity from the same characters. The measurements are unchanged."
+  },
+  {
+   "file": "babeldoc/format/pdf/document_il/utils/layout_helper.py",
+   "line": 485,
+   "source": "elif comp.pdf_formula and comp.pdf_formula.pdf_character:",
+   "reads": "a formula's width, height, characters, and its first and last character, for the layout measurements shared across stages",
+   "after_reclassification": "Every one of those has a line branch beside the formula branch, computing the same quantity from the same characters. The measurements are unchanged."
+  },
+  {
+   "file": "babeldoc/format/pdf/document_il/utils/layout_helper.py",
+   "line": 486,
+   "source": "return comp.pdf_formula.pdf_character[-1]",
+   "reads": "a formula's width, height, characters, and its first and last character, for the layout measurements shared across stages",
+   "after_reclassification": "Every one of those has a line branch beside the formula branch, computing the same quantity from the same characters. The measurements are unchanged."
+  },
+  {
+   "file": "babeldoc/format/pdf/document_il/utils/layout_helper.py",
+   "line": 982,
+   "source": "elif composition.pdf_formula and composition.pdf_formula.box:",
+   "reads": "a formula's width, height, characters, and its first and last character, for the layout measurements shared across stages",
+   "after_reclassification": "Every one of those has a line branch beside the formula branch, computing the same quantity from the same characters. The measurements are unchanged."
+  },
+  {
+   "file": "babeldoc/format/pdf/document_il/utils/layout_helper.py",
+   "line": 983,
+   "source": "comp_box = composition.pdf_formula.box",
+   "reads": "a formula's width, height, characters, and its first and last character, for the layout measurements shared across stages",
+   "after_reclassification": "Every one of those has a line branch beside the formula branch, computing the same quantity from the same characters. The measurements are unchanged."
+  },
+  {
+   "file": "babeldoc/format/pdf/document_il/utils/paragraph_helper.py",
+   "line": 19,
+   "source": "elif composition.pdf_formula:",
+   "reads": "a formula's characters when gathering a paragraph's, and separately whether every composition of a paragraph is a formula or whitespace -- the test for a paragraph that is nothing but formula",
+   "after_reclassification": "The gather has a line branch holding the same characters, so it is unchanged. The all-formula test stops answering yes for a converted paragraph, which is correct and is the point: a paragraph of residue text is not a paragraph of formula, and it was that answer which kept it out of the translator's way."
+  },
+  {
+   "file": "babeldoc/format/pdf/document_il/utils/paragraph_helper.py",
+   "line": 20,
+   "source": "chars.extend(composition.pdf_formula.pdf_character)",
+   "reads": "a formula's characters when gathering a paragraph's, and separately whether every composition of a paragraph is a formula or whitespace -- the test for a paragraph that is nothing but formula",
+   "after_reclassification": "The gather has a line branch holding the same characters, so it is unchanged. The all-formula test stops answering yes for a converted paragraph, which is correct and is the point: a paragraph of residue text is not a paragraph of formula, and it was that answer which kept it out of the translator's way."
+  },
+  {
+   "file": "babeldoc/format/pdf/document_il/utils/paragraph_helper.py",
+   "line": 69,
+   "source": "if composition.pdf_formula:",
+   "reads": "a formula's characters when gathering a paragraph's, and separately whether every composition of a paragraph is a formula or whitespace -- the test for a paragraph that is nothing but formula",
+   "after_reclassification": "The gather has a line branch holding the same characters, so it is unchanged. The all-formula test stops answering yes for a converted paragraph, which is correct and is the point: a paragraph of residue text is not a paragraph of formula, and it was that answer which kept it out of the translator's way."
+  },
+  {
+   "file": "babeldoc/magazine/chain_signals.py",
+   "line": 499,
+   "source": "elif composition.pdf_formula is not None:",
+   "reads": "a formula's characters, when gathering an endpoint's",
+   "after_reclassification": "The line branch gathers the same characters, so an endpoint's geometry and text are unchanged."
+  },
+  {
+   "file": "babeldoc/magazine/chain_signals.py",
+   "line": 500,
+   "source": "characters.extend(composition.pdf_formula.pdf_character)",
+   "reads": "a formula's characters, when gathering an endpoint's",
+   "after_reclassification": "The line branch gathers the same characters, so an endpoint's geometry and text are unchanged."
+  },
+  {
+   "file": "babeldoc/magazine/drop_cap.py",
+   "line": 384,
+   "source": "composition.pdf_formula,",
+   "reads": "whether a composition is a formula, to leave it alone",
+   "after_reclassification": "A converted composition becomes eligible to be read as a dropped initial. It cannot be one in practice -- the pass acts only on residue bearing compositions and the drop cap acts on the first paragraph of an article -- and the lane's exclusion assertion holds the two apart on the rotated ones."
+  },
+  {
+   "file": "babeldoc/magazine/line_split.py",
+   "line": 292,
+   "source": "ATOMIC = (\"pdf_formula\", \"pdf_character\", \"pdf_same_style_unicode_characters\")",
+   "reads": "ATOMIC: a formula is a unit a line split may not divide",
+   "after_reclassification": "A converted composition is divisible. That is correct for the text it now is: a credit line broken across two lines is set as two lines, which is what the source did."
+  },
+  {
+   "file": "babeldoc/magazine/react/writeback.py",
+   "line": 48,
+   "source": "_CHARACTER_HOLDERS = (\"pdf_same_style_characters\", \"pdf_line\", \"pdf_formula\")",
+   "reads": "a formula's characters, when rebuilding a paragraph",
+   "after_reclassification": "The line branch holds the same characters, so the rebuild reads the same text. This is the path that writes the repair back."
+  },
+  {
+   "file": "babeldoc/magazine/reading_order.py",
+   "line": 31,
+   "source": "_CHARACTER_HOLDERS = (\"pdf_same_style_characters\", \"pdf_line\", \"pdf_formula\")",
+   "reads": "a formula's characters, to order the compositions of a paragraph as a reader reads them",
+   "after_reclassification": "The line branch is in the same list, so a converted composition is ordered identically."
+  },
+  {
+   "file": "babeldoc/tools/italic_assistance.py",
+   "line": 83,
+   "source": "elif \"pdf_formula\" in comp and comp[\"pdf_formula\"]:",
+   "reads": "the fonts a formula's characters are set in, from a written IL json, for the standalone italic recognition tool",
+   "after_reclassification": "A developer tool run by hand against a debug json; it is not in any pipeline. It reads the line branch in the same loop, so it collects the same fonts either way."
+  },
+  {
+   "file": "babeldoc/tools/italic_assistance.py",
+   "line": 84,
+   "source": "formula = comp[\"pdf_formula\"]",
+   "reads": "the fonts a formula's characters are set in, from a written IL json, for the standalone italic recognition tool",
+   "after_reclassification": "A developer tool run by hand against a debug json; it is not in any pipeline. It reads the line branch in the same loop, so it collects the same fonts either way."
+  }
+ ],
+ "unanswered": [],
+ "answers_with_no_site": [],
+ "files": [
+  "babeldoc/format/pdf/document_il/backend/pdf_creater.py",
+  "babeldoc/format/pdf/document_il/midend/add_debug_information.py",
+  "babeldoc/format/pdf/document_il/midend/il_translator.py",
+  "babeldoc/format/pdf/document_il/midend/paragraph_finder.py",
+  "babeldoc/format/pdf/document_il/midend/remove_descent.py",
+  "babeldoc/format/pdf/document_il/midend/styles_and_formulas.py",
+  "babeldoc/format/pdf/document_il/midend/typesetting.py",
+  "babeldoc/format/pdf/document_il/utils/layout_helper.py",
+  "babeldoc/format/pdf/document_il/utils/paragraph_helper.py",
+  "babeldoc/magazine/chain_signals.py",
+  "babeldoc/magazine/drop_cap.py",
+  "babeldoc/magazine/line_split.py",
+  "babeldoc/magazine/react/writeback.py",
+  "babeldoc/magazine/reading_order.py",
+  "babeldoc/tools/italic_assistance.py"
+ ],
+ "carriers_by_sample": {
+  "Courier-en": {
+   "acts": false,
+   "residue_bearing": 0,
+   "carrying_artwork": 0
+  },
+  "AramcoWorld-en-v2": {
+   "acts": false,
+   "residue_bearing": 0,
+   "carrying_artwork": 0
+  },
+  "FD-en-v2": {
+   "acts": false,
+   "residue_bearing": 0,
+   "carrying_artwork": 0
+  },
+  "Courier-zh": {
+   "acts": true,
+   "residue_bearing": 46,
+   "carrying_artwork": 0
+  }
+ },
+ "carriers_in_scope": 0,
+ "residue_bearing_in_scope": 46
+}

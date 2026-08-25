@@ -114,6 +114,63 @@ LINE_BREAK_REGEX = regex.compile(
 )
 
 
+# The marks a line may not open with, and which therefore hang past its end
+# rather than being carried down. Held at module level so that a pass
+# deciding where to cut a text can consult the same class this stage sets by,
+# rather than restating it and drifting from it.
+LINE_HEAD_FORBIDDEN_PUNCTUATION = frozenset([
+    # 英文标点
+    ",",
+    ".",
+    ":",
+    ";",
+    "?",
+    "!",
+    # 中文点号
+    "，",  # 逗号
+    "。",  # 句号
+    "．",  # 全角句号
+    "、",  # 顿号
+    "：",  # 冒号
+    "；",  # 分号
+    "！",  # 叹号
+    "‼",  # 双叹号
+    "？",  # 问号
+    "⁇",  # 双问号
+    # 结束引号
+    "”",  # 右双引号
+    "’",  # 右单引号
+    "」",  # 右直角单引号
+    "』",  # 右直角双引号
+    # 结束括号
+    ")",  # 右圆括号
+    "]",  # 右方括号
+    "}",  # 右花括号
+    "）",  # 右圆括号
+    "〕",  # 右龟甲括号
+    "〉",  # 右单书名号
+    "】",  # 右黑色方头括号
+    "〗",  # 右空白方头括号
+    "］",  # 全角右方括号
+    "｝",  # 全角右花括号
+    # 结束双书名号
+    "》",  # 右双书名号
+    # 连接号
+    "～",  # 全角波浪号
+    "-",  # 连字符减号
+    "–",  # 短破折号 (EN DASH)
+    "—",  # 长破折号 (EM DASH)
+    # 间隔号
+    "·",  # 中间点
+    "・",  # 片假名中间点
+    "‧",  # 连字点
+    # 分隔号
+    "/",  # 斜杠
+    "／",  # 全角斜杠
+    "⁄",  # 分数斜杠
+])
+
+
 class TypesettingUnit:
     def __str__(self):
         return self.try_get_unicode() or ""
@@ -349,57 +406,7 @@ class TypesettingUnit:
         unicode = self.try_get_unicode()
 
         if unicode:
-            return unicode in [
-                # 英文标点
-                ",",
-                ".",
-                ":",
-                ";",
-                "?",
-                "!",
-                # 中文点号
-                "，",  # 逗号
-                "。",  # 句号
-                "．",  # 全角句号
-                "、",  # 顿号
-                "：",  # 冒号
-                "；",  # 分号
-                "！",  # 叹号
-                "‼",  # 双叹号
-                "？",  # 问号
-                "⁇",  # 双问号
-                # 结束引号
-                "”",  # 右双引号
-                "’",  # 右单引号
-                "」",  # 右直角单引号
-                "』",  # 右直角双引号
-                # 结束括号
-                ")",  # 右圆括号
-                "]",  # 右方括号
-                "}",  # 右花括号
-                "）",  # 右圆括号
-                "〕",  # 右龟甲括号
-                "〉",  # 右单书名号
-                "】",  # 右黑色方头括号
-                "〗",  # 右空白方头括号
-                "］",  # 全角右方括号
-                "｝",  # 全角右花括号
-                # 结束双书名号
-                "》",  # 右双书名号
-                # 连接号
-                "～",  # 全角波浪号
-                "-",  # 连字符减号
-                "–",  # 短破折号 (EN DASH)
-                "—",  # 长破折号 (EM DASH)
-                # 间隔号
-                "·",  # 中间点
-                "・",  # 片假名中间点
-                "‧",  # 连字点
-                # 分隔号
-                "/",  # 斜杠
-                "／",  # 全角斜杠
-                "⁄",  # 分数斜杠
-            ]
+            return unicode in LINE_HEAD_FORBIDDEN_PUNCTUATION
         return False
 
     @property

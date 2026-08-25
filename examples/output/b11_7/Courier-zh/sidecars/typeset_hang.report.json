@@ -1,0 +1,9 @@
+{
+  "counts": {
+    "hung": 0,
+    "pulled_back": 0,
+    "unchanged": 0
+  },
+  "hang_max_em": 0.5,
+  "paragraphs": []
+}

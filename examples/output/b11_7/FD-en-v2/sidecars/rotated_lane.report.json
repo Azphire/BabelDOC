@@ -1,0 +1,51 @@
+{
+  "attempted": 2,
+  "excluded_from": [
+    "column_reflow",
+    "drop_cap",
+    "typeset_hang"
+  ],
+  "laid_out": 1,
+  "paragraphs": [
+    {
+      "box": [
+        543.38,
+        53.91,
+        548.66,
+        164.26
+      ],
+      "characters": 9,
+      "layout_label": "abandon",
+      "reach": [
+        542.91,
+        53.91,
+        548.66,
+        105.66
+      ],
+      "reference": "p9#9",
+      "skipped": null,
+      "text": "由瑞士国家银行提供"
+    },
+    {
+      "box": [
+        543.38,
+        53.91,
+        548.0,
+        121.53
+      ],
+      "characters": 11,
+      "layout_label": "abandon",
+      "reach": [
+        542.25,
+        53.91,
+        548.0,
+        100.22
+      ],
+      "reference": "p8#5",
+      "skipped": "reached_past_its_own_box",
+      "text": "由KIM RUHL提供"
+    }
+  ],
+  "switch": "magazine_rotated_lane",
+  "target_lang": "zh"
+}

@@ -1,0 +1,96 @@
+{
+  "counts": {
+    "by_kind": {
+      "text_figure_overlap": 1
+    },
+    "issues": 1
+  },
+  "detector_records": {},
+  "document_detectors": [
+    "escalation_surfacing"
+  ],
+  "issues": [
+    {
+      "detected_at_iteration": 2,
+      "detector": "text_figure_overlap",
+      "evidence": {
+        "artwork_index": 0,
+        "artwork_source": "pdf_xobject",
+        "debug_id": "mhAME",
+        "excerpt": "Indigenous Knowledge",
+        "iou": 0.2778,
+        "layout_label": "title",
+        "min_iou": 0.2
+      },
+      "geometry": {
+        "x": 0.0,
+        "x2": 595.276,
+        "y": 0.0,
+        "y2": 841.89
+      },
+      "id": "text_figure_overlap:p3:p3#1",
+      "kind": "text_figure_overlap",
+      "page": 3,
+      "paragraph_refs": [
+        "p3#1"
+      ],
+      "severity": "low"
+    }
+  ],
+  "iteration": 2,
+  "language": "en",
+  "notes": [],
+  "pages_by_detector": {
+    "fragment_cluster": [
+      1,
+      4,
+      6,
+      8
+    ],
+    "out_of_page": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8
+    ],
+    "text_figure_overlap": [
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8
+    ],
+    "text_text_collision": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8
+    ],
+    "untranslated_residue": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8
+    ]
+  },
+  "source_geometry": {
+    "checkpoint": "checkpoint.06_styles_and_formulas.xml",
+    "paragraphs": 135,
+    "stage": "styles_and_formulas"
+  },
+  "translation_performed": true
+}

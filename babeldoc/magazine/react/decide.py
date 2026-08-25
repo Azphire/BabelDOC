@@ -193,7 +193,7 @@ def issues_block(issues, excerpt_chars: int, limit: int, drop=()) -> str:
     return "\n".join(lines) if lines else "- none"
 
 
-def actions_block(config: RepairConfig) -> str:
+def actions_block(config: RepairConfig, language: str | None = None) -> str:
     """The vocabulary as the request states it, one block per action."""
     lines: list[str] = []
     for name, action in sorted(config.actions.items()):
@@ -220,7 +220,7 @@ def actions_block(config: RepairConfig) -> str:
     return "\n".join(lines)
 
 
-def constraints_block(config: RepairConfig) -> str:
+def constraints_block(config: RepairConfig, language: str | None = None) -> str:
     """The applicability rule as the request states it, one block per action.
 
     The rule is what decides whether a named finding is acted on, and it is
@@ -231,7 +231,7 @@ def constraints_block(config: RepairConfig) -> str:
     """
     lines: list[str] = []
     for name, action in sorted(config.actions.items()):
-        conditions = action.conditions()
+        conditions = action.conditions(language)
         if not conditions:
             continue
         stated = "\n".join(f"    - {sentence}" for sentence in conditions)
@@ -317,8 +317,13 @@ class CachedDecisionClient:
         identity: str = "",
         working_dir: Path | str | None = None,
         ignore_cache: bool = False,
+        language: str | None = None,
     ) -> None:
         self.config = config
+        # The run's target language, because an applicability term declared for
+        # one language governs this decision and the sentence the model reads
+        # has to carry the value that governs.
+        self.language = language
         self.transport = transport
         self.cache = (
             TranslationCache(ENGINE_NAME, {"cache_key_version": CACHE_KEY_VERSION})
@@ -339,8 +344,8 @@ class CachedDecisionClient:
                     self.config.max_issues_offered,
                     drop=drop,
                 ),
-                "actions_block": actions_block(self.config),
-                "action_constraints": constraints_block(self.config),
+                "actions_block": actions_block(self.config, self.language),
+                "action_constraints": constraints_block(self.config, self.language),
             },
             working_dir=working_dir,
         )

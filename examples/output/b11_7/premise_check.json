@@ -1,0 +1,325 @@
+{
+ "batch": "b11.7",
+ "read_at_tag": "b11.6",
+ "premises": {
+  "1": {
+   "premise": "b11.6 FD indent sidecar: p3 three paragraphs before/after true, source geometry inherited; page_ineligible leaves them alone",
+   "p3_paragraphs": 52,
+   "p3_flagged": [
+    {
+     "reference": "p3#18",
+     "before": true,
+     "after": true,
+     "decided": false,
+     "skipped": "page_ineligible"
+    },
+    {
+     "reference": "p3#36",
+     "before": true,
+     "after": true,
+     "decided": false,
+     "skipped": "page_ineligible"
+    },
+    {
+     "reference": "p3#43",
+     "before": true,
+     "after": true,
+     "decided": false,
+     "skipped": "page_ineligible"
+    }
+   ],
+   "p3_decided": 0,
+   "skip_reasons_on_p3": [
+    "page_ineligible"
+   ],
+   "left_alone_total": 194,
+   "holds": true
+  },
+  "2": {
+   "premise": "b11.6 FD p6 column chain continuation first line x=409.4 against 393.7 for the members after it; the sentence lands whole",
+   "continuation": {
+    "reference": "p6#12",
+    "box_x": 393.65,
+    "first_line_x": 409.375,
+    "offset": 15.725,
+    "first_line_indent": true
+   },
+   "following_box_x": {
+    "p6#13": 393.647,
+    "p6#14": 393.363
+   },
+   "sentence_in_continuation": true,
+   "holds": true
+  },
+  "3": {
+   "premise": "Courier-zh carries four residue sites on the canvas: p3 rotated credit (unreported), p5 footer (unreported), p5 Gambarini (reported), p6 Semeniako (reported)",
+   "canvas_cjk_by_page": {
+    "3": 10,
+    "5": 31,
+    "6": 23
+   },
+   "canvas_spans": [
+    {
+     "page": 3,
+     "direction": [
+      0.0,
+      -1.0
+     ],
+     "rotated": true,
+     "text": "卡洛丽娜·赞布拉诺（Carolina Zambrano）",
+     "cjk_chars": 10
+    },
+    {
+     "page": 5,
+     "direction": [
+      1.0,
+      0.0
+     ],
+     "rotated": false,
+     "text": "巴西：水之民族的启示",
+     "cjk_chars": 10
+    },
+    {
+     "page": 5,
+     "direction": [
+      0.0,
+      -1.0
+     ],
+     "rotated": true,
+     "text": "阿德里亚诺·甘巴里尼（Adriano ",
+     "cjk_chars": 10
+    },
+    {
+     "page": 5,
+     "direction": [
+      0.0,
+      -1.0
+     ],
+     "rotated": true,
+     "text": "ambarini）/亚马孙原住民行动组织",
+     "cjk_chars": 11
+    },
+    {
+     "page": 6,
+     "direction": [
+      0.0,
+      -1.0
+     ],
+     "rotated": true,
+     "text": "鲍里斯·塞梅尼亚科为联合国教科文组织《信使》创作",
+     "cjk_chars": 23
+    }
+   ],
+   "canvas_sites": [
+    {
+     "page": 3,
+     "rotated": true
+    },
+    {
+     "page": 5,
+     "rotated": false
+    },
+    {
+     "page": 5,
+     "rotated": true
+    },
+    {
+     "page": 6,
+     "rotated": true
+    }
+   ],
+   "reported_residue_refs": [
+    "p5#8",
+    "p6#14"
+   ],
+   "page1_canvas_cjk": 0,
+   "holds": true
+  },
+  "4": {
+   "premise": "typesetting always reflows a vertical paragraph on the horizontal matrix; the residue detector reads IL paragraph text and does not count formula characters",
+   "clause_1_horizontal_reflow": {
+    "packer_reads_box_x2_as_line_end": true,
+    "packer_names_an_axis": false,
+    "new_characters_constructed_vertical_false": true,
+    "renderer_emits_rotation_for_vertical_chars": true,
+    "holds": true
+   },
+   "clause_2_formula_characters_not_counted": {
+    "character_holders_read_by_reading_order": [
+     "pdf_same_style_characters",
+     "pdf_line",
+     "pdf_formula"
+    ],
+    "residue_bearing_paragraphs": [
+     {
+      "reference": "p3#2",
+      "layout_label": "fallback_line",
+      "vertical": true,
+      "han_chars": 1,
+      "script_chars": 17,
+      "residue_ratio": 0.0588,
+      "composition_holders": [
+       "pdf_formula"
+      ],
+      "reported_by_detector": false,
+      "withheld_by": "residue_min_script_chars",
+      "text": "诺（Carolina Zambrano）"
+     },
+     {
+      "reference": "p3#3",
+      "layout_label": "fallback_line",
+      "vertical": true,
+      "han_chars": 7,
+      "script_chars": 7,
+      "residue_ratio": 1.0,
+      "composition_holders": [
+       "pdf_formula"
+      ],
+      "reported_by_detector": false,
+      "withheld_by": "residue_min_script_chars",
+      "text": "© 卡洛丽娜·赞布拉"
+     },
+     {
+      "reference": "p5#0",
+      "layout_label": "abandon",
+      "vertical": false,
+      "han_chars": 9,
+      "script_chars": 9,
+      "residue_ratio": 1.0,
+      "composition_holders": [
+       "pdf_formula"
+      ],
+      "reported_by_detector": false,
+      "withheld_by": "residue_min_script_chars",
+      "text": "7巴西：水之民族的启示   |"
+     },
+     {
+      "reference": "p5#8",
+      "layout_label": "abandon",
+      "vertical": true,
+      "han_chars": 13,
+      "script_chars": 29,
+      "residue_ratio": 0.4483,
+      "composition_holders": [
+       "pdf_formula"
+      ],
+      "reported_by_detector": true,
+      "withheld_by": null,
+      "text": "巴里尼（Adriano Gambarini）/亚马孙原住民行动组织"
+     },
+     {
+      "reference": "p5#9",
+      "layout_label": "abandon",
+      "vertical": true,
+      "han_chars": 6,
+      "script_chars": 6,
+      "residue_ratio": 1.0,
+      "composition_holders": [
+       "pdf_formula"
+      ],
+      "reported_by_detector": false,
+      "withheld_by": "residue_min_script_chars",
+      "text": "© 阿德里亚诺·甘"
+     },
+     {
+      "reference": "p6#14",
+      "layout_label": "fallback_line",
+      "vertical": true,
+      "han_chars": 16,
+      "script_chars": 16,
+      "residue_ratio": 1.0,
+      "composition_holders": [
+       "pdf_formula"
+      ],
+      "reported_by_detector": true,
+      "withheld_by": null,
+      "text": "作创》使信《织组文科教国合联为科亚尼"
+     },
+     {
+      "reference": "p6#15",
+      "layout_label": "fallback_line",
+      "vertical": true,
+      "han_chars": 5,
+      "script_chars": 5,
+      "residue_ratio": 1.0,
+      "composition_holders": [
+       "pdf_formula"
+      ],
+      "reported_by_detector": false,
+      "withheld_by": "residue_min_script_chars",
+      "text": "© 鲍里斯·塞梅"
+     }
+    ],
+    "all_residue_paragraphs_are_formula_only": true,
+    "formula_characters_reaching_the_detector": 57,
+    "reported_paragraphs_are_formula_only": true,
+    "il_cjk_by_page": {
+     "3": 10,
+     "5": 31,
+     "6": 23
+    },
+    "canvas_cjk_by_page": {
+     "3": 10,
+     "5": 31,
+     "6": 23
+    },
+    "il_equals_canvas": true,
+    "withheld_by": {
+     "p3#2": "residue_min_script_chars",
+     "p3#3": "residue_min_script_chars",
+     "p5#0": "residue_min_script_chars",
+     "p5#9": "residue_min_script_chars",
+     "p6#15": "residue_min_script_chars"
+    },
+    "holds": false
+   },
+   "holds": false
+  },
+  "5": {
+   "premise": "chain_backfill cuts a body chain on sentence ends; indent_policy indents on eligible pages and leaves the rest alone",
+   "strategy_by_pair_class": {
+    "body": "sentence_greedy",
+    "title": "proportional"
+   },
+   "strategy_default": "sentence_greedy",
+   "decided": 24,
+   "left_alone": 194,
+   "skipped": {
+    "mode_decides_nothing": 0,
+    "outside_body_labels": 27,
+    "page_ineligible": 167
+   },
+   "decided_on_ineligible_pages": [],
+   "holds": true
+  },
+  "6": {
+   "premise": "translate_orphan_lines accepts fallback_line; the p6 finding was not repaired -- read the react sidecar for whether it refused or failed",
+   "action_offered": "translate_orphan_lines",
+   "issue_ids": [
+    "untranslated_residue:p6:p6#14"
+   ],
+   "decision_reason": "The finding on page 6 meets all conditions: residue_ratio is 1.0, text length is 16 characters, and layout_label is 'fallback_line'.",
+   "executions": [
+    {
+     "issue_id": "untranslated_residue:p6:p6#14",
+     "accepted": false,
+     "changed": false,
+     "attempts": 1,
+     "reason": "retypesetting_needed_more_room_than_the_paragraph_had",
+     "source_text": "作创》使信《织组文科教国合联为科亚尼",
+     "translated_text": "Creative Work by Keni"
+    }
+   ],
+   "api_calls": 1,
+   "applications": 0,
+   "stopped_because": "no_paragraph_was_written",
+   "verdict": "applied_and_refused_at_retypesetting",
+   "verdict_detail": "The action was selected, the engine was called and answered, and the write back was refused because laying the answer out needed more room than the paragraph had. That is a failure to apply rather than a refusal to act: the paragraph is a rotated strip 6.4 pt wide, and the packer measures that 6.4 pt as the line it has to fit the answer into.",
+   "holds": true
+  }
+ },
+ "failed": [
+  "4"
+ ],
+ "verdict": "STOP"
+}

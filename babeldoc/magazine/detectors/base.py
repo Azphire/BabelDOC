@@ -55,6 +55,7 @@ _STRUCTURAL_KEYS = (
 
 # How a per direction threshold is named from the target language it governs.
 RATIO_KEY_FORMAT = "residue_min_ratio_into_{language}"
+MIN_CHARS_KEY_FORMAT = "residue_min_script_chars_into_{language}"
 
 # The policy flags read here. A page whose kind declares no translation has no
 # residue to answer for, and the profile is how a page selects its detectors.
@@ -96,6 +97,7 @@ class DetectorConfig:
     residue_directions: dict[str, str]
     residue_ratios: dict[str, float]
     residue_min_script_chars: int
+    residue_min_chars_by_language: dict[str, int]
     fragment_max_chars: int
     fragment_min_cluster: int
     fragment_max_line_gap_ratio: float
@@ -139,6 +141,21 @@ class DetectorConfig:
         if script is None:
             return None
         return script, self.residue_ratios[language]
+
+    def residue_min_chars(self, language: str | None) -> int:
+        """How many characters of the residue script make a finding, per direction.
+
+        The floor exists to keep a folio or a copyright glyph from being
+        evidence, and whether it has anything to protect depends on the
+        direction. Where the residue script has legitimate uses in the target
+        language the floor is doing work; where it has none, every character of
+        it is residue and a floor only hides some of them. A direction that
+        declares no floor of its own takes the general one.
+        """
+        declared = self.residue_min_chars_by_language.get(language or "")
+        if declared is None:
+            return self.residue_min_script_chars
+        return declared
 
 
 def _require(condition: bool, message: str) -> None:
@@ -244,7 +261,18 @@ def parse_detector_config(
         for key, value in parameters.items()
         if key.startswith(RATIO_KEY_FORMAT.format(language=""))
     }
+    min_chars_by_language = {
+        key.removeprefix(MIN_CHARS_KEY_FORMAT.format(language="")): int(value)
+        for key, value in parameters.items()
+        if key.startswith(MIN_CHARS_KEY_FORMAT.format(language=""))
+    }
     directions = _parse_directions(raw.get(DIRECTIONS_KEY), source, ratios)
+    undeclared = sorted(set(min_chars_by_language) - set(directions))
+    _require(
+        not undeclared,
+        f"{source}: {MIN_CHARS_KEY_FORMAT.format(language='<language>')} is "
+        f"declared for {undeclared}, which {DIRECTIONS_KEY} does not name",
+    )
 
     vocabulary = set(parameters.get(SEVERITY_VOCABULARY_KEY, ()))
     _require(bool(vocabulary), f"{source}: missing {SEVERITY_VOCABULARY_KEY}")
@@ -276,6 +304,7 @@ def parse_detector_config(
         residue_directions=directions,
         residue_ratios=ratios,
         residue_min_script_chars=int(parameters["residue_min_script_chars"]),
+        residue_min_chars_by_language=min_chars_by_language,
         fragment_max_chars=int(parameters["fragment_max_chars"]),
         fragment_min_cluster=int(parameters["fragment_min_cluster"]),
         fragment_max_line_gap_ratio=float(parameters["fragment_max_line_gap_ratio"]),

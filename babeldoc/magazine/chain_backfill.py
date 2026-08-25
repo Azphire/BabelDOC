@@ -14,15 +14,24 @@ answerable to: the pieces join back to exactly the translation that came in,
 their spans tile it once with no overlap and no gap, and every member gets a
 non-empty piece.
 
-Two redistributions exist because two kinds of chain do. Running text has
-sentence ends to cut on, so cuts land on them and fall back to a proportional
-cut only for the members no boundary is left for -- reported, never silent. A
-broken display line has no sentence structure at all, so it is cut by share
-throughout and claims no sentence indices. Which one a chain takes is read from
+Three redistributions exist because the kinds of chain differ in what a cut
+should respect. Running text is one paragraph the layout broke, so its
+continuation should resume where the first box ran out of room: the cut is
+placed at that box's capacity, made legal by the target language's break rule
+and pulled back off any mark a line may not open with. A broken display line
+has no such structure -- it is one line of type the layout snapped -- so it is
+cut by share throughout and claims no sentence indices. The sentence greedy cut
+that running text used to take remains, and is what a capacity cut falls back
+to where the caller could measure no box. Which one a chain takes is read from
 the endpoint pair class it was built under, through the declaration in
 ``configs/chain_translation.json``; nothing here names a page type or a
 publication, and every character class, threshold and separator it compares
 against comes from that file.
+
+Which kind of boundary broke the chain does not enter into it. A body paragraph
+interrupted by a column edge and one interrupted by a page edge are the same
+paragraph interrupted, and a cut that answered to the edge rather than to the
+text would be answering the wrong question.
 
 Sentence splitting is a model, not a parser, and its failure modes are known
 and bounded. Three guards narrow them. A terminator that carries no whitespace
@@ -61,11 +70,21 @@ CONFIG_PATH = Path(__file__).resolve().parents[2] / "configs" / "chain_translati
 JOIN_KEY = "join"
 PROFILES_KEY = "profiles"
 STRATEGIES_KEY = "strategies"
+CAPACITY_KEY = "capacity"
+LINE_HEAD_KEY = "line_head_forbidden_punctuation"
 
 # The run attribute the alignment level is read from. A name rather than a
 # value: the switch itself lives on the run, and this says which one it is.
 ALIGN_SWITCH_KEY = "cut_align_switch"
-NESTED_KEYS = (JOIN_KEY, PROFILES_KEY, STRATEGIES_KEY, ALIGN_SWITCH_KEY)
+NESTED_KEYS = (
+    JOIN_KEY,
+    PROFILES_KEY,
+    STRATEGIES_KEY,
+    CAPACITY_KEY,
+    LINE_HEAD_KEY,
+    f"{LINE_HEAD_KEY}_description",
+    ALIGN_SWITCH_KEY,
+)
 
 ENTRIES_KEY = "entries"
 DEFAULT_KEY = "default"
@@ -93,7 +112,8 @@ REQUIRED_PARAMETERS: frozenset[str] = frozenset(
 # configuration has to be one of them.
 STRATEGY_SENTENCE_GREEDY = "sentence_greedy"
 STRATEGY_PROPORTIONAL = "proportional"
-STRATEGIES = (STRATEGY_SENTENCE_GREEDY, STRATEGY_PROPORTIONAL)
+STRATEGY_CAPACITY = "capacity"
+STRATEGIES = (STRATEGY_SENTENCE_GREEDY, STRATEGY_PROPORTIONAL, STRATEGY_CAPACITY)
 
 # Where a proportional cut may land. A break rule named by a profile has to be
 # one of them.
@@ -104,10 +124,29 @@ BREAK_RULES = (BREAK_WORD_BOUNDARY, BREAK_ANY_CHAR)
 # How one cut was placed, recorded per cut.
 CUT_SENTENCE = "sentence"
 CUT_PROPORTIONAL = "proportional"
+CUT_CAPACITY = "capacity"
+
+# Recorded on a capacity cut that was pulled back off a mark no line may open
+# with. The move is towards the start of the text, by the least it takes.
+MOVED_OFF_LINE_HEAD = "line_head_punctuation"
+
+# How far back a capacity cut may be pulled to keep the continuation from
+# opening on a forbidden mark. One position is the whole of the intended move;
+# the rest of the allowance covers a run of such marks, which a closing bracket
+# after a full stop is. Past it the cut stands where it was and the sidecar
+# says so, because walking backwards without limit would trade a punctuation
+# defect for an arbitrary one.
+_LINE_HEAD_RETREAT_LIMIT = 4
 
 # Reported by a sentence redistribution that had to place at least one cut by
 # share because no sentence boundary was left for it.
 FALLBACK_PROPORTIONAL = "proportional"
+
+# Reported by a capacity redistribution the caller could measure no box for. The
+# cut is then placed by the share cascade, which is the answer the strategy
+# before this one gave, and saying so is what keeps a capacity cut that was
+# never measured from reading like one that was.
+FALLBACK_NO_CAPACITY = "no_capacity"
 
 # Recorded in place of a sentence index by a redistribution that claims no
 # sentence structure.
@@ -199,6 +238,56 @@ class JoinRules:
 
 
 @dataclass(frozen=True)
+class CapacityGrid:
+    """How many characters of a target language one box is estimated to hold.
+
+    Two numbers per script rather than one per language: the advance of a
+    character and the advance between baselines are both multiples of the font
+    size, and which pair a language takes is the one question a tag has to
+    answer.
+    """
+
+    line_skip_cjk: float
+    line_skip_latin: float
+    advance_ratio_cjk: float
+    advance_ratio_latin: float
+    cjk_target_prefixes: tuple[str, ...]
+
+    def is_cjk_target(self, language: str | None) -> bool:
+        tag = (language or "").strip().lower()
+        return any(tag.startswith(prefix) for prefix in self.cjk_target_prefixes)
+
+    def characters_in(
+        self, width: float, height: float, font_size: float, language: str | None
+    ) -> int:
+        """The capacity of one box, as a whole number of characters.
+
+        Zero where the box holds no whole line or the font size is not a
+        positive number, which a caller reads as "not measurable" rather than
+        as "empty": a capacity of zero is not a cut position.
+        """
+        if not (font_size and font_size > 0 and width > 0 and height > 0):
+            return 0
+        cjk = self.is_cjk_target(language)
+        skip = self.line_skip_cjk if cjk else self.line_skip_latin
+        advance = self.advance_ratio_cjk if cjk else self.advance_ratio_latin
+        lines = int(height // (font_size * skip))
+        per_line = int(width // (font_size * advance))
+        if lines < 1 or per_line < 1:
+            return 0
+        return lines * per_line
+
+    def lines_in(self, height: float, font_size: float, language: str | None) -> int:
+        """How many lines the box was estimated to hold, for the record."""
+        if not (font_size and font_size > 0 and height > 0):
+            return 0
+        skip = self.line_skip_cjk if self.is_cjk_target(language) else (
+            self.line_skip_latin
+        )
+        return int(height // (font_size * skip))
+
+
+@dataclass(frozen=True)
 class BackfillConfig:
     """The whole of ``configs/chain_translation.json``, parsed and checked."""
 
@@ -214,6 +303,8 @@ class BackfillConfig:
     default_profile: str
     strategy_by_pair_class: Mapping[str, str]
     default_strategy: str
+    capacity: CapacityGrid
+    line_head_forbidden: frozenset
 
 
 @dataclass(frozen=True)
@@ -350,6 +441,7 @@ class Redistribution:
     cuts: tuple[Cut, ...]
     fallback: str | None
     alignment: Alignment | None = None
+    capacities: tuple[int, ...] = ()
 
     @property
     def texts(self) -> tuple[str, ...]:
@@ -364,6 +456,7 @@ class Redistribution:
             "members": [segment.as_record() for segment in self.segments],
             "cuts": [cut.as_record() for cut in self.cuts],
             "alignment": None if self.alignment is None else self.alignment.as_record(),
+            "capacities": list(self.capacities),
         }
 
 
@@ -643,14 +736,66 @@ def _parse_strategies(raw: object, source: str) -> tuple[dict[str, str], str]:
     return dict(by_class), fallback
 
 
+def _parse_capacity(raw: object, source: str) -> CapacityGrid:
+    """The line grid, bounded by the ranges declared beside each of its numbers."""
+    where = f"{source}.{CAPACITY_KEY}"
+    _require(isinstance(raw, dict), f"{where} must be an object")
+    prefixes = raw.get("cjk_target_prefixes")
+    _require(
+        isinstance(prefixes, list)
+        and bool(prefixes)
+        and all(isinstance(item, str) and item.strip() for item in prefixes),
+        f"{where}.cjk_target_prefixes must be a non-empty list of language tags",
+    )
+    flat = {
+        key: value
+        for key, value in raw.items()
+        if key not in (DESCRIPTION_KEY, "cjk_target_prefixes")
+    }
+    try:
+        numbers = dict(validate_bounded_config(flat, Path(where)))
+    except ConfigError as exc:
+        raise BackfillConfigError(str(exc)) from exc
+    needed = (
+        "line_skip_cjk",
+        "line_skip_latin",
+        "advance_ratio_cjk",
+        "advance_ratio_latin",
+    )
+    missing = sorted(set(needed) - set(numbers))
+    _require(not missing, f"{where}: missing parameters {missing}")
+    return CapacityGrid(
+        line_skip_cjk=float(numbers["line_skip_cjk"]),
+        line_skip_latin=float(numbers["line_skip_latin"]),
+        advance_ratio_cjk=float(numbers["advance_ratio_cjk"]),
+        advance_ratio_latin=float(numbers["advance_ratio_latin"]),
+        cjk_target_prefixes=tuple(item.strip().lower() for item in prefixes),
+    )
+
+
+def _parse_line_head(raw: object, source: str) -> frozenset:
+    """The marks a line may not open with, as declared."""
+    where = f"{source}.{LINE_HEAD_KEY}"
+    _require(
+        isinstance(raw, list) and bool(raw),
+        f"{where} must be a non-empty list of marks",
+    )
+    for item in raw:
+        _require(
+            isinstance(item, str) and len(item) == 1,
+            f"{where} holds {item!r}, which is not a single character",
+        )
+    return frozenset(raw)
+
+
 @lru_cache(maxsize=4)
 def load_backfill_config(path: str | None = None) -> BackfillConfig:
     """Load and validate ``configs/chain_translation.json``.
 
-    The flat entries are bounded the usual way; the three nested sections are
-    checked against the vocabularies this module implements, so a strategy or a
-    break rule that has no code behind it is refused at load rather than
-    reached at run time.
+    The flat entries are bounded the usual way; the nested sections are checked
+    against the vocabularies this module implements, so a strategy or a break
+    rule that has no code behind it is refused at load rather than reached at
+    run time.
     """
     config_path = CONFIG_PATH if path is None else Path(path)
     with config_path.open(encoding="utf-8") as f:
@@ -681,6 +826,8 @@ def load_backfill_config(path: str | None = None) -> BackfillConfig:
         default_profile=default_profile,
         strategy_by_pair_class=strategy_by_pair_class,
         default_strategy=default_strategy,
+        capacity=_parse_capacity(raw.get(CAPACITY_KEY), source),
+        line_head_forbidden=_parse_line_head(raw.get(LINE_HEAD_KEY), source),
     )
 
 
@@ -1044,6 +1191,85 @@ def _plan_cuts(
     return tuple(cuts)
 
 
+def _retreat_off_line_head(
+    text: str, position: int, low: int, profile: LanguageProfile, forbidden
+) -> tuple[int, str | None]:
+    """Pull a cut back off a mark the continuation may not open with.
+
+    The class consulted is the typesetting stage's own, so a cut is judged by
+    the rule that will set the line rather than by a second list meaning nearly
+    the same thing. The retreat is bounded and it is refused rather than
+    forced: a position it cannot reach legally leaves the cut where it stood,
+    which the record then says.
+    """
+    if position >= len(text) or text[position] not in forbidden:
+        return position, None
+    for step in range(1, _LINE_HEAD_RETREAT_LIMIT + 1):
+        candidate = position - step
+        if candidate < low:
+            break
+        if text[candidate] in forbidden:
+            continue
+        if _is_legal_break(text, candidate, profile):
+            return candidate, MOVED_OFF_LINE_HEAD
+    return position, None
+
+
+def _plan_capacity_cuts(
+    translated: str,
+    capacities: Sequence[int],
+    profile: LanguageProfile,
+    config: BackfillConfig,
+) -> tuple[Cut, ...]:
+    """Place each cut where the member's box runs out of room.
+
+    A body chain is one paragraph the layout broke, so its continuation should
+    resume where the first box stopped holding text and not where the nearest
+    sentence happened to end. The estimate is therefore the box's own capacity
+    in characters, accumulated across the members, rather than a share of the
+    text: a cut at a share leaves the first box's last line part empty whenever
+    the two boxes are of different sizes, and that gap is the join showing.
+
+    The estimate is then made a position a line may actually break at -- the
+    profile's break rule decides that, which is nearly any character between
+    two Chinese ones and a word edge in English -- and pulled back off a mark
+    no line may open with.
+    """
+    length = len(translated)
+    count = len(capacities)
+    cuts: list[Cut] = []
+    previous = 0
+    running = 0
+    for index in range(count - 1):
+        running += capacities[index]
+        low = previous + 1
+        high = length - (count - 1 - index)
+        if low > high:
+            raise ChainBackfillError(
+                f"the translation has {length} characters, too few to give each "
+                f"of {count} members a piece"
+            )
+        ideal = min(max(running, low), high)
+        target = max(1, capacities[index])
+        snapped = _snap(translated, ideal, low, high, target, profile, config)
+        position = ideal if snapped is None else snapped
+        position, moved = _retreat_off_line_head(
+            translated, position, low, profile, config.line_head_forbidden
+        )
+        cuts.append(
+            Cut(
+                index,
+                position,
+                CUT_CAPACITY,
+                snapped is not None,
+                estimate=ideal,
+                moved_to=moved,
+            )
+        )
+        previous = position
+    return tuple(cuts)
+
+
 def _sentence_intervals(
     positions: Sequence[int], ends: Sequence[int], count: int
 ) -> tuple[tuple[int, int], ...]:
@@ -1084,6 +1310,7 @@ def redistribute(
     config: BackfillConfig | None = None,
     aligned_lengths: Sequence[int] | None = None,
     align_enabled: bool = True,
+    capacities: Sequence[int] | None = None,
 ) -> Redistribution:
     """Cut one chain's translation back into one piece per member.
 
@@ -1098,7 +1325,11 @@ def redistribute(
     Under ``sentence_greedy`` a cut lands on a sentence end wherever one is
     still available and is placed by the estimate where none is, which is
     reported as a proportional fallback. Under ``proportional`` no sentence
-    indices are claimed.
+    indices are claimed. Under ``capacity`` the cut is placed where the
+    member's own box stops holding text, which needs ``capacities`` and falls
+    back to the share cascade where the caller could not measure them -- a
+    caller with no boxes to measure says so by passing none, and the fallback
+    is reported rather than assumed.
     """
     config = load_backfill_config() if config is None else config
     if strategy not in STRATEGIES:
@@ -1119,6 +1350,19 @@ def redistribute(
     ends = sentence_end_offsets(sentences)
     interior = [offset for offset in ends if offset < len(translated)]
     sentence_mode = strategy == STRATEGY_SENTENCE_GREEDY
+    # Usable capacities are one positive integer per member. Anything else is
+    # not a measurement, and a cut placed on it would be a guess wearing a
+    # measurement's name.
+    usable_capacities = (
+        capacities is not None
+        and len(capacities) == count
+        and all(isinstance(item, int) and item > 0 for item in capacities)
+    )
+    capacity_mode = strategy == STRATEGY_CAPACITY and usable_capacities
+    # The sentences are attributed whenever the text has sentence structure to
+    # attribute, which a body chain has however its cuts were placed. Only the
+    # display strategy claims none.
+    claims_sentences = strategy != STRATEGY_PROPORTIONAL
 
     source_shares = merge.shares
     aligned = align_shares(aligned_lengths, count) if align_enabled else None
@@ -1137,19 +1381,22 @@ def redistribute(
         source_shares=source_shares,
     )
 
-    cuts = _plan_cuts(
-        translated,
-        source_shares if aligned is None else aligned,
-        interior,
-        profile,
-        config,
-        sentence_mode,
-    )
+    if capacity_mode:
+        cuts = _plan_capacity_cuts(translated, list(capacities), profile, config)
+    else:
+        cuts = _plan_cuts(
+            translated,
+            source_shares if aligned is None else aligned,
+            interior,
+            profile,
+            config,
+            sentence_mode,
+        )
     positions = [cut.position for cut in cuts]
     edges = [0, *positions, len(translated)]
     intervals = (
         _sentence_intervals(positions, ends, count)
-        if sentence_mode
+        if claims_sentences
         else ((NO_SENTENCE_INDEX, NO_SENTENCE_INDEX),) * count
     )
     segments = tuple(
@@ -1163,11 +1410,12 @@ def redistribute(
         )
         for index in range(count)
     )
-    fallback = (
-        FALLBACK_PROPORTIONAL
-        if sentence_mode and any(cut.mode == CUT_PROPORTIONAL for cut in cuts)
-        else None
-    )
+    if strategy == STRATEGY_CAPACITY and not capacity_mode:
+        fallback = FALLBACK_NO_CAPACITY
+    elif sentence_mode and any(cut.mode == CUT_PROPORTIONAL for cut in cuts):
+        fallback = FALLBACK_PROPORTIONAL
+    else:
+        fallback = None
     result = Redistribution(
         strategy=strategy,
         profile=profile.name,
@@ -1176,6 +1424,7 @@ def redistribute(
         cuts=cuts,
         fallback=fallback,
         alignment=alignment,
+        capacities=tuple(capacities or ()),
     )
     report = verify_redistribution(merge, translated, result)
     if not report.ok:

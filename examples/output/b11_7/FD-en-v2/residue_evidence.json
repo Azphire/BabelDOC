@@ -1,0 +1,14426 @@
+{
+ "sample": "FD-en-v2",
+ "canvas_han_by_page": {
+  "1": 71,
+  "2": 223,
+  "3": 462,
+  "4": 50,
+  "5": 574,
+  "6": 671,
+  "7": 371,
+  "8": 551,
+  "9": 886
+ },
+ "canvas_han_total": 3859,
+ "canvas_spans": [
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    246.83,
+    71.17,
+    274.83,
+    81.22
+   ],
+   "han": 4,
+   "latin": 0,
+   "text": "经济理论"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    274.83,
+    69.94,
+    304.83,
+    81.78
+   ],
+   "han": 3,
+   "latin": 0,
+   "text": "罗伯特"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    307.69,
+    69.94,
+    327.69,
+    81.78
+   ],
+   "han": 2,
+   "latin": 0,
+   "text": "斯基"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    246.83,
+    84.94,
+    326.83,
+    96.78
+   ],
+   "han": 8,
+   "latin": 0,
+   "text": "德尔斯基论凯恩斯"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    349.43,
+    71.17,
+    363.43,
+    81.22
+   ],
+   "han": 2,
+   "latin": 0,
+   "text": "商品"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    363.43,
+    69.94,
+    433.43,
+    81.78
+   ],
+   "han": 7,
+   "latin": 0,
+   "text": "关键矿物与国家"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    349.43,
+    84.94,
+    369.43,
+    96.78
+   ],
+   "han": 2,
+   "latin": 0,
+   "text": "安全"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    465.95,
+    71.17,
+    493.95,
+    81.22
+   ],
+   "han": 4,
+   "latin": 0,
+   "text": "贸易政策"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    493.95,
+    69.94,
+    523.95,
+    81.78
+   ],
+   "han": 3,
+   "latin": 0,
+   "text": "杰米森"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    465.95,
+    84.94,
+    525.95,
+    96.78
+   ],
+   "han": 6,
+   "latin": 0,
+   "text": "格里尔论关税"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    390.58,
+    43.33,
+    446.58,
+    53.38
+   ],
+   "han": 8,
+   "latin": 0,
+   "text": "国际货币基金组织"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    242.8,
+    38.75,
+    297.8,
+    54.55
+   ],
+   "han": 5,
+   "latin": 0,
+   "text": "金融与发展"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    32.83,
+    557.6,
+    112.83,
+    580.58
+   ],
+   "han": 5,
+   "latin": 0,
+   "text": "地缘经济学"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    30.7,
+    581.18,
+    138.7,
+    597.17
+   ],
+   "han": 8,
+   "latin": 0,
+   "text": "以及经济治国术的"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    30.7,
+    601.43,
+    57.7,
+    617.42
+   ],
+   "han": 2,
+   "latin": 0,
+   "text": "回归"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    46.18,
+    125.13,
+    52.93,
+    134.82
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "年"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    56.7,
+    125.13,
+    63.45,
+    134.82
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "月"
+  },
+  {
+   "page": 2,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    113.77,
+    19.68,
+    293.77,
+    84.3
+   ],
+   "han": 4,
+   "latin": 0,
+   "text": "世界经济"
+  },
+  {
+   "page": 2,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    293.77,
+    19.68,
+    383.77,
+    84.3
+   ],
+   "han": 2,
+   "latin": 0,
+   "text": "展望"
+  },
+  {
+   "page": 2,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    26.61,
+    480.46,
+    136.61,
+    494.82
+   ],
+   "han": 10,
+   "latin": 0,
+   "text": "第一章：全球前景与政策"
+  },
+  {
+   "page": 2,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    26.33,
+    493.51,
+    386.33,
+    507.87
+   ],
+   "han": 33,
+   "latin": 0,
+   "text": "全球经济再次受到冲击，这次是由于中东战争的爆发。商品价格上涨、通胀预期增"
+  },
+  {
+   "page": 2,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    26.33,
+    508.51,
+    216.33,
+    522.87
+   ],
+   "han": 18,
+   "latin": 0,
+   "text": "强以及金融环境趋紧正在考验近期的韧性。"
+  },
+  {
+   "page": 2,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    26.33,
+    542.36,
+    56.33,
+    556.72
+   ],
+   "han": 3,
+   "latin": 0,
+   "text": "第二章"
+  },
+  {
+   "page": 2,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    61.97,
+    542.36,
+    101.97,
+    556.72
+   ],
+   "han": 4,
+   "latin": 0,
+   "text": "国防支出"
+  },
+  {
+   "page": 2,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    107.61,
+    542.36,
+    197.61,
+    556.72
+   ],
+   "han": 9,
+   "latin": 0,
+   "text": "宏观经济后果与权衡"
+  },
+  {
+   "page": 2,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    197.61,
+    542.36,
+    387.61,
+    556.72
+   ],
+   "han": 19,
+   "latin": 0,
+   "text": "国防支出在地缘政治紧张局势加剧的背景下"
+  },
+  {
+   "page": 2,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    26.33,
+    557.36,
+    386.33,
+    571.72
+   ],
+   "han": 33,
+   "latin": 0,
+   "text": "不断增加。本章发现，国防支出的大幅增长变得更加频繁，尤其是在新兴市场和发"
+  },
+  {
+   "page": 2,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    26.33,
+    572.36,
+    96.33,
+    586.72
+   ],
+   "han": 6,
+   "latin": 0,
+   "text": "展中经济体中。"
+  },
+  {
+   "page": 2,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    26.61,
+    605.18,
+    176.61,
+    619.54
+   ],
+   "han": 14,
+   "latin": 0,
+   "text": "第三章：冲突与恢复的宏观经济学"
+  },
+  {
+   "page": 2,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    26.31,
+    618.37,
+    386.31,
+    632.73
+   ],
+   "han": 34,
+   "latin": 0,
+   "text": "武装冲突除了造成毁灭性的人类损失外，还会产生深远的宏观经济后果。本章利用"
+  },
+  {
+   "page": 2,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    26.31,
+    633.37,
+    306.31,
+    647.73
+   ],
+   "han": 27,
+   "latin": 0,
+   "text": "全球关于第二次世界大战后冲突的数据来评估战争的经济影响。"
+  },
+  {
+   "page": 2,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    485.63,
+    697.06,
+    510.55,
+    706.01
+   ],
+   "han": 4,
+   "latin": 0,
+   "text": "立即访问"
+  },
+  {
+   "page": 2,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    105.73,
+    718.86,
+    165.53,
+    747.49
+   ],
+   "han": 3,
+   "latin": 0,
+   "text": "出版物"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    459.49,
+    749.36,
+    466.49,
+    759.42
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "年"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    470.4,
+    749.36,
+    477.4,
+    759.42
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "月"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    51.0,
+    43.68,
+    163.0,
+    124.1
+   ],
+   "han": 2,
+   "latin": 0,
+   "text": "目录"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    386.99,
+    191.62,
+    451.99,
+    210.29
+   ],
+   "han": 5,
+   "latin": 0,
+   "text": "本期还包括"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    47.75,
+    192.74,
+    112.75,
+    211.41
+   ],
+   "han": 5,
+   "latin": 0,
+   "text": "地缘经济学"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    388.2,
+    243.44,
+    462.2,
+    256.73
+   ],
+   "han": 8,
+   "latin": 0,
+   "text": "纠正全球化的错误"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    387.5,
+    255.99,
+    394.9,
+    266.61
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "基"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    387.5,
+    267.71,
+    396.75,
+    280.99
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "全"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    394.9,
+    255.99,
+    402.3,
+    266.61
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "于"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    396.75,
+    267.71,
+    406.0,
+    280.99
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "球"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    402.3,
+    255.99,
+    409.7,
+    266.61
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "地"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    406.0,
+    267.71,
+    415.25,
+    280.99
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "化"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    409.7,
+    255.99,
+    417.1,
+    266.61
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "点"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    415.25,
+    267.71,
+    424.5,
+    280.99
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "留"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    417.1,
+    255.99,
+    424.5,
+    266.61
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "的"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    424.5,
+    267.71,
+    433.75,
+    280.99
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "下"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    424.5,
+    255.99,
+    431.9,
+    266.61
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "政"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    433.75,
+    267.71,
+    443.0,
+    280.99
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "的"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    431.9,
+    255.99,
+    439.3,
+    266.61
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "策"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    443.0,
+    267.71,
+    452.25,
+    280.99
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "路"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    439.3,
+    255.99,
+    446.7,
+    266.61
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "为"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    452.25,
+    267.71,
+    461.5,
+    280.99
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "径"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    446.7,
+    255.99,
+    454.1,
+    266.61
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "被"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    454.1,
+    255.99,
+    461.5,
+    266.61
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "遗"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    463.91,
+    267.71,
+    473.16,
+    280.99
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "超"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    461.5,
+    255.99,
+    468.9,
+    266.61
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "忘"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    473.16,
+    267.71,
+    482.41,
+    280.99
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "越"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    468.9,
+    255.99,
+    476.3,
+    266.61
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "的"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    482.41,
+    267.71,
+    491.66,
+    280.99
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "经"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    476.3,
+    255.99,
+    483.7,
+    266.61
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "地"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    491.66,
+    267.71,
+    500.91,
+    280.99
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "济"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    483.7,
+    255.99,
+    491.1,
+    266.61
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "区"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    500.91,
+    267.71,
+    510.16,
+    280.99
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "民"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    491.1,
+    255.99,
+    498.5,
+    266.61
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "提"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    510.16,
+    267.71,
+    519.41,
+    280.99
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "粹"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    498.5,
+    255.99,
+    505.9,
+    266.61
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "供"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    519.41,
+    267.71,
+    528.66,
+    280.99
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "主"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    505.9,
+    255.99,
+    513.3,
+    266.61
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "了"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    387.5,
+    281.58,
+    396.75,
+    294.86
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "义"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    513.3,
+    255.99,
+    520.7,
+    266.61
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "机"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    520.7,
+    255.99,
+    528.1,
+    266.61
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "会"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    399.16,
+    283.64,
+    417.66,
+    294.59
+   ],
+   "han": 2,
+   "latin": 0,
+   "text": "戈登"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    420.3,
+    283.64,
+    438.8,
+    294.59
+   ],
+   "han": 2,
+   "latin": 0,
+   "text": "汉森"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    388.2,
+    339.58,
+    479.77,
+    351.54
+   ],
+   "han": 11,
+   "latin": 0,
+   "text": "凯恩斯在我们时代的意义"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    387.08,
+    351.23,
+    396.33,
+    364.51
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "凯"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    387.08,
+    363.71,
+    396.33,
+    376.99
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "对"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    387.08,
+    375.7,
+    396.33,
+    388.99
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "当"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    396.33,
+    351.23,
+    405.58,
+    364.51
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "恩"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    396.33,
+    363.71,
+    405.58,
+    376.99
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "不"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    396.33,
+    375.7,
+    405.58,
+    388.99
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "今"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    405.58,
+    351.23,
+    414.83,
+    364.51
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "斯"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    405.58,
+    363.71,
+    414.83,
+    376.99
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "确"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    405.58,
+    375.7,
+    414.83,
+    388.99
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "的"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    414.83,
+    351.23,
+    424.08,
+    364.51
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "的"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    414.83,
+    363.71,
+    424.08,
+    376.99
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "定"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    414.83,
+    375.7,
+    424.08,
+    388.99
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "经"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    424.08,
+    351.23,
+    433.33,
+    364.51
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "道"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    424.08,
+    363.71,
+    433.33,
+    376.99
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "性"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    424.08,
+    375.7,
+    433.33,
+    388.99
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "济"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    433.33,
+    351.23,
+    442.58,
+    364.51
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "德"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    433.33,
+    363.71,
+    442.58,
+    376.99
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "的"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    442.58,
+    351.23,
+    451.83,
+    364.51
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "哲"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    442.58,
+    363.71,
+    451.83,
+    376.99
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "接"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    442.58,
+    375.7,
+    451.83,
+    388.99
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "金"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    451.83,
+    351.23,
+    461.08,
+    364.51
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "学"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    451.83,
+    363.71,
+    461.08,
+    376.99
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "受"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    451.83,
+    375.7,
+    461.08,
+    388.99
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "融"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    461.08,
+    351.23,
+    470.33,
+    364.51
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "和"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    461.08,
+    363.71,
+    470.33,
+    376.99
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "可"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    461.08,
+    375.7,
+    470.33,
+    388.99
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "和"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    470.33,
+    363.71,
+    479.58,
+    376.99
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "以"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    470.33,
+    375.7,
+    479.58,
+    388.99
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "人"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    479.58,
+    363.71,
+    488.83,
+    376.99
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "指"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    479.58,
+    375.7,
+    488.83,
+    388.99
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "工"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    488.83,
+    363.71,
+    498.08,
+    376.99
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "导"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    488.83,
+    375.7,
+    516.58,
+    388.99
+   ],
+   "han": 3,
+   "latin": 0,
+   "text": "智能驱"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    387.08,
+    389.58,
+    424.08,
+    402.86
+   ],
+   "han": 4,
+   "latin": 0,
+   "text": "动的市场"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    426.48,
+    391.63,
+    454.23,
+    402.58
+   ],
+   "han": 3,
+   "latin": 0,
+   "text": "罗伯特"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    456.88,
+    391.63,
+    512.38,
+    402.58
+   ],
+   "han": 6,
+   "latin": 0,
+   "text": "斯基德尔斯基"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    388.2,
+    447.44,
+    462.2,
+    460.73
+   ],
+   "han": 7,
+   "latin": 0,
+   "text": "世界运作得如何？"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    386.13,
+    459.23,
+    395.38,
+    472.51
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "经"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    386.13,
+    471.71,
+    395.38,
+    484.99
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "缩"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    386.13,
+    483.7,
+    395.38,
+    496.99
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "政"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    395.38,
+    459.23,
+    404.63,
+    472.51
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "济"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    395.38,
+    471.71,
+    404.63,
+    484.99
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "短"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    395.38,
+    483.7,
+    404.63,
+    496.99
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "策"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    404.63,
+    459.23,
+    413.88,
+    472.51
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "发"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    404.63,
+    471.71,
+    413.88,
+    484.99
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "工"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    404.63,
+    483.7,
+    413.88,
+    496.99
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "决"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    413.88,
+    459.23,
+    423.13,
+    472.51
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "展"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    413.88,
+    471.71,
+    423.13,
+    484.99
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "作"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    413.88,
+    483.7,
+    423.13,
+    496.99
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "定"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    423.13,
+    459.23,
+    432.38,
+    472.51
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "并"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    423.13,
+    471.71,
+    432.38,
+    484.99
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "周"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    423.13,
+    483.7,
+    432.38,
+    496.99
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "了"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    432.38,
+    459.23,
+    441.63,
+    472.51
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "不"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    432.38,
+    483.7,
+    441.63,
+    496.99
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "工"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    441.63,
+    471.71,
+    450.88,
+    484.99
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "以"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    441.63,
+    483.7,
+    450.88,
+    496.99
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "作"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    450.88,
+    471.71,
+    460.13,
+    484.99
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "及"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    450.88,
+    483.7,
+    460.13,
+    496.99
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "的"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    460.13,
+    471.71,
+    469.38,
+    484.99
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "社"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    460.13,
+    483.7,
+    469.38,
+    496.99
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "组"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    469.38,
+    471.71,
+    478.63,
+    484.99
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "会"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    469.38,
+    483.7,
+    478.63,
+    496.99
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "织"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    481.03,
+    485.76,
+    508.78,
+    496.71
+   ],
+   "han": 3,
+   "latin": 0,
+   "text": "阿莫里"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    511.43,
+    485.76,
+    529.93,
+    496.71
+   ],
+   "han": 2,
+   "latin": 0,
+   "text": "盖辛"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    386.13,
+    499.63,
+    441.63,
+    510.58
+   ],
+   "han": 6,
+   "latin": 0,
+   "text": "和埃马纽埃尔"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    444.27,
+    499.63,
+    462.77,
+    510.58
+   ],
+   "han": 2,
+   "latin": 0,
+   "text": "萨兹"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    387.22,
+    555.58,
+    433.47,
+    568.87
+   ],
+   "han": 5,
+   "latin": 0,
+   "text": "重访国富论"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    386.76,
+    579.23,
+    396.01,
+    592.51
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "亚"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    386.76,
+    591.7,
+    396.01,
+    604.99
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "揭"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    396.01,
+    579.23,
+    405.26,
+    592.51
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "当"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    396.01,
+    591.7,
+    405.26,
+    604.99
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "示"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    405.26,
+    591.7,
+    414.51,
+    604.99
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "经"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    407.58,
+    579.23,
+    416.83,
+    592.51
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "斯"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    414.51,
+    591.7,
+    423.76,
+    604.99
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "济"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    416.83,
+    579.23,
+    426.08,
+    592.51
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "密"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    423.76,
+    591.7,
+    433.01,
+    604.99
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "增"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    426.08,
+    579.23,
+    435.33,
+    592.51
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "的"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    433.01,
+    591.7,
+    442.26,
+    604.99
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "长"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    435.33,
+    579.23,
+    444.58,
+    592.51
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "哲"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    444.58,
+    579.23,
+    453.83,
+    592.51
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "学"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    451.51,
+    591.7,
+    460.76,
+    604.99
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "贸"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    453.83,
+    579.23,
+    463.08,
+    592.51
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "仍"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    460.76,
+    591.7,
+    470.01,
+    604.99
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "易"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    463.08,
+    579.23,
+    472.33,
+    592.51
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "然"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    470.01,
+    591.7,
+    479.26,
+    604.99
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "和"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    472.33,
+    579.23,
+    481.58,
+    592.51
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "揭"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    479.26,
+    591.7,
+    488.51,
+    604.99
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "应"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    481.58,
+    579.23,
+    490.83,
+    592.51
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "示"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    488.51,
+    591.7,
+    525.51,
+    604.99
+   ],
+   "han": 4,
+   "latin": 0,
+   "text": "对变化的"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    386.76,
+    605.58,
+    405.26,
+    618.86
+   ],
+   "han": 2,
+   "latin": 0,
+   "text": "方式"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    407.67,
+    607.63,
+    435.42,
+    618.58
+   ],
+   "han": 3,
+   "latin": 0,
+   "text": "迈克尔"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    438.06,
+    607.63,
+    465.81,
+    618.58
+   ],
+   "han": 3,
+   "latin": 0,
+   "text": "斯彭斯"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    223.51,
+    434.28,
+    353.11,
+    465.3
+   ],
+   "han": 6,
+   "latin": 0,
+   "text": "地缘政治的回"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    213.79,
+    466.68,
+    343.39,
+    497.7
+   ],
+   "han": 6,
+   "latin": 0,
+   "text": "归并不排除合"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    213.79,
+    499.08,
+    343.39,
+    530.1
+   ],
+   "han": 5,
+   "latin": 0,
+   "text": "作的可能性。"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    48.06,
+    243.44,
+    168.31,
+    256.73
+   ],
+   "han": 13,
+   "latin": 0,
+   "text": "理解动荡世界中的地缘经济学"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    47.24,
+    267.71,
+    185.99,
+    280.99
+   ],
+   "han": 15,
+   "latin": 0,
+   "text": "新经济工具如何解释全球权力动态"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    47.24,
+    283.64,
+    93.49,
+    294.59
+   ],
+   "han": 5,
+   "latin": 0,
+   "text": "克里斯托弗"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    96.14,
+    283.64,
+    160.89,
+    294.59
+   ],
+   "han": 6,
+   "latin": 0,
+   "text": "克莱顿、马泰奥"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    163.53,
+    283.64,
+    191.28,
+    294.59
+   ],
+   "han": 3,
+   "latin": 0,
+   "text": "马焦里"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    47.24,
+    297.51,
+    74.99,
+    308.46
+   ],
+   "han": 3,
+   "latin": 0,
+   "text": "和杰西"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    77.64,
+    297.51,
+    105.39,
+    308.46
+   ],
+   "han": 3,
+   "latin": 0,
+   "text": "施雷格"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    47.79,
+    351.44,
+    131.04,
+    364.73
+   ],
+   "han": 9,
+   "latin": 0,
+   "text": "地缘经济学的再发现"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    46.28,
+    363.71,
+    55.53,
+    376.99
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "在"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    46.28,
+    375.71,
+    55.53,
+    388.99
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "经"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    55.53,
+    363.71,
+    64.78,
+    376.99
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "全"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    55.53,
+    375.71,
+    64.78,
+    388.99
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "济"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    64.78,
+    363.71,
+    74.03,
+    376.99
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "球"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    64.78,
+    375.71,
+    74.03,
+    388.99
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "政"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    74.03,
+    363.71,
+    83.28,
+    376.99
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "范"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    74.03,
+    375.71,
+    83.28,
+    388.99
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "策"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    83.28,
+    363.71,
+    92.53,
+    376.99
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "围"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    83.28,
+    375.71,
+    92.53,
+    388.99
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "和"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    92.53,
+    363.71,
+    101.78,
+    376.99
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "内"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    92.53,
+    375.71,
+    101.78,
+    388.99
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "国"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    101.78,
+    375.71,
+    194.28,
+    388.99
+   ],
+   "han": 10,
+   "latin": 0,
+   "text": "家安全之间的界限正在"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    46.28,
+    389.58,
+    64.78,
+    402.86
+   ],
+   "han": 2,
+   "latin": 0,
+   "text": "消失"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    67.19,
+    391.64,
+    85.69,
+    402.59
+   ],
+   "han": 2,
+   "latin": 0,
+   "text": "乔什"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    88.33,
+    391.64,
+    125.33,
+    402.59
+   ],
+   "han": 4,
+   "latin": 0,
+   "text": "利普斯基"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    46.6,
+    447.44,
+    65.1,
+    460.73
+   ],
+   "han": 2,
+   "latin": 0,
+   "text": "代价"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    47.79,
+    459.44,
+    103.29,
+    472.72
+   ],
+   "han": 6,
+   "latin": 0,
+   "text": "地缘经济胁迫"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    46.3,
+    471.71,
+    55.55,
+    484.99
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "各"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    46.3,
+    483.7,
+    55.55,
+    496.99
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "为"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    46.3,
+    495.7,
+    55.55,
+    508.98
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "但"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    46.3,
+    507.7,
+    55.55,
+    520.98
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "权"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    46.3,
+    519.4,
+    55.55,
+    530.35
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "杰"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    55.55,
+    471.71,
+    64.8,
+    484.99
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "国"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    55.55,
+    483.7,
+    64.8,
+    496.99
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "地"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    55.55,
+    495.7,
+    64.8,
+    508.98
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "应"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    55.55,
+    507.7,
+    64.8,
+    520.98
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "衡"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    55.55,
+    519.4,
+    64.8,
+    530.35
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "弗"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    64.8,
+    471.71,
+    74.05,
+    484.99
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "政"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    64.8,
+    483.7,
+    74.05,
+    496.99
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "缘"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    64.8,
+    495.7,
+    74.05,
+    508.98
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "考"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    64.8,
+    507.7,
+    74.05,
+    520.98
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "取"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    64.8,
+    519.4,
+    74.05,
+    530.35
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "里"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    74.05,
+    471.71,
+    83.3,
+    484.99
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "府"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    74.05,
+    483.7,
+    83.3,
+    496.99
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "政"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    74.05,
+    495.7,
+    83.3,
+    508.98
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "虑"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    74.05,
+    507.7,
+    83.3,
+    520.98
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "舍"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    83.3,
+    471.71,
+    92.55,
+    484.99
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "有"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    83.3,
+    483.7,
+    92.55,
+    496.99
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "治"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    76.69,
+    519.4,
+    85.94,
+    530.35
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "弗"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    92.55,
+    471.71,
+    101.8,
+    484.99
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "充"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    92.55,
+    483.7,
+    101.8,
+    496.99
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "目"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    85.94,
+    519.4,
+    95.19,
+    530.35
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "里"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    101.8,
+    471.71,
+    111.05,
+    484.99
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "分"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    101.8,
+    483.7,
+    111.05,
+    496.99
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "的"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    95.19,
+    519.4,
+    104.44,
+    530.35
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "登"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    111.05,
+    471.71,
+    120.3,
+    484.99
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "的"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    111.05,
+    483.7,
+    120.3,
+    496.99
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "使"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    120.3,
+    471.71,
+    129.55,
+    484.99
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "理"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    120.3,
+    483.7,
+    129.55,
+    496.99
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "用"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    129.55,
+    471.71,
+    138.8,
+    484.99
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "由"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    129.55,
+    483.7,
+    175.8,
+    496.99
+   ],
+   "han": 5,
+   "latin": 0,
+   "text": "关税或制裁"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    216.6,
+    243.58,
+    308.18,
+    255.54
+   ],
+   "han": 11,
+   "latin": 0,
+   "text": "地缘政治时代的贸易合作"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    216.12,
+    267.71,
+    354.87,
+    280.99
+   ],
+   "han": 15,
+   "latin": 0,
+   "text": "地缘政治竞争并不意味着贸易合作"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    216.12,
+    281.58,
+    336.37,
+    294.86
+   ],
+   "han": 12,
+   "latin": 0,
+   "text": "的终结，但多边体系必须适应"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    338.77,
+    283.64,
+    357.27,
+    294.59
+   ],
+   "han": 2,
+   "latin": 0,
+   "text": "阿迪"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    216.12,
+    297.51,
+    225.37,
+    308.46
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "亚"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    228.02,
+    297.51,
+    246.52,
+    308.46
+   ],
+   "han": 2,
+   "latin": 0,
+   "text": "马图"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    251.23,
+    297.51,
+    278.98,
+    308.46
+   ],
+   "han": 3,
+   "latin": 0,
+   "text": "米凯莱"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    281.63,
+    297.51,
+    300.13,
+    308.46
+   ],
+   "han": 2,
+   "latin": 0,
+   "text": "鲁塔"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    304.85,
+    297.51,
+    314.1,
+    308.46
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "和"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    216.6,
+    363.48,
+    225.85,
+    376.76
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "新"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    216.6,
+    375.71,
+    225.85,
+    388.99
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "历"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    216.6,
+    387.71,
+    225.85,
+    400.99
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "所"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    225.85,
+    363.48,
+    235.1,
+    376.76
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "一"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    225.85,
+    375.71,
+    235.1,
+    388.99
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "史"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    225.85,
+    387.71,
+    235.1,
+    400.99
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "有"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    235.1,
+    363.48,
+    244.35,
+    376.76
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "波"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    235.1,
+    375.71,
+    244.35,
+    388.99
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "模"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    235.1,
+    387.71,
+    244.35,
+    400.99
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "权"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    244.35,
+    363.48,
+    253.6,
+    376.76
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "国"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    244.35,
+    375.71,
+    253.6,
+    388.99
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "式"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    244.35,
+    387.71,
+    253.6,
+    400.99
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "再"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    253.6,
+    363.48,
+    262.85,
+    376.76
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "有"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    253.6,
+    375.71,
+    262.85,
+    388.99
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "揭"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    253.6,
+    387.71,
+    262.85,
+    400.99
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "次"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    262.85,
+    363.48,
+    272.1,
+    376.76
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "化"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    262.85,
+    375.71,
+    272.1,
+    388.99
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "示"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    262.85,
+    387.71,
+    272.1,
+    400.99
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "扩"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    272.1,
+    375.71,
+    281.35,
+    388.99
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "了"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    272.1,
+    387.71,
+    281.35,
+    400.99
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "张"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    281.35,
+    375.71,
+    290.6,
+    388.99
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "为"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    290.6,
+    375.71,
+    299.85,
+    388.99
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "何"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    290.6,
+    387.71,
+    299.85,
+    400.99
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "这"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    299.85,
+    375.71,
+    309.1,
+    388.99
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "国"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    299.85,
+    387.71,
+    309.1,
+    400.99
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "次"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    309.1,
+    375.71,
+    318.35,
+    388.99
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "家"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    309.1,
+    387.71,
+    346.1,
+    400.99
+   ],
+   "han": 4,
+   "latin": 0,
+   "text": "有何不同"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    348.51,
+    389.76,
+    367.01,
+    400.71
+   ],
+   "han": 2,
+   "latin": 0,
+   "text": "尼古"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    216.6,
+    403.64,
+    235.1,
+    414.59
+   ],
+   "han": 2,
+   "latin": 0,
+   "text": "拉斯"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    237.75,
+    403.64,
+    265.5,
+    414.59
+   ],
+   "han": 3,
+   "latin": 0,
+   "text": "穆尔德"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    285.75,
+    63.68,
+    294.75,
+    76.6
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "金"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    285.75,
+    73.65,
+    294.75,
+    86.57
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "国"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    285.75,
+    85.64,
+    294.75,
+    98.57
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "六"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    294.75,
+    63.68,
+    303.75,
+    76.6
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "融"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    294.75,
+    73.65,
+    303.75,
+    86.57
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "际"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    294.75,
+    85.64,
+    303.75,
+    98.57
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "月"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    303.75,
+    63.68,
+    312.75,
+    76.6
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "与"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    303.75,
+    73.65,
+    312.75,
+    86.57
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "货"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    312.75,
+    63.68,
+    321.75,
+    76.6
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "发"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    312.75,
+    73.65,
+    321.75,
+    86.57
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "币"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    321.75,
+    63.68,
+    330.75,
+    76.6
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "展"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    321.75,
+    73.65,
+    330.75,
+    86.57
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "基"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    330.75,
+    73.65,
+    339.75,
+    86.57
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "金"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    339.75,
+    73.65,
+    348.75,
+    86.57
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "组"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    348.75,
+    73.65,
+    357.75,
+    86.57
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "织"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    357.75,
+    73.65,
+    366.75,
+    86.57
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "的"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    366.75,
+    73.65,
+    375.75,
+    86.57
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "季"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    375.75,
+    73.65,
+    384.75,
+    86.57
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "度"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    384.75,
+    73.65,
+    393.75,
+    86.57
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "刊"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    393.75,
+    73.65,
+    402.75,
+    86.57
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "物"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    338.85,
+    85.64,
+    347.85,
+    98.57
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "第"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    371.06,
+    85.64,
+    389.06,
+    98.57
+   ],
+   "han": 2,
+   "latin": 0,
+   "text": "卷第"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    398.77,
+    85.64,
+    407.77,
+    98.57
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "期"
+  },
+  {
+   "page": 4,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    36.45,
+    587.64,
+    312.45,
+    604.88
+   ],
+   "han": 20,
+   "latin": 0,
+   "text": "立即注册，获取关于塑造世界的关键经济、金融、发"
+  },
+  {
+   "page": 4,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    36.45,
+    605.64,
+    216.45,
+    622.88
+   ],
+   "han": 14,
+   "latin": 0,
+   "text": "展和政策问题的前沿研究和分析。"
+  },
+  {
+   "page": 4,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    36.87,
+    664.52,
+    136.87,
+    693.24
+   ],
+   "han": 4,
+   "latin": 0,
+   "text": "立即注册！"
+  },
+  {
+   "page": 4,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    39.8,
+    502.89,
+    351.8,
+    558.9
+   ],
+   "han": 8,
+   "latin": 0,
+   "text": "国际货币基金组织"
+  },
+  {
+   "page": 4,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    361.94,
+    502.89,
+    517.94,
+    558.9
+   ],
+   "han": 4,
+   "latin": 0,
+   "text": "周末阅读"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    89.7,
+    27.86,
+    109.7,
+    42.22
+   ],
+   "han": 2,
+   "latin": 0,
+   "text": "报头"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    406.15,
+    51.87,
+    443.65,
+    62.64
+   ],
+   "han": 5,
+   "latin": 0,
+   "text": "金融与发展"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    405.82,
+    61.86,
+    503.32,
+    72.63
+   ],
+   "han": 13,
+   "latin": 0,
+   "text": "国际货币基金组织的季度刊物"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    333.83,
+    91.03,
+    340.33,
+    100.36
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "总"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    333.83,
+    99.73,
+    340.83,
+    109.78
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "吉"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    340.33,
+    91.03,
+    346.83,
+    100.36
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "编"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    340.83,
+    99.73,
+    347.83,
+    109.78
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "塔"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    346.83,
+    91.03,
+    353.33,
+    100.36
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "辑"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    349.58,
+    99.73,
+    363.58,
+    109.78
+   ],
+   "han": 2,
+   "latin": 0,
+   "text": "巴特"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    334.03,
+    114.03,
+    340.53,
+    123.36
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "执"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    334.03,
+    122.73,
+    341.03,
+    132.78
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "尼"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    340.53,
+    114.03,
+    347.03,
+    123.36
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "行"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    341.03,
+    122.73,
+    348.03,
+    132.78
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "古"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    347.03,
+    114.03,
+    353.53,
+    123.36
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "编"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    348.03,
+    122.73,
+    355.03,
+    132.78
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "拉"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    353.53,
+    114.03,
+    360.03,
+    123.36
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "辑"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    355.03,
+    122.73,
+    362.03,
+    132.78
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "斯"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    363.78,
+    122.73,
+    377.78,
+    132.78
+   ],
+   "han": 2,
+   "latin": 0,
+   "text": "欧文"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    333.6,
+    137.02,
+    340.1,
+    146.36
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "高"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    333.6,
+    146.08,
+    338.85,
+    153.62
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "安"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    333.6,
+    154.77,
+    340.6,
+    164.82
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "杰"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    333.6,
+    163.83,
+    340.6,
+    173.89
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "彼"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    340.1,
+    137.02,
+    346.6,
+    146.36
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "级"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    338.85,
+    146.08,
+    344.1,
+    153.62
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "德"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    340.6,
+    154.77,
+    347.6,
+    164.82
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "夫"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    340.6,
+    163.83,
+    347.6,
+    173.89
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "得"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    346.6,
+    137.02,
+    353.1,
+    146.36
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "编"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    344.1,
+    146.08,
+    349.35,
+    153.62
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "烈"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    353.1,
+    137.02,
+    359.6,
+    146.36
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "辑"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    349.35,
+    146.08,
+    354.6,
+    153.62
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "亚"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    349.35,
+    154.77,
+    356.35,
+    164.82
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "科"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    349.35,
+    163.83,
+    356.35,
+    173.89
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "沃"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    354.6,
+    146.08,
+    359.85,
+    153.62
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "斯"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    356.35,
+    154.77,
+    363.35,
+    164.82
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "恩"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    356.35,
+    163.83,
+    363.35,
+    173.89
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "克"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    363.35,
+    154.77,
+    370.35,
+    164.82
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "斯"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    361.16,
+    146.08,
+    387.41,
+    153.62
+   ],
+   "han": 5,
+   "latin": 0,
+   "text": "阿德里亚诺"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    333.6,
+    178.02,
+    340.1,
+    187.36
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "助"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    333.6,
+    186.73,
+    340.6,
+    196.78
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "安"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    340.1,
+    178.02,
+    346.6,
+    187.36
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "理"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    340.6,
+    186.73,
+    347.6,
+    196.78
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "德"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    346.6,
+    178.02,
+    353.1,
+    187.36
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "编"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    347.6,
+    186.73,
+    354.6,
+    196.78
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "鲁"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    353.1,
+    178.02,
+    359.6,
+    187.36
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "辑"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    356.35,
+    186.73,
+    377.35,
+    196.78
+   ],
+   "han": 3,
+   "latin": 0,
+   "text": "斯坦利"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    333.9,
+    201.02,
+    340.4,
+    210.36
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "创"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    333.9,
+    209.83,
+    340.9,
+    219.88
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "玛"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    333.9,
+    218.83,
+    340.9,
+    228.88
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "娜"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    333.9,
+    227.5,
+    340.9,
+    237.56
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "香"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    340.4,
+    201.02,
+    346.9,
+    210.36
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "意"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    340.9,
+    209.83,
+    347.9,
+    219.88
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "尔"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    340.9,
+    218.83,
+    347.9,
+    228.88
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "塔"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    346.9,
+    201.02,
+    353.4,
+    210.36
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "与"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    347.9,
+    209.83,
+    354.9,
+    219.88
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "塔"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    347.9,
+    218.83,
+    354.9,
+    228.88
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "莉"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    347.9,
+    227.5,
+    354.9,
+    237.56
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "凡"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    353.4,
+    201.02,
+    359.9,
+    210.36
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "营"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    354.9,
+    218.83,
+    361.9,
+    228.88
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "亚"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    354.9,
+    227.5,
+    361.9,
+    237.56
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "妮"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    359.9,
+    201.02,
+    366.4,
+    210.36
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "销"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    356.65,
+    209.83,
+    363.65,
+    219.88
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "多"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    361.9,
+    227.5,
+    368.9,
+    237.56
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "莎"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    363.65,
+    209.83,
+    370.65,
+    219.88
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "罗"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    363.65,
+    218.83,
+    370.65,
+    228.88
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "维"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    370.65,
+    209.83,
+    377.65,
+    219.88
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "什"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    370.65,
+    218.83,
+    377.65,
+    228.88
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "内"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    377.65,
+    209.83,
+    384.65,
+    219.88
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "奇"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    377.65,
+    218.83,
+    384.65,
+    228.88
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "加"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    377.65,
+    227.5,
+    384.65,
+    237.56
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "黎"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    384.65,
+    209.83,
+    391.65,
+    219.88
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "克"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    384.65,
+    218.83,
+    391.65,
+    228.88
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "斯"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    393.4,
+    218.83,
+    421.4,
+    228.88
+   ],
+   "han": 4,
+   "latin": 0,
+   "text": "菲格罗亚"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    334.23,
+    242.02,
+    360.23,
+    251.36
+   ],
+   "han": 4,
+   "latin": 0,
+   "text": "制作经理"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    334.07,
+    250.83,
+    355.07,
+    260.88
+   ],
+   "han": 3,
+   "latin": 0,
+   "text": "梅琳达"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    356.82,
+    250.83,
+    370.82,
+    260.88
+   ],
+   "han": 2,
+   "latin": 0,
+   "text": "韦尔"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    333.9,
+    265.02,
+    359.9,
+    274.36
+   ],
+   "han": 4,
+   "latin": 0,
+   "text": "文字编辑"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    334.07,
+    273.83,
+    348.07,
+    283.88
+   ],
+   "han": 2,
+   "latin": 0,
+   "text": "露西"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    349.82,
+    273.83,
+    377.82,
+    283.88
+   ],
+   "han": 4,
+   "latin": 0,
+   "text": "莫拉莱斯"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    333.68,
+    288.02,
+    340.18,
+    297.36
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "艺"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    333.68,
+    296.72,
+    340.68,
+    306.77
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "二"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    340.18,
+    288.02,
+    346.68,
+    297.36
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "术"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    340.68,
+    296.72,
+    347.68,
+    306.77
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "号"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    346.68,
+    288.02,
+    353.18,
+    297.36
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "指"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    347.68,
+    296.72,
+    354.68,
+    306.77
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "公"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    353.18,
+    288.02,
+    359.68,
+    297.36
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "导"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    354.68,
+    296.72,
+    361.68,
+    306.77
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "报"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    359.68,
+    288.02,
+    379.18,
+    297.36
+   ],
+   "han": 3,
+   "latin": 0,
+   "text": "与设计"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    333.68,
+    311.02,
+    359.68,
+    320.36
+   ],
+   "han": 4,
+   "latin": 0,
+   "text": "编辑顾问"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    346.3,
+    319.83,
+    358.9,
+    328.87
+   ],
+   "han": 2,
+   "latin": 0,
+   "text": "阿里"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    360.48,
+    319.83,
+    379.38,
+    328.87
+   ],
+   "han": 3,
+   "latin": 0,
+   "text": "阿巴斯"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    333.6,
+    329.13,
+    348.3,
+    336.17
+   ],
+   "han": 3,
+   "latin": 0,
+   "text": "阿基布"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    349.52,
+    329.13,
+    369.12,
+    336.17
+   ],
+   "han": 4,
+   "latin": 0,
+   "text": "阿斯拉姆"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    333.84,
+    338.08,
+    349.59,
+    345.62
+   ],
+   "han": 3,
+   "latin": 0,
+   "text": "詹姆斯"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    350.9,
+    338.08,
+    371.9,
+    345.62
+   ],
+   "han": 4,
+   "latin": 0,
+   "text": "阿斯蒂尔"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    334.07,
+    346.83,
+    355.07,
+    356.88
+   ],
+   "han": 3,
+   "latin": 0,
+   "text": "赫尔格"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    356.82,
+    346.83,
+    377.82,
+    356.88
+   ],
+   "han": 3,
+   "latin": 0,
+   "text": "贝尔格"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    333.57,
+    355.73,
+    340.57,
+    365.78
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "严"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    342.32,
+    355.73,
+    363.32,
+    365.78
+   ],
+   "han": 3,
+   "latin": 0,
+   "text": "卡里耶"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    365.49,
+    355.73,
+    386.49,
+    365.78
+   ],
+   "han": 3,
+   "latin": 0,
+   "text": "斯沃洛"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    333.83,
+    364.73,
+    347.83,
+    374.78
+   ],
+   "han": 2,
+   "latin": 0,
+   "text": "奥亚"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    349.58,
+    364.73,
+    370.58,
+    374.78
+   ],
+   "han": 3,
+   "latin": 0,
+   "text": "切拉松"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    334.07,
+    373.73,
+    348.07,
+    383.79
+   ],
+   "han": 2,
+   "latin": 0,
+   "text": "马丁"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    349.82,
+    373.73,
+    370.82,
+    383.79
+   ],
+   "han": 3,
+   "latin": 0,
+   "text": "奇哈克"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    334.07,
+    382.84,
+    348.07,
+    392.89
+   ],
+   "han": 2,
+   "latin": 0,
+   "text": "鲁帕"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    349.82,
+    382.84,
+    384.82,
+    392.89
+   ],
+   "han": 5,
+   "latin": 0,
+   "text": "杜塔古普塔"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    334.07,
+    391.9,
+    354.02,
+    401.44
+   ],
+   "han": 3,
+   "latin": 0,
+   "text": "达维德"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    355.69,
+    391.9,
+    382.29,
+    401.44
+   ],
+   "han": 4,
+   "latin": 0,
+   "text": "富尔切里"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    334.07,
+    400.95,
+    352.97,
+    410.0
+   ],
+   "han": 3,
+   "latin": 0,
+   "text": "德尼兹"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    354.55,
+    400.95,
+    367.15,
+    410.0
+   ],
+   "han": 2,
+   "latin": 0,
+   "text": "伊甘"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    438.32,
+    319.74,
+    459.32,
+    329.79
+   ],
+   "han": 3,
+   "latin": 0,
+   "text": "苏比尔"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    461.07,
+    319.74,
+    475.07,
+    329.79
+   ],
+   "han": 2,
+   "latin": 0,
+   "text": "拉尔"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    476.89,
+    319.74,
+    490.89,
+    329.79
+   ],
+   "han": 2,
+   "latin": 0,
+   "text": "帕帕"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    492.64,
+    319.74,
+    513.64,
+    329.79
+   ],
+   "han": 3,
+   "latin": 0,
+   "text": "恩迪亚"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    438.32,
+    330.24,
+    445.32,
+    340.29
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "耶"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    447.14,
+    330.24,
+    475.14,
+    340.29
+   ],
+   "han": 4,
+   "latin": 0,
+   "text": "马尔哈尔"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    476.89,
+    330.24,
+    497.89,
+    340.29
+   ],
+   "han": 3,
+   "latin": 0,
+   "text": "纳巴尔"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    499.71,
+    330.24,
+    513.71,
+    340.29
+   ],
+   "han": 2,
+   "latin": 0,
+   "text": "迪亚"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    438.32,
+    340.74,
+    466.32,
+    350.79
+   ],
+   "han": 4,
+   "latin": 0,
+   "text": "努雷尔丁"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    468.14,
+    340.74,
+    482.14,
+    350.79
+   ],
+   "han": 2,
+   "latin": 0,
+   "text": "乌玛"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    483.89,
+    340.74,
+    511.89,
+    350.79
+   ],
+   "han": 4,
+   "latin": 0,
+   "text": "拉马克里"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    438.32,
+    351.24,
+    452.32,
+    361.29
+   ],
+   "han": 2,
+   "latin": 0,
+   "text": "希南"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    454.14,
+    351.24,
+    489.14,
+    361.29
+   ],
+   "han": 5,
+   "latin": 0,
+   "text": "克里斯托夫"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    490.89,
+    351.24,
+    511.89,
+    361.29
+   ],
+   "han": 3,
+   "latin": 0,
+   "text": "罗森伯"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    438.32,
+    361.74,
+    445.32,
+    371.79
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "格"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    447.14,
+    361.74,
+    475.14,
+    371.79
+   ],
+   "han": 4,
+   "latin": 0,
+   "text": "毛里西奥"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    476.89,
+    361.74,
+    490.89,
+    371.79
+   ],
+   "han": 2,
+   "latin": 0,
+   "text": "索托"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    492.71,
+    361.74,
+    513.71,
+    371.79
+   ],
+   "han": 3,
+   "latin": 0,
+   "text": "伊丽莎"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    438.32,
+    372.24,
+    445.32,
+    382.29
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "白"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    447.07,
+    372.24,
+    454.07,
+    382.29
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "范"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    455.82,
+    372.24,
+    476.82,
+    382.29
+   ],
+   "han": 3,
+   "latin": 0,
+   "text": "赫维伦"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    478.64,
+    372.24,
+    499.64,
+    382.29
+   ],
+   "han": 3,
+   "latin": 0,
+   "text": "达里娅"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    501.39,
+    372.24,
+    515.39,
+    382.29
+   ],
+   "han": 2,
+   "latin": 0,
+   "text": "扎哈"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    438.32,
+    382.74,
+    452.32,
+    392.79
+   ],
+   "han": 2,
+   "latin": 0,
+   "text": "罗娃"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    454.14,
+    382.74,
+    475.14,
+    392.79
+   ],
+   "han": 3,
+   "latin": 0,
+   "text": "罗伯特"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    476.89,
+    382.74,
+    497.89,
+    392.79
+   ],
+   "han": 3,
+   "latin": 0,
+   "text": "齐梅克"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    357.24,
+    443.95,
+    503.54,
+    453.5
+   ],
+   "han": 20,
+   "latin": 0,
+   "text": "国际货币基金组织。保留所有权利。如需复制任何"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    333.29,
+    453.92,
+    406.44,
+    463.47
+   ],
+   "han": 9,
+   "latin": 0,
+   "text": "内容，请通过在线表格（"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    492.7,
+    453.92,
+    525.95,
+    463.47
+   ],
+   "han": 4,
+   "latin": 0,
+   "text": "）或发送电"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    333.29,
+    463.9,
+    359.89,
+    473.45
+   ],
+   "han": 4,
+   "latin": 0,
+   "text": "子邮件至"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    426.37,
+    463.9,
+    526.12,
+    473.45
+   ],
+   "han": 14,
+   "latin": 0,
+   "text": "提交请求。商业用途的许可也可通"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    333.29,
+    473.87,
+    386.49,
+    483.42
+   ],
+   "han": 7,
+   "latin": 0,
+   "text": "过版权许可中心（"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    431.9,
+    473.87,
+    498.4,
+    483.42
+   ],
+   "han": 8,
+   "latin": 0,
+   "text": "）以象征性费用获得。"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    333.31,
+    488.56,
+    517.76,
+    497.1
+   ],
+   "han": 30,
+   "latin": 0,
+   "text": "文章和其他材料中表达的观点是作者的观点；它们不一定反映国际货币"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    333.31,
+    497.48,
+    380.91,
+    506.03
+   ],
+   "han": 7,
+   "latin": 0,
+   "text": "基金组织的政策。"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    333.34,
+    508.9,
+    438.34,
+    518.95
+   ],
+   "han": 13,
+   "latin": 0,
+   "text": "订阅服务、地址变更和广告咨询："
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    333.2,
+    521.4,
+    340.2,
+    531.46
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "国"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    333.2,
+    530.96,
+    340.2,
+    539.25
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "金"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    333.2,
+    537.41,
+    340.2,
+    547.46
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "邮"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    333.2,
+    545.41,
+    340.2,
+    555.46
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "华"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    333.2,
+    553.78,
+    337.75,
+    560.31
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "电"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    340.2,
+    521.4,
+    347.2,
+    531.46
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "际"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    340.2,
+    530.96,
+    347.2,
+    539.25
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "融"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    340.2,
+    537.41,
+    347.2,
+    547.46
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "政"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    340.2,
+    545.41,
+    347.2,
+    555.46
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "盛"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    337.75,
+    553.78,
+    342.3,
+    560.31
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "子"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    347.2,
+    521.4,
+    354.2,
+    531.46
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "货"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    347.2,
+    530.96,
+    354.2,
+    539.25
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "与"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    347.2,
+    537.41,
+    354.2,
+    547.46
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "信"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    347.2,
+    545.41,
+    354.2,
+    555.46
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "顿"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    342.3,
+    553.78,
+    346.85,
+    560.31
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "邮"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    354.2,
+    521.4,
+    361.2,
+    531.46
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "币"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    354.2,
+    530.96,
+    361.2,
+    539.25
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "发"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    354.2,
+    537.41,
+    361.2,
+    547.46
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "箱"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    354.2,
+    545.41,
+    361.2,
+    555.46
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "特"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    346.85,
+    553.78,
+    351.4,
+    560.31
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "件"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    361.2,
+    521.4,
+    368.2,
+    531.46
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "基"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    361.2,
+    530.96,
+    368.2,
+    539.25
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "展"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    361.2,
+    545.41,
+    368.2,
+    555.46
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "区"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    368.2,
+    521.4,
+    375.2,
+    531.46
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "金"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    375.2,
+    521.4,
+    382.2,
+    531.46
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "组"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    382.2,
+    521.4,
+    389.2,
+    531.46
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "织"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    389.2,
+    521.4,
+    396.2,
+    531.46
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "出"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    396.2,
+    521.4,
+    403.2,
+    531.46
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "版"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    403.2,
+    521.4,
+    410.2,
+    531.46
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "物"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    396.59,
+    545.41,
+    403.59,
+    555.46
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "美"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    403.59,
+    545.41,
+    410.59,
+    555.46
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "国"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    333.51,
+    566.07,
+    422.76,
+    574.61
+   ],
+   "han": 14,
+   "latin": 0,
+   "text": "邮政管理员：请将地址变更发送至"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    422.76,
+    567.39,
+    452.51,
+    574.43
+   ],
+   "han": 5,
+   "latin": 0,
+   "text": "金融与发展"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    452.51,
+    566.07,
+    523.91,
+    574.61
+   ],
+   "han": 10,
+   "latin": 0,
+   "text": "，国际货币基金组织，邮政"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    333.51,
+    574.99,
+    345.41,
+    583.54
+   ],
+   "han": 2,
+   "latin": 0,
+   "text": "信箱"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    363.59,
+    574.99,
+    399.29,
+    583.54
+   ],
+   "han": 5,
+   "latin": 0,
+   "text": "，华盛顿特区"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    417.47,
+    574.99,
+    441.27,
+    583.54
+   ],
+   "han": 2,
+   "latin": 0,
+   "text": "，美国。"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    333.08,
+    586.57,
+    505.63,
+    595.12
+   ],
+   "han": 26,
+   "latin": 0,
+   "text": "英文版由达特茅斯印刷公司印刷，地点在汉诺威，新罕布什尔州。"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    333.24,
+    606.92,
+    452.24,
+    616.97
+   ],
+   "han": 15,
+   "latin": 0,
+   "text": "《金融与发展》由以下机构每季度出版"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    333.1,
+    614.97,
+    406.25,
+    624.52
+   ],
+   "han": 10,
+   "latin": 0,
+   "text": "国际货币基金组织，西北"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    413.68,
+    614.97,
+    420.33,
+    624.52
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "街"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    344.25,
+    624.95,
+    390.8,
+    634.49
+   ],
+   "han": 6,
+   "latin": 0,
+   "text": "号，华盛顿特区"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    409.39,
+    624.95,
+    429.34,
+    634.49
+   ],
+   "han": 2,
+   "latin": 0,
+   "text": "，提供"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    333.1,
+    634.92,
+    426.2,
+    644.47
+   ],
+   "han": 10,
+   "latin": 0,
+   "text": "英语、阿拉伯语、中文、法语、"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    333.1,
+    644.9,
+    426.2,
+    654.44
+   ],
+   "han": 12,
+   "latin": 0,
+   "text": "日语、俄语和西班牙语版本。英"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    333.1,
+    654.87,
+    346.4,
+    664.42
+   ],
+   "han": 2,
+   "latin": 0,
+   "text": "文版"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    103.66,
+    749.36,
+    110.66,
+    759.42
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "年"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    114.57,
+    749.36,
+    121.57,
+    759.42
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "月"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    51.45,
+    131.21,
+    123.84,
+    142.76
+   ],
+   "han": 9,
+   "latin": 0,
+   "text": "七种语言的在线版本"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    147.34,
+    249.14,
+    207.67,
+    266.46
+   ],
+   "han": 5,
+   "latin": 0,
+   "text": "可提供法语"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    147.34,
+    267.23,
+    183.54,
+    284.56
+   ],
+   "han": 2,
+   "latin": 0,
+   "text": "版本！"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    229.79,
+    368.22,
+    251.91,
+    384.11
+   ],
+   "han": 2,
+   "latin": 0,
+   "text": "阅读"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    230.06,
+    381.53,
+    274.29,
+    397.41
+   ],
+   "han": 3,
+   "latin": 0,
+   "text": "俄文版！"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    126.17,
+    527.48,
+    193.03,
+    541.2
+   ],
+   "han": 6,
+   "latin": 0,
+   "text": "请阅读中文版！"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    165.44,
+    618.63,
+    225.77,
+    633.07
+   ],
+   "han": 5,
+   "latin": 0,
+   "text": "日文版在此！"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    153.28,
+    425.82,
+    220.84,
+    441.99
+   ],
+   "han": 6,
+   "latin": 0,
+   "text": "阅读阿拉伯文"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    161.54,
+    445.65,
+    200.15,
+    464.13
+   ],
+   "han": 2,
+   "latin": 0,
+   "text": "版本！"
+  },
+  {
+   "page": 6,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    103.66,
+    747.95,
+    110.66,
+    758.0
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "年"
+  },
+  {
+   "page": 6,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    114.57,
+    747.95,
+    121.57,
+    758.0
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "月"
+  },
+  {
+   "page": 6,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    39.88,
+    46.75,
+    183.88,
+    115.68
+   ],
+   "han": 3,
+   "latin": 0,
+   "text": "万花筒"
+  },
+  {
+   "page": 6,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    337.91,
+    76.73,
+    445.91,
+    93.96
+   ],
+   "han": 8,
+   "latin": 0,
+   "text": "全球视野，简要概述"
+  },
+  {
+   "page": 6,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    54.72,
+    601.36,
+    100.97,
+    614.65
+   ],
+   "han": 5,
+   "latin": 0,
+   "text": "中东的战争"
+  },
+  {
+   "page": 6,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    100.97,
+    601.36,
+    193.47,
+    614.65
+   ],
+   "han": 10,
+   "latin": 0,
+   "text": "引发了一场全球供应冲"
+  },
+  {
+   "page": 6,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    36.22,
+    615.24,
+    193.47,
+    628.52
+   ],
+   "han": 14,
+   "latin": 0,
+   "text": "击，正在减缓全球增长，推高通胀，并"
+  },
+  {
+   "page": 6,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    36.22,
+    629.11,
+    193.47,
+    642.4
+   ],
+   "han": 17,
+   "latin": 0,
+   "text": "给世界上一些最贫穷的国家带来更多痛"
+  },
+  {
+   "page": 6,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    36.22,
+    642.99,
+    193.47,
+    656.27
+   ],
+   "han": 16,
+   "latin": 0,
+   "text": "苦，据国际货币基金组织总裁克里斯塔"
+  },
+  {
+   "page": 6,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    36.22,
+    656.86,
+    54.72,
+    670.15
+   ],
+   "han": 2,
+   "latin": 0,
+   "text": "利娜"
+  },
+  {
+   "page": 6,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    57.03,
+    656.86,
+    131.03,
+    670.15
+   ],
+   "han": 7,
+   "latin": 0,
+   "text": "格奥尔基耶娃称。"
+  },
+  {
+   "page": 6,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    54.08,
+    673.43,
+    194.68,
+    686.05
+   ],
+   "han": 16,
+   "latin": 0,
+   "text": "在国际货币基金组织四月春季会议之"
+  },
+  {
+   "page": 6,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    36.51,
+    686.61,
+    194.68,
+    699.23
+   ],
+   "han": 16,
+   "latin": 0,
+   "text": "前，格奥尔基耶娃表示，冲突已经削减了"
+  },
+  {
+   "page": 6,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    36.51,
+    699.79,
+    185.9,
+    712.41
+   ],
+   "han": 16,
+   "latin": 0,
+   "text": "全球石油和天然气的流动，推高了能源"
+  },
+  {
+   "page": 6,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    215.36,
+    481.36,
+    335.61,
+    494.65
+   ],
+   "han": 11,
+   "latin": 0,
+   "text": "价格并扰乱了供应链。她说："
+  },
+  {
+   "page": 6,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    339.78,
+    481.36,
+    376.78,
+    494.65
+   ],
+   "han": 4,
+   "latin": 0,
+   "text": "一个有韧"
+  },
+  {
+   "page": 6,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    215.36,
+    495.24,
+    363.36,
+    508.52
+   ],
+   "han": 16,
+   "latin": 0,
+   "text": "性的世界经济再次受到中东战争的考"
+  },
+  {
+   "page": 6,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    215.36,
+    509.11,
+    233.86,
+    522.4
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "验。"
+  },
+  {
+   "page": 6,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    238.03,
+    509.11,
+    312.03,
+    522.4
+   ],
+   "han": 7,
+   "latin": 0,
+   "text": "她警告说，不会有"
+  },
+  {
+   "page": 6,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    316.19,
+    509.11,
+    371.69,
+    522.4
+   ],
+   "han": 6,
+   "latin": 0,
+   "text": "整洁和干净的"
+  },
+  {
+   "page": 6,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    215.36,
+    522.99,
+    233.86,
+    536.27
+   ],
+   "han": 2,
+   "latin": 0,
+   "text": "回归"
+  },
+  {
+   "page": 6,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    238.03,
+    522.99,
+    302.78,
+    536.27
+   ],
+   "han": 6,
+   "latin": 0,
+   "text": "到战前的局面。"
+  },
+  {
+   "page": 6,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    230.89,
+    541.36,
+    369.64,
+    554.65
+   ],
+   "han": 14,
+   "latin": 0,
+   "text": "这些评论发表之际，国际货币基金"
+  },
+  {
+   "page": 6,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    212.39,
+    555.24,
+    369.64,
+    568.52
+   ],
+   "han": 17,
+   "latin": 0,
+   "text": "组织将今年全球增长的参考预测下调至"
+  },
+  {
+   "page": 6,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    233.33,
+    569.11,
+    316.58,
+    582.4
+   ],
+   "han": 8,
+   "latin": 0,
+   "text": "，比一月份的估计低"
+  },
+  {
+   "page": 6,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    329.23,
+    569.11,
+    375.48,
+    582.4
+   ],
+   "han": 4,
+   "latin": 0,
+   "text": "个百分点。"
+  },
+  {
+   "page": 6,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    212.39,
+    585.04,
+    267.89,
+    595.99
+   ],
+   "han": 6,
+   "latin": 0,
+   "text": "世界经济展望"
+  },
+  {
+   "page": 6,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    267.89,
+    582.99,
+    369.64,
+    596.27
+   ],
+   "han": 10,
+   "latin": 0,
+   "text": "警告称，在能源供应中断"
+  },
+  {
+   "page": 6,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    212.39,
+    596.86,
+    267.89,
+    610.15
+   ],
+   "han": 6,
+   "latin": 0,
+   "text": "延续到明年的"
+  },
+  {
+   "page": 6,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    272.05,
+    596.86,
+    309.05,
+    610.15
+   ],
+   "han": 4,
+   "latin": 0,
+   "text": "严重情景"
+  },
+  {
+   "page": 6,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    313.21,
+    596.86,
+    377.96,
+    610.15
+   ],
+   "han": 6,
+   "latin": 0,
+   "text": "下，增长可能会"
+  },
+  {
+   "page": 6,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    212.39,
+    610.74,
+    277.14,
+    624.02
+   ],
+   "han": 7,
+   "latin": 0,
+   "text": "更大幅度放缓至"
+  },
+  {
+   "page": 6,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    290.6,
+    610.74,
+    373.85,
+    624.02
+   ],
+   "han": 7,
+   "latin": 0,
+   "text": "。在参考预测下，今"
+  },
+  {
+   "page": 6,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    212.39,
+    624.61,
+    314.14,
+    637.9
+   ],
+   "han": 11,
+   "latin": 0,
+   "text": "年的通胀率预计将上升至"
+  },
+  {
+   "page": 6,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    232.33,
+    661.43,
+    285.06,
+    674.05
+   ],
+   "han": 6,
+   "latin": 0,
+   "text": "克里斯塔利娜"
+  },
+  {
+   "page": 6,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    287.25,
+    661.43,
+    375.13,
+    674.05
+   ],
+   "han": 9,
+   "latin": 0,
+   "text": "格奥尔基耶娃表示，除"
+  },
+  {
+   "page": 6,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    214.76,
+    674.61,
+    372.93,
+    687.23
+   ],
+   "han": 17,
+   "latin": 0,
+   "text": "了受战争影响的波斯湾国家外，撒哈拉以"
+  },
+  {
+   "page": 6,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    214.76,
+    687.79,
+    372.93,
+    700.41
+   ],
+   "han": 18,
+   "latin": 0,
+   "text": "南非洲和小岛屿国家也是最容易受到影响"
+  },
+  {
+   "page": 6,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    214.76,
+    700.97,
+    346.57,
+    713.59
+   ],
+   "han": 13,
+   "latin": 0,
+   "text": "的地区之一。她指出，这些地区严"
+  },
+  {
+   "page": 6,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    36.67,
+    475.97,
+    126.27,
+    508.13
+   ],
+   "han": 4,
+   "latin": 0,
+   "text": "战争风险"
+  },
+  {
+   "page": 6,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    36.67,
+    509.57,
+    126.27,
+    541.73
+   ],
+   "han": 4,
+   "latin": 0,
+   "text": "加剧经济"
+  },
+  {
+   "page": 6,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    36.67,
+    543.17,
+    81.47,
+    575.33
+   ],
+   "han": 2,
+   "latin": 0,
+   "text": "下滑"
+  },
+  {
+   "page": 6,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    49.11,
+    403.25,
+    73.11,
+    414.74
+   ],
+   "han": 2,
+   "latin": 0,
+   "text": "大局："
+  },
+  {
+   "page": 6,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    73.11,
+    403.25,
+    345.11,
+    414.74
+   ],
+   "han": 32,
+   "latin": 0,
+   "text": "每三年，国际货币基金组织和世界银行都会在华盛顿特区以外举行年度会议。"
+  },
+  {
+   "page": 6,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    363.0,
+    403.25,
+    491.0,
+    414.74
+   ],
+   "han": 15,
+   "latin": 0,
+   "text": "年的会议在摩洛哥的马拉喀什举行。"
+  },
+  {
+   "page": 6,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    49.11,
+    415.25,
+    201.11,
+    426.74
+   ],
+   "han": 18,
+   "latin": 0,
+   "text": "今年的会议将在十月于泰国首都曼谷举行。"
+  },
+  {
+   "page": 6,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    201.11,
+    417.03,
+    497.11,
+    426.5
+   ],
+   "han": 35,
+   "latin": 0,
+   "text": "上图中，泰拳武术家在华盛顿的春季会议期间展示他们的技艺，作为文化活动的一部"
+  },
+  {
+   "page": 6,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    49.11,
+    429.03,
+    145.11,
+    438.5
+   ],
+   "han": 11,
+   "latin": 0,
+   "text": "分。国际货币基金组织照片"
+  },
+  {
+   "page": 6,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    147.41,
+    429.03,
+    171.41,
+    438.5
+   ],
+   "han": 3,
+   "latin": 0,
+   "text": "艾莉森"
+  },
+  {
+   "page": 6,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    173.7,
+    429.03,
+    205.7,
+    438.5
+   ],
+   "han": 3,
+   "latin": 0,
+   "text": "罗伯特。"
+  },
+  {
+   "page": 6,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    393.65,
+    481.5,
+    526.85,
+    493.46
+   ],
+   "han": 15,
+   "latin": 0,
+   "text": "重依赖燃料进口，食品和化肥成本上"
+  },
+  {
+   "page": 6,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    393.65,
+    493.99,
+    526.85,
+    505.94
+   ],
+   "han": 14,
+   "latin": 0,
+   "text": "升，加剧了贫困和粮食不安全。她还"
+  },
+  {
+   "page": 6,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    393.65,
+    506.48,
+    526.85,
+    518.43
+   ],
+   "han": 15,
+   "latin": 0,
+   "text": "表示，位于全球航运路线末端的岛屿"
+  },
+  {
+   "page": 6,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    393.65,
+    518.96,
+    526.85,
+    530.92
+   ],
+   "han": 15,
+   "latin": 0,
+   "text": "经济体也面临燃料短缺的更大风险。"
+  },
+  {
+   "page": 6,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    412.15,
+    541.36,
+    523.15,
+    554.65
+   ],
+   "han": 12,
+   "latin": 0,
+   "text": "国际货币基金组织总裁呼吁"
+  },
+  {
+   "page": 6,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    393.65,
+    555.24,
+    523.15,
+    568.52
+   ],
+   "han": 13,
+   "latin": 0,
+   "text": "各国政府避免广泛的能源补贴，"
+  },
+  {
+   "page": 6,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    393.65,
+    569.11,
+    523.15,
+    582.4
+   ],
+   "han": 14,
+   "latin": 0,
+   "text": "而应将支持目标对准脆弱的家庭"
+  },
+  {
+   "page": 6,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    393.65,
+    582.99,
+    523.15,
+    596.27
+   ],
+   "han": 12,
+   "latin": 0,
+   "text": "和有活力的企业，并警告称，高"
+  },
+  {
+   "page": 6,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    393.65,
+    596.86,
+    523.15,
+    610.15
+   ],
+   "han": 14,
+   "latin": 0,
+   "text": "公共债务使得不当设计的支出几"
+  },
+  {
+   "page": 6,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    393.65,
+    610.74,
+    449.15,
+    624.02
+   ],
+   "han": 5,
+   "latin": 0,
+   "text": "乎没有空间。"
+  },
+  {
+   "page": 6,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    416.03,
+    625.36,
+    480.78,
+    638.65
+   ],
+   "han": 7,
+   "latin": 0,
+   "text": "公共债务普遍比"
+  },
+  {
+   "page": 6,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    491.12,
+    625.36,
+    528.12,
+    638.65
+   ],
+   "han": 4,
+   "latin": 0,
+   "text": "年前高得"
+  },
+  {
+   "page": 6,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    393.36,
+    639.24,
+    402.61,
+    652.52
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "多"
+  },
+  {
+   "page": 6,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    421.11,
+    639.24,
+    476.61,
+    652.52
+   ],
+   "han": 6,
+   "latin": 0,
+   "text": "包括在大多数"
+  },
+  {
+   "page": 6,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    493.56,
+    639.24,
+    512.06,
+    652.52
+   ],
+   "han": 2,
+   "latin": 0,
+   "text": "国家"
+  },
+  {
+   "page": 6,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    393.36,
+    653.11,
+    522.86,
+    666.4
+   ],
+   "han": 14,
+   "latin": 0,
+   "text": "这反映了在条件允许时普遍忽视"
+  },
+  {
+   "page": 6,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    393.36,
+    666.99,
+    467.36,
+    680.27
+   ],
+   "han": 7,
+   "latin": 0,
+   "text": "财政整顿的情况，"
+  },
+  {
+   "page": 6,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    471.53,
+    666.99,
+    499.28,
+    680.27
+   ],
+   "han": 2,
+   "latin": 0,
+   "text": "她说。"
+  },
+  {
+   "page": 6,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    503.44,
+    666.99,
+    521.94,
+    680.27
+   ],
+   "han": 2,
+   "latin": 0,
+   "text": "所有"
+  },
+  {
+   "page": 6,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    393.36,
+    680.86,
+    522.86,
+    694.15
+   ],
+   "han": 13,
+   "latin": 0,
+   "text": "国家必须果断行动，在这次冲击"
+  },
+  {
+   "page": 6,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    393.36,
+    694.74,
+    467.36,
+    708.02
+   ],
+   "han": 7,
+   "latin": 0,
+   "text": "后重建财政空间。"
+  },
+  {
+   "page": 7,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    459.49,
+    749.36,
+    466.49,
+    759.42
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "年"
+  },
+  {
+   "page": 7,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    470.4,
+    749.36,
+    477.4,
+    759.42
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "月"
+  },
+  {
+   "page": 7,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    424.45,
+    27.5,
+    454.45,
+    41.86
+   ],
+   "han": 3,
+   "latin": 0,
+   "text": "万花筒"
+  },
+  {
+   "page": 7,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    84.29,
+    89.21,
+    108.29,
+    106.44
+   ],
+   "han": 2,
+   "latin": 0,
+   "text": "偷听"
+  },
+  {
+   "page": 7,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    241.19,
+    411.44,
+    289.34,
+    428.73
+   ],
+   "han": 4,
+   "latin": 0,
+   "text": "数字背后"
+  },
+  {
+   "page": 7,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    240.45,
+    434.77,
+    407.5,
+    448.1
+   ],
+   "han": 17,
+   "latin": 0,
+   "text": "冲突的持续时间和规模将影响全球前景。"
+  },
+  {
+   "page": 7,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    240.39,
+    699.79,
+    303.59,
+    707.35
+   ],
+   "han": 10,
+   "latin": 0,
+   "text": "来源：国际货币基金组织，"
+  },
+  {
+   "page": 7,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    315.37,
+    699.79,
+    320.64,
+    707.35
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "年"
+  },
+  {
+   "page": 7,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    323.58,
+    699.79,
+    328.85,
+    707.35
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "月"
+  },
+  {
+   "page": 7,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    328.85,
+    700.95,
+    360.45,
+    707.19
+   ],
+   "han": 6,
+   "latin": 0,
+   "text": "世界经济展望"
+  },
+  {
+   "page": 7,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    360.45,
+    699.79,
+    460.53,
+    707.35
+   ],
+   "han": 17,
+   "latin": 0,
+   "text": "；以及国际货币基金组织工作人员的计算。"
+  },
+  {
+   "page": 7,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    314.42,
+    674.6,
+    334.49,
+    689.01
+   ],
+   "han": 2,
+   "latin": 0,
+   "text": "增长"
+  },
+  {
+   "page": 7,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    415.58,
+    674.6,
+    455.71,
+    689.01
+   ],
+   "han": 4,
+   "latin": 0,
+   "text": "总体通胀"
+  },
+  {
+   "page": 7,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    270.61,
+    464.04,
+    278.63,
+    475.57
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "年"
+  },
+  {
+   "page": 7,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    283.12,
+    464.04,
+    331.28,
+    475.57
+   ],
+   "han": 4,
+   "latin": 0,
+   "text": "月（冲突前）"
+  },
+  {
+   "page": 7,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    270.61,
+    477.82,
+    278.63,
+    489.35
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "年"
+  },
+  {
+   "page": 7,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    283.12,
+    477.82,
+    339.3,
+    489.35
+   ],
+   "han": 5,
+   "latin": 0,
+   "text": "月（参考预测）"
+  },
+  {
+   "page": 7,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    413.4,
+    464.07,
+    445.51,
+    475.6
+   ],
+   "han": 4,
+   "latin": 0,
+   "text": "不利情景"
+  },
+  {
+   "page": 7,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    413.6,
+    478.04,
+    445.71,
+    489.56
+   ],
+   "han": 4,
+   "latin": 0,
+   "text": "严重情景"
+  },
+  {
+   "page": 7,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    270.72,
+    490.93,
+    278.74,
+    502.45
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "年"
+  },
+  {
+   "page": 7,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    283.23,
+    490.93,
+    291.26,
+    502.45
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "月"
+  },
+  {
+   "page": 7,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    216.87,
+    321.2,
+    248.87,
+    332.69
+   ],
+   "han": 3,
+   "latin": 0,
+   "text": "新闻中："
+  },
+  {
+   "page": 7,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    248.87,
+    321.2,
+    336.87,
+    332.69
+   ],
+   "han": 11,
+   "latin": 0,
+   "text": "国际货币基金组织于四月"
+  },
+  {
+   "page": 7,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    345.81,
+    321.2,
+    521.81,
+    332.69
+   ],
+   "han": 20,
+   "latin": 0,
+   "text": "日表示，将恢复与委内瑞拉的关系。克里斯塔利娜"
+  },
+  {
+   "page": 7,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    523.81,
+    321.2,
+    531.81,
+    332.69
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "格"
+  },
+  {
+   "page": 7,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    216.87,
+    333.2,
+    528.87,
+    344.69
+   ],
+   "han": 37,
+   "latin": 0,
+   "text": "奥尔基耶娃告诉记者，基金致力于帮助这个拉丁美洲国家的人民迎来更好的日子。委内瑞"
+  },
+  {
+   "page": 7,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    216.87,
+    345.2,
+    232.87,
+    356.69
+   ],
+   "han": 2,
+   "latin": 0,
+   "text": "拉自"
+  },
+  {
+   "page": 7,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    250.75,
+    345.2,
+    410.75,
+    356.69
+   ],
+   "han": 19,
+   "latin": 0,
+   "text": "年起成为国际货币基金组织的成员，但关系在"
+  },
+  {
+   "page": 7,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    428.64,
+    345.2,
+    460.64,
+    356.69
+   ],
+   "han": 3,
+   "latin": 0,
+   "text": "年中断。"
+  },
+  {
+   "page": 7,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    460.64,
+    346.98,
+    532.64,
+    356.45
+   ],
+   "han": 8,
+   "latin": 0,
+   "text": "上图：在晴朗的天空"
+  },
+  {
+   "page": 7,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    216.87,
+    358.98,
+    328.87,
+    368.45
+   ],
+   "han": 13,
+   "latin": 0,
+   "text": "下飘扬的委内瑞拉国旗。彭博社"
+  },
+  {
+   "page": 7,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    331.17,
+    358.98,
+    355.17,
+    368.45
+   ],
+   "han": 3,
+   "latin": 0,
+   "text": "卡洛斯"
+  },
+  {
+   "page": 7,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    357.46,
+    358.98,
+    389.46,
+    368.45
+   ],
+   "han": 3,
+   "latin": 0,
+   "text": "贝塞拉。"
+  },
+  {
+   "page": 7,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    64.66,
+    220.67,
+    159.66,
+    234.32
+   ],
+   "han": 10,
+   "latin": 0,
+   "text": "应对分裂的方式不应是"
+  },
+  {
+   "page": 7,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    60.39,
+    234.92,
+    164.89,
+    248.57
+   ],
+   "han": 10,
+   "latin": 0,
+   "text": "孤立，而是更深层次的区"
+  },
+  {
+   "page": 7,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    60.39,
+    249.17,
+    107.89,
+    262.82
+   ],
+   "han": 4,
+   "latin": 0,
+   "text": "域一体化。"
+  },
+  {
+   "page": 7,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    75.59,
+    276.46,
+    105.99,
+    287.37
+   ],
+   "han": 4,
+   "latin": 0,
+   "text": "穆罕默德"
+  },
+  {
+   "page": 7,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    107.89,
+    276.46,
+    161.09,
+    287.37
+   ],
+   "han": 6,
+   "latin": 0,
+   "text": "希姆谢克，土耳"
+  },
+  {
+   "page": 7,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    60.39,
+    287.86,
+    98.39,
+    298.77
+   ],
+   "han": 5,
+   "latin": 0,
+   "text": "其财政部长"
+  },
+  {
+   "page": 7,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    64.41,
+    401.38,
+    159.41,
+    415.02
+   ],
+   "han": 10,
+   "latin": 0,
+   "text": "韧性不是在冲击时建立"
+  },
+  {
+   "page": 7,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    60.14,
+    415.62,
+    164.64,
+    429.27
+   ],
+   "han": 10,
+   "latin": 0,
+   "text": "的。韧性是在好时光中建"
+  },
+  {
+   "page": 7,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    60.14,
+    429.88,
+    164.64,
+    443.52
+   ],
+   "han": 10,
+   "latin": 0,
+   "text": "立的，而你只有在坏时光"
+  },
+  {
+   "page": 7,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    60.14,
+    444.12,
+    145.64,
+    457.77
+   ],
+   "han": 8,
+   "latin": 0,
+   "text": "中才能看到其好处。"
+  },
+  {
+   "page": 7,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    76.14,
+    469.1,
+    108.14,
+    480.59
+   ],
+   "han": 4,
+   "latin": 0,
+   "text": "穆罕默德"
+  },
+  {
+   "page": 7,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    110.14,
+    469.1,
+    150.14,
+    480.59
+   ],
+   "han": 4,
+   "latin": 0,
+   "text": "阿尔贾丹，"
+  },
+  {
+   "page": 7,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    60.14,
+    481.1,
+    132.14,
+    492.59
+   ],
+   "han": 9,
+   "latin": 0,
+   "text": "沙特阿拉伯财政部长"
+  },
+  {
+   "page": 7,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    64.41,
+    602.67,
+    168.91,
+    616.32
+   ],
+   "han": 11,
+   "latin": 0,
+   "text": "有些人可能会想知道为什"
+  },
+  {
+   "page": 7,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    60.14,
+    616.92,
+    164.64,
+    630.57
+   ],
+   "han": 11,
+   "latin": 0,
+   "text": "么基金会花时间在这些问"
+  },
+  {
+   "page": 7,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    60.14,
+    631.17,
+    79.14,
+    644.82
+   ],
+   "han": 2,
+   "latin": 0,
+   "text": "题上"
+  },
+  {
+   "page": 7,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    95.44,
+    631.17,
+    171.44,
+    644.82
+   ],
+   "han": 6,
+   "latin": 0,
+   "text": "但事实是，腐败、"
+  },
+  {
+   "page": 7,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    60.14,
+    645.42,
+    164.64,
+    659.07
+   ],
+   "han": 11,
+   "latin": 0,
+   "text": "洗钱和其他金融犯罪对宏"
+  },
+  {
+   "page": 7,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    60.14,
+    659.67,
+    136.14,
+    673.32
+   ],
+   "han": 7,
+   "latin": 0,
+   "text": "观经济至关重要。"
+  },
+  {
+   "page": 7,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    67.34,
+    694.52,
+    168.14,
+    704.86
+   ],
+   "han": 14,
+   "latin": 0,
+   "text": "国际货币基金组织第一副总裁丹"
+  },
+  {
+   "page": 7,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    60.14,
+    705.32,
+    74.54,
+    715.66
+   ],
+   "han": 2,
+   "latin": 0,
+   "text": "卡茨"
+  },
+  {
+   "page": 8,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    103.66,
+    747.95,
+    110.66,
+    758.0
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "年"
+  },
+  {
+   "page": 8,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    114.57,
+    747.95,
+    121.57,
+    758.0
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "月"
+  },
+  {
+   "page": 8,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    37.78,
+    51.06,
+    81.78,
+    82.65
+   ],
+   "han": 2,
+   "latin": 0,
+   "text": "观点"
+  },
+  {
+   "page": 8,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    409.29,
+    749.77,
+    437.04,
+    760.72
+   ],
+   "han": 3,
+   "latin": 0,
+   "text": "尚塔尔"
+  },
+  {
+   "page": 8,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    439.69,
+    749.77,
+    485.94,
+    760.72
+   ],
+   "han": 5,
+   "latin": 0,
+   "text": "贾赫昌插图"
+  },
+  {
+   "page": 8,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    37.2,
+    648.49,
+    48.2,
+    664.28
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "金"
+  },
+  {
+   "page": 8,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    51.43,
+    648.49,
+    73.43,
+    664.28
+   ],
+   "han": 2,
+   "latin": 0,
+   "text": "鲁尔"
+  },
+  {
+   "page": 8,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    61.31,
+    686.46,
+    288.11,
+    701.38
+   ],
+   "han": 18,
+   "latin": 0,
+   "text": "美国政策制定者在地缘政治风险上升的背"
+  },
+  {
+   "page": 8,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    36.11,
+    705.36,
+    262.91,
+    720.28
+   ],
+   "han": 17,
+   "latin": 0,
+   "text": "景下，正在重新平衡经济效率与国家安全"
+  },
+  {
+   "page": 8,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    38.59,
+    553.76,
+    158.2,
+    575.23
+   ],
+   "han": 8,
+   "latin": 0,
+   "text": "重新思考自由贸易"
+  },
+  {
+   "page": 8,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    394.5,
+    109.36,
+    533.25,
+    122.65
+   ],
+   "han": 14,
+   "latin": 0,
+   "text": "在国际贸易方面，各国一直在经济"
+  },
+  {
+   "page": 8,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    376.0,
+    123.24,
+    533.25,
+    136.52
+   ],
+   "han": 16,
+   "latin": 0,
+   "text": "效率与国家安全之间进行权衡。第二次"
+  },
+  {
+   "page": 8,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    376.0,
+    137.11,
+    533.25,
+    150.4
+   ],
+   "han": 16,
+   "latin": 0,
+   "text": "世界大战后，他们通过降低关税来追求"
+  },
+  {
+   "page": 8,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    376.0,
+    150.99,
+    533.25,
+    164.27
+   ],
+   "han": 16,
+   "latin": 0,
+   "text": "自由国际贸易，认为这既经济高效又有"
+  },
+  {
+   "page": 8,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    376.0,
+    164.86,
+    440.75,
+    178.15
+   ],
+   "han": 6,
+   "latin": 0,
+   "text": "助于政治稳定。"
+  },
+  {
+   "page": 8,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    461.43,
+    164.86,
+    479.93,
+    178.15
+   ],
+   "han": 2,
+   "latin": 0,
+   "text": "年至"
+  },
+  {
+   "page": 8,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    500.61,
+    164.86,
+    528.36,
+    178.15
+   ],
+   "han": 3,
+   "latin": 0,
+   "text": "年达到"
+  },
+  {
+   "page": 8,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    376.0,
+    178.74,
+    533.25,
+    192.02
+   ],
+   "han": 16,
+   "latin": 0,
+   "text": "峰值期间，世界贸易占国内生产总值的"
+  },
+  {
+   "page": 8,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    376.0,
+    192.61,
+    533.25,
+    205.9
+   ],
+   "han": 16,
+   "latin": 0,
+   "text": "比例增加了三倍，其中约一半是中间产"
+  },
+  {
+   "page": 8,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    376.0,
+    206.49,
+    524.0,
+    219.77
+   ],
+   "han": 15,
+   "latin": 0,
+   "text": "品贸易，反映了跨境生产关系的重要"
+  },
+  {
+   "page": 8,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    376.0,
+    220.36,
+    514.75,
+    233.65
+   ],
+   "han": 13,
+   "latin": 0,
+   "text": "性。尽管冲突持续，但没有出现像"
+  },
+  {
+   "page": 8,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    376.0,
+    234.24,
+    533.25,
+    247.52
+   ],
+   "han": 16,
+   "latin": 0,
+   "text": "世纪上半叶那样的全球性战争。全球化"
+  },
+  {
+   "page": 8,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    376.0,
+    248.11,
+    468.5,
+    261.4
+   ],
+   "han": 9,
+   "latin": 0,
+   "text": "和稳定性取得了胜利。"
+  },
+  {
+   "page": 8,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    395.01,
+    313.36,
+    524.51,
+    326.65
+   ],
+   "han": 14,
+   "latin": 0,
+   "text": "世界正在重新评估经济互联互通"
+  },
+  {
+   "page": 8,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    376.51,
+    327.24,
+    524.51,
+    340.52
+   ],
+   "han": 15,
+   "latin": 0,
+   "text": "在全球事务中的作用，意识到更多的"
+  },
+  {
+   "page": 8,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    376.51,
+    341.11,
+    524.51,
+    354.4
+   ],
+   "han": 15,
+   "latin": 0,
+   "text": "互联意味着更多的依赖，而敌对国家"
+  },
+  {
+   "page": 8,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    376.51,
+    354.99,
+    524.51,
+    368.27
+   ],
+   "han": 16,
+   "latin": 0,
+   "text": "可以利用这些依赖在国际关系的其他"
+  },
+  {
+   "page": 8,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    376.51,
+    368.86,
+    524.51,
+    382.15
+   ],
+   "han": 15,
+   "latin": 0,
+   "text": "领域达到他们的目的。应对之策是建"
+  },
+  {
+   "page": 8,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    376.51,
+    382.74,
+    524.51,
+    396.02
+   ],
+   "han": 15,
+   "latin": 0,
+   "text": "立有韧性的经济。一个国家必须能够"
+  },
+  {
+   "page": 8,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    376.51,
+    396.61,
+    524.51,
+    409.9
+   ],
+   "han": 15,
+   "latin": 0,
+   "text": "获得其在长期战争中所需的资源。无"
+  },
+  {
+   "page": 8,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    376.51,
+    410.49,
+    524.51,
+    423.77
+   ],
+   "han": 15,
+   "latin": 0,
+   "text": "论全球格局如何变化，它都必须有可"
+  },
+  {
+   "page": 8,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    376.51,
+    424.36,
+    524.51,
+    437.65
+   ],
+   "han": 14,
+   "latin": 0,
+   "text": "靠的药品、芯片、关键矿物和其他重"
+  },
+  {
+   "page": 8,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    376.51,
+    438.24,
+    524.51,
+    451.52
+   ],
+   "han": 14,
+   "latin": 0,
+   "text": "要投入品的供应。而且，它必须能够"
+  },
+  {
+   "page": 8,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    376.51,
+    452.11,
+    524.51,
+    465.4
+   ],
+   "han": 15,
+   "latin": 0,
+   "text": "迅速增加生产，以应对诸如新冠肺炎"
+  },
+  {
+   "page": 8,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    376.51,
+    465.99,
+    450.51,
+    479.27
+   ],
+   "han": 7,
+   "latin": 0,
+   "text": "这样的紧急情况。"
+  },
+  {
+   "page": 8,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    395.15,
+    505.36,
+    459.9,
+    518.64
+   ],
+   "han": 6,
+   "latin": 0,
+   "text": "在美国，唐纳德"
+  },
+  {
+   "page": 8,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    462.21,
+    505.36,
+    526.96,
+    518.64
+   ],
+   "han": 7,
+   "latin": 0,
+   "text": "特朗普总统的政"
+  },
+  {
+   "page": 8,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    376.65,
+    519.23,
+    524.65,
+    532.52
+   ],
+   "han": 15,
+   "latin": 0,
+   "text": "府正在努力降低供应链的风险，并在"
+  },
+  {
+   "page": 8,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    376.65,
+    533.11,
+    524.65,
+    546.39
+   ],
+   "han": 15,
+   "latin": 0,
+   "text": "关键行业建立国内能力，以增强经济"
+  },
+  {
+   "page": 8,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    376.65,
+    546.98,
+    524.65,
+    560.27
+   ],
+   "han": 15,
+   "latin": 0,
+   "text": "韧性。这意味着对过去几乎无条件开"
+  },
+  {
+   "page": 8,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    376.65,
+    560.86,
+    441.4,
+    574.14
+   ],
+   "han": 6,
+   "latin": 0,
+   "text": "放政策的调整。"
+  },
+  {
+   "page": 8,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    395.15,
+    601.36,
+    524.65,
+    614.65
+   ],
+   "han": 14,
+   "latin": 0,
+   "text": "这些政策在某些情况下会降低相"
+  },
+  {
+   "page": 8,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    376.65,
+    615.24,
+    524.65,
+    628.52
+   ],
+   "han": 16,
+   "latin": 0,
+   "text": "对于我们忽视地缘政治风险的世界的"
+  },
+  {
+   "page": 8,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    376.65,
+    629.11,
+    524.65,
+    642.4
+   ],
+   "han": 15,
+   "latin": 0,
+   "text": "经济效率。这些是实现韧性所需的成"
+  },
+  {
+   "page": 8,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    376.65,
+    642.99,
+    524.65,
+    656.27
+   ],
+   "han": 15,
+   "latin": 0,
+   "text": "本。承认这种权衡的经济建模可以为"
+  },
+  {
+   "page": 8,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    376.65,
+    656.86,
+    524.65,
+    670.15
+   ],
+   "han": 15,
+   "latin": 0,
+   "text": "政策制定者提供指导。挑战在于尽量"
+  },
+  {
+   "page": 8,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    376.65,
+    670.74,
+    524.65,
+    684.02
+   ],
+   "han": 15,
+   "latin": 0,
+   "text": "减少成本，并确保不会以国家安全的"
+  },
+  {
+   "page": 8,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    376.65,
+    684.61,
+    487.65,
+    697.9
+   ],
+   "han": 11,
+   "latin": 0,
+   "text": "名义实施粗暴的保护主义。"
+  },
+  {
+   "page": 9,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    88.49,
+    21.29,
+    107.49,
+    34.94
+   ],
+   "han": 2,
+   "latin": 0,
+   "text": "标语"
+  },
+  {
+   "page": 9,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    103.66,
+    749.36,
+    110.66,
+    759.42
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "年"
+  },
+  {
+   "page": 9,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    114.57,
+    749.36,
+    121.57,
+    759.42
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "月"
+  },
+  {
+   "page": 9,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    89.5,
+    22.78,
+    129.5,
+    37.14
+   ],
+   "han": 4,
+   "latin": 0,
+   "text": "货币笔记"
+  },
+  {
+   "page": 9,
+   "direction": [
+    0.0,
+    -1.0
+   ],
+   "rotated": true,
+   "bbox": [
+    542.04,
+    668.34,
+    550.3,
+    720.09
+   ],
+   "han": 9,
+   "latin": 0,
+   "text": "由瑞士国家银行提供"
+  },
+  {
+   "page": 9,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    61.48,
+    178.91,
+    263.08,
+    193.83
+   ],
+   "han": 16,
+   "latin": 0,
+   "text": "瑞士人民帮助选择了他们下一版纸币"
+  },
+  {
+   "page": 9,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    36.28,
+    197.81,
+    74.08,
+    212.73
+   ],
+   "han": 3,
+   "latin": 0,
+   "text": "的设计"
+  },
+  {
+   "page": 9,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    51.36,
+    142.83,
+    90.36,
+    154.03
+   ],
+   "han": 5,
+   "latin": 0,
+   "text": "安德烈亚斯"
+  },
+  {
+   "page": 9,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    92.65,
+    142.83,
+    131.65,
+    154.03
+   ],
+   "han": 5,
+   "latin": 0,
+   "text": "阿德里亚诺"
+  },
+  {
+   "page": 9,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    40.53,
+    73.18,
+    264.53,
+    153.6
+   ],
+   "han": 4,
+   "latin": 0,
+   "text": "瑞士民主"
+  },
+  {
+   "page": 9,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    54.86,
+    229.36,
+    128.86,
+    242.65
+   ],
+   "han": 7,
+   "latin": 0,
+   "text": "除了阿尔卑斯山，"
+  },
+  {
+   "page": 9,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    128.86,
+    229.36,
+    267.61,
+    242.65
+   ],
+   "han": 15,
+   "latin": 0,
+   "text": "原始湖泊和以安静精确著称的声誉"
+  },
+  {
+   "page": 9,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    36.36,
+    243.24,
+    184.36,
+    256.52
+   ],
+   "han": 14,
+   "latin": 0,
+   "text": "外，瑞士还以其直接民主而闻名。其"
+  },
+  {
+   "page": 9,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    199.87,
+    243.24,
+    273.87,
+    256.52
+   ],
+   "han": 8,
+   "latin": 0,
+   "text": "万公民每年大约四"
+  },
+  {
+   "page": 9,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    36.36,
+    257.11,
+    249.11,
+    270.4
+   ],
+   "han": 20,
+   "latin": 0,
+   "text": "次就联邦问题（包括修改宪法）进行咨询，并有多达"
+  },
+  {
+   "page": 9,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    264.62,
+    257.11,
+    273.87,
+    270.4
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "次"
+  },
+  {
+   "page": 9,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    36.36,
+    270.99,
+    276.86,
+    284.27
+   ],
+   "han": 22,
+   "latin": 0,
+   "text": "的州（省）公投。去年，人们被要求帮助决定未来瑞士法郎"
+  },
+  {
+   "page": 9,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    36.36,
+    284.86,
+    73.36,
+    298.15
+   ],
+   "han": 3,
+   "latin": 0,
+   "text": "的外观。"
+  },
+  {
+   "page": 9,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    54.26,
+    313.36,
+    72.76,
+    326.65
+   ],
+   "han": 2,
+   "latin": 0,
+   "text": "大约"
+  },
+  {
+   "page": 9,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    83.1,
+    313.36,
+    166.35,
+    326.65
+   ],
+   "han": 9,
+   "latin": 0,
+   "text": "万人在线投票选择了"
+  },
+  {
+   "page": 9,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    176.69,
+    313.36,
+    213.69,
+    326.65
+   ],
+   "han": 4,
+   "latin": 0,
+   "text": "套面额为"
+  },
+  {
+   "page": 9,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    76.03,
+    327.24,
+    85.28,
+    340.52
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "和"
+  },
+  {
+   "page": 9,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    105.97,
+    327.24,
+    226.22,
+    340.52
+   ],
+   "han": 12,
+   "latin": 0,
+   "text": "法郎的纸币设计。提议的主题"
+  },
+  {
+   "page": 9,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    230.38,
+    327.24,
+    267.38,
+    340.52
+   ],
+   "han": 4,
+   "latin": 0,
+   "text": "瑞士及其"
+  },
+  {
+   "page": 9,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    35.76,
+    341.11,
+    54.26,
+    354.4
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "海⾋"
+  },
+  {
+   "page": 9,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    58.42,
+    341.11,
+    271.17,
+    354.4
+   ],
+   "han": 21,
+   "latin": 0,
+   "text": "突出了这个小国的地理多样性：汝拉地区，一个与法"
+  },
+  {
+   "page": 9,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    35.76,
+    354.99,
+    267.01,
+    368.27
+   ],
+   "han": 21,
+   "latin": 0,
+   "text": "国共享的中等海⾋山脉；瑞士高原，国家的中心区域；低"
+  },
+  {
+   "page": 9,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    35.76,
+    368.86,
+    267.01,
+    382.15
+   ],
+   "han": 22,
+   "latin": 0,
+   "text": "地，包括日内瓦和巴塞尔等城市的山谷；阿尔卑斯山麓；"
+  },
+  {
+   "page": 9,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    35.76,
+    382.74,
+    267.01,
+    396.02
+   ],
+   "han": 23,
+   "latin": 0,
+   "text": "阿尔卑斯山；以及高阿尔卑斯山。在线投票结合了专家咨"
+  },
+  {
+   "page": 9,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    35.76,
+    396.61,
+    109.76,
+    409.9
+   ],
+   "han": 7,
+   "latin": 0,
+   "text": "询委员会的分析。"
+  },
+  {
+   "page": 9,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    55.15,
+    421.36,
+    119.9,
+    434.65
+   ],
+   "han": 6,
+   "latin": 0,
+   "text": "瑞士国家银行（"
+  },
+  {
+   "page": 9,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    138.04,
+    421.36,
+    267.54,
+    434.65
+   ],
+   "han": 12,
+   "latin": 0,
+   "text": "）于三月宣布了获胜者。位于洛"
+  },
+  {
+   "page": 9,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    36.65,
+    435.24,
+    82.9,
+    448.52
+   ],
+   "han": 5,
+   "latin": 0,
+   "text": "桑的工作室"
+  },
+  {
+   "page": 9,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    123.29,
+    435.24,
+    271.29,
+    448.52
+   ],
+   "han": 15,
+   "latin": 0,
+   "text": "的设计在一面展示了不同海⾋高度的"
+  },
+  {
+   "page": 9,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    36.65,
+    449.11,
+    258.65,
+    462.4
+   ],
+   "han": 23,
+   "latin": 0,
+   "text": "本土植物的比例图，另一面则展示了引人注目的景观和"
+  },
+  {
+   "page": 9,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    262.81,
+    449.11,
+    272.06,
+    462.4
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "文"
+  },
+  {
+   "page": 9,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    36.65,
+    462.99,
+    64.4,
+    476.27
+   ],
+   "han": 3,
+   "latin": 0,
+   "text": "明成就"
+  },
+  {
+   "page": 9,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    68.56,
+    462.99,
+    272.06,
+    476.27
+   ],
+   "han": 18,
+   "latin": 0,
+   "text": "：阿尔卑斯山景观、缆车、以准时著称的火车、欧"
+  },
+  {
+   "page": 9,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    36.65,
+    476.86,
+    147.65,
+    490.15
+   ],
+   "han": 11,
+   "latin": 0,
+   "text": "洲核子研究中心，以及位于"
+  },
+  {
+   "page": 9,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    170.65,
+    476.86,
+    244.65,
+    490.15
+   ],
+   "han": 8,
+   "latin": 0,
+   "text": "米高山顶的高科技"
+  },
+  {
+   "page": 9,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    88.02,
+    490.74,
+    273.02,
+    504.02
+   ],
+   "han": 19,
+   "latin": 0,
+   "text": "小屋。瑞士国家银行董事会的替补成员塞巴斯"
+  },
+  {
+   "page": 9,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    36.65,
+    504.61,
+    55.15,
+    517.9
+   ],
+   "han": 2,
+   "latin": 0,
+   "text": "蒂安"
+  },
+  {
+   "page": 9,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    57.46,
+    504.61,
+    122.21,
+    517.9
+   ],
+   "han": 6,
+   "latin": 0,
+   "text": "克兰兹林表示："
+  },
+  {
+   "page": 9,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    126.37,
+    504.61,
+    274.37,
+    517.9
+   ],
+   "han": 15,
+   "latin": 0,
+   "text": "凭借其精确性和工艺，这一概念令人"
+  },
+  {
+   "page": 9,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    36.65,
+    518.49,
+    203.15,
+    531.77
+   ],
+   "han": 17,
+   "latin": 0,
+   "text": "印象深刻地表达了瑞士的多样性和质量。"
+  },
+  {
+   "page": 9,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    54.86,
+    541.36,
+    101.11,
+    554.65
+   ],
+   "han": 5,
+   "latin": 0,
+   "text": "新钞票将在"
+  },
+  {
+   "page": 9,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    121.8,
+    541.36,
+    269.8,
+    554.65
+   ],
+   "han": 15,
+   "latin": 0,
+   "text": "年后才会流通，届时将进行更多的开"
+  },
+  {
+   "page": 9,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    36.36,
+    555.24,
+    175.11,
+    568.52
+   ],
+   "han": 14,
+   "latin": 0,
+   "text": "发并加入安全特征。中央银行告诉"
+  },
+  {
+   "page": 9,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    207.57,
+    555.24,
+    272.32,
+    568.52
+   ],
+   "han": 7,
+   "latin": 0,
+   "text": "安全元素和制造"
+  },
+  {
+   "page": 9,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    36.36,
+    569.11,
+    119.61,
+    582.4
+   ],
+   "han": 8,
+   "latin": 0,
+   "text": "工艺变得更加复杂。"
+  },
+  {
+   "page": 9,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    123.78,
+    569.11,
+    170.03,
+    582.4
+   ],
+   "han": 5,
+   "latin": 0,
+   "text": "开发新系列"
+  },
+  {
+   "page": 9,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    174.19,
+    569.11,
+    266.69,
+    582.4
+   ],
+   "han": 10,
+   "latin": 0,
+   "text": "提供了更多机会来改进"
+  },
+  {
+   "page": 9,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    36.36,
+    582.99,
+    249.11,
+    596.27
+   ],
+   "han": 20,
+   "latin": 0,
+   "text": "钞票，无论是在安全性、功能性还是图形设计方面。"
+  },
+  {
+   "page": 9,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    54.57,
+    613.36,
+    267.32,
+    626.64
+   ],
+   "han": 22,
+   "latin": 0,
+   "text": "与此同时，最近的一次公投将现金使用权写入了瑞士"
+  },
+  {
+   "page": 9,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    36.07,
+    627.23,
+    267.32,
+    640.52
+   ],
+   "han": 24,
+   "latin": 0,
+   "text": "宪法，加强了中央银行始终确保充足硬币和纸币供应的使"
+  },
+  {
+   "page": 9,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    36.07,
+    641.11,
+    267.32,
+    654.39
+   ],
+   "han": 23,
+   "latin": 0,
+   "text": "命。尽管瑞士人对他们的货币感到自豪，作为世界上最安"
+  },
+  {
+   "page": 9,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    36.07,
+    654.98,
+    267.32,
+    668.27
+   ],
+   "han": 23,
+   "latin": 0,
+   "text": "全的货币之一，他们也在跟随全球现金使用减少的趋势。"
+  },
+  {
+   "page": 9,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    36.07,
+    668.86,
+    202.57,
+    682.14
+   ],
+   "han": 17,
+   "latin": 0,
+   "text": "大约三分之一的面对面交易使用现金，较"
+  },
+  {
+   "page": 9,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    223.26,
+    668.86,
+    241.76,
+    682.14
+   ],
+   "han": 2,
+   "latin": 0,
+   "text": "年的"
+  },
+  {
+   "page": 9,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    260.39,
+    668.86,
+    269.64,
+    682.14
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "有"
+  },
+  {
+   "page": 9,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    36.07,
+    682.73,
+    230.32,
+    696.02
+   ],
+   "han": 20,
+   "latin": 0,
+   "text": "所下降。许多人更喜欢使用流行的快速支付应用"
+  },
+  {
+   "page": 9,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    67.43,
+    709.36,
+    95.18,
+    722.64
+   ],
+   "han": 3,
+   "latin": 0,
+   "text": "瑞士每"
+  },
+  {
+   "page": 9,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    105.52,
+    709.36,
+    114.77,
+    722.64
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "到"
+  },
+  {
+   "page": 9,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    125.11,
+    709.36,
+    245.36,
+    722.64
+   ],
+   "han": 12,
+   "latin": 0,
+   "text": "年更换一次纸币。即将发行的"
+  },
+  {
+   "page": 9,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    458.36,
+    233.55,
+    493.36,
+    243.6
+   ],
+   "han": 5,
+   "latin": 0,
+   "text": "冰川毛茛出"
+  },
+  {
+   "page": 9,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    444.36,
+    244.05,
+    458.36,
+    254.1
+   ],
+   "han": 2,
+   "latin": 0,
+   "text": "现在"
+  },
+  {
+   "page": 9,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    474.01,
+    244.05,
+    495.01,
+    254.1
+   ],
+   "han": 3,
+   "latin": 0,
+   "text": "法郎纸"
+  },
+  {
+   "page": 9,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    444.36,
+    254.55,
+    493.36,
+    264.6
+   ],
+   "han": 6,
+   "latin": 0,
+   "text": "币草稿的正面。"
+  },
+  {
+   "page": 9,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    291.65,
+    541.5,
+    316.63,
+    553.46
+   ],
+   "han": 3,
+   "latin": 0,
+   "text": "新系列"
+  },
+  {
+   "page": 9,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    333.28,
+    541.5,
+    416.53,
+    553.46
+   ],
+   "han": 10,
+   "latin": 0,
+   "text": "瑞士银行的第十套纸币"
+  },
+  {
+   "page": 9,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    433.18,
+    541.5,
+    524.75,
+    553.46
+   ],
+   "han": 11,
+   "latin": 0,
+   "text": "保留了另一个瑞士的独特"
+  },
+  {
+   "page": 9,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    291.65,
+    553.99,
+    324.95,
+    565.94
+   ],
+   "han": 3,
+   "latin": 0,
+   "text": "之处，即"
+  },
+  {
+   "page": 9,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    343.57,
+    553.99,
+    376.87,
+    565.94
+   ],
+   "han": 3,
+   "latin": 0,
+   "text": "法郎（约"
+  },
+  {
+   "page": 9,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    395.48,
+    553.99,
+    528.68,
+    565.94
+   ],
+   "han": 14,
+   "latin": 0,
+   "text": "美元）的钞票，这是世界上流通中面"
+  },
+  {
+   "page": 9,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    291.65,
+    566.48,
+    349.93,
+    578.43
+   ],
+   "han": 6,
+   "latin": 0,
+   "text": "额最大的纸币。"
+  },
+  {
+   "page": 9,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    309.72,
+    577.36,
+    531.72,
+    590.65
+   ],
+   "han": 23,
+   "latin": 0,
+   "text": "大多数国家已经停止使用大额纸币，因为这些纸币被认"
+  },
+  {
+   "page": 9,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    291.22,
+    591.24,
+    457.72,
+    604.52
+   ],
+   "han": 17,
+   "latin": 0,
+   "text": "为主要用于洗钱和逃税。欧洲中央银行在"
+  },
+  {
+   "page": 9,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    478.4,
+    591.24,
+    524.65,
+    604.52
+   ],
+   "han": 5,
+   "latin": 0,
+   "text": "年停止发行"
+  },
+  {
+   "page": 9,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    291.22,
+    605.11,
+    309.72,
+    618.4
+   ],
+   "han": 2,
+   "latin": 0,
+   "text": "新的"
+  },
+  {
+   "page": 9,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    325.23,
+    605.11,
+    519.48,
+    618.4
+   ],
+   "han": 19,
+   "latin": 0,
+   "text": "欧元纸币。但是，根据瑞士国家银行支付方式调"
+  },
+  {
+   "page": 9,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    291.22,
+    618.99,
+    494.72,
+    632.27
+   ],
+   "han": 21,
+   "latin": 0,
+   "text": "查，大约四分之一的受访者报告在过去两年中拥有"
+  },
+  {
+   "page": 9,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    515.4,
+    618.99,
+    524.65,
+    632.27
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "法"
+  },
+  {
+   "page": 9,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    291.22,
+    632.86,
+    466.97,
+    646.15
+   ],
+   "han": 16,
+   "latin": 0,
+   "text": "郎纸币，主要用于支付，而不是储存价值。"
+  },
+  {
+   "page": 9,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    471.13,
+    632.86,
+    526.63,
+    646.15
+   ],
+   "han": 6,
+   "latin": 0,
+   "text": "目前的面额已"
+  },
+  {
+   "page": 9,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    291.22,
+    646.74,
+    513.22,
+    660.02
+   ],
+   "han": 21,
+   "latin": 0,
+   "text": "被证明是可靠的，从今天的角度来看，因此应该保留，"
+  },
+  {
+   "page": 9,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    517.38,
+    646.74,
+    526.63,
+    660.02
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "瑞"
+  },
+  {
+   "page": 9,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    291.22,
+    660.61,
+    365.22,
+    673.9
+   ],
+   "han": 7,
+   "latin": 0,
+   "text": "士国家银行表示。"
+  },
+  {
+   "page": 9,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    290.76,
+    697.36,
+    337.01,
+    710.65
+   ],
+   "han": 5,
+   "latin": 0,
+   "text": "安德烈亚斯"
+  },
+  {
+   "page": 9,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    339.73,
+    697.36,
+    385.98,
+    710.65
+   ],
+   "han": 5,
+   "latin": 0,
+   "text": "阿德里亚诺"
+  },
+  {
+   "page": 9,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    385.98,
+    699.42,
+    395.23,
+    710.37
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "是"
+  },
+  {
+   "page": 9,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    395.23,
+    697.36,
+    441.48,
+    710.65
+   ],
+   "han": 5,
+   "latin": 0,
+   "text": "金融与发展"
+  },
+  {
+   "page": 9,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    441.48,
+    699.42,
+    469.23,
+    710.37
+   ],
+   "han": 3,
+   "latin": 0,
+   "text": "的工作"
+  },
+  {
+   "page": 9,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    290.76,
+    713.29,
+    318.51,
+    724.24
+   ],
+   "han": 2,
+   "latin": 0,
+   "text": "人员。"
+  }
+ ],
+ "il_paragraphs_with_han": [
+  {
+   "reference": "p1#0",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 17,
+   "latin": 0,
+   "text": "经济理论罗伯特·斯基德尔斯基论凯恩斯"
+  },
+  {
+   "reference": "p1#1",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 11,
+   "latin": 0,
+   "text": "商品关键矿物与国家安全"
+  },
+  {
+   "reference": "p1#2",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 13,
+   "latin": 0,
+   "text": "贸易政策杰米森·格里尔论关税"
+  },
+  {
+   "reference": "p1#3",
+   "layout_label": "fallback_line",
+   "vertical": false,
+   "han": 8,
+   "latin": 0,
+   "text": "国际货币基金组织"
+  },
+  {
+   "reference": "p1#4",
+   "layout_label": "title",
+   "vertical": false,
+   "han": 5,
+   "latin": 0,
+   "text": "金融与发展"
+  },
+  {
+   "reference": "p1#5",
+   "layout_label": "title",
+   "vertical": false,
+   "han": 5,
+   "latin": 0,
+   "text": "地缘经济学"
+  },
+  {
+   "reference": "p1#6",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 10,
+   "latin": 0,
+   "text": "以及经济治国术的回归"
+  },
+  {
+   "reference": "p1#7",
+   "layout_label": "fallback_line",
+   "vertical": false,
+   "han": 2,
+   "latin": 0,
+   "text": "2026年6月"
+  },
+  {
+   "reference": "p2#0",
+   "layout_label": "title",
+   "vertical": false,
+   "han": 6,
+   "latin": 0,
+   "text": "世界经济展望"
+  },
+  {
+   "reference": "p2#1",
+   "layout_label": "title",
+   "vertical": false,
+   "han": 10,
+   "latin": 0,
+   "text": "第一章：全球前景与政策"
+  },
+  {
+   "reference": "p2#2",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 51,
+   "latin": 0,
+   "text": "全球经济再次受到冲击，这次是由于中东战争的爆发。商品价格上涨、通胀预期增强以及金融环境趋紧正在考验近期的韧性。"
+  },
+  {
+   "reference": "p2#3",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 74,
+   "latin": 0,
+   "text": "第二章: 国防支出: 宏观经济后果与权衡国防支出在地缘政治紧张局势加剧的背景下不断增加。本章发现，国防支出的大幅增长变得更加频繁，尤其是在新兴市场和发展中经济体"
+  },
+  {
+   "reference": "p2#4",
+   "layout_label": "title",
+   "vertical": false,
+   "han": 14,
+   "latin": 0,
+   "text": "第三章：冲突与恢复的宏观经济学"
+  },
+  {
+   "reference": "p2#5",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 61,
+   "latin": 0,
+   "text": "武装冲突除了造成毁灭性的人类损失外，还会产生深远的宏观经济后果。本章利用全球关于第二次世界大战后冲突的数据来评估战争的经济影响。"
+  },
+  {
+   "reference": "p2#6",
+   "layout_label": "abandon",
+   "vertical": false,
+   "han": 4,
+   "latin": 6,
+   "text": "IMF.org立即访问"
+  },
+  {
+   "reference": "p2#7",
+   "layout_label": "abandon",
+   "vertical": false,
+   "han": 3,
+   "latin": 0,
+   "text": "出版物"
+  },
+  {
+   "reference": "p3#1",
+   "layout_label": "abandon",
+   "vertical": false,
+   "han": 2,
+   "latin": 0,
+   "text": "2026年6月"
+  },
+  {
+   "reference": "p3#2",
+   "layout_label": "title",
+   "vertical": false,
+   "han": 2,
+   "latin": 0,
+   "text": "目录"
+  },
+  {
+   "reference": "p3#3",
+   "layout_label": "title",
+   "vertical": false,
+   "han": 5,
+   "latin": 0,
+   "text": "本期还包括"
+  },
+  {
+   "reference": "p3#6",
+   "layout_label": "title",
+   "vertical": false,
+   "han": 5,
+   "latin": 0,
+   "text": "地缘经济学"
+  },
+  {
+   "reference": "p3#8",
+   "layout_label": "title",
+   "vertical": false,
+   "han": 8,
+   "latin": 0,
+   "text": "纠正全球化的错误"
+  },
+  {
+   "reference": "p3#9",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 19,
+   "latin": 0,
+   "text": "基于地点的政策为被遗忘的地区提供了机会"
+  },
+  {
+   "reference": "p3#10",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 20,
+   "latin": 0,
+   "text": "全球化留下的路径 超越经济民粹主义 戈登·汉森"
+  },
+  {
+   "reference": "p3#12",
+   "layout_label": "title",
+   "vertical": false,
+   "han": 11,
+   "latin": 0,
+   "text": "凯恩斯在我们时代的意义"
+  },
+  {
+   "reference": "p3#13",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 9,
+   "latin": 0,
+   "text": "凯恩斯的道德哲学和"
+  },
+  {
+   "reference": "p3#14",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 12,
+   "latin": 0,
+   "text": "对不确定性的接受可以指导"
+  },
+  {
+   "reference": "p3#15",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 26,
+   "latin": 0,
+   "text": "当今的经济、金融和人工智能驱动的市场 罗伯特·斯基德尔斯基"
+  },
+  {
+   "reference": "p3#17",
+   "layout_label": "fallback_line",
+   "vertical": false,
+   "han": 7,
+   "latin": 0,
+   "text": "世界运作得如何？"
+  },
+  {
+   "reference": "p3#18",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 6,
+   "latin": 0,
+   "text": "经济发展并不"
+  },
+  {
+   "reference": "p3#19",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 9,
+   "latin": 0,
+   "text": "缩短工作周，以及社会"
+  },
+  {
+   "reference": "p3#20",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 23,
+   "latin": 0,
+   "text": "政策决定了工作的组织 阿莫里·盖辛和埃马纽埃尔·萨兹"
+  },
+  {
+   "reference": "p3#22",
+   "layout_label": "title",
+   "vertical": false,
+   "han": 5,
+   "latin": 0,
+   "text": "重访国富论"
+  },
+  {
+   "reference": "p3#23",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 11,
+   "latin": 0,
+   "text": "亚当·斯密的哲学仍然揭示"
+  },
+  {
+   "reference": "p3#24",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 22,
+   "latin": 0,
+   "text": "揭示经济增长、贸易和应对变化的方式 迈克尔·斯彭斯"
+  },
+  {
+   "reference": "p3#25",
+   "layout_label": "title",
+   "vertical": false,
+   "han": 17,
+   "latin": 0,
+   "text": "“地缘政治的回归并不排除合作的可能性。”"
+  },
+  {
+   "reference": "p3#27",
+   "layout_label": "title",
+   "vertical": false,
+   "han": 13,
+   "latin": 0,
+   "text": "理解动荡世界中的地缘经济学"
+  },
+  {
+   "reference": "p3#28",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 35,
+   "latin": 0,
+   "text": "新经济工具如何解释全球权力动态 克里斯托弗·克莱顿、马泰奥·马焦里和杰西·施雷格"
+  },
+  {
+   "reference": "p3#30",
+   "layout_label": "title",
+   "vertical": false,
+   "han": 9,
+   "latin": 0,
+   "text": "地缘经济学的再发现"
+  },
+  {
+   "reference": "p3#31",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 6,
+   "latin": 0,
+   "text": "在全球范围内，"
+  },
+  {
+   "reference": "p3#32",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 24,
+   "latin": 0,
+   "text": "经济政策和国家安全之间的界限正在消失 乔什·利普斯基"
+  },
+  {
+   "reference": "p3#34",
+   "layout_label": "title",
+   "vertical": false,
+   "han": 2,
+   "latin": 0,
+   "text": "代价"
+  },
+  {
+   "reference": "p3#35",
+   "layout_label": "title",
+   "vertical": false,
+   "han": 6,
+   "latin": 0,
+   "text": "地缘经济胁迫"
+  },
+  {
+   "reference": "p3#36",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 10,
+   "latin": 0,
+   "text": "各国政府有充分的理由"
+  },
+  {
+   "reference": "p3#37",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 14,
+   "latin": 0,
+   "text": "为地缘政治目的使用关税或制裁"
+  },
+  {
+   "reference": "p3#38",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 4,
+   "latin": 0,
+   "text": "但应考虑"
+  },
+  {
+   "reference": "p3#39",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 4,
+   "latin": 0,
+   "text": "权衡取舍"
+  },
+  {
+   "reference": "p3#40",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 6,
+   "latin": 0,
+   "text": "杰弗里·弗里登"
+  },
+  {
+   "reference": "p3#42",
+   "layout_label": "title",
+   "vertical": false,
+   "han": 11,
+   "latin": 0,
+   "text": "地缘政治时代的贸易合作"
+  },
+  {
+   "reference": "p3#43",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 38,
+   "latin": 14,
+   "text": "地缘政治竞争并不意味着贸易合作的终结，但多边体系必须适应 阿迪亚·马图, 米凯莱·鲁塔, 和 Robert W. Staiger"
+  },
+  {
+   "reference": "p3#45",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 6,
+   "latin": 0,
+   "text": "新一波国有化"
+  },
+  {
+   "reference": "p3#46",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 11,
+   "latin": 0,
+   "text": "历史模式揭示了为何国家"
+  },
+  {
+   "reference": "p3#47",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 20,
+   "latin": 0,
+   "text": "所有权再次扩张，这次有何不同 尼古拉斯·穆尔德"
+  },
+  {
+   "reference": "p3#49",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 5,
+   "latin": 0,
+   "text": "金融与发展"
+  },
+  {
+   "reference": "p3#50",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 13,
+   "latin": 0,
+   "text": "国际货币基金组织的季度刊物"
+  },
+  {
+   "reference": "p3#51",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 6,
+   "latin": 0,
+   "text": "六月 2026  |  第 63  |  卷第 2 期"
+  },
+  {
+   "reference": "p4#0",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 34,
+   "latin": 0,
+   "text": "立即注册，获取关于塑造世界的关键经济、金融、发展和政策问题的前沿研究和分析。"
+  },
+  {
+   "reference": "p4#1",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 4,
+   "latin": 0,
+   "text": "立即注册！"
+  },
+  {
+   "reference": "p4#2",
+   "layout_label": "title",
+   "vertical": false,
+   "han": 12,
+   "latin": 0,
+   "text": "国际货币基金组织 周末阅读"
+  },
+  {
+   "reference": "p5#0",
+   "layout_label": "abandon",
+   "vertical": false,
+   "han": 2,
+   "latin": 0,
+   "text": "报头"
+  },
+  {
+   "reference": "p5#1",
+   "layout_label": "title",
+   "vertical": false,
+   "han": 5,
+   "latin": 0,
+   "text": "金融与发展"
+  },
+  {
+   "reference": "p5#2",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 13,
+   "latin": 0,
+   "text": "国际货币基金组织的季度刊物"
+  },
+  {
+   "reference": "p5#4",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 3,
+   "latin": 0,
+   "text": "总编辑"
+  },
+  {
+   "reference": "p5#5",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 4,
+   "latin": 0,
+   "text": "吉塔·巴特"
+  },
+  {
+   "reference": "p5#6",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 4,
+   "latin": 0,
+   "text": "执行编辑"
+  },
+  {
+   "reference": "p5#7",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 6,
+   "latin": 0,
+   "text": "尼古拉斯·欧文"
+  },
+  {
+   "reference": "p5#8",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 4,
+   "latin": 0,
+   "text": "高级编辑"
+  },
+  {
+   "reference": "p5#9",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 10,
+   "latin": 0,
+   "text": "安德烈亚斯·阿德里亚诺"
+  },
+  {
+   "reference": "p5#10",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 5,
+   "latin": 0,
+   "text": "杰夫·科恩斯"
+  },
+  {
+   "reference": "p5#11",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 4,
+   "latin": 0,
+   "text": "彼得·沃克"
+  },
+  {
+   "reference": "p5#12",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 4,
+   "latin": 0,
+   "text": "助理编辑"
+  },
+  {
+   "reference": "p5#13",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 6,
+   "latin": 0,
+   "text": "安德鲁·斯坦利"
+  },
+  {
+   "reference": "p5#14",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 5,
+   "latin": 0,
+   "text": "创意与营销"
+  },
+  {
+   "reference": "p5#15",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 8,
+   "latin": 0,
+   "text": "玛尔塔·多罗什奇克"
+  },
+  {
+   "reference": "p5#16",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 12,
+   "latin": 0,
+   "text": "娜塔莉亚·维内加斯·菲格罗亚"
+  },
+  {
+   "reference": "p5#17",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 5,
+   "latin": 0,
+   "text": "香（凡妮莎）·黎"
+  },
+  {
+   "reference": "p5#18",
+   "layout_label": "fallback_line",
+   "vertical": false,
+   "han": 4,
+   "latin": 0,
+   "text": "制作经理"
+  },
+  {
+   "reference": "p5#19",
+   "layout_label": "fallback_line",
+   "vertical": false,
+   "han": 5,
+   "latin": 0,
+   "text": "梅琳达·韦尔"
+  },
+  {
+   "reference": "p5#20",
+   "layout_label": "fallback_line",
+   "vertical": false,
+   "han": 4,
+   "latin": 0,
+   "text": "文字编辑"
+  },
+  {
+   "reference": "p5#21",
+   "layout_label": "fallback_line",
+   "vertical": false,
+   "han": 6,
+   "latin": 0,
+   "text": "露西·莫拉莱斯"
+  },
+  {
+   "reference": "p5#22",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 7,
+   "latin": 0,
+   "text": "艺术指导与设计"
+  },
+  {
+   "reference": "p5#23",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 4,
+   "latin": 0,
+   "text": "二号公报"
+  },
+  {
+   "reference": "p5#24",
+   "layout_label": "fallback_line",
+   "vertical": false,
+   "han": 4,
+   "latin": 0,
+   "text": "编辑顾问"
+  },
+  {
+   "reference": "p5#25",
+   "layout_label": "fallback_line",
+   "vertical": false,
+   "han": 5,
+   "latin": 2,
+   "text": "S·M·阿里·阿巴斯"
+  },
+  {
+   "reference": "p5#26",
+   "layout_label": "fallback_line",
+   "vertical": false,
+   "han": 7,
+   "latin": 0,
+   "text": "阿基布·阿斯拉姆"
+  },
+  {
+   "reference": "p5#27",
+   "layout_label": "fallback_line",
+   "vertical": false,
+   "han": 7,
+   "latin": 0,
+   "text": "詹姆斯·阿斯蒂尔"
+  },
+  {
+   "reference": "p5#28",
+   "layout_label": "fallback_line",
+   "vertical": false,
+   "han": 6,
+   "latin": 0,
+   "text": "赫尔格·贝尔格"
+  },
+  {
+   "reference": "p5#29",
+   "layout_label": "fallback_line",
+   "vertical": false,
+   "han": 7,
+   "latin": 0,
+   "text": "严·卡里耶-斯沃洛"
+  },
+  {
+   "reference": "p5#30",
+   "layout_label": "fallback_line",
+   "vertical": false,
+   "han": 5,
+   "latin": 0,
+   "text": "奥亚·切拉松"
+  },
+  {
+   "reference": "p5#31",
+   "layout_label": "fallback_line",
+   "vertical": false,
+   "han": 5,
+   "latin": 0,
+   "text": "马丁·奇哈克"
+  },
+  {
+   "reference": "p5#32",
+   "layout_label": "fallback_line",
+   "vertical": false,
+   "han": 7,
+   "latin": 0,
+   "text": "鲁帕·杜塔古普塔"
+  },
+  {
+   "reference": "p5#33",
+   "layout_label": "fallback_line",
+   "vertical": false,
+   "han": 7,
+   "latin": 0,
+   "text": "达维德·富尔切里"
+  },
+  {
+   "reference": "p5#34",
+   "layout_label": "fallback_line",
+   "vertical": false,
+   "han": 5,
+   "latin": 0,
+   "text": "德尼兹·伊甘"
+  },
+  {
+   "reference": "p5#35",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 68,
+   "latin": 0,
+   "text": "苏比尔·拉尔 帕帕·恩迪亚耶 马尔哈尔·纳巴尔 迪亚·努雷尔丁 乌玛·拉马克里希南 克里斯托夫·罗森伯格 毛里西奥·索托 伊丽莎白·范·赫维伦 达里娅·扎哈罗娃"
+  },
+  {
+   "reference": "p5#36",
+   "layout_label": "abandon",
+   "vertical": false,
+   "han": 2,
+   "latin": 0,
+   "text": "2026年6月"
+  },
+  {
+   "reference": "p5#37",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 9,
+   "latin": 0,
+   "text": "七种语言的在线版本"
+  },
+  {
+   "reference": "p5#38",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 7,
+   "latin": 0,
+   "text": "可提供法语版本！"
+  },
+  {
+   "reference": "p5#40",
+   "layout_label": "fallback_line",
+   "vertical": false,
+   "han": 2,
+   "latin": 0,
+   "text": "阅读"
+  },
+  {
+   "reference": "p5#41",
+   "layout_label": "fallback_line",
+   "vertical": false,
+   "han": 3,
+   "latin": 0,
+   "text": "俄文版！"
+  },
+  {
+   "reference": "p5#42",
+   "layout_label": "figure_caption",
+   "vertical": false,
+   "han": 6,
+   "latin": 0,
+   "text": "请阅读中文版！"
+  },
+  {
+   "reference": "p5#43",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 5,
+   "latin": 0,
+   "text": "日文版在此！"
+  },
+  {
+   "reference": "p5#45",
+   "layout_label": "fallback_line",
+   "vertical": false,
+   "han": 6,
+   "latin": 0,
+   "text": "阅读阿拉伯文"
+  },
+  {
+   "reference": "p5#46",
+   "layout_label": "fallback_line",
+   "vertical": false,
+   "han": 2,
+   "latin": 0,
+   "text": "版本！"
+  },
+  {
+   "reference": "p5#47",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 66,
+   "latin": 51,
+   "text": "© 2026 国际货币基金组织。保留所有权利。如需复制任何 F&D 内容，请通过在线表格（imf.org/external/terms.htm）或发送电子邮件至"
+  },
+  {
+   "reference": "p5#48",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 37,
+   "latin": 0,
+   "text": "文章和其他材料中表达的观点是作者的观点；它们不一定反映国际货币基金组织的政策。"
+  },
+  {
+   "reference": "p5#49",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 13,
+   "latin": 0,
+   "text": "订阅服务、地址变更和广告咨询："
+  },
+  {
+   "reference": "p5#50",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 11,
+   "latin": 0,
+   "text": "国际货币基金组织出版物"
+  },
+  {
+   "reference": "p5#51",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 5,
+   "latin": 0,
+   "text": "金融与发展"
+  },
+  {
+   "reference": "p5#52",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 4,
+   "latin": 0,
+   "text": "邮政信箱 92780"
+  },
+  {
+   "reference": "p5#53",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 7,
+   "latin": 0,
+   "text": "华盛顿特区 20090，美国"
+  },
+  {
+   "reference": "p5#54",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 4,
+   "latin": 18,
+   "text": "电子邮件：publications@IMF.org"
+  },
+  {
+   "reference": "p5#55",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 38,
+   "latin": 0,
+   "text": "邮政管理员：请将地址变更发送至金融与发展，国际货币基金组织，邮政信箱 92780，华盛顿特区 20090，美国。"
+  },
+  {
+   "reference": "p5#56",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 26,
+   "latin": 0,
+   "text": "英文版由达特茅斯印刷公司印刷，地点在汉诺威，新罕布什尔州。"
+  },
+  {
+   "reference": "p5#57",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 15,
+   "latin": 0,
+   "text": "《金融与发展》由以下机构每季度出版"
+  },
+  {
+   "reference": "p5#59",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 43,
+   "latin": 4,
+   "text": "国际货币基金组织，西北19街700号，华盛顿特区20431，提供英语、阿拉伯语、中文、法语、日语、俄语和西班牙语版本。英文版 ISSN 0145-1707"
+  },
+  {
+   "reference": "p6#0",
+   "layout_label": "abandon",
+   "vertical": false,
+   "han": 2,
+   "latin": 0,
+   "text": "2026年6月"
+  },
+  {
+   "reference": "p6#2",
+   "layout_label": "title",
+   "vertical": false,
+   "han": 3,
+   "latin": 0,
+   "text": "万花筒"
+  },
+  {
+   "reference": "p6#3",
+   "layout_label": "title",
+   "vertical": false,
+   "han": 8,
+   "latin": 0,
+   "text": "全球视野，简要概述"
+  },
+  {
+   "reference": "p6#5",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 71,
+   "latin": 0,
+   "text": "中东的战争引发了一场全球供应冲击，正在减缓全球增长，推高通胀，并给世界上一些最贫穷的国家带来更多痛苦，据国际货币基金组织总裁克里斯塔利娜·格奥尔基耶娃称。"
+  },
+  {
+   "reference": "p6#6",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 48,
+   "latin": 0,
+   "text": "在国际货币基金组织四月春季会议之前，格奥尔基耶娃表示，冲突已经削减了全球石油和天然气的流动，推高了能源"
+  },
+  {
+   "reference": "p6#7",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 53,
+   "latin": 0,
+   "text": "价格并扰乱了供应链。她说：“一个有韧性的世界经济再次受到中东战争的考验。”她警告说，不会有“整洁和干净的回归”到战前的局面。"
+  },
+  {
+   "reference": "p6#8",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 100,
+   "latin": 0,
+   "text": "这些评论发表之际，国际货币基金组织将今年全球增长的参考预测下调至3.1%，比一月份的估计低0.2个百分点。世界经济展望警告称，在能源供应中断延续到明年的“严重情"
+  },
+  {
+   "reference": "p6#9",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 63,
+   "latin": 0,
+   "text": "克里斯塔利娜·格奥尔基耶娃表示，除了受战争影响的波斯湾国家外，撒哈拉以南非洲和小岛屿国家也是最容易受到影响的地区之一。她指出，这些地区严"
+  },
+  {
+   "reference": "p6#10",
+   "layout_label": "title",
+   "vertical": false,
+   "han": 10,
+   "latin": 0,
+   "text": "战争风险加剧经济下滑"
+  },
+  {
+   "reference": "p6#11",
+   "layout_label": "figure_caption",
+   "vertical": false,
+   "han": 119,
+   "latin": 0,
+   "text": "大局：每三年，国际货币基金组织和世界银行都会在华盛顿特区以外举行年度会议。2023年的会议在摩洛哥的马拉喀什举行。今年的会议将在十月于泰国首都曼谷举行。上图中，"
+  },
+  {
+   "reference": "p6#12",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 59,
+   "latin": 0,
+   "text": "重依赖燃料进口，食品和化肥成本上升，加剧了贫困和粮食不安全。她还表示，位于全球航运路线末端的岛屿经济体也面临燃料短缺的更大风险。"
+  },
+  {
+   "reference": "p6#13",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 70,
+   "latin": 0,
+   "text": "国际货币基金组织总裁呼吁各国政府避免广泛的能源补贴，而应将支持目标对准脆弱的家庭和有活力的企业，并警告称，高公共债务使得不当设计的支出几乎没有空间。"
+  },
+  {
+   "reference": "p6#14",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 65,
+   "latin": 1,
+   "text": "“公共债务普遍比20年前高得多——包括在大多数G20国家——这反映了在条件允许时普遍忽视财政整顿的情况，”她说。“所有国家必须果断行动，在这次冲击后重建财政空间"
+  },
+  {
+   "reference": "p7#0",
+   "layout_label": "abandon",
+   "vertical": false,
+   "han": 2,
+   "latin": 0,
+   "text": "2026年6月"
+  },
+  {
+   "reference": "p7#2",
+   "layout_label": "fallback_line",
+   "vertical": false,
+   "han": 3,
+   "latin": 0,
+   "text": "万花筒"
+  },
+  {
+   "reference": "p7#3",
+   "layout_label": "title",
+   "vertical": false,
+   "han": 2,
+   "latin": 0,
+   "text": "偷听"
+  },
+  {
+   "reference": "p7#5",
+   "layout_label": "title",
+   "vertical": false,
+   "han": 4,
+   "latin": 0,
+   "text": "数字背后"
+  },
+  {
+   "reference": "p7#6",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 17,
+   "latin": 0,
+   "text": "冲突的持续时间和规模将影响全球前景。"
+  },
+  {
+   "reference": "p7#7",
+   "layout_label": "table_footnote",
+   "vertical": false,
+   "han": 35,
+   "latin": 0,
+   "text": "来源：国际货币基金组织，2026年4月世界经济展望；以及国际货币基金组织工作人员的计算。"
+  },
+  {
+   "reference": "p7#19",
+   "layout_label": "fallback_line",
+   "vertical": false,
+   "han": 2,
+   "latin": 3,
+   "text": "GDP增长"
+  },
+  {
+   "reference": "p7#20",
+   "layout_label": "fallback_line",
+   "vertical": false,
+   "han": 4,
+   "latin": 0,
+   "text": "总体通胀"
+  },
+  {
+   "reference": "p7#21",
+   "layout_label": "fallback_line",
+   "vertical": false,
+   "han": 5,
+   "latin": 0,
+   "text": "2026年4月（冲突前）"
+  },
+  {
+   "reference": "p7#22",
+   "layout_label": "fallback_line",
+   "vertical": false,
+   "han": 6,
+   "latin": 0,
+   "text": "2026年4月（参考预测）"
+  },
+  {
+   "reference": "p7#23",
+   "layout_label": "fallback_line",
+   "vertical": false,
+   "han": 4,
+   "latin": 0,
+   "text": "不利情景"
+  },
+  {
+   "reference": "p7#24",
+   "layout_label": "fallback_line",
+   "vertical": false,
+   "han": 4,
+   "latin": 0,
+   "text": "严重情景"
+  },
+  {
+   "reference": "p7#25",
+   "layout_label": "fallback_line",
+   "vertical": false,
+   "han": 2,
+   "latin": 0,
+   "text": "2026年1月"
+  },
+  {
+   "reference": "p7#26",
+   "layout_label": "figure_caption",
+   "vertical": false,
+   "han": 123,
+   "latin": 0,
+   "text": "新闻中：国际货币基金组织于四月16日表示，将恢复与委内瑞拉的关系。克里斯塔利娜·格奥尔基耶娃告诉记者，基金致力于帮助这个拉丁美洲国家的人民迎来更好的日子。委内瑞"
+  },
+  {
+   "reference": "p7#27",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 24,
+   "latin": 0,
+   "text": "“应对分裂的方式不应是孤立，而是更深层次的区域一体化。”"
+  },
+  {
+   "reference": "p7#28",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 15,
+   "latin": 0,
+   "text": "——穆罕默德·希姆谢克，土耳其财政部长"
+  },
+  {
+   "reference": "p7#29",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 38,
+   "latin": 0,
+   "text": "“韧性不是在冲击时建立的。韧性是在好时光中建立的，而你只有在坏时光中才能看到其好处。”"
+  },
+  {
+   "reference": "p7#30",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 17,
+   "latin": 0,
+   "text": "——穆罕默德·阿尔贾丹，沙特阿拉伯财政部长"
+  },
+  {
+   "reference": "p7#31",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 48,
+   "latin": 0,
+   "text": "“有些人可能会想知道为什么基金会花时间在这些问题上……但事实是，腐败、洗钱和其他金融犯罪对宏观经济至关重要。”"
+  },
+  {
+   "reference": "p7#32",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 16,
+   "latin": 0,
+   "text": "—国际货币基金组织第一副总裁丹·卡茨"
+  },
+  {
+   "reference": "p8#0",
+   "layout_label": "abandon",
+   "vertical": false,
+   "han": 2,
+   "latin": 0,
+   "text": "2026年6月"
+  },
+  {
+   "reference": "p8#2",
+   "layout_label": "title",
+   "vertical": false,
+   "han": 2,
+   "latin": 0,
+   "text": "观点"
+  },
+  {
+   "reference": "p8#3",
+   "layout_label": "abandon",
+   "vertical": false,
+   "han": 8,
+   "latin": 0,
+   "text": "尚塔尔·贾赫昌插图"
+  },
+  {
+   "reference": "p8#6",
+   "layout_label": "title",
+   "vertical": false,
+   "han": 3,
+   "latin": 0,
+   "text": "金·鲁尔"
+  },
+  {
+   "reference": "p8#7",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 35,
+   "latin": 0,
+   "text": "美国政策制定者在地缘政治风险上升的背景下，正在重新平衡经济效率与国家安全"
+  },
+  {
+   "reference": "p8#8",
+   "layout_label": "title",
+   "vertical": false,
+   "han": 8,
+   "latin": 0,
+   "text": "重新思考自由贸易"
+  },
+  {
+   "reference": "p8#9",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 158,
+   "latin": 0,
+   "text": "在国际贸易方面，各国一直在经济效率与国家安全之间进行权衡。第二次世界大战后，他们通过降低关税来追求自由国际贸易，认为这既经济高效又有助于政治稳定。1950年至2"
+  },
+  {
+   "reference": "p8#10",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 170,
+   "latin": 0,
+   "text": "世界正在重新评估经济互联互通在全球事务中的作用，意识到更多的互联意味着更多的依赖，而敌对国家可以利用这些依赖在国际关系的其他领域达到他们的目的。应对之策是建立有"
+  },
+  {
+   "reference": "p8#11",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 64,
+   "latin": 0,
+   "text": "在美国，唐纳德·特朗普总统的政府正在努力降低供应链的风险，并在关键行业建立国内能力，以增强经济韧性。这意味着对过去几乎无条件开放政策的调整。"
+  },
+  {
+   "reference": "p8#12",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 101,
+   "latin": 0,
+   "text": "这些政策在某些情况下会降低相对于我们忽视地缘政治风险的世界的经济效率。这些是实现韧性所需的成本。承认这种权衡的经济建模可以为政策制定者提供指导。挑战在于尽量减少"
+  },
+  {
+   "reference": "p9#2",
+   "layout_label": "abandon",
+   "vertical": false,
+   "han": 2,
+   "latin": 2,
+   "text": "F&D 标语"
+  },
+  {
+   "reference": "p9#6",
+   "layout_label": "abandon",
+   "vertical": false,
+   "han": 2,
+   "latin": 0,
+   "text": "2026年6月"
+  },
+  {
+   "reference": "p9#7",
+   "layout_label": "abandon",
+   "vertical": false,
+   "han": 4,
+   "latin": 2,
+   "text": "F  D 货币笔记"
+  },
+  {
+   "reference": "p9#10",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 19,
+   "latin": 0,
+   "text": "瑞士人民帮助选择了他们下一版纸币的设计"
+  },
+  {
+   "reference": "p9#11",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 10,
+   "latin": 0,
+   "text": "安德烈亚斯·阿德里亚诺"
+  },
+  {
+   "reference": "p9#12",
+   "layout_label": "title",
+   "vertical": false,
+   "han": 4,
+   "latin": 0,
+   "text": "瑞士民主"
+  },
+  {
+   "reference": "p9#13",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 90,
+   "latin": 0,
+   "text": "除了阿尔卑斯山，原始湖泊和以安静精确著称的声誉外，瑞士还以其直接民主而闻名。其900万公民每年大约四次就联邦问题（包括修改宪法）进行咨询，并有多达100次的州（"
+  },
+  {
+   "reference": "p9#14",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 129,
+   "latin": 0,
+   "text": "大约10万人在线投票选择了12套面额为10、20、50、100、200和1000法郎的纸币设计。提议的主题“瑞士及其海拔”突出了这个小国的地理多样性：汝拉地区，"
+  },
+  {
+   "reference": "p9#15",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 162,
+   "latin": 19,
+   "text": "瑞士国家银行（SNB）于三月宣布了获胜者。位于洛桑的工作室Emphase的设计在一面展示了不同海拔高度的本土植物的比例图，另一面则展示了引人注目的景观和“文明成"
+  },
+  {
+   "reference": "p9#16",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 84,
+   "latin": 2,
+   "text": "新钞票将在2030年后才会流通，届时将进行更多的开发并加入安全特征。中央银行告诉F&D：“安全元素和制造工艺变得更加复杂。”开发新系列“提供了更多机会来改进钞票"
+  },
+  {
+   "reference": "p9#17",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 132,
+   "latin": 5,
+   "text": "与此同时，最近的一次公投将现金使用权写入了瑞士宪法，加强了中央银行始终确保充足硬币和纸币供应的使命。尽管瑞士人对他们的货币感到自豪，作为世界上最安全的货币之一，"
+  },
+  {
+   "reference": "p9#18",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 16,
+   "latin": 0,
+   "text": "瑞士每15到20年更换一次纸币。即将发行的"
+  },
+  {
+   "reference": "p9#19",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 16,
+   "latin": 0,
+   "text": "冰川毛茛出现在1000法郎纸币草稿的正面。"
+  },
+  {
+   "reference": "p9#20",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 50,
+   "latin": 0,
+   "text": "新系列——瑞士银行的第十套纸币——保留了另一个瑞士的独特之处，即1000法郎（约1250美元）的钞票，这是世界上流通中面额最大的纸币。"
+  },
+  {
+   "reference": "p9#21",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 139,
+   "latin": 2,
+   "text": "大多数国家已经停止使用大额纸币，因为这些纸币被认为主要用于洗钱和逃税。欧洲中央银行在2019年停止发行新的500欧元纸币。但是，根据瑞士国家银行支付方式调查，大"
+  },
+  {
+   "reference": "p9#22",
+   "layout_label": "abandon",
+   "vertical": false,
+   "han": 21,
+   "latin": 0,
+   "text": "安德烈亚斯·阿德里亚诺是金融与发展的工作人员。"
+  }
+ ],
+ "il_han_total": 3853
+}

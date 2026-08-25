@@ -1,0 +1,160 @@
+{
+  "articles": [
+    {
+      "article_id": "i4dVC",
+      "attempts": 0,
+      "brief": {
+        "names": [
+          {
+            "source": "Khakimov",
+            "suggested_translation": "哈基莫夫"
+          }
+        ],
+        "register": "文章采用正式的报道风格，描述了历史遗迹保护者的工作，语气严谨且不直接与读者对话。",
+        "title_translation": "精心修复是一种使命"
+      },
+      "brief_failed": false,
+      "excerpt_chars": 294,
+      "from_cache": true,
+      "pages": [
+        4
+      ],
+      "reason": "",
+      "requested": true,
+      "start_page": 4,
+      "title_text": "PAINSTAKING RESTORATION IS A CALLING"
+    },
+    {
+      "article_id": "FzCqR",
+      "attempts": 0,
+      "brief": {
+        "names": [
+          {
+            "source": "Tawfiq Al Juhani",
+            "suggested_translation": "塔菲克·阿尔·朱哈尼"
+          },
+          {
+            "source": "Al- Ula",
+            "suggested_translation": "阿勒乌拉"
+          },
+          {
+            "source": "Saudi Arabia",
+            "suggested_translation": "沙特阿拉伯"
+          },
+          {
+            "source": "Hijaz Railway",
+            "suggested_translation": "希贾兹铁路"
+          },
+          {
+            "source": "Damascus",
+            "suggested_translation": "大马士革"
+          },
+          {
+            "source": "Syria",
+            "suggested_translation": "叙利亚"
+          },
+          {
+            "source": "Madinah",
+            "suggested_translation": "麦地那"
+          },
+          {
+            "source": "Hijaz",
+            "suggested_translation": "希贾兹"
+          }
+        ],
+        "register": "这篇文章采用叙述风格，语气较为正式，描述了一次在沙特阿拉伯西部的旅行经历，涉及历史和地理背景。",
+        "title_translation": "塔菲克·阿尔·朱哈尼高速驾驶"
+      },
+      "brief_failed": false,
+      "excerpt_chars": 480,
+      "from_cache": true,
+      "pages": [
+        5,
+        6,
+        7
+      ],
+      "reason": "",
+      "requested": true,
+      "start_page": 5,
+      "title_text": "Tawfiq Al Juhani drove at great speed, though it was hard to tell exactly how fast be-"
+    },
+    {
+      "article_id": "aRTRM",
+      "attempts": 0,
+      "brief": {
+        "names": [
+          {
+            "source": "Edhem Eldem",
+            "suggested_translation": "Edhem Eldem"
+          },
+          {
+            "source": "Edinburgh University Press",
+            "suggested_translation": "爱丁堡大学出版社"
+          }
+        ],
+        "register": "文章应以正式的语气翻译，不直接与读者对话，属于评论性质。",
+        "title_translation": "评论"
+      },
+      "brief_failed": false,
+      "excerpt_chars": 46,
+      "from_cache": true,
+      "pages": [
+        8
+      ],
+      "reason": "",
+      "requested": true,
+      "start_page": 8,
+      "title_text": "Reviews"
+    },
+    {
+      "article_id": "2D9XD",
+      "attempts": 0,
+      "brief": {
+        "names": [
+          {
+            "source": "Powers",
+            "suggested_translation": "鲍尔斯"
+          },
+          {
+            "source": "Tagliacozzo",
+            "suggested_translation": "塔利亚科佐"
+          }
+        ],
+        "register": "文章采用正式的语体，属于学术评论，分析和讨论伊斯兰历史和文化的多样性。",
+        "title_translation": "评论"
+      },
+      "brief_failed": false,
+      "excerpt_chars": 448,
+      "from_cache": true,
+      "pages": [
+        9
+      ],
+      "reason": "",
+      "requested": true,
+      "start_page": 9,
+      "title_text": "Reviews"
+    }
+  ],
+  "body_labels": [
+    "text",
+    "plain text",
+    "paragraph_hybrid"
+  ],
+  "counts": {
+    "articles": 4,
+    "briefs": 4,
+    "failed": 0,
+    "from_cache": 4,
+    "requested": 4,
+    "requests": 4
+  },
+  "title_labels": [
+    "title",
+    "paragraph_title"
+  ],
+  "unassigned_pages": [
+    1,
+    2,
+    3
+  ]
+}

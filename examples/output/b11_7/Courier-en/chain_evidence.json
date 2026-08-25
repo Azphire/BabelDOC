@@ -1,0 +1,1373 @@
+{
+ "sample": "Courier-en",
+ "read_from": "checkpoint.08_chain_builder.xml",
+ "link_min_score": 0.8,
+ "boundary_priority": [
+  "page",
+  "column_adjacent",
+  "body_next"
+ ],
+ "boundaries": [
+  {
+   "boundary": "p1:columns",
+   "kind": "column",
+   "pairing": null,
+   "tail_page": 1,
+   "head_page": 1,
+   "tail_column": null,
+   "head_column": null,
+   "column_count": null,
+   "eligible": false,
+   "reason": "preserve_line_structure",
+   "pair": null,
+   "score": null,
+   "linked": false,
+   "tail_ends_on_hyphen": false,
+   "tail_last_line": null,
+   "head_first_line": "",
+   "tail": null,
+   "head": null
+  },
+  {
+   "boundary": "1->2",
+   "kind": "page",
+   "pairing": null,
+   "tail_page": 1,
+   "head_page": 2,
+   "tail_column": null,
+   "head_column": null,
+   "column_count": null,
+   "eligible": false,
+   "reason": "not_chain_eligible:tail",
+   "pair": null,
+   "score": null,
+   "linked": false,
+   "tail_ends_on_hyphen": false,
+   "tail_last_line": null,
+   "head_first_line": "",
+   "tail": null,
+   "head": null
+  },
+  {
+   "boundary": "p2:c0->c1",
+   "kind": "column",
+   "pairing": "column_adjacent",
+   "tail_page": 2,
+   "head_page": 2,
+   "tail_column": 0,
+   "head_column": 1,
+   "column_count": 2,
+   "eligible": false,
+   "reason": "no_endpoint",
+   "pair": null,
+   "score": null,
+   "linked": false,
+   "tail_ends_on_hyphen": false,
+   "tail_last_line": "declining biodiversity.",
+   "head_first_line": "Work by Ecuadorian photographer Carolina Zambrano, embroidered with chambira fibres, a palm tree emblematic of Indigenous Amazonian craftsmanship.",
+   "tail": {
+    "reference": "p2#5",
+    "page": 2,
+    "text": "From the Aboriginal practice of controlled burning to prevent wildfires to Inuit weather forecasting, and the zaï techniques used in some African countries to capture water, the world is rich with diverse, proven Indigenous wisdom. This kno"
+   },
+   "head": {
+    "reference": "p2#4",
+    "page": 2,
+    "text": "Work by Ecuadorian photographer Carolina Zambrano, embroidered with chambira fibres, a palm tree emblematic of Indigenous Amazonian craftsmanship."
+   }
+  },
+  {
+   "boundary": "2->3",
+   "kind": "page",
+   "pairing": null,
+   "tail_page": 2,
+   "head_page": 3,
+   "tail_column": 0,
+   "head_column": 0,
+   "column_count": null,
+   "eligible": true,
+   "reason": null,
+   "pair": "title->title",
+   "score": 0.9500000000000001,
+   "linked": true,
+   "tail_ends_on_hyphen": false,
+   "tail_last_line": "knowledge drives",
+   "head_first_line": "scientific discover y",
+   "tail": {
+    "reference": "p2#3",
+    "page": 2,
+    "text": "How Indigenous knowledge drives"
+   },
+   "head": {
+    "reference": "p3#1",
+    "page": 3,
+    "text": "scientific discover y"
+   }
+  },
+  {
+   "boundary": "p3:columns",
+   "kind": "column",
+   "pairing": null,
+   "tail_page": 3,
+   "head_page": 3,
+   "tail_column": null,
+   "head_column": null,
+   "column_count": null,
+   "eligible": false,
+   "reason": "one_column",
+   "pair": null,
+   "score": null,
+   "linked": false,
+   "tail_ends_on_hyphen": false,
+   "tail_last_line": null,
+   "head_first_line": "",
+   "tail": null,
+   "head": null
+  },
+  {
+   "boundary": "3->4",
+   "kind": "page",
+   "pairing": null,
+   "tail_page": 3,
+   "head_page": 4,
+   "tail_column": 0,
+   "head_column": 0,
+   "column_count": null,
+   "eligible": true,
+   "reason": null,
+   "pair": "title->title",
+   "score": 0.5,
+   "linked": false,
+   "tail_ends_on_hyphen": false,
+   "tail_last_line": "scientific discover y",
+   "head_first_line": "LINKS programme: promoting Indigenous knowledge",
+   "tail": {
+    "reference": "p3#1",
+    "page": 3,
+    "text": "scientific discover y"
+   },
+   "head": {
+    "reference": "p4#18",
+    "page": 4,
+    "text": "LINKS programme: promoting Indigenous knowledge"
+   }
+  },
+  {
+   "boundary": "p4:c0->c1",
+   "kind": "column",
+   "pairing": "column_adjacent",
+   "tail_page": 4,
+   "head_page": 4,
+   "tail_column": 0,
+   "head_column": 1,
+   "column_count": 4,
+   "eligible": false,
+   "reason": "no_endpoint",
+   "pair": null,
+   "score": null,
+   "linked": false,
+   "tail_ends_on_hyphen": false,
+   "tail_last_line": "local knowledge holders,",
+   "head_first_line": "Indigenous skills and wisdom are codified to form complex systems of knowledge",
+   "tail": {
+    "reference": "p4#20",
+    "page": 4,
+    "text": "LINKS aims to build dialogue among Indigenous and local knowledge holders,"
+   },
+   "head": {
+    "reference": "p4#17",
+    "page": 4,
+    "text": "Indigenous skills and wisdom are codified to form complex systems of knowledge"
+   }
+  },
+  {
+   "boundary": "p4:c0->c2",
+   "kind": "column",
+   "pairing": "body_next",
+   "tail_page": 4,
+   "head_page": 4,
+   "tail_column": 0,
+   "head_column": 2,
+   "column_count": 4,
+   "eligible": true,
+   "reason": null,
+   "pair": "body->body",
+   "score": 0.5,
+   "linked": false,
+   "tail_ends_on_hyphen": false,
+   "tail_last_line": "local knowledge holders,",
+   "head_first_line": "United Nations Declaration on the Rights of Indigenous Peoples — but it is nonetheless threatened by cultural and commercial appropriation.",
+   "tail": {
+    "reference": "p4#20",
+    "page": 4,
+    "text": "LINKS aims to build dialogue among Indigenous and local knowledge holders,"
+   },
+   "head": {
+    "reference": "p4#12",
+    "page": 4,
+    "text": "United Nations Declaration on the Rights of Indigenous Peoples — but it is nonetheless threatened by cultural and commercial appropriation."
+   }
+  },
+  {
+   "boundary": "p4:c1->c2",
+   "kind": "column",
+   "pairing": "column_adjacent",
+   "tail_page": 4,
+   "head_page": 4,
+   "tail_column": 1,
+   "head_column": 2,
+   "column_count": 4,
+   "eligible": true,
+   "reason": null,
+   "pair": "body->body",
+   "score": 0.65,
+   "linked": false,
+   "tail_ends_on_hyphen": false,
+   "tail_last_line": "hosts the Indigenous and",
+   "head_first_line": "United Nations Declaration on the Rights of Indigenous Peoples — but it is nonetheless threatened by cultural and commercial appropriation.",
+   "tail": {
+    "reference": "p4#22",
+    "page": 4,
+    "text": "Among other roles, the LINKS programme currently hosts the Indigenous and"
+   },
+   "head": {
+    "reference": "p4#12",
+    "page": 4,
+    "text": "United Nations Declaration on the Rights of Indigenous Peoples — but it is nonetheless threatened by cultural and commercial appropriation."
+   }
+  },
+  {
+   "boundary": "p4:c1->c3",
+   "kind": "column",
+   "pairing": "body_next",
+   "tail_page": 4,
+   "head_page": 4,
+   "tail_column": 1,
+   "head_column": 3,
+   "column_count": 4,
+   "eligible": true,
+   "reason": null,
+   "pair": "body->body",
+   "score": 0.65,
+   "linked": false,
+   "tail_ends_on_hyphen": false,
+   "tail_last_line": "hosts the Indigenous and",
+   "head_first_line": "“We observe nature, our animals and plants. We are the guardians of nature and we possess an enormous amount of knowledge about our environment,” noted Hindou O",
+   "tail": {
+    "reference": "p4#22",
+    "page": 4,
+    "text": "Among other roles, the LINKS programme currently hosts the Indigenous and"
+   },
+   "head": {
+    "reference": "p4#15",
+    "page": 4,
+    "text": "“We observe nature, our animals and plants. We are the guardians of nature and we possess an enormous amount of knowledge about our environment,” noted Hindou Oumarou Ibrahim, an Indigenous Mbororo leader from Chad and Chair of the 23rd Ses"
+   }
+  },
+  {
+   "boundary": "p4:c2->c3",
+   "kind": "column",
+   "pairing": "column_adjacent",
+   "tail_page": 4,
+   "head_page": 4,
+   "tail_column": 2,
+   "head_column": 3,
+   "column_count": 4,
+   "eligible": true,
+   "reason": null,
+   "pair": "body->body",
+   "score": 0.6,
+   "linked": false,
+   "tail_ends_on_hyphen": false,
+   "tail_last_line": "merits greater attention.",
+   "head_first_line": "“We observe nature, our animals and plants. We are the guardians of nature and we possess an enormous amount of knowledge about our environment,” noted Hindou O",
+   "tail": {
+    "reference": "p4#14",
+    "page": 4,
+    "text": "As the climate crisis intensifies and biodiversity collapses, the world turns to the very knowledge systems it once dismissed. According to the United Nations, Indigenous Peoples comprise less than 5 per cent of the global population yet st"
+   },
+   "head": {
+    "reference": "p4#15",
+    "page": 4,
+    "text": "“We observe nature, our animals and plants. We are the guardians of nature and we possess an enormous amount of knowledge about our environment,” noted Hindou Oumarou Ibrahim, an Indigenous Mbororo leader from Chad and Chair of the 23rd Ses"
+   }
+  },
+  {
+   "boundary": "4->5",
+   "kind": "page",
+   "pairing": null,
+   "tail_page": 4,
+   "head_page": 5,
+   "tail_column": 2,
+   "head_column": 0,
+   "column_count": null,
+   "eligible": true,
+   "reason": null,
+   "pair": "title->title",
+   "score": 0.35000000000000003,
+   "linked": false,
+   "tail_ends_on_hyphen": false,
+   "tail_last_line": "Guardians of biodiversity",
+   "head_first_line": "Brazil: lessons from the water people",
+   "tail": {
+    "reference": "p4#13",
+    "page": 4,
+    "text": "Guardians of biodiversity"
+   },
+   "head": {
+    "reference": "p5#6",
+    "page": 5,
+    "text": "Brazil: lessons from the water people"
+   }
+  },
+  {
+   "boundary": "p5:c0->c1",
+   "kind": "column",
+   "pairing": "column_adjacent",
+   "tail_page": 5,
+   "head_page": 5,
+   "tail_column": 0,
+   "head_column": 1,
+   "column_count": 3,
+   "eligible": false,
+   "reason": "no_endpoint",
+   "pair": null,
+   "score": null,
+   "linked": false,
+   "tail_ends_on_hyphen": false,
+   "tail_last_line": "pirarucu from the lakes to the cold chain.",
+   "head_first_line": "heartbreaking to see our food supply exhausted. We didn’t know how to feed our children.”",
+   "tail": {
+    "reference": "p5#11",
+    "page": 5,
+    "text": "During the fishing season, the Paumari work in continuous shifts to quickly transport pirarucu from the lakes to the cold chain."
+   },
+   "head": {
+    "reference": "p5#3",
+    "page": 5,
+    "text": "heartbreaking to see our food supply exhausted. We didn’t know how to feed our children.”"
+   }
+  },
+  {
+   "boundary": "p5:c0->c2",
+   "kind": "column",
+   "pairing": "body_next",
+   "tail_page": 5,
+   "head_page": 5,
+   "tail_column": 0,
+   "head_column": 2,
+   "column_count": 3,
+   "eligible": false,
+   "reason": "no_endpoint",
+   "pair": null,
+   "score": null,
+   "linked": false,
+   "tail_ends_on_hyphen": false,
+   "tail_last_line": "pirarucu from the lakes to the cold chain.",
+   "head_first_line": "in any scientific textbook: “We are the people of the water, the only ones who truly live within it.” When the population of pirarucus, the world’s largest fres",
+   "tail": {
+    "reference": "p5#11",
+    "page": 5,
+    "text": "During the fishing season, the Paumari work in continuous shifts to quickly transport pirarucu from the lakes to the cold chain."
+   },
+   "head": {
+    "reference": "p5#1",
+    "page": 5,
+    "text": "in any scientific textbook: “We are the people of the water, the only ones who truly live within it.” When the population of pirarucus, the world’s largest freshwater fish, fell to just 266 adult specimens in 2009, the Paumari faced an exis"
+   }
+  },
+  {
+   "boundary": "p5:c1->c2",
+   "kind": "column",
+   "pairing": "column_adjacent",
+   "tail_page": 5,
+   "head_page": 5,
+   "tail_column": 1,
+   "head_column": 2,
+   "column_count": 3,
+   "eligible": true,
+   "reason": null,
+   "pair": "body->body",
+   "score": 1.0,
+   "linked": true,
+   "tail_ends_on_hyphen": false,
+   "tail_last_line": "defining themselves that can’t be found",
+   "head_first_line": "in any scientific textbook: “We are the people of the water, the only ones who truly live within it.” When the population of pirarucus, the world’s largest fres",
+   "tail": {
+    "reference": "p5#4",
+    "page": 5,
+    "text": "Dawn gives off an odour of ferrous humidity mingled with brazier smoke. The Paumari, an Indigenous people of about two thousand souls living in the vast region of Amazonas state in the north-west of the country, have a way of defining thems"
+   },
+   "head": {
+    "reference": "p5#1",
+    "page": 5,
+    "text": "in any scientific textbook: “We are the people of the water, the only ones who truly live within it.” When the population of pirarucus, the world’s largest freshwater fish, fell to just 266 adult specimens in 2009, the Paumari faced an exis"
+   }
+  },
+  {
+   "boundary": "5->6",
+   "kind": "page",
+   "pairing": null,
+   "tail_page": 5,
+   "head_page": 6,
+   "tail_column": 2,
+   "head_column": 0,
+   "column_count": null,
+   "eligible": true,
+   "reason": null,
+   "pair": "body->body",
+   "score": 0.6,
+   "linked": false,
+   "tail_ends_on_hyphen": false,
+   "tail_last_line": "without ever meeting. Technicians arrived",
+   "head_first_line": "To mark the centennial of quantum mechanics, the United Nations declared 2025 the International Year of Quantum Science and Technology. As the lead agency of th",
+   "tail": {
+    "reference": "p5#2",
+    "page": 5,
+    "text": "For years, academic research and traditional knowledge evolved in parallel without ever meeting. Technicians arrived"
+   },
+   "head": {
+    "reference": "p6#12",
+    "page": 6,
+    "text": "To mark the centennial of quantum mechanics, the United Nations declared 2025 the International Year of Quantum Science and Technology. As the lead agency of the initiative, UNESCO inaugurated the year-long initiative in Paris on 4 and 5 Fe"
+   }
+  },
+  {
+   "boundary": "p6:c0->c1",
+   "kind": "column",
+   "pairing": "column_adjacent",
+   "tail_page": 6,
+   "head_page": 6,
+   "tail_column": 0,
+   "head_column": 1,
+   "column_count": 3,
+   "eligible": true,
+   "reason": null,
+   "pair": "body->body",
+   "score": 1.0,
+   "linked": true,
+   "tail_ends_on_hyphen": false,
+   "tail_last_line": "entire  Universe.  Everything  everywhere",
+   "head_first_line": "down in the quantum realm is constantly getting entangled and unentangled with everything else, all the time. The new quantum revolution, which involves technol",
+   "tail": {
+    "reference": "p6#10",
+    "page": 6,
+    "text": "This quantum entanglement is far from being a novel phenomenon that only happens rarely in nature, nor is it restricted to a “spooky” telepathic connection between two separated particles. Rather, it is one of the most, if not the most, pre"
+   },
+   "head": {
+    "reference": "p6#5",
+    "page": 6,
+    "text": "down in the quantum realm is constantly getting entangled and unentangled with everything else, all the time. The new quantum revolution, which involves technologies that make direct use of quantum superposition and entanglement, is already"
+   }
+  },
+  {
+   "boundary": "p6:c0->c2",
+   "kind": "column",
+   "pairing": "body_next",
+   "tail_page": 6,
+   "head_page": 6,
+   "tail_column": 0,
+   "head_column": 2,
+   "column_count": 3,
+   "eligible": true,
+   "reason": null,
+   "pair": "body->body",
+   "score": 1.0,
+   "linked": true,
+   "tail_ends_on_hyphen": false,
+   "tail_last_line": "entire  Universe.  Everything  everywhere",
+   "head_first_line": "still for a lengthy period inside a noisy, claustrophobic machine.",
+   "tail": {
+    "reference": "p6#10",
+    "page": 6,
+    "text": "This quantum entanglement is far from being a novel phenomenon that only happens rarely in nature, nor is it restricted to a “spooky” telepathic connection between two separated particles. Rather, it is one of the most, if not the most, pre"
+   },
+   "head": {
+    "reference": "p6#3",
+    "page": 6,
+    "text": "still for a lengthy period inside a noisy, claustrophobic machine."
+   }
+  },
+  {
+   "boundary": "p6:c1->c2",
+   "kind": "column",
+   "pairing": "column_adjacent",
+   "tail_page": 6,
+   "head_page": 6,
+   "tail_column": 1,
+   "head_column": 2,
+   "column_count": 3,
+   "eligible": true,
+   "reason": null,
+   "pair": "body->body",
+   "score": 1.0,
+   "linked": true,
+   "tail_ends_on_hyphen": false,
+   "tail_last_line": "MRI  where the  patient  has to lie very",
+   "head_first_line": "still for a lengthy period inside a noisy, claustrophobic machine.",
+   "tail": {
+    "reference": "p6#8",
+    "page": 6,
+    "text": "There are even quantum sensors that can read your thoughts. A special brain scanner that can be worn like a cycle helmet is so sensitive it can detect the electrical firing of individual neurons inside a patient’s brain, enabling researcher"
+   },
+   "head": {
+    "reference": "p6#3",
+    "page": 6,
+    "text": "still for a lengthy period inside a noisy, claustrophobic machine."
+   }
+  },
+  {
+   "boundary": "6->7",
+   "kind": "page",
+   "pairing": null,
+   "tail_page": 6,
+   "head_page": 7,
+   "tail_column": 2,
+   "head_column": 0,
+   "column_count": null,
+   "eligible": true,
+   "reason": null,
+   "pair": "body->body",
+   "score": 0.51875,
+   "linked": false,
+   "tail_ends_on_hyphen": false,
+   "tail_last_line": "images  in  a  camera. This  technology",
+   "head_first_line": "For the past thirty years, international regulations have sought to limit the exploitation of Indigenous knowledge by industry so that it does not occur at the ",
+   "tail": {
+    "reference": "p6#4",
+    "page": 6,
+    "text": "Another exciting medical application of quantum sensors is the entanglement camera, which is being used to image tissue samples in breast cancer. The science behind it sounds almost like magic. It relies on quantum entanglement of two kinds"
+   },
+   "head": {
+    "reference": "p7#12",
+    "page": 7,
+    "text": "For the past thirty years, international regulations have sought to limit the exploitation of Indigenous knowledge by industry so that it does not occur at the expense of local populations. But despite these measures, cases of misappropriat"
+   }
+  },
+  {
+   "boundary": "p7:c0->c1",
+   "kind": "column",
+   "pairing": "column_adjacent",
+   "tail_page": 7,
+   "head_page": 7,
+   "tail_column": 0,
+   "head_column": 1,
+   "column_count": 3,
+   "eligible": true,
+   "reason": null,
+   "pair": "body->body",
+   "score": 0.6,
+   "linked": false,
+   "tail_ends_on_hyphen": false,
+   "tail_last_line": "products to market more quickly.",
+   "head_first_line": "However, there is criticism against biodiscovery as “free riding” on knowledge developed by Indigenous and other local peoples. When the role of their knowledge",
+   "tail": {
+    "reference": "p7#10",
+    "page": 7,
+    "text": "Resorting to biodiscovery can offer numerous advantages for those developing new products. For example, in the pharmaceutical industry, where research and approval timelines are long, product development processes are expensive, and intelle"
+   },
+   "head": {
+    "reference": "p7#5",
+    "page": 7,
+    "text": "However, there is criticism against biodiscovery as “free riding” on knowledge developed by Indigenous and other local peoples. When the role of their knowledge is not sufficiently recognized in scientific investigation, product development"
+   }
+  },
+  {
+   "boundary": "p7:c0->c2",
+   "kind": "column",
+   "pairing": "body_next",
+   "tail_page": 7,
+   "head_page": 7,
+   "tail_column": 0,
+   "head_column": 2,
+   "column_count": 3,
+   "eligible": true,
+   "reason": null,
+   "pair": "body->body",
+   "score": 0.6,
+   "linked": false,
+   "tail_ends_on_hyphen": false,
+   "tail_last_line": "products to market more quickly.",
+   "head_first_line": "Oil produced from the nuts of the Moroccan argan tree (Argania spinosa L.) provides another example. Argan oil is now used in hair and skin care products around",
+   "tail": {
+    "reference": "p7#10",
+    "page": 7,
+    "text": "Resorting to biodiscovery can offer numerous advantages for those developing new products. For example, in the pharmaceutical industry, where research and approval timelines are long, product development processes are expensive, and intelle"
+   },
+   "head": {
+    "reference": "p7#3",
+    "page": 7,
+    "text": "Oil produced from the nuts of the Moroccan argan tree (Argania spinosa L.) provides another example. Argan oil is now used in hair and skin care products around the world for essentially the same purposes for which Amazigh (or Berber) women"
+   }
+  },
+  {
+   "boundary": "p7:c1->c2",
+   "kind": "column",
+   "pairing": "column_adjacent",
+   "tail_page": 7,
+   "head_page": 7,
+   "tail_column": 1,
+   "head_column": 2,
+   "column_count": 3,
+   "eligible": false,
+   "reason": "no_endpoint",
+   "pair": null,
+   "score": null,
+   "linked": false,
+   "tail_ends_on_hyphen": false,
+   "tail_last_line": "from the knowledge holders",
+   "head_first_line": "Oil produced from the nuts of the Moroccan argan tree (Argania spinosa L.) provides another example. Argan oil is now used in hair and skin care products around",
+   "tail": {
+    "reference": "p7#17",
+    "page": 7,
+    "text": "Today, many countries require prospective users of Indigenous knowledge to first secure consent from the knowledge holders"
+   },
+   "head": {
+    "reference": "p7#3",
+    "page": 7,
+    "text": "Oil produced from the nuts of the Moroccan argan tree (Argania spinosa L.) provides another example. Argan oil is now used in hair and skin care products around the world for essentially the same purposes for which Amazigh (or Berber) women"
+   }
+  },
+  {
+   "boundary": "7->8",
+   "kind": "page",
+   "pairing": null,
+   "tail_page": 7,
+   "head_page": 8,
+   "tail_column": 2,
+   "head_column": 0,
+   "column_count": null,
+   "eligible": true,
+   "reason": null,
+   "pair": "body->body",
+   "score": 0.95,
+   "linked": true,
+   "tail_ends_on_hyphen": false,
+   "tail_last_line": "spinifex, and a composite material from",
+   "head_first_line": "the grass has been patented. Benefits that have already been shared under the agreement include employment opportunities for First Nations youth and funding for",
+   "tail": {
+    "reference": "p7#4",
+    "page": 7,
+    "text": "Not all commercial use of Indigenous knowledge linked to genetic resources constitutes biopiracy; some projects are mutually beneficial. For instance, the Indjalandji-Dhidhanu people in Australia have worked with researchers at the Universi"
+   },
+   "head": {
+    "reference": "p8#8",
+    "page": 8,
+    "text": "the grass has been patented. Benefits that have already been shared under the agreement include employment opportunities for First Nations youth and funding for training and educational opportunities for Indigenous Australians."
+   }
+  },
+  {
+   "boundary": "p8:c0->c1",
+   "kind": "column",
+   "pairing": "column_adjacent",
+   "tail_page": 8,
+   "head_page": 8,
+   "tail_column": 0,
+   "head_column": 1,
+   "column_count": 4,
+   "eligible": true,
+   "reason": null,
+   "pair": "body->body",
+   "score": 1.0,
+   "linked": true,
+   "tail_ends_on_hyphen": false,
+   "tail_last_line": "obtain  permission or to  share  benefits",
+   "head_first_line": "with resource providers. However, with new developments in the science of genetics starting in the mid-twentieth century, products based on or derived from biod",
+   "tail": {
+    "reference": "p8#12",
+    "page": 8,
+    "text": "For most of human history, interna- tion al law treated such biological resources as the “common heritage of humankind”, meaning that anyone could obtain and use them without needing to obtain permission or to share benefits"
+   },
+   "head": {
+    "reference": "p8#4",
+    "page": 8,
+    "text": "with resource providers. However, with new developments in the science of genetics starting in the mid-twentieth century, products based on or derived from biodiversity came to be understood as “genetic resources”. This corresponded with ne"
+   }
+  },
+  {
+   "boundary": "p8:c0->c2",
+   "kind": "column",
+   "pairing": "body_next",
+   "tail_page": 8,
+   "head_page": 8,
+   "tail_column": 0,
+   "head_column": 2,
+   "column_count": 4,
+   "eligible": true,
+   "reason": null,
+   "pair": "body->body",
+   "score": 1.0,
+   "linked": true,
+   "tail_ends_on_hyphen": false,
+   "tail_last_line": "obtain  permission or to  share  benefits",
+   "head_first_line": "require prospective users of Indigenous knowledge to first secure clear consent from the knowledge holders and sign agreements detailing how benefits will be sh",
+   "tail": {
+    "reference": "p8#12",
+    "page": 8,
+    "text": "For most of human history, interna- tion al law treated such biological resources as the “common heritage of humankind”, meaning that anyone could obtain and use them without needing to obtain permission or to share benefits"
+   },
+   "head": {
+    "reference": "p8#1",
+    "page": 8,
+    "text": "require prospective users of Indigenous knowledge to first secure clear consent from the knowledge holders and sign agreements detailing how benefits will be shared."
+   }
+  },
+  {
+   "boundary": "p8:c1->c2",
+   "kind": "column",
+   "pairing": "column_adjacent",
+   "tail_page": 8,
+   "head_page": 8,
+   "tail_column": 1,
+   "head_column": 2,
+   "column_count": 4,
+   "eligible": true,
+   "reason": null,
+   "pair": "body->body",
+   "score": 1.0,
+   "linked": true,
+   "tail_ends_on_hyphen": false,
+   "tail_last_line": "positive change. Today, many countries",
+   "head_first_line": "require prospective users of Indigenous knowledge to first secure clear consent from the knowledge holders and sign agreements detailing how benefits will be sh",
+   "tail": {
+    "reference": "p8#7",
+    "page": 8,
+    "text": "The reinforced international framework of rules and agreements, built over the past 30 years, has brought about some positive change. Today, many countries"
+   },
+   "head": {
+    "reference": "p8#1",
+    "page": 8,
+    "text": "require prospective users of Indigenous knowledge to first secure clear consent from the knowledge holders and sign agreements detailing how benefits will be shared."
+   }
+  },
+  {
+   "boundary": "p8:c1->c3",
+   "kind": "column",
+   "pairing": "body_next",
+   "tail_page": 8,
+   "head_page": 8,
+   "tail_column": 1,
+   "head_column": 3,
+   "column_count": 4,
+   "eligible": false,
+   "reason": "no_endpoint",
+   "pair": null,
+   "score": null,
+   "linked": false,
+   "tail_ends_on_hyphen": false,
+   "tail_last_line": "positive change. Today, many countries",
+   "head_first_line": "Argan oil production workshop at a women’s cooperative in Tafraout, southwestern Morocco.",
+   "tail": {
+    "reference": "p8#7",
+    "page": 8,
+    "text": "The reinforced international framework of rules and agreements, built over the past 30 years, has brought about some positive change. Today, many countries"
+   },
+   "head": {
+    "reference": "p8#14",
+    "page": 8,
+    "text": "Argan oil production workshop at a women’s cooperative in Tafraout, southwestern Morocco."
+   }
+  },
+  {
+   "boundary": "p8:c2->c3",
+   "kind": "column",
+   "pairing": "column_adjacent",
+   "tail_page": 8,
+   "head_page": 8,
+   "tail_column": 2,
+   "head_column": 3,
+   "column_count": 4,
+   "eligible": false,
+   "reason": "no_endpoint",
+   "pair": null,
+   "score": null,
+   "linked": false,
+   "tail_ends_on_hyphen": false,
+   "tail_last_line": "unfortunate reality.",
+   "head_first_line": "Argan oil production workshop at a women’s cooperative in Tafraout, southwestern Morocco.",
+   "tail": {
+    "reference": "p8#3",
+    "page": 8,
+    "text": "But despite these measures, biopiracy continues to occur due to exploitable gaps in the system. For instance, the rules may be bypassed by collecting genetic resources or traditional knowledge from a country where no restrictive legislation"
+   },
+   "head": {
+    "reference": "p8#14",
+    "page": 8,
+    "text": "Argan oil production workshop at a women’s cooperative in Tafraout, southwestern Morocco."
+   }
+  }
+ ],
+ "edges": [
+  {
+   "boundary": "2->3",
+   "kind": "page",
+   "pairing": null,
+   "score": 0.9500000000000001
+  },
+  {
+   "boundary": "p5:c1->c2",
+   "kind": "column",
+   "pairing": "column_adjacent",
+   "score": 1.0
+  },
+  {
+   "boundary": "p6:c0->c1",
+   "kind": "column",
+   "pairing": "column_adjacent",
+   "score": 1.0
+  },
+  {
+   "boundary": "p6:c1->c2",
+   "kind": "column",
+   "pairing": "column_adjacent",
+   "score": 1.0
+  },
+  {
+   "boundary": "7->8",
+   "kind": "page",
+   "pairing": null,
+   "score": 0.95
+  },
+  {
+   "boundary": "p8:c0->c1",
+   "kind": "column",
+   "pairing": "column_adjacent",
+   "score": 1.0
+  },
+  {
+   "boundary": "p8:c1->c2",
+   "kind": "column",
+   "pairing": "column_adjacent",
+   "score": 1.0
+  }
+ ],
+ "dropped_edges": [
+  {
+   "boundary": "p6:c0->c2",
+   "dropped_reason": "tail_already_handed_on",
+   "kind": "column",
+   "pairing": "body_next",
+   "score": 1.0
+  },
+  {
+   "boundary": "p8:c0->c2",
+   "dropped_reason": "tail_already_handed_on",
+   "kind": "column",
+   "pairing": "body_next",
+   "score": 1.0
+  }
+ ],
+ "chains": [
+  {
+   "length": 2,
+   "pages": [
+    2,
+    3
+   ],
+   "members": [
+    {
+     "chain_index": 0,
+     "reference_at_build": "p2#3",
+     "page": 2,
+     "source": "How Indigenous knowledge drives",
+     "box_at_build": [
+      60.74,
+      662.67,
+      483.61,
+      792.18
+     ],
+     "laid_out": {
+      "reference": "p2#3",
+      "box": [
+       60.74,
+       662.67,
+       483.61,
+       792.18
+      ],
+      "text": "土著知识如何推动"
+     }
+    },
+    {
+     "chain_index": 1,
+     "reference_at_build": "p3#1",
+     "page": 3,
+     "source": "scientific discover y",
+     "box_at_build": [
+      58.74,
+      663.37,
+      496.48,
+      733.88
+     ],
+     "laid_out": {
+      "reference": "p3#1",
+      "box": [
+       58.74,
+       663.37,
+       496.48,
+       733.88
+      ],
+      "text": "科学发现"
+     }
+    }
+   ],
+   "joint_translation": "土著知识如何推动科学发现",
+   "joint_segments": [
+    {
+     "chars": 8,
+     "end": 8,
+     "index": 0,
+     "sentence_end": -1,
+     "sentence_start": -1,
+     "start": 0
+    },
+    {
+     "chars": 4,
+     "end": 12,
+     "index": 1,
+     "sentence_end": -1,
+     "sentence_start": -1,
+     "start": 8
+    }
+   ]
+  },
+  {
+   "length": 2,
+   "pages": [
+    5
+   ],
+   "members": [
+    {
+     "chain_index": 0,
+     "reference_at_build": "p5#4",
+     "page": 5,
+     "source": "Dawn gives off an odour of ferrous humidity mingled with brazier smoke. The Paumari, an Indigenous people of about two thousand souls living in the vast region of Amazonas state in the north-west of the country, have a way of defining themselves that can’t be found",
+     "box_at_build": [
+      222.51,
+      411.33,
+      373.22,
+      494.43
+     ],
+     "laid_out": {
+      "reference": "p5#4",
+      "box": [
+       222.51,
+       411.33,
+       373.22,
+       494.43
+      ],
+      "text": "黎明散发出一种铁质湿气与火盆烟雾混合的气味。保马里族是一个约有两千人的土著民族，生活在该国西北部广袤的亚马孙州地区，他们有一种在任何科学教科书中都找不到的自我定义方式：“我们是水上的人，是唯一"
+     }
+    },
+    {
+     "chain_index": 1,
+     "reference_at_build": "p5#1",
+     "page": 5,
+     "source": "in any scientific textbook: “We are the people of the water, the only ones who truly live within it.” When the population of pirarucus, the world’s largest freshwater fish, fell to just 266 adult specimens in 2009, the Paumari faced an existential threat.",
+     "box_at_build": [
+      388.48,
+      449.11,
+      538.54,
+      530.4
+     ],
+     "laid_out": {
+      "reference": "p5#1",
+      "box": [
+       388.48,
+       449.42,
+       538.54,
+       530.4
+      ],
+      "text": "真正生活在水中的人。” 当世界上最大的淡水鱼——巨骨舌鱼的数量在2009年下降到仅266条成年鱼时，保马里族面临着生存威胁。"
+     }
+    }
+   ],
+   "joint_translation": "黎明散发出一种铁质湿气与火盆烟雾混合的气味。保马里族是一个约有两千人的土著民族，生活在该国西北部广袤的亚马孙州地区，他们有一种在任何科学教科书中都找不到的自我定义方式：“我们是水上的人，是唯一真正生活在水中的人。” 当世界上最大的淡水鱼——巨骨舌鱼的数量在2009年下降到仅266条成年鱼时，保马里族面临着生存威胁。",
+   "joint_segments": [
+    {
+     "chars": 96,
+     "end": 96,
+     "index": 0,
+     "sentence_end": 1,
+     "sentence_start": 0,
+     "start": 0
+    },
+    {
+     "chars": 62,
+     "end": 158,
+     "index": 1,
+     "sentence_end": 3,
+     "sentence_start": 1,
+     "start": 96
+    }
+   ]
+  },
+  {
+   "length": 2,
+   "pages": [
+    6
+   ],
+   "members": [
+    {
+     "chain_index": 0,
+     "reference_at_build": "p6#10",
+     "page": 6,
+     "source": "This quantum entanglement is far from being a novel phenomenon that only happens rarely in nature, nor is it restricted to a “spooky” telepathic connection between two separated particles. Rather, it is one of the most, if not the most, prevalent process in the entire Universe. Everything everywhere",
+     "box_at_build": [
+      56.82,
+      63.29,
+      207.47,
+      158.49
+     ],
+     "laid_out": {
+      "reference": "p6#10",
+      "box": [
+       56.82,
+       63.29,
+       207.47,
+       158.49
+      ],
+      "text": "这种量子纠缠远非一种在自然界中罕见的新现象，也不仅限于两个分离粒子之间的“诡异”心灵感应连接。相反，它是整个宇宙中最普遍的过程之一，甚至可以说是最普遍的过程。无处不在"
+     }
+    },
+    {
+     "chain_index": 1,
+     "reference_at_build": "p6#5",
+     "page": 6,
+     "source": "down in the quantum realm is constantly getting entangled and unentangled with everything else, all the time. The new quantum revolution, which involves technologies that make direct use of quantum superposition and entanglement, is already well underway and will without doubt transform our world.",
+     "box_at_build": [
+      222.51,
+      401.17,
+      372.92,
+      506.44
+     ],
+     "laid_out": {
+      "reference": "p6#5",
+      "box": [
+       222.51,
+       401.17,
+       372.92,
+       506.44
+      ],
+      "text": "在量子领域中不断与其他一切纠缠和解纠缠。涉及直接利用量子叠加和纠缠的技术的新量子革命已经在稳步进行中，毫无疑问将会改变我们的世界。"
+     }
+    }
+   ],
+   "joint_translation": null,
+   "joint_segments": null
+  },
+  {
+   "length": 2,
+   "pages": [
+    6
+   ],
+   "members": [
+    {
+     "chain_index": 0,
+     "reference_at_build": "p6#8",
+     "page": 6,
+     "source": "There are even quantum sensors that can read your thoughts. A special brain scanner that can be worn like a cycle helmet is so sensitive it can detect the electrical firing of individual neurons inside a patient’s brain, enabling researchers to “see” brain processes in real time. This device is already proving useful in analyzing a range of neurological disorders such as autism, epilepsy, dementia, and schizophrenia and is far less intrusive than other established imaging techniques like functional MRI where the patient has to lie very",
+     "box_at_build": [
+      222.69,
+      63.25,
+      372.87,
+      230.43
+     ],
+     "laid_out": {
+      "reference": "p6#8",
+      "box": [
+       222.69,
+       63.25,
+       372.87,
+       230.43
+      ],
+      "text": "甚至还有能够读取你思想的量子传感器。一种可以像骑行头盔一样佩戴的特殊脑扫描仪，其灵敏度极高，能够检测到患者大脑内单个神经元的电活动，使研究人员能够实时“观察”大脑过程。这种设备在分析自闭症、癫痫、痴呆和精神分裂症等多种神经系统疾病方面已经证明了其有用性，并且比其他已建立的成像技术（如功能性磁共振成像）要少侵入性得多，因为后者要求患者在一个嘈杂、令人感到幽闭恐惧的机器内长时间保持静"
+     }
+    },
+    {
+     "chain_index": 1,
+     "reference_at_build": "p6#3",
+     "page": 6,
+     "source": "still for a lengthy period inside a noisy, claustrophobic machine.",
+     "box_at_build": [
+      388.7,
+      207.38,
+      538.4,
+      230.4
+     ],
+     "laid_out": {
+      "reference": "p6#3",
+      "box": [
+       388.7,
+       207.38,
+       538.4,
+       230.4
+      ],
+      "text": "止。"
+     }
+    }
+   ],
+   "joint_translation": "甚至还有能够读取你思想的量子传感器。一种可以像骑行头盔一样佩戴的特殊脑扫描仪，其灵敏度极高，能够检测到患者大脑内单个神经元的电活动，使研究人员能够实时“观察”大脑过程。这种设备在分析自闭症、癫痫、痴呆和精神分裂症等多种神经系统疾病方面已经证明了其有用性，并且比其他已建立的成像技术（如功能性磁共振成像）要少侵入性得多，因为后者要求患者在一个嘈杂、令人感到幽闭恐惧的机器内长时间保持静止。",
+   "joint_segments": [
+    {
+     "chars": 191,
+     "end": 191,
+     "index": 0,
+     "sentence_end": 2,
+     "sentence_start": 0,
+     "start": 0
+    },
+    {
+     "chars": 2,
+     "end": 193,
+     "index": 1,
+     "sentence_end": 3,
+     "sentence_start": 2,
+     "start": 191
+    }
+   ]
+  },
+  {
+   "length": 2,
+   "pages": [
+    7,
+    8
+   ],
+   "members": [
+    {
+     "chain_index": 0,
+     "reference_at_build": "p7#4",
+     "page": 7,
+     "source": "Not all commercial use of Indigenous knowledge linked to genetic resources constitutes biopiracy; some projects are mutually beneficial. For instance, the Indjalandji-Dhidhanu people in Australia have worked with researchers at the University of Queensland to build upon their Indigenous knowledge of spinifex, a hardy perennial tussock grass tradition- ally used for a variety of purposes. The collaborative research agreement includes provisions for benefit sharing. A spinoff company is now developing medical gels from cellulose nanofibers extracted from spinifex, and a composite material from",
+     "box_at_build": [
+      388.48,
+      182.99,
+      539.22,
+      360.14
+     ],
+     "laid_out": {
+      "reference": "p7#4",
+      "box": [
+       388.48,
+       182.99,
+       539.22,
+       360.14
+      ],
+      "text": "并非所有与遗传资源相关的土著知识的商业使用都构成生物盗窃；有些项目是互利的。例如，澳大利亚的Indjalandji-Dhidhanu人已经与昆士兰大学的研究人员合作，基于他们对传统上用于多种用途的针茅这种耐寒多年生丛生草的土著知识进行研究。该合作研究协议包括利益分享的条款。现在，一家衍生公司正在开发从针茅中提取的纤维素纳米纤维制成的医用凝胶，并已为这种草的复合材料申请了专利。根据协"
+     }
+    },
+    {
+     "chain_index": 1,
+     "reference_at_build": "p8#8",
+     "page": 8,
+     "source": "the grass has been patented. Benefits that have already been shared under the agreement include employment opportunities for First Nations youth and funding for training and educational opportunities for Indigenous Australians.",
+     "box_at_build": [
+      56.86,
+      423.3,
+      206.94,
+      494.4
+     ],
+     "laid_out": {
+      "reference": "p8#8",
+      "box": [
+       56.86,
+       423.3,
+       206.94,
+       494.4
+      ],
+      "text": "议已经分享的利益包括为第一民族青年提供就业机会以及为澳大利亚土著提供培训和教育机会的资金。"
+     }
+    }
+   ],
+   "joint_translation": "并非所有与遗传资源相关的土著知识的商业使用都构成生物盗窃；有些项目是互利的。例如，澳大利亚的Indjalandji-Dhidhanu人已经与昆士兰大学的研究人员合作，基于他们对传统上用于多种用途的针茅这种耐寒多年生丛生草的土著知识进行研究。该合作研究协议包括利益分享的条款。现在，一家衍生公司正在开发从针茅中提取的纤维素纳米纤维制成的医用凝胶，并已为这种草的复合材料申请了专利。根据协议已经分享的利益包括为第一民族青年提供就业机会以及为澳大利亚土著提供培训和教育机会的资金。",
+   "joint_segments": [
+    {
+     "chars": 192,
+     "end": 192,
+     "index": 0,
+     "sentence_end": 4,
+     "sentence_start": 0,
+     "start": 0
+    },
+    {
+     "chars": 45,
+     "end": 237,
+     "index": 1,
+     "sentence_end": 5,
+     "sentence_start": 4,
+     "start": 192
+    }
+   ]
+  },
+  {
+   "length": 2,
+   "pages": [
+    8
+   ],
+   "members": [
+    {
+     "chain_index": 0,
+     "reference_at_build": "p8#12",
+     "page": 8,
+     "source": "For most of human history, interna- tion al law treated such biological resources as the “common heritage of humankind”, meaning that anyone could obtain and use them without needing to obtain permission or to share benefits",
+     "box_at_build": [
+      56.85,
+      63.46,
+      207.33,
+      134.46
+     ],
+     "laid_out": {
+      "reference": "p8#12",
+      "box": [
+       56.85,
+       63.46,
+       207.33,
+       134.46
+      ],
+      "text": "在人类历史的大部分时间里，国际法将此类生物资源视为“人类共同的遗产”，这意味着任何人都可以获取和使用这些资源，而无需获得许可或与资源提供者分享利益。然而，随着二"
+     }
+    },
+    {
+     "chain_index": 1,
+     "reference_at_build": "p8#4",
+     "page": 8,
+     "source": "with resource providers. However, with new developments in the science of genetics starting in the mid-twentieth century, products based on or derived from biodiversity came to be understood as “genetic resources”. This corresponded with new ways of assigning value to the components of biodiversity based on potential, rather than only actual uses.",
+     "box_at_build": [
+      222.65,
+      387.2,
+      373.26,
+      494.4
+     ],
+     "laid_out": {
+      "reference": "p8#4",
+      "box": [
+       222.65,
+       389.43,
+       373.26,
+       494.4
+      ],
+      "text": "十世纪中期遗传学科学的新发展，基于或衍生自生物多样性的产品被理解为“遗传资源”。这与基于潜在用途而非仅实际用途为生物多样性成分赋予价值的新方式相对应。"
+     }
+    }
+   ],
+   "joint_translation": "在人类历史的大部分时间里，国际法将此类生物资源视为“人类共同的遗产”，这意味着任何人都可以获取和使用这些资源，而无需获得许可或与资源提供者分享利益。然而，随着二十世纪中期遗传学科学的新发展，基于或衍生自生物多样性的产品被理解为“遗传资源”。这与基于潜在用途而非仅实际用途为生物多样性成分赋予价值的新方式相对应。",
+   "joint_segments": [
+    {
+     "chars": 80,
+     "end": 80,
+     "index": 0,
+     "sentence_end": 1,
+     "sentence_start": 0,
+     "start": 0
+    },
+    {
+     "chars": 75,
+     "end": 155,
+     "index": 1,
+     "sentence_end": 3,
+     "sentence_start": 1,
+     "start": 80
+    }
+   ]
+  },
+  {
+   "length": 2,
+   "pages": [
+    8
+   ],
+   "members": [
+    {
+     "chain_index": 0,
+     "reference_at_build": "p8#7",
+     "page": 8,
+     "source": "The reinforced international framework of rules and agreements, built over the past 30 years, has brought about some positive change. Today, many countries",
+     "box_at_build": [
+      222.51,
+      63.18,
+      373.07,
+      110.4
+     ],
+     "laid_out": {
+      "reference": "p8#7",
+      "box": [
+       222.51,
+       63.18,
+       373.07,
+       110.4
+      ],
+      "text": "过去30年间建立的强化国际规则和协议框架带来了一些积极的变化。如今，许多国家要求潜在的土著知识使"
+     }
+    },
+    {
+     "chain_index": 1,
+     "reference_at_build": "p8#1",
+     "page": 8,
+     "source": "require prospective users of Indigenous knowledge to first secure clear consent from the knowledge holders and sign agreements detailing how benefits will be shared.",
+     "box_at_build": [
+      388.48,
+      437.11,
+      538.55,
+      494.4
+     ],
+     "laid_out": {
+      "reference": "p8#1",
+      "box": [
+       388.48,
+       437.41,
+       538.55,
+       494.4
+      ],
+      "text": "用者首先获得知识持有者的明确同意，并签署详细说明如何分享利益的协议。"
+     }
+    }
+   ],
+   "joint_translation": "过去30年间建立的强化国际规则和协议框架带来了一些积极的变化。如今，许多国家要求潜在的土著知识使用者首先获得知识持有者的明确同意，并签署详细说明如何分享利益的协议。",
+   "joint_segments": [
+    {
+     "chars": 48,
+     "end": 48,
+     "index": 0,
+     "sentence_end": 1,
+     "sentence_start": 0,
+     "start": 0
+    },
+    {
+     "chars": 34,
+     "end": 82,
+     "index": 1,
+     "sentence_end": 2,
+     "sentence_start": 1,
+     "start": 48
+    }
+   ]
+  }
+ ],
+ "escalated": [
+  {
+   "chain_id": "65sEh",
+   "detail": "member p1tpH carries 1 placeholder(s)",
+   "members": [
+    {
+     "chain_index": 0,
+     "debug_id": "p1tpH",
+     "layout_label": "plain text",
+     "page_index": 5
+    },
+    {
+     "chain_index": 1,
+     "debug_id": "hYsGs",
+     "layout_label": "plain text",
+     "page_index": 5
+    }
+   ],
+   "reason": "placeholder_bearing"
+  }
+ ],
+ "totals": {
+  "boundaries": 29,
+  "linked": 9,
+  "column_linked": 7,
+  "edges": 7,
+  "dropped_edges": 2,
+  "chains": 7
+ }
+}

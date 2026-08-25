@@ -173,12 +173,74 @@
     }
   },
   "strategies": {
-    "description": "Which redistribution a chain is cut by, keyed by the endpoint pair class the chain was built under in chain_detection.json. sentence_greedy assigns whole sentences to members by their share of the source and cuts proportionally only where no sentence boundary is left, which it reports as a proportional fallback. proportional cuts by share throughout and claims no sentence structure. A pair class not named here takes the default.",
+    "description": "Which redistribution a chain is cut by, keyed by the endpoint pair class the chain was built under in chain_detection.json. capacity places each cut where the member's own box stops holding text, measured by the line grid below, and falls back to sentence_greedy where the caller could measure no box; it is what a broken running paragraph takes, because its continuation should resume where the first box ran out of room rather than where a sentence happened to end, and that is true of a paragraph broken by a column edge and one broken by a page edge alike. sentence_greedy assigns whole sentences to members by their share of the source and cuts proportionally only where no sentence boundary is left, which it reports as a proportional fallback. proportional cuts by share throughout and claims no sentence structure. A pair class not named here takes the default.",
     "default": "sentence_greedy",
     "by_pair_class": {
-      "body": "sentence_greedy",
+      "body": "capacity",
       "title": "proportional"
     }
   },
-  "cut_align_switch": "magazine_chain_cut_align"
+  "cut_align_switch": "magazine_chain_cut_align",
+  "capacity": {
+    "description": "The line grid a member's box is measured by, to estimate how many characters of the target language it holds. The typesetting stage's own packer cannot be called for this: it is a method of the stage, it needs the mapped font and a list of typesetting units built from laid out characters, and at the moment a chain is cut the translation has no characters yet -- so the capacity is arithmetic over the box instead, and the two numbers it needs are declared here rather than guessed at each site. line_skip_<script> is the multiple of the font size the stage advances between baselines, pinned to the value the stage itself uses. advance_ratio_<script> is the mean character advance as a multiple of the font size, measured over the body paragraphs of the frozen b11.6 runs: 1.00 for a Chinese target across three samples, and 0.473 for an English one with a tenth to ninetieth percentile spread of 0.464..0.492. Which pair a target language takes is decided by cjk_target_prefixes, by the same longest declared prefix match the indent policy resolves a language tag with. The estimate is deliberately coarse: a cut a few characters off is corrected by the break rule and the retreat that follow it, and a cut badly off is caught by the stage's own scale search the way any overfull box is.",
+    "line_skip_cjk": 1.5,
+    "line_skip_cjk_allowed_range": "1.0..3.0",
+    "line_skip_latin": 1.3,
+    "line_skip_latin_allowed_range": "1.0..3.0",
+    "advance_ratio_cjk": 1.0,
+    "advance_ratio_cjk_allowed_range": "0.3..2.0",
+    "advance_ratio_latin": 0.473,
+    "advance_ratio_latin_allowed_range": "0.3..2.0",
+    "cjk_target_prefixes": [
+      "zh",
+      "ja",
+      "jp",
+      "ko",
+      "kr"
+    ]
+  },
+  "line_head_forbidden_punctuation": [
+    "!",
+    ")",
+    ",",
+    "-",
+    ".",
+    "/",
+    ":",
+    ";",
+    "?",
+    "]",
+    "}",
+    "\u00b7",
+    "\u2013",
+    "\u2014",
+    "\u2019",
+    "\u201d",
+    "\u2027",
+    "\u203c",
+    "\u2044",
+    "\u2047",
+    "\u3001",
+    "\u3002",
+    "\u3009",
+    "\u300b",
+    "\u300d",
+    "\u300f",
+    "\u3011",
+    "\u3015",
+    "\u3017",
+    "\u30fb",
+    "\uff01",
+    "\uff09",
+    "\uff0c",
+    "\uff0e",
+    "\uff0f",
+    "\uff1a",
+    "\uff1b",
+    "\uff1f",
+    "\uff3d",
+    "\uff5d",
+    "\uff5e"
+  ],
+  "line_head_forbidden_punctuation_description": "The marks a line may not open with, which a capacity cut pulls its continuation back off. This is the typesetting stage's own class, declared here rather than imported from it: chain_backfill is pure -- strings in, strings out, no intermediate language and no pipeline -- and importing the stage would invert that. A gate pins this list byte-equal to the stage's LINE_HEAD_FORBIDDEN_PUNCTUATION, so the two cannot drift apart; the equality is checked rather than assumed, which an import could not have given."
 }

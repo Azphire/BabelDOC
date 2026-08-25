@@ -1,0 +1,610 @@
+{
+ "batch": "b11.7",
+ "read_from": "examples/output/b11_6",
+ "implementation": {
+  "reused_the_general_packer": false,
+  "why_not": [
+   "_layout_typesetting_units is a method of the Typesetting stage and needs its font mapper, which is built from the run configuration at the stage and does not exist earlier.",
+   "It takes TypesettingUnit objects built by create_typesetting_units from a paragraph's laid out characters. At the moment a chain is cut the translation is a string and has no characters behind it, so there is nothing for that packer to pack.",
+   "chain_backfill is declared pure -- strings in, strings out, no intermediate language and no pipeline -- and importing the stage would invert that and pull the font mapper into the translation stage."
+  ],
+  "chosen": "line_grid_arithmetic",
+  "grid": {
+   "line_skip_cjk": 1.5,
+   "line_skip_latin": 1.3,
+   "advance_ratio_cjk": 1.0,
+   "advance_ratio_latin": 0.473
+  }
+ },
+ "totals": {
+  "chains": 20,
+  "measurable": 18,
+  "overflowed_sentence": 11,
+  "overflowed_capacity": 3,
+  "better": 15,
+  "worse": 0,
+  "unchanged": 3
+ },
+ "chains": [
+  {
+   "sample": "Courier-en",
+   "target_lang": "zh",
+   "first_page": 5,
+   "boundary_kinds": [
+    "column"
+   ],
+   "measurable": true,
+   "translation_chars": 158,
+   "capacities": [
+    96,
+    80
+   ],
+   "characters_per_line": 16,
+   "cut_sentence": 108,
+   "cut_capacity": 96,
+   "overflowed_sentence": true,
+   "overflowed_capacity": false,
+   "last_line_fill_sentence": 1.0,
+   "last_line_fill_capacity": 1.0,
+   "quality_sentence": [
+    0,
+    1.0
+   ],
+   "quality_capacity": [
+    1,
+    1.0
+   ],
+   "cut_displacement": 0,
+   "moved_to": null
+  },
+  {
+   "sample": "Courier-en",
+   "target_lang": "zh",
+   "first_page": 6,
+   "boundary_kinds": [
+    "column"
+   ],
+   "measurable": true,
+   "translation_chars": 193,
+   "capacities": [
+    192,
+    16
+   ],
+   "characters_per_line": 16,
+   "cut_sentence": 84,
+   "cut_capacity": 191,
+   "overflowed_sentence": false,
+   "overflowed_capacity": false,
+   "last_line_fill_sentence": 0.25,
+   "last_line_fill_capacity": 0.9375,
+   "quality_sentence": [
+    1,
+    0.25
+   ],
+   "quality_capacity": [
+    1,
+    0.9375
+   ],
+   "cut_displacement": -1,
+   "moved_to": "line_head_punctuation"
+  },
+  {
+   "sample": "Courier-en",
+   "target_lang": "zh",
+   "first_page": 7,
+   "boundary_kinds": [
+    "page"
+   ],
+   "measurable": true,
+   "translation_chars": 237,
+   "capacities": [
+    192,
+    80
+   ],
+   "characters_per_line": 16,
+   "cut_sentence": 189,
+   "cut_capacity": 192,
+   "overflowed_sentence": false,
+   "overflowed_capacity": false,
+   "last_line_fill_sentence": 0.8125,
+   "last_line_fill_capacity": 1.0,
+   "quality_sentence": [
+    1,
+    0.8125
+   ],
+   "quality_capacity": [
+    1,
+    1.0
+   ],
+   "cut_displacement": 0,
+   "moved_to": null
+  },
+  {
+   "sample": "Courier-en",
+   "target_lang": "zh",
+   "first_page": 8,
+   "boundary_kinds": [
+    "column"
+   ],
+   "measurable": true,
+   "translation_chars": 82,
+   "capacities": [
+    48,
+    64
+   ],
+   "characters_per_line": 16,
+   "cut_sentence": 31,
+   "cut_capacity": 48,
+   "overflowed_sentence": false,
+   "overflowed_capacity": false,
+   "last_line_fill_sentence": 0.9375,
+   "last_line_fill_capacity": 1.0,
+   "quality_sentence": [
+    1,
+    0.9375
+   ],
+   "quality_capacity": [
+    1,
+    1.0
+   ],
+   "cut_displacement": 0,
+   "moved_to": null
+  },
+  {
+   "sample": "Courier-en",
+   "target_lang": "zh",
+   "first_page": 8,
+   "boundary_kinds": [
+    "column"
+   ],
+   "measurable": true,
+   "translation_chars": 155,
+   "capacities": [
+    80,
+    112
+   ],
+   "characters_per_line": 16,
+   "cut_sentence": 74,
+   "cut_capacity": 80,
+   "overflowed_sentence": false,
+   "overflowed_capacity": false,
+   "last_line_fill_sentence": 0.625,
+   "last_line_fill_capacity": 1.0,
+   "quality_sentence": [
+    1,
+    0.625
+   ],
+   "quality_capacity": [
+    1,
+    1.0
+   ],
+   "cut_displacement": 0,
+   "moved_to": null
+  },
+  {
+   "sample": "AramcoWorld-en-v2",
+   "target_lang": "zh",
+   "first_page": 5,
+   "boundary_kinds": [
+    "column"
+   ],
+   "measurable": true,
+   "translation_chars": 128,
+   "capacities": [
+    40,
+    60
+   ],
+   "characters_per_line": 20,
+   "cut_sentence": 83,
+   "cut_capacity": 40,
+   "overflowed_sentence": true,
+   "overflowed_capacity": false,
+   "last_line_fill_sentence": 1.0,
+   "last_line_fill_capacity": 1.0,
+   "quality_sentence": [
+    0,
+    1.0
+   ],
+   "quality_capacity": [
+    1,
+    1.0
+   ],
+   "cut_displacement": 0,
+   "moved_to": null
+  },
+  {
+   "sample": "AramcoWorld-en-v2",
+   "target_lang": "zh",
+   "first_page": 6,
+   "boundary_kinds": [
+    "column"
+   ],
+   "measurable": true,
+   "translation_chars": 168,
+   "capacities": [
+    40,
+    120
+   ],
+   "characters_per_line": 20,
+   "cut_sentence": 56,
+   "cut_capacity": 40,
+   "overflowed_sentence": true,
+   "overflowed_capacity": false,
+   "last_line_fill_sentence": 1.0,
+   "last_line_fill_capacity": 1.0,
+   "quality_sentence": [
+    0,
+    1.0
+   ],
+   "quality_capacity": [
+    1,
+    1.0
+   ],
+   "cut_displacement": 0,
+   "moved_to": null
+  },
+  {
+   "sample": "AramcoWorld-en-v2",
+   "target_lang": "zh",
+   "first_page": 6,
+   "boundary_kinds": [
+    "page"
+   ],
+   "measurable": true,
+   "translation_chars": 75,
+   "capacities": [
+    40,
+    20
+   ],
+   "characters_per_line": 20,
+   "cut_sentence": 29,
+   "cut_capacity": 40,
+   "overflowed_sentence": false,
+   "overflowed_capacity": false,
+   "last_line_fill_sentence": 0.45,
+   "last_line_fill_capacity": 1.0,
+   "quality_sentence": [
+    1,
+    0.45
+   ],
+   "quality_capacity": [
+    1,
+    1.0
+   ],
+   "cut_displacement": 0,
+   "moved_to": null
+  },
+  {
+   "sample": "FD-en-v2",
+   "target_lang": "zh",
+   "first_page": 6,
+   "boundary_kinds": [
+    "column"
+   ],
+   "measurable": true,
+   "translation_chars": 132,
+   "capacities": [
+    68,
+    56
+   ],
+   "characters_per_line": 17,
+   "cut_sentence": 59,
+   "cut_capacity": 68,
+   "overflowed_sentence": false,
+   "overflowed_capacity": false,
+   "last_line_fill_sentence": 0.4706,
+   "last_line_fill_capacity": 1.0,
+   "quality_sentence": [
+    1,
+    0.47058823529411764
+   ],
+   "quality_capacity": [
+    1,
+    1.0
+   ],
+   "cut_displacement": 0,
+   "moved_to": null
+  },
+  {
+   "sample": "FD-en-v2",
+   "target_lang": "zh",
+   "first_page": 6,
+   "boundary_kinds": [
+    "column"
+   ],
+   "measurable": true,
+   "translation_chars": 113,
+   "capacities": [
+    51,
+    68
+   ],
+   "characters_per_line": 17,
+   "cut_sentence": 61,
+   "cut_capacity": 51,
+   "overflowed_sentence": true,
+   "overflowed_capacity": false,
+   "last_line_fill_sentence": 1.0,
+   "last_line_fill_capacity": 1.0,
+   "quality_sentence": [
+    0,
+    1.0
+   ],
+   "quality_capacity": [
+    1,
+    1.0
+   ],
+   "cut_displacement": 0,
+   "moved_to": null
+  },
+  {
+   "sample": "FD-en-v2",
+   "target_lang": "zh",
+   "first_page": 9,
+   "boundary_kinds": [
+    "column"
+   ],
+   "measurable": false,
+   "translation_chars": 88,
+   "note": "a member carries no box or no font size; the cut falls back"
+  },
+  {
+   "sample": "Courier-zh",
+   "target_lang": "en",
+   "first_page": 4,
+   "boundary_kinds": [
+    "column"
+   ],
+   "measurable": true,
+   "translation_chars": 663,
+   "capacities": [
+    330,
+    266
+   ],
+   "characters_per_line": 55,
+   "cut_sentence": 310,
+   "cut_capacity": 329,
+   "overflowed_sentence": false,
+   "overflowed_capacity": false,
+   "last_line_fill_sentence": 0.6364,
+   "last_line_fill_capacity": 0.9818,
+   "quality_sentence": [
+    1,
+    0.6363636363636364
+   ],
+   "quality_capacity": [
+    1,
+    0.9818181818181818
+   ],
+   "cut_displacement": -1,
+   "moved_to": null
+  },
+  {
+   "sample": "Courier-zh",
+   "target_lang": "en",
+   "first_page": 5,
+   "boundary_kinds": [
+    "column"
+   ],
+   "measurable": true,
+   "translation_chars": 497,
+   "capacities": [
+    288,
+    108
+   ],
+   "characters_per_line": 36,
+   "cut_sentence": 361,
+   "cut_capacity": 291,
+   "overflowed_sentence": true,
+   "overflowed_capacity": true,
+   "last_line_fill_sentence": 1.0,
+   "last_line_fill_capacity": 1.0,
+   "quality_sentence": [
+    0,
+    1.0
+   ],
+   "quality_capacity": [
+    0,
+    1.0
+   ],
+   "cut_displacement": 3,
+   "moved_to": null
+  },
+  {
+   "sample": "Courier-zh",
+   "target_lang": "en",
+   "first_page": 5,
+   "boundary_kinds": [
+    "page"
+   ],
+   "measurable": true,
+   "translation_chars": 704,
+   "capacities": [
+    180,
+    312
+   ],
+   "characters_per_line": 36,
+   "cut_sentence": 343,
+   "cut_capacity": 179,
+   "overflowed_sentence": true,
+   "overflowed_capacity": false,
+   "last_line_fill_sentence": 1.0,
+   "last_line_fill_capacity": 0.9722,
+   "quality_sentence": [
+    0,
+    1.0
+   ],
+   "quality_capacity": [
+    1,
+    0.9722222222222222
+   ],
+   "cut_displacement": -1,
+   "moved_to": null
+  },
+  {
+   "sample": "Courier-zh",
+   "target_lang": "en",
+   "first_page": 5,
+   "boundary_kinds": [
+    "column"
+   ],
+   "measurable": false,
+   "translation_chars": 453,
+   "note": "a member carries no box or no font size; the cut falls back"
+  },
+  {
+   "sample": "Courier-zh",
+   "target_lang": "en",
+   "first_page": 6,
+   "boundary_kinds": [
+    "column"
+   ],
+   "measurable": true,
+   "translation_chars": 748,
+   "capacities": [
+    216,
+    396
+   ],
+   "characters_per_line": 36,
+   "cut_sentence": 226,
+   "cut_capacity": 217,
+   "overflowed_sentence": true,
+   "overflowed_capacity": true,
+   "last_line_fill_sentence": 1.0,
+   "last_line_fill_capacity": 1.0,
+   "quality_sentence": [
+    0,
+    1.0
+   ],
+   "quality_capacity": [
+    0,
+    1.0
+   ],
+   "cut_displacement": 1,
+   "moved_to": null
+  },
+  {
+   "sample": "Courier-zh",
+   "target_lang": "en",
+   "first_page": 7,
+   "boundary_kinds": [
+    "page"
+   ],
+   "measurable": true,
+   "translation_chars": 914,
+   "capacities": [
+    396,
+    360
+   ],
+   "characters_per_line": 36,
+   "cut_sentence": 514,
+   "cut_capacity": 394,
+   "overflowed_sentence": true,
+   "overflowed_capacity": false,
+   "last_line_fill_sentence": 1.0,
+   "last_line_fill_capacity": 0.9444,
+   "quality_sentence": [
+    0,
+    1.0
+   ],
+   "quality_capacity": [
+    1,
+    0.9444444444444444
+   ],
+   "cut_displacement": -2,
+   "moved_to": null
+  },
+  {
+   "sample": "Courier-zh",
+   "target_lang": "en",
+   "first_page": 7,
+   "boundary_kinds": [
+    "column"
+   ],
+   "measurable": true,
+   "translation_chars": 454,
+   "capacities": [
+    144,
+    144
+   ],
+   "characters_per_line": 36,
+   "cut_sentence": 184,
+   "cut_capacity": 144,
+   "overflowed_sentence": true,
+   "overflowed_capacity": false,
+   "last_line_fill_sentence": 1.0,
+   "last_line_fill_capacity": 1.0,
+   "quality_sentence": [
+    0,
+    1.0
+   ],
+   "quality_capacity": [
+    1,
+    1.0
+   ],
+   "cut_displacement": 0,
+   "moved_to": null
+  },
+  {
+   "sample": "Courier-zh",
+   "target_lang": "en",
+   "first_page": 8,
+   "boundary_kinds": [
+    "column"
+   ],
+   "measurable": true,
+   "translation_chars": 326,
+   "capacities": [
+    108,
+    108
+   ],
+   "characters_per_line": 36,
+   "cut_sentence": 121,
+   "cut_capacity": 112,
+   "overflowed_sentence": true,
+   "overflowed_capacity": true,
+   "last_line_fill_sentence": 1.0,
+   "last_line_fill_capacity": 1.0,
+   "quality_sentence": [
+    0,
+    1.0
+   ],
+   "quality_capacity": [
+    0,
+    1.0
+   ],
+   "cut_displacement": 4,
+   "moved_to": null
+  },
+  {
+   "sample": "Courier-zh",
+   "target_lang": "en",
+   "first_page": 8,
+   "boundary_kinds": [
+    "column"
+   ],
+   "measurable": true,
+   "translation_chars": 602,
+   "capacities": [
+    108,
+    360
+   ],
+   "characters_per_line": 36,
+   "cut_sentence": 260,
+   "cut_capacity": 107,
+   "overflowed_sentence": true,
+   "overflowed_capacity": false,
+   "last_line_fill_sentence": 1.0,
+   "last_line_fill_capacity": 0.9722,
+   "quality_sentence": [
+    0,
+    1.0
+   ],
+   "quality_capacity": [
+    1,
+    0.9722222222222222
+   ],
+   "cut_displacement": -1,
+   "moved_to": null
+  }
+ ]
+}

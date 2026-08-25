@@ -57,8 +57,10 @@ from babeldoc.magazine.chain_builder import ChainBuilder
 from babeldoc.magazine import detectors
 from babeldoc.magazine import hitl
 from babeldoc.magazine.checkpoint import dump_checkpoint
+from babeldoc.magazine import formula_reclass
 from babeldoc.magazine import indent_policy
 from babeldoc.magazine import paren_dedup
+from babeldoc.magazine import rotated_lane
 from babeldoc.magazine.page_classifier import PageClassifier
 from babeldoc.progress_monitor import ProgressMonitor
 from babeldoc.utils import memory
@@ -1003,6 +1005,11 @@ def _do_translate_single(
     if translation_config.magazine_checkpoint:
         dump_checkpoint(docs, translation_config, "styles_and_formulas")
 
+    # Before the classifier and the chains, because both read paragraph text
+    # and this is the pass that puts the swallowed characters into it. After
+    # the formula stage, because the groupings it undoes are that stage's.
+    formula_reclass.apply(translation_config, docs)
+
     if translation_config.magazine_page_classify:
         PageClassifier(translation_config).process(docs)
         logger.debug(f"finish page classifier from {temp_pdf_path}")
@@ -1094,8 +1101,15 @@ def _do_translate_single(
         mono_watermark_first_page_doc_bytes = None
         dual_watermark_first_page_doc_bytes = None
 
-    Typesetting(translation_config).typesetting_document(docs)
+    typesetting_stage = Typesetting(translation_config)
+    typesetting_stage.typesetting_document(docs)
     logger.debug(f"finish typsetting from {temp_pdf_path}")
+
+    # Immediately after the stage: a paragraph whose text the reclassification
+    # lengthened may not fit the box its source was drawn in, and the stage
+    # answers that with an empty composition that the writer then declines to
+    # export. Put such a paragraph back rather than lose the line.
+    formula_reclass.restore_unformatted(translation_config, docs, typesetting_stage)
     if translation_config.debug:
         xml_converter.write_json(
             docs,
@@ -1107,7 +1121,11 @@ def _do_translate_single(
     # The one point where the translation is written back and the geometry it
     # will be rendered at is final. Reads the document, writes a sidecar.
     if translation_config.magazine_detect:
+        rotated_lane.reset()
         detectors.detect_issues(translation_config, docs)
+        # The lane sets a strip during the repair loop, so its record is written
+        # once the loop is done rather than at a stage of its own.
+        rotated_lane.write_report(translation_config)
         logger.debug(f"finish detection from {temp_pdf_path}")
 
     pdf_creater = PDFCreater(temp_pdf_path, docs, translation_config, mediabox_data)

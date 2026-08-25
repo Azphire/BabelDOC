@@ -19,7 +19,7 @@
   ],
   "actions": {
     "translate_orphan_lines": {
-      "description": "Send the text of an orphan line through the translation engine and write the answer back into the paragraph, then lay that paragraph out again.",
+      "description": "Send the text of a paragraph the translator was never given the chance to reach through the translation engine and write the answer back into it, then lay that paragraph out again.",
       "issue_kinds": [
         "untranslated_residue"
       ],
@@ -34,6 +34,8 @@
       "applicability": {
         "min_residue_ratio": 0.9,
         "min_residue_ratio_allowed_range": "0.05..1.0",
+        "min_residue_ratio_into_en": 0.05,
+        "min_residue_ratio_into_en_allowed_range": "0.01..1.0",
         "min_source_chars": 12,
         "min_source_chars_allowed_range": "1..400",
         "orphan_layout_labels": [
@@ -42,8 +44,11 @@
         "statements": {
           "min_residue_ratio": "its evidence reports residue_ratio at or above {value}",
           "min_source_chars": "the text the page renders for it is at least {value} characters long",
-          "orphan_layout_labels": "its evidence reports layout_label as one of: {value}"
-        }
+          "orphan_layout_labels": "it was never offered a request, either because its evidence reports layout_label as one of: {value}",
+          "orphan_accepts_vertical": "or, where this is {value}, because the paragraph is set along the vertical axis and the translator refuses such a paragraph before reading its text",
+          "min_residue_ratio_into_en": "its evidence reports residue_ratio at or above {value}"
+        },
+        "orphan_accepts_vertical": true
       }
     },
     "contain_in_page": {

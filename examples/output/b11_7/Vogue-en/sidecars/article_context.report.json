@@ -1,0 +1,25 @@
+{
+  "articles": [],
+  "body_labels": [
+    "text",
+    "plain text",
+    "paragraph_hybrid"
+  ],
+  "counts": {
+    "articles": 0,
+    "briefs": 0,
+    "failed": 0,
+    "from_cache": 0,
+    "requested": 0,
+    "requests": 0
+  },
+  "title_labels": [
+    "title",
+    "paragraph_title"
+  ],
+  "unassigned_pages": [
+    1,
+    2,
+    3
+  ]
+}

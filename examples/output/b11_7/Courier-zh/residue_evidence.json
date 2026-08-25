@@ -1,0 +1,34 @@
+{
+ "sample": "Courier-zh",
+ "canvas_han_by_page": {
+  "1": 0,
+  "2": 0,
+  "3": 0,
+  "4": 0,
+  "5": 0,
+  "6": 0,
+  "7": 0,
+  "8": 0
+ },
+ "canvas_han_total": 0,
+ "canvas_spans": [],
+ "il_paragraphs_with_han": [
+  {
+   "reference": "p5#9",
+   "layout_label": "abandon",
+   "vertical": true,
+   "han": 19,
+   "latin": 16,
+   "text": "© 阿德里亚诺·甘巴里尼（Adriano Gambarini）/亚马孙原住民行动组织"
+  },
+  {
+   "reference": "p6#15",
+   "layout_label": "fallback_line",
+   "vertical": true,
+   "han": 21,
+   "latin": 0,
+   "text": "© 鲍里斯·塞梅尼亚科为联合国教科文组织《信使》创作"
+  }
+ ],
+ "il_han_total": 40
+}

@@ -1,0 +1,12653 @@
+{
+ "sample": "Courier-en",
+ "canvas_han_by_page": {
+  "1": 932,
+  "2": 208,
+  "3": 24,
+  "4": 1154,
+  "5": 438,
+  "6": 905,
+  "7": 1051,
+  "8": 957
+ },
+ "canvas_han_total": 5669,
+ "canvas_spans": [
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    77.19,
+    106.91,
+    165.19,
+    159.0
+   ],
+   "han": 2,
+   "latin": 0,
+   "text": "目录"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    301.54,
+    78.67,
+    331.54,
+    100.21
+   ],
+   "han": 2,
+   "latin": 0,
+   "text": "社论"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    300.76,
+    104.84,
+    550.76,
+    119.2
+   ],
+   "han": 22,
+   "latin": 0,
+   "text": "土著知识长期以来被科学忽视，有时甚至被反对。然而，"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    300.76,
+    119.84,
+    430.76,
+    134.2
+   ],
+   "han": 13,
+   "latin": 0,
+   "text": "现在它重新引起了人们的兴趣"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    450.76,
+    119.84,
+    540.76,
+    134.2
+   ],
+   "han": 8,
+   "latin": 0,
+   "text": "这正是时候：全球机"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    300.76,
+    134.84,
+    540.76,
+    149.2
+   ],
+   "han": 22,
+   "latin": 0,
+   "text": "械化的后果，以及与气候变化和健康问题相关的危机，"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    300.76,
+    149.84,
+    540.76,
+    164.2
+   ],
+   "han": 23,
+   "latin": 0,
+   "text": "促使我们重新重视那些长期被边缘化的知识、实践和专"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    300.76,
+    164.84,
+    340.76,
+    179.2
+   ],
+   "han": 3,
+   "latin": 0,
+   "text": "业技能。"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    300.72,
+    207.93,
+    540.72,
+    222.29
+   ],
+   "han": 23,
+   "latin": 0,
+   "text": "这种知识植根于对生态系统的细致观察，并通过口头传"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    300.72,
+    222.93,
+    540.72,
+    237.29
+   ],
+   "han": 22,
+   "latin": 0,
+   "text": "承代代相传，为构建可持续的未来提供了宝贵的钥匙。"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    300.72,
+    237.93,
+    460.72,
+    252.29
+   ],
+   "han": 14,
+   "latin": 0,
+   "text": "近年来，它获得了越来越多的认可。"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    483.08,
+    237.93,
+    543.08,
+    252.29
+   ],
+   "han": 5,
+   "latin": 0,
+   "text": "年通过的《联"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    300.72,
+    252.93,
+    540.72,
+    267.29
+   ],
+   "han": 22,
+   "latin": 0,
+   "text": "合国土著人民权利宣言》确认了这些人民保留、控制和"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    300.72,
+    267.93,
+    410.72,
+    282.29
+   ],
+   "han": 10,
+   "latin": 0,
+   "text": "发展其传统知识的权利。"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    300.72,
+    313.52,
+    540.72,
+    327.88
+   ],
+   "han": 23,
+   "latin": 0,
+   "text": "联合国教科文组织长期以来在这一领域处于先锋地位。"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    300.72,
+    328.52,
+    430.72,
+    342.88
+   ],
+   "han": 12,
+   "latin": 0,
+   "text": "通过其地方和土著知识系统（"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    460.69,
+    328.52,
+    540.69,
+    342.88
+   ],
+   "han": 6,
+   "latin": 0,
+   "text": "）计划，该组织促"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    300.72,
+    343.52,
+    540.72,
+    357.88
+   ],
+   "han": 23,
+   "latin": 0,
+   "text": "进土著知识持有者与科学家之间的交流，特别是在生态"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    300.72,
+    358.52,
+    540.72,
+    372.88
+   ],
+   "han": 22,
+   "latin": 0,
+   "text": "学、水资源管理和自然风险预防领域。生物圈保护区是"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    300.72,
+    373.52,
+    390.72,
+    387.88
+   ],
+   "han": 9,
+   "latin": 0,
+   "text": "这种方法的具体例子"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    410.72,
+    373.52,
+    540.72,
+    387.88
+   ],
+   "han": 13,
+   "latin": 0,
+   "text": "它们将研究人员和当地社区聚"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    300.72,
+    388.52,
+    540.72,
+    402.88
+   ],
+   "han": 22,
+   "latin": 0,
+   "text": "集在一起，开发适应特定地区的解决方案。这是一个重"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    300.72,
+    403.52,
+    540.72,
+    417.88
+   ],
+   "han": 23,
+   "latin": 0,
+   "text": "大转变，因为科学不再被视为单一的自上而下的知识形"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    300.72,
+    418.52,
+    540.72,
+    432.88
+   ],
+   "han": 20,
+   "latin": 0,
+   "text": "式，而是知识系统之间的对话。此外，《保护非物质文"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    300.72,
+    433.52,
+    540.72,
+    447.88
+   ],
+   "han": 21,
+   "latin": 0,
+   "text": "化遗产公约》保护代代相传的实践、技术和技能，承认"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    300.72,
+    448.52,
+    350.72,
+    462.88
+   ],
+   "han": 4,
+   "latin": 0,
+   "text": "其普遍性。"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    300.72,
+    512.61,
+    540.72,
+    526.97
+   ],
+   "han": 23,
+   "latin": 0,
+   "text": "除了提供实证数据外，土著知识还挑战了科学方法的基"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    300.72,
+    527.61,
+    540.72,
+    541.97
+   ],
+   "han": 21,
+   "latin": 0,
+   "text": "础，无论是在伦理的位置、人类与自然的关系，还是观"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    300.72,
+    542.61,
+    540.72,
+    556.97
+   ],
+   "han": 21,
+   "latin": 0,
+   "text": "察的长时间框架方面。在农业、传统医学和气候学中，"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    300.72,
+    557.61,
+    540.72,
+    571.97
+   ],
+   "han": 23,
+   "latin": 0,
+   "text": "这些知识已经激发了重大的创新，这些创新往往比纯粹"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    300.72,
+    572.61,
+    440.72,
+    586.97
+   ],
+   "han": 13,
+   "latin": 0,
+   "text": "的技术解决方案更具可持续性。"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    300.47,
+    615.7,
+    440.47,
+    630.06
+   ],
+   "han": 14,
+   "latin": 0,
+   "text": "但这种认可必须伴随着保障措施"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    460.47,
+    615.7,
+    540.47,
+    630.06
+   ],
+   "han": 8,
+   "latin": 0,
+   "text": "社区的自由和知情"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    300.47,
+    630.7,
+    540.47,
+    645.06
+   ],
+   "han": 22,
+   "latin": 0,
+   "text": "同意、利益的公平分享以及防止滥用占有的保护。目标"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    300.47,
+    645.7,
+    540.47,
+    660.06
+   ],
+   "han": 23,
+   "latin": 0,
+   "text": "不仅仅是将土著知识吸收到主流科学中，而是促进合作"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    300.47,
+    660.7,
+    370.47,
+    675.06
+   ],
+   "han": 6,
+   "latin": 0,
+   "text": "以造福所有人。"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    300.72,
+    692.29,
+    540.72,
+    706.65
+   ],
+   "han": 23,
+   "latin": 0,
+   "text": "通过推广这些知识，联合国教科文组织提醒我们一个显"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    300.72,
+    707.29,
+    360.72,
+    721.65
+   ],
+   "han": 6,
+   "latin": 0,
+   "text": "而易见的道理"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    380.72,
+    707.29,
+    540.72,
+    721.65
+   ],
+   "han": 15,
+   "latin": 0,
+   "text": "要理解和保护这个世界，我们可以通"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    300.72,
+    722.29,
+    550.72,
+    736.65
+   ],
+   "han": 23,
+   "latin": 0,
+   "text": "过整合所有民族的知识和传统而获益良多。真正的科学，"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    300.72,
+    737.29,
+    540.72,
+    751.65
+   ],
+   "han": 23,
+   "latin": 0,
+   "text": "以及适合我们多元世界的伦理，是那些为所有人类表达"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    300.72,
+    752.29,
+    430.72,
+    766.65
+   ],
+   "han": 12,
+   "latin": 0,
+   "text": "形式留出空间的科学和伦理。"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    486.05,
+    790.73,
+    496.05,
+    802.57
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "阿"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    486.05,
+    802.65,
+    496.05,
+    814.49
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "主"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    496.05,
+    790.73,
+    506.05,
+    802.57
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "涅"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    496.05,
+    802.65,
+    506.05,
+    814.49
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "编"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    506.05,
+    790.73,
+    516.05,
+    802.57
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "斯"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    519.09,
+    790.73,
+    549.09,
+    802.57
+   ],
+   "han": 3,
+   "latin": 0,
+   "text": "巴尔东"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    373.39,
+    1.37,
+    467.42,
+    68.88
+   ],
+   "han": 2,
+   "latin": 0,
+   "text": "信使"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    468.89,
+    48.93,
+    514.1,
+    57.05
+   ],
+   "han": 8,
+   "latin": 0,
+   "text": "联合国教科文组织"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    78.2,
+    183.12,
+    98.2,
+    194.96
+   ],
+   "han": 2,
+   "latin": 0,
+   "text": "广角"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    78.62,
+    201.92,
+    217.53,
+    218.54
+   ],
+   "han": 12,
+   "latin": 0,
+   "text": "土著知识如何推动科学发现"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    78.16,
+    264.19,
+    88.16,
+    278.55
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "土"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    78.16,
+    275.69,
+    88.16,
+    290.05
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "知"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    88.16,
+    264.19,
+    98.16,
+    278.55
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "著"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    88.16,
+    275.69,
+    98.16,
+    290.05
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "识"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    98.16,
+    264.19,
+    108.16,
+    278.55
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "人"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    108.16,
+    264.19,
+    118.16,
+    278.55
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "民"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    118.16,
+    264.19,
+    128.16,
+    278.55
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "面"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    128.16,
+    264.19,
+    188.16,
+    278.55
+   ],
+   "han": 6,
+   "latin": 0,
+   "text": "临的气候变化"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    78.48,
+    288.99,
+    113.48,
+    299.04
+   ],
+   "han": 5,
+   "latin": 0,
+   "text": "拉吉波伊瓦"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    115.23,
+    288.99,
+    136.23,
+    299.04
+   ],
+   "han": 3,
+   "latin": 0,
+   "text": "谢雷尔"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    137.98,
+    288.99,
+    158.98,
+    299.04
+   ],
+   "han": 3,
+   "latin": 0,
+   "text": "杰克逊"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    78.36,
+    303.74,
+    88.36,
+    318.1
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "巴"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    78.36,
+    317.04,
+    85.36,
+    327.1
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "马"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    88.36,
+    303.74,
+    98.36,
+    318.1
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "西"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    85.36,
+    317.04,
+    92.36,
+    327.1
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "塞"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    92.36,
+    317.04,
+    99.36,
+    327.1
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "洛"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    108.36,
+    303.74,
+    118.36,
+    318.1
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "来"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    118.36,
+    303.74,
+    128.36,
+    318.1
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "自"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    101.11,
+    317.04,
+    108.11,
+    327.1
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "席"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    128.36,
+    303.74,
+    138.36,
+    318.1
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "水"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    108.11,
+    317.04,
+    115.11,
+    327.1
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "尔"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    138.36,
+    303.74,
+    148.36,
+    318.1
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "上"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    115.11,
+    317.04,
+    122.11,
+    327.1
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "瓦"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    148.36,
+    303.74,
+    158.36,
+    318.1
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "人"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    158.36,
+    303.74,
+    168.36,
+    318.1
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "家"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    123.86,
+    317.04,
+    130.86,
+    327.1
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "德"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    168.36,
+    303.74,
+    178.36,
+    318.1
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "的"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    178.36,
+    303.74,
+    188.36,
+    318.1
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "教"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    132.61,
+    317.04,
+    139.61,
+    327.1
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "索"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    188.36,
+    303.74,
+    198.36,
+    318.1
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "训"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    139.61,
+    317.04,
+    146.61,
+    327.1
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "萨"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    78.1,
+    331.8,
+    88.1,
+    346.16
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "当"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    78.1,
+    345.1,
+    85.1,
+    355.15
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "丹"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    88.1,
+    331.8,
+    98.1,
+    346.16
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "生"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    85.1,
+    345.1,
+    92.1,
+    355.15
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "尼"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    98.1,
+    331.8,
+    108.1,
+    346.16
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "物"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    92.1,
+    345.1,
+    99.1,
+    355.15
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "尔"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    108.1,
+    331.8,
+    118.1,
+    346.16
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "盗"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    118.1,
+    331.8,
+    128.1,
+    346.16
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "窃"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    100.85,
+    345.1,
+    107.85,
+    355.15
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "罗"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    128.1,
+    331.8,
+    138.1,
+    346.16
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "扎"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    107.85,
+    345.1,
+    114.85,
+    355.15
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "宾"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    138.1,
+    331.8,
+    148.1,
+    346.16
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "根"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    114.85,
+    345.1,
+    121.85,
+    355.15
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "逊"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    121.85,
+    345.1,
+    128.85,
+    355.15
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "和"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    128.85,
+    345.1,
+    135.85,
+    355.15
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "大"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    135.85,
+    345.1,
+    142.85,
+    355.15
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "卫"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    144.6,
+    345.1,
+    165.6,
+    355.15
+   ],
+   "han": 3,
+   "latin": 0,
+   "text": "杰斐逊"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    78.04,
+    360.35,
+    88.04,
+    374.71
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "中"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    78.04,
+    371.85,
+    88.04,
+    386.21
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "传"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    78.04,
+    385.15,
+    85.04,
+    395.2
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "杨"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    88.04,
+    360.35,
+    98.04,
+    374.71
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "国"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    88.04,
+    371.85,
+    98.04,
+    386.21
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "统"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    85.04,
+    385.15,
+    92.04,
+    395.2
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "沙"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    98.04,
+    371.85,
+    108.04,
+    386.21
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "傣"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    92.04,
+    385.15,
+    99.04,
+    395.2
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "和"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    108.04,
+    360.35,
+    118.04,
+    374.71
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "光"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    108.04,
+    371.85,
+    118.04,
+    386.21
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "族"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    99.04,
+    385.15,
+    106.04,
+    395.2
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "杜"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    118.04,
+    360.35,
+    128.04,
+    374.71
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "辉"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    118.04,
+    371.85,
+    128.04,
+    386.21
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "医"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    106.04,
+    385.15,
+    113.04,
+    395.2
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "俊"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    128.04,
+    360.35,
+    138.04,
+    374.71
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "的"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    128.04,
+    371.85,
+    138.04,
+    386.21
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "学"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    113.04,
+    385.15,
+    120.04,
+    395.2
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "志"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    138.04,
+    360.35,
+    148.04,
+    374.71
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "健"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    148.04,
+    360.35,
+    158.04,
+    374.71
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "康"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    78.03,
+    397.9,
+    88.03,
+    412.26
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "卡"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    78.03,
+    413.2,
+    85.03,
+    423.26
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "西"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    88.03,
+    397.9,
+    98.03,
+    412.26
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "拉"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    85.03,
+    413.2,
+    92.03,
+    423.26
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "斯"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    98.03,
+    397.9,
+    108.03,
+    412.26
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "哈"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    92.03,
+    413.2,
+    99.03,
+    423.26
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "科"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    108.03,
+    397.9,
+    118.03,
+    412.26
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "里"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    118.03,
+    397.9,
+    128.03,
+    412.26
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "的"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    100.78,
+    413.2,
+    107.78,
+    423.26
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "阿"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    128.03,
+    397.9,
+    138.03,
+    412.26
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "秘"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    107.78,
+    413.2,
+    114.78,
+    423.26
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "瓦"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    138.03,
+    397.9,
+    148.03,
+    412.26
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "密"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    114.78,
+    413.2,
+    121.78,
+    423.26
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "拉"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    148.03,
+    397.9,
+    168.03,
+    412.26
+   ],
+   "han": 2,
+   "latin": 0,
+   "text": "天空"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    78.03,
+    428.46,
+    88.03,
+    442.82
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "萨"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    78.03,
+    437.96,
+    88.03,
+    452.32
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "气"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    78.03,
+    453.26,
+    85.03,
+    463.31
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "安"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    88.03,
+    428.46,
+    98.03,
+    442.82
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "米"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    88.03,
+    437.96,
+    98.03,
+    452.32
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "候"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    85.03,
+    453.26,
+    92.03,
+    463.31
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "娜"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    98.03,
+    428.46,
+    108.03,
+    442.82
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "人"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    98.03,
+    437.96,
+    108.03,
+    452.32
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "变"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    108.03,
+    437.96,
+    118.03,
+    452.32
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "化"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    93.78,
+    453.26,
+    100.78,
+    463.31
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "罗"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    118.03,
+    428.46,
+    128.03,
+    442.82
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "不"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    118.03,
+    437.96,
+    128.03,
+    452.32
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "的"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    100.78,
+    453.26,
+    107.78,
+    463.31
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "霍"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    128.03,
+    428.46,
+    138.03,
+    442.82
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "可"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    128.03,
+    437.96,
+    138.03,
+    452.32
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "守"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    107.78,
+    453.26,
+    114.78,
+    463.31
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "宁"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    138.03,
+    428.46,
+    148.03,
+    442.82
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "或"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    138.03,
+    437.96,
+    148.03,
+    452.32
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "护"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    148.03,
+    428.46,
+    158.03,
+    442.82
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "缺"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    148.03,
+    437.96,
+    158.03,
+    452.32
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "者"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    78.25,
+    480.01,
+    88.25,
+    494.37
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "被"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    83.14,
+    468.51,
+    93.14,
+    482.87
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "我"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    88.25,
+    480.01,
+    98.25,
+    494.37
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "视"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    93.14,
+    468.51,
+    103.14,
+    482.87
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "们"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    98.25,
+    480.01,
+    108.25,
+    494.37
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "为"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    103.14,
+    468.51,
+    113.14,
+    482.87
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "的"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    108.25,
+    480.01,
+    118.25,
+    494.37
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "民"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    113.14,
+    468.51,
+    123.14,
+    482.87
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "知"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    118.25,
+    480.01,
+    128.25,
+    494.37
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "间"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    123.14,
+    468.51,
+    133.14,
+    482.87
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "识"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    128.25,
+    480.01,
+    138.25,
+    494.37
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "传"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    133.14,
+    468.51,
+    143.14,
+    482.87
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "长"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    138.25,
+    480.01,
+    148.25,
+    494.37
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "说"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    143.14,
+    468.51,
+    153.14,
+    482.87
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "期"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    153.14,
+    468.51,
+    163.14,
+    482.87
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "以"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    163.14,
+    468.51,
+    173.14,
+    482.87
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "来"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    173.14,
+    468.51,
+    183.14,
+    482.87
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "一"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    183.14,
+    468.51,
+    203.14,
+    482.87
+   ],
+   "han": 2,
+   "latin": 0,
+   "text": "直被"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    78.13,
+    493.31,
+    92.13,
+    503.36
+   ],
+   "han": 2,
+   "latin": 0,
+   "text": "奥拉"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    93.88,
+    493.31,
+    114.88,
+    503.36
+   ],
+   "han": 3,
+   "latin": 0,
+   "text": "马雷克"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    117.05,
+    493.31,
+    166.05,
+    503.36
+   ],
+   "han": 7,
+   "latin": 0,
+   "text": "马丁内斯的采访"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    78.33,
+    528.22,
+    98.33,
+    540.06
+   ],
+   "han": 2,
+   "latin": 0,
+   "text": "缩放"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    78.48,
+    540.74,
+    88.48,
+    555.1
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "通"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    78.48,
+    556.04,
+    85.48,
+    566.09
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "照"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    88.48,
+    540.74,
+    98.48,
+    555.1
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "过"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    85.48,
+    556.04,
+    92.48,
+    566.09
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "片"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    98.48,
+    540.74,
+    108.48,
+    555.1
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "孩"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    108.48,
+    540.74,
+    118.48,
+    555.1
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "子"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    118.48,
+    540.74,
+    128.48,
+    555.1
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "的"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    128.48,
+    540.74,
+    138.48,
+    555.1
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "眼"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    138.48,
+    540.74,
+    148.48,
+    555.1
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "睛"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    148.48,
+    540.74,
+    158.48,
+    555.1
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "看"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    158.48,
+    540.74,
+    168.48,
+    555.1
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "流"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    168.48,
+    540.74,
+    178.48,
+    555.1
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "亡"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    78.1,
+    605.97,
+    88.1,
+    620.33
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "欢"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    78.1,
+    617.47,
+    88.1,
+    631.83
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "革"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    88.1,
+    605.97,
+    98.1,
+    620.33
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "迎"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    88.1,
+    617.47,
+    98.1,
+    631.83
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "命"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    98.1,
+    605.97,
+    108.1,
+    620.33
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "来"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    108.1,
+    605.97,
+    118.1,
+    620.33
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "到"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    118.1,
+    605.97,
+    128.1,
+    620.33
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "第"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    128.1,
+    605.97,
+    168.1,
+    620.33
+   ],
+   "han": 4,
+   "latin": 0,
+   "text": "二次量子"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    77.98,
+    631.09,
+    87.78,
+    638.12
+   ],
+   "han": 2,
+   "latin": 0,
+   "text": "吉姆"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    89.01,
+    631.09,
+    98.81,
+    638.12
+   ],
+   "han": 2,
+   "latin": 0,
+   "text": "艾尔"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    100.32,
+    631.09,
+    115.02,
+    638.12
+   ],
+   "han": 3,
+   "latin": 0,
+   "text": "哈利利"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    78.53,
+    664.97,
+    128.53,
+    676.81
+   ],
+   "han": 5,
+   "latin": 0,
+   "text": "我们的嘉宾"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    78.09,
+    690.2,
+    88.09,
+    704.56
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "诚"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    78.09,
+    705.5,
+    85.09,
+    715.56
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "与"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    82.98,
+    680.7,
+    92.98,
+    695.06
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "小"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    88.09,
+    690.2,
+    98.09,
+    704.56
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "实"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    85.09,
+    705.5,
+    92.09,
+    715.56
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "奇"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    92.98,
+    680.7,
+    102.98,
+    695.06
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "说"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    98.09,
+    690.2,
+    108.09,
+    704.56
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "叙"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    92.09,
+    705.5,
+    99.09,
+    715.56
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "玛"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    102.98,
+    680.7,
+    112.98,
+    695.06
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "是"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    108.09,
+    690.2,
+    118.09,
+    704.56
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "事"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    99.09,
+    705.5,
+    106.09,
+    715.56
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "曼"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    112.98,
+    680.7,
+    122.98,
+    695.06
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "人"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    118.09,
+    690.2,
+    128.09,
+    704.56
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "的"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    106.09,
+    705.5,
+    113.09,
+    715.56
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "达"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    122.98,
+    680.7,
+    132.98,
+    695.06
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "类"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    128.09,
+    690.2,
+    138.09,
+    704.56
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "边"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    132.98,
+    680.7,
+    142.98,
+    695.06
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "最"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    138.09,
+    690.2,
+    148.09,
+    704.56
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "疆"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    114.84,
+    705.5,
+    121.84,
+    715.56
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "恩"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    142.98,
+    680.7,
+    152.98,
+    695.06
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "后"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    121.84,
+    705.5,
+    128.84,
+    715.56
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "戈"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    152.98,
+    680.7,
+    162.98,
+    695.06
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "的"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    128.84,
+    705.5,
+    135.84,
+    715.56
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "兹"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    162.98,
+    680.7,
+    172.98,
+    695.06
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "集"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    172.98,
+    680.7,
+    182.98,
+    695.06
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "体"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    137.59,
+    705.5,
+    144.59,
+    715.56
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "阿"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    144.59,
+    705.5,
+    151.59,
+    715.56
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "迪"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    151.59,
+    705.5,
+    158.59,
+    715.56
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "契"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    158.59,
+    705.5,
+    165.59,
+    715.56
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "的"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    165.59,
+    705.5,
+    172.59,
+    715.56
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "访"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    172.59,
+    705.5,
+    179.59,
+    715.56
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "谈"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    78.66,
+    739.7,
+    118.66,
+    751.54
+   ],
+   "han": 4,
+   "latin": 0,
+   "text": "深入探讨"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    78.16,
+    755.43,
+    88.16,
+    769.79
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "非"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    78.16,
+    766.93,
+    88.16,
+    781.29
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "新"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    88.16,
+    755.43,
+    98.16,
+    769.79
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "洲"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    88.16,
+    766.93,
+    98.16,
+    781.29
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "的"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    98.16,
+    755.43,
+    108.16,
+    769.79
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "的"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    98.16,
+    766.93,
+    108.16,
+    781.29
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "一"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    108.16,
+    755.43,
+    118.16,
+    769.79
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "图"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    108.16,
+    766.93,
+    118.16,
+    781.29
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "页"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    118.16,
+    755.43,
+    128.16,
+    769.79
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "书"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    118.16,
+    766.93,
+    128.16,
+    781.29
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "正"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    128.16,
+    755.43,
+    138.16,
+    769.79
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "产"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    128.16,
+    766.93,
+    138.16,
+    781.29
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "在"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    138.16,
+    755.43,
+    148.16,
+    769.79
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "业"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    138.16,
+    766.93,
+    148.16,
+    781.29
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "翻"
+  },
+  {
+   "page": 1,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    148.16,
+    766.93,
+    158.16,
+    781.29
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "开"
+  },
+  {
+   "page": 2,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    61.52,
+    804.62,
+    132.92,
+    813.16
+   ],
+   "han": 10,
+   "latin": 0,
+   "text": "联合国教科文组织《信使》"
+  },
+  {
+   "page": 2,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    151.19,
+    805.94,
+    157.14,
+    812.98
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "年"
+  },
+  {
+   "page": 2,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    160.47,
+    805.94,
+    172.37,
+    812.98
+   ],
+   "han": 2,
+   "latin": 0,
+   "text": "月至"
+  },
+  {
+   "page": 2,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    175.69,
+    805.94,
+    181.64,
+    812.98
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "月"
+  },
+  {
+   "page": 2,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    59.7,
+    30.27,
+    79.7,
+    42.11
+   ],
+   "han": 2,
+   "latin": 0,
+   "text": "广角"
+  },
+  {
+   "page": 2,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    60.74,
+    53.41,
+    471.14,
+    114.14
+   ],
+   "han": 8,
+   "latin": 0,
+   "text": "土著知识如何推动"
+  },
+  {
+   "page": 2,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    276.25,
+    784.33,
+    360.4,
+    793.39
+   ],
+   "han": 11,
+   "latin": 0,
+   "text": "厄瓜多尔摄影师卡罗琳娜"
+  },
+  {
+   "page": 2,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    362.58,
+    784.33,
+    439.08,
+    793.39
+   ],
+   "han": 9,
+   "latin": 0,
+   "text": "桑布拉诺的作品，采用"
+  },
+  {
+   "page": 2,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    473.31,
+    784.33,
+    549.81,
+    793.39
+   ],
+   "han": 9,
+   "latin": 0,
+   "text": "纤维刺绣，这是一种象"
+  },
+  {
+   "page": 2,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    276.25,
+    795.81,
+    391.0,
+    804.86
+   ],
+   "han": 14,
+   "latin": 0,
+   "text": "征亚马逊土著工艺的棕榈树纤维。"
+  },
+  {
+   "page": 2,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    90.95,
+    320.91,
+    209.95,
+    345.32
+   ],
+   "han": 7,
+   "latin": 0,
+   "text": "从土著的控制燃"
+  },
+  {
+   "page": 2,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    56.95,
+    346.41,
+    226.95,
+    370.82
+   ],
+   "han": 9,
+   "latin": 0,
+   "text": "烧以防止野火的做法，"
+  },
+  {
+   "page": 2,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    56.95,
+    371.91,
+    209.95,
+    396.32
+   ],
+   "han": 9,
+   "latin": 0,
+   "text": "到因纽特人的天气预"
+  },
+  {
+   "page": 2,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    56.95,
+    397.41,
+    209.95,
+    421.82
+   ],
+   "han": 8,
+   "latin": 0,
+   "text": "报，以及一些非洲国"
+  },
+  {
+   "page": 2,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    56.95,
+    422.91,
+    158.95,
+    447.32
+   ],
+   "han": 6,
+   "latin": 0,
+   "text": "家用于蓄水的"
+  },
+  {
+   "page": 2,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    176.75,
+    422.91,
+    227.75,
+    447.32
+   ],
+   "han": 2,
+   "latin": 0,
+   "text": "技术，"
+  },
+  {
+   "page": 2,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    56.95,
+    448.41,
+    209.95,
+    472.82
+   ],
+   "han": 9,
+   "latin": 0,
+   "text": "世界充满了多样且经"
+  },
+  {
+   "page": 2,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    56.95,
+    473.91,
+    209.95,
+    498.32
+   ],
+   "han": 8,
+   "latin": 0,
+   "text": "过验证的土著智慧。"
+  },
+  {
+   "page": 2,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    56.95,
+    499.41,
+    209.95,
+    523.82
+   ],
+   "han": 9,
+   "latin": 0,
+   "text": "这些知识在气候变化"
+  },
+  {
+   "page": 2,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    56.95,
+    524.91,
+    209.95,
+    549.32
+   ],
+   "han": 9,
+   "latin": 0,
+   "text": "和生物多样性下降的"
+  },
+  {
+   "page": 2,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    56.95,
+    550.41,
+    192.95,
+    574.82
+   ],
+   "han": 7,
+   "latin": 0,
+   "text": "背景下尤为珍贵。"
+  },
+  {
+   "page": 2,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    57.44,
+    197.41,
+    102.44,
+    210.33
+   ],
+   "han": 5,
+   "latin": 0,
+   "text": "拉吉波伊瓦"
+  },
+  {
+   "page": 2,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    104.69,
+    197.41,
+    131.69,
+    210.33
+   ],
+   "han": 3,
+   "latin": 0,
+   "text": "谢雷尔"
+  },
+  {
+   "page": 2,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    133.94,
+    197.41,
+    160.94,
+    210.33
+   ],
+   "han": 3,
+   "latin": 0,
+   "text": "杰克逊"
+  },
+  {
+   "page": 2,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    74.81,
+    219.99,
+    209.81,
+    230.65
+   ],
+   "han": 14,
+   "latin": 0,
+   "text": "来自萨摩亚的原住民气候记者，为"
+  },
+  {
+   "page": 2,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    209.81,
+    218.0,
+    218.81,
+    230.92
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "卫"
+  },
+  {
+   "page": 2,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    56.81,
+    231.5,
+    65.81,
+    244.42
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "报"
+  },
+  {
+   "page": 2,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    65.81,
+    233.49,
+    218.81,
+    244.15
+   ],
+   "han": 16,
+   "latin": 0,
+   "text": "报道太平洋岛屿问题，目前担任波特兰"
+  },
+  {
+   "page": 2,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    56.81,
+    246.99,
+    218.81,
+    257.65
+   ],
+   "han": 15,
+   "latin": 0,
+   "text": "州立大学（美国）太平洋岛屿研究教授。"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    381.92,
+    803.69,
+    486.37,
+    815.89
+   ],
+   "han": 12,
+   "latin": 0,
+   "text": " 气候变化对土著知识的影响"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    58.74,
+    112.11,
+    286.74,
+    179.6
+   ],
+   "han": 4,
+   "latin": 0,
+   "text": "科学发现"
+  },
+  {
+   "page": 3,
+   "direction": [
+    0.0,
+    -1.0
+   ],
+   "rotated": true,
+   "bbox": [
+    540.7,
+    228.42,
+    549.1,
+    251.82
+   ],
+   "han": 4,
+   "latin": 0,
+   "text": "卡罗琳娜"
+  },
+  {
+   "page": 3,
+   "direction": [
+    0.0,
+    -1.0
+   ],
+   "rotated": true,
+   "bbox": [
+    540.7,
+    203.55,
+    549.1,
+    226.95
+   ],
+   "han": 4,
+   "latin": 0,
+   "text": "桑布拉诺"
+  },
+  {
+   "page": 4,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    61.52,
+    804.62,
+    132.92,
+    813.16
+   ],
+   "han": 10,
+   "latin": 0,
+   "text": "联合国教科文组织《信使》"
+  },
+  {
+   "page": 4,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    151.19,
+    805.94,
+    157.14,
+    812.98
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "年"
+  },
+  {
+   "page": 4,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    160.47,
+    805.94,
+    172.37,
+    812.98
+   ],
+   "han": 2,
+   "latin": 0,
+   "text": "月至"
+  },
+  {
+   "page": 4,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    175.69,
+    805.94,
+    181.64,
+    812.98
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "月"
+  },
+  {
+   "page": 4,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    59.7,
+    30.27,
+    79.7,
+    42.11
+   ],
+   "han": 2,
+   "latin": 0,
+   "text": "广角"
+  },
+  {
+   "page": 4,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    75.26,
+    70.11,
+    286.86,
+    83.32
+   ],
+   "han": 22,
+   "latin": 0,
+   "text": "早在卫星环绕地球运行之前，波利尼西亚航海家就通"
+  },
+  {
+   "page": 4,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    56.86,
+    83.91,
+    286.86,
+    97.12
+   ],
+   "han": 22,
+   "latin": 0,
+   "text": "过阅读星星、海浪、生物发光和海鸟飞行模式，跨越了数"
+  },
+  {
+   "page": 4,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    56.86,
+    97.71,
+    286.86,
+    110.92
+   ],
+   "han": 23,
+   "latin": 0,
+   "text": "千英里的开阔海洋。在撒哈拉，图阿雷格向导历史上通过"
+  },
+  {
+   "page": 4,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    56.86,
+    111.51,
+    286.86,
+    124.72
+   ],
+   "han": 22,
+   "latin": 0,
+   "text": "天体模式、太阳、风和地形进行旅行，尽管他们现代的导"
+  },
+  {
+   "page": 4,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    56.86,
+    125.31,
+    286.86,
+    138.52
+   ],
+   "han": 24,
+   "latin": 0,
+   "text": "航现在更多依赖于地标和白天旅行。认知科学研究揭示了"
+  },
+  {
+   "page": 4,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    56.86,
+    139.11,
+    296.06,
+    152.32
+   ],
+   "han": 25,
+   "latin": 0,
+   "text": "这些导航系统通过多样的环境线索展示了复杂的空间推理，"
+  },
+  {
+   "page": 4,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    56.86,
+    152.91,
+    259.26,
+    166.12
+   ],
+   "han": 21,
+   "latin": 0,
+   "text": "远比实验室研究中使用的单一输入方法更为综合。"
+  },
+  {
+   "page": 4,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    74.34,
+    164.98,
+    284.1,
+    177.53
+   ],
+   "han": 23,
+   "latin": 0,
+   "text": "还有许多其他例子展示了传统知识的价值，在水资源管"
+  },
+  {
+   "page": 4,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    56.86,
+    178.09,
+    284.1,
+    190.64
+   ],
+   "han": 23,
+   "latin": 0,
+   "text": "理、农林业、健康和渔业等多样领域中得到了证明。这些实"
+  },
+  {
+   "page": 4,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    56.86,
+    191.2,
+    292.84,
+    203.75
+   ],
+   "han": 24,
+   "latin": 0,
+   "text": "践远不止是一系列技术，它们也是一种世界观的表达。例如，"
+  },
+  {
+   "page": 4,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    56.86,
+    204.31,
+    284.1,
+    216.86
+   ],
+   "han": 25,
+   "latin": 0,
+   "text": "纺织品的创作在精神层面上也起到了导航的作用。密克罗尼"
+  },
+  {
+   "page": 4,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    56.86,
+    217.42,
+    284.1,
+    229.97
+   ],
+   "han": 26,
+   "latin": 0,
+   "text": "西亚外岛的编织裙和加纳及尼日利亚的条纹编织传统将社区"
+  },
+  {
+   "page": 4,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    56.86,
+    230.53,
+    231.66,
+    243.08
+   ],
+   "han": 19,
+   "latin": 0,
+   "text": "知识和文化身份映射到象征性的图案语言中。"
+  },
+  {
+   "page": 4,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    75.41,
+    346.04,
+    195.01,
+    359.25
+   ],
+   "han": 13,
+   "latin": 0,
+   "text": "这些实践代表了完整的知识体"
+  },
+  {
+   "page": 4,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    57.01,
+    359.84,
+    204.21,
+    373.05
+   ],
+   "han": 14,
+   "latin": 0,
+   "text": "系。它们编码、保存并传递跨代的理"
+  },
+  {
+   "page": 4,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    57.01,
+    373.64,
+    121.41,
+    386.85
+   ],
+   "han": 5,
+   "latin": 0,
+   "text": "解。今天，土著"
+  },
+  {
+   "page": 4,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    75.26,
+    385.64,
+    286.86,
+    398.85
+   ],
+   "han": 23,
+   "latin": 0,
+   "text": "社区在全球范围内捍卫他们的权利来保护这种文化遗"
+  },
+  {
+   "page": 4,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    56.86,
+    399.44,
+    286.86,
+    412.65
+   ],
+   "han": 23,
+   "latin": 0,
+   "text": "产，同时积极主张传统知识体系作为平行的科学框架。正"
+  },
+  {
+   "page": 4,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    56.86,
+    413.24,
+    148.86,
+    426.45
+   ],
+   "han": 10,
+   "latin": 0,
+   "text": "如斐济研究员萨拉涅塔"
+  },
+  {
+   "page": 4,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    151.16,
+    413.24,
+    197.16,
+    426.45
+   ],
+   "han": 5,
+   "latin": 0,
+   "text": "基托莱莱在"
+  },
+  {
+   "page": 4,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    217.73,
+    413.24,
+    282.13,
+    426.45
+   ],
+   "han": 7,
+   "latin": 0,
+   "text": "年第二届太平洋"
+  },
+  {
+   "page": 4,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    56.86,
+    427.04,
+    259.26,
+    440.25
+   ],
+   "han": 21,
+   "latin": 0,
+   "text": "岛国海洋会议上于所罗门群岛霍尼亚拉所指出的："
+  },
+  {
+   "page": 4,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    263.4,
+    427.04,
+    281.8,
+    440.25
+   ],
+   "han": 2,
+   "latin": 0,
+   "text": "这是"
+  },
+  {
+   "page": 4,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    56.86,
+    440.84,
+    93.66,
+    454.05
+   ],
+   "han": 4,
+   "latin": 0,
+   "text": "同一件事"
+  },
+  {
+   "page": 4,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    112.06,
+    440.84,
+    277.66,
+    454.05
+   ],
+   "han": 17,
+   "latin": 0,
+   "text": "我们只是用不同的语言来谈论同一件事。"
+  },
+  {
+   "page": 4,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    75.72,
+    452.83,
+    287.32,
+    466.04
+   ],
+   "han": 22,
+   "latin": 0,
+   "text": "传统土著知识近年来获得了认可，这主要得益于诸如"
+  },
+  {
+   "page": 4,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    324.81,
+    70.0,
+    508.81,
+    83.21
+   ],
+   "han": 18,
+   "latin": 0,
+   "text": "《联合国土著人民权利宣言》这样的国际文书"
+  },
+  {
+   "page": 4,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    527.21,
+    70.0,
+    536.41,
+    83.21
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "但"
+  },
+  {
+   "page": 4,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    306.41,
+    83.8,
+    453.61,
+    97.01
+   ],
+   "han": 15,
+   "latin": 0,
+   "text": "它仍然受到文化和商业挪用的威胁。"
+  },
+  {
+   "page": 4,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    306.61,
+    105.05,
+    423.61,
+    123.72
+   ],
+   "han": 9,
+   "latin": 0,
+   "text": "生物多样性的守护者"
+  },
+  {
+   "page": 4,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    324.71,
+    131.92,
+    536.31,
+    145.13
+   ],
+   "han": 22,
+   "latin": 0,
+   "text": "随着气候危机加剧和生物多样性崩溃，世界开始转向"
+  },
+  {
+   "page": 4,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    306.31,
+    145.72,
+    536.31,
+    158.93
+   ],
+   "han": 23,
+   "latin": 0,
+   "text": "那些曾经被忽视的知识体系。根据联合国的数据，土著人"
+  },
+  {
+   "page": 4,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    306.31,
+    159.52,
+    389.11,
+    172.73
+   ],
+   "han": 9,
+   "latin": 0,
+   "text": "民占全球人口的不到"
+  },
+  {
+   "page": 4,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    402.49,
+    159.52,
+    512.89,
+    172.73
+   ],
+   "han": 11,
+   "latin": 0,
+   "text": "，但他们管理着包含地球约"
+  },
+  {
+   "page": 4,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    306.31,
+    173.32,
+    527.11,
+    186.53
+   ],
+   "han": 23,
+   "latin": 0,
+   "text": "剩余生物多样性的土地。通过与周围自然世界的密切关"
+  },
+  {
+   "page": 4,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    306.31,
+    187.12,
+    481.11,
+    200.33
+   ],
+   "han": 17,
+   "latin": 0,
+   "text": "系，他们获得了值得更多关注的宝贵知识。"
+  },
+  {
+   "page": 4,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    404.44,
+    199.12,
+    533.24,
+    212.33
+   ],
+   "han": 13,
+   "latin": 0,
+   "text": "我们观察自然，我们的动物和植"
+  },
+  {
+   "page": 4,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    381.9,
+    212.92,
+    538.3,
+    226.13
+   ],
+   "han": 15,
+   "latin": 0,
+   "text": "物。我们是自然的守护者，我们拥有关"
+  },
+  {
+   "page": 4,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    381.9,
+    226.72,
+    483.1,
+    239.93
+   ],
+   "han": 10,
+   "latin": 0,
+   "text": "于我们环境的大量知识，"
+  },
+  {
+   "page": 4,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    487.24,
+    226.72,
+    533.24,
+    239.93
+   ],
+   "han": 5,
+   "latin": 0,
+   "text": "乍得的土著"
+  },
+  {
+   "page": 4,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    381.9,
+    240.52,
+    464.7,
+    253.73
+   ],
+   "han": 9,
+   "latin": 0,
+   "text": "姆博罗罗领导人欣杜"
+  },
+  {
+   "page": 4,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    467.0,
+    240.52,
+    494.6,
+    253.73
+   ],
+   "han": 3,
+   "latin": 0,
+   "text": "乌马鲁"
+  },
+  {
+   "page": 4,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    496.9,
+    240.52,
+    533.7,
+    253.73
+   ],
+   "han": 4,
+   "latin": 0,
+   "text": "易卜拉欣"
+  },
+  {
+   "page": 4,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    381.9,
+    254.32,
+    391.1,
+    267.53
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "在"
+  },
+  {
+   "page": 4,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    411.67,
+    254.32,
+    420.87,
+    267.53
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "年"
+  },
+  {
+   "page": 4,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    426.01,
+    254.32,
+    536.41,
+    267.53
+   ],
+   "han": 12,
+   "latin": 0,
+   "text": "月的联合国土著问题常设论"
+  },
+  {
+   "page": 4,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    381.9,
+    268.12,
+    400.3,
+    281.33
+   ],
+   "han": 2,
+   "latin": 0,
+   "text": "坛第"
+  },
+  {
+   "page": 4,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    410.59,
+    268.12,
+    474.99,
+    281.33
+   ],
+   "han": 6,
+   "latin": 0,
+   "text": "届会议上指出。"
+  },
+  {
+   "page": 4,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    479.13,
+    268.12,
+    534.33,
+    281.33
+   ],
+   "han": 6,
+   "latin": 0,
+   "text": "这种知识不是"
+  },
+  {
+   "page": 4,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    381.9,
+    281.92,
+    538.3,
+    295.13
+   ],
+   "han": 16,
+   "latin": 0,
+   "text": "理论性的；它已经经过了几个世纪的尝"
+  },
+  {
+   "page": 4,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    381.9,
+    295.72,
+    427.9,
+    308.93
+   ],
+   "han": 4,
+   "latin": 0,
+   "text": "试和检验。"
+  },
+  {
+   "page": 4,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    324.71,
+    307.71,
+    536.31,
+    320.92
+   ],
+   "han": 23,
+   "latin": 0,
+   "text": "积累的技能和智慧不仅仅是机械地从一代传递到下一"
+  },
+  {
+   "page": 4,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    306.31,
+    321.51,
+    536.31,
+    334.72
+   ],
+   "han": 23,
+   "latin": 0,
+   "text": "代，还被编纂成复杂的知识系统，如太平洋和非洲的纺织"
+  },
+  {
+   "page": 4,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    306.31,
+    335.31,
+    536.31,
+    348.52
+   ],
+   "han": 23,
+   "latin": 0,
+   "text": "艺术掌握所示。太平洋的编织者了解植物生态学、航行动"
+  },
+  {
+   "page": 4,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    306.31,
+    349.11,
+    536.31,
+    362.32
+   ],
+   "han": 23,
+   "latin": 0,
+   "text": "力学和文化礼仪。西非的编织者精通织机技术、天然染料"
+  },
+  {
+   "page": 4,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    306.31,
+    362.91,
+    536.31,
+    376.12
+   ],
+   "han": 23,
+   "latin": 0,
+   "text": "和象征性图案语言。在这两个地区，知识通过学徒制和文"
+  },
+  {
+   "page": 4,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    306.31,
+    376.71,
+    536.31,
+    389.92
+   ],
+   "han": 23,
+   "latin": 0,
+   "text": "化实践进行传递。纺织品本身成为活的档案，知识存在于"
+  },
+  {
+   "page": 4,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    306.31,
+    390.51,
+    416.71,
+    403.72
+   ],
+   "han": 10,
+   "latin": 0,
+   "text": "手中、图案中和过程之中。"
+  },
+  {
+   "page": 4,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    232.32,
+    270.66,
+    352.32,
+    288.42
+   ],
+   "han": 8,
+   "latin": 0,
+   "text": "土著技能和智慧被"
+  },
+  {
+   "page": 4,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    232.32,
+    293.16,
+    352.32,
+    310.92
+   ],
+   "han": 8,
+   "latin": 0,
+   "text": "编纂成复杂的知识"
+  },
+  {
+   "page": 4,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    232.32,
+    315.66,
+    262.32,
+    333.42
+   ],
+   "han": 2,
+   "latin": 0,
+   "text": "系统"
+  },
+  {
+   "page": 4,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    121.89,
+    548.02,
+    265.89,
+    570.99
+   ],
+   "han": 8,
+   "latin": 0,
+   "text": "计划：促进土著知识"
+  },
+  {
+   "page": 4,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    90.51,
+    577.44,
+    206.91,
+    591.37
+   ],
+   "han": 12,
+   "latin": 0,
+   "text": "联合国教科文组织的地方和"
+  },
+  {
+   "page": 4,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    71.11,
+    591.99,
+    139.01,
+    605.92
+   ],
+   "han": 6,
+   "latin": 0,
+   "text": "土著知识系统（"
+  },
+  {
+   "page": 4,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    168.08,
+    591.99,
+    206.88,
+    605.92
+   ],
+   "han": 3,
+   "latin": 0,
+   "text": "）计划成"
+  },
+  {
+   "page": 4,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    71.11,
+    606.54,
+    90.51,
+    620.47
+   ],
+   "han": 2,
+   "latin": 0,
+   "text": "立于"
+  },
+  {
+   "page": 4,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    112.2,
+    606.54,
+    199.5,
+    620.47
+   ],
+   "han": 8,
+   "latin": 0,
+   "text": "年，动员地方社区和"
+  },
+  {
+   "page": 4,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    71.11,
+    621.09,
+    206.91,
+    635.02
+   ],
+   "han": 12,
+   "latin": 0,
+   "text": "土著人民的知识、技能和实践，"
+  },
+  {
+   "page": 4,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    71.11,
+    635.64,
+    197.21,
+    649.57
+   ],
+   "han": 13,
+   "latin": 0,
+   "text": "以支持他们在环境决策中的参"
+  },
+  {
+   "page": 4,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    71.11,
+    650.19,
+    206.91,
+    664.12
+   ],
+   "han": 13,
+   "latin": 0,
+   "text": "与，特别是在生物多样性和气候"
+  },
+  {
+   "page": 4,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    71.11,
+    664.74,
+    119.61,
+    678.67
+   ],
+   "han": 4,
+   "latin": 0,
+   "text": "变化方面。"
+  },
+  {
+   "page": 4,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    119.61,
+    682.41,
+    197.21,
+    696.34
+   ],
+   "han": 8,
+   "latin": 0,
+   "text": "旨在建立土著和地"
+  },
+  {
+   "page": 4,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    71.14,
+    696.96,
+    187.54,
+    710.89
+   ],
+   "han": 11,
+   "latin": 0,
+   "text": "方知识持有者之间的对话，"
+  },
+  {
+   "page": 4,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    247.4,
+    577.43,
+    354.1,
+    591.36
+   ],
+   "han": 10,
+   "latin": 0,
+   "text": "自然和社会科学家、资源"
+  },
+  {
+   "page": 4,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    228.0,
+    591.98,
+    354.1,
+    605.91
+   ],
+   "han": 12,
+   "latin": 0,
+   "text": "管理者和决策者，以确保地方"
+  },
+  {
+   "page": 4,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    228.0,
+    606.53,
+    354.1,
+    620.46
+   ],
+   "han": 13,
+   "latin": 0,
+   "text": "社区在治理中发挥积极和公平"
+  },
+  {
+   "page": 4,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    228.0,
+    621.08,
+    354.1,
+    635.01
+   ],
+   "han": 12,
+   "latin": 0,
+   "text": "的作用。该计划旨在加强长者"
+  },
+  {
+   "page": 4,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    228.0,
+    635.63,
+    354.1,
+    649.56
+   ],
+   "han": 12,
+   "latin": 0,
+   "text": "知识的传承，并在社区知识与"
+  },
+  {
+   "page": 4,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    228.0,
+    650.18,
+    334.7,
+    664.11
+   ],
+   "han": 10,
+   "latin": 0,
+   "text": "全球知识之间找到平衡。"
+  },
+  {
+   "page": 4,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    247.29,
+    667.85,
+    315.19,
+    681.78
+   ],
+   "han": 6,
+   "latin": 0,
+   "text": "在其他角色中，"
+  },
+  {
+   "page": 4,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    227.89,
+    682.4,
+    315.19,
+    696.33
+   ],
+   "han": 9,
+   "latin": 0,
+   "text": "计划目前主持土著和"
+  },
+  {
+   "page": 4,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    404.23,
+    577.42,
+    520.63,
+    591.35
+   ],
+   "han": 12,
+   "latin": 0,
+   "text": "生物多样性和生态系统服务"
+  },
+  {
+   "page": 4,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    384.83,
+    591.97,
+    481.83,
+    605.9
+   ],
+   "han": 9,
+   "latin": 0,
+   "text": "政府间科学政策平台（"
+  },
+  {
+   "page": 4,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    384.83,
+    606.52,
+    520.63,
+    620.45
+   ],
+   "han": 13,
+   "latin": 0,
+   "text": "的地方知识技术支持单元。在这"
+  },
+  {
+   "page": 4,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    384.83,
+    621.07,
+    520.63,
+    635.0
+   ],
+   "han": 13,
+   "latin": 0,
+   "text": "一角色中，它提供支持和专家建"
+  },
+  {
+   "page": 4,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    384.83,
+    635.62,
+    433.33,
+    649.55
+   ],
+   "han": 4,
+   "latin": 0,
+   "text": "议，以帮助"
+  },
+  {
+   "page": 4,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    460.42,
+    635.62,
+    518.62,
+    649.55
+   ],
+   "han": 6,
+   "latin": 0,
+   "text": "更好地将土著"
+  },
+  {
+   "page": 4,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    384.83,
+    650.17,
+    501.23,
+    664.1
+   ],
+   "han": 11,
+   "latin": 0,
+   "text": "和地方知识纳入其评估中。"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    408.68,
+    801.09,
+    493.68,
+    813.29
+   ],
+   "han": 9,
+   "latin": 0,
+   "text": "巴西：水上人家的启示"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    388.48,
+    310.11,
+    480.48,
+    323.32
+   ],
+   "han": 9,
+   "latin": 0,
+   "text": "真正生活在水中的人。"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    487.01,
+    310.11,
+    533.01,
+    323.32
+   ],
+   "han": 5,
+   "latin": 0,
+   "text": "当世界上最"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    388.48,
+    323.91,
+    434.48,
+    337.12
+   ],
+   "han": 5,
+   "latin": 0,
+   "text": "大的淡水鱼"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    452.88,
+    323.91,
+    526.48,
+    337.12
+   ],
+   "han": 8,
+   "latin": 0,
+   "text": "巨骨舌鱼的数量在"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    409.05,
+    337.71,
+    455.05,
+    350.92
+   ],
+   "han": 5,
+   "latin": 0,
+   "text": "年下降到仅"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    470.47,
+    337.71,
+    534.87,
+    350.92
+   ],
+   "han": 6,
+   "latin": 0,
+   "text": "条成年鱼时，保"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    388.48,
+    351.51,
+    489.68,
+    364.72
+   ],
+   "han": 10,
+   "latin": 0,
+   "text": "马里族面临着生存威胁。"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    406.91,
+    394.09,
+    535.71,
+    407.3
+   ],
+   "han": 13,
+   "latin": 0,
+   "text": "多年来，学术研究和传统知识各"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    388.51,
+    407.89,
+    535.71,
+    421.1
+   ],
+   "han": 14,
+   "latin": 0,
+   "text": "自发展，却从未交汇。技术人员到来"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    240.35,
+    310.15,
+    371.45,
+    322.71
+   ],
+   "han": 14,
+   "latin": 0,
+   "text": "看到我们的食物供应耗尽，令人心"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    222.87,
+    323.26,
+    371.45,
+    335.82
+   ],
+   "han": 15,
+   "latin": 0,
+   "text": "碎。我们不知道如何养活我们的孩子。"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    239.99,
+    346.14,
+    371.09,
+    358.7
+   ],
+   "han": 15,
+   "latin": 0,
+   "text": "黎明散发出一种铁质湿气与火盆烟"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    222.51,
+    359.25,
+    371.09,
+    371.81
+   ],
+   "han": 16,
+   "latin": 0,
+   "text": "雾混合的气味。保马里族是一个约有两"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    222.51,
+    372.36,
+    371.09,
+    384.92
+   ],
+   "han": 16,
+   "latin": 0,
+   "text": "千人的土著民族，生活在该国西北部广"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    222.51,
+    385.47,
+    371.09,
+    398.03
+   ],
+   "han": 16,
+   "latin": 0,
+   "text": "袤的亚马孙州地区，他们有一种在任何"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    222.51,
+    398.58,
+    362.35,
+    411.14
+   ],
+   "han": 16,
+   "latin": 0,
+   "text": "科学教科书中都找不到的自我定义方"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    222.51,
+    411.69,
+    239.99,
+    424.25
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "式："
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    243.93,
+    411.69,
+    340.07,
+    424.25
+   ],
+   "han": 10,
+   "latin": 0,
+   "text": "我们是水上的人，是唯一"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    75.2,
+    310.11,
+    213.2,
+    323.32
+   ],
+   "han": 13,
+   "latin": 0,
+   "text": "在普鲁斯河上，当光线渐渐消退，"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    56.8,
+    323.91,
+    204.0,
+    337.12
+   ],
+   "han": 15,
+   "latin": 0,
+   "text": "热气仍在水面上徘徊时，一条巨骨舌"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    56.8,
+    337.71,
+    204.0,
+    350.92
+   ],
+   "han": 14,
+   "latin": 0,
+   "text": "鱼浮出水面，吞咽了一口空气。这种"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    56.8,
+    351.51,
+    75.2,
+    364.72
+   ],
+   "han": 2,
+   "latin": 0,
+   "text": "声音"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    93.6,
+    351.51,
+    167.2,
+    364.72
+   ],
+   "han": 6,
+   "latin": 0,
+   "text": "深沉、潮湿、古老"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    185.6,
+    351.51,
+    204.0,
+    364.72
+   ],
+   "han": 2,
+   "latin": 0,
+   "text": "唤醒"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    56.8,
+    365.31,
+    176.4,
+    378.52
+   ],
+   "han": 12,
+   "latin": 0,
+   "text": "了这片土地几乎失去的脉动。"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    180.54,
+    365.31,
+    208.14,
+    378.52
+   ],
+   "han": 3,
+   "latin": 0,
+   "text": "大自然"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    56.8,
+    379.11,
+    139.6,
+    392.32
+   ],
+   "han": 8,
+   "latin": 0,
+   "text": "在乞求我们的帮助，"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    143.74,
+    379.11,
+    198.94,
+    392.32
+   ],
+   "han": 6,
+   "latin": 0,
+   "text": "年轻渔夫奇科"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    56.8,
+    392.91,
+    121.2,
+    406.12
+   ],
+   "han": 6,
+   "latin": 0,
+   "text": "保马里回忆道，"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    125.34,
+    392.91,
+    208.14,
+    406.12
+   ],
+   "han": 8,
+   "latin": 0,
+   "text": "我们到达湖边时，发"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    56.8,
+    406.71,
+    130.4,
+    419.92
+   ],
+   "han": 7,
+   "latin": 0,
+   "text": "现什么都没有了。"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    58.24,
+    59.04,
+    382.24,
+    97.4
+   ],
+   "han": 9,
+   "latin": 0,
+   "text": "巴西：水上人家的启示"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    91.0,
+    159.3,
+    465.0,
+    183.71
+   ],
+   "han": 21,
+   "latin": 0,
+   "text": "面对巨骨舌鱼数量的急剧下降，这种对他们生存至"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    57.0,
+    184.8,
+    465.0,
+    209.21
+   ],
+   "han": 23,
+   "latin": 0,
+   "text": "关重要的鱼类，亚马孙州的保马里族参与了一项恢复该"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    57.0,
+    210.3,
+    465.0,
+    234.71
+   ],
+   "han": 21,
+   "latin": 0,
+   "text": "物种的计划，结合科学和传统知识。几年后，这些鱼再"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    57.0,
+    235.8,
+    261.0,
+    260.21
+   ],
+   "han": 11,
+   "latin": 0,
+   "text": "次在普鲁斯河中繁衍生息。"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    508.17,
+    24.65,
+    532.17,
+    36.13
+   ],
+   "han": 3,
+   "latin": 0,
+   "text": "马塞洛"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    534.17,
+    24.65,
+    558.17,
+    36.13
+   ],
+   "han": 3,
+   "latin": 0,
+   "text": "席尔瓦"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    508.17,
+    36.65,
+    516.17,
+    48.13
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "德"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    518.17,
+    36.65,
+    534.17,
+    48.13
+   ],
+   "han": 2,
+   "latin": 0,
+   "text": "索萨"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    492.81,
+    55.55,
+    560.81,
+    65.61
+   ],
+   "han": 6,
+   "latin": 0,
+   "text": "巴西利亚（巴西）"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    492.81,
+    68.3,
+    518.31,
+    78.36
+   ],
+   "han": 3,
+   "latin": 0,
+   "text": "的记者"
+  },
+  {
+   "page": 5,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    45.94,
+    782.27,
+    326.44,
+    792.33
+   ],
+   "han": 30,
+   "latin": 0,
+   "text": "在捕鱼季节，保马里族轮班工作，以便迅速将巨骨舌鱼从湖泊运送到冷链。"
+  },
+  {
+   "page": 6,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    61.52,
+    804.62,
+    132.92,
+    813.16
+   ],
+   "han": 10,
+   "latin": 0,
+   "text": "联合国教科文组织《信使》"
+  },
+  {
+   "page": 6,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    151.19,
+    805.94,
+    157.14,
+    812.98
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "年"
+  },
+  {
+   "page": 6,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    160.47,
+    805.94,
+    172.37,
+    812.98
+   ],
+   "han": 2,
+   "latin": 0,
+   "text": "月至"
+  },
+  {
+   "page": 6,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    175.69,
+    805.94,
+    181.64,
+    812.98
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "月"
+  },
+  {
+   "page": 6,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    60.16,
+    33.48,
+    80.16,
+    45.32
+   ],
+   "han": 2,
+   "latin": 0,
+   "text": "观点"
+  },
+  {
+   "page": 6,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    388.7,
+    610.11,
+    407.1,
+    623.32
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "止。"
+  },
+  {
+   "page": 6,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    406.87,
+    634.11,
+    535.67,
+    647.32
+   ],
+   "han": 14,
+   "latin": 0,
+   "text": "量子传感器的另一个令人兴奋的"
+  },
+  {
+   "page": 6,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    388.47,
+    647.91,
+    535.67,
+    661.12
+   ],
+   "han": 15,
+   "latin": 0,
+   "text": "医学应用是纠缠相机，它被用于乳腺"
+  },
+  {
+   "page": 6,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    388.47,
+    661.71,
+    535.67,
+    674.92
+   ],
+   "han": 15,
+   "latin": 0,
+   "text": "癌组织样本的成像。其背后的科学听"
+  },
+  {
+   "page": 6,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    388.47,
+    675.51,
+    535.67,
+    688.72
+   ],
+   "han": 15,
+   "latin": 0,
+   "text": "起来几乎像魔法。它依赖于两种光的"
+  },
+  {
+   "page": 6,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    388.47,
+    689.31,
+    535.67,
+    702.52
+   ],
+   "han": 14,
+   "latin": 0,
+   "text": "量子纠缠：红外光，非常适合生物成"
+  },
+  {
+   "page": 6,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    388.47,
+    703.11,
+    535.67,
+    716.32
+   ],
+   "han": 14,
+   "latin": 0,
+   "text": "像，能够轻松穿透组织内部；以及可"
+  },
+  {
+   "page": 6,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    388.47,
+    716.91,
+    535.67,
+    730.12
+   ],
+   "han": 14,
+   "latin": 0,
+   "text": "见光，虽然无法接近组织，但可以在"
+  },
+  {
+   "page": 6,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    388.47,
+    730.71,
+    535.67,
+    743.92
+   ],
+   "han": 15,
+   "latin": 0,
+   "text": "相机中产生更清晰的图像。这项技术"
+  },
+  {
+   "page": 6,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    222.51,
+    334.07,
+    369.71,
+    347.28
+   ],
+   "han": 16,
+   "latin": 0,
+   "text": "在量子领域中不断与其他一切纠缠和"
+  },
+  {
+   "page": 6,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    222.51,
+    347.87,
+    369.71,
+    361.08
+   ],
+   "han": 15,
+   "latin": 0,
+   "text": "解纠缠。涉及直接利用量子叠加和纠"
+  },
+  {
+   "page": 6,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    222.51,
+    361.67,
+    369.71,
+    374.88
+   ],
+   "han": 16,
+   "latin": 0,
+   "text": "缠的技术的新量子革命已经在稳步进"
+  },
+  {
+   "page": 6,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    222.51,
+    375.47,
+    360.51,
+    388.68
+   ],
+   "han": 14,
+   "latin": 0,
+   "text": "行中，毫无疑问将会改变我们的世"
+  },
+  {
+   "page": 6,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    222.51,
+    389.27,
+    240.91,
+    402.48
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "界。"
+  },
+  {
+   "page": 6,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    222.97,
+    411.08,
+    312.53,
+    423.93
+   ],
+   "han": 10,
+   "latin": 0,
+   "text": "传感器读取我们的思想"
+  },
+  {
+   "page": 6,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    241.06,
+    431.29,
+    369.86,
+    444.5
+   ],
+   "han": 13,
+   "latin": 0,
+   "text": "其中一种技术是量子传感。我们"
+  },
+  {
+   "page": 6,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    222.66,
+    445.09,
+    369.86,
+    458.3
+   ],
+   "han": 16,
+   "latin": 0,
+   "text": "现在拥有可以感知地球重力变化到十"
+  },
+  {
+   "page": 6,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    222.66,
+    458.89,
+    369.86,
+    472.1
+   ],
+   "han": 15,
+   "latin": 0,
+   "text": "亿分之一的量子设备，这些设备不仅"
+  },
+  {
+   "page": 6,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    222.66,
+    472.69,
+    369.86,
+    485.9
+   ],
+   "han": 15,
+   "latin": 0,
+   "text": "可以帮助研究地球气候，还在建筑行"
+  },
+  {
+   "page": 6,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    222.66,
+    486.49,
+    369.86,
+    499.7
+   ],
+   "han": 15,
+   "latin": 0,
+   "text": "业中有许多实际应用。量子传感器甚"
+  },
+  {
+   "page": 6,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    222.66,
+    500.29,
+    369.86,
+    513.5
+   ],
+   "han": 15,
+   "latin": 0,
+   "text": "至正在被开发用于寻找暗物质，这种"
+  },
+  {
+   "page": 6,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    222.66,
+    514.09,
+    360.66,
+    527.3
+   ],
+   "han": 15,
+   "latin": 0,
+   "text": "神秘的不可见物质将星系结合在一"
+  },
+  {
+   "page": 6,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    222.66,
+    527.89,
+    241.06,
+    541.1
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "起。"
+  },
+  {
+   "page": 6,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    241.09,
+    539.89,
+    369.89,
+    553.1
+   ],
+   "han": 14,
+   "latin": 0,
+   "text": "甚至还有能够读取你思想的量子"
+  },
+  {
+   "page": 6,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    222.69,
+    553.69,
+    369.89,
+    566.9
+   ],
+   "han": 15,
+   "latin": 0,
+   "text": "传感器。一种可以像骑行头盔一样佩"
+  },
+  {
+   "page": 6,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    222.69,
+    567.49,
+    369.89,
+    580.7
+   ],
+   "han": 14,
+   "latin": 0,
+   "text": "戴的特殊脑扫描仪，其灵敏度极高，"
+  },
+  {
+   "page": 6,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    222.69,
+    581.29,
+    369.89,
+    594.5
+   ],
+   "han": 16,
+   "latin": 0,
+   "text": "能够检测到患者大脑内单个神经元的"
+  },
+  {
+   "page": 6,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    222.69,
+    595.09,
+    342.29,
+    608.3
+   ],
+   "han": 12,
+   "latin": 0,
+   "text": "电活动，使研究人员能够实时"
+  },
+  {
+   "page": 6,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    346.43,
+    595.09,
+    364.83,
+    608.3
+   ],
+   "han": 2,
+   "latin": 0,
+   "text": "观察"
+  },
+  {
+   "page": 6,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    222.69,
+    608.89,
+    369.89,
+    622.1
+   ],
+   "han": 14,
+   "latin": 0,
+   "text": "大脑过程。这种设备在分析自闭症、"
+  },
+  {
+   "page": 6,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    222.69,
+    622.69,
+    369.89,
+    635.9
+   ],
+   "han": 15,
+   "latin": 0,
+   "text": "癫痫、痴呆和精神分裂症等多种神经"
+  },
+  {
+   "page": 6,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    222.69,
+    636.49,
+    369.89,
+    649.7
+   ],
+   "han": 15,
+   "latin": 0,
+   "text": "系统疾病方面已经证明了其有用性，"
+  },
+  {
+   "page": 6,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    222.69,
+    650.29,
+    369.89,
+    663.5
+   ],
+   "han": 15,
+   "latin": 0,
+   "text": "并且比其他已建立的成像技术（如功"
+  },
+  {
+   "page": 6,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    222.69,
+    664.09,
+    369.89,
+    677.3
+   ],
+   "han": 14,
+   "latin": 0,
+   "text": "能性磁共振成像）要少侵入性得多，"
+  },
+  {
+   "page": 6,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    222.69,
+    677.89,
+    369.89,
+    691.1
+   ],
+   "han": 15,
+   "latin": 0,
+   "text": "因为后者要求患者在一个嘈杂、令人"
+  },
+  {
+   "page": 6,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    222.69,
+    691.69,
+    369.89,
+    704.9
+   ],
+   "han": 16,
+   "latin": 0,
+   "text": "感到幽闭恐惧的机器内长时间保持静"
+  },
+  {
+   "page": 6,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    75.22,
+    334.04,
+    204.02,
+    347.25
+   ],
+   "han": 13,
+   "latin": 0,
+   "text": "同时具有多个值的范围，例如在"
+  },
+  {
+   "page": 6,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    56.82,
+    347.84,
+    204.02,
+    361.05
+   ],
+   "han": 15,
+   "latin": 0,
+   "text": "空间中扩散或同时向两个方向旋转。"
+  },
+  {
+   "page": 6,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    56.82,
+    361.64,
+    204.02,
+    374.85
+   ],
+   "han": 15,
+   "latin": 0,
+   "text": "只有当我们选择测量它们时，才迫使"
+  },
+  {
+   "page": 6,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    56.82,
+    375.44,
+    204.02,
+    388.65
+   ],
+   "han": 15,
+   "latin": 0,
+   "text": "它们在共存的多个选项中决定一个。"
+  },
+  {
+   "page": 6,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    56.82,
+    389.24,
+    204.02,
+    402.45
+   ],
+   "han": 15,
+   "latin": 0,
+   "text": "当两个或多个粒子联合时，它们可以"
+  },
+  {
+   "page": 6,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    56.82,
+    403.04,
+    93.62,
+    416.25
+   ],
+   "han": 4,
+   "latin": 0,
+   "text": "变得量子"
+  },
+  {
+   "page": 6,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    97.76,
+    403.04,
+    116.16,
+    416.25
+   ],
+   "han": 2,
+   "latin": 0,
+   "text": "纠缠"
+  },
+  {
+   "page": 6,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    75.22,
+    597.48,
+    204.02,
+    610.69
+   ],
+   "han": 14,
+   "latin": 0,
+   "text": "这种量子纠缠远非一种在自然界"
+  },
+  {
+   "page": 6,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    56.82,
+    611.28,
+    204.02,
+    624.49
+   ],
+   "han": 15,
+   "latin": 0,
+   "text": "中罕见的新现象，也不仅限于两个分"
+  },
+  {
+   "page": 6,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    56.82,
+    625.08,
+    112.02,
+    638.29
+   ],
+   "han": 6,
+   "latin": 0,
+   "text": "离粒子之间的"
+  },
+  {
+   "page": 6,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    116.16,
+    625.08,
+    134.56,
+    638.29
+   ],
+   "han": 2,
+   "latin": 0,
+   "text": "诡异"
+  },
+  {
+   "page": 6,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    138.7,
+    625.08,
+    203.1,
+    638.29
+   ],
+   "han": 6,
+   "latin": 0,
+   "text": "心灵感应连接。"
+  },
+  {
+   "page": 6,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    56.82,
+    638.88,
+    204.02,
+    652.09
+   ],
+   "han": 15,
+   "latin": 0,
+   "text": "相反，它是整个宇宙中最普遍的过程"
+  },
+  {
+   "page": 6,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    56.82,
+    652.68,
+    204.02,
+    665.89
+   ],
+   "han": 14,
+   "latin": 0,
+   "text": "之一，甚至可以说是最普遍的过程。"
+  },
+  {
+   "page": 6,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    56.82,
+    666.48,
+    93.62,
+    679.69
+   ],
+   "han": 4,
+   "latin": 0,
+   "text": "无处不在"
+  },
+  {
+   "page": 6,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    84.89,
+    76.52,
+    180.89,
+    99.5
+   ],
+   "han": 6,
+   "latin": 0,
+   "text": "年国际量子年"
+  },
+  {
+   "page": 6,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    67.83,
+    109.94,
+    213.33,
+    123.87
+   ],
+   "han": 14,
+   "latin": 0,
+   "text": "为纪念量子力学百年，联合国宣布"
+  },
+  {
+   "page": 6,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    235.02,
+    109.94,
+    370.82,
+    123.87
+   ],
+   "han": 13,
+   "latin": 0,
+   "text": "年为国际量子科学与技术年。作"
+  },
+  {
+   "page": 6,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    48.43,
+    124.49,
+    232.73,
+    138.42
+   ],
+   "han": 18,
+   "latin": 0,
+   "text": "为该倡议的牵头机构，联合国教科文组织于"
+  },
+  {
+   "page": 6,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    238.15,
+    124.49,
+    247.85,
+    138.42
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "月"
+  },
+  {
+   "page": 6,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    253.28,
+    124.49,
+    272.68,
+    138.42
+   ],
+   "han": 2,
+   "latin": 0,
+   "text": "日和"
+  },
+  {
+   "page": 6,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    278.1,
+    124.49,
+    365.4,
+    138.42
+   ],
+   "han": 9,
+   "latin": 0,
+   "text": "日在巴黎启动了为期"
+  },
+  {
+   "page": 6,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    48.43,
+    139.04,
+    261.83,
+    152.97
+   ],
+   "han": 21,
+   "latin": 0,
+   "text": "一年的倡议，吸引了包括几位诺贝尔奖得主在内的"
+  },
+  {
+   "page": 6,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    283.52,
+    139.04,
+    341.72,
+    152.97
+   ],
+   "han": 5,
+   "latin": 0,
+   "text": "多名参与者。"
+  },
+  {
+   "page": 6,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    67.89,
+    156.71,
+    368.59,
+    170.64
+   ],
+   "han": 28,
+   "latin": 0,
+   "text": "全年，全球的科学家、教育工作者和公民被邀请探索和庆祝量子创新。"
+  },
+  {
+   "page": 6,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    48.49,
+    171.26,
+    368.59,
+    185.19
+   ],
+   "han": 32,
+   "latin": 0,
+   "text": "全球活动提升了公众意识并促进了合作，突出了量子科学在可持续解决方案"
+  },
+  {
+   "page": 6,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    48.49,
+    185.81,
+    368.59,
+    199.74
+   ],
+   "han": 31,
+   "latin": 0,
+   "text": "中的潜力。联合国教科文组织带头推动包容性发展和普及量子科学的益处。"
+  },
+  {
+   "page": 6,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    48.49,
+    200.36,
+    329.79,
+    214.29
+   ],
+   "han": 25,
+   "latin": 0,
+   "text": "重点领域包括在全球南方建立能力、在科学、技术、工程和数学（"
+  },
+  {
+   "page": 6,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    48.49,
+    214.91,
+    271.59,
+    228.84
+   ],
+   "han": 21,
+   "latin": 0,
+   "text": "领域推进性别平等，以及应对日益扩大的量子鸿沟。"
+  },
+  {
+   "page": 6,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    106.78,
+    478.06,
+    196.78,
+    495.82
+   ],
+   "han": 5,
+   "latin": 0,
+   "text": "在量子领域，"
+  },
+  {
+   "page": 6,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    76.78,
+    500.56,
+    196.78,
+    518.32
+   ],
+   "han": 8,
+   "latin": 0,
+   "text": "一切事物总是在不"
+  },
+  {
+   "page": 6,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    76.78,
+    523.06,
+    196.78,
+    540.82
+   ],
+   "han": 8,
+   "latin": 0,
+   "text": "断地与其他事物纠"
+  },
+  {
+   "page": 6,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    76.78,
+    545.56,
+    166.78,
+    563.32
+   ],
+   "han": 5,
+   "latin": 0,
+   "text": "缠和解纠缠。"
+  },
+  {
+   "page": 6,
+   "direction": [
+    0.0,
+    -1.0
+   ],
+   "rotated": true,
+   "bbox": [
+    414.26,
+    80.23,
+    421.26,
+    85.1
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "为"
+  },
+  {
+   "page": 6,
+   "direction": [
+    0.0,
+    -1.0
+   ],
+   "rotated": true,
+   "bbox": [
+    414.26,
+    20.46,
+    421.26,
+    78.96
+   ],
+   "han": 10,
+   "latin": 0,
+   "text": "联合国教科文组织《信使》"
+  },
+  {
+   "page": 7,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    61.52,
+    804.62,
+    132.92,
+    813.16
+   ],
+   "han": 10,
+   "latin": 0,
+   "text": "联合国教科文组织《信使》"
+  },
+  {
+   "page": 7,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    151.19,
+    805.94,
+    157.14,
+    812.98
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "年"
+  },
+  {
+   "page": 7,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    160.47,
+    805.94,
+    172.37,
+    812.98
+   ],
+   "han": 2,
+   "latin": 0,
+   "text": "月至"
+  },
+  {
+   "page": 7,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    175.69,
+    805.94,
+    181.64,
+    812.98
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "月"
+  },
+  {
+   "page": 7,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    59.7,
+    32.77,
+    79.7,
+    44.61
+   ],
+   "han": 2,
+   "latin": 0,
+   "text": "广角"
+  },
+  {
+   "page": 7,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    406.91,
+    310.11,
+    535.71,
+    323.32
+   ],
+   "han": 14,
+   "latin": 0,
+   "text": "由摩洛哥阿甘树的坚果生产的油"
+  },
+  {
+   "page": 7,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    388.51,
+    323.91,
+    535.71,
+    337.12
+   ],
+   "han": 15,
+   "latin": 0,
+   "text": "提供了另一个例子。阿甘油现在被用"
+  },
+  {
+   "page": 7,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    388.51,
+    337.71,
+    535.71,
+    350.92
+   ],
+   "han": 15,
+   "latin": 0,
+   "text": "于全球的护发和护肤产品中，其用途"
+  },
+  {
+   "page": 7,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    388.51,
+    351.51,
+    535.71,
+    364.72
+   ],
+   "han": 14,
+   "latin": 0,
+   "text": "与柏柏尔（或柏柏尔）妇女使用它已"
+  },
+  {
+   "page": 7,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    388.51,
+    365.31,
+    416.11,
+    378.52
+   ],
+   "han": 3,
+   "latin": 0,
+   "text": "有超过"
+  },
+  {
+   "page": 7,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    436.69,
+    365.31,
+    537.89,
+    378.52
+   ],
+   "han": 10,
+   "latin": 0,
+   "text": "年的历史基本相同。虽然"
+  },
+  {
+   "page": 7,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    388.51,
+    379.11,
+    535.71,
+    392.32
+   ],
+   "han": 16,
+   "latin": 0,
+   "text": "一些拥有相关专利的国际大公司在销"
+  },
+  {
+   "page": 7,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    388.51,
+    392.91,
+    535.71,
+    406.12
+   ],
+   "han": 15,
+   "latin": 0,
+   "text": "售基于阿甘的产品时，与柏柏尔妇女"
+  },
+  {
+   "page": 7,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    388.51,
+    406.71,
+    535.71,
+    419.92
+   ],
+   "han": 15,
+   "latin": 0,
+   "text": "合作社建立了利益共享协议，但其他"
+  },
+  {
+   "page": 7,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    388.51,
+    420.51,
+    535.71,
+    433.72
+   ],
+   "han": 16,
+   "latin": 0,
+   "text": "公司似乎从未与柏柏尔社区分享过利"
+  },
+  {
+   "page": 7,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    388.51,
+    434.31,
+    406.91,
+    447.52
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "益。"
+  },
+  {
+   "page": 7,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    406.88,
+    480.37,
+    535.68,
+    493.58
+   ],
+   "han": 14,
+   "latin": 0,
+   "text": "并非所有与遗传资源相关的土著"
+  },
+  {
+   "page": 7,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    388.48,
+    494.17,
+    535.68,
+    507.38
+   ],
+   "han": 15,
+   "latin": 0,
+   "text": "知识的商业使用都构成生物盗窃；有"
+  },
+  {
+   "page": 7,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    388.48,
+    507.97,
+    535.68,
+    521.18
+   ],
+   "han": 14,
+   "latin": 0,
+   "text": "些项目是互利的。例如，澳大利亚的"
+  },
+  {
+   "page": 7,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    483.47,
+    521.77,
+    538.67,
+    534.98
+   ],
+   "han": 6,
+   "latin": 0,
+   "text": "人已经与昆士"
+  },
+  {
+   "page": 7,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    388.48,
+    535.57,
+    535.68,
+    548.78
+   ],
+   "han": 15,
+   "latin": 0,
+   "text": "兰大学的研究人员合作，基于他们对"
+  },
+  {
+   "page": 7,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    388.48,
+    549.37,
+    535.68,
+    562.58
+   ],
+   "han": 16,
+   "latin": 0,
+   "text": "传统上用于多种用途的针茅这种耐寒"
+  },
+  {
+   "page": 7,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    388.48,
+    563.17,
+    535.68,
+    576.38
+   ],
+   "han": 15,
+   "latin": 0,
+   "text": "多年生丛生草的土著知识进行研究。"
+  },
+  {
+   "page": 7,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    388.48,
+    576.97,
+    526.48,
+    590.18
+   ],
+   "han": 15,
+   "latin": 0,
+   "text": "该合作研究协议包括利益分享的条"
+  },
+  {
+   "page": 7,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    388.48,
+    590.77,
+    535.68,
+    603.98
+   ],
+   "han": 14,
+   "latin": 0,
+   "text": "款。现在，一家衍生公司正在开发从"
+  },
+  {
+   "page": 7,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    388.48,
+    604.57,
+    535.68,
+    617.78
+   ],
+   "han": 16,
+   "latin": 0,
+   "text": "针茅中提取的纤维素纳米纤维制成的"
+  },
+  {
+   "page": 7,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    388.48,
+    618.37,
+    535.68,
+    631.58
+   ],
+   "han": 15,
+   "latin": 0,
+   "text": "医用凝胶，并已为这种草的复合材料"
+  },
+  {
+   "page": 7,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    388.48,
+    632.17,
+    471.28,
+    645.38
+   ],
+   "han": 8,
+   "latin": 0,
+   "text": "申请了专利。根据协"
+  },
+  {
+   "page": 7,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    241.09,
+    310.02,
+    369.89,
+    323.23
+   ],
+   "han": 13,
+   "latin": 0,
+   "text": "然而，有人批评生物发现是对土"
+  },
+  {
+   "page": 7,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    222.69,
+    323.82,
+    351.49,
+    337.03
+   ],
+   "han": 14,
+   "latin": 0,
+   "text": "著和其他地方人民开发的知识的"
+  },
+  {
+   "page": 7,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    355.63,
+    323.82,
+    364.83,
+    337.03
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "搭"
+  },
+  {
+   "page": 7,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    222.69,
+    337.62,
+    241.09,
+    350.83
+   ],
+   "han": 2,
+   "latin": 0,
+   "text": "便车"
+  },
+  {
+   "page": 7,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    245.23,
+    337.62,
+    364.83,
+    350.83
+   ],
+   "han": 11,
+   "latin": 0,
+   "text": "。当他们的知识在科学研究、"
+  },
+  {
+   "page": 7,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    222.69,
+    351.42,
+    369.89,
+    364.63
+   ],
+   "han": 16,
+   "latin": 0,
+   "text": "产品开发或商业化中没有得到充分认"
+  },
+  {
+   "page": 7,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    222.69,
+    365.22,
+    369.89,
+    378.43
+   ],
+   "han": 15,
+   "latin": 0,
+   "text": "可，并且这些知识的使用者没有适当"
+  },
+  {
+   "page": 7,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    222.69,
+    379.02,
+    369.89,
+    392.23
+   ],
+   "han": 15,
+   "latin": 0,
+   "text": "地与祖传知识持有者分享利益时，这"
+  },
+  {
+   "page": 7,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    222.69,
+    392.82,
+    268.69,
+    406.03
+   ],
+   "han": 5,
+   "latin": 0,
+   "text": "可以被称为"
+  },
+  {
+   "page": 7,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    272.83,
+    392.82,
+    309.63,
+    406.03
+   ],
+   "han": 4,
+   "latin": 0,
+   "text": "生物盗窃"
+  },
+  {
+   "page": 7,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    222.62,
+    454.59,
+    309.07,
+    472.33
+   ],
+   "han": 7,
+   "latin": 0,
+   "text": "利益分享的斗争"
+  },
+  {
+   "page": 7,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    240.91,
+    492.41,
+    268.51,
+    505.62
+   ],
+   "han": 2,
+   "latin": 0,
+   "text": "卡瓦（"
+  },
+  {
+   "page": 7,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    268.51,
+    494.46,
+    286.91,
+    505.35
+   ],
+   "han": 2,
+   "latin": 0,
+   "text": "醉椒"
+  },
+  {
+   "page": 7,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    286.91,
+    492.41,
+    369.71,
+    505.62
+   ],
+   "han": 7,
+   "latin": 0,
+   "text": "），一种原产于太平"
+  },
+  {
+   "page": 7,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    222.51,
+    506.21,
+    369.71,
+    519.42
+   ],
+   "han": 15,
+   "latin": 0,
+   "text": "洋的胡椒科植物，似乎是土著和当地"
+  },
+  {
+   "page": 7,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    222.51,
+    520.01,
+    360.51,
+    533.22
+   ],
+   "han": 15,
+   "latin": 0,
+   "text": "社区开发知识被不当利用的典型例"
+  },
+  {
+   "page": 7,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    222.51,
+    533.81,
+    369.71,
+    547.02
+   ],
+   "han": 14,
+   "latin": 0,
+   "text": "子。卡瓦吸引了数百项专利申请，其"
+  },
+  {
+   "page": 7,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    222.51,
+    547.61,
+    369.71,
+    560.82
+   ],
+   "han": 15,
+   "latin": 0,
+   "text": "中许多与其抗焦虑和镇静效果有关，"
+  },
+  {
+   "page": 7,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    222.51,
+    561.41,
+    369.71,
+    574.62
+   ],
+   "han": 15,
+   "latin": 0,
+   "text": "这些效果早已为太平洋人民所知。尽"
+  },
+  {
+   "page": 7,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    222.51,
+    575.21,
+    369.71,
+    588.42
+   ],
+   "han": 15,
+   "latin": 0,
+   "text": "管有如此巨大的兴趣，但目前尚无已"
+  },
+  {
+   "page": 7,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    222.51,
+    589.01,
+    369.71,
+    602.22
+   ],
+   "han": 16,
+   "latin": 0,
+   "text": "知的协议来确保研究和专利申请的许"
+  },
+  {
+   "page": 7,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    222.51,
+    602.81,
+    305.31,
+    616.02
+   ],
+   "han": 8,
+   "latin": 0,
+   "text": "可或实施利益分享。"
+  },
+  {
+   "page": 7,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    75.08,
+    310.11,
+    203.88,
+    323.32
+   ],
+   "han": 13,
+   "latin": 0,
+   "text": "世界上有着多样化的土著人民、"
+  },
+  {
+   "page": 7,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    56.68,
+    323.91,
+    203.88,
+    337.12
+   ],
+   "han": 14,
+   "latin": 0,
+   "text": "文化、语言和知识体系。这些体系经"
+  },
+  {
+   "page": 7,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    56.68,
+    337.71,
+    203.88,
+    350.92
+   ],
+   "han": 15,
+   "latin": 0,
+   "text": "过数百年或数千年的发展，对我们所"
+  },
+  {
+   "page": 7,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    56.68,
+    351.51,
+    203.88,
+    364.72
+   ],
+   "han": 15,
+   "latin": 0,
+   "text": "食用的食物、传统和现代药物以及我"
+  },
+  {
+   "page": 7,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    56.68,
+    365.31,
+    203.88,
+    378.52
+   ],
+   "han": 16,
+   "latin": 0,
+   "text": "们家中和衣物中使用的纤维和材料的"
+  },
+  {
+   "page": 7,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    56.68,
+    379.11,
+    203.88,
+    392.32
+   ],
+   "han": 15,
+   "latin": 0,
+   "text": "发展做出了巨大贡献。尽管通常被描"
+  },
+  {
+   "page": 7,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    56.68,
+    392.91,
+    75.08,
+    406.12
+   ],
+   "han": 2,
+   "latin": 0,
+   "text": "述为"
+  },
+  {
+   "page": 7,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    79.22,
+    392.91,
+    97.62,
+    406.12
+   ],
+   "han": 2,
+   "latin": 0,
+   "text": "传统"
+  },
+  {
+   "page": 7,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    101.76,
+    392.91,
+    202.96,
+    406.12
+   ],
+   "han": 10,
+   "latin": 0,
+   "text": "，但土著知识体系源于经"
+  },
+  {
+   "page": 7,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    56.68,
+    406.71,
+    203.88,
+    419.92
+   ],
+   "han": 15,
+   "latin": 0,
+   "text": "验观察和反复实践，并且像其他知识"
+  },
+  {
+   "page": 7,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    56.68,
+    420.51,
+    213.08,
+    433.72
+   ],
+   "han": 15,
+   "latin": 0,
+   "text": "体系一样，随着时间的推移不断演变，"
+  },
+  {
+   "page": 7,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    56.68,
+    434.31,
+    213.08,
+    447.52
+   ],
+   "han": 16,
+   "latin": 0,
+   "text": "以纳入新信息并适应当地条件的变化。"
+  },
+  {
+   "page": 7,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    75.22,
+    516.36,
+    204.02,
+    529.57
+   ],
+   "han": 14,
+   "latin": 0,
+   "text": "研究人员和公司经常寻求土著对"
+  },
+  {
+   "page": 7,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    56.82,
+    530.16,
+    204.02,
+    543.37
+   ],
+   "han": 15,
+   "latin": 0,
+   "text": "植物、动物和生态系统中其他非人类"
+  },
+  {
+   "page": 7,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    56.82,
+    543.96,
+    204.02,
+    557.17
+   ],
+   "han": 15,
+   "latin": 0,
+   "text": "居民特性的见解，以开发新技术和创"
+  },
+  {
+   "page": 7,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    56.82,
+    557.76,
+    158.02,
+    570.97
+   ],
+   "han": 10,
+   "latin": 0,
+   "text": "新。这一过程有时被称为"
+  },
+  {
+   "page": 7,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    162.16,
+    557.76,
+    189.76,
+    570.97
+   ],
+   "han": 3,
+   "latin": 0,
+   "text": "生物发"
+  },
+  {
+   "page": 7,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    56.82,
+    571.56,
+    66.02,
+    584.77
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "现"
+  },
+  {
+   "page": 7,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    70.16,
+    571.56,
+    198.96,
+    584.77
+   ],
+   "han": 12,
+   "latin": 0,
+   "text": "，经常发生在农业和食品、生物"
+  },
+  {
+   "page": 7,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    56.82,
+    585.36,
+    204.02,
+    598.57
+   ],
+   "han": 12,
+   "latin": 0,
+   "text": "技术、制药、化妆品、林业等领域，"
+  },
+  {
+   "page": 7,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    56.82,
+    599.16,
+    185.62,
+    612.37
+   ],
+   "han": 13,
+   "latin": 0,
+   "text": "以创造在全球市场销售的产品。"
+  },
+  {
+   "page": 7,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    75.44,
+    646.02,
+    204.24,
+    659.23
+   ],
+   "han": 14,
+   "latin": 0,
+   "text": "利用生物发现可以为开发新产品"
+  },
+  {
+   "page": 7,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    57.04,
+    659.82,
+    204.24,
+    673.03
+   ],
+   "han": 14,
+   "latin": 0,
+   "text": "的人提供许多优势。例如，在制药行"
+  },
+  {
+   "page": 7,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    57.04,
+    673.62,
+    204.24,
+    686.83
+   ],
+   "han": 14,
+   "latin": 0,
+   "text": "业，研究和审批时间长，产品开发过"
+  },
+  {
+   "page": 7,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    57.04,
+    687.42,
+    204.24,
+    700.63
+   ],
+   "han": 15,
+   "latin": 0,
+   "text": "程昂贵，知识产权和监管保护策略具"
+  },
+  {
+   "page": 7,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    57.04,
+    701.22,
+    204.24,
+    714.43
+   ],
+   "han": 15,
+   "latin": 0,
+   "text": "有风险，土著知识可以帮助产品更快"
+  },
+  {
+   "page": 7,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    57.04,
+    715.02,
+    112.24,
+    728.23
+   ],
+   "han": 5,
+   "latin": 0,
+   "text": "地推向市场。"
+  },
+  {
+   "page": 7,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    57.59,
+    68.9,
+    316.79,
+    107.26
+   ],
+   "han": 8,
+   "latin": 0,
+   "text": "当生物盗窃扎根时"
+  },
+  {
+   "page": 7,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    91.44,
+    164.41,
+    414.44,
+    188.82
+   ],
+   "han": 18,
+   "latin": 0,
+   "text": "在过去的三十年中，国际法规一直试图限制"
+  },
+  {
+   "page": 7,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    57.44,
+    189.91,
+    414.44,
+    214.32
+   ],
+   "han": 20,
+   "latin": 0,
+   "text": "行业对土著知识的剥削，以免损害当地人口的利"
+  },
+  {
+   "page": 7,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    57.44,
+    215.41,
+    414.44,
+    239.82
+   ],
+   "han": 19,
+   "latin": 0,
+   "text": "益。但尽管有这些措施，盗用的情况仍然普遍存"
+  },
+  {
+   "page": 7,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    57.44,
+    240.91,
+    91.44,
+    265.32
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "在。"
+  },
+  {
+   "page": 7,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    495.38,
+    26.85,
+    525.38,
+    41.21
+   ],
+   "han": 3,
+   "latin": 0,
+   "text": "丹尼尔"
+  },
+  {
+   "page": 7,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    527.88,
+    26.85,
+    557.88,
+    41.21
+   ],
+   "han": 3,
+   "latin": 0,
+   "text": "罗宾逊"
+  },
+  {
+   "page": 7,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    493.34,
+    47.05,
+    552.84,
+    57.11
+   ],
+   "han": 7,
+   "latin": 0,
+   "text": "他是新南威尔士"
+  },
+  {
+   "page": 7,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    476.34,
+    59.8,
+    552.84,
+    69.86
+   ],
+   "han": 7,
+   "latin": 0,
+   "text": "大学（澳大利亚）艺"
+  },
+  {
+   "page": 7,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    476.34,
+    72.55,
+    552.84,
+    82.61
+   ],
+   "han": 9,
+   "latin": 0,
+   "text": "术学院的教授兼研究"
+  },
+  {
+   "page": 7,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    476.34,
+    85.3,
+    552.84,
+    95.36
+   ],
+   "han": 8,
+   "latin": 0,
+   "text": "副院长，他的研究重"
+  },
+  {
+   "page": 7,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    476.34,
+    98.05,
+    552.84,
+    108.11
+   ],
+   "han": 9,
+   "latin": 0,
+   "text": "点是自然和知识的监"
+  },
+  {
+   "page": 7,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    476.34,
+    110.8,
+    493.34,
+    120.86
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "管。"
+  },
+  {
+   "page": 7,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    499.51,
+    141.21,
+    519.51,
+    155.57
+   ],
+   "han": 2,
+   "latin": 0,
+   "text": "大卫"
+  },
+  {
+   "page": 7,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    522.01,
+    141.21,
+    552.01,
+    155.57
+   ],
+   "han": 3,
+   "latin": 0,
+   "text": "杰斐逊"
+  },
+  {
+   "page": 7,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    495.39,
+    161.48,
+    552.39,
+    172.73
+   ],
+   "han": 6,
+   "latin": 0,
+   "text": "他是坎特伯雷"
+  },
+  {
+   "page": 7,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    476.39,
+    175.73,
+    552.39,
+    186.98
+   ],
+   "han": 6,
+   "latin": 0,
+   "text": "大学（新西兰）的"
+  },
+  {
+   "page": 7,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    476.39,
+    189.98,
+    552.39,
+    201.23
+   ],
+   "han": 7,
+   "latin": 0,
+   "text": "副教授，他的研究"
+  },
+  {
+   "page": 7,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    476.39,
+    204.23,
+    561.89,
+    215.48
+   ],
+   "han": 8,
+   "latin": 0,
+   "text": "重点是生物多样性、"
+  },
+  {
+   "page": 7,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    476.39,
+    218.48,
+    552.39,
+    229.73
+   ],
+   "han": 8,
+   "latin": 0,
+   "text": "知识产权和土著知"
+  },
+  {
+   "page": 7,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    476.39,
+    232.73,
+    561.89,
+    243.98
+   ],
+   "han": 8,
+   "latin": 0,
+   "text": "识体系的交叉领域。"
+  },
+  {
+   "page": 7,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    234.14,
+    709.52,
+    489.14,
+    727.28
+   ],
+   "han": 16,
+   "latin": 0,
+   "text": "今天，许多国家要求潜在的土著知识使"
+  },
+  {
+   "page": 7,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    234.14,
+    732.02,
+    444.14,
+    749.78
+   ],
+   "han": 14,
+   "latin": 0,
+   "text": "用者首先获得知识持有者的同意"
+  },
+  {
+   "page": 8,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    443.24,
+    801.09,
+    511.24,
+    813.29
+   ],
+   "han": 8,
+   "latin": 0,
+   "text": "当生物盗窃扎根时"
+  },
+  {
+   "page": 8,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    388.48,
+    284.07,
+    526.48,
+    297.28
+   ],
+   "han": 15,
+   "latin": 0,
+   "text": "用者首先获得知识持有者的明确同"
+  },
+  {
+   "page": 8,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    388.48,
+    297.87,
+    535.68,
+    311.08
+   ],
+   "han": 15,
+   "latin": 0,
+   "text": "意，并签署详细说明如何分享利益的"
+  },
+  {
+   "page": 8,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    388.48,
+    311.67,
+    416.08,
+    324.88
+   ],
+   "han": 2,
+   "latin": 0,
+   "text": "协议。"
+  },
+  {
+   "page": 8,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    406.74,
+    323.67,
+    535.54,
+    336.88
+   ],
+   "han": 13,
+   "latin": 0,
+   "text": "此外，越来越多的法律要求知识"
+  },
+  {
+   "page": 8,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    388.34,
+    337.47,
+    434.34,
+    350.68
+   ],
+   "han": 5,
+   "latin": 0,
+   "text": "产权申请者"
+  },
+  {
+   "page": 8,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    452.74,
+    337.47,
+    517.14,
+    350.68
+   ],
+   "han": 7,
+   "latin": 0,
+   "text": "尤其是专利申请"
+  },
+  {
+   "page": 8,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    388.34,
+    351.27,
+    397.54,
+    364.48
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "者"
+  },
+  {
+   "page": 8,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    415.94,
+    351.27,
+    535.54,
+    364.48
+   ],
+   "han": 13,
+   "latin": 0,
+   "text": "披露任何用于创造发明的遗传"
+  },
+  {
+   "page": 8,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    388.34,
+    365.07,
+    507.94,
+    378.28
+   ],
+   "han": 12,
+   "latin": 0,
+   "text": "资源或传统知识的来源。随着"
+  },
+  {
+   "page": 8,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    528.51,
+    365.07,
+    537.71,
+    378.28
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "年"
+  },
+  {
+   "page": 8,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    388.34,
+    378.87,
+    535.54,
+    392.08
+   ],
+   "han": 14,
+   "latin": 0,
+   "text": "世界知识产权组织《知识产权、遗传"
+  },
+  {
+   "page": 8,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    388.34,
+    392.67,
+    535.54,
+    405.88
+   ],
+   "han": 15,
+   "latin": 0,
+   "text": "资源及相关传统知识条约》的最终确"
+  },
+  {
+   "page": 8,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    388.34,
+    406.47,
+    535.54,
+    419.68
+   ],
+   "han": 15,
+   "latin": 0,
+   "text": "定，越来越多的国家可能会采纳这种"
+  },
+  {
+   "page": 8,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    392.48,
+    420.27,
+    429.28,
+    433.48
+   ],
+   "han": 4,
+   "latin": 0,
+   "text": "来源披露"
+  },
+  {
+   "page": 8,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    433.42,
+    420.27,
+    461.02,
+    433.48
+   ],
+   "han": 2,
+   "latin": 0,
+   "text": "要求。"
+  },
+  {
+   "page": 8,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    406.88,
+    432.27,
+    535.68,
+    445.48
+   ],
+   "han": 13,
+   "latin": 0,
+   "text": "但尽管有这些措施，由于系统中"
+  },
+  {
+   "page": 8,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    388.48,
+    446.07,
+    535.68,
+    459.28
+   ],
+   "han": 15,
+   "latin": 0,
+   "text": "存在可利用的漏洞，生物盗窃仍然发"
+  },
+  {
+   "page": 8,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    388.48,
+    459.87,
+    535.68,
+    473.08
+   ],
+   "han": 14,
+   "latin": 0,
+   "text": "生。例如，可以通过从未采纳限制性"
+  },
+  {
+   "page": 8,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    388.48,
+    473.67,
+    526.48,
+    486.88
+   ],
+   "han": 15,
+   "latin": 0,
+   "text": "立法的国家收集遗传资源或传统知"
+  },
+  {
+   "page": 8,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    388.48,
+    487.47,
+    535.68,
+    500.68
+   ],
+   "han": 15,
+   "latin": 0,
+   "text": "识，或从在公约生效前进行的历史收"
+  },
+  {
+   "page": 8,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    388.48,
+    501.27,
+    526.48,
+    514.48
+   ],
+   "han": 14,
+   "latin": 0,
+   "text": "藏中获取遗传资源来规避规则。此"
+  },
+  {
+   "page": 8,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    388.48,
+    515.07,
+    535.68,
+    528.28
+   ],
+   "han": 14,
+   "latin": 0,
+   "text": "外，尽管专利滥用受到广泛关注，其"
+  },
+  {
+   "page": 8,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    388.48,
+    528.87,
+    535.68,
+    542.08
+   ],
+   "han": 15,
+   "latin": 0,
+   "text": "他形式的知识产权，如植物育种者权"
+  },
+  {
+   "page": 8,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    388.48,
+    542.67,
+    535.68,
+    555.88
+   ],
+   "han": 15,
+   "latin": 0,
+   "text": "利和商标，也助长了对土著知识的盗"
+  },
+  {
+   "page": 8,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    388.48,
+    556.47,
+    535.68,
+    569.68
+   ],
+   "han": 14,
+   "latin": 0,
+   "text": "用。如果没有重大改变，这些漏洞的"
+  },
+  {
+   "page": 8,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    388.48,
+    570.27,
+    535.68,
+    583.48
+   ],
+   "han": 16,
+   "latin": 0,
+   "text": "持续存在意味着生物盗窃将仍然是不"
+  },
+  {
+   "page": 8,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    388.48,
+    584.07,
+    434.48,
+    597.28
+   ],
+   "han": 4,
+   "latin": 0,
+   "text": "幸的现实。"
+  },
+  {
+   "page": 8,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    222.65,
+    346.11,
+    369.85,
+    359.32
+   ],
+   "han": 15,
+   "latin": 0,
+   "text": "十世纪中期遗传学科学的新发展，基"
+  },
+  {
+   "page": 8,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    222.65,
+    359.91,
+    369.85,
+    373.12
+   ],
+   "han": 16,
+   "latin": 0,
+   "text": "于或衍生自生物多样性的产品被理解"
+  },
+  {
+   "page": 8,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    222.65,
+    373.71,
+    231.85,
+    386.92
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "为"
+  },
+  {
+   "page": 8,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    235.99,
+    373.71,
+    272.79,
+    386.92
+   ],
+   "han": 4,
+   "latin": 0,
+   "text": "遗传资源"
+  },
+  {
+   "page": 8,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    276.93,
+    373.71,
+    368.93,
+    386.92
+   ],
+   "han": 9,
+   "latin": 0,
+   "text": "。这与基于潜在用途而"
+  },
+  {
+   "page": 8,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    222.65,
+    387.51,
+    369.85,
+    400.72
+   ],
+   "han": 16,
+   "latin": 0,
+   "text": "非仅实际用途为生物多样性成分赋予"
+  },
+  {
+   "page": 8,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    222.65,
+    401.31,
+    314.65,
+    414.52
+   ],
+   "han": 9,
+   "latin": 0,
+   "text": "价值的新方式相对应。"
+  },
+  {
+   "page": 8,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    251.37,
+    413.31,
+    269.77,
+    426.52
+   ],
+   "han": 2,
+   "latin": 0,
+   "text": "世纪"
+  },
+  {
+   "page": 8,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    280.06,
+    413.31,
+    372.06,
+    426.52
+   ],
+   "han": 8,
+   "latin": 0,
+   "text": "年代，由于一些发展，"
+  },
+  {
+   "page": 8,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    222.69,
+    427.11,
+    369.89,
+    440.32
+   ],
+   "han": 14,
+   "latin": 0,
+   "text": "情况发生了巨大变化。首先，知识产"
+  },
+  {
+   "page": 8,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    222.69,
+    440.91,
+    305.49,
+    454.12
+   ],
+   "han": 8,
+   "latin": 0,
+   "text": "权在世界贸易组织（"
+  },
+  {
+   "page": 8,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    327.58,
+    440.91,
+    364.38,
+    454.12
+   ],
+   "han": 3,
+   "latin": 0,
+   "text": "）协议下"
+  },
+  {
+   "page": 8,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    222.69,
+    454.71,
+    369.89,
+    467.92
+   ],
+   "han": 15,
+   "latin": 0,
+   "text": "得到了统一，这改变了各国对与遗传"
+  },
+  {
+   "page": 8,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    222.69,
+    468.51,
+    360.69,
+    481.72
+   ],
+   "han": 14,
+   "latin": 0,
+   "text": "资源相关的知识产权保护的方式。"
+  },
+  {
+   "page": 8,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    243.26,
+    482.31,
+    353.66,
+    495.52
+   ],
+   "han": 8,
+   "latin": 0,
+   "text": "年，《生物多样性公约》（"
+  },
+  {
+   "page": 8,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    241.04,
+    496.11,
+    360.64,
+    509.32
+   ],
+   "han": 12,
+   "latin": 0,
+   "text": "）将遗传资源置于国家主权之"
+  },
+  {
+   "page": 8,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    222.69,
+    509.91,
+    369.89,
+    523.12
+   ],
+   "han": 15,
+   "latin": 0,
+   "text": "下，同时为防止传统知识被盗用的系"
+  },
+  {
+   "page": 8,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    222.69,
+    523.71,
+    314.69,
+    536.92
+   ],
+   "han": 8,
+   "latin": 0,
+   "text": "统奠定了基础。最近，"
+  },
+  {
+   "page": 8,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    335.26,
+    523.71,
+    372.06,
+    536.92
+   ],
+   "han": 3,
+   "latin": 0,
+   "text": "年的《名"
+  },
+  {
+   "page": 8,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    222.69,
+    537.51,
+    369.89,
+    550.72
+   ],
+   "han": 15,
+   "latin": 0,
+   "text": "古屋议定书》为遗传资源和传统知识"
+  },
+  {
+   "page": 8,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    222.69,
+    551.31,
+    369.89,
+    564.52
+   ],
+   "han": 16,
+   "latin": 0,
+   "text": "的使用者和提供者提供了一个国际模"
+  },
+  {
+   "page": 8,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    222.69,
+    565.11,
+    360.69,
+    578.32
+   ],
+   "han": 14,
+   "latin": 0,
+   "text": "板，以协商如何利用这些资产的协"
+  },
+  {
+   "page": 8,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    222.69,
+    578.91,
+    241.09,
+    592.12
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "议。"
+  },
+  {
+   "page": 8,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    222.97,
+    703.24,
+    287.97,
+    721.91
+   ],
+   "han": 5,
+   "latin": 0,
+   "text": "明确的同意"
+  },
+  {
+   "page": 8,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    239.99,
+    730.18,
+    257.47,
+    742.73
+   ],
+   "han": 2,
+   "latin": 0,
+   "text": "过去"
+  },
+  {
+   "page": 8,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    267.24,
+    730.18,
+    372.12,
+    742.73
+   ],
+   "han": 12,
+   "latin": 0,
+   "text": "年间建立的强化国际规则和"
+  },
+  {
+   "page": 8,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    222.51,
+    743.29,
+    362.35,
+    755.84
+   ],
+   "han": 15,
+   "latin": 0,
+   "text": "协议框架带来了一些积极的变化。如"
+  },
+  {
+   "page": 8,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    222.51,
+    756.4,
+    362.35,
+    768.95
+   ],
+   "han": 15,
+   "latin": 0,
+   "text": "今，许多国家要求潜在的土著知识使"
+  },
+  {
+   "page": 8,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    56.86,
+    346.11,
+    204.06,
+    359.32
+   ],
+   "han": 16,
+   "latin": 0,
+   "text": "议已经分享的利益包括为第一民族青"
+  },
+  {
+   "page": 8,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    56.86,
+    359.91,
+    204.06,
+    373.12
+   ],
+   "han": 16,
+   "latin": 0,
+   "text": "年提供就业机会以及为澳大利亚土著"
+  },
+  {
+   "page": 8,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    56.86,
+    373.71,
+    176.46,
+    386.92
+   ],
+   "han": 12,
+   "latin": 0,
+   "text": "提供培训和教育机会的资金。"
+  },
+  {
+   "page": 8,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    57.15,
+    427.69,
+    157.53,
+    442.1
+   ],
+   "han": 9,
+   "latin": 0,
+   "text": "私人财产的共同遗产？"
+  },
+  {
+   "page": 8,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    75.08,
+    466.11,
+    203.88,
+    479.32
+   ],
+   "han": 14,
+   "latin": 0,
+   "text": "生物盗窃问题的根源在于一个历"
+  },
+  {
+   "page": 8,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    56.68,
+    479.91,
+    203.88,
+    493.12
+   ],
+   "han": 15,
+   "latin": 0,
+   "text": "史性的转变：全球社会开始将生物资"
+  },
+  {
+   "page": 8,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    56.68,
+    493.71,
+    203.88,
+    506.92
+   ],
+   "han": 15,
+   "latin": 0,
+   "text": "源视为专有资产，而非共享遗产的那"
+  },
+  {
+   "page": 8,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    56.68,
+    507.51,
+    84.28,
+    520.72
+   ],
+   "han": 2,
+   "latin": 0,
+   "text": "一刻。"
+  },
+  {
+   "page": 8,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    75.22,
+    519.51,
+    204.02,
+    532.72
+   ],
+   "han": 13,
+   "latin": 0,
+   "text": "植物、动物和其他生物多样性成"
+  },
+  {
+   "page": 8,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    56.82,
+    533.31,
+    204.02,
+    546.52
+   ],
+   "han": 16,
+   "latin": 0,
+   "text": "分在全球范围内的流通以及不同人群"
+  },
+  {
+   "page": 8,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    56.82,
+    547.11,
+    204.02,
+    560.32
+   ],
+   "han": 16,
+   "latin": 0,
+   "text": "之间相关知识的共享并不是什么新鲜"
+  },
+  {
+   "page": 8,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    56.82,
+    560.91,
+    204.02,
+    574.12
+   ],
+   "han": 14,
+   "latin": 0,
+   "text": "事。在欧洲殖民时代之前，各种物种"
+  },
+  {
+   "page": 8,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    56.82,
+    574.71,
+    204.02,
+    587.92
+   ],
+   "han": 16,
+   "latin": 0,
+   "text": "及其栽培和利用知识的全球性流动就"
+  },
+  {
+   "page": 8,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    56.82,
+    588.51,
+    204.02,
+    601.72
+   ],
+   "han": 15,
+   "latin": 0,
+   "text": "已经存在。人们长期以来在广阔的距"
+  },
+  {
+   "page": 8,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    56.82,
+    602.31,
+    204.02,
+    615.52
+   ],
+   "han": 13,
+   "latin": 0,
+   "text": "离上交易驯化动物、香料、草药、食"
+  },
+  {
+   "page": 8,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    56.82,
+    616.11,
+    204.02,
+    629.32
+   ],
+   "han": 15,
+   "latin": 0,
+   "text": "品和饮料以及纤维产品，常常借鉴其"
+  },
+  {
+   "page": 8,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    56.82,
+    629.91,
+    204.02,
+    643.12
+   ],
+   "han": 16,
+   "latin": 0,
+   "text": "他群体开发的知识来理解如何使用获"
+  },
+  {
+   "page": 8,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    56.82,
+    643.71,
+    102.82,
+    656.92
+   ],
+   "han": 4,
+   "latin": 0,
+   "text": "得的物品。"
+  },
+  {
+   "page": 8,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    74.33,
+    655.78,
+    205.43,
+    668.33
+   ],
+   "han": 14,
+   "latin": 0,
+   "text": "在人类历史的大部分时间里，国际"
+  },
+  {
+   "page": 8,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    56.85,
+    668.89,
+    144.25,
+    681.44
+   ],
+   "han": 10,
+   "latin": 0,
+   "text": "法将此类生物资源视为"
+  },
+  {
+   "page": 8,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    148.18,
+    668.89,
+    200.62,
+    681.44
+   ],
+   "han": 6,
+   "latin": 0,
+   "text": "人类共同的遗"
+  },
+  {
+   "page": 8,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    56.85,
+    682.0,
+    65.59,
+    694.55
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "产"
+  },
+  {
+   "page": 8,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    69.52,
+    682.0,
+    200.62,
+    694.55
+   ],
+   "han": 14,
+   "latin": 0,
+   "text": "，这意味着任何人都可以获取和使"
+  },
+  {
+   "page": 8,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    56.85,
+    695.11,
+    205.43,
+    707.66
+   ],
+   "han": 16,
+   "latin": 0,
+   "text": "用这些资源，而无需获得许可或与资源"
+  },
+  {
+   "page": 8,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    56.85,
+    708.22,
+    179.21,
+    720.77
+   ],
+   "han": 12,
+   "latin": 0,
+   "text": "提供者分享利益。然而，随着二"
+  },
+  {
+   "page": 8,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    467.86,
+    142.77,
+    557.86,
+    160.53
+   ],
+   "han": 5,
+   "latin": 0,
+   "text": "千百年来，柏"
+  },
+  {
+   "page": 8,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    437.86,
+    165.27,
+    557.86,
+    183.03
+   ],
+   "han": 8,
+   "latin": 0,
+   "text": "柏尔女性一直使用"
+  },
+  {
+   "page": 8,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    437.86,
+    187.77,
+    557.86,
+    205.53
+   ],
+   "han": 7,
+   "latin": 0,
+   "text": "阿甘油，这种产品"
+  },
+  {
+   "page": 8,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    437.86,
+    210.27,
+    557.86,
+    228.03
+   ],
+   "han": 8,
+   "latin": 0,
+   "text": "现在已在全球范围"
+  },
+  {
+   "page": 8,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    437.86,
+    232.77,
+    512.86,
+    250.53
+   ],
+   "han": 4,
+   "latin": 0,
+   "text": "内商业化。"
+  },
+  {
+   "page": 8,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    416.3,
+    48.09,
+    535.3,
+    58.16
+   ],
+   "han": 14,
+   "latin": 0,
+   "text": "摩洛哥西南部塔夫拉乌特的一家"
+  },
+  {
+   "page": 8,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    416.3,
+    60.84,
+    535.3,
+    70.91
+   ],
+   "han": 13,
+   "latin": 0,
+   "text": "女性合作社的阿甘油生产车间。"
+  },
+  {
+   "page": 8,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    22.99,
+    30.62,
+    48.99,
+    38.09
+   ],
+   "han": 5,
+   "latin": 0,
+   "text": "克里斯蒂安"
+  },
+  {
+   "page": 8,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    50.29,
+    30.62,
+    60.69,
+    38.09
+   ],
+   "han": 2,
+   "latin": 0,
+   "text": "古皮"
+  }
+ ],
+ "il_paragraphs_with_han": [
+  {
+   "reference": "p1#0",
+   "layout_label": "title",
+   "vertical": false,
+   "han": 2,
+   "latin": 0,
+   "text": "目录"
+  },
+  {
+   "reference": "p1#1",
+   "layout_label": "title",
+   "vertical": false,
+   "han": 2,
+   "latin": 0,
+   "text": "社论"
+  },
+  {
+   "reference": "p1#2",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 91,
+   "latin": 0,
+   "text": "土著知识长期以来被科学忽视，有时甚至被反对。然而，现在它重新引起了人们的兴趣——这正是时候：全球机械化的后果，以及与气候变化和健康问题相关的危机，促使我们重新重"
+  },
+  {
+   "reference": "p1#3",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 96,
+   "latin": 0,
+   "text": "这种知识植根于对生态系统的细致观察，并通过口头传承代代相传，为构建可持续的未来提供了宝贵的钥匙。近年来，它获得了越来越多的认可。2007年通过的《联合国土著人民"
+  },
+  {
+   "reference": "p1#4",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 198,
+   "latin": 5,
+   "text": "联合国教科文组织长期以来在这一领域处于先锋地位。通过其地方和土著知识系统（LINKS）计划，该组织促进土著知识持有者与科学家之间的交流，特别是在生态学、水资源管"
+  },
+  {
+   "reference": "p1#5",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 101,
+   "latin": 0,
+   "text": "除了提供实证数据外，土著知识还挑战了科学方法的基础，无论是在伦理的位置、人类与自然的关系，还是观察的长时间框架方面。在农业、传统医学和气候学中，这些知识已经激发"
+  },
+  {
+   "reference": "p1#6",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 73,
+   "latin": 0,
+   "text": "但这种认可必须伴随着保障措施——社区的自由和知情同意、利益的公平分享以及防止滥用占有的保护。目标不仅仅是将土著知识吸收到主流科学中，而是促进合作以造福所有人。"
+  },
+  {
+   "reference": "p1#7",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 102,
+   "latin": 0,
+   "text": "通过推广这些知识，联合国教科文组织提醒我们一个显而易见的道理——要理解和保护这个世界，我们可以通过整合所有民族的知识和传统而获益良多。真正的科学，以及适合我们多"
+  },
+  {
+   "reference": "p1#8",
+   "layout_label": "abandon",
+   "vertical": false,
+   "han": 6,
+   "latin": 0,
+   "text": "阿涅斯·巴尔东"
+  },
+  {
+   "reference": "p1#9",
+   "layout_label": "abandon",
+   "vertical": false,
+   "han": 2,
+   "latin": 0,
+   "text": "主编"
+  },
+  {
+   "reference": "p1#10",
+   "layout_label": "title",
+   "vertical": false,
+   "han": 10,
+   "latin": 0,
+   "text": "信使 联合国教科文组织"
+  },
+  {
+   "reference": "p1#11",
+   "layout_label": "title",
+   "vertical": false,
+   "han": 2,
+   "latin": 0,
+   "text": "广角"
+  },
+  {
+   "reference": "p1#12",
+   "layout_label": "title",
+   "vertical": false,
+   "han": 12,
+   "latin": 0,
+   "text": "土著知识如何推动科学发现"
+  },
+  {
+   "reference": "p1#13",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 11,
+   "latin": 0,
+   "text": "土著人民面临的气候变化"
+  },
+  {
+   "reference": "p1#14",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 2,
+   "latin": 0,
+   "text": "知识 .4"
+  },
+  {
+   "reference": "p1#15",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 11,
+   "latin": 0,
+   "text": "拉吉波伊瓦·谢雷尔·杰克逊"
+  },
+  {
+   "reference": "p1#16",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 11,
+   "latin": 0,
+   "text": "巴西：来自水上人家的教训 ..... 9"
+  },
+  {
+   "reference": "p1#17",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 9,
+   "latin": 0,
+   "text": "马塞洛·席尔瓦·德·索萨"
+  },
+  {
+   "reference": "p1#18",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 7,
+   "latin": 0,
+   "text": "当生物盗窃扎根.12"
+  },
+  {
+   "reference": "p1#19",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 12,
+   "latin": 0,
+   "text": "丹尼尔·罗宾逊和大卫·杰斐逊"
+  },
+  {
+   "reference": "p1#20",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 7,
+   "latin": 0,
+   "text": "中国：光辉的健康"
+  },
+  {
+   "reference": "p1#21",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 6,
+   "latin": 0,
+   "text": "传统傣族医学.14"
+  },
+  {
+   "reference": "p1#22",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 6,
+   "latin": 0,
+   "text": "杨沙和杜俊志"
+  },
+  {
+   "reference": "p1#23",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 9,
+   "latin": 0,
+   "text": "卡拉哈里的秘密天空 ................. 17"
+  },
+  {
+   "reference": "p1#24",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 6,
+   "latin": 0,
+   "text": "西斯科·阿瓦拉"
+  },
+  {
+   "reference": "p1#25",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 7,
+   "latin": 0,
+   "text": "萨米人，不可或缺"
+  },
+  {
+   "reference": "p1#26",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 8,
+   "latin": 0,
+   "text": "气候变化的守护者 ............... 20"
+  },
+  {
+   "reference": "p1#27",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 5,
+   "latin": 0,
+   "text": "安娜·罗霍宁"
+  },
+  {
+   "reference": "p1#28",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 12,
+   "latin": 0,
+   "text": "“我们的知识长期以来一直被"
+  },
+  {
+   "reference": "p1#29",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 7,
+   "latin": 0,
+   "text": "被视为民间传说”.23"
+  },
+  {
+   "reference": "p1#30",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 12,
+   "latin": 0,
+   "text": "奥拉·马雷克-马丁内斯的采访"
+  },
+  {
+   "reference": "p1#31",
+   "layout_label": "title",
+   "vertical": false,
+   "han": 2,
+   "latin": 0,
+   "text": "缩放"
+  },
+  {
+   "reference": "p1#32",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 10,
+   "latin": 0,
+   "text": "通过孩子的眼睛看流亡 ................. 26"
+  },
+  {
+   "reference": "p1#33",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 2,
+   "latin": 16,
+   "text": "照片：Fotohane DARKROOM"
+  },
+  {
+   "reference": "p1#35",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 9,
+   "latin": 0,
+   "text": "欢迎来到第二次量子"
+  },
+  {
+   "reference": "p1#36",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 2,
+   "latin": 0,
+   "text": "革命.36"
+  },
+  {
+   "reference": "p1#37",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 7,
+   "latin": 0,
+   "text": "吉姆·艾尔-哈利利"
+  },
+  {
+   "reference": "p1#38",
+   "layout_label": "title",
+   "vertical": false,
+   "han": 5,
+   "latin": 0,
+   "text": "我们的嘉宾"
+  },
+  {
+   "reference": "p1#39",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 10,
+   "latin": 0,
+   "text": "“小说是人类最后的集体"
+  },
+  {
+   "reference": "p1#40",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 7,
+   "latin": 0,
+   "text": "诚实叙事的边疆” ........... 40"
+  },
+  {
+   "reference": "p1#41",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 14,
+   "latin": 0,
+   "text": "与奇玛曼达·恩戈兹·阿迪契的访谈"
+  },
+  {
+   "reference": "p1#42",
+   "layout_label": "title",
+   "vertical": false,
+   "han": 4,
+   "latin": 0,
+   "text": "深入探讨"
+  },
+  {
+   "reference": "p1#43",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 7,
+   "latin": 0,
+   "text": "非洲的图书产业："
+  },
+  {
+   "reference": "p1#44",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 8,
+   "latin": 0,
+   "text": "新的一页正在翻开.44"
+  },
+  {
+   "reference": "p2#0",
+   "layout_label": "abandon",
+   "vertical": false,
+   "han": 14,
+   "latin": 0,
+   "text": "|   联合国教科文组织《信使》• 2026年1月至3月"
+  },
+  {
+   "reference": "p2#1",
+   "layout_label": "abandon",
+   "vertical": false,
+   "han": 2,
+   "latin": 0,
+   "text": "广角"
+  },
+  {
+   "reference": "p2#3",
+   "layout_label": "title",
+   "vertical": false,
+   "han": 8,
+   "latin": 0,
+   "text": "土著知识如何推动"
+  },
+  {
+   "reference": "p2#4",
+   "layout_label": "figure_caption",
+   "vertical": false,
+   "han": 43,
+   "latin": 8,
+   "text": "厄瓜多尔摄影师卡罗琳娜·桑布拉诺的作品，采用chambira纤维刺绣，这是一种象征亚马逊土著工艺的棕榈树纤维。"
+  },
+  {
+   "reference": "p2#5",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 83,
+   "latin": 3,
+   "text": "从土著的控制燃烧以防止野火的做法，到因纽特人的天气预报，以及一些非洲国家用于蓄水的zaï技术，世界充满了多样且经过验证的土著智慧。这些知识在气候变化和生物多样性"
+  },
+  {
+   "reference": "p2#6",
+   "layout_label": "title",
+   "vertical": false,
+   "han": 11,
+   "latin": 0,
+   "text": "拉吉波伊瓦·谢雷尔·杰克逊"
+  },
+  {
+   "reference": "p2#7",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 47,
+   "latin": 0,
+   "text": "来自萨摩亚的原住民气候记者，为卫报报道太平洋岛屿问题，目前担任波特兰州立大学（美国）太平洋岛屿研究教授。"
+  },
+  {
+   "reference": "p3#0",
+   "layout_label": "abandon",
+   "vertical": false,
+   "han": 12,
+   "latin": 0,
+   "text": "5 气候变化对土著知识的影响 |"
+  },
+  {
+   "reference": "p3#1",
+   "layout_label": "title",
+   "vertical": false,
+   "han": 4,
+   "latin": 0,
+   "text": "科学发现"
+  },
+  {
+   "reference": "p4#0",
+   "layout_label": "abandon",
+   "vertical": false,
+   "han": 14,
+   "latin": 0,
+   "text": "|   联合国教科文组织《信使》 • 2026年1月至3月"
+  },
+  {
+   "reference": "p4#1",
+   "layout_label": "abandon",
+   "vertical": false,
+   "han": 2,
+   "latin": 0,
+   "text": "广角"
+  },
+  {
+   "reference": "p4#3",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 159,
+   "latin": 0,
+   "text": "早在卫星环绕地球运行之前，波利尼西亚航海家就通过阅读星星、海浪、生物发光和海鸟飞行模式，跨越了数千英里的开阔海洋。在撒哈拉，图阿雷格向导历史上通过天体模式、太阳"
+  },
+  {
+   "reference": "p4#4",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 140,
+   "latin": 0,
+   "text": "还有许多其他例子展示了传统知识的价值，在水资源管理、农林业、健康和渔业等多样领域中得到了证明。这些实践远不止是一系列技术，它们也是一种世界观的表达。例如，纺织品"
+  },
+  {
+   "reference": "p4#9",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 32,
+   "latin": 0,
+   "text": "这些实践代表了完整的知识体系。它们编码、保存并传递跨代的理解。今天，土著"
+  },
+  {
+   "reference": "p4#10",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 112,
+   "latin": 0,
+   "text": "社区在全球范围内捍卫他们的权利来保护这种文化遗产，同时积极主张传统知识体系作为平行的科学框架。正如斐济研究员萨拉涅塔·基托莱莱在2025年第二届太平洋岛国海洋会"
+  },
+  {
+   "reference": "p4#11",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 22,
+   "latin": 0,
+   "text": "传统土著知识近年来获得了认可，这主要得益于诸如"
+  },
+  {
+   "reference": "p4#12",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 34,
+   "latin": 0,
+   "text": "《联合国土著人民权利宣言》这样的国际文书——但它仍然受到文化和商业挪用的威胁。"
+  },
+  {
+   "reference": "p4#13",
+   "layout_label": "title",
+   "vertical": false,
+   "han": 9,
+   "latin": 0,
+   "text": "生物多样性的守护者"
+  },
+  {
+   "reference": "p4#14",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 105,
+   "latin": 0,
+   "text": "随着气候危机加剧和生物多样性崩溃，世界开始转向那些曾经被忽视的知识体系。根据联合国的数据，土著人民占全球人口的不到5%，但他们管理着包含地球约80%剩余生物多样"
+  },
+  {
+   "reference": "p4#15",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 107,
+   "latin": 0,
+   "text": "“我们观察自然，我们的动物和植物。我们是自然的守护者，我们拥有关于我们环境的大量知识，”乍得的土著姆博罗罗领导人欣杜·乌马鲁·易卜拉欣在2024年4月的联合国土"
+  },
+  {
+   "reference": "p4#16",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 148,
+   "latin": 0,
+   "text": "积累的技能和智慧不仅仅是机械地从一代传递到下一代，还被编纂成复杂的知识系统，如太平洋和非洲的纺织艺术掌握所示。太平洋的编织者了解植物生态学、航行动力学和文化礼仪"
+  },
+  {
+   "reference": "p4#17",
+   "layout_label": "title",
+   "vertical": false,
+   "han": 18,
+   "latin": 0,
+   "text": "土著技能和智慧被编纂成复杂的知识系统"
+  },
+  {
+   "reference": "p4#18",
+   "layout_label": "title",
+   "vertical": false,
+   "han": 8,
+   "latin": 5,
+   "text": "LINKS计划：促进土著知识"
+  },
+  {
+   "reference": "p4#19",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 73,
+   "latin": 5,
+   "text": "联合国教科文组织的地方和土著知识系统（LINKS）计划成立于2002年，动员地方社区和土著人民的知识、技能和实践，以支持他们在环境决策中的参与，特别是在生物多样"
+  },
+  {
+   "reference": "p4#20",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 19,
+   "latin": 5,
+   "text": "LINKS旨在建立土著和地方知识持有者之间的对话，"
+  },
+  {
+   "reference": "p4#21",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 69,
+   "latin": 0,
+   "text": "自然和社会科学家、资源管理者和决策者，以确保地方社区在治理中发挥积极和公平的作用。该计划旨在加强长者知识的传承，并在社区知识与全球知识之间找到平衡。"
+  },
+  {
+   "reference": "p4#22",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 15,
+   "latin": 5,
+   "text": "在其他角色中，LINKS计划目前主持土著和"
+  },
+  {
+   "reference": "p4#23",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 68,
+   "latin": 10,
+   "text": "生物多样性和生态系统服务政府间科学政策平台（IPBES）的地方知识技术支持单元。在这一角色中，它提供支持和专家建议，以帮助IPBES更好地将土著和地方知识纳入其"
+  },
+  {
+   "reference": "p5#0",
+   "layout_label": "abandon",
+   "vertical": false,
+   "han": 9,
+   "latin": 0,
+   "text": "巴西：水上人家的启示 | 9"
+  },
+  {
+   "reference": "p5#1",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 48,
+   "latin": 0,
+   "text": "真正生活在水中的人。” 当世界上最大的淡水鱼——巨骨舌鱼的数量在2009年下降到仅266条成年鱼时，保马里族面临着生存威胁。"
+  },
+  {
+   "reference": "p5#2",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 27,
+   "latin": 0,
+   "text": "多年来，学术研究和传统知识各自发展，却从未交汇。技术人员到来"
+  },
+  {
+   "reference": "p5#3",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 29,
+   "latin": 0,
+   "text": "看到我们的食物供应耗尽，令人心碎。我们不知道如何养活我们的孩子。"
+  },
+  {
+   "reference": "p5#4",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 90,
+   "latin": 0,
+   "text": "黎明散发出一种铁质湿气与火盆烟雾混合的气味。保马里族是一个约有两千人的土著民族，生活在该国西北部广袤的亚马孙州地区，他们有一种在任何科学教科书中都找不到的自我定"
+  },
+  {
+   "reference": "p5#5",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 102,
+   "latin": 0,
+   "text": "在普鲁斯河上，当光线渐渐消退，热气仍在水面上徘徊时，一条巨骨舌鱼浮出水面，吞咽了一口空气。这种声音——深沉、潮湿、古老——唤醒了这片土地几乎失去的脉动。“大自然"
+  },
+  {
+   "reference": "p5#6",
+   "layout_label": "title",
+   "vertical": false,
+   "han": 9,
+   "latin": 0,
+   "text": "巴西：水上人家的启示"
+  },
+  {
+   "reference": "p5#7",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 76,
+   "latin": 0,
+   "text": "面对巨骨舌鱼数量的急剧下降，这种对他们生存至关重要的鱼类，亚马孙州的保马里族参与了一项恢复该物种的计划，结合科学和传统知识。几年后，这些鱼再次在普鲁斯河中繁衍生"
+  },
+  {
+   "reference": "p5#8",
+   "layout_label": "abandon",
+   "vertical": false,
+   "han": 9,
+   "latin": 0,
+   "text": "马塞洛·席尔瓦·德·索萨"
+  },
+  {
+   "reference": "p5#9",
+   "layout_label": "abandon",
+   "vertical": false,
+   "han": 9,
+   "latin": 0,
+   "text": "巴西利亚（巴西）的记者"
+  },
+  {
+   "reference": "p5#11",
+   "layout_label": "figure_caption",
+   "vertical": false,
+   "han": 30,
+   "latin": 0,
+   "text": "在捕鱼季节，保马里族轮班工作，以便迅速将巨骨舌鱼从湖泊运送到冷链。"
+  },
+  {
+   "reference": "p6#0",
+   "layout_label": "abandon",
+   "vertical": false,
+   "han": 14,
+   "latin": 0,
+   "text": "|   联合国教科文组织《信使》 • 2026年1月至3月"
+  },
+  {
+   "reference": "p6#1",
+   "layout_label": "abandon",
+   "vertical": false,
+   "han": 2,
+   "latin": 0,
+   "text": "观点"
+  },
+  {
+   "reference": "p6#3",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 1,
+   "latin": 0,
+   "text": "止。"
+  },
+  {
+   "reference": "p6#4",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 116,
+   "latin": 0,
+   "text": "量子传感器的另一个令人兴奋的医学应用是纠缠相机，它被用于乳腺癌组织样本的成像。其背后的科学听起来几乎像魔法。它依赖于两种光的量子纠缠：红外光，非常适合生物成像，"
+  },
+  {
+   "reference": "p6#5",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 62,
+   "latin": 0,
+   "text": "在量子领域中不断与其他一切纠缠和解纠缠。涉及直接利用量子叠加和纠缠的技术的新量子革命已经在稳步进行中，毫无疑问将会改变我们的世界。"
+  },
+  {
+   "reference": "p6#6",
+   "layout_label": "title",
+   "vertical": false,
+   "han": 10,
+   "latin": 0,
+   "text": "传感器读取我们的思想"
+  },
+  {
+   "reference": "p6#7",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 105,
+   "latin": 0,
+   "text": "其中一种技术是量子传感。我们现在拥有可以感知地球重力变化到十亿分之一的量子设备，这些设备不仅可以帮助研究地球气候，还在建筑行业中有许多实际应用。量子传感器甚至正"
+  },
+  {
+   "reference": "p6#8",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 177,
+   "latin": 0,
+   "text": "甚至还有能够读取你思想的量子传感器。一种可以像骑行头盔一样佩戴的特殊脑扫描仪，其灵敏度极高，能够检测到患者大脑内单个神经元的电活动，使研究人员能够实时“观察”大"
+  },
+  {
+   "reference": "p6#9",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 79,
+   "latin": 0,
+   "text": "同时具有多个值的范围，例如在空间中扩散或同时向两个方向旋转。只有当我们选择测量它们时，才迫使它们在共存的多个选项中决定一个。当两个或多个粒子联合时，它们可以变得"
+  },
+  {
+   "reference": "p6#10",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 76,
+   "latin": 0,
+   "text": "这种量子纠缠远非一种在自然界中罕见的新现象，也不仅限于两个分离粒子之间的“诡异”心灵感应连接。相反，它是整个宇宙中最普遍的过程之一，甚至可以说是最普遍的过程。无"
+  },
+  {
+   "reference": "p6#11",
+   "layout_label": "title",
+   "vertical": false,
+   "han": 6,
+   "latin": 0,
+   "text": "2025年国际量子年"
+  },
+  {
+   "reference": "p6#12",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 83,
+   "latin": 0,
+   "text": "为纪念量子力学百年，联合国宣布2025年为国际量子科学与技术年。作为该倡议的牵头机构，联合国教科文组织于2月4日和5日在巴黎启动了为期一年的倡议，吸引了包括几位"
+  },
+  {
+   "reference": "p6#13",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 137,
+   "latin": 4,
+   "text": "全年，全球的科学家、教育工作者和公民被邀请探索和庆祝量子创新。全球活动提升了公众意识并促进了合作，突出了量子科学在可持续解决方案中的潜力。联合国教科文组织带头推"
+  },
+  {
+   "reference": "p6#14",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 26,
+   "latin": 0,
+   "text": "在量子领域，一切事物总是在不断地与其他事物纠缠和解纠缠。"
+  },
+  {
+   "reference": "p7#0",
+   "layout_label": "abandon",
+   "vertical": false,
+   "han": 14,
+   "latin": 0,
+   "text": "|   联合国教科文组织《信使》 • 2026年1月至3月"
+  },
+  {
+   "reference": "p7#1",
+   "layout_label": "abandon",
+   "vertical": false,
+   "han": 2,
+   "latin": 0,
+   "text": "广角"
+  },
+  {
+   "reference": "p7#3",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 134,
+   "latin": 0,
+   "text": "由摩洛哥阿甘树的坚果生产的油提供了另一个例子。阿甘油现在被用于全球的护发和护肤产品中，其用途与柏柏尔（或柏柏尔）妇女使用它已有超过1000年的历史基本相同。虽然"
+  },
+  {
+   "reference": "p7#4",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 163,
+   "latin": 19,
+   "text": "并非所有与遗传资源相关的土著知识的商业使用都构成生物盗窃；有些项目是互利的。例如，澳大利亚的Indjalandji-Dhidhanu人已经与昆士兰大学的研究人员"
+  },
+  {
+   "reference": "p7#5",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 96,
+   "latin": 0,
+   "text": "然而，有人批评生物发现是对土著和其他地方人民开发的知识的“搭便车”。当他们的知识在科学研究、产品开发或商业化中没有得到充分认可，并且这些知识的使用者没有适当地与"
+  },
+  {
+   "reference": "p7#6",
+   "layout_label": "title",
+   "vertical": false,
+   "han": 7,
+   "latin": 0,
+   "text": "利益分享的斗争"
+  },
+  {
+   "reference": "p7#7",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 124,
+   "latin": 0,
+   "text": "卡瓦（醉椒），一种原产于太平洋的胡椒科植物，似乎是土著和当地社区开发知识被不当利用的典型例子。卡瓦吸引了数百项专利申请，其中许多与其抗焦虑和镇静效果有关，这些效"
+  },
+  {
+   "reference": "p7#8",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 148,
+   "latin": 0,
+   "text": "世界上有着多样化的土著人民、文化、语言和知识体系。这些体系经过数百年或数千年的发展，对我们所食用的食物、传统和现代药物以及我们家中和衣物中使用的纤维和材料的发展"
+  },
+  {
+   "reference": "p7#9",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 95,
+   "latin": 0,
+   "text": "研究人员和公司经常寻求土著对植物、动物和生态系统中其他非人类居民特性的见解，以开发新技术和创新。这一过程有时被称为“生物发现”，经常发生在农业和食品、生物技术、"
+  },
+  {
+   "reference": "p7#10",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 77,
+   "latin": 0,
+   "text": "利用生物发现可以为开发新产品的人提供许多优势。例如，在制药行业，研究和审批时间长，产品开发过程昂贵，知识产权和监管保护策略具有风险，土著知识可以帮助产品更快地推"
+  },
+  {
+   "reference": "p7#11",
+   "layout_label": "title",
+   "vertical": false,
+   "han": 8,
+   "latin": 0,
+   "text": "当生物盗窃扎根时"
+  },
+  {
+   "reference": "p7#12",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 58,
+   "latin": 0,
+   "text": "在过去的三十年中，国际法规一直试图限制行业对土著知识的剥削，以免损害当地人口的利益。但尽管有这些措施，盗用的情况仍然普遍存在。"
+  },
+  {
+   "reference": "p7#13",
+   "layout_label": "abandon",
+   "vertical": false,
+   "han": 6,
+   "latin": 0,
+   "text": "丹尼尔·罗宾逊"
+  },
+  {
+   "reference": "p7#14",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 41,
+   "latin": 0,
+   "text": "他是新南威尔士大学（澳大利亚）艺术学院的教授兼研究副院长，他的研究重点是自然和知识的监管。"
+  },
+  {
+   "reference": "p7#15",
+   "layout_label": "title",
+   "vertical": false,
+   "han": 5,
+   "latin": 0,
+   "text": "大卫·杰斐逊"
+  },
+  {
+   "reference": "p7#16",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 43,
+   "latin": 0,
+   "text": "他是坎特伯雷大学（新西兰）的副教授，他的研究重点是生物多样性、知识产权和土著知识体系的交叉领域。"
+  },
+  {
+   "reference": "p7#17",
+   "layout_label": "title",
+   "vertical": false,
+   "han": 30,
+   "latin": 0,
+   "text": "今天，许多国家要求潜在的土著知识使用者首先获得知识持有者的同意"
+  },
+  {
+   "reference": "p8#0",
+   "layout_label": "abandon",
+   "vertical": false,
+   "han": 8,
+   "latin": 0,
+   "text": "当生物盗窃扎根时 | 13"
+  },
+  {
+   "reference": "p8#1",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 32,
+   "latin": 0,
+   "text": "用者首先获得知识持有者的明确同意，并签署详细说明如何分享利益的协议。"
+  },
+  {
+   "reference": "p8#2",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 102,
+   "latin": 0,
+   "text": "此外，越来越多的法律要求知识产权申请者——尤其是专利申请者——披露任何用于创造发明的遗传资源或传统知识的来源。随着2024年世界知识产权组织《知识产权、遗传资源"
+  },
+  {
+   "reference": "p8#3",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 164,
+   "latin": 0,
+   "text": "但尽管有这些措施，由于系统中存在可利用的漏洞，生物盗窃仍然发生。例如，可以通过从未采纳限制性立法的国家收集遗传资源或传统知识，或从在公约生效前进行的历史收藏中获"
+  },
+  {
+   "reference": "p8#4",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 70,
+   "latin": 0,
+   "text": "十世纪中期遗传学科学的新发展，基于或衍生自生物多样性的产品被理解为“遗传资源”。这与基于潜在用途而非仅实际用途为生物多样性成分赋予价值的新方式相对应。"
+  },
+  {
+   "reference": "p8#5",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 156,
+   "latin": 6,
+   "text": "20世纪90年代，由于一些发展，情况发生了巨大变化。首先，知识产权在世界贸易组织（WTO）协议下得到了统一，这改变了各国对与遗传资源相关的知识产权保护的方式。1"
+  },
+  {
+   "reference": "p8#6",
+   "layout_label": "title",
+   "vertical": false,
+   "han": 5,
+   "latin": 0,
+   "text": "明确的同意"
+  },
+  {
+   "reference": "p8#7",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 44,
+   "latin": 0,
+   "text": "过去30年间建立的强化国际规则和协议框架带来了一些积极的变化。如今，许多国家要求潜在的土著知识使"
+  },
+  {
+   "reference": "p8#8",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 44,
+   "latin": 0,
+   "text": "议已经分享的利益包括为第一民族青年提供就业机会以及为澳大利亚土著提供培训和教育机会的资金。"
+  },
+  {
+   "reference": "p8#9",
+   "layout_label": "title",
+   "vertical": false,
+   "han": 9,
+   "latin": 0,
+   "text": "私人财产的共同遗产？"
+  },
+  {
+   "reference": "p8#10",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 46,
+   "latin": 0,
+   "text": "生物盗窃问题的根源在于一个历史性的转变：全球社会开始将生物资源视为专有资产，而非共享遗产的那一刻。"
+  },
+  {
+   "reference": "p8#11",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 138,
+   "latin": 0,
+   "text": "植物、动物和其他生物多样性成分在全球范围内的流通以及不同人群之间相关知识的共享并不是什么新鲜事。在欧洲殖民时代之前，各种物种及其栽培和利用知识的全球性流动就已经"
+  },
+  {
+   "reference": "p8#12",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 73,
+   "latin": 0,
+   "text": "在人类历史的大部分时间里，国际法将此类生物资源视为“人类共同的遗产”，这意味着任何人都可以获取和使用这些资源，而无需获得许可或与资源提供者分享利益。然而，随着二"
+  },
+  {
+   "reference": "p8#13",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 32,
+   "latin": 0,
+   "text": "千百年来，柏柏尔女性一直使用阿甘油，这种产品现在已在全球范围内商业化。"
+  },
+  {
+   "reference": "p8#14",
+   "layout_label": "figure_caption",
+   "vertical": false,
+   "han": 27,
+   "latin": 0,
+   "text": "摩洛哥西南部塔夫拉乌特的一家女性合作社的阿甘油生产车间。"
+  },
+  {
+   "reference": "p8#15",
+   "layout_label": "abandon",
+   "vertical": false,
+   "han": 7,
+   "latin": 16,
+   "text": "© 克里斯蒂安·古皮 / robertharding.com"
+  }
+ ],
+ "il_han_total": 5650
+}

@@ -1,0 +1,51 @@
+{
+  "attempted": 2,
+  "excluded_from": [
+    "column_reflow",
+    "drop_cap",
+    "typeset_hang"
+  ],
+  "laid_out": 2,
+  "paragraphs": [
+    {
+      "box": [
+        19.87,
+        581.07,
+        28.83,
+        754.39
+      ],
+      "characters": 30,
+      "layout_label": "abandon",
+      "reach": [
+        20.69,
+        581.07,
+        28.83,
+        728.06
+      ],
+      "reference": "p1#0",
+      "skipped": null,
+      "text": "FENDI 精品店 888291 0163FENDI.COM"
+    },
+    {
+      "box": [
+        548.1,
+        56.0,
+        558.91,
+        299.74
+      ],
+      "characters": 78,
+      "layout_label": "abandon",
+      "reach": [
+        548.23,
+        56.0,
+        558.91,
+        299.0
+      ],
+      "reference": "p3#59",
+      "skipped": null,
+      "text": "时尚编辑：朱莉娅·萨尔-贾莫伊斯。发型 苏西·索博尔。制作 Boom Productions。道具造型师：彼得·克莱因。"
+    }
+  ],
+  "switch": "magazine_rotated_lane",
+  "target_lang": "zh"
+}

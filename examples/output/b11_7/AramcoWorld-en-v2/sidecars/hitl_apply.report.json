@@ -1,0 +1,1123 @@
+{
+  "sample": "AramcoWorld-en-v2",
+  "terms": {
+    "auto_glossary_kept": 123,
+    "auto_glossary_relocated": "auto_extracted_glossary",
+    "defaulted": 61,
+    "dropped_from_auto": [
+      {
+        "auto_target": "Ahmed AL-Mulhem",
+        "source": "Ahmed AL-Mulhem",
+        "user_target": "艾哈迈德·阿尔-穆勒赫姆"
+      },
+      {
+        "auto_target": "Blain Rethmeier",
+        "source": "Blain Rethmeier",
+        "user_target": "布莱恩·雷思迈尔"
+      },
+      {
+        "auto_target": "Amra Pasic",
+        "source": "Amra Pasic",
+        "user_target": "阿姆拉·帕西奇"
+      },
+      {
+        "auto_target": "Alva Robinson",
+        "source": "Alva Robinson",
+        "user_target": "阿尔瓦·罗宾逊"
+      },
+      {
+        "auto_target": "Waleed Dashash",
+        "source": "Waleed Dashash",
+        "user_target": "瓦利德·达沙什"
+      },
+      {
+        "auto_target": "Suzanne Garofalo",
+        "source": "Suzanne Garofalo",
+        "user_target": "苏珊娜·加罗法洛"
+      },
+      {
+        "auto_target": "Indlieb Farazi Saber",
+        "source": "Indlieb Farazi Saber",
+        "user_target": "因德利布·法拉兹·萨贝尔"
+      },
+      {
+        "auto_target": "Sarah Khan",
+        "source": "Sarah Khan",
+        "user_target": "萨拉·汗"
+      },
+      {
+        "auto_target": "Bianca Speranza",
+        "source": "Bianca Speranza",
+        "user_target": "比安卡·斯佩兰扎"
+      },
+      {
+        "auto_target": "Banning Eyre",
+        "source": "Banning Eyre",
+        "user_target": "班宁·艾尔"
+      },
+      {
+        "auto_target": "西非",
+        "source": "West African",
+        "user_target": "西非"
+      },
+      {
+        "auto_target": "北非",
+        "source": "North African",
+        "user_target": "北非"
+      },
+      {
+        "auto_target": "早期美国",
+        "source": "Early America",
+        "user_target": "早期美国"
+      },
+      {
+        "auto_target": "Ramin Ganeshram",
+        "source": "Ramin Ganeshram",
+        "user_target": "拉明·加内什拉姆"
+      },
+      {
+        "auto_target": "Ivy Johnson",
+        "source": "Ivy Johnson",
+        "user_target": "艾维·约翰逊"
+      },
+      {
+        "auto_target": "美国",
+        "source": "United States",
+        "user_target": "美国"
+      },
+      {
+        "auto_target": "开国元勋",
+        "source": "Founding Fathers",
+        "user_target": "开国元勋"
+      },
+      {
+        "auto_target": "中东",
+        "source": "Middle East",
+        "user_target": "中东"
+      },
+      {
+        "auto_target": "Aibarshyn Akhmetkali",
+        "source": "Aibarshyn Akhmetkali",
+        "user_target": "艾巴尔申·阿赫梅特卡利"
+      },
+      {
+        "auto_target": "Daniil Usmanov",
+        "source": "Daniil Usmanov",
+        "user_target": "达尼尔·乌斯马诺夫"
+      },
+      {
+        "auto_target": "希贾兹铁路",
+        "source": "Hijaz Railway",
+        "user_target": "希贾兹铁路"
+      },
+      {
+        "auto_target": "Leon McCarron",
+        "source": "Leon McCarron",
+        "user_target": "利昂·麦卡伦"
+      },
+      {
+        "auto_target": "沙特阿拉伯",
+        "source": "Saudi Arabia",
+        "user_target": "沙特阿拉伯"
+      },
+      {
+        "auto_target": "蒂利亚-科里神学院",
+        "source": "Tilya-Kori Madrasa",
+        "user_target": "蒂利亚-科里神学院"
+      },
+      {
+        "auto_target": "乌鲁伯格神学院",
+        "source": "Ulugh Beg Madrasa",
+        "user_target": "乌鲁伯格神学院"
+      },
+      {
+        "auto_target": "阿拉伯湾",
+        "source": "Arabian Gulf",
+        "user_target": "阿拉伯湾"
+      },
+      {
+        "auto_target": "Tawfiq Al Juhani",
+        "source": "Tawfiq Al Juhani",
+        "user_target": "陶菲克·阿尔·朱哈尼"
+      },
+      {
+        "auto_target": "Bir Jdid",
+        "source": "Bir Jdid",
+        "user_target": "Bir Jdid"
+      },
+      {
+        "auto_target": "北非",
+        "source": "North Africa",
+        "user_target": "北非"
+      },
+      {
+        "auto_target": "Zekeriya Kurşun",
+        "source": "Zekeriya Kurşun",
+        "user_target": "泽克里亚·库尔顺"
+      },
+      {
+        "auto_target": "英属印度",
+        "source": "British India",
+        "user_target": "英属印度"
+      },
+      {
+        "auto_target": "南非",
+        "source": "South Africa",
+        "user_target": "南非"
+      },
+      {
+        "auto_target": "James Nicholson",
+        "source": "James Nicholson",
+        "user_target": "詹姆斯·尼科尔森"
+      },
+      {
+        "auto_target": "亚尔穆克山谷",
+        "source": "Yarmouk Valley",
+        "user_target": "亚尔穆克山谷"
+      },
+      {
+        "auto_target": "地中海",
+        "source": "Mediterranean Sea",
+        "user_target": "地中海"
+      },
+      {
+        "auto_target": "Charles-Eudes Bonin",
+        "source": "Charles-Eudes Bonin",
+        "user_target": "夏尔-厄德·博南"
+      },
+      {
+        "auto_target": "地理学年鉴",
+        "source": "Annales de Géographie",
+        "user_target": "地理学年鉴"
+      },
+      {
+        "auto_target": "奥斯曼帝国",
+        "source": "Ottoman Empire",
+        "user_target": "奥斯曼帝国"
+      },
+      {
+        "auto_target": "希贾兹火车站",
+        "source": "Hijaz Railway Station",
+        "user_target": "希贾兹火车站"
+      },
+      {
+        "auto_target": "希尔贝特·萨姆拉",
+        "source": "Khir-bet Samra",
+        "user_target": "希尔贝特·萨姆拉"
+      },
+      {
+        "auto_target": "阿尔罕布拉宫",
+        "source": "Th Alhambra",
+        "user_target": "阿尔罕布拉宫"
+      },
+      {
+        "auto_target": "Edhem Eldem",
+        "source": "Edhem Eldem",
+        "user_target": "埃德赫姆·埃尔德姆"
+      },
+      {
+        "auto_target": "阿拉伯北非",
+        "source": "Arab North Africa",
+        "user_target": "阿拉伯北非"
+      },
+      {
+        "auto_target": "奥斯曼土耳其",
+        "source": "Ottoman Türkiye",
+        "user_target": "奥斯曼土耳其"
+      },
+      {
+        "auto_target": "西班牙东方学家",
+        "source": "Spanish Orientalists",
+        "user_target": "西班牙东方学家"
+      },
+      {
+        "auto_target": "Paul Binski",
+        "source": "Paul Binski",
+        "user_target": "保罗·宾斯基"
+      },
+      {
+        "auto_target": "让·德·让顿",
+        "source": "Jean de Jandun",
+        "user_target": "让·德·让顿"
+      },
+      {
+        "auto_target": "圣母玛利亚",
+        "source": "Virgin Mary",
+        "user_target": "圣母玛利亚"
+      },
+      {
+        "auto_target": "巴黎圣母院",
+        "source": "Notre Dame Cathedral",
+        "user_target": "巴黎圣母院"
+      },
+      {
+        "auto_target": "圣索菲亚大教堂",
+        "source": "Hagia Sophia",
+        "user_target": "圣索菲亚大教堂"
+      },
+      {
+        "auto_target": "安德鲁·柯林斯",
+        "source": "Andrew Collins",
+        "user_target": "安德鲁·柯林斯"
+      },
+      {
+        "auto_target": "阿蒙涅姆哈特三世",
+        "source": "Amenemhat III",
+        "user_target": "阿蒙涅姆赫特三世"
+      },
+      {
+        "auto_target": "中王国",
+        "source": "Middle Kingdom",
+        "user_target": "中王国"
+      },
+      {
+        "auto_target": "法尤姆绿洲",
+        "source": "Fayum Oasis",
+        "user_target": "法尤姆绿洲"
+      },
+      {
+        "auto_target": "James Pickett",
+        "source": "James Pickett",
+        "user_target": "詹姆斯·皮克特"
+      },
+      {
+        "auto_target": "Benjamin Claude Brower",
+        "source": "Benjamin Claude Brower",
+        "user_target": "本杰明·克劳德·布劳尔"
+      },
+      {
+        "auto_target": "Mehmet Darakçıoğlu",
+        "source": "Mehmet Darakçıoğlu",
+        "user_target": "穆罕默德·达拉克乔奥卢"
+      },
+      {
+        "auto_target": "伊斯兰教会",
+        "source": "Islamic Ecumene",
+        "user_target": "伊斯兰教会"
+      },
+      {
+        "auto_target": "Eric Tagliacozzo",
+        "source": "Eric Tagliacozzo",
+        "user_target": "埃里克·塔利亚科佐"
+      },
+      {
+        "auto_target": "伊斯兰政体",
+        "source": "Islamic Polity",
+        "user_target": "伊斯兰政体"
+      }
+    ],
+    "entries": [
+      {
+        "decided_by": "policy",
+        "source": "Ahmed AL-Mulhem",
+        "target": "艾哈迈德·阿尔-穆勒赫姆"
+      },
+      {
+        "decided_by": "policy",
+        "source": "Alva Robinson",
+        "target": "阿尔瓦·罗宾逊"
+      },
+      {
+        "decided_by": "policy",
+        "source": "Amra Pasic",
+        "target": "阿姆拉·帕西奇"
+      },
+      {
+        "decided_by": "policy",
+        "source": "Bianca Speranza",
+        "target": "比安卡·斯佩兰扎"
+      },
+      {
+        "decided_by": "policy",
+        "source": "Blain Rethmeier",
+        "target": "布莱恩·雷思迈尔"
+      },
+      {
+        "decided_by": "policy",
+        "source": "Indlieb Farazi Saber",
+        "target": "因德利布·法拉兹·萨贝尔"
+      },
+      {
+        "decided_by": "policy",
+        "source": "Sarah Khan",
+        "target": "萨拉·汗"
+      },
+      {
+        "decided_by": "policy",
+        "source": "Suzanne Garofalo",
+        "target": "苏珊娜·加罗法洛"
+      },
+      {
+        "decided_by": "policy",
+        "source": "Waleed Dashash",
+        "target": "瓦利德·达沙什"
+      },
+      {
+        "decided_by": "policy",
+        "source": "Early America",
+        "target": "早期美国"
+      },
+      {
+        "decided_by": "policy",
+        "source": "Founding Fathers",
+        "target": "开国元勋"
+      },
+      {
+        "decided_by": "policy",
+        "source": "Hijaz Railway",
+        "target": "希贾兹铁路"
+      },
+      {
+        "decided_by": "policy",
+        "source": "Middle East",
+        "target": "中东"
+      },
+      {
+        "decided_by": "policy",
+        "source": "North Africa",
+        "target": "北非"
+      },
+      {
+        "decided_by": "policy",
+        "source": "North African",
+        "target": "北非"
+      },
+      {
+        "decided_by": "policy",
+        "source": "Saudi Arabia",
+        "target": "沙特阿拉伯"
+      },
+      {
+        "decided_by": "policy",
+        "source": "Tilya-Kori Madrasa",
+        "target": "蒂利亚-科里神学院"
+      },
+      {
+        "decided_by": "policy",
+        "source": "United States",
+        "target": "美国"
+      },
+      {
+        "decided_by": "policy",
+        "source": "West African",
+        "target": "西非"
+      },
+      {
+        "decided_by": "policy",
+        "source": "Arabian Gulf",
+        "target": "阿拉伯湾"
+      },
+      {
+        "decided_by": "policy",
+        "source": "Bir Jdid",
+        "target": "Bir Jdid"
+      },
+      {
+        "decided_by": "policy",
+        "source": "Tawfiq Al Juhani",
+        "target": "陶菲克·阿尔·朱哈尼"
+      },
+      {
+        "decided_by": "policy",
+        "source": "British India",
+        "target": "英属印度"
+      },
+      {
+        "decided_by": "policy",
+        "source": "HIJAZ RAILWAY",
+        "target": "希贾兹铁路"
+      },
+      {
+        "decided_by": "policy",
+        "source": "James Nicholson",
+        "target": "詹姆斯·尼科尔森"
+      },
+      {
+        "decided_by": "policy",
+        "source": "Mediterranean Sea",
+        "target": "地中海"
+      },
+      {
+        "decided_by": "policy",
+        "source": "South Africa",
+        "target": "南非"
+      },
+      {
+        "decided_by": "policy",
+        "source": "Yarmouk Valley",
+        "target": "亚尔穆克山谷"
+      },
+      {
+        "decided_by": "policy",
+        "source": "Zekeriya Kurşun",
+        "target": "泽克里亚·库尔顺"
+      },
+      {
+        "decided_by": "policy",
+        "source": "Annales de Géographie",
+        "target": "地理学年鉴"
+      },
+      {
+        "decided_by": "policy",
+        "source": "Charles-Eudes Bonin",
+        "target": "夏尔-厄德·博南"
+      },
+      {
+        "decided_by": "policy",
+        "source": "Hijaz Railway Station",
+        "target": "希贾兹火车站"
+      },
+      {
+        "decided_by": "policy",
+        "source": "Ottoman Empire",
+        "target": "奥斯曼帝国"
+      },
+      {
+        "decided_by": "policy",
+        "source": "Amenemhat III",
+        "target": "阿蒙涅姆赫特三世"
+      },
+      {
+        "decided_by": "policy",
+        "source": "Andrew Collins",
+        "target": "安德鲁·柯林斯"
+      },
+      {
+        "decided_by": "policy",
+        "source": "Arab North Africa",
+        "target": "阿拉伯北非"
+      },
+      {
+        "decided_by": "policy",
+        "source": "Edhem Eldem",
+        "target": "埃德赫姆·埃尔德姆"
+      },
+      {
+        "decided_by": "policy",
+        "source": "Fayum Oasis",
+        "target": "法尤姆绿洲"
+      },
+      {
+        "decided_by": "policy",
+        "source": "Hagia Sophia",
+        "target": "圣索菲亚大教堂"
+      },
+      {
+        "decided_by": "policy",
+        "source": "Jean de Jandun",
+        "target": "让·德·让顿"
+      },
+      {
+        "decided_by": "policy",
+        "source": "Middle Kingdom",
+        "target": "中王国"
+      },
+      {
+        "decided_by": "policy",
+        "source": "Notre Dame Cathedral",
+        "target": "巴黎圣母院"
+      },
+      {
+        "decided_by": "policy",
+        "source": "Ottoman Türkiye",
+        "target": "奥斯曼土耳其"
+      },
+      {
+        "decided_by": "policy",
+        "source": "Paul Binski",
+        "target": "保罗·宾斯基"
+      },
+      {
+        "decided_by": "policy",
+        "source": "Spanish Orientalists",
+        "target": "西班牙东方学家"
+      },
+      {
+        "decided_by": "policy",
+        "source": "Th Alhambra",
+        "target": "阿尔罕布拉宫"
+      },
+      {
+        "decided_by": "policy",
+        "source": "Virgin Mary",
+        "target": "圣母玛利亚"
+      },
+      {
+        "decided_by": "policy",
+        "source": "Benjamin Claude Brower",
+        "target": "本杰明·克劳德·布劳尔"
+      },
+      {
+        "decided_by": "policy",
+        "source": "Eric Tagliacozzo",
+        "target": "埃里克·塔利亚科佐"
+      },
+      {
+        "decided_by": "policy",
+        "source": "Islamic Ecumene",
+        "target": "伊斯兰教会"
+      },
+      {
+        "decided_by": "policy",
+        "source": "Islamic Polity",
+        "target": "伊斯兰政体"
+      },
+      {
+        "decided_by": "policy",
+        "source": "James Pickett",
+        "target": "詹姆斯·皮克特"
+      },
+      {
+        "decided_by": "policy",
+        "source": "Aibarshyn Akhmetkali",
+        "target": "艾巴尔申·阿赫梅特卡利"
+      },
+      {
+        "decided_by": "policy",
+        "source": "Banning Eyre",
+        "target": "班宁·艾尔"
+      },
+      {
+        "decided_by": "policy",
+        "source": "Daniil Usmanov",
+        "target": "达尼尔·乌斯马诺夫"
+      },
+      {
+        "decided_by": "policy",
+        "source": "Ivy Johnson",
+        "target": "艾维·约翰逊"
+      },
+      {
+        "decided_by": "policy",
+        "source": "Khir-bet Samra",
+        "target": "希尔贝特·萨姆拉"
+      },
+      {
+        "decided_by": "policy",
+        "source": "Leon McCarron",
+        "target": "利昂·麦卡伦"
+      },
+      {
+        "decided_by": "policy",
+        "source": "Mehmet Darakçıoğlu",
+        "target": "穆罕默德·达拉克乔奥卢"
+      },
+      {
+        "decided_by": "policy",
+        "source": "Ramin Ganeshram",
+        "target": "拉明·加内什拉姆"
+      },
+      {
+        "decided_by": "policy",
+        "source": "Ulugh Beg Madrasa",
+        "target": "乌鲁伯格神学院"
+      }
+    ],
+    "glossary": "hitl_decisions",
+    "match_definition": "how many inputs -- the text a paragraph was offered as, which is what the glossary is matched against -- activate this entry, by the matcher the translation prompt itself uses; counted over every request this run built from the document, the repair loop's included",
+    "matches": [
+      {
+        "matched_excerpts": [
+          "Publisher: <style id='1'>Aramco Americas Company</style><style id='3'>President and CEO: </style><style id='5'>Ahmed AL-Mulhem</style><style id='7'>Director, Public Affairs (A): </style><style id='9'>Blain Rethmeier</style><style id='11'>Editor in Chief (A): </style><style id='13'>Amra Pasic</style><style id='15'>Specials Editor: </style><style id='17'>Alva Robinson</style><style id='19'>Visuals Editor: </style><style id='21'>Waleed Dashash</style><style id='23'>Content Editor: </style><style id='25'>Suzanne Garofalo</style><style id='27'>Contributing Editor:</style><style id='29'> Indlieb Farazi Saber</style>"
+        ],
+        "matched_prompt_count": 1,
+        "source": "Ahmed AL-Mulhem",
+        "target": "艾哈迈德·阿尔-穆勒赫姆"
+      },
+      {
+        "matched_excerpts": [
+          "Publisher: <style id='1'>Aramco Americas Company</style><style id='3'>President and CEO: </style><style id='5'>Ahmed AL-Mulhem</style><style id='7'>Director, Public Affairs (A): </style><style id='9'>Blain Rethmeier</style><style id='11'>Editor in Chief (A): </style><style id='13'>Amra Pasic</style><style id='15'>Specials Editor: </style><style id='17'>Alva Robinson</style><style id='19'>Visuals Editor: </style><style id='21'>Waleed Dashash</style><style id='23'>Content Editor: </style><style id='25'>Suzanne Garofalo</style><style id='27'>Contributing Editor:</style><style id='29'> Indlieb Farazi Saber</style>"
+        ],
+        "matched_prompt_count": 1,
+        "source": "Alva Robinson",
+        "target": "阿尔瓦·罗宾逊"
+      },
+      {
+        "matched_excerpts": [
+          "Publisher: <style id='1'>Aramco Americas Company</style><style id='3'>President and CEO: </style><style id='5'>Ahmed AL-Mulhem</style><style id='7'>Director, Public Affairs (A): </style><style id='9'>Blain Rethmeier</style><style id='11'>Editor in Chief (A): </style><style id='13'>Amra Pasic</style><style id='15'>Specials Editor: </style><style id='17'>Alva Robinson</style><style id='19'>Visuals Editor: </style><style id='21'>Waleed Dashash</style><style id='23'>Content Editor: </style><style id='25'>Suzanne Garofalo</style><style id='27'>Contributing Editor:</style><style id='29'> Indlieb Farazi Saber</style>"
+        ],
+        "matched_prompt_count": 1,
+        "source": "Amra Pasic",
+        "target": "阿姆拉·帕西奇"
+      },
+      {
+        "matched_excerpts": [
+          "<style id='1'>Editorial Assistants:</style>Sarah Khan and Bianca Speranza"
+        ],
+        "matched_prompt_count": 1,
+        "source": "Bianca Speranza",
+        "target": "比安卡·斯佩兰扎"
+      },
+      {
+        "matched_excerpts": [
+          "Publisher: <style id='1'>Aramco Americas Company</style><style id='3'>President and CEO: </style><style id='5'>Ahmed AL-Mulhem</style><style id='7'>Director, Public Affairs (A): </style><style id='9'>Blain Rethmeier</style><style id='11'>Editor in Chief (A): </style><style id='13'>Amra Pasic</style><style id='15'>Specials Editor: </style><style id='17'>Alva Robinson</style><style id='19'>Visuals Editor: </style><style id='21'>Waleed Dashash</style><style id='23'>Content Editor: </style><style id='25'>Suzanne Garofalo</style><style id='27'>Contributing Editor:</style><style id='29'> Indlieb Farazi Saber</style>"
+        ],
+        "matched_prompt_count": 1,
+        "source": "Blain Rethmeier",
+        "target": "布莱恩·雷思迈尔"
+      },
+      {
+        "matched_excerpts": [
+          "Publisher: <style id='1'>Aramco Americas Company</style><style id='3'>President and CEO: </style><style id='5'>Ahmed AL-Mulhem</style><style id='7'>Director, Public Affairs (A): </style><style id='9'>Blain Rethmeier</style><style id='11'>Editor in Chief (A): </style><style id='13'>Amra Pasic</style><style id='15'>Specials Editor: </style><style id='17'>Alva Robinson</style><style id='19'>Visuals Editor: </style><style id='21'>Waleed Dashash</style><style id='23'>Content Editor: </style><style id='25'>Suzanne Garofalo</style><style id='27'>Contributing Editor:</style><style id='29'> Indlieb Farazi Saber</style>"
+        ],
+        "matched_prompt_count": 1,
+        "source": "Indlieb Farazi Saber",
+        "target": "因德利布·法拉兹·萨贝尔"
+      },
+      {
+        "matched_excerpts": [
+          "<style id='1'>Editorial Assistants:</style>Sarah Khan and Bianca Speranza"
+        ],
+        "matched_prompt_count": 1,
+        "source": "Sarah Khan",
+        "target": "萨拉·汗"
+      },
+      {
+        "matched_excerpts": [
+          "Publisher: <style id='1'>Aramco Americas Company</style><style id='3'>President and CEO: </style><style id='5'>Ahmed AL-Mulhem</style><style id='7'>Director, Public Affairs (A): </style><style id='9'>Blain Rethmeier</style><style id='11'>Editor in Chief (A): </style><style id='13'>Amra Pasic</style><style id='15'>Specials Editor: </style><style id='17'>Alva Robinson</style><style id='19'>Visuals Editor: </style><style id='21'>Waleed Dashash</style><style id='23'>Content Editor: </style><style id='25'>Suzanne Garofalo</style><style id='27'>Contributing Editor:</style><style id='29'> Indlieb Farazi Saber</style>"
+        ],
+        "matched_prompt_count": 1,
+        "source": "Suzanne Garofalo",
+        "target": "苏珊娜·加罗法洛"
+      },
+      {
+        "matched_excerpts": [
+          "Publisher: <style id='1'>Aramco Americas Company</style><style id='3'>President and CEO: </style><style id='5'>Ahmed AL-Mulhem</style><style id='7'>Director, Public Affairs (A): </style><style id='9'>Blain Rethmeier</style><style id='11'>Editor in Chief (A): </style><style id='13'>Amra Pasic</style><style id='15'>Specials Editor: </style><style id='17'>Alva Robinson</style><style id='19'>Visuals Editor: </style><style id='21'>Waleed Dashash</style><style id='23'>Content Editor: </style><style id='25'>Suzanne Garofalo</style><style id='27'>Contributing Editor:</style><style id='29'> Indlieb Farazi Saber</style>"
+        ],
+        "matched_prompt_count": 1,
+        "source": "Waleed Dashash",
+        "target": "瓦利德·达沙什"
+      },
+      {
+        "matched_excerpts": [
+          "Early America’s Love of Foods From the East"
+        ],
+        "matched_prompt_count": 1,
+        "source": "Early America",
+        "target": "早期美国"
+      },
+      {
+        "matched_excerpts": [
+          "<style id='1'>WRITTEN BY </style>RAMIN GANESHRAM, <style id='3'>ILLUSTRATED BY </style>IVY JOHNSON As the United States marks the 250th anniversary of its independence on July 4, scholars note the Founding Fathers enjoyed foods that relied on ingredients carried through trade routes connecting the Mediterranean, Africa, Asia and the modern-day Middle East."
+        ],
+        "matched_prompt_count": 1,
+        "source": "Founding Fathers",
+        "target": "开国元勋"
+      },
+      {
+        "matched_excerpts": [
+          "What Has Become of the Hijaz Railway?",
+          "ORIGINS OF THE HIJAZ RAILWAY",
+          "<style id='1'>beloW</style> Workers lay rails near Tabuk in 1906. Construc- tion of the Hijaz Railway required thousands of mil- itary conscripts who toiled for eight years in var- ied landscapes. <style id='3'>bottoM</style> Tracks run through the coun- tyside south of Daraa, Syria."
+        ],
+        "matched_prompt_count": 11,
+        "source": "Hijaz Railway",
+        "target": "希贾兹铁路"
+      },
+      {
+        "matched_excerpts": [
+          "Finally, Middle East historian Meh- met Darakçıoğlu’s evaluation of the Ot- toman Bureau of Translation offers a necessary counter-narrative focused on adaptation rather than erasure. Found- ed in the early 19th century, the bureau trained officials fluent in French and European political thought. Translation acted as a bridge through which new po- litical concepts seeped into the empire. Darakçıoğlu illustrates how administra- tive renewal begins on the page before it takes institutional form.",
+          "<style id='1'>WRITTEN BY </style>RAMIN GANESHRAM, <style id='3'>ILLUSTRATED BY </style>IVY JOHNSON As the United States marks the 250th anniversary of its independence on July 4, scholars note the Founding Fathers enjoyed foods that relied on ingredients carried through trade routes connecting the Mediterranean, Africa, Asia and the modern-day Middle East."
+        ],
+        "matched_prompt_count": 2,
+        "source": "Middle East",
+        "target": "中东"
+      },
+      {
+        "matched_excerpts": [
+          "<style id='1'>Banjo on the Atlas </style><style id='3'>WRITTEN BY </style>BANNING EYRE How did an instrument with West African ancestors, entwined with Americana music, appear in the lineup of a North African orchestra? Two parallel narratives hold the answer.<style id='5'>8</style>",
+          "modern Spain, generates often conflicting meanings at the same time— meanings actively constructed and sometimes misread. Edhem Eldem, an Istanbul-based history professor, traces its role in shaping social and cultural identities across imperial Europe, Arab North Africa and Ottoman Türkiye from the 18th to the early 20th centuries. He builds his analysis like a layered confection, drawing on sources ranging from architectural history and travelogue to photographs and diplomatic correspondence. This approach both confirms and unsettles earlier assumptions about the Alhambra’s significance. One resource stands out and disrupts expectations. A multivolume register of visitors started in 1829 but long overlooked by scholars reveals recurring expressions of admiration and dissatisfaction shaped by shared expectations among travelers locally from Europe to the Maghreb of North Africa and farther east to the Levant. Eldem invokes the image of Russian <style id='1'>matryoshka</style>dolls to describe these layered reinter- pretations. Figures as different as a Moroccan diplomat and a European architect expressed admiration, even as shifting fashions rendered Ottoman observers increasingly indifferent. Then again, Spanish Orientalists reap- propriated Andalusian Islamic features copied elsewhere in Europe, while in Istanbul similar structures echoed both the Alhambra and its imitators. In each case, the monument becomes a site where meaning is continually reconfi ured through inherited cultural frameworks.—JAMIE S. SCOT T"
+        ],
+        "matched_prompt_count": 2,
+        "source": "North Africa",
+        "target": "北非"
+      },
+      {
+        "matched_excerpts": [
+          "<style id='1'>Banjo on the Atlas </style><style id='3'>WRITTEN BY </style>BANNING EYRE How did an instrument with West African ancestors, entwined with Americana music, appear in the lineup of a North African orchestra? Two parallel narratives hold the answer.<style id='5'>8</style>"
+        ],
+        "matched_prompt_count": 1,
+        "source": "North African",
+        "target": "北非"
+      },
+      {
+        "matched_excerpts": [
+          "The legacy of an Ottoman-era project to connect Damascas, Syria, to the holy site of Madinah in modern Saudi Arabia and beyond is breathing new life into today’s visions for rail in the region.",
+          "I discovered that the story Al Juhani was telling has been largely forgotten in Saudi Arabia. Yet the Hi- jaz (Hejaz) Railway helped shape the modern region. Over two years, while researching my forthcoming book on the railway, I traveled across the surviving route to understand what remains of that lost world.",
+          "Over the decades, various efforts were made to rehabilitate the Hijaz route. Most notably, in the 1960s, work in the north of Saudi Arabia involved rebuilding embankments and replacing dilapidated bridges and culverts. But cost spiraled, and that vision never fully materialized."
+        ],
+        "matched_prompt_count": 7,
+        "source": "Saudi Arabia",
+        "target": "沙特阿拉伯"
+      },
+      {
+        "matched_excerpts": [
+          "<style id='1'>R</style> Intricate interior details of the Tilya-Kori Madrasa on the Registan complex in Samarkand, Uzbekistan, include its gilded",
+          "“For example, this monument {v1}the Tilya-Kori Madrasa{v2}sits on a 9-meter foundation with a 10-cen- timeter layer of reeds beneath it,” he says. “When af- fected by earthquakes or water levels, the reeds act as a natural cushion. Our ancestors calculated all this.”",
+          "Inside the Tilya-Kori Madrasa, visitors now walk alongside large brick surfaces where decorative stone carving once existed."
+        ],
+        "matched_prompt_count": 3,
+        "source": "Tilya-Kori Madrasa",
+        "target": "蒂利亚-科里神学院"
+      },
+      {
+        "matched_excerpts": [
+          "<style id='1'>WRITTEN BY </style>RAMIN GANESHRAM, <style id='3'>ILLUSTRATED BY </style>IVY JOHNSON As the United States marks the 250th anniversary of its independence on July 4, scholars note the Founding Fathers enjoyed foods that relied on ingredients carried through trade routes connecting the Mediterranean, Africa, Asia and the modern-day Middle East."
+        ],
+        "matched_prompt_count": 1,
+        "source": "United States",
+        "target": "美国"
+      },
+      {
+        "matched_excerpts": [
+          "<style id='1'>Banjo on the Atlas </style><style id='3'>WRITTEN BY </style>BANNING EYRE How did an instrument with West African ancestors, entwined with Americana music, appear in the lineup of a North African orchestra? Two parallel narratives hold the answer.<style id='5'>8</style>"
+        ],
+        "matched_prompt_count": 1,
+        "source": "West African",
+        "target": "西非"
+      },
+      {
+        "matched_excerpts": [
+          "Today, however, no passenger services in the Mid- dle East cross an international border. That absence increasingly looks anomalous as Arabian Gulf gov- ernments revive plans for regional rail integration."
+        ],
+        "matched_prompt_count": 1,
+        "source": "Arabian Gulf",
+        "target": "阿拉伯湾"
+      },
+      {
+        "matched_excerpts": [
+          "<style id='1'>opposite</style> A rail-way tunnel cuts through a steep and rocky section of the landscape 50 kilometers (31 miles) south of Tabuk, Saudi Ara- bia. <style id='3'>beloW</style> Tawfiq Al Juhani drives off-road near the remote train sta- tion of Bir Jdid, part of the histor- ical Hijaz Railway, roughly 220 kilo-meters (137 miles) north of Madinah."
+        ],
+        "matched_prompt_count": 1,
+        "source": "Bir Jdid",
+        "target": "Bir Jdid"
+      },
+      {
+        "matched_excerpts": [
+          "Tawfiq Al Juhani drove at great speed, though it was hard to tell exactly how fast be-",
+          "<style id='1'>opposite</style> A rail-way tunnel cuts through a steep and rocky section of the landscape 50 kilometers (31 miles) south of Tabuk, Saudi Ara- bia. <style id='3'>beloW</style> Tawfiq Al Juhani drives off-road near the remote train sta- tion of Bir Jdid, part of the histor- ical Hijaz Railway, roughly 220 kilo-meters (137 miles) north of Madinah."
+        ],
+        "matched_prompt_count": 2,
+        "source": "Tawfiq Al Juhani",
+        "target": "陶菲克·阿尔·朱哈尼"
+      },
+      {
+        "matched_excerpts": [
+          "“The most unique aspect of all was how it was funded,” Kurşun added. Abdul Hamid contributed personally, and taxes were levied within the empire, complemented by voluntary donations from the global Muslim community. Donations arrived from across the Muslim world, including British India, Singapore and South Africa, turning the railway into a rare pan-Islamic infrastructure project that extended far beyond Ottoman territory itself. The railway became the first in Ottoman territory that received no financing from foreign powers and was designated as <style id='1'>waqf</style>: an Islamic endowment whose assets could not be sold and charitable purpose not easily changed."
+        ],
+        "matched_prompt_count": 1,
+        "source": "British India",
+        "target": "英属印度"
+      },
+      {
+        "matched_excerpts": [
+          "What Has Become of the Hijaz Railway?",
+          "ORIGINS OF THE HIJAZ RAILWAY",
+          "<style id='1'>beloW</style> Workers lay rails near Tabuk in 1906. Construc- tion of the Hijaz Railway required thousands of mil- itary conscripts who toiled for eight years in var- ied landscapes. <style id='3'>bottoM</style> Tracks run through the coun- tyside south of Daraa, Syria."
+        ],
+        "matched_prompt_count": 11,
+        "source": "HIJAZ RAILWAY",
+        "target": "希贾兹铁路"
+      },
+      {
+        "matched_excerpts": [
+          "Ottoman authorities deployed thousands of mil- itary conscripts to build the railway, said Kurşun, and the landscapes in which they worked were fierce, varied and often far from urban centers. In his com- prehensive 2005 history book <style id='1'>The Hejaz Railway</style>, author James Nicholson writes, “Winding its way through some of the most dramatic desert mountain scenery in the world...its construction was a tale of endurance and resolve made epic by the heat {v3}and{v4}the harsh conditions.”"
+        ],
+        "matched_prompt_count": 1,
+        "source": "James Nicholson",
+        "target": "詹姆斯·尼科尔森"
+      },
+      {
+        "matched_excerpts": [
+          "The advancement of the line here required hun- dreds of bridges, aqueducts and culverts to manage the drainage. In the Yarmouk Valley—a stunning, steep cleavage in the earth (now the border between Syria and Jordan) and through which the railway passed on a slightly later branch line on the way to the Mediterranean Sea—a series of highly complex stone and iron bridges was required to navigate the gorge."
+        ],
+        "matched_prompt_count": 1,
+        "source": "Mediterranean Sea",
+        "target": "地中海"
+      },
+      {
+        "matched_excerpts": [
+          "“The most unique aspect of all was how it was funded,” Kurşun added. Abdul Hamid contributed personally, and taxes were levied within the empire, complemented by voluntary donations from the global Muslim community. Donations arrived from across the Muslim world, including British India, Singapore and South Africa, turning the railway into a rare pan-Islamic infrastructure project that extended far beyond Ottoman territory itself. The railway became the first in Ottoman territory that received no financing from foreign powers and was designated as <style id='1'>waqf</style>: an Islamic endowment whose assets could not be sold and charitable purpose not easily changed."
+        ],
+        "matched_prompt_count": 1,
+        "source": "South Africa",
+        "target": "南非"
+      },
+      {
+        "matched_excerpts": [
+          "The advancement of the line here required hun- dreds of bridges, aqueducts and culverts to manage the drainage. In the Yarmouk Valley—a stunning, steep cleavage in the earth (now the border between Syria and Jordan) and through which the railway passed on a slightly later branch line on the way to the Mediterranean Sea—a series of highly complex stone and iron bridges was required to navigate the gorge."
+        ],
+        "matched_prompt_count": 1,
+        "source": "Yarmouk Valley",
+        "target": "亚尔穆克山谷"
+      },
+      {
+        "matched_excerpts": [
+          "All three aims were important, said professor Zekeriya Kurşun, a specialist on the subject whose expertise I sought out in Istanbul, “but the religious reason was elevated above the others.” It was popu- lar with a majority of Ottoman subjects, and being the leader behind a sacred project was useful for the sultan. Journeys that once consumed weeks of hardship suddenly became predictable and compar- atively safe, reshaping the psychological geography of the region."
+        ],
+        "matched_prompt_count": 1,
+        "source": "Zekeriya Kurşun",
+        "target": "泽克里亚·库尔顺"
+      },
+      {
+        "matched_excerpts": [
+          "Still, it was a great success for the ailing em- pire. In 1909 French explorer Charles-Eudes Bonin noted admiringly in the academic journal <style id='1'>Annales de Géographie</style>: “By reducing costs and journey times, and by protecting travellers ... the Hijaz Railway has restored the terrestrial pilgrimage to its former glory.”"
+        ],
+        "matched_prompt_count": 1,
+        "source": "Annales de Géographie",
+        "target": "地理学年鉴"
+      },
+      {
+        "matched_excerpts": [
+          "Still, it was a great success for the ailing em- pire. In 1909 French explorer Charles-Eudes Bonin noted admiringly in the academic journal <style id='1'>Annales de Géographie</style>: “By reducing costs and journey times, and by protecting travellers ... the Hijaz Railway has restored the terrestrial pilgrimage to its former glory.”"
+        ],
+        "matched_prompt_count": 1,
+        "source": "Charles-Eudes Bonin",
+        "target": "夏尔-厄德·博南"
+      },
+      {
+        "matched_excerpts": [
+          "Since 2023 I have been exploring the route, re- turning multiple times to collect memories of a past era. Its starting point is marked by the grand Hijaz Railway Station in downtown Damascus, where a"
+        ],
+        "matched_prompt_count": 1,
+        "source": "Hijaz Railway Station",
+        "target": "希贾兹火车站"
+      },
+      {
+        "matched_excerpts": [
+          "The optimism surrounding the railway did not last long. Less than a decade later, during World War I, the railway was repeatedly attacked. Raiding par- ties destroyed large sections of the route—including the stretch Al Juhani showed me in the desert south of AlUla. The war eventually led to the Ottoman Empire’s collapse."
+        ],
+        "matched_prompt_count": 1,
+        "source": "Ottoman Empire",
+        "target": "奥斯曼帝国"
+      },
+      {
+        "matched_excerpts": [
+          "<style id='1'>In </style><style id='3'>The First Female Pharoah: Sobekneferu, Goddess of the Seven Stars</style><style id='5'>, historian Andrew Collins offers a reassess- ment of Sobekneferu, the first woman to rule both Upper and Lower Egypt—an achievement long obscured by fragmentary evidence and mythmaking. Collins argues that her brief reign deserves recognition not as an anom- aly but as a consequential moment in ancient Egyptian leadership. Born to Amenemhat III during the Middle Kingdom, Sobekneferu, also known as Neferusobek, ascended the throne around 1798 BCE, per Collins, amid growing instability. Economic strains and the failure of the Nile to flood undermined royal authority. Drawing on sparse material evidence—broken statues, scattered inscriptions and later textual references—Collins re- constructs Sobekneferu’s reign with care. He traces her efforts to stabilize the kingdom, including completing her father’s mortuary complex at Hawara in the Fayum Oasis and elevating the crocodile god Sobek to state prominence. While the circumstances of her abrupt end in 1794 BCE remain unresolved, Collins treats uncertain- ty as part of historical record rather than a narrative flaw. The book’s greatest strength lies in its restraint. Collins transforms limited evidence into a readable, measured narrative without allowing speculation to overwhelm scholarship. His prose balances archeological detail with interpretive clarity, presenting Sobekneferu as a political actor navigating structural constraints rather than as a symbolic curiosity. Over time, Sobekneferu’s legacy fractured—absorbed into her father’s legacy and later mythologized as Nitocris, whose name Herodotus preserved in the fifth century BCE. </style><style id='7'>The First Female Pharaoh</style><style id='9'> invites readers to appreciate how authority, gender and memory intersect. </style>—DIANNA WR AY"
+        ],
+        "matched_prompt_count": 1,
+        "source": "Amenemhat III",
+        "target": "阿蒙涅姆赫特三世"
+      },
+      {
+        "matched_excerpts": [
+          "<style id='1'>In </style><style id='3'>The First Female Pharoah: Sobekneferu, Goddess of the Seven Stars</style><style id='5'>, historian Andrew Collins offers a reassess- ment of Sobekneferu, the first woman to rule both Upper and Lower Egypt—an achievement long obscured by fragmentary evidence and mythmaking. Collins argues that her brief reign deserves recognition not as an anom- aly but as a consequential moment in ancient Egyptian leadership. Born to Amenemhat III during the Middle Kingdom, Sobekneferu, also known as Neferusobek, ascended the throne around 1798 BCE, per Collins, amid growing instability. Economic strains and the failure of the Nile to flood undermined royal authority. Drawing on sparse material evidence—broken statues, scattered inscriptions and later textual references—Collins re- constructs Sobekneferu’s reign with care. He traces her efforts to stabilize the kingdom, including completing her father’s mortuary complex at Hawara in the Fayum Oasis and elevating the crocodile god Sobek to state prominence. While the circumstances of her abrupt end in 1794 BCE remain unresolved, Collins treats uncertain- ty as part of historical record rather than a narrative flaw. The book’s greatest strength lies in its restraint. Collins transforms limited evidence into a readable, measured narrative without allowing speculation to overwhelm scholarship. His prose balances archeological detail with interpretive clarity, presenting Sobekneferu as a political actor navigating structural constraints rather than as a symbolic curiosity. Over time, Sobekneferu’s legacy fractured—absorbed into her father’s legacy and later mythologized as Nitocris, whose name Herodotus preserved in the fifth century BCE. </style><style id='7'>The First Female Pharaoh</style><style id='9'> invites readers to appreciate how authority, gender and memory intersect. </style>—DIANNA WR AY",
+          "Andrew Collins. Bear & Company, 2023."
+        ],
+        "matched_prompt_count": 2,
+        "source": "Andrew Collins",
+        "target": "安德鲁·柯林斯"
+      },
+      {
+        "matched_excerpts": [
+          "modern Spain, generates often conflicting meanings at the same time— meanings actively constructed and sometimes misread. Edhem Eldem, an Istanbul-based history professor, traces its role in shaping social and cultural identities across imperial Europe, Arab North Africa and Ottoman Türkiye from the 18th to the early 20th centuries. He builds his analysis like a layered confection, drawing on sources ranging from architectural history and travelogue to photographs and diplomatic correspondence. This approach both confirms and unsettles earlier assumptions about the Alhambra’s significance. One resource stands out and disrupts expectations. A multivolume register of visitors started in 1829 but long overlooked by scholars reveals recurring expressions of admiration and dissatisfaction shaped by shared expectations among travelers locally from Europe to the Maghreb of North Africa and farther east to the Levant. Eldem invokes the image of Russian <style id='1'>matryoshka</style>dolls to describe these layered reinter- pretations. Figures as different as a Moroccan diplomat and a European architect expressed admiration, even as shifting fashions rendered Ottoman observers increasingly indifferent. Then again, Spanish Orientalists reap- propriated Andalusian Islamic features copied elsewhere in Europe, while in Istanbul similar structures echoed both the Alhambra and its imitators. In each case, the monument becomes a site where meaning is continually reconfi ured through inherited cultural frameworks.—JAMIE S. SCOT T"
+        ],
+        "matched_prompt_count": 1,
+        "source": "Arab North Africa",
+        "target": "阿拉伯北非"
+      },
+      {
+        "matched_excerpts": [
+          "modern Spain, generates often conflicting meanings at the same time— meanings actively constructed and sometimes misread. Edhem Eldem, an Istanbul-based history professor, traces its role in shaping social and cultural identities across imperial Europe, Arab North Africa and Ottoman Türkiye from the 18th to the early 20th centuries. He builds his analysis like a layered confection, drawing on sources ranging from architectural history and travelogue to photographs and diplomatic correspondence. This approach both confirms and unsettles earlier assumptions about the Alhambra’s significance. One resource stands out and disrupts expectations. A multivolume register of visitors started in 1829 but long overlooked by scholars reveals recurring expressions of admiration and dissatisfaction shaped by shared expectations among travelers locally from Europe to the Maghreb of North Africa and farther east to the Levant. Eldem invokes the image of Russian <style id='1'>matryoshka</style>dolls to describe these layered reinter- pretations. Figures as different as a Moroccan diplomat and a European architect expressed admiration, even as shifting fashions rendered Ottoman observers increasingly indifferent. Then again, Spanish Orientalists reap- propriated Andalusian Islamic features copied elsewhere in Europe, while in Istanbul similar structures echoed both the Alhambra and its imitators. In each case, the monument becomes a site where meaning is continually reconfi ured through inherited cultural frameworks.—JAMIE S. SCOT T",
+          "Edhem Eldem. Edinburgh University Press, 2024."
+        ],
+        "matched_prompt_count": 2,
+        "source": "Edhem Eldem",
+        "target": "埃德赫姆·埃尔德姆"
+      },
+      {
+        "matched_excerpts": [
+          "<style id='1'>In </style><style id='3'>The First Female Pharoah: Sobekneferu, Goddess of the Seven Stars</style><style id='5'>, historian Andrew Collins offers a reassess- ment of Sobekneferu, the first woman to rule both Upper and Lower Egypt—an achievement long obscured by fragmentary evidence and mythmaking. Collins argues that her brief reign deserves recognition not as an anom- aly but as a consequential moment in ancient Egyptian leadership. Born to Amenemhat III during the Middle Kingdom, Sobekneferu, also known as Neferusobek, ascended the throne around 1798 BCE, per Collins, amid growing instability. Economic strains and the failure of the Nile to flood undermined royal authority. Drawing on sparse material evidence—broken statues, scattered inscriptions and later textual references—Collins re- constructs Sobekneferu’s reign with care. He traces her efforts to stabilize the kingdom, including completing her father’s mortuary complex at Hawara in the Fayum Oasis and elevating the crocodile god Sobek to state prominence. While the circumstances of her abrupt end in 1794 BCE remain unresolved, Collins treats uncertain- ty as part of historical record rather than a narrative flaw. The book’s greatest strength lies in its restraint. Collins transforms limited evidence into a readable, measured narrative without allowing speculation to overwhelm scholarship. His prose balances archeological detail with interpretive clarity, presenting Sobekneferu as a political actor navigating structural constraints rather than as a symbolic curiosity. Over time, Sobekneferu’s legacy fractured—absorbed into her father’s legacy and later mythologized as Nitocris, whose name Herodotus preserved in the fifth century BCE. </style><style id='7'>The First Female Pharaoh</style><style id='9'> invites readers to appreciate how authority, gender and memory intersect. </style>—DIANNA WR AY"
+        ],
+        "matched_prompt_count": 1,
+        "source": "Fayum Oasis",
+        "target": "法尤姆绿洲"
+      },
+      {
+        "matched_excerpts": [
+          "it actively shaped how it was perceived and felt. Drawing on classical, biblical and medieval texts, Binski, a professor emeritus of medieval art history at the University of Cambridge, shows how language and symbolism informed the way these buildings were understood. He conducts us through cathedrals across Europe, where architecture emerges as part of a larger environment. Context is key, he insists. For example, when French philos- opher Jean de Jandun described the Virgin Mary at Notre Dame Cathedral as <style id='1'>terribilissima</style> in 1323 CE, he invoked reverence rather than fear. Within these spaces, soaring columns draw the eye upward. Intricate carvings and opulent materials hold it there. Sound seizes the ear—the rumbling organ at Winchester or the authority of bells at Ely. Comparisons with the sunlit marble of Hagia Sophia and the uplifting sublimity of the workmanship in the Alhambra extend the book’s scope, though these remain part of a broader comparative framework. Richly illustrated, the book ultimately asks us to reconsider these sites not as monuments to be viewed but as spaces that act upon those who enter them. —JAMIE S. SCOT T"
+        ],
+        "matched_prompt_count": 1,
+        "source": "Hagia Sophia",
+        "target": "圣索菲亚大教堂"
+      },
+      {
+        "matched_excerpts": [
+          "it actively shaped how it was perceived and felt. Drawing on classical, biblical and medieval texts, Binski, a professor emeritus of medieval art history at the University of Cambridge, shows how language and symbolism informed the way these buildings were understood. He conducts us through cathedrals across Europe, where architecture emerges as part of a larger environment. Context is key, he insists. For example, when French philos- opher Jean de Jandun described the Virgin Mary at Notre Dame Cathedral as <style id='1'>terribilissima</style> in 1323 CE, he invoked reverence rather than fear. Within these spaces, soaring columns draw the eye upward. Intricate carvings and opulent materials hold it there. Sound seizes the ear—the rumbling organ at Winchester or the authority of bells at Ely. Comparisons with the sunlit marble of Hagia Sophia and the uplifting sublimity of the workmanship in the Alhambra extend the book’s scope, though these remain part of a broader comparative framework. Richly illustrated, the book ultimately asks us to reconsider these sites not as monuments to be viewed but as spaces that act upon those who enter them. —JAMIE S. SCOT T"
+        ],
+        "matched_prompt_count": 1,
+        "source": "Jean de Jandun",
+        "target": "让·德·让顿"
+      },
+      {
+        "matched_excerpts": [
+          "<style id='1'>In </style><style id='3'>The First Female Pharoah: Sobekneferu, Goddess of the Seven Stars</style><style id='5'>, historian Andrew Collins offers a reassess- ment of Sobekneferu, the first woman to rule both Upper and Lower Egypt—an achievement long obscured by fragmentary evidence and mythmaking. Collins argues that her brief reign deserves recognition not as an anom- aly but as a consequential moment in ancient Egyptian leadership. Born to Amenemhat III during the Middle Kingdom, Sobekneferu, also known as Neferusobek, ascended the throne around 1798 BCE, per Collins, amid growing instability. Economic strains and the failure of the Nile to flood undermined royal authority. Drawing on sparse material evidence—broken statues, scattered inscriptions and later textual references—Collins re- constructs Sobekneferu’s reign with care. He traces her efforts to stabilize the kingdom, including completing her father’s mortuary complex at Hawara in the Fayum Oasis and elevating the crocodile god Sobek to state prominence. While the circumstances of her abrupt end in 1794 BCE remain unresolved, Collins treats uncertain- ty as part of historical record rather than a narrative flaw. The book’s greatest strength lies in its restraint. Collins transforms limited evidence into a readable, measured narrative without allowing speculation to overwhelm scholarship. His prose balances archeological detail with interpretive clarity, presenting Sobekneferu as a political actor navigating structural constraints rather than as a symbolic curiosity. Over time, Sobekneferu’s legacy fractured—absorbed into her father’s legacy and later mythologized as Nitocris, whose name Herodotus preserved in the fifth century BCE. </style><style id='7'>The First Female Pharaoh</style><style id='9'> invites readers to appreciate how authority, gender and memory intersect. </style>—DIANNA WR AY"
+        ],
+        "matched_prompt_count": 1,
+        "source": "Middle Kingdom",
+        "target": "中王国"
+      },
+      {
+        "matched_excerpts": [
+          "it actively shaped how it was perceived and felt. Drawing on classical, biblical and medieval texts, Binski, a professor emeritus of medieval art history at the University of Cambridge, shows how language and symbolism informed the way these buildings were understood. He conducts us through cathedrals across Europe, where architecture emerges as part of a larger environment. Context is key, he insists. For example, when French philos- opher Jean de Jandun described the Virgin Mary at Notre Dame Cathedral as <style id='1'>terribilissima</style> in 1323 CE, he invoked reverence rather than fear. Within these spaces, soaring columns draw the eye upward. Intricate carvings and opulent materials hold it there. Sound seizes the ear—the rumbling organ at Winchester or the authority of bells at Ely. Comparisons with the sunlit marble of Hagia Sophia and the uplifting sublimity of the workmanship in the Alhambra extend the book’s scope, though these remain part of a broader comparative framework. Richly illustrated, the book ultimately asks us to reconsider these sites not as monuments to be viewed but as spaces that act upon those who enter them. —JAMIE S. SCOT T"
+        ],
+        "matched_prompt_count": 1,
+        "source": "Notre Dame Cathedral",
+        "target": "巴黎圣母院"
+      },
+      {
+        "matched_excerpts": [
+          "modern Spain, generates often conflicting meanings at the same time— meanings actively constructed and sometimes misread. Edhem Eldem, an Istanbul-based history professor, traces its role in shaping social and cultural identities across imperial Europe, Arab North Africa and Ottoman Türkiye from the 18th to the early 20th centuries. He builds his analysis like a layered confection, drawing on sources ranging from architectural history and travelogue to photographs and diplomatic correspondence. This approach both confirms and unsettles earlier assumptions about the Alhambra’s significance. One resource stands out and disrupts expectations. A multivolume register of visitors started in 1829 but long overlooked by scholars reveals recurring expressions of admiration and dissatisfaction shaped by shared expectations among travelers locally from Europe to the Maghreb of North Africa and farther east to the Levant. Eldem invokes the image of Russian <style id='1'>matryoshka</style>dolls to describe these layered reinter- pretations. Figures as different as a Moroccan diplomat and a European architect expressed admiration, even as shifting fashions rendered Ottoman observers increasingly indifferent. Then again, Spanish Orientalists reap- propriated Andalusian Islamic features copied elsewhere in Europe, while in Istanbul similar structures echoed both the Alhambra and its imitators. In each case, the monument becomes a site where meaning is continually reconfi ured through inherited cultural frameworks.—JAMIE S. SCOT T"
+        ],
+        "matched_prompt_count": 1,
+        "source": "Ottoman Türkiye",
+        "target": "奥斯曼土耳其"
+      },
+      {
+        "matched_excerpts": [
+          "Paul Binski. University of California Press, 2024.",
+          "From the opening pages, Paul Binski’s <style id='1'>Architecture and </style><style id='3'>Aff</style><style id='5'>ect in the Middle Ages</style> immerses the reader in a dense, multisensory world. It reveals a central claim: Medieval architecture did not merely surround worship;"
+        ],
+        "matched_prompt_count": 2,
+        "source": "Paul Binski",
+        "target": "保罗·宾斯基"
+      },
+      {
+        "matched_excerpts": [
+          "modern Spain, generates often conflicting meanings at the same time— meanings actively constructed and sometimes misread. Edhem Eldem, an Istanbul-based history professor, traces its role in shaping social and cultural identities across imperial Europe, Arab North Africa and Ottoman Türkiye from the 18th to the early 20th centuries. He builds his analysis like a layered confection, drawing on sources ranging from architectural history and travelogue to photographs and diplomatic correspondence. This approach both confirms and unsettles earlier assumptions about the Alhambra’s significance. One resource stands out and disrupts expectations. A multivolume register of visitors started in 1829 but long overlooked by scholars reveals recurring expressions of admiration and dissatisfaction shaped by shared expectations among travelers locally from Europe to the Maghreb of North Africa and farther east to the Levant. Eldem invokes the image of Russian <style id='1'>matryoshka</style>dolls to describe these layered reinter- pretations. Figures as different as a Moroccan diplomat and a European architect expressed admiration, even as shifting fashions rendered Ottoman observers increasingly indifferent. Then again, Spanish Orientalists reap- propriated Andalusian Islamic features copied elsewhere in Europe, while in Istanbul similar structures echoed both the Alhambra and its imitators. In each case, the monument becomes a site where meaning is continually reconfi ured through inherited cultural frameworks.—JAMIE S. SCOT T"
+        ],
+        "matched_prompt_count": 1,
+        "source": "Spanish Orientalists",
+        "target": "西班牙东方学家"
+      },
+      {
+        "matched_excerpts": [
+          "Th Alhambra at the Crossroads of History: Eastern and Western Visions in the Long Nineteenth Century."
+        ],
+        "matched_prompt_count": 1,
+        "source": "Th Alhambra",
+        "target": "阿尔罕布拉宫"
+      },
+      {
+        "matched_excerpts": [
+          "it actively shaped how it was perceived and felt. Drawing on classical, biblical and medieval texts, Binski, a professor emeritus of medieval art history at the University of Cambridge, shows how language and symbolism informed the way these buildings were understood. He conducts us through cathedrals across Europe, where architecture emerges as part of a larger environment. Context is key, he insists. For example, when French philos- opher Jean de Jandun described the Virgin Mary at Notre Dame Cathedral as <style id='1'>terribilissima</style> in 1323 CE, he invoked reverence rather than fear. Within these spaces, soaring columns draw the eye upward. Intricate carvings and opulent materials hold it there. Sound seizes the ear—the rumbling organ at Winchester or the authority of bells at Ely. Comparisons with the sunlit marble of Hagia Sophia and the uplifting sublimity of the workmanship in the Alhambra extend the book’s scope, though these remain part of a broader comparative framework. Richly illustrated, the book ultimately asks us to reconsider these sites not as monuments to be viewed but as spaces that act upon those who enter them. —JAMIE S. SCOT T"
+        ],
+        "matched_prompt_count": 1,
+        "source": "Virgin Mary",
+        "target": "圣母玛利亚"
+      },
+      {
+        "matched_excerpts": [
+          "Shifting to the mechanisms of state control, Benjamin Claude Brower’s essay on “name regulation” in Algeria stands out for its chilling analysis of the quieter mechanisms of imperial pow- er. The forced simplification of Muslim"
+        ],
+        "matched_prompt_count": 1,
+        "source": "Benjamin Claude Brower",
+        "target": "本杰明·克劳德·布劳尔"
+      },
+      {
+        "matched_excerpts": [
+          "<style id='1'>Islamic Ecumene: Comparing Muslim Societies</style>David S. Powers and Eric Tagliacozzo, eds. Cornell University Press, 2023.",
+          "<style id='1'>Islamic Ecumene</style> opens with a firm refusal: Islam cannot be contained within a single geography, tra- dition or political form. Edited by David S. Powers and Eric Tagliacozzo, both professors of history at Cornell University, this collection of 22 essays advances a simple yet consequential claim. The Muslim world is not a unified or monolithic civi- lization but rather a historically layered ecumene shaped by centuries of regional choice, encounter, translation and experience. This insistence that Is- lamic life has always emerged not through sameness but through plurality binds this volume together."
+        ],
+        "matched_prompt_count": 2,
+        "source": "Eric Tagliacozzo",
+        "target": "埃里克·塔利亚科佐"
+      },
+      {
+        "matched_excerpts": [
+          "As these essays intersect, a cen- tral insight emerges: Muslim societies do not flow as a single river but braids as a world shaped by power, reform, ethics and historical memory. <style id='1'>Islamic Ecumene</style> excels in its restraint, favoring close case studies over sweeping theory and allowing complexity to accumulate rather than forcing resolution.",
+          "<style id='1'>—</style>Islamic Ecumene",
+          "<style id='1'>Islamic Ecumene: Comparing Muslim Societies</style>David S. Powers and Eric Tagliacozzo, eds. Cornell University Press, 2023."
+        ],
+        "matched_prompt_count": 4,
+        "source": "Islamic Ecumene",
+        "target": "伊斯兰教会"
+      },
+      {
+        "matched_excerpts": [
+          "Work Reveals a Layered, Complex Islamic Polity"
+        ],
+        "matched_prompt_count": 1,
+        "source": "Islamic Polity",
+        "target": "伊斯兰政体"
+      },
+      {
+        "matched_excerpts": [
+          "Historian James Pickett’s study of 19th-century Bukharan <style id='1'>madrasa</style>s, for example, is essential reading for those seeking to understand cultural fl idity. Pickett questions whether these institu- tions of modern Uzbekistan can mean- ingfully be described as “Persian.” While imbued with Persian literary culture, Pickett shows their intellectual foun- dations rested on Arabic logic and juris- prudence. The convergence of Turkic, Persian and Arab traditions produced a scholarly environment that defies a single civilizational label."
+        ],
+        "matched_prompt_count": 1,
+        "source": "James Pickett",
+        "target": "詹姆斯·皮克特"
+      },
+      {
+        "matched_excerpts": [
+          "<style id='1'>WRITTEN BY </style>AIBARSHYN AKHMETKALI, <style id='3'>PHOTOGRAPHED BY </style>DANIIL USMANOV With earthquakes, weather, tourism and time threatening some of the world’s most celebrated Islamic architecture, restorers ensure that the knowledge behind the monuments survives alongside the buildings themselves."
+        ],
+        "matched_prompt_count": 1,
+        "source": "Aibarshyn Akhmetkali",
+        "target": "艾巴尔申·阿赫梅特卡利"
+      },
+      {
+        "matched_excerpts": [
+          "<style id='1'>Banjo on the Atlas </style><style id='3'>WRITTEN BY </style>BANNING EYRE How did an instrument with West African ancestors, entwined with Americana music, appear in the lineup of a North African orchestra? Two parallel narratives hold the answer.<style id='5'>8</style>"
+        ],
+        "matched_prompt_count": 1,
+        "source": "Banning Eyre",
+        "target": "班宁·艾尔"
+      },
+      {
+        "matched_excerpts": [
+          "<style id='1'>WRITTEN BY </style>AIBARSHYN AKHMETKALI, <style id='3'>PHOTOGRAPHED BY </style>DANIIL USMANOV With earthquakes, weather, tourism and time threatening some of the world’s most celebrated Islamic architecture, restorers ensure that the knowledge behind the monuments survives alongside the buildings themselves."
+        ],
+        "matched_prompt_count": 1,
+        "source": "Daniil Usmanov",
+        "target": "达尼尔·乌斯马诺夫"
+      },
+      {
+        "matched_excerpts": [
+          "<style id='1'>WRITTEN BY </style>RAMIN GANESHRAM, <style id='3'>ILLUSTRATED BY </style>IVY JOHNSON As the United States marks the 250th anniversary of its independence on July 4, scholars note the Founding Fathers enjoyed foods that relied on ingredients carried through trade routes connecting the Mediterranean, Africa, Asia and the modern-day Middle East."
+        ],
+        "matched_prompt_count": 1,
+        "source": "Ivy Johnson",
+        "target": "艾维·约翰逊"
+      },
+      {
+        "matched_excerpts": [],
+        "matched_prompt_count": 0,
+        "source": "Khir-bet Samra",
+        "target": "希尔贝特·萨姆拉"
+      },
+      {
+        "matched_excerpts": [
+          "<style id='1'>WRITTEN AND PHOTOGRAPHED BY </style>LEON McCARRON"
+        ],
+        "matched_prompt_count": 1,
+        "source": "Leon McCarron",
+        "target": "利昂·麦卡伦"
+      },
+      {
+        "matched_excerpts": [],
+        "matched_prompt_count": 0,
+        "source": "Mehmet Darakçıoğlu",
+        "target": "穆罕默德·达拉克乔奥卢"
+      },
+      {
+        "matched_excerpts": [
+          "<style id='1'>WRITTEN BY </style>RAMIN GANESHRAM, <style id='3'>ILLUSTRATED BY </style>IVY JOHNSON As the United States marks the 250th anniversary of its independence on July 4, scholars note the Founding Fathers enjoyed foods that relied on ingredients carried through trade routes connecting the Mediterranean, Africa, Asia and the modern-day Middle East."
+        ],
+        "matched_prompt_count": 1,
+        "source": "Ramin Ganeshram",
+        "target": "拉明·加内什拉姆"
+      },
+      {
+        "matched_excerpts": [],
+        "matched_prompt_count": 0,
+        "source": "Ulugh Beg Madrasa",
+        "target": "乌鲁伯格神学院"
+      }
+    ],
+    "overridden": [],
+    "repair_inputs": 5,
+    "ruled": 0
+  }
+}

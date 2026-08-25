@@ -46,6 +46,8 @@ from babeldoc.magazine.react.config import MAX_PARAGRAPHS as MAX_PARAGRAPHS_KEY
 from babeldoc.magazine.react.config import MIN_CHARS_KEY
 from babeldoc.magazine.react.config import MIN_RATIO_KEY
 from babeldoc.magazine.react.config import ORPHAN_LABELS_KEY
+from babeldoc.magazine.react.config import ORPHAN_VERTICAL_DEFAULT
+from babeldoc.magazine.react.config import ORPHAN_VERTICAL_KEY
 from babeldoc.magazine.react.config import Action
 from babeldoc.magazine.react.config import RepairConfig
 from babeldoc.translator.cache import TranslationCache
@@ -161,13 +163,50 @@ def applicability(action: Action) -> tuple[float, int, tuple[str, ...]]:
         float(rule[MIN_RATIO_KEY]),
         int(rule[MIN_CHARS_KEY]),
         tuple(rule[ORPHAN_LABELS_KEY]),
+        bool(rule.get(ORPHAN_VERTICAL_KEY, ORPHAN_VERTICAL_DEFAULT)),
     )
 
 
-def admits(issue, paragraph, action: Action, source_text: str) -> str:
-    """Why this finding is not one to act on, or ``ACCEPTED``."""
-    min_ratio, min_chars, orphan_labels = applicability(action)
-    if (paragraph.layout_label or "") not in orphan_labels:
+def min_ratio_for(action: Action, language: str | None) -> float:
+    """The share of residue a finding needs before this action acts, per direction.
+
+    The share is a filter against acting on a paragraph that is mostly its own
+    target language with a word of something else in it -- a brand, an address,
+    a name. Whether that filter has anything to protect depends on the
+    direction, exactly as the detector's own floor does. Into English a Chinese
+    character has no legitimate untranslated use, so a credit line that is half
+    Latin and half Chinese is half residue rather than a mixed line to be left
+    alone. A direction declaring no share of its own takes the general one.
+    """
+    override = action.overridden_by(language).get(MIN_RATIO_KEY)
+    if override is None:
+        return float(action.applicability[MIN_RATIO_KEY])
+    return float(action.applicability[override])
+
+
+def admits(issue, paragraph, action: Action, source_text: str, language=None) -> str:
+    """Why this finding is not one to act on, or ``ACCEPTED``.
+
+    What this action exists for is a paragraph the translator was never given
+    the chance to reach, and there are two ways to be one. A line the layout
+    parser recovered outside every block carries no paragraph style, and the
+    declared labels are how that is recognised. A paragraph set along the
+    vertical axis is refused by the translator before its text is read at all,
+    whatever label it carries and however ordinary that label is. Both are
+    "never offered a request", so both are this action's jurisdiction, and a
+    finding qualifying under either is admitted.
+
+    The two are kept as separate terms rather than merged into one widened
+    label list. A rotated paragraph is not an orphan line and does not become
+    one by being listed beside it; and widening the labels would admit every
+    unrotated paragraph carrying them, which is a different and larger class
+    than the one this answers for.
+    """
+    _general, min_chars, orphan_labels, accepts_vertical = applicability(action)
+    min_ratio = min_ratio_for(action, language)
+    orphaned = (paragraph.layout_label or "") in orphan_labels
+    rotated = accepts_vertical and bool(getattr(paragraph, "vertical", False))
+    if not (orphaned or rotated):
         return REASON_LABEL
     ratio = issue.evidence.get("residue_ratio")
     if not isinstance(ratio, int | float) or float(ratio) < min_ratio:
@@ -179,9 +218,15 @@ def admits(issue, paragraph, action: Action, source_text: str) -> str:
     return ACCEPTED
 
 
-def admits_candidate(issue, candidate, action: Action, context) -> str:  # noqa: ARG001 - the pass is part of the question every action is asked
+def admits_candidate(issue, candidate, action: Action, context) -> str:
     """This action's admission question, in the shape the loop asks every action."""
-    return admits(issue, candidate.paragraph, action, candidate.source_text)
+    return admits(
+        issue,
+        candidate.paragraph,
+        action,
+        candidate.source_text,
+        getattr(context, "language", None),
+    )
 
 
 def resolve(issue, pages_by_label: dict) -> Candidate | None:

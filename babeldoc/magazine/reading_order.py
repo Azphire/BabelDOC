@@ -76,6 +76,21 @@ def _advance(units) -> tuple[float, float]:
     Summed rather than counted so that a run advancing steadily in one direction
     outweighs the odd step that does not, which is what a superscript or a
     kerned pair looks like from here.
+
+    The steps are the ones inside a unit wherever there are any. A paragraph
+    whose units hold one character each has none, so its two sums are zero,
+    neither axis dominates, and the paragraph is left in stored order -- and
+    that is exactly the shape a strip of rotated type arrives in, one character
+    per formula, which is the paragraph this module exists for. For that shape
+    alone the steps between consecutive units are counted instead.
+
+    The two cases are kept apart rather than merged because the step between
+    two units of a paragraph set in lines is not an advance: at a line end it
+    runs the width of the column backwards and one line down, and summing those
+    with the steps along the lines makes a page of running text look as though
+    it were written downwards. Where a unit carries its own characters the
+    direction is legible without leaving the unit, and that is the reading
+    taken.
     """
     horizontal = 0.0
     vertical = 0.0
@@ -88,7 +103,52 @@ def _advance(units) -> tuple[float, float]:
         for first, second in zip(centres, centres[1:], strict=False):
             horizontal += second[0] - first[0]
             vertical += second[1] - first[1]
-    return horizontal, vertical
+    if horizontal or vertical:
+        return horizontal, vertical
+    return _strip_advance(units)
+
+
+def _strip_advance(units) -> tuple[float, float]:
+    """The advance of a paragraph whose units carry one character each.
+
+    Two conditions, and neither of them is the stored order. The characters have
+    to stand in a single column of type -- every one within the width of one
+    character of every other, compared against their own measured width so that
+    no threshold is introduced -- and they have to be marked as set along the
+    vertical axis. A paragraph set in lines fails the first by the width of its
+    column and is given no direction rather than the wrong one.
+
+    The direction itself comes from that mark and not from the geometry, because
+    the geometry here cannot supply it. The stored order of a one character unit
+    is the only order there is, so a direction measured from it would be the
+    direction of the stored order, and sorting by that would reproduce the
+    stored order and call it the reading order -- which is the answer this
+    module exists to avoid. The mark is where the answer is: the writer turns it
+    into the one rotation it stands for, ``0 1 -1 0``, and under that matrix the
+    pen travels up the page. So the reading order of a marked column is
+    ascending, whichever way the characters were stored.
+    """
+    boxes = [
+        item.box
+        for _text, characters in units
+        for item in characters
+        if _centre(item.box) is not None
+    ]
+    if len(boxes) < 2:
+        return 0.0, 0.0
+    marked = all(
+        bool(getattr(item, "vertical", False))
+        for _text, characters in units
+        for item in characters
+    )
+    if not marked:
+        return 0.0, 0.0
+    horizontals = [_centre(box)[0] for box in boxes]
+    verticals = [_centre(box)[1] for box in boxes]
+    widths = sorted(float(box.x2) - float(box.x) for box in boxes)
+    if max(horizontals) - min(horizontals) > widths[len(widths) // 2]:
+        return 0.0, 0.0
+    return 0.0, max(verticals) - min(verticals)
 
 
 def _band(characters) -> float | None:
@@ -123,6 +183,20 @@ def reading_order(units) -> list[int]:
         return positions
     direction = 1.0 if vertical > 0 else -1.0
     return sorted(positions, key=lambda position: direction * bands[position])
+
+
+def paragraph_characters(paragraph) -> list:
+    """Every laid out character of a paragraph, in the order it is read.
+
+    The shared walk. A pass needing a paragraph's characters asks here rather
+    than naming the composition members itself, so there is one place that knows
+    which members hold characters and one order they come back in -- which is
+    what keeps a finding and the repair answering for it looking at one string.
+    """
+    compositions = paragraph.pdf_paragraph_composition or []
+    units = [_unit(composition) for composition in compositions]
+    order = reading_order(units)
+    return [character for position in order for character in units[position][1]]
 
 
 def paragraph_reading_text(paragraph) -> str:

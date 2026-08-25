@@ -1,0 +1,65 @@
+{
+ "batch": "b11.7",
+ "sites": {
+  "character_matrix": {
+   "question": "Can a character the stage creates from translated text carry the source rotation?",
+   "carries": false,
+   "evidence": [
+    {
+     "file": "babeldoc/format/pdf/document_il/midend/typesetting.py",
+     "line": 868,
+     "source": "vertical=False,"
+    },
+    {
+     "file": "babeldoc/format/pdf/document_il/midend/typesetting.py",
+     "line": 1341,
+     "source": "vertical=False,"
+    }
+   ],
+   "detail": "The stage constructs every character it creates from a translated string with vertical hardcoded false. The two branches that carry a source character or a formula's characters through do copy the flag, so the flag itself is live in the intermediate language; it is only the newly set text that loses it.",
+   "what_the_lane_does": "Sets the flag itself, on exactly the characters it has just placed. The upstream line is deliberately left alone: making the stage inherit the paragraph's flag would mark every character of every rotated paragraph, including the ones the lane never claimed and the stage laid out horizontally, and those would then be drawn rotated at horizontal positions. The narrower change is the correct one, and it needs no upstream edit at all."
+  },
+  "packer": {
+   "question": "Can the packer lay text out along the vertical axis?",
+   "carries": false,
+   "evidence": [
+    {
+     "file": "babeldoc/format/pdf/document_il/midend/typesetting.py",
+     "line": null,
+     "source": "_layout_typesetting_units names no axis: 'axis' in the function = False; the line end test is True"
+    }
+   ],
+   "detail": "Every geometric decision in the packer is written with x as the line and y as the column: the cursor, the space width, the hanging punctuation overflow measured past box.x2, the retreat that undoes a hung run, and the first line indent added to the cursor. Threading an axis through all of it is a rewrite of a stage this project does not own.",
+   "what_the_lane_does": "Hands it the paragraph's box with the two axes exchanged and rotates the result. The packer is neither modified nor bypassed: it does its own line breaking with the real mapped font, in a box whose width is the strip's length, and what comes back is mapped onto the strip. This is the plan's transposed box, and it buys the real font advances that a hand rolled fitter would have had to estimate."
+  },
+  "renderer": {
+   "question": "Does the writer draw a character marked vertical rotated, and with which matrix?",
+   "carries": true,
+   "evidence": [
+    {
+     "file": "babeldoc/format/pdf/document_il/backend/pdf_creater.py",
+     "line": 113,
+     "source": "f\"BT /{font_id} {tf_font_size:f} Tf 0 1 -1 0 {char.box.x2:f} {char.box.y:f} Tm \".encode(),"
+    },
+    {
+     "file": "babeldoc/format/pdf/document_il/backend/pdf_creater.py",
+     "line": 1188,
+     "source": "f\"BT /{font_id} {char_size:f} Tf 0 1 -1 0 {char.box.x2:f} {char.box.y:f} Tm \".encode(),"
+    }
+   ],
+   "detail": "Both of the writer's character paths emit '0 1 -1 0' for a character marked vertical, anchored at the character box's x2 and y. Under that matrix the pen advances up the page and the ascent runs to the left, which is what the lane maps its characters into.",
+   "what_the_lane_does": "Nothing. The renderer is untouched and carries the rotation as it always has."
+  }
+ },
+ "verdict": "feasible",
+ "verdict_detail": "Two of the three sites do not carry it and one does. Neither of the two needs an upstream change: the character flag is set by the lane on the characters it placed, and the packer is given a transposed box rather than an axis. So the lane is built, and it is built narrow -- it claims only a paragraph set along the vertical axis whose text a repair has just replaced.",
+ "rotation_expressible_in_il": [
+  "rotation",
+  "vertical"
+ ],
+ "per_char_source_matrix": {
+  "asked_for_by": "the initial plan, as 'per-char matrix takes the source rotation'",
+  "available": false,
+  "detail": "The intermediate language carries a boolean and no matrix, and the schema is frozen. The writer expands that boolean into the single matrix '0 1 -1 0'. So 'the source rotation' has exactly one value it can take, and a paragraph rotated any other way cannot enter the lane -- which is registered rather than silently mishandled."
+ }
+}

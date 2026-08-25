@@ -1,0 +1,32 @@
+{
+  "attempted": 1,
+  "excluded_from": [
+    "column_reflow",
+    "drop_cap",
+    "typeset_hang"
+  ],
+  "laid_out": 1,
+  "paragraphs": [
+    {
+      "box": [
+        29.03,
+        413.82,
+        32.81,
+        442.94
+      ],
+      "characters": 13,
+      "layout_label": "fallback_line",
+      "reach": [
+        29.85,
+        413.82,
+        32.81,
+        440.72
+      ],
+      "reference": "p4#38",
+      "skipped": null,
+      "text": "R Hahn, 费米实验室"
+    }
+  ],
+  "switch": "magazine_rotated_lane",
+  "target_lang": "zh"
+}

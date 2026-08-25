@@ -185,6 +185,61 @@ def same_form_spans(text: str, config: ParenConfig) -> list[tuple[int, int, str]
     return spans
 
 
+def reverse_annotation(text: str, config: ParenConfig, is_residue) -> tuple[str, list[str]]:
+    """Fold a name away and keep the original it is annotated with.
+
+    The mirror of the rule above, and the same shape read the other way. That
+    one folds out a parenthetical saying what the text before it already said;
+    this one folds out the text *before* a parenthetical, where that text is
+    written in the script the target document should not be holding and the
+    parenthetical is not. A transliterated name followed by that same name in
+    brackets, in a document finished into English, is a name the page already
+    carries in the language it is being finished into, with a transliteration
+    of it standing in front -- so the annotation is the answer
+    and the run before it is the residue.
+
+    Deterministic and free: no model is asked, because there is nothing to ask.
+    What comes out is characters the page already had.
+
+    Applies only where the parenthetical holds none of the residue script, so a
+    parenthetical that is itself residue is left alone rather than promoted.
+    """
+    folded: list[str] = []
+    out = text
+    position = 0
+    while position < len(out):
+        character = out[position]
+        if character not in config.openers:
+            position += 1
+            continue
+        close = _closing(out, position, config)
+        if close is None:
+            position += 1
+            continue
+        inner = out[position + 1 : close]
+        if not inner.strip() or any(is_residue(item) for item in inner):
+            position = close + 1
+            continue
+        start = position
+        while start > 0 and (
+            is_residue(out[start - 1]) or out[start - 1] in _ANNOTATION_JOINERS
+        ):
+            start -= 1
+        if start == position or not any(is_residue(item) for item in out[start:position]):
+            position = close + 1
+            continue
+        folded.append(out[start:position])
+        out = out[:start] + inner + out[close + 1 :]
+        position = start + len(inner)
+    return out, folded
+
+
+# The marks that may stand inside a name written in the residue script without
+# ending it. A middle dot separates the parts of a transliterated name, and a
+# name broken by one is still one name.
+_ANNOTATION_JOINERS = "\u00b7\u2027\u30fb\uff65"
+
+
 def _agrees(before: str, inner: str, config: ParenConfig) -> bool:
     """Whether a parenthetical's content is how the text before it ends."""
     content = normalize(inner)

@@ -1,0 +1,109 @@
+{
+ "batch": "b11.7",
+ "ledger_identity_holds_everywhere": true,
+ "totals": {
+  "requests": 432,
+  "cache_hits": 424,
+  "api_calls": 8,
+  "rotated_repair": 8
+ },
+ "runs": [
+  {
+   "sample": "Courier-en",
+   "requests": 67,
+   "cache_hits": 67,
+   "api_calls": 0,
+   "ledger_identity_holds": true,
+   "last_run": "b11.6",
+   "api_calls_last_run": 17,
+   "paragraphs_reclassified": 0,
+   "repair_calls": 0,
+   "attribution": {
+    "rotated_repair": 0,
+    "other_new": 0
+   },
+   "other_new_is_this_batch": true
+  },
+  {
+   "sample": "CERNCourier-en",
+   "requests": 108,
+   "cache_hits": 102,
+   "api_calls": 6,
+   "ledger_identity_holds": true,
+   "last_run": "f3",
+   "api_calls_last_run": null,
+   "paragraphs_reclassified": 0,
+   "repair_calls": 6,
+   "attribution": {
+    "rotated_repair": 6,
+    "other_new": 0
+   },
+   "other_new_is_this_batch": false
+  },
+  {
+   "sample": "Vogue-en",
+   "requests": 20,
+   "cache_hits": 20,
+   "api_calls": 0,
+   "ledger_identity_holds": true,
+   "last_run": "f3",
+   "api_calls_last_run": null,
+   "paragraphs_reclassified": 0,
+   "repair_calls": 0,
+   "attribution": {
+    "rotated_repair": 0,
+    "other_new": 0
+   },
+   "other_new_is_this_batch": false
+  },
+  {
+   "sample": "AramcoWorld-en-v2",
+   "requests": 83,
+   "cache_hits": 81,
+   "api_calls": 2,
+   "ledger_identity_holds": true,
+   "last_run": "b11.6",
+   "api_calls_last_run": 5,
+   "paragraphs_reclassified": 0,
+   "repair_calls": 2,
+   "attribution": {
+    "rotated_repair": 2,
+    "other_new": 0
+   },
+   "other_new_is_this_batch": true
+  },
+  {
+   "sample": "FD-en-v2",
+   "requests": 87,
+   "cache_hits": 87,
+   "api_calls": 0,
+   "ledger_identity_holds": true,
+   "last_run": "b11.6",
+   "api_calls_last_run": 4,
+   "paragraphs_reclassified": 0,
+   "repair_calls": 0,
+   "attribution": {
+    "rotated_repair": 0,
+    "other_new": 0
+   },
+   "other_new_is_this_batch": true
+  },
+  {
+   "sample": "Courier-zh",
+   "requests": 67,
+   "cache_hits": 67,
+   "api_calls": 0,
+   "ledger_identity_holds": true,
+   "last_run": "b11.6",
+   "api_calls_last_run": 49,
+   "paragraphs_reclassified": 7,
+   "repair_calls": 0,
+   "attribution": {
+    "rotated_repair": 0,
+    "other_new": 0
+   },
+   "other_new_is_this_batch": true
+  }
+ ],
+ "detector_rises": {}
+}

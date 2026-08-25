@@ -607,9 +607,19 @@ def check_01d_the_gate_is_declared_and_not_named() -> None:
 def check_01e_the_gate_is_driven_not_reasoned() -> None:
     """Positive 1e: the pass is run over three stubs and answers three ways.
 
-    A page whose kind declares the flag is decided; a page whose kind does not is
-    untouched; a page carrying no kind at all is untouched, which is the case no
-    corpus document supplies and the one an undeclared page falls into.
+    A page whose kind declares the flag is set indented; a page whose kind does
+    not is set flush and says the page is why; a page carrying no kind at all is
+    treated as the second, which is the case no corpus document supplies and the
+    one an undeclared page falls into.
+
+    AC-23. This asked, until b11.7, that an ineligible page be left *untouched*.
+    That pass has since become the only writer of the flag and now states it on
+    every paragraph rather than raising it on some, so an ineligible page is
+    decided and decided flush. What the assertion is about -- that the gate is
+    driven by what the vocabulary declares and not by anything reasoned about
+    the page -- is unchanged, and the outcome it reads is the same flag it
+    always read. What moved is the middle term: from "no decision was taken" to
+    "the decision taken was flush, for the page".
     """
     faults = []
     eligible_kind = a_kind_with(True)
@@ -624,7 +634,7 @@ def check_01e_the_gate_is_driven_not_reasoned() -> None:
                 "ineligible": (ineligible_kind, False),
                 "no kind": (None, False),
             }
-            for name, (kind, should_decide) in cases.items():
+            for name, (kind, should_indent) in cases.items():
                 paragraph = a_body_paragraph()
                 document = il_version_1.Document(page=[a_page([paragraph], kind)])
                 config = StubConfig(working, magazine_indent_policy=True)
@@ -632,17 +642,18 @@ def check_01e_the_gate_is_driven_not_reasoned() -> None:
                 if report is None:
                     faults.append(f"{name}: the pass did not act")
                     continue
-                decided = report["totals"]["decided"]
-                if bool(decided) != should_decide:
-                    faults.append(f"{name}: decided {decided}")
-                if bool(paragraph.first_line_indent) != should_decide:
+                if not report["totals"]["decided"]:
+                    faults.append(f"{name}: the pass decided nothing")
+                if bool(paragraph.first_line_indent) != should_indent:
                     faults.append(
                         f"{name}: the flag is {paragraph.first_line_indent!r}"
                     )
-                if not should_decide:
-                    row = report["paragraphs"][0]
-                    if row["skipped"] != indent_policy.SKIP_PAGE_INELIGIBLE:
-                        faults.append(f"{name}: skipped as {row['skipped']!r}")
+                row = report["paragraphs"][0]
+                if should_indent:
+                    if row["skipped"] is not None:
+                        faults.append(f"{name}: indented yet {row['skipped']!r}")
+                elif row["skipped"] != indent_policy.SKIP_PAGE_INELIGIBLE:
+                    faults.append(f"{name}: set flush for {row['skipped']!r}")
     record(
         "check_01e_the_gate_is_driven_not_reasoned",
         not faults,

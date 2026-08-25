@@ -1,0 +1,9 @@
+{
+  "prompts/article_brief.md": "819373eb50fbfa5fe2a06271da270e92facc863bdd9b0ca8f2e10bcfc0ef3c7b",
+  "prompts/article_brief_context.md": "beaa6e5fa939787a4127d4741a92addaa7b211658a052e1b2b423c1906ad3421",
+  "prompts/article_brief_names.md": "97c6ae29f13943d9ba6497a0d5eb082c54de46c93f2f88ecbb8c13105df5088e",
+  "prompts/name_transliterate.md": "f655ad9129a00cbc2a8572d071c230f9e09400653fd47f75a3baef5e9990b659",
+  "prompts/react_orphan_glossary.md": "7f65988c20b4b4648757c3adee793471aa777bd17027d7cee508556d431b23dd",
+  "prompts/react_repair_decide.md": "94f390049cd07156b3290170062939ad88b1103e9f207335b41769a0a4ba1a03",
+  "prompts/react_translate_orphan.md": "cc3f132c251022995b1e6386450b2b6546d9481686074dd1adbe64af3d650fa4"
+}

@@ -145,7 +145,19 @@ def retypeset(typesetting, paragraph, page) -> bool:
     the same way: this paragraph is not repairable and the caller puts it back.
     A repair loop that cannot repair a line is working correctly; one that
     stops a translation from being written is not.
+
+    A paragraph set along the vertical axis goes to the lane that answers for
+    that axis instead. The ordinary path measures the box's width as the length
+    of a line, and for a strip of rotated type six points wide the answer is
+    that no word fits -- which is a fact about the measurement rather than about
+    the strip, and it is what left a paid for translation unwritten.
     """
+    # Imported here rather than at the top: the lane reads this module for the
+    # font map, and the two would otherwise import each other.
+    from babeldoc.magazine import rotated_lane
+
+    if rotated_lane.claims(paragraph):
+        return rotated_lane.set_along_axis(typesetting, paragraph, page)
     fonts = page_font_map(page, typesetting.font_mapper)
     try:
         typesetting.render_paragraph(paragraph, page, fonts)

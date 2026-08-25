@@ -15,12 +15,30 @@ paragraphs; Chinese setting indents every paragraph, the first included. A
 Chinese page built by copying English geometry is therefore wrong in a way no
 amount of care in the copying can fix, because the copying is the error.
 
-What this pass does is small: it overwrites the flag, on body paragraphs only,
-according to a mode declared per target language. It computes no geometry and it
-sets no text. The stage that acts on the flag is not touched, which is why the
-indent still moves the pen by the amount the stage has always moved it -- the
-configuration pins that amount rather than setting it, and a gate holds the
-stage to the pin.
+What this pass does is state the flag rather than adjust it. Where the mode has
+an opinion, the flag every paragraph carries afterwards is this pass's answer
+and nothing else's: it is the conjunction of four conditions -- the page admits
+a paragraph convention, the label is running body text, the mode indents a
+paragraph of this rank, and the paragraph opens rather than resumes a chain --
+and a paragraph failing any of them is set flush. What the source geometry said,
+and what the line splitting pass wrote on the fragments it made, are therefore
+overwritten in both directions rather than only upward. It computes no geometry
+and it sets no text. The stage that acts on the flag is not touched, which is
+why the indent still moves the pen by the amount the stage has always moved it
+-- the configuration pins that amount rather than setting it, and a gate holds
+the stage to the pin.
+
+Being the only writer is the point. A flag that three passes may raise and one
+may lower has no answer to "why is this line indented" that can be read off any
+one of them, and the contents page of a magazine is where that showed: the flag
+arrived there from the source geometry, no pass had lowered it, and the page set
+its records as if they were prose.
+
+The fourth condition is the one this pass cannot see for itself. A chain's later
+members are one paragraph the layout broke into several, and a resumed paragraph
+opens no new one, so indenting it prints a paragraph break the author did not
+write. Assembly already records which members those are, and this reads its
+answer rather than forming a second one.
 
 Where this sits
 ---------------
@@ -34,21 +52,20 @@ makes, so a decision taken before it would be quietly undone.
 What it does not touch
 ----------------------
 
-Anything outside the declared body labels. A title, a caption, a record in a
-contents list and a line of an imprint each have their own setting, and a rule
-written for running text is wrong for all four. The title pass writes the flag
-too, after the stage rather than before it, and only on titles; the two do not
-meet, which the gate asserts from both ends.
+A run whose mode is ``source``. That mode says the source convention is the one
+to reproduce, so a pass claiming authority under it would be claiming the right
+to overrule the answer it was told to give, and ``source`` would become a second
+spelling of ``none``. Under it this pass decides nothing at all and every
+paragraph keeps the flag it arrived with.
 
-Anything on a page the vocabulary does not declare ``indent_eligible``. The
-label surface alone was not enough, because a page of records sets those records
-under a body label: a line of a contents list and a line of an imprint are both
-running text as far as the layout model is concerned, and a paragraph convention
-written for an article reached every one of them. The page kind is where that is stated, and the flag is read
-off the declared policy rather than off the kind's name, so this pass names no
-page type. A page carrying no kind, or a kind the vocabulary does not hold, is
-not eligible either: an undeclared page is left as the source set it, which is
-the answer that cannot be wrong twice.
+The page kind gate is read off the declared policy rather than off the kind's
+name, so this pass names no page type. A page carrying no kind, or a kind the
+vocabulary does not hold, is not eligible: an undeclared page sets its text
+flush, which is the answer that adds nothing a reader has to unlearn.
+
+The title pass writes the flag too, after the typesetting stage rather than
+before it, and only on titles; the two do not meet, which the gate asserts from
+both ends.
 """
 
 from __future__ import annotations
@@ -60,6 +77,7 @@ from functools import lru_cache
 from pathlib import Path
 from types import MappingProxyType
 
+from babeldoc.magazine import chain_builder
 from babeldoc.magazine import hitl
 from babeldoc.magazine.drop_cap import paragraph_reference
 from babeldoc.magazine.drop_cap import read_article_map
@@ -85,13 +103,33 @@ SWITCH = "magazine_indent_policy"
 # and read by name here, which is what keeps page type names out of this module.
 PAGE_ELIGIBILITY_POLICY_FLAG = "indent_eligible"
 
-# Why a paragraph this pass saw was left alone. One reason per way of being
-# left alone, declared here rather than written at each site, so a reader of the
-# sidecar meets a closed set.
+# Why a paragraph this pass decided is set flush. One reason per unmet
+# condition, declared here rather than written at each site, so a reader of the
+# sidecar meets a closed set. The names are the conditions, not the outcome: a
+# paragraph flush for its page and one flush for its label are different
+# findings and a sidecar that could not tell them apart would answer neither.
 SKIP_PAGE_INELIGIBLE = "page_ineligible"
 SKIP_OUTSIDE_BODY = "outside_body_labels"
 SKIP_MODE = "mode_decides_nothing"
-SKIP_REASONS = (SKIP_PAGE_INELIGIBLE, SKIP_OUTSIDE_BODY, SKIP_MODE)
+CLEAR_CHAIN_CONTINUATION = "chain_continuation"
+SKIP_REASONS = (
+    SKIP_PAGE_INELIGIBLE,
+    SKIP_OUTSIDE_BODY,
+    SKIP_MODE,
+    CLEAR_CHAIN_CONTINUATION,
+)
+
+# The order the unmet conditions are reported in. A paragraph may fail more than
+# one, and the sidecar names the first in this order rather than all of them, so
+# every flush paragraph carries exactly one reason. Page before label before
+# mode before chain is widest first: the reason given is the one that would
+# still hold if every narrower one were repaired.
+CLEAR_ORDER = (
+    SKIP_PAGE_INELIGIBLE,
+    SKIP_OUTSIDE_BODY,
+    SKIP_MODE,
+    CLEAR_CHAIN_CONTINUATION,
+)
 
 MODE_SOURCE = "source"
 MODE_ALL = "all"
@@ -230,33 +268,56 @@ def article_of_page(translation_config) -> dict[int, str]:
     return pages
 
 
-def decide(
-    label: str | None,
-    mode: str,
-    source_value: bool,
-    body_rank: int | None,
-    config: IndentConfig,
-) -> bool | None:
-    """What one paragraph's flag becomes, or None where this pass leaves it.
+def mode_is_authoritative(mode: str) -> bool:
+    """Whether this mode gives the pass an answer of its own to write."""
+    return mode != MODE_SOURCE
 
-    None rather than the unchanged value, so a caller can tell a paragraph this
-    pass decided to leave alone from one it decided and happened to agree with.
+
+def mode_indents(mode: str, body_rank: int | None, config: IndentConfig) -> bool:
+    """Whether the mode alone would indent a body paragraph of this rank.
+
+    Asked only of a mode that is authoritative, so ``source`` never reaches
+    here. A rank the article numbering could not supply is not the opening
+    paragraph of anything, so a mode that exempts the opening paragraph indents
+    it: the exemption is a statement about a position, and a paragraph outside
+    every article holds no position to be exempted at.
     """
-    if label not in config.body_labels:
-        return None
-    if mode == MODE_SOURCE:
-        return None
     if mode == MODE_ALL:
         return True
     if mode == MODE_NONE:
         return False
     if mode == MODE_ALL_BUT_FIRST:
-        if body_rank is None:
-            # Outside every article there is no first paragraph to be, so the
-            # rule has nothing to say and the source geometry stands.
-            return None
         return body_rank != config.article_opening_rank
-    return None
+    return False
+
+
+def decide(
+    label: str | None,
+    mode: str,
+    eligible_page: bool,
+    body_rank: int | None,
+    continuation: bool,
+    config: IndentConfig,
+) -> tuple[bool, str | None] | None:
+    """What one paragraph's flag becomes and the condition that decided it.
+
+    ``None`` where the mode is not authoritative, which is the one case this
+    pass leaves a paragraph as it found it. Otherwise the flag is the
+    conjunction of the four conditions and the second member names the first
+    unmet one, or is ``None`` where all four are met.
+    """
+    if not mode_is_authoritative(mode):
+        return None
+    unmet = {
+        SKIP_PAGE_INELIGIBLE: not eligible_page,
+        SKIP_OUTSIDE_BODY: label not in config.body_labels,
+        SKIP_MODE: not mode_indents(mode, body_rank, config),
+        CLEAR_CHAIN_CONTINUATION: continuation,
+    }
+    for reason in CLEAR_ORDER:
+        if unmet[reason]:
+            return False, reason
+    return True, None
 
 
 def as_record(
@@ -282,11 +343,17 @@ def as_record(
         "skip_reasons": list(SKIP_REASONS),
         "pages": len(pages),
         "page_records": pages,
+        "authoritative": mode_is_authoritative(mode),
         "totals": {
             "paragraphs": len(rows),
             "decided": sum(1 for row in rows if row["decided"]),
             "left_alone": sum(1 for row in rows if not row["decided"]),
             "changed": len(changed),
+            "cleared": sum(1 for row in rows if row["cleared"]),
+            "raised": sum(1 for row in rows if row["after"] and not row["before"]),
+            "chain_continuations": sum(
+                1 for row in rows if row["chain_continuation"]
+            ),
             "indented_after": sum(1 for row in rows if row["after"]),
             "pages_eligible": sum(1 for page in pages if page["indent_eligible"]),
             "pages_ineligible": sum(
@@ -370,21 +437,17 @@ def apply(translation_config, docs) -> dict | None:
                 body_rank = rank_of_article.get(article_id, 0) + 1
                 rank_of_article[article_id] = body_rank
             before = bool(paragraph.first_line_indent)
-            decision = (
-                decide(layout_label, mode, before, body_rank, config)
-                if eligible
-                else None
+            continuation = chain_builder.is_chain_continuation(paragraph)
+            decision = decide(
+                layout_label, mode, eligible, body_rank, continuation, config
             )
-            if decision is not None:
-                paragraph.first_line_indent = decision
-                decided_here += 1
-                skipped = None
-            elif not eligible:
-                skipped = SKIP_PAGE_INELIGIBLE
-            elif not in_body:
-                skipped = SKIP_OUTSIDE_BODY
-            else:
+            if decision is None:
                 skipped = SKIP_MODE
+            else:
+                value, skipped = decision
+                paragraph.first_line_indent = value
+                decided_here += 1
+            after = bool(paragraph.first_line_indent)
             rows.append(
                 {
                     "page": label,
@@ -394,9 +457,11 @@ def apply(translation_config, docs) -> dict | None:
                     "indent_eligible_page": eligible,
                     "article_id": article_id,
                     "body_rank": body_rank,
+                    "chain_continuation": continuation,
                     "before": before,
-                    "after": bool(paragraph.first_line_indent),
+                    "after": after,
                     "decided": decision is not None,
+                    "cleared": before and not after,
                     "skipped": skipped,
                     "excerpt": (paragraph.unicode or "")[: config.excerpt_chars],
                 }

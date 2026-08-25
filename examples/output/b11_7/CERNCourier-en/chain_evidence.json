@@ -1,0 +1,420 @@
+{
+ "sample": "CERNCourier-en",
+ "read_from": "checkpoint.08_chain_builder.xml",
+ "link_min_score": 0.8,
+ "boundary_priority": [
+  "page",
+  "column_adjacent",
+  "body_next"
+ ],
+ "boundaries": [
+  {
+   "boundary": "p1:c0->c1",
+   "kind": "column",
+   "pairing": "column_adjacent",
+   "tail_page": 1,
+   "head_page": 1,
+   "tail_column": 0,
+   "head_column": 1,
+   "column_count": 2,
+   "eligible": false,
+   "reason": "no_endpoint",
+   "pair": null,
+   "score": null,
+   "linked": false,
+   "tail_ends_on_hyphen": false,
+   "tail_last_line": "V o l u m e   6 6     N u m b e r   4      J u l y / A u g u s t   2 0 2 6",
+   "head_first_line": "CERNCOURIER July/August 2026 cerncourier.com Reporting on international high-energy physics",
+   "tail": {
+    "reference": "p1#0",
+    "page": 1,
+    "text": "V o l u m e 6 6 N u m b e r 4 J u l y / A u g u s t 2 0 2 6"
+   },
+   "head": {
+    "reference": "p1#2",
+    "page": 1,
+    "text": "CERNCOURIER July/August 2026 cerncourier.com Reporting on international high-energy physics"
+   }
+  },
+  {
+   "boundary": "1->2",
+   "kind": "page",
+   "pairing": null,
+   "tail_page": 1,
+   "head_page": 2,
+   "tail_column": null,
+   "head_column": null,
+   "column_count": null,
+   "eligible": false,
+   "reason": "not_chain_eligible:head",
+   "pair": null,
+   "score": null,
+   "linked": false,
+   "tail_ends_on_hyphen": false,
+   "tail_last_line": null,
+   "head_first_line": "",
+   "tail": null,
+   "head": null
+  },
+  {
+   "boundary": "p2:columns",
+   "kind": "column",
+   "pairing": null,
+   "tail_page": 2,
+   "head_page": 2,
+   "tail_column": null,
+   "head_column": null,
+   "column_count": null,
+   "eligible": false,
+   "reason": "preserve_line_structure",
+   "pair": null,
+   "score": null,
+   "linked": false,
+   "tail_ends_on_hyphen": false,
+   "tail_last_line": null,
+   "head_first_line": "",
+   "tail": null,
+   "head": null
+  },
+  {
+   "boundary": "2->3",
+   "kind": "page",
+   "pairing": null,
+   "tail_page": 2,
+   "head_page": 3,
+   "tail_column": null,
+   "head_column": null,
+   "column_count": null,
+   "eligible": false,
+   "reason": "not_chain_eligible:tail",
+   "pair": null,
+   "score": null,
+   "linked": false,
+   "tail_ends_on_hyphen": false,
+   "tail_last_line": null,
+   "head_first_line": "",
+   "tail": null,
+   "head": null
+  },
+  {
+   "boundary": "p3:c0->c1",
+   "kind": "column",
+   "pairing": "column_adjacent",
+   "tail_page": 3,
+   "head_page": 3,
+   "tail_column": 0,
+   "head_column": 1,
+   "column_count": 5,
+   "eligible": false,
+   "reason": "no_endpoint",
+   "pair": null,
+   "score": null,
+   "linked": false,
+   "tail_ends_on_hyphen": false,
+   "tail_last_line": "stamping with further customization upon user request.",
+   "head_first_line": "Bergoz Instrumentation goes digital",
+   "tail": {
+    "reference": "p3#36",
+    "page": 3,
+    "text": "Beyond waveform acquisition, the MDS can provide extra features such as pulse charge, interlock on threshold, time stamping with further customization upon user request."
+   },
+   "head": {
+    "reference": "p3#25",
+    "page": 3,
+    "text": "Bergoz Instrumentation goes digital"
+   }
+  },
+  {
+   "boundary": "p3:c0->c2",
+   "kind": "column",
+   "pairing": "body_next",
+   "tail_page": 3,
+   "head_page": 3,
+   "tail_column": 0,
+   "head_column": 2,
+   "column_count": 5,
+   "eligible": true,
+   "reason": null,
+   "pair": "body->body",
+   "score": 0.75,
+   "linked": false,
+   "tail_ends_on_hyphen": false,
+   "tail_last_line": "stamping with further customization upon user request.",
+   "head_first_line": "Each MDS variant is dedicated to specific Bergoz Instrumentation measurement system to best interface their analog signals with accelerator control systems.",
+   "tail": {
+    "reference": "p3#36",
+    "page": 3,
+    "text": "Beyond waveform acquisition, the MDS can provide extra features such as pulse charge, interlock on threshold, time stamping with further customization upon user request."
+   },
+   "head": {
+    "reference": "p3#37",
+    "page": 3,
+    "text": "Each MDS variant is dedicated to specific Bergoz Instrumentation measurement system to best interface their analog signals with accelerator control systems."
+   }
+  },
+  {
+   "boundary": "p3:c1->c2",
+   "kind": "column",
+   "pairing": "column_adjacent",
+   "tail_page": 3,
+   "head_page": 3,
+   "tail_column": 1,
+   "head_column": 2,
+   "column_count": 5,
+   "eligible": false,
+   "reason": "no_endpoint",
+   "pair": null,
+   "score": null,
+   "linked": false,
+   "tail_ends_on_hyphen": false,
+   "tail_last_line": "Bergoz Instrumentation goes digital",
+   "head_first_line": "Each MDS variant is dedicated to specific Bergoz Instrumentation measurement system to best interface their analog signals with accelerator control systems.",
+   "tail": {
+    "reference": "p3#25",
+    "page": 3,
+    "text": "Bergoz Instrumentation goes digital"
+   },
+   "head": {
+    "reference": "p3#37",
+    "page": 3,
+    "text": "Each MDS variant is dedicated to specific Bergoz Instrumentation measurement system to best interface their analog signals with accelerator control systems."
+   }
+  },
+  {
+   "boundary": "p3:c1->c3",
+   "kind": "column",
+   "pairing": "body_next",
+   "tail_page": 3,
+   "head_page": 3,
+   "tail_column": 1,
+   "head_column": 3,
+   "column_count": 5,
+   "eligible": true,
+   "reason": null,
+   "pair": "title->title",
+   "score": 0.55,
+   "linked": false,
+   "tail_ends_on_hyphen": false,
+   "tail_last_line": "Bergoz Instrumentation goes digital",
+   "head_first_line": "CERN Council updates the European Strategy",
+   "tail": {
+    "reference": "p3#25",
+    "page": 3,
+    "text": "Bergoz Instrumentation goes digital"
+   },
+   "head": {
+    "reference": "p3#16",
+    "page": 3,
+    "text": "CERN Council updates the European Strategy"
+   }
+  },
+  {
+   "boundary": "p3:c2->c3",
+   "kind": "column",
+   "pairing": "column_adjacent",
+   "tail_page": 3,
+   "head_page": 3,
+   "tail_column": 2,
+   "head_column": 3,
+   "column_count": 5,
+   "eligible": false,
+   "reason": "no_endpoint",
+   "pair": null,
+   "score": null,
+   "linked": false,
+   "tail_ends_on_hyphen": false,
+   "tail_last_line": "and  will soon be released.",
+   "head_first_line": "CERN Council updates the European Strategy",
+   "tail": {
+    "reference": "p3#39",
+    "page": 3,
+    "text": "The MDS-ACCT, based on a 16-bit analog-to-digital converter (ADC) operating at 160 MS/s, is already available. The MDS-NPCT and MDS-ICT are currently being developed and will soon be released."
+   },
+   "head": {
+    "reference": "p3#16",
+    "page": 3,
+    "text": "CERN Council updates the European Strategy"
+   }
+  },
+  {
+   "boundary": "p3:c2->c4",
+   "kind": "column",
+   "pairing": "body_next",
+   "tail_page": 3,
+   "head_page": 3,
+   "tail_column": 2,
+   "head_column": 4,
+   "column_count": 5,
+   "eligible": false,
+   "reason": "no_endpoint",
+   "pair": null,
+   "score": null,
+   "linked": false,
+   "tail_ends_on_hyphen": false,
+   "tail_last_line": "and  will soon be released.",
+   "head_first_line": "Strategy, updated The CERN Council in Budapest for its dedicated session on the European Strategy for Particle Physics, on 22 May 2026.",
+   "tail": {
+    "reference": "p3#39",
+    "page": 3,
+    "text": "The MDS-ACCT, based on a 16-bit analog-to-digital converter (ADC) operating at 160 MS/s, is already available. The MDS-NPCT and MDS-ICT are currently being developed and will soon be released."
+   },
+   "head": {
+    "reference": "p3#42",
+    "page": 3,
+    "text": "Strategy, updated The CERN Council in Budapest for its dedicated session on the European Strategy for Particle Physics, on 22 May 2026."
+   }
+  },
+  {
+   "boundary": "p3:c3->c4",
+   "kind": "column",
+   "pairing": "column_adjacent",
+   "tail_page": 3,
+   "head_page": 3,
+   "tail_column": 3,
+   "head_column": 4,
+   "column_count": 5,
+   "eligible": false,
+   "reason": "no_endpoint",
+   "pair": null,
+   "score": null,
+   "linked": false,
+   "tail_ends_on_hyphen": false,
+   "tail_last_line": "CERN Council updates the European Strategy",
+   "head_first_line": "Strategy, updated The CERN Council in Budapest for its dedicated session on the European Strategy for Particle Physics, on 22 May 2026.",
+   "tail": {
+    "reference": "p3#16",
+    "page": 3,
+    "text": "CERN Council updates the European Strategy"
+   },
+   "head": {
+    "reference": "p3#42",
+    "page": 3,
+    "text": "Strategy, updated The CERN Council in Budapest for its dedicated session on the European Strategy for Particle Physics, on 22 May 2026."
+   }
+  },
+  {
+   "boundary": "3->4",
+   "kind": "page",
+   "pairing": null,
+   "tail_page": 3,
+   "head_page": 4,
+   "tail_column": 2,
+   "head_column": 0,
+   "column_count": null,
+   "eligible": true,
+   "reason": null,
+   "pair": "body->body",
+   "score": 0.0,
+   "linked": false,
+   "tail_ends_on_hyphen": false,
+   "tail_last_line": "and  will soon be released.",
+   "head_first_line": "V o l u m e 6 6 N u m b e r 4 J u l y / A u g u s t 2 0 2 6",
+   "tail": {
+    "reference": "p3#39",
+    "page": 3,
+    "text": "The MDS-ACCT, based on a 16-bit analog-to-digital converter (ADC) operating at 160 MS/s, is already available. The MDS-NPCT and MDS-ICT are currently being developed and will soon be released."
+   },
+   "head": {
+    "reference": "p4#0",
+    "page": 4,
+    "text": "V o l u m e 6 6 N u m b e r 4 J u l y / A u g u s t 2 0 2 6"
+   }
+  },
+  {
+   "boundary": "p4:c0->c1",
+   "kind": "column",
+   "pairing": "column_adjacent",
+   "tail_page": 4,
+   "head_page": 4,
+   "tail_column": 0,
+   "head_column": 1,
+   "column_count": 3,
+   "eligible": false,
+   "reason": "no_endpoint",
+   "pair": null,
+   "score": null,
+   "linked": false,
+   "tail_ends_on_hyphen": false,
+   "tail_last_line": "V o l u m e   6 6     N u m b e r   4      J u l y / A u g u s t   2 0 2 6",
+   "head_first_line": "The proton stays The Kamiokande detector during construction in spring 1983, a kilometre beneath Mount Ikeno in Japan. Designed to detect proton decay, it found",
+   "tail": {
+    "reference": "p4#0",
+    "page": 4,
+    "text": "V o l u m e 6 6 N u m b e r 4 J u l y / A u g u s t 2 0 2 6"
+   },
+   "head": {
+    "reference": "p4#37",
+    "page": 4,
+    "text": "The proton stays The Kamiokande detector during construction in spring 1983, a kilometre beneath Mount Ikeno in Japan. Designed to detect proton decay, it found none, ruling out the simplest grand unified theories. Its successor, Super-Kami"
+   }
+  },
+  {
+   "boundary": "p4:c0->c2",
+   "kind": "column",
+   "pairing": "body_next",
+   "tail_page": 4,
+   "head_page": 4,
+   "tail_column": 0,
+   "head_column": 2,
+   "column_count": 3,
+   "eligible": false,
+   "reason": "no_endpoint",
+   "pair": null,
+   "score": null,
+   "linked": false,
+   "tail_ends_on_hyphen": false,
+   "tail_last_line": "V o l u m e   6 6     N u m b e r   4      J u l y / A u g u s t   2 0 2 6",
+   "head_first_line": "Second life The construction of BNL’s Relativistic Heavy Ion Collider began in 1991, in the tunnel left by the cancellation of the ISABELLE proton collider eigh",
+   "tail": {
+    "reference": "p4#0",
+    "page": 4,
+    "text": "V o l u m e 6 6 N u m b e r 4 J u l y / A u g u s t 2 0 2 6"
+   },
+   "head": {
+    "reference": "p4#21",
+    "page": 4,
+    "text": "Second life The construction of BNL’s Relativistic Heavy Ion Collider began in 1991, in the tunnel left by the cancellation of the ISABELLE proton collider eight years earlier. The machine would come into operation in 2000 and establish the"
+   }
+  },
+  {
+   "boundary": "p4:c1->c2",
+   "kind": "column",
+   "pairing": "column_adjacent",
+   "tail_page": 4,
+   "head_page": 4,
+   "tail_column": 1,
+   "head_column": 2,
+   "column_count": 3,
+   "eligible": false,
+   "reason": "no_endpoint",
+   "pair": null,
+   "score": null,
+   "linked": false,
+   "tail_ends_on_hyphen": false,
+   "tail_last_line": "Super-Kamiokande, observed neutrino oscillations in 1998.",
+   "head_first_line": "Second life The construction of BNL’s Relativistic Heavy Ion Collider began in 1991, in the tunnel left by the cancellation of the ISABELLE proton collider eigh",
+   "tail": {
+    "reference": "p4#37",
+    "page": 4,
+    "text": "The proton stays The Kamiokande detector during construction in spring 1983, a kilometre beneath Mount Ikeno in Japan. Designed to detect proton decay, it found none, ruling out the simplest grand unified theories. Its successor, Super-Kami"
+   },
+   "head": {
+    "reference": "p4#21",
+    "page": 4,
+    "text": "Second life The construction of BNL’s Relativistic Heavy Ion Collider began in 1991, in the tunnel left by the cancellation of the ISABELLE proton collider eight years earlier. The machine would come into operation in 2000 and establish the"
+   }
+  }
+ ],
+ "edges": [],
+ "dropped_edges": [],
+ "chains": [],
+ "escalated": [],
+ "totals": {
+  "boundaries": 15,
+  "linked": 0,
+  "column_linked": 0,
+  "edges": 0,
+  "dropped_edges": 0,
+  "chains": 0
+ }
+}

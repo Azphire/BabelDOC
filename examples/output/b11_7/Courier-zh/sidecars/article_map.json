@@ -1,0 +1,552 @@
+{
+  "articles": [
+    {
+      "article_id": "dDEYD",
+      "chains": [
+        "o9ptu"
+      ],
+      "merged_by_chain": false,
+      "pages": [
+        2,
+        3,
+        4
+      ],
+      "paragraphs": [
+        {
+          "debug_id": "T7Mkp",
+          "page": 2
+        },
+        {
+          "debug_id": "qdmqH",
+          "page": 2
+        },
+        {
+          "debug_id": "N7CdR",
+          "page": 2
+        },
+        {
+          "debug_id": "M7zxA",
+          "page": 2
+        },
+        {
+          "debug_id": "dStYV",
+          "page": 2
+        },
+        {
+          "debug_id": "dy1u9",
+          "page": 2
+        },
+        {
+          "debug_id": "RVr8B",
+          "page": 2
+        },
+        {
+          "debug_id": "XVVAV",
+          "page": 2
+        },
+        {
+          "debug_id": "mpxQi",
+          "page": 3
+        },
+        {
+          "debug_id": "mhAME",
+          "page": 3
+        },
+        {
+          "debug_id": "hjraM",
+          "page": 3
+        },
+        {
+          "debug_id": "aQR1f",
+          "page": 3
+        },
+        {
+          "debug_id": "1Jiic",
+          "page": 4
+        },
+        {
+          "debug_id": "Hqnz5",
+          "page": 4
+        },
+        {
+          "debug_id": "ySxpg",
+          "page": 4
+        },
+        {
+          "debug_id": "d3PDJ",
+          "page": 4
+        },
+        {
+          "debug_id": "KznkB",
+          "page": 4
+        },
+        {
+          "debug_id": "Hqfm3",
+          "page": 4
+        },
+        {
+          "debug_id": "mtKBv",
+          "page": 4
+        },
+        {
+          "debug_id": "CPaUg",
+          "page": 4
+        },
+        {
+          "debug_id": "Jx9Vk",
+          "page": 4
+        },
+        {
+          "debug_id": "8BEaW",
+          "page": 4
+        },
+        {
+          "debug_id": "yqjTL",
+          "page": 4
+        },
+        {
+          "debug_id": "58nNy",
+          "page": 4
+        },
+        {
+          "debug_id": "1csEd",
+          "page": 4
+        },
+        {
+          "debug_id": "1kfN3",
+          "page": 4
+        },
+        {
+          "debug_id": "DNd4f",
+          "page": 4
+        },
+        {
+          "debug_id": "pWNLZ",
+          "page": 4
+        },
+        {
+          "debug_id": "WUDXv",
+          "page": 4
+        },
+        {
+          "debug_id": "Lamc5",
+          "page": 4
+        },
+        {
+          "debug_id": "ffNDF",
+          "page": 4
+        },
+        {
+          "debug_id": "HpDgC",
+          "page": 4
+        },
+        {
+          "debug_id": "G32KE",
+          "page": 4
+        },
+        {
+          "debug_id": "Sxyk3",
+          "page": 4
+        },
+        {
+          "debug_id": "udYwL",
+          "page": 4
+        }
+      ],
+      "start_page": 2,
+      "title": {
+        "debug_id": "M7zxA",
+        "layout_label": "title",
+        "text": "\u65f6\u4ee3\u53d8\u8fc1\u80cc\u666f\u4e0b\u7684"
+      }
+    },
+    {
+      "article_id": "1Uk4x",
+      "chains": [
+        "JEcDW",
+        "KbEdk",
+        "Rc9Ng",
+        "x9ear"
+      ],
+      "merged_by_chain": false,
+      "pages": [
+        5,
+        6
+      ],
+      "paragraphs": [
+        {
+          "debug_id": "95SA5",
+          "page": 5
+        },
+        {
+          "debug_id": "BFGnq",
+          "page": 5
+        },
+        {
+          "debug_id": "uxFEM",
+          "page": 5
+        },
+        {
+          "debug_id": "HoSvG",
+          "page": 5
+        },
+        {
+          "debug_id": "DpbaN",
+          "page": 5
+        },
+        {
+          "debug_id": "oqWHp",
+          "page": 5
+        },
+        {
+          "debug_id": "DiMBA",
+          "page": 5
+        },
+        {
+          "debug_id": "PrTqC",
+          "page": 5
+        },
+        {
+          "debug_id": "RHM4p",
+          "page": 5
+        },
+        {
+          "debug_id": "SSk1S",
+          "page": 5
+        },
+        {
+          "debug_id": "XLBWL",
+          "page": 5
+        },
+        {
+          "debug_id": "ZpKpm",
+          "page": 5
+        },
+        {
+          "debug_id": "U1QSF",
+          "page": 5
+        },
+        {
+          "debug_id": "4N6ny",
+          "page": 6
+        },
+        {
+          "debug_id": "G72sA",
+          "page": 6
+        },
+        {
+          "debug_id": "g5J9q",
+          "page": 6
+        },
+        {
+          "debug_id": "AxJex",
+          "page": 6
+        },
+        {
+          "debug_id": "TNYWx",
+          "page": 6
+        },
+        {
+          "debug_id": "4kQhm",
+          "page": 6
+        },
+        {
+          "debug_id": "aMV2y",
+          "page": 6
+        },
+        {
+          "debug_id": "irM3B",
+          "page": 6
+        },
+        {
+          "debug_id": "aBNpq",
+          "page": 6
+        },
+        {
+          "debug_id": "bPu7j",
+          "page": 6
+        },
+        {
+          "debug_id": "dkXJq",
+          "page": 6
+        },
+        {
+          "debug_id": "aPpsL",
+          "page": 6
+        },
+        {
+          "debug_id": "CCDsX",
+          "page": 6
+        },
+        {
+          "debug_id": "BxBcN",
+          "page": 6
+        },
+        {
+          "debug_id": "Cdti2",
+          "page": 6
+        },
+        {
+          "debug_id": "Cxb2F",
+          "page": 6
+        }
+      ],
+      "start_page": 5,
+      "title": {
+        "debug_id": "DiMBA",
+        "layout_label": "title",
+        "text": "\u5df4\u897f:\u6c34\u4e4b\u6c11\u65cf\u7684 \u542f\u793a"
+      }
+    },
+    {
+      "article_id": "xHWj7",
+      "chains": [
+        "Ce7AH",
+        "k5d6b",
+        "mLmBF",
+        "szVZR"
+      ],
+      "merged_by_chain": false,
+      "pages": [
+        7,
+        8
+      ],
+      "paragraphs": [
+        {
+          "debug_id": "MLEnF",
+          "page": 7
+        },
+        {
+          "debug_id": "QJNcc",
+          "page": 7
+        },
+        {
+          "debug_id": "16nHn",
+          "page": 7
+        },
+        {
+          "debug_id": "P95fR",
+          "page": 7
+        },
+        {
+          "debug_id": "4wACb",
+          "page": 7
+        },
+        {
+          "debug_id": "4Ed76",
+          "page": 7
+        },
+        {
+          "debug_id": "b2XwD",
+          "page": 7
+        },
+        {
+          "debug_id": "6N8rK",
+          "page": 7
+        },
+        {
+          "debug_id": "dcyUw",
+          "page": 7
+        },
+        {
+          "debug_id": "ptf9w",
+          "page": 7
+        },
+        {
+          "debug_id": "zZCgg",
+          "page": 7
+        },
+        {
+          "debug_id": "CAfyH",
+          "page": 7
+        },
+        {
+          "debug_id": "wmGfv",
+          "page": 7
+        },
+        {
+          "debug_id": "2vBhv",
+          "page": 7
+        },
+        {
+          "debug_id": "Gs32h",
+          "page": 7
+        },
+        {
+          "debug_id": "aFQsF",
+          "page": 7
+        },
+        {
+          "debug_id": "c8iga",
+          "page": 7
+        },
+        {
+          "debug_id": "tC7bb",
+          "page": 7
+        },
+        {
+          "debug_id": "u3cMx",
+          "page": 7
+        },
+        {
+          "debug_id": "21ELq",
+          "page": 7
+        },
+        {
+          "debug_id": "qzBjy",
+          "page": 8
+        },
+        {
+          "debug_id": "DBxrZ",
+          "page": 8
+        },
+        {
+          "debug_id": "tMK8y",
+          "page": 8
+        },
+        {
+          "debug_id": "7DKQR",
+          "page": 8
+        },
+        {
+          "debug_id": "wXM62",
+          "page": 8
+        },
+        {
+          "debug_id": "wm12g",
+          "page": 8
+        },
+        {
+          "debug_id": "dg2zM",
+          "page": 8
+        },
+        {
+          "debug_id": "1gDYR",
+          "page": 8
+        },
+        {
+          "debug_id": "c6A3T",
+          "page": 8
+        },
+        {
+          "debug_id": "jfN5a",
+          "page": 8
+        },
+        {
+          "debug_id": "C5mAA",
+          "page": 8
+        },
+        {
+          "debug_id": "EM2oY",
+          "page": 8
+        },
+        {
+          "debug_id": "Ksxid",
+          "page": 8
+        },
+        {
+          "debug_id": "vAAD8",
+          "page": 8
+        },
+        {
+          "debug_id": "vDr6n",
+          "page": 8
+        },
+        {
+          "debug_id": "NhJ2b",
+          "page": 8
+        }
+      ],
+      "start_page": 7,
+      "title": {
+        "debug_id": "b2XwD",
+        "layout_label": "title",
+        "text": "\u60e0\u76ca\u5206\u4eab\u4e4b\u4e89"
+      }
+    }
+  ],
+  "counts": {
+    "articles": 3,
+    "chains": 9,
+    "merged_by_chain": 0,
+    "pages": 8,
+    "unassigned": 1
+  },
+  "pages": [
+    {
+      "article_id": null,
+      "page": 1,
+      "page_kind": "toc",
+      "page_kind_conf": 1.0,
+      "reason": "not_chain_eligible",
+      "role": "unassigned"
+    },
+    {
+      "article_id": "dDEYD",
+      "page": 2,
+      "page_kind": "article_opener",
+      "page_kind_conf": 1.0,
+      "reason": null,
+      "role": "opens"
+    },
+    {
+      "article_id": "dDEYD",
+      "page": 3,
+      "page_kind": "photo_spread",
+      "page_kind_conf": 1.0,
+      "reason": null,
+      "role": "member"
+    },
+    {
+      "article_id": "dDEYD",
+      "page": 4,
+      "page_kind": "article_body",
+      "page_kind_conf": 1.0,
+      "reason": null,
+      "role": "member"
+    },
+    {
+      "article_id": "1Uk4x",
+      "page": 5,
+      "page_kind": "article_opener",
+      "page_kind_conf": 1.0,
+      "reason": null,
+      "role": "opens"
+    },
+    {
+      "article_id": "1Uk4x",
+      "page": 6,
+      "page_kind": "article_body",
+      "page_kind_conf": 1.0,
+      "reason": null,
+      "role": "member"
+    },
+    {
+      "article_id": "xHWj7",
+      "page": 7,
+      "page_kind": "article_opener",
+      "page_kind_conf": 1.0,
+      "reason": null,
+      "role": "opens"
+    },
+    {
+      "article_id": "xHWj7",
+      "page": 8,
+      "page_kind": "article_body",
+      "page_kind_conf": 1.0,
+      "reason": null,
+      "role": "member"
+    }
+  ],
+  "title_labels": [
+    "title",
+    "paragraph_title"
+  ],
+  "unassigned": [
+    {
+      "page": 1,
+      "page_kind": "toc",
+      "reason": "not_chain_eligible"
+    }
+  ]
+}

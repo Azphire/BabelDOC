@@ -1,0 +1,5451 @@
+{
+ "sample": "Vogue-en",
+ "canvas_han_by_page": {
+  "1": 3,
+  "2": 0,
+  "3": 675
+ },
+ "canvas_han_total": 678,
+ "canvas_spans": [
+  {
+   "page": 1,
+   "direction": [
+    0.0,
+    -1.0
+   ],
+   "rotated": true,
+   "bbox": [
+    19.47,
+    150.39,
+    31.16,
+    174.82
+   ],
+   "han": 3,
+   "latin": 0,
+   "text": "精品店"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    276.89,
+    107.75,
+    321.89,
+    129.29
+   ],
+   "han": 3,
+   "latin": 0,
+   "text": "年冬季"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    139.52,
+    437.91,
+    150.57,
+    445.84
+   ],
+   "han": 2,
+   "latin": 0,
+   "text": "模特"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    192.0,
+    437.91,
+    396.42,
+    445.84
+   ],
+   "han": 33,
+   "latin": 0,
+   "text": "身穿路易威登的夹克、连身衣和包，以及耐克运动鞋，拍摄于水滨。摄影师为丹尼尔"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    397.8,
+    437.91,
+    419.9,
+    445.84
+   ],
+   "han": 3,
+   "latin": 0,
+   "text": "阿诺德。"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    66.38,
+    472.36,
+    102.38,
+    485.29
+   ],
+   "han": 4,
+   "latin": 0,
+   "text": "主编寄语"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    66.38,
+    497.83,
+    93.38,
+    510.76
+   ],
+   "han": 3,
+   "latin": 0,
+   "text": "贡献者"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    56.16,
+    549.42,
+    64.16,
+    560.91
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "关"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    56.16,
+    557.92,
+    64.16,
+    569.4
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "前"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    64.16,
+    549.42,
+    72.16,
+    560.91
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "于"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    64.16,
+    557.92,
+    72.16,
+    569.4
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "沿"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    66.22,
+    523.36,
+    75.22,
+    536.28
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "步"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    72.16,
+    549.42,
+    80.16,
+    560.91
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "复"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    75.22,
+    523.36,
+    84.22,
+    536.28
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "伐"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    80.16,
+    549.42,
+    88.16,
+    560.91
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "古"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    80.16,
+    557.92,
+    88.16,
+    569.4
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "鞋"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    84.22,
+    523.36,
+    93.22,
+    536.28
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "一"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    88.16,
+    549.42,
+    96.16,
+    560.91
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "的"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    88.16,
+    557.92,
+    96.16,
+    569.4
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "子"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    93.22,
+    523.36,
+    102.22,
+    536.28
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "致"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    96.16,
+    549.42,
+    104.16,
+    560.91
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "新"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    104.56,
+    524.51,
+    120.56,
+    536.0
+   ],
+   "han": 2,
+   "latin": 0,
+   "text": "玛戈"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    56.16,
+    538.01,
+    80.16,
+    549.5
+   ],
+   "han": 3,
+   "latin": 0,
+   "text": "安布巴"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    56.73,
+    582.5,
+    83.73,
+    595.42
+   ],
+   "han": 3,
+   "latin": 0,
+   "text": "奇迹滴"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    56.61,
+    590.3,
+    112.61,
+    601.79
+   ],
+   "han": 7,
+   "latin": 0,
+   "text": "输液承诺逆转时"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    56.61,
+    602.3,
+    88.61,
+    613.79
+   ],
+   "han": 3,
+   "latin": 0,
+   "text": "光。马蒂"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    90.61,
+    602.3,
+    114.61,
+    613.79
+   ],
+   "han": 3,
+   "latin": 0,
+   "text": "卡恩调"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    56.61,
+    614.3,
+    64.61,
+    625.79
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "查"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    56.18,
+    647.76,
+    64.73,
+    660.04
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "试"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    56.18,
+    668.42,
+    64.18,
+    679.91
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "她"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    56.18,
+    676.92,
+    64.18,
+    688.4
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "到"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    64.73,
+    647.76,
+    73.28,
+    660.04
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "验"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    64.18,
+    668.42,
+    72.18,
+    679.91
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "的"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    64.18,
+    676.92,
+    72.18,
+    688.4
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "百"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    73.28,
+    647.76,
+    81.83,
+    660.04
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "场"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    72.18,
+    668.42,
+    80.18,
+    679.91
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "戏"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    72.18,
+    676.92,
+    80.18,
+    688.4
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "老"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    80.18,
+    668.42,
+    88.18,
+    679.91
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "剧"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    80.18,
+    676.92,
+    88.18,
+    688.4
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "汇"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    84.05,
+    648.86,
+    91.65,
+    659.77
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "萨"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    88.18,
+    670.2,
+    96.18,
+    679.67
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "英"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    91.65,
+    648.86,
+    99.25,
+    659.77
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "纳"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    96.18,
+    670.2,
+    104.18,
+    679.67
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "语"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    99.25,
+    648.86,
+    106.85,
+    659.77
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "兹"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    108.75,
+    648.86,
+    123.95,
+    659.77
+   ],
+   "han": 2,
+   "latin": 0,
+   "text": "图西"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    56.18,
+    660.26,
+    71.38,
+    671.17
+   ],
+   "han": 2,
+   "latin": 0,
+   "text": "带来"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    56.22,
+    719.42,
+    64.22,
+    730.91
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "在"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    66.28,
+    693.34,
+    75.28,
+    706.26
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "从"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    81.62,
+    693.34,
+    90.62,
+    706.26
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "到"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    79.34,
+    719.42,
+    87.34,
+    730.91
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "是"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    90.62,
+    693.34,
+    99.62,
+    706.26
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "扎"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    87.34,
+    719.42,
+    95.34,
+    730.91
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "一"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    99.62,
+    693.34,
+    108.62,
+    706.26
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "克"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    110.96,
+    694.49,
+    118.96,
+    705.98
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "扎"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    56.22,
+    707.99,
+    64.22,
+    719.48
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "克"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    66.22,
+    707.99,
+    106.22,
+    719.48
+   ],
+   "han": 5,
+   "latin": 0,
+   "text": "珀森的到来"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    140.93,
+    471.3,
+    204.93,
+    482.79
+   ],
+   "han": 8,
+   "latin": 0,
+   "text": "这让许多人感到惊"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    140.93,
+    483.3,
+    204.93,
+    494.79
+   ],
+   "han": 7,
+   "latin": 0,
+   "text": "讶，但这位纽约时"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    140.93,
+    495.3,
+    204.93,
+    506.79
+   ],
+   "han": 8,
+   "latin": 0,
+   "text": "尚界的前神童却乐"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    140.93,
+    507.3,
+    196.93,
+    518.79
+   ],
+   "han": 6,
+   "latin": 0,
+   "text": "在其中。伊琳娜"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    140.93,
+    519.3,
+    204.93,
+    530.79
+   ],
+   "han": 8,
+   "latin": 0,
+   "text": "亚历山大在波森准"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    140.93,
+    531.3,
+    204.93,
+    542.79
+   ],
+   "han": 8,
+   "latin": 0,
+   "text": "备为美国设计服装"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    140.93,
+    543.3,
+    180.93,
+    554.79
+   ],
+   "han": 5,
+   "latin": 0,
+   "text": "时与他会面"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    141.0,
+    573.0,
+    177.0,
+    585.93
+   ],
+   "han": 4,
+   "latin": 0,
+   "text": "无处不在"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    177.0,
+    574.15,
+    201.0,
+    585.64
+   ],
+   "han": 3,
+   "latin": 0,
+   "text": "随着越"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    141.0,
+    587.65,
+    205.0,
+    599.14
+   ],
+   "han": 8,
+   "latin": 0,
+   "text": "来越多有远见的设"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    141.0,
+    599.65,
+    205.0,
+    611.14
+   ],
+   "han": 8,
+   "latin": 0,
+   "text": "计师与大品牌合作"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    141.0,
+    611.65,
+    205.0,
+    623.14
+   ],
+   "han": 7,
+   "latin": 0,
+   "text": "并为其工作，正在"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    141.0,
+    623.65,
+    205.0,
+    635.14
+   ],
+   "han": 8,
+   "latin": 0,
+   "text": "发生一场范式转变"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    140.93,
+    667.65,
+    196.93,
+    679.14
+   ],
+   "han": 6,
+   "latin": 0,
+   "text": "行动时间！无论"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    140.93,
+    679.65,
+    196.93,
+    691.14
+   ],
+   "han": 6,
+   "latin": 0,
+   "text": "你是乘火车、自"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    140.93,
+    691.65,
+    196.93,
+    703.14
+   ],
+   "han": 5,
+   "latin": 0,
+   "text": "行车、滑板，还"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    140.93,
+    703.65,
+    196.93,
+    715.14
+   ],
+   "han": 6,
+   "latin": 0,
+   "text": "是步行，轻便的"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    140.93,
+    715.65,
+    164.93,
+    727.14
+   ],
+   "han": 3,
+   "latin": 0,
+   "text": "层次和"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    220.69,
+    471.29,
+    276.69,
+    482.77
+   ],
+   "han": 7,
+   "latin": 0,
+   "text": "欢乐的印花让你"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    220.69,
+    483.29,
+    252.69,
+    494.77
+   ],
+   "han": 4,
+   "latin": 0,
+   "text": "时尚出行"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    220.98,
+    514.5,
+    229.98,
+    527.43
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "当"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    220.98,
+    541.27,
+    228.98,
+    552.75
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "缪"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    220.98,
+    549.42,
+    228.98,
+    560.91
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "体"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    229.98,
+    514.5,
+    238.98,
+    527.43
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "运"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    228.98,
+    541.27,
+    236.98,
+    552.75
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "斯"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    228.98,
+    549.42,
+    236.98,
+    560.91
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "育"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    238.98,
+    514.5,
+    247.98,
+    527.43
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "动"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    236.98,
+    549.42,
+    244.98,
+    560.91
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "场"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    247.98,
+    514.5,
+    256.98,
+    527.43
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "遇"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    244.98,
+    549.42,
+    252.98,
+    560.91
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "如"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    256.98,
+    514.5,
+    265.98,
+    527.43
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "上"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    252.98,
+    549.42,
+    260.98,
+    560.91
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "同"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    265.98,
+    514.5,
+    274.98,
+    527.43
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "时"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    220.98,
+    528.0,
+    229.98,
+    540.93
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "尚"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    265.88,
+    549.42,
+    273.88,
+    560.91
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "台"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    220.98,
+    561.42,
+    228.98,
+    572.91
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "竞"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    228.98,
+    561.42,
+    236.98,
+    572.91
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "技"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    236.98,
+    561.42,
+    244.98,
+    572.91
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "场"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    239.07,
+    529.15,
+    247.07,
+    540.64
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "运"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    244.98,
+    561.42,
+    252.98,
+    572.91
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "如"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    247.07,
+    529.15,
+    255.07,
+    540.64
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "动"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    252.98,
+    561.42,
+    260.98,
+    572.91
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "同"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    255.07,
+    529.15,
+    263.07,
+    540.64
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "员"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    260.98,
+    561.42,
+    268.98,
+    572.91
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "前"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    263.07,
+    529.15,
+    271.07,
+    540.64
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "作"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    268.98,
+    561.42,
+    276.98,
+    572.91
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "排"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    271.07,
+    529.15,
+    279.07,
+    540.64
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "为"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    220.98,
+    573.42,
+    276.98,
+    584.91
+   ],
+   "han": 7,
+   "latin": 0,
+   "text": "时尚与运动无需"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    220.98,
+    585.42,
+    276.98,
+    596.91
+   ],
+   "han": 6,
+   "latin": 0,
+   "text": "介绍，但最近它"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    220.98,
+    597.42,
+    276.98,
+    608.91
+   ],
+   "han": 7,
+   "latin": 0,
+   "text": "们完全迷上了彼"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    220.98,
+    609.42,
+    252.98,
+    620.91
+   ],
+   "han": 3,
+   "latin": 0,
+   "text": "此。玛雅"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    254.98,
+    609.42,
+    278.98,
+    620.91
+   ],
+   "han": 3,
+   "latin": 0,
+   "text": "辛格撰"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    220.98,
+    621.42,
+    228.98,
+    632.91
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "文"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    220.91,
+    647.77,
+    229.46,
+    660.04
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "走"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    220.91,
+    685.54,
+    228.11,
+    695.87
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "没"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    229.46,
+    647.77,
+    238.01,
+    660.04
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "钢"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    228.11,
+    685.54,
+    235.31,
+    695.87
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "有"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    238.01,
+    647.77,
+    246.56,
+    660.04
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "丝"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    235.31,
+    685.54,
+    242.51,
+    695.87
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "什"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    246.56,
+    647.77,
+    255.11,
+    660.04
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "的"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    242.51,
+    685.54,
+    249.71,
+    695.87
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "么"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    255.11,
+    647.77,
+    263.66,
+    660.04
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "人"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    249.71,
+    685.54,
+    256.91,
+    695.87
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "能"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    256.91,
+    685.54,
+    264.11,
+    695.87
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "比"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    265.89,
+    648.86,
+    273.49,
+    659.77
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "艾"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    264.11,
+    685.54,
+    271.31,
+    695.87
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "得"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    273.49,
+    648.86,
+    281.09,
+    659.77
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "德"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    271.31,
+    685.54,
+    278.51,
+    695.87
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "上"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    220.91,
+    661.68,
+    228.51,
+    672.6
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "里"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    220.91,
+    696.34,
+    228.11,
+    706.67
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "他"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    228.51,
+    661.68,
+    236.11,
+    672.6
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "安"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    228.11,
+    696.34,
+    235.31,
+    706.67
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "在"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    238.01,
+    661.68,
+    245.61,
+    672.6
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "布"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    245.61,
+    661.68,
+    253.21,
+    672.6
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "罗"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    253.21,
+    661.68,
+    260.81,
+    672.6
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "迪"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    260.81,
+    661.68,
+    268.41,
+    672.6
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "被"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    268.41,
+    661.68,
+    276.01,
+    672.6
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "吸"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    276.01,
+    661.68,
+    283.61,
+    672.6
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "引"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    220.91,
+    673.08,
+    228.51,
+    684.0
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "到"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    228.51,
+    673.08,
+    236.11,
+    684.0
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "极"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    236.11,
+    673.08,
+    243.71,
+    684.0
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "端"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    243.71,
+    673.08,
+    251.31,
+    684.0
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "角"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    251.31,
+    673.08,
+    258.91,
+    684.0
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "色"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    220.91,
+    707.14,
+    228.11,
+    717.47
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "中"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    274.11,
+    673.08,
+    281.71,
+    684.0
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "但"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    228.11,
+    707.14,
+    278.51,
+    717.47
+   ],
+   "han": 6,
+   "latin": 0,
+   "text": "的作品。温德尔"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    220.91,
+    717.94,
+    249.71,
+    728.27
+   ],
+   "han": 4,
+   "latin": 0,
+   "text": "斯蒂文森"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    299.85,
+    480.5,
+    308.85,
+    493.43
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "透"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    299.85,
+    507.27,
+    307.85,
+    518.76
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "康"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    299.85,
+    515.54,
+    307.05,
+    525.88
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "家"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    299.85,
+    549.84,
+    307.85,
+    561.32
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "美"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    299.85,
+    557.96,
+    307.45,
+    568.87
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "以"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    308.85,
+    480.5,
+    317.85,
+    493.43
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "过"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    307.85,
+    507.27,
+    315.85,
+    518.76
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "涅"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    307.05,
+    515.54,
+    314.25,
+    525.88
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "是"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    307.85,
+    549.84,
+    315.85,
+    561.32
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "国"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    307.45,
+    557.96,
+    315.05,
+    568.87
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "及"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    317.85,
+    480.5,
+    326.85,
+    493.43
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "镜"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    315.85,
+    507.27,
+    323.85,
+    518.76
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "狄"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    314.25,
+    515.54,
+    321.45,
+    525.88
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "一"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    315.85,
+    549.84,
+    323.85,
+    561.32
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "风"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    315.05,
+    557.96,
+    322.65,
+    568.87
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "艺"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    326.85,
+    480.5,
+    335.85,
+    493.43
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "子"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    323.85,
+    507.27,
+    331.85,
+    518.76
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "格"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    321.45,
+    515.54,
+    328.65,
+    525.88
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "个"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    322.65,
+    557.96,
+    330.25,
+    568.87
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "术"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    335.85,
+    480.5,
+    344.85,
+    493.43
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "看"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    331.85,
+    507.27,
+    339.85,
+    518.76
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "州"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    328.65,
+    515.54,
+    335.85,
+    525.88
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "神"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    330.25,
+    557.96,
+    337.85,
+    568.87
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "家"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    344.85,
+    480.5,
+    353.85,
+    493.43
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "世"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    335.85,
+    515.54,
+    343.05,
+    525.88
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "奇"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    337.85,
+    557.96,
+    345.45,
+    568.87
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "对"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    299.85,
+    494.0,
+    308.85,
+    506.93
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "界"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    343.05,
+    515.54,
+    350.25,
+    525.88
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "的"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    345.45,
+    557.96,
+    353.05,
+    568.87
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "流"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    308.85,
+    495.15,
+    316.85,
+    506.64
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "萨"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    350.25,
+    515.54,
+    357.45,
+    525.88
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "混"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    299.85,
+    569.36,
+    307.45,
+    580.27
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "行"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    316.85,
+    495.15,
+    324.85,
+    506.64
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "姆"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    299.85,
+    526.34,
+    307.05,
+    536.68
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "合"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    307.45,
+    569.36,
+    315.05,
+    580.27
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "文"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    307.05,
+    526.34,
+    314.25,
+    536.68
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "体"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    315.05,
+    569.36,
+    322.65,
+    580.27
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "化"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    326.85,
+    495.15,
+    334.85,
+    506.64
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "麦"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    322.65,
+    569.36,
+    330.25,
+    580.27
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "的"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    334.85,
+    495.15,
+    342.85,
+    506.64
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "金"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    321.45,
+    526.34,
+    328.65,
+    536.68
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "充"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    330.25,
+    569.36,
+    337.85,
+    580.27
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "非"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    342.85,
+    495.15,
+    350.85,
+    506.64
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "尼"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    328.65,
+    526.34,
+    335.85,
+    536.68
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "满"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    337.85,
+    569.36,
+    345.45,
+    580.27
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "凡"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    350.85,
+    495.15,
+    358.85,
+    506.64
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "斯"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    335.85,
+    526.34,
+    343.05,
+    536.68
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "了"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    345.45,
+    569.36,
+    353.05,
+    580.27
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "想"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    343.05,
+    526.34,
+    350.25,
+    536.68
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "喧"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    299.85,
+    580.76,
+    307.45,
+    591.67
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "象"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    350.25,
+    526.34,
+    357.45,
+    536.68
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "闹"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    299.85,
+    537.14,
+    307.05,
+    547.48
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "的"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    315.05,
+    580.76,
+    322.65,
+    591.67
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "作"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    307.05,
+    537.14,
+    314.25,
+    547.48
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "色"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    322.65,
+    580.76,
+    330.25,
+    591.67
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "者"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    314.25,
+    537.14,
+    321.45,
+    547.48
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "彩"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    337.85,
+    580.76,
+    345.45,
+    591.67
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "克"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    328.65,
+    537.14,
+    335.85,
+    547.48
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "复"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    345.45,
+    580.76,
+    353.05,
+    591.67
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "洛"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    335.85,
+    537.14,
+    343.05,
+    547.48
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "古"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    299.85,
+    592.16,
+    307.45,
+    603.07
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "伊"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    309.35,
+    592.16,
+    324.55,
+    603.07
+   ],
+   "han": 2,
+   "latin": 0,
+   "text": "沙玛"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    299.81,
+    615.74,
+    307.91,
+    627.37
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "麦"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    299.81,
+    660.35,
+    307.81,
+    671.84
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "亚"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    307.91,
+    615.74,
+    316.01,
+    627.37
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "吉"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    307.81,
+    660.35,
+    315.81,
+    671.84
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "历"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    316.01,
+    615.74,
+    324.11,
+    627.37
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "尔"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    315.81,
+    660.35,
+    323.81,
+    671.84
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "山"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    324.11,
+    615.74,
+    332.21,
+    627.37
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "的"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    323.81,
+    660.35,
+    331.81,
+    671.84
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "大"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    332.21,
+    615.74,
+    340.31,
+    627.37
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "麦"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    340.31,
+    615.74,
+    348.41,
+    627.37
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "昆"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    350.51,
+    616.78,
+    357.71,
+    627.11
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "肖"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    299.81,
+    628.93,
+    307.01,
+    639.26
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "恩"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    337.36,
+    668.59,
+    344.16,
+    678.36
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "时"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    344.16,
+    668.59,
+    350.96,
+    678.36
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "尚"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    308.81,
+    628.93,
+    316.01,
+    639.26
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "麦"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    350.96,
+    668.59,
+    357.76,
+    678.36
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "界"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    316.01,
+    628.93,
+    323.21,
+    639.26
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "吉"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    299.81,
+    678.79,
+    306.61,
+    688.56
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "最"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    323.21,
+    628.93,
+    330.41,
+    639.26
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "尔"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    306.61,
+    678.79,
+    313.41,
+    688.56
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "具"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    330.41,
+    628.93,
+    337.61,
+    639.26
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "从"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    313.41,
+    678.79,
+    320.21,
+    688.56
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "传"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    337.61,
+    628.93,
+    344.81,
+    639.26
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "无"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    320.21,
+    678.79,
+    327.01,
+    688.56
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "奇"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    344.81,
+    628.93,
+    352.01,
+    639.26
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "名"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    327.01,
+    678.79,
+    333.81,
+    688.56
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "色"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    352.01,
+    628.93,
+    359.21,
+    639.26
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "小"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    333.81,
+    678.79,
+    340.61,
+    688.56
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "彩"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    299.81,
+    639.73,
+    307.01,
+    650.06
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "卒"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    340.61,
+    678.79,
+    347.41,
+    688.56
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "的"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    307.01,
+    639.73,
+    314.21,
+    650.06
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "跃"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    347.41,
+    678.79,
+    354.21,
+    688.56
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "品"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    314.21,
+    639.73,
+    321.41,
+    650.06
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "升"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    299.81,
+    688.99,
+    306.61,
+    698.76
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "牌"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    321.41,
+    639.73,
+    328.61,
+    650.06
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "为"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    306.61,
+    688.99,
+    313.41,
+    698.76
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "之"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    328.61,
+    639.73,
+    335.81,
+    650.06
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "领"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    313.41,
+    688.99,
+    320.21,
+    698.76
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "一"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    335.81,
+    639.73,
+    343.01,
+    650.06
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "导"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    343.01,
+    639.73,
+    350.21,
+    650.06
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "者"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    327.01,
+    688.99,
+    340.61,
+    698.76
+   ],
+   "han": 2,
+   "latin": 0,
+   "text": "海莉"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    342.31,
+    688.99,
+    355.91,
+    698.76
+   ],
+   "han": 2,
+   "latin": 0,
+   "text": "梅特"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    299.81,
+    699.19,
+    354.21,
+    708.96
+   ],
+   "han": 8,
+   "latin": 0,
+   "text": "兰采访了这位正在"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    299.81,
+    709.39,
+    354.21,
+    719.16
+   ],
+   "han": 8,
+   "latin": 0,
+   "text": "书写其下一个篇章"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    299.81,
+    719.59,
+    347.41,
+    729.36
+   ],
+   "han": 7,
+   "latin": 0,
+   "text": "的年轻爱尔兰人"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    375.68,
+    498.43,
+    383.68,
+    509.91
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "冬"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    375.68,
+    506.92,
+    383.68,
+    518.41
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "完"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    375.68,
+    515.42,
+    383.68,
+    526.91
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "去"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    383.68,
+    498.43,
+    391.68,
+    509.91
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "天"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    383.68,
+    506.92,
+    391.68,
+    518.41
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "美"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    383.68,
+    515.42,
+    391.68,
+    526.91
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "投"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    391.68,
+    498.43,
+    399.68,
+    509.91
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "是"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    391.68,
+    506.92,
+    399.68,
+    518.41
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "时"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    391.68,
+    515.42,
+    399.68,
+    526.91
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "入"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    399.68,
+    506.92,
+    407.68,
+    518.41
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "刻"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    375.68,
+    486.02,
+    415.68,
+    497.51
+   ],
+   "han": 5,
+   "latin": 0,
+   "text": "炎热的夏日"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    398.53,
+    632.42,
+    434.65,
+    642.8
+   ],
+   "han": 5,
+   "latin": 0,
+   "text": "明星安吉尔"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    436.46,
+    632.42,
+    479.81,
+    642.8
+   ],
+   "han": 5,
+   "latin": 0,
+   "text": "里斯，效力于"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    387.87,
+    643.26,
+    510.7,
+    653.64
+   ],
+   "han": 13,
+   "latin": 0,
+   "text": "（上图左，身穿范思哲连衣裙），以及"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    375.63,
+    654.1,
+    484.01,
+    664.47
+   ],
+   "han": 15,
+   "latin": 0,
+   "text": "美国奥林匹克冠军短跑运动员加比"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    485.81,
+    654.1,
+    507.49,
+    664.47
+   ],
+   "han": 3,
+   "latin": 0,
+   "text": "托马斯"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    375.63,
+    664.93,
+    426.21,
+    675.31
+   ],
+   "han": 5,
+   "latin": 0,
+   "text": "（上图右，身穿"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    459.76,
+    664.93,
+    510.33,
+    675.31
+   ],
+   "han": 5,
+   "latin": 0,
+   "text": "上衣），她们拥"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    375.63,
+    675.77,
+    476.78,
+    686.15
+   ],
+   "han": 12,
+   "latin": 0,
+   "text": "有技巧、速度和独特的风格。由"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    476.78,
+    676.02,
+    490.81,
+    686.09
+   ],
+   "han": 2,
+   "latin": 0,
+   "text": "诺曼"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    492.56,
+    676.02,
+    499.57,
+    686.09
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "让"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    501.32,
+    676.02,
+    508.34,
+    686.09
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "罗"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    375.63,
+    686.85,
+    382.64,
+    696.92
+   ],
+   "han": 1,
+   "latin": 0,
+   "text": "伊"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    382.64,
+    686.61,
+    404.32,
+    696.99
+   ],
+   "han": 2,
+   "latin": 0,
+   "text": "拍摄，"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    406.08,
+    686.61,
+    442.2,
+    696.99
+   ],
+   "han": 5,
+   "latin": 0,
+   "text": "与时尚编辑"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    442.2,
+    686.85,
+    463.24,
+    696.92
+   ],
+   "han": 3,
+   "latin": 0,
+   "text": "朱莉娅"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    464.99,
+    686.85,
+    479.02,
+    696.92
+   ],
+   "han": 2,
+   "latin": 0,
+   "text": "萨尔"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    481.19,
+    686.85,
+    509.24,
+    696.92
+   ],
+   "han": 4,
+   "latin": 0,
+   "text": "贾莫伊斯"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    375.63,
+    697.45,
+    426.21,
+    707.82
+   ],
+   "han": 7,
+   "latin": 0,
+   "text": "合作拍摄安吉尔"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    428.01,
+    697.45,
+    449.69,
+    707.82
+   ],
+   "han": 2,
+   "latin": 0,
+   "text": "里斯，"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    449.69,
+    697.69,
+    470.72,
+    707.76
+   ],
+   "han": 3,
+   "latin": 0,
+   "text": "约哈娜"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    472.48,
+    697.69,
+    493.52,
+    707.76
+   ],
+   "han": 3,
+   "latin": 0,
+   "text": "勒巴西"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    493.52,
+    697.45,
+    507.97,
+    707.82
+   ],
+   "han": 2,
+   "latin": 0,
+   "text": "合作"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    375.63,
+    708.28,
+    404.53,
+    718.66
+   ],
+   "han": 4,
+   "latin": 0,
+   "text": "拍摄加比"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    406.34,
+    708.28,
+    500.26,
+    718.66
+   ],
+   "han": 11,
+   "latin": 0,
+   "text": "托马斯。详情请见本期内容。"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    448.68,
+    470.8,
+    499.88,
+    479.99
+   ],
+   "han": 7,
+   "latin": 0,
+   "text": "温暖舒适的时尚，"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    448.68,
+    480.4,
+    499.88,
+    489.59
+   ],
+   "han": 8,
+   "latin": 0,
+   "text": "带来明亮的冲击力"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    460.21,
+    505.96,
+    487.21,
+    515.65
+   ],
+   "han": 4,
+   "latin": 0,
+   "text": "最后一瞥"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    375.92,
+    536.23,
+    409.92,
+    548.44
+   ],
+   "han": 4,
+   "latin": 0,
+   "text": "封面造型"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    412.12,
+    536.23,
+    446.12,
+    548.44
+   ],
+   "han": 4,
+   "latin": 0,
+   "text": "冠军联赛"
+  },
+  {
+   "page": 3,
+   "direction": [
+    1.0,
+    0.0
+   ],
+   "rotated": false,
+   "bbox": [
+    43.47,
+    745.66,
+    55.51,
+    753.56
+   ],
+   "han": 2,
+   "latin": 0,
+   "text": " 冬季"
+  },
+  {
+   "page": 3,
+   "direction": [
+    0.0,
+    -1.0
+   ],
+   "rotated": true,
+   "bbox": [
+    554.0,
+    692.8,
+    560.14,
+    727.0
+   ],
+   "han": 7,
+   "latin": 0,
+   "text": "时尚编辑：朱莉娅"
+  },
+  {
+   "page": 3,
+   "direction": [
+    0.0,
+    -1.0
+   ],
+   "rotated": true,
+   "bbox": [
+    554.0,
+    683.18,
+    560.14,
+    691.73
+   ],
+   "han": 2,
+   "latin": 0,
+   "text": "萨尔"
+  },
+  {
+   "page": 3,
+   "direction": [
+    0.0,
+    -1.0
+   ],
+   "rotated": true,
+   "bbox": [
+    554.0,
+    651.93,
+    560.14,
+    681.86
+   ],
+   "han": 6,
+   "latin": 0,
+   "text": "贾莫伊斯。发型"
+  },
+  {
+   "page": 3,
+   "direction": [
+    0.0,
+    -1.0
+   ],
+   "rotated": true,
+   "bbox": [
+    554.0,
+    642.27,
+    560.14,
+    650.82
+   ],
+   "han": 2,
+   "latin": 0,
+   "text": "苏西"
+  },
+  {
+   "page": 3,
+   "direction": [
+    0.0,
+    -1.0
+   ],
+   "rotated": true,
+   "bbox": [
+    554.0,
+    615.55,
+    560.14,
+    641.2
+   ],
+   "han": 5,
+   "latin": 0,
+   "text": "索博尔。制作"
+  },
+  {
+   "page": 3,
+   "direction": [
+    0.0,
+    -1.0
+   ],
+   "rotated": true,
+   "bbox": [
+    554.0,
+    538.55,
+    560.14,
+    577.03
+   ],
+   "han": 7,
+   "latin": 0,
+   "text": "。道具造型师：彼得"
+  },
+  {
+   "page": 3,
+   "direction": [
+    0.0,
+    -1.0
+   ],
+   "rotated": true,
+   "bbox": [
+    554.0,
+    511.83,
+    560.14,
+    537.48
+   ],
+   "han": 5,
+   "latin": 0,
+   "text": "克莱因。细节"
+  },
+  {
+   "page": 3,
+   "direction": [
+    0.0,
+    -1.0
+   ],
+   "rotated": true,
+   "bbox": [
+    554.0,
+    502.17,
+    560.14,
+    510.72
+   ],
+   "han": 2,
+   "latin": 0,
+   "text": "乔伊"
+  },
+  {
+   "page": 3,
+   "direction": [
+    0.0,
+    -1.0
+   ],
+   "rotated": true,
+   "bbox": [
+    554.0,
+    484.0,
+    560.14,
+    501.1
+   ],
+   "han": 3,
+   "latin": 0,
+   "text": "乔治；化"
+  },
+  {
+   "page": 3,
+   "direction": [
+    0.0,
+    -1.0
+   ],
+   "rotated": true,
+   "bbox": [
+    547.58,
+    692.8,
+    553.72,
+    727.0
+   ],
+   "han": 7,
+   "latin": 0,
+   "text": "妆请见本期内容。"
+  }
+ ],
+ "il_paragraphs_with_han": [
+  {
+   "reference": "p3#0",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 3,
+   "latin": 0,
+   "text": "2025年冬季"
+  },
+  {
+   "reference": "p3#2",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 38,
+   "latin": 14,
+   "text": "模特Grace Elizabeth身穿路易威登的夹克、连身衣和包，以及耐克运动鞋，拍摄于水滨。摄影师为丹尼尔·阿诺德。"
+  },
+  {
+   "reference": "p3#3",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 4,
+   "latin": 0,
+   "text": "24主编寄语"
+  },
+  {
+   "reference": "p3#4",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 3,
+   "latin": 0,
+   "text": "28贡献者"
+  },
+  {
+   "reference": "p3#5",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 9,
+   "latin": 0,
+   "text": "32步伐一致 玛戈·安布巴"
+  },
+  {
+   "reference": "p3#6",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 6,
+   "latin": 0,
+   "text": "关于复古的新"
+  },
+  {
+   "reference": "p3#7",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 4,
+   "latin": 0,
+   "text": "前沿：鞋子"
+  },
+  {
+   "reference": "p3#9",
+   "layout_label": "title",
+   "vertical": false,
+   "han": 3,
+   "latin": 0,
+   "text": "奇迹滴"
+  },
+  {
+   "reference": "p3#12",
+   "layout_label": "title",
+   "vertical": false,
+   "han": 14,
+   "latin": 0,
+   "text": "输液承诺逆转时光。马蒂·卡恩调查"
+  },
+  {
+   "reference": "p3#19",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 10,
+   "latin": 0,
+   "text": "试验场 萨纳兹·图西带来"
+  },
+  {
+   "reference": "p3#20",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 6,
+   "latin": 0,
+   "text": "她的戏剧英语"
+  },
+  {
+   "reference": "p3#21",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 4,
+   "latin": 0,
+   "text": "到百老汇"
+  },
+  {
+   "reference": "p3#22",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 11,
+   "latin": 1,
+   "text": "48从A到扎克 扎克·珀森的到来"
+  },
+  {
+   "reference": "p3#23",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 3,
+   "latin": 3,
+   "text": "在Gap是一"
+  },
+  {
+   "reference": "p3#24",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 50,
+   "latin": 0,
+   "text": "这让许多人感到惊讶，但这位纽约时尚界的前神童却乐在其中。伊琳娜·亚历山大在波森准备为美国设计服装时与他会面"
+  },
+  {
+   "reference": "p3#26",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 38,
+   "latin": 0,
+   "text": "无处不在随着越来越多有远见的设计师与大品牌合作并为其工作，正在发生一场范式转变"
+  },
+  {
+   "reference": "p3#28",
+   "layout_label": "title",
+   "vertical": false,
+   "han": 26,
+   "latin": 0,
+   "text": "行动时间！无论你是乘火车、自行车、滑板，还是步行，轻便的层次和"
+  },
+  {
+   "reference": "p3#32",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 11,
+   "latin": 0,
+   "text": "欢乐的印花让你时尚出行"
+  },
+  {
+   "reference": "p3#34",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 12,
+   "latin": 0,
+   "text": "当运动遇上时尚... 运动员作为"
+  },
+  {
+   "reference": "p3#35",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 2,
+   "latin": 0,
+   "text": "缪斯？"
+  },
+  {
+   "reference": "p3#36",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 40,
+   "latin": 1,
+   "text": "体育场如同T台？竞技场如同前排？时尚与运动无需介绍，但最近它们完全迷上了彼此。玛雅·辛格撰文"
+  },
+  {
+   "reference": "p3#38",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 21,
+   "latin": 0,
+   "text": "走钢丝的人 艾德里安·布罗迪被吸引到极端角色——但"
+  },
+  {
+   "reference": "p3#39",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 21,
+   "latin": 12,
+   "text": "没有什么能比得上他在The Brutalist中的作品。温德尔·斯蒂文森"
+  },
+  {
+   "reference": "p3#41",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 13,
+   "latin": 0,
+   "text": "透过镜子看世界萨姆·麦金尼斯"
+  },
+  {
+   "reference": "p3#42",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 5,
+   "latin": 0,
+   "text": "康涅狄格州"
+  },
+  {
+   "reference": "p3#43",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 20,
+   "latin": 0,
+   "text": "家是一个神奇的混合体，充满了喧闹的色彩，复古"
+  },
+  {
+   "reference": "p3#44",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 3,
+   "latin": 0,
+   "text": "美国风，"
+  },
+  {
+   "reference": "p3#45",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 22,
+   "latin": 0,
+   "text": "以及艺术家对流行文化的非凡想象。作者：克洛伊·沙玛"
+  },
+  {
+   "reference": "p3#47",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 22,
+   "latin": 0,
+   "text": "麦吉尔的麦昆 肖恩·麦吉尔从无名小卒跃升为领导者"
+  },
+  {
+   "reference": "p3#48",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 4,
+   "latin": 0,
+   "text": "亚历山大"
+  },
+  {
+   "reference": "p3#49",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 41,
+   "latin": 7,
+   "text": "McQueen，时尚界最具传奇色彩的品牌之一。海莉·梅特兰采访了这位正在书写其下一个篇章的年轻爱尔兰人"
+  },
+  {
+   "reference": "p3#50",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 5,
+   "latin": 6,
+   "text": "104The Get 炎热的夏日"
+  },
+  {
+   "reference": "p3#51",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 3,
+   "latin": 0,
+   "text": "冬天是"
+  },
+  {
+   "reference": "p3#52",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 4,
+   "latin": 0,
+   "text": "完美时刻"
+  },
+  {
+   "reference": "p3#53",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 3,
+   "latin": 0,
+   "text": "去投入"
+  },
+  {
+   "reference": "p3#54",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 116,
+   "latin": 22,
+   "text": "WNBA明星安吉尔·里斯，效力于Chicago Sky（上图左，身穿范思哲连衣裙），以及美国奥林匹克冠军短跑运动员加比·托马斯（上图右，身穿Sportmax上衣"
+  },
+  {
+   "reference": "p3#55",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 15,
+   "latin": 0,
+   "text": "温暖舒适的时尚，带来明亮的冲击力"
+  },
+  {
+   "reference": "p3#56",
+   "layout_label": "plain text",
+   "vertical": false,
+   "han": 4,
+   "latin": 0,
+   "text": "112最后一瞥"
+  },
+  {
+   "reference": "p3#57",
+   "layout_label": "title",
+   "vertical": false,
+   "han": 8,
+   "latin": 0,
+   "text": "封面造型 冠军联赛"
+  },
+  {
+   "reference": "p3#58",
+   "layout_label": "abandon",
+   "vertical": false,
+   "han": 2,
+   "latin": 8,
+   "text": "22 冬季 2025 VOGUE.COM"
+  }
+ ],
+ "il_han_total": 629
+}

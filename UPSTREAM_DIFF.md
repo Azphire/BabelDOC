@@ -226,3 +226,29 @@ T3 的 `tools/column_continuity.py` 只读复用 `magazine/chain_signals.py`,不
   (22 站点,本批新做,逐站点以锚文本在当前树上定位)。
 - **通用信号约束**:所用信号只有字号比、同字号 run 长度与字符顺序;不含刊物名、字体名、
   页码、段落 id 或任何取自样张的字符串。
+
+
+## B11.7
+
+| 文件 | 符号 | 调用方 | 目的 | 批次 |
+| --- | --- | --- | --- | --- |
+| `babeldoc/format/pdf/high_level.py` | `_do_translate_single`(三行调用与两行 import) | 流水线主干 | 两个新 pass 的挂点,均在主干上、magazine 侧无既有钩子够得到。(a) `formula_reclass.apply` 落在 `StylesAndFormulas` 之后、`PageClassifier` 之前:它要撤销的分组是前者做的,而后者与链检测都读段落文本,须在文本补全之后才读。(b) `rotated_lane.reset()` 与 `rotated_lane.write_report()` 夹住 `detectors.detect_issues`:车道是在修复回路里施加的,故其记录在回路跑完之后写,而不是自成一个 stage。两个 pass 默认关(`magazine_formula_reclass` / `magazine_rotated_lane` 缺省为假),开关抬起前逐位无行为差异 | B11.7 |
+| `babeldoc/format/pdf/document_il/midend/typesetting.py` | 模块级 `LINE_HEAD_FORBIDDEN_PUNCTUATION`(新增);`TypesettingUnit.calc_is_hung_punctuation`(改读该常量) | `_layout_typesetting_units` 的悬挂标点分支;`chain_backfill._retreat_off_line_head` | 把该方法内联的 41 个字符的列表提到模块级冻结集合,方法改为读它。**行为逐位不变**:同一个集合、同一个 `in` 测试、同一个返回值。理由是 T2 的容量切要求"续段不得以行首禁排标点起头",而计划明写"复用排版器既有标点分类";把那 41 个字符抄进 magazine 侧会在树上留两份同样的表,正是 W-B11-18 认定为违规的形态。提取而非复制,是使"复用"这件事成立的最小改动 | B11.7 |
+
+### 未做的改动,与为什么
+
+**`babeldoc/format/pdf/document_il/midend/typesetting.py:861` 的 `vertical=False`**
+
+计划 T3.4a 要求把它改为继承段落的 `vertical`。**本批不改**,理由是改了会错:该行构造的是
+**stage 自己排出来的**译文字符,而 stage 对旋转段一律以水平轴排。让它继承段落标志,等于
+把每一个旋转段的每一个译文字符都标成竖排 —— 包括车道从未认领、stage 已按水平摆好的那些 ——
+渲染端随即以 `0 1 -1 0` 把它们旋转着画在水平位置上,那是比原缺陷更坏的结果。车道只在**它自己
+摆放过的**字符上置该标志,作用面恰为它认领的段,无需任何上游改动。判定证据见
+`examples/output/b11_7/t3_lane_feasibility.json` 的 `character_matrix` 项。
+
+**`babeldoc/format/pdf/document_il/midend/il_translator.py:1043` 的 `if paragraph.vertical: return None, None`**
+
+这是旋转段从未被译的**真正原因**,公式分组只是第二道闸。CLAUDE.md §2 禁止修改
+`il_translator.py` 的行为,故**一字未改**,并按 §2 停止并报告(报告见批次交付报告 §3.4)。
+用户裁决:走既有 react 孤行动作的第二类管辖(段落 `vertical`),不动该文件。该文件在本批的
+`git diff` 中不出现。

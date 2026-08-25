@@ -58,6 +58,22 @@ logger = logging.getLogger(__name__)
 
 REPORT_NAME = "chain_report.json"
 
+# The position a chain's first member holds. Every member after it resumes a
+# paragraph the layout broke rather than opening one, which is a fact several
+# passes downstream need and none of them should restate as an integer test.
+CHAIN_HEAD_INDEX = 0
+
+
+def is_chain_continuation(paragraph) -> bool:
+    """Whether this paragraph resumes a chain rather than opening one.
+
+    Read off ``chain_index``, which assembly already writes, rather than off a
+    second mark meaning the same thing: the intermediate language is frozen, and
+    a mark derived from the field that decides it cannot disagree with it.
+    """
+    index = getattr(paragraph, "chain_index", None)
+    return index is not None and index > CHAIN_HEAD_INDEX
+
 
 class ChainBuilder:
     """Link paragraphs across page boundaries and write the resulting chains."""

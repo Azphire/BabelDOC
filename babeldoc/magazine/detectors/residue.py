@@ -53,6 +53,7 @@ def detect(context: base.DetectionContext) -> list[base.Issue]:
         )
         return []
     script, min_ratio = rule
+    min_chars = config.residue_min_chars(context.language)
     found: list[base.Issue] = []
     for view in context.pages:
         if not view.flag(base.TRANSLATE_POLICY_FLAG, True):
@@ -62,7 +63,7 @@ def detect(context: base.DetectionContext) -> list[base.Issue]:
             if not text:
                 continue
             residue, total, ratio = measure(text, script)
-            if residue < config.residue_min_script_chars or ratio < min_ratio:
+            if residue < min_chars or ratio < min_ratio:
                 continue
             found.append(
                 base.Issue(
@@ -77,6 +78,7 @@ def detect(context: base.DetectionContext) -> list[base.Issue]:
                         "script_chars": total,
                         "residue_ratio": round(ratio, 4),
                         "min_ratio": min_ratio,
+                        "min_script_chars": min_chars,
                         "layout_label": paragraph.layout_label,
                         "debug_id": paragraph.debug_id,
                         "excerpt": text[: config.excerpt_chars],

@@ -79,6 +79,7 @@ from babeldoc.magazine.drop_cap import paragraph_reference
 from babeldoc.magazine.react import actions
 from babeldoc.magazine.react import collision
 from babeldoc.magazine.react import contain
+from babeldoc.magazine import rotated_lane
 from babeldoc.magazine.react import writeback
 from babeldoc.magazine.react.config import CONFIG_PATH
 from babeldoc.magazine.react.config import MAX_PARAGRAPHS
@@ -403,6 +404,7 @@ class RepairLoop:
                 identity=self.identity,
                 working_dir=self.working_dir,
                 ignore_cache=self.ignore_cache,
+                language=self.language,
             )
         return self.decision_client
 
@@ -420,6 +422,7 @@ class RepairLoop:
             transport=base.transport,
             cache=base.cache,
             identity=f"{base.identity}{ROUND_KEY_PREFIX}{kind}",
+            language=base.language,
             working_dir=base.working_dir,
             ignore_cache=base.ignore_cache,
         )
@@ -673,6 +676,7 @@ class RepairLoop:
             laid_out = writeback.retypeset(
                 typesetting, candidate.paragraph, candidate.page
             )
+            rotated_lane.note_reference(candidate.reference)
             stayed = writeback.stayed_inside(
                 box_before, box_tuple(candidate.paragraph.box)
             )

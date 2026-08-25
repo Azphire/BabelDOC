@@ -111,6 +111,21 @@
       "name": "column_reflow.report.json",
       "stage": "typesetting",
       "switch": "magazine_column_reflow"
+    },
+    {
+      "name": "formula_reclass.report.json",
+      "stage": "styles_and_formulas",
+      "switch": "magazine_formula_reclass"
+    },
+    {
+      "name": "formula_reclass_restore.report.json",
+      "stage": "typesetting",
+      "switch": "magazine_formula_reclass"
+    },
+    {
+      "name": "rotated_lane.report.json",
+      "stage": "typesetting",
+      "switch": "magazine_rotated_lane"
     }
   ]
 }

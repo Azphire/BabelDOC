@@ -1,0 +1,1829 @@
+{
+  "boundaries": [
+    {
+      "boundary": "p1:columns",
+      "column_count": null,
+      "constant_share_of_score": null,
+      "eligible": false,
+      "head_column": null,
+      "head_debug_id": null,
+      "head_label": null,
+      "head_page": 1,
+      "head_text": null,
+      "kind": "column",
+      "linked": false,
+      "pair": null,
+      "pairing": null,
+      "pairs": [],
+      "reason": "preserve_line_structure",
+      "score": null,
+      "signals": {
+        "body_label_pair": null,
+        "column_position": null,
+        "opener_prior": null,
+        "style_continuity": null,
+        "tail_line_fill": null,
+        "tail_no_terminal_punct": null
+      },
+      "tail_column": null,
+      "tail_debug_id": null,
+      "tail_ends_on_hyphen": false,
+      "tail_fill_ratio": null,
+      "tail_label": null,
+      "tail_page": 1,
+      "tail_text": null
+    },
+    {
+      "boundary": "1->2",
+      "column_count": null,
+      "constant_share_of_score": null,
+      "eligible": false,
+      "head_column": null,
+      "head_debug_id": null,
+      "head_label": null,
+      "head_page": 2,
+      "head_text": null,
+      "kind": "page",
+      "linked": false,
+      "pair": null,
+      "pairing": null,
+      "pairs": [],
+      "reason": "not_chain_eligible:tail",
+      "score": null,
+      "signals": {
+        "body_label_pair": null,
+        "column_position": null,
+        "opener_prior": null,
+        "style_continuity": null,
+        "tail_line_fill": null,
+        "tail_no_terminal_punct": null
+      },
+      "tail_column": null,
+      "tail_debug_id": null,
+      "tail_ends_on_hyphen": false,
+      "tail_fill_ratio": null,
+      "tail_label": null,
+      "tail_page": 1,
+      "tail_text": null
+    },
+    {
+      "boundary": "p2:c0->c1",
+      "column_count": 2,
+      "constant_share_of_score": null,
+      "eligible": false,
+      "head_column": 1,
+      "head_debug_id": "dStYV",
+      "head_label": "figure_caption",
+      "head_page": 2,
+      "head_text": "\u5384\u74dc\u591a\u5c14\u6444\u5f71\u5e08\u5361\u6d1b\u4e3d\u5a1c\u00b7\u8d5e\u5e03\u62c9\u8bfa\u7684\u523a\u7ee3\u4f5c\u54c1,\u91c7\u7528\u660c\u6bd4\u62c9\u68d5\u6988\u7ea4\u7ef4\u5236\u4f5c\u2014 \u8fd9\u79cd\u68d5\u6988\u662f\u4e9a\u9a6c\u5b59\u571f\u8457\u624b\u5de5\u827a\u7684\u8c61\u5f81\u3002",
+      "kind": "column",
+      "linked": false,
+      "pair": null,
+      "pairing": "column_adjacent",
+      "pairs": [],
+      "reason": "no_endpoint",
+      "score": null,
+      "signals": {
+        "body_label_pair": null,
+        "column_position": null,
+        "opener_prior": null,
+        "style_continuity": null,
+        "tail_line_fill": null,
+        "tail_no_terminal_punct": null
+      },
+      "tail_column": 0,
+      "tail_debug_id": "dy1u9",
+      "tail_ends_on_hyphen": false,
+      "tail_fill_ratio": null,
+      "tail_label": "plain text",
+      "tail_page": 2,
+      "tail_text": "\u8fd9\u4e9b\u77e5\u8bc6\u663e\u5f97\u5c24\u4e3a\u73cd\u8d35\u3002"
+    },
+    {
+      "boundary": "2->3",
+      "column_count": null,
+      "constant_share_of_score": null,
+      "eligible": true,
+      "head_column": 0,
+      "head_debug_id": "mhAME",
+      "head_label": "title",
+      "head_page": 3,
+      "head_text": "\u571f\u8457\u77e5\u8bc6",
+      "kind": "page",
+      "linked": false,
+      "pair": "title->title",
+      "pairing": null,
+      "pairs": [
+        {
+          "head_debug_id": "mhAME",
+          "head_label": "title",
+          "head_text": "\u571f\u8457\u77e5\u8bc6",
+          "linked": false,
+          "pair": "title->title",
+          "score": 0.5,
+          "signals": {
+            "body_label_pair": 0.0,
+            "column_position": 0.5,
+            "opener_prior": 0.0,
+            "style_continuity": 0.0,
+            "tail_line_fill": 1.0,
+            "tail_no_terminal_punct": 1.0
+          },
+          "tail_debug_id": "RVr8B",
+          "tail_fill_ratio": 1.3247924936845905,
+          "tail_label": "title",
+          "tail_text": "\u001a Lagipoiva Cherelle Jackson\uff09"
+        }
+      ],
+      "reason": null,
+      "score": 0.5,
+      "signals": {
+        "body_label_pair": 0.0,
+        "column_position": 0.5,
+        "opener_prior": 0.0,
+        "style_continuity": 0.0,
+        "tail_line_fill": 1.0,
+        "tail_no_terminal_punct": 1.0
+      },
+      "tail_column": 0,
+      "tail_debug_id": "RVr8B",
+      "tail_ends_on_hyphen": false,
+      "tail_fill_ratio": 1.3247924936845905,
+      "tail_label": "title",
+      "tail_page": 2,
+      "tail_text": "\u001a Lagipoiva Cherelle Jackson\uff09"
+    },
+    {
+      "boundary": "p3:columns",
+      "column_count": null,
+      "constant_share_of_score": null,
+      "eligible": false,
+      "head_column": null,
+      "head_debug_id": null,
+      "head_label": null,
+      "head_page": 3,
+      "head_text": null,
+      "kind": "column",
+      "linked": false,
+      "pair": null,
+      "pairing": null,
+      "pairs": [],
+      "reason": "one_column",
+      "score": null,
+      "signals": {
+        "body_label_pair": null,
+        "column_position": null,
+        "opener_prior": null,
+        "style_continuity": null,
+        "tail_line_fill": null,
+        "tail_no_terminal_punct": null
+      },
+      "tail_column": null,
+      "tail_debug_id": null,
+      "tail_ends_on_hyphen": false,
+      "tail_fill_ratio": null,
+      "tail_label": null,
+      "tail_page": 3,
+      "tail_text": null
+    },
+    {
+      "boundary": "3->4",
+      "column_count": null,
+      "constant_share_of_score": null,
+      "eligible": true,
+      "head_column": 0,
+      "head_debug_id": "ffNDF",
+      "head_label": "title",
+      "head_page": 4,
+      "head_text": "\u5730\u65b9\u548c\u571f\u8457\u77e5\u8bc6\u4f53\u7cfb\u8ba1\u5212: \u63a8\u5e7f\u571f\u8457\u77e5\u8bc6",
+      "kind": "page",
+      "linked": false,
+      "pair": "title->title",
+      "pairing": null,
+      "pairs": [
+        {
+          "head_debug_id": "ffNDF",
+          "head_label": "title",
+          "head_text": "\u5730\u65b9\u548c\u571f\u8457\u77e5\u8bc6\u4f53\u7cfb\u8ba1\u5212: \u63a8\u5e7f\u571f\u8457\u77e5\u8bc6",
+          "linked": false,
+          "pair": "title->title",
+          "score": 0.5,
+          "signals": {
+            "body_label_pair": 0.0,
+            "column_position": 0.5,
+            "opener_prior": 0.0,
+            "style_continuity": 0.0,
+            "tail_line_fill": null,
+            "tail_no_terminal_punct": 1.0
+          },
+          "tail_debug_id": "mhAME",
+          "tail_fill_ratio": null,
+          "tail_label": "title",
+          "tail_text": "\u571f\u8457\u77e5\u8bc6"
+        }
+      ],
+      "reason": null,
+      "score": 0.5,
+      "signals": {
+        "body_label_pair": 0.0,
+        "column_position": 0.5,
+        "opener_prior": 0.0,
+        "style_continuity": 0.0,
+        "tail_line_fill": null,
+        "tail_no_terminal_punct": 1.0
+      },
+      "tail_column": 0,
+      "tail_debug_id": "mhAME",
+      "tail_ends_on_hyphen": false,
+      "tail_fill_ratio": null,
+      "tail_label": "title",
+      "tail_page": 3,
+      "tail_text": "\u571f\u8457\u77e5\u8bc6"
+    },
+    {
+      "boundary": "p4:c0->c1",
+      "column_count": 5,
+      "constant_share_of_score": 0.1,
+      "eligible": true,
+      "head_column": 1,
+      "head_debug_id": "G32KE",
+      "head_label": "plain text",
+      "head_page": 4,
+      "head_text": "\u8be5\u8ba1\u5212\u65e8\u5728\u4fc3\u8fdb\u571f\u8457\u548c\u5730\u65b9",
+      "kind": "column",
+      "linked": false,
+      "pair": "body->body",
+      "pairing": "column_adjacent",
+      "pairs": [
+        {
+          "head_debug_id": "G32KE",
+          "head_label": "plain text",
+          "head_text": "\u8be5\u8ba1\u5212\u65e8\u5728\u4fc3\u8fdb\u571f\u8457\u548c\u5730\u65b9",
+          "linked": false,
+          "pair": "body->body",
+          "score": 0.6,
+          "signals": {
+            "body_label_pair": 1.0,
+            "column_position": 1.0,
+            "opener_prior": 0.0,
+            "style_continuity": 1.0,
+            "tail_line_fill": 0.0,
+            "tail_no_terminal_punct": 0.0
+          },
+          "tail_debug_id": "HpDgC",
+          "tail_fill_ratio": 0.5166155599229236,
+          "tail_label": "plain text",
+          "tail_text": "\u5019\u53d8\u5316\u76f8\u5173\u9886\u57df\u3002"
+        }
+      ],
+      "reason": null,
+      "score": 0.6,
+      "signals": {
+        "body_label_pair": 1.0,
+        "column_position": 1.0,
+        "opener_prior": 0.0,
+        "style_continuity": 1.0,
+        "tail_line_fill": 0.0,
+        "tail_no_terminal_punct": 0.0
+      },
+      "tail_column": 0,
+      "tail_debug_id": "HpDgC",
+      "tail_ends_on_hyphen": false,
+      "tail_fill_ratio": 0.5166155599229236,
+      "tail_label": "plain text",
+      "tail_page": 4,
+      "tail_text": "\u5019\u53d8\u5316\u76f8\u5173\u9886\u57df\u3002"
+    },
+    {
+      "boundary": "p4:c0->c2",
+      "column_count": 5,
+      "constant_share_of_score": 0.1,
+      "eligible": true,
+      "head_column": 2,
+      "head_debug_id": "Lamc5",
+      "head_label": "plain text",
+      "head_page": 4,
+      "head_text": "\u571f\u8457\u4eba\u6c11\u79ef\u7d2f \u7684\u6280\u827a\u4e0e\u667a\u6167 \u88ab\u7cfb\u7edf\u5316\u5730\u7f16 \u7e82\u6210\u590d\u6742\u7684\u77e5 \u8bc6\u4f53\u7cfb",
+      "kind": "column",
+      "linked": false,
+      "pair": "body->body",
+      "pairing": "body_next",
+      "pairs": [
+        {
+          "head_debug_id": "Lamc5",
+          "head_label": "plain text",
+          "head_text": "\u571f\u8457\u4eba\u6c11\u79ef\u7d2f \u7684\u6280\u827a\u4e0e\u667a\u6167 \u88ab\u7cfb\u7edf\u5316\u5730\u7f16 \u7e82\u6210\u590d\u6742\u7684\u77e5 \u8bc6\u4f53\u7cfb",
+          "linked": false,
+          "pair": "body->body",
+          "score": 0.25,
+          "signals": {
+            "body_label_pair": 1.0,
+            "column_position": 1.0,
+            "opener_prior": 0.0,
+            "style_continuity": 0.0,
+            "tail_line_fill": 0.0,
+            "tail_no_terminal_punct": 0.0
+          },
+          "tail_debug_id": "HpDgC",
+          "tail_fill_ratio": 0.5166155599229236,
+          "tail_label": "plain text",
+          "tail_text": "\u5019\u53d8\u5316\u76f8\u5173\u9886\u57df\u3002"
+        }
+      ],
+      "reason": null,
+      "score": 0.25,
+      "signals": {
+        "body_label_pair": 1.0,
+        "column_position": 1.0,
+        "opener_prior": 0.0,
+        "style_continuity": 0.0,
+        "tail_line_fill": 0.0,
+        "tail_no_terminal_punct": 0.0
+      },
+      "tail_column": 0,
+      "tail_debug_id": "HpDgC",
+      "tail_ends_on_hyphen": false,
+      "tail_fill_ratio": 0.5166155599229236,
+      "tail_label": "plain text",
+      "tail_page": 4,
+      "tail_text": "\u5019\u53d8\u5316\u76f8\u5173\u9886\u57df\u3002"
+    },
+    {
+      "boundary": "p4:c1->c2",
+      "column_count": 5,
+      "constant_share_of_score": 0.1,
+      "eligible": true,
+      "head_column": 2,
+      "head_debug_id": "Lamc5",
+      "head_label": "plain text",
+      "head_page": 4,
+      "head_text": "\u571f\u8457\u4eba\u6c11\u79ef\u7d2f \u7684\u6280\u827a\u4e0e\u667a\u6167 \u88ab\u7cfb\u7edf\u5316\u5730\u7f16 \u7e82\u6210\u590d\u6742\u7684\u77e5 \u8bc6\u4f53\u7cfb",
+      "kind": "column",
+      "linked": false,
+      "pair": "body->body",
+      "pairing": "column_adjacent",
+      "pairs": [
+        {
+          "head_debug_id": "Lamc5",
+          "head_label": "plain text",
+          "head_text": "\u571f\u8457\u4eba\u6c11\u79ef\u7d2f \u7684\u6280\u827a\u4e0e\u667a\u6167 \u88ab\u7cfb\u7edf\u5316\u5730\u7f16 \u7e82\u6210\u590d\u6742\u7684\u77e5 \u8bc6\u4f53\u7cfb",
+          "linked": false,
+          "pair": "body->body",
+          "score": 0.5,
+          "signals": {
+            "body_label_pair": 1.0,
+            "column_position": 1.0,
+            "opener_prior": 0.0,
+            "style_continuity": 0.0,
+            "tail_line_fill": null,
+            "tail_no_terminal_punct": 1.0
+          },
+          "tail_debug_id": "G32KE",
+          "tail_fill_ratio": null,
+          "tail_label": "plain text",
+          "tail_text": "\u8be5\u8ba1\u5212\u65e8\u5728\u4fc3\u8fdb\u571f\u8457\u548c\u5730\u65b9"
+        }
+      ],
+      "reason": null,
+      "score": 0.5,
+      "signals": {
+        "body_label_pair": 1.0,
+        "column_position": 1.0,
+        "opener_prior": 0.0,
+        "style_continuity": 0.0,
+        "tail_line_fill": null,
+        "tail_no_terminal_punct": 1.0
+      },
+      "tail_column": 1,
+      "tail_debug_id": "G32KE",
+      "tail_ends_on_hyphen": false,
+      "tail_fill_ratio": null,
+      "tail_label": "plain text",
+      "tail_page": 4,
+      "tail_text": "\u8be5\u8ba1\u5212\u65e8\u5728\u4fc3\u8fdb\u571f\u8457\u548c\u5730\u65b9"
+    },
+    {
+      "boundary": "p4:c1->c3",
+      "column_count": 5,
+      "constant_share_of_score": null,
+      "eligible": false,
+      "head_column": 3,
+      "head_debug_id": "yqjTL",
+      "head_label": "title",
+      "head_page": 4,
+      "head_text": "\u751f\u7269\u591a\u6837\u6027\u7684\u5b88\u62a4\u8005",
+      "kind": "column",
+      "linked": false,
+      "pair": null,
+      "pairing": "body_next",
+      "pairs": [],
+      "reason": "no_endpoint",
+      "score": null,
+      "signals": {
+        "body_label_pair": null,
+        "column_position": null,
+        "opener_prior": null,
+        "style_continuity": null,
+        "tail_line_fill": null,
+        "tail_no_terminal_punct": null
+      },
+      "tail_column": 1,
+      "tail_debug_id": "G32KE",
+      "tail_ends_on_hyphen": false,
+      "tail_fill_ratio": null,
+      "tail_label": "plain text",
+      "tail_page": 4,
+      "tail_text": "\u8be5\u8ba1\u5212\u65e8\u5728\u4fc3\u8fdb\u571f\u8457\u548c\u5730\u65b9"
+    },
+    {
+      "boundary": "p4:c2->c3",
+      "column_count": 5,
+      "constant_share_of_score": null,
+      "eligible": false,
+      "head_column": 3,
+      "head_debug_id": "yqjTL",
+      "head_label": "title",
+      "head_page": 4,
+      "head_text": "\u751f\u7269\u591a\u6837\u6027\u7684\u5b88\u62a4\u8005",
+      "kind": "column",
+      "linked": false,
+      "pair": null,
+      "pairing": "column_adjacent",
+      "pairs": [],
+      "reason": "no_endpoint",
+      "score": null,
+      "signals": {
+        "body_label_pair": null,
+        "column_position": null,
+        "opener_prior": null,
+        "style_continuity": null,
+        "tail_line_fill": null,
+        "tail_no_terminal_punct": null
+      },
+      "tail_column": 2,
+      "tail_debug_id": "Sxyk3",
+      "tail_ends_on_hyphen": false,
+      "tail_fill_ratio": null,
+      "tail_label": "plain text",
+      "tail_page": 4,
+      "tail_text": "\u8bc6\u4e4b\u95f4\u7684\u5e73\u8861\u3002"
+    },
+    {
+      "boundary": "p4:c2->c4",
+      "column_count": 5,
+      "constant_share_of_score": 0.1,
+      "eligible": true,
+      "head_column": 4,
+      "head_debug_id": "1kfN3",
+      "head_label": "plain text",
+      "head_page": 4,
+      "head_text": "\u571f \u8457\u4eba \u6c11\u9886 \u8896\u3001\u8054 \u5408\u56fd \u571f\u8457 \u95ee\u9898 \u5e38\u8bbe \u8bba \u575b\u7b2c \u4e8c\u5341 \u4e09\u5c4a \u4f1a\u8bae \u4e3b\u5e2d \u6b23\u675c\u00b7 \u5965\u9a6c \u9c81\u00b7\u6613\u535c\u62c9\u6b23(Hindou Oumarou Ibrahim) \u5728 2024 \u5e74 4 \u6708\u6307\u51fa,\u201c\u8fd9\u4e9b\u77e5\u8bc6\u5e76\u975e\u7eb8 \u4e0a\u8c08\u5175,\u800c\u662f\u5386\u7ecf\u6570\u767e\u5e74\u5b9e\u8df5\u68c0\u9a8c\u7684\u667a \u6167\u7ed3\u6676\u3002\u201d",
+      "kind": "column",
+      "linked": false,
+      "pair": "body->body",
+      "pairing": "body_next",
+      "pairs": [
+        {
+          "head_debug_id": "1kfN3",
+          "head_label": "plain text",
+          "head_text": "\u571f \u8457\u4eba \u6c11\u9886 \u8896\u3001\u8054 \u5408\u56fd \u571f\u8457 \u95ee\u9898 \u5e38\u8bbe \u8bba \u575b\u7b2c \u4e8c\u5341 \u4e09\u5c4a \u4f1a\u8bae \u4e3b\u5e2d \u6b23\u675c\u00b7 \u5965\u9a6c \u9c81\u00b7\u6613\u535c\u62c9\u6b23(Hindou Oumarou Ibrahim) \u5728 2024 \u5e74 4 \u6708\u6307\u51fa,\u201c\u8fd9\u4e9b\u77e5\u8bc6\u5e76\u975e\u7eb8 \u4e0a\u8c08\u5175,\u800c\u662f\u5386\u7ecf\u6570\u767e\u5e74\u5b9e\u8df5\u68c0\u9a8c\u7684\u667a \u6167\u7ed3\u6676\u3002\u201d",
+          "linked": false,
+          "pair": "body->body",
+          "score": 0.6,
+          "signals": {
+            "body_label_pair": 1.0,
+            "column_position": 1.0,
+            "opener_prior": 0.0,
+            "style_continuity": 1.0,
+            "tail_line_fill": 0.0,
+            "tail_no_terminal_punct": 0.0
+          },
+          "tail_debug_id": "Sxyk3",
+          "tail_fill_ratio": 0.4559426229508198,
+          "tail_label": "plain text",
+          "tail_text": "\u8bc6\u4e4b\u95f4\u7684\u5e73\u8861\u3002"
+        }
+      ],
+      "reason": null,
+      "score": 0.6,
+      "signals": {
+        "body_label_pair": 1.0,
+        "column_position": 1.0,
+        "opener_prior": 0.0,
+        "style_continuity": 1.0,
+        "tail_line_fill": 0.0,
+        "tail_no_terminal_punct": 0.0
+      },
+      "tail_column": 2,
+      "tail_debug_id": "Sxyk3",
+      "tail_ends_on_hyphen": false,
+      "tail_fill_ratio": 0.4559426229508198,
+      "tail_label": "plain text",
+      "tail_page": 4,
+      "tail_text": "\u8bc6\u4e4b\u95f4\u7684\u5e73\u8861\u3002"
+    },
+    {
+      "boundary": "p4:c3->c4",
+      "column_count": 5,
+      "constant_share_of_score": 0.1,
+      "eligible": true,
+      "head_column": 4,
+      "head_debug_id": "1kfN3",
+      "head_label": "plain text",
+      "head_page": 4,
+      "head_text": "\u571f \u8457\u4eba \u6c11\u9886 \u8896\u3001\u8054 \u5408\u56fd \u571f\u8457 \u95ee\u9898 \u5e38\u8bbe \u8bba \u575b\u7b2c \u4e8c\u5341 \u4e09\u5c4a \u4f1a\u8bae \u4e3b\u5e2d \u6b23\u675c\u00b7 \u5965\u9a6c \u9c81\u00b7\u6613\u535c\u62c9\u6b23(Hindou Oumarou Ibrahim) \u5728 2024 \u5e74 4 \u6708\u6307\u51fa,\u201c\u8fd9\u4e9b\u77e5\u8bc6\u5e76\u975e\u7eb8 \u4e0a\u8c08\u5175,\u800c\u662f\u5386\u7ecf\u6570\u767e\u5e74\u5b9e\u8df5\u68c0\u9a8c\u7684\u667a \u6167\u7ed3\u6676\u3002\u201d",
+      "kind": "column",
+      "linked": true,
+      "pair": "body->body",
+      "pairing": "column_adjacent",
+      "pairs": [
+        {
+          "head_debug_id": "1kfN3",
+          "head_label": "plain text",
+          "head_text": "\u571f \u8457\u4eba \u6c11\u9886 \u8896\u3001\u8054 \u5408\u56fd \u571f\u8457 \u95ee\u9898 \u5e38\u8bbe \u8bba \u575b\u7b2c \u4e8c\u5341 \u4e09\u5c4a \u4f1a\u8bae \u4e3b\u5e2d \u6b23\u675c\u00b7 \u5965\u9a6c \u9c81\u00b7\u6613\u535c\u62c9\u6b23(Hindou Oumarou Ibrahim) \u5728 2024 \u5e74 4 \u6708\u6307\u51fa,\u201c\u8fd9\u4e9b\u77e5\u8bc6\u5e76\u975e\u7eb8 \u4e0a\u8c08\u5175,\u800c\u662f\u5386\u7ecf\u6570\u767e\u5e74\u5b9e\u8df5\u68c0\u9a8c\u7684\u667a \u6167\u7ed3\u6676\u3002\u201d",
+          "linked": true,
+          "pair": "body->body",
+          "score": 1.0,
+          "signals": {
+            "body_label_pair": 1.0,
+            "column_position": 1.0,
+            "opener_prior": 0.0,
+            "style_continuity": 1.0,
+            "tail_line_fill": 1.0,
+            "tail_no_terminal_punct": 1.0
+          },
+          "tail_debug_id": "WUDXv",
+          "tail_fill_ratio": 0.9968341326426903,
+          "tail_label": "plain text",
+          "tail_text": "\u8482\u00b7\u535a\u897f\uff08Delsie Betty Bosi\uff09 \u6240\u8a00\uff1a\u201c\u7537\u6027\u8d1f\u8d23\u5efa\u9020\u5927\u90e8"
+        }
+      ],
+      "reason": null,
+      "score": 1.0,
+      "signals": {
+        "body_label_pair": 1.0,
+        "column_position": 1.0,
+        "opener_prior": 0.0,
+        "style_continuity": 1.0,
+        "tail_line_fill": 1.0,
+        "tail_no_terminal_punct": 1.0
+      },
+      "tail_column": 3,
+      "tail_debug_id": "WUDXv",
+      "tail_ends_on_hyphen": false,
+      "tail_fill_ratio": 0.9968341326426903,
+      "tail_label": "plain text",
+      "tail_page": 4,
+      "tail_text": "\u8482\u00b7\u535a\u897f\uff08Delsie Betty Bosi\uff09 \u6240\u8a00\uff1a\u201c\u7537\u6027\u8d1f\u8d23\u5efa\u9020\u5927\u90e8"
+    },
+    {
+      "boundary": "4->5",
+      "column_count": null,
+      "constant_share_of_score": null,
+      "eligible": true,
+      "head_column": 0,
+      "head_debug_id": "DiMBA",
+      "head_label": "title",
+      "head_page": 5,
+      "head_text": "\u5df4\u897f:\u6c34\u4e4b\u6c11\u65cf\u7684 \u542f\u793a",
+      "kind": "page",
+      "linked": false,
+      "pair": "title->title",
+      "pairing": null,
+      "pairs": [
+        {
+          "head_debug_id": "PrTqC",
+          "head_label": "plain text",
+          "head_text": "\u5de8\u9aa8\u820c\u9c7c\u5bf9\u4fdd\u9a6c\u91cc\u4eba\u7684\u751f\u5b58\u81f3\u5173\u91cd\u8981,\u800c\u8be5\u9c7c\u7684\u6570\u91cf\u4e00\u5ea6\u6025\u5267\u51cf\u5c11\u3002\u4e3a\u6b64,\u4e9a\u9a6c\u5b59\u5dde\u7684 \u4fdd\u9a6c\u91cc\u4eba\u53c2\u4e0e\u4e86\u4e00\u9879\u878d\u5408\u79d1\u5b66\u77e5\u8bc6\u4e0e\u4f20\u7edf\u667a\u6167\u7684\u7269\u79cd\u6062\u590d\u8ba1\u5212\u3002\u51e0\u5e74\u540e,\u666e\u9c81\u65af\u6cb3\u5df2\u91cd \u73b0\u6b64\u79cd\u9c7c\u7fa4\u7684\u8eab\u5f71\u3002",
+          "linked": false,
+          "pair": "body->body",
+          "score": 0.05,
+          "signals": {
+            "body_label_pair": 1.0,
+            "column_position": 0.5,
+            "opener_prior": 1.0,
+            "style_continuity": 0.0,
+            "tail_line_fill": 0.0,
+            "tail_no_terminal_punct": 0.0
+          },
+          "tail_debug_id": "udYwL",
+          "tail_fill_ratio": 0.7825307377049178,
+          "tail_label": "plain text",
+          "tail_text": "\u5206\u5730\u7eb3\u5165\u571f\u8457\u548c\u5730\u65b9\u77e5\u8bc6\u3002"
+        },
+        {
+          "head_debug_id": "DiMBA",
+          "head_label": "title",
+          "head_text": "\u5df4\u897f:\u6c34\u4e4b\u6c11\u65cf\u7684 \u542f\u793a",
+          "linked": false,
+          "pair": "title->title",
+          "score": 0.35000000000000003,
+          "signals": {
+            "body_label_pair": 0.0,
+            "column_position": 0.5,
+            "opener_prior": 1.0,
+            "style_continuity": 0.0,
+            "tail_line_fill": null,
+            "tail_no_terminal_punct": 1.0
+          },
+          "tail_debug_id": "yqjTL",
+          "tail_fill_ratio": null,
+          "tail_label": "title",
+          "tail_text": "\u751f\u7269\u591a\u6837\u6027\u7684\u5b88\u62a4\u8005"
+        }
+      ],
+      "reason": null,
+      "score": 0.35000000000000003,
+      "signals": {
+        "body_label_pair": 0.0,
+        "column_position": 0.5,
+        "opener_prior": 1.0,
+        "style_continuity": 0.0,
+        "tail_line_fill": null,
+        "tail_no_terminal_punct": 1.0
+      },
+      "tail_column": 3,
+      "tail_debug_id": "yqjTL",
+      "tail_ends_on_hyphen": false,
+      "tail_fill_ratio": null,
+      "tail_label": "title",
+      "tail_page": 4,
+      "tail_text": "\u751f\u7269\u591a\u6837\u6027\u7684\u5b88\u62a4\u8005"
+    },
+    {
+      "boundary": "p5:c0->c1",
+      "column_count": 3,
+      "constant_share_of_score": 0.1,
+      "eligible": true,
+      "head_column": 1,
+      "head_debug_id": "HoSvG",
+      "head_label": "plain text",
+      "head_page": 5,
+      "head_text": "\u4ee4\u4eba\u5fc3\u788e,\u771f\u4e0d\u77e5\u9053\u8be5\u600e\u4e48\u517b\u6d3b\u5b69\u5b50\u3002\u201d",
+      "kind": "column",
+      "linked": true,
+      "pair": "body->body",
+      "pairing": "column_adjacent",
+      "pairs": [
+        {
+          "head_debug_id": "HoSvG",
+          "head_label": "plain text",
+          "head_text": "\u4ee4\u4eba\u5fc3\u788e,\u771f\u4e0d\u77e5\u9053\u8be5\u600e\u4e48\u517b\u6d3b\u5b69\u5b50\u3002\u201d",
+          "linked": true,
+          "pair": "body->body",
+          "score": 1.0,
+          "signals": {
+            "body_label_pair": 1.0,
+            "column_position": 1.0,
+            "opener_prior": 0.0,
+            "style_continuity": 1.0,
+            "tail_line_fill": 1.0,
+            "tail_no_terminal_punct": 1.0
+          },
+          "tail_debug_id": "oqWHp",
+          "tail_fill_ratio": 1.0001471637026391,
+          "tail_label": "plain text",
+          "tail_text": "\u5374\u53d1\u73b0\u7a7a\u7a7a\u5982\u4e5f\u3002\u773c\u770b\u751f\u8ba1\u6ca1\u4e86\u7740\u843d\uff0c"
+        }
+      ],
+      "reason": null,
+      "score": 1.0,
+      "signals": {
+        "body_label_pair": 1.0,
+        "column_position": 1.0,
+        "opener_prior": 0.0,
+        "style_continuity": 1.0,
+        "tail_line_fill": 1.0,
+        "tail_no_terminal_punct": 1.0
+      },
+      "tail_column": 0,
+      "tail_debug_id": "oqWHp",
+      "tail_ends_on_hyphen": false,
+      "tail_fill_ratio": 1.0001471637026391,
+      "tail_label": "plain text",
+      "tail_page": 5,
+      "tail_text": "\u5374\u53d1\u73b0\u7a7a\u7a7a\u5982\u4e5f\u3002\u773c\u770b\u751f\u8ba1\u6ca1\u4e86\u7740\u843d\uff0c"
+    },
+    {
+      "boundary": "p5:c0->c2",
+      "column_count": 3,
+      "constant_share_of_score": 0.1,
+      "eligible": true,
+      "head_column": 2,
+      "head_debug_id": "BFGnq",
+      "head_label": "plain text",
+      "head_page": 5,
+      "head_text": "\u6c11\u65cf\u3002\u201d2009 \u5e74,\u4e16\u754c\u4e0a\u6700\u5927\u7684\u6de1\u6c34 \u9c7c \u2014 \u5de8\u9aa8\u820c\u9c7c\u53ea\u5269\u4e0b 266 \u5c3e\u6210\u9c7c, \u4fdd\u9a6c\u91cc\u4eba\u7684\u751f\u5b58\u906d\u5230\u5a01\u80c1\u3002",
+      "kind": "column",
+      "linked": true,
+      "pair": "body->body",
+      "pairing": "body_next",
+      "pairs": [
+        {
+          "head_debug_id": "BFGnq",
+          "head_label": "plain text",
+          "head_text": "\u6c11\u65cf\u3002\u201d2009 \u5e74,\u4e16\u754c\u4e0a\u6700\u5927\u7684\u6de1\u6c34 \u9c7c \u2014 \u5de8\u9aa8\u820c\u9c7c\u53ea\u5269\u4e0b 266 \u5c3e\u6210\u9c7c, \u4fdd\u9a6c\u91cc\u4eba\u7684\u751f\u5b58\u906d\u5230\u5a01\u80c1\u3002",
+          "linked": true,
+          "pair": "body->body",
+          "score": 1.0,
+          "signals": {
+            "body_label_pair": 1.0,
+            "column_position": 1.0,
+            "opener_prior": 0.0,
+            "style_continuity": 1.0,
+            "tail_line_fill": 1.0,
+            "tail_no_terminal_punct": 1.0
+          },
+          "tail_debug_id": "oqWHp",
+          "tail_fill_ratio": 1.0001471637026391,
+          "tail_label": "plain text",
+          "tail_text": "\u5374\u53d1\u73b0\u7a7a\u7a7a\u5982\u4e5f\u3002\u773c\u770b\u751f\u8ba1\u6ca1\u4e86\u7740\u843d\uff0c"
+        }
+      ],
+      "reason": null,
+      "score": 1.0,
+      "signals": {
+        "body_label_pair": 1.0,
+        "column_position": 1.0,
+        "opener_prior": 0.0,
+        "style_continuity": 1.0,
+        "tail_line_fill": 1.0,
+        "tail_no_terminal_punct": 1.0
+      },
+      "tail_column": 0,
+      "tail_debug_id": "oqWHp",
+      "tail_ends_on_hyphen": false,
+      "tail_fill_ratio": 1.0001471637026391,
+      "tail_label": "plain text",
+      "tail_page": 5,
+      "tail_text": "\u5374\u53d1\u73b0\u7a7a\u7a7a\u5982\u4e5f\u3002\u773c\u770b\u751f\u8ba1\u6ca1\u4e86\u7740\u843d\uff0c"
+    },
+    {
+      "boundary": "p5:c1->c2",
+      "column_count": 3,
+      "constant_share_of_score": 0.1,
+      "eligible": true,
+      "head_column": 2,
+      "head_debug_id": "BFGnq",
+      "head_label": "plain text",
+      "head_page": 5,
+      "head_text": "\u6c11\u65cf\u3002\u201d2009 \u5e74,\u4e16\u754c\u4e0a\u6700\u5927\u7684\u6de1\u6c34 \u9c7c \u2014 \u5de8\u9aa8\u820c\u9c7c\u53ea\u5269\u4e0b 266 \u5c3e\u6210\u9c7c, \u4fdd\u9a6c\u91cc\u4eba\u7684\u751f\u5b58\u906d\u5230\u5a01\u80c1\u3002",
+      "kind": "column",
+      "linked": true,
+      "pair": "body->body",
+      "pairing": "column_adjacent",
+      "pairs": [
+        {
+          "head_debug_id": "BFGnq",
+          "head_label": "plain text",
+          "head_text": "\u6c11\u65cf\u3002\u201d2009 \u5e74,\u4e16\u754c\u4e0a\u6700\u5927\u7684\u6de1\u6c34 \u9c7c \u2014 \u5de8\u9aa8\u820c\u9c7c\u53ea\u5269\u4e0b 266 \u5c3e\u6210\u9c7c, \u4fdd\u9a6c\u91cc\u4eba\u7684\u751f\u5b58\u906d\u5230\u5a01\u80c1\u3002",
+          "linked": true,
+          "pair": "body->body",
+          "score": 1.0,
+          "signals": {
+            "body_label_pair": 1.0,
+            "column_position": 1.0,
+            "opener_prior": 0.0,
+            "style_continuity": 1.0,
+            "tail_line_fill": 1.0,
+            "tail_no_terminal_punct": 1.0
+          },
+          "tail_debug_id": "DpbaN",
+          "tail_fill_ratio": 0.9718652703085204,
+          "tail_label": "plain text",
+          "tail_text": "\u6c34\u4e4b\u6c11\u65cf\uff0c\u662f\u552f\u4e00\u771f\u6b63\u751f\u6d3b\u5728\u6c34\u4e2d\u7684"
+        }
+      ],
+      "reason": null,
+      "score": 1.0,
+      "signals": {
+        "body_label_pair": 1.0,
+        "column_position": 1.0,
+        "opener_prior": 0.0,
+        "style_continuity": 1.0,
+        "tail_line_fill": 1.0,
+        "tail_no_terminal_punct": 1.0
+      },
+      "tail_column": 1,
+      "tail_debug_id": "DpbaN",
+      "tail_ends_on_hyphen": false,
+      "tail_fill_ratio": 0.9718652703085204,
+      "tail_label": "plain text",
+      "tail_page": 5,
+      "tail_text": "\u6c34\u4e4b\u6c11\u65cf\uff0c\u662f\u552f\u4e00\u771f\u6b63\u751f\u6d3b\u5728\u6c34\u4e2d\u7684"
+    },
+    {
+      "boundary": "5->6",
+      "column_count": null,
+      "constant_share_of_score": null,
+      "eligible": true,
+      "head_column": 0,
+      "head_debug_id": "aPpsL",
+      "head_label": "plain text",
+      "head_page": 6,
+      "head_text": "\u4e3a\u7eaa\u5ff5\u91cf\u5b50\u529b\u5b66\u8bde\u751f 100 \u5468\u5e74,\u8054\u5408\u56fd\u5ba3\u5e03\u5c06 2025 \u5e74\u5b9a\u4e3a\u56fd\u9645\u91cf\u5b50\u79d1\u5b66\u6280\u672f\u5e74\u3002 \u4f5c\u4e3a\u8be5\u5021\u8bae\u7684\u7275\u5934\u673a\u6784,\u8054\u5408\u56fd\u6559\u79d1\u6587\u7ec4\u7ec7\u4e8e 2 \u6708 4 \u65e5\u548c 5 \u65e5\u5728\u5df4\u9ece\u542f\u52a8\u4e86\u8fd9\u9879\u4e3a \u671f\u4e00\u5e74\u7684\u6d3b\u52a8,\u5171\u5438\u5f15\u4e861200 \u591a\u540d\u53c2\u4e0e\u8005,\u5176\u4e2d\u5305\u62ec\u591a\u4f4d\u8bfa\u8d1d\u5c14\u5956\u5f97\u4e3b\u3002",
+      "kind": "page",
+      "linked": true,
+      "pair": "body->body",
+      "pairing": null,
+      "pairs": [
+        {
+          "head_debug_id": "aPpsL",
+          "head_label": "plain text",
+          "head_text": "\u4e3a\u7eaa\u5ff5\u91cf\u5b50\u529b\u5b66\u8bde\u751f 100 \u5468\u5e74,\u8054\u5408\u56fd\u5ba3\u5e03\u5c06 2025 \u5e74\u5b9a\u4e3a\u56fd\u9645\u91cf\u5b50\u79d1\u5b66\u6280\u672f\u5e74\u3002 \u4f5c\u4e3a\u8be5\u5021\u8bae\u7684\u7275\u5934\u673a\u6784,\u8054\u5408\u56fd\u6559\u79d1\u6587\u7ec4\u7ec7\u4e8e 2 \u6708 4 \u65e5\u548c 5 \u65e5\u5728\u5df4\u9ece\u542f\u52a8\u4e86\u8fd9\u9879\u4e3a \u671f\u4e00\u5e74\u7684\u6d3b\u52a8,\u5171\u5438\u5f15\u4e861200 \u591a\u540d\u53c2\u4e0e\u8005,\u5176\u4e2d\u5305\u62ec\u591a\u4f4d\u8bfa\u8d1d\u5c14\u5956\u5f97\u4e3b\u3002",
+          "linked": true,
+          "pair": "body->body",
+          "score": 1.0,
+          "signals": {
+            "body_label_pair": 1.0,
+            "column_position": 1.0,
+            "opener_prior": 0.0,
+            "style_continuity": 1.0,
+            "tail_line_fill": 1.0,
+            "tail_no_terminal_punct": 1.0
+          },
+          "tail_debug_id": "uxFEM",
+          "tail_fill_ratio": 0.9716170859470992,
+          "tail_label": "plain text",
+          "tail_text": "\u4e4b\u65f6 \u2014\u8fd9\u4e00\u8054\u76df\u7531\u5df4\u897f\u6700\u53e4\u8001\u7684\u539f"
+        },
+        {
+          "head_debug_id": "dkXJq",
+          "head_label": "title",
+          "head_text": "2025 \u56fd\u9645\u91cf\u5b50\u79d1\u5b66\u6280\u672f\u5e74",
+          "linked": false,
+          "pair": "title->title",
+          "score": 0.5,
+          "signals": {
+            "body_label_pair": 0.0,
+            "column_position": 0.5,
+            "opener_prior": 0.0,
+            "style_continuity": 0.0,
+            "tail_line_fill": 0.0,
+            "tail_no_terminal_punct": 1.0
+          },
+          "tail_debug_id": "DiMBA",
+          "tail_fill_ratio": 0.258754889263896,
+          "tail_label": "title",
+          "tail_text": "\u542f\u793a"
+        }
+      ],
+      "reason": null,
+      "score": 1.0,
+      "signals": {
+        "body_label_pair": 1.0,
+        "column_position": 1.0,
+        "opener_prior": 0.0,
+        "style_continuity": 1.0,
+        "tail_line_fill": 1.0,
+        "tail_no_terminal_punct": 1.0
+      },
+      "tail_column": 2,
+      "tail_debug_id": "uxFEM",
+      "tail_ends_on_hyphen": false,
+      "tail_fill_ratio": 0.9716170859470992,
+      "tail_label": "plain text",
+      "tail_page": 5,
+      "tail_text": "\u4e4b\u65f6 \u2014\u8fd9\u4e00\u8054\u76df\u7531\u5df4\u897f\u6700\u53e4\u8001\u7684\u539f"
+    },
+    {
+      "boundary": "p6:c0->c1",
+      "column_count": 3,
+      "constant_share_of_score": null,
+      "eligible": false,
+      "head_column": 1,
+      "head_debug_id": "TNYWx",
+      "head_label": "title",
+      "head_page": 6,
+      "head_text": "\u8bfb\u53d6\u601d\u60f3\u7684\u4f20\u611f\u5668",
+      "kind": "column",
+      "linked": false,
+      "pair": null,
+      "pairing": "column_adjacent",
+      "pairs": [],
+      "reason": "no_endpoint",
+      "score": null,
+      "signals": {
+        "body_label_pair": null,
+        "column_position": null,
+        "opener_prior": null,
+        "style_continuity": null,
+        "tail_line_fill": null,
+        "tail_no_terminal_punct": null
+      },
+      "tail_column": 0,
+      "tail_debug_id": "BxBcN",
+      "tail_ends_on_hyphen": false,
+      "tail_fill_ratio": null,
+      "tail_label": "plain text",
+      "tail_page": 6,
+      "tail_text": "\u672a\u505c\u606f"
+    },
+    {
+      "boundary": "p6:c0->c2",
+      "column_count": 3,
+      "constant_share_of_score": 0.1,
+      "eligible": true,
+      "head_column": 2,
+      "head_debug_id": "AxJex",
+      "head_label": "plain text",
+      "head_page": 6,
+      "head_text": "\u662f\u7ea2\u5916\u5149,\u5b83\u975e\u5e38\u9002\u5408\u751f\u7269\u6210\u50cf,\u80fd \u591f\u8f7b\u677e\u7a7f\u900f\u7ec4\u7ec7\u5185\u90e8;\u53e6\u4e00\u79cd\u662f\u53ef\u89c1 \u5149,\u5b83\u65e0\u6cd5\u7a7f\u900f\u7ec4\u7ec7,\u4f46\u80fd\u5728\u76f8\u673a\u4e2d \u751f\u6210\u66f4\u6e05\u6670\u7684\u56fe\u50cf\u3002\u8fd9\u9879\u6280\u672f\u80fd\u4e3a\u6211 \u4eec\u63d0\u4f9b\u7ea2\u5916\u5149\u63a2\u6d4b\u8fc7\u7684\u7ec4\u7ec7\u6837\u672c\u7684\u76f8 \u5173\u4fe1\u606f\u3002\u7ea0\u7f20\u76f8\u673a\u80fd\u591f\u4e3a\u80bf\u7624\u79d1\u533b\u751f \u63d0\u4f9b\u6307\u5bfc,\u5feb\u901f\u5224\u65ad\u5973\u6027\u5728\u4e73\u817a\u764c\u624b \u672f\u540e\u662f\u5426\u5e94\u63a5\u53d7\u5316\u7597\u3002",
+      "kind": "column",
+      "linked": false,
+      "pair": "body->body",
+      "pairing": "body_next",
+      "pairs": [
+        {
+          "head_debug_id": "AxJex",
+          "head_label": "plain text",
+          "head_text": "\u662f\u7ea2\u5916\u5149,\u5b83\u975e\u5e38\u9002\u5408\u751f\u7269\u6210\u50cf,\u80fd \u591f\u8f7b\u677e\u7a7f\u900f\u7ec4\u7ec7\u5185\u90e8;\u53e6\u4e00\u79cd\u662f\u53ef\u89c1 \u5149,\u5b83\u65e0\u6cd5\u7a7f\u900f\u7ec4\u7ec7,\u4f46\u80fd\u5728\u76f8\u673a\u4e2d \u751f\u6210\u66f4\u6e05\u6670\u7684\u56fe\u50cf\u3002\u8fd9\u9879\u6280\u672f\u80fd\u4e3a\u6211 \u4eec\u63d0\u4f9b\u7ea2\u5916\u5149\u63a2\u6d4b\u8fc7\u7684\u7ec4\u7ec7\u6837\u672c\u7684\u76f8 \u5173\u4fe1\u606f\u3002\u7ea0\u7f20\u76f8\u673a\u80fd\u591f\u4e3a\u80bf\u7624\u79d1\u533b\u751f \u63d0\u4f9b\u6307\u5bfc,\u5feb\u901f\u5224\u65ad\u5973\u6027\u5728\u4e73\u817a\u764c\u624b \u672f\u540e\u662f\u5426\u5e94\u63a5\u53d7\u5316\u7597\u3002",
+          "linked": false,
+          "pair": "body->body",
+          "score": 0.5,
+          "signals": {
+            "body_label_pair": 1.0,
+            "column_position": 1.0,
+            "opener_prior": 0.0,
+            "style_continuity": 0.0,
+            "tail_line_fill": 0.0,
+            "tail_no_terminal_punct": 1.0
+          },
+          "tail_debug_id": "BxBcN",
+          "tail_fill_ratio": 0.5897187196896219,
+          "tail_label": "plain text",
+          "tail_text": "\u672a\u505c\u606f"
+        }
+      ],
+      "reason": null,
+      "score": 0.5,
+      "signals": {
+        "body_label_pair": 1.0,
+        "column_position": 1.0,
+        "opener_prior": 0.0,
+        "style_continuity": 0.0,
+        "tail_line_fill": 0.0,
+        "tail_no_terminal_punct": 1.0
+      },
+      "tail_column": 0,
+      "tail_debug_id": "BxBcN",
+      "tail_ends_on_hyphen": false,
+      "tail_fill_ratio": 0.5897187196896219,
+      "tail_label": "plain text",
+      "tail_page": 6,
+      "tail_text": "\u672a\u505c\u606f"
+    },
+    {
+      "boundary": "p6:c1->c2",
+      "column_count": 3,
+      "constant_share_of_score": 0.1,
+      "eligible": true,
+      "head_column": 2,
+      "head_debug_id": "AxJex",
+      "head_label": "plain text",
+      "head_page": 6,
+      "head_text": "\u662f\u7ea2\u5916\u5149,\u5b83\u975e\u5e38\u9002\u5408\u751f\u7269\u6210\u50cf,\u80fd \u591f\u8f7b\u677e\u7a7f\u900f\u7ec4\u7ec7\u5185\u90e8;\u53e6\u4e00\u79cd\u662f\u53ef\u89c1 \u5149,\u5b83\u65e0\u6cd5\u7a7f\u900f\u7ec4\u7ec7,\u4f46\u80fd\u5728\u76f8\u673a\u4e2d \u751f\u6210\u66f4\u6e05\u6670\u7684\u56fe\u50cf\u3002\u8fd9\u9879\u6280\u672f\u80fd\u4e3a\u6211 \u4eec\u63d0\u4f9b\u7ea2\u5916\u5149\u63a2\u6d4b\u8fc7\u7684\u7ec4\u7ec7\u6837\u672c\u7684\u76f8 \u5173\u4fe1\u606f\u3002\u7ea0\u7f20\u76f8\u673a\u80fd\u591f\u4e3a\u80bf\u7624\u79d1\u533b\u751f \u63d0\u4f9b\u6307\u5bfc,\u5feb\u901f\u5224\u65ad\u5973\u6027\u5728\u4e73\u817a\u764c\u624b \u672f\u540e\u662f\u5426\u5e94\u63a5\u53d7\u5316\u7597\u3002",
+      "kind": "column",
+      "linked": true,
+      "pair": "body->body",
+      "pairing": "column_adjacent",
+      "pairs": [
+        {
+          "head_debug_id": "AxJex",
+          "head_label": "plain text",
+          "head_text": "\u662f\u7ea2\u5916\u5149,\u5b83\u975e\u5e38\u9002\u5408\u751f\u7269\u6210\u50cf,\u80fd \u591f\u8f7b\u677e\u7a7f\u900f\u7ec4\u7ec7\u5185\u90e8;\u53e6\u4e00\u79cd\u662f\u53ef\u89c1 \u5149,\u5b83\u65e0\u6cd5\u7a7f\u900f\u7ec4\u7ec7,\u4f46\u80fd\u5728\u76f8\u673a\u4e2d \u751f\u6210\u66f4\u6e05\u6670\u7684\u56fe\u50cf\u3002\u8fd9\u9879\u6280\u672f\u80fd\u4e3a\u6211 \u4eec\u63d0\u4f9b\u7ea2\u5916\u5149\u63a2\u6d4b\u8fc7\u7684\u7ec4\u7ec7\u6837\u672c\u7684\u76f8 \u5173\u4fe1\u606f\u3002\u7ea0\u7f20\u76f8\u673a\u80fd\u591f\u4e3a\u80bf\u7624\u79d1\u533b\u751f \u63d0\u4f9b\u6307\u5bfc,\u5feb\u901f\u5224\u65ad\u5973\u6027\u5728\u4e73\u817a\u764c\u624b \u672f\u540e\u662f\u5426\u5e94\u63a5\u53d7\u5316\u7597\u3002",
+          "linked": true,
+          "pair": "body->body",
+          "score": 1.0,
+          "signals": {
+            "body_label_pair": 1.0,
+            "column_position": 1.0,
+            "opener_prior": 0.0,
+            "style_continuity": 1.0,
+            "tail_line_fill": 1.0,
+            "tail_no_terminal_punct": 1.0
+          },
+          "tail_debug_id": "irM3B",
+          "tail_fill_ratio": 0.9719728276252475,
+          "tail_label": "plain text",
+          "tail_text": "\u8fd9\u79cd\u6280\u672f\u4f9d\u8d56\u4e24\u79cd\u5149\u7684\u91cf\u5b50\u7ea0\u7f20\uff1a\u4e00\u79cd"
+        }
+      ],
+      "reason": null,
+      "score": 1.0,
+      "signals": {
+        "body_label_pair": 1.0,
+        "column_position": 1.0,
+        "opener_prior": 0.0,
+        "style_continuity": 1.0,
+        "tail_line_fill": 1.0,
+        "tail_no_terminal_punct": 1.0
+      },
+      "tail_column": 1,
+      "tail_debug_id": "irM3B",
+      "tail_ends_on_hyphen": false,
+      "tail_fill_ratio": 0.9719728276252475,
+      "tail_label": "plain text",
+      "tail_page": 6,
+      "tail_text": "\u8fd9\u79cd\u6280\u672f\u4f9d\u8d56\u4e24\u79cd\u5149\u7684\u91cf\u5b50\u7ea0\u7f20\uff1a\u4e00\u79cd"
+    },
+    {
+      "boundary": "6->7",
+      "column_count": null,
+      "constant_share_of_score": null,
+      "eligible": true,
+      "head_column": 0,
+      "head_debug_id": "2vBhv",
+      "head_label": "title",
+      "head_page": 7,
+      "head_text": "\u5f53\u751f\u7269\u527d\u7a83\u6ecb\u751f \u8513\u5ef6\u65f6",
+      "kind": "page",
+      "linked": false,
+      "pair": "title->title",
+      "pairing": null,
+      "pairs": [
+        {
+          "head_debug_id": "Gs32h",
+          "head_label": "plain text",
+          "head_text": "\u8fc7\u53bb 30 \u5e74\u6765,\u56fd\u9645\u6cd5\u89c4\u4e00\u76f4\u81f4\u529b\u4e8e\u9650\u5236\u4ea7\u4e1a\u754c\u5bf9\u571f\u8457\u77e5\u8bc6\u7684\u63a0\u593a\u6027\u5229\u7528,\u4ee5\u9632 \u6b62\u8fd9\u7c7b\u884c\u4e3a\u4ee5\u635f\u5bb3\u5f53\u5730\u6c11\u4f17\u5229\u76ca\u4e3a\u4ee3\u4ef7\u3002\u7136\u800c,\u5c3d\u7ba1\u5df2\u91c7\u53d6\u8bb8\u591a\u4e3e\u63aa,\u4e0d\u5f53\u4fb5\u5360 \u571f\u8457\u77e5\u8bc6\u7684\u6848\u4f8b\u4ecd\u5c61\u89c1\u4e0d\u9c9c\u3002",
+          "linked": false,
+          "pair": "body->body",
+          "score": 0.1,
+          "signals": {
+            "body_label_pair": 1.0,
+            "column_position": 1.0,
+            "opener_prior": 1.0,
+            "style_continuity": 0.0,
+            "tail_line_fill": 0.0,
+            "tail_no_terminal_punct": 0.0
+          },
+          "tail_debug_id": "AxJex",
+          "tail_fill_ratio": 0.5928600547434626,
+          "tail_label": "plain text",
+          "tail_text": "\u672f\u540e\u662f\u5426\u5e94\u63a5\u53d7\u5316\u7597\u3002"
+        },
+        {
+          "head_debug_id": "2vBhv",
+          "head_label": "title",
+          "head_text": "\u5f53\u751f\u7269\u527d\u7a83\u6ecb\u751f \u8513\u5ef6\u65f6",
+          "linked": false,
+          "pair": "title->title",
+          "score": 0.35000000000000003,
+          "signals": {
+            "body_label_pair": 0.0,
+            "column_position": 0.5,
+            "opener_prior": 1.0,
+            "style_continuity": 0.0,
+            "tail_line_fill": null,
+            "tail_no_terminal_punct": 1.0
+          },
+          "tail_debug_id": "TNYWx",
+          "tail_fill_ratio": null,
+          "tail_label": "title",
+          "tail_text": "\u8bfb\u53d6\u601d\u60f3\u7684\u4f20\u611f\u5668"
+        }
+      ],
+      "reason": null,
+      "score": 0.35000000000000003,
+      "signals": {
+        "body_label_pair": 0.0,
+        "column_position": 0.5,
+        "opener_prior": 1.0,
+        "style_continuity": 0.0,
+        "tail_line_fill": null,
+        "tail_no_terminal_punct": 1.0
+      },
+      "tail_column": 1,
+      "tail_debug_id": "TNYWx",
+      "tail_ends_on_hyphen": false,
+      "tail_fill_ratio": null,
+      "tail_label": "title",
+      "tail_page": 6,
+      "tail_text": "\u8bfb\u53d6\u601d\u60f3\u7684\u4f20\u611f\u5668"
+    },
+    {
+      "boundary": "p7:c0->c1",
+      "column_count": 3,
+      "constant_share_of_score": 0.1,
+      "eligible": true,
+      "head_column": 1,
+      "head_debug_id": "4Ed76",
+      "head_label": "plain text",
+      "head_page": 7,
+      "head_text": "\u4e1a\u5316\u8fc7\u7a0b\u4e2d\u672a\u80fd\u83b7\u5f97\u5145\u5206\u8ba4\u53ef,\u4e14\u77e5 \u8bc6\u4f7f\u7528\u8005\u672a\u4e0e\u7956\u4f20\u77e5\u8bc6\u6301\u6709\u8005\u5408\u7406\u5206 \u4eab\u60e0\u76ca\u65f6,\u8fd9\u79cd\u884c\u4e3a\u4fbf\u53ef\u88ab\u79f0\u4e3a\u201c\u751f \u7269\u527d\u7a83\u201d\u3002",
+      "kind": "column",
+      "linked": true,
+      "pair": "body->body",
+      "pairing": "column_adjacent",
+      "pairs": [
+        {
+          "head_debug_id": "4Ed76",
+          "head_label": "plain text",
+          "head_text": "\u4e1a\u5316\u8fc7\u7a0b\u4e2d\u672a\u80fd\u83b7\u5f97\u5145\u5206\u8ba4\u53ef,\u4e14\u77e5 \u8bc6\u4f7f\u7528\u8005\u672a\u4e0e\u7956\u4f20\u77e5\u8bc6\u6301\u6709\u8005\u5408\u7406\u5206 \u4eab\u60e0\u76ca\u65f6,\u8fd9\u79cd\u884c\u4e3a\u4fbf\u53ef\u88ab\u79f0\u4e3a\u201c\u751f \u7269\u527d\u7a83\u201d\u3002",
+          "linked": true,
+          "pair": "body->body",
+          "score": 1.0,
+          "signals": {
+            "body_label_pair": 1.0,
+            "column_position": 1.0,
+            "opener_prior": 0.0,
+            "style_continuity": 1.0,
+            "tail_line_fill": 1.0,
+            "tail_no_terminal_punct": 1.0
+          },
+          "tail_debug_id": "wmGfv",
+          "tail_fill_ratio": 1.0000058247903074,
+          "tail_label": "plain text",
+          "tail_text": "\u571f\u8457\u77e5\u8bc6\u5728\u79d1\u5b66\u8c03\u7814\u3001\u4ea7\u54c1\u5f00\u53d1\u6216\u5546"
+        }
+      ],
+      "reason": null,
+      "score": 1.0,
+      "signals": {
+        "body_label_pair": 1.0,
+        "column_position": 1.0,
+        "opener_prior": 0.0,
+        "style_continuity": 1.0,
+        "tail_line_fill": 1.0,
+        "tail_no_terminal_punct": 1.0
+      },
+      "tail_column": 0,
+      "tail_debug_id": "wmGfv",
+      "tail_ends_on_hyphen": false,
+      "tail_fill_ratio": 1.0000058247903074,
+      "tail_label": "plain text",
+      "tail_page": 7,
+      "tail_text": "\u571f\u8457\u77e5\u8bc6\u5728\u79d1\u5b66\u8c03\u7814\u3001\u4ea7\u54c1\u5f00\u53d1\u6216\u5546"
+    },
+    {
+      "boundary": "p7:c0->c2",
+      "column_count": 3,
+      "constant_share_of_score": 0.1,
+      "eligible": true,
+      "head_column": 2,
+      "head_debug_id": "P95fR",
+      "head_label": "plain text",
+      "head_page": 7,
+      "head_text": "spinosa L.) \u575a\u679c\u63d0\u53d6\u7684\u6cb9\u8102\u5219\u662f\u53c8 \u4e00\u4f8b\u8bc1\u3002\u5982\u4eca,\u963f\u7518\u6cb9\u88ab\u5e7f\u6cdb\u5e94\u7528\u4e8e \u5168\u7403\u5404\u7c7b\u62a4\u53d1\u548c\u62a4\u80a4\u4ea7\u54c1\u4e2d,\u5176\u7528\u9014 \u672c\u8d28\u4e0a\u4e0e\u963f\u9a6c\u9f50\u683c (\u53c8\u79f0\u67cf\u67cf\u5c14) \u5987 \u5973 \u6cbf\u7528\u4e86 \u4e00 \u5343\u591a \u5e74\u7684 \u7528 \u9014\u5982\u51fa \u4e00 \u8f99\u3002 \u867d\u7136\u90e8\u5206\u6301\u6709\u76f8\u5173\u4e13\u5229\u5e76\u9500\u552e\u963f\u7518\u6cb9 \u76f8\u5173\u4ea7\u54c1\u7684\u56fd\u9645\u5de8\u5934\u5df2\u4e0e\u963f\u9a6c\u9f50\u683c\u5987 \u5973\u5408\u4f5c\u793e\u7b7e\u8ba2\u4e86\u60e0\u76ca\u5206\u4eab\u534f\u8bae,\u4f46\u5176 \u4ed6\u4f01\u4e1a\u4f3c\u4e4e\u4ece\u672a\u4e0e\u963f\u9a6c\u9f50\u683c\u793e\u7fa4\u5171\u4eab \u8fc7\u76f8\u5173\u60e0\u76ca\u3002",
+      "kind": "column",
+      "linked": true,
+      "pair": "body->body",
+      "pairing": "body_next",
+      "pairs": [
+        {
+          "head_debug_id": "P95fR",
+          "head_label": "plain text",
+          "head_text": "spinosa L.) \u575a\u679c\u63d0\u53d6\u7684\u6cb9\u8102\u5219\u662f\u53c8 \u4e00\u4f8b\u8bc1\u3002\u5982\u4eca,\u963f\u7518\u6cb9\u88ab\u5e7f\u6cdb\u5e94\u7528\u4e8e \u5168\u7403\u5404\u7c7b\u62a4\u53d1\u548c\u62a4\u80a4\u4ea7\u54c1\u4e2d,\u5176\u7528\u9014 \u672c\u8d28\u4e0a\u4e0e\u963f\u9a6c\u9f50\u683c (\u53c8\u79f0\u67cf\u67cf\u5c14) \u5987 \u5973 \u6cbf\u7528\u4e86 \u4e00 \u5343\u591a \u5e74\u7684 \u7528 \u9014\u5982\u51fa \u4e00 \u8f99\u3002 \u867d\u7136\u90e8\u5206\u6301\u6709\u76f8\u5173\u4e13\u5229\u5e76\u9500\u552e\u963f\u7518\u6cb9 \u76f8\u5173\u4ea7\u54c1\u7684\u56fd\u9645\u5de8\u5934\u5df2\u4e0e\u963f\u9a6c\u9f50\u683c\u5987 \u5973\u5408\u4f5c\u793e\u7b7e\u8ba2\u4e86\u60e0\u76ca\u5206\u4eab\u534f\u8bae,\u4f46\u5176 \u4ed6\u4f01\u4e1a\u4f3c\u4e4e\u4ece\u672a\u4e0e\u963f\u9a6c\u9f50\u683c\u793e\u7fa4\u5171\u4eab \u8fc7\u76f8\u5173\u60e0\u76ca\u3002",
+          "linked": true,
+          "pair": "body->body",
+          "score": 1.0,
+          "signals": {
+            "body_label_pair": 1.0,
+            "column_position": 1.0,
+            "opener_prior": 0.0,
+            "style_continuity": 1.0,
+            "tail_line_fill": 1.0,
+            "tail_no_terminal_punct": 1.0
+          },
+          "tail_debug_id": "wmGfv",
+          "tail_fill_ratio": 1.0000058247903074,
+          "tail_label": "plain text",
+          "tail_text": "\u571f\u8457\u77e5\u8bc6\u5728\u79d1\u5b66\u8c03\u7814\u3001\u4ea7\u54c1\u5f00\u53d1\u6216\u5546"
+        }
+      ],
+      "reason": null,
+      "score": 1.0,
+      "signals": {
+        "body_label_pair": 1.0,
+        "column_position": 1.0,
+        "opener_prior": 0.0,
+        "style_continuity": 1.0,
+        "tail_line_fill": 1.0,
+        "tail_no_terminal_punct": 1.0
+      },
+      "tail_column": 0,
+      "tail_debug_id": "wmGfv",
+      "tail_ends_on_hyphen": false,
+      "tail_fill_ratio": 1.0000058247903074,
+      "tail_label": "plain text",
+      "tail_page": 7,
+      "tail_text": "\u571f\u8457\u77e5\u8bc6\u5728\u79d1\u5b66\u8c03\u7814\u3001\u4ea7\u54c1\u5f00\u53d1\u6216\u5546"
+    },
+    {
+      "boundary": "p7:c1->c2",
+      "column_count": 3,
+      "constant_share_of_score": null,
+      "eligible": false,
+      "head_column": 2,
+      "head_debug_id": "P95fR",
+      "head_label": "plain text",
+      "head_page": 7,
+      "head_text": "spinosa L.) \u575a\u679c\u63d0\u53d6\u7684\u6cb9\u8102\u5219\u662f\u53c8 \u4e00\u4f8b\u8bc1\u3002\u5982\u4eca,\u963f\u7518\u6cb9\u88ab\u5e7f\u6cdb\u5e94\u7528\u4e8e \u5168\u7403\u5404\u7c7b\u62a4\u53d1\u548c\u62a4\u80a4\u4ea7\u54c1\u4e2d,\u5176\u7528\u9014 \u672c\u8d28\u4e0a\u4e0e\u963f\u9a6c\u9f50\u683c (\u53c8\u79f0\u67cf\u67cf\u5c14) \u5987 \u5973 \u6cbf\u7528\u4e86 \u4e00 \u5343\u591a \u5e74\u7684 \u7528 \u9014\u5982\u51fa \u4e00 \u8f99\u3002 \u867d\u7136\u90e8\u5206\u6301\u6709\u76f8\u5173\u4e13\u5229\u5e76\u9500\u552e\u963f\u7518\u6cb9 \u76f8\u5173\u4ea7\u54c1\u7684\u56fd\u9645\u5de8\u5934\u5df2\u4e0e\u963f\u9a6c\u9f50\u683c\u5987 \u5973\u5408\u4f5c\u793e\u7b7e\u8ba2\u4e86\u60e0\u76ca\u5206\u4eab\u534f\u8bae,\u4f46\u5176 \u4ed6\u4f01\u4e1a\u4f3c\u4e4e\u4ece\u672a\u4e0e\u963f\u9a6c\u9f50\u683c\u793e\u7fa4\u5171\u4eab \u8fc7\u76f8\u5173\u60e0\u76ca\u3002",
+      "kind": "column",
+      "linked": false,
+      "pair": null,
+      "pairing": "column_adjacent",
+      "pairs": [],
+      "reason": "no_endpoint",
+      "score": null,
+      "signals": {
+        "body_label_pair": null,
+        "column_position": null,
+        "opener_prior": null,
+        "style_continuity": null,
+        "tail_line_fill": null,
+        "tail_no_terminal_punct": null
+      },
+      "tail_column": 1,
+      "tail_debug_id": "aFQsF",
+      "tail_ends_on_hyphen": false,
+      "tail_fill_ratio": null,
+      "tail_label": "title",
+      "tail_page": 7,
+      "tail_text": "\u77e5\u8bc6\u6301\u6709\u8005\u7684\u660e\u786e\u540c\u610f"
+    },
+    {
+      "boundary": "7->8",
+      "column_count": null,
+      "constant_share_of_score": null,
+      "eligible": true,
+      "head_column": 0,
+      "head_debug_id": "c6A3T",
+      "head_label": "plain text",
+      "head_page": 8,
+      "head_text": "\u542b\u60e0\u76ca\u5206\u4eab\u6761\u6b3e\u3002\u4e00\u5bb6\u884d\u751f\u4f01\u4e1a\u76ee\u524d \u6b63\u5229\u7528\u4ece\u4e09\u9f7f\u7a03\u4e2d\u63d0\u53d6\u7684\u7ea4\u7ef4\u7d20\u7eb3\u7c73 \u7ea4\u7ef4\u5f00\u53d1\u533b\u7528\u51dd\u80f6,\u540c\u65f6,\u8be5\u8349\u672c\u690d \u7269\u5236\u6210\u7684\u590d\u5408\u6750\u6599\u4e5f\u5df2\u83b7\u5f97\u4e13\u5229\u3002\u6839 \u636e\u8be5\u534f\u8bae,\u5df2\u5b9e\u73b0\u7684\u60e0\u76ca\u5206\u4eab\u5305\u62ec\u4e3a \u7b2c\u4e00\u6c11\u65cf\u9752\u5e74\u63d0\u4f9b\u5c31\u4e1a\u673a\u4f1a,\u5e76\u4e3a\u6fb3 \u5927\u5229\u4e9a\u571f\u8457\u7fa4\u4f53\u63d0\u4f9b\u57f9\u8bad\u4e0e\u6559\u80b2\u76f8\u5173 \u7684\u8d44\u91d1\u652f\u6301\u3002",
+      "kind": "page",
+      "linked": true,
+      "pair": "body->body",
+      "pairing": null,
+      "pairs": [
+        {
+          "head_debug_id": "c6A3T",
+          "head_label": "plain text",
+          "head_text": "\u542b\u60e0\u76ca\u5206\u4eab\u6761\u6b3e\u3002\u4e00\u5bb6\u884d\u751f\u4f01\u4e1a\u76ee\u524d \u6b63\u5229\u7528\u4ece\u4e09\u9f7f\u7a03\u4e2d\u63d0\u53d6\u7684\u7ea4\u7ef4\u7d20\u7eb3\u7c73 \u7ea4\u7ef4\u5f00\u53d1\u533b\u7528\u51dd\u80f6,\u540c\u65f6,\u8be5\u8349\u672c\u690d \u7269\u5236\u6210\u7684\u590d\u5408\u6750\u6599\u4e5f\u5df2\u83b7\u5f97\u4e13\u5229\u3002\u6839 \u636e\u8be5\u534f\u8bae,\u5df2\u5b9e\u73b0\u7684\u60e0\u76ca\u5206\u4eab\u5305\u62ec\u4e3a \u7b2c\u4e00\u6c11\u65cf\u9752\u5e74\u63d0\u4f9b\u5c31\u4e1a\u673a\u4f1a,\u5e76\u4e3a\u6fb3 \u5927\u5229\u4e9a\u571f\u8457\u7fa4\u4f53\u63d0\u4f9b\u57f9\u8bad\u4e0e\u6559\u80b2\u76f8\u5173 \u7684\u8d44\u91d1\u652f\u6301\u3002",
+          "linked": true,
+          "pair": "body->body",
+          "score": 1.0,
+          "signals": {
+            "body_label_pair": 1.0,
+            "column_position": 1.0,
+            "opener_prior": 0.0,
+            "style_continuity": 1.0,
+            "tail_line_fill": 1.0,
+            "tail_no_terminal_punct": 1.0
+          },
+          "tail_debug_id": "4wACb",
+          "tail_fill_ratio": 0.9997379531227256,
+          "tail_label": "plain text",
+          "tail_text": "\u7814\u7a76\u3002\u53cc\u65b9\u7b7e\u8ba2\u7684\u5408\u4f5c\u7814\u7a76\u534f\u8bae\u4e2d\u5305"
+        },
+        {
+          "head_debug_id": "jfN5a",
+          "head_label": "title",
+          "head_text": "\u5171\u6709\u9057\u4ea7\u6ca6\u4e3a\u79c1\u6709\u5546\u54c1?",
+          "linked": false,
+          "pair": "title->title",
+          "score": 0.45,
+          "signals": {
+            "body_label_pair": 0.0,
+            "column_position": 0.0,
+            "opener_prior": 0.0,
+            "style_continuity": 0.0,
+            "tail_line_fill": 0.0,
+            "tail_no_terminal_punct": 1.0
+          },
+          "tail_debug_id": "aFQsF",
+          "tail_fill_ratio": 0.7349119260756566,
+          "tail_label": "title",
+          "tail_text": "\u77e5\u8bc6\u6301\u6709\u8005\u7684\u660e\u786e\u540c\u610f"
+        }
+      ],
+      "reason": null,
+      "score": 1.0,
+      "signals": {
+        "body_label_pair": 1.0,
+        "column_position": 1.0,
+        "opener_prior": 0.0,
+        "style_continuity": 1.0,
+        "tail_line_fill": 1.0,
+        "tail_no_terminal_punct": 1.0
+      },
+      "tail_column": 2,
+      "tail_debug_id": "4wACb",
+      "tail_ends_on_hyphen": false,
+      "tail_fill_ratio": 0.9997379531227256,
+      "tail_label": "plain text",
+      "tail_page": 7,
+      "tail_text": "\u7814\u7a76\u3002\u53cc\u65b9\u7b7e\u8ba2\u7684\u5408\u4f5c\u7814\u7a76\u534f\u8bae\u4e2d\u5305"
+    },
+    {
+      "boundary": "p8:c0->c1",
+      "column_count": 4,
+      "constant_share_of_score": 0.1,
+      "eligible": true,
+      "head_column": 1,
+      "head_debug_id": "wXM62",
+      "head_label": "plain text",
+      "head_page": 8,
+      "head_text": "\u4f7f\u7528\u8fd9\u4e9b\u8d44\u6e90,\u65e0\u9700\u83b7\u5f97\u8d44\u6e90\u63d0\u4f9b\u8005 \u7684\u8bb8\u53ef,\u4e5f\u4e0d\u5fc5\u4e0e\u5176\u5206\u4eab\u60e0\u76ca\u3002\u7136\u800c, \u81ea 20 \u4e16\u7eaa\u4e2d\u53f6\u9057\u4f20\u5b66\u53d6\u5f97\u65b0\u8fdb\u5c55\u4ee5 \u6765,\u57fa\u4e8e\u751f\u7269\u591a\u6837\u6027\u6216\u7531\u5176\u884d\u751f\u7684\u76f8 \u5173\u4ea7\u54c1\u5f00\u59cb\u88ab\u89c6\u4e3a\u201c\u9057\u4f20\u8d44\u6e90\u201d\u3002\u8fd9\u6070 \u597d\u4e0e\u751f\u7269\u591a\u6837\u6027\u4ef7\u503c\u8bc4\u4f30\u65b9\u5f0f\u7684\u9769\u65b0 \u540c\u6b65 \u2014\u5176\u4ef7\u503c\u4e0d\u518d\u4ec5\u53d6\u51b3\u4e8e\u5b9e\u9645\u7528 \u9014,\u66f4\u5ef6\u4f38\u81f3\u6f5c\u5728\u5e94\u7528\u3002",
+      "kind": "column",
+      "linked": true,
+      "pair": "body->body",
+      "pairing": "column_adjacent",
+      "pairs": [
+        {
+          "head_debug_id": "wXM62",
+          "head_label": "plain text",
+          "head_text": "\u4f7f\u7528\u8fd9\u4e9b\u8d44\u6e90,\u65e0\u9700\u83b7\u5f97\u8d44\u6e90\u63d0\u4f9b\u8005 \u7684\u8bb8\u53ef,\u4e5f\u4e0d\u5fc5\u4e0e\u5176\u5206\u4eab\u60e0\u76ca\u3002\u7136\u800c, \u81ea 20 \u4e16\u7eaa\u4e2d\u53f6\u9057\u4f20\u5b66\u53d6\u5f97\u65b0\u8fdb\u5c55\u4ee5 \u6765,\u57fa\u4e8e\u751f\u7269\u591a\u6837\u6027\u6216\u7531\u5176\u884d\u751f\u7684\u76f8 \u5173\u4ea7\u54c1\u5f00\u59cb\u88ab\u89c6\u4e3a\u201c\u9057\u4f20\u8d44\u6e90\u201d\u3002\u8fd9\u6070 \u597d\u4e0e\u751f\u7269\u591a\u6837\u6027\u4ef7\u503c\u8bc4\u4f30\u65b9\u5f0f\u7684\u9769\u65b0 \u540c\u6b65 \u2014\u5176\u4ef7\u503c\u4e0d\u518d\u4ec5\u53d6\u51b3\u4e8e\u5b9e\u9645\u7528 \u9014,\u66f4\u5ef6\u4f38\u81f3\u6f5c\u5728\u5e94\u7528\u3002",
+          "linked": true,
+          "pair": "body->body",
+          "score": 1.0,
+          "signals": {
+            "body_label_pair": 1.0,
+            "column_position": 1.0,
+            "opener_prior": 0.0,
+            "style_continuity": 1.0,
+            "tail_line_fill": 1.0,
+            "tail_no_terminal_punct": 1.0
+          },
+          "tail_debug_id": "Ksxid",
+          "tail_fill_ratio": 0.9999999999999998,
+          "tail_label": "plain text",
+          "tail_text": "\u9057\u4ea7\u201d\uff0c\u8fd9\u610f\u5473\u7740\u4efb\u4f55\u4eba\u90fd\u53ef\u83b7\u53d6\u5e76"
+        }
+      ],
+      "reason": null,
+      "score": 1.0,
+      "signals": {
+        "body_label_pair": 1.0,
+        "column_position": 1.0,
+        "opener_prior": 0.0,
+        "style_continuity": 1.0,
+        "tail_line_fill": 1.0,
+        "tail_no_terminal_punct": 1.0
+      },
+      "tail_column": 0,
+      "tail_debug_id": "Ksxid",
+      "tail_ends_on_hyphen": false,
+      "tail_fill_ratio": 0.9999999999999998,
+      "tail_label": "plain text",
+      "tail_page": 8,
+      "tail_text": "\u9057\u4ea7\u201d\uff0c\u8fd9\u610f\u5473\u7740\u4efb\u4f55\u4eba\u90fd\u53ef\u83b7\u53d6\u5e76"
+    },
+    {
+      "boundary": "p8:c0->c2",
+      "column_count": 4,
+      "constant_share_of_score": 0.1,
+      "eligible": true,
+      "head_column": 2,
+      "head_debug_id": "DBxrZ",
+      "head_label": "plain text",
+      "head_page": 8,
+      "head_text": "\u5fc5 \u987b \u9996 \u5148 \u83b7 \u5f97 \u77e5 \u8bc6 \u6301 \u6709 \u8005 \u7684 \u660e \u786e \u540c \u610f,\u5e76\u7b7e\u7f72\u8be6\u7ec6\u8f7d\u660e\u60e0\u76ca\u5206\u4eab\u65b9\u5f0f\u7684 \u534f\u8bae\u3002",
+      "kind": "column",
+      "linked": true,
+      "pair": "body->body",
+      "pairing": "body_next",
+      "pairs": [
+        {
+          "head_debug_id": "DBxrZ",
+          "head_label": "plain text",
+          "head_text": "\u5fc5 \u987b \u9996 \u5148 \u83b7 \u5f97 \u77e5 \u8bc6 \u6301 \u6709 \u8005 \u7684 \u660e \u786e \u540c \u610f,\u5e76\u7b7e\u7f72\u8be6\u7ec6\u8f7d\u660e\u60e0\u76ca\u5206\u4eab\u65b9\u5f0f\u7684 \u534f\u8bae\u3002",
+          "linked": true,
+          "pair": "body->body",
+          "score": 1.0,
+          "signals": {
+            "body_label_pair": 1.0,
+            "column_position": 1.0,
+            "opener_prior": 0.0,
+            "style_continuity": 1.0,
+            "tail_line_fill": 1.0,
+            "tail_no_terminal_punct": 1.0
+          },
+          "tail_debug_id": "Ksxid",
+          "tail_fill_ratio": 0.9999999999999998,
+          "tail_label": "plain text",
+          "tail_text": "\u9057\u4ea7\u201d\uff0c\u8fd9\u610f\u5473\u7740\u4efb\u4f55\u4eba\u90fd\u53ef\u83b7\u53d6\u5e76"
+        }
+      ],
+      "reason": null,
+      "score": 1.0,
+      "signals": {
+        "body_label_pair": 1.0,
+        "column_position": 1.0,
+        "opener_prior": 0.0,
+        "style_continuity": 1.0,
+        "tail_line_fill": 1.0,
+        "tail_no_terminal_punct": 1.0
+      },
+      "tail_column": 0,
+      "tail_debug_id": "Ksxid",
+      "tail_ends_on_hyphen": false,
+      "tail_fill_ratio": 0.9999999999999998,
+      "tail_label": "plain text",
+      "tail_page": 8,
+      "tail_text": "\u9057\u4ea7\u201d\uff0c\u8fd9\u610f\u5473\u7740\u4efb\u4f55\u4eba\u90fd\u53ef\u83b7\u53d6\u5e76"
+    },
+    {
+      "boundary": "p8:c1->c2",
+      "column_count": 4,
+      "constant_share_of_score": 0.1,
+      "eligible": true,
+      "head_column": 2,
+      "head_debug_id": "DBxrZ",
+      "head_label": "plain text",
+      "head_page": 8,
+      "head_text": "\u5fc5 \u987b \u9996 \u5148 \u83b7 \u5f97 \u77e5 \u8bc6 \u6301 \u6709 \u8005 \u7684 \u660e \u786e \u540c \u610f,\u5e76\u7b7e\u7f72\u8be6\u7ec6\u8f7d\u660e\u60e0\u76ca\u5206\u4eab\u65b9\u5f0f\u7684 \u534f\u8bae\u3002",
+      "kind": "column",
+      "linked": true,
+      "pair": "body->body",
+      "pairing": "column_adjacent",
+      "pairs": [
+        {
+          "head_debug_id": "DBxrZ",
+          "head_label": "plain text",
+          "head_text": "\u5fc5 \u987b \u9996 \u5148 \u83b7 \u5f97 \u77e5 \u8bc6 \u6301 \u6709 \u8005 \u7684 \u660e \u786e \u540c \u610f,\u5e76\u7b7e\u7f72\u8be6\u7ec6\u8f7d\u660e\u60e0\u76ca\u5206\u4eab\u65b9\u5f0f\u7684 \u534f\u8bae\u3002",
+          "linked": true,
+          "pair": "body->body",
+          "score": 1.0,
+          "signals": {
+            "body_label_pair": 1.0,
+            "column_position": 1.0,
+            "opener_prior": 0.0,
+            "style_continuity": 1.0,
+            "tail_line_fill": 1.0,
+            "tail_no_terminal_punct": 1.0
+          },
+          "tail_debug_id": "1gDYR",
+          "tail_fill_ratio": 0.9998252868208033,
+          "tail_label": "plain text",
+          "tail_text": "\u591a\u56fd\u5bb6\u8981\u6c42\uff0c\u571f\u8457\u77e5\u8bc6\u7684\u6f5c\u5728\u4f7f\u7528\u8005"
+        }
+      ],
+      "reason": null,
+      "score": 1.0,
+      "signals": {
+        "body_label_pair": 1.0,
+        "column_position": 1.0,
+        "opener_prior": 0.0,
+        "style_continuity": 1.0,
+        "tail_line_fill": 1.0,
+        "tail_no_terminal_punct": 1.0
+      },
+      "tail_column": 1,
+      "tail_debug_id": "1gDYR",
+      "tail_ends_on_hyphen": false,
+      "tail_fill_ratio": 0.9998252868208033,
+      "tail_label": "plain text",
+      "tail_page": 8,
+      "tail_text": "\u591a\u56fd\u5bb6\u8981\u6c42\uff0c\u571f\u8457\u77e5\u8bc6\u7684\u6f5c\u5728\u4f7f\u7528\u8005"
+    },
+    {
+      "boundary": "p8:c1->c3",
+      "column_count": 4,
+      "constant_share_of_score": 0.1,
+      "eligible": true,
+      "head_column": 3,
+      "head_debug_id": "vAAD8",
+      "head_label": "plain text",
+      "head_page": 8,
+      "head_text": "\u4e00 \u5343 \u591a \u5e74 \u6765, \u963f\u9a6c\u9f50\u683c\u5987\u5973 \u4e00\u76f4\u6cbf\u7528\u963f\u7518 \u6cb9,\u5982\u4eca\u8fd9\u4e00 \u4ea7\u54c1\u5df2\u5728\u5168\u7403 \u5b9e\u73b0\u5546\u4e1a\u5316",
+      "kind": "column",
+      "linked": false,
+      "pair": "body->body",
+      "pairing": "body_next",
+      "pairs": [
+        {
+          "head_debug_id": "vAAD8",
+          "head_label": "plain text",
+          "head_text": "\u4e00 \u5343 \u591a \u5e74 \u6765, \u963f\u9a6c\u9f50\u683c\u5987\u5973 \u4e00\u76f4\u6cbf\u7528\u963f\u7518 \u6cb9,\u5982\u4eca\u8fd9\u4e00 \u4ea7\u54c1\u5df2\u5728\u5168\u7403 \u5b9e\u73b0\u5546\u4e1a\u5316",
+          "linked": false,
+          "pair": "body->body",
+          "score": 0.65,
+          "signals": {
+            "body_label_pair": 1.0,
+            "column_position": 1.0,
+            "opener_prior": 0.0,
+            "style_continuity": 0.0,
+            "tail_line_fill": 1.0,
+            "tail_no_terminal_punct": 1.0
+          },
+          "tail_debug_id": "1gDYR",
+          "tail_fill_ratio": 0.9998252868208033,
+          "tail_label": "plain text",
+          "tail_text": "\u591a\u56fd\u5bb6\u8981\u6c42\uff0c\u571f\u8457\u77e5\u8bc6\u7684\u6f5c\u5728\u4f7f\u7528\u8005"
+        }
+      ],
+      "reason": null,
+      "score": 0.65,
+      "signals": {
+        "body_label_pair": 1.0,
+        "column_position": 1.0,
+        "opener_prior": 0.0,
+        "style_continuity": 0.0,
+        "tail_line_fill": 1.0,
+        "tail_no_terminal_punct": 1.0
+      },
+      "tail_column": 1,
+      "tail_debug_id": "1gDYR",
+      "tail_ends_on_hyphen": false,
+      "tail_fill_ratio": 0.9998252868208033,
+      "tail_label": "plain text",
+      "tail_page": 8,
+      "tail_text": "\u591a\u56fd\u5bb6\u8981\u6c42\uff0c\u571f\u8457\u77e5\u8bc6\u7684\u6f5c\u5728\u4f7f\u7528\u8005"
+    },
+    {
+      "boundary": "p8:c2->c3",
+      "column_count": 4,
+      "constant_share_of_score": 0.1,
+      "eligible": true,
+      "head_column": 3,
+      "head_debug_id": "vAAD8",
+      "head_label": "plain text",
+      "head_page": 8,
+      "head_text": "\u4e00 \u5343 \u591a \u5e74 \u6765, \u963f\u9a6c\u9f50\u683c\u5987\u5973 \u4e00\u76f4\u6cbf\u7528\u963f\u7518 \u6cb9,\u5982\u4eca\u8fd9\u4e00 \u4ea7\u54c1\u5df2\u5728\u5168\u7403 \u5b9e\u73b0\u5546\u4e1a\u5316",
+      "kind": "column",
+      "linked": false,
+      "pair": "body->body",
+      "pairing": "column_adjacent",
+      "pairs": [
+        {
+          "head_debug_id": "vAAD8",
+          "head_label": "plain text",
+          "head_text": "\u4e00 \u5343 \u591a \u5e74 \u6765, \u963f\u9a6c\u9f50\u683c\u5987\u5973 \u4e00\u76f4\u6cbf\u7528\u963f\u7518 \u6cb9,\u5982\u4eca\u8fd9\u4e00 \u4ea7\u54c1\u5df2\u5728\u5168\u7403 \u5b9e\u73b0\u5546\u4e1a\u5316",
+          "linked": false,
+          "pair": "body->body",
+          "score": 0.25,
+          "signals": {
+            "body_label_pair": 1.0,
+            "column_position": 1.0,
+            "opener_prior": 0.0,
+            "style_continuity": 0.0,
+            "tail_line_fill": 0.0,
+            "tail_no_terminal_punct": 0.0
+          },
+          "tail_debug_id": "7DKQR",
+          "tail_fill_ratio": 0.6337709370755998,
+          "tail_label": "plain text",
+          "tail_text": "\u4ecd\u5c06\u662f\u4ee4\u4eba\u9057\u61be\u7684\u73b0\u5b9e\u3002"
+        }
+      ],
+      "reason": null,
+      "score": 0.25,
+      "signals": {
+        "body_label_pair": 1.0,
+        "column_position": 1.0,
+        "opener_prior": 0.0,
+        "style_continuity": 0.0,
+        "tail_line_fill": 0.0,
+        "tail_no_terminal_punct": 0.0
+      },
+      "tail_column": 2,
+      "tail_debug_id": "7DKQR",
+      "tail_ends_on_hyphen": false,
+      "tail_fill_ratio": 0.6337709370755998,
+      "tail_label": "plain text",
+      "tail_page": 8,
+      "tail_text": "\u4ecd\u5c06\u662f\u4ee4\u4eba\u9057\u61be\u7684\u73b0\u5b9e\u3002"
+    }
+  ],
+  "boundary_priority": [
+    "page",
+    "column_adjacent",
+    "body_next"
+  ],
+  "chains": [
+    {
+      "chain_id": "o9ptu",
+      "length": 2,
+      "members": [
+        {
+          "chain_index": 0,
+          "debug_id": "WUDXv"
+        },
+        {
+          "chain_index": 1,
+          "debug_id": "1kfN3"
+        }
+      ]
+    },
+    {
+      "chain_id": "x9ear",
+      "length": 2,
+      "members": [
+        {
+          "chain_index": 0,
+          "debug_id": "oqWHp"
+        },
+        {
+          "chain_index": 1,
+          "debug_id": "HoSvG"
+        }
+      ]
+    },
+    {
+      "chain_id": "JEcDW",
+      "length": 2,
+      "members": [
+        {
+          "chain_index": 0,
+          "debug_id": "DpbaN"
+        },
+        {
+          "chain_index": 1,
+          "debug_id": "BFGnq"
+        }
+      ]
+    },
+    {
+      "chain_id": "KbEdk",
+      "length": 2,
+      "members": [
+        {
+          "chain_index": 0,
+          "debug_id": "uxFEM"
+        },
+        {
+          "chain_index": 1,
+          "debug_id": "aPpsL"
+        }
+      ]
+    },
+    {
+      "chain_id": "Rc9Ng",
+      "length": 2,
+      "members": [
+        {
+          "chain_index": 0,
+          "debug_id": "irM3B"
+        },
+        {
+          "chain_index": 1,
+          "debug_id": "AxJex"
+        }
+      ]
+    },
+    {
+      "chain_id": "Ce7AH",
+      "length": 2,
+      "members": [
+        {
+          "chain_index": 0,
+          "debug_id": "wmGfv"
+        },
+        {
+          "chain_index": 1,
+          "debug_id": "4Ed76"
+        }
+      ]
+    },
+    {
+      "chain_id": "k5d6b",
+      "length": 2,
+      "members": [
+        {
+          "chain_index": 0,
+          "debug_id": "4wACb"
+        },
+        {
+          "chain_index": 1,
+          "debug_id": "c6A3T"
+        }
+      ]
+    },
+    {
+      "chain_id": "szVZR",
+      "length": 2,
+      "members": [
+        {
+          "chain_index": 0,
+          "debug_id": "Ksxid"
+        },
+        {
+          "chain_index": 1,
+          "debug_id": "wXM62"
+        }
+      ]
+    },
+    {
+      "chain_id": "mLmBF",
+      "length": 2,
+      "members": [
+        {
+          "chain_index": 0,
+          "debug_id": "1gDYR"
+        },
+        {
+          "chain_index": 1,
+          "debug_id": "DBxrZ"
+        }
+      ]
+    }
+  ],
+  "dropped_edges": [
+    {
+      "boundary": "p5:c0->c2",
+      "dropped_reason": "tail_already_handed_on",
+      "kind": "column",
+      "pairing": "body_next",
+      "score": 1.0
+    },
+    {
+      "boundary": "p7:c0->c2",
+      "dropped_reason": "tail_already_handed_on",
+      "kind": "column",
+      "pairing": "body_next",
+      "score": 1.0
+    },
+    {
+      "boundary": "p8:c0->c2",
+      "dropped_reason": "tail_already_handed_on",
+      "kind": "column",
+      "pairing": "body_next",
+      "score": 1.0
+    }
+  ],
+  "edges": [
+    {
+      "boundary": "p4:c3->c4",
+      "kind": "column",
+      "pairing": "column_adjacent",
+      "score": 1.0
+    },
+    {
+      "boundary": "p5:c0->c1",
+      "kind": "column",
+      "pairing": "column_adjacent",
+      "score": 1.0
+    },
+    {
+      "boundary": "p5:c1->c2",
+      "kind": "column",
+      "pairing": "column_adjacent",
+      "score": 1.0
+    },
+    {
+      "boundary": "5->6",
+      "kind": "page",
+      "pairing": null,
+      "score": 1.0
+    },
+    {
+      "boundary": "p6:c1->c2",
+      "kind": "column",
+      "pairing": "column_adjacent",
+      "score": 1.0
+    },
+    {
+      "boundary": "p7:c0->c1",
+      "kind": "column",
+      "pairing": "column_adjacent",
+      "score": 1.0
+    },
+    {
+      "boundary": "7->8",
+      "kind": "page",
+      "pairing": null,
+      "score": 1.0
+    },
+    {
+      "boundary": "p8:c0->c1",
+      "kind": "column",
+      "pairing": "column_adjacent",
+      "score": 1.0
+    },
+    {
+      "boundary": "p8:c1->c2",
+      "kind": "column",
+      "pairing": "column_adjacent",
+      "score": 1.0
+    }
+  ],
+  "link_min_score": 0.8,
+  "pair_weights": {
+    "body->body": {
+      "body_label_pair": 0.15,
+      "column_position": 0.1,
+      "opener_prior": -0.15,
+      "style_continuity": 0.35,
+      "tail_line_fill": 0.15,
+      "tail_no_terminal_punct": 0.25
+    },
+    "title->title": {
+      "body_label_pair": 0.0,
+      "column_position": 0.1,
+      "opener_prior": -0.15,
+      "style_continuity": 0.45,
+      "tail_line_fill": 0.0,
+      "tail_no_terminal_punct": 0.45
+    }
+  },
+  "weights": {
+    "weight_body_label_pair": 0.15,
+    "weight_column_position": 0.1,
+    "weight_opener_prior": -0.15,
+    "weight_style_continuity": 0.35,
+    "weight_tail_line_fill": 0.15,
+    "weight_tail_no_terminal_punct": 0.25
+  }
+}

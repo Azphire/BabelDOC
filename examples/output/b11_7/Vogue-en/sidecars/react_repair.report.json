@@ -1,0 +1,574 @@
+{
+  "api_attributions": [],
+  "api_calls": 0,
+  "applications": 2,
+  "config": {
+    "actions": [
+      {
+        "applicability": {
+          "contain_layout_labels": [
+            "title",
+            "paragraph_title"
+          ],
+          "min_overflow_ratio": 0.01
+        },
+        "bounds": {
+          "contain_margin_ratio": 0.01,
+          "contain_min_scale": 0.5
+        },
+        "conditions": [
+          "its evidence reports layout_label as one of: title, paragraph_title",
+          "its evidence reports overflow_ratio at or above 0.01"
+        ],
+        "description": "Put a paragraph that is printing off the edge of its page back inside the page. It moves ink and never changes a character of text: it slides the paragraph inside the frame, shrinks it about the centre of its own extent only where sliding alone cannot fit it, and escalates instead of shrinking past the declared floor.",
+        "issue_kinds": [
+          "out_of_page"
+        ],
+        "max_applications": 8,
+        "name": "contain_in_page",
+        "parameters": [
+          {
+            "allowed_range": "1.0..20.0",
+            "default": 3.0,
+            "name": "max_paragraphs"
+          }
+        ]
+      },
+      {
+        "applicability": {
+          "min_collision_coverage": 0.4
+        },
+        "bounds": {
+          "resolve_margin": 0.05,
+          "resolve_max_area_ratio": 0.5,
+          "resolve_max_shift_ratio": 0.08
+        },
+        "conditions": [
+          "its evidence reports coverage at or above 0.4"
+        ],
+        "description": "Slide the smaller of two paragraphs standing in one place clear of the larger, along the axis on which they overlap least. It moves ink and never changes a character of text, it moves only the paragraph its rule can name as the smaller, and it escalates rather than acting where the two are of comparable size or where clearing the overlap would take more movement than a paragraph that merely drifted would need.",
+        "issue_kinds": [
+          "text_text_collision"
+        ],
+        "max_applications": 8,
+        "name": "resolve_collision",
+        "parameters": [
+          {
+            "allowed_range": "1.0..20.0",
+            "default": 3.0,
+            "name": "max_paragraphs"
+          }
+        ]
+      },
+      {
+        "applicability": {
+          "min_residue_ratio": 0.9,
+          "min_residue_ratio_into_en": 0.05,
+          "min_source_chars": 12,
+          "orphan_accepts_vertical": true,
+          "orphan_layout_labels": [
+            "fallback_line"
+          ]
+        },
+        "bounds": {},
+        "conditions": [
+          "its evidence reports residue_ratio at or above 0.9",
+          "the text the page renders for it is at least 12 characters long",
+          "it was never offered a request, either because its evidence reports layout_label as one of: fallback_line",
+          "or, where this is True, because the paragraph is set along the vertical axis and the translator refuses such a paragraph before reading its text"
+        ],
+        "description": "Send the text of a paragraph the translator was never given the chance to reach through the translation engine and write the answer back into it, then lay that paragraph out again.",
+        "issue_kinds": [
+          "untranslated_residue"
+        ],
+        "max_applications": 12,
+        "name": "translate_orphan_lines",
+        "parameters": [
+          {
+            "allowed_range": "1.0..20.0",
+            "default": 3.0,
+            "name": "max_paragraphs"
+          }
+        ]
+      }
+    ],
+    "decide_max_attempts": 2,
+    "issue_excerpt_chars": 120,
+    "max_glossary_entries": 24,
+    "max_issues_offered": 40,
+    "max_iterations": 3,
+    "page_context_chars": 1200,
+    "volatile_evidence_keys": [
+      "debug_id",
+      "debug_ids",
+      "source_checkpoint"
+    ]
+  },
+  "conservation": {
+    "changed_outside_touched": [],
+    "changed_refs": [
+      "p1#0",
+      "p3#59"
+    ],
+    "pages_after": 3,
+    "pages_before": 3,
+    "paragraphs_after": 61,
+    "paragraphs_before": 61,
+    "touched_refs": [
+      "p1#0",
+      "p3#59"
+    ],
+    "verdict": "conserved"
+  },
+  "engine_configured": true,
+  "final": {
+    "by_kind": {
+      "fragment_cluster": 4,
+      "text_text_collision": 1,
+      "untranslated_residue": 1
+    },
+    "total": 6
+  },
+  "final_untreated": {
+    "by_kind": {
+      "fragment_cluster": 4,
+      "text_text_collision": 1
+    },
+    "total": 5
+  },
+  "iterations": [
+    {
+      "applicability": [
+        {
+          "accepted": false,
+          "attempts": 0,
+          "calls": [],
+          "changed": false,
+          "from_cache": false,
+          "geometry": {},
+          "glossary_entries": [],
+          "issue_id": "text_text_collision:p3:p3#11+p3#12",
+          "offered_text": "",
+          "paragraph_ref": "p3#11",
+          "reason": "moving_it_clear_would_stand_it_on_text_it_was_not_standing_on",
+          "source_text": "+",
+          "translated_text": ""
+        }
+      ],
+      "decision": {
+        "action": "translate_orphan_lines",
+        "attempts": 0,
+        "from_cache": true,
+        "issue_ids": [
+          "untranslated_residue:p1:p1#0",
+          "untranslated_residue:p3:p3#59"
+        ],
+        "parameters": {
+          "max_paragraphs": 3.0
+        },
+        "raw": "{\"action\": \"translate_orphan_lines\", \"issue_ids\": [\"untranslated_residue:p1:p1#0\", \"untranslated_residue:p3:p3#59\"], \"parameters\": {}, \"reason\": \"Both findings have a residue_ratio of 1.0 and text length above 12 characters, meeting the conditions for translation.\"}",
+        "reason": "Both findings have a residue_ratio of 1.0 and text length above 12 characters, meeting the conditions for translation.",
+        "violations": []
+      },
+      "detected": {
+        "by_kind": {
+          "fragment_cluster": 4,
+          "text_text_collision": 1,
+          "untranslated_residue": 2
+        },
+        "total": 7
+      },
+      "detected_ids": [
+        "fragment_cluster:p3:p3#5+p3#6+p3#7",
+        "fragment_cluster:p3:p3#19+p3#20+p3#21+p3#22+p3#23",
+        "fragment_cluster:p3:p3#42+p3#43+p3#44+p3#45",
+        "fragment_cluster:p3:p3#50+p3#51+p3#52+p3#53",
+        "text_text_collision:p3:p3#11+p3#12",
+        "untranslated_residue:p1:p1#0",
+        "untranslated_residue:p3:p3#59"
+      ],
+      "executed": [
+        {
+          "accepted": true,
+          "attempts": 0,
+          "calls": [],
+          "changed": true,
+          "from_cache": true,
+          "geometry": {},
+          "glossary_entries": [],
+          "issue_id": "untranslated_residue:p1:p1#0",
+          "offered_text": "FENDI BOUTIQUES  888291 0163FENDI.COM",
+          "paragraph_ref": "p1#0",
+          "reason": "accepted",
+          "source_text": "FENDI BOUTIQUES  888291 0163FENDI.COM",
+          "translated_text": "FENDI 精品店 888291 0163FENDI.COM"
+        },
+        {
+          "accepted": true,
+          "attempts": 0,
+          "calls": [],
+          "changed": true,
+          "from_cache": true,
+          "geometry": {},
+          "glossary_entries": [
+            [
+              "Boom Productions",
+              "Boom Productions"
+            ],
+            [
+              "Joey George",
+              "乔伊·乔治"
+            ],
+            [
+              "Julia Sarr-Jamois",
+              "朱莉娅·萨尔-贾莫伊斯"
+            ],
+            [
+              "Peter Klein",
+              "彼得·克莱因"
+            ],
+            [
+              "Susie Sobol",
+              "苏西·索博尔"
+            ]
+          ],
+          "issue_id": "untranslated_residue:p3:p3#59",
+          "offered_text": "FASHION EDITOR: JULIA SARR-JAMOIS. HAIR SUSIE SOBOL.   PRODUCED BY BOOM PRODUCTIONS. PROP STYLIST: PETER KLEIN. DETAILS JOEY GEORGE; MAKEUP SEE IN TH,,,IS ISSUE.",
+          "paragraph_ref": "p3#59",
+          "reason": "accepted",
+          "source_text": "FASHION EDITOR: JULIA SARR-JAMOIS. HAIR SUSIE SOBOL.   PRODUCED BY BOOM PRODUCTIONS. PROP STYLIST: PETER KLEIN. DETAILS JOEY GEORGE; MAKEUP SEE IN TH,,,IS ISSUE.",
+          "translated_text": "时尚编辑：朱莉娅·萨尔-贾莫伊斯。发型 苏西·索博尔。制作 Boom Productions。道具造型师：彼得·克莱因。细节 乔伊·乔治；化妆请见本期内容。"
+        }
+      ],
+      "iteration": 1,
+      "new_ids": [],
+      "outcome": "advanced",
+      "recheck": {
+        "by_kind": {
+          "fragment_cluster": 4,
+          "text_text_collision": 1,
+          "untranslated_residue": 1
+        },
+        "total": 6
+      },
+      "request": {
+        "cache_key": "0e28d86ef763f594834a2d284338ced0456d0a3d36eff0ada853682873c7a881",
+        "calls": [],
+        "prompt_sha256": "94f390049cd07156b3290170062939ad88b1103e9f207335b41769a0a4ba1a03"
+      },
+      "resolved_ids": [
+        "untranslated_residue:p3:p3#59"
+      ],
+      "rounds": [
+        {
+          "applicability": [
+            {
+              "accepted": false,
+              "attempts": 0,
+              "calls": [],
+              "changed": false,
+              "from_cache": false,
+              "geometry": {},
+              "glossary_entries": [],
+              "issue_id": "text_text_collision:p3:p3#11+p3#12",
+              "offered_text": "",
+              "paragraph_ref": "p3#11",
+              "reason": "moving_it_clear_would_stand_it_on_text_it_was_not_standing_on",
+              "source_text": "+",
+              "translated_text": ""
+            }
+          ],
+          "decision": {
+            "action": "resolve_collision",
+            "attempts": 0,
+            "from_cache": true,
+            "issue_ids": [
+              "text_text_collision:p3:p3#11+p3#12"
+            ],
+            "parameters": {
+              "max_paragraphs": 3.0
+            },
+            "raw": "{\"action\": \"resolve_collision\", \"issue_ids\": [\"text_text_collision:p3:p3#11+p3#12\"], \"parameters\": {}, \"reason\": \"The finding meets the condition with coverage at 1.0, which is above the required 0.4.\"}",
+            "reason": "The finding meets the condition with coverage at 1.0, which is above the required 0.4.",
+            "violations": []
+          },
+          "executed": [],
+          "kind": "text_text_collision",
+          "offered": 1,
+          "offered_ids": [
+            "text_text_collision:p3:p3#11+p3#12"
+          ],
+          "reason": "no_finding_the_action_may_act_on",
+          "request": {
+            "cache_key": "ff006a135f7dc3918bee50838f2998437df30483c6afd9ed514fca0259c1b41b",
+            "calls": [],
+            "prompt_sha256": "94f390049cd07156b3290170062939ad88b1103e9f207335b41769a0a4ba1a03"
+          },
+          "vocabulary": [
+            "resolve_collision"
+          ],
+          "written": []
+        },
+        {
+          "applicability": [],
+          "decision": {
+            "action": "translate_orphan_lines",
+            "attempts": 0,
+            "from_cache": true,
+            "issue_ids": [
+              "untranslated_residue:p1:p1#0",
+              "untranslated_residue:p3:p3#59"
+            ],
+            "parameters": {
+              "max_paragraphs": 3.0
+            },
+            "raw": "{\"action\": \"translate_orphan_lines\", \"issue_ids\": [\"untranslated_residue:p1:p1#0\", \"untranslated_residue:p3:p3#59\"], \"parameters\": {}, \"reason\": \"Both findings have a residue_ratio of 1.0 and text length above 12 characters, meeting the conditions for translation.\"}",
+            "reason": "Both findings have a residue_ratio of 1.0 and text length above 12 characters, meeting the conditions for translation.",
+            "violations": []
+          },
+          "executed": [
+            {
+              "accepted": true,
+              "attempts": 0,
+              "calls": [],
+              "changed": true,
+              "from_cache": true,
+              "geometry": {},
+              "glossary_entries": [],
+              "issue_id": "untranslated_residue:p1:p1#0",
+              "offered_text": "FENDI BOUTIQUES  888291 0163FENDI.COM",
+              "paragraph_ref": "p1#0",
+              "reason": "accepted",
+              "source_text": "FENDI BOUTIQUES  888291 0163FENDI.COM",
+              "translated_text": "FENDI 精品店 888291 0163FENDI.COM"
+            },
+            {
+              "accepted": true,
+              "attempts": 0,
+              "calls": [],
+              "changed": true,
+              "from_cache": true,
+              "geometry": {},
+              "glossary_entries": [
+                [
+                  "Boom Productions",
+                  "Boom Productions"
+                ],
+                [
+                  "Joey George",
+                  "乔伊·乔治"
+                ],
+                [
+                  "Julia Sarr-Jamois",
+                  "朱莉娅·萨尔-贾莫伊斯"
+                ],
+                [
+                  "Peter Klein",
+                  "彼得·克莱因"
+                ],
+                [
+                  "Susie Sobol",
+                  "苏西·索博尔"
+                ]
+              ],
+              "issue_id": "untranslated_residue:p3:p3#59",
+              "offered_text": "FASHION EDITOR: JULIA SARR-JAMOIS. HAIR SUSIE SOBOL.   PRODUCED BY BOOM PRODUCTIONS. PROP STYLIST: PETER KLEIN. DETAILS JOEY GEORGE; MAKEUP SEE IN TH,,,IS ISSUE.",
+              "paragraph_ref": "p3#59",
+              "reason": "accepted",
+              "source_text": "FASHION EDITOR: JULIA SARR-JAMOIS. HAIR SUSIE SOBOL.   PRODUCED BY BOOM PRODUCTIONS. PROP STYLIST: PETER KLEIN. DETAILS JOEY GEORGE; MAKEUP SEE IN TH,,,IS ISSUE.",
+              "translated_text": "时尚编辑：朱莉娅·萨尔-贾莫伊斯。发型 苏西·索博尔。制作 Boom Productions。道具造型师：彼得·克莱因。细节 乔伊·乔治；化妆请见本期内容。"
+            }
+          ],
+          "kind": "untranslated_residue",
+          "offered": 2,
+          "offered_ids": [
+            "untranslated_residue:p1:p1#0",
+            "untranslated_residue:p3:p3#59"
+          ],
+          "reason": "",
+          "request": {
+            "cache_key": "0e28d86ef763f594834a2d284338ced0456d0a3d36eff0ada853682873c7a881",
+            "calls": [],
+            "prompt_sha256": "94f390049cd07156b3290170062939ad88b1103e9f207335b41769a0a4ba1a03"
+          },
+          "vocabulary": [
+            "translate_orphan_lines"
+          ],
+          "written": [
+            "p1#0",
+            "p3#59"
+          ]
+        }
+      ],
+      "treated_ids": [
+        "untranslated_residue:p1:p1#0"
+      ],
+      "untreated": {
+        "by_kind": {
+          "fragment_cluster": 4,
+          "text_text_collision": 1,
+          "untranslated_residue": 2
+        },
+        "total": 7
+      },
+      "untreated_after": {
+        "by_kind": {
+          "fragment_cluster": 4,
+          "text_text_collision": 1
+        },
+        "total": 5
+      }
+    },
+    {
+      "applicability": [
+        {
+          "accepted": false,
+          "attempts": 0,
+          "calls": [],
+          "changed": false,
+          "from_cache": false,
+          "geometry": {},
+          "glossary_entries": [],
+          "issue_id": "text_text_collision:p3:p3#11+p3#12",
+          "offered_text": "",
+          "paragraph_ref": "p3#11",
+          "reason": "moving_it_clear_would_stand_it_on_text_it_was_not_standing_on",
+          "source_text": "+",
+          "translated_text": ""
+        }
+      ],
+      "decision": {
+        "action": "resolve_collision",
+        "attempts": 0,
+        "from_cache": true,
+        "issue_ids": [
+          "text_text_collision:p3:p3#11+p3#12"
+        ],
+        "parameters": {
+          "max_paragraphs": 3.0
+        },
+        "raw": "{\"action\": \"resolve_collision\", \"issue_ids\": [\"text_text_collision:p3:p3#11+p3#12\"], \"parameters\": {}, \"reason\": \"The finding meets the condition with coverage at 1.0, which is above the required 0.4.\"}",
+        "reason": "The finding meets the condition with coverage at 1.0, which is above the required 0.4.",
+        "violations": []
+      },
+      "detected": {
+        "by_kind": {
+          "fragment_cluster": 4,
+          "text_text_collision": 1,
+          "untranslated_residue": 1
+        },
+        "total": 6
+      },
+      "detected_ids": [
+        "fragment_cluster:p3:p3#5+p3#6+p3#7",
+        "fragment_cluster:p3:p3#19+p3#20+p3#21+p3#22+p3#23",
+        "fragment_cluster:p3:p3#42+p3#43+p3#44+p3#45",
+        "fragment_cluster:p3:p3#50+p3#51+p3#52+p3#53",
+        "text_text_collision:p3:p3#11+p3#12",
+        "untranslated_residue:p1:p1#0"
+      ],
+      "executed": [],
+      "iteration": 2,
+      "outcome": "applied_nothing",
+      "request": {
+        "cache_key": "ff006a135f7dc3918bee50838f2998437df30483c6afd9ed514fca0259c1b41b",
+        "calls": [],
+        "prompt_sha256": "94f390049cd07156b3290170062939ad88b1103e9f207335b41769a0a4ba1a03"
+      },
+      "rounds": [
+        {
+          "applicability": [
+            {
+              "accepted": false,
+              "attempts": 0,
+              "calls": [],
+              "changed": false,
+              "from_cache": false,
+              "geometry": {},
+              "glossary_entries": [],
+              "issue_id": "text_text_collision:p3:p3#11+p3#12",
+              "offered_text": "",
+              "paragraph_ref": "p3#11",
+              "reason": "moving_it_clear_would_stand_it_on_text_it_was_not_standing_on",
+              "source_text": "+",
+              "translated_text": ""
+            }
+          ],
+          "decision": {
+            "action": "resolve_collision",
+            "attempts": 0,
+            "from_cache": true,
+            "issue_ids": [
+              "text_text_collision:p3:p3#11+p3#12"
+            ],
+            "parameters": {
+              "max_paragraphs": 3.0
+            },
+            "raw": "{\"action\": \"resolve_collision\", \"issue_ids\": [\"text_text_collision:p3:p3#11+p3#12\"], \"parameters\": {}, \"reason\": \"The finding meets the condition with coverage at 1.0, which is above the required 0.4.\"}",
+            "reason": "The finding meets the condition with coverage at 1.0, which is above the required 0.4.",
+            "violations": []
+          },
+          "executed": [],
+          "kind": "text_text_collision",
+          "offered": 1,
+          "offered_ids": [
+            "text_text_collision:p3:p3#11+p3#12"
+          ],
+          "reason": "no_finding_the_action_may_act_on",
+          "request": {
+            "cache_key": "ff006a135f7dc3918bee50838f2998437df30483c6afd9ed514fca0259c1b41b",
+            "calls": [],
+            "prompt_sha256": "94f390049cd07156b3290170062939ad88b1103e9f207335b41769a0a4ba1a03"
+          },
+          "vocabulary": [
+            "resolve_collision"
+          ],
+          "written": []
+        }
+      ],
+      "untreated": {
+        "by_kind": {
+          "fragment_cluster": 4,
+          "text_text_collision": 1
+        },
+        "total": 5
+      }
+    }
+  ],
+  "iterations_run": 2,
+  "kind_order": [
+    "out_of_page",
+    "text_text_collision",
+    "text_figure_overlap",
+    "fragment_cluster",
+    "chain_escalation",
+    "untranslated_residue"
+  ],
+  "offered_texts": [
+    "FENDI BOUTIQUES  888291 0163FENDI.COM",
+    "FASHION EDITOR: JULIA SARR-JAMOIS. HAIR SUSIE SOBOL.   PRODUCED BY BOOM PRODUCTIONS. PROP STYLIST: PETER KLEIN. DETAILS JOEY GEORGE; MAKEUP SEE IN TH,,,IS ISSUE."
+  ],
+  "stopped_because": "no_finding_the_action_may_act_on",
+  "switch": "magazine_repair",
+  "treated": [
+    {
+      "before": {
+        "residue_chars": 22,
+        "residue_ratio": 1.0
+      },
+      "issue_id": "untranslated_residue:p1:p1#0",
+      "kind": "untranslated_residue",
+      "measured": [
+        "residue_chars",
+        "residue_ratio"
+      ],
+      "paragraph_ref": "p1#0",
+      "residual": {
+        "residue_chars": 13,
+        "residue_ratio": 0.8125
+      },
+      "still_reported": true,
+      "treated_at_iteration": 1
+    }
+  ]
+}

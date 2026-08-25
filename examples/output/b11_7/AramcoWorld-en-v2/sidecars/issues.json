@@ -1,0 +1,791 @@
+{
+  "counts": {
+    "by_kind": {
+      "fragment_cluster": 2,
+      "out_of_page": 3,
+      "untranslated_residue": 18
+    },
+    "issues": 23
+  },
+  "detector_records": {},
+  "document_detectors": [
+    "escalation_surfacing"
+  ],
+  "issues": [
+    {
+      "detected_at_iteration": 1,
+      "detector": "fragment_cluster",
+      "evidence": {
+        "debug_ids": [
+          "YkZB3#L0",
+          "YkZB3#L1",
+          "YkZB3#L2",
+          "YkZB3#L3",
+          "YkZB3#L4"
+        ],
+        "excerpt": "AramcoWorld 激发全球联系 / 以拓宽对多样化 / 文化的欣赏。我们相信通过庆祝我们的 / 共同体验来实现这一目标 / 以及教育故事和内容。",
+        "layout_labels": [
+          "plain text"
+        ],
+        "max_chars": 40,
+        "member_count": 5,
+        "min_cluster": 3
+      },
+      "geometry": {
+        "x": 55.019800000000004,
+        "x2": 179.78359999999998,
+        "y": 602.0780000000002,
+        "y2": 645.086
+      },
+      "id": "fragment_cluster:p2:p2#0+p2#1+p2#2+p2#3+p2#4",
+      "kind": "fragment_cluster",
+      "page": 2,
+      "paragraph_refs": [
+        "p2#0",
+        "p2#1",
+        "p2#2",
+        "p2#3",
+        "p2#4"
+      ],
+      "severity": "low"
+    },
+    {
+      "detected_at_iteration": 1,
+      "detector": "fragment_cluster",
+      "evidence": {
+        "debug_ids": [
+          "u5bSG#L1",
+          "P2yW4#L0",
+          "P2yW4#L1",
+          "P2yW4#L2",
+          "P2yW4#L3",
+          "mF8fj"
+        ],
+        "excerpt": "国际标准连续出版物号：2376-1083 / AramcoWorld（国际标准连续出版物号 2376-1083）出版 / 由阿美美洲公司双月刊发行， / 艾伦中",
+        "layout_labels": [
+          "plain text"
+        ],
+        "max_chars": 40,
+        "member_count": 6,
+        "min_cluster": 3
+      },
+      "geometry": {
+        "x": 49.247400000000006,
+        "x2": 186.06940000000006,
+        "y": 216.98300000000026,
+        "y2": 293.8850000000003
+      },
+      "id": "fragment_cluster:p2:p2#16+p2#17+p2#18+p2#19+p2#20+p2#21",
+      "kind": "fragment_cluster",
+      "page": 2,
+      "paragraph_refs": [
+        "p2#16",
+        "p2#17",
+        "p2#18",
+        "p2#19",
+        "p2#20",
+        "p2#21"
+      ],
+      "severity": "low"
+    },
+    {
+      "detected_at_iteration": 1,
+      "detector": "out_of_page",
+      "evidence": {
+        "box_source": "characters",
+        "debug_id": "tdf3b",
+        "excerpt": "16344araD1R1.Cvr.indd   1-3",
+        "frame_box": [
+          0.0,
+          0.0,
+          607.46,
+          783.0
+        ],
+        "frame_source": "cropbox",
+        "layout_label": "fallback_line",
+        "margin_ratio": 0.0,
+        "min_overflow_ratio": 0.002,
+        "overflow_bottom": 18.0,
+        "overflow_left": 604.1599,
+        "overflow_max": 604.1599,
+        "overflow_ratio": 0.994567,
+        "overflow_right": 0.0,
+        "overflow_side": "left",
+        "overflow_top": 0.0,
+        "safe_box": [
+          0.0,
+          0.0,
+          607.46,
+          783.0
+        ]
+      },
+      "geometry": {
+        "x": -604.1599,
+        "x2": -525.7938999999999,
+        "y": -18.0,
+        "y2": -12.0
+      },
+      "id": "out_of_page:p1:p1#1",
+      "kind": "out_of_page",
+      "page": 1,
+      "paragraph_refs": [
+        "p1#1"
+      ],
+      "severity": "high"
+    },
+    {
+      "detected_at_iteration": 1,
+      "detector": "out_of_page",
+      "evidence": {
+        "box_source": "characters",
+        "debug_id": "DUrHA",
+        "excerpt": "(cid:25)(cid:18)(cid:23)(cid:18)(cid:21)(cid:25)(cid:3)(cid:3)(cid:3)(cid:23)(ci",
+        "frame_box": [
+          0.0,
+          0.0,
+          607.46,
+          783.0
+        ],
+        "frame_source": "cropbox",
+        "layout_label": "fallback_line",
+        "margin_ratio": 0.0,
+        "min_overflow_ratio": 0.002,
+        "overflow_bottom": 18.0,
+        "overflow_left": 0.0,
+        "overflow_max": 18.0,
+        "overflow_ratio": 0.022989,
+        "overflow_right": 0.0,
+        "overflow_side": "bottom",
+        "overflow_top": 0.0,
+        "safe_box": [
+          0.0,
+          0.0,
+          607.46,
+          783.0
+        ]
+      },
+      "geometry": {
+        "x": 559.4621000000001,
+        "x2": 602.6561000000002,
+        "y": -18.0,
+        "y2": -12.0
+      },
+      "id": "out_of_page:p1:p1#2",
+      "kind": "out_of_page",
+      "page": 1,
+      "paragraph_refs": [
+        "p1#2"
+      ],
+      "severity": "high"
+    },
+    {
+      "detected_at_iteration": 1,
+      "detector": "out_of_page",
+      "evidence": {
+        "box_source": "characters",
+        "debug_id": "gbUZv",
+        "excerpt": "希贾兹",
+        "frame_box": [
+          0.0,
+          0.0,
+          631.5,
+          807.0
+        ],
+        "frame_source": "cropbox",
+        "layout_label": "fallback_line",
+        "margin_ratio": 0.0,
+        "min_overflow_ratio": 0.002,
+        "overflow_bottom": 0.0,
+        "overflow_left": 307.3494,
+        "overflow_max": 307.3494,
+        "overflow_ratio": 0.486697,
+        "overflow_right": 0.0,
+        "overflow_side": "left",
+        "overflow_top": 0.0,
+        "safe_box": [
+          0.0,
+          0.0,
+          631.5,
+          807.0
+        ]
+      },
+      "geometry": {
+        "x": -307.3493795,
+        "x2": -69.9308795,
+        "y": 673.2224105,
+        "y2": 752.3619105
+      },
+      "id": "out_of_page:p5:p5#16",
+      "kind": "out_of_page",
+      "page": 5,
+      "paragraph_refs": [
+        "p5#16"
+      ],
+      "severity": "high"
+    },
+    {
+      "detected_at_iteration": 1,
+      "detector": "untranslated_residue",
+      "evidence": {
+        "debug_id": "HDVAh",
+        "excerpt": "7月 – 8月 2026  |  第77卷 第4   |  期 AramcoWorld.com",
+        "layout_label": "abandon",
+        "min_ratio": 0.6,
+        "min_script_chars": 12,
+        "residue_chars": 14,
+        "residue_ratio": 0.7,
+        "residue_script": "latin",
+        "script_chars": 20
+      },
+      "geometry": {
+        "x": 92.54469999999999,
+        "x2": 319.3932999999998,
+        "y": 730.7716,
+        "y2": 739.7716
+      },
+      "id": "untranslated_residue:p1:p1#0",
+      "kind": "untranslated_residue",
+      "page": 1,
+      "paragraph_refs": [
+        "p1#0"
+      ],
+      "severity": "high"
+    },
+    {
+      "detected_at_iteration": 1,
+      "detector": "untranslated_residue",
+      "evidence": {
+        "debug_id": "tdf3b",
+        "excerpt": "16344araD1R1.Cvr.indd   1-3",
+        "layout_label": "fallback_line",
+        "min_ratio": 0.6,
+        "min_script_chars": 12,
+        "residue_chars": 12,
+        "residue_ratio": 1.0,
+        "residue_script": "latin",
+        "script_chars": 12
+      },
+      "geometry": {
+        "x": -603.5539,
+        "x2": -525.9979,
+        "y": -19.242,
+        "y2": -13.242
+      },
+      "id": "untranslated_residue:p1:p1#1",
+      "kind": "untranslated_residue",
+      "page": 1,
+      "paragraph_refs": [
+        "p1#1"
+      ],
+      "severity": "high"
+    },
+    {
+      "detected_at_iteration": 1,
+      "detector": "untranslated_residue",
+      "evidence": {
+        "debug_id": "DUrHA",
+        "excerpt": "(cid:25)(cid:18)(cid:23)(cid:18)(cid:21)(cid:25)(cid:3)(cid:3)(cid:3)(cid:23)(ci",
+        "layout_label": "fallback_line",
+        "min_ratio": 0.6,
+        "min_script_chars": 12,
+        "residue_chars": 48,
+        "residue_ratio": 1.0,
+        "residue_script": "latin",
+        "script_chars": 48
+      },
+      "geometry": {
+        "x": 559.6901,
+        "x2": 602.2361000000001,
+        "y": -19.626,
+        "y2": -13.626
+      },
+      "id": "untranslated_residue:p1:p1#2",
+      "kind": "untranslated_residue",
+      "page": 1,
+      "paragraph_refs": [
+        "p1#2"
+      ],
+      "severity": "high"
+    },
+    {
+      "detected_at_iteration": 1,
+      "detector": "untranslated_residue",
+      "evidence": {
+        "debug_id": "gP6XC",
+        "excerpt": "AramcoWorld.com",
+        "layout_label": "title",
+        "min_ratio": 0.6,
+        "min_script_chars": 12,
+        "residue_chars": 14,
+        "residue_ratio": 1.0,
+        "residue_script": "latin",
+        "script_chars": 14
+      },
+      "geometry": {
+        "x": 85.7093,
+        "x2": 149.1173,
+        "y": 584.61,
+        "y2": 592.61
+      },
+      "id": "untranslated_residue:p2:p2#7",
+      "kind": "untranslated_residue",
+      "page": 2,
+      "paragraph_refs": [
+        "p2#7"
+      ],
+      "severity": "high"
+    },
+    {
+      "detected_at_iteration": 1,
+      "detector": "untranslated_residue",
+      "evidence": {
+        "debug_id": "7R5zR#L2",
+        "excerpt": "合同支持：Kymani J. Hill 和 Nicole E. Martinez印刷设计：Graphic Engine Design Studio印刷：RR D",
+        "layout_label": "plain text",
+        "min_ratio": 0.6,
+        "min_script_chars": 12,
+        "residue_chars": 88,
+        "residue_ratio": 0.8544,
+        "residue_script": "latin",
+        "script_chars": 103
+      },
+      "geometry": {
+        "x": 52.383400000000016,
+        "x2": 183.0524,
+        "y": 377.3740000000003,
+        "y2": 431.1200000000002
+      },
+      "id": "untranslated_residue:p2:p2#10",
+      "kind": "untranslated_residue",
+      "page": 2,
+      "paragraph_refs": [
+        "p2#10"
+      ],
+      "severity": "high"
+    },
+    {
+      "detected_at_iteration": 1,
+      "detector": "untranslated_residue",
+      "evidence": {
+        "debug_id": "WBc9s",
+        "excerpt": "在线订阅：AramcoWorld.com",
+        "layout_label": "plain text",
+        "min_ratio": 0.6,
+        "min_script_chars": 12,
+        "residue_chars": 14,
+        "residue_ratio": 0.7778,
+        "residue_script": "latin",
+        "script_chars": 18
+      },
+      "geometry": {
+        "x": 62.22540000000001,
+        "x2": 172.83730000000003,
+        "y": 358.95000000000033,
+        "y2": 368.4700000000003
+      },
+      "id": "untranslated_residue:p2:p2#11",
+      "kind": "untranslated_residue",
+      "page": 2,
+      "paragraph_refs": [
+        "p2#11"
+      ],
+      "severity": "high"
+    },
+    {
+      "detected_at_iteration": 1,
+      "detector": "untranslated_residue",
+      "evidence": {
+        "debug_id": "mdznF#L1",
+        "excerpt": "aramcoworld@sfsdayton.com",
+        "layout_label": "plain text",
+        "min_ratio": 0.6,
+        "min_script_chars": 12,
+        "residue_chars": 23,
+        "residue_ratio": 1.0,
+        "residue_script": "latin",
+        "script_chars": 23
+      },
+      "geometry": {
+        "x": 49.17040000000001,
+        "x2": 186.23670000000007,
+        "y": 338.2580000000003,
+        "y2": 345.2580000000003
+      },
+      "id": "untranslated_residue:p2:p2#13",
+      "kind": "untranslated_residue",
+      "page": 2,
+      "paragraph_refs": [
+        "p2#13"
+      ],
+      "severity": "high"
+    },
+    {
+      "detected_at_iteration": 1,
+      "detector": "untranslated_residue",
+      "evidence": {
+        "debug_id": "u5bSG#L0",
+        "excerpt": "编辑部：publications@aramcoamericas.com或邮政信箱 2106, 休斯顿, 德克萨斯州 77252-2106, 美国",
+        "layout_label": "plain text",
+        "min_ratio": 0.6,
+        "min_script_chars": 12,
+        "residue_chars": 29,
+        "residue_ratio": 0.617,
+        "residue_script": "latin",
+        "script_chars": 47
+      },
+      "geometry": {
+        "x": 49.247400000000006,
+        "x2": 186.06940000000006,
+        "y": 299.11400000000026,
+        "y2": 325.0280000000003
+      },
+      "id": "untranslated_residue:p2:p2#15",
+      "kind": "untranslated_residue",
+      "page": 2,
+      "paragraph_refs": [
+        "p2#15"
+      ],
+      "severity": "high"
+    },
+    {
+      "detected_at_iteration": 1,
+      "detector": "untranslated_residue",
+      "evidence": {
+        "debug_id": "vea4C",
+        "excerpt": "OPPOSITE: BANNING EYRE; THIS PAGE, FROM TOP: IVY JOHNSON; DANIIL USMANOV; LEON M",
+        "layout_label": "abandon",
+        "min_ratio": 0.6,
+        "min_script_chars": 12,
+        "residue_chars": 69,
+        "residue_ratio": 1.0,
+        "residue_script": "latin",
+        "script_chars": 69
+      },
+      "geometry": {
+        "x": 52.0214,
+        "x2": 57.996399999999994,
+        "y": 71.82499999999999,
+        "y2": 304.7845
+      },
+      "id": "untranslated_residue:p3:p3#18",
+      "kind": "untranslated_residue",
+      "page": 3,
+      "paragraph_refs": [
+        "p3#18"
+      ],
+      "severity": "high"
+    },
+    {
+      "detected_at_iteration": 1,
+      "detector": "untranslated_residue",
+      "evidence": {
+        "debug_id": "seC4D",
+        "excerpt": "— BA K H O D I R BA LTAY E V",
+        "layout_label": "plain text",
+        "min_ratio": 0.6,
+        "min_script_chars": 12,
+        "residue_chars": 16,
+        "residue_ratio": 1.0,
+        "residue_script": "latin",
+        "script_chars": 16
+      },
+      "geometry": {
+        "x": 237.0984,
+        "x2": 370.45640000000003,
+        "y": 83.89999999999999,
+        "y2": 96.19
+      },
+      "id": "untranslated_residue:p4:p4#13",
+      "kind": "untranslated_residue",
+      "page": 4,
+      "paragraph_refs": [
+        "p4#13"
+      ],
+      "severity": "high"
+    },
+    {
+      "detected_at_iteration": 1,
+      "detector": "untranslated_residue",
+      "evidence": {
+        "debug_id": "P2myW",
+        "excerpt": "6/(cid:23)/26   (cid:24):(cid:23)(cid:19) 下午",
+        "layout_label": "abandon",
+        "min_ratio": 0.6,
+        "min_script_chars": 12,
+        "residue_chars": 12,
+        "residue_ratio": 0.8571,
+        "residue_script": "latin",
+        "script_chars": 14
+      },
+      "geometry": {
+        "x": 583.7255859375,
+        "x2": 626.2633828125,
+        "y": 5.8857421875,
+        "y2": 12.0
+      },
+      "id": "untranslated_residue:p4:p4#16",
+      "kind": "untranslated_residue",
+      "page": 4,
+      "paragraph_refs": [
+        "p4#16"
+      ],
+      "severity": "high"
+    },
+    {
+      "detected_at_iteration": 1,
+      "detector": "untranslated_residue",
+      "evidence": {
+        "debug_id": "98Lw1",
+        "excerpt": "6/(cid:20)(cid:20)/26   (cid:20)(cid:19):(cid:19)(cid:19) (cid:36)M",
+        "layout_label": "fallback_line",
+        "min_ratio": 0.6,
+        "min_script_chars": 12,
+        "residue_chars": 22,
+        "residue_ratio": 1.0,
+        "residue_script": "latin",
+        "script_chars": 22
+      },
+      "geometry": {
+        "x": 577.7255859375,
+        "x2": 626.9353828125,
+        "y": 5.8857421875,
+        "y2": 12.0
+      },
+      "id": "untranslated_residue:p5:p5#19",
+      "kind": "untranslated_residue",
+      "page": 5,
+      "paragraph_refs": [
+        "p5#19"
+      ],
+      "severity": "high"
+    },
+    {
+      "detected_at_iteration": 1,
+      "detector": "untranslated_residue",
+      "evidence": {
+        "debug_id": "1YWEk",
+        "excerpt": "6/(cid:23)/26   (cid:24):(cid:23)(cid:23) 下午",
+        "layout_label": "abandon",
+        "min_ratio": 0.6,
+        "min_script_chars": 12,
+        "residue_chars": 12,
+        "residue_ratio": 0.8571,
+        "residue_script": "latin",
+        "script_chars": 14
+      },
+      "geometry": {
+        "x": 583.7255859375,
+        "x2": 626.2633828125,
+        "y": 5.8916015625,
+        "y2": 12.0
+      },
+      "id": "untranslated_residue:p6:p6#13",
+      "kind": "untranslated_residue",
+      "page": 6,
+      "paragraph_refs": [
+        "p6#13"
+      ],
+      "severity": "high"
+    },
+    {
+      "detected_at_iteration": 1,
+      "detector": "untranslated_residue",
+      "evidence": {
+        "debug_id": "cM695",
+        "excerpt": "OPPOSITE TOP: B.MORITZ/LIBRARY OF CONGRESS",
+        "layout_label": "abandon",
+        "min_ratio": 0.6,
+        "min_script_chars": 12,
+        "residue_chars": 35,
+        "residue_ratio": 1.0,
+        "residue_script": "latin",
+        "script_chars": 35
+      },
+      "geometry": {
+        "x": 52.25,
+        "x2": 57.25,
+        "y": 86.2289,
+        "y2": 201.96990000000002
+      },
+      "id": "untranslated_residue:p7:p7#12",
+      "kind": "untranslated_residue",
+      "page": 7,
+      "paragraph_refs": [
+        "p7#12"
+      ],
+      "severity": "high"
+    },
+    {
+      "detected_at_iteration": 1,
+      "detector": "untranslated_residue",
+      "evidence": {
+        "debug_id": "qSMgn",
+        "excerpt": "6/(cid:23)/26   (cid:24):(cid:23)(cid:23) 下午",
+        "layout_label": "abandon",
+        "min_ratio": 0.6,
+        "min_script_chars": 12,
+        "residue_chars": 12,
+        "residue_ratio": 0.8571,
+        "residue_script": "latin",
+        "script_chars": 14
+      },
+      "geometry": {
+        "x": 583.7255859375,
+        "x2": 626.2633828125,
+        "y": 5.8916015625,
+        "y2": 12.0
+      },
+      "id": "untranslated_residue:p7:p7#20",
+      "kind": "untranslated_residue",
+      "page": 7,
+      "paragraph_refs": [
+        "p7#20"
+      ],
+      "severity": "high"
+    },
+    {
+      "detected_at_iteration": 1,
+      "detector": "untranslated_residue",
+      "evidence": {
+        "debug_id": "25FCt",
+        "excerpt": "40 40 AramcoWorld AramcoWorld",
+        "layout_label": "abandon",
+        "min_ratio": 0.6,
+        "min_script_chars": 12,
+        "residue_chars": 22,
+        "residue_ratio": 1.0,
+        "residue_script": "latin",
+        "script_chars": 22
+      },
+      "geometry": {
+        "x": 77.984,
+        "x2": 151.6592,
+        "y": 14.0,
+        "y2": 56.448
+      },
+      "id": "untranslated_residue:p8:p8#0",
+      "kind": "untranslated_residue",
+      "page": 8,
+      "paragraph_refs": [
+        "p8#0"
+      ],
+      "severity": "high"
+    },
+    {
+      "detected_at_iteration": 1,
+      "detector": "untranslated_residue",
+      "evidence": {
+        "debug_id": "puGpt",
+        "excerpt": "评论者 ADIL ZHAN ANAY",
+        "layout_label": "plain text",
+        "min_ratio": 0.6,
+        "min_script_chars": 12,
+        "residue_chars": 12,
+        "residue_ratio": 0.8,
+        "residue_script": "latin",
+        "script_chars": 15
+      },
+      "geometry": {
+        "x": 142.2031,
+        "x2": 239.90000000000003,
+        "y": 454.11,
+        "y2": 462.37
+      },
+      "id": "untranslated_residue:p9:p9#12",
+      "kind": "untranslated_residue",
+      "page": 9,
+      "paragraph_refs": [
+        "p9#12"
+      ],
+      "severity": "high"
+    },
+    {
+      "detected_at_iteration": 1,
+      "detector": "untranslated_residue",
+      "evidence": {
+        "debug_id": "LeDBf",
+        "excerpt": "顶部：UNIVERSITY HISTORY ARCHIVE / GETTY IMAGES",
+        "layout_label": "abandon",
+        "min_ratio": 0.6,
+        "min_script_chars": 12,
+        "residue_chars": 35,
+        "residue_ratio": 0.9459,
+        "residue_script": "latin",
+        "script_chars": 37
+      },
+      "geometry": {
+        "x": 52.25,
+        "x2": 57.25,
+        "y": 78.5431,
+        "y2": 200.81959999999995
+      },
+      "id": "untranslated_residue:p9:p9#14",
+      "kind": "untranslated_residue",
+      "page": 9,
+      "paragraph_refs": [
+        "p9#14"
+      ],
+      "severity": "high"
+    }
+  ],
+  "iteration": 1,
+  "language": "zh",
+  "notes": [],
+  "pages_by_detector": {
+    "fragment_cluster": [
+      2,
+      3,
+      4,
+      6,
+      7
+    ],
+    "out_of_page": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9
+    ],
+    "text_figure_overlap": [
+      1,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9
+    ],
+    "text_text_collision": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9
+    ],
+    "untranslated_residue": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9
+    ]
+  },
+  "source_geometry": {
+    "checkpoint": "checkpoint.06_styles_and_formulas.xml",
+    "paragraphs": 146,
+    "stage": "styles_and_formulas"
+  },
+  "translation_performed": true
+}

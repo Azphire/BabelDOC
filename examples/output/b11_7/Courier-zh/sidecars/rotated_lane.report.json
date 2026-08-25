@@ -1,0 +1,51 @@
+{
+  "attempted": 2,
+  "excluded_from": [
+    "column_reflow",
+    "drop_cap",
+    "typeset_hang"
+  ],
+  "laid_out": 2,
+  "paragraphs": [
+    {
+      "box": [
+        413.37,
+        663.3,
+        419.87,
+        823.61
+      ],
+      "characters": 36,
+      "layout_label": "fallback_line",
+      "reach": [
+        414.34,
+        663.3,
+        419.87,
+        766.06
+      ],
+      "reference": "p6#15",
+      "skipped": null,
+      "text": "© Boris Semeniako for UNESCO Courier"
+    },
+    {
+      "box": [
+        24.31,
+        174.05,
+        30.81,
+        375.09
+      ],
+      "characters": 57,
+      "layout_label": "abandon",
+      "reach": [
+        25.29,
+        174.05,
+        30.81,
+        336.47
+      ],
+      "reference": "p5#9",
+      "skipped": null,
+      "text": "© Adriano Gambarini/Amazon Indigenous Action Organization"
+    }
+  ],
+  "switch": "magazine_rotated_lane",
+  "target_lang": "en"
+}

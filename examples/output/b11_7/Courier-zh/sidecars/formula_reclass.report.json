@@ -1,0 +1,516 @@
+{
+  "compositions": [
+    {
+      "characters": 1,
+      "is_corner_mark": false,
+      "layout_label": "fallback_line",
+      "reference": "p3#2",
+      "text": "诺",
+      "vertical": true,
+      "x_offset": 0.0,
+      "y_offset": 0.0
+    },
+    {
+      "characters": 4,
+      "is_corner_mark": false,
+      "layout_label": "fallback_line",
+      "reference": "p3#3",
+      "text": "·赞布拉",
+      "vertical": true,
+      "x_offset": 0.0,
+      "y_offset": 0.0
+    },
+    {
+      "characters": 1,
+      "is_corner_mark": false,
+      "layout_label": "fallback_line",
+      "reference": "p3#3",
+      "text": "娜",
+      "vertical": true,
+      "x_offset": 0.0,
+      "y_offset": 0.0
+    },
+    {
+      "characters": 1,
+      "is_corner_mark": false,
+      "layout_label": "fallback_line",
+      "reference": "p3#3",
+      "text": "丽",
+      "vertical": true,
+      "x_offset": 0.0,
+      "y_offset": 0.0
+    },
+    {
+      "characters": 1,
+      "is_corner_mark": false,
+      "layout_label": "fallback_line",
+      "reference": "p3#3",
+      "text": "洛",
+      "vertical": true,
+      "x_offset": 0.0,
+      "y_offset": 0.0
+    },
+    {
+      "characters": 3,
+      "is_corner_mark": false,
+      "layout_label": "fallback_line",
+      "reference": "p3#3",
+      "text": "© 卡",
+      "vertical": true,
+      "x_offset": 0.0,
+      "y_offset": 0.0
+    },
+    {
+      "characters": 15,
+      "is_corner_mark": true,
+      "layout_label": "abandon",
+      "reference": "p5#0",
+      "text": "7巴西：水之民族的启示   |",
+      "vertical": false,
+      "x_offset": 0.0,
+      "y_offset": 0.0
+    },
+    {
+      "characters": 1,
+      "is_corner_mark": false,
+      "layout_label": "abandon",
+      "reference": "p5#8",
+      "text": "织",
+      "vertical": true,
+      "x_offset": 0.0,
+      "y_offset": 0.0
+    },
+    {
+      "characters": 1,
+      "is_corner_mark": false,
+      "layout_label": "abandon",
+      "reference": "p5#8",
+      "text": "组",
+      "vertical": true,
+      "x_offset": 0.0,
+      "y_offset": 0.0
+    },
+    {
+      "characters": 1,
+      "is_corner_mark": false,
+      "layout_label": "abandon",
+      "reference": "p5#8",
+      "text": "动",
+      "vertical": true,
+      "x_offset": 0.0,
+      "y_offset": 0.0
+    },
+    {
+      "characters": 1,
+      "is_corner_mark": false,
+      "layout_label": "abandon",
+      "reference": "p5#8",
+      "text": "行",
+      "vertical": true,
+      "x_offset": 0.0,
+      "y_offset": 0.0
+    },
+    {
+      "characters": 1,
+      "is_corner_mark": false,
+      "layout_label": "abandon",
+      "reference": "p5#8",
+      "text": "民",
+      "vertical": true,
+      "x_offset": 0.0,
+      "y_offset": 0.0
+    },
+    {
+      "characters": 1,
+      "is_corner_mark": false,
+      "layout_label": "abandon",
+      "reference": "p5#8",
+      "text": "住",
+      "vertical": true,
+      "x_offset": 0.0,
+      "y_offset": 0.0
+    },
+    {
+      "characters": 1,
+      "is_corner_mark": false,
+      "layout_label": "abandon",
+      "reference": "p5#8",
+      "text": "原",
+      "vertical": true,
+      "x_offset": 0.0,
+      "y_offset": 0.0
+    },
+    {
+      "characters": 1,
+      "is_corner_mark": false,
+      "layout_label": "abandon",
+      "reference": "p5#8",
+      "text": "孙",
+      "vertical": true,
+      "x_offset": 0.0,
+      "y_offset": 0.0
+    },
+    {
+      "characters": 1,
+      "is_corner_mark": false,
+      "layout_label": "abandon",
+      "reference": "p5#8",
+      "text": "马",
+      "vertical": true,
+      "x_offset": 0.0,
+      "y_offset": 0.0
+    },
+    {
+      "characters": 2,
+      "is_corner_mark": false,
+      "layout_label": "abandon",
+      "reference": "p5#8",
+      "text": "/亚",
+      "vertical": true,
+      "x_offset": 0.0,
+      "y_offset": 0.0
+    },
+    {
+      "characters": 1,
+      "is_corner_mark": false,
+      "layout_label": "abandon",
+      "reference": "p5#8",
+      "text": "尼",
+      "vertical": true,
+      "x_offset": 0.0,
+      "y_offset": 0.0
+    },
+    {
+      "characters": 1,
+      "is_corner_mark": false,
+      "layout_label": "abandon",
+      "reference": "p5#8",
+      "text": "里",
+      "vertical": true,
+      "x_offset": 0.0,
+      "y_offset": 0.0
+    },
+    {
+      "characters": 1,
+      "is_corner_mark": false,
+      "layout_label": "abandon",
+      "reference": "p5#8",
+      "text": "巴",
+      "vertical": true,
+      "x_offset": 0.0,
+      "y_offset": 0.0
+    },
+    {
+      "characters": 2,
+      "is_corner_mark": false,
+      "layout_label": "abandon",
+      "reference": "p5#9",
+      "text": "·甘",
+      "vertical": true,
+      "x_offset": 0.0,
+      "y_offset": 0.0
+    },
+    {
+      "characters": 1,
+      "is_corner_mark": false,
+      "layout_label": "abandon",
+      "reference": "p5#9",
+      "text": "诺",
+      "vertical": true,
+      "x_offset": 0.0,
+      "y_offset": 0.0
+    },
+    {
+      "characters": 1,
+      "is_corner_mark": false,
+      "layout_label": "abandon",
+      "reference": "p5#9",
+      "text": "亚",
+      "vertical": true,
+      "x_offset": 0.0,
+      "y_offset": 0.0
+    },
+    {
+      "characters": 1,
+      "is_corner_mark": false,
+      "layout_label": "abandon",
+      "reference": "p5#9",
+      "text": "里",
+      "vertical": true,
+      "x_offset": 0.0,
+      "y_offset": 0.0
+    },
+    {
+      "characters": 1,
+      "is_corner_mark": false,
+      "layout_label": "abandon",
+      "reference": "p5#9",
+      "text": "德",
+      "vertical": true,
+      "x_offset": 0.0,
+      "y_offset": 0.0
+    },
+    {
+      "characters": 3,
+      "is_corner_mark": false,
+      "layout_label": "abandon",
+      "reference": "p5#9",
+      "text": "© 阿",
+      "vertical": true,
+      "x_offset": 0.0,
+      "y_offset": 0.0
+    },
+    {
+      "characters": 1,
+      "is_corner_mark": false,
+      "layout_label": "fallback_line",
+      "reference": "p6#14",
+      "text": "作",
+      "vertical": true,
+      "x_offset": 0.0,
+      "y_offset": 0.0
+    },
+    {
+      "characters": 1,
+      "is_corner_mark": false,
+      "layout_label": "fallback_line",
+      "reference": "p6#14",
+      "text": "创",
+      "vertical": true,
+      "x_offset": 0.0,
+      "y_offset": 0.0
+    },
+    {
+      "characters": 1,
+      "is_corner_mark": false,
+      "layout_label": "fallback_line",
+      "reference": "p6#14",
+      "text": "使",
+      "vertical": true,
+      "x_offset": 0.0,
+      "y_offset": 0.0
+    },
+    {
+      "characters": 1,
+      "is_corner_mark": false,
+      "layout_label": "fallback_line",
+      "reference": "p6#14",
+      "text": "信",
+      "vertical": true,
+      "x_offset": 0.0,
+      "y_offset": 0.0
+    },
+    {
+      "characters": 1,
+      "is_corner_mark": false,
+      "layout_label": "fallback_line",
+      "reference": "p6#14",
+      "text": "织",
+      "vertical": true,
+      "x_offset": 0.0,
+      "y_offset": 0.0
+    },
+    {
+      "characters": 1,
+      "is_corner_mark": false,
+      "layout_label": "fallback_line",
+      "reference": "p6#14",
+      "text": "组",
+      "vertical": true,
+      "x_offset": 0.0,
+      "y_offset": 0.0
+    },
+    {
+      "characters": 1,
+      "is_corner_mark": false,
+      "layout_label": "fallback_line",
+      "reference": "p6#14",
+      "text": "文",
+      "vertical": true,
+      "x_offset": 0.0,
+      "y_offset": 0.0
+    },
+    {
+      "characters": 1,
+      "is_corner_mark": false,
+      "layout_label": "fallback_line",
+      "reference": "p6#14",
+      "text": "科",
+      "vertical": true,
+      "x_offset": 0.0,
+      "y_offset": 0.0
+    },
+    {
+      "characters": 1,
+      "is_corner_mark": false,
+      "layout_label": "fallback_line",
+      "reference": "p6#14",
+      "text": "教",
+      "vertical": true,
+      "x_offset": 0.0,
+      "y_offset": 0.0
+    },
+    {
+      "characters": 1,
+      "is_corner_mark": false,
+      "layout_label": "fallback_line",
+      "reference": "p6#14",
+      "text": "国",
+      "vertical": true,
+      "x_offset": 0.0,
+      "y_offset": 0.0
+    },
+    {
+      "characters": 1,
+      "is_corner_mark": false,
+      "layout_label": "fallback_line",
+      "reference": "p6#14",
+      "text": "合",
+      "vertical": true,
+      "x_offset": 0.0,
+      "y_offset": 0.0
+    },
+    {
+      "characters": 1,
+      "is_corner_mark": false,
+      "layout_label": "fallback_line",
+      "reference": "p6#14",
+      "text": "联",
+      "vertical": true,
+      "x_offset": 0.0,
+      "y_offset": 0.0
+    },
+    {
+      "characters": 1,
+      "is_corner_mark": false,
+      "layout_label": "fallback_line",
+      "reference": "p6#14",
+      "text": "为",
+      "vertical": true,
+      "x_offset": 0.0,
+      "y_offset": 0.0
+    },
+    {
+      "characters": 1,
+      "is_corner_mark": false,
+      "layout_label": "fallback_line",
+      "reference": "p6#14",
+      "text": "科",
+      "vertical": true,
+      "x_offset": 0.0,
+      "y_offset": 0.0
+    },
+    {
+      "characters": 1,
+      "is_corner_mark": false,
+      "layout_label": "fallback_line",
+      "reference": "p6#14",
+      "text": "亚",
+      "vertical": true,
+      "x_offset": 0.0,
+      "y_offset": 0.0
+    },
+    {
+      "characters": 1,
+      "is_corner_mark": false,
+      "layout_label": "fallback_line",
+      "reference": "p6#14",
+      "text": "尼",
+      "vertical": true,
+      "x_offset": 0.0,
+      "y_offset": 0.0
+    },
+    {
+      "characters": 3,
+      "is_corner_mark": false,
+      "layout_label": "fallback_line",
+      "reference": "p6#15",
+      "text": "·塞梅",
+      "vertical": true,
+      "x_offset": 0.0,
+      "y_offset": 0.0
+    },
+    {
+      "characters": 1,
+      "is_corner_mark": false,
+      "layout_label": "fallback_line",
+      "reference": "p6#15",
+      "text": "斯",
+      "vertical": true,
+      "x_offset": 0.0,
+      "y_offset": 0.0
+    },
+    {
+      "characters": 1,
+      "is_corner_mark": false,
+      "layout_label": "fallback_line",
+      "reference": "p6#15",
+      "text": "里",
+      "vertical": true,
+      "x_offset": 0.0,
+      "y_offset": 0.0
+    },
+    {
+      "characters": 3,
+      "is_corner_mark": false,
+      "layout_label": "fallback_line",
+      "reference": "p6#15",
+      "text": "© 鲍",
+      "vertical": true,
+      "x_offset": 0.0,
+      "y_offset": 0.0
+    }
+  ],
+  "converted": 46,
+  "folded_annotations": [
+    {
+      "after": "© Carolina Zambrano",
+      "before": "© 卡洛丽娜·赞布拉诺（Carolina Zambrano）",
+      "folded": [
+        "卡洛丽娜·赞布拉诺"
+      ],
+      "reference": "p3#3"
+    }
+  ],
+  "folded_count": 1,
+  "formula_compositions_examined": 62,
+  "paragraphs_touched": 7,
+  "refused": [],
+  "refused_for_artwork": 0,
+  "residue_script": "han",
+  "stitched_count": 3,
+  "stitched_rotated": [
+    {
+      "characters": 30,
+      "merged": [
+        "p3#3",
+        "p3#2"
+      ],
+      "page": 3,
+      "reference": "p3#3",
+      "text": "© 卡洛丽娜·赞布拉诺（Carolina Zambrano）"
+    },
+    {
+      "characters": 42,
+      "merged": [
+        "p5#9",
+        "p5#8"
+      ],
+      "page": 5,
+      "reference": "p5#9",
+      "text": "© 阿德里亚诺·甘巴里尼（Adriano Gambarini）/亚马孙原住民行动组织"
+    },
+    {
+      "characters": 26,
+      "merged": [
+        "p6#15",
+        "p6#14"
+      ],
+      "page": 6,
+      "reference": "p6#15",
+      "text": "© 鲍里斯·塞梅尼亚科为联合国教科文组织《信使》创作"
+    }
+  ],
+  "switch": "magazine_formula_reclass",
+  "target_lang": "en"
+}

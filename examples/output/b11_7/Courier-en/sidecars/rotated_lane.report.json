@@ -1,0 +1,51 @@
+{
+  "attempted": 2,
+  "excluded_from": [
+    "column_reflow",
+    "drop_cap",
+    "typeset_hang"
+  ],
+  "laid_out": 2,
+  "paragraphs": [
+    {
+      "box": [
+        540.93,
+        583.61,
+        547.43,
+        640.89
+      ],
+      "characters": 11,
+      "layout_label": "fallback_line",
+      "reach": [
+        541.58,
+        583.61,
+        547.43,
+        638.34
+      ],
+      "reference": "p3#2",
+      "skipped": null,
+      "text": "© 卡罗琳娜·桑布拉诺"
+    },
+    {
+      "box": [
+        413.37,
+        711.22,
+        419.87,
+        826.03
+      ],
+      "characters": 32,
+      "layout_label": "fallback_line",
+      "reach": [
+        414.99,
+        711.22,
+        419.87,
+        821.43
+      ],
+      "reference": "p6#15",
+      "skipped": null,
+      "text": "© Boris Séméniako 为 联合国教科文组织《信使》"
+    }
+  ],
+  "switch": "magazine_rotated_lane",
+  "target_lang": "zh"
+}

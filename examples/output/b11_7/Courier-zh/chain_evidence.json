@@ -1,0 +1,1587 @@
+{
+ "sample": "Courier-zh",
+ "read_from": "checkpoint.08_chain_builder.xml",
+ "link_min_score": 0.8,
+ "boundary_priority": [
+  "page",
+  "column_adjacent",
+  "body_next"
+ ],
+ "boundaries": [
+  {
+   "boundary": "p1:columns",
+   "kind": "column",
+   "pairing": null,
+   "tail_page": 1,
+   "head_page": 1,
+   "tail_column": null,
+   "head_column": null,
+   "column_count": null,
+   "eligible": false,
+   "reason": "preserve_line_structure",
+   "pair": null,
+   "score": null,
+   "linked": false,
+   "tail_ends_on_hyphen": false,
+   "tail_last_line": null,
+   "head_first_line": "",
+   "tail": null,
+   "head": null
+  },
+  {
+   "boundary": "1->2",
+   "kind": "page",
+   "pairing": null,
+   "tail_page": 1,
+   "head_page": 2,
+   "tail_column": null,
+   "head_column": null,
+   "column_count": null,
+   "eligible": false,
+   "reason": "not_chain_eligible:tail",
+   "pair": null,
+   "score": null,
+   "linked": false,
+   "tail_ends_on_hyphen": false,
+   "tail_last_line": null,
+   "head_first_line": "",
+   "tail": null,
+   "head": null
+  },
+  {
+   "boundary": "p2:c0->c1",
+   "kind": "column",
+   "pairing": "column_adjacent",
+   "tail_page": 2,
+   "head_page": 2,
+   "tail_column": 0,
+   "head_column": 1,
+   "column_count": 2,
+   "eligible": false,
+   "reason": "no_endpoint",
+   "pair": null,
+   "score": null,
+   "linked": false,
+   "tail_ends_on_hyphen": false,
+   "tail_last_line": "这些知识显得尤为珍贵。",
+   "head_first_line": "厄瓜多尔摄影师卡洛丽娜·赞布拉诺的刺绣作品,采用昌比拉棕榈纤维制作— 这种棕榈是亚马孙土著手工艺的象征。",
+   "tail": {
+    "reference": "p2#5",
+    "page": 2,
+    "text": "从原住民通过有控制的焚烧来预防 野火,到因纽特人的天气预测方法, 再 到 部 分 非 洲 国 家 采 用 的“ 扎 伊 ” (zaï) 集水技术,世界各地的土著 传统实践丰富多样且行之有效,凝 聚着土著人民的智慧。在气候变化 和 生 物 多 样 性 不 断 丧 失 的 背 景下, 这些知识显得尤为珍贵。"
+   },
+   "head": {
+    "reference": "p2#4",
+    "page": 2,
+    "text": "厄瓜多尔摄影师卡洛丽娜·赞布拉诺的刺绣作品,采用昌比拉棕榈纤维制作— 这种棕榈是亚马孙土著手工艺的象征。"
+   }
+  },
+  {
+   "boundary": "2->3",
+   "kind": "page",
+   "pairing": null,
+   "tail_page": 2,
+   "head_page": 3,
+   "tail_column": 0,
+   "head_column": 0,
+   "column_count": null,
+   "eligible": true,
+   "reason": null,
+   "pair": "title->title",
+   "score": 0.5,
+   "linked": false,
+   "tail_ends_on_hyphen": false,
+   "tail_last_line": "\u001a Lagipoiva Cherelle Jackson）",
+   "head_first_line": "土著知识",
+   "tail": {
+    "reference": "p2#6",
+    "page": 2,
+    "text": "拉吉波瓦·谢雷尔·杰克逊 \u001a Lagipoiva Cherelle Jackson)"
+   },
+   "head": {
+    "reference": "p3#1",
+    "page": 3,
+    "text": "土著知识"
+   }
+  },
+  {
+   "boundary": "p3:columns",
+   "kind": "column",
+   "pairing": null,
+   "tail_page": 3,
+   "head_page": 3,
+   "tail_column": null,
+   "head_column": null,
+   "column_count": null,
+   "eligible": false,
+   "reason": "one_column",
+   "pair": null,
+   "score": null,
+   "linked": false,
+   "tail_ends_on_hyphen": false,
+   "tail_last_line": null,
+   "head_first_line": "",
+   "tail": null,
+   "head": null
+  },
+  {
+   "boundary": "3->4",
+   "kind": "page",
+   "pairing": null,
+   "tail_page": 3,
+   "head_page": 4,
+   "tail_column": 0,
+   "head_column": 0,
+   "column_count": null,
+   "eligible": true,
+   "reason": null,
+   "pair": "title->title",
+   "score": 0.5,
+   "linked": false,
+   "tail_ends_on_hyphen": false,
+   "tail_last_line": "土著知识",
+   "head_first_line": "地方和土著知识体系计划: 推广土著知识",
+   "tail": {
+    "reference": "p3#1",
+    "page": 3,
+    "text": "土著知识"
+   },
+   "head": {
+    "reference": "p4#18",
+    "page": 4,
+    "text": "地方和土著知识体系计划: 推广土著知识"
+   }
+  },
+  {
+   "boundary": "p4:c0->c1",
+   "kind": "column",
+   "pairing": "column_adjacent",
+   "tail_page": 4,
+   "head_page": 4,
+   "tail_column": 0,
+   "head_column": 1,
+   "column_count": 5,
+   "eligible": true,
+   "reason": null,
+   "pair": "body->body",
+   "score": 0.6,
+   "linked": false,
+   "tail_ends_on_hyphen": false,
+   "tail_last_line": "候变化相关领域。",
+   "head_first_line": "该计划旨在促进土著和地方",
+   "tail": {
+    "reference": "p4#19",
+    "page": 4,
+    "text": "联合国教科文组织于 2002 年制定 的地方和土著知识体系计划,旨在 调动地方社区和土著人民的知识、 技能与实践,支持他们参与环境 决策,特别是在生物多样性和气 候变化相关领域。"
+   },
+   "head": {
+    "reference": "p4#20",
+    "page": 4,
+    "text": "该计划旨在促进土著和地方"
+   }
+  },
+  {
+   "boundary": "p4:c0->c2",
+   "kind": "column",
+   "pairing": "body_next",
+   "tail_page": 4,
+   "head_page": 4,
+   "tail_column": 0,
+   "head_column": 2,
+   "column_count": 5,
+   "eligible": true,
+   "reason": null,
+   "pair": "body->body",
+   "score": 0.25,
+   "linked": false,
+   "tail_ends_on_hyphen": false,
+   "tail_last_line": "候变化相关领域。",
+   "head_first_line": "土著人民积累 的技艺与智慧 被系统化地编 纂成复杂的知 识体系",
+   "tail": {
+    "reference": "p4#19",
+    "page": 4,
+    "text": "联合国教科文组织于 2002 年制定 的地方和土著知识体系计划,旨在 调动地方社区和土著人民的知识、 技能与实践,支持他们参与环境 决策,特别是在生物多样性和气 候变化相关领域。"
+   },
+   "head": {
+    "reference": "p4#17",
+    "page": 4,
+    "text": "土著人民积累 的技艺与智慧 被系统化地编 纂成复杂的知 识体系"
+   }
+  },
+  {
+   "boundary": "p4:c1->c2",
+   "kind": "column",
+   "pairing": "column_adjacent",
+   "tail_page": 4,
+   "head_page": 4,
+   "tail_column": 1,
+   "head_column": 2,
+   "column_count": 5,
+   "eligible": true,
+   "reason": null,
+   "pair": "body->body",
+   "score": 0.5,
+   "linked": false,
+   "tail_ends_on_hyphen": false,
+   "tail_last_line": "该计划旨在促进土著和地方",
+   "head_first_line": "土著人民积累 的技艺与智慧 被系统化地编 纂成复杂的知 识体系",
+   "tail": {
+    "reference": "p4#20",
+    "page": 4,
+    "text": "该计划旨在促进土著和地方"
+   },
+   "head": {
+    "reference": "p4#17",
+    "page": 4,
+    "text": "土著人民积累 的技艺与智慧 被系统化地编 纂成复杂的知 识体系"
+   }
+  },
+  {
+   "boundary": "p4:c1->c3",
+   "kind": "column",
+   "pairing": "body_next",
+   "tail_page": 4,
+   "head_page": 4,
+   "tail_column": 1,
+   "head_column": 3,
+   "column_count": 5,
+   "eligible": false,
+   "reason": "no_endpoint",
+   "pair": null,
+   "score": null,
+   "linked": false,
+   "tail_ends_on_hyphen": false,
+   "tail_last_line": "该计划旨在促进土著和地方",
+   "head_first_line": "生物多样性的守护者",
+   "tail": {
+    "reference": "p4#20",
+    "page": 4,
+    "text": "该计划旨在促进土著和地方"
+   },
+   "head": {
+    "reference": "p4#10",
+    "page": 4,
+    "text": "生物多样性的守护者"
+   }
+  },
+  {
+   "boundary": "p4:c2->c3",
+   "kind": "column",
+   "pairing": "column_adjacent",
+   "tail_page": 4,
+   "head_page": 4,
+   "tail_column": 2,
+   "head_column": 3,
+   "column_count": 5,
+   "eligible": false,
+   "reason": "no_endpoint",
+   "pair": null,
+   "score": null,
+   "linked": false,
+   "tail_ends_on_hyphen": false,
+   "tail_last_line": "识之间的平衡。",
+   "head_first_line": "生物多样性的守护者",
+   "tail": {
+    "reference": "p4#21",
+    "page": 4,
+    "text": "知识掌握者、自然和社会科学家、 资 源 管 理 者 和 决 策 者 进 行 对 话, 确保地方社区在治理领域发挥积 极且公平的作用;同时着力于加强 长者知识传承,并在正规科学体 系中寻求社区本土知识与全球知 识之间的平衡。"
+   },
+   "head": {
+    "reference": "p4#10",
+    "page": 4,
+    "text": "生物多样性的守护者"
+   }
+  },
+  {
+   "boundary": "p4:c2->c4",
+   "kind": "column",
+   "pairing": "body_next",
+   "tail_page": 4,
+   "head_page": 4,
+   "tail_column": 2,
+   "head_column": 4,
+   "column_count": 5,
+   "eligible": true,
+   "reason": null,
+   "pair": "body->body",
+   "score": 0.6,
+   "linked": false,
+   "tail_ends_on_hyphen": false,
+   "tail_last_line": "识之间的平衡。",
+   "head_first_line": "土 著人 民领 袖、联 合国 土著 问题 常设 论 坛第 二十 三届 会议 主席 欣杜· 奥马 鲁·易卜拉欣(Hindou Oumarou Ibrahim) 在 2024 年 4 月指出,“这些知识并非纸 上谈兵,而是历经数百年实践检验的智 慧结晶。”",
+   "tail": {
+    "reference": "p4#21",
+    "page": 4,
+    "text": "知识掌握者、自然和社会科学家、 资 源 管 理 者 和 决 策 者 进 行 对 话, 确保地方社区在治理领域发挥积 极且公平的作用;同时着力于加强 长者知识传承,并在正规科学体 系中寻求社区本土知识与全球知 识之间的平衡。"
+   },
+   "head": {
+    "reference": "p4#13",
+    "page": 4,
+    "text": "土 著人 民领 袖、联 合国 土著 问题 常设 论 坛第 二十 三届 会议 主席 欣杜· 奥马 鲁·易卜拉欣(Hindou Oumarou Ibrahim) 在 2024 年 4 月指出,“这些知识并非纸 上谈兵,而是历经数百年实践检验的智 慧结晶。”"
+   }
+  },
+  {
+   "boundary": "p4:c3->c4",
+   "kind": "column",
+   "pairing": "column_adjacent",
+   "tail_page": 4,
+   "head_page": 4,
+   "tail_column": 3,
+   "head_column": 4,
+   "column_count": 5,
+   "eligible": true,
+   "reason": null,
+   "pair": "body->body",
+   "score": 1.0,
+   "linked": true,
+   "tail_ends_on_hyphen": false,
+   "tail_last_line": "蒂·博西（Delsie Betty Bosi） 所言：“男性负责建造大部",
+   "head_first_line": "土 著人 民领 袖、联 合国 土著 问题 常设 论 坛第 二十 三届 会议 主席 欣杜· 奥马 鲁·易卜拉欣(Hindou Oumarou Ibrahim) 在 2024 年 4 月指出,“这些知识并非纸 上谈兵,而是历经数百年实践检验的智 慧结晶。”",
+   "tail": {
+    "reference": "p4#16",
+    "page": 4,
+    "text": "在所罗门群岛的陶马科岛,女性是陆地和海洋的守护 者。她们采摘并加工露兜树(这种小型树木广泛分布于波利 尼西亚、密克罗尼西亚等地区),编织出为航海提供动力的 船帆 —这项技艺已延续三千余年。正如岛民德尔西·贝 蒂·博西 (Delsie Betty Bosi) 所言:“男性负责建造大部"
+   },
+   "head": {
+    "reference": "p4#13",
+    "page": 4,
+    "text": "土 著人 民领 袖、联 合国 土著 问题 常设 论 坛第 二十 三届 会议 主席 欣杜· 奥马 鲁·易卜拉欣(Hindou Oumarou Ibrahim) 在 2024 年 4 月指出,“这些知识并非纸 上谈兵,而是历经数百年实践检验的智 慧结晶。”"
+   }
+  },
+  {
+   "boundary": "4->5",
+   "kind": "page",
+   "pairing": null,
+   "tail_page": 4,
+   "head_page": 5,
+   "tail_column": 3,
+   "head_column": 0,
+   "column_count": null,
+   "eligible": true,
+   "reason": null,
+   "pair": "title->title",
+   "score": 0.35000000000000003,
+   "linked": false,
+   "tail_ends_on_hyphen": false,
+   "tail_last_line": "生物多样性的守护者",
+   "head_first_line": "巴西:水之民族的 启示",
+   "tail": {
+    "reference": "p4#10",
+    "page": 4,
+    "text": "生物多样性的守护者"
+   },
+   "head": {
+    "reference": "p5#6",
+    "page": 5,
+    "text": "巴西:水之民族的 启示"
+   }
+  },
+  {
+   "boundary": "p5:c0->c1",
+   "kind": "column",
+   "pairing": "column_adjacent",
+   "tail_page": 5,
+   "head_page": 5,
+   "tail_column": 0,
+   "head_column": 1,
+   "column_count": 3,
+   "eligible": true,
+   "reason": null,
+   "pair": "body->body",
+   "score": 1.0,
+   "linked": true,
+   "tail_ends_on_hyphen": false,
+   "tail_last_line": "却发现空空如也。眼看生计没了着落，",
+   "head_first_line": "令人心碎,真不知道该怎么养活孩子。”",
+   "tail": {
+    "reference": "p5#5",
+    "page": 5,
+    "text": "在普鲁斯河上,暮光渐褪,热气仍在 水面萦绕,一条巨骨舌鱼浮出水面大 口吞吸着空气。这深沉、湿润、带着 古 老 气 息 的 声 响 唤 醒 了 这 片 土 地 几 近 断 绝 的 生 机。“ 大 自 然 在 向 我 们 求 救,”年轻渔民奇科·保马里 (Chico Paumari)回忆道,“我们赶到湖边时, 却发现空空如也。眼看生计没了着落,"
+   },
+   "head": {
+    "reference": "p5#3",
+    "page": 5,
+    "text": "令人心碎,真不知道该怎么养活孩子。”"
+   }
+  },
+  {
+   "boundary": "p5:c0->c2",
+   "kind": "column",
+   "pairing": "body_next",
+   "tail_page": 5,
+   "head_page": 5,
+   "tail_column": 0,
+   "head_column": 2,
+   "column_count": 3,
+   "eligible": true,
+   "reason": null,
+   "pair": "body->body",
+   "score": 1.0,
+   "linked": true,
+   "tail_ends_on_hyphen": false,
+   "tail_last_line": "却发现空空如也。眼看生计没了着落，",
+   "head_first_line": "民族。”2009 年,世界上最大的淡水 鱼 — 巨骨舌鱼只剩下 266 尾成鱼, 保马里人的生存遭到威胁。",
+   "tail": {
+    "reference": "p5#5",
+    "page": 5,
+    "text": "在普鲁斯河上,暮光渐褪,热气仍在 水面萦绕,一条巨骨舌鱼浮出水面大 口吞吸着空气。这深沉、湿润、带着 古 老 气 息 的 声 响 唤 醒 了 这 片 土 地 几 近 断 绝 的 生 机。“ 大 自 然 在 向 我 们 求 救,”年轻渔民奇科·保马里 (Chico Paumari)回忆道,“我们赶到湖边时, 却发现空空如也。眼看生计没了着落,"
+   },
+   "head": {
+    "reference": "p5#1",
+    "page": 5,
+    "text": "民族。”2009 年,世界上最大的淡水 鱼 — 巨骨舌鱼只剩下 266 尾成鱼, 保马里人的生存遭到威胁。"
+   }
+  },
+  {
+   "boundary": "p5:c1->c2",
+   "kind": "column",
+   "pairing": "column_adjacent",
+   "tail_page": 5,
+   "head_page": 5,
+   "tail_column": 1,
+   "head_column": 2,
+   "column_count": 3,
+   "eligible": true,
+   "reason": null,
+   "pair": "body->body",
+   "score": 1.0,
+   "linked": true,
+   "tail_ends_on_hyphen": false,
+   "tail_last_line": "水之民族，是唯一真正生活在水中的",
+   "head_first_line": "民族。”2009 年,世界上最大的淡水 鱼 — 巨骨舌鱼只剩下 266 尾成鱼, 保马里人的生存遭到威胁。",
+   "tail": {
+    "reference": "p5#4",
+    "page": 5,
+    "text": "黎 明 时 分, 空 气 里 弥 漫 着 铁 锈 般的潮湿气息,与炭火烟味交织在一 起。保马里人是一个约有两千人的土 著族群,世居在巴西西北部亚马孙州 的 广 袤 土 地 上。 他 们 对 自 己 的 定 义, 在 科 学 教 科 书 里 无 从 寻 觅:“ 我 们 是 水之民族,是唯一真正生活在水中的"
+   },
+   "head": {
+    "reference": "p5#1",
+    "page": 5,
+    "text": "民族。”2009 年,世界上最大的淡水 鱼 — 巨骨舌鱼只剩下 266 尾成鱼, 保马里人的生存遭到威胁。"
+   }
+  },
+  {
+   "boundary": "5->6",
+   "kind": "page",
+   "pairing": null,
+   "tail_page": 5,
+   "head_page": 6,
+   "tail_column": 2,
+   "head_column": 0,
+   "column_count": null,
+   "eligible": true,
+   "reason": null,
+   "pair": "body->body",
+   "score": 1.0,
+   "linked": true,
+   "tail_ends_on_hyphen": false,
+   "tail_last_line": "之时 —这一联盟由巴西最古老的原",
+   "head_first_line": "为纪念量子力学诞生 100 周年,联合国宣布将 2025 年定为国际量子科学技术年。 作为该倡议的牵头机构,联合国教科文组织于 2 月 4 日和 5 日在巴黎启动了这项为 期一年的活动,共吸引了1200 多名参与者,其中包括多位诺贝尔奖得主。",
+   "tail": {
+    "reference": "p5#2",
+    "page": 5,
+    "text": "长久以来,学术研究与传统知识 各行其道,互不交融。技术人员运用 科学方法,土著社区则依赖直觉感知。 转 折 点 出 现 在 双 方 决 定“ 同 舟 共 济 ” 之时 —这一联盟由巴西最古老的原"
+   },
+   "head": {
+    "reference": "p6#11",
+    "page": 6,
+    "text": "为纪念量子力学诞生 100 周年,联合国宣布将 2025 年定为国际量子科学技术年。 作为该倡议的牵头机构,联合国教科文组织于 2 月 4 日和 5 日在巴黎启动了这项为 期一年的活动,共吸引了1200 多名参与者,其中包括多位诺贝尔奖得主。"
+   }
+  },
+  {
+   "boundary": "p6:c0->c1",
+   "kind": "column",
+   "pairing": "column_adjacent",
+   "tail_page": 6,
+   "head_page": 6,
+   "tail_column": 0,
+   "head_column": 1,
+   "column_count": 3,
+   "eligible": false,
+   "reason": "no_endpoint",
+   "pair": null,
+   "score": null,
+   "linked": false,
+   "tail_ends_on_hyphen": false,
+   "tail_last_line": "未停息",
+   "head_first_line": "读取思想的传感器",
+   "tail": {
+    "reference": "p6#13",
+    "page": 6,
+    "text": "在量子领域 里,一切事 物时时刻刻 都在不断地 与其他事物 发生纠缠与 解纠缠,从 未停息"
+   },
+   "head": {
+    "reference": "p6#4",
+    "page": 6,
+    "text": "读取思想的传感器"
+   }
+  },
+  {
+   "boundary": "p6:c0->c2",
+   "kind": "column",
+   "pairing": "body_next",
+   "tail_page": 6,
+   "head_page": 6,
+   "tail_column": 0,
+   "head_column": 2,
+   "column_count": 3,
+   "eligible": true,
+   "reason": null,
+   "pair": "body->body",
+   "score": 0.5,
+   "linked": false,
+   "tail_ends_on_hyphen": false,
+   "tail_last_line": "未停息",
+   "head_first_line": "是红外光,它非常适合生物成像,能 够轻松穿透组织内部;另一种是可见 光,它无法穿透组织,但能在相机中 生成更清晰的图像。这项技术能为我 们提供红外光探测过的组织样本的相 关信息。纠缠相机能够为肿瘤科医生 提供指导,快速判断女性在乳腺癌手 术后是否应接受化疗。",
+   "tail": {
+    "reference": "p6#13",
+    "page": 6,
+    "text": "在量子领域 里,一切事 物时时刻刻 都在不断地 与其他事物 发生纠缠与 解纠缠,从 未停息"
+   },
+   "head": {
+    "reference": "p6#3",
+    "page": 6,
+    "text": "是红外光,它非常适合生物成像,能 够轻松穿透组织内部;另一种是可见 光,它无法穿透组织,但能在相机中 生成更清晰的图像。这项技术能为我 们提供红外光探测过的组织样本的相 关信息。纠缠相机能够为肿瘤科医生 提供指导,快速判断女性在乳腺癌手 术后是否应接受化疗。"
+   }
+  },
+  {
+   "boundary": "p6:c1->c2",
+   "kind": "column",
+   "pairing": "column_adjacent",
+   "tail_page": 6,
+   "head_page": 6,
+   "tail_column": 1,
+   "head_column": 2,
+   "column_count": 3,
+   "eligible": true,
+   "reason": null,
+   "pair": "body->body",
+   "score": 1.0,
+   "linked": true,
+   "tail_ends_on_hyphen": false,
+   "tail_last_line": "这种技术依赖两种光的量子纠缠：一种",
+   "head_first_line": "是红外光,它非常适合生物成像,能 够轻松穿透组织内部;另一种是可见 光,它无法穿透组织,但能在相机中 生成更清晰的图像。这项技术能为我 们提供红外光探测过的组织样本的相 关信息。纠缠相机能够为肿瘤科医生 提供指导,快速判断女性在乳腺癌手 术后是否应接受化疗。",
+   "tail": {
+    "reference": "p6#7",
+    "page": 6,
+    "text": "量子传感器在医学领域的另一项 令 人 振 奋 的 应 用 是“ 纠 缠 相 机 ”, 目 前正被用于乳腺癌组织样本成像。其 背后的科学原理听起来简直如同魔法。 这种技术依赖两种光的量子纠缠:一种"
+   },
+   "head": {
+    "reference": "p6#3",
+    "page": 6,
+    "text": "是红外光,它非常适合生物成像,能 够轻松穿透组织内部;另一种是可见 光,它无法穿透组织,但能在相机中 生成更清晰的图像。这项技术能为我 们提供红外光探测过的组织样本的相 关信息。纠缠相机能够为肿瘤科医生 提供指导,快速判断女性在乳腺癌手 术后是否应接受化疗。"
+   }
+  },
+  {
+   "boundary": "6->7",
+   "kind": "page",
+   "pairing": null,
+   "tail_page": 6,
+   "head_page": 7,
+   "tail_column": 1,
+   "head_column": 0,
+   "column_count": null,
+   "eligible": true,
+   "reason": null,
+   "pair": "title->title",
+   "score": 0.35000000000000003,
+   "linked": false,
+   "tail_ends_on_hyphen": false,
+   "tail_last_line": "读取思想的传感器",
+   "head_first_line": "当生物剽窃滋生 蔓延时",
+   "tail": {
+    "reference": "p6#4",
+    "page": 6,
+    "text": "读取思想的传感器"
+   },
+   "head": {
+    "reference": "p7#13",
+    "page": 7,
+    "text": "当生物剽窃滋生 蔓延时"
+   }
+  },
+  {
+   "boundary": "p7:c0->c1",
+   "kind": "column",
+   "pairing": "column_adjacent",
+   "tail_page": 7,
+   "head_page": 7,
+   "tail_column": 0,
+   "head_column": 1,
+   "column_count": 3,
+   "eligible": true,
+   "reason": null,
+   "pair": "body->body",
+   "score": 1.0,
+   "linked": true,
+   "tail_ends_on_hyphen": false,
+   "tail_last_line": "土著知识在科学调研、产品开发或商",
+   "head_first_line": "业化过程中未能获得充分认可,且知 识使用者未与祖传知识持有者合理分 享惠益时,这种行为便可被称为“生 物剽窃”。",
+   "tail": {
+    "reference": "p7#12",
+    "page": 7,
+    "text": "然 而, 生 物 探 索 也 因“ 搭 便 车 ” 受到了批评,被指责无偿利用了土著 人民和其他当地族群的知识成果。当 土著知识在科学调研、产品开发或商"
+   },
+   "head": {
+    "reference": "p7#5",
+    "page": 7,
+    "text": "业化过程中未能获得充分认可,且知 识使用者未与祖传知识持有者合理分 享惠益时,这种行为便可被称为“生 物剽窃”。"
+   }
+  },
+  {
+   "boundary": "p7:c0->c2",
+   "kind": "column",
+   "pairing": "body_next",
+   "tail_page": 7,
+   "head_page": 7,
+   "tail_column": 0,
+   "head_column": 2,
+   "column_count": 3,
+   "eligible": true,
+   "reason": null,
+   "pair": "body->body",
+   "score": 1.0,
+   "linked": true,
+   "tail_ends_on_hyphen": false,
+   "tail_last_line": "土著知识在科学调研、产品开发或商",
+   "head_first_line": "spinosa L.) 坚果提取的油脂则是又 一例证。如今,阿甘油被广泛应用于 全球各类护发和护肤产品中,其用途 本质上与阿马齐格 (又称柏柏尔) 妇 女 沿用了 一 千多 年的 用 途如出 一 辙。 虽然部分持有相关专利并销售阿甘油 相关产品的国际巨头已与阿马齐格妇 女合作社签订了惠益分享协议,但其 他企业似乎从未与",
+   "tail": {
+    "reference": "p7#12",
+    "page": 7,
+    "text": "然 而, 生 物 探 索 也 因“ 搭 便 车 ” 受到了批评,被指责无偿利用了土著 人民和其他当地族群的知识成果。当 土著知识在科学调研、产品开发或商"
+   },
+   "head": {
+    "reference": "p7#3",
+    "page": 7,
+    "text": "spinosa L.) 坚果提取的油脂则是又 一例证。如今,阿甘油被广泛应用于 全球各类护发和护肤产品中,其用途 本质上与阿马齐格 (又称柏柏尔) 妇 女 沿用了 一 千多 年的 用 途如出 一 辙。 虽然部分持有相关专利并销售阿甘油 相关产品的国际巨头已与阿马齐格妇 女合作社签订了惠益分享协议,但其 他企业似乎从未与阿马齐格社群共享 过相关惠益。"
+   }
+  },
+  {
+   "boundary": "p7:c1->c2",
+   "kind": "column",
+   "pairing": "column_adjacent",
+   "tail_page": 7,
+   "head_page": 7,
+   "tail_column": 1,
+   "head_column": 2,
+   "column_count": 3,
+   "eligible": false,
+   "reason": "no_endpoint",
+   "pair": null,
+   "score": null,
+   "linked": false,
+   "tail_ends_on_hyphen": false,
+   "tail_last_line": "知识持有者的明确同意",
+   "head_first_line": "spinosa L.) 坚果提取的油脂则是又 一例证。如今,阿甘油被广泛应用于 全球各类护发和护肤产品中,其用途 本质上与阿马齐格 (又称柏柏尔) 妇 女 沿用了 一 千多 年的 用 途如出 一 辙。 虽然部分持有相关专利并销售阿甘油 相关产品的国际巨头已与阿马齐格妇 女合作社签订了惠益分享协议,但其 他企业似乎从未与",
+   "tail": {
+    "reference": "p7#15",
+    "page": 7,
+    "text": "如 今, 许 多 国 家 要 求, 土 著 知 识 的 潜 在使 用者 必 须 首 先获 得 知识持有者的明确同意"
+   },
+   "head": {
+    "reference": "p7#3",
+    "page": 7,
+    "text": "spinosa L.) 坚果提取的油脂则是又 一例证。如今,阿甘油被广泛应用于 全球各类护发和护肤产品中,其用途 本质上与阿马齐格 (又称柏柏尔) 妇 女 沿用了 一 千多 年的 用 途如出 一 辙。 虽然部分持有相关专利并销售阿甘油 相关产品的国际巨头已与阿马齐格妇 女合作社签订了惠益分享协议,但其 他企业似乎从未与阿马齐格社群共享 过相关惠益。"
+   }
+  },
+  {
+   "boundary": "7->8",
+   "kind": "page",
+   "pairing": null,
+   "tail_page": 7,
+   "head_page": 8,
+   "tail_column": 2,
+   "head_column": 0,
+   "column_count": null,
+   "eligible": true,
+   "reason": null,
+   "pair": "body->body",
+   "score": 1.0,
+   "linked": true,
+   "tail_ends_on_hyphen": false,
+   "tail_last_line": "研究。双方签订的合作研究协议中包",
+   "head_first_line": "含惠益分享条款。一家衍生企业目前 正利用从三齿稃中提取的纤维素纳米 纤维开发医用凝胶,同时,该草本植 物制成的复合材料也已获得专利。根 据该协议,已实现的惠益分享包括为 第一民族青年提供就业机会,并为澳 大利亚土著群体提供培训与教育相关 的资金支持。",
+   "tail": {
+    "reference": "p7#4",
+    "page": 7,
+    "text": "并非所有与遗传 资源相关的土 著知识商业化利用行为都构成生物剽 窃;部分项目实现了互利共赢。以澳大 利亚的印贾兰吉 - 迪达努 (Indjalan- dji-Dhidhanu) 部族为例,该部族与 昆士兰大学的研究人员合作,根据其 关于三齿稃 (一种多年生丛生草本植 物,传统用途广泛) 的土著知识开展 研究。双方签订的合作研究协议中包"
+   },
+   "head": {
+    "reference": "p8#8",
+    "page": 8,
+    "text": "含惠益分享条款。一家衍生企业目前 正利用从三齿稃中提取的纤维素纳米 纤维开发医用凝胶,同时,该草本植 物制成的复合材料也已获得专利。根 据该协议,已实现的惠益分享包括为 第一民族青年提供就业机会,并为澳 大利亚土著群体提供培训与教育相关 的资金支持。"
+   }
+  },
+  {
+   "boundary": "p8:c0->c1",
+   "kind": "column",
+   "pairing": "column_adjacent",
+   "tail_page": 8,
+   "head_page": 8,
+   "tail_column": 0,
+   "head_column": 1,
+   "column_count": 4,
+   "eligible": true,
+   "reason": null,
+   "pair": "body->body",
+   "score": 1.0,
+   "linked": true,
+   "tail_ends_on_hyphen": false,
+   "tail_last_line": "遗产”，这意味着任何人都可获取并",
+   "head_first_line": "使用这些资源,无需获得资源提供者 的许可,也不必与其分享惠益。然而, 自 20 世纪中叶遗传学取得新进展以 来,基于生物多样性或由其衍生的相 关产品开始被视为“遗传资源”。这恰 好与生物多样性价值评估方式的革新 同步 —其价值不再仅取决于实际用 途,更延伸至潜在应用。",
+   "tail": {
+    "reference": "p8#12",
+    "page": 8,
+    "text": "在人类历史的大部分时期,国际 法都将这类生物资源视为“人类共有 遗产”,这意味着任何人都可获取并"
+   },
+   "head": {
+    "reference": "p8#4",
+    "page": 8,
+    "text": "使用这些资源,无需获得资源提供者 的许可,也不必与其分享惠益。然而, 自 20 世纪中叶遗传学取得新进展以 来,基于生物多样性或由其衍生的相 关产品开始被视为“遗传资源”。这恰 好与生物多样性价值评估方式的革新 同步 —其价值不再仅取决于实际用 途,更延伸至潜在应用。"
+   }
+  },
+  {
+   "boundary": "p8:c0->c2",
+   "kind": "column",
+   "pairing": "body_next",
+   "tail_page": 8,
+   "head_page": 8,
+   "tail_column": 0,
+   "head_column": 2,
+   "column_count": 4,
+   "eligible": true,
+   "reason": null,
+   "pair": "body->body",
+   "score": 1.0,
+   "linked": true,
+   "tail_ends_on_hyphen": false,
+   "tail_last_line": "遗产”，这意味着任何人都可获取并",
+   "head_first_line": "必 须 首 先 获 得 知 识 持 有 者 的 明 确 同 意,并签署详细载明惠益分享方式的 协议。",
+   "tail": {
+    "reference": "p8#12",
+    "page": 8,
+    "text": "在人类历史的大部分时期,国际 法都将这类生物资源视为“人类共有 遗产”,这意味着任何人都可获取并"
+   },
+   "head": {
+    "reference": "p8#1",
+    "page": 8,
+    "text": "必 须 首 先 获 得 知 识 持 有 者 的 明 确 同 意,并签署详细载明惠益分享方式的 协议。"
+   }
+  },
+  {
+   "boundary": "p8:c1->c2",
+   "kind": "column",
+   "pairing": "column_adjacent",
+   "tail_page": 8,
+   "head_page": 8,
+   "tail_column": 1,
+   "head_column": 2,
+   "column_count": 4,
+   "eligible": true,
+   "reason": null,
+   "pair": "body->body",
+   "score": 1.0,
+   "linked": true,
+   "tail_ends_on_hyphen": false,
+   "tail_last_line": "多国家要求，土著知识的潜在使用者",
+   "head_first_line": "必 须 首 先 获 得 知 识 持 有 者 的 明 确 同 意,并签署详细载明惠益分享方式的 协议。",
+   "tail": {
+    "reference": "p8#7",
+    "page": 8,
+    "text": "历经 30 年构建的强化版国际规则与 协议框架已带来积极变化。如今,许 多国家要求,土著知识的潜在使用者"
+   },
+   "head": {
+    "reference": "p8#1",
+    "page": 8,
+    "text": "必 须 首 先 获 得 知 识 持 有 者 的 明 确 同 意,并签署详细载明惠益分享方式的 协议。"
+   }
+  },
+  {
+   "boundary": "p8:c1->c3",
+   "kind": "column",
+   "pairing": "body_next",
+   "tail_page": 8,
+   "head_page": 8,
+   "tail_column": 1,
+   "head_column": 3,
+   "column_count": 4,
+   "eligible": true,
+   "reason": null,
+   "pair": "body->body",
+   "score": 0.65,
+   "linked": false,
+   "tail_ends_on_hyphen": false,
+   "tail_last_line": "多国家要求，土著知识的潜在使用者",
+   "head_first_line": "一 千 多 年 来, 阿马齐格妇女 一直沿用阿甘 油,如今这一 产品已在全球 实现商业化",
+   "tail": {
+    "reference": "p8#7",
+    "page": 8,
+    "text": "历经 30 年构建的强化版国际规则与 协议框架已带来积极变化。如今,许 多国家要求,土著知识的潜在使用者"
+   },
+   "head": {
+    "reference": "p8#13",
+    "page": 8,
+    "text": "一 千 多 年 来, 阿马齐格妇女 一直沿用阿甘 油,如今这一 产品已在全球 实现商业化"
+   }
+  },
+  {
+   "boundary": "p8:c2->c3",
+   "kind": "column",
+   "pairing": "column_adjacent",
+   "tail_page": 8,
+   "head_page": 8,
+   "tail_column": 2,
+   "head_column": 3,
+   "column_count": 4,
+   "eligible": true,
+   "reason": null,
+   "pair": "body->body",
+   "score": 0.25,
+   "linked": false,
+   "tail_ends_on_hyphen": false,
+   "tail_last_line": "仍将是令人遗憾的现实。",
+   "head_first_line": "一 千 多 年 来, 阿马齐格妇女 一直沿用阿甘 油,如今这一 产品已在全球 实现商业化",
+   "tail": {
+    "reference": "p8#3",
+    "page": 8,
+    "text": "然 而, 尽 管 已 采 取 了 上 述 措 施, 但由于制度体系中仍存在可利用的漏 洞,生物剽窃现象依然不断发生。例 如,通过在尚未出台限制性立法的国 家获取遗传资源或传统知识,或通过 利用公约生效前留存的历史收藏获取 遗传资源,均可规避规则约束。此外, 尽 管专利 滥 用问 题已 受 到广泛 关 注, 植物育种者权利、商标等其他形式的 知识产权同样可能促成对土著知识的 不当侵占。若不进行重大变革,这些 漏洞会一直存在,这意味着生物剽窃 仍将是令人遗憾的现实。"
+   },
+   "head": {
+    "reference": "p8#13",
+    "page": 8,
+    "text": "一 千 多 年 来, 阿马齐格妇女 一直沿用阿甘 油,如今这一 产品已在全球 实现商业化"
+   }
+  }
+ ],
+ "edges": [
+  {
+   "boundary": "p4:c3->c4",
+   "kind": "column",
+   "pairing": "column_adjacent",
+   "score": 1.0
+  },
+  {
+   "boundary": "p5:c0->c1",
+   "kind": "column",
+   "pairing": "column_adjacent",
+   "score": 1.0
+  },
+  {
+   "boundary": "p5:c1->c2",
+   "kind": "column",
+   "pairing": "column_adjacent",
+   "score": 1.0
+  },
+  {
+   "boundary": "5->6",
+   "kind": "page",
+   "pairing": null,
+   "score": 1.0
+  },
+  {
+   "boundary": "p6:c1->c2",
+   "kind": "column",
+   "pairing": "column_adjacent",
+   "score": 1.0
+  },
+  {
+   "boundary": "p7:c0->c1",
+   "kind": "column",
+   "pairing": "column_adjacent",
+   "score": 1.0
+  },
+  {
+   "boundary": "7->8",
+   "kind": "page",
+   "pairing": null,
+   "score": 1.0
+  },
+  {
+   "boundary": "p8:c0->c1",
+   "kind": "column",
+   "pairing": "column_adjacent",
+   "score": 1.0
+  },
+  {
+   "boundary": "p8:c1->c2",
+   "kind": "column",
+   "pairing": "column_adjacent",
+   "score": 1.0
+  }
+ ],
+ "dropped_edges": [
+  {
+   "boundary": "p5:c0->c2",
+   "dropped_reason": "tail_already_handed_on",
+   "kind": "column",
+   "pairing": "body_next",
+   "score": 1.0
+  },
+  {
+   "boundary": "p7:c0->c2",
+   "dropped_reason": "tail_already_handed_on",
+   "kind": "column",
+   "pairing": "body_next",
+   "score": 1.0
+  },
+  {
+   "boundary": "p8:c0->c2",
+   "dropped_reason": "tail_already_handed_on",
+   "kind": "column",
+   "pairing": "body_next",
+   "score": 1.0
+  }
+ ],
+ "chains": [
+  {
+   "length": 2,
+   "pages": [
+    4
+   ],
+   "members": [
+    {
+     "chain_index": 0,
+     "reference_at_build": "p4#16",
+     "page": 4,
+     "source": "在所罗门群岛的陶马科岛,女性是陆地和海洋的守护 者。她们采摘并加工露兜树(这种小型树木广泛分布于波利 尼西亚、密克罗尼西亚等地区),编织出为航海提供动力的 船帆 —这项技艺已延续三千余年。正如岛民德尔西·贝 蒂·博西 (Delsie Betty Bosi) 所言:“男性负责建造大部",
+     "box_at_build": [
+      306.35,
+      290.47,
+      537.95,
+      359.96
+     ],
+     "laid_out": {
+      "reference": "p4#16",
+      "box": [
+       306.35,
+       290.47,
+       537.95,
+       359.96
+      ],
+      "text": "On Taumako Island in the Solomon Islands, women are the guardians of the land and sea. They harvest and process the pandanus tree (a small tree widely distributed in Polynesia, Micronesia, and other regions) to weave sails that power navigation—a skill that has been passed down for over three thousand years. As islander Delsie "
+     }
+    },
+    {
+     "chain_index": 1,
+     "reference_at_build": "p4#13",
+     "page": 4,
+     "source": "土 著人 民领 袖、联 合国 土著 问题 常设 论 坛第 二十 三届 会议 主席 欣杜· 奥马 鲁·易卜拉欣(Hindou Oumarou Ibrahim) 在 2024 年 4 月指出,“这些知识并非纸 上谈兵,而是历经数百年实践检验的智 慧结晶。”",
+     "box_at_build": [
+      381.97,
+      543.97,
+      540.45,
+      629.1
+     ],
+     "laid_out": {
+      "reference": "p4#13",
+      "box": [
+       381.97,
+       543.97,
+       540.45,
+       629.1
+      ],
+      "text": "Betty Bosi states, “Men are responsible for building most of the indigenous leaders, and Hindou Oumarou Ibrahim, Chair of the 23rd Session of the United Nations Permanent Forum on Indigenous Issues, pointed out in April 2024, 'This knowledge is not theoretical but the crystallization of wisdom tested through centuries of practice.'”"
+     }
+    }
+   ],
+   "joint_translation": "On Taumako Island in the Solomon Islands, women are the guardians of the land and sea. They harvest and process the pandanus tree (a small tree widely distributed in Polynesia, Micronesia, and other regions) to weave sails that power navigation—a skill that has been passed down for over three thousand years. As islander Delsie Betty Bosi states, “Men are responsible for building most of the indigenous leaders, and Hindou Oumarou Ibrahim, Chair of the 23rd Session of the United Nations Permanent Forum on Indigenous Issues, pointed out in April 2024, 'This knowledge is not theoretical but the crystallization of wisdom tested through centuries of practice.'”",
+   "joint_segments": [
+    {
+     "chars": 329,
+     "end": 329,
+     "index": 0,
+     "sentence_end": 2,
+     "sentence_start": 0,
+     "start": 0
+    },
+    {
+     "chars": 334,
+     "end": 663,
+     "index": 1,
+     "sentence_end": 3,
+     "sentence_start": 2,
+     "start": 329
+    }
+   ]
+  },
+  {
+   "length": 2,
+   "pages": [
+    5
+   ],
+   "members": [
+    {
+     "chain_index": 0,
+     "reference_at_build": "p5#5",
+     "page": 5,
+     "source": "在普鲁斯河上,暮光渐褪,热气仍在 水面萦绕,一条巨骨舌鱼浮出水面大 口吞吸着空气。这深沉、湿润、带着 古 老 气 息 的 声 响 唤 醒 了 这 片 土 地 几 近 断 绝 的 生 机。“ 大 自 然 在 向 我 们 求 救,”年轻渔民奇科·保马里 (Chico Paumari)回忆道,“我们赶到湖边时, 却发现空空如也。眼看生计没了着落,",
+     "box_at_build": [
+      56.86,
+      418.82,
+      206.75,
+      537.83
+     ],
+     "laid_out": {
+      "reference": "p5#5",
+      "box": [
+       56.86,
+       418.82,
+       206.75,
+       537.83
+      ],
+      "text": "As twilight fades over the Purus River, the heat still lingers over the water's surface, and an Arapaima emerges, gulping air with its large mouth. This deep, moist, ancient sound awakens the nearly extinct vitality of this land. \"Nature is calling for our help,\" recalls the young fisherman Chico Paumari, \"When we rushed to the lake, we found it empty. It's heartbreaking to see our livelihood vanish, and I "
+     }
+    },
+    {
+     "chain_index": 1,
+     "reference_at_build": "p5#3",
+     "page": 5,
+     "source": "令人心碎,真不知道该怎么养活孩子。”",
+     "box_at_build": [
+      222.65,
+      529.51,
+      371.76,
+      537.95
+     ],
+     "laid_out": {
+      "reference": "p5#3",
+      "box": [
+       222.65,
+       529.51,
+       371.76,
+       537.95
+      ],
+      "text": "truly don't know how to feed the children.\""
+     }
+    }
+   ],
+   "joint_translation": "As twilight fades over the Purus River, the heat still lingers over the water's surface, and an Arapaima emerges, gulping air with its large mouth. This deep, moist, ancient sound awakens the nearly extinct vitality of this land. \"Nature is calling for our help,\" recalls the young fisherman Chico Paumari, \"When we rushed to the lake, we found it empty. It's heartbreaking to see our livelihood vanish, and I truly don't know how to feed the children.\"",
+   "joint_segments": [
+    {
+     "chars": 410,
+     "end": 410,
+     "index": 0,
+     "sentence_end": 3,
+     "sentence_start": 0,
+     "start": 0
+    },
+    {
+     "chars": 43,
+     "end": 453,
+     "index": 1,
+     "sentence_end": 4,
+     "sentence_start": 3,
+     "start": 410
+    }
+   ]
+  },
+  {
+   "length": 2,
+   "pages": [
+    5
+   ],
+   "members": [
+    {
+     "chain_index": 0,
+     "reference_at_build": "p5#4",
+     "page": 5,
+     "source": "黎 明 时 分, 空 气 里 弥 漫 着 铁 锈 般的潮湿气息,与炭火烟味交织在一 起。保马里人是一个约有两千人的土 著族群,世居在巴西西北部亚马孙州 的 广 袤 土 地 上。 他 们 对 自 己 的 定 义, 在 科 学 教 科 书 里 无 从 寻 觅:“ 我 们 是 水之民族,是唯一真正生活在水中的",
+     "box_at_build": [
+      222.69,
+      418.81,
+      372.53,
+      518.72
+     ],
+     "laid_out": {
+      "reference": "p5#4",
+      "box": [
+       222.69,
+       418.81,
+       372.53,
+       518.72
+      ],
+      "text": "At dawn, the air is filled with a rusty humidity, mingling with the scent of charcoal smoke. The Paumari people are an indigenous group of about two thousand, residing on the vast lands of Amazonas in northwestern Brazil. Their self-definition cannot be found in scientific textbooks: \"We "
+     }
+    },
+    {
+     "chain_index": 1,
+     "reference_at_build": "p5#1",
+     "page": 5,
+     "source": "民族。”2009 年,世界上最大的淡水 鱼 — 巨骨舌鱼只剩下 266 尾成鱼, 保马里人的生存遭到威胁。",
+     "box_at_build": [
+      388.55,
+      499.64,
+      538.39,
+      539.39
+     ],
+     "laid_out": {
+      "reference": "p5#1",
+      "box": [
+       388.55,
+       499.64,
+       538.39,
+       539.39
+      ],
+      "text": "are the Water People, the only people truly living in the water.\" In 2009, the world's largest freshwater fish, the Arapaima, was reduced to only 266 adult fish, threatening the survival of the Paumari people."
+     }
+    }
+   ],
+   "joint_translation": "At dawn, the air is filled with a rusty humidity, mingling with the scent of charcoal smoke. The Paumari people are an indigenous group of about two thousand, residing on the vast lands of Amazonas in northwestern Brazil. Their self-definition cannot be found in scientific textbooks: \"We are the Water People, the only people truly living in the water.\" In 2009, the world's largest freshwater fish, the Arapaima, was reduced to only 266 adult fish, threatening the survival of the Paumari people.",
+   "joint_segments": [
+    {
+     "chars": 289,
+     "end": 289,
+     "index": 0,
+     "sentence_end": 2,
+     "sentence_start": 0,
+     "start": 0
+    },
+    {
+     "chars": 209,
+     "end": 498,
+     "index": 1,
+     "sentence_end": 4,
+     "sentence_start": 2,
+     "start": 289
+    }
+   ]
+  },
+  {
+   "length": 2,
+   "pages": [
+    5,
+    6
+   ],
+   "members": [
+    {
+     "chain_index": 0,
+     "reference_at_build": "p5#2",
+     "page": 5,
+     "source": "长久以来,学术研究与传统知识 各行其道,互不交融。技术人员运用 科学方法,土著社区则依赖直觉感知。 转 折 点 出 现 在 双 方 决 定“ 同 舟 共 济 ” 之时 —这一联盟由巴西最古老的原",
+     "box_at_build": [
+      388.51,
+      418.93,
+      538.34,
+      487.17
+     ],
+     "laid_out": {
+      "reference": "p5#2",
+      "box": [
+       388.51,
+       418.93,
+       538.34,
+       487.17
+      ],
+      "text": "For a long time, academic research and traditional knowledge have operated independently, without integration. Technicians employ scientific methods, while indigenous communities "
+     }
+    },
+    {
+     "chain_index": 1,
+     "reference_at_build": "p6#11",
+     "page": 6,
+     "source": "为纪念量子力学诞生 100 周年,联合国宣布将 2025 年定为国际量子科学技术年。 作为该倡议的牵头机构,联合国教科文组织于 2 月 4 日和 5 日在巴黎启动了这项为 期一年的活动,共吸引了1200 多名参与者,其中包括多位诺贝尔奖得主。",
+     "box_at_build": [
+      48.39,
+      675.12,
+      373.55,
+      723.02
+     ],
+     "laid_out": {
+      "reference": "p6#11",
+      "box": [
+       48.39,
+       675.12,
+       373.55,
+       723.02
+      ],
+      "text": "rely on intuitive perception. A turning point emerged when both sides decided to 'join forces'—this alliance was initiated by Brazil's oldest indigenous community. To commemorate the 100th anniversary of the birth of quantum mechanics, the United Nations declared 2025 as the International Year of Quantum Science and Technology. As the leading organization for this initiative, UNESCO launched the year-long event on February 4th and 5th in Paris, attracting over 1,200 participants, including several Nobel Prize laureates."
+     }
+    }
+   ],
+   "joint_translation": "For a long time, academic research and traditional knowledge have operated independently, without integration. Technicians employ scientific methods, while indigenous communities rely on intuitive perception. A turning point emerged when both sides decided to 'join forces'—this alliance was initiated by Brazil's oldest indigenous community. To commemorate the 100th anniversary of the birth of quantum mechanics, the United Nations declared 2025 as the International Year of Quantum Science and Technology. As the leading organization for this initiative, UNESCO launched the year-long event on February 4th and 5th in Paris, attracting over 1,200 participants, including several Nobel Prize laureates.",
+   "joint_segments": [
+    {
+     "chars": 179,
+     "end": 179,
+     "index": 0,
+     "sentence_end": 1,
+     "sentence_start": 0,
+     "start": 0
+    },
+    {
+     "chars": 525,
+     "end": 704,
+     "index": 1,
+     "sentence_end": 5,
+     "sentence_start": 1,
+     "start": 179
+    }
+   ]
+  },
+  {
+   "length": 2,
+   "pages": [
+    6
+   ],
+   "members": [
+    {
+     "chain_index": 0,
+     "reference_at_build": "p6#7",
+     "page": 6,
+     "source": "量子传感器在医学领域的另一项 令 人 振 奋 的 应 用 是“ 纠 缠 相 机 ”, 目 前正被用于乳腺癌组织样本成像。其 背后的科学原理听起来简直如同魔法。 这种技术依赖两种光的量子纠缠:一种",
+     "box_at_build": [
+      222.66,
+      65.42,
+      372.5,
+      140.02
+     ],
+     "laid_out": {
+      "reference": "p6#7",
+      "box": [
+       222.66,
+       65.42,
+       372.5,
+       140.02
+      ],
+      "text": "Another exciting application of quantum sensing in the medical field is the 'entangled camera,' which is currently being used for imaging breast cancer tissue samples. The scientific principle behind it sounds almost "
+     }
+    },
+    {
+     "chain_index": 1,
+     "reference_at_build": "p6#3",
+     "page": 6,
+     "source": "是红外光,它非常适合生物成像,能 够轻松穿透组织内部;另一种是可见 光,它无法穿透组织,但能在相机中 生成更清晰的图像。这项技术能为我 们提供红外光探测过的组织样本的相 关信息。纠缠相机能够为肿瘤科医生 提供指导,快速判断女性在乳腺癌手 术后是否应接受化疗。",
+     "box_at_build": [
+      388.55,
+      65.4,
+      538.36,
+      198.43
+     ],
+     "laid_out": {
+      "reference": "p6#3",
+      "box": [
+       388.55,
+       65.4,
+       538.36,
+       198.43
+      ],
+      "text": "magical. This technology relies on the quantum entanglement of two types of light: one is infrared light, which is very suitable for biological imaging and can easily penetrate tissue; the other is visible light, which cannot penetrate tissue but can produce clearer images in the camera. This technology can provide us with relevant information about tissue samples detected by infrared light. The entangled camera can guide oncologists in quickly determining whether women should undergo chemotherapy after breast cancer surgery."
+     }
+    }
+   ],
+   "joint_translation": "Another exciting application of quantum sensing in the medical field is the 'entangled camera,' which is currently being used for imaging breast cancer tissue samples. The scientific principle behind it sounds almost magical. This technology relies on the quantum entanglement of two types of light: one is infrared light, which is very suitable for biological imaging and can easily penetrate tissue; the other is visible light, which cannot penetrate tissue but can produce clearer images in the camera. This technology can provide us with relevant information about tissue samples detected by infrared light. The entangled camera can guide oncologists in quickly determining whether women should undergo chemotherapy after breast cancer surgery.",
+   "joint_segments": [
+    {
+     "chars": 217,
+     "end": 217,
+     "index": 0,
+     "sentence_end": 1,
+     "sentence_start": 0,
+     "start": 0
+    },
+    {
+     "chars": 531,
+     "end": 748,
+     "index": 1,
+     "sentence_end": 5,
+     "sentence_start": 1,
+     "start": 217
+    }
+   ]
+  },
+  {
+   "length": 2,
+   "pages": [
+    7
+   ],
+   "members": [
+    {
+     "chain_index": 0,
+     "reference_at_build": "p7#12",
+     "page": 7,
+     "source": "然 而, 生 物 探 索 也 因“ 搭 便 车 ” 受到了批评,被指责无偿利用了土著 人民和其他当地族群的知识成果。当 土著知识在科学调研、产品开发或商",
+     "box_at_build": [
+      56.97,
+      65.36,
+      206.65,
+      121.2
+     ],
+     "laid_out": {
+      "reference": "p7#12",
+      "box": [
+       56.97,
+       65.36,
+       206.65,
+       121.2
+      ],
+      "text": "However, bioprospecting has been criticized for \"free-riding,\" accused of exploiting the knowledge achievements of indigenous peoples and other "
+     }
+    },
+    {
+     "chain_index": 1,
+     "reference_at_build": "p7#5",
+     "page": 7,
+     "source": "业化过程中未能获得充分认可,且知 识使用者未与祖传知识持有者合理分 享惠益时,这种行为便可被称为“生 物剽窃”。",
+     "box_at_build": [
+      222.69,
+      450.97,
+      372.52,
+      505.26
+     ],
+     "laid_out": {
+      "reference": "p7#5",
+      "box": [
+       222.69,
+       450.97,
+       372.52,
+       505.26
+      ],
+      "text": "local communities without compensation. When indigenous knowledge is not adequately recognized in scientific research, product development, or commercialization, and the users of this knowledge do not reasonably share benefits with the holders of traditional knowledge, this behavior can be termed \"biopiracy.\""
+     }
+    }
+   ],
+   "joint_translation": "However, bioprospecting has been criticized for \"free-riding,\" accused of exploiting the knowledge achievements of indigenous peoples and other local communities without compensation. When indigenous knowledge is not adequately recognized in scientific research, product development, or commercialization, and the users of this knowledge do not reasonably share benefits with the holders of traditional knowledge, this behavior can be termed \"biopiracy.\"",
+   "joint_segments": [
+    {
+     "chars": 144,
+     "end": 144,
+     "index": 0,
+     "sentence_end": 0,
+     "sentence_start": 0,
+     "start": 0
+    },
+    {
+     "chars": 310,
+     "end": 454,
+     "index": 1,
+     "sentence_end": 2,
+     "sentence_start": 0,
+     "start": 144
+    }
+   ]
+  },
+  {
+   "length": 2,
+   "pages": [
+    7,
+    8
+   ],
+   "members": [
+    {
+     "chain_index": 0,
+     "reference_at_build": "p7#4",
+     "page": 7,
+     "source": "并非所有与遗传 资源相关的土 著知识商业化利用行为都构成生物剽 窃;部分项目实现了互利共赢。以澳大 利亚的印贾兰吉 - 迪达努 (Indjalan- dji-Dhidhanu) 部族为例,该部族与 昆士兰大学的研究人员合作,根据其 关于三齿稃 (一种多年生丛生草本植 物,传统用途广泛) 的土著知识开展 研究。双方签订的合作研究协议中包",
+     "box_at_build": [
+      388.52,
+      209.07,
+      538.35,
+      344.32
+     ],
+     "laid_out": {
+      "reference": "p7#4",
+      "box": [
+       388.52,
+       209.07,
+       538.35,
+       344.32
+      ],
+      "text": "Not all commercial uses of indigenous knowledge related to genetic resources constitute biopiracy; some projects achieve mutual benefits. Take the Indjalangji-Dhidhanu tribe in Australia as an example. This tribe collaborated with researchers from the University of Queensland to conduct research based on their indigenous knowledge about three-awned grass (a perennial tufted herb with a wide "
+     }
+    },
+    {
+     "chain_index": 1,
+     "reference_at_build": "p8#8",
+     "page": 8,
+     "source": "含惠益分享条款。一家衍生企业目前 正利用从三齿稃中提取的纤维素纳米 纤维开发医用凝胶,同时,该草本植 物制成的复合材料也已获得专利。根 据该协议,已实现的惠益分享包括为 第一民族青年提供就业机会,并为澳 大利亚土著群体提供培训与教育相关 的资金支持。",
+     "box_at_build": [
+      56.86,
+      390.46,
+      206.7,
+      505.28
+     ],
+     "laid_out": {
+      "reference": "p8#8",
+      "box": [
+       56.86,
+       390.46,
+       206.7,
+       505.28
+      ],
+      "text": "range of traditional uses). The cooperative research agreement signed by both parties includes benefit-sharing clauses. A spin-off company is currently using cellulose nanofibers extracted from three-awned grass to develop medical gel, and composite materials made from this herb have also been patented. According to the agreement, realized benefit sharing includes providing employment opportunities for First Nations youth and funding support for training and education related to the Australian indigenous community."
+     }
+    }
+   ],
+   "joint_translation": "Not all commercial uses of indigenous knowledge related to genetic resources constitute biopiracy; some projects achieve mutual benefits. Take the Indjalangji-Dhidhanu tribe in Australia as an example. This tribe collaborated with researchers from the University of Queensland to conduct research based on their indigenous knowledge about three-awned grass (a perennial tufted herb with a wide range of traditional uses). The cooperative research agreement signed by both parties includes benefit-sharing clauses. A spin-off company is currently using cellulose nanofibers extracted from three-awned grass to develop medical gel, and composite materials made from this herb have also been patented. According to the agreement, realized benefit sharing includes providing employment opportunities for First Nations youth and funding support for training and education related to the Australian indigenous community.",
+   "joint_segments": [
+    {
+     "chars": 394,
+     "end": 394,
+     "index": 0,
+     "sentence_end": 2,
+     "sentence_start": 0,
+     "start": 0
+    },
+    {
+     "chars": 520,
+     "end": 914,
+     "index": 1,
+     "sentence_end": 6,
+     "sentence_start": 2,
+     "start": 394
+    }
+   ]
+  },
+  {
+   "length": 2,
+   "pages": [
+    8
+   ],
+   "members": [
+    {
+     "chain_index": 0,
+     "reference_at_build": "p8#12",
+     "page": 8,
+     "source": "在人类历史的大部分时期,国际 法都将这类生物资源视为“人类共有 遗产”,这意味着任何人都可获取并",
+     "box_at_build": [
+      56.9,
+      65.31,
+      206.69,
+      104.08
+     ],
+     "laid_out": {
+      "reference": "p8#12",
+      "box": [
+       56.9,
+       65.31,
+       206.69,
+       104.08
+      ],
+      "text": "For most of human history, international law regarded such biological resources as the \"common heritage of "
+     }
+    },
+    {
+     "chain_index": 1,
+     "reference_at_build": "p8#4",
+     "page": 8,
+     "source": "使用这些资源,无需获得资源提供者 的许可,也不必与其分享惠益。然而, 自 20 世纪中叶遗传学取得新进展以 来,基于生物多样性或由其衍生的相 关产品开始被视为“遗传资源”。这恰 好与生物多样性价值评估方式的革新 同步 —其价值不再仅取决于实际用 途,更延伸至潜在应用。",
+     "box_at_build": [
+      222.72,
+      387.96,
+      372.58,
+      505.28
+     ],
+     "laid_out": {
+      "reference": "p8#4",
+      "box": [
+       222.72,
+       387.96,
+       372.58,
+       505.28
+      ],
+      "text": "mankind,\" meaning that anyone could access and use these resources without needing permission from the resource providers or sharing benefits with them. However, since the mid-20th century, with new advancements in genetics, products based on biodiversity or derived from it have begun to be seen as \"genetic resources.\" This coincides with innovations in the way the value of biodiversity is assessed—its value is no longer determined solely by actual use but extends to potential applications."
+     }
+    }
+   ],
+   "joint_translation": "For most of human history, international law regarded such biological resources as the \"common heritage of mankind,\" meaning that anyone could access and use these resources without needing permission from the resource providers or sharing benefits with them. However, since the mid-20th century, with new advancements in genetics, products based on biodiversity or derived from it have begun to be seen as \"genetic resources.\" This coincides with innovations in the way the value of biodiversity is assessed—its value is no longer determined solely by actual use but extends to potential applications.",
+   "joint_segments": [
+    {
+     "chars": 107,
+     "end": 107,
+     "index": 0,
+     "sentence_end": 0,
+     "sentence_start": 0,
+     "start": 0
+    },
+    {
+     "chars": 495,
+     "end": 602,
+     "index": 1,
+     "sentence_end": 3,
+     "sentence_start": 0,
+     "start": 107
+    }
+   ]
+  },
+  {
+   "length": 2,
+   "pages": [
+    8
+   ],
+   "members": [
+    {
+     "chain_index": 0,
+     "reference_at_build": "p8#7",
+     "page": 8,
+     "source": "历经 30 年构建的强化版国际规则与 协议框架已带来积极变化。如今,许 多国家要求,土著知识的潜在使用者",
+     "box_at_build": [
+      222.72,
+      65.29,
+      372.49,
+      106.3
+     ],
+     "laid_out": {
+      "reference": "p8#7",
+      "box": [
+       222.72,
+       65.29,
+       372.49,
+       106.3
+      ],
+      "text": "The enhanced international rules and agreement framework, constructed over 30 years, has brought about positive "
+     }
+    },
+    {
+     "chain_index": 1,
+     "reference_at_build": "p8#1",
+     "page": 8,
+     "source": "必 须 首 先 获 得 知 识 持 有 者 的 明 确 同 意,并签署详细载明惠益分享方式的 协议。",
+     "box_at_build": [
+      388.55,
+      467.05,
+      537.99,
+      506.79
+     ],
+     "laid_out": {
+      "reference": "p8#1",
+      "box": [
+       388.55,
+       467.05,
+       537.99,
+       506.79
+      ],
+      "text": "changes. Nowadays, many countries require that potential users of indigenous knowledge must first obtain the explicit consent of the knowledge holders and sign agreements that detail the methods of benefit sharing."
+     }
+    }
+   ],
+   "joint_translation": "The enhanced international rules and agreement framework, constructed over 30 years, has brought about positive changes. Nowadays, many countries require that potential users of indigenous knowledge must first obtain the explicit consent of the knowledge holders and sign agreements that detail the methods of benefit sharing.",
+   "joint_segments": [
+    {
+     "chars": 112,
+     "end": 112,
+     "index": 0,
+     "sentence_end": 0,
+     "sentence_start": 0,
+     "start": 0
+    },
+    {
+     "chars": 214,
+     "end": 326,
+     "index": 1,
+     "sentence_end": 2,
+     "sentence_start": 0,
+     "start": 112
+    }
+   ]
+  }
+ ],
+ "escalated": [],
+ "totals": {
+  "boundaries": 31,
+  "linked": 12,
+  "column_linked": 10,
+  "edges": 9,
+  "dropped_edges": 3,
+  "chains": 9
+ }
+}
