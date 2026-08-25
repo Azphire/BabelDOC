@@ -197,6 +197,9 @@ def repair_level(report: dict | None) -> LevelVerdict:
         failures.append(f"changed outside the declared touch set: {stray}")
     if outside:
         failures.append(f"the report itself lists {len(outside)} change(s) outside")
+    fixed_assets = block.get("fixed_assets")
+    if isinstance(fixed_assets, dict) and not fixed_assets.get("holds", False):
+        failures.append("fixed asset count, bbox, digest, or page size changed")
 
     return LevelVerdict(
         level=REPAIR_LEVEL,
@@ -212,6 +215,7 @@ def repair_level(report: dict | None) -> LevelVerdict:
             "changed": len(changed),
             "changed_outside_touched": len(outside),
             "reported_verdict": block.get("verdict"),
+            "fixed_assets": fixed_assets,
         },
     )
 

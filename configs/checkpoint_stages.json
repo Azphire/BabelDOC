@@ -123,6 +123,11 @@
       "switch": "magazine_column_reflow"
     },
     {
+      "name": "fixed_asset_inventory.report.json",
+      "stage": "typesetting",
+      "switch": "magazine_detect"
+    },
+    {
       "name": "formula_reclass.report.json",
       "stage": "styles_and_formulas",
       "switch": "magazine_formula_reclass"

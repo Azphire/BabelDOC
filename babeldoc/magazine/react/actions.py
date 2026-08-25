@@ -93,6 +93,7 @@ REASON_REFUSED = "translation_refused"
 REASON_UNCHANGED = "translation_equals_source"
 REASON_LAYOUT = "retypesetting_produced_nothing"
 REASON_GEOMETRY = "retypesetting_needed_more_room_than_the_paragraph_had"
+REASON_FIXED_ASSET = "fixed_asset_protected"
 
 ACCEPTED = "accepted"
 

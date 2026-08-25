@@ -16,6 +16,7 @@ for the batch that acts on the finding, not for the batch that first counts it.
 from __future__ import annotations
 
 from babeldoc.magazine.detectors import base
+from babeldoc.magazine.fixed_assets import ARTWORK_COLLECTIONS
 
 NAME = "text_figure_overlap"
 KIND = "text_figure_overlap"
@@ -25,7 +26,7 @@ REQUIRES_SOURCE_GEOMETRY = False
 
 # What counts as artwork: the figures the parser recorded and the embedded
 # forms it recorded beside them, each named by the attribute holding its box.
-ARTWORK_SOURCES = ("pdf_figure", "pdf_xobject")
+ARTWORK_SOURCES = ARTWORK_COLLECTIONS
 
 
 def artwork_boxes(page) -> list[tuple[str, int, tuple[float, float, float, float]]]:

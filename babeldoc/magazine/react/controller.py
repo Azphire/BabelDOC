@@ -71,7 +71,9 @@ from lxml import etree
 
 from babeldoc.format.pdf.document_il.midend.typesetting import Typesetting
 from babeldoc.magazine import detectors
+from babeldoc.magazine import fixed_assets
 from babeldoc.magazine import hitl
+from babeldoc.magazine import rotated_lane
 from babeldoc.magazine.checkpoint import to_checkpoint_xml
 from babeldoc.magazine.detectors.base import CONFIG_PATH as DETECTOR_CONFIG_PATH
 from babeldoc.magazine.detectors.base import box_tuple
@@ -79,7 +81,6 @@ from babeldoc.magazine.drop_cap import paragraph_reference
 from babeldoc.magazine.react import actions
 from babeldoc.magazine.react import collision
 from babeldoc.magazine.react import contain
-from babeldoc.magazine import rotated_lane
 from babeldoc.magazine.react import writeback
 from babeldoc.magazine.react.config import CONFIG_PATH
 from babeldoc.magazine.react.config import MAX_PARAGRAPHS
@@ -362,6 +363,8 @@ class RepairLoop:
         decision_client=None,
         translator=None,
         run_trace=None,
+        source_geometry=None,
+        fixed_inventory=None,
     ):
         self.translation_config = translation_config
         self.docs = docs
@@ -378,6 +381,20 @@ class RepairLoop:
         self.decision_client = decision_client
         self.translator = translator
         self.run_trace = run_trace
+        from babeldoc.magazine import column_reflow
+
+        reflow_config = column_reflow.load_reflow_config()
+        self.protected_paragraph_labels = reflow_config.protected_paragraph_labels
+        self.fixed_inventory = (
+            fixed_assets.build_inventory(
+                docs,
+                run_trace=run_trace,
+                protected_paragraph_labels=self.protected_paragraph_labels,
+            )
+            if fixed_inventory is None
+            else fixed_inventory
+        )
+        self.asset_bbox_tolerance_pt = reflow_config.asset_bbox_tolerance_pt
         self.trace_base_generation = None
         self.typesetting = None
         self.iterations: list[dict] = []
@@ -399,8 +416,12 @@ class RepairLoop:
         # the run's own checkpoint. Loaded once and handed to every pass: the
         # loop detects several times over one document and the file behind this
         # is the whole untranslated document.
-        self.source_layout = detectors.source_geometry_of(
-            self.working_dir, self.detector_config
+        self.source_layout = (
+            detectors.source_geometry_of(
+                self.working_dir, self.detector_config, run_trace=run_trace
+            )
+            if source_geometry is None
+            else source_geometry
         )
 
     # -- clients ----------------------------------------------------------
@@ -550,6 +571,20 @@ class RepairLoop:
                         reference=", ".join(issue.paragraph_refs),
                         accepted=False,
                         reason=actions.REASON_NO_PARAGRAPH,
+                    )
+                )
+                continue
+            if (
+                candidate.reference
+                in self.fixed_inventory.protected_paragraph_refs
+            ):
+                records.append(
+                    actions.Application(
+                        issue_id=issue_id,
+                        reference=candidate.reference,
+                        accepted=False,
+                        reason=actions.REASON_FIXED_ASSET,
+                        source_text=candidate.source_text,
                     )
                 )
                 continue
@@ -992,6 +1027,15 @@ class RepairLoop:
 
         after_shape = shape(self.docs)
         after_digests = paragraph_digests(self.docs)
+        asset_comparison = fixed_assets.compare(
+            self.fixed_inventory,
+            fixed_assets.build_inventory(
+                self.docs,
+                run_trace=self.run_trace,
+                protected_paragraph_labels=self.protected_paragraph_labels,
+            ),
+            self.asset_bbox_tolerance_pt,
+        )
         changed = sorted(
             reference
             for reference, digest in after_digests.items()
@@ -1007,16 +1051,19 @@ class RepairLoop:
             "touched_refs": sorted(self.touched),
             "changed_refs": changed,
             "changed_outside_touched": outside,
+            "fixed_assets": asset_comparison.to_record(),
         }
-        if before_shape != after_shape or outside:
+        if before_shape != after_shape or outside or not asset_comparison.holds:
             conservation["verdict"] = VIOLATED
             logger.error(
                 "react: conservation violated (shape %s -> %s, %d paragraph(s) "
-                "changed outside the repaired set); the document is restored to "
+                "changed outside the repaired set, fixed assets conserved=%s); "
+                "the document is restored to "
                 "what it was before the loop",
                 before_shape,
                 after_shape,
                 len(outside),
+                asset_comparison.holds,
             )
             self.docs.page = before_document.page
             if self.run_trace is not None:
@@ -1087,7 +1134,14 @@ class RepairLoop:
         )
 
 
-def repair_document(translation_config, docs, run_trace=None):
+def repair_document(
+    translation_config,
+    docs,
+    run_trace=None,
+    *,
+    source_geometry=None,
+    fixed_inventory=None,
+):
     """Run the loop over one finished document and return what it left standing.
 
     A failure anywhere in the loop puts the document back as typesetting left it
@@ -1096,7 +1150,13 @@ def repair_document(translation_config, docs, run_trace=None):
     not repair has to produce the PDF it would have produced with the switch
     down, rather than no PDF at all.
     """
-    loop = RepairLoop(translation_config, docs, run_trace=run_trace)
+    loop = RepairLoop(
+        translation_config,
+        docs,
+        run_trace=run_trace,
+        source_geometry=source_geometry,
+        fixed_inventory=fixed_inventory,
+    )
     try:
         return loop.run()
     except Exception:  # noqa: BLE001 - the loop never stops a translation
@@ -1119,7 +1179,9 @@ def repair_document(translation_config, docs, run_trace=None):
             docs,
             config,
             0,
-            detectors.source_geometry_of(loop.working_dir, config),
+            detectors.source_geometry_of(
+                loop.working_dir, config, run_trace=run_trace
+            ),
         )
         detectors.write_report(
             loop.working_dir, detectors.as_record(context, issues)

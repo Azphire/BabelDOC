@@ -287,3 +287,28 @@ def preflight_magazine_runtime(translation_config) -> Path | None:
     if issues:
         raise MagazineDependencyError(issues)
     return path
+
+
+def record_runtime_blocked_reason(translation_config, issue: dict) -> Path:
+    """Append one deterministic prerequisite failure to the run manifest."""
+    path = Path(translation_config.get_working_file_path(RUN_MANIFEST_NAME))
+    if path.exists():
+        manifest = json.loads(path.read_text(encoding="utf-8"))
+    else:
+        manifest = {"manifest_version": 1}
+    reasons = list(manifest.get("blocked_reasons") or ())
+    row = dict(issue)
+    if row not in reasons:
+        reasons.append(row)
+    manifest["blocked_reasons"] = sorted(
+        reasons,
+        key=lambda item: json.dumps(
+            item, ensure_ascii=False, sort_keys=True, separators=(",", ":")
+        ),
+    )
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(
+        json.dumps(manifest, indent=2, sort_keys=True, ensure_ascii=False) + "\n",
+        encoding="utf-8",
+    )
+    return path

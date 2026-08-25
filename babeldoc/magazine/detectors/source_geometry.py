@@ -30,25 +30,17 @@ as though the translation had caused it.
 How a finished paragraph finds its source
 -----------------------------------------
 
-By ``debug_id``. The paragraph finder mints one per paragraph and every stage
-after it carries the id unchanged, so within one run the id is the identity of
-the paragraph across the whole pipeline. The one pass that mints derived ids is
-line splitting, which names each line after the paragraph it came out of; the
-separator it uses is what this module cuts back to, so a line finds the box its
-parent occupied.
-
-A paragraph with no id, or with one the source checkpoint does not carry, has
-no source layout to be compared against. The watermark the typesetting stage
-appends is exactly that case, and it spans most of the page. Such a paragraph
-is left out of the comparison entirely rather than treated as having had no
-source overlap, because "the source did not draw this" is not evidence that the
-translation moved anything.
+By the stable ``pN#k`` source reference frozen after the structural stages.
+Where RunTrace is available its canonical source boxes are used after the
+checkpoint has been validated. Standalone callers use the same positional
+reference over the checkpoint itself.
 """
 
 from __future__ import annotations
 
 import logging
 from dataclasses import dataclass
+from enum import Enum
 from functools import lru_cache
 from pathlib import Path
 
@@ -59,8 +51,19 @@ from babeldoc.magazine.line_split import LINE_ID_SEPARATOR
 logger = logging.getLogger(__name__)
 
 
+AVAILABLE = "available"
+MISSING = "missing"
+INVALID = "invalid"
+
+
+class SourceGeometryStatus(str, Enum):
+    AVAILABLE = AVAILABLE
+    MISSING = MISSING
+    INVALID = INVALID
+
+
 def root_id(debug_id: str | None) -> str | None:
-    """The source paragraph's id behind a possibly derived one."""
+    """Normalize a legacy diagnostic id without using it for decisions."""
     if not debug_id:
         return None
     return debug_id.split(LINE_ID_SEPARATOR, 1)[0]
@@ -74,12 +77,45 @@ class SourceGeometry:
     path: str
     boxes: dict[str, tuple[float, float, float, float]]
 
-    def box_of(self, paragraph) -> tuple[float, float, float, float] | None:
-        """Where this paragraph's source counterpart stood, if it has one."""
-        key = root_id(getattr(paragraph, "debug_id", None))
-        if key is None:
+    def box_for(self, source_ref: str) -> tuple[float, float, float, float] | None:
+        """Where one stable source reference stood."""
+        return self.boxes.get(source_ref)
+
+
+@dataclass(frozen=True)
+class SourceGeometryResult:
+    """Typed checkpoint outcome used by every source-dependent consumer."""
+
+    status: SourceGeometryStatus
+    stage: str
+    checkpoint: str | None
+    geometry: SourceGeometry | None
+    reason: str | None = None
+
+    @property
+    def available(self) -> bool:
+        return self.status is SourceGeometryStatus.AVAILABLE
+
+    def issue(self) -> dict | None:
+        if self.available:
             return None
-        return self.boxes.get(key)
+        return {
+            "code": f"source_checkpoint_{self.status.value}",
+            "status": self.status.value,
+            "stage": self.stage,
+            "checkpoint": self.checkpoint,
+            "blocked": True,
+            "reason": self.reason,
+        }
+
+    def to_record(self) -> dict:
+        return {
+            "status": self.status.value,
+            "stage": self.stage,
+            "checkpoint": self.checkpoint,
+            "paragraphs": 0 if self.geometry is None else len(self.geometry.boxes),
+            "reason": self.reason,
+        }
 
 
 def checkpoint_path(working_dir, stage: str) -> Path | None:
@@ -106,7 +142,7 @@ def _stamp(path: Path) -> tuple[str, int, int]:
 
 @lru_cache(maxsize=4)
 def _boxes_of(stamp: tuple[str, int, int]) -> dict:
-    """Every source paragraph box of one checkpoint, keyed by its id.
+    """Every source paragraph box keyed by stable positional reference.
 
     Cached on the file's identity rather than its name alone, so a rerun that
     wrote a new checkpoint into the same working directory is read again. The
@@ -115,38 +151,56 @@ def _boxes_of(stamp: tuple[str, int, int]) -> dict:
     """
     docs = checkpoint.load_checkpoint(stamp[0])
     boxes: dict[str, tuple[float, float, float, float]] = {}
-    for page in docs.page or ():
-        for paragraph in page.pdf_paragraph or ():
-            key = root_id(paragraph.debug_id)
-            if key is None or key in boxes:
-                continue
+    for page_index, page in enumerate(docs.page or ()):
+        for paragraph_index, paragraph in enumerate(page.pdf_paragraph or ()):
+            key = f"p{page_index + 1}#{paragraph_index}"
             box, _source = base.rendered_box(paragraph)
             if box is not None:
                 boxes[key] = box
     return boxes
 
 
-def load(working_dir, stage: str) -> SourceGeometry | None:
-    """The source layout of one run, or None where the run did not keep it.
-
-    Never raises. This is read on the way into a detection pass, which is on the
-    path that produces the document, and a comparison that cannot be made is a
-    detector that does not run rather than a translation that does not finish.
-    """
+def load(working_dir, stage: str, run_trace=None) -> SourceGeometryResult:
+    """Read and validate the source checkpoint without hiding its failure mode."""
     path = None
     try:
         path = checkpoint_path(working_dir, stage)
         if path is None:
-            return None
-        return SourceGeometry(
-            stage=stage, path=path.name, boxes=_boxes_of(_stamp(path))
+            return SourceGeometryResult(
+                status=SourceGeometryStatus.MISSING,
+                stage=stage,
+                checkpoint=None,
+                geometry=None,
+                reason="the declared source checkpoint is absent",
+            )
+        boxes = _boxes_of(_stamp(path))
+        if run_trace is not None:
+            traced = {
+                reference: source.source_box
+                for reference, source in run_trace.sources.items()
+                if source.source_box is not None
+            }
+            if traced:
+                boxes = traced
+        geometry = SourceGeometry(stage=stage, path=path.name, boxes=boxes)
+        return SourceGeometryResult(
+            status=SourceGeometryStatus.AVAILABLE,
+            stage=stage,
+            checkpoint=path.name,
+            geometry=geometry,
         )
-    except Exception as exc:  # noqa: BLE001 - a missing comparison is never fatal
+    except Exception as exc:  # noqa: BLE001 - failure is returned as typed state
         logger.warning(
             "detection: the source layout of stage %s could not be read from %s "
-            "(%s); the detectors that compare against it will not run",
+            "(%s); source-dependent actions are blocked",
             stage,
             path if path is not None else working_dir,
             exc,
         )
-        return None
+        return SourceGeometryResult(
+            status=SourceGeometryStatus.INVALID,
+            stage=stage,
+            checkpoint=None if path is None else path.name,
+            geometry=None,
+            reason=f"{type(exc).__name__}: {exc}",
+        )

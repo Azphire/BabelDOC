@@ -120,8 +120,12 @@ def detect(context: base.DetectionContext) -> list[base.Issue]:
                 by_coverage = covered >= config.collision_min_coverage
                 if not (by_iou or by_coverage):
                     continue
-                left = source.box_of(paragraph)
-                right = source.box_of(other)
+                if hasattr(source, "box_for"):
+                    left = source.box_for(view.reference(index))
+                    right = source.box_for(view.reference(other_index))
+                else:
+                    left = source.box_of(paragraph)
+                    right = source.box_of(other)
                 if left is None or right is None:
                     skipped[SKIPPED_NO_SOURCE] = skipped.get(SKIPPED_NO_SOURCE, 0) + 1
                     continue

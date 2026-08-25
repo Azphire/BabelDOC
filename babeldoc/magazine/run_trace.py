@@ -359,6 +359,8 @@ class RunTrace:
             0: GenerationRecord(0, "typeset", GENERATION_COMMITTED)
         }
         self.current_generation = 0
+        self.unsupported_pages: set[int] = set()
+        self.blocked_reasons: list[dict] = []
         self._source_objects: dict[int, str] = {}
         self._whole_targets: dict[str, str] = {}
         self._fragment_text: dict[str, str] = {}
@@ -380,6 +382,11 @@ class RunTrace:
         article_document_ir: ArticleDocumentIR | None = None,
     ) -> None:
         """Freeze pN#k after structural stages and bind refs to runtime objects."""
+        self.unsupported_pages = (
+            set()
+            if article_document_ir is None
+            else {item.page for item in article_document_ir.unsupported_pages}
+        )
         ir_elements = (
             {}
             if article_document_ir is None
@@ -872,6 +879,15 @@ class RunTrace:
                 if self.generations[generation].status == GENERATION_OPEN:
                     self.rollback_generation(generation)
 
+    def record_blocked_reason(self, issue: Mapping) -> None:
+        """Retain one structured prerequisite failure in the run ledger."""
+        row = dict(issue)
+        with self._lock:
+            if hash_record(row) not in {
+                hash_record(existing) for existing in self.blocked_reasons
+            }:
+                self.blocked_reasons.append(row)
+
     def bind_final_geometry(
         self,
         fragment_id: str,
@@ -1199,6 +1215,13 @@ class RunTrace:
                 "repair_generations": [
                     generation.to_record()
                     for _number, generation in sorted(self.generations.items())
+                ],
+                "unsupported_pages": sorted(self.unsupported_pages),
+                "blocked_reasons": [
+                    dict(reason)
+                    for reason in sorted(
+                        self.blocked_reasons, key=lambda item: canonical_json_bytes(item)
+                    )
                 ],
                 "indexes": {
                     "article_to_sources": article_to_sources,

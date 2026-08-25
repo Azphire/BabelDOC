@@ -84,6 +84,7 @@ the last bit.
 
 from __future__ import annotations
 
+import copy
 import json
 import logging
 import statistics
@@ -94,13 +95,16 @@ from functools import lru_cache
 from pathlib import Path
 
 from babeldoc.format.pdf.document_il.il_version_1 import Box
+from babeldoc.magazine import fixed_assets
 from babeldoc.magazine import hitl
 from babeldoc.magazine.detectors import base
+from babeldoc.magazine.detectors import source_geometry as source_geometry_module
 from babeldoc.magazine.drop_cap import paragraph_reference
 from babeldoc.magazine.line_split import holds_formula
 from babeldoc.magazine.line_split import paragraph_characters
 from babeldoc.magazine.page_features import ConfigError
 from babeldoc.magazine.page_features import validate_bounded_config
+from babeldoc.magazine.runtime_profile import record_runtime_blocked_reason
 from babeldoc.magazine.taxonomy import load_taxonomy
 from babeldoc.magazine.taxonomy import record_config_manifest
 
@@ -122,6 +126,7 @@ WINDOW_SWITCH = "magazine_detect"
 PROFILES_KEY = "profiles"
 TARGETS_KEY = "target_languages"
 OBSTACLES_KEY = "obstacle_collections"
+PROTECTED_LABELS_KEY = "protected_paragraph_labels"
 
 # The policy flag a page selects this pass with. The same flag detection selects
 # its detectors by; no page type is named here.
@@ -157,10 +162,12 @@ GUARD_COLUMN_TOP = "above_column_top"
 # The page level guard, which is not about one column's arithmetic but about
 # what the whole page detects as afterwards.
 GUARD_NEW_FINDING = "new_finding_after_shift"
+GUARD_FIXED_ASSET = "fixed_asset_changed"
 
 # Why a page carrying the profile was not reflowed at all.
 SKIP_NO_SOURCE = "no_source_geometry"
 SKIP_NO_COLUMN = "no_reflowable_column"
+SKIP_UNSUPPORTED = "unsupported_article_page"
 
 
 class ColumnReflowError(ConfigError):
@@ -178,6 +185,8 @@ class ReflowConfig:
     max_shift_ratio: float
     column_min_x_overlap_ratio: float
     order_tolerance_pt: float
+    asset_bbox_tolerance_pt: float
+    protected_paragraph_labels: tuple[str, ...]
 
     def claims(self, target_lang: str | None) -> bool:
         """Whether this pass runs for one target language tag."""
@@ -227,7 +236,7 @@ def parse_reflow_config(raw: dict, source: str) -> ReflowConfig:
     except ConfigError as exc:
         raise ColumnReflowError(str(exc)) from exc
 
-    for key in (PROFILES_KEY, TARGETS_KEY, OBSTACLES_KEY):
+    for key in (PROFILES_KEY, TARGETS_KEY, OBSTACLES_KEY, PROTECTED_LABELS_KEY):
         _require(key in parameters, f"{source}: missing {key}")
 
     profiles = tuple(parameters[PROFILES_KEY])
@@ -246,6 +255,11 @@ def parse_reflow_config(raw: dict, source: str) -> ReflowConfig:
         not absent,
         f"{source}: {OBSTACLES_KEY} names {absent}, which a page does not carry",
     )
+    missing_fixed = sorted(set(fixed_assets.PAGE_ASSET_COLLECTIONS) - set(collections))
+    _require(
+        not missing_fixed,
+        f"{source}: {OBSTACLES_KEY} omits fixed collections {missing_fixed}",
+    )
 
     return ReflowConfig(
         profiles=profiles,
@@ -255,6 +269,8 @@ def parse_reflow_config(raw: dict, source: str) -> ReflowConfig:
         max_shift_ratio=float(parameters["max_shift_ratio"]),
         column_min_x_overlap_ratio=float(parameters["column_min_x_overlap_ratio"]),
         order_tolerance_pt=float(parameters["order_tolerance_pt"]),
+        asset_bbox_tolerance_pt=float(parameters["asset_bbox_tolerance_pt"]),
+        protected_paragraph_labels=tuple(parameters[PROTECTED_LABELS_KEY]),
     )
 
 
@@ -433,7 +449,13 @@ class Member:
     shift: float = 0.0
 
 
-def obstacle_boxes(page, config: ReflowConfig, members: set[int]) -> list[tuple]:
+def obstacle_boxes(
+    page,
+    config: ReflowConfig,
+    members: set[int],
+    inventory: fixed_assets.FixedAssetInventory | None = None,
+    label: int | None = None,
+) -> list[tuple]:
     """Every box on one page holding ink one column does not move.
 
     The declared page level collections, plus every paragraph outside this
@@ -442,11 +464,18 @@ def obstacle_boxes(page, config: ReflowConfig, members: set[int]) -> list[tuple]
     ink that stays where it is, which is the whole of what makes it an obstacle.
     """
     boxes = []
-    for name in config.obstacle_collections:
-        for item in getattr(page, name, None) or ():
-            box = base.box_tuple(getattr(item, "box", None))
-            if box is not None:
-                boxes.append(box)
+    if inventory is not None and label is not None:
+        boxes.extend(
+            asset.bbox
+            for asset in inventory.page_assets(label)
+            if asset.protected and asset.bbox is not None
+        )
+    else:
+        for name in config.obstacle_collections:
+            for item in getattr(page, name, None) or ():
+                box = base.box_tuple(getattr(item, "box", None))
+                if box is not None:
+                    boxes.append(box)
     for index, paragraph in enumerate(page.pdf_paragraph or ()):
         if index in members:
             continue
@@ -602,18 +631,25 @@ def guard_column(members, cap: float, frame) -> str | None:
     return None
 
 
-def page_members(page, label: int, source_geometry):
+def page_members(page, label: int, source_geometry, protected_refs=frozenset()):
     """Every paragraph of one page this pass may move, and its source box."""
     members = []
     for index, paragraph in enumerate(page.pdf_paragraph or ()):
         box = ink_box(paragraph)
-        source = source_geometry.box_of(paragraph)
+        reference = paragraph_reference(label, index)
+        source = (
+            source_geometry.box_for(reference)
+            if hasattr(source_geometry, "box_for")
+            else source_geometry.box_of(paragraph)
+        )
+        if reference in protected_refs:
+            continue
         if box is None or source is None:
             continue
         members.append(
             Member(
                 index=index,
-                reference=paragraph_reference(label, index),
+                reference=reference,
                 paragraph=paragraph,
                 box=box,
                 source=source,
@@ -623,9 +659,20 @@ def page_members(page, label: int, source_geometry):
     return members
 
 
-def plan_page(page, label: int, source_geometry, config: ReflowConfig) -> dict:
+def plan_page(
+    page,
+    label: int,
+    source_geometry,
+    config: ReflowConfig,
+    fixed_inventory: fixed_assets.FixedAssetInventory | None = None,
+) -> dict:
     """Every column of one page, planned and guarded but not yet applied."""
-    members = page_members(page, label, source_geometry)
+    protected_refs = (
+        frozenset()
+        if fixed_inventory is None
+        else fixed_inventory.protected_paragraph_refs
+    )
+    members = page_members(page, label, source_geometry, protected_refs)
     frame = base.page_frame(page)
     frame_box = None if frame is None else frame[0]
     records = []
@@ -633,7 +680,13 @@ def plan_page(page, label: int, source_geometry, config: ReflowConfig) -> dict:
         if len(group) < 2:
             continue
         group.sort(key=lambda member: -member.box[3])
-        obstacles = obstacle_boxes(page, config, {member.index for member in group})
+        obstacles = obstacle_boxes(
+            page,
+            config,
+            {member.index for member in group},
+            fixed_inventory,
+            label,
+        )
         record = plan_column(group, obstacles, config)
         if not source_order_holds(group, config.order_tolerance_pt):
             record["guard"] = GUARD_SOURCE_ORDER
@@ -685,6 +738,8 @@ def apply_page(
     source_geometry,
     config,
     issues_of=None,
+    fixed_inventory=None,
+    inventory_after=None,
 ) -> dict:
     """Reflow one page's columns, and put the page back if it detected worse.
 
@@ -696,7 +751,7 @@ def apply_page(
     not a shape a stub can be sure of building.
     """
     reader = _page_issues if issues_of is None else issues_of
-    planned = plan_page(page, label, source_geometry, config)
+    planned = plan_page(page, label, source_geometry, config, fixed_inventory)
     applicable = [
         (record, group) for record, group in planned["columns"] if record["applied"]
     ]
@@ -718,6 +773,20 @@ def apply_page(
         for member in group:
             if member.shift > 0:
                 stored.extend(raise_by(member.paragraph, member.shift))
+    if fixed_inventory is not None and inventory_after is not None:
+        asset_comparison = fixed_assets.compare(
+            fixed_inventory,
+            inventory_after(),
+            config.asset_bbox_tolerance_pt,
+        )
+        record["asset_guard"] = asset_comparison.to_record()
+        if not asset_comparison.holds:
+            restore(stored)
+            for column, _group in applicable:
+                column["applied"] = False
+                column["guard"] = GUARD_FIXED_ASSET
+            record["guard"] = GUARD_FIXED_ASSET
+            return record
     after = reader(page, label, translation_config, source_geometry)
     introduced = sorted(after - before)
     if introduced:
@@ -735,7 +804,13 @@ def apply_page(
 
 
 def as_record(
-    config: ReflowConfig, pages: list[dict], target_lang: str, notes: list[str]
+    config: ReflowConfig,
+    pages: list[dict],
+    target_lang: str,
+    notes: list[str],
+    *,
+    source_geometry=None,
+    prerequisite_issues=(),
 ) -> dict:
     """One run of this pass, as the sidecar carries it."""
     columns_of = [column for page in pages for column in page["columns"]]
@@ -752,11 +827,18 @@ def as_record(
         "target_languages": list(config.target_languages),
         "min_excess_pt": config.min_excess_pt,
         "max_shift_ratio": config.max_shift_ratio,
+        "asset_bbox_tolerance_pt": config.asset_bbox_tolerance_pt,
+        "source_geometry": (
+            None if source_geometry is None else source_geometry.to_record()
+        ),
+        "prerequisite_issues": list(prerequisite_issues),
         "totals": {
             "pages_considered": len(pages),
             "pages_applied": sum(1 for page in pages if page["applied"]),
             "pages_reverted": sum(
-                1 for page in pages if page["guard"] == GUARD_NEW_FINDING
+                1
+                for page in pages
+                if page["guard"] in (GUARD_NEW_FINDING, GUARD_FIXED_ASSET)
             ),
             "columns": len(columns_of),
             "columns_applied": len(applied),
@@ -788,7 +870,13 @@ def write_report(working_dir: Path, record: dict) -> Path:
 
 
 def apply(
-    translation_config, docs, source_geometry=None, *, run_trace=None
+    translation_config,
+    docs,
+    source_geometry=None,
+    *,
+    run_trace=None,
+    fixed_inventory=None,
+    article_document_ir=None,
 ) -> dict | None:
     """Close the excess of every reflowable column. None where the switch is down.
 
@@ -817,18 +905,46 @@ def apply(
 
     taxonomy = load_taxonomy()
     if source_geometry is None:
-        source_geometry = detectors.source_geometry_of(
-            working_dir, detectors.detector_config()
+        source_result = detectors.source_geometry_of(
+            working_dir, detectors.detector_config(), run_trace=run_trace
         )
+    elif isinstance(source_geometry, source_geometry_module.SourceGeometryResult):
+        source_result = source_geometry
+    else:
+        source_result = source_geometry_module.SourceGeometryResult(
+            status=source_geometry_module.SourceGeometryStatus.AVAILABLE,
+            stage=source_geometry.stage,
+            checkpoint=source_geometry.path,
+            geometry=source_geometry,
+        )
+    source = source_result.geometry
+    prerequisite_issue = source_result.issue()
+    if prerequisite_issue is not None:
+        record_runtime_blocked_reason(translation_config, prerequisite_issue)
+        if run_trace is not None:
+            run_trace.record_blocked_reason(prerequisite_issue)
+    if fixed_inventory is None:
+        fixed_inventory = fixed_assets.build_inventory(
+            docs,
+            article_document_ir=article_document_ir,
+            run_trace=run_trace,
+            protected_paragraph_labels=config.protected_paragraph_labels,
+        )
+    unsupported_pages = (
+        {item.page for item in article_document_ir.unsupported_pages}
+        if article_document_ir is not None
+        else set(getattr(run_trace, "unsupported_pages", ()))
+    )
+    baseline_pages = copy.deepcopy(docs.page)
     generation = (
         None
-        if run_trace is None
+        if run_trace is None or source is None
         else run_trace.begin_repair_generation("column_reflow")
     )
     for label, page in hitl.labeled_pages(docs):
         if not config.selects(taxonomy.policy_of(getattr(page, "page_kind", None))):
             continue
-        if source_geometry is None:
+        if label in unsupported_pages:
             pages.append(
                 {
                     "page": label,
@@ -837,21 +953,82 @@ def apply(
                     "members": 0,
                     "applied": False,
                     "guard": None,
-                    "skipped": SKIP_NO_SOURCE,
+                    "skipped": SKIP_UNSUPPORTED,
+                }
+            )
+            continue
+        if source is None:
+            pages.append(
+                {
+                    "page": label,
+                    "kind": getattr(page, "page_kind", None),
+                    "columns": [],
+                    "members": 0,
+                    "applied": False,
+                    "guard": None,
+                    "skipped": prerequisite_issue["code"],
                 }
             )
             continue
         pages.append(
-            apply_page(page, label, translation_config, source_geometry, config)
+            apply_page(
+                page,
+                label,
+                translation_config,
+                source,
+                config,
+                fixed_inventory=fixed_inventory,
+                inventory_after=lambda: fixed_assets.build_inventory(
+                    docs,
+                    article_document_ir=article_document_ir,
+                    run_trace=run_trace,
+                    protected_paragraph_labels=config.protected_paragraph_labels,
+                ),
+            )
         )
-    if source_geometry is None and pages:
+    if source is None and pages:
         notes.append(
-            "this run kept no checkpoint of the layout as the source drew it, "
-            "so there is no source gap to converge to and nothing was moved"
+            f"the source checkpoint is {source_result.status.value}, so there is "
+            "no source gap to converge to and nothing was moved"
         )
-    record = as_record(config, pages, target_lang, notes)
+    final_inventory = fixed_assets.build_inventory(
+        docs,
+        article_document_ir=article_document_ir,
+        run_trace=run_trace,
+        protected_paragraph_labels=config.protected_paragraph_labels,
+    )
+    final_comparison = fixed_assets.compare(
+        fixed_inventory, final_inventory, config.asset_bbox_tolerance_pt
+    )
+    if not final_comparison.holds:
+        docs.page = baseline_pages
+        for page_record in pages:
+            if page_record["applied"]:
+                page_record["applied"] = False
+                page_record["guard"] = GUARD_FIXED_ASSET
+            for column in page_record["columns"]:
+                if column["applied"]:
+                    column["applied"] = False
+                    column["guard"] = GUARD_FIXED_ASSET
+        notes.append(
+            "fixed asset conservation failed; the complete document was restored"
+        )
+    record = as_record(
+        config,
+        pages,
+        target_lang,
+        notes,
+        source_geometry=source_result,
+        prerequisite_issues=(
+            () if prerequisite_issue is None else (prerequisite_issue,)
+        ),
+    )
+    record["fixed_asset_comparison"] = final_comparison.to_record()
     write_report(working_dir, record)
     if generation is not None:
+        if not final_comparison.holds:
+            run_trace.rollback_generation(generation)
+            return record
         touched = {
             row["reference"]
             for page in pages

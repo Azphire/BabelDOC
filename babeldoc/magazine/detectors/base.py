@@ -585,6 +585,7 @@ class DetectionContext:
     # about what the finished page shows. None where the run kept no checkpoint
     # to read it from, in which case those detectors are not run at all.
     source_geometry: object | None = None
+    source_geometry_result: object | None = None
     notes: list[str] = field(default_factory=list)
     # Structured notes, filed by the detector that made them. A note in
     # ``notes`` is a sentence for a human and a row here is a fact a gate or a

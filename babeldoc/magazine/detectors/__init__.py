@@ -38,13 +38,14 @@ import json
 import logging
 from pathlib import Path
 
+from babeldoc.magazine import fixed_assets
 from babeldoc.magazine.detectors import collision
 from babeldoc.magazine.detectors import escalation
 from babeldoc.magazine.detectors import fragment
 from babeldoc.magazine.detectors import overlap
 from babeldoc.magazine.detectors import page_bounds
 from babeldoc.magazine.detectors import residue
-from babeldoc.magazine.detectors import source_geometry
+from babeldoc.magazine.detectors import source_geometry as source_geometry_module
 from babeldoc.magazine.detectors.base import CONFIG_PATH
 from babeldoc.magazine.detectors.base import REPAIR_PROFILE_POLICY_FLAG
 from babeldoc.magazine.detectors.base import DetectionContext
@@ -54,6 +55,7 @@ from babeldoc.magazine.detectors.base import Issue
 from babeldoc.magazine.detectors.base import PageView
 from babeldoc.magazine.detectors.base import load_detector_config
 from babeldoc.magazine.hitl import labeled_pages
+from babeldoc.magazine.runtime_profile import record_runtime_blocked_reason
 from babeldoc.magazine.taxonomy import load_taxonomy
 from babeldoc.magazine.taxonomy import record_config_manifest
 
@@ -126,8 +128,12 @@ def build_context(
         PageView(label=label, page=page, policy=taxonomy.policy_of(page.page_kind))
         for label, page in labeled_pages(docs)
     ]
+    result = None
     if source_geometry is None and working_dir is not None:
         source_geometry = source_geometry_of(working_dir, config)
+    if isinstance(source_geometry, source_geometry_module.SourceGeometryResult):
+        result = source_geometry
+        source_geometry = result.geometry
     return DetectionContext(
         pages=pages,
         config=config,
@@ -136,12 +142,15 @@ def build_context(
         translation_performed=translation_performed,
         working_dir=working_dir,
         source_geometry=source_geometry,
+        source_geometry_result=result,
     )
 
 
-def source_geometry_of(working_dir, config: DetectorConfig):
+def source_geometry_of(working_dir, config: DetectorConfig, run_trace=None):
     """The layout as the source drew it, from the stage the bounds declare."""
-    return source_geometry.load(working_dir, config.source_geometry_stage)
+    return source_geometry_module.load(
+        working_dir, config.source_geometry_stage, run_trace=run_trace
+    )
 
 
 def _selected(context: DetectionContext) -> dict[str, list[PageView]]:
@@ -190,6 +199,7 @@ def run_detectors(context: DetectionContext) -> list[Issue]:
             translation_performed=context.translation_performed,
             working_dir=context.working_dir,
             source_geometry=context.source_geometry,
+            source_geometry_result=context.source_geometry_result,
             notes=context.notes,
             records=context.records,
         )
@@ -213,13 +223,23 @@ def as_record(context: DetectionContext, issues: list[Issue]) -> dict:
         },
         "document_detectors": list(context.config.document_detectors),
         "source_geometry": (
-            None
+            context.source_geometry_result.to_record()
+            if context.source_geometry_result is not None
+            else None
             if context.source_geometry is None
             else {
+                "status": source_geometry_module.AVAILABLE,
                 "stage": context.source_geometry.stage,
                 "checkpoint": context.source_geometry.path,
                 "paragraphs": len(context.source_geometry.boxes),
+                "reason": None,
             }
+        ),
+        "prerequisite_issues": (
+            []
+            if context.source_geometry_result is None
+            or context.source_geometry_result.issue() is None
+            else [context.source_geometry_result.issue()]
         ),
         "notes": list(context.notes),
         "detector_records": {
@@ -239,6 +259,29 @@ def write_report(working_dir: Path, record: dict) -> Path:
 
 def enabled(translation_config) -> bool:
     return bool(getattr(translation_config, SWITCH, False))
+
+
+def _write_fixed_asset_report(
+    working_dir,
+    source_result,
+    prerequisite_issue,
+    before,
+    after,
+    tolerance: float,
+) -> None:
+    fixed_assets.write_report(
+        working_dir,
+        {
+            "source_geometry": source_result.to_record(),
+            "prerequisite_issues": (
+                [] if prerequisite_issue is None else [prerequisite_issue]
+            ),
+            "inventory": before.to_record(),
+            "final_comparison": fixed_assets.compare(
+                before, after, tolerance
+            ).to_record(),
+        },
+    )
 
 
 def detect_issues(translation_config, docs, run_trace=None) -> list[Issue]:
@@ -263,31 +306,94 @@ def detect_issues(translation_config, docs, run_trace=None) -> list[Issue]:
     from babeldoc.magazine import title_typeset
 
     title_typeset.apply(translation_config, docs)
+    config = detector_config()
+    reflow_config = column_reflow.load_reflow_config()
+    working_dir = Path(translation_config.get_working_file_path(REPORT_NAME)).parent
+    source_result = source_geometry_of(working_dir, config, run_trace=run_trace)
+    prerequisite_issue = source_result.issue()
+    if prerequisite_issue is not None:
+        record_runtime_blocked_reason(translation_config, prerequisite_issue)
+        if run_trace is not None:
+            run_trace.record_blocked_reason(prerequisite_issue)
+    inventory_before = fixed_assets.build_inventory(
+        docs,
+        run_trace=run_trace,
+        protected_paragraph_labels=reflow_config.protected_paragraph_labels,
+    )
     if run_trace is None:
-        column_reflow.apply(translation_config, docs)
+        column_reflow.apply(
+            translation_config,
+            docs,
+            source_geometry=source_result,
+            fixed_inventory=inventory_before,
+        )
     else:
-        column_reflow.apply(translation_config, docs, run_trace=run_trace)
+        column_reflow.apply(
+            translation_config,
+            docs,
+            source_geometry=source_result,
+            fixed_inventory=inventory_before,
+            run_trace=run_trace,
+        )
     if not enabled(translation_config):
         return []
     from babeldoc.magazine.react import controller
 
     if controller.enabled(translation_config):
         if run_trace is None:
-            return controller.repair_document(translation_config, docs)
-        return controller.repair_document(
-            translation_config, docs, run_trace=run_trace
+            issues = controller.repair_document(
+                translation_config,
+                docs,
+                source_geometry=source_result,
+                fixed_inventory=inventory_before,
+            )
+        else:
+            issues = controller.repair_document(
+                translation_config,
+                docs,
+                run_trace=run_trace,
+                source_geometry=source_result,
+                fixed_inventory=inventory_before,
+            )
+        _write_fixed_asset_report(
+            working_dir,
+            source_result,
+            prerequisite_issue,
+            inventory_before,
+            fixed_assets.build_inventory(
+                docs,
+                run_trace=run_trace,
+                protected_paragraph_labels=(
+                    reflow_config.protected_paragraph_labels
+                ),
+            ),
+            reflow_config.asset_bbox_tolerance_pt,
         )
-    config = detector_config()
-    working_dir = Path(translation_config.get_working_file_path(REPORT_NAME)).parent
+        return issues
     context = build_context(
         docs,
         config,
         getattr(translation_config, "lang_out", None),
         working_dir,
-        translation_performed=not getattr(translation_config, "skip_translation", False),
+        translation_performed=not getattr(
+            translation_config, "skip_translation", False
+        ),
+        source_geometry=source_result,
     )
     issues = run_detectors(context)
     write_report(working_dir, as_record(context, issues))
+    _write_fixed_asset_report(
+        working_dir,
+        source_result,
+        prerequisite_issue,
+        inventory_before,
+        fixed_assets.build_inventory(
+            docs,
+            run_trace=run_trace,
+            protected_paragraph_labels=reflow_config.protected_paragraph_labels,
+        ),
+        reflow_config.asset_bbox_tolerance_pt,
+    )
     logger.debug(
         "detection: %d issue(s) over %d page(s)", len(issues), len(context.pages)
     )
