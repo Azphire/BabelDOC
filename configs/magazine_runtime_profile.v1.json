@@ -1,0 +1,28 @@
+{
+  "format_version": 1,
+  "profile": "magazine-runtime",
+  "version": 1,
+  "switches": {
+    "magazine_checkpoint": true,
+    "magazine_page_classify": true,
+    "magazine_chain_detect": true,
+    "magazine_chain_translate": false,
+    "magazine_article_group": true,
+    "magazine_article_context": false,
+    "magazine_hitl_export": false,
+    "magazine_hitl_apply": false,
+    "magazine_detect": true,
+    "magazine_column_reflow": true,
+    "magazine_drop_cap_apply": false,
+    "magazine_drop_cap_mark": false,
+    "magazine_drop_cap_render": false,
+    "magazine_formula_reclass": true,
+    "magazine_fragment_stitch": true,
+    "magazine_indent_policy": true,
+    "magazine_line_structure": true,
+    "magazine_paren_dedup": true,
+    "magazine_repair": false,
+    "magazine_rotated_lane": false,
+    "magazine_title_typeset": true
+  }
+}

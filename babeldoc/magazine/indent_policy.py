@@ -79,8 +79,8 @@ from types import MappingProxyType
 
 from babeldoc.magazine import chain_builder
 from babeldoc.magazine import hitl
+from babeldoc.magazine.article_ir import ArticleDocumentIR
 from babeldoc.magazine.drop_cap import paragraph_reference
-from babeldoc.magazine.drop_cap import read_article_map
 from babeldoc.magazine.page_features import ConfigError
 from babeldoc.magazine.page_features import validate_bounded_config
 from babeldoc.magazine.taxonomy import TAXONOMY_PATH
@@ -92,7 +92,6 @@ logger = logging.getLogger(__name__)
 CONFIG_PATH = Path(__file__).resolve().parents[2] / "configs" / "indent_policy.json"
 
 REPORT_NAME = "indent_policy.report.json"
-ARTICLE_MAP_NAME = "article_map.json"
 
 # The switch, by the name the caller sets on the translation config. Down unless
 # something puts it up: this pass changes how every body paragraph of a document
@@ -254,18 +253,13 @@ def enabled(translation_config) -> bool:
     return bool(getattr(translation_config, SWITCH, False))
 
 
-def article_of_page(translation_config) -> dict[int, str]:
-    """Which article each page belongs to, or an empty map where none was written.
-
-    Read from the grouping pass's own sidecar rather than recomputed. A run with
-    grouping down has no map, and a mode that needs one says so by leaving every
-    paragraph alone rather than by inventing article boundaries here.
-    """
-    path = Path(translation_config.get_working_file_path(ARTICLE_MAP_NAME))
-    if not path.is_file():
+def article_of_page(
+    article_document_ir: ArticleDocumentIR | None,
+) -> dict[int, str]:
+    """Which article each page belongs to in the canonical runtime state."""
+    if article_document_ir is None:
         return {}
-    pages, _ = read_article_map(path)
-    return pages
+    return dict(article_document_ir.by_page)
 
 
 def mode_is_authoritative(mode: str) -> bool:
@@ -393,7 +387,11 @@ def page_is_eligible(page, taxonomy) -> tuple[bool, str | None]:
     return bool(policy.get(PAGE_ELIGIBILITY_POLICY_FLAG, False)), kind
 
 
-def apply(translation_config, docs) -> dict | None:
+def apply(
+    translation_config,
+    docs,
+    article_document_ir: ArticleDocumentIR | None = None,
+) -> dict | None:
     """Decide the first line indent of every paragraph. None where the switch is down.
 
     Returns the record it wrote, so a caller holding the document can assert
@@ -409,12 +407,16 @@ def apply(translation_config, docs) -> dict | None:
     """
     if not enabled(translation_config):
         return None
+    if article_document_ir is None:
+        raise IndentPolicyError(
+            "indent policy requires the canonical ArticleDocumentIR"
+        )
     config = load_indent_config()
     taxonomy = load_taxonomy()
     target_lang = getattr(translation_config, "lang_out", "") or ""
     mode, origin = config.mode_for(target_lang)
     pages = hitl.labeled_pages(docs)
-    of_page = article_of_page(translation_config)
+    of_page = article_of_page(article_document_ir)
 
     rank_of_article: dict[str, int] = {}
     rows: list[dict] = []

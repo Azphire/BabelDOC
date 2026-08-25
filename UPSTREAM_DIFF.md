@@ -312,3 +312,19 @@ p1#10/p3#2/p5#10/p6#15,FD-en-v2 触及 p2#8/p4#3/p8#5/p9#9,与四条锚零交集
 `line_skip` 为 1.50/1.3 两个裸字面量)。把 `line_skip` 提到模块级或抄进
 `configs/drop_cap_render.json`,都会在树上留两份同一个数 —— 正是 W-B11-18 认定为违规的形态。
 本批改为**从段落自身的基线实测行进量**,故上游一字未改,且任意正文字号的栏都得到成比例的首字。
+
+
+## C01
+
+| 文件 | 符号 | 调用方 | 目的 | 批次 |
+| --- | --- | --- | --- | --- |
+| `babeldoc/format/pdf/translation_config.py` | `TranslationConfig.__init__` | CLI、工具与公开 Python 配置入口 | 将正在使用的 21 个 magazine 开关全部公开为带兼容默认值的构造参数，并允许版本化 profile 在构造期间一次性提供有效值；未选择 profile 时保留原默认行为 | C01 |
+| `babeldoc/main.py` | `create_parser`、`main` | BabelDOC CLI | 新增 `--magazine-profile` 正式入口并把所选文件交给 `TranslationConfig`，避免工具或测试脚本通过临时 `setattr` 才能启用功能 | C01 |
+| `babeldoc/format/pdf/high_level.py` | `do_translate` | 同步与异步翻译入口 | 在读取、创建或修改 Document IL 前执行 magazine 依赖校验并写运行 manifest；非法组合在进入 PDF/IL 流水线前失败 | C01 |
+
+## C02
+
+| 文件 | 符号 | 调用方 | 目的 | 批次 |
+| --- | --- | --- | --- | --- |
+| `babeldoc/format/pdf/high_level.py` | `_do_translate_single` | 单文档 PDF 流水线 | 保存 ArticleBuilder 返回的唯一 `ArticleDocumentIR`，并显式传给 HITL 身份消费者、LLM-only 翻译器和缩进策略；sidecar 不再作为该次运行的身份来源 | C02 |
+| `babeldoc/format/pdf/document_il/midend/il_translator_llm_only.py` | `ILTranslatorLLMOnly.__init__`、`translate` | high-level LLM-only 翻译路径 | 接收同一 `ArticleDocumentIR`，article context 开启时直接用它规划 brief；缺少 canonical state 时拒绝重新分组 | C02 |

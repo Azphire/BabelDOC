@@ -34,6 +34,7 @@ from babeldoc.format.pdf.translation_config import TranslationConfig
 from babeldoc.magazine.article_context import EMPTY_CONTEXT
 from babeldoc.magazine.article_context import ArticleContext
 from babeldoc.magazine.article_context import plan_article_context
+from babeldoc.magazine.article_ir import ArticleDocumentIR
 from babeldoc.magazine.chain_translation import EMPTY_CLAIM
 from babeldoc.magazine.chain_translation import ChainClaim
 from babeldoc.magazine.chain_translation import plan_chain_translation
@@ -121,9 +122,11 @@ class ILTranslatorLLMOnly:
         translate_engine: BaseTranslator,
         translation_config: TranslationConfig,
         tokenizer=None,
+        article_document_ir: ArticleDocumentIR | None = None,
     ):
         self.translate_engine = translate_engine
         self.translation_config = translation_config
+        self.article_document_ir = article_document_ir
         self.font_mapper = FontMapper(translation_config)
         self.shared_context_cross_split_part = (
             translation_config.shared_context_cross_split_part
@@ -224,7 +227,13 @@ class ILTranslatorLLMOnly:
             # one such batch.
             article_context = EMPTY_CONTEXT
             if self.translation_config.magazine_article_context:
-                article_context = plan_article_context(self, docs)
+                if self.article_document_ir is None:
+                    raise ValueError(
+                        "article context requires the canonical ArticleDocumentIR"
+                    )
+                article_context = plan_article_context(
+                    self, docs, self.article_document_ir
+                )
             chain_plan = None
             chain_claim = EMPTY_CLAIM
             if self.translation_config.magazine_chain_translate:

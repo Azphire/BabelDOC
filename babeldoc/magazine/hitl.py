@@ -96,6 +96,7 @@ from babeldoc.magazine import fragment_stitch
 from babeldoc.magazine import line_split
 from babeldoc.magazine import name_harvest
 from babeldoc.magazine import translation_style
+from babeldoc.magazine.article_ir import ArticleDocumentIR
 from babeldoc.magazine.page_classifier import REPORT_NAME as CLASSIFY_REPORT_NAME
 from babeldoc.magazine.page_features import ConfigError
 from babeldoc.magazine.page_features import validate_bounded_config
@@ -542,7 +543,11 @@ def export_terms(translation_config, docs) -> list[dict]:
     return rows
 
 
-def merged_terms(translation_config, docs) -> list[dict]:
+def merged_terms(
+    translation_config,
+    docs,
+    article_document_ir: ArticleDocumentIR | None = None,
+) -> list[dict]:
     """One terms table, whoever found each entry, with the defaults derived.
 
     Two finders reach this table and they are looking for different things: the
@@ -571,7 +576,9 @@ def merged_terms(translation_config, docs) -> list[dict]:
     engine = getattr(translation_config, "translator", None)
     config = name_harvest.load_harvest_config()
     by_key = {Glossary.normalize_source(row["source"]): row for row in rows}
-    for row in name_harvest.harvested_rows(translation_config, docs):
+    for row in name_harvest.harvested_rows(
+        translation_config, docs, article_document_ir
+    ):
         key = Glossary.normalize_source(row["source"])
         held = by_key.get(key)
         if held is None:
@@ -613,7 +620,13 @@ def merged_terms(translation_config, docs) -> list[dict]:
         row["candidates"] = candidates
         row["person_shaped"] = True
         row["policy"] = policy.person_names
-    name_harvest.write_merged_report(translation_config, rows, rendered)
+    name_harvest.write_merged_report(
+        translation_config,
+        rows,
+        rendered,
+        article_document_ir,
+        len(docs.page),
+    )
     return rows
 
 
@@ -825,14 +838,18 @@ def after_page_classify(translation_config, docs) -> None:
     line_split.apply(translation_config, pages)
 
 
-def after_term_extract(translation_config, docs) -> None:
+def after_term_extract(
+    translation_config,
+    docs,
+    article_document_ir: ArticleDocumentIR | None = None,
+) -> None:
     """Hook run once term extraction is over and before the translator is built.
 
     The translator caches its glossaries as it is constructed, so this is the
     last point at which a ruled term can reach a prompt. Drop cap marking runs
-    here too, unconditionally and behind its own switch: it needs the article map
-    the grouping stage writes earlier in the pipeline, and marking before the
-    draft is written is what lets one hook export the candidates it just found.
+    here too, unconditionally and behind its own switch: it consumes the
+    canonical article state built earlier in the pipeline, and marking before
+    the draft is written lets one hook export the candidates it just found.
 
     The pass that acts on a drop cap verdict runs last of all, and outside the
     ruling branch: a verdict reaches it whether a human wrote it or the target
@@ -841,14 +858,16 @@ def after_term_extract(translation_config, docs) -> None:
     is what puts a whole first word in the request.
     """
     labeled = labeled_pages(docs)
-    candidates = drop_cap.mark(translation_config, labeled)
+    candidates = drop_cap.mark(
+        translation_config, labeled, article_document_ir=article_document_ir
+    )
     # Built once, whether or not it is written out: the defaults it derives are
     # what a run lands under with nobody ruling, so a run with the draft switch
     # down needs them exactly as much as a run with it up. A run with both
     # switches down builds nothing and asks nothing, which is the run that
     # existed before the loop.
     rows = (
-        merged_terms(translation_config, docs)
+        merged_terms(translation_config, docs, article_document_ir)
         if (
             translation_config.magazine_hitl_export
             or translation_config.magazine_hitl_apply

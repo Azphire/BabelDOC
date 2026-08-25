@@ -384,6 +384,11 @@ def create_parser():
         default=False,
         help="Skip formula offset calculation (default: False)",
     )
+    translation_group.add_argument(
+        "--magazine-profile",
+        default=None,
+        help="Path to a versioned magazine runtime profile JSON file.",
+    )
     # service option argument group
     service_group = translation_group.add_mutually_exclusive_group()
     service_group.add_argument(
@@ -738,6 +743,7 @@ async def main():
             skip_formula_offset_calculation=args.skip_formula_offset_calculation,
             metadata_extra_data=args.metadata_extra_data,
             term_pool_max_workers=args.term_pool_max_workers,
+            magazine_profile=args.magazine_profile,
         )
 
         def nop(_x):

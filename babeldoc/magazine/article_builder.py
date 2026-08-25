@@ -10,13 +10,11 @@ the page level declaration is only a prior -- the two layer rule again, decided
 the same way it is decided everywhere else.
 
 The stage is off by default, and even with ``magazine_article_group`` on it
-writes nothing into the intermediate language. What it finds goes to
-``article_map.json`` beside the other sidecars: the schema is frozen, and an
-article is a property of the document's structure rather than of any one
-paragraph, so the map is a document of its own. Nothing downstream of this stage
-is affected by it in this batch, which is why the stage leaves no checkpoint of
-its own: the intermediate language after it is the one the chain builder's
-checkpoint already holds.
+writes nothing into the intermediate language. It returns the canonical runtime
+``ArticleDocumentIR`` and writes ``article_ir.json`` for audit. The older
+``article_map.json`` projection remains for offline tools. The schema is frozen,
+and an article is a property of the document rather than of any one paragraph,
+so neither sidecar is read back to recover runtime identity.
 
 Two policy flags steer it and it reads nothing else about a page.
 ``opens_article`` says an article begins on this page. ``chain_eligible``, with
@@ -30,6 +28,7 @@ they are declared and consumed separately.
 
 from __future__ import annotations
 
+import hashlib
 import json
 import logging
 from dataclasses import dataclass
@@ -37,7 +36,13 @@ from functools import lru_cache
 from pathlib import Path
 
 from babeldoc.format.pdf.document_il import il_version_1
-from babeldoc.format.pdf.document_il.midend.paragraph_finder import generate_base58_id
+from babeldoc.magazine.article_ir import ArticleDocumentIR
+from babeldoc.magazine.article_ir import ArticleIR
+from babeldoc.magazine.article_ir import ArticleIssue
+from babeldoc.magazine.article_ir import ArticlePolicyEvidence
+from babeldoc.magazine.article_ir import ArticleRegionSlot
+from babeldoc.magazine.article_ir import SourceElementRef
+from babeldoc.magazine.article_ir import UnsupportedArticlePage
 from babeldoc.magazine.chain_signals import CLASS_LABELS_KEY
 from babeldoc.magazine.chain_signals import CONFIG_PATH as CHAIN_CONFIG_PATH
 from babeldoc.magazine.chain_signals import load_chain_config
@@ -52,6 +57,10 @@ logger = logging.getLogger(__name__)
 CONFIG_PATH = Path(__file__).resolve().parents[2] / "configs" / "article_grouping.json"
 
 REPORT_NAME = "article_map.json"
+IR_REPORT_NAME = "article_ir.json"
+
+UNSUPPORTED_SAME_PAGE_MULTI_ARTICLE = "unsupported_same_page_multi_article"
+ISSUE_CHAIN_SPANS_ARTICLES = "continuity_chain_spans_articles"
 
 # The endpoint classes whose layout labels count as a heading, by name.
 TITLE_CLASSES_KEY = "title_pair_classes"
@@ -279,17 +288,392 @@ def title_paragraph(
     return None
 
 
-def build_articles(docs: il_version_1.Document, policy_of, labels) -> Grouping:
-    """Group one document: roles, the walk they imply, then the chain merge."""
-    roles = [page_role(page, index, policy_of) for index, page in enumerate(docs.page)]
-    articles = merge_across_chains(walk_roles(roles), chain_pages(docs))
+def _hash_record(value) -> str:
+    encoded = json.dumps(
+        value, ensure_ascii=False, sort_keys=True, separators=(",", ":")
+    ).encode("utf-8")
+    return hashlib.sha256(encoded).hexdigest()
+
+
+def _source_ref(page_index: int, paragraph_index: int) -> str:
+    return f"p{page_index + 1}#{paragraph_index}"
+
+
+def _box_tuple(box) -> tuple[float, float, float, float] | None:
+    if box is None or None in (box.x, box.y, box.x2, box.y2):
+        return None
+    return (float(box.x), float(box.y), float(box.x2), float(box.y2))
+
+
+def _style_hash(paragraph) -> str:
+    style = paragraph.pdf_style
+    graphic_state = None if style is None else style.graphic_state
+    return _hash_record(
+        {
+            "font_id": None if style is None else style.font_id,
+            "font_size": None if style is None else style.font_size,
+            "graphic_state": None
+            if graphic_state is None
+            else graphic_state.passthrough_per_char_instruction,
+        }
+    )
+
+
+def _page_frame(page) -> tuple[float, float, float, float] | None:
+    for holder in (page.cropbox, page.mediabox):
+        if holder is not None:
+            frame = _box_tuple(holder.box)
+            if frame is not None:
+                return frame
+    return None
+
+
+def _column_bands(page, boxes, gap_ratio: float) -> list[float]:
+    lefts = sorted(box[0] for box in boxes if box is not None)
+    if not lefts:
+        return []
+    frame = _page_frame(page)
+    width = 0.0 if frame is None else frame[2] - frame[0]
+    gap = width * gap_ratio
+    bands = [lefts[0]]
+    for left in lefts[1:]:
+        if left - bands[-1] > gap:
+            bands.append(left)
+    return bands
+
+
+def _column_of(bands: list[float], box) -> int:
+    if box is None or not bands:
+        return 0
+    column = 0
+    for position, band in enumerate(bands):
+        if box[0] >= band:
+            column = position
+    return column
+
+
+def _page_elements(
+    page, page_index: int, reading_order: int, gap_ratio: float
+) -> tuple[list[SourceElementRef], int]:
+    entries = []
+    for paragraph_index, paragraph in enumerate(page.pdf_paragraph):
+        box = _box_tuple(paragraph.box)
+        entries.append((paragraph_index, paragraph, box))
+    bands = _column_bands(page, [item[2] for item in entries], gap_ratio)
+    entries.sort(
+        key=lambda item: (
+            _column_of(bands, item[2]),
+            -(item[2][3] if item[2] is not None else 0.0),
+            item[2][0] if item[2] is not None else 0.0,
+            item[0],
+        )
+    )
+    elements = []
+    for paragraph_index, paragraph, box in entries:
+        elements.append(
+            SourceElementRef(
+                source_ref=_source_ref(page_index, paragraph_index),
+                page=page_index + 1,
+                column=_column_of(bands, box),
+                reading_order=reading_order,
+                role=paragraph.layout_label or "unclassified",
+                source_box=box,
+                source_text_hash=hashlib.sha256(
+                    (paragraph.unicode or "").encode("utf-8")
+                ).hexdigest(),
+                style_hash=_style_hash(paragraph),
+            )
+        )
+        reading_order += 1
+    return elements, reading_order
+
+
+def _document_elements(docs) -> dict[int, tuple[SourceElementRef, ...]]:
+    gap_ratio = float(load_chain_config()["column_split_gap_ratio"])
+    by_page = {}
+    reading_order = 0
+    for page_index, page in enumerate(docs.page):
+        elements, reading_order = _page_elements(
+            page, page_index, reading_order, gap_ratio
+        )
+        by_page[page_index] = tuple(elements)
+    return by_page
+
+
+def _canonical_chains(docs) -> dict[str, tuple[str, tuple[str, ...], tuple[int, ...]]]:
+    members: dict[str, list[tuple[int | None, int, int, str]]] = {}
+    for page_index, page in enumerate(docs.page):
+        for paragraph_index, paragraph in enumerate(page.pdf_paragraph):
+            if not paragraph.chain_id:
+                continue
+            members.setdefault(paragraph.chain_id, []).append(
+                (
+                    paragraph.chain_index,
+                    page_index,
+                    paragraph_index,
+                    _source_ref(page_index, paragraph_index),
+                )
+            )
+    canonical = {}
+    for raw_id, held in members.items():
+        held.sort(
+            key=lambda item: (
+                item[0] is None,
+                0 if item[0] is None else item[0],
+                item[1],
+                item[2],
+            )
+        )
+        refs = tuple(item[3] for item in held)
+        pages = tuple(sorted({item[1] for item in held}))
+        canonical[raw_id] = (f"chain-{_hash_record(refs)}", refs, pages)
+    return canonical
+
+
+def _article_id(
+    article: Article,
+    elements_by_page: dict[int, tuple[SourceElementRef, ...]],
+    chains: dict[str, tuple[str, tuple[str, ...], tuple[int, ...]]],
+) -> str:
+    held = set(article.pages)
+    elements = [
+        element
+        for page_index in article.pages
+        for element in elements_by_page.get(page_index, ())
+    ]
+    chain_signature = sorted(
+        canonical_id
+        for canonical_id, _refs, pages in chains.values()
+        if held.issuperset(pages)
+    )
+    material = {
+        "pages": [page + 1 for page in article.pages],
+        "first_source_ref": elements[0].source_ref if elements else None,
+        "chain_signature": chain_signature,
+    }
+    return f"article-{_hash_record(material)}"
+
+
+def _assign_article_ids(
+    articles: list[Article], elements_by_page, chains
+) -> None:
     for article in articles:
-        article.article_id = generate_base58_id()
-    return Grouping(roles=tuple(roles), articles=tuple(articles))
+        article.article_id = _article_id(article, elements_by_page, chains)
+
+
+def _build_grouping(docs, policy_of):
+    roles = [page_role(page, index, policy_of) for index, page in enumerate(docs.page)]
+    elements_by_page = _document_elements(docs)
+    chains = _canonical_chains(docs)
+    provisional = walk_roles(roles)
+    _assign_article_ids(provisional, elements_by_page, chains)
+    merged = merge_across_chains(provisional, chain_pages(docs))
+    _assign_article_ids(merged, elements_by_page, chains)
+    return (
+        Grouping(roles=tuple(roles), articles=tuple(merged)),
+        provisional,
+        elements_by_page,
+        chains,
+    )
+
+
+def build_articles(docs: il_version_1.Document, policy_of, labels) -> Grouping:
+    """Group one document with deterministic identities."""
+    grouping, _provisional, _elements, _chains = _build_grouping(docs, policy_of)
+    return grouping
+
+
+def _fixed_obstacle_refs(page, page_number: int) -> tuple[str, ...]:
+    refs = []
+    for collection in (
+        "pdf_xobject",
+        "pdf_rectangle",
+        "pdf_figure",
+        "pdf_curve",
+        "pdf_form",
+    ):
+        for index, item in enumerate(getattr(page, collection, ()) or ()):
+            if _box_tuple(getattr(item, "box", None)) is not None:
+                refs.append(f"p{page_number}:{collection}#{index}")
+    return tuple(refs)
+
+
+def _unsupported_pages(docs, elements_by_page, title_labels):
+    unsupported = []
+    for page_index, page in enumerate(docs.page):
+        by_ref = {
+            element.source_ref: element
+            for element in elements_by_page.get(page_index, ())
+        }
+        candidates = [
+            (
+                _source_ref(page_index, paragraph_index),
+                paragraph.chain_id,
+            )
+            for paragraph_index, paragraph in enumerate(page.pdf_paragraph)
+            if paragraph.layout_label in title_labels
+            and (paragraph.unicode or "").strip()
+        ]
+        evidence = set()
+        for position, (left_ref, left_chain) in enumerate(candidates):
+            for right_ref, right_chain in candidates[position + 1 :]:
+                if by_ref[left_ref].column == by_ref[right_ref].column:
+                    continue
+                if left_chain and left_chain == right_chain:
+                    continue
+                evidence.update((left_ref, right_ref))
+        if evidence:
+            unsupported.append(
+                UnsupportedArticlePage(
+                    page=page_index + 1,
+                    reason=UNSUPPORTED_SAME_PAGE_MULTI_ARTICLE,
+                    evidence_refs=tuple(sorted(evidence)),
+                )
+            )
+    return tuple(unsupported)
+
+
+def _chain_issues(provisional, chains) -> tuple[ArticleIssue, ...]:
+    owner = {
+        page: article.article_id for article in provisional for page in article.pages
+    }
+    issues = []
+    for canonical_id, refs, pages in sorted(chains.values()):
+        article_ids = tuple(sorted({owner[page] for page in pages if page in owner}))
+        if len(article_ids) > 1:
+            issues.append(
+                ArticleIssue(
+                    code=ISSUE_CHAIN_SPANS_ARTICLES,
+                    chain_id=canonical_id,
+                    article_ids=article_ids,
+                    element_refs=refs,
+                )
+            )
+    return tuple(issues)
+
+
+def _slot_box(elements) -> tuple[float, float, float, float] | None:
+    boxes = [
+        element.source_box
+        for element in elements
+        if element.source_box is not None
+    ]
+    if not boxes:
+        return None
+    return (
+        min(box[0] for box in boxes),
+        min(box[1] for box in boxes),
+        max(box[2] for box in boxes),
+        max(box[3] for box in boxes),
+    )
+
+
+def _article_ir(
+    docs,
+    article,
+    roles,
+    elements_by_page,
+    chains,
+    unsupported_pages,
+) -> ArticleIR:
+    held = set(article.pages)
+    unsupported = {item.page for item in unsupported_pages}
+    elements = tuple(
+        element
+        for page_index in article.pages
+        for element in elements_by_page.get(page_index, ())
+    )
+    chain_ids = tuple(
+        sorted(
+            canonical_id
+            for canonical_id, _refs, pages in chains.values()
+            if held.issuperset(pages)
+        )
+    )
+    slots = []
+    for page_index in article.pages:
+        page_number = page_index + 1
+        if page_number in unsupported:
+            continue
+        page_elements = elements_by_page.get(page_index, ())
+        columns = sorted({element.column for element in page_elements})
+        for column in columns:
+            members = [element for element in page_elements if element.column == column]
+            box = _slot_box(members)
+            if box is None:
+                continue
+            capacity = max(0.0, box[2] - box[0]) * max(0.0, box[3] - box[1])
+            slots.append(
+                ArticleRegionSlot(
+                    article_id=article.article_id,
+                    page=page_number,
+                    column=column,
+                    slot_order=len(slots),
+                    box=box,
+                    fixed_obstacle_refs=_fixed_obstacle_refs(
+                        docs.page[page_index], page_number
+                    ),
+                    capacity_hint=capacity,
+                )
+            )
+    policy_evidence = tuple(
+        ArticlePolicyEvidence(
+            page=page_index + 1,
+            role=roles[page_index].role,
+            page_kind=roles[page_index].kind,
+            reason=roles[page_index].reason,
+            article_reflow_allowed=page_index + 1 not in unsupported,
+        )
+        for page_index in article.pages
+    )
+    return ArticleIR(
+        article_id=article.article_id,
+        pages=tuple(page + 1 for page in article.pages),
+        elements=elements,
+        slots=tuple(slots),
+        chain_ids=chain_ids,
+        policy_evidence=policy_evidence,
+    )
+
+
+def _document_ir(docs, grouping, provisional, elements_by_page, chains, labels):
+    unsupported = _unsupported_pages(docs, elements_by_page, labels)
+    articles = tuple(
+        _article_ir(
+            docs,
+            article,
+            grouping.roles,
+            elements_by_page,
+            chains,
+            unsupported,
+        )
+        for article in grouping.articles
+    )
+    by_page = {
+        page: article.article_id for article in articles for page in article.pages
+    }
+    by_element = {
+        element.source_ref: article.article_id
+        for article in articles
+        for element in article.elements
+    }
+    by_chain = {
+        chain_id: article.article_id
+        for article in articles
+        for chain_id in article.chain_ids
+    }
+    return ArticleDocumentIR(
+        articles=articles,
+        by_page=by_page,
+        by_element=by_element,
+        by_chain=by_chain,
+        unsupported_pages=unsupported,
+        issues=_chain_issues(provisional, chains),
+    )
 
 
 class ArticleBuilder:
-    """Group the pages of a document into articles and write the map."""
+    """Build and write the canonical article state for one document."""
 
     stage_name = "ArticleBuilder"
 
@@ -300,63 +684,85 @@ class ArticleBuilder:
         self.taxonomy = load_taxonomy()
         self.policy_of = policy_of if policy_of is not None else self.taxonomy.policy_of
 
-    def process(self, docs: il_version_1.Document) -> il_version_1.Document:
-        grouping = build_articles(docs, self.policy_of, self.labels)
-        self._write_report(docs, grouping)
-        return docs
+    def process(self, docs: il_version_1.Document) -> ArticleDocumentIR:
+        grouping, provisional, elements, chains = _build_grouping(
+            docs, self.policy_of
+        )
+        document_ir = _document_ir(
+            docs, grouping, provisional, elements, chains, self.labels
+        )
+        self._write_ir(document_ir)
+        self._write_report(docs, grouping, document_ir)
+        return document_ir
 
     def _article_record(
-        self, docs: il_version_1.Document, article: Article, chains: dict[str, list[int]]
+        self,
+        docs: il_version_1.Document,
+        article: ArticleIR,
+        merged_by_chain: bool,
     ) -> dict:
-        start = docs.page[article.pages[0]]
+        start = docs.page[article.pages[0] - 1]
         title = title_paragraph(start, self.labels)
-        held = set(article.pages)
+        title_ref = None
+        if title is not None:
+            title_ref = next(
+                (
+                    _source_ref(article.pages[0] - 1, index)
+                    for index, paragraph in enumerate(start.pdf_paragraph)
+                    if paragraph is title
+                ),
+                None,
+            )
         return {
             "article_id": article.article_id,
-            # 1-based file page order, the form every other sidecar reports in.
-            "pages": [index + 1 for index in article.pages],
-            "start_page": article.pages[0] + 1,
-            "merged_by_chain": article.merged_by_chain,
+            "pages": list(article.pages),
+            "start_page": article.pages[0],
+            "merged_by_chain": merged_by_chain,
             "title": None
             if title is None
             else {
-                "debug_id": title.debug_id,
+                "source_ref": title_ref,
                 "layout_label": title.layout_label,
                 "text": title.unicode,
             },
-            "chains": sorted(
-                chain_id
-                for chain_id, pages in chains.items()
-                if held.issuperset(pages)
-            ),
+            "chains": list(article.chain_ids),
             "paragraphs": [
-                {"debug_id": paragraph.debug_id, "page": index + 1}
-                for index in article.pages
-                for paragraph in docs.page[index].pdf_paragraph
+                {"source_ref": element.source_ref, "page": element.page}
+                for element in article.elements
             ],
         }
 
-    def _write_report(self, docs: il_version_1.Document, grouping: Grouping) -> Path:
-        chains = chain_pages(docs)
-        by_page = {
-            index: article.article_id
+    def _write_ir(self, document_ir: ArticleDocumentIR) -> Path:
+        path = Path(self.translation_config.get_working_file_path(IR_REPORT_NAME))
+        path.write_bytes(document_ir.to_json_bytes())
+        return path
+
+    def _write_report(
+        self,
+        docs: il_version_1.Document,
+        grouping: Grouping,
+        document_ir: ArticleDocumentIR,
+    ) -> Path:
+        merged_by_id = {
+            article.article_id: article.merged_by_chain
             for article in grouping.articles
-            for index in article.pages
         }
         report = {
             "counts": {
                 "pages": len(docs.page),
-                "articles": len(grouping.articles),
+                "articles": len(document_ir.articles),
                 "unassigned": len(grouping.unassigned),
                 "merged_by_chain": sum(
                     1 for article in grouping.articles if article.merged_by_chain
                 ),
-                "chains": len(chains),
+                "chains": len(document_ir.by_chain),
             },
             "title_labels": list(self.labels),
             "articles": [
-                self._article_record(docs, article, chains)
-                for article in grouping.articles
+                self._article_record(
+                    docs, article, merged_by_id.get(article.article_id, False)
+                )
+                for article in document_ir.articles
             ],
             "unassigned": [
                 {
@@ -373,14 +779,19 @@ class ArticleBuilder:
                     "page_kind_conf": role.confidence,
                     "role": role.role,
                     "reason": role.reason,
-                    "article_id": by_page.get(role.index),
+                    "article_id": document_ir.by_page.get(role.index + 1),
                 }
                 for role in grouping.roles
             ],
+            "unsupported_pages": [
+                item.to_record() for item in document_ir.unsupported_pages
+            ],
+            "issues": [issue.to_record() for issue in document_ir.issues],
         }
         path = Path(self.translation_config.get_working_file_path(REPORT_NAME))
         with path.open("w", encoding="utf-8") as f:
-            json.dump(report, f, indent=2, sort_keys=True)
+            json.dump(report, f, indent=2, sort_keys=True, ensure_ascii=False)
+            f.write("\n")
         record_config_manifest(path.parent, [*DEFAULT_CONFIG_PATHS, CONFIG_PATH])
         logger.debug(
             "grouped %d pages into %d article(s), %d unassigned, map at %s",

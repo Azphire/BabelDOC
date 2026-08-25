@@ -33,6 +33,11 @@
       "switch": "magazine_article_group"
     },
     {
+      "name": "article_ir.json",
+      "stage": "article_builder",
+      "switch": "magazine_article_group"
+    },
+    {
       "name": "chain_translation.report.json",
       "stage": "il_translated",
       "switch": "magazine_chain_translate"
