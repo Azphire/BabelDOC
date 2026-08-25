@@ -226,6 +226,19 @@ class TranslationConfig:
         magazine_hitl_export: bool = False,
         magazine_hitl_apply: bool = False,
         magazine_detect: bool = False,
+        magazine_column_reflow: bool = False,
+        magazine_drop_cap_apply: bool = False,
+        magazine_drop_cap_mark: bool = False,
+        magazine_drop_cap_render: bool = False,
+        magazine_formula_reclass: bool = False,
+        magazine_fragment_stitch: bool = False,
+        magazine_indent_policy: bool = False,
+        magazine_line_structure: bool = False,
+        magazine_paren_dedup: bool = True,
+        magazine_repair: bool = False,
+        magazine_rotated_lane: bool = False,
+        magazine_title_typeset: bool = False,
+        magazine_profile: str | Path | None = None,
     ):
         self.translator = translator
         self.term_extraction_translator = term_extraction_translator or translator
@@ -345,28 +358,77 @@ class TranslationConfig:
         self.auto_enable_ocr_workaround = auto_enable_ocr_workaround
         self.skip_translation = skip_translation
         self.only_parse_generate_pdf = only_parse_generate_pdf
-        # Magazine extension: write round-trippable IL XML checkpoints per stage.
-        self.magazine_checkpoint = magazine_checkpoint
-        # Magazine extension: run the deterministic page classifier stage.
-        self.magazine_page_classify = magazine_page_classify
-        # Magazine extension: run the article chain detection stage.
-        self.magazine_chain_detect = magazine_chain_detect
-        # Magazine extension: translate the members of a chain as one unit.
-        self.magazine_chain_translate = magazine_chain_translate
-        # Magazine extension: group the pages of the document into articles.
-        self.magazine_article_group = magazine_article_group
-        # Magazine extension: describe each article once and carry the
-        # description on every batch that belongs to it.
-        self.magazine_article_context = magazine_article_context
-        # Magazine extension: write the review draft of what the machine
-        # decided on its own.
-        self.magazine_hitl_export = magazine_hitl_export
-        # Magazine extension: let the decisions file beside that draft overrule
-        # those decisions.
-        self.magazine_hitl_apply = magazine_hitl_apply
-        # Magazine extension: inspect the finished document for defects and
-        # write what it finds to a sidecar.
-        self.magazine_detect = magazine_detect
+        self.magazine_runtime_profile = None
+        profile_switches: dict[str, bool] = {}
+        if magazine_profile is not None:
+            from babeldoc.magazine.runtime_profile import load_magazine_profile
+
+            self.magazine_runtime_profile = load_magazine_profile(magazine_profile)
+            profile_switches = self.magazine_runtime_profile.switches
+
+        self.magazine_checkpoint = profile_switches.get(
+            "magazine_checkpoint", magazine_checkpoint
+        )
+        self.magazine_page_classify = profile_switches.get(
+            "magazine_page_classify", magazine_page_classify
+        )
+        self.magazine_chain_detect = profile_switches.get(
+            "magazine_chain_detect", magazine_chain_detect
+        )
+        self.magazine_chain_translate = profile_switches.get(
+            "magazine_chain_translate", magazine_chain_translate
+        )
+        self.magazine_article_group = profile_switches.get(
+            "magazine_article_group", magazine_article_group
+        )
+        self.magazine_article_context = profile_switches.get(
+            "magazine_article_context", magazine_article_context
+        )
+        self.magazine_hitl_export = profile_switches.get(
+            "magazine_hitl_export", magazine_hitl_export
+        )
+        self.magazine_hitl_apply = profile_switches.get(
+            "magazine_hitl_apply", magazine_hitl_apply
+        )
+        self.magazine_detect = profile_switches.get(
+            "magazine_detect", magazine_detect
+        )
+        self.magazine_column_reflow = profile_switches.get(
+            "magazine_column_reflow", magazine_column_reflow
+        )
+        self.magazine_drop_cap_apply = profile_switches.get(
+            "magazine_drop_cap_apply", magazine_drop_cap_apply
+        )
+        self.magazine_drop_cap_mark = profile_switches.get(
+            "magazine_drop_cap_mark", magazine_drop_cap_mark
+        )
+        self.magazine_drop_cap_render = profile_switches.get(
+            "magazine_drop_cap_render", magazine_drop_cap_render
+        )
+        self.magazine_formula_reclass = profile_switches.get(
+            "magazine_formula_reclass", magazine_formula_reclass
+        )
+        self.magazine_fragment_stitch = profile_switches.get(
+            "magazine_fragment_stitch", magazine_fragment_stitch
+        )
+        self.magazine_indent_policy = profile_switches.get(
+            "magazine_indent_policy", magazine_indent_policy
+        )
+        self.magazine_line_structure = profile_switches.get(
+            "magazine_line_structure", magazine_line_structure
+        )
+        self.magazine_paren_dedup = profile_switches.get(
+            "magazine_paren_dedup", magazine_paren_dedup
+        )
+        self.magazine_repair = profile_switches.get(
+            "magazine_repair", magazine_repair
+        )
+        self.magazine_rotated_lane = profile_switches.get(
+            "magazine_rotated_lane", magazine_rotated_lane
+        )
+        self.magazine_title_typeset = profile_switches.get(
+            "magazine_title_typeset", magazine_title_typeset
+        )
 
         if self.skip_translation or self.only_parse_generate_pdf:
             self.auto_extract_glossary = False

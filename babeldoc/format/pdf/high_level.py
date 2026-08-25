@@ -63,6 +63,7 @@ from babeldoc.magazine import indent_policy
 from babeldoc.magazine import paren_dedup
 from babeldoc.magazine import rotated_lane
 from babeldoc.magazine.page_classifier import PageClassifier
+from babeldoc.magazine.runtime_profile import preflight_magazine_runtime
 from babeldoc.progress_monitor import ProgressMonitor
 from babeldoc.utils import memory
 
@@ -540,6 +541,7 @@ def do_translate(
 ) -> TranslateResult:
     try:
         translation_config.progress_monitor = pm
+        preflight_magazine_runtime(translation_config)
         original_pdf_path = translation_config.input_file
         logger.info(f"start to translate: {original_pdf_path}")
         try:

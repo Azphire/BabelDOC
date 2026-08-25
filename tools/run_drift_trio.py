@@ -106,10 +106,9 @@ STACK = {
     "magazine_hitl_export": True,
     "magazine_hitl_apply": True,
     "magazine_detect": True,
+    "magazine_drop_cap_mark": True,
+    "magazine_repair": True,
 }
-
-# Switches that are not constructor parameters (W-B7-02, W-B8-01).
-ATTRIBUTES = {"magazine_drop_cap_mark": True, "magazine_repair": True}
 
 # The three arms, in the order they are run. The on arm goes first because it
 # spends nothing: if it does not replay from cache, the setup is wrong and the
@@ -315,8 +314,6 @@ def run_one(arm: dict, layout_model) -> dict:
         qps=QPS,
         **switches,
     )
-    for attribute, value in ATTRIBUTES.items():
-        setattr(config, attribute, value)
 
     db_path = ROOT / PROJECT_CACHE_RELPATH
     before = cache_rows_by_engine(db_path)
