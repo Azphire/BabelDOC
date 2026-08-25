@@ -41,10 +41,11 @@
 },
   "HuaweiTech-zh.pdf": {
     "1": ["masthead", "article_opener"],
-    "2": ["photo_spread"],
-    "3": ["article_opener", "article_body"],
-    "4": ["article_body"],
-    "5": ["article_opener", "article_body"]
+    "2": ["toc"],
+    "3": ["photo_spread"],
+    "4": ["article_opener", "article_body"],
+    "5": ["article_body"],
+    "6": ["article_opener", "article_body"]
   },
   "ABB-zh.pdf": {
     "1": ["front_cover"],
