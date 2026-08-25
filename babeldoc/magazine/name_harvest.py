@@ -51,6 +51,7 @@ from functools import lru_cache
 from pathlib import Path
 
 from babeldoc.glossary import Glossary
+from babeldoc.magazine.article_ir import ArticleDocumentIR
 from babeldoc.magazine.page_features import ConfigError
 from babeldoc.magazine.page_features import validate_bounded_config
 from babeldoc.magazine.prompt_loader import load_prompt
@@ -60,8 +61,6 @@ logger = logging.getLogger(__name__)
 CONFIG_PATH = Path(__file__).resolve().parents[2] / "configs" / "name_harvest.json"
 REPORT_NAME = "name_harvest.report.json"
 PROMPT_NAME = "name_transliterate"
-ARTICLE_MAP_NAME = "article_map.json"
-
 SWITCH_KEY = "switch"
 PARTICLES_KEY = "name_particles"
 STOPWORDS_KEY = "stopwords"
@@ -216,22 +215,17 @@ def harvest_text(text: str, config: HarvestConfig) -> list[str]:
     return found
 
 
-def unassigned_pages(translation_config) -> list[int]:
-    """The pages the grouping walk claimed for no article, read from its map.
-
-    Read from the map rather than decided here, and the map records a page as
-    unassigned without this module knowing or asking what kind of page it is.
-    """
-    path = Path(translation_config.get_working_file_path(ARTICLE_MAP_NAME))
-    if not path.exists():
+def unassigned_pages(
+    article_document_ir: ArticleDocumentIR | None, page_count: int
+) -> list[int]:
+    """The pages the canonical article state leaves unassigned."""
+    if article_document_ir is None:
         return []
-    with path.open(encoding="utf-8") as f:
-        record = json.load(f)
-    return sorted(
-        int(item["page"])
-        for item in record.get("unassigned", ())
-        if isinstance(item, dict) and item.get("page") is not None
-    )
+    return [
+        page
+        for page in range(1, page_count + 1)
+        if page not in article_document_ir.by_page
+    ]
 
 
 def harvest(docs, pages: list[int], config: HarvestConfig) -> list[dict]:
@@ -446,26 +440,40 @@ def write_report(translation_config, record: dict) -> Path:
     return path
 
 
-def harvested_rows(translation_config, docs) -> list[dict]:
+def harvested_rows(
+    translation_config,
+    docs,
+    article_document_ir: ArticleDocumentIR | None = None,
+) -> list[dict]:
     """The harvest's own findings, in the shape the merged table has.
 
     Deterministic and free: no model is asked anything here. The rendering is
     asked once, over the merged table, by whoever merges it.
     """
     config = load_harvest_config()
-    pages = unassigned_pages(translation_config)
+    if article_document_ir is None:
+        raise NameHarvestError(
+            "name harvest requires the canonical ArticleDocumentIR"
+        )
+    pages = unassigned_pages(article_document_ir, len(docs.page))
     rows = harvest(docs, pages, config)
     shared = translation_config.shared_context_cross_split_part
     rows = without_glossary_hits(rows, getattr(shared, "user_glossaries", ()) or ())
     return draft_rows(rows)
 
 
-def write_merged_report(translation_config, rows: list[dict], request: dict) -> Path:
+def write_merged_report(
+    translation_config,
+    rows: list[dict],
+    request: dict,
+    article_document_ir: ArticleDocumentIR | None = None,
+    page_count: int = 0,
+) -> Path:
     """What the merged table holds, and what the one request cost."""
     shaped = [row for row in rows if row.get("person_shaped")]
     record = {
         "switch": load_harvest_config().switch,
-        "pages": unassigned_pages(translation_config),
+        "pages": unassigned_pages(article_document_ir, page_count),
         "policy": (shaped[0].get("policy") if shaped else None),
         "counts": {
             "rows": len(rows),

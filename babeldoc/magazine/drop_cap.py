@@ -94,7 +94,7 @@ from pathlib import Path
 from types import MappingProxyType
 
 from babeldoc.format.pdf.document_il import il_version_1
-from babeldoc.magazine import article_builder
+from babeldoc.magazine.article_ir import ArticleDocumentIR
 from babeldoc.magazine.chain_signals import load_chain_config
 from babeldoc.magazine.line_split import SPLITTABLE
 from babeldoc.magazine.line_split import character_box
@@ -494,7 +494,11 @@ def find_candidates(
     return found
 
 
-def mark(translation_config, labeled_pages) -> list[Candidate]:
+def mark(
+    translation_config,
+    labeled_pages,
+    article_document_ir: ArticleDocumentIR | None = None,
+) -> list[Candidate]:
     """Find the candidates of one document and say so in the document.
 
     Returns them in page order, empty where the switch is down. Only a candidate
@@ -504,16 +508,11 @@ def mark(translation_config, labeled_pages) -> list[Candidate]:
     require_dependencies(translation_config)
     if not mark_enabled(translation_config):
         return []
+    if article_document_ir is None:
+        raise DropCapError("drop cap marking requires the canonical ArticleDocumentIR")
     config = load_drop_cap_config()
-    map_path = Path(
-        translation_config.get_working_file_path(article_builder.REPORT_NAME)
-    )
-    if not map_path.exists():
-        raise DropCapError(
-            f"{map_path.name} is not beside this run; the grouping stage writes "
-            f"it and {MARK_SWITCH} needs it"
-        )
-    article_of_page, openers = read_article_map(map_path)
+    article_of_page = dict(article_document_ir.by_page)
+    openers = {article.pages[0] for article in article_document_ir.articles}
     pages = dict(labeled_pages)
     candidates = find_candidates(
         labeled_pages, article_of_page, openers, config, body_labels()

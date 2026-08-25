@@ -51,13 +51,13 @@ from pathlib import Path
 from typing import Protocol
 
 from babeldoc.magazine import article_builder
+from babeldoc.magazine.article_ir import ArticleDocumentIR
 from babeldoc.magazine.chain_signals import load_chain_config
 from babeldoc.magazine.page_features import ConfigError
 from babeldoc.magazine.page_features import validate_bounded_config
 from babeldoc.magazine.prompt_loader import Prompt
 from babeldoc.magazine.prompt_loader import load_prompt
 from babeldoc.magazine.taxonomy import DEFAULT_CONFIG_PATHS
-from babeldoc.magazine.taxonomy import load_taxonomy
 from babeldoc.magazine.taxonomy import record_config_manifest
 from babeldoc.translator.cache import TranslationCache
 
@@ -426,12 +426,14 @@ class ArticleContext:
 
     def __init__(
         self,
+        article_document_ir: ArticleDocumentIR | None = None,
         page_index: dict[int, int] | None = None,
         article_of_page: dict[int, str] | None = None,
         brief_of_article: dict[str, str] | None = None,
         opener_indices: frozenset[int] = frozenset(),
         title_labels: tuple[str, ...] = (),
     ) -> None:
+        self._article_document_ir = article_document_ir
         self._page_index = page_index or {}
         self._article_of_page = article_of_page or {}
         self._brief_of_article = brief_of_article or {}
@@ -440,6 +442,10 @@ class ArticleContext:
 
     def __bool__(self) -> bool:
         return bool(self._page_index)
+
+    @property
+    def article_document_ir(self) -> ArticleDocumentIR | None:
+        return self._article_document_ir
 
     @property
     def declares_titles(self) -> bool:
@@ -504,23 +510,45 @@ def first_body_excerpt(page, body_labels, limit: int) -> str:
     return ""
 
 
-def article_sources(docs, grouping, title_labels, body_labels, config) -> list:
+def article_sources(docs, document_ir, title_labels, body_labels, config) -> list:
     """The heading and opening excerpt of every article, in page order."""
+    paragraphs = {
+        f"p{page_index + 1}#{paragraph_index}": paragraph
+        for page_index, page in enumerate(docs.page)
+        for paragraph_index, paragraph in enumerate(page.pdf_paragraph)
+    }
     sources = []
-    for article in grouping.articles:
-        start = docs.page[article.pages[0]]
-        title = article_builder.title_paragraph(start, title_labels)
+    for article in document_ir.articles:
+        title_element = next(
+            (
+                element
+                for element in article.elements
+                if element.page == article.pages[0]
+                and element.role in title_labels
+            ),
+            None,
+        )
+        title = (
+            None
+            if title_element is None
+            else paragraphs.get(title_element.source_ref)
+        )
         excerpt = ""
-        for index in article.pages:
-            excerpt = first_body_excerpt(
-                docs.page[index], body_labels, config.first_body_excerpt_chars
-            )
+        for element in article.elements:
+            if element.role not in body_labels:
+                continue
+            paragraph = paragraphs.get(element.source_ref)
+            if paragraph is None:
+                continue
+            excerpt = (paragraph.unicode or "").strip()[
+                : config.first_body_excerpt_chars
+            ]
             if excerpt:
                 break
         sources.append(
             ArticleSource(
                 article_id=article.article_id,
-                pages=tuple(article.pages),
+                pages=tuple(page - 1 for page in article.pages),
                 title_text="" if title is None else (title.unicode or "").strip(),
                 excerpt=excerpt,
             )
@@ -534,16 +562,15 @@ class ArticleContextPlan:
     def __init__(
         self,
         translation_config,
+        article_document_ir: ArticleDocumentIR,
         client: CachedBriefClient | None = None,
-        policy_of=None,
     ) -> None:
         self.translation_config = translation_config
+        self.article_document_ir = article_document_ir
         self.config = load_context_config()
         self.grouping_config = article_builder.load_grouping_config()
         self.title_labels = article_builder.title_labels(self.grouping_config)
         self.body_labels = tuple(load_chain_config()[BODY_LABELS_KEY])
-        taxonomy = load_taxonomy()
-        self.policy_of = policy_of if policy_of is not None else taxonomy.policy_of
         self.client = client
         self.records: list[dict] = []
         self.requests = 0
@@ -603,12 +630,9 @@ class ArticleContextPlan:
         return prompt.text.strip()
 
     def plan(self, docs) -> ArticleContext:
-        grouping = article_builder.build_articles(
-            docs, self.policy_of, self.title_labels
-        )
         sources = article_sources(
             docs,
-            grouping,
+            self.article_document_ir,
             self.title_labels,
             self.body_labels,
             self.config,
@@ -630,19 +654,21 @@ class ArticleContextPlan:
 
         page_index = {id(page): index for index, page in enumerate(docs.page)}
         article_of_page = {
-            index: article.article_id
-            for article in grouping.articles
-            for index in article.pages
+            page - 1: article_id
+            for page, article_id in self.article_document_ir.by_page.items()
         }
-        openers = frozenset(article.pages[0] for article in grouping.articles)
+        openers = frozenset(
+            article.pages[0] - 1 for article in self.article_document_ir.articles
+        )
         context = ArticleContext(
+            article_document_ir=self.article_document_ir,
             page_index=page_index,
             article_of_page=article_of_page,
             brief_of_article=brief_of_article,
             opener_indices=openers,
             title_labels=self.title_labels,
         )
-        self._write_report(grouping)
+        self._write_report(len(docs.page))
         return context
 
     def _record(
@@ -664,7 +690,7 @@ class ArticleContextPlan:
             }
         )
 
-    def _write_report(self, grouping) -> Path:
+    def _write_report(self, page_count: int) -> Path:
         report = {
             "counts": {
                 "articles": len(self.records),
@@ -678,7 +704,9 @@ class ArticleContextPlan:
             "body_labels": list(self.body_labels),
             "articles": self.records,
             "unassigned_pages": [
-                role.index + 1 for role in grouping.unassigned
+                page
+                for page in range(1, page_count + 1)
+                if page not in self.article_document_ir.by_page
             ],
         }
         path = Path(self.translation_config.get_working_file_path(REPORT_NAME))
@@ -700,6 +728,7 @@ class ArticleContextPlan:
 def plan_article_context(
     translator,
     docs,
+    article_document_ir: ArticleDocumentIR,
     transport: BriefTransport | None = None,
     client: CachedBriefClient | None = None,
 ):
@@ -712,4 +741,6 @@ def plan_article_context(
             identity=engine_identity(engine, config.lang_out),
             ignore_cache=bool(getattr(engine, "ignore_cache", False)),
         )
-    return ArticleContextPlan(config, client=client).plan(docs)
+    return ArticleContextPlan(
+        config, article_document_ir=article_document_ir, client=client
+    ).plan(docs)

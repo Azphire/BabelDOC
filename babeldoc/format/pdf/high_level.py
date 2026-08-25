@@ -1026,11 +1026,9 @@ def _do_translate_single(
         if translation_config.magazine_checkpoint:
             dump_checkpoint(docs, translation_config, "chain_builder")
 
-    # No checkpoint of its own: the stage writes nothing into the intermediate
-    # language, so the document after it is the one the chain builder's
-    # checkpoint already holds. What it finds goes to its sidecar.
+    article_document_ir = None
     if translation_config.magazine_article_group:
-        ArticleBuilder(translation_config).process(docs)
+        article_document_ir = ArticleBuilder(translation_config).process(docs)
         logger.debug(f"finish article builder from {temp_pdf_path}")
 
     translate_engine = translation_config.translator
@@ -1046,11 +1044,15 @@ def _do_translate_single(
 
     # Unconditional: a ruling on terms applies whether or not extraction ran,
     # and the translator caches its glossaries as it is constructed below.
-    hitl.after_term_extract(translation_config, docs)
+    hitl.after_term_extract(translation_config, docs, article_document_ir)
 
     if not translation_config.skip_translation:
         if support_llm_translate:
-            il_translator = ILTranslatorLLMOnly(translate_engine, translation_config)
+            il_translator = ILTranslatorLLMOnly(
+                translate_engine,
+                translation_config,
+                article_document_ir=article_document_ir,
+            )
         else:
             il_translator = ILTranslator(translate_engine, translation_config)
 
@@ -1069,7 +1071,7 @@ def _do_translate_single(
     paren_dedup.apply(translation_config, docs)
     # Same window, and after the text is final: the flag this decides is read by
     # the stage below and by nothing between here and it.
-    indent_policy.apply(translation_config, docs)
+    indent_policy.apply(translation_config, docs, article_document_ir)
 
     if translation_config.debug:
         xml_converter.write_json(
