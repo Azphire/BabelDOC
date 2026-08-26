@@ -9,16 +9,16 @@ BabelDOC Magazine 是基于 [funstory-ai/BabelDOC](https://github.com/funstory-a
 | 项目 | 状态 |
 | --- | --- |
 | 统一命令入口 | 已有：`babeldoc` / `uv run babeldoc` |
-| 杂志运行入口 | 已有：`--magazine-profile <profile.json>` |
-| 随仓库提供的 profile | 保守配置，只启用完整功能链的一部分 |
-| 完整功能一键模式 | 尚未提供 |
-| 推荐运行形态 | 从本仓库源码目录执行 |
+| 杂志运行入口 | `--magazine-mode` 内置模式；`--magazine-profile` 自定义模式 |
+| 内置模式 | `conservative`、`automatic`、`hitl-export`、`hitl-apply` |
+| 发布形态 | 源码树与 wheel 均包含杂志配置和提示词资源 |
+| 凭据 | CLI/TOML 显式 key 优先，空值回退到 `OPENAI_API_KEY` |
 | Python | `>=3.10,<3.14` |
 | 翻译服务 | OpenAI 兼容接口 |
 | 主要输入 | 带文本层的原生数字 PDF |
 | 明确边界 | 不实现同页多文章身份隔离；扫描件不属于主研究范围 |
 
-完整启动模式、资源打包和短门禁的收口工作见 [`plans/codex_plan_C16.md`](plans/codex_plan_C16.md)。
+这些入口、资源打包与短门禁由 [`plans/codex_plan_C16.md`](plans/codex_plan_C16.md) 统一收口。
 
 ## 核心能力
 
@@ -107,12 +107,12 @@ flowchart TB
 - Python 3.10、3.11、3.12 或 3.13
 - 可访问的 OpenAI 兼容接口及对应 API key
 
-当前 wheel 不包含根目录的 `configs/` 与 `prompts/`。请使用源码检出方式运行杂志扩展。
+仓库提交 `uv.lock`。源码运行建议使用锁定环境：
 
 ```bash
 git clone https://github.com/Azphire/BabelDOC.git
 cd BabelDOC
-uv sync
+uv sync --locked
 ```
 
 首次运行前下载并校验布局模型与字体资源：
@@ -121,11 +121,37 @@ uv sync
 uv run babeldoc --warmup
 ```
 
-仓库没有提交 `uv.lock`，`uv sync` 会按执行时可解析的依赖版本创建本地环境。需要严格复现实验时，应保存本次解析得到的锁文件和运行清单。
+### wheel 安装
+
+wheel 内已包含 `configs/*.json` 和 `prompts/*.md`，安装后不需依赖仓库根目录。可在本地构建并安装到独立环境：
+
+```bash
+uv build --wheel --no-build-isolation
+uv venv .venv-wheel
+uv pip install --python .venv-wheel dist/babeldoc-0.6.4-py3-none-any.whl
+```
+
+Linux/macOS 从安装环境启动：
+
+```bash
+./.venv-wheel/bin/babeldoc --magazine-mode conservative --validate-config
+```
+
+Windows PowerShell 对应入口为：
+
+```powershell
+& .\.venv-wheel\Scripts\babeldoc.exe --magazine-mode conservative --validate-config
+```
+
+`spec_checks/spec_check_startup_distribution.py` 会在系统临时目录重建 wheel、安装到独立 venv，并从仓库外目录校验命令入口、包内资源和 manifest 逻辑路径。
 
 ## 快速启动
 
-### Linux / macOS
+正常翻译仍必须显式选择 `--openai`。如果 CLI 或 TOML 未提供 `openai-api-key`，CLI 会自动读取 `OPENAI_API_KEY`。
+
+### 保守模式
+
+`conservative` 保留与既有 `magazine_runtime_profile.v1.json` 相同的部分功能组合，适合先进行低变更面运行：
 
 ```bash
 export OPENAI_API_KEY="your-api-key"
@@ -134,16 +160,39 @@ uv run babeldoc \
   --files /absolute/path/to/input.pdf \
   --openai \
   --openai-model gpt-4o-mini \
-  --openai-api-key "$OPENAI_API_KEY" \
   --lang-in en \
   --lang-out zh \
-  --magazine-profile configs/magazine_runtime_profile.v1.json \
+  --magazine-mode conservative \
   --working-dir runs/work \
-  --output runs/output \
-  --debug
+  --output runs/output
 ```
 
-### Windows PowerShell
+### 自动模式
+
+`automatic` 在 22 个开关中只关闭 HITL export/apply，启用其余自动功能链。先在不加载模型、不强制凭据的分支检查配置：
+
+```bash
+uv run babeldoc --magazine-mode automatic --validate-config
+uv run babeldoc --magazine-mode automatic --print-effective-config
+```
+
+然后执行翻译：
+
+```bash
+export OPENAI_API_KEY="your-api-key"
+
+uv run babeldoc \
+  --files /absolute/path/to/input.pdf \
+  --openai \
+  --openai-model gpt-4o-mini \
+  --lang-in en \
+  --lang-out zh \
+  --magazine-mode automatic \
+  --working-dir runs/work \
+  --output runs/output
+```
+
+Windows PowerShell 中可使用同一入口：
 
 ```powershell
 $env:OPENAI_API_KEY = "your-api-key"
@@ -152,16 +201,20 @@ uv run babeldoc `
   --files "C:\path\to\input.pdf" `
   --openai `
   --openai-model gpt-4o-mini `
-  --openai-api-key $env:OPENAI_API_KEY `
   --lang-in en `
   --lang-out zh `
-  --magazine-profile configs/magazine_runtime_profile.v1.json `
+  --magazine-mode automatic `
   --working-dir runs/work `
-  --output runs/output `
-  --debug
+  --output runs/output
 ```
 
-当前 CLI 不会自动读取 `OPENAI_API_KEY`。以上命令通过 shell 展开环境变量，再传给 `--openai-api-key`。避免把真实密钥写入仓库内的 TOML 或脚本。
+凭据优先级为：
+
+1. CLI 或 TOML 中显式提供的主 key。
+2. 显式值为空时的 `OPENAI_API_KEY`。
+3. term extraction 显式 key；未设置时回退到上述最终主 key。
+
+`--print-effective-config` 中的 key 始终是 `<redacted>` 或 `null`，base URL 不显示查询参数。不要把真实密钥写入仓库 TOML、命令历史或调试产物。
 
 常用调整：
 
@@ -177,18 +230,17 @@ uv run babeldoc `
 
 ### 仅解析烟雾测试
 
-当前 CLI 会在解析专用模式下继续校验翻译服务参数。可使用不会发起翻译请求的占位值完成短烟雾测试：
+`--only-parse-generate-pdf` 与明确跳过翻译的路径使用无网络翻译器：不需要 `--openai`，不读取 key，也不构造 OpenAI 客户端。
 
 ```bash
 uv run babeldoc \
   --files examples/ci/test.pdf \
   --only-parse-generate-pdf \
   --skip-scanned-detection \
-  --openai \
-  --openai-api-key parse-only-unused
+  --output runs/parse-only
 ```
 
-该参数约束会在 C16 启动统一化计划中移除。
+首次真实 PDF 解析仍可能需要 `--warmup` 下载布局和字体资源，但不会访问翻译服务。
 
 ## 配置
 
@@ -200,7 +252,7 @@ uv run babeldoc \
 
 ### TOML 配置
 
-`configargparse` 读取 `[babeldoc]` 表。建议在配置文件中保存非敏感参数，密钥继续通过命令行环境变量展开。
+`configargparse` 读取 `[babeldoc]` 表。建议只保存非敏感参数，密钥由 `OPENAI_API_KEY` 提供。
 
 ```toml
 [babeldoc]
@@ -216,7 +268,7 @@ qps = 4
 pool-max-workers = 4
 term-pool-max-workers = 2
 
-magazine-profile = "configs/magazine_runtime_profile.v1.json"
+magazine-mode = "automatic"
 watermark-output-mode = "no_watermark"
 no-dual = true
 skip-scanned-detection = false
@@ -229,8 +281,7 @@ auto-extract-glossary = true
 export OPENAI_API_KEY="your-api-key"
 uv run babeldoc \
   --config local.toml \
-  --files /absolute/path/to/input.pdf \
-  --openai-api-key "$OPENAI_API_KEY"
+  --files /absolute/path/to/input.pdf
 ```
 
 `local.toml` 当前没有被 `.gitignore` 自动排除。请勿在其中保存密钥；需要本机专用参数时，可把文件名加入 `.git/info/exclude`。
@@ -252,36 +303,24 @@ uv run babeldoc \
 
 上例只用于展示外层结构，不能直接运行。实际 profile 必须完整声明全部 22 个布尔开关，不能包含未知键。创建自定义 profile 时，请复制仓库内完整文件后修改值。
 
-随仓库提供的 profile 当前状态如下：
+内置 profile 与用途如下：
 
-| 开关 | 默认 profile | 作用 |
-| --- | --- | --- |
-| `magazine_checkpoint` | 开 | 写入阶段性 XML 检查点 |
-| `magazine_page_classify` | 开 | 识别页面类型并加载页面策略 |
-| `magazine_chain_detect` | 开 | 检测跨栏、跨页连续链 |
-| `magazine_chain_translate` | 关 | 对连续链执行一次联合翻译 |
-| `magazine_article_group` | 开 | 构建规范文章状态与文章区域 |
-| `magazine_article_context` | 关 | 生成文章级翻译上下文 |
-| `magazine_hitl_export` | 关 | 导出人工复核草稿 |
-| `magazine_hitl_apply` | 关 | 校验并应用人工决定 |
-| `magazine_detect` | 开 | 执行版面与守恒检测 |
-| `magazine_column_reflow` | 开 | 启用文章内跨栏及受限跨页文本流 |
-| `magazine_drop_cap_mark` | 关 | 标记首字候选与意图 |
-| `magazine_drop_cap_apply` | 关 | 应用语言策略或人工决定 |
-| `magazine_drop_cap_render` | 关 | 渲染首字装置并执行几何守卫 |
-| `magazine_formula_reclass` | 开 | 修复被公式阶段误吞的普通文本 |
-| `magazine_fragment_stitch` | 开 | 合并错误拆开的正文片段 |
-| `magazine_indent_policy` | 开 | 按页面与文章策略决定缩进 |
-| `magazine_line_structure` | 开 | 处理声明为逐行结构的页面 |
-| `magazine_paren_dedup` | 开 | 清理翻译后重复括号 |
-| `magazine_repair` | 关 | 执行封闭动作集合内的有界修复 |
-| `magazine_rotated_lane` | 关 | 处理修复阶段确认的旋转文本通道 |
-| `magazine_title_typeset` | 开 | 应用标题专用排版策略 |
-| `magazine_pdf_compliance` | 开 | 检查最终可检索 PDF |
+| `--magazine-mode` | profile 资源 | 22 开关策略 | 适用阶段 |
+| --- | --- | --- | --- |
+| `conservative` | `magazine_runtime_profile.v1.json` | 保守组合，关闭联合翻译、文章上下文、HITL、首字和修复等高影响开关 | 快速基线与低变更面运行 |
+| `automatic` | `magazine_runtime_profile.automatic.v1.json` | 除 `magazine_hitl_export` / `magazine_hitl_apply` 外全开 | 无人工决定的完整自动链 |
+| `hitl-export` | `magazine_runtime_profile.hitl_export.v1.json` | `automatic` 加导出复核草稿 | HITL 第一次运行 |
+| `hitl-apply` | `magazine_runtime_profile.hitl_apply.v1.json` | 22 开关全开，并要求匹配的 decisions 文件 | HITL 第二次运行 |
 
 开关之间存在显式依赖。例如联合翻译依赖连续链检测，首字渲染依赖标记与应用，旋转文本通道依赖修复，文章文本流依赖检测、检查点和文章归并。依赖不满足时，流水线会在 IL 创建前终止，并把原因写入运行清单。
 
-该 profile 可启动统一的保守流水线。它没有启用联合翻译、文章上下文、人工复核、首字装置、修复和旋转文本通道，因此无法覆盖 15 轮开发形成的完整功能组合。
+`--magazine-mode` 与 `--magazine-profile` 互斥。自定义 profile 可在不加载模型的情况下先校验：
+
+```bash
+uv run babeldoc \
+  --magazine-profile configs/magazine_runtime_profile.v1.json \
+  --validate-config
+```
 
 ### 算法配置与提示模板
 
@@ -296,11 +335,39 @@ uv run babeldoc \
 | 人工复核 | `hitl.json`、`reviews/` |
 | 提示模板 | `prompts/*.md` |
 
+源码树直接读取根目录资源，wheel 读取 `babeldoc/_resources/`内的同内容副本。运行报告始终使用 `configs/<name>` 或 `prompts/<name>` 逻辑路径和 SHA-256，不写入安装机器的绝对路径。
+
 阈值、枚举和提示文本应继续保存在这些外部文件中。不要在代码中加入刊物名、页码、样本标识或针对单一版面的条件分支。
 
 ## 人工复核文件
 
-启用相应 profile 开关后，`hitl.py` 使用以下文件：
+HITL 是两次明确运行，两次必须使用同一 `--magazine-reviews-dir`。第一次导出复核草稿：
+
+```bash
+export OPENAI_API_KEY="your-api-key"
+
+uv run babeldoc \
+  --files /absolute/path/to/input.pdf \
+  --openai \
+  --magazine-mode hitl-export \
+  --magazine-reviews-dir runs/reviews \
+  --working-dir runs/export-work \
+  --output runs/export-output
+```
+
+人工核对 `<stem>.review.json` 或 HTML，然后手工维护 `runs/reviews/<stem>.decisions.json`。第二次应用决定：
+
+```bash
+uv run babeldoc \
+  --files /absolute/path/to/input.pdf \
+  --openai \
+  --magazine-mode hitl-apply \
+  --magazine-reviews-dir runs/reviews \
+  --working-dir runs/apply-work \
+  --output runs/apply-output
+```
+
+`hitl-apply` 会在创建 IL 之前检查 `<stem>.decisions.json` 是否存在。相关文件如下：
 
 | 文件 | 写入者 | 用途 |
 | --- | --- | --- |
@@ -309,7 +376,7 @@ uv run babeldoc \
 | `reviews/<stem>.decisions.json` | 人工 | 术语、页面类型和首字决定 |
 | `<working-dir>/<stem>/hitl_apply.report.json` | 程序 | 实际应用结果与未命中警告 |
 
-程序不会生成带有效决定的 `decisions.json`。决定文件采用整文件校验；任一非法条目会阻止整份文件应用。当前仓库没有可直接选择的人工复核运行模式，C16 计划会补齐 export/apply 预设和显式复核目录参数。
+程序不会生成带有效决定的 `decisions.json`。决定文件采用整文件校验；任一非法条目会阻止整份文件应用。`BABELDOC_REVIEWS_DIR` 仅作为兼容回退，优先级低于 CLI/TOML 的显式目录。
 
 ## 运行产物与审计
 
@@ -317,7 +384,7 @@ uv run babeldoc \
 
 | 文件 | 内容 |
 | --- | --- |
-| `magazine_run_manifest.json` | 代码提交、输入摘要、profile 摘要、有效开关和依赖校验 |
+| `magazine_run_manifest.json` | 代码提交、输入摘要、用户选择的 mode、profile 名称/版本/SHA-256/逻辑源路径、有效开关和依赖校验 |
 | `magazine_config_manifest.json` | 本次读取的算法配置及摘要 |
 | `prompts.manifest.json` | 本次读取的提示模板及摘要 |
 | `article_ir.json` | 规范文章、区域槽位、源元素和跨页索引 |
@@ -347,40 +414,46 @@ uv sync --group dev
 ```bash
 uv run python -m compileall -q babeldoc tools spec_checks
 uv run ruff check .
+SPEC_NO_NESTED=1 uv run python spec_checks/spec_check_gate_registration.py
+SPEC_NO_NESTED=1 uv run python spec_checks/spec_check_drop_cap_intent.py
 SPEC_NO_NESTED=1 uv run python spec_checks/spec_check_pdf_compliance.py
+SPEC_NO_NESTED=1 uv run python spec_checks/spec_check_startup_modes.py
+SPEC_NO_NESTED=1 uv run python spec_checks/spec_check_cli_credentials.py
+SPEC_NO_NESTED=1 uv run python spec_checks/spec_check_startup_distribution.py
 ```
 
-`spec_checks/run_all.py` 包含历史批次的 fast 与 sweep 门禁。sweep 会重建语料输出，耗时可能达到数小时；短周期开发不要启动 sweep。
+C01-C16 的已注册 fast 规格可通过一条命令运行：
+
+```bash
+uv run python spec_checks/run_all.py --set fast
+```
+
+`spec_checks/run_all.py` 同时包含历史 sweep 门禁。sweep 会重建语料输出，耗时可能达到数小时；短周期开发和 CI 只使用 `--set fast`，不启动 sweep。
 
 每项功能使用独立提交。代码注释保持英文、数量最少，只解释必要约束。实现继续遵守 `CLAUDE.md` 中的唯一翻译路径、外部配置、固定资产、检查点和通用化规则。
 
-## 2026-08-26 代码质量审计
+## 2026-08-26 C16 短验证状态
 
-审计基线：`cda5ccc3159ee271af8ba1f978b13ec275b47b3b`。
-
-已完成的短检查：
+C16 收口已完成以下本地短检查：
 
 | 检查 | 结果 |
 | --- | --- |
 | `python -m compileall -q babeldoc tools spec_checks` | 通过 |
-| wheel 构建 | 通过 |
-| C01-C15 新增规格检查 | 14/15 通过 |
-| 最终 PDF 合规规格 | 10/10 断言通过 |
-| `ruff check .` | 失败，共 78 项 |
-| 完整语料 sweep | 未运行，符合本次短周期限制 |
+| `ruff check .` | 通过 |
+| C01-C16 fast 注册与 C01-C15 交付提交证据 | 通过 |
+| 首字当前意图、最终 PDF 合规 | 通过 |
+| mode 启动、凭据脱敏与无网络路径 | 通过 |
+| 源码入口与仓库外 wheel 入口 | 通过 |
+| `examples/ci/test.pdf` 无服务/无 key 真实解析 | 通过，翻译 token 为 0 |
+| 完整语料 sweep 与长视觉回归 | 未运行，符合 C16 测试预算 |
 
-当前已知工程问题：
+剩余边界与验证缺口：
 
-1. `spec_check_drop_cap_intent.py` 在中文渲染用例中失败，`drop_cap` 意图与 C14 当前决定指纹约束之间存在回归。
-2. C01-C15 的 15 个规格文件没有加入 `spec_checks/run_all.py`，也没有声明 `GATE_SET`，总门禁无法覆盖这些检查。
-3. 仓库没有 `batch-C*` 标签，部分规格检查的变更范围断言会回退到 `git diff HEAD`；干净提交上的结果为空，范围检查可能失去作用。
-4. 当前 wheel 没有打包 `configs/` 与 `prompts/`，安装包中的杂志扩展缺少运行资源。
-5. 随仓库提供的 profile 关闭 9 个关键开关，完整功能链没有统一启动预设。
-6. CI 会执行 `ruff check .`，当前主分支静态检查无法通过。
-7. `uv.lock` 没有纳入版本控制，依赖解析缺少仓库级锁定。
-8. `pyproject.toml` 的项目链接仍指向上游仓库；`regex` 被源码直接导入，但只通过传递依赖获得。
-
-这些结果证明代码能够编译，新增的大部分局部规格可以运行，最终 PDF 验证器的独立规格已通过。真实杂志样本的端到端稳定性、视觉质量和跨平台可重复性仍需要修复门禁后再评估。
+1. 本项目仍是研究原型；正式出版需要人工语言校对与版面复核。
+2. 同页多文章身份隔离没有实现，这类页面不应被视为已完整支持。
+3. 扫描件与 OCR 版面恢复不属于杂志扩展的主研究范围。
+4. C16 没有运行完整语料 sweep、长视觉回归或真实翻译 API 端到端；`automatic` 全自动开关组合不等于生产可用性承诺。
+5. CI 已配置 Linux 上的源码、wheel、fast 规格和无 key 解析烟雾；本地交付不会 push，因此需在后续远程 CI 中观察该工作流。
 
 ## 上游与许可证
 
