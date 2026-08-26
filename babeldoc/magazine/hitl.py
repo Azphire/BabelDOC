@@ -101,6 +101,8 @@ from babeldoc.magazine.page_classifier import REPORT_NAME as CLASSIFY_REPORT_NAM
 from babeldoc.magazine.page_features import ConfigError
 from babeldoc.magazine.page_features import validate_bounded_config
 from babeldoc.magazine.resource_paths import config_path
+from babeldoc.magazine.runtime_profile import REVIEWS_ENV
+from babeldoc.magazine.runtime_profile import default_reviews_dir
 from babeldoc.magazine.taxonomy import load_taxonomy
 from babeldoc.magazine.taxonomy import record_config_manifest
 
@@ -112,8 +114,7 @@ CONFIG_PATH = config_path("hitl.json")
 # Where the two files live. The environment variable is a test seam: a gate
 # runs the export against a disposable directory rather than into the working
 # tree it is asserting about.
-REVIEWS_ENV = "BABELDOC_REVIEWS_DIR"
-DEFAULT_REVIEWS_DIR = ROOT / "reviews"
+DEFAULT_REVIEWS_DIR = default_reviews_dir()
 
 REVIEW_SUFFIX = ".review.json"
 REVIEW_HTML_SUFFIX = ".review.html"
@@ -214,7 +215,10 @@ def sections() -> tuple[str, ...]:
     return tuple(load_hitl_config()[_CONFIG_KEY_SECTIONS])
 
 
-def reviews_dir() -> Path:
+def reviews_dir(translation_config=None) -> Path:
+    explicit = getattr(translation_config, "magazine_reviews_dir", None)
+    if explicit:
+        return Path(explicit).expanduser().resolve()
     override = os.environ.get(REVIEWS_ENV)
     return DEFAULT_REVIEWS_DIR if not override else Path(override)
 
@@ -224,16 +228,16 @@ def sample_name(translation_config) -> str:
     return Path(translation_config.input_file).stem
 
 
-def review_path(sample: str) -> Path:
-    return reviews_dir() / f"{sample}{REVIEW_SUFFIX}"
+def review_path(sample: str, translation_config=None) -> Path:
+    return reviews_dir(translation_config) / f"{sample}{REVIEW_SUFFIX}"
 
 
-def review_html_path(sample: str) -> Path:
-    return reviews_dir() / f"{sample}{REVIEW_HTML_SUFFIX}"
+def review_html_path(sample: str, translation_config=None) -> Path:
+    return reviews_dir(translation_config) / f"{sample}{REVIEW_HTML_SUFFIX}"
 
 
-def decisions_path(sample: str) -> Path:
-    return reviews_dir() / f"{sample}{DECISIONS_SUFFIX}"
+def decisions_path(sample: str, translation_config=None) -> Path:
+    return reviews_dir(translation_config) / f"{sample}{DECISIONS_SUFFIX}"
 
 
 def page_label(page, position: int) -> int:
@@ -427,14 +431,14 @@ def _draft(translation_config) -> dict:
     return draft
 
 
-def _write_draft(_translation_config, draft: dict) -> Path:
-    directory = reviews_dir()
+def _write_draft(translation_config, draft: dict) -> Path:
+    directory = reviews_dir(translation_config)
     directory.mkdir(parents=True, exist_ok=True)
-    path = review_path(draft["sample"])
+    path = review_path(draft["sample"], translation_config)
     with path.open("w", encoding="utf-8") as f:
         json.dump(draft, f, ensure_ascii=False, indent=2, sort_keys=True)
         f.write("\n")
-    html_path = review_html_path(draft["sample"])
+    html_path = review_html_path(draft["sample"], translation_config)
     with html_path.open("w", encoding="utf-8") as f:
         f.write(render_review_html(draft))
     return path
@@ -463,7 +467,7 @@ def _decisions_for(translation_config, docs) -> Decisions | None:
     labeled = labeled_pages(docs)
     pages = {label for label, _page in labeled}
     decisions = load_decisions(
-        decisions_path(sample_name(translation_config)),
+        decisions_path(sample_name(translation_config), translation_config),
         pages,
         drop_cap.document_references(labeled),
     )

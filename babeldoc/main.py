@@ -1,4 +1,5 @@
 import asyncio
+import json
 import logging
 import multiprocessing as mp
 import queue
@@ -6,6 +7,8 @@ import random
 import sys
 from pathlib import Path
 from typing import Any
+from urllib.parse import urlsplit
+from urllib.parse import urlunsplit
 
 import configargparse
 import tqdm
@@ -22,6 +25,14 @@ from babeldoc.const import enable_process_pool
 from babeldoc.format.pdf.translation_config import TranslationConfig
 from babeldoc.format.pdf.translation_config import WatermarkOutputMode
 from babeldoc.glossary import Glossary
+from babeldoc.magazine.resource_paths import logical_resource_name
+from babeldoc.magazine.resource_paths import resource_availability
+from babeldoc.magazine.runtime_profile import MODE_NAMES
+from babeldoc.magazine.runtime_profile import SWITCH_DEFAULTS
+from babeldoc.magazine.runtime_profile import input_summary
+from babeldoc.magazine.runtime_profile import resolve_magazine_profile
+from babeldoc.magazine.runtime_profile import resolve_reviews_dir
+from babeldoc.magazine.runtime_profile import validate_magazine_switches
 from babeldoc.translator.translator import OpenAITranslator
 from babeldoc.translator.translator import set_translate_rate_limiter
 
@@ -384,10 +395,32 @@ def create_parser():
         default=False,
         help="Skip formula offset calculation (default: False)",
     )
-    translation_group.add_argument(
+    magazine_group = translation_group.add_mutually_exclusive_group()
+    magazine_group.add_argument(
+        "--magazine-mode",
+        choices=MODE_NAMES,
+        default=None,
+        help="Use a built-in validated magazine runtime mode.",
+    )
+    magazine_group.add_argument(
         "--magazine-profile",
         default=None,
         help="Path to a versioned magazine runtime profile JSON file.",
+    )
+    translation_group.add_argument(
+        "--magazine-reviews-dir",
+        default=None,
+        help="Directory containing HITL review and decisions files.",
+    )
+    translation_group.add_argument(
+        "--validate-config",
+        action="store_true",
+        help="Validate the effective configuration and exit before loading models.",
+    )
+    translation_group.add_argument(
+        "--print-effective-config",
+        action="store_true",
+        help="Print the validated, redacted effective configuration as JSON.",
     )
     # service option argument group
     service_group = translation_group.add_mutually_exclusive_group()
@@ -470,12 +503,105 @@ def create_parser():
     return parser
 
 
+def _normalized_file(value: str) -> str:
+    if value.startswith("--files="):
+        value = value[len("--files=") :]
+    return value.lstrip("-").strip("\"'")
+
+
+def _redacted(value: str | None) -> str | None:
+    return "<redacted>" if value else None
+
+
+def _display_url(value: str | None) -> str | None:
+    if not value:
+        return None
+    parsed = urlsplit(value)
+    return urlunsplit((parsed.scheme, parsed.netloc, parsed.path, "", ""))
+
+
+def effective_config_report(args) -> tuple[dict, list[str]]:
+    profile = resolve_magazine_profile(args.magazine_mode, args.magazine_profile)
+    switches = dict(SWITCH_DEFAULTS if profile is None else profile.switches)
+    inputs = [input_summary(_normalized_file(value)) for value in (args.files or ())]
+    reviews = resolve_reviews_dir(args.magazine_reviews_dir)
+    resources = resource_availability()
+    errors = [issue.message for issue in validate_magazine_switches(switches)]
+    for kind, status in resources.items():
+        if not status["available"]:
+            errors.append(f"runtime {kind} resources are unavailable")
+    if switches["magazine_hitl_apply"]:
+        from babeldoc.magazine.hitl import DECISIONS_SUFFIX
+
+        for summary in inputs:
+            decision = reviews / f"{Path(summary['path']).stem}{DECISIONS_SUFFIX}"
+            if not decision.is_file():
+                errors.append(f"HITL decisions file not found: {decision}")
+    profile_record = None
+    if profile is not None:
+        profile_record = {
+            "name": profile.name,
+            "version": profile.version,
+            "sha256": profile.sha256,
+            "source": logical_resource_name(profile.source),
+        }
+    report = {
+        "inputs": inputs,
+        "mode": args.magazine_mode,
+        "profile": profile_record,
+        "resources": resources,
+        "reviews_dir": str(reviews),
+        "service": {
+            "openai": {
+                "api_key": _redacted(args.openai_api_key),
+                "base_url": _display_url(args.openai_base_url),
+                "enabled": bool(args.openai),
+                "model": args.openai_model,
+            },
+            "term_extraction": {
+                "api_key": _redacted(args.openai_term_extraction_api_key),
+                "base_url": _display_url(args.openai_term_extraction_base_url),
+                "model": args.openai_term_extraction_model,
+            },
+        },
+        "switches": switches,
+        "validation": {"errors": errors, "ok": not errors},
+    }
+    return report, errors
+
+
 async def main():
     parser = create_parser()
     args: Any = parser.parse_args()
 
     if args.debug:
         logging.getLogger().setLevel(logging.DEBUG)
+
+    if (
+        args.validate_config
+        or args.print_effective_config
+        or args.magazine_mode is not None
+        or args.magazine_profile is not None
+    ):
+        try:
+            effective, config_errors = effective_config_report(args)
+        except (OSError, ValueError) as exc:
+            parser.error(str(exc))
+        if config_errors:
+            parser.error("; ".join(config_errors))
+        if args.print_effective_config:
+            print(
+                json.dumps(
+                    effective,
+                    ensure_ascii=False,
+                    indent=2,
+                    sort_keys=True,
+                )
+            )
+            return
+        if args.validate_config:
+            print("Configuration valid.")
+            return
 
     if args.generate_offline_assets:
         babeldoc.assets.assets.generate_offline_assets_package(
@@ -744,6 +870,8 @@ async def main():
             metadata_extra_data=args.metadata_extra_data,
             term_pool_max_workers=args.term_pool_max_workers,
             magazine_profile=args.magazine_profile,
+            magazine_mode=args.magazine_mode,
+            magazine_reviews_dir=args.magazine_reviews_dir,
         )
 
         def nop(_x):

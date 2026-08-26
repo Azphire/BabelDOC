@@ -240,6 +240,8 @@ class TranslationConfig:
         magazine_title_typeset: bool = False,
         magazine_pdf_compliance: bool = False,
         magazine_profile: str | Path | None = None,
+        magazine_mode: str | None = None,
+        magazine_reviews_dir: str | Path | None = None,
     ):
         self.translator = translator
         self.term_extraction_translator = term_extraction_translator or translator
@@ -359,12 +361,16 @@ class TranslationConfig:
         self.auto_enable_ocr_workaround = auto_enable_ocr_workaround
         self.skip_translation = skip_translation
         self.only_parse_generate_pdf = only_parse_generate_pdf
+        self.magazine_mode = magazine_mode
+        self.magazine_reviews_dir = magazine_reviews_dir
         self.magazine_runtime_profile = None
         profile_switches: dict[str, bool] = {}
-        if magazine_profile is not None:
-            from babeldoc.magazine.runtime_profile import load_magazine_profile
+        if magazine_mode is not None or magazine_profile is not None:
+            from babeldoc.magazine.runtime_profile import resolve_magazine_profile
 
-            self.magazine_runtime_profile = load_magazine_profile(magazine_profile)
+            self.magazine_runtime_profile = resolve_magazine_profile(
+                magazine_mode, magazine_profile
+            )
             profile_switches = self.magazine_runtime_profile.switches
 
         self.magazine_checkpoint = profile_switches.get(

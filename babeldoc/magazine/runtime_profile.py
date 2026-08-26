@@ -4,10 +4,13 @@ from __future__ import annotations
 
 import hashlib
 import json
+import os
 import subprocess
 from dataclasses import dataclass
 from pathlib import Path
+from types import MappingProxyType
 
+from babeldoc.magazine.resource_paths import SOURCE_ROOT
 from babeldoc.magazine.resource_paths import config_path
 from babeldoc.magazine.resource_paths import logical_resource_name
 
@@ -15,6 +18,17 @@ ROOT = Path(__file__).resolve().parents[2]
 DEFAULT_PROFILE_PATH = config_path("magazine_runtime_profile.v1.json")
 RUN_MANIFEST_NAME = "magazine_run_manifest.json"
 PROFILE_FORMAT_VERSION = 1
+REVIEWS_ENV = "BABELDOC_REVIEWS_DIR"
+
+MODE_PROFILE_FILES = MappingProxyType(
+    {
+        "conservative": "magazine_runtime_profile.v1.json",
+        "automatic": "magazine_runtime_profile.automatic.v1.json",
+        "hitl-export": "magazine_runtime_profile.hitl_export.v1.json",
+        "hitl-apply": "magazine_runtime_profile.hitl_apply.v1.json",
+    }
+)
+MODE_NAMES = tuple(MODE_PROFILE_FILES)
 
 SWITCH_DEFAULTS: dict[str, bool] = {
     "magazine_checkpoint": False,
@@ -156,6 +170,40 @@ def load_magazine_profile(path: str | Path | None = None) -> MagazineRuntimeProf
     )
 
 
+def load_magazine_mode(mode: str) -> MagazineRuntimeProfile:
+    try:
+        filename = MODE_PROFILE_FILES[mode]
+    except KeyError as exc:
+        raise MagazineProfileError(
+            f"unknown magazine mode {mode!r}; expected one of {list(MODE_NAMES)}"
+        ) from exc
+    return load_magazine_profile(config_path(filename))
+
+
+def resolve_magazine_profile(
+    mode: str | None = None, profile: str | Path | None = None
+) -> MagazineRuntimeProfile | None:
+    if mode is not None and profile is not None:
+        raise MagazineProfileError("magazine mode and profile are mutually exclusive")
+    if mode is not None:
+        return load_magazine_mode(mode)
+    if profile is not None:
+        return load_magazine_profile(profile)
+    return None
+
+
+def default_reviews_dir() -> Path:
+    source_default = SOURCE_ROOT / "reviews"
+    if (SOURCE_ROOT / "configs").is_dir():
+        return source_default
+    return Path.cwd() / "reviews"
+
+
+def resolve_reviews_dir(path: str | Path | None = None) -> Path:
+    selected = path or os.environ.get(REVIEWS_ENV) or default_reviews_dir()
+    return Path(selected).expanduser().resolve()
+
+
 def effective_switches(translation_config) -> dict[str, bool]:
     return {
         name: bool(getattr(translation_config, name, default))
@@ -219,7 +267,7 @@ def _file_sha256(path: Path) -> str:
     return digest.hexdigest()
 
 
-def _input_summary(input_file: str | Path) -> dict:
+def input_summary(input_file: str | Path) -> dict:
     path = Path(input_file)
     if not path.is_file():
         return {"path": str(path), "exists": False, "size": None, "sha256": None}
@@ -269,15 +317,27 @@ def preflight_magazine_runtime(translation_config) -> Path | None:
     profile_record = None
     config_files: dict[str, str] = {}
     if profile is not None:
-        profile_record = {"name": profile.name, "version": profile.version}
-        config_files[_profile_source(profile.source)] = profile.sha256
+        source = _profile_source(profile.source)
+        profile_record = {
+            "name": profile.name,
+            "version": profile.version,
+            "sha256": profile.sha256,
+            "source": source,
+        }
+        config_files[source] = profile.sha256
     manifest = {
         "manifest_version": 1,
+        "mode": getattr(translation_config, "magazine_mode", None),
         "profile": profile_record,
         "effective_switches": switches,
         "config_files": config_files,
         "code_head": _code_head(),
-        "input": _input_summary(translation_config.input_file),
+        "input": input_summary(translation_config.input_file),
+        "reviews_dir": str(
+            resolve_reviews_dir(
+                getattr(translation_config, "magazine_reviews_dir", None)
+            )
+        ),
         "validation": validation,
     }
     path = Path(translation_config.get_working_file_path(RUN_MANIFEST_NAME))

@@ -390,3 +390,5 @@ p1#10/p3#2/p5#10/p6#15,FD-en-v2 触及 p2#8/p4#3/p8#5/p9#9,与四条锚零交集
 | `babeldoc/format/pdf/document_il/midend/styles_and_formulas.py` | `INITIAL_ADJACENT_CONFIG_PATH` | 放大首字邻接配置加载器 | 通过统一的源码/轮子资源定位器读取既有配置；调用方显式传入的路径仍优先 | C16 |
 | `pyproject.toml` | 依赖、项目 URL 与 Hatch wheel force-include | 安装与构建入口 | 声明代码直接导入的 `regex`，把项目元数据指向 fork，并将根目录配置和提示词映射到 wheel 内 `babeldoc/_resources` | C16 |
 | `.gitignore` | `uv.lock` 规则 | 依赖锁定 | 不再忽略可复现的依赖锁，使 C16 的锁文件刷新可提交 | C16 |
+| `babeldoc/main.py` | `create_parser`、`effective_config_report`、`main` | CLI 启动入口 | 增加互斥内置 mode/自定义 profile、显式复核目录、模型加载前配置校验与稳定脱敏有效配置输出，并把选择传入运行配置 | C16 |
+| `babeldoc/format/pdf/translation_config.py` | `TranslationConfig.__init__` | CLI 与公开 Python 配置入口 | 接收 mode 和显式复核目录；mode 通过封闭注册表加载完整 profile，未选择时保持既有 22 个开关默认值 | C16 |

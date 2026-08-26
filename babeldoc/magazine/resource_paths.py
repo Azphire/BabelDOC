@@ -52,3 +52,26 @@ def logical_resource_name(path: str | Path) -> str:
                 continue
             return (Path(kind) / relative).as_posix()
     return resolved.as_posix()
+
+
+def resource_availability() -> dict[str, dict[str, object]]:
+    """Describe readable runtime data without exposing installation paths."""
+    result: dict[str, dict[str, object]] = {}
+    suffixes = {"configs": ".json", "prompts": ".md"}
+    for kind in sorted(RESOURCE_KINDS):
+        directory = resource_dir(kind)
+        files = (
+            sorted(
+                path.name
+                for path in directory.iterdir()
+                if path.is_file() and path.suffix == suffixes[kind]
+            )
+            if directory.is_dir()
+            else []
+        )
+        result[kind] = {
+            "available": bool(files),
+            "file_count": len(files),
+            "files": files,
+        }
+    return result

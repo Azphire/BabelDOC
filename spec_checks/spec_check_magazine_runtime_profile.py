@@ -252,7 +252,11 @@ def check_manifest(root: Path) -> None:
     )
     check(
         "05d manifest records profile and config hash",
-        manifest["profile"] == {"name": "magazine-runtime", "version": 1}
+        manifest["profile"]["name"] == "magazine-runtime"
+        and manifest["profile"]["version"] == 1
+        and manifest["profile"]["sha256"] == expected_hash
+        and manifest["profile"]["source"]
+        == "configs/magazine_runtime_profile.v1.json"
         and set(manifest["config_files"])
         == {"configs/magazine_runtime_profile.v1.json"}
         and list(manifest["config_files"].values()) == [expected_hash],
