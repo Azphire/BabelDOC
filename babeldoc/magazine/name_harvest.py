@@ -55,10 +55,11 @@ from babeldoc.magazine.article_ir import ArticleDocumentIR
 from babeldoc.magazine.page_features import ConfigError
 from babeldoc.magazine.page_features import validate_bounded_config
 from babeldoc.magazine.prompt_loader import load_prompt
+from babeldoc.magazine.resource_paths import config_path
 
 logger = logging.getLogger(__name__)
 
-CONFIG_PATH = Path(__file__).resolve().parents[2] / "configs" / "name_harvest.json"
+CONFIG_PATH = config_path("name_harvest.json")
 REPORT_NAME = "name_harvest.report.json"
 PROMPT_NAME = "name_transliterate"
 SWITCH_KEY = "switch"

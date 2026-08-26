@@ -69,12 +69,13 @@ from babeldoc.magazine.detectors.drop_cap_geometry import DropCapGeometryContrac
 from babeldoc.magazine.line_split import paragraph_characters
 from babeldoc.magazine.page_features import ConfigError
 from babeldoc.magazine.page_features import validate_bounded_config
+from babeldoc.magazine.resource_paths import config_path
 from babeldoc.magazine.taxonomy import record_config_manifest
 from babeldoc.magazine.transaction import TransactionSnapshot
 
 logger = logging.getLogger(__name__)
 
-CONFIG_PATH = Path(__file__).resolve().parents[2] / "configs" / "drop_cap_render.json"
+CONFIG_PATH = config_path("drop_cap_render.json")
 
 REPORT_NAME = "drop_cap_render.report.json"
 

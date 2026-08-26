@@ -24,6 +24,7 @@ from babeldoc.magazine.chain_backfill import load_backfill_config
 from babeldoc.magazine.line_split import holds_formula
 from babeldoc.magazine.page_features import ConfigError
 from babeldoc.magazine.page_features import validate_bounded_config
+from babeldoc.magazine.resource_paths import config_path
 from babeldoc.magazine.run_trace import ALLOCATION_RELEASED
 from babeldoc.magazine.run_trace import canonical_text
 from babeldoc.magazine.run_trace import hash_record
@@ -31,10 +32,8 @@ from babeldoc.magazine.run_trace import parse_source_ref
 from babeldoc.magazine.taxonomy import record_config_manifest
 from babeldoc.magazine.transaction import TransactionSnapshot
 
-CONFIG_PATH = Path(__file__).resolve().parents[2] / "configs" / "article_flow.json"
-CHAIN_CONFIG_PATH = (
-    Path(__file__).resolve().parents[2] / "configs" / "chain_translation.json"
-)
+CONFIG_PATH = config_path("article_flow.json")
+CHAIN_CONFIG_PATH = config_path("chain_translation.json")
 REPORT_NAME = "article_flow.report.json"
 SWITCH = "magazine_column_reflow"
 

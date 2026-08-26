@@ -62,8 +62,9 @@ from pathlib import Path
 
 from babeldoc.magazine.page_features import ConfigError
 from babeldoc.magazine.page_features import validate_bounded_config
+from babeldoc.magazine.resource_paths import config_path
 
-CONFIG_PATH = Path(__file__).resolve().parents[2] / "configs" / "chain_translation.json"
+CONFIG_PATH = config_path("chain_translation.json")
 
 # Sections of the configuration that are not flat bounded parameters and are
 # parsed here rather than by validate_bounded_config.

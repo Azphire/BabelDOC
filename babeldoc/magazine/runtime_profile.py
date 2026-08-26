@@ -8,8 +8,11 @@ import subprocess
 from dataclasses import dataclass
 from pathlib import Path
 
+from babeldoc.magazine.resource_paths import config_path
+from babeldoc.magazine.resource_paths import logical_resource_name
+
 ROOT = Path(__file__).resolve().parents[2]
-DEFAULT_PROFILE_PATH = ROOT / "configs" / "magazine_runtime_profile.v1.json"
+DEFAULT_PROFILE_PATH = config_path("magazine_runtime_profile.v1.json")
 RUN_MANIFEST_NAME = "magazine_run_manifest.json"
 PROFILE_FORMAT_VERSION = 1
 
@@ -98,10 +101,7 @@ def _require(condition: bool, message: str) -> None:
 
 
 def _profile_source(path: Path) -> str:
-    try:
-        return path.resolve().relative_to(ROOT).as_posix()
-    except ValueError:
-        return str(path.resolve())
+    return logical_resource_name(path)
 
 
 def parse_magazine_profile(

@@ -48,13 +48,14 @@ from babeldoc.magazine.chain_signals import CONFIG_PATH as CHAIN_CONFIG_PATH
 from babeldoc.magazine.chain_signals import load_chain_config
 from babeldoc.magazine.page_features import ConfigError
 from babeldoc.magazine.page_features import validate_bounded_config
+from babeldoc.magazine.resource_paths import config_path
 from babeldoc.magazine.taxonomy import DEFAULT_CONFIG_PATHS
 from babeldoc.magazine.taxonomy import load_taxonomy
 from babeldoc.magazine.taxonomy import record_config_manifest
 
 logger = logging.getLogger(__name__)
 
-CONFIG_PATH = Path(__file__).resolve().parents[2] / "configs" / "article_grouping.json"
+CONFIG_PATH = config_path("article_grouping.json")
 
 REPORT_NAME = "article_map.json"
 IR_REPORT_NAME = "article_ir.json"

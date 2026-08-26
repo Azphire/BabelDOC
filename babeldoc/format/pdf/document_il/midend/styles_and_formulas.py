@@ -44,10 +44,9 @@ from babeldoc.format.pdf.document_il.utils.spatial_analyzer import (
 )
 from babeldoc.format.pdf.translation_config import TranslationConfig
 from babeldoc.magazine.page_features import validate_bounded_config
+from babeldoc.magazine.resource_paths import config_path
 
-INITIAL_ADJACENT_CONFIG_PATH = (
-    Path(__file__).resolve().parents[5] / "configs" / "initial_adjacent.json"
-)
+INITIAL_ADJACENT_CONFIG_PATH = config_path("initial_adjacent.json")
 
 
 @lru_cache(maxsize=2)

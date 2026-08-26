@@ -64,10 +64,11 @@ from babeldoc.magazine import reading_order
 from babeldoc.magazine.detectors import base as detector_base
 from babeldoc.magazine.detectors import detector_config
 from babeldoc.magazine.page_features import ConfigError
+from babeldoc.magazine.resource_paths import config_path
 
 logger = logging.getLogger(__name__)
 
-CONFIG_PATH = Path(__file__).resolve().parents[2] / "configs" / "formula_reclass.json"
+CONFIG_PATH = config_path("formula_reclass.json")
 
 DIRECTIONS_KEY = "directions"
 
@@ -631,5 +632,4 @@ def _in_reading_order(compositions: list) -> list:
     """The compositions in the order a reader meets them."""
     units = [reading_order._unit(item) for item in compositions]
     return [compositions[position] for position in reading_order.reading_order(units)]
-
 

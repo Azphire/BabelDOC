@@ -52,11 +52,12 @@ from babeldoc.magazine.page_features import ConfigError
 from babeldoc.magazine.page_features import validate_bounded_config
 from babeldoc.magazine.prompt_loader import Prompt
 from babeldoc.magazine.prompt_loader import load_prompt
+from babeldoc.magazine.resource_paths import config_path
 from babeldoc.translator.cache import TranslationCache
 
 logger = logging.getLogger(__name__)
 
-CONFIG_PATH = Path(__file__).resolve().parents[2] / "configs" / "vlm.json"
+CONFIG_PATH = config_path("vlm.json")
 
 # Engine name the cached replies are filed under, keeping them apart from the
 # translated segments sharing the database.

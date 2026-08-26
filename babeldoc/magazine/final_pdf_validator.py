@@ -15,10 +15,11 @@ from typing import Any
 
 import pymupdf
 
+from babeldoc.magazine.resource_paths import config_path
 from babeldoc.magazine.taxonomy import record_config_manifest
 
 ROOT = Path(__file__).resolve().parents[2]
-CONFIG_PATH = ROOT / "configs" / "final_pdf_compliance.json"
+CONFIG_PATH = config_path("final_pdf_compliance.json")
 REPORT_NAME = "final_pdf_compliance.json"
 SCHEMA_VERSION = "final-pdf-compliance.v1"
 NORMALIZATION_VERSION = "nfkc-whitespace-v1"

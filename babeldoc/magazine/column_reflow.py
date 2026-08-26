@@ -105,6 +105,7 @@ from babeldoc.magazine.line_split import holds_formula
 from babeldoc.magazine.line_split import paragraph_characters
 from babeldoc.magazine.page_features import ConfigError
 from babeldoc.magazine.page_features import validate_bounded_config
+from babeldoc.magazine.resource_paths import config_path
 from babeldoc.magazine.runtime_profile import record_runtime_blocked_reason
 from babeldoc.magazine.taxonomy import load_taxonomy
 from babeldoc.magazine.taxonomy import record_config_manifest
@@ -112,7 +113,7 @@ from babeldoc.magazine.transaction import TransactionSnapshot
 
 logger = logging.getLogger(__name__)
 
-CONFIG_PATH = Path(__file__).resolve().parents[2] / "configs" / "column_reflow.json"
+CONFIG_PATH = config_path("column_reflow.json")
 
 REPORT_NAME = "column_reflow.report.json"
 

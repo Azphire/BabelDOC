@@ -28,6 +28,7 @@ from pathlib import Path
 
 from babeldoc.format.pdf.document_il import il_version_1
 from babeldoc.format.pdf.document_il.xml_converter import XMLConverter
+from babeldoc.magazine.resource_paths import config_path
 
 logger = logging.getLogger(__name__)
 
@@ -66,9 +67,7 @@ _ESCAPE_TAG = "u"
 # unchanged and a literal lead in one is never mistaken for an escape.
 _ESCAPE_MARKER = "<!-- magazine-checkpoint-escape v1 -->"
 
-_CONFIG_PATH = (
-    Path(__file__).resolve().parents[2] / "configs" / "checkpoint_stages.json"
-)
+_CONFIG_PATH = config_path("checkpoint_stages.json")
 
 
 class CheckpointError(RuntimeError):

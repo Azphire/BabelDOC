@@ -83,13 +83,14 @@ from babeldoc.magazine.article_ir import ArticleDocumentIR
 from babeldoc.magazine.drop_cap import paragraph_reference
 from babeldoc.magazine.page_features import ConfigError
 from babeldoc.magazine.page_features import validate_bounded_config
+from babeldoc.magazine.resource_paths import config_path
 from babeldoc.magazine.taxonomy import TAXONOMY_PATH
 from babeldoc.magazine.taxonomy import load_taxonomy
 from babeldoc.magazine.taxonomy import record_config_manifest
 
 logger = logging.getLogger(__name__)
 
-CONFIG_PATH = Path(__file__).resolve().parents[2] / "configs" / "indent_policy.json"
+CONFIG_PATH = config_path("indent_policy.json")
 
 REPORT_NAME = "indent_policy.report.json"
 

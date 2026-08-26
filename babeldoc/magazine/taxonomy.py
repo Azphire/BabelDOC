@@ -24,10 +24,12 @@ from babeldoc.magazine.page_features import ConfigError
 from babeldoc.magazine.page_features import Parameter
 from babeldoc.magazine.page_features import known_feature_names
 from babeldoc.magazine.page_features import load_feature_config
+from babeldoc.magazine.resource_paths import config_path
+from babeldoc.magazine.resource_paths import logical_resource_name
 
 logger = logging.getLogger(__name__)
 
-TAXONOMY_PATH = Path(__file__).resolve().parents[2] / "configs" / "page_types.json"
+TAXONOMY_PATH = config_path("page_types.json")
 
 RUN_MANIFEST_NAME = "magazine_config_manifest.json"
 
@@ -433,7 +435,7 @@ def record_config_manifest(working_dir: Path | str, paths: list[Path]) -> Path:
         with manifest_path.open(encoding="utf-8") as f:
             existing = json.load(f)
     for path in paths:
-        existing[path.name] = file_digest(path)
+        existing[logical_resource_name(path)] = file_digest(path)
     with manifest_path.open("w", encoding="utf-8") as f:
         json.dump(existing, f, indent=2, sort_keys=True)
     return manifest_path

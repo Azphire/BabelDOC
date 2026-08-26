@@ -100,13 +100,14 @@ from babeldoc.magazine.article_ir import ArticleDocumentIR
 from babeldoc.magazine.page_classifier import REPORT_NAME as CLASSIFY_REPORT_NAME
 from babeldoc.magazine.page_features import ConfigError
 from babeldoc.magazine.page_features import validate_bounded_config
+from babeldoc.magazine.resource_paths import config_path
 from babeldoc.magazine.taxonomy import load_taxonomy
 from babeldoc.magazine.taxonomy import record_config_manifest
 
 logger = logging.getLogger(__name__)
 
 ROOT = Path(__file__).resolve().parents[2]
-CONFIG_PATH = ROOT / "configs" / "hitl.json"
+CONFIG_PATH = config_path("hitl.json")
 
 # Where the two files live. The environment variable is a test seam: a gate
 # runs the export against a disposable directory rather than into the working

@@ -78,11 +78,12 @@ from babeldoc.magazine.page_features import ConfigError
 from babeldoc.magazine.page_features import validate_bounded_config
 from babeldoc.magazine.react.writeback import page_font_map
 from babeldoc.magazine.reading_order import paragraph_reading_text
+from babeldoc.magazine.resource_paths import config_path
 from babeldoc.magazine.taxonomy import record_config_manifest
 
 logger = logging.getLogger(__name__)
 
-CONFIG_PATH = Path(__file__).resolve().parents[2] / "configs" / "title_typeset.json"
+CONFIG_PATH = config_path("title_typeset.json")
 
 REPORT_NAME = "title_typeset.report.json"
 

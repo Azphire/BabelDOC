@@ -80,10 +80,9 @@ from babeldoc.magazine.metrics import MetricsConfig
 from babeldoc.magazine.metrics import load_metrics_config
 from babeldoc.magazine.metrics import rounded
 from babeldoc.magazine.page_features import validate_bounded_config
+from babeldoc.magazine.resource_paths import config_path
 
-CONFIG_PATH = (
-    Path(__file__).resolve().parents[3] / "configs" / "term_consistency.json"
-)
+CONFIG_PATH = config_path("term_consistency.json")
 
 # A word: letters only, with internal apostrophes and hyphens kept, so a name
 # carrying one stays a single token. The joiners are written as escapes to keep

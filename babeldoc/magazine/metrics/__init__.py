@@ -37,8 +37,9 @@ from pathlib import Path
 
 from babeldoc.magazine.page_features import ConfigError
 from babeldoc.magazine.page_features import validate_bounded_config
+from babeldoc.magazine.resource_paths import config_path
 
-CONFIG_PATH = Path(__file__).resolve().parents[3] / "configs" / "metrics.json"
+CONFIG_PATH = config_path("metrics.json")
 
 
 class MetricError(ConfigError):

@@ -21,8 +21,9 @@ from functools import lru_cache
 from pathlib import Path
 
 from babeldoc.format.pdf.document_il import il_version_1
+from babeldoc.magazine.resource_paths import config_path
 
-CONFIG_PATH = Path(__file__).resolve().parents[2] / "configs" / "page_features.json"
+CONFIG_PATH = config_path("page_features.json")
 
 # Feature vector layout. The order is the report order; scoring is by name.
 FEATURE_NAMES: tuple[str, ...] = (

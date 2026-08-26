@@ -381,3 +381,12 @@ p1#10/p3#2/p5#10/p6#15,FD-en-v2 触及 p2#8/p4#3/p8#5/p9#9,与四条锚零交集
 | `babeldoc/format/pdf/document_il/backend/pdf_creater.py` | `PDFCreater.__init__`、`restore_media_box`、`write`、`update_page_content_stream` | PDF 写出主路径 | 将原先仅记录日志并继续的 XObject font/stream、mediabox restoration 与 save fallback 转为结构化 writer warnings，随 `TranslateResult` 交给只读终态 validator；PDF 写出与 fallback 行为不变 | C15 |
 | `babeldoc/format/pdf/high_level.py` | `do_translate`、`_do_translate_single`、PDF compliance 辅助函数 | 单文件与 split 合并流水线 | 在 CMap、metadata、TOC 和 split merge 全部完成后 reopen 真正交付的 mono PDF；聚合 part touched-page 期望与 warnings，并把 pass/degraded/fail 写回结果、运行 manifest 和 RunTrace | C15 |
 | `babeldoc/format/pdf/translation_config.py` | `TranslationConfig.__init__`、`TranslateResult` | 公开 Python 配置与流水线返回值 | 公开兼容默认关闭的 `magazine_pdf_compliance` 开关，并显式返回报告路径、合规状态、fully-compliant 标志与 writer warnings | C15 |
+
+## C16
+
+| 文件 | 符号 | 调用方 | 目的 | 批次 |
+| --- | --- | --- | --- | --- |
+| `babeldoc/format/pdf/document_il/midend/typesetting.py` | `HANG_CONFIG_PATH` | 排版配置加载器 | 通过统一的源码/轮子资源定位器读取既有悬挂标点配置；调用方显式传入的路径仍优先 | C16 |
+| `babeldoc/format/pdf/document_il/midend/styles_and_formulas.py` | `INITIAL_ADJACENT_CONFIG_PATH` | 放大首字邻接配置加载器 | 通过统一的源码/轮子资源定位器读取既有配置；调用方显式传入的路径仍优先 | C16 |
+| `pyproject.toml` | 依赖、项目 URL 与 Hatch wheel force-include | 安装与构建入口 | 声明代码直接导入的 `regex`，把项目元数据指向 fork，并将根目录配置和提示词映射到 wheel 内 `babeldoc/_resources` | C16 |
+| `.gitignore` | `uv.lock` 规则 | 依赖锁定 | 不再忽略可复现的依赖锁，使 C16 的锁文件刷新可提交 | C16 |

@@ -9,7 +9,9 @@ from dataclasses import dataclass
 from functools import lru_cache
 from pathlib import Path
 
-CONFIG_PATH = Path(__file__).resolve().parents[2] / "configs" / "repair_acceptance.json"
+from babeldoc.magazine.resource_paths import config_path
+
+CONFIG_PATH = config_path("repair_acceptance.json")
 
 POLICY_TYPED_LEXICOGRAPHIC = "typed_lexicographic"
 

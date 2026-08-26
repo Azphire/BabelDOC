@@ -91,6 +91,7 @@ from babeldoc.magazine.react.config import load_repair_config
 from babeldoc.magazine.react.decide import CachedDecisionClient
 from babeldoc.magazine.react.decide import EngineTransport
 from babeldoc.magazine.react.decide import engine_identity
+from babeldoc.magazine.resource_paths import config_path
 from babeldoc.magazine.taxonomy import record_config_manifest
 from babeldoc.magazine.transaction import TransactionSnapshot
 
@@ -103,9 +104,7 @@ REPORT_NAME = "react_repair.report.json"
 
 # The rounds one iteration is made of, declared beside the other bounds rather
 # than written here.
-ROUNDS_CONFIG_PATH = (
-    Path(__file__).resolve().parents[3] / "configs" / "decision_rounds.json"
-)
+ROUNDS_CONFIG_PATH = config_path("decision_rounds.json")
 KIND_ORDER_KEY = "kind_order"
 
 # What carries the kind into the identity a round files its request under. Two

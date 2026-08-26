@@ -34,8 +34,9 @@ from pathlib import Path
 from babeldoc.magazine.page_features import ConfigError
 from babeldoc.magazine.page_features import _parse_range
 from babeldoc.magazine.page_features import validate_bounded_config
+from babeldoc.magazine.resource_paths import config_path
 
-CONFIG_PATH = Path(__file__).resolve().parents[3] / "configs" / "repair_actions.json"
+CONFIG_PATH = config_path("repair_actions.json")
 
 ACTIONS_KEY = "actions"
 PARAMETERS_KEY = "parameters"

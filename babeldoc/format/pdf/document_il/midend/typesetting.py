@@ -33,15 +33,14 @@ from babeldoc.format.pdf.document_il.utils.layout_helper import box_to_tuple
 from babeldoc.format.pdf.translation_config import TranslationConfig
 from babeldoc.format.pdf.translation_config import WatermarkOutputMode
 from babeldoc.magazine.page_features import validate_bounded_config
+from babeldoc.magazine.resource_paths import config_path
 
 logger = logging.getLogger(__name__)
 
 # Where the bound on hung punctuation is declared, and the sidecar every hang
 # past the box edge is recorded in. The bound is read rather than written here:
 # no length in this file decides how far a mark may be set outside its box.
-HANG_CONFIG_PATH = (
-    Path(__file__).resolve().parents[5] / "configs" / "typeset_hang.json"
-)
+HANG_CONFIG_PATH = config_path("typeset_hang.json")
 HANG_REPORT_NAME = "typeset_hang.report.json"
 
 # Verdicts a hang past the box edge is recorded under.

@@ -48,8 +48,9 @@ from babeldoc.format.pdf.document_il import il_version_1
 from babeldoc.magazine.page_features import ConfigError
 from babeldoc.magazine.page_features import Parameter
 from babeldoc.magazine.page_features import validate_bounded_config
+from babeldoc.magazine.resource_paths import config_path
 
-CONFIG_PATH = Path(__file__).resolve().parents[2] / "configs" / "chain_detection.json"
+CONFIG_PATH = config_path("chain_detection.json")
 
 # Signals in report order. Scoring is by name, through the weight_<signal> key.
 SIGNAL_NAMES: tuple[str, ...] = (

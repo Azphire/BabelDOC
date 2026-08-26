@@ -26,6 +26,7 @@ translator_stub.BaseTranslator = type("BaseTranslator", (), {})
 sys.modules["babeldoc.translator.translator"] = translator_stub
 
 from babeldoc.format.pdf.translation_config import TranslationConfig  # noqa: E402
+from babeldoc.magazine import resource_paths  # noqa: E402
 from babeldoc.magazine.runtime_profile import DEFAULT_PROFILE_PATH  # noqa: E402
 from babeldoc.magazine.runtime_profile import NETWORK_CAPABLE_SWITCHES  # noqa: E402
 from babeldoc.magazine.runtime_profile import RUN_MANIFEST_NAME  # noqa: E402
@@ -121,6 +122,37 @@ def check_construct_and_round_trip(root: Path) -> None:
         and decoded.switches == profile.switches
         and all(type(value) is bool for value in decoded.switches.values()),
     )
+
+
+def check_resource_resolution(root: Path) -> None:
+    source_root = root / "source"
+    packaged_root = root / "package" / "_resources"
+    source_file = source_root / "configs" / "example.json"
+    packaged_file = packaged_root / "configs" / "example.json"
+    source_file.parent.mkdir(parents=True)
+    packaged_file.parent.mkdir(parents=True)
+    source_file.write_text("source", encoding="utf-8")
+    packaged_file.write_text("wheel", encoding="utf-8")
+    original_source = resource_paths.SOURCE_ROOT
+    original_packaged = resource_paths.PACKAGED_ROOT
+    try:
+        resource_paths.SOURCE_ROOT = source_root
+        resource_paths.PACKAGED_ROOT = packaged_root
+        check(
+            "02d source resource wins when present",
+            resource_paths.config_path("example.json") == source_file,
+        )
+        source_file.unlink()
+        resolved = resource_paths.config_path("example.json")
+        check(
+            "02e wheel resource fallback keeps a logical manifest name",
+            resolved == packaged_file
+            and resource_paths.logical_resource_name(resolved)
+            == "configs/example.json",
+        )
+    finally:
+        resource_paths.SOURCE_ROOT = original_source
+        resource_paths.PACKAGED_ROOT = original_packaged
 
 
 def check_formal_entry(root: Path) -> None:
@@ -221,6 +253,8 @@ def check_manifest(root: Path) -> None:
     check(
         "05d manifest records profile and config hash",
         manifest["profile"] == {"name": "magazine-runtime", "version": 1}
+        and set(manifest["config_files"])
+        == {"configs/magazine_runtime_profile.v1.json"}
         and list(manifest["config_files"].values()) == [expected_hash],
     )
     check(
@@ -260,6 +294,7 @@ def main() -> int:
     with tempfile.TemporaryDirectory(prefix="babeldoc-c01-") as temp:
         root = Path(temp)
         check_construct_and_round_trip(root)
+        check_resource_resolution(root)
         check_formal_entry(root)
         check_dependencies()
         check_manifest(root)

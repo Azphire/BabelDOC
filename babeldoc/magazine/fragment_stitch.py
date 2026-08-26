@@ -86,12 +86,13 @@ from babeldoc.magazine.line_split import paragraph_characters
 from babeldoc.magazine.line_split import recover_lines
 from babeldoc.magazine.page_features import ConfigError
 from babeldoc.magazine.page_features import validate_bounded_config
+from babeldoc.magazine.resource_paths import config_path
 from babeldoc.magazine.taxonomy import load_taxonomy
 from babeldoc.magazine.taxonomy import record_config_manifest
 
 logger = logging.getLogger(__name__)
 
-CONFIG_PATH = Path(__file__).resolve().parents[2] / "configs" / "fragment_stitch.json"
+CONFIG_PATH = config_path("fragment_stitch.json")
 
 REPORT_NAME = "fragment_stitch.report.json"
 

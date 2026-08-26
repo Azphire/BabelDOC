@@ -66,8 +66,9 @@ from pathlib import Path
 from types import MappingProxyType
 
 from babeldoc.magazine.page_features import ConfigError
+from babeldoc.magazine.resource_paths import config_path
 
-CONFIG_PATH = Path(__file__).resolve().parents[2] / "configs" / "translation_style.json"
+CONFIG_PATH = config_path("translation_style.json")
 
 # The policy selector and the closed vocabulary it is checked against.
 POLICY_KEY = "person_names"

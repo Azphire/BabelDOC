@@ -27,8 +27,9 @@ from babeldoc.magazine.line_split import paragraph_characters
 from babeldoc.magazine.page_features import ConfigError
 from babeldoc.magazine.page_features import validate_bounded_config
 from babeldoc.magazine.reading_order import paragraph_reading_text
+from babeldoc.magazine.resource_paths import config_path
 
-CONFIG_PATH = Path(__file__).resolve().parents[3] / "configs" / "detectors.json"
+CONFIG_PATH = config_path("detectors.json")
 
 # Structural sections of the configuration: everything that is not a bounded
 # number, and so is validated against what it refers to instead of a range.

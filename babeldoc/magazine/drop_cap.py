@@ -106,11 +106,12 @@ from babeldoc.magazine.line_split import composition_kind
 from babeldoc.magazine.line_split import paragraph_characters
 from babeldoc.magazine.page_features import ConfigError
 from babeldoc.magazine.page_features import validate_bounded_config
+from babeldoc.magazine.resource_paths import config_path
 from babeldoc.magazine.taxonomy import record_config_manifest
 
 logger = logging.getLogger(__name__)
 
-CONFIG_PATH = Path(__file__).resolve().parents[2] / "configs" / "drop_cap.json"
+CONFIG_PATH = config_path("drop_cap.json")
 
 REPORT_NAME = "drop_cap.report.json"
 

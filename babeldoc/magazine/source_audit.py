@@ -62,8 +62,9 @@ from babeldoc.magazine.line_split import ATOMIC
 from babeldoc.magazine.line_split import SPLITTABLE
 from babeldoc.magazine.page_features import ConfigError
 from babeldoc.magazine.page_features import validate_bounded_config
+from babeldoc.magazine.resource_paths import config_path
 
-CONFIG_PATH = Path(__file__).resolve().parents[2] / "configs" / "source_audit.json"
+CONFIG_PATH = config_path("source_audit.json")
 
 CLASSES_KEY = "classes"
 DESCRIPTION_KEY = "description"

@@ -57,13 +57,14 @@ from babeldoc.magazine.page_features import ConfigError
 from babeldoc.magazine.page_features import validate_bounded_config
 from babeldoc.magazine.prompt_loader import Prompt
 from babeldoc.magazine.prompt_loader import load_prompt
+from babeldoc.magazine.resource_paths import config_path
 from babeldoc.magazine.taxonomy import DEFAULT_CONFIG_PATHS
 from babeldoc.magazine.taxonomy import record_config_manifest
 from babeldoc.translator.cache import TranslationCache
 
 logger = logging.getLogger(__name__)
 
-CONFIG_PATH = Path(__file__).resolve().parents[2] / "configs" / "article_context.json"
+CONFIG_PATH = config_path("article_context.json")
 
 REPORT_NAME = "article_context.report.json"
 

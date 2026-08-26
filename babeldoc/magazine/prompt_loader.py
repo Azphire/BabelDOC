@@ -28,9 +28,12 @@ import re
 from dataclasses import dataclass
 from pathlib import Path
 
+from babeldoc.magazine.resource_paths import logical_resource_name
+from babeldoc.magazine.resource_paths import resource_dir
+
 logger = logging.getLogger(__name__)
 
-PROMPT_DIR = Path(__file__).resolve().parents[2] / "prompts"
+PROMPT_DIR = resource_dir("prompts")
 
 PROMPT_SUFFIX = ".md"
 
@@ -128,12 +131,7 @@ def record_prompt_manifest(working_dir: Path | str, prompts: list[Prompt]) -> Pa
 
 def manifest_key(path: Path) -> str:
     """Repository relative posix path, the key a manifest entry is filed under."""
-    root = PROMPT_DIR.parent
-    resolved = Path(path).resolve()
-    try:
-        return resolved.relative_to(root).as_posix()
-    except ValueError:
-        return resolved.as_posix()
+    return logical_resource_name(path)
 
 
 def load_prompt(
