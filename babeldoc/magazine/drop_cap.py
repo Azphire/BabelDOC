@@ -603,7 +603,9 @@ def mark(
             decision_version=config.decision_version,
         )
         intents.append(intent)
-        if run_trace is not None:
+    drop_cap_intent.replace_intents(translation_config, intents)
+    if run_trace is not None:
+        for intent in intents:
             run_trace.record_drop_cap_event(
                 {
                     "event": "intent_frozen",
@@ -612,7 +614,6 @@ def mark(
                     "intent": intent.as_record(),
                 }
             )
-    drop_cap_intent.replace_intents(translation_config, intents)
     drop_cap_intent.write_report(translation_config)
     _write_report(translation_config, config, candidates)
     logger.debug("drop cap: %d candidate(s)", len(candidates))

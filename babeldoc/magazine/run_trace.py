@@ -1239,6 +1239,7 @@ class RunTrace:
             "current_generation",
             "unsupported_pages",
             "blocked_reasons",
+            "drop_cap_events",
             "_source_objects",
             "_whole_targets",
             "_fragment_text",

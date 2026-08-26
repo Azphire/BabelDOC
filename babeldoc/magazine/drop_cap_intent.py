@@ -36,6 +36,8 @@ RENDER_FAILED = "failed"
 
 ISSUE_FLATTEN_FAILED = "drop_cap_flatten_failed"
 ISSUE_RENDER_FAILED = "drop_cap_render_failed"
+ISSUE_INVALID_INTENT = "invalid_drop_cap_intent"
+ISSUE_PROTECTED_CONFLICT = "protected_drop_cap_conflict"
 
 
 def _digest(value) -> str:
@@ -149,6 +151,7 @@ class DropCapIntent:
     candidate_fingerprint: str
     config_version: int
     decision_version: int
+    generation: int = 0
     decision: str | None = None
     flatten_status: str = FLATTEN_PENDING
     render_status: str = RENDER_PENDING
@@ -182,6 +185,7 @@ class DropCapIntent:
             "candidate_fingerprint": self.candidate_fingerprint,
             "config_version": self.config_version,
             "decision_version": self.decision_version,
+            "generation": self.generation,
             "decision": self.decision,
             "flatten_status": self.flatten_status,
             "render_status": self.render_status,
@@ -193,12 +197,17 @@ class DropCapIntent:
 
 
 _registry: weakref.WeakKeyDictionary = weakref.WeakKeyDictionary()
+_generations: weakref.WeakKeyDictionary = weakref.WeakKeyDictionary()
 
 
 def replace_intents(translation_config, intents: list[DropCapIntent]) -> None:
     references = [intent.source_ref for intent in intents]
     if len(references) != len(set(references)):
         raise ValueError("a drop-cap source ref cannot own more than one active intent")
+    generation = int(_generations.get(translation_config, 0)) + 1
+    for intent in intents:
+        intent.generation = generation
+    _generations[translation_config] = generation
     _registry[translation_config] = {intent.source_ref: intent for intent in intents}
 
 
@@ -212,6 +221,81 @@ def intent_for(translation_config, reference: str) -> DropCapIntent | None:
 
 def clear(translation_config) -> None:
     _registry.pop(translation_config, None)
+    _generations.pop(translation_config, None)
+
+
+def current_generation(translation_config) -> int:
+    return int(_generations.get(translation_config, 0))
+
+
+def active_protected_refs(
+    translation_config,
+    *,
+    rendered_only: bool = False,
+) -> frozenset[str]:
+    """Canonical refs whose current intent still owns decorative composition."""
+    generation = current_generation(translation_config)
+    active = set()
+    for reference, intent in intents_for(translation_config).items():
+        try:
+            from babeldoc.magazine.run_trace import parse_source_ref
+
+            parse_source_ref(reference)
+        except (TypeError, ValueError):
+            continue
+        if intent.generation != generation:
+            continue
+        if intent.flatten_status != FLATTEN_APPLIED:
+            continue
+        if rendered_only:
+            if intent.render_status != RENDER_APPLIED:
+                continue
+        elif intent.render_status not in (RENDER_PENDING, RENDER_APPLIED):
+            continue
+        active.add(reference)
+    return frozenset(active)
+
+
+def decorative_anchor_signature(paragraph, intent: DropCapIntent):
+    """Relative initial geometry used to prove whole-paragraph moves are safe."""
+    if intent.render_status != RENDER_APPLIED or intent.target_index is None:
+        return None
+    paragraph_box = getattr(paragraph, "box", None)
+    if paragraph_box is None:
+        return None
+    from babeldoc.magazine.line_split import paragraph_characters
+
+    characters = [
+        character
+        for character in paragraph_characters(paragraph)
+        if character.box is not None
+    ]
+    if not 0 <= intent.target_index < len(characters):
+        return None
+    initial = characters[intent.target_index]
+    box = initial.box
+    body = tuple(
+        (
+            character.char_unicode or "",
+            round(float(character.box.x) - float(paragraph_box.x), 6),
+            round(float(character.box.y) - float(paragraph_box.y), 6),
+            round(float(character.box.x2) - float(paragraph_box.x), 6),
+            round(float(character.box.y2) - float(paragraph_box.y), 6),
+        )
+        for index, character in enumerate(characters)
+        if index != intent.target_index
+    )
+    return (
+        initial.char_unicode or "",
+        round(float(box.x) - float(paragraph_box.x), 6),
+        round(float(box.y) - float(paragraph_box.y), 6),
+        round(float(box.x2) - float(paragraph_box.x), 6),
+        round(float(box.y2) - float(paragraph_box.y), 6),
+        None
+        if initial.pdf_style is None or initial.pdf_style.font_size is None
+        else round(float(initial.pdf_style.font_size), 6),
+        body,
+    )
 
 
 def _clamp(value: float) -> float:
@@ -455,6 +539,7 @@ def colors_close(
 def write_report(translation_config) -> Path:
     intents = intents_for(translation_config)
     record = {
+        "generation": current_generation(translation_config),
         "intents": [intent.as_record() for _ref, intent in sorted(intents.items())],
         "totals": {
             "active": len(intents),

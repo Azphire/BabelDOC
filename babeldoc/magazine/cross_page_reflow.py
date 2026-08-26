@@ -10,6 +10,7 @@ from dataclasses import dataclass
 from babeldoc.format.pdf.document_il.il_version_1 import Box
 from babeldoc.format.pdf.document_il.midend.typesetting import Typesetting
 from babeldoc.magazine import article_flow
+from babeldoc.magazine import drop_cap_intent
 from babeldoc.magazine import fixed_assets
 from babeldoc.magazine.run_trace import hash_record
 from babeldoc.magazine.run_trace import parse_source_ref
@@ -322,6 +323,7 @@ def build_cross_page_segments(
     inventory,
     config: article_flow.ArticleFlowConfig,
     typesetter: Typesetting,
+    protected_refs=frozenset(),
 ) -> tuple[tuple[CrossPageArticleFlowSegment, ...], tuple[CrossPageFlowIssue, ...]]:
     """Build a read-only cross-page plan from the canonical article state."""
     unsupported = {item.page for item in article_document_ir.unsupported_pages}
@@ -356,6 +358,7 @@ def build_cross_page_segments(
                     inventory,
                     config,
                     typesetter,
+                    protected_refs,
                 )
             )
             for left, right in zip(by_page[page], by_page[page][1:]):
@@ -592,6 +595,9 @@ def apply(
         docs,
         protected_paragraph_labels=tuple(sorted(protected_roles)),
     )
+    protected_refs = drop_cap_intent.active_protected_refs(
+        translator.translation_config
+    )
     segments, boundary_issues = build_cross_page_segments(
         docs,
         article_document_ir,
@@ -599,6 +605,7 @@ def apply(
         inventory,
         config,
         typesetter,
+        protected_refs,
     )
     issues = list(boundary_issues)
     for issue in boundary_issues:

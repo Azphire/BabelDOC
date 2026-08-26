@@ -66,7 +66,12 @@
     "outside_article_envelope",
     "decorative_collision",
     "render_exception",
-    "fixed_asset_changed"
+    "fixed_asset_changed",
+    "invalid_drop_cap_intent",
+    "post_render_geometry_failed",
+    "post_render_color_failed",
+    "post_render_coverage_failed",
+    "post_render_collision_failed"
   ],
   "report_fields": [
     "paragraph",
@@ -113,6 +118,8 @@
     "color_evidence",
     "style_evidence",
     "detector_contract",
-    "transaction"
+    "transaction",
+    "render_state",
+    "validation"
   ]
 }

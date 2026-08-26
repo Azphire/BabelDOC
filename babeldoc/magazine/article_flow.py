@@ -18,6 +18,7 @@ from babeldoc.format.pdf.document_il.midend.typesetting import FIT_INVALID
 from babeldoc.format.pdf.document_il.midend.typesetting import FIT_NONE
 from babeldoc.format.pdf.document_il.midend.typesetting import Typesetting
 from babeldoc.magazine import acceptance
+from babeldoc.magazine import drop_cap_intent
 from babeldoc.magazine import fixed_assets
 from babeldoc.magazine.chain_backfill import load_backfill_config
 from babeldoc.magazine.line_split import holds_formula
@@ -485,6 +486,7 @@ def build_page_segments(
     inventory,
     config: ArticleFlowConfig,
     typesetter: Typesetting,
+    protected_refs=frozenset(),
 ) -> tuple[ArticleFlowSegment, ...]:
     """Build segments strictly from canonical ArticleIR reading order."""
     page = docs.page[page_number - 1]
@@ -494,52 +496,60 @@ def build_page_segments(
     previous = None
     for element in page_elements:
         paragraph = _paragraph(docs, element.source_ref)
-        fragments = run_trace.target_fragments_for_source(element.source_ref)
-        released = any(
-            run_trace.fragments[fragment_id].allocation_status == ALLOCATION_RELEASED
-            for fragment_id in run_trace.sources[element.source_ref].fragment_ids
-        )
         role_allowed = config.eligible(element.role)
         boundaries = []
         reason = None
-        if not role_allowed:
+        if element.source_ref in protected_refs:
+            reason = "active_drop_cap"
+        elif not role_allowed:
             reason = "role_not_eligible"
-        elif fragments:
-            joined = "".join(fragment["text"] for fragment in fragments)
-            style = _plain_style(paragraph, joined)
-            if style is None:
-                reason = "non_plain_or_formula_target"
-            else:
-                spacing = _spacing_before(previous, element)
-                for fragment_index, fragment in enumerate(fragments):
-                    boundaries.append(
-                        ParagraphBoundaryToken(
-                            source_ref=element.source_ref,
-                            source_page=element.page,
-                            source_slot_id=(
-                                fragment["slot_id"]
-                                or f"source-holder:{element.source_ref}"
-                            ),
-                            paragraph_order=element.reading_order,
-                            request_id=fragment["request_id"],
-                            fragment_id=fragment["fragment_id"],
-                            target_start=fragment["text_start"],
-                            target_end=fragment["text_end"],
-                            text=fragment["text"],
-                            first_line_indent=bool(
-                                fragment_index == 0
-                                and getattr(paragraph, "first_line_indent", False)
-                            ),
-                            spacing_before=spacing if fragment_index == 0 else 0.0,
-                            style=style,
-                            original_font=_source_font(
-                                page, paragraph, style, typesetter
-                            ),
-                            paragraph=paragraph,
+        else:
+            fragments = run_trace.target_fragments_for_source(element.source_ref)
+            released = any(
+                run_trace.fragments[fragment_id].allocation_status
+                == ALLOCATION_RELEASED
+                for fragment_id in run_trace.sources[element.source_ref].fragment_ids
+            )
+            if fragments:
+                joined = "".join(fragment["text"] for fragment in fragments)
+                style = _plain_style(paragraph, joined)
+                if style is None:
+                    reason = "non_plain_or_formula_target"
+                else:
+                    spacing = _spacing_before(previous, element)
+                    for fragment_index, fragment in enumerate(fragments):
+                        boundaries.append(
+                            ParagraphBoundaryToken(
+                                source_ref=element.source_ref,
+                                source_page=element.page,
+                                source_slot_id=(
+                                    fragment["slot_id"]
+                                    or f"source-holder:{element.source_ref}"
+                                ),
+                                paragraph_order=element.reading_order,
+                                request_id=fragment["request_id"],
+                                fragment_id=fragment["fragment_id"],
+                                target_start=fragment["text_start"],
+                                target_end=fragment["text_end"],
+                                text=fragment["text"],
+                                first_line_indent=bool(
+                                    fragment_index == 0
+                                    and getattr(
+                                        paragraph, "first_line_indent", False
+                                    )
+                                ),
+                                spacing_before=(
+                                    spacing if fragment_index == 0 else 0.0
+                                ),
+                                style=style,
+                                original_font=_source_font(
+                                    page, paragraph, style, typesetter
+                                ),
+                                paragraph=paragraph,
+                            )
                         )
-                    )
-        elif not released:
-            reason = "target_fragment_unavailable"
+            elif not released:
+                reason = "target_fragment_unavailable"
         prepared.append((element, tuple(boundaries), reason))
         if reason is None:
             previous = element
@@ -940,6 +950,9 @@ def _apply_page_local(
     )
     unsupported = {item.page for item in article_document_ir.unsupported_pages}
     page_records = []
+    protected_refs = drop_cap_intent.active_protected_refs(
+        translator.translation_config
+    )
     for page_number in sorted(article_document_ir.by_page):
         article = article_document_ir.article_for_page(page_number)
         if article is None:
@@ -964,6 +977,7 @@ def _apply_page_local(
             inventory,
             config,
             typesetter,
+            protected_refs,
         )
         if not segments:
             page_records.append(

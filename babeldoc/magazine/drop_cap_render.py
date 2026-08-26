@@ -45,6 +45,7 @@ a line should be or a fragment of a first word stranded beside one.
 
 from __future__ import annotations
 
+import copy
 import json
 import logging
 import math
@@ -111,6 +112,15 @@ REVERT_ARTICLE_BOUNDS = "outside_article_envelope"
 REVERT_COLLISION = "decorative_collision"
 REVERT_RENDER_EXCEPTION = "render_exception"
 REVERT_FIXED_ASSET = "fixed_asset_changed"
+REVERT_INVALID_INTENT = "invalid_drop_cap_intent"
+REVERT_POST_GEOMETRY = "post_render_geometry_failed"
+REVERT_POST_COLOR = "post_render_color_failed"
+REVERT_POST_COVERAGE = "post_render_coverage_failed"
+REVERT_POST_COLLISION = "post_render_collision_failed"
+
+STATE_INVALID_INTENT = "invalid_intent"
+STATE_RENDER_ROLLBACK = "render_rollback"
+STATE_COMMITTED = "committed"
 
 RAISED_RESERVE_LINES = 1
 CHINESE_RESERVE_LINES = 2
@@ -286,6 +296,11 @@ def parse_render_config(raw: dict, source: str) -> RenderConfig:
         REVERT_COLLISION,
         REVERT_RENDER_EXCEPTION,
         REVERT_FIXED_ASSET,
+        REVERT_INVALID_INTENT,
+        REVERT_POST_GEOMETRY,
+        REVERT_POST_COLOR,
+        REVERT_POST_COVERAGE,
+        REVERT_POST_COLLISION,
     ):
         _require(
             name in reasons,
@@ -1435,6 +1450,8 @@ def _blank(reference: str, label: int, decision: str, target: str, regime) -> di
         "style_evidence": None,
         "detector_contract": None,
         "transaction": None,
+        "render_state": None,
+        "validation": None,
     }
 
 
@@ -1540,9 +1557,14 @@ def _decorative_guard(
     )
 
 
-def _record_render_issue(intent, reference: str, detail: str) -> None:
+def _record_render_issue(
+    intent,
+    reference: str,
+    detail: str,
+    kind: str = drop_cap_intent.ISSUE_RENDER_FAILED,
+) -> None:
     issue = drop_cap_intent.DropCapIssue(
-        kind=drop_cap_intent.ISSUE_RENDER_FAILED,
+        kind=kind,
         source_ref=reference,
         detail=detail,
     )
@@ -1565,6 +1587,136 @@ def kept_verdict() -> str:
             f"for the one verdict that is not {drop_cap.DECISION_FLATTEN!r}"
         )
     return other[0]
+
+
+def _render_validation(
+    translation_config,
+    paragraph,
+    reference: str,
+    decision: str,
+    intent,
+    regime,
+    run_trace,
+) -> dict:
+    try:
+        from babeldoc.magazine.run_trace import parse_source_ref
+
+        parse_source_ref(reference)
+        canonical = True
+    except (TypeError, ValueError):
+        canonical = False
+    characters = [
+        character
+        for character in paragraph_characters(paragraph)
+        if character.box is not None
+    ]
+    policy = None if intent is None else intent.target_policy
+    known_policies = {
+        drop_cap_intent.POLICY_ALPHABETIC,
+        drop_cap_intent.POLICY_CJK_IDEOGRAPH,
+        drop_cap_intent.POLICY_ENGLISH_RAISED_INITIAL,
+        drop_cap_intent.POLICY_CHINESE_TWO_LINE_INITIAL,
+    }
+    trace_generation = getattr(run_trace, "current_generation", None)
+    trace_record = (
+        None
+        if trace_generation is None
+        else getattr(run_trace, "generations", {}).get(trace_generation)
+    )
+    checks = {
+        "candidate_valid": bool(getattr(paragraph, "drop_cap_candidate", False)),
+        "decision_current": bool(
+            intent is not None and intent.decision == decision
+        ),
+        "flatten_success": bool(
+            intent is not None
+            and intent.flatten_status == drop_cap_intent.FLATTEN_APPLIED
+        ),
+        "target_initial_available": bool(
+            intent is not None
+            and drop_cap_intent.eligible_initial(characters, policy) is not None
+        ),
+        "geometry_policy_known": bool(regime is not None and policy in known_policies),
+        "current_intent_generation": bool(
+            intent is not None
+            and intent.generation
+            == drop_cap_intent.current_generation(translation_config)
+        ),
+        "current_transaction_generation": bool(
+            trace_record is None
+            or getattr(trace_record, "status", None) == "committed"
+        ),
+        "canonical_source_ref": canonical,
+    }
+    return {
+        "checks": checks,
+        "valid": all(checks.values()),
+        "failed": [name for name, holds in checks.items() if not holds],
+        "intent_generation": None if intent is None else intent.generation,
+        "registry_generation": drop_cap_intent.current_generation(
+            translation_config
+        ),
+        "base_transaction_generation": trace_generation,
+        "transaction_generation": None,
+        "post_render": None,
+    }
+
+
+def _post_render_validation(
+    paragraph,
+    intent,
+    outcome: dict,
+    before_text: str,
+) -> tuple[str | None, dict]:
+    characters = [
+        character
+        for character in paragraph_characters(paragraph)
+        if character.box is not None
+    ]
+    target_index = outcome.get("_target_index")
+    contract = outcome.get("detector_contract")
+    geometry = bool(
+        outcome.get("set")
+        and isinstance(target_index, int)
+        and 0 <= target_index < len(characters)
+        and isinstance(outcome.get("reach"), list)
+        and len(outcome["reach"]) == 4
+        and (
+            contract is None
+            or not contract.get("missing_fields", ["contract_invalid"])
+        )
+    )
+    color = False
+    if geometry:
+        actual = drop_cap_intent.freeze_color(
+            characters[target_index].pdf_style
+        ).fill.rgb
+        color = drop_cap_intent.colors_close(
+            actual,
+            intent.source_color.fill.rgb,
+            drop_cap.load_drop_cap_config().color_tolerance,
+        )
+    rendered_text = "".join(character.char_unicode or "" for character in characters)
+    coverage = rendered_text == before_text == (paragraph.unicode or "")
+    collision = not outcome.get("collision_evidence") and (
+        contract is None or not contract.get("collision")
+    )
+    checks = {
+        "drop_cap_geometry": geometry,
+        "color": color,
+        "coverage": coverage,
+        "collision": collision,
+    }
+    reason = None
+    if not geometry:
+        reason = REVERT_POST_GEOMETRY
+    elif not color:
+        reason = REVERT_POST_COLOR
+    elif not coverage:
+        reason = REVERT_POST_COVERAGE
+    elif not collision:
+        reason = REVERT_POST_COLLISION
+    return reason, {"checks": checks, "valid": reason is None}
 
 
 def apply(
@@ -1617,21 +1769,6 @@ def apply(
                 continue
             reference = drop_cap.paragraph_reference(label, index)
             intent = drop_cap_intent.intent_for(translation_config, reference)
-            if intent is None:
-                raise DropCapRenderError(
-                    f"{reference}: kept decision has no frozen drop-cap intent"
-                )
-            if intent.flatten_status == drop_cap_intent.FLATTEN_FAILED:
-                intent.render_status = drop_cap_intent.RENDER_SKIPPED
-                if run_trace is not None:
-                    run_trace.record_drop_cap_event(
-                        {
-                            "event": "render_blocked",
-                            "source_ref": reference,
-                            "flatten_status": intent.flatten_status,
-                        }
-                    )
-                continue
             blank = _blank(
                 reference,
                 label,
@@ -1639,10 +1776,26 @@ def apply(
                 target,
                 None if regime is None else regime.name,
             )
-            blank["target_policy"] = intent.target_policy
+            blank["target_policy"] = None if intent is None else intent.target_policy
+            validation = _render_validation(
+                translation_config,
+                paragraph,
+                reference,
+                decision,
+                intent,
+                regime,
+                run_trace,
+            )
+            blank["validation"] = validation
             transaction = None
-            if regime is None:
-                outcome = blank
+            local_snapshot = copy.deepcopy(paragraph)
+            if not validation["valid"]:
+                outcome = {
+                    **blank,
+                    "revert_reason": REVERT_INVALID_INTENT,
+                    "issue": ", ".join(validation["failed"]),
+                    "render_state": STATE_INVALID_INTENT,
+                }
             elif (
                 regime.name == REGIME_INITIAL
                 and intent.target_policy
@@ -1650,31 +1803,32 @@ def apply(
             ):
                 outcome = _refusal(blank, REVERT_POLICY)
             else:
-                guarded_policy = intent.target_policy in (
-                    drop_cap_intent.POLICY_ENGLISH_RAISED_INITIAL,
-                    drop_cap_intent.POLICY_CHINESE_TWO_LINE_INITIAL,
+                guard = _decorative_guard(
+                    page,
+                    label,
+                    index,
+                    reference,
+                    intent,
+                    article_document_ir,
+                    inventory,
                 )
-                guard = (
-                    _decorative_guard(
-                        page,
-                        label,
-                        index,
-                        reference,
-                        intent,
-                        article_document_ir,
-                        inventory,
+                attempt_inventory = _without_mutable_paragraph(
+                    inventory, reference
+                )
+                if isinstance(docs, il_version_1.Document):
+                    transaction_trace = (
+                        run_trace
+                        if run_trace is not None
+                        and hasattr(run_trace, "transaction_snapshot")
+                        else None
                     )
-                    if guarded_policy
-                    else None
-                )
-                if guard is not None:
                     attempt_inventory = _without_mutable_paragraph(
                         inventory, reference
                     )
                     transaction = TransactionSnapshot.capture(
                         docs,
                         (position,),
-                        run_trace=run_trace,
+                        run_trace=transaction_trace,
                         fixed_inventory=attempt_inventory,
                         fixed_inventory_builder=lambda reference=reference: (
                             _without_mutable_paragraph(
@@ -1682,7 +1836,31 @@ def apply(
                             )
                         ),
                     )
+                    transaction.begin_generation(f"drop_cap_render:{reference}")
+                    validation["transaction_generation"] = transaction.generation
+                    if transaction_trace is not None:
+                        validation["checks"]["current_transaction_generation"] = (
+                            transaction.generation
+                            == transaction_trace.current_generation
+                        )
+                        validation["valid"] = all(
+                            validation["checks"].values()
+                        )
+                        validation["failed"] = [
+                            name
+                            for name, holds in validation["checks"].items()
+                            if not holds
+                        ]
                 try:
+                    if not validation["valid"]:
+                        raise DropCapRenderError(
+                            "render transaction generation is not current"
+                        )
+                    before_text = "".join(
+                        character.char_unicode or ""
+                        for character in paragraph_characters(paragraph)
+                        if character.box is not None
+                    )
                     outcome = set_one(
                         paragraph,
                         regime,
@@ -1692,7 +1870,17 @@ def apply(
                         glyph_metric_resolver=glyph_metric_resolver,
                         geometry_guard=guard,
                     )
-                    if transaction is not None and outcome["set"]:
+                    if outcome["set"]:
+                        post_reason, post = _post_render_validation(
+                            paragraph,
+                            intent,
+                            outcome,
+                            before_text,
+                        )
+                        validation["post_render"] = post
+                        if post_reason is not None:
+                            outcome = _refusal(outcome, post_reason)
+                    if outcome["set"]:
                         after_inventory = inventory_builder()
                         comparison = fixed_assets.compare(
                             attempt_inventory,
@@ -1703,6 +1891,11 @@ def apply(
                             outcome = _refusal(outcome, REVERT_FIXED_ASSET)
                         else:
                             inventory = after_inventory
+                    outcome["render_state"] = (
+                        STATE_COMMITTED
+                        if outcome["set"]
+                        else STATE_RENDER_ROLLBACK
+                    )
                     if transaction is not None:
                         outcome["transaction"] = (
                             transaction.commit(
@@ -1711,6 +1904,8 @@ def apply(
                             if outcome["set"]
                             else transaction.rollback()
                         )
+                    elif not outcome["set"]:
+                        page.pdf_paragraph[index] = copy.deepcopy(local_snapshot)
                 except Exception as error:  # noqa: BLE001 - the snapshot must close
                     transaction_record = (
                         None if transaction is None else transaction.rollback()
@@ -1718,8 +1913,16 @@ def apply(
                     outcome = _refusal(blank, REVERT_RENDER_EXCEPTION)
                     outcome["issue"] = f"{type(error).__name__}: {error}"
                     outcome["transaction"] = transaction_record
+                    outcome["render_state"] = STATE_RENDER_ROLLBACK
+                    if transaction is None:
+                        page.pdf_paragraph[index] = copy.deepcopy(local_snapshot)
+            if outcome["render_state"] is None:
+                outcome["render_state"] = STATE_RENDER_ROLLBACK
+                if transaction is None:
+                    page.pdf_paragraph[index] = copy.deepcopy(local_snapshot)
             target_index = outcome.pop("_target_index", None)
             if outcome["set"] and target_index is not None:
+                paragraph = docs.page[position].pdf_paragraph[index]
                 characters = [
                     character
                     for character in paragraph_characters(paragraph)
@@ -1732,9 +1935,16 @@ def apply(
                 intent.target_style_hash = drop_cap_intent.style_hash(
                     target_character.pdf_style
                 )
-            elif regime is None:
+            elif intent is not None and outcome["render_state"] == STATE_INVALID_INTENT:
                 intent.render_status = drop_cap_intent.RENDER_SKIPPED
-            else:
+                detail = outcome["issue"] or str(outcome["revert_reason"])
+                _record_render_issue(
+                    intent,
+                    reference,
+                    detail,
+                    drop_cap_intent.ISSUE_INVALID_INTENT,
+                )
+            elif intent is not None:
                 intent.render_status = drop_cap_intent.RENDER_FAILED
                 detail = outcome["issue"] or str(outcome["revert_reason"])
                 outcome["issue"] = detail
@@ -1742,24 +1952,32 @@ def apply(
             if run_trace is not None:
                 event_name = "target_initial_style"
                 if (
-                    intent.target_policy
+                    intent is not None
+                    and intent.target_policy
                     == drop_cap_intent.POLICY_ENGLISH_RAISED_INITIAL
                 ):
                     event_name = "english_raised_initial_geometry"
                 elif (
-                    intent.target_policy
+                    intent is not None
+                    and intent.target_policy
                     == drop_cap_intent.POLICY_CHINESE_TWO_LINE_INITIAL
                 ):
                     event_name = "chinese_two_line_initial_geometry"
                 event = {
                     "event": event_name,
                     "source_ref": reference,
-                    "render_status": intent.render_status,
-                    "target_policy": intent.target_policy,
+                    "render_status": (
+                        drop_cap_intent.RENDER_SKIPPED
+                        if intent is None
+                        else intent.render_status
+                    ),
+                    "render_state": outcome["render_state"],
+                    "validation": validation,
+                    "target_policy": None if intent is None else intent.target_policy,
                     "initial_char": outcome["initial"],
-                    "target_char": intent.target_char,
-                    "target_index": intent.target_index,
-                    "target_style_hash": intent.target_style_hash,
+                    "target_char": None if intent is None else intent.target_char,
+                    "target_index": None if intent is None else intent.target_index,
+                    "target_style_hash": None if intent is None else intent.target_style_hash,
                     "initial_char_count": outcome["initial_char_count"],
                     "initial_ink_box": outcome["initial_ink_box"],
                     "first_line_metrics": {
@@ -1846,6 +2064,14 @@ def as_record(
             "decided": len(records),
             "set": sum(1 for item in records if item["set"]),
             "reverted": sum(1 for item in records if item["reverted"]),
+            "by_state": {
+                state: sum(1 for item in records if item["render_state"] == state)
+                for state in (
+                    STATE_INVALID_INTENT,
+                    STATE_RENDER_ROLLBACK,
+                    STATE_COMMITTED,
+                )
+            },
             "by_reason": {
                 name: sum(1 for item in records if item["revert_reason"] == name)
                 for name in config.revert_reasons

@@ -72,6 +72,7 @@ from lxml import etree
 from babeldoc.format.pdf.document_il.midend.typesetting import Typesetting
 from babeldoc.magazine import acceptance
 from babeldoc.magazine import detectors
+from babeldoc.magazine import drop_cap_intent
 from babeldoc.magazine import fixed_assets
 from babeldoc.magazine import hitl
 from babeldoc.magazine import rotated_lane
@@ -398,6 +399,10 @@ class RepairLoop:
         self.decision_client = decision_client
         self.translator = translator
         self.run_trace = run_trace
+        self.protected_drop_cap_refs = drop_cap_intent.active_protected_refs(
+            translation_config,
+            rendered_only=True,
+        )
         from babeldoc.magazine import column_reflow
 
         reflow_config = column_reflow.load_reflow_config()
@@ -590,6 +595,26 @@ class RepairLoop:
                         reference=", ".join(issue.paragraph_refs),
                         accepted=False,
                         reason=actions.REASON_NO_PARAGRAPH,
+                    )
+                )
+                continue
+            protected = sorted(
+                set(issue.paragraph_refs) & self.protected_drop_cap_refs
+            )
+            if protected:
+                records.append(
+                    actions.Application(
+                        issue_id=issue_id,
+                        reference=", ".join(protected),
+                        accepted=False,
+                        reason=actions.REASON_PROTECTED_DROP_CAP,
+                        source_text=candidate.source_text,
+                        geometry={
+                            "issue": {
+                                "kind": drop_cap_intent.ISSUE_PROTECTED_CONFLICT,
+                                "source_refs": protected,
+                            }
+                        },
                     )
                 )
                 continue
@@ -827,6 +852,7 @@ class RepairLoop:
             "written": [],
             "attempted": False,
             "action_status": ACTION_NOT_EXECUTED,
+            "protected_skips": [],
         }
         decision, request = self._round_client(kind).decide(offered)
         entry["decision"] = decision.as_record()
@@ -871,6 +897,11 @@ class RepairLoop:
             applied = []
         written = [item for item in applied if item.changed]
         entry["applicability"] = [item.as_record() for item in rejected]
+        entry["protected_skips"] = [
+            item.reference
+            for item in rejected
+            if item.reason == actions.REASON_PROTECTED_DROP_CAP
+        ]
         entry["executed"] = [
             {**item.as_record(), "action_status": ACTION_ATTEMPTED}
             for item in applied
@@ -1247,6 +1278,12 @@ class RepairLoop:
             "api_attributions": [dict(row) for row in self.attributions],
             "action_statuses": dict(sorted(action_statuses.items())),
             "failure": self.failure,
+            "protected_drop_cap_refs": sorted(self.protected_drop_cap_refs),
+            "protected_drop_cap_skips": sum(
+                len(round_record.get("protected_skips", ()))
+                for iteration in self.iterations
+                for round_record in iteration.get("rounds", ())
+            ),
         }
         path = self.working_dir / REPORT_NAME
         with path.open("w", encoding="utf-8") as f:

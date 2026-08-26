@@ -95,6 +95,7 @@ from pathlib import Path
 
 from babeldoc.format.pdf.document_il.il_version_1 import Box
 from babeldoc.magazine import acceptance
+from babeldoc.magazine import drop_cap_intent
 from babeldoc.magazine import fixed_assets
 from babeldoc.magazine import hitl
 from babeldoc.magazine.detectors import base
@@ -164,6 +165,7 @@ GUARD_COLUMN_TOP = "above_column_top"
 # what the whole page detects as afterwards.
 GUARD_NEW_FINDING = "new_finding_after_shift"
 GUARD_FIXED_ASSET = "fixed_asset_changed"
+GUARD_DROP_CAP_ANCHOR = "drop_cap_anchor_changed"
 
 GAP_ISSUE_KIND = "abnormal_blank_area"
 GAP_ISSUE_DETECTOR = "column_gap"
@@ -824,10 +826,58 @@ def apply_page(
         _gap_issue(label, applicable, "excess_sum_before", policy),
     ]
     stored = []
+    active_drop_caps = drop_cap_intent.active_protected_refs(
+        translation_config,
+        rendered_only=True,
+    )
+    anchors_before = {}
     for _column, group in applicable:
         for member in group:
             if member.shift > 0:
+                if member.reference in active_drop_caps:
+                    intent = drop_cap_intent.intent_for(
+                        translation_config, member.reference
+                    )
+                    anchors_before[member.reference] = (
+                        None
+                        if intent is None
+                        else drop_cap_intent.decorative_anchor_signature(
+                            member.paragraph, intent
+                        )
+                    )
                 stored.extend(raise_by(member.paragraph, member.shift))
+    changed_anchors = []
+    for _column, group in applicable:
+        for member in group:
+            if member.reference not in anchors_before:
+                continue
+            intent = drop_cap_intent.intent_for(
+                translation_config, member.reference
+            )
+            after = (
+                None
+                if intent is None
+                else drop_cap_intent.decorative_anchor_signature(
+                    member.paragraph, intent
+                )
+            )
+            if anchors_before[member.reference] is None or (
+                after != anchors_before[member.reference]
+            ):
+                changed_anchors.append(member.reference)
+    record["drop_cap_anchor_comparison"] = {
+        "checked": sorted(anchors_before),
+        "changed": sorted(set(changed_anchors)),
+        "holds": not changed_anchors,
+    }
+    if changed_anchors:
+        restore(stored)
+        for column, _group in applicable:
+            column["applied"] = False
+            column["guard"] = GUARD_DROP_CAP_ANCHOR
+        record["guard"] = GUARD_DROP_CAP_ANCHOR
+        record["action_status"] = "rolled_back"
+        return record
     if fixed_inventory is not None and inventory_after is not None:
         asset_comparison = fixed_assets.compare(
             fixed_inventory,
