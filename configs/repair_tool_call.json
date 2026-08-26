@@ -1,0 +1,42 @@
+{
+  "schema_version": "repair-decision-wire.v1",
+  "tool_name": "select_repair_action",
+  "max_issue_ids": 40,
+  "max_element_refs": 200,
+  "max_identifier_chars": 128,
+  "parameter_slots": {
+    "max_source_chars": {
+      "type": "integer",
+      "minimum": 16,
+      "maximum": 20000
+    },
+    "fit_profile": {
+      "type": "string",
+      "enum": ["preserve", "balanced", "compact"]
+    },
+    "spacing_profile": {
+      "type": "string",
+      "enum": ["preserve", "balanced", "compact"]
+    },
+    "minimum_scale_profile": {
+      "type": "string",
+      "enum": ["conservative", "standard", "strong"]
+    },
+    "wrap_policy": {
+      "type": "string",
+      "enum": ["preserve_words", "balanced"]
+    },
+    "collision_axis": {
+      "type": "string",
+      "enum": ["horizontal", "vertical", "least_overlap"]
+    }
+  },
+  "actions": {
+    "reprocess_omitted_text": ["max_source_chars"],
+    "reallocate_continuity_chain": ["fit_profile", "spacing_profile", "wrap_policy"],
+    "retypeset_article_region": ["fit_profile", "spacing_profile", "wrap_policy"],
+    "contain_overflowing_heading": ["minimum_scale_profile", "wrap_policy"],
+    "resolve_text_collision": ["collision_axis"],
+    "no_action": []
+  }
+}

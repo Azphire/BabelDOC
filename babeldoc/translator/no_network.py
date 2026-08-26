@@ -31,6 +31,9 @@ class NoNetworkTranslator(BaseTranslator):
     def llm_translate(self, text, ignore_cache=False, rate_limit_params=None):
         self._disabled()
 
+    def supports_tool_calls(self) -> bool:
+        return False
+
     def do_translate(self, text, rate_limit_params=None):
         self._disabled()
 

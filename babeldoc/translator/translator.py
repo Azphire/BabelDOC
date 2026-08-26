@@ -1,10 +1,12 @@
 import contextlib
+import hashlib
 import logging
 import threading
 import time
 import unicodedata
 from abc import ABC
 from abc import abstractmethod
+from collections.abc import Mapping
 
 import httpx
 import openai
@@ -16,9 +18,38 @@ from tenacity import wait_exponential
 
 from babeldoc.babeldoc_exception.BabelDOCException import ContentFilterError
 from babeldoc.translator.cache import TranslationCache
+from babeldoc.translator.tool_call import ToolCallCapability
+from babeldoc.translator.tool_call import ToolCallLimits
+from babeldoc.translator.tool_call import ToolCallProtocolError
+from babeldoc.translator.tool_call import ToolCallResult
+from babeldoc.translator.tool_call import ToolCallSchemaError
+from babeldoc.translator.tool_call import ToolCallsUnsupported
+from babeldoc.translator.tool_call import ToolCallTransientError
+from babeldoc.translator.tool_call import ToolCallTransportError
+from babeldoc.translator.tool_call import decode_arguments
+from babeldoc.translator.tool_call import digest_json
+from babeldoc.translator.tool_call import endpoint_identity
+from babeldoc.translator.tool_call import resolve_tool_call_capability
+from babeldoc.translator.tool_call import tool_call_cache_key
+from babeldoc.translator.tool_call import validate_resource_limits
+from babeldoc.translator.tool_call import validate_schema
+from babeldoc.translator.tool_call import validate_state_binding
 from babeldoc.utils.atomic_integer import AtomicInteger
 
 logger = logging.getLogger(__name__)
+
+
+def _safe_cache_log(event: str, text: object, exc: Exception, result=None) -> None:
+    encoded = "" if text is None else str(text)
+    fields = {
+        "event": event,
+        "request_sha256": hashlib.sha256(encoded.encode("utf-8")).hexdigest(),
+        "request_chars": len(encoded),
+        "exception": type(exc).__name__,
+    }
+    if result is not None:
+        fields["result_chars"] = len(str(result))
+    logger.debug("translator cache event %s", fields)
 
 
 def remove_control_characters(s):
@@ -131,7 +162,7 @@ class BaseTranslator(ABC):
                     self.translate_cache_call_count += 1
                     return cache
             except Exception as e:
-                logger.debug(f"try get cache failed, ignore it: {e}")
+                _safe_cache_log("get_failed", text, e)
         _translate_rate_limiter.wait()
         translation = self.do_translate(text, rate_limit_params)
         if not (self.ignore_cache or ignore_cache):
@@ -152,17 +183,35 @@ class BaseTranslator(ABC):
                     self.translate_cache_call_count += 1
                     return cache
             except Exception as e:
-                logger.debug(f"try get cache failed, ignore it: {e}")
+                _safe_cache_log("get_failed", text, e)
         _translate_rate_limiter.wait()
         translation = self.do_llm_translate(text, rate_limit_params)
         if not (self.ignore_cache or ignore_cache):
             try:
                 self.cache.set(text, translation)
             except Exception as e:
-                logger.debug(
-                    f"try set cache failed, ignore it: {e}, text: {text}, translation: {translation}"
-                )
+                _safe_cache_log("set_failed", text, e, translation)
         return translation
+
+    def supports_tool_calls(self) -> bool:
+        """Whether this exact endpoint/model has declared strict-tool support."""
+        return False
+
+    def llm_tool_call(
+        self,
+        *,
+        messages,
+        tool_name: str,
+        parameters_schema: Mapping[str, object],
+        state_sha256: str,
+        cache_context: Mapping[str, object],
+        request_limits: Mapping[str, object] | None,
+    ) -> ToolCallResult:
+        del messages, tool_name, parameters_schema, state_sha256
+        del cache_context, request_limits
+        raise ToolCallsUnsupported(
+            f"{self.name} does not support forced structured tool calls"
+        )
 
     @abstractmethod
     def do_llm_translate(self, text, rate_limit_params: dict = None):
@@ -217,6 +266,7 @@ class OpenAITranslator(BaseTranslator):
         send_temperature=True,
         reasoning=None,
         thinking=None,
+        tool_call_capability: Mapping[str, object] | ToolCallCapability | None = None,
     ):
         super().__init__(lang_in, lang_out, ignore_cache)
         self.options = {"temperature": 0}  # 随机采样可能会打断公式标记
@@ -227,6 +277,12 @@ class OpenAITranslator(BaseTranslator):
         #     }
         #     self.add_cache_impact_parameters("reasoning-effort", 'minimal')
         self.reasoning = reasoning
+        self.base_url_identity = endpoint_identity(base_url)
+        self.tool_call_capability = resolve_tool_call_capability(
+            base_url,
+            model,
+            tool_call_capability,
+        )
         self.client = openai.OpenAI(
             base_url=base_url,
             api_key=api_key,
@@ -261,6 +317,265 @@ class OpenAITranslator(BaseTranslator):
         self.prompt_token_count = AtomicInteger()
         self.completion_token_count = AtomicInteger()
         self.cache_hit_prompt_token_count = AtomicInteger()
+        self.tool_call_count = 0
+        self.tool_call_cache_hit_count = 0
+        self.tool_call_attempt_count = 0
+        # Imported only where an OpenAI transport is actually built.  Several
+        # offline layout gates install a minimal TranslationCache protocol
+        # module while importing BaseTranslator, and must not need tool-cache
+        # production dependencies merely to exercise non-transport code.
+        from babeldoc.translator.cache import ToolCallCache
+
+        self.tool_call_cache = ToolCallCache(
+            self.name, self.base_url_identity, self.model
+        )
+
+    def supports_tool_calls(self) -> bool:
+        return bool(
+            self.tool_call_capability
+            and self.tool_call_capability.supports(
+                self.base_url_identity,
+                self.model,
+            )
+        )
+
+    @staticmethod
+    def _member(value, name: str, default=None):
+        if isinstance(value, Mapping):
+            return value.get(name, default)
+        return getattr(value, name, default)
+
+    @staticmethod
+    def _is_transient_tool_error(exc: Exception) -> bool:
+        provider_types = tuple(
+            candidate
+            for candidate in (
+                getattr(openai, "RateLimitError", None),
+                getattr(openai, "APIConnectionError", None),
+                getattr(openai, "APITimeoutError", None),
+                getattr(openai, "InternalServerError", None),
+            )
+            if isinstance(candidate, type)
+        )
+        return isinstance(exc, (ToolCallTransientError, *provider_types))
+
+    def _parse_tool_response(
+        self,
+        response,
+        *,
+        tool_name: str,
+        parameters_schema: Mapping[str, object],
+        state_sha256: str,
+        limits: ToolCallLimits,
+    ) -> ToolCallResult:
+        choices = self._member(response, "choices")
+        if not isinstance(choices, list) or len(choices) != 1:
+            raise ToolCallProtocolError("provider must return exactly one choice")
+        choice = choices[0]
+        finish_reason = self._member(choice, "finish_reason")
+        if finish_reason != "tool_calls":
+            raise ToolCallProtocolError("provider did not finish with tool_calls")
+        message = self._member(choice, "message")
+        if message is None:
+            raise ToolCallProtocolError("provider choice has no message")
+        refusal = self._member(message, "refusal")
+        if refusal:
+            raise ToolCallProtocolError("provider refused the forced tool call")
+        calls = self._member(message, "tool_calls")
+        if not isinstance(calls, list) or len(calls) != 1:
+            raise ToolCallProtocolError("provider must return exactly one tool call")
+        call = calls[0]
+        if self._member(call, "type") != "function":
+            raise ToolCallProtocolError("provider returned the wrong tool-call type")
+        function = self._member(call, "function")
+        if function is None or self._member(function, "name") != tool_name:
+            raise ToolCallProtocolError("provider returned the wrong tool name")
+        arguments = decode_arguments(self._member(function, "arguments"), limits)
+        validate_schema(arguments, parameters_schema)
+        validate_state_binding(arguments, state_sha256)
+        call_id = self._member(call, "id")
+        if call_id is not None and not isinstance(call_id, str):
+            raise ToolCallProtocolError("provider call id has the wrong type")
+        return ToolCallResult(
+            tool_name=tool_name,
+            arguments=arguments,
+            provider_call_id=call_id,
+            finish_reason=finish_reason,
+        )
+
+    def llm_tool_call(
+        self,
+        *,
+        messages,
+        tool_name: str,
+        parameters_schema: Mapping[str, object],
+        state_sha256: str,
+        cache_context: Mapping[str, object],
+        request_limits: Mapping[str, object] | None,
+    ) -> ToolCallResult:
+        if not self.supports_tool_calls():
+            raise ToolCallsUnsupported(
+                "strict tool calls were not declared for this endpoint and model"
+            )
+        if not isinstance(tool_name, str) or not tool_name:
+            raise ToolCallProtocolError("tool_name must be a non-empty string")
+        if not isinstance(parameters_schema, Mapping):
+            raise ToolCallProtocolError("parameters_schema must be an object")
+        if not isinstance(cache_context, Mapping):
+            raise ToolCallProtocolError("cache_context must be an object")
+        # Canonicalisation validates these inputs before a cache or provider is
+        # touched, and prevents provider identifiers from entering semantics.
+        digest_json(messages)
+        digest_json(parameters_schema)
+        digest_json(cache_context)
+        limits = ToolCallLimits.from_mapping(request_limits)
+        output_parameters = {
+            "temperature": self.options.get("temperature")
+            if self.send_temperature
+            else None,
+            "reasoning": self.reasoning,
+            "thinking": self.thinking,
+            "max_tokens": 2048,
+        }
+        key = tool_call_cache_key(
+            endpoint=self.base_url_identity,
+            model=self.model,
+            output_parameters=output_parameters,
+            messages=messages,
+            tool_name=tool_name,
+            parameters_schema=parameters_schema,
+            state_sha256=state_sha256,
+            cache_context=cache_context,
+            limits=limits,
+        )
+        self.tool_call_count += 1
+        if not self.ignore_cache:
+            try:
+                cached = self.tool_call_cache.get(key)
+            except Exception as exc:  # cache failure is a miss, never a bypass
+                logger.debug(
+                    "tool-call cache get failed %s",
+                    {"cache_key": key, "exception": type(exc).__name__},
+                )
+            else:
+                if cached is not None:
+                    if cached["tool_name"] != tool_name:
+                        raise ToolCallSchemaError(
+                            "cached tool name does not match the forced tool"
+                        )
+                    arguments = dict(cached["arguments"])
+                    validate_resource_limits(arguments, limits)
+                    validate_schema(arguments, parameters_schema)
+                    validate_state_binding(arguments, state_sha256)
+                    self.tool_call_cache_hit_count += 1
+                    return ToolCallResult(
+                        tool_name=tool_name,
+                        arguments=arguments,
+                        provider_call_id=None,
+                        finish_reason=cached["finish_reason"],
+                    )
+
+        request_digest = digest_json(
+            {
+                "cache_key": key,
+                "tool_name": tool_name,
+                "schema_sha256": digest_json(parameters_schema),
+                "state_sha256": state_sha256,
+            }
+        )
+        request = {
+            "model": self.model,
+            "messages": messages,
+            "tools": [
+                {
+                    "type": "function",
+                    "function": {
+                        "name": tool_name,
+                        "parameters": dict(parameters_schema),
+                        "strict": True,
+                    },
+                }
+            ],
+            "tool_choice": {
+                "type": "function",
+                "function": {"name": tool_name},
+            },
+            "max_tokens": 2048,
+            "extra_body": self.extra_body,
+            "timeout": limits.attempt_timeout_seconds,
+        }
+        if self.send_temperature:
+            request.update(self.options)
+
+        last_exc: Exception | None = None
+        for attempt in range(1, limits.max_attempts + 1):
+            self.tool_call_attempt_count += 1
+            try:
+                response = self.client.chat.completions.create(**request)
+            except Exception as exc:  # provider libraries expose several subclasses
+                last_exc = exc
+                if not self._is_transient_tool_error(exc):
+                    logger.warning(
+                        "tool-call provider error %s",
+                        {
+                            "request_sha256": request_digest,
+                            "attempt": attempt,
+                            "exception": type(exc).__name__,
+                        },
+                    )
+                    raise ToolCallTransportError(
+                        f"non-transient tool-call transport error: {type(exc).__name__}"
+                    ) from exc
+                logger.warning(
+                    "tool-call transient retry %s",
+                    {
+                        "request_sha256": request_digest,
+                        "attempt": attempt,
+                        "exception": type(exc).__name__,
+                    },
+                )
+                if attempt == limits.max_attempts:
+                    break
+                continue
+            try:
+                result = self._parse_tool_response(
+                    response,
+                    tool_name=tool_name,
+                    parameters_schema=parameters_schema,
+                    state_sha256=state_sha256,
+                    limits=limits,
+                )
+            except (ToolCallProtocolError, ToolCallSchemaError) as exc:
+                logger.warning(
+                    "tool-call response rejected %s",
+                    {
+                        "request_sha256": request_digest,
+                        "attempt": attempt,
+                        "reason": type(exc).__name__,
+                    },
+                )
+                raise
+            self.update_token_count(response)
+            if not self.ignore_cache:
+                try:
+                    self.tool_call_cache.set(
+                        key,
+                        tool_name=result.tool_name,
+                        arguments=dict(result.arguments),
+                        finish_reason=result.finish_reason,
+                        attempts=attempt,
+                    )
+                except Exception as exc:
+                    logger.debug(
+                        "tool-call cache set failed %s",
+                        {"cache_key": key, "exception": type(exc).__name__},
+                    )
+            return result
+        assert last_exc is not None
+        raise ToolCallTransportError(
+            f"tool-call transport exhausted {limits.max_attempts} attempts: "
+            f"{type(last_exc).__name__}"
+        ) from last_exc
 
     @retry(
         retry=retry_if_exception_type(openai.RateLimitError),
@@ -307,7 +622,7 @@ class OpenAITranslator(BaseTranslator):
         options = {}
         if self.send_temperature:
             options.update(self.options)
-        if self.enable_json_mode_if_requested and rate_limit_params.get(
+        if self.enable_json_mode_if_requested and (rate_limit_params or {}).get(
             "request_json_mode", False
         ):
             options["response_format"] = {"type": "json_object"}

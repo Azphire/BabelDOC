@@ -17,6 +17,9 @@ from babeldoc.const import CACHE_FOLDER
 
 logger = logging.getLogger(__name__)
 
+TOOL_CALL_CACHE_ENGINE = "tool-call-v1"
+TOOL_CALL_CACHE_SCHEMA_VERSION = 1
+
 # we don't init the database here
 db = SqliteDatabase(None)
 
@@ -150,6 +153,82 @@ class TranslationCache:
             ).execute()
         finally:
             _cleanup_lock.release()
+
+
+class ToolCallCache:
+    """A versioned namespace over the existing SQLite cache table.
+
+    Ordinary translation rows and serialization remain untouched.  The digest
+    supplied as ``key`` contains no prompt bytes or credentials; the value is a
+    canonical structured result and never a raw provider response.
+    """
+
+    def __init__(self, provider: str, endpoint: str, model: str) -> None:
+        self._cache = TranslationCache(
+            TOOL_CALL_CACHE_ENGINE,
+            {
+                "schema_version": TOOL_CALL_CACHE_SCHEMA_VERSION,
+                "provider": provider,
+                "endpoint_identity": endpoint,
+                "model": model,
+            },
+        )
+
+    def get(self, key: str) -> dict | None:
+        stored = self._cache.get(key)
+        if stored is None:
+            return None
+        try:
+            value = json.loads(stored)
+        except (TypeError, json.JSONDecodeError) as exc:
+            raise ValueError("tool-call cache value is malformed") from exc
+        if not isinstance(value, dict) or value.get("schema_version") != 1:
+            raise ValueError("tool-call cache value has an unknown schema")
+        if set(value) != {
+            "schema_version",
+            "tool_name",
+            "arguments",
+            "finish_reason",
+            "attempts",
+        }:
+            raise ValueError("tool-call cache value has unknown fields")
+        if (
+            not isinstance(value["tool_name"], str)
+            or not isinstance(value["arguments"], dict)
+            or not isinstance(value["attempts"], int)
+            or value["attempts"] < 0
+            or value["finish_reason"] is not None
+            and not isinstance(value["finish_reason"], str)
+        ):
+            raise ValueError("tool-call cache value has invalid field types")
+        return value
+
+    def set(
+        self,
+        key: str,
+        *,
+        tool_name: str,
+        arguments: dict,
+        finish_reason: str | None,
+        attempts: int,
+    ) -> None:
+        value = {
+            "schema_version": TOOL_CALL_CACHE_SCHEMA_VERSION,
+            "tool_name": tool_name,
+            "arguments": arguments,
+            "finish_reason": finish_reason,
+            "attempts": attempts,
+        }
+        self._cache.set(
+            key,
+            json.dumps(
+                value,
+                ensure_ascii=False,
+                sort_keys=True,
+                separators=(",", ":"),
+                allow_nan=False,
+            ),
+        )
 
 
 def init_db(

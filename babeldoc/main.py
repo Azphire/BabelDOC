@@ -26,6 +26,7 @@ from babeldoc.const import enable_process_pool
 from babeldoc.format.pdf.translation_config import TranslationConfig
 from babeldoc.format.pdf.translation_config import WatermarkOutputMode
 from babeldoc.glossary import Glossary
+from babeldoc.magazine.react.config import load_repair_config
 from babeldoc.magazine.resource_paths import logical_resource_name
 from babeldoc.magazine.resource_paths import resource_availability
 from babeldoc.magazine.runtime_profile import MODE_NAMES
@@ -35,6 +36,7 @@ from babeldoc.magazine.runtime_profile import resolve_magazine_profile
 from babeldoc.magazine.runtime_profile import resolve_reviews_dir
 from babeldoc.magazine.runtime_profile import validate_magazine_switches
 from babeldoc.translator.no_network import NoNetworkTranslator
+from babeldoc.translator.tool_call import tool_call_capability_record
 from babeldoc.translator.translator import OpenAITranslator
 from babeldoc.translator.translator import set_translate_rate_limiter
 
@@ -535,6 +537,27 @@ def create_parser():
         default=None,
         help="Reasoning string for the OpenAI term extraction translator. If not set, no reasoning field is sent for term extraction requests.",
     )
+    service_group.add_argument(
+        "--openai-supports-strict-tool-calls",
+        action="store_true",
+        default=False,
+        help=(
+            "Explicitly declare strict forced-tool support for the selected "
+            "OpenAI-compatible endpoint and model."
+        ),
+    )
+    service_group.add_argument(
+        "--tool-call-timeout",
+        type=float,
+        default=60.0,
+        help="Per-attempt timeout for forced tool calls (0 < seconds <= 600).",
+    )
+    service_group.add_argument(
+        "--max-tool-call-attempts",
+        type=int,
+        default=1,
+        help="Maximum forced tool-call attempts (1..3).",
+    )
 
     return parser
 
@@ -553,7 +576,13 @@ def _display_url(value: str | None) -> str | None:
     if not value:
         return None
     parsed = urlsplit(value)
-    return urlunsplit((parsed.scheme, parsed.netloc, parsed.path, "", ""))
+    hostname = parsed.hostname or ""
+    if ":" in hostname and not hostname.startswith("["):
+        hostname = f"[{hostname}]"
+    netloc = hostname
+    if parsed.port is not None:
+        netloc += f":{parsed.port}"
+    return urlunsplit((parsed.scheme, netloc, parsed.path, "", ""))
 
 
 def translation_disabled(args) -> bool:
@@ -587,6 +616,14 @@ def build_translators(args, environment: dict[str, str] | None = None):
     if args.openai_thinking is not None:
         translator_kwargs["thinking"] = args.openai_thinking
     try:
+        capability = None
+        if args.openai_supports_strict_tool_calls:
+            capability = {
+                "endpoint_identity": args.openai_base_url
+                or "https://api.openai.com/v1",
+                "models": [args.openai_model],
+                "strict": True,
+            }
         translator = OpenAITranslator(
             lang_in=args.lang_in,
             lang_out=args.lang_out,
@@ -597,6 +634,7 @@ def build_translators(args, environment: dict[str, str] | None = None):
             enable_json_mode_if_requested=args.enable_json_mode_if_requested,
             send_dashscope_header=args.send_dashscope_header,
             send_temperature=not args.no_send_temperature,
+            tool_call_capability=capability,
             **translator_kwargs,
         )
         term_extraction_translator = translator
@@ -620,6 +658,7 @@ def build_translators(args, environment: dict[str, str] | None = None):
                 enable_json_mode_if_requested=args.enable_json_mode_if_requested,
                 send_dashscope_header=args.send_dashscope_header,
                 send_temperature=not args.no_send_temperature,
+                tool_call_capability=None,
                 **term_translator_kwargs,
             )
     except Exception as exc:
@@ -647,11 +686,33 @@ def redact_sensitive_text(text: object, args) -> str:
 def effective_config_report(args) -> tuple[dict, list[str]]:
     profile = resolve_magazine_profile(args.magazine_mode, args.magazine_profile)
     switches = dict(SWITCH_DEFAULTS if profile is None else profile.switches)
-    inputs = [input_summary(_normalized_file(value)) for value in (args.files or ())]
+    inputs = []
+    for value in args.files or ():
+        summary = input_summary(_normalized_file(value))
+        inputs.append(
+            {
+                "basename": Path(summary["path"]).name,
+                "exists": summary["exists"],
+                "size": summary["size"],
+                "sha256": summary["sha256"],
+            }
+        )
     reviews = resolve_reviews_dir(args.magazine_reviews_dir)
     resources = resource_availability()
     main_key, term_key = resolve_cli_credentials(args)
     errors = [issue.message for issue in validate_magazine_switches(switches)]
+    if not 0 < args.tool_call_timeout <= 600:
+        errors.append("tool_call_timeout must be greater than 0 and at most 600")
+    if not 1 <= args.max_tool_call_attempts <= 3:
+        errors.append("max_tool_call_attempts must be between 1 and 3")
+    if args.qps <= 0 or args.qps > 1000:
+        errors.append("qps must be between 1 and 1000")
+    pool_workers = args.pool_max_workers or args.qps
+    term_pool_workers = args.term_pool_max_workers or pool_workers
+    if not 1 <= pool_workers <= 1000:
+        errors.append("pool_max_workers must be between 1 and 1000")
+    if not 1 <= term_pool_workers <= 1000:
+        errors.append("term_pool_max_workers must be between 1 and 1000")
     for kind, status in resources.items():
         if not status["available"]:
             errors.append(f"runtime {kind} resources are unavailable")
@@ -659,7 +720,7 @@ def effective_config_report(args) -> tuple[dict, list[str]]:
         from babeldoc.magazine.hitl import DECISIONS_SUFFIX
 
         for summary in inputs:
-            decision = reviews / f"{Path(summary['path']).stem}{DECISIONS_SUFFIX}"
+            decision = reviews / f"{Path(summary['basename']).stem}{DECISIONS_SUFFIX}"
             if not decision.is_file():
                 errors.append(f"HITL decisions file not found: {decision}")
     profile_record = None
@@ -670,30 +731,79 @@ def effective_config_report(args) -> tuple[dict, list[str]]:
             "sha256": profile.sha256,
             "source": logical_resource_name(profile.source),
         }
+    repair = load_repair_config()
+    explicit_capability = None
+    if args.openai_supports_strict_tool_calls:
+        explicit_capability = {
+            "endpoint_identity": args.openai_base_url or "https://api.openai.com/v1",
+            "models": [args.openai_model],
+            "strict": True,
+        }
+    effective_tool_capability = tool_call_capability_record(
+        args.openai_base_url,
+        args.openai_model,
+        explicit_capability,
+    )
     report = {
+        "schema_version": "effective-run-config.v1",
         "diagnostics": {
             "debug": bool(args.debug),
             "show_char_box": bool(args.show_char_box),
         },
         "inputs": inputs,
+        "languages": {"in": args.lang_in, "out": args.lang_out},
         "mode": args.magazine_mode,
+        "selection": {
+            "physical_pages": args.pages,
+            "output_mode": {
+                "bilingual": not args.no_dual,
+                "monolingual": not args.no_mono,
+                "watermark": args.watermark_output_mode,
+            },
+        },
         "profile": profile_record,
         "resources": resources,
-        "reviews_dir": str(reviews),
+        "paths": {
+            "working": "explicit" if args.working_dir else "temporary",
+            "output": "explicit" if args.output else "input_adjacent",
+            "reviews": "explicit" if args.magazine_reviews_dir else "default",
+        },
         "service": {
             "openai": {
                 "api_key": _redacted(main_key),
                 "base_url": _display_url(args.openai_base_url),
+                "credential_configured": bool(main_key),
                 "enabled": bool(args.openai),
                 "model": args.openai_model,
+                "tool_call_capability": effective_tool_capability,
             },
             "term_extraction": {
                 "api_key": _redacted(term_key),
                 "base_url": _display_url(
                     args.openai_term_extraction_base_url or args.openai_base_url
                 ),
+                "credential_configured": bool(term_key),
                 "model": args.openai_term_extraction_model or args.openai_model,
             },
+            "repair": {
+                "model": args.openai_model,
+                "endpoint": _display_url(args.openai_base_url),
+            },
+        },
+        "limits": {
+            "qps": args.qps,
+            "pool_max_workers": pool_workers,
+            "term_pool_max_workers": term_pool_workers,
+            "translation_request_timeout_seconds": 600,
+            "tool_call_timeout_seconds": args.tool_call_timeout,
+            "repair_max_iterations": repair.max_iterations,
+            "repair_decide_max_attempts": repair.decide_max_attempts,
+            "repair_max_issues_offered": repair.max_issues_offered,
+            "max_tool_call_attempts": args.max_tool_call_attempts,
+        },
+        "cache": {
+            "ordinary_translation": "bypass" if args.ignore_cache else "read_write",
+            "tool_calls": "bypass" if args.ignore_cache else "read_write",
         },
         "switches": switches,
         "validation": {"errors": errors, "ok": not errors},

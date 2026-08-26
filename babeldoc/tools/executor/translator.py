@@ -31,6 +31,11 @@ class ExecutorTranslatorError(RuntimeError):
 class ExecutorTranslator(BaseTranslator):
     name = "executor"
 
+    def supports_tool_calls(self) -> bool:
+        # The executor protocol has no versioned tool-call operation.  JSON
+        # mode is an ordinary text response and must never advertise support.
+        return False
+
     def __init__(
         self,
         lang_in: str,
