@@ -35,6 +35,7 @@ SWITCH_DEFAULTS: dict[str, bool] = {
     "magazine_repair": False,
     "magazine_rotated_lane": False,
     "magazine_title_typeset": False,
+    "magazine_pdf_compliance": False,
 }
 
 NETWORK_CAPABLE_SWITCHES = frozenset(
@@ -206,6 +207,7 @@ def validate_magazine_switches(
     require("magazine_title_typeset", "magazine_detect")
     require("magazine_repair", "magazine_detect")
     require("magazine_rotated_lane", "magazine_repair")
+    require("magazine_pdf_compliance", "magazine_article_group")
     return tuple(issues)
 
 

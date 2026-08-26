@@ -447,6 +447,7 @@ class RunTrace:
         self.unsupported_pages: set[int] = set()
         self.blocked_reasons: list[dict] = []
         self.drop_cap_events: list[dict] = []
+        self.final_pdf_compliance: dict | None = None
         self._source_objects: dict[int, str] = {}
         self._whole_targets: dict[str, str] = {}
         self._fragment_text: dict[str, str] = {}
@@ -602,6 +603,12 @@ class RunTrace:
                 }
                 for fragment in held
             )
+
+    def target_fragment_text(self, fragment_id: str) -> str:
+        with self._lock:
+            if fragment_id not in self.fragments:
+                raise KeyError(f"unknown target fragment: {fragment_id}")
+            return self._fragment_text[fragment_id]
 
     def target_conservation_evidence(self, request_id: str) -> dict:
         """Return hash-and-range evidence for one request without target text."""
@@ -1417,6 +1424,13 @@ class RunTrace:
         with self._lock:
             self.drop_cap_events.append(row)
 
+    def bind_final_pdf_compliance(self, result: Mapping) -> None:
+        row = dict(result)
+        if row.get("status") not in {"pass", "degraded", "fail"}:
+            raise ValueError("final PDF compliance has an invalid status")
+        with self._lock:
+            self.final_pdf_compliance = row
+
     def bind_final_geometry(
         self,
         fragment_id: str,
@@ -1814,6 +1828,11 @@ class RunTrace:
                     )
                 ],
                 "drop_cap_events": [dict(event) for event in self.drop_cap_events],
+                **(
+                    {}
+                    if self.final_pdf_compliance is None
+                    else {"final_pdf_compliance": dict(self.final_pdf_compliance)}
+                ),
                 "indexes": {
                     "article_to_sources": article_to_sources,
                     "chain_to_sources": chain_to_sources,

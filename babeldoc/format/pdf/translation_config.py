@@ -238,6 +238,7 @@ class TranslationConfig:
         magazine_repair: bool = False,
         magazine_rotated_lane: bool = False,
         magazine_title_typeset: bool = False,
+        magazine_pdf_compliance: bool = False,
         magazine_profile: str | Path | None = None,
     ):
         self.translator = translator
@@ -429,6 +430,9 @@ class TranslationConfig:
         self.magazine_title_typeset = profile_switches.get(
             "magazine_title_typeset", magazine_title_typeset
         )
+        self.magazine_pdf_compliance = profile_switches.get(
+            "magazine_pdf_compliance", magazine_pdf_compliance
+        )
 
         if self.skip_translation or self.only_parse_generate_pdf:
             self.auto_extract_glossary = False
@@ -610,6 +614,10 @@ class TranslateResult:
     auto_extracted_glossary_path: Path | None
     total_valid_character_count: int | None
     total_valid_text_token_count: int | None
+    writer_warnings: tuple[dict, ...]
+    final_pdf_compliance_status: str | None
+    final_pdf_compliance_path: Path | None
+    fully_compliant: bool
 
     def __init__(
         self,
@@ -628,6 +636,10 @@ class TranslateResult:
         self.auto_extracted_glossary_path = auto_extracted_glossary_path
         self.total_valid_character_count = None
         self.total_valid_text_token_count = None
+        self.writer_warnings = ()
+        self.final_pdf_compliance_status = None
+        self.final_pdf_compliance_path = None
+        self.fully_compliant = False
 
     def __str__(self):
         """Return a human-readable string representation of the translation result."""
@@ -643,6 +655,11 @@ class TranslateResult:
 
         if self.dual_pdf_path:
             result.append(f"\tDual-language PDF: {self.dual_pdf_path}")
+
+        if self.final_pdf_compliance_status is not None:
+            result.append(
+                f"\tFinal PDF compliance: {self.final_pdf_compliance_status}"
+            )
 
         if (
             hasattr(self, "no_watermark_mono_pdf_path")

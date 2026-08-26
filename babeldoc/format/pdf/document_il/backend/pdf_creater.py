@@ -625,6 +625,12 @@ class PDFCreater:
         self.font_mapper = FontMapper(translation_config)
         self.translation_config = translation_config
         self.mediabox_data = mediabox_data
+        self.writer_warnings: list[dict] = []
+
+    def _record_writer_warning(self, code: str, **evidence) -> None:
+        warning = {"code": code, **evidence}
+        if warning not in self.writer_warnings:
+            self.writer_warnings.append(warning)
 
     def render_graphic_state(
         self,
@@ -1437,7 +1443,13 @@ class PDFCreater:
             for name, box in page_box_data.items():
                 try:
                     doc.xref_set_key(xref, name, box)
-                except Exception:
+                except Exception as exc:
+                    self._record_writer_warning(
+                        "mediabox_restoration_error",
+                        xref=xref,
+                        box_name=name,
+                        detail=f"{type(exc).__name__}: {exc}",
+                    )
                     logger.debug(f"Error restoring media box {name} from PDF")
 
     def write(
@@ -1514,7 +1526,7 @@ class PDFCreater:
                             pretty=True,
                         )
                     translation_config.raise_if_cancelled()
-                    self.save_pdf_with_timeout(
+                    saved_cleanly = self.save_pdf_with_timeout(
                         pdf,
                         mono_out_path,
                         translation_config,
@@ -1525,6 +1537,12 @@ class PDFCreater:
                         linear=False,
                         tag="mono",
                     )
+                    if not saved_cleanly:
+                        self._record_writer_warning(
+                            "pdf_save_fallback",
+                            output="mono",
+                            path=str(mono_out_path),
+                        )
                 pbar.advance()
                 dual_out_path = None
                 if not translation_config.no_dual:
@@ -1575,7 +1593,7 @@ class PDFCreater:
                             translation_config,
                         )
 
-                    self.save_pdf_with_timeout(
+                    saved_cleanly = self.save_pdf_with_timeout(
                         dual,
                         dual_out_path,
                         translation_config,
@@ -1586,6 +1604,12 @@ class PDFCreater:
                         linear=False,
                         tag="dual",
                     )
+                    if not saved_cleanly:
+                        self._record_writer_warning(
+                            "pdf_save_fallback",
+                            output="dual",
+                            path=str(dual_out_path),
+                        )
                     if translation_config.debug:
                         translation_config.raise_if_cancelled()
                         dual.save(
@@ -1614,9 +1638,11 @@ class PDFCreater:
                         self.translation_config.shared_context_cross_split_part.auto_extracted_glossary.to_csv()
                     )
 
-            return TranslateResult(
+            result = TranslateResult(
                 mono_out_path, dual_out_path, auto_extracted_glossary_path
             )
+            result.writer_warnings = tuple(dict(item) for item in self.writer_warnings)
+            return result
         except Exception:
             logger.exception(
                 "Failed to create PDF: %s",
@@ -1657,8 +1683,13 @@ class PDFCreater:
                 xobj_available_fonts[xobj.xobj_id].update(
                     self.get_xobj_available_fonts(xobj.xref_id, pdf),
                 )
-            except Exception:
-                pass
+            except Exception as exc:
+                self._record_writer_warning(
+                    "xobject_font_restoration_error",
+                    page=page.page_number + 1,
+                    xref=xobj.xref_id,
+                    detail=f"{type(exc).__name__}: {exc}",
+                )
             xobj_font_map[xobj.xobj_id] = page_font_map.copy()
             xobj_font_map[xobj.xobj_id].update({f.font_id: f for f in xobj.pdf_font})
             xobj_encoding_length_map[xobj.xobj_id] = {
@@ -1726,7 +1757,13 @@ class PDFCreater:
                     candidate_resource_xrefs,
                 )
                 pdf.update_stream(xobj.xref_id, stream)
-            except Exception:
+            except Exception as exc:
+                self._record_writer_warning(
+                    "xobject_stream_restoration_error",
+                    page=page.page_number + 1,
+                    xref=xobj.xref_id,
+                    detail=f"{type(exc).__name__}: {exc}",
+                )
                 logger.warning(f"update xref {xobj.xref_id} stream fail, continue")
         draw_op = page_op
         op_container = pdf.get_new_xref()

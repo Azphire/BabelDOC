@@ -373,3 +373,11 @@ p1#10/p3#2/p5#10/p6#15,FD-en-v2 触及 p2#8/p4#3/p8#5/p9#9,与四条锚零交集
 | --- | --- | --- | --- | --- |
 | `babeldoc/format/pdf/document_il/midend/typesetting.py` | `GlyphInkMetric`、`Typesetting.glyph_ink_metrics` | `babeldoc.magazine.drop_cap_render` | 暴露映射后字体对单个 Unicode code point 的真实 glyph ink bbox、advance 与 glyph id；接口只读字体映射，不改变既有排版或 Document IL | C12 |
 | `babeldoc/format/pdf/high_level.py` | `_do_translate_single` | 单文档 PDF 流水线 | 将本次运行唯一的 `ArticleDocumentIR` 与刚完成正式排版的 `Typesetting` 实例传给 drop-cap render，使英文装饰首字读取同一文章 envelope 与映射字体度量；render 开关关闭时不执行任何新工作 | C12 |
+
+## C15
+
+| 文件 | 符号 | 调用方 | 目的 | 批次 |
+| --- | --- | --- | --- | --- |
+| `babeldoc/format/pdf/document_il/backend/pdf_creater.py` | `PDFCreater.__init__`、`restore_media_box`、`write`、`update_page_content_stream` | PDF 写出主路径 | 将原先仅记录日志并继续的 XObject font/stream、mediabox restoration 与 save fallback 转为结构化 writer warnings，随 `TranslateResult` 交给只读终态 validator；PDF 写出与 fallback 行为不变 | C15 |
+| `babeldoc/format/pdf/high_level.py` | `do_translate`、`_do_translate_single`、PDF compliance 辅助函数 | 单文件与 split 合并流水线 | 在 CMap、metadata、TOC 和 split merge 全部完成后 reopen 真正交付的 mono PDF；聚合 part touched-page 期望与 warnings，并把 pass/degraded/fail 写回结果、运行 manifest 和 RunTrace | C15 |
+| `babeldoc/format/pdf/translation_config.py` | `TranslationConfig.__init__`、`TranslateResult` | 公开 Python 配置与流水线返回值 | 公开兼容默认关闭的 `magazine_pdf_compliance` 开关，并显式返回报告路径、合规状态、fully-compliant 标志与 writer warnings | C15 |

@@ -23,6 +23,7 @@
     "magazine_paren_dedup": true,
     "magazine_repair": false,
     "magazine_rotated_lane": false,
-    "magazine_title_typeset": true
+    "magazine_title_typeset": true,
+    "magazine_pdf_compliance": true
   }
 }

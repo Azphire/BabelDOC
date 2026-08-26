@@ -55,6 +55,7 @@ from babeldoc.format.pdf.translation_config import WatermarkOutputMode
 from babeldoc.magazine import article_flow
 from babeldoc.magazine import detectors
 from babeldoc.magazine import drop_cap_render
+from babeldoc.magazine import fixed_assets
 from babeldoc.magazine import formula_reclass
 from babeldoc.magazine import hitl
 from babeldoc.magazine import indent_policy
@@ -63,6 +64,15 @@ from babeldoc.magazine import rotated_lane
 from babeldoc.magazine.article_builder import ArticleBuilder
 from babeldoc.magazine.chain_builder import ChainBuilder
 from babeldoc.magazine.checkpoint import dump_checkpoint
+from babeldoc.magazine.final_pdf_validator import (
+    REPORT_NAME as PDF_COMPLIANCE_REPORT_NAME,
+)
+from babeldoc.magazine.final_pdf_validator import ComplianceExpectations
+from babeldoc.magazine.final_pdf_validator import FinalPdfValidator
+from babeldoc.magazine.final_pdf_validator import expectations_from_runtime
+from babeldoc.magazine.final_pdf_validator import merge_expectations
+from babeldoc.magazine.final_pdf_validator import offset_expectations
+from babeldoc.magazine.final_pdf_validator import record_pipeline_status
 from babeldoc.magazine.page_classifier import PageClassifier
 from babeldoc.magazine.run_trace import REPORT_NAME as RUN_TRACE_REPORT_NAME
 from babeldoc.magazine.run_trace import RunTrace
@@ -539,6 +549,85 @@ def update_page_bbox(doc, page, box, key):
         doc.xref_set_key(page.xref, key, f"[{box.x0} {box.y0} {box.x1} {box.y1}]")
 
 
+def _expected_output_page_count(translation_config, docs) -> int:
+    if not translation_config.only_include_translated_page:
+        return len(docs.page)
+    return sum(
+        translation_config.should_translate_page(page.page_number + 1)
+        for page in docs.page
+    )
+
+
+def _attach_pdf_compliance_context(
+    result,
+    translation_config,
+    docs,
+    *,
+    run_trace=None,
+    article_document_ir=None,
+) -> None:
+    if not getattr(translation_config, "magazine_pdf_compliance", False):
+        result._pdf_compliance_expectations = ComplianceExpectations()
+        result._pdf_compliance_run_trace = None
+        result._pdf_compliance_trace_path = None
+        return
+    inventory = None
+    try:
+        inventory = fixed_assets.build_inventory(
+            docs,
+            article_document_ir=article_document_ir,
+            run_trace=run_trace,
+        )
+    except Exception:
+        logger.warning(
+            "Failed to prepare protected bounds for final PDF validation",
+            exc_info=True,
+        )
+    result._pdf_compliance_expectations = expectations_from_runtime(
+        run_trace,
+        expected_page_count=_expected_output_page_count(translation_config, docs),
+        article_document_ir=article_document_ir,
+        fixed_asset_inventory=inventory,
+    )
+    result._pdf_compliance_run_trace = run_trace
+    result._pdf_compliance_trace_path = translation_config.get_working_file_path(
+        RUN_TRACE_REPORT_NAME
+    )
+
+
+def _run_final_pdf_compliance(
+    translation_config,
+    result,
+    source_pdf,
+    expectations: ComplianceExpectations,
+    writer_warnings,
+) -> None:
+    if not getattr(translation_config, "magazine_pdf_compliance", False):
+        return
+    output_pdf = result.mono_pdf_path
+    if output_pdf is None:
+        output_pdf = translation_config.get_working_file_path("missing.mono.pdf")
+    compliance = FinalPdfValidator().validate(
+        source_pdf,
+        output_pdf,
+        translation_config.get_working_file_path(PDF_COMPLIANCE_REPORT_NAME),
+        expectations=expectations,
+        writer_warnings=writer_warnings,
+    )
+    result.final_pdf_compliance_status = compliance.status
+    result.final_pdf_compliance_path = compliance.report_path
+    result.fully_compliant = compliance.fully_compliant
+    result.writer_warnings = tuple(dict(item) for item in writer_warnings)
+    record_pipeline_status(translation_config, compliance)
+    run_trace = getattr(result, "_pdf_compliance_run_trace", None)
+    if run_trace is not None:
+        run_trace.bind_final_pdf_compliance(compliance.trace_binding())
+        run_trace.write(
+            result._pdf_compliance_trace_path,
+            require_terminal=True,
+        )
+
+
 def do_translate(
     pm: ProgressMonitor, translation_config: TranslationConfig
 ) -> TranslateResult:
@@ -559,9 +648,13 @@ def do_translate(
         start_time = time.time()
         peak_memory_usage = 0
         with MemoryMonitor() as memory_monitor:
+            final_expectations = None
+            final_writer_warnings = ()
             # Check if split translation is enabled
             if not translation_config.split_strategy:
                 result = _do_translate_single(pm, translation_config)
+                final_expectations = result._pdf_compliance_expectations
+                final_writer_warnings = result.writer_warnings
             else:
                 # Initialize split manager and determine split points
                 split_manager = SplitManager(translation_config)
@@ -572,12 +665,16 @@ def do_translate(
                         "No split points determined, falling back to single translation"
                     )
                     result = _do_translate_single(pm, translation_config)
+                    final_expectations = result._pdf_compliance_expectations
+                    final_writer_warnings = result.writer_warnings
                 else:
                     logger.info(f"Split points determined: {len(split_points)} parts")
 
                     if len(split_points) == 1:
                         logger.info("Only one part, use single translation")
                         result = _do_translate_single(pm, translation_config)
+                        final_expectations = result._pdf_compliance_expectations
+                        final_writer_warnings = result.writer_warnings
                     else:
                         pm.total_parts = len(split_points)
 
@@ -696,6 +793,23 @@ def do_translate(
                         logger.info("start merge results")
                         result = merger.merge_results(results)
                         logger.info("finish merge results")
+                        part_expectations = []
+                        warnings = []
+                        page_offset = 0
+                        for index in sorted(results):
+                            part_result = results[index]
+                            if part_result is None:
+                                continue
+                            item = part_result._pdf_compliance_expectations
+                            part_expectations.append(
+                                offset_expectations(item, page_offset)
+                            )
+                            warnings.extend(part_result.writer_warnings)
+                            page_offset += int(item.expected_page_count or 0)
+                        final_expectations = merge_expectations(
+                            tuple(part_expectations), page_offset
+                        )
+                        final_writer_warnings = tuple(warnings)
             peak_memory_usage = memory_monitor.peak_memory_usage
 
         finish_time = time.time()
@@ -732,6 +846,15 @@ def do_translate(
             logger.error(
                 f"Failed to migrate TOC from {translation_config.input_file}: {e}"
             )
+        if final_expectations is None:
+            final_expectations = ComplianceExpectations()
+        _run_final_pdf_compliance(
+            translation_config,
+            result,
+            original_pdf_path,
+            final_expectations,
+            final_writer_warnings,
+        )
         pm.translate_done(result)
         return result
 
@@ -946,6 +1069,7 @@ def _do_translate_single(
         # Skip directly to PDF generation
         pdf_creater = PDFCreater(temp_pdf_path, docs, translation_config, mediabox_data)
         result = pdf_creater.write(translation_config)
+        _attach_pdf_compliance_context(result, translation_config, docs)
         result.original_pdf_path = translation_config.input_file
         return result
 
@@ -1213,6 +1337,13 @@ def _do_translate_single(
             translation_config.get_working_file_path(RUN_TRACE_REPORT_NAME),
             require_terminal=True,
         )
+    _attach_pdf_compliance_context(
+        result,
+        translation_config,
+        docs,
+        run_trace=run_trace,
+        article_document_ir=article_document_ir,
+    )
     result.original_pdf_path = translation_config.input_file
 
     return result
