@@ -348,3 +348,9 @@ p1#10/p3#2/p5#10/p6#15,FD-en-v2 触及 p2#8/p4#3/p8#5/p9#9,与四条锚零交集
 | 文件 | 符号 | 调用方 | 目的 | 批次 |
 | --- | --- | --- | --- | --- |
 | `babeldoc/format/pdf/document_il/midend/typesetting.py` | `Typesetting.fit_text_to_slot`、`SlotFitResult`、`LINE_TAIL_FORBIDDEN_PUNCTUATION` | continuity-chain allocation planner；既有 typesetting stage | 在固定目标字号和映射字体下复用真实断行器，返回最大合法 target 前缀、行指标与 ink bounds；测量只创建临时 units，不写 Document IL 或 PDF，正式排版路径保持原入口 | C06 |
+
+## C07
+
+| 文件 | 符号 | 调用方 | 目的 | 批次 |
+| --- | --- | --- | --- | --- |
+| `babeldoc/format/pdf/high_level.py` | `_do_translate_single` | 单文档 PDF 流水线 | 在 LLM-only 普通段落与 continuity chain 完成唯一翻译写回、括号去重与缩进策略都确定之后，正式排版之前调用 page-local article flow；复用同一 ArticleDocumentIR 与 RunTrace，开关关闭时旧路径不变 | C07 |

@@ -6,17 +6,17 @@ import hashlib
 import json
 import re
 import threading
+from collections.abc import Iterable
+from collections.abc import Mapping
+from collections.abc import Sequence
 from dataclasses import dataclass
 from dataclasses import field
 from enum import Enum
 from pathlib import Path
-from typing import Iterable
-from typing import Mapping
-from typing import Sequence
 
 from babeldoc.magazine.article_ir import ArticleDocumentIR
 
-SCHEMA_VERSION = "run-trace.v1"
+SCHEMA_VERSION = "run-trace.v2"
 CANONICALIZATION_VERSION = "utf8-lf-json-v1"
 SOURCE_REF_FREEZE_STAGE = "post-article-builder-v1"
 REPORT_NAME = "run_trace.report.json"
@@ -295,6 +295,8 @@ class FragmentRecord:
     allocation_status: str
     generation: int
     slot_id: str | None
+    render_ref: str | None
+    render_page: int | None
     measurement_summary: dict
     active: bool = True
     terminal_state: SourceTerminalState | None = None
@@ -312,6 +314,8 @@ class FragmentRecord:
             "allocation_status": self.allocation_status,
             "generation": self.generation,
             "slot_id": self.slot_id,
+            "render_ref": self.render_ref,
+            "render_page": self.render_page,
             "measurement_summary": dict(self.measurement_summary),
             "active": self.active,
             "terminal_state": None
@@ -369,6 +373,8 @@ class GenerationRecord:
     status: str
     fragment_ids: list[str] = field(default_factory=list)
     geometry_ids: list[str] = field(default_factory=list)
+    replaced_fragment_ids: list[str] = field(default_factory=list)
+    flow_slot_ids: list[str] = field(default_factory=list)
 
     def to_record(self) -> dict:
         return {
@@ -377,6 +383,38 @@ class GenerationRecord:
             "status": self.status,
             "fragment_ids": sorted(self.fragment_ids),
             "geometry_ids": sorted(self.geometry_ids),
+            "replaced_fragment_ids": sorted(self.replaced_fragment_ids),
+            "flow_slot_ids": sorted(self.flow_slot_ids),
+        }
+
+
+@dataclass(slots=True)
+class FlowSlotRecord:
+    """One article-flow slot, including released and protected regions."""
+
+    slot_id: str
+    article_id: str
+    page: int
+    status: str
+    box: BoxTuple | None
+    source_ref: str | None = None
+    render_ref: str | None = None
+    reason: str | None = None
+    generation: int = 0
+    active: bool = True
+
+    def to_record(self) -> dict:
+        return {
+            "slot_id": self.slot_id,
+            "article_id": self.article_id,
+            "page": self.page,
+            "status": self.status,
+            "box": None if self.box is None else list(self.box),
+            "source_ref": self.source_ref,
+            "render_ref": self.render_ref,
+            "reason": self.reason,
+            "generation": self.generation,
+            "active": self.active,
         }
 
 
@@ -389,6 +427,7 @@ class RunTrace:
         self.chain_outcomes: dict[str, ChainOutcomeRecord] = {}
         self.fragments: dict[str, FragmentRecord] = {}
         self.geometries: dict[str, GeometryRecord] = {}
+        self.flow_slots: dict[str, FlowSlotRecord] = {}
         self.generations: dict[int, GenerationRecord] = {
             0: GenerationRecord(0, "typeset", GENERATION_COMMITTED)
         }
@@ -398,6 +437,11 @@ class RunTrace:
         self._source_objects: dict[int, str] = {}
         self._whole_targets: dict[str, str] = {}
         self._fragment_text: dict[str, str] = {}
+        self._generation_request_snapshots: dict[int, dict[str, set[str]]] = {}
+        self._generation_fragment_snapshots: dict[
+            int,
+            dict[str, tuple[bool, str, SourceTerminalState | None, str | None]],
+        ] = {}
         self._lock = threading.RLock()
 
     @classmethod
@@ -517,6 +561,34 @@ class RunTrace:
 
     def source_ref_for(self, source_object) -> str | None:
         return self._source_objects.get(id(source_object))
+
+    def target_fragments_for_source(self, reference: str) -> tuple[dict, ...]:
+        """Return the current target pieces owned by one frozen source."""
+        with self._lock:
+            if reference not in self.sources:
+                raise KeyError(f"unknown source: {reference}")
+            held = [
+                self.fragments[fragment_id]
+                for fragment_id in self.sources[reference].fragment_ids
+                if fragment_id in self.fragments
+                and self.fragments[fragment_id].active
+            ]
+            held.sort(key=lambda item: (item.text_start, item.order, item.fragment_id))
+            return tuple(
+                {
+                    "fragment_id": fragment.fragment_id,
+                    "request_id": fragment.request_id,
+                    "source_ref": fragment.source_ref,
+                    "text_start": fragment.text_start,
+                    "text_end": fragment.text_end,
+                    "text": self._fragment_text[fragment.fragment_id],
+                    "slot_id": fragment.slot_id,
+                    "render_ref": fragment.render_ref,
+                    "render_page": fragment.render_page,
+                    "measurement_summary": dict(fragment.measurement_summary),
+                }
+                for fragment in held
+            )
 
     def open_request(
         self,
@@ -653,6 +725,8 @@ class RunTrace:
         text: str,
         generation: int = 0,
         slot_id: str | None = None,
+        render_ref: str | None = None,
+        render_page: int | None = None,
         measurement_summary: Mapping | None = None,
         released: bool = False,
     ) -> str:
@@ -674,6 +748,10 @@ class RunTrace:
                 raise ValueError("fragment order and range must be non-negative")
             if slot_id is not None and not slot_id:
                 raise ValueError("fragment slot id must be non-empty when provided")
+            if render_ref is not None:
+                parse_source_ref(render_ref)
+            if render_page is not None and render_page < 1:
+                raise ValueError("fragment render page must be positive")
             if released and text_start != text_end:
                 raise ValueError("a released slot cannot consume target text")
             if text_end > len(target) or target[text_start:text_end] != canonical:
@@ -718,6 +796,8 @@ class RunTrace:
                 ),
                 generation=generation,
                 slot_id=slot_id,
+                render_ref=render_ref,
+                render_page=render_page,
                 measurement_summary=dict(measurement_summary or {}),
                 active=not released,
                 terminal_state=(
@@ -731,6 +811,148 @@ class RunTrace:
             self.sources[source_reference].fragment_ids.add(fragment_id)
             self.generations[generation].fragment_ids.append(fragment_id)
             return fragment_id
+
+    def replace_request_fragments(
+        self,
+        generation: int,
+        request_id: str,
+        allocations: Sequence[Mapping],
+    ) -> tuple[str, ...]:
+        """Replace one completed request's allocation inside an open transaction."""
+        with self._lock:
+            generation_record = self._generation(generation)
+            if generation_record.status != GENERATION_OPEN:
+                raise ValueError("fragment replacement requires an open generation")
+            request = self._request(request_id)
+            if request.status != REQUEST_COMPLETED:
+                raise ValueError("only completed requests can be reallocated")
+            snapshots = self._generation_request_snapshots.setdefault(generation, {})
+            if request_id in snapshots:
+                raise ValueError("a request can be replaced once per generation")
+            old_ids = set(request.fragment_ids)
+            snapshots[request_id] = old_ids
+            fragment_snapshots = self._generation_fragment_snapshots.setdefault(
+                generation, {}
+            )
+            for fragment_id in old_ids:
+                fragment = self.fragments[fragment_id]
+                fragment_snapshots[fragment_id] = (
+                    fragment.active,
+                    fragment.allocation_status,
+                    fragment.terminal_state,
+                    fragment.terminal_issue,
+                )
+                fragment.active = False
+                fragment.allocation_status = ALLOCATION_INACTIVE
+                generation_record.replaced_fragment_ids.append(fragment_id)
+
+            target = self._whole_targets[request_id]
+            request.fragment_ids = set()
+            created = []
+            cursor = 0
+            for order, allocation in enumerate(allocations):
+                source_reference = str(allocation["source_ref"])
+                if source_reference not in request.ordered_source_refs:
+                    raise ValueError("replacement source must belong to its request")
+                start = int(allocation["text_start"])
+                end = int(allocation["text_end"])
+                text = canonical_text(str(allocation["text"]))
+                released = bool(allocation.get("released", False))
+                if start != cursor or end < start or target[start:end] != text:
+                    raise ValueError("replacement ranges must tile the whole target")
+                if released and start != end:
+                    raise ValueError("released replacement cannot consume target text")
+                render_ref = allocation.get("render_ref")
+                render_page = allocation.get("render_page")
+                if render_ref is not None:
+                    parse_source_ref(str(render_ref))
+                if render_page is not None and int(render_page) < 1:
+                    raise ValueError("replacement render page must be positive")
+                material = {
+                    "request_id": request_id,
+                    "source_ref": source_reference,
+                    "order": order,
+                    "text_range": [start, end],
+                    "text_hash": hash_text(text),
+                    "generation": generation,
+                    "slot_id": allocation.get("slot_id"),
+                    "render_ref": render_ref,
+                }
+                fragment_id = f"fragment-{hash_record(material)}"
+                if fragment_id in self.fragments:
+                    raise ValueError("replacement fragment id already exists")
+                fragment = FragmentRecord(
+                    fragment_id=fragment_id,
+                    request_id=request_id,
+                    source_ref=source_reference,
+                    order=order,
+                    text_start=start,
+                    text_end=end,
+                    text_hash=material["text_hash"],
+                    allocation_status=(
+                        ALLOCATION_RELEASED if released else ALLOCATION_ALLOCATED
+                    ),
+                    generation=generation,
+                    slot_id=allocation.get("slot_id"),
+                    render_ref=None if render_ref is None else str(render_ref),
+                    render_page=None if render_page is None else int(render_page),
+                    measurement_summary=dict(
+                        allocation.get("measurement_summary", {})
+                    ),
+                    active=not released,
+                    terminal_state=(
+                        SourceTerminalState.PROTECTED if released else None
+                    ),
+                    terminal_issue="released_target_slot" if released else None,
+                )
+                self.fragments[fragment_id] = fragment
+                self._fragment_text[fragment_id] = text
+                request.fragment_ids.add(fragment_id)
+                self.sources[source_reference].fragment_ids.add(fragment_id)
+                generation_record.fragment_ids.append(fragment_id)
+                created.append(fragment_id)
+                cursor = end
+            if cursor != len(target):
+                raise ValueError("replacement ranges stop before the whole target")
+            self._validate_target(request)
+            return tuple(created)
+
+    def record_flow_slot(
+        self,
+        generation: int,
+        *,
+        slot_id: str,
+        article_id: str,
+        page: int,
+        status: str,
+        box: Sequence[float] | None,
+        source_ref: str | None = None,
+        render_ref: str | None = None,
+        reason: str | None = None,
+    ) -> None:
+        """Record an allocated, released, or protected article-flow region."""
+        with self._lock:
+            record = self._generation(generation)
+            if record.status != GENERATION_OPEN:
+                raise ValueError("flow slots require an open generation")
+            if not slot_id or slot_id in self.flow_slots:
+                raise ValueError("flow slot ids must be new and non-empty")
+            if source_ref is not None and source_ref not in self.sources:
+                raise ValueError("flow slot source must be registered")
+            if render_ref is not None:
+                parse_source_ref(render_ref)
+            self.flow_slots[slot_id] = FlowSlotRecord(
+                slot_id=slot_id,
+                article_id=article_id,
+                page=page,
+                status=status,
+                box=_checked_box(box),
+                source_ref=source_ref,
+                render_ref=render_ref,
+                reason=reason,
+                generation=generation,
+            )
+            record.flow_slot_ids.append(slot_id)
 
     def complete_request(self, request_id: str) -> None:
         with self._lock:
@@ -912,7 +1134,8 @@ class RunTrace:
         """Register the post-typesetting, pre-repair slot for each target fragment."""
         with self._lock:
             for fragment in self._active_fragments():
-                paragraph = self._paragraph(document, fragment.source_ref)
+                render_ref = fragment.render_ref or fragment.source_ref
+                paragraph = self._paragraph(document, render_ref)
                 if paragraph is None:
                     continue
                 fonts, colors = _font_color_summary(paragraph)
@@ -948,7 +1171,8 @@ class RunTrace:
             for fragment in self._active_fragments():
                 if selected is not None and fragment.source_ref not in selected:
                     continue
-                paragraph = self._paragraph(document, fragment.source_ref)
+                render_ref = fragment.render_ref or fragment.source_ref
+                paragraph = self._paragraph(document, render_ref)
                 if paragraph is None:
                     continue
                 previous = self._active_geometry(fragment.fragment_id)
@@ -969,7 +1193,10 @@ class RunTrace:
                         fragment.fragment_id,
                         slot_id=slot_id,
                         pre_repair_box=previous_box,
-                        final_page=self.sources[fragment.source_ref].page,
+                        final_page=(
+                            fragment.render_page
+                            or self.sources[fragment.source_ref].page
+                        ),
                         final_box=current_box,
                         font_summary=fonts,
                         color_summary=colors,
@@ -1018,6 +1245,22 @@ class RunTrace:
                 fragment = self.fragments[fragment_id]
                 fragment.active = False
                 fragment.allocation_status = ALLOCATION_INACTIVE
+            for slot_id in record.flow_slot_ids:
+                self.flow_slots[slot_id].active = False
+            snapshots = self._generation_request_snapshots.get(generation, {})
+            fragment_snapshots = self._generation_fragment_snapshots.get(
+                generation, {}
+            )
+            for request_id, fragment_ids in snapshots.items():
+                self.requests[request_id].fragment_ids = set(fragment_ids)
+            for fragment_id, snapshot in fragment_snapshots.items():
+                fragment = self.fragments[fragment_id]
+                (
+                    fragment.active,
+                    fragment.allocation_status,
+                    fragment.terminal_state,
+                    fragment.terminal_issue,
+                ) = snapshot
             record.status = GENERATION_ROLLED_BACK
 
     def rollback_generations_after(self, generation: int) -> None:
@@ -1080,7 +1323,8 @@ class RunTrace:
         """Bind active slots to the paragraph blocks emitted by PDFCreater."""
         with self._lock:
             for fragment in self._active_fragments():
-                paragraph = self._paragraph(document, fragment.source_ref)
+                render_ref = fragment.render_ref or fragment.source_ref
+                paragraph = self._paragraph(document, render_ref)
                 if paragraph is None:
                     fragment.terminal_state = SourceTerminalState.FAILED_WITH_ISSUE
                     fragment.terminal_issue = "source_missing_at_final_binding"
@@ -1101,14 +1345,13 @@ class RunTrace:
                         fragment.source_ref, "no_renderable_pdf_block"
                     )
                     continue
-                page = self.sources[fragment.source_ref].page
-                binding_id = f"pdf-block-{hash_record(
-                    {
-                        'fragment_id': fragment.fragment_id,
-                        'page': page,
-                        'box': final_box,
-                    }
-                )}"
+                page = fragment.render_page or self.sources[fragment.source_ref].page
+                binding_material = {
+                    "fragment_id": fragment.fragment_id,
+                    "page": page,
+                    "box": final_box,
+                }
+                binding_id = f"pdf-block-{hash_record(binding_material)}"
                 span_ids = tuple(
                     f"{binding_id}:span:{index}" for index, _character in enumerate(characters)
                 )
@@ -1307,6 +1550,8 @@ class RunTrace:
                     raise ValueError("rolled-back fragments must be inactive")
                 if any(self.geometries[item].active for item in generation.geometry_ids):
                     raise ValueError("rolled-back geometry must be inactive")
+                if any(self.flow_slots[item].active for item in generation.flow_slot_ids):
+                    raise ValueError("rolled-back flow slots must be inactive")
             if require_terminal:
                 missing = [
                     reference
@@ -1408,6 +1653,10 @@ class RunTrace:
                 "geometry": [
                     geometry.to_record()
                     for _geometry_id, geometry in sorted(self.geometries.items())
+                ],
+                "flow_slots": [
+                    slot.to_record()
+                    for _slot_id, slot in sorted(self.flow_slots.items())
                 ],
                 "repair_generations": [
                     generation.to_record()

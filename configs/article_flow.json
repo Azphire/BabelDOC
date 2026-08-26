@@ -1,0 +1,14 @@
+{
+  "description": "Page-local article body flow. eligible_roles is the closed vocabulary allowed to share target slots; every other role is a protected hard boundary. Legal column envelopes come from canonical ArticleIR source geometry and are split around fixed assets and protected elements. Capacity is measured only through the shared typesetter fit interface and all tolerances are declared here or reused from chain_translation.json.",
+  "eligible_roles": [
+    "body",
+    "continuation",
+    "paragraph_hybrid",
+    "plain text",
+    "text"
+  ],
+  "asset_bbox_tolerance_pt": 0.000001,
+  "asset_bbox_tolerance_pt_allowed_range": "0..0.01",
+  "minimum_slot_height_pt": 1.0,
+  "minimum_slot_height_pt_allowed_range": "0..20"
+}

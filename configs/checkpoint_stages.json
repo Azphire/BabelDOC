@@ -48,6 +48,11 @@
       "switch": "magazine_chain_translate"
     },
     {
+      "name": "article_flow.report.json",
+      "stage": "il_translated",
+      "switch": "magazine_column_reflow"
+    },
+    {
       "name": "article_context.report.json",
       "stage": "il_translated",
       "switch": "magazine_article_context"

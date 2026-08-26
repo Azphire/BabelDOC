@@ -52,20 +52,21 @@ from babeldoc.format.pdf.split_manager import SplitManager
 from babeldoc.format.pdf.translation_config import TranslateResult
 from babeldoc.format.pdf.translation_config import TranslationConfig
 from babeldoc.format.pdf.translation_config import WatermarkOutputMode
-from babeldoc.magazine.article_builder import ArticleBuilder
-from babeldoc.magazine.chain_builder import ChainBuilder
+from babeldoc.magazine import article_flow
 from babeldoc.magazine import detectors
-from babeldoc.magazine import hitl
-from babeldoc.magazine.checkpoint import dump_checkpoint
 from babeldoc.magazine import drop_cap_render
 from babeldoc.magazine import formula_reclass
+from babeldoc.magazine import hitl
 from babeldoc.magazine import indent_policy
 from babeldoc.magazine import paren_dedup
 from babeldoc.magazine import rotated_lane
+from babeldoc.magazine.article_builder import ArticleBuilder
+from babeldoc.magazine.chain_builder import ChainBuilder
+from babeldoc.magazine.checkpoint import dump_checkpoint
 from babeldoc.magazine.page_classifier import PageClassifier
-from babeldoc.magazine.runtime_profile import preflight_magazine_runtime
 from babeldoc.magazine.run_trace import REPORT_NAME as RUN_TRACE_REPORT_NAME
 from babeldoc.magazine.run_trace import RunTrace
+from babeldoc.magazine.runtime_profile import preflight_magazine_runtime
 from babeldoc.progress_monitor import ProgressMonitor
 from babeldoc.utils import memory
 
@@ -1053,6 +1054,7 @@ def _do_translate_single(
     # and the translator caches its glossaries as it is constructed below.
     hitl.after_term_extract(translation_config, docs, article_document_ir)
 
+    il_translator = None
     if not translation_config.skip_translation:
         if support_llm_translate:
             il_translator = ILTranslatorLLMOnly(
@@ -1065,7 +1067,6 @@ def _do_translate_single(
             il_translator = ILTranslator(translate_engine, translation_config)
 
         il_translator.translate(docs)
-        del il_translator
         logger.debug(f"finish ILTranslator from {temp_pdf_path}")
     else:
         logger.info("skip ILTranslator")
@@ -1080,6 +1081,21 @@ def _do_translate_single(
     # Same window, and after the text is final: the flag this decides is read by
     # the stage below and by nothing between here and it.
     indent_policy.apply(translation_config, docs, article_document_ir)
+
+    if (
+        isinstance(il_translator, ILTranslatorLLMOnly)
+        and article_document_ir is not None
+        and run_trace is not None
+        and article_flow.enabled(translation_config)
+    ):
+        article_flow.apply(
+            il_translator,
+            docs,
+            article_document_ir,
+            run_trace,
+        )
+    if il_translator is not None:
+        del il_translator
 
     if translation_config.debug:
         xml_converter.write_json(
