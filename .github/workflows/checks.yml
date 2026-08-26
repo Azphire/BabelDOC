@@ -37,19 +37,28 @@ jobs:
       - name: Lint
         run: uv run ruff check .
 
-      - name: Build package
-        run: uv build
+      - name: Compile
+        run: uv run python -m compileall -q babeldoc tools spec_checks
 
-      - name: Import and CLI smoke
+      - name: Build wheel
+        run: uv build --wheel --no-build-isolation
+
+      - name: Source configuration smoke
         run: |
-          uv run python -m compileall babeldoc
           uv run babeldoc --help
+          uv run babeldoc --magazine-mode conservative --validate-config
+          uv run babeldoc --magazine-mode automatic --print-effective-config
+
+      - name: Installed wheel smoke
+        run: uv run python spec_checks/spec_check_startup_distribution.py
+
+      - name: C01-C16 fast specifications
+        run: uv run python spec_checks/run_all.py --set fast
 
       - name: Lightweight no-secret PDF E2E
         run: |
           uv run babeldoc \
-            --openai \
-            --openai-api-key ci-dummy-key \
             --files examples/ci/test.pdf \
             --only-parse-generate-pdf \
-            --skip-scanned-detection
+            --skip-scanned-detection \
+            --output "${{ runner.temp }}/babeldoc-parse-smoke"

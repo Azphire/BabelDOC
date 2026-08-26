@@ -151,6 +151,9 @@ GATES = (
     "spec_check_drop_cap_chinese.py",
     "spec_check_drop_cap_repair_guard.py",
     "spec_check_pdf_compliance.py",
+    "spec_check_startup_modes.py",
+    "spec_check_cli_credentials.py",
+    "spec_check_startup_distribution.py",
     "spec_check_gate_registration.py",
 )
 

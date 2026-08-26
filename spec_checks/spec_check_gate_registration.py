@@ -1,4 +1,4 @@
-"""Meta-check for C01-C15 fast-gate registration and delivery evidence."""
+"""Meta-check for C01-C16 fast-gate registration and delivery evidence."""
 
 from __future__ import annotations
 
@@ -33,6 +33,11 @@ DELIVERY_GATES = (
     "spec_check_drop_cap_repair_guard.py",
     "spec_check_pdf_compliance.py",
 )
+C16_GATES = (
+    "spec_check_startup_modes.py",
+    "spec_check_cli_credentials.py",
+    "spec_check_startup_distribution.py",
+)
 SCOPE_GATES = {
     "C02": "spec_check_article_flow_ir.py",
     "C03": "spec_check_run_trace.py",
@@ -58,10 +63,11 @@ def registered_gates() -> tuple[str, ...]:
 
 def main() -> int:
     registered = registered_gates()
-    assert all(gate in registered for gate in DELIVERY_GATES)
-    positions = [registered.index(gate) for gate in DELIVERY_GATES]
+    expected_gates = (*DELIVERY_GATES, *C16_GATES)
+    assert all(gate in registered for gate in expected_gates)
+    positions = [registered.index(gate) for gate in expected_gates]
     assert positions == sorted(positions)
-    for gate in DELIVERY_GATES:
+    for gate in expected_gates:
         source = (ROOT / "spec_checks" / gate).read_text(encoding="utf-8")
         match = GATE_SET_PATTERN.search(source)
         assert match is not None and match.group(1) == "fast", gate
@@ -74,7 +80,7 @@ def main() -> int:
         assert '["git", "diff", "--name-only", "HEAD"]' not in source
         assert f'delivery_files("{batch}", ROOT)' in source
         assert f"spec_checks/{gate}" in delivery_files(batch, ROOT)
-    print("PASS: C01-C15 fast gates and delivery commits are registered")
+    print("PASS: C01-C16 fast gates and C01-C15 delivery commits are registered")
     return 0
 
 
