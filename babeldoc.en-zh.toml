@@ -1,0 +1,19 @@
+[babeldoc]
+# 翻译方向
+lang-in = "en"
+lang-out = "zh"
+
+# OpenAI 兼容服务
+openai = true
+openai-model = "gpt-4o-mini"
+
+# 并发和限速
+qps = 4
+pool-max-workers = 4
+term-pool-max-workers = 2
+report-interval = 0.5
+
+# 输出和审计
+debug = true
+watermark-output-mode = "both"
+save-auto-extracted-glossary = true
