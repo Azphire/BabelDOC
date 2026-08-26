@@ -602,6 +602,47 @@ class RunTrace:
                 for fragment in held
             )
 
+    def target_conservation_evidence(self, request_id: str) -> dict:
+        """Return hash-and-range evidence for one request without target text."""
+        with self._lock:
+            request = self._request(request_id)
+            fragments = sorted(
+                (
+                    self.fragments[fragment_id]
+                    for fragment_id in request.fragment_ids
+                    if fragment_id in self.fragments
+                ),
+                key=lambda item: (item.order, item.fragment_id),
+            )
+            reconstructed = "".join(
+                self._fragment_text.get(fragment.fragment_id, "")
+                for fragment in fragments
+            )
+            return {
+                "request_id": request_id,
+                "request_kind": request.request_kind,
+                "ordered_source_refs": list(request.ordered_source_refs),
+                "whole_target_hash": request.whole_target_hash,
+                "whole_target_chars": request.whole_target_chars,
+                "reconstructed_target_hash": hash_text(reconstructed),
+                "reconstructed_target_chars": len(reconstructed),
+                "fragments": [
+                    {
+                        "fragment_id": fragment.fragment_id,
+                        "source_ref": fragment.source_ref,
+                        "order": fragment.order,
+                        "text_start": fragment.text_start,
+                        "text_end": fragment.text_end,
+                        "text_hash": fragment.text_hash,
+                        "stored_text_hash": hash_text(
+                            self._fragment_text.get(fragment.fragment_id, "")
+                        ),
+                        "active": fragment.active,
+                    }
+                    for fragment in fragments
+                ],
+            }
+
     def open_request(
         self,
         request_kind: str,

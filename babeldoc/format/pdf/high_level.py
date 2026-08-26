@@ -1161,7 +1161,10 @@ def _do_translate_single(
             detectors.detect_issues(translation_config, docs)
         else:
             detectors.detect_issues(
-                translation_config, docs, run_trace=run_trace
+                translation_config,
+                docs,
+                run_trace=run_trace,
+                article_document_ir=article_document_ir,
             )
         # The lane sets a strip during the repair loop, so its record is written
         # once the loop is done rather than at a stage of its own.

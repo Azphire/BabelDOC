@@ -39,11 +39,17 @@ import logging
 from pathlib import Path
 
 from babeldoc.magazine import fixed_assets
+from babeldoc.magazine.detectors import abnormal_blank
+from babeldoc.magazine.detectors import article_ownership
+from babeldoc.magazine.detectors import chain_conservation
 from babeldoc.magazine.detectors import collision
 from babeldoc.magazine.detectors import escalation
+from babeldoc.magazine.detectors import fixed_asset_drift
 from babeldoc.magazine.detectors import fragment
+from babeldoc.magazine.detectors import instruction_compliance
 from babeldoc.magazine.detectors import overlap
 from babeldoc.magazine.detectors import page_bounds
+from babeldoc.magazine.detectors import render_coverage
 from babeldoc.magazine.detectors import residue
 from babeldoc.magazine.detectors import source_geometry as source_geometry_module
 from babeldoc.magazine.detectors.base import CONFIG_PATH
@@ -74,11 +80,13 @@ __all__ = [
     "build_context",
     "detect_issues",
     "detector_config",
+    "detector_kinds",
     "run_detectors",
     "source_geometry_of",
 ]
 
 REPORT_NAME = "issues.json"
+PREREQUISITE_KIND = "detector_prerequisite_missing"
 
 # The switch, by the name the caller sets on the translation config.
 SWITCH = "magazine_detect"
@@ -95,8 +103,20 @@ DETECTORS = {
         page_bounds,
         collision,
         escalation,
+        article_ownership,
+        chain_conservation,
+        render_coverage,
+        abnormal_blank,
+        fixed_asset_drift,
+        instruction_compliance,
     )
 }
+
+
+def detector_kinds() -> tuple[str, ...]:
+    return tuple(
+        sorted({PREREQUISITE_KIND, *(module.KIND for module in DETECTORS.values())})
+    )
 
 
 def detector_config() -> DetectorConfig:
@@ -104,7 +124,7 @@ def detector_config() -> DetectorConfig:
     return load_detector_config(
         None,
         tuple(sorted(DETECTORS)),
-        tuple(sorted(module.KIND for module in DETECTORS.values())),
+        detector_kinds(),
     )
 
 
@@ -116,6 +136,11 @@ def build_context(
     translation_performed: bool = True,
     iteration: int = 0,
     source_geometry: object | None = None,
+    article_document_ir=None,
+    run_trace=None,
+    fixed_inventory=None,
+    current_inventory=None,
+    finalized: bool = False,
 ) -> DetectionContext:
     """One document as the detectors read it, each page carrying its policy.
 
@@ -143,6 +168,11 @@ def build_context(
         working_dir=working_dir,
         source_geometry=source_geometry,
         source_geometry_result=result,
+        article_document_ir=article_document_ir,
+        run_trace=run_trace,
+        fixed_inventory=fixed_inventory,
+        current_inventory=current_inventory,
+        finalized=finalized,
     )
 
 
@@ -174,6 +204,8 @@ def run_detectors(context: DetectionContext) -> list[Issue]:
     found: list[Issue] = []
     for name in sorted(DETECTORS):
         module = DETECTORS[name]
+        if getattr(module, "FINAL_ONLY", False) and not context.finalized:
+            continue
         document_level = name in context.config.document_detectors
         pages = context.pages if document_level else selection.get(name, [])
         if not pages:
@@ -184,11 +216,46 @@ def run_detectors(context: DetectionContext) -> list[Issue]:
                 f"carries no translated text to answer for; not run"
             )
             continue
+        missing = []
         if module.REQUIRES_SOURCE_GEOMETRY and context.source_geometry is None:
-            context.notes.append(
-                f"{name}: this run kept no checkpoint of the layout as the "
-                f"source drew it, so there is nothing to compare the finished "
-                f"page against; not run"
+            missing.append("source_geometry")
+        for attribute, label in (
+            ("REQUIRES_ARTICLE_IR", "article_ir"),
+            ("REQUIRES_RUN_TRACE", "run_trace"),
+            ("REQUIRES_FIXED_INVENTORY", "fixed_asset_inventory"),
+            ("REQUIRES_CURRENT_INVENTORY", "current_fixed_asset_inventory"),
+        ):
+            if not getattr(module, attribute, False):
+                continue
+            context_name = {
+                "REQUIRES_ARTICLE_IR": "article_document_ir",
+                "REQUIRES_RUN_TRACE": "run_trace",
+                "REQUIRES_FIXED_INVENTORY": "fixed_inventory",
+                "REQUIRES_CURRENT_INVENTORY": "current_inventory",
+            }[attribute]
+            if getattr(context, context_name) is None:
+                missing.append(label)
+        if missing:
+            page = context.pages[0].label if context.pages else 0
+            found.extend(
+                Issue(
+                    kind=PREREQUISITE_KIND,
+                    page=page,
+                    paragraph_refs=(),
+                    geometry=None,
+                    severity=context.severity_of(PREREQUISITE_KIND),
+                    evidence={
+                        "prerequisite": prerequisite,
+                        "required_by": name,
+                        "detector_kind": module.KIND,
+                        "violation_count": 1,
+                    },
+                    detector=name,
+                    detected_at_iteration=context.iteration,
+                ).with_severity_fields(
+                    context.config.progress_fields(PREREQUISITE_KIND)
+                )
+                for prerequisite in missing
             )
             continue
         scoped = DetectionContext(
@@ -200,14 +267,54 @@ def run_detectors(context: DetectionContext) -> list[Issue]:
             working_dir=context.working_dir,
             source_geometry=context.source_geometry,
             source_geometry_result=context.source_geometry_result,
+            article_document_ir=context.article_document_ir,
+            run_trace=context.run_trace,
+            fixed_inventory=context.fixed_inventory,
+            current_inventory=context.current_inventory,
+            finalized=context.finalized,
             notes=context.notes,
             records=context.records,
         )
-        found.extend(
-            issue.with_severity_fields(context.config.progress_fields(issue.kind))
-            for issue in module.detect(scoped)
+        for issue in module.detect(scoped):
+            source_refs = tuple(
+                reference
+                for reference in issue.paragraph_refs
+                if context.run_trace is not None
+                and reference in context.run_trace.sources
+            )
+            source_refs = issue.source_refs or source_refs
+            articles = set(issue.article_refs)
+            fragments = set(issue.fragment_refs)
+            if context.run_trace is not None:
+                for reference in source_refs:
+                    source = context.run_trace.sources[reference]
+                    if source.article_id:
+                        articles.add(source.article_id)
+                    fragments.update(
+                        fragment_id
+                        for fragment_id in source.fragment_ids
+                        if fragment_id in context.run_trace.fragments
+                        and context.run_trace.fragments[fragment_id].active
+                    )
+            found.append(
+                issue.with_severity_fields(
+                    context.config.progress_fields(issue.kind)
+                ).with_contract(
+                    suggested_action_type=context.config.suggested_action(issue.kind),
+                    article_refs=articles,
+                    source_refs=source_refs,
+                    fragment_refs=fragments,
+                )
+            )
+    contracted = [
+        issue
+        if issue.suggested_action_type is not None
+        else issue.with_contract(
+            suggested_action_type=context.config.suggested_action(issue.kind)
         )
-    return found
+        for issue in found
+    ]
+    return sorted(contracted, key=Issue.sort_key)
 
 
 def as_record(context: DetectionContext, issues: list[Issue]) -> dict:
@@ -287,7 +394,12 @@ def _write_fixed_asset_report(
     )
 
 
-def detect_issues(translation_config, docs, run_trace=None) -> list[Issue]:
+def detect_issues(
+    translation_config,
+    docs,
+    run_trace=None,
+    article_document_ir=None,
+) -> list[Issue]:
     """Find every issue of one finished document and write the sidecar.
 
     Returns them in report order, empty where the switch is down, in which case
@@ -344,35 +456,28 @@ def detect_issues(translation_config, docs, run_trace=None) -> list[Issue]:
 
     if controller.enabled(translation_config):
         if run_trace is None:
-            issues = controller.repair_document(
+            controller.repair_document(
                 translation_config,
                 docs,
                 source_geometry=source_result,
                 fixed_inventory=inventory_before,
             )
         else:
-            issues = controller.repair_document(
+            controller.repair_document(
                 translation_config,
                 docs,
                 run_trace=run_trace,
                 source_geometry=source_result,
                 fixed_inventory=inventory_before,
             )
-        _write_fixed_asset_report(
-            working_dir,
-            source_result,
-            prerequisite_issue,
-            inventory_before,
-            fixed_assets.build_inventory(
-                docs,
-                run_trace=run_trace,
-                protected_paragraph_labels=(
-                    reflow_config.protected_paragraph_labels
-                ),
-            ),
-            reflow_config.asset_bbox_tolerance_pt,
-        )
-        return issues
+    if run_trace is not None:
+        run_trace.capture_final_document(docs)
+        run_trace.finalize_sources()
+    inventory_after = fixed_assets.build_inventory(
+        docs,
+        run_trace=run_trace,
+        protected_paragraph_labels=reflow_config.protected_paragraph_labels,
+    )
     context = build_context(
         docs,
         config,
@@ -382,6 +487,11 @@ def detect_issues(translation_config, docs, run_trace=None) -> list[Issue]:
             translation_config, "skip_translation", False
         ),
         source_geometry=source_result,
+        article_document_ir=article_document_ir,
+        run_trace=run_trace,
+        fixed_inventory=inventory_before,
+        current_inventory=inventory_after,
+        finalized=True,
     )
     issues = run_detectors(context)
     write_report(working_dir, as_record(context, issues))
@@ -390,11 +500,7 @@ def detect_issues(translation_config, docs, run_trace=None) -> list[Issue]:
         source_result,
         prerequisite_issue,
         inventory_before,
-        fixed_assets.build_inventory(
-            docs,
-            run_trace=run_trace,
-            protected_paragraph_labels=reflow_config.protected_paragraph_labels,
-        ),
+        inventory_after,
         reflow_config.asset_bbox_tolerance_pt,
     )
     logger.debug(

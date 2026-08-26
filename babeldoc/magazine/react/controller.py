@@ -189,7 +189,7 @@ def load_kind_order(kinds, path: Path | str | None = None) -> tuple[str, ...]:
 
 
 def detector_kinds() -> tuple[str, ...]:
-    return tuple(sorted(module.KIND for module in detectors.DETECTORS.values()))
+    return detectors.detector_kinds()
 
 
 def round_vocabulary(config, kind: str):

@@ -6,6 +6,13 @@
     "text_figure_overlap",
     "fragment_cluster",
     "chain_escalation",
-    "untranslated_residue"
+    "untranslated_residue",
+    "article_ownership",
+    "chain_conservation",
+    "render_coverage",
+    "abnormal_blank",
+    "fixed_asset_drift",
+    "instruction_compliance",
+    "detector_prerequisite_missing"
   ]
 }

@@ -1,5 +1,5 @@
 {
-  "description": "Bounds of the post typesetting issue detectors (babeldoc/magazine/detectors/). Same convention as configs/drop_cap.json: every numeric parameter carries a '<name>_allowed_range' sibling of the form 'low..high', inclusive on both ends. Which detectors run on a page is decided by the repair profile the page's kind declares in configs/page_types.json, never by the kind itself: 'profile_detectors' maps a declared profile to the detectors that answer for a page carrying it, 'default_profile' is what a page whose kind is absent or outside the vocabulary is treated as, and 'document_detectors' run once for the whole document because what they read is a sidecar rather than a page. 'severity' declares the weight of each issue kind in the closed vocabulary 'severity_vocabulary'; the repair acceptance policy uses that order together with the versioned progress vector. Residue is language directional: 'residue_directions' names, per target language, the script whose presence in a finished translation is residue rather than content, and the matching 'residue_min_ratio_into_<language>' is the share of the paragraph's cased characters that script has to hold. The share is measured over the scripts named here alone, so digits, punctuation and spacing neither raise nor lower it, and 'residue_min_script_chars' keeps a folio or a copyright glyph from being evidence of anything. That floor is itself directional, because what it protects is: 'residue_min_script_chars_into_<language>' overrides it for one direction, and a direction declaring none takes the general value. Into Chinese the floor has work to do -- a brand, a URL and an address are Latin and belong on the page -- so it stands at twelve. Into English it stands at one, because a Chinese character in a document finished into English has no legitimate use to be confused with: every one of them is residue, and a floor there hides residue rather than noise. The two are set separately for that reason and not to tune a count. Fragment clustering is a report only census of paragraphs the finder left in pieces: members are short by 'fragment_max_chars', set in one font at one size within 'fragment_font_size_tolerance', standing in one column by 'fragment_min_x_overlap_ratio' of the narrower box, separated by no more than 'fragment_max_line_gap_ratio' of their own median height, and a run of at least 'fragment_min_cluster' of them is a cluster. Overlap is likewise report only: 'overlap_min_iou' is the intersection over union of a paragraph box and an artwork box above which the pair is recorded. Two detectors are about the page frame and about text standing on text, and both measure the ink rather than the layout box: what they read is the union of the boxes of the characters a paragraph was laid out as, falling back to the paragraph's box only where it carries no character. 'page_safety_margin_ratio' draws the page frame in by a share of each of its own axes before the comparison, and a paragraph whose ink reaches past the result is out of the page. It is zero by default, which is the page frame itself: what falls outside the crop box is what the trim removes, and what falls inside it is what the designer put there however close to the edge. A run that wants ink approaching the trim reported before it crosses raises it. Where the repair puts a paragraph it has taken back inside is a separate number, declared by the action in configs/repair_actions.json, because reporting that ink is outside and choosing how far inside to land it are different questions. 'out_of_page_min_overflow_ratio' is how far past the frame a paragraph has to reach, as a share of the page dimension of the side it left by, before the reach is a finding rather than a rounding. 'collision_min_iou' is the intersection over union above which two text paragraphs are candidates for standing on each other, and 'collision_source_min_iou' is the intersection over union the same two had in the layout as the source drew it, at or above which the overlap is the source's design and no finding is made. Intersection over union is not the only shape an overlap takes, and on this corpus it is not the common one. A folio printed inside the entry it numbers, or a dropped initial standing in the column beside it, covers nearly the whole of its own small area and nearly none of the area the two cover together, so the ratio over the union reports as nothing what a reader sees as one text printed on another. 'collision_min_coverage' is the second measure, the shared area over the area of the smaller of the two boxes, and a pair is a candidate at or above either bound rather than at or above both: the two measures answer for different shapes of overlap, and requiring both would report only the overlaps that are already obvious under either. 'collision_source_min_coverage' is that same measure read over the layout as the source drew it, and the exemption is likewise either: a pair the source already overlapped by either measure is the designer's decision and no finding is made. Because the two bounds move pairs between routes rather than only into and out of the finding set, the detector files what it exempted and by which route, so a pair that used to fall short of the candidate bound and now clears it and is exempted instead can be shown to have reached the same verdict along a different path. What that record holds is the pair, the two measures and the route. That comparison is what 'source_geometry_stage' names: the pipeline stage whose XML checkpoint holds the untranslated layout, matched to a finished paragraph by the identity the paragraph finder minted and every stage since has carried. A run that kept no such checkpoint has nothing to compare against and the detectors needing one do not run. 'excerpt_chars' bounds the text quoted into an issue, which is what a human reads to recognise it and steers no decision. 'progress_evidence' names, per issue kind, the evidence fields that quantify how much of the defect a finding reports, smaller being less. It is what lets the repair loop tell a finding that survived a repair with less of the defect in it from one that survived unchanged: a repair whose finding reports every one of these fields no higher than before and at least one of them strictly lower has made progress the loop counts, and one whose finding reports the same figures has not. A kind that declares none can never be counted as improved, only as resolved, which is the conservative reading and the one a kind with nothing monotone to measure deserves.",
+  "description": "Bounds of the post typesetting issue detectors (babeldoc/magazine/detectors/). Same convention as configs/drop_cap.json: every numeric parameter carries a '<name>_allowed_range' sibling of the form 'low..high', inclusive on both ends. Which detectors run on a page is decided by the repair profile the page's kind declares in configs/page_types.json, never by the kind itself: 'profile_detectors' maps a declared profile to the detectors that answer for a page carrying it, 'default_profile' is what a page whose kind is absent or outside the vocabulary is treated as, and 'document_detectors' run once for the whole document because what they read is a sidecar rather than a page. 'severity' declares the weight of each issue kind in the closed vocabulary 'severity_vocabulary'; the repair acceptance policy uses that order together with the versioned progress vector. Residue is language directional: 'residue_directions' names, per target language, the script whose presence in a finished translation is residue rather than content, and the matching 'residue_min_ratio_into_<language>' is the share of the paragraph's cased characters that script has to hold. The share is measured over the scripts named here alone, so digits, punctuation and spacing neither raise nor lower it, and 'residue_min_script_chars' keeps a folio or a copyright glyph from being evidence of anything. That floor is itself directional, because what it protects is: 'residue_min_script_chars_into_<language>' overrides it for one direction, and a direction declaring none takes the general value. Into Chinese the floor has work to do -- a brand, a URL and an address are Latin and belong on the page -- so it stands at twelve. Into English it stands at one, because a Chinese character in a document finished into English has no legitimate use to be confused with: every one of them is residue, and a floor there hides residue rather than noise. The two are set separately for that reason and not to tune a count. Fragment clustering is a report only census of paragraphs the finder left in pieces: members are short by 'fragment_max_chars', set in one font at one size within 'fragment_font_size_tolerance', standing in one column by 'fragment_min_x_overlap_ratio' of the narrower box, separated by no more than 'fragment_max_line_gap_ratio' of their own median height, and a run of at least 'fragment_min_cluster' of them is a cluster. Overlap is likewise report only: 'overlap_min_iou' is the intersection over union of a paragraph box and an artwork box above which the pair is recorded. Two detectors are about the page frame and about text standing on text, and both measure the ink rather than the layout box: what they read is the union of the boxes of the characters a paragraph was laid out as, falling back to the paragraph's box only where it carries no character. 'page_safety_margin_ratio' draws the page frame in by a share of each of its own axes before the comparison, and a paragraph whose ink reaches past the result is out of the page. It is zero by default, which is the page frame itself: what falls outside the crop box is what the trim removes, and what falls inside it is what the designer put there however close to the edge. A run that wants ink approaching the trim reported before it crosses raises it. Where the repair puts a paragraph it has taken back inside is a separate number, declared by the action in configs/repair_actions.json, because reporting that ink is outside and choosing how far inside to land it are different questions. 'out_of_page_min_overflow_ratio' is how far past the frame a paragraph has to reach, as a share of the page dimension of the side it left by, before the reach is a finding rather than a rounding. 'collision_min_iou' is the intersection over union above which two text paragraphs are candidates for standing on each other, and 'collision_source_min_iou' is the intersection over union the same two had in the layout as the source drew it, at or above which the overlap is the source's design and no finding is made. Intersection over union is not the only shape an overlap takes, and on this corpus it is not the common one. A folio printed inside the entry it numbers, or a dropped initial standing in the column beside it, covers nearly the whole of its own small area and nearly none of the area the two cover together, so the ratio over the union reports as nothing what a reader sees as one text printed on another. 'collision_min_coverage' is the second measure, the shared area over the area of the smaller of the two boxes, and a pair is a candidate at or above either bound rather than at or above both: the two measures answer for different shapes of overlap, and requiring both would report only the overlaps that are already obvious under either. 'collision_source_min_coverage' is that same measure read over the layout as the source drew it, and the exemption is likewise either: a pair the source already overlapped by either measure is the designer's decision and no finding is made. Because the two bounds move pairs between routes rather than only into and out of the finding set, the detector files what it exempted and by which route, so a pair that used to fall short of the candidate bound and now clears it and is exempted instead can be shown to have reached the same verdict along a different path. What that record holds is the pair, the two measures and the route. That comparison is what 'source_geometry_stage' names: the pipeline stage whose XML checkpoint holds the untranslated layout, matched to a finished paragraph by the identity the paragraph finder minted and every stage since has carried. A run that kept no such checkpoint has nothing to compare against and the detectors needing one do not run. 'excerpt_chars' bounds the text quoted into an issue, which is what a human reads to recognise it and steers no decision. 'progress_evidence' names, per issue kind, the evidence fields that quantify how much of the defect a finding reports, smaller being less. It is what lets the repair loop tell a finding that survived a repair with less of the defect in it from one that survived unchanged: a repair whose finding reports every one of these fields no higher than before and at least one of them strictly lower has made progress the loop counts, and one whose finding reports the same figures has not. A kind that declares none can never be counted as improved, only as resolved, which is the conservative reading and the one a kind with nothing monotone to measure deserves. The reflow compliance bounds normalize an explicitly released flow slot by the total area and capacity of its canonical article slots; fixed assets and policy hard boundaries are excluded before either ratio is tested. Fixed-asset drift uses its own declared coordinate tolerance. 'suggested_actions' maps every issue kind into the closed 'suggested_action_vocabulary'; these are evidence-backed recommendations only and never mutate the document.",
   "residue_directions": {
     "zh": "latin",
     "en": "han"
@@ -38,6 +38,12 @@
   "collision_source_min_iou_allowed_range": "0.0..1.0",
   "collision_source_min_coverage": 0.4,
   "collision_source_min_coverage_allowed_range": "0.0..1.0",
+  "abnormal_blank_min_area_ratio": 0.2,
+  "abnormal_blank_min_area_ratio_allowed_range": "0.01..1.0",
+  "abnormal_blank_min_capacity_ratio": 0.2,
+  "abnormal_blank_min_capacity_ratio_allowed_range": "0.01..1.0",
+  "fixed_asset_bbox_tolerance_pt": 0.000001,
+  "fixed_asset_bbox_tolerance_pt_allowed_range": "0.0..0.01",
   "excerpt_chars": 80,
   "excerpt_chars_allowed_range": "20..400",
   "severity_vocabulary": [
@@ -52,7 +58,14 @@
     "text_figure_overlap": "low",
     "chain_escalation": "medium",
     "out_of_page": "high",
-    "text_text_collision": "medium"
+    "text_text_collision": "medium",
+    "article_ownership": "high",
+    "chain_conservation": "high",
+    "render_coverage": "high",
+    "abnormal_blank": "medium",
+    "fixed_asset_drift": "critical",
+    "instruction_compliance": "high",
+    "detector_prerequisite_missing": "high"
   },
   "default_profile": "flow",
   "profile_detectors": {
@@ -83,7 +96,13 @@
     ]
   },
   "document_detectors": [
-    "escalation_surfacing"
+    "abnormal_blank",
+    "article_ownership",
+    "chain_conservation",
+    "escalation_surfacing",
+    "fixed_asset_drift",
+    "instruction_compliance",
+    "render_coverage"
   ],
   "progress_evidence": {
     "untranslated_residue": [
@@ -106,7 +125,52 @@
     ],
     "chain_escalation": [
       "member_count"
+    ],
+    "article_ownership": [
+      "violation_count"
+    ],
+    "chain_conservation": [
+      "violation_count"
+    ],
+    "render_coverage": [
+      "violation_count"
+    ],
+    "abnormal_blank": [
+      "blank_area_ratio",
+      "blank_capacity_ratio"
+    ],
+    "fixed_asset_drift": [
+      "drift_count"
+    ],
+    "instruction_compliance": [
+      "violation_count"
+    ],
+    "detector_prerequisite_missing": [
+      "violation_count"
     ]
+  },
+  "suggested_action_vocabulary": [
+    "contain_in_page",
+    "report_only",
+    "resolve_collision",
+    "rollback_reflow",
+    "supply_detector_prerequisite",
+    "translate_orphan_lines"
+  ],
+  "suggested_actions": {
+    "untranslated_residue": "translate_orphan_lines",
+    "fragment_cluster": "report_only",
+    "text_figure_overlap": "report_only",
+    "chain_escalation": "report_only",
+    "out_of_page": "contain_in_page",
+    "text_text_collision": "resolve_collision",
+    "article_ownership": "rollback_reflow",
+    "chain_conservation": "rollback_reflow",
+    "render_coverage": "rollback_reflow",
+    "abnormal_blank": "rollback_reflow",
+    "fixed_asset_drift": "rollback_reflow",
+    "instruction_compliance": "rollback_reflow",
+    "detector_prerequisite_missing": "supply_detector_prerequisite"
   },
   "source_geometry_stage": "styles_and_formulas"
 }

@@ -39,6 +39,8 @@ PROFILE_DETECTORS_KEY = "profile_detectors"
 DOCUMENT_DETECTORS_KEY = "document_detectors"
 DEFAULT_PROFILE_KEY = "default_profile"
 PROGRESS_EVIDENCE_KEY = "progress_evidence"
+SUGGESTED_ACTIONS_KEY = "suggested_actions"
+SUGGESTED_ACTION_VOCABULARY_KEY = "suggested_action_vocabulary"
 
 SEVERITY_VECTOR_VERSION = "1"
 
@@ -53,6 +55,7 @@ _STRUCTURAL_KEYS = (
     PROFILE_DETECTORS_KEY,
     DEFAULT_PROFILE_KEY,
     PROGRESS_EVIDENCE_KEY,
+    SUGGESTED_ACTIONS_KEY,
     SOURCE_STAGE_KEY,
 )
 
@@ -113,12 +116,16 @@ class DetectorConfig:
     collision_min_coverage: float
     collision_source_min_iou: float
     collision_source_min_coverage: float
+    abnormal_blank_min_area_ratio: float
+    abnormal_blank_min_capacity_ratio: float
+    fixed_asset_bbox_tolerance_pt: float
     excerpt_chars: int
     severity: dict[str, str]
     default_profile: str
     profile_detectors: dict[str, tuple[str, ...]]
     document_detectors: tuple[str, ...]
     progress_evidence: dict[str, tuple[str, ...]]
+    suggested_actions: dict[str, str]
     source_geometry_stage: str
 
     def progress_fields(self, kind: str) -> tuple[str, ...]:
@@ -137,6 +144,9 @@ class DetectorConfig:
         if declared is not None:
             return declared
         return self.profile_detectors.get(self.default_profile, ())
+
+    def suggested_action(self, kind: str) -> str:
+        return self.suggested_actions[kind]
 
     def residue_rule(self, language: str | None) -> tuple[str, float] | None:
         """The residue script and share for one target language, if declared."""
@@ -229,6 +239,37 @@ def _parse_progress(raw: object, source: str, kinds: set[str]) -> dict:
         )
         progress[kind] = tuple(fields)
     return progress
+
+
+def _parse_suggested_actions(raw: dict, source: str, kinds: set[str]) -> dict[str, str]:
+    declared = raw.get(SUGGESTED_ACTION_VOCABULARY_KEY)
+    _require(
+        isinstance(declared, list)
+        and bool(declared)
+        and all(isinstance(item, str) and item for item in declared)
+        and len(set(declared)) == len(declared),
+        f"{source}: {SUGGESTED_ACTION_VOCABULARY_KEY} must list action types",
+    )
+    vocabulary = set(declared)
+    actions = raw.get(SUGGESTED_ACTIONS_KEY)
+    _require(
+        isinstance(actions, dict),
+        f"{source}: {SUGGESTED_ACTIONS_KEY} must be an object",
+    )
+    missing = sorted(kinds - set(actions))
+    unknown = sorted(set(actions) - kinds)
+    _require(
+        not missing and not unknown,
+        f"{source}: {SUGGESTED_ACTIONS_KEY} omits {missing} and names {unknown}",
+    )
+    outside = sorted(
+        kind for kind, action in actions.items() if action not in vocabulary
+    )
+    _require(
+        not outside,
+        f"{source}: {SUGGESTED_ACTIONS_KEY} uses an undeclared action for {outside}",
+    )
+    return {str(kind): str(action) for kind, action in actions.items()}
 
 
 def _parse_source_stage(raw: object, source: str) -> str:
@@ -325,6 +366,15 @@ def parse_detector_config(
         collision_source_min_coverage=float(
             parameters["collision_source_min_coverage"]
         ),
+        abnormal_blank_min_area_ratio=float(
+            parameters["abnormal_blank_min_area_ratio"]
+        ),
+        abnormal_blank_min_capacity_ratio=float(
+            parameters["abnormal_blank_min_capacity_ratio"]
+        ),
+        fixed_asset_bbox_tolerance_pt=float(
+            parameters["fixed_asset_bbox_tolerance_pt"]
+        ),
         excerpt_chars=int(parameters["excerpt_chars"]),
         severity=dict(severity),
         default_profile=str(default_profile),
@@ -333,6 +383,7 @@ def parse_detector_config(
         progress_evidence=_parse_progress(
             raw.get(PROGRESS_EVIDENCE_KEY), source, kinds
         ),
+        suggested_actions=_parse_suggested_actions(raw, source, kinds),
         source_geometry_stage=_parse_source_stage(raw.get(SOURCE_STAGE_KEY), source),
     )
 
@@ -548,12 +599,16 @@ class Issue:
     kind: str
     page: int
     paragraph_refs: tuple[str, ...]
-    geometry: dict[str, float] | None
+    geometry: dict | None
     severity: str
     evidence: dict
     detector: str
     detected_at_iteration: int = 0
     severity_vector: SeverityVector | None = None
+    article_refs: tuple[str, ...] = ()
+    source_refs: tuple[str, ...] = ()
+    fragment_refs: tuple[str, ...] = ()
+    suggested_action_type: str | None = None
 
     @property
     def id(self) -> str:
@@ -564,7 +619,25 @@ class Issue:
         same name on a rerun and a repair loop can tell a surviving issue from
         a new one.
         """
-        tail = "+".join(self.paragraph_refs) or self.evidence.get("chain_id") or "page"
+        stable_refs = (
+            self.paragraph_refs
+            or self.fragment_refs
+            or self.source_refs
+            or self.article_refs
+        )
+        tail = (
+            "+".join(stable_refs)
+            or self.evidence.get("chain_id")
+            or self.evidence.get("request_id")
+            or self.evidence.get("asset_ref")
+            or self.evidence.get("flow_slot_id")
+            or self.evidence.get("instruction_ref")
+            or self.evidence.get("prerequisite")
+            or "page"
+        )
+        discriminator = self.evidence.get("identity_ref")
+        if discriminator:
+            tail = f"{tail}:{discriminator}"
         return f"{self.detector}:p{self.page}:{tail}"
 
     def as_record(self) -> dict:
@@ -576,10 +649,15 @@ class Issue:
             "kind": self.kind,
             "page": self.page,
             "paragraph_refs": list(self.paragraph_refs),
+            "article_refs": list(self.article_refs),
+            "source_refs": list(self.source_refs),
+            "fragment_refs": list(self.fragment_refs),
             "geometry": self.geometry,
+            "geometry_evidence": self.geometry,
             "severity": self.severity,
             "evidence": self.evidence,
             "detector": self.detector,
+            "suggested_action_type": self.suggested_action_type,
             "detected_at_iteration": self.detected_at_iteration,
             "severity_vector": vector.as_record(),
         }
@@ -590,6 +668,33 @@ class Issue:
             severity_vector=SeverityVector.from_evidence(
                 self.severity, self.evidence, fields
             ),
+        )
+
+    def with_contract(
+        self,
+        *,
+        suggested_action_type: str,
+        article_refs=(),
+        source_refs=(),
+        fragment_refs=(),
+    ) -> Issue:
+        return replace(
+            self,
+            article_refs=tuple(sorted(set(self.article_refs or article_refs))),
+            source_refs=tuple(sorted(set(self.source_refs or source_refs))),
+            fragment_refs=tuple(sorted(set(self.fragment_refs or fragment_refs))),
+            suggested_action_type=suggested_action_type,
+        )
+
+    def sort_key(self) -> tuple:
+        return (
+            self.detector,
+            self.page,
+            self.article_refs,
+            self.source_refs,
+            self.fragment_refs,
+            self.paragraph_refs,
+            self.id,
         )
 
 
@@ -624,6 +729,11 @@ class DetectionContext:
     # to read it from, in which case those detectors are not run at all.
     source_geometry: object | None = None
     source_geometry_result: object | None = None
+    article_document_ir: object | None = None
+    run_trace: object | None = None
+    fixed_inventory: object | None = None
+    current_inventory: object | None = None
+    finalized: bool = False
     notes: list[str] = field(default_factory=list)
     # Structured notes, filed by the detector that made them. A note in
     # ``notes`` is a sentence for a human and a row here is a fact a gate or a

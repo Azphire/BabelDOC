@@ -354,3 +354,9 @@ p1#10/p3#2/p5#10/p6#15,FD-en-v2 触及 p2#8/p4#3/p8#5/p9#9,与四条锚零交集
 | 文件 | 符号 | 调用方 | 目的 | 批次 |
 | --- | --- | --- | --- | --- |
 | `babeldoc/format/pdf/high_level.py` | `_do_translate_single` | 单文档 PDF 流水线 | 在 LLM-only 普通段落与 continuity chain 完成唯一翻译写回、括号去重与缩进策略都确定之后，正式排版之前调用 page-local article flow；复用同一 ArticleDocumentIR 与 RunTrace，开关关闭时旧路径不变 | C07 |
+
+## C10
+
+| 文件 | 符号 | 调用方 | 目的 | 批次 |
+| --- | --- | --- | --- | --- |
+| `babeldoc/format/pdf/high_level.py` | `_do_translate_single` | 单文档 PDF 流水线 | 将当前运行唯一的 canonical `ArticleDocumentIR` 与既有 `RunTrace` 一并显式传给最终 detector 聚合，使 ownership、slot capacity 与 hard-boundary 验收读取同一运行时身份；检测开关关闭时路径不变 | C10 |
