@@ -29,6 +29,7 @@ REQUEST_FAILED = "failed"
 ALLOCATION_ALLOCATED = "allocated"
 ALLOCATION_FAILED = "failed"
 ALLOCATION_INACTIVE = "inactive"
+ALLOCATION_RELEASED = "released"
 
 RENDER_PENDING = "pending"
 RENDER_RENDERED = "rendered"
@@ -293,6 +294,8 @@ class FragmentRecord:
     text_hash: str
     allocation_status: str
     generation: int
+    slot_id: str | None
+    measurement_summary: dict
     active: bool = True
     terminal_state: SourceTerminalState | None = None
     terminal_issue: str | None = None
@@ -308,6 +311,8 @@ class FragmentRecord:
             "text_hash": self.text_hash,
             "allocation_status": self.allocation_status,
             "generation": self.generation,
+            "slot_id": self.slot_id,
+            "measurement_summary": dict(self.measurement_summary),
             "active": self.active,
             "terminal_state": None
             if self.terminal_state is None
@@ -647,6 +652,9 @@ class RunTrace:
         text_end: int,
         text: str,
         generation: int = 0,
+        slot_id: str | None = None,
+        measurement_summary: Mapping | None = None,
+        released: bool = False,
     ) -> str:
         with self._lock:
             request = self._request(request_id)
@@ -664,6 +672,10 @@ class RunTrace:
             canonical = canonical_text(text)
             if order < 0 or text_start < 0 or text_end < text_start:
                 raise ValueError("fragment order and range must be non-negative")
+            if slot_id is not None and not slot_id:
+                raise ValueError("fragment slot id must be non-empty when provided")
+            if released and text_start != text_end:
+                raise ValueError("a released slot cannot consume target text")
             if text_end > len(target) or target[text_start:text_end] != canonical:
                 raise ValueError("fragment text must equal its whole-target range")
             held = [
@@ -686,6 +698,10 @@ class RunTrace:
                 "text_hash": hash_text(canonical),
                 "generation": generation,
             }
+            if slot_id is not None:
+                material["slot_id"] = slot_id
+            if released:
+                material["allocation_status"] = ALLOCATION_RELEASED
             fragment_id = f"fragment-{hash_record(material)}"
             if fragment_id in self.fragments:
                 return fragment_id
@@ -697,8 +713,17 @@ class RunTrace:
                 text_start=text_start,
                 text_end=text_end,
                 text_hash=material["text_hash"],
-                allocation_status=ALLOCATION_ALLOCATED,
+                allocation_status=(
+                    ALLOCATION_RELEASED if released else ALLOCATION_ALLOCATED
+                ),
                 generation=generation,
+                slot_id=slot_id,
+                measurement_summary=dict(measurement_summary or {}),
+                active=not released,
+                terminal_state=(
+                    SourceTerminalState.PROTECTED if released else None
+                ),
+                terminal_issue="released_target_slot" if released else None,
             )
             self.fragments[fragment_id] = fragment
             self._fragment_text[fragment_id] = canonical
@@ -764,6 +789,37 @@ class RunTrace:
                     self._set_terminal(
                         reference, SourceTerminalState.FAILED_WITH_ISSUE, issue
                     )
+
+    def rollback_completed_chain(
+        self, chain_id: str, request_id: str, issue: str
+    ) -> None:
+        """Invalidate a completed chain after transactional writeback fails."""
+        with self._lock:
+            request = self._request(request_id)
+            outcome = self.chain_outcomes.get(chain_id)
+            if request.status != REQUEST_COMPLETED:
+                raise ValueError("only a completed chain request can roll back")
+            if (
+                outcome is None
+                or outcome.request_id != request_id
+                or outcome.result_state != ChainResultState.JOINT_SUCCESS
+            ):
+                raise ValueError("completed chain outcome does not match its request")
+            request.status = REQUEST_FAILED
+            request.issue = issue
+            for fragment_id in request.fragment_ids:
+                fragment = self.fragments[fragment_id]
+                fragment.allocation_status = ALLOCATION_FAILED
+                fragment.active = False
+                fragment.terminal_state = SourceTerminalState.FAILED_WITH_ISSUE
+                fragment.terminal_issue = issue
+            for reference in request.ordered_source_refs:
+                source = self.sources[reference]
+                if source.terminal_state != SourceTerminalState.RENDERED:
+                    source.terminal_state = SourceTerminalState.FAILED_WITH_ISSUE
+                    source.terminal_issue = issue
+            outcome.result_state = ChainResultState.FAILED_WITH_ISSUE
+            outcome.issue = issue
 
     def mark_source_protected(self, reference: str, reason: str) -> None:
         with self._lock:
@@ -860,7 +916,9 @@ class RunTrace:
                 if paragraph is None:
                     continue
                 fonts, colors = _font_color_summary(paragraph)
-                slot_id = f"slot-{hash_record({'source_ref': fragment.source_ref})}"
+                slot_id = fragment.slot_id or (
+                    f"slot-{hash_record({'source_ref': fragment.source_ref})}"
+                )
                 self.register_typeset_geometry(
                     fragment.fragment_id,
                     slot_id=slot_id,

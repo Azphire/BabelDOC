@@ -72,6 +72,7 @@ PROFILES_KEY = "profiles"
 STRATEGIES_KEY = "strategies"
 CAPACITY_KEY = "capacity"
 LINE_HEAD_KEY = "line_head_forbidden_punctuation"
+LINE_TAIL_KEY = "line_tail_forbidden_punctuation"
 
 # The run attribute the alignment level is read from. A name rather than a
 # value: the switch itself lives on the run, and this says which one it is.
@@ -83,6 +84,8 @@ NESTED_KEYS = (
     CAPACITY_KEY,
     LINE_HEAD_KEY,
     f"{LINE_HEAD_KEY}_description",
+    LINE_TAIL_KEY,
+    f"{LINE_TAIL_KEY}_description",
     ALIGN_SWITCH_KEY,
 )
 
@@ -105,6 +108,8 @@ REQUIRED_PARAMETERS: frozenset[str] = frozenset(
         "cut_snap_radius",
         "output_token_budget",
         "output_token_ratio",
+        "slot_min_font_size",
+        "slot_fit_tolerance",
     }
 )
 
@@ -305,6 +310,9 @@ class BackfillConfig:
     default_strategy: str
     capacity: CapacityGrid
     line_head_forbidden: frozenset
+    line_tail_forbidden: frozenset
+    slot_min_font_size: float
+    slot_fit_tolerance: float
 
 
 @dataclass(frozen=True)
@@ -773,9 +781,9 @@ def _parse_capacity(raw: object, source: str) -> CapacityGrid:
     )
 
 
-def _parse_line_head(raw: object, source: str) -> frozenset:
-    """The marks a line may not open with, as declared."""
-    where = f"{source}.{LINE_HEAD_KEY}"
+def _parse_punctuation(raw: object, source: str, key: str) -> frozenset:
+    """A declared class of one-character punctuation marks."""
+    where = f"{source}.{key}"
     _require(
         isinstance(raw, list) and bool(raw),
         f"{where} must be a non-empty list of marks",
@@ -827,7 +835,14 @@ def load_backfill_config(path: str | None = None) -> BackfillConfig:
         strategy_by_pair_class=strategy_by_pair_class,
         default_strategy=default_strategy,
         capacity=_parse_capacity(raw.get(CAPACITY_KEY), source),
-        line_head_forbidden=_parse_line_head(raw.get(LINE_HEAD_KEY), source),
+        line_head_forbidden=_parse_punctuation(
+            raw.get(LINE_HEAD_KEY), source, LINE_HEAD_KEY
+        ),
+        line_tail_forbidden=_parse_punctuation(
+            raw.get(LINE_TAIL_KEY), source, LINE_TAIL_KEY
+        ),
+        slot_min_font_size=float(parameters["slot_min_font_size"]),
+        slot_fit_tolerance=float(parameters["slot_fit_tolerance"]),
     )
 
 

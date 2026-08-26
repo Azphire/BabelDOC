@@ -12,6 +12,10 @@
   "output_token_budget_allowed_range": "1..8192",
   "output_token_ratio": 2.0,
   "output_token_ratio_allowed_range": "0.1..10.0",
+  "slot_min_font_size": 4.0,
+  "slot_min_font_size_allowed_range": "1.0..72.0",
+  "slot_fit_tolerance": 0.01,
+  "slot_fit_tolerance_allowed_range": "0.0..2.0",
   "join": {
     "description": "How consecutive members are merged. A member whose last character is a trailing hyphen is a word the page break cut in half, so the hyphen is dropped and the halves close up; the hyphen is kept when it stands alone as a word, which is what the preceding character being a space tells us. Two members that meet where neither side is written with interword spaces close up as well: spaceless_script_ranges lists the code point ranges, low..high in hexadecimal, whose scripts set no space between words. Everything else takes the default separator. Nothing else is added to or removed from a member.",
     "default_separator": " ",
@@ -182,7 +186,7 @@
   },
   "cut_align_switch": "magazine_chain_cut_align",
   "capacity": {
-    "description": "The line grid a member's box is measured by, to estimate how many characters of the target language it holds. The typesetting stage's own packer cannot be called for this: it is a method of the stage, it needs the mapped font and a list of typesetting units built from laid out characters, and at the moment a chain is cut the translation has no characters yet -- so the capacity is arithmetic over the box instead, and the two numbers it needs are declared here rather than guessed at each site. line_skip_<script> is the multiple of the font size the stage advances between baselines, pinned to the value the stage itself uses. advance_ratio_<script> is the mean character advance as a multiple of the font size, measured over the body paragraphs of the frozen b11.6 runs: 1.00 for a Chinese target across three samples, and 0.473 for an English one with a tenth to ninetieth percentile spread of 0.464..0.492. Which pair a target language takes is decided by cjk_target_prefixes, by the same longest declared prefix match the indent policy resolves a language tag with. The estimate is deliberately coarse: a cut a few characters off is corrected by the break rule and the retreat that follow it, and a cut badly off is caught by the stage's own scale search the way any overfull box is.",
+    "description": "Legacy deterministic grid retained for pure redistribution compatibility checks. The live continuity-chain path measures target text with the typesetter's mapped fonts and line packer and does not consume these character estimates.",
     "line_skip_cjk": 1.5,
     "line_skip_cjk_allowed_range": "1.0..3.0",
     "line_skip_latin": 1.3,
@@ -242,5 +246,22 @@
     "\uff5d",
     "\uff5e"
   ],
-  "line_head_forbidden_punctuation_description": "The marks a line may not open with, which a capacity cut pulls its continuation back off. This is the typesetting stage's own class, declared here rather than imported from it: chain_backfill is pure -- strings in, strings out, no intermediate language and no pipeline -- and importing the stage would invert that. A gate pins this list byte-equal to the stage's LINE_HEAD_FORBIDDEN_PUNCTUATION, so the two cannot drift apart; the equality is checked rather than assumed, which an import could not have given."
+  "line_head_forbidden_punctuation_description": "The marks a target fragment may not open with. The list is pinned to the typesetter's line-head punctuation class.",
+  "line_tail_forbidden_punctuation": [
+    "(",
+    "[",
+    "{",
+    "\u2018",
+    "\u201c",
+    "\u3008",
+    "\u300a",
+    "\u300c",
+    "\u300e",
+    "\u3014",
+    "\u3016",
+    "\u3018",
+    "\u301a",
+    "\uff08"
+  ],
+  "line_tail_forbidden_punctuation_description": "The opening marks a target fragment may not end with. The list is pinned to the typesetter's line-tail punctuation class."
 }

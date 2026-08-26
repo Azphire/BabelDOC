@@ -1,15 +1,14 @@
 """Chain level joint translation: the translation stage's half of it.
 
-A chain is a semantic unit the page break split. ``chain_backfill`` is the
-string layer -- merge the members, cut the translation back up, hold the
-conservation law -- and this module is what puts that layer on the translation
-path: it finds the chains in the document, sends each one to the engine as a
-single unit through the machinery the per paragraph path already uses, and
-writes each member back the piece the backfill cut for it.
+A chain is a semantic unit a column or page boundary split. ``chain_backfill``
+merges its source members, and this module sends that source to the engine as a
+single unit before measuring the resulting target against the canonical
+ArticleIR slots. The verified target ranges are then written to those slots in
+reading order.
 
 The pass is a plan and an application, deliberately in that order. Planning
-merges, translates and cuts every chain before the per paragraph machinery
-starts, and application writes the pieces back after that machinery has
+merges, translates and measures every chain before the per paragraph machinery
+starts, and application writes the allocation after that machinery has
 finished. Nothing between those two points reads a member's text, so the
 context the per paragraph path builds as it goes -- the running title above all
 -- is built from exactly the same source text it would have been built from
@@ -30,6 +29,7 @@ The sidecar and RunTrace both record the explicit terminal outcome.
 
 from __future__ import annotations
 
+import copy
 import json
 import logging
 import re
@@ -37,6 +37,7 @@ from dataclasses import dataclass
 from dataclasses import field
 from pathlib import Path
 
+from babeldoc.format.pdf.document_il import Box
 from babeldoc.magazine import chain_backfill as backfill
 from babeldoc.magazine import short_unit
 from babeldoc.magazine.article_context import EMPTY_CONTEXT
@@ -45,6 +46,7 @@ from babeldoc.magazine.chain_signals import BOUNDARY_PAGE
 from babeldoc.magazine.chain_signals import CLASS_LABELS_KEY
 from babeldoc.magazine.chain_signals import load_chain_config
 from babeldoc.magazine.run_trace import ChainResultState
+from babeldoc.magazine.run_trace import canonical_text
 from babeldoc.magazine.run_trace import hash_record
 
 logger = logging.getLogger(__name__)
@@ -60,6 +62,7 @@ ESCALATION_INCOMPLETE = "incomplete_chain"
 ESCALATION_TOKEN_BUDGET = "token_budget"
 ESCALATION_ARTICLE = "canonical_article_mismatch"
 ESCALATION_TOPOLOGY = "invalid_chain_topology"
+ESCALATION_OVERFLOW = "chain_target_overflow"
 
 # Which pass holds a claimed paragraph.
 TAKEN_BY_CHAIN = "chain"
@@ -77,6 +80,9 @@ MECHANISM_PAGE_BATCH = "page_batch"
 # shape it is asked for everywhere else, so one chain is one row of the batch
 # protocol rather than a second protocol beside it.
 _SINGLE_ITEM_ID = 0
+SLOT_CAPACITY_STRATEGY = "slot_capacity"
+SLOT_ALLOCATED = "allocated"
+SLOT_RELEASED = "released"
 
 
 class ChainTranslationError(RuntimeError):
@@ -115,6 +121,7 @@ class ChainPreflight:
     canonical_chain_id: str
     article_id: str
     ordered_source_refs: tuple[str, ...]
+    ordered_slots: tuple[object, ...]
 
 
 @dataclass
@@ -122,8 +129,13 @@ class MemberPlan:
     """One member, prepared for the merge and waiting for its piece."""
 
     paragraph: object
+    page: object
     tracker: object
     translate_input: object
+    style: object
+    source_font: object
+    page_font_map: dict
+    xobj_font_map: dict
     source: str
     page_index: int
     source_ref: str
@@ -138,9 +150,117 @@ class MemberPlan:
         return getattr(self.paragraph, "chain_index", None)
 
 
+@dataclass(frozen=True, slots=True)
+class SlotAllocationFragment:
+    """One verified whole-target range assigned to one canonical article slot."""
+
+    member: MemberPlan
+    slot_id: str
+    page: int
+    column: int
+    slot_order: int
+    box: tuple[float, float, float, float] | None
+    text: str
+    start: int
+    end: int
+    released: bool
+    measurement_record: dict
+
+    def segment_record(self) -> dict:
+        return {
+            "index": self.member.chain_index,
+            "start": self.start,
+            "end": self.end,
+            "chars": len(self.text),
+            "sentence_start": backfill.NO_SENTENCE_INDEX,
+            "sentence_end": backfill.NO_SENTENCE_INDEX,
+        }
+
+    def as_record(self) -> dict:
+        return {
+            "slot_id": self.slot_id,
+            "page": self.page,
+            "column": self.column,
+            "slot_order": self.slot_order,
+            "source_ref": self.member.source_ref,
+            "target_range": [self.start, self.end],
+            "chars": len(self.text),
+            "status": SLOT_RELEASED if self.released else SLOT_ALLOCATED,
+            "box": None
+            if self.box is None
+            else [round(value, 3) for value in self.box],
+            "measurement": dict(self.measurement_record),
+        }
+
+
+@dataclass(frozen=True, slots=True)
+class ChainAllocationPlan:
+    """An immutable, fully measured allocation committed as one transaction."""
+
+    whole_target: str
+    fragments: tuple[SlotAllocationFragment, ...]
+
+    def __post_init__(self) -> None:
+        if not self.fragments:
+            raise ValueError("a chain allocation requires at least one slot")
+        if [fragment.slot_order for fragment in self.fragments] != sorted(
+            fragment.slot_order for fragment in self.fragments
+        ):
+            raise ValueError("chain allocation slots must follow ArticleIR order")
+        cursor = 0
+        released = False
+        joined = []
+        for fragment in self.fragments:
+            if fragment.start != cursor or fragment.end < fragment.start:
+                raise ValueError("chain allocation target ranges must be contiguous")
+            if fragment.text != self.whole_target[fragment.start : fragment.end]:
+                raise ValueError("chain fragment must equal its whole-target range")
+            if fragment.released:
+                released = True
+                if fragment.start != fragment.end:
+                    raise ValueError("released slots cannot consume target text")
+            elif released or fragment.start == fragment.end:
+                raise ValueError("only trailing slots may be released")
+            joined.append(fragment.text)
+            cursor = fragment.end
+        if cursor != len(self.whole_target) or "".join(joined) != self.whole_target:
+            raise ValueError("chain allocation must reconstruct the whole target")
+
+    def as_record(self) -> dict:
+        return {
+            "verified": True,
+            "whole_target_chars": len(self.whole_target),
+            "fragments": [fragment.as_record() for fragment in self.fragments],
+            "released_slot_ids": [
+                fragment.slot_id for fragment in self.fragments if fragment.released
+            ],
+        }
+
+    def as_redistribution_record(self) -> dict:
+        return {
+            "strategy": SLOT_CAPACITY_STRATEGY,
+            "profile": None,
+            "fallback": None,
+            "sentence_count": 0,
+            "members": [fragment.segment_record() for fragment in self.fragments],
+            "cuts": [
+                {
+                    "index": index,
+                    "position": fragment.end,
+                    "mode": SLOT_CAPACITY_STRATEGY,
+                    "snapped": False,
+                    "estimate": None,
+                    "moved_to": None,
+                }
+                for index, fragment in enumerate(self.fragments[:-1])
+            ],
+            "alignment": None,
+        }
+
+
 @dataclass
 class ChainEntry:
-    """One chain, merged and cut, waiting to be written back."""
+    """One chain with a verified slot allocation waiting to be written back."""
 
     chain_id: str
     pair_class: str | None
@@ -148,12 +268,11 @@ class ChainEntry:
     members: list[MemberPlan]
     merge: backfill.ChainMerge
     translated: str
-    redistribution: backfill.Redistribution
+    allocation: ChainAllocationPlan
     request_id: str | None = None
     canonical_chain_id: str | None = None
     article_id: str | None = None
     translator_call_count: int = 1
-    capacity: list[dict] = field(default_factory=list)
 
     @property
     def boundary_kinds(self) -> list[str]:
@@ -183,11 +302,10 @@ class ChainEntry:
             "pair_class": self.pair_class,
             "strategy": self.strategy,
             "boundary_kinds": self.boundary_kinds,
-            "capacity": self.capacity,
-            "cut_displacement": [
-                None if cut.estimate is None else cut.position - cut.estimate
-                for cut in self.redistribution.cuts
+            "capacity": [
+                fragment.measurement_record for fragment in self.allocation.fragments
             ],
+            "cut_displacement": [],
             "merged_source_chars": len(self.merge.text),
             "merged_translation_chars": len(self.translated),
             # Written out whole so that the conservation law can be stated over
@@ -195,7 +313,8 @@ class ChainEntry:
             # back to exactly this string.
             "translation": self.translated,
             "merge": self.merge.as_record(),
-            "redistribution": self.redistribution.as_record(),
+            "allocation": self.allocation.as_record(),
+            "redistribution": self.allocation.as_redistribution_record(),
             "members": [
                 {
                     "debug_id": member.debug_id,
@@ -203,10 +322,10 @@ class ChainEntry:
                     "page_index": member.page_index,
                     "layout_label": getattr(member.paragraph, "layout_label", None),
                     "source_chars": len(member.source),
-                    "segment": segment.as_record(),
+                    "segment": fragment.segment_record(),
                 }
-                for member, segment in zip(
-                    self.members, self.redistribution.segments, strict=True
+                for member, fragment in zip(
+                    self.members, self.allocation.fragments, strict=True
                 )
             ],
         }
@@ -440,8 +559,27 @@ def _tokens_in(text: str, expected: tuple[str, ...]) -> tuple[str, ...]:
     return tuple(match.group(0) for match in re.finditer(pattern, text))
 
 
+def _token_ranges(text: str, expected: tuple[str, ...]) -> tuple[tuple[int, int], ...]:
+    vocabulary = sorted(set(expected), key=lambda token: (-len(token), token))
+    if not vocabulary:
+        return ()
+    pattern = "|".join(re.escape(token) for token in vocabulary)
+    return tuple((match.start(), match.end()) for match in re.finditer(pattern, text))
+
+
+def _slot_id(slot) -> str:
+    material = {
+        "article_id": slot.article_id,
+        "page": slot.page,
+        "column": slot.column,
+        "slot_order": slot.slot_order,
+        "box": list(slot.box),
+    }
+    return f"slot-{hash_record(material)}"
+
+
 class ChainPlan:
-    """Every chain of one document, merged and cut, waiting to be written back."""
+    """Every chain of one document, measured and waiting to be written back."""
 
     def __init__(
         self, translator, article_context=EMPTY_CONTEXT, article_document_ir=None
@@ -462,6 +600,7 @@ class ChainPlan:
             getattr(translator.translation_config, self.config.align_switch, False)
         )
         self.alignment_calls = 0
+        self._typesetter = None
         # The short unit pass rides here rather than at a hook of its own: the
         # translation stage offers exactly one place a magazine pass can run
         # before the page batches, and this is it. What it needs from the stage
@@ -586,8 +725,53 @@ class ChainPlan:
             return None, ESCALATION_ARTICLE, (
                 "canonical chain owner disagrees with members"
             )
+        article_lookup = getattr(self.article_document_ir, "article", None)
+        if article_lookup is None:
+            return (
+                ChainPreflight(canonical_chain_id, article_id, refs, ()),
+                "",
+                "",
+            )
+        article = article_lookup(article_id)
+        if article is None:
+            return None, ESCALATION_ARTICLE, "canonical article object is unavailable"
+        elements = {element.source_ref: element for element in article.elements}
+        slots_by_region = {}
+        for slot in article.slots:
+            key = (slot.page, slot.column)
+            if key in slots_by_region:
+                return None, ESCALATION_TOPOLOGY, (
+                    f"article region {key} has more than one slot"
+                )
+            slots_by_region[key] = slot
+        ordered_slots = []
+        for reference in refs:
+            element = elements.get(reference)
+            if element is None:
+                return None, ESCALATION_ARTICLE, (
+                    f"member {reference} has no canonical article element"
+                )
+            slot = slots_by_region.get((element.page, element.column))
+            if slot is None:
+                return None, ESCALATION_ARTICLE, (
+                    f"member {reference} has no legal article slot"
+                )
+            ordered_slots.append(slot)
+        slot_orders = [slot.slot_order for slot in ordered_slots]
+        expected_slot_orders = list(
+            range(slot_orders[0], slot_orders[0] + len(slot_orders))
+        )
+        if slot_orders != expected_slot_orders:
+            return None, ESCALATION_TOPOLOGY, (
+                f"chain slots do not follow ArticleIR order: {slot_orders}"
+            )
         return (
-            ChainPreflight(canonical_chain_id, article_id, refs),
+            ChainPreflight(
+                canonical_chain_id,
+                article_id,
+                refs,
+                tuple(ordered_slots),
+            ),
             "",
             "",
         )
@@ -674,11 +858,27 @@ class ChainPlan:
                     ESCALATION_PLACEHOLDER,
                     f"{member.source_ref}: {error}",
                 )
+            style = getattr(translate_input, "base_style", None) or getattr(
+                paragraph, "pdf_style", None
+            )
+            active_fonts = xobj_font_map.get(
+                getattr(paragraph, "xobj_id", None), page_font_map
+            )
+            source_font = (
+                None
+                if style is None
+                else active_fonts.get(getattr(style, "font_id", None))
+            )
             prepared.append(
                 MemberPlan(
                     paragraph=paragraph,
+                    page=member.page,
                     tracker=member_tracker,
                     translate_input=translate_input,
+                    style=style,
+                    source_font=source_font,
+                    page_font_map=page_font_map,
+                    xobj_font_map=xobj_font_map,
                     source=text,
                     page_index=member.page_index,
                     source_ref=member.source_ref,
@@ -719,7 +919,7 @@ class ChainPlan:
             [getattr(member.paragraph, "layout_label", None) for member in prepared],
             self.class_labels,
         )
-        strategy = backfill.strategy_for_pair_class(pair_class, self.config)
+        strategy = SLOT_CAPACITY_STRATEGY
         try:
             merge = backfill.merge_chain_text(
                 [member.source for member in prepared], self.config
@@ -805,27 +1005,41 @@ class ChainPlan:
             )
             return
         try:
-            redistribution = backfill.redistribute(
-                merge,
-                translated,
-                self.language,
-                strategy,
-                self.config,
-                aligned_lengths=None,
-                align_enabled=self.align_enabled,
-                capacities=self._capacities(prepared, strategy),
-            )
-        except backfill.ChainBackfillError as error:
-            if request_id is not None:
-                self.translator.run_trace.fail_request(
-                    request_id, f"redistribution failed: {error}"
+            allocation = (
+                self._allocate_target(
+                    translated,
+                    prepared,
+                    preflight.ordered_slots,
+                    expected_tokens,
                 )
+                if preflight.ordered_slots
+                else self._legacy_allocation(merge, translated, prepared, pair_class)
+            )
+        except (ChainTranslationError, ValueError) as error:
+            detail = f"slot measurement failed: {error}"
+            if request_id is not None:
+                self.translator.run_trace.fail_request(request_id, detail)
             self._record_outcome(
                 chain_id,
                 members,
                 ChainResultState.FAILED_WITH_ISSUE,
                 reason=ESCALATION_CONSERVATION,
-                detail=str(error),
+                detail=detail,
+                request_id=request_id,
+                translator_call_count=translator_call_count,
+                canonical_chain_id=preflight.canonical_chain_id,
+                article_id=preflight.article_id,
+            )
+            return
+        if allocation is None:
+            if request_id is not None:
+                self.translator.run_trace.fail_request(request_id, ESCALATION_OVERFLOW)
+            self._record_outcome(
+                chain_id,
+                members,
+                ChainResultState.FAILED_WITH_ISSUE,
+                reason=ESCALATION_OVERFLOW,
+                detail=ESCALATION_OVERFLOW,
                 request_id=request_id,
                 translator_call_count=translator_call_count,
                 canonical_chain_id=preflight.canonical_chain_id,
@@ -833,29 +1047,10 @@ class ChainPlan:
             )
             return
 
-        for member, segment in zip(prepared, redistribution.segments, strict=True):
-            if _tokens_in(segment.text, expected_tokens) != member.placeholder_tokens:
-                detail = f"{member.source_ref} did not retain its placeholder sequence"
-                if request_id is not None:
-                    self.translator.run_trace.fail_request(request_id, detail)
-                self._record_outcome(
-                    chain_id,
-                    members,
-                    ChainResultState.FAILED_WITH_ISSUE,
-                    reason=ESCALATION_PLACEHOLDER,
-                    detail=detail,
-                    request_id=request_id,
-                    translator_call_count=translator_call_count,
-                    canonical_chain_id=preflight.canonical_chain_id,
-                    article_id=preflight.article_id,
-                )
-                return
-
         if request_id is not None:
             try:
-                for member, segment in zip(
-                    prepared, redistribution.segments, strict=True
-                ):
+                for order, fragment in enumerate(allocation.fragments):
+                    member = fragment.member
                     reference = self.translator.run_trace.source_ref_for(
                         member.paragraph
                     )
@@ -864,10 +1059,13 @@ class ChainPlan:
                     self.translator.run_trace.allocate_target_fragment(
                         request_id,
                         reference,
-                        order=segment.index,
-                        text_start=segment.start,
-                        text_end=segment.end,
-                        text=segment.text,
+                        order=order,
+                        text_start=fragment.start,
+                        text_end=fragment.end,
+                        text=fragment.text,
+                        slot_id=fragment.slot_id,
+                        measurement_summary=fragment.measurement_record,
+                        released=fragment.released,
                     )
                 self.translator.run_trace.complete_request(request_id)
             except Exception as error:
@@ -894,14 +1092,11 @@ class ChainPlan:
             members=prepared,
             merge=merge,
             translated=translated,
-            redistribution=redistribution,
+            allocation=allocation,
             request_id=request_id,
             canonical_chain_id=preflight.canonical_chain_id,
             article_id=preflight.article_id,
             translator_call_count=translator_call_count,
-            capacity=self._capacity_record(prepared)
-            if strategy == backfill.STRATEGY_CAPACITY
-            else [],
         )
         self.entries.append(entry)
         self._record_outcome(
@@ -914,74 +1109,206 @@ class ChainPlan:
             article_id=preflight.article_id,
         )
 
-    def _capacities(
-        self, members: list[MemberPlan], strategy: str
-    ) -> list[int] | None:
-        """How many characters of the target language each member's box holds.
+    def _slot_typesetter(self):
+        if self._typesetter is None:
+            from babeldoc.format.pdf.document_il.midend.typesetting import Typesetting
 
-        This is the half of the capacity cut that needs the document, which is
-        why it lives here and not in the pure module: the boxes are on the
-        paragraphs and the estimate is arithmetic over them.
-
-        The typesetting stage's own packer was the first candidate and it
-        cannot serve. It is a method of the stage, it needs the mapped font and
-        a list of typesetting units built from laid out characters, and at this
-        point in the run the translation is a string with no characters behind
-        it -- there is nothing for that packer to pack. The grid is declared in
-        the configuration and measured against the frozen runs instead.
-
-        Returns None where any member cannot be measured, so a chain is cut by
-        one method throughout: a mixture of measured and estimated cuts in one
-        chain would put a boundary of unknown provenance in the middle of it.
-        """
-        if strategy != backfill.STRATEGY_CAPACITY:
-            return None
-        grid = self.config.capacity
-        capacities = []
-        for member in members:
-            box = getattr(member.paragraph, "box", None)
-            style = getattr(member.paragraph, "pdf_style", None)
-            font_size = getattr(style, "font_size", None) if style else None
-            if box is None or font_size is None:
-                return None
-            try:
-                width = float(box.x2) - float(box.x)
-                height = float(box.y2) - float(box.y)
-            except TypeError:
-                return None
-            characters = grid.characters_in(width, height, float(font_size), self.language)
-            if characters <= 0:
-                return None
-            capacities.append(characters)
-        return capacities
-
-    def _capacity_record(self, members: list[MemberPlan]) -> list[dict]:
-        """What each member's box was measured as, for the sidecar."""
-        grid = self.config.capacity
-        rows = []
-        for member in members:
-            box = getattr(member.paragraph, "box", None)
-            style = getattr(member.paragraph, "pdf_style", None)
-            font_size = getattr(style, "font_size", None) if style else None
-            if box is None or font_size is None:
-                rows.append({"chain_index": member.chain_index, "measurable": False})
-                continue
-            width = float(box.x2) - float(box.x)
-            height = float(box.y2) - float(box.y)
-            rows.append(
-                {
-                    "chain_index": member.chain_index,
-                    "measurable": True,
-                    "page_index": member.page_index,
-                    "box": [round(float(v), 2) for v in (box.x, box.y, box.x2, box.y2)],
-                    "font_size": round(float(font_size), 3),
-                    "fitted_lines": grid.lines_in(height, float(font_size), self.language),
-                    "capacity_chars": grid.characters_in(
-                        width, height, float(font_size), self.language
-                    ),
-                }
+            self._typesetter = Typesetting(
+                self.translator.translation_config,
+                font_mapper=getattr(self.translator.il_translator, "font_mapper", None),
             )
-        return rows
+        return self._typesetter
+
+    def _measurement_unit_factory(
+        self, members: list[MemberPlan], member: MemberPlan, typesetter
+    ):
+        parser = getattr(self.translator.il_translator, "parse_translate_output", None)
+        if parser is None:
+            return None
+        fonts = dict(member.page_font_map)
+        fonts.update(getattr(typesetter.font_mapper, "fontid2font", {}))
+        for xobj_id, held in member.xobj_font_map.items():
+            fonts[xobj_id] = dict(held)
+        translate_input = self._translate_input_for_members(members, member)
+
+        def make_units(text: str):
+            paragraph = copy.copy(member.paragraph)
+            tracker = copy.deepcopy(member.tracker)
+            paragraph.unicode = text
+            paragraph.pdf_paragraph_composition = parser(
+                translate_input,
+                text,
+                tracker,
+                tracker.last_llm_translate_tracker(),
+            )
+            for composition in paragraph.pdf_paragraph_composition:
+                same_style = composition.pdf_same_style_unicode_characters
+                if same_style is not None and same_style.pdf_style is None:
+                    same_style.pdf_style = member.style
+            return typesetter.create_typesetting_units(paragraph, fonts)
+
+        return make_units
+
+    def _allocate_target(
+        self,
+        translated: str,
+        members: list[MemberPlan],
+        slots: tuple[object, ...],
+        protected_tokens: tuple[str, ...],
+    ) -> ChainAllocationPlan | None:
+        """Measure every slot first and return no plan unless all text fits."""
+        if len(members) != len(slots):
+            return None
+        protected = _token_ranges(translated, protected_tokens)
+        cursor = 0
+        fragments = []
+        typesetter = self._slot_typesetter()
+        for order, (member, slot) in enumerate(zip(members, slots, strict=True)):
+            slot_box = Box(*slot.box)
+            slot_identifier = _slot_id(slot)
+            if cursor == len(translated):
+                measurement = {
+                    "fit_status": SLOT_RELEASED,
+                    "consumed_range": [0, 0],
+                    "whole_target_range": [cursor, cursor],
+                    "chars": 0,
+                    "line_metrics": [],
+                    "ink_bounds": None,
+                }
+                fragments.append(
+                    SlotAllocationFragment(
+                        member=member,
+                        slot_id=slot_identifier,
+                        page=slot.page,
+                        column=slot.column,
+                        slot_order=slot.slot_order,
+                        box=tuple(float(value) for value in slot.box),
+                        text="",
+                        start=cursor,
+                        end=cursor,
+                        released=True,
+                        measurement_record=measurement,
+                    )
+                )
+                continue
+            remaining_ranges = tuple(
+                (start - cursor, end - cursor)
+                for start, end in protected
+                if start >= cursor
+            )
+            result = typesetter.fit_text_to_slot(
+                translated[cursor:],
+                member.style,
+                self.language,
+                slot_box,
+                paragraph_start=(
+                    order == 0
+                    and bool(getattr(member.paragraph, "first_line_indent", False))
+                ),
+                original_font=member.source_font,
+                protected_ranges=remaining_ranges,
+                unit_factory=self._measurement_unit_factory(
+                    members, member, typesetter
+                ),
+                minimum_font_size=self.config.slot_min_font_size,
+                fit_tolerance=self.config.slot_fit_tolerance,
+                line_skip=(
+                    self.config.capacity.line_skip_cjk
+                    if self.config.capacity.is_cjk_target(self.language)
+                    else self.config.capacity.line_skip_latin
+                ),
+                line_head_forbidden=self.config.line_head_forbidden,
+                line_tail_forbidden=self.config.line_tail_forbidden,
+            )
+            if result.status == "invalid":
+                raise ChainTranslationError(
+                    f"slot {slot_identifier} has no valid target style or box"
+                )
+            consumed = result.consumed_range[1]
+            if consumed <= 0:
+                return None
+            end = cursor + consumed
+            measurement = result.to_record()
+            measurement["whole_target_range"] = [cursor, end]
+            fragments.append(
+                SlotAllocationFragment(
+                    member=member,
+                    slot_id=slot_identifier,
+                    page=slot.page,
+                    column=slot.column,
+                    slot_order=slot.slot_order,
+                    box=tuple(float(value) for value in slot.box),
+                    text=translated[cursor:end],
+                    start=cursor,
+                    end=end,
+                    released=False,
+                    measurement_record=measurement,
+                )
+            )
+            cursor = end
+        if cursor != len(translated):
+            return None
+        try:
+            return ChainAllocationPlan(translated, tuple(fragments))
+        except ValueError:
+            return None
+
+    def _legacy_allocation(
+        self,
+        merge: backfill.ChainMerge,
+        translated: str,
+        members: list[MemberPlan],
+        pair_class: str | None,
+    ) -> ChainAllocationPlan | None:
+        """Keep callers without canonical slot objects readable but unmeasured."""
+        redistribute = backfill.redistribute
+        try:
+            result = redistribute(
+                merge,
+                translated,
+                self.language,
+                backfill.strategy_for_pair_class(pair_class, self.config),
+                self.config,
+                aligned_lengths=None,
+                align_enabled=self.align_enabled,
+                capacities=None,
+            )
+        except backfill.ChainBackfillError:
+            return None
+        fragments = []
+        for member, segment in zip(members, result.segments, strict=True):
+            paragraph_box = getattr(member.paragraph, "box", None)
+            box = (
+                None
+                if paragraph_box is None
+                else tuple(
+                    float(getattr(paragraph_box, name))
+                    for name in ("x", "y", "x2", "y2")
+                )
+            )
+            slot_identifier = f"slot-{hash_record({'source_ref': member.source_ref})}"
+            fragments.append(
+                SlotAllocationFragment(
+                    member=member,
+                    slot_id=slot_identifier,
+                    page=member.page_index + 1,
+                    column=member.chain_index or 0,
+                    slot_order=member.chain_index or 0,
+                    box=box,
+                    text=segment.text,
+                    start=segment.start,
+                    end=segment.end,
+                    released=False,
+                    measurement_record={
+                        "fit_status": "legacy_unmeasured",
+                        "whole_target_range": [segment.start, segment.end],
+                        "chars": len(segment.text),
+                        "line_metrics": [],
+                        "ink_bounds": None,
+                    },
+                )
+            )
+        return ChainAllocationPlan(translated, tuple(fragments))
 
     def _translate(
         self, merged: str, members: list[MemberPlan], chain_tracker
@@ -1077,6 +1404,7 @@ class ChainPlan:
                     f"the engine returned {type(translated).__name__} for a chain of "
                     f"{len(members)} members"
                 )
+            translated = canonical_text(translated)
             if trace_request_id is not None:
                 trace.register_whole_target(trace_request_id, translated)
             return translated, trace_request_id, translator_call_count
@@ -1097,31 +1425,126 @@ class ChainPlan:
 
     # --- application --------------------------------------------------------
 
-    def apply(self, pbar=None) -> None:
-        """Write each member the piece the backfill cut for it, then report.
+    @staticmethod
+    def _member_snapshot(member: MemberPlan) -> dict:
+        paragraph = member.paragraph
+        return {
+            "box": copy.deepcopy(getattr(paragraph, "box", None)),
+            "unicode": getattr(paragraph, "unicode", None),
+            "pdf_paragraph_composition": copy.deepcopy(
+                getattr(paragraph, "pdf_paragraph_composition", None)
+            ),
+            "segment_sentence_start": getattr(
+                paragraph, "segment_sentence_start", None
+            ),
+            "segment_sentence_end": getattr(paragraph, "segment_sentence_end", None),
+        }
 
-        The pieces were verified against the conservation law when they were
-        cut, so this walks a plan rather than deciding anything, and it runs
-        after the per paragraph machinery so that nothing it writes can reach
-        the context that machinery built.
+    @staticmethod
+    def _restore_member(member: MemberPlan, snapshot: dict) -> None:
+        for name, value in snapshot.items():
+            setattr(member.paragraph, name, copy.deepcopy(value))
+
+    @staticmethod
+    def _translate_input_for_members(
+        members: list[MemberPlan], member: MemberPlan
+    ):
+        translate_input = copy.copy(member.translate_input)
+        translate_input.placeholders = [
+            placeholder
+            for held in members
+            for placeholder in getattr(held.translate_input, "placeholders", ())
+        ]
+        original_tokens = {}
+        for held in members:
+            for token, count in getattr(
+                held.translate_input, "original_placeholder_tokens", {}
+            ).items():
+                original_tokens[token] = original_tokens.get(token, 0) + count
+        translate_input.original_placeholder_tokens = original_tokens
+        translate_input.base_style = member.style
+        return translate_input
+
+    def _record_writeback_failure(self, entry: ChainEntry, detail: str) -> None:
+        self.claim.set_result(
+            [member.paragraph for member in entry.members],
+            ChainResultState.FAILED_WITH_ISSUE,
+        )
+        record = next(
+            (
+                outcome
+                for outcome in self.outcomes
+                if outcome["canonical_chain_id"] == entry.canonical_chain_id
+            ),
+            None,
+        )
+        if record is None:
+            raise ValueError("writeback failure has no planned chain outcome")
+        record["result_state"] = ChainResultState.FAILED_WITH_ISSUE.value
+        record["reason"] = ESCALATION_CONSERVATION
+        record["detail"] = detail
+        self.escalated.append(record)
+        if entry.request_id is not None:
+            self.translator.run_trace.rollback_completed_chain(
+                entry.canonical_chain_id,
+                entry.request_id,
+                detail,
+            )
+
+    def apply(self, pbar=None) -> None:
+        """Commit each verified allocation atomically, then report.
+
+        It runs after the per paragraph machinery so that nothing it writes can
+        reach the context that machinery built. A failed write restores every
+        paragraph in the chain before its trace request is failed.
         """
         translator = self.translator
+        applied_entries = []
         for entry in self.entries:
-            for member, segment in zip(
-                entry.members, entry.redistribution.segments, strict=True
-            ):
-                translator.il_translator.post_translate_paragraph(
-                    member.paragraph,
-                    member.tracker,
-                    member.translate_input,
-                    segment.text,
+            snapshots = [self._member_snapshot(member) for member in entry.members]
+            try:
+                for member, fragment in zip(
+                    entry.members, entry.allocation.fragments, strict=True
+                ):
+                    translator.il_translator.post_translate_paragraph(
+                        member.paragraph,
+                        member.tracker,
+                        self._translate_input_for_members(entry.members, member),
+                        fragment.text,
+                    )
+                    if fragment.box is not None:
+                        member.paragraph.box = Box(*fragment.box)
+                    member.paragraph.segment_sentence_start = backfill.NO_SENTENCE_INDEX
+                    member.paragraph.segment_sentence_end = backfill.NO_SENTENCE_INDEX
+                joined = "".join(
+                    getattr(member.paragraph, "unicode", "") or ""
+                    for member in entry.members
                 )
-                member.paragraph.segment_sentence_start = segment.sentence_start
-                member.paragraph.segment_sentence_end = segment.sentence_end
-                translator.total_count += 1
-                translator.ok_count += 1
-                if pbar:
-                    pbar.advance(1)
+                if canonical_text(joined) != entry.translated:
+                    raise ChainTranslationError(
+                        "writeback fragments do not reconstruct the whole target"
+                    )
+            except Exception as error:
+                for member, snapshot in zip(
+                    entry.members, snapshots, strict=True
+                ):
+                    self._restore_member(member, snapshot)
+                self._record_writeback_failure(
+                    entry, f"writeback failed: {error}"
+                )
+                continue
+            if entry.request_id is not None:
+                for fragment in entry.allocation.fragments:
+                    if fragment.released:
+                        translator.run_trace.mark_source_protected(
+                            fragment.member.source_ref, "released_target_slot"
+                        )
+            translator.total_count += len(entry.members)
+            translator.ok_count += len(entry.members)
+            if pbar:
+                pbar.advance(len(entry.members))
+            applied_entries.append(entry)
+        self.entries = applied_entries
         if self.short_units is not None:
             short_unit.apply(translator, self.short_units, pbar)
             short_unit.write_report(translator.translation_config, self.short_units)
@@ -1146,12 +1569,7 @@ class ChainPlan:
                     outcome["translator_call_count"] for outcome in self.outcomes
                 ),
                 "alignment_requests": 0,
-                "aligned_cuts": sum(
-                    1
-                    for entry in self.entries
-                    if entry.redistribution.alignment is not None
-                    and entry.redistribution.alignment.used
-                ),
+                "aligned_cuts": 0,
             },
             "align_enabled": self.align_enabled,
             "short_units": None

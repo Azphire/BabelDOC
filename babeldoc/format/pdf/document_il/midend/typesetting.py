@@ -6,9 +6,12 @@ import logging
 import re
 import statistics
 import unicodedata
+from dataclasses import dataclass
 from functools import cache
 from functools import lru_cache
 from pathlib import Path
+from typing import Callable
+from typing import Sequence
 
 import pymupdf
 import regex
@@ -169,6 +172,147 @@ LINE_HEAD_FORBIDDEN_PUNCTUATION = frozenset([
     "／",  # 全角斜杠
     "⁄",  # 分数斜杠
 ])
+
+LINE_TAIL_FORBIDDEN_PUNCTUATION = frozenset([
+    "“",
+    "‘",
+    "「",
+    "『",
+    "(",
+    "[",
+    "{",
+    "（",
+    "〔",
+    "〈",
+    "《",
+    "〖",
+    "〘",
+    "〚",
+])
+
+FIT_ALL = "fit_all"
+FIT_PREFIX = "fit_prefix"
+FIT_NONE = "no_fit"
+FIT_INVALID = "invalid"
+
+
+@dataclass(frozen=True, slots=True)
+class SlotLineMetric:
+    """One line produced while measuring target text against a slot."""
+
+    index: int
+    unit_count: int
+    bounds: tuple[float, float, float, float]
+
+    def to_record(self) -> dict:
+        return {
+            "index": self.index,
+            "unit_count": self.unit_count,
+            "bounds": [round(value, 3) for value in self.bounds],
+        }
+
+
+@dataclass(frozen=True, slots=True)
+class SlotFitResult:
+    """The largest legal prefix the real line packer accepts in one slot."""
+
+    consumed_range: tuple[int, int]
+    text: str
+    line_metrics: tuple[SlotLineMetric, ...]
+    ink_bounds: tuple[float, float, float, float] | None
+    status: str
+
+    def to_record(self) -> dict:
+        return {
+            "consumed_range": list(self.consumed_range),
+            "chars": len(self.text),
+            "line_metrics": [line.to_record() for line in self.line_metrics],
+            "ink_bounds": None
+            if self.ink_bounds is None
+            else [round(value, 3) for value in self.ink_bounds],
+            "fit_status": self.status,
+        }
+
+
+def _is_cjk_language(language: str | None) -> bool:
+    tag = (language or "").upper()
+    return any(part in tag for part in ("ZH", "JA", "JP", "KR", "CN", "HK", "TW"))
+
+
+def _legal_prefix_boundaries(
+    text: str,
+    target_language: str | None,
+    protected_ranges: Sequence[tuple[int, int]],
+    line_head_forbidden: frozenset[str],
+    line_tail_forbidden: frozenset[str],
+) -> tuple[int, ...]:
+    """Return grapheme-safe cut positions accepted by the target script."""
+    graphemes = list(regex.finditer(r"\X", text))
+    protected = tuple((int(start), int(end)) for start, end in protected_ranges)
+    if any(start < 0 or end <= start or end > len(text) for start, end in protected):
+        raise ValueError("protected ranges must be non-empty ranges inside the text")
+    if any(
+        left[0] < right[1] and right[0] < left[1]
+        for index, left in enumerate(protected)
+        for right in protected[index + 1 :]
+    ):
+        raise ValueError("protected ranges must not overlap")
+
+    cjk = _is_cjk_language(target_language)
+    boundaries = []
+    for position, match in enumerate(graphemes):
+        boundary = match.end()
+        if any(start < boundary < end for start, end in protected):
+            continue
+        if boundary < len(text):
+            if text[boundary] in line_head_forbidden:
+                continue
+            if text[boundary - 1] in line_tail_forbidden:
+                continue
+            if not cjk:
+                left = match.group(0)
+                right = graphemes[position + 1].group(0)
+                if LINE_BREAK_REGEX.fullmatch(left) and LINE_BREAK_REGEX.fullmatch(right):
+                    continue
+        boundaries.append(boundary)
+    return tuple(boundaries)
+
+
+def _unit_bounds(units: Sequence[TypesettingUnit]):
+    boxes = [unit.box for unit in units if unit.box is not None]
+    if not boxes:
+        return None
+    return (
+        min(float(box.x) for box in boxes),
+        min(float(box.y) for box in boxes),
+        max(float(box.x2) for box in boxes),
+        max(float(box.y2) for box in boxes),
+    )
+
+
+def _line_metrics(
+    units: Sequence[TypesettingUnit], tolerance: float
+) -> tuple[SlotLineMetric, ...]:
+    lines: list[list[TypesettingUnit]] = []
+    for unit in units:
+        y = float(unit.box.y)
+        line = next(
+            (
+                held
+                for held in lines
+                if abs(float(held[0].box.y) - y) <= tolerance
+            ),
+            None,
+        )
+        if line is None:
+            lines.append([unit])
+        else:
+            line.append(unit)
+    lines.sort(key=lambda held: -float(held[0].box.y))
+    return tuple(
+        SlotLineMetric(index, len(line), _unit_bounds(line))
+        for index, line in enumerate(lines)
+    )
 
 
 class TypesettingUnit:
@@ -424,25 +568,7 @@ class TypesettingUnit:
         unicode = self.try_get_unicode()
         if not unicode:
             return False
-        return unicode in [
-            # 开始引号
-            "“",  # 左双引号
-            "‘",  # 左单引号
-            "「",  # 左直角单引号
-            "『",  # 左直角双引号
-            # 开始括号
-            "(",  # 左圆括号
-            "[",  # 左方括号
-            "{",  # 左花括号
-            "（",  # 左圆括号
-            "〔",  # 左龟甲括号
-            "〈",  # 左单书名号
-            "《",  # 左双书名号
-            # 开始单双书名号
-            "〖",  # 左空白方头括号
-            "〘",  # 左黑色方头括号
-            "〚",  # 左单书名号
-        ]
+        return unicode in LINE_TAIL_FORBIDDEN_PUNCTUATION
 
     def passthrough(
         self,
@@ -880,8 +1006,15 @@ class TypesettingUnit:
 class Typesetting:
     stage_name = "Typesetting"
 
-    def __init__(self, translation_config: TranslationConfig, run_trace=None):
-        self.font_mapper = FontMapper(translation_config)
+    def __init__(
+        self,
+        translation_config: TranslationConfig,
+        run_trace=None,
+        font_mapper=None,
+    ):
+        self.font_mapper = (
+            FontMapper(translation_config) if font_mapper is None else font_mapper
+        )
         self.translation_config = translation_config
         self.run_trace = run_trace
         self.lang_code = self.translation_config.lang_out.upper()
@@ -897,6 +1030,128 @@ class Typesetting:
             or ("CN" in self.lang_code)
             or ("HK" in self.lang_code)
             or ("TW" in self.lang_code)
+        )
+
+    def fit_text_to_slot(
+        self,
+        text: str,
+        style: PdfStyle,
+        target_language: str,
+        slot_box: Box,
+        *,
+        paragraph_start: bool,
+        original_font=None,
+        protected_ranges: Sequence[tuple[int, int]] = (),
+        unit_factory: Callable[[str], list[TypesettingUnit]] | None = None,
+        minimum_font_size: float,
+        fit_tolerance: float,
+        line_skip: float,
+        line_head_forbidden: frozenset[str] = LINE_HEAD_FORBIDDEN_PUNCTUATION,
+        line_tail_forbidden: frozenset[str] = LINE_TAIL_FORBIDDEN_PUNCTUATION,
+    ) -> SlotFitResult:
+        """Measure the largest legal target prefix without mutating Document IL."""
+        if not text:
+            return SlotFitResult((0, 0), "", (), None, FIT_ALL)
+        font_size = getattr(style, "font_size", None)
+        coordinates = tuple(
+            getattr(slot_box, name, None) for name in ("x", "y", "x2", "y2")
+        )
+        if (
+            font_size is None
+            or minimum_font_size <= 0
+            or float(font_size) < minimum_font_size
+            or any(value is None for value in coordinates)
+            or float(slot_box.x2) <= float(slot_box.x)
+            or float(slot_box.y2) <= float(slot_box.y)
+            or fit_tolerance < 0
+            or line_skip <= 0
+        ):
+            return SlotFitResult((0, 0), "", (), None, FIT_INVALID)
+
+        boundaries = _legal_prefix_boundaries(
+            text,
+            target_language,
+            protected_ranges,
+            frozenset(line_head_forbidden),
+            frozenset(line_tail_forbidden),
+        )
+        if not boundaries:
+            return SlotFitResult((0, 0), "", (), None, FIT_NONE)
+        measured_box = Box(
+            x=float(slot_box.x),
+            y=float(slot_box.y),
+            x2=float(slot_box.x2),
+            y2=float(slot_box.y2),
+        )
+        source_font = original_font or self.font_mapper.base_font
+        paragraph = type(
+            "MeasuredParagraph",
+            (),
+            {"first_line_indent": bool(paragraph_start)},
+        )()
+        cache: dict[int, tuple[bool, list[TypesettingUnit]]] = {}
+
+        def measure(end: int) -> tuple[bool, list[TypesettingUnit]]:
+            held = cache.get(end)
+            if held is not None:
+                return held
+            try:
+                if unit_factory is not None:
+                    units = list(unit_factory(text[:end]))
+                else:
+                    units = []
+                    for character in text[:end]:
+                        if character in ("\r", "\n"):
+                            continue
+                        mapped = self.font_mapper.map(source_font, character)
+                        if mapped is None:
+                            cache[end] = (False, [])
+                            return cache[end]
+                        units.append(
+                            TypesettingUnit(
+                                unicode=character,
+                                font=mapped,
+                                original_font=source_font,
+                                font_size=float(font_size),
+                                style=style,
+                                xobj_id=-1,
+                            )
+                        )
+                laid_out, fits = self._layout_typesetting_units(
+                    units,
+                    measured_box,
+                    1.0,
+                    line_skip,
+                    paragraph,
+                    True,
+                    [],
+                )
+            except Exception:
+                laid_out, fits = [], False
+            cache[end] = (fits, laid_out)
+            return cache[end]
+
+        low = 0
+        high = len(boundaries) - 1
+        best = -1
+        while low <= high:
+            middle = (low + high) // 2
+            fits, _units = measure(boundaries[middle])
+            if fits:
+                best = middle
+                low = middle + 1
+            else:
+                high = middle - 1
+        if best < 0:
+            return SlotFitResult((0, 0), "", (), None, FIT_NONE)
+        consumed = boundaries[best]
+        _fits, units = measure(consumed)
+        return SlotFitResult(
+            consumed_range=(0, consumed),
+            text=text[:consumed],
+            line_metrics=_line_metrics(units, fit_tolerance),
+            ink_bounds=_unit_bounds(units),
+            status=FIT_ALL if consumed == len(text) else FIT_PREFIX,
         )
 
     def preprocess_document(self, document: il_version_1.Document, pbar):

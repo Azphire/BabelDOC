@@ -342,3 +342,9 @@ p1#10/p3#2/p5#10/p6#15,FD-en-v2 触及 p2#8/p4#3/p8#5/p9#9,与四条锚零交集
 | 文件 | 符号 | 调用方 | 目的 | 批次 |
 | --- | --- | --- | --- | --- |
 | `babeldoc/format/pdf/document_il/midend/il_translator_llm_only.py` | `ILTranslatorLLMOnly.translate` | LLM-only 翻译主路径 | 将 high-level 已注入的同一 canonical `ArticleDocumentIR` 显式传给 chain planner，使联合请求能在调用引擎前验证所有成员的文章身份；普通非 chain 请求路径不变 | C05 |
+
+## C06
+
+| 文件 | 符号 | 调用方 | 目的 | 批次 |
+| --- | --- | --- | --- | --- |
+| `babeldoc/format/pdf/document_il/midend/typesetting.py` | `Typesetting.fit_text_to_slot`、`SlotFitResult`、`LINE_TAIL_FORBIDDEN_PUNCTUATION` | continuity-chain allocation planner；既有 typesetting stage | 在固定目标字号和映射字体下复用真实断行器，返回最大合法 target 前缀、行指标与 ink bounds；测量只创建临时 units，不写 Document IL 或 PDF，正式排版路径保持原入口 | C06 |
