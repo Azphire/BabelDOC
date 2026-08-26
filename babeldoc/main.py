@@ -2,6 +2,7 @@ import asyncio
 import json
 import logging
 import multiprocessing as mp
+import os
 import queue
 import random
 import sys
@@ -33,6 +34,7 @@ from babeldoc.magazine.runtime_profile import input_summary
 from babeldoc.magazine.runtime_profile import resolve_magazine_profile
 from babeldoc.magazine.runtime_profile import resolve_reviews_dir
 from babeldoc.magazine.runtime_profile import validate_magazine_switches
+from babeldoc.translator.no_network import NoNetworkTranslator
 from babeldoc.translator.translator import OpenAITranslator
 from babeldoc.translator.translator import set_translate_rate_limiter
 
@@ -520,12 +522,101 @@ def _display_url(value: str | None) -> str | None:
     return urlunsplit((parsed.scheme, parsed.netloc, parsed.path, "", ""))
 
 
+def translation_disabled(args) -> bool:
+    return bool(args.only_parse_generate_pdf or args.skip_translation)
+
+
+def resolve_cli_credentials(
+    args, environment: dict[str, str] | None = None
+) -> tuple[str | None, str | None]:
+    if translation_disabled(args):
+        return None, None
+    source = os.environ if environment is None else environment
+    main_key = args.openai_api_key or source.get("OPENAI_API_KEY")
+    term_key = args.openai_term_extraction_api_key or main_key
+    return main_key, term_key
+
+
+def build_translators(args, environment: dict[str, str] | None = None):
+    if translation_disabled(args):
+        translator = NoNetworkTranslator(args.lang_in, args.lang_out)
+        return translator, translator
+    if not args.openai:
+        raise ValueError("必须选择一个翻译服务：--openai")
+    main_key, term_key = resolve_cli_credentials(args, environment)
+    if not main_key:
+        raise ValueError("使用 OpenAI 服务时必须提供 API key 或 OPENAI_API_KEY")
+
+    translator_kwargs: dict[str, Any] = {}
+    if args.openai_reasoning is not None:
+        translator_kwargs["reasoning"] = args.openai_reasoning
+    if args.openai_thinking is not None:
+        translator_kwargs["thinking"] = args.openai_thinking
+    try:
+        translator = OpenAITranslator(
+            lang_in=args.lang_in,
+            lang_out=args.lang_out,
+            model=args.openai_model,
+            base_url=args.openai_base_url,
+            api_key=main_key,
+            ignore_cache=args.ignore_cache,
+            enable_json_mode_if_requested=args.enable_json_mode_if_requested,
+            send_dashscope_header=args.send_dashscope_header,
+            send_temperature=not args.no_send_temperature,
+            **translator_kwargs,
+        )
+        term_extraction_translator = translator
+        if (
+            args.openai_term_extraction_model
+            or args.openai_term_extraction_base_url
+            or args.openai_term_extraction_api_key
+        ):
+            term_translator_kwargs: dict[str, Any] = {}
+            if args.openai_term_extraction_reasoning is not None:
+                term_translator_kwargs["reasoning"] = (
+                    args.openai_term_extraction_reasoning
+                )
+            term_extraction_translator = OpenAITranslator(
+                lang_in=args.lang_in,
+                lang_out=args.lang_out,
+                model=args.openai_term_extraction_model or args.openai_model,
+                base_url=(args.openai_term_extraction_base_url or args.openai_base_url),
+                api_key=term_key,
+                ignore_cache=args.ignore_cache,
+                enable_json_mode_if_requested=args.enable_json_mode_if_requested,
+                send_dashscope_header=args.send_dashscope_header,
+                send_temperature=not args.no_send_temperature,
+                **term_translator_kwargs,
+            )
+    except Exception as exc:
+        raise ValueError("无法初始化 OpenAI 翻译器；请检查服务配置") from exc
+    return translator, term_extraction_translator
+
+
+def redact_sensitive_text(text: object, args) -> str:
+    redacted = str(text)
+    main_key, term_key = resolve_cli_credentials(args)
+    for secret in {
+        main_key,
+        term_key,
+        args.openai_api_key,
+        args.openai_term_extraction_api_key,
+    }:
+        if secret:
+            redacted = redacted.replace(secret, "<redacted>")
+    for value in {args.openai_base_url, args.openai_term_extraction_base_url}:
+        if value:
+            redacted = redacted.replace(value, _display_url(value) or "<redacted>")
+    return redacted
+
+
 def effective_config_report(args) -> tuple[dict, list[str]]:
     profile = resolve_magazine_profile(args.magazine_mode, args.magazine_profile)
     switches = dict(SWITCH_DEFAULTS if profile is None else profile.switches)
     inputs = [input_summary(_normalized_file(value)) for value in (args.files or ())]
     reviews = resolve_reviews_dir(args.magazine_reviews_dir)
     resources = resource_availability()
+    main_key, term_key = resolve_cli_credentials(args)
     errors = [issue.message for issue in validate_magazine_switches(switches)]
     for kind, status in resources.items():
         if not status["available"]:
@@ -553,15 +644,17 @@ def effective_config_report(args) -> tuple[dict, list[str]]:
         "reviews_dir": str(reviews),
         "service": {
             "openai": {
-                "api_key": _redacted(args.openai_api_key),
+                "api_key": _redacted(main_key),
                 "base_url": _display_url(args.openai_base_url),
                 "enabled": bool(args.openai),
                 "model": args.openai_model,
             },
             "term_extraction": {
-                "api_key": _redacted(args.openai_term_extraction_api_key),
-                "base_url": _display_url(args.openai_term_extraction_base_url),
-                "model": args.openai_term_extraction_model,
+                "api_key": _redacted(term_key),
+                "base_url": _display_url(
+                    args.openai_term_extraction_base_url or args.openai_base_url
+                ),
+                "model": args.openai_term_extraction_model or args.openai_model,
             },
         },
         "switches": switches,
@@ -622,61 +715,13 @@ async def main():
         logger.info("Warmup completed, exiting...")
         return
 
-    # 验证翻译服务选择
-    if not args.openai:
-        parser.error("必须选择一个翻译服务：--openai")
-
-    # 验证 OpenAI 参数
-    if args.openai and not args.openai_api_key:
-        parser.error("使用 OpenAI 服务时必须提供 API key")
-
     if args.enable_process_pool:
         enable_process_pool()
 
-    # 实例化翻译器
-    if args.openai:
-        translator_kwargs: dict[str, Any] = {}
-        if args.openai_reasoning is not None:
-            translator_kwargs["reasoning"] = args.openai_reasoning
-        if args.openai_thinking is not None:
-            translator_kwargs["thinking"] = args.openai_thinking
-        translator = OpenAITranslator(
-            lang_in=args.lang_in,
-            lang_out=args.lang_out,
-            model=args.openai_model,
-            base_url=args.openai_base_url,
-            api_key=args.openai_api_key,
-            ignore_cache=args.ignore_cache,
-            enable_json_mode_if_requested=args.enable_json_mode_if_requested,
-            send_dashscope_header=args.send_dashscope_header,
-            send_temperature=not args.no_send_temperature,
-            **translator_kwargs,
-        )
-        term_extraction_translator = translator
-        if (
-            args.openai_term_extraction_model
-            or args.openai_term_extraction_base_url
-            or args.openai_term_extraction_api_key
-        ):
-            term_translator_kwargs: dict[str, Any] = {}
-            if args.openai_term_extraction_reasoning is not None:
-                term_translator_kwargs["reasoning"] = (
-                    args.openai_term_extraction_reasoning
-                )
-            term_extraction_translator = OpenAITranslator(
-                lang_in=args.lang_in,
-                lang_out=args.lang_out,
-                model=args.openai_term_extraction_model or args.openai_model,
-                base_url=(args.openai_term_extraction_base_url or args.openai_base_url),
-                api_key=args.openai_term_extraction_api_key or args.openai_api_key,
-                ignore_cache=args.ignore_cache,
-                enable_json_mode_if_requested=args.enable_json_mode_if_requested,
-                send_dashscope_header=args.send_dashscope_header,
-                send_temperature=not args.no_send_temperature,
-                **term_translator_kwargs,
-            )
-    else:
-        raise ValueError("Invalid translator type")
+    try:
+        translator, term_extraction_translator = build_translators(args)
+    except ValueError as exc:
+        parser.error(str(exc))
 
     # 设置翻译速率限制
     set_translate_rate_limiter(args.qps)
@@ -888,9 +933,16 @@ async def main():
             async for event in babeldoc.format.pdf.high_level.async_translate(config):
                 progress_handler(event)
                 if config.debug:
-                    logger.debug(event)
+                    debug_event = dict(event)
+                    if event["type"] == "error":
+                        debug_event["error"] = redact_sensitive_text(
+                            event["error"], args
+                        )
+                    logger.debug(debug_event)
                 if event["type"] == "error":
-                    logger.error(f"Error: {event['error']}")
+                    logger.error(
+                        "Error: %s", redact_sensitive_text(event["error"], args)
+                    )
                     break
                 if event["type"] == "finish":
                     result = event["translate_result"]
