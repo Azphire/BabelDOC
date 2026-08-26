@@ -366,3 +366,10 @@ p1#10/p3#2/p5#10/p6#15,FD-en-v2 触及 p2#8/p4#3/p8#5/p9#9,与四条锚零交集
 | 文件 | 符号 | 调用方 | 目的 | 批次 |
 | --- | --- | --- | --- | --- |
 | `babeldoc/format/pdf/high_level.py` | `_do_translate_single` | 单文档 PDF 流水线 | 将 C03 创建的同一 `RunTrace` 显式传给翻译前 drop-cap intent 冻结/flatten 和 typeset 后 render，使源样式、intent、失败门控及目标首字符样式进入一条运行时追踪链；开关关闭时既有路径不变 | C11 |
+
+## C12
+
+| 文件 | 符号 | 调用方 | 目的 | 批次 |
+| --- | --- | --- | --- | --- |
+| `babeldoc/format/pdf/document_il/midend/typesetting.py` | `GlyphInkMetric`、`Typesetting.glyph_ink_metrics` | `babeldoc.magazine.drop_cap_render` | 暴露映射后字体对单个 Unicode code point 的真实 glyph ink bbox、advance 与 glyph id；接口只读字体映射，不改变既有排版或 Document IL | C12 |
+| `babeldoc/format/pdf/high_level.py` | `_do_translate_single` | 单文档 PDF 流水线 | 将本次运行唯一的 `ArticleDocumentIR` 与刚完成正式排版的 `Typesetting` 实例传给 drop-cap render，使英文装饰首字读取同一文章 envelope 与映射字体度量；render 开关关闭时不执行任何新工作 | C12 |

@@ -21,24 +21,18 @@ using the advances the stage already measured, and it re-packs nothing else.
 Where the size comes from
 -------------------------
 
-From the page, not from the configuration. An initial standing two lines deep is
-two line advances tall, and the advance is measured off the paragraph's own
-baselines, so a column set at any body size gets an initial in proportion to it
-and no line spacing is declared twice.
+The desired ink height follows the paragraph's measured line advance. The
+mapped font's glyph box turns that height into a font size, and declared minimum
+and maximum scales bound fonts with unusually short or tall capitals.
 
 Where the initial is put
 ------------------------
 
-Its em box top is aligned with the first line's em box top. That is the one
-placement the box allows: the typesetting stage sets a paragraph so that the
-first line's em box top touches ``box.y2`` exactly, so an initial hung any
-higher stands outside the paragraph's own box. Aligning the tops has a second
-property that is arithmetic rather than luck -- an initial ``lines * advance``
-tall whose top sits at ``baseline + em`` has its bottom at
-``baseline + em - lines * advance``, which is exactly where line ``lines + 1``
-puts its own em box top. So the first ``lines`` lines are set beside the
-initial, the line after them runs the full measure, and neither the box above
-nor the line below is reached into.
+Its real ink bottom is aligned with the first body line's real ink bottom. The
+ink may stand above the paragraph body box, while the page and canonical article
+envelopes still contain it and fixed assets remain obstacles. Only the first
+line starts after its right edge and gutter; the next line resumes at the body
+column edge.
 
 What a refusal leaves
 ---------------------
@@ -65,12 +59,17 @@ from types import MappingProxyType
 from babeldoc.format.pdf.document_il import il_version_1
 from babeldoc.magazine import drop_cap
 from babeldoc.magazine import drop_cap_intent
+from babeldoc.magazine import fixed_assets
 from babeldoc.magazine.chain_signals import group_lines
 from babeldoc.magazine.chain_signals import load_chain_config
+from babeldoc.magazine.detectors.drop_cap_geometry import BoxEvidence
+from babeldoc.magazine.detectors.drop_cap_geometry import ColorEvidence
+from babeldoc.magazine.detectors.drop_cap_geometry import DropCapGeometryContract
 from babeldoc.magazine.line_split import paragraph_characters
 from babeldoc.magazine.page_features import ConfigError
 from babeldoc.magazine.page_features import validate_bounded_config
 from babeldoc.magazine.taxonomy import record_config_manifest
+from babeldoc.magazine.transaction import TransactionSnapshot
 
 logger = logging.getLogger(__name__)
 
@@ -105,6 +104,15 @@ REVERT_TOO_NARROW = "box_too_narrow"
 REVERT_TOO_FEW_LINES = "not_enough_lines"
 REVERT_NO_ADVANCE = "no_line_advance"
 REVERT_WILL_NOT_FIT = "reached_past_its_own_box"
+REVERT_NO_METRICS = "glyph_metrics_unavailable"
+REVERT_POLICY = "target_policy_mismatch"
+REVERT_PAGE_BOUNDS = "outside_page_envelope"
+REVERT_ARTICLE_BOUNDS = "outside_article_envelope"
+REVERT_COLLISION = "decorative_collision"
+REVERT_RENDER_EXCEPTION = "render_exception"
+REVERT_FIXED_ASSET = "fixed_asset_changed"
+
+RAISED_RESERVE_LINES = 1
 
 # Where the line grouping tolerance is declared, once for the whole project.
 LINE_OVERLAP_KEY = "line_overlap_min"
@@ -133,6 +141,10 @@ class RenderConfig:
     by_target: Mapping[str, str]
     min_line_capacity_em: float
     edge_slack_pt: float
+    raised_initial_cap_height_lines: float
+    raised_initial_min_font_scale: float
+    raised_initial_max_font_scale: float
+    ink_bottom_tolerance_pt: float
     revert_reasons: tuple[str, ...]
     report_fields: tuple[str, ...]
 
@@ -150,6 +162,18 @@ class RenderConfig:
         if not claimed:
             return None
         return self.regimes[self.by_target[max(claimed, key=len)]]
+
+
+BoxTuple = tuple[float, float, float, float]
+
+
+@dataclass(frozen=True, slots=True)
+class DecorativeGeometryGuard:
+    """The envelopes and obstacles governing decorative initial ink."""
+
+    page_box: BoxTuple | None
+    article_boxes: tuple[BoxTuple, ...]
+    obstacles: tuple[tuple[str, BoxTuple], ...]
 
 
 def _require(condition: bool, message: str) -> None:
@@ -253,18 +277,52 @@ def parse_render_config(raw: dict, source: str) -> RenderConfig:
         REVERT_TOO_FEW_LINES,
         REVERT_NO_ADVANCE,
         REVERT_WILL_NOT_FIT,
+        REVERT_NO_METRICS,
+        REVERT_POLICY,
+        REVERT_PAGE_BOUNDS,
+        REVERT_ARTICLE_BOUNDS,
+        REVERT_COLLISION,
+        REVERT_RENDER_EXCEPTION,
+        REVERT_FIXED_ASSET,
     ):
         _require(
             name in reasons,
             f"{source}: revert_reasons omits {name!r}, which a record may name",
         )
-    for key in ("min_line_capacity_em", "edge_slack_pt"):
+    for key in (
+        "min_line_capacity_em",
+        "edge_slack_pt",
+        "raised_initial_cap_height_lines",
+        "raised_initial_min_font_scale",
+        "raised_initial_max_font_scale",
+        "ink_bottom_tolerance_pt",
+    ):
         _require(key in parameters, f"{source}: missing {key}")
+    _require(
+        parameters["raised_initial_min_font_scale"]
+        <= parameters["raised_initial_max_font_scale"],
+        f"{source}: raised initial minimum font scale exceeds its maximum",
+    )
+    initial_regime = regimes.get(REGIME_INITIAL)
+    _require(
+        initial_regime is not None and initial_regime.lines == RAISED_RESERVE_LINES,
+        f"{source}: the raised initial must reserve exactly one line",
+    )
     return RenderConfig(
         regimes=regimes,
         by_target=by_target,
         min_line_capacity_em=float(parameters["min_line_capacity_em"]),
         edge_slack_pt=float(parameters["edge_slack_pt"]),
+        raised_initial_cap_height_lines=float(
+            parameters["raised_initial_cap_height_lines"]
+        ),
+        raised_initial_min_font_scale=float(
+            parameters["raised_initial_min_font_scale"]
+        ),
+        raised_initial_max_font_scale=float(
+            parameters["raised_initial_max_font_scale"]
+        ),
+        ink_bottom_tolerance_pt=float(parameters["ink_bottom_tolerance_pt"]),
         revert_reasons=reasons,
         report_fields=fields,
     )
@@ -431,18 +489,413 @@ def _refusal(base: dict, reason: str) -> dict:
     return {**base, "set": False, "reverted": True, "revert_reason": reason}
 
 
+def _metric_for(character, resolver):
+    if not callable(resolver):
+        return None
+    metric = resolver(character)
+    if metric is None:
+        return None
+    try:
+        box = tuple(float(value) for value in metric.ink_box_em)
+        advance = float(metric.advance_em)
+    except (AttributeError, TypeError, ValueError):
+        return None
+    if (
+        len(box) != 4
+        or not all(math.isfinite(value) for value in (*box, advance))
+        or box[2] <= box[0]
+        or box[3] <= box[1]
+        or advance <= 0
+    ):
+        return None
+    return metric
+
+
+def _glyph_ink_box(character, metric) -> BoxTuple | None:
+    style = getattr(character, "pdf_style", None)
+    size = None if style is None else getattr(style, "font_size", None)
+    box = getattr(character, "box", None)
+    if not size or box is None:
+        return None
+    try:
+        x, y, x2, y2 = (float(value) for value in metric.ink_box_em)
+        origin_x = float(box.x)
+        baseline = float(box.y)
+        size = float(size)
+    except (TypeError, ValueError):
+        return None
+    return (
+        origin_x + x * size,
+        baseline + y * size,
+        origin_x + x2 * size,
+        baseline + y2 * size,
+    )
+
+
+def _union(boxes: list[BoxTuple]) -> BoxTuple | None:
+    if not boxes:
+        return None
+    return (
+        min(box[0] for box in boxes),
+        min(box[1] for box in boxes),
+        max(box[2] for box in boxes),
+        max(box[3] for box in boxes),
+    )
+
+
+def _line_ink_box(characters, assigned, line_index: int, resolver) -> BoxTuple | None:
+    boxes = []
+    for character, assigned_line in zip(characters, assigned, strict=True):
+        if assigned_line != line_index or _is_whitespace(character):
+            continue
+        metric = _metric_for(character, resolver)
+        if metric is None:
+            return None
+        box = _glyph_ink_box(character, metric)
+        if box is None:
+            return None
+        boxes.append(box)
+    return _union(boxes)
+
+
+def _contains(outer: BoxTuple, inner: BoxTuple, slack: float) -> bool:
+    return (
+        inner[0] >= outer[0] - slack
+        and inner[1] >= outer[1] - slack
+        and inner[2] <= outer[2] + slack
+        and inner[3] <= outer[3] + slack
+    )
+
+
+def _overlaps(left: BoxTuple, right: BoxTuple, tolerance: float) -> bool:
+    return (
+        min(left[2], right[2]) - max(left[0], right[0]) > tolerance
+        and min(left[3], right[3]) - max(left[1], right[1]) > tolerance
+    )
+
+
+def _rgb_hex(color) -> str | None:
+    if color is None:
+        return None
+    rgb = getattr(color, "rgb", None)
+    if rgb is None or len(rgb) != 3:
+        return None
+    channels = [max(0, min(255, round(float(value) * 255))) for value in rgb]
+    return "#" + "".join(f"{channel:02x}" for channel in channels)
+
+
+def _raised_initial_size(
+    body_size: float,
+    line_advance: float,
+    metric,
+    config: RenderConfig,
+) -> float:
+    ink_height_em = float(metric.ink_box_em[3]) - float(metric.ink_box_em[1])
+    desired = config.raised_initial_cap_height_lines * line_advance / ink_height_em
+    return min(
+        body_size * config.raised_initial_max_font_scale,
+        max(body_size * config.raised_initial_min_font_scale, desired),
+    )
+
+
+def _set_english_raised_initial(
+    paragraph,
+    regime: Regime,
+    config: RenderConfig,
+    base: dict,
+    intent,
+    glyph_metric_resolver,
+    geometry_guard: DecorativeGeometryGuard | None,
+) -> dict:
+    if intent.target_policy != drop_cap_intent.POLICY_ENGLISH_RAISED_INITIAL:
+        return _refusal(base, REVERT_POLICY)
+    characters = [c for c in paragraph_characters(paragraph) if c.box is not None]
+    if not characters or paragraph.box is None:
+        return _refusal(base, REVERT_TOO_FEW_LINES)
+    lines = group_lines(list(characters), _line_overlap_min())
+    if len(lines) <= RAISED_RESERVE_LINES:
+        return _refusal(base, REVERT_TOO_FEW_LINES)
+    baselines = [float(line[0].box.y) for line in lines]
+    steps = [
+        baselines[position] - baselines[position + 1]
+        for position in range(len(baselines) - 1)
+    ]
+    steps = [step for step in steps if step > 0]
+    if not steps:
+        return _refusal(base, REVERT_NO_ADVANCE)
+    advance = statistics.median(steps)
+    sizes = [
+        float(c.pdf_style.font_size)
+        for c in characters
+        if c.pdf_style is not None and c.pdf_style.font_size
+    ]
+    if not sizes:
+        return _refusal(base, REVERT_NO_ADVANCE)
+    body_size = statistics.median(sizes)
+    eligible = drop_cap_intent.eligible_initial(
+        characters, drop_cap_intent.POLICY_ENGLISH_RAISED_INITIAL
+    )
+    if eligible is None:
+        return _refusal(base, REVERT_NOT_A_LETTER)
+    target_index, initial = eligible
+    glyph = initial.char_unicode or ""
+    if len(glyph) != 1 or not glyph.isalpha():
+        return _refusal({**base, "initial": glyph}, REVERT_NOT_A_LETTER)
+    initial_metric = _metric_for(initial, glyph_metric_resolver)
+    if initial_metric is None:
+        return _refusal({**base, "initial": glyph}, REVERT_NO_METRICS)
+
+    initial_size = _raised_initial_size(body_size, advance, initial_metric, config)
+    ink_left, _ink_bottom, ink_right, _ink_top = (
+        float(value) for value in initial_metric.ink_box_em
+    )
+    initial_ink_width = (ink_right - ink_left) * initial_size
+    left = float(paragraph.box.x)
+    right = float(paragraph.box.x2)
+
+    stored = _take(characters)
+    prefix = characters[:target_index]
+    suffix = characters[target_index + 1 :]
+    prefix_pen = left
+    for character in prefix:
+        _place(character, prefix_pen, baselines[0])
+        prefix_pen += _width(character)
+    prefix_ink = (
+        None
+        if not prefix
+        else _line_ink_box(
+            prefix,
+            [0] * len(prefix),
+            0,
+            glyph_metric_resolver,
+        )
+    )
+    if prefix and any(not _is_whitespace(character) for character in prefix) and prefix_ink is None:
+        _put_back(stored)
+        return _refusal({**base, "initial": glyph}, REVERT_NO_METRICS)
+    initial_ink_left = max(
+        prefix_pen,
+        prefix_pen if prefix_ink is None else prefix_ink[2],
+    )
+    reserve = (
+        initial_ink_left
+        + initial_ink_width
+        + regime.gutter_em * body_size
+        - left
+    )
+    if (right - left) - reserve < config.min_line_capacity_em * body_size:
+        _put_back(stored)
+        return _refusal({**base, "initial": glyph}, REVERT_TOO_NARROW)
+    initial_style = il_version_1.PdfStyle(
+        font_id=None if initial.pdf_style is None else initial.pdf_style.font_id,
+        font_size=initial_size,
+        graphic_state=(
+            None if initial.pdf_style is None else initial.pdf_style.graphic_state
+        ),
+    )
+    initial.pdf_style = drop_cap_intent.apply_color(
+        initial_style, intent.source_color
+    )
+    initial.box.x = initial_ink_left - ink_left * initial_size
+    initial.box.x2 = initial.box.x + float(initial_metric.advance_em) * initial_size
+    initial.advance = float(initial_metric.advance_em) * initial_size
+    assigned = _pack(
+        suffix,
+        regime,
+        {
+            "left": left,
+            "right": right,
+            "reserve": reserve,
+            "advance": advance,
+            "first_baseline": baselines[0],
+        },
+    )
+    suffix_first_line_ink = _line_ink_box(
+        suffix, assigned, 0, glyph_metric_resolver
+    )
+    first_line_ink = _union(
+        [box for box in (prefix_ink, suffix_first_line_ink) if box is not None]
+    )
+    if first_line_ink is None or suffix_first_line_ink is None:
+        _put_back(stored)
+        return _refusal({**base, "initial": glyph}, REVERT_NO_METRICS)
+    initial.box.y = first_line_ink[1] - float(initial_metric.ink_box_em[1]) * initial_size
+    initial.box.y2 = initial.box.y + initial_size
+    initial_ink = _glyph_ink_box(initial, initial_metric)
+    body_reaches = [
+        reach
+        for reach in (_ink_reach(prefix), _ink_reach(suffix))
+        if reach is not None
+    ]
+    body_reach = _union(body_reaches)
+    if initial_ink is None or body_reach is None:
+        _put_back(stored)
+        return _refusal({**base, "initial": glyph}, REVERT_NO_METRICS)
+
+    bottom_delta = initial_ink[1] - first_line_ink[1]
+    slack = config.edge_slack_pt
+    body_fits = (
+        body_reach[0] >= left - slack
+        and body_reach[1] >= float(paragraph.box.y) - slack
+        and body_reach[2] <= right + slack
+        and body_reach[3] <= float(paragraph.box.y2) + slack
+    )
+
+    def line_start(index: int) -> float | None:
+        members = [
+            character
+            for character, line in zip(suffix, assigned, strict=True)
+            if line == index and not _is_whitespace(character)
+        ]
+        return None if not members else min(float(character.box.x) for character in members)
+
+    first_line_start = line_start(0)
+    second_line_start = line_start(RAISED_RESERVE_LINES)
+    geometry = {
+        **base,
+        "initial": glyph,
+        "target_policy": intent.target_policy,
+        "body_size": round(body_size, 4),
+        "line_advance": round(advance, 4),
+        "initial_size": round(initial_size, 4),
+        "initial_char_count": len(glyph),
+        "reserve": round(reserve, 4),
+        "reserve_lines": RAISED_RESERVE_LINES,
+        "lines_before": len(lines),
+        "lines_after": (max(assigned) + 1) if assigned else 1,
+        "first_line_shifts": [
+            None if first_line_start is None else round(first_line_start - left, 4)
+        ],
+        "resume_shift": (
+            None if second_line_start is None else round(second_line_start - left, 4)
+        ),
+        "second_line_start_x": (
+            None if second_line_start is None else round(second_line_start, 4)
+        ),
+        "box": _quad(paragraph.box),
+        "body_box": _quad(paragraph.box),
+        "reach": [round(value, 4) for value in _union([body_reach, initial_ink])],
+        "initial_ink_box": [round(value, 4) for value in initial_ink],
+        "first_line_ink_box": [round(value, 4) for value in first_line_ink],
+        "first_line_ink_bottom": round(first_line_ink[1], 4),
+        "ink_bottom_delta": round(bottom_delta, 6),
+        "page_box": (
+            None
+            if geometry_guard is None or geometry_guard.page_box is None
+            else [round(value, 4) for value in geometry_guard.page_box]
+        ),
+        "article_boxes": (
+            []
+            if geometry_guard is None
+            else [
+                [round(value, 4) for value in box]
+                for box in geometry_guard.article_boxes
+            ]
+        ),
+        "collision_evidence": [],
+        "color_evidence": intent.source_color.as_record(),
+        "style_evidence": {
+            "font_id": getattr(initial.pdf_style, "font_id", None),
+            "font_size": round(initial_size, 4),
+            "glyph_id": getattr(initial_metric, "glyph_id", None),
+            "metric_source": getattr(initial_metric, "source", None),
+            "source_style_hash": getattr(intent, "source_style_hash", None),
+            "target_style_hash": drop_cap_intent.style_hash(initial.pdf_style),
+        },
+        "detector_contract": None,
+    }
+    failure = None
+    if abs(bottom_delta) > config.ink_bottom_tolerance_pt or not body_fits:
+        failure = REVERT_WILL_NOT_FIT
+    elif (
+        second_line_start is not None
+        and abs(second_line_start - left) > config.ink_bottom_tolerance_pt
+    ):
+        failure = REVERT_WILL_NOT_FIT
+    elif geometry_guard is None or geometry_guard.page_box is None:
+        failure = REVERT_PAGE_BOUNDS
+    elif not _contains(geometry_guard.page_box, initial_ink, slack):
+        failure = REVERT_PAGE_BOUNDS
+    elif not geometry_guard.article_boxes or not any(
+        _contains(box, initial_ink, slack) for box in geometry_guard.article_boxes
+    ):
+        failure = REVERT_ARTICLE_BOUNDS
+    else:
+        collisions = [
+            (reference, box)
+            for reference, box in geometry_guard.obstacles
+            if _overlaps(initial_ink, box, config.ink_bottom_tolerance_pt)
+        ]
+        if collisions:
+            geometry["collision_evidence"] = [
+                {"reference": reference, "box": [round(value, 4) for value in box]}
+                for reference, box in collisions
+            ]
+            failure = REVERT_COLLISION
+    if failure is not None:
+        _put_back(stored)
+        return _refusal(geometry, failure)
+
+    reserve_box = (
+        left,
+        first_line_ink[1],
+        left + reserve,
+        first_line_ink[3],
+    )
+    contract = DropCapGeometryContract(
+        source_ref=str(base["paragraph"]),
+        page=int(base["page"]),
+        article_id=getattr(intent, "article_id", None),
+        character_count=len(glyph),
+        policy=intent.target_policy,
+        ink=BoxEvidence(initial_ink, "font_glyph_metrics"),
+        reserve=BoxEvidence(reserve_box, "first_line_only"),
+        collision=(),
+        color=ColorEvidence(
+            _rgb_hex(intent.source_color.fill),
+            _rgb_hex(intent.source_color.stroke),
+            None,
+        ),
+    )
+    geometry["detector_contract"] = contract.to_record()
+    return {
+        **geometry,
+        "set": True,
+        "reverted": False,
+        "revert_reason": None,
+        "_target_index": target_index,
+    }
+
+
 def set_one(
     paragraph,
     regime: Regime,
     config: RenderConfig,
     base: dict,
     intent: drop_cap_intent.DropCapIntent | None = None,
+    glyph_metric_resolver=None,
+    geometry_guard: DecorativeGeometryGuard | None = None,
 ) -> dict:
     """Set one paragraph's opening character enlarged, or say why it was not.
 
     The paragraph is put back exactly as it stood on every refusal, and the
-    refusal names itself. Nothing outside the paragraph is read or written.
+    refusal names itself. Geometry outside the paragraph is read but never
+    mutated.
     """
+    if (
+        intent is not None
+        and intent.target_policy
+        == drop_cap_intent.POLICY_ENGLISH_RAISED_INITIAL
+    ):
+        return _set_english_raised_initial(
+            paragraph,
+            regime,
+            config,
+            base,
+            intent,
+            glyph_metric_resolver,
+            geometry_guard,
+        )
     characters = [c for c in paragraph_characters(paragraph) if c.box is not None]
     if not characters or paragraph.box is None:
         return _refusal(base, REVERT_TOO_FEW_LINES)
@@ -587,21 +1040,150 @@ def _blank(reference: str, label: int, decision: str, target: str, regime) -> di
         "decision": decision,
         "target_lang": target,
         "regime": regime,
+        "target_policy": None,
         "initial": None,
+        "initial_char_count": None,
         "set": False,
         "reverted": False,
         "revert_reason": None,
+        "issue": None,
         "body_size": None,
         "line_advance": None,
         "initial_size": None,
         "reserve": None,
+        "reserve_lines": None,
         "lines_before": None,
         "lines_after": None,
         "first_line_shifts": None,
         "resume_shift": None,
+        "second_line_start_x": None,
         "box": None,
+        "body_box": None,
         "reach": None,
+        "initial_ink_box": None,
+        "first_line_ink_box": None,
+        "first_line_ink_bottom": None,
+        "ink_bottom_delta": None,
+        "page_box": None,
+        "article_boxes": None,
+        "collision_evidence": None,
+        "color_evidence": None,
+        "style_evidence": None,
+        "detector_contract": None,
+        "transaction": None,
     }
+
+
+def _box_tuple(value) -> BoxTuple | None:
+    if value is None:
+        return None
+    coordinates = tuple(getattr(value, name, None) for name in ("x", "y", "x2", "y2"))
+    if any(coordinate is None for coordinate in coordinates):
+        return None
+    box = tuple(float(coordinate) for coordinate in coordinates)
+    if box[2] <= box[0] or box[3] <= box[1]:
+        return None
+    return box
+
+
+def _page_envelope(page) -> BoxTuple | None:
+    for name in ("cropbox", "mediabox"):
+        holder = getattr(page, name, None)
+        box = _box_tuple(getattr(holder, "box", None))
+        if box is not None:
+            return box
+    return None
+
+
+def _article_envelopes(article, label: int) -> tuple[BoxTuple, ...]:
+    slots = tuple(
+        tuple(float(value) for value in slot.box)
+        for slot in article.slots
+        if slot.page == label
+    )
+    if slots:
+        return slots
+    source_boxes = []
+    for element in article.elements:
+        if element.page != label or element.source_box is None:
+            continue
+        box = tuple(float(value) for value in element.source_box)
+        if box[2] > box[0] and box[3] > box[1]:
+            source_boxes.append(box)
+    envelope = _union(source_boxes)
+    return () if envelope is None else (envelope,)
+
+
+def _without_mutable_paragraph(inventory, reference: str):
+    return fixed_assets.FixedAssetInventory(
+        assets=tuple(
+            asset
+            for asset in inventory.assets
+            if not (
+                asset.reference == reference
+                and asset.asset_type == fixed_assets.FURNITURE_TYPE
+            )
+        ),
+        page_sizes=inventory.page_sizes,
+    )
+
+
+def _decorative_guard(
+    page,
+    label: int,
+    index: int,
+    reference: str,
+    intent,
+    article_document_ir,
+    inventory,
+) -> DecorativeGeometryGuard:
+    paragraph = page.pdf_paragraph[index]
+    body_box = _box_tuple(paragraph.box)
+    article_boxes: tuple[BoxTuple, ...] = ()
+    if article_document_ir is not None:
+        owner = article_document_ir.by_element.get(reference)
+        article = article_document_ir.article(owner) if owner == intent.article_id else None
+        if article is not None:
+            article_boxes = _article_envelopes(article, label)
+    obstacles: dict[str, BoxTuple] = {}
+    for asset in inventory.page_assets(label):
+        if (
+            not asset.protected
+            or asset.bbox is None
+            or asset.reference == reference
+        ):
+            continue
+        box = tuple(float(value) for value in asset.bbox)
+        if body_box is not None and _contains(box, body_box, 0.0):
+            continue
+        obstacles[asset.reference] = box
+    for other_index, other in enumerate(page.pdf_paragraph or ()):
+        if other_index == index:
+            continue
+        other_characters = [
+            character
+            for character in paragraph_characters(other)
+            if character.box is not None
+        ]
+        box = _ink_reach(other_characters) or _box_tuple(other.box)
+        if box is None:
+            continue
+        obstacles[drop_cap.paragraph_reference(label, other_index)] = box
+    return DecorativeGeometryGuard(
+        page_box=_page_envelope(page),
+        article_boxes=article_boxes,
+        obstacles=tuple(sorted(obstacles.items())),
+    )
+
+
+def _record_render_issue(intent, reference: str, detail: str) -> None:
+    issue = drop_cap_intent.DropCapIssue(
+        kind=drop_cap_intent.ISSUE_RENDER_FAILED,
+        source_ref=reference,
+        detail=detail,
+    )
+    if issue not in intent.issues:
+        intent.issues.append(issue)
 
 
 def kept_verdict() -> str:
@@ -621,7 +1203,13 @@ def kept_verdict() -> str:
     return other[0]
 
 
-def apply(translation_config, docs, run_trace=None) -> dict | None:
+def apply(
+    translation_config,
+    docs,
+    run_trace=None,
+    article_document_ir=None,
+    typesetting_stage=None,
+) -> dict | None:
     """Set every kept opening of one document. None where the switch is down.
 
     Returns the record it wrote, so a caller holding the document can assert
@@ -636,10 +1224,30 @@ def apply(translation_config, docs, run_trace=None) -> dict | None:
     regime = config.regime_for(target)
     default = drop_cap.load_drop_cap_config().default_for(target)
     keep = kept_verdict()
+    glyph_metric_resolver = getattr(typesetting_stage, "glyph_ink_metrics", None)
+    inventory = fixed_assets.build_inventory(
+        docs,
+        article_document_ir=article_document_ir,
+        run_trace=run_trace,
+    )
+
+    def inventory_builder():
+        return fixed_assets.build_inventory(
+            docs,
+            article_document_ir=article_document_ir,
+            run_trace=run_trace,
+        )
 
     records: list[dict] = []
-    for label, page in hitl.labeled_pages(docs):
-        for index, paragraph in enumerate(page.pdf_paragraph or ()):
+    labeled_positions = [
+        (label, position)
+        for position, (label, _page) in enumerate(hitl.labeled_pages(docs))
+    ]
+    for label, position in labeled_positions:
+        paragraph_count = len(docs.page[position].pdf_paragraph or ())
+        for index in range(paragraph_count):
+            page = docs.page[position]
+            paragraph = page.pdf_paragraph[index]
             decision, _source = drop_cap.resolve_decision(paragraph, default)
             if decision != keep:
                 continue
@@ -667,11 +1275,82 @@ def apply(translation_config, docs, run_trace=None) -> dict | None:
                 target,
                 None if regime is None else regime.name,
             )
-            outcome = (
-                blank
-                if regime is None
-                else set_one(paragraph, regime, config, blank, intent=intent)
-            )
+            blank["target_policy"] = intent.target_policy
+            transaction = None
+            if regime is None:
+                outcome = blank
+            elif (
+                regime.name == REGIME_INITIAL
+                and intent.target_policy
+                != drop_cap_intent.POLICY_ENGLISH_RAISED_INITIAL
+            ):
+                outcome = _refusal(blank, REVERT_POLICY)
+            else:
+                guard = (
+                    _decorative_guard(
+                        page,
+                        label,
+                        index,
+                        reference,
+                        intent,
+                        article_document_ir,
+                        inventory,
+                    )
+                    if intent.target_policy
+                    == drop_cap_intent.POLICY_ENGLISH_RAISED_INITIAL
+                    else None
+                )
+                if guard is not None:
+                    attempt_inventory = _without_mutable_paragraph(
+                        inventory, reference
+                    )
+                    transaction = TransactionSnapshot.capture(
+                        docs,
+                        (position,),
+                        run_trace=run_trace,
+                        fixed_inventory=attempt_inventory,
+                        fixed_inventory_builder=lambda reference=reference: (
+                            _without_mutable_paragraph(
+                                inventory_builder(), reference
+                            )
+                        ),
+                    )
+                try:
+                    outcome = set_one(
+                        paragraph,
+                        regime,
+                        config,
+                        blank,
+                        intent=intent,
+                        glyph_metric_resolver=glyph_metric_resolver,
+                        geometry_guard=guard,
+                    )
+                    if transaction is not None and outcome["set"]:
+                        after_inventory = inventory_builder()
+                        comparison = fixed_assets.compare(
+                            attempt_inventory,
+                            _without_mutable_paragraph(after_inventory, reference),
+                            config.edge_slack_pt,
+                        )
+                        if not comparison.holds:
+                            outcome = _refusal(outcome, REVERT_FIXED_ASSET)
+                        else:
+                            inventory = after_inventory
+                    if transaction is not None:
+                        outcome["transaction"] = (
+                            transaction.commit(
+                                (reference,), capture_geometry=False
+                            )
+                            if outcome["set"]
+                            else transaction.rollback()
+                        )
+                except Exception as error:  # noqa: BLE001 - the snapshot must close
+                    transaction_record = (
+                        None if transaction is None else transaction.rollback()
+                    )
+                    outcome = _refusal(blank, REVERT_RENDER_EXCEPTION)
+                    outcome["issue"] = f"{type(error).__name__}: {error}"
+                    outcome["transaction"] = transaction_record
             target_index = outcome.pop("_target_index", None)
             if outcome["set"] and target_index is not None:
                 characters = [
@@ -690,17 +1369,37 @@ def apply(translation_config, docs, run_trace=None) -> dict | None:
                 intent.render_status = drop_cap_intent.RENDER_SKIPPED
             else:
                 intent.render_status = drop_cap_intent.RENDER_FAILED
+                detail = outcome["issue"] or str(outcome["revert_reason"])
+                outcome["issue"] = detail
+                _record_render_issue(intent, reference, detail)
             if run_trace is not None:
-                run_trace.record_drop_cap_event(
-                    {
-                        "event": "target_initial_style",
-                        "source_ref": reference,
-                        "render_status": intent.render_status,
-                        "target_char": intent.target_char,
-                        "target_index": intent.target_index,
-                        "target_style_hash": intent.target_style_hash,
-                    }
-                )
+                event = {
+                    "event": "english_raised_initial_geometry"
+                    if intent.target_policy
+                    == drop_cap_intent.POLICY_ENGLISH_RAISED_INITIAL
+                    else "target_initial_style",
+                    "source_ref": reference,
+                    "render_status": intent.render_status,
+                    "target_policy": intent.target_policy,
+                    "initial_char": outcome["initial"],
+                    "target_char": intent.target_char,
+                    "target_index": intent.target_index,
+                    "target_style_hash": intent.target_style_hash,
+                    "initial_char_count": outcome["initial_char_count"],
+                    "initial_ink_box": outcome["initial_ink_box"],
+                    "first_line_metrics": {
+                        "ink_box": outcome["first_line_ink_box"],
+                        "ink_bottom": outcome["first_line_ink_bottom"],
+                        "line_advance": outcome["line_advance"],
+                    },
+                    "reserve_lines": outcome["reserve_lines"],
+                    "second_line_start_x": outcome["second_line_start_x"],
+                    "color_evidence": outcome["color_evidence"],
+                    "style_evidence": outcome["style_evidence"],
+                    "detector_contract": outcome["detector_contract"],
+                    "revert_reason": outcome["revert_reason"],
+                }
+                run_trace.record_drop_cap_event(event)
             records.append(outcome)
 
     expected = set(config.report_fields)
@@ -744,6 +1443,10 @@ def as_record(
         "grid": None if regime is None else regime.grid,
         "edge_slack_pt": config.edge_slack_pt,
         "min_line_capacity_em": config.min_line_capacity_em,
+        "raised_initial_cap_height_lines": config.raised_initial_cap_height_lines,
+        "raised_initial_min_font_scale": config.raised_initial_min_font_scale,
+        "raised_initial_max_font_scale": config.raised_initial_max_font_scale,
+        "ink_bottom_tolerance_pt": config.ink_bottom_tolerance_pt,
         "revert_reasons": list(config.revert_reasons),
         # Named here so that a gate reads the relation off the pass that owns it
         # rather than off a list kept somewhere else. The hanging punctuation

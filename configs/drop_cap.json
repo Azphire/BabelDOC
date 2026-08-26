@@ -55,11 +55,12 @@
     "description": "The first eligible target code point, selected after translation without copying the source font.",
     "vocabulary": [
       "alphabetic",
-      "cjk_ideograph"
+      "cjk_ideograph",
+      "english_raised_initial"
     ],
     "entries": {
       "zh": "cjk_ideograph",
-      "en": "alphabetic"
+      "en": "english_raised_initial"
     }
   }
 }

@@ -22,6 +22,7 @@ REPORT_NAME = "drop_cap_intent.report.json"
 
 POLICY_ALPHABETIC = "alphabetic"
 POLICY_CJK_IDEOGRAPH = "cjk_ideograph"
+POLICY_ENGLISH_RAISED_INITIAL = "english_raised_initial"
 
 FLATTEN_PENDING = "pending"
 FLATTEN_APPLIED = "applied"
@@ -33,6 +34,7 @@ RENDER_SKIPPED = "skipped"
 RENDER_FAILED = "failed"
 
 ISSUE_FLATTEN_FAILED = "drop_cap_flatten_failed"
+ISSUE_RENDER_FAILED = "drop_cap_render_failed"
 
 
 def _digest(value) -> str:
@@ -395,6 +397,13 @@ def _is_cjk_ideograph(char: str) -> bool:
 def eligible_initial(characters, policy: str) -> tuple[int, object] | None:
     for index, character in enumerate(characters):
         text = character.char_unicode or ""
+        if (
+            policy == POLICY_ENGLISH_RAISED_INITIAL
+            and len(text) == 1
+            and text.isalpha()
+            and not _is_cjk_ideograph(text)
+        ):
+            return index, character
         if policy == POLICY_ALPHABETIC and any(
             char.isalpha() and not _is_cjk_ideograph(char) for char in text
         ):

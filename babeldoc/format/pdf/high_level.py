@@ -1154,9 +1154,16 @@ def _do_translate_single(
 
     # After the checkpoint, so that the checkpoint keeps meaning "as the
     # typesetting stage left it", and before detection, so that what is detected
-    # is the document the PDF is written from. The pass re-packs one paragraph
-    # inside its own box and reaches nothing else on the page.
-    drop_cap_render.apply(translation_config, docs, run_trace=run_trace)
+    # is the document the PDF is written from. Body lines stay inside their
+    # logical box; decorative initial ink is guarded by page, article, and fixed
+    # asset geometry before it may stand above that box.
+    drop_cap_render.apply(
+        translation_config,
+        docs,
+        run_trace=run_trace,
+        article_document_ir=article_document_ir,
+        typesetting_stage=typesetting_stage,
+    )
 
     # The one point where the translation is written back and the geometry it
     # will be rendered at is final. Reads the document, writes a sidecar.
