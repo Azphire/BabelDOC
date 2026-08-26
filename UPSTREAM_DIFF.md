@@ -336,3 +336,9 @@ p1#10/p3#2/p5#10/p6#15,FD-en-v2 触及 p2#8/p4#3/p8#5/p9#9,与四条锚零交集
 | `babeldoc/format/pdf/high_level.py` | `_do_translate_single` | 单文档 PDF 流水线 | 在 ArticleBuilder 后冻结并创建唯一 `RunTrace`，显式传给翻译、排版与检测/修复路径；PDF 成功写出后绑定最终几何、验证终态并写统一 sidecar | C03 |
 | `babeldoc/format/pdf/document_il/midend/il_translator_llm_only.py` | `BatchParagraph`、`ILTranslatorLLMOnly.__init__`、`translate_paragraph` | high-level LLM-only 翻译路径 | 不改变请求内容或次数，在现有普通批请求边界记录稳定 source refs、prompt/config 哈希、translator 调用、whole target 与 fragment ranges | C03 |
 | `babeldoc/format/pdf/document_il/midend/typesetting.py` | `Typesetting.__init__`、`typesetting_document` | high-level 与修复回路排版入口 | 接收同一可选 `RunTrace`，在完整排版结束时登记 pre-repair slot geometry；未传 trace 时行为保持不变 | C03 |
+
+## C05
+
+| 文件 | 符号 | 调用方 | 目的 | 批次 |
+| --- | --- | --- | --- | --- |
+| `babeldoc/format/pdf/document_il/midend/il_translator_llm_only.py` | `ILTranslatorLLMOnly.translate` | LLM-only 翻译主路径 | 将 high-level 已注入的同一 canonical `ArticleDocumentIR` 显式传给 chain planner，使联合请求能在调用引擎前验证所有成员的文章身份；普通非 chain 请求路径不变 | C05 |

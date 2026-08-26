@@ -50,6 +50,14 @@ class SourceTerminalState(str, Enum):
     FAILED_WITH_ISSUE = "failed_with_issue"
 
 
+class ChainResultState(str, Enum):
+    """The only terminal outcomes of a confirmed continuity chain."""
+
+    JOINT_SUCCESS = "joint_success"
+    PROTECTED_UNTRANSLATED = "protected_untranslated"
+    FAILED_WITH_ISSUE = "failed_with_issue"
+
+
 def canonical_text(value: str) -> str:
     """Canonical text used by every text hash and target range."""
     return value.replace("\r\n", "\n").replace("\r", "\n")
@@ -255,6 +263,26 @@ class RequestRecord:
 
 
 @dataclass(slots=True)
+class ChainOutcomeRecord:
+    chain_id: str
+    ordered_source_refs: tuple[str, ...]
+    result_state: ChainResultState
+    request_id: str | None
+    translator_call_count: int
+    issue: str | None = None
+
+    def to_record(self) -> dict:
+        return {
+            "chain_id": self.chain_id,
+            "ordered_source_refs": list(self.ordered_source_refs),
+            "request_id": self.request_id,
+            "translator_call_count": self.translator_call_count,
+            "result_state": self.result_state.value,
+            "issue": self.issue,
+        }
+
+
+@dataclass(slots=True)
 class FragmentRecord:
     fragment_id: str
     request_id: str
@@ -353,6 +381,7 @@ class RunTrace:
     def __init__(self) -> None:
         self.sources: dict[str, SourceRecord] = {}
         self.requests: dict[str, RequestRecord] = {}
+        self.chain_outcomes: dict[str, ChainOutcomeRecord] = {}
         self.fragments: dict[str, FragmentRecord] = {}
         self.geometries: dict[str, GeometryRecord] = {}
         self.generations: dict[int, GenerationRecord] = {
@@ -495,7 +524,9 @@ class RunTrace:
         if not references or len(references) != len(set(references)):
             raise ValueError("request source refs must be non-empty and unique")
         with self._lock:
-            unknown = [reference for reference in references if reference not in self.sources]
+            unknown = [
+                reference for reference in references if reference not in self.sources
+            ]
             if unknown:
                 raise KeyError(f"request names unregistered source refs: {unknown}")
             material = {
@@ -527,6 +558,70 @@ class RunTrace:
             if request.status != REQUEST_OPEN:
                 raise ValueError("translator calls can only be recorded on open requests")
             request.translator_call_count += 1
+
+    def record_chain_outcome(
+        self,
+        chain_id: str,
+        ordered_source_refs: Sequence[str],
+        result_state: ChainResultState | str,
+        *,
+        request_id: str | None,
+        translator_call_count: int,
+        issue: str | None = None,
+    ) -> None:
+        """Record one terminal chain result, including zero-request failures."""
+        references = tuple(ordered_source_refs)
+        state = ChainResultState(result_state)
+        if not chain_id:
+            raise ValueError("chain outcome requires a stable chain id")
+        if not references or len(references) != len(set(references)):
+            raise ValueError("chain outcome source refs must be non-empty and unique")
+        if translator_call_count not in (0, 1):
+            raise ValueError("a confirmed chain can make at most one translator call")
+        with self._lock:
+            if chain_id in self.chain_outcomes:
+                raise ValueError(f"chain outcome registered twice: {chain_id}")
+            unknown = [
+                reference for reference in references if reference not in self.sources
+            ]
+            if unknown:
+                raise KeyError(
+                    f"chain outcome names unregistered source refs: {unknown}"
+                )
+            request = None if request_id is None else self._request(request_id)
+            if request is not None:
+                if request.ordered_source_refs != references:
+                    raise ValueError("chain outcome refs must equal its request refs")
+                if request.translator_call_count != translator_call_count:
+                    raise ValueError("chain outcome call count must equal its request")
+            if state == ChainResultState.JOINT_SUCCESS:
+                if request is None or request.status != REQUEST_COMPLETED:
+                    raise ValueError("a successful chain requires a completed request")
+                if translator_call_count != 1:
+                    raise ValueError("a successful chain requires exactly one call")
+            elif state == ChainResultState.PROTECTED_UNTRANSLATED:
+                if request is not None or translator_call_count != 0:
+                    raise ValueError("a protected chain must stop before its request")
+                for reference in references:
+                    self._set_terminal(reference, SourceTerminalState.PROTECTED, issue)
+            else:
+                if request is not None and request.status != REQUEST_FAILED:
+                    raise ValueError("a failed chain request must be marked failed")
+                if request is None and translator_call_count != 0:
+                    raise ValueError("a failed chain call requires its request record")
+                for reference in references:
+                    if not self._source_has_rendered_geometry(reference):
+                        self._set_terminal(
+                            reference, SourceTerminalState.FAILED_WITH_ISSUE, issue
+                        )
+            self.chain_outcomes[chain_id] = ChainOutcomeRecord(
+                chain_id=chain_id,
+                ordered_source_refs=references,
+                result_state=state,
+                request_id=request_id,
+                translator_call_count=translator_call_count,
+                issue=issue,
+            )
 
     def register_whole_target(self, request_id: str, target: str) -> str:
         with self._lock:
@@ -1085,6 +1180,46 @@ class RunTrace:
                     raise ValueError("request contains an unregistered source ref")
                 if request.status == REQUEST_COMPLETED:
                     self._validate_target(request)
+            for outcome in self.chain_outcomes.values():
+                if any(
+                    reference not in self.sources
+                    for reference in outcome.ordered_source_refs
+                ):
+                    raise ValueError(
+                        "chain outcome contains an unregistered source ref"
+                    )
+                request = (
+                    None
+                    if outcome.request_id is None
+                    else self.requests.get(outcome.request_id)
+                )
+                if request is not None:
+                    if request.ordered_source_refs != outcome.ordered_source_refs:
+                        raise ValueError("chain outcome and request source refs differ")
+                    if request.translator_call_count != outcome.translator_call_count:
+                        raise ValueError("chain outcome and request call counts differ")
+                if outcome.result_state == ChainResultState.JOINT_SUCCESS and (
+                    request is None or request.status != REQUEST_COMPLETED
+                ):
+                    raise ValueError(
+                        "successful chain outcome lacks a completed request"
+                    )
+                protected = (
+                    outcome.result_state
+                    == ChainResultState.PROTECTED_UNTRANSLATED
+                )
+                if protected and (
+                    request is not None or outcome.translator_call_count != 0
+                ):
+                    raise ValueError(
+                        "protected chain outcome crossed the request boundary"
+                    )
+                if (
+                    outcome.result_state == ChainResultState.FAILED_WITH_ISSUE
+                    and request is None
+                    and outcome.translator_call_count != 0
+                ):
+                    raise ValueError("failed chain call lacks its request record")
             active_by_fragment: dict[str, int] = {}
             for fragment in self.fragments.values():
                 if fragment.request_id not in self.requests:
@@ -1203,6 +1338,10 @@ class RunTrace:
                 "requests": [
                     request.to_record()
                     for _request_id, request in sorted(self.requests.items())
+                ],
+                "chain_outcomes": [
+                    outcome.to_record()
+                    for _chain_id, outcome in sorted(self.chain_outcomes.items())
                 ],
                 "fragments": [
                     fragment.to_record()

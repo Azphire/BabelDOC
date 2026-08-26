@@ -22,20 +22,17 @@ per paragraph machinery. Every other mechanism asks it and records the refusal,
 so the sidecar answers who wanted a member and who got it; an empty claim
 answers no to everything, which is what the switch being off leaves behind.
 
-A chain the pass cannot see through goes back to the per paragraph path whole,
-and the reason is written down: a member carrying a formula or style
-placeholder, a member the pipeline will not hand over text for, a chain whose
-answer would be larger than the engine will return in one piece, an engine that
-returns nothing usable, or a cut that fails the conservation law. Falling back
-is the escape hatch, not a way of swallowing the error, so every one of them
-appears in the report and in the counts, which is what makes ``chains ==
-merged + escalated`` checkable from the sidecar alone.
+A confirmed chain is claimed before its preflight begins. If its topology,
+article identity, placeholders, request, or redistribution cannot be trusted,
+the members remain untranslated and protected from every per-paragraph path.
+The sidecar and RunTrace both record the explicit terminal outcome.
 """
 
 from __future__ import annotations
 
 import json
 import logging
+import re
 from dataclasses import dataclass
 from dataclasses import field
 from pathlib import Path
@@ -47,18 +44,22 @@ from babeldoc.magazine.chain_signals import BOUNDARY_COLUMN
 from babeldoc.magazine.chain_signals import BOUNDARY_PAGE
 from babeldoc.magazine.chain_signals import CLASS_LABELS_KEY
 from babeldoc.magazine.chain_signals import load_chain_config
+from babeldoc.magazine.run_trace import ChainResultState
+from babeldoc.magazine.run_trace import hash_record
 
 logger = logging.getLogger(__name__)
 
 REPORT_NAME = "chain_translation.report.json"
 
-# Why a chain was handed back to the per paragraph path.
+# Why a confirmed chain could not produce an applicable joint result.
 ESCALATION_PLACEHOLDER = "placeholder_bearing"
 ESCALATION_CONSERVATION = "conservation_failure"
 ESCALATION_MEMBER = "member_unavailable"
 ESCALATION_TRANSLATION = "translation_unavailable"
 ESCALATION_INCOMPLETE = "incomplete_chain"
 ESCALATION_TOKEN_BUDGET = "token_budget"
+ESCALATION_ARTICLE = "canonical_article_mismatch"
+ESCALATION_TOPOLOGY = "invalid_chain_topology"
 
 # Which pass holds a claimed paragraph.
 TAKEN_BY_CHAIN = "chain"
@@ -81,6 +82,40 @@ _SINGLE_ITEM_ID = 0
 class ChainTranslationError(RuntimeError):
     """Raised when a chain's merged translation cannot be used."""
 
+    def __init__(
+        self,
+        message: str,
+        *,
+        request_id: str | None = None,
+        translator_call_count: int = 0,
+    ) -> None:
+        super().__init__(message)
+        self.request_id = request_id
+        self.translator_call_count = translator_call_count
+
+
+@dataclass(frozen=True)
+class CollectedMember:
+    page_index: int
+    paragraph_index: int
+    page: object
+    paragraph: object
+
+    @property
+    def source_ref(self) -> str:
+        return f"p{self.page_index + 1}#{self.paragraph_index}"
+
+    @property
+    def chain_index(self):
+        return getattr(self.paragraph, "chain_index", None)
+
+
+@dataclass(frozen=True)
+class ChainPreflight:
+    canonical_chain_id: str
+    article_id: str
+    ordered_source_refs: tuple[str, ...]
+
 
 @dataclass
 class MemberPlan:
@@ -91,6 +126,8 @@ class MemberPlan:
     translate_input: object
     source: str
     page_index: int
+    source_ref: str
+    placeholder_tokens: tuple[str, ...] = ()
 
     @property
     def debug_id(self):
@@ -113,6 +150,9 @@ class ChainEntry:
     translated: str
     redistribution: backfill.Redistribution
     request_id: str | None = None
+    canonical_chain_id: str | None = None
+    article_id: str | None = None
+    translator_call_count: int = 1
     capacity: list[dict] = field(default_factory=list)
 
     @property
@@ -134,6 +174,12 @@ class ChainEntry:
     def as_record(self) -> dict:
         record = {
             "chain_id": self.chain_id,
+            "canonical_chain_id": self.canonical_chain_id,
+            "article_id": self.article_id,
+            "ordered_source_refs": [member.source_ref for member in self.members],
+            "request_id": self.request_id,
+            "translator_call_count": self.translator_call_count,
+            "result_state": ChainResultState.JOINT_SUCCESS.value,
             "pair_class": self.pair_class,
             "strategy": self.strategy,
             "boundary_kinds": self.boundary_kinds,
@@ -164,8 +210,6 @@ class ChainEntry:
                 )
             ],
         }
-        if self.request_id is not None:
-            record["request_id"] = self.request_id
         return record
 
 
@@ -185,6 +229,7 @@ class SkipRecord:
     debug_id: str | None
     page_index: int
     taken_by: str = TAKEN_BY_CHAIN
+    result_state: str | None = None
     declined_by: list[str] = field(default_factory=list)
 
     def decline(self, mechanism: str) -> None:
@@ -199,6 +244,7 @@ class SkipRecord:
             "page_index": self.page_index,
             "reason": SKIP_REASON,
             "taken_by": self.taken_by,
+            "result_state": self.result_state,
             "declined_by": list(self.declined_by),
         }
 
@@ -213,6 +259,7 @@ class ChainClaim:
 
     def __init__(self, records: dict[int, SkipRecord] | None = None):
         self._records: dict[int, SkipRecord] = records or {}
+        self._released: list[SkipRecord] = []
 
     def __bool__(self) -> bool:
         return bool(self._records)
@@ -245,10 +292,39 @@ class ChainClaim:
 
     def take(self, paragraph, record: SkipRecord) -> None:
         """Withhold one paragraph from every other mechanism."""
-        self._records[id(paragraph)] = record
+        self.take_many([(paragraph, record)])
+
+    def take_many(self, rows: list[tuple[object, SkipRecord]]) -> None:
+        """Establish a complete claim without exposing a partial member set."""
+        identities = [id(paragraph) for paragraph, _record in rows]
+        if not identities or len(identities) != len(set(identities)):
+            raise ValueError("claim members must be non-empty and unique")
+        if any(identity in self._records for identity in identities):
+            raise ValueError("a paragraph can be held by only one active claim")
+        self._records.update(
+            {
+                id(paragraph): record
+                for paragraph, record in rows
+            }
+        )
+
+    def set_result(
+        self, paragraphs: list[object], result_state: ChainResultState
+    ) -> None:
+        records = [self._records.get(id(paragraph)) for paragraph in paragraphs]
+        if any(record is None for record in records):
+            raise ValueError("a chain result requires every member to remain claimed")
+        for record in records:
+            record.result_state = result_state.value
+
+    def release_all(self) -> None:
+        """Close the guard window without exposing a partial release."""
+        records = list(self._records.values())
+        self._records.clear()
+        self._released.extend(records)
 
     def records(self) -> list[SkipRecord]:
-        return list(self._records.values())
+        return [*self._released, *self._records.values()]
 
 
 # The claim a document with the switch down leaves behind: it claims nothing,
@@ -256,33 +332,36 @@ class ChainClaim:
 EMPTY_CLAIM = ChainClaim()
 
 
-def _collect_chains(docs) -> list[tuple[str, list[tuple[int, object, object]]]]:
+def _collect_chains(docs) -> list[tuple[str, list[CollectedMember]]]:
     """The chains in the document, in page order, members in chain order.
 
     A member with no chain index sorts by its page, which keeps a chain whose
     order is missing readable rather than arbitrary; the plan refuses it further
     down rather than guessing at it here.
     """
-    groups: dict[str, list[tuple[int, object, object]]] = {}
+    groups: dict[str, list[CollectedMember]] = {}
     for page_index, page in enumerate(docs.page):
-        for paragraph in page.pdf_paragraph:
+        for paragraph_index, paragraph in enumerate(page.pdf_paragraph):
             chain_id = getattr(paragraph, "chain_id", None)
             if not chain_id:
                 continue
-            groups.setdefault(chain_id, []).append((page_index, page, paragraph))
+            groups.setdefault(chain_id, []).append(
+                CollectedMember(page_index, paragraph_index, page, paragraph)
+            )
     chains = []
     for chain_id, members in groups.items():
         ordered = sorted(
             members,
-            key=lambda item: (
-                item[0]
-                if getattr(item[2], "chain_index", None) is None
-                else item[2].chain_index,
-                item[0],
+            key=lambda member: (
+                member.page_index
+                if member.chain_index is None
+                else member.chain_index,
+                member.page_index,
+                member.paragraph_index,
             ),
         )
         chains.append((chain_id, ordered))
-    chains.sort(key=lambda item: (item[1][0][0], item[0]))
+    chains.sort(key=lambda item: (item[1][0].page_index, item[0]))
     return chains
 
 
@@ -304,17 +383,78 @@ def pair_class_of(labels: list[str | None], class_labels: dict) -> str | None:
     return matches[0]
 
 
+def _placeholder_tokens(source: str, translate_input) -> tuple[str, ...]:
+    """Return every protected token in source order or reject ambiguity."""
+    occurrences: list[tuple[int, int, str]] = []
+    for placeholder in getattr(translate_input, "placeholders", ()):
+        if hasattr(placeholder, "placeholder") and hasattr(
+            placeholder, "regex_pattern"
+        ):
+            patterns = (placeholder.regex_pattern,)
+        elif all(
+            hasattr(placeholder, name)
+            for name in (
+                "left_regex_pattern",
+                "right_regex_pattern",
+            )
+        ):
+            patterns = (
+                placeholder.left_regex_pattern,
+                placeholder.right_regex_pattern,
+            )
+        else:
+            raise ChainTranslationError("unsupported placeholder shape")
+        for pattern in patterns:
+            matches = list(re.finditer(pattern, source, flags=re.IGNORECASE))
+            if len(matches) != 1:
+                raise ChainTranslationError(
+                    "each injected placeholder token must occur exactly once"
+                )
+            match = matches[0]
+            occurrences.append((match.start(), match.end(), match.group(0)))
+    for token, expected_count in getattr(
+        translate_input, "original_placeholder_tokens", {}
+    ).items():
+        matches = list(re.finditer(re.escape(token), source))
+        if len(matches) != expected_count:
+            raise ChainTranslationError(
+                "original placeholder token count changed during preparation"
+            )
+        occurrences.extend(
+            (match.start(), match.end(), match.group(0)) for match in matches
+        )
+    occurrences.sort(key=lambda item: (item[0], item[1]))
+    if any(
+        left[1] > right[0]
+        for left, right in zip(occurrences, occurrences[1:], strict=False)
+    ):
+        raise ChainTranslationError("placeholder tokens overlap")
+    return tuple(token for _start, _end, token in occurrences)
+
+
+def _tokens_in(text: str, expected: tuple[str, ...]) -> tuple[str, ...]:
+    vocabulary = sorted(set(expected), key=lambda token: (-len(token), token))
+    if not vocabulary:
+        return ()
+    pattern = "|".join(re.escape(token) for token in vocabulary)
+    return tuple(match.group(0) for match in re.finditer(pattern, text))
+
+
 class ChainPlan:
     """Every chain of one document, merged and cut, waiting to be written back."""
 
-    def __init__(self, translator, article_context=EMPTY_CONTEXT):
+    def __init__(
+        self, translator, article_context=EMPTY_CONTEXT, article_document_ir=None
+    ):
         self.translator = translator
         self.article_context = article_context
+        self.article_document_ir = article_document_ir
         self.config = backfill.load_backfill_config()
         self.class_labels = load_chain_config()[CLASS_LABELS_KEY]
         self.language = translator.translation_config.lang_out
         self.entries: list[ChainEntry] = []
         self.escalated: list[dict] = []
+        self.outcomes: list[dict] = []
         self.chain_count = 0
         self.claim = ChainClaim()
         self.applied = False
@@ -367,34 +507,152 @@ class ChainPlan:
                 ),
             )
 
-    def _escalate(self, chain_id, members, reason: str, detail: str = "") -> None:
-        logger.debug("chain %s left to the paragraph path: %s", chain_id, reason)
-        self.escalated.append(
-            {
-                "chain_id": chain_id,
-                "reason": reason,
-                "detail": detail,
-                "members": [
-                    {
-                        "debug_id": getattr(paragraph, "debug_id", None),
-                        "chain_index": getattr(paragraph, "chain_index", None),
-                        "page_index": page_index,
-                        "layout_label": getattr(paragraph, "layout_label", None),
-                    }
-                    for page_index, _page, paragraph in members
-                ],
+    def _stable_chain_id(self, members: list[CollectedMember]) -> str:
+        refs = tuple(member.source_ref for member in members)
+        if self.article_document_ir is not None:
+            canonical = {
+                self.article_document_ir.by_chain_member.get(reference)
+                for reference in refs
             }
+            canonical.discard(None)
+            if len(canonical) == 1:
+                return canonical.pop()
+        return f"chain-{hash_record(refs)}"
+
+    def _claim_chain(self, chain_id: str, members: list[CollectedMember]) -> None:
+        self.claim.take_many(
+            [
+                (
+                    member.paragraph,
+                    SkipRecord(
+                        chain_id=chain_id,
+                        chain_index=member.chain_index,
+                        debug_id=getattr(member.paragraph, "debug_id", None),
+                        page_index=member.page_index,
+                    ),
+                )
+                for member in members
+            ]
         )
+
+    def _preflight_members(
+        self, members: list[CollectedMember]
+    ) -> tuple[ChainPreflight | None, str, str]:
+        refs = tuple(member.source_ref for member in members)
+        if len(members) < 2:
+            return None, ESCALATION_INCOMPLETE, f"{len(members)} member(s)"
+        unique_objects = {id(member.paragraph) for member in members}
+        if len(refs) != len(set(refs)) or len(unique_objects) != len(members):
+            return None, ESCALATION_TOPOLOGY, "ordered members are not unique"
+        indices = [member.chain_index for member in members]
+        if indices != list(range(len(members))):
+            return None, ESCALATION_TOPOLOGY, f"chain indices are {indices}"
+        pages = [member.page_index for member in members]
+        page_pairs = zip(pages, pages[1:], strict=False)
+        if any(right < left or right - left > 1 for left, right in page_pairs):
+            return None, ESCALATION_TOPOLOGY, (
+                f"member pages are not continuous: {pages}"
+            )
+        if self.article_document_ir is None:
+            return None, ESCALATION_ARTICLE, (
+                "canonical ArticleDocumentIR is unavailable"
+            )
+        articles = [
+            self.article_document_ir.by_element.get(reference) for reference in refs
+        ]
+        if any(article is None for article in articles) or len(set(articles)) != 1:
+            return None, ESCALATION_ARTICLE, f"member article ids are {articles}"
+        page_articles = [
+            self.article_document_ir.by_page.get(member.page_index + 1)
+            for member in members
+        ]
+        if any(article != articles[0] for article in page_articles):
+            return None, ESCALATION_ARTICLE, (
+                f"member page article ids are {page_articles}"
+            )
+        canonical_chains = [
+            self.article_document_ir.by_chain_member.get(reference)
+            for reference in refs
+        ]
+        if any(chain is None for chain in canonical_chains) or len(
+            set(canonical_chains)
+        ) != 1:
+            return None, ESCALATION_TOPOLOGY, (
+                f"canonical chain ids are {canonical_chains}"
+            )
+        canonical_chain_id = canonical_chains[0]
+        article_id = articles[0]
+        if self.article_document_ir.by_chain.get(canonical_chain_id) != article_id:
+            return None, ESCALATION_ARTICLE, (
+                "canonical chain owner disagrees with members"
+            )
+        return (
+            ChainPreflight(canonical_chain_id, article_id, refs),
+            "",
+            "",
+        )
+
+    def _record_outcome(
+        self,
+        chain_id: str,
+        members: list[CollectedMember],
+        state: ChainResultState,
+        *,
+        reason: str = "",
+        detail: str = "",
+        request_id: str | None = None,
+        translator_call_count: int = 0,
+        canonical_chain_id: str | None = None,
+        article_id: str | None = None,
+    ) -> None:
+        stable_chain_id = canonical_chain_id or self._stable_chain_id(members)
+        references = tuple(member.source_ref for member in members)
+        self.claim.set_result([member.paragraph for member in members], state)
+        record = {
+            "chain_id": chain_id,
+            "canonical_chain_id": stable_chain_id,
+            "article_id": article_id,
+            "ordered_source_refs": list(references),
+            "request_id": request_id,
+            "translator_call_count": translator_call_count,
+            "result_state": state.value,
+            "reason": reason,
+            "detail": detail,
+            "members": [
+                {
+                    "source_ref": member.source_ref,
+                    "debug_id": getattr(member.paragraph, "debug_id", None),
+                    "chain_index": member.chain_index,
+                    "page_index": member.page_index,
+                    "layout_label": getattr(member.paragraph, "layout_label", None),
+                }
+                for member in members
+            ],
+        }
+        self.outcomes.append(record)
+        if state != ChainResultState.JOINT_SUCCESS:
+            logger.warning("chain %s protected after %s: %s", chain_id, reason, detail)
+            self.escalated.append(record)
+        trace = getattr(self.translator, "run_trace", None)
+        if trace is not None:
+            trace.record_chain_outcome(
+                stable_chain_id,
+                references,
+                state,
+                request_id=request_id,
+                translator_call_count=translator_call_count,
+                issue=detail or reason or None,
+            )
 
     def _prepare(self, members, tracker) -> tuple[list[MemberPlan], str, str]:
         """Ask the pipeline for each member's source text and its placeholders.
 
-        Nothing here writes to a paragraph, so a chain refused after this point
-        goes back to the per paragraph path exactly as it arrived.
+        Nothing here writes to a paragraph. A refusal leaves its claim active.
         """
         prepared: list[MemberPlan] = []
-        for page_index, page, paragraph in members:
-            page_font_map, xobj_font_map = self.translator._build_font_maps(page)
+        for member in members:
+            paragraph = member.paragraph
+            page_font_map, xobj_font_map = self.translator._build_font_maps(member.page)
             member_tracker = tracker.new_paragraph()
             text, translate_input = (
                 self.translator.il_translator.pre_translate_paragraph(
@@ -408,12 +666,13 @@ class ChainPlan:
                     f"member {getattr(paragraph, 'debug_id', None)} has no text to "
                     f"translate",
                 )
-            if translate_input.placeholders:
+            try:
+                placeholder_tokens = _placeholder_tokens(text, translate_input)
+            except (ChainTranslationError, re.error) as error:
                 return (
                     [],
                     ESCALATION_PLACEHOLDER,
-                    f"member {getattr(paragraph, 'debug_id', None)} carries "
-                    f"{len(translate_input.placeholders)} placeholder(s)",
+                    f"{member.source_ref}: {error}",
                 )
             prepared.append(
                 MemberPlan(
@@ -421,25 +680,39 @@ class ChainPlan:
                     tracker=member_tracker,
                     translate_input=translate_input,
                     source=text,
-                    page_index=page_index,
+                    page_index=member.page_index,
+                    source_ref=member.source_ref,
+                    placeholder_tokens=placeholder_tokens,
                 )
             )
         return prepared, "", ""
 
-    def _plan_chain(self, chain_id: str, members, tracker) -> None:
-        if len(members) < 2:
-            self._escalate(
+    def _plan_chain(
+        self, chain_id: str, members: list[CollectedMember], tracker
+    ) -> None:
+        self._claim_chain(chain_id, members)
+        preflight, reason, detail = self._preflight_members(members)
+        if preflight is None:
+            self._record_outcome(
                 chain_id,
                 members,
-                ESCALATION_INCOMPLETE,
-                f"{len(members)} member(s) carry this chain id",
+                ChainResultState.PROTECTED_UNTRANSLATED,
+                reason=reason,
+                detail=detail,
             )
             return
-
         chain_tracker = tracker.new_cross_page()
         prepared, reason, detail = self._prepare(members, chain_tracker)
         if reason:
-            self._escalate(chain_id, members, reason, detail)
+            self._record_outcome(
+                chain_id,
+                members,
+                ChainResultState.PROTECTED_UNTRANSLATED,
+                reason=reason,
+                detail=detail,
+                canonical_chain_id=preflight.canonical_chain_id,
+                article_id=preflight.article_id,
+            )
             return
 
         pair_class = pair_class_of(
@@ -452,7 +725,29 @@ class ChainPlan:
                 [member.source for member in prepared], self.config
             )
         except backfill.ChainBackfillError as error:
-            self._escalate(chain_id, members, ESCALATION_MEMBER, str(error))
+            self._record_outcome(
+                chain_id,
+                members,
+                ChainResultState.PROTECTED_UNTRANSLATED,
+                reason=ESCALATION_MEMBER,
+                detail=str(error),
+                canonical_chain_id=preflight.canonical_chain_id,
+                article_id=preflight.article_id,
+            )
+            return
+        expected_tokens = tuple(
+            token for member in prepared for token in member.placeholder_tokens
+        )
+        if _tokens_in(merge.text, expected_tokens) != expected_tokens:
+            self._record_outcome(
+                chain_id,
+                members,
+                ChainResultState.PROTECTED_UNTRANSLATED,
+                reason=ESCALATION_PLACEHOLDER,
+                detail="merged source changed placeholder order",
+                canonical_chain_id=preflight.canonical_chain_id,
+                article_id=preflight.article_id,
+            )
             return
 
         # Asked before the request, because the engine truncates an answer that
@@ -462,23 +757,52 @@ class ChainPlan:
         # chain exists to close, so an oversized chain goes back whole.
         source_tokens = self.translator.calc_token_count(merge.text)
         if backfill.over_output_token_budget(source_tokens, self.config):
-            self._escalate(
+            self._record_outcome(
                 chain_id,
                 members,
-                ESCALATION_TOKEN_BUDGET,
-                f"{source_tokens} source token(s) estimate "
+                ChainResultState.PROTECTED_UNTRANSLATED,
+                reason=ESCALATION_TOKEN_BUDGET,
+                detail=f"{source_tokens} source token(s) estimate "
                 f"{backfill.estimated_output_tokens(source_tokens, self.config)} "
                 f"output token(s), over the budget of "
                 f"{self.config.output_token_budget}",
+                canonical_chain_id=preflight.canonical_chain_id,
+                article_id=preflight.article_id,
             )
             return
         try:
-            translated, request_id = self._translate(
+            translated, request_id, translator_call_count = self._translate(
                 merge.text, prepared, chain_tracker
             )
-        except Exception as error:  # the engine and its output are both foreign
+        except ChainTranslationError as error:
             logger.warning("chain %s could not be translated: %s", chain_id, error)
-            self._escalate(chain_id, members, ESCALATION_TRANSLATION, str(error))
+            self._record_outcome(
+                chain_id,
+                members,
+                ChainResultState.FAILED_WITH_ISSUE,
+                reason=ESCALATION_TRANSLATION,
+                detail=str(error),
+                request_id=error.request_id,
+                translator_call_count=error.translator_call_count,
+                canonical_chain_id=preflight.canonical_chain_id,
+                article_id=preflight.article_id,
+            )
+            return
+        if _tokens_in(translated, expected_tokens) != expected_tokens:
+            detail = "joint response changed placeholder set or order"
+            if request_id is not None:
+                self.translator.run_trace.fail_request(request_id, detail)
+            self._record_outcome(
+                chain_id,
+                members,
+                ChainResultState.FAILED_WITH_ISSUE,
+                reason=ESCALATION_PLACEHOLDER,
+                detail=detail,
+                request_id=request_id,
+                translator_call_count=translator_call_count,
+                canonical_chain_id=preflight.canonical_chain_id,
+                article_id=preflight.article_id,
+            )
             return
         try:
             redistribution = backfill.redistribute(
@@ -487,7 +811,7 @@ class ChainPlan:
                 self.language,
                 strategy,
                 self.config,
-                aligned_lengths=self._aligned_lengths(prepared, strategy),
+                aligned_lengths=None,
                 align_enabled=self.align_enabled,
                 capacities=self._capacities(prepared, strategy),
             )
@@ -496,8 +820,36 @@ class ChainPlan:
                 self.translator.run_trace.fail_request(
                     request_id, f"redistribution failed: {error}"
                 )
-            self._escalate(chain_id, members, ESCALATION_CONSERVATION, str(error))
+            self._record_outcome(
+                chain_id,
+                members,
+                ChainResultState.FAILED_WITH_ISSUE,
+                reason=ESCALATION_CONSERVATION,
+                detail=str(error),
+                request_id=request_id,
+                translator_call_count=translator_call_count,
+                canonical_chain_id=preflight.canonical_chain_id,
+                article_id=preflight.article_id,
+            )
             return
+
+        for member, segment in zip(prepared, redistribution.segments, strict=True):
+            if _tokens_in(segment.text, expected_tokens) != member.placeholder_tokens:
+                detail = f"{member.source_ref} did not retain its placeholder sequence"
+                if request_id is not None:
+                    self.translator.run_trace.fail_request(request_id, detail)
+                self._record_outcome(
+                    chain_id,
+                    members,
+                    ChainResultState.FAILED_WITH_ISSUE,
+                    reason=ESCALATION_PLACEHOLDER,
+                    detail=detail,
+                    request_id=request_id,
+                    translator_call_count=translator_call_count,
+                    canonical_chain_id=preflight.canonical_chain_id,
+                    article_id=preflight.article_id,
+                )
+                return
 
         if request_id is not None:
             try:
@@ -522,11 +874,16 @@ class ChainPlan:
                 self.translator.run_trace.fail_request(
                     request_id, f"fragment allocation failed: {error}"
                 )
-                self._escalate(
+                self._record_outcome(
                     chain_id,
                     members,
-                    ESCALATION_CONSERVATION,
-                    str(error),
+                    ChainResultState.FAILED_WITH_ISSUE,
+                    reason=ESCALATION_CONSERVATION,
+                    detail=str(error),
+                    request_id=request_id,
+                    translator_call_count=translator_call_count,
+                    canonical_chain_id=preflight.canonical_chain_id,
+                    article_id=preflight.article_id,
                 )
                 return
 
@@ -539,21 +896,23 @@ class ChainPlan:
             translated=translated,
             redistribution=redistribution,
             request_id=request_id,
+            canonical_chain_id=preflight.canonical_chain_id,
+            article_id=preflight.article_id,
+            translator_call_count=translator_call_count,
             capacity=self._capacity_record(prepared)
             if strategy == backfill.STRATEGY_CAPACITY
             else [],
         )
         self.entries.append(entry)
-        for member in prepared:
-            self.claim.take(
-                member.paragraph,
-                SkipRecord(
-                    chain_id=chain_id,
-                    chain_index=member.chain_index,
-                    debug_id=member.debug_id,
-                    page_index=member.page_index,
-                ),
-            )
+        self._record_outcome(
+            chain_id,
+            members,
+            ChainResultState.JOINT_SUCCESS,
+            request_id=request_id,
+            translator_call_count=translator_call_count,
+            canonical_chain_id=preflight.canonical_chain_id,
+            article_id=preflight.article_id,
+        )
 
     def _capacities(
         self, members: list[MemberPlan], strategy: str
@@ -624,46 +983,9 @@ class ChainPlan:
             )
         return rows
 
-    def _aligned_lengths(
-        self, members: list[MemberPlan], strategy: str
-    ) -> list[int] | None:
-        """Measure each member's own translation, for the cut to be placed by.
-
-        Only for a chain with no sentence structure to cut on. A body chain
-        cuts on sentence ends, which are positions in the joint translation and
-        need no estimate; a display line chain has nothing but the share, and
-        the share is the quantity this replaces.
-
-        The answers are measured and discarded. Nothing a chain writes back
-        comes from anywhere but the joint translation, so the auxiliary text is
-        never returned from here and never stored: what leaves this method is a
-        list of integers. Each request goes through the engine's own cache, so a
-        rerun of the same chain sends nothing.
-
-        Returns None where the alignment cannot be had, which the caller records
-        as such and the cascade falls softly past.
-        """
-        if not self.align_enabled or strategy != backfill.STRATEGY_PROPORTIONAL:
-            return None
-        lengths = []
-        engine = self.translator.translate_engine
-        for member in members:
-            try:
-                answer = engine.translate(member.source)
-            except Exception as error:  # the engine is foreign and may refuse
-                logger.warning(
-                    "chain alignment: a member could not be measured: %s", error
-                )
-                return None
-            if not isinstance(answer, str) or not answer.strip():
-                return None
-            self.alignment_calls += 1
-            lengths.append(len(answer))
-        return lengths
-
     def _translate(
         self, merged: str, members: list[MemberPlan], chain_tracker
-    ) -> tuple[str, str | None]:
+    ) -> tuple[str, str | None, int]:
         """Send one merged chain through the machinery a batch already uses."""
         translator = self.translator
         shared = translator.translation_config.shared_context_cross_split_part
@@ -674,6 +996,18 @@ class ChainPlan:
                 "layout_label": getattr(members[0].paragraph, "layout_label", None),
             }
         ]
+        placeholder_hints = {
+            token: hint
+            for member in members
+            for token, hint in (
+                member.translate_input.get_placeholders_hint() or {}
+            ).items()
+        }
+        if (
+            placeholder_hints
+            and translator.translation_config.add_formula_placehold_hint
+        ):
+            json_input[0]["formula_placeholders_hint"] = placeholder_hints
         # A chain never crosses an article, so its members share one brief and
         # the first of them answers for all: a chain is one batch of its
         # article and carries what the article's other batches carry. A chain
@@ -697,6 +1031,8 @@ class ChainPlan:
             ]
             if any(reference is None for reference in references):
                 raise ChainTranslationError("chain member has no frozen source ref")
+            if tuple(references) != tuple(member.source_ref for member in members):
+                raise ChainTranslationError("frozen source refs changed before request")
             trace_request_id = trace.open_request(
                 "continuity_chain",
                 references,
@@ -709,9 +1045,11 @@ class ChainPlan:
         for llm_tracker in llm_trackers:
             llm_tracker.set_input(prompt)
         token_count = translator.calc_token_count(merged)
+        translator_call_count = 0
         try:
             if trace_request_id is not None:
                 trace.record_translator_call(trace_request_id)
+            translator_call_count = 1
             raw = translator.translate_engine.llm_translate(
                 prompt,
                 rate_limit_params={
@@ -724,12 +1062,16 @@ class ChainPlan:
             parsed = json.loads(translator._clean_json_output(raw.strip()))
             if isinstance(parsed, dict):
                 parsed = [parsed]
-            results = {
-                int(item["id"]): item.get("output", item.get("input"))
-                for item in parsed
-                if isinstance(item, dict) and "id" in item
-            }
-            translated = results.get(_SINGLE_ITEM_ID)
+            if (
+                not isinstance(parsed, list)
+                or len(parsed) != 1
+                or not isinstance(parsed[0], dict)
+                or int(parsed[0].get("id", -1)) != _SINGLE_ITEM_ID
+            ):
+                raise ChainTranslationError(
+                    "the engine did not return exactly one chain result"
+                )
+            translated = parsed[0].get("output", parsed[0].get("input"))
             if not isinstance(translated, str) or not translated.strip():
                 raise ChainTranslationError(
                     f"the engine returned {type(translated).__name__} for a chain of "
@@ -737,11 +1079,21 @@ class ChainPlan:
                 )
             if trace_request_id is not None:
                 trace.register_whole_target(trace_request_id, translated)
-            return translated, trace_request_id
+            return translated, trace_request_id, translator_call_count
         except Exception as error:
             if trace_request_id is not None:
                 trace.fail_request(trace_request_id, str(error))
-            raise
+            if isinstance(error, ChainTranslationError):
+                raise ChainTranslationError(
+                    str(error),
+                    request_id=trace_request_id,
+                    translator_call_count=translator_call_count,
+                ) from error
+            raise ChainTranslationError(
+                str(error),
+                request_id=trace_request_id,
+                translator_call_count=translator_call_count,
+            ) from error
 
     # --- application --------------------------------------------------------
 
@@ -774,12 +1126,14 @@ class ChainPlan:
             short_unit.apply(translator, self.short_units, pbar)
             short_unit.write_report(translator.translation_config, self.short_units)
         self.applied = True
+        self.claim.release_all()
         self.write_report()
 
     # --- reporting ----------------------------------------------------------
 
     def as_record(self) -> dict:
         merged_members = sum(len(entry.members) for entry in self.entries)
+        claim_records = self.claim.records()
         return {
             "language": self.language,
             "counts": {
@@ -787,8 +1141,11 @@ class ChainPlan:
                 "merged": len(self.entries),
                 "escalated": len(self.escalated),
                 "merged_members": merged_members,
-                "skips": len(self.claim),
-                "alignment_requests": self.alignment_calls,
+                "skips": len(claim_records),
+                "translator_calls": sum(
+                    outcome["translator_call_count"] for outcome in self.outcomes
+                ),
+                "alignment_requests": 0,
                 "aligned_cuts": sum(
                     1
                     for entry in self.entries
@@ -807,7 +1164,8 @@ class ChainPlan:
             "applied": self.applied,
             "chains": [entry.as_record() for entry in self.entries],
             "escalated": list(self.escalated),
-            "skips": [record.as_record() for record in self.claim.records()],
+            "outcomes": list(self.outcomes),
+            "skips": [record.as_record() for record in claim_records],
         }
 
     def write_report(self) -> Path:
@@ -827,7 +1185,13 @@ class ChainPlan:
 
 
 def plan_chain_translation(
-    translator, docs, tracker, article_context=EMPTY_CONTEXT
+    translator,
+    docs,
+    tracker,
+    article_context=EMPTY_CONTEXT,
+    article_document_ir=None,
 ) -> ChainPlan:
     """Merge, translate and cut every chain in ``docs``, writing nothing yet."""
-    return ChainPlan(translator, article_context).plan(docs, tracker)
+    return ChainPlan(translator, article_context, article_document_ir).plan(
+        docs, tracker
+    )

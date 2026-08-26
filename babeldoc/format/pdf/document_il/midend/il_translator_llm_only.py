@@ -257,7 +257,11 @@ class ILTranslatorLLMOnly:
             chain_claim = EMPTY_CLAIM
             if self.translation_config.magazine_chain_translate:
                 chain_plan = plan_chain_translation(
-                    self, docs, tracker, article_context
+                    self,
+                    docs,
+                    tracker,
+                    article_context,
+                    self.article_document_ir,
                 )
                 chain_claim = chain_plan.claim
             with PriorityThreadPoolExecutor(
