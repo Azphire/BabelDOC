@@ -84,6 +84,7 @@ two cases indistinguishable at this layer.
 
 from __future__ import annotations
 
+import copy
 import json
 import logging
 import statistics
@@ -94,6 +95,7 @@ from pathlib import Path
 from types import MappingProxyType
 
 from babeldoc.format.pdf.document_il import il_version_1
+from babeldoc.magazine import drop_cap_intent
 from babeldoc.magazine.article_ir import ArticleDocumentIR
 from babeldoc.magazine.chain_signals import load_chain_config
 from babeldoc.magazine.line_split import SPLITTABLE
@@ -131,9 +133,10 @@ GROUP_SWITCH = "magazine_article_group"
 SEPARATOR_KEY = "separator_policy"
 SEPARATOR_VOCABULARY_KEY = "separator_policy_vocabulary"
 DEFAULTS_KEY = "default_decision_by_target"
+TARGET_POLICY_KEY = "target_initial_policy"
 ENTRIES_KEY = "entries"
 DESCRIPTION_KEY = "description"
-_STRUCTURAL_KEYS = (SEPARATOR_KEY, DEFAULTS_KEY)
+_STRUCTURAL_KEYS = (SEPARATOR_KEY, DEFAULTS_KEY, TARGET_POLICY_KEY)
 
 # The separator policy that closes the break the paragraph finder opened.
 SEPARATOR_DROP_SYNTHESIZED = "drop_synthesized"
@@ -175,10 +178,14 @@ class DropCapConfig:
     max_body_rank_in_article: int
     excerpt_chars: int
     initial_size_tolerance: float
+    color_tolerance: float
+    intent_config_version: int
+    decision_version: int
     separator_policy: str
     decision_sources: tuple[str, ...]
     apply_fields: tuple[str, ...]
     defaults: Mapping[str, str]
+    target_policies: Mapping[str, str]
 
     def default_for(self, target_lang: str) -> str | None:
         """The verdict an unruled candidate takes under one target language.
@@ -194,6 +201,14 @@ class DropCapConfig:
         if not claimed:
             return None
         return self.defaults[max(claimed, key=len)]
+
+    def target_policy_for(self, target_lang: str) -> str | None:
+        """Return the eligible-initial policy selected by a target language tag."""
+        tag = (target_lang or "").strip().lower()
+        claimed = [key for key in self.target_policies if tag.startswith(key.lower())]
+        if not claimed:
+            return None
+        return self.target_policies[max(claimed, key=len)]
 
 
 def decision_vocabulary() -> tuple[str, ...]:
@@ -232,6 +247,35 @@ def _read_defaults(raw: object, source: str, verdicts: tuple[str, ...]):
             f"{source}: {DEFAULTS_KEY}.{ENTRIES_KEY}[{key!r}]={value!r} is "
             f"outside the declared verdicts {sorted(verdicts)}",
         )
+    return MappingProxyType({key.strip(): value for key, value in entries.items()})
+
+
+def _read_target_policies(raw: object, source: str):
+    _require(isinstance(raw, dict), f"{source}: {TARGET_POLICY_KEY} must be an object")
+    entries = raw.get(ENTRIES_KEY)
+    vocabulary = raw.get("vocabulary")
+    _require(
+        isinstance(vocabulary, list) and bool(vocabulary),
+        f"{source}: {TARGET_POLICY_KEY}.vocabulary must be a non-empty list",
+    )
+    _require(
+        isinstance(entries, dict) and bool(entries),
+        f"{source}: {TARGET_POLICY_KEY}.{ENTRIES_KEY} must be a non-empty object",
+    )
+    for key, value in entries.items():
+        _require(
+            isinstance(key, str) and bool(key.strip()) and value in vocabulary,
+            f"{source}: {TARGET_POLICY_KEY}.{ENTRIES_KEY}[{key!r}]={value!r} "
+            f"is not a declared target policy",
+        )
+    required = {
+        drop_cap_intent.POLICY_ALPHABETIC,
+        drop_cap_intent.POLICY_CJK_IDEOGRAPH,
+    }
+    _require(
+        required.issubset(vocabulary),
+        f"{source}: {TARGET_POLICY_KEY}.vocabulary omits {sorted(required - set(vocabulary))}",
+    )
     return MappingProxyType({key.strip(): value for key, value in entries.items()})
 
 
@@ -277,6 +321,9 @@ def parse_drop_cap_config(raw: dict, source: str) -> DropCapConfig:
         "max_body_rank_in_article",
         "excerpt_chars",
         "initial_size_tolerance",
+        "color_tolerance",
+        "intent_config_version",
+        "decision_version",
     )
     missing = sorted(set(numbers) - set(parameters))
     _require(not missing, f"{source}: missing parameters {missing}")
@@ -286,10 +333,14 @@ def parse_drop_cap_config(raw: dict, source: str) -> DropCapConfig:
         max_body_rank_in_article=int(parameters["max_body_rank_in_article"]),
         excerpt_chars=int(parameters["excerpt_chars"]),
         initial_size_tolerance=float(parameters["initial_size_tolerance"]),
+        color_tolerance=float(parameters["color_tolerance"]),
+        intent_config_version=int(parameters["intent_config_version"]),
+        decision_version=int(parameters["decision_version"]),
         separator_policy=str(separator),
         decision_sources=sources,
         apply_fields=fields,
         defaults=_read_defaults(raw.get(DEFAULTS_KEY), source, verdicts),
+        target_policies=_read_target_policies(raw.get(TARGET_POLICY_KEY), source),
     )
 
 
@@ -498,6 +549,7 @@ def mark(
     translation_config,
     labeled_pages,
     article_document_ir: ArticleDocumentIR | None = None,
+    run_trace=None,
 ) -> list[Candidate]:
     """Find the candidates of one document and say so in the document.
 
@@ -507,6 +559,7 @@ def mark(
     """
     require_dependencies(translation_config)
     if not mark_enabled(translation_config):
+        drop_cap_intent.clear(translation_config)
         return []
     if article_document_ir is None:
         raise DropCapError("drop cap marking requires the canonical ArticleDocumentIR")
@@ -519,6 +572,46 @@ def mark(
     )
     for candidate in candidates:
         pages[candidate.page].pdf_paragraph[candidate.index].drop_cap_candidate = True
+    policy = config.target_policy_for(getattr(translation_config, "lang_out", ""))
+    if candidates and policy is None:
+        raise DropCapError(
+            "drop cap candidates have no target initial policy for "
+            f"{getattr(translation_config, 'lang_out', '')!r}"
+        )
+    intents: list[drop_cap_intent.DropCapIntent] = []
+    for candidate in candidates:
+        paragraph = pages[candidate.page].pdf_paragraph[candidate.index]
+        source_character = next(
+            (
+                character
+                for character in paragraph_characters(paragraph)
+                if (character.char_unicode or "").strip()
+            ),
+            None,
+        )
+        if source_character is None:
+            raise DropCapError(f"{candidate.reference} has no source initial character")
+        intent = drop_cap_intent.build_intent(
+            source_ref=candidate.reference,
+            article_id=candidate.article_id,
+            paragraph=paragraph,
+            source_character=source_character,
+            target_policy=str(policy),
+            config_version=config.intent_config_version,
+            decision_version=config.decision_version,
+        )
+        intents.append(intent)
+        if run_trace is not None:
+            run_trace.record_drop_cap_event(
+                {
+                    "event": "intent_frozen",
+                    "source_ref": intent.source_ref,
+                    "source_style_hash": intent.source_style_hash,
+                    "intent": intent.as_record(),
+                }
+            )
+    drop_cap_intent.replace_intents(translation_config, intents)
+    drop_cap_intent.write_report(translation_config)
     _write_report(translation_config, config, candidates)
     logger.debug("drop cap: %d candidate(s)", len(candidates))
     return candidates
@@ -560,10 +653,14 @@ def _write_report(
     return path
 
 
-def review_rows(candidates: list[Candidate]) -> list[dict]:
+def review_rows(candidates: list[Candidate], translation_config=None) -> list[dict]:
     """The candidates as the review draft states them, one row each."""
-    return [
-        {
+    intents = (
+        {} if translation_config is None else drop_cap_intent.intents_for(translation_config)
+    )
+    rows = []
+    for candidate in candidates:
+        row = {
             "paragraph": candidate.reference,
             "page": candidate.page,
             "article_id": candidate.article_id,
@@ -571,36 +668,128 @@ def review_rows(candidates: list[Candidate]) -> list[dict]:
             "first_run": candidate.first_run,
             "excerpt": candidate.excerpt,
         }
-        for candidate in candidates
-    ]
+        intent = intents.get(candidate.reference)
+        if intent is not None:
+            row.update(intent.manual_template("keep"))
+            row["decision"] = None
+        rows.append(row)
+    return rows
 
 
-def apply_decisions(labeled_pages, verdicts: dict[str, str]) -> list[dict]:
+def parse_manual_decision(
+    reference: str, raw: object, verdicts: tuple[str, ...]
+) -> drop_cap_intent.ManualDecision:
+    fields = {
+        "decision",
+        "candidate_id",
+        "source_ref",
+        "source_text_fingerprint",
+        "source_style_hash",
+        "config_version",
+        "decision_version",
+    }
+    if not isinstance(raw, dict) or set(raw) != fields:
+        raise DropCapError(
+            f"drop_caps[{reference!r}] must carry exactly {sorted(fields)}"
+        )
+    if raw["decision"] not in verdicts:
+        raise DropCapError(
+            f"drop_caps[{reference!r}].decision={raw['decision']!r} is outside "
+            f"{sorted(verdicts)}"
+        )
+    if raw["source_ref"] != reference:
+        raise DropCapError(
+            f"drop_caps[{reference!r}].source_ref must equal its mapping key"
+        )
+    for name in (
+        "candidate_id",
+        "source_ref",
+        "source_text_fingerprint",
+        "source_style_hash",
+    ):
+        if not isinstance(raw[name], str) or not raw[name]:
+            raise DropCapError(f"drop_caps[{reference!r}].{name} must be non-empty")
+    if not isinstance(raw["config_version"], int) or not isinstance(
+        raw["decision_version"], int
+    ):
+        raise DropCapError(
+            f"drop_caps[{reference!r}] versions must be decimal integers"
+        )
+    return drop_cap_intent.ManualDecision(**raw)
+
+
+def validate_manual_decisions(
+    translation_config, verdicts: Mapping[str, object]
+) -> dict[str, drop_cap_intent.ManualDecision]:
+    intents = drop_cap_intent.intents_for(translation_config)
+    faults: list[str] = []
+    parsed = {}
+    vocabulary = decision_vocabulary()
+    for reference, raw in verdicts.items():
+        try:
+            decision = (
+                raw
+                if isinstance(raw, drop_cap_intent.ManualDecision)
+                else parse_manual_decision(reference, raw, vocabulary)
+            )
+        except DropCapError as exc:
+            faults.append(str(exc))
+            continue
+        parsed[reference] = decision
+        intent = intents.get(reference)
+        if intent is None:
+            faults.append(f"{reference}: not a current drop-cap candidate")
+        elif not drop_cap_intent.decision_matches(intent, decision):
+            faults.append(f"{reference}: candidate or source/config fingerprint is stale")
+    if faults:
+        raise DropCapError("drop-cap decisions rejected: " + "; ".join(faults))
+    return parsed
+
+
+def apply_decisions(
+    translation_config,
+    labeled_pages,
+    verdicts: Mapping[str, drop_cap_intent.ManualDecision],
+) -> list[dict]:
     """Write the ruled verdicts into the document, one paragraph at a time.
 
-    A ruling may name a paragraph the marking pass did not flag, exactly as a
-    ruling on terms may name a source the extractor never proposed: the human is
-    the authority on what carries an initial, and the candidate list is the
-    machine's opening bid rather than the set of questions allowed.
+    Every ruling must name and fingerprint one current candidate. Validation is
+    completed before this function writes the first IL attribute.
     """
     records: list[dict] = []
     if not verdicts:
         return records
+    intents = drop_cap_intent.intents_for(translation_config)
+    invalid = [
+        reference
+        for reference, manual in verdicts.items()
+        if reference not in intents
+        or not drop_cap_intent.decision_matches(intents[reference], manual)
+    ]
+    if invalid:
+        raise DropCapError(
+            f"stale or noncandidate decisions cannot change IL: {sorted(invalid)}"
+        )
     for label, page in labeled_pages:
         for index, paragraph in enumerate(page.pdf_paragraph):
-            verdict = verdicts.get(paragraph_reference(label, index))
-            if verdict is None:
+            reference = paragraph_reference(label, index)
+            manual = verdicts.get(reference)
+            if manual is None:
                 continue
+            intent = drop_cap_intent.intent_for(translation_config, reference)
+            if intent is None or not drop_cap_intent.decision_matches(intent, manual):
+                raise DropCapError(f"{reference}: stale or noncandidate decision")
             records.append(
                 {
                     "paragraph": paragraph_reference(label, index),
                     "page": label,
                     "debug_id": paragraph.debug_id,
                     "was_candidate": bool(paragraph.drop_cap_candidate),
-                    "decision": verdict,
+                    "decision": manual.decision,
                 }
             )
-            paragraph.drop_cap_decision = verdict
+            paragraph.drop_cap_decision = manual.decision
+            intent.decision = manual.decision
     return records
 
 
@@ -820,7 +1009,7 @@ def resolve_decision(paragraph, default: str | None) -> tuple[str | None, str | 
     return None, None
 
 
-def apply(translation_config, labeled_pages) -> dict | None:
+def apply(translation_config, labeled_pages, run_trace=None) -> dict | None:
     """Act on every verdict of one document. None where the switch is down.
 
     Returns the record it wrote, so a caller holding the document can assert
@@ -840,6 +1029,10 @@ def apply(translation_config, labeled_pages) -> dict | None:
             decision, source = resolve_decision(paragraph, default)
             if decision is None:
                 continue
+            reference = paragraph_reference(label, index)
+            intent = drop_cap_intent.intent_for(translation_config, reference)
+            if intent is None:
+                raise DropCapError(f"{reference}: active decision has no frozen intent")
             if decision not in verdicts:
                 raise DropCapError(
                     f"{paragraph_reference(label, index)} carries verdict "
@@ -852,7 +1045,47 @@ def apply(translation_config, labeled_pages) -> dict | None:
             # an initial the engine can carry across untranslated whichever way
             # the finished page is set, so the merge happens first and the
             # verdict is answered afterwards, by the render lane.
-            outcome = flatten(paragraph, config)
+            issue = None
+            snapshot = (
+                copy.deepcopy(paragraph.pdf_paragraph_composition),
+                paragraph.unicode,
+                copy.deepcopy(paragraph.box),
+            )
+            try:
+                outcome = flatten(paragraph, config)
+                intent.flatten_status = drop_cap_intent.FLATTEN_APPLIED
+            except Exception as exc:
+                (
+                    paragraph.pdf_paragraph_composition,
+                    paragraph.unicode,
+                    paragraph.box,
+                ) = snapshot
+                outcome = _unchanged(paragraph, config)
+                intent.flatten_status = drop_cap_intent.FLATTEN_FAILED
+                intent.render_status = drop_cap_intent.RENDER_SKIPPED
+                issue = drop_cap_intent.DropCapIssue(
+                    kind=drop_cap_intent.ISSUE_FLATTEN_FAILED,
+                    source_ref=reference,
+                    detail=f"{type(exc).__name__}: {exc}",
+                )
+                intent.issues.append(issue)
+                if run_trace is not None:
+                    run_trace.record_blocked_reason(issue.as_record())
+            intent.decision = decision
+            if (
+                decision == DECISION_FLATTEN
+                and intent.flatten_status != drop_cap_intent.FLATTEN_FAILED
+            ):
+                intent.render_status = drop_cap_intent.RENDER_SKIPPED
+            if run_trace is not None:
+                run_trace.record_drop_cap_event(
+                    {
+                        "event": "flatten_completed",
+                        "source_ref": reference,
+                        "flatten_status": intent.flatten_status,
+                        "issue": None if issue is None else issue.as_record(),
+                    }
+                )
             records.append(
                 {
                     "paragraph": paragraph_reference(label, index),
@@ -867,6 +1100,8 @@ def apply(translation_config, labeled_pages) -> dict | None:
                         if run is None or not median
                         else round(run.size / median, 4)
                     ),
+                    "flatten_status": intent.flatten_status,
+                    "issue": None if issue is None else issue.as_record(),
                     **outcome,
                 }
             )
@@ -886,6 +1121,7 @@ def apply(translation_config, labeled_pages) -> dict | None:
 
     record = as_apply_record(config, verdicts, target, default, records)
     _write_apply_report(translation_config, record)
+    drop_cap_intent.write_report(translation_config)
     logger.debug(
         "drop cap apply: %d verdict(s), %d merged",
         record["totals"]["decided"],

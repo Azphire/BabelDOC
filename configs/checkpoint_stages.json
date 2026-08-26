@@ -68,6 +68,11 @@
       "switch": "magazine_drop_cap_mark"
     },
     {
+      "name": "drop_cap_intent.report.json",
+      "stage": "typesetting",
+      "switch": "magazine_drop_cap_mark"
+    },
+    {
       "name": "drop_cap_apply.report.json",
       "stage": "hitl",
       "switch": "magazine_drop_cap_apply"

@@ -446,6 +446,7 @@ class RunTrace:
         self.current_generation = 0
         self.unsupported_pages: set[int] = set()
         self.blocked_reasons: list[dict] = []
+        self.drop_cap_events: list[dict] = []
         self._source_objects: dict[int, str] = {}
         self._whole_targets: dict[str, str] = {}
         self._fragment_text: dict[str, str] = {}
@@ -1406,6 +1407,15 @@ class RunTrace:
             }:
                 self.blocked_reasons.append(row)
 
+    def record_drop_cap_event(self, event: Mapping) -> None:
+        """Append one source-style, intent, flatten, or target-style event."""
+        row = dict(event)
+        reference = row.get("source_ref")
+        if reference not in self.sources:
+            raise ValueError(f"drop-cap event names unknown source {reference!r}")
+        with self._lock:
+            self.drop_cap_events.append(row)
+
     def bind_final_geometry(
         self,
         fragment_id: str,
@@ -1802,6 +1812,7 @@ class RunTrace:
                         self.blocked_reasons, key=lambda item: canonical_json_bytes(item)
                     )
                 ],
+                "drop_cap_events": [dict(event) for event in self.drop_cap_events],
                 "indexes": {
                     "article_to_sources": article_to_sources,
                     "chain_to_sources": chain_to_sources,

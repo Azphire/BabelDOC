@@ -64,6 +64,7 @@ from types import MappingProxyType
 
 from babeldoc.format.pdf.document_il import il_version_1
 from babeldoc.magazine import drop_cap
+from babeldoc.magazine import drop_cap_intent
 from babeldoc.magazine.chain_signals import group_lines
 from babeldoc.magazine.chain_signals import load_chain_config
 from babeldoc.magazine.line_split import paragraph_characters
@@ -430,7 +431,13 @@ def _refusal(base: dict, reason: str) -> dict:
     return {**base, "set": False, "reverted": True, "revert_reason": reason}
 
 
-def set_one(paragraph, regime: Regime, config: RenderConfig, base: dict) -> dict:
+def set_one(
+    paragraph,
+    regime: Regime,
+    config: RenderConfig,
+    base: dict,
+    intent: drop_cap_intent.DropCapIntent | None = None,
+) -> dict:
     """Set one paragraph's opening character enlarged, or say why it was not.
 
     The paragraph is put back exactly as it stood on every refusal, and the
@@ -462,9 +469,19 @@ def set_one(paragraph, regime: Regime, config: RenderConfig, base: dict) -> dict
         return _refusal(base, REVERT_NO_ADVANCE)
     body_size = statistics.median(sizes)
 
-    initial = lines[0][0]
+    eligible = drop_cap_intent.eligible_initial(
+        characters,
+        (
+            drop_cap_intent.POLICY_ALPHABETIC
+            if intent is None
+            else intent.target_policy
+        ),
+    )
+    if eligible is None:
+        return _refusal(base, REVERT_NOT_A_LETTER)
+    target_index, initial = eligible
     glyph = initial.char_unicode or ""
-    if len(glyph) != 1 or not unicodedata.category(glyph).startswith("L"):
+    if not any(unicodedata.category(char).startswith("L") for char in glyph):
         return _refusal({**base, "initial": glyph}, REVERT_NOT_A_LETTER)
 
     base = {**base, "initial": glyph}
@@ -488,12 +505,17 @@ def set_one(paragraph, regime: Regime, config: RenderConfig, base: dict) -> dict
     stored = _take(characters)
     rest = [c for c in characters if c is not initial]
 
-    initial.pdf_style = il_version_1.PdfStyle(
+    initial_style = il_version_1.PdfStyle(
         font_id=None if initial.pdf_style is None else initial.pdf_style.font_id,
         font_size=initial_size,
         graphic_state=(
             None if initial.pdf_style is None else initial.pdf_style.graphic_state
         ),
+    )
+    initial.pdf_style = (
+        initial_style
+        if intent is None
+        else drop_cap_intent.apply_color(initial_style, intent.source_color)
     )
     top = first_baseline + body_size
     initial.box.x = left
@@ -554,6 +576,7 @@ def set_one(paragraph, regime: Regime, config: RenderConfig, base: dict) -> dict
         "resume_shift": offset_of(regime.lines),
         "box": _quad(paragraph.box),
         "reach": [round(v, 4) for v in reach],
+        "_target_index": target_index,
     }
 
 
@@ -598,7 +621,7 @@ def kept_verdict() -> str:
     return other[0]
 
 
-def apply(translation_config, docs) -> dict | None:
+def apply(translation_config, docs, run_trace=None) -> dict | None:
     """Set every kept opening of one document. None where the switch is down.
 
     Returns the record it wrote, so a caller holding the document can assert
@@ -620,16 +643,65 @@ def apply(translation_config, docs) -> dict | None:
             decision, _source = drop_cap.resolve_decision(paragraph, default)
             if decision != keep:
                 continue
+            reference = drop_cap.paragraph_reference(label, index)
+            intent = drop_cap_intent.intent_for(translation_config, reference)
+            if intent is None:
+                raise DropCapRenderError(
+                    f"{reference}: kept decision has no frozen drop-cap intent"
+                )
+            if intent.flatten_status == drop_cap_intent.FLATTEN_FAILED:
+                intent.render_status = drop_cap_intent.RENDER_SKIPPED
+                if run_trace is not None:
+                    run_trace.record_drop_cap_event(
+                        {
+                            "event": "render_blocked",
+                            "source_ref": reference,
+                            "flatten_status": intent.flatten_status,
+                        }
+                    )
+                continue
             blank = _blank(
-                drop_cap.paragraph_reference(label, index),
+                reference,
                 label,
                 decision,
                 target,
                 None if regime is None else regime.name,
             )
-            records.append(
-                blank if regime is None else set_one(paragraph, regime, config, blank)
+            outcome = (
+                blank
+                if regime is None
+                else set_one(paragraph, regime, config, blank, intent=intent)
             )
+            target_index = outcome.pop("_target_index", None)
+            if outcome["set"] and target_index is not None:
+                characters = [
+                    character
+                    for character in paragraph_characters(paragraph)
+                    if character.box is not None
+                ]
+                target_character = characters[target_index]
+                intent.render_status = drop_cap_intent.RENDER_APPLIED
+                intent.target_char = target_character.char_unicode or ""
+                intent.target_index = target_index
+                intent.target_style_hash = drop_cap_intent.style_hash(
+                    target_character.pdf_style
+                )
+            elif regime is None:
+                intent.render_status = drop_cap_intent.RENDER_SKIPPED
+            else:
+                intent.render_status = drop_cap_intent.RENDER_FAILED
+            if run_trace is not None:
+                run_trace.record_drop_cap_event(
+                    {
+                        "event": "target_initial_style",
+                        "source_ref": reference,
+                        "render_status": intent.render_status,
+                        "target_char": intent.target_char,
+                        "target_index": intent.target_index,
+                        "target_style_hash": intent.target_style_hash,
+                    }
+                )
+            records.append(outcome)
 
     expected = set(config.report_fields)
     for item in records:
@@ -647,6 +719,7 @@ def apply(translation_config, docs) -> dict | None:
 
     record = as_record(config, target, regime, records)
     _write_report(translation_config, record)
+    drop_cap_intent.write_report(translation_config)
     logger.debug(
         "drop cap render: %d kept opening(s), %d set",
         record["totals"]["decided"],

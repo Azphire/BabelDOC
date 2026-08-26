@@ -259,7 +259,7 @@ class Decisions:
     path: Path
     terms: dict[str, str] = field(default_factory=dict)
     page_kinds: dict[int, str] = field(default_factory=dict)
-    drop_caps: dict[str, str] = field(default_factory=dict)
+    drop_caps: dict[str, object] = field(default_factory=dict)
 
     def is_empty(self) -> bool:
         return not (self.terms or self.page_kinds or self.drop_caps)
@@ -342,15 +342,12 @@ def _validate_drop_caps(
     verdicts: tuple[str, ...],
     references: set[str] | None,
     faults: list[str],
-) -> dict[str, str]:
-    entries: dict[str, str] = {}
+) -> dict[str, object]:
+    entries: dict[str, object] = {}
     for reference, verdict in _require_object(raw, DROP_CAPS_SECTION, faults).items():
         where = f"{DROP_CAPS_SECTION}[{reference!r}]"
-        if not reference.strip():
+        if not isinstance(reference, str) or not reference.strip():
             faults.append(f"{where}: paragraph reference must be non-empty")
-            continue
-        if not isinstance(verdict, str) or verdict not in verdicts:
-            faults.append(f"{where}: {verdict!r} is not one of {list(verdicts)}")
             continue
         # A reference is checked against the document only where the caller
         # knows the document. A ruling read against a document names paragraphs
@@ -358,7 +355,12 @@ def _validate_drop_caps(
         if references is not None and reference not in references:
             faults.append(f"{where}: no such paragraph in this document")
             continue
-        entries[reference] = verdict
+        try:
+            entries[reference] = drop_cap.parse_manual_decision(
+                reference, verdict, verdicts
+            )
+        except drop_cap.DropCapError as exc:
+            faults.append(f"{where}: {exc}")
     return entries
 
 
@@ -842,6 +844,7 @@ def after_term_extract(
     translation_config,
     docs,
     article_document_ir: ArticleDocumentIR | None = None,
+    run_trace=None,
 ) -> None:
     """Hook run once term extraction is over and before the translator is built.
 
@@ -859,7 +862,10 @@ def after_term_extract(
     """
     labeled = labeled_pages(docs)
     candidates = drop_cap.mark(
-        translation_config, labeled, article_document_ir=article_document_ir
+        translation_config,
+        labeled,
+        article_document_ir=article_document_ir,
+        run_trace=run_trace,
     )
     # Built once, whether or not it is written out: the defaults it derives are
     # what a run lands under with nobody ruling, so a run with the draft switch
@@ -877,15 +883,20 @@ def after_term_extract(
     if translation_config.magazine_hitl_export:
         draft = _draft(translation_config)
         draft[TERMS_SECTION] = rows
-        draft[DROP_CAPS_SECTION] = drop_cap.review_rows(candidates)
+        draft[DROP_CAPS_SECTION] = drop_cap.review_rows(candidates, translation_config)
         _write_draft(translation_config, draft)
     if translation_config.magazine_hitl_apply:
         decisions = _decisions_for(translation_config, docs)
         defaults = term_defaults(rows)
+        ruled_drop_caps = (
+            drop_cap.validate_manual_decisions(translation_config, decisions.drop_caps)
+            if decisions is not None
+            else {}
+        )
         if decisions is not None or defaults:
             applied = apply_terms(translation_config, decisions, defaults)
             ruled = (
-                drop_cap.apply_decisions(labeled, decisions.drop_caps)
+                drop_cap.apply_decisions(translation_config, labeled, ruled_drop_caps)
                 if decisions is not None
                 else []
             )
@@ -898,7 +909,7 @@ def after_term_extract(
                 if decisions is not None:
                     report["decisions_file"] = str(decisions.path)
                 _write_report(translation_config, report)
-    drop_cap.apply(translation_config, labeled)
+    drop_cap.apply(translation_config, labeled, run_trace=run_trace)
 
 
 def read_tracking(translation_config) -> list[dict]:

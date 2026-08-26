@@ -1052,7 +1052,12 @@ def _do_translate_single(
 
     # Unconditional: a ruling on terms applies whether or not extraction ran,
     # and the translator caches its glossaries as it is constructed below.
-    hitl.after_term_extract(translation_config, docs, article_document_ir)
+    hitl.after_term_extract(
+        translation_config,
+        docs,
+        article_document_ir,
+        run_trace=run_trace,
+    )
 
     il_translator = None
     if not translation_config.skip_translation:
@@ -1151,7 +1156,7 @@ def _do_translate_single(
     # typesetting stage left it", and before detection, so that what is detected
     # is the document the PDF is written from. The pass re-packs one paragraph
     # inside its own box and reaches nothing else on the page.
-    drop_cap_render.apply(translation_config, docs)
+    drop_cap_render.apply(translation_config, docs, run_trace=run_trace)
 
     # The one point where the translation is written back and the geometry it
     # will be rendered at is final. Reads the document, writes a sidecar.

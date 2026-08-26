@@ -10,6 +10,12 @@
   "excerpt_chars_allowed_range": "20..400",
   "initial_size_tolerance": 0.02,
   "initial_size_tolerance_allowed_range": "0.0..2.0",
+  "color_tolerance": 0.003922,
+  "color_tolerance_allowed_range": "0.0..0.05",
+  "intent_config_version": 1,
+  "intent_config_version_allowed_range": "1..99",
+  "decision_version": 1,
+  "decision_version_allowed_range": "1..99",
   "separator_policy": "drop_synthesized",
   "separator_policy_vocabulary": [
     "drop_synthesized",
@@ -31,6 +37,8 @@
     "separator_dropped",
     "initial",
     "size_ratio",
+    "flatten_status",
+    "issue",
     "unicode_before",
     "unicode_after",
     "box_before",
@@ -41,6 +49,17 @@
     "entries": {
       "zh": "keep",
       "en": "keep"
+    }
+  },
+  "target_initial_policy": {
+    "description": "The first eligible target code point, selected after translation without copying the source font.",
+    "vocabulary": [
+      "alphabetic",
+      "cjk_ideograph"
+    ],
+    "entries": {
+      "zh": "cjk_ideograph",
+      "en": "alphabetic"
     }
   }
 }

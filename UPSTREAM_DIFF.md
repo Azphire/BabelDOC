@@ -360,3 +360,9 @@ p1#10/p3#2/p5#10/p6#15,FD-en-v2 触及 p2#8/p4#3/p8#5/p9#9,与四条锚零交集
 | 文件 | 符号 | 调用方 | 目的 | 批次 |
 | --- | --- | --- | --- | --- |
 | `babeldoc/format/pdf/high_level.py` | `_do_translate_single` | 单文档 PDF 流水线 | 将当前运行唯一的 canonical `ArticleDocumentIR` 与既有 `RunTrace` 一并显式传给最终 detector 聚合，使 ownership、slot capacity 与 hard-boundary 验收读取同一运行时身份；检测开关关闭时路径不变 | C10 |
+
+## C11
+
+| 文件 | 符号 | 调用方 | 目的 | 批次 |
+| --- | --- | --- | --- | --- |
+| `babeldoc/format/pdf/high_level.py` | `_do_translate_single` | 单文档 PDF 流水线 | 将 C03 创建的同一 `RunTrace` 显式传给翻译前 drop-cap intent 冻结/flatten 和 typeset 后 render，使源样式、intent、失败门控及目标首字符样式进入一条运行时追踪链；开关关闭时既有路径不变 | C11 |

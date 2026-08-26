@@ -82,7 +82,17 @@ on the second pass.
 {
   "terms": {"biopiracy": "生物剽窃"},
   "page_kinds": {"4": "feature_body"},
-  "drop_caps": {"<paragraph ref>": "keep"}
+  "drop_caps": {
+    "p4#8": {
+      "decision": "keep",
+      "candidate_id": "<copy from review.json>",
+      "source_ref": "p4#8",
+      "source_text_fingerprint": "<copy from review.json>",
+      "source_style_hash": "<copy from review.json>",
+      "config_version": 1,
+      "decision_version": 1
+    }
+  }
 }
 ```
 
@@ -92,15 +102,17 @@ on the second pass.
 - `page_kinds` maps a one-based page number, written as a decimal string, to a
   page type name declared in `configs/page_types.json`. A ruled page is
   recorded at confidence 1.0 with source `human`.
-- `drop_caps` maps a paragraph reference to `keep` or `flatten`. The reference
-  is the `paragraph` field of the draft, and a reference this document has no
-  paragraph for refuses the whole file. A paragraph the machine did not flag may
-  still be ruled on, as an unextracted term may be. The verdict is written into
-  the intermediate language as `dropCapDecision` and **batch b9.4 gave it a
-  reader**: behind `magazine_drop_cap_apply`, `flatten` merges the enlarged
-  initial into the text it opens so the first word reaches the engine as a
-  word, and `keep` leaves the paragraph as an unruled one is left. A candidate
-  nobody ruled takes the verdict its target language declares in
+- `drop_caps` maps a paragraph reference to the complete decision object emitted
+  in the review draft. Copy its candidate id, source ref, source text/style
+  fingerprints and versions unchanged, then set `decision` to `keep` or
+  `flatten`. A missing candidate, changed source/config fingerprint, or old
+  decision version rejects the drop-cap ruling before it can write the IL; a
+  human ruling cannot turn a noncandidate into a candidate. Under either verdict
+  `magazine_drop_cap_apply` merges the enlarged source initial into the text it
+  opens so the first word reaches the engine as one word. `keep` additionally
+  lets the post-typesetting lane apply the frozen source color to exactly one
+  target-language eligible initial. A candidate nobody ruled takes the verdict
+  its target language declares in
   `configs/drop_cap.json`, so a run with no human in it still decides.
   `drop_cap_apply.report.json` in the run's working directory says what the
   reader did with each verdict.
@@ -108,7 +120,7 @@ on the second pass.
 Validation is all-or-nothing. An unknown section, a page number this document
 does not have, a page type the vocabulary does not declare, a padded or empty
 term, two sources that collide once case and whitespace are normalised, an
-unknown drop cap verdict, or a paragraph reference this document cannot resolve:
+invalid or stale drop-cap decision, or a paragraph reference this document cannot resolve:
 any of these refuses the whole file with every fault listed. Nothing is applied
 in part.
 
