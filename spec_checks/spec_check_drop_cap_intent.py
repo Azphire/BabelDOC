@@ -41,6 +41,11 @@ from babeldoc.format.pdf.document_il import il_version_1 as il  # noqa: E402
 from babeldoc.magazine import drop_cap  # noqa: E402
 from babeldoc.magazine import drop_cap_intent as intent_lane  # noqa: E402
 from babeldoc.magazine import drop_cap_render as render_lane  # noqa: E402
+from babeldoc.magazine.article_ir import ArticleDocumentIR  # noqa: E402
+from babeldoc.magazine.article_ir import ArticleIR  # noqa: E402
+from babeldoc.magazine.article_ir import ArticlePolicyEvidence  # noqa: E402
+from babeldoc.magazine.article_ir import ArticleRegionSlot  # noqa: E402
+from babeldoc.magazine.article_ir import SourceElementRef  # noqa: E402
 from babeldoc.magazine.line_split import paragraph_characters  # noqa: E402
 from babeldoc.magazine.run_trace import RunTrace  # noqa: E402
 
@@ -132,6 +137,48 @@ def paragraph(
     )
 
 
+def article_state(value: il.PdfParagraph) -> ArticleDocumentIR:
+    article_id = "article-1"
+    source_box = tuple(
+        float(getattr(value.box, name)) for name in ("x", "y", "x2", "y2")
+    )
+    article = ArticleIR(
+        article_id=article_id,
+        pages=(1,),
+        elements=(
+            SourceElementRef(
+                "p1#0",
+                1,
+                0,
+                0,
+                "text",
+                source_box,
+                "fixture-text",
+                "fixture-style",
+            ),
+        ),
+        slots=(
+            ArticleRegionSlot(
+                article_id,
+                1,
+                0,
+                0,
+                (0.0, 0.0, 500.0, 800.0),
+                (),
+                400000.0,
+            ),
+        ),
+        chain_ids=(),
+        policy_evidence=(ArticlePolicyEvidence(1, "text", None, None, True),),
+    )
+    return ArticleDocumentIR(
+        articles=(article,),
+        by_page={1: article_id},
+        by_element={"p1#0": article_id},
+        by_chain={},
+    )
+
+
 def source_intent(
     reference: str,
     source_char: str,
@@ -154,6 +201,33 @@ def source_intent(
     )
 
 
+def production_intent(config, page, article_ir, trace) -> intent_lane.DropCapIntent:
+    candidates = drop_cap.mark(
+        config,
+        [(1, page)],
+        article_document_ir=article_ir,
+        run_trace=trace,
+    )
+    assert [candidate.reference for candidate in candidates] == ["p1#0"]
+    apply_report = drop_cap.apply(config, [(1, page)], run_trace=trace)
+    frozen = intent_lane.intent_for(config, "p1#0")
+    assert apply_report is not None and frozen is not None
+    assert frozen.decision == "keep"
+    assert frozen.flatten_status == intent_lane.FLATTEN_APPLIED
+    return frozen
+
+
+def metric_for(character):
+    font_id = getattr(getattr(character, "pdf_style", None), "font_id", None)
+    return SimpleNamespace(
+        ink_box_em=(0.05, -0.1, 0.95, 0.9),
+        advance_em=1.0,
+        source="fixture-font",
+        glyph_id=ord(character.char_unicode or " "),
+        font_id=font_id,
+    )
+
+
 def rendered_color(character) -> tuple[float, float, float]:
     return intent_lane.freeze_color(character.pdf_style).fill.rgb
 
@@ -172,14 +246,32 @@ def render_case(
 ) -> tuple[il.PdfParagraph, intent_lane.DropCapIntent, Trace]:
     config = Config(directory, target)
     target_paragraph = paragraph(prefix, font=target_font)
-    frozen = source_intent(
-        "p1#0", source_char, source_font, source_color, policy
+    source = paragraph(source_char, font=source_font, instruction="0 g", lines=3)
+    paragraph_characters(source)[0].pdf_style = style(
+        source_font, 30.0, source_color
     )
-    frozen.flatten_status = intent_lane.FLATTEN_APPLIED
-    intent_lane.replace_intents(config, [frozen])
-    page = SimpleNamespace(page_number=0, pdf_paragraph=[target_paragraph])
+    page = il.Page(
+        page_number=0,
+        unit="pt",
+        mediabox=il.Mediabox(box=il.Box(0.0, 0.0, 500.0, 800.0)),
+        cropbox=il.Cropbox(box=il.Box(0.0, 0.0, 500.0, 800.0)),
+        pdf_paragraph=[source],
+    )
+    docs = il.Document(page=[page], total_pages=1)
+    article_ir = article_state(source)
     trace = Trace()
-    report = render_lane.apply(config, SimpleNamespace(page=[page]), run_trace=trace)
+    frozen = production_intent(config, page, article_ir, trace)
+    assert frozen.target_policy == policy
+    target_paragraph.drop_cap_candidate = source.drop_cap_candidate
+    target_paragraph.drop_cap_decision = source.drop_cap_decision
+    page.pdf_paragraph[0] = target_paragraph
+    report = render_lane.apply(
+        config,
+        docs,
+        run_trace=trace,
+        article_document_ir=article_ir,
+        typesetting_stage=SimpleNamespace(glyph_ink_metrics=metric_for),
+    )
     assert report is not None and report["totals"]["set"] == 1
     characters = paragraph_characters(target_paragraph)
     assert frozen.target_index is not None
@@ -192,7 +284,11 @@ def render_case(
         intent_lane.colors_close(rendered_color(character), expected, tolerance)
         for character in characters
     ) == 1
-    assert trace.events[-1]["event"] == "target_initial_style"
+    expected_event = {
+        intent_lane.POLICY_ENGLISH_RAISED_INITIAL: "english_raised_initial_geometry",
+        intent_lane.POLICY_CHINESE_TWO_LINE_INITIAL: "chinese_two_line_initial_geometry",
+    }[policy]
+    assert trace.events[-1]["event"] == expected_event
     assert trace.events[-1]["target_style_hash"] == frozen.target_style_hash
     return target_paragraph, frozen, trace
 
@@ -224,7 +320,7 @@ def check_bidirectional_color_and_eligible_initial(directory: Path) -> None:
         source_font="SourceLatin",
         source_color="1 0 0 rg",
         target_font="TargetCJK",
-        policy=intent_lane.POLICY_CJK_IDEOGRAPH,
+        policy=intent_lane.POLICY_CHINESE_TWO_LINE_INITIAL,
         expected=(1.0, 0.0, 0.0),
     )
     zh_characters = paragraph_characters(chinese)
@@ -243,7 +339,7 @@ def check_bidirectional_color_and_eligible_initial(directory: Path) -> None:
         source_font="SourceCJK",
         source_color="0 0 1 rg",
         target_font="TargetLatin",
-        policy=intent_lane.POLICY_ALPHABETIC,
+        policy=intent_lane.POLICY_ENGLISH_RAISED_INITIAL,
         expected=(0.0, 0.0, 1.0),
     )
     en_characters = paragraph_characters(english)
@@ -285,8 +381,10 @@ def check_flatten_failure_blocks_render(directory: Path) -> None:
     assert trace.blocked[0]["kind"] == intent_lane.ISSUE_FLATTEN_FAILED
     assert il_digest([candidate]) == before
     render_report = render_lane.apply(config, docs, run_trace=trace)
-    assert render_report is not None and render_report["totals"]["decided"] == 0
-    assert not any(event["event"] == "target_initial_style" for event in trace.events)
+    assert render_report is not None
+    assert render_report["totals"]["set"] == 0
+    assert render_report["totals"]["by_state"]["invalid_intent"] == 1
+    assert trace.events[-1]["render_state"] == render_lane.STATE_INVALID_INTENT
 
 
 def check_stale_and_noncandidate_decisions_are_atomic(directory: Path) -> None:
