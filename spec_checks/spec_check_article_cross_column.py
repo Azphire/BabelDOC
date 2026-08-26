@@ -5,7 +5,6 @@ from __future__ import annotations
 import hashlib
 import importlib.util
 import json
-import subprocess
 import sys
 import tempfile
 import types
@@ -13,9 +12,13 @@ from dataclasses import asdict
 from pathlib import Path
 from types import SimpleNamespace
 
+GATE_SET = "fast"
+
 ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
+
+from spec_checks.delivery_commits import delivery_files  # noqa: E402
 
 if importlib.util.find_spec("pymupdf") is None:
     pymupdf_stub = types.ModuleType("pymupdf")
@@ -475,30 +478,7 @@ def check_unsupported_page_is_inert() -> None:
 
 
 def changed_files() -> set[str]:
-    tagged = (
-        subprocess.run(  # noqa: S603, S607
-            [  # noqa: S607
-                "git",
-                "rev-parse",
-                "--verify",
-                "--quiet",
-                "refs/tags/batch-C07",
-            ],
-            cwd=ROOT,
-            capture_output=True,
-            check=False,
-        ).returncode
-        == 0
-    )
-    command = (
-        ["git", "diff", "--name-only", "batch-C07^", "batch-C07"]
-        if tagged
-        else ["git", "diff", "--name-only", "HEAD"]
-    )
-    output = subprocess.check_output(  # noqa: S603, S607
-        command, cwd=ROOT, text=True
-    )
-    return {line.replace("\\", "/") for line in output.splitlines() if line}
+    return delivery_files("C07", ROOT)
 
 
 def check_scope_and_pipeline_contract() -> None:

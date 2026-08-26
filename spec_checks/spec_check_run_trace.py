@@ -4,14 +4,17 @@ from __future__ import annotations
 
 import inspect
 import json
-import subprocess
 import sys
 import tempfile
 from pathlib import Path
 from types import SimpleNamespace
 
+GATE_SET = "fast"
+
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
+
+from spec_checks.delivery_commits import delivery_files  # noqa: E402
 
 from babeldoc.magazine import run_trace  # noqa: E402
 from babeldoc.magazine.article_ir import ArticleDocumentIR  # noqa: E402
@@ -464,14 +467,7 @@ def check_article_and_chain_keys_are_shared() -> None:
         and trace.sources["p1#0"].chain_id == "chain-stable",
     )
 def changed_files() -> set[str]:
-    result = subprocess.run(
-        ["git", "diff", "--name-only", "HEAD"],
-        cwd=ROOT,
-        capture_output=True,
-        text=True,
-        check=True,
-    )
-    return {line.strip().replace("\\", "/") for line in result.stdout.splitlines()}
+    return delivery_files("C03", ROOT)
 
 
 def check_negative_and_integration_contracts() -> None:

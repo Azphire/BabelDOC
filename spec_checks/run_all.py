@@ -136,6 +136,22 @@ GATES = (
     "spec_check_b11_3.py",
     "spec_check_b11_6.py",
     "spec_check_b11_7.py",
+    "spec_check_magazine_runtime_profile.py",
+    "spec_check_article_flow_ir.py",
+    "spec_check_run_trace.py",
+    "spec_check_fixed_asset_guard.py",
+    "spec_check_chain_single_request.py",
+    "spec_check_chain_slot_backfill.py",
+    "spec_check_article_cross_column.py",
+    "spec_check_article_cross_page.py",
+    "spec_check_repair_transaction.py",
+    "spec_check_reflow_compliance.py",
+    "spec_check_drop_cap_intent.py",
+    "spec_check_drop_cap_english.py",
+    "spec_check_drop_cap_chinese.py",
+    "spec_check_drop_cap_repair_guard.py",
+    "spec_check_pdf_compliance.py",
+    "spec_check_gate_registration.py",
 )
 
 

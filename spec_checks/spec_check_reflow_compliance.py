@@ -2,12 +2,15 @@
 
 from __future__ import annotations
 
-import subprocess
 import sys
 from pathlib import Path
 
+GATE_SET = "fast"
+
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
+
+from spec_checks.delivery_commits import delivery_files  # noqa: E402
 
 from babeldoc.format.pdf.document_il import il_version_1  # noqa: E402
 from babeldoc.magazine import detectors  # noqa: E402
@@ -496,13 +499,7 @@ def check_read_only_and_deterministic() -> None:
 
 
 def check_scope_and_integration() -> None:
-    changed = subprocess.run(
-        ["git", "diff", "--name-only", "HEAD"],  # noqa: S607
-        cwd=ROOT,
-        capture_output=True,
-        text=True,
-        check=True,
-    ).stdout.splitlines()
+    changed = delivery_files("C10", ROOT)
     forbidden = {
         "babeldoc/format/pdf/document_il/midend/il_translator.py",
         "babeldoc/format/pdf/document_il/il_version_1.py",
@@ -510,7 +507,6 @@ def check_scope_and_integration() -> None:
         "babeldoc/format/pdf/document_il/il_version_1.rng",
         "babeldoc/format/pdf/document_il/il_version_1.rnc",
     }
-    changed = {item.replace("\\", "/") for item in changed}
     high_level = (ROOT / "babeldoc/format/pdf/high_level.py").read_text(
         encoding="utf-8"
     )

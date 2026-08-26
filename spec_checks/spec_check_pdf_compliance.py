@@ -10,6 +10,8 @@ import tempfile
 from pathlib import Path
 from types import SimpleNamespace
 
+GATE_SET = "fast"
+
 import pymupdf
 
 ROOT = Path(__file__).resolve().parents[1]

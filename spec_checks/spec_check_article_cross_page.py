@@ -4,16 +4,19 @@ from __future__ import annotations
 
 import hashlib
 import json
-import subprocess
 import sys
 import tempfile
 from dataclasses import asdict
 from dataclasses import replace
 from pathlib import Path
 
+GATE_SET = "fast"
+
 ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
+
+from spec_checks.delivery_commits import delivery_files  # noqa: E402
 
 from spec_checks.spec_check_article_cross_column import FixedWidthMapper  # noqa: E402
 from spec_checks.spec_check_article_cross_column import StubTranslator  # noqa: E402
@@ -488,28 +491,7 @@ def check_capacity_exhaustion_is_typed_and_atomic() -> None:
 
 
 def changed_files() -> set[str]:
-    tagged = (
-        subprocess.run(  # noqa: S603, S607
-            ["git", "rev-parse", "--verify", "--quiet", "refs/tags/batch-C08"],
-            cwd=ROOT,
-            capture_output=True,
-            check=False,
-        ).returncode
-        == 0
-    )
-    command = (
-        ["git", "diff", "--name-only", "batch-C08^", "batch-C08"]
-        if tagged
-        else ["git", "diff", "--name-only", "HEAD"]
-    )
-    output = subprocess.check_output(command, cwd=ROOT, text=True)  # noqa: S603
-    if not tagged:
-        output += subprocess.check_output(  # noqa: S603
-            ["git", "ls-files", "--others", "--exclude-standard"],
-            cwd=ROOT,
-            text=True,
-        )
-    return {line.replace("\\", "/") for line in output.splitlines() if line}
+    return delivery_files("C08", ROOT)
 
 
 def check_scope_and_contract() -> None:

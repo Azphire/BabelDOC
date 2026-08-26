@@ -5,6 +5,8 @@ from dataclasses import dataclass
 from pathlib import Path
 from types import SimpleNamespace
 
+GATE_SET = "fast"
+
 import pymupdf
 from babeldoc.format.pdf.document_il import il_version_1 as il
 from babeldoc.format.pdf.document_il.midend.typesetting import Typesetting

@@ -3,14 +3,17 @@
 from __future__ import annotations
 
 import inspect
-import subprocess
 import sys
 import tempfile
 import types
 from pathlib import Path
 
+GATE_SET = "fast"
+
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
+
+from spec_checks.delivery_commits import delivery_files  # noqa: E402
 
 try:
     import peewee  # noqa: F401
@@ -357,22 +360,7 @@ def check_context_consumes_same_ir(root: Path) -> None:
 
 
 def changed_files() -> set[str]:
-    tag = subprocess.run(
-        ["git", "rev-parse", "--verify", "--quiet", "refs/tags/batch-C02"],
-        cwd=ROOT,
-        capture_output=True,
-        text=True,
-        check=False,
-    )
-    command = (
-        ["git", "diff", "--name-only", "batch-C02^", "batch-C02"]
-        if tag.returncode == 0
-        else ["git", "diff", "--name-only", "HEAD"]
-    )
-    result = subprocess.run(
-        command, cwd=ROOT, capture_output=True, text=True, check=True
-    )
-    return {line.strip().replace("\\", "/") for line in result.stdout.splitlines()}
+    return delivery_files("C02", ROOT)
 
 
 def check_negative_contracts() -> None:
