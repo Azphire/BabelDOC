@@ -233,8 +233,8 @@ def _input_summary(input_file: str | Path) -> dict:
 
 def _code_head() -> str:
     try:
-        result = subprocess.run(
-            ["git", "-C", str(ROOT), "rev-parse", "HEAD"],
+        result = subprocess.run(  # noqa: S603 - fixed Git argv reads local metadata
+            ["git", "-C", str(ROOT), "rev-parse", "HEAD"],  # noqa: S607
             capture_output=True,
             check=True,
             text=True,

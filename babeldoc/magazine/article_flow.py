@@ -1023,9 +1023,12 @@ def _apply_page_local(
             reference: fixed_assets.content_digest(_paragraph(docs, reference))
             for reference in protected_refs
         }
-        inventory_builder = lambda: fixed_assets.build_inventory(
-            docs, protected_paragraph_labels=tuple(sorted(roles))
-        )
+
+        def inventory_builder():
+            return fixed_assets.build_inventory(
+                docs, protected_paragraph_labels=tuple(sorted(roles))
+            )
+
         transaction = TransactionSnapshot.capture(
             docs,
             (page_number - 1,),

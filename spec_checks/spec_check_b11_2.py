@@ -67,6 +67,7 @@ sys.path.insert(0, str(ROOT))
 
 from spec_checks import evidence  # noqa: E402
 from spec_checks import harness  # noqa: E402
+
 from tools import prune_outputs  # noqa: E402
 
 GATE_SET = "fast"
@@ -333,7 +334,7 @@ def check_00c_a_gate_sweep_is_not_a_destroying_action() -> None:
     faults = []
     calls: list[list[str]] = []
 
-    def record_call(argv, **kwargs):
+    def record_call(argv, **_kwargs):
         calls.append(list(argv))
         return subprocess.CompletedProcess(argv, 0, "", "")
 
@@ -904,7 +905,7 @@ def check_05a_the_stranded_assertions_are_named_and_registered() -> None:
     register = GAP_REGISTER.read_text(encoding="utf-8")
     if "GAP-31" not in register:
         faults.append("GAP-31 is not registered")
-    for gate, names in STRANDED.items():
+    for _gate, names in STRANDED.items():
         for name in names:
             if name not in register:
                 faults.append(f"GAP-31 does not name {name}")

@@ -1057,12 +1057,15 @@ def apply(
         if article_document_ir is not None
         else set(getattr(run_trace, "unsupported_pages", ()))
     )
-    inventory_builder = lambda: fixed_assets.build_inventory(
-        docs,
-        article_document_ir=article_document_ir,
-        run_trace=run_trace,
-        protected_paragraph_labels=config.protected_paragraph_labels,
-    )
+
+    def inventory_builder():
+        return fixed_assets.build_inventory(
+            docs,
+            article_document_ir=article_document_ir,
+            run_trace=run_trace,
+            protected_paragraph_labels=config.protected_paragraph_labels,
+        )
+
     transaction = TransactionSnapshot.capture(
         docs,
         run_trace=run_trace,

@@ -58,7 +58,6 @@ from __future__ import annotations
 import hashlib
 import json
 import os
-import shutil
 import subprocess
 import sys
 import tempfile
@@ -832,7 +831,7 @@ def check_04c_incomplete_build_is_not_published() -> None:
     previous_root = artifacts.CACHE_ROOT
     previous_translate = high_level.translate
     artifacts.CACHE_ROOT = cache_root
-    high_level.translate = lambda config: NothingProduced()
+    high_level.translate = lambda _config: NothingProduced()
     try:
         raised = None
         try:
@@ -843,7 +842,7 @@ def check_04c_incomplete_build_is_not_published() -> None:
             faults.append(f"raised {type(exc).__name__} rather than BuildIncomplete")
         if raised is None and not faults:
             faults.append("an empty run was accepted")
-        published = [path for path in cache_root.rglob("meta.json")]
+        published = list(cache_root.rglob("meta.json"))
         if published:
             faults.append(f"a slot was published anyway: {published}")
         if not list(cache_root.rglob("*.partial")):
@@ -1126,7 +1125,7 @@ def check_07d_report_quotes_the_evidence() -> None:
         "offered but unmatched": data["offered_but_unmatched"],
         "not offered": data["not_offered"],
     }
-    for label, count in counts.items():
+    for label, _count in counts.items():
         if label not in text:
             faults.append(f"the report does not name the {label} outcome")
     quoted = [

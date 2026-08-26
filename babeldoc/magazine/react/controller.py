@@ -263,7 +263,7 @@ class Snapshot:
                 del page.pdf_form[count:]
 
 
-class RoundFailure(RuntimeError):
+class RoundFailureError(RuntimeError):
     """An action failed after its auditable round record was opened."""
 
     def __init__(self, entry: dict, error: Exception):
@@ -892,7 +892,7 @@ class RepairLoop:
                 applied = handler.apply(candidates, context, snapshot, action)
             except Exception as error:  # noqa: BLE001 - preserve the round record
                 entry["failure"] = f"{type(error).__name__}: {error}"
-                raise RoundFailure(entry, error) from error
+                raise RoundFailureError(entry, error) from error
         else:
             applied = []
         written = [item for item in applied if item.changed]
@@ -951,11 +951,13 @@ class RepairLoop:
             record["transaction"] = {"status": ACTION_NOT_EXECUTED, "pages": []}
             return OUTCOME_INERT, STOP_NO_ENGINE, issues
 
-        inventory_builder = lambda: fixed_assets.build_inventory(
-            self.docs,
-            run_trace=self.run_trace,
-            protected_paragraph_labels=self.protected_paragraph_labels,
-        )
+        def inventory_builder():
+            return fixed_assets.build_inventory(
+                self.docs,
+                run_trace=self.run_trace,
+                protected_paragraph_labels=self.protected_paragraph_labels,
+            )
+
         transaction = TransactionSnapshot.capture(
             self.docs,
             run_trace=self.run_trace,
@@ -994,7 +996,7 @@ class RepairLoop:
                     entry, applied = self._round(
                         kind, offered, context, action_snapshot
                     )
-                except RoundFailure as failure:
+                except RoundFailureError as failure:
                     rounds.append(failure.entry)
                     raise failure.error from failure
                 rounds.append(entry)

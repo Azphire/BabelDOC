@@ -67,9 +67,11 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
 from babeldoc.format.pdf.document_il import il_version_1  # noqa: E402
+from babeldoc.format.pdf.document_il.midend import (  # noqa: E402
+    styles_and_formulas as sf,  # noqa: E402
+)
 from babeldoc.magazine import drop_cap  # noqa: E402
 from babeldoc.magazine import indent_policy  # noqa: E402
-from babeldoc.format.pdf.document_il.midend import styles_and_formulas as sf  # noqa: E402
 from spec_checks import evidence  # noqa: E402
 from spec_checks import harness  # noqa: E402
 
@@ -1066,7 +1068,7 @@ def check_04b_nothing_outside_the_body_was_decided() -> None:
            "; ".join(faults[:4]))
 
 
-def check_04c_the_switch_down_changes_nothing(tmp_path: Path | None = None) -> None:
+def check_04c_the_switch_down_changes_nothing() -> None:
     """Negative 4c: with the switch down the document comes back untouched.
 
     Driven rather than reasoned: the pass is run over a stub document with the

@@ -524,7 +524,7 @@ def check_04_the_chain_ab_is_measured_on_every_arm() -> None:
         return
     report = read_json(METRICS)
     runs = {run["label"]: run for run in report["runs"]}
-    expected = [arm for arm in ARMS] + [f"{arm}_pdf" for arm in ARMS]
+    expected = list(ARMS) + [f"{arm}_pdf" for arm in ARMS]
     missing = [label for label in expected if label not in runs]
     if missing:
         faults.append(f"arms not measured: {missing}")

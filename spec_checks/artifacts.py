@@ -262,7 +262,7 @@ _stats = {
 }
 
 
-class BuildIncomplete(RuntimeError):
+class BuildIncomplete(RuntimeError):  # noqa: N818 - retained gate API
     """Raised when a run finished without producing what its mode promises."""
 
 

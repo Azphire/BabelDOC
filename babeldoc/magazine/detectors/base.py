@@ -588,7 +588,7 @@ class SeverityVector:
         return {
             "schema_version": self.schema_version,
             "severity": self.severity,
-            "dimensions": {name: value for name, value in self.dimensions},
+            "dimensions": dict(self.dimensions),
         }
 
 

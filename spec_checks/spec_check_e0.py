@@ -626,7 +626,7 @@ def check_05_the_ledger_and_the_gap_register_close_over_each_other() -> None:
     # The open statuses are those that are not the plainly citable one, which is
     # identified structurally: it is the status the summary counts most of.
     rows = ledger_rows(document)
-    tally = {term: 0 for term in statuses}
+    tally = dict.fromkeys(statuses, 0)
     classified: dict[str, str] = {}
     for identifier, cells in rows:
         cell = cells[-1]

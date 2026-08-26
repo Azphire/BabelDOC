@@ -62,13 +62,13 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
 from babeldoc.format.pdf.document_il import il_version_1  # noqa: E402
-from babeldoc.format.pdf.document_il.midend import typesetting as upstream_typeset  # noqa: E402
+from babeldoc.format.pdf.document_il.midend import (  # noqa: E402
+    typesetting as upstream_typeset,  # noqa: E402
+)
 from babeldoc.magazine import chain_backfill as backfill  # noqa: E402
-from babeldoc.magazine import chain_builder  # noqa: E402
 from babeldoc.magazine import formula_reclass  # noqa: E402
 from babeldoc.magazine import indent_policy  # noqa: E402
 from babeldoc.magazine import reading_order  # noqa: E402
-from babeldoc.magazine import rotated_lane  # noqa: E402
 from babeldoc.magazine.detectors import base as detector_base  # noqa: E402
 from babeldoc.magazine.detectors import detector_config  # noqa: E402
 from babeldoc.magazine.detectors import residue as residue_detector  # noqa: E402
@@ -1217,7 +1217,7 @@ def check_03m_a_converted_paragraph_never_leaves_the_page() -> None:
         if not evidence.exists(conservation_path):
             continue
         texts = {}
-        for label, page in read(conservation_path)["per_page"].items():
+        for _label, page in read(conservation_path)["per_page"].items():
             texts.update(page["text"])
         for reference in converted:
             if reference not in texts:
@@ -1513,8 +1513,8 @@ def check_04c_the_detectors_did_not_find_more() -> None:
 def _changed_files() -> list[str]:
     """The files this batch changed, anchored to its tag where the tag exists."""
     tag = f"{BATCH_TAG}"
-    exists = subprocess.run(
-        ["git", "rev-parse", "--verify", "--quiet", f"{tag}^{{commit}}"],
+    exists = subprocess.run(  # noqa: S603 - fixed Git argv reads repository history
+        ["git", "rev-parse", "--verify", "--quiet", f"{tag}^{{commit}}"],  # noqa: S607
         cwd=ROOT,
         capture_output=True,
         text=True,
@@ -1523,8 +1523,8 @@ def _changed_files() -> list[str]:
         span = [f"{tag}^..{tag}"]
     else:
         span = ["HEAD"]
-    out = subprocess.run(
-        ["git", "diff", "--name-only", *span],
+    out = subprocess.run(  # noqa: S603 - fixed Git argv reads repository history
+        ["git", "diff", "--name-only", *span],  # noqa: S607
         cwd=ROOT,
         capture_output=True,
         text=True,
@@ -1532,8 +1532,8 @@ def _changed_files() -> list[str]:
     )
     names = [line.strip() for line in out.stdout.splitlines() if line.strip()]
     if exists.returncode != 0:
-        untracked = subprocess.run(
-            ["git", "ls-files", "--others", "--exclude-standard"],
+        untracked = subprocess.run(  # noqa: S603 - fixed Git argv reads repository history
+            ["git", "ls-files", "--others", "--exclude-standard"],  # noqa: S607
             cwd=ROOT,
             capture_output=True,
             text=True,

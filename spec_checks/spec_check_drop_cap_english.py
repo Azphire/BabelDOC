@@ -5,8 +5,6 @@ from dataclasses import dataclass
 from pathlib import Path
 from types import SimpleNamespace
 
-GATE_SET = "fast"
-
 import pymupdf
 from babeldoc.format.pdf.document_il import il_version_1 as il
 from babeldoc.format.pdf.document_il.midend.typesetting import Typesetting
@@ -20,6 +18,8 @@ from babeldoc.magazine.article_ir import SourceElementRef
 from babeldoc.magazine.article_ir import UnsupportedArticlePage
 from babeldoc.magazine.line_split import paragraph_characters
 from babeldoc.magazine.run_trace import RunTrace
+
+GATE_SET = "fast"
 
 
 @dataclass(frozen=True, slots=True)

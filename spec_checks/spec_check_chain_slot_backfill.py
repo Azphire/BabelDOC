@@ -66,7 +66,6 @@ from babeldoc.magazine.run_trace import ChainResultState  # noqa: E402
 from babeldoc.magazine.run_trace import RunTrace  # noqa: E402
 from babeldoc.magazine.run_trace import hash_record  # noqa: E402
 
-
 CHECKS = 0
 FAILURES: list[str] = []
 
@@ -301,9 +300,9 @@ def fixture(target: str):
     article_ir = ArticleDocumentIR(
         articles=(article,),
         by_page={1: "article-a", 2: "article-a"},
-        by_element={reference: "article-a" for reference in refs},
+        by_element=dict.fromkeys(refs, "article-a"),
         by_chain={"chain-canonical": "article-a"},
-        by_chain_member={reference: "chain-canonical" for reference in refs},
+        by_chain_member=dict.fromkeys(refs, "chain-canonical"),
     )
     mapper = FixedWidthMapper()
     work = Path(tempfile.mkdtemp(prefix="babeldoc-c06-"))

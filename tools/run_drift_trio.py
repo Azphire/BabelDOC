@@ -179,7 +179,7 @@ def cache_rows_by_engine(db_path: Path) -> dict[str, int]:
         ).fetchall()
     finally:
         connection.close()
-    return {name: count for name, count in rows}
+    return dict(rows)
 
 
 class PromptTrace:

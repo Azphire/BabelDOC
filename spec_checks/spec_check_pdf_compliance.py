@@ -10,9 +10,9 @@ import tempfile
 from pathlib import Path
 from types import SimpleNamespace
 
-GATE_SET = "fast"
-
 import pymupdf
+
+GATE_SET = "fast"
 
 ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:

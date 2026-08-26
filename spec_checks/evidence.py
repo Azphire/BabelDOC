@@ -34,7 +34,7 @@ OUTPUT_DIR = ROOT / "examples" / "output"
 ARCHIVE_DIR = ROOT / "docs" / "reports" / "archive"
 
 
-class EvidenceMissing(FileNotFoundError):
+class EvidenceMissing(FileNotFoundError):  # noqa: N818 - retained gate API
     """Neither the workspace nor the archive holds the evidence asked for."""
 
 

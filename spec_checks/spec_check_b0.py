@@ -26,7 +26,6 @@ sys.path.insert(0, str(ROOT))
 
 import pymupdf  # noqa: E402
 from babeldoc.assets.assets import warmup  # noqa: E402
-from babeldoc.format.pdf.document_il.xml_converter import XMLConverter  # noqa: E402
 from babeldoc.magazine import cache_setup  # noqa: E402
 from babeldoc.magazine import checkpoint as checkpoint_module  # noqa: E402
 from spec_checks import artifacts  # noqa: E402

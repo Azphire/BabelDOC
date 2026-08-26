@@ -477,7 +477,7 @@ def _build_grouping(docs, policy_of):
     )
 
 
-def build_articles(docs: il_version_1.Document, policy_of, labels) -> Grouping:
+def build_articles(docs: il_version_1.Document, policy_of, _labels) -> Grouping:
     """Group one document with deterministic identities."""
     grouping, _provisional, _elements, _chains = _build_grouping(docs, policy_of)
     return grouping

@@ -10,8 +10,6 @@ GATE_SET = "fast"
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
-from spec_checks.delivery_commits import delivery_files  # noqa: E402
-
 from babeldoc.format.pdf.document_il import il_version_1  # noqa: E402
 from babeldoc.magazine import detectors  # noqa: E402
 from babeldoc.magazine import fixed_assets  # noqa: E402
@@ -29,6 +27,7 @@ from babeldoc.magazine.detectors import drop_cap_geometry  # noqa: E402
 from babeldoc.magazine.detectors import fixed_asset_drift  # noqa: E402
 from babeldoc.magazine.detectors import instruction_compliance  # noqa: E402
 from babeldoc.magazine.detectors import render_coverage  # noqa: E402
+from spec_checks.delivery_commits import delivery_files  # noqa: E402
 
 FAILURES: list[str] = []
 CHECKS = 0

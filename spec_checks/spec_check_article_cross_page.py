@@ -16,13 +16,6 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from spec_checks.delivery_commits import delivery_files  # noqa: E402
-
-from spec_checks.spec_check_article_cross_column import FixedWidthMapper  # noqa: E402
-from spec_checks.spec_check_article_cross_column import StubTranslator  # noqa: E402
-from spec_checks.spec_check_article_cross_column import paragraph  # noqa: E402
-from spec_checks.spec_check_article_cross_column import style_hash  # noqa: E402
-
 from babeldoc.format.pdf.document_il import Box  # noqa: E402
 from babeldoc.format.pdf.document_il import PdfStyle  # noqa: E402
 from babeldoc.format.pdf.document_il import il_version_1  # noqa: E402
@@ -37,6 +30,11 @@ from babeldoc.magazine.article_ir import SourceElementRef  # noqa: E402
 from babeldoc.magazine.article_ir import UnsupportedArticlePage  # noqa: E402
 from babeldoc.magazine.fixed_assets import content_digest  # noqa: E402
 from babeldoc.magazine.run_trace import RunTrace  # noqa: E402
+from spec_checks.delivery_commits import delivery_files  # noqa: E402
+from spec_checks.spec_check_article_cross_column import FixedWidthMapper  # noqa: E402
+from spec_checks.spec_check_article_cross_column import StubTranslator  # noqa: E402
+from spec_checks.spec_check_article_cross_column import paragraph  # noqa: E402
+from spec_checks.spec_check_article_cross_column import style_hash  # noqa: E402
 
 CHECKS = 0
 FAILURES: list[str] = []
@@ -135,7 +133,7 @@ def fixture(
     source = "源文"
     pages = []
     elements = []
-    for index, target in enumerate(targets):
+    for index, _target in enumerate(targets):
         page_number = index + 1
         body = paragraph(source, "text", (0.0, 20.0, 40.0, 90.0), style)
         xobjects = []

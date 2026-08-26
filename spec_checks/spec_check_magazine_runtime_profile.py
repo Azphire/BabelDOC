@@ -26,18 +26,16 @@ translator_stub.BaseTranslator = type("BaseTranslator", (), {})
 sys.modules["babeldoc.translator.translator"] = translator_stub
 
 from babeldoc.format.pdf.translation_config import TranslationConfig  # noqa: E402
-from babeldoc.magazine.runtime_profile import (  # noqa: E402
-    DEFAULT_PROFILE_PATH,
-    NETWORK_CAPABLE_SWITCHES,
-    RUN_MANIFEST_NAME,
-    SWITCH_DEFAULTS,
-    MagazineDependencyError,
-    effective_switches,
-    load_magazine_profile,
-    parse_magazine_profile,
-    preflight_magazine_runtime,
-    validate_magazine_switches,
-)
+from babeldoc.magazine.runtime_profile import DEFAULT_PROFILE_PATH  # noqa: E402
+from babeldoc.magazine.runtime_profile import NETWORK_CAPABLE_SWITCHES  # noqa: E402
+from babeldoc.magazine.runtime_profile import RUN_MANIFEST_NAME  # noqa: E402
+from babeldoc.magazine.runtime_profile import SWITCH_DEFAULTS  # noqa: E402
+from babeldoc.magazine.runtime_profile import MagazineDependencyError  # noqa: E402
+from babeldoc.magazine.runtime_profile import effective_switches  # noqa: E402
+from babeldoc.magazine.runtime_profile import load_magazine_profile  # noqa: E402
+from babeldoc.magazine.runtime_profile import parse_magazine_profile  # noqa: E402
+from babeldoc.magazine.runtime_profile import preflight_magazine_runtime  # noqa: E402
+from babeldoc.magazine.runtime_profile import validate_magazine_switches  # noqa: E402
 
 RESULTS: list[tuple[str, bool, str]] = []
 

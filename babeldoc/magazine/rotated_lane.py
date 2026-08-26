@@ -57,8 +57,8 @@ import logging
 from pathlib import Path
 
 from babeldoc.format.pdf.document_il import il_version_1
-from babeldoc.magazine.reading_order import paragraph_characters
 from babeldoc.magazine.react import writeback
+from babeldoc.magazine.reading_order import paragraph_characters
 
 logger = logging.getLogger(__name__)
 

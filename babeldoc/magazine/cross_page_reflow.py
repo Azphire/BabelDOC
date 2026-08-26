@@ -330,7 +330,7 @@ def build_cross_page_segments(
     all_segments = []
     issues = []
     ordered_pages = sorted(article_document_ir.by_page)
-    for left_page, right_page in zip(ordered_pages, ordered_pages[1:]):
+    for left_page, right_page in zip(ordered_pages, ordered_pages[1:], strict=False):
         if right_page != left_page + 1:
             continue
         left_owner = article_document_ir.by_page[left_page]
@@ -361,7 +361,7 @@ def build_cross_page_segments(
                     protected_refs,
                 )
             )
-            for left, right in zip(by_page[page], by_page[page][1:]):
+            for left, right in zip(by_page[page], by_page[page][1:], strict=False):
                 issues.append(
                     _issue(
                         ISSUE_HARD_BOUNDARY,
@@ -371,7 +371,7 @@ def build_cross_page_segments(
                     )
                 )
         groups = [[segment] for page in article.pages for segment in by_page[page]]
-        for left_page, right_page in zip(article.pages, article.pages[1:]):
+        for left_page, right_page in zip(article.pages, article.pages[1:], strict=False):
             connection = page_connection_issue(
                 article_document_ir,
                 article,
@@ -653,10 +653,13 @@ def apply(
             reference: fixed_assets.content_digest(_paragraph(docs, reference))
             for reference in protected_refs
         }
-        inventory_builder = lambda: fixed_assets.build_inventory(
-            docs,
-            protected_paragraph_labels=tuple(sorted(protected_roles)),
-        )
+
+        def inventory_builder():
+            return fixed_assets.build_inventory(
+                docs,
+                protected_paragraph_labels=tuple(sorted(protected_roles)),
+            )
+
         transaction = TransactionSnapshot.capture(
             docs,
             (page - 1 for page in segment.contiguous_pages),

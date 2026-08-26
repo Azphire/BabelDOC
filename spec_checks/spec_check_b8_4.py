@@ -1592,7 +1592,7 @@ def check_04e_the_sweep_applies_the_policy() -> None:
     # must run nothing, and the runner must declare the flag that asks for it.
     calls: list[list[str]] = []
 
-    def record_call(argv, **kwargs):
+    def record_call(argv, **_kwargs):
         calls.append(list(argv))
         return subprocess.CompletedProcess(argv, 0, "", "")
 

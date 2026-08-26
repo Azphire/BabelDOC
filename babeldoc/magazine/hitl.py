@@ -426,7 +426,7 @@ def _draft(translation_config) -> dict:
     return draft
 
 
-def _write_draft(translation_config, draft: dict) -> Path:
+def _write_draft(_translation_config, draft: dict) -> Path:
     directory = reviews_dir()
     directory.mkdir(parents=True, exist_ok=True)
     path = review_path(draft["sample"])

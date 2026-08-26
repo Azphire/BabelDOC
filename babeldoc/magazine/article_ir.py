@@ -3,10 +3,10 @@
 from __future__ import annotations
 
 import json
+from collections.abc import Mapping
 from dataclasses import dataclass
 from dataclasses import field
 from types import MappingProxyType
-from typing import Mapping
 
 BoxTuple = tuple[float, float, float, float]
 
@@ -216,7 +216,7 @@ class ArticleDocumentIR:
                 raise ValueError("unsupported pages cannot carry reflow slots")
         expected = (expected_by_page, expected_by_element, expected_by_chain)
         actual = (self.by_page, self.by_element, self.by_chain)
-        if any(dict(index) != wanted for index, wanted in zip(actual, expected)):
+        if any(dict(index) != wanted for index, wanted in zip(actual, expected, strict=False)):
             raise ValueError("article indexes must exactly describe canonical articles")
         for source_ref, chain_id in self.by_chain_member.items():
             if source_ref not in expected_by_element:

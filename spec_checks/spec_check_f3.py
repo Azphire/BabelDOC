@@ -351,7 +351,7 @@ def check_01b_nothing_upstream_and_nothing_owned_by_a_person_moved() -> None:
                 k: v for k, v in now.items() if k != "description"
             }:
                 faults.append("the escaped configuration declares something else")
-            if not was["description"] in now["description"]:
+            if was["description"] not in now["description"]:
                 faults.append("the description lost what it said")
             if any(_is_cjk(char) for char in after):
                 faults.append("the escaped configuration still carries CJK")

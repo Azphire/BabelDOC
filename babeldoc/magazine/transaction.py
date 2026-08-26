@@ -4,10 +4,10 @@ from __future__ import annotations
 
 import copy
 import hashlib
+from collections.abc import Iterable
 from dataclasses import dataclass
 from dataclasses import fields
 from dataclasses import is_dataclass
-from typing import Iterable
 
 from babeldoc.format.pdf.document_il.il_version_1 import Box
 from babeldoc.magazine import fixed_assets
@@ -130,7 +130,7 @@ def state_digests(
     fixed_inventory=None,
     allocator=None,
 ) -> TransactionDigests:
-    selected = tuple(sorted(set(int(position) for position in positions)))
+    selected = tuple(sorted({int(position) for position in positions}))
     return TransactionDigests(
         xml=_page_xml_digests(docs, selected),
         geometry=_geometry_digest(docs, selected),
@@ -202,7 +202,7 @@ class TransactionSnapshot:
         positions = tuple(
             range(len(docs.page))
             if page_positions is None
-            else sorted(set(int(position) for position in page_positions))
+            else sorted({int(position) for position in page_positions})
         )
         if any(position < 0 or position >= len(docs.page) for position in positions):
             raise ValueError("transaction page position is outside the document")

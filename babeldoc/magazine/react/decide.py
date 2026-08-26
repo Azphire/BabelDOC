@@ -196,7 +196,7 @@ def issues_block(issues, excerpt_chars: int, limit: int, drop=()) -> str:
     return "\n".join(lines) if lines else "- none"
 
 
-def actions_block(config: RepairConfig, language: str | None = None) -> str:
+def actions_block(config: RepairConfig, _language: str | None = None) -> str:
     """The vocabulary as the request states it, one block per action."""
     lines: list[str] = []
     for name, action in sorted(config.actions.items()):

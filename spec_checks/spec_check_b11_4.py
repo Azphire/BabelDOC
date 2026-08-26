@@ -63,6 +63,7 @@ sys.path.insert(0, str(ROOT))
 
 from spec_checks import evidence  # noqa: E402
 from spec_checks import harness  # noqa: E402
+
 from tools import prune_outputs  # noqa: E402
 
 GATE_SET = "fast"

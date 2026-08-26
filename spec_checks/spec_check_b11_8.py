@@ -1093,8 +1093,8 @@ def pipeline_import_offences(named_sources) -> list[str]:
 def _added_python_lines() -> list[tuple[str, str]]:
     """This batch's added lines, as one text per file it added them to."""
     span = _diff_span()
-    out = subprocess.run(
-        ["git", "diff", "--unified=0", *span, "--", "*.py"],
+    out = subprocess.run(  # noqa: S603 - fixed Git argv reads repository history
+        ["git", "diff", "--unified=0", *span, "--", "*.py"],  # noqa: S607
         cwd=ROOT,
         capture_output=True,
         text=True,
@@ -1108,8 +1108,8 @@ def _added_python_lines() -> list[tuple[str, str]]:
         elif line.startswith("+") and not line.startswith("+++") and current:
             by_file.setdefault(current, []).append(line[1:])
     if span == ["HEAD"]:
-        untracked = subprocess.run(
-            ["git", "ls-files", "--others", "--exclude-standard", "--", "*.py"],
+        untracked = subprocess.run(  # noqa: S603 - fixed Git argv reads repository history
+            ["git", "ls-files", "--others", "--exclude-standard", "--", "*.py"],  # noqa: S607
             cwd=ROOT,
             capture_output=True,
             text=True,
@@ -1316,8 +1316,8 @@ def check_08b_the_reflow_saw_the_finished_shape() -> None:
 
 
 def _diff_span() -> list[str]:
-    exists = subprocess.run(
-        ["git", "rev-parse", "--verify", "--quiet", f"{BATCH_TAG}^{{commit}}"],
+    exists = subprocess.run(  # noqa: S603 - fixed Git argv reads repository history
+        ["git", "rev-parse", "--verify", "--quiet", f"{BATCH_TAG}^{{commit}}"],  # noqa: S607
         cwd=ROOT,
         capture_output=True,
         text=True,
@@ -1330,8 +1330,8 @@ def _diff_span() -> list[str]:
 def _changed_files() -> list[str]:
     """The files this batch changed, anchored to its tag where the tag exists."""
     span = _diff_span()
-    out = subprocess.run(
-        ["git", "diff", "--name-only", *span],
+    out = subprocess.run(  # noqa: S603 - fixed Git argv reads repository history
+        ["git", "diff", "--name-only", *span],  # noqa: S607
         cwd=ROOT,
         capture_output=True,
         text=True,
@@ -1339,8 +1339,8 @@ def _changed_files() -> list[str]:
     )
     names = [line.strip() for line in out.stdout.splitlines() if line.strip()]
     if span == ["HEAD"]:
-        untracked = subprocess.run(
-            ["git", "ls-files", "--others", "--exclude-standard"],
+        untracked = subprocess.run(  # noqa: S603 - fixed Git argv reads repository history
+            ["git", "ls-files", "--others", "--exclude-standard"],  # noqa: S607
             cwd=ROOT,
             capture_output=True,
             text=True,

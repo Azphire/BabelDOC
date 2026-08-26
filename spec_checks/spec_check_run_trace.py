@@ -14,12 +14,11 @@ GATE_SET = "fast"
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
-from spec_checks.delivery_commits import delivery_files  # noqa: E402
-
 from babeldoc.magazine import run_trace  # noqa: E402
 from babeldoc.magazine.article_ir import ArticleDocumentIR  # noqa: E402
 from babeldoc.magazine.article_ir import ArticleIR  # noqa: E402
 from babeldoc.magazine.article_ir import SourceElementRef  # noqa: E402
+from spec_checks.delivery_commits import delivery_files  # noqa: E402
 
 FAILURES: list[str] = []
 CHECKS = 0
@@ -131,7 +130,7 @@ def check_ordinary_complete_lineage(root: Path) -> None:
     check(
         "sidecar retains hashes instead of sensitive text",
         b"private prompt material" not in payload
-        and "A source paragraph.".encode() not in payload
+        and b"A source paragraph." not in payload
         and "一个目标段落。".encode() not in payload,
     )
 

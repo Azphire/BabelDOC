@@ -30,7 +30,6 @@ from babeldoc.magazine.article_context import EMPTY_CONTEXT  # noqa: E402
 from babeldoc.magazine.run_trace import ChainResultState  # noqa: E402
 from babeldoc.magazine.run_trace import RunTrace  # noqa: E402
 
-
 CHECKS = 0
 FAILURES: list[str] = []
 
@@ -180,8 +179,8 @@ def fixture(member_count: int, *, ordinary=False):
     canonical_chain = f"chain-canonical-{member_count}"
     article_ir = SimpleNamespace(
         by_page={index + 1: "article-a" for index in range(member_count)},
-        by_element={reference: "article-a" for reference in refs},
-        by_chain_member={reference: canonical_chain for reference in refs},
+        by_element=dict.fromkeys(refs, "article-a"),
+        by_chain_member=dict.fromkeys(refs, canonical_chain),
         by_chain={canonical_chain: "article-a"},
     )
     return docs, members, refs, article_ir
