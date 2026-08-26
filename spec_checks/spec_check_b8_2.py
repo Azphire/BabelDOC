@@ -1220,8 +1220,15 @@ def check_05i_failure_is_never_fatal() -> None:
         faults.append("a failed loop left the document changed")
     if not (directory / detectors.REPORT_NAME).exists():
         faults.append("the detection sidecar was not written after the failure")
-    if (directory / controller.REPORT_NAME).exists():
-        faults.append("a failed loop wrote an account of a run it did not finish")
+    repair_path = directory / controller.REPORT_NAME
+    if not repair_path.exists():
+        faults.append("a failed loop did not write its rollback account")
+    else:
+        failed = json.loads(repair_path.read_text(encoding="utf-8"))
+        if not failed.get("failure"):
+            faults.append("the failed loop report omits the failure")
+        if failed.get("action_statuses", {}).get("not_executed", 0) < 1:
+            faults.append("the failed loop was not marked not_executed")
     record("check_05i_failure_is_never_fatal", not faults, "; ".join(faults))
 
 

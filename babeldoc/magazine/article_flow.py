@@ -17,6 +17,7 @@ from babeldoc.format.pdf.document_il.il_version_1 import PdfSameStyleUnicodeChar
 from babeldoc.format.pdf.document_il.midend.typesetting import FIT_INVALID
 from babeldoc.format.pdf.document_il.midend.typesetting import FIT_NONE
 from babeldoc.format.pdf.document_il.midend.typesetting import Typesetting
+from babeldoc.magazine import acceptance
 from babeldoc.magazine import fixed_assets
 from babeldoc.magazine.chain_backfill import load_backfill_config
 from babeldoc.magazine.line_split import holds_formula
@@ -27,6 +28,7 @@ from babeldoc.magazine.run_trace import canonical_text
 from babeldoc.magazine.run_trace import hash_record
 from babeldoc.magazine.run_trace import parse_source_ref
 from babeldoc.magazine.taxonomy import record_config_manifest
+from babeldoc.magazine.transaction import TransactionSnapshot
 
 CONFIG_PATH = Path(__file__).resolve().parents[2] / "configs" / "article_flow.json"
 CHAIN_CONFIG_PATH = (
@@ -52,10 +54,63 @@ GUARD_FIXED_ASSET = "fixed_asset_conservation"
 GUARD_PROTECTED = "protected_element_conservation"
 GUARD_DETECTOR = "detector"
 GUARD_TRACE = "trace"
+GUARD_ACTION = "action"
+GUARD_ACCEPTANCE = "acceptance"
+
+FLOW_OBJECTIVE_KIND = "unallocated_article_target"
+FLOW_OBJECTIVE_DETECTOR = "article_flow_capacity"
+FLOW_GUARD_DETECTOR = "article_flow_guard"
 
 
 class ArticleFlowError(ConfigError):
     """Raised when article flow cannot be planned without breaking a contract."""
+
+
+def objective_issue(
+    article_id: str, pages, references, remaining_chars: int, policy
+):
+    evidence = {"remaining_chars": remaining_chars}
+    return acceptance.measured_issue(
+        f"{FLOW_OBJECTIVE_DETECTOR}:{article_id}:p{min(pages)}:"
+        f"{'+'.join(references)}",
+        FLOW_OBJECTIVE_KIND,
+        policy.severity_order[0],
+        evidence,
+        ("remaining_chars",),
+        schema_version=policy.schema_version,
+    )
+
+
+def guard_issues(article_id: str, pages, references, guards, policy) -> list:
+    return [
+        acceptance.measured_issue(
+            f"{FLOW_GUARD_DETECTOR}:{article_id}:{guard}:p{min(pages)}:"
+            f"{'+'.join(references)}",
+            str(guard),
+            policy.reject_new_at_or_above,
+            {"violations": 1},
+            ("violations",),
+            schema_version=policy.schema_version,
+        )
+        for guard in sorted(set(guards))
+    ]
+
+
+def compare_flow(article_id: str, pages, segments, guards):
+    policy = acceptance.load_acceptance_policy()
+    references = tuple(
+        dict.fromkeys(
+            reference
+            for segment in segments
+            for reference in segment.ordered_source_refs
+        )
+    )
+    remaining = sum(
+        len(boundary.text) for segment in segments for boundary in segment.boundaries
+    )
+    before = [objective_issue(article_id, pages, references, remaining, policy)]
+    after = guard_issues(article_id, pages, references, guards, policy)
+    return acceptance.compare_issues(before, after, policy)
 
 
 @dataclass(frozen=True, slots=True)
@@ -850,7 +905,9 @@ def _write_report(translation_config, record: dict) -> Path:
         json.dumps(record, ensure_ascii=False, indent=2, sort_keys=True) + "\n",
         encoding="utf-8",
     )
-    record_config_manifest(path.parent, [CONFIG_PATH, CHAIN_CONFIG_PATH])
+    record_config_manifest(
+        path.parent, [CONFIG_PATH, CHAIN_CONFIG_PATH, acceptance.CONFIG_PATH]
+    )
     return path
 
 
@@ -893,6 +950,7 @@ def _apply_page_local(
                     "page": page_number,
                     "article_id": article.article_id,
                     "status": "skipped",
+                    "action_status": "not_executed",
                     "reason": SKIP_UNSUPPORTED,
                     "segments": [],
                 }
@@ -913,6 +971,7 @@ def _apply_page_local(
                     "page": page_number,
                     "article_id": article.article_id,
                     "status": "skipped",
+                    "action_status": "not_executed",
                     "reason": SKIP_NO_SEGMENT,
                     "segments": [],
                 }
@@ -930,6 +989,7 @@ def _apply_page_local(
                     "page": page_number,
                     "article_id": article.article_id,
                     "status": "rolled_back",
+                    "action_status": "not_executed",
                     "reason": GUARD_CONSERVATION,
                     "detail": str(error),
                     "segments": [segment.to_record() for segment in segments],
@@ -937,7 +997,6 @@ def _apply_page_local(
             )
             continue
         page = docs.page[page_number - 1]
-        original_paragraphs = list(page.pdf_paragraph)
         protected_refs = {
             item.reference
             for segment in segments
@@ -950,11 +1009,26 @@ def _apply_page_local(
             reference: fixed_assets.content_digest(_paragraph(docs, reference))
             for reference in protected_refs
         }
-        generation = None
+        inventory_builder = lambda: fixed_assets.build_inventory(
+            docs, protected_paragraph_labels=tuple(sorted(roles))
+        )
+        transaction = TransactionSnapshot.capture(
+            docs,
+            (page_number - 1,),
+            run_trace=run_trace,
+            fixed_inventory=inventory,
+            fixed_inventory_builder=inventory_builder,
+        )
+        generation = transaction.begin_generation(
+            f"article_flow:{article.article_id}:p{page_number}"
+        )
+        issues = []
+        failure_stage = GUARD_ACTION
         try:
             placements, released_holders = _write_page(
                 docs, page_number, segments, planned
             )
+            failure_stage = GUARD_CONSERVATION
             issues = _validate_page(
                 docs,
                 article,
@@ -963,14 +1037,14 @@ def _apply_page_local(
                 placements,
                 protected_digests,
             )
-            comparison = fixed_assets.compare(
+            failure_stage = GUARD_FIXED_ASSET
+            candidate_inventory = inventory_builder()
+            asset_comparison = fixed_assets.compare(
                 inventory,
-                fixed_assets.build_inventory(
-                    docs, protected_paragraph_labels=tuple(sorted(roles))
-                ),
+                candidate_inventory,
                 config.asset_bbox_tolerance_pt,
             )
-            if not comparison.holds:
+            if not asset_comparison.holds:
                 issues.append(GUARD_FIXED_ASSET)
             provisional = {
                 "page": page_number,
@@ -982,11 +1056,14 @@ def _apply_page_local(
                 issues.extend(str(item) for item in validator(page, provisional))
                 if issues:
                     issues.append(GUARD_DETECTOR)
-            if issues:
-                raise ArticleFlowError(", ".join(sorted(set(issues))))
-            generation = run_trace.begin_repair_generation(
-                f"article_flow:{article.article_id}:p{page_number}"
+            failure_stage = GUARD_ACCEPTANCE
+            monotonic = compare_flow(
+                article.article_id, (page_number,), segments, issues
             )
+            provisional["acceptance"] = monotonic.as_record()
+            if not monotonic.accepted:
+                raise ArticleFlowError(", ".join(sorted(set(issues))))
+            failure_stage = GUARD_TRACE
             for request_id, rows in _request_replacements(
                 run_trace, placements
             ).items():
@@ -1044,31 +1121,35 @@ def _apply_page_local(
                     reason=protected.reason,
                 )
             run_trace.validate()
-            run_trace.commit_generation(generation)
-            inventory = fixed_assets.build_inventory(
-                docs, protected_paragraph_labels=tuple(sorted(roles))
+            transaction_record = transaction.commit(
+                (item.render_ref for item in placements if item.render_ref),
+                capture_geometry=False,
             )
+            inventory = candidate_inventory
             page_records.append(
                 {
                     **provisional,
                     "status": "applied",
+                    "action_status": "committed",
                     "reason": None,
                     "released_holders": list(released_holders),
-                    "fixed_asset_comparison": comparison.to_record(),
+                    "fixed_asset_comparison": asset_comparison.to_record(),
+                    "transaction": transaction_record,
                 }
             )
         except Exception as error:
-            page.pdf_paragraph = original_paragraphs
-            if generation is not None:
-                run_trace.rollback_generation(generation)
+            transaction_record = transaction.rollback()
             page_records.append(
                 {
                     "page": page_number,
                     "article_id": article.article_id,
                     "status": "rolled_back",
-                    "reason": GUARD_TRACE if generation is not None else str(error),
+                    "action_status": "rolled_back",
+                    "reason": failure_stage,
+                    "failure_stage": failure_stage,
                     "detail": str(error),
                     "segments": [segment.to_record() for segment in segments],
+                    "transaction": transaction_record,
                 }
             )
     record = {

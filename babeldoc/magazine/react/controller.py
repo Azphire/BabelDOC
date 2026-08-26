@@ -70,6 +70,7 @@ from pathlib import Path
 from lxml import etree
 
 from babeldoc.format.pdf.document_il.midend.typesetting import Typesetting
+from babeldoc.magazine import acceptance
 from babeldoc.magazine import detectors
 from babeldoc.magazine import fixed_assets
 from babeldoc.magazine import hitl
@@ -90,6 +91,7 @@ from babeldoc.magazine.react.decide import CachedDecisionClient
 from babeldoc.magazine.react.decide import EngineTransport
 from babeldoc.magazine.react.decide import engine_identity
 from babeldoc.magazine.taxonomy import record_config_manifest
+from babeldoc.magazine.transaction import TransactionSnapshot
 
 logger = logging.getLogger(__name__)
 
@@ -120,9 +122,10 @@ STOP_NO_DECISION = "no_usable_decision"
 STOP_NO_ACTION = "decision_applied_nothing"
 STOP_NOTHING_APPLICABLE = "no_finding_the_action_may_act_on"
 STOP_NO_MECHANISM = "the_chosen_action_has_no_mechanism_behind_it"
-STOP_NOT_CONVERGING = "finding_count_did_not_strictly_decrease"
+STOP_NOT_CONVERGING = "monotonic_acceptance_failed"
 STOP_NOTHING_WRITTEN = "no_paragraph_was_written"
 STOP_CONVERGED_WITH_RESIDUALS = "converged_with_residuals"
+STOP_TRANSACTION_FAILED = "repair_action_or_detection_failed"
 
 # How far a round got, least far first. An iteration that wrote nothing reports
 # the furthest any of its rounds reached, because it is inert only where every
@@ -139,6 +142,11 @@ ROUND_PROGRESS = (
 OUTCOME_ADVANCED = "advanced"
 OUTCOME_ROLLED_BACK = "rolled_back"
 OUTCOME_INERT = "applied_nothing"
+
+ACTION_ATTEMPTED = "attempted"
+ACTION_NOT_EXECUTED = "not_executed"
+ACTION_ROLLED_BACK = "rolled_back"
+ACTION_COMMITTED = "committed"
 
 # Conservation verdicts.
 CONSERVED = "conserved"
@@ -252,6 +260,15 @@ class Snapshot:
             page = docs.page[page_position]
             if page.pdf_form is not None and len(page.pdf_form) > count:
                 del page.pdf_form[count:]
+
+
+class RoundFailure(RuntimeError):
+    """An action failed after its auditable round record was opened."""
+
+    def __init__(self, entry: dict, error: Exception):
+        super().__init__(str(error))
+        self.entry = entry
+        self.error = error
 
 
 def paragraph_digests(docs) -> dict[str, str]:
@@ -412,6 +429,8 @@ class RepairLoop:
         # The document as it stood before the first iteration, taken once the
         # run begins and put back if the run cannot finish.
         self.baseline = None
+        self.run_transaction = None
+        self.failure = None
         # Where every paragraph stood before anything was translated, read from
         # the run's own checkpoint. Loaded once and handed to every pass: the
         # loop detects several times over one document and the file behind this
@@ -806,6 +825,8 @@ class RepairLoop:
             "applicability": [],
             "executed": [],
             "written": [],
+            "attempted": False,
+            "action_status": ACTION_NOT_EXECUTED,
         }
         decision, request = self._round_client(kind).decide(offered)
         entry["decision"] = decision.as_record()
@@ -837,12 +858,23 @@ class RepairLoop:
         candidates, rejected = self._candidates(
             offered, decision, action, context, handler
         )
-        applied = (
-            handler.apply(candidates, context, snapshot, action) if candidates else []
-        )
+        if candidates:
+            entry["attempted"] = True
+            entry["action_status"] = ACTION_ATTEMPTED
+            entry["decision"]["action_status"] = ACTION_ATTEMPTED
+            try:
+                applied = handler.apply(candidates, context, snapshot, action)
+            except Exception as error:  # noqa: BLE001 - preserve the round record
+                entry["failure"] = f"{type(error).__name__}: {error}"
+                raise RoundFailure(entry, error) from error
+        else:
+            applied = []
         written = [item for item in applied if item.changed]
         entry["applicability"] = [item.as_record() for item in rejected]
-        entry["executed"] = [item.as_record() for item in applied]
+        entry["executed"] = [
+            {**item.as_record(), "action_status": ACTION_ATTEMPTED}
+            for item in applied
+        ]
         entry["written"] = [item.reference for item in written]
         if written:
             entry["reason"] = ""
@@ -851,6 +883,18 @@ class RepairLoop:
                 STOP_NOTHING_APPLICABLE if not candidates else STOP_NOTHING_WRITTEN
             )
         return entry, written
+
+    @staticmethod
+    def _finish_rounds(rounds, status: str) -> None:
+        for entry in rounds:
+            if not entry.get("attempted"):
+                continue
+            if entry.get("written") or entry.get("failure"):
+                entry["action_status"] = status
+                entry["decision"]["action_status"] = status
+            for application in entry.get("executed", ()):
+                if application.get("changed"):
+                    application["action_status"] = status
 
     def _iterate(self, iteration: int, issues, context) -> tuple[str, str, list]:
         """One iteration: every round once. Returns (outcome, stop reason, issues).
@@ -865,6 +909,7 @@ class RepairLoop:
             "detected": counts_of(issues),
             "detected_ids": [issue.id for issue in issues],
             "untreated": counts_of(working),
+            "action_status": ACTION_NOT_EXECUTED,
         }
         self.iterations.append(record)
 
@@ -872,116 +917,181 @@ class RepairLoop:
             record["outcome"] = OUTCOME_INERT
             record["decision"] = None
             record["rounds"] = []
+            record["transaction"] = {"status": ACTION_NOT_EXECUTED, "pages": []}
             return OUTCOME_INERT, STOP_NO_ENGINE, issues
 
-        generation = (
-            None
-            if self.run_trace is None
-            else self.run_trace.begin_repair_generation(
-                f"react_iteration_{iteration}"
-            )
+        inventory_builder = lambda: fixed_assets.build_inventory(
+            self.docs,
+            run_trace=self.run_trace,
+            protected_paragraph_labels=self.protected_paragraph_labels,
         )
-
-        snapshot = Snapshot()
+        transaction = TransactionSnapshot.capture(
+            self.docs,
+            run_trace=self.run_trace,
+            fixed_inventory=self.fixed_inventory,
+            fixed_inventory_builder=inventory_builder,
+        )
+        transaction.begin_generation(f"react_iteration_{iteration}")
+        action_snapshot = Snapshot()
         rounds: list[dict] = []
         written: list = []
         halted = ""
-        for kind, offered in round_plan(self.repair_config, self.kind_order, working):
-            entry, applied = self._round(kind, offered, context, snapshot)
-            rounds.append(entry)
-            written.extend(applied)
-            if entry["reason"] == STOP_NO_MECHANISM:
-                halted = STOP_NO_MECHANISM
-                break
+        touched_before = set(self.touched)
+        applications_before = self.applications
+        treated_before = dict(self.treated)
 
-        record["rounds"] = rounds
-        record["applicability"] = [
-            item for entry in rounds for item in entry["applicability"]
-        ]
-        record["executed"] = [item for entry in rounds for item in entry["executed"]]
-        # The iteration's decision is the one that acted, and the first of them
-        # where several rounds did; where none did, the first round asked. What
-        # every round decided is in ``rounds`` and is not summarised away.
-        leading = next(
-            (entry for entry in rounds if not entry["reason"]),
-            rounds[0] if rounds else None,
-        )
-        record["decision"] = None if leading is None else leading["decision"]
-        record["request"] = None if leading is None else leading["request"]
-
-        if not written:
-            record["outcome"] = OUTCOME_INERT
-            snapshot.restore(self.docs)
-            if generation is not None:
-                self.run_trace.rollback_generation(generation)
-            if halted:
-                return OUTCOME_INERT, halted, issues
-            reasons = [entry["reason"] for entry in rounds if entry["reason"]]
-            return (
-                OUTCOME_INERT,
-                max(reasons, key=ROUND_PROGRESS.index)
-                if reasons
-                else STOP_NOTHING_APPLICABLE,
-                issues,
+        def summarise_rounds() -> None:
+            record["rounds"] = rounds
+            record["applicability"] = [
+                item for entry in rounds for item in entry.get("applicability", ())
+            ]
+            record["executed"] = [
+                item for entry in rounds for item in entry.get("executed", ())
+            ]
+            leading = next(
+                (entry for entry in rounds if not entry.get("reason")),
+                rounds[0] if rounds else None,
             )
+            record["decision"] = None if leading is None else leading.get("decision")
+            record["request"] = None if leading is None else leading.get("request")
 
-        rechecked, new_context = detect(
-            self.translation_config,
-            self.docs,
-            self.detector_config,
-            iteration,
-            self.source_layout,
-        )
-        before = {issue.id for issue in issues}
-        after = {issue.id for issue in rechecked}
-        newly = self._newly_treated(written, issues, rechecked, iteration)
-        self.treated.update(newly)
-        untreated = self._untreated(rechecked)
-        record["recheck"] = counts_of(rechecked)
-        record["untreated_after"] = counts_of(untreated)
-        record["resolved_ids"] = sorted(before - after)
-        record["new_ids"] = sorted(after - before)
-        record["treated_ids"] = sorted(newly)
+        try:
+            for kind, offered in round_plan(
+                self.repair_config, self.kind_order, working
+            ):
+                try:
+                    entry, applied = self._round(
+                        kind, offered, context, action_snapshot
+                    )
+                except RoundFailure as failure:
+                    rounds.append(failure.entry)
+                    raise failure.error from failure
+                rounds.append(entry)
+                written.extend(applied)
+                if entry["reason"] == STOP_NO_MECHANISM:
+                    halted = STOP_NO_MECHANISM
+                    break
+            summarise_rounds()
 
-        if generation is not None:
-            self.run_trace.capture_repair_document(
+            if not written:
+                record["outcome"] = OUTCOME_INERT
+                record["action_status"] = (
+                    ACTION_ATTEMPTED
+                    if any(entry.get("attempted") for entry in rounds)
+                    else ACTION_NOT_EXECUTED
+                )
+                record["transaction"] = transaction.not_executed()
+                if halted:
+                    return OUTCOME_INERT, halted, issues
+                reasons = [entry["reason"] for entry in rounds if entry["reason"]]
+                return (
+                    OUTCOME_INERT,
+                    max(reasons, key=ROUND_PROGRESS.index)
+                    if reasons
+                    else STOP_NOTHING_APPLICABLE,
+                    issues,
+                )
+
+            rechecked, new_context = detect(
+                self.translation_config,
                 self.docs,
-                generation,
-                (item.reference for item in written),
-            )
-
-        if len(untreated) >= len(working):
-            # Not strictly decreasing: undo this iteration and stop. A repair
-            # that trades one finding for another is not progress, and a loop
-            # that cannot tell the difference will run to its ceiling. What is
-            # counted is the findings this run has neither resolved nor made
-            # smaller, so a repair that improved a finding without clearing it
-            # is progress and one that rewrote a line into the same defect is
-            # not.
-            for issue_id in newly:
-                self.treated.pop(issue_id, None)
-            snapshot.restore(self.docs)
-            if generation is not None:
-                self.run_trace.rollback_generation(generation)
-            for item in written:
-                self.touched.discard(item.reference)
-                self.applications -= 1
-            record["outcome"] = OUTCOME_ROLLED_BACK
-            record["rolled_back_refs"] = [item.reference for item in written]
-            record["treated_ids"] = []
-            logger.warning(
-                "react: iteration %d left %d untreated finding(s) against %d "
-                "before it; rolled back and stopped",
+                self.detector_config,
                 iteration,
-                len(untreated),
-                len(working),
+                self.source_layout,
             )
-            return OUTCOME_ROLLED_BACK, STOP_NOT_CONVERGING, issues
+            asset_comparison = fixed_assets.compare(
+                self.fixed_inventory,
+                inventory_builder(),
+                self.asset_bbox_tolerance_pt,
+            )
+            policy = acceptance.load_acceptance_policy()
+            compared_after = list(rechecked)
+            if not asset_comparison.holds:
+                compared_after.append(
+                    acceptance.measured_issue(
+                        f"fixed_asset_guard:iteration:{iteration}",
+                        "fixed_asset_drift",
+                        policy.severity_order[-1],
+                        {"drift_count": 1},
+                        ("drift_count",),
+                        schema_version=policy.schema_version,
+                    )
+                )
+            monotonic = acceptance.compare_issues(
+                issues, compared_after, policy
+            )
+            before_ids = {issue.id for issue in issues}
+            after_ids = {issue.id for issue in rechecked}
+            newly = self._newly_treated(written, issues, rechecked, iteration)
+            untreated = [
+                issue
+                for issue in rechecked
+                if issue.id not in (set(self.treated) | set(newly))
+            ]
+            record["recheck"] = counts_of(rechecked)
+            record["untreated_after"] = counts_of(untreated)
+            record["resolved_ids"] = sorted(before_ids - after_ids)
+            record["new_ids"] = sorted(after_ids - before_ids)
+            record["treated_ids"] = sorted(newly)
+            record["acceptance"] = monotonic.as_record()
+            record["fixed_asset_comparison"] = asset_comparison.to_record()
 
-        if generation is not None:
-            self.run_trace.commit_generation(generation)
-        record["outcome"] = OUTCOME_ADVANCED
-        return OUTCOME_ADVANCED, "", (rechecked, new_context)
+            if not monotonic.accepted:
+                self.touched.clear()
+                self.touched.update(touched_before)
+                self.applications = applications_before
+                self.treated = treated_before
+                self._finish_rounds(rounds, ACTION_ROLLED_BACK)
+                summarise_rounds()
+                record["outcome"] = OUTCOME_ROLLED_BACK
+                record["action_status"] = ACTION_ROLLED_BACK
+                record["rolled_back_refs"] = [item.reference for item in written]
+                record["treated_ids"] = []
+                record["transaction"] = transaction.rollback()
+                logger.warning(
+                    "react: iteration %d failed monotonic acceptance (%s); "
+                    "rolled back and stopped",
+                    iteration,
+                    ", ".join(monotonic.reasons),
+                )
+                return OUTCOME_ROLLED_BACK, STOP_NOT_CONVERGING, issues
+
+            self.treated.update(newly)
+            transaction_record = transaction.commit(
+                item.reference for item in written
+            )
+            self._finish_rounds(rounds, ACTION_COMMITTED)
+            summarise_rounds()
+            record["transaction"] = transaction_record
+            record["action_status"] = ACTION_COMMITTED
+            record["outcome"] = OUTCOME_ADVANCED
+            return OUTCOME_ADVANCED, "", (rechecked, new_context)
+        except Exception as error:  # noqa: BLE001 - a partial action must restore
+            rolled_back_refs = sorted(set(self.touched) - touched_before)
+            self.touched.clear()
+            self.touched.update(touched_before)
+            self.applications = applications_before
+            self.treated = treated_before
+            self._finish_rounds(rounds, ACTION_ROLLED_BACK)
+            summarise_rounds()
+            record["outcome"] = OUTCOME_ROLLED_BACK
+            record["action_status"] = (
+                ACTION_ROLLED_BACK
+                if any(entry.get("attempted") for entry in rounds)
+                else ACTION_NOT_EXECUTED
+            )
+            record["rolled_back_refs"] = rolled_back_refs
+            record["failure"] = {
+                "type": type(error).__name__,
+                "detail": str(error),
+            }
+            record["transaction"] = transaction.rollback()
+            self.failure = record["failure"]
+            logger.exception(
+                "react: iteration %d failed; the complete touched set was restored",
+                iteration,
+            )
+            return OUTCOME_ROLLED_BACK, STOP_TRANSACTION_FAILED, issues
 
     # -- the run ----------------------------------------------------------
 
@@ -1006,6 +1116,16 @@ class RepairLoop:
         before_shape = shape(self.docs)
         before_document = copy.deepcopy(self.docs)
         self.baseline = before_document
+        self.run_transaction = TransactionSnapshot.capture(
+            self.docs,
+            run_trace=self.run_trace,
+            fixed_inventory=self.fixed_inventory,
+            fixed_inventory_builder=lambda: fixed_assets.build_inventory(
+                self.docs,
+                run_trace=self.run_trace,
+                protected_paragraph_labels=self.protected_paragraph_labels,
+            ),
+        )
 
         issues, context = detect(
             self.translation_config,
@@ -1065,11 +1185,7 @@ class RepairLoop:
                 len(outside),
                 asset_comparison.holds,
             )
-            self.docs.page = before_document.page
-            if self.run_trace is not None:
-                self.run_trace.rollback_generations_after(
-                    self.trace_base_generation
-                )
+            conservation["rollback"] = self.run_transaction.rollback()
             self.touched.clear()
             self.treated.clear()
             stop = f"{VIOLATED}: conservation"
@@ -1109,6 +1225,10 @@ class RepairLoop:
         detectors.write_report(
             self.working_dir, detectors.as_record(context, issues)
         )
+        action_statuses: dict[str, int] = {}
+        for iteration in self.iterations:
+            status = iteration.get("action_status", ACTION_NOT_EXECUTED)
+            action_statuses[status] = action_statuses.get(status, 0) + 1
         record = {
             "switch": SWITCH,
             "config": self.repair_config.as_record(),
@@ -1125,12 +1245,20 @@ class RepairLoop:
             "final_untreated": counts_of(self._untreated(issues)),
             "api_calls": len(self.attributions),
             "api_attributions": [dict(row) for row in self.attributions],
+            "action_statuses": dict(sorted(action_statuses.items())),
+            "failure": self.failure,
         }
         path = self.working_dir / REPORT_NAME
         with path.open("w", encoding="utf-8") as f:
             json.dump(record, f, indent=2, sort_keys=True, ensure_ascii=False)
         record_config_manifest(
-            self.working_dir, [CONFIG_PATH, DETECTOR_CONFIG_PATH, ROUNDS_CONFIG_PATH]
+            self.working_dir,
+            [
+                CONFIG_PATH,
+                DETECTOR_CONFIG_PATH,
+                ROUNDS_CONFIG_PATH,
+                acceptance.CONFIG_PATH,
+            ],
         )
 
 
@@ -1159,31 +1287,95 @@ def repair_document(
     )
     try:
         return loop.run()
-    except Exception:  # noqa: BLE001 - the loop never stops a translation
+    except Exception as error:  # noqa: BLE001 - the loop never stops a translation
         logger.exception(
             "react: the repair loop failed; the document is left as typesetting "
             "produced it and detection alone is reported"
         )
-        if loop.baseline is not None:
+        rollback_record = None
+        if loop.run_transaction is not None:
+            rollback_record = loop.run_transaction.rollback()
+        elif loop.baseline is not None:
             docs.page = loop.baseline.page
-        if run_trace is not None:
+        if run_trace is not None and loop.run_transaction is None:
             if loop.trace_base_generation is None:
                 run_trace.rollback_open_generations()
             else:
                 run_trace.rollback_generations_after(
                     loop.trace_base_generation
                 )
+        loop.failure = {"type": type(error).__name__, "detail": str(error)}
         config = detectors.detector_config()
-        issues, context = detect(
-            translation_config,
-            docs,
-            config,
-            0,
-            detectors.source_geometry_of(
-                loop.working_dir, config, run_trace=run_trace
-            ),
+        try:
+            issues, context = detect(
+                translation_config,
+                docs,
+                config,
+                0,
+                loop.source_layout,
+            )
+        except Exception as detection_error:  # noqa: BLE001 - report the failure
+            issues = []
+            context = detectors.build_context(
+                docs,
+                config,
+                getattr(translation_config, "lang_out", None),
+                None,
+                translation_performed=not getattr(
+                    translation_config, "skip_translation", False
+                ),
+                iteration=0,
+                source_geometry=loop.source_layout,
+            )
+            loop.failure["fallback_detection_failure"] = {
+                "type": type(detection_error).__name__,
+                "detail": str(detection_error),
+            }
+            context.notes.append(
+                "repair fallback detection failed; no findings were classified"
+            )
+        attempted = any(
+            iteration.get("action_status")
+            in {ACTION_ATTEMPTED, ACTION_ROLLED_BACK, ACTION_COMMITTED}
+            for iteration in loop.iterations
         )
-        detectors.write_report(
-            loop.working_dir, detectors.as_record(context, issues)
+        loop.iterations.append(
+            {
+                "iteration": len(loop.iterations) + 1,
+                "outcome": OUTCOME_ROLLED_BACK if attempted else OUTCOME_INERT,
+                "action_status": (
+                    ACTION_ROLLED_BACK if attempted else ACTION_NOT_EXECUTED
+                ),
+                "failure": loop.failure,
+                "rounds": [],
+                "transaction": rollback_record,
+            }
+        )
+        loop._write(
+            issues,
+            context,
+            {
+                "verdict": VIOLATED,
+                "pages_before": len(docs.page),
+                "pages_after": len(docs.page),
+                "paragraphs_before": sum(shape(docs)),
+                "paragraphs_after": sum(shape(docs)),
+                "touched_refs": [],
+                "changed_refs": [],
+                "changed_outside_touched": [],
+                "fixed_assets": fixed_assets.compare(
+                    loop.fixed_inventory,
+                    fixed_assets.build_inventory(
+                        docs,
+                        run_trace=run_trace,
+                        protected_paragraph_labels=loop.protected_paragraph_labels,
+                    ),
+                    loop.asset_bbox_tolerance_pt,
+                ).to_record(),
+                "failure": loop.failure,
+                "rollback": rollback_record,
+            },
+            STOP_TRANSACTION_FAILED,
+            len(loop.iterations),
         )
         return issues

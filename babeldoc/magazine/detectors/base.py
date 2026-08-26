@@ -18,6 +18,7 @@ import json
 import unicodedata
 from dataclasses import dataclass
 from dataclasses import field
+from dataclasses import replace
 from functools import lru_cache
 from pathlib import Path
 
@@ -38,6 +39,8 @@ PROFILE_DETECTORS_KEY = "profile_detectors"
 DOCUMENT_DETECTORS_KEY = "document_detectors"
 DEFAULT_PROFILE_KEY = "default_profile"
 PROGRESS_EVIDENCE_KEY = "progress_evidence"
+
+SEVERITY_VECTOR_VERSION = "1"
 
 # The pipeline stage whose checkpoint holds the layout as the source drew it.
 # A stage name rather than a number, validated against the declared stage order
@@ -220,7 +223,8 @@ def _parse_progress(raw: object, source: str, kinds: set[str]) -> dict:
         _require(
             isinstance(fields, list)
             and bool(fields)
-            and all(isinstance(name, str) for name in fields),
+            and all(isinstance(name, str) and name for name in fields)
+            and len(set(fields)) == len(fields),
             f"{source}: {PROGRESS_EVIDENCE_KEY}.{kind} must list evidence fields",
         )
         progress[kind] = tuple(fields)
@@ -517,6 +521,27 @@ def coverage(left, right) -> float:
 
 
 @dataclass(frozen=True)
+class SeverityVector:
+    """Versioned monotone measurements for one detector finding."""
+
+    schema_version: str
+    severity: str
+    dimensions: tuple[tuple[str, object], ...]
+
+    @classmethod
+    def from_evidence(cls, severity: str, evidence: dict, fields) -> SeverityVector:
+        dimensions = tuple((name, evidence.get(name)) for name in fields)
+        return cls(SEVERITY_VECTOR_VERSION, severity, dimensions)
+
+    def as_record(self) -> dict:
+        return {
+            "schema_version": self.schema_version,
+            "severity": self.severity,
+            "dimensions": {name: value for name, value in self.dimensions},
+        }
+
+
+@dataclass(frozen=True)
 class Issue:
     """One finding about a finished document."""
 
@@ -528,6 +553,7 @@ class Issue:
     evidence: dict
     detector: str
     detected_at_iteration: int = 0
+    severity_vector: SeverityVector | None = None
 
     @property
     def id(self) -> str:
@@ -542,6 +568,9 @@ class Issue:
         return f"{self.detector}:p{self.page}:{tail}"
 
     def as_record(self) -> dict:
+        vector = self.severity_vector or SeverityVector.from_evidence(
+            self.severity, self.evidence, ()
+        )
         return {
             "id": self.id,
             "kind": self.kind,
@@ -552,7 +581,16 @@ class Issue:
             "evidence": self.evidence,
             "detector": self.detector,
             "detected_at_iteration": self.detected_at_iteration,
+            "severity_vector": vector.as_record(),
         }
+
+    def with_severity_fields(self, fields) -> Issue:
+        return replace(
+            self,
+            severity_vector=SeverityVector.from_evidence(
+                self.severity, self.evidence, fields
+            ),
+        )
 
 
 @dataclass(frozen=True)

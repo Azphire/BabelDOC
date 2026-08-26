@@ -1,0 +1,16 @@
+{
+  "description": "Deterministic acceptance policy shared by article flow, column reflow, and bounded repair transactions. The comparator first enforces non-worsening invariants, then requires one strict improvement. Total and per-kind finding counts may not increase, every surviving issue must retain or reduce every declared severity dimension, and a newly introduced issue at or above reject_new_at_or_above is always rejected. A transaction is accepted only when a count falls or a surviving severity vector strictly improves.",
+  "schema_version": "1",
+  "policy": "typed_lexicographic",
+  "severity_order": [
+    "low",
+    "medium",
+    "high",
+    "critical"
+  ],
+  "reject_new_at_or_above": "high",
+  "require_total_nonincrease": true,
+  "require_kind_nonincrease": true,
+  "require_persistent_nonworsening": true,
+  "require_strict_improvement": true
+}

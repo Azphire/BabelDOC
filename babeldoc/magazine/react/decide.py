@@ -59,6 +59,8 @@ CACHE_KEY_VERSION = cache_key_fields.CACHE_KEY_VERSION
 # extra field is a reply to a different request than the one that was sent.
 REQUIRED_FIELDS = ("action", "issue_ids", "parameters", "reason")
 
+ACTION_NOT_EXECUTED = "not_executed"
+
 
 @dataclass(frozen=True)
 class Decision:
@@ -91,6 +93,7 @@ class Decision:
             "from_cache": self.from_cache,
             "raw": self.raw,
             "violations": list(self.violations),
+            "action_status": ACTION_NOT_EXECUTED,
         }
 
 

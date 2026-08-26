@@ -203,7 +203,10 @@ def run_detectors(context: DetectionContext) -> list[Issue]:
             notes=context.notes,
             records=context.records,
         )
-        found.extend(module.detect(scoped))
+        found.extend(
+            issue.with_severity_fields(context.config.progress_fields(issue.kind))
+            for issue in module.detect(scoped)
+        )
     return found
 
 

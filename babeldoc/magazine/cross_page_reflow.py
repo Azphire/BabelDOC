@@ -13,6 +13,7 @@ from babeldoc.magazine import article_flow
 from babeldoc.magazine import fixed_assets
 from babeldoc.magazine.run_trace import hash_record
 from babeldoc.magazine.run_trace import parse_source_ref
+from babeldoc.magazine.transaction import TransactionSnapshot
 
 ISSUE_CAPACITY_EXHAUSTION = "capacity_exhaustion"
 ISSUE_HARD_BOUNDARY = "hard_boundary"
@@ -519,6 +520,7 @@ def _segment_page_records(segment, result):
             "page": page,
             "article_id": segment.article_id,
             "status": result["status"],
+            "action_status": result.get("action_status", "not_executed"),
             "reason": result.get("reason"),
             "detail": result.get("detail"),
             "segments": [
@@ -532,7 +534,10 @@ def _segment_page_records(segment, result):
                 for reference in released
                 if parse_source_ref(reference)[0] == page
             ],
+            "transaction": result.get("transaction"),
         }
+        if "acceptance" in result:
+            records[page]["acceptance"] = result["acceptance"]
         if "fixed_asset_comparison" in result:
             records[page]["fixed_asset_comparison"] = result[
                 "fixed_asset_comparison"
@@ -551,6 +556,7 @@ def _merge_page_records(target, incoming) -> None:
         held["released_holders"].extend(record["released_holders"])
         if record["status"] == "rolled_back":
             held["status"] = "rolled_back"
+            held["action_status"] = record.get("action_status", "rolled_back")
             held["reason"] = record.get("reason")
         details = [item for item in (held.get("detail"), record.get("detail")) if item]
         held["detail"] = "; ".join(dict.fromkeys(details)) or None
@@ -614,18 +620,19 @@ def apply(
             result = {
                 **segment.to_record(),
                 "status": "rolled_back",
+                "action_status": "not_executed",
                 "reason": ISSUE_CAPACITY_EXHAUSTION,
                 "detail": str(error),
                 "placements": [],
                 "released_holders": [],
+                "transaction": {
+                    "status": "not_executed",
+                    "pages": list(segment.contiguous_pages),
+                },
             }
             segment_results.append(result)
             _merge_page_records(page_results, _segment_page_records(segment, result))
             continue
-        snapshots = {
-            page: copy.deepcopy(docs.page[page - 1])
-            for page in segment.contiguous_pages
-        }
         invariants = _document_invariants(docs)
         protected_refs = {
             item.reference
@@ -639,9 +646,27 @@ def apply(
             reference: fixed_assets.content_digest(_paragraph(docs, reference))
             for reference in protected_refs
         }
-        generation = None
+        inventory_builder = lambda: fixed_assets.build_inventory(
+            docs,
+            protected_paragraph_labels=tuple(sorted(protected_roles)),
+        )
+        transaction = TransactionSnapshot.capture(
+            docs,
+            (page - 1 for page in segment.contiguous_pages),
+            run_trace=run_trace,
+            fixed_inventory=inventory,
+            fixed_inventory_builder=inventory_builder,
+        )
+        generation = transaction.begin_generation(
+            f"cross_page_article_flow:{segment.article_id}:"
+            f"p{segment.contiguous_pages[0]}-p{segment.contiguous_pages[-1]}"
+        )
+        found = []
+        monotonic = None
+        failure_stage = article_flow.GUARD_ACTION
         try:
             placements, released_holders = _write_segment(docs, segment, planned)
+            failure_stage = article_flow.GUARD_CONSERVATION
             found = _validate_ranges(segment, placements)
             for page in segment.contiguous_pages:
                 local_segments = tuple(
@@ -665,12 +690,11 @@ def apply(
                         validate_conservation=False,
                     )
                 )
+            failure_stage = article_flow.GUARD_FIXED_ASSET
+            candidate_inventory = inventory_builder()
             comparison = fixed_assets.compare(
                 inventory,
-                fixed_assets.build_inventory(
-                    docs,
-                    protected_paragraph_labels=tuple(sorted(protected_roles)),
-                ),
+                candidate_inventory,
                 config.asset_bbox_tolerance_pt,
             )
             if not comparison.holds:
@@ -690,12 +714,17 @@ def apply(
                     if detected:
                         found.extend(f"p{page}:{item}" for item in detected)
                         found.append(article_flow.GUARD_DETECTOR)
-            if found:
-                raise article_flow.ArticleFlowError(", ".join(sorted(set(found))))
-            generation = run_trace.begin_repair_generation(
-                f"cross_page_article_flow:{segment.article_id}:"
-                f"p{segment.contiguous_pages[0]}-p{segment.contiguous_pages[-1]}"
+            failure_stage = article_flow.GUARD_ACCEPTANCE
+            monotonic = article_flow.compare_flow(
+                segment.article_id,
+                segment.contiguous_pages,
+                segment.page_segments,
+                found,
             )
+            provisional["acceptance"] = monotonic.as_record()
+            if not monotonic.accepted:
+                raise article_flow.ArticleFlowError(", ".join(sorted(set(found))))
+            failure_stage = article_flow.GUARD_TRACE
             for request_id, rows in article_flow._request_replacements(
                 run_trace, placements
             ).items():
@@ -782,36 +811,37 @@ def apply(
                     reason=item.reason,
                 )
             run_trace.validate()
-            run_trace.commit_generation(generation)
-            inventory = fixed_assets.build_inventory(
-                docs,
-                protected_paragraph_labels=tuple(sorted(protected_roles)),
+            transaction_record = transaction.commit(
+                (item.render_ref for item in placements if item.render_ref),
+                capture_geometry=False,
             )
+            inventory = candidate_inventory
             result = {
                 **segment.to_record(),
                 "status": "applied",
+                "action_status": "committed",
                 "reason": None,
                 "placements": [item.to_record() for item in placements],
                 "released_holders": list(released_holders),
                 "fixed_asset_comparison": comparison.to_record(),
+                "acceptance": monotonic.as_record(),
+                "transaction": transaction_record,
             }
         except Exception as error:
-            for page, snapshot in snapshots.items():
-                docs.page[page - 1] = snapshot
-            if generation is not None:
-                run_trace.rollback_generation(generation)
+            transaction_record = transaction.rollback()
             result = {
                 **segment.to_record(),
                 "status": "rolled_back",
-                "reason": (
-                    article_flow.GUARD_TRACE
-                    if generation is not None
-                    else str(error)
-                ),
+                "action_status": "rolled_back",
+                "reason": failure_stage,
+                "failure_stage": failure_stage,
                 "detail": str(error),
                 "placements": [],
                 "released_holders": [],
+                "transaction": transaction_record,
             }
+            if monotonic is not None:
+                result["acceptance"] = monotonic.as_record()
         segment_results.append(result)
         _merge_page_records(page_results, _segment_page_records(segment, result))
     unsupported = {item.page for item in article_document_ir.unsupported_pages}
@@ -826,6 +856,7 @@ def apply(
                     "page": page,
                     "article_id": article_id,
                     "status": "skipped",
+                    "action_status": "not_executed",
                     "reason": (
                         article_flow.SKIP_UNSUPPORTED
                         if page in unsupported

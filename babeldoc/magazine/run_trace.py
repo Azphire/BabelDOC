@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import copy
 import hashlib
 import json
 import re
@@ -1182,6 +1183,61 @@ class RunTrace:
                 self.current_generation, reason, GENERATION_OPEN
             )
             return self.current_generation
+
+    def transaction_snapshot(self) -> dict:
+        """State needed to restore a failed mutation without trace residue."""
+        names = (
+            "sources",
+            "requests",
+            "chain_outcomes",
+            "fragments",
+            "geometries",
+            "flow_slots",
+            "generations",
+            "current_generation",
+            "unsupported_pages",
+            "blocked_reasons",
+            "_source_objects",
+            "_whole_targets",
+            "_fragment_text",
+            "_generation_request_snapshots",
+            "_generation_fragment_snapshots",
+        )
+        with self._lock:
+            return {name: copy.deepcopy(getattr(self, name)) for name in names}
+
+    def restore_transaction_snapshot(self, snapshot: dict) -> None:
+        """Restore a state produced by :meth:`transaction_snapshot` exactly."""
+        with self._lock:
+            for name, value in snapshot.items():
+                setattr(self, name, copy.deepcopy(value))
+
+    def transaction_digest(self) -> str:
+        """Digest of the externally observable trace generation and lineage."""
+        return hash_record(self.to_record())
+
+    def transaction_allocator_digest(self) -> str:
+        """Digest of active request allocation state used by flow transactions."""
+        with self._lock:
+            return hash_record(
+                {
+                    "requests": {
+                        request_id: sorted(request.fragment_ids)
+                        for request_id, request in sorted(self.requests.items())
+                    },
+                    "fragments": {
+                        fragment_id: {
+                            "active": fragment.active,
+                            "allocation_status": fragment.allocation_status,
+                            "generation": fragment.generation,
+                            "slot_id": fragment.slot_id,
+                            "render_ref": fragment.render_ref,
+                            "render_page": fragment.render_page,
+                        }
+                        for fragment_id, fragment in sorted(self.fragments.items())
+                    },
+                }
+            )
 
     def capture_repair_document(
         self,

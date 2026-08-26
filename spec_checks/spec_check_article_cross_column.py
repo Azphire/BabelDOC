@@ -426,6 +426,7 @@ def check_trace_failure_rolls_back() -> None:
         request_id: set(request.fragment_ids)
         for request_id, request in trace.requests.items()
     }
+    before_trace = trace.to_json_bytes()
     original_record = trace.record_flow_slot
 
     def fail_record(*_args, **_kwargs):
@@ -450,10 +451,7 @@ def check_trace_failure_rolls_back() -> None:
             request.fragment_ids == before_active[request_id]
             for request_id, request in trace.requests.items()
         )
-        and any(
-            generation.status == "rolled_back"
-            for generation in trace.generations.values()
-        ),
+        and trace.to_json_bytes() == before_trace,
         repr(report["pages"][0]),
     )
     trace.validate()

@@ -84,7 +84,6 @@ the last bit.
 
 from __future__ import annotations
 
-import copy
 import json
 import logging
 import statistics
@@ -95,6 +94,7 @@ from functools import lru_cache
 from pathlib import Path
 
 from babeldoc.format.pdf.document_il.il_version_1 import Box
+from babeldoc.magazine import acceptance
 from babeldoc.magazine import fixed_assets
 from babeldoc.magazine import hitl
 from babeldoc.magazine.detectors import base
@@ -107,6 +107,7 @@ from babeldoc.magazine.page_features import validate_bounded_config
 from babeldoc.magazine.runtime_profile import record_runtime_blocked_reason
 from babeldoc.magazine.taxonomy import load_taxonomy
 from babeldoc.magazine.taxonomy import record_config_manifest
+from babeldoc.magazine.transaction import TransactionSnapshot
 
 logger = logging.getLogger(__name__)
 
@@ -163,6 +164,9 @@ GUARD_COLUMN_TOP = "above_column_top"
 # what the whole page detects as afterwards.
 GUARD_NEW_FINDING = "new_finding_after_shift"
 GUARD_FIXED_ASSET = "fixed_asset_changed"
+
+GAP_ISSUE_KIND = "abnormal_blank_area"
+GAP_ISSUE_DETECTOR = "column_gap"
 
 # Why a page carrying the profile was not reflowed at all.
 SKIP_NO_SOURCE = "no_source_geometry"
@@ -698,8 +702,8 @@ def plan_page(
     return {"members": members, "columns": records}
 
 
-def _page_issues(page, label: int, translation_config, source_geometry) -> set[str]:
-    """Every page level finding of one page, by the name a detector gives it.
+def _page_issues(page, label: int, translation_config, source_geometry) -> list:
+    """Every page level finding of one page.
 
     Detection is what says whether a change made a page worse, so the pass asks
     it rather than deciding for itself. Document level detectors are left out:
@@ -726,9 +730,52 @@ def _page_issues(page, label: int, translation_config, source_geometry) -> set[s
         source_geometry=source_geometry,
     )
     issues = detectors.run_detectors(context)
-    return {
-        issue.id for issue in issues if issue.detector not in config.document_detectors
-    }
+    return [
+        issue for issue in issues if issue.detector not in config.document_detectors
+    ]
+
+
+def _coerce_issues(values, policy) -> list:
+    return [
+        acceptance.measured_issue(
+            str(value),
+            "injected_finding",
+            policy.reject_new_at_or_above,
+            {},
+            (),
+            schema_version=policy.schema_version,
+        )
+        if isinstance(value, str)
+        else value
+        for value in values
+    ]
+
+
+def _gap_issue(label: int, columns_of, key: str, policy) -> base.Issue:
+    columns = [record for record, _group in columns_of if record["applied"]]
+    references = tuple(
+        sorted(
+            {
+                row["reference"]
+                for column in columns
+                for row in column["rows"]
+                if row["shift"] > 0
+            }
+        )
+    )
+    evidence = {"excess_sum": round(sum(item[key] for item in columns), 4)}
+    return base.Issue(
+        kind=GAP_ISSUE_KIND,
+        page=label,
+        paragraph_refs=references,
+        geometry=None,
+        severity=policy.severity_order[0],
+        evidence=evidence,
+        detector=GAP_ISSUE_DETECTOR,
+        severity_vector=base.SeverityVector.from_evidence(
+            policy.severity_order[0], evidence, ("excess_sum",)
+        ),
+    )
 
 
 def apply_page(
@@ -765,9 +812,17 @@ def apply_page(
     }
     if not applicable:
         record["skipped"] = SKIP_NO_COLUMN
+        record["action_status"] = "not_executed"
         return record
 
-    before = reader(page, label, translation_config, source_geometry)
+    policy = acceptance.load_acceptance_policy()
+    before = _coerce_issues(
+        reader(page, label, translation_config, source_geometry), policy
+    )
+    before_with_gap = [
+        *before,
+        _gap_issue(label, applicable, "excess_sum_before", policy),
+    ]
     stored = []
     for _column, group in applicable:
         for member in group:
@@ -786,18 +841,30 @@ def apply_page(
                 column["applied"] = False
                 column["guard"] = GUARD_FIXED_ASSET
             record["guard"] = GUARD_FIXED_ASSET
+            record["action_status"] = "rolled_back"
             return record
-    after = reader(page, label, translation_config, source_geometry)
-    introduced = sorted(after - before)
-    if introduced:
+    after = _coerce_issues(
+        reader(page, label, translation_config, source_geometry), policy
+    )
+    after_with_gap = [
+        *after,
+        _gap_issue(label, applicable, "excess_sum_after", policy),
+    ]
+    comparison = acceptance.compare_issues(
+        before_with_gap, after_with_gap, policy
+    )
+    record["acceptance"] = comparison.as_record()
+    if not comparison.accepted:
         restore(stored)
         for column, _group in applicable:
             column["applied"] = False
             column["guard"] = GUARD_NEW_FINDING
         record["guard"] = GUARD_NEW_FINDING
-        record["introduced_findings"] = introduced
+        record["introduced_findings"] = list(comparison.new_ids)
+        record["action_status"] = "rolled_back"
         return record
     record["applied"] = True
+    record["action_status"] = "committed"
     record["findings_before"] = len(before)
     record["findings_after"] = len(after)
     return record
@@ -865,7 +932,7 @@ def write_report(working_dir: Path, record: dict) -> Path:
     path.parent.mkdir(parents=True, exist_ok=True)
     with path.open("w", encoding="utf-8") as f:
         json.dump(record, f, indent=2, sort_keys=True, ensure_ascii=False)
-    record_config_manifest(path.parent, [CONFIG_PATH])
+    record_config_manifest(path.parent, [CONFIG_PATH, acceptance.CONFIG_PATH])
     return path
 
 
@@ -900,6 +967,11 @@ def apply(
             f"{list(config.target_languages)}; no page was reflowed"
         )
         record = as_record(config, pages, target_lang, notes)
+        record["transaction"] = {
+            "status": "not_executed",
+            "pages": [],
+            "reason": "target_language_not_selected",
+        }
         write_report(working_dir, record)
         return record
 
@@ -935,12 +1007,21 @@ def apply(
         if article_document_ir is not None
         else set(getattr(run_trace, "unsupported_pages", ()))
     )
-    baseline_pages = copy.deepcopy(docs.page)
-    generation = (
-        None
-        if run_trace is None or source is None
-        else run_trace.begin_repair_generation("column_reflow")
+    inventory_builder = lambda: fixed_assets.build_inventory(
+        docs,
+        article_document_ir=article_document_ir,
+        run_trace=run_trace,
+        protected_paragraph_labels=config.protected_paragraph_labels,
     )
+    transaction = TransactionSnapshot.capture(
+        docs,
+        run_trace=run_trace,
+        fixed_inventory=fixed_inventory,
+        fixed_inventory_builder=inventory_builder,
+    )
+    if source is not None:
+        transaction.begin_generation("column_reflow")
+    failure = None
     for label, page in hitl.labeled_pages(docs):
         if not config.selects(taxonomy.policy_of(getattr(page, "page_kind", None))):
             continue
@@ -954,6 +1035,7 @@ def apply(
                     "applied": False,
                     "guard": None,
                     "skipped": SKIP_UNSUPPORTED,
+                    "action_status": "not_executed",
                 }
             )
             continue
@@ -967,45 +1049,81 @@ def apply(
                     "applied": False,
                     "guard": None,
                     "skipped": prerequisite_issue["code"],
+                    "action_status": "not_executed",
                 }
             )
             continue
-        pages.append(
-            apply_page(
+        try:
+            page_record = apply_page(
                 page,
                 label,
                 translation_config,
                 source,
                 config,
                 fixed_inventory=fixed_inventory,
-                inventory_after=lambda: fixed_assets.build_inventory(
-                    docs,
-                    article_document_ir=article_document_ir,
-                    run_trace=run_trace,
-                    protected_paragraph_labels=config.protected_paragraph_labels,
-                ),
+                inventory_after=inventory_builder,
             )
-        )
+        except Exception as error:  # noqa: BLE001 - the transaction must close
+            failure = f"{type(error).__name__}: {error}"
+            transaction_record = transaction.rollback()
+            for previous in pages:
+                if previous.get("applied"):
+                    previous["applied"] = False
+                    previous["guard"] = GUARD_NEW_FINDING
+                    previous["action_status"] = "rolled_back"
+            pages.append(
+                {
+                    "page": label,
+                    "kind": getattr(page, "page_kind", None),
+                    "columns": [],
+                    "members": 0,
+                    "applied": False,
+                    "guard": GUARD_NEW_FINDING,
+                    "action_status": "rolled_back",
+                    "failure": failure,
+                }
+            )
+            notes.append(
+                "column reflow failed during mutation or detection; the complete "
+                "touched set was restored"
+            )
+            break
+        pages.append(page_record)
     if source is None and pages:
         notes.append(
             f"the source checkpoint is {source_result.status.value}, so there is "
             "no source gap to converge to and nothing was moved"
         )
-    final_inventory = fixed_assets.build_inventory(
-        docs,
-        article_document_ir=article_document_ir,
-        run_trace=run_trace,
-        protected_paragraph_labels=config.protected_paragraph_labels,
-    )
-    final_comparison = fixed_assets.compare(
-        fixed_inventory, final_inventory, config.asset_bbox_tolerance_pt
-    )
-    if not final_comparison.holds:
-        docs.page = baseline_pages
+    final_comparison = None
+    if failure is None:
+        try:
+            final_comparison = fixed_assets.compare(
+                fixed_inventory,
+                inventory_builder(),
+                config.asset_bbox_tolerance_pt,
+            )
+        except Exception as error:  # noqa: BLE001 - detection closes the transaction
+            failure = f"{type(error).__name__}: {error}"
+            transaction_record = transaction.rollback()
+            for page_record in pages:
+                if page_record["applied"]:
+                    page_record["applied"] = False
+                    page_record["guard"] = GUARD_FIXED_ASSET
+                    page_record["action_status"] = "rolled_back"
+                for column in page_record["columns"]:
+                    if column["applied"]:
+                        column["applied"] = False
+                        column["guard"] = GUARD_FIXED_ASSET
+            notes.append(
+                "fixed asset detection failed; the complete document was restored"
+            )
+    if final_comparison is not None and not final_comparison.holds:
+        transaction_record = transaction.rollback()
         for page_record in pages:
             if page_record["applied"]:
                 page_record["applied"] = False
                 page_record["guard"] = GUARD_FIXED_ASSET
+                page_record["action_status"] = "rolled_back"
             for column in page_record["columns"]:
                 if column["applied"]:
                     column["applied"] = False
@@ -1013,6 +1131,24 @@ def apply(
         notes.append(
             "fixed asset conservation failed; the complete document was restored"
         )
+    elif failure is None:
+        touched = {
+            row["reference"]
+            for page_record in pages
+            if page_record["applied"]
+            for column in page_record["columns"]
+            if column["applied"]
+            for row in column["rows"]
+            if row["shift"] > 0
+        }
+        if touched:
+            transaction_record = transaction.commit(touched)
+        elif any(
+            item.get("action_status") == "rolled_back" for item in pages
+        ):
+            transaction_record = transaction.rollback()
+        else:
+            transaction_record = transaction.not_executed()
     record = as_record(
         config,
         pages,
@@ -1023,23 +1159,13 @@ def apply(
             () if prerequisite_issue is None else (prerequisite_issue,)
         ),
     )
-    record["fixed_asset_comparison"] = final_comparison.to_record()
+    record["fixed_asset_comparison"] = (
+        None if final_comparison is None else final_comparison.to_record()
+    )
+    record["transaction"] = transaction_record
+    if failure is not None:
+        record["failure"] = failure
     write_report(working_dir, record)
-    if generation is not None:
-        if not final_comparison.holds:
-            run_trace.rollback_generation(generation)
-            return record
-        touched = {
-            row["reference"]
-            for page in pages
-            if page["applied"]
-            for column in page["columns"]
-            if column["applied"]
-            for row in column["rows"]
-            if row["shift"] > 0
-        }
-        run_trace.capture_repair_document(docs, generation, touched)
-        run_trace.commit_generation(generation)
     logger.debug(
         "column reflow: %d page(s), %d column(s) closed, %.1fpt recovered",
         record["totals"]["pages_considered"],
