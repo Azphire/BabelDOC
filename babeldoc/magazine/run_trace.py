@@ -399,6 +399,8 @@ class FlowSlotRecord:
     box: BoxTuple | None
     source_ref: str | None = None
     render_ref: str | None = None
+    previous_page: int | None = None
+    previous_slot_id: str | None = None
     reason: str | None = None
     generation: int = 0
     active: bool = True
@@ -412,6 +414,15 @@ class FlowSlotRecord:
             "box": None if self.box is None else list(self.box),
             "source_ref": self.source_ref,
             "render_ref": self.render_ref,
+            "movement": None
+            if self.previous_page is None and self.previous_slot_id is None
+            else {
+                "before": {
+                    "page": self.previous_page,
+                    "slot_id": self.previous_slot_id,
+                },
+                "after": {"page": self.page, "slot_id": self.slot_id},
+            },
             "reason": self.reason,
             "generation": self.generation,
             "active": self.active,
@@ -928,6 +939,8 @@ class RunTrace:
         box: Sequence[float] | None,
         source_ref: str | None = None,
         render_ref: str | None = None,
+        previous_page: int | None = None,
+        previous_slot_id: str | None = None,
         reason: str | None = None,
     ) -> None:
         """Record an allocated, released, or protected article-flow region."""
@@ -941,6 +954,16 @@ class RunTrace:
                 raise ValueError("flow slot source must be registered")
             if render_ref is not None:
                 parse_source_ref(render_ref)
+            if previous_page is not None and previous_page <= 0:
+                raise ValueError("flow slot previous page must be positive")
+            if previous_slot_id == "":
+                raise ValueError("flow slot previous id cannot be empty")
+            if (
+                source_ref is not None
+                and previous_page is not None
+                and self.sources[source_ref].page != previous_page
+            ):
+                raise ValueError("flow slot previous page disagrees with its source")
             self.flow_slots[slot_id] = FlowSlotRecord(
                 slot_id=slot_id,
                 article_id=article_id,
@@ -949,6 +972,8 @@ class RunTrace:
                 box=_checked_box(box),
                 source_ref=source_ref,
                 render_ref=render_ref,
+                previous_page=previous_page,
+                previous_slot_id=previous_slot_id,
                 reason=reason,
                 generation=generation,
             )
@@ -1543,6 +1568,17 @@ class RunTrace:
                     )
             if any(count > 1 for count in active_by_fragment.values()):
                 raise ValueError("a fragment can have only one active geometry")
+            for slot in self.flow_slots.values():
+                if slot.generation not in self.generations:
+                    raise ValueError("flow slot points to an unknown generation")
+                if slot.source_ref is not None and slot.source_ref not in self.sources:
+                    raise ValueError("flow slot points to an unknown source")
+                if (
+                    slot.source_ref is not None
+                    and slot.previous_page is not None
+                    and self.sources[slot.source_ref].page != slot.previous_page
+                ):
+                    raise ValueError("flow slot movement starts on the wrong page")
             for generation in self.generations.values():
                 if generation.status != GENERATION_ROLLED_BACK:
                     continue

@@ -73,6 +73,8 @@ class ParagraphBoundaryToken:
     """A zero-width boundary retaining one target paragraph's identity and policy."""
 
     source_ref: str
+    source_page: int
+    source_slot_id: str | None
     paragraph_order: int
     request_id: str
     fragment_id: str
@@ -88,6 +90,8 @@ class ParagraphBoundaryToken:
     def to_record(self) -> dict:
         return {
             "source_ref": self.source_ref,
+            "source_page": self.source_page,
+            "source_slot_id": self.source_slot_id,
             "paragraph_order": self.paragraph_order,
             "request_id": self.request_id,
             "fragment_id": self.fragment_id,
@@ -169,6 +173,8 @@ class FlowPlacement:
     source_ref: str
     request_id: str
     old_fragment_id: str
+    previous_page: int
+    previous_slot_id: str | None
     target_start: int
     target_end: int
     text: str
@@ -189,6 +195,8 @@ class FlowPlacement:
             self.source_ref,
             self.request_id,
             self.old_fragment_id,
+            self.previous_page,
+            self.previous_slot_id,
             self.target_start,
             self.target_end,
             self.text,
@@ -210,6 +218,13 @@ class FlowPlacement:
             "source_ref": self.source_ref,
             "render_ref": self.render_ref,
             "request_id": self.request_id,
+            "movement": {
+                "before": {
+                    "page": self.previous_page,
+                    "slot_id": self.previous_slot_id,
+                },
+                "after": {"page": self.page, "slot_id": self.slot_id},
+            },
             "target_range": [self.target_start, self.target_end],
             "chars": len(self.text),
             "page": self.page,
@@ -445,6 +460,11 @@ def build_page_segments(
                     boundaries.append(
                         ParagraphBoundaryToken(
                             source_ref=element.source_ref,
+                            source_page=element.page,
+                            source_slot_id=(
+                                fragment["slot_id"]
+                                or f"source-holder:{element.source_ref}"
+                            ),
                             paragraph_order=element.reading_order,
                             request_id=fragment["request_id"],
                             fragment_id=fragment["fragment_id"],
@@ -608,10 +628,12 @@ def allocate_segment(
                     source_ref=boundary.source_ref,
                     request_id=boundary.request_id,
                     old_fragment_id=boundary.fragment_id,
+                    previous_page=boundary.source_page,
+                    previous_slot_id=boundary.source_slot_id,
                     target_start=target_start,
                     target_end=target_end,
                     text=boundary.text[local:end],
-                    page=segment.page,
+                    page=slot.page,
                     column=slot.column,
                     slot_order=len(placements),
                     box=box,
@@ -697,6 +719,8 @@ def _validate_page(
     segments,
     placements,
     protected_digests: Mapping[str, str],
+    *,
+    validate_conservation: bool = True,
 ) -> list[str]:
     issues = []
     frame = _box_tuple(getattr(docs.page[page_number - 1].cropbox, "box", None))
@@ -739,15 +763,16 @@ def _validate_page(
     for reference, digest in protected_digests.items():
         if fixed_assets.content_digest(_paragraph(docs, reference)) != digest:
             issues.append(GUARD_PROTECTED)
-    for segment in segments:
-        for boundary in segment.boundaries:
-            pieces = [
-                item.text
-                for item in placements
-                if item.old_fragment_id == boundary.fragment_id
-            ]
-            if "".join(pieces) != boundary.text:
-                issues.append(GUARD_CONSERVATION)
+    if validate_conservation:
+        for segment in segments:
+            for boundary in segment.boundaries:
+                pieces = [
+                    item.text
+                    for item in placements
+                    if item.old_fragment_id == boundary.fragment_id
+                ]
+                if "".join(pieces) != boundary.text:
+                    issues.append(GUARD_CONSERVATION)
     return sorted(set(issues))
 
 
@@ -829,7 +854,7 @@ def _write_report(translation_config, record: dict) -> Path:
     return path
 
 
-def apply(
+def _apply_page_local(
     translator,
     docs,
     article_document_ir,
@@ -1062,3 +1087,27 @@ def apply(
     }
     _write_report(translator.translation_config, record)
     return record
+
+
+def apply(
+    translator,
+    docs,
+    article_document_ir,
+    run_trace,
+    *,
+    typesetter: Typesetting | None = None,
+    validator: Callable[[object, dict], Sequence[str]] | None = None,
+    config: ArticleFlowConfig | None = None,
+) -> dict | None:
+    """Apply bounded article flow across canonical adjacent pages."""
+    from babeldoc.magazine import cross_page_reflow
+
+    return cross_page_reflow.apply(
+        translator,
+        docs,
+        article_document_ir,
+        run_trace,
+        typesetter=typesetter,
+        validator=validator,
+        config=config,
+    )
