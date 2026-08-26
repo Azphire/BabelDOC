@@ -23,6 +23,7 @@ REPORT_NAME = "drop_cap_intent.report.json"
 POLICY_ALPHABETIC = "alphabetic"
 POLICY_CJK_IDEOGRAPH = "cjk_ideograph"
 POLICY_ENGLISH_RAISED_INITIAL = "english_raised_initial"
+POLICY_CHINESE_TWO_LINE_INITIAL = "chinese_two_line_initial"
 
 FLATTEN_PENDING = "pending"
 FLATTEN_APPLIED = "applied"
@@ -409,6 +410,12 @@ def eligible_initial(characters, policy: str) -> tuple[int, object] | None:
         ):
             return index, character
         if policy == POLICY_CJK_IDEOGRAPH and any(_is_cjk_ideograph(char) for char in text):
+            return index, character
+        if (
+            policy == POLICY_CHINESE_TWO_LINE_INITIAL
+            and len(text) == 1
+            and _is_cjk_ideograph(text)
+        ):
             return index, character
     return None
 

@@ -56,10 +56,11 @@
     "vocabulary": [
       "alphabetic",
       "cjk_ideograph",
+      "chinese_two_line_initial",
       "english_raised_initial"
     ],
     "entries": {
-      "zh": "cjk_ideograph",
+      "zh": "chinese_two_line_initial",
       "en": "english_raised_initial"
     }
   }

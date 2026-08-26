@@ -271,6 +271,7 @@ def _read_target_policies(raw: object, source: str):
     required = {
         drop_cap_intent.POLICY_ALPHABETIC,
         drop_cap_intent.POLICY_CJK_IDEOGRAPH,
+        drop_cap_intent.POLICY_CHINESE_TWO_LINE_INITIAL,
         drop_cap_intent.POLICY_ENGLISH_RAISED_INITIAL,
     }
     _require(
