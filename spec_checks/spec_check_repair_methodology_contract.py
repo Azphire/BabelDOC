@@ -104,7 +104,7 @@ def _decision(state: RepairKnowledgeState) -> RepairDecision:
             element_refs=("p1#0",),
             legal_slot_refs=("legal-slot-1",),
         ),
-        parameters=(("margin", 0.05),),
+        parameters=(("collision_axis", "least_overlap"),),
         state_sha256=state.sha256(),
     )
 

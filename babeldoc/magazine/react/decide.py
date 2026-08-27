@@ -1,23 +1,18 @@
-"""The decision step: which action, on which findings, with what parameters.
+"""Forced structured selection for one bounded repair action.
 
-One request per iteration, through the run's own engine, filed in the project
-cache under a key naming the prompt file it came from. The reply is a JSON
-object and is held to the vocabulary the request stated: an action name outside
-it, a finding id that was not offered, a parameter the action does not declare
-or a value outside its range are all violations. A violated reply is asked for
-again once with the violation stated back, and a second violation abandons the
-iteration rather than guessing -- not repairing is the safe failure of a repair
-loop, and the loop's own guard would have to undo a wrong guess anyway.
+The production path makes one logical ``select_repair_action`` tool request
+through the run's translator.  Provider arguments are decoded against the
+versioned wire schema and converted to C19's canonical :class:`RepairDecision`;
+the exact C19 knowledge state then preflights that decision before the caller
+can resolve or invoke a handler.  There is deliberately no text-response JSON
+path here.
 
-Nothing here writes to the document. What it returns is a decision the caller
-is free to reject: the applicability rule below it decides whether the findings
-the decision named are ones the action may act on, and that rule is
-deterministic and is not the model's to overrule.
+Generic fence stripping remains for the separate orphan-translation reader;
+there is no historical decision reader on the executable controller surface.
 """
 
 from __future__ import annotations
 
-import json
 import logging
 from dataclasses import dataclass
 from dataclasses import field
@@ -30,24 +25,26 @@ from babeldoc.magazine.react.cache_key import GROUP_DECISION
 from babeldoc.magazine.react.cache_key import SERVED_BYPASSED
 from babeldoc.magazine.react.cache_key import SERVED_MISS
 from babeldoc.magazine.react.cache_key import SERVED_RETRY
-from babeldoc.magazine.react.cache_key import SERVED_STALE
 from babeldoc.magazine.react.cache_key import attribution
 from babeldoc.magazine.react.config import NO_ACTION
 from babeldoc.magazine.react.config import RepairConfig
-from babeldoc.magazine.react.config import RepairConfigError
-from babeldoc.translator.cache import TranslationCache
+from babeldoc.magazine.repair_contract import RepairAction
+from babeldoc.magazine.repair_contract import RepairContractError
+from babeldoc.magazine.repair_contract import RepairDecision
+from babeldoc.magazine.repair_contract import RepairKnowledgeState
+from babeldoc.magazine.repair_contract import RepairTarget
+from babeldoc.translator.repair_tool_schema import RepairToolContext
+from babeldoc.translator.repair_tool_schema import decode_repair_tool_arguments
+from babeldoc.translator.repair_tool_schema import load_repair_tool_config
+from babeldoc.translator.repair_tool_schema import repair_tool_parameters_schema
+from babeldoc.translator.tool_call import ToolCallError
+from babeldoc.translator.tool_call import ToolCallLimits
+from babeldoc.translator.tool_call import ToolCallSchemaError
+from babeldoc.translator.tool_call import ToolCallsUnsupported
 
 logger = logging.getLogger(__name__)
 
 DECIDE_PROMPT = "react_repair_decide"
-
-# The generic notice a rejected reply is asked again with, shared with the
-# vision client: what it says is true of any strict-shape request.
-RETRY_PROMPT = "vlm_retry_notice"
-
-# Engine name the decisions are filed under, keeping them out of the translated
-# segments sharing the database. The column is 20 characters wide.
-ENGINE_NAME = "magazine_repair"
 
 # The composition a key is built by, shared with the orphan action's cache so
 # the two cannot drift apart. Named here as well because the engine parameters
@@ -55,82 +52,54 @@ ENGINE_NAME = "magazine_repair"
 # composition does.
 CACHE_KEY_VERSION = cache_key_fields.CACHE_KEY_VERSION
 
-# Fields a reply must carry. Anything else in the object is a violation: an
-# extra field is a reply to a different request than the one that was sent.
-REQUIRED_FIELDS = ("action", "issue_ids", "parameters", "reason")
-
 ACTION_NOT_EXECUTED = "not_executed"
-
-
-@dataclass(frozen=True)
-class Decision:
-    """One iteration's choice, as the loop is allowed to act on it."""
-
-    action: str
-    issue_ids: tuple[str, ...]
-    parameters: dict[str, float]
-    reason: str
-    attempts: int = 0
-    from_cache: bool = False
-    raw: str = ""
-    violations: tuple[str, ...] = ()
-
-    @property
-    def acts(self) -> bool:
-        return self.action != NO_ACTION and bool(self.issue_ids)
-
-    @property
-    def refused(self) -> bool:
-        return self.action == ""
-
-    def as_record(self) -> dict:
-        return {
-            "action": self.action,
-            "issue_ids": list(self.issue_ids),
-            "parameters": dict(self.parameters),
-            "reason": self.reason,
-            "attempts": self.attempts,
-            "from_cache": self.from_cache,
-            "raw": self.raw,
-            "violations": list(self.violations),
-            "action_status": ACTION_NOT_EXECUTED,
-        }
-
-
-REFUSED = Decision(action="", issue_ids=(), parameters={}, reason="")
+STRUCTURED_TOOL_CALLS_UNSUPPORTED = "STRUCTURED_TOOL_CALLS_UNSUPPORTED"
+STRUCTURED_TOOL_CACHE_HIT = "structured_tool_cache_hit"
 
 
 @dataclass
 class RequestLog:
-    """What one decision point sent, for the sidecar."""
+    """Digest-only accounting for one logical structured selection."""
 
     prompt_digest: str = ""
-    prompt_text: str = ""
     key: str = ""
-    replies: list[str] = field(default_factory=list)
-    # One row per call that reached the transport, which is one row per call
-    # the run is billed for. A request the cache answered adds none.
     calls: list[dict] = field(default_factory=list)
+    violations: list[str] = field(default_factory=list)
+    logical_calls: int = 0
+    provider_attempts: int = 0
+    cache_hits: int = 0
 
 
 class EngineTransport:
-    """The run's translation engine, asked a question that is not a translation.
-
-    A repair decision is a text request to the model already configured for the
-    run, so it travels that engine's transport: its credential, its endpoint and
-    its rate limiter, none of which is configured a second time here. The
-    engine's own cache is bypassed, because the cache that serves a decision is
-    the one below, whose key names the prompt file the request came from.
-    """
+    """The run's translator, exposing only its forced-tool interface."""
 
     def __init__(self, engine):
         self.engine = engine
 
-    def complete(self, prompt_text: str) -> str:
-        return self.engine.llm_translate(
-            prompt_text,
-            ignore_cache=True,
-            rate_limit_params={"request_json_mode": True},
+    def counters(self) -> tuple[int, int]:
+        return (
+            int(getattr(self.engine, "tool_call_attempt_count", 0)),
+            int(getattr(self.engine, "tool_call_cache_hit_count", 0)),
+        )
+
+    def select(
+        self,
+        *,
+        messages,
+        state_sha256: str,
+        cache_context: dict[str, object],
+        request_limits: dict[str, int | float],
+    ):
+        if not self.engine.supports_tool_calls():
+            raise ToolCallsUnsupported("strict structured tool calls unavailable")
+        tool = load_repair_tool_config()
+        return self.engine.llm_tool_call(
+            messages=messages,
+            tool_name=tool.tool_name,
+            parameters_schema=repair_tool_parameters_schema(tool),
+            state_sha256=state_sha256,
+            cache_context=cache_context,
+            request_limits=request_limits,
         )
 
 
@@ -197,7 +166,8 @@ def issues_block(issues, excerpt_chars: int, limit: int, drop=()) -> str:
             f"  kind: {issue.kind}\n"
             f"  severity: {issue.severity}\n"
             f"  page: {issue.page}\n"
-            f"  paragraphs: {', '.join(issue.paragraph_refs)}\n"
+            f"  article refs: {', '.join(getattr(issue, 'article_refs', ()))}\n"
+            f"  target element refs: {', '.join(issue.paragraph_refs)}\n"
             f"  evidence: {detail}\n"
             f"  text as the page renders it: {excerpt}"
         )
@@ -211,16 +181,18 @@ def issues_block(issues, excerpt_chars: int, limit: int, drop=()) -> str:
 
 def actions_block(config: RepairConfig, _language: str | None = None) -> str:
     """The vocabulary as the request states it, one block per action."""
+    tool = load_repair_tool_config()
     lines: list[str] = []
     for name, action in sorted(config.actions.items()):
-        parameters = (
-            "; ".join(
-                f"{parameter.name} (number in {parameter.low}..{parameter.high}, "
-                f"default {parameter.default:g})"
-                for _key, parameter in sorted(action.parameters.items())
-            )
-            or "none"
-        )
+        descriptions = []
+        for slot_name in tool.actions[name]:
+            slot = tool.parameter_slots[slot_name]
+            if "enum" in slot:
+                bound = f"one of {', '.join(map(str, slot['enum']))}"
+            else:
+                bound = f"integer in {slot['minimum']}..{slot['maximum']}"
+            descriptions.append(f"{slot_name} ({bound})")
+        parameters = "; ".join(descriptions) or "none"
         lines.append(
             f'- name: "{name}"\n'
             f"  what it does: {action.description}\n"
@@ -257,83 +229,115 @@ def constraints_block(config: RepairConfig, language: str | None = None) -> str:
     return "\n".join(lines) if lines else "- none"
 
 
-def interpret(reply: str, config: RepairConfig, offered: set[str]):
-    """One reply as a decision, or the violation that refuses it."""
-    try:
-        parsed = json.loads(strip_fence(reply))
-    except (ValueError, TypeError) as exc:
-        return None, f"reply is not JSON: {exc}"
-    if not isinstance(parsed, dict):
-        return None, f"reply is a {type(parsed).__name__}, not one JSON object"
-    missing = [name for name in REQUIRED_FIELDS if name not in parsed]
-    if missing:
-        return None, f"reply omits {missing}"
-    extra = sorted(set(parsed) - set(REQUIRED_FIELDS))
-    if extra:
-        return None, f"reply carries fields nothing asked for: {extra}"
-
-    name = parsed["action"]
-    if not isinstance(name, str):
-        return None, "action is not a string"
-    action = config.action(name)
-    if action is None and name != NO_ACTION:
-        return (
-            None,
-            f"action {name!r} is outside the vocabulary; declared are "
-            f"{sorted(config.actions) + [NO_ACTION]}",
+def _tool_context(
+    issues, repair_state: RepairKnowledgeState, config: RepairConfig
+) -> RepairToolContext:
+    """Project only offered, canonically-owned refs into the wire decoder."""
+    roles = dict(repair_state.element_roles)
+    contract_issues = {item.issue_id: item for item in repair_state.issues}
+    issue_actions: dict[str, tuple[str, ...]] = {}
+    element_owners: dict[str, tuple[int, str]] = {}
+    supported_pages = {page for page, _digest in repair_state.page_policies}
+    unsupported_pages: set[int] = set()
+    for issue in issues[: config.max_issues_offered]:
+        issue_actions[issue.id] = tuple(
+            sorted(
+                name
+                for name, action in config.actions.items()
+                if action.answers_for(issue.kind)
+            )
         )
-
-    ids = parsed["issue_ids"]
-    if not isinstance(ids, list) or any(not isinstance(item, str) for item in ids):
-        return None, "issue_ids is not an array of strings"
-    unknown = sorted(set(ids) - offered)
-    if unknown:
-        return None, f"issue_ids names findings that were not offered: {unknown}"
-
-    reason = parsed["reason"]
-    if not isinstance(reason, str):
-        return None, "reason is not a string"
-
-    if action is None:
-        if ids:
-            return None, f"action is {NO_ACTION!r} but issue_ids is not empty"
-        return (
-            Decision(
-                action=NO_ACTION, issue_ids=(), parameters={}, reason=reason, raw=reply
-            ),
-            "",
+        contract = contract_issues.get(issue.id)
+        articles = (
+            tuple(contract.article_refs)
+            if contract is not None
+            else tuple(getattr(issue, "article_refs", ()))
         )
+        if issue.page not in supported_pages:
+            unsupported_pages.add(issue.page)
+        if len(articles) != 1:
+            continue
+        owner = (int(issue.page), articles[0])
+        for reference in issue.paragraph_refs:
+            if reference not in roles:
+                continue
+            previous = element_owners.get(reference)
+            if previous is None:
+                element_owners[reference] = owner
+            elif previous != owner:
+                element_owners.pop(reference, None)
+    return RepairToolContext(
+        state_sha256=repair_state.sha256(),
+        issue_actions=issue_actions,
+        element_owners=element_owners,
+        unsupported_pages=tuple(sorted(unsupported_pages)),
+    )
 
-    try:
-        parameters = action.resolve(parsed["parameters"])
-    except RepairConfigError as exc:
-        return None, str(exc)
-    if not ids:
-        return None, f"action {name!r} was chosen with no findings to apply it to"
-    return (
-        Decision(
-            action=name,
-            issue_ids=tuple(ids),
+
+def _canonical_decision(
+    domain: dict[str, object],
+    issues,
+    repair_state: RepairKnowledgeState,
+    config: RepairConfig,
+) -> RepairDecision:
+    """Bind decoded wire targets to the exact offered C19 issue objects."""
+    action = RepairAction(domain["action"])
+    parameters = config.decision_parameters(action, dict(domain["parameters"]))
+    if action is RepairAction.NO_ACTION:
+        return RepairDecision(
+            action=action,
+            issue_ids=(),
+            target=RepairTarget(),
             parameters=parameters,
-            reason=reason,
-            raw=reply,
+            state_sha256=repair_state.sha256(),
+        )
+
+    offered = {
+        issue.id: issue for issue in issues[: config.max_issues_offered]
+    }
+    selected = [offered[issue_id] for issue_id in domain["issue_ids"]]
+    contract = {item.issue_id: item for item in repair_state.issues}
+    expected_pages = {int(issue.page) for issue in selected}
+    expected_articles = {
+        article
+        for issue in selected
+        for article in contract[issue.id].article_refs
+    }
+    expected_elements = {
+        reference for issue in selected for reference in issue.paragraph_refs
+    }
+    wire_target = domain["target"]
+    if expected_pages != {wire_target["physical_page_number"]}:
+        raise ToolCallSchemaError("tool target must name the selected physical page")
+    if expected_articles != {wire_target["article_id"]}:
+        raise ToolCallSchemaError("tool target must name one selected article owner")
+    if expected_elements != set(wire_target["element_refs"]):
+        raise ToolCallSchemaError("tool target must name every selected element ref")
+    return RepairDecision(
+        action=action,
+        issue_ids=tuple(domain["issue_ids"]),
+        target=RepairTarget(
+            physical_pages=(wire_target["physical_page_number"],),
+            article_refs=(wire_target["article_id"],),
+            element_refs=tuple(sorted(wire_target["element_refs"])),
         ),
-        "",
+        parameters=parameters,
+        state_sha256=repair_state.sha256(),
     )
 
 
 class CachedDecisionClient:
-    """One decision point: cache lookup, bounded attempts, closed vocabulary."""
+    """One logical forced call, transport cache, strict decode and preflight."""
 
     def __init__(
         self,
         config: RepairConfig,
         transport=None,
-        cache: TranslationCache | None = None,
         identity: str = "",
         working_dir: Path | str | None = None,
         ignore_cache: bool = False,
         language: str | None = None,
+        request_limits: dict[str, object] | None = None,
     ) -> None:
         self.config = config
         # The run's target language, because an applicability term declared for
@@ -341,14 +345,10 @@ class CachedDecisionClient:
         # has to carry the value that governs.
         self.language = language
         self.transport = transport
-        self.cache = (
-            TranslationCache(ENGINE_NAME, {"cache_key_version": CACHE_KEY_VERSION})
-            if cache is None
-            else cache
-        )
         self.identity = identity
         self.working_dir = working_dir
         self.ignore_cache = ignore_cache
+        self.request_limits = ToolCallLimits.from_mapping(request_limits).as_record()
 
     def _render(self, issues, drop, working_dir) -> Prompt:
         return load_prompt(
@@ -379,113 +379,122 @@ class CachedDecisionClient:
         """
         return self._render(issues, self.config.volatile_evidence_keys, None)
 
-    def _retry_text(self, prompt: Prompt, violation: str) -> str:
-        notice = load_prompt(
-            RETRY_PROMPT, {"violation": violation}, working_dir=self.working_dir
-        )
-        return f"{prompt.text}\n\n{notice.text}"
-
     def decide(
-        self, issues, *, state_sha256: str | None = None
-    ) -> tuple[Decision, RequestLog]:
-        """Choose one action for one iteration, from cache where it is not new."""
+        self, issues, *, repair_state: RepairKnowledgeState
+    ) -> tuple[RepairDecision | None, RequestLog]:
+        """Return one preflighted C19 decision, or a typed fail-closed refusal."""
         prompt = self.prompt(issues)
-        offered = {issue.id for issue in issues[: self.config.max_issues_offered]}
+        state_sha256 = repair_state.sha256()
         key = cache_key(
             self.key_prompt(issues),
             self.identity,
             state_sha256=state_sha256,
         )
-        log = RequestLog(prompt_digest=prompt.digest, prompt_text=prompt.text, key=key)
-        verdict = SERVED_BYPASSED if self.ignore_cache else SERVED_MISS
+        log = RequestLog(prompt_digest=prompt.digest, key=key, logical_calls=1)
+        before_attempts, before_hits = self.transport.counters()
+        tool = load_repair_tool_config()
+        try:
+            result = self.transport.select(
+                messages=[
+                    {"role": "system", "content": prompt.text},
+                    {
+                        "role": "user",
+                        "content": f"repair_state_sha256={state_sha256}",
+                    },
+                ],
+                state_sha256=state_sha256,
+                cache_context={
+                    "decision_schema_version": tool.repair_config.decision_schema_version,
+                    "decision_prompt_sha256": prompt.digest,
+                    "decision_projection_sha256": key,
+                    "engine_identity": self.identity,
+                },
+                request_limits=self.request_limits,
+            )
+        except Exception as exc:  # noqa: BLE001 - every transport fault fails closed
+            after_attempts, after_hits = self.transport.counters()
+            self._account(
+                log,
+                prompt,
+                before_attempts,
+                before_hits,
+                after_attempts,
+                after_hits,
+            )
+            violation = (
+                STRUCTURED_TOOL_CALLS_UNSUPPORTED
+                if isinstance(exc, ToolCallsUnsupported)
+                else type(exc).__name__
+            )
+            log.violations.append(violation)
+            logger.warning(
+                "repair structured decision refused %s",
+                {"state_sha256": state_sha256, "reason": violation},
+            )
+            return None, log
 
-        if not self.ignore_cache:
-            try:
-                stored = self.cache.get(key)
-            except Exception as exc:  # noqa: BLE001 - a cache is never a hard failure
-                logger.debug("decision cache lookup failed, ignoring it: %s", exc)
-                stored = None
-            if stored is not None:
-                log.replies.append(stored)
-                decision, violation = interpret(stored, self.config, offered)
-                if decision is not None:
-                    return (
-                        Decision(
-                            action=decision.action,
-                            issue_ids=decision.issue_ids,
-                            parameters=decision.parameters,
-                            reason=decision.reason,
-                            attempts=0,
-                            from_cache=True,
-                            raw=stored,
-                        ),
-                        log,
-                    )
-                # A stored reply that no longer validates means the vocabulary
-                # moved under it. Ask again rather than serve what cannot be used.
-                logger.debug("cached decision rejected, re-requesting: %s", violation)
-                verdict = SERVED_STALE
+        after_attempts, after_hits = self.transport.counters()
+        self._account(
+            log,
+            prompt,
+            before_attempts,
+            before_hits,
+            after_attempts,
+            after_hits,
+        )
+        try:
+            domain = decode_repair_tool_arguments(
+                result.arguments,
+                _tool_context(issues, repair_state, self.config),
+                tool,
+            )
+            decision = _canonical_decision(
+                domain, issues, repair_state, self.config
+            )
+            repair_state.preflight(decision)
+        except (
+            ToolCallError,
+            RepairContractError,
+            KeyError,
+            TypeError,
+            ValueError,
+        ) as exc:
+            violation = type(exc).__name__
+            log.violations.append(violation)
+            logger.warning(
+                "repair structured decision rejected %s",
+                {"state_sha256": state_sha256, "reason": violation},
+            )
+            return None, log
+        return decision, log
 
-        text = prompt.text
-        violations: list[str] = []
-        attempts = 0
-        while attempts < self.config.decide_max_attempts:
-            attempts += 1
+    def _account(
+        self,
+        log: RequestLog,
+        prompt: Prompt,
+        before_attempts: int,
+        before_hits: int,
+        after_attempts: int,
+        after_hits: int,
+    ) -> None:
+        log.provider_attempts = max(0, after_attempts - before_attempts)
+        log.cache_hits = max(0, after_hits - before_hits)
+        verdict = (
+            SERVED_BYPASSED
+            if self.ignore_cache
+            else STRUCTURED_TOOL_CACHE_HIT
+            if log.cache_hits
+            else SERVED_MISS
+        )
+        for attempt in range(1, log.provider_attempts + 1):
             log.calls.append(
                 attribution(
                     GROUP_DECISION,
-                    SERVED_RETRY if attempts > 1 else verdict,
-                    key,
+                    SERVED_RETRY if attempt > 1 else verdict,
+                    log.key,
                     prompt.digest,
-                    text,
-                    attempts,
+                    prompt.text,
+                    attempt,
                     identity=self.identity,
                 )
             )
-            try:
-                reply = self.transport.complete(text)
-            except Exception as exc:  # noqa: BLE001 - any failure is a violation
-                violations.append(f"request failed: {type(exc).__name__}: {exc}")
-                text = self._retry_text(prompt, violations[-1])
-                continue
-            log.replies.append(reply)
-            decision, violation = interpret(reply, self.config, offered)
-            if decision is not None:
-                if not self.ignore_cache:
-                    try:
-                        self.cache.set(key, reply)
-                    except Exception as exc:  # noqa: BLE001 - see above
-                        logger.debug("decision cache write failed, ignoring: %s", exc)
-                return (
-                    Decision(
-                        action=decision.action,
-                        issue_ids=decision.issue_ids,
-                        parameters=decision.parameters,
-                        reason=decision.reason,
-                        attempts=attempts,
-                        raw=reply,
-                        violations=tuple(violations),
-                    ),
-                    log,
-                )
-            violations.append(violation)
-            text = self._retry_text(prompt, violation)
-
-        logger.warning(
-            "react: no usable decision after %d attempt(s); this iteration "
-            "applies nothing. %s",
-            attempts,
-            "; ".join(violations),
-        )
-        return (
-            Decision(
-                action="",
-                issue_ids=(),
-                parameters={},
-                reason="",
-                attempts=attempts,
-                raw=log.replies[-1] if log.replies else "",
-                violations=tuple(violations),
-            ),
-            log,
-        )

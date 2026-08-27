@@ -89,7 +89,6 @@ from babeldoc.magazine.react import contain
 from babeldoc.magazine.react import region_repair
 from babeldoc.magazine.react import writeback
 from babeldoc.magazine.react.config import CONFIG_PATH
-from babeldoc.magazine.react.config import MAX_PARAGRAPHS
 from babeldoc.magazine.react.config import RepairConfigError
 from babeldoc.magazine.react.config import load_repair_config
 from babeldoc.magazine.react.decide import CachedDecisionClient
@@ -98,7 +97,6 @@ from babeldoc.magazine.react.decide import engine_identity
 from babeldoc.magazine.repair_contract import RepairAction
 from babeldoc.magazine.repair_contract import RepairContractError
 from babeldoc.magazine.repair_contract import RepairDecision
-from babeldoc.magazine.repair_contract import RepairTarget
 from babeldoc.magazine.repair_contract import build_repair_knowledge_state
 from babeldoc.magazine.repair_detector_closure import CONFIG_PATH as CLOSURE_CONFIG_PATH
 from babeldoc.magazine.repair_detector_closure import DetectorClosureRun
@@ -446,6 +444,14 @@ class RepairLoop:
         self.language = getattr(translation_config, "lang_out", "") or ""
         self.identity = engine_identity(self.engine, self.language)
         self.ignore_cache = bool(getattr(translation_config, "ignore_cache", False))
+        self.tool_call_request_limits = {
+            "attempt_timeout_seconds": float(
+                getattr(translation_config, "tool_call_timeout_seconds", 60.0)
+            ),
+            "max_attempts": int(
+                getattr(translation_config, "max_tool_call_attempts", 1)
+            ),
+        }
         self.decision_client = decision_client
         self.translator = translator
         self.run_trace = run_trace
@@ -562,6 +568,7 @@ class RepairLoop:
                 working_dir=self.working_dir,
                 ignore_cache=self.ignore_cache,
                 language=self.language,
+                request_limits=self.tool_call_request_limits,
             )
         return self.decision_client
 
@@ -577,11 +584,11 @@ class RepairLoop:
         return CachedDecisionClient(
             round_vocabulary(base.config, kind),
             transport=base.transport,
-            cache=base.cache,
             identity=f"{base.identity}{ROUND_KEY_PREFIX}{kind}",
             language=base.language,
             working_dir=base.working_dir,
             ignore_cache=base.ignore_cache,
+            request_limits=base.request_limits,
         )
 
     def _translator(self):
@@ -668,7 +675,6 @@ class RepairLoop:
         by_id = {issue.id: issue for issue in issues}
         records: list[actions.Application] = []
         accepted: list[actions.Candidate] = []
-        limit = int(decision.parameters.get(MAX_PARAGRAPHS, 0))
         for issue_id in decision.issue_ids:
             issue = by_id.get(issue_id)
             if issue is None:
@@ -777,22 +783,16 @@ class RepairLoop:
                     )
                 )
                 continue
-            if len(accepted) >= limit:
-                records.append(
-                    actions.Application(
-                        issue_id=issue_id,
-                        reference=candidate.reference,
-                        accepted=False,
-                        reason=actions.REASON_LIMIT,
-                        source_text=candidate.source_text,
-                    )
-                )
-                continue
             accepted.append(candidate)
         return accepted, records
 
-    def _reallocate_chain(self, candidates, context, snapshot: Snapshot, _action):
+    def _reallocate_chain(
+        self, candidates, context, snapshot: Snapshot, _action, decision=None
+    ):
         """Move existing chain fragments through the shared legal-slot fitter."""
+        execution_parameters = (
+            {} if decision is None else dict(decision.parameters)
+        )
         positions = {
             view.label: position for position, view in enumerate(context.pages)
         }
@@ -826,6 +826,7 @@ class RepairLoop:
                         "article_id": plan.article_id,
                         "request_id": plan.request_id,
                         "whole_target_chars": len(plan.whole_target),
+                        "execution_parameters": execution_parameters,
                         "touched_refs": list(touched_refs),
                         "placements": [
                             {
@@ -843,7 +844,7 @@ class RepairLoop:
         return records
 
     def _retypeset_article_region(
-        self, candidates, context, _snapshot: Snapshot, _action
+        self, candidates, context, _snapshot: Snapshot, _action, decision=None
     ):
         """Repack existing targets; the controller owns generation and rollback."""
         records = []
@@ -874,12 +875,19 @@ class RepairLoop:
                     accepted=True,
                     reason=actions.ACCEPTED,
                     changed=True,
-                    geometry=result.to_record(),
+                    geometry={
+                        **result.to_record(),
+                        "execution_parameters": (
+                            {} if decision is None else dict(decision.parameters)
+                        ),
+                    },
                 )
             )
         return records
 
-    def _contain(self, candidates, context, snapshot: Snapshot, action):
+    def _contain(
+        self, candidates, context, snapshot: Snapshot, action, decision=None
+    ):
         """Put each admitted paragraph back inside its page. What happened.
 
         Where inside is the action's own declared margin, read from the
@@ -902,6 +910,9 @@ class RepairLoop:
             outcome = contain.apply_one(
                 candidate, action, context.config.collision_min_iou
             )
+            outcome.geometry["execution_parameters"] = (
+                {} if decision is None else dict(decision.parameters)
+            )
             if not outcome.changed:
                 candidate.page.pdf_paragraph[candidate.paragraph_index] = (
                     snapshot.paragraphs.pop((position, candidate.paragraph_index))
@@ -913,7 +924,9 @@ class RepairLoop:
             records.append(outcome)
         return records
 
-    def _resolve_collisions(self, candidates, context, snapshot: Snapshot, action):
+    def _resolve_collisions(
+        self, candidates, context, snapshot: Snapshot, action, decision=None
+    ):
         """Slide the smaller member of each admitted pair clear. What happened.
 
         The paragraph put under snapshot is the one the plan would move, which
@@ -929,6 +942,9 @@ class RepairLoop:
         for candidate in candidates:
             position = positions[candidate.page_index]
             outcome, found = collision.separate(candidate, action, context.config)
+            outcome.geometry["execution_parameters"] = (
+                {} if decision is None else dict(decision.parameters)
+            )
             if found is None:
                 records.append(outcome)
                 continue
@@ -946,19 +962,37 @@ class RepairLoop:
             records.append(outcome)
         return records
 
-    def _translate_orphans(self, candidates, context, snapshot: Snapshot, action):
+    def _translate_orphans(
+        self, candidates, context, snapshot: Snapshot, action, decision
+    ):
         """Translate and write each admitted candidate. Returns what happened."""
         pages_by_label = {view.label: view for view in context.pages}
         positions = {view.label: position for position, view in enumerate(context.pages)}
         translator = self._translator()
         typesetting = self._typesetting()
         records: list[actions.Application] = []
+        max_source_chars = int(dict(decision.parameters)["max_source_chars"])
         for candidate in candidates:
+            if len(candidate.source_text) > max_source_chars:
+                records.append(
+                    actions.Application(
+                        issue_id=candidate.issue_id,
+                        reference=candidate.reference,
+                        accepted=False,
+                        reason=actions.REASON_LIMIT,
+                        source_text=candidate.source_text,
+                        geometry={
+                            "execution_parameters": dict(decision.parameters)
+                        },
+                    )
+                )
+                continue
             view = pages_by_label[candidate.page_index]
             context_text = actions.page_context(
                 view, candidate.paragraph_index, self.repair_config.page_context_chars
             )
             outcome = translator.translate(candidate.source_text, context_text)
+            outcome.geometry["execution_parameters"] = dict(decision.parameters)
             for row in outcome.calls:
                 self.attributions.append({**row, "kind": actions.NAME})
             outcome.issue_id = candidate.issue_id
@@ -1139,9 +1173,16 @@ class RepairLoop:
             "repair_state_sha256": repair_state.sha256(),
         }
         decision, request = self._round_client(kind).decide(
-            offered, state_sha256=repair_state.sha256()
+            offered, repair_state=repair_state
         )
-        entry["decision"] = decision.as_record()
+        entry["decision"] = {
+            **({} if decision is None else decision.to_record()),
+            "logical_calls": request.logical_calls,
+            "provider_attempts": request.provider_attempts,
+            "cache_hits": request.cache_hits,
+            "violations": list(request.violations),
+            "action_status": ACTION_NOT_EXECUTED,
+        }
         entry["request"] = {
             "prompt_sha256": request.prompt_digest,
             "cache_key": request.key,
@@ -1149,20 +1190,20 @@ class RepairLoop:
         }
         for row in request.calls:
             self.attributions.append({**row, "kind": kind})
-        if decision.refused:
+        if decision is None:
             entry["reason"] = STOP_NO_DECISION
             return PreparedRound(entry, (), None, None, None)
-        if not decision.acts:
+        if decision.action is RepairAction.NO_ACTION:
             entry["reason"] = STOP_NO_ACTION
             return PreparedRound(entry, (), None, None, None)
 
-        action = self.repair_config.action(decision.action)
-        handler = self._handlers().get(decision.action)
+        action = self.repair_config.action(decision.action.value)
+        handler = self._handlers().get(decision.action.value)
         if handler is None:
             logger.error(
                 "react: the vocabulary declares %r but nothing here carries it "
                 "out; no paragraph was touched",
-                decision.action,
+                decision.action.value,
             )
             entry["reason"] = STOP_NO_MECHANISM
             return PreparedRound(entry, (), action, None, None)
@@ -1176,67 +1217,11 @@ class RepairLoop:
             for item in rejected
             if item.reason == actions.REASON_PROTECTED_DROP_CAP
         ]
-        selected = {
-            issue.id: issue for issue in offered if issue.id in decision.issue_ids
-        }
-        target_articles = {
-            article
-            for issue in selected.values()
-            for article in issue.article_refs
-        }
-        target_articles.update(
-            owner
-            for issue in selected.values()
-            if self.article_document_ir is not None
-            and (owner := self.article_document_ir.by_page.get(issue.page))
-            is not None
-        )
-        target_pages = {issue.page for issue in selected.values()}
-        target_chains = {
-            chain_id
-            for issue in selected.values()
-            if isinstance((chain_id := issue.evidence.get("chain_id")), str)
-            and self.article_document_ir is not None
-            and chain_id in self.article_document_ir.by_chain
-        }
-        target_slots = (
-            ()
-            if self.legal_slot_plan is None
-            else tuple(
-                sorted(
-                    slot.slot_id
-                    for slot in self.legal_slot_plan.slots
-                    if slot.article_id in target_articles
-                    and slot.page in target_pages
-                )
-            )
-        )
-        canonical_decision = RepairDecision(
-            action=RepairAction(decision.action),
-            issue_ids=tuple(decision.issue_ids),
-            target=RepairTarget(
-                physical_pages=tuple(sorted(target_pages)),
-                article_refs=tuple(sorted(target_articles)),
-                element_refs=tuple(
-                    sorted(
-                        {
-                            reference
-                            for issue in selected.values()
-                            for reference in issue.paragraph_refs
-                        }
-                    )
-                ),
-                chain_refs=tuple(sorted(target_chains)),
-                legal_slot_refs=target_slots,
-            ),
-            parameters=tuple(sorted(decision.parameters.items())),
-            state_sha256=repair_state.sha256(),
-        )
-        repair_state.preflight(canonical_decision, self.detector_closure)
-        entry["canonical_decision"] = canonical_decision.to_record()
+        repair_state.preflight(decision, self.detector_closure)
+        entry["canonical_decision"] = decision.to_record()
         entry["reason"] = "" if candidates else STOP_NOTHING_APPLICABLE
         return PreparedRound(
-            entry, tuple(candidates), action, handler, canonical_decision
+            entry, tuple(candidates), action, handler, decision
         )
 
     def _execute_round(
@@ -1254,7 +1239,11 @@ class RepairLoop:
         entry["decision"]["action_status"] = ACTION_ATTEMPTED
         try:
             applied = prepared.handler.apply(
-                list(prepared.candidates), context, snapshot, prepared.action
+                list(prepared.candidates),
+                context,
+                snapshot,
+                prepared.action,
+                prepared.decision,
             )
         except Exception as error:  # noqa: BLE001 - preserve the round record
             entry["failure"] = f"{type(error).__name__}: {error}"

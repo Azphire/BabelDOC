@@ -17,6 +17,44 @@
     "debug_ids",
     "source_checkpoint"
   ],
+  "decision_protocol": {
+    "schema_version": "repair-decision-wire.v1",
+    "parameter_slots": {
+      "max_source_chars": {
+        "type": "integer",
+        "minimum": 16,
+        "maximum": 20000
+      },
+      "fit_profile": {
+        "type": "string",
+        "enum": ["balanced"]
+      },
+      "spacing_profile": {
+        "type": "string",
+        "enum": ["preserve"]
+      },
+      "minimum_scale_profile": {
+        "type": "string",
+        "enum": ["conservative"]
+      },
+      "wrap_policy": {
+        "type": "string",
+        "enum": ["preserve_words"]
+      },
+      "collision_axis": {
+        "type": "string",
+        "enum": ["least_overlap"]
+      }
+    },
+    "action_parameter_slots": {
+      "reprocess_omitted_text": ["max_source_chars"],
+      "reallocate_continuity_chain": ["fit_profile", "spacing_profile", "wrap_policy"],
+      "retypeset_article_region": ["fit_profile", "spacing_profile", "wrap_policy"],
+      "contain_overflowing_heading": ["minimum_scale_profile", "wrap_policy"],
+      "resolve_text_collision": ["collision_axis"],
+      "no_action": []
+    }
+  },
   "actions": {
     "reprocess_omitted_text": {
       "description": "Send the text of a paragraph the translator was never given the chance to reach through the translation engine and write the answer back into it, then lay that paragraph out again.",
@@ -25,12 +63,6 @@
       ],
       "max_applications": 12,
       "max_applications_allowed_range": "1..200",
-      "parameters": {
-        "max_paragraphs": {
-          "default": 3,
-          "default_allowed_range": "1..20"
-        }
-      },
       "applicability": {
         "min_residue_ratio": 0.9,
         "min_residue_ratio_allowed_range": "0.05..1.0",
@@ -59,12 +91,6 @@
       ],
       "max_applications": 2,
       "max_applications_allowed_range": "1..20",
-      "parameters": {
-        "max_paragraphs": {
-          "default": 1,
-          "default_allowed_range": "1..1"
-        }
-      },
       "applicability": {
         "requires_complete_target": true,
         "statements": {
@@ -81,12 +107,6 @@
       ],
       "max_applications": 3,
       "max_applications_allowed_range": "1..20",
-      "parameters": {
-        "max_paragraphs": {
-          "default": 1,
-          "default_allowed_range": "1..1"
-        }
-      },
       "applicability": {
         "requires_legal_slots": true,
         "statements": {
@@ -105,12 +125,6 @@
       "contain_min_scale_allowed_range": "0.05..1.0",
       "contain_margin_ratio": 0.01,
       "contain_margin_ratio_allowed_range": "0.0..0.25",
-      "parameters": {
-        "max_paragraphs": {
-          "default": 3,
-          "default_allowed_range": "1..20"
-        }
-      },
       "applicability": {
         "contain_layout_labels": [
           "title",
@@ -137,12 +151,6 @@
       "resolve_max_shift_ratio_allowed_range": "0.0..0.5",
       "resolve_margin": 0.05,
       "resolve_margin_allowed_range": "0.0..0.5",
-      "parameters": {
-        "max_paragraphs": {
-          "default": 3,
-          "default_allowed_range": "1..20"
-        }
-      },
       "applicability": {
         "min_collision_coverage": 0.4,
         "min_collision_coverage_allowed_range": "0.05..1.0",

@@ -41,6 +41,10 @@ CONFIG_PATH = config_path("repair_actions.json")
 
 ACTIONS_KEY = "actions"
 PARAMETERS_KEY = "parameters"
+DECISION_PROTOCOL_KEY = "decision_protocol"
+DECISION_SCHEMA_VERSION = "repair-decision-wire.v1"
+DECISION_PARAMETER_SLOTS_KEY = "parameter_slots"
+DECISION_ACTION_PARAMETER_SLOTS_KEY = "action_parameter_slots"
 APPLICABILITY_KEY = "applicability"
 ISSUE_KINDS_KEY = "issue_kinds"
 DEFAULT_KEY = "default"
@@ -60,11 +64,6 @@ NO_ACTION = "no_action"
 MUTATING_ACTIONS = frozenset(
     action.value for action in RepairAction if action is not RepairAction.NO_ACTION
 )
-
-# The parameter every action that touches paragraphs declares: how many of them
-# one iteration may take. Named here rather than in one action's module because
-# the loop reads it to bound an iteration whichever action it is carrying out.
-MAX_PARAGRAPHS = "max_paragraphs"
 
 # Applicability keys the orphan action is built from.
 MIN_RATIO_KEY = "min_residue_ratio"
@@ -322,9 +321,55 @@ class RepairConfig:
     page_context_chars: int
     volatile_evidence_keys: tuple[str, ...]
     actions: dict[str, Action]
+    decision_schema_version: str
+    decision_parameter_slots: dict[str, dict[str, object]]
+    decision_action_parameter_slots: dict[str, tuple[str, ...]]
 
     def action(self, name: str) -> Action | None:
         return self.actions.get(name)
+
+    def decision_parameters(
+        self, action: str | RepairAction, supplied: dict[str, object]
+    ) -> tuple[tuple[str, int | str], ...]:
+        """Validate the canonical per-action parameter object.
+
+        The provider schema and C19 preflight both call this same owner.  The
+        single-valued profile enums certify the already-fixed deterministic
+        handler path; they do not select an unimplemented alternative mode.
+        """
+        name = action.value if isinstance(action, RepairAction) else action
+        required = self.decision_action_parameter_slots.get(name)
+        _require(required is not None, f"unknown repair action {name!r}")
+        _require(
+            set(supplied) == set(required),
+            f"{name}: decision parameters must be exactly {list(required)}",
+        )
+        canonical: list[tuple[str, int | str]] = []
+        for slot_name in required:
+            value = supplied[slot_name]
+            slot = self.decision_parameter_slots[slot_name]
+            if slot["type"] == "integer":
+                _require(
+                    isinstance(value, int) and not isinstance(value, bool),
+                    f"{name}.{slot_name}: value must be an integer",
+                )
+                _require(
+                    int(slot["minimum"]) <= value <= int(slot["maximum"]),
+                    f"{name}.{slot_name}: value is outside the canonical range",
+                )
+            else:
+                _require(
+                    isinstance(value, str) and value in slot["enum"],
+                    f"{name}.{slot_name}: unsupported execution profile",
+                )
+            canonical.append((slot_name, value))
+        return tuple(sorted(canonical))
+
+    def decision_parameter_schema(self) -> dict[str, dict[str, object]]:
+        return {
+            name: dict(slot)
+            for name, slot in self.decision_parameter_slots.items()
+        }
 
     def as_record(self) -> dict:
         return {
@@ -335,6 +380,14 @@ class RepairConfig:
             "max_glossary_entries": self.max_glossary_entries,
             "page_context_chars": self.page_context_chars,
             "volatile_evidence_keys": list(self.volatile_evidence_keys),
+            DECISION_PROTOCOL_KEY: {
+                "schema_version": self.decision_schema_version,
+                DECISION_PARAMETER_SLOTS_KEY: self.decision_parameter_schema(),
+                DECISION_ACTION_PARAMETER_SLOTS_KEY: {
+                    name: list(slots)
+                    for name, slots in self.decision_action_parameter_slots.items()
+                },
+            },
             "actions": [
                 action.as_record() for _name, action in sorted(self.actions.items())
             ],
@@ -488,9 +541,6 @@ def _parse_action(name: str, raw: object, kinds: set[str], source: str) -> Actio
         },
         applicability=applicability,
         statements=statements,
-        # Whatever else the action declared at its own level: validated by the
-        # same range convention, and everything that is not one of the two keys
-        # read by name above.
         bounds={
             key: value
             for key, value in parameters.items()
@@ -499,10 +549,96 @@ def _parse_action(name: str, raw: object, kinds: set[str], source: str) -> Actio
     )
 
 
+def _parse_decision_protocol(raw: object, source: str):
+    _require(isinstance(raw, dict), f"{source} must be an object")
+    required = {
+        "schema_version",
+        DECISION_PARAMETER_SLOTS_KEY,
+        DECISION_ACTION_PARAMETER_SLOTS_KEY,
+    }
+    _require(set(raw) == required, f"{source} has unknown or missing fields")
+    _require(
+        raw["schema_version"] == DECISION_SCHEMA_VERSION,
+        f"{source} has an unsupported schema version",
+    )
+    slots = raw[DECISION_PARAMETER_SLOTS_KEY]
+    matrix = raw[DECISION_ACTION_PARAMETER_SLOTS_KEY]
+    _require(isinstance(slots, dict) and slots, f"{source} slots must be an object")
+    canonical_slots: dict[str, dict[str, object]] = {}
+    for name, slot in slots.items():
+        _require(isinstance(name, str) and name, f"{source} slot name is invalid")
+        _require(isinstance(slot, dict), f"{source}.{name} must be an object")
+        kind = slot.get("type")
+        if kind == "integer":
+            _require(
+                set(slot) == {"type", "minimum", "maximum"},
+                f"{source}.{name} integer schema is not closed",
+            )
+            low, high = slot["minimum"], slot["maximum"]
+            _require(
+                isinstance(low, int)
+                and not isinstance(low, bool)
+                and isinstance(high, int)
+                and not isinstance(high, bool)
+                and 0 <= low <= high,
+                f"{source}.{name} integer bounds are invalid",
+            )
+        elif kind == "string":
+            _require(
+                set(slot) == {"type", "enum"},
+                f"{source}.{name} enum schema is not closed",
+            )
+            values = slot["enum"]
+            _require(
+                isinstance(values, list)
+                and len(values) == 1
+                and isinstance(values[0], str)
+                and bool(values[0]),
+                f"{source}.{name} must certify one fixed handler profile",
+            )
+        else:
+            raise RepairConfigError(f"{source}.{name} has an unsupported type")
+        canonical_slots[name] = dict(slot)
+    expected_actions = set(MUTATING_ACTIONS) | {NO_ACTION}
+    _require(
+        isinstance(matrix, dict) and set(matrix) == expected_actions,
+        f"{source} matrix must cover the closed action vocabulary",
+    )
+    canonical_matrix: dict[str, tuple[str, ...]] = {}
+    used: set[str] = set()
+    for action_name, names in matrix.items():
+        _require(
+            isinstance(names, list)
+            and all(isinstance(name, str) and name for name in names)
+            and len(names) == len(set(names)),
+            f"{source}.{action_name} parameter list is invalid",
+        )
+        _require(
+            not set(names) - set(canonical_slots),
+            f"{source}.{action_name} names an unknown parameter slot",
+        )
+        _require(
+            action_name != NO_ACTION or not names,
+            f"{source}.{NO_ACTION} must have no parameters",
+        )
+        canonical_matrix[action_name] = tuple(names)
+        used.update(names)
+    _require(used == set(canonical_slots), f"{source} contains unused parameter slots")
+    return canonical_slots, canonical_matrix
+
+
 def parse_repair_config(raw: dict, source: str, kinds: set[str]) -> RepairConfig:
     """Validate one configuration mapping against the issue kinds that exist."""
-    flat = {key: value for key, value in raw.items() if key != ACTIONS_KEY}
+    flat = {
+        key: value
+        for key, value in raw.items()
+        if key not in (ACTIONS_KEY, DECISION_PROTOCOL_KEY)
+    }
     parameters = _bounded(flat, source)
+    decision_slots, decision_matrix = _parse_decision_protocol(
+        raw.get(DECISION_PROTOCOL_KEY),
+        f"{source}.{DECISION_PROTOCOL_KEY}",
+    )
     actions_raw = raw.get(ACTIONS_KEY)
     _require(
         isinstance(actions_raw, dict) and actions_raw,
@@ -531,6 +667,9 @@ def parse_repair_config(raw: dict, source: str, kinds: set[str]) -> RepairConfig
             name: _parse_action(name, value, kinds, source)
             for name, value in actions_raw.items()
         },
+        decision_schema_version=DECISION_SCHEMA_VERSION,
+        decision_parameter_slots=decision_slots,
+        decision_action_parameter_slots=decision_matrix,
     )
 
 

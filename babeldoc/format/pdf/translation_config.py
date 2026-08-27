@@ -242,6 +242,8 @@ class TranslationConfig:
         magazine_profile: str | Path | None = None,
         magazine_mode: str | None = None,
         magazine_reviews_dir: str | Path | None = None,
+        tool_call_timeout_seconds: float = 60.0,
+        max_tool_call_attempts: int = 1,
     ):
         self.translator = translator
         self.term_extraction_translator = term_extraction_translator or translator
@@ -369,6 +371,8 @@ class TranslationConfig:
         self.only_parse_generate_pdf = only_parse_generate_pdf
         self.magazine_mode = magazine_mode
         self.magazine_reviews_dir = magazine_reviews_dir
+        self.tool_call_timeout_seconds = tool_call_timeout_seconds
+        self.max_tool_call_attempts = max_tool_call_attempts
         self.magazine_runtime_profile = None
         profile_switches: dict[str, bool] = {}
         if magazine_mode is not None or magazine_profile is not None:

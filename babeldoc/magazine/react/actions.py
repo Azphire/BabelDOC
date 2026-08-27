@@ -44,7 +44,6 @@ from babeldoc.magazine.react.cache_key import SERVED_MISS
 from babeldoc.magazine.react.cache_key import SERVED_RETRY
 from babeldoc.magazine.react.cache_key import SERVED_STALE
 from babeldoc.magazine.react.cache_key import attribution
-from babeldoc.magazine.react.config import MAX_PARAGRAPHS as MAX_PARAGRAPHS_KEY
 from babeldoc.magazine.react.config import MIN_CHARS_KEY
 from babeldoc.magazine.react.config import MIN_RATIO_KEY
 from babeldoc.magazine.react.config import ORPHAN_LABELS_KEY
@@ -61,8 +60,6 @@ NAME = "reprocess_omitted_text"
 # The parameter the decision may set: how many paragraphs one iteration takes.
 # Declared beside the vocabulary rather than here, because the loop reads it to
 # bound an iteration whichever action that iteration is carrying out.
-MAX_PARAGRAPHS = MAX_PARAGRAPHS_KEY
-
 # One finding, one paragraph: an orphan line is untranslated on its own.
 PARAGRAPHS_PER_FINDING = 1
 

@@ -412,7 +412,12 @@ def check_omitted_handler() -> None:
     before_generation = trace.current_generation
     transaction.begin_generation("handler_omitted")
     written = controller.RepairLoop._translate_orphans(
-        owner, [candidate], context, controller.Snapshot(), action
+        owner,
+        [candidate],
+        context,
+        controller.Snapshot(),
+        action,
+        SimpleNamespace(parameters=(("max_source_chars", 20000),)),
     )
     committed = strict_commit(
         transaction, issue, RepairAction.REPROCESS_OMITTED_TEXT, ("p2#0",)
@@ -426,6 +431,22 @@ def check_omitted_handler() -> None:
         and document.page[1].pdf_paragraph[0].unicode == "translated body copy"
         and transport.calls == 1
         and trace.current_generation == before_generation + 1,
+    )
+    calls_before_limit = transport.calls
+    over_limit = replace(candidate, source_text="x" * 17)
+    limited = controller.RepairLoop._translate_orphans(
+        owner,
+        [over_limit],
+        context,
+        controller.Snapshot(),
+        action,
+        SimpleNamespace(parameters=(("max_source_chars", 16),)),
+    )
+    check(
+        "reprocess omitted text consumes max_source_chars before translation",
+        limited[0].reason == actions.REASON_LIMIT
+        and not limited[0].changed
+        and transport.calls == calls_before_limit,
     )
     check(
         "omitted target and canonical slot are recorded in the same generation",
@@ -715,7 +736,7 @@ def check_closed_boundaries() -> None:
             element_refs=("p1#0",),
             legal_slot_refs=("slot-a",),
         ),
-        parameters=(("max_paragraphs", 1),),
+        parameters=(("max_source_chars", 1200),),
         state_sha256="1" * 64,
     )
     try:
@@ -776,9 +797,7 @@ def check_closed_boundaries() -> None:
         == actions.REASON_UNSUPPORTED,
     )
 
-    decision = SimpleNamespace(
-        issue_ids=(issue.id,), parameters={"max_paragraphs": 1}
-    )
+    decision = SimpleNamespace(issue_ids=(issue.id,))
     handler = controller.Handler(
         paragraphs_per_finding=1,
         resolve=lambda selected, pages, _context: actions.resolve(
@@ -837,16 +856,37 @@ class QueuedRound:
     def __init__(self, action_name: str) -> None:
         self.action_name = action_name
 
-    def decide(self, offered, state_sha256=None):
-        action = repair_config_module.load_repair_config(
+    def decide(self, offered, *, repair_state):
+        config = repair_config_module.load_repair_config(
             None, controller.detector_kinds()
-        ).actions[self.action_name]
+        )
+        action = RepairAction(self.action_name)
+        selected = next(
+            item for item in repair_state.issues if item.issue_id == offered[0].id
+        )
+        values = {
+            "max_source_chars": 1200,
+            "fit_profile": "balanced",
+            "spacing_profile": "preserve",
+            "minimum_scale_profile": "conservative",
+            "wrap_policy": "preserve_words",
+            "collision_axis": "least_overlap",
+        }
+        parameters = {
+            name: values[name]
+            for name in config.decision_action_parameter_slots[self.action_name]
+        }
         return (
-            decide.Decision(
-                action=self.action_name,
+            RepairDecision(
+                action=action,
                 issue_ids=(offered[0].id,),
-                parameters=action.resolve({"max_paragraphs": 1}),
-                reason="deterministic fixture",
+                target=RepairTarget(
+                    physical_pages=(selected.physical_page,),
+                    article_refs=selected.article_refs,
+                    element_refs=tuple(offered[0].paragraph_refs),
+                ),
+                parameters=config.decision_parameters(action, parameters),
+                state_sha256=repair_state.sha256(),
             ),
             decide.RequestLog(),
         )

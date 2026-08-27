@@ -257,36 +257,25 @@ def check_second_page_failure_restores_both_pages() -> None:
     )
 
 
-class BrokenCache:
-    def __init__(self) -> None:
-        self.looked_up = False
-
-    def get(self, _key):
-        self.looked_up = True
-        raise OSError("cache unavailable")
-
-    def set(self, _key, _value):
-        raise OSError("cache unavailable")
-
-
 class BrokenTransport:
     def __init__(self) -> None:
         self.calls = 0
 
-    def complete(self, _text):
+    def counters(self):
+        return self.calls, 0
+
+    def select(self, **_request):
         self.calls += 1
         raise ConnectionError("transport unavailable")
 
 
 def check_cache_transport_failure_is_not_executed() -> None:
     config = repair_config.load_repair_config(None, detectors.detector_kinds())
-    cache = BrokenCache()
     transport = BrokenTransport()
     with tempfile.TemporaryDirectory(prefix="repair_transaction_") as directory:
         client = decide.CachedDecisionClient(
             config,
             transport=transport,
-            cache=cache,
             identity="offline",
             working_dir=Path(directory),
             language="zh",
@@ -303,14 +292,16 @@ def check_cache_transport_failure_is_not_executed() -> None:
                 "excerpt": "untranslated line",
             },
         )
-        decision, _request = client.decide([finding])
+        state = types.SimpleNamespace(sha256=lambda: "1" * 64)
+        decision, request = client.decide([finding], repair_state=state)
     check(
-        "cache and transport failure is reported as not_executed",
-        cache.looked_up
-        and transport.calls == config.decide_max_attempts
-        and decision.refused
-        and decision.as_record()["action_status"] == "not_executed",
-        json.dumps(decision.as_record(), sort_keys=True),
+        "forced transport failure is reported as not_executed without fallback",
+        transport.calls == 1
+        and decision is None
+        and request.logical_calls == 1
+        and request.provider_attempts == 1
+        and request.violations == ["ConnectionError"],
+        json.dumps(request.__dict__, sort_keys=True),
     )
 
 

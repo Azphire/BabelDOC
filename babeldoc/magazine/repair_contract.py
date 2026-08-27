@@ -308,6 +308,20 @@ class RepairKnowledgeState:
             raise StaleRepairStateError(StaleRepairStateError.code)
         if decision.action not in self.allowed_actions:
             raise RepairContractError("decision action is not allowed by state")
+        # C19 owns the domain parameter contract.  The provider wire schema is
+        # generated from this same config, but cached/tampered typed decisions
+        # still have to pass the deterministic executor boundary independently.
+        from babeldoc.magazine.react.config import load_repair_config
+
+        repair_config = load_repair_config()
+        try:
+            canonical_parameters = repair_config.decision_parameters(
+                decision.action, dict(decision.parameters)
+            )
+        except ValueError as exc:
+            raise RepairContractError(str(exc)) from exc
+        if decision.parameters != canonical_parameters:
+            raise RepairContractError("decision parameters are not canonical")
         known = {issue.issue_id for issue in self.issues}
         if any(issue_id not in known for issue_id in decision.issue_ids):
             raise RepairContractError("decision targets an unknown issue")

@@ -105,11 +105,6 @@ SERVED_RETRY = "retry_after_a_violated_reply"
 GROUP_DECISION = "decision"
 GROUP_ORPHAN = "orphan_translation"
 
-# How much of a request a row quotes. A digest identifies it and a prefix lets a
-# human recognise it; the whole of it belongs in the transcript and not here.
-SUMMARY_CHARS = 160
-
-
 def attribution(
     group: str,
     cache_verdict: str,
@@ -125,9 +120,8 @@ def attribution(
     and the charge cannot come apart: a request served from the cache adds no
     row, and a run's rows are exactly the calls it paid for. What the row holds
     is what a reader needs to ask why the call happened -- which group asked,
-    why the cache did not answer, and enough of the request to recognise it --
-    and a digest of the request rather than the request, which belongs in the
-    transcript.
+    why the cache did not answer, and only a digest/count of the request. Raw
+    prompt text, including prefixes, never enters the attribution ledger.
     """
     return {
         "group": group,
@@ -137,6 +131,5 @@ def attribution(
         "prompt_sha256": prompt_digest,
         "request_sha256": hashlib.sha256(request_text.encode()).hexdigest(),
         "request_chars": len(request_text),
-        "request_head": request_text[:SUMMARY_CHARS],
         "attempt": attempt,
     }

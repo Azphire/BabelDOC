@@ -101,20 +101,19 @@ You are not choosing how the repair is carried out, only whether it is and on
 what. Do not describe the repair, the layout, or the text a paragraph should
 end up carrying.
 
-## What to return
+## Required function call
 
-Return one JSON object and nothing else: no prose before or after it, no code
-fence, no explanation. The object carries exactly these four fields.
+Call the required `select_repair_action` function exactly once. Do not return a
+text answer. Its schema is the complete output contract.
 
-- "action": the name of one action from the vocabulary above, exactly as it is
-  written there, or the string "none" to apply nothing in this iteration.
-- "issue_ids": an array of finding ids from the list above. An empty array when
-  the action is "none".
-- "parameters": an object holding the parameters the chosen action declares.
-  Every value must be a number inside the range stated for it. An empty object
-  when the action is "none", or when the declared defaults are what you want.
-- "reason": one sentence stating what in the evidence made this the choice.
+For a mutating action, name findings from exactly one physical page and one
+article owner. The target page and article must equal that shared owner, and
+the target element refs must be exactly all `target element refs` carried by
+the selected findings. Supply the one fixed execution profile or bounded value
+listed for every parameter of the selected action; unused parameter slots stay
+null as required by the function schema.
 
-This is the shape of the answer, not its content:
-
-{"action": "...", "issue_ids": ["..."], "parameters": {"...": 0}, "reason": "..."}
+To apply nothing, select `no_action`, use an empty issue list, a null page and
+article, an empty element-ref list, and null for every parameter slot. Bind the
+call to the exact state digest supplied by the request schema. Never include a
+reason, coordinates, replacement text, prompt, URL, code, or extra field.

@@ -1065,6 +1065,8 @@ async def main():
             magazine_profile=args.magazine_profile,
             magazine_mode=args.magazine_mode,
             magazine_reviews_dir=args.magazine_reviews_dir,
+            tool_call_timeout_seconds=args.tool_call_timeout,
+            max_tool_call_attempts=args.max_tool_call_attempts,
         )
 
         def nop(_x):

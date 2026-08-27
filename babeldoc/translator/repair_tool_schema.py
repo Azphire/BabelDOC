@@ -13,6 +13,8 @@ from dataclasses import dataclass
 from functools import lru_cache
 from pathlib import Path
 
+from babeldoc.magazine.react.config import RepairConfig
+from babeldoc.magazine.react.config import load_repair_config
 from babeldoc.translator.tool_call import ToolCallSchemaError
 from babeldoc.translator.tool_call import validate_schema
 
@@ -27,8 +29,15 @@ class RepairToolConfig:
     max_issue_ids: int
     max_element_refs: int
     max_identifier_chars: int
-    parameter_slots: Mapping[str, Mapping[str, object]]
-    actions: Mapping[str, tuple[str, ...]]
+    repair_config: RepairConfig
+
+    @property
+    def parameter_slots(self) -> Mapping[str, Mapping[str, object]]:
+        return self.repair_config.decision_parameter_slots
+
+    @property
+    def actions(self) -> Mapping[str, tuple[str, ...]]:
+        return self.repair_config.decision_action_parameter_slots
 
 
 @dataclass(frozen=True)
@@ -57,8 +66,6 @@ def load_repair_tool_config(path: str | None = None) -> RepairToolConfig:
         "max_issue_ids",
         "max_element_refs",
         "max_identifier_chars",
-        "parameter_slots",
-        "actions",
     }
     _require(set(raw) == required, "repair tool config has unknown or missing keys")
     _require(
@@ -66,32 +73,18 @@ def load_repair_tool_config(path: str | None = None) -> RepairToolConfig:
         "repair tool config has an unknown schema version",
     )
     _require(raw["tool_name"] == "select_repair_action", "repair tool name changed")
-    slots = raw["parameter_slots"]
-    actions = raw["actions"]
-    _require(isinstance(slots, dict) and len(slots) == 6, "six slots are required")
-    expected_actions = {
-        "reprocess_omitted_text",
-        "reallocate_continuity_chain",
-        "retypeset_article_region",
-        "contain_overflowing_heading",
-        "resolve_text_collision",
-        "no_action",
-    }
-    _require(set(actions) == expected_actions, "repair action vocabulary changed")
-    for action, names in actions.items():
-        _require(
-            isinstance(names, list) and len(names) == len(set(names)),
-            f"{action}: parameter matrix entry is invalid",
-        )
-        _require(not set(names) - set(slots), f"{action}: matrix names unknown slots")
+    repair = load_repair_config()
+    _require(
+        repair.decision_schema_version == raw["schema_version"],
+        "transport and canonical repair decision schema versions differ",
+    )
     return RepairToolConfig(
         schema_version=raw["schema_version"],
         tool_name=raw["tool_name"],
         max_issue_ids=int(raw["max_issue_ids"]),
         max_element_refs=int(raw["max_element_refs"]),
         max_identifier_chars=int(raw["max_identifier_chars"]),
-        parameter_slots={key: dict(value) for key, value in slots.items()},
-        actions={key: tuple(value) for key, value in actions.items()},
+        repair_config=repair,
     )
 
 
@@ -231,6 +224,9 @@ def decode_repair_tool_arguments(
     canonical_parameters = {
         name: value for name, value in supplied.items() if value is not None
     }
+    canonical_parameters = dict(
+        config.repair_config.decision_parameters(action, canonical_parameters)
+    )
     return {
         "action": action,
         "issue_ids": list(issue_ids),
