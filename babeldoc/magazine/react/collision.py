@@ -117,6 +117,7 @@ from dataclasses import dataclass
 
 from babeldoc.magazine.detectors import base as detector_base
 from babeldoc.magazine.drop_cap import paragraph_reference
+from babeldoc.magazine.element_roles import ElementRole
 from babeldoc.magazine.react.actions import ACCEPTED
 from babeldoc.magazine.react.actions import Application
 from babeldoc.magazine.react.config import MIN_COLLISION_COVERAGE_KEY
@@ -125,7 +126,7 @@ from babeldoc.magazine.react.contain import arithmetic_slack
 from babeldoc.magazine.react.contain import ink_box
 from babeldoc.magazine.react.contain import transform
 
-NAME = "resolve_collision"
+NAME = "resolve_text_collision"
 
 # One finding, two paragraphs: an overlap is a statement about a pair.
 PARAGRAPHS_PER_FINDING = 2
@@ -153,6 +154,10 @@ REASON_ALREADY = "the_overlap_is_already_below_the_bound_the_slide_aims_at"
 REASON_INDUCED = "moving_it_clear_would_stand_it_on_text_it_was_not_standing_on"
 REASON_LEAVES_PAGE = "moving_it_clear_would_take_its_ink_outside_the_page"
 REASON_NOT_RESOLVED = "the_move_did_not_bring_the_overlap_below_the_bound"
+REASON_OWNER = "collision_members_do_not_share_one_canonical_owner"
+REASON_ROLE = "collision_member_role_not_body"
+REASON_SOURCE = "collision_already_existed_in_source"
+REASON_UNSUPPORTED = "unsupported_article_page"
 
 # What the guard refused, as the record states it.
 GUARD_INDUCED = "it_would_stand_on_text_it_was_not_standing_on"
@@ -468,6 +473,35 @@ def admits(issue, candidate, action: Action, context) -> str:
     below refuses anyway, so stating it would state a filter that selects
     nothing.
     """
+    article_document_ir = context.article_document_ir
+    if article_document_ir is None:
+        return REASON_OWNER
+    if issue.page in {item.page for item in article_document_ir.unsupported_pages}:
+        return REASON_UNSUPPORTED
+    owners = {
+        article_document_ir.by_element.get(reference)
+        for reference in issue.paragraph_refs
+    }
+    if None in owners or len(owners) != 1:
+        return REASON_OWNER
+    owner = next(iter(owners))
+    if issue.article_refs and set(issue.article_refs) != {owner}:
+        return REASON_OWNER
+    article = article_document_ir.article(owner)
+    roles = {
+        element.source_ref: element.role for element in article.elements
+    }
+    if any(roles.get(reference) is not ElementRole.BODY for reference in issue.paragraph_refs):
+        return REASON_ROLE
+    source_iou = issue.evidence.get("source_iou")
+    source_coverage = issue.evidence.get("source_coverage")
+    if (
+        not isinstance(source_iou, int | float)
+        or not isinstance(source_coverage, int | float)
+        or float(source_iou) >= context.config.collision_source_min_iou
+        or float(source_coverage) >= context.config.collision_source_min_coverage
+    ):
+        return REASON_SOURCE
     bound = applicability(action)
     if bound is None:
         return REASON_NO_BOUND

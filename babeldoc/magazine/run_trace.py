@@ -642,6 +642,14 @@ class RunTrace:
                 raise KeyError(f"unknown target fragment: {fragment_id}")
             return self._fragment_text[fragment_id]
 
+    def whole_target_text(self, request_id: str) -> str:
+        """Return the canonical completed target owned by ``request_id``."""
+        with self._lock:
+            self._request(request_id)
+            if request_id not in self._whole_targets:
+                raise KeyError(f"request has no whole target: {request_id}")
+            return self._whole_targets[request_id]
+
     def target_conservation_evidence(self, request_id: str) -> dict:
         """Return hash-and-range evidence for one request without target text."""
         with self._lock:

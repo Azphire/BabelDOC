@@ -32,6 +32,8 @@ from dataclasses import field
 from pathlib import Path
 
 from babeldoc.magazine.detectors import base as detector_base
+from babeldoc.magazine.element_roles import ElementRole
+from babeldoc.magazine.legal_slots import slot_for_source_box
 from babeldoc.magazine.prompt_loader import Prompt
 from babeldoc.magazine.prompt_loader import load_prompt
 from babeldoc.magazine.react import cache_key as cache_key_fields
@@ -54,7 +56,7 @@ from babeldoc.translator.cache import TranslationCache
 
 logger = logging.getLogger(__name__)
 
-NAME = "translate_orphan_lines"
+NAME = "reprocess_omitted_text"
 
 # The parameter the decision may set: how many paragraphs one iteration takes.
 # Declared beside the vocabulary rather than here, because the loop reads it to
@@ -95,6 +97,12 @@ REASON_LAYOUT = "retypesetting_produced_nothing"
 REASON_GEOMETRY = "retypesetting_needed_more_room_than_the_paragraph_had"
 REASON_FIXED_ASSET = "fixed_asset_protected"
 REASON_PROTECTED_DROP_CAP = "protected_drop_cap_conflict"
+REASON_MANUAL_TERM = "manual_term_not_preserved"
+REASON_OWNER = "canonical_article_owner_unavailable"
+REASON_ROLE = "element_role_not_body"
+REASON_UNSUPPORTED = "unsupported_article_page"
+REASON_TRACE = "run_trace_unavailable"
+REASON_SLOT = "canonical_legal_slot_unavailable"
 
 ACCEPTED = "accepted"
 
@@ -222,6 +230,38 @@ def admits(issue, paragraph, action: Action, source_text: str, language=None) ->
 
 def admits_candidate(issue, candidate, action: Action, context) -> str:
     """This action's admission question, in the shape the loop asks every action."""
+    article_document_ir = context.article_document_ir
+    if article_document_ir is None:
+        return REASON_OWNER
+    if issue.page in {item.page for item in article_document_ir.unsupported_pages}:
+        return REASON_UNSUPPORTED
+    owner = article_document_ir.by_element.get(candidate.reference)
+    if owner is None or (
+        issue.article_refs and set(issue.article_refs) != {owner}
+    ):
+        return REASON_OWNER
+    article = article_document_ir.article(owner)
+    element = next(
+        (
+            item
+            for item in article.elements
+            if item.source_ref == candidate.reference
+        ),
+        None,
+    )
+    if element is None or element.role is not ElementRole.BODY:
+        return REASON_ROLE
+    if context.run_trace is None:
+        return REASON_TRACE
+    legal_slot_plan = getattr(context, "legal_slot_plan", None)
+    if legal_slot_plan is None or slot_for_source_box(
+        legal_slot_plan,
+        article_id=owner,
+        page=element.page,
+        column=element.column,
+        source_box=element.source_box,
+    ) is None:
+        return REASON_SLOT
     return admits(
         issue,
         candidate.paragraph,

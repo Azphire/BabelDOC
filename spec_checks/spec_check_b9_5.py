@@ -2116,7 +2116,7 @@ def check_10e_the_scripted_arm_is_scripted_and_says_so() -> None:
         record("check_10e_the_scripted_arm_is_scripted_and_says_so", False, "no ledger")
         return
     faults = []
-    allowed = {contain.NAME, "none"}
+    allowed = {contain.NAME, "no_action"}
     for row in load_json(path):
         answers = row.get("scripted_decisions")
         if not answers:

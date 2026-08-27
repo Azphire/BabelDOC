@@ -1028,7 +1028,7 @@ def check_03j_the_second_jurisdiction_is_the_axis_not_the_label() -> None:
     from babeldoc.magazine.react import actions as react_actions
     from babeldoc.magazine.react.config import load_repair_config
 
-    action = load_repair_config().actions["translate_orphan_lines"]
+    action = load_repair_config().actions["reprocess_omitted_text"]
     _ratio, min_chars, labels, accepts_vertical = react_actions.applicability(action)
     faults = []
     if not accepts_vertical:

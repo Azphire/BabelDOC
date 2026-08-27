@@ -71,6 +71,7 @@ from lxml import etree
 
 from babeldoc.format.pdf.document_il.midend.typesetting import Typesetting
 from babeldoc.magazine import acceptance
+from babeldoc.magazine import article_flow
 from babeldoc.magazine import detectors
 from babeldoc.magazine import drop_cap_intent
 from babeldoc.magazine import fixed_assets
@@ -80,9 +81,12 @@ from babeldoc.magazine.checkpoint import to_checkpoint_xml
 from babeldoc.magazine.detectors.base import CONFIG_PATH as DETECTOR_CONFIG_PATH
 from babeldoc.magazine.detectors.base import box_tuple
 from babeldoc.magazine.drop_cap import paragraph_reference
+from babeldoc.magazine.legal_slots import slot_for_source_box
 from babeldoc.magazine.react import actions
+from babeldoc.magazine.react import chain_repair
 from babeldoc.magazine.react import collision
 from babeldoc.magazine.react import contain
+from babeldoc.magazine.react import region_repair
 from babeldoc.magazine.react import writeback
 from babeldoc.magazine.react.config import CONFIG_PATH
 from babeldoc.magazine.react.config import MAX_PARAGRAPHS
@@ -159,15 +163,6 @@ ACTION_COMMITTED = "committed"
 # Conservation verdicts.
 CONSERVED = "conserved"
 VIOLATED = "violated"
-
-# Explicit one-release migration. Commit 2 renames the action vocabulary and
-# removes this table; no unrecognised synonym is ever accepted.
-_C19_ACTION_MIGRATION = {
-    actions.NAME: RepairAction.REPROCESS_OMITTED_TEXT,
-    contain.NAME: RepairAction.CONTAIN_OVERFLOWING_HEADING,
-    collision.NAME: RepairAction.RESOLVE_TEXT_COLLISION,
-}
-
 
 def enabled(translation_config) -> bool:
     return bool(getattr(translation_config, SWITCH, False))
@@ -362,6 +357,7 @@ def detect(
     run_trace=None,
     fixed_inventory=None,
     current_inventory=None,
+    legal_slot_plan=None,
 ):
     """One detection pass over the document as it currently stands.
 
@@ -385,6 +381,7 @@ def detect(
         run_trace=run_trace,
         fixed_inventory=fixed_inventory,
         current_inventory=current_inventory,
+        legal_slot_plan=legal_slot_plan,
         finalized=True,
     )
     return detectors.run_detectors(context), context
@@ -400,7 +397,8 @@ class Handler:
     out with somebody else's mechanism.
     """
 
-    paragraphs_per_finding: int
+    paragraphs_per_finding: int | None
+    resolve: object
     admits: object
     apply: object
 
@@ -518,10 +516,7 @@ class RepairLoop:
         )
         actions_allowed = {
             RepairAction.NO_ACTION,
-            *(
-                _C19_ACTION_MIGRATION[name]
-                for name in self.repair_config.actions
-            ),
+            *(RepairAction(name) for name in self.repair_config.actions),
         }
         return build_repair_knowledge_state(
             self.docs,
@@ -553,6 +548,7 @@ class RepairLoop:
             run_trace=self.run_trace,
             fixed_inventory=self.fixed_inventory,
             current_inventory=current_inventory,
+            legal_slot_plan=self.legal_slot_plan,
         )
 
     # -- clients ----------------------------------------------------------
@@ -634,16 +630,31 @@ class RepairLoop:
         return {
             actions.NAME: Handler(
                 paragraphs_per_finding=actions.PARAGRAPHS_PER_FINDING,
+                resolve=lambda issue, pages, _context: actions.resolve(issue, pages),
                 admits=actions.admits_candidate,
                 apply=self._translate_orphans,
             ),
+            chain_repair.NAME: Handler(
+                paragraphs_per_finding=chain_repair.PARAGRAPHS_PER_FINDING,
+                resolve=chain_repair.resolve_candidate,
+                admits=chain_repair.admits,
+                apply=self._reallocate_chain,
+            ),
+            region_repair.NAME: Handler(
+                paragraphs_per_finding=region_repair.PARAGRAPHS_PER_FINDING,
+                resolve=region_repair.resolve_candidate,
+                admits=region_repair.admits,
+                apply=self._retypeset_article_region,
+            ),
             contain.NAME: Handler(
                 paragraphs_per_finding=contain.PARAGRAPHS_PER_FINDING,
+                resolve=lambda issue, pages, _context: actions.resolve(issue, pages),
                 admits=contain.admits,
                 apply=self._contain,
             ),
             collision.NAME: Handler(
                 paragraphs_per_finding=collision.PARAGRAPHS_PER_FINDING,
+                resolve=lambda issue, pages, _context: actions.resolve(issue, pages),
                 admits=collision.admits,
                 apply=self._resolve_collisions,
             ),
@@ -680,7 +691,10 @@ class RepairLoop:
                     )
                 )
                 continue
-            if len(issue.paragraph_refs) != handler.paragraphs_per_finding:
+            if (
+                handler.paragraphs_per_finding is not None
+                and len(issue.paragraph_refs) != handler.paragraphs_per_finding
+            ):
                 # An action answers for findings of one shape: the orphan one
                 # writes into a single paragraph, and a collision is a statement
                 # about a pair. A finding of any other shape is a different
@@ -694,7 +708,7 @@ class RepairLoop:
                     )
                 )
                 continue
-            candidate = actions.resolve(issue, pages_by_label)
+            candidate = handler.resolve(issue, pages_by_label, context)
             if candidate is None:
                 records.append(
                     actions.Application(
@@ -725,14 +739,15 @@ class RepairLoop:
                     )
                 )
                 continue
-            if (
-                candidate.reference
-                in self.fixed_inventory.protected_paragraph_refs
-            ):
+            protected_assets = sorted(
+                set(issue.paragraph_refs)
+                & self.fixed_inventory.protected_paragraph_refs
+            )
+            if protected_assets:
                 records.append(
                     actions.Application(
                         issue_id=issue_id,
-                        reference=candidate.reference,
+                        reference=", ".join(protected_assets),
                         accepted=False,
                         reason=actions.REASON_FIXED_ASSET,
                         source_text=candidate.source_text,
@@ -775,6 +790,94 @@ class RepairLoop:
                 continue
             accepted.append(candidate)
         return accepted, records
+
+    def _reallocate_chain(self, candidates, context, snapshot: Snapshot, _action):
+        """Move existing chain fragments through the shared legal-slot fitter."""
+        positions = {
+            view.label: position for position, view in enumerate(context.pages)
+        }
+        records = []
+        for candidate in candidates:
+            plan = chain_repair.plan(candidate, context, self._typesetting())
+            for placement in plan.placements:
+                snapshot.take(
+                    positions[placement.page],
+                    context.docs.page[positions[placement.page]],
+                    placement.paragraph_index,
+                )
+            chain_repair.apply_plan(
+                context.docs,
+                self.run_trace,
+                self.run_trace.current_generation,
+                plan,
+            )
+            touched_refs = plan.touched_refs
+            self.touched.update(touched_refs)
+            self.applications += 1
+            records.append(
+                actions.Application(
+                    issue_id=candidate.issue_id,
+                    reference=touched_refs[0],
+                    accepted=True,
+                    reason=actions.ACCEPTED,
+                    changed=True,
+                    geometry={
+                        "chain_id": plan.chain_id,
+                        "article_id": plan.article_id,
+                        "request_id": plan.request_id,
+                        "whole_target_chars": len(plan.whole_target),
+                        "touched_refs": list(touched_refs),
+                        "placements": [
+                            {
+                                "source_ref": item.source_ref,
+                                "page": item.page,
+                                "slot_id": item.slot_id,
+                                "box": list(item.box),
+                                "text_range": [item.text_start, item.text_end],
+                            }
+                            for item in plan.placements
+                        ],
+                    },
+                )
+            )
+        return records
+
+    def _retypeset_article_region(
+        self, candidates, context, _snapshot: Snapshot, _action
+    ):
+        """Repack existing targets; the controller owns generation and rollback."""
+        records = []
+        for candidate in candidates:
+            owner = region_repair.owner_for_issue(
+                candidate.issue, self.article_document_ir
+            )
+            if owner is None:
+                raise ValueError(region_repair.REASON_ARTICLE)
+            result = article_flow.retypeset_existing_article_region(
+                context.docs,
+                self.article_document_ir,
+                self.run_trace,
+                self.fixed_inventory,
+                self.legal_slot_plan,
+                article_id=owner,
+                page_number=candidate.issue.page,
+                generation=self.run_trace.current_generation,
+                typesetter=self._typesetting(),
+                protected_refs=frozenset(self.protected_drop_cap_refs),
+            )
+            self.touched.update(result.touched_refs)
+            self.applications += 1
+            records.append(
+                actions.Application(
+                    issue_id=candidate.issue_id,
+                    reference=result.touched_refs[0],
+                    accepted=True,
+                    reason=actions.ACCEPTED,
+                    changed=True,
+                    geometry=result.to_record(),
+                )
+            )
+        return records
 
     def _contain(self, candidates, context, snapshot: Snapshot, action):
         """Put each admitted paragraph back inside its page. What happened.
@@ -869,6 +972,17 @@ class RepairLoop:
                 outcome.reason = actions.REASON_UNCHANGED
                 records.append(outcome)
                 continue
+            missing_manual_terms = [
+                target
+                for source, target in outcome.glossary_entries
+                if source in candidate.source_text
+                and target not in outcome.translated_text
+            ]
+            if missing_manual_terms:
+                outcome.accepted = False
+                outcome.reason = actions.REASON_MANUAL_TERM
+                records.append(outcome)
+                continue
             position = positions[candidate.page_index]
             snapshot.take(position, candidate.page, candidate.paragraph_index)
             box_before = box_tuple(candidate.paragraph.box)
@@ -894,6 +1008,66 @@ class RepairLoop:
                 )
                 records.append(outcome)
                 continue
+            owner = self.article_document_ir.by_element[candidate.reference]
+            article = self.article_document_ir.article(owner)
+            element = next(
+                item
+                for item in article.elements
+                if item.source_ref == candidate.reference
+            )
+            slot = slot_for_source_box(
+                self.legal_slot_plan,
+                article_id=owner,
+                page=element.page,
+                column=element.column,
+                source_box=element.source_box,
+            )
+            if slot is None or self.run_trace is None:
+                raise RepairContractError(actions.REASON_SLOT)
+            generation = self.run_trace.current_generation
+            request_id = self.run_trace.open_request(
+                "repair_omitted_text",
+                (candidate.reference,),
+                candidate.source_text,
+                {
+                    "action": actions.NAME,
+                    "article_id": owner,
+                    "legal_slot_id": slot.slot_id,
+                    "language": self.language,
+                    "glossary_entries": outcome.glossary_entries,
+                },
+            )
+            for _call in outcome.calls:
+                self.run_trace.record_translator_call(request_id)
+            self.run_trace.register_whole_target(
+                request_id, outcome.translated_text
+            )
+            self.run_trace.allocate_target_fragment(
+                request_id,
+                candidate.reference,
+                order=0,
+                text_start=0,
+                text_end=len(outcome.translated_text),
+                text=outcome.translated_text,
+                generation=generation,
+                slot_id=slot.slot_id,
+                render_ref=candidate.reference,
+                render_page=element.page,
+                measurement_summary={
+                    "action": actions.NAME,
+                    "box_before": list(box_before) if box_before else None,
+                    "box_after": list(box_tuple(candidate.paragraph.box) or ()),
+                },
+            )
+            self.run_trace.complete_request(request_id)
+            outcome.geometry.update(
+                {
+                    "article_id": owner,
+                    "legal_slot_id": slot.slot_id,
+                    "request_id": request_id,
+                    "touched_refs": [candidate.reference],
+                }
+            )
             outcome.changed = True
             self.touched.add(candidate.reference)
             self.applications += 1
@@ -1005,22 +1179,44 @@ class RepairLoop:
         selected = {
             issue.id: issue for issue in offered if issue.id in decision.issue_ids
         }
+        target_articles = {
+            article
+            for issue in selected.values()
+            for article in issue.article_refs
+        }
+        target_articles.update(
+            owner
+            for issue in selected.values()
+            if self.article_document_ir is not None
+            and (owner := self.article_document_ir.by_page.get(issue.page))
+            is not None
+        )
+        target_pages = {issue.page for issue in selected.values()}
+        target_chains = {
+            chain_id
+            for issue in selected.values()
+            if isinstance((chain_id := issue.evidence.get("chain_id")), str)
+            and self.article_document_ir is not None
+            and chain_id in self.article_document_ir.by_chain
+        }
+        target_slots = (
+            ()
+            if self.legal_slot_plan is None
+            else tuple(
+                sorted(
+                    slot.slot_id
+                    for slot in self.legal_slot_plan.slots
+                    if slot.article_id in target_articles
+                    and slot.page in target_pages
+                )
+            )
+        )
         canonical_decision = RepairDecision(
-            action=_C19_ACTION_MIGRATION[decision.action],
+            action=RepairAction(decision.action),
             issue_ids=tuple(decision.issue_ids),
             target=RepairTarget(
-                physical_pages=tuple(
-                    sorted({issue.page for issue in selected.values()})
-                ),
-                article_refs=tuple(
-                    sorted(
-                        {
-                            article
-                            for issue in selected.values()
-                            for article in issue.article_refs
-                        }
-                    )
-                ),
+                physical_pages=tuple(sorted(target_pages)),
+                article_refs=tuple(sorted(target_articles)),
                 element_refs=tuple(
                     sorted(
                         {
@@ -1030,6 +1226,8 @@ class RepairLoop:
                         }
                     )
                 ),
+                chain_refs=tuple(sorted(target_chains)),
+                legal_slot_refs=target_slots,
             ),
             parameters=tuple(sorted(decision.parameters.items())),
             state_sha256=repair_state.sha256(),
@@ -1217,9 +1415,30 @@ class RepairLoop:
             )
             closure_run.require_complete(self.detector_closure)
             target_issue_ids = decision.issue_ids
+            touched_refs = {
+                reference
+                for item in written
+                for reference in item.geometry.get(
+                    "touched_refs", (item.reference,)
+                )
+            }
             touched_scope_valid = {
                 item.issue_id for item in written
-            }.issubset(target_issue_ids)
+            }.issubset(target_issue_ids) and all(
+                (
+                    self.article_document_ir.by_element.get(reference)
+                    in decision.target.article_refs
+                    or (
+                        reference.startswith("p")
+                        and "#" in reference
+                        and self.article_document_ir.by_page.get(
+                            int(reference[1:].split("#", 1)[0])
+                        )
+                        in decision.target.article_refs
+                    )
+                )
+                for reference in touched_refs
+            )
             monotonic = acceptance.compare_repair_action(
                 issues,
                 compared_after,

@@ -27,9 +27,11 @@ from babeldoc.magazine.legal_slots import SlotObstacle
 from babeldoc.magazine.legal_slots import digest_record
 from babeldoc.magazine.legal_slots import fragment_envelope
 from babeldoc.magazine.line_split import holds_formula
+from babeldoc.magazine.line_split import paragraph_characters
 from babeldoc.magazine.page_features import ConfigError
 from babeldoc.magazine.page_features import validate_bounded_config
 from babeldoc.magazine.page_identity import DocumentPageIndex
+from babeldoc.magazine.reading_order import paragraph_reading_text
 from babeldoc.magazine.resource_paths import config_path
 from babeldoc.magazine.run_trace import ALLOCATION_RELEASED
 from babeldoc.magazine.run_trace import canonical_text
@@ -446,6 +448,29 @@ def _plain_style(paragraph, text: str):
     return first
 
 
+def _existing_target_style(paragraph, text: str):
+    """Read one uniform style from either pre- or post-typeset target IL."""
+    found = _plain_style(paragraph, text)
+    if found is not None:
+        return found
+    if holds_formula(paragraph) or canonical_text(
+        paragraph_reading_text(paragraph)
+    ) != canonical_text(text):
+        return None
+    paragraph_style = getattr(paragraph, "pdf_style", None)
+    if paragraph_style is not None:
+        return paragraph_style
+    styles = [
+        character.pdf_style
+        for character in paragraph_characters(paragraph)
+        if character.pdf_style is not None
+    ]
+    if not styles:
+        return None
+    first = styles[0]
+    return first if all(style == first for style in styles[1:]) else None
+
+
 def _spacing_before(previous, current) -> float:
     if previous is None or previous.column != current.column:
         return 0.0
@@ -574,7 +599,7 @@ def build_page_segments(
             )
             if fragments:
                 joined = "".join(fragment["text"] for fragment in fragments)
-                style = _plain_style(paragraph, joined)
+                style = _existing_target_style(paragraph, joined)
                 if style is None:
                     reason = "non_plain_or_formula_target"
                 else:
@@ -983,6 +1008,149 @@ def _write_report(translation_config, record: dict) -> Path:
         path.parent, [CONFIG_PATH, CHAIN_CONFIG_PATH, acceptance.CONFIG_PATH]
     )
     return path
+
+
+@dataclass(frozen=True, slots=True)
+class RegionRetypesetResult:
+    """One existing-target article region mutation inside a caller transaction."""
+
+    article_id: str
+    page: int
+    touched_refs: tuple[str, ...]
+    released_refs: tuple[str, ...]
+    placements: tuple[FlowPlacement, ...]
+    fixed_asset_comparison: object
+
+    def to_record(self) -> dict:
+        return {
+            "article_id": self.article_id,
+            "page": self.page,
+            "touched_refs": list(self.touched_refs),
+            "released_refs": list(self.released_refs),
+            "placements": [item.to_record() for item in self.placements],
+            "fixed_asset_comparison": self.fixed_asset_comparison.to_record(),
+        }
+
+
+def retypeset_existing_article_region(
+    docs,
+    article_document_ir,
+    run_trace,
+    fixed_asset_inventory,
+    legal_slot_plan,
+    *,
+    article_id: str,
+    page_number: int,
+    generation: int,
+    typesetter: Typesetting,
+    protected_refs=frozenset(),
+    config: ArticleFlowConfig | None = None,
+) -> RegionRetypesetResult:
+    """Repack existing targets only; the caller owns the sole transaction."""
+    config = load_flow_config() if config is None else config
+    unsupported = {item.page for item in article_document_ir.unsupported_pages}
+    if page_number in unsupported:
+        raise ArticleFlowError(SKIP_UNSUPPORTED)
+    article = article_document_ir.article(article_id)
+    if article is None or article_document_ir.by_page.get(page_number) != article_id:
+        raise ArticleFlowError(GUARD_OWNERSHIP)
+    if legal_slot_plan is None or not legal_slot_plan.article_slots(article_id):
+        raise ArticleFlowError(SKIP_NO_SEGMENT)
+    segments = build_page_segments(
+        docs,
+        article,
+        page_number,
+        run_trace,
+        fixed_asset_inventory,
+        config,
+        typesetter,
+        protected_refs,
+        legal_slot_plan,
+    )
+    if not segments:
+        raise ArticleFlowError(SKIP_NO_SEGMENT)
+    planned = tuple(
+        placement
+        for segment in segments
+        for placement in allocate_segment(segment, typesetter, config)
+    )
+    if not planned:
+        raise ArticleFlowError(SKIP_NO_SEGMENT)
+    protected = {
+        item.reference
+        for segment in segments
+        for item in segment.protected_elements
+        if item.reference.startswith("p")
+        and "#" in item.reference
+        and ":" not in item.reference
+    }
+    protected_digests = {
+        reference: fixed_assets.content_digest(_paragraph(docs, reference))
+        for reference in protected
+    }
+    placements, released = _write_page(docs, page_number, segments, planned)
+    issues = _validate_page(
+        docs,
+        article,
+        page_number,
+        segments,
+        placements,
+        protected_digests,
+    )
+    current_inventory = fixed_assets.build_inventory(
+        docs,
+        article_document_ir=article_document_ir,
+        run_trace=run_trace,
+    )
+    comparison = fixed_assets.compare(
+        fixed_asset_inventory,
+        current_inventory,
+        config.asset_bbox_tolerance_pt,
+    )
+    if not comparison.holds:
+        issues.append(GUARD_FIXED_ASSET)
+    if issues:
+        raise ArticleFlowError(", ".join(sorted(set(issues))))
+    for request_id, rows in _request_replacements(run_trace, placements).items():
+        run_trace.replace_request_fragments(generation, request_id, rows)
+    for placement in placements:
+        run_trace.record_flow_slot(
+            generation,
+            slot_id=placement.slot_id,
+            article_id=article_id,
+            page=page_number,
+            status=STATUS_ALLOCATED,
+            box=placement.box,
+            source_ref=placement.source_ref,
+            render_ref=placement.render_ref,
+            previous_page=placement.previous_page,
+            previous_slot_id=placement.previous_slot_id,
+        )
+    for slot_id, owner, box in _released_regions(segments, placements):
+        run_trace.record_flow_slot(
+            generation,
+            slot_id=slot_id,
+            article_id=owner,
+            page=page_number,
+            status=STATUS_RELEASED,
+            box=box,
+            reason="unused_repair_capacity",
+        )
+    run_trace.validate()
+    touched = tuple(
+        dict.fromkeys(
+            [item.source_ref for item in placements]
+            + list(released)
+        )
+    )
+    return RegionRetypesetResult(
+        article_id,
+        page_number,
+        touched,
+        tuple(released),
+        placements,
+        comparison,
+    )
 
 
 def _apply_page_local(

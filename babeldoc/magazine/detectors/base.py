@@ -721,6 +721,7 @@ class DetectionContext:
     pages: list[PageView]
     config: DetectorConfig
     language: str | None
+    docs: object | None = None
     iteration: int = 0
     translation_performed: bool = True
     working_dir: Path | None = None
@@ -734,6 +735,7 @@ class DetectionContext:
     run_trace: object | None = None
     fixed_inventory: object | None = None
     current_inventory: object | None = None
+    legal_slot_plan: object | None = None
     finalized: bool = False
     notes: list[str] = field(default_factory=list)
     # Structured notes, filed by the detector that made them. A note in

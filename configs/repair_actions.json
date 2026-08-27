@@ -18,7 +18,7 @@
     "source_checkpoint"
   ],
   "actions": {
-    "translate_orphan_lines": {
+    "reprocess_omitted_text": {
       "description": "Send the text of a paragraph the translator was never given the chance to reach through the translation engine and write the answer back into it, then lay that paragraph out again.",
       "issue_kinds": [
         "untranslated_residue"
@@ -51,7 +51,50 @@
         "orphan_accepts_vertical": true
       }
     },
-    "contain_in_page": {
+    "reallocate_continuity_chain": {
+      "description": "Reallocate one already translated canonical continuity chain across its C18 legal slots without issuing another translation request.",
+      "issue_kinds": [
+        "chain_escalation",
+        "chain_conservation"
+      ],
+      "max_applications": 2,
+      "max_applications_allowed_range": "1..20",
+      "parameters": {
+        "max_paragraphs": {
+          "default": 1,
+          "default_allowed_range": "1..1"
+        }
+      },
+      "applicability": {
+        "requires_complete_target": true,
+        "statements": {
+          "requires_complete_target": "the canonical chain has one completed whole target and matching ordered fragments: {value}"
+        }
+      }
+    },
+    "retypeset_article_region": {
+      "description": "Repack existing target fragments of one canonical article page into C18 obstacle-free legal slots without translating text or crossing owner boundaries.",
+      "issue_kinds": [
+        "abnormal_blank",
+        "fragment_cluster",
+        "out_of_page"
+      ],
+      "max_applications": 3,
+      "max_applications_allowed_range": "1..20",
+      "parameters": {
+        "max_paragraphs": {
+          "default": 1,
+          "default_allowed_range": "1..1"
+        }
+      },
+      "applicability": {
+        "requires_legal_slots": true,
+        "statements": {
+          "requires_legal_slots": "the selected article page has canonical obstacle-free legal slots: {value}"
+        }
+      }
+    },
+    "contain_overflowing_heading": {
       "description": "Put a paragraph that is printing off the edge of its page back inside the page. It moves ink and never changes a character of text: it slides the paragraph inside the frame, shrinks it about the centre of its own extent only where sliding alone cannot fit it, and escalates instead of shrinking past the declared floor.",
       "issue_kinds": [
         "out_of_page"
@@ -81,7 +124,7 @@
         }
       }
     },
-    "resolve_collision": {
+    "resolve_text_collision": {
       "description": "Slide the smaller of two paragraphs standing in one place clear of the larger, along the axis on which they overlap least. It moves ink and never changes a character of text, it moves only the paragraph its rule can name as the smaller, and it escalates rather than acting where the two are of comparable size or where clearing the overlap would take more movement than a paragraph that merely drifted would need.",
       "issue_kinds": [
         "text_text_collision"

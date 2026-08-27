@@ -34,6 +34,7 @@ from pathlib import Path
 from babeldoc.magazine.page_features import ConfigError
 from babeldoc.magazine.page_features import _parse_range
 from babeldoc.magazine.page_features import validate_bounded_config
+from babeldoc.magazine.repair_contract import RepairAction
 from babeldoc.magazine.resource_paths import config_path
 
 CONFIG_PATH = config_path("repair_actions.json")
@@ -55,7 +56,10 @@ STATEMENTS_KEY = "statements"
 STATEMENT_VALUE = "{value}"
 
 # The name a decision uses to apply nothing. Reserved, so no action may take it.
-NO_ACTION = "none"
+NO_ACTION = "no_action"
+MUTATING_ACTIONS = frozenset(
+    action.value for action in RepairAction if action is not RepairAction.NO_ACTION
+)
 
 # The parameter every action that touches paragraphs declares: how many of them
 # one iteration may take. Named here rather than in one action's module because
@@ -110,9 +114,11 @@ VOLATILE_EVIDENCE_KEY = "volatile_evidence_keys"
 # rule, and requiring the orphan action's terms of a geometric one would be
 # requiring a filter that means nothing there.
 REQUIRED_APPLICABILITY = {
-    "translate_orphan_lines": (MIN_RATIO_KEY, MIN_CHARS_KEY, ORPHAN_LABELS_KEY),
-    "contain_in_page": (CONTAIN_LABELS_KEY, MIN_OVERFLOW_KEY),
-    "resolve_collision": (),
+    "reprocess_omitted_text": (MIN_RATIO_KEY, MIN_CHARS_KEY, ORPHAN_LABELS_KEY),
+    "reallocate_continuity_chain": ("requires_complete_target",),
+    "retypeset_article_region": ("requires_legal_slots",),
+    "contain_overflowing_heading": (CONTAIN_LABELS_KEY, MIN_OVERFLOW_KEY),
+    "resolve_text_collision": (),
 }
 
 # Terms an action's rule may declare in place of one another, of which it must
@@ -125,7 +131,10 @@ REQUIRED_APPLICABILITY = {
 # rule that carries the older one, rather than reading a bound that means
 # something else.
 ALTERNATIVE_APPLICABILITY = {
-    "resolve_collision": (MIN_COLLISION_COVERAGE_KEY, LEGACY_COLLISION_IOU_KEY),
+    "resolve_text_collision": (
+        MIN_COLLISION_COVERAGE_KEY,
+        LEGACY_COLLISION_IOU_KEY,
+    ),
 }
 
 
@@ -498,6 +507,11 @@ def parse_repair_config(raw: dict, source: str, kinds: set[str]) -> RepairConfig
     _require(
         isinstance(actions_raw, dict) and actions_raw,
         f"{source}: {ACTIONS_KEY} must be a non-empty object",
+    )
+    _require(
+        set(actions_raw) == MUTATING_ACTIONS,
+        f"{source}: {ACTIONS_KEY} must be the closed mutating vocabulary "
+        f"{sorted(MUTATING_ACTIONS)}",
     )
     return RepairConfig(
         max_iterations=int(parameters["max_iterations"]),

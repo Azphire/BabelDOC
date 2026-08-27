@@ -140,6 +140,7 @@ def build_context(
     run_trace=None,
     fixed_inventory=None,
     current_inventory=None,
+    legal_slot_plan=None,
     finalized: bool = False,
 ) -> DetectionContext:
     """One document as the detectors read it, each page carrying its policy.
@@ -163,6 +164,7 @@ def build_context(
         pages=pages,
         config=config,
         language=language,
+        docs=docs,
         iteration=iteration,
         translation_performed=translation_performed,
         working_dir=working_dir,
@@ -172,6 +174,7 @@ def build_context(
         run_trace=run_trace,
         fixed_inventory=fixed_inventory,
         current_inventory=current_inventory,
+        legal_slot_plan=legal_slot_plan,
         finalized=finalized,
     )
 
@@ -262,6 +265,7 @@ def run_detectors(context: DetectionContext) -> list[Issue]:
             pages=pages,
             config=context.config,
             language=context.language,
+            docs=context.docs,
             iteration=context.iteration,
             translation_performed=context.translation_performed,
             working_dir=context.working_dir,
@@ -271,6 +275,7 @@ def run_detectors(context: DetectionContext) -> list[Issue]:
             run_trace=context.run_trace,
             fixed_inventory=context.fixed_inventory,
             current_inventory=context.current_inventory,
+            legal_slot_plan=context.legal_slot_plan,
             finalized=context.finalized,
             notes=context.notes,
             records=context.records,
@@ -502,6 +507,7 @@ def detect_issues(
         run_trace=run_trace,
         fixed_inventory=inventory_before,
         current_inventory=inventory_after,
+        legal_slot_plan=legal_slot_plan,
         finalized=True,
     )
     issues = run_detectors(context)

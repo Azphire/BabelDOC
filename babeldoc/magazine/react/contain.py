@@ -101,6 +101,7 @@ from dataclasses import dataclass
 from babeldoc.format.pdf.document_il import il_version_1
 from babeldoc.magazine.detectors import base as detector_base
 from babeldoc.magazine.drop_cap import paragraph_reference
+from babeldoc.magazine.element_roles import ElementRole
 from babeldoc.magazine.line_split import paragraph_characters
 from babeldoc.magazine.react.actions import ACCEPTED
 from babeldoc.magazine.react.actions import Application
@@ -108,7 +109,7 @@ from babeldoc.magazine.react.config import CONTAIN_LABELS_KEY
 from babeldoc.magazine.react.config import MIN_OVERFLOW_KEY
 from babeldoc.magazine.react.config import Action
 
-NAME = "contain_in_page"
+NAME = "contain_overflowing_heading"
 
 # The two numbers this mechanism is bounded by, declared at the action's own
 # level because neither is a decision's to set and neither selects a finding.
@@ -131,6 +132,9 @@ REASON_CONTAINED = "the_paragraph_is_already_inside_the_page"
 REASON_FLOOR = "containing_it_would_shrink_it_past_the_declared_floor"
 REASON_NOT_CONTAINED = "the_transform_did_not_bring_the_ink_inside_the_page"
 REASON_INDUCED = "containing_it_would_stand_it_on_text_it_was_not_standing_on"
+REASON_OWNER = "canonical_article_owner_unavailable"
+REASON_ROLE = "element_role_not_heading"
+REASON_UNSUPPORTED = "unsupported_article_page"
 
 # How it was contained: the three states an accepted application reports. The
 # third is the guard's fallback -- shrunk where it stands, because sliding it
@@ -418,6 +422,29 @@ def admits(issue, candidate, action: Action, context) -> str:  # noqa: ARG001 - 
     finding reported at the edge of the detector's noise floor is not one to
     move a heading over.
     """
+    article_document_ir = context.article_document_ir
+    if article_document_ir is None:
+        return REASON_OWNER
+    if issue.page in {item.page for item in article_document_ir.unsupported_pages}:
+        return REASON_UNSUPPORTED
+    owner = article_document_ir.by_element.get(candidate.reference)
+    article = None if owner is None else article_document_ir.article(owner)
+    element = (
+        None
+        if article is None
+        else next(
+            (
+                item
+                for item in article.elements
+                if item.source_ref == candidate.reference
+            ),
+            None,
+        )
+    )
+    if owner is None or (issue.article_refs and set(issue.article_refs) != {owner}):
+        return REASON_OWNER
+    if element is None or element.role is not ElementRole.HEADING:
+        return REASON_ROLE
     labels, min_overflow = applicability(action)
     if (candidate.paragraph.layout_label or "") not in labels:
         return REASON_LABEL

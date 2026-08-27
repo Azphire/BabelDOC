@@ -23,6 +23,7 @@ sys.modules.setdefault("babeldoc.magazine.react", react_package)
 
 from babeldoc.format.pdf.document_il import il_version_1  # noqa: E402
 from babeldoc.magazine import acceptance  # noqa: E402
+from babeldoc.magazine import detectors  # noqa: E402
 from babeldoc.magazine import fixed_assets  # noqa: E402
 from babeldoc.magazine import run_trace  # noqa: E402
 from babeldoc.magazine.react import config as repair_config  # noqa: E402
@@ -278,15 +279,7 @@ class BrokenTransport:
 
 
 def check_cache_transport_failure_is_not_executed() -> None:
-    known = (
-        "chain_escalation",
-        "fragment_cluster",
-        "out_of_page",
-        "text_figure_overlap",
-        "text_text_collision",
-        "untranslated_residue",
-    )
-    config = repair_config.load_repair_config(None, known)
+    config = repair_config.load_repair_config(None, detectors.detector_kinds())
     cache = BrokenCache()
     transport = BrokenTransport()
     with tempfile.TemporaryDirectory(prefix="repair_transaction_") as directory:
@@ -344,12 +337,14 @@ def check_integration_and_limits() -> None:
         name: value["max_applications"]
         for name, value in repair_raw["actions"].items()
     } == {
-        "translate_orphan_lines": 12,
-        "contain_in_page": 8,
-        "resolve_collision": 8,
+        "reprocess_omitted_text": 12,
+        "reallocate_continuity_chain": 2,
+        "retypeset_article_region": 3,
+        "contain_overflowing_heading": 8,
+        "resolve_text_collision": 8,
     }
     check("all flow and repair paths share the transaction boundary", integration)
-    check("existing round and action limits are unchanged", limits)
+    check("canonical round and five-action limits remain bounded", limits)
 
 
 def main() -> int:

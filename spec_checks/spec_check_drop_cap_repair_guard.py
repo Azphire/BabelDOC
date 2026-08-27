@@ -343,7 +343,12 @@ def check_repair_preflight_and_unrelated_action(directory: Path) -> None:
     before_trace = trace.transaction_digest()
     for name, issue, count in cases:
         action = loop.repair_config.action(name)
-        handler = controller.Handler(count, lambda *_args: actions.ACCEPTED, None)
+        handler = controller.Handler(
+            count,
+            lambda finding, pages, _context: actions.resolve(finding, pages),
+            lambda *_args: actions.ACCEPTED,
+            None,
+        )
         accepted, rejected = loop._candidates(
             [issue], decision(issue), action, context, handler
         )
