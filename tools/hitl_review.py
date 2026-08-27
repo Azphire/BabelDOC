@@ -3,6 +3,9 @@
 Usage:
     python tools/hitl_review.py Courier-en
     python tools/hitl_review.py reviews/Courier-en.review.json
+    python tools/hitl_review.py bind --source SOURCE.pdf --config babeldoc.toml \
+        --review SAMPLE.review.json --decisions SAMPLE.decisions.json \
+        --output-dir EMPTY_DIRECTORY
 
 The pipeline already writes this page beside the draft on every export, so this
 tool is for the case where the draft was edited by hand, or where a draft
@@ -31,6 +34,8 @@ from babeldoc.magazine.hitl import REVIEW_SUFFIX  # noqa: E402
 from babeldoc.magazine.hitl import render_review_html  # noqa: E402
 from babeldoc.magazine.hitl import review_html_path  # noqa: E402
 from babeldoc.magazine.hitl import review_path  # noqa: E402
+from babeldoc.magazine.hitl_binding import HitlBindingError  # noqa: E402
+from babeldoc.magazine.hitl_binding import bind_legacy_files  # noqa: E402
 
 
 def resolve(target: str) -> Path:
@@ -41,7 +46,36 @@ def resolve(target: str) -> Path:
     return review_path(candidate.name.removesuffix(REVIEW_SUFFIX))
 
 
+def _bind(argv: list[str]) -> int:
+    parser = argparse.ArgumentParser(
+        prog="hitl_review.py bind",
+        description="Bind legacy explicit decisions to a current source PDF.",
+    )
+    parser.add_argument("--source", type=Path, required=True)
+    parser.add_argument("--config", type=Path, required=True)
+    parser.add_argument("--review", type=Path, required=True)
+    parser.add_argument("--decisions", type=Path, required=True)
+    parser.add_argument("--output-dir", type=Path, required=True)
+    args = parser.parse_args(argv)
+    try:
+        report = bind_legacy_files(
+            source=args.source,
+            config_path=args.config,
+            review_path=args.review,
+            decisions_path=args.decisions,
+            output_dir=args.output_dir,
+        )
+    except HitlBindingError as exc:
+        print(str(exc), file=sys.stderr)
+        return 1
+    print(f"bound {report['sample']} as {report['binding_mode']} in {args.output_dir}")
+    return 0
+
+
 def main(argv: list[str] | None = None) -> int:
+    argv = list(sys.argv[1:] if argv is None else argv)
+    if argv and argv[0] == "bind":
+        return _bind(argv[1:])
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("target", help="sample name, or path to a review draft")
     parser.add_argument(

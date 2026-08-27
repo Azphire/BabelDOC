@@ -93,6 +93,7 @@ from babeldoc.glossary import Glossary
 from babeldoc.glossary import GlossaryEntry
 from babeldoc.magazine import drop_cap
 from babeldoc.magazine import fragment_stitch
+from babeldoc.magazine import hitl_binding
 from babeldoc.magazine import line_split
 from babeldoc.magazine import name_harvest
 from babeldoc.magazine import translation_style
@@ -267,6 +268,7 @@ class Decisions:
     terms: dict[str, str] = field(default_factory=dict)
     page_kinds: dict[int, str] = field(default_factory=dict)
     drop_caps: dict[str, object] = field(default_factory=dict)
+    bound: hitl_binding.BoundDecisionProjection | None = None
 
     def is_empty(self) -> bool:
         return not (self.terms or self.page_kinds or self.drop_caps)
@@ -446,6 +448,26 @@ def _write_draft(translation_config, draft: dict) -> Path:
     return path
 
 
+def _write_run_draft(translation_config, draft: dict) -> Path:
+    """Write a source-bound machine draft without replacing apply inputs."""
+
+    envelope = hitl_binding.runtime_review_envelope(
+        draft,
+        source=Path(translation_config.input_file),
+        config=translation_config,
+    )
+    if translation_config.magazine_hitl_apply:
+        path = Path(
+            translation_config.get_working_file_path(
+                f"{draft['sample']}{hitl_binding.RUNTIME_REVIEW_SUFFIX}"
+            )
+        )
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_bytes(hitl_binding.canonical_json_bytes(envelope, pretty=True))
+        return path
+    return _write_draft(translation_config, envelope)
+
+
 def _report(translation_config) -> dict:
     report = _reports.get(translation_config)
     if report is None:
@@ -465,16 +487,71 @@ def _write_report(translation_config, report: dict) -> Path:
 def _decisions_for(translation_config, docs) -> Decisions | None:
     """The ruling governing this run, read and validated once."""
     if translation_config in _decisions:
-        return _decisions[translation_config]
+        decisions = _decisions[translation_config]
+        if decisions is not None and decisions.bound is not None:
+            hitl_binding.verify_bound_artifacts(
+                decisions.bound,
+                source=Path(translation_config.input_file),
+                config=translation_config,
+            )
+        return decisions
     labeled = labeled_pages(docs)
     pages = {label for label, _page in labeled}
-    decisions = load_decisions(
-        decisions_path(sample_name(translation_config), translation_config),
+    path = decisions_path(sample_name(translation_config), translation_config)
+    try:
+        bound = hitl_binding.load_bound_decisions(
+            path,
+            source=Path(translation_config.input_file),
+            config=translation_config,
+        )
+    except hitl_binding.HitlBindingError as exc:
+        raise HitlError(str(exc)) from exc
+    faults: list[str] = []
+    terms = _validate_terms(dict(bound.terms), faults)
+    page_kinds = _validate_page_kinds(
+        {str(page): kind for page, kind in bound.page_kinds.items()},
         pages,
+        load_taxonomy().names(),
+        faults,
+    )
+    drop_caps = _validate_drop_caps(
+        dict(bound.drop_caps),
+        tuple(load_hitl_config()[_CONFIG_KEY_DROP_CAP_DECISIONS]),
         drop_cap.document_references(labeled),
+        faults,
+    )
+    if faults:
+        raise HitlError(f"{hitl_binding.HITL_DECISION_REF_STALE}: " + "; ".join(faults))
+    decisions = Decisions(
+        path=path,
+        terms=terms,
+        page_kinds=page_kinds,
+        drop_caps=drop_caps,
+        bound=bound,
     )
     _decisions[translation_config] = decisions
+    translation_config.magazine_hitl_decisions = decisions
+    report = _report(translation_config)
+    report["binding_evidence_sha256"] = bound.decisions["lineage"][
+        "binding_evidence_sha256"
+    ]
+    report["selected_physical_pages"] = list(bound.selected_pages)
+    report["projection"] = [dict(item) for item in bound.projection_report]
     return decisions
+
+
+def _verify_cached_bound(translation_config) -> None:
+    decisions = _decisions.get(translation_config)
+    if decisions is None or decisions.bound is None:
+        return
+    try:
+        hitl_binding.verify_bound_artifacts(
+            decisions.bound,
+            source=Path(translation_config.input_file),
+            config=translation_config,
+        )
+    except hitl_binding.HitlBindingError as exc:
+        raise HitlError(str(exc)) from exc
 
 
 def _term_votes(shared_context) -> dict[str, int]:
@@ -832,7 +909,7 @@ def after_page_classify(translation_config, docs) -> None:
     if translation_config.magazine_hitl_export:
         draft = _draft(translation_config)
         draft[PAGE_KINDS_SECTION] = export_page_kinds(translation_config, docs)
-        _write_draft(translation_config, draft)
+        _write_run_draft(translation_config, draft)
     if translation_config.magazine_hitl_apply:
         decisions = _decisions_for(translation_config, docs)
         if decisions is not None:
@@ -867,6 +944,11 @@ def after_term_extract(
     still decides. It merges what it merges before the translator is built, which
     is what puts a whole first word in the request.
     """
+    decisions = (
+        _decisions_for(translation_config, docs)
+        if translation_config.magazine_hitl_apply
+        else None
+    )
     labeled = labeled_pages(docs)
     candidates = drop_cap.mark(
         translation_config,
@@ -891,9 +973,8 @@ def after_term_extract(
         draft = _draft(translation_config)
         draft[TERMS_SECTION] = rows
         draft[DROP_CAPS_SECTION] = drop_cap.review_rows(candidates, translation_config)
-        _write_draft(translation_config, draft)
+        _write_run_draft(translation_config, draft)
     if translation_config.magazine_hitl_apply:
-        decisions = _decisions_for(translation_config, docs)
         defaults = term_defaults(rows)
         ruled_drop_caps = (
             drop_cap.validate_manual_decisions(translation_config, decisions.drop_caps)
@@ -1007,6 +1088,8 @@ def after_translate(translation_config) -> None:
         or translation_config.magazine_hitl_apply
     ):
         return
+    if translation_config.magazine_hitl_apply:
+        _verify_cached_bound(translation_config)
     records = read_tracking(translation_config)
     if not records:
         return
@@ -1019,7 +1102,7 @@ def after_translate(translation_config) -> None:
             row[TRANSLATOR_VIEW_COLUMN] = translator_view(
                 row.get("source") or "", records, limit
             )
-        _write_draft(translation_config, draft)
+        _write_run_draft(translation_config, draft)
 
     if not translation_config.magazine_hitl_apply:
         return
@@ -1059,7 +1142,10 @@ def after_repair(translation_config, offered: list[str]) -> None:
     on: a pair reported as reaching nothing has to mean it reached nothing
     anywhere.
     """
-    if not translation_config.magazine_hitl_apply or not offered:
+    if not translation_config.magazine_hitl_apply:
+        return
+    _verify_cached_bound(translation_config)
+    if not offered:
         return
     report = _report(translation_config)
     applied = report.get(TERMS_SECTION)
