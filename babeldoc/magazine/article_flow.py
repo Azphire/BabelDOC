@@ -23,6 +23,9 @@ from babeldoc.magazine import fixed_assets
 from babeldoc.magazine.chain_backfill import load_backfill_config
 from babeldoc.magazine.element_roles import ElementRole
 from babeldoc.magazine.element_roles import coerce_element_role
+from babeldoc.magazine.legal_slots import SlotObstacle
+from babeldoc.magazine.legal_slots import digest_record
+from babeldoc.magazine.legal_slots import fragment_envelope
 from babeldoc.magazine.line_split import holds_formula
 from babeldoc.magazine.page_features import ConfigError
 from babeldoc.magazine.page_features import validate_bounded_config
@@ -67,6 +70,10 @@ FLOW_GUARD_DETECTOR = "article_flow_guard"
 
 class ArticleFlowError(ConfigError):
     """Raised when article flow cannot be planned without breaking a contract."""
+
+
+class ArticleFlowCapabilityError(ArticleFlowError):
+    """Raised before target mutation when production flow inputs are unavailable."""
 
 
 def objective_issue(
@@ -332,6 +339,58 @@ def enabled(translation_config) -> bool:
     return bool(getattr(translation_config, SWITCH, False))
 
 
+def preflight_runtime(
+    translator,
+    article_document_ir,
+    run_trace,
+    fixed_asset_inventory,
+    legal_slot_plan,
+) -> dict:
+    """Validate production capability and document inputs before translation."""
+    translation_config = translator.translation_config
+    if getattr(translation_config, "skip_translation", False):
+        return {"status": "not_exercised", "reason": "SKIP_TRANSLATION"}
+    if not enabled(translation_config):
+        return {"status": "skipped", "reason": "MAGAZINE_COLUMN_REFLOW_DISABLED"}
+    if type(translator).__name__ != "ILTranslatorLLMOnly":
+        raise ArticleFlowCapabilityError(
+            "magazine_column_reflow requires ILTranslatorLLMOnly"
+        )
+    missing = [
+        name
+        for name, value in (
+            ("article_ir", article_document_ir),
+            ("run_trace", run_trace),
+            ("fixed_asset_inventory", fixed_asset_inventory),
+            ("legal_slot_plan", legal_slot_plan),
+        )
+        if value is None
+    ]
+    if missing:
+        raise ArticleFlowCapabilityError(
+            "magazine_column_reflow missing " + ", ".join(missing)
+        )
+    if not set(article_document_ir.by_element).issubset(run_trace.sources):
+        raise ArticleFlowCapabilityError(
+            "RunTrace does not cover every canonical ArticleIR element"
+        )
+    inventory_pages = {page for page, _media, _crop in fixed_asset_inventory.page_sizes}
+    if not set(article_document_ir.by_page).issubset(inventory_pages):
+        raise ArticleFlowCapabilityError(
+            "fixed asset inventory does not cover every owned physical page"
+        )
+    if any(
+        legal_slot.article_id != article_document_ir.by_page.get(legal_slot.page)
+        for legal_slot in legal_slot_plan.slots
+    ):
+        raise ArticleFlowCapabilityError("legal slot crosses canonical article ownership")
+    return {
+        "status": "ready",
+        "reason": None,
+        "legal_slots_sha256": legal_slot_plan.digest,
+    }
+
+
 def _box_tuple(value) -> tuple[float, float, float, float] | None:
     if value is None:
         return None
@@ -395,67 +454,57 @@ def _spacing_before(previous, current) -> float:
     return max(0.0, previous.source_box[1] - current.source_box[3])
 
 
-def _subtract_obstacles(
-    envelope: tuple[float, float, float, float],
-    obstacles: Sequence[ProtectedElement],
-    minimum_height: float,
-) -> tuple[tuple[tuple[float, float, float, float], tuple[str, ...]], ...]:
-    x, y, x2, y2 = envelope
-    intervals = []
-    for obstacle in obstacles:
-        box = obstacle.box
-        if box is None or min(x2, box[2]) <= max(x, box[0]):
-            continue
-        low = max(y, box[1])
-        high = min(y2, box[3])
-        if high > low:
-            intervals.append((low, high, obstacle.reference))
-    intervals.sort(key=lambda item: (item[0], item[1], item[2]))
-    merged: list[tuple[float, float, set[str]]] = []
-    for low, high, reference in intervals:
-        if not merged or low > merged[-1][1]:
-            merged.append((low, high, {reference}))
-        else:
-            old_low, old_high, refs = merged[-1]
-            refs.add(reference)
-            merged[-1] = (old_low, max(old_high, high), refs)
-    cursor = y
-    regions = []
-    for low, high, refs in merged:
-        if low - cursor >= minimum_height:
-            regions.append(((x, cursor, x2, low), tuple(sorted(refs))))
-        cursor = max(cursor, high)
-    if y2 - cursor >= minimum_height:
-        regions.append(((x, cursor, x2, y2), ()))
-    return tuple(reversed(regions))
-
-
 def _legal_slots(
     article_id: str,
     page_number: int,
     elements,
     protected: Sequence[ProtectedElement],
     config: ArticleFlowConfig,
+    legal_slot_plan=None,
 ) -> tuple[ArticleFlowSlot, ...]:
-    columns = []
-    for column in dict.fromkeys(element.column for element in elements):
-        held = [element for element in elements if element.column == column]
-        boxes = [
-            element.source_box for element in held if element.source_box is not None
-        ]
-        if not boxes:
-            continue
-        envelope = (
-            min(box[0] for box in boxes),
-            min(box[1] for box in boxes),
-            max(box[2] for box in boxes),
-            max(box[3] for box in boxes),
-        )
-        columns.append((column, envelope))
+    columns = tuple(dict.fromkeys(element.column for element in elements))
+    bases = []
+    if legal_slot_plan is not None:
+        for column in columns:
+            bases.extend(
+                (column, slot.box, slot.slot_id, slot.obstacle_refs)
+                for slot in legal_slot_plan.region_slots(
+                    article_id, page_number, column
+                )
+            )
+    else:
+        for column in columns:
+            held = [element for element in elements if element.column == column]
+            boxes = [
+                element.source_box
+                for element in held
+                if element.source_box is not None
+            ]
+            if boxes:
+                bases.append(
+                    (
+                        column,
+                        (
+                            min(box[0] for box in boxes),
+                            min(box[1] for box in boxes),
+                            max(box[2] for box in boxes),
+                            max(box[3] for box in boxes),
+                        ),
+                        None,
+                        (),
+                    )
+                )
+    dynamic = tuple(
+        SlotObstacle(item.reference, page_number, item.box, item.reason)
+        for item in protected
+        if item.box is not None
+    )
     slots = []
-    for column, envelope in columns:
-        for box, obstacle_refs in _subtract_obstacles(
-            envelope, protected, config.minimum_slot_height_pt
+    for column, envelope, canonical_slot_id, inherited_refs in bases:
+        for box, obstacle_refs in fragment_envelope(
+            envelope,
+            dynamic,
+            minimum_height=config.minimum_slot_height_pt,
         ):
             material = {
                 "article_id": article_id,
@@ -463,15 +512,20 @@ def _legal_slots(
                 "column": column,
                 "box": list(box),
             }
+            refs = tuple(sorted(set(inherited_refs) | set(obstacle_refs)))
             slots.append(
                 ArticleFlowSlot(
-                    slot_id=f"article-flow-region-{hash_record(material)}",
+                    slot_id=(
+                        canonical_slot_id
+                        if canonical_slot_id is not None and box == envelope
+                        else f"legal-flow-slot-{digest_record(material)}"
+                    ),
                     article_id=article_id,
                     page=page_number,
                     column=column,
                     slot_order=len(slots),
                     box=box,
-                    obstacle_refs=obstacle_refs,
+                    obstacle_refs=refs,
                 )
             )
     return tuple(slots)
@@ -494,6 +548,7 @@ def build_page_segments(
     config: ArticleFlowConfig,
     typesetter: Typesetting,
     protected_refs=frozenset(),
+    legal_slot_plan=None,
 ) -> tuple[ArticleFlowSegment, ...]:
     """Build segments strictly from canonical ArticleIR reading order."""
     page = DocumentPageIndex(docs).page_by_source_number(page_number)
@@ -586,6 +641,7 @@ def build_page_segments(
             held_elements,
             protected_page,
             config,
+            legal_slot_plan,
         )
         if slots:
             identity = {
@@ -957,6 +1013,7 @@ def _apply_page_local(
     inventory = fixed_assets.build_inventory(
         docs, protected_paragraph_labels=tuple(sorted(protected_labels))
     )
+    legal_slot_plan = getattr(translator, "legal_slot_plan", None)
     unsupported = {item.page for item in article_document_ir.unsupported_pages}
     page_records = []
     protected_refs = drop_cap_intent.active_protected_refs(
@@ -995,6 +1052,7 @@ def _apply_page_local(
             config,
             typesetter,
             protected_refs,
+            legal_slot_plan,
         )
         if not segments:
             page_records.append(
@@ -1189,6 +1247,9 @@ def _apply_page_local(
             )
     record = {
         "switch": SWITCH,
+        "legal_slots_sha256": (
+            None if legal_slot_plan is None else legal_slot_plan.digest
+        ),
         "eligible_roles": [role.value for role in config.eligible_roles],
         "pages": page_records,
         "totals": {

@@ -62,6 +62,9 @@ from babeldoc.magazine import indent_policy
 from babeldoc.magazine import paren_dedup
 from babeldoc.magazine import rotated_lane
 from babeldoc.magazine.article_builder import ArticleBuilder
+from babeldoc.magazine.article_state import ArticleStateJournal
+from babeldoc.magazine.article_state import ArticleStateStage
+from babeldoc.magazine.article_state import ArticleStateStatus
 from babeldoc.magazine.chain_builder import ChainBuilder
 from babeldoc.magazine.checkpoint import dump_checkpoint
 from babeldoc.magazine.debug_overlay import SIDECAR_NAME as DEBUG_OVERLAY_SIDECAR
@@ -75,6 +78,7 @@ from babeldoc.magazine.final_pdf_validator import expectations_from_runtime
 from babeldoc.magazine.final_pdf_validator import merge_expectations
 from babeldoc.magazine.final_pdf_validator import offset_expectations
 from babeldoc.magazine.final_pdf_validator import record_pipeline_status
+from babeldoc.magazine.legal_slots import plan_legal_slots
 from babeldoc.magazine.page_classifier import PageClassifier
 from babeldoc.magazine.page_identity import ensure_magazine_split_supported
 from babeldoc.magazine.run_trace import REPORT_NAME as RUN_TRACE_REPORT_NAME
@@ -1233,6 +1237,31 @@ def _do_translate_single(
         if article_document_ir is None
         else RunTrace.from_document(docs, article_document_ir)
     )
+    fixed_asset_inventory = None
+    legal_slot_plan = None
+    article_state_journal = None
+    if article_document_ir is not None and run_trace is not None:
+        fixed_asset_inventory = fixed_assets.build_inventory(
+            docs,
+            article_document_ir=article_document_ir,
+            run_trace=run_trace,
+        )
+        legal_slot_plan = plan_legal_slots(
+            article_document_ir,
+            fixed_asset_inventory,
+        )
+        article_state_journal = ArticleStateJournal(
+            translation_config,
+            docs,
+            article_document_ir,
+            run_trace,
+            fixed_asset_inventory,
+            legal_slot_plan,
+        )
+        article_state_journal.capture(
+            ArticleStateStage.SOURCE_RECONSTRUCTED,
+            include_context=False,
+        )
     record_runtime_stage(
         translation_config,
         "post_article_ir",
@@ -1260,6 +1289,29 @@ def _do_translate_single(
         run_trace=run_trace,
     )
 
+    if article_state_journal is not None:
+        article_state_journal.plan_context(
+            delivery_expectation=(
+                "NOT_EXERCISED"
+                if translation_config.skip_translation
+                else (
+                    "ARTICLE_SCOPED_CONTEXT"
+                    if translation_config.magazine_article_context
+                    else "ARTICLE_SCOPED_INPUTS_ONLY"
+                )
+            )
+        )
+        article_state_journal.capture(
+            ArticleStateStage.PRE_TRANSLATION,
+            status=(
+                ArticleStateStatus.NOT_EXERCISED
+                if translation_config.skip_translation
+                else ArticleStateStatus.CAPTURED
+            ),
+            reason=("SKIP_TRANSLATION" if translation_config.skip_translation else None),
+            include_context=not translation_config.skip_translation,
+        )
+
     il_translator = None
     if not translation_config.skip_translation:
         if support_llm_translate:
@@ -1268,10 +1320,23 @@ def _do_translate_single(
                 translation_config,
                 article_document_ir=article_document_ir,
                 run_trace=run_trace,
+                legal_slot_plan=legal_slot_plan,
+                article_context_records=(
+                    ()
+                    if article_state_journal is None
+                    else article_state_journal.context_records
+                ),
             )
         else:
             il_translator = ILTranslator(translate_engine, translation_config)
 
+        article_flow.preflight_runtime(
+            il_translator,
+            article_document_ir,
+            run_trace,
+            fixed_asset_inventory,
+            legal_slot_plan,
+        )
         il_translator.translate(docs)
         logger.debug(f"finish ILTranslator from {temp_pdf_path}")
     else:
@@ -1281,6 +1346,18 @@ def _do_translate_single(
     # the requests it was given the chance to reach.
     hitl.after_translate(translation_config)
 
+    if article_state_journal is not None:
+        article_state_journal.capture(
+            ArticleStateStage.TARGET_GENERATED,
+            status=(
+                ArticleStateStatus.NOT_EXERCISED
+                if translation_config.skip_translation
+                else ArticleStateStatus.CAPTURED
+            ),
+            reason=("SKIP_TRANSLATION" if translation_config.skip_translation else None),
+            include_context=not translation_config.skip_translation,
+        )
+
     # The translation is written back and the stage has not laid it out, which is
     # the one window in which shortening a paragraph's text costs nothing.
     paren_dedup.apply(translation_config, docs)
@@ -1288,17 +1365,43 @@ def _do_translate_single(
     # the stage below and by nothing between here and it.
     indent_policy.apply(translation_config, docs, article_document_ir)
 
+    article_flow_result = None
     if (
         isinstance(il_translator, ILTranslatorLLMOnly)
         and article_document_ir is not None
         and run_trace is not None
         and article_flow.enabled(translation_config)
     ):
-        article_flow.apply(
+        article_flow_result = article_flow.apply(
             il_translator,
             docs,
             article_document_ir,
             run_trace,
+        )
+    if article_state_journal is not None:
+        if translation_config.skip_translation:
+            allocated_status = ArticleStateStatus.NOT_EXERCISED
+            allocated_reason = "SKIP_TRANSLATION"
+        elif not article_flow.enabled(translation_config):
+            allocated_status = ArticleStateStatus.SKIPPED
+            allocated_reason = "MAGAZINE_COLUMN_REFLOW_DISABLED"
+        elif not isinstance(il_translator, ILTranslatorLLMOnly):
+            allocated_status = ArticleStateStatus.SKIPPED
+            allocated_reason = "TRANSLATOR_CAPABILITY_UNAVAILABLE"
+        elif article_flow_result is None:
+            allocated_status = ArticleStateStatus.SKIPPED
+            allocated_reason = "ARTICLE_FLOW_UNAVAILABLE"
+        elif article_flow_result["totals"].get("segments_rolled_back", 0):
+            allocated_status = ArticleStateStatus.ROLLED_BACK
+            allocated_reason = "ARTICLE_FLOW_ROLLED_BACK"
+        else:
+            allocated_status = ArticleStateStatus.CAPTURED
+            allocated_reason = None
+        article_state_journal.capture(
+            ArticleStateStage.TARGET_ALLOCATED,
+            status=allocated_status,
+            reason=allocated_reason,
+            include_context=not translation_config.skip_translation,
         )
     if il_translator is not None:
         del il_translator
@@ -1357,6 +1460,11 @@ def _do_translate_single(
         article_document_ir=article_document_ir,
         typesetting_stage=typesetting_stage,
     )
+    if article_state_journal is not None:
+        article_state_journal.capture(
+            ArticleStateStage.TYPESET,
+            include_context=not translation_config.skip_translation,
+        )
     record_runtime_stage(
         translation_config,
         "post_typesetting",

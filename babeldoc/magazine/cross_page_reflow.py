@@ -325,6 +325,7 @@ def build_cross_page_segments(
     config: article_flow.ArticleFlowConfig,
     typesetter: Typesetting,
     protected_refs=frozenset(),
+    legal_slot_plan=None,
 ) -> tuple[tuple[CrossPageArticleFlowSegment, ...], tuple[CrossPageFlowIssue, ...]]:
     """Build a read-only cross-page plan from the canonical article state."""
     unsupported = {item.page for item in article_document_ir.unsupported_pages}
@@ -367,6 +368,7 @@ def build_cross_page_segments(
                     config,
                     typesetter,
                     protected_refs,
+                    legal_slot_plan,
                 )
             )
             for left, right in zip(by_page[page], by_page[page][1:], strict=False):
@@ -607,6 +609,7 @@ def apply(
         docs,
         protected_paragraph_labels=tuple(sorted(protected_labels)),
     )
+    legal_slot_plan = getattr(translator, "legal_slot_plan", None)
     protected_refs = drop_cap_intent.active_protected_refs(
         translator.translation_config
     )
@@ -618,6 +621,7 @@ def apply(
         config,
         typesetter,
         protected_refs,
+        legal_slot_plan,
     )
     issues = list(boundary_issues)
     for issue in boundary_issues:
@@ -904,6 +908,9 @@ def apply(
             )
     record = {
         "switch": article_flow.SWITCH,
+        "legal_slots_sha256": (
+            None if legal_slot_plan is None else legal_slot_plan.digest
+        ),
         "eligible_roles": [role.value for role in config.eligible_roles],
         "cross_page_segments": segment_results,
         "issues": [item.to_record() for item in issues],

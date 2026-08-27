@@ -52,6 +52,8 @@ from typing import Protocol
 
 from babeldoc.magazine import article_builder
 from babeldoc.magazine.article_ir import ArticleDocumentIR
+from babeldoc.magazine.article_state import ArticleContextRecord
+from babeldoc.magazine.article_state import ArticleContextRecordPlanner
 from babeldoc.magazine.chain_signals import load_chain_config
 from babeldoc.magazine.element_roles import ElementRole
 from babeldoc.magazine.page_features import ConfigError
@@ -568,6 +570,7 @@ class ArticleContextPlan:
         translation_config,
         article_document_ir: ArticleDocumentIR,
         client: CachedBriefClient | None = None,
+        input_records: tuple[ArticleContextRecord, ...] = (),
     ) -> None:
         self.translation_config = translation_config
         self.article_document_ir = article_document_ir
@@ -576,6 +579,7 @@ class ArticleContextPlan:
         self.title_labels = article_builder.title_labels(self.grouping_config)
         self.body_labels = tuple(load_chain_config()[BODY_LABELS_KEY])
         self.client = client
+        self.input_records = tuple(input_records)
         self.records: list[dict] = []
         self.requests = 0
 
@@ -709,6 +713,7 @@ class ArticleContextPlan:
             "title_labels": list(self.title_labels),
             "body_labels": list(self.body_labels),
             "articles": self.records,
+            "input_records": [record.to_record() for record in self.input_records],
             "unassigned_pages": [
                 int(page)
                 for page in self.article_document_ir.page_selection_map.physical_to_structural
@@ -747,6 +752,23 @@ def plan_article_context(
             identity=engine_identity(engine, config.lang_out),
             ignore_cache=bool(getattr(engine, "ignore_cache", False)),
         )
+    input_records = tuple(getattr(translator, "article_context_records", ()))
+    if not input_records:
+        input_records = ArticleContextRecordPlanner(
+            config, article_document_ir
+        ).plan(docs, delivery_expectation="ARTICLE_SCOPED_CONTEXT")
+    expected_articles = {article.article_id for article in article_document_ir.articles}
+    if {record.article_id for record in input_records} != expected_articles:
+        raise ArticleContextError("context records must exactly cover canonical articles")
+    for record in input_records:
+        if any(
+            article_document_ir.by_element.get(reference) != record.article_id
+            for reference in record.ordered_source_refs
+        ):
+            raise ArticleContextError("article context record crosses owner boundary")
     return ArticleContextPlan(
-        config, article_document_ir=article_document_ir, client=client
+        config,
+        article_document_ir=article_document_ir,
+        client=client,
+        input_records=input_records,
     ).plan(docs)

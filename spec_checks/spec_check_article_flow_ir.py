@@ -29,6 +29,9 @@ except ModuleNotFoundError:
 from babeldoc.format.pdf.document_il import il_version_1  # noqa: E402
 from babeldoc.magazine import article_builder  # noqa: E402
 from babeldoc.magazine import article_context  # noqa: E402
+from babeldoc.magazine import article_flow  # noqa: E402
+from babeldoc.magazine.legal_slots import SlotObstacle  # noqa: E402
+from babeldoc.magazine.legal_slots import fragment_envelope  # noqa: E402
 
 FAILURES: list[str] = []
 CHECKS = 0
@@ -389,6 +392,26 @@ def check_negative_contracts() -> None:
     )
 
 
+def check_shared_legal_slot_contract() -> None:
+    fragments = fragment_envelope(
+        (0.0, 0.0, 100.0, 100.0),
+        (SlotObstacle("figure", 1, (40.0, 40.0, 60.0, 60.0), "fixed"),),
+    )
+    source = inspect.getsource(article_flow._legal_slots)
+    report_source = inspect.getsource(article_flow._apply_page_local)
+    check(
+        "article flow consumes the shared legal-slot planner and digest",
+        "fragment_envelope(" in source
+        and "legal_slot_plan.region_slots(" in source
+        and '"legal_slots_sha256"' in report_source,
+    )
+    check(
+        "article flow obstacle subtraction creates legal fragments",
+        len(fragments) == 4
+        and all("figure" in refs for _box, refs in fragments),
+    )
+
+
 def main() -> int:
     with tempfile.TemporaryDirectory(prefix="article-flow-ir-") as temp:
         root = Path(temp)
@@ -399,6 +422,7 @@ def main() -> int:
         check_fresh_run_determinism(root)
         check_context_consumes_same_ir(root)
         check_negative_contracts()
+        check_shared_legal_slot_contract()
     if FAILURES:
         print(f"FAIL: {len(FAILURES)} of {CHECKS} ArticleFlowIR checks failed")
         for failure in FAILURES:

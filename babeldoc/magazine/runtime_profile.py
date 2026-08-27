@@ -237,7 +237,11 @@ def validate_magazine_switches(
         )
 
     require("magazine_chain_detect", "magazine_page_classify")
-    require("magazine_chain_translate", "magazine_chain_detect")
+    require(
+        "magazine_chain_translate",
+        "magazine_chain_detect",
+        "magazine_article_group",
+    )
     require("magazine_article_group", "magazine_page_classify")
     require("magazine_article_context", "magazine_article_group")
     require("magazine_fragment_stitch", "magazine_page_classify")
@@ -256,6 +260,7 @@ def validate_magazine_switches(
         "magazine_detect",
         "magazine_checkpoint",
         "magazine_article_group",
+        "magazine_chain_detect",
     )
     require("magazine_title_typeset", "magazine_detect")
     require("magazine_repair", "magazine_detect")

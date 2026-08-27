@@ -128,11 +128,15 @@ class ILTranslatorLLMOnly:
         tokenizer=None,
         article_document_ir: ArticleDocumentIR | None = None,
         run_trace: RunTrace | None = None,
+        legal_slot_plan=None,
+        article_context_records=(),
     ):
         self.translate_engine = translate_engine
         self.translation_config = translation_config
         self.article_document_ir = article_document_ir
         self.run_trace = run_trace
+        self.legal_slot_plan = legal_slot_plan
+        self.article_context_records = tuple(article_context_records)
         self.font_mapper = FontMapper(translation_config)
         self.shared_context_cross_split_part = (
             translation_config.shared_context_cross_split_part
@@ -264,6 +268,7 @@ class ILTranslatorLLMOnly:
                     tracker,
                     article_context,
                     self.article_document_ir,
+                    self.legal_slot_plan,
                 )
                 chain_claim = chain_plan.claim
             with PriorityThreadPoolExecutor(

@@ -45,6 +45,7 @@ from babeldoc.magazine.chain_signals import BOUNDARY_COLUMN
 from babeldoc.magazine.chain_signals import BOUNDARY_PAGE
 from babeldoc.magazine.chain_signals import CLASS_LABELS_KEY
 from babeldoc.magazine.chain_signals import load_chain_config
+from babeldoc.magazine.legal_slots import slot_for_source_box
 from babeldoc.magazine.page_identity import physical_page_number
 from babeldoc.magazine.page_identity import translation_pages
 from babeldoc.magazine.run_trace import ChainResultState
@@ -581,6 +582,8 @@ def _token_ranges(text: str, expected: tuple[str, ...]) -> tuple[tuple[int, int]
 
 
 def _slot_id(slot) -> str:
+    if getattr(slot, "slot_id", None):
+        return slot.slot_id
     material = {
         "article_id": slot.article_id,
         "page": slot.page,
@@ -595,11 +598,16 @@ class ChainPlan:
     """Every chain of one document, measured and waiting to be written back."""
 
     def __init__(
-        self, translator, article_context=EMPTY_CONTEXT, article_document_ir=None
+        self,
+        translator,
+        article_context=EMPTY_CONTEXT,
+        article_document_ir=None,
+        legal_slot_plan=None,
     ):
         self.translator = translator
         self.article_context = article_context
         self.article_document_ir = article_document_ir
+        self.legal_slot_plan = legal_slot_plan
         self.config = backfill.load_backfill_config()
         self.class_labels = load_chain_config()[CLASS_LABELS_KEY]
         self.language = translator.translation_config.lang_out
@@ -757,14 +765,6 @@ class ChainPlan:
         if article is None:
             return None, ESCALATION_ARTICLE, "canonical article object is unavailable"
         elements = {element.source_ref: element for element in article.elements}
-        slots_by_region = {}
-        for slot in article.slots:
-            key = (slot.page, slot.column)
-            if key in slots_by_region:
-                return None, ESCALATION_TOPOLOGY, (
-                    f"article region {key} has more than one slot"
-                )
-            slots_by_region[key] = slot
         ordered_slots = []
         for reference in refs:
             element = elements.get(reference)
@@ -772,13 +772,30 @@ class ChainPlan:
                 return None, ESCALATION_ARTICLE, (
                     f"member {reference} has no canonical article element"
                 )
-            slot = slots_by_region.get((element.page, element.column))
+            if self.legal_slot_plan is None:
+                candidates = tuple(
+                    slot
+                    for slot in article.slots
+                    if slot.page == element.page and slot.column == element.column
+                )
+                slot = candidates[0] if len(candidates) == 1 else None
+            else:
+                slot = slot_for_source_box(
+                    self.legal_slot_plan,
+                    article_id=article_id,
+                    page=element.page,
+                    column=element.column,
+                    source_box=element.source_box,
+                )
             if slot is None:
                 return None, ESCALATION_ARTICLE, (
                     f"member {reference} has no legal article slot"
                 )
             ordered_slots.append(slot)
-        slot_orders = [slot.slot_order for slot in ordered_slots]
+        slot_orders = [
+            getattr(slot, "source_slot_order", slot.slot_order)
+            for slot in ordered_slots
+        ]
         expected_slot_orders = list(
             range(slot_orders[0], slot_orders[0] + len(slot_orders))
         )
@@ -1594,6 +1611,9 @@ class ChainPlan:
                 "aligned_cuts": 0,
             },
             "align_enabled": self.align_enabled,
+            "legal_slots_sha256": (
+                None if self.legal_slot_plan is None else self.legal_slot_plan.digest
+            ),
             "short_units": None
             if self.short_units is None
             else {
@@ -1630,8 +1650,12 @@ def plan_chain_translation(
     tracker,
     article_context=EMPTY_CONTEXT,
     article_document_ir=None,
+    legal_slot_plan=None,
 ) -> ChainPlan:
     """Merge, translate and cut every chain in ``docs``, writing nothing yet."""
-    return ChainPlan(translator, article_context, article_document_ir).plan(
-        docs, tracker
-    )
+    return ChainPlan(
+        translator,
+        article_context,
+        article_document_ir,
+        legal_slot_plan,
+    ).plan(docs, tracker)

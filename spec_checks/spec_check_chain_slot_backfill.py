@@ -65,6 +65,8 @@ from babeldoc.magazine.article_ir import ChainHeadStartEvidence  # noqa: E402
 from babeldoc.magazine.article_ir import ChainSourceRange  # noqa: E402
 from babeldoc.magazine.article_ir import ChainTailEndEvidence  # noqa: E402
 from babeldoc.magazine.article_ir import SourceElementRef  # noqa: E402
+from babeldoc.magazine.legal_slots import SlotObstacle  # noqa: E402
+from babeldoc.magazine.legal_slots import fragment_envelope  # noqa: E402
 from babeldoc.magazine.run_trace import ALLOCATION_RELEASED  # noqa: E402
 from babeldoc.magazine.run_trace import ChainResultState  # noqa: E402
 from babeldoc.magazine.run_trace import RunTrace  # noqa: E402
@@ -622,6 +624,31 @@ def check_scope_and_source_contract() -> None:
     )
 
 
+def check_shared_legal_slot_contract() -> None:
+    fragments = fragment_envelope(
+        (0.0, 0.0, 100.0, 100.0),
+        (SlotObstacle("figure", 7, (40.0, 40.0, 60.0, 60.0), "fixed"),),
+    )
+    source = (ROOT / "babeldoc/magazine/chain_translation.py").read_text(
+        encoding="utf-8"
+    )
+    check(
+        "chain slot preflight consumes the shared legal-slot planner",
+        "slot_for_source_box(" in source and '"legal_slots_sha256"' in source,
+    )
+    check(
+        "shared planner fragments a two-dimensional chain obstacle",
+        len(fragments) == 4
+        and all(
+            not (
+                min(box[2], 60.0) > max(box[0], 40.0)
+                and min(box[3], 60.0) > max(box[1], 40.0)
+            )
+            for box, _refs in fragments
+        ),
+    )
+
+
 def main() -> int:
     check_pure_typesetter_measurement()
     check_legal_boundaries()
@@ -629,6 +656,7 @@ def main() -> int:
     check_overflow_rollback()
     check_writeback_rollback()
     check_scope_and_source_contract()
+    check_shared_legal_slot_contract()
     if FAILURES:
         print(f"FAIL: {len(FAILURES)} of {CHECKS} chain slot checks")
         for failure in FAILURES:

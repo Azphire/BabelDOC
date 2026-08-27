@@ -227,6 +227,32 @@ def check_dependencies() -> None:
         "04g shipped profile enables no network-capable feature",
         not any(profile.switches[name] for name in NETWORK_CAPABLE_SWITCHES),
     )
+    check(
+        "04h chain translation requires detection and article ownership",
+        issue_for(
+            {"magazine_chain_translate": True},
+            "magazine_chain_translate",
+            "magazine_chain_detect",
+        )
+        and issue_for(
+            {"magazine_chain_translate": True},
+            "magazine_chain_translate",
+            "magazine_article_group",
+        ),
+    )
+    check(
+        "04i column reflow requires owner-scoped chain inputs",
+        issue_for(
+            {"magazine_column_reflow": True},
+            "magazine_column_reflow",
+            "magazine_article_group",
+        )
+        and issue_for(
+            {"magazine_column_reflow": True},
+            "magazine_column_reflow",
+            "magazine_chain_detect",
+        ),
+    )
 
 
 def check_manifest(root: Path) -> None:
