@@ -1,5 +1,16 @@
 # D2 指标合同(batch-e0)
 
+> **C21 methodology correction (authoritative for current output).** The
+> publication replay is `descriptive_publication_matrix` (descriptive;
+> `generalisation_claim=false`), shared-substring grouping is
+> `substring_consistency_proxy` (proxy; `formal_ltcr_claim=false`), and the
+> endpoint-window judge is `exploratory_endpoint_window_annotations`
+> (exploratory; `formal_seam_mqm_claim=false`). Historical LOPO/LTCR/M10 text
+> below describes frozen legacy artifacts, not formal certificates. Formal
+> LOPO, word-aligned LTCR, and seam MQM are currently `not_ready`,
+> `not_computed`, and null; see `methodology_status.v2.json` and the evidence
+> state machine in `babeldoc/magazine/metrics/readiness.py`.
+
 评估阶段每个指标的**唯一定义来源、数据来源、工具状态与归属批次**。本文件是 E1–E4 的合同:
 E1 之后任何指标实现若与本表不符,以本表为准或先改本表。
 

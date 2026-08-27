@@ -239,9 +239,12 @@ def measure_run(label: str, working_dir: Path, sample: str | None) -> dict:
         absent.append(f"{REPAIR_SIDECAR}: no repair level of the conservation invariant")
 
     if source is None or translated is None:
-        absent.append(f"{SOURCE_STAGE} or {TRANSLATED_STAGE} checkpoint: no LTCR")
+        absent.append(
+            f"{SOURCE_STAGE} or {TRANSLATED_STAGE} checkpoint: "
+            "no substring consistency proxy"
+        )
     else:
-        report["ltcr"] = ltcr.measure(
+        report["substring_consistency_proxy"] = ltcr.measure(
             _regions_for_ltcr(source, translated),
             tuple(chain_config["terminal_punctuation"]),
             metrics=config,
@@ -297,7 +300,7 @@ def measure_pdf(
         "absent": [
             "no working directory: no chain or repair level of the conservation "
             "invariant",
-            "no source and translated checkpoint pair: no LTCR",
+            "no source and translated checkpoint pair: no substring consistency proxy",
         ],
     }
     return report
@@ -432,13 +435,13 @@ def markdown(report: dict) -> str:
     lines = ["# Evaluation metrics", "", f"Sample: `{report['sample']}`", ""]
     lines.append(
         "| run | path | MBR linkable | MBR all | inherited open | conserved | "
-        "LTCR | legacy share | Overlap delta | Alignment delta | image IoU | "
+        "substring consistency proxy | legacy share | Overlap delta | Alignment delta | image IoU | "
         "page delta |"
     )
     lines.append("| --- " * 12 + "|")
     for run in runs:
         breaks = _stratified(run)
-        terms = (run.get("ltcr") or {}).get("summary") or {}
+        terms = (run.get("substring_consistency_proxy") or {}).get("summary") or {}
         geometry = (run.get("layout_geometry") or {}).get("summary") or {}
         pages = (run.get("layout_geometry") or {}).get("page_count_delta") or {}
         lines.append(
@@ -451,7 +454,7 @@ def markdown(report: dict) -> str:
                     _cell(breaks.get("mbr_all")),
                     _cell(breaks.get("source_inherited_open")),
                     _cell(run["conservation"]["holds"]),
-                    _cell(terms.get("ltcr")),
+                    _cell(terms.get("substring_consistency_proxy")),
                     _cell(terms.get("legacy_mean_share")),
                     _cell(geometry.get("overlap_delta")),
                     _cell(geometry.get("alignment_delta")),
@@ -488,14 +491,14 @@ def corpus_markdown(report: dict) -> str:
         "## 1. Headline table",
         "",
         "| sample | run | path | MBR linkable | MBR all | inherited open | "
-        "conserved | LTCR | Overlap delta | Alignment delta | image IoU | "
+        "conserved | substring consistency proxy | Overlap delta | Alignment delta | image IoU | "
         "page delta |",
         "| --- " * 12 + "|",
     ]
     for sample in report["samples"]:
         for run in sample["runs"]:
             breaks = _stratified(run)
-            terms = (run.get("ltcr") or {}).get("summary") or {}
+            terms = (run.get("substring_consistency_proxy") or {}).get("summary") or {}
             geometry = (run.get("layout_geometry") or {}).get("summary") or {}
             pages = (run.get("layout_geometry") or {}).get("page_count_delta") or {}
             lines.append(
@@ -509,7 +512,7 @@ def corpus_markdown(report: dict) -> str:
                         _cell(breaks.get("mbr_all")),
                         _cell(breaks.get("source_inherited_open")),
                         _cell(run["conservation"]["holds"]),
-                        _cell(terms.get("ltcr")),
+                        _cell(terms.get("substring_consistency_proxy")),
                         _cell(geometry.get("overlap_delta")),
                         _cell(geometry.get("alignment_delta")),
                         _cell(geometry.get("image_placement_iou")),
@@ -751,7 +754,9 @@ def _run_summary(run: dict) -> dict:
             }
             for item in series.get("boundaries", [])
         ],
-        "ltcr": (run.get("ltcr") or {}).get("summary"),
+        "substring_consistency_proxy": (
+            run.get("substring_consistency_proxy") or {}
+        ).get("summary"),
         "layout_geometry": (run.get("layout_geometry") or {}).get("summary"),
         "page_count_delta": (run.get("layout_geometry") or {}).get("page_count_delta"),
     }

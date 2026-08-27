@@ -1,5 +1,13 @@
 # 拼接点判官协议(M10,batch-e2.2)
 
+> **C21 label/readiness correction.** This historical protocol produced
+> `exploratory_endpoint_window_annotations`, not a formal seam-MQM score. Its
+> 14/14 human review remains valuable, but the point/member/arm mappings were
+> not all frozen before output, six windows were invalidated post hoc, and the
+> taxonomy, severities, weights, and prompt differ from the required TeX
+> three-shot MQM contract. Formal seam MQM therefore remains `not_computed`
+> with value null; see `methodology_status.v2.json`.
+
 指标合同 D2 把 M10 记作 "GEMBA-MQM 拼接点标注",并留下两处待定:判官模型待用户决策
 (GAP-03),协议本身"标注单位是拼接点而不是文档"只有一句话。本文件把协议写死:**测试点
 怎么选、材料怎么切、答案怎么约束、判官怎么钉版、结果怎么复现**。实现是

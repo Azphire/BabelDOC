@@ -1,8 +1,8 @@
-"""Leave-one-publication-out over the page classifier, on the v2 corpus.
+"""Descriptive publication matrix over the page classifier, on the v2 corpus.
 
 Usage:
     python tools/lopo.py
-    python tools/lopo.py --out docs/eval/results_e1 --name lopo_v2
+    python tools/lopo.py --out output
 
 Writes the fold matrix as JSON and prints it. Deterministic, no API key, no
 pipeline run: the classifier is replayed in this process over the frozen
@@ -73,7 +73,8 @@ FORK_RUN_DIR = ROOT / "examples" / "output" / "b8_4" / "smoke"
 CLASSIFIER_INPUT_STAGE = "styles_and_formulas"
 
 DEFAULT_OUT = ROOT / "docs" / "eval" / "results_e1"
-DEFAULT_NAME = "lopo_v2"
+DEFAULT_NAME = "descriptive_publication_matrix"
+LEGACY_NAME = "lopo_v2"
 
 
 def checkpoint_path(stem: str) -> Path:
@@ -155,7 +156,7 @@ def _totals(rows: list[dict]) -> dict:
     }
 
 
-def build_report() -> dict:
+def build_report(*, legacy: bool = False) -> dict:
     manifest = corpus_module.load_manifest()
     labels = corpus_module.normalize_page_labels(corpus_module.load_page_labels())
     _, taxonomy = load_configs()
@@ -192,7 +193,7 @@ def build_report() -> dict:
 
     binding = [row for row in scored if row["binding"]]
     observed = [row for row in scored if not row["binding"]]
-    return {
+    report = {
         "generated_by": "tools/lopo.py",
         "protocol": {
             "split": "leave one publication out",
@@ -223,6 +224,15 @@ def build_report() -> dict:
         "folds": folds,
         "samples": scored,
         "missing": missing,
+    }
+    if legacy:
+        return report
+    return {
+        "metric_id": "descriptive_publication_matrix",
+        "metric_class": "descriptive",
+        "generalisation_claim": False,
+        "compatibility": "current",
+        **report,
     }
 
 
@@ -257,11 +267,25 @@ def summarize(report: dict) -> str:
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--out", type=Path, default=DEFAULT_OUT)
-    parser.add_argument("--name", default=DEFAULT_NAME)
+    parser.add_argument(
+        "--name",
+        default=DEFAULT_NAME,
+        help=(
+            "output stem (default: descriptive_publication_matrix); explicit "
+            "lopo_v2 writes the legacy non-comparable shape with a warning"
+        ),
+    )
     args = parser.parse_args(argv)
 
     logging.basicConfig(level=logging.WARNING)
-    report = build_report()
+    legacy = args.name == LEGACY_NAME
+    if legacy:
+        warnings.warn(
+            "lopo_v2 is a legacy non-comparable descriptive artifact, not formal LOPO",
+            DeprecationWarning,
+            stacklevel=2,
+        )
+    report = build_report(legacy=legacy)
     target = args.out / f"{args.name}.json"
 
     # A run that could not read some sample's checkpoint has not produced a

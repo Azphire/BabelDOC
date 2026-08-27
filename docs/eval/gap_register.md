@@ -1,5 +1,13 @@
 # D3 缺口登记(batch-e0)
 
+> **C21 status correction.** Frozen `lopo_v2` is a descriptive publication
+> matrix, frozen `ltcr` values are a substring-consistency proxy without word
+> alignment, and frozen M10 rows are exploratory endpoint-window annotations,
+> not formal seam MQM. Missing methodology now fails closed with a null value
+> and exact reason codes; no legacy value enters a formal mean or ranking. The
+> per-artifact hashes and current reasons are recorded in
+> `docs/eval/methodology_status.v2.json`.
+
 已知缺口逐条:**补法 / 成本 / 不补时的论文措辞**。最后一列是合同——若某缺口不补,论文
 就照那一行写,不得改成更强的说法。
 

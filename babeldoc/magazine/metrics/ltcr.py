@@ -1,4 +1,10 @@
-"""M3, the lexical translation consistency ratio, by the pairwise definition.
+"""Substring consistency proxy using pairwise shared-substring groupings.
+
+Formal LTCR requires word-aligned renderings for preidentified source terms.
+This module has no word alignment, so its public metric ID is
+``substring_consistency_proxy`` and it makes no formal LTCR claim. The legacy
+internal calculation key remains only to keep existing callers compatible and
+is removed before ``measure`` returns a public report.
 
 The definition is ``eq:ltcr`` of ``docs/dissertation/background_chapter.tex``,
 after lyu2021ltcr: for a source word :math:`w` occurring :math:`k` times in a
@@ -441,7 +447,7 @@ def measure(
     config: Config | None = None,
     metrics: MetricsConfig | None = None,
 ) -> dict:
-    """M3 over a document given as its regions, each a source and a target mapping.
+    """The substring proxy over document regions and target paragraphs.
 
     A region is whatever the caller wants a term to be counted inside -- an
     article for a magazine, a whole document for a report. The metric never
@@ -453,16 +459,37 @@ def measure(
     metrics = metrics or load_metrics_config()
     digits = metrics.report_float_digits
     measured = []
+    every = []
     for name, sources, targets in regions:
         rows = measure_region(sources, targets, terminals, config, metrics)
+        every.extend(rows)
+        public_rows = [
+            {
+                **{key: value for key, value in row.items() if key != "ltcr"},
+                "substring_consistency_proxy": row["ltcr"],
+            }
+            for row in rows
+        ]
+        summary = summarise(rows, digits)
+        public_summary = {
+            **{key: value for key, value in summary.items() if key != "ltcr"},
+            "substring_consistency_proxy": summary["ltcr"],
+        }
         measured.append(
-            {"region": name, "summary": summarise(rows, digits), "terms": rows}
+            {"region": name, "summary": public_summary, "terms": public_rows}
         )
-    every = [row for region in measured for row in region["terms"]]
+    overall = summarise(every, digits)
+    public_overall = {
+        **{key: value for key, value in overall.items() if key != "ltcr"},
+        "substring_consistency_proxy": overall["ltcr"],
+    }
     return {
-        "metric": "ltcr",
+        "metric_id": "substring_consistency_proxy",
+        "metric_class": "proxy",
+        "formal_ltcr_claim": False,
+        "compatibility": "current",
         "min_occurrences": metrics.ltcr_min_occurrences,
         "min_paragraphs": metrics.ltcr_min_paragraphs,
         "regions": measured,
-        "summary": summarise(every, digits),
+        "summary": public_overall,
     }

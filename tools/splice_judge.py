@@ -1,4 +1,4 @@
-"""Annotate splice points with a cached MQM judge -- metric contract M10.
+"""Exploratory endpoint-window annotations with a cached legacy judge.
 
 A *splice point* is a page boundary a reader crosses in one movement: the last
 passage of running text on the page being left and the first on the page being
@@ -887,7 +887,10 @@ def report_of(material: dict, annotated: dict, config: JudgeConfig) -> dict:
             tally[name] = tally.get(name, 0) + 1
     return {
         "generated_by": "tools/splice_judge.py",
-        "metric": "M10",
+        "metric_id": "exploratory_endpoint_window_annotations",
+        "metric_class": "exploratory",
+        "formal_seam_mqm_claim": False,
+        "compatibility": "current",
         "protocol": "docs/eval/splice_protocol.md",
         "judge": {
             **config.pinned(),
@@ -972,9 +975,9 @@ def _cell(text: str, limit: int = 40) -> str:
 
 def markdown(report: dict) -> str:
     if not report["rows"]:
-        return "# M10 splice point annotation (batch-e2.2)\n\nNo test point.\n"
+        return "# Exploratory endpoint-window annotations\n\nNo test point.\n"
     lines = [
-        "# M10 splice point annotation (batch-e2.2)",
+        "# Exploratory endpoint-window annotations",
         "",
         f"Judge `{report['judge']['judge_model']}`, "
         f"transport `{json.dumps(report['judge']['judge_transport'], sort_keys=True)}`, "

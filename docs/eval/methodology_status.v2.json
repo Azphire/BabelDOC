@@ -1,0 +1,165 @@
+{
+  "schema_version": "methodology-status.v2",
+  "readiness_schema_version": "evaluation-readiness.v1",
+  "tex_sha256": "a3e7a6237085d3879ab98f53265d3fac7450d18ee8610f6eb62230c6ba67fd08",
+  "artifact_groups": [
+    {
+      "old_label": "lopo_v2",
+      "new_label": "descriptive_publication_matrix",
+      "metric_class": "descriptive",
+      "compatibility": "legacy_noncomparable",
+      "formal_metric_id": "formal_lopo",
+      "formal_status": {
+        "readiness_status": "not_ready",
+        "computation_status": "not_computed",
+        "value": null,
+        "missing_reason_codes": [
+          "LOPO_NO_FOLD_REFIT",
+          "LOPO_HELDOUT_TUNING_CONTACT"
+        ]
+      },
+      "artifacts": [
+        {
+          "path": "docs/eval/results_e1/lopo_v2.json",
+          "sha256": "c93f3794ccc2a37babd3b28597aaa10b9a323ac889f4b4ea93927b0e56dbc8bc"
+        },
+        {
+          "path": "docs/eval/results_e1/README.md",
+          "sha256": "897d2fc1dd0c9b92c0f248c302bbd13cc008f62aea1bfc969b1de77272211cd9"
+        }
+      ]
+    },
+    {
+      "old_label": "ltcr",
+      "new_label": "substring_consistency_proxy",
+      "metric_class": "proxy",
+      "compatibility": "legacy_noncomparable",
+      "formal_metric_id": "formal_ltcr",
+      "formal_status": {
+        "readiness_status": "not_ready",
+        "computation_status": "not_computed",
+        "value": null,
+        "missing_reason_codes": [
+          "LTCR_TERM_MANIFEST_NOT_FROZEN",
+          "LTCR_WORD_ALIGNMENT_MISSING"
+        ]
+      },
+      "artifacts": [
+        {
+          "path": "docs/eval/results_e1/README.md",
+          "sha256": "897d2fc1dd0c9b92c0f248c302bbd13cc008f62aea1bfc969b1de77272211cd9"
+        },
+        {
+          "path": "docs/eval/results_e1/eval_corpus.json",
+          "sha256": "21c2ea981a95a701f7921f2ac331b35a00714229430d1ae3db32ca814d3f1482"
+        },
+        {
+          "path": "docs/eval/results_e1/eval_corpus.md",
+          "sha256": "ca67e4fff53aa49ae28171319e1b561a051f2d0ac40ee5f414e2b32c93707088"
+        },
+        {
+          "path": "docs/eval/results_e1/eval_report.AramcoWorld-en-v2.json",
+          "sha256": "a8575cdbf61fedf027d28017aca5e31e777750f71117242516608a550db5f297"
+        },
+        {
+          "path": "docs/eval/results_e1/eval_report.AramcoWorld-en-v2.md",
+          "sha256": "641b1752638ad1c8f5e1838a4bbe19ae2396bf2d21caa51a2e365ceec5cd33c3"
+        },
+        {
+          "path": "docs/eval/results_e1/eval_report.CERNCourier-en.json",
+          "sha256": "1bb788e28691bfc36abd71cb6a47ba16999c9e65a0a9817352c4ea94a1606226"
+        },
+        {
+          "path": "docs/eval/results_e1/eval_report.CERNCourier-en.md",
+          "sha256": "1dfbc78f914e7f0bd06714906731aad1f299505dc492328d71df923fab993e05"
+        },
+        {
+          "path": "docs/eval/results_e1/eval_report.Courier-en.json",
+          "sha256": "385a47c5004e7cb847fb0da010e51b14e1dec71ef83a72404a4285628b3d6c90"
+        },
+        {
+          "path": "docs/eval/results_e1/eval_report.Courier-en.md",
+          "sha256": "e22088e7d7bf031f2dab542fe82486d757bf2f2d247000a6021faf78331abc15"
+        },
+        {
+          "path": "docs/eval/results_e1/eval_report.Courier-zh.json",
+          "sha256": "7adfd8c920527bf85d83a1cd976ec308b8210ece944414b7078bf010c8d21ee1"
+        },
+        {
+          "path": "docs/eval/results_e1/eval_report.Courier-zh.md",
+          "sha256": "3a308ae374acbd2e04cabceee83349c8164af2903624f12656cdf1e394a4e6f3"
+        },
+        {
+          "path": "docs/eval/results_e1/eval_report.FD-en-v2.json",
+          "sha256": "7fcf5d465abf22962d3da12f86a36ee3b253a9944df70eac2cb7edb8387d214d"
+        },
+        {
+          "path": "docs/eval/results_e1/eval_report.FD-en-v2.md",
+          "sha256": "949baddca8788005741bf28ef46b742d3c372302e3f002a5c11fdd6d26033ffe"
+        },
+        {
+          "path": "docs/eval/results_e1/eval_report.Vogue-en.json",
+          "sha256": "118d342292f0ade8f1369d637b47d0a192a971b5286f7882c3ad99353ce56e90"
+        },
+        {
+          "path": "docs/eval/results_e1/eval_report.Vogue-en.md",
+          "sha256": "9497753a85a9ebcb69f32d0aec7d4fd05de762b5702d6cffd8df3b6268563a69"
+        },
+        {
+          "path": "docs/eval/results_e2/README.md",
+          "sha256": "8389707bae67fc48a40207b8155ceaa337338f77bccdb635e0ce0fd9d8b00ab1"
+        },
+        {
+          "path": "docs/eval/results_e2/eval_report.Courier-en.json",
+          "sha256": "5c5bd61e41aeccb60deffa23a31a8ded626b96cbda0889e7b6bb197c83cc76f8"
+        },
+        {
+          "path": "docs/eval/results_e2/eval_report.Courier-en.md",
+          "sha256": "f5e188e78143b1ef5207539822abb91df51c516e28277858cab9ccf62cf23d15"
+        }
+      ]
+    },
+    {
+      "old_label": "M10",
+      "new_label": "exploratory_endpoint_window_annotations",
+      "metric_class": "exploratory",
+      "compatibility": "legacy_noncomparable",
+      "formal_metric_id": "formal_seam_mqm",
+      "formal_status": {
+        "readiness_status": "not_ready",
+        "computation_status": "not_computed",
+        "value": null,
+        "missing_reason_codes": [
+          "SEAM_POINTS_NOT_FROZEN",
+          "SEAM_POINTS_NOT_BOUND_TO_ADJUDICATED_MEMBERS",
+          "SEAM_INVALID_POSTHOC_WINDOWS",
+          "SEAM_ARM_MAPPING_INCOMPLETE",
+          "MQM_TAXONOMY_OR_WEIGHTS_MISMATCH",
+          "MQM_PROMPT_PROTOCOL_MISMATCH"
+        ]
+      },
+      "artifacts": [
+        {
+          "path": "docs/eval/results_e2/README.md",
+          "sha256": "8389707bae67fc48a40207b8155ceaa337338f77bccdb635e0ce0fd9d8b00ab1"
+        },
+        {
+          "path": "docs/eval/results_e2/splice_judgements.json",
+          "sha256": "fe889518b1c81bd54e7e8c8b368ed828619d592cdeee77e26919b33312a9296c"
+        },
+        {
+          "path": "docs/eval/results_e2/splice_judgements.md",
+          "sha256": "352247eed0032cc5141a72eed1c4a4a513bcba8b6297ca5a88cb11a96536f2f7"
+        },
+        {
+          "path": "docs/eval/results_e2/splice_manual_review.json",
+          "sha256": "930596eb7c7a3a1e8876ac32e58ee6f3017ebd9d8ec8ee20257c36b191b4759a"
+        },
+        {
+          "path": "docs/eval/results_e2/splice_manual_review.md",
+          "sha256": "865d82ab663916eef14b705cd152fdb9503758e9a2d677065fb80a21dcd0df2e"
+        }
+      ]
+    }
+  ]
+}
