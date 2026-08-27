@@ -638,7 +638,9 @@ def load_page_policy_observables(path: str | None = None) -> Mapping[str, Any]:
         raise ManualConstraintDeliveryError(
             f"{config.name}: must declare all seven policy fields in canonical order"
         )
-    required = {"consumer", "runtime_event", "target_observable", "final_observable"}
+    base = {"consumer", "runtime_event", "target_observable", "final_observable"}
+    c20c_extension = {"typeset_observable", "final_pdf_observable"}
+    required = base | c20c_extension
     for field, declaration in raw["fields"].items():
         if not isinstance(declaration, dict) or set(declaration) != required:
             raise ManualConstraintDeliveryError(

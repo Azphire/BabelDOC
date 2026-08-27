@@ -17,6 +17,10 @@ from typing import Any
 import pymupdf
 
 from babeldoc.magazine.hitl_expectation import ManualConstraintExpectation
+from babeldoc.magazine.manual_constraint_validator import ManualOccurrenceObservation
+from babeldoc.magazine.manual_constraint_validator import ValidationScope
+from babeldoc.magazine.manual_constraint_validator import bind_final_pdf_observations
+from babeldoc.magazine.manual_constraint_validator import evaluate_manual_constraints
 from babeldoc.magazine.page_identity import UNBOUND_SOURCE_PDF_SHA256
 from babeldoc.magazine.page_identity import PageSelectionMap
 from babeldoc.magazine.resource_paths import config_path
@@ -31,6 +35,7 @@ SWITCH = "magazine_pdf_compliance"
 STATUS_PASS = "pass"  # noqa: S105 - compliance status, not a credential
 STATUS_DEGRADED = "degraded"
 STATUS_FAIL = "fail"
+STATUS_PARSE_GATE_PASS = "parse_gate_pass"  # noqa: S105 - compliance status
 
 Box = tuple[float, float, float, float]
 
@@ -102,6 +107,8 @@ class ComplianceExpectations:
         default_factory=dict
     )
     manual_constraint_expectations: tuple[ManualConstraintExpectation, ...] = ()
+    manual_constraint_observations: tuple[ManualOccurrenceObservation, ...] = ()
+    validation_scope: ValidationScope = ValidationScope.FULL_TRANSLATION
 
 
 @dataclass(frozen=True, slots=True)
@@ -432,6 +439,8 @@ def expectations_from_runtime(
     article_document_ir=None,
     fixed_asset_inventory=None,
     manual_constraint_expectations=(),
+    manual_constraint_observations=(),
+    validation_scope=ValidationScope.FULL_TRANSLATION,
 ) -> ComplianceExpectations:
     page_selection_map = (
         None
@@ -486,6 +495,8 @@ def expectations_from_runtime(
             page: tuple(sorted(set(items))) for page, items in runtrace_refs.items()
         },
         "manual_constraint_expectations": tuple(manual_constraint_expectations),
+        "manual_constraint_observations": tuple(manual_constraint_observations),
+        "validation_scope": ValidationScope(validation_scope),
     }
     if run_trace is None:
         return ComplianceExpectations(
@@ -642,6 +653,8 @@ def offset_expectations(
             for page, refs in expectations.runtrace_refs_by_physical_page.items()
         },
         manual_constraint_expectations=expectations.manual_constraint_expectations,
+        manual_constraint_observations=expectations.manual_constraint_observations,
+        validation_scope=expectations.validation_scope,
     )
 
 
@@ -698,6 +711,16 @@ def merge_expectations(
             expectation
             for item in items
             for expectation in item.manual_constraint_expectations
+        ),
+        manual_constraint_observations=tuple(
+            observation
+            for item in items
+            for observation in item.manual_constraint_observations
+        ),
+        validation_scope=(
+            items[0].validation_scope
+            if items
+            else ValidationScope.FULL_TRANSLATION
         ),
     )
 
@@ -762,6 +785,7 @@ class FinalPdfValidator:
                 "references": [],
             },
             "trace_reconciliation": [],
+            "manual_constraints": None,
             "writer_warnings": [dict(item) for item in writer_warnings],
             "issues": [],
         }
@@ -997,6 +1021,29 @@ class FinalPdfValidator:
             self._check_reference_projection(selection, expected, record, check)
 
             self._check_touched(source, output, selection, expected, record, check)
+            if expected.manual_constraint_expectations:
+                bound_observations = bind_final_pdf_observations(
+                    output,
+                    selection,
+                    expected.manual_constraint_observations,
+                )
+                manual_result = evaluate_manual_constraints(
+                    expected.manual_constraint_expectations,
+                    bound_observations,
+                    selection,
+                    scope=expected.validation_scope,
+                )
+                record["manual_constraints"] = manual_result.to_record()
+                check(
+                    "manual_constraints",
+                    manual_result.accepted,
+                    {
+                        "scope": manual_result.scope.value,
+                        "status": manual_result.status,
+                        "issue_count": len(manual_result.issues),
+                    },
+                    code="manual_constraint_noncompliant",
+                )
         except Exception as exc:
             check(
                 "validator_exception",
@@ -1345,6 +1392,11 @@ class FinalPdfValidator:
             status = STATUS_FAIL
         elif record["writer_warnings"]:
             status = STATUS_DEGRADED
+        elif (
+            (record.get("manual_constraints") or {}).get("status")
+            == STATUS_PARSE_GATE_PASS
+        ):
+            status = STATUS_PARSE_GATE_PASS
         else:
             status = STATUS_PASS
         record["status"] = status

@@ -262,6 +262,61 @@ class ManualConstraintExpectation:
             "stage_evidence": [item.to_record() for item in self.stage_evidence],
         }
 
+    def evidence_for(
+        self, stage: ManualConstraintStage | str
+    ) -> ManualConstraintEvidence:
+        """Return the canonical evidence row for one stage."""
+
+        wanted = ManualConstraintStage(stage)
+        return next(item for item in self.stage_evidence if item.stage is wanted)
+
+    def with_stage_evidence(
+        self,
+        stage: ManualConstraintStage | str,
+        status: ManualConstraintStatus | str,
+        evidence_refs: tuple[str, ...] = (),
+    ) -> ManualConstraintExpectation:
+        """Return an immutable copy with one canonical stage row replaced."""
+
+        wanted = ManualConstraintStage(stage)
+        replacement = ManualConstraintEvidence(
+            stage=wanted,
+            status=ManualConstraintStatus(status),
+            evidence_refs=evidence_refs,
+        )
+        return ManualConstraintExpectation(
+            expectation_id=self.expectation_id,
+            kind=self.kind,
+            human_value=self.human_value,
+            source_occurrence_refs=self.source_occurrence_refs,
+            selected_occurrence_refs=self.selected_occurrence_refs,
+            source_binding_sha256=self.source_binding_sha256,
+            stage_evidence=tuple(
+                replacement if item.stage is wanted else item
+                for item in self.stage_evidence
+            ),
+            schema_version=self.schema_version,
+        )
+
+    def with_stage_updates(
+        self,
+        updates: Mapping[
+            ManualConstraintStage | str,
+            tuple[ManualConstraintStatus | str, tuple[str, ...]],
+        ],
+    ) -> ManualConstraintExpectation:
+        """Apply several stage updates without creating another protocol type."""
+
+        result = self
+        for stage in _STAGE_ORDER:
+            if stage in updates:
+                status, refs = updates[stage]
+                result = result.with_stage_evidence(stage, status, refs)
+            elif ManualConstraintStage(stage) in updates:
+                status, refs = updates[ManualConstraintStage(stage)]
+                result = result.with_stage_evidence(stage, status, refs)
+        return result
+
     def to_json_bytes(self) -> bytes:
         """Serialize with stable UTF-8 bytes and a final newline."""
 

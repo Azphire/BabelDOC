@@ -6,43 +6,57 @@
       "consumer": "translator_routing",
       "runtime_event": "translation_complete",
       "target_observable": "selected translatable source refs have terminal target mappings",
-      "final_observable": "C20C must extend this base with final PDF text presence or a typed not-applicable reason"
+      "final_observable": "C20C must extend this base with final PDF text presence or a typed not-applicable reason",
+      "typeset_observable": "terminal_mapping_or_protected_passthrough",
+      "final_pdf_observable": "terminal_glyph_or_protected_passthrough"
     },
     "chain_eligible": {
       "consumer": "ChainBuilder",
       "runtime_event": "article_ir_complete",
       "target_observable": "ineligible pages own no continuity chain; eligible pages retain bounded signals and ownership",
-      "final_observable": "C20C must extend this base with a final continuity observable or a typed not-applicable reason"
+      "final_observable": "C20C must extend this base with a final continuity observable or a typed not-applicable reason",
+      "typeset_observable": "owner_scoped_chain_policy_consumed",
+      "final_pdf_observable": "owner_scoped_attribution_preserved"
     },
     "starts_article": {
       "consumer": "ArticleBuilder.build_provisional",
       "runtime_event": "article_ir_complete",
       "target_observable": "the physical page establishes the declared hard start boundary",
-      "final_observable": "C20C must extend this base with a final article-boundary observable or a typed not-applicable reason"
+      "final_observable": "C20C must extend this base with a final article-boundary observable or a typed not-applicable reason",
+      "typeset_observable": "hard_start_boundary_consumed",
+      "final_pdf_observable": "hard_start_attribution_preserved"
     },
     "opens_article": {
       "consumer": "ArticleBuilder.finalize",
       "runtime_event": "article_ir_complete",
       "target_observable": "openers create a new owner and non-openers do not claim one solely from this flag",
-      "final_observable": "C20C must extend this base with a final ownership observable or a typed not-applicable reason"
+      "final_observable": "C20C must extend this base with a final ownership observable or a typed not-applicable reason",
+      "typeset_observable": "owner_open_policy_consumed",
+      "final_pdf_observable": "owner_open_attribution_preserved"
     },
     "preserve_line_structure": {
       "consumer": "line_split.apply",
       "runtime_event": "line_split_complete",
       "target_observable": "record refs and reading order remain aligned with translation units",
-      "final_observable": "C20C must extend this base with final line-order evidence or a typed not-applicable reason"
+      "final_observable": "C20C must extend this base with final line-order evidence or a typed not-applicable reason",
+      "typeset_observable": "record_order_count_conserved",
+      "final_pdf_observable": "line_group_order_count_conserved"
     },
     "indent_eligible": {
       "consumer": "indent_policy.apply",
       "runtime_event": "indent_policy_complete",
       "target_observable": "indent tokens are admitted only for eligible running-body paragraphs",
-      "final_observable": "C20C must extend this base with final indent geometry evidence or a typed not-applicable reason"
+      "final_observable": "C20C must extend this base with final indent geometry evidence or a typed not-applicable reason",
+      "typeset_observable": "indent_token_matches_policy",
+      "final_pdf_observable": "first_line_geometry_matches_policy"
     },
     "repair_profile": {
       "consumer": "react.detectors/controller",
       "runtime_event": "repair_complete",
       "target_observable": "the executed detector and action profile digest equals the taxonomy policy",
-      "final_observable": "C20C must extend this base with repaired final-state evidence or a typed not-applicable reason"
+      "final_observable": "C20C must extend this base with repaired final-state evidence or a typed not-applicable reason",
+      "typeset_observable": "repair_records_within_profile",
+      "final_pdf_observable": "repair_profile_geometry_passed"
     }
   }
 }
