@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import re
 from collections.abc import Iterable
 from collections.abc import Mapping
 from dataclasses import dataclass
@@ -14,7 +15,10 @@ PhysicalPageNumber = NewType("PhysicalPageNumber", int)
 SelectedPagePosition = NewType("SelectedPagePosition", int)
 OutputPageIndex = NewType("OutputPageIndex", int)
 
-PAGE_SELECTION_MAP_SCHEMA_VERSION = "page-selection-map.v1"
+PAGE_SELECTION_MAP_SCHEMA_VERSION = "page-selection-map.v2"
+UNBOUND_SOURCE_PDF_SHA256 = "0" * 64
+
+_SHA256_RE = re.compile(r"^[0-9a-f]{64}$")
 
 
 class PageIdentityError(ValueError):
@@ -49,6 +53,31 @@ class PartialArticleStructureError(RuntimeError):
 
     def __init__(self):
         super().__init__(self.code)
+
+
+class UnsupportedOutputCardinalityChange(RuntimeError):  # noqa: N818
+    """The v2 one-to-one map cannot describe a split or merged PDF page."""
+
+    code = "UNSUPPORTED_OUTPUT_CARDINALITY_CHANGE"
+
+    def __init__(self, detail: str = ""):
+        suffix = f": {detail}" if detail else ""
+        super().__init__(f"{self.code}{suffix}")
+
+
+def _sha256_file(path) -> str | None:
+    if path is None:
+        return None
+    from pathlib import Path
+
+    source = Path(path)
+    if not source.is_file():
+        return None
+    digest = hashlib.sha256()
+    with source.open("rb") as stream:
+        for block in iter(lambda: stream.read(1024 * 1024), b""):
+            digest.update(block)
+    return digest.hexdigest()
 
 
 def physical_page_number(page) -> PhysicalPageNumber:
@@ -117,49 +146,92 @@ def translation_pages(docs, translation_config) -> tuple:
 
 @dataclass(frozen=True, slots=True)
 class PageSelectionMap:
-    """Canonical mapping between physical, structural, and output pages."""
+    """Canonical v2 mapping between physical, structural, and output pages.
 
-    translation_selected_physical_pages: tuple[PhysicalPageNumber, ...]
-    physical_to_structural: Mapping[PhysicalPageNumber, int]
-    output_to_physical: Mapping[OutputPageIndex, PhysicalPageNumber]
+    The output mapping is deliberately one-to-one.  A future page split/merge
+    needs a multimap schema and is rejected instead of being guessed here.
+    """
+
+    source_pdf_sha256: str
+    source_page_count: int
+    selected_physical_pages: tuple[PhysicalPageNumber, ...]
+    physical_page_to_structural_position: Mapping[PhysicalPageNumber, int]
+    output_index_to_physical_page: Mapping[OutputPageIndex, PhysicalPageNumber]
+    mapping_sha256: str | None = None
     schema_version: str = PAGE_SELECTION_MAP_SCHEMA_VERSION
 
     def __post_init__(self) -> None:
+        if self.schema_version != PAGE_SELECTION_MAP_SCHEMA_VERSION:
+            raise PageIdentityError("unsupported page selection map schema")
+        if not isinstance(self.source_page_count, int) or self.source_page_count < 1:
+            raise PageIdentityError("source_page_count must be a positive integer")
+        if not isinstance(self.source_pdf_sha256, str) or not _SHA256_RE.fullmatch(
+            self.source_pdf_sha256
+        ):
+            raise PageIdentityError(
+                "source_pdf_sha256 must be 64 lowercase hexadecimal characters"
+            )
         selected = tuple(
-            PhysicalPageNumber(int(page))
-            for page in self.translation_selected_physical_pages
+            PhysicalPageNumber(int(page)) for page in self.selected_physical_pages
         )
         if len(selected) != len(set(selected)):
             raise PageIdentityError("selected physical pages must be unique")
+        if selected != tuple(sorted(selected)):
+            raise PageIdentityError("selected physical pages must be canonical ascending")
+        if any(not 1 <= int(page) <= self.source_page_count for page in selected):
+            raise PageIdentityError("selected physical page is outside the source PDF")
         structural = {
             PhysicalPageNumber(int(page)): int(position)
-            for page, position in self.physical_to_structural.items()
+            for page, position in self.physical_page_to_structural_position.items()
         }
         if sorted(structural.values()) != list(range(len(structural))):
             raise PageIdentityError("structural positions must be dense and zero based")
+        if any(not 1 <= int(page) <= self.source_page_count for page in structural):
+            raise PageIdentityError("structural page is outside the source PDF")
         if any(page not in structural for page in selected):
             raise PageIdentityError("selected physical page is absent from structure")
         output = {
             OutputPageIndex(int(index)): PhysicalPageNumber(int(page))
-            for index, page in self.output_to_physical.items()
+            for index, page in self.output_index_to_physical_page.items()
         }
         if sorted(int(index) for index in output) != list(range(len(output))):
             raise PageIdentityError("output indexes must be dense and zero based")
         if any(page not in structural for page in output.values()):
             raise PageIdentityError("output page is absent from structure")
-        if self.schema_version != PAGE_SELECTION_MAP_SCHEMA_VERSION:
-            raise PageIdentityError("unsupported page selection map schema")
-        object.__setattr__(self, "translation_selected_physical_pages", selected)
+        if len(output.values()) != len(set(output.values())):
+            raise UnsupportedOutputCardinalityChange(
+                "a physical source page may appear in output exactly once"
+            )
+        output_pages = tuple(output[index] for index in sorted(output))
+        identity_pages = tuple(
+            PhysicalPageNumber(page)
+            for page in range(1, self.source_page_count + 1)
+        )
+        if output_pages not in (selected, identity_pages):
+            raise UnsupportedOutputCardinalityChange(
+                "output must be the selected projection or the full identity map"
+            )
+        object.__setattr__(self, "selected_physical_pages", selected)
         object.__setattr__(
             self,
-            "physical_to_structural",
+            "physical_page_to_structural_position",
             MappingProxyType(dict(sorted(structural.items()))),
         )
         object.__setattr__(
             self,
-            "output_to_physical",
+            "output_index_to_physical_page",
             MappingProxyType(dict(sorted(output.items()))),
         )
+        computed = self._compute_mapping_sha256(
+            self.source_pdf_sha256,
+            self.source_page_count,
+            selected,
+            structural,
+            output,
+        )
+        if self.mapping_sha256 is not None and self.mapping_sha256 != computed:
+            raise PageIdentityError("mapping_sha256 does not match canonical map")
+        object.__setattr__(self, "mapping_sha256", computed)
 
     @classmethod
     def from_document(
@@ -169,6 +241,8 @@ class PageSelectionMap:
         translation_config=None,
         selected_physical_pages: Iterable[int] | None = None,
         targeted_output: bool | None = None,
+        source_pdf=None,
+        source_pdf_sha256: str | None = None,
     ) -> PageSelectionMap:
         physical_pages = tuple(physical_page_number(page) for page in docs.page or ())
         if len(physical_pages) != len(set(physical_pages)):
@@ -183,27 +257,146 @@ class PageSelectionMap:
                 or selector(int(page))
             )
         else:
-            selected = tuple(PhysicalPageNumber(int(page)) for page in selected_physical_pages)
+            selected = tuple(
+                PhysicalPageNumber(int(page)) for page in selected_physical_pages
+            )
+        if len(selected) != len(set(selected)):
+            raise PageIdentityError("selected physical pages must be unique")
+        selected = tuple(sorted(selected))
         if targeted_output is None:
             targeted_output = bool(
                 translation_config is not None
                 and getattr(translation_config, "only_include_translated_page", False)
             )
         output_pages = selected if targeted_output else physical_pages
+        source_page_count = int(
+            getattr(docs, "total_pages", None) or len(physical_pages)
+        )
+        source_pdf = source_pdf or getattr(translation_config, "input_file", None)
+        source_digest = source_pdf_sha256 or _sha256_file(source_pdf)
+        if source_digest is None:
+            # Synthetic IL/checkpoint tests have no PDF bytes.  Production
+            # ArticleBuilder supplies translation_config.input_file; validators
+            # fail closed if this sentinel reaches a source-bound acceptance run.
+            source_digest = UNBOUND_SOURCE_PDF_SHA256
         return cls(
-            translation_selected_physical_pages=selected,
-            physical_to_structural={
+            source_pdf_sha256=source_digest,
+            source_page_count=source_page_count,
+            selected_physical_pages=selected,
+            physical_page_to_structural_position={
                 page: position for position, page in enumerate(physical_pages)
             },
-            output_to_physical={
+            output_index_to_physical_page={
                 OutputPageIndex(index): page for index, page in enumerate(output_pages)
             },
         )
 
+    @classmethod
+    def from_source_pdf(
+        cls,
+        source_pdf,
+        *,
+        selected_physical_pages: Iterable[int] | None = None,
+        targeted_output: bool = False,
+    ) -> PageSelectionMap:
+        """Build the same canonical map directly from an opened source PDF."""
+
+        import pymupdf
+
+        source_digest = _sha256_file(source_pdf)
+        if source_digest is None:
+            raise PageIdentityError("source PDF is required for a bound page map")
+        with pymupdf.open(source_pdf) as document:
+            count = len(document)
+        physical_pages = tuple(
+            PhysicalPageNumber(page) for page in range(1, count + 1)
+        )
+        selected = (
+            physical_pages
+            if selected_physical_pages is None
+            else tuple(
+                PhysicalPageNumber(int(page)) for page in selected_physical_pages
+            )
+        )
+        if len(selected) != len(set(selected)):
+            raise PageIdentityError("selected physical pages must be unique")
+        selected = tuple(sorted(selected))
+        output_pages = selected if targeted_output else physical_pages
+        return cls(
+            source_pdf_sha256=source_digest,
+            source_page_count=count,
+            selected_physical_pages=selected,
+            physical_page_to_structural_position={
+                page: index for index, page in enumerate(physical_pages)
+            },
+            output_index_to_physical_page={
+                OutputPageIndex(index): page for index, page in enumerate(output_pages)
+            },
+        )
+
+    @staticmethod
+    def _compute_mapping_sha256(
+        source_pdf_sha256,
+        source_page_count,
+        selected,
+        structural,
+        output,
+    ) -> str:
+        payload = {
+            "schema_version": PAGE_SELECTION_MAP_SCHEMA_VERSION,
+            "source_pdf_sha256": source_pdf_sha256,
+            "source_page_count": source_page_count,
+            "selected_physical_pages": [int(page) for page in selected],
+            "physical_page_to_structural_position": {
+                str(int(page)): position for page, position in sorted(structural.items())
+            },
+            "output_index_to_physical_page": {
+                str(int(index)): int(page) for index, page in sorted(output.items())
+            },
+            "physical_page_to_output_index": {
+                str(int(page)): int(index) for index, page in sorted(output.items())
+            },
+        }
+        return hashlib.sha256(
+            json.dumps(payload, sort_keys=True, separators=(",", ":")).encode("utf-8")
+        ).hexdigest()
+
+    @property
+    def translation_selected_physical_pages(self):
+        """Compatibility spelling retained for C18 consumers."""
+
+        return self.selected_physical_pages
+
+    @property
+    def physical_to_structural(self):
+        """Compatibility spelling retained for C18 consumers."""
+
+        return self.physical_page_to_structural_position
+
+    @property
+    def output_to_physical(self):
+        """Compatibility spelling retained for C18 consumers."""
+
+        return self.output_index_to_physical_page
+
     @property
     def physical_to_output(self) -> Mapping[PhysicalPageNumber, OutputPageIndex]:
         return MappingProxyType(
-            {page: index for index, page in self.output_to_physical.items()}
+            {
+                page: index
+                for index, page in self.output_index_to_physical_page.items()
+            }
+        )
+
+    @property
+    def physical_page_to_output_index(self):
+        return self.physical_to_output
+
+    @property
+    def is_targeted(self) -> bool:
+        return (
+            tuple(self.output_index_to_physical_page.values())
+            == self.selected_physical_pages
         )
 
     def selected_position_of(self, page: int) -> SelectedPagePosition:
@@ -227,46 +420,74 @@ class PageSelectionMap:
     def to_record(self) -> dict:
         return {
             "schema_version": self.schema_version,
-            "translation_selected_physical_pages": [
-                int(page) for page in self.translation_selected_physical_pages
+            "source_pdf_sha256": self.source_pdf_sha256,
+            "source_page_count": self.source_page_count,
+            "selected_physical_pages": [
+                int(page) for page in self.selected_physical_pages
             ],
-            "physical_to_structural": {
+            "physical_page_to_structural_position": {
                 str(int(page)): position
-                for page, position in self.physical_to_structural.items()
+                for page, position in self.physical_page_to_structural_position.items()
             },
-            "output_to_physical": {
+            "output_index_to_physical_page": {
                 str(int(index)): int(page)
-                for index, page in self.output_to_physical.items()
+                for index, page in self.output_index_to_physical_page.items()
             },
-            "physical_to_output": {
+            "physical_page_to_output_index": {
                 str(int(page)): int(index)
                 for page, index in self.physical_to_output.items()
             },
+            "mapping_sha256": self.mapping_sha256,
         }
 
     @classmethod
     def from_record(cls, record: Mapping) -> PageSelectionMap:
-        return cls(
+        expected = {
+            "schema_version",
+            "source_pdf_sha256",
+            "source_page_count",
+            "selected_physical_pages",
+            "physical_page_to_structural_position",
+            "output_index_to_physical_page",
+            "physical_page_to_output_index",
+            "mapping_sha256",
+        }
+        if set(record) != expected:
+            raise PageIdentityError(
+                "page selection map fields must exactly match the v2 schema"
+            )
+        instance = cls(
             schema_version=str(record["schema_version"]),
-            translation_selected_physical_pages=tuple(
+            source_pdf_sha256=str(record["source_pdf_sha256"]),
+            source_page_count=int(record["source_page_count"]),
+            selected_physical_pages=tuple(
                 PhysicalPageNumber(int(page))
-                for page in record["translation_selected_physical_pages"]
+                for page in record["selected_physical_pages"]
             ),
-            physical_to_structural={
+            physical_page_to_structural_position={
                 PhysicalPageNumber(int(page)): int(position)
-                for page, position in record["physical_to_structural"].items()
+                for page, position in record[
+                    "physical_page_to_structural_position"
+                ].items()
             },
-            output_to_physical={
+            output_index_to_physical_page={
                 OutputPageIndex(int(index)): PhysicalPageNumber(int(page))
-                for index, page in record["output_to_physical"].items()
+                for index, page in record["output_index_to_physical_page"].items()
             },
+            mapping_sha256=str(record["mapping_sha256"]),
         )
+        declared_reverse = {
+            PhysicalPageNumber(int(page)): OutputPageIndex(int(index))
+            for page, index in record["physical_page_to_output_index"].items()
+        }
+        if declared_reverse != dict(instance.physical_page_to_output_index):
+            raise PageIdentityError(
+                "physical_page_to_output_index does not match the forward map"
+            )
+        return instance
 
     def sha256(self) -> str:
-        payload = json.dumps(
-            self.to_record(), sort_keys=True, separators=(",", ":")
-        ).encode("utf-8")
-        return hashlib.sha256(payload).hexdigest()
+        return str(self.mapping_sha256)
 
 
 class DocumentPageIndex:

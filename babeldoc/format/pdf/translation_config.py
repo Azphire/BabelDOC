@@ -508,14 +508,38 @@ class TranslationConfig:
         ranges: list[tuple[int, int]] = []
         for part in pages_str.split(","):
             part = part.strip()
+            if not part:
+                raise ValueError("page selection contains an empty item")
+            if part.count("-") > 1:
+                raise ValueError(f"invalid page range: {part!r}")
             if "-" in part:
-                start, end = part.split("-")
+                start, end = part.split("-", maxsplit=1)
                 start_as_int = int(start) if start else 1
                 end_as_int = int(end) if end else -1
-                ranges.append((start_as_int, end_as_int))
             else:
-                page = int(part)
-                ranges.append((page, page))
+                start_as_int = int(part)
+                end_as_int = start_as_int
+            if start_as_int < 1 or end_as_int == 0 or end_as_int < -1:
+                raise ValueError("page numbers must be positive")
+            if end_as_int != -1 and end_as_int < start_as_int:
+                raise ValueError(f"reversed page range is not allowed: {part!r}")
+            ranges.append((start_as_int, end_as_int))
+
+        # CLI page selection has always been evaluated as a set while walking
+        # the source document in physical order.  Canonicalize to that ascending
+        # order and reject duplicate/overlapping spellings instead of allowing
+        # an ambiguous PageSelectionMap.
+        ranges.sort(
+            key=lambda item: (
+                item[0],
+                float("inf") if item[1] == -1 else item[1],
+            )
+        )
+        previous_end = 0
+        for start, end in ranges:
+            if previous_end == -1 or start <= previous_end:
+                raise ValueError("page selection ranges must be unique and disjoint")
+            previous_end = end
         return ranges
 
     def should_translate_page(self, page_number: int) -> bool:

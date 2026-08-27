@@ -80,6 +80,7 @@ from babeldoc.magazine.final_pdf_validator import offset_expectations
 from babeldoc.magazine.final_pdf_validator import record_pipeline_status
 from babeldoc.magazine.legal_slots import plan_legal_slots
 from babeldoc.magazine.page_classifier import PageClassifier
+from babeldoc.magazine.page_identity import PageSelectionMap
 from babeldoc.magazine.page_identity import ensure_magazine_split_supported
 from babeldoc.magazine.run_trace import REPORT_NAME as RUN_TRACE_REPORT_NAME
 from babeldoc.magazine.run_trace import RunTrace
@@ -574,6 +575,11 @@ def _attach_pdf_compliance_context(
     run_trace=None,
     article_document_ir=None,
 ) -> None:
+    result.page_selection_map = (
+        None
+        if article_document_ir is None
+        else article_document_ir.page_selection_map
+    )
     if not getattr(translation_config, "magazine_pdf_compliance", False):
         result._pdf_compliance_expectations = ComplianceExpectations()
         result._pdf_compliance_run_trace = None
@@ -899,14 +905,18 @@ def do_translate(
 
         fix_cmap(result, translation_config)
         add_metadata(result, translation_config)
+        if final_expectations is None:
+            final_expectations = ComplianceExpectations()
+        if final_expectations.page_selection_map is not None:
+            result.page_selection_map = final_expectations.page_selection_map
         try:
             migrate_toc(translation_config, result)
         except Exception as e:
+            if translation_config.only_include_translated_page:
+                raise
             logger.error(
                 f"Failed to migrate TOC from {translation_config.input_file}: {e}"
             )
-        if final_expectations is None:
-            final_expectations = ComplianceExpectations()
         _run_final_pdf_compliance(
             translation_config,
             result,
@@ -932,8 +942,54 @@ def do_translate(
         translation_config.cleanup_temp_files()
 
 
+def _project_targeted_toc(toc_data, page_selection_map: PageSelectionMap):
+    """Project physical outline destinations and drop unselected entries."""
+
+    projected = []
+    previous_level = 0
+    for source_entry in toc_data:
+        entry = list(source_entry)
+        physical_page = int(entry[2])
+        if physical_page > 0:
+            output_index = page_selection_map.output_index_of(physical_page)
+            if output_index is None:
+                continue
+            entry[2] = int(output_index) + 1
+            if len(entry) > 3 and isinstance(entry[3], dict):
+                destination = dict(entry[3])
+                destination["page"] = int(output_index)
+                entry[3] = destination
+        level = max(1, int(entry[0]))
+        level = 1 if not projected else min(level, previous_level + 1)
+        entry[0] = level
+        previous_level = level
+        projected.append(entry)
+    return projected
+
+
+def _projected_page_label_rules(
+    source_document, page_selection_map: PageSelectionMap
+) -> list[dict]:
+    """Preserve exact source labels for a non-contiguous physical projection."""
+
+    return [
+        {
+            "startpage": int(output_index),
+            "prefix": source_document[int(physical_page) - 1].get_label(),
+            "style": "",
+            "firstpagenum": 1,
+        }
+        for output_index, physical_page in (
+            page_selection_map.output_index_to_physical_page.items()
+        )
+    ]
+
+
 def migrate_toc(
-    translation_config: TranslationConfig, translate_result: TranslateResult
+    translation_config: TranslationConfig,
+    translate_result: TranslateResult,
+    *,
+    page_selection_map: PageSelectionMap | None = None,
 ):
     if translation_config.use_alternating_pages_dual:
         logger.info('skipping TOC migration for "use_alternating_pages_dual" mode')
@@ -945,22 +1001,27 @@ def migrate_toc(
         fix_filter(old_doc)
         fix_null_xref(old_doc)
     except Exception:
+        if translation_config.only_include_translated_page:
+            raise
         logger.exception("auto fix failed, please check the pdf file")
 
-    toc_data = old_doc.get_toc()
-
-    if not toc_data:
-        logger.info("No TOC found in the original PDF, skipping migration.")
-        return
-
+    toc_data = old_doc.get_toc(simple=False)
     if translation_config.only_include_translated_page:
-        total_page = set(range(0, len(old_doc)))
-
-        pages_to_translate = {
-            i for i in len(old_doc) if translation_config.should_translate_page(i + 1)
-        }
-
-        should_removed_page = list(total_page - pages_to_translate)
+        page_selection_map = page_selection_map or getattr(
+            translate_result, "page_selection_map", None
+        )
+        if page_selection_map is None:
+            selected = tuple(
+                page
+                for page in range(1, len(old_doc) + 1)
+                if translation_config.should_translate_page(page)
+            )
+            page_selection_map = PageSelectionMap.from_source_pdf(
+                translation_config.input_file,
+                selected_physical_pages=selected,
+                targeted_output=True,
+            )
+        toc_data = _project_targeted_toc(toc_data, page_selection_map)
 
     files = {
         translate_result.dual_pdf_path,
@@ -980,7 +1041,14 @@ def migrate_toc(
         if not new_doc:
             continue
 
-        new_doc.set_toc(toc_data)
+        if translation_config.only_include_translated_page:
+            new_doc.set_page_labels(
+                _projected_page_label_rules(old_doc, page_selection_map)
+            )
+        if toc_data:
+            new_doc.set_toc(toc_data)
+        else:
+            new_doc.set_toc([])
         PDFCreater.save_pdf_with_timeout(
             new_doc,
             f.as_posix(),
@@ -988,6 +1056,8 @@ def migrate_toc(
             clean=not translation_config.skip_clean,
             tag="mig_toc",
         )
+        new_doc.close()
+    old_doc.close()
 
 
 # mediabox -> '[0 nul 792]'

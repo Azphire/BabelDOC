@@ -8,6 +8,7 @@ import math
 import re
 import unicodedata
 from collections import Counter
+from collections.abc import Mapping
 from dataclasses import dataclass
 from dataclasses import field
 from pathlib import Path
@@ -15,6 +16,8 @@ from typing import Any
 
 import pymupdf
 
+from babeldoc.magazine.hitl_expectation import ManualConstraintExpectation
+from babeldoc.magazine.page_identity import UNBOUND_SOURCE_PDF_SHA256
 from babeldoc.magazine.page_identity import PageSelectionMap
 from babeldoc.magazine.resource_paths import config_path
 from babeldoc.magazine.taxonomy import record_config_manifest
@@ -80,6 +83,25 @@ class ComplianceExpectations:
     protected_bounds: dict[int, tuple[Box, ...]] = field(default_factory=dict)
     drop_caps: tuple[DropCapExpectation, ...] = ()
     page_selection_map: PageSelectionMap | None = None
+    expected_source_page_geometry_by_physical_page: Mapping[int, dict] = field(
+        default_factory=dict
+    )
+    expected_page_labels_by_physical_page: Mapping[int, str] = field(
+        default_factory=dict
+    )
+    fixed_assets_by_physical_page: Mapping[int, tuple[dict, ...]] = field(
+        default_factory=dict
+    )
+    article_refs_by_physical_page: Mapping[int, tuple[str, ...]] = field(
+        default_factory=dict
+    )
+    chain_refs_by_physical_page: Mapping[int, tuple[str, ...]] = field(
+        default_factory=dict
+    )
+    runtrace_refs_by_physical_page: Mapping[int, tuple[str, ...]] = field(
+        default_factory=dict
+    )
+    manual_constraint_expectations: tuple[ManualConstraintExpectation, ...] = ()
 
 
 @dataclass(frozen=True, slots=True)
@@ -93,6 +115,7 @@ class ComplianceResult:
         return self.status == STATUS_PASS
 
     def trace_binding(self) -> dict:
+        selection = self.record.get("page_selection_map") or {}
         return {
             "schema_version": self.record.get("schema_version"),
             "status": self.status,
@@ -100,6 +123,7 @@ class ComplianceResult:
             "report": str(self.report_path),
             "issue_count": len(self.record.get("issues", ())),
             "output_sha256": self.record.get("output", {}).get("sha256"),
+            "page_selection_mapping_sha256": selection.get("mapping_sha256"),
         }
 
 
@@ -407,16 +431,67 @@ def expectations_from_runtime(
     expected_page_count: int | None,
     article_document_ir=None,
     fixed_asset_inventory=None,
+    manual_constraint_expectations=(),
 ) -> ComplianceExpectations:
     page_selection_map = (
         None
         if article_document_ir is None
         else article_document_ir.page_selection_map
     )
+    expected_geometry: dict[int, dict] = {}
+    fixed_by_page: dict[int, list[dict]] = {}
+    if fixed_asset_inventory is not None:
+        expected_geometry = {
+            int(page): {
+                "mediabox": None if media is None else list(media),
+                "cropbox": None if crop is None else list(crop),
+                "rotation": None,
+            }
+            for page, media, crop in fixed_asset_inventory.page_sizes
+        }
+        for asset in fixed_asset_inventory.assets:
+            fixed_by_page.setdefault(int(asset.page), []).append(asset.to_record())
+    article_refs: dict[int, list[str]] = {}
+    chain_refs: dict[int, list[str]] = {}
+    if article_document_ir is not None:
+        for article in article_document_ir.articles:
+            for page in article.pages:
+                article_refs.setdefault(int(page), []).append(article.article_id)
+        for chain in article_document_ir.chains:
+            for page, reference in zip(
+                chain.member_physical_pages,
+                chain.ordered_member_refs,
+                strict=True,
+            ):
+                chain_refs.setdefault(int(page), []).append(
+                    f"{chain.chain_id}:{reference}"
+                )
+    runtrace_refs: dict[int, list[str]] = {}
+    if run_trace is not None:
+        for reference, source in run_trace.sources.items():
+            runtrace_refs.setdefault(int(source.page), []).append(reference)
+    common = {
+        "expected_source_page_geometry_by_physical_page": expected_geometry,
+        "fixed_assets_by_physical_page": {
+            page: tuple(sorted(items, key=lambda item: item["reference"]))
+            for page, items in fixed_by_page.items()
+        },
+        "article_refs_by_physical_page": {
+            page: tuple(sorted(set(items))) for page, items in article_refs.items()
+        },
+        "chain_refs_by_physical_page": {
+            page: tuple(sorted(set(items))) for page, items in chain_refs.items()
+        },
+        "runtrace_refs_by_physical_page": {
+            page: tuple(sorted(set(items))) for page, items in runtrace_refs.items()
+        },
+        "manual_constraint_expectations": tuple(manual_constraint_expectations),
+    }
     if run_trace is None:
         return ComplianceExpectations(
             expected_page_count=expected_page_count,
             page_selection_map=page_selection_map,
+            **common,
         )
     article_bounds: dict[tuple[str, int], tuple[Box, ...]] = {}
     if article_document_ir is not None:
@@ -503,6 +578,7 @@ def expectations_from_runtime(
         protected_bounds={page: tuple(boxes) for page, boxes in protected.items()},
         drop_caps=tuple(drop_caps),
         page_selection_map=page_selection_map,
+        **common,
     )
 
 
@@ -541,6 +617,31 @@ def offset_expectations(
             for item in expectations.drop_caps
         ),
         page_selection_map=expectations.page_selection_map,
+        expected_source_page_geometry_by_physical_page={
+            page + page_offset: geometry
+            for page, geometry in expectations.expected_source_page_geometry_by_physical_page.items()
+        },
+        expected_page_labels_by_physical_page={
+            page + page_offset: label
+            for page, label in expectations.expected_page_labels_by_physical_page.items()
+        },
+        fixed_assets_by_physical_page={
+            page + page_offset: assets
+            for page, assets in expectations.fixed_assets_by_physical_page.items()
+        },
+        article_refs_by_physical_page={
+            page + page_offset: refs
+            for page, refs in expectations.article_refs_by_physical_page.items()
+        },
+        chain_refs_by_physical_page={
+            page + page_offset: refs
+            for page, refs in expectations.chain_refs_by_physical_page.items()
+        },
+        runtrace_refs_by_physical_page={
+            page + page_offset: refs
+            for page, refs in expectations.runtrace_refs_by_physical_page.items()
+        },
+        manual_constraint_expectations=expectations.manual_constraint_expectations,
     )
 
 
@@ -563,6 +664,41 @@ def merge_expectations(
         },
         drop_caps=tuple(drop_cap for item in items for drop_cap in item.drop_caps),
         page_selection_map=None,
+        expected_source_page_geometry_by_physical_page={
+            page: geometry
+            for item in items
+            for page, geometry in item.expected_source_page_geometry_by_physical_page.items()
+        },
+        expected_page_labels_by_physical_page={
+            page: label
+            for item in items
+            for page, label in item.expected_page_labels_by_physical_page.items()
+        },
+        fixed_assets_by_physical_page={
+            page: assets
+            for item in items
+            for page, assets in item.fixed_assets_by_physical_page.items()
+        },
+        article_refs_by_physical_page={
+            page: refs
+            for item in items
+            for page, refs in item.article_refs_by_physical_page.items()
+        },
+        chain_refs_by_physical_page={
+            page: refs
+            for item in items
+            for page, refs in item.chain_refs_by_physical_page.items()
+        },
+        runtrace_refs_by_physical_page={
+            page: refs
+            for item in items
+            for page, refs in item.runtrace_refs_by_physical_page.items()
+        },
+        manual_constraint_expectations=tuple(
+            expectation
+            for item in items
+            for expectation in item.manual_constraint_expectations
+        ),
     )
 
 
@@ -618,7 +754,13 @@ class FinalPdfValidator:
                 else expected.page_selection_map.to_record()
             ),
             "checks": [],
-            "evidence": {"pages": [], "assets": [], "drop_caps": []},
+            "evidence": {
+                "pages": [],
+                "assets": [],
+                "drop_caps": [],
+                "mapping": {},
+                "references": [],
+            },
             "trace_reconciliation": [],
             "writer_warnings": [dict(item) for item in writer_warnings],
             "issues": [],
@@ -693,13 +835,71 @@ class FinalPdfValidator:
                 )
                 return self._finish(record, destination)
 
+            selection = expected.page_selection_map
+            if selection is None:
+                selection = PageSelectionMap.from_source_pdf(source_path)
+            record["page_selection_map"] = selection.to_record()
+            actual_source_sha256 = record["input"]["sha256"]
+            source_hash_holds = (
+                selection.source_pdf_sha256 != UNBOUND_SOURCE_PDF_SHA256
+                and selection.source_pdf_sha256 == actual_source_sha256
+            )
+            check(
+                "page_mapping_source_binding",
+                source_hash_holds,
+                {
+                    "expected_sha256": selection.source_pdf_sha256,
+                    "actual_sha256": actual_source_sha256,
+                    "source_page_count": selection.source_page_count,
+                },
+                code="page_mapping_source_mismatch",
+            )
+            check(
+                "page_mapping_source_count",
+                selection.source_page_count == len(source),
+                {
+                    "expected": selection.source_page_count,
+                    "actual": len(source),
+                },
+                code="page_mapping_source_count_mismatch",
+            )
+
+            mapped_physical_pages = tuple(
+                int(page)
+                for page in selection.output_index_to_physical_page.values()
+            )
+            mapped_output_indexes = tuple(
+                int(index) for index in selection.output_index_to_physical_page
+            )
+            mapping_holds = (
+                mapped_output_indexes == tuple(range(len(output)))
+                and len(mapped_physical_pages) == len(set(mapped_physical_pages))
+            )
+            record["evidence"]["mapping"] = {
+                "mapping_sha256": selection.mapping_sha256,
+                "physical_pages": list(mapped_physical_pages),
+                "output_indexes": list(mapped_output_indexes),
+                "holds": mapping_holds,
+            }
+            check(
+                "page_mapping_coverage",
+                mapping_holds,
+                record["evidence"]["mapping"],
+                code="page_mapping_coverage_mismatch",
+            )
+
             expected_count = expected.expected_page_count
             if expected_count is None:
-                expected_count = len(source)
+                expected_count = len(selection.output_index_to_physical_page)
             check(
                 "page_count",
-                len(output) == expected_count,
-                {"expected": expected_count, "actual": len(output)},
+                len(output) == expected_count
+                == len(selection.output_index_to_physical_page),
+                {
+                    "expected": expected_count,
+                    "mapping": len(selection.output_index_to_physical_page),
+                    "actual": len(output),
+                },
                 code="page_count_mismatch",
             )
 
@@ -710,23 +910,32 @@ class FinalPdfValidator:
                 catalog_evidence,
                 code="catalog_page_tree_invalid",
             )
-            source_labels = source.get_page_labels()
-            output_labels = output.get_page_labels()
+            source_labels = {
+                physical_page: source[physical_page - 1].get_label()
+                for physical_page in mapped_physical_pages
+                if 1 <= physical_page <= len(source)
+            }
+            projected_labels = {
+                physical_page: expected.expected_page_labels_by_physical_page.get(
+                    physical_page, label
+                )
+                for physical_page, label in source_labels.items()
+            }
+            output_labels = {
+                physical_page: output[output_index].get_label()
+                for output_index, physical_page in enumerate(mapped_physical_pages)
+                if output_index < len(output)
+            }
             check(
                 "page_labels",
-                source_labels == output_labels,
-                {"input": source_labels, "output": output_labels},
+                projected_labels == output_labels,
+                {"expected": projected_labels, "output": output_labels},
                 code="page_labels_mismatch",
             )
 
-            selection = expected.page_selection_map
-            geometry_pairs = (
-                tuple(
-                    (int(physical), int(output_index))
-                    for output_index, physical in selection.output_to_physical.items()
-                )
-                if selection is not None
-                else tuple((index + 1, index) for index in range(len(output)))
+            geometry_pairs = tuple(
+                (int(physical), int(output_index))
+                for output_index, physical in selection.output_index_to_physical_page.items()
             )
             geometry_holds = len(geometry_pairs) == len(output)
             page_evidence = []
@@ -734,7 +943,16 @@ class FinalPdfValidator:
                 if not 1 <= physical_page <= len(source) or not 0 <= output_index < len(output):
                     geometry_holds = False
                     continue
-                left = _page_geometry(source[physical_page - 1])
+                source_geometry = _page_geometry(source[physical_page - 1])
+                declared = expected.expected_source_page_geometry_by_physical_page.get(
+                    physical_page, {}
+                )
+                left = {
+                    key: source_geometry[key]
+                    if declared.get(key) is None
+                    else declared[key]
+                    for key in ("mediabox", "cropbox", "rotation")
+                }
                 right = _page_geometry(output[output_index])
                 holds = (
                     _box_close(
@@ -754,6 +972,7 @@ class FinalPdfValidator:
                     {
                         "physical_page": physical_page,
                         "output_index": output_index,
+                        "source": source_geometry,
                         "input": left,
                         "output": right,
                         "holds": holds,
@@ -767,7 +986,17 @@ class FinalPdfValidator:
                 code="page_geometry_mismatch",
             )
 
-            self._check_touched(source, output, expected, record, check)
+            self._check_mapped_assets(
+                source,
+                output,
+                selection,
+                expected,
+                record,
+                check,
+            )
+            self._check_reference_projection(selection, expected, record, check)
+
+            self._check_touched(source, output, selection, expected, record, check)
         except Exception as exc:
             check(
                 "validator_exception",
@@ -782,14 +1011,75 @@ class FinalPdfValidator:
                 source.close()
         return self._finish(record, destination)
 
-    def _check_touched(self, source, output, expected, record, check) -> None:
+    def _check_mapped_assets(
+        self, source, output, selection, expected, record, check
+    ) -> None:
+        for output_index, physical in selection.output_index_to_physical_page.items():
+            page_number = int(physical)
+            if not 1 <= page_number <= len(source) or not 0 <= output_index < len(output):
+                continue
+            before_assets = _asset_records(source[page_number - 1])
+            after_assets = _asset_records(output[output_index])
+            comparison = _compare_assets(
+                before_assets, after_assets, self.config.asset_bbox_tolerance_pt
+            )
+            comparison.update(
+                {
+                    "physical_page": page_number,
+                    "output_index": int(output_index),
+                    "inventory_refs": [
+                        item.get("reference")
+                        for item in expected.fixed_assets_by_physical_page.get(
+                            page_number, ()
+                        )
+                    ],
+                }
+            )
+            record["evidence"]["assets"].append(comparison)
+            check(
+                "fixed_assets",
+                comparison["holds"],
+                comparison,
+                code="fixed_asset_drift",
+                page=page_number,
+            )
+
+    def _check_reference_projection(self, selection, expected, record, check) -> None:
+        projected = {
+            int(page)
+            for page in selection.output_index_to_physical_page.values()
+        }
+        for kind, references in (
+            ("article", expected.article_refs_by_physical_page),
+            ("chain", expected.chain_refs_by_physical_page),
+            ("runtrace", expected.runtrace_refs_by_physical_page),
+        ):
+            for physical_page, refs in sorted(references.items()):
+                if int(physical_page) not in projected:
+                    continue
+                output_index = selection.output_index_of(int(physical_page))
+                holds = output_index is not None and bool(refs)
+                evidence = {
+                    "kind": kind,
+                    "physical_page": int(physical_page),
+                    "output_index": None if output_index is None else int(output_index),
+                    "refs": list(refs),
+                }
+                record["evidence"]["references"].append(evidence)
+                check(
+                    f"{kind}_reference_projection",
+                    holds,
+                    evidence,
+                    code=f"{kind}_reference_projection_missing",
+                    page=int(physical_page),
+                )
+
+    def _check_touched(
+        self, source, output, selection, expected, record, check
+    ) -> None:
         page_cache = {}
         for page_number in expected.touched_pages:
-            output_index = (
-                page_number - 1
-                if expected.page_selection_map is None
-                else expected.page_selection_map.output_index_of(page_number)
-            )
+            output_index = selection.output_index_of(page_number)
             if output_index is None or not 0 <= output_index < len(output):
                 check(
                     "touched_page_exists",
@@ -852,25 +1142,6 @@ class FinalPdfValidator:
                 page=page_number,
             )
 
-            before_assets = (
-                _asset_records(source[page_number - 1])
-                if page_number <= len(source)
-                else []
-            )
-            after_assets = _asset_records(page)
-            asset_comparison = _compare_assets(
-                before_assets, after_assets, self.config.asset_bbox_tolerance_pt
-            )
-            asset_comparison["page"] = page_number
-            record["evidence"]["assets"].append(asset_comparison)
-            check(
-                "fixed_assets",
-                asset_comparison["holds"],
-                asset_comparison,
-                code="fixed_asset_drift",
-                page=page_number,
-            )
-
         grouped = Counter(
             (target.page, normalize_text(target.text))
             for target in expected.targets
@@ -923,19 +1194,9 @@ class FinalPdfValidator:
             actual_box = boxes[index] if index < len(boxes) else None
             page_height = (
                 output[
-                    target.page - 1
-                    if expected.page_selection_map is None
-                    else expected.page_selection_map.require_output_index(target.page)
+                    selection.require_output_index(target.page)
                 ].rect.height
-                if (
-                    expected.page_selection_map is None
-                    and 1 <= target.page <= len(output)
-                )
-                or (
-                    expected.page_selection_map is not None
-                    and expected.page_selection_map.output_index_of(target.page)
-                    is not None
-                )
+                if selection.output_index_of(target.page) is not None
                 else 0.0
             )
             geometry_holds = actual_box is not None
@@ -987,7 +1248,7 @@ class FinalPdfValidator:
                 expectation,
                 record,
                 check,
-                expected.page_selection_map,
+                selection,
             )
 
     def _check_drop_cap(
