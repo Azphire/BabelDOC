@@ -1484,6 +1484,9 @@ def _do_translate_single(
                 docs,
                 run_trace=run_trace,
                 article_document_ir=article_document_ir,
+                article_state_journal=article_state_journal,
+                legal_slot_plan=legal_slot_plan,
+                fixed_inventory=fixed_asset_inventory,
             )
         # The lane sets a strip during the repair loop, so its record is written
         # once the loop is done rather than at a stage of its own.

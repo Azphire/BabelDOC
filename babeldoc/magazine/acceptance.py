@@ -9,6 +9,7 @@ from dataclasses import dataclass
 from functools import lru_cache
 from pathlib import Path
 
+from babeldoc.magazine.repair_contract import RepairAction
 from babeldoc.magazine.resource_paths import config_path
 
 CONFIG_PATH = config_path("repair_acceptance.json")
@@ -341,5 +342,202 @@ def compare_issues(
         uncomparable_ids=tuple(uncomparable),
         improved_ids=tuple(improved),
         strict_improvement=strict,
+        reasons=tuple(reasons),
+    )
+
+
+@dataclass(frozen=True, slots=True)
+class RepairAcceptanceResult:
+    """TeX 615 result for exactly one action and one complete recheck."""
+
+    accepted: bool
+    action: str
+    target_issue_ids: tuple[str, ...]
+    target_kinds: tuple[str, ...]
+    before_total: int
+    after_total: int
+    persistent_ids: tuple[str, ...]
+    resolved_ids: tuple[str, ...]
+    new_ids: tuple[str, ...]
+    improved_ids: tuple[str, ...]
+    unchanged_ids: tuple[str, ...]
+    worsened_ids: tuple[str, ...]
+    uncomparable_ids: tuple[str, ...]
+    closure_complete: bool
+    conservation_holds: bool
+    touched_scope_valid: bool
+    reasons: tuple[str, ...]
+
+    def as_record(self) -> dict:
+        return {
+            "accepted": self.accepted,
+            "action": self.action,
+            "target_issue_ids": list(self.target_issue_ids),
+            "target_kinds": list(self.target_kinds),
+            "before_total": self.before_total,
+            "after_total": self.after_total,
+            "persistent_ids": list(self.persistent_ids),
+            "resolved_ids": list(self.resolved_ids),
+            "new_ids": list(self.new_ids),
+            "improved_ids": list(self.improved_ids),
+            "unchanged_ids": list(self.unchanged_ids),
+            "worsened_ids": list(self.worsened_ids),
+            "uncomparable_ids": list(self.uncomparable_ids),
+            "closure_complete": self.closure_complete,
+            "conservation_holds": self.conservation_holds,
+            "touched_scope_valid": self.touched_scope_valid,
+            "reasons": list(self.reasons),
+        }
+
+
+def _strict_persistent_verdict(before, after, policy: AcceptancePolicy) -> str:
+    """Compare one stable ID; every metric must exist, be finite, and decrease."""
+    if before.kind != after.kind:
+        return "uncomparable"
+    before_vector = _vector(before)
+    after_vector = _vector(after)
+    if (
+        before_vector.schema_version != policy.schema_version
+        or after_vector.schema_version != policy.schema_version
+        or before_vector.severity != before.severity
+        or after_vector.severity != after.severity
+    ):
+        return "uncomparable"
+    before_names = [name for name, _value in before_vector.dimensions]
+    after_names = [name for name, _value in after_vector.dimensions]
+    if (
+        not before_names
+        or before_names != after_names
+        or len(before_names) != len(set(before_names))
+    ):
+        return "uncomparable"
+    if policy.rank(after.severity) > policy.rank(before.severity):
+        return "worsened"
+    improved = policy.rank(after.severity) < policy.rank(before.severity)
+    for (_name, left), (_after_name, right) in zip(
+        before_vector.dimensions, after_vector.dimensions, strict=True
+    ):
+        if isinstance(left, bool) or isinstance(right, bool):
+            return "uncomparable"
+        if not isinstance(left, int | float) or not isinstance(right, int | float):
+            return "uncomparable"
+        if not math.isfinite(left) or not math.isfinite(right):
+            return "uncomparable"
+        if right > left:
+            return "worsened"
+        if right < left:
+            improved = True
+    return "improved" if improved else "unchanged"
+
+
+def compare_repair_action(
+    before,
+    after,
+    policy: AcceptancePolicy,
+    *,
+    action: RepairAction | str,
+    target_issue_ids,
+    closure_complete: bool,
+    conservation_holds: bool,
+    touched_scope_valid: bool,
+) -> RepairAcceptanceResult:
+    """Apply the strict C19 conjunction to one action's full-suite findings."""
+    action = RepairAction(action)
+    before = tuple(before)
+    after = tuple(after)
+    before_index, before_duplicates = _index(before)
+    after_index, after_duplicates = _index(after)
+    targets = tuple(target_issue_ids)
+    target_duplicates = len(targets) != len(set(targets))
+    target_unknown = tuple(sorted(set(targets) - set(before_index)))
+    target_kinds = tuple(
+        sorted(
+            {
+                before_index[issue_id].kind
+                for issue_id in targets
+                if issue_id in before_index
+            }
+        )
+    )
+    before_ids = set(before_index)
+    after_ids = set(after_index)
+    persistent = tuple(sorted(before_ids & after_ids))
+    resolved = tuple(sorted(before_ids - after_ids))
+    new = tuple(sorted(after_ids - before_ids))
+    improved = []
+    unchanged = []
+    worsened = []
+    uncomparable = []
+    for issue_id in persistent:
+        verdict = _strict_persistent_verdict(
+            before_index[issue_id], after_index[issue_id], policy
+        )
+        {
+            "improved": improved,
+            "unchanged": unchanged,
+            "worsened": worsened,
+            "uncomparable": uncomparable,
+        }[verdict].append(issue_id)
+
+    target_kind_persistent = tuple(
+        issue_id
+        for issue_id in persistent
+        if before_index[issue_id].kind in target_kinds
+    )
+    target_not_improved = tuple(
+        issue_id for issue_id in target_kind_persistent if issue_id not in improved
+    )
+    non_target_worsened = tuple(
+        issue_id
+        for issue_id in worsened
+        if before_index[issue_id].kind not in target_kinds
+    )
+    reasons = []
+    duplicates = tuple(
+        sorted(set(before_duplicates) | set(after_duplicates))
+    )
+    if duplicates:
+        reasons.append(f"duplicate_issue_ids:{','.join(duplicates)}")
+    if target_duplicates:
+        reasons.append("duplicate_target_issue_ids")
+    if target_unknown:
+        reasons.append(f"unknown_target_issue_ids:{','.join(target_unknown)}")
+    if action is RepairAction.NO_ACTION:
+        reasons.append("no_action_bypasses_acceptance")
+    elif not targets:
+        reasons.append("mutating_action_has_no_target_kinds")
+    if len(after_index) >= len(before_index):
+        reasons.append("total_issue_count_did_not_decrease")
+    if new:
+        reasons.append("new_issue_introduced")
+    if uncomparable:
+        reasons.append("persistent_issue_metric_uncomparable")
+    if target_not_improved:
+        reasons.append("target_kind_persistent_issue_not_improved")
+    if non_target_worsened:
+        reasons.append("non_target_persistent_issue_worsened")
+    if not closure_complete:
+        reasons.append("detector_closure_incomplete")
+    if not conservation_holds:
+        reasons.append("conservation_invariant_failed")
+    if not touched_scope_valid:
+        reasons.append("touched_scope_not_preflighted")
+    return RepairAcceptanceResult(
+        accepted=not reasons,
+        action=action.value,
+        target_issue_ids=targets,
+        target_kinds=target_kinds,
+        before_total=len(before_index),
+        after_total=len(after_index),
+        persistent_ids=persistent,
+        resolved_ids=resolved,
+        new_ids=new,
+        improved_ids=tuple(improved),
+        unchanged_ids=tuple(unchanged),
+        worsened_ids=tuple(worsened),
+        uncomparable_ids=tuple(uncomparable),
+        closure_complete=closure_complete,
+        conservation_holds=conservation_holds,
+        touched_scope_valid=touched_scope_valid,
         reasons=tuple(reasons),
     )

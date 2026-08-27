@@ -99,7 +99,17 @@ def _drop_cap_digest(docs, positions: tuple[int, ...]) -> str:
 
 
 def _allocator_digest(value) -> str | None:
-    return None if value is None else fixed_assets.content_digest(value)
+    if value is None:
+        return None
+    states = getattr(value, "states", None)
+    if states is not None:
+        return hash_record(
+            [
+                item.to_record() if hasattr(item, "to_record") else item
+                for item in states
+            ]
+        )
+    return fixed_assets.content_digest(value)
 
 
 @dataclass(frozen=True, slots=True)
@@ -110,6 +120,10 @@ class TransactionDigests:
     run_trace: str | None
     fixed_assets: str | None
     allocator: str | None
+    article_state: str | None = None
+    manual_expectations: str | None = None
+    repair_records: str | None = None
+    repair_knowledge_state: str | None = None
 
     def as_record(self) -> dict:
         return {
@@ -119,6 +133,10 @@ class TransactionDigests:
             "run_trace": self.run_trace,
             "fixed_assets": self.fixed_assets,
             "allocator": self.allocator,
+            "article_state": self.article_state,
+            "manual_expectations": self.manual_expectations,
+            "repair_records": self.repair_records,
+            "repair_knowledge_state": self.repair_knowledge_state,
         }
 
 
@@ -129,6 +147,10 @@ def state_digests(
     run_trace=None,
     fixed_inventory=None,
     allocator=None,
+    article_state=None,
+    manual_expectations=None,
+    repair_records=None,
+    repair_knowledge_state=None,
 ) -> TransactionDigests:
     selected = tuple(sorted({int(position) for position in positions}))
     return TransactionDigests(
@@ -146,6 +168,14 @@ def state_digests(
             if allocator is None and run_trace is not None
             else _allocator_digest(allocator)
         ),
+        article_state=_allocator_digest(article_state),
+        manual_expectations=_allocator_digest(manual_expectations),
+        repair_records=_allocator_digest(repair_records),
+        repair_knowledge_state=(
+            None
+            if repair_knowledge_state is None
+            else repair_knowledge_state.sha256()
+        ),
     )
 
 
@@ -159,6 +189,11 @@ def _restore_allocator(target, snapshot) -> None:
         return
     if isinstance(target, list):
         target[:] = restored
+        return
+    if hasattr(target, "states") and hasattr(restored, "states"):
+        target.states = restored.states
+        if hasattr(target, "context_records"):
+            target.context_records = restored.context_records
         return
     if hasattr(target, "__dict__") and hasattr(restored, "__dict__"):
         target.__dict__.clear()
@@ -183,6 +218,13 @@ class TransactionSnapshot:
     fixed_inventory_builder: object | None
     allocator: object | None
     allocator_state: object | None
+    article_state: object | None
+    article_state_snapshot: object | None
+    manual_expectations: object | None
+    manual_expectations_snapshot: object | None
+    repair_records: object | None
+    repair_records_snapshot: object | None
+    repair_knowledge_state: object | None
     before: TransactionDigests
     generation: int | None = None
     status: str = "attempted"
@@ -198,6 +240,10 @@ class TransactionSnapshot:
         fixed_inventory=None,
         fixed_inventory_builder=None,
         allocator=None,
+        article_state=None,
+        manual_expectations=None,
+        repair_records=None,
+        repair_knowledge_state=None,
     ) -> TransactionSnapshot:
         positions = tuple(
             range(len(docs.page))
@@ -227,12 +273,23 @@ class TransactionSnapshot:
             fixed_inventory_builder=fixed_inventory_builder,
             allocator=allocator,
             allocator_state=allocator_state,
+            article_state=article_state,
+            article_state_snapshot=copy.deepcopy(article_state),
+            manual_expectations=manual_expectations,
+            manual_expectations_snapshot=copy.deepcopy(manual_expectations),
+            repair_records=repair_records,
+            repair_records_snapshot=copy.deepcopy(repair_records),
+            repair_knowledge_state=repair_knowledge_state,
             before=state_digests(
                 docs,
                 positions,
                 run_trace=run_trace,
                 fixed_inventory=inventory,
                 allocator=allocator,
+                article_state=article_state,
+                manual_expectations=manual_expectations,
+                repair_records=repair_records,
+                repair_knowledge_state=repair_knowledge_state,
             ),
         )
 
@@ -253,6 +310,10 @@ class TransactionSnapshot:
             run_trace=self.run_trace,
             fixed_inventory=inventory,
             allocator=self.allocator,
+            article_state=self.article_state,
+            manual_expectations=self.manual_expectations,
+            repair_records=self.repair_records,
+            repair_knowledge_state=self.repair_knowledge_state,
         )
 
     def commit(self, touched_refs=(), *, capture_geometry: bool = True) -> dict:
@@ -279,6 +340,11 @@ class TransactionSnapshot:
         if self.run_trace is not None:
             self.run_trace.restore_transaction_snapshot(self.trace_state)
         _restore_allocator(self.allocator, self.allocator_state)
+        _restore_allocator(self.article_state, self.article_state_snapshot)
+        _restore_allocator(
+            self.manual_expectations, self.manual_expectations_snapshot
+        )
+        _restore_allocator(self.repair_records, self.repair_records_snapshot)
         restored = self.current_digests()
         self.rollback_verification = {
             "verified": restored == self.before,

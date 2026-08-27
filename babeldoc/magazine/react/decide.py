@@ -139,7 +139,13 @@ def engine_identity(engine, lang_out: str) -> str:
     return f"{type(engine).__name__}/{getattr(engine, 'name', '')}/{lang_out}"
 
 
-def cache_key(prompt: Prompt, identity: str, version: int | None = None) -> str:
+def cache_key(
+    prompt: Prompt,
+    identity: str,
+    version: int | None = None,
+    *,
+    state_sha256: str | None = None,
+) -> str:
     """Digest of everything that could change the answer to one request.
 
     Given the key rendering of a request rather than the sent one, so two runs
@@ -149,7 +155,14 @@ def cache_key(prompt: Prompt, identity: str, version: int | None = None) -> str:
     ``version`` is for replaying a key an earlier batch filed under an earlier
     composition; a run leaves it alone.
     """
-    return cache_key_fields.digest(identity, prompt.digest, prompt.text, version)
+    bound_identity = (
+        identity
+        if state_sha256 is None
+        else f"{identity}/repair-state-sha256:{state_sha256}"
+    )
+    return cache_key_fields.digest(
+        bound_identity, prompt.digest, prompt.text, version
+    )
 
 
 def strip_fence(reply: str) -> str:
@@ -372,11 +385,17 @@ class CachedDecisionClient:
         )
         return f"{prompt.text}\n\n{notice.text}"
 
-    def decide(self, issues) -> tuple[Decision, RequestLog]:
+    def decide(
+        self, issues, *, state_sha256: str | None = None
+    ) -> tuple[Decision, RequestLog]:
         """Choose one action for one iteration, from cache where it is not new."""
         prompt = self.prompt(issues)
         offered = {issue.id for issue in issues[: self.config.max_issues_offered]}
-        key = cache_key(self.key_prompt(issues), self.identity)
+        key = cache_key(
+            self.key_prompt(issues),
+            self.identity,
+            state_sha256=state_sha256,
+        )
         log = RequestLog(prompt_digest=prompt.digest, prompt_text=prompt.text, key=key)
         verdict = SERVED_BYPASSED if self.ignore_cache else SERVED_MISS
 

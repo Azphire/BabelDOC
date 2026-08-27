@@ -1,0 +1,62 @@
+{
+  "description": "C19 repair action to detector closure. Every mutating action declares its primary checks and the global conservation checks, while complete_detector_suite is rerun after every action so unrelated findings cannot disappear merely because they were not observed.",
+  "schema_version": "repair-detector-closure.v1",
+  "complete_detector_suite": [
+    "abnormal_blank",
+    "article_ownership",
+    "chain_conservation",
+    "escalation_surfacing",
+    "fixed_asset_drift",
+    "fragment_cluster",
+    "instruction_compliance",
+    "out_of_page",
+    "render_coverage",
+    "text_figure_overlap",
+    "text_text_collision",
+    "untranslated_residue"
+  ],
+  "closures": {
+    "reprocess_omitted_text": {
+      "trigger_issue_kinds": ["untranslated_residue"],
+      "primary_detectors": ["untranslated_residue"],
+      "conservation_detectors": ["untranslated_residue", "out_of_page", "text_text_collision", "text_figure_overlap", "article_ownership", "chain_conservation", "render_coverage", "fixed_asset_drift", "instruction_compliance"],
+      "potential_side_effect_kinds": ["out_of_page", "text_text_collision", "text_figure_overlap", "instruction_compliance"],
+      "required_state": ["element_roles", "article_regions", "manual_constraint_refs", "legal_slot_digests", "run_trace_generation"]
+    },
+    "reallocate_continuity_chain": {
+      "trigger_issue_kinds": ["chain_escalation", "chain_conservation"],
+      "primary_detectors": ["chain_conservation", "render_coverage"],
+      "conservation_detectors": ["untranslated_residue", "out_of_page", "text_text_collision", "text_figure_overlap", "article_ownership", "chain_conservation", "render_coverage", "fixed_asset_drift", "instruction_compliance"],
+      "potential_side_effect_kinds": ["out_of_page", "text_text_collision", "render_coverage", "article_ownership"],
+      "required_state": ["chain_states", "article_regions", "legal_slot_digests", "run_trace_generation"]
+    },
+    "retypeset_article_region": {
+      "trigger_issue_kinds": ["abnormal_blank", "fragment_cluster", "out_of_page"],
+      "primary_detectors": ["abnormal_blank", "fragment_cluster", "out_of_page"],
+      "conservation_detectors": ["untranslated_residue", "out_of_page", "text_text_collision", "text_figure_overlap", "article_ownership", "chain_conservation", "render_coverage", "fixed_asset_drift", "instruction_compliance"],
+      "potential_side_effect_kinds": ["out_of_page", "text_text_collision", "text_figure_overlap", "article_ownership", "render_coverage"],
+      "required_state": ["article_regions", "legal_slot_digests", "element_roles", "run_trace_generation"]
+    },
+    "contain_overflowing_heading": {
+      "trigger_issue_kinds": ["out_of_page"],
+      "primary_detectors": ["out_of_page"],
+      "conservation_detectors": ["untranslated_residue", "out_of_page", "text_text_collision", "text_figure_overlap", "article_ownership", "chain_conservation", "render_coverage", "fixed_asset_drift", "instruction_compliance"],
+      "potential_side_effect_kinds": ["text_text_collision", "text_figure_overlap", "article_ownership"],
+      "required_state": ["element_roles", "article_regions", "legal_slot_digests"]
+    },
+    "resolve_text_collision": {
+      "trigger_issue_kinds": ["text_text_collision"],
+      "primary_detectors": ["text_text_collision"],
+      "conservation_detectors": ["untranslated_residue", "out_of_page", "text_text_collision", "text_figure_overlap", "article_ownership", "chain_conservation", "render_coverage", "fixed_asset_drift", "instruction_compliance"],
+      "potential_side_effect_kinds": ["out_of_page", "text_text_collision", "article_ownership", "fixed_asset_drift"],
+      "required_state": ["element_roles", "article_regions", "fixed_asset_inventory_sha256", "protected_refs"]
+    },
+    "no_action": {
+      "trigger_issue_kinds": [],
+      "primary_detectors": [],
+      "conservation_detectors": [],
+      "potential_side_effect_kinds": [],
+      "required_state": []
+    }
+  }
+}

@@ -91,6 +91,14 @@ from babeldoc.magazine.react.config import load_repair_config
 from babeldoc.magazine.react.decide import CachedDecisionClient
 from babeldoc.magazine.react.decide import EngineTransport
 from babeldoc.magazine.react.decide import engine_identity
+from babeldoc.magazine.repair_contract import RepairAction
+from babeldoc.magazine.repair_contract import RepairContractError
+from babeldoc.magazine.repair_contract import RepairDecision
+from babeldoc.magazine.repair_contract import RepairTarget
+from babeldoc.magazine.repair_contract import build_repair_knowledge_state
+from babeldoc.magazine.repair_detector_closure import CONFIG_PATH as CLOSURE_CONFIG_PATH
+from babeldoc.magazine.repair_detector_closure import DetectorClosureRun
+from babeldoc.magazine.repair_detector_closure import load_repair_detector_closure
 from babeldoc.magazine.resource_paths import config_path
 from babeldoc.magazine.taxonomy import record_config_manifest
 from babeldoc.magazine.transaction import TransactionSnapshot
@@ -151,6 +159,14 @@ ACTION_COMMITTED = "committed"
 # Conservation verdicts.
 CONSERVED = "conserved"
 VIOLATED = "violated"
+
+# Explicit one-release migration. Commit 2 renames the action vocabulary and
+# removes this table; no unrecognised synonym is ever accepted.
+_C19_ACTION_MIGRATION = {
+    actions.NAME: RepairAction.REPROCESS_OMITTED_TEXT,
+    contain.NAME: RepairAction.CONTAIN_OVERFLOWING_HEADING,
+    collision.NAME: RepairAction.RESOLVE_TEXT_COLLISION,
+}
 
 
 def enabled(translation_config) -> bool:
@@ -335,7 +351,18 @@ def counts_of(issues) -> dict:
     return {"total": len(issues), "by_kind": by_kind}
 
 
-def detect(translation_config, docs, config, iteration: int, source_geometry=None):
+def detect(
+    translation_config,
+    docs,
+    config,
+    iteration: int,
+    source_geometry=None,
+    *,
+    article_document_ir=None,
+    run_trace=None,
+    fixed_inventory=None,
+    current_inventory=None,
+):
     """One detection pass over the document as it currently stands.
 
     The working directory is deliberately not handed over: what a detector reads
@@ -354,6 +381,11 @@ def detect(translation_config, docs, config, iteration: int, source_geometry=Non
         ),
         iteration=iteration,
         source_geometry=source_geometry,
+        article_document_ir=article_document_ir,
+        run_trace=run_trace,
+        fixed_inventory=fixed_inventory,
+        current_inventory=current_inventory,
+        finalized=True,
     )
     return detectors.run_detectors(context), context
 
@@ -373,6 +405,17 @@ class Handler:
     apply: object
 
 
+@dataclass(frozen=True)
+class PreparedRound:
+    """A selected and deterministically preflighted action, before mutation."""
+
+    entry: dict
+    candidates: tuple
+    action: object | None
+    handler: Handler | None
+    decision: RepairDecision | None
+
+
 class RepairLoop:
     """One document, one run of the loop."""
 
@@ -385,11 +428,18 @@ class RepairLoop:
         run_trace=None,
         source_geometry=None,
         fixed_inventory=None,
+        article_document_ir=None,
+        article_state_journal=None,
+        legal_slot_plan=None,
+        manual_expectations=None,
     ):
         self.translation_config = translation_config
         self.docs = docs
         self.detector_config = detectors.detector_config()
         self.repair_config = load_repair_config(None, detector_kinds())
+        self.detector_closure = load_repair_detector_closure()
+        self.article_document_ir = article_document_ir
+        self.legal_slot_plan = legal_slot_plan
         self.kind_order = load_kind_order(detector_kinds())
         self.working_dir = Path(
             translation_config.get_working_file_path(REPORT_NAME)
@@ -422,6 +472,9 @@ class RepairLoop:
         self.trace_base_generation = None
         self.typesetting = None
         self.iterations: list[dict] = []
+        self.handler_records: list[dict] = []
+        self.article_state = article_state_journal
+        self.manual_expectations = manual_expectations
         self.offered_texts: list[str] = []
         self.touched: set[str] = set()
         # Findings this run repaired into something the detectors still report,
@@ -448,6 +501,58 @@ class RepairLoop:
             )
             if source_geometry is None
             else source_geometry
+        )
+
+    def _latest_article_state(self):
+        states = () if self.article_state is None else self.article_state.states
+        if not states:
+            raise RepairContractError("latest ArticleKnowledgeState is unavailable")
+        return states[-1]
+
+    def _repair_state(self, issues):
+        limits = (
+            ("max_actions", self.repair_config.max_iterations),
+            ("max_candidate_issues", self.repair_config.max_issues_offered),
+            ("max_decisions", self.repair_config.max_iterations),
+            ("max_iterations", self.repair_config.max_iterations),
+        )
+        actions_allowed = {
+            RepairAction.NO_ACTION,
+            *(
+                _C19_ACTION_MIGRATION[name]
+                for name in self.repair_config.actions
+            ),
+        }
+        return build_repair_knowledge_state(
+            self.docs,
+            issues,
+            article_document_ir=self.article_document_ir,
+            article_state=self._latest_article_state(),
+            legal_slot_plan=self.legal_slot_plan,
+            fixed_asset_inventory=self.fixed_inventory,
+            run_trace=self.run_trace,
+            allowed_actions=actions_allowed,
+            limits=limits,
+            protected_refs=self.protected_drop_cap_refs,
+        )
+
+    def _detect(self, iteration: int):
+        current_inventory = fixed_assets.build_inventory(
+            self.docs,
+            article_document_ir=self.article_document_ir,
+            run_trace=self.run_trace,
+            protected_paragraph_labels=self.protected_paragraph_labels,
+        )
+        return detect(
+            self.translation_config,
+            self.docs,
+            self.detector_config,
+            iteration,
+            self.source_layout,
+            article_document_ir=self.article_document_ir,
+            run_trace=self.run_trace,
+            fixed_inventory=self.fixed_inventory,
+            current_inventory=current_inventory,
         )
 
     # -- clients ----------------------------------------------------------
@@ -834,8 +939,10 @@ class RepairLoop:
             }
         return treated
 
-    def _round(self, kind: str, offered, context, snapshot: Snapshot):
-        """One kind's turn: ask, filter, apply. Its record and what it applied.
+    def _prepare_round(
+        self, kind: str, offered, context, repair_state
+    ) -> PreparedRound:
+        """Choose and preflight exactly one action without opening a generation.
 
         The round carries its own reason for having written nothing, so an
         iteration that wrote nothing anywhere can say which of its rounds got
@@ -855,8 +962,11 @@ class RepairLoop:
             "attempted": False,
             "action_status": ACTION_NOT_EXECUTED,
             "protected_skips": [],
+            "repair_state_sha256": repair_state.sha256(),
         }
-        decision, request = self._round_client(kind).decide(offered)
+        decision, request = self._round_client(kind).decide(
+            offered, state_sha256=repair_state.sha256()
+        )
         entry["decision"] = decision.as_record()
         entry["request"] = {
             "prompt_sha256": request.prompt_digest,
@@ -867,10 +977,10 @@ class RepairLoop:
             self.attributions.append({**row, "kind": kind})
         if decision.refused:
             entry["reason"] = STOP_NO_DECISION
-            return entry, []
+            return PreparedRound(entry, (), None, None, None)
         if not decision.acts:
             entry["reason"] = STOP_NO_ACTION
-            return entry, []
+            return PreparedRound(entry, (), None, None, None)
 
         action = self.repair_config.action(decision.action)
         handler = self._handlers().get(decision.action)
@@ -881,40 +991,83 @@ class RepairLoop:
                 decision.action,
             )
             entry["reason"] = STOP_NO_MECHANISM
-            return entry, []
+            return PreparedRound(entry, (), action, None, None)
 
         candidates, rejected = self._candidates(
             offered, decision, action, context, handler
         )
-        if candidates:
-            entry["attempted"] = True
-            entry["action_status"] = ACTION_ATTEMPTED
-            entry["decision"]["action_status"] = ACTION_ATTEMPTED
-            try:
-                applied = handler.apply(candidates, context, snapshot, action)
-            except Exception as error:  # noqa: BLE001 - preserve the round record
-                entry["failure"] = f"{type(error).__name__}: {error}"
-                raise RoundFailureError(entry, error) from error
-        else:
-            applied = []
-        written = [item for item in applied if item.changed]
         entry["applicability"] = [item.as_record() for item in rejected]
         entry["protected_skips"] = [
             item.reference
             for item in rejected
             if item.reason == actions.REASON_PROTECTED_DROP_CAP
         ]
+        selected = {
+            issue.id: issue for issue in offered if issue.id in decision.issue_ids
+        }
+        canonical_decision = RepairDecision(
+            action=_C19_ACTION_MIGRATION[decision.action],
+            issue_ids=tuple(decision.issue_ids),
+            target=RepairTarget(
+                physical_pages=tuple(
+                    sorted({issue.page for issue in selected.values()})
+                ),
+                article_refs=tuple(
+                    sorted(
+                        {
+                            article
+                            for issue in selected.values()
+                            for article in issue.article_refs
+                        }
+                    )
+                ),
+                element_refs=tuple(
+                    sorted(
+                        {
+                            reference
+                            for issue in selected.values()
+                            for reference in issue.paragraph_refs
+                        }
+                    )
+                ),
+            ),
+            parameters=tuple(sorted(decision.parameters.items())),
+            state_sha256=repair_state.sha256(),
+        )
+        repair_state.preflight(canonical_decision, self.detector_closure)
+        entry["canonical_decision"] = canonical_decision.to_record()
+        entry["reason"] = "" if candidates else STOP_NOTHING_APPLICABLE
+        return PreparedRound(
+            entry, tuple(candidates), action, handler, canonical_decision
+        )
+
+    def _execute_round(
+        self,
+        prepared: PreparedRound,
+        context,
+        snapshot: Snapshot,
+    ) -> tuple[dict, list]:
+        """Execute the one preflighted handler inside the caller's generation."""
+        entry = prepared.entry
+        if not prepared.candidates or prepared.handler is None:
+            return entry, []
+        entry["attempted"] = True
+        entry["action_status"] = ACTION_ATTEMPTED
+        entry["decision"]["action_status"] = ACTION_ATTEMPTED
+        try:
+            applied = prepared.handler.apply(
+                list(prepared.candidates), context, snapshot, prepared.action
+            )
+        except Exception as error:  # noqa: BLE001 - preserve the round record
+            entry["failure"] = f"{type(error).__name__}: {error}"
+            raise RoundFailureError(entry, error) from error
+        written = [item for item in applied if item.changed]
         entry["executed"] = [
             {**item.as_record(), "action_status": ACTION_ATTEMPTED}
             for item in applied
         ]
         entry["written"] = [item.reference for item in written]
-        if written:
-            entry["reason"] = ""
-        else:
-            entry["reason"] = (
-                STOP_NOTHING_APPLICABLE if not candidates else STOP_NOTHING_WRITTEN
-            )
+        entry["reason"] = "" if written else STOP_NOTHING_WRITTEN
         return entry, written
 
     @staticmethod
@@ -930,12 +1083,7 @@ class RepairLoop:
                     application["action_status"] = status
 
     def _iterate(self, iteration: int, issues, context) -> tuple[str, str, list]:
-        """One iteration: every round once. Returns (outcome, stop reason, issues).
-
-        The iteration's own record keeps the aggregate the run has always kept
-        -- everything that was rejected, everything that was executed, and the
-        decision that acted -- and ``rounds`` beside it keeps each round whole.
-        """
+        """Choose, execute, and immediately recheck exactly one action."""
         working = self._untreated(issues)
         record: dict = {
             "iteration": iteration,
@@ -953,6 +1101,10 @@ class RepairLoop:
             record["transaction"] = {"status": ACTION_NOT_EXECUTED, "pages": []}
             return OUTCOME_INERT, STOP_NO_ENGINE, issues
 
+        repair_state = self._repair_state(issues)
+        record["repair_state_sha256"] = repair_state.sha256()
+        record["repair_state_schema_version"] = repair_state.schema_version
+
         def inventory_builder():
             return fixed_assets.build_inventory(
                 self.docs,
@@ -965,12 +1117,14 @@ class RepairLoop:
             run_trace=self.run_trace,
             fixed_inventory=self.fixed_inventory,
             fixed_inventory_builder=inventory_builder,
+            article_state=self.article_state,
+            manual_expectations=self.manual_expectations,
+            repair_records=self.handler_records,
+            repair_knowledge_state=repair_state,
         )
-        transaction.begin_generation(f"react_iteration_{iteration}")
         action_snapshot = Snapshot()
         rounds: list[dict] = []
         written: list = []
-        halted = ""
         touched_before = set(self.touched)
         applications_before = self.applications
         treated_before = dict(self.treated)
@@ -991,21 +1145,26 @@ class RepairLoop:
             record["request"] = None if leading is None else leading.get("request")
 
         try:
-            for kind, offered in round_plan(
-                self.repair_config, self.kind_order, working
-            ):
-                try:
-                    entry, applied = self._round(
-                        kind, offered, context, action_snapshot
-                    )
-                except RoundFailureError as failure:
-                    rounds.append(failure.entry)
-                    raise failure.error from failure
-                rounds.append(entry)
+            plan = round_plan(self.repair_config, self.kind_order, working)
+            if plan:
+                kind, offered = plan[0]
+                prepared = self._prepare_round(
+                    kind, offered, context, repair_state
+                )
+                rounds.append(prepared.entry)
+                if prepared.candidates and prepared.handler is not None:
+                    transaction.begin_generation(f"react_iteration_{iteration}")
+                    try:
+                        entry, applied = self._execute_round(
+                            prepared, context, action_snapshot
+                        )
+                    except RoundFailureError as failure:
+                        rounds[0] = failure.entry
+                        raise failure.error from failure
+                else:
+                    entry, applied = prepared.entry, []
+                rounds[0] = entry
                 written.extend(applied)
-                if entry["reason"] == STOP_NO_MECHANISM:
-                    halted = STOP_NO_MECHANISM
-                    break
             summarise_rounds()
 
             if not written:
@@ -1016,9 +1175,9 @@ class RepairLoop:
                     else ACTION_NOT_EXECUTED
                 )
                 record["transaction"] = transaction.not_executed()
-                if halted:
-                    return OUTCOME_INERT, halted, issues
                 reasons = [entry["reason"] for entry in rounds if entry["reason"]]
+                if STOP_NO_MECHANISM in reasons:
+                    return OUTCOME_INERT, STOP_NO_MECHANISM, issues
                 return (
                     OUTCOME_INERT,
                     max(reasons, key=ROUND_PROGRESS.index)
@@ -1027,13 +1186,7 @@ class RepairLoop:
                     issues,
                 )
 
-            rechecked, new_context = detect(
-                self.translation_config,
-                self.docs,
-                self.detector_config,
-                iteration,
-                self.source_layout,
-            )
+            rechecked, new_context = self._detect(iteration)
             asset_comparison = fixed_assets.compare(
                 self.fixed_inventory,
                 inventory_builder(),
@@ -1052,8 +1205,30 @@ class RepairLoop:
                         schema_version=policy.schema_version,
                     )
                 )
-            monotonic = acceptance.compare_issues(
-                issues, compared_after, policy
+            decision = prepared.decision
+            if decision is None:
+                raise RepairContractError("executed round lacks canonical decision")
+            canonical_action = decision.action
+            closure_run = DetectorClosureRun(
+                action=canonical_action,
+                registry_version=self.detector_closure.schema_version,
+                ran_detectors=self.detector_closure.complete_detector_suite,
+                conservation_invariants_passed=asset_comparison.holds,
+            )
+            closure_run.require_complete(self.detector_closure)
+            target_issue_ids = decision.issue_ids
+            touched_scope_valid = {
+                item.issue_id for item in written
+            }.issubset(target_issue_ids)
+            monotonic = acceptance.compare_repair_action(
+                issues,
+                compared_after,
+                policy,
+                action=canonical_action,
+                target_issue_ids=target_issue_ids,
+                closure_complete=True,
+                conservation_holds=asset_comparison.holds,
+                touched_scope_valid=touched_scope_valid,
             )
             before_ids = {issue.id for issue in issues}
             after_ids = {issue.id for issue in rechecked}
@@ -1092,6 +1267,17 @@ class RepairLoop:
                 return OUTCOME_ROLLED_BACK, STOP_NOT_CONVERGING, issues
 
             self.treated.update(newly)
+            next_article_state = self.article_state.capture_repair_checkpoint()
+            self.handler_records.append(
+                {
+                    "action": canonical_action.value,
+                    "before_repair_state_sha256": repair_state.sha256(),
+                    "article_state_sha256": next_article_state.state_sha256,
+                    "run_trace_generation": self.run_trace.current_generation,
+                    "target_issue_ids": list(target_issue_ids),
+                    "acceptance": monotonic.as_record(),
+                }
+            )
             transaction_record = transaction.commit(
                 item.reference for item in written
             )
@@ -1160,15 +1346,12 @@ class RepairLoop:
                 run_trace=self.run_trace,
                 protected_paragraph_labels=self.protected_paragraph_labels,
             ),
+            article_state=self.article_state,
+            manual_expectations=self.manual_expectations,
+            repair_records=self.handler_records,
         )
 
-        issues, context = detect(
-            self.translation_config,
-            self.docs,
-            self.detector_config,
-            0,
-            self.source_layout,
-        )
+        issues, context = self._detect(0)
         stop = self._standing(issues)
         iteration = 0
         while self._untreated(issues) and iteration < self.repair_config.max_iterations:
@@ -1224,13 +1407,7 @@ class RepairLoop:
             self.touched.clear()
             self.treated.clear()
             stop = f"{VIOLATED}: conservation"
-            issues, context = detect(
-                self.translation_config,
-                self.docs,
-                self.detector_config,
-                0,
-                self.source_layout,
-            )
+            issues, context = self._detect(0)
 
         self._write(issues, context, conservation, stop, iteration)
         hitl.after_repair(self.translation_config, self.offered_texts)
@@ -1299,6 +1476,7 @@ class RepairLoop:
                 DETECTOR_CONFIG_PATH,
                 ROUNDS_CONFIG_PATH,
                 acceptance.CONFIG_PATH,
+                CLOSURE_CONFIG_PATH,
             ],
         )
 
@@ -1310,6 +1488,10 @@ def repair_document(
     *,
     source_geometry=None,
     fixed_inventory=None,
+    article_document_ir=None,
+    article_state_journal=None,
+    legal_slot_plan=None,
+    manual_expectations=None,
 ):
     """Run the loop over one finished document and return what it left standing.
 
@@ -1325,6 +1507,10 @@ def repair_document(
         run_trace=run_trace,
         source_geometry=source_geometry,
         fixed_inventory=fixed_inventory,
+        article_document_ir=article_document_ir,
+        article_state_journal=article_state_journal,
+        legal_slot_plan=legal_slot_plan,
+        manual_expectations=manual_expectations,
     )
     try:
         return loop.run()
@@ -1348,13 +1534,7 @@ def repair_document(
         loop.failure = {"type": type(error).__name__, "detail": str(error)}
         config = detectors.detector_config()
         try:
-            issues, context = detect(
-                translation_config,
-                docs,
-                config,
-                0,
-                loop.source_layout,
-            )
+            issues, context = loop._detect(0)
         except Exception as detection_error:  # noqa: BLE001 - report the failure
             issues = []
             context = detectors.build_context(

@@ -399,6 +399,9 @@ def detect_issues(
     docs,
     run_trace=None,
     article_document_ir=None,
+    article_state_journal=None,
+    legal_slot_plan=None,
+    fixed_inventory=None,
 ) -> list[Issue]:
     """Find every issue of one finished document and write the sidecar.
 
@@ -430,10 +433,15 @@ def detect_issues(
         record_runtime_blocked_reason(translation_config, prerequisite_issue)
         if run_trace is not None:
             run_trace.record_blocked_reason(prerequisite_issue)
-    inventory_before = fixed_assets.build_inventory(
-        docs,
-        run_trace=run_trace,
-        protected_paragraph_labels=reflow_config.protected_paragraph_labels,
+    inventory_before = (
+        fixed_assets.build_inventory(
+            docs,
+            article_document_ir=article_document_ir,
+            run_trace=run_trace,
+            protected_paragraph_labels=reflow_config.protected_paragraph_labels,
+        )
+        if fixed_inventory is None
+        else fixed_inventory
     )
     if run_trace is None:
         column_reflow.apply(
@@ -469,6 +477,9 @@ def detect_issues(
                 run_trace=run_trace,
                 source_geometry=source_result,
                 fixed_inventory=inventory_before,
+                article_document_ir=article_document_ir,
+                article_state_journal=article_state_journal,
+                legal_slot_plan=legal_slot_plan,
             )
     if run_trace is not None:
         run_trace.capture_final_document(docs)

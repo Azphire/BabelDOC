@@ -338,9 +338,14 @@ class ArticleStateJournal:
         reason: str | None = None,
         include_context: bool = True,
         previous_generation: int | None = None,
+        _allow_repeated_stage: bool = False,
     ) -> ArticleKnowledgeState:
         generation = len(self.states) + 1
-        if self.states and stage in {item.stage for item in self.states}:
+        if (
+            self.states
+            and stage in {item.stage for item in self.states}
+            and not _allow_repeated_stage
+        ):
             raise ValueError(f"article state stage already captured: {stage.value}")
         if previous_generation is None and self.states:
             previous_generation = self.states[-1].generation
@@ -449,6 +454,15 @@ class ArticleStateJournal:
         self.states = (*self.states, state)
         self._write(state)
         return state
+
+    def capture_repair_checkpoint(self) -> ArticleKnowledgeState:
+        """Advance canonical state after one accepted repair transaction."""
+        return self.capture(
+            ArticleStateStage.TYPESET,
+            reason="REPAIR_ACTION_COMMITTED",
+            include_context=True,
+            _allow_repeated_stage=True,
+        )
 
     def _write(self, state: ArticleKnowledgeState) -> None:
         filename = (
