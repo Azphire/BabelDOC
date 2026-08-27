@@ -1,4 +1,4 @@
-"""Meta-check for C01-C16 fast-gate registration and delivery evidence."""
+"""Meta-check for C01-C21 fast-gate registration and delivery evidence."""
 
 from __future__ import annotations
 
@@ -38,6 +38,26 @@ C16_GATES = (
     "spec_check_cli_credentials.py",
     "spec_check_startup_distribution.py",
 )
+AUDIT_GATES = (
+    "spec_check_debug_semantic_invariance.py",
+    "spec_check_debug_overlay_render.py",
+    "spec_check_geometry_write_guard.py",
+    "spec_check_physical_page_identity.py",
+    "spec_check_article_ir_contract.py",
+    "spec_check_chain_owner_scope.py",
+    "spec_check_article_state_checkpoints.py",
+    "spec_check_repair_methodology_contract.py",
+    "spec_check_repair_action_handlers.py",
+    "spec_check_tool_call_transport.py",
+    "spec_check_repair_tool_schema.py",
+    "spec_check_hitl_source_binding.py",
+    "spec_check_manual_constraint_delivery.py",
+    "spec_check_targeted_page_compliance.py",
+    "spec_check_manual_constraint_final.py",
+    "spec_check_targeted_pdf_acceptance.py",
+    "spec_check_evaluation_readiness.py",
+    "spec_check_eval_labels.py",
+)
 SCOPE_GATES = {
     "C02": "spec_check_article_flow_ir.py",
     "C03": "spec_check_run_trace.py",
@@ -63,10 +83,12 @@ def registered_gates() -> tuple[str, ...]:
 
 def main() -> int:
     registered = registered_gates()
-    expected_gates = (*DELIVERY_GATES, *C16_GATES)
-    assert all(gate in registered for gate in expected_gates)
+    expected_gates = (*DELIVERY_GATES, *C16_GATES, *AUDIT_GATES)
+    assert all(registered.count(gate) == 1 for gate in expected_gates)
     positions = [registered.index(gate) for gate in expected_gates]
     assert positions == sorted(positions)
+    assert len(AUDIT_GATES) == 18
+    assert registered.index("spec_check_gate_registration.py") > positions[-1]
     for gate in expected_gates:
         source = (ROOT / "spec_checks" / gate).read_text(encoding="utf-8")
         match = GATE_SET_PATTERN.search(source)
@@ -80,7 +102,9 @@ def main() -> int:
         assert '["git", "diff", "--name-only", "HEAD"]' not in source
         assert f'delivery_files("{batch}", ROOT)' in source
         assert f"spec_checks/{gate}" in delivery_files(batch, ROOT)
-    print("PASS: C01-C16 fast gates and C01-C15 delivery commits are registered")
+    print(
+        "PASS: C01-C21 fast gates and C01-C15 delivery commits are registered"
+    )
     return 0
 
 
