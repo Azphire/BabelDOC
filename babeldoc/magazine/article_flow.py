@@ -21,9 +21,12 @@ from babeldoc.magazine import acceptance
 from babeldoc.magazine import drop_cap_intent
 from babeldoc.magazine import fixed_assets
 from babeldoc.magazine.chain_backfill import load_backfill_config
+from babeldoc.magazine.element_roles import ElementRole
+from babeldoc.magazine.element_roles import coerce_element_role
 from babeldoc.magazine.line_split import holds_formula
 from babeldoc.magazine.page_features import ConfigError
 from babeldoc.magazine.page_features import validate_bounded_config
+from babeldoc.magazine.page_identity import DocumentPageIndex
 from babeldoc.magazine.resource_paths import config_path
 from babeldoc.magazine.run_trace import ALLOCATION_RELEASED
 from babeldoc.magazine.run_trace import canonical_text
@@ -115,12 +118,12 @@ def compare_flow(article_id: str, pages, segments, guards):
 
 @dataclass(frozen=True, slots=True)
 class ArticleFlowConfig:
-    eligible_roles: tuple[str, ...]
+    eligible_roles: tuple[ElementRole, ...]
     asset_bbox_tolerance_pt: float
     minimum_slot_height_pt: float
 
-    def eligible(self, role: str | None) -> bool:
-        return role in self.eligible_roles
+    def eligible(self, role: ElementRole | str | None) -> bool:
+        return coerce_element_role(role) in self.eligible_roles
 
 
 @dataclass(frozen=True, slots=True)
@@ -302,7 +305,12 @@ def parse_flow_config(raw: dict, source: str) -> ArticleFlowConfig:
     except ConfigError as exc:
         raise ArticleFlowError(str(exc)) from exc
     _require("eligible_roles" in values, f"{source}: missing eligible_roles")
-    roles = tuple(values["eligible_roles"])
+    try:
+        roles = tuple(ElementRole(value) for value in values["eligible_roles"])
+    except ValueError as exc:
+        raise ArticleFlowError(
+            f"{source}: eligible_roles must use the closed ElementRole vocabulary"
+        ) from exc
     _require(
         len(roles) == len(set(roles)), f"{source}: eligible_roles contains duplicates"
     )
@@ -338,7 +346,7 @@ def _box_tuple(value) -> tuple[float, float, float, float] | None:
 
 def _paragraph(docs, reference: str):
     page, index = parse_source_ref(reference)
-    return docs.page[page - 1].pdf_paragraph[index]
+    return DocumentPageIndex(docs).page_by_source_number(page).pdf_paragraph[index]
 
 
 def _source_font(page, paragraph, style, typesetter):
@@ -488,7 +496,7 @@ def build_page_segments(
     protected_refs=frozenset(),
 ) -> tuple[ArticleFlowSegment, ...]:
     """Build segments strictly from canonical ArticleIR reading order."""
-    page = docs.page[page_number - 1]
+    page = DocumentPageIndex(docs).page_by_source_number(page_number)
     page_elements = [item for item in article.elements if item.page == page_number]
     protected_page = _asset_obstacles(inventory, page_number)
     prepared = []
@@ -731,7 +739,7 @@ def _composition(text: str, style) -> list[PdfParagraphComposition]:
 
 
 def _write_page(docs, page_number: int, segments, placements):
-    page = docs.page[page_number - 1]
+    page = DocumentPageIndex(docs).page_by_source_number(page_number)
     assigned = []
     released = []
     for segment in segments:
@@ -787,9 +795,10 @@ def _validate_page(
     validate_conservation: bool = True,
 ) -> list[str]:
     issues = []
-    frame = _box_tuple(getattr(docs.page[page_number - 1].cropbox, "box", None))
+    page = DocumentPageIndex(docs).page_by_source_number(page_number)
+    frame = _box_tuple(getattr(page.cropbox, "box", None))
     if frame is None:
-        frame = _box_tuple(getattr(docs.page[page_number - 1].mediabox, "box", None))
+        frame = _box_tuple(getattr(page.mediabox, "box", None))
     legal = {
         slot.slot_id: slot for segment in segments for slot in segment.ordered_slots
     }
@@ -938,21 +947,30 @@ def _apply_page_local(
         translator.translation_config,
         font_mapper=getattr(translator, "font_mapper", None),
     )
-    roles = {
-        element.role
+    protected_labels = {
+        element.raw_layout_label
         for article in article_document_ir.articles
         for element in article.elements
         if not config.eligible(element.role)
+        and element.raw_layout_label is not None
     }
     inventory = fixed_assets.build_inventory(
-        docs, protected_paragraph_labels=tuple(sorted(roles))
+        docs, protected_paragraph_labels=tuple(sorted(protected_labels))
     )
     unsupported = {item.page for item in article_document_ir.unsupported_pages}
     page_records = []
     protected_refs = drop_cap_intent.active_protected_refs(
         translator.translation_config
     )
+    selection = article_document_ir.page_selection_map
+    selected_pages = (
+        set(article_document_ir.by_page)
+        if selection is None
+        else {int(page) for page in selection.translation_selected_physical_pages}
+    )
     for page_number in sorted(article_document_ir.by_page):
+        if page_number not in selected_pages:
+            continue
         article = article_document_ir.article_for_page(page_number)
         if article is None:
             continue
@@ -1009,7 +1027,8 @@ def _apply_page_local(
                 }
             )
             continue
-        page = docs.page[page_number - 1]
+        page_index = DocumentPageIndex(docs)
+        page = page_index.page_by_source_number(page_number)
         protected_refs = {
             item.reference
             for segment in segments
@@ -1025,12 +1044,12 @@ def _apply_page_local(
 
         def inventory_builder():
             return fixed_assets.build_inventory(
-                docs, protected_paragraph_labels=tuple(sorted(roles))
+                docs, protected_paragraph_labels=tuple(sorted(protected_labels))
             )
 
         transaction = TransactionSnapshot.capture(
             docs,
-            (page_number - 1,),
+            (page_index.structural_position_of(page_number),),
             run_trace=run_trace,
             fixed_inventory=inventory,
             fixed_inventory_builder=inventory_builder,
@@ -1170,7 +1189,7 @@ def _apply_page_local(
             )
     record = {
         "switch": SWITCH,
-        "eligible_roles": list(config.eligible_roles),
+        "eligible_roles": [role.value for role in config.eligible_roles],
         "pages": page_records,
         "totals": {
             "pages_considered": len(page_records),

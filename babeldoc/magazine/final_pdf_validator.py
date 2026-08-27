@@ -15,6 +15,7 @@ from typing import Any
 
 import pymupdf
 
+from babeldoc.magazine.page_identity import PageSelectionMap
 from babeldoc.magazine.resource_paths import config_path
 from babeldoc.magazine.taxonomy import record_config_manifest
 
@@ -78,6 +79,7 @@ class ComplianceExpectations:
     targets: tuple[TargetExpectation, ...] = ()
     protected_bounds: dict[int, tuple[Box, ...]] = field(default_factory=dict)
     drop_caps: tuple[DropCapExpectation, ...] = ()
+    page_selection_map: PageSelectionMap | None = None
 
 
 @dataclass(frozen=True, slots=True)
@@ -406,8 +408,16 @@ def expectations_from_runtime(
     article_document_ir=None,
     fixed_asset_inventory=None,
 ) -> ComplianceExpectations:
+    page_selection_map = (
+        None
+        if article_document_ir is None
+        else article_document_ir.page_selection_map
+    )
     if run_trace is None:
-        return ComplianceExpectations(expected_page_count=expected_page_count)
+        return ComplianceExpectations(
+            expected_page_count=expected_page_count,
+            page_selection_map=page_selection_map,
+        )
     article_bounds: dict[tuple[str, int], tuple[Box, ...]] = {}
     if article_document_ir is not None:
         for article in article_document_ir.articles:
@@ -492,6 +502,7 @@ def expectations_from_runtime(
         targets=tuple(targets),
         protected_bounds={page: tuple(boxes) for page, boxes in protected.items()},
         drop_caps=tuple(drop_caps),
+        page_selection_map=page_selection_map,
     )
 
 
@@ -529,6 +540,7 @@ def offset_expectations(
             )
             for item in expectations.drop_caps
         ),
+        page_selection_map=expectations.page_selection_map,
     )
 
 
@@ -550,6 +562,7 @@ def merge_expectations(
             )
         },
         drop_caps=tuple(drop_cap for item in items for drop_cap in item.drop_caps),
+        page_selection_map=None,
     )
 
 
@@ -599,6 +612,11 @@ class FinalPdfValidator:
             "input": _file_summary(source_path),
             "output": _file_summary(output_path),
             "touched_pages": list(expected.touched_pages),
+            "page_selection_map": (
+                None
+                if expected.page_selection_map is None
+                else expected.page_selection_map.to_record()
+            ),
             "checks": [],
             "evidence": {"pages": [], "assets": [], "drop_caps": []},
             "trace_reconciliation": [],
@@ -701,11 +719,23 @@ class FinalPdfValidator:
                 code="page_labels_mismatch",
             )
 
-            geometry_holds = len(source) == len(output)
+            selection = expected.page_selection_map
+            geometry_pairs = (
+                tuple(
+                    (int(physical), int(output_index))
+                    for output_index, physical in selection.output_to_physical.items()
+                )
+                if selection is not None
+                else tuple((index + 1, index) for index in range(len(output)))
+            )
+            geometry_holds = len(geometry_pairs) == len(output)
             page_evidence = []
-            for index in range(min(len(source), len(output))):
-                left = _page_geometry(source[index])
-                right = _page_geometry(output[index])
+            for physical_page, output_index in geometry_pairs:
+                if not 1 <= physical_page <= len(source) or not 0 <= output_index < len(output):
+                    geometry_holds = False
+                    continue
+                left = _page_geometry(source[physical_page - 1])
+                right = _page_geometry(output[output_index])
                 holds = (
                     _box_close(
                         tuple(left["mediabox"]),
@@ -721,7 +751,13 @@ class FinalPdfValidator:
                 )
                 geometry_holds = geometry_holds and holds
                 page_evidence.append(
-                    {"page": index + 1, "input": left, "output": right, "holds": holds}
+                    {
+                        "physical_page": physical_page,
+                        "output_index": output_index,
+                        "input": left,
+                        "output": right,
+                        "holds": holds,
+                    }
                 )
             record["evidence"]["pages"] = page_evidence
             check(
@@ -749,7 +785,12 @@ class FinalPdfValidator:
     def _check_touched(self, source, output, expected, record, check) -> None:
         page_cache = {}
         for page_number in expected.touched_pages:
-            if not 1 <= page_number <= len(output):
+            output_index = (
+                page_number - 1
+                if expected.page_selection_map is None
+                else expected.page_selection_map.output_index_of(page_number)
+            )
+            if output_index is None or not 0 <= output_index < len(output):
                 check(
                     "touched_page_exists",
                     False,
@@ -757,7 +798,7 @@ class FinalPdfValidator:
                     page=page_number,
                 )
                 continue
-            page = output[page_number - 1]
+            page = output[output_index]
             text, mapping, spans = _raw_page(page)
             page_cache[page_number] = (text, mapping, spans)
             source_text = (
@@ -881,8 +922,20 @@ class FinalPdfValidator:
             assigned[(target.page, target_text)] += 1
             actual_box = boxes[index] if index < len(boxes) else None
             page_height = (
-                output[target.page - 1].rect.height
-                if 1 <= target.page <= len(output)
+                output[
+                    target.page - 1
+                    if expected.page_selection_map is None
+                    else expected.page_selection_map.require_output_index(target.page)
+                ].rect.height
+                if (
+                    expected.page_selection_map is None
+                    and 1 <= target.page <= len(output)
+                )
+                or (
+                    expected.page_selection_map is not None
+                    and expected.page_selection_map.output_index_of(target.page)
+                    is not None
+                )
                 else 0.0
             )
             geometry_holds = actual_box is not None
@@ -928,12 +981,25 @@ class FinalPdfValidator:
             )
 
         for expectation in expected.drop_caps:
-            self._check_drop_cap(output, page_cache, expectation, record, check)
+            self._check_drop_cap(
+                output,
+                page_cache,
+                expectation,
+                record,
+                check,
+                expected.page_selection_map,
+            )
 
-    def _check_drop_cap(self, output, page_cache, expectation, record, check) -> None:
+    def _check_drop_cap(
+        self, output, page_cache, expectation, record, check, page_selection_map
+    ) -> None:
         if expectation.page not in page_cache:
             return
-        page = output[expectation.page - 1]
+        page = output[
+            expectation.page - 1
+            if page_selection_map is None
+            else page_selection_map.require_output_index(expectation.page)
+        ]
         text, _mapping, spans = page_cache[expectation.page]
         candidates = []
         for span in spans:

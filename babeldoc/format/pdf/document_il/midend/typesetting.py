@@ -1518,21 +1518,26 @@ class Typesetting:
         # The report describes the layout the document is left in, so a second
         # pass over the same document replaces the first pass's account of it.
         self.hang_records = []
+        from babeldoc.magazine.page_identity import translation_pages
+
+        selected_pages = translation_pages(document, self.translation_config)
+        selected_document = copy.copy(document)
+        selected_document.page = list(selected_pages)
         # 原有的排版逻辑
         if self.translation_config.progress_monitor:
             with self.translation_config.progress_monitor.stage_start(
                 self.stage_name,
-                len(document.page) * 2,
+                len(selected_pages) * 2,
             ) as pbar:
                 # 预处理：获取所有段落的最优缩放因子
-                self.preprocess_document(document, pbar)
+                self.preprocess_document(selected_document, pbar)
 
-                for page in document.page:
+                for page in selected_pages:
                     self.translation_config.raise_if_cancelled()
                     self.render_page(page)
                     pbar.advance()
         else:
-            for page in document.page:
+            for page in selected_pages:
                 self.translation_config.raise_if_cancelled()
                 self.render_page(page)
         self._write_hang_report()

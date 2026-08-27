@@ -156,8 +156,9 @@ def fixture(targets: tuple[str, ...], *, unsupported: bool = False):
         ("title", (0.0, 105.0, 100.0, 116.0)),
         ("text", (0.0, 58.0, 40.0, 90.0)),
         ("plain text", (0.0, 20.0, 40.0, 52.0)),
-        ("continuation", (60.0, 58.0, 100.0, 90.0)),
-        ("body", (60.0, 20.0, 100.0, 52.0)),
+        # Continuity is chain membership, not an element role; both members are BODY.
+        ("text", (60.0, 58.0, 100.0, 90.0)),
+        ("text", (60.0, 20.0, 100.0, 52.0)),
         ("caption", (0.0, 5.0, 35.0, 14.0)),
         ("formula", (40.0, 5.0, 60.0, 14.0)),
         ("footer", (65.0, 5.0, 100.0, 14.0)),
@@ -178,6 +179,7 @@ def fixture(targets: tuple[str, ...], *, unsupported: bool = False):
     paragraphs[4].chain_id = "raw-chain"
     paragraphs[4].chain_index = 1
     page = il_version_1.Page(
+        page_number=0,
         mediabox=il_version_1.Mediabox(box=Box(0.0, 0.0, 100.0, 120.0)),
         cropbox=il_version_1.Cropbox(box=Box(0.0, 0.0, 100.0, 120.0)),
         pdf_font=[il_version_1.PdfFont(font_id="body", name="body")],

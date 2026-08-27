@@ -12,6 +12,7 @@ from babeldoc.format.pdf.document_il.midend.typesetting import Typesetting
 from babeldoc.magazine import article_flow
 from babeldoc.magazine import drop_cap_intent
 from babeldoc.magazine import fixed_assets
+from babeldoc.magazine.page_identity import DocumentPageIndex
 from babeldoc.magazine.run_trace import hash_record
 from babeldoc.magazine.run_trace import parse_source_ref
 from babeldoc.magazine.transaction import TransactionSnapshot
@@ -327,9 +328,15 @@ def build_cross_page_segments(
 ) -> tuple[tuple[CrossPageArticleFlowSegment, ...], tuple[CrossPageFlowIssue, ...]]:
     """Build a read-only cross-page plan from the canonical article state."""
     unsupported = {item.page for item in article_document_ir.unsupported_pages}
+    selection = article_document_ir.page_selection_map
+    selected_pages = (
+        set(article_document_ir.by_page)
+        if selection is None
+        else {int(page) for page in selection.translation_selected_physical_pages}
+    )
     all_segments = []
     issues = []
-    ordered_pages = sorted(article_document_ir.by_page)
+    ordered_pages = sorted(set(article_document_ir.by_page) & selected_pages)
     for left_page, right_page in zip(ordered_pages, ordered_pages[1:], strict=False):
         if right_page != left_page + 1:
             continue
@@ -346,7 +353,8 @@ def build_cross_page_segments(
             )
     for article in article_document_ir.articles:
         by_page = {}
-        for page in article.pages:
+        article_pages = tuple(page for page in article.pages if page in selected_pages)
+        for page in article_pages:
             by_page[page] = (
                 ()
                 if page in unsupported
@@ -370,8 +378,10 @@ def build_cross_page_segments(
                         f"{BOUNDARY_PROTECTED}:{left.segment_id}:{right.segment_id}",
                     )
                 )
-        groups = [[segment] for page in article.pages for segment in by_page[page]]
-        for left_page, right_page in zip(article.pages, article.pages[1:], strict=False):
+        groups = [[segment] for page in article_pages for segment in by_page[page]]
+        for left_page, right_page in zip(
+            article_pages, article_pages[1:], strict=False
+        ):
             connection = page_connection_issue(
                 article_document_ir,
                 article,
@@ -416,8 +426,9 @@ def build_cross_page_segments(
 def _write_segment(docs, segment, placements):
     assigned = []
     released = []
+    page_index = DocumentPageIndex(docs)
     for page_number in segment.contiguous_pages:
-        page = docs.page[page_number - 1]
+        page = page_index.page_by_source_number(page_number)
         holders = list(
             dict.fromkeys(
                 reference
@@ -459,7 +470,7 @@ def _write_segment(docs, segment, placements):
 
 def _paragraph(docs, reference: str):
     page, index = parse_source_ref(reference)
-    return docs.page[page - 1].pdf_paragraph[index]
+    return DocumentPageIndex(docs).page_by_source_number(page).pdf_paragraph[index]
 
 
 def _page_shell_digest(page) -> str:
@@ -585,15 +596,16 @@ def apply(
         translator.translation_config,
         font_mapper=getattr(translator, "font_mapper", None),
     )
-    protected_roles = {
-        element.role
+    protected_labels = {
+        element.raw_layout_label
         for article in article_document_ir.articles
         for element in article.elements
         if not config.eligible(element.role)
+        and element.raw_layout_label is not None
     }
     inventory = fixed_assets.build_inventory(
         docs,
-        protected_paragraph_labels=tuple(sorted(protected_roles)),
+        protected_paragraph_labels=tuple(sorted(protected_labels)),
     )
     protected_refs = drop_cap_intent.active_protected_refs(
         translator.translation_config
@@ -657,12 +669,16 @@ def apply(
         def inventory_builder():
             return fixed_assets.build_inventory(
                 docs,
-                protected_paragraph_labels=tuple(sorted(protected_roles)),
+                protected_paragraph_labels=tuple(sorted(protected_labels)),
             )
 
+        page_index = DocumentPageIndex(docs)
         transaction = TransactionSnapshot.capture(
             docs,
-            (page - 1 for page in segment.contiguous_pages),
+            (
+                page_index.structural_position_of(page)
+                for page in segment.contiguous_pages
+            ),
             run_trace=run_trace,
             fixed_inventory=inventory,
             fixed_inventory_builder=inventory_builder,
@@ -719,7 +735,9 @@ def apply(
                 for page in segment.contiguous_pages:
                     detected = [
                         str(item)
-                        for item in validator(docs.page[page - 1], provisional)
+                        for item in validator(
+                            page_index.page_by_source_number(page), provisional
+                        )
                     ]
                     if detected:
                         found.extend(f"p{page}:{item}" for item in detected)
@@ -855,8 +873,16 @@ def apply(
         segment_results.append(result)
         _merge_page_records(page_results, _segment_page_records(segment, result))
     unsupported = {item.page for item in article_document_ir.unsupported_pages}
+    selection = article_document_ir.page_selection_map
+    selected_pages = (
+        set(article_document_ir.by_page)
+        if selection is None
+        else {int(page) for page in selection.translation_selected_physical_pages}
+    )
     page_records = []
     for page in sorted(article_document_ir.by_page):
+        if page not in selected_pages:
+            continue
         if page in page_results:
             page_records.append(page_results[page])
         else:
@@ -878,7 +904,7 @@ def apply(
             )
     record = {
         "switch": article_flow.SWITCH,
-        "eligible_roles": list(config.eligible_roles),
+        "eligible_roles": [role.value for role in config.eligible_roles],
         "cross_page_segments": segment_results,
         "issues": [item.to_record() for item in issues],
         "pages": page_records,

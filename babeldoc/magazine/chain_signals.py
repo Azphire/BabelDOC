@@ -1033,12 +1033,12 @@ class BoundaryVerdict:
         for a column boundary the page followed by the two bands.
         """
         if self.kind != BOUNDARY_COLUMN:
-            return f"{self.tail_page + 1}->{self.head_page + 1}"
+            return f"{self.tail_page}->{self.head_page}"
         if self.tail_column is None:
             # One row standing for a whole page that offered no column
             # boundary, which has a reason rather than a pair of bands.
-            return f"p{self.tail_page + 1}:columns"
-        return f"p{self.tail_page + 1}:c{self.tail_column}->c{self.head_column}"
+            return f"p{self.tail_page}:columns"
+        return f"p{self.tail_page}:c{self.tail_column}->c{self.head_column}"
 
     def as_record(self) -> dict:
         """The report row for this boundary, one boundary per row."""
@@ -1046,8 +1046,8 @@ class BoundaryVerdict:
             "boundary": self.label,
             "kind": self.kind,
             "pairing": self.pairing,
-            "tail_page": self.tail_page + 1,
-            "head_page": self.head_page + 1,
+            "tail_page": self.tail_page,
+            "head_page": self.head_page,
             "tail_column": self.tail_column,
             "head_column": self.head_column,
             "column_count": self.column_count,

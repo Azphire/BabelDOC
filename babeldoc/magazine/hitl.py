@@ -246,8 +246,10 @@ def page_label(page, position: int) -> int:
     ``page_number`` is zero based where it is set at all; the label is what both
     files speak in, and what ``corpus/page_labels.json`` already speaks in.
     """
-    index = page.page_number if page.page_number is not None else position
-    return int(index) + 1
+    from babeldoc.magazine.page_identity import physical_page_number
+
+    del position
+    return int(physical_page_number(page))
 
 
 def labeled_pages(docs) -> list[tuple[int, object]]:
@@ -670,7 +672,7 @@ def export_page_kinds(translation_config, docs) -> list[dict]:
         for record in report.get("pages", ()):
             number = record.get("page_number")
             if number is not None:
-                ambiguity[int(number) + 1] = bool(record.get("ambiguous"))
+                ambiguity[int(number)] = bool(record.get("ambiguous"))
     rows = []
     for position, page in enumerate(docs.page):
         label = page_label(page, position)

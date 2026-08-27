@@ -53,13 +53,16 @@ def parse_prepared_pdf_with_new_parser_to_legacy_ir(
         ActiveILCreater,
     )
     from babeldoc.format.pdf.new_parser.text_positioning import NativeTextRunPositioner
+    from babeldoc.magazine.page_identity import structural_page_selected
 
     sink = ActiveILCreater(config)
     sink.mupdf = doc_pdf
     resource_runtime = create_active_font_resource_runtime()
+    def selector(page: int) -> bool:
+        return structural_page_selected(config, page)
     with load_prepared_pdf_pages(
         temp_pdf_path,
-        should_include_page=config.should_translate_page,
+        should_include_page=selector,
     ) as prepared_pages:
         page_interpreter = create_native_page_interpreter(
             sink,
@@ -69,7 +72,7 @@ def parse_prepared_pdf_with_new_parser_to_legacy_ir(
         )
         return run_prepared_pages(
             sink,
-            config.should_translate_page,
+            selector,
             prepared_pages,
             page_interpreter,
         )

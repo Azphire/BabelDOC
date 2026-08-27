@@ -45,6 +45,13 @@ def read_escalations(working_dir: Path | None) -> list[dict]:
 
 def _page_of(members: list[dict], pages: dict[int, base.PageView]) -> int | None:
     """The first page the chain touches, by the label the pages carry."""
+    physical = [
+        member.get("physical_page_number")
+        for member in members
+        if member.get("physical_page_number") is not None
+    ]
+    if physical:
+        return min(int(page) for page in physical)
     indices = [
         member.get("page_index")
         for member in members
@@ -54,7 +61,7 @@ def _page_of(members: list[dict], pages: dict[int, base.PageView]) -> int | None
         return None
     position = min(int(index) for index in indices)
     view = pages.get(position)
-    return view.label if view is not None else position + 1
+    return view.label if view is not None else None
 
 
 def _references(

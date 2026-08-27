@@ -286,9 +286,12 @@ def paragraph_digests(docs) -> dict[str, str]:
     """
     root = etree.fromstring(to_checkpoint_xml(docs).encode("utf-8"))
     labels = [label for label, _page in hitl.labeled_pages(docs)]
+    nodes = root.findall("page")
+    if len(labels) != len(nodes):
+        raise ValueError("checkpoint pages lost their physical page identity")
     digests: dict[str, str] = {}
-    for position, node in enumerate(root.findall("page")):
-        label = labels[position] if position < len(labels) else position + 1
+    for position, node in enumerate(nodes):
+        label = labels[position]
         for index, paragraph_node in enumerate(node.findall("pdfParagraph")):
             digests[paragraph_reference(label, index)] = hashlib.sha256(
                 etree.tostring(paragraph_node)

@@ -64,6 +64,7 @@ from babeldoc.magazine import reading_order
 from babeldoc.magazine.detectors import base as detector_base
 from babeldoc.magazine.detectors import detector_config
 from babeldoc.magazine.page_features import ConfigError
+from babeldoc.magazine.page_identity import physical_page_number
 from babeldoc.magazine.resource_paths import config_path
 
 logger = logging.getLogger(__name__)
@@ -163,10 +164,8 @@ def apply(translation_config, docs) -> dict | None:
     converted = 0
     examined = 0
     if script is not None:
-        for index, page in enumerate(docs.page or ()):
-            label = (
-                page.page_number if page.page_number is not None else index
-            ) + 1
+        for page in docs.page or ():
+            label = int(physical_page_number(page))
             for position, paragraph in enumerate(page.pdf_paragraph or ()):
                 reference = f"p{label}#{position}"
                 rebuilt = []
@@ -361,8 +360,8 @@ def stitch_rotated(docs, converted: set[str], originals: dict) -> list[dict]:
     """
     config = fragment_stitch.load_stitch_config()
     records: list[dict] = []
-    for index, page in enumerate(docs.page or ()):
-        label = (page.page_number if page.page_number is not None else index) + 1
+    for page in docs.page or ():
+        label = int(physical_page_number(page))
         paragraphs = list(page.pdf_paragraph or ())
         pieces = []
         for position, paragraph in enumerate(paragraphs):
@@ -488,8 +487,8 @@ def fold_annotations(docs, converted: set[str], language: str) -> list[dict]:
         return detector_base.script_of(character) == script
 
     records: list[dict] = []
-    for index, page in enumerate(docs.page or ()):
-        label = (page.page_number if page.page_number is not None else index) + 1
+    for page in docs.page or ():
+        label = int(physical_page_number(page))
         for position, paragraph in enumerate(page.pdf_paragraph or ()):
             reference = f"p{label}#{position}"
             if reference not in converted:
@@ -547,8 +546,8 @@ def set_folded_along_axis(translation_config, docs, typesetting) -> list[dict]:
     from babeldoc.magazine import rotated_lane
 
     set_out: list[dict] = []
-    for index, page in enumerate(docs.page or ()):
-        label = (page.page_number if page.page_number is not None else index) + 1
+    for page in docs.page or ():
+        label = int(physical_page_number(page))
         for position, paragraph in enumerate(page.pdf_paragraph or ()):
             reference = f"p{label}#{position}"
             pending = _PENDING.get(reference)
@@ -590,8 +589,8 @@ def restore_unformatted(translation_config, docs, typesetting=None) -> dict | No
         if typesetting is not None
         else []
     )
-    for index, page in enumerate(docs.page or ()):
-        label = (page.page_number if page.page_number is not None else index) + 1
+    for page in docs.page or ():
+        label = int(physical_page_number(page))
         for position, paragraph in enumerate(page.pdf_paragraph or ()):
             reference = f"p{label}#{position}"
             original = _ORIGINALS.get(reference)

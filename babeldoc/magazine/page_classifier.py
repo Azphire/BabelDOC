@@ -35,6 +35,7 @@ from babeldoc.format.pdf.document_il import il_version_1
 from babeldoc.magazine.page_features import FEATURE_NAMES
 from babeldoc.magazine.page_features import extract_document_features
 from babeldoc.magazine.page_features import percentile_feature_names
+from babeldoc.magazine.page_identity import physical_page_number
 from babeldoc.magazine.prompt_loader import load_prompt
 from babeldoc.magazine.taxonomy import DEFAULT_CONFIG_PATHS
 from babeldoc.magazine.taxonomy import Verdict
@@ -107,7 +108,7 @@ class PageClassifier:
             page.page_kind_source = VLM_SOURCE if accepted else SOURCE
             records.append(
                 {
-                    "page_number": page.page_number,
+                    "page_number": int(physical_page_number(page)),
                     "kind": verdict.kind,
                     "conf": verdict.confidence,
                     "ambiguous": verdict.ambiguous,
@@ -151,7 +152,7 @@ class PageClassifier:
         with pymupdf.open(source_pdf) as rendered:
             for position in routed:
                 page = docs.page[position]
-                index = page.page_number if page.page_number is not None else position
+                index = int(physical_page_number(page)) - 1
                 if not 0 <= index < rendered.page_count:
                     outcomes[position] = VlmVerdict(
                         accepted=False,

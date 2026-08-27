@@ -237,8 +237,10 @@ def harvest(docs, pages: list[int], config: HarvestConfig) -> list[dict]:
     """
     counts: dict[str, dict] = {}
     wanted = set(pages)
-    for page_index, page in enumerate(docs.page or ()):
-        label = page_index + 1
+    from babeldoc.magazine.page_identity import physical_page_number
+
+    for page in docs.page or ():
+        label = int(physical_page_number(page))
         if label not in wanted:
             continue
         for paragraph in page.pdf_paragraph or ():

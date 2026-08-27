@@ -80,7 +80,9 @@ def start_parse_il(
             continue
         page.pageno = pageno
 
-        if not translation_config.should_translate_page(pageno + 1):
+        from babeldoc.magazine.page_identity import structural_page_selected
+
+        if not structural_page_selected(translation_config, pageno + 1):
             continue
 
         height, width = (

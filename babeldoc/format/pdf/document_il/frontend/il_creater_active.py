@@ -236,21 +236,27 @@ class ActiveILCreater:
         self.progress.__exit__(None, None, None)
 
     def create_il(self):
+        from babeldoc.magazine.page_identity import structural_page_selected
+
         pages = [
             page
             for page in self.docs.page
-            if self.translation_config.should_translate_page(page.page_number + 1)
+            if structural_page_selected(
+                self.translation_config, page.page_number + 1
+            )
         ]
         self.docs.page = pages
         return self.docs
 
     def on_total_pages(self, total_pages: int):
+        from babeldoc.magazine.page_identity import structural_page_selected
+
         assert isinstance(total_pages, int)
         assert total_pages > 0
         self.docs.total_pages = total_pages
         total = 0
         for page in range(total_pages):
-            if self.translation_config.should_translate_page(page + 1) is False:
+            if not structural_page_selected(self.translation_config, page + 1):
                 continue
             total += 1
         self.progress = self.translation_config.progress_monitor.stage_start(

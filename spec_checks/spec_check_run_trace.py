@@ -410,7 +410,7 @@ def check_source_ref_freeze() -> None:
         pdf_style=None,
         chain_id=None,
     )
-    page = SimpleNamespace(pdf_paragraph=[first, second])
+    page = SimpleNamespace(page_number=0, pdf_paragraph=[first, second])
     trace = run_trace.RunTrace.from_document(SimpleNamespace(page=[page]))
     page.pdf_paragraph.reverse()
     check(
@@ -457,7 +457,9 @@ def check_article_and_chain_keys_are_shared() -> None:
         by_chain_member={element.source_ref: "chain-stable"},
     )
     trace = run_trace.RunTrace.from_document(
-        SimpleNamespace(page=[SimpleNamespace(pdf_paragraph=[paragraph])]),
+        SimpleNamespace(
+            page=[SimpleNamespace(page_number=0, pdf_paragraph=[paragraph])]
+        ),
         article_document,
     )
     check(

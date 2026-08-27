@@ -150,15 +150,15 @@ def assert_new_fields_roundtrip() -> il_version_1.Document:
 def unset_new_fields(docs: il_version_1.Document) -> list[str]:
     """Return a report of every new field that is set on ``docs``."""
     populated: list[str] = []
-    for page_index, page in enumerate(docs.page):
+    for structural_position, page in enumerate(docs.page):
         for name in NEW_PAGE_FIELDS:
             if getattr(page, name) is not None:
-                populated.append(f"page[{page_index}].{name}")
+                populated.append(f"page[{structural_position}].{name}")
         for para_index, paragraph in enumerate(page.pdf_paragraph):
             for name in NEW_PARAGRAPH_FIELDS:
                 if getattr(paragraph, name) is not None:
                     populated.append(
-                        f"page[{page_index}].pdf_paragraph[{para_index}].{name}"
+                        f"page[{structural_position}].pdf_paragraph[{para_index}].{name}"
                     )
     return populated
 

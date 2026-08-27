@@ -42,6 +42,7 @@ from babeldoc.format.pdf.document_il.utils.paragraph_helper import (
 from babeldoc.format.pdf.document_il.utils.style_helper import GRAY80
 from babeldoc.format.pdf.translation_config import TitleContextSnapshot
 from babeldoc.format.pdf.translation_config import TranslationConfig
+from babeldoc.magazine.page_identity import translation_pages
 from babeldoc.translator.translator import BaseTranslator
 from babeldoc.utils.priority_thread_pool_executor import PriorityThreadPoolExecutor
 
@@ -465,7 +466,8 @@ class ILTranslator:
                 logger.info(f"Found first title paragraph: {title_paragraph.unicode}")
 
         # count total paragraph
-        total = sum(len(page.pdf_paragraph) for page in docs.page)
+        selected_pages = translation_pages(docs, self.translation_config)
+        total = sum(len(page.pdf_paragraph) for page in selected_pages)
         with self.translation_config.progress_monitor.stage_start(
             self.stage_name,
             total,
@@ -473,7 +475,7 @@ class ILTranslator:
             with PriorityThreadPoolExecutor(
                 max_workers=self.translation_config.pool_max_workers,
             ) as executor:
-                for page in docs.page:
+                for page in selected_pages:
                     self.process_page(page, executor, pbar, tracker.new_page())
 
         path = self.translation_config.get_working_file_path("translate_tracking.json")

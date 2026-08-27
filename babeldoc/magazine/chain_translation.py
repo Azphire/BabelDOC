@@ -45,6 +45,8 @@ from babeldoc.magazine.chain_signals import BOUNDARY_COLUMN
 from babeldoc.magazine.chain_signals import BOUNDARY_PAGE
 from babeldoc.magazine.chain_signals import CLASS_LABELS_KEY
 from babeldoc.magazine.chain_signals import load_chain_config
+from babeldoc.magazine.page_identity import physical_page_number
+from babeldoc.magazine.page_identity import translation_pages
 from babeldoc.magazine.run_trace import ChainResultState
 from babeldoc.magazine.run_trace import canonical_text
 from babeldoc.magazine.run_trace import hash_record
@@ -109,7 +111,11 @@ class CollectedMember:
 
     @property
     def source_ref(self) -> str:
-        return f"p{self.page_index + 1}#{self.paragraph_index}"
+        return f"p{self.physical_page}#{self.paragraph_index}"
+
+    @property
+    def physical_page(self) -> int:
+        return int(physical_page_number(self.page))
 
     @property
     def chain_index(self):
@@ -148,6 +154,10 @@ class MemberPlan:
     @property
     def chain_index(self):
         return getattr(self.paragraph, "chain_index", None)
+
+    @property
+    def physical_page(self) -> int:
+        return int(physical_page_number(self.page))
 
 
 @dataclass(frozen=True, slots=True)
@@ -286,7 +296,7 @@ class ChainEntry:
         two kinds were treated alike instead of asserting it.
         """
         return [
-            BOUNDARY_COLUMN if left.page_index == right.page_index else BOUNDARY_PAGE
+            BOUNDARY_COLUMN if left.physical_page == right.physical_page else BOUNDARY_PAGE
             for left, right in zip(self.members, self.members[1:], strict=False)
         ]
 
@@ -320,6 +330,7 @@ class ChainEntry:
                     "debug_id": member.debug_id,
                     "chain_index": member.chain_index,
                     "page_index": member.page_index,
+                    "physical_page_number": member.physical_page,
                     "layout_label": getattr(member.paragraph, "layout_label", None),
                     "source_chars": len(member.source),
                     "segment": fragment.segment_record(),
@@ -347,6 +358,7 @@ class SkipRecord:
     chain_index: int | None
     debug_id: str | None
     page_index: int
+    physical_page_number: int | None = None
     taken_by: str = TAKEN_BY_CHAIN
     result_state: str | None = None
     declined_by: list[str] = field(default_factory=list)
@@ -361,6 +373,7 @@ class SkipRecord:
             "chain_index": self.chain_index,
             "debug_id": self.debug_id,
             "page_index": self.page_index,
+            "physical_page_number": self.physical_page_number,
             "reason": SKIP_REASON,
             "taken_by": self.taken_by,
             "result_state": self.result_state,
@@ -472,15 +485,15 @@ def _collect_chains(docs) -> list[tuple[str, list[CollectedMember]]]:
         ordered = sorted(
             members,
             key=lambda member: (
-                member.page_index
+                member.physical_page
                 if member.chain_index is None
                 else member.chain_index,
-                member.page_index,
+                member.physical_page,
                 member.paragraph_index,
             ),
         )
         chains.append((chain_id, ordered))
-    chains.sort(key=lambda item: (item[1][0].page_index, item[0]))
+    chains.sort(key=lambda item: (item[1][0].physical_page, item[0]))
     return chains
 
 
@@ -612,7 +625,13 @@ class ChainPlan:
     # --- planning -----------------------------------------------------------
 
     def plan(self, docs, tracker) -> ChainPlan:
+        selected = {
+            id(page)
+            for page in translation_pages(docs, self.translator.translation_config)
+        }
         for chain_id, members in _collect_chains(docs):
+            if any(id(member.page) not in selected for member in members):
+                continue
             self.chain_count += 1
             self._plan_chain(chain_id, members, tracker)
         self._plan_short_units(docs, tracker)
@@ -642,6 +661,7 @@ class ChainPlan:
                     chain_index=None,
                     debug_id=getattr(unit.paragraph, "debug_id", None),
                     page_index=unit.page_index,
+                    physical_page_number=unit.page_label,
                     taken_by=TAKEN_BY_SHORT_UNIT,
                 ),
             )
@@ -668,6 +688,7 @@ class ChainPlan:
                         chain_index=member.chain_index,
                         debug_id=getattr(member.paragraph, "debug_id", None),
                         page_index=member.page_index,
+                        physical_page_number=member.physical_page,
                     ),
                 )
                 for member in members
@@ -686,7 +707,7 @@ class ChainPlan:
         indices = [member.chain_index for member in members]
         if indices != list(range(len(members))):
             return None, ESCALATION_TOPOLOGY, f"chain indices are {indices}"
-        pages = [member.page_index for member in members]
+        pages = [member.physical_page for member in members]
         page_pairs = zip(pages, pages[1:], strict=False)
         if any(right < left or right - left > 1 for left, right in page_pairs):
             return None, ESCALATION_TOPOLOGY, (
@@ -702,7 +723,7 @@ class ChainPlan:
         if any(article is None for article in articles) or len(set(articles)) != 1:
             return None, ESCALATION_ARTICLE, f"member article ids are {articles}"
         page_articles = [
-            self.article_document_ir.by_page.get(member.page_index + 1)
+            self.article_document_ir.by_page.get(member.physical_page)
             for member in members
         ]
         if any(article != articles[0] for article in page_articles):
@@ -808,6 +829,7 @@ class ChainPlan:
                     "debug_id": getattr(member.paragraph, "debug_id", None),
                     "chain_index": member.chain_index,
                     "page_index": member.page_index,
+                    "physical_page_number": member.physical_page,
                     "layout_label": getattr(member.paragraph, "layout_label", None),
                 }
                 for member in members
@@ -1291,7 +1313,7 @@ class ChainPlan:
                 SlotAllocationFragment(
                     member=member,
                     slot_id=slot_identifier,
-                    page=member.page_index + 1,
+                    page=member.physical_page,
                     column=member.chain_index or 0,
                     slot_order=member.chain_index or 0,
                     box=box,

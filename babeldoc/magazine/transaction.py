@@ -291,9 +291,15 @@ class TransactionSnapshot:
         return self.as_record()
 
     def as_record(self) -> dict:
+        from babeldoc.magazine.page_identity import physical_page_number
+
         return {
             "status": self.status,
-            "pages": [position + 1 for position in self.page_positions],
+            "pages": [
+                int(physical_page_number(self.docs.page[position]))
+                for position in self.page_positions
+            ],
+            "structural_positions": list(self.page_positions),
             "generation": self.generation,
             "before": self.before.as_record(),
             "rollback_verification": self.rollback_verification,

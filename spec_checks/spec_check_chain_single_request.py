@@ -173,7 +173,7 @@ def fixture(member_count: int, *, ordinary=False):
         rows = [member]
         if index == 0 and ordinary:
             rows.append(paragraph("ordinary paragraph", None, None))
-        pages.append(SimpleNamespace(pdf_paragraph=rows))
+        pages.append(SimpleNamespace(page_number=index, pdf_paragraph=rows))
     docs = SimpleNamespace(page=pages)
     refs = tuple(f"p{index + 1}#0" for index in range(member_count))
     canonical_chain = f"chain-canonical-{member_count}"

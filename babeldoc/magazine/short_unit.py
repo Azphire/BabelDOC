@@ -283,6 +283,7 @@ def candidates(
     minimum: int,
     config: ShortUnitConfig,
     fractured: dict[int, set[int]] | None = None,
+    translation_config=None,
 ) -> list[Unit]:
     """Every paragraph the exception admits, in document order.
 
@@ -290,9 +291,18 @@ def candidates(
     exception and is left to the path that already reaches it.
     """
     found: list[Unit] = []
+    from babeldoc.magazine.page_identity import physical_page_number
+
     for page_index, page in enumerate(docs.page or ()):
+        if (
+            translation_config is not None
+            and not translation_config.should_translate_page(
+                int(physical_page_number(page))
+            )
+        ):
+            continue
         paragraphs = list(page.pdf_paragraph or ())
-        label = page_index + 1
+        label = int(physical_page_number(page))
         broken = (fractured or {}).get(label, set())
         for index, paragraph in enumerate(paragraphs):
             text = paragraph.unicode
@@ -343,9 +353,11 @@ def fractured_paragraphs(translation_config, docs) -> dict[int, set[int]]:
         return {}
     config = source_audit.load_audit_config()
     broken: dict[int, set[int]] = {}
-    for page_index, page in enumerate(docs.page or ()):
-        label = page_index + 1
-        words = source_audit.independent_words(Path(pdf), page_index)
+    from babeldoc.magazine.page_identity import physical_page_number
+
+    for page in docs.page or ():
+        label = int(physical_page_number(page))
+        words = source_audit.independent_words(Path(pdf), label - 1)
         for item in source_audit.audit_page(page, words, label, config):
             if item["class"] == source_audit.CLASS_TRUE_FRACTURE:
                 broken.setdefault(label, set()).add(
@@ -427,7 +439,11 @@ def plan(translator, docs, tracker, article_context=None, config=None) -> ShortU
     translation_config = translator.translation_config
     minimum = int(getattr(translation_config, "min_text_length", 0) or 0)
     units = candidates(
-        docs, minimum, config, fractured_paragraphs(translation_config, docs)
+        docs,
+        minimum,
+        config,
+        fractured_paragraphs(translation_config, docs),
+        translation_config,
     )
     if not units:
         return result

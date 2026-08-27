@@ -106,6 +106,7 @@ from babeldoc.magazine.drop_cap import paragraph_reference
 from babeldoc.magazine.metrics import MetricsConfig
 from babeldoc.magazine.metrics import load_metrics_config
 from babeldoc.magazine.metrics import rounded
+from babeldoc.magazine.page_identity import physical_page_number
 
 # The two boundary series. A page boundary is the reader leaving a page; a
 # column boundary is the reader leaving a column for the one right of it.
@@ -219,8 +220,8 @@ class Boundary:
     def label(self) -> str:
         """How the corpus ground truth names this boundary, in 1-based pages."""
         if self.series == PAGE_SERIES:
-            return f"{self.page_index + 1}->{self.to_page_index + 1}"
-        return f"p{self.page_index + 1}c{self.from_column}->c{self.to_column}"
+            return f"{self.page_index}->{self.to_page_index}"
+        return f"p{self.page_index}c{self.from_column}->c{self.to_column}"
 
     def as_record(self) -> dict:
         return {
@@ -398,7 +399,7 @@ def _tail_of(page, page_index, item) -> Tail:
     text = chain_signals.line_text(lines[-1])
     character, x, y = _last_character(lines[-1])
     return Tail(
-        reference=paragraph_reference(page_index + 1, index),
+        reference=paragraph_reference(page_index, index),
         page_index=page_index,
         paragraph_index=index,
         layout_label=label,
@@ -446,19 +447,23 @@ def boundaries_of(
     results = {name: SeriesResult(series=name) for name in SERIES}
 
     for index in range(len(pages) - 1):
+        left_page = int(physical_page_number(pages[index]))
+        right_page = int(physical_page_number(pages[index + 1]))
+        if right_page != left_page + 1:
+            continue
         items = per_page[index]
         tail = None
         verdict = NO_TAIL
         if items:
             paragraph = items[-1][0]
-            tail = _tail_of(pages[index], index, items[-1])
+            tail = _tail_of(pages[index], left_page, items[-1])
             verdict = _verdict_of(tail, paragraph, chain_reach, chain_config)
-        ruling = None if truth is None else truth.get(f"{index + 1}->{index + 2}")
+        ruling = None if truth is None else truth.get(f"{left_page}->{right_page}")
         results[PAGE_SERIES].boundaries.append(
             Boundary(
                 series=PAGE_SERIES,
-                page_index=index,
-                to_page_index=index + 1,
+                page_index=left_page,
+                to_page_index=right_page,
                 from_column=-1,
                 to_column=-1,
                 verdict=verdict,
@@ -471,16 +476,17 @@ def boundaries_of(
         )
 
     for index, items in enumerate(per_page):
+        page_number = int(physical_page_number(pages[index]))
         columns = sorted({item[3] for item in items})
         for position, column in enumerate(columns[:-1]):
             in_column = [item for item in items if item[3] == column]
             paragraph = in_column[-1][0]
-            tail = _tail_of(pages[index], index, in_column[-1])
+            tail = _tail_of(pages[index], page_number, in_column[-1])
             results[COLUMN_SERIES].boundaries.append(
                 Boundary(
                     series=COLUMN_SERIES,
-                    page_index=index,
-                    to_page_index=index,
+                    page_index=page_number,
+                    to_page_index=page_number,
                     from_column=column,
                     to_column=columns[position + 1],
                     verdict=_verdict_of(tail, paragraph, chain_reach, chain_config),

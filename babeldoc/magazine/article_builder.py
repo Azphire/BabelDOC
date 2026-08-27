@@ -46,8 +46,14 @@ from babeldoc.magazine.article_ir import UnsupportedArticlePage
 from babeldoc.magazine.chain_signals import CLASS_LABELS_KEY
 from babeldoc.magazine.chain_signals import CONFIG_PATH as CHAIN_CONFIG_PATH
 from babeldoc.magazine.chain_signals import load_chain_config
+from babeldoc.magazine.element_roles import CONFIG_PATH as ELEMENT_ROLE_CONFIG_PATH
+from babeldoc.magazine.element_roles import map_layout_label
 from babeldoc.magazine.page_features import ConfigError
 from babeldoc.magazine.page_features import validate_bounded_config
+from babeldoc.magazine.page_identity import DocumentPageIndex
+from babeldoc.magazine.page_identity import PageSelectionMap
+from babeldoc.magazine.page_identity import ensure_full_structural_document
+from babeldoc.magazine.page_identity import physical_page_number
 from babeldoc.magazine.resource_paths import config_path
 from babeldoc.magazine.taxonomy import DEFAULT_CONFIG_PATHS
 from babeldoc.magazine.taxonomy import load_taxonomy
@@ -296,8 +302,8 @@ def _hash_record(value) -> str:
     return hashlib.sha256(encoded).hexdigest()
 
 
-def _source_ref(page_index: int, paragraph_index: int) -> str:
-    return f"p{page_index + 1}#{paragraph_index}"
+def _source_ref(page_number: int, paragraph_index: int) -> str:
+    return f"p{page_number}#{paragraph_index}"
 
 
 def _box_tuple(box) -> tuple[float, float, float, float] | None:
@@ -354,7 +360,7 @@ def _column_of(bands: list[float], box) -> int:
 
 
 def _page_elements(
-    page, page_index: int, reading_order: int, gap_ratio: float
+    page, page_number: int, reading_order: int, gap_ratio: float
 ) -> tuple[list[SourceElementRef], int]:
     entries = []
     for paragraph_index, paragraph in enumerate(page.pdf_paragraph):
@@ -371,18 +377,21 @@ def _page_elements(
     )
     elements = []
     for paragraph_index, paragraph, box in entries:
+        mapping = map_layout_label(paragraph.layout_label)
         elements.append(
             SourceElementRef(
-                source_ref=_source_ref(page_index, paragraph_index),
-                page=page_index + 1,
+                source_ref=_source_ref(page_number, paragraph_index),
+                page=page_number,
                 column=_column_of(bands, box),
                 reading_order=reading_order,
-                role=paragraph.layout_label or "unclassified",
+                role=mapping.role,
                 source_box=box,
                 source_text_hash=hashlib.sha256(
                     (paragraph.unicode or "").encode("utf-8")
                 ).hexdigest(),
                 style_hash=_style_hash(paragraph),
+                raw_layout_label=paragraph.layout_label,
+                role_mapping_reason=mapping.reason,
             )
         )
         reading_order += 1
@@ -394,8 +403,9 @@ def _document_elements(docs) -> dict[int, tuple[SourceElementRef, ...]]:
     by_page = {}
     reading_order = 0
     for page_index, page in enumerate(docs.page):
+        page_number = int(physical_page_number(page))
         elements, reading_order = _page_elements(
-            page, page_index, reading_order, gap_ratio
+            page, page_number, reading_order, gap_ratio
         )
         by_page[page_index] = tuple(elements)
     return by_page
@@ -404,6 +414,7 @@ def _document_elements(docs) -> dict[int, tuple[SourceElementRef, ...]]:
 def _canonical_chains(docs) -> dict[str, tuple[str, tuple[str, ...], tuple[int, ...]]]:
     members: dict[str, list[tuple[int | None, int, int, str]]] = {}
     for page_index, page in enumerate(docs.page):
+        page_number = int(physical_page_number(page))
         for paragraph_index, paragraph in enumerate(page.pdf_paragraph):
             if not paragraph.chain_id:
                 continue
@@ -412,7 +423,7 @@ def _canonical_chains(docs) -> dict[str, tuple[str, tuple[str, ...], tuple[int, 
                     paragraph.chain_index,
                     page_index,
                     paragraph_index,
-                    _source_ref(page_index, paragraph_index),
+                    _source_ref(page_number, paragraph_index),
                 )
             )
     canonical = {}
@@ -435,6 +446,7 @@ def _article_id(
     article: Article,
     elements_by_page: dict[int, tuple[SourceElementRef, ...]],
     chains: dict[str, tuple[str, tuple[str, ...], tuple[int, ...]]],
+    page_index: DocumentPageIndex,
 ) -> str:
     held = set(article.pages)
     elements = [
@@ -448,7 +460,12 @@ def _article_id(
         if held.issuperset(pages)
     )
     material = {
-        "pages": [page + 1 for page in article.pages],
+        "pages": [
+            int(physical_page_number(docs_page))
+            for docs_page in (
+                page_index.docs.page[position] for position in article.pages
+            )
+        ],
         "first_source_ref": elements[0].source_ref if elements else None,
         "chain_signature": chain_signature,
     }
@@ -456,20 +473,23 @@ def _article_id(
 
 
 def _assign_article_ids(
-    articles: list[Article], elements_by_page, chains
+    articles: list[Article], elements_by_page, chains, page_index
 ) -> None:
     for article in articles:
-        article.article_id = _article_id(article, elements_by_page, chains)
+        article.article_id = _article_id(
+            article, elements_by_page, chains, page_index
+        )
 
 
 def _build_grouping(docs, policy_of):
+    page_index = DocumentPageIndex(docs)
     roles = [page_role(page, index, policy_of) for index, page in enumerate(docs.page)]
     elements_by_page = _document_elements(docs)
     chains = _canonical_chains(docs)
     provisional = walk_roles(roles)
-    _assign_article_ids(provisional, elements_by_page, chains)
+    _assign_article_ids(provisional, elements_by_page, chains, page_index)
     merged = merge_across_chains(provisional, chain_pages(docs))
-    _assign_article_ids(merged, elements_by_page, chains)
+    _assign_article_ids(merged, elements_by_page, chains, page_index)
     return (
         Grouping(roles=tuple(roles), articles=tuple(merged)),
         provisional,
@@ -502,13 +522,14 @@ def _fixed_obstacle_refs(page, page_number: int) -> tuple[str, ...]:
 def _unsupported_pages(docs, elements_by_page, title_labels):
     unsupported = []
     for page_index, page in enumerate(docs.page):
+        page_number = int(physical_page_number(page))
         by_ref = {
             element.source_ref: element
             for element in elements_by_page.get(page_index, ())
         }
         candidates = [
             (
-                _source_ref(page_index, paragraph_index),
+                _source_ref(page_number, paragraph_index),
                 paragraph.chain_id,
             )
             for paragraph_index, paragraph in enumerate(page.pdf_paragraph)
@@ -526,7 +547,7 @@ def _unsupported_pages(docs, elements_by_page, title_labels):
         if evidence:
             unsupported.append(
                 UnsupportedArticlePage(
-                    page=page_index + 1,
+                    page=page_number,
                     reason=UNSUPPORTED_SAME_PAGE_MULTI_ARTICLE,
                     evidence_refs=tuple(sorted(evidence)),
                 )
@@ -593,7 +614,7 @@ def _article_ir(
     )
     slots = []
     for page_index in article.pages:
-        page_number = page_index + 1
+        page_number = int(physical_page_number(docs.page[page_index]))
         if page_number in unsupported:
             continue
         page_elements = elements_by_page.get(page_index, ())
@@ -619,17 +640,22 @@ def _article_ir(
             )
     policy_evidence = tuple(
         ArticlePolicyEvidence(
-            page=page_index + 1,
+            page=int(physical_page_number(docs.page[page_index])),
             role=roles[page_index].role,
             page_kind=roles[page_index].kind,
             reason=roles[page_index].reason,
-            article_reflow_allowed=page_index + 1 not in unsupported,
+            article_reflow_allowed=(
+                int(physical_page_number(docs.page[page_index])) not in unsupported
+            ),
         )
         for page_index in article.pages
     )
     return ArticleIR(
         article_id=article.article_id,
-        pages=tuple(page + 1 for page in article.pages),
+        pages=tuple(
+            int(physical_page_number(docs.page[position]))
+            for position in article.pages
+        ),
         elements=elements,
         slots=tuple(slots),
         chain_ids=chain_ids,
@@ -637,7 +663,15 @@ def _article_ir(
     )
 
 
-def _document_ir(docs, grouping, provisional, elements_by_page, chains, labels):
+def _document_ir(
+    docs,
+    grouping,
+    provisional,
+    elements_by_page,
+    chains,
+    labels,
+    page_selection_map,
+):
     unsupported = _unsupported_pages(docs, elements_by_page, labels)
     articles = tuple(
         _article_ir(
@@ -678,6 +712,7 @@ def _document_ir(docs, grouping, provisional, elements_by_page, chains, labels):
         by_chain_member=by_chain_member,
         unsupported_pages=unsupported,
         issues=_chain_issues(provisional, chains),
+        page_selection_map=page_selection_map,
     )
 
 
@@ -694,11 +729,21 @@ class ArticleBuilder:
         self.policy_of = policy_of if policy_of is not None else self.taxonomy.policy_of
 
     def process(self, docs: il_version_1.Document) -> ArticleDocumentIR:
+        ensure_full_structural_document(self.translation_config, docs)
+        page_selection_map = PageSelectionMap.from_document(
+            docs, translation_config=self.translation_config
+        )
         grouping, provisional, elements, chains = _build_grouping(
             docs, self.policy_of
         )
         document_ir = _document_ir(
-            docs, grouping, provisional, elements, chains, self.labels
+            docs,
+            grouping,
+            provisional,
+            elements,
+            chains,
+            self.labels,
+            page_selection_map,
         )
         self._write_ir(document_ir)
         self._write_report(docs, grouping, document_ir)
@@ -710,13 +755,14 @@ class ArticleBuilder:
         article: ArticleIR,
         merged_by_chain: bool,
     ) -> dict:
-        start = docs.page[article.pages[0] - 1]
+        page_index = DocumentPageIndex(docs)
+        start = page_index.page_by_source_number(article.pages[0])
         title = title_paragraph(start, self.labels)
         title_ref = None
         if title is not None:
             title_ref = next(
                 (
-                    _source_ref(article.pages[0] - 1, index)
+                    _source_ref(article.pages[0], index)
                     for index, paragraph in enumerate(start.pdf_paragraph)
                     if paragraph is title
                 ),
@@ -775,7 +821,9 @@ class ArticleBuilder:
             ],
             "unassigned": [
                 {
-                    "page": role.index + 1,
+                    "page": int(
+                        physical_page_number(docs.page[role.index])
+                    ),
                     "page_kind": role.kind,
                     "reason": role.reason,
                 }
@@ -783,12 +831,14 @@ class ArticleBuilder:
             ],
             "pages": [
                 {
-                    "page": role.index + 1,
+                    "page": int(physical_page_number(docs.page[role.index])),
                     "page_kind": role.kind,
                     "page_kind_conf": role.confidence,
                     "role": role.role,
                     "reason": role.reason,
-                    "article_id": document_ir.by_page.get(role.index + 1),
+                    "article_id": document_ir.by_page.get(
+                        int(physical_page_number(docs.page[role.index]))
+                    ),
                 }
                 for role in grouping.roles
             ],
@@ -801,7 +851,10 @@ class ArticleBuilder:
         with path.open("w", encoding="utf-8") as f:
             json.dump(report, f, indent=2, sort_keys=True, ensure_ascii=False)
             f.write("\n")
-        record_config_manifest(path.parent, [*DEFAULT_CONFIG_PATHS, CONFIG_PATH])
+        record_config_manifest(
+            path.parent,
+            [*DEFAULT_CONFIG_PATHS, CONFIG_PATH, ELEMENT_ROLE_CONFIG_PATH],
+        )
         logger.debug(
             "grouped %d pages into %d article(s), %d unassigned, map at %s",
             len(docs.page),

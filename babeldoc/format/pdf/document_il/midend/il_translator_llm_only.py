@@ -38,6 +38,7 @@ from babeldoc.magazine.article_ir import ArticleDocumentIR
 from babeldoc.magazine.chain_translation import EMPTY_CLAIM
 from babeldoc.magazine.chain_translation import ChainClaim
 from babeldoc.magazine.chain_translation import plan_chain_translation
+from babeldoc.magazine.page_identity import translation_pages
 from babeldoc.magazine.run_trace import RunTrace
 from babeldoc.translator.translator import BaseTranslator
 from babeldoc.utils.priority_thread_pool_executor import PriorityThreadPoolExecutor
@@ -220,6 +221,7 @@ class ILTranslatorLLMOnly:
                 logger.info(f"Found first title paragraph: {title_paragraph.unicode}")
 
         # count total paragraph
+        selected_pages = translation_pages(docs, self.translation_config)
         total = sum(
             [
                 len(
@@ -229,7 +231,7 @@ class ILTranslatorLLMOnly:
                         if p.debug_id is not None and p.unicode is not None
                     ]
                 )
-                for page in docs.page
+                for page in selected_pages
             ]
         )
         translated_ids = set()
@@ -281,7 +283,7 @@ class ILTranslatorLLMOnly:
                         article_context,
                     )
                     # Cross-column detection per page (after cross-page processing)
-                    for page in docs.page:
+                    for page in selected_pages:
                         self.process_cross_column_paragraph(
                             page,
                             executor,
@@ -292,7 +294,7 @@ class ILTranslatorLLMOnly:
                             chain_claim,
                             article_context,
                         )
-                    for page in docs.page:
+                    for page in selected_pages:
                         self.process_page(
                             page,
                             executor,

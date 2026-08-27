@@ -53,8 +53,11 @@ from typing import Protocol
 from babeldoc.magazine import article_builder
 from babeldoc.magazine.article_ir import ArticleDocumentIR
 from babeldoc.magazine.chain_signals import load_chain_config
+from babeldoc.magazine.element_roles import ElementRole
 from babeldoc.magazine.page_features import ConfigError
 from babeldoc.magazine.page_features import validate_bounded_config
+from babeldoc.magazine.page_identity import DocumentPageIndex
+from babeldoc.magazine.page_identity import physical_page_number
 from babeldoc.magazine.prompt_loader import Prompt
 from babeldoc.magazine.prompt_loader import load_prompt
 from babeldoc.magazine.resource_paths import config_path
@@ -511,11 +514,11 @@ def first_body_excerpt(page, body_labels, limit: int) -> str:
     return ""
 
 
-def article_sources(docs, document_ir, title_labels, body_labels, config) -> list:
+def article_sources(docs, document_ir, _title_labels, _body_labels, config) -> list:
     """The heading and opening excerpt of every article, in page order."""
     paragraphs = {
-        f"p{page_index + 1}#{paragraph_index}": paragraph
-        for page_index, page in enumerate(docs.page)
+        f"p{int(physical_page_number(page))}#{paragraph_index}": paragraph
+        for page in docs.page
         for paragraph_index, paragraph in enumerate(page.pdf_paragraph)
     }
     sources = []
@@ -525,7 +528,7 @@ def article_sources(docs, document_ir, title_labels, body_labels, config) -> lis
                 element
                 for element in article.elements
                 if element.page == article.pages[0]
-                and element.role in title_labels
+                and element.role is ElementRole.HEADING
             ),
             None,
         )
@@ -536,7 +539,7 @@ def article_sources(docs, document_ir, title_labels, body_labels, config) -> lis
         )
         excerpt = ""
         for element in article.elements:
-            if element.role not in body_labels:
+            if element.role is not ElementRole.BODY:
                 continue
             paragraph = paragraphs.get(element.source_ref)
             if paragraph is None:
@@ -549,7 +552,7 @@ def article_sources(docs, document_ir, title_labels, body_labels, config) -> lis
         sources.append(
             ArticleSource(
                 article_id=article.article_id,
-                pages=tuple(page - 1 for page in article.pages),
+                pages=article.pages,
                 title_text="" if title is None else (title.unicode or "").strip(),
                 excerpt=excerpt,
             )
@@ -653,13 +656,15 @@ class ArticleContextPlan:
                 brief_of_article[source.article_id] = self._context_text(outcome.brief)
             self._record(source, outcome, True)
 
+        resolver = DocumentPageIndex(docs, self.article_document_ir.page_selection_map)
         page_index = {id(page): index for index, page in enumerate(docs.page)}
         article_of_page = {
-            page - 1: article_id
+            resolver.structural_position_of(page): article_id
             for page, article_id in self.article_document_ir.by_page.items()
         }
         openers = frozenset(
-            article.pages[0] - 1 for article in self.article_document_ir.articles
+            resolver.structural_position_of(article.pages[0])
+            for article in self.article_document_ir.articles
         )
         context = ArticleContext(
             article_document_ir=self.article_document_ir,
@@ -678,8 +683,8 @@ class ArticleContextPlan:
         self.records.append(
             {
                 "article_id": source.article_id,
-                "pages": [index + 1 for index in source.pages],
-                "start_page": source.pages[0] + 1,
+                "pages": list(source.pages),
+                "start_page": source.pages[0],
                 "title_text": source.title_text,
                 "excerpt_chars": len(source.excerpt),
                 "requested": requested,
@@ -705,9 +710,9 @@ class ArticleContextPlan:
             "body_labels": list(self.body_labels),
             "articles": self.records,
             "unassigned_pages": [
-                page
-                for page in range(1, page_count + 1)
-                if page not in self.article_document_ir.by_page
+                int(page)
+                for page in self.article_document_ir.page_selection_map.physical_to_structural
+                if int(page) not in self.article_document_ir.by_page
             ],
         }
         path = Path(self.translation_config.get_working_file_path(REPORT_NAME))

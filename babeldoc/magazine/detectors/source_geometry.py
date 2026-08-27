@@ -150,10 +150,13 @@ def _boxes_of(stamp: tuple[str, int, int]) -> dict:
     parse the same file once per iteration.
     """
     docs = checkpoint.load_checkpoint(stamp[0])
+    from babeldoc.magazine.page_identity import physical_page_number
+
     boxes: dict[str, tuple[float, float, float, float]] = {}
-    for page_index, page in enumerate(docs.page or ()):
+    for page in docs.page or ():
+        page_number = int(physical_page_number(page))
         for paragraph_index, paragraph in enumerate(page.pdf_paragraph or ()):
-            key = f"p{page_index + 1}#{paragraph_index}"
+            key = f"p{page_number}#{paragraph_index}"
             box, _source = base.rendered_box(paragraph)
             if box is not None:
                 boxes[key] = box

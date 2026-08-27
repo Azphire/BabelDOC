@@ -217,8 +217,10 @@ def build_inventory(
     protected_labels = frozenset(protected_paragraph_labels)
     assets: list[AssetRecord] = []
     page_sizes = []
-    for position, page in enumerate(docs.page or ()):
-        page_number = position + 1
+    from babeldoc.magazine.page_identity import physical_page_number
+
+    for page in docs.page or ():
+        page_number = int(physical_page_number(page))
         page_sizes.append(
             (
                 page_number,

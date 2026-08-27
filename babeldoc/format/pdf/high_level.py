@@ -76,6 +76,7 @@ from babeldoc.magazine.final_pdf_validator import merge_expectations
 from babeldoc.magazine.final_pdf_validator import offset_expectations
 from babeldoc.magazine.final_pdf_validator import record_pipeline_status
 from babeldoc.magazine.page_classifier import PageClassifier
+from babeldoc.magazine.page_identity import ensure_magazine_split_supported
 from babeldoc.magazine.run_trace import REPORT_NAME as RUN_TRACE_REPORT_NAME
 from babeldoc.magazine.run_trace import RunTrace
 from babeldoc.magazine.runtime_profile import preflight_magazine_runtime
@@ -712,6 +713,7 @@ def do_translate(
                 # Initialize split manager and determine split points
                 split_manager = SplitManager(translation_config)
                 split_points = split_manager.determine_split_points(translation_config)
+                ensure_magazine_split_supported(translation_config, split_points)
 
                 if not split_points:
                     logger.warning(

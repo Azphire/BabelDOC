@@ -17,6 +17,7 @@ from enum import Enum
 from pathlib import Path
 
 from babeldoc.magazine.article_ir import ArticleDocumentIR
+from babeldoc.magazine.page_identity import physical_page_number
 
 SCHEMA_VERSION = "run-trace.v2"
 CANONICALIZATION_VERSION = "utf8-lf-json-v1"
@@ -519,11 +520,12 @@ class RunTrace:
         )
         raw_chains: dict[str, list[str]] = {}
         paragraphs: list[tuple[str, int, int, object]] = []
-        for page_index, page in enumerate(document.page):
+        for page in document.page:
+            page_number = int(physical_page_number(page))
             for paragraph_index, paragraph in enumerate(page.pdf_paragraph or ()):
-                reference = source_ref(page_index + 1, paragraph_index)
+                reference = source_ref(page_number, paragraph_index)
                 paragraphs.append(
-                    (reference, page_index + 1, paragraph_index, paragraph)
+                    (reference, page_number, paragraph_index, paragraph)
                 )
                 raw_chain_id = getattr(paragraph, "chain_id", None)
                 if raw_chain_id:

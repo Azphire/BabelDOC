@@ -247,12 +247,14 @@ def fixture(target: str):
     ]
     pages = [
         il_version_1.Page(
+            page_number=0,
             mediabox=il_version_1.Mediabox(box=Box(0.0, 0.0, 120.0, 100.0)),
             cropbox=il_version_1.Cropbox(box=Box(0.0, 0.0, 120.0, 100.0)),
             pdf_figure=[il_version_1.PdfFigure(box=Box(116.0, 90.0, 119.0, 99.0))],
             pdf_paragraph=paragraphs[:2],
         ),
         il_version_1.Page(
+            page_number=1,
             mediabox=il_version_1.Mediabox(box=Box(0.0, 0.0, 120.0, 100.0)),
             cropbox=il_version_1.Cropbox(box=Box(0.0, 0.0, 120.0, 100.0)),
             pdf_figure=[il_version_1.PdfFigure(box=Box(116.0, 90.0, 119.0, 99.0))],

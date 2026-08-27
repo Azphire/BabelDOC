@@ -107,7 +107,8 @@ def page(number: int, kind: str, paragraphs):
         mediabox=il_version_1.Mediabox(box=frame),
         cropbox=il_version_1.Cropbox(box=frame),
         pdf_paragraph=list(paragraphs),
-        page_number=number,
+        # IL page metadata is zero-based; ArticleIR exposes physical pages as 1-based.
+        page_number=number - 1,
         unit="pt",
         page_kind=kind,
         page_kind_conf=1.0,

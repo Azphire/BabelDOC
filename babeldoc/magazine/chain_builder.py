@@ -50,6 +50,7 @@ from babeldoc.magazine.chain_signals import BoundaryVerdict
 from babeldoc.magazine.chain_signals import evaluate_boundary
 from babeldoc.magazine.chain_signals import evaluate_column_boundaries
 from babeldoc.magazine.chain_signals import load_chain_config
+from babeldoc.magazine.page_identity import physical_page_number
 from babeldoc.magazine.taxonomy import DEFAULT_CONFIG_PATHS
 from babeldoc.magazine.taxonomy import load_taxonomy
 from babeldoc.magazine.taxonomy import record_config_manifest
@@ -102,18 +103,22 @@ class ChainBuilder:
         pages = docs.page
         verdicts: list[BoundaryVerdict] = []
         for index, page in enumerate(pages):
+            page_number = int(physical_page_number(page))
             verdicts.extend(
                 evaluate_column_boundaries(
-                    page, index, self.taxonomy.policy_of, self.config
+                    page, page_number, self.taxonomy.policy_of, self.config
                 )
             )
             if index + 1 < len(pages):
+                next_page_number = int(physical_page_number(pages[index + 1]))
+                if next_page_number != page_number + 1:
+                    continue
                 verdicts.append(
                     evaluate_boundary(
                         page,
                         pages[index + 1],
-                        index,
-                        index + 1,
+                        page_number,
+                        next_page_number,
                         self.taxonomy.policy_of,
                         self.config,
                     )
@@ -145,7 +150,7 @@ class ChainBuilder:
             return []
         if not docs.page:
             return []
-        last = len(docs.page)
+        last = int(physical_page_number(docs.page[-1]))
         return [
             {
                 "boundary": f"{last}->{last + 1}",

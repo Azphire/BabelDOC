@@ -8,7 +8,12 @@ from dataclasses import dataclass
 from dataclasses import field
 from types import MappingProxyType
 
+from babeldoc.magazine.element_roles import ElementRole
+from babeldoc.magazine.element_roles import coerce_element_role
+from babeldoc.magazine.page_identity import PageSelectionMap
+
 BoxTuple = tuple[float, float, float, float]
+ARTICLE_IR_SCHEMA_VERSION = "article-ir.v2"
 
 
 @dataclass(frozen=True, slots=True)
@@ -19,10 +24,18 @@ class SourceElementRef:
     page: int
     column: int
     reading_order: int
-    role: str
+    role: ElementRole
     source_box: BoxTuple | None
     source_text_hash: str
     style_hash: str
+    raw_layout_label: str | None = None
+    role_mapping_reason: str = "closed_role"
+
+    def __post_init__(self) -> None:
+        role = coerce_element_role(self.role)
+        object.__setattr__(self, "role", role)
+        if role is ElementRole.UNCLASSIFIED and not self.role_mapping_reason:
+            raise ValueError("UNCLASSIFIED requires a mapping reason")
 
     def to_record(self) -> dict:
         return {
@@ -30,7 +43,9 @@ class SourceElementRef:
             "page": self.page,
             "column": self.column,
             "reading_order": self.reading_order,
-            "role": self.role,
+            "role": self.role.value,
+            "raw_layout_label": self.raw_layout_label,
+            "role_mapping_reason": self.role_mapping_reason,
             "source_box": None if self.source_box is None else list(self.source_box),
             "source_text_hash": self.source_text_hash,
             "style_hash": self.style_hash,
@@ -148,6 +163,8 @@ class ArticleDocumentIR:
     by_chain_member: Mapping[str, str] = field(default_factory=dict)
     unsupported_pages: tuple[UnsupportedArticlePage, ...] = ()
     issues: tuple[ArticleIssue, ...] = ()
+    page_selection_map: PageSelectionMap | None = None
+    schema_version: str = ARTICLE_IR_SCHEMA_VERSION
 
     def __post_init__(self) -> None:
         object.__setattr__(
@@ -169,6 +186,8 @@ class ArticleDocumentIR:
         self._validate()
 
     def _validate(self) -> None:
+        if self.schema_version != ARTICLE_IR_SCHEMA_VERSION:
+            raise ValueError("unsupported ArticleIR schema")
         article_ids = [article.article_id for article in self.articles]
         if len(article_ids) != len(set(article_ids)):
             raise ValueError("article ids must be unique")
@@ -236,6 +255,12 @@ class ArticleDocumentIR:
 
     def to_record(self) -> dict:
         return {
+            "schema_version": self.schema_version,
+            "page_selection_map": (
+                None
+                if self.page_selection_map is None
+                else self.page_selection_map.to_record()
+            ),
             "articles": [article.to_record() for article in self.articles],
             "by_page": {str(page): value for page, value in self.by_page.items()},
             "by_element": dict(self.by_element),
@@ -244,6 +269,88 @@ class ArticleDocumentIR:
             "unsupported_pages": [item.to_record() for item in self.unsupported_pages],
             "issues": [issue.to_record() for issue in self.issues],
         }
+
+    @classmethod
+    def from_record(cls, record: Mapping) -> ArticleDocumentIR:
+        """Rehydrate the canonical sidecar without guessing legacy identities."""
+
+        def element(item) -> SourceElementRef:
+            box = item.get("source_box")
+            return SourceElementRef(
+                source_ref=str(item["source_ref"]),
+                page=int(item["page"]),
+                column=int(item["column"]),
+                reading_order=int(item["reading_order"]),
+                role=ElementRole(str(item["role"])),
+                source_box=None if box is None else tuple(float(x) for x in box),
+                source_text_hash=str(item["source_text_hash"]),
+                style_hash=str(item["style_hash"]),
+                raw_layout_label=item.get("raw_layout_label"),
+                role_mapping_reason=str(item.get("role_mapping_reason") or "closed_role"),
+            )
+
+        def slot(item) -> ArticleRegionSlot:
+            return ArticleRegionSlot(
+                article_id=str(item["article_id"]),
+                page=int(item["page"]),
+                column=int(item["column"]),
+                slot_order=int(item["slot_order"]),
+                box=tuple(float(x) for x in item["box"]),
+                fixed_obstacle_refs=tuple(item.get("fixed_obstacle_refs", ())),
+                capacity_hint=float(item["capacity_hint"]),
+            )
+
+        def policy(item) -> ArticlePolicyEvidence:
+            return ArticlePolicyEvidence(
+                page=int(item["page"]),
+                role=str(item["role"]),
+                page_kind=item.get("page_kind"),
+                reason=item.get("reason"),
+                article_reflow_allowed=bool(item["article_reflow_allowed"]),
+            )
+
+        articles = tuple(
+            ArticleIR(
+                article_id=str(item["article_id"]),
+                pages=tuple(int(page) for page in item["pages"]),
+                elements=tuple(element(value) for value in item["elements"]),
+                slots=tuple(slot(value) for value in item["slots"]),
+                chain_ids=tuple(item["chain_ids"]),
+                policy_evidence=tuple(
+                    policy(value) for value in item["policy_evidence"]
+                ),
+            )
+            for item in record["articles"]
+        )
+        selection = record.get("page_selection_map")
+        return cls(
+            schema_version=str(record.get("schema_version") or ""),
+            page_selection_map=(
+                None if selection is None else PageSelectionMap.from_record(selection)
+            ),
+            articles=articles,
+            by_page={int(page): value for page, value in record["by_page"].items()},
+            by_element=dict(record["by_element"]),
+            by_chain=dict(record["by_chain"]),
+            by_chain_member=dict(record.get("by_chain_member", {})),
+            unsupported_pages=tuple(
+                UnsupportedArticlePage(
+                    page=int(item["page"]),
+                    reason=str(item["reason"]),
+                    evidence_refs=tuple(item.get("evidence_refs", ())),
+                )
+                for item in record.get("unsupported_pages", ())
+            ),
+            issues=tuple(
+                ArticleIssue(
+                    code=str(item["code"]),
+                    chain_id=item.get("chain_id"),
+                    article_ids=tuple(item.get("article_ids", ())),
+                    element_refs=tuple(item.get("element_refs", ())),
+                )
+                for item in record.get("issues", ())
+            ),
+        )
 
     def to_json_bytes(self) -> bytes:
         return (
