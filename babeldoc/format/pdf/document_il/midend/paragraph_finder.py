@@ -33,9 +33,16 @@ from babeldoc.format.pdf.document_il.utils.layout_helper import (
 )
 from babeldoc.format.pdf.document_il.utils.layout_helper import is_text_layout
 from babeldoc.format.pdf.document_il.utils.paragraph_helper import is_cid_paragraph
-from babeldoc.format.pdf.document_il.utils.style_helper import INDIGO
 from babeldoc.format.pdf.document_il.utils.style_helper import WHITE
 from babeldoc.format.pdf.translation_config import TranslationConfig
+from babeldoc.magazine.debug_overlay import OverlayCategory
+from babeldoc.magazine.debug_overlay import OverlayProducer
+from babeldoc.magazine.debug_overlay import OverlayStyle
+from babeldoc.magazine.debug_overlay import ledger_for
+from babeldoc.magazine.debug_overlay import page_bounds
+from babeldoc.magazine.debug_overlay import physical_page_number
+from babeldoc.magazine.geometry_write import GeometryRole
+from babeldoc.magazine.geometry_write import propose_box_updates
 
 logger = logging.getLogger(__name__)
 
@@ -179,18 +186,22 @@ class ParagraphFinder:
     def add_debug_info(self, page: Page):
         if not self.translation_config.debug:
             return
-        for paragraph in page.pdf_paragraph:
+        ledger = ledger_for(self.translation_config)
+        bounds = page_bounds(page)
+        source_page = physical_page_number(page)
+        for paragraph_index, paragraph in enumerate(page.pdf_paragraph):
             for composition in paragraph.pdf_paragraph_composition:
                 if composition.pdf_line:
                     line = composition.pdf_line
-                    page.pdf_rectangle.append(
-                        PdfRectangle(
-                            box=line.box,
-                            fill_background=False,
-                            graphic_state=INDIGO,
-                            debug_info=True,
-                            line_width=0.2,
-                        )
+                    ledger.add_box(
+                        source_page_number=source_page,
+                        producer=OverlayProducer.PARAGRAPH_FINDER,
+                        category=OverlayCategory.PARAGRAPH,
+                        page_bounds=bounds,
+                        box=line.box,
+                        text="0.2",
+                        style=OverlayStyle.INDIGO,
+                        related_semantic_ref=f"p{source_page}#{paragraph_index}",
                     )
 
     def process(self, document):
@@ -947,6 +958,12 @@ class ParagraphFinder:
         paragraphs = page.pdf_paragraph
         if not paragraphs or len(paragraphs) < 2:
             return
+        bounds = page.cropbox.box
+        source_page = page.page_number + 1
+        stable_refs = {
+            id(paragraph): f"p{source_page}#{index}"
+            for index, paragraph in enumerate(paragraphs)
+        }
 
         max_iterations = len(paragraphs) * len(paragraphs)  # Safety break
         iterations = 0
@@ -982,8 +999,6 @@ class ParagraphFinder:
 
                         # Ensure there's a real 2D overlap, focusing on vertical adjustment
                         if overlap_height > 1e-6 and overlap_width > 1e-6:
-                            overlap_found_in_pass = True
-
                             # Determine which paragraph is visually higher
                             if para1.box.y2 > para2.box.y and para1.box.y < para2.box.y:
                                 lower_para = para1
@@ -1002,8 +1017,41 @@ class ParagraphFinder:
 
                             # Adjust boxes, ensuring they remain valid (y2 > y)
                             if mid_y > higher_para.box.y and mid_y < lower_para.box.y2:
-                                higher_para.box.y = mid_y + 1
-                                lower_para.box.y2 = mid_y - 1
+                                higher_candidate = (
+                                    higher_para.box.x,
+                                    mid_y + 1,
+                                    higher_para.box.x2,
+                                    higher_para.box.y2,
+                                )
+                                lower_candidate = (
+                                    lower_para.box.x,
+                                    lower_para.box.y,
+                                    lower_para.box.x2,
+                                    mid_y - 1,
+                                )
+                                result = propose_box_updates(
+                                    (
+                                        (
+                                            higher_para.box,
+                                            higher_candidate,
+                                            stable_refs[id(higher_para)],
+                                            GeometryRole.PROCESSABLE_TEXT,
+                                        ),
+                                        (
+                                            lower_para.box,
+                                            lower_candidate,
+                                            stable_refs[id(lower_para)],
+                                            GeometryRole.PROCESSABLE_TEXT,
+                                        ),
+                                    ),
+                                    page_bounds=bounds,
+                                    stage="paragraph_finder.overlap",
+                                    source_page=source_page,
+                                )
+                                if result.committed:
+                                    overlap_found_in_pass = True
+                                else:
+                                    logger.warning("%s", result.refusal)
                             else:
                                 # This might happen if one box is fully contained vertically
                                 # within another, or due to floating point issues.

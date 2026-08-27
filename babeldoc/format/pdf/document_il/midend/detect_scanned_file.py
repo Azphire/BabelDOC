@@ -10,8 +10,13 @@ from babeldoc.format.pdf.document_il import il_version_1
 from babeldoc.format.pdf.document_il.backend.pdf_creater import PDFCreater
 from babeldoc.format.pdf.document_il.utils.raster_geometry import with_pixel_budget
 from babeldoc.format.pdf.document_il.utils.style_helper import BLACK
-from babeldoc.format.pdf.document_il.utils.style_helper import GREEN
 from babeldoc.format.pdf.translation_config import TranslationConfig
+from babeldoc.magazine.debug_overlay import OverlayCategory
+from babeldoc.magazine.debug_overlay import OverlayProducer
+from babeldoc.magazine.debug_overlay import OverlayStyle
+from babeldoc.magazine.debug_overlay import ledger_for
+from babeldoc.magazine.debug_overlay import page_bounds
+from babeldoc.magazine.debug_overlay import physical_page_number
 
 logger = logging.getLogger(__name__)
 
@@ -23,46 +28,18 @@ class DetectScannedFile:
         self.translation_config = translation_config
 
     def _save_debug_box_to_page(self, page: il_version_1.Page, similarity: float):
-        """Save debug boxes and text labels to the PDF page."""
+        """Record the score without appending a diagnostic paragraph."""
         if not self.translation_config.debug:
             return
-
-        color = GREEN
-
-        # Create text label at top-left corner
-        # Note: PDF coordinates are from bottom-left,
-        # so we use y2 for top position
-        style = il_version_1.PdfStyle(
-            font_id="base",
-            font_size=4,
-            graphic_state=color,
-        )
-        page_width = page.cropbox.box.x2 - page.cropbox.box.x
-        page_height = page.cropbox.box.y2 - page.cropbox.box.y
-        unicode = f"scanned score: {similarity * 100:.2f} %"
-        page.pdf_paragraph.append(
-            il_version_1.PdfParagraph(
-                first_line_indent=False,
-                box=il_version_1.Box(
-                    x=page.cropbox.box.x + page_width * 0.03,
-                    y=page.cropbox.box.y,
-                    x2=page.cropbox.box.x2,
-                    y2=page.cropbox.box.y2 - page_height * 0.03,
-                ),
-                vertical=False,
-                pdf_style=style,
-                unicode=unicode,
-                pdf_paragraph_composition=[
-                    il_version_1.PdfParagraphComposition(
-                        pdf_same_style_unicode_characters=il_version_1.PdfSameStyleUnicodeCharacters(
-                            unicode=unicode,
-                            pdf_style=style,
-                            debug_info=True,
-                        ),
-                    ),
-                ],
-                xobj_id=-1,
-            ),
+        bounds = page_bounds(page)
+        ledger_for(self.translation_config).add_label(
+            source_page_number=physical_page_number(page),
+            producer=OverlayProducer.DETECT_SCANNED,
+            category=OverlayCategory.SCAN_SCORE,
+            page_bounds=bounds,
+            box=bounds,
+            text=f"scanned score: {similarity * 100:.2f} %",
+            style=OverlayStyle.GREEN,
         )
 
     def fast_check(self, doc: pymupdf.Document) -> bool:
@@ -169,4 +146,5 @@ class DetectScannedFile:
         before_page_image = cv2.cvtColor(before_page_image, cv2.COLOR_RGB2GRAY)
         after_page_image = cv2.cvtColor(after_page_image, cv2.COLOR_RGB2GRAY)
         similarity = structural_similarity(before_page_image, after_page_image)
+        self._save_debug_box_to_page(page, similarity)
         return similarity > 0.95

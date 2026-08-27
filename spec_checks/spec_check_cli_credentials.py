@@ -23,7 +23,8 @@ RESULTS: list[tuple[str, bool, str]] = []
 
 def check(name: str, condition: bool, detail: str = "") -> None:
     RESULTS.append((name, condition, detail))
-    print(f"{'PASS' if condition else 'FAIL'} {name}{': ' + detail if detail else ''}")
+    rendered = f"{'PASS' if condition else 'FAIL'} {name}{': ' + detail if detail else ''}"
+    print(rendered.encode(sys.stdout.encoding or "utf-8", errors="backslashreplace").decode(sys.stdout.encoding or "utf-8"))
 
 
 class FakeTranslator:
@@ -213,6 +214,8 @@ def check_cli_missing_key(root: Path) -> None:
         env=environment,
         capture_output=True,
         text=True,
+        encoding="utf-8",
+        errors="replace",
         timeout=20,
     )
     combined = result.stdout + result.stderr
@@ -246,6 +249,38 @@ def check_effective_environment_redaction() -> None:
             os.environ["OPENAI_API_KEY"] = previous
 
 
+def check_diagnostic_precedence(root: Path) -> None:
+    def configured(name: str, contents: str, *cli: str):
+        path = root / name
+        path.write_text("[babeldoc]\n" + contents, encoding="utf-8")
+        return parser_args("-c", str(path), *cli)
+
+    cases = (
+        ("toml true", configured("debug-true.toml", "debug = true\n"), (True, False)),
+        ("toml false", configured("debug-false.toml", "debug = false\n"), (False, False)),
+        ("cli debug wins", configured("cli-debug.toml", "debug = false\n", "--debug"), (True, False)),
+        ("cli no-debug wins", configured("cli-no-debug.toml", "debug = true\n", "--no-debug"), (False, False)),
+        ("no-debug clears TOML char boxes", configured("toml-char.toml", "debug = true\nshow-char-box = true\n", "--no-debug"), (False, False)),
+        ("char boxes are independently selectable", configured("cli-char.toml", "debug = false\n", "--show-char-box"), (False, True)),
+    )
+    check(
+        "06 six-way diagnostic precedence matrix",
+        all((args.debug, args.show_char_box) == expected for _, args, expected in cases),
+        "; ".join(f"{name}={(args.debug, args.show_char_box)}" for name, args, _ in cases),
+    )
+    conflict = False
+    try:
+        parser_args("--show-char-box", "--no-debug")
+    except SystemExit as exc:
+        conflict = exc.code == 2
+    check("07 explicit char boxes conflict with explicit no-debug", conflict)
+    report, errors = main_module.effective_config_report(cases[-1][1])
+    check(
+        "08 effective config reports final diagnostics",
+        not errors and report["diagnostics"] == {"debug": False, "show_char_box": True},
+    )
+
+
 def main() -> int:
     with tempfile.TemporaryDirectory(prefix="babeldoc-c16-credentials-") as temp:
         root = Path(temp)
@@ -254,6 +289,7 @@ def main() -> int:
         check_translation_free_paths()
         check_cli_missing_key(root)
         check_effective_environment_redaction()
+        check_diagnostic_precedence(root)
     failed = [name for name, ok, _ in RESULTS if not ok]
     print(
         f"spec_check_cli_credentials: {len(RESULTS) - len(failed)}/{len(RESULTS)} passed"

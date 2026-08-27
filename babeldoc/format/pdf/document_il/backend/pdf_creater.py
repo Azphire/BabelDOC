@@ -28,6 +28,10 @@ from babeldoc.format.pdf.new_parser.pdf_token_serializer import serialize_pdf_to
 from babeldoc.format.pdf.translation_config import TranslateResult
 from babeldoc.format.pdf.translation_config import TranslationConfig
 from babeldoc.format.pdf.translation_config import WatermarkOutputMode
+from babeldoc.magazine.debug_overlay import DebugArtifactError
+from babeldoc.magazine.debug_overlay import DebugOverlayLedger
+from babeldoc.magazine.debug_overlay import OverlayKind
+from babeldoc.magazine.debug_overlay import OverlayStyle
 
 logger = logging.getLogger(__name__)
 
@@ -1132,7 +1136,7 @@ class PDFCreater:
 
         return dual
 
-    def write_debug_info(
+    def _write_legacy_debug_info_disabled(
         self,
         pdf: pymupdf.Document,
         translation_config: TranslationConfig,
@@ -1459,7 +1463,7 @@ class PDFCreater:
     ) -> TranslateResult:
         try:
             basename = Path(translation_config.input_file).stem
-            debug_suffix = ".debug" if translation_config.debug else ""
+            debug_suffix = ""
             if (
                 translation_config.watermark_output_mode
                 != WatermarkOutputMode.Watermarked
@@ -1518,13 +1522,6 @@ class PDFCreater:
                 2,
             ) as pbar:
                 if not translation_config.no_mono:
-                    if translation_config.debug:
-                        translation_config.raise_if_cancelled()
-                        pdf.save(
-                            f"{mono_out_path}.decompressed.pdf",
-                            expand=True,
-                            pretty=True,
-                        )
                     translation_config.raise_if_cancelled()
                     saved_cleanly = self.save_pdf_with_timeout(
                         pdf,
@@ -1551,18 +1548,6 @@ class PDFCreater:
                     )
                     translation_config.raise_if_cancelled()
                     original_pdf = pymupdf.open(self.original_pdf_path)
-
-                    if translation_config.debug:
-                        translation_config.raise_if_cancelled()
-                        try:
-                            original_pdf = self.write_debug_info(
-                                original_pdf, translation_config
-                            )
-                        except Exception:
-                            logger.warning(
-                                "Failed to write debug info to dual PDF",
-                                exc_info=True,
-                            )
 
                     if (
                         self.translation_config.only_include_translated_page
@@ -1610,13 +1595,6 @@ class PDFCreater:
                             output="dual",
                             path=str(dual_out_path),
                         )
-                    if translation_config.debug:
-                        translation_config.raise_if_cancelled()
-                        dual.save(
-                            f"{dual_out_path}.decompressed.pdf",
-                            expand=True,
-                            pretty=True,
-                        )
                 pbar.advance()
             if self.translation_config.no_mono:
                 mono_out_path = None
@@ -1651,6 +1629,95 @@ class PDFCreater:
             if not check_font_exists:
                 return self.write(translation_config, True)
             raise
+
+    def write_debug_info(
+        self,
+        pdf: pymupdf.Document,
+        translation_config: TranslationConfig,
+        ledger: DebugOverlayLedger | None = None,
+    ) -> pymupdf.Document:
+        """Draw typed diagnostics directly on a separate PDF copy."""
+        ledger = ledger or translation_config.debug_overlay_ledger
+        colors = {
+            OverlayStyle.BLUE: (0.0, 0.2, 1.0),
+            OverlayStyle.GREEN: (0.0, 0.7, 0.0),
+            OverlayStyle.ORANGE: (1.0, 0.5, 0.0),
+            OverlayStyle.PINK: (1.0, 0.1, 0.7),
+            OverlayStyle.TEAL: (0.0, 0.6, 0.6),
+            OverlayStyle.YELLOW: (0.9, 0.75, 0.0),
+            OverlayStyle.INDIGO: (0.3, 0.1, 0.8),
+        }
+        by_page: dict[int, list] = {}
+        for item in ledger.items:
+            by_page.setdefault(item.source_page_number, []).append(item)
+        for source_page, items in sorted(by_page.items()):
+            page_index = source_page - 1
+            if not 0 <= page_index < pdf.page_count:
+                raise ValueError(
+                    f"overlay source page {source_page} is absent from debug copy"
+                )
+            translation_config.raise_if_cancelled()
+            output_page = pdf[page_index]
+            matrix = output_page.transformation_matrix
+            for item in items:
+                color = colors[item.style]
+                if item.box is not None and item.kind == OverlayKind.BOX:
+                    rect = pymupdf.Rect(*item.box) * matrix
+                    width = 0.4
+                    if item.text:
+                        try:
+                            width = max(0.05, min(float(item.text), 4.0))
+                        except ValueError:
+                            pass
+                    output_page.draw_rect(
+                        rect,
+                        color=color,
+                        width=width,
+                        overlay=True,
+                    )
+                elif item.box is not None and item.kind == OverlayKind.LABEL:
+                    anchor = pymupdf.Point(item.box[0], item.box[3]) * matrix
+                    output_page.insert_text(
+                        anchor,
+                        item.text or "",
+                        fontsize=4.0,
+                        color=color,
+                        overlay=True,
+                    )
+                elif item.kind == OverlayKind.LINE and len(item.points) >= 2:
+                    points = [pymupdf.Point(*point) * matrix for point in item.points]
+                    for start, end in zip(points, points[1:], strict=False):
+                        output_page.draw_line(start, end, color=color, overlay=True)
+                elif item.kind == OverlayKind.POINT:
+                    for point in item.points:
+                        center = pymupdf.Point(*point) * matrix
+                        output_page.draw_circle(center, 1.5, color=color, overlay=True)
+        translation_config.raise_if_cancelled()
+        return pdf
+
+    def write_debug_artifact(
+        self,
+        semantic_pdf_path: str | Path,
+        output_path: str | Path,
+        translation_config: TranslationConfig,
+        ledger: DebugOverlayLedger | None = None,
+    ) -> Path:
+        """Create an overlay copy without reopening or changing semantic IL."""
+        destination = Path(output_path)
+        temporary = destination.with_name(f".{destination.name}.{os.getpid()}.tmp")
+        try:
+            destination.parent.mkdir(parents=True, exist_ok=True)
+            with pymupdf.open(semantic_pdf_path) as pdf:
+                self.write_debug_info(pdf, translation_config, ledger)
+                pdf.save(temporary)
+            temporary.replace(destination)
+            return destination
+        except Exception as exc:
+            try:
+                temporary.unlink(missing_ok=True)
+            except OSError:
+                pass
+            raise DebugArtifactError(destination, exc) from exc
 
     def update_page_content_stream(
         self, check_font_exists, page, pdf, translation_config, skip_char: bool = False

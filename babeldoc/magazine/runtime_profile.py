@@ -4,9 +4,12 @@ from __future__ import annotations
 
 import hashlib
 import json
+import math
 import os
 import subprocess
 from dataclasses import dataclass
+from decimal import ROUND_HALF_EVEN
+from decimal import Decimal
 from pathlib import Path
 from types import MappingProxyType
 
@@ -17,6 +20,8 @@ from babeldoc.magazine.resource_paths import logical_resource_name
 ROOT = Path(__file__).resolve().parents[2]
 DEFAULT_PROFILE_PATH = config_path("magazine_runtime_profile.v1.json")
 RUN_MANIFEST_NAME = "magazine_run_manifest.json"
+MANIFEST_VERSION = 2
+FINGERPRINT_SCHEMA_VERSION = "semantic-fingerprint.v1"
 PROFILE_FORMAT_VERSION = 1
 REVIEWS_ENV = "BABELDOC_REVIEWS_DIR"
 
@@ -279,6 +284,136 @@ def input_summary(input_file: str | Path) -> dict:
     }
 
 
+def _canonical_float(value: float) -> str:
+    number = float(value)
+    if not math.isfinite(number):
+        raise ValueError("semantic fingerprint coordinates must be finite")
+    rounded = Decimal(str(number)).quantize(Decimal("0.0001"), rounding=ROUND_HALF_EVEN)
+    if rounded == 0:
+        rounded = Decimal("0")
+    return format(rounded, "f")
+
+
+def _canonical_box(value) -> list[str] | None:
+    if value is None:
+        return None
+    coordinates = [getattr(value, name, None) for name in ("x", "y", "x2", "y2")]
+    if any(item is None for item in coordinates):
+        return None
+    return [_canonical_float(item) for item in coordinates]
+
+
+def _canonical_value(value):
+    if isinstance(value, float):
+        return _canonical_float(value)
+    if isinstance(value, dict):
+        return {
+            str(key): _canonical_value(item)
+            for key, item in sorted(value.items(), key=lambda pair: str(pair[0]))
+        }
+    if isinstance(value, (list, tuple)):
+        return [_canonical_value(item) for item in value]
+    return value
+
+
+def semantic_projection(stage: str, docs, article_document_ir=None) -> dict:
+    """Canonical semantic state; diagnostic IDs and overlay items cannot enter it."""
+    pages = []
+    for page in docs.page or ():
+        physical_page = int(page.page_number) + 1
+        paragraphs = []
+        for reading_order, paragraph in enumerate(page.pdf_paragraph or ()):
+            paragraphs.append(
+                {
+                    "stable_ref": f"p{physical_page}#{reading_order}",
+                    "reading_order": reading_order,
+                    "role": getattr(paragraph, "layout_label", None)
+                    or "unclassified",
+                    "text": (getattr(paragraph, "unicode", None) or "")
+                    .replace("\r\n", "\n")
+                    .replace("\r", "\n"),
+                    "box": _canonical_box(getattr(paragraph, "box", None)),
+                }
+            )
+        pages.append(
+            {
+                "physical_page_number": physical_page,
+                "mediabox": _canonical_box(
+                    getattr(getattr(page, "mediabox", None), "box", None)
+                ),
+                "cropbox": _canonical_box(
+                    getattr(getattr(page, "cropbox", None), "box", None)
+                ),
+                "paragraphs": paragraphs,
+            }
+        )
+    article_record = None
+    if article_document_ir is not None:
+        article_record = _canonical_value(article_document_ir.to_record())
+    return {
+        "schema_version": FINGERPRINT_SCHEMA_VERSION,
+        "stage": stage,
+        "pages": pages,
+        "article_ir": article_record,
+    }
+
+
+def semantic_fingerprint(stage: str, docs, article_document_ir=None) -> str:
+    payload = json.dumps(
+        semantic_projection(stage, docs, article_document_ir),
+        ensure_ascii=False,
+        sort_keys=True,
+        separators=(",", ":"),
+    ).encode("utf-8")
+    return hashlib.sha256(payload).hexdigest()
+
+
+def _atomic_write_json(path: Path, value: dict) -> Path:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    temporary = path.with_name(f".{path.name}.{os.getpid()}.tmp")
+    temporary.write_text(
+        json.dumps(value, indent=2, sort_keys=True, ensure_ascii=False) + "\n",
+        encoding="utf-8",
+    )
+    temporary.replace(path)
+    return path
+
+
+def record_runtime_stage(
+    translation_config,
+    stage: str,
+    *,
+    docs=None,
+    article_document_ir=None,
+    overlay_ledger=None,
+) -> str:
+    """Append one deterministic stage digest to an existing run manifest."""
+    if overlay_ledger is not None:
+        digest = overlay_ledger.digest()
+        schema_version = overlay_ledger.schema_version
+    else:
+        if docs is None:
+            raise ValueError("semantic runtime stage requires a document")
+        digest = semantic_fingerprint(stage, docs, article_document_ir)
+        schema_version = FINGERPRINT_SCHEMA_VERSION
+    digests = dict(getattr(translation_config, "semantic_stage_digests", {}))
+    digests[stage] = digest
+    translation_config.semantic_stage_digests = digests
+    path = Path(translation_config.get_working_file_path(RUN_MANIFEST_NAME))
+    if not path.exists():
+        return digest
+    manifest = json.loads(path.read_text(encoding="utf-8"))
+    records = dict(manifest.get("stage_records") or {})
+    records[stage] = {
+        "stage": stage,
+        "schema_version": schema_version,
+        "sha256": digest,
+    }
+    manifest["stage_records"] = records
+    _atomic_write_json(path, manifest)
+    return digest
+
+
 def _code_head() -> str:
     try:
         result = subprocess.run(  # noqa: S603 - fixed Git argv reads local metadata
@@ -326,7 +461,7 @@ def preflight_magazine_runtime(translation_config) -> Path | None:
         }
         config_files[source] = profile.sha256
     manifest = {
-        "manifest_version": 1,
+        "manifest_version": MANIFEST_VERSION,
         "mode": getattr(translation_config, "magazine_mode", None),
         "profile": profile_record,
         "effective_switches": switches,
@@ -340,12 +475,30 @@ def preflight_magazine_runtime(translation_config) -> Path | None:
         ),
         "validation": validation,
     }
+    preflight_material = {
+        "schema_version": "runtime-preflight.v2",
+        "input_sha256": manifest["input"]["sha256"],
+        "profile_sha256": None if profile_record is None else profile_record["sha256"],
+        "config_files": config_files,
+        "effective_switches": switches,
+        "code_head": manifest["code_head"],
+    }
+    manifest["stage_records"] = {
+        "preflight": {
+            "stage": "preflight",
+            "schema_version": preflight_material["schema_version"],
+            "sha256": hashlib.sha256(
+                json.dumps(
+                    preflight_material,
+                    ensure_ascii=False,
+                    sort_keys=True,
+                    separators=(",", ":"),
+                ).encode("utf-8")
+            ).hexdigest(),
+        }
+    }
     path = Path(translation_config.get_working_file_path(RUN_MANIFEST_NAME))
-    path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(
-        json.dumps(manifest, indent=2, sort_keys=True, ensure_ascii=False) + "\n",
-        encoding="utf-8",
-    )
+    _atomic_write_json(path, manifest)
     if issues:
         raise MagazineDependencyError(issues)
     return path
@@ -357,7 +510,7 @@ def record_runtime_blocked_reason(translation_config, issue: dict) -> Path:
     if path.exists():
         manifest = json.loads(path.read_text(encoding="utf-8"))
     else:
-        manifest = {"manifest_version": 1}
+        manifest = {"manifest_version": MANIFEST_VERSION}
     reasons = list(manifest.get("blocked_reasons") or ())
     row = dict(issue)
     if row not in reasons:
@@ -368,9 +521,4 @@ def record_runtime_blocked_reason(translation_config, issue: dict) -> Path:
             item, ensure_ascii=False, sort_keys=True, separators=(",", ":")
         ),
     )
-    path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(
-        json.dumps(manifest, indent=2, sort_keys=True, ensure_ascii=False) + "\n",
-        encoding="utf-8",
-    )
-    return path
+    return _atomic_write_json(path, manifest)

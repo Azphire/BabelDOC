@@ -42,9 +42,35 @@ logger = logging.getLogger(__name__)
 __version__ = "0.6.4"
 
 
+class DiagnosticArgumentParser(configargparse.ArgParser):
+    """Apply CLI diagnostic master overrides after TOML expansion."""
+
+    def parse_known_args(self, args=None, namespace=None, **kwargs):
+        raw_args = list(sys.argv[1:] if args is None else args)
+        parsed, remaining = super().parse_known_args(args, namespace, **kwargs)
+        cli_no_debug = "--no-debug" in raw_args
+        cli_debug = "--debug" in raw_args
+        cli_show_char_box = "--show-char-box" in raw_args
+        if cli_debug and cli_no_debug:
+            self.error("--debug cannot be combined with --no-debug")
+        if cli_no_debug and cli_show_char_box:
+            self.error("--show-char-box cannot be combined with --no-debug")
+        if cli_no_debug:
+            parsed.debug = False
+            parsed.show_char_box = False
+        parsed.debug = bool(parsed.debug)
+        parsed.show_char_box = bool(parsed.show_char_box)
+        return parsed, remaining
+
+
+def _open_utf8_config(path):
+    return open(path, encoding="utf-8")  # noqa: PTH123 - configargparse callback
+
+
 def create_parser():
-    parser = configargparse.ArgParser(
+    parser = DiagnosticArgumentParser(
         config_file_parser_class=configargparse.TomlConfigParser(["babeldoc"]),
+        config_file_open_func=_open_utf8_config,
     )
     parser.add_argument(
         "-c",
@@ -65,7 +91,15 @@ def create_parser():
     parser.add_argument(
         "--debug",
         action="store_true",
+        dest="debug",
+        default=False,
         help="Use debug logging level.",
+    )
+    parser.add_argument(
+        "--no-debug",
+        action="store_false",
+        dest="debug",
+        help="Disable all general debug diagnostics from TOML/defaults.",
     )
     parser.add_argument(
         "--warmup",
@@ -637,6 +671,10 @@ def effective_config_report(args) -> tuple[dict, list[str]]:
             "source": logical_resource_name(profile.source),
         }
     report = {
+        "diagnostics": {
+            "debug": bool(args.debug),
+            "show_char_box": bool(args.show_char_box),
+        },
         "inputs": inputs,
         "mode": args.magazine_mode,
         "profile": profile_record,

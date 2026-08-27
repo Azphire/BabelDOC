@@ -64,6 +64,8 @@ from babeldoc.magazine import rotated_lane
 from babeldoc.magazine.article_builder import ArticleBuilder
 from babeldoc.magazine.chain_builder import ChainBuilder
 from babeldoc.magazine.checkpoint import dump_checkpoint
+from babeldoc.magazine.debug_overlay import SIDECAR_NAME as DEBUG_OVERLAY_SIDECAR
+from babeldoc.magazine.debug_overlay import DebugArtifactError
 from babeldoc.magazine.final_pdf_validator import (
     REPORT_NAME as PDF_COMPLIANCE_REPORT_NAME,
 )
@@ -77,6 +79,7 @@ from babeldoc.magazine.page_classifier import PageClassifier
 from babeldoc.magazine.run_trace import REPORT_NAME as RUN_TRACE_REPORT_NAME
 from babeldoc.magazine.run_trace import RunTrace
 from babeldoc.magazine.runtime_profile import preflight_magazine_runtime
+from babeldoc.magazine.runtime_profile import record_runtime_stage
 from babeldoc.progress_monitor import ProgressMonitor
 from babeldoc.utils import memory
 
@@ -628,6 +631,56 @@ def _run_final_pdf_compliance(
         )
 
 
+def _write_debug_artifact_after_validation(
+    translation_config,
+    result,
+) -> None:
+    ledger = translation_config.debug_overlay_ledger
+    if not (translation_config.debug or translation_config.show_char_box) or not len(
+        ledger
+    ):
+        return
+    writer = getattr(result, "_debug_overlay_writer", None)
+    semantic_path = result.mono_pdf_path
+    if writer is None or semantic_path is None:
+        result.debug_artifact_error = DebugArtifactError(
+            "debug.pdf", RuntimeError("semantic mono PDF or overlay writer is unavailable")
+        )
+        return
+    semantic_path = Path(semantic_path)
+    debug_path = semantic_path.with_name(
+        f"{semantic_path.stem}.debug{semantic_path.suffix}"
+    )
+    try:
+        result.debug_mono_pdf_path = writer.write_debug_artifact(
+            semantic_path,
+            debug_path,
+            translation_config,
+            ledger,
+        )
+    except DebugArtifactError as exc:
+        result.debug_artifact_error = exc
+        logger.warning("%s", exc)
+
+
+def _validate_then_write_debug_artifact(
+    translation_config,
+    result,
+    source_pdf,
+    expectations: ComplianceExpectations,
+    writer_warnings,
+) -> None:
+    """Keep diagnostics downstream of the semantic PDF validation boundary."""
+    _run_final_pdf_compliance(
+        translation_config,
+        result,
+        source_pdf,
+        expectations,
+        writer_warnings,
+    )
+    _write_debug_artifact_after_validation(translation_config, result)
+
+
 def do_translate(
     pm: ProgressMonitor, translation_config: TranslationConfig
 ) -> TranslateResult:
@@ -855,6 +908,7 @@ def do_translate(
             final_expectations,
             final_writer_warnings,
         )
+        _write_debug_artifact_after_validation(translation_config, result)
         pm.translate_done(result)
         return result
 
@@ -1069,6 +1123,7 @@ def _do_translate_single(
         # Skip directly to PDF generation
         pdf_creater = PDFCreater(temp_pdf_path, docs, translation_config, mediabox_data)
         result = pdf_creater.write(translation_config)
+        result._debug_overlay_writer = pdf_creater
         _attach_pdf_compliance_context(result, translation_config, docs)
         result.original_pdf_path = translation_config.input_file
         return result
@@ -1162,6 +1217,12 @@ def _do_translate_single(
         if article_document_ir is None
         else RunTrace.from_document(docs, article_document_ir)
     )
+    record_runtime_stage(
+        translation_config,
+        "post_article_ir",
+        docs=docs,
+        article_document_ir=article_document_ir,
+    )
 
     translate_engine = translation_config.translator
     term_extraction_engine = translation_config.get_term_extraction_translator()
@@ -1234,14 +1295,6 @@ def _do_translate_single(
     if translation_config.magazine_checkpoint:
         dump_checkpoint(docs, translation_config, "il_translated")
 
-    if translation_config.debug:
-        AddDebugInformation(translation_config).process(docs)
-        xml_converter.write_json(
-            docs,
-            translation_config.get_working_file_path("add_debug_information.json"),
-        )
-        if translation_config.magazine_checkpoint:
-            dump_checkpoint(docs, translation_config, "add_debug_information")
     mono_watermark_first_page_doc_bytes = None
     dual_watermark_first_page_doc_bytes = None
     try:
@@ -1288,6 +1341,12 @@ def _do_translate_single(
         article_document_ir=article_document_ir,
         typesetting_stage=typesetting_stage,
     )
+    record_runtime_stage(
+        translation_config,
+        "post_typesetting",
+        docs=docs,
+        article_document_ir=article_document_ir,
+    )
 
     # The one point where the translation is written back and the geometry it
     # will be rendered at is final. Reads the document, writes a sidecar.
@@ -1307,8 +1366,26 @@ def _do_translate_single(
         rotated_lane.write_report(translation_config)
         logger.debug(f"finish detection from {temp_pdf_path}")
 
+    record_runtime_stage(
+        translation_config,
+        "post_repair",
+        docs=docs,
+        article_document_ir=article_document_ir,
+    )
+    overlay_ledger = AddDebugInformation(translation_config).process(docs)
+    record_runtime_stage(
+        translation_config,
+        "debug_overlay",
+        overlay_ledger=overlay_ledger,
+    )
+    if len(overlay_ledger):
+        overlay_ledger.write(
+            translation_config.get_working_file_path(DEBUG_OVERLAY_SIDECAR)
+        )
+
     pdf_creater = PDFCreater(temp_pdf_path, docs, translation_config, mediabox_data)
     result = pdf_creater.write(translation_config)
+    result._debug_overlay_writer = pdf_creater
     try:
         if mono_watermark_first_page_doc_bytes:
             mono_watermark_pdf = merge_watermark_doc(

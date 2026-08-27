@@ -85,7 +85,6 @@ from babeldoc.format.pdf.document_il.utils import zstd_helper
 from babeldoc.format.pdf.document_il.utils.fontmap import FontMapper
 from babeldoc.format.pdf.document_il.utils.matrix_helper import decompose_ctm
 from babeldoc.format.pdf.document_il.utils.style_helper import BLACK
-from babeldoc.format.pdf.document_il.utils.style_helper import YELLOW
 from babeldoc.format.pdf.document_il.utils.type3_font_metrics import (
     build_type3_pdf_font_fields,
 )
@@ -1427,13 +1426,21 @@ class ActiveILCreater:
             return
         if self.translation_config.show_char_box:
             pdf_char = self.current_page.pdf_character[-1]
-            self.current_page.pdf_rectangle.append(
-                il_version_1.PdfRectangle(
-                    box=pdf_char.visual_bbox.box,
-                    graphic_state=YELLOW,
-                    debug_info=True,
-                    line_width=0.2,
-                )
+            from babeldoc.magazine.debug_overlay import OverlayCategory
+            from babeldoc.magazine.debug_overlay import OverlayProducer
+            from babeldoc.magazine.debug_overlay import OverlayStyle
+            from babeldoc.magazine.debug_overlay import ledger_for
+            from babeldoc.magazine.debug_overlay import page_bounds
+            from babeldoc.magazine.debug_overlay import physical_page_number
+
+            ledger_for(self.translation_config).add_box(
+                source_page_number=physical_page_number(self.current_page),
+                producer=OverlayProducer.ACTIVE_FRONTEND_CHAR_BOX,
+                category=OverlayCategory.CHARACTER_BOX,
+                page_bounds=page_bounds(self.current_page),
+                box=pdf_char.visual_bbox.box,
+                text="0.2",
+                style=OverlayStyle.YELLOW,
             )
 
     def _collect_valid_char(self, ch: str):

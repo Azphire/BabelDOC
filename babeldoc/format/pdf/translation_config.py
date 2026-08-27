@@ -355,6 +355,12 @@ class TranslationConfig:
             )
         self.table_model = None
         self.show_char_box = show_char_box
+        # Diagnostics are deliberately run-scoped and live outside the XML/JSON
+        # document IL.  Import locally to keep the core configuration module's
+        # startup surface small.
+        from babeldoc.magazine.debug_overlay import DebugOverlayLedger
+
+        self.debug_overlay_ledger = DebugOverlayLedger()
         self.custom_system_prompt = custom_system_prompt
         self.add_formula_placehold_hint = add_formula_placehold_hint
         self.auto_extract_glossary = auto_extract_glossary
@@ -624,6 +630,9 @@ class TranslateResult:
     final_pdf_compliance_status: str | None
     final_pdf_compliance_path: Path | None
     fully_compliant: bool
+    debug_mono_pdf_path: Path | None
+    debug_dual_pdf_path: Path | None
+    debug_artifact_error: Exception | None
 
     def __init__(
         self,
@@ -646,6 +655,9 @@ class TranslateResult:
         self.final_pdf_compliance_status = None
         self.final_pdf_compliance_path = None
         self.fully_compliant = False
+        self.debug_mono_pdf_path = None
+        self.debug_dual_pdf_path = None
+        self.debug_artifact_error = None
 
     def __str__(self):
         """Return a human-readable string representation of the translation result."""

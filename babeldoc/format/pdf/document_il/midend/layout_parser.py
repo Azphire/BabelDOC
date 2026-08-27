@@ -10,8 +10,13 @@ from pymupdf import Document
 
 import babeldoc.format.pdf.document_il.utils.extract_char
 from babeldoc.format.pdf.document_il import il_version_1
-from babeldoc.format.pdf.document_il.utils.style_helper import GREEN
 from babeldoc.format.pdf.translation_config import TranslationConfig
+from babeldoc.magazine.debug_overlay import OverlayCategory
+from babeldoc.magazine.debug_overlay import OverlayProducer
+from babeldoc.magazine.debug_overlay import OverlayStyle
+from babeldoc.magazine.debug_overlay import ledger_for
+from babeldoc.magazine.debug_overlay import page_bounds
+from babeldoc.magazine.debug_overlay import physical_page_number
 
 logger = logging.getLogger(__name__)
 
@@ -59,61 +64,36 @@ class LayoutParser:
         cv2.imwrite(str(output_path), img_bgr)
 
     def _save_debug_box_to_page(self, page: il_version_1.Page):
-        """Save debug boxes and text labels to the PDF page."""
+        """Record layout diagnostics without mutating semantic page elements."""
         if not self.translation_config.debug:
             return
-
-        color = GREEN
-
+        ledger = ledger_for(self.translation_config)
+        bounds = page_bounds(page)
+        source_page = physical_page_number(page)
         for layout in page.page_layout:
-            # Create a rectangle box
             scale_factor = 1
             if layout.class_name == "fallback_line":
                 scale_factor = 0.1
-            rect = il_version_1.PdfRectangle(
-                box=il_version_1.Box(
-                    x=layout.box.x,
-                    y=layout.box.y,
-                    x2=layout.box.x2,
-                    y2=layout.box.y2,
-                ),
-                graphic_state=color,
-                debug_info=True,
-                line_width=0.4 * scale_factor,
+            related_ref = f"p{source_page}:layout#{layout.id}"
+            ledger.add_box(
+                source_page_number=source_page,
+                producer=OverlayProducer.LAYOUT_PARSER,
+                category=OverlayCategory.LAYOUT,
+                page_bounds=bounds,
+                box=layout.box,
+                text=str(0.4 * scale_factor),
+                style=OverlayStyle.GREEN,
+                related_semantic_ref=related_ref,
             )
-            page.pdf_rectangle.append(rect)
-
-            # Create text label at top-left corner
-            # Note: PDF coordinates are from bottom-left,
-            # so we use y2 for top position
-            style = il_version_1.PdfStyle(
-                font_id="base",
-                font_size=4 * scale_factor,
-                graphic_state=color,
-            )
-            page.pdf_paragraph.append(
-                il_version_1.PdfParagraph(
-                    first_line_indent=False,
-                    box=il_version_1.Box(
-                        x=layout.box.x,
-                        y=layout.box.y2,
-                        x2=layout.box.x2,
-                        y2=layout.box.y2 + 5,
-                    ),
-                    vertical=False,
-                    pdf_style=style,
-                    unicode=layout.class_name,
-                    pdf_paragraph_composition=[
-                        il_version_1.PdfParagraphComposition(
-                            pdf_same_style_unicode_characters=il_version_1.PdfSameStyleUnicodeCharacters(
-                                unicode=layout.class_name,
-                                pdf_style=style,
-                                debug_info=True,
-                            ),
-                        ),
-                    ],
-                    xobj_id=-1,
-                ),
+            ledger.add_label(
+                source_page_number=source_page,
+                producer=OverlayProducer.LAYOUT_PARSER,
+                category=OverlayCategory.LAYOUT,
+                page_bounds=bounds,
+                box=layout.box,
+                text=layout.class_name,
+                style=OverlayStyle.GREEN,
+                related_semantic_ref=related_ref,
             )
 
     def process(self, docs: il_version_1.Document, mupdf_doc: Document):

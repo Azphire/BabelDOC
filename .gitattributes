@@ -9,6 +9,7 @@
 
 prompts/**              text eol=lf
 configs/**              text eol=lf
+babeldoc*.toml          text eol=lf
 spec_checks/**          text eol=lf
 docs/**                 text=auto eol=lf
 

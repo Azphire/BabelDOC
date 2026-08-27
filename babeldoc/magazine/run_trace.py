@@ -5,6 +5,7 @@ from __future__ import annotations
 import copy
 import hashlib
 import json
+import math
 import re
 import threading
 from collections.abc import Iterable
@@ -105,14 +106,34 @@ def _box_tuple(box) -> BoxTuple | None:
     return tuple(float(value) for value in values)
 
 
-def _checked_box(box: Sequence[float] | None) -> BoxTuple | None:
+def _checked_box(
+    box: Sequence[float] | None,
+    *,
+    source_page: int | None = None,
+    stage: str = "run_trace",
+    stable_ref: str = "unknown",
+    role: str = "semantic_geometry",
+    provenance: str = "source",
+    before: Sequence[float] | None = None,
+    candidate: Sequence[float] | None = None,
+) -> BoxTuple | None:
     if box is None:
         return None
     if len(box) != 4:
         raise ValueError("geometry boxes must contain four coordinates")
     values = tuple(float(value) for value in box)
+    invalid = not all(math.isfinite(value) for value in values)
+    reason = "geometry box coordinates must be finite" if invalid else None
     if values[0] > values[2] or values[1] > values[3]:
-        raise ValueError("geometry box coordinates must be ordered")
+        reason = "geometry box coordinates must be ordered"
+    if reason is not None:
+        before_value = None if before is None else tuple(before)
+        candidate_value = values if candidate is None else tuple(candidate)
+        raise ValueError(
+            f"{reason}; source_page={source_page} stage={stage} "
+            f"stable_ref={stable_ref} role={role} provenance={provenance} "
+            f"before={before_value} candidate={candidate_value}"
+        )
     return values
 
 
@@ -564,7 +585,16 @@ class RunTrace:
                 source_ref=reference,
                 page=page,
                 index=index,
-                source_box=_checked_box(source_box),
+                source_box=_checked_box(
+                    source_box,
+                    source_page=page,
+                    stage=SOURCE_REF_FREEZE_STAGE,
+                    stable_ref=reference,
+                    role="source_paragraph",
+                    provenance="source",
+                    before=source_box,
+                    candidate=source_box,
+                ),
                 text_hash=text_hash,
                 style_hash=style_hash,
                 article_id=article_id,

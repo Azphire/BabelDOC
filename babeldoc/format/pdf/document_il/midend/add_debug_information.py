@@ -1,180 +1,188 @@
-import logging
+"""Build final diagnostics from semantic geometry without mutating the IL."""
 
-import babeldoc.format.pdf.document_il.il_version_1 as il_version_1
-from babeldoc.format.pdf.document_il import GraphicState
-from babeldoc.format.pdf.document_il.utils.style_helper import BLUE
-from babeldoc.format.pdf.document_il.utils.style_helper import ORANGE
-from babeldoc.format.pdf.document_il.utils.style_helper import PINK
-from babeldoc.format.pdf.document_il.utils.style_helper import TEAL
-from babeldoc.format.pdf.document_il.utils.style_helper import YELLOW
+from __future__ import annotations
+
+import math
+
+from babeldoc.format.pdf.document_il import il_version_1
 from babeldoc.format.pdf.translation_config import TranslationConfig
-
-logger = logging.getLogger(__name__)
+from babeldoc.magazine.debug_overlay import OverlayCategory
+from babeldoc.magazine.debug_overlay import OverlayProducer
+from babeldoc.magazine.debug_overlay import OverlayStyle
+from babeldoc.magazine.debug_overlay import ledger_for
+from babeldoc.magazine.debug_overlay import page_bounds
+from babeldoc.magazine.debug_overlay import physical_page_number
 
 
 class AddDebugInformation:
-    stage_name = "Add Debug Information"
+    stage_name = "Build Debug Overlay Ledger"
 
     def __init__(self, translation_config: TranslationConfig):
         self.translation_config = translation_config
-        self.model = translation_config.doc_layout_model
 
     def process(self, docs: il_version_1.Document):
-        if not self.translation_config.debug:
+        ledger = ledger_for(self.translation_config)
+        if self.translation_config.debug:
+            for page in docs.page:
+                self.process_page(page)
+        return ledger
+
+    def _box(
+        self,
+        page,
+        box,
+        *,
+        category: OverlayCategory,
+        style: OverlayStyle,
+        related_ref: str | None,
+        width: float = 0.4,
+    ) -> None:
+        box = self._renderable_box(page, box)
+        if box is None:
             return
-
-        for page in docs.page:
-            self.process_page(page)
-
-    def _create_rectangle(
-        self,
-        box: il_version_1.Box,
-        color: GraphicState,
-        line_width: float | None = None,
-    ):
-        rect = il_version_1.PdfRectangle(
+        ledger_for(self.translation_config).add_box(
+            source_page_number=physical_page_number(page),
+            producer=OverlayProducer.ADD_DEBUG_INFORMATION,
+            category=category,
+            page_bounds=page_bounds(page),
             box=box,
-            graphic_state=color,
-            debug_info=True,
-            line_width=line_width,
+            text=str(width),
+            style=style,
+            related_semantic_ref=related_ref,
         )
-        return rect
 
-    def _create_text(
+    def _label(
         self,
+        page,
+        box,
         text: str,
-        color: GraphicState,
-        box: il_version_1.Box,
-        font_size: float = 4,
-    ):
-        style = il_version_1.PdfStyle(
-            font_id="base",
-            font_size=font_size,
-            graphic_state=color,
+        *,
+        category: OverlayCategory,
+        style: OverlayStyle,
+        related_ref: str | None,
+    ) -> None:
+        box = self._renderable_box(page, box)
+        if box is None:
+            return
+        ledger_for(self.translation_config).add_label(
+            source_page_number=physical_page_number(page),
+            producer=OverlayProducer.ADD_DEBUG_INFORMATION,
+            category=category,
+            page_bounds=page_bounds(page),
+            box=box,
+            text=text,
+            style=style,
+            related_semantic_ref=related_ref,
         )
-        return il_version_1.PdfParagraph(
-            first_line_indent=False,
-            box=il_version_1.Box(
-                x=box.x,
-                y=box.y2,
-                x2=box.x2,
-                y2=box.y2 + 5,
-            ),
-            vertical=False,
-            pdf_style=style,
-            unicode=text,
-            pdf_paragraph_composition=[
-                il_version_1.PdfParagraphComposition(
-                    pdf_same_style_unicode_characters=il_version_1.PdfSameStyleUnicodeCharacters(
-                        unicode=text,
-                        pdf_style=style,
-                        debug_info=True,
-                    ),
-                ),
-            ],
-            xobj_id=-1,
+
+    @staticmethod
+    def _renderable_box(page, value):
+        raw = tuple(float(getattr(value, name)) for name in ("x", "y", "x2", "y2"))
+        if not all(math.isfinite(item) for item in raw):
+            return None
+        if raw[0] > raw[2] or raw[1] > raw[3]:
+            return None
+        bounds = tuple(
+            float(getattr(page_bounds(page), name)) for name in ("x", "y", "x2", "y2")
+        )
+        return (
+            max(bounds[0], min(raw[0], bounds[2])),
+            max(bounds[1], min(raw[1], bounds[3])),
+            max(bounds[0], min(raw[2], bounds[2])),
+            max(bounds[1], min(raw[3], bounds[3])),
         )
 
     def process_page(self, page: il_version_1.Page):
-        # Add page number text at top-left corner
-        page_width = page.cropbox.box.x2 - page.cropbox.box.x
-        page_height = page.cropbox.box.y2 - page.cropbox.box.y
-        page_number_text = f"pagenumber: {page.page_number + 1}"
-        page_number_box = il_version_1.Box(
-            x=page.cropbox.box.x + page_width * 0.02,
-            y=page.cropbox.box.y,
-            x2=page.cropbox.box.x2,
-            y2=page.cropbox.box.y2 - page_height * 0.02,
+        source_page = physical_page_number(page)
+        bounds = page_bounds(page)
+        self._label(
+            page,
+            bounds,
+            f"pagenumber: {source_page}",
+            category=OverlayCategory.PAGE,
+            style=OverlayStyle.BLUE,
+            related_ref=None,
         )
-        page_number_paragraph = self._create_text(
-            page_number_text,
-            BLUE,
-            page_number_box,
-        )
-        page.pdf_paragraph.append(page_number_paragraph)
-
-        new_paragraphs = []
-
-        for paragraph in page.pdf_paragraph:
-            if not paragraph.pdf_paragraph_composition:
+        for paragraph_index, paragraph in enumerate(page.pdf_paragraph):
+            if paragraph.box is None:
                 continue
-            if any(
-                x.pdf_same_style_unicode_characters.debug_info
-                for x in paragraph.pdf_paragraph_composition
-                if x.pdf_same_style_unicode_characters
-            ):
-                continue
-            # Create a rectangle box
-            rect = self._create_rectangle(paragraph.box, BLUE)
-
-            page.pdf_rectangle.append(rect)
-
-            # Create text label at top-left corner
-            # Note: PDF coordinates are from bottom-left,
-            # so we use y2 for top position
-
-            debug_text = "paragraph"
-            if hasattr(paragraph, "debug_id") and paragraph.debug_id:
-                debug_text = (
-                    f"paragraph[{paragraph.debug_id}]-[{paragraph.layout_label}]"
-                )
-            new_paragraphs.append(self._create_text(debug_text, BLUE, paragraph.box))
-
+            reference = f"p{source_page}#{paragraph_index}"
+            self._box(
+                page,
+                paragraph.box,
+                category=OverlayCategory.PARAGRAPH,
+                style=OverlayStyle.BLUE,
+                related_ref=reference,
+            )
+            self._label(
+                page,
+                paragraph.box,
+                f"paragraph[{reference}]-[{paragraph.layout_label}]",
+                category=OverlayCategory.PARAGRAPH,
+                style=OverlayStyle.BLUE,
+                related_ref=reference,
+            )
             for composition in paragraph.pdf_paragraph_composition:
-                if composition.pdf_formula:
-                    new_paragraphs.append(
-                        self._create_text(
-                            "formula",
-                            ORANGE,
-                            composition.pdf_formula.box,
-                        ),
-                    )
-                    page.pdf_rectangle.append(
-                        self._create_rectangle(
-                            composition.pdf_formula.box,
-                            ORANGE,
-                        ),
-                    )
-                    for char in composition.pdf_formula.pdf_character:
-                        page.pdf_rectangle.append(
-                            self._create_rectangle(
-                                char.visual_bbox.box, TEAL, line_width=0.2
-                            ),
+                formula = composition.pdf_formula
+                if formula is None or formula.box is None:
+                    continue
+                self._box(
+                    page,
+                    formula.box,
+                    category=OverlayCategory.FORMULA,
+                    style=OverlayStyle.ORANGE,
+                    related_ref=reference,
+                )
+                self._label(
+                    page,
+                    formula.box,
+                    "formula",
+                    category=OverlayCategory.FORMULA,
+                    style=OverlayStyle.ORANGE,
+                    related_ref=reference,
+                )
+                for char in formula.pdf_character:
+                    visual = getattr(getattr(char, "visual_bbox", None), "box", None)
+                    if visual is not None:
+                        self._box(
+                            page,
+                            visual,
+                            category=OverlayCategory.CHARACTER_BOX,
+                            style=OverlayStyle.TEAL,
+                            related_ref=reference,
+                            width=0.2,
                         )
-                        # page.pdf_rectangle.append(
-                        #     self._create_rectangle(char.box, CYAN, line_width=0.2),
-                        # )
-
-            for xobj in page.pdf_xobject:
-                # new_paragraphs.append(
-                #     self._create_text(
-                #         "xobj",
-                #         YELLOW,
-                #         xobj.box,
-                #     ),
-                # )
-                page.pdf_rectangle.append(
-                    self._create_rectangle(
-                        xobj.box,
-                        YELLOW,
-                    ),
+        for index, xobj in enumerate(page.pdf_xobject):
+            if xobj.box is not None:
+                self._box(
+                    page,
+                    xobj.box,
+                    category=OverlayCategory.XOBJECT,
+                    style=OverlayStyle.YELLOW,
+                    related_ref=f"p{source_page}:pdf_xobject#{index}",
                 )
-
-            for form in page.pdf_form:
-                debug_text = "Form"
-                if form.pdf_form_subtype.pdf_xobj_form:
-                    debug_text += f"[{form.pdf_form_subtype.pdf_xobj_form.do_args}]"
-                elif form.pdf_form_subtype.pdf_inline_form:
-                    debug_text += "[inline]"
-
-                new_paragraphs.append(
-                    self._create_text(debug_text, PINK, form.box, font_size=0.4),
-                )
-                page.pdf_rectangle.append(
-                    self._create_rectangle(
-                        form.box,
-                        PINK,
-                    ),
-                )
-
-        page.pdf_paragraph.extend(new_paragraphs)
+        for index, form in enumerate(page.pdf_form):
+            if form.box is None:
+                continue
+            reference = f"p{source_page}:pdf_form#{index}"
+            self._box(
+                page,
+                form.box,
+                category=OverlayCategory.FORM,
+                style=OverlayStyle.PINK,
+                related_ref=reference,
+            )
+            subtype = form.pdf_form_subtype
+            text = "Form"
+            if subtype is not None and subtype.pdf_xobj_form:
+                text += f"[{subtype.pdf_xobj_form.do_args}]"
+            elif subtype is not None and subtype.pdf_inline_form:
+                text += "[inline]"
+            self._label(
+                page,
+                form.box,
+                text,
+                category=OverlayCategory.FORM,
+                style=OverlayStyle.PINK,
+                related_ref=reference,
+            )

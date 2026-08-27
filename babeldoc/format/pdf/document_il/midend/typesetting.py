@@ -32,6 +32,8 @@ from babeldoc.format.pdf.document_il.utils.formular_helper import update_formula
 from babeldoc.format.pdf.document_il.utils.layout_helper import box_to_tuple
 from babeldoc.format.pdf.translation_config import TranslationConfig
 from babeldoc.format.pdf.translation_config import WatermarkOutputMode
+from babeldoc.magazine.geometry_write import GeometryRole
+from babeldoc.magazine.geometry_write import propose_box_update
 from babeldoc.magazine.page_features import validate_bounded_config
 from babeldoc.magazine.resource_paths import config_path
 
@@ -1567,6 +1569,10 @@ class Typesetting:
                 if p.box
                 and all(c is not None for c in [p.box.x, p.box.y, p.box.x2, p.box.y2])
             ]
+            stable_refs = {
+                id(paragraph): f"p{page.page_number + 1}#{position}"
+                for position, paragraph in enumerate(page.pdf_paragraph)
+            }
 
             for i, para in enumerate(valid_paras):
                 para_map[i] = para
@@ -1611,7 +1617,22 @@ class Typesetting:
 
                     new_y = max_y2 + required_gap
                     if p_upper.box and new_y < p_upper.box.y2:
-                        p_upper.box.y = new_y
+                        result = propose_box_update(
+                            p_upper.box,
+                            (
+                                p_upper.box.x,
+                                new_y,
+                                p_upper.box.x2,
+                                p_upper.box.y2,
+                            ),
+                            page_bounds=page.cropbox.box,
+                            stage="typesetting.paragraph_gap",
+                            source_page=page.page_number + 1,
+                            stable_ref=stable_refs[id(p_upper)],
+                            role=GeometryRole.PROCESSABLE_TEXT,
+                        )
+                        if not result.committed:
+                            logger.warning("%s", result.refusal)
         except Exception as e:
             logger.warning(
                 f"Failed to adjust paragraph positions on page {page.page_number}: {e}"
@@ -1629,8 +1650,6 @@ class Typesetting:
             graphic_state=il_version_1.GraphicState(),
         )
         text = f"本文档由 funstory.ai 的开源 PDF 翻译库 BabelDOC {WATERMARK_VERSION} (https://github.com/funstory-ai/BabelDOC) 翻译，本仓库正在积极的建设当中，欢迎 star 和关注。"
-        if self.translation_config.debug:
-            text += "\n 当前为 DEBUG 模式，将显示更多辅助信息。请注意，部分框的位置对应原文，但在译文中可能不正确。"
         page.pdf_paragraph.append(
             il_version_1.PdfParagraph(
                 first_line_indent=False,
