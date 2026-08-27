@@ -56,10 +56,14 @@ from babeldoc.format.pdf.document_il.midend.typesetting import Typesetting  # no
 from babeldoc.magazine import chain_backfill  # noqa: E402
 from babeldoc.magazine import chain_translation  # noqa: E402
 from babeldoc.magazine.article_context import EMPTY_CONTEXT  # noqa: E402
+from babeldoc.magazine.article_ir import ArticleChain  # noqa: E402
 from babeldoc.magazine.article_ir import ArticleDocumentIR  # noqa: E402
 from babeldoc.magazine.article_ir import ArticleIR  # noqa: E402
 from babeldoc.magazine.article_ir import ArticlePolicyEvidence  # noqa: E402
 from babeldoc.magazine.article_ir import ArticleRegionSlot  # noqa: E402
+from babeldoc.magazine.article_ir import ChainHeadStartEvidence  # noqa: E402
+from babeldoc.magazine.article_ir import ChainSourceRange  # noqa: E402
+from babeldoc.magazine.article_ir import ChainTailEndEvidence  # noqa: E402
 from babeldoc.magazine.article_ir import SourceElementRef  # noqa: E402
 from babeldoc.magazine.run_trace import ALLOCATION_RELEASED  # noqa: E402
 from babeldoc.magazine.run_trace import ChainResultState  # noqa: E402
@@ -305,6 +309,30 @@ def fixture(target: str):
         by_element=dict.fromkeys(refs, "article-a"),
         by_chain={"chain-canonical": "article-a"},
         by_chain_member=dict.fromkeys(refs, "chain-canonical"),
+        chains=(
+            ArticleChain(
+                chain_id="chain-canonical",
+                article_id="article-a",
+                ordered_member_refs=refs,
+                source_ranges=tuple(
+                    ChainSourceRange(
+                        source_ref=reference,
+                        start=0,
+                        end=len(paragraphs[index].unicode or ""),
+                        source_sha256=hashlib.sha256(
+                            (paragraphs[index].unicode or "").encode("utf-8")
+                        ).hexdigest(),
+                    )
+                    for index, reference in enumerate(refs)
+                ),
+                member_physical_pages=(1, 1, 2, 2),
+                head_start_evidence=(
+                    ChainHeadStartEvidence.SENTENCE_CONTINUATION
+                ),
+                tail_end_evidence=ChainTailEndEvidence.NO_TERMINAL_PUNCTUATION,
+                decision_reason="synthetic_fixture",
+            ),
+        ),
     )
     mapper = FixedWidthMapper()
     work = Path(tempfile.mkdtemp(prefix="babeldoc-c06-"))

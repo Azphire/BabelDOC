@@ -156,10 +156,15 @@ def check_two_pages_merge_and_report_issue(root: Path) -> None:
         )
     )
     ir, _payload = build(docs, root / "two-page")
-    check("two pages become one article", len(ir.articles) == 1)
-    check("merged article pages", ir.articles[0].pages == (1, 2))
+    check("two opener pages stay two provisional articles", len(ir.articles) == 2)
+    check(
+        "provisional article pages are not chain-merged",
+        [article.pages for article in ir.articles] == [(1,), (2,)],
+    )
     check("page index is singular", len(ir.by_page) == 2)
-    elements = ir.articles[0].elements
+    elements = tuple(
+        element for article in ir.articles for element in article.elements
+    )
     check(
         "source elements carry stable audit material",
         [element.source_ref for element in elements] == ["p1#0", "p2#0"]
@@ -175,9 +180,10 @@ def check_two_pages_merge_and_report_issue(root: Path) -> None:
     check(
         "slots are indexed geometry",
         all(
-            slot.article_id == ir.articles[0].article_id
+            slot.article_id in ir.by_page.values()
             and slot.capacity_hint > 0
-            for slot in ir.articles[0].slots
+            for article in ir.articles
+            for slot in article.slots
         ),
     )
     check(
@@ -186,15 +192,11 @@ def check_two_pages_merge_and_report_issue(root: Path) -> None:
     )
     check(
         "canonical chains reverse-index articles",
-        set(ir.by_chain) == set(ir.articles[0].chain_ids),
+        not ir.by_chain and all(not article.chain_ids for article in ir.articles),
     )
     check(
         "chain conflict is structured",
-        any(
-            issue.code == article_builder.ISSUE_CHAIN_SPANS_ARTICLES
-            and len(issue.article_ids) == 2
-            for issue in ir.issues
-        ),
+        not ir.issues,
     )
 
 
@@ -238,10 +240,10 @@ def check_three_page_split(root: Path) -> None:
         ]
     )
     ir, _ = build(docs, root / "three-page")
-    check("three pages make two articles", len(ir.articles) == 2)
+    check("three opener pages stay three articles", len(ir.articles) == 3)
     check(
-        "first two pages stay together",
-        [article.pages for article in ir.articles] == [(1, 2), (3,)],
+        "legacy chain fields cannot merge owners",
+        [article.pages for article in ir.articles] == [(1,), (2,), (3,)],
     )
 
 
@@ -273,14 +275,14 @@ def check_same_page_multi_article_guard(root: Path) -> None:
         and unsupported[0].reason
         == article_builder.UNSUPPORTED_SAME_PAGE_MULTI_ARTICLE,
     )
-    check("unsupported page has no slots", not ir.articles[0].slots)
+    check("unsupported page has no article or slots", not ir.articles)
     check(
         "unsupported policy forbids article reflow",
-        not ir.articles[0].policy_evidence[0].article_reflow_allowed,
+        not any(article.slots for article in ir.articles),
     )
     check(
         "unsupported page remains one identity",
-        list(ir.by_page) == [1] and len(set(ir.by_page.values())) == 1,
+        not ir.by_page,
     )
     joined_title = document(
         [
@@ -308,8 +310,8 @@ def check_same_page_multi_article_guard(root: Path) -> None:
     )
     joined_ir, _ = build(joined_title, root / "joined-title")
     check(
-        "one chained display is not a second article",
-        not joined_ir.unsupported_pages,
+        "legacy chain fields cannot bypass same-page unsupported guard",
+        bool(joined_ir.unsupported_pages) and not joined_ir.by_page,
     )
 
 
@@ -377,8 +379,9 @@ def check_negative_contracts() -> None:
     )
     check(
         "high level retains the canonical object",
-        "article_document_ir = ArticleBuilder(translation_config).process(docs)"
-        in high_level,
+        "provisional_owners = article_builder.build_provisional(docs)"
+        in high_level
+        and "article_document_ir = article_builder.finalize(" in high_level,
     )
     check(
         "high level passes the canonical object to context",

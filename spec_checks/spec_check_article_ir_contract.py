@@ -168,7 +168,8 @@ def main() -> int:
             len(unsupported.unsupported_pages) == 1
             and unsupported.unsupported_pages[0].reason
             == UNSUPPORTED_SAME_PAGE_MULTI_ARTICLE
-            and unsupported.articles[0].slots == (),
+            and not unsupported.articles
+            and not unsupported.by_page,
         )
 
     check(

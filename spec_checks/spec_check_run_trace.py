@@ -15,8 +15,12 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
 from babeldoc.magazine import run_trace  # noqa: E402
+from babeldoc.magazine.article_ir import ArticleChain  # noqa: E402
 from babeldoc.magazine.article_ir import ArticleDocumentIR  # noqa: E402
 from babeldoc.magazine.article_ir import ArticleIR  # noqa: E402
+from babeldoc.magazine.article_ir import ChainHeadStartEvidence  # noqa: E402
+from babeldoc.magazine.article_ir import ChainSourceRange  # noqa: E402
+from babeldoc.magazine.article_ir import ChainTailEndEvidence  # noqa: E402
 from babeldoc.magazine.article_ir import SourceElementRef  # noqa: E402
 from spec_checks.delivery_commits import delivery_files  # noqa: E402
 
@@ -422,29 +426,35 @@ def check_source_ref_freeze() -> None:
 
 
 def check_article_and_chain_keys_are_shared() -> None:
-    paragraph = SimpleNamespace(
-        box=SimpleNamespace(x=1.0, y=2.0, x2=3.0, y2=4.0),
-        unicode="member",
-        pdf_style=None,
-        chain_id="ephemeral-chain-id",
-    )
+    paragraphs = [
+        SimpleNamespace(
+            box=SimpleNamespace(x=1.0, y=2.0, x2=3.0, y2=4.0),
+            unicode=text,
+            pdf_style=None,
+            chain_id="ephemeral-chain-id",
+        )
+        for text in ("member one", "member two")
+    ]
     style_hash = run_trace.hash_record(
         {"font_id": None, "font_size": None, "graphic_state": None}
     )
-    element = SourceElementRef(
-        source_ref="p1#0",
-        page=1,
-        column=0,
-        reading_order=0,
-        role="text",
-        source_box=(1.0, 2.0, 3.0, 4.0),
-        source_text_hash=run_trace.hash_text("member"),
-        style_hash=style_hash,
+    elements = tuple(
+        SourceElementRef(
+            source_ref=f"p1#{index}",
+            page=1,
+            column=index,
+            reading_order=index,
+            role="text",
+            source_box=(1.0, 2.0, 3.0, 4.0),
+            source_text_hash=run_trace.hash_text(paragraph.unicode),
+            style_hash=style_hash,
+        )
+        for index, paragraph in enumerate(paragraphs)
     )
     article = ArticleIR(
         article_id="article-stable",
         pages=(1,),
-        elements=(element,),
+        elements=elements,
         slots=(),
         chain_ids=("chain-stable",),
         policy_evidence=(),
@@ -452,13 +462,43 @@ def check_article_and_chain_keys_are_shared() -> None:
     article_document = ArticleDocumentIR(
         articles=(article,),
         by_page={1: article.article_id},
-        by_element={element.source_ref: article.article_id},
+        by_element={element.source_ref: article.article_id for element in elements},
         by_chain={"chain-stable": article.article_id},
-        by_chain_member={element.source_ref: "chain-stable"},
+        by_chain_member=dict.fromkeys(
+            (element.source_ref for element in elements), "chain-stable"
+        ),
+        chains=(
+            ArticleChain(
+                chain_id="chain-stable",
+                article_id=article.article_id,
+                ordered_member_refs=tuple(
+                    element.source_ref for element in elements
+                ),
+                source_ranges=tuple(
+                    ChainSourceRange(
+                        source_ref=element.source_ref,
+                        start=0,
+                        end=len(paragraph.unicode),
+                        source_sha256=run_trace.hash_text(paragraph.unicode),
+                    )
+                    for element, paragraph in zip(
+                        elements, paragraphs, strict=True
+                    )
+                ),
+                member_physical_pages=(1, 1),
+                head_start_evidence=(
+                    ChainHeadStartEvidence.NOT_APPLICABLE_SAME_PAGE_COLUMN
+                ),
+                tail_end_evidence=(
+                    ChainTailEndEvidence.NOT_APPLICABLE_SAME_PAGE_COLUMN
+                ),
+                decision_reason="synthetic_fixture",
+            ),
+        ),
     )
     trace = run_trace.RunTrace.from_document(
         SimpleNamespace(
-            page=[SimpleNamespace(page_number=0, pdf_paragraph=[paragraph])]
+            page=[SimpleNamespace(page_number=0, pdf_paragraph=paragraphs)]
         ),
         article_document,
     )
@@ -467,6 +507,8 @@ def check_article_and_chain_keys_are_shared() -> None:
         trace.sources["p1#0"].article_id == "article-stable"
         and trace.sources["p1#0"].chain_id == "chain-stable",
     )
+
+
 def changed_files() -> set[str]:
     return delivery_files("C03", ROOT)
 

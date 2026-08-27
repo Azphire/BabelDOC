@@ -48,10 +48,14 @@ from babeldoc.format.pdf.document_il import PdfStyle  # noqa: E402
 from babeldoc.format.pdf.document_il import il_version_1  # noqa: E402
 from babeldoc.format.pdf.document_il.midend.typesetting import Typesetting  # noqa: E402
 from babeldoc.magazine import article_flow  # noqa: E402
+from babeldoc.magazine.article_ir import ArticleChain  # noqa: E402
 from babeldoc.magazine.article_ir import ArticleDocumentIR  # noqa: E402
 from babeldoc.magazine.article_ir import ArticleIR  # noqa: E402
 from babeldoc.magazine.article_ir import ArticlePolicyEvidence  # noqa: E402
 from babeldoc.magazine.article_ir import ArticleRegionSlot  # noqa: E402
+from babeldoc.magazine.article_ir import ChainHeadStartEvidence  # noqa: E402
+from babeldoc.magazine.article_ir import ChainSourceRange  # noqa: E402
+from babeldoc.magazine.article_ir import ChainTailEndEvidence  # noqa: E402
 from babeldoc.magazine.article_ir import SourceElementRef  # noqa: E402
 from babeldoc.magazine.article_ir import UnsupportedArticlePage  # noqa: E402
 from babeldoc.magazine.fixed_assets import content_digest  # noqa: E402
@@ -237,6 +241,30 @@ def fixture(targets: tuple[str, ...], *, unsupported: bool = False):
         by_element={item.source_ref: "article-a" for item in elements},
         by_chain={"chain-a": "article-a"},
         by_chain_member={"p1#3": "chain-a", "p1#4": "chain-a"},
+        chains=(
+            ArticleChain(
+                chain_id="chain-a",
+                article_id="article-a",
+                ordered_member_refs=("p1#3", "p1#4"),
+                source_ranges=tuple(
+                    ChainSourceRange(
+                        source_ref=reference,
+                        start=0,
+                        end=len(source),
+                        source_sha256=hashlib.sha256(source.encode()).hexdigest(),
+                    )
+                    for reference in ("p1#3", "p1#4")
+                ),
+                member_physical_pages=(1, 1),
+                head_start_evidence=(
+                    ChainHeadStartEvidence.NOT_APPLICABLE_SAME_PAGE_COLUMN
+                ),
+                tail_end_evidence=(
+                    ChainTailEndEvidence.NOT_APPLICABLE_SAME_PAGE_COLUMN
+                ),
+                decision_reason="synthetic_fixture",
+            ),
+        ),
         unsupported_pages=(
             (UnsupportedArticlePage(1, "multiple_article_identity", ("p1#0", "p1#8")),)
             if unsupported

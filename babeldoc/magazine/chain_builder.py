@@ -34,12 +34,18 @@ scored and why, and the chains as they came out.
 
 from __future__ import annotations
 
+import hashlib
 import json
 import logging
+from dataclasses import dataclass
 from pathlib import Path
 
 from babeldoc.format.pdf.document_il import il_version_1
-from babeldoc.format.pdf.document_il.midend.paragraph_finder import generate_base58_id
+from babeldoc.magazine.article_ir import ArticleChain
+from babeldoc.magazine.article_ir import ArticleIssue
+from babeldoc.magazine.article_ir import ChainHeadStartEvidence
+from babeldoc.magazine.article_ir import ChainSourceRange
+from babeldoc.magazine.article_ir import ChainTailEndEvidence
 from babeldoc.magazine.chain_signals import BOUNDARY_PRIORITY_KEY
 from babeldoc.magazine.chain_signals import CONFIG_PATH as CHAIN_CONFIG_PATH
 from babeldoc.magazine.chain_signals import DROPPED_HEAD_TAKEN
@@ -50,6 +56,7 @@ from babeldoc.magazine.chain_signals import BoundaryVerdict
 from babeldoc.magazine.chain_signals import evaluate_boundary
 from babeldoc.magazine.chain_signals import evaluate_column_boundaries
 from babeldoc.magazine.chain_signals import load_chain_config
+from babeldoc.magazine.element_roles import ElementRole
 from babeldoc.magazine.page_identity import physical_page_number
 from babeldoc.magazine.taxonomy import DEFAULT_CONFIG_PATHS
 from babeldoc.magazine.taxonomy import load_taxonomy
@@ -63,6 +70,37 @@ REPORT_NAME = "chain_report.json"
 # paragraph the layout broke rather than opening one, which is a fact several
 # passes downstream need and none of them should restate as an integer test.
 CHAIN_HEAD_INDEX = 0
+CHAIN_CROSSES_PROVISIONAL_OWNER = "CHAIN_CROSSES_PROVISIONAL_OWNER"
+CHAIN_ENDPOINT_ROLE_NOT_BODY = "CHAIN_ENDPOINT_ROLE_NOT_BODY"
+CHAIN_HEAD_START_EVIDENCE_MISSING = "CHAIN_HEAD_START_EVIDENCE_MISSING"
+CHAIN_TAIL_END_EVIDENCE_MISSING = "CHAIN_TAIL_END_EVIDENCE_MISSING"
+CHAIN_UNASSIGNED_OWNER = "CHAIN_UNASSIGNED_OWNER"
+CHAIN_UNSUPPORTED_PAGE = "CHAIN_UNSUPPORTED_PAGE"
+CHAIN_NON_ADJACENT_PHYSICAL_PAGES = "CHAIN_NON_ADJACENT_PHYSICAL_PAGES"
+
+
+@dataclass(frozen=True, slots=True)
+class ChainRefusal:
+    boundary: str
+    code: str
+    article_ids: tuple[str, ...]
+    element_refs: tuple[str, ...]
+
+    def to_record(self) -> dict:
+        return {
+            "boundary": self.boundary,
+            "code": self.code,
+            "article_ids": list(self.article_ids),
+            "element_refs": list(self.element_refs),
+        }
+
+
+@dataclass(frozen=True, slots=True)
+class ChainBuildResult:
+    document: il_version_1.Document
+    chains: tuple[ArticleChain, ...]
+    issues: tuple[ArticleIssue, ...]
+    refusals: tuple[ChainRefusal, ...]
 
 
 def is_chain_continuation(paragraph) -> bool:
@@ -76,6 +114,50 @@ def is_chain_continuation(paragraph) -> bool:
     return index is not None and index > CHAIN_HEAD_INDEX
 
 
+def _paragraph_locations(docs, provisional_owners) -> dict[int, tuple[str, int, object]]:
+    elements = {
+        element.source_ref: element
+        for held in provisional_owners.elements_by_structural_position.values()
+        for element in held
+    }
+    locations = {}
+    for page in docs.page:
+        physical = int(physical_page_number(page))
+        for index, paragraph in enumerate(page.pdf_paragraph):
+            reference = f"p{physical}#{index}"
+            element = elements.get(reference)
+            if element is not None:
+                locations[id(paragraph)] = (reference, physical, element)
+    return locations
+
+
+def _head_start_evidence(
+    verdict: BoundaryVerdict,
+) -> ChainHeadStartEvidence | None:
+    if verdict.tail_page == verdict.head_page:
+        return ChainHeadStartEvidence.NOT_APPLICABLE_SAME_PAGE_COLUMN
+    text = "" if verdict.head is None else (verdict.head.paragraph.unicode or "")
+    stripped = text.lstrip()
+    if not stripped:
+        return None
+    first = stripped[0]
+    if not first.isalpha() or first.islower():
+        return ChainHeadStartEvidence.LOWERCASE_OR_PUNCTUATION_CONTINUATION
+    if first.upper() == first.lower():
+        return ChainHeadStartEvidence.SENTENCE_CONTINUATION
+    return None
+
+
+def _tail_end_evidence(verdict: BoundaryVerdict) -> ChainTailEndEvidence | None:
+    if verdict.tail_page == verdict.head_page:
+        return ChainTailEndEvidence.NOT_APPLICABLE_SAME_PAGE_COLUMN
+    if verdict.hyphen_tail:
+        return ChainTailEndEvidence.HYPHENATED_CONTINUATION
+    if float(verdict.values.get("tail_no_terminal_punct") or 0.0) > 0.0:
+        return ChainTailEndEvidence.NO_TERMINAL_PUNCTUATION
+    return None
+
+
 class ChainBuilder:
     """Link paragraphs across page boundaries and write the resulting chains."""
 
@@ -86,13 +168,44 @@ class ChainBuilder:
         self.config = load_chain_config()
         self.taxonomy = load_taxonomy()
 
-    def process(self, docs: il_version_1.Document) -> il_version_1.Document:
+    def process(self, docs: il_version_1.Document, provisional_owners=None) -> ChainBuildResult:
+        if provisional_owners is None:
+            from babeldoc.magazine.article_builder import ArticleBuilder
+
+            provisional_owners = ArticleBuilder(
+                self.translation_config
+            ).build_provisional(docs)
         verdicts = self._score_boundaries(docs)
-        taken, dropped = _accepted_edges(verdicts, self.config[BOUNDARY_PRIORITY_KEY])
+        scoped, refusals = self._owner_scoped(
+            docs, verdicts, provisional_owners
+        )
+        taken, dropped = _accepted_edges(
+            scoped, self.config[BOUNDARY_PRIORITY_KEY]
+        )
         chains = _chains_from(taken)
-        self._write_chains(chains)
-        self._write_report(docs, verdicts, chains, taken, dropped)
-        return docs
+        self._clear_chains(docs)
+        evidence = self._write_chains(
+            docs, chains, taken, provisional_owners
+        )
+        issues = tuple(
+            ArticleIssue(
+                code=refusal.code,
+                chain_id=(
+                    "chain-candidate-"
+                    + hashlib.sha256(
+                        "\0".join(refusal.element_refs).encode("utf-8")
+                    ).hexdigest()
+                ),
+                article_ids=refusal.article_ids,
+                element_refs=refusal.element_refs,
+            )
+            for refusal in refusals
+            if refusal.code == CHAIN_CROSSES_PROVISIONAL_OWNER
+        )
+        self._write_report(
+            docs, verdicts, evidence, taken, dropped, refusals
+        )
+        return ChainBuildResult(docs, evidence, issues, refusals)
 
     def _score_boundaries(self, docs: il_version_1.Document) -> list[BoundaryVerdict]:
         """Every boundary of the document, in the order a reader meets them.
@@ -125,17 +238,152 @@ class ChainBuilder:
                 )
         return verdicts
 
-    def _write_chains(self, chains: list[list[il_version_1.PdfParagraph]]) -> None:
+    def _owner_scoped(
+        self,
+        docs: il_version_1.Document,
+        verdicts: list[BoundaryVerdict],
+        provisional_owners,
+    ) -> tuple[list[BoundaryVerdict], tuple[ChainRefusal, ...]]:
+        """Admit linked candidates only after owner, role, and evidence checks."""
+        locations = _paragraph_locations(docs, provisional_owners)
+        unsupported = {
+            item.page for item in provisional_owners.unsupported_pages
+        }
+        admitted = []
+        refusals = []
+        for verdict in verdicts:
+            if (
+                not verdict.linked
+                or verdict.tail is None
+                or verdict.head is None
+            ):
+                admitted.append(verdict)
+                continue
+            tail = locations.get(id(verdict.tail.paragraph))
+            head = locations.get(id(verdict.head.paragraph))
+            if tail is None or head is None:
+                refusals.append(
+                    ChainRefusal(verdict.label, CHAIN_UNASSIGNED_OWNER, (), ())
+                )
+                continue
+            tail_ref, tail_page, tail_element = tail
+            head_ref, head_page, head_element = head
+            refs = (tail_ref, head_ref)
+            owners = (
+                provisional_owners.owner_of_element(tail_ref),
+                provisional_owners.owner_of_element(head_ref),
+            )
+            article_ids = tuple(sorted({owner for owner in owners if owner}))
+            if not (
+                tail_page == head_page or head_page == tail_page + 1
+            ):
+                code = CHAIN_NON_ADJACENT_PHYSICAL_PAGES
+            elif tail_page in unsupported or head_page in unsupported:
+                code = CHAIN_UNSUPPORTED_PAGE
+            elif None in owners:
+                code = CHAIN_UNASSIGNED_OWNER
+            elif owners[0] != owners[1]:
+                code = CHAIN_CROSSES_PROVISIONAL_OWNER
+            elif (
+                tail_element.role is not ElementRole.BODY
+                or head_element.role is not ElementRole.BODY
+            ):
+                code = CHAIN_ENDPOINT_ROLE_NOT_BODY
+            elif _head_start_evidence(verdict) is None:
+                code = CHAIN_HEAD_START_EVIDENCE_MISSING
+            elif _tail_end_evidence(verdict) is None:
+                code = CHAIN_TAIL_END_EVIDENCE_MISSING
+            else:
+                admitted.append(verdict)
+                continue
+            refusals.append(
+                ChainRefusal(verdict.label, code, article_ids, refs)
+            )
+        return admitted, tuple(refusals)
+
+    @staticmethod
+    def _clear_chains(docs: il_version_1.Document) -> None:
+        for page in docs.page:
+            for paragraph in page.pdf_paragraph:
+                paragraph.chain_id = None
+                paragraph.chain_index = None
+
+    def _write_chains(
+        self,
+        docs: il_version_1.Document,
+        chains: list[list[il_version_1.PdfParagraph]],
+        edges: list[BoundaryVerdict],
+        provisional_owners,
+    ) -> tuple[ArticleChain, ...]:
         """Give every member of every chain an id and its position in the chain.
 
-        Ids come from the same base58 generator that names paragraphs, so a
-        chain id reads like the debug ids beside it and collides no more often.
+        IDs derive only from ordered canonical source refs, never debug IDs.
         """
+        locations = _paragraph_locations(docs, provisional_owners)
+        by_pair = {
+            (id(verdict.tail.paragraph), id(verdict.head.paragraph)): verdict
+            for verdict in edges
+        }
+        evidence = []
         for chain in chains:
-            chain_id = generate_base58_id()
+            refs = tuple(locations[id(paragraph)][0] for paragraph in chain)
+            chain_id = "chain-" + hashlib.sha256(
+                "\0".join(refs).encode("utf-8")
+            ).hexdigest()
             for index, paragraph in enumerate(chain):
                 paragraph.chain_id = chain_id
                 paragraph.chain_index = index
+            owner = provisional_owners.owner_of_element(refs[0])
+            if owner is None:
+                raise ValueError("owner-scoped chain lost its provisional owner")
+            verdicts = [
+                by_pair[(id(left), id(right))]
+                for left, right in zip(chain, chain[1:], strict=False)
+            ]
+            head_evidence = next(
+                (
+                    _head_start_evidence(verdict)
+                    for verdict in verdicts
+                    if _head_start_evidence(verdict)
+                    is not ChainHeadStartEvidence.NOT_APPLICABLE_SAME_PAGE_COLUMN
+                ),
+                ChainHeadStartEvidence.NOT_APPLICABLE_SAME_PAGE_COLUMN,
+            )
+            tail_evidence = next(
+                (
+                    _tail_end_evidence(verdict)
+                    for verdict in verdicts
+                    if _tail_end_evidence(verdict)
+                    is not ChainTailEndEvidence.NOT_APPLICABLE_SAME_PAGE_COLUMN
+                ),
+                ChainTailEndEvidence.NOT_APPLICABLE_SAME_PAGE_COLUMN,
+            )
+            ranges = tuple(
+                ChainSourceRange(
+                    source_ref=reference,
+                    start=0,
+                    end=len(paragraph.unicode or ""),
+                    source_sha256=hashlib.sha256(
+                        (paragraph.unicode or "").encode("utf-8")
+                    ).hexdigest(),
+                )
+                for reference, paragraph in zip(refs, chain, strict=True)
+            )
+            evidence.append(
+                ArticleChain(
+                    chain_id=chain_id,
+                    article_id=owner,
+                    ordered_member_refs=refs,
+                    source_ranges=ranges,
+                    member_physical_pages=tuple(
+                        locations[id(paragraph)][1] for paragraph in chain
+                    ),
+                    head_start_evidence=head_evidence,
+                    tail_end_evidence=tail_evidence,
+                    decision_reason="linked_owner_scoped_boundaries",
+                )
+            )
+        return tuple(evidence)
 
     def _split_records(self, docs: il_version_1.Document) -> list[dict]:
         """Boundaries this run cannot see because the document was split.
@@ -170,9 +418,10 @@ class ChainBuilder:
         self,
         docs: il_version_1.Document,
         verdicts: list[BoundaryVerdict],
-        chains: list[list[il_version_1.PdfParagraph]],
+        chains: tuple[ArticleChain, ...],
         taken: list[BoundaryVerdict],
         dropped: list[tuple[BoundaryVerdict, str]],
+        refusals: tuple[ChainRefusal, ...],
     ) -> Path:
         records = [verdict.as_record() for verdict in verdicts]
         records.extend(self._split_records(docs))
@@ -215,17 +464,8 @@ class ChainBuilder:
                 }
                 for verdict, reason in dropped
             ],
-            "chains": [
-                {
-                    "chain_id": chain[0].chain_id,
-                    "length": len(chain),
-                    "members": [
-                        {"debug_id": p.debug_id, "chain_index": p.chain_index}
-                        for p in chain
-                    ],
-                }
-                for chain in chains
-            ],
+            "owner_refusals": [item.to_record() for item in refusals],
+            "chains": [chain.to_record() for chain in chains],
         }
         path = Path(self.translation_config.get_working_file_path(REPORT_NAME))
         with path.open("w", encoding="utf-8") as f:

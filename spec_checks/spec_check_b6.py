@@ -584,8 +584,9 @@ def check_03_synthetic_walk() -> None:
     _, joined = group([KIND_OPENS, KIND_OPENS, KIND_OPENS], chains={"c1": [0, 1]})
     merged = [article.merged_by_chain for article in joined.articles]
     record(
-        "03e a chain across a drawn boundary joins the two articles",
-        page_sets(joined) == [[1, 2], [3]] and merged == [True, False],
+        "03e legacy chain fields cannot merge provisional owners",
+        page_sets(joined) == [[1], [2], [3]]
+        and merged == [False, False, False],
         f"articles={page_sets(joined)} merged={merged}",
     )
 
@@ -821,17 +822,20 @@ def check_06a_switch() -> None:
         "magazine_article_group"
     )
     source = (ROOT / HIGH_LEVEL).read_text(encoding="utf-8")
-    gated = re.search(
-        r"if translation_config\.magazine_article_group:\s*\n\s*ArticleBuilder\(",
-        source,
+    gated = (
+        "translation_config.magazine_article_group\n"
+        "        or translation_config.magazine_chain_detect" in source
+        and "article_builder = ArticleBuilder(translation_config)" in source
+        and "if translation_config.magazine_article_group:\n"
+        "        article_document_ir = article_builder.finalize(" in source
     )
     record(
         "06a the switch exists, defaults to False, and is the only way in",
         parameter is not None
         and parameter.default is False
-        and gated is not None
+        and gated
         and source.count("ArticleBuilder(") == 1,
-        f"default={parameter.default if parameter else 'absent'} gated={bool(gated)}",
+        f"default={parameter.default if parameter else 'absent'} gated={gated}",
     )
 
 
@@ -927,10 +931,10 @@ def check_07a_synthetic_determinism() -> None:
         article.article_id for article in second.articles
     }
     record(
-        "07a the grouping is the same twice over, the ids being fresh each time",
+        "07a the grouping and deterministic ids are the same twice over",
         page_sets(first) == page_sets(second)
         and unassigned_pages(first) == unassigned_pages(second)
-        and len(ids) == len(first.articles) + len(second.articles),
+        and len(ids) == len(first.articles),
         f"first={page_sets(first)} second={page_sets(second)}",
     )
 

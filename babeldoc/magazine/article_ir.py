@@ -6,6 +6,7 @@ import json
 from collections.abc import Mapping
 from dataclasses import dataclass
 from dataclasses import field
+from enum import StrEnum
 from types import MappingProxyType
 
 from babeldoc.magazine.element_roles import ElementRole
@@ -13,7 +14,24 @@ from babeldoc.magazine.element_roles import coerce_element_role
 from babeldoc.magazine.page_identity import PageSelectionMap
 
 BoxTuple = tuple[float, float, float, float]
-ARTICLE_IR_SCHEMA_VERSION = "article-ir.v2"
+ARTICLE_IR_SCHEMA_VERSION = "article-ir.v3"
+CHAIN_DECISION_VERSION = "owner-scoped-continuity.v1"
+
+
+class ChainHeadStartEvidence(StrEnum):
+    SENTENCE_CONTINUATION = "sentence_continuation"
+    LOWERCASE_OR_PUNCTUATION_CONTINUATION = (
+        "lowercase_or_punctuation_continuation"
+    )
+    MANUAL_ADJUDICATION = "manual_adjudication"
+    NOT_APPLICABLE_SAME_PAGE_COLUMN = "not_applicable_same_page_column"
+
+
+class ChainTailEndEvidence(StrEnum):
+    NO_TERMINAL_PUNCTUATION = "no_terminal_punctuation"
+    HYPHENATED_CONTINUATION = "hyphenated_continuation"
+    MANUAL_ADJUDICATION = "manual_adjudication"
+    NOT_APPLICABLE_SAME_PAGE_COLUMN = "not_applicable_same_page_column"
 
 
 @dataclass(frozen=True, slots=True)
@@ -97,6 +115,68 @@ class ArticlePolicyEvidence:
 
 
 @dataclass(frozen=True, slots=True)
+class ChainSourceRange:
+    """The exact source range contributed by one ordered chain member."""
+
+    source_ref: str
+    start: int
+    end: int
+    source_sha256: str
+
+    def to_record(self) -> dict:
+        return {
+            "source_ref": self.source_ref,
+            "start": self.start,
+            "end": self.end,
+            "source_sha256": self.source_sha256,
+        }
+
+
+@dataclass(frozen=True, slots=True)
+class ArticleChain:
+    """One canonical continuity chain already proven to stay within its owner."""
+
+    chain_id: str
+    article_id: str
+    ordered_member_refs: tuple[str, ...]
+    source_ranges: tuple[ChainSourceRange, ...]
+    member_physical_pages: tuple[int, ...]
+    head_start_evidence: ChainHeadStartEvidence
+    tail_end_evidence: ChainTailEndEvidence
+    decision_reason: str
+    decision_version: str = CHAIN_DECISION_VERSION
+
+    def __post_init__(self) -> None:
+        if self.decision_version != CHAIN_DECISION_VERSION:
+            raise ValueError("unsupported chain decision version")
+        if len(self.ordered_member_refs) < 2:
+            raise ValueError("a continuity chain requires at least two members")
+        if len(self.source_ranges) != len(self.ordered_member_refs):
+            raise ValueError("chain source ranges must cover every member")
+        if len(self.member_physical_pages) != len(self.ordered_member_refs):
+            raise ValueError("chain pages must cover every member")
+        if tuple(item.source_ref for item in self.source_ranges) != (
+            self.ordered_member_refs
+        ):
+            raise ValueError("chain source ranges must follow member order")
+        if any(item.start != 0 or item.end < item.start for item in self.source_ranges):
+            raise ValueError("chain source ranges must be complete source ranges")
+
+    def to_record(self) -> dict:
+        return {
+            "chain_id": self.chain_id,
+            "article_id": self.article_id,
+            "ordered_member_refs": list(self.ordered_member_refs),
+            "source_ranges": [item.to_record() for item in self.source_ranges],
+            "member_physical_pages": list(self.member_physical_pages),
+            "head_start_evidence": self.head_start_evidence.value,
+            "tail_end_evidence": self.tail_end_evidence.value,
+            "decision_reason": self.decision_reason,
+            "decision_version": self.decision_version,
+        }
+
+
+@dataclass(frozen=True, slots=True)
 class ArticleIR:
     """One deterministic article and everything assigned to its flow."""
 
@@ -161,6 +241,7 @@ class ArticleDocumentIR:
     by_element: Mapping[str, str]
     by_chain: Mapping[str, str]
     by_chain_member: Mapping[str, str] = field(default_factory=dict)
+    chains: tuple[ArticleChain, ...] = ()
     unsupported_pages: tuple[UnsupportedArticlePage, ...] = ()
     issues: tuple[ArticleIssue, ...] = ()
     page_selection_map: PageSelectionMap | None = None
@@ -242,6 +323,44 @@ class ArticleDocumentIR:
                 raise ValueError("chain member must be a canonical source element")
             if chain_id not in expected_by_chain:
                 raise ValueError("chain member points to an unknown canonical chain")
+        chain_ids = [chain.chain_id for chain in self.chains]
+        if len(chain_ids) != len(set(chain_ids)):
+            raise ValueError("canonical chain ids must be unique")
+        if set(chain_ids) != set(expected_by_chain):
+            raise ValueError("chain evidence must exactly describe chain indexes")
+        element_by_ref = {
+            element.source_ref: element
+            for article in self.articles
+            for element in article.elements
+        }
+        for chain in self.chains:
+            if expected_by_chain.get(chain.chain_id) != chain.article_id:
+                raise ValueError("chain evidence points to another article")
+            if tuple(
+                sorted(
+                    chain.ordered_member_refs,
+                    key=lambda reference: element_by_ref[reference].reading_order,
+                )
+            ) != chain.ordered_member_refs:
+                raise ValueError("chain members must follow canonical reading order")
+            for reference, page in zip(
+                chain.ordered_member_refs,
+                chain.member_physical_pages,
+                strict=True,
+            ):
+                element = element_by_ref.get(reference)
+                if element is None or element.page != page:
+                    raise ValueError("chain member evidence must resolve to its page")
+                if element.role is not ElementRole.BODY:
+                    raise ValueError("only BODY elements may enter continuity chains")
+                if self.by_element.get(reference) != chain.article_id:
+                    raise ValueError("chain member must belong to its chain owner")
+            for source_range in chain.source_ranges:
+                if (
+                    element_by_ref[source_range.source_ref].source_text_hash
+                    != source_range.source_sha256
+                ):
+                    raise ValueError("chain source range hash must conserve source")
 
     def article(self, article_id: str) -> ArticleIR | None:
         return next(
@@ -266,10 +385,10 @@ class ArticleDocumentIR:
             "by_element": dict(self.by_element),
             "by_chain": dict(self.by_chain),
             "by_chain_member": dict(self.by_chain_member),
+            "chains": [chain.to_record() for chain in self.chains],
             "unsupported_pages": [item.to_record() for item in self.unsupported_pages],
             "issues": [issue.to_record() for issue in self.issues],
         }
-
     @classmethod
     def from_record(cls, record: Mapping) -> ArticleDocumentIR:
         """Rehydrate the canonical sidecar without guessing legacy identities."""
@@ -309,6 +428,33 @@ class ArticleDocumentIR:
                 article_reflow_allowed=bool(item["article_reflow_allowed"]),
             )
 
+        def chain(item) -> ArticleChain:
+            return ArticleChain(
+                chain_id=str(item["chain_id"]),
+                article_id=str(item["article_id"]),
+                ordered_member_refs=tuple(item["ordered_member_refs"]),
+                source_ranges=tuple(
+                    ChainSourceRange(
+                        source_ref=str(value["source_ref"]),
+                        start=int(value["start"]),
+                        end=int(value["end"]),
+                        source_sha256=str(value["source_sha256"]),
+                    )
+                    for value in item["source_ranges"]
+                ),
+                member_physical_pages=tuple(
+                    int(page) for page in item["member_physical_pages"]
+                ),
+                head_start_evidence=ChainHeadStartEvidence(
+                    str(item["head_start_evidence"])
+                ),
+                tail_end_evidence=ChainTailEndEvidence(
+                    str(item["tail_end_evidence"])
+                ),
+                decision_reason=str(item["decision_reason"]),
+                decision_version=str(item["decision_version"]),
+            )
+
         articles = tuple(
             ArticleIR(
                 article_id=str(item["article_id"]),
@@ -333,6 +479,7 @@ class ArticleDocumentIR:
             by_element=dict(record["by_element"]),
             by_chain=dict(record["by_chain"]),
             by_chain_member=dict(record.get("by_chain_member", {})),
+            chains=tuple(chain(item) for item in record.get("chains", ())),
             unsupported_pages=tuple(
                 UnsupportedArticlePage(
                     page=int(item["page"]),

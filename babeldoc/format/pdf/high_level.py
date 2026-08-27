@@ -1204,15 +1204,29 @@ def _do_translate_single(
         if translation_config.magazine_checkpoint:
             dump_checkpoint(docs, translation_config, "page_classifier")
 
+    article_builder = None
+    provisional_owners = None
+    if (
+        translation_config.magazine_article_group
+        or translation_config.magazine_chain_detect
+    ):
+        article_builder = ArticleBuilder(translation_config)
+        provisional_owners = article_builder.build_provisional(docs)
+
+    chain_result = None
     if translation_config.magazine_chain_detect:
-        ChainBuilder(translation_config).process(docs)
+        chain_result = ChainBuilder(translation_config).process(
+            docs, provisional_owners
+        )
         logger.debug(f"finish chain builder from {temp_pdf_path}")
         if translation_config.magazine_checkpoint:
             dump_checkpoint(docs, translation_config, "chain_builder")
 
     article_document_ir = None
     if translation_config.magazine_article_group:
-        article_document_ir = ArticleBuilder(translation_config).process(docs)
+        article_document_ir = article_builder.finalize(
+            provisional_owners, chain_result
+        )
         logger.debug(f"finish article builder from {temp_pdf_path}")
     run_trace = (
         None

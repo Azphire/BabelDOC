@@ -14,10 +14,14 @@ from babeldoc.format.pdf.document_il import il_version_1  # noqa: E402
 from babeldoc.magazine import detectors  # noqa: E402
 from babeldoc.magazine import fixed_assets  # noqa: E402
 from babeldoc.magazine import run_trace  # noqa: E402
+from babeldoc.magazine.article_ir import ArticleChain  # noqa: E402
 from babeldoc.magazine.article_ir import ArticleDocumentIR  # noqa: E402
 from babeldoc.magazine.article_ir import ArticleIR  # noqa: E402
 from babeldoc.magazine.article_ir import ArticlePolicyEvidence  # noqa: E402
 from babeldoc.magazine.article_ir import ArticleRegionSlot  # noqa: E402
+from babeldoc.magazine.article_ir import ChainHeadStartEvidence  # noqa: E402
+from babeldoc.magazine.article_ir import ChainSourceRange  # noqa: E402
+from babeldoc.magazine.article_ir import ChainTailEndEvidence  # noqa: E402
 from babeldoc.magazine.article_ir import SourceElementRef  # noqa: E402
 from babeldoc.magazine.detectors import abnormal_blank  # noqa: E402
 from babeldoc.magazine.detectors import article_ownership  # noqa: E402
@@ -92,6 +96,7 @@ def article_state(
     allowed: bool = True,
 ) -> ArticleDocumentIR:
     elements = tuple(element(reference, index) for index, reference in enumerate(references))
+    has_chain = len(references) >= 2
     article = ArticleIR(
         article_id="article-a",
         pages=(1,),
@@ -107,7 +112,7 @@ def article_state(
                 capacity_hint=100.0,
             ),
         ),
-        chain_ids=("chain-a",),
+        chain_ids=(("chain-a",) if has_chain else ()),
         policy_evidence=(
             ArticlePolicyEvidence(
                 page=1,
@@ -122,8 +127,34 @@ def article_state(
         articles=(article,),
         by_page={1: "article-a"},
         by_element=dict.fromkeys(references, "article-a"),
-        by_chain={"chain-a": "article-a"},
-        by_chain_member=dict.fromkeys(references, "chain-a"),
+        by_chain=({"chain-a": "article-a"} if has_chain else {}),
+        by_chain_member=(
+            dict.fromkeys(references, "chain-a") if has_chain else {}
+        ),
+        chains=((
+            ArticleChain(
+                chain_id="chain-a",
+                article_id="article-a",
+                ordered_member_refs=tuple(references),
+                source_ranges=tuple(
+                    ChainSourceRange(
+                        source_ref=reference,
+                        start=0,
+                        end=len(reference),
+                        source_sha256=run_trace.hash_text(reference),
+                    )
+                    for reference in references
+                ),
+                member_physical_pages=tuple(1 for _reference in references),
+                head_start_evidence=(
+                    ChainHeadStartEvidence.NOT_APPLICABLE_SAME_PAGE_COLUMN
+                ),
+                tail_end_evidence=(
+                    ChainTailEndEvidence.NOT_APPLICABLE_SAME_PAGE_COLUMN
+                ),
+                decision_reason="synthetic_fixture",
+            ),
+        ) if has_chain else ()),
     )
 
 

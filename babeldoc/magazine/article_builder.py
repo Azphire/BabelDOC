@@ -34,8 +34,10 @@ import logging
 from dataclasses import dataclass
 from functools import lru_cache
 from pathlib import Path
+from types import MappingProxyType
 
 from babeldoc.format.pdf.document_il import il_version_1
+from babeldoc.magazine.article_ir import ArticleChain
 from babeldoc.magazine.article_ir import ArticleDocumentIR
 from babeldoc.magazine.article_ir import ArticleIR
 from babeldoc.magazine.article_ir import ArticleIssue
@@ -68,6 +70,7 @@ IR_REPORT_NAME = "article_ir.json"
 
 UNSUPPORTED_SAME_PAGE_MULTI_ARTICLE = "unsupported_same_page_multi_article"
 ISSUE_CHAIN_SPANS_ARTICLES = "continuity_chain_spans_articles"
+ISSUE_CHAIN_CROSSES_PROVISIONAL_OWNER = "CHAIN_CROSSES_PROVISIONAL_OWNER"
 
 # The endpoint classes whose layout labels count as a heading, by name.
 TITLE_CLASSES_KEY = "title_pair_classes"
@@ -165,6 +168,36 @@ class Grouping:
     @property
     def unassigned(self) -> tuple[PageRole, ...]:
         return tuple(role for role in self.roles if role.role == ROLE_UNASSIGNED)
+
+
+@dataclass(frozen=True, slots=True)
+class ProvisionalArticleOwners:
+    """Immutable owner assignment made before any continuity chain exists."""
+
+    docs: il_version_1.Document
+    grouping: Grouping
+    elements_by_structural_position: dict[int, tuple[SourceElementRef, ...]]
+    by_page: dict[int, str]
+    by_element: dict[str, str]
+    unsupported_pages: tuple[UnsupportedArticlePage, ...]
+    page_selection_map: PageSelectionMap
+
+    def __post_init__(self) -> None:
+        object.__setattr__(self, "by_page", MappingProxyType(dict(self.by_page)))
+        object.__setattr__(
+            self, "by_element", MappingProxyType(dict(self.by_element))
+        )
+        object.__setattr__(
+            self,
+            "elements_by_structural_position",
+            MappingProxyType(dict(self.elements_by_structural_position)),
+        )
+
+    def owner_of_page(self, physical_page: int) -> str | None:
+        return self.by_page.get(int(physical_page))
+
+    def owner_of_element(self, source_ref: str) -> str | None:
+        return self.by_element.get(source_ref)
 
 
 def page_role(page: il_version_1.Page, index: int, policy_of) -> PageRole:
@@ -445,20 +478,13 @@ def _canonical_chains(docs) -> dict[str, tuple[str, tuple[str, ...], tuple[int, 
 def _article_id(
     article: Article,
     elements_by_page: dict[int, tuple[SourceElementRef, ...]],
-    chains: dict[str, tuple[str, tuple[str, ...], tuple[int, ...]]],
     page_index: DocumentPageIndex,
 ) -> str:
-    held = set(article.pages)
     elements = [
         element
         for page_index in article.pages
         for element in elements_by_page.get(page_index, ())
     ]
-    chain_signature = sorted(
-        canonical_id
-        for canonical_id, _refs, pages in chains.values()
-        if held.issuperset(pages)
-    )
     material = {
         "pages": [
             int(physical_page_number(docs_page))
@@ -467,40 +493,33 @@ def _article_id(
             )
         ],
         "first_source_ref": elements[0].source_ref if elements else None,
-        "chain_signature": chain_signature,
+        "decision_version": "provisional-owner.v1",
     }
     return f"article-{_hash_record(material)}"
 
 
 def _assign_article_ids(
-    articles: list[Article], elements_by_page, chains, page_index
+    articles: list[Article], elements_by_page, page_index
 ) -> None:
     for article in articles:
-        article.article_id = _article_id(
-            article, elements_by_page, chains, page_index
-        )
+        article.article_id = _article_id(article, elements_by_page, page_index)
 
 
 def _build_grouping(docs, policy_of):
     page_index = DocumentPageIndex(docs)
     roles = [page_role(page, index, policy_of) for index, page in enumerate(docs.page)]
     elements_by_page = _document_elements(docs)
-    chains = _canonical_chains(docs)
     provisional = walk_roles(roles)
-    _assign_article_ids(provisional, elements_by_page, chains, page_index)
-    merged = merge_across_chains(provisional, chain_pages(docs))
-    _assign_article_ids(merged, elements_by_page, chains, page_index)
+    _assign_article_ids(provisional, elements_by_page, page_index)
     return (
-        Grouping(roles=tuple(roles), articles=tuple(merged)),
-        provisional,
+        Grouping(roles=tuple(roles), articles=tuple(provisional)),
         elements_by_page,
-        chains,
     )
 
 
 def build_articles(docs: il_version_1.Document, policy_of, _labels) -> Grouping:
     """Group one document with deterministic identities."""
-    grouping, _provisional, _elements, _chains = _build_grouping(docs, policy_of)
+    grouping, _elements = _build_grouping(docs, policy_of)
     return grouping
 
 
@@ -528,20 +547,15 @@ def _unsupported_pages(docs, elements_by_page, title_labels):
             for element in elements_by_page.get(page_index, ())
         }
         candidates = [
-            (
-                _source_ref(page_number, paragraph_index),
-                paragraph.chain_id,
-            )
+            _source_ref(page_number, paragraph_index)
             for paragraph_index, paragraph in enumerate(page.pdf_paragraph)
             if paragraph.layout_label in title_labels
             and (paragraph.unicode or "").strip()
         ]
         evidence = set()
-        for position, (left_ref, left_chain) in enumerate(candidates):
-            for right_ref, right_chain in candidates[position + 1 :]:
+        for position, left_ref in enumerate(candidates):
+            for right_ref in candidates[position + 1 :]:
                 if by_ref[left_ref].column == by_ref[right_ref].column:
-                    continue
-                if left_chain and left_chain == right_chain:
                     continue
                 evidence.update((left_ref, right_ref))
         if evidence:
@@ -553,6 +567,24 @@ def _unsupported_pages(docs, elements_by_page, title_labels):
                 )
             )
     return tuple(unsupported)
+
+
+def _without_unsupported_pages(
+    articles: list[Article],
+    docs: il_version_1.Document,
+    unsupported_pages: tuple[UnsupportedArticlePage, ...],
+) -> list[Article]:
+    unsupported = {item.page for item in unsupported_pages}
+    result = []
+    for article in articles:
+        pages = [
+            position
+            for position in article.pages
+            if int(physical_page_number(docs.page[position])) not in unsupported
+        ]
+        if pages:
+            result.append(Article(pages=pages))
+    return result
 
 
 def _chain_issues(provisional, chains) -> tuple[ArticleIssue, ...]:
@@ -595,10 +627,9 @@ def _article_ir(
     article,
     roles,
     elements_by_page,
-    chains,
+    chains: tuple[ArticleChain, ...],
     unsupported_pages,
 ) -> ArticleIR:
-    held = set(article.pages)
     unsupported = {item.page for item in unsupported_pages}
     elements = tuple(
         element
@@ -606,11 +637,7 @@ def _article_ir(
         for element in elements_by_page.get(page_index, ())
     )
     chain_ids = tuple(
-        sorted(
-            canonical_id
-            for canonical_id, _refs, pages in chains.values()
-            if held.issuperset(pages)
-        )
+        chain.chain_id for chain in chains if chain.article_id == article.article_id
     )
     slots = []
     for page_index in article.pages:
@@ -666,13 +693,12 @@ def _article_ir(
 def _document_ir(
     docs,
     grouping,
-    provisional,
     elements_by_page,
-    chains,
-    labels,
+    unsupported,
+    chains: tuple[ArticleChain, ...],
+    issues: tuple[ArticleIssue, ...],
     page_selection_map,
 ):
-    unsupported = _unsupported_pages(docs, elements_by_page, labels)
     articles = tuple(
         _article_ir(
             docs,
@@ -698,10 +724,10 @@ def _document_ir(
         for chain_id in article.chain_ids
     }
     by_chain_member = {
-        source_ref: canonical_id
-        for canonical_id, source_refs, _pages in chains.values()
-        if canonical_id in by_chain
-        for source_ref in source_refs
+        source_ref: chain.chain_id
+        for chain in chains
+        if chain.chain_id in by_chain
+        for source_ref in chain.ordered_member_refs
         if source_ref in by_element
     }
     return ArticleDocumentIR(
@@ -710,8 +736,9 @@ def _document_ir(
         by_element=by_element,
         by_chain=by_chain,
         by_chain_member=by_chain_member,
+        chains=chains,
         unsupported_pages=unsupported,
-        issues=_chain_issues(provisional, chains),
+        issues=issues,
         page_selection_map=page_selection_map,
     )
 
@@ -728,26 +755,66 @@ class ArticleBuilder:
         self.taxonomy = load_taxonomy()
         self.policy_of = policy_of if policy_of is not None else self.taxonomy.policy_of
 
-    def process(self, docs: il_version_1.Document) -> ArticleDocumentIR:
+    def build_provisional(
+        self, docs: il_version_1.Document
+    ) -> ProvisionalArticleOwners:
+        """Assign 0/1 page owners before continuity evidence is consulted."""
         ensure_full_structural_document(self.translation_config, docs)
         page_selection_map = PageSelectionMap.from_document(
             docs, translation_config=self.translation_config
         )
-        grouping, provisional, elements, chains = _build_grouping(
-            docs, self.policy_of
+        grouping, elements = _build_grouping(docs, self.policy_of)
+        unsupported = _unsupported_pages(docs, elements, self.labels)
+        articles = _without_unsupported_pages(
+            list(grouping.articles), docs, unsupported
         )
+        _assign_article_ids(articles, elements, DocumentPageIndex(docs))
+        grouping = Grouping(roles=grouping.roles, articles=tuple(articles))
+        by_page = {
+            int(physical_page_number(docs.page[position])): article.article_id
+            for article in grouping.articles
+            for position in article.pages
+        }
+        by_element = {
+            element.source_ref: article.article_id
+            for article in grouping.articles
+            for position in article.pages
+            for element in elements.get(position, ())
+        }
+        return ProvisionalArticleOwners(
+            docs=docs,
+            grouping=grouping,
+            elements_by_structural_position=elements,
+            by_page=by_page,
+            by_element=by_element,
+            unsupported_pages=unsupported,
+            page_selection_map=page_selection_map,
+        )
+
+    def finalize(
+        self,
+        provisional: ProvisionalArticleOwners,
+        chain_result=None,
+    ) -> ArticleDocumentIR:
+        """Attach only owner-scoped chains without ever changing an owner."""
+        chains = tuple(getattr(chain_result, "chains", ()))
+        issues = tuple(getattr(chain_result, "issues", ()))
         document_ir = _document_ir(
-            docs,
-            grouping,
-            provisional,
-            elements,
+            provisional.docs,
+            provisional.grouping,
+            provisional.elements_by_structural_position,
+            provisional.unsupported_pages,
             chains,
-            self.labels,
-            page_selection_map,
+            issues,
+            provisional.page_selection_map,
         )
         self._write_ir(document_ir)
-        self._write_report(docs, grouping, document_ir)
+        self._write_report(provisional.docs, provisional.grouping, document_ir)
         return document_ir
+
+    def process(self, docs: il_version_1.Document) -> ArticleDocumentIR:
+        """Compatibility entry point for grouping without chain detection."""
+        return self.finalize(self.build_provisional(docs))
 
     def _article_record(
         self,
