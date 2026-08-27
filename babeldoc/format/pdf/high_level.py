@@ -1126,6 +1126,7 @@ def _do_translate_single(
     # Skip all translation processing if only_parse_generate_pdf is enabled
     if translation_config.only_parse_generate_pdf:
         logger.debug("only_parse_generate_pdf enabled, skipping translation processing")
+        hitl.validate_parse_only_apply(translation_config, docs)
         # Skip directly to PDF generation
         pdf_creater = PDFCreater(temp_pdf_path, docs, translation_config, mediabox_data)
         result = pdf_creater.write(translation_config)
@@ -1237,6 +1238,7 @@ def _do_translate_single(
         if article_document_ir is None
         else RunTrace.from_document(docs, article_document_ir)
     )
+    hitl.after_article_ir(translation_config, article_document_ir)
     fixed_asset_inventory = None
     legal_slot_plan = None
     article_state_journal = None
@@ -1344,7 +1346,7 @@ def _do_translate_single(
 
     # After the translator, because what a ruling reached is only knowable from
     # the requests it was given the chance to reach.
-    hitl.after_translate(translation_config)
+    hitl.after_translate(translation_config, docs, run_trace)
 
     if article_state_journal is not None:
         article_state_journal.capture(
@@ -1364,6 +1366,7 @@ def _do_translate_single(
     # Same window, and after the text is final: the flag this decides is read by
     # the stage below and by nothing between here and it.
     indent_policy.apply(translation_config, docs, article_document_ir)
+    hitl.after_indent_policy(translation_config)
 
     article_flow_result = None
     if (
@@ -1499,6 +1502,7 @@ def _do_translate_single(
         docs=docs,
         article_document_ir=article_document_ir,
     )
+    hitl.finalize_manual_delivery(translation_config)
     overlay_ledger = AddDebugInformation(translation_config).process(docs)
     record_runtime_stage(
         translation_config,

@@ -1,0 +1,48 @@
+{
+  "schema_version": "babeldoc.page-policy-observables.v1",
+  "owner": "C20B-manual-delivery-target-base",
+  "fields": {
+    "translate": {
+      "consumer": "translator_routing",
+      "runtime_event": "translation_complete",
+      "target_observable": "selected translatable source refs have terminal target mappings",
+      "final_observable": "C20C must extend this base with final PDF text presence or a typed not-applicable reason"
+    },
+    "chain_eligible": {
+      "consumer": "ChainBuilder",
+      "runtime_event": "article_ir_complete",
+      "target_observable": "ineligible pages own no continuity chain; eligible pages retain bounded signals and ownership",
+      "final_observable": "C20C must extend this base with a final continuity observable or a typed not-applicable reason"
+    },
+    "starts_article": {
+      "consumer": "ArticleBuilder.build_provisional",
+      "runtime_event": "article_ir_complete",
+      "target_observable": "the physical page establishes the declared hard start boundary",
+      "final_observable": "C20C must extend this base with a final article-boundary observable or a typed not-applicable reason"
+    },
+    "opens_article": {
+      "consumer": "ArticleBuilder.finalize",
+      "runtime_event": "article_ir_complete",
+      "target_observable": "openers create a new owner and non-openers do not claim one solely from this flag",
+      "final_observable": "C20C must extend this base with a final ownership observable or a typed not-applicable reason"
+    },
+    "preserve_line_structure": {
+      "consumer": "line_split.apply",
+      "runtime_event": "line_split_complete",
+      "target_observable": "record refs and reading order remain aligned with translation units",
+      "final_observable": "C20C must extend this base with final line-order evidence or a typed not-applicable reason"
+    },
+    "indent_eligible": {
+      "consumer": "indent_policy.apply",
+      "runtime_event": "indent_policy_complete",
+      "target_observable": "indent tokens are admitted only for eligible running-body paragraphs",
+      "final_observable": "C20C must extend this base with final indent geometry evidence or a typed not-applicable reason"
+    },
+    "repair_profile": {
+      "consumer": "react.detectors/controller",
+      "runtime_event": "repair_complete",
+      "target_observable": "the executed detector and action profile digest equals the taxonomy policy",
+      "final_observable": "C20C must extend this base with repaired final-state evidence or a typed not-applicable reason"
+    }
+  }
+}

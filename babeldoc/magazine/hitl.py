@@ -83,6 +83,7 @@ import html
 import json
 import logging
 import os
+import unicodedata
 import weakref
 from dataclasses import dataclass
 from dataclasses import field
@@ -94,6 +95,7 @@ from babeldoc.glossary import GlossaryEntry
 from babeldoc.magazine import drop_cap
 from babeldoc.magazine import fragment_stitch
 from babeldoc.magazine import hitl_binding
+from babeldoc.magazine import hitl_delivery
 from babeldoc.magazine import line_split
 from babeldoc.magazine import name_harvest
 from babeldoc.magazine import translation_style
@@ -421,6 +423,8 @@ def load_decisions(
 _drafts: weakref.WeakKeyDictionary = weakref.WeakKeyDictionary()
 _decisions: weakref.WeakKeyDictionary = weakref.WeakKeyDictionary()
 _reports: weakref.WeakKeyDictionary = weakref.WeakKeyDictionary()
+_manual_inventories: weakref.WeakKeyDictionary = weakref.WeakKeyDictionary()
+_manual_runtime: weakref.WeakKeyDictionary = weakref.WeakKeyDictionary()
 
 
 def _draft(translation_config) -> dict:
@@ -484,6 +488,77 @@ def _write_report(translation_config, report: dict) -> Path:
     return path
 
 
+def _manual_inventory_for(
+    translation_config, decisions: Decisions
+) -> hitl_delivery.ManualConstraintInventory:
+    inventory = _manual_inventories.get(translation_config)
+    if inventory is not None:
+        return inventory
+    if decisions.bound is None:
+        raise HitlError("manual delivery requires a source-bound v4 decision set")
+    try:
+        inventory = hitl_delivery.inventory_from_bound(decisions.bound)
+    except hitl_delivery.ManualConstraintDeliveryError as exc:
+        raise HitlError(f"manual delivery inventory rejected: {exc}") from exc
+    _manual_inventories[translation_config] = inventory
+    _manual_runtime[translation_config] = {
+        "term_bindings": {},
+        "glossary_sha256": None,
+        "drop_cap_apply": {},
+    }
+    hitl_delivery.write_inventory_report(inventory, translation_config)
+    return inventory
+
+
+def _replace_manual_inventory(
+    translation_config, inventory: hitl_delivery.ManualConstraintInventory
+) -> None:
+    _manual_inventories[translation_config] = inventory
+    hitl_delivery.write_inventory_report(inventory, translation_config)
+
+
+def _manual_selected_pages(
+    inventory: hitl_delivery.ManualConstraintInventory,
+) -> tuple[int, ...]:
+    selected = {
+        constraint.physical_page
+        for constraint in inventory.page_constraints
+        if inventory.by_id()[constraint.expectation_id].selected_occurrence_refs
+    }
+    return tuple(sorted(selected))
+
+
+def _record_manual_policy_event(
+    translation_config,
+    runtime_event: str,
+    *,
+    unsupported_pages: tuple[int, ...] | None = None,
+) -> None:
+    inventory = _manual_inventories.get(translation_config)
+    if inventory is None:
+        return
+    try:
+        inventory = hitl_delivery.record_page_policy_event(
+            inventory,
+            runtime_event,
+            executed_pages=_manual_selected_pages(inventory),
+            unsupported_pages=unsupported_pages,
+        )
+    except hitl_delivery.ManualConstraintDeliveryError as exc:
+        raise HitlError(f"manual page policy evidence rejected: {exc}") from exc
+    _replace_manual_inventory(translation_config, inventory)
+
+
+def validate_parse_only_apply(translation_config, docs) -> None:
+    """Validate v4 inputs in an offline parse-only run without claiming delivery."""
+
+    if not translation_config.magazine_hitl_apply:
+        return
+    decisions = _decisions_for(translation_config, docs)
+    if decisions is not None:
+        _manual_inventory_for(translation_config, decisions)
+
+
 def _decisions_for(translation_config, docs) -> Decisions | None:
     """The ruling governing this run, read and validated once."""
     if translation_config in _decisions:
@@ -537,6 +612,7 @@ def _decisions_for(translation_config, docs) -> Decisions | None:
     ]
     report["selected_physical_pages"] = list(bound.selected_pages)
     report["projection"] = [dict(item) for item in bound.projection_report]
+    _manual_inventory_for(translation_config, decisions)
     return decisions
 
 
@@ -914,6 +990,13 @@ def after_page_classify(translation_config, docs) -> None:
         decisions = _decisions_for(translation_config, docs)
         if decisions is not None:
             applied = apply_page_kinds(docs, decisions)
+            try:
+                inventory = hitl_delivery.record_page_policy_delivery(
+                    _manual_inventory_for(translation_config, decisions)
+                )
+            except hitl_delivery.ManualConstraintDeliveryError as exc:
+                raise HitlError(f"manual page policy delivery rejected: {exc}") from exc
+            _replace_manual_inventory(translation_config, inventory)
             if applied:
                 report = _report(translation_config)
                 report[PAGE_KINDS_SECTION] = applied
@@ -922,6 +1005,272 @@ def after_page_classify(translation_config, docs) -> None:
     pages = labeled_pages(docs)
     fragment_stitch.apply(translation_config, pages)
     line_split.apply(translation_config, pages)
+    if translation_config.magazine_hitl_apply:
+        _record_manual_policy_event(translation_config, "line_split_complete")
+
+
+def after_article_ir(
+    translation_config,
+    article_document_ir: ArticleDocumentIR | None,
+) -> None:
+    """Record the three article-policy consumers after canonical IR freezes."""
+
+    if not translation_config.magazine_hitl_apply:
+        return
+    inventory = _manual_inventories.get(translation_config)
+    if (
+        inventory is not None
+        and _manual_selected_pages(inventory)
+        and article_document_ir is None
+    ):
+        raise HitlError(
+            "manual page policy cannot claim article consumers without ArticleIR"
+        )
+    unsupported = (
+        ()
+        if article_document_ir is None
+        else tuple(item.page for item in article_document_ir.unsupported_pages)
+    )
+    _record_manual_policy_event(
+        translation_config,
+        "article_ir_complete",
+        unsupported_pages=unsupported,
+    )
+
+
+def _capture_term_runtime_bindings(
+    translation_config,
+    decisions: Decisions | None,
+    docs,
+    run_trace,
+    applied: dict | None,
+) -> None:
+    """Resolve bound PDF occurrences to unique pre-translation IL paragraphs."""
+
+    if decisions is None or decisions.bound is None:
+        return
+    inventory = _manual_inventory_for(translation_config, decisions)
+    selected_ids = {
+        item.expectation_id
+        for item in inventory.expectations
+        if item.kind is hitl_delivery.ManualConstraintKind.TERM
+        and item.selected_occurrence_refs
+    }
+    constraints = [
+        item
+        for item in inventory.term_constraints
+        if item.expectation_id in selected_ids
+    ]
+    if not constraints:
+        return
+    if not applied:
+        raise HitlError("manual term decisions did not reach the glossary execution point")
+    human_entries = sorted(
+        (
+            {"source": entry["source"], "target": entry["target"]}
+            for entry in applied["entries"]
+            if entry["decided_by"] == HUMAN_SOURCE
+        ),
+        key=lambda item: (item["source"], item["target"]),
+    )
+    glossary_sha256 = hitl_binding.canonical_sha256(
+        {
+            "glossary": applied["glossary"],
+            "human_entries": human_entries,
+            "schema_version": "hitl-manual-glossary.v1",
+        }
+    )
+    shared = translation_config.shared_context_cross_split_part
+    prompt_glossaries = shared.get_glossaries_for_translation(
+        bool(translation_config.auto_extract_glossary)
+    )
+    for source, human_target in decisions.terms.items():
+        active = [
+            (glossary.name, entry.source, entry.target)
+            for glossary in prompt_glossaries
+            for entry in glossary.entries
+            if Glossary.normalize_source(entry.source)
+            == Glossary.normalize_source(source)
+        ]
+        if len(active) != 1 or active[0][2] != human_target:
+            raise HitlError(
+                f"manual term {source!r} is not the unique human value in "
+                "the translator's active glossary context"
+            )
+    page_objects = dict(labeled_pages(docs))
+    bindings: dict[str, dict] = {}
+    grouped: dict[tuple[str, int], list] = {}
+    for constraint in constraints:
+        grouped.setdefault((constraint.source, constraint.physical_page), []).append(
+            constraint
+        )
+    for (source, page_number), held in grouped.items():
+        eligible = [item for item in held if item.eligibility == "eligible"]
+        protected = [item for item in held if item.eligibility == "protected_fixed"]
+        for constraint in protected:
+            bindings[constraint.occurrence_ref] = {
+                "paragraph_ref": f"fixed:{constraint.stable_source_ref}",
+                "fixed_asset_ref": f"asset:{constraint.stable_source_ref}",
+            }
+        if not eligible:
+            continue
+        page = page_objects.get(page_number)
+        if page is None:
+            raise HitlError(f"manual term occurrence page {page_number} is unavailable")
+        needle = unicodedata.normalize("NFC", source)
+        paragraph_occurrences: list[tuple[int, int, object, str]] = []
+        for index, paragraph in enumerate(page.pdf_paragraph or ()):
+            text = unicodedata.normalize("NFC", paragraph.unicode or "")
+            position = 0
+            while True:
+                found = text.find(needle, position)
+                if found < 0:
+                    break
+                reference = (
+                    None if run_trace is None else run_trace.source_ref_for(paragraph)
+                ) or f"p{page_number}#{index}"
+                paragraph_occurrences.append((index, found, paragraph, reference))
+                position = found + len(needle)
+        eligible.sort(key=lambda item: (item.source_span, item.occurrence_ref))
+        paragraph_occurrences.sort(key=lambda item: (item[0], item[1]))
+        if len(paragraph_occurrences) != len(eligible):
+            raise HitlError(
+                "manual term occurrence mapping is missing or ambiguous for "
+                f"{source!r} on page {page_number}: source-bound={len(eligible)}, "
+                f"IL={len(paragraph_occurrences)}"
+            )
+        for constraint, (_index, source_start, paragraph, reference) in zip(
+            eligible, paragraph_occurrences, strict=True
+        ):
+            bindings[constraint.occurrence_ref] = {
+                "paragraph": paragraph,
+                "paragraph_ref": reference,
+                "source_start": source_start,
+            }
+    runtime = _manual_runtime[translation_config]
+    runtime["term_bindings"] = bindings
+    runtime["glossary_sha256"] = glossary_sha256
+
+
+def _request_sha256(run_trace, request_id: str) -> str:
+    request = run_trace.requests[request_id]
+    return hitl_binding.canonical_sha256(
+        {
+            "merged_source_hash": request.merged_source_hash,
+            "ordered_source_refs": list(request.ordered_source_refs),
+            "prompt_config_hash": request.prompt_config_hash,
+            "request_id": request.request_id,
+            "request_kind": request.request_kind,
+        }
+    )
+
+
+def _finalize_term_runtime(
+    translation_config,
+    run_trace,
+) -> None:
+    inventory = _manual_inventories.get(translation_config)
+    if inventory is None:
+        return
+    runtime = _manual_runtime[translation_config]
+    constraints = {
+        item.occurrence_ref: item
+        for item in inventory.term_constraints
+        if inventory.by_id()[item.expectation_id].selected_occurrence_refs
+    }
+    if not constraints:
+        return
+    bindings = runtime["term_bindings"]
+    glossary_sha256 = runtime["glossary_sha256"]
+    deliveries: list[hitl_delivery.TermDeliveryEvidence] = []
+    targets: list[hitl_delivery.TermTargetEvidence] = []
+    grouped: dict[tuple[str, str], list] = {}
+    for reference, constraint in constraints.items():
+        binding = bindings.get(reference)
+        if binding is None:
+            raise HitlError(f"manual term occurrence {reference} has no IL binding")
+        if constraint.eligibility == "protected_fixed":
+            deliveries.append(
+                hitl_delivery.TermDeliveryEvidence(
+                    occurrence_ref=reference,
+                    physical_page=constraint.physical_page,
+                    paragraph_ref=binding["paragraph_ref"],
+                    eligibility=constraint.eligibility,
+                    eligibility_rule_id=constraint.eligibility_rule_id,
+                    fixed_asset_ref=binding["fixed_asset_ref"],
+                )
+            )
+            targets.append(
+                hitl_delivery.TermTargetEvidence(
+                    occurrence_ref=reference,
+                    physical_page=constraint.physical_page,
+                    paragraph_ref=binding["paragraph_ref"],
+                    target_text=None,
+                    mapping_count=0,
+                    fixed_asset_ref=binding["fixed_asset_ref"],
+                )
+            )
+            continue
+        if run_trace is None or binding["paragraph_ref"] not in run_trace.sources:
+            raise HitlError(
+                f"manual term occurrence {reference} has no request ownership trace"
+            )
+        request_ids = sorted(run_trace.sources[binding["paragraph_ref"]].request_ids)
+        if len(request_ids) != 1:
+            raise HitlError(
+                f"manual term occurrence {reference} has {len(request_ids)} request mappings"
+            )
+        deliveries.append(
+            hitl_delivery.TermDeliveryEvidence(
+                occurrence_ref=reference,
+                physical_page=constraint.physical_page,
+                paragraph_ref=binding["paragraph_ref"],
+                eligibility=constraint.eligibility,
+                eligibility_rule_id=constraint.eligibility_rule_id,
+                request_sha256=_request_sha256(run_trace, request_ids[0]),
+                glossary_sha256=glossary_sha256,
+            )
+        )
+        expectation = inventory.by_id()[constraint.expectation_id]
+        grouped.setdefault(
+            (binding["paragraph_ref"], expectation.human_value), []
+        ).append(constraint)
+
+    for (paragraph_ref, human_value), held in grouped.items():
+        paragraph = bindings[held[0].occurrence_ref]["paragraph"]
+        target_text = hitl_delivery.normalize_term(paragraph.unicode or "")
+        needle = hitl_delivery.normalize_term(human_value)
+        target_positions: list[int] = []
+        position = 0
+        while True:
+            found = target_text.find(needle, position)
+            if found < 0:
+                break
+            target_positions.append(found)
+            position = found + len(needle)
+        held.sort(key=lambda item: (item.source_span, item.occurrence_ref))
+        if len(target_positions) != len(held):
+            raise HitlError(
+                f"manual target {human_value!r} has {len(target_positions)} mappings "
+                f"in {paragraph_ref}, expected {len(held)}"
+            )
+        for constraint, target_start in zip(held, target_positions, strict=True):
+            targets.append(
+                hitl_delivery.TermTargetEvidence(
+                    occurrence_ref=constraint.occurrence_ref,
+                    physical_page=constraint.physical_page,
+                    paragraph_ref=paragraph_ref,
+                    target_text=human_value,
+                    mapping_count=1,
+                    target_span=(target_start, target_start + len(needle)),
+                )
+            )
+    try:
+        inventory = hitl_delivery.record_term_delivery(inventory, deliveries)
+        inventory = hitl_delivery.record_term_targets(inventory, targets)
+    except hitl_delivery.ManualConstraintDeliveryError as exc:
+        raise HitlError(f"manual term evidence rejected: {exc}") from exc
+    _replace_manual_inventory(translation_config, inventory)
 
 
 def after_term_extract(
@@ -981,6 +1330,8 @@ def after_term_extract(
             if decisions is not None
             else {}
         )
+        applied = None
+        ruled: list[dict] = []
         if decisions is not None or defaults:
             applied = apply_terms(translation_config, decisions, defaults)
             ruled = (
@@ -997,7 +1348,48 @@ def after_term_extract(
                 if decisions is not None:
                     report["decisions_file"] = str(decisions.path)
                 _write_report(translation_config, report)
-    drop_cap.apply(translation_config, labeled, run_trace=run_trace)
+        _capture_term_runtime_bindings(
+            translation_config,
+            decisions,
+            docs,
+            run_trace,
+            applied,
+        )
+        if decisions is not None:
+            inventory = _manual_inventory_for(translation_config, decisions)
+            selected_drop = {
+                item.reference: item
+                for item in inventory.drop_cap_constraints
+                if inventory.by_id()[item.expectation_id].selected_occurrence_refs
+            }
+            ruled_by_ref = {item["paragraph"]: item for item in ruled}
+            if selected_drop:
+                try:
+                    inventory = hitl_delivery.record_drop_cap_delivery(
+                        inventory,
+                        (
+                            hitl_delivery.DropCapDeliveryEvidence(
+                                reference=reference,
+                                physical_page=constraint.physical_page,
+                                paragraph_ref=ruled_by_ref[reference]["paragraph"],
+                                fingerprint=constraint.fingerprint,
+                                decision=ruled_by_ref[reference]["decision"],
+                            )
+                            for reference, constraint in selected_drop.items()
+                            if reference in ruled_by_ref
+                        ),
+                    )
+                except hitl_delivery.ManualConstraintDeliveryError as exc:
+                    raise HitlError(f"manual drop-cap delivery rejected: {exc}") from exc
+                _replace_manual_inventory(translation_config, inventory)
+    drop_apply = drop_cap.apply(translation_config, labeled, run_trace=run_trace)
+    if translation_config.magazine_hitl_apply and drop_apply is not None:
+        runtime = _manual_runtime.get(translation_config)
+        if runtime is not None:
+            runtime["drop_cap_apply"] = {
+                item["paragraph"]: dict(item)
+                for item in drop_apply.get("decisions", ())
+            }
 
 
 def read_tracking(translation_config) -> list[dict]:
@@ -1072,7 +1464,58 @@ def match_counts(
     return counted
 
 
-def after_translate(translation_config) -> None:
+def _finalize_drop_cap_runtime(translation_config, docs, run_trace) -> None:
+    inventory = _manual_inventories.get(translation_config)
+    if inventory is None:
+        return
+    selected = {
+        item.reference: item
+        for item in inventory.drop_cap_constraints
+        if inventory.by_id()[item.expectation_id].selected_occurrence_refs
+    }
+    if not selected:
+        return
+    runtime = _manual_runtime[translation_config]
+    applied = runtime["drop_cap_apply"]
+    paragraphs = {
+        f"p{label}#{index}": paragraph
+        for label, page in labeled_pages(docs)
+        for index, paragraph in enumerate(page.pdf_paragraph or ())
+    }
+    evidence: list[hitl_delivery.DropCapTargetEvidence] = []
+    for reference, constraint in selected.items():
+        record = applied.get(reference)
+        paragraph = paragraphs.get(reference)
+        if record is None or paragraph is None:
+            raise HitlError(f"manual drop-cap target {reference} has no execution record")
+        first_character = next(
+            (character for character in (paragraph.unicode or "") if character.strip()),
+            "",
+        )
+        if not first_character:
+            raise HitlError(f"manual drop-cap target {reference} has no target initial")
+        ownership_ref = reference
+        if run_trace is not None and reference not in run_trace.sources:
+            raise HitlError(f"manual drop-cap target {reference} lost target ownership")
+        evidence.append(
+            hitl_delivery.DropCapTargetEvidence(
+                reference=reference,
+                physical_page=constraint.physical_page,
+                paragraph_ref=reference,
+                ownership_ref=ownership_ref,
+                translated_first_character=first_character,
+                decision=record["decision"],
+                flatten_status=record["flatten_status"],
+            )
+        )
+    try:
+        inventory = hitl_delivery.record_drop_cap_targets(inventory, evidence)
+    except hitl_delivery.ManualConstraintDeliveryError as exc:
+        raise HitlError(f"manual drop-cap target rejected: {exc}") from exc
+    _replace_manual_inventory(translation_config, inventory)
+
+
+def after_translate(translation_config, docs=None, run_trace=None) -> None:
     """Hook run once the translator has finished with the whole document.
 
     Two things are only knowable here, both about the gap between what a human
@@ -1090,6 +1533,12 @@ def after_translate(translation_config) -> None:
         return
     if translation_config.magazine_hitl_apply:
         _verify_cached_bound(translation_config)
+        if docs is None and _manual_inventories.get(translation_config) is not None:
+            raise HitlError("manual delivery requires translated document evidence")
+        _finalize_term_runtime(translation_config, run_trace)
+        if docs is not None:
+            _finalize_drop_cap_runtime(translation_config, docs, run_trace)
+        _record_manual_policy_event(translation_config, "translation_complete")
     records = read_tracking(translation_config)
     if not records:
         return
@@ -1133,6 +1582,28 @@ def _warn_unreached(counted: list[dict]) -> None:
         )
 
 
+def after_indent_policy(translation_config) -> None:
+    """Record the page-policy consumer after indent eligibility is applied."""
+
+    if translation_config.magazine_hitl_apply:
+        _record_manual_policy_event(translation_config, "indent_policy_complete")
+
+
+def finalize_manual_delivery(translation_config) -> None:
+    """Fail closed if a selected page-policy consumer never executed."""
+
+    if not translation_config.magazine_hitl_apply:
+        return
+    inventory = _manual_inventories.get(translation_config)
+    if inventory is None:
+        return
+    try:
+        inventory = hitl_delivery.finalize_page_policy_targets(inventory)
+    except hitl_delivery.ManualConstraintDeliveryError as exc:
+        raise HitlError(f"manual page policy target rejected: {exc}") from exc
+    _replace_manual_inventory(translation_config, inventory)
+
+
 def after_repair(translation_config, offered: list[str]) -> None:
     """Hook run once the repair loop has finished with the document.
 
@@ -1145,6 +1616,8 @@ def after_repair(translation_config, offered: list[str]) -> None:
     if not translation_config.magazine_hitl_apply:
         return
     _verify_cached_bound(translation_config)
+    _record_manual_policy_event(translation_config, "repair_complete")
+    finalize_manual_delivery(translation_config)
     if not offered:
         return
     report = _report(translation_config)

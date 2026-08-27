@@ -178,7 +178,11 @@ def _config_value(config: object, name: str, default: Any) -> Any:
 def _model_identity(config: object) -> dict[str, str]:
     declared = _config_value(config, "doc_layout_model", None)
     if declared is None:
-        identity = "babeldoc.docvision.doclayout.DocLayoutModel"
+        # The production CLI constructs the built-in ONNX implementation even
+        # for parse-only runs.  Binder TOML has no object to inspect, so its
+        # default must name that same concrete built-in implementation rather
+        # than the abstract loader facade.
+        identity = "babeldoc.docvision.doclayout.OnnxModel"
     elif isinstance(declared, str):
         identity = declared
     else:
