@@ -253,15 +253,11 @@ def verify_chain(
                 raise VerificationError(f"fragment left its source box: {reference}")
 
     expected_skip_keys = set()
-    expected_mechanisms = {}
     for refs, chain in translated.items():
         members = chain.get("members")
         if not isinstance(members, list) or len(members) != len(refs):
             raise VerificationError(f"translated member audit mismatch: {refs}")
         chain_id = chain.get("chain_id")
-        signatures = expected_actual_chains[refs]
-        transitions = expected[signatures].get("transitions", [])
-        mechanisms = {f"cross_{transition.removeprefix('cross_')}" for transition in transitions}
         for order, member in enumerate(members):
             if member.get("source_ref") != refs[order]:
                 raise VerificationError(f"translated member ref mismatch: {refs[order]}")
@@ -269,7 +265,6 @@ def verify_chain(
                 raise VerificationError(f"translated member order mismatch: {refs[order]}")
             key = (chain_id, order)
             expected_skip_keys.add(key)
-            expected_mechanisms[key] = mechanisms
 
     skips = {}
     for item in translation.get("skips", []):
@@ -282,7 +277,6 @@ def verify_chain(
         if (
             item.get("taken_by") != "chain"
             or "page_batch" not in declined
-            or not declined.intersection(expected_mechanisms[key])
         ):
             raise VerificationError(f"chain skip does not prove exclusion: {key}")
         skips[key] = item

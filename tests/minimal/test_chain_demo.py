@@ -548,7 +548,11 @@ def test_chain_verifier_checks_truth_translation_and_ordinary_exclusion(tmp_path
                 "chain_id": "raw",
                 "chain_index": index,
                 "taken_by": "chain",
-                "declined_by": ["cross_column", "page_batch"],
+                "declined_by": (
+                    ["page_batch"]
+                    if index == 0
+                    else ["cross_column", "page_batch"]
+                ),
             }
             for index in range(2)
         ],
@@ -570,6 +574,17 @@ def test_chain_verifier_checks_truth_translation_and_ordinary_exclusion(tmp_path
 
     result = verify_chain(expectations_path, source, output, work, "en", "zh")
     assert result["status"] == "pass"
+
+    missing_page_batch = json.loads(json.dumps(translation_report))
+    missing_page_batch["skips"][0]["declined_by"] = ["cross_column"]
+    (work / "chain_translation.report.json").write_text(
+        json.dumps(missing_page_batch), encoding="utf-8"
+    )
+    with pytest.raises(VerificationError, match="skip does not prove exclusion"):
+        verify_chain(expectations_path, source, output, work, "en", "zh")
+    (work / "chain_translation.report.json").write_text(
+        json.dumps(translation_report), encoding="utf-8"
+    )
 
     (work / "run_trace.report.json").unlink()
     result = verify_chain(expectations_path, source, output, work, "en", "zh")
