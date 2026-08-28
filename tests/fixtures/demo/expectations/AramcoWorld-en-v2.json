@@ -11,6 +11,15 @@
         {"physical_page": 5, "source_text_sha256": "e4603c0db6e31386a5e94e7242c0ea19dc025254577ba30cee657f9d57fe72f0", "source_box": [285.15725, 493.938875, 477.124154, 547.15], "diagnostic_ref": "styles_and_formulas.json:p5#116;debug_id=QnLwy"}
       ],
       "transitions": ["cross_column"]
+    },
+    {
+      "id": "aramco-p6-p7-cross-page-body",
+      "role": "body",
+      "ordered_members": [
+        {"physical_page": 6, "source_text_sha256": "67d5274ff957bca0fc5a836b53221baef4d12ecc41199fae134586784d29a75b", "source_box": [388.65725, 83.81275, 580.658099, 115.513875], "diagnostic_ref": "styles_and_formulas.json:p6#119;debug_id=9HPUY"},
+        {"physical_page": 7, "source_text_sha256": "f606c661b42e7e584ddc3fba3025a556b9c7718776c03efeaa8ec79e559cde8e", "source_box": [78.15725, 450.918875, 267.959148, 471.865], "diagnostic_ref": "styles_and_formulas.json:p7#95;debug_id=toYtv"}
+      ],
+      "transitions": ["cross_page"]
     }
   ],
   "negative_chain_pairs": [],
