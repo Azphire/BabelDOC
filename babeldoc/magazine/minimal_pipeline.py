@@ -18,6 +18,7 @@ from babeldoc.magazine import line_split
 from babeldoc.magazine import minimal_detection
 from babeldoc.magazine import minimal_repair
 from babeldoc.magazine import paren_dedup
+from babeldoc.magazine import title_typeset
 from babeldoc.magazine.article_builder import ArticleBuilder
 from babeldoc.magazine.article_ir import ArticleDocumentIR
 from babeldoc.magazine.chain_builder import ChainBuilder
@@ -242,6 +243,7 @@ _FIXED_TRUE_ATTRIBUTES = (
     "magazine_line_structure",
     "magazine_paren_dedup",
     "magazine_repair",
+    "magazine_title_typeset",
 )
 
 _FIXED_FALSE_ATTRIBUTES = (
@@ -249,7 +251,6 @@ _FIXED_FALSE_ATTRIBUTES = (
     "magazine_column_reflow",
     "magazine_pdf_compliance",
     "magazine_rotated_lane",
-    "magazine_title_typeset",
     "magazine_profile",
     "magazine_mode",
     "magazine_runtime_profile",
@@ -469,6 +470,7 @@ def after_translation(config, docs, typesetter) -> dict:
         # An opaque orchestration marker carries no geometry contract.  The
         # built-in flow pass always declares the required decision explicitly.
         layout_report.discard()
+    title_typeset.prepare(config, docs, article_document_ir, typesetter)
     if state.article_document_ir is not article_document_ir:
         raise MinimalPipelineStateError("canonical ArticleDocumentIR identity changed")
     state._flow_report = report
@@ -1197,7 +1199,7 @@ def _refresh_detection_fixed_baseline(
 
 
 def after_typesetting(config, docs, typesetter) -> dict:
-    """Render frozen drop-cap intents once after formal typesetting."""
+    """Render frozen titles then drop-cap intents after formal typesetting."""
     state = _state(config)
     if state._render_started:
         raise MinimalPipelineStateError("drop-cap render was already attempted")
@@ -1226,6 +1228,9 @@ def after_typesetting(config, docs, typesetter) -> dict:
         and state.flow_report.get("article_flow_applied") is False
     ):
         layout_report.finalize()
+    title_report = title_typeset.apply(config, docs, typesetter)
+    if not isinstance(title_report, dict):
+        raise MinimalPipelineStateError("title typesetter did not return a report")
     _refresh_detection_fixed_baseline(
         docs,
         article_document_ir,

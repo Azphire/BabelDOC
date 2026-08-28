@@ -1,203 +1,147 @@
-"""Heading typesetting policy, applied to a document the stage has laid out.
+"""Bounded target-title typesetting for the fixed minimal pipeline.
 
-A heading is a display unit rather than a paragraph of running text, and the
-three things that follow from that are the whole of this pass. It is set on one
-line, because a headline broken mid word is a headline nobody set. It carries
-no first line indent, because the indent is a running text convention the
-paragraph finder infers from where the first line starts. And it is shown once,
-because a display headline is routinely drawn twice -- once per paint, a solid
-layer under a gradient or texture layer -- and the two layers survive the
-translation as two copies of the text rather than as one headline.
-
-Where this sits and why
------------------------
-
-After the typesetting stage, which is the point at which the geometry a
-paragraph will render at is final, and before detection reads it. Nothing
-upstream is changed to reach that point: the pass is called from
-``detectors.detect_issues``, which is the only extension owned code the pipeline
-runs in that window, so this pass runs when ``magazine_detect`` runs. Its own
-switch is ``magazine_title_typeset`` and it is down by default; with it down
-this module returns having read nothing and the document is byte for byte the
-one the stage produced.
-
-What one heading is laid out again from
----------------------------------------
-
-The characters it was laid out as, grouped back into style runs -- consecutive
-characters agreeing on font id, size and paint -- and rebuilt as unicode runs.
-Rebuilt rather than reused because a character unit passes straight through the
-stage: ``TypesettingUnit.calc_can_passthrough`` is ``self.unicode is None``, so
-a paragraph handed back its own laid out characters is copied, not laid out.
-Only a unicode run makes the stage measure and place text again.
-
-There is no flag anywhere upstream that forbids a line break, so single line is
-not asked for, it is obtained: the layout wraps when a unit would cross the
-right edge of the box, and a scale at which the whole run fits inside the box
-never reaches that edge. The scale is estimated from the font metrics the stage
-itself measures with and then verified against the result -- the characters that
-came back have to sit in one band -- and shrunk and retried while they do not.
-The measurement is the authority, the estimate only picks where to start.
-
-Erasure
--------
-
-Nothing here erases anything, because nothing upstream erases anything either.
-``PDFCreater.update_page_content_stream`` builds each page's content stream from
-this document -- the page's own base operations are not carried over -- so the
-source text of every paragraph is gone from the output by construction, and a
-layer dropped here is dropped from the output whether it was source or
-translation. That is what makes deduplicating a layer safe: suppressing it needs
-no counterpart erasure, and a duplicate paragraph left with an empty composition
-renders nothing at all.
+``prepare`` runs after translation but before formal Typesetting and freezes
+title ownership, target text, source boxes, and base font sizes. ``apply`` runs
+after formal Typesetting with that exact Typesetting instance and lays each
+complete target back into its immutable source box.
 """
 
 from __future__ import annotations
 
 import copy
+import hashlib
 import json
-import logging
+import math
 from collections.abc import Mapping
 from dataclasses import dataclass
 from dataclasses import replace
-from difflib import SequenceMatcher
 from functools import lru_cache
 from pathlib import Path
 from types import MappingProxyType
 
 from babeldoc.format.pdf.document_il import il_version_1
-from babeldoc.format.pdf.document_il.midend.typesetting import Typesetting
+from babeldoc.format.pdf.document_il.midend.typesetting import BoundedTypesettingError
 from babeldoc.magazine import hitl
+from babeldoc.magazine import line_split
 from babeldoc.magazine.article_builder import TITLE_CLASSES_KEY
 from babeldoc.magazine.article_builder import title_labels
+from babeldoc.magazine.article_ir import ArticleDocumentIR
 from babeldoc.magazine.chain_signals import CLASS_LABELS_KEY
 from babeldoc.magazine.chain_signals import CONFIG_PATH as CHAIN_CONFIG_PATH
 from babeldoc.magazine.chain_signals import load_chain_config
-from babeldoc.magazine.drop_cap import paragraph_reference
 from babeldoc.magazine.page_features import ConfigError
 from babeldoc.magazine.page_features import validate_bounded_config
 from babeldoc.magazine.react.writeback import page_font_map
-from babeldoc.magazine.reading_order import paragraph_reading_text
 from babeldoc.magazine.resource_paths import config_path
 from babeldoc.magazine.taxonomy import record_config_manifest
 
-logger = logging.getLogger(__name__)
-
 CONFIG_PATH = config_path("title_typeset.json")
-
 REPORT_NAME = "title_typeset.report.json"
-
-# The switch, by the name the caller sets on the translation config.
+CHAIN_REPORT_NAME = "chain_translation.report.json"
 SWITCH = "magazine_title_typeset"
+SCHEMA_VERSION = "title-typeset.v1"
 
-# The switch this pass rides, because the window it has to run in holds no other
-# extension owned call. Named here so the report says what it depended on.
-WINDOW_SWITCH = "magazine_detect"
-
-# Structural sections of the configuration: what is validated against a declared
-# vocabulary rather than against a numeric range.
-FLOOR_KEY = "on_floor"
-FLOOR_VOCABULARY_KEY = "on_floor_vocabulary"
-
-# The same two policies, stated per target language. A single line constraint is
-# a property of the language the heading is set in rather than of the heading:
-# a script that carries a headline in a third of the width can be squeezed where
-# an alphabetic one cannot. Both tables are keyed by language prefix and every
-# value of them is checked against the bound its flat sibling is checked against,
-# so the declaration stays one vocabulary and one range.
-FLOOR_BY_TARGET_KEY = "on_floor_by_target"
 MIN_SCALE_KEY = "title_min_scale"
+MAX_LINES_KEY = "title_max_lines"
 MIN_SCALE_BY_TARGET_KEY = "title_min_scale_by_target"
-
-_STRUCTURAL_KEYS = (FLOOR_KEY, FLOOR_BY_TARGET_KEY, MIN_SCALE_BY_TARGET_KEY)
-
-# The floor policy that raises what it could not set, by the name the
-# configuration's own vocabulary declares it under. The other member of that
-# vocabulary accepts the same rendering without raising anything.
-FLOOR_ESCALATE = "escalate"
-FLOOR_WRAP = "wrap"
-
-# How a language tag is separated into subtags, and what is read as a separator
-# before it is matched.
+MAX_LINES_BY_TARGET_KEY = "title_max_lines_by_target"
+_STRUCTURAL_KEYS = (MIN_SCALE_BY_TARGET_KEY, MAX_LINES_BY_TARGET_KEY)
 _SUBTAG_SEPARATOR = "-"
 _SUBTAG_ALIASES = ("_",)
+_BOX_TOLERANCE = 0.001
 
-# What was done with one heading.
-DISPOSITION_UNCHANGED = "unchanged"
-DISPOSITION_SINGLE_LINE = "single_line"
-DISPOSITION_FLOOR = "floor_reached"
-DISPOSITION_WRAP = "wrap"
-
-# What a deduplicated layer was recovered as.
-LAYER_PARAGRAPH = "paragraph"
-LAYER_RUN = "run"
+_EXCLUDED_LABELS = frozenset(
+    {
+        "caption",
+        "credit",
+        "figure_caption",
+        "folio",
+        "page number",
+        "page_number",
+        "table_caption",
+    }
+)
 
 
 class TitleTypesetError(ConfigError):
-    """Raised when the title typesetting configuration is malformed."""
+    """A title cannot be safely identified, conserved, or fitted."""
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, slots=True)
 class TitleConfig:
-    """Everything bounded about setting one heading."""
-
     labels: tuple[str, ...]
     title_min_scale: float
-    on_floor: str
+    title_max_lines: int
     title_min_scale_by_target: Mapping[str, float]
-    on_floor_by_target: Mapping[str, str]
-    duplicate_min_iou: float
-    duplicate_min_text_similarity: float
-    duplicate_min_chars: int
-    duplicate_font_size_tolerance: float
-    single_line_width_ratio: float
-    scale_shrink_step: float
-    max_scale_attempts: int
-    line_band_tolerance: float
+    title_max_lines_by_target: Mapping[str, int]
 
     def is_title(self, paragraph) -> bool:
         return getattr(paragraph, "layout_label", None) in self.labels
 
     def for_target(self, target_lang: str | None) -> TitleConfig:
-        """This policy as the given target language states it.
-
-        Whatever the language claims replaces the flat declaration, so the rest
-        of the pass reads one floor and one policy and never asks what language
-        it is setting. What nothing claims stays as the flat keys declare it.
-        """
-        floor = _claimed(target_lang, self.on_floor_by_target)
         scale = _claimed(target_lang, self.title_min_scale_by_target)
-        if floor is None and scale is None:
-            return self
+        lines = _claimed(target_lang, self.title_max_lines_by_target)
         return replace(
             self,
-            on_floor=self.on_floor if floor is None else str(floor),
             title_min_scale=(
                 self.title_min_scale if scale is None else float(scale)
+            ),
+            title_max_lines=(
+                self.title_max_lines if lines is None else int(lines)
             ),
         )
 
 
-def _claimed(target_lang: str | None, table: Mapping[str, object]):
-    """The entry a target language tag claims, longest declared prefix first.
+@dataclass(slots=True)
+class FrozenTitle:
+    paragraph: object
+    page: object
+    physical_page: int
+    local_ref: str
+    source_ref: str
+    source_box: tuple[float, float, float, float]
+    base_style: object
+    base_font_size: float
+    target: str
+    target_sha256: str
+    chain_id: str | None
+    chain_index: int | None
+    owner_ref: str | None = None
+    member_refs: tuple[str, ...] = ()
+    trailing: bool = False
 
-    A tag matches a prefix when it is that prefix or a subtag of it, which is
-    the rule the sentence profiles resolve a language under, so ``en`` and
-    ``en-GB`` claim one entry while ``eng`` claims neither. None where nothing
-    claims the tag, which is what sends the caller back to the flat key.
-    """
+
+@dataclass(slots=True)
+class _Run:
+    config: object
+    docs: object
+    typesetter: object
+    policy: TitleConfig
+    titles: list[FrozenTitle]
+    exclusions: list[dict]
+
+
+_RUN: _Run | None = None
+
+
+def discard() -> None:
+    global _RUN
+    _RUN = None
+
+
+def _claimed(target_lang: str | None, table: Mapping[str, object]):
     if not table or not target_lang:
         return None
     tag = target_lang.strip().lower()
     for alias in _SUBTAG_ALIASES:
         tag = tag.replace(alias, _SUBTAG_SEPARATOR)
-    best: tuple[int, str] | None = None
-    for key in table:
-        prefix = key.strip().lower()
-        if tag == prefix or tag.startswith(prefix + _SUBTAG_SEPARATOR):
-            if best is None or len(prefix) > best[0]:
-                best = (len(prefix), key)
-    return None if best is None else table[best[1]]
+    matches = [
+        (len(prefix), key)
+        for key in table
+        for prefix in (key.strip().lower(),)
+        if tag == prefix or tag.startswith(prefix + _SUBTAG_SEPARATOR)
+    ]
+    return None if not matches else table[max(matches)[1]]
 
 
 def _require(condition: bool, message: str) -> None:
@@ -205,751 +149,657 @@ def _require(condition: bool, message: str) -> None:
         raise TitleTypesetError(message)
 
 
-def _read_target_table(raw: object, key: str, source: str) -> dict:
-    """One by-target mapping, checked for shape before its values are bounded."""
-    if raw is None:
-        return {}
-    _require(isinstance(raw, dict), f"{source}: {key} must be an object")
+def _target_table(raw: object, key: str, source: str) -> dict:
+    _require(isinstance(raw, dict) and bool(raw), f"{source}: {key} must be an object")
     for name in raw:
         _require(
-            isinstance(name, str) and name.strip() != "",
-            f"{source}: {key} carries a key that is not a language prefix",
+            isinstance(name, str) and bool(name.strip()),
+            f"{source}: {key} has an invalid language prefix",
         )
     return dict(raw)
 
 
-def _read_floor_table(raw: object, source: str, vocabulary: tuple[str, ...]):
-    """The per-language floor policies, each a member of the flat vocabulary."""
-    table = _read_target_table(raw, FLOOR_BY_TARGET_KEY, source)
-    for name, value in table.items():
-        _require(
-            value in vocabulary,
-            f"{source}: {FLOOR_BY_TARGET_KEY}[{name!r}] is {value!r}, outside "
-            f"{sorted(vocabulary)}",
-        )
-    return MappingProxyType({name: str(value) for name, value in table.items()})
-
-
-def _read_scale_table(raw: object, config: dict, source: str):
-    """The per-language floors, each inside the flat key's own allowed range."""
-    table = _read_target_table(raw, MIN_SCALE_BY_TARGET_KEY, source)
-    range_key = f"{MIN_SCALE_KEY}_allowed_range"
-    for name, value in table.items():
+def _validate_table_values(
+    table: dict,
+    *,
+    key: str,
+    flat_key: str,
+    raw: dict,
+    source: str,
+    integer: bool,
+) -> Mapping:
+    result = {}
+    range_key = f"{flat_key}_allowed_range"
+    for language, value in table.items():
         try:
-            validate_bounded_config(
-                {MIN_SCALE_KEY: value, range_key: config.get(range_key)}, CONFIG_PATH
-            )
-        except ConfigError as exc:
+            validated = validate_bounded_config(
+                {flat_key: value, range_key: raw.get(range_key)}, CONFIG_PATH
+            )[flat_key]
+        except ConfigError as error:
             raise TitleTypesetError(
-                f"{source}: {MIN_SCALE_BY_TARGET_KEY}[{name!r}]: {exc}"
-            ) from exc
-    return MappingProxyType({name: float(value) for name, value in table.items()})
+                f"{source}: {key}[{language!r}]: {error}"
+            ) from error
+        if integer:
+            _require(
+                isinstance(value, int) and not isinstance(value, bool),
+                f"{source}: {key}[{language!r}] must be an integer",
+            )
+            result[language] = int(validated)
+        else:
+            result[language] = float(validated)
+    return MappingProxyType(result)
 
 
 def parse_title_config(raw: dict, source: str) -> TitleConfig:
-    """Validate one configuration mapping into the policy it declares."""
     flat = {key: value for key, value in raw.items() if key not in _STRUCTURAL_KEYS}
     try:
         parameters = dict(validate_bounded_config(flat, CONFIG_PATH))
-    except ConfigError as exc:
-        raise TitleTypesetError(str(exc)) from exc
-
-    _require(TITLE_CLASSES_KEY in parameters, f"{source}: missing {TITLE_CLASSES_KEY}")
-    vocabulary = tuple(parameters.get(FLOOR_VOCABULARY_KEY, ()))
-    _require(bool(vocabulary), f"{source}: missing {FLOOR_VOCABULARY_KEY}")
-    floor = raw.get(FLOOR_KEY)
+    except ConfigError as error:
+        raise TitleTypesetError(str(error)) from error
+    for key in (TITLE_CLASSES_KEY, MIN_SCALE_KEY, MAX_LINES_KEY):
+        _require(key in parameters, f"{source}: missing {key}")
     _require(
-        floor in vocabulary,
-        f"{source}: {FLOOR_KEY} is {floor!r}, outside {sorted(vocabulary)}",
+        isinstance(raw[MAX_LINES_KEY], int) and not isinstance(raw[MAX_LINES_KEY], bool),
+        f"{source}: {MAX_LINES_KEY} must be an integer",
     )
-    for policy in (FLOOR_ESCALATE, FLOOR_WRAP):
-        _require(
-            policy in vocabulary,
-            f"{source}: {FLOOR_VOCABULARY_KEY} omits {policy!r}, which is one "
-            f"of the two policies this pass lands a heading on the floor under",
-        )
-    floors_by_target = _read_floor_table(raw.get(FLOOR_BY_TARGET_KEY), source, vocabulary)
-    scales_by_target = _read_scale_table(raw.get(MIN_SCALE_BY_TARGET_KEY), raw, source)
-    # The heading labels come from the chain detector's own class declaration,
-    # which is what keeps one description of a heading serving both.
     declared = load_chain_config()[CLASS_LABELS_KEY]
     unknown = sorted(set(parameters[TITLE_CLASSES_KEY]) - set(declared))
     _require(
         not unknown,
-        f"{source}: {TITLE_CLASSES_KEY} names {unknown}, which "
-        f"{CHAIN_CONFIG_PATH.name} does not declare as endpoint classes; "
-        f"declared classes are {sorted(declared)}",
+        f"{source}: {TITLE_CLASSES_KEY} names {unknown}, outside "
+        f"{CHAIN_CONFIG_PATH.name}",
     )
     labels = title_labels(parameters)
-    _require(bool(labels), f"{source}: {TITLE_CLASSES_KEY} names no layout label")
-
+    _require(bool(labels), f"{source}: no title layout labels are declared")
+    scale_table = _target_table(
+        raw.get(MIN_SCALE_BY_TARGET_KEY), MIN_SCALE_BY_TARGET_KEY, source
+    )
+    lines_table = _target_table(
+        raw.get(MAX_LINES_BY_TARGET_KEY), MAX_LINES_BY_TARGET_KEY, source
+    )
+    _require(
+        set(scale_table) == set(lines_table),
+        f"{source}: target policy language prefixes disagree",
+    )
     return TitleConfig(
         labels=labels,
         title_min_scale=float(parameters[MIN_SCALE_KEY]),
-        on_floor=str(floor),
-        title_min_scale_by_target=scales_by_target,
-        on_floor_by_target=floors_by_target,
-        duplicate_min_iou=float(parameters["duplicate_min_iou"]),
-        duplicate_min_text_similarity=float(
-            parameters["duplicate_min_text_similarity"]
+        title_max_lines=int(parameters[MAX_LINES_KEY]),
+        title_min_scale_by_target=_validate_table_values(
+            scale_table,
+            key=MIN_SCALE_BY_TARGET_KEY,
+            flat_key=MIN_SCALE_KEY,
+            raw=raw,
+            source=source,
+            integer=False,
         ),
-        duplicate_min_chars=int(parameters["duplicate_min_chars"]),
-        duplicate_font_size_tolerance=float(
-            parameters["duplicate_font_size_tolerance"]
+        title_max_lines_by_target=_validate_table_values(
+            lines_table,
+            key=MAX_LINES_BY_TARGET_KEY,
+            flat_key=MAX_LINES_KEY,
+            raw=raw,
+            source=source,
+            integer=True,
         ),
-        single_line_width_ratio=float(parameters["single_line_width_ratio"]),
-        scale_shrink_step=float(parameters["scale_shrink_step"]),
-        max_scale_attempts=int(parameters["max_scale_attempts"]),
-        line_band_tolerance=float(parameters["line_band_tolerance"]),
     )
 
 
 @lru_cache(maxsize=2)
 def load_title_config(path: str | None = None) -> TitleConfig:
-    """Load and validate ``configs/title_typeset.json``."""
-    config_path = CONFIG_PATH if path is None else Path(path)
-    with config_path.open(encoding="utf-8") as f:
-        raw = json.load(f)
-    return parse_title_config(raw, config_path.name)
+    held = CONFIG_PATH if path is None else Path(path)
+    raw = json.loads(held.read_text(encoding="utf-8"))
+    _require(isinstance(raw, dict), f"{held.name}: root must be an object")
+    return parse_title_config(raw, held.name)
 
 
 def enabled(translation_config) -> bool:
     return bool(getattr(translation_config, SWITCH, False))
 
 
-# --- reading a laid out paragraph ---------------------------------------------
+def _box(value) -> tuple[float, float, float, float] | None:
+    if value is None:
+        return None
+    try:
+        result = tuple(
+            float(getattr(value, name)) for name in ("x", "y", "x2", "y2")
+        )
+    except (AttributeError, TypeError, ValueError):
+        return None
+    if (
+        not all(math.isfinite(item) for item in result)
+        or result[0] >= result[2]
+        or result[1] >= result[3]
+    ):
+        return None
+    return result
 
 
-def laid_out_characters(paragraph) -> list:
-    """The characters a laid out paragraph is composed of, in stored order.
-
-    After the stage, a paragraph that was typeset carries one character per
-    composition. A composition holding anything else belongs to a paragraph the
-    stage passed through rather than laid out, and this pass leaves those alone
-    rather than guessing at their structure.
-    """
-    characters = []
-    for composition in paragraph.pdf_paragraph_composition or ():
-        if composition is None or composition.pdf_character is None:
-            return []
-        characters.append(composition.pdf_character)
-    return characters
-
-
-def _style_key(character) -> tuple:
-    """What makes two characters part of one style run: font, size and paint."""
-    style = character.pdf_style
-    if style is None:
-        return (None, None, None)
-    state = style.graphic_state
+def _box_equal(left, right, tolerance: float = _BOX_TOLERANCE) -> bool:
     return (
-        style.font_id,
-        style.font_size,
-        None if state is None else state.passthrough_per_char_instruction,
+        left is not None
+        and right is not None
+        and len(left) == len(right) == 4
+        and all(
+            abs(float(a) - float(b)) <= tolerance
+            for a, b in zip(left, right, strict=True)
+        )
     )
 
 
-@dataclass
-class Run:
-    """One style run of a laid out heading."""
-
-    style: object
-    characters: list
-    position: int
-
-    @property
-    def text(self) -> str:
-        return "".join(item.char_unicode or "" for item in self.characters)
+def _contains(outer, inner, tolerance: float = _BOX_TOLERANCE) -> bool:
+    return (
+        outer[0] - tolerance <= inner[0]
+        and outer[1] - tolerance <= inner[1]
+        and inner[2] <= outer[2] + tolerance
+        and inner[3] <= outer[3] + tolerance
+    )
 
 
-def style_runs(characters) -> list[Run]:
-    """Consecutive characters agreeing on font, size and paint, as runs."""
-    runs: list[Run] = []
-    previous = object()
-    for character in characters:
-        key = _style_key(character)
-        if not runs or key != previous:
-            runs.append(Run(character.pdf_style, [character], len(runs)))
-        else:
-            runs[-1].characters.append(character)
-        previous = key
-    return runs
+def _sha256(text: str) -> str:
+    return hashlib.sha256(text.encode("utf-8")).hexdigest()
 
 
-def line_bands(characters, tolerance: float) -> list[float]:
-    """The distinct vertical bands the characters were laid out on.
-
-    The layout places every character of one line at one vertical position, so
-    the bands are the distinct positions; the tolerance is a fraction of the
-    line height and absorbs nothing more than arithmetic noise.
-    """
-    positions = [
-        float(item.box.y)
-        for item in characters
-        if item.box is not None and item.box.y is not None
-    ]
-    if not positions:
-        return []
-    heights = [
-        float(item.box.y2) - float(item.box.y)
-        for item in characters
-        if item.box is not None and item.box.y is not None and item.box.y2 is not None
-    ]
-    span = max(heights) if heights else 0.0
-    window = max(span * tolerance, 1e-6)
-    bands: list[float] = []
-    for position in sorted(positions):
-        if not bands or abs(position - bands[-1]) > window:
-            bands.append(position)
-    return bands
-
-
-def normalised(text: str) -> str:
-    """One heading's text as agreement between two layers is measured on."""
-    return "".join(text.split()).casefold()
-
-
-def similarity(left: str, right: str) -> float:
-    left_key, right_key = normalised(left), normalised(right)
-    if not left_key or not right_key:
-        return 0.0
-    if left_key == right_key:
-        return 1.0
-    return SequenceMatcher(None, left_key, right_key).ratio()
-
-
-def box_tuple(box) -> tuple[float, float, float, float] | None:
-    if box is None:
-        return None
-    values = (box.x, box.y, box.x2, box.y2)
-    if any(value is None for value in values):
-        return None
-    return tuple(float(value) for value in values)
-
-
-def intersection_over_union(left, right) -> float:
-    """Area shared by two boxes over the area they cover together."""
-    width = min(left[2], right[2]) - max(left[0], right[0])
-    height = min(left[3], right[3]) - max(left[1], right[1])
-    if width <= 0 or height <= 0:
-        return 0.0
-    shared = width * height
-    left_area = max(0.0, left[2] - left[0]) * max(0.0, left[3] - left[1])
-    right_area = max(0.0, right[2] - right[0]) * max(0.0, right[3] - right[1])
-    union = left_area + right_area - shared
-    return shared / union if union > 0 else 0.0
-
-
-def _area(box) -> float:
-    return max(0.0, box[2] - box[0]) * max(0.0, box[3] - box[1])
-
-
-# --- deduplicating the layers of one display unit -----------------------------
-
-
-def duplicate_paragraphs(titles, config: TitleConfig) -> dict[int, dict]:
-    """Which heading paragraphs of one page are a second layer of another.
-
-    ``titles`` are the page's headings as (index, paragraph) pairs. Two of them
-    standing on each other and saying the same thing are one display unit drawn
-    twice; the one covering more of the page keeps it, and equal area is settled
-    by which came first, so the choice does not depend on iteration order.
-    """
-    suppressed: dict[int, dict] = {}
-    for position, (index, paragraph) in enumerate(titles):
-        if index in suppressed:
-            continue
-        left_box = box_tuple(paragraph.box)
-        left_text = paragraph_reading_text(paragraph)
-        if left_box is None or len(normalised(left_text)) < config.duplicate_min_chars:
-            continue
-        for other_index, other in titles[position + 1 :]:
-            if other_index in suppressed:
-                continue
-            right_box = box_tuple(other.box)
-            if right_box is None:
-                continue
-            overlap = intersection_over_union(left_box, right_box)
-            if overlap < config.duplicate_min_iou:
-                continue
-            agreement = similarity(left_text, paragraph_reading_text(other))
-            if agreement < config.duplicate_min_text_similarity:
-                continue
-            if _area(right_box) > _area(left_box):
-                keeper, dropped = other_index, index
-            else:
-                keeper, dropped = index, other_index
-            suppressed[dropped] = {
-                "layer": LAYER_PARAGRAPH,
-                "duplicate_of_index": keeper,
-                "iou": round(overlap, 4),
-                "similarity": round(agreement, 4),
-            }
-            if dropped == index:
-                break
-    return suppressed
-
-
-def _styles_correspond(left: list[Run], right: list[Run], config: TitleConfig) -> bool:
-    """Whether two sequences of runs are the same sequence of styles.
-
-    Two paints of one headline are laid in the same fonts at the same sizes and
-    in the same order, because they are the same text: what differs between the
-    layers is the paint, which is what made them separate runs to begin with.
-    """
-    if len(left) != len(right):
-        return False
-    for first, second in zip(left, right, strict=True):
-        if first.style is None or second.style is None:
-            return False
-        if first.style.font_id != second.style.font_id:
-            return False
-        sizes = (first.style.font_size, second.style.font_size)
-        if any(size is None for size in sizes):
-            return False
-        if abs(float(sizes[0]) - float(sizes[1])) > config.duplicate_font_size_tolerance:
-            return False
-    return True
-
-
-def duplicate_layer(runs: list[Run], config: TitleConfig) -> int | None:
-    """Where a heading written twice over splits into its two layers.
-
-    The run level rule below compares one run with another, which answers a
-    layer that is one run and leaves a layer of several runs half removed: a
-    headline whose question mark is set in a fallback font is four runs, and
-    dropping the repeated words alone leaves the punctuation twice over. So the
-    sequence is tested as a whole first. A split at a run boundary whose two
-    sides say the same thing in the same sequence of styles is one display unit
-    drawn twice, and the second side is the second drawing.
-
-    The boundary matters. A folio reading twice its own digit is one run, not
-    two, and stays whole because there is no boundary to split it at; and each
-    side has to carry ``duplicate_min_chars`` of its own, which is the same
-    floor the run level rule applies and for the same reason. Returns the index
-    the second layer starts at, or None where the heading is written once.
-    """
-    if len(runs) < 2:
-        return None
-    best = None
-    for split in range(1, len(runs)):
-        left, right = runs[:split], runs[split:]
-        left_text = "".join(run.text for run in left)
-        right_text = "".join(run.text for run in right)
-        if min(len(normalised(left_text)), len(normalised(right_text))) < (
-            config.duplicate_min_chars
-        ):
-            continue
-        if not _styles_correspond(left, right, config):
-            continue
-        agreement = similarity(left_text, right_text)
-        if agreement < config.duplicate_min_text_similarity:
-            continue
-        imbalance = abs(len(left_text) - len(right_text))
-        key = (-agreement, imbalance, split)
-        if best is None or key < best[0]:
-            best = (key, split)
-    return None if best is None else best[1]
-
-
-def duplicate_runs(runs: list[Run], config: TitleConfig) -> tuple[list[Run], list[dict]]:
-    """The runs of one heading with its repeated layers dropped.
-
-    Two runs set in one font at one size and saying the same thing are the two
-    paints of one display unit: the paragraph finder recovered them as one
-    paragraph because they were drawn at one place, and the layout has since put
-    them side by side. The earlier run keeps the heading.
-
-    A layer of several runs is recognised as a whole first, by
-    ``duplicate_layer``; what the run level rule then sees is a heading with one
-    layer left, which is what it was written for.
-    """
-    split = duplicate_layer(runs, config)
-    if split is not None:
-        return runs[:split], [
-            {
-                "layer": LAYER_RUN,
-                "run": run.position,
-                "duplicate_of_run": runs[position].position,
-                "similarity": round(
-                    similarity(runs[position].text, run.text), 4
-                ),
-                "characters": len(run.characters),
-            }
-            for position, run in enumerate(runs[split:])
-        ]
-    kept: list[Run] = []
-    dropped: list[dict] = []
-    for run in runs:
-        text = run.text
-        if len(normalised(text)) < config.duplicate_min_chars:
-            kept.append(run)
-            continue
-        match = None
-        for earlier in kept:
-            if earlier.style is None or run.style is None:
-                continue
-            if earlier.style.font_id != run.style.font_id:
-                continue
-            sizes = (earlier.style.font_size, run.style.font_size)
-            if any(size is None for size in sizes):
-                continue
-            if abs(float(sizes[0]) - float(sizes[1])) > (
-                config.duplicate_font_size_tolerance
-            ):
-                continue
-            agreement = similarity(earlier.text, text)
-            if agreement >= config.duplicate_min_text_similarity:
-                match = (earlier, agreement)
-                break
-        if match is None:
-            kept.append(run)
-            continue
-        earlier, agreement = match
-        dropped.append(
-            {
-                "layer": LAYER_RUN,
-                "run": run.position,
-                "duplicate_of_run": earlier.position,
-                "similarity": round(agreement, 4),
-                "characters": len(run.characters),
-            }
+def _has_target_composition(paragraph) -> bool:
+    return any(
+        composition.pdf_same_style_unicode_characters is not None
+        and not bool(
+            getattr(
+                composition.pdf_same_style_unicode_characters,
+                "debug_info",
+                False,
+            )
         )
-    return kept, dropped
+        for composition in paragraph.pdf_paragraph_composition or ()
+    )
 
 
-# --- laying one heading out again ---------------------------------------------
+def _union_box(boxes) -> tuple[float, float, float, float]:
+    return (
+        min(box[0] for box in boxes),
+        min(box[1] for box in boxes),
+        max(box[2] for box in boxes),
+        max(box[3] for box in boxes),
+    )
 
 
-def _set_runs(paragraph, runs: list[Run]) -> None:
-    """Compose the paragraph from unicode runs, which the stage lays out again."""
+def _base_style(paragraph):
+    style = getattr(paragraph, "pdf_style", None)
+    if style is not None and getattr(style, "font_size", None):
+        return copy.deepcopy(style)
+    for composition in paragraph.pdf_paragraph_composition or ():
+        holder = composition.pdf_same_style_unicode_characters
+        if holder is not None and holder.pdf_style is not None:
+            if getattr(holder.pdf_style, "font_size", None):
+                return copy.deepcopy(holder.pdf_style)
+    return None
+
+
+def _read_chain_report(config) -> dict:
+    path = Path(config.get_working_file_path(CHAIN_REPORT_NAME))
+    if not path.is_file():
+        return {"chains": []}
+    payload = json.loads(path.read_text(encoding="utf-8"))
+    _require(isinstance(payload, dict), f"{CHAIN_REPORT_NAME}: root must be an object")
+    return payload
+
+
+def _prove_title_chains(
+    config,
+    article_document_ir: ArticleDocumentIR,
+    titles: list[FrozenTitle],
+) -> None:
+    groups: dict[str, list[FrozenTitle]] = {}
+    for title in titles:
+        if title.chain_id:
+            groups.setdefault(title.chain_id, []).append(title)
+    if not groups:
+        return
+    report_chains = _read_chain_report(config).get("chains")
+    _require(
+        isinstance(report_chains, list), f"{CHAIN_REPORT_NAME}.chains must be a list"
+    )
+    for chain_id, members in groups.items():
+        _require(
+            len(members) >= 2,
+            f"title chain {chain_id} has fewer than two runtime members",
+        )
+        members.sort(
+            key=lambda item: (
+                item.chain_index if item.chain_index is not None else 1 << 30,
+                item.local_ref,
+            )
+        )
+        _require(
+            [item.chain_index for item in members] == list(range(len(members))),
+            f"title chain {chain_id} has incomplete member order",
+        )
+        local_refs = tuple(item.local_ref for item in members)
+        canonical = tuple(
+            article_document_ir.by_chain_member.get(reference)
+            for reference in local_refs
+        )
+        _require(
+            canonical[0] is not None and len(set(canonical)) == 1,
+            f"title chain {chain_id} lacks canonical ArticleIR ownership",
+        )
+        matches = [
+            item
+            for item in report_chains
+            if isinstance(item, dict)
+            and item.get("chain_id") == chain_id
+            and item.get("outcome") == "joint_success"
+            and item.get("pair_class") == "title"
+            and tuple(item.get("runtime_source_refs") or ()) == local_refs
+            and item.get("canonical_chain_id") == canonical[0]
+        ]
+        _require(
+            len(matches) == 1,
+            f"title chain {chain_id} has no unique joint-success ownership proof",
+        )
+        evidence = matches[0]
+        target = evidence.get("translation")
+        fragments = evidence.get("ordered_fragments")
+        source_boxes = evidence.get("source_boxes")
+        _require(
+            isinstance(target, str)
+            and bool(target)
+            and isinstance(fragments, list)
+            and all(isinstance(item, str) for item in fragments)
+            and "".join(fragments) == target
+            and _sha256(target) == evidence.get("whole_target_sha256"),
+            f"title chain {chain_id} target conservation proof is invalid",
+        )
+        _require(
+            len(fragments) == len(members)
+            and all(
+                item.target == fragment
+                for item, fragment in zip(members, fragments, strict=True)
+            ),
+            f"title chain {chain_id} runtime fragments disagree with holders",
+        )
+        _require(
+            isinstance(source_boxes, list)
+            and len(source_boxes) == len(members)
+            and all(
+                _box_equal(source_box, member.source_box)
+                for source_box, member in zip(source_boxes, members, strict=True)
+            ),
+            f"title chain {chain_id} source boxes changed",
+        )
+        _require(
+            len({item.physical_page for item in members}) == 1,
+            f"title chain {chain_id} crosses physical pages",
+        )
+        refs = tuple(item.source_ref for item in members)
+        # A display title can be recovered as adjacent title paragraphs.  The
+        # chain report is the ownership proof and its immutable member boxes
+        # define the only region the complete target may use.  It is not safe
+        # to require the boxes to overlap: that would reject the common two-line
+        # source shape and leave two independently translated target holders.
+        members[0].source_box = _union_box(
+            tuple(item.source_box for item in members)
+        )
+        for position, member in enumerate(members):
+            member.owner_ref = refs[0]
+            member.member_refs = refs
+            member.trailing = position > 0
+        members[0].target = target
+        members[0].target_sha256 = _sha256(target)
+
+
+def prepare(
+    translation_config,
+    docs,
+    article_document_ir: ArticleDocumentIR,
+    typesetter,
+) -> dict | None:
+    """Freeze target titles before the formal Typesetting pass."""
+    global _RUN
+    if not enabled(translation_config):
+        discard()
+        return None
+    _require(
+        getattr(typesetter, "translation_config", None) is translation_config,
+        "title prepare received a foreign Typesetting instance",
+    )
+    policy = load_title_config().for_target(
+        getattr(translation_config, "lang_out", None)
+    )
+    elements = {
+        element.source_ref: element
+        for article in article_document_ir.articles
+        for element in article.elements
+    }
+    titles: list[FrozenTitle] = []
+    exclusions: list[dict] = []
+    for local_page, (physical_page, page) in enumerate(
+        hitl.labeled_pages(docs), start=1
+    ):
+        for paragraph_index, paragraph in enumerate(page.pdf_paragraph or ()):
+            local_ref = f"p{local_page}#{paragraph_index}"
+            source_ref = f"p{physical_page}#{paragraph_index}"
+            label = (getattr(paragraph, "layout_label", None) or "").strip().lower()
+            unit = line_split.source_unit(paragraph, physical_page)
+            element = elements.get(local_ref)
+            is_title = policy.is_title(paragraph) or (
+                element is not None and element.role == "title"
+            )
+            reason = None
+            if unit is not None:
+                reason = f"toc:{unit.record_kind}"
+            elif label in _EXCLUDED_LABELS:
+                reason = label
+            elif not is_title:
+                continue
+            elif not _has_target_composition(paragraph):
+                reason = "no_generated_target"
+            if reason is not None:
+                exclusions.append(
+                    {
+                        "source_ref": source_ref,
+                        "layout_label": label or None,
+                        "reason": reason,
+                    }
+                )
+                continue
+            source_box = (
+                tuple(float(value) for value in element.source_box)
+                if element is not None and element.source_box is not None
+                else _box(getattr(paragraph, "box", None))
+            )
+            style = _base_style(paragraph)
+            target = getattr(paragraph, "unicode", None)
+            _require(source_box is not None, f"{source_ref}: title source box is missing")
+            _require(
+                style is not None and float(style.font_size) > 0,
+                f"{source_ref}: title base font size is missing",
+            )
+            _require(isinstance(target, str) and bool(target), f"{source_ref}: title target is empty")
+            _require(
+                "\n" not in target and "\r" not in target,
+                f"{source_ref}: title target contains an unrendered line break",
+            )
+            titles.append(
+                FrozenTitle(
+                    paragraph=paragraph,
+                    page=page,
+                    physical_page=physical_page,
+                    local_ref=local_ref,
+                    source_ref=source_ref,
+                    source_box=source_box,
+                    base_style=style,
+                    base_font_size=float(style.font_size),
+                    target=target,
+                    target_sha256=_sha256(target),
+                    chain_id=getattr(paragraph, "chain_id", None),
+                    chain_index=getattr(paragraph, "chain_index", None),
+                )
+            )
+    _prove_title_chains(translation_config, article_document_ir, titles)
+    _RUN = _Run(translation_config, docs, typesetter, policy, titles, exclusions)
+    return {
+        "prepared": len(titles),
+        "excluded": len(exclusions),
+        "typesetter_identity_frozen": True,
+    }
+
+
+def _unit_bounds(units) -> tuple[float, float, float, float] | None:
+    boxes = [unit.box for unit in units if unit.box is not None]
+    if not boxes:
+        return None
+    return (
+        min(float(box.x) for box in boxes),
+        min(float(box.y) for box in boxes),
+        max(float(box.x2) for box in boxes),
+        max(float(box.y2) for box in boxes),
+    )
+
+
+def _line_count(units) -> int:
+    indices = [getattr(unit, "layout_line_index", None) for unit in units]
+    _require(
+        bool(indices) and all(index is not None for index in indices),
+        "title line metrics are missing",
+    )
+    return len(set(indices))
+
+
+def _snapshot(paragraph) -> tuple:
+    return (
+        paragraph.pdf_paragraph_composition,
+        paragraph.unicode,
+        copy.deepcopy(paragraph.box),
+        paragraph.scale,
+        paragraph.optimal_scale,
+        paragraph.first_line_indent,
+        paragraph.pdf_style,
+    )
+
+
+def _restore(paragraph, snapshot) -> None:
+    (
+        paragraph.pdf_paragraph_composition,
+        paragraph.unicode,
+        paragraph.box,
+        paragraph.scale,
+        paragraph.optimal_scale,
+        paragraph.first_line_indent,
+        paragraph.pdf_style,
+    ) = snapshot
+
+
+def _render_owner(typesetter, title: FrozenTitle, policy: TitleConfig) -> dict:
+    paragraph = title.paragraph
+    style = copy.deepcopy(title.base_style)
+    style.font_size = title.base_font_size
+    paragraph.box = il_version_1.Box(*title.source_box)
+    paragraph.pdf_style = style
     paragraph.pdf_paragraph_composition = [
         il_version_1.PdfParagraphComposition(
             pdf_same_style_unicode_characters=(
                 il_version_1.PdfSameStyleUnicodeCharacters(
-                    unicode=run.text, pdf_style=run.style
+                    unicode=title.target,
+                    pdf_style=style,
                 )
             )
         )
-        for run in runs
     ]
-    paragraph.unicode = "".join(run.text for run in runs)
-
-
-def _font_of(fonts, font_id, xobj_id):
-    """The font a style resolves to, looked up as the stage looks it up."""
-    scoped = fonts.get(xobj_id)
-    if isinstance(scoped, dict) and font_id in scoped:
-        return scoped[font_id]
-    return fonts.get(font_id)
-
-
-def natural_width(runs: list[Run], typesetting, fonts, xobj_id) -> float | None:
-    """How wide the heading is on one line at the size it is set in.
-
-    Measured with the font the stage would map each character to, which is the
-    same measurement ``TypesettingUnit`` makes. None where any character cannot
-    be measured, in which case the search starts at full size and shrinks.
-    """
-    total = 0.0
-    for run in runs:
-        style = run.style
-        if style is None or style.font_id is None or style.font_size is None:
-            return None
-        original = _font_of(fonts, style.font_id, xobj_id)
-        if original is None:
-            return None
-        for character in run.text:
-            try:
-                mapped = typesetting.font_mapper.map(original, character)
-                if mapped is None:
-                    return None
-                total += mapped.char_lengths(character, float(style.font_size))[0]
-            except Exception:  # noqa: BLE001 - an unmeasurable heading is searched for
-                return None
-    return total
-
-
-def _render(typesetting, paragraph, page, fonts, record=None) -> bool:
-    """Lay one paragraph out again in place. False where nothing came out.
-
-    A failure is recorded on the heading as well as logged: a font the mapper
-    cannot resolve leaves the source rendering standing, which is a heading the
-    policy did not reach, and a run log is not where the record of what the pass
-    reached belongs.
-    """
-    try:
-        typesetting.render_paragraph(paragraph, page, fonts)
-    except Exception as exc:  # noqa: BLE001 - a heading that cannot be laid out stands
-        logger.warning(
-            "title typeset: laying out %s again failed; it is left as it was",
-            paragraph.debug_id,
-            exc_info=True,
-        )
-        if record is not None:
-            record["relayout_failed"] = True
-            record["relayout_error"] = f"{type(exc).__name__}: {exc}"
-        return False
-    return bool(paragraph.pdf_paragraph_composition)
-
-
-def _fit_single_line(
-    typesetting, paragraph, page, fonts, runs, start_scale, config, record=None
-) -> tuple[bool, float, float]:
-    """Shrink until the heading lands on one line. The scale it landed at.
-
-    Returns whether it landed, the scale it landed at or the last one tried, and
-    the scale the first estimate asked for, which is what an escalation reports.
-    """
-    scale = start_scale
-    for _attempt in range(config.max_scale_attempts):
-        if scale < config.title_min_scale:
-            break
-        _set_runs(paragraph, runs)
-        paragraph.optimal_scale = scale
-        if not _render(typesetting, paragraph, page, fonts, record):
-            return False, scale, start_scale
-        bands = line_bands(laid_out_characters(paragraph), config.line_band_tolerance)
-        if len(bands) <= 1:
-            return True, scale, start_scale
-        scale *= config.scale_shrink_step
-    return False, scale, start_scale
-
-
-def _restore(page, index: int, snapshot) -> None:
-    page.pdf_paragraph[index] = snapshot
-
-
-def _suppress(paragraph) -> None:
-    """Leave a paragraph that renders nothing, without removing the paragraph.
-
-    The composition is what the page is drawn from, so emptying it is the whole
-    of not being drawn. ``unicode`` goes with it because a paragraph that shows
-    nothing says nothing: the writer logs an unformatted paragraph when a
-    composition is empty beside a text, and a detector reading the fallback
-    would otherwise measure a line the reader cannot see.
-    """
-    paragraph.pdf_paragraph_composition = []
-    paragraph.unicode = ""
-
-
-def process_page(page, label: int, typesetting, config: TitleConfig) -> list[dict]:
-    """Apply the policy to every heading of one page. One record per heading."""
-    titles = [
-        (index, paragraph)
-        for index, paragraph in enumerate(page.pdf_paragraph or ())
-        if config.is_title(paragraph)
-    ]
-    if not titles:
-        return []
-    fonts = page_font_map(page, typesetting.font_mapper)
-    suppressed = duplicate_paragraphs(titles, config)
-    records = []
-    for index, paragraph in titles:
-        reference = paragraph_reference(label, index)
-        if index in suppressed:
-            finding = suppressed[index]
-            _suppress(paragraph)
-            records.append(
-                {
-                    "page": label,
-                    "reference": reference,
-                    "disposition": DISPOSITION_UNCHANGED,
-                    "suppressed": True,
-                    "duplicates": [
-                        {
-                            "layer": finding["layer"],
-                            "duplicate_of": paragraph_reference(
-                                label, finding["duplicate_of_index"]
-                            ),
-                            "iou": finding["iou"],
-                            "similarity": finding["similarity"],
-                        }
-                    ],
-                }
-            )
-            continue
-        records.append(
-            _process_title(page, label, index, paragraph, typesetting, fonts, config)
-        )
-    return records
-
-
-def _process_title(
-    page, label: int, index: int, paragraph, typesetting, fonts, config
-) -> dict:
-    """One heading: its layers deduplicated, its indent closed, its line found."""
-    reference = paragraph_reference(label, index)
-    characters = laid_out_characters(paragraph)
-    record = {
-        "page": label,
-        "reference": reference,
-        "disposition": DISPOSITION_UNCHANGED,
-        "suppressed": False,
-        "duplicates": [],
-    }
-    if not characters:
-        return record
-
-    runs = style_runs(characters)
-    kept, dropped = duplicate_runs(runs, config)
-    record["duplicates"] = [
-        {
-            "layer": item["layer"],
-            "duplicate_of": f"{reference}~{item['duplicate_of_run']}",
-            "run": f"{reference}~{item['run']}",
-            "similarity": item["similarity"],
-            "characters": item["characters"],
-        }
-        for item in dropped
-    ]
-    bands_before = line_bands(characters, config.line_band_tolerance)
-    indent = bool(paragraph.first_line_indent)
-    record["lines_before"] = len(bands_before)
-    record["indent_closed"] = indent
-    if not dropped and len(bands_before) <= 1 and not indent:
-        # Nothing to answer for: one line, no indent, one layer. A heading the
-        # policy has no work on is not laid out again, so its rendering is the
-        # one the stage produced rather than one this pass reproduced.
-        return record
-
-    snapshot = copy.deepcopy(paragraph)
+    paragraph.unicode = title.target
     paragraph.first_line_indent = False
-    box = box_tuple(paragraph.box)
-    usable = 0.0 if box is None else (box[2] - box[0]) * config.single_line_width_ratio
-    measured = natural_width(kept, typesetting, fonts, paragraph.xobj_id)
-    if measured and usable > 0:
-        start = min(1.0, usable / measured)
-    else:
-        start = 1.0
-    record["required_scale"] = round(start, 4)
-
-    landed, scale, _asked = _fit_single_line(
-        typesetting, paragraph, page, fonts, kept, start, config, record
+    fonts = page_font_map(title.page, typesetter.font_mapper)
+    units = typesetter.create_typesetting_units(paragraph, fonts)
+    sequence = "".join(unit.try_get_unicode() or "" for unit in units)
+    _require(sequence == title.target, f"{title.source_ref}: target unit sequence changed")
+    try:
+        laid_out = typesetter.retypeset_bounded_text(
+            paragraph,
+            title.page,
+            units,
+            source_ref=title.source_ref,
+            source_box=title.source_box,
+            minimum_scale=policy.title_min_scale,
+            maximum_lines=policy.title_max_lines,
+            # The ordinary English look-ahead deliberately drops a space that
+            # becomes a line-leading layout separator.  A title pass has the
+            # stricter audit contract that its target character sequence is
+            # preserved exactly, so let the bounded packer wrap at the actual
+            # unit boundary instead.
+            use_english_line_break=False,
+        )
+    except BoundedTypesettingError as error:
+        raise TitleTypesetError(str(error)) from error
+    rendered = "".join(unit.try_get_unicode() or "" for unit in laid_out)
+    bounds = _unit_bounds(laid_out)
+    lines = _line_count(laid_out)
+    holder = _box(paragraph.box)
+    _require(rendered == title.target, f"{title.source_ref}: rendered target changed")
+    _require(
+        _sha256(rendered) == title.target_sha256,
+        f"{title.source_ref}: target digest changed",
     )
-    if landed:
-        record["disposition"] = DISPOSITION_SINGLE_LINE
-        record["scale"] = round(scale, 4)
-        record["lines_after"] = 1
-        return record
-
-    # A heading that cannot be squeezed to the floor keeps the wrapped rendering
-    # the stage produced either way; what the policy decides is whether that
-    # rendering is an answer or a question, and the disposition is what says so.
-    record["disposition"] = (
-        DISPOSITION_WRAP if config.on_floor == FLOOR_WRAP else DISPOSITION_FLOOR
+    _require(
+        holder is not None and _box_equal(holder, title.source_box),
+        f"{title.source_ref}: title holder changed",
     )
-    record["floor"] = config.title_min_scale
-    record["on_floor"] = config.on_floor
-    if dropped:
-        # The deduplication stands on its own: a heading shown once and wrapped
-        # is better than one shown twice, and the wrapping is what the stage
-        # would have produced for the text that is left.
-        _set_runs(paragraph, kept)
-        paragraph.optimal_scale = snapshot.optimal_scale or 1.0
-        if not _render(typesetting, paragraph, page, fonts, record):
-            _restore(page, index, snapshot)
-            record["duplicates"] = []
-            record["restored"] = True
-    else:
-        _restore(page, index, snapshot)
-        record["restored"] = True
-    after = line_bands(
-        laid_out_characters(page.pdf_paragraph[index]), config.line_band_tolerance
+    _require(
+        bounds is not None and _contains(title.source_box, bounds),
+        f"{title.source_ref}: title ink escaped source box",
     )
-    record["lines_after"] = len(after)
-    return record
-
-
-def as_record(
-    config: TitleConfig, records: list[dict], pages: int, target_lang: str = ""
-) -> dict:
-    escalations = [
-        {
-            "page": item["page"],
-            "reference": item["reference"],
-            "required_scale": item.get("required_scale"),
-            "floor": item.get("floor"),
-            "lines_after": item.get("lines_after"),
-        }
-        for item in records
-        if item["disposition"] == DISPOSITION_FLOOR
-    ]
-    duplicates = [
-        {"page": item["page"], "reference": item["reference"], **finding}
-        for item in records
-        for finding in item["duplicates"]
-    ]
+    _require(
+        1 <= lines <= policy.title_max_lines,
+        f"{title.source_ref}: title line limit changed",
+    )
+    _require(
+        paragraph.scale is not None
+        and float(paragraph.scale) + 1e-9 >= policy.title_min_scale,
+        f"{title.source_ref}: title fell below minimum scale",
+    )
     return {
-        "switch": SWITCH,
-        "window_switch": WINDOW_SWITCH,
-        "labels": list(config.labels),
-        "on_floor": config.on_floor,
-        "title_min_scale": config.title_min_scale,
-        "target_lang": target_lang,
-        "pages": pages,
-        "totals": {
-            "titles": len(records),
-            "single_line": sum(
-                1
-                for item in records
-                if item["disposition"] == DISPOSITION_SINGLE_LINE
-            ),
-            "unchanged": sum(
-                1 for item in records if item["disposition"] == DISPOSITION_UNCHANGED
-            ),
-            "floor_reached": sum(
-                1 for item in records if item["disposition"] == DISPOSITION_FLOOR
-            ),
-            "wrapped": sum(
-                1 for item in records if item["disposition"] == DISPOSITION_WRAP
-            ),
-            "relayout_failed": sum(
-                1 for item in records if item.get("relayout_failed")
-            ),
-            "suppressed_paragraphs": sum(
-                1 for item in records if item.get("suppressed")
-            ),
-            "duplicate_layers": len(duplicates),
-            "escalations": len(escalations),
+        "scale": float(paragraph.scale),
+        "lines": lines,
+        "final_text_box": list(bounds),
+        "final_holder_box": list(holder),
+    }
+
+
+def _report(run: _Run, records: list[dict], status: str, error: str | None) -> dict:
+    return {
+        "schema_version": SCHEMA_VERSION,
+        "status": status,
+        "error": error,
+        "same_formal_typesetter": True,
+        "target_lang": getattr(run.config, "lang_out", "") or "",
+        "policy": {
+            "minimum_scale": run.policy.title_min_scale,
+            "maximum_lines": run.policy.title_max_lines,
         },
         "titles": records,
-        "duplicates": duplicates,
-        "escalations": escalations,
+        "exclusions": run.exclusions,
+        "totals": {
+            "owners": len(records),
+            "success": sum(item.get("status") == "success" for item in records),
+            "failure": sum(item.get("status") == "failure" for item in records),
+            "rolled_back": sum(
+                item.get("status") == "rolled_back" for item in records
+            ),
+            "suppressed_trailing_holders": sum(
+                len(item.get("suppressed_refs", ())) for item in records
+            ),
+            "excluded": len(run.exclusions),
+        },
     }
 
 
-def write_report(working_dir: Path, record: dict) -> Path:
-    path = Path(working_dir) / REPORT_NAME
+def _write(run: _Run, report: dict) -> None:
+    path = Path(run.config.get_working_file_path(REPORT_NAME))
     path.parent.mkdir(parents=True, exist_ok=True)
-    with path.open("w", encoding="utf-8") as f:
-        json.dump(record, f, indent=2, sort_keys=True, ensure_ascii=False)
-    record_config_manifest(path.parent, [CONFIG_PATH])
-    return path
-
-
-def apply(translation_config, docs) -> dict | None:
-    """Set every heading of one laid out document. None where the switch is down.
-
-    Returns the record it wrote, so a caller that already holds the document can
-    assert about the pass without reading the sidecar back.
-    """
-    if not enabled(translation_config):
-        return None
-    target_lang = getattr(translation_config, "lang_out", "") or ""
-    config = load_title_config().for_target(target_lang)
-    typesetting = Typesetting(translation_config)
-    records: list[dict] = []
-    pages = hitl.labeled_pages(docs)
-    for label, page in pages:
-        records.extend(process_page(page, label, typesetting, config))
-    record = as_record(config, records, len(pages), target_lang)
-    working_dir = Path(translation_config.get_working_file_path(REPORT_NAME)).parent
-    write_report(working_dir, record)
-    logger.debug(
-        "title typeset: %d heading(s), %d set on one line, %d layer(s) dropped",
-        record["totals"]["titles"],
-        record["totals"]["single_line"],
-        record["totals"]["duplicate_layers"],
+    path.write_text(
+        json.dumps(report, ensure_ascii=False, indent=2, sort_keys=True) + "\n",
+        encoding="utf-8",
     )
-    return record
+    record_config_manifest(path.parent, [CONFIG_PATH])
+
+
+def apply(translation_config, docs, typesetter) -> dict | None:
+    """Retypeset every frozen title with the exact formal Typesetting instance."""
+    global _RUN
+    if not enabled(translation_config):
+        discard()
+        return None
+    run = _RUN
+    if run is None:
+        raise TitleTypesetError("title typesetting was not prepared")
+    _require(run.config is translation_config, "title config identity changed")
+    _require(run.docs is docs, "title document identity changed")
+    _require(run.typesetter is typesetter, "formal Typesetting identity changed")
+    _require(
+        getattr(typesetter, "translation_config", None) is translation_config,
+        "formal Typesetting config identity changed",
+    )
+    by_ref = {item.source_ref: item for item in run.titles}
+    owners = [item for item in run.titles if not item.trailing]
+    # The pass is one document-title transaction, not one transaction per
+    # owner.  A late overflow must undo earlier owner rendering and any proven
+    # trailing-holder suppression as well as the owner that failed.
+    snapshots = {
+        id(item.paragraph): _snapshot(item.paragraph) for item in run.titles
+    }
+    records: list[dict] = []
+    for title in sorted(owners, key=lambda item: (item.physical_page, item.source_ref)):
+        member_refs = title.member_refs or (title.source_ref,)
+        members = [by_ref[reference] for reference in member_refs]
+        record = {
+            "source_ref": title.source_ref,
+            "physical_page": title.physical_page,
+            "source_box": list(title.source_box),
+            "base_font_size": title.base_font_size,
+            "target_chars": len(title.target),
+            "target_sha256": title.target_sha256,
+            "rendered_target_sha256": None,
+            "maximum_lines": run.policy.title_max_lines,
+            "minimum_scale": run.policy.title_min_scale,
+            "chain_id": title.chain_id,
+            "owner_ref": title.owner_ref or title.source_ref,
+            "member_refs": list(member_refs),
+            "suppressed_refs": [],
+            "suppressed_holders": [],
+            "status": "pending",
+            "failure_reason": None,
+        }
+        try:
+            outcome = _render_owner(typesetter, title, run.policy)
+            suppressed = []
+            suppressed_holders = []
+            for member in members[1:]:
+                member.paragraph.pdf_paragraph_composition = []
+                member.paragraph.unicode = ""
+                suppressed.append(member.source_ref)
+                suppressed_holders.append(
+                    {
+                        "source_ref": member.source_ref,
+                        "final_chars": len(member.paragraph.unicode),
+                        "composition_count": len(
+                            member.paragraph.pdf_paragraph_composition
+                        ),
+                    }
+                )
+            record.update(outcome)
+            record["suppressed_refs"] = suppressed
+            record["suppressed_holders"] = suppressed_holders
+            record["rendered_target_sha256"] = _sha256(title.target)
+            record["status"] = "success"
+            records.append(record)
+        except Exception as error:
+            for frozen in run.titles:
+                _restore(
+                    frozen.paragraph,
+                    snapshots[id(frozen.paragraph)],
+                )
+            rollback_reason = f"title pass rolled back after {title.source_ref} failed"
+            for previous in records:
+                previous["status"] = "rolled_back"
+                previous["failure_reason"] = rollback_reason
+                previous["rendered_target_sha256"] = None
+                previous["suppressed_refs"] = []
+                previous["suppressed_holders"] = []
+                for field in (
+                    "scale",
+                    "lines",
+                    "final_text_box",
+                    "final_holder_box",
+                ):
+                    previous.pop(field, None)
+            record["status"] = "failure"
+            record["failure_reason"] = f"{type(error).__name__}: {error}"
+            records.append(record)
+            report = _report(run, records, "failure", record["failure_reason"])
+            _write(run, report)
+            _RUN = None
+            if isinstance(error, TitleTypesetError):
+                raise
+            raise TitleTypesetError(str(error)) from error
+    report = _report(run, records, "success", None)
+    _write(run, report)
+    _RUN = None
+    return report

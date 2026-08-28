@@ -1505,27 +1505,49 @@ class Typesetting:
             raise BoundedTypesettingError(
                 f"{source_unit.source_ref}: source container is not measurable"
             )
-        source_box = Box(*source_unit.source_box)
+        return self.retypeset_bounded_text(
+            paragraph,
+            page,
+            typesetting_units,
+            source_ref=source_unit.source_ref,
+            source_box=source_unit.source_box,
+            minimum_scale=load_line_split_config().minimum_readable_scale,
+            maximum_lines=(
+                1 if source_unit.record_kind == RECORD_SINGLE else None
+            ),
+        )
+
+    def retypeset_bounded_text(
+        self,
+        paragraph: il_version_1.PdfParagraph,
+        page: il_version_1.Page,
+        typesetting_units: list[TypesettingUnit],
+        *,
+        source_ref: str,
+        source_box: tuple[float, float, float, float],
+        minimum_scale: float,
+        maximum_lines: int | None,
+        use_english_line_break: bool = True,
+    ) -> list[TypesettingUnit]:
+        """Render complete target text inside one immutable source box."""
+        box = Box(*source_box)
         _scale, laid_out = self._find_optimal_scale_and_layout(
             paragraph,
             page,
             typesetting_units,
             initial_scale=1.0,
-            use_english_line_break=True,
+            use_english_line_break=use_english_line_break,
             apply_layout=True,
-            minimum_scale=load_line_split_config().minimum_readable_scale,
+            minimum_scale=minimum_scale,
             allow_expand=False,
-            box_override=source_box,
-            maximum_lines=(
-                1 if source_unit.record_kind == RECORD_SINGLE else None
-            ),
+            box_override=box,
+            maximum_lines=maximum_lines,
             allow_hanging_punctuation_outside_box=False,
             require_unit_bounds_inside_box=True,
         )
         if laid_out is None:
             raise BoundedTypesettingError(
-                f"{source_unit.source_ref}: complete target does not fit "
-                f"{source_unit.record_kind} source container"
+                f"{source_ref}: complete target does not fit bounded source container"
             )
         return laid_out
 

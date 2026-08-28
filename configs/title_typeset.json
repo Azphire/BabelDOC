@@ -1,31 +1,18 @@
 {
-  "description": "Title typesetting policy, applied after the typesetting stage has laid a document out and before it is detected or written. A heading is a display unit: it is set on one line, it carries no first line indent, and it is shown once even where the source drew it twice. title_pair_classes names the endpoint classes declared in chain_detection.json whose layout labels count as a heading, so a heading is recognised here by the same declaration the chain detector pairs display lines by and no layout label is written in code. Single line: the paragraph is laid out again at a scale small enough that its characters land on one line, starting from the ratio its own font metrics predict and shrinking by scale_shrink_step until the laid out characters occupy one band or max_scale_attempts is spent. A heading that would need a scale below title_min_scale is not squeezed in; what happens to it instead is on_floor, which is a member of on_floor_vocabulary: wrap accepts the wrapped rendering the stage produced, escalate accepts the same rendering and records the heading as an escalation, with the scale it asked for, for a human to answer. Duplicate layers: a display headline is often drawn twice, once per paint, and the paragraph finder recovers the two as either two paragraphs standing on each other or two style runs of one paragraph, so both granularities are deduplicated. Two heading paragraphs of one page whose boxes share duplicate_min_iou of their area and whose text agrees to duplicate_min_text_similarity are one display unit: the larger keeps the page and the smaller renders nothing. Inside one heading a layer may be several runs -- a headline whose punctuation falls to a fallback font is two runs per paint -- so the run sequence is split at a run boundary first: where the two sides say the same thing to duplicate_min_text_similarity in the same sequence of font ids and, within duplicate_font_size_tolerance, the same sizes, the second side is the second drawing and is dropped whole. What is left, and any heading with no such boundary, is then read run against run under the same agreement: two runs in one font at one size saying the same thing are one display unit and the later is dropped. No rule looks at a piece shorter than duplicate_min_chars, which is too little text for agreement to mean anything and is what keeps a folio that reads as its own digit twice from being halved. Erasure needs no rule of its own: the page content stream is rebuilt from this document rather than edited, so a layer removed from it is removed from the output, source and translation alike. line_band_tolerance is how far apart two characters may sit on the vertical axis and still count as one line, as a fraction of the line height. single_line_width_ratio is how much of the box width a single line may occupy, which leaves the margin the inter script spacing the layout adds needs. title_min_scale_by_target and on_floor_by_target state the same two policies per target language, keyed by language prefix and resolved longest prefix first with the flat key as the fallback, because how far a heading may be squeezed and what happens when it cannot be is a property of the script it is set in: a run whose target claims neither key reads the flat declaration unchanged, and every value of either table is checked against the vocabulary and the range its flat sibling is checked against.",
-
+  "description": "Minimal bidirectional title policy. Titles are identified by the title endpoint class shared with chain detection, frozen before formal Typesetting, and retypeset afterward with the same Typesetting instance in their immutable source boxes. The target-language tables resolve by longest language-tag prefix. Chinese targets require one visual line; English targets may use a finite three-line source region. Every target remains complete, at or above the configured readable scale, and overflow fails closed.",
   "title_pair_classes": ["title"],
 
-  "title_min_scale": 0.55,
+  "title_min_scale": 0.5,
   "title_min_scale_allowed_range": "0.05..1.0",
-  "title_min_scale_by_target": {"en": 0.8},
+  "title_max_lines": 3,
+  "title_max_lines_allowed_range": "1..8",
 
-  "on_floor": "escalate",
-  "on_floor_vocabulary": ["wrap", "escalate"],
-  "on_floor_by_target": {"en": "wrap"},
-
-  "duplicate_min_iou": 0.7,
-  "duplicate_min_iou_allowed_range": "0.0..1.0",
-  "duplicate_min_text_similarity": 0.95,
-  "duplicate_min_text_similarity_allowed_range": "0.5..1.0",
-  "duplicate_min_chars": 2,
-  "duplicate_min_chars_allowed_range": "1..64",
-  "duplicate_font_size_tolerance": 0.5,
-  "duplicate_font_size_tolerance_allowed_range": "0.0..12.0",
-
-  "single_line_width_ratio": 0.98,
-  "single_line_width_ratio_allowed_range": "0.5..1.0",
-  "scale_shrink_step": 0.96,
-  "scale_shrink_step_allowed_range": "0.5..0.999",
-  "max_scale_attempts": 24,
-  "max_scale_attempts_allowed_range": "1..64",
-  "line_band_tolerance": 0.35,
-  "line_band_tolerance_allowed_range": "0.0..1.0"
+  "title_min_scale_by_target": {
+    "en": 0.5,
+    "zh": 0.5
+  },
+  "title_max_lines_by_target": {
+    "en": 3,
+    "zh": 1
+  }
 }

@@ -1,4 +1,4 @@
-"""Offline verifier for frozen magazine chain, TOC, and layout truth."""
+"""Offline verifier for frozen magazine chain, TOC, layout, and title truth."""
 
 from __future__ import annotations
 
@@ -919,9 +919,200 @@ def verify_layout(
     }
 
 
+def verify_title(
+    expectations_path: Path,
+    source: Path,
+    output: Path,
+    working_dir: Path,
+    source_lang: str,
+    target_lang: str,
+):
+    """Verify complete target titles inside their frozen source regions."""
+    expectations = _verify_inputs(
+        expectations_path,
+        source,
+        output,
+        source_lang,
+        target_lang,
+    )
+    report = _read(working_dir / "title_typeset.report.json")
+    if (
+        report.get("schema_version") != "title-typeset.v1"
+        or report.get("status") != "success"
+        or report.get("error") is not None
+        or report.get("same_formal_typesetter") is not True
+        or report.get("target_lang") != target_lang
+    ):
+        raise VerificationError("title pass did not complete with the formal typesetter")
+    policy = report.get("policy")
+    if not isinstance(policy, dict):
+        raise VerificationError("title policy evidence is missing")
+    minimum_scale = policy.get("minimum_scale")
+    maximum_lines = policy.get("maximum_lines")
+    if (
+        not isinstance(minimum_scale, int | float)
+        or isinstance(minimum_scale, bool)
+        or not 0 < float(minimum_scale) <= 1
+        or not isinstance(maximum_lines, int)
+        or isinstance(maximum_lines, bool)
+        or maximum_lines < 1
+    ):
+        raise VerificationError("title policy bounds are invalid")
+    if target_lang.lower().replace("_", "-").split("-", 1)[0] == "zh":
+        if maximum_lines != 1:
+            raise VerificationError("Chinese target title policy is not single-line")
+
+    rows = report.get("titles")
+    if not isinstance(rows, list):
+        raise VerificationError("title inventory is missing")
+    by_ref = {}
+    all_members = set()
+    for row in rows:
+        reference = row.get("source_ref") if isinstance(row, dict) else None
+        if (
+            not isinstance(reference, str)
+            or REF_PATTERN.fullmatch(reference) is None
+            or reference in by_ref
+        ):
+            raise VerificationError("title owner refs are invalid or duplicated")
+        physical_page = row.get("physical_page")
+        if (
+            not isinstance(physical_page, int)
+            or isinstance(physical_page, bool)
+            or physical_page < 1
+        ):
+            raise VerificationError(f"title physical page is invalid: {reference}")
+        source_box = _require_box(row.get("source_box"), reference)
+        holder_box = _require_box(row.get("final_holder_box"), f"holder {reference}")
+        text_box = _require_box(row.get("final_text_box"), f"text {reference}")
+        if not _box_equal(source_box, holder_box) or not _box_contains(
+            source_box, text_box
+        ):
+            raise VerificationError(f"title left frozen source region: {reference}")
+        if (
+            row.get("status") != "success"
+            or row.get("failure_reason") is not None
+            or not isinstance(row.get("target_chars"), int)
+            or row["target_chars"] <= 0
+            or _require_sha256(row, "target_sha256", reference)
+            != _require_sha256(row, "rendered_target_sha256", reference)
+        ):
+            raise VerificationError(f"title target conservation failed: {reference}")
+        scale = row.get("scale")
+        lines = row.get("lines")
+        if (
+            not isinstance(scale, int | float)
+            or isinstance(scale, bool)
+            or float(scale) + 1e-9 < float(minimum_scale)
+            or not isinstance(lines, int)
+            or isinstance(lines, bool)
+            or not 1 <= lines <= maximum_lines
+            or row.get("minimum_scale") != minimum_scale
+            or row.get("maximum_lines") != maximum_lines
+        ):
+            raise VerificationError(f"title scale/line policy failed: {reference}")
+        members = row.get("member_refs")
+        suppressed = row.get("suppressed_refs")
+        suppressed_holders = row.get("suppressed_holders")
+        if (
+            not isinstance(members, list)
+            or not members
+            or members[0] != reference
+            or len(members) != len(set(members))
+            or any(
+                not isinstance(item, str) or REF_PATTERN.fullmatch(item) is None
+                for item in members
+            )
+            or not isinstance(suppressed, list)
+            or suppressed != members[1:]
+            or not isinstance(suppressed_holders, list)
+            or [
+                item.get("source_ref") if isinstance(item, dict) else None
+                for item in suppressed_holders
+            ]
+            != suppressed
+            or any(
+                item.get("final_chars") != 0
+                or item.get("composition_count") != 0
+                for item in suppressed_holders
+            )
+            or row.get("owner_ref") != reference
+            or all_members.intersection(members)
+        ):
+            raise VerificationError(f"title owner/member evidence failed: {reference}")
+        all_members.update(members)
+        if len(members) > 1 and not row.get("chain_id"):
+            raise VerificationError(f"title trailing holder lacks chain proof: {reference}")
+        by_ref[reference] = row
+
+    totals = report.get("totals")
+    exclusions = report.get("exclusions")
+    if not isinstance(exclusions, list) or not isinstance(totals, dict):
+        raise VerificationError("title totals/exclusions are missing")
+    if totals != {
+        "owners": len(rows),
+        "success": len(rows),
+        "failure": 0,
+        "rolled_back": 0,
+        "suppressed_trailing_holders": sum(
+            len(row["suppressed_refs"]) for row in rows
+        ),
+        "excluded": len(exclusions),
+    }:
+        raise VerificationError("title totals disagree with inventory")
+    active_refs = set(by_ref)
+    for exclusion in exclusions:
+        reference = exclusion.get("source_ref") if isinstance(exclusion, dict) else None
+        if (
+            not isinstance(reference, str)
+            or REF_PATTERN.fullmatch(reference) is None
+            or not isinstance(exclusion.get("reason"), str)
+            or not exclusion["reason"]
+        ):
+            raise VerificationError("title exclusion evidence is invalid")
+        if reference in all_members or reference in active_refs:
+            raise VerificationError(f"excluded item entered title pass: {reference}")
+
+    line_split_path = working_dir / "line_split.report.json"
+    if line_split_path.is_file():
+        toc_refs = {
+            item.get("source_ref")
+            for item in _read(line_split_path).get("source_units", [])
+            if isinstance(item, dict)
+        }
+        if toc_refs.intersection(all_members):
+            raise VerificationError("typed TOC record entered title pass")
+
+    verified = 0
+    for truth in expectations.get("titles", []):
+        anchor = truth.get("anchor")
+        if not isinstance(anchor, str) or REF_PATTERN.fullmatch(anchor) is None:
+            raise VerificationError("title truth anchor is invalid")
+        expected_box = _require_box(truth.get("source_box"), anchor)
+        physical_page = int(anchor[1 : anchor.index("#")])
+        matches = [
+            row
+            for row in rows
+            if row["physical_page"] == physical_page
+            and _box_equal(row["source_box"], expected_box)
+        ]
+        if len(matches) != 1:
+            raise VerificationError(f"title truth match is not unique: {anchor}")
+        verified += 1
+    return {
+        "check": "title",
+        "sample_id": expectations.get("sample_id"),
+        "titles": verified,
+        "owners": len(rows),
+        "status": "pass",
+    }
+
+
 def _parser():
     parser = argparse.ArgumentParser()
-    parser.add_argument("--check", required=True, choices=("chain", "toc", "layout"))
+    parser.add_argument(
+        "--check", required=True, choices=("chain", "toc", "layout", "title")
+    )
     parser.add_argument("--expectations", required=True, type=Path)
     parser.add_argument("--source", required=True, type=Path)
     parser.add_argument("--output", required=True, type=Path)
@@ -941,6 +1132,7 @@ def main(argv=None) -> int:
             "chain": verify_chain,
             "toc": verify_toc,
             "layout": verify_layout,
+            "title": verify_title,
         }[args.check]
         result = verifier(
             args.expectations,
