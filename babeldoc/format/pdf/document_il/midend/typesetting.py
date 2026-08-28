@@ -269,22 +269,35 @@ def _unit_bounds(units: Sequence[TypesettingUnit]):
 def _line_metrics(
     units: Sequence[TypesettingUnit], tolerance: float
 ) -> tuple[SlotLineMetric, ...]:
-    lines: list[list[TypesettingUnit]] = []
-    for unit in units:
-        y = float(unit.box.y)
-        line = next(
-            (
-                held
-                for held in lines
-                if abs(float(held[0].box.y) - y) <= tolerance
-            ),
-            None,
-        )
-        if line is None:
-            lines.append([unit])
-        else:
-            line.append(unit)
-    lines.sort(key=lambda held: -float(held[0].box.y))
+    layout_indices = [
+        getattr(unit, "layout_line_index", None) for unit in units
+    ]
+    if units and all(index is not None for index in layout_indices):
+        lines_by_index: dict[int, list[TypesettingUnit]] = {}
+        for unit, index in zip(units, layout_indices, strict=True):
+            lines_by_index.setdefault(int(index), []).append(unit)
+        lines = [lines_by_index[index] for index in sorted(lines_by_index)]
+    else:
+        # Compatibility for units not produced by the line packer.  Formula
+        # glyphs can carry an intentional baseline offset, so packed units
+        # always use their explicit line index above rather than this visual
+        # approximation.
+        lines = []
+        for unit in units:
+            y = float(unit.box.y)
+            line = next(
+                (
+                    held
+                    for held in lines
+                    if abs(float(held[0].box.y) - y) <= tolerance
+                ),
+                None,
+            )
+            if line is None:
+                lines.append([unit])
+            else:
+                line.append(unit)
+        lines.sort(key=lambda held: -float(held[0].box.y))
     return tuple(
         SlotLineMetric(index, len(line), _unit_bounds(line))
         for index, line in enumerate(lines)
@@ -317,6 +330,7 @@ class TypesettingUnit:
         self.y = None
         self.scale = None
         self.debug_info = debug_info
+        self.layout_line_index: int | None = None
 
         # Cache variables
         self.box_cache: Box | None = None
@@ -1698,26 +1712,19 @@ class Typesetting:
             self.font_mapper.base_font.char_lengths("你", font_size * scale)[0] * 0.5
         )
 
-        # 计算行高（使用众数）
+        # The first baseline must leave room for the tallest unit in a mixed
+        # style line.  Using the modal height lets a larger folio/title glyph
+        # protrude above the slot even when the complete line has enough
+        # vertical capacity.  Later line advances already honor max height.
         unit_heights = (
             [unit.height for unit in typesetting_units] if typesetting_units else []
         )
-        if not unit_heights:
-            avg_height = 0
-        elif len(unit_heights) == 1:
-            avg_height = unit_heights[0] * scale
-        else:
-            try:
-                avg_height = statistics.mode(unit_heights) * scale
-            except statistics.StatisticsError:
-                # 如果没有众数（所有值都出现相同次数），则使用平均值
-                avg_height = sum(unit_heights) / len(unit_heights) * scale
+        initial_line_height = max(unit_heights, default=0.0) * scale
 
-        # 初始化位置为右上角，并减去一个平均行高
+        # 初始化位置为右上角，并减去最高单元的行高
         current_x = box.x
-        current_y = box.y2 - avg_height
+        current_y = box.y2 - initial_line_height
         box = copy.deepcopy(box)
-        # box.y -= avg_height * (line_spacing - 1.01) # line_spacing 已被替换为 line_skip
         line_height = 0
         current_line_heights = []  # 存储当前行所有元素的高度
 
@@ -1725,7 +1732,7 @@ class Typesetting:
         typeset_units = []
         all_units_fit = True
         last_unit: TypesettingUnit | None = None
-        line_ys = [current_y]
+        layout_line_index = 0
         if paragraph.first_line_indent:
             current_x += space_width * 4
         # 遍历所有排版单元
@@ -1801,7 +1808,7 @@ class Typesetting:
                     mode_height * line_skip,
                     max_height * 1.05,
                 )
-                line_ys.append(current_y)
+                layout_line_index += 1
                 line_height = 0.0
                 current_line_heights = []  # 清空当前行高度列表
 
@@ -1817,6 +1824,7 @@ class Typesetting:
 
             # 放置当前单元
             relocated_unit = unit.relocate(current_x, current_y, scale)
+            relocated_unit.layout_line_index = layout_line_index
             typeset_units.append(relocated_unit)
 
             # 添加当前单元的高度到当前行高度列表

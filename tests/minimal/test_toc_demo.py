@@ -582,6 +582,137 @@ def test_rich_formula_single_attempts_exact_minimum_readable_scale():
     )
 
 
+def test_formula_baseline_offset_does_not_create_a_false_layout_line():
+    source_box = (93.6923, 126.6545, 566.9849, 142.9345)
+    paragraph = _paragraph(
+        ["source navigation line"],
+        "formula-baseline-single",
+        left=source_box[0],
+        bottom=source_box[1],
+    )
+    paragraph.box = il_version_1.Box(*source_box)
+    paragraph.first_line_indent = False
+    page = _page([paragraph], number=2)
+    typesetter = Typesetting(SimpleNamespace(lang_out="zh"), RenderMapper())
+    body_style = il_version_1.PdfStyle(font_id="body", font_size=10.0)
+    folio_style = il_version_1.PdfStyle(font_id="title", font_size=14.0)
+    chunks = (
+        ("2 ", folio_style),
+        ("首次预览", body_style),
+        ("风味 ", body_style),
+        ("问答 ", body_style),
+        ("作者专栏 ", body_style),
+        ("评论 ", body_style),
+        ("活动 ", body_style),
+        ("在线内容 ", body_style),
+        ("测验", body_style),
+    )
+    formula_widths = (13.3636, 13.8117, 20.5456, 21.2877, 19.9016, 20.3706, 20.1537)
+    units = []
+    for index, (text, style) in enumerate(chunks):
+        units.extend(
+            TypesettingUnit(
+                unicode=character,
+                font=typesetter.font_mapper.base_font,
+                font_size=style.font_size,
+                style=style,
+                xobj_id=-1,
+            )
+            for character in text
+        )
+        if index >= len(formula_widths):
+            continue
+        width = formula_widths[index]
+        formula_box = il_version_1.Box(0.0, 0.0, width, 10.2)
+        formula_character = il_version_1.PdfCharacter(
+            char_unicode="|",
+            box=formula_box,
+            visual_bbox=il_version_1.VisualBbox(box=formula_box),
+            pdf_style=body_style,
+            advance=width,
+            xobj_id=-1,
+        )
+        units.append(
+            TypesettingUnit(
+                formular=il_version_1.PdfFormula(
+                    box=formula_box,
+                    pdf_character=[formula_character],
+                    x_offset=3.65,
+                    y_offset=-1.008,
+                    x_advance=0.0,
+                )
+            )
+        )
+
+    assert sum(unit.width for unit in units) < source_box[2] - source_box[0]
+    typesetter.retypeset_bounded_source_unit(
+        paragraph,
+        page,
+        units,
+        SimpleNamespace(
+            source_box=source_box,
+            source_ref="p3#16",
+            record_kind=line_split.RECORD_SINGLE,
+        ),
+    )
+
+    assert paragraph.scale == pytest.approx(1.0)
+    rendered = [
+        composition.pdf_character
+        for composition in paragraph.pdf_paragraph_composition
+        if composition.pdf_character is not None
+    ]
+    # Formula glyphs retain their intentional baseline offset, while the line
+    # packer records that no wrap occurred.
+    assert len({round(character.box.y, 3) for character in rendered}) > 1
+    assert all(
+        source_box[0] <= character.box.x <= character.box.x2 <= source_box[2]
+        and source_box[1]
+        <= character.box.y
+        <= character.box.y2
+        <= source_box[3]
+        for character in rendered
+    )
+
+
+def test_single_visual_line_still_rejects_a_real_packer_wrap():
+    source_box = (0.0, 0.0, 100.0, 100.0)
+    paragraph = _paragraph(
+        ["source"],
+        "real-wrap-single",
+        left=source_box[0],
+        bottom=source_box[1],
+    )
+    paragraph.box = il_version_1.Box(*source_box)
+    paragraph.first_line_indent = False
+    page = _page([paragraph])
+    typesetter = Typesetting(SimpleNamespace(lang_out="zh"), RenderMapper())
+    style = il_version_1.PdfStyle(font_id="body", font_size=10.0)
+    units = [
+        TypesettingUnit(
+            unicode="译",
+            font=typesetter.font_mapper.base_font,
+            font_size=10.0,
+            style=style,
+            xobj_id=-1,
+        )
+        for _index in range(50)
+    ]
+
+    # Height is ample, so the only violated contract is the real second line.
+    with pytest.raises(BoundedTypesettingError, match="does not fit"):
+        typesetter.retypeset_bounded_source_unit(
+            paragraph,
+            page,
+            units,
+            SimpleNamespace(
+                source_box=source_box,
+                source_ref="p1#0",
+                record_kind=line_split.RECORD_SINGLE,
+            ),
+        )
+
+
 def test_bounded_overflow_fails_without_text_loss_or_container_borrowing(tmp_path):
     paragraph = _paragraph(["tiny"], "overflow", left=50, bottom=400, char_width=5)
     _config, document, report = _apply(tmp_path, [paragraph])
