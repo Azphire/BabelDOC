@@ -379,12 +379,24 @@ class ChainClaim:
     def __init__(self, records: dict[int, SkipRecord] | None = None):
         self._records: dict[int, SkipRecord] = records or {}
         self._released: list[SkipRecord] = []
+        self._membership_frozen = False
+        self._membership_released = False
 
     def __bool__(self) -> bool:
         return bool(self._records)
 
     def __len__(self) -> int:
         return len(self._records)
+
+    @property
+    def membership_frozen(self) -> bool:
+        return self._membership_frozen
+
+    def freeze(self) -> None:
+        """Close admission before any competing producer sees the claim."""
+        if self._membership_frozen:
+            raise ValueError("claim membership is already frozen")
+        self._membership_frozen = True
 
     def _decline(self, paragraph, mechanism: str) -> bool:
         record = self._records.get(id(paragraph))
@@ -415,6 +427,8 @@ class ChainClaim:
 
     def take_many(self, rows: list[tuple[object, SkipRecord]]) -> None:
         """Establish a complete claim without exposing a partial member set."""
+        if self._membership_frozen:
+            raise ValueError("claim membership is frozen")
         identities = [id(paragraph) for paragraph, _record in rows]
         if not identities or len(identities) != len(set(identities)):
             raise ValueError("claim members must be non-empty and unique")
@@ -438,9 +452,14 @@ class ChainClaim:
 
     def release_all(self) -> None:
         """Close the guard window without exposing a partial release."""
+        if not self._membership_frozen:
+            raise ValueError("claim membership must be frozen before release")
+        if self._membership_released:
+            raise ValueError("claim membership was already released")
         records = list(self._records.values())
         self._records.clear()
         self._released.extend(records)
+        self._membership_released = True
 
     def records(self) -> list[SkipRecord]:
         return [*self._released, *self._records.values()]
@@ -449,6 +468,7 @@ class ChainClaim:
 # The claim a document with the switch down leaves behind: it claims nothing,
 # so every call site reads the same with the pass absent as with it present.
 EMPTY_CLAIM = ChainClaim()
+EMPTY_CLAIM.freeze()
 
 
 def _collect_chains(docs) -> list[tuple[str, list[CollectedMember]]]:
@@ -616,6 +636,7 @@ class ChainPlan:
             self.chain_count += 1
             self._plan_chain(chain_id, members, tracker)
         self._plan_short_units(docs, tracker)
+        self.claim.freeze()
         return self
 
     def _plan_short_units(self, docs, tracker) -> None:
