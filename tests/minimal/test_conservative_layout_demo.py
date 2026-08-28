@@ -197,6 +197,115 @@ def test_pipeline_prepares_frozen_holders_after_disabled_flow(monkeypatch, tmp_p
     assert layout_report.finalize()["totals"]["success"] == 1
 
 
+def test_bounded_dropcap_holder_uses_full_frozen_allocation(monkeypatch, tmp_path):
+    source_box = (56.85554, 651.2017, 292.360544, 786.545)
+    temporary_box = (56.85554, 651.2017, 292.360544, 770.3969)
+    paragraph = _paragraph("translated body", "dropcap-merged", temporary_box)
+    paragraph.xobj_id = -1
+    document = il_version_1.Document(page=[_page(0, [paragraph])], total_pages=1)
+    unit = SimpleNamespace(
+        source_ref="p4#3",
+        record_kind="prose_exempt",
+        source_box=source_box,
+        fixed_companion=False,
+    )
+    monkeypatch.setattr(
+        layout_report.line_split,
+        "source_unit",
+        lambda held, _physical_page: unit if held is paragraph else None,
+    )
+    config = Config(tmp_path)
+    typesetter = Typesetting(config, RenderMapper())
+
+    layout_report.prepare(
+        config,
+        document,
+        ArticleDocumentIR(articles=(), by_page={}, by_element={}, by_chain={}),
+        article_flow_report=_flow_report(),
+        eligible_roles=("text",),
+    )
+    container = layout_report.source_container(paragraph, 1)
+
+    assert container is not None
+    assert container.source_box == source_box
+    assert container.allocation_box == source_box
+    assert tuple(
+        getattr(paragraph.box, name) for name in ("x", "y", "x2", "y2")
+    ) == temporary_box
+
+    typesetter.render_paragraph(paragraph, document.page[0], {"body": RenderFont()})
+    report = layout_report.finalize()
+    item = report["elements"][0]
+    assert item["source_box"] == list(source_box)
+    assert item["allocation_box"] == list(source_box)
+    assert item["final_holder_box"] == list(source_box)
+    assert item["status"] == "success"
+
+
+def test_bounded_temporary_holder_outside_source_fails_closed(monkeypatch, tmp_path):
+    source_box = (10.0, 10.0, 100.0, 40.0)
+    paragraph = _paragraph(
+        "translated body",
+        "escaped-dropcap-holder",
+        (9.0, 10.0, 100.0, 35.0),
+    )
+    paragraph.xobj_id = -1
+    document = il_version_1.Document(page=[_page(0, [paragraph])], total_pages=1)
+    unit = SimpleNamespace(
+        source_ref="p1#0",
+        record_kind="prose_exempt",
+        source_box=source_box,
+        fixed_companion=False,
+    )
+    monkeypatch.setattr(
+        layout_report.line_split,
+        "source_unit",
+        lambda held, _physical_page: unit if held is paragraph else None,
+    )
+    config = Config(tmp_path)
+
+    with pytest.raises(
+        layout_report.ConservativeLayoutError,
+        match="current holder is outside",
+    ):
+        layout_report.prepare(
+            config,
+            document,
+            ArticleDocumentIR(articles=(), by_page={}, by_element={}, by_chain={}),
+            article_flow_report=_flow_report(),
+            eligible_roles=("text",),
+        )
+
+    report = json.loads((tmp_path / layout_report.REPORT_NAME).read_text())
+    item = report["elements"][0]
+    assert item["source_box"] == list(source_box)
+    assert item["allocation_box"] == list(source_box)
+    assert item["status"] == "overflow"
+    assert item["overflow_reason"] == "current_holder_outside_source_box"
+
+
+def test_nonunit_body_keeps_its_observed_allocation(tmp_path):
+    source_box = (10.0, 10.0, 100.0, 40.0)
+    current_box = (10.0, 10.0, 95.0, 35.0)
+    paragraph = _paragraph("translated body", "ordinary-body", current_box)
+    document = il_version_1.Document(page=[_page(0, [paragraph])], total_pages=1)
+    config = Config(tmp_path)
+
+    layout_report.prepare(
+        config,
+        document,
+        _article_ir([paragraph], [source_box]),
+        article_flow_report=_flow_report(),
+        eligible_roles=("text",),
+    )
+    container = layout_report.source_container(paragraph, 1)
+
+    assert container is not None
+    assert container.source_box == source_box
+    assert container.allocation_box == current_box
+    layout_report.discard()
+
+
 @pytest.mark.parametrize("lang_out", ("zh", "en"))
 def test_intro_columns_body_and_chain_keep_each_source_x_band(tmp_path, lang_out):
     boxes = (

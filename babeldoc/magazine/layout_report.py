@@ -234,11 +234,16 @@ def prepare(
                 if source_box is not None
                 else _box_tuple(getattr(paragraph, "box", None))
             )
-            allocation = _box_tuple(getattr(paragraph, "box", None))
-            if source is None or allocation is None:
+            current_holder = _box_tuple(getattr(paragraph, "box", None))
+            if source is None or current_holder is None:
                 raise ConservativeLayoutError(
                     f"{source_ref}: source/allocation container is not measurable"
                 )
+            # A declared source unit is formally rendered in its frozen source
+            # box.  Earlier structural passes (notably drop-cap merge) may
+            # leave a smaller temporary paragraph holder, which is evidence to
+            # validate rather than the allocation Typesetting will use.
+            allocation = source if unit is not None else current_holder
             if source_ref in seen_refs:
                 raise ConservativeLayoutError(
                     f"duplicate conservative layout source ref: {source_ref}"
@@ -256,13 +261,17 @@ def prepare(
                         f"ambiguous conservative layout debug id: {key}"
                     )
                 run.debug_entries[key] = entry
-            if not _contains(source, allocation):
+            if not _contains(source, current_holder):
                 entry.status = "overflow"
-                entry.overflow_reason = "allocation_outside_source_box"
+                entry.overflow_reason = (
+                    "current_holder_outside_source_box"
+                    if unit is not None
+                    else "allocation_outside_source_box"
+                )
                 _write()
                 _RUN = None
                 raise ConservativeLayoutError(
-                    f"{source_ref}: allocation is outside the frozen source box"
+                    f"{source_ref}: current holder is outside the frozen source box"
                 )
     return {
         "article_flow_applied": False,
