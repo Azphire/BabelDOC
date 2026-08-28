@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import copy
 import hashlib
 import json
 from pathlib import Path
@@ -259,6 +260,58 @@ def test_single_block_and_prose_use_their_own_source_units(monkeypatch, tmp_path
     assert [item["role"] for item in report["elements"]] == list(kinds)
     assert all(item["status"] == "success" for item in report["elements"])
     assert all(item["source_box"] == item["final_holder_box"] for item in report["elements"])
+
+
+def test_fixed_companion_is_not_a_target_holder_and_remains_untouched(
+    monkeypatch, tmp_path
+):
+    fixed = _paragraph("50", "fixed-folio", (0.0, 70.0, 20.0, 90.0))
+    fixed.unicode = None
+    translated = _paragraph("translated", "record", (25.0, 70.0, 100.0, 90.0))
+    translated.xobj_id = -1
+    document = il_version_1.Document(
+        page=[_page(0, [fixed, translated])], total_pages=1
+    )
+    empty_ir = ArticleDocumentIR(articles=(), by_page={}, by_element={}, by_chain={})
+    units = {
+        id(fixed): SimpleNamespace(
+            source_ref="p1#0",
+            record_kind="single_visual_line",
+            source_box=(0.0, 70.0, 20.0, 90.0),
+            fixed_companion=True,
+        ),
+        id(translated): SimpleNamespace(
+            source_ref="p1#1",
+            record_kind="single_visual_line",
+            source_box=(25.0, 70.0, 100.0, 90.0),
+            fixed_companion=False,
+        ),
+    }
+    monkeypatch.setattr(
+        layout_report.line_split,
+        "source_unit",
+        lambda paragraph, _physical_page: units.get(id(paragraph)),
+    )
+    config = Config(tmp_path)
+    typesetter = Typesetting(config, RenderMapper())
+    fixed_before = copy.deepcopy(fixed)
+
+    layout_report.prepare(
+        config,
+        document,
+        empty_ir,
+        article_flow_report=_flow_report(),
+        eligible_roles=("text",),
+    )
+    typesetter.render_paragraph(fixed, document.page[0], {"body": RenderFont()})
+    typesetter.render_paragraph(
+        translated, document.page[0], {"body": RenderFont()}
+    )
+    report = layout_report.finalize()
+
+    assert fixed == fixed_before
+    assert [item["source_ref"] for item in report["elements"]] == ["p1#1"]
+    assert report["elements"][0]["status"] == "success"
 
 
 def test_minimum_scale_overflow_is_reported_without_expansion_or_text_loss(

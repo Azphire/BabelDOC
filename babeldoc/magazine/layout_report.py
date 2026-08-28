@@ -181,6 +181,11 @@ def prepare(
             unit = line_split.source_unit(paragraph, physical_page)
             element = elements.get(local_ref)
             if unit is not None:
+                if getattr(unit, "fixed_companion", False):
+                    # Fixed folios are untranslated source furniture.  They
+                    # retain their original glyph geometry and are not target
+                    # holders subject to translated-text containment.
+                    continue
                 source_ref = unit.source_ref
                 role = unit.record_kind
                 source_box = unit.source_box

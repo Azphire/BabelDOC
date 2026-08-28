@@ -1626,7 +1626,6 @@ class Typesetting:
             il_version_1.PdfFont | dict[str, il_version_1.PdfFont],
         ],
     ):
-        typesetting_units = self.create_typesetting_units(paragraph, fonts)
         from babeldoc.magazine import layout_report
         from babeldoc.magazine.line_split import source_unit
 
@@ -1634,6 +1633,14 @@ class Typesetting:
             None if page.page_number is None else int(page.page_number) + 1
         )
         bounded_unit = source_unit(paragraph, physical_page)
+        if bounded_unit is not None and getattr(
+            bounded_unit, "fixed_companion", False
+        ):
+            # A fixed folio is deliberately excluded from translation.  Its
+            # source glyphs may have ink slightly outside the paragraph box,
+            # so formal target typesetting must leave the object untouched.
+            return
+        typesetting_units = self.create_typesetting_units(paragraph, fonts)
         conservative_container = layout_report.source_container(
             paragraph, physical_page
         )
