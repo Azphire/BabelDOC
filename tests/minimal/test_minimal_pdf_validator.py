@@ -139,6 +139,7 @@ def _report(run_dir, output, *, translated=False):
             "decided": 0,
             "set": 0,
             "reverted": 0,
+            "invalid_intent": 0,
             "typed_no_candidate": True,
         },
         "issues": {"before": _counts(), "after": _counts()},
@@ -209,9 +210,18 @@ def validator_case(tmp_path, *, translated=False):
 
 
 def test_offline_and_paid_synthetic_pdf_validate(tmp_path):
-    offline_args, _report_data, _path, _output, _run = validator_case(
+    offline_args, offline_report, offline_path, _output, _run = validator_case(
         tmp_path / "offline"
     )
+    assert verify_minimal_pdf.main(offline_args) == 0
+    offline_report["dropcap"] = {
+        "decided": 1,
+        "set": 0,
+        "reverted": 0,
+        "invalid_intent": 1,
+        "typed_no_candidate": True,
+    }
+    offline_path.write_text(json.dumps(offline_report) + "\n", encoding="utf-8")
     assert verify_minimal_pdf.main(offline_args) == 0
 
     paid_args, report, _path, _output, _run = validator_case(
@@ -244,6 +254,9 @@ def test_ambiguous_mono_and_mode_mismatch_fail_closed(tmp_path):
         "pass_overflow",
         "sidecar_mismatch",
         "chain_claim_mismatch",
+        "dropcap_missing_state",
+        "dropcap_count_mismatch",
+        "dropcap_typed_mismatch",
     ],
 )
 def test_malformed_report_evidence_fails_closed(tmp_path, mutation):
@@ -260,8 +273,26 @@ def test_malformed_report_evidence_fails_closed(tmp_path, mutation):
         (run_dir / "issues.before.json").write_text(
             json.dumps(sidecar) + "\n", encoding="utf-8"
         )
-    else:
+    elif mutation == "chain_claim_mismatch":
         report["chain"]["claimed_members"] = 1
+    elif mutation == "dropcap_missing_state":
+        del report["dropcap"]["invalid_intent"]
+    elif mutation == "dropcap_count_mismatch":
+        report["dropcap"] = {
+            "decided": 1,
+            "set": 0,
+            "reverted": 1,
+            "invalid_intent": 1,
+            "typed_no_candidate": True,
+        }
+    else:
+        report["dropcap"] = {
+            "decided": 1,
+            "set": 1,
+            "reverted": 0,
+            "invalid_intent": 0,
+            "typed_no_candidate": True,
+        }
     report_path.write_text(json.dumps(report) + "\n", encoding="utf-8")
     with pytest.raises(verify_minimal_pdf.MinimalPdfValidationError):
         verify_minimal_pdf.main(args)

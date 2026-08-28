@@ -303,13 +303,35 @@ def _validate_report(report_path: Path, output: Path, allow_untranslated: bool) 
     dropcap = _object(
         report["dropcap"],
         "dropcap",
-        frozenset({"decided", "set", "reverted", "typed_no_candidate"}),
+        frozenset(
+            {
+                "decided",
+                "set",
+                "reverted",
+                "invalid_intent",
+                "typed_no_candidate",
+            }
+        ),
     )
     decided = _integer(dropcap["decided"], "dropcap.decided")
     rendered = _integer(dropcap["set"], "dropcap.set")
     reverted = _integer(dropcap["reverted"], "dropcap.reverted")
-    _require(decided == rendered + reverted, "drop-cap counts do not conserve candidates")
+    invalid_intent = _integer(
+        dropcap["invalid_intent"],
+        "dropcap.invalid_intent",
+    )
+    _require(
+        decided == rendered + reverted + invalid_intent,
+        "drop-cap counts do not conserve candidates",
+    )
     typed_no_candidate = _boolean(dropcap["typed_no_candidate"], "dropcap.typed_no_candidate")
+    expected_typed_no_candidate = decided == 0 or (
+        rendered == 0 and reverted + invalid_intent == decided
+    )
+    _require(
+        typed_no_candidate is expected_typed_no_candidate,
+        "drop-cap typed no-candidate evidence disagrees with counts",
+    )
     _require(rendered > 0 or typed_no_candidate, "drop-cap path has neither render nor typed no-candidate evidence")
 
     issues = _object(report["issues"], "issues", frozenset({"before", "after"}))

@@ -814,13 +814,32 @@ def _dropcap_summary(report: dict) -> dict:
     decided = _count(totals.get("decided"), "drop-cap decided")
     rendered = _count(totals.get("set"), "drop-cap set")
     reverted = _count(totals.get("reverted"), "drop-cap reverted")
-    if rendered + reverted != decided:
+    by_state = _mapping(totals.get("by_state"), "drop-cap states")
+    expected_states = {"committed", "invalid_intent", "render_rollback"}
+    if set(by_state) != expected_states:
+        raise MinimalPipelineStateError("drop-cap states are not the closed schema")
+    committed = _count(by_state["committed"], "drop-cap committed")
+    invalid_intent = _count(
+        by_state["invalid_intent"],
+        "drop-cap invalid intent",
+    )
+    render_rollback = _count(
+        by_state["render_rollback"],
+        "drop-cap render rollback",
+    )
+    if decided != committed + invalid_intent + render_rollback:
         raise MinimalPipelineStateError("drop-cap totals do not conserve candidates")
+    if rendered != committed or reverted != render_rollback:
+        raise MinimalPipelineStateError("drop-cap totals disagree with render states")
+    typed_no_candidate = decided == 0 or (
+        rendered == 0 and invalid_intent + reverted == decided
+    )
     return {
         "decided": decided,
         "set": rendered,
         "reverted": reverted,
-        "typed_no_candidate": decided == 0 or (rendered == 0 and reverted == decided),
+        "invalid_intent": invalid_intent,
+        "typed_no_candidate": typed_no_candidate,
     }
 
 

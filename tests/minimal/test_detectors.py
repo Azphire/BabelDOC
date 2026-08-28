@@ -686,3 +686,91 @@ def test_after_typesetting_refreshes_fixed_before_dropcap(tmp_path, monkeypatch)
     assert events == ["fixed_refresh", "dropcap"]
     assert state.fixed_baseline_refresh_completed
     assert state.render_started and not state.render_completed
+
+
+def test_dropcap_summary_closes_all_render_states():
+    actual_invalid_intent = {
+        "totals": {
+            "decided": 1,
+            "set": 0,
+            "reverted": 0,
+            "by_state": {
+                "committed": 0,
+                "invalid_intent": 1,
+                "render_rollback": 0,
+            },
+        }
+    }
+    assert minimal_pipeline._dropcap_summary(actual_invalid_intent) == {
+        "decided": 1,
+        "set": 0,
+        "reverted": 0,
+        "invalid_intent": 1,
+        "typed_no_candidate": True,
+    }
+
+    invalid_reports = []
+    for states in (
+        {"committed": 0, "render_rollback": 0},
+        {
+            "committed": 0,
+            "invalid_intent": 1,
+            "render_rollback": 0,
+            "unknown": 0,
+        },
+        {"committed": False, "invalid_intent": 1, "render_rollback": 0},
+        {"committed": 0, "invalid_intent": -1, "render_rollback": 0},
+    ):
+        invalid_reports.append(
+            {
+                "totals": {
+                    "decided": 1,
+                    "set": 0,
+                    "reverted": 0,
+                    "by_state": states,
+                }
+            }
+        )
+    invalid_reports.extend(
+        [
+            {
+                "totals": {
+                    "decided": 2,
+                    "set": 0,
+                    "reverted": 0,
+                    "by_state": {
+                        "committed": 0,
+                        "invalid_intent": 1,
+                        "render_rollback": 0,
+                    },
+                }
+            },
+            {
+                "totals": {
+                    "decided": 1,
+                    "set": 0,
+                    "reverted": 1,
+                    "by_state": {
+                        "committed": 0,
+                        "invalid_intent": 1,
+                        "render_rollback": 0,
+                    },
+                }
+            },
+            {
+                "totals": {
+                    "decided": 1,
+                    "set": 0,
+                    "reverted": 0,
+                    "by_state": {
+                        "committed": 1,
+                        "invalid_intent": 0,
+                        "render_rollback": 0,
+                    },
+                }
+            },
+        ]
+    )
+    for report in invalid_reports:
+        with pytest.raises(minimal_pipeline.MinimalPipelineStateError):
+            minimal_pipeline._dropcap_summary(report)
