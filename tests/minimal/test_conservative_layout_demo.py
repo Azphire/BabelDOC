@@ -63,6 +63,40 @@ def _flow_report() -> dict:
     }
 
 
+def _original_character_paragraph(text: str, debug_id: str, box):
+    style = il_version_1.PdfStyle(font_id="body", font_size=10.0)
+    characters = [
+        il_version_1.PdfCharacter(
+            char_unicode=character,
+            box=il_version_1.Box(
+                box[0] + index * 5.0,
+                box[1],
+                box[0] + (index + 1) * 5.0,
+                box[1] + 10.0,
+            ),
+            pdf_style=style,
+            xobj_id=-1,
+        )
+        for index, character in enumerate(text)
+    ]
+    return il_version_1.PdfParagraph(
+        box=il_version_1.Box(*box),
+        pdf_style=style,
+        pdf_paragraph_composition=[
+            il_version_1.PdfParagraphComposition(
+                pdf_same_style_characters=il_version_1.PdfSameStyleCharacters(
+                    pdf_style=style,
+                    pdf_character=characters,
+                )
+            )
+        ],
+        unicode=text,
+        debug_id=debug_id,
+        layout_label="text",
+        xobj_id=-1,
+    )
+
+
 def _article_ir(paragraphs, boxes) -> ArticleDocumentIR:
     elements = tuple(
         SourceElementRef(
@@ -311,6 +345,94 @@ def test_fixed_companion_is_not_a_target_holder_and_remains_untouched(
     report = layout_report.finalize()
 
     assert fixed == fixed_before
+    assert [item["source_ref"] for item in report["elements"]] == ["p1#1"]
+    assert report["elements"][0]["status"] == "success"
+
+
+def test_untranslated_vertical_furniture_is_excluded_and_untouched(
+    monkeypatch, tmp_path
+):
+    vertical_box = (52.0214, 71.825, 57.9964, 304.7845)
+    vertical = _paragraph("vertical source", "vertical", vertical_box)
+    vertical.vertical = True
+    horizontal_box = (70.0, 71.825, 120.0, 101.825)
+    horizontal = _paragraph("译文", "horizontal", horizontal_box)
+    horizontal.xobj_id = -1
+    document = il_version_1.Document(
+        page=[_page(0, [vertical, horizontal])], total_pages=1
+    )
+    empty_ir = ArticleDocumentIR(articles=(), by_page={}, by_element={}, by_chain={})
+    units = {
+        id(vertical): SimpleNamespace(
+            source_ref="p1#0",
+            record_kind="block",
+            source_box=vertical_box,
+            fixed_companion=False,
+        ),
+        id(horizontal): SimpleNamespace(
+            source_ref="p1#1",
+            record_kind="single_visual_line",
+            source_box=horizontal_box,
+            fixed_companion=False,
+        ),
+    }
+    monkeypatch.setattr(
+        layout_report.line_split,
+        "source_unit",
+        lambda paragraph, _physical_page: units.get(id(paragraph)),
+    )
+    config = Config(tmp_path)
+    typesetter = Typesetting(config, RenderMapper())
+    vertical_before = copy.deepcopy(vertical)
+
+    layout_report.prepare(
+        config,
+        document,
+        empty_ir,
+        article_flow_report=_flow_report(),
+        eligible_roles=("text",),
+    )
+    typesetter.render_paragraph(vertical, document.page[0], {"body": RenderFont()})
+    typesetter.render_paragraph(
+        horizontal, document.page[0], {"body": RenderFont()}
+    )
+    report = layout_report.finalize()
+
+    assert vertical == vertical_before
+    assert [item["source_ref"] for item in report["elements"]] == ["p1#1"]
+    assert report["elements"][0]["source_box"] == list(horizontal_box)
+    assert report["elements"][0]["status"] == "success"
+
+
+def test_original_passthrough_composition_is_generically_protected(tmp_path):
+    source = _original_character_paragraph(
+        "12", "short-untranslated", (0.0, 70.0, 20.0, 90.0)
+    )
+    translated_box = (25.0, 70.0, 100.0, 90.0)
+    translated = _paragraph("目标", "translated", translated_box)
+    translated.xobj_id = -1
+    document = il_version_1.Document(
+        page=[_page(0, [source, translated])], total_pages=1
+    )
+    empty_ir = ArticleDocumentIR(articles=(), by_page={}, by_element={}, by_chain={})
+    config = Config(tmp_path)
+    typesetter = Typesetting(config, RenderMapper())
+    source_before = copy.deepcopy(source)
+
+    layout_report.prepare(
+        config,
+        document,
+        empty_ir,
+        article_flow_report=_flow_report(),
+        eligible_roles=("text",),
+    )
+    typesetter.render_paragraph(source, document.page[0], {"body": RenderFont()})
+    typesetter.render_paragraph(
+        translated, document.page[0], {"body": RenderFont()}
+    )
+    report = layout_report.finalize()
+
+    assert source == source_before
     assert [item["source_ref"] for item in report["elements"]] == ["p1#1"]
     assert report["elements"][0]["status"] == "success"
 

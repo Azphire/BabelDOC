@@ -98,6 +98,7 @@ class _Run:
     entries: dict[int, _LayoutEntry]
     paragraphs: dict[int, object]
     debug_entries: dict[tuple[int, str], _LayoutEntry]
+    protected_paragraphs: dict[int, object]
 
 
 _RUN: _Run | None = None
@@ -142,6 +143,15 @@ def _physical_page(page, fallback: int) -> int:
     return fallback if page_number is None else int(page_number) + 1
 
 
+def _has_generated_target(paragraph) -> bool:
+    """Whether translation produced a Unicode target composition."""
+    for composition in paragraph.pdf_paragraph_composition or ():
+        holder = composition.pdf_same_style_unicode_characters
+        if holder is not None and not getattr(holder, "debug_info", False):
+            return True
+    return False
+
+
 def prepare(
     translation_config,
     docs,
@@ -156,7 +166,7 @@ def prepare(
     if article_flow_report.get("article_flow_applied") is not False:
         raise ConservativeLayoutError("ordinary article flow must remain disabled")
     report_path = Path(translation_config.get_working_file_path(REPORT_NAME))
-    run = _Run(report_path, {}, {}, {})
+    run = _Run(report_path, {}, {}, {}, {})
     _RUN = run
 
     elements = {
@@ -180,12 +190,18 @@ def prepare(
             physical_ref = f"p{physical_page}#{paragraph_index}"
             unit = line_split.source_unit(paragraph, physical_page)
             element = elements.get(local_ref)
+            if (
+                getattr(paragraph, "vertical", False)
+                or (unit is not None and getattr(unit, "fixed_companion", False))
+                or not _has_generated_target(paragraph)
+            ):
+                # Translation leaves source char/formula compositions in
+                # place.  They are fixed furniture, not target holders; keep
+                # the exact objects so pre-existing ink/box differences do
+                # not masquerade as translated-text overflow.
+                run.protected_paragraphs[id(paragraph)] = paragraph
+                continue
             if unit is not None:
-                if getattr(unit, "fixed_companion", False):
-                    # Fixed folios are untranslated source furniture.  They
-                    # retain their original glyph geometry and are not target
-                    # holders subject to translated-text containment.
-                    continue
                 source_ref = unit.source_ref
                 role = unit.record_kind
                 source_box = unit.source_box
@@ -265,6 +281,14 @@ def source_container(paragraph, physical_page: int | None = None) -> SourceConta
         entry = _RUN.debug_entries.get((physical_page, debug_id))
         return None if entry is None else entry.container
     return None
+
+
+def is_protected_source(paragraph) -> bool:
+    """Return true for one untranslated source paragraph in the active run."""
+    return bool(
+        _RUN is not None
+        and _RUN.protected_paragraphs.get(id(paragraph)) is paragraph
+    )
 
 
 def _entry(paragraph, physical_page: int | None = None) -> _LayoutEntry | None:

@@ -1638,14 +1638,9 @@ class Typesetting:
         physical_page = (
             None if page.page_number is None else int(page.page_number) + 1
         )
-        bounded_unit = source_unit(paragraph, physical_page)
-        if bounded_unit is not None and getattr(
-            bounded_unit, "fixed_companion", False
-        ):
-            # A fixed folio is deliberately excluded from translation.  Its
-            # source glyphs may have ink slightly outside the paragraph box,
-            # so formal target typesetting must leave the object untouched.
+        if layout_report.is_protected_source(paragraph):
             return
+        bounded_unit = source_unit(paragraph, physical_page)
         typesetting_units = self.create_typesetting_units(paragraph, fonts)
         conservative_container = layout_report.source_container(
             paragraph, physical_page
