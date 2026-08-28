@@ -13,6 +13,15 @@
       "transitions": ["cross_column"]
     },
     {
+      "id": "aramco-p6-cross-column-body",
+      "role": "body",
+      "ordered_members": [
+        {"physical_page": 6, "source_text_sha256": "65ee6c47ee062d272471a866e4bb7b82ccaf19921c70e52a23abb7cadb98bdd5", "source_box": [181.80525, 632.31775, 373.538801, 664.018875], "diagnostic_ref": "styles_and_formulas.json:p6#112;debug_id=jyiTC"},
+        {"physical_page": 6, "source_text_sha256": "3da1c0945f915669fcb1c7f81b3d405239e55983ede859b602d886d23b643ee3", "source_box": [388.58325, 655.263875, 580.631584, 751.495], "diagnostic_ref": "styles_and_formulas.json:p6#113;debug_id=R316W"}
+      ],
+      "transitions": ["cross_column"]
+    },
+    {
       "id": "aramco-p6-p7-cross-page-body",
       "role": "body",
       "ordered_members": [

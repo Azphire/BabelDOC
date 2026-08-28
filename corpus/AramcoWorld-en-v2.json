@@ -5,6 +5,8 @@
     {"source_ref": "p3#80", "physical_page": 3, "source_text_sha256": "96007999a79b7cbbb24164c79427fff04a327260ab12e35db211663fd0fa0ec9", "source_box": [104.47, 687.9936, 448.212, 736.6976], "debug_id": "e3muX"},
     {"source_ref": "p5#115", "physical_page": 5, "source_text_sha256": "d630eec3db3e77fe45738ccddfdc6d1e21a06a058f24cf0817c28af105f385ea", "source_box": [78.15725, 85.10775, 270.701605, 126.268875], "debug_id": "masRk"},
     {"source_ref": "p5#116", "physical_page": 5, "source_text_sha256": "e4603c0db6e31386a5e94e7242c0ea19dc025254577ba30cee657f9d57fe72f0", "source_box": [285.15725, 493.938875, 477.124154, 547.15], "debug_id": "QnLwy"},
+    {"source_ref": "p6#112", "physical_page": 6, "source_text_sha256": "65ee6c47ee062d272471a866e4bb7b82ccaf19921c70e52a23abb7cadb98bdd5", "source_box": [181.80525, 632.31775, 373.538801, 664.018875], "debug_id": "jyiTC"},
+    {"source_ref": "p6#113", "physical_page": 6, "source_text_sha256": "3da1c0945f915669fcb1c7f81b3d405239e55983ede859b602d886d23b643ee3", "source_box": [388.58325, 655.263875, 580.631584, 751.495], "debug_id": "R316W"},
     {"source_ref": "p6#119", "physical_page": 6, "source_text_sha256": "67d5274ff957bca0fc5a836b53221baef4d12ecc41199fae134586784d29a75b", "source_box": [388.65725, 83.81275, 580.658099, 115.513875], "debug_id": "9HPUY"},
     {"source_ref": "p7#95", "physical_page": 7, "source_text_sha256": "f606c661b42e7e584ddc3fba3025a556b9c7718776c03efeaa8ec79e559cde8e", "source_box": [78.15725, 450.918875, 267.959148, 471.865], "debug_id": "toYtv"},
     {"source_ref": "p5#125", "physical_page": 5, "source_text_sha256": "9eb2b51f80c837b84320c92c40626ab7a556abf9fba09d719be72f71b6ef7453", "source_box": [54.074621, 695.46061, 566.645334, 753.944701], "debug_id": "KMXMQ"}
