@@ -1,0 +1,7 @@
+{
+  "description": "Bounded presentation parameters for tools/chain_report.py. These affect the review page only, never a boundary verdict.",
+  "thumbnail_dpi": 36,
+  "thumbnail_dpi_allowed_range": "12..150",
+  "excerpt_chars": 320,
+  "excerpt_chars_allowed_range": "40..2000"
+}

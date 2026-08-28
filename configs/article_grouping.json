@@ -1,0 +1,5 @@
+{
+  "description": "Article grouping. Which pages make up one article is decided from the page type vocabulary alone: a type declaring opens_article begins an article, a type declaring chain_eligible and translate joins whatever article is running, and anything else belongs to no article and takes no page with it. Those flags are declared per type in page_types.json, not here, so this file holds only what grouping needs beyond them. title_pair_classes names the endpoint classes declared in chain_detection.json whose layout labels count as a heading; the first paragraph carrying one of those labels on an article's opening page is that article's title reference, so a heading is recognised by the same declaration the chain detector pairs display lines by, and neither a layout label nor a page type name is written in code. Note that opens_article is not starts_article: the latter is the chain detector's prior, meaning running text does not continue into a page, and the two answer different questions on every page that is not flowing text.",
+
+  "title_pair_classes": ["title"]
+}

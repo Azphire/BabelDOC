@@ -1,0 +1,42 @@
+{
+  "description": "Column level reflow of the space a shorter translation leaves behind. Every paragraph is laid out inside the box the source drew for it, and the boxes themselves are not moved, so a translation that fills less of its box than the source filled leaves the difference standing as white space above the paragraph below it. Measured over the corpus that difference is not small: on a running text page it is routinely tens of points, and it is not evenly spread, so a column ends up alternating tight bands with holes the source never had. This pass closes that difference and nothing else. For each adjacent pair of paragraphs in a column it takes the excess -- the gap on the finished page minus the gap the same pair had on the source page -- and where the excess is over min_excess_pt it raises the lower paragraph, and everything under it, by that much. A gap the source itself set wide has no excess and is not touched, which is how a section break survives a pass that closes holes. profiles names the repair profiles whose pages are reflowed, and is validated against the profiles the page type vocabulary declares; no page type is named here or in the code that reads this. target_languages names the target language prefixes the pass runs for, matched as a tag or a subtag of one, because the defect is a property of a translation that sets shorter than its source. min_excess_pt is the excess a pair has to show before anything moves, which keeps rounding and hinting differences out of it. max_shift_ratio caps one pair's contribution at that share of its column's own height, so no single measurement can move a paragraph an arbitrary distance. column_min_x_overlap_ratio is how much of the narrower of two boxes has to share a horizontal band before they are read as one column. order_tolerance_pt is how far two paragraphs may disagree with their source counterparts about which of them stands higher before the column is left alone, which is the guard against reflowing a column whose layout the pipeline has already rearranged. obstacle_collections names the page level structures whose ink this pass does not move: a gap with any of them standing in it is not empty space, so it is never closed, and nothing below it rises through it. protected_paragraph_labels names page furniture that remains fixed even when ArticleIR assigns the page to an article. asset_bbox_tolerance_pt is the float-width tolerance used only when the same protected bbox is compared before and after a transaction.",
+
+  "profiles": ["flow"],
+
+  "target_languages": ["zh"],
+
+  "protected_paragraph_labels": [
+    "abandon",
+    "header",
+    "footer",
+    "page_header",
+    "page_footer",
+    "page_header_hybrid",
+    "page_footer_hybrid",
+    "page_number_hybrid"
+  ],
+
+  "obstacle_collections": [
+    "pdf_figure",
+    "pdf_xobject",
+    "pdf_rectangle",
+    "pdf_curve",
+    "pdf_form",
+    "pdf_character"
+  ],
+
+  "min_excess_pt": 4.0,
+  "min_excess_pt_allowed_range": "0..20",
+
+  "max_shift_ratio": 0.25,
+  "max_shift_ratio_allowed_range": "0..0.5",
+
+  "column_min_x_overlap_ratio": 0.5,
+  "column_min_x_overlap_ratio_allowed_range": "0..1",
+
+  "order_tolerance_pt": 1.0,
+  "order_tolerance_pt_allowed_range": "0..20",
+
+  "asset_bbox_tolerance_pt": 0.000001,
+  "asset_bbox_tolerance_pt_allowed_range": "0..0.01"
+}

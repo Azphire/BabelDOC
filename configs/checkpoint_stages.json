@@ -1,0 +1,161 @@
+{
+  "description": "Ordered pipeline stage names used to number magazine XML checkpoints. The position of a name in 'stages' (1-based) becomes the two-digit ordinal in 'checkpoint.<NN>_<stage>.xml', so lexicographic filename order equals execution order.",
+  "ordinal_width": 2,
+  "ordinal_width_allowed_range": "2..4",
+  "stages": [
+    "create_il",
+    "detect_scanned_file",
+    "layout_generator",
+    "table_parser",
+    "paragraph_finder",
+    "styles_and_formulas",
+    "page_classifier",
+    "chain_builder",
+    "il_translated",
+    "add_debug_information",
+    "typesetting"
+  ],
+  "sidecars_description": "Every file a magazine stage writes into the working directory beside the XML checkpoints. A checkpoint is the intermediate language at a point in the pipeline; a sidecar is what a stage found that the frozen schema has nowhere to hold. The two together are what a run leaves behind, so a stage that writes only a sidecar -- article grouping and the article brief pass both do -- is still declared here and is still part of the run's inventory. 'switch' names the constructor flag that has to be up for the file to appear, and 'stage' the pipeline stage it is written by; a stage named here need not appear in 'stages', because writing a sidecar and checkpointing the document are separate things.",
+  "sidecars": [
+    {
+      "name": "page_classify.report.json",
+      "stage": "page_classifier",
+      "switch": "magazine_page_classify"
+    },
+    {
+      "name": "chain_report.json",
+      "stage": "chain_builder",
+      "switch": "magazine_chain_detect"
+    },
+    {
+      "name": "article_map.json",
+      "stage": "article_builder",
+      "switch": "magazine_article_group"
+    },
+    {
+      "name": "article_ir.json",
+      "stage": "article_builder",
+      "switch": "magazine_article_group"
+    },
+    {
+      "name": "run_trace.report.json",
+      "stage": "pdf_created",
+      "switch": "magazine_article_group"
+    },
+    {
+      "name": "chain_translation.report.json",
+      "stage": "il_translated",
+      "switch": "magazine_chain_translate"
+    },
+    {
+      "name": "article_flow.report.json",
+      "stage": "il_translated",
+      "switch": "magazine_column_reflow"
+    },
+    {
+      "name": "article_context.report.json",
+      "stage": "il_translated",
+      "switch": "magazine_article_context"
+    },
+    {
+      "name": "hitl_apply.report.json",
+      "stage": "hitl",
+      "switch": "magazine_hitl_apply"
+    },
+    {
+      "name": "drop_cap.report.json",
+      "stage": "hitl",
+      "switch": "magazine_drop_cap_mark"
+    },
+    {
+      "name": "drop_cap_intent.report.json",
+      "stage": "typesetting",
+      "switch": "magazine_drop_cap_mark"
+    },
+    {
+      "name": "drop_cap_apply.report.json",
+      "stage": "hitl",
+      "switch": "magazine_drop_cap_apply"
+    },
+    {
+      "name": "fragment_stitch.report.json",
+      "stage": "page_classifier",
+      "switch": "magazine_fragment_stitch"
+    },
+    {
+      "name": "line_split.report.json",
+      "stage": "page_classifier",
+      "switch": "magazine_line_structure"
+    },
+    {
+      "name": "issues.json",
+      "stage": "typesetting",
+      "switch": "magazine_detect"
+    },
+    {
+      "name": "react_repair.report.json",
+      "stage": "typesetting",
+      "switch": "magazine_repair"
+    },
+    {
+      "name": "title_typeset.report.json",
+      "stage": "typesetting",
+      "switch": "magazine_title_typeset"
+    },
+    {
+      "name": "paren_dedup.report.json",
+      "stage": "il_translated",
+      "switch": "magazine_paren_dedup"
+    },
+    {
+      "name": "indent_policy.report.json",
+      "stage": "il_translated",
+      "switch": "magazine_indent_policy"
+    },
+    {
+      "name": "source_audit.report.json",
+      "stage": "page_classifier",
+      "switch": "magazine_stitch_declared"
+    },
+    {
+      "name": "short_unit.report.json",
+      "stage": "il_translated",
+      "switch": "magazine_short_unit"
+    },
+    {
+      "name": "name_harvest.report.json",
+      "stage": "il_translated",
+      "switch": "magazine_name_harvest"
+    },
+    {
+      "name": "column_reflow.report.json",
+      "stage": "typesetting",
+      "switch": "magazine_column_reflow"
+    },
+    {
+      "name": "fixed_asset_inventory.report.json",
+      "stage": "typesetting",
+      "switch": "magazine_detect"
+    },
+    {
+      "name": "formula_reclass.report.json",
+      "stage": "styles_and_formulas",
+      "switch": "magazine_formula_reclass"
+    },
+    {
+      "name": "formula_reclass_restore.report.json",
+      "stage": "typesetting",
+      "switch": "magazine_formula_reclass"
+    },
+    {
+      "name": "rotated_lane.report.json",
+      "stage": "typesetting",
+      "switch": "magazine_rotated_lane"
+    },
+    {
+      "name": "drop_cap_render.report.json",
+      "stage": "typesetting",
+      "switch": "magazine_drop_cap_render"
+    }
+  ]
+}

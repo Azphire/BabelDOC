@@ -1,0 +1,7 @@
+{
+  "description": "Bounded parameters for the gate artefact cache (spec_checks/artifacts.py, reported and applied by spec_checks/run_all.py). Same convention as configs/page_features.json: every numeric parameter carries a '<name>_allowed_range' sibling of the form 'low..high', inclusive on both ends. 'gate_cache_max_gb' is the size a sweep trims the cache back under before it starts; slots go least recently used first, and a slot's last use is the last sweep that was served from it rather than the run that built it. A build in progress works in a staging directory, which is never a slot and can never be swept away by the build it belongs to; it is exempted by the lock file it carries, and 'staging_stale_after_seconds' is how long a lock written by another process is believed. Past that a staging directory is read as abandoned by an interrupted build: it costs disk, it can never be served as a hit, and a sweep removes it before it considers any slot.",
+  "gate_cache_max_gb": 16,
+  "gate_cache_max_gb_allowed_range": "0.5..256",
+  "staging_stale_after_seconds": 86400,
+  "staging_stale_after_seconds_allowed_range": "60..2592000"
+}

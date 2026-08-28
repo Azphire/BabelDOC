@@ -1,0 +1,7 @@
+{
+  "description": "Bounded presentation parameters for tools/page_classify_report.py. These affect the review page only, never a classification result.",
+  "thumbnail_dpi": 36,
+  "thumbnail_dpi_allowed_range": "12..150",
+  "score_rows": 5,
+  "score_rows_allowed_range": "1..15"
+}

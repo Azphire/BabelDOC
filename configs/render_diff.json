@@ -1,0 +1,11 @@
+{
+  "description": "Bounded parameters for tools/render_diff.py, the rasterised PDF comparison used by every 'behaviour unchanged' assertion.",
+  "dpi": 150,
+  "dpi_allowed_range": "72..600",
+  "pixel_diff_threshold": 16,
+  "pixel_diff_threshold_allowed_range": "0..255 (absolute 8-bit grayscale delta above which a pixel counts as different)",
+  "diff_ratio_tolerance": 0.0,
+  "diff_ratio_tolerance_allowed_range": "0.0..1.0 (fraction of differing pixels on a page tolerated before the page is reported as different)",
+  "region_block_px": 16,
+  "region_block_px_allowed_range": "4..64 (raster block edge used to group differing pixels into connected difference regions)"
+}

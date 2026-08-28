@@ -1,0 +1,30 @@
+{
+  "description": "Bounds for the evaluation metrics in babeldoc/magazine/metrics/. Nothing here steers the translation pipeline: every parameter is read only by a measurement, and every measurement is deterministic and makes no model request. Thresholds a metric shares with a detector are not repeated here -- the sentence enders and closing marks, the line banding rule and the column split rule are read from chain_detection.json, and the source term qualification from term_consistency.json, so a retune moves one number and both the detector and the metric follow it. min_element_area_ratio is the floor below which an element takes no part in the Overlap sum: eq:overlap divides by the area of each element in turn, so a box of no area has no defined contribution and is dropped from both roles rather than being given one. alignment_max_delta bounds the argument of g(x) = -log(1-x), whose pole at x=1 is reachable in principle -- two elements at opposite edges of a page differ by exactly one normalised unit -- and never in a page anybody set; the clamp makes the metric total rather than letting one degenerate page return an infinity. image_pair_max_area_ratio is how far two images' areas may differ before they are refused as a pair, which is what stops the nearest-area rule from marrying an illustration to a rule line when one side is missing an image. ltcr_min_occurrences is the k of eq:ltcr read on the source side -- how often a term must recur in a document to be measured at all -- and ltcr_min_paragraphs the least number of distinct translated paragraphs its occurrences must fall in, below which C(k,2) has no pair to count. report_float_digits is presentation only and rounds what is written, never what is compared. image_layout_classes is the vocabulary of layout classes that stand for an image: a run of this pipeline leaves its images as layout regions rather than as pdf_figure elements, so the image measures read both and this list is what tells them which regions are images. It is a vocabulary and takes no range; a class outside it is text or furniture and takes no part in the image measures. truth_trap_markers is the vocabulary of markers the corpus adjudication writes into a boundary note to say that the tail dangles into a page the excerpt does not contain: no producer can close such a boundary, so the mid-unit rate reports the openness it inherits from the excerpt separately from the openness it caused. Matching is case sensitive and on the note as written, so the marker is a deliberate annotation rather than an accident of prose. pdf_block_label is the layout label a text block extracted from a produced PDF stands in as, for the geometry path that has no intermediate language to read a label from; it has to be a label the endpoint filter of chain_detection.json admits, or that path would offer no tail at all. Both are vocabularies and take no range. method_comparable_max_relative_delta is how far two readings of one quantity -- the same produced document measured through the intermediate language and through PDF extraction -- may sit apart, as a share of the larger of them, before the two paths are declared not comparable for that metric. It governs a report and never a pipeline: what it decides is whether an upstream column may be read beside a fork column, and a metric that fails it is reported on both paths separately rather than differenced.",
+
+  "image_layout_classes": ["figure", "image"],
+
+  "truth_trap_markers": ["TRAP"],
+
+  "pdf_block_label": ["plain text"],
+
+  "method_comparable_max_relative_delta": 0.1,
+  "method_comparable_max_relative_delta_allowed_range": "0.0..1.0",
+
+  "min_element_area_ratio": 0.000001,
+  "min_element_area_ratio_allowed_range": "0.0..0.1",
+
+  "alignment_max_delta": 0.999,
+  "alignment_max_delta_allowed_range": "0.0..1.0",
+
+  "image_pair_max_area_ratio": 4.0,
+  "image_pair_max_area_ratio_allowed_range": "1.0..100.0",
+
+  "ltcr_min_occurrences": 3,
+  "ltcr_min_occurrences_allowed_range": "2..50",
+
+  "ltcr_min_paragraphs": 2,
+  "ltcr_min_paragraphs_allowed_range": "2..50",
+
+  "report_float_digits": 6,
+  "report_float_digits_allowed_range": "0..12"
+}

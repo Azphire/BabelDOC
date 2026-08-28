@@ -1,0 +1,112 @@
+{
+  "description": "Bounds of the ReAct repair controller (babeldoc/magazine/react/). Same convention as configs/detectors.json: every numeric parameter carries a '<name>_allowed_range' sibling of the form 'low..high', inclusive on both ends, and the convention holds inside the nested action blocks as well. 'actions' is the vocabulary a decision may choose from; a name outside it, a parameter the chosen action does not declare, or a value outside that parameter's range is a violation and the reply is refused. Each action declares 'issue_kinds', the detector kinds it answers for, 'max_applications', the ceiling on how many paragraphs it may touch over the whole run, its 'parameters' with a default and a range each, and its 'applicability', which is what decides whether a particular finding is one this action may act on at all. Applicability is deliberately stricter than detection: a detector reports what looks wrong and a repair has to be sure, because leaving a defect standing costs one defect and rewriting a correct paragraph costs a correct paragraph. For translate_orphan_lines that is two conditions. 'min_residue_ratio' is the share of the paragraph's script characters that must be in the wrong script -- a paragraph that is almost entirely the wrong script was not translated, whereas a mixed one is a translation that kept a name in its source form, and rewriting the second would undo a correct decision. 'orphan_layout_labels' is the closed set of layout labels an orphan carries: a paragraph the layout parser recovered outside every detected block, which is what 'fallback_line' means and the only way a paragraph reaches typesetting without ever having been offered to the translator. A paragraph carrying any other label was offered and what it renders as is the translator's decision, which this action does not overrule. 'min_source_chars' keeps a folio or a credit glyph from being sent anywhere. An action may also declare, at its own level beside 'max_applications', the numbers its own mechanism is bounded by. Such a number is neither a parameter nor a term of the rule: a decision may not set it and it selects nothing. 'contain_in_page' declares two: 'contain_min_scale', the smallest share of its set size a heading may be shrunk to before shrinking it is the wrong answer and the finding is escalated instead, and 'contain_margin_ratio', how far inside the page frame the ink is landed, as a share of each of the frame's own axes. The margin is the action's rather than the detector's because the two answer different questions: the detector says whether ink is outside the trim, and the action chooses how comfortably inside to put it, which has to clear the trim tolerance rather than sit on it. The two actions added beside the orphan one answer for the geometric findings. 'contain_in_page' slides a paragraph whose ink reaches past the page frame back inside it, and shrinks it about the centre of its own extent only where sliding cannot fit it; its rule admits a display block by 'contain_layout_labels' and a reach past 'min_overflow_ratio', which is at or above the share the detector reports at. 'resolve_collision' answers for two texts standing in one place. It recorded a finding and wrote nothing while the overlaps it was shown were of every kind at once and their answers were opposite; what has changed is not that judgement but the two conditions it rested on. The coverage bound and the source exemption in configs/detectors.json now separate the overlap the source drew from the overlap the translation made before this action sees either, and the per kind decision rounds in configs/decision_rounds.json put a decision between the finding and the act, which is where a heterogeneous cause belongs. So the action writes, and it writes only for the class its own rule can isolate: it slides the smaller of the two paragraphs clear of the larger along the axis they overlap least. 'resolve_max_area_ratio' is what makes 'the smaller' mean something -- the smaller box's area over the larger's has to be at or below it, so a pair of comparable blocks, where moving either is as wrong as moving the other, is escalated rather than acted on. 'resolve_max_shift_ratio' is the furthest it may slide, as a share of the page's own dimension along that axis, and a pair needing more than that is not a paragraph that drifted. 'resolve_margin' is how far below the coverage bound the slide has to land, so a repair clears the threshold rather than stopping on it. Its rule admits a finding by coverage alone, and this is the one place the action is not symmetric with the detector. The detector is bounded by either measure because a defect it fails to report is a defect nobody can act on. The rule needs only the one because the other cannot reach anything: coverage is never below the ratio over the union, and a pair the union ratio admits at 0.2 while coverage refuses it at 0.4 is arithmetically forced to have two boxes of nearly the same area -- above 0.71 of each other -- which 'resolve_max_area_ratio' refuses first. Stating a bound that can select nothing would be stating a filter the rule does not have, and the deciding model reads these sentences as the whole of the rule. Each term carries a sentence in 'statements', keyed by the term it states and carrying '{value}' where the term's own figure goes: the rule is applied from the numbers and stated to the deciding model from these sentences, so a request cannot describe a filter other than the one it is feeding. Every term must carry one and every statement must name a term. 'max_iterations' bounds the detect-decide-act-recheck loop, 'decide_max_attempts' bounds how many times one iteration's decision may be asked for before the iteration is abandoned, and the remaining numbers bound what one request is allowed to carry. 'volatile_evidence_keys' names the evidence fields that are kept out of the digest a cached request is filed under. A finding names its paragraph by an id the paragraph finder mints afresh every run, so two runs of one unchanged document ask a byte identical question under different ids and a key taken over the rendered request never matches. The list names what to drop rather than what to keep because the two ways of being wrong here are not symmetrical: a key still carrying a volatile field misses a cache it should have hit, which costs a request and is visible in the attribution line beside it, while a key that has dropped a field the decision turns on hits a cache it should have missed and replays a decision taken about other evidence with nothing anywhere saying so. A field nobody has classified therefore stays in the key. What the model is shown is not touched: the request carries every field it carried before, and only the digest is taken over the projection.",
+  "max_iterations": 3,
+  "max_iterations_allowed_range": "1..10",
+  "decide_max_attempts": 2,
+  "decide_max_attempts_allowed_range": "1..5",
+  "max_issues_offered": 40,
+  "max_issues_offered_allowed_range": "1..500",
+  "issue_excerpt_chars": 120,
+  "issue_excerpt_chars_allowed_range": "20..400",
+  "max_glossary_entries": 24,
+  "max_glossary_entries_allowed_range": "1..200",
+  "page_context_chars": 1200,
+  "page_context_chars_allowed_range": "0..20000",
+  "volatile_evidence_keys": [
+    "debug_id",
+    "debug_ids",
+    "source_checkpoint"
+  ],
+  "actions": {
+    "translate_orphan_lines": {
+      "description": "Send the text of a paragraph the translator was never given the chance to reach through the translation engine and write the answer back into it, then lay that paragraph out again.",
+      "issue_kinds": [
+        "untranslated_residue"
+      ],
+      "max_applications": 12,
+      "max_applications_allowed_range": "1..200",
+      "parameters": {
+        "max_paragraphs": {
+          "default": 3,
+          "default_allowed_range": "1..20"
+        }
+      },
+      "applicability": {
+        "min_residue_ratio": 0.9,
+        "min_residue_ratio_allowed_range": "0.05..1.0",
+        "min_residue_ratio_into_en": 0.05,
+        "min_residue_ratio_into_en_allowed_range": "0.01..1.0",
+        "min_source_chars": 12,
+        "min_source_chars_allowed_range": "1..400",
+        "orphan_layout_labels": [
+          "fallback_line"
+        ],
+        "statements": {
+          "min_residue_ratio": "its evidence reports residue_ratio at or above {value}",
+          "min_source_chars": "the text the page renders for it is at least {value} characters long",
+          "orphan_layout_labels": "it was never offered a request, either because its evidence reports layout_label as one of: {value}",
+          "orphan_accepts_vertical": "or, where this is {value}, because the paragraph is set along the vertical axis and the translator refuses such a paragraph before reading its text",
+          "min_residue_ratio_into_en": "its evidence reports residue_ratio at or above {value}"
+        },
+        "orphan_accepts_vertical": true
+      }
+    },
+    "contain_in_page": {
+      "description": "Put a paragraph that is printing off the edge of its page back inside the page. It moves ink and never changes a character of text: it slides the paragraph inside the frame, shrinks it about the centre of its own extent only where sliding alone cannot fit it, and escalates instead of shrinking past the declared floor.",
+      "issue_kinds": [
+        "out_of_page"
+      ],
+      "max_applications": 8,
+      "max_applications_allowed_range": "1..200",
+      "contain_min_scale": 0.5,
+      "contain_min_scale_allowed_range": "0.05..1.0",
+      "contain_margin_ratio": 0.01,
+      "contain_margin_ratio_allowed_range": "0.0..0.25",
+      "parameters": {
+        "max_paragraphs": {
+          "default": 3,
+          "default_allowed_range": "1..20"
+        }
+      },
+      "applicability": {
+        "contain_layout_labels": [
+          "title",
+          "paragraph_title"
+        ],
+        "min_overflow_ratio": 0.01,
+        "min_overflow_ratio_allowed_range": "0.0..1.0",
+        "statements": {
+          "contain_layout_labels": "its evidence reports layout_label as one of: {value}",
+          "min_overflow_ratio": "its evidence reports overflow_ratio at or above {value}"
+        }
+      }
+    },
+    "resolve_collision": {
+      "description": "Slide the smaller of two paragraphs standing in one place clear of the larger, along the axis on which they overlap least. It moves ink and never changes a character of text, it moves only the paragraph its rule can name as the smaller, and it escalates rather than acting where the two are of comparable size or where clearing the overlap would take more movement than a paragraph that merely drifted would need.",
+      "issue_kinds": [
+        "text_text_collision"
+      ],
+      "max_applications": 8,
+      "max_applications_allowed_range": "1..200",
+      "resolve_max_area_ratio": 0.5,
+      "resolve_max_area_ratio_allowed_range": "0.05..1.0",
+      "resolve_max_shift_ratio": 0.08,
+      "resolve_max_shift_ratio_allowed_range": "0.0..0.5",
+      "resolve_margin": 0.05,
+      "resolve_margin_allowed_range": "0.0..0.5",
+      "parameters": {
+        "max_paragraphs": {
+          "default": 3,
+          "default_allowed_range": "1..20"
+        }
+      },
+      "applicability": {
+        "min_collision_coverage": 0.4,
+        "min_collision_coverage_allowed_range": "0.05..1.0",
+        "statements": {
+          "min_collision_coverage": "its evidence reports coverage at or above {value}"
+        }
+      }
+    }
+  }
+}

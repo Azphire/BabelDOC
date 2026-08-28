@@ -1,0 +1,18 @@
+{
+  "description": "Declarative surface of the human review layer. 'sections' is the closed set of sections both review.json and decisions.json may carry, in the order a reader meets them; a decisions file naming anything else is rejected whole. 'drop_cap_decisions' is the closed vocabulary of the drop_caps section's values, declared here so the validator refuses an unknown verdict from the batch the section is introduced in rather than from the batch that first consumes it. 'review_format_version' stamps every exported draft, so a draft written by an older layer is recognisable rather than silently reinterpreted. 'translator_view_chars' bounds the excerpt of the text the translator was actually offered that the terms section carries beside the joined rendering a human is shown; the two differ wherever a paragraph is set in several styles, and a ruling written from the rendering cannot match the offered text, so the excerpt is what makes that disagreement visible at review time. 'matched_prompt_excerpts' bounds how many offered texts an applied ruling records per term as evidence of what it reached; the count itself is always recorded whole. Version 2 of the draft merges the two finders into one terms table and derives what a personal name defaults to from the run's declared name policy. Version 3 makes each drop-cap ruling carry the candidate, source text/style and config fingerprints emitted by its draft; version 1 or 2 files still parse when their drop_caps section is empty, while an old non-empty drop-cap mapping is rejected as unverifiable.",
+  "review_format_version": 3,
+  "review_format_version_allowed_range": "1..99",
+  "translator_view_chars": 120,
+  "translator_view_chars_allowed_range": "20..600",
+  "matched_prompt_excerpts": 3,
+  "matched_prompt_excerpts_allowed_range": "0..20",
+  "sections": [
+    "terms",
+    "page_kinds",
+    "drop_caps"
+  ],
+  "drop_cap_decisions": [
+    "keep",
+    "flatten"
+  ]
+}

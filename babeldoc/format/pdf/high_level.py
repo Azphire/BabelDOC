@@ -52,6 +52,7 @@ from babeldoc.format.pdf.split_manager import SplitManager
 from babeldoc.format.pdf.translation_config import TranslateResult
 from babeldoc.format.pdf.translation_config import TranslationConfig
 from babeldoc.format.pdf.translation_config import WatermarkOutputMode
+from babeldoc.magazine import minimal_pipeline
 from babeldoc.progress_monitor import ProgressMonitor
 from babeldoc.utils import memory
 
@@ -529,6 +530,7 @@ def do_translate(
 ) -> TranslateResult:
     try:
         translation_config.progress_monitor = pm
+        minimal_pipeline.configure(translation_config)
         original_pdf_path = translation_config.input_file
         logger.info(f"start to translate: {original_pdf_path}")
         try:
@@ -982,6 +984,8 @@ def _do_translate_single(
             docs,
             translation_config.get_working_file_path("styles_and_formulas.json"),
         )
+
+    minimal_pipeline.after_styles(translation_config, docs)
 
     translate_engine = translation_config.translator
     term_extraction_engine = translation_config.get_term_extraction_translator()

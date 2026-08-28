@@ -1239,6 +1239,48 @@ class PdfParagraph:
             "type": "Attribute",
         },
     )
+    chain_id: str | None = field(
+        default=None,
+        metadata={
+            "name": "chainId",
+            "type": "Attribute",
+        },
+    )
+    chain_index: int | None = field(
+        default=None,
+        metadata={
+            "name": "chainIndex",
+            "type": "Attribute",
+        },
+    )
+    drop_cap_candidate: bool | None = field(
+        default=None,
+        metadata={
+            "name": "dropCapCandidate",
+            "type": "Attribute",
+        },
+    )
+    drop_cap_decision: str | None = field(
+        default=None,
+        metadata={
+            "name": "dropCapDecision",
+            "type": "Attribute",
+        },
+    )
+    segment_sentence_start: int | None = field(
+        default=None,
+        metadata={
+            "name": "segmentSentenceStart",
+            "type": "Attribute",
+        },
+    )
+    segment_sentence_end: int | None = field(
+        default=None,
+        metadata={
+            "name": "segmentSentenceEnd",
+            "type": "Attribute",
+        },
+    )
 
 
 @dataclass(slots=True)
@@ -1345,6 +1387,27 @@ class Page:
             "name": "Unit",
             "type": "Attribute",
             "required": True,
+        },
+    )
+    page_kind: str | None = field(
+        default=None,
+        metadata={
+            "name": "pageKind",
+            "type": "Attribute",
+        },
+    )
+    page_kind_conf: float | None = field(
+        default=None,
+        metadata={
+            "name": "pageKindConf",
+            "type": "Attribute",
+        },
+    )
+    page_kind_source: str | None = field(
+        default=None,
+        metadata={
+            "name": "pageKindSource",
+            "type": "Attribute",
         },
     )
 

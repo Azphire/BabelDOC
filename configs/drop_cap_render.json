@@ -1,0 +1,125 @@
+{
+  "description": "Geometry of the post-typesetting pass for translated decorative initials. Target language selects a regime by longest tag prefix. The English 'initial' regime is a raised initial: one alphabetic code point is sized from its mapped font's real glyph ink height, its ink bottom is aligned with the first body line, and horizontal reserve lasts for exactly one line. The Chinese 'sink' regime sizes one CJK ideograph from the mapped font's real glyph ink box so its top follows the first body line's ink top and its bottom follows the second body line's ink bottom; both lines reserve its ink width plus gutter and the third line returns to the body edge. 'raised_initial_cap_height_lines' is the English desired ink height in measured line advances; minimum and maximum font scales bound the result across fonts with different cap heights. 'ink_bottom_tolerance_pt' governs English bottom alignment and second-line return, 'ink_anchor_tolerance_pt' governs both Chinese ink anchors, and 'edge_slack_pt' governs page, article, and body-envelope rounding. Fixed assets and other paragraphs remain obstacles; only a page-spanning asset that already contains the complete body region is treated as its background. Every refusal restores the complete touched-page snapshot and leaves the ordinary searchable paragraph intact.",
+  "by_target": {
+    "description": "One regime per target language, keyed by language tag and matched to a run by the longest declared prefix of its target language tag, as the drop cap default table is matched. A target language no entry claims leaves every paragraph alone.",
+    "entries": {
+      "zh": "sink",
+      "en": "initial"
+    }
+  },
+  "regimes": {
+    "description": "The non numeric half of each regime. The numeric half is declared at the top level under the regime's own name, so that every threshold carries its allowed range where the bounded reader can see it.",
+    "entries": {
+      "sink": {
+        "break_rule": "anywhere",
+        "grid": "em"
+      },
+      "initial": {
+        "break_rule": "word",
+        "grid": "advance"
+      }
+    }
+  },
+  "regime_vocabulary": [
+    "sink",
+    "initial"
+  ],
+  "break_rule_vocabulary": [
+    "anywhere",
+    "word"
+  ],
+  "grid_vocabulary": [
+    "em",
+    "advance"
+  ],
+  "sink_lines": 2,
+  "sink_lines_allowed_range": "2..2",
+  "sink_gutter_em": 0.25,
+  "sink_gutter_em_allowed_range": "0.0..1.0",
+  "initial_lines": 1,
+  "initial_lines_allowed_range": "1..1",
+  "initial_gutter_em": 0.25,
+  "initial_gutter_em_allowed_range": "0.0..1.0",
+  "min_line_capacity_em": 4.0,
+  "min_line_capacity_em_allowed_range": "1.0..20.0",
+  "edge_slack_pt": 1.0,
+  "edge_slack_pt_allowed_range": "0.0..4.0",
+  "raised_initial_cap_height_lines": 2.0,
+  "raised_initial_cap_height_lines_allowed_range": "1.1..4.0",
+  "raised_initial_min_font_scale": 1.5,
+  "raised_initial_min_font_scale_allowed_range": "1.0..4.0",
+  "raised_initial_max_font_scale": 4.5,
+  "raised_initial_max_font_scale_allowed_range": "2.0..8.0",
+  "ink_bottom_tolerance_pt": 0.05,
+  "ink_bottom_tolerance_pt_allowed_range": "0.0..1.0",
+  "ink_anchor_tolerance_pt": 0.05,
+  "ink_anchor_tolerance_pt_allowed_range": "0.0..1.0",
+  "revert_reasons": [
+    "initial_is_not_a_letter",
+    "box_too_narrow",
+    "not_enough_lines",
+    "no_line_advance",
+    "reached_past_its_own_box",
+    "glyph_metrics_unavailable",
+    "target_policy_mismatch",
+    "outside_page_envelope",
+    "outside_article_envelope",
+    "decorative_collision",
+    "render_exception",
+    "fixed_asset_changed",
+    "invalid_drop_cap_intent",
+    "post_render_geometry_failed",
+    "post_render_color_failed",
+    "post_render_coverage_failed",
+    "post_render_collision_failed"
+  ],
+  "report_fields": [
+    "paragraph",
+    "page",
+    "decision",
+    "target_lang",
+    "regime",
+    "target_policy",
+    "initial",
+    "initial_char_count",
+    "set",
+    "reverted",
+    "revert_reason",
+    "issue",
+    "body_size",
+    "line_advance",
+    "initial_size",
+    "reserve",
+    "gutter",
+    "reserve_lines",
+    "lines_before",
+    "lines_after",
+    "line_baselines",
+    "body_start_x",
+    "first_line_shifts",
+    "resume_shift",
+    "second_line_start_x",
+    "third_line_start_x",
+    "box",
+    "body_box",
+    "reach",
+    "initial_ink_box",
+    "body_ink_box",
+    "first_line_ink_box",
+    "first_line_ink_top",
+    "second_line_ink_box",
+    "second_line_ink_bottom",
+    "ink_top_delta",
+    "first_line_ink_bottom",
+    "ink_bottom_delta",
+    "page_box",
+    "article_boxes",
+    "collision_evidence",
+    "color_evidence",
+    "style_evidence",
+    "detector_contract",
+    "transaction",
+    "render_state",
+    "validation"
+  ]
+}

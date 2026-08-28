@@ -1,0 +1,12 @@
+{
+  "description": "Same form parenthetical folding, applied to a translated document after the translation is written back and before the typesetting stage lays it out. A parenthetical whose content repeats the text standing immediately before it says nothing twice: it is the shape a translation engine falls into when it is asked to carry a proper name across and answers by writing the name and then glossing it with itself. Wording alone does not close it -- two rounds of prompt work did not -- so it is closed mechanically here, on a rule narrow enough to be stated in full. One parenthetical is folded when its content, normalised, is exactly how the text immediately before the opening bracket ends, normalised; the parenthetical and any whitespace run standing between it and that text are then removed. Normalisation is NFKC with the outer whitespace stripped, which is what makes a full width bracket and a half width one one shape and a full width letter and its ASCII form one letter. Case is deliberately not folded: an initialism glossing the words it stands for is a real parenthetical and folding case would read it as a repetition. bracket_openers and bracket_closers are the bracket forms a parenthetical may be written with, and any opener pairs with any closer, because a translated line mixes the two widths. A parenthetical carrying another opener before its closer is not a unit this rule understands and is left alone. max_span_chars is the longest content, in normalised characters, the rule will fold: a long parenthetical repeating its lead in is more likely a real apposition a translator built than a gloss, so length is where the rule stops. excerpt_chars is how much of a paragraph the record quotes on each side of the change.",
+
+  "bracket_openers": ["(", "\uff08"],
+  "bracket_closers": [")", "\uff09"],
+
+  "max_span_chars": 40,
+  "max_span_chars_allowed_range": "1..200",
+
+  "excerpt_chars": 120,
+  "excerpt_chars_allowed_range": "20..1000"
+}
