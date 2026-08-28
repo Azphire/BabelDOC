@@ -1,278 +1,143 @@
-# 主控执行计划：Courier report demo 最小修补
+# 主控执行计划：双向多样张 demo 最小修补
 
-计划版本：2026-08-28  
-目标分支：`migration/minimal-v0.6.4`  
-审查基线：`04ad1485a34942bb249b5325bb2809ffdba332a2`  
-执行拓扑：一个主控 + 一个持续复用的执行 agent + 一个 branch + 一个 worktree  
+计划版本：2026-08-28 demo-minimal-v2
 
-## 1. 目标和固定取舍
+目标分支：`migration/minimal-v0.6.4`
 
-本轮只把 Courier 英译中样张修到可支撑报告展示。优先级依次为：不漏正文、联合翻译成立、源网格不被破坏、TOC/标题/首字可见。暂不处理发布、兼容、恢复、通用配置、全语料稳定性和完整文章重排。
+执行方式：一个主控、一个持续复用的执行 agent、一个 branch、一个 worktree，阶段串行。
 
-固定取舍如下：
+## 1. 目标与边界
 
-- 普通正文停用 `article_flow`，继续在原 paragraph box 内排版，允许译文变短后留白。
-- 连续链仍可在自身相邻 member box 中做一次联合翻译和容量回填。
-- TOC 复用已有 `line_split.py`，只保证视觉行/记录边界，不追求 leader dots 的像素级对齐。
-- 中文标题复用已有 `title_typeset.py`，选定 demo 标题必须单行；低于可读字号下限的其他标题可报告降级。
-- 首字复用现有 keep/flatten、intent 和 renderer，只修生产字形度量。
-- 联合链在 claim freeze 前的 planning failure 回到普通翻译，任何失败链均不得造成静默漏译；apply/writeback 的 late failure 直接阻断阶段门。
-- C22 已停止，不再作为依赖、门禁或等待条件。
+本轮只支撑 report 展示。实现必须能在多份样张和两个翻译方向上工作，但不开发发布级兼容、稳定、部署或恢复能力。
 
-## 2. 已核对的需求与基线事实
+必须完成：
 
-`main(3).tex` 的任务定义要求三项同时成立：翻译正确、版面可用、内容守恒。方法章节明确要求 ArticleIR 的源—译—渲染映射、连续链一次联合翻译、目标语容量回填、TOC/记录型文字使用角色政策、页面/术语/首字三类 HITL 决定、固定页面网格、LLM 受限规划和最终缺陷核查。用户本轮追加两个具体 demo 条件：单行 TOC 不得合并相邻视觉行；英译中标题应优先排为单行。
+- 同一段落被分栏或分页切断时，准确识别全部成员，合并后联合翻译一次，再按顺序回填到各自源框。
+- body chain 每个成员都有非空译文；任何 fallback、漏检、错序或普通翻译重复接管都不能通过验收。
+- 单行 TOC 按源视觉行分别翻译和排版；块状 TOC 按块翻译；同页长正文不拆行。
+- 关闭普通文章跨容器重排，保留多栏、通栏导语、图片和页脚的源布局。
+- 英译中的中文标题尽量在源标题区单行排版；中译英标题完整留在源标题区。
+- 首字下沉/放大使用真实单字度量并进入最终 PDF。
+- 检查所有应译长段都有目标语输出，避免大段漏译。
 
-现有 paid Courier 结果已逐页核查：
+Courier 只用于定位已知问题。产品代码中禁止出现刊物名、固定页码、固定坐标、固定文本或 source hash 特例。
 
-| 缺陷 | 当前证据 | 根因 |
-| --- | --- | --- |
-| 大段漏译 | 16 个 residue，其中 12 个是失败链成员 | `_plan_chain` 预检前 claim，失败后仍阻止普通翻译 |
-| 联合翻译 | 7 条链仅 1 条成功 | chain preflight 错用整栏 ArticleIR slot；unsupported 页没有 slot |
-| p5 三栏塌成单栏 | 6 个正文段落进入一个宽槽 | 通栏导语与首栏正文被 union 后交给 `article_flow` |
-| TOC | 标题、页码、作者相粘 | `line_split.py` 已存在但未接入固定流水线 |
-| 跨页标题 | p2/p3 两段英文残留 | 标题链被 slot order `[0,2]` 拒绝；`title_typeset.py` 未接入 |
-| 首字 | 3 个 keep 候选全部回滚 | PyMuPDF 的全字体 bbox 被当成逐字 bbox |
+## 2. 明确删除的工程内容
 
-固定输入：
+以下内容与 demo 功能无关，本轮全部取消：
 
-- `Courier-en.pdf`：8 页，SHA-256 `9fcb6b5e7d5a51972d766b98518554c64ef39080371ec98b4d04570402ea275a`。
-- paid 基线结果：`chains=7`、`merged=1`、`escalated=6`、`dropcap set=0/reverted=3`、p5 `placements=6`。
-- 每次执行前由主控重新确认输入 hash；输入 PDF 不提交到 Git。
+- `tree-state-v1`、`tree-content-v1` 及其 helper；
+- symlink、文件 mode、特殊文件名、NUL-safe、设备文件等文件系统测试；
+- Windows Developer Mode、`Create symbolic links` 权限或跨平台兼容测试；
+- append-only ledger、hash chain、`fsync`、atomic replace、high-water、崩溃恢复；
+- paid 子进程状态恢复、PID/session 跟踪、重复计费防护框架；
+- secret launcher、全盘 secret 扫描和 `/proc` 隔离测试；
+- legacy paid 包兼容、旧 schema 回放和迁移层；
+- schema vector、坐标量化一致性、fuzz、全测试套件和发布级回归；
+- 新 CLI 开关、feature flag、配置兼容层、打包、部署和性能测试。
 
-当前 TeX 有四组表述高于本轮 demo：
+API key 由主控在 paid 命令运行时临时提供，不写入仓库文件或日志即可，不为此开发新框架。
 
-- 普通文章级跨容器重排关闭，需要收窄 RQ2、贡献 3 和 3.4 节。
-- 当前 `minimal_repair.repair_once` 是确定性单动作检测—修复—重检，没有 TeX 中的 LLM autonomic manager、结构化工具选择和完整动作空间，需要收窄 RQ3、贡献 4 和 3.5 节。
-- 最低 chain floor 允许非代表链 `fallback_ordinary`，低于 3.3.1 对所有连续链联合处理及 placeholder 失败保守路径的表述。
-- 本轮只验证 Courier 英译中 demo，不产生 LOPO、MQM、LTCR、Overlap/Alignment 等正式实验结果，也不验证完整中译英范围。
+## 3. 已确认的代码问题
 
-本轮保留 ArticleIR、代表链 joint translation、三类 HITL 送达证据、确定性 detection/repair sidecar 和最终人工验收；上述报告收窄项不阻塞代码 demo。
+- 失败 chain 在 claim 后没有释放，导致 12 个成员被普通翻译跳过。
+- chain preflight 依赖 ArticleIR 整栏 slot，导致多数连续链失败。
+- `line_split.py` 与 `title_typeset.py` 已有实现，但没有进入固定流水线。
+- `article_flow` 把通栏导语和窄栏正文合成宽槽，Courier p5 三栏变成单栏。
+- drop-cap 使用全字体 bbox 代替单字度量，真实首字全部回滚。
+- 当前完整性检查偏向英译中，无法可靠发现中译英漏译。
 
-## 3. 角色边界
+## 4. 角色
 
-### 主控
+主控负责：
 
-主控只做调度、独立验收、paid 运行、视觉检查和 Git 操作：
+1. 按顺序下发一份 agent 计划。
+2. 检查改动范围和聚焦测试结果。
+3. 提交当前阶段代码。
+4. 用冻结样张运行 paid、机器检查和 PDF 目检。
+5. 失败时把具体日志、sidecar 和页面截图交回同一 agent 修复。
 
-1. 启动时只创建一个执行 agent，后续所有阶段复用该 agent。
-2. 每次只下发一份完整 agent plan，禁止并行产品代码修改。
-3. agent 返回后检查 diff，独立运行离线门。
-4. 离线门通过后由主控显式暂存允许路径并创建 candidate commit；这是主控唯一允许的产品工作树写操作，主控不编辑产品文件。
-5. 需要 paid 的阶段由主控持有 API key 并运行；执行 agent 不接触 key。
-6. 主控亲自打开渲染页，记录通过/失败理由。
-7. 通过后把 candidate SHA 标记为 verified，立即下发下一份 plan。
-8. 失败后把命令、日志、report、截图和精确断言发回同一 agent，继续当前阶段。
+执行 agent 负责：
 
-### 唯一执行 agent
+- 实际阅读计划列出的代码；
+- 只做该阶段的最小实现；
+- 运行计划指定的聚焦测试；
+- 返回改动文件、测试结果和剩余问题；
+- 不运行 paid，不接触 API key，不自行进入下一阶段。
 
-执行 agent 负责只读定位、最小实现、聚焦测试和自检。它不得：
+## 5. 样张与轮换
 
-- 创建子 agent、branch 或 worktree；
-- 使用真实 API key 或启动 paid 请求；
-- 修改本阶段允许路径之外的文件；
-- 执行 `git add`、`git commit`、`git stash`、`git reset`、`git clean`、rebase 或 force push；
-- 提前进入下一份 plan。
+Stage 00 冻结至少五份不同 PDF：
 
-每次返回必须列出：改动文件、关键行为、测试命令与 exit code、未解决项、建议 paid 页范围。工作树保留给主控验收。
+- Courier en→zh diagnosis；
+- 非 Courier en→zh transfer；
+- 另一份非 Courier en→zh holdout；
+- zh→en transfer；
+- 另一份 zh→en holdout。
 
-## 4. 阶段顺序
+两个方向都必须包含至少一条正文跨栏 chain 和一条正文跨页 chain。每次功能修复后先运行另一刊物，再回归最初失败样张，最后运行未参与修改判断的 holdout。
 
-严格串行执行：
+当前仍缺两份非 Courier 英文 PDF；Stage 00 在获得真实文件和人工 chain 标注前停止，不能用 Courier 的裁剪页或重复运行替代。
 
-1. `01_agent_chain_coverage.md`：修联合翻译 slot 与失败 claim，先消除大段漏译根因。
-2. `02_agent_toc_structure.md`：把 TOC 行/块结构恢复接入翻译前路径。
-3. `03_agent_conservative_layout.md`：固定 demo 路径关闭普通 article reflow，保住 p5 三栏。
-4. `04_agent_title_typeset.md`：接入中文标题单行排版。
-5. `05_agent_dropcap_render.md`：修真实字形度量并提交三处首字。
-6. `06_agent_demo_completeness.md`：建立 Courier 专用完整性门和最终报告汇总。
-7. 主控完成一次整本 paid 验收；失败项回到所属阶段，全部通过后结束。
+## 6. 串行阶段
 
-阶段 3 必须先于阶段 5 完成，避免 p5 box 改动后重复调首字。阶段 1 必须先于阶段 4，确保标题已经有中文 target。
+1. `00_agent_sample_matrix.md`：冻结样张、人工 expectations 和双向配置。
+2. `01_agent_chain_coverage.md`：连续链检测、联合翻译一次、源框回填、失败 claim 释放。
+3. `02_agent_toc_structure.md`：TOC 单行/块状结构和排版。
+4. `03_agent_conservative_layout.md`：关闭普通重排并保护源容器；同时回归 chain 和 TOC 最终 PDF。
+5. `04_agent_title_typeset.md`：接入双向标题排版。
+6. `05_agent_dropcap_render.md`：修首字度量和渲染。
+7. `06_agent_demo_completeness.md`：补双向内容完整性检查并运行最终整本 demo。
 
-## 5. 每阶段状态机
+Stage 01/02 的 paid 结果只检查本阶段语义和 source unit；其最终几何在 Stage 03 关闭重排后统一验收。
 
-```text
-READY
-→ EXECUTING
-→ AGENT_HANDOFF
-→ OFFLINE_GATE
-→ CANDIDATE_COMMIT
-→ PAID_GATE（需要时）
-→ VISUAL_GATE（需要时）
-→ VERIFIED
-→ NEXT_PLAN
-```
+## 7. 每阶段最小流程
 
-失败路径：
+1. 确认分支正确，工作树没有与本阶段冲突的用户改动。
+2. 执行 agent 修改 allowlist 内文件并跑聚焦测试。
+3. 主控检查 diff，测试通过后提交。
+4. 运行冻结的 transfer 样张，再回归 diagnosis，最后运行 holdout。
+5. 运行对应 verifier，并对涉及页面做原分辨率 source/output 对照。
+6. 通过后进入下一阶段；失败则交回同一 agent。
 
-```text
-GATE_FAILED
-→ 保存失败证据
-→ follow-up 同一 agent
-→ AGENT_HANDOFF
-→ 重新验收
-```
+不要求每阶段跑完整 `tests/minimal`、跨平台测试或 lint 全库。
 
-600 秒仅是一轮观察窗口。主控把 `agent_id`、stage、previous/candidate SHA、`entry_mode`、`expected_head_sha`、`allowed_dirty_paths`、`handoff_tree_state_digest`、`tree_state_digest_version`、`tree_state_digest_helper_path`、`tree_state_digest_helper_sha256`、当前 actor、run root、页范围、脱敏命令摘要、session/child PID、开始/最近轮询时间、日志 size/mtime、`request_may_be_billed` 和 next action 写入 `.runtime/demo-repair/controller-state.json`；禁止记录 key、key hash 或 key 片段。长任务每 60 秒内检查一次进程/agent 与日志进展；600 秒到点仍有进展则继续等待同一任务，不 interrupt、不重启、不创建替代 agent。paid 状态不明时标记可能计费并停止自动重跑。
+## 8. paid 命令模板
 
-agent 入口有三种：`initial` 要求 HEAD=previous verified 且 clean；`dirty_followup` 要求 HEAD=expected HEAD，dirty paths 与 `tree-state-v1` digest 精确匹配 controller state；`committed_followup` 要求 HEAD=rejected candidate 且 clean。主控每次 follow-up 都显式设置一种，agent 不自行猜测。
-
-## 6. 初始化与 Git 门
-
-首次启动：
-
-1. 七份计划必须先形成一个 docs-only 干净提交，或移出产品 worktree；记录 `code_review_baseline=04ad1485a34942bb249b5325bb2809ffdba332a2` 和 `execution_start_sha`，并确认前者是后者祖先。首次 previous verified SHA 使用 `execution_start_sha`。
-2. 确认 branch 为 `migration/minimal-v0.6.4`，HEAD 为 execution start 或上一 verified SHA。
-3. 确认只有一个 worktree，工作树干净且没有来源不明提交。
-4. 运行一次 `uv sync`；仓库没有受控 `uv.lock`，禁止使用 `uv sync --frozen`。
-5. 后续命令使用 `uv run --no-sync`。
-6. 保存 Python、uv、PyMuPDF 和依赖快照到 `.runtime/demo-repair/bootstrap/`。
-7. 把用户附件放到忽略路径 `examples/input/Courier-en.pdf`，重验 SHA-256 `9fcb6b5e7d5a51972d766b98518554c64ef39080371ec98b4d04570402ea275a`；禁止提交该 PDF。
-8. 把旧 paid 附件复制到忽略路径 `.runtime/demo-repair/fixtures/paid.zip`，重验 SHA-256 `bfddf9258bbd65e996de2e041623faba8fafb5ad6c946d510e34d768a3e3660a`，一次性解包到新的 `.runtime/demo-repair/fixtures/paid-bfddf9258bbd/`。解包后设为负例只读证据；在 controller state 以 `paid_fixture_archive`、`paid_fixture_root`、`old_output_pdf`、`old_work_courier_dir` 记录四个精确绝对路径，禁止阶段 agent 回退到 `upload/`、递归猜路径或改写 fixture。
-9. 设置独立的 `.runtime/uv-cache`、`.runtime/babeldoc-cache`、TEMP/TMP/TMPDIR；不清理旧运行证据。当前 `Initialize-MigrationRuntime.ps1` 含固定 Windows 路径，本轮不调用。
-
-`dirty_followup` 的工作树摘要固定为 `tree-state-v1`，不得用普通 `git diff` hash 代替：
-
-1. 主控在首次 agent 启动前把唯一 helper 放到 `.runtime/demo-repair/bootstrap/tree_state_digest_v1.py`，在 controller state 记录其绝对路径和 SHA-256；主控与 agent 都只能调用这一个已验 hash 的 helper。
-2. helper 以 controller state 的 `expected_head_sha` 为基线，用 `git -c status.renames=false status --porcelain=v1 -z --untracked-files=all` 枚举 tracked staged/unstaged/deleted 和全部 untracked 文件；拒绝 unresolved merge、submodule 和 unsupported special file。
-3. 按原始相对路径字节做 C-locale 升序和去重。每项向 manifest 写入 `path NUL XY-status NUL type NUL mode NUL index-object-id NUL content-sha256 NUL`：`type` 仅为 `file/symlink/deleted`；现存对象用 `lstat` mode，删除项用基线 tree mode；普通文件 hash 原始 bytes，symlink hash 原始 link-target bytes，删除项写 `-`；未跟踪项的 index object id 写 `-`。路径本身禁止 Unicode/换行规范化。
-4. manifest 以 `tree-state-v1 NUL expected-head-sha NUL` 开头；最终 `handoff_tree_state_digest=SHA256(manifest)`。helper 同时输出排序后的 path 清单，主控把它与 `allowed_dirty_paths` 精确比较。
-5. bootstrap 自测必须分别改变 tracked worktree、staged index、tracked delete、untracked regular file 和 untracked symlink，证明任一状态/内容/mode 变化都会改变 digest；相同状态重复计算必须一致。helper 或自测不通过时禁止进入 agent 阶段。
-
-agent handoff 时由 agent 先计算一次，主控在 agent idle 后用同一 helper 复算；两者 digest、path 清单、HEAD 和 helper SHA 必须全部一致。这样新建但尚未 `git add` 的 verifier/tests 也进入续作证据。
-
-每阶段开始记录：
+使用现有 CLI，固定 fresh run：
 
 ```text
-previous verified SHA
-branch / HEAD / git status
-worktree list
-输入 PDF 与配置 hash
-阶段名与允许改动路径
+uv run --no-sync babeldoc \
+  --config <minimal.en-zh.toml|minimal.zh-en.toml> \
+  --files <source.pdf> \
+  --pages <frozen-pages> \
+  --working-dir <run>/work \
+  --output <run>/output \
+  --no-dual --no-auto-extract-glossary --skip-scanned-detection --ignore-cache
 ```
 
-agent 返回后主控执行：
+验收命令：
 
 ```text
-git status --porcelain=v1
-git ls-files --others --exclude-standard
-git diff --stat
-git diff --name-status
-git diff --check
-uv run --no-sync pytest -q <聚焦测试>
-uv run --no-sync pytest -q tests/minimal
-uv run --no-sync ruff check <改动 Python 文件>
+uv run --no-sync python tools/verify_magazine_demo.py \
+  --check <chain|toc|layout|title|dropcap|full> \
+  --expectations <sample-expectations.json> \
+  --source <source.pdf> --output <translated.pdf> \
+  --run-dir <exact-run-dir> --pages <frozen-pages> \
+  --target-lang <zh|en>
 ```
 
-主控先确认所有 changed/untracked path 均在本阶段 allowlist，再逐路径执行 `git add -- <path...>`，随后运行 `git diff --cached --name-status` 和 `git diff --cached --check`；staged 集合必须精确等于已验收集合。创建 candidate commit 后，`git status --porcelain=v1` 必须为空，并用 `git show --name-status --format=fuller HEAD` 复核提交内容，才可进入 paid。测试或视觉失败时保留 rejected candidate 和证据，把失败包发给同一 agent；agent 在当前 HEAD 上向前修复，主控创建新的 fix commit，禁止 amend 已验收过的 SHA。只有尚无下游 candidate 且明确放弃整个阶段时，主控才对列明的 stage commits 执行 `git revert`；已有下游提交后只允许向前修复并按依赖重跑门禁。继续禁止 reset、clean 和 stash。
+## 9. 阶段验收
 
-## 7. 运行目录与 paid key
+| 阶段 | 必须看到的结果 |
+| --- | --- |
+| 01 chain | 双向跨栏/跨页 truth 全部准确成链；每链联合翻译一次；body fragments 全非空并回填源框；无 fallback |
+| 02 TOC | 双向单行记录不合并，块状记录不拆散，prose 不碎；相关 chain 不退化 |
+| 03 layout | 普通 flow 关闭；多栏和固定资产不漂移；chain 与 TOC 最终 PDF 仍在各自源框 |
+| 04 title | 中文标题单行；英文标题完整留在源区；标题 chain 无重复或残留 |
+| 05 drop-cap | 双向首字进入最终渲染，正文字符不丢失，相关 chain 不退化 |
+| 06 full | 三份整本输出和双向 holdout 页窗通过；无大段漏译、错误方向残留或重大布局破坏 |
 
-每次门禁创建新目录：
+## 10. 最终交付
 
-```text
-.runtime/demo-repair/<stage>/<UTC>-<short-sha>/
-  work/
-  output/
-  temp/
-  logs/
-  render/
-  gate.json
-```
-
-`working-dir` 会追加输入 stem。不要复用父 run root，否则 validator 可能读到多个 report。
-
-用户给主控的 API key 只进入 BabelDOC 子进程环境：
-
-- 不写入命令行、TOML、脚本、日志、测试、Git 或全局 shell 环境。
-- 不把 key 转发给执行 agent。
-- 计划 01 必须先交付使用 `getpass`/TTY 无回显读取的小型 launcher；launcher 复制环境后只给目标 child 增加 `OPENAI_API_KEY`，输出脱敏命令和 child PID。launcher 与 secret-isolation 测试未通过时禁止 paid。
-- 退出后扫描本阶段 argv、日志、配置和 `git diff`，确认 key 没有落盘。
-
-只在唯一执行 agent 已创建、candidate 已提交且 agent idle 后向用户索取 key。key 进入主控上下文后不再 spawn/fork 新 agent；任何 follow-up 失败包先对 key 精确脱敏。启动 launcher 必须分配 PTY，等待固定 prompt 后通过既有 session stdin 发送 key；无法获得 TTY 时立即停止，禁止降级为 argv、普通 pipe 或全局环境变量。
-
-每次 paid 命令都带：
-
-```text
---no-dual
---no-auto-extract-glossary
---skip-scanned-detection
-```
-
-翻译语义发生变化的阶段加 `--ignore-cache`。纯排版阶段可复用翻译缓存，并在 gate 记录 cache hit 情况。不要使用 `--only-include-translated-page`，输出必须保留完整 8 页和物理页映射。
-
-`--pages` 使用 1-based 物理页，支持 `2-3`、`4,5,7`；`working-dir` 会追加 `Courier-en`。每次 run root 名含 stage、UTC、candidate SHA、页范围和随机后缀。规范 argv 形态：
-
-```text
-uv run --no-sync python tools/run_paid_subprocess.py
-  --log <run>/logs/babeldoc.log
-  --scan-root <run>
-  --
-  uv run --no-sync babeldoc
-  --config <repo>/minimal.en-zh.toml
-  --files <repo>/examples/input/Courier-en.pdf
-  --pages <physical-pages>
-  --working-dir <run>/work
-  --output <run>/output
-  --no-dual
-  --no-auto-extract-glossary
-  --skip-scanned-detection
-  [--ignore-cache]
-```
-
-基础门紧随 CLI：
-
-```text
-uv run --no-sync python tools/verify_minimal_pdf.py
-  --source <repo>/examples/input/Courier-en.pdf
-  --output-dir <run>/output
-  --run-dir <run>/work
-  --translated-pages <逗号分隔物理页>
-```
-
-validator 的 `--translated-pages` 只接受逗号整数，例如 `2,3`；整本为 `1,2,3,4,5,6,7,8`。主控再运行该阶段的机器断言和 PDF render，不以自然语言检查替代 exit code。
-
-## 8. 定向 paid 门
-
-| 阶段 | 页范围 | 硬检查 | 视觉检查 |
-| --- | --- | --- | --- |
-| 1 联合翻译 | `2-3`、`6-8` 两个独立 run | exemplar chain 单请求；失败成员能普通翻译；无正文/标题 residue | p2 标题已有中文 target；p6–p8 无大块英文条带 |
-| 2 TOC | `1` | `line_split.report.json` 有 split；记录未跨视觉行 | 左侧目录行独立，右侧 Editorial 未逐行碎裂 |
-| 3 保守布局 | `5` | `article_flow` typed no-op，0 placement | 通栏导语下保持三条正文 x-band |
-| 4 标题 | `2-3` | report 为 `single_line` 或合法单行 `unchanged` | 完整中文标题只在主标题区显示一行 |
-| 5 首字 | `4,5,7` | 3 个 keep 均 committed | p4、p5、p7 首字可见；p5 仍为三栏 |
-| 6 最终 | 整本 8 页 | Courier 专用完整性门全通过 | 8 页缩略图 + 风险区原分辨率复核 |
-
-阶段 1 的首选目标为 7/7 canonical chain 全部 joint success。为了尽快交付，允许的最低 demo floor 为：至少一条同页跨栏正文链、一条跨页正文链和 p2–p3 标题链各自一次请求且守恒；其余失败链必须显式 `fallback_ordinary`，正文不得留英文。是否接受 floor 由主控在证据齐全后记录，禁止执行 agent自行放宽。
-
-## 9. 最终硬验收
-
-整本 paid run 只在计划 01–05 verified、计划 06 candidate 已通过独立离线门后启动；paid、完整 verifier 和视觉门通过后才把计划 06 candidate 标记为 verified。主控要求：
-
-- 输出可重新打开，仍为 8 页，页面尺寸和固定图像不变。
-- p1 左侧单行目录逐视觉行翻译，紧密多行 TOC 按块翻译；右侧 Editorial 保持普通长正文；页码/作者不粘到相邻条目。
-- p2–p3 标题链生成一次完整中文译文，demo 标题为单行；第二个源标题 holder 可被 trailing release。
-- p5 通栏导语下仍是三栏，普通 article flow 为 0 placement。
-- 至少一个跨栏正文链和一个跨页正文链为 `joint_success`，每链恰好一次 translator call，回填 target 守恒。
-- 所有 translate-eligible 的正文、continuation、plain text 和 title 均有 translated/joint/fallback 的显式状态；不存在无状态遗漏。
-- `issues.after` 中无正文或标题 `untranslated_residue`；摄影署名等保留英文只能以显式 `intentional_preserve` 通过。
-- `article_ir.json`、article map、article context 和 source→target→render coverage sidecar 存在且映射闭合；独立 source PDF 文本块 inventory 无未解释的大块缺失。
-- HITL review/decision 引用仍匹配 source，page kind、3 个 drop-cap、glossary decisions hash 与实际条目数（当前基线 14）均送达，样张中出现的术语最终译法合规。
-- `issues.before/after`、typed repair/no-op、重检和残余问题清单完整；该证据只代表确定性 minimal repair。
-- title pass 之后再次确认 TOC record 数、视觉 band 和右侧 Editorial 未回归。
-- p4、p5、p7 三个 keep 首字均 committed；任何 typed rollback 均算失败。
-- 无新增越页、碰撞、文字/固定资产漂移。p1 logo 若在 source 已越界且未漂移，记录为 baseline condition；只有译后新增或恶化的 heading 越界才回到标题阶段。
-- 主控打开全部 8 页缩略图，并以原分辨率检查 p1、p2–p3、p5、p6–p8。
-
-每个 verified gate 保存 candidate SHA、命令、exit code、报告、PDF hash、PNG、视觉结论和 secret 扫描结果。CLI exit 0、PDF 文件存在或 `minimal_run.report.status=complete` 单独均不构成通过；必须同时通过 verifier 和视觉门。
-
-## 10. 结束条件
-
-满足最终硬验收后，主控：
-
-1. 确认工作树干净、一个 worktree、HEAD 等于最终 verified SHA。
-2. 输出按阶段的 verified SHA 和 paid evidence 路径。
-3. 汇总已接受的降级：普通文章不跨容器重排、TOC 点线允许近似、非 demo 极端标题可换行、三个 Courier 目标之外的复杂首字可回滚。
-4. 单列 TeX 尚需收窄的文章级重排、LLM planner、fallback chain 和正式评价表述，不在本轮修改论文。
-5. 停止，不追加发布、兼容或重构工作。
+主控最终返回：代码 SHA、实际运行样张与方向、机器检查结果、关键页面截图、仍保留的 demo 降级。普通文章重排关闭、非正式 benchmark、非发布级稳定性必须如实写入报告。
