@@ -281,6 +281,21 @@ def _bounds_inside_box(
     )
 
 
+def _is_passthrough_source_composition(composition: PdfParagraphComposition) -> bool:
+    """Whether one source wrapper can be losslessly flattened for the backend."""
+    carriers = (
+        composition.pdf_line,
+        composition.pdf_formula,
+        composition.pdf_same_style_characters,
+        composition.pdf_character,
+        composition.pdf_same_style_unicode_characters,
+    )
+    return (
+        sum(carrier is not None for carrier in carriers) == 1
+        and composition.pdf_same_style_unicode_characters is None
+    )
+
+
 def _line_metrics(
     units: Sequence[TypesettingUnit], tolerance: float
 ) -> tuple[SlotLineMetric, ...]:
@@ -1666,6 +1681,30 @@ class Typesetting:
             None if page.page_number is None else int(page.page_number) + 1
         )
         if layout_report.is_protected_source(paragraph):
+            original_compositions = paragraph.pdf_paragraph_composition
+            if any(
+                not _is_passthrough_source_composition(composition)
+                for composition in original_compositions
+            ):
+                raise BoundedTypesettingError(
+                    "protected source paragraph contains a non-passthrough "
+                    "composition"
+                )
+            typesetting_units = self.create_typesetting_units(paragraph, fonts)
+            if (
+                (original_compositions and not typesetting_units)
+                or not all(unit.can_passthrough for unit in typesetting_units)
+            ):
+                raise BoundedTypesettingError(
+                    "protected source paragraph cannot be passed through"
+                )
+            # The PDF backend accepts only individual characters/formulas at
+            # this stage.  Flatten source wrappers without relocating or
+            # cloning their underlying objects.
+            paragraph.scale = 1.0
+            paragraph.pdf_paragraph_composition = self.create_passthrough_composition(
+                typesetting_units,
+            )
             return
         bounded_unit = source_unit(paragraph, physical_page)
         typesetting_units = self.create_typesetting_units(paragraph, fonts)

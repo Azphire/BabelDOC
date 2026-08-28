@@ -300,8 +300,9 @@ def test_single_block_and_prose_use_their_own_source_units(monkeypatch, tmp_path
 def test_fixed_companion_is_not_a_target_holder_and_remains_untouched(
     monkeypatch, tmp_path
 ):
-    fixed = _paragraph("50", "fixed-folio", (0.0, 70.0, 20.0, 90.0))
-    fixed.unicode = None
+    fixed = _original_character_paragraph(
+        "50", "fixed-folio", (0.0, 70.0, 20.0, 90.0)
+    )
     translated = _paragraph("translated", "record", (25.0, 70.0, 100.0, 90.0))
     translated.xobj_id = -1
     document = il_version_1.Document(
@@ -329,7 +330,12 @@ def test_fixed_companion_is_not_a_target_holder_and_remains_untouched(
     )
     config = Config(tmp_path)
     typesetter = Typesetting(config, RenderMapper())
-    fixed_before = copy.deepcopy(fixed)
+    fixed_box = copy.deepcopy(fixed.box)
+    fixed_characters = list(
+        fixed.pdf_paragraph_composition[0]
+        .pdf_same_style_characters.pdf_character
+    )
+    fixed_character_state = copy.deepcopy(fixed_characters)
 
     layout_report.prepare(
         config,
@@ -344,7 +350,20 @@ def test_fixed_companion_is_not_a_target_holder_and_remains_untouched(
     )
     report = layout_report.finalize()
 
-    assert fixed == fixed_before
+    assert fixed.box == fixed_box
+    assert fixed.scale == 1.0
+    assert len(fixed.pdf_paragraph_composition) == len(fixed_characters)
+    assert all(
+        composition.pdf_character is character
+        and composition.pdf_formula is None
+        and composition.pdf_same_style_characters is None
+        for composition, character in zip(
+            fixed.pdf_paragraph_composition,
+            fixed_characters,
+            strict=True,
+        )
+    )
+    assert fixed_characters == fixed_character_state
     assert [item["source_ref"] for item in report["elements"]] == ["p1#1"]
     assert report["elements"][0]["status"] == "success"
 
@@ -353,7 +372,9 @@ def test_untranslated_vertical_furniture_is_excluded_and_untouched(
     monkeypatch, tmp_path
 ):
     vertical_box = (52.0214, 71.825, 57.9964, 304.7845)
-    vertical = _paragraph("vertical source", "vertical", vertical_box)
+    vertical = _original_character_paragraph(
+        "vertical source", "vertical", vertical_box
+    )
     vertical.vertical = True
     horizontal_box = (70.0, 71.825, 120.0, 101.825)
     horizontal = _paragraph("译文", "horizontal", horizontal_box)
@@ -383,7 +404,12 @@ def test_untranslated_vertical_furniture_is_excluded_and_untouched(
     )
     config = Config(tmp_path)
     typesetter = Typesetting(config, RenderMapper())
-    vertical_before = copy.deepcopy(vertical)
+    vertical_box_before = copy.deepcopy(vertical.box)
+    vertical_characters = list(
+        vertical.pdf_paragraph_composition[0]
+        .pdf_same_style_characters.pdf_character
+    )
+    vertical_character_state = copy.deepcopy(vertical_characters)
 
     layout_report.prepare(
         config,
@@ -398,7 +424,17 @@ def test_untranslated_vertical_furniture_is_excluded_and_untouched(
     )
     report = layout_report.finalize()
 
-    assert vertical == vertical_before
+    assert vertical.box == vertical_box_before
+    assert vertical.scale == 1.0
+    assert all(
+        composition.pdf_character is character
+        for composition, character in zip(
+            vertical.pdf_paragraph_composition,
+            vertical_characters,
+            strict=True,
+        )
+    )
+    assert vertical_characters == vertical_character_state
     assert [item["source_ref"] for item in report["elements"]] == ["p1#1"]
     assert report["elements"][0]["source_box"] == list(horizontal_box)
     assert report["elements"][0]["status"] == "success"
@@ -411,13 +447,43 @@ def test_original_passthrough_composition_is_generically_protected(tmp_path):
     translated_box = (25.0, 70.0, 100.0, 90.0)
     translated = _paragraph("目标", "translated", translated_box)
     translated.xobj_id = -1
+    source_characters = list(
+        source.pdf_paragraph_composition[0]
+        .pdf_same_style_characters.pdf_character
+    )
+    for index, character in enumerate(source_characters, start=1):
+        character.render_order = 11
+        character.sub_render_order = index
+    formula_box = il_version_1.Box(10.0, 70.0, 15.0, 80.0)
+    formula_character = il_version_1.PdfCharacter(
+        char_unicode="x",
+        box=formula_box,
+        visual_bbox=il_version_1.VisualBbox(box=formula_box),
+        pdf_style=source.pdf_style,
+        render_order=12,
+        sub_render_order=1,
+        xobj_id=-1,
+    )
+    formula = il_version_1.PdfFormula(
+        box=formula_box,
+        pdf_character=[formula_character],
+        x_offset=0.0,
+        y_offset=0.0,
+        x_advance=5.0,
+    )
+    source.pdf_paragraph_composition.append(
+        il_version_1.PdfParagraphComposition(pdf_formula=formula)
+    )
+    source.unicode = "12x"
     document = il_version_1.Document(
         page=[_page(0, [source, translated])], total_pages=1
     )
     empty_ir = ArticleDocumentIR(articles=(), by_page={}, by_element={}, by_chain={})
     config = Config(tmp_path)
     typesetter = Typesetting(config, RenderMapper())
-    source_before = copy.deepcopy(source)
+    source_box = copy.deepcopy(source.box)
+    source_character_state = copy.deepcopy(source_characters)
+    formula_state = copy.deepcopy(formula)
 
     layout_report.prepare(
         config,
@@ -432,9 +498,58 @@ def test_original_passthrough_composition_is_generically_protected(tmp_path):
     )
     report = layout_report.finalize()
 
-    assert source == source_before
+    assert source.box == source_box
+    assert source.scale == 1.0
+    assert len(source.pdf_paragraph_composition) == 3
+    assert all(
+        composition.pdf_line is None
+        and composition.pdf_same_style_characters is None
+        and composition.pdf_same_style_unicode_characters is None
+        and (
+            composition.pdf_character is not None
+            or composition.pdf_formula is not None
+        )
+        for composition in source.pdf_paragraph_composition
+    )
+    assert [
+        composition.pdf_character
+        for composition in source.pdf_paragraph_composition[:2]
+    ] == source_characters
+    assert source.pdf_paragraph_composition[2].pdf_formula is formula
+    assert source_characters == source_character_state
+    assert formula == formula_state
     assert [item["source_ref"] for item in report["elements"]] == ["p1#1"]
     assert report["elements"][0]["status"] == "success"
+
+
+def test_protected_generated_unicode_composition_fails_closed(tmp_path):
+    source = _paragraph(
+        "unexpected generated target",
+        "protected-unicode",
+        (0.0, 0.0, 100.0, 20.0),
+    )
+    source.vertical = True
+    document = il_version_1.Document(page=[_page(0, [source])], total_pages=1)
+    config = Config(tmp_path)
+    typesetter = Typesetting(config, RenderMapper())
+    original_compositions = source.pdf_paragraph_composition
+
+    layout_report.prepare(
+        config,
+        document,
+        ArticleDocumentIR(articles=(), by_page={}, by_element={}, by_chain={}),
+        article_flow_report=_flow_report(),
+        eligible_roles=("text",),
+    )
+
+    with pytest.raises(BoundedTypesettingError, match="non-passthrough"):
+        typesetter.render_paragraph(
+            source,
+            document.page[0],
+            {"body": RenderFont()},
+        )
+
+    assert source.pdf_paragraph_composition is original_compositions
 
 
 def test_minimum_scale_overflow_is_reported_without_expansion_or_text_loss(
