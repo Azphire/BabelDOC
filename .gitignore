@@ -6,7 +6,7 @@ web/yarn-debug.log*
 web/yarn-error.log*
 web/pnpm-debug.log*
 web/lerna-debug.log*
-
+.env
 web/node_modules
 web/dist
 web/dist-ssr
