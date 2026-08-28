@@ -86,6 +86,27 @@ SLOT_CAPACITY_STRATEGY = "slot_capacity"
 SLOT_ALLOCATED = "allocated"
 SLOT_RELEASED = "released"
 
+# Scales visited by Typesetting._find_optimal_scale_and_layout.  Capacity is
+# measured at the smallest visited scale which still respects the configured
+# readable font floor, so the later application pass can reach the exact same
+# geometry without needing a typesetter mutation.
+_APPLICATION_SCALES = (
+    1.0,
+    0.95,
+    0.9,
+    0.85,
+    0.8,
+    0.75,
+    0.7,
+    0.65,
+    0.6,
+    0.5,
+    0.4,
+    0.3,
+    0.2,
+    0.1,
+)
+
 
 class ChainTranslationError(RuntimeError):
     """Raised when a chain's merged translation cannot be used."""
@@ -1321,7 +1342,11 @@ class ChainPlan:
         return self._typesetter
 
     def _measurement_unit_factory(
-        self, members: list[MemberPlan], member: MemberPlan, typesetter
+        self,
+        members: list[MemberPlan],
+        member: MemberPlan,
+        typesetter,
+        measurement_scale: float,
     ):
         parser = getattr(self.translator.il_translator, "parse_translate_output", None)
         if parser is None:
@@ -1346,7 +1371,17 @@ class ChainPlan:
                 same_style = composition.pdf_same_style_unicode_characters
                 if same_style is not None and same_style.pdf_style is None:
                     same_style.pdf_style = member.style
-            return typesetter.create_typesetting_units(paragraph, fonts)
+            units = typesetter.create_typesetting_units(paragraph, fonts)
+            if measurement_scale < 1.0:
+                # These units were built from a copied paragraph and are used
+                # only for capacity measurement.  Relocating them at the
+                # configured readable scale gives the same proportional glyph
+                # geometry final typesetting is allowed to use, without
+                # mutating source IL or weakening the source-box gate.
+                units = [
+                    unit.relocate(0.0, 0.0, measurement_scale) for unit in units
+                ]
+            return units
 
         return make_units
 
@@ -1371,11 +1406,30 @@ class ChainPlan:
         protected = _token_ranges(translated, protected_tokens)
         typesetter = self._slot_typesetter()
 
+        def measurement_style(member):
+            style = member.style
+            source_size = getattr(style, "font_size", None)
+            if source_size is None:
+                return style, 1.0
+            source_size = float(source_size)
+            if source_size <= 0:
+                return style, 1.0
+            readable_scales = [
+                scale
+                for scale in _APPLICATION_SCALES
+                if source_size * scale >= self.config.slot_min_font_size
+            ]
+            scale = min(readable_scales) if readable_scales else 1.0
+            held = copy.copy(style)
+            held.font_size = source_size * scale
+            return held, scale
+
         def measure(text, member, slot, order, ranges=()):
             slot_box = Box(*slot.box)
+            style, scale = measurement_style(member)
             return typesetter.fit_text_to_slot(
                 text,
-                member.style,
+                style,
                 self.language,
                 slot_box,
                 paragraph_start=(
@@ -1385,7 +1439,7 @@ class ChainPlan:
                 original_font=member.source_font,
                 protected_ranges=ranges,
                 unit_factory=self._measurement_unit_factory(
-                    members, member, typesetter
+                    members, member, typesetter, scale
                 ),
                 minimum_font_size=self.config.slot_min_font_size,
                 fit_tolerance=self.config.slot_fit_tolerance,
@@ -1446,6 +1500,11 @@ class ChainPlan:
                 return None
             measurement = result.to_record()
             measurement["whole_target_range"] = [segment.start, segment.end]
+            style, scale = measurement_style(member)
+            measurement["measurement_scale"] = scale
+            measurement["measurement_font_size"] = getattr(
+                style, "font_size", None
+            )
             fragments.append(
                 SlotAllocationFragment(
                     member=member,

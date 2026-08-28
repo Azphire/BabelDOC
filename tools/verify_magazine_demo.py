@@ -46,17 +46,38 @@ def _box_equal(left, right, tolerance: float = 0.001) -> bool:
     )
 
 
+def _member_signature(member: dict, where: str) -> tuple:
+    page = member.get("physical_page")
+    text_hash = member.get("source_text_sha256")
+    box = member.get("source_box")
+    if not isinstance(page, int) or page <= 0:
+        raise VerificationError(f"invalid physical page: {where}")
+    if not isinstance(text_hash, str) or SHA256_PATTERN.fullmatch(text_hash) is None:
+        raise VerificationError(f"invalid source text hash: {where}")
+    if not isinstance(box, list) or len(box) != 4:
+        raise VerificationError(f"invalid source box: {where}")
+    try:
+        stable_box = tuple(round(float(value), 3) for value in box)
+    except (TypeError, ValueError) as error:
+        raise VerificationError(f"invalid source box: {where}") from error
+    return page, text_hash, stable_box
+
+
 def _expected_chains(expectations: dict):
     expected = {}
-    members = {}
     for chain in expectations.get("chains", []):
-        refs = tuple(_truth_ref(item) for item in chain["ordered_members"])
-        if refs in expected:
+        members = chain.get("ordered_members")
+        if not isinstance(members, list) or len(members) < 2:
+            raise VerificationError("truth chain has fewer than two members")
+        signatures = tuple(
+            _member_signature(item, f"truth chain {chain.get('id')}")
+            for item in members
+        )
+        if signatures in expected:
+            refs = tuple(_truth_ref(item) for item in members)
             raise VerificationError(f"duplicate truth chain: {refs}")
-        expected[refs] = chain
-        for reference, member in zip(refs, chain["ordered_members"], strict=True):
-            members[reference] = member
-    return expected, members
+        expected[signatures] = chain
+    return expected
 
 
 def _report_refs(record: dict, where: str) -> tuple[str, ...]:
@@ -102,7 +123,7 @@ def verify_chain(
     if source_hash != expectations.get("source_sha256"):
         raise VerificationError("source PDF hash disagrees with expectations")
 
-    expected, truth_members = _expected_chains(expectations)
+    expected = _expected_chains(expectations)
     detector = _read(working_dir / "chain_report.json")
     detected = {}
     for chain in detector.get("chains", []):
@@ -110,18 +131,36 @@ def verify_chain(
         if not isinstance(rows, list) or len(rows) < 2:
             raise VerificationError("detector chain has fewer than two members")
         refs = tuple(row.get("source_ref") for row in rows)
-        if refs in detected:
+        if any(
+            not isinstance(reference, str)
+            or REF_PATTERN.fullmatch(reference) is None
+            for reference in refs
+        ):
+            raise VerificationError(f"detector has invalid source refs: {refs}")
+        signatures = tuple(
+            _member_signature(row, f"detector member {reference}")
+            for reference, row in zip(refs, rows, strict=True)
+        )
+        if signatures in detected:
             raise VerificationError(f"duplicate detector chain: {refs}")
-        detected[refs] = rows
+        detected[signatures] = (rows, refs)
     if set(detected) != set(expected):
         missing = sorted(set(expected) - set(detected))
         extra = sorted(set(detected) - set(expected))
         raise VerificationError(
             f"detector truth mismatch; missing={missing}, extra={extra}"
         )
-    for refs, rows in detected.items():
-        for order, (reference, row) in enumerate(zip(refs, rows, strict=True)):
-            truth = truth_members[reference]
+    truth_by_actual_ref = {}
+    expected_actual_chains = {}
+    for signatures, (rows, refs) in detected.items():
+        truth_chain = expected[signatures]
+        truth_members = truth_chain["ordered_members"]
+        if refs in expected_actual_chains:
+            raise VerificationError(f"duplicate detector refs: {refs}")
+        expected_actual_chains[refs] = signatures
+        for order, (reference, row, truth) in enumerate(
+            zip(refs, rows, truth_members, strict=True)
+        ):
             if row.get("order", row.get("chain_index")) != order:
                 raise VerificationError(f"detector order mismatch: {reference}")
             if row.get("physical_page") != truth.get("physical_page"):
@@ -132,24 +171,56 @@ def verify_chain(
                 raise VerificationError(f"detector source box mismatch: {reference}")
             if row.get("role") not in {"plain text", "text", "body"}:
                 raise VerificationError(f"detector role is not body: {reference}")
+            if reference in truth_by_actual_ref:
+                raise VerificationError(f"detector member repeated: {reference}")
+            truth_by_actual_ref[reference] = truth
 
     for negative in expectations.get("negative_chain_pairs", []):
-        refs = tuple(_truth_ref(item) for item in negative["endpoints"])
-        for chain_refs in detected:
-            adjacent_pairs = set(zip(chain_refs, chain_refs[1:], strict=False))
-            if refs in adjacent_pairs or refs[::-1] in adjacent_pairs:
+        endpoints = negative.get("endpoints")
+        if not isinstance(endpoints, list) or len(endpoints) != 2:
+            raise VerificationError("negative truth must have two endpoints")
+        signatures = tuple(
+            _member_signature(item, f"negative pair {negative.get('id')}")
+            for item in endpoints
+        )
+        for chain_signatures in detected:
+            adjacent_pairs = set(
+                zip(chain_signatures, chain_signatures[1:], strict=False)
+            )
+            if signatures in adjacent_pairs or signatures[::-1] in adjacent_pairs:
+                refs = tuple(_truth_ref(item) for item in endpoints)
                 raise VerificationError(f"negative endpoints formed a chain: {refs}")
 
     translation = _read(working_dir / "chain_translation.report.json")
     if translation.get("applied") is not True:
         raise VerificationError("chain translation plan was not applied")
+
+    outcomes = {}
+    for item in translation.get("outcomes", []):
+        refs = _report_refs(item, "translation outcome")
+        if refs in outcomes:
+            raise VerificationError(f"duplicate translation outcome: {refs}")
+        if refs not in expected_actual_chains:
+            raise VerificationError(f"unadjudicated translation outcome: {refs}")
+        outcomes[refs] = item
+    if set(outcomes) != set(expected_actual_chains):
+        raise VerificationError("translation outcome set disagrees with truth")
+    for refs, item in outcomes.items():
+        if item.get("outcome") != "joint_success" or item.get("fallback_reason"):
+            raise VerificationError(
+                "truth chain fallback: "
+                f"refs={refs}, reason={item.get('fallback_reason') or item.get('outcome')}"
+            )
+        _require_sha256(item, "merged_source_sha256", str(refs))
+        _require_sha256(item, "whole_target_sha256", str(refs))
+
     translated = {}
     for chain in translation.get("chains", []):
         refs = _report_refs(chain, "translated chain")
         if refs in translated:
             raise VerificationError(f"duplicate translated chain: {refs}")
         translated[refs] = chain
-    if set(translated) != set(expected):
+    if set(translated) != set(expected_actual_chains):
         raise VerificationError("translated chain set disagrees with truth")
     for refs, chain in translated.items():
         fragments = chain.get("ordered_fragments")
@@ -175,26 +246,49 @@ def verify_chain(
         for reference, source_box, fragment_box in zip(
             refs, source_boxes, fragment_boxes, strict=True
         ):
-            truth_box = truth_members[reference]["source_box"]
+            truth_box = truth_by_actual_ref[reference]["source_box"]
             if not _box_equal(source_box, truth_box) or not _box_equal(
                 fragment_box, truth_box
             ):
                 raise VerificationError(f"fragment left its source box: {reference}")
 
-    outcomes = {}
-    for item in translation.get("outcomes", []):
-        refs = _report_refs(item, "translation outcome")
-        if refs in outcomes:
-            raise VerificationError(f"duplicate translation outcome: {refs}")
-        if item.get("outcome") != "joint_success" or item.get("fallback_reason"):
-            raise VerificationError("chain report contains a fallback outcome")
-        _require_sha256(item, "merged_source_sha256", str(refs))
-        _require_sha256(item, "whole_target_sha256", str(refs))
-        outcomes[refs] = item
-    if set(outcomes) != set(expected):
-        raise VerificationError("translation outcome set disagrees with truth")
+    expected_skip_keys = set()
+    expected_mechanisms = {}
+    for refs, chain in translated.items():
+        members = chain.get("members")
+        if not isinstance(members, list) or len(members) != len(refs):
+            raise VerificationError(f"translated member audit mismatch: {refs}")
+        chain_id = chain.get("chain_id")
+        signatures = expected_actual_chains[refs]
+        transitions = expected[signatures].get("transitions", [])
+        mechanisms = {f"cross_{transition.removeprefix('cross_')}" for transition in transitions}
+        for order, member in enumerate(members):
+            if member.get("source_ref") != refs[order]:
+                raise VerificationError(f"translated member ref mismatch: {refs[order]}")
+            if member.get("chain_index") != order:
+                raise VerificationError(f"translated member order mismatch: {refs[order]}")
+            key = (chain_id, order)
+            expected_skip_keys.add(key)
+            expected_mechanisms[key] = mechanisms
 
-    trace = _read(working_dir / "run_trace.report.json")
+    skips = {}
+    for item in translation.get("skips", []):
+        key = (item.get("chain_id"), item.get("chain_index"))
+        if key in skips:
+            raise VerificationError(f"duplicate chain skip: {key}")
+        if key not in expected_skip_keys:
+            raise VerificationError(f"unadjudicated chain skip: {key}")
+        declined = set(item.get("declined_by", []))
+        if (
+            item.get("taken_by") != "chain"
+            or "page_batch" not in declined
+            or not declined.intersection(expected_mechanisms[key])
+        ):
+            raise VerificationError(f"chain skip does not prove exclusion: {key}")
+        skips[key] = item
+    if set(skips) != expected_skip_keys:
+        raise VerificationError("chain skips do not cover every joint member")
+
     runtime_by_physical = {
         physical: runtime
         for chain in translation.get("chains", [])
@@ -205,20 +299,23 @@ def verify_chain(
         )
     }
     chain_runtime_refs = set(runtime_by_physical.values())
-    for request in trace.get("requests", []):
-        overlap = chain_runtime_refs.intersection(
-            request.get("ordered_source_refs", [])
-        )
-        if overlap and request.get("request_kind") != "continuity_chain":
-            raise VerificationError(
-                f"joint member reached ordinary producer: {sorted(overlap)}"
+    trace_path = working_dir / "run_trace.report.json"
+    if trace_path.is_file():
+        trace = _read(trace_path)
+        for request in trace.get("requests", []):
+            overlap = chain_runtime_refs.intersection(
+                request.get("ordered_source_refs", [])
             )
+            if overlap and request.get("request_kind") != "continuity_chain":
+                raise VerificationError(
+                    f"joint member reached ordinary producer: {sorted(overlap)}"
+                )
 
     return {
         "check": "chain",
         "sample_id": expectations.get("sample_id"),
         "chains": len(expected),
-        "members": sum(len(refs) for refs in expected),
+        "members": sum(len(signatures) for signatures in expected),
         "status": "pass",
     }
 

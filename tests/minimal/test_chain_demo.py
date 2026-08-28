@@ -468,7 +468,8 @@ def test_chain_verifier_checks_truth_translation_and_ordinary_exclusion(tmp_path
     output.write_bytes(b"synthetic-output")
     work = tmp_path / "work"
     work.mkdir()
-    refs = ("p5#1", "p5#2")
+    truth_refs = ("p5#1", "p5#2")
+    refs = ("p5#7", "p5#8")
     boxes = ([10.0, 20.0, 30.0, 40.0], [40.0, 50.0, 60.0, 70.0])
     hashes = ("a" * 64, "b" * 64)
     expectations = {
@@ -486,7 +487,7 @@ def test_chain_verifier_checks_truth_translation_and_ordinary_exclusion(tmp_path
                         "source_box": boxes[index],
                         "diagnostic_ref": f"styles_and_formulas.json:{reference}",
                     }
-                    for index, reference in enumerate(refs)
+                    for index, reference in enumerate(truth_refs)
                 ],
                 "transitions": ["cross_column"],
             }
@@ -526,6 +527,15 @@ def test_chain_verifier_checks_truth_translation_and_ordinary_exclusion(tmp_path
         "whole_target_sha256": whole_hash,
         "ordered_fragments": fragments,
         "fragment_boxes": list(boxes),
+        "boundary_kinds": ["column"],
+        "members": [
+            {
+                "source_ref": reference,
+                "runtime_source_ref": f"p2#{index + 1}",
+                "chain_index": index,
+            }
+            for index, reference in enumerate(refs)
+        ],
         "outcome": "joint_success",
         "fallback_reason": None,
     }
@@ -533,6 +543,15 @@ def test_chain_verifier_checks_truth_translation_and_ordinary_exclusion(tmp_path
         "applied": True,
         "chains": [translated_chain],
         "outcomes": [translated_chain],
+        "skips": [
+            {
+                "chain_id": "raw",
+                "chain_index": index,
+                "taken_by": "chain",
+                "declined_by": ["cross_column", "page_batch"],
+            }
+            for index in range(2)
+        ],
     }
     (work / "chain_translation.report.json").write_text(
         json.dumps(translation_report, ensure_ascii=False), encoding="utf-8"
@@ -551,6 +570,13 @@ def test_chain_verifier_checks_truth_translation_and_ordinary_exclusion(tmp_path
 
     result = verify_chain(expectations_path, source, output, work, "en", "zh")
     assert result["status"] == "pass"
+
+    (work / "run_trace.report.json").unlink()
+    result = verify_chain(expectations_path, source, output, work, "en", "zh")
+    assert result["status"] == "pass"
+    (work / "run_trace.report.json").write_text(
+        json.dumps(trace_report), encoding="utf-8"
+    )
 
     trace = json.loads((work / "run_trace.report.json").read_text(encoding="utf-8"))
     trace["requests"].append(
@@ -576,19 +602,20 @@ def test_chain_verifier_checks_truth_translation_and_ordinary_exclusion(tmp_path
     )
 
     extended_expectations = json.loads(json.dumps(expectations))
-    third_ref = "p5#3"
+    third_truth_ref = "p5#3"
+    third_ref = "p5#9"
     third_member = {
         "physical_page": 5,
         "source_text_sha256": "d" * 64,
         "source_box": [70.0, 80.0, 90.0, 100.0],
-        "diagnostic_ref": f"styles_and_formulas.json:{third_ref}",
+        "diagnostic_ref": f"styles_and_formulas.json:{third_truth_ref}",
     }
     extended_expectations["chains"][0]["ordered_members"].append(third_member)
     extended_expectations["negative_chain_pairs"] = [
         {
             "endpoints": [
-                {"diagnostic_ref": f"styles_and_formulas.json:{refs[1]}"},
-                {"diagnostic_ref": f"styles_and_formulas.json:{refs[0]}"},
+                extended_expectations["chains"][0]["ordered_members"][1],
+                extended_expectations["chains"][0]["ordered_members"][0],
             ]
         }
     ]
@@ -631,12 +658,23 @@ def test_chain_verifier_checks_truth_translation_and_ordinary_exclusion(tmp_path
     with pytest.raises(VerificationError, match="duplicate translation outcome"):
         verify_chain(expectations_path, source, output, work, "en", "zh")
 
+    fallback = json.loads(json.dumps(translation_report))
+    fallback["chains"] = []
+    fallback["outcomes"][0]["outcome"] = "failed_with_issue"
+    fallback["outcomes"][0]["fallback_reason"] = "chain_target_overflow"
+    fallback["outcomes"][0]["whole_target_sha256"] = None
+    (work / "chain_translation.report.json").write_text(
+        json.dumps(fallback), encoding="utf-8"
+    )
+    with pytest.raises(VerificationError, match="truth chain fallback.*overflow"):
+        verify_chain(expectations_path, source, output, work, "en", "zh")
+
     wrong_outcome = json.loads(json.dumps(translation_report))
     wrong_outcome["outcomes"][0]["ordered_source_refs"] = ["p5#8", "p5#9"]
     (work / "chain_translation.report.json").write_text(
         json.dumps(wrong_outcome), encoding="utf-8"
     )
-    with pytest.raises(VerificationError, match="outcome set disagrees"):
+    with pytest.raises(VerificationError, match="unadjudicated translation outcome"):
         verify_chain(expectations_path, source, output, work, "en", "zh")
 
     invalid_hash = json.loads(json.dumps(translation_report))
