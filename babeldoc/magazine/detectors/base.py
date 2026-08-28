@@ -22,10 +22,9 @@ from dataclasses import replace
 from functools import lru_cache
 from pathlib import Path
 
-from babeldoc.magazine.drop_cap import paragraph_reference
-from babeldoc.magazine.line_split import paragraph_characters
 from babeldoc.magazine.page_features import ConfigError
 from babeldoc.magazine.page_features import validate_bounded_config
+from babeldoc.magazine.reading_order import paragraph_characters
 from babeldoc.magazine.reading_order import paragraph_reading_text
 from babeldoc.magazine.resource_paths import config_path
 
@@ -49,6 +48,7 @@ SEVERITY_VECTOR_VERSION = "1"
 # A stage name rather than a number, validated against the declared stage order
 # so that a checkpoint nobody writes cannot be asked for.
 SOURCE_STAGE_KEY = "source_geometry_stage"
+SOURCE_GEOMETRY_STAGE = "styles_and_formulas"
 
 _STRUCTURAL_KEYS = (
     DIRECTIONS_KEY,
@@ -274,18 +274,10 @@ def _parse_suggested_actions(raw: dict, source: str, kinds: set[str]) -> dict[st
 
 
 def _parse_source_stage(raw: object, source: str) -> str:
-    """Validate the stage whose checkpoint the source layout is read from.
-
-    Against the declared stage order rather than against a list here, so a
-    configuration can only name a stage the pipeline actually checkpoints.
-    """
-    from babeldoc.magazine.checkpoint import stage_names
-
-    declared = stage_names()
+    """Validate the one in-memory source-layout stage used by the minimal path."""
     _require(
-        isinstance(raw, str) and raw in declared,
-        f"{source}: {SOURCE_STAGE_KEY} is {raw!r}, which is not one of the "
-        f"declared pipeline stages {list(declared)}",
+        raw == SOURCE_GEOMETRY_STAGE,
+        f"{source}: {SOURCE_STAGE_KEY} must be {SOURCE_GEOMETRY_STAGE!r}",
     )
     return str(raw)
 
@@ -711,7 +703,16 @@ class PageView:
         return default if self.policy is None else self.policy.get(name, default)
 
     def reference(self, index: int) -> str:
-        return paragraph_reference(self.label, index)
+        if (
+            not isinstance(self.label, int)
+            or isinstance(self.label, bool)
+            or self.label < 1
+            or not isinstance(index, int)
+            or isinstance(index, bool)
+            or index < 0
+        ):
+            raise ValueError("paragraph references require a positive page label and index")
+        return f"p{self.label}#{index}"
 
 
 @dataclass

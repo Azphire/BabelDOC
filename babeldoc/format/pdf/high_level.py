@@ -718,6 +718,7 @@ def do_translate(
             logger.error(
                 f"Failed to migrate TOC from {translation_config.input_file}: {e}"
             )
+        minimal_pipeline.finalize_result(translation_config, result)
         pm.translate_done(result)
         return result
 
