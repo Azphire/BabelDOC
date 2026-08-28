@@ -177,6 +177,8 @@ REASON_SPLIT_BOUNDARY = "split_boundary"
 REASON_LINE_STRUCTURE = "preserve_line_structure"
 REASON_ONE_COLUMN = "one_column"
 REASON_HEAD_NOT_CLEAR = "head_not_clear"
+REASON_OVERLAPPING_COLUMNS = "overlapping_column_boxes"
+REASON_NONADJACENT_PHYSICAL_PAGE = "nonadjacent_physical_page"
 
 # Why chain assembly dropped an edge it was handed. Exclusive assembly gives a
 # paragraph at most one edge in each role, so an edge wanting an end another
@@ -1276,6 +1278,14 @@ def evaluate_column_boundaries(
             if candidate.score > best.score:
                 best = candidate
         clear = head_is_clear(columns, head, config)
+        tail_box = tail.paragraph.box
+        head_box = head.paragraph.box
+        horizontal_overlap = 0.0
+        if tail_box is not None and head_box is not None:
+            horizontal_overlap = max(
+                0.0, min(tail_box.x2, head_box.x2) - max(tail_box.x, head_box.x)
+            )
+        separate_columns = horizontal_overlap <= 0.0
         weights = next(
             rule.weights for rule in config[PAIR_RULES_KEY] if rule.name == best.pair
         )
@@ -1284,11 +1294,19 @@ def evaluate_column_boundaries(
                 tail_page=page_index,
                 head_page=page_index,
                 eligible=True,
-                reason=None if clear else REASON_HEAD_NOT_CLEAR,
+                reason=(
+                    None
+                    if clear and separate_columns
+                    else (
+                        REASON_HEAD_NOT_CLEAR
+                        if not clear
+                        else REASON_OVERLAPPING_COLUMNS
+                    )
+                ),
                 pair=best.pair,
                 values=best.values,
                 score=best.score,
-                linked=best.linked and clear,
+                linked=best.linked and clear and separate_columns,
                 tail_fill_ratio=best.tail_fill_ratio,
                 tail=best.tail,
                 head=best.head,
@@ -1312,12 +1330,9 @@ def evaluate_boundary(
     """Score one adjacent page boundary, or explain why it was not scored.
 
     ``policy_of`` maps a page kind to its declared policy, or to None when the
-    kind is not in the vocabulary. Eligibility is read per endpoint: the tail
-    endpoint answers to the page it sits on and the head endpoint to the page it
-    begins, so a page the vocabulary keeps out of chains takes only its own end
-    of the boundary with it. It is a qualification rather than a term, so no
-    accumulation of continuity evidence can link through an endpoint the
-    vocabulary excludes.
+    kind is not in the vocabulary. A known page's classification is a soft
+    prior: paragraph geometry, role, style and text continuity decide the
+    boundary even when the page-level classifier called the page a sidebar.
 
     Every allowed pairing that finds both its endpoints is scored, and the
     boundary takes the strongest of them; a pairing that finds neither leaves no
@@ -1344,16 +1359,8 @@ def evaluate_boundary(
     head_policy = policy_of(head_page.page_kind)
     if tail_policy is None or head_policy is None:
         return rejected(REASON_NO_PAGE_KIND)
-    excluded = [
-        endpoint
-        for endpoint, policy in (
-            (TAIL_ENDPOINT, tail_policy),
-            (HEAD_ENDPOINT, head_policy),
-        )
-        if not policy.get(ELIGIBILITY_POLICY_FLAG, False)
-    ]
-    if excluded:
-        return rejected(f"{REASON_NOT_CHAIN_ELIGIBLE}:{','.join(excluded)}")
+    # Page classification is only a prior.  A feature page misclassified as a
+    # sidebar must not overrule complete paragraph-level continuity evidence.
 
     tail_ends = page_endpoints(tail_page, tail_index, config)
     head_ends = page_endpoints(head_page, head_index, config)

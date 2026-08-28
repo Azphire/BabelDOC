@@ -420,7 +420,14 @@ def _batches(units: list[Unit], config: ShortUnitConfig) -> list[list[Unit]]:
     return batches
 
 
-def plan(translator, docs, tracker, article_context=None, config=None) -> ShortUnitPlan:
+def plan(
+    translator,
+    docs,
+    tracker,
+    article_context=None,
+    config=None,
+    excluded_paragraph_ids: frozenset[int] = frozenset(),
+) -> ShortUnitPlan:
     """Translate every admitted unit, writing nothing into the document yet."""
     config = load_short_unit_config() if config is None else config
     result = ShortUnitPlan(enabled=True)
@@ -429,6 +436,7 @@ def plan(translator, docs, tracker, article_context=None, config=None) -> ShortU
     units = candidates(
         docs, minimum, config, fractured_paragraphs(translation_config, docs)
     )
+    units = [unit for unit in units if id(unit.paragraph) not in excluded_paragraph_ids]
     if not units:
         return result
 

@@ -21,11 +21,11 @@ pipeline is untouched and both attributes stay unset.
 
 The failure modes are deliberately asymmetric. Linking too little costs nothing
 beyond the per page behaviour the pipeline already had, so every uncertainty
-resolves towards not linking: a boundary whose pages are not both declared chain
-eligible is never scored, a column boundary on a page declared to preserve its
-line structure is never scored, a signal the geometry cannot supply contributes
-nothing, and a boundary that would cross a split part is dropped rather than
-guessed at.
+resolves towards not linking: a column boundary on a page declared to preserve
+its line structure is never scored, a signal the geometry cannot supply
+contributes nothing, and a boundary that would cross a split part is dropped
+rather than guessed at. Page classification stays a soft prior and cannot veto
+complete paragraph-level continuity evidence.
 
 Everything the intermediate language has no field for goes to the sidecar
 report: the per signal values behind each score, the boundaries that were not
@@ -34,6 +34,7 @@ scored and why, and the chains as they came out.
 
 from __future__ import annotations
 
+import hashlib
 import json
 import logging
 from pathlib import Path
@@ -45,7 +46,9 @@ from babeldoc.magazine.chain_signals import CONFIG_PATH as CHAIN_CONFIG_PATH
 from babeldoc.magazine.chain_signals import DROPPED_HEAD_TAKEN
 from babeldoc.magazine.chain_signals import DROPPED_TAIL_TAKEN
 from babeldoc.magazine.chain_signals import PAIR_RULES_KEY
+from babeldoc.magazine.chain_signals import REASON_NONADJACENT_PHYSICAL_PAGE
 from babeldoc.magazine.chain_signals import REASON_SPLIT_BOUNDARY
+from babeldoc.magazine.chain_signals import SIGNAL_NAMES
 from babeldoc.magazine.chain_signals import BoundaryVerdict
 from babeldoc.magazine.chain_signals import evaluate_boundary
 from babeldoc.magazine.chain_signals import evaluate_column_boundaries
@@ -102,18 +105,41 @@ class ChainBuilder:
         pages = docs.page
         verdicts: list[BoundaryVerdict] = []
         for index, page in enumerate(pages):
+            page_number = getattr(page, "page_number", index)
+            physical_index = index if page_number is None else int(page_number)
             verdicts.extend(
                 evaluate_column_boundaries(
-                    page, index, self.taxonomy.policy_of, self.config
+                    page, physical_index, self.taxonomy.policy_of, self.config
                 )
             )
             if index + 1 < len(pages):
+                following_number = getattr(pages[index + 1], "page_number", index + 1)
+                following_index = (
+                    index + 1 if following_number is None else int(following_number)
+                )
+                if following_index != physical_index + 1:
+                    verdicts.append(
+                        BoundaryVerdict(
+                            tail_page=physical_index,
+                            head_page=following_index,
+                            eligible=False,
+                            reason=REASON_NONADJACENT_PHYSICAL_PAGE,
+                            pair=None,
+                            values=dict.fromkeys(SIGNAL_NAMES),
+                            score=None,
+                            linked=False,
+                            tail_fill_ratio=None,
+                            tail=None,
+                            head=None,
+                        )
+                    )
+                    continue
                 verdicts.append(
                     evaluate_boundary(
                         page,
                         pages[index + 1],
-                        index,
-                        index + 1,
+                        physical_index,
+                        following_index,
                         self.taxonomy.policy_of,
                         self.config,
                     )
@@ -169,6 +195,30 @@ class ChainBuilder:
         taken: list[BoundaryVerdict],
         dropped: list[tuple[BoundaryVerdict, str]],
     ) -> Path:
+        member_audit = {}
+        for local_page_index, page in enumerate(docs.page):
+            physical_page = getattr(page, "page_number", local_page_index)
+            physical_page = (
+                local_page_index + 1
+                if physical_page is None
+                else int(physical_page) + 1
+            )
+            for paragraph_index, paragraph in enumerate(page.pdf_paragraph):
+                box = getattr(paragraph, "box", None)
+                member_audit[id(paragraph)] = {
+                    "source_ref": f"p{physical_page}#{paragraph_index}",
+                    "physical_page": physical_page,
+                    "source_box": None
+                    if box is None
+                    else [
+                        float(getattr(box, name))
+                        for name in ("x", "y", "x2", "y2")
+                    ],
+                    "source_text_sha256": hashlib.sha256(
+                        (getattr(paragraph, "unicode", "") or "").encode("utf-8")
+                    ).hexdigest(),
+                    "role": getattr(paragraph, "layout_label", None),
+                }
         records = [verdict.as_record() for verdict in verdicts]
         records.extend(self._split_records(docs))
         report = {
@@ -197,6 +247,8 @@ class ChainBuilder:
                     "kind": verdict.kind,
                     "pairing": verdict.pairing,
                     "score": verdict.score,
+                    "tail": member_audit.get(id(verdict.tail.paragraph)),
+                    "head": member_audit.get(id(verdict.head.paragraph)),
                 }
                 for verdict in taken
             ],
@@ -215,7 +267,12 @@ class ChainBuilder:
                     "chain_id": chain[0].chain_id,
                     "length": len(chain),
                     "members": [
-                        {"debug_id": p.debug_id, "chain_index": p.chain_index}
+                        {
+                            "debug_id": p.debug_id,
+                            "chain_index": p.chain_index,
+                            "order": p.chain_index,
+                            **member_audit[id(p)],
+                        }
                         for p in chain
                     ],
                 }
@@ -224,7 +281,7 @@ class ChainBuilder:
         }
         path = Path(self.translation_config.get_working_file_path(REPORT_NAME))
         with path.open("w", encoding="utf-8") as f:
-            json.dump(report, f, indent=2, sort_keys=True)
+            json.dump(report, f, indent=2, sort_keys=True, ensure_ascii=False)
         record_config_manifest(path.parent, [*DEFAULT_CONFIG_PATHS, CHAIN_CONFIG_PATH])
         linked = sum(1 for verdict in verdicts if verdict.linked)
         logger.debug(
@@ -259,6 +316,8 @@ def _accepted_edges(
         (position, verdict)
         for position, verdict in enumerate(verdicts)
         if verdict.linked and verdict.tail is not None and verdict.head is not None
+        and verdict.values.get("body_label_pair") == 1.0
+        and _textually_continuous(verdict)
     ]
     ranked = sorted(
         linked,
@@ -288,6 +347,22 @@ def _accepted_edges(
         [verdict for _position, verdict in taken],
         [(verdict, reason) for _position, verdict, reason in dropped],
     )
+
+
+def _textually_continuous(verdict: BoundaryVerdict) -> bool:
+    """Conservative source-text guard for a body handover.
+
+    In a Latin-script paragraph, a continuation normally resumes with a
+    lower-case word.  An upper-case opener is instead evidence that the next
+    record starts independently (the common TOC/byline false positive).  CJK
+    text has no case and is left entirely to geometry/style evidence.
+    """
+    tail_text = verdict.tail.paragraph.unicode or ""
+    head_text = verdict.head.paragraph.unicode or ""
+    if any("\u3400" <= char <= "\u9fff" for char in tail_text + head_text):
+        return True
+    first_alpha = next((char for char in head_text if char.isalpha()), None)
+    return first_alpha is None or not first_alpha.isupper()
 
 
 def _chains_from(

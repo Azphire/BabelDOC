@@ -475,14 +475,35 @@ def _chain_refs(value, where: str, article_document_ir) -> tuple[str, ...]:
         raise MinimalDetectionError(f"{where} must not be empty")
     for reference in refs:
         _source_ref(reference)
-        if reference not in article_document_ir.by_element:
+        if (
+            article_document_ir.by_element
+            and reference not in article_document_ir.by_element
+        ):
             raise MinimalDetectionError(
                 f"{where} ref is outside canonical IR: {reference}"
             )
     return tuple(refs)
 
 
-def _allocation_violations(chain_id: str, chain: dict, local_refs) -> list[str]:
+def _report_chain_refs(row: dict, where: str, article_document_ir):
+    physical = _required_list(row.get("ordered_source_refs"), f"{where}.ordered_source_refs")
+    if not physical:
+        raise MinimalDetectionError(f"{where}.ordered_source_refs must not be empty")
+    for reference in physical:
+        _source_ref(reference)
+    runtime = _chain_refs(
+        row.get("runtime_source_refs", physical),
+        f"{where}.runtime_source_refs",
+        article_document_ir,
+    )
+    if len(physical) != len(runtime):
+        raise MinimalDetectionError(f"{where} physical/runtime ref counts disagree")
+    return tuple(physical), runtime
+
+
+def _allocation_violations(
+    chain_id: str, chain: dict, physical_refs, local_refs
+) -> list[str]:
     translation = _required_text(
         chain.get("translation"),
         f"chain {chain_id}.translation",
@@ -504,7 +525,6 @@ def _allocation_violations(chain_id: str, chain: dict, local_refs) -> list[str]:
     if len(fragments) != len(local_refs):
         violations.append("fragment_member_count")
     cursor = 0
-    released = False
     for fragment_index, raw_fragment in enumerate(fragments):
         item = _required_mapping(
             raw_fragment,
@@ -533,16 +553,17 @@ def _allocation_violations(chain_id: str, chain: dict, local_refs) -> list[str]:
             violations.append("target_range_discontinuity")
         if item.get("chars") != end - start:
             violations.append("fragment_char_count")
-        if fragment_index < len(local_refs) and item.get("source_ref") != local_refs[
-            fragment_index
-        ]:
-            violations.append("fragment_source_order")
+        if fragment_index < len(local_refs):
+            if item.get("source_ref") != physical_refs[fragment_index]:
+                violations.append("fragment_source_order")
+            if item.get("runtime_source_ref", item.get("source_ref")) != local_refs[
+                fragment_index
+            ]:
+                violations.append("fragment_runtime_source_order")
         if is_released:
-            released = True
-            if start != end:
-                violations.append("released_fragment_not_empty")
-        elif released or start == end:
-            violations.append("released_fragment_not_trailing")
+            violations.append("body_fragment_released")
+        if start == end:
+            violations.append("empty_body_fragment")
         cursor = max(cursor, end)
     if cursor != len(translation):
         violations.append("whole_target_range")
@@ -708,9 +729,9 @@ def _chain_findings(
         article_id = outcome.get("article_id")
         if article_id is not None:
             _required_text(article_id, f"outcome {chain_id}.article_id")
-        local_refs = _chain_refs(
-            outcome.get("ordered_source_refs"),
-            f"outcome {chain_id}.ordered_source_refs",
+        physical_refs, local_refs = _report_chain_refs(
+            outcome,
+            f"outcome {chain_id}",
             article_document_ir,
         )
         calls = _nonnegative_integer(
@@ -740,9 +761,13 @@ def _chain_findings(
                 raw_member,
                 f"outcome {chain_id}.member {member_index}",
             )
-            if member.get("source_ref") != local_ref:
+            if member.get("source_ref") != physical_refs[member_index]:
                 raise MinimalDetectionError(
                     f"outcome {chain_id} member order disagrees with source refs"
+                )
+            if member.get("runtime_source_ref", member.get("source_ref")) != local_ref:
+                raise MinimalDetectionError(
+                    f"outcome {chain_id} member runtime order disagrees"
                 )
             chain_index = _optional_integer(
                 member.get("chain_index"),
@@ -768,17 +793,19 @@ def _chain_findings(
             violations.append("translator_call_count")
         if len(local_refs) != len(set(local_refs)):
             violations.append("duplicate_source_ref")
-        if claimed_refs.intersection(local_refs):
-            root_violations.append("source_ref_claimed_by_multiple_chains")
-        claimed_refs.update(local_refs)
         if result_state != "joint_success":
             violations.append("non_joint_success")
+        else:
+            if claimed_refs.intersection(local_refs):
+                root_violations.append("source_ref_claimed_by_multiple_chains")
+            claimed_refs.update(local_refs)
         row = {
             "chain_id": chain_id,
             "canonical_chain_id": canonical_chain_id,
             "article_id": article_id,
             "translator_call_count": calls,
             "result_state": result_state,
+            "physical_refs": physical_refs,
             "local_refs": local_refs,
             "violations": violations,
             "raw": outcome,
@@ -793,9 +820,9 @@ def _chain_findings(
     for position, raw_chain in enumerate(chains):
         chain = _required_mapping(raw_chain, f"chain {position}")
         chain_id = _required_text(chain.get("chain_id"), f"chain {position}.chain_id")
-        local_refs = _chain_refs(
-            chain.get("ordered_source_refs"),
-            f"chain {chain_id}.ordered_source_refs",
+        physical_refs, local_refs = _report_chain_refs(
+            chain,
+            f"chain {chain_id}",
             article_document_ir,
         )
         calls = _nonnegative_integer(
@@ -840,7 +867,9 @@ def _chain_findings(
             chain.get("article_id"),
             f"chain {chain_id}.article_id",
         )
-        violations = _allocation_violations(chain_id, chain, local_refs)
+        violations = _allocation_violations(
+            chain_id, chain, physical_refs, local_refs
+        )
         if calls != 1:
             violations.append("translator_call_count")
         if len(local_refs) != len(set(local_refs)):
@@ -853,6 +882,7 @@ def _chain_findings(
             "article_id": article_id,
             "translator_call_count": calls,
             "result_state": state,
+            "physical_refs": physical_refs,
             "local_refs": local_refs,
             "violations": violations,
         }
@@ -872,6 +902,7 @@ def _chain_findings(
                     "canonical_chain_id",
                     "article_id",
                     "translator_call_count",
+                    "physical_refs",
                     "local_refs",
                 ):
                     if entry[name] != outcome[name]:
