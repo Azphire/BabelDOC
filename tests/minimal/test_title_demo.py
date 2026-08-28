@@ -158,6 +158,100 @@ def test_required_chinese_titles_are_complete_single_lines(
     assert paragraph.unicode == target
 
 
+def test_styled_translation_markup_freezes_plain_visual_target(
+    monkeypatch, tmp_path
+):
+    source_box = (5.0, 50.0, 100.0, 70.0)
+    markup = "<style id='1'>铁路？</style><style id='3'>铁路？</style>"
+    visible = "铁路？铁路？"
+    paragraph = _paragraph(markup, "styled-title", source_box, label="title")
+    paragraph.xobj_id = -1
+    first_style = il_version_1.PdfStyle(font_id="body", font_size=10.0)
+    second_style = il_version_1.PdfStyle(font_id="body", font_size=8.0)
+    paragraph.pdf_paragraph_composition = [
+        il_version_1.PdfParagraphComposition(
+            pdf_same_style_unicode_characters=(
+                il_version_1.PdfSameStyleUnicodeCharacters(
+                    pdf_style=first_style,
+                    unicode="铁路？",
+                )
+            )
+        ),
+        il_version_1.PdfParagraphComposition(
+            pdf_same_style_unicode_characters=(
+                il_version_1.PdfSameStyleUnicodeCharacters(
+                    pdf_style=first_style,
+                    unicode="debug overlay",
+                    debug_info=True,
+                )
+            )
+        ),
+        il_version_1.PdfParagraphComposition(
+            pdf_same_style_unicode_characters=(
+                il_version_1.PdfSameStyleUnicodeCharacters(
+                    pdf_style=second_style,
+                    unicode="铁路？",
+                )
+            )
+        ),
+    ]
+
+    report, _document_value, _typesetter = _run_title(
+        monkeypatch, tmp_path, "zh", paragraph, source_box
+    )
+
+    row = report["titles"][0]
+    assert row["target_chars"] == 6
+    assert row["target_sha256"] == _sha256(visible)
+    assert row["rendered_target_sha256"] == _sha256(visible)
+    assert paragraph.unicode == visible
+    rendered = "".join(
+        composition.pdf_character.char_unicode
+        for composition in paragraph.pdf_paragraph_composition
+        if composition.pdf_character is not None
+    )
+    assert rendered == visible
+    assert "style" not in rendered
+    assert "debug" not in rendered
+
+
+def test_source_only_title_compositions_are_not_claimed_as_generated_target(
+    monkeypatch, tmp_path
+):
+    source_box = (5.0, 50.0, 90.0, 70.0)
+    paragraph = _paragraph("SOURCE", "source-only-title", source_box, label="title")
+    paragraph.xobj_id = -1
+    paragraph.pdf_paragraph_composition = [
+        il_version_1.PdfParagraphComposition(
+            pdf_character=il_version_1.PdfCharacter(
+                pdf_style=paragraph.pdf_style,
+                box=il_version_1.Box(5.0, 50.0, 10.0, 60.0),
+                char_unicode="S",
+                xobj_id=-1,
+            )
+        )
+    ]
+    document = _document([paragraph])
+    article_ir = _article_ir([paragraph], [source_box])
+    config = Config(tmp_path, "zh")
+    typesetter = Typesetting(config, RenderMapper())
+    before = document_digest(document)
+    monkeypatch.setattr(title_typeset.line_split, "source_unit", lambda *_args: None)
+
+    title_typeset.prepare(config, document, article_ir, typesetter)
+    report = title_typeset.apply(config, document, typesetter)
+
+    assert report["titles"] == []
+    assert report["exclusions"] == [
+        {
+            "source_ref": "p1#0",
+            "layout_label": "title",
+            "reason": "no_generated_target",
+        }
+    ]
+    assert document_digest(document) == before
+
+
 def test_long_english_title_is_complete_inside_finite_line_limit(
     monkeypatch, tmp_path
 ):
