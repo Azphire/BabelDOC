@@ -298,6 +298,64 @@ def test_non_record_page_registers_only_long_prose_without_splitting(tmp_path):
     )["status"] == "pass"
 
 
+def test_ruling_owner_resolves_untouched_body_beside_units_but_not_split_parent(
+    tmp_path,
+):
+    registered_prose = _paragraph(
+        ["中文长段落" * 5] * 6,
+        "registered-prose",
+        left=50,
+        bottom=500,
+    )
+    untouched_body = _paragraph(
+        ["O n the river, an ordinary opening paragraph continues."],
+        "dropcap-body",
+        left=330,
+        bottom=500,
+        faces=["body"],
+    )
+    page = _page(
+        [registered_prose, untouched_body],
+        number=4,
+        kind="article_opener",
+    )
+    config = Config(tmp_path / "untouched")
+    report = line_split.apply(
+        config,
+        [(5, page)],
+        policy_of=lambda _kind: {"preserve_line_structure": False},
+    )
+
+    assert [unit["parent_ref"] for unit in report["source_units"]] == [
+        "p5#0"
+    ]
+    assert line_split.source_unit(untouched_body, 5) is None
+    assert line_split.resolve_parent_index(page, 5, "p5#1") == 1
+
+    split_parent = _paragraph(
+        ["Contents ........ 2", "By Example"],
+        "split-owner",
+        left=50,
+        bottom=400,
+        faces=["title", "byline"],
+    )
+    _split_config, split_document, split_report = _apply(
+        tmp_path / "split",
+        [split_parent],
+    )
+    assert len(split_report["source_units"]) == 2
+    assert split_report["source_units"][0]["parent_ref"] == "p1#0"
+    assert split_report["source_units"][1]["parent_ref"] == "p1#0"
+    assert (
+        line_split.resolve_parent_index(
+            split_document.page[0],
+            1,
+            "p1#0",
+        )
+        is None
+    )
+
+
 def test_long_uniform_horizontal_prose_does_not_capture_vertical_furniture(
     tmp_path,
 ):

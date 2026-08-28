@@ -283,6 +283,8 @@ class SourceUnit:
 
 _SOURCE_UNITS_BY_ID: dict[int, SourceUnit] = {}
 _SOURCE_UNITS_BY_DEBUG: dict[tuple[int, str], SourceUnit] = {}
+_RULING_OWNERS_BY_ID: dict[int, tuple[object, tuple[str, ...]]] = {}
+_RULING_OWNERS_BY_DEBUG: dict[tuple[int, str], tuple[str, ...]] = {}
 
 
 def _box_record(box) -> list[float] | None:
@@ -299,6 +301,40 @@ def _register_source_unit(paragraph, physical_page: int, unit: SourceUnit) -> No
     _SOURCE_UNITS_BY_ID[id(paragraph)] = unit
     if paragraph.debug_id:
         _SOURCE_UNITS_BY_DEBUG[(physical_page, paragraph.debug_id)] = unit
+
+
+def _register_ruling_owner(
+    paragraph,
+    physical_page: int,
+    parent_refs: tuple[str, ...],
+) -> None:
+    """Record which pre-split paragraph(s) own one post-split paragraph."""
+    # Keep the object itself so a later object reusing the same CPython id
+    # cannot inherit stale ownership before the next apply clears the table.
+    _RULING_OWNERS_BY_ID[id(paragraph)] = (paragraph, parent_refs)
+    if not paragraph.debug_id:
+        return
+    key = (physical_page, paragraph.debug_id)
+    previous = _RULING_OWNERS_BY_DEBUG.get(key)
+    if previous is None or previous == parent_refs:
+        _RULING_OWNERS_BY_DEBUG[key] = parent_refs
+    else:
+        # A copied paragraph with a colliding debug id cannot prove ownership.
+        _RULING_OWNERS_BY_DEBUG[key] = ()
+
+
+def _ruling_owner_refs(
+    paragraph,
+    physical_page: int,
+) -> tuple[str, ...] | None:
+    held = _RULING_OWNERS_BY_ID.get(id(paragraph))
+    if held is not None and held[0] is paragraph:
+        return held[1]
+    if paragraph.debug_id:
+        return _RULING_OWNERS_BY_DEBUG.get(
+            (physical_page, paragraph.debug_id)
+        )
+    return None
 
 
 def source_unit(paragraph, physical_page: int | None = None) -> SourceUnit | None:
@@ -325,14 +361,14 @@ def resolve_parent_index(page, physical_page: int, parent_ref: str) -> int | Non
 
     A split parent has more than one child and is intentionally ambiguous: a
     paragraph ruling must name an owner, never be guessed onto one of several
-    records.  An unchanged source unit, including one shifted by earlier
-    splits, has exactly one match and is safe to map.
+    records.  Ownership aliases cover both bounded source units and untouched
+    paragraphs on a page where only other paragraphs became source units.
     """
     registered = [
-        source_unit(paragraph, physical_page)
+        _ruling_owner_refs(paragraph, physical_page)
         for paragraph in page.pdf_paragraph or ()
     ]
-    if not any(unit is not None for unit in registered):
+    if not any(owner is not None for owner in registered):
         prefix = f"p{physical_page}#"
         if parent_ref.startswith(prefix):
             try:
@@ -349,9 +385,8 @@ def resolve_parent_index(page, physical_page: int, parent_ref: str) -> int | Non
         return None
     matches = [
         index
-        for index, unit in enumerate(registered)
-        if unit is not None
-        and parent_ref in unit.parent_refs
+        for index, owner_refs in enumerate(registered)
+        if owner_refs is not None and parent_ref in owner_refs
     ]
     return matches[0] if len(matches) == 1 else None
 
@@ -1168,6 +1203,7 @@ def process_page(
     parents: dict[str, dict] = {}
     parent_texts: dict[str, str] = {}
     parent_character_texts: dict[str, str] = {}
+    pre_owner_refs: dict[int, tuple[str, ...]] = {}
     physical_index = 0
     for runtime_index, paragraph in enumerate(page.pdf_paragraph or ()):
         source_characters = paragraph_characters(paragraph)
@@ -1179,6 +1215,7 @@ def process_page(
         parent_ref = paragraph_reference(label, physical_index)
         runtime_parent_ref = paragraph_reference(label, runtime_index)
         physical_index += 1
+        pre_owner_refs[id(paragraph)] = (parent_ref,)
         if not source_characters:
             # Other generated furniture can likewise have no source glyph
             # geometry. It is not a bounded TOC source unit either.
@@ -1298,8 +1335,12 @@ def process_page(
     for post_index, paragraph in enumerate(page.pdf_paragraph or ()):
         held = pending_by_id.get(id(paragraph))
         if held is None:
+            owner_refs = pre_owner_refs.get(id(paragraph))
+            if owner_refs is not None:
+                _register_ruling_owner(paragraph, label, owner_refs)
             continue
         parent_refs = held.parent_refs
+        _register_ruling_owner(paragraph, label, parent_refs)
         parent_ref = parent_refs[0]
         kind = held.kind
         order = held.child_order
@@ -1499,6 +1540,8 @@ def apply(translation_config, labeled_pages, policy_of=None) -> dict | None:
     config = load_line_split_config()
     _SOURCE_UNITS_BY_ID.clear()
     _SOURCE_UNITS_BY_DEBUG.clear()
+    _RULING_OWNERS_BY_ID.clear()
+    _RULING_OWNERS_BY_DEBUG.clear()
     resolve = policy_of if policy_of is not None else load_taxonomy().policy_of
     minimum = int(getattr(translation_config, "min_text_length", 0) or 0)
 
