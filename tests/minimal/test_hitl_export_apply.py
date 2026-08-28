@@ -407,3 +407,28 @@ def test_late_prepare_exception_restores_terms_intents_and_document(
     assert raised.value is marker
     assert_prepare_rollback(config, docs, state, before)
     assert not list(tmp_path.rglob("*.html"))
+
+
+def test_prepare_transaction_does_not_copy_unrelated_page_graph(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    fixed = json.loads(FIXED_DECISIONS.read_text(encoding="utf-8"))
+    source, _generated = isolate_review_paths(monkeypatch, tmp_path)
+    write_decisions(source, "Courier-en", fixed)
+    config, docs, article_ir = selected_fixture(tmp_path)
+
+    class UncopyablePagePayload:
+        def __deepcopy__(self, _memo):
+            raise AssertionError("unrelated page payload was deep-copied")
+
+    payload = UncopyablePagePayload()
+    docs.page[0].pdf_xobject.append(payload)
+    state = hitl.begin_run(config, docs)
+    hitl.page_kind_pass(config, docs, state)
+
+    report = hitl.before_translation(config, docs, article_ir, state)
+
+    assert report["passes"]["before_translation"] is True
+    assert state.translation_pass_completed is True
+    assert docs.page[0].pdf_xobject[-1] is payload

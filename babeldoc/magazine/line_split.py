@@ -93,15 +93,16 @@ not exist at this layer.
 from __future__ import annotations
 
 import copy
+import hashlib
 import json
 import logging
+import re
 import statistics
 from dataclasses import dataclass
 from functools import lru_cache
 from pathlib import Path
 
 from babeldoc.format.pdf.document_il import il_version_1
-from babeldoc.format.pdf.document_il.utils.layout_helper import get_char_unicode_string
 from babeldoc.magazine.page_features import ConfigError
 from babeldoc.magazine.page_features import validate_bounded_config
 from babeldoc.magazine.resource_paths import config_path
@@ -125,6 +126,12 @@ POLICY_FLAGS_KEY = "policy_flags"
 SIDECAR_FIELDS_KEY = "sidecar_fields"
 EXEMPTION_FIELDS_KEY = "exemption_fields"
 EXEMPTION_REASONS_KEY = "exemption_reasons"
+
+RECORD_SINGLE = "single_visual_line"
+RECORD_BLOCK = "block"
+RECORD_PROSE = "prose_exempt"
+RECORD_KINDS = frozenset((RECORD_SINGLE, RECORD_BLOCK, RECORD_PROSE))
+CHAIN_EXCLUDED_RECORD_KINDS = frozenset((RECORD_SINGLE, RECORD_BLOCK))
 
 # Why a paragraph of a declared page was left whole. Both are the narrowing the
 # bounds perform, and the vocabulary is declared in the configuration so a
@@ -151,6 +158,7 @@ class LineSplitConfig:
     max_line_chars: float
     require_style_heterogeneity: bool
     record_gap_ratio: float
+    minimum_readable_scale: float
     policy_flags: tuple[str, ...]
     sidecar_fields: tuple[str, ...]
     exemption_fields: tuple[str, ...]
@@ -222,6 +230,7 @@ def parse_line_split_config(raw: dict, source: str) -> LineSplitConfig:
             int(parameters["require_style_heterogeneity"])
         ),
         record_gap_ratio=float(parameters["record_gap_ratio"]),
+        minimum_readable_scale=float(parameters["minimum_readable_scale"]),
         policy_flags=flags,
         sidecar_fields=tuple(parameters[SIDECAR_FIELDS_KEY]),
         exemption_fields=tuple(parameters[EXEMPTION_FIELDS_KEY]),
@@ -240,6 +249,111 @@ def load_line_split_config(path: str | None = None) -> LineSplitConfig:
 
 def enabled(translation_config) -> bool:
     return bool(getattr(translation_config, SWITCH, False))
+
+
+@dataclass(frozen=True)
+class SourceUnit:
+    """Runtime source-container identity for one post-split paragraph.
+
+    Document IL has no extension field for a structure pass.  The registry is
+    keyed by object identity for one ``apply`` lifetime, but retains only this
+    immutable payload rather than the paragraph/page graph.  A
+    physical-page/debug-id fallback lets an otherwise identical transaction
+    copy retain the same bounded source container without changing the IL
+    schema.
+    """
+
+    # ``parent_ref`` is the stable physical alias used by frozen truth.  Its
+    # paragraph ordinal excludes debug-only overlay paragraphs.  The runtime
+    # refs retain the actual IL indexes before and after splitting.
+    parent_ref: str
+    runtime_parent_ref: str
+    parent_refs: tuple[str, ...]
+    runtime_parent_refs: tuple[str, ...]
+    source_ref: str
+    record_kind: str
+    child_order: int
+    source_box: tuple[float, float, float, float] | None
+    source_text_sha256: str
+    source_text: str
+    source_characters_sha256: str
+    source_characters_text: str
+    fixed_companion: bool
+
+
+_SOURCE_UNITS_BY_ID: dict[int, SourceUnit] = {}
+_SOURCE_UNITS_BY_DEBUG: dict[tuple[int, str], SourceUnit] = {}
+
+
+def _box_record(box) -> list[float] | None:
+    if box is None or any(getattr(box, name, None) is None for name in ("x", "y", "x2", "y2")):
+        return None
+    return [float(getattr(box, name)) for name in ("x", "y", "x2", "y2")]
+
+
+def _source_hash(text: str) -> str:
+    return hashlib.sha256(text.encode("utf-8")).hexdigest()
+
+
+def _register_source_unit(paragraph, physical_page: int, unit: SourceUnit) -> None:
+    _SOURCE_UNITS_BY_ID[id(paragraph)] = unit
+    if paragraph.debug_id:
+        _SOURCE_UNITS_BY_DEBUG[(physical_page, paragraph.debug_id)] = unit
+
+
+def source_unit(paragraph, physical_page: int | None = None) -> SourceUnit | None:
+    """Return the structure unit belonging to ``paragraph``, if it has one."""
+    held = _SOURCE_UNITS_BY_ID.get(id(paragraph))
+    if held is not None:
+        return held
+    if physical_page is not None and paragraph.debug_id:
+        return _SOURCE_UNITS_BY_DEBUG.get((physical_page, paragraph.debug_id))
+    return None
+
+
+def record_kind(paragraph, physical_page: int | None = None) -> str | None:
+    unit = source_unit(paragraph, physical_page)
+    return None if unit is None else unit.record_kind
+
+
+def excludes_chain_endpoint(paragraph, physical_page: int | None = None) -> bool:
+    return record_kind(paragraph, physical_page) in CHAIN_EXCLUDED_RECORD_KINDS
+
+
+def resolve_parent_index(page, physical_page: int, parent_ref: str) -> int | None:
+    """Resolve one pre-split parent ref to its unique post-split paragraph.
+
+    A split parent has more than one child and is intentionally ambiguous: a
+    paragraph ruling must name an owner, never be guessed onto one of several
+    records.  An unchanged source unit, including one shifted by earlier
+    splits, has exactly one match and is safe to map.
+    """
+    registered = [
+        source_unit(paragraph, physical_page)
+        for paragraph in page.pdf_paragraph or ()
+    ]
+    if not any(unit is not None for unit in registered):
+        prefix = f"p{physical_page}#"
+        if parent_ref.startswith(prefix):
+            try:
+                index = int(parent_ref[len(prefix) :])
+            except ValueError:
+                return None
+            physical_paragraphs = [
+                runtime_index
+                for runtime_index, paragraph in enumerate(page.pdf_paragraph or ())
+                if paragraph_characters(paragraph) or not is_debug_overlay(paragraph)
+            ]
+            if 0 <= index < len(physical_paragraphs):
+                return physical_paragraphs[index]
+        return None
+    matches = [
+        index
+        for index, unit in enumerate(registered)
+        if unit is not None
+        and parent_ref in unit.parent_refs
+    ]
+    return matches[0] if len(matches) == 1 else None
 
 
 # --- reading the geometry the characters still carry --------------------------
@@ -337,6 +451,81 @@ def paragraph_characters(paragraph) -> list:
             continue
         characters.extend(composition_characters(composition, kind))
     return characters
+
+
+def is_debug_overlay(paragraph) -> bool:
+    """Whether every actual text carrier is explicitly diagnostic-only.
+
+    Before formal Typesetting a debug label is a Unicode holder.  Afterwards it
+    is a run of laid-out ``PdfCharacter`` objects which inherit that holder's
+    flag.  Requiring every carrier to opt in keeps a paragraph containing even
+    one real character in the product path.  Formula drawing is conservative:
+    an unmarked curve or any form prevents whole-paragraph exclusion.
+    """
+    saw_text = False
+    for composition in paragraph.pdf_paragraph_composition or ():
+        unicode_holder = composition.pdf_same_style_unicode_characters
+        if unicode_holder is not None:
+            saw_text = True
+            if not bool(unicode_holder.debug_info):
+                return False
+            continue
+
+        kind = composition_kind(composition)
+        if kind is None:
+            continue
+        characters = composition_characters(composition, kind)
+        if characters:
+            saw_text = True
+            if any(not bool(character.debug_info) for character in characters):
+                return False
+        if kind == FORMULA_KIND:
+            formula = composition.pdf_formula
+            if formula.pdf_form or any(
+                not bool(curve.debug_info) for curve in formula.pdf_curve or ()
+            ):
+                return False
+    return saw_text
+
+
+def characters_text(characters) -> str:
+    """Exact stored source characters, with no punctuation normalization."""
+    return "".join(character.char_unicode or "" for character in characters)
+
+
+def has_multiple_source_rows(characters) -> bool:
+    """Whether drawing baselines prove multiple rows despite a spanning glyph.
+
+    A large folio or decorative initial can cross every whitespace gap and make
+    the collision scan conservatively return one bucket.  Its drawing baseline
+    does not erase the distinct baselines of the ordinary text around it.  This
+    fallback only classifies the untouched paragraph as a block; it never cuts
+    on this weaker signal.
+    """
+    positions = []
+    sizes = []
+    for character in characters:
+        if not (character.char_unicode or "").strip():
+            continue
+        box = character.box
+        if box is None or box.y is None:
+            continue
+        positions.append(float(box.y))
+        style = character.pdf_style
+        if style is not None and style.font_size is not None:
+            size = float(style.font_size)
+            if size > 0:
+                sizes.append(size)
+    if len(positions) < 2 or not sizes:
+        return False
+    tolerance = max(1.0, statistics.median(sizes) * 0.55)
+    rows = 1
+    previous = min(positions)
+    for position in sorted(positions):
+        if position - previous > tolerance:
+            rows += 1
+        previous = position
+    return rows > 1
 
 
 def recover_lines(characters, config: LineSplitConfig) -> list[list[int]]:
@@ -582,6 +771,52 @@ def examine(paragraph, config: LineSplitConfig) -> Examination | None:
     )
 
 
+def _is_prose_exempt(
+    paragraph,
+    examination: Examination | None,
+    config: LineSplitConfig,
+) -> bool:
+    """Distinguish long prose from a short uniform multiline record.
+
+    Mean line length already identifies prose set in long lines.  Uniform
+    styling is deliberately also an exemption from splitting, but is not by
+    itself prose: a short multiline TOC block is commonly uniform.  Within
+    that exempt class, reuse the configured line-length bound as a conservative
+    total-content bound, require more than the minimum two-line block shape,
+    and require the recovered glyph rows to have horizontal rather than
+    vertical flow.  This admits long CJK prose whose many short visual lines
+    keep its mean below the line bound, without folding either a dense two-line
+    TOC subtitle or narrow vertical furniture into prose.
+    """
+    if examination is None:
+        return False
+    if examination.reason == REASON_LONG_LINES:
+        return True
+    if examination.reason != REASON_UNIFORM_STYLING:
+        return False
+    visible_characters = sum(
+        1
+        for character in characters_text(paragraph_characters(paragraph))
+        if not character.isspace()
+    )
+    characters = paragraph_characters(paragraph)
+    horizontal_extent = 0.0
+    vertical_extent = 0.0
+    for line in examination.lines:
+        box = _box_record(
+            character_union([characters[index] for index in line])
+        )
+        if box is None:
+            continue
+        horizontal_extent += box[2] - box[0]
+        vertical_extent += box[3] - box[1]
+    return (
+        len(examination.lines) > 2
+        and visible_characters > config.max_line_chars
+        and horizontal_extent > vertical_extent
+    )
+
+
 # --- cutting one paragraph into one paragraph per line ------------------------
 
 
@@ -696,7 +931,7 @@ def _line_paragraph(paragraph, characters, compositions, ordinal: int):
             graphic_state=style.graphic_state,
         )
     line.pdf_paragraph_composition = compositions
-    line.unicode = get_char_unicode_string(characters) if characters else ""
+    line.unicode = characters_text(characters)
     if paragraph.debug_id is not None:
         line.debug_id = f"{paragraph.debug_id}{LINE_ID_SEPARATOR}{ordinal}"
     # Only the first line can have carried the paragraph's opening indent; a
@@ -758,28 +993,253 @@ def paragraph_reference(page_label: int, index: int) -> str:
     return f"p{page_label}#{index}"
 
 
+@dataclass(frozen=True)
+class _PendingUnit:
+    paragraph: object
+    parent_refs: tuple[str, ...]
+    kind: str
+    child_order: int
+    mergeable: bool
+    fixed_companion: bool
+
+
+_FOLIO_TEXT = re.compile(r"[\d\s.·|/\-–—]+\Z")
+_FOLIO_EDGE = re.compile(r"(?:^\d+|\d+$)")
+
+
+def _is_fixed_folio(paragraph) -> bool:
+    text = (
+        paragraph.unicode or characters_text(paragraph_characters(paragraph))
+    ).strip()
+    return bool(text) and _FOLIO_TEXT.fullmatch(text) is not None
+
+
+def _has_folio_edge(paragraph) -> bool:
+    """Whether a record advertises its own folio at either text edge."""
+    text = (
+        paragraph.unicode or characters_text(paragraph_characters(paragraph))
+    ).strip()
+    return bool(text) and _FOLIO_EDGE.search(text) is not None
+
+
+def _tight_uniform_neighbors(upper, lower, config: LineSplitConfig) -> bool:
+    """Whether two source paragraphs are one tightly set visual block."""
+    if _has_folio_edge(lower):
+        # A lower record carrying its own folio is a new TOC item even where
+        # the printer uses the same leading as a title/subtitle pair.
+        return False
+    if not (
+        _has_folio_edge(upper)
+        or has_multiple_source_rows(paragraph_characters(upper))
+        or has_multiple_source_rows(paragraph_characters(lower))
+    ):
+        # Geometry alone cannot distinguish two tightly led independent
+        # singles.  Merge only with positive record-continuation evidence.
+        return False
+    upper_box = _box_record(upper.box)
+    lower_box = _box_record(lower.box)
+    if upper_box is None or lower_box is None:
+        return False
+    upper_height = upper_box[3] - upper_box[1]
+    lower_height = lower_box[3] - lower_box[1]
+    narrower = min(upper_box[2] - upper_box[0], lower_box[2] - lower_box[0])
+    overlap = min(upper_box[2], lower_box[2]) - max(upper_box[0], lower_box[0])
+    if min(upper_height, lower_height, narrower) <= 0:
+        return False
+    gap = upper_box[1] - lower_box[3]
+    tolerance = config.scan_step
+    return (
+        gap >= -tolerance
+        and gap <= min(upper_height, lower_height) / config.record_gap_ratio
+        and overlap / narrower >= 1.0 / config.record_gap_ratio
+    )
+
+
+def _merged_block(paragraphs: list):
+    """Build one translation paragraph from a tight source paragraph block."""
+    merged = copy.copy(paragraphs[0])
+    boxes = [_box_record(paragraph.box) for paragraph in paragraphs]
+    if any(box is None for box in boxes):
+        raise LineSplitError("a merged visual block has no source box")
+    merged.box = il_version_1.Box(
+        x=min(box[0] for box in boxes),
+        y=min(box[1] for box in boxes),
+        x2=max(box[2] for box in boxes),
+        y2=max(box[3] for box in boxes),
+    )
+    merged.pdf_paragraph_composition = [
+        composition
+        for paragraph in paragraphs
+        for composition in paragraph.pdf_paragraph_composition or ()
+    ]
+    characters = paragraph_characters(merged)
+    merged.unicode = "\n".join(
+        paragraph.unicode or characters_text(paragraph_characters(paragraph))
+        for paragraph in paragraphs
+    )
+    style = record_style(characters)
+    if style is not None:
+        merged.pdf_style = il_version_1.PdfStyle(
+            font_id=style.font_id,
+            font_size=style.font_size,
+            graphic_state=style.graphic_state,
+        )
+    return merged
+
+
+def _merge_tight_blocks(rebuilt, pending, config: LineSplitConfig):
+    """Coalesce adjacent untouched single lines into physical block items."""
+    by_id = {id(item.paragraph): item for item in pending}
+    result = []
+    result_pending = []
+    position = 0
+    while position < len(rebuilt):
+        paragraph = rebuilt[position]
+        held = by_id.get(id(paragraph))
+        if held is None or not held.mergeable:
+            result.append(paragraph)
+            if held is not None:
+                result_pending.append(held)
+            position += 1
+            continue
+        members = [paragraph]
+        held_members = [held]
+        cursor = position + 1
+        while cursor < len(rebuilt):
+            next_paragraph = rebuilt[cursor]
+            next_held = by_id.get(id(next_paragraph))
+            if (
+                next_held is None
+                or not next_held.mergeable
+                or not _tight_uniform_neighbors(
+                    members[-1], next_paragraph, config
+                )
+            ):
+                break
+            members.append(next_paragraph)
+            held_members.append(next_held)
+            cursor += 1
+        if len(members) == 1:
+            result.append(paragraph)
+            result_pending.append(held)
+            position += 1
+            continue
+        merged = _merged_block(members)
+        result.append(merged)
+        result_pending.append(
+            _PendingUnit(
+                paragraph=merged,
+                parent_refs=tuple(
+                    reference
+                    for item in held_members
+                    for reference in item.parent_refs
+                ),
+                kind=RECORD_BLOCK,
+                child_order=0,
+                mergeable=False,
+                fixed_companion=False,
+            )
+        )
+        position = cursor
+    return result, result_pending
+
+
 def process_page(
-    page, label: int, config: LineSplitConfig
-) -> tuple[list[dict], list[dict]]:
-    """Split every record paragraph of one declared page.
+    page,
+    label: int,
+    config: LineSplitConfig,
+    *,
+    prose_only: bool = False,
+) -> tuple[list[dict], list[dict], list[dict]]:
+    """Split a record page, or inventory only its long prose paragraphs.
 
     One record per split, and one per paragraph the bounds exempted, so the
     page's answer is readable in both directions: what was cut, and what was
-    left whole because it was prose rather than records.
+    left whole because it was prose rather than records.  ``prose_only`` is
+    used outside declared record pages: it leaves the page untouched and
+    registers only paragraphs already identified by the same long-line bound
+    as prose.  Ordinary body paragraphs therefore do not become TOC units.
     """
     records: list[dict] = []
     exemptions: list[dict] = []
+    units: list[dict] = []
     rebuilt: list = []
-    for index, paragraph in enumerate(page.pdf_paragraph or ()):
+    pending: list[_PendingUnit] = []
+    parents: dict[str, dict] = {}
+    parent_texts: dict[str, str] = {}
+    parent_character_texts: dict[str, str] = {}
+    physical_index = 0
+    for runtime_index, paragraph in enumerate(page.pdf_paragraph or ()):
+        source_characters = paragraph_characters(paragraph)
+        if not source_characters and is_debug_overlay(paragraph):
+            # Debug overlays are explicitly marked on their Unicode-only
+            # composition and have no source glyph container to preserve.
+            rebuilt.append(paragraph)
+            continue
+        parent_ref = paragraph_reference(label, physical_index)
+        runtime_parent_ref = paragraph_reference(label, runtime_index)
+        physical_index += 1
+        if not source_characters:
+            # Other generated furniture can likewise have no source glyph
+            # geometry. It is not a bounded TOC source unit either.
+            rebuilt.append(paragraph)
+            continue
+        source_character_text = characters_text(source_characters)
+        parent_text = paragraph.unicode or source_character_text
         examination = examine(paragraph, config)
-        lines = split_paragraph(paragraph, config)
+        prose_exempt = _is_prose_exempt(paragraph, examination, config)
+        if prose_only and not prose_exempt:
+            rebuilt.append(paragraph)
+            continue
+        parent_record = {
+            "source_ref": parent_ref,
+            "runtime_source_ref": runtime_parent_ref,
+            "debug_id": paragraph.debug_id,
+            "source_box": _box_record(paragraph.box),
+            "source_text_sha256": _source_hash(parent_text),
+            "source_characters": len(source_character_text),
+            "source_characters_sha256": _source_hash(source_character_text),
+        }
+        parents[parent_ref] = parent_record
+        parent_texts[parent_ref] = parent_text
+        parent_character_texts[parent_ref] = source_character_text
+        lines = None if prose_only else split_paragraph(paragraph, config)
         if lines is None:
             rebuilt.append(paragraph)
+            kind = (
+                RECORD_PROSE
+                if prose_exempt
+                else (
+                    RECORD_BLOCK
+                    if (
+                        examination is not None
+                        and len(examination.lines) > 1
+                    )
+                    or (
+                        examination is None
+                        and has_multiple_source_rows(source_characters)
+                    )
+                    else RECORD_SINGLE
+                )
+            )
+            pending.append(
+                _PendingUnit(
+                    paragraph=paragraph,
+                    parent_refs=(parent_ref,),
+                    kind=kind,
+                    child_order=0,
+                    mergeable=(
+                        kind in {RECORD_SINGLE, RECORD_BLOCK}
+                        and not _is_fixed_folio(paragraph)
+                    ),
+                    fixed_companion=_is_fixed_folio(paragraph),
+                )
+            )
             if examination is not None and not examination.admitted:
                 exemptions.append(
                     {
                         "page": label,
-                        "paragraph": paragraph_reference(label, index),
+                        "paragraph": parent_ref,
                         "debug_id": paragraph.debug_id,
                         "lines": len(examination.lines),
                         "mean_line_chars": examination.mean_line_chars,
@@ -791,11 +1251,29 @@ def process_page(
         rebuilt.extend(lines)
         characters = paragraph_characters(paragraph)
         groups = record_groups(characters, examination.lines, config)
+        if characters_text(characters) != "".join(
+            characters_text(paragraph_characters(child)) for child in lines
+        ):
+            raise LineSplitError(
+                f"{parent_ref}: split changed source character order or count"
+            )
+        for ordinal, (child, group) in enumerate(zip(lines, groups, strict=True)):
+            kind = RECORD_SINGLE if len(group) == 1 else RECORD_BLOCK
+            pending.append(
+                _PendingUnit(
+                    paragraph=child,
+                    parent_refs=(parent_ref,),
+                    kind=kind,
+                    child_order=ordinal,
+                    mergeable=False,
+                    fixed_companion=False,
+                )
+            )
         parent = paragraph.pdf_style
         records.append(
             {
                 "page": label,
-                "paragraph": paragraph_reference(label, index),
+                "paragraph": parent_ref,
                 "debug_id": paragraph.debug_id,
                 "characters": len(characters),
                 "lines": len(examination.lines),
@@ -808,9 +1286,124 @@ def process_page(
                 "line_paragraphs": [line.debug_id for line in lines],
             }
         )
-    if records:
-        page.pdf_paragraph = rebuilt
-    return records, exemptions
+    rebuilt, pending = _merge_tight_blocks(rebuilt, pending, config)
+    page.pdf_paragraph = rebuilt
+
+    pending_by_id = {
+        id(item.paragraph): item
+        for item in pending
+    }
+    children_by_parent: dict[tuple[str, ...], list[dict]] = {}
+    group_parents: dict[tuple[str, ...], dict] = {}
+    for post_index, paragraph in enumerate(page.pdf_paragraph or ()):
+        held = pending_by_id.get(id(paragraph))
+        if held is None:
+            continue
+        parent_refs = held.parent_refs
+        parent_ref = parent_refs[0]
+        kind = held.kind
+        order = held.child_order
+        source_ref = paragraph_reference(label, post_index)
+        runtime_parent_refs = tuple(
+            parents[reference]["runtime_source_ref"] for reference in parent_refs
+        )
+        runtime_parent_ref = runtime_parent_refs[0]
+        text = paragraph.unicode or characters_text(paragraph_characters(paragraph))
+        source_character_text = characters_text(paragraph_characters(paragraph))
+        box = _box_record(paragraph.box)
+        parent_boxes = [parents[reference]["source_box"] for reference in parent_refs]
+        if any(parent_box is None for parent_box in parent_boxes):
+            group_box = None
+        else:
+            group_box = [
+                min(parent_box[0] for parent_box in parent_boxes),
+                min(parent_box[1] for parent_box in parent_boxes),
+                max(parent_box[2] for parent_box in parent_boxes),
+                max(parent_box[3] for parent_box in parent_boxes),
+            ]
+        group_character_text = "".join(
+            parent_character_texts[reference] for reference in parent_refs
+        )
+        group_text = "\n".join(
+            parent_texts[reference] for reference in parent_refs
+        )
+        group_parents.setdefault(
+            parent_refs,
+            {
+                "source_ref": parent_ref,
+                "source_refs": list(parent_refs),
+                "runtime_source_ref": runtime_parent_ref,
+                "runtime_source_refs": list(runtime_parent_refs),
+                "debug_id": parents[parent_ref]["debug_id"],
+                "source_box": group_box,
+                "source_text_sha256": _source_hash(group_text),
+                "source_characters": len(group_character_text),
+                "source_characters_sha256": _source_hash(group_character_text),
+            },
+        )
+        unit = SourceUnit(
+            parent_ref=parent_ref,
+            runtime_parent_ref=runtime_parent_ref,
+            parent_refs=parent_refs,
+            runtime_parent_refs=runtime_parent_refs,
+            source_ref=source_ref,
+            record_kind=kind,
+            child_order=order,
+            source_box=None if box is None else tuple(box),
+            source_text_sha256=_source_hash(text),
+            source_text=text,
+            source_characters_sha256=_source_hash(source_character_text),
+            source_characters_text=source_character_text,
+            fixed_companion=held.fixed_companion,
+        )
+        _register_source_unit(paragraph, label, unit)
+        child = {
+            "source_ref": source_ref,
+            "runtime_source_ref": source_ref,
+            "debug_id": paragraph.debug_id,
+            "record_kind": kind,
+            "fixed_companion": held.fixed_companion,
+            "child_order": order,
+            "source_band": box,
+            "source_text_sha256": unit.source_text_sha256,
+            "source_characters": len(source_character_text),
+            "source_characters_sha256": unit.source_characters_sha256,
+        }
+        children_by_parent.setdefault(parent_refs, []).append(child)
+        units.append(
+            {
+                "parent_ref": parent_ref,
+                "parent_refs": list(parent_refs),
+                "runtime_parent_ref": runtime_parent_ref,
+                "runtime_parent_refs": list(runtime_parent_refs),
+                **child,
+            }
+        )
+        if held.fixed_companion:
+            # Keep the original glyph compositions as fixed page furniture,
+            # while making every translation producer's shared semantic-input
+            # precondition reject this standalone folio.
+            paragraph.unicode = None
+
+    for unit in units:
+        parent_refs = tuple(unit["parent_refs"])
+        ordered = sorted(
+            children_by_parent[parent_refs],
+            key=lambda child: child["child_order"],
+        )
+        ordered_character_text = "".join(
+            source_unit(paragraph, label).source_characters_text
+            for paragraph in page.pdf_paragraph or ()
+            if source_unit(paragraph, label) is not None
+            and source_unit(paragraph, label).parent_refs == parent_refs
+        )
+        group_parents[parent_refs]["ordered_children_characters_sha256"] = (
+            _source_hash(ordered_character_text)
+        )
+        unit["parent"] = group_parents[parent_refs]
+        unit["source_parents"] = [parents[reference] for reference in parent_refs]
+        unit["ordered_children"] = ordered
+    return records, exemptions, units
 
 
 def page_lines(page, config: LineSplitConfig) -> int:
@@ -856,6 +1449,7 @@ def as_record(
     config: LineSplitConfig,
     splits: list[dict],
     exemptions: list[dict],
+    source_units: list[dict],
     pages: list[dict],
     untranslated: list[dict],
     minimum: int,
@@ -867,6 +1461,7 @@ def as_record(
         "min_line_characters": config.min_line_characters,
         "max_line_chars": config.max_line_chars,
         "require_style_heterogeneity": config.require_style_heterogeneity,
+        "minimum_readable_scale": config.minimum_readable_scale,
         "min_text_length": minimum,
         "totals": {
             "declared_pages": sum(1 for page in pages if page["declared"]),
@@ -879,6 +1474,7 @@ def as_record(
         "pages": pages,
         "splits": splits,
         "exemptions": exemptions,
+        "source_units": source_units,
         "short_lines": untranslated,
     }
 
@@ -901,22 +1497,41 @@ def apply(translation_config, labeled_pages, policy_of=None) -> dict | None:
     if not enabled(translation_config):
         return None
     config = load_line_split_config()
+    _SOURCE_UNITS_BY_ID.clear()
+    _SOURCE_UNITS_BY_DEBUG.clear()
     resolve = policy_of if policy_of is not None else load_taxonomy().policy_of
     minimum = int(getattr(translation_config, "min_text_length", 0) or 0)
 
     splits: list[dict] = []
     exempt: list[dict] = []
+    source_units: list[dict] = []
     pages: list[dict] = []
     untranslated: list[dict] = []
     for label, page in labeled_pages:
         declared = config.declared(resolve(page.page_kind))
+        source_characters = "".join(
+            characters_text(paragraph_characters(paragraph))
+            for paragraph in page.pdf_paragraph or ()
+        )
         before = page_lines(page, config)
-        records, exemptions = (
-            process_page(page, label, config) if declared else ([], [])
+        records, exemptions, units = process_page(
+            page,
+            label,
+            config,
+            prose_only=not declared,
         )
         after = page_lines(page, config)
+        result_characters = "".join(
+            characters_text(paragraph_characters(paragraph))
+            for paragraph in page.pdf_paragraph or ()
+        )
+        if source_characters != result_characters:
+            raise LineSplitError(
+                f"p{label}: line split changed source character order or count"
+            )
         splits.extend(records)
         exempt.extend(exemptions)
+        source_units.extend(units)
         untranslated.extend(short_lines(page, label, minimum) if declared else [])
         pages.append(
             {
@@ -925,6 +1540,10 @@ def apply(translation_config, labeled_pages, policy_of=None) -> dict | None:
                 "paragraphs": len(page.pdf_paragraph or ()),
                 "lines_before": before,
                 "lines_after": after,
+                "characters_before": len(source_characters),
+                "characters_after": len(result_characters),
+                "source_characters_sha256": _source_hash(source_characters),
+                "result_characters_sha256": _source_hash(result_characters),
                 "split_paragraphs": len(records),
                 "exempt_paragraphs": len(exemptions),
             }
@@ -948,7 +1567,18 @@ def apply(translation_config, labeled_pages, policy_of=None) -> dict | None:
                 f"and {CONFIG_PATH.name} declares {sorted(config.exemption_reasons)}"
             )
 
-    record = as_record(config, splits, exempt, pages, untranslated, minimum)
+    refs = [item["source_ref"] for item in source_units]
+    if len(refs) != len(set(refs)):
+        raise LineSplitError(f"{REPORT_NAME}: post-split source refs are not unique")
+    record = as_record(
+        config,
+        splits,
+        exempt,
+        source_units,
+        pages,
+        untranslated,
+        minimum,
+    )
     working_dir = Path(translation_config.get_working_file_path(REPORT_NAME)).parent
     write_report(working_dir, record)
     logger.debug(

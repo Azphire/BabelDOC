@@ -15,6 +15,7 @@ from babeldoc.glossary import Glossary
 from babeldoc.glossary import GlossaryEntry
 from babeldoc.magazine import drop_cap
 from babeldoc.magazine import drop_cap_intent
+from babeldoc.magazine import line_split
 from babeldoc.magazine.article_ir import ArticleDocumentIR
 from babeldoc.magazine.page_features import ConfigError
 from babeldoc.magazine.page_features import validate_bounded_config
@@ -624,6 +625,7 @@ def _canonical_element(
 
 def _selected_drop_cap_decisions(
     translation_config,
+    docs,
     state: HitlRunState,
     article_document_ir: ArticleDocumentIR,
 ) -> dict[str, object]:
@@ -636,7 +638,26 @@ def _selected_drop_cap_decisions(
         if ruling.physical_page not in selected:
             continue
         local_page = state.physical_to_local[ruling.physical_page]
-        local_ref = f"p{local_page}#{ruling.paragraph_index}"
+        page = docs.page[local_page - 1]
+        parent_ref = f"p{ruling.physical_page}#{ruling.paragraph_index}"
+        resolved_index = (
+            line_split.resolve_parent_index(
+                page,
+                ruling.physical_page,
+                parent_ref,
+            )
+            if line_split.enabled(translation_config)
+            else ruling.paragraph_index
+        )
+        if resolved_index is not None and not 0 <= resolved_index < len(
+            page.pdf_paragraph or ()
+        ):
+            resolved_index = None
+        if resolved_index is None:
+            raise HitlError(
+                f"{reference}: split source paragraph has no unique ruling owner"
+            )
+        local_ref = f"p{local_page}#{resolved_index}"
         element = _canonical_element(article_document_ir, local_ref)
         if element is None:
             raise HitlError(
@@ -698,7 +719,16 @@ class _BeforeTranslationTransaction:
 
     def __init__(self, translation_config, docs, state: HitlRunState):
         self._translation_config = translation_config
-        self._pages = [(page, copy.deepcopy(page)) for page in docs.page]
+        # This transaction can mark or flatten paragraphs, but it never mutates
+        # page-level fonts, xobjects, drawing operations, or the paragraph list.
+        # Snapshotting an entire Page needlessly traversed those very large,
+        # unrelated graphs and could exhaust Python's recursion depth before
+        # translation preparation began.
+        self._paragraphs = [
+            (paragraph, copy.deepcopy(paragraph))
+            for page in docs.page
+            for paragraph in page.pdf_paragraph
+        ]
         self._shared = translation_config.shared_context_cross_split_part
         self._user_glossaries_ref = self._shared.user_glossaries
         self._user_glossaries = list(self._shared.user_glossaries)
@@ -736,8 +766,8 @@ class _BeforeTranslationTransaction:
 
     def __exit__(self, exc_type, exc_value, traceback) -> bool:
         if exc_type is not None or not self._committed:
-            for page, snapshot in self._pages:
-                _restore_dataclass(page, snapshot)
+            for paragraph, snapshot in self._paragraphs:
+                _restore_dataclass(paragraph, snapshot)
             self._user_glossaries_ref[:] = self._user_glossaries
             self._shared.user_glossaries = self._user_glossaries_ref
             self._shared.auto_extracted_glossary = self._auto_glossary
@@ -790,7 +820,7 @@ def before_translation(
             article_document_ir=article_document_ir,
         )
         selected_decisions = _selected_drop_cap_decisions(
-            translation_config, state, article_document_ir
+            translation_config, docs, state, article_document_ir
         )
         state.draft[TERMS_SECTION] = export_terms(translation_config, docs)
         state.draft[DROP_CAPS_SECTION] = drop_cap.review_rows(

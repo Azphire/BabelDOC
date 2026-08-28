@@ -14,6 +14,8 @@
   "require_style_heterogeneity_allowed_range": "0..1",
   "record_gap_ratio": 1.6,
   "record_gap_ratio_allowed_range": "1.1..5.0",
+  "minimum_readable_scale": 0.5,
+  "minimum_readable_scale_allowed_range": "0.1..1.0",
   "policy_flags": ["preserve_line_structure"],
   "exemption_reasons": ["long_lines", "uniform_styling"],
   "sidecar_fields": [

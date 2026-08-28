@@ -53,6 +53,7 @@ from babeldoc.magazine.chain_signals import BoundaryVerdict
 from babeldoc.magazine.chain_signals import evaluate_boundary
 from babeldoc.magazine.chain_signals import evaluate_column_boundaries
 from babeldoc.magazine.chain_signals import load_chain_config
+from babeldoc.magazine.line_split import source_unit
 from babeldoc.magazine.taxonomy import DEFAULT_CONFIG_PATHS
 from babeldoc.magazine.taxonomy import load_taxonomy
 from babeldoc.magazine.taxonomy import record_config_manifest
@@ -205,6 +206,7 @@ class ChainBuilder:
             )
             for paragraph_index, paragraph in enumerate(page.pdf_paragraph):
                 box = getattr(paragraph, "box", None)
+                split_unit = source_unit(paragraph, physical_page)
                 member_audit[id(paragraph)] = {
                     "source_ref": f"p{physical_page}#{paragraph_index}",
                     "physical_page": physical_page,
@@ -218,6 +220,9 @@ class ChainBuilder:
                         (getattr(paragraph, "unicode", "") or "").encode("utf-8")
                     ).hexdigest(),
                     "role": getattr(paragraph, "layout_label", None),
+                    "source_aliases": (
+                        [] if split_unit is None else list(split_unit.parent_refs)
+                    ),
                 }
         records = [verdict.as_record() for verdict in verdicts]
         records.extend(self._split_records(docs))

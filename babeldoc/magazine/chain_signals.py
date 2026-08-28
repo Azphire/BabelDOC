@@ -45,6 +45,7 @@ from functools import lru_cache
 from pathlib import Path
 
 from babeldoc.format.pdf.document_il import il_version_1
+from babeldoc.magazine.line_split import excludes_chain_endpoint
 from babeldoc.magazine.page_features import ConfigError
 from babeldoc.magazine.page_features import Parameter
 from babeldoc.magazine.page_features import validate_bounded_config
@@ -774,6 +775,8 @@ def page_candidates(
 
     candidates = []
     for paragraph in page.pdf_paragraph:
+        if excludes_chain_endpoint(paragraph):
+            continue
         label = paragraph.layout_label or ""
         if label not in labels or paragraph.box is None:
             continue
@@ -1234,8 +1237,6 @@ def evaluate_column_boundaries(
     policy = policy_of(page.page_kind)
     if policy is None:
         return [_column_rejected(page_index, REASON_NO_PAGE_KIND)]
-    if policy.get(LINE_STRUCTURE_POLICY_FLAG, False):
-        return [_column_rejected(page_index, REASON_LINE_STRUCTURE)]
     columns = page_columns(page, config)
     if columns is None or len(columns.order) < 2:
         return [_column_rejected(page_index, REASON_ONE_COLUMN)]

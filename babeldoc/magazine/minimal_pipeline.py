@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+from contextlib import contextmanager
 from dataclasses import dataclass
 from pathlib import Path
 
@@ -12,6 +13,7 @@ from babeldoc.magazine import article_flow
 from babeldoc.magazine import drop_cap_render
 from babeldoc.magazine import hitl
 from babeldoc.magazine import indent_policy
+from babeldoc.magazine import line_split
 from babeldoc.magazine import minimal_detection
 from babeldoc.magazine import minimal_repair
 from babeldoc.magazine import paren_dedup
@@ -27,6 +29,39 @@ class MinimalPipelineStateError(RuntimeError):
 
 RUN_REPORT_NAME = "minimal_run.report.json"
 RUN_SCHEMA_VERSION = "minimal-run.v1"
+
+
+@contextmanager
+def _without_debug_overlay_text(docs):
+    """Keep diagnostic-only paragraphs outside the product quality gate.
+
+    Debug rendering appends Unicode-only paragraphs far outside the source page
+    so the backend can draw its labels.  They retain real paragraph slots (and
+    therefore must not be removed or renumbered), but they are not source or
+    translated content.  The detector and its fixed-asset baseline must see the
+    same text-free projection; the original objects are restored for the final
+    debug PDF without copying the surrounding page graph.
+    """
+    hidden = []
+    for page in docs.page or ():
+        for paragraph in page.pdf_paragraph or ():
+            if not line_split.is_debug_overlay(paragraph):
+                continue
+            hidden.append(
+                (
+                    paragraph,
+                    paragraph.pdf_paragraph_composition,
+                    paragraph.unicode,
+                )
+            )
+            paragraph.pdf_paragraph_composition = []
+            paragraph.unicode = None
+    try:
+        yield
+    finally:
+        for paragraph, compositions, unicode_text in hidden:
+            paragraph.pdf_paragraph_composition = compositions
+            paragraph.unicode = unicode_text
 
 
 @dataclass(slots=True)
@@ -339,6 +374,7 @@ def after_styles(config, docs) -> ArticleDocumentIR:
     hitl_state = hitl.begin_run(config, docs)
     state._hitl_state = hitl_state
     hitl.page_kind_pass(config, docs, hitl_state)
+    line_split.apply(config, hitl.labeled_pages(docs))
     ChainBuilder(config).process(docs)
 
     article_document_ir = ArticleBuilder(config).process(docs)
@@ -348,11 +384,12 @@ def after_styles(config, docs) -> ArticleDocumentIR:
     )
     state._article_document_ir = article_document_ir
     if docs.page:
-        state._detection_baseline = minimal_detection.capture_baseline(
-            docs,
-            article_document_ir,
-            labeled_pages=hitl.labeled_pages(docs),
-        )
+        with _without_debug_overlay_text(docs):
+            state._detection_baseline = minimal_detection.capture_baseline(
+                docs,
+                article_document_ir,
+                labeled_pages=hitl.labeled_pages(docs),
+            )
     return article_document_ir
 
 
@@ -1051,49 +1088,50 @@ def _detect_and_repair(config, docs, typesetter, state: MagazineState) -> None:
     state._detection_document_identity = id(docs)
     translation_performed = not bool(getattr(config, "skip_translation", False))
     working_dir = Path(config.working_dir)
-    before = minimal_detection.detect(
-        docs,
-        article_document_ir,
-        baseline,
-        language=getattr(config, "lang_out", None),
-        translation_performed=translation_performed,
-        working_dir=working_dir,
-        sidecar_name="issues.before.json",
-        pass_index=0,
-        flow_report=state.flow_report,
-    )
-    state._detection_before = before
-
-    def detect_after(repair_owned_local_ref):
-        binding = None
-        if repair_owned_local_ref is not None:
-            binding = (
-                baseline.physical_ref(repair_owned_local_ref),
-                repair_owned_local_ref,
-            )
-        return minimal_detection.detect(
+    with _without_debug_overlay_text(docs):
+        before = minimal_detection.detect(
             docs,
             article_document_ir,
             baseline,
             language=getattr(config, "lang_out", None),
             translation_performed=translation_performed,
             working_dir=working_dir,
-            sidecar_name="issues.after.json",
-            pass_index=1,
+            sidecar_name="issues.before.json",
+            pass_index=0,
             flow_report=state.flow_report,
-            repair_owned_binding=binding,
         )
+        state._detection_before = before
 
-    repair_result = minimal_repair.repair_once(
-        before,
-        docs,
-        article_document_ir,
-        baseline,
-        typesetter,
-        config,
-        state.flow_report,
-        detect_after,
-    )
+        def detect_after(repair_owned_local_ref):
+            binding = None
+            if repair_owned_local_ref is not None:
+                binding = (
+                    baseline.physical_ref(repair_owned_local_ref),
+                    repair_owned_local_ref,
+                )
+            return minimal_detection.detect(
+                docs,
+                article_document_ir,
+                baseline,
+                language=getattr(config, "lang_out", None),
+                translation_performed=translation_performed,
+                working_dir=working_dir,
+                sidecar_name="issues.after.json",
+                pass_index=1,
+                flow_report=state.flow_report,
+                repair_owned_binding=binding,
+            )
+
+        repair_result = minimal_repair.repair_once(
+            before,
+            docs,
+            article_document_ir,
+            baseline,
+            typesetter,
+            config,
+            state.flow_report,
+            detect_after,
+        )
     if not isinstance(repair_result, minimal_repair.RepairResult):
         raise MinimalPipelineStateError("minimal repair did not return a RepairResult")
     state._repair_result = repair_result
@@ -1129,12 +1167,13 @@ def _refresh_detection_fixed_baseline(
     if baseline is None:
         raise MinimalPipelineStateError("source detection baseline is not available")
     source_geometry = baseline.source_geometry
-    refreshed = minimal_detection.refresh_fixed_inventory(
-        baseline,
-        docs,
-        article_document_ir,
-        flow_report=state.flow_report,
-    )
+    with _without_debug_overlay_text(docs):
+        refreshed = minimal_detection.refresh_fixed_inventory(
+            baseline,
+            docs,
+            article_document_ir,
+            flow_report=state.flow_report,
+        )
     if refreshed.source_geometry is not source_geometry:
         raise MinimalPipelineStateError(
             "fixed baseline refresh replaced frozen source geometry"

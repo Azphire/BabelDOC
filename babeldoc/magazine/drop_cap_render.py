@@ -1985,6 +1985,31 @@ def apply(
 ) -> dict | None:
     if not enabled(translation_config):
         return None
+    if article_document_ir is None:
+        raise DropCapRenderError("drop-cap render requires canonical ArticleDocumentIR")
+
+    intents = drop_cap_intent.intents_for(translation_config)
+    if not intents:
+        # Validate both declarations before taking the empty fast path.  A
+        # dangling keep verdict/default with no intent must still reach the
+        # ordinary validator rather than being silently accepted.
+        config = load_render_config()
+        target = getattr(translation_config, "lang_out", "") or ""
+        regime = config.regime_for(target)
+        default = drop_cap.load_drop_cap_config().default_for(target)
+        keep = kept_verdict()
+        has_keep_without_intent = any(
+            drop_cap.resolve_decision(paragraph, default)[0] == keep
+            for page in docs.page
+            for paragraph in page.pdf_paragraph or ()
+        )
+        if not has_keep_without_intent:
+            record = as_record(config, target, regime, [])
+            _write_report(translation_config, record)
+            drop_cap_intent.write_report(translation_config)
+            logger.debug("drop cap render: 0 kept opening(s), 0 set")
+            return record
+
     with _RenderPassTransaction(translation_config, docs) as transaction:
         record = _apply_render_pass(
             translation_config,

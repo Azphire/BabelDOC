@@ -157,6 +157,10 @@ FIT_NONE = "no_fit"
 FIT_INVALID = "invalid"
 
 
+class BoundedTypesettingError(RuntimeError):
+    """A declared source unit cannot fit its immutable source container."""
+
+
 @dataclass(frozen=True, slots=True)
 class SlotLineMetric:
     """One line produced while measuring target text against a slot."""
@@ -1238,6 +1242,10 @@ class Typesetting:
         initial_scale: float = 1.0,
         use_english_line_break: bool = True,
         apply_layout: bool = False,
+        minimum_scale: float = 0.1,
+        allow_expand: bool = True,
+        box_override: Box | None = None,
+        maximum_lines: int | None = None,
     ) -> tuple[float, list[TypesettingUnit] | None]:
         """查找最优缩放因子并可选择性地执行布局
 
@@ -1252,13 +1260,13 @@ class Typesetting:
         Returns:
             tuple[float, list[TypesettingUnit] | None]: (最终缩放因子，排版后的单元列表或 None)
         """
-        if not paragraph.box:
+        if not paragraph.box and box_override is None:
             return initial_scale, None
 
-        box = paragraph.box
+        box = copy.deepcopy(box_override if box_override is not None else paragraph.box)
         scale = initial_scale
         line_skip = 1.50 if self.is_cjk else 1.3
-        min_scale = 0.1
+        min_scale = minimum_scale
         expand_space_flag = 0
         final_typeset_units = None
 
@@ -1274,14 +1282,20 @@ class Typesetting:
                     use_english_line_break,
                 )
 
+                if all_units_fit and maximum_lines is not None:
+                    all_units_fit = (
+                        len(_line_metrics(typeset_units, tolerance=0.1))
+                        <= maximum_lines
+                    )
                 # 如果所有单元都放得下
                 if all_units_fit:
                     if apply_layout:
                         # 实际应用排版结果
+                        rendered = [unit.render() for unit in typeset_units]
+                        paragraph.box = copy.deepcopy(box)
                         paragraph.scale = scale
                         paragraph.pdf_paragraph_composition = []
-                        for unit in typeset_units:
-                            chars, curves, forms = unit.render()
+                        for chars, curves, forms in rendered:
                             for char in chars:
                                 paragraph.pdf_paragraph_composition.append(
                                     PdfParagraphComposition(pdf_character=char),
@@ -1306,7 +1320,7 @@ class Typesetting:
             else:
                 scale -= 0.1
 
-            if scale < 0.7:
+            if allow_expand and scale < 0.7:
                 space_expanded = False  # 标记是否成功扩展了空间
 
                 if expand_space_flag == 0:
@@ -1362,6 +1376,10 @@ class Typesetting:
                 initial_scale,
                 use_english_line_break=False,
                 apply_layout=apply_layout,
+                minimum_scale=minimum_scale,
+                allow_expand=allow_expand,
+                box_override=box_override,
+                maximum_lines=maximum_lines,
             )
 
         # 最后返回最小缩放因子
@@ -1406,6 +1424,42 @@ class Typesetting:
             use_english_line_break,
             apply_layout=True,
         )
+
+    def retypeset_bounded_source_unit(
+        self,
+        paragraph: il_version_1.PdfParagraph,
+        page: il_version_1.Page,
+        typesetting_units: list[TypesettingUnit],
+        source_unit,
+    ) -> None:
+        """Render one declared source unit without borrowing adjacent space."""
+        from babeldoc.magazine.line_split import RECORD_SINGLE
+        from babeldoc.magazine.line_split import load_line_split_config
+
+        if source_unit.source_box is None:
+            raise BoundedTypesettingError(
+                f"{source_unit.source_ref}: source container is not measurable"
+            )
+        source_box = Box(*source_unit.source_box)
+        _scale, laid_out = self._find_optimal_scale_and_layout(
+            paragraph,
+            page,
+            typesetting_units,
+            initial_scale=1.0,
+            use_english_line_break=True,
+            apply_layout=True,
+            minimum_scale=load_line_split_config().minimum_readable_scale,
+            allow_expand=False,
+            box_override=source_box,
+            maximum_lines=(
+                1 if source_unit.record_kind == RECORD_SINGLE else None
+            ),
+        )
+        if laid_out is None:
+            raise BoundedTypesettingError(
+                f"{source_unit.source_ref}: complete target does not fit "
+                f"{source_unit.record_kind} source container"
+            )
 
     def typesetting_document(self, document: il_version_1.Document):
         # 原有的排版逻辑
@@ -1553,6 +1607,14 @@ class Typesetting:
         ],
     ):
         typesetting_units = self.create_typesetting_units(paragraph, fonts)
+        from babeldoc.magazine.line_split import source_unit
+
+        physical_page = (
+            None if page.page_number is None else int(page.page_number) + 1
+        )
+        bounded_unit = source_unit(paragraph, physical_page)
+        if bounded_unit is not None and bounded_unit.source_box is not None:
+            paragraph.box = Box(*bounded_unit.source_box)
         # 如果所有单元都可以直接传递，则直接传递
         if all(unit.can_passthrough for unit in typesetting_units):
             paragraph.scale = 1.0
@@ -1560,6 +1622,15 @@ class Typesetting:
                 typesetting_units,
             )
         else:
+            if bounded_unit is not None:
+                self.retypeset_bounded_source_unit(
+                    paragraph,
+                    page,
+                    typesetting_units,
+                    bounded_unit,
+                )
+                self._update_paragraph_render_order(paragraph)
+                return
             # 使用预计算的缩放因子进行重排版
             precomputed_scale = (
                 paragraph.optimal_scale if paragraph.optimal_scale is not None else 1.0
