@@ -1,0 +1,32 @@
+{
+  "sample_id": "AramcoWorld-en-v2",
+  "source_sha256": "174cf0480ded6fb10bbbaa6368dc6b578bfd54835e2d2ff886073a23ae873663",
+  "direction": "en-zh",
+  "chains": [
+    {
+      "id": "aramco-p5-cross-column-body",
+      "role": "body",
+      "ordered_members": [
+        {"physical_page": 5, "source_text_sha256": "d630eec3db3e77fe45738ccddfdc6d1e21a06a058f24cf0817c28af105f385ea", "source_box": [78.15725, 85.10775, 270.701605, 126.268875], "diagnostic_ref": "styles_and_formulas.json:p5#115;debug_id=masRk"},
+        {"physical_page": 5, "source_text_sha256": "e4603c0db6e31386a5e94e7242c0ea19dc025254577ba30cee657f9d57fe72f0", "source_box": [285.15725, 493.938875, 477.124154, 547.15], "diagnostic_ref": "styles_and_formulas.json:p5#116;debug_id=QnLwy"}
+      ],
+      "transitions": ["cross_column"]
+    }
+  ],
+  "negative_chain_pairs": [],
+  "toc_records": [
+    {"anchor": "p3#80", "kind": "block", "source_box": [104.47, 687.9936, 448.212, 736.6976]}
+  ],
+  "layout_regions": [
+    {"role": "multi_column_page", "physical_page": 5, "source_box": [24.0, 0.0, 631.5, 783.0]},
+    {"role": "multi_column_page", "physical_page": 6, "source_box": [24.0, 0.0, 631.5, 783.0]}
+  ],
+  "titles": [
+    {"anchor": "p5#125", "source_box": [54.074621, 695.46061, 566.645334, 753.944701], "target_policy": "single_line_if_possible"}
+  ],
+  "dropcaps": [],
+  "coverage_exemptions": [
+    {"anchor": "p5#115", "reason": "ArticleBuilder currently reports this source page unsupported; retain as a generic Stage 01 unsupported-page truth input."}
+  ],
+  "stage_pages": [3, 5, 6, 7]
+}

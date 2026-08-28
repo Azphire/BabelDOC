@@ -1,0 +1,53 @@
+{
+  "sample_id": "bull-zh",
+  "source_sha256": "c558d56210f59d35ef6ab52a7ae8e995ba7e7c82c2e400ecbf64033fe7970ce5",
+  "direction": "zh-en",
+  "chains": [
+    {
+      "id": "bull-p8-p9-cross-page-body",
+      "role": "body",
+      "ordered_members": [
+        {"physical_page": 8, "source_text_sha256": "9b6481076ed5912757087673265ed364eafa76f855b422a3a9869ed9e9b87f22", "source_box": [377.288997, 67.211261, 560.787044, 143.964191], "diagnostic_ref": "styles_and_formulas.json:p8#77;debug_id=cojh9"},
+        {"physical_page": 9, "source_text_sha256": "d30161f314660f10d1b1ac0b2709d9ee19900779310d90c5da981e6a1a6ab7e2", "source_box": [34.391677, 711.089317, 217.868239, 789.9692], "diagnostic_ref": "styles_and_formulas.json:p9#105;debug_id=QcQHW"}
+      ],
+      "transitions": ["cross_page"]
+    },
+    {
+      "id": "bull-p9-cross-column-body",
+      "role": "body",
+      "ordered_members": [
+        {"physical_page": 9, "source_text_sha256": "4af9fc8aec1c8759cf5c41d7cdcb7fa1519c0c4e2f8c1d11e33558e32d90170a", "source_box": [57.198041, 67.643028, 211.666486, 80.4692], "diagnostic_ref": "styles_and_formulas.json:p9#111;debug_id=kjALF"},
+        {"physical_page": 9, "source_text_sha256": "c0c386ccec42e47bd47bf6ca535d5bb95fed2a8d48cffc4adc206a2816ff63f8", "source_box": [241.276166, 694.685997, 424.731244, 787.412559], "diagnostic_ref": "styles_and_formulas.json:p9#112;debug_id=SfMZf"}
+      ],
+      "transitions": ["cross_column"]
+    }
+  ],
+  "negative_chain_pairs": [
+    {
+      "id": "bull-p8-adjacent-distinct-body-paragraphs",
+      "role": "body",
+      "endpoints": [
+        {"physical_page": 8, "source_text_sha256": "e1fe9ba25a2fd6c970cda1c31325ea80fea28ca25e6ceb4916ad15d2d58d0c64", "source_box": [171.426873, 67.662433, 353.926928, 94.388995], "diagnostic_ref": "styles_and_formulas.json:p8#72;debug_id=s1oDA"},
+        {"physical_page": 8, "source_text_sha256": "adc9212f9f03254466cc4130c8dca8d90380b6d635e68cfe970b800da5a08485", "source_box": [170.470819, 381.291339, 353.915739, 459.816104], "diagnostic_ref": "styles_and_formulas.json:p8#69;debug_id=ynVxP"}
+      ],
+      "diagnostic_ref": "human_review:same_article_but_distinct_paragraphs"
+    }
+  ],
+  "toc_records": [
+    {"anchor": "p4#55", "kind": "single_visual_line", "source_box": [256.755586, 705.3937, 389.773, 717.438098]},
+    {"anchor": ["p4#57", "p4#58"], "kind": "block", "source_box": [256.981172, 506.013673, 438.036488, 533.45545]},
+    {"anchor": "p3#93", "kind": "prose_exempt", "source_box": [35.591581, 557.014617, 218.558534, 718.3945]}
+  ],
+  "layout_regions": [
+    {"role": "multi_column_page", "physical_page": 8, "source_box": [0.0, 0.0, 595.276001, 841.890015]},
+    {"role": "multi_column_page", "physical_page": 9, "source_box": [0.0, 0.0, 595.276001, 841.890015]}
+  ],
+  "titles": [
+    {"anchor": "p8#78", "source_box": [171.353114, 755.233278, 469.316981, 783.988161], "target_policy": "complete_in_source_region"}
+  ],
+  "dropcaps": [
+    {"anchor": "p8#69", "decision": "keep", "diagnostic_ref": "paragraph_owner=p8#69;visual_initial=p8#83(塞)"}
+  ],
+  "coverage_exemptions": [],
+  "stage_pages": [3, 4, 5, 8, 9]
+}

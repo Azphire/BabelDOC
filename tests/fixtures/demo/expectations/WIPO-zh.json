@@ -1,0 +1,30 @@
+{
+  "sample_id": "WIPO-zh",
+  "source_sha256": "7f3d8f31f17aab47464690c7d1c4aaaa3970525ed006ffaeec579214e3562800",
+  "direction": "zh-en",
+  "chains": [
+    {
+      "id": "wipo-p2-cross-column-body",
+      "role": "body",
+      "ordered_members": [
+        {"physical_page": 2, "source_text_sha256": "2a68e43031f4af6aee41d11b2a78eb39ef8072bcbac0ed6c8bd1917d683fef6e", "source_box": [128.5439, 54.2621, 334.9489, 102.3921], "diagnostic_ref": "styles_and_formulas.json:p2#48;debug_id=UBrVa"},
+        {"physical_page": 2, "source_text_sha256": "ccac945d6462d6a467bde3154917346012a228f020178a0d954cd9b78cfd5e7d", "source_box": [348.5039, 475.4421, 554.6199, 503.9721], "diagnostic_ref": "styles_and_formulas.json:p2#49;debug_id=KdWb8"}
+      ],
+      "transitions": ["cross_column"]
+    }
+  ],
+  "negative_chain_pairs": [],
+  "toc_records": [],
+  "layout_regions": [
+    {"role": "multi_column_page", "physical_page": 2, "source_box": [0.0, 0.0, 595.276001, 841.890015]},
+    {"role": "multi_column_page", "physical_page": 3, "source_box": [0.0, 0.0, 595.276001, 841.890015]}
+  ],
+  "titles": [
+    {"anchor": "p1#20", "source_box": [41.4017, 542.086, 522.1217, 708.454], "target_policy": "complete_in_source_region"}
+  ],
+  "dropcaps": [
+    {"anchor": "p2#45", "decision": "keep", "diagnostic_ref": "paragraph_owner=p2#45;visual_initial=格(same_paragraph_composition)"}
+  ],
+  "coverage_exemptions": [],
+  "stage_pages": [1, 2, 3, 5, 6]
+}

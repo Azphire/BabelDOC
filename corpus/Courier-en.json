@@ -1,0 +1,17 @@
+{
+  "sample_id": "Courier-en",
+  "source_sha256": "9fcb6b5e7d5a51972d766b98518554c64ef39080371ec98b4d04570402ea275a",
+  "nodes": [
+    {"source_ref": "p1#137", "physical_page": 1, "source_text_sha256": "7c111a9a28dd82bf220f4a33471dc6c96a6540fe90d6b9183fdb3ab41c5f1ccc", "source_box": [300.7625, 639.4727, 550.0025, 735.5527], "debug_id": "DLmgH"},
+    {"source_ref": "p1#146", "physical_page": 1, "source_text_sha256": "fa6142dd971a3bd0cbebf0e909927168e0c5a2b2648edea6df33fe63ad09f5c5", "source_box": [78.6158, 585.2324, 220.3652, 638.2384], "debug_id": "JLssJ"},
+    {"source_ref": "p1#157", "physical_page": 1, "source_text_sha256": "9d2aedfa163bb19992544412aa61064e4072a553159b35364ae9be0a47c551b6", "source_box": [78.4847, 277.7982, 256.2315, 297.649], "debug_id": "qEgLB"},
+    {"source_ref": "p1#169", "physical_page": 1, "source_text_sha256": "4b227777d4dd1fc61c6f884f48641d02b4d121d3fd328cb08b5531fcacdabf8a", "source_box": [45.2396, 637.8851, 60.7916, 661.8971], "debug_id": "4wFBa"},
+    {"source_ref": "p2#38", "physical_page": 2, "source_text_sha256": "27c9fbe9727406e32ef800ac907fbff763a3f88297aa380eff40c5f79354c6c4", "source_box": [60.7399, 662.6743, 483.6115, 792.1783], "debug_id": "D6ZST"},
+    {"source_ref": "p3#7", "physical_page": 3, "source_text_sha256": "b7c68e39dee7f081853cb0ec5b7ff7e85e9fcf788aecfa06c7a438326fcc3675", "source_box": [58.7449, 663.3701, 496.4764, 733.8791], "debug_id": "Jzn81"},
+    {"source_ref": "p4#144", "physical_page": 4, "source_text_sha256": "faabbd2e5f4e5e84b85c97a369ce6369fdbbc93fb75c35f9891d86cf7435040a", "source_box": [56.85554, 651.2017, 292.360544, 786.545], "debug_id": "9uNWY"},
+    {"source_ref": "p5#64", "physical_page": 5, "source_text_sha256": "fc52479e69373279cdb987bc4a9566dea2b761d91e7de9e3acfba3a1a5c2fa01", "source_box": [388.4753, 449.1149, 538.54317, 530.3969], "debug_id": "12nbt"},
+    {"source_ref": "p5#67", "physical_page": 5, "source_text_sha256": "eed0c25d628ef100bd0acadb17864bb280dc3fa809471ba1849215338347832d", "source_box": [222.51328, 411.3305, 373.22078, 494.4341], "debug_id": "teEWF"},
+    {"source_ref": "p7#162", "physical_page": 7, "source_text_sha256": "cd5461e761159a58be72c92decdf81badf0c4633243bea6447554366548d4d89", "source_box": [388.47812, 182.9865, 539.217314, 360.1417], "debug_id": "r9ir1"},
+    {"source_ref": "p8#145", "physical_page": 8, "source_text_sha256": "288f96f8f2f207768376b939b0bbfd8a72fb26cb887556c1cc28f2b86e350b3f", "source_box": [56.86128, 423.2981, 206.938212, 494.4049], "debug_id": "pEitN"}
+  ]
+}

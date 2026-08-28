@@ -1,0 +1,12 @@
+[babeldoc]
+lang-in = "zh"
+lang-out = "en"
+openai = true
+openai-model = "gpt-4o-mini"
+no-dual = true
+qps = 1
+pool-max-workers = 1
+term-pool-max-workers = 1
+report-interval = 0.5
+debug = false
+watermark-output-mode = "no_watermark"

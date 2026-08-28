@@ -1,0 +1,17 @@
+{
+  "sample_id": "FD-en-v2",
+  "source_sha256": "15e00ca85f0ee3ad9e3ae7a71af8808b57da6bb57f63708943b2a6b9dad4d622",
+  "nodes": [
+    {"source_ref": "p3#143", "physical_page": 3, "source_text_sha256": "1a6562590ef19d1045d06c4055742d38288e9e6dcd71ccde5cee80f1d5a774eb", "source_box": [387.7497, 329.748, 411.3297, 343.95], "debug_id": "Pyn5A"},
+    {"source_ref": "p3#144", "physical_page": 3, "source_text_sha256": "0fd899ab16c27906b093f8ef26d0c29075bb93ed08f89c55eaad3be431f77d93", "source_box": [388.1974, 315.75225, 539.44415, 325.16875], "debug_id": "Yzj23"},
+    {"source_ref": "p3#150", "physical_page": 3, "source_text_sha256": "f5ca38f748a1d6eaf726b8a42fb575c3c71f1864a8143301782de13da2d9202b", "source_box": [47.5643, 533.748, 70.8923, 547.95], "debug_id": "9nm2x"},
+    {"source_ref": "p3#151", "physical_page": 3, "source_text_sha256": "50518dafbfb4551a8d3c24a0946e5ac0a7856ec2def7c9e1d8ff9fb4473294bb", "source_box": [48.0641, 507.755, 185.30635, 529.16875], "debug_id": "razPs"},
+    {"source_ref": "p3#152", "physical_page": 3, "source_text_sha256": "ddfe263c6c29ecada9580c613554991b910f5f43de02740587badae0266247ff", "source_box": [47.24085, 459.544, 192.955175, 504.906], "debug_id": "rCE8g"},
+    {"source_ref": "p3#159", "physical_page": 3, "source_text_sha256": "b051c45e8c391d5ac07edfd4e5f0e8268a275b56350ee6fa62c259a48932f00f", "source_box": [46.29575, 243.54675, 189.67075, 300.906], "debug_id": "i8YkN"},
+    {"source_ref": "p3#162", "physical_page": 3, "source_text_sha256": "57fb53aae58f29647938f632f2ede434b424dcbc7d5fc6708c76f96aa9865579", "source_box": [216.12, 447.54675, 359.33775, 504.906], "debug_id": "tVqbH"},
+    {"source_ref": "p8#90", "physical_page": 8, "source_text_sha256": "c9f1ca445061987a850f2d2080b4423e59b7103dffa57be6f7d4cadbf614dde2", "source_box": [38.588, 144.688, 151.036, 210.32], "debug_id": "nadea"},
+    {"source_ref": "p8#91", "physical_page": 8, "source_text_sha256": "6c7b337c2588abad1696ace6f04a79c9b8fd1d158f290ee9f0240253e76ef825", "source_box": [375.997573, 459.6625, 533.785531, 663.25], "debug_id": "sSe8Y"},
+    {"source_ref": "p9#107", "physical_page": 9, "source_text_sha256": "2551ac989cdd08558acb01f30e120e483af1e5762999b122bb7cd4fa06866906", "source_box": [48.92575, 51.6625, 273.126325, 63.25275], "debug_id": "Tv3SP"},
+    {"source_ref": "p9#109", "physical_page": 9, "source_text_sha256": "d8a4491eaa910b4a48f4c7114075d2417f77a9904d57d268c20e06ce9d7c4208", "source_box": [291.651, 197.82425, 530.847779, 231.25], "debug_id": "fgQK9"}
+  ]
+}

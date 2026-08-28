@@ -1,0 +1,43 @@
+{
+  "sample_id": "FD-en-v2",
+  "source_sha256": "15e00ca85f0ee3ad9e3ae7a71af8808b57da6bb57f63708943b2a6b9dad4d622",
+  "direction": "en-zh",
+  "chains": [
+    {
+      "id": "fd-p9-cross-column-body",
+      "role": "body",
+      "ordered_members": [
+        {"physical_page": 9, "source_text_sha256": "2551ac989cdd08558acb01f30e120e483af1e5762999b122bb7cd4fa06866906", "source_box": [48.92575, 51.6625, 273.126325, 63.25275], "diagnostic_ref": "styles_and_formulas.json:p9#107;debug_id=Tv3SP"},
+        {"physical_page": 9, "source_text_sha256": "d8a4491eaa910b4a48f4c7114075d2417f77a9904d57d268c20e06ce9d7c4208", "source_box": [291.651, 197.82425, 530.847779, 231.25], "diagnostic_ref": "styles_and_formulas.json:p9#109;debug_id=fgQK9"}
+      ],
+      "transitions": ["cross_column"]
+    }
+  ],
+  "negative_chain_pairs": [
+    {
+      "id": "fd-p3-distinct-toc-entries",
+      "role": "toc",
+      "endpoints": [
+        {"physical_page": 3, "source_text_sha256": "b051c45e8c391d5ac07edfd4e5f0e8268a275b56350ee6fa62c259a48932f00f", "source_box": [46.29575, 243.54675, 189.67075, 300.906], "diagnostic_ref": "styles_and_formulas.json:p3#159;debug_id=i8YkN"},
+        {"physical_page": 3, "source_text_sha256": "57fb53aae58f29647938f632f2ede434b424dcbc7d5fc6708c76f96aa9865579", "source_box": [216.12, 447.54675, 359.33775, 504.906], "diagnostic_ref": "styles_and_formulas.json:p3#162;debug_id=tVqbH"}
+      ],
+      "diagnostic_ref": "human_review:adjacent_visual_records_belong_to_distinct_toc_entries"
+    }
+  ],
+  "toc_records": [
+    {"anchor": ["p3#143", "p3#144"], "kind": "single_visual_line", "source_box": [387.7497, 315.75225, 539.44415, 343.95]},
+    {"anchor": ["p3#150", "p3#151", "p3#152"], "kind": "block", "source_box": [47.24085, 459.544, 192.955175, 547.95]}
+  ],
+  "layout_regions": [
+    {"role": "multi_column_page", "physical_page": 8, "source_box": [0.0, 0.0, 576.0, 774.0]},
+    {"role": "multi_column_page", "physical_page": 9, "source_box": [0.0, 0.0, 576.0, 774.0]}
+  ],
+  "titles": [
+    {"anchor": "p8#90", "source_box": [38.588, 144.688, 151.036, 210.32], "target_policy": "single_line_if_possible"}
+  ],
+  "dropcaps": [
+    {"anchor": "p8#91", "decision": "keep", "diagnostic_ref": "paragraph_owner=p8#91;visual_initial=W(same_paragraph_composition)"}
+  ],
+  "coverage_exemptions": [],
+  "stage_pages": [3, 8, 9]
+}

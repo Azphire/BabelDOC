@@ -1,0 +1,62 @@
+[
+  {
+    "sample_id": "Courier-en",
+    "publication_id": "unesco-courier",
+    "role": "diagnosis",
+    "source_path": "examples/input/Courier-en.pdf",
+    "source_sha256": "9fcb6b5e7d5a51972d766b98518554c64ef39080371ec98b4d04570402ea275a",
+    "source_lang": "en",
+    "target_lang": "zh",
+    "config_path": "minimal.en-zh.toml",
+    "expectations_path": "tests/fixtures/demo/expectations/Courier-en.json",
+    "stage_pages": [1, 2, 3, 4, 5, 6, 7, 8]
+  },
+  {
+    "sample_id": "AramcoWorld-en-v2",
+    "publication_id": "aramco-world",
+    "role": "transfer",
+    "source_path": "examples/input/AramcoWorld-en-v2.pdf",
+    "source_sha256": "174cf0480ded6fb10bbbaa6368dc6b578bfd54835e2d2ff886073a23ae873663",
+    "source_lang": "en",
+    "target_lang": "zh",
+    "config_path": "minimal.en-zh.toml",
+    "expectations_path": "tests/fixtures/demo/expectations/AramcoWorld-en-v2.json",
+    "stage_pages": [3, 5, 6, 7]
+  },
+  {
+    "sample_id": "FD-en-v2",
+    "publication_id": "finance-and-development",
+    "role": "holdout",
+    "source_path": "examples/input/FD-en-v2.pdf",
+    "source_sha256": "15e00ca85f0ee3ad9e3ae7a71af8808b57da6bb57f63708943b2a6b9dad4d622",
+    "source_lang": "en",
+    "target_lang": "zh",
+    "config_path": "minimal.en-zh.toml",
+    "expectations_path": "tests/fixtures/demo/expectations/FD-en-v2.json",
+    "stage_pages": [3, 8, 9]
+  },
+  {
+    "sample_id": "bull-zh",
+    "publication_id": "iaea-bulletin",
+    "role": "transfer",
+    "source_path": "examples/input/bull-zh.pdf",
+    "source_sha256": "c558d56210f59d35ef6ab52a7ae8e995ba7e7c82c2e400ecbf64033fe7970ce5",
+    "source_lang": "zh",
+    "target_lang": "en",
+    "config_path": "minimal.zh-en.toml",
+    "expectations_path": "tests/fixtures/demo/expectations/bull-zh.json",
+    "stage_pages": [3, 4, 5, 8, 9]
+  },
+  {
+    "sample_id": "WIPO-zh",
+    "publication_id": "wipo-magazine",
+    "role": "holdout",
+    "source_path": "examples/input/WIPO-zh.pdf",
+    "source_sha256": "7f3d8f31f17aab47464690c7d1c4aaaa3970525ed006ffaeec579214e3562800",
+    "source_lang": "zh",
+    "target_lang": "en",
+    "config_path": "minimal.zh-en.toml",
+    "expectations_path": "tests/fixtures/demo/expectations/WIPO-zh.json",
+    "stage_pages": [1, 2, 3, 5, 6]
+  }
+]

@@ -1,0 +1,10 @@
+{
+  "sample_id": "WIPO-zh",
+  "source_sha256": "7f3d8f31f17aab47464690c7d1c4aaaa3970525ed006ffaeec579214e3562800",
+  "nodes": [
+    {"source_ref": "p1#20", "physical_page": 1, "source_text_sha256": "a26c9d78c4c89c3199de9b126830f1cf53adb211dfaa748fcf5f734315833473", "source_box": [41.4017, 542.086, 522.1217, 708.454], "debug_id": "H9py5"},
+    {"source_ref": "p2#45", "physical_page": 2, "source_text_sha256": "da4717f5c36061022766abe425793c326992e3cc8849d382527a3d17fbbacb4d", "source_box": [128.268407, 360.5721, 336.1799, 509.400523], "debug_id": "YWP4D"},
+    {"source_ref": "p2#48", "physical_page": 2, "source_text_sha256": "2a68e43031f4af6aee41d11b2a78eb39ef8072bcbac0ed6c8bd1917d683fef6e", "source_box": [128.5439, 54.2621, 334.9489, 102.3921], "debug_id": "UBrVa"},
+    {"source_ref": "p2#49", "physical_page": 2, "source_text_sha256": "ccac945d6462d6a467bde3154917346012a228f020178a0d954cd9b78cfd5e7d", "source_box": [348.5039, 475.4421, 554.6199, 503.9721], "debug_id": "KdWb8"}
+  ]
+}
