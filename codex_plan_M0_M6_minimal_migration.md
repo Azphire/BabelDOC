@@ -1,10 +1,10 @@
 # Codex Plan M0–M6：BabelDOC Magazine 最小迁移
 
-计划版本：2026-08-27 rev.2  
-执行形式：一个主控 Agent + 一个持续复用的执行 Agent  
-开发拓扑：一个独立 clone、一个开发分支、零额外 worktree  
-并行条件：旧仓库 C22 可继续运行；迁移仓库在 M6 付费门之前全程禁止翻译 API 请求  
-目标环境：Windows 11、PowerShell、Python 3.12、`uv`、源码树运行  
+计划版本：2026-08-27 rev.2
+执行形式：一个主控 Agent + 一个持续复用的执行 Agent
+开发拓扑：一个独立 clone、一个开发分支、零额外 worktree
+并行条件：旧仓库 C22 可继续运行；迁移仓库在 M6 付费门之前全程禁止翻译 API 请求
+目标环境：Windows 11、PowerShell、Python 3.12、`uv`、源码树运行
 
 ---
 
