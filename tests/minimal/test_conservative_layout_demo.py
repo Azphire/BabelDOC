@@ -284,12 +284,19 @@ def test_bounded_temporary_holder_outside_source_fails_closed(monkeypatch, tmp_p
     assert item["overflow_reason"] == "current_holder_outside_source_box"
 
 
-def test_nonunit_body_keeps_its_observed_allocation(tmp_path):
+def test_nonunit_body_uses_full_frozen_allocation(monkeypatch, tmp_path):
     source_box = (10.0, 10.0, 100.0, 40.0)
     current_box = (10.0, 10.0, 95.0, 35.0)
     paragraph = _paragraph("translated body", "ordinary-body", current_box)
+    paragraph.xobj_id = -1
     document = il_version_1.Document(page=[_page(0, [paragraph])], total_pages=1)
     config = Config(tmp_path)
+    monkeypatch.setattr(
+        layout_report.line_split,
+        "source_unit",
+        lambda _paragraph, _physical_page: None,
+    )
+    typesetter = Typesetting(config, RenderMapper())
 
     layout_report.prepare(
         config,
@@ -302,8 +309,17 @@ def test_nonunit_body_keeps_its_observed_allocation(tmp_path):
 
     assert container is not None
     assert container.source_box == source_box
-    assert container.allocation_box == current_box
-    layout_report.discard()
+    assert container.allocation_box == source_box
+    assert tuple(
+        getattr(paragraph.box, name) for name in ("x", "y", "x2", "y2")
+    ) == current_box
+
+    typesetter.render_paragraph(paragraph, document.page[0], {"body": RenderFont()})
+    item = layout_report.finalize()["elements"][0]
+    assert item["source_box"] == list(source_box)
+    assert item["allocation_box"] == list(source_box)
+    assert item["final_holder_box"] == list(source_box)
+    assert item["status"] == "success"
 
 
 @pytest.mark.parametrize("lang_out", ("zh", "en"))

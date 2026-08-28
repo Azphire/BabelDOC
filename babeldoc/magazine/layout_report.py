@@ -239,11 +239,12 @@ def prepare(
                 raise ConservativeLayoutError(
                     f"{source_ref}: source/allocation container is not measurable"
                 )
-            # A declared source unit is formally rendered in its frozen source
-            # box.  Earlier structural passes (notably drop-cap merge) may
-            # leave a smaller temporary paragraph holder, which is evidence to
-            # validate rather than the allocation Typesetting will use.
-            allocation = source if unit is not None else current_holder
+            # Every tracked target receives this SourceContainer as its formal
+            # bounded allocator, including ordinary body/chain paragraphs
+            # without a line-split unit.  Earlier structural passes (notably
+            # drop-cap merge) may leave a smaller temporary holder; validate it
+            # as evidence, but report the frozen box Typesetting will use.
+            allocation = source
             if source_ref in seen_refs:
                 raise ConservativeLayoutError(
                     f"duplicate conservative layout source ref: {source_ref}"
@@ -263,11 +264,7 @@ def prepare(
                 run.debug_entries[key] = entry
             if not _contains(source, current_holder):
                 entry.status = "overflow"
-                entry.overflow_reason = (
-                    "current_holder_outside_source_box"
-                    if unit is not None
-                    else "allocation_outside_source_box"
-                )
+                entry.overflow_reason = "current_holder_outside_source_box"
                 _write()
                 _RUN = None
                 raise ConservativeLayoutError(
