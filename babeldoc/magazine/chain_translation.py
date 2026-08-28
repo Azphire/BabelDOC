@@ -186,6 +186,8 @@ class MemberPlan:
     source_ref: str
     physical_source_ref: str
     placeholder_tokens: tuple[str, ...] = ()
+    protected_placeholder_tokens: tuple[str, ...] = ()
+    rich_text_placeholder_tokens: tuple[str, ...] = ()
 
     @property
     def debug_id(self):
@@ -594,14 +596,19 @@ def pair_class_of(labels: list[str | None], class_labels: dict) -> str | None:
     return matches[0]
 
 
-def _placeholder_tokens(source: str, translate_input) -> tuple[str, ...]:
-    """Return every protected token in source order or reject ambiguity."""
+def _placeholder_tokens(
+    source: str, translate_input
+) -> tuple[tuple[str, ...], tuple[str, ...], tuple[str, ...]]:
+    """Return all, hard-protected and inline-style tokens in source order."""
     occurrences: list[tuple[int, int, str]] = []
+    protected_occurrences: list[tuple[int, int, str]] = []
+    rich_text_occurrences: list[tuple[int, int, str]] = []
     for placeholder in getattr(translate_input, "placeholders", ()):
         if hasattr(placeholder, "placeholder") and hasattr(
             placeholder, "regex_pattern"
         ):
             patterns = (placeholder.regex_pattern,)
+            destination = protected_occurrences
         elif all(
             hasattr(placeholder, name)
             for name in (
@@ -613,6 +620,7 @@ def _placeholder_tokens(source: str, translate_input) -> tuple[str, ...]:
                 placeholder.left_regex_pattern,
                 placeholder.right_regex_pattern,
             )
+            destination = rich_text_occurrences
         else:
             raise ChainTranslationError("unsupported placeholder shape")
         for pattern in patterns:
@@ -622,7 +630,9 @@ def _placeholder_tokens(source: str, translate_input) -> tuple[str, ...]:
                     "each injected placeholder token must occur exactly once"
                 )
             match = matches[0]
-            occurrences.append((match.start(), match.end(), match.group(0)))
+            occurrence = (match.start(), match.end(), match.group(0))
+            occurrences.append(occurrence)
+            destination.append(occurrence)
     for token, expected_count in getattr(
         translate_input, "original_placeholder_tokens", {}
     ).items():
@@ -631,16 +641,22 @@ def _placeholder_tokens(source: str, translate_input) -> tuple[str, ...]:
             raise ChainTranslationError(
                 "original placeholder token count changed during preparation"
             )
-        occurrences.extend(
-            (match.start(), match.end(), match.group(0)) for match in matches
-        )
+        held = [(match.start(), match.end(), match.group(0)) for match in matches]
+        occurrences.extend(held)
+        protected_occurrences.extend(held)
     occurrences.sort(key=lambda item: (item[0], item[1]))
+    protected_occurrences.sort(key=lambda item: (item[0], item[1]))
+    rich_text_occurrences.sort(key=lambda item: (item[0], item[1]))
     if any(
         left[1] > right[0]
         for left, right in zip(occurrences, occurrences[1:], strict=False)
     ):
         raise ChainTranslationError("placeholder tokens overlap")
-    return tuple(token for _start, _end, token in occurrences)
+    return (
+        tuple(token for _start, _end, token in occurrences),
+        tuple(token for _start, _end, token in protected_occurrences),
+        tuple(token for _start, _end, token in rich_text_occurrences),
+    )
 
 
 def _tokens_in(text: str, expected: tuple[str, ...]) -> tuple[str, ...]:
@@ -1050,7 +1066,11 @@ class ChainPlan:
                     f"translate",
                 )
             try:
-                placeholder_tokens = _placeholder_tokens(text, translate_input)
+                (
+                    placeholder_tokens,
+                    protected_placeholder_tokens,
+                    rich_text_placeholder_tokens,
+                ) = _placeholder_tokens(text, translate_input)
             except (ChainTranslationError, re.error) as error:
                 return (
                     [],
@@ -1083,6 +1103,8 @@ class ChainPlan:
                     source_ref=member.source_ref,
                     physical_source_ref=member.physical_source_ref,
                     placeholder_tokens=placeholder_tokens,
+                    protected_placeholder_tokens=protected_placeholder_tokens,
+                    rich_text_placeholder_tokens=rich_text_placeholder_tokens,
                 )
             )
         return prepared, "", ""
@@ -1137,6 +1159,16 @@ class ChainPlan:
         expected_tokens = tuple(
             token for member in prepared for token in member.placeholder_tokens
         )
+        protected_tokens = tuple(
+            token
+            for member in prepared
+            for token in member.protected_placeholder_tokens
+        )
+        rich_text_tokens = tuple(
+            token
+            for member in prepared
+            for token in member.rich_text_placeholder_tokens
+        )
         if _tokens_in(merge.text, expected_tokens) != expected_tokens:
             self._record_outcome(
                 chain_id,
@@ -1187,7 +1219,14 @@ class ChainPlan:
                 article_id=preflight.article_id,
             )
             return
-        if _tokens_in(translated, expected_tokens) != expected_tokens:
+        translated_protected = _tokens_in(translated, protected_tokens)
+        translated_rich_text = _tokens_in(translated, rich_text_tokens)
+        rich_text_preserved = translated_rich_text == rich_text_tokens
+        rich_text_dropped = not translated_rich_text
+        if (
+            translated_protected != protected_tokens
+            or not (rich_text_preserved or rich_text_dropped)
+        ):
             detail = "joint response changed placeholder set or order"
             if request_id is not None:
                 self.translator.run_trace.fail_request(request_id, detail)
@@ -1203,6 +1242,9 @@ class ChainPlan:
                 article_id=preflight.article_id,
             )
             return
+        allocation_tokens = (
+            expected_tokens if rich_text_preserved else protected_tokens
+        )
         try:
             allocation = (
                 self._allocate_target(
@@ -1210,7 +1252,7 @@ class ChainPlan:
                     translated,
                     prepared,
                     preflight.ordered_slots,
-                    expected_tokens,
+                    allocation_tokens,
                 )
                 if preflight.ordered_slots
                 else self._legacy_allocation(merge, translated, prepared, pair_class)

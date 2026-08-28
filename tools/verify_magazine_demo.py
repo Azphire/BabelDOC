@@ -36,8 +36,8 @@ def _truth_ref(member: dict) -> str:
 
 def _box_equal(left, right, tolerance: float = 0.001) -> bool:
     return (
-        isinstance(left, list)
-        and isinstance(right, list)
+        isinstance(left, (list, tuple))
+        and isinstance(right, (list, tuple))
         and len(left) == len(right) == 4
         and all(
             abs(float(a) - float(b)) <= tolerance
@@ -57,14 +57,25 @@ def _member_signature(member: dict, where: str) -> tuple:
     if not isinstance(box, list) or len(box) != 4:
         raise VerificationError(f"invalid source box: {where}")
     try:
-        stable_box = tuple(round(float(value), 3) for value in box)
+        stable_box = tuple(float(value) for value in box)
     except (TypeError, ValueError) as error:
         raise VerificationError(f"invalid source box: {where}") from error
     return page, text_hash, stable_box
 
 
+def _signature_equal(left: tuple, right: tuple) -> bool:
+    return left[:2] == right[:2] and _box_equal(left[2], right[2])
+
+
+def _chain_signature_equal(left: tuple, right: tuple) -> bool:
+    return len(left) == len(right) and all(
+        _signature_equal(left_member, right_member)
+        for left_member, right_member in zip(left, right, strict=True)
+    )
+
+
 def _expected_chains(expectations: dict):
-    expected = {}
+    expected = []
     for chain in expectations.get("chains", []):
         members = chain.get("ordered_members")
         if not isinstance(members, list) or len(members) < 2:
@@ -73,10 +84,13 @@ def _expected_chains(expectations: dict):
             _member_signature(item, f"truth chain {chain.get('id')}")
             for item in members
         )
-        if signatures in expected:
+        if any(
+            _chain_signature_equal(signatures, held_signatures)
+            for held_signatures, _held_chain in expected
+        ):
             refs = tuple(_truth_ref(item) for item in members)
             raise VerificationError(f"duplicate truth chain: {refs}")
-        expected[signatures] = chain
+        expected.append((signatures, chain))
     return expected
 
 
@@ -125,7 +139,7 @@ def verify_chain(
 
     expected = _expected_chains(expectations)
     detector = _read(working_dir / "chain_report.json")
-    detected = {}
+    detected = []
     for chain in detector.get("chains", []):
         rows = chain.get("members")
         if not isinstance(rows, list) or len(rows) < 2:
@@ -141,23 +155,30 @@ def verify_chain(
             _member_signature(row, f"detector member {reference}")
             for reference, row in zip(refs, rows, strict=True)
         )
-        if signatures in detected:
-            raise VerificationError(f"duplicate detector chain: {refs}")
-        detected[signatures] = (rows, refs)
-    if set(detected) != set(expected):
-        missing = sorted(set(expected) - set(detected))
-        extra = sorted(set(detected) - set(expected))
-        raise VerificationError(
-            f"detector truth mismatch; missing={missing}, extra={extra}"
-        )
+        detected.append((signatures, rows, refs))
+
     truth_by_actual_ref = {}
     expected_actual_chains = {}
-    for signatures, (rows, refs) in detected.items():
-        truth_chain = expected[signatures]
+    matched_truth = set()
+    for signatures, rows, refs in detected:
+        candidates = [
+            index
+            for index, (truth_signatures, _truth_chain) in enumerate(expected)
+            if _chain_signature_equal(signatures, truth_signatures)
+        ]
+        if not candidates:
+            raise VerificationError(f"unadjudicated detector chain: {refs}")
+        if len(candidates) != 1:
+            raise VerificationError(f"ambiguous detector truth match: {refs}")
+        truth_index = candidates[0]
+        if truth_index in matched_truth:
+            raise VerificationError(f"duplicate detector chain: {refs}")
+        matched_truth.add(truth_index)
+        truth_chain = expected[truth_index][1]
         truth_members = truth_chain["ordered_members"]
         if refs in expected_actual_chains:
             raise VerificationError(f"duplicate detector refs: {refs}")
-        expected_actual_chains[refs] = signatures
+        expected_actual_chains[refs] = truth_index
         for order, (reference, row, truth) in enumerate(
             zip(refs, rows, truth_members, strict=True)
         ):
@@ -174,6 +195,12 @@ def verify_chain(
             if reference in truth_by_actual_ref:
                 raise VerificationError(f"detector member repeated: {reference}")
             truth_by_actual_ref[reference] = truth
+    if matched_truth != set(range(len(expected))):
+        missing = [
+            expected[index][1].get("id")
+            for index in sorted(set(range(len(expected))) - matched_truth)
+        ]
+        raise VerificationError(f"detector truth mismatch; missing={missing}")
 
     for negative in expectations.get("negative_chain_pairs", []):
         endpoints = negative.get("endpoints")
@@ -183,13 +210,21 @@ def verify_chain(
             _member_signature(item, f"negative pair {negative.get('id')}")
             for item in endpoints
         )
-        for chain_signatures in detected:
-            adjacent_pairs = set(
-                zip(chain_signatures, chain_signatures[1:], strict=False)
-            )
-            if signatures in adjacent_pairs or signatures[::-1] in adjacent_pairs:
-                refs = tuple(_truth_ref(item) for item in endpoints)
-                raise VerificationError(f"negative endpoints formed a chain: {refs}")
+        for chain_signatures, _rows, _refs in detected:
+            for left, right in zip(
+                chain_signatures, chain_signatures[1:], strict=False
+            ):
+                direct = _signature_equal(signatures[0], left) and _signature_equal(
+                    signatures[1], right
+                )
+                reverse = _signature_equal(signatures[1], left) and _signature_equal(
+                    signatures[0], right
+                )
+                if direct or reverse:
+                    refs = tuple(_truth_ref(item) for item in endpoints)
+                    raise VerificationError(
+                        f"negative endpoints formed a chain: {refs}"
+                    )
 
     translation = _read(working_dir / "chain_translation.report.json")
     if translation.get("applied") is not True:
@@ -309,7 +344,7 @@ def verify_chain(
         "check": "chain",
         "sample_id": expectations.get("sample_id"),
         "chains": len(expected),
-        "members": sum(len(signatures) for signatures in expected),
+        "members": sum(len(signatures) for signatures, _chain in expected),
         "status": "pass",
     }
 

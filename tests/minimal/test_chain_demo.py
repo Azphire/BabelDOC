@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import re
 from dataclasses import replace
 from pathlib import Path
 from types import SimpleNamespace
@@ -21,6 +22,7 @@ from babeldoc.magazine.chain_signals import evaluate_boundary
 from babeldoc.magazine.chain_signals import evaluate_column_boundaries
 from babeldoc.magazine.chain_signals import load_chain_config
 from babeldoc.magazine.chain_translation import plan_chain_translation
+from tests.minimal.fakes import Placeholder
 from tests.minimal.fakes import RecordingExecutor
 from tests.minimal.fakes import RecordingParagraphTracker
 from tests.minimal.fakes import RecordingTracker
@@ -313,6 +315,65 @@ def test_sparse_physical_refs_are_reported_without_changing_runtime_refs(tmp_pat
     ] == ["p1#0", "p1#1", "p2#0", "p2#1"]
 
 
+def test_missing_inline_rich_text_wrapper_degrades_to_base_style(tmp_path):
+    target = "完整的连续译文足够分配到三个正文框"
+    document, article_ir, paragraphs, translator = _three_member_fixture(
+        tmp_path, target, "zh"
+    )
+    left = "<style id='1'>"
+    right = "</style>"
+    paragraphs[0].unicode = f"source {left}the{right} member"
+    rich_text = SimpleNamespace(
+        left_regex_pattern=re.escape(left),
+        right_regex_pattern=re.escape(right),
+    )
+    translator.il_translator.prepared[id(paragraphs[0])] = TranslateInput(
+        paragraphs[0].pdf_style, placeholders=[rich_text]
+    )
+
+    plan = plan_chain_translation(
+        translator, document, RecordingTracker(), EMPTY_CONTEXT, article_ir
+    )
+
+    assert len(plan.entries) == 1
+    assert len(translator.translate_engine.llm_calls) == 1
+    assert all(fragment.text for fragment in plan.entries[0].allocation.fragments)
+    assert (
+        "".join(
+            fragment.text for fragment in plan.entries[0].allocation.fragments
+        )
+        == target
+    )
+    plan.apply()
+    assert "".join(paragraph.unicode for paragraph in paragraphs) == target
+
+
+@pytest.mark.parametrize("placeholder_kind", ["formula", "original"])
+def test_missing_formula_or_original_placeholder_still_fails_closed(
+    tmp_path, placeholder_kind
+):
+    target = "完整的连续译文没有保护标记"
+    document, article_ir, paragraphs, translator = _three_member_fixture(
+        tmp_path, target, "zh"
+    )
+    protected_marker = "[[KEEP]]"
+    paragraphs[0].unicode = f"source {protected_marker} member"
+    translate_input = TranslateInput(paragraphs[0].pdf_style)
+    if placeholder_kind == "formula":
+        translate_input.placeholders = [Placeholder(protected_marker)]
+    else:
+        translate_input.original_placeholder_tokens = {protected_marker: 1}
+    translator.il_translator.prepared[id(paragraphs[0])] = translate_input
+
+    plan = plan_chain_translation(
+        translator, document, RecordingTracker(), EMPTY_CONTEXT, article_ir
+    )
+
+    assert not plan.entries
+    assert not plan.claim
+    assert plan.outcomes[0]["fallback_reason"] == "placeholder_bearing"
+
+
 def test_planning_failure_releases_to_ordinary_once_and_verifier_rejects(
     tmp_path,
 ):
@@ -470,7 +531,11 @@ def test_chain_verifier_checks_truth_translation_and_ordinary_exclusion(tmp_path
     work.mkdir()
     truth_refs = ("p5#1", "p5#2")
     refs = ("p5#7", "p5#8")
-    boxes = ([10.0, 20.0, 30.0, 40.0], [40.0, 50.0, 60.0, 70.0])
+    boxes = ([10.0, 182.9865, 30.0, 200.0], [40.0, 50.0, 60.0, 70.0])
+    actual_boxes = (
+        [10.0, 182.9864999999998, 30.0, 200.0],
+        [40.0, 50.0, 60.0, 70.0],
+    )
     hashes = ("a" * 64, "b" * 64)
     expectations = {
         "sample_id": "synthetic",
@@ -503,7 +568,7 @@ def test_chain_verifier_checks_truth_translation_and_ordinary_exclusion(tmp_path
                 "source_ref": reference,
                 "physical_page": 5,
                 "source_text_sha256": hashes[index],
-                "source_box": boxes[index],
+                "source_box": actual_boxes[index],
                 "role": "plain text",
                 "chain_index": index,
                 "order": index,
@@ -521,12 +586,12 @@ def test_chain_verifier_checks_truth_translation_and_ordinary_exclusion(tmp_path
         "chain_id": "raw",
         "ordered_source_refs": list(refs),
         "runtime_source_refs": ["p2#1", "p2#2"],
-        "source_boxes": list(boxes),
+        "source_boxes": list(actual_boxes),
         "merged_source_sha256": "c" * 64,
         "joint_call_count": 1,
         "whole_target_sha256": whole_hash,
         "ordered_fragments": fragments,
-        "fragment_boxes": list(boxes),
+        "fragment_boxes": list(actual_boxes),
         "boundary_kinds": ["column"],
         "members": [
             {
@@ -612,6 +677,26 @@ def test_chain_verifier_checks_truth_translation_and_ordinary_exclusion(tmp_path
     )
     with pytest.raises(VerificationError, match="duplicate detector chain"):
         verify_chain(expectations_path, source, output, work, "en", "zh")
+    (work / "chain_report.json").write_text(
+        json.dumps(detector_report), encoding="utf-8"
+    )
+
+    ambiguous_expectations = json.loads(json.dumps(expectations))
+    second_truth = json.loads(json.dumps(expectations["chains"][0]))
+    second_truth["id"] = "nearby-truth"
+    second_truth["ordered_members"][0]["source_box"][1] += 0.0015
+    ambiguous_expectations["chains"].append(second_truth)
+    expectations_path.write_text(
+        json.dumps(ambiguous_expectations), encoding="utf-8"
+    )
+    ambiguous_detector = json.loads(json.dumps(detector_report))
+    ambiguous_detector["chains"][0]["members"][0]["source_box"][1] += 0.00075
+    (work / "chain_report.json").write_text(
+        json.dumps(ambiguous_detector), encoding="utf-8"
+    )
+    with pytest.raises(VerificationError, match="ambiguous detector truth match"):
+        verify_chain(expectations_path, source, output, work, "en", "zh")
+    expectations_path.write_text(json.dumps(expectations), encoding="utf-8")
     (work / "chain_report.json").write_text(
         json.dumps(detector_report), encoding="utf-8"
     )
