@@ -49,6 +49,9 @@ class MagazineState:
     _render_document_identity: int | None = None
     _render_report: dict | None = None
     _detection_baseline: minimal_detection.DetectionBaseline | None = None
+    _fixed_baseline_refresh_started: bool = False
+    _fixed_baseline_refresh_completed: bool = False
+    _fixed_baseline_refresh_document_identity: int | None = None
     _detection_started: bool = False
     _detection_completed: bool = False
     _detection_document_identity: int | None = None
@@ -131,6 +134,18 @@ class MagazineState:
     @property
     def detection_baseline(self) -> minimal_detection.DetectionBaseline | None:
         return self._detection_baseline
+
+    @property
+    def fixed_baseline_refresh_started(self) -> bool:
+        return self._fixed_baseline_refresh_started
+
+    @property
+    def fixed_baseline_refresh_completed(self) -> bool:
+        return self._fixed_baseline_refresh_completed
+
+    @property
+    def fixed_baseline_refresh_document_identity(self) -> int | None:
+        return self._fixed_baseline_refresh_document_identity
 
     @property
     def detection_started(self) -> bool:
@@ -452,7 +467,10 @@ def _sidecar_summary(
     if result.report_path.resolve() != path.resolve():
         raise MinimalPipelineStateError(f"{expected_name} path disagrees with state")
     payload = _read_json(path, expected_name)
-    if payload != result.record:
+    canonical_record = json.loads(
+        json.dumps(result.record, ensure_ascii=False, sort_keys=True)
+    )
+    if payload != canonical_record:
         raise MinimalPipelineStateError(f"{expected_name} differs from memory")
     counts = _mapping(payload.get("counts"), f"{expected_name}.counts")
     by_kind = _mapping(counts.get("by_kind"), f"{expected_name}.counts.by_kind")
@@ -1065,6 +1083,48 @@ def _detect_and_repair(config, docs, typesetter, state: MagazineState) -> None:
     state._detection_completed = True
 
 
+def _refresh_detection_fixed_baseline(
+    docs,
+    article_document_ir,
+    state: MagazineState,
+) -> minimal_detection.DetectionBaseline:
+    if state._fixed_baseline_refresh_started:
+        raise MinimalPipelineStateError(
+            "post-typesetting fixed baseline refresh was already attempted"
+        )
+    state._fixed_baseline_refresh_started = True
+    state._fixed_baseline_refresh_document_identity = id(docs)
+    if not state._render_started:
+        raise MinimalPipelineStateError(
+            "fixed baseline refresh must run inside the render phase"
+        )
+    if state.structure_document_identity != id(docs):
+        raise MinimalPipelineStateError(
+            "fixed baseline refresh belongs to a different document"
+        )
+    if state.flow_document_identity != id(docs):
+        raise MinimalPipelineStateError(
+            "fixed baseline refresh article flow belongs to another document"
+        )
+    baseline = state.detection_baseline
+    if baseline is None:
+        raise MinimalPipelineStateError("source detection baseline is not available")
+    source_geometry = baseline.source_geometry
+    refreshed = minimal_detection.refresh_fixed_inventory(
+        baseline,
+        docs,
+        article_document_ir,
+        flow_report=state.flow_report,
+    )
+    if refreshed.source_geometry is not source_geometry:
+        raise MinimalPipelineStateError(
+            "fixed baseline refresh replaced frozen source geometry"
+        )
+    state._detection_baseline = refreshed
+    state._fixed_baseline_refresh_completed = True
+    return refreshed
+
+
 def after_typesetting(config, docs, typesetter) -> dict:
     """Render frozen drop-cap intents once after formal typesetting."""
     state = _state(config)
@@ -1090,6 +1150,11 @@ def after_typesetting(config, docs, typesetter) -> dict:
             "drop-cap renderer typesetter belongs to a different config"
         )
 
+    _refresh_detection_fixed_baseline(
+        docs,
+        article_document_ir,
+        state,
+    )
     report = drop_cap_render.apply(
         config,
         docs,

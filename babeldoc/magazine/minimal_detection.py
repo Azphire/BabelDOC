@@ -120,7 +120,7 @@ class SourceGeometrySnapshot:
 
 @dataclass(frozen=True, slots=True)
 class DetectionBaseline:
-    """Immutable evidence frozen after the unique canonical IR is built."""
+    """Source evidence plus the fixed inventory for the current layout stage."""
 
     document_identity: int
     article_document_identity: int
@@ -295,6 +295,34 @@ def capture_baseline(
         fixed_inventory=fixed_assets.build_inventory(
             docs,
             article_document_ir=article_document_ir,
+        ),
+    )
+
+
+def refresh_fixed_inventory(
+    baseline: DetectionBaseline,
+    docs,
+    article_document_ir,
+    *,
+    flow_report: dict | None,
+) -> DetectionBaseline:
+    """Refresh only fixed assets after formal typesetting, preserving source evidence."""
+    if not isinstance(baseline, DetectionBaseline):
+        raise MinimalDetectionError("fixed refresh requires a DetectionBaseline")
+    if baseline.document_identity != id(docs):
+        raise MinimalDetectionError("fixed refresh baseline belongs to another document")
+    if baseline.article_document_identity != id(article_document_ir):
+        raise MinimalDetectionError("fixed refresh baseline belongs to another ArticleIR")
+    if len(docs.page or ()) != len(baseline.physical_labels):
+        raise MinimalDetectionError("fixed refresh document page count changed")
+    _article_elements(article_document_ir)
+    flow_owned_refs = _committed_flow_refs(flow_report, article_document_ir)
+    return replace(
+        baseline,
+        fixed_inventory=fixed_assets.build_inventory(
+            docs,
+            article_document_ir=article_document_ir,
+            flow_owned_paragraph_refs=flow_owned_refs,
         ),
     )
 

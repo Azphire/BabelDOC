@@ -200,6 +200,22 @@ def test_six_detectors_and_document_are_read_only(tmp_path):
         "chain_conservation",
     }.issubset({issue.kind for issue in result.issues})
     assert result.record["fixed_comparison"]["holds"] is True
+    tuple_record = json.loads(json.dumps(result.record))
+    tuple_record["issues"][0]["evidence"]["tuple_box"] = (0.0, 1.0, 2.0, 3.0)
+    tuple_path = minimal_detection._write_sidecar(
+        tmp_path, "issues.before.json", tuple_record
+    )
+    tuple_result = minimal_detection.DetectionResult(
+        result.issues, tuple_record, tuple_path
+    )
+    assert isinstance(tuple_record["issues"][0]["evidence"]["tuple_box"], tuple)
+    summary_config = SimpleNamespace(
+        working_dir=tmp_path,
+        get_working_file_path=lambda name: str(tmp_path / name),
+    )
+    assert minimal_pipeline._sidecar_summary(
+        tuple_result, summary_config, "issues.before.json"
+    )["total"] == len(result.issues)
 
     docs.page[0].cropbox.box.x += 1.0
     drift_before = document_digest(docs)
@@ -492,3 +508,181 @@ def test_no_explicit_selection_preserves_fixture_total(tmp_path):
         SimpleNamespace(input_file=tmp_path / "missing.pdf", page_ranges=None), empty
     )
     assert empty.total_pages == 0
+
+
+def test_post_typesetting_fixed_refresh_preserves_source_and_flow_exclusions(
+    tmp_path,
+):
+    docs, article_ir, _paragraphs, _translator = make_chain_fixture(
+        "目标文本", tmp_path / "translator"
+    )
+    docs.page[0].pdf_paragraph.append(
+        _paragraph("fixed furniture", "furniture", (10.0, 70.0, 80.0, 82.0))
+    )
+    baseline = minimal_detection.capture_baseline(
+        docs,
+        article_ir,
+        labeled_pages=((7, docs.page[0]), (8, docs.page[1])),
+    )
+    source_geometry = baseline.source_geometry
+    docs.page[0].pdf_paragraph[2].unicode = "formal representation"
+    docs.page[0].pdf_paragraph.append(
+        _paragraph("flow holder", "flow", (85.0, 70.0, 110.0, 82.0))
+    )
+    flow = {
+        "cross_page_segments": [
+            {
+                "status": "applied",
+                "action_status": "committed",
+                "committed_flow_owned_refs": ["p1#3"],
+            }
+        ]
+    }
+    before_refresh = minimal_detection.detect(
+        docs,
+        article_ir,
+        baseline,
+        language="zh",
+        translation_performed=False,
+        working_dir=tmp_path / "before-refresh",
+        sidecar_name="issues.before.json",
+        pass_index=0,
+        flow_report=flow,
+    )
+    assert before_refresh.record["fixed_comparison"]["holds"] is False
+
+    refreshed = minimal_detection.refresh_fixed_inventory(
+        baseline,
+        docs,
+        article_ir,
+        flow_report=flow,
+    )
+    assert refreshed.source_geometry is source_geometry
+    assert refreshed.physical_to_local == baseline.physical_to_local
+    assert all(
+        asset.reference != "p1#3" for asset in refreshed.fixed_inventory.assets
+    )
+    clean = minimal_detection.detect(
+        docs,
+        article_ir,
+        refreshed,
+        language="zh",
+        translation_performed=False,
+        working_dir=tmp_path / "after-refresh",
+        sidecar_name="issues.before.json",
+        pass_index=0,
+        flow_report=flow,
+    )
+    assert clean.record["fixed_comparison"]["holds"] is True
+    docs.page[0].cropbox.box.x += 1.0
+    drift = minimal_detection.detect(
+        docs,
+        article_ir,
+        refreshed,
+        language="zh",
+        translation_performed=False,
+        working_dir=tmp_path / "after-drift",
+        sidecar_name="issues.after.json",
+        pass_index=1,
+        flow_report=flow,
+    )
+    assert drift.record["fixed_comparison"]["holds"] is False
+    assert any(issue.kind == "fixed_asset_drift" for issue in drift.issues)
+
+
+def test_pipeline_fixed_refresh_is_one_shot_and_identity_bound(tmp_path):
+    docs, article_ir, _paragraphs, _translator = make_chain_fixture(
+        "目标文本", tmp_path / "translator"
+    )
+    baseline = minimal_detection.capture_baseline(
+        docs,
+        article_ir,
+        labeled_pages=((7, docs.page[0]), (8, docs.page[1])),
+    )
+
+    def prepared_state(document):
+        config = SimpleNamespace()
+        minimal_pipeline.configure(config)
+        state = config.magazine_state
+        state._structure_started = True
+        state._structure_document_identity = id(document)
+        state._article_document_ir = article_ir
+        state._flow_started = True
+        state._flow_completed = True
+        state._flow_document_identity = id(document)
+        state._flow_report = None
+        state._render_started = True
+        state._detection_baseline = baseline
+        return state
+
+    state = prepared_state(docs)
+    refreshed = minimal_pipeline._refresh_detection_fixed_baseline(
+        docs, article_ir, state
+    )
+    assert refreshed.source_geometry is baseline.source_geometry
+    assert state.fixed_baseline_refresh_started
+    assert state.fixed_baseline_refresh_completed
+    assert state.fixed_baseline_refresh_document_identity == id(docs)
+    with pytest.raises(minimal_pipeline.MinimalPipelineStateError):
+        minimal_pipeline._refresh_detection_fixed_baseline(docs, article_ir, state)
+
+    wrong_docs, _wrong_ir, _paragraphs, _translator = make_chain_fixture(
+        "目标文本", tmp_path / "wrong-translator"
+    )
+    wrong_state = prepared_state(docs)
+    with pytest.raises(minimal_pipeline.MinimalPipelineStateError):
+        minimal_pipeline._refresh_detection_fixed_baseline(
+            wrong_docs, article_ir, wrong_state
+        )
+    assert wrong_state.fixed_baseline_refresh_started
+    assert not wrong_state.fixed_baseline_refresh_completed
+
+
+def test_after_typesetting_refreshes_fixed_before_dropcap(tmp_path, monkeypatch):
+    docs, article_ir, _paragraphs, _translator = make_chain_fixture(
+        "目标文本", tmp_path / "translator"
+    )
+    baseline = minimal_detection.capture_baseline(
+        docs,
+        article_ir,
+        labeled_pages=((7, docs.page[0]), (8, docs.page[1])),
+    )
+    config = SimpleNamespace()
+    minimal_pipeline.configure(config)
+    typesetter = SimpleNamespace(translation_config=config)
+    state = config.magazine_state
+    state._structure_started = True
+    state._structure_document_identity = id(docs)
+    state._article_document_ir = article_ir
+    state._translation_prep_started = True
+    state._translation_prep_completed = True
+    state._flow_started = True
+    state._flow_completed = True
+    state._flow_document_identity = id(docs)
+    state._flow_report = None
+    state._typesetter_identity = id(typesetter)
+    state._detection_baseline = baseline
+    events = []
+
+    def refresh(current, document, current_ir, *, flow_report):
+        assert current is baseline
+        assert document is docs
+        assert current_ir is article_ir
+        assert flow_report is None
+        events.append("fixed_refresh")
+        return current
+
+    marker = RuntimeError("dropcap marker")
+
+    def dropcap(*_args, **_kwargs):
+        events.append("dropcap")
+        raise marker
+
+    monkeypatch.setattr(minimal_detection, "refresh_fixed_inventory", refresh)
+    monkeypatch.setattr(minimal_pipeline.drop_cap_render, "apply", dropcap)
+    with pytest.raises(RuntimeError) as raised:
+        minimal_pipeline.after_typesetting(config, docs, typesetter)
+    assert raised.value is marker
+    assert events == ["fixed_refresh", "dropcap"]
+    assert state.fixed_baseline_refresh_completed
+    assert state.render_started and not state.render_completed
