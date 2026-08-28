@@ -163,11 +163,23 @@ def test_styled_translation_markup_freezes_plain_visual_target(
 ):
     source_box = (5.0, 50.0, 100.0, 70.0)
     markup = "<style id='1'>铁路？</style><style id='3'>铁路？</style>"
-    visible = "铁路？铁路？"
+    visible = "铁路？"
     paragraph = _paragraph(markup, "styled-title", source_box, label="title")
     paragraph.xobj_id = -1
-    first_style = il_version_1.PdfStyle(font_id="body", font_size=10.0)
-    second_style = il_version_1.PdfStyle(font_id="body", font_size=8.0)
+    first_style = il_version_1.PdfStyle(
+        font_id="body",
+        font_size=10.0,
+        graphic_state=il_version_1.GraphicState(
+            passthrough_per_char_instruction="0 g"
+        ),
+    )
+    second_style = il_version_1.PdfStyle(
+        font_id="body",
+        font_size=10.0,
+        graphic_state=il_version_1.GraphicState(
+            passthrough_per_char_instruction="1 0 0 rg"
+        ),
+    )
     paragraph.pdf_paragraph_composition = [
         il_version_1.PdfParagraphComposition(
             pdf_same_style_unicode_characters=(
@@ -201,9 +213,18 @@ def test_styled_translation_markup_freezes_plain_visual_target(
     )
 
     row = report["titles"][0]
-    assert row["target_chars"] == 6
+    assert row["target_chars"] == 3
     assert row["target_sha256"] == _sha256(visible)
     assert row["rendered_target_sha256"] == _sha256(visible)
+    assert row["pre_dedup_visual_target"] == visible * 2
+    assert row["pre_dedup_target_chars"] == 6
+    assert row["duplicate_layers_dropped"] == 1
+    proof = row["target_segments"][0]["duplicate_layer"]
+    assert proof["split_composition_index"] == 1
+    assert proof["dropped_layer_count"] == 1
+    assert proof["style_proof"][0]["kept_style_sequence"] == (
+        proof["style_proof"][0]["dropped_style_sequence"]
+    )
     assert paragraph.unicode == visible
     rendered = "".join(
         composition.pdf_character.char_unicode
@@ -213,6 +234,177 @@ def test_styled_translation_markup_freezes_plain_visual_target(
     assert rendered == visible
     assert "style" not in rendered
     assert "debug" not in rendered
+
+    source = tmp_path / "dedup-source.pdf"
+    output = tmp_path / "dedup-output.pdf"
+    source.write_bytes(b"dedup-source")
+    output.write_bytes(b"dedup-output")
+    expectations = tmp_path / "dedup-expectations.json"
+    expectations.write_text(
+        json.dumps(
+            {
+                "sample_id": "synthetic-title-dedup",
+                "source_sha256": hashlib.sha256(b"dedup-source").hexdigest(),
+                "direction": "en-zh",
+                "titles": [{"anchor": "p1#0", "source_box": list(source_box)}],
+            }
+        ),
+        encoding="utf-8",
+    )
+    assert verify_title(
+        expectations, source, output, tmp_path, "en", "zh"
+    )["status"] == "pass"
+
+    proof["style_proof"][0]["dropped_style_sequence"][0]["font_size"] = 9.0
+    (tmp_path / title_typeset.REPORT_NAME).write_text(
+        json.dumps(report), encoding="utf-8"
+    )
+    with pytest.raises(VerificationError, match="duplicate style proof"):
+        verify_title(expectations, source, output, tmp_path, "en", "zh")
+
+
+def test_repeated_wording_inside_one_generated_holder_is_not_deduplicated(
+    monkeypatch, tmp_path
+):
+    target = "铁路？铁路？"
+    source_box = (5.0, 50.0, 100.0, 70.0)
+    paragraph = _paragraph(target, "one-holder-repeat", source_box, label="title")
+    paragraph.xobj_id = -1
+
+    report, _document_value, _typesetter = _run_title(
+        monkeypatch, tmp_path, "zh", paragraph, source_box
+    )
+
+    row = report["titles"][0]
+    assert row["visual_target"] == target
+    assert row["target_chars"] == 6
+    assert row["duplicate_layers_dropped"] == 0
+    assert row["target_segments"][0]["duplicate_layer"] is None
+    assert paragraph.unicode == target
+
+
+def test_equal_composition_text_with_unequal_sizes_is_not_deduplicated(
+    monkeypatch, tmp_path
+):
+    target = "铁路？铁路？"
+    source_box = (5.0, 50.0, 100.0, 70.0)
+    paragraph = _paragraph(target, "unequal-style-repeat", source_box, label="title")
+    paragraph.xobj_id = -1
+    paragraph.pdf_paragraph_composition = [
+        il_version_1.PdfParagraphComposition(
+            pdf_same_style_unicode_characters=(
+                il_version_1.PdfSameStyleUnicodeCharacters(
+                    pdf_style=il_version_1.PdfStyle(
+                        font_id="body", font_size=10.0
+                    ),
+                    unicode="铁路？",
+                )
+            )
+        ),
+        il_version_1.PdfParagraphComposition(
+            pdf_same_style_unicode_characters=(
+                il_version_1.PdfSameStyleUnicodeCharacters(
+                    pdf_style=il_version_1.PdfStyle(
+                        font_id="body", font_size=8.0
+                    ),
+                    unicode="铁路？",
+                )
+            )
+        ),
+    ]
+
+    report, _document_value, _typesetter = _run_title(
+        monkeypatch, tmp_path, "zh", paragraph, source_box
+    )
+
+    row = report["titles"][0]
+    assert row["visual_target"] == target
+    assert row["target_chars"] == 6
+    assert row["duplicate_layers_dropped"] == 0
+    assert row["target_segments"][0]["duplicate_layer"] is None
+    assert paragraph.unicode == target
+
+
+def test_exact_multirun_layers_deduplicate_only_at_the_midpoint(
+    monkeypatch, tmp_path
+):
+    source_box = (5.0, 50.0, 100.0, 70.0)
+    paragraph = _paragraph("铁路？铁路？", "multirun-overpaint", source_box, label="title")
+    paragraph.xobj_id = -1
+    styles = (
+        il_version_1.PdfStyle(font_id="body", font_size=10.0),
+        il_version_1.PdfStyle(font_id="body", font_size=8.0),
+    )
+    paragraph.pdf_paragraph_composition = [
+        il_version_1.PdfParagraphComposition(
+            pdf_same_style_unicode_characters=(
+                il_version_1.PdfSameStyleUnicodeCharacters(
+                    pdf_style=styles[position % 2],
+                    unicode=text,
+                )
+            )
+        )
+        for position, text in enumerate(("铁路", "？", "铁路", "？"))
+    ]
+
+    report, _document_value, _typesetter = _run_title(
+        monkeypatch, tmp_path, "zh", paragraph, source_box
+    )
+
+    row = report["titles"][0]
+    proof = row["target_segments"][0]["duplicate_layer"]
+    assert row["visual_target"] == "铁路？"
+    assert proof["split_composition_index"] == 2
+    assert len(proof["style_proof"]) == 2
+    assert paragraph.unicode == "铁路？"
+
+
+def test_formula_carrier_prevents_intra_paragraph_duplicate_guess():
+    source_box = (5.0, 50.0, 100.0, 70.0)
+    paragraph = _paragraph("A+A+", "formula-repeat", source_box, label="title")
+    style = il_version_1.PdfStyle(font_id="body", font_size=10.0)
+    formula = il_version_1.PdfFormula(
+        box=il_version_1.Box(0.0, 0.0, 5.0, 10.0),
+        pdf_character=[
+            il_version_1.PdfCharacter(
+                pdf_style=style,
+                box=il_version_1.Box(0.0, 0.0, 5.0, 10.0),
+                char_unicode="+",
+                xobj_id=-1,
+            )
+        ],
+        x_offset=0.0,
+        y_offset=0.0,
+        x_advance=5.0,
+    )
+    paragraph.pdf_paragraph_composition = [
+        il_version_1.PdfParagraphComposition(
+            pdf_same_style_unicode_characters=(
+                il_version_1.PdfSameStyleUnicodeCharacters(
+                    pdf_style=style,
+                    unicode="A",
+                )
+            )
+        ),
+        il_version_1.PdfParagraphComposition(pdf_formula=copy.deepcopy(formula)),
+        il_version_1.PdfParagraphComposition(
+            pdf_same_style_unicode_characters=(
+                il_version_1.PdfSameStyleUnicodeCharacters(
+                    pdf_style=style,
+                    unicode="A",
+                )
+            )
+        ),
+        il_version_1.PdfParagraphComposition(pdf_formula=copy.deepcopy(formula)),
+    ]
+
+    target, compositions, segment = title_typeset._generated_target(
+        paragraph, "p1#0"
+    )
+
+    assert target == "A+A+"
+    assert len(compositions) == 4
+    assert segment["duplicate_layer"] is None
 
 
 def test_source_only_title_compositions_are_not_claimed_as_generated_target(
@@ -446,9 +638,12 @@ def test_impossible_title_fails_closed_and_restores_post_formal_state(
         title_typeset.apply(config, document, typesetter)
 
     assert document_digest(document) == before
-    report = json.loads((tmp_path / title_typeset.REPORT_NAME).read_text())
+    report = json.loads(
+        (tmp_path / title_typeset.REPORT_NAME).read_text(encoding="utf-8")
+    )
     assert report["status"] == "failure"
     assert report["totals"] == {
+        "duplicate_layers_dropped": 0,
         "excluded": 0,
         "failure": 1,
         "owners": 1,
@@ -472,6 +667,22 @@ def test_late_title_overflow_rolls_back_every_prior_owner(monkeypatch, tmp_path)
     ]
     for paragraph in paragraphs:
         paragraph.xobj_id = -1
+    paragraphs[0].unicode = (
+        "<style id='1'>首个标题</style><style id='3'>首个标题</style>"
+    )
+    paragraphs[0].pdf_paragraph_composition = [
+        il_version_1.PdfParagraphComposition(
+            pdf_same_style_unicode_characters=(
+                il_version_1.PdfSameStyleUnicodeCharacters(
+                    pdf_style=il_version_1.PdfStyle(
+                        font_id="body", font_size=10.0
+                    ),
+                    unicode="首个标题",
+                )
+            )
+        )
+        for _paint in range(2)
+    ]
     document = _document(paragraphs)
     article_ir = _article_ir(paragraphs, boxes)
     config = Config(tmp_path, "zh")
@@ -487,12 +698,16 @@ def test_late_title_overflow_rolls_back_every_prior_owner(monkeypatch, tmp_path)
 
     assert document_digest(document) == before_document
     assert paragraphs == before_paragraphs
-    report = json.loads((tmp_path / title_typeset.REPORT_NAME).read_text())
+    report = json.loads(
+        (tmp_path / title_typeset.REPORT_NAME).read_text(encoding="utf-8")
+    )
     assert [row["status"] for row in report["titles"]] == [
         "rolled_back",
         "failure",
     ]
+    assert report["titles"][0]["duplicate_layers_dropped"] == 1
     assert report["totals"] == {
+        "duplicate_layers_dropped": 0,
         "excluded": 0,
         "failure": 1,
         "owners": 2,

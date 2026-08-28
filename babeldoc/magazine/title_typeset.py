@@ -105,6 +105,7 @@ class FrozenTitle:
     target: str
     target_sha256: str
     target_compositions: tuple[object, ...]
+    target_segments: tuple[dict, ...]
     chain_id: str | None
     chain_index: int | None
     owner_ref: str | None = None
@@ -304,7 +305,120 @@ def _characters_text(characters) -> str:
     return "".join(character.char_unicode or "" for character in characters)
 
 
-def _generated_target(paragraph, source_ref: str) -> tuple[str, tuple] | None:
+def _style_identity(style) -> dict | None:
+    font_id = None if style is None else getattr(style, "font_id", None)
+    font_size = None if style is None else getattr(style, "font_size", None)
+    if not isinstance(font_id, str) or not font_id or font_size is None:
+        return None
+    try:
+        size = float(font_size)
+    except (TypeError, ValueError):
+        return None
+    if not math.isfinite(size) or size <= 0:
+        return None
+    return {"font_id": font_id, "font_size": size}
+
+
+def _composition_identity(composition) -> dict | None:
+    """The exact text/type/font-size evidence one paint layer can compare."""
+    holder = composition.pdf_same_style_unicode_characters
+    if holder is not None:
+        identity = _style_identity(holder.pdf_style)
+        if identity is None or not holder.unicode:
+            return None
+        return {
+            "kind": "unicode",
+            "text": holder.unicode,
+            "styles": [identity],
+        }
+    character = composition.pdf_character
+    if character is not None:
+        identity = _style_identity(character.pdf_style)
+        if identity is None or not character.char_unicode:
+            return None
+        return {
+            "kind": "character",
+            "text": character.char_unicode,
+            "styles": [identity],
+        }
+    character_holder = (
+        composition.pdf_same_style_characters or composition.pdf_line
+    )
+    if character_holder is not None:
+        characters = list(character_holder.pdf_character or ())
+        text = _characters_text(characters)
+        styles = []
+        holder_style = getattr(character_holder, "pdf_style", None)
+        for character in characters:
+            identity = _style_identity(character.pdf_style or holder_style)
+            if identity is None:
+                return None
+            if not styles or styles[-1] != identity:
+                styles.append(identity)
+        if not text or not styles:
+            return None
+        return {
+            "kind": (
+                "same_style_characters"
+                if composition.pdf_same_style_characters is not None
+                else "line"
+            ),
+            "text": text,
+            "styles": styles,
+        }
+    # Formula paint correspondence is not provable from font id/size alone.
+    # A formula therefore prevents duplicate-layer suppression.
+    return None
+
+
+def _duplicate_layer_proof(compositions: tuple) -> dict | None:
+    """Prove two exact overpaint layers at one composition boundary."""
+    if len(compositions) < 2 or len(compositions) % 2:
+        return None
+    split = len(compositions) // 2
+    left = [_composition_identity(item) for item in compositions[:split]]
+    right = [_composition_identity(item) for item in compositions[split:]]
+    if any(item is None for item in (*left, *right)):
+        return None
+    layer = "".join(item["text"] for item in left)
+    other = "".join(item["text"] for item in right)
+    if layer != other or len("".join(layer.split())) < 2:
+        return None
+    pairs = []
+    for position, (kept, dropped) in enumerate(zip(left, right, strict=True)):
+        if (
+            kept["kind"] != dropped["kind"]
+            or kept["text"] != dropped["text"]
+            or kept["styles"] != dropped["styles"]
+        ):
+            return None
+        pairs.append(
+            {
+                "position": position,
+                "kind": kept["kind"],
+                "kept_text": kept["text"],
+                "kept_chars": len(kept["text"]),
+                "kept_text_sha256": _sha256(kept["text"]),
+                "dropped_text": dropped["text"],
+                "dropped_chars": len(dropped["text"]),
+                "dropped_text_sha256": _sha256(dropped["text"]),
+                "kept_style_sequence": kept["styles"],
+                "dropped_style_sequence": dropped["styles"],
+            }
+        )
+    return {
+        "split_composition_index": split,
+        "kept_composition_count": split,
+        "dropped_composition_count": split,
+        "dropped_layer_count": 1,
+        "layer_chars": len(layer),
+        "layer_sha256": _sha256(layer),
+        "paint_may_differ": True,
+        "style_proof": pairs,
+    }
+
+
+def _generated_target(paragraph, source_ref: str) -> tuple[str, tuple, dict] | None:
     """Return the pre-formal visual target and its generated compositions.
 
     ``paragraph.unicode`` is the translation protocol string and can still
@@ -400,10 +514,33 @@ def _generated_target(paragraph, source_ref: str) -> tuple[str, tuple] | None:
         raise TitleTypesetError(
             f"{source_ref}: generated target has an unknown composition"
         )
-    target = "".join(visible)
-    _require(bool(target), f"{source_ref}: generated visual target is empty")
+    pre_dedup_target = "".join(visible)
+    _require(
+        bool(pre_dedup_target), f"{source_ref}: generated visual target is empty"
+    )
     _require(bool(retained), f"{source_ref}: generated target has no visual carriers")
-    return target, tuple(retained)
+    retained = tuple(retained)
+    proof = _duplicate_layer_proof(retained)
+    if proof is None:
+        target = pre_dedup_target
+        target_compositions = retained
+    else:
+        target_compositions = retained[: proof["split_composition_index"]]
+        target = "".join(
+            _composition_identity(composition)["text"]
+            for composition in target_compositions
+        )
+    segment = {
+        "source_ref": source_ref,
+        "pre_dedup_visual_target": pre_dedup_target,
+        "pre_dedup_target_chars": len(pre_dedup_target),
+        "pre_dedup_target_sha256": _sha256(pre_dedup_target),
+        "visual_target": target,
+        "target_chars": len(target),
+        "target_sha256": _sha256(target),
+        "duplicate_layer": proof,
+    }
+    return target, target_compositions, segment
 
 
 def _union_box(boxes) -> tuple[float, float, float, float]:
@@ -548,6 +685,11 @@ def _prove_title_chains(
             for member in members
             for composition in member.target_compositions
         )
+        members[0].target_segments = tuple(
+            segment
+            for member in members
+            for segment in member.target_segments
+        )
 
 
 def prepare(
@@ -618,7 +760,7 @@ def prepare(
                 generated_target is not None,
                 f"{source_ref}: generated target disappeared during prepare",
             )
-            target, target_compositions = generated_target
+            target, target_compositions, target_segment = generated_target
             _require(source_box is not None, f"{source_ref}: title source box is missing")
             _require(
                 style is not None and float(style.font_size) > 0,
@@ -642,6 +784,7 @@ def prepare(
                     target=target,
                     target_sha256=_sha256(target),
                     target_compositions=target_compositions,
+                    target_segments=(target_segment,),
                     chain_id=getattr(paragraph, "chain_id", None),
                     chain_index=getattr(paragraph, "chain_index", None),
                 )
@@ -800,6 +943,11 @@ def _report(run: _Run, records: list[dict], status: str, error: str | None) -> d
             "suppressed_trailing_holders": sum(
                 len(item.get("suppressed_refs", ())) for item in records
             ),
+            "duplicate_layers_dropped": sum(
+                item.get("duplicate_layers_dropped", 0)
+                for item in records
+                if item.get("status") == "success"
+            ),
             "excluded": len(run.exclusions),
         },
     }
@@ -851,6 +999,16 @@ def apply(translation_config, docs, typesetter) -> dict | None:
     for title in sorted(owners, key=lambda item: (item.physical_page, item.source_ref)):
         member_refs = title.member_refs or (title.source_ref,)
         members = [by_ref[reference] for reference in member_refs]
+        target_segments = copy.deepcopy(list(title.target_segments))
+        pre_dedup_target = "".join(
+            segment["pre_dedup_visual_target"] for segment in target_segments
+        )
+        duplicate_layers_dropped = sum(
+            0
+            if segment["duplicate_layer"] is None
+            else segment["duplicate_layer"]["dropped_layer_count"]
+            for segment in target_segments
+        )
         record = {
             "source_ref": title.source_ref,
             "physical_page": title.physical_page,
@@ -858,6 +1016,12 @@ def apply(translation_config, docs, typesetter) -> dict | None:
             "base_font_size": title.base_font_size,
             "target_chars": len(title.target),
             "target_sha256": title.target_sha256,
+            "visual_target": title.target,
+            "pre_dedup_visual_target": pre_dedup_target,
+            "pre_dedup_target_chars": len(pre_dedup_target),
+            "pre_dedup_target_sha256": _sha256(pre_dedup_target),
+            "target_segments": target_segments,
+            "duplicate_layers_dropped": duplicate_layers_dropped,
             "rendered_target_sha256": None,
             "maximum_lines": run.policy.title_max_lines,
             "minimum_scale": run.policy.title_min_scale,

@@ -967,6 +967,7 @@ def verify_title(
         raise VerificationError("title inventory is missing")
     by_ref = {}
     all_members = set()
+    duplicate_layers_dropped = 0
     for row in rows:
         reference = row.get("source_ref") if isinstance(row, dict) else None
         if (
@@ -998,6 +999,173 @@ def verify_title(
             != _require_sha256(row, "rendered_target_sha256", reference)
         ):
             raise VerificationError(f"title target conservation failed: {reference}")
+        visual_target = row.get("visual_target")
+        pre_dedup_target = row.get("pre_dedup_visual_target")
+        if (
+            not isinstance(visual_target, str)
+            or not visual_target
+            or len(visual_target) != row["target_chars"]
+            or hashlib.sha256(visual_target.encode("utf-8")).hexdigest()
+            != row["target_sha256"]
+            or not isinstance(pre_dedup_target, str)
+            or not pre_dedup_target
+            or len(pre_dedup_target) != row.get("pre_dedup_target_chars")
+            or hashlib.sha256(pre_dedup_target.encode("utf-8")).hexdigest()
+            != _require_sha256(row, "pre_dedup_target_sha256", reference)
+        ):
+            raise VerificationError(f"title visual target evidence failed: {reference}")
+        segments = row.get("target_segments")
+        if not isinstance(segments, list) or not segments:
+            raise VerificationError(f"title target segments are missing: {reference}")
+        segment_refs = []
+        segment_pre = []
+        segment_targets = []
+        row_dropped = 0
+        for segment in segments:
+            segment_ref = segment.get("source_ref") if isinstance(segment, dict) else None
+            segment_before = (
+                segment.get("pre_dedup_visual_target")
+                if isinstance(segment, dict)
+                else None
+            )
+            segment_target = (
+                segment.get("visual_target") if isinstance(segment, dict) else None
+            )
+            if (
+                not isinstance(segment_ref, str)
+                or REF_PATTERN.fullmatch(segment_ref) is None
+                or not isinstance(segment_before, str)
+                or not segment_before
+                or not isinstance(segment_target, str)
+                or not segment_target
+                or len(segment_before) != segment.get("pre_dedup_target_chars")
+                or hashlib.sha256(segment_before.encode("utf-8")).hexdigest()
+                != _require_sha256(
+                    segment, "pre_dedup_target_sha256", segment_ref
+                )
+                or len(segment_target) != segment.get("target_chars")
+                or hashlib.sha256(segment_target.encode("utf-8")).hexdigest()
+                != _require_sha256(segment, "target_sha256", segment_ref)
+            ):
+                raise VerificationError(
+                    f"title target segment evidence failed: {reference}"
+                )
+            proof = segment.get("duplicate_layer")
+            if proof is None:
+                if segment_before != segment_target:
+                    raise VerificationError(
+                        f"title changed without duplicate proof: {segment_ref}"
+                    )
+            else:
+                if not isinstance(proof, dict):
+                    raise VerificationError(
+                        f"title duplicate-layer proof failed: {segment_ref}"
+                    )
+                style_proof = proof.get("style_proof")
+                kept_count = proof.get("kept_composition_count")
+                if (
+                    segment_before != segment_target + segment_target
+                    or proof.get("dropped_layer_count") != 1
+                    or not isinstance(kept_count, int)
+                    or isinstance(kept_count, bool)
+                    or kept_count < 1
+                    or proof.get("dropped_composition_count") != kept_count
+                    or proof.get("split_composition_index") != kept_count
+                    or proof.get("layer_chars") != len(segment_target)
+                    or _require_sha256(proof, "layer_sha256", segment_ref)
+                    != segment["target_sha256"]
+                    or proof.get("paint_may_differ") is not True
+                    or not isinstance(style_proof, list)
+                    or len(style_proof) != kept_count
+                ):
+                    raise VerificationError(
+                        f"title duplicate-layer proof failed: {segment_ref}"
+                    )
+                proved_kept = []
+                proved_dropped = []
+                for position, pair in enumerate(style_proof):
+                    kept_styles = (
+                        pair.get("kept_style_sequence")
+                        if isinstance(pair, dict)
+                        else None
+                    )
+                    dropped_styles = (
+                        pair.get("dropped_style_sequence")
+                        if isinstance(pair, dict)
+                        else None
+                    )
+                    valid_styles = (
+                        isinstance(kept_styles, list)
+                        and bool(kept_styles)
+                        and kept_styles == dropped_styles
+                        and all(
+                            isinstance(style, dict)
+                            and isinstance(style.get("font_id"), str)
+                            and bool(style["font_id"])
+                            and isinstance(style.get("font_size"), int | float)
+                            and not isinstance(style.get("font_size"), bool)
+                            and math.isfinite(float(style["font_size"]))
+                            and float(style["font_size"]) > 0
+                            for style in kept_styles
+                        )
+                    )
+                    kept_text = pair.get("kept_text") if isinstance(pair, dict) else None
+                    dropped_text = (
+                        pair.get("dropped_text") if isinstance(pair, dict) else None
+                    )
+                    if (
+                        not isinstance(pair, dict)
+                        or pair.get("position") != position
+                        or pair.get("kind")
+                        not in {
+                            "unicode",
+                            "character",
+                            "same_style_characters",
+                            "line",
+                        }
+                        or not isinstance(kept_text, str)
+                        or not kept_text
+                        or not isinstance(dropped_text, str)
+                        or dropped_text != kept_text
+                        or pair.get("kept_chars") != len(kept_text)
+                        or pair.get("dropped_chars") != len(dropped_text)
+                        or hashlib.sha256(kept_text.encode("utf-8")).hexdigest()
+                        != pair.get("kept_text_sha256")
+                        or hashlib.sha256(dropped_text.encode("utf-8")).hexdigest()
+                        != pair.get("dropped_text_sha256")
+                        or _require_sha256(
+                            pair, "kept_text_sha256", f"{segment_ref}:{position}"
+                        )
+                        != _require_sha256(
+                            pair,
+                            "dropped_text_sha256",
+                            f"{segment_ref}:{position}",
+                        )
+                        or not valid_styles
+                    ):
+                        raise VerificationError(
+                            f"title duplicate style proof failed: {segment_ref}"
+                        )
+                    proved_kept.append(kept_text)
+                    proved_dropped.append(dropped_text)
+                if (
+                    "".join(proved_kept) != segment_target
+                    or "".join(proved_dropped) != segment_target
+                ):
+                    raise VerificationError(
+                        f"title duplicate text proof failed: {segment_ref}"
+                    )
+                row_dropped += 1
+            segment_refs.append(segment_ref)
+            segment_pre.append(segment_before)
+            segment_targets.append(segment_target)
+        if (
+            "".join(segment_pre) != pre_dedup_target
+            or "".join(segment_targets) != visual_target
+            or row.get("duplicate_layers_dropped") != row_dropped
+        ):
+            raise VerificationError(f"title segment aggregate failed: {reference}")
+        duplicate_layers_dropped += row_dropped
         scale = row.get("scale")
         lines = row.get("lines")
         if (
@@ -1037,6 +1205,7 @@ def verify_title(
                 for item in suppressed_holders
             )
             or row.get("owner_ref") != reference
+            or segment_refs != members
             or all_members.intersection(members)
         ):
             raise VerificationError(f"title owner/member evidence failed: {reference}")
@@ -1054,6 +1223,7 @@ def verify_title(
         "success": len(rows),
         "failure": 0,
         "rolled_back": 0,
+        "duplicate_layers_dropped": duplicate_layers_dropped,
         "suppressed_trailing_holders": sum(
             len(row["suppressed_refs"]) for row in rows
         ),
