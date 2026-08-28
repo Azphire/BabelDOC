@@ -236,6 +236,34 @@ def test_detector_rejects_adjacent_negative_and_nonadjacent_physical_pages():
     assert not page_rows[0].linked
 
 
+@pytest.mark.parametrize("closer", [")", "）", "]", "】"])
+def test_detector_treats_closing_bracket_as_terminal_evidence(closer):
+    config = load_chain_config()
+    tail = _detector_paragraph(
+        f"Image credit (Battistella{closer}",
+        "caption-tail",
+        left=40,
+        bottom=30,
+    )
+    head = _detector_paragraph(
+        "正文从这里开始并形成一个独立的完整段落",
+        "body-head",
+        left=330,
+        bottom=600,
+    )
+
+    verdicts = evaluate_column_boundaries(
+        _detector_page(7, [tail, head]), 7, _policy, config
+    )
+    scored = [verdict for verdict in verdicts if verdict.pair == "body->body"]
+    edges, _dropped = _accepted_edges(verdicts, config["boundary_priority"])
+
+    assert len(scored) == 1
+    assert scored[0].values["tail_no_terminal_punct"] == 0.0
+    assert not scored[0].linked
+    assert edges == []
+
+
 @pytest.mark.parametrize(
     ("language", "target"),
     (("zh", "连续正文译文内容"), ("en", "one two three")),

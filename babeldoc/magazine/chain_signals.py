@@ -837,15 +837,24 @@ def tail_no_terminal_punct(
 ) -> float | None:
     """Whether the tail's last line stops without ending a sentence.
 
-    Trailing closing marks are stripped first, so a paragraph that ends on a
-    closed quotation reads as ended rather than as running on.
+    A closing bracket or parenthesis is terminal evidence in its own right.
+    Quote closers are stripped first, so a paragraph ending on a closed quote
+    still takes its verdict from the punctuation inside the quote.
     """
     text = tail.last_line_text.rstrip()
     closers = config["terminal_closers"]
+    # Combining marks and format characters carry no punctuation of their own
+    # and would otherwise hide the closer or ender they sit on.
+    while text and unicodedata.category(text[-1]) in ("Mn", "Cf"):
+        text = text[:-1]
+    if (
+        text
+        and text[-1] in closers
+        and unicodedata.category(text[-1]) == "Pe"
+    ):
+        return 0.0
     while text and text[-1] in closers:
         text = text[:-1].rstrip()
-    # Combining marks and format characters carry no punctuation of their own
-    # and would otherwise hide the ender they sit on.
     while text and unicodedata.category(text[-1]) in ("Mn", "Cf"):
         text = text[:-1]
     if not text:
