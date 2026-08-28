@@ -1,5 +1,9 @@
+import json
 import math
 import re
+import statistics
+from functools import lru_cache
+from pathlib import Path
 
 from babeldoc.format.pdf.document_il.il_version_1 import Box
 from babeldoc.format.pdf.document_il.il_version_1 import Document
@@ -39,6 +43,66 @@ from babeldoc.format.pdf.document_il.utils.spatial_analyzer import (
     is_element_contained_in_formula,
 )
 from babeldoc.format.pdf.translation_config import TranslationConfig
+from babeldoc.magazine.page_features import validate_bounded_config
+from babeldoc.magazine.resource_paths import config_path
+
+INITIAL_ADJACENT_CONFIG_PATH = config_path("initial_adjacent.json")
+
+
+@lru_cache(maxsize=2)
+def load_initial_adjacent(path: str | None = None) -> tuple[float, int, float]:
+    """Load the bounded opening-run exemption."""
+    source = INITIAL_ADJACENT_CONFIG_PATH if path is None else Path(path)
+    with source.open(encoding="utf-8") as file:
+        raw = json.load(file)
+    parameters = validate_bounded_config(raw, source)
+    return (
+        float(parameters["initial_adjacent_ratio"]),
+        int(parameters["initial_adjacent_chars"]),
+        float(parameters["initial_adjacent_tolerance"]),
+    )
+
+
+def _character_size(character: PdfCharacter) -> float | None:
+    style = getattr(character, "pdf_style", None)
+    size = getattr(style, "font_size", None)
+    return float(size) if size else None
+
+
+def paragraph_character_sizes(paragraph) -> list[float]:
+    """Return every stored character size in paragraph order."""
+    sizes: list[float] = []
+    for composition in paragraph.pdf_paragraph_composition or ():
+        for holder in (
+            composition.pdf_line,
+            composition.pdf_same_style_characters,
+            composition.pdf_formula,
+        ):
+            if holder is None:
+                continue
+            for character in holder.pdf_character or ():
+                size = _character_size(character)
+                if size is not None:
+                    sizes.append(size)
+    return sizes
+
+
+def initial_adjacent_exemption(paragraph) -> tuple[int, int]:
+    """Return the half-open first-line span protected beside an enlarged run."""
+    ratio, reach, tolerance = load_initial_adjacent()
+    sizes = paragraph_character_sizes(paragraph)
+    if not sizes:
+        return 0, 0
+    opening = sizes[0]
+    span = 1
+    for size in sizes[1:]:
+        if abs(size - opening) > tolerance:
+            break
+        span += 1
+    median = statistics.median(sizes)
+    if not median or opening < median * ratio:
+        return 0, 0
+    return span, span + reach
 
 
 class StylesAndFormulas:
@@ -394,6 +458,7 @@ class StylesAndFormulas:
         formula_font_ids: set[int],
         first_is_bullet_so_far: bool,
         line_index: int,
+        exempt_span: tuple[int, int] = (0, 0),
     ) -> tuple[list[tuple[PdfCharacter, bool]], bool]:
         """
         Phase 1: Classify every character in a composition as either formula or text.
@@ -410,6 +475,7 @@ class StylesAndFormulas:
         in_formula_state = False
         in_corner_mark_state = False
         corner_mark_info = []
+        exempt_start, exempt_end = exempt_span
 
         # Determine the `is_formula` tag for each character
         for i, char in enumerate(line.pdf_character):
@@ -502,6 +568,9 @@ class StylesAndFormulas:
                 )
             )
 
+            if line_index == 0 and exempt_start <= i < exempt_end:
+                is_corner_mark = False
+
             is_formula = is_formula or is_corner_mark
 
             if char.char_unicode == " ":
@@ -593,6 +662,7 @@ class StylesAndFormulas:
             new_paragraph_compositions = []
             # This flag is carried through all compositions in a paragraph, as in the original implementation.
             first_is_bullet = False
+            exempt_span = initial_adjacent_exemption(paragraph)
 
             for line_index, composition in enumerate(
                 paragraph.pdf_paragraph_composition
@@ -605,6 +675,7 @@ class StylesAndFormulas:
                     current_formula_font_ids,
                     first_is_bullet,
                     line_index,
+                    exempt_span,
                 )
 
                 if not tagged_chars:

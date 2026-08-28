@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import copy
 import logging
+import math
 import re
 import statistics
 import unicodedata
@@ -170,6 +171,17 @@ class SlotLineMetric:
             "unit_count": self.unit_count,
             "bounds": [round(value, 3) for value in self.bounds],
         }
+
+
+@dataclass(frozen=True, slots=True)
+class GlyphInkMetric:
+    """Font-unit ink geometry for one rendered Unicode code point."""
+
+    ink_box_em: tuple[float, float, float, float]
+    advance_em: float
+    font_id: str
+    glyph_id: int
+    source: str = "pymupdf.Font.glyph_bbox"
 
 
 @dataclass(frozen=True, slots=True)
@@ -982,6 +994,46 @@ class Typesetting:
             or ("CN" in self.lang_code)
             or ("HK" in self.lang_code)
             or ("TW" in self.lang_code)
+        )
+
+    def glyph_ink_metrics(self, character) -> GlyphInkMetric | None:
+        """Return the mapped font's real glyph ink box in em units."""
+        text = getattr(character, "char_unicode", None) or ""
+        style = getattr(character, "pdf_style", None)
+        font_id = None if style is None else getattr(style, "font_id", None)
+        font_size = None if style is None else getattr(style, "font_size", None)
+        if len(text) != 1 or not font_id or font_size is None:
+            return None
+        try:
+            size = float(font_size)
+        except (TypeError, ValueError):
+            return None
+        if not math.isfinite(size) or size <= 0:
+            return None
+        font = self.font_mapper.fontid2font.get(font_id)
+        if font is None:
+            return None
+        try:
+            codepoint = ord(text)
+            glyph_id = int(font.has_glyph(codepoint))
+            coordinates = tuple(float(value) for value in font.glyph_bbox(codepoint))
+            advance = float(font.glyph_advance(codepoint))
+        except (RuntimeError, TypeError, ValueError):
+            return None
+        if (
+            glyph_id <= 0
+            or len(coordinates) != 4
+            or not all(math.isfinite(value) for value in (*coordinates, advance))
+            or coordinates[2] <= coordinates[0]
+            or coordinates[3] <= coordinates[1]
+            or advance <= 0
+        ):
+            return None
+        return GlyphInkMetric(
+            ink_box_em=coordinates,
+            advance_em=advance,
+            font_id=str(font_id),
+            glyph_id=glyph_id,
         )
 
     def fit_text_to_slot(

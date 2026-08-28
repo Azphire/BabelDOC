@@ -495,7 +495,7 @@ def read_article_map(path: Path) -> tuple[dict[int, str], set[int]]:
 
 
 def find_candidates(
-    labeled_pages,
+    page_coordinates,
     article_of_page: dict[int, str],
     openers: set[int],
     config: DropCapConfig,
@@ -504,8 +504,8 @@ def find_candidates(
     """Every candidate of one document, in page then paragraph order."""
     found: list[Candidate] = []
     rank_of_article: dict[str, int] = {}
-    for label, page in labeled_pages:
-        article_id = article_of_page.get(label)
+    for physical_label, canonical_page, page in page_coordinates:
+        article_id = article_of_page.get(canonical_page)
         for index, paragraph in enumerate(page.pdf_paragraph):
             text = (paragraph.unicode or "").strip()
             if paragraph.layout_label not in labels or not text:
@@ -516,7 +516,7 @@ def find_candidates(
                 continue
             rank = rank_of_article.get(article_id, 0) + 1
             rank_of_article[article_id] = rank
-            opens = label in openers
+            opens = canonical_page in openers
             if rank > config.max_body_rank_in_article and not opens:
                 continue
             run = leading_run(paragraph, config.initial_size_tolerance)
@@ -533,8 +533,8 @@ def find_candidates(
                 continue
             found.append(
                 Candidate(
-                    reference=paragraph_reference(label, index),
-                    page=label,
+                    reference=paragraph_reference(physical_label, index),
+                    page=physical_label,
                     index=index,
                     debug_id=paragraph.debug_id,
                     article_id=article_id,
@@ -552,7 +552,6 @@ def mark(
     translation_config,
     labeled_pages,
     article_document_ir: ArticleDocumentIR | None = None,
-    run_trace=None,
 ) -> list[Candidate]:
     """Find the candidates of one document and say so in the document.
 
@@ -570,11 +569,13 @@ def mark(
     article_of_page = dict(article_document_ir.by_page)
     openers = {article.pages[0] for article in article_document_ir.articles}
     pages = dict(labeled_pages)
+    page_coordinates = [
+        (physical_label, position + 1, page)
+        for position, (physical_label, page) in enumerate(labeled_pages)
+    ]
     candidates = find_candidates(
-        labeled_pages, article_of_page, openers, config, body_labels()
+        page_coordinates, article_of_page, openers, config, body_labels()
     )
-    for candidate in candidates:
-        pages[candidate.page].pdf_paragraph[candidate.index].drop_cap_candidate = True
     policy = config.target_policy_for(getattr(translation_config, "lang_out", ""))
     if candidates and policy is None:
         raise DropCapError(
@@ -604,17 +605,9 @@ def mark(
             decision_version=config.decision_version,
         )
         intents.append(intent)
+    for candidate in candidates:
+        pages[candidate.page].pdf_paragraph[candidate.index].drop_cap_candidate = True
     drop_cap_intent.replace_intents(translation_config, intents)
-    if run_trace is not None:
-        for intent in intents:
-            run_trace.record_drop_cap_event(
-                {
-                    "event": "intent_frozen",
-                    "source_ref": intent.source_ref,
-                    "source_style_hash": intent.source_style_hash,
-                    "intent": intent.as_record(),
-                }
-            )
     drop_cap_intent.write_report(translation_config)
     _write_report(translation_config, config, candidates)
     logger.debug("drop cap: %d candidate(s)", len(candidates))
@@ -730,6 +723,17 @@ def validate_manual_decisions(
     parsed = {}
     vocabulary = decision_vocabulary()
     for reference, raw in verdicts.items():
+        intent = intents.get(reference)
+        if isinstance(raw, str):
+            if raw not in vocabulary:
+                faults.append(
+                    f"{reference}: decision {raw!r} is outside {sorted(vocabulary)}"
+                )
+                continue
+            if intent is None:
+                faults.append(f"{reference}: not a current drop-cap candidate")
+                continue
+            raw = intent.manual_template(raw)
         try:
             decision = (
                 raw
@@ -740,7 +744,6 @@ def validate_manual_decisions(
             faults.append(str(exc))
             continue
         parsed[reference] = decision
-        intent = intents.get(reference)
         if intent is None:
             faults.append(f"{reference}: not a current drop-cap candidate")
         elif not drop_cap_intent.decision_matches(intent, decision):
@@ -748,6 +751,36 @@ def validate_manual_decisions(
     if faults:
         raise DropCapError("drop-cap decisions rejected: " + "; ".join(faults))
     return parsed
+
+
+def _restore_dataclass(target, snapshot) -> None:
+    for name in target.__dataclass_fields__:
+        setattr(target, name, copy.deepcopy(getattr(snapshot, name)))
+
+
+class _AtomicParagraphUpdate:
+    """Restore all touched paragraphs and intents unless explicitly committed."""
+
+    def __init__(self, paragraphs, intents=()):
+        self._paragraphs = [
+            (paragraph, copy.deepcopy(paragraph)) for paragraph in paragraphs
+        ]
+        self._intents = [(intent, copy.deepcopy(intent)) for intent in intents]
+        self._committed = False
+
+    def __enter__(self):
+        return self
+
+    def commit(self) -> None:
+        self._committed = True
+
+    def __exit__(self, exc_type, exc_value, traceback) -> bool:
+        if exc_type is not None or not self._committed:
+            for paragraph, snapshot in self._paragraphs:
+                _restore_dataclass(paragraph, snapshot)
+            for intent, snapshot in self._intents:
+                _restore_dataclass(intent, snapshot)
+        return False
 
 
 def apply_decisions(
@@ -774,6 +807,7 @@ def apply_decisions(
         raise DropCapError(
             f"stale or noncandidate decisions cannot change IL: {sorted(invalid)}"
         )
+    targets = []
     for label, page in labeled_pages:
         for index, paragraph in enumerate(page.pdf_paragraph):
             reference = paragraph_reference(label, index)
@@ -783,6 +817,14 @@ def apply_decisions(
             intent = drop_cap_intent.intent_for(translation_config, reference)
             if intent is None or not drop_cap_intent.decision_matches(intent, manual):
                 raise DropCapError(f"{reference}: stale or noncandidate decision")
+            targets.append((label, index, paragraph, intent, manual))
+    if len(targets) != len(verdicts):
+        raise DropCapError("a validated drop-cap decision has no selected paragraph")
+    with _AtomicParagraphUpdate(
+        [target[2] for target in targets],
+        [target[3] for target in targets],
+    ) as transaction:
+        for label, index, paragraph, intent, manual in targets:
             records.append(
                 {
                     "paragraph": paragraph_reference(label, index),
@@ -794,6 +836,7 @@ def apply_decisions(
             )
             paragraph.drop_cap_decision = manual.decision
             intent.decision = manual.decision
+        transaction.commit()
     return records
 
 
@@ -1013,7 +1056,7 @@ def resolve_decision(paragraph, default: str | None) -> tuple[str | None, str | 
     return None, None
 
 
-def apply(translation_config, labeled_pages, run_trace=None) -> dict | None:
+def apply(translation_config, labeled_pages) -> dict | None:
     """Act on every verdict of one document. None where the switch is down.
 
     Returns the record it wrote, so a caller holding the document can assert
@@ -1027,7 +1070,7 @@ def apply(translation_config, labeled_pages, run_trace=None) -> dict | None:
     target = getattr(translation_config, "lang_out", "") or ""
     default = config.default_for(target)
 
-    records: list[dict] = []
+    targets = []
     for label, page in labeled_pages:
         for index, paragraph in enumerate(page.pdf_paragraph or ()):
             decision, source = resolve_decision(paragraph, default)
@@ -1044,52 +1087,23 @@ def apply(translation_config, labeled_pages, run_trace=None) -> dict | None:
                 )
             run = leading_run(paragraph, config.initial_size_tolerance)
             median = median_font_size(paragraph)
-            # Under either verdict. What the engine is offered is not what a
-            # verdict is about: an initial standing in a style run of its own is
-            # an initial the engine can carry across untranslated whichever way
-            # the finished page is set, so the merge happens first and the
-            # verdict is answered afterwards, by the render lane.
-            issue = None
-            snapshot = (
-                copy.deepcopy(paragraph.pdf_paragraph_composition),
-                paragraph.unicode,
-                copy.deepcopy(paragraph.box),
+            targets.append(
+                (label, index, paragraph, decision, source, intent, run, median)
             )
-            try:
-                outcome = flatten(paragraph, config)
-                intent.flatten_status = drop_cap_intent.FLATTEN_APPLIED
-            except Exception as exc:
-                (
-                    paragraph.pdf_paragraph_composition,
-                    paragraph.unicode,
-                    paragraph.box,
-                ) = snapshot
-                outcome = _unchanged(paragraph, config)
-                intent.flatten_status = drop_cap_intent.FLATTEN_FAILED
-                intent.render_status = drop_cap_intent.RENDER_SKIPPED
-                issue = drop_cap_intent.DropCapIssue(
-                    kind=drop_cap_intent.ISSUE_FLATTEN_FAILED,
-                    source_ref=reference,
-                    detail=f"{type(exc).__name__}: {exc}",
-                )
-                intent.issues.append(issue)
-                if run_trace is not None:
-                    run_trace.record_blocked_reason(issue.as_record())
+
+    records: list[dict] = []
+    with _AtomicParagraphUpdate(
+        [target[2] for target in targets],
+        [target[5] for target in targets],
+    ) as transaction:
+        for label, index, paragraph, decision, source, intent, run, median in targets:
+            # Under either verdict. What the engine is offered is independent
+            # of whether the later render keeps or flattens the visual initial.
+            outcome = flatten(paragraph, config)
+            intent.flatten_status = drop_cap_intent.FLATTEN_APPLIED
             intent.decision = decision
-            if (
-                decision == DECISION_FLATTEN
-                and intent.flatten_status != drop_cap_intent.FLATTEN_FAILED
-            ):
+            if decision == DECISION_FLATTEN:
                 intent.render_status = drop_cap_intent.RENDER_SKIPPED
-            if run_trace is not None:
-                run_trace.record_drop_cap_event(
-                    {
-                        "event": "flatten_completed",
-                        "source_ref": reference,
-                        "flatten_status": intent.flatten_status,
-                        "issue": None if issue is None else issue.as_record(),
-                    }
-                )
             records.append(
                 {
                     "paragraph": paragraph_reference(label, index),
@@ -1105,27 +1119,30 @@ def apply(translation_config, labeled_pages, run_trace=None) -> dict | None:
                         else round(run.size / median, 4)
                     ),
                     "flatten_status": intent.flatten_status,
-                    "issue": None if issue is None else issue.as_record(),
+                    "issue": None,
                     **outcome,
                 }
             )
 
-    expected = set(config.apply_fields)
-    for item in records:
-        if set(item) != expected:
-            raise DropCapError(
-                f"{APPLY_REPORT_NAME}: a record carries {sorted(item)}, and "
-                f"{CONFIG_PATH.name} declares {sorted(expected)}"
-            )
-        if item["source"] not in config.decision_sources:
-            raise DropCapError(
-                f"{APPLY_REPORT_NAME}: a record names source {item['source']!r}, "
-                f"and {CONFIG_PATH.name} declares {sorted(config.decision_sources)}"
-            )
+        expected = set(config.apply_fields)
+        for item in records:
+            if set(item) != expected:
+                raise DropCapError(
+                    f"{APPLY_REPORT_NAME}: a record carries {sorted(item)}, and "
+                    f"{CONFIG_PATH.name} declares {sorted(expected)}"
+                )
+            if item["source"] not in config.decision_sources:
+                raise DropCapError(
+                    f"{APPLY_REPORT_NAME}: a record names source "
+                    f"{item['source']!r}, and {CONFIG_PATH.name} declares "
+                    f"{sorted(config.decision_sources)}"
+                )
 
-    record = as_apply_record(config, verdicts, target, default, records)
-    _write_apply_report(translation_config, record)
-    drop_cap_intent.write_report(translation_config)
+        record = as_apply_record(config, verdicts, target, default, records)
+        _write_apply_report(translation_config, record)
+        drop_cap_intent.write_report(translation_config)
+        transaction.commit()
+
     logger.debug(
         "drop cap apply: %d verdict(s), %d merged",
         record["totals"]["decided"],

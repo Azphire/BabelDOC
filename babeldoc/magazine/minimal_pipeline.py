@@ -5,6 +5,8 @@ from __future__ import annotations
 from dataclasses import dataclass
 
 from babeldoc.magazine import article_flow
+from babeldoc.magazine import drop_cap_render
+from babeldoc.magazine import hitl
 from babeldoc.magazine import indent_policy
 from babeldoc.magazine import paren_dedup
 from babeldoc.magazine.article_builder import ArticleBuilder
@@ -24,10 +26,18 @@ class MagazineState:
     _article_document_ir: ArticleDocumentIR | None = None
     _structure_started: bool = False
     _structure_document_identity: int | None = None
+    _hitl_state: hitl.HitlRunState | None = None
+    _translation_prep_started: bool = False
+    _translation_prep_completed: bool = False
     _flow_started: bool = False
     _flow_completed: bool = False
     _flow_document_identity: int | None = None
     _flow_report: dict | None = None
+    _typesetter_identity: int | None = None
+    _render_started: bool = False
+    _render_completed: bool = False
+    _render_document_identity: int | None = None
+    _render_report: dict | None = None
 
     @property
     def article_document_ir(self) -> ArticleDocumentIR | None:
@@ -40,6 +50,26 @@ class MagazineState:
     @property
     def structure_document_identity(self) -> int | None:
         return self._structure_document_identity
+
+    @property
+    def hitl_state(self) -> hitl.HitlRunState | None:
+        return self._hitl_state
+
+    @property
+    def hitl_report(self) -> dict | None:
+        return None if self._hitl_state is None else self._hitl_state.report
+
+    @property
+    def glossary_freeze(self) -> hitl.GlossaryFreezeEvidence | None:
+        return None if self._hitl_state is None else self._hitl_state.glossary_freeze
+
+    @property
+    def translation_prep_started(self) -> bool:
+        return self._translation_prep_started
+
+    @property
+    def translation_prep_completed(self) -> bool:
+        return self._translation_prep_completed
 
     @property
     def flow_started(self) -> bool:
@@ -57,6 +87,26 @@ class MagazineState:
     def flow_report(self) -> dict | None:
         return self._flow_report
 
+    @property
+    def typesetter_identity(self) -> int | None:
+        return self._typesetter_identity
+
+    @property
+    def render_started(self) -> bool:
+        return self._render_started
+
+    @property
+    def render_completed(self) -> bool:
+        return self._render_completed
+
+    @property
+    def render_document_identity(self) -> int | None:
+        return self._render_document_identity
+
+    @property
+    def render_report(self) -> dict | None:
+        return self._render_report
+
 
 _FIXED_TRUE_ATTRIBUTES = (
     "magazine_page_classify",
@@ -64,6 +114,7 @@ _FIXED_TRUE_ATTRIBUTES = (
     "magazine_chain_translate",
     "magazine_article_group",
     "magazine_article_context",
+    "magazine_hitl_apply",
     "magazine_hitl_export",
     "magazine_detect",
     "magazine_column_reflow",
@@ -78,7 +129,6 @@ _FIXED_TRUE_ATTRIBUTES = (
 )
 
 _FIXED_FALSE_ATTRIBUTES = (
-    "magazine_hitl_apply",
     "magazine_checkpoint",
     "magazine_pdf_compliance",
     "magazine_repair",
@@ -137,6 +187,9 @@ def after_styles(config, docs) -> ArticleDocumentIR:
             "VLM page classification must remain disabled in the minimal pipeline"
         )
     classifier.process(docs)
+    hitl_state = hitl.begin_run(config, docs)
+    state._hitl_state = hitl_state
+    hitl.page_kind_pass(config, docs, hitl_state)
     ChainBuilder(config).process(docs)
 
     article_document_ir = ArticleBuilder(config).process(docs)
@@ -146,6 +199,33 @@ def after_styles(config, docs) -> ArticleDocumentIR:
         )
     state._article_document_ir = article_document_ir
     return article_document_ir
+
+
+def before_translation(config, docs) -> dict:
+    """Freeze HITL terms and drop-cap intent exactly once before translation."""
+    state = _state(config)
+    if state._translation_prep_started:
+        raise MinimalPipelineStateError("translation preparation was already attempted")
+    state._translation_prep_started = True
+    article_document_ir = get_article_document_ir(config)
+    if state.structure_document_identity != id(docs):
+        raise MinimalPipelineStateError(
+            "canonical ArticleDocumentIR belongs to a different document"
+        )
+    hitl_state = state.hitl_state
+    if hitl_state is None:
+        raise MinimalPipelineStateError("HITL state is not available")
+
+    report = hitl.before_translation(
+        config,
+        docs,
+        article_document_ir,
+        hitl_state,
+    )
+    if state.article_document_ir is not article_document_ir:
+        raise MinimalPipelineStateError("canonical ArticleDocumentIR identity changed")
+    state._translation_prep_completed = True
+    return report
 
 
 def get_article_document_ir(config) -> ArticleDocumentIR:
@@ -173,6 +253,7 @@ def after_translation(config, docs, typesetter) -> dict:
 
     state._flow_started = True
     state._flow_document_identity = id(docs)
+    state._typesetter_identity = id(typesetter)
     paren_dedup.apply(config, docs)
     indent_policy.apply(config, docs, article_document_ir)
     report = article_flow.apply(
@@ -187,4 +268,44 @@ def after_translation(config, docs, typesetter) -> dict:
         raise MinimalPipelineStateError("canonical ArticleDocumentIR identity changed")
     state._flow_report = report
     state._flow_completed = True
+    return report
+
+
+def after_typesetting(config, docs, typesetter) -> dict:
+    """Render frozen drop-cap intents once after formal typesetting."""
+    state = _state(config)
+    if state._render_started:
+        raise MinimalPipelineStateError("drop-cap render was already attempted")
+    state._render_started = True
+    state._render_document_identity = id(docs)
+    article_document_ir = get_article_document_ir(config)
+    if not state.translation_prep_completed:
+        raise MinimalPipelineStateError("translation preparation did not complete")
+    if not state.flow_completed:
+        raise MinimalPipelineStateError("article flow did not complete")
+    if state.structure_document_identity != id(docs):
+        raise MinimalPipelineStateError(
+            "canonical ArticleDocumentIR belongs to a different document"
+        )
+    if state.flow_document_identity != id(docs):
+        raise MinimalPipelineStateError("article flow belongs to a different document")
+    if state.typesetter_identity != id(typesetter):
+        raise MinimalPipelineStateError("formal typesetter identity changed")
+    if getattr(typesetter, "translation_config", None) is not config:
+        raise MinimalPipelineStateError(
+            "drop-cap renderer typesetter belongs to a different config"
+        )
+
+    report = drop_cap_render.apply(
+        config,
+        docs,
+        article_document_ir=article_document_ir,
+        typesetting_stage=typesetter,
+    )
+    if not isinstance(report, dict):
+        raise MinimalPipelineStateError("drop-cap renderer did not return a report")
+    if state.article_document_ir is not article_document_ir:
+        raise MinimalPipelineStateError("canonical ArticleDocumentIR identity changed")
+    state._render_report = report
+    state._render_completed = True
     return report

@@ -18,6 +18,7 @@ memray*
 *.docx
 *.json
 !/configs/*.json
+!/reviews/Courier-en.decisions.json
 **/*.pyc
 .venv
 .idea

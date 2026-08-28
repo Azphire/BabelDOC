@@ -71,7 +71,6 @@ from babeldoc.magazine.page_features import ConfigError
 from babeldoc.magazine.page_features import validate_bounded_config
 from babeldoc.magazine.resource_paths import config_path
 from babeldoc.magazine.taxonomy import record_config_manifest
-from babeldoc.magazine.transaction import TransactionSnapshot
 
 logger = logging.getLogger(__name__)
 
@@ -1512,9 +1511,9 @@ def _without_mutable_paragraph(inventory, reference: str):
 
 def _decorative_guard(
     page,
-    label: int,
+    local_page: int,
     index: int,
-    reference: str,
+    local_reference: str,
     intent,
     article_document_ir,
     inventory,
@@ -1523,16 +1522,16 @@ def _decorative_guard(
     body_box = _box_tuple(paragraph.box)
     article_boxes: tuple[BoxTuple, ...] = ()
     if article_document_ir is not None:
-        owner = article_document_ir.by_element.get(reference)
+        owner = article_document_ir.by_element.get(local_reference)
         article = article_document_ir.article(owner) if owner == intent.article_id else None
         if article is not None:
-            article_boxes = _article_envelopes(article, label)
+            article_boxes = _article_envelopes(article, local_page)
     obstacles: dict[str, BoxTuple] = {}
-    for asset in inventory.page_assets(label):
+    for asset in inventory.page_assets(local_page):
         if (
             not asset.protected
             or asset.bbox is None
-            or asset.reference == reference
+            or asset.reference == local_reference
         ):
             continue
         box = tuple(float(value) for value in asset.bbox)
@@ -1550,7 +1549,7 @@ def _decorative_guard(
         box = _ink_reach(other_characters) or _box_tuple(other.box)
         if box is None:
             continue
-        obstacles[drop_cap.paragraph_reference(label, other_index)] = box
+        obstacles[drop_cap.paragraph_reference(local_page, other_index)] = box
     return DecorativeGeometryGuard(
         page_box=_page_envelope(page),
         article_boxes=article_boxes,
@@ -1593,19 +1592,21 @@ def kept_verdict() -> str:
 def _render_validation(
     translation_config,
     paragraph,
-    reference: str,
+    physical_reference: str,
+    local_reference: str,
     decision: str,
     intent,
     regime,
-    run_trace,
+    article_document_ir,
 ) -> dict:
-    try:
-        from babeldoc.magazine.run_trace import parse_source_ref
-
-        parse_source_ref(reference)
-        canonical = True
-    except (TypeError, ValueError):
-        canonical = False
+    page, separator, index = physical_reference.partition("#")
+    physical_valid = bool(
+        separator == "#"
+        and page.startswith("p")
+        and page[1:].isdigit()
+        and int(page[1:]) > 0
+        and index.isdigit()
+    )
     characters = [
         character
         for character in paragraph_characters(paragraph)
@@ -1618,11 +1619,10 @@ def _render_validation(
         drop_cap_intent.POLICY_ENGLISH_RAISED_INITIAL,
         drop_cap_intent.POLICY_CHINESE_TWO_LINE_INITIAL,
     }
-    trace_generation = getattr(run_trace, "current_generation", None)
-    trace_record = (
+    canonical_owner = (
         None
-        if trace_generation is None
-        else getattr(run_trace, "generations", {}).get(trace_generation)
+        if article_document_ir is None
+        else article_document_ir.by_element.get(local_reference)
     )
     checks = {
         "candidate_valid": bool(getattr(paragraph, "drop_cap_candidate", False)),
@@ -1643,11 +1643,11 @@ def _render_validation(
             and intent.generation
             == drop_cap_intent.current_generation(translation_config)
         ),
-        "current_transaction_generation": bool(
-            trace_record is None
-            or getattr(trace_record, "status", None) == "committed"
+        "canonical_source_ref": bool(
+            physical_valid
+            and intent is not None
+            and canonical_owner == intent.article_id
         ),
-        "canonical_source_ref": canonical,
     }
     return {
         "checks": checks,
@@ -1657,7 +1657,9 @@ def _render_validation(
         "registry_generation": drop_cap_intent.current_generation(
             translation_config
         ),
-        "base_transaction_generation": trace_generation,
+        "physical_source_ref": physical_reference,
+        "local_source_ref": local_reference,
+        "base_transaction_generation": None,
         "transaction_generation": None,
         "post_render": None,
     }
@@ -1720,20 +1722,77 @@ def _post_render_validation(
     return reason, {"checks": checks, "valid": reason is None}
 
 
-def apply(
+def _restore_dataclass(target, snapshot) -> None:
+    for name in target.__dataclass_fields__:
+        setattr(target, name, copy.deepcopy(getattr(snapshot, name)))
+
+
+class _RenderPassTransaction:
+    """Restore all selected pages and active intents unless the pass commits."""
+
+    def __init__(self, translation_config, docs):
+        self._translation_config = translation_config
+        self._pages = [(page, copy.deepcopy(page)) for page in docs.page]
+        self._intent_generation = drop_cap_intent.current_generation(
+            translation_config
+        )
+        self._intents = copy.deepcopy(
+            list(drop_cap_intent.intents_for(translation_config).values())
+        )
+        self._committed = False
+
+    def __enter__(self):
+        return self
+
+    def commit(self) -> None:
+        self._committed = True
+
+    def _restore_intents(self) -> None:
+        drop_cap_intent.clear(self._translation_config)
+        for generation in range(1, self._intent_generation + 1):
+            intents = (
+                copy.deepcopy(self._intents)
+                if generation == self._intent_generation
+                else []
+            )
+            drop_cap_intent.replace_intents(self._translation_config, intents)
+
+    def __exit__(self, exc_type, exc_value, traceback) -> bool:
+        if exc_type is not None or not self._committed:
+            for page, snapshot in self._pages:
+                _restore_dataclass(page, snapshot)
+            self._restore_intents()
+        return False
+
+
+class _ParagraphAttempt:
+    """Restore one paragraph after a typed render refusal."""
+
+    def __init__(self, paragraph):
+        self._paragraph = paragraph
+        self._snapshot = copy.deepcopy(paragraph)
+        self._committed = False
+
+    def __enter__(self):
+        return self
+
+    def commit(self) -> None:
+        self._committed = True
+
+    def __exit__(self, exc_type, exc_value, traceback) -> bool:
+        if exc_type is not None or not self._committed:
+            _restore_dataclass(self._paragraph, self._snapshot)
+        return False
+
+
+def _apply_render_pass(
     translation_config,
     docs,
-    run_trace=None,
     article_document_ir=None,
     typesetting_stage=None,
-) -> dict | None:
-    """Set every kept opening of one document. None where the switch is down.
-
-    Returns the record it wrote, so a caller holding the document can assert
-    about the pass without reading the sidecar back.
-    """
-    if not enabled(translation_config):
-        return None
+) -> dict:
+    if article_document_ir is None:
+        raise DropCapRenderError("drop-cap render requires canonical ArticleDocumentIR")
     from babeldoc.magazine import hitl
 
     config = load_render_config()
@@ -1745,22 +1804,20 @@ def apply(
     inventory = fixed_assets.build_inventory(
         docs,
         article_document_ir=article_document_ir,
-        run_trace=run_trace,
     )
 
     def inventory_builder():
         return fixed_assets.build_inventory(
             docs,
             article_document_ir=article_document_ir,
-            run_trace=run_trace,
         )
 
     records: list[dict] = []
     labeled_positions = [
-        (label, position)
+        (label, position + 1, position)
         for position, (label, _page) in enumerate(hitl.labeled_pages(docs))
     ]
-    for label, position in labeled_positions:
+    for physical_label, local_page, position in labeled_positions:
         paragraph_count = len(docs.page[position].pdf_paragraph or ())
         for index in range(paragraph_count):
             page = docs.page[position]
@@ -1768,11 +1825,14 @@ def apply(
             decision, _source = drop_cap.resolve_decision(paragraph, default)
             if decision != keep:
                 continue
-            reference = drop_cap.paragraph_reference(label, index)
-            intent = drop_cap_intent.intent_for(translation_config, reference)
+            physical_reference = drop_cap.paragraph_reference(physical_label, index)
+            local_reference = drop_cap.paragraph_reference(local_page, index)
+            intent = drop_cap_intent.intent_for(
+                translation_config, physical_reference
+            )
             blank = _blank(
-                reference,
-                label,
+                physical_reference,
+                physical_label,
                 decision,
                 target,
                 None if regime is None else regime.name,
@@ -1781,82 +1841,41 @@ def apply(
             validation = _render_validation(
                 translation_config,
                 paragraph,
-                reference,
+                physical_reference,
+                local_reference,
                 decision,
                 intent,
                 regime,
-                run_trace,
+                article_document_ir,
             )
             blank["validation"] = validation
-            transaction = None
-            local_snapshot = copy.deepcopy(paragraph)
-            if not validation["valid"]:
-                outcome = {
-                    **blank,
-                    "revert_reason": REVERT_INVALID_INTENT,
-                    "issue": ", ".join(validation["failed"]),
-                    "render_state": STATE_INVALID_INTENT,
-                }
-            elif (
-                regime.name == REGIME_INITIAL
-                and intent.target_policy
-                != drop_cap_intent.POLICY_ENGLISH_RAISED_INITIAL
-            ):
-                outcome = _refusal(blank, REVERT_POLICY)
-            else:
-                guard = _decorative_guard(
-                    page,
-                    label,
-                    index,
-                    reference,
-                    intent,
-                    article_document_ir,
-                    inventory,
-                )
-                attempt_inventory = _without_mutable_paragraph(
-                    inventory, reference
-                )
-                if isinstance(docs, il_version_1.Document):
-                    transaction_trace = (
-                        run_trace
-                        if run_trace is not None
-                        and hasattr(run_trace, "transaction_snapshot")
-                        else None
+            with _ParagraphAttempt(paragraph) as attempt:
+                if not validation["valid"]:
+                    outcome = {
+                        **blank,
+                        "revert_reason": REVERT_INVALID_INTENT,
+                        "issue": ", ".join(validation["failed"]),
+                        "render_state": STATE_INVALID_INTENT,
+                    }
+                elif (
+                    regime.name == REGIME_INITIAL
+                    and intent.target_policy
+                    != drop_cap_intent.POLICY_ENGLISH_RAISED_INITIAL
+                ):
+                    outcome = _refusal(blank, REVERT_POLICY)
+                else:
+                    guard = _decorative_guard(
+                        page,
+                        local_page,
+                        index,
+                        local_reference,
+                        intent,
+                        article_document_ir,
+                        inventory,
                     )
                     attempt_inventory = _without_mutable_paragraph(
-                        inventory, reference
+                        inventory, local_reference
                     )
-                    transaction = TransactionSnapshot.capture(
-                        docs,
-                        (position,),
-                        run_trace=transaction_trace,
-                        fixed_inventory=attempt_inventory,
-                        fixed_inventory_builder=lambda reference=reference: (
-                            _without_mutable_paragraph(
-                                inventory_builder(), reference
-                            )
-                        ),
-                    )
-                    transaction.begin_generation(f"drop_cap_render:{reference}")
-                    validation["transaction_generation"] = transaction.generation
-                    if transaction_trace is not None:
-                        validation["checks"]["current_transaction_generation"] = (
-                            transaction.generation
-                            == transaction_trace.current_generation
-                        )
-                        validation["valid"] = all(
-                            validation["checks"].values()
-                        )
-                        validation["failed"] = [
-                            name
-                            for name, holds in validation["checks"].items()
-                            if not holds
-                        ]
-                try:
-                    if not validation["valid"]:
-                        raise DropCapRenderError(
-                            "render transaction generation is not current"
-                        )
                     before_text = "".join(
                         character.char_unicode or ""
                         for character in paragraph_characters(paragraph)
@@ -1885,42 +1904,23 @@ def apply(
                         after_inventory = inventory_builder()
                         comparison = fixed_assets.compare(
                             attempt_inventory,
-                            _without_mutable_paragraph(after_inventory, reference),
+                            _without_mutable_paragraph(
+                                after_inventory, local_reference
+                            ),
                             config.edge_slack_pt,
                         )
                         if not comparison.holds:
                             outcome = _refusal(outcome, REVERT_FIXED_ASSET)
                         else:
                             inventory = after_inventory
+                if outcome["render_state"] is None:
                     outcome["render_state"] = (
                         STATE_COMMITTED
                         if outcome["set"]
                         else STATE_RENDER_ROLLBACK
                     )
-                    if transaction is not None:
-                        outcome["transaction"] = (
-                            transaction.commit(
-                                (reference,), capture_geometry=False
-                            )
-                            if outcome["set"]
-                            else transaction.rollback()
-                        )
-                    elif not outcome["set"]:
-                        page.pdf_paragraph[index] = copy.deepcopy(local_snapshot)
-                except Exception as error:  # noqa: BLE001 - the snapshot must close
-                    transaction_record = (
-                        None if transaction is None else transaction.rollback()
-                    )
-                    outcome = _refusal(blank, REVERT_RENDER_EXCEPTION)
-                    outcome["issue"] = f"{type(error).__name__}: {error}"
-                    outcome["transaction"] = transaction_record
-                    outcome["render_state"] = STATE_RENDER_ROLLBACK
-                    if transaction is None:
-                        page.pdf_paragraph[index] = copy.deepcopy(local_snapshot)
-            if outcome["render_state"] is None:
-                outcome["render_state"] = STATE_RENDER_ROLLBACK
-                if transaction is None:
-                    page.pdf_paragraph[index] = copy.deepcopy(local_snapshot)
+                if outcome["set"]:
+                    attempt.commit()
             target_index = outcome.pop("_target_index", None)
             if outcome["set"] and target_index is not None:
                 paragraph = docs.page[position].pdf_paragraph[index]
@@ -1941,7 +1941,7 @@ def apply(
                 detail = outcome["issue"] or str(outcome["revert_reason"])
                 _record_render_issue(
                     intent,
-                    reference,
+                    physical_reference,
                     detail,
                     drop_cap_intent.ISSUE_INVALID_INTENT,
                 )
@@ -1949,60 +1949,7 @@ def apply(
                 intent.render_status = drop_cap_intent.RENDER_FAILED
                 detail = outcome["issue"] or str(outcome["revert_reason"])
                 outcome["issue"] = detail
-                _record_render_issue(intent, reference, detail)
-            if run_trace is not None:
-                event_name = "target_initial_style"
-                if (
-                    intent is not None
-                    and intent.target_policy
-                    == drop_cap_intent.POLICY_ENGLISH_RAISED_INITIAL
-                ):
-                    event_name = "english_raised_initial_geometry"
-                elif (
-                    intent is not None
-                    and intent.target_policy
-                    == drop_cap_intent.POLICY_CHINESE_TWO_LINE_INITIAL
-                ):
-                    event_name = "chinese_two_line_initial_geometry"
-                event = {
-                    "event": event_name,
-                    "source_ref": reference,
-                    "render_status": (
-                        drop_cap_intent.RENDER_SKIPPED
-                        if intent is None
-                        else intent.render_status
-                    ),
-                    "render_state": outcome["render_state"],
-                    "validation": validation,
-                    "target_policy": None if intent is None else intent.target_policy,
-                    "initial_char": outcome["initial"],
-                    "target_char": None if intent is None else intent.target_char,
-                    "target_index": None if intent is None else intent.target_index,
-                    "target_style_hash": None if intent is None else intent.target_style_hash,
-                    "initial_char_count": outcome["initial_char_count"],
-                    "initial_ink_box": outcome["initial_ink_box"],
-                    "first_line_metrics": {
-                        "ink_box": outcome["first_line_ink_box"],
-                        "ink_top": outcome["first_line_ink_top"],
-                        "ink_bottom": outcome["first_line_ink_bottom"],
-                        "line_advance": outcome["line_advance"],
-                    },
-                    "second_line_metrics": {
-                        "ink_box": outcome["second_line_ink_box"],
-                        "ink_bottom": outcome["second_line_ink_bottom"],
-                    },
-                    "reserve_lines": outcome["reserve_lines"],
-                    "gutter": outcome["gutter"],
-                    "line_baselines": outcome["line_baselines"],
-                    "body_start_x": outcome["body_start_x"],
-                    "second_line_start_x": outcome["second_line_start_x"],
-                    "third_line_start_x": outcome["third_line_start_x"],
-                    "color_evidence": outcome["color_evidence"],
-                    "style_evidence": outcome["style_evidence"],
-                    "detector_contract": outcome["detector_contract"],
-                    "revert_reason": outcome["revert_reason"],
-                }
-                run_trace.record_drop_cap_event(event)
+                _record_render_issue(intent, physical_reference, detail)
             records.append(outcome)
 
     expected = set(config.report_fields)
@@ -2027,6 +1974,25 @@ def apply(
         record["totals"]["decided"],
         record["totals"]["set"],
     )
+    return record
+
+
+def apply(
+    translation_config,
+    docs,
+    article_document_ir=None,
+    typesetting_stage=None,
+) -> dict | None:
+    if not enabled(translation_config):
+        return None
+    with _RenderPassTransaction(translation_config, docs) as transaction:
+        record = _apply_render_pass(
+            translation_config,
+            docs,
+            article_document_ir=article_document_ir,
+            typesetting_stage=typesetting_stage,
+        )
+        transaction.commit()
     return record
 
 

@@ -998,6 +998,8 @@ def _do_translate_single(
             docs
         )
 
+    minimal_pipeline.before_translation(translation_config, docs)
+
     if not translation_config.skip_translation:
         if support_llm_translate:
             il_translator = ILTranslatorLLMOnly(translate_engine, translation_config)
@@ -1048,6 +1050,11 @@ def _do_translate_single(
 
     typesetting_stage.typesetting_document(docs)
     logger.debug(f"finish typsetting from {temp_pdf_path}")
+    minimal_pipeline.after_typesetting(
+        translation_config,
+        docs,
+        typesetting_stage,
+    )
     if translation_config.debug:
         xml_converter.write_json(
             docs,
