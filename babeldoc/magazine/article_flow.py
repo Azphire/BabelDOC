@@ -809,6 +809,31 @@ def apply(
     config: ArticleFlowConfig | None = None,
 ) -> dict | None:
     """Apply bounded article flow across canonical adjacent pages."""
+    if typesetter.translation_config is not translation_config:
+        raise ValueError("article flow typesetter belongs to another config")
+    if not enabled(translation_config):
+        record = {
+            "switch": SWITCH,
+            "status": "disabled",
+            "reason": SKIP_DISABLED,
+            "article_flow_applied": False,
+            "cross_page_segments": [],
+            "issues": [],
+            "pages": [],
+            "totals": {
+                "segments_considered": 0,
+                "segments_applied": 0,
+                "segments_rolled_back": 0,
+                "pages_considered": 0,
+                "pages_applied": 0,
+                "pages_rolled_back": 0,
+                "pages_skipped": 0,
+                "placements": 0,
+                "cross_page_movements": 0,
+            },
+        }
+        _write_report(translation_config, record)
+        return record
     from babeldoc.magazine import cross_page_reflow
 
     return cross_page_reflow.apply(

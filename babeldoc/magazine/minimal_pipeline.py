@@ -13,6 +13,7 @@ from babeldoc.magazine import article_flow
 from babeldoc.magazine import drop_cap_render
 from babeldoc.magazine import hitl
 from babeldoc.magazine import indent_policy
+from babeldoc.magazine import layout_report
 from babeldoc.magazine import line_split
 from babeldoc.magazine import minimal_detection
 from babeldoc.magazine import minimal_repair
@@ -232,7 +233,6 @@ _FIXED_TRUE_ATTRIBUTES = (
     "magazine_hitl_apply",
     "magazine_hitl_export",
     "magazine_detect",
-    "magazine_column_reflow",
     "magazine_drop_cap_apply",
     "magazine_drop_cap_mark",
     "magazine_drop_cap_render",
@@ -246,6 +246,7 @@ _FIXED_TRUE_ATTRIBUTES = (
 
 _FIXED_FALSE_ATTRIBUTES = (
     "magazine_checkpoint",
+    "magazine_column_reflow",
     "magazine_pdf_compliance",
     "magazine_rotated_lane",
     "magazine_title_typeset",
@@ -456,6 +457,18 @@ def after_translation(config, docs, typesetter) -> dict:
     )
     if not isinstance(report, dict):
         raise MinimalPipelineStateError("fixed article flow did not return a report")
+    if "article_flow_applied" in report:
+        layout_report.prepare(
+            config,
+            docs,
+            article_document_ir,
+            article_flow_report=report,
+            eligible_roles=article_flow.load_flow_config().eligible_roles,
+        )
+    else:
+        # An opaque orchestration marker carries no geometry contract.  The
+        # built-in flow pass always declares the required decision explicitly.
+        layout_report.discard()
     if state.article_document_ir is not article_document_ir:
         raise MinimalPipelineStateError("canonical ArticleDocumentIR identity changed")
     state._flow_report = report
@@ -1208,6 +1221,11 @@ def after_typesetting(config, docs, typesetter) -> dict:
             "drop-cap renderer typesetter belongs to a different config"
         )
 
+    if (
+        isinstance(state.flow_report, dict)
+        and state.flow_report.get("article_flow_applied") is False
+    ):
+        layout_report.finalize()
     _refresh_detection_fixed_baseline(
         docs,
         article_document_ir,

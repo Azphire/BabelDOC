@@ -1450,7 +1450,7 @@ class Typesetting:
         page: il_version_1.Page,
         typesetting_units: list[TypesettingUnit],
         source_unit,
-    ) -> None:
+    ) -> list[TypesettingUnit]:
         """Render one declared source unit without borrowing adjacent space."""
         from babeldoc.magazine.line_split import RECORD_SINGLE
         from babeldoc.magazine.line_split import load_line_split_config
@@ -1479,6 +1479,7 @@ class Typesetting:
                 f"{source_unit.source_ref}: complete target does not fit "
                 f"{source_unit.record_kind} source container"
             )
+        return laid_out
 
     def typesetting_document(self, document: il_version_1.Document):
         # 原有的排版逻辑
@@ -1626,12 +1627,18 @@ class Typesetting:
         ],
     ):
         typesetting_units = self.create_typesetting_units(paragraph, fonts)
+        from babeldoc.magazine import layout_report
         from babeldoc.magazine.line_split import source_unit
 
         physical_page = (
             None if page.page_number is None else int(page.page_number) + 1
         )
         bounded_unit = source_unit(paragraph, physical_page)
+        conservative_container = layout_report.source_container(
+            paragraph, physical_page
+        )
+        if conservative_container is not None:
+            bounded_unit = conservative_container
         if bounded_unit is not None and bounded_unit.source_box is not None:
             paragraph.box = Box(*bounded_unit.source_box)
         # 如果所有单元都可以直接传递，则直接传递
@@ -1640,14 +1647,46 @@ class Typesetting:
             paragraph.pdf_paragraph_composition = self.create_passthrough_composition(
                 typesetting_units,
             )
+            if conservative_container is not None:
+                try:
+                    layout_report.record_success(
+                        paragraph,
+                        physical_page,
+                        final_text_box=_unit_bounds(typesetting_units),
+                    )
+                except layout_report.ConservativeLayoutError as error:
+                    raise BoundedTypesettingError(str(error)) from error
         else:
             if bounded_unit is not None:
-                self.retypeset_bounded_source_unit(
-                    paragraph,
-                    page,
-                    typesetting_units,
-                    bounded_unit,
-                )
+                original_compositions = paragraph.pdf_paragraph_composition
+                original_box = copy.deepcopy(paragraph.box)
+                original_scale = paragraph.scale
+                try:
+                    laid_out = self.retypeset_bounded_source_unit(
+                        paragraph,
+                        page,
+                        typesetting_units,
+                        bounded_unit,
+                    )
+                    if conservative_container is not None:
+                        layout_report.record_success(
+                            paragraph,
+                            physical_page,
+                            final_text_box=_unit_bounds(laid_out),
+                        )
+                except BoundedTypesettingError as error:
+                    if conservative_container is not None:
+                        layout_report.record_overflow(
+                            paragraph,
+                            physical_page,
+                            "minimum_readable_scale_exhausted",
+                        )
+                    raise
+                except layout_report.ConservativeLayoutError as error:
+                    paragraph.pdf_paragraph_composition = original_compositions
+                    paragraph.box = original_box
+                    paragraph.scale = original_scale
+                    raise BoundedTypesettingError(str(error)) from error
                 self._update_paragraph_render_order(paragraph)
                 return
             # 使用预计算的缩放因子进行重排版

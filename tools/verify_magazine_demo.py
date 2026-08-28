@@ -1,4 +1,4 @@
-"""Offline verifier for frozen magazine chain and TOC truth."""
+"""Offline verifier for frozen magazine chain, TOC, and layout truth."""
 
 from __future__ import annotations
 
@@ -741,9 +741,187 @@ def verify_toc(
     }
 
 
+def verify_layout(
+    expectations_path: Path,
+    source: Path,
+    output: Path,
+    working_dir: Path,
+    source_lang: str,
+    target_lang: str,
+):
+    """Verify that formal text stayed inside every frozen source holder."""
+    expectations = _verify_inputs(
+        expectations_path,
+        source,
+        output,
+        source_lang,
+        target_lang,
+    )
+    flow = _read(working_dir / "article_flow.report.json")
+    if (
+        flow.get("article_flow_applied") is not False
+        or flow.get("status") != "disabled"
+        or flow.get("totals", {}).get("placements") != 0
+    ):
+        raise VerificationError("ordinary article flow was applied")
+
+    report = _read(working_dir / "layout_report.json")
+    if report.get("article_flow_applied") is not False:
+        raise VerificationError("layout report does not prove disabled article flow")
+    elements = report.get("elements")
+    if not isinstance(elements, list) or not elements:
+        raise VerificationError("layout element inventory is missing")
+    allowed_roles = {
+        "body",
+        "chain",
+        "single_visual_line",
+        "block",
+        "prose_exempt",
+    }
+    by_ref = {}
+    for element in elements:
+        reference = element.get("source_ref") if isinstance(element, dict) else None
+        if (
+            not isinstance(reference, str)
+            or REF_PATTERN.fullmatch(reference) is None
+            or reference in by_ref
+        ):
+            raise VerificationError("layout source refs are invalid or duplicated")
+        if element.get("role") not in allowed_roles:
+            raise VerificationError(f"invalid layout role: {reference}")
+        if element.get("article_flow_applied") is not False:
+            raise VerificationError(f"layout element used article flow: {reference}")
+        source_box = _require_box(element.get("source_box"), reference)
+        allocation_box = _require_box(
+            element.get("allocation_box"), f"allocation {reference}"
+        )
+        holder_box = _require_box(
+            element.get("final_holder_box"), f"holder {reference}"
+        )
+        text_box = _require_box(element.get("final_text_box"), f"text {reference}")
+        if not _box_equal(source_box, allocation_box):
+            raise VerificationError(f"allocation changed source holder: {reference}")
+        if not _box_equal(source_box, holder_box):
+            raise VerificationError(f"formal holder changed source box: {reference}")
+        if not _box_contains(source_box, text_box):
+            raise VerificationError(f"final text left source box: {reference}")
+        if element.get("status") != "success" or element.get("overflow_reason") is not None:
+            raise VerificationError(f"layout overflow/failure: {reference}")
+        by_ref[reference] = element
+
+    totals = report.get("totals")
+    if not isinstance(totals, dict) or totals != {
+        "elements": len(elements),
+        "overflow": 0,
+        "pending": 0,
+        "success": len(elements),
+    }:
+        raise VerificationError("layout totals disagree with element inventory")
+
+    units_path = working_dir / "line_split.report.json"
+    if units_path.is_file():
+        units = _read(units_path).get("source_units", [])
+        unit_boxes = {
+            item.get("source_ref"): item.get("source_band")
+            for item in units
+            if isinstance(item, dict)
+        }
+        for reference, element in by_ref.items():
+            if element["role"] not in {
+                "single_visual_line",
+                "block",
+                "prose_exempt",
+            }:
+                continue
+            if reference not in unit_boxes or not _box_equal(
+                element["source_box"], unit_boxes[reference]
+            ):
+                raise VerificationError(
+                    f"layout source unit disagrees with line split: {reference}"
+                )
+
+    chain_path = working_dir / "chain_translation.report.json"
+    if chain_path.is_file():
+        chain_members = {}
+        for chain in _read(chain_path).get("chains", []):
+            if chain.get("outcome") != "joint_success":
+                continue
+            refs = chain.get("ordered_source_refs")
+            source_boxes = chain.get("source_boxes")
+            fragment_boxes = chain.get("fragment_boxes")
+            if (
+                not isinstance(refs, list)
+                or not isinstance(source_boxes, list)
+                or not isinstance(fragment_boxes, list)
+                or not len(refs) == len(source_boxes) == len(fragment_boxes)
+            ):
+                raise VerificationError("chain layout boxes are incomplete")
+            for reference, source_box, fragment_box in zip(
+                refs, source_boxes, fragment_boxes, strict=True
+            ):
+                if reference in chain_members:
+                    raise VerificationError(
+                        f"duplicate chain layout member: {reference}"
+                    )
+                chain_members[reference] = (source_box, fragment_box)
+        for reference, (source_box, fragment_box) in chain_members.items():
+            element = by_ref.get(reference)
+            if element is None:
+                raise VerificationError(f"chain member has no layout holder: {reference}")
+            if element["role"] not in {"chain", "prose_exempt"}:
+                raise VerificationError(f"chain member has wrong layout role: {reference}")
+            if not _box_equal(element["source_box"], source_box):
+                raise VerificationError(f"chain source box changed: {reference}")
+            if not _box_equal(element["allocation_box"], fragment_box):
+                raise VerificationError(f"chain allocation box changed: {reference}")
+        unproved_chain = {
+            reference
+            for reference, element in by_ref.items()
+            if element["role"] == "chain" and reference not in chain_members
+        }
+        if unproved_chain:
+            raise VerificationError(
+                f"layout chain holders lack joint allocation evidence: {sorted(unproved_chain)}"
+            )
+
+    verified_regions = 0
+    seen_region_pages = set()
+    for region in expectations.get("layout_regions", []):
+        page = region.get("physical_page")
+        if (
+            region.get("role") != "multi_column_page"
+            or not isinstance(page, int)
+            or page <= 0
+            or page in seen_region_pages
+        ):
+            raise VerificationError("layout region identity is invalid or duplicated")
+        seen_region_pages.add(page)
+        box = _require_box(region.get("source_box"), f"layout region p{page}")
+        page_elements = [
+            element
+            for reference, element in by_ref.items()
+            if int(reference[1 : reference.index("#")]) == page
+        ]
+        if not page_elements:
+            raise VerificationError(f"layout region has no frozen holders: p{page}")
+        if any(
+            not _box_contains(box, _require_box(element["source_box"], element["source_ref"]))
+            for element in page_elements
+        ):
+            raise VerificationError(f"layout holder left frozen page region: p{page}")
+        verified_regions += 1
+    return {
+        "check": "layout",
+        "sample_id": expectations.get("sample_id"),
+        "elements": len(elements),
+        "regions": verified_regions,
+        "status": "pass",
+    }
+
+
 def _parser():
     parser = argparse.ArgumentParser()
-    parser.add_argument("--check", required=True, choices=("chain", "toc"))
+    parser.add_argument("--check", required=True, choices=("chain", "toc", "layout"))
     parser.add_argument("--expectations", required=True, type=Path)
     parser.add_argument("--source", required=True, type=Path)
     parser.add_argument("--output", required=True, type=Path)
@@ -759,7 +937,11 @@ def _parser():
 def main(argv=None) -> int:
     args = _parser().parse_args(argv)
     try:
-        verifier = verify_chain if args.check == "chain" else verify_toc
+        verifier = {
+            "chain": verify_chain,
+            "toc": verify_toc,
+            "layout": verify_layout,
+        }[args.check]
         result = verifier(
             args.expectations,
             args.source,
