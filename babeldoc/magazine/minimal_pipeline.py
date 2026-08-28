@@ -6,6 +6,8 @@ import json
 from dataclasses import dataclass
 from pathlib import Path
 
+import pymupdf
+
 from babeldoc.magazine import article_flow
 from babeldoc.magazine import drop_cap_render
 from babeldoc.magazine import hitl
@@ -233,6 +235,74 @@ def _state(config) -> MagazineState:
     return state
 
 
+def _normalize_selected_document_total_pages(config, docs) -> None:
+    """Restore the source PDF page count for an explicitly selected IL."""
+    page_ranges = getattr(config, "page_ranges", None)
+    if page_ranges is None:
+        return
+    if not isinstance(page_ranges, list) or not page_ranges:
+        raise MinimalPipelineStateError(
+            "explicit page ranges must be a non-empty list"
+        )
+    normalized_ranges = []
+    for position, item in enumerate(page_ranges):
+        if (
+            not isinstance(item, tuple | list)
+            or len(item) != 2
+            or any(not isinstance(value, int) or isinstance(value, bool) for value in item)
+        ):
+            raise MinimalPipelineStateError(
+                f"explicit page range {position} is malformed"
+            )
+        start, end = item
+        if start < 1 or (end != -1 and end < start):
+            raise MinimalPipelineStateError(
+                f"explicit page range {position} is invalid"
+            )
+        normalized_ranges.append((start, end))
+
+    input_file = getattr(config, "input_file", None)
+    if not isinstance(input_file, str | Path) or not str(input_file):
+        raise MinimalPipelineStateError(
+            "explicit page selection requires a source PDF path"
+        )
+    source_pdf = Path(input_file)
+    if not source_pdf.is_file():
+        raise MinimalPipelineStateError(
+            f"selected source PDF is missing: {source_pdf}"
+        )
+    with pymupdf.open(source_pdf) as source_document:
+        source_total_pages = int(source_document.page_count)
+    if source_total_pages <= 0:
+        raise MinimalPipelineStateError("selected source PDF has no pages")
+
+    labels = []
+    for position, page in enumerate(docs.page or ()):
+        page_number = getattr(page, "page_number", None)
+        if (
+            not isinstance(page_number, int)
+            or isinstance(page_number, bool)
+            or not 0 <= page_number < source_total_pages
+        ):
+            raise MinimalPipelineStateError(
+                f"selected page {position} has an invalid physical page number"
+            )
+        label = page_number + 1
+        if not any(
+            start <= label and (end == -1 or label <= end)
+            for start, end in normalized_ranges
+        ):
+            raise MinimalPipelineStateError(
+                f"selected physical page {label} is outside explicit page ranges"
+            )
+        labels.append(label)
+    if len(labels) != len(set(labels)):
+        raise MinimalPipelineStateError(
+            "explicitly selected pages have duplicate physical labels"
+        )
+    docs.total_pages = source_total_pages
+
+
 def after_styles(config, docs) -> ArticleDocumentIR:
     """Build page, chain, and canonical article structure exactly once."""
     state = _state(config)
@@ -244,6 +314,7 @@ def after_styles(config, docs) -> ArticleDocumentIR:
     state._structure_started = True
     state._structure_document_identity = id(docs)
 
+    _normalize_selected_document_total_pages(config, docs)
     classifier = PageClassifier(config)
     if classifier.vlm_enabled:
         raise MinimalPipelineStateError(

@@ -2,9 +2,12 @@ from __future__ import annotations
 
 import json
 from dataclasses import replace
+from types import SimpleNamespace
 
+import pymupdf
 import pytest
 from babeldoc.magazine import minimal_detection
+from babeldoc.magazine import minimal_pipeline
 from babeldoc.magazine.detectors import CONFIG_PATH
 from babeldoc.magazine.detectors import DETECTOR_KINDS
 from babeldoc.magazine.detectors.base import DetectorError
@@ -384,3 +387,108 @@ def test_detector_config_and_baseline_invariants_fail_closed(tmp_path):
     with pytest.raises(minimal_detection.MinimalDetectionError):
         replace(baseline, physical_to_local={7: 2, 8: 1})
     assert baseline.physical_to_local == {7: 1, 8: 2}
+
+
+def _source_pdf(path, pages=8):
+    document = pymupdf.open()
+    for _index in range(pages):
+        document.new_page()
+    document.save(path)
+    document.close()
+
+
+def test_explicit_selection_restores_source_total_before_structure(
+    tmp_path, monkeypatch
+):
+    source = tmp_path / "source.pdf"
+    _source_pdf(source)
+    docs, article_ir, _paragraphs, _translator = make_chain_fixture(
+        "目标文本", tmp_path / "translator"
+    )
+    docs.total_pages = 2
+    docs.page[0].page_number = 6
+    docs.page[1].page_number = 7
+    observed = []
+
+    class Classifier:
+        def __init__(self, _config):
+            self.vlm_enabled = False
+
+        def process(self, document):
+            observed.append(document.total_pages)
+            return document
+
+    class Processor:
+        def __init__(self, _config, result=None):
+            self.result = result
+
+        def process(self, document):
+            return document if self.result is None else self.result
+
+    monkeypatch.setattr(minimal_pipeline, "PageClassifier", Classifier)
+    monkeypatch.setattr(minimal_pipeline, "ChainBuilder", Processor)
+    monkeypatch.setattr(
+        minimal_pipeline,
+        "ArticleBuilder",
+        lambda config: Processor(config, article_ir),
+    )
+    monkeypatch.setattr(
+        minimal_pipeline.hitl,
+        "page_kind_pass",
+        lambda _config, _docs, _state: None,
+    )
+    config = SimpleNamespace(input_file=source, page_ranges=[(7, 8)])
+    minimal_pipeline.configure(config)
+    assert minimal_pipeline.after_styles(config, docs) is article_ir
+    assert observed == [8]
+    assert docs.total_pages == 8
+    assert config.magazine_state.hitl_state.total_pages == 8
+    assert config.magazine_state.hitl_state.physical_to_local == {7: 1, 8: 2}
+    assert config.magazine_state.detection_baseline.physical_labels == (7, 8)
+
+
+def test_explicit_selection_source_and_labels_fail_closed(tmp_path):
+    docs, _article_ir, _paragraphs, _translator = make_chain_fixture(
+        "目标文本", tmp_path / "translator"
+    )
+    docs.page[0].page_number = 6
+    docs.page[1].page_number = 7
+    with pytest.raises(minimal_pipeline.MinimalPipelineStateError):
+        minimal_pipeline._normalize_selected_document_total_pages(
+            SimpleNamespace(
+                input_file=tmp_path / "missing.pdf", page_ranges=[(7, 8)]
+            ),
+            docs,
+        )
+
+    invalid = tmp_path / "invalid.pdf"
+    invalid.write_text("not a PDF", encoding="utf-8")
+    with pytest.raises(pymupdf.FileDataError):
+        minimal_pipeline._normalize_selected_document_total_pages(
+            SimpleNamespace(input_file=invalid, page_ranges=[(7, 8)]), docs
+        )
+
+    source = tmp_path / "source.pdf"
+    _source_pdf(source)
+    docs.page[1].page_number = None
+    with pytest.raises(minimal_pipeline.MinimalPipelineStateError):
+        minimal_pipeline._normalize_selected_document_total_pages(
+            SimpleNamespace(input_file=source, page_ranges=[(7, 8)]), docs
+        )
+
+
+def test_no_explicit_selection_preserves_fixture_total(tmp_path):
+    docs, _article_ir, _paragraphs, _translator = make_chain_fixture(
+        "目标文本", tmp_path / "translator"
+    )
+    docs.total_pages = 2
+    minimal_pipeline._normalize_selected_document_total_pages(
+        SimpleNamespace(input_file=tmp_path / "missing.pdf", page_ranges=None), docs
+    )
+    assert docs.total_pages == 2
+
+    empty = type(docs)(page=[], total_pages=0)
+    minimal_pipeline._normalize_selected_document_total_pages(
+        SimpleNamespace(input_file=tmp_path / "missing.pdf", page_ranges=None), empty
+    )
+    assert empty.total_pages == 0
