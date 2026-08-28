@@ -469,6 +469,41 @@ def test_long_english_title_is_complete_inside_finite_line_limit(
     assert rendered == target
 
 
+def test_wipo_english_title_preserves_wrapped_spaces_in_source_box(
+    monkeypatch, tmp_path
+):
+    target = "Prince of Soca Music in Grenada and Youth Ambassador for WIPO"
+    source_box = (41.4017, 542.086, 522.1217, 708.454)
+    paragraph = _paragraph(target, "wipo-title", source_box, label="title")
+    paragraph.xobj_id = -1
+    paragraph.pdf_style.font_size = 24.0
+    holder = paragraph.pdf_paragraph_composition[0]
+    holder.pdf_same_style_unicode_characters.pdf_style.font_size = 24.0
+
+    report, _document_value, _typesetter = _run_title(
+        monkeypatch, tmp_path, "en-GB", paragraph, source_box
+    )
+
+    row = report["titles"][0]
+    rendered = "".join(
+        composition.pdf_character.char_unicode
+        for composition in paragraph.pdf_paragraph_composition
+        if composition.pdf_character is not None
+    )
+    assert rendered == target
+    assert rendered.count(" ") == target.count(" ")
+    assert 1 < row["lines"] <= 3
+    assert row["source_box"] == list(source_box)
+    assert row["final_holder_box"] == list(source_box)
+    assert row["rendered_target_sha256"] == _sha256(target)
+    final_box = row["final_text_box"]
+    assert final_box is not None
+    assert final_box[0] >= source_box[0] - 1e-3
+    assert final_box[1] >= source_box[1] - 1e-3
+    assert final_box[2] <= source_box[2] + 1e-3
+    assert final_box[3] <= source_box[3] + 1e-3
+
+
 def test_toc_records_captions_credits_and_folios_are_excluded_unchanged(
     monkeypatch, tmp_path
 ):

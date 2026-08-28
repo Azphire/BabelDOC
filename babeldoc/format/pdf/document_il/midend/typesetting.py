@@ -1292,6 +1292,7 @@ class Typesetting:
         maximum_lines: int | None = None,
         allow_hanging_punctuation_outside_box: bool = True,
         require_unit_bounds_inside_box: bool = False,
+        preserve_wrapped_spaces: bool = False,
     ) -> tuple[float, list[TypesettingUnit] | None]:
         """查找最优缩放因子并可选择性地执行布局
 
@@ -1327,6 +1328,7 @@ class Typesetting:
                     paragraph,
                     use_english_line_break,
                     allow_hanging_punctuation_outside_box,
+                    preserve_wrapped_spaces,
                 )
 
                 if all_units_fit and maximum_lines is not None:
@@ -1445,6 +1447,7 @@ class Typesetting:
                     allow_hanging_punctuation_outside_box
                 ),
                 require_unit_bounds_inside_box=require_unit_bounds_inside_box,
+                preserve_wrapped_spaces=preserve_wrapped_spaces,
             )
 
         # 最后返回最小缩放因子
@@ -1528,6 +1531,7 @@ class Typesetting:
         minimum_scale: float,
         maximum_lines: int | None,
         use_english_line_break: bool = True,
+        preserve_wrapped_spaces: bool = False,
     ) -> list[TypesettingUnit]:
         """Render complete target text inside one immutable source box."""
         box = Box(*source_box)
@@ -1544,6 +1548,7 @@ class Typesetting:
             maximum_lines=maximum_lines,
             allow_hanging_punctuation_outside_box=False,
             require_unit_bounds_inside_box=True,
+            preserve_wrapped_spaces=preserve_wrapped_spaces,
         )
         if laid_out is None:
             raise BoundedTypesettingError(
@@ -1823,6 +1828,7 @@ class Typesetting:
         paragraph: il_version_1.PdfParagraph,
         use_english_line_break: bool = True,
         allow_hanging_punctuation_outside_box: bool = True,
+        preserve_wrapped_spaces: bool = False,
     ) -> tuple[list[TypesettingUnit], bool]:
         """布局排版单元。
 
@@ -1878,7 +1884,11 @@ class Typesetting:
             unit_height = unit.height * scale
 
             # 跳过行首的空格
-            if current_x == box.x and unit.is_space:
+            if (
+                current_x == box.x
+                and unit.is_space
+                and not preserve_wrapped_spaces
+            ):
                 continue
 
             if (
@@ -1930,6 +1940,25 @@ class Typesetting:
                 )
             ):
                 # 换行
+                if preserve_wrapped_spaces and unit.is_space:
+                    # A bounded title must conserve its exact target sequence.
+                    # Keep a separator on the line it terminates instead of
+                    # silently discarding it while advancing to the next line.
+                    # If it cannot fit there, reject this scale and let the
+                    # bounded search try a smaller one.
+                    if (
+                        not current_line_heights
+                        or current_x + unit_width > box.x2
+                    ):
+                        return [], False
+                    relocated_separator = unit.relocate(
+                        current_x,
+                        current_y,
+                        scale,
+                    )
+                    relocated_separator.layout_line_index = layout_line_index
+                    typeset_units.append(relocated_separator)
+                    last_unit = relocated_separator
                 current_x = box.x
                 if not current_line_heights:
                     return [], False

@@ -877,12 +877,8 @@ def _render_owner(typesetter, title: FrozenTitle, policy: TitleConfig) -> dict:
             source_box=title.source_box,
             minimum_scale=policy.title_min_scale,
             maximum_lines=policy.title_max_lines,
-            # The ordinary English look-ahead deliberately drops a space that
-            # becomes a line-leading layout separator.  A title pass has the
-            # stricter audit contract that its target character sequence is
-            # preserved exactly, so let the bounded packer wrap at the actual
-            # unit boundary instead.
-            use_english_line_break=False,
+            use_english_line_break=True,
+            preserve_wrapped_spaces=True,
         )
     except BoundedTypesettingError as error:
         raise TitleTypesetError(str(error)) from error
