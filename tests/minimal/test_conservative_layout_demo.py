@@ -530,6 +530,120 @@ def test_bounded_prose_wraps_hanging_punctuation_inside_source_x2():
     assert paragraph.unicode == target
 
 
+def _offset_formula_unit(
+    typesetter: Typesetting,
+    *,
+    height: float,
+    y_offset: float,
+) -> list[TypesettingUnit]:
+    style = il_version_1.PdfStyle(font_id="body", font_size=height)
+    formula_box = il_version_1.Box(0.0, 0.0, 5.0, height)
+    formula_character = il_version_1.PdfCharacter(
+        char_unicode="|",
+        box=formula_box,
+        visual_bbox=il_version_1.VisualBbox(box=formula_box),
+        pdf_style=style,
+        advance=5.0,
+        xobj_id=-1,
+    )
+    return [
+        TypesettingUnit(
+            unicode="A",
+            font=typesetter.font_mapper.base_font,
+            font_size=height,
+            style=style,
+            xobj_id=-1,
+        ),
+        TypesettingUnit(
+            formular=il_version_1.PdfFormula(
+                box=formula_box,
+                pdf_character=[formula_character],
+                x_offset=0.0,
+                y_offset=y_offset,
+                x_advance=5.0,
+            )
+        ),
+    ]
+
+
+def test_bounded_candidate_shrinks_until_actual_formula_ink_is_contained():
+    source_box = (583.7255859375, 3.114, 626.2633828125, 10.3037109375)
+    height = source_box[3] - source_box[1]
+    paragraph = _paragraph("generated timestamp", "offset-ink", source_box)
+    paragraph.xobj_id = -1
+    page = _page(0, [paragraph])
+    typesetter = Typesetting(SimpleNamespace(lang_out="en"), RenderMapper())
+    units = _offset_formula_unit(
+        typesetter,
+        height=height,
+        y_offset=-1.7914171875,
+    )
+
+    initial, initial_fits = typesetter._layout_typesetting_units(
+        units,
+        il_version_1.Box(*source_box),
+        1.0,
+        1.3,
+        paragraph,
+        True,
+        False,
+    )
+    assert initial_fits
+    assert min(unit.box.y for unit in initial) == pytest.approx(1.3225828125)
+
+    laid_out = typesetter.retypeset_bounded_source_unit(
+        paragraph,
+        page,
+        units,
+        SimpleNamespace(
+            source_ref="p3#20",
+            source_box=source_box,
+            record_kind="single_visual_line",
+        ),
+    )
+
+    assert paragraph.scale == pytest.approx(0.8)
+    bounds = (
+        min(unit.box.x for unit in laid_out),
+        min(unit.box.y for unit in laid_out),
+        max(unit.box.x2 for unit in laid_out),
+        max(unit.box.y2 for unit in laid_out),
+    )
+    assert source_box[0] <= bounds[0]
+    assert source_box[1] <= bounds[1]
+    assert bounds[2] <= source_box[2]
+    assert bounds[3] <= source_box[3]
+
+
+def test_bounded_actual_ink_overflow_at_minimum_scale_fails_closed():
+    source_box = (0.0, 0.0, 50.0, 10.0)
+    paragraph = _paragraph("target", "offset-ink-overflow", source_box)
+    paragraph.xobj_id = -1
+    page = _page(0, [paragraph])
+    typesetter = Typesetting(SimpleNamespace(lang_out="en"), RenderMapper())
+    units = _offset_formula_unit(
+        typesetter,
+        height=10.0,
+        y_offset=-11.0,
+    )
+    original_compositions = paragraph.pdf_paragraph_composition
+
+    with pytest.raises(BoundedTypesettingError, match="does not fit"):
+        typesetter.retypeset_bounded_source_unit(
+            paragraph,
+            page,
+            units,
+            SimpleNamespace(
+                source_ref="p1#0",
+                source_box=source_box,
+                record_kind="single_visual_line",
+            ),
+        )
+
+    assert paragraph.pdf_paragraph_composition is original_compositions
+    assert paragraph.scale is None
+
+
 def _write_json(path: Path, value) -> None:
     path.write_text(json.dumps(value), encoding="utf-8")
 

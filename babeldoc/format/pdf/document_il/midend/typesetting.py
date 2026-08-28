@@ -266,6 +266,21 @@ def _unit_bounds(units: Sequence[TypesettingUnit]):
     )
 
 
+def _bounds_inside_box(
+    box: Box,
+    bounds: tuple[float, float, float, float] | None,
+    tolerance: float = 0.001,
+) -> bool:
+    """Whether actual laid-out unit ink stays inside one immutable box."""
+    return bool(
+        bounds is not None
+        and float(box.x) - tolerance <= bounds[0]
+        and float(box.y) - tolerance <= bounds[1]
+        and bounds[2] <= float(box.x2) + tolerance
+        and bounds[3] <= float(box.y2) + tolerance
+    )
+
+
 def _line_metrics(
     units: Sequence[TypesettingUnit], tolerance: float
 ) -> tuple[SlotLineMetric, ...]:
@@ -1261,6 +1276,7 @@ class Typesetting:
         box_override: Box | None = None,
         maximum_lines: int | None = None,
         allow_hanging_punctuation_outside_box: bool = True,
+        require_unit_bounds_inside_box: bool = False,
     ) -> tuple[float, list[TypesettingUnit] | None]:
         """查找最优缩放因子并可选择性地执行布局
 
@@ -1302,6 +1318,15 @@ class Typesetting:
                     all_units_fit = (
                         len(_line_metrics(typeset_units, tolerance=0.1))
                         <= maximum_lines
+                    )
+                if all_units_fit and require_unit_bounds_inside_box:
+                    # The packer tracks advances and line baselines, but a
+                    # glyph or formula can carry ink offsets beyond those
+                    # metrics.  A bounded source unit accepts a candidate only
+                    # when its actual relocated bounds fit on all four sides.
+                    all_units_fit = _bounds_inside_box(
+                        box,
+                        _unit_bounds(typeset_units),
                     )
                 # 如果所有单元都放得下
                 if all_units_fit:
@@ -1404,6 +1429,7 @@ class Typesetting:
                 allow_hanging_punctuation_outside_box=(
                     allow_hanging_punctuation_outside_box
                 ),
+                require_unit_bounds_inside_box=require_unit_bounds_inside_box,
             )
 
         # 最后返回最小缩放因子
@@ -1479,6 +1505,7 @@ class Typesetting:
                 1 if source_unit.record_kind == RECORD_SINGLE else None
             ),
             allow_hanging_punctuation_outside_box=False,
+            require_unit_bounds_inside_box=True,
         )
         if laid_out is None:
             raise BoundedTypesettingError(
