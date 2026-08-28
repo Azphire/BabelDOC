@@ -4,7 +4,6 @@ from __future__ import annotations
 
 import copy
 import json
-from collections.abc import Callable
 from collections.abc import Mapping
 from collections.abc import Sequence
 from dataclasses import dataclass
@@ -17,20 +16,16 @@ from babeldoc.format.pdf.document_il.il_version_1 import PdfSameStyleUnicodeChar
 from babeldoc.format.pdf.document_il.midend.typesetting import FIT_INVALID
 from babeldoc.format.pdf.document_il.midend.typesetting import FIT_NONE
 from babeldoc.format.pdf.document_il.midend.typesetting import Typesetting
-from babeldoc.magazine import acceptance
-from babeldoc.magazine import drop_cap_intent
 from babeldoc.magazine import fixed_assets
 from babeldoc.magazine.chain_backfill import load_backfill_config
 from babeldoc.magazine.line_split import holds_formula
 from babeldoc.magazine.page_features import ConfigError
 from babeldoc.magazine.page_features import validate_bounded_config
 from babeldoc.magazine.resource_paths import config_path
-from babeldoc.magazine.run_trace import ALLOCATION_RELEASED
 from babeldoc.magazine.run_trace import canonical_text
 from babeldoc.magazine.run_trace import hash_record
 from babeldoc.magazine.run_trace import parse_source_ref
 from babeldoc.magazine.taxonomy import record_config_manifest
-from babeldoc.magazine.transaction import TransactionSnapshot
 
 CONFIG_PATH = config_path("article_flow.json")
 CHAIN_CONFIG_PATH = config_path("chain_translation.json")
@@ -44,73 +39,21 @@ STATUS_PROTECTED = "protected"
 SKIP_DISABLED = "switch_disabled"
 SKIP_UNSUPPORTED = "unsupported_multi_article_page"
 SKIP_NO_SEGMENT = "no_eligible_article_flow_segment"
-SKIP_NO_TARGET = "no_traced_target_fragments"
+SKIP_NO_TARGET = "target_text_unavailable"
 
 GUARD_BOUNDS = "bounds"
 GUARD_OVERLAP = "overlap"
 GUARD_OWNERSHIP = "ownership"
-GUARD_CONSERVATION = "conservation"
+GUARD_SOURCE_CONSERVATION = "source_text_conservation"
+GUARD_TARGET_CONSERVATION = "target_text_conservation"
+GUARD_CONSERVATION = GUARD_TARGET_CONSERVATION
 GUARD_FIXED_ASSET = "fixed_asset_conservation"
 GUARD_PROTECTED = "protected_element_conservation"
-GUARD_DETECTOR = "detector"
-GUARD_TRACE = "trace"
 GUARD_ACTION = "action"
-GUARD_ACCEPTANCE = "acceptance"
-
-FLOW_OBJECTIVE_KIND = "unallocated_article_target"
-FLOW_OBJECTIVE_DETECTOR = "article_flow_capacity"
-FLOW_GUARD_DETECTOR = "article_flow_guard"
 
 
 class ArticleFlowError(ConfigError):
     """Raised when article flow cannot be planned without breaking a contract."""
-
-
-def objective_issue(
-    article_id: str, pages, references, remaining_chars: int, policy
-):
-    evidence = {"remaining_chars": remaining_chars}
-    return acceptance.measured_issue(
-        f"{FLOW_OBJECTIVE_DETECTOR}:{article_id}:p{min(pages)}:"
-        f"{'+'.join(references)}",
-        FLOW_OBJECTIVE_KIND,
-        policy.severity_order[0],
-        evidence,
-        ("remaining_chars",),
-        schema_version=policy.schema_version,
-    )
-
-
-def guard_issues(article_id: str, pages, references, guards, policy) -> list:
-    return [
-        acceptance.measured_issue(
-            f"{FLOW_GUARD_DETECTOR}:{article_id}:{guard}:p{min(pages)}:"
-            f"{'+'.join(references)}",
-            str(guard),
-            policy.reject_new_at_or_above,
-            {"violations": 1},
-            ("violations",),
-            schema_version=policy.schema_version,
-        )
-        for guard in sorted(set(guards))
-    ]
-
-
-def compare_flow(article_id: str, pages, segments, guards):
-    policy = acceptance.load_acceptance_policy()
-    references = tuple(
-        dict.fromkeys(
-            reference
-            for segment in segments
-            for reference in segment.ordered_source_refs
-        )
-    )
-    remaining = sum(
-        len(boundary.text) for segment in segments for boundary in segment.boundaries
-    )
-    before = [objective_issue(article_id, pages, references, remaining, policy)]
-    after = guard_issues(article_id, pages, references, guards, policy)
-    return acceptance.compare_issues(before, after, policy)
 
 
 @dataclass(frozen=True, slots=True)
@@ -481,11 +424,9 @@ def build_page_segments(
     docs,
     article,
     page_number: int,
-    run_trace,
     inventory,
     config: ArticleFlowConfig,
     typesetter: Typesetting,
-    protected_refs=frozenset(),
 ) -> tuple[ArticleFlowSegment, ...]:
     """Build segments strictly from canonical ArticleIR reading order."""
     page = docs.page[page_number - 1]
@@ -498,57 +439,47 @@ def build_page_segments(
         role_allowed = config.eligible(element.role)
         boundaries = []
         reason = None
-        if element.source_ref in protected_refs:
-            reason = "active_drop_cap"
+        target = paragraph.unicode or ""
+        if bool(getattr(paragraph, "vertical", False)):
+            reason = "rotated_text"
+        elif holds_formula(paragraph):
+            reason = "formula"
         elif not role_allowed:
             reason = "role_not_eligible"
+        elif not target:
+            reason = SKIP_NO_TARGET
         else:
-            fragments = run_trace.target_fragments_for_source(element.source_ref)
-            released = any(
-                run_trace.fragments[fragment_id].allocation_status
-                == ALLOCATION_RELEASED
-                for fragment_id in run_trace.sources[element.source_ref].fragment_ids
-            )
-            if fragments:
-                joined = "".join(fragment["text"] for fragment in fragments)
-                style = _plain_style(paragraph, joined)
-                if style is None:
-                    reason = "non_plain_or_formula_target"
-                else:
-                    spacing = _spacing_before(previous, element)
-                    for fragment_index, fragment in enumerate(fragments):
-                        boundaries.append(
-                            ParagraphBoundaryToken(
-                                source_ref=element.source_ref,
-                                source_page=element.page,
-                                source_slot_id=(
-                                    fragment["slot_id"]
-                                    or f"source-holder:{element.source_ref}"
-                                ),
-                                paragraph_order=element.reading_order,
-                                request_id=fragment["request_id"],
-                                fragment_id=fragment["fragment_id"],
-                                target_start=fragment["text_start"],
-                                target_end=fragment["text_end"],
-                                text=fragment["text"],
-                                first_line_indent=bool(
-                                    fragment_index == 0
-                                    and getattr(
-                                        paragraph, "first_line_indent", False
-                                    )
-                                ),
-                                spacing_before=(
-                                    spacing if fragment_index == 0 else 0.0
-                                ),
-                                style=style,
-                                original_font=_source_font(
-                                    page, paragraph, style, typesetter
-                                ),
-                                paragraph=paragraph,
-                            )
-                        )
-            elif not released:
-                reason = "target_fragment_unavailable"
+            style = _plain_style(paragraph, target)
+            if style is None:
+                reason = "non_plain_target"
+            else:
+                identity = {
+                    "source_ref": element.source_ref,
+                    "target": target,
+                }
+                fragment_id = f"article-flow-target-{hash_record(identity)}"
+                boundaries.append(
+                    ParagraphBoundaryToken(
+                        source_ref=element.source_ref,
+                        source_page=element.page,
+                        source_slot_id=f"source-holder:{element.source_ref}",
+                        paragraph_order=element.reading_order,
+                        request_id=f"article-flow-source:{element.source_ref}",
+                        fragment_id=fragment_id,
+                        target_start=0,
+                        target_end=len(target),
+                        text=target,
+                        first_line_indent=bool(
+                            getattr(paragraph, "first_line_indent", False)
+                        ),
+                        spacing_before=_spacing_before(previous, element),
+                        style=style,
+                        original_font=_source_font(
+                            page, paragraph, style, typesetter
+                        ),
+                        paragraph=paragraph,
+                    )
+                )
         prepared.append((element, tuple(boundaries), reason))
         if reason is None:
             previous = element
@@ -840,57 +771,6 @@ def _validate_page(
     return sorted(set(issues))
 
 
-def _request_replacements(run_trace, placements) -> dict[str, list[dict]]:
-    by_old: dict[str, list[FlowPlacement]] = {}
-    for placement in placements:
-        by_old.setdefault(placement.old_fragment_id, []).append(placement)
-    affected = {placement.request_id for placement in placements}
-    replacements = {}
-    for request_id in affected:
-        request = run_trace.requests[request_id]
-        rows = []
-        current = sorted(
-            (run_trace.fragments[item] for item in request.fragment_ids),
-            key=lambda item: item.order,
-        )
-        for fragment in current:
-            changed = sorted(
-                by_old.get(fragment.fragment_id, ()),
-                key=lambda item: item.target_start,
-            )
-            if changed:
-                rows.extend(
-                    {
-                        "source_ref": item.source_ref,
-                        "text_start": item.target_start,
-                        "text_end": item.target_end,
-                        "text": item.text,
-                        "slot_id": item.slot_id,
-                        "render_ref": item.render_ref,
-                        "render_page": item.page,
-                        "measurement_summary": item.measurement,
-                    }
-                    for item in changed
-                )
-                continue
-            rows.append(
-                {
-                    "source_ref": fragment.source_ref,
-                    "text_start": fragment.text_start,
-                    "text_end": fragment.text_end,
-                    "text": run_trace._fragment_text[fragment.fragment_id],
-                    "slot_id": fragment.slot_id,
-                    "render_ref": fragment.render_ref,
-                    "render_page": fragment.render_page,
-                    "measurement_summary": fragment.measurement_summary,
-                    "released": fragment.allocation_status == ALLOCATION_RELEASED,
-                }
-            )
-        rows.sort(key=lambda item: (item["text_start"], item["text_end"]))
-        replacements[request_id] = rows
-    return replacements
-
-
 def _released_regions(segments, placements):
     by_region: dict[str, list[FlowPlacement]] = {}
     for placement in placements:
@@ -915,296 +795,26 @@ def _write_report(translation_config, record: dict) -> Path:
         encoding="utf-8",
     )
     record_config_manifest(
-        path.parent, [CONFIG_PATH, CHAIN_CONFIG_PATH, acceptance.CONFIG_PATH]
+        path.parent, [CONFIG_PATH, CHAIN_CONFIG_PATH]
     )
     return path
 
 
-def _apply_page_local(
-    translator,
-    docs,
-    article_document_ir,
-    run_trace,
-    *,
-    typesetter: Typesetting | None = None,
-    validator: Callable[[object, dict], Sequence[str]] | None = None,
-    config: ArticleFlowConfig | None = None,
-) -> dict | None:
-    """Apply every page/article transaction and write its deterministic sidecar."""
-    if not enabled(translator.translation_config):
-        return None
-    config = load_flow_config() if config is None else config
-    typesetter = typesetter or Typesetting(
-        translator.translation_config,
-        font_mapper=getattr(translator, "font_mapper", None),
-    )
-    roles = {
-        element.role
-        for article in article_document_ir.articles
-        for element in article.elements
-        if not config.eligible(element.role)
-    }
-    inventory = fixed_assets.build_inventory(
-        docs, protected_paragraph_labels=tuple(sorted(roles))
-    )
-    unsupported = {item.page for item in article_document_ir.unsupported_pages}
-    page_records = []
-    protected_refs = drop_cap_intent.active_protected_refs(
-        translator.translation_config
-    )
-    for page_number in sorted(article_document_ir.by_page):
-        article = article_document_ir.article_for_page(page_number)
-        if article is None:
-            continue
-        if page_number in unsupported:
-            page_records.append(
-                {
-                    "page": page_number,
-                    "article_id": article.article_id,
-                    "status": "skipped",
-                    "action_status": "not_executed",
-                    "reason": SKIP_UNSUPPORTED,
-                    "segments": [],
-                }
-            )
-            continue
-        segments = build_page_segments(
-            docs,
-            article,
-            page_number,
-            run_trace,
-            inventory,
-            config,
-            typesetter,
-            protected_refs,
-        )
-        if not segments:
-            page_records.append(
-                {
-                    "page": page_number,
-                    "article_id": article.article_id,
-                    "status": "skipped",
-                    "action_status": "not_executed",
-                    "reason": SKIP_NO_SEGMENT,
-                    "segments": [],
-                }
-            )
-            continue
-        try:
-            planned = tuple(
-                placement
-                for segment in segments
-                for placement in allocate_segment(segment, typesetter, config)
-            )
-        except ArticleFlowError as error:
-            page_records.append(
-                {
-                    "page": page_number,
-                    "article_id": article.article_id,
-                    "status": "rolled_back",
-                    "action_status": "not_executed",
-                    "reason": GUARD_CONSERVATION,
-                    "detail": str(error),
-                    "segments": [segment.to_record() for segment in segments],
-                }
-            )
-            continue
-        page = docs.page[page_number - 1]
-        protected_refs = {
-            item.reference
-            for segment in segments
-            for item in segment.protected_elements
-            if item.reference.startswith("p")
-            and "#" in item.reference
-            and ":" not in item.reference
-        }
-        protected_digests = {
-            reference: fixed_assets.content_digest(_paragraph(docs, reference))
-            for reference in protected_refs
-        }
-
-        def inventory_builder():
-            return fixed_assets.build_inventory(
-                docs, protected_paragraph_labels=tuple(sorted(roles))
-            )
-
-        transaction = TransactionSnapshot.capture(
-            docs,
-            (page_number - 1,),
-            run_trace=run_trace,
-            fixed_inventory=inventory,
-            fixed_inventory_builder=inventory_builder,
-        )
-        generation = transaction.begin_generation(
-            f"article_flow:{article.article_id}:p{page_number}"
-        )
-        issues = []
-        failure_stage = GUARD_ACTION
-        try:
-            placements, released_holders = _write_page(
-                docs, page_number, segments, planned
-            )
-            failure_stage = GUARD_CONSERVATION
-            issues = _validate_page(
-                docs,
-                article,
-                page_number,
-                segments,
-                placements,
-                protected_digests,
-            )
-            failure_stage = GUARD_FIXED_ASSET
-            candidate_inventory = inventory_builder()
-            asset_comparison = fixed_assets.compare(
-                inventory,
-                candidate_inventory,
-                config.asset_bbox_tolerance_pt,
-            )
-            if not asset_comparison.holds:
-                issues.append(GUARD_FIXED_ASSET)
-            provisional = {
-                "page": page_number,
-                "article_id": article.article_id,
-                "segments": [segment.to_record() for segment in segments],
-                "placements": [item.to_record() for item in placements],
-            }
-            if validator is not None:
-                issues.extend(str(item) for item in validator(page, provisional))
-                if issues:
-                    issues.append(GUARD_DETECTOR)
-            failure_stage = GUARD_ACCEPTANCE
-            monotonic = compare_flow(
-                article.article_id, (page_number,), segments, issues
-            )
-            provisional["acceptance"] = monotonic.as_record()
-            if not monotonic.accepted:
-                raise ArticleFlowError(", ".join(sorted(set(issues))))
-            failure_stage = GUARD_TRACE
-            for request_id, rows in _request_replacements(
-                run_trace, placements
-            ).items():
-                run_trace.replace_request_fragments(generation, request_id, rows)
-            for placement in placements:
-                run_trace.record_flow_slot(
-                    generation,
-                    slot_id=placement.slot_id,
-                    article_id=article.article_id,
-                    page=page_number,
-                    status=STATUS_ALLOCATED,
-                    box=placement.box,
-                    source_ref=placement.source_ref,
-                    render_ref=placement.render_ref,
-                )
-            for slot_id, article_id, box in _released_regions(segments, placements):
-                run_trace.record_flow_slot(
-                    generation,
-                    slot_id=slot_id,
-                    article_id=article_id,
-                    page=page_number,
-                    status=STATUS_RELEASED,
-                    box=box,
-                    reason="unused_page_local_capacity",
-                )
-            for render_ref in released_holders:
-                run_trace.record_flow_slot(
-                    generation,
-                    slot_id=f"article-flow-holder-{hash_record({'render_ref': render_ref, 'generation': generation})}",
-                    article_id=article.article_id,
-                    page=page_number,
-                    status=STATUS_RELEASED,
-                    box=_box_tuple(_paragraph(docs, render_ref).box),
-                    render_ref=render_ref,
-                    reason="released_paragraph_holder",
-                )
-            for protected in {
-                item.reference: item
-                for segment in segments
-                for item in segment.protected_elements
-            }.values():
-                slot_id = f"article-flow-protected-{hash_record({'reference': protected.reference, 'page': page_number, 'generation': generation})}"
-                run_trace.record_flow_slot(
-                    generation,
-                    slot_id=slot_id,
-                    article_id=article.article_id,
-                    page=page_number,
-                    status=STATUS_PROTECTED,
-                    box=protected.box,
-                    source_ref=(
-                        protected.reference
-                        if protected.reference in run_trace.sources
-                        else None
-                    ),
-                    reason=protected.reason,
-                )
-            run_trace.validate()
-            transaction_record = transaction.commit(
-                (item.render_ref for item in placements if item.render_ref),
-                capture_geometry=False,
-            )
-            inventory = candidate_inventory
-            page_records.append(
-                {
-                    **provisional,
-                    "status": "applied",
-                    "action_status": "committed",
-                    "reason": None,
-                    "released_holders": list(released_holders),
-                    "fixed_asset_comparison": asset_comparison.to_record(),
-                    "transaction": transaction_record,
-                }
-            )
-        except Exception as error:
-            transaction_record = transaction.rollback()
-            page_records.append(
-                {
-                    "page": page_number,
-                    "article_id": article.article_id,
-                    "status": "rolled_back",
-                    "action_status": "rolled_back",
-                    "reason": failure_stage,
-                    "failure_stage": failure_stage,
-                    "detail": str(error),
-                    "segments": [segment.to_record() for segment in segments],
-                    "transaction": transaction_record,
-                }
-            )
-    record = {
-        "switch": SWITCH,
-        "eligible_roles": list(config.eligible_roles),
-        "pages": page_records,
-        "totals": {
-            "pages_considered": len(page_records),
-            "pages_applied": sum(item["status"] == "applied" for item in page_records),
-            "pages_rolled_back": sum(
-                item["status"] == "rolled_back" for item in page_records
-            ),
-            "pages_skipped": sum(item["status"] == "skipped" for item in page_records),
-            "placements": sum(len(item.get("placements", ())) for item in page_records),
-        },
-    }
-    _write_report(translator.translation_config, record)
-    return record
-
-
 def apply(
-    translator,
+    translation_config,
     docs,
     article_document_ir,
-    run_trace,
     *,
-    typesetter: Typesetting | None = None,
-    validator: Callable[[object, dict], Sequence[str]] | None = None,
+    typesetter: Typesetting,
     config: ArticleFlowConfig | None = None,
 ) -> dict | None:
     """Apply bounded article flow across canonical adjacent pages."""
     from babeldoc.magazine import cross_page_reflow
 
     return cross_page_reflow.apply(
-        translator,
+        translation_config,
         docs,
         article_document_ir,
-        run_trace,
         typesetter=typesetter,
-        validator=validator,
         config=config,
     )

@@ -3,18 +3,14 @@
 from __future__ import annotations
 
 import copy
-from collections.abc import Callable
-from collections.abc import Sequence
 from dataclasses import dataclass
 
 from babeldoc.format.pdf.document_il.il_version_1 import Box
 from babeldoc.format.pdf.document_il.midend.typesetting import Typesetting
 from babeldoc.magazine import article_flow
-from babeldoc.magazine import drop_cap_intent
 from babeldoc.magazine import fixed_assets
 from babeldoc.magazine.run_trace import hash_record
 from babeldoc.magazine.run_trace import parse_source_ref
-from babeldoc.magazine.transaction import TransactionSnapshot
 
 ISSUE_CAPACITY_EXHAUSTION = "capacity_exhaustion"
 ISSUE_HARD_BOUNDARY = "hard_boundary"
@@ -164,7 +160,19 @@ def _page_inventory(inventory, page: int):
     return next((item for item in inventory.page_sizes if item[0] == page), None)
 
 
+def _physical_page_number(docs, canonical_page: int) -> int | None:
+    if canonical_page < 1 or canonical_page > len(docs.page):
+        return None
+    value = getattr(docs.page[canonical_page - 1], "page_number", None)
+    if value is None:
+        return canonical_page
+    if not isinstance(value, int) or isinstance(value, bool) or value < 0:
+        return None
+    return value + 1
+
+
 def page_connection_issue(
+    docs,
     article_document_ir,
     article,
     left_page: int,
@@ -174,6 +182,17 @@ def page_connection_issue(
     """Return the first canonical reason two page endpoints cannot connect."""
     pages = (left_page, right_page)
     if right_page != left_page + 1:
+        return _issue(
+            ISSUE_HARD_BOUNDARY,
+            article.article_id,
+            pages,
+            BOUNDARY_NON_ADJACENT,
+        )
+    physical_pages = (
+        _physical_page_number(docs, left_page),
+        _physical_page_number(docs, right_page),
+    )
+    if physical_pages[0] is None or physical_pages[1] != physical_pages[0] + 1:
         return _issue(
             ISSUE_HARD_BOUNDARY,
             article.article_id,
@@ -319,11 +338,9 @@ def _cross_segment(local_segments, hard_boundaries, inventory):
 def build_cross_page_segments(
     docs,
     article_document_ir,
-    run_trace,
     inventory,
     config: article_flow.ArticleFlowConfig,
     typesetter: Typesetting,
-    protected_refs=frozenset(),
 ) -> tuple[tuple[CrossPageArticleFlowSegment, ...], tuple[CrossPageFlowIssue, ...]]:
     """Build a read-only cross-page plan from the canonical article state."""
     unsupported = {item.page for item in article_document_ir.unsupported_pages}
@@ -354,11 +371,9 @@ def build_cross_page_segments(
                     docs,
                     article,
                     page,
-                    run_trace,
                     inventory,
                     config,
                     typesetter,
-                    protected_refs,
                 )
             )
             for left, right in zip(by_page[page], by_page[page][1:], strict=False):
@@ -373,6 +388,7 @@ def build_cross_page_segments(
         groups = [[segment] for page in article.pages for segment in by_page[page]]
         for left_page, right_page in zip(article.pages, article.pages[1:], strict=False):
             connection = page_connection_issue(
+                docs,
                 article_document_ir,
                 article,
                 left_page,
@@ -514,6 +530,144 @@ def _validate_ranges(segment, placements) -> list[str]:
     return sorted(set(issues))
 
 
+@dataclass(slots=True)
+class _TouchedPageSnapshot:
+    docs: object
+    pages: tuple[int, ...]
+    originals: tuple[object, ...]
+    committed: bool = False
+
+    @classmethod
+    def capture(cls, docs, pages) -> _TouchedPageSnapshot:
+        selected = tuple(sorted(set(pages)))
+        if not selected or any(page < 1 or page > len(docs.page) for page in selected):
+            raise ValueError("flow snapshot pages must exist in the current document")
+        return cls(
+            docs,
+            selected,
+            tuple(copy.deepcopy(docs.page[page - 1]) for page in selected),
+        )
+
+    def __enter__(self) -> _TouchedPageSnapshot:
+        return self
+
+    def commit(self) -> None:
+        self.committed = True
+
+    def restore(self) -> None:
+        for page, original in zip(self.pages, self.originals, strict=True):
+            self.docs.page[page - 1] = original
+
+    def __exit__(self, _error_type, _error, _traceback) -> bool:
+        if not self.committed:
+            self.restore()
+        return False
+
+    def to_record(self) -> dict:
+        return {
+            "status": "committed" if self.committed else "rolled_back",
+            "pages": list(self.pages),
+        }
+
+
+@dataclass(slots=True)
+class _FlowOwnedParagraphRefs:
+    _committed: set[str]
+
+    @classmethod
+    def empty(cls) -> _FlowOwnedParagraphRefs:
+        return cls(set())
+
+    @property
+    def committed(self) -> frozenset[str]:
+        return frozenset(self._committed)
+
+    def candidate(self, current) -> frozenset[str]:
+        return frozenset(self._committed.union(current))
+
+    def commit(self, current) -> None:
+        self._committed.update(current)
+
+
+def _source_ledger(article_document_ir, article_id: str, source_refs) -> tuple:
+    article = article_document_ir.article(article_id)
+    if article is None:
+        raise ValueError(f"unknown canonical article owner: {article_id}")
+    elements = {element.source_ref: element for element in article.elements}
+    rows = []
+    for source_ref in source_refs:
+        element = elements.get(source_ref)
+        owner = article_document_ir.by_element.get(source_ref)
+        if element is None or owner != article_id:
+            raise ValueError(f"source {source_ref} is outside owner {article_id}")
+        rows.append(
+            (
+                source_ref,
+                owner,
+                element.source_text_hash,
+                element.style_hash,
+            )
+        )
+    return tuple(rows)
+
+
+def _source_ledger_record(ledger) -> list[dict]:
+    return [
+        {
+            "source_ref": source_ref,
+            "owner": owner,
+            "source_text_hash": source_text_hash,
+            "style_hash": style_hash,
+        }
+        for source_ref, owner, source_text_hash, style_hash in ledger
+    ]
+
+
+def _target_ledger(segment) -> tuple:
+    return tuple(
+        (
+            boundary.fragment_id,
+            boundary.source_ref,
+            boundary.target_start,
+            boundary.target_end,
+            boundary.text,
+        )
+        for boundary in segment.boundaries
+    )
+
+
+def _target_ledger_record(ledger) -> list[dict]:
+    return [
+        {
+            "fragment_id": fragment_id,
+            "source_ref": source_ref,
+            "target_range": [target_start, target_end],
+            "chars": len(text),
+            "text_hash": hash_record({"text": text}),
+        }
+        for fragment_id, source_ref, target_start, target_end, text in ledger
+    ]
+
+
+def _validate_written_targets(docs, placements, released_holders) -> list[str]:
+    issues = []
+    for placement in placements:
+        if placement.render_ref is None:
+            issues.append(article_flow.GUARD_TARGET_CONSERVATION)
+            continue
+        paragraph = _paragraph(docs, placement.render_ref)
+        if (
+            (paragraph.unicode or "") != placement.text
+            or article_flow._plain_style(paragraph, placement.text) is None
+        ):
+            issues.append(article_flow.GUARD_TARGET_CONSERVATION)
+    for reference in released_holders:
+        paragraph = _paragraph(docs, reference)
+        if paragraph.unicode or paragraph.pdf_paragraph_composition:
+            issues.append(article_flow.GUARD_TARGET_CONSERVATION)
+    return sorted(set(issues))
+
+
 def _segment_page_records(segment, result):
     records = {}
     placements = result.get("placements", ())
@@ -537,10 +691,8 @@ def _segment_page_records(segment, result):
                 for reference in released
                 if parse_source_ref(reference)[0] == page
             ],
-            "transaction": result.get("transaction"),
+            "snapshot": result.get("snapshot"),
         }
-        if "acceptance" in result:
-            records[page]["acceptance"] = result["acceptance"]
         if "fixed_asset_comparison" in result:
             records[page]["fixed_asset_comparison"] = result[
                 "fixed_asset_comparison"
@@ -568,23 +720,19 @@ def _merge_page_records(target, incoming) -> None:
 
 
 def apply(
-    translator,
+    translation_config,
     docs,
     article_document_ir,
-    run_trace,
     *,
-    typesetter: Typesetting | None = None,
-    validator: Callable[[object, dict], Sequence[str]] | None = None,
+    typesetter: Typesetting,
     config: article_flow.ArticleFlowConfig | None = None,
 ) -> dict | None:
-    """Apply each cross-page segment as one document and trace transaction."""
-    if not article_flow.enabled(translator.translation_config):
+    """Apply each unified segment once with bounded, page-local rollback."""
+    if not article_flow.enabled(translation_config):
         return None
+    if typesetter.translation_config is not translation_config:
+        raise ValueError("article flow typesetter belongs to another config")
     config = article_flow.load_flow_config() if config is None else config
-    typesetter = typesetter or Typesetting(
-        translator.translation_config,
-        font_mapper=getattr(translator, "font_mapper", None),
-    )
     protected_roles = {
         element.role
         for article in article_document_ir.articles
@@ -593,54 +741,28 @@ def apply(
     }
     inventory = fixed_assets.build_inventory(
         docs,
+        article_document_ir=article_document_ir,
         protected_paragraph_labels=tuple(sorted(protected_roles)),
-    )
-    protected_refs = drop_cap_intent.active_protected_refs(
-        translator.translation_config
     )
     segments, boundary_issues = build_cross_page_segments(
         docs,
         article_document_ir,
-        run_trace,
         inventory,
         config,
         typesetter,
-        protected_refs,
     )
     issues = list(boundary_issues)
-    for issue in boundary_issues:
-        run_trace.record_blocked_reason(issue.to_record())
+    flow_owned_refs = _FlowOwnedParagraphRefs.empty()
     segment_results = []
     page_results = {}
     for segment in segments:
-        try:
-            planned = article_flow.allocate_segment(segment, typesetter, config)
-        except article_flow.ArticleFlowError as error:
-            issue = _issue(
-                ISSUE_CAPACITY_EXHAUSTION,
-                segment.article_id,
-                segment.contiguous_pages,
-                str(error),
-            )
-            issues.append(issue)
-            run_trace.record_blocked_reason(issue.to_record())
-            result = {
-                **segment.to_record(),
-                "status": "rolled_back",
-                "action_status": "not_executed",
-                "reason": ISSUE_CAPACITY_EXHAUSTION,
-                "detail": str(error),
-                "placements": [],
-                "released_holders": [],
-                "transaction": {
-                    "status": "not_executed",
-                    "pages": list(segment.contiguous_pages),
-                },
-            }
-            segment_results.append(result)
-            _merge_page_records(page_results, _segment_page_records(segment, result))
-            continue
         invariants = _document_invariants(docs)
+        source_ledger = _source_ledger(
+            article_document_ir,
+            segment.article_id,
+            segment.touched_source_refs,
+        )
+        target_ledger = _target_ledger(segment)
         protected_refs = {
             item.reference
             for local in segment.page_segments
@@ -654,177 +776,134 @@ def apply(
             for reference in protected_refs
         }
 
-        def inventory_builder():
+        def inventory_builder(current_flow_refs=()):
             return fixed_assets.build_inventory(
                 docs,
+                article_document_ir=article_document_ir,
                 protected_paragraph_labels=tuple(sorted(protected_roles)),
+                flow_owned_paragraph_refs=flow_owned_refs.candidate(
+                    current_flow_refs
+                ),
             )
 
-        transaction = TransactionSnapshot.capture(
-            docs,
-            (page - 1 for page in segment.contiguous_pages),
-            run_trace=run_trace,
-            fixed_inventory=inventory,
-            fixed_inventory_builder=inventory_builder,
-        )
-        generation = transaction.begin_generation(
-            f"cross_page_article_flow:{segment.article_id}:"
-            f"p{segment.contiguous_pages[0]}-p{segment.contiguous_pages[-1]}"
-        )
+        snapshot = _TouchedPageSnapshot.capture(docs, segment.contiguous_pages)
+        capacity_error = None
         found = []
-        monotonic = None
-        failure_stage = article_flow.GUARD_ACTION
-        try:
-            placements, released_holders = _write_segment(docs, segment, planned)
-            failure_stage = article_flow.GUARD_CONSERVATION
-            found = _validate_ranges(segment, placements)
-            for page in segment.contiguous_pages:
-                local_segments = tuple(
-                    item for item in segment.page_segments if item.page == page
+        placements = ()
+        released_holders = ()
+        candidate_inventory = None
+        comparison = None
+        with snapshot:
+            try:
+                planned = article_flow.allocate_segment(segment, typesetter, config)
+            except article_flow.ArticleFlowError as error:
+                capacity_error = error
+            if capacity_error is None:
+                placements, released_holders = _write_segment(docs, segment, planned)
+                candidate_render_refs = frozenset(
+                    placement.render_ref
+                    for placement in placements
+                    if placement.render_ref is not None
                 )
-                page_placements = tuple(
-                    item for item in placements if item.page == page
+                new_render_refs = candidate_render_refs.difference(
+                    article_document_ir.by_element
                 )
+                found.extend(_validate_ranges(segment, placements))
                 found.extend(
-                    article_flow._validate_page(
-                        docs,
-                        article_document_ir.article(segment.article_id),
-                        page,
-                        local_segments,
-                        page_placements,
-                        {
-                            reference: digest
-                            for reference, digest in protected_digests.items()
-                            if parse_source_ref(reference)[0] == page
-                        },
-                        validate_conservation=False,
-                    )
+                    _validate_written_targets(docs, placements, released_holders)
                 )
-            failure_stage = article_flow.GUARD_FIXED_ASSET
-            candidate_inventory = inventory_builder()
-            comparison = fixed_assets.compare(
-                inventory,
-                candidate_inventory,
-                config.asset_bbox_tolerance_pt,
-            )
-            if not comparison.holds:
-                found.append(article_flow.GUARD_FIXED_ASSET)
-            if _document_invariants(docs) != invariants:
-                found.append(GUARD_PAGE_GEOMETRY)
-            provisional = {
-                "segment": segment.to_record(),
-                "placements": [item.to_record() for item in placements],
-            }
-            if validator is not None:
                 for page in segment.contiguous_pages:
-                    detected = [
-                        str(item)
-                        for item in validator(docs.page[page - 1], provisional)
-                    ]
-                    if detected:
-                        found.extend(f"p{page}:{item}" for item in detected)
-                        found.append(article_flow.GUARD_DETECTOR)
-            failure_stage = article_flow.GUARD_ACCEPTANCE
-            monotonic = article_flow.compare_flow(
+                    local_segments = tuple(
+                        item for item in segment.page_segments if item.page == page
+                    )
+                    page_placements = tuple(
+                        item for item in placements if item.page == page
+                    )
+                    found.extend(
+                        article_flow._validate_page(
+                            docs,
+                            article_document_ir.article(segment.article_id),
+                            page,
+                            local_segments,
+                            page_placements,
+                            {
+                                reference: digest
+                                for reference, digest in protected_digests.items()
+                                if parse_source_ref(reference)[0] == page
+                            },
+                            validate_conservation=False,
+                        )
+                    )
+                if (
+                    _source_ledger(
+                        article_document_ir,
+                        segment.article_id,
+                        segment.touched_source_refs,
+                    )
+                    != source_ledger
+                ):
+                    found.append(article_flow.GUARD_SOURCE_CONSERVATION)
+                candidate_inventory = inventory_builder(candidate_render_refs)
+                comparison = fixed_assets.compare(
+                    inventory,
+                    candidate_inventory,
+                    config.asset_bbox_tolerance_pt,
+                )
+                if not comparison.holds:
+                    found.append(article_flow.GUARD_FIXED_ASSET)
+                if _document_invariants(docs) != invariants:
+                    found.append(GUARD_PAGE_GEOMETRY)
+                found = sorted(set(found))
+                if not found:
+                    snapshot.commit()
+
+        if capacity_error is not None:
+            issue = _issue(
+                ISSUE_CAPACITY_EXHAUSTION,
                 segment.article_id,
                 segment.contiguous_pages,
-                segment.page_segments,
-                found,
+                str(capacity_error),
             )
-            provisional["acceptance"] = monotonic.as_record()
-            if not monotonic.accepted:
-                raise article_flow.ArticleFlowError(", ".join(sorted(set(found))))
-            failure_stage = article_flow.GUARD_TRACE
-            for request_id, rows in article_flow._request_replacements(
-                run_trace, placements
-            ).items():
-                run_trace.replace_request_fragments(generation, request_id, rows)
-            for placement in placements:
-                run_trace.record_flow_slot(
-                    generation,
-                    slot_id=placement.slot_id,
-                    article_id=segment.article_id,
-                    page=placement.page,
-                    status=article_flow.STATUS_ALLOCATED,
-                    box=placement.box,
-                    source_ref=placement.source_ref,
-                    render_ref=placement.render_ref,
-                    previous_page=placement.previous_page,
-                    previous_slot_id=placement.previous_slot_id,
-                )
-            for slot_id, article_id, box in article_flow._released_regions(
-                segment.page_segments, placements
-            ):
-                page = next(
-                    slot.page
-                    for slot in segment.ordered_slots
-                    if f"{slot.slot_id}:released" == slot_id
-                )
-                run_trace.record_flow_slot(
-                    generation,
-                    slot_id=slot_id,
-                    article_id=article_id,
-                    page=page,
-                    status=article_flow.STATUS_RELEASED,
-                    box=box,
-                    reason="unused_cross_page_capacity",
-                )
-            for render_ref in released_holders:
-                page, _index = parse_source_ref(render_ref)
-                holder_slot_id = "article-flow-holder-" + hash_record(
-                    {"render_ref": render_ref, "generation": generation}
-                )
-                run_trace.record_flow_slot(
-                    generation,
-                    slot_id=holder_slot_id,
-                    article_id=segment.article_id,
-                    page=page,
-                    status=article_flow.STATUS_RELEASED,
-                    box=article_flow._box_tuple(_paragraph(docs, render_ref).box),
-                    render_ref=render_ref,
-                    reason="released_paragraph_holder",
-                )
-            protected = {
-                item.reference: item
-                for local in segment.page_segments
-                for item in local.protected_elements
+            issues.append(issue)
+            result = {
+                **segment.to_record(),
+                "status": "rolled_back",
+                "action_status": "not_executed",
+                "reason": ISSUE_CAPACITY_EXHAUSTION,
+                "detail": str(capacity_error),
+                "placements": [],
+                "released_holders": [],
+                "source_ledger": _source_ledger_record(source_ledger),
+                "target_ledger": _target_ledger_record(target_ledger),
+                "committed_flow_owned_refs": sorted(flow_owned_refs.committed),
+                "snapshot": snapshot.to_record(),
             }
-            for item in protected.values():
-                page = (
-                    parse_source_ref(item.reference)[0]
-                    if item.reference.startswith("p")
-                    and "#" in item.reference
-                    and ":" not in item.reference
-                    else next(
-                        asset.page
-                        for asset in inventory.assets
-                        if asset.reference == item.reference
-                    )
-                )
-                protected_slot_id = "article-flow-protected-" + hash_record(
-                    {
-                        "reference": item.reference,
-                        "page": page,
-                        "generation": generation,
-                    }
-                )
-                run_trace.record_flow_slot(
-                    generation,
-                    slot_id=protected_slot_id,
-                    article_id=segment.article_id,
-                    page=page,
-                    status=article_flow.STATUS_PROTECTED,
-                    box=item.box,
-                    source_ref=(
-                        item.reference if item.reference in run_trace.sources else None
-                    ),
-                    reason=item.reason,
-                )
-            run_trace.validate()
-            transaction_record = transaction.commit(
-                (item.render_ref for item in placements if item.render_ref),
-                capture_geometry=False,
+        elif found:
+            detail = ", ".join(found)
+            issue = _issue(
+                ISSUE_HARD_BOUNDARY,
+                segment.article_id,
+                segment.contiguous_pages,
+                detail,
             )
+            issues.append(issue)
+            result = {
+                **segment.to_record(),
+                "status": "rolled_back",
+                "action_status": "rolled_back",
+                "reason": found[0],
+                "detail": detail,
+                "placements": [],
+                "released_holders": [],
+                "source_ledger": _source_ledger_record(source_ledger),
+                "target_ledger": _target_ledger_record(target_ledger),
+                "committed_flow_owned_refs": sorted(flow_owned_refs.committed),
+                "snapshot": snapshot.to_record(),
+            }
+        else:
+            if candidate_inventory is None or comparison is None:
+                raise RuntimeError("article flow completed without conservation evidence")
+            flow_owned_refs.commit(new_render_refs)
             inventory = candidate_inventory
             result = {
                 **segment.to_record(),
@@ -833,25 +912,12 @@ def apply(
                 "reason": None,
                 "placements": [item.to_record() for item in placements],
                 "released_holders": list(released_holders),
+                "source_ledger": _source_ledger_record(source_ledger),
+                "target_ledger": _target_ledger_record(target_ledger),
+                "committed_flow_owned_refs": sorted(flow_owned_refs.committed),
                 "fixed_asset_comparison": comparison.to_record(),
-                "acceptance": monotonic.as_record(),
-                "transaction": transaction_record,
+                "snapshot": snapshot.to_record(),
             }
-        except Exception as error:
-            transaction_record = transaction.rollback()
-            result = {
-                **segment.to_record(),
-                "status": "rolled_back",
-                "action_status": "rolled_back",
-                "reason": failure_stage,
-                "failure_stage": failure_stage,
-                "detail": str(error),
-                "placements": [],
-                "released_holders": [],
-                "transaction": transaction_record,
-            }
-            if monotonic is not None:
-                result["acceptance"] = monotonic.as_record()
         segment_results.append(result)
         _merge_page_records(page_results, _segment_page_records(segment, result))
     unsupported = {item.page for item in article_document_ir.unsupported_pages}
@@ -906,5 +972,5 @@ def apply(
             ),
         },
     }
-    article_flow._write_report(translator.translation_config, record)
+    article_flow._write_report(translation_config, record)
     return record

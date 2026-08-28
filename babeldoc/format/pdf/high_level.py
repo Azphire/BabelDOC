@@ -1010,6 +1010,13 @@ def _do_translate_single(
     else:
         logger.info("skip ILTranslator")
 
+    typesetting_stage = Typesetting(translation_config)
+    minimal_pipeline.after_translation(
+        translation_config,
+        docs,
+        typesetting_stage,
+    )
+
     if translation_config.debug:
         xml_converter.write_json(
             docs,
@@ -1039,7 +1046,7 @@ def _do_translate_single(
         mono_watermark_first_page_doc_bytes = None
         dual_watermark_first_page_doc_bytes = None
 
-    Typesetting(translation_config).typesetting_document(docs)
+    typesetting_stage.typesetting_document(docs)
     logger.debug(f"finish typsetting from {temp_pdf_path}")
     if translation_config.debug:
         xml_converter.write_json(

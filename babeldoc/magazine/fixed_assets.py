@@ -25,6 +25,7 @@ ARTWORK_COLLECTIONS = ("pdf_figure", "pdf_xobject")
 FORMULA_CHILD_COLLECTIONS = ("pdf_curve", "pdf_form")
 FORMULA_TYPE = "pdf_formula"
 FURNITURE_TYPE = "pdf_paragraph_furniture"
+ROTATED_PARAGRAPH_TYPE = "pdf_paragraph_rotated"
 
 
 def paragraph_reference(page: int, index: int) -> str:
@@ -71,7 +72,8 @@ class FixedAssetInventory:
         return frozenset(
             asset.reference
             for asset in self.assets
-            if asset.asset_type == FURNITURE_TYPE and asset.protected
+            if asset.asset_type in (FURNITURE_TYPE, ROTATED_PARAGRAPH_TYPE)
+            and asset.protected
         )
 
     def page_assets(self, page: int) -> tuple[AssetRecord, ...]:
@@ -205,15 +207,36 @@ def _article_refs(article_document_ir, run_trace) -> tuple[set[str] | None, set[
     )
 
 
+def _flow_owned_refs(references) -> frozenset[str]:
+    held = frozenset(references)
+    for reference in held:
+        if not isinstance(reference, str):
+            raise ValueError(f"invalid flow-owned paragraph ref: {reference!r}")
+        page, separator, index = reference.partition("#")
+        if (
+            separator != "#"
+            or not page.startswith("p")
+            or not page[1:].isdigit()
+            or not index.isdigit()
+            or int(page[1:]) < 1
+        ):
+            raise ValueError(f"invalid flow-owned paragraph ref: {reference!r}")
+    return held
+
+
 def build_inventory(
     docs,
     *,
     article_document_ir=None,
     run_trace=None,
     protected_paragraph_labels=(),
+    flow_owned_paragraph_refs=(),
 ) -> FixedAssetInventory:
     """Freeze every fixed asset under stable page/source references."""
     article_refs, unsupported_pages = _article_refs(article_document_ir, run_trace)
+    flow_owned_refs = _flow_owned_refs(flow_owned_paragraph_refs)
+    if article_document_ir is not None:
+        article_refs.update(flow_owned_refs)
     protected_labels = frozenset(protected_paragraph_labels)
     assets: list[AssetRecord] = []
     page_sizes = []
@@ -241,13 +264,19 @@ def build_inventory(
         for paragraph_index, paragraph in enumerate(page.pdf_paragraph or ()):
             source_ref = paragraph_reference(page_number, paragraph_index)
             fixed_paragraph = (
-                getattr(paragraph, "layout_label", None) in protected_labels
+                bool(getattr(paragraph, "vertical", False))
+                or getattr(paragraph, "layout_label", None) in protected_labels
                 or page_number in unsupported_pages
                 or (article_refs is not None and source_ref not in article_refs)
             )
             if fixed_paragraph:
+                asset_type = (
+                    ROTATED_PARAGRAPH_TYPE
+                    if bool(getattr(paragraph, "vertical", False))
+                    else FURNITURE_TYPE
+                )
                 assets.append(
-                    _record(source_ref, FURNITURE_TYPE, page_number, paragraph)
+                    _record(source_ref, asset_type, page_number, paragraph)
                 )
             for composition_index, composition in enumerate(
                 paragraph.pdf_paragraph_composition or ()
