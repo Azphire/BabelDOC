@@ -13,6 +13,24 @@
       "transitions": ["cross_column"]
     },
     {
+      "id": "courier-p6-cross-column-quantum-body",
+      "role": "body",
+      "ordered_members": [
+        {"physical_page": 6, "source_text_sha256": "03fa6e58eeb57832519b96a61a7941f708959d9dbb717559838d2784cd0d7666", "source_box": [56.82448, 63.2925, 207.474388, 158.4941], "diagnostic_ref": "styles_and_formulas.json:p6#122;debug_id=T8k7U"},
+        {"physical_page": 6, "source_text_sha256": "ff17b1a4a157547189a8a86123cc81ab20468bbe2a21f60b14dd203bd85a99a7", "source_box": [222.51328, 401.1673, 372.91534, 506.4429], "diagnostic_ref": "styles_and_formulas.json:p6#117;debug_id=PUAfd"}
+      ],
+      "transitions": ["cross_column"]
+    },
+    {
+      "id": "courier-p6-cross-column-brain-scanner-body",
+      "role": "body",
+      "ordered_members": [
+        {"physical_page": 6, "source_text_sha256": "241ddbf4c138ed62d22d00e99abb955be9632a27d3b37b092072ef51bd5db3a9", "source_box": [222.6853, 63.2465, 372.874104, 230.4289], "diagnostic_ref": "styles_and_formulas.json:p6#120;debug_id=yZBKk"},
+        {"physical_page": 6, "source_text_sha256": "bb69812a151e1ea10eebc9ce11fa049bcfa6539710dc38db9ed76e9e851454f8", "source_box": [388.6961, 207.3785, 538.40057, 230.3969], "diagnostic_ref": "styles_and_formulas.json:p6#115;debug_id=q6jwo"}
+      ],
+      "transitions": ["cross_column"]
+    },
+    {
       "id": "courier-p7-p8-cross-page-body",
       "role": "body",
       "ordered_members": [
@@ -20,6 +38,24 @@
         {"physical_page": 8, "source_text_sha256": "288f96f8f2f207768376b939b0bbfd8a72fb26cb887556c1cc28f2b86e350b3f", "source_box": [56.86128, 423.2981, 206.938212, 494.4049], "diagnostic_ref": "styles_and_formulas.json:p8#145;debug_id=pEitN"}
       ],
       "transitions": ["cross_page"]
+    },
+    {
+      "id": "courier-p8-cross-column-biological-resources-body",
+      "role": "body",
+      "ordered_members": [
+        {"physical_page": 8, "source_text_sha256": "3a3fab0e1d019f1031533a029a8f905932beadb9c00cabbc39506df9a3537f97", "source_box": [56.84976, 63.4553, 207.331768, 134.4609], "diagnostic_ref": "styles_and_formulas.json:p8#149;debug_id=c9EdS"},
+        {"physical_page": 8, "source_text_sha256": "6d5d2e83f9e4508ca31e3826c73975c4b7f69c5375ad549da39a08f4bbc9e68c", "source_box": [222.6485, 387.1985, 373.259952, 494.3969], "diagnostic_ref": "styles_and_formulas.json:p8#141;debug_id=zZ7Qk"}
+      ],
+      "transitions": ["cross_column"]
+    },
+    {
+      "id": "courier-p8-cross-column-framework-body",
+      "role": "body",
+      "ordered_members": [
+        {"physical_page": 8, "source_text_sha256": "7b8bdd09af07e6c229019f90d1f5684d1cbbebd55575293ffb111c8bc390d235", "source_box": [222.5105, 63.1825, 373.067166, 110.3969], "diagnostic_ref": "styles_and_formulas.json:p8#144;debug_id=v2Cd6"},
+        {"physical_page": 8, "source_text_sha256": "be2a0ed0fc21f31d1ab04fd7f3d6010412a55381c4142443854e76538fbf2f6d", "source_box": [388.4753, 437.1085, 538.550852, 494.3969], "diagnostic_ref": "styles_and_formulas.json:p8#138;debug_id=pHpjC"}
+      ],
+      "transitions": ["cross_column"]
     }
   ],
   "negative_chain_pairs": [],
