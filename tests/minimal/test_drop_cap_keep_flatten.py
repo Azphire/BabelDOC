@@ -14,6 +14,7 @@ from babeldoc.format.pdf.translation_config import SharedContextCrossSplitPart
 from babeldoc.magazine import drop_cap
 from babeldoc.magazine import drop_cap_intent
 from babeldoc.magazine import drop_cap_render
+from babeldoc.magazine import minimal_detection
 from babeldoc.magazine import minimal_pipeline
 from babeldoc.magazine.article_ir import ArticleDocumentIR
 from babeldoc.magazine.article_ir import ArticleIR
@@ -605,6 +606,17 @@ def _prepared_pipeline_state(config, docs, article_ir, typesetter):
     state._flow_completed = True
     state._flow_document_identity = id(docs)
     state._typesetter_identity = id(typesetter)
+    state._detection_baseline = minimal_detection.capture_baseline(
+        docs,
+        article_ir,
+        labeled_pages=tuple(
+            (
+                (page.page_number if page.page_number is not None else position) + 1,
+                page,
+            )
+            for position, page in enumerate(docs.page)
+        ),
+    )
     return state
 
 
@@ -612,6 +624,11 @@ def test_after_typesetting_is_one_shot_after_success_and_failure(
     tmp_path: Path,
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
+    monkeypatch.setattr(
+        minimal_pipeline,
+        "_detect_and_repair",
+        lambda _config, _docs, _typesetter, _state: None,
+    )
     paragraph = english_render_paragraph()
     docs = make_document([paragraph])
     article_ir = make_article_ir([paragraph])
