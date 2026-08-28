@@ -10,6 +10,7 @@ import pytest
 from babeldoc.format.pdf.document_il import il_version_1
 from babeldoc.format.pdf.document_il.midend.typesetting import BoundedTypesettingError
 from babeldoc.format.pdf.document_il.midend.typesetting import Typesetting
+from babeldoc.format.pdf.document_il.midend.typesetting import TypesettingUnit
 from babeldoc.magazine import article_flow
 from babeldoc.magazine import layout_report
 from babeldoc.magazine import minimal_pipeline
@@ -359,6 +360,52 @@ def test_minimum_scale_overflow_is_reported_without_expansion_or_text_loss(
     assert paragraph.pdf_paragraph_composition is original_compositions
     assert paragraph.unicode == target
     assert tuple(getattr(paragraph.box, name) for name in ("x", "y", "x2", "y2")) == source_box
+
+
+def test_bounded_prose_wraps_hanging_punctuation_inside_source_x2():
+    source_box = (0.0, 0.0, 50.0, 30.0)
+    target = "汉" * 10 + "。"
+    paragraph = _paragraph(target, "hung-punctuation", source_box)
+    paragraph.xobj_id = -1
+    page = _page(0, [paragraph])
+    typesetter = Typesetting(SimpleNamespace(lang_out="zh"), RenderMapper())
+    style = il_version_1.PdfStyle(font_id="body", font_size=10.0)
+    units = [
+        TypesettingUnit(
+            unicode=character,
+            font=typesetter.font_mapper.base_font,
+            font_size=10.0,
+            style=style,
+            xobj_id=-1,
+        )
+        for character in target
+    ]
+
+    ordinary, ordinary_fits = typesetter._layout_typesetting_units(
+        units,
+        il_version_1.Box(*source_box),
+        1.0,
+        1.5,
+        paragraph,
+        True,
+    )
+    assert ordinary_fits
+    assert max(unit.box.x2 for unit in ordinary) > source_box[2]
+
+    laid_out = typesetter.retypeset_bounded_source_unit(
+        paragraph,
+        page,
+        units,
+        SimpleNamespace(
+            source_ref="p1#0",
+            source_box=source_box,
+            record_kind="prose_exempt",
+        ),
+    )
+
+    assert max(unit.box.x2 for unit in laid_out) <= source_box[2]
+    assert len({unit.layout_line_index for unit in laid_out}) == 2
+    assert paragraph.unicode == target
 
 
 def _write_json(path: Path, value) -> None:

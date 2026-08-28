@@ -1260,6 +1260,7 @@ class Typesetting:
         allow_expand: bool = True,
         box_override: Box | None = None,
         maximum_lines: int | None = None,
+        allow_hanging_punctuation_outside_box: bool = True,
     ) -> tuple[float, list[TypesettingUnit] | None]:
         """查找最优缩放因子并可选择性地执行布局
 
@@ -1294,6 +1295,7 @@ class Typesetting:
                     line_skip,
                     paragraph,
                     use_english_line_break,
+                    allow_hanging_punctuation_outside_box,
                 )
 
                 if all_units_fit and maximum_lines is not None:
@@ -1399,6 +1401,9 @@ class Typesetting:
                 allow_expand=allow_expand,
                 box_override=box_override,
                 maximum_lines=maximum_lines,
+                allow_hanging_punctuation_outside_box=(
+                    allow_hanging_punctuation_outside_box
+                ),
             )
 
         # 最后返回最小缩放因子
@@ -1473,6 +1478,7 @@ class Typesetting:
             maximum_lines=(
                 1 if source_unit.record_kind == RECORD_SINGLE else None
             ),
+            allow_hanging_punctuation_outside_box=False,
         )
         if laid_out is None:
             raise BoundedTypesettingError(
@@ -1733,6 +1739,7 @@ class Typesetting:
         line_skip: float,
         paragraph: il_version_1.PdfParagraph,
         use_english_line_break: bool = True,
+        allow_hanging_punctuation_outside_box: bool = True,
     ) -> tuple[list[TypesettingUnit], bool]:
         """布局排版单元。
 
@@ -1825,7 +1832,10 @@ class Typesetting:
                 width_before_next_break_point = 0
 
             # 如果当前行放不下这个元素，换行
-            if not unit.is_hung_punctuation and (
+            if (
+                not unit.is_hung_punctuation
+                or not allow_hanging_punctuation_outside_box
+            ) and (
                 (current_x + unit_width > box.x2)
                 or (
                     use_english_line_break
