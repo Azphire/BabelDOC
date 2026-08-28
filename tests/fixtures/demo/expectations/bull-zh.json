@@ -4,6 +4,24 @@
   "direction": "zh-en",
   "chains": [
     {
+      "id": "bull-p3-cross-column-editorial-body",
+      "role": "body",
+      "ordered_members": [
+        {"physical_page": 3, "source_text_sha256": "b3953279c1d346fc7507168f38265d89cc5d54673468c85de17f04024d401750", "source_box": [36.956097, 177.493133, 218.403933, 204.251922], "diagnostic_ref": "styles_and_formulas.json:p3#97;debug_id=Qrvff"},
+        {"physical_page": 3, "source_text_sha256": "935db47e5912ee90ea9f3f0c93f8aefefea199e6eb2e545136da43f5d53d5ad8", "source_box": [241.993261, 639.450164, 424.820566, 715.762664], "diagnostic_ref": "styles_and_formulas.json:p3#98;debug_id=sNQ5J"}
+      ],
+      "transitions": ["cross_column"]
+    },
+    {
+      "id": "bull-p8-cross-column-plan-body",
+      "role": "body",
+      "ordered_members": [
+        {"physical_page": 8, "source_text_sha256": "e1fe9ba25a2fd6c970cda1c31325ea80fea28ca25e6ceb4916ad15d2d58d0c64", "source_box": [171.426873, 67.662433, 353.926928, 94.388995], "diagnostic_ref": "styles_and_formulas.json:p8#72;debug_id=s1oDA"},
+        {"physical_page": 8, "source_text_sha256": "500311697e9d870438b3986021a3f7dc4fa0dfc2197ce96146f9b1cd870209af", "source_box": [377.370592, 414.388019, 560.728991, 473.856769], "diagnostic_ref": "styles_and_formulas.json:p8#73;debug_id=DXFAV"}
+      ],
+      "transitions": ["cross_column"]
+    },
+    {
       "id": "bull-p8-p9-cross-page-body",
       "role": "body",
       "ordered_members": [
@@ -31,6 +49,15 @@
         {"physical_page": 8, "source_text_sha256": "adc9212f9f03254466cc4130c8dca8d90380b6d635e68cfe970b800da5a08485", "source_box": [170.470819, 381.291339, 353.915739, 459.816104], "diagnostic_ref": "styles_and_formulas.json:p8#69;debug_id=ynVxP"}
       ],
       "diagnostic_ref": "human_review:same_article_but_distinct_paragraphs"
+    },
+    {
+      "id": "bull-p8-caption-to-body",
+      "role": "caption_to_body",
+      "endpoints": [
+        {"physical_page": 8, "source_text_sha256": "778d79c3fe2790ab263e44658603810870277aa0a47cbdc704c154bb5ebc36f8", "source_box": [27.562217, 484.4901, 152.330233, 572.2921], "diagnostic_ref": "styles_and_formulas.json:p8#80;debug_id=3W8Me"},
+        {"physical_page": 8, "source_text_sha256": "adc9212f9f03254466cc4130c8dca8d90380b6d635e68cfe970b800da5a08485", "source_box": [170.470819, 381.291339, 353.915739, 459.816104], "diagnostic_ref": "styles_and_formulas.json:p8#69;debug_id=ynVxP"}
+      ],
+      "diagnostic_ref": "human_review:photo_credit_closes_before_body"
     }
   ],
   "toc_records": [
