@@ -1314,11 +1314,16 @@ class Typesetting:
             if not hasattr(paragraph, "debug_id") or not paragraph.debug_id:
                 return scale, final_typeset_units
 
-            # 减小缩放因子
-            if scale > 0.6:
-                scale -= 0.05
+            # 减小缩放因子。浮点减法会把 0.6 - 0.1 算成略小于
+            # 0.5；若 0.5 恰是配置下限，旧循环会在测量它之前退出。
+            # 越过下限时明确夹到下限，令每个合法最小 scale 恰好被
+            # 尝试一次，下一次失败后仍正常退出。
+            step = 0.05 if scale > 0.6 else 0.1
+            next_scale = scale - step
+            if scale > min_scale and next_scale < min_scale:
+                scale = min_scale
             else:
-                scale -= 0.1
+                scale = next_scale
 
             if allow_expand and scale < 0.7:
                 space_expanded = False  # 标记是否成功扩展了空间

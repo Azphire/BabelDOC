@@ -12,6 +12,7 @@ from babeldoc.format.pdf.document_il.midend.il_translator_llm_only import (
 )
 from babeldoc.format.pdf.document_il.midend.typesetting import BoundedTypesettingError
 from babeldoc.format.pdf.document_il.midend.typesetting import Typesetting
+from babeldoc.format.pdf.document_il.midend.typesetting import TypesettingUnit
 from babeldoc.magazine import drop_cap_render
 from babeldoc.magazine import line_split
 from babeldoc.magazine import minimal_detection
@@ -501,6 +502,84 @@ def test_three_record_kinds_render_inside_their_source_container(
     )
     if expected_kind == line_split.RECORD_SINGLE:
         assert len({round(character.box.y, 3) for character in rendered}) == 1
+
+
+def test_rich_formula_single_attempts_exact_minimum_readable_scale():
+    source_box = (93.6923, 126.6545, 566.9849, 142.9345)
+    paragraph = _paragraph(
+        ["source navigation line"],
+        "minimum-scale-single",
+        left=source_box[0],
+        bottom=source_box[1],
+    )
+    paragraph.box = il_version_1.Box(*source_box)
+    page = _page([paragraph], number=2)
+    typesetter = Typesetting(SimpleNamespace(lang_out="zh"), RenderMapper())
+    target = "2 首次预览 风味 问答 作者专栏 评论 活动 在线内容 测验"
+    styles = (
+        il_version_1.PdfStyle(font_id="body", font_size=10.0),
+        il_version_1.PdfStyle(font_id="title", font_size=10.0),
+    )
+    units = [
+        TypesettingUnit(
+            unicode=character,
+            font=typesetter.font_mapper.base_font,
+            font_size=10.0,
+            style=styles[index % len(styles)],
+            xobj_id=-1,
+        )
+        for index, character in enumerate(target)
+    ]
+    rich_width = sum(unit.width for unit in units)
+    required_width = 900.0
+    formula_width = required_width - rich_width
+    formula_box = il_version_1.Box(0.0, 0.0, formula_width, 10.0)
+    formula_character = il_version_1.PdfCharacter(
+        char_unicode="|",
+        box=formula_box,
+        visual_bbox=il_version_1.VisualBbox(box=formula_box),
+        pdf_style=styles[0],
+        advance=formula_width,
+        xobj_id=-1,
+    )
+    units.insert(
+        len(units) // 2,
+        TypesettingUnit(
+            formular=il_version_1.PdfFormula(
+                box=formula_box,
+                pdf_character=[formula_character],
+                x_offset=0.0,
+                y_offset=0.0,
+                x_advance=formula_width,
+            )
+        ),
+    )
+    available_width = source_box[2] - source_box[0]
+    assert sum(unit.width for unit in units) == pytest.approx(required_width)
+    assert required_width * 0.5 < available_width < required_width * 0.55
+
+    typesetter.retypeset_bounded_source_unit(
+        paragraph,
+        page,
+        units,
+        SimpleNamespace(
+            source_box=source_box,
+            source_ref="p3#16",
+            record_kind=line_split.RECORD_SINGLE,
+        ),
+    )
+
+    assert paragraph.scale == pytest.approx(0.5)
+    rendered = [
+        composition.pdf_character
+        for composition in paragraph.pdf_paragraph_composition
+        if composition.pdf_character is not None
+    ]
+    assert len({round(character.box.y, 3) for character in rendered}) == 1
+    assert all(
+        source_box[0] <= character.box.x <= character.box.x2 <= source_box[2]
+        for character in rendered
+    )
 
 
 def test_bounded_overflow_fails_without_text_loss_or_container_borrowing(tmp_path):
