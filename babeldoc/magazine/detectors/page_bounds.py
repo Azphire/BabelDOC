@@ -78,7 +78,7 @@ def detect(context: base.DetectionContext) -> list[base.Issue]:
         bounds, frame_source = frame
         safe = base.inset(bounds, config.page_safety_margin_ratio)
         for index, paragraph in enumerate(view.page.pdf_paragraph or ()):
-            text = base.rendered_text(paragraph).strip()
+            text = base.rendered_text(paragraph, physical_page=view.label).strip()
             box, box_source = base.rendered_box(paragraph)
             if not text or box is None:
                 continue

@@ -318,7 +318,9 @@ def standing_on(candidate, box, min_iou: float) -> dict[int, float]:
     for index, other in enumerate(candidate.page.pdf_paragraph or ()):
         if index == candidate.paragraph_index:
             continue
-        if not detector_base.rendered_text(other).strip():
+        if not detector_base.rendered_text(
+            other, physical_page=candidate.page_index
+        ).strip():
             continue
         other_box, _source = detector_base.rendered_box(other)
         if other_box is None:
@@ -513,7 +515,9 @@ def worst_overlap(candidate) -> float:
     for index, other in enumerate(candidate.page.pdf_paragraph or ()):
         if index == candidate.paragraph_index:
             continue
-        if not detector_base.rendered_text(other).strip():
+        if not detector_base.rendered_text(
+            other, physical_page=candidate.page_index
+        ).strip():
             continue
         other_box, _source = detector_base.rendered_box(other)
         if other_box is None:

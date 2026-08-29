@@ -432,7 +432,9 @@ def standing_on(candidate, mover_index: int, box, config) -> list[int]:
     for index, other in enumerate(candidate.page.pdf_paragraph or ()):
         if index == mover_index:
             continue
-        if not detector_base.rendered_text(other).strip():
+        if not detector_base.rendered_text(
+            other, physical_page=candidate.page_index
+        ).strip():
             continue
         other_box, _source = detector_base.rendered_box(other)
         if other_box is None:

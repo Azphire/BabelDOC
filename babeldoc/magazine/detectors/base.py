@@ -22,6 +22,7 @@ from dataclasses import replace
 from functools import lru_cache
 from pathlib import Path
 
+from babeldoc.magazine import line_split
 from babeldoc.magazine.page_features import ConfigError
 from babeldoc.magazine.page_features import validate_bounded_config
 from babeldoc.magazine.reading_order import paragraph_characters
@@ -418,7 +419,7 @@ def script_counts(text: str) -> dict[str, int]:
     return counts
 
 
-def rendered_text(paragraph) -> str:
+def rendered_text(paragraph, *, physical_page: int | None = None) -> str:
     """What the page shows for this paragraph, as characters rather than markup.
 
     Read in the order a reader reads it rather than in the order the composition
@@ -426,6 +427,8 @@ def rendered_text(paragraph) -> str:
     same order. The ordering rule is shared with the repair path, so a detector
     and the action answering for what it found are looking at one string.
     """
+    if line_split.is_fixed_artwork(paragraph, physical_page):
+        return ""
     return paragraph_reading_text(paragraph)
 
 

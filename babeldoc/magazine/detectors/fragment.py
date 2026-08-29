@@ -76,7 +76,7 @@ def _continues(previous, current, config: base.DetectorConfig) -> bool:
 def _members(view, config: base.DetectorConfig):
     """Candidate members of the page, in the order the page holds them."""
     for index, paragraph in enumerate(view.page.pdf_paragraph or ()):
-        text = base.rendered_text(paragraph).strip()
+        text = base.rendered_text(paragraph, physical_page=view.label).strip()
         box = base.box_tuple(paragraph.box)
         key = style_key(paragraph, config.fragment_font_size_tolerance)
         eligible = bool(text) and len(text) <= config.fragment_max_chars

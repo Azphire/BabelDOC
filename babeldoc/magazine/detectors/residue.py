@@ -59,7 +59,7 @@ def detect(context: base.DetectionContext) -> list[base.Issue]:
         if not view.flag(base.TRANSLATE_POLICY_FLAG, True):
             continue
         for index, paragraph in enumerate(view.page.pdf_paragraph or ()):
-            text = base.rendered_text(paragraph).strip()
+            text = base.rendered_text(paragraph, physical_page=view.label).strip()
             if not text:
                 continue
             residue, total, ratio = measure(text, script)

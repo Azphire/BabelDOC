@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import copy
 import hashlib
 import json
 from pathlib import Path
@@ -14,6 +15,8 @@ from babeldoc.format.pdf.document_il.midend.il_translator_llm_only import (
 from babeldoc.format.pdf.document_il.midend.typesetting import BoundedTypesettingError
 from babeldoc.format.pdf.document_il.midend.typesetting import Typesetting
 from babeldoc.format.pdf.document_il.midend.typesetting import TypesettingUnit
+from babeldoc.magazine import article_builder
+from babeldoc.magazine import demo_coverage
 from babeldoc.magazine import drop_cap_render
 from babeldoc.magazine import layout_report
 from babeldoc.magazine import line_split
@@ -23,6 +26,9 @@ from babeldoc.magazine.article_context import EMPTY_CONTEXT
 from babeldoc.magazine.article_ir import ArticleDocumentIR
 from babeldoc.magazine.chain_builder import ChainBuilder
 from babeldoc.magazine.chain_translation import plan_chain_translation
+from babeldoc.magazine.detectors import base as detector_base
+from babeldoc.magazine.detectors import detector_config
+from babeldoc.magazine.detectors import page_bounds
 from tests.minimal.fakes import FixedWidthFont
 from tests.minimal.fakes import FixedWidthMapper
 from tests.minimal.fakes import RecordingTracker
@@ -2639,6 +2645,265 @@ def test_embedded_artwork_proof_does_not_capture_ordinary_text(
     driver = object.__new__(ILTranslatorLLMOnly)
     driver.translation_config = SimpleNamespace(min_text_length=1)
     assert driver._should_translate_paragraph(paragraph)
+
+
+def test_adjacent_spread_figure_labels_are_fixed_but_root_text_stays_detectable(
+    tmp_path,
+):
+    def root_text(text: str, debug_id: str, left: float):
+        paragraph = _paragraph(
+            [text],
+            debug_id,
+            left=left,
+            bottom=587.25,
+            char_width=5.0,
+        )
+        paragraph.xobj_id = 0
+        for character in line_split.paragraph_characters(paragraph):
+            character.xobj_id = 0
+        return paragraph
+
+    # Each page repeats one two-page coordinate plane.  The second invocation
+    # and every corresponding label are shifted left by exactly one page.
+    visible_left = root_text("Industry", "left-visible", 49.0)
+    clipped_right = root_text("Agriculture", "right-clipped", 700.0)
+    visible_symbol = root_text("+", "symbol-visible", 450.0)
+    ordinary_caption = root_text("A translatable caption", "caption", 200.0)
+    genuine_out_of_page = root_text("Root overflow", "root-overflow", 900.0)
+    clipped_left = root_text("Industry", "left-clipped", -551.0)
+    visible_right = root_text("Agriculture", "right-visible", 100.0)
+    clipped_symbol = root_text("+", "symbol-clipped", -150.0)
+    repeated_header = root_text("A translatable caption", "header", 200.0)
+    for symbol in (visible_symbol, clipped_symbol):
+        characters = line_split.paragraph_characters(symbol)
+        symbol.pdf_paragraph_composition = [
+            il_version_1.PdfParagraphComposition(
+                pdf_formula=il_version_1.PdfFormula(
+                    box=symbol.box,
+                    pdf_character=characters,
+                )
+            )
+        ]
+
+    left_page = _page(
+        [
+            visible_left,
+            clipped_right,
+            visible_symbol,
+            ordinary_caption,
+            genuine_out_of_page,
+        ],
+        number=5,
+        kind="masthead",
+    )
+    right_page = _page(
+        [clipped_left, visible_right, clipped_symbol, repeated_header],
+        number=6,
+        kind="masthead",
+    )
+    left_page.pdf_xobject = [
+        il_version_1.PdfXobject(
+            box=il_version_1.Box(-20, 180, 1220, 700),
+            base_operations=il_version_1.BaseOperations(value="q /Spread Do Q"),
+            xobj_id=7,
+            xref_id=100,
+        )
+    ]
+    right_page.pdf_xobject = [
+        il_version_1.PdfXobject(
+            box=il_version_1.Box(-620, 180, 620, 700),
+            base_operations=il_version_1.BaseOperations(value="q /Spread Do Q"),
+            xobj_id=15,
+            xref_id=200,
+        )
+    ]
+    for page in (left_page, right_page):
+        page.page_layout = [
+            il_version_1.PageLayout(
+                box=il_version_1.Box(0, 190, 600, 650),
+                id=1,
+                conf=0.99,
+                class_name="figure",
+            )
+        ]
+    config = Config(tmp_path)
+
+    report = line_split.apply(config, [(6, left_page), (7, right_page)])
+
+    artwork = (
+        visible_left,
+        clipped_right,
+        visible_symbol,
+        clipped_left,
+        visible_right,
+        clipped_symbol,
+    )
+    assert report["totals"]["fixed_artwork"] == 6
+    assert {item["reason"] for item in report["fixed_artwork"]} == {
+        "adjacent_spread_figure_overlay"
+    }
+    assert {
+        (item["source_ref"], item["paired_source_ref"])
+        for item in report["fixed_artwork"]
+    } == {
+        ("p6#0", "p7#0"),
+        ("p6#1", "p7#1"),
+        ("p6#2", "p7#2"),
+        ("p7#0", "p6#0"),
+        ("p7#1", "p6#1"),
+        ("p7#2", "p6#2"),
+    }
+    assert all(line_split.is_fixed_artwork(paragraph) for paragraph in artwork)
+    assert all(paragraph.unicode is None for paragraph in artwork)
+    assert not line_split.is_fixed_artwork(ordinary_caption)
+    assert not line_split.is_fixed_artwork(repeated_header)
+    assert not line_split.is_fixed_artwork(genuine_out_of_page)
+
+    # The fixed labels retain their IL slots for exact source paint, but neither
+    # ArticleIR nor an ordinary translation producer can claim them.
+    document = il_version_1.Document(page=[left_page, right_page], total_pages=2)
+    elements = article_builder._document_elements(document)
+    indexed = {
+        element.source_ref
+        for page_elements in elements.values()
+        for element in page_elements
+    }
+    assert indexed == {"p1#3", "p1#4", "p2#3"}
+    driver = object.__new__(ILTranslatorLLMOnly)
+    driver.translation_config = SimpleNamespace(min_text_length=1)
+    assert all(not driver._should_translate_paragraph(paragraph) for paragraph in artwork)
+    assert driver._should_translate_paragraph(ordinary_caption)
+    assert driver._should_translate_paragraph(genuine_out_of_page)
+
+    snapshot = demo_coverage.freeze(
+        document,
+        ArticleDocumentIR(
+            articles=(),
+            by_page={},
+            by_element={},
+            by_chain={},
+            by_chain_member={},
+        ),
+        [(6, left_page), (7, right_page)],
+    )
+    coverage = demo_coverage.finalize(config, snapshot)
+    fixed_refs = {item["source_ref"] for item in report["fixed_artwork"]}
+    assert {
+        row["source_ref"]
+        for row in coverage["items"]
+        if row["translation_owner"] == "none"
+    }.issuperset(fixed_refs)
+    assert all(
+        row["target_text_sha256"] is None
+        for row in coverage["items"]
+        if row["source_ref"] in fixed_refs
+    )
+
+    # Detectors see fixed artwork as non-product paint.  A lone root paragraph
+    # outside the same page remains a genuine, selectable out-of-page issue.
+    copied_document = copy.deepcopy(document)
+    assert detector_base.rendered_text(copied_document.page[0].pdf_paragraph[0])
+    assert not detector_base.rendered_text(
+        copied_document.page[0].pdf_paragraph[0], physical_page=6
+    )
+    context = detector_base.DetectionContext(
+        pages=[
+            detector_base.PageView(6, copied_document.page[0], None),
+            detector_base.PageView(7, copied_document.page[1], None),
+        ],
+        config=detector_config(),
+        language="en",
+    )
+    issues = page_bounds.detect(context)
+    assert [issue.paragraph_refs for issue in issues] == [("p6#4",)]
+
+
+def test_spread_artwork_proof_rejects_ambiguous_pairs_and_drawn_formula(tmp_path):
+    def root_text(text: str, debug_id: str, left: float):
+        paragraph = _paragraph(
+            [text],
+            debug_id,
+            left=left,
+            bottom=587.25,
+            char_width=5.0,
+        )
+        paragraph.xobj_id = 0
+        for character in line_split.paragraph_characters(paragraph):
+            character.xobj_id = 0
+        return paragraph
+
+    one = root_text("Repeated", "one", 49.0)
+    many_a = root_text("Repeated", "many-a", -551.0)
+    many_b = root_text("Repeated", "many-b", -551.0)
+    many_left_a = root_text("Mirrored", "many-left-a", 300.0)
+    many_left_b = root_text("Mirrored", "many-left-b", 300.0)
+    one_right = root_text("Mirrored", "one-right", -300.0)
+    drawn_left = root_text("+", "drawn-left", 450.0)
+    drawn_right = root_text("+", "drawn-right", -150.0)
+    for paragraph in (drawn_left, drawn_right):
+        characters = line_split.paragraph_characters(paragraph)
+        paragraph.pdf_paragraph_composition = [
+            il_version_1.PdfParagraphComposition(
+                pdf_formula=il_version_1.PdfFormula(
+                    box=paragraph.box,
+                    pdf_character=characters,
+                    pdf_curve=[il_version_1.PdfCurve(box=paragraph.box)],
+                )
+            )
+        ]
+
+    left_page = _page(
+        [one, many_left_a, many_left_b, drawn_left],
+        number=5,
+        kind="masthead",
+    )
+    right_page = _page(
+        [many_a, many_b, one_right, drawn_right],
+        number=6,
+        kind="masthead",
+    )
+    left_page.pdf_xobject = [
+        il_version_1.PdfXobject(
+            box=il_version_1.Box(-20, 180, 1220, 700),
+            base_operations=il_version_1.BaseOperations(value="q /Spread Do Q"),
+            xobj_id=7,
+            xref_id=100,
+        )
+    ]
+    right_page.pdf_xobject = [
+        il_version_1.PdfXobject(
+            box=il_version_1.Box(-620, 180, 620, 700),
+            base_operations=il_version_1.BaseOperations(value="q /Spread Do Q"),
+            xobj_id=15,
+            xref_id=200,
+        )
+    ]
+    for page in (left_page, right_page):
+        page.page_layout = [
+            il_version_1.PageLayout(
+                box=il_version_1.Box(0, 190, 600, 650),
+                id=1,
+                conf=0.99,
+                class_name="figure",
+            )
+        ]
+
+    report = line_split.apply(Config(tmp_path), [(6, left_page), (7, right_page)])
+
+    assert report["fixed_artwork"] == []
+    assert all(
+        paragraph.unicode is not None
+        for paragraph in (
+            one,
+            many_a,
+            many_b,
+            many_left_a,
+            many_left_b,
+            one_right,
+            drawn_left,
+            drawn_right,
+        )
+    )
 
 
 def test_debug_overlays_do_not_renumber_physical_parent_aliases(tmp_path):

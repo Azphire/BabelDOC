@@ -288,9 +288,13 @@ _SOURCE_UNITS_BY_ID: dict[int, SourceUnit] = {}
 _SOURCE_UNITS_BY_DEBUG: dict[tuple[int, str], SourceUnit] = {}
 _RULING_OWNERS_BY_ID: dict[int, tuple[object, tuple[str, ...]]] = {}
 _RULING_OWNERS_BY_DEBUG: dict[tuple[int, str], tuple[str, ...]] = {}
+_FIXED_ARTWORK_BY_ID: dict[int, object] = {}
+_FIXED_ARTWORK_BY_DEBUG: dict[tuple[int, str], bool] = {}
 
 
 def _box_record(box) -> list[float] | None:
+    if isinstance(box, tuple | list) and len(box) == 4:
+        return [float(value) for value in box]
     if box is None or any(getattr(box, name, None) is None for name in ("x", "y", "x2", "y2")):
         return None
     return [float(getattr(box, name)) for name in ("x", "y", "x2", "y2")]
@@ -304,6 +308,27 @@ def _register_source_unit(paragraph, physical_page: int, unit: SourceUnit) -> No
     _SOURCE_UNITS_BY_ID[id(paragraph)] = unit
     if paragraph.debug_id:
         _SOURCE_UNITS_BY_DEBUG[(physical_page, paragraph.debug_id)] = unit
+
+
+def _register_fixed_artwork(paragraph, physical_page: int) -> None:
+    """Remember one source-painted paragraph without retaining its page graph."""
+    _FIXED_ARTWORK_BY_ID[id(paragraph)] = paragraph
+    if paragraph.debug_id:
+        key = (physical_page, paragraph.debug_id)
+        previous = _FIXED_ARTWORK_BY_DEBUG.get(key)
+        _FIXED_ARTWORK_BY_DEBUG[key] = previous is None
+
+
+def is_fixed_artwork(paragraph, physical_page: int | None = None) -> bool:
+    """Whether structural evidence proved ``paragraph`` belongs to artwork."""
+    held = _FIXED_ARTWORK_BY_ID.get(id(paragraph))
+    if held is paragraph:
+        return True
+    return bool(
+        physical_page is not None
+        and paragraph.debug_id
+        and _FIXED_ARTWORK_BY_DEBUG.get((physical_page, paragraph.debug_id))
+    )
 
 
 def _register_ruling_owner(
@@ -504,6 +529,61 @@ def _box_contains(outer, inner) -> bool:
     )
 
 
+def _box_intersection(left, right) -> list[float] | None:
+    left_record = _box_record(left)
+    right_record = _box_record(right)
+    if left_record is None or right_record is None:
+        return None
+    held = [
+        max(left_record[0], right_record[0]),
+        max(left_record[1], right_record[1]),
+        min(left_record[2], right_record[2]),
+        min(left_record[3], right_record[3]),
+    ]
+    return held if held[0] < held[2] and held[1] < held[3] else None
+
+
+def _source_paint_ownership(paragraph, owner: int) -> tuple[int, int] | None:
+    """Count original non-space paint and synthetic whitespace for one owner."""
+    compositions = list(paragraph.pdf_paragraph_composition or ())
+    if not compositions:
+        return None
+    owned_characters = 0
+    synthetic_whitespace_characters = 0
+    for composition in compositions:
+        kind = composition_kind(composition)
+        if kind == "pdf_same_style_characters":
+            held = list(composition.pdf_same_style_characters.pdf_character or ())
+        elif kind == "pdf_formula":
+            formula = composition.pdf_formula
+            # A text-only atomic formula is sometimes how the parser preserves
+            # a symbol painted into artwork.  Curves/forms have independent
+            # render owners and therefore make whole-paragraph classification
+            # unprovable.
+            if formula.pdf_curve or formula.pdf_form:
+                return None
+            held = list(formula.pdf_character or ())
+        else:
+            return None
+        if not held:
+            return None
+        for character in held:
+            if bool(character.debug_info):
+                return None
+            text = character.char_unicode or ""
+            if character.xobj_id == owner:
+                if not text.isspace():
+                    owned_characters += 1
+                continue
+            if character.xobj_id is None and text.isspace():
+                synthetic_whitespace_characters += 1
+                continue
+            return None
+    if not owned_characters:
+        return None
+    return owned_characters, synthetic_whitespace_characters
+
+
 def embedded_figure_artwork(page, paragraph) -> dict | None:
     """Prove that one source paragraph is paint inside embedded artwork.
 
@@ -518,36 +598,12 @@ def embedded_figure_artwork(page, paragraph) -> dict | None:
     in the translation path.
     """
     xobj_id = getattr(paragraph, "xobj_id", None)
-    compositions = list(paragraph.pdf_paragraph_composition or ())
-    if xobj_id is None or not compositions:
+    if xobj_id is None:
         return None
-
-    characters = []
-    owned_characters = 0
-    synthetic_whitespace_characters = 0
-    for composition in compositions:
-        if composition_kind(composition) != "pdf_same_style_characters":
-            return None
-        held = list(composition.pdf_same_style_characters.pdf_character or ())
-        if not held:
-            return None
-        for character in held:
-            if bool(character.debug_info):
-                return None
-            text = character.char_unicode or ""
-            if character.xobj_id == xobj_id:
-                if not text.isspace():
-                    owned_characters += 1
-                continue
-            if character.xobj_id is None and text.isspace():
-                # ParagraphFinder may synthesize inter-run whitespace.  It has
-                # no PDF owner, but it cannot prove content outside the Form.
-                synthetic_whitespace_characters += 1
-                continue
-            return None
-        characters.extend(held)
-    if not characters or not owned_characters:
+    ownership = _source_paint_ownership(paragraph, xobj_id)
+    if ownership is None:
         return None
+    owned_characters, synthetic_whitespace_characters = ownership
 
     xobjects = [
         xobject
@@ -576,6 +632,163 @@ def embedded_figure_artwork(page, paragraph) -> dict | None:
         "synthetic_whitespace_characters": synthetic_whitespace_characters,
         "paragraph_inside_xobject": _box_contains(xobject.box, paragraph.box),
     }
+
+
+def _spread_form_evidence(page, paragraph) -> tuple[object, object] | None:
+    """Return a unique clipped Form/figure proof for a root-scope overlay.
+
+    Some spread artwork is authored in a two-page coordinate system.  Its Form
+    and root text overlays are repeated on both physical pages, with the second
+    invocation shifted by exactly one page width.  The text therefore carries
+    root owner ``0`` even though it is a label painted over that clipped Form.
+    This helper deliberately does not classify from that fact alone: it also
+    requires one over-wide Form geometrically containing the local-coordinate
+    paragraph and a detected figure intersecting the visible slice of the Form.
+    The adjacent-page duplicate proof is completed by
+    ``spread_figure_artwork`` below.
+    """
+    if getattr(paragraph, "xobj_id", None) != 0:
+        return None
+    if _source_paint_ownership(paragraph, 0) is None:
+        return None
+    frame = _page_boundary_box(page)
+    paragraph_box = _box_record(paragraph.box)
+    if frame is None or paragraph_box is None:
+        return None
+    candidates = []
+    for xobject in page.pdf_xobject or ():
+        xobject_box = _box_record(xobject.box)
+        if (
+            xobject_box is None
+            or not _box_contains(xobject.box, paragraph.box)
+            or not (xobject_box[0] < frame[0] or xobject_box[2] > frame[2])
+        ):
+            continue
+        visible_slice = _box_intersection(xobject.box, frame)
+        if visible_slice is None:
+            continue
+        figures = [
+            layout
+            for layout in page.page_layout or ()
+            if (layout.class_name or "").casefold() == "figure"
+            and _box_intersection(layout.box, visible_slice) is not None
+        ]
+        if len(figures) == 1:
+            candidates.append((xobject, figures[0]))
+    return candidates[0] if len(candidates) == 1 else None
+
+
+def _box_shift_equal(left, right, shift: float, tolerance: float) -> bool:
+    left_record = _box_record(left)
+    right_record = _box_record(right)
+    if left_record is None or right_record is None:
+        return False
+    expected = (
+        left_record[0] - shift,
+        left_record[1],
+        left_record[2] - shift,
+        left_record[3],
+    )
+    return all(abs(actual - wanted) <= tolerance for actual, wanted in zip(right_record, expected, strict=True))
+
+
+def _physical_paragraphs(label: int, page):
+    physical_index = 0
+    for runtime_index, paragraph in enumerate(page.pdf_paragraph or ()):
+        source_characters = paragraph_characters(paragraph)
+        if not source_characters and is_debug_overlay(paragraph):
+            continue
+        source_ref = paragraph_reference(label, physical_index)
+        physical_index += 1
+        if source_characters:
+            yield source_ref, runtime_index, paragraph
+
+
+def spread_figure_artwork(labeled_pages, config: LineSplitConfig) -> dict[int, dict]:
+    """Prove duplicated root labels belonging to adjacent spread artwork.
+
+    A match is exact and one-to-one: adjacent equal-width pages, identical
+    source character sequence, paragraph and containing Form both shifted left
+    by one page width, and the clipped-Form figure proof on both pages.  This
+    excludes ordinary repeated headers/captions (their page coordinates do not
+    shift) and leaves a lone genuine root out-of-page paragraph detectable.
+    """
+    pages = list(labeled_pages)
+    proofs: dict[int, dict] = {}
+    tolerance = config.scan_step
+    for (left_label, left_page), (right_label, right_page) in zip(
+        pages, pages[1:], strict=False
+    ):
+        if right_label != left_label + 1:
+            continue
+        left_frame = _page_boundary_box(left_page)
+        right_frame = _page_boundary_box(right_page)
+        if left_frame is None or right_frame is None:
+            continue
+        width = left_frame[2] - left_frame[0]
+        right_width = right_frame[2] - right_frame[0]
+        if width <= 0 or abs(width - right_width) > tolerance:
+            continue
+
+        left_candidates = []
+        for source_ref, runtime_index, paragraph in _physical_paragraphs(
+            left_label, left_page
+        ):
+            evidence = _spread_form_evidence(left_page, paragraph)
+            if evidence is not None:
+                left_candidates.append((source_ref, runtime_index, paragraph, *evidence))
+        right_candidates = []
+        for source_ref, runtime_index, paragraph in _physical_paragraphs(
+            right_label, right_page
+        ):
+            evidence = _spread_form_evidence(right_page, paragraph)
+            if evidence is not None:
+                right_candidates.append((source_ref, runtime_index, paragraph, *evidence))
+
+        candidate_pairs = []
+        for left in left_candidates:
+            left_ref, _left_runtime, left_paragraph, left_xobject, _left_figure = left
+            left_text = characters_text(paragraph_characters(left_paragraph))
+            for right in right_candidates:
+                right_ref, _right_runtime, right_paragraph, right_xobject, _right_figure = right
+                if (
+                    left_text
+                    and left_text == characters_text(paragraph_characters(right_paragraph))
+                    and _box_shift_equal(left_paragraph.box, right_paragraph.box, width, tolerance)
+                    and _box_shift_equal(left_xobject.box, right_xobject.box, width, tolerance)
+                ):
+                    candidate_pairs.append((left_ref, right_ref, left, right))
+
+        left_counts: dict[int, int] = {}
+        right_counts: dict[int, int] = {}
+        for _left_ref, _right_ref, left, right in candidate_pairs:
+            left_counts[id(left[2])] = left_counts.get(id(left[2]), 0) + 1
+            right_counts[id(right[2])] = right_counts.get(id(right[2]), 0) + 1
+        for left_ref, right_ref, left, right in candidate_pairs:
+            left_paragraph, left_xobject, left_figure = left[2:]
+            right_paragraph, right_xobject, right_figure = right[2:]
+            if left_counts[id(left_paragraph)] != 1 or right_counts[id(right_paragraph)] != 1:
+                continue
+            for paragraph, peer, _source_ref, peer_ref, xobject, figure in (
+                (left_paragraph, right_paragraph, left_ref, right_ref, left_xobject, left_figure),
+                (right_paragraph, left_paragraph, right_ref, left_ref, right_xobject, right_figure),
+            ):
+                ownership = _source_paint_ownership(paragraph, 0)
+                if ownership is None:
+                    continue
+                proofs[id(paragraph)] = {
+                    "reason": "adjacent_spread_figure_overlay",
+                    "xobj_id": 0,
+                    "xobject_box": _box_record(xobject.box),
+                    "figure_box": _box_record(figure.box),
+                    "owned_characters": ownership[0],
+                    "synthetic_whitespace_characters": ownership[1],
+                    "paragraph_inside_xobject": True,
+                    "paired_source_ref": peer_ref,
+                    "paired_source_box": _box_record(peer.box),
+                    "page_width_shift": width,
+                }
+    return proofs
 
 
 def is_debug_overlay(paragraph) -> bool:
@@ -1584,6 +1797,7 @@ def process_page(
     prose_only: bool = False,
     minimum_text_length: int = 0,
     fixed_artwork: list[dict] | None = None,
+    fixed_artwork_proofs: dict[int, dict] | None = None,
 ) -> tuple[list[dict], list[dict], list[dict]]:
     """Split a record page, or inventory only its long prose paragraphs.
 
@@ -1620,7 +1834,13 @@ def process_page(
             # geometry. It is not a bounded TOC source unit either.
             rebuilt.append(paragraph)
             continue
-        artwork = embedded_figure_artwork(page, paragraph)
+        artwork = (
+            None
+            if fixed_artwork_proofs is None
+            else fixed_artwork_proofs.get(id(paragraph))
+        )
+        if artwork is None:
+            artwork = embedded_figure_artwork(page, paragraph)
         if artwork is not None:
             source_character_text = characters_text(source_characters)
             if fixed_artwork is not None:
@@ -1639,6 +1859,7 @@ def process_page(
             # The original character objects remain the rendering authority.
             # Removing only semantic input makes all translation producers
             # decline this fixed artwork without changing its paint geometry.
+            _register_fixed_artwork(paragraph, label)
             paragraph.unicode = None
             rebuilt.append(paragraph)
             continue
@@ -2059,8 +2280,12 @@ def apply(translation_config, labeled_pages, policy_of=None) -> dict | None:
     _SOURCE_UNITS_BY_DEBUG.clear()
     _RULING_OWNERS_BY_ID.clear()
     _RULING_OWNERS_BY_DEBUG.clear()
+    _FIXED_ARTWORK_BY_ID.clear()
+    _FIXED_ARTWORK_BY_DEBUG.clear()
     resolve = policy_of if policy_of is not None else load_taxonomy().policy_of
     minimum = int(getattr(translation_config, "min_text_length", 0) or 0)
+    labeled_pages = list(labeled_pages)
+    spread_artwork = spread_figure_artwork(labeled_pages, config)
 
     splits: list[dict] = []
     exempt: list[dict] = []
@@ -2083,6 +2308,7 @@ def apply(translation_config, labeled_pages, policy_of=None) -> dict | None:
             prose_only=not declared,
             minimum_text_length=minimum,
             fixed_artwork=fixed_artwork,
+            fixed_artwork_proofs=spread_artwork,
         )
         after = page_lines(page, config)
         result_characters = "".join(

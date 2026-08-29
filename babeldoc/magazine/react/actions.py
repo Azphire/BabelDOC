@@ -248,7 +248,9 @@ def resolve(issue, pages_by_label: dict) -> Candidate | None:
             paragraph_index=index,
             paragraph=paragraphs[index],
             page=view.page,
-            source_text=detector_base.rendered_text(paragraphs[index]).strip(),
+            source_text=detector_base.rendered_text(
+                paragraphs[index], physical_page=view.label
+            ).strip(),
             issue=issue,
         )
     return None
@@ -268,7 +270,9 @@ def page_context(view, skip_index: int, limit: int) -> str:
     for index, paragraph in enumerate(view.page.pdf_paragraph or ()):
         if index == skip_index:
             continue
-        text = detector_base.rendered_text(paragraph).strip()
+        text = detector_base.rendered_text(
+            paragraph, physical_page=view.label
+        ).strip()
         if not text:
             continue
         parts.append(text)

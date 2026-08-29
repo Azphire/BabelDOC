@@ -36,6 +36,7 @@ from functools import lru_cache
 from pathlib import Path
 
 from babeldoc.format.pdf.document_il import il_version_1
+from babeldoc.magazine import line_split
 from babeldoc.magazine.article_ir import ArticleDocumentIR
 from babeldoc.magazine.article_ir import ArticleIR
 from babeldoc.magazine.article_ir import ArticleIssue
@@ -358,6 +359,11 @@ def _page_elements(
 ) -> tuple[list[SourceElementRef], int]:
     entries = []
     for paragraph_index, paragraph in enumerate(page.pdf_paragraph):
+        # Source-painted figure labels remain in the IL so the backend can
+        # preserve their exact paint, but they are not article text and must
+        # never acquire an ordinary translation owner.
+        if line_split.is_fixed_artwork(paragraph):
+            continue
         box = _box_tuple(paragraph.box)
         entries.append((paragraph_index, paragraph, box))
     bands = _column_bands(page, [item[2] for item in entries], gap_ratio)

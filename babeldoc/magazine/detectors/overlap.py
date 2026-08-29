@@ -48,7 +48,7 @@ def detect(context: base.DetectionContext) -> list[base.Issue]:
         if not artwork:
             continue
         for index, paragraph in enumerate(view.page.pdf_paragraph or ()):
-            text = base.rendered_text(paragraph).strip()
+            text = base.rendered_text(paragraph, physical_page=view.label).strip()
             box = base.box_tuple(paragraph.box)
             if not text or box is None:
                 continue

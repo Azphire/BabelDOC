@@ -88,7 +88,7 @@ def measurable(view) -> list[tuple[int, object, str, tuple[float, float, float, 
     """Every paragraph of a page that carries text and an extent to compare."""
     rows = []
     for index, paragraph in enumerate(view.page.pdf_paragraph or ()):
-        text = base.rendered_text(paragraph).strip()
+        text = base.rendered_text(paragraph, physical_page=view.label).strip()
         box, _source = base.rendered_box(paragraph)
         if not text or box is None:
             continue
