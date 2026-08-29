@@ -13,6 +13,7 @@ import json
 from dataclasses import dataclass
 from pathlib import Path
 
+from babeldoc.magazine import drop_cap_intent
 from babeldoc.magazine import line_split
 
 REPORT_NAME = "demo_coverage.report.json"
@@ -209,6 +210,13 @@ def finalize(config, snapshot: CoverageSnapshot) -> dict:
     joint = _joint_outcomes(
         _read_optional(working_dir / "chain_translation.report.json")
     )
+    companion_refs = {
+        intent.visual_initial_ref
+        for intent in drop_cap_intent.intents_for(config).values()
+        if isinstance(intent.visual_initial_ref, str)
+        and intent.visual_initial_ref != intent.source_ref
+        and intent.binding_proof.get("kind") == "standalone_visual_initial"
+    }
 
     rows: list[dict] = []
     for item in snapshot.items:
@@ -216,7 +224,10 @@ def finalize(config, snapshot: CoverageSnapshot) -> dict:
         joint_rows = joint.get(item.runtime_source_ref, [])
         target_text: str | None = None
 
-        if joint_rows:
+        if item.source_ref in companion_refs and not joint_rows and not ordinary_rows:
+            translation_owner = "none"
+            final_status = "merged_into_drop_cap_owner"
+        elif joint_rows:
             translation_owner = "joint"
             evidence = joint_rows[0]
             target_text = evidence.get("fragment")
@@ -274,7 +285,11 @@ def finalize(config, snapshot: CoverageSnapshot) -> dict:
                 "source_ref": item.source_ref,
                 "runtime_source_ref": item.runtime_source_ref,
                 "physical_page": item.physical_page,
-                "role": item.role,
+                "role": (
+                    "drop_cap_companion"
+                    if item.source_ref in companion_refs
+                    else item.role
+                ),
                 "source_text_sha256": item.source_text_sha256,
                 "source_box": (
                     None if item.source_box is None else list(item.source_box)

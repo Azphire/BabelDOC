@@ -2,15 +2,18 @@
 
 A drop cap is the oversized initial a magazine opens a piece of running text
 with. It is a typographic decision rather than a linguistic one, and it is not
-one a translation can take on its own: the initial is a style run of a single
-character, and a target language that renders that character as part of a word
-leaves the paragraph with an inset first line and nothing to fill it. So this
-module finds the paragraphs that carry one and says so in the intermediate
-language, and the review layer beside it carries the finding out to a human and
-the ruling back in.
+one a translation can take on its own: the source may paint the initial either
+as the paragraph's leading run or as a separate visual paragraph. In both
+forms, translating the body alone leaves an untranslated source initial beside
+the target word. This module therefore freezes one unambiguous visual-initial
+owner binding, exposes it to review, and merges the source character into that
+owner before translation.
 
-Three signals decide a candidate, all general, all bounded in
-``configs/drop_cap.json``, and none of them naming a publication or a page type.
+The evidence is general, bounded by ``configs/drop_cap.json``, and never names a
+publication or page type. A separate visual initial additionally has to be a
+single oversized letter in the same article, page and column, immediately
+before the body owner in reading order, geometrically attached to its first
+line, and in a one-to-one binding. Ambiguous bindings are not candidates.
 
 The paragraph is body text, by the label vocabulary every other stage reads. It
 belongs to an article, and stands within the first few body paragraphs of it or
@@ -36,13 +39,11 @@ candidates and produced none has to be a run that found none.
 Where the initial is read from
 ------------------------------
 
-From the paragraph's leading characters, not from its first composition. The
-composition holding an initial is a style run on one page and a formula on the
-next: where the styling stage reads the body sized letters standing after an
-enlarged initial as corner marks, the initial and the rest of the first word are
-grouped into one formula, and a reader consulting the first style run alone finds
-nothing there. What makes an initial an initial is the size of the characters, so
-that is what is read.
+From rendered characters, not merely from the first composition. For an inline
+initial those characters may be grouped as a style run or formula. For a
+standalone initial the visual paragraph must contain exactly one regroupable
+letter, while ArticleIR reading order and source geometry prove the body owner;
+the frozen companion ref remains audit evidence after its paint is cleared.
 
 What consumes the ruling
 ------------------------
@@ -85,9 +86,12 @@ two cases indistinguishable at this layer.
 from __future__ import annotations
 
 import copy
+import hashlib
 import json
 import logging
 import statistics
+import unicodedata
+from collections import Counter
 from collections.abc import Mapping
 from dataclasses import dataclass
 from functools import lru_cache
@@ -97,6 +101,7 @@ from types import MappingProxyType
 from babeldoc.format.pdf.document_il import il_version_1
 from babeldoc.magazine import drop_cap_intent
 from babeldoc.magazine.article_ir import ArticleDocumentIR
+from babeldoc.magazine.chain_signals import group_lines
 from babeldoc.magazine.chain_signals import load_chain_config
 from babeldoc.magazine.line_split import SPLITTABLE
 from babeldoc.magazine.line_split import character_box
@@ -107,6 +112,7 @@ from babeldoc.magazine.line_split import paragraph_characters
 from babeldoc.magazine.page_features import ConfigError
 from babeldoc.magazine.page_features import validate_bounded_config
 from babeldoc.magazine.resource_paths import config_path
+from babeldoc.magazine.run_trace import parse_source_ref
 from babeldoc.magazine.taxonomy import record_config_manifest
 
 logger = logging.getLogger(__name__)
@@ -466,6 +472,13 @@ class Candidate:
     size_ratio: float
     first_run: str
     excerpt: str
+    source_text_sha256: str
+    source_box: tuple[float, float, float, float]
+    visual_initial_reference: str
+    visual_initial_debug_id: str | None
+    visual_initial_text_sha256: str
+    visual_initial_box: tuple[float, float, float, float]
+    binding_proof: Mapping[str, object]
 
     def as_record(self) -> dict:
         return {
@@ -478,7 +491,93 @@ class Candidate:
             "size_ratio": round(self.size_ratio, 4),
             "first_run": self.first_run,
             "excerpt": self.excerpt,
+            "source_text_sha256": self.source_text_sha256,
+            "source_box": list(self.source_box),
+            "visual_initial_ref": self.visual_initial_reference,
+            "visual_initial_debug_id": self.visual_initial_debug_id,
+            "visual_initial_text_sha256": self.visual_initial_text_sha256,
+            "visual_initial_box": list(self.visual_initial_box),
+            "binding_proof": dict(self.binding_proof),
         }
+
+
+def _text_sha256(text: str) -> str:
+    return hashlib.sha256(text.encode("utf-8")).hexdigest()
+
+
+def _strict_box(value) -> tuple[float, float, float, float] | None:
+    if value is None or any(
+        getattr(value, name, None) is None for name in ("x", "y", "x2", "y2")
+    ):
+        return None
+    box = tuple(float(getattr(value, name)) for name in ("x", "y", "x2", "y2"))
+    return box if box[0] < box[2] and box[1] < box[3] else None
+
+
+def _visible_characters(paragraph) -> list:
+    return [
+        character
+        for character in paragraph_characters(paragraph)
+        if (character.char_unicode or "").strip() and _strict_box(character.box)
+    ]
+
+
+def _letter(text: str) -> bool:
+    return len(text) == 1 and unicodedata.category(text).startswith("L")
+
+
+def _same_paragraph_candidate(
+    *,
+    reference: str,
+    page: int,
+    index: int,
+    paragraph,
+    article_id: str,
+    rank: int,
+    opens: bool,
+    run: LeadingRun,
+    median: float,
+    config: DropCapConfig,
+) -> Candidate | None:
+    source_box = _strict_box(paragraph.box)
+    source_character = next(iter(_visible_characters(paragraph)), None)
+    initial_box = (
+        None if source_character is None else _strict_box(source_character.box)
+    )
+    if source_box is None or source_character is None or initial_box is None:
+        return None
+    initial = run.text.strip()
+    ratio = run.size / median
+    return Candidate(
+        reference=reference,
+        page=page,
+        index=index,
+        debug_id=paragraph.debug_id,
+        article_id=article_id,
+        body_rank=rank,
+        opens_article=opens,
+        size_ratio=ratio,
+        first_run=initial,
+        excerpt=(paragraph.unicode or "").strip()[: config.excerpt_chars],
+        source_text_sha256=_text_sha256(paragraph.unicode or ""),
+        source_box=source_box,
+        visual_initial_reference=reference,
+        visual_initial_debug_id=paragraph.debug_id,
+        visual_initial_text_sha256=_text_sha256(initial),
+        visual_initial_box=initial_box,
+        binding_proof=MappingProxyType(
+            {
+                "kind": "same_paragraph_composition",
+                "owner_ref": reference,
+                "visual_initial_ref": reference,
+                "source_character_count": 1,
+                "size_ratio": round(ratio, 6),
+                "minimum_size_ratio": config.min_first_run_size_ratio,
+                "unique_owner_count": 1,
+                "unique_visual_count": 1,
+            }
+        ),
+    )
 
 
 def read_article_map(path: Path) -> tuple[dict[int, str], set[int]]:
@@ -531,20 +630,236 @@ def find_candidates(
             ratio = run.size / median
             if ratio < config.min_first_run_size_ratio:
                 continue
-            found.append(
-                Candidate(
-                    reference=paragraph_reference(physical_label, index),
-                    page=physical_label,
-                    index=index,
-                    debug_id=paragraph.debug_id,
-                    article_id=article_id,
-                    body_rank=rank,
-                    opens_article=opens,
-                    size_ratio=ratio,
-                    first_run=initial,
-                    excerpt=text[: config.excerpt_chars],
-                )
+            candidate = _same_paragraph_candidate(
+                reference=paragraph_reference(physical_label, index),
+                page=physical_label,
+                index=index,
+                paragraph=paragraph,
+                article_id=article_id,
+                rank=rank,
+                opens=opens,
+                run=run,
+                median=median,
+                config=config,
             )
+            if candidate is not None:
+                found.append(candidate)
+    return found
+
+
+def _band_gap(left, right) -> float:
+    return max(0.0, max(left[0], right[0]) - min(left[1], right[1]))
+
+
+def _standalone_geometry(companion, owner, config: DropCapConfig) -> dict | None:
+    companion_compositions = list(companion.pdf_paragraph_composition or ())
+    if not companion_compositions or any(
+        composition_kind(composition) not in _MERGEABLE
+        for composition in companion_compositions
+    ):
+        return None
+    companion_characters = _visible_characters(companion)
+    owner_characters = _visible_characters(owner)
+    if len(companion_characters) != 1 or len(owner_characters) < 2:
+        return None
+    source_char = companion_characters[0].char_unicode or ""
+    if not _letter(source_char) or (companion.unicode or "").strip() != source_char:
+        return None
+    initial_size = character_size(companion_characters[0])
+    body_size = median_font_size(owner)
+    initial_box = _strict_box(companion_characters[0].box)
+    owner_box = _strict_box(owner.box)
+    if not initial_size or not body_size or initial_box is None or owner_box is None:
+        return None
+    ratio = initial_size / body_size
+    if ratio < config.min_first_run_size_ratio:
+        return None
+    lines = group_lines(
+        owner_characters,
+        float(load_chain_config()["line_overlap_min"]),
+    )
+    if not lines:
+        return None
+    first_line_box = character_union(lines[0])
+    first_box = _strict_box(first_line_box)
+    if first_box is None:
+        return None
+    logical_start_delta = abs(initial_box[0] - owner_box[0])
+    first_line_gap = abs(first_box[0] - initial_box[2])
+    vertical_gap = _band_gap(
+        (initial_box[1], initial_box[3]),
+        (first_box[1], first_box[3]),
+    )
+    # The paragraph's own body em is the only geometric tolerance: the initial
+    # starts on the body edge, meets its first line, and is no farther than one
+    # body glyph from that line vertically.  No publication-specific distance
+    # or page coordinate enters the proof.
+    if (
+        initial_box[0] > first_box[0]
+        or logical_start_delta > body_size
+        or first_line_gap > body_size
+        or vertical_gap > body_size
+    ):
+        return None
+    return {
+        "source_char": source_char,
+        "source_character": companion_characters[0],
+        "size_ratio": ratio,
+        "body_size": body_size,
+        "visual_font_id": getattr(companion_characters[0].pdf_style, "font_id", None),
+        "body_font_id": getattr(owner_characters[0].pdf_style, "font_id", None),
+        "visual_font_size": initial_size,
+        "initial_box": initial_box,
+        "owner_box": owner_box,
+        "first_line_box": first_box,
+        "logical_start_delta": logical_start_delta,
+        "first_line_gap": first_line_gap,
+        "vertical_gap": vertical_gap,
+    }
+
+
+def find_standalone_candidates(
+    page_coordinates,
+    article_document_ir: ArticleDocumentIR,
+    config: DropCapConfig,
+    labels: tuple[str, ...],
+) -> list[Candidate]:
+    """Bind an independently painted initial to exactly one body owner."""
+    pages_by_local = {
+        canonical_page: (physical_label, page)
+        for physical_label, canonical_page, page in page_coordinates
+    }
+    possibilities = []
+    for article in article_document_ir.articles:
+        ordered = sorted(
+            article.elements,
+            key=lambda item: (item.reading_order, item.page, item.column, item.source_ref),
+        )
+        for visual in ordered:
+            visual_page, visual_index = parse_source_ref(visual.source_ref)
+            held = pages_by_local.get(visual_page)
+            if held is None or visual.role not in labels:
+                continue
+            physical_label, page = held
+            if visual_index >= len(page.pdf_paragraph):
+                continue
+            companion = page.pdf_paragraph[visual_index]
+            if companion.layout_label not in labels:
+                continue
+            for owner in ordered:
+                owner_page, owner_index = parse_source_ref(owner.source_ref)
+                if (
+                    owner.role not in labels
+                    or owner_page != visual_page
+                    or owner.column != visual.column
+                    or visual.reading_order >= owner.reading_order
+                    or owner_index >= len(page.pdf_paragraph)
+                ):
+                    continue
+                # Once this pair is geometrically admissible, the standalone
+                # initial is not an independent body paragraph and therefore
+                # must not consume the owner's semantic opening rank.
+                rank = sum(
+                    1
+                    for item in ordered
+                    if item.role in labels
+                    and item.source_ref != visual.source_ref
+                    and item.reading_order <= owner.reading_order
+                )
+                opens = owner_page == article.pages[0]
+                if rank > config.max_body_rank_in_article and not opens:
+                    continue
+                paragraph = page.pdf_paragraph[owner_index]
+                if paragraph.layout_label not in labels:
+                    continue
+                geometry = _standalone_geometry(companion, paragraph, config)
+                if geometry is None:
+                    continue
+                possibilities.append(
+                    (
+                        article.article_id,
+                        physical_label,
+                        owner_index,
+                        visual_index,
+                        owner,
+                        visual,
+                        paragraph,
+                        companion,
+                        rank,
+                        opens,
+                        geometry,
+                    )
+                )
+
+    owner_counts = Counter((item[1], item[2]) for item in possibilities)
+    visual_counts = Counter((item[1], item[3]) for item in possibilities)
+    found = []
+    for (
+        article_id,
+        physical_label,
+        owner_index,
+        visual_index,
+        owner,
+        visual,
+        paragraph,
+        companion,
+        rank,
+        opens,
+        geometry,
+    ) in possibilities:
+        if owner_counts[(physical_label, owner_index)] != 1 or visual_counts[
+            (physical_label, visual_index)
+        ] != 1:
+            continue
+        owner_ref = paragraph_reference(physical_label, owner_index)
+        visual_ref = paragraph_reference(physical_label, visual_index)
+        source_char = geometry["source_char"]
+        proof = MappingProxyType(
+            {
+                "kind": "standalone_visual_initial",
+                "owner_ref": owner_ref,
+                "visual_initial_ref": visual_ref,
+                "article_id": article_id,
+                "owner_reading_order": owner.reading_order,
+                "visual_reading_order": visual.reading_order,
+                "column": owner.column,
+                "body_rank": rank,
+                "opens_article": opens,
+                "source_character_count": 1,
+                "size_ratio": round(geometry["size_ratio"], 6),
+                "minimum_size_ratio": config.min_first_run_size_ratio,
+                "body_size": round(geometry["body_size"], 6),
+                "visual_font_id": geometry["visual_font_id"],
+                "body_font_id": geometry["body_font_id"],
+                "visual_font_size": round(geometry["visual_font_size"], 6),
+                "logical_start_delta": round(geometry["logical_start_delta"], 6),
+                "first_line_gap": round(geometry["first_line_gap"], 6),
+                "vertical_gap": round(geometry["vertical_gap"], 6),
+                "unique_owner_count": 1,
+                "unique_visual_count": 1,
+            }
+        )
+        found.append(
+            Candidate(
+                reference=owner_ref,
+                page=physical_label,
+                index=owner_index,
+                debug_id=paragraph.debug_id,
+                article_id=article_id,
+                body_rank=rank,
+                opens_article=opens,
+                size_ratio=geometry["size_ratio"],
+                first_run=source_char,
+                excerpt=(source_char + (paragraph.unicode or ""))[: config.excerpt_chars],
+                source_text_sha256=_text_sha256(paragraph.unicode or ""),
+                source_box=geometry["owner_box"],
+                visual_initial_reference=visual_ref,
+                visual_initial_debug_id=companion.debug_id,
+                visual_initial_text_sha256=_text_sha256(companion.unicode or ""),
+                visual_initial_box=geometry["initial_box"],
+                binding_proof=proof,
+            )
+        )
     return found
 
 
@@ -576,6 +891,23 @@ def mark(
     candidates = find_candidates(
         page_coordinates, article_of_page, openers, config, body_labels()
     )
+    candidates.extend(
+        find_standalone_candidates(
+            page_coordinates,
+            article_document_ir,
+            config,
+            body_labels(),
+        )
+    )
+    candidate_counts = Counter(candidate.reference for candidate in candidates)
+    candidates = sorted(
+        (
+            candidate
+            for candidate in candidates
+            if candidate_counts[candidate.reference] == 1
+        ),
+        key=lambda candidate: (candidate.page, candidate.index),
+    )
     policy = config.target_policy_for(getattr(translation_config, "lang_out", ""))
     if candidates and policy is None:
         raise DropCapError(
@@ -585,10 +917,28 @@ def mark(
     intents: list[drop_cap_intent.DropCapIntent] = []
     for candidate in candidates:
         paragraph = pages[candidate.page].pdf_paragraph[candidate.index]
+        visual_page, visual_index = parse_source_ref(
+            candidate.visual_initial_reference
+        )
+        visual_page_position = next(
+            (
+                index
+                for index, (physical_label, _page) in enumerate(labeled_pages)
+                if physical_label == visual_page
+            ),
+            None,
+        )
+        if visual_page_position is None:
+            raise DropCapError(
+                f"{candidate.reference}: visual initial page is not selected"
+            )
+        visual_paragraph = labeled_pages[visual_page_position][1].pdf_paragraph[
+            visual_index
+        ]
         source_character = next(
             (
                 character
-                for character in paragraph_characters(paragraph)
+                for character in paragraph_characters(visual_paragraph)
                 if (character.char_unicode or "").strip()
             ),
             None,
@@ -603,6 +953,8 @@ def mark(
             target_policy=str(policy),
             config_version=config.intent_config_version,
             decision_version=config.decision_version,
+            visual_initial_ref=candidate.visual_initial_reference,
+            binding_proof=dict(candidate.binding_proof),
         )
         intents.append(intent)
     for candidate in candidates:
@@ -1042,6 +1394,68 @@ def flatten(paragraph, config: DropCapConfig) -> dict:
     return outcome
 
 
+def flatten_standalone(
+    paragraph,
+    companion,
+    intent: drop_cap_intent.DropCapIntent,
+    config: DropCapConfig,
+) -> dict:
+    """Move one proven standalone source initial into its semantic owner.
+
+    The owner remains the sole translation paragraph and keeps its immutable
+    source container.  The independently painted source glyph is removed only
+    after the exact character has been prepended to the owner's first regroupable
+    run; any stale or unsupported shape raises so the surrounding document
+    transaction restores both paragraphs.
+    """
+    owner_text = paragraph.unicode or ""
+    visual_text = companion.unicode or ""
+    visual_characters = _visible_characters(companion)
+    if (
+        len(visual_characters) != 1
+        or visual_text.strip() != intent.source_char
+        or (visual_characters[0].char_unicode or "") != intent.source_char
+        or not _letter(intent.source_char)
+    ):
+        raise DropCapError(f"{intent.source_ref}: standalone visual initial is stale")
+    if owner_text.startswith(intent.source_char):
+        raise DropCapError(f"{intent.source_ref}: standalone visual initial is duplicated")
+    compositions = list(paragraph.pdf_paragraph_composition or ())
+    if not compositions:
+        raise DropCapError(f"{intent.source_ref}: standalone owner has no composition")
+    tail_kind = composition_kind(compositions[0])
+    if tail_kind not in _MERGEABLE:
+        raise DropCapError(
+            f"{intent.source_ref}: standalone owner does not open in regroupable text"
+        )
+    tail = composition_characters(compositions[0], tail_kind)
+    if not tail:
+        raise DropCapError(f"{intent.source_ref}: standalone owner has no leading text")
+    combined = [visual_characters[0], *tail]
+    paragraph.pdf_paragraph_composition = [
+        il_version_1.PdfParagraphComposition(
+            pdf_same_style_characters=il_version_1.PdfSameStyleCharacters(
+                box=copy.deepcopy(paragraph.box),
+                pdf_style=paragraph.pdf_style,
+                pdf_character=combined,
+            )
+        ),
+        *compositions[1:],
+    ]
+    paragraph.unicode = intent.source_char + owner_text
+    companion.pdf_paragraph_composition = []
+    companion.unicode = ""
+    return {
+        "merged": True,
+        "characters_merged": len(combined),
+        "separator_dropped": 0,
+        "unicode_before": (intent.source_char + owner_text)[: config.excerpt_chars],
+        "unicode_after": (paragraph.unicode or "")[: config.excerpt_chars],
+        "box_before": box_quad(paragraph.box),
+        "box_after": box_quad(paragraph.box),
+    }
+
+
 def resolve_decision(paragraph, default: str | None) -> tuple[str | None, str | None]:
     """The verdict one paragraph is acted on under, and where it came from.
 
@@ -1071,6 +1485,7 @@ def apply(translation_config, labeled_pages) -> dict | None:
     default = config.default_for(target)
 
     targets = []
+    pages_by_label = dict(labeled_pages)
     for label, page in labeled_pages:
         for index, paragraph in enumerate(page.pdf_paragraph or ()):
             decision, source = resolve_decision(paragraph, default)
@@ -1087,19 +1502,62 @@ def apply(translation_config, labeled_pages) -> dict | None:
                 )
             run = leading_run(paragraph, config.initial_size_tolerance)
             median = median_font_size(paragraph)
+            visual_ref = intent.visual_initial_ref or reference
+            visual_page, visual_index = parse_source_ref(visual_ref)
+            visual_holder = pages_by_label.get(visual_page)
+            if visual_holder is None or visual_index >= len(
+                visual_holder.pdf_paragraph
+            ):
+                raise DropCapError(
+                    f"{reference}: frozen visual initial has no selected paragraph"
+                )
+            companion = visual_holder.pdf_paragraph[visual_index]
             targets.append(
-                (label, index, paragraph, decision, source, intent, run, median)
+                (
+                    label,
+                    index,
+                    paragraph,
+                    companion,
+                    decision,
+                    source,
+                    intent,
+                    run,
+                    median,
+                )
             )
 
     records: list[dict] = []
+    touched = []
+    for target_item in targets:
+        for paragraph in (target_item[2], target_item[3]):
+            if all(paragraph is not held for held in touched):
+                touched.append(paragraph)
     with _AtomicParagraphUpdate(
-        [target[2] for target in targets],
-        [target[5] for target in targets],
+        touched,
+        [target_item[6] for target_item in targets],
     ) as transaction:
-        for label, index, paragraph, decision, source, intent, run, median in targets:
+        for (
+            label,
+            index,
+            paragraph,
+            companion,
+            decision,
+            source,
+            intent,
+            run,
+            median,
+        ) in targets:
             # Under either verdict. What the engine is offered is independent
             # of whether the later render keeps or flattens the visual initial.
-            outcome = flatten(paragraph, config)
+            if companion is paragraph:
+                outcome = flatten(paragraph, config)
+            else:
+                outcome = flatten_standalone(
+                    paragraph,
+                    companion,
+                    intent,
+                    config,
+                )
             intent.flatten_status = drop_cap_intent.FLATTEN_APPLIED
             intent.decision = decision
             if decision == DECISION_FLATTEN:
@@ -1112,11 +1570,15 @@ def apply(translation_config, labeled_pages) -> dict | None:
                     "decision": decision,
                     "source": source,
                     "was_candidate": bool(paragraph.drop_cap_candidate),
-                    "initial": None if run is None else run.text.strip(),
+                    "initial": intent.source_char,
                     "size_ratio": (
-                        None
-                        if run is None or not median
-                        else round(run.size / median, 4)
+                        round(float(intent.binding_proof.get("size_ratio")), 4)
+                        if intent.binding_proof.get("size_ratio") is not None
+                        else (
+                            None
+                            if run is None or not median
+                            else round(run.size / median, 4)
+                        )
                     ),
                     "flatten_status": intent.flatten_status,
                     "issue": None,

@@ -13,6 +13,7 @@ from babeldoc.format.pdf.document_il.midend.il_translator import (
 )
 from babeldoc.format.pdf.document_il.midend.il_translator import ILTranslator
 from babeldoc.magazine import demo_coverage
+from babeldoc.magazine import drop_cap_intent
 from babeldoc.magazine import minimal_pipeline
 from babeldoc.magazine.article_ir import ArticleDocumentIR
 
@@ -179,6 +180,30 @@ def test_coverage_report_joins_mutually_exclusive_owners(tmp_path: Path) -> None
     }
     assert all(required <= set(row) for row in report["items"])
     assert json.loads((tmp_path / demo_coverage.REPORT_NAME).read_text()) == report
+
+
+def test_standalone_drop_cap_companion_is_not_a_second_translation_owner(
+    tmp_path: Path,
+) -> None:
+    _write_outcomes(tmp_path)
+    config = Config(tmp_path)
+    intent = SimpleNamespace(
+        source_ref="p7#1",
+        visual_initial_ref="p7#3",
+        binding_proof={"kind": "standalone_visual_initial"},
+        generation=0,
+    )
+    drop_cap_intent.replace_intents(config, [intent])
+
+    report = demo_coverage.finalize(config, _snapshot())
+
+    companion = next(
+        item for item in report["items"] if item["source_ref"] == "p7#3"
+    )
+    assert companion["role"] == "drop_cap_companion"
+    assert companion["translation_owner"] == "none"
+    assert companion["target_text_sha256"] is None
+    assert companion["final_status"] == "merged_into_drop_cap_owner"
 
 
 def test_chain_claim_cannot_also_be_owned_by_ordinary_translation(tmp_path: Path) -> None:

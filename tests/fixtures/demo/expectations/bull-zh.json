@@ -13,6 +13,15 @@
       "transitions": ["cross_column"]
     },
     {
+      "id": "bull-p6-p7-cross-page-body",
+      "role": "body",
+      "ordered_members": [
+        {"physical_page": 6, "source_text_sha256": "255b3f351e6053e3649ef2751cd666ef3f69a938416e98de8701570c07f5e0b2", "source_box": [170.46061875, 638.95264375, 560.8615328124997, 667.1644640625001], "diagnostic_ref": "chain_report.json:p6#15;debug_id=75tfE"},
+        {"physical_page": 7, "source_text_sha256": "a0d3a9be6708f03f798e08cc49a010a8f0b04ef9b1c317b5a01a3f525dcdfd39", "source_box": [34.3057390625, 710.8614484375, 382.1115593749999, 739.137721875], "diagnostic_ref": "chain_report.json:p7#14;debug_id=uJtZ8"}
+      ],
+      "transitions": ["cross_page"]
+    },
+    {
       "id": "bull-p8-cross-column-plan-body",
       "role": "body",
       "ordered_members": [

@@ -151,6 +151,8 @@ class DropCapIntent:
     candidate_fingerprint: str
     config_version: int
     decision_version: int
+    visual_initial_ref: str | None = None
+    binding_proof: dict = field(default_factory=dict)
     generation: int = 0
     decision: str | None = None
     flatten_status: str = FLATTEN_PENDING
@@ -185,6 +187,8 @@ class DropCapIntent:
             "candidate_fingerprint": self.candidate_fingerprint,
             "config_version": self.config_version,
             "decision_version": self.decision_version,
+            "visual_initial_ref": self.visual_initial_ref,
+            "binding_proof": self.binding_proof,
             "generation": self.generation,
             "decision": self.decision,
             "flatten_status": self.flatten_status,
@@ -432,6 +436,8 @@ def build_intent(
     target_policy: str,
     config_version: int,
     decision_version: int,
+    visual_initial_ref: str | None = None,
+    binding_proof: dict | None = None,
 ) -> DropCapIntent:
     source_char = source_character.char_unicode or ""
     source_style_hash = style_hash(source_character.pdf_style)
@@ -442,6 +448,8 @@ def build_intent(
         "source_char": source_char,
         "source_text_fingerprint": text_fingerprint,
         "source_style_hash": source_style_hash,
+        "visual_initial_ref": visual_initial_ref or source_ref,
+        "binding_proof": binding_proof or {},
         "config_version": config_version,
     }
     candidate_fingerprint = _digest(candidate_payload)
@@ -458,6 +466,8 @@ def build_intent(
         candidate_fingerprint=candidate_fingerprint,
         config_version=config_version,
         decision_version=decision_version,
+        visual_initial_ref=visual_initial_ref or source_ref,
+        binding_proof=dict(binding_proof or {}),
     )
 
 

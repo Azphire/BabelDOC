@@ -30,6 +30,7 @@ COVERAGE_FIELDS = {
 COVERAGE_OPTIONAL_FIELDS = {"runtime_source_ref"}
 COVERAGE_OWNERS = {"joint", "ordinary", "preserve", "none"}
 BODY_ROLES = {"body", "text", "plain text", "paragraph_hybrid"}
+DROPCAP_COMPANION_ROLE = "drop_cap_companion"
 HAN_PATTERN = re.compile(r"[\u3400-\u4dbf\u4e00-\u9fff\uf900-\ufaff]")
 LATIN_PATTERN = re.compile(r"[A-Za-z]")
 DROPCAP_FIELDS = {
@@ -49,6 +50,10 @@ DROPCAP_METRIC_SOURCES = {
     "pymupdf.Font.glyph_bbox",
     "advance_em_fallback",
 }
+STYLE_TAG_PATTERN = re.compile(
+    r"</?style(?:\s+id=(?:'[^']+'|\"[^\"]+\"))?\s*>",
+    re.IGNORECASE,
+)
 FROZEN_BOX_TOLERANCE = 0.5
 SOURCE_PAGE_BOUNDARY_TOLERANCE = 0.01
 
@@ -1645,17 +1650,98 @@ def verify_title(
     }
 
 
-def _dropcap_truth_initial(truth: dict) -> str:
+def _dropcap_truth_binding(truth: dict) -> tuple[str, str | None, str]:
     diagnostic = truth.get("diagnostic_ref")
-    if not isinstance(diagnostic, str) or "visual_initial=" not in diagnostic:
-        raise VerificationError("drop-cap truth has no visual initial")
+    anchor = truth.get("anchor")
+    if (
+        not isinstance(diagnostic, str)
+        or not isinstance(anchor, str)
+        or "paragraph_owner=" not in diagnostic
+        or "visual_initial=" not in diagnostic
+    ):
+        raise VerificationError("drop-cap truth has no owner/visual binding")
+    owner_value = diagnostic.split("paragraph_owner=", 1)[1].split(";", 1)[0]
+    if owner_value != anchor or REF_PATTERN.fullmatch(owner_value) is None:
+        raise VerificationError("drop-cap truth owner disagrees with its anchor")
     value = diagnostic.split("visual_initial=", 1)[1]
-    held = re.match(r"p\d+#\d+\((.)\)", value)
+    held = re.fullmatch(r"(p\d+#\d+)\((.)\)", value)
     if held is not None:
-        return held.group(1)
+        return owner_value, held.group(1), held.group(2)
+    same = re.fullmatch(r"(.)\(same_paragraph_composition\)", value)
+    if same is not None:
+        return owner_value, None, same.group(1)
     if not value:
         raise VerificationError("drop-cap truth visual initial is empty")
-    return value[0]
+    raise VerificationError("drop-cap truth visual initial syntax is invalid")
+
+
+def _verify_dropcap_binding_proof(candidate: dict, intent: dict) -> None:
+    owner_ref = candidate.get("paragraph")
+    visual_ref = candidate.get("visual_initial_ref")
+    proof = candidate.get("binding_proof")
+    if (
+        not isinstance(owner_ref, str)
+        or REF_PATTERN.fullmatch(owner_ref) is None
+        or not isinstance(visual_ref, str)
+        or REF_PATTERN.fullmatch(visual_ref) is None
+        or not isinstance(proof, dict)
+        or proof.get("owner_ref") != owner_ref
+        or proof.get("visual_initial_ref") != visual_ref
+        or proof.get("source_character_count") != 1
+        or proof.get("unique_owner_count") != 1
+        or proof.get("unique_visual_count") != 1
+        or intent.get("visual_initial_ref") != visual_ref
+        or intent.get("binding_proof") != proof
+    ):
+        raise VerificationError(f"drop-cap binding proof is invalid: {owner_ref}")
+    ratio = proof.get("size_ratio")
+    minimum = proof.get("minimum_size_ratio")
+    if (
+        not isinstance(ratio, int | float)
+        or isinstance(ratio, bool)
+        or not isinstance(minimum, int | float)
+        or isinstance(minimum, bool)
+        or float(ratio) < float(minimum)
+    ):
+        raise VerificationError(f"drop-cap size proof is invalid: {owner_ref}")
+    if proof.get("kind") == "same_paragraph_composition":
+        if visual_ref != owner_ref:
+            raise VerificationError(f"drop-cap same-paragraph proof split: {owner_ref}")
+        return
+    body_size = proof.get("body_size")
+    visual_size = proof.get("visual_font_size")
+    if (
+        proof.get("kind") != "standalone_visual_initial"
+        or visual_ref == owner_ref
+        or not isinstance(proof.get("article_id"), str)
+        or not proof["article_id"]
+        or not isinstance(proof.get("owner_reading_order"), int)
+        or not isinstance(proof.get("visual_reading_order"), int)
+        or proof["visual_reading_order"] >= proof["owner_reading_order"]
+        or not isinstance(proof.get("column"), int)
+        or not isinstance(proof.get("body_rank"), int)
+        or proof["body_rank"] <= 0
+        or not isinstance(proof.get("opens_article"), bool)
+        or not isinstance(body_size, int | float)
+        or isinstance(body_size, bool)
+        or float(body_size) <= 0
+        or not isinstance(visual_size, int | float)
+        or isinstance(visual_size, bool)
+        or float(visual_size) <= 0
+        # Product evidence is rounded to six decimals before JSON emission.
+        or abs(float(visual_size) / float(body_size) - float(ratio)) > 1e-4
+        or not isinstance(proof.get("visual_font_id"), str)
+        or not proof["visual_font_id"]
+        or not isinstance(proof.get("body_font_id"), str)
+        or not proof["body_font_id"]
+        or any(
+            not isinstance(proof.get(name), int | float)
+            or isinstance(proof.get(name), bool)
+            or not 0 <= float(proof[name]) <= float(body_size)
+            for name in ("logical_start_delta", "first_line_gap", "vertical_gap")
+        )
+    ):
+        raise VerificationError(f"drop-cap standalone proof is invalid: {owner_ref}")
 
 
 def _verify_dropcap_chain(rows: list[dict], working_dir: Path) -> None:
@@ -1692,6 +1778,72 @@ def _verify_dropcap_chain(rows: list[dict], working_dir: Path) -> None:
             or members[index].get("source_ref") != reference
         ):
             raise VerificationError(f"drop-cap chain lacks joint-success proof: {reference}")
+
+
+def _dropcap_owner_target(reference: str, working_dir: Path) -> str:
+    """Read one owner's target from an independent translation sidecar."""
+    chain_path = working_dir / "chain_translation.report.json"
+    chain_matches = []
+    if chain_path.is_file():
+        chains = _read(chain_path).get("chains")
+        if not isinstance(chains, list):
+            raise VerificationError("chain translation inventory is invalid")
+        for chain in chains:
+            refs = chain.get("ordered_source_refs") if isinstance(chain, dict) else None
+            if not isinstance(refs, list) or reference not in refs:
+                continue
+            fragments = chain.get("ordered_fragments")
+            index = refs.index(reference)
+            if (
+                refs.count(reference) != 1
+                or not isinstance(fragments, list)
+                or len(fragments) != len(refs)
+                or not isinstance(fragments[index], str)
+                or not fragments[index]
+            ):
+                raise VerificationError(
+                    f"drop-cap chain target evidence is invalid: {reference}"
+                )
+            chain_matches.append(fragments[index])
+    if len(chain_matches) > 1:
+        raise VerificationError(f"drop-cap chain target is ambiguous: {reference}")
+    if chain_matches:
+        target = chain_matches[0]
+    else:
+        targets = [
+            row.get("output")
+            for row in _tracking_rows(working_dir)
+            if row.get("source_ref") == reference
+            and isinstance(row.get("output"), str)
+        ]
+        if len(targets) != 1:
+            raise VerificationError(
+                f"drop-cap ordinary target evidence is not unique: {reference}"
+            )
+        target = targets[0]
+    visible = STYLE_TAG_PATTERN.sub("", target)
+    if "<style" in visible.lower() or "</style" in visible.lower():
+        raise VerificationError(f"drop-cap target has malformed style markup: {reference}")
+    return visible
+
+
+def _verify_dropcap_target_initial(
+    row: dict,
+    working_dir: Path,
+    target_lang: str,
+) -> None:
+    reference = row["source_ref"]
+    target = _dropcap_owner_target(reference, working_dir)
+    pattern = LATIN_PATTERN if target_lang.lower().startswith("en") else HAN_PATTERN
+    match = pattern.search(target)
+    if (
+        match is None
+        or match.group(0) != row["target_char"]
+        or match.start() != row["target_index"]
+    ):
+        raise VerificationError(
+            f"drop-cap initial disagrees with owner target: {reference}"
+        )
 
 
 def verify_dropcap(
@@ -1777,6 +1929,7 @@ def verify_dropcap(
     ]
     if len(active_intents) != len(rows):
         raise VerificationError("active keep intents disagree with rendered inventory")
+    intents_by_ref = {}
     for intent in active_intents:
         reference = intent.get("source_ref")
         row = by_ref.get(reference)
@@ -1788,11 +1941,15 @@ def verify_dropcap(
             or intent.get("target_policy") != row["direction_policy"]
         ):
             raise VerificationError(f"drop-cap intent was not committed: {reference}")
+        if reference in intents_by_ref:
+            raise VerificationError(f"duplicate drop-cap intent: {reference}")
+        intents_by_ref[reference] = intent
 
     source_report = _read(working_dir / "drop_cap.report.json")
     candidates = source_report.get("candidates")
     if not isinstance(candidates, list):
         raise VerificationError("drop-cap source candidate inventory is invalid")
+    corpus = _toc_anchor_inventory(expectations)
     verified = 0
     for truth in expectations.get("dropcaps", []):
         anchor = truth.get("anchor")
@@ -1803,20 +1960,82 @@ def verify_dropcap(
         ):
             raise VerificationError("drop-cap truth is invalid")
         page = int(anchor[1 : anchor.index("#")])
-        source_initial = _dropcap_truth_initial(truth)
-        matches = [
-            item
-            for item in candidates
-            if isinstance(item, dict)
-            and item.get("page") == page
-            and isinstance(item.get("first_run"), str)
-            and item["first_run"].startswith(source_initial)
-        ]
+        owner_anchor, visual_anchor, source_initial = _dropcap_truth_binding(truth)
+        if corpus is None:
+            matches = [
+                item
+                for item in candidates
+                if isinstance(item, dict)
+                and item.get("page") == page
+                and isinstance(item.get("first_run"), str)
+                and item["first_run"].startswith(source_initial)
+            ]
+        else:
+            owner_node = corpus.get(owner_anchor)
+            visual_node = None if visual_anchor is None else corpus.get(visual_anchor)
+            if owner_node is None or (visual_anchor is not None and visual_node is None):
+                raise VerificationError(
+                    f"drop-cap frozen owner/visual node is missing: {anchor}"
+                )
+            matches = [
+                item
+                for item in candidates
+                if isinstance(item, dict)
+                and item.get("page") == page
+                and item.get("source_text_sha256")
+                == owner_node.get("source_text_sha256")
+                and _frozen_box_equal(
+                    item.get("source_box"), owner_node.get("source_box")
+                )
+                and (
+                    visual_node is None
+                    or (
+                        item.get("visual_initial_text_sha256")
+                        == visual_node.get("source_text_sha256")
+                        and _frozen_box_equal(
+                            item.get("visual_initial_box"),
+                            visual_node.get("source_box"),
+                        )
+                    )
+                )
+                and isinstance(item.get("first_run"), str)
+                and item["first_run"] == source_initial
+            ]
         if len(matches) != 1:
             raise VerificationError(f"drop-cap truth match is not unique: {anchor}")
-        runtime_ref = matches[0].get("paragraph")
+        candidate = matches[0]
+        runtime_ref = candidate.get("paragraph")
         if runtime_ref not in by_ref:
             raise VerificationError(f"drop-cap truth was not rendered: {anchor}")
+        intent = intents_by_ref.get(runtime_ref)
+        if intent is None:
+            raise VerificationError(f"drop-cap truth has no active intent: {anchor}")
+        _verify_dropcap_binding_proof(candidate, intent)
+        if visual_anchor is None:
+            if candidate.get("visual_initial_ref") != runtime_ref:
+                raise VerificationError(
+                    f"drop-cap same-paragraph truth used a companion: {anchor}"
+                )
+        elif candidate.get("visual_initial_ref") == runtime_ref:
+            raise VerificationError(
+                f"drop-cap standalone truth lost its companion: {anchor}"
+            )
+        target_char = by_ref[runtime_ref]["target_char"]
+        if (
+            target_lang.lower().startswith("en")
+            and LATIN_PATTERN.fullmatch(target_char) is None
+        ) or (
+            target_lang.lower().startswith("zh")
+            and HAN_PATTERN.fullmatch(target_char) is None
+        ):
+            raise VerificationError(
+                f"drop-cap committed target initial is invalid: {anchor}"
+            )
+        _verify_dropcap_target_initial(
+            by_ref[runtime_ref],
+            working_dir,
+            target_lang,
+        )
         verified += 1
     _verify_dropcap_chain(rows, working_dir)
     return {
@@ -1985,6 +2204,22 @@ def verify_coverage(
     ):
         raise VerificationError("coverage report did not complete with the requested direction")
     exemptions = _coverage_exemptions(expectations)
+    dropcap_intent_path = working_dir / "drop_cap_intent.report.json"
+    dropcap_intents = (
+        _read(dropcap_intent_path).get("intents", [])
+        if dropcap_intent_path.is_file()
+        else []
+    )
+    if not isinstance(dropcap_intents, list):
+        raise VerificationError("drop-cap intent inventory is invalid")
+    companion_refs = {
+        item.get("visual_initial_ref")
+        for item in dropcap_intents
+        if isinstance(item, dict)
+        and item.get("visual_initial_ref") != item.get("source_ref")
+        and isinstance(item.get("binding_proof"), dict)
+        and item["binding_proof"].get("kind") == "standalone_visual_initial"
+    }
     by_ref = {}
     signatures = []
     owner_counts = dict.fromkeys(sorted(COVERAGE_OWNERS), 0)
@@ -2040,6 +2275,15 @@ def verify_coverage(
             raise VerificationError(f"preserved coverage item lacks an expectation exemption: {reference}")
         if role == "chain" and owner != "joint":
             raise VerificationError(f"body chain coverage item is not joint-owned: {reference}")
+        if role == DROPCAP_COMPANION_ROLE and (
+            reference not in companion_refs
+            or owner != "none"
+            or target_hash is not None
+            or status != "merged_into_drop_cap_owner"
+        ):
+            raise VerificationError(
+                f"drop-cap companion coverage evidence is invalid: {reference}"
+            )
         if role in BODY_ROLES and (owner == "none" or target_hash is None):
             raise VerificationError(f"body coverage item has no target: {reference}")
         by_ref[reference] = held
@@ -2047,6 +2291,13 @@ def verify_coverage(
         owner_counts[owner] += 1
     if not items:
         raise VerificationError("coverage item inventory is empty")
+    covered_companions = {
+        reference
+        for reference, item in by_ref.items()
+        if item["role"] == DROPCAP_COMPANION_ROLE
+    }
+    if covered_companions != companion_refs:
+        raise VerificationError("drop-cap companion coverage inventory disagrees")
 
     totals = report.get("totals")
     if not isinstance(totals, dict) or set(totals) != {"sources", "owners"}:

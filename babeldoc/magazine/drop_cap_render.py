@@ -1532,13 +1532,14 @@ def _article_envelopes(article, label: int) -> tuple[BoxTuple, ...]:
     return () if envelope is None else (envelope,)
 
 
-def _without_mutable_paragraph(inventory, reference: str):
+def _without_mutable_paragraphs(inventory, references) -> fixed_assets.FixedAssetInventory:
+    mutable = frozenset(references)
     return fixed_assets.FixedAssetInventory(
         assets=tuple(
             asset
             for asset in inventory.assets
             if not (
-                asset.reference == reference
+                asset.reference in mutable
                 and asset.asset_type == fixed_assets.FURNITURE_TYPE
             )
         ),
@@ -1557,6 +1558,16 @@ def _decorative_guard(
 ) -> DecorativeGeometryGuard:
     paragraph = page.pdf_paragraph[index]
     body_box = _box_tuple(paragraph.box)
+    visual_index = None
+    visual_reference = getattr(intent, "visual_initial_ref", None)
+    if isinstance(visual_reference, str):
+        try:
+            _visual_page, visual_index = drop_cap.parse_source_ref(visual_reference)
+        except ValueError:
+            visual_index = None
+    mutable_references = {local_reference}
+    if visual_index is not None:
+        mutable_references.add(drop_cap.paragraph_reference(local_page, visual_index))
     article_boxes: tuple[BoxTuple, ...] = ()
     if article_document_ir is not None:
         owner = article_document_ir.by_element.get(local_reference)
@@ -1568,7 +1579,7 @@ def _decorative_guard(
         if (
             not asset.protected
             or asset.bbox is None
-            or asset.reference == local_reference
+            or asset.reference in mutable_references
         ):
             continue
         box = tuple(float(value) for value in asset.bbox)
@@ -1580,7 +1591,7 @@ def _decorative_guard(
             continue
         obstacles[asset.reference] = box
     for other_index, other in enumerate(page.pdf_paragraph or ()):
-        if other_index == index:
+        if other_index == index or other_index == visual_index:
             continue
         other_characters = [
             character
@@ -1991,8 +2002,21 @@ def _apply_render_pass(
                         article_document_ir,
                         inventory,
                     )
-                    attempt_inventory = _without_mutable_paragraph(
-                        inventory, local_reference
+                    visual_reference = getattr(intent, "visual_initial_ref", None)
+                    visual_local_reference = local_reference
+                    if isinstance(visual_reference, str):
+                        _visual_page, visual_index = drop_cap.parse_source_ref(
+                            visual_reference
+                        )
+                        visual_local_reference = drop_cap.paragraph_reference(
+                            local_page, visual_index
+                        )
+                    mutable_references = {
+                        local_reference,
+                        visual_local_reference,
+                    }
+                    attempt_inventory = _without_mutable_paragraphs(
+                        inventory, mutable_references
                     )
                     outcome = set_one(
                         paragraph,
@@ -2017,8 +2041,8 @@ def _apply_render_pass(
                         after_inventory = inventory_builder()
                         comparison = fixed_assets.compare(
                             attempt_inventory,
-                            _without_mutable_paragraph(
-                                after_inventory, local_reference
+                            _without_mutable_paragraphs(
+                                after_inventory, mutable_references
                             ),
                             config.edge_slack_pt,
                         )
