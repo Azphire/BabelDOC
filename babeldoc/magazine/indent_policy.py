@@ -17,10 +17,11 @@ amount of care in the copying can fix, because the copying is the error.
 
 What this pass does is state the flag rather than adjust it. Where the mode has
 an opinion, the flag every paragraph carries afterwards is this pass's answer
-and nothing else's: it is the conjunction of four conditions -- the page admits
-a paragraph convention, the label is running body text, the mode indents a
-paragraph of this rank, and the paragraph opens rather than resumes a chain --
-and a paragraph failing any of them is set flush. What the source geometry said,
+and nothing else's: it is the conjunction of five conditions -- the page admits
+a paragraph convention, the label is running body text, some article claims this
+paragraph, the mode indents a paragraph of this rank, and the paragraph opens
+rather than resumes a chain -- and a paragraph failing any of them is set flush.
+What the source geometry said,
 and what the line splitting pass wrote on the fragments it made, are therefore
 overwritten in both directions rather than only upward. It computes no geometry
 and it sets no text. The stage that acts on the flag is not touched, which is
@@ -34,11 +35,24 @@ one of them, and the contents page of a magazine is where that showed: the flag
 arrived there from the source geometry, no pass had lowered it, and the page set
 its records as if they were prose.
 
-The fourth condition is the one this pass cannot see for itself. A chain's later
-members are one paragraph the layout broke into several, and a resumed paragraph
-opens no new one, so indenting it prints a paragraph break the author did not
-write. Assembly already records which members those are, and this reads its
-answer rather than forming a second one.
+Two of the five conditions are ones this pass cannot see for itself, and it
+reads both rather than forming a second opinion. A chain's later members are one
+paragraph the layout broke into several, and a resumed paragraph opens no new
+one, so indenting it prints a paragraph break the author did not write; assembly
+already records which members those are. And running body text is not the same
+thing as an article's running body text: an advertisement block, a sidebar or a
+page whose classification fell back to the default type all carry body labels
+without belonging to any article, and the canonical article grouping is what
+already knows the difference. That answer is per paragraph rather than per page,
+because a page belonging to a feature does not make everything printed on it
+part of the feature.
+
+Both readings are asked in the canonical page space -- the position of a page
+inside the document this run holds -- because that is the space the article
+grouping keyed its references in. A run over a selected page range carries two
+page numbers for every page, and the physical one a reader sees appears only in
+the record, alongside the canonical one, so nothing downstream has to guess
+which space a number came from.
 
 Where this sits
 ---------------
@@ -78,8 +92,8 @@ from pathlib import Path
 from types import MappingProxyType
 
 from babeldoc.magazine import chain_builder
-from babeldoc.magazine import hitl
 from babeldoc.magazine.article_ir import ArticleDocumentIR
+from babeldoc.magazine.cross_page_reflow import _physical_page_number
 from babeldoc.magazine.drop_cap import paragraph_reference
 from babeldoc.magazine.page_features import ConfigError
 from babeldoc.magazine.page_features import validate_bounded_config
@@ -110,11 +124,13 @@ PAGE_ELIGIBILITY_POLICY_FLAG = "indent_eligible"
 # findings and a sidecar that could not tell them apart would answer neither.
 SKIP_PAGE_INELIGIBLE = "page_ineligible"
 SKIP_OUTSIDE_BODY = "outside_body_labels"
+SKIP_OUTSIDE_ARTICLE = "outside_article"
 SKIP_MODE = "mode_decides_nothing"
 CLEAR_CHAIN_CONTINUATION = "chain_continuation"
 SKIP_REASONS = (
     SKIP_PAGE_INELIGIBLE,
     SKIP_OUTSIDE_BODY,
+    SKIP_OUTSIDE_ARTICLE,
     SKIP_MODE,
     CLEAR_CHAIN_CONTINUATION,
 )
@@ -122,11 +138,15 @@ SKIP_REASONS = (
 # The order the unmet conditions are reported in. A paragraph may fail more than
 # one, and the sidecar names the first in this order rather than all of them, so
 # every flush paragraph carries exactly one reason. Page before label before
-# mode before chain is widest first: the reason given is the one that would
-# still hold if every narrower one were repaired.
+# article before mode before chain is widest first: the reason given is the one
+# that would still hold if every narrower one were repaired. Article membership
+# sits between label and mode because it is a fact about where the paragraph is,
+# which is narrower than the label it carries and wider than the convention the
+# mode chooses.
 CLEAR_ORDER = (
     SKIP_PAGE_INELIGIBLE,
     SKIP_OUTSIDE_BODY,
+    SKIP_OUTSIDE_ARTICLE,
     SKIP_MODE,
     CLEAR_CHAIN_CONTINUATION,
 )
@@ -254,13 +274,22 @@ def enabled(translation_config) -> bool:
     return bool(getattr(translation_config, SWITCH, False))
 
 
-def article_of_page(
+def article_of_element(
     article_document_ir: ArticleDocumentIR | None,
-) -> dict[int, str]:
-    """Which article each page belongs to in the canonical runtime state."""
+) -> dict[str, str]:
+    """Which article each paragraph belongs to in the canonical runtime state.
+
+    Keyed by the canonical source reference, one entry per paragraph, rather
+    than by page: a page belonging to an article does not make every paragraph
+    on it that article's running text, and an advertisement block sharing a page
+    with a feature is not part of the feature. A paragraph the article builder
+    never claimed - fixed artwork, a stray rule, anything on a page whose
+    classification failed into the default type - is simply absent here, which
+    is the answer this pass wants.
+    """
     if article_document_ir is None:
         return {}
-    return dict(article_document_ir.by_page)
+    return dict(article_document_ir.by_element)
 
 
 def mode_is_authoritative(mode: str) -> bool:
@@ -290,6 +319,7 @@ def decide(
     label: str | None,
     mode: str,
     eligible_page: bool,
+    in_article: bool,
     body_rank: int | None,
     continuation: bool,
     config: IndentConfig,
@@ -298,14 +328,15 @@ def decide(
 
     ``None`` where the mode is not authoritative, which is the one case this
     pass leaves a paragraph as it found it. Otherwise the flag is the
-    conjunction of the four conditions and the second member names the first
-    unmet one, or is ``None`` where all four are met.
+    conjunction of the five conditions and the second member names the first
+    unmet one, or is ``None`` where all five are met.
     """
     if not mode_is_authoritative(mode):
         return None
     unmet = {
         SKIP_PAGE_INELIGIBLE: not eligible_page,
         SKIP_OUTSIDE_BODY: label not in config.body_labels,
+        SKIP_OUTSIDE_ARTICLE: not in_article,
         SKIP_MODE: not mode_indents(mode, body_rank, config),
         CLEAR_CHAIN_CONTINUATION: continuation,
     }
@@ -350,6 +381,10 @@ def as_record(
                 1 for row in rows if row["chain_continuation"]
             ),
             "indented_after": sum(1 for row in rows if row["after"]),
+            "paragraphs_in_article": sum(1 for row in rows if row["in_article"]),
+            "paragraphs_outside_article": sum(
+                1 for row in rows if not row["in_article"]
+            ),
             "pages_eligible": sum(1 for page in pages if page["indent_eligible"]),
             "pages_ineligible": sum(
                 1 for page in pages if not page["indent_eligible"]
@@ -361,6 +396,32 @@ def as_record(
         },
         "paragraphs": rows,
     }
+
+
+def _require_conservation(record: dict) -> None:
+    """Every paragraph is accounted for exactly once, or the record is a lie.
+
+    The first equation holds in every mode: a paragraph is either one this pass
+    decided or one it left alone. The second holds only where the mode is
+    authoritative, because a pass that declines to decide records ``SKIP_MODE``
+    for every paragraph without setting any of them, so the skipped tally and
+    the surviving indents would double count the same paragraph.
+    """
+    totals = record["totals"]
+    paragraphs = totals["paragraphs"]
+    if totals["decided"] + totals["left_alone"] != paragraphs:
+        raise IndentPolicyError(
+            f"indent policy decided {totals['decided']} and left alone "
+            f"{totals['left_alone']} of {paragraphs} paragraph(s)"
+        )
+    if not record["authoritative"]:
+        return
+    skipped = sum(totals["skipped"].values())
+    if skipped + totals["indented_after"] != paragraphs:
+        raise IndentPolicyError(
+            f"indent policy skipped {skipped} and indented "
+            f"{totals['indented_after']} of {paragraphs} paragraph(s)"
+        )
 
 
 def write_report(working_dir: Path, record: dict) -> Path:
@@ -398,13 +459,16 @@ def apply(
     Returns the record it wrote, so a caller holding the document can assert
     about the pass without reading the sidecar back.
 
-    Two gates stand in front of the decision and both are declarative. The page
-    gate asks the page type vocabulary whether this page sets the kind of text a
-    paragraph convention is written for; the label gate asks whether this
-    paragraph is running body text. A paragraph that fails either is recorded
-    with the reason it failed by, because a paragraph left alone by the page it
-    sits on and one left alone by its own label are two different findings and a
-    sidecar that could not tell them apart would answer neither.
+    Three gates stand in front of the decision and all three are declarative.
+    The page gate asks the page type vocabulary whether this page sets the kind
+    of text a paragraph convention is written for; the label gate asks whether
+    this paragraph is running body text; the article gate asks whether the
+    canonical article grouping claimed this paragraph as part of an article at
+    all. A paragraph that fails any of them is recorded with the reason it
+    failed by, because a paragraph left alone by the page it sits on, one left
+    alone by its own label and one left alone because it belongs to no article
+    are three different findings and a sidecar that could not tell them apart
+    would answer none of them.
     """
     if not enabled(translation_config):
         return None
@@ -416,17 +480,31 @@ def apply(
     taxonomy = load_taxonomy()
     target_lang = getattr(translation_config, "lang_out", "") or ""
     mode, origin = config.mode_for(target_lang)
-    pages = hitl.labeled_pages(docs)
-    of_page = article_of_page(article_document_ir)
+    of_element = article_of_element(article_document_ir)
 
     rank_of_article: dict[str, int] = {}
     rows: list[dict] = []
     page_rows: list[dict] = []
-    for label, page in pages:
-        article_id = of_page.get(label)
+    # Iterated in the canonical page space, one position per page of the
+    # document this run actually holds, because that is the space the article
+    # builder keyed its references in. The physical page a reader sees is
+    # derived per page and used only to name things in the record: a run over a
+    # selected page range has two page numbers for every page, and asking one
+    # space a question the other space answered is how a paragraph ends up
+    # holding a neighbour's article.
+    for position, page in enumerate(docs.page):
+        canonical_page = position + 1
+        physical_page = _physical_page_number(docs, canonical_page)
+        if physical_page is None:
+            raise IndentPolicyError(
+                f"canonical page {canonical_page} has no physical page number"
+            )
         eligible, kind = page_is_eligible(page, taxonomy)
         decided_here = 0
         for index, paragraph in enumerate(page.pdf_paragraph or ()):
+            canonical_ref = f"p{canonical_page}#{index}"
+            article_id = of_element.get(canonical_ref)
+            in_article = article_id is not None
             layout_label = paragraph.layout_label
             in_body = layout_label in config.body_labels
             body_rank = None
@@ -436,13 +514,19 @@ def apply(
             # Counted on every page, eligible or not, because the rank belongs
             # to that pass and not to this one: withholding a decision here may
             # not renumber the article for the pass that shares the count.
-            if in_body and article_id is not None and (paragraph.unicode or "").strip():
+            if in_body and in_article and (paragraph.unicode or "").strip():
                 body_rank = rank_of_article.get(article_id, 0) + 1
                 rank_of_article[article_id] = body_rank
             before = bool(paragraph.first_line_indent)
             continuation = chain_builder.is_chain_continuation(paragraph)
             decision = decide(
-                layout_label, mode, eligible, body_rank, continuation, config
+                layout_label,
+                mode,
+                eligible,
+                in_article,
+                body_rank,
+                continuation,
+                config,
             )
             if decision is None:
                 skipped = SKIP_MODE
@@ -453,12 +537,15 @@ def apply(
             after = bool(paragraph.first_line_indent)
             rows.append(
                 {
-                    "page": label,
-                    "reference": paragraph_reference(label, index),
+                    "page": physical_page,
+                    "canonical_page": canonical_page,
+                    "reference": paragraph_reference(physical_page, index),
+                    "canonical_ref": canonical_ref,
                     "layout_label": layout_label,
                     "page_kind": kind,
                     "indent_eligible_page": eligible,
                     "article_id": article_id,
+                    "in_article": in_article,
                     "body_rank": body_rank,
                     "chain_continuation": continuation,
                     "before": before,
@@ -471,7 +558,8 @@ def apply(
             )
         page_rows.append(
             {
-                "page": label,
+                "page": physical_page,
+                "canonical_page": canonical_page,
                 "page_kind": kind,
                 "indent_eligible": eligible,
                 "paragraphs": len(page.pdf_paragraph or ()),
@@ -480,6 +568,7 @@ def apply(
         )
 
     record = as_record(config, mode, origin, target_lang, rows, page_rows)
+    _require_conservation(record)
     working_dir = Path(translation_config.get_working_file_path(REPORT_NAME)).parent
     write_report(working_dir, record)
     logger.debug(
