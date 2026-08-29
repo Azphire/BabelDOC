@@ -23,6 +23,17 @@ def _sha(text: str) -> str:
     return hashlib.sha256(text.encode("utf-8")).hexdigest()
 
 
+def test_pdf_box_conversion_restores_pipeline_normalized_media_coordinates():
+    page = SimpleNamespace(
+        cropbox=SimpleNamespace(x0=24.0, y0=0.0),
+        mediabox=SimpleNamespace(y1=807.0),
+    )
+
+    assert verify_magazine_demo._pdf_box_to_source_box(
+        [100.586, 696.303, 512.32, 715.182], page
+    ) == pytest.approx((124.586, 91.818, 536.32, 110.697))
+
+
 class Config:
     def __init__(self, working_dir: Path):
         self.working_dir = working_dir

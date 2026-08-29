@@ -14,6 +14,7 @@ from babeldoc.format.pdf.document_il.midend.typesetting import BoundedTypesettin
 from babeldoc.format.pdf.document_il.midend.typesetting import Typesetting
 from babeldoc.format.pdf.document_il.midend.typesetting import TypesettingUnit
 from babeldoc.magazine import drop_cap_render
+from babeldoc.magazine import layout_report
 from babeldoc.magazine import line_split
 from babeldoc.magazine import minimal_detection
 from babeldoc.magazine import minimal_pipeline
@@ -26,6 +27,7 @@ from tests.minimal.fakes import FixedWidthMapper
 from tests.minimal.fakes import RecordingTracker
 from tests.minimal.fakes import StubChainTranslator
 from tools.verify_magazine_demo import VerificationError
+from tools.verify_magazine_demo import _frozen_box_equal
 from tools.verify_magazine_demo import verify_toc
 
 
@@ -33,6 +35,70 @@ class RenderFont(FixedWidthFont):
     @staticmethod
     def has_glyph(_codepoint: int) -> int:
         return 1
+
+
+def test_frozen_truth_tolerates_only_subpoint_pdf_normalization_drift():
+    frozen = [104.47, 687.9936, 448.212, 736.6976]
+
+    assert _frozen_box_equal(frozen, [104.47, 688.2576, 448.212, 736.6976])
+    assert not _frozen_box_equal(frozen, [104.47, 688.4946, 448.212, 736.6976])
+
+
+def test_typesetting_removes_only_unowned_source_shadows_from_translated_units(
+    tmp_path, monkeypatch,
+):
+    paragraph = _paragraph(["source text"], "shadow-owner", left=50, bottom=400)
+    config, document, _report = _apply(tmp_path, [paragraph])
+    page = document.page[0]
+    paragraph = page.pdf_paragraph[0]
+    style = paragraph.pdf_style
+    paragraph.unicode = "目标文本"
+    paragraph.pdf_paragraph_composition = [
+        il_version_1.PdfParagraphComposition(
+            pdf_same_style_unicode_characters=(
+                il_version_1.PdfSameStyleUnicodeCharacters(
+                    unicode=paragraph.unicode,
+                    pdf_style=style,
+                )
+            )
+        )
+    ]
+    shadow = il_version_1.PdfCharacter(
+        char_unicode="s",
+        box=il_version_1.Box(51, 401, 54, 409),
+        pdf_style=style,
+    )
+    formula = il_version_1.PdfCharacter(
+        char_unicode="x",
+        box=il_version_1.Box(55, 401, 58, 409),
+        pdf_style=style,
+        formula_layout_id=7,
+    )
+    outside = il_version_1.PdfCharacter(
+        char_unicode="z",
+        box=il_version_1.Box(500, 500, 503, 508),
+        pdf_style=style,
+    )
+    page.pdf_character = [shadow, formula, outside]
+
+    layout_report.prepare(
+        config,
+        document,
+        ArticleDocumentIR(articles=(), by_page={}, by_element={}, by_chain={}),
+        article_flow_report={"article_flow_applied": False},
+        eligible_roles=(),
+    )
+    # The formal layout registry is the authoritative translated-owner proof.
+    # A later source-unit registry reset must not resurrect page-level source ink.
+    monkeypatch.setattr(line_split, "source_unit", lambda *_args: None)
+    try:
+        Typesetting(
+            SimpleNamespace(lang_out="zh"), RenderMapper()
+        )._remove_translated_source_shadows(page)
+    finally:
+        layout_report.discard()
+
+    assert page.pdf_character == [formula, outside]
 
 
 class RenderMapper(FixedWidthMapper):

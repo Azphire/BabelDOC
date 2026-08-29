@@ -1595,6 +1595,8 @@ class Typesetting:
 
     def typesetting_document(self, document: il_version_1.Document):
         # 原有的排版逻辑
+        for page in document.page:
+            self._remove_translated_source_shadows(page)
         if self.translation_config.progress_monitor:
             with self.translation_config.progress_monitor.stage_start(
                 self.stage_name,
@@ -1611,6 +1613,47 @@ class Typesetting:
             for page in document.page:
                 self.translation_config.raise_if_cancelled()
                 self.render_page(page)
+
+    @staticmethod
+    def _remove_translated_source_shadows(page: il_version_1.Page) -> None:
+        """Drop unowned source glyphs shadowing a formal target holder."""
+        from babeldoc.magazine import layout_report
+
+        physical_page = None if page.page_number is None else int(page.page_number) + 1
+        translated_boxes = []
+        for paragraph in page.pdf_paragraph:
+            if layout_report.is_protected_source(paragraph):
+                continue
+            container = layout_report.source_container(paragraph, physical_page)
+            if container is not None and container.source_box is not None:
+                translated_boxes.append(Box(*container.source_box))
+        if not translated_boxes or not page.pdf_character:
+            return
+
+        def is_shadow(character: PdfCharacter) -> bool:
+            if character.debug_info or character.formula_layout_id is not None:
+                return False
+            held = character.visual_bbox.box if character.visual_bbox else character.box
+            if held is None:
+                return False
+            center_x = (held.x + held.x2) / 2
+            center_y = (held.y + held.y2) / 2
+            return any(
+                box.x <= center_x <= box.x2 and box.y <= center_y <= box.y2
+                for box in translated_boxes
+            )
+
+        before = len(page.pdf_character)
+        page.pdf_character = [
+            character for character in page.pdf_character if not is_shadow(character)
+        ]
+        removed = before - len(page.pdf_character)
+        if removed:
+            logger.info(
+                "Removed %d unowned source glyphs shadowing formal target holders on p%s",
+                removed,
+                physical_page,
+            )
 
     def render_page(self, page: il_version_1.Page):
         fonts: dict[

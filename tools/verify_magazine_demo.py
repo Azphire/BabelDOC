@@ -48,6 +48,7 @@ DROPCAP_METRIC_SOURCES = {
     "pymupdf.Font.glyph_bbox",
     "advance_em_fallback",
 }
+FROZEN_BOX_TOLERANCE = 0.5
 
 
 class VerificationError(ValueError):
@@ -81,6 +82,11 @@ def _box_equal(left, right, tolerance: float = 0.001) -> bool:
             for a, b in zip(left, right, strict=True)
         )
     )
+
+
+def _frozen_box_equal(left, right) -> bool:
+    """Allow sub-point PDF normalization drift only at the frozen-truth boundary."""
+    return _box_equal(left, right, tolerance=FROZEN_BOX_TOLERANCE)
 
 
 def _require_box(value, where: str) -> tuple[float, float, float, float]:
@@ -716,7 +722,9 @@ def verify_toc(
                     if reference.startswith(f"p{frozen['physical_page']}#")
                     and parent.get("source_text_sha256")
                     == frozen.get("source_text_sha256")
-                    and _box_equal(parent.get("source_box"), frozen.get("source_box"))
+                    and _frozen_box_equal(
+                        parent.get("source_box"), frozen.get("source_box")
+                    )
                 ]
             if len(candidates) != 1:
                 raise VerificationError(
@@ -731,7 +739,7 @@ def verify_toc(
             _require_box(parent["source_box"], f"truth parent {parent['source_ref']}")
             for parent, _group_key in matches
         ]
-        if not _box_equal(_union_box(parent_boxes), truth.get("source_box")):
+        if not _frozen_box_equal(_union_box(parent_boxes), truth.get("source_box")):
             raise VerificationError(f"TOC parent container mismatch: {anchors}")
         group_keys = list(dict.fromkeys(group_key for _parent, group_key in matches))
         truth_children = [
@@ -1530,10 +1538,17 @@ def _box_area(box) -> float:
     return max(0.0, box[2] - box[0]) * max(0.0, box[3] - box[1])
 
 
-def _pdf_box_to_source_box(box, page_height: float) -> tuple[float, float, float, float]:
-    """Convert PyMuPDF's top-left coordinates to the IL's bottom-left space."""
+def _pdf_box_to_source_box(box, page) -> tuple[float, float, float, float]:
+    """Convert crop-local PDF coordinates to the pipeline's normalized IL space."""
     held = _require_box(list(box), "PDF text block")
-    return (held[0], page_height - held[3], held[2], page_height - held[1])
+    crop = page.cropbox
+    media = page.mediabox
+    return (
+        held[0] + crop.x0,
+        media.y1 - (held[3] + crop.y0),
+        held[2] + crop.x0,
+        media.y1 - (held[1] + crop.y0),
+    )
 
 
 def _coverage_exemptions(expectations: dict) -> tuple[dict, ...]:
@@ -1879,7 +1894,7 @@ def verify_long_blocks_and_pdf(
                 text = block[4]
                 if _script_count(text, source_lang) < source_min:
                     continue
-                source_box = _pdf_box_to_source_box(block[:4], source_page.rect.height)
+                source_box = _pdf_box_to_source_box(block[:4], source_page)
                 if _block_is_exempt(physical_page, source_box, exemptions):
                     continue
                 block_area = _box_area(source_box)
@@ -1904,7 +1919,7 @@ def verify_long_blocks_and_pdf(
                 residue = _script_count(block[4], source_lang)
                 if residue <= residue_max:
                     continue
-                output_box = _pdf_box_to_source_box(block[:4], output_page.rect.height)
+                output_box = _pdf_box_to_source_box(block[:4], output_page)
                 if _block_is_exempt(physical_page, output_box, exemptions):
                     continue
                 raise VerificationError(

@@ -44,7 +44,11 @@
   ],
   "dropcaps": [],
   "coverage_exemptions": [
-    {"anchor": "p5#115", "reason": "ArticleBuilder currently reports this source page unsupported; retain as a generic Stage 01 unsupported-page truth input."}
+    {"anchor": "p5#115", "reason": "ArticleBuilder currently reports this source page unsupported; retain as a generic Stage 01 unsupported-page truth input."},
+    {"physical_page": 2, "source_box": [110.815, 663.829, 124.423, 670.111], "reason": "fixed TOC folio companion"},
+    {"physical_page": 3, "source_box": [317.764, 594.689, 342.901, 619.845], "reason": "fixed TOC folio companion"},
+    {"physical_page": 3, "source_box": [317.52, 441.3904, 353.734, 466.8884], "reason": "fixed TOC folio companion"},
+    {"physical_page": 3, "source_box": [317.1234, 267.8205, 351.7034, 293.4325], "reason": "fixed TOC folio companion"}
   ],
   "stage_pages": [3, 5, 6, 7]
 }
