@@ -1090,6 +1090,57 @@ def _tight_uniform_neighbors(upper, lower, config: LineSplitConfig) -> bool:
     )
 
 
+def _tight_short_label_value_neighbors(
+    upper,
+    lower,
+    config: LineSplitConfig,
+    minimum_text_length: int,
+) -> bool:
+    """Whether two single rows prove one short-label/value block.
+
+    Mastheads and other record pages commonly set a short field label above a
+    longer value.  Keeping those rows as unrelated single-line targets both
+    strands the label below the translator's length floor and denies the value
+    the vertical source area that visually belongs to the field.  Geometry
+    alone is not proof: require the upper row to be below that existing floor,
+    distinct typography, close left alignment, and both semantic and visual
+    width growth into the lower row.  This leaves ordinary adjacent records
+    separate while preserving the complete field as one bounded block.
+    """
+    if minimum_text_length <= 1 or _has_folio_edge(upper) or _has_folio_edge(lower):
+        return False
+    if has_multiple_source_rows(
+        paragraph_characters(upper)
+    ) or has_multiple_source_rows(paragraph_characters(lower)):
+        return False
+    if same_style(upper.pdf_style, lower.pdf_style):
+        return False
+    upper_text = characters_text(paragraph_characters(upper)).strip()
+    lower_text = characters_text(paragraph_characters(lower)).strip()
+    if not (
+        0 < len(upper_text) < minimum_text_length <= len(lower_text)
+        and len(upper_text) * config.record_gap_ratio <= len(lower_text)
+    ):
+        return False
+    upper_box = _box_record(upper.box)
+    lower_box = _box_record(lower.box)
+    if upper_box is None or lower_box is None:
+        return False
+    upper_width = upper_box[2] - upper_box[0]
+    lower_width = lower_box[2] - lower_box[0]
+    upper_height = upper_box[3] - upper_box[1]
+    lower_height = lower_box[3] - lower_box[1]
+    if min(upper_width, lower_width, upper_height, lower_height) <= 0:
+        return False
+    gap = upper_box[1] - lower_box[3]
+    return (
+        abs(upper_box[0] - lower_box[0]) <= config.scan_step
+        and gap >= -config.scan_step
+        and gap <= min(upper_height, lower_height)
+        and upper_width * config.record_gap_ratio <= lower_width
+    )
+
+
 def _merged_block(paragraphs: list):
     """Build one translation paragraph from a tight source paragraph block."""
     merged = copy.copy(paragraphs[0])
@@ -1122,7 +1173,12 @@ def _merged_block(paragraphs: list):
     return merged
 
 
-def _merge_tight_blocks(rebuilt, pending, config: LineSplitConfig):
+def _merge_tight_blocks(
+    rebuilt,
+    pending,
+    config: LineSplitConfig,
+    minimum_text_length: int,
+):
     """Coalesce adjacent untouched single lines into physical block items."""
     by_id = {id(item.paragraph): item for item in pending}
 
@@ -1196,7 +1252,15 @@ def _merge_tight_blocks(rebuilt, pending, config: LineSplitConfig):
                 if len(candidates) == 1
                 else _merged_block(candidates)
             )
-            if not _tight_uniform_neighbors(members[-1], neighbor, config):
+            if not (
+                _tight_uniform_neighbors(members[-1], neighbor, config)
+                or _tight_short_label_value_neighbors(
+                    members[-1],
+                    neighbor,
+                    config,
+                    minimum_text_length,
+                )
+            ):
                 break
             members.extend(candidates)
             held_members.extend(candidate_items)
@@ -1234,6 +1298,7 @@ def process_page(
     config: LineSplitConfig,
     *,
     prose_only: bool = False,
+    minimum_text_length: int = 0,
 ) -> tuple[list[dict], list[dict], list[dict]]:
     """Split a record page, or inventory only its long prose paragraphs.
 
@@ -1372,7 +1437,12 @@ def process_page(
                 "line_paragraphs": [line.debug_id for line in lines],
             }
         )
-    rebuilt, pending = _merge_tight_blocks(rebuilt, pending, config)
+    rebuilt, pending = _merge_tight_blocks(
+        rebuilt,
+        pending,
+        config,
+        minimum_text_length,
+    )
     page.pdf_paragraph = rebuilt
 
     pending_by_id = {
@@ -1611,6 +1681,7 @@ def apply(translation_config, labeled_pages, policy_of=None) -> dict | None:
             label,
             config,
             prose_only=not declared,
+            minimum_text_length=minimum,
         )
         after = page_lines(page, config)
         result_characters = "".join(

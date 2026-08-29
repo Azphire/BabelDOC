@@ -1307,6 +1307,118 @@ def test_tight_independent_neighbors_stay_separate(
     ]
 
 
+def test_short_masthead_label_and_value_form_one_readable_bounded_block(tmp_path):
+    label = _paragraph(
+        ["主办单位"],
+        "masthead-label",
+        left=36.52734375,
+        bottom=549.51915,
+        faces=["title"],
+        char_width=8.0,
+    )
+    label.box = il_version_1.Box(
+        36.52734375,
+        549.51915,
+        71.47265625,
+        557.6754,
+    )
+    value = _paragraph(
+        ["国际原子能机构新闻和宣传办公室"],
+        "masthead-value",
+        left=36.5625,
+        bottom=534.27005625,
+        faces=["body"],
+        char_width=8.0,
+    )
+    value.box = il_version_1.Box(
+        36.5625,
+        534.27005625,
+        170.6484375,
+        542.8833375,
+    )
+    config = Config(tmp_path)
+    config.min_text_length = 5
+    page = _page([label, value], number=1, kind="masthead")
+    document = il_version_1.Document(page=[page], total_pages=1)
+    source_characters = "".join(
+        line_split.characters_text(line_split.paragraph_characters(paragraph))
+        for paragraph in page.pdf_paragraph
+    )
+
+    report = line_split.apply(config, [(2, page)])
+
+    assert len(page.pdf_paragraph) == 1
+    merged = page.pdf_paragraph[0]
+    assert line_split.characters_text(
+        line_split.paragraph_characters(merged)
+    ) == source_characters
+    assert merged.unicode == "主办单位\n国际原子能机构新闻和宣传办公室"
+    assert report["source_units"][0]["parent_refs"] == ["p2#0", "p2#1"]
+    assert report["source_units"][0]["record_kind"] == line_split.RECORD_BLOCK
+    assert report["short_lines"] == []
+    driver = object.__new__(ILTranslatorLLMOnly)
+    driver.translation_config = SimpleNamespace(min_text_length=5)
+    assert driver._should_translate_paragraph(merged)
+
+    target = (
+        "Organizer International Atomic Energy Agency News and Public "
+        "Information Office"
+    )
+    merged.unicode = target
+    merged.pdf_paragraph_composition = _target_composition(target)
+    Typesetting(SimpleNamespace(lang_out="en"), RenderMapper()).render_paragraph(
+        merged,
+        document.page[0],
+        {"body": RenderFont(), "title": RenderFont()},
+    )
+
+    source_box = (36.52734375, 534.27005625, 170.6484375, 557.6754)
+    assert tuple(
+        getattr(merged.box, name) for name in ("x", "y", "x2", "y2")
+    ) == source_box
+    rendered = [
+        composition.pdf_character
+        for composition in merged.pdf_paragraph_composition
+        if composition.pdf_character is not None
+    ]
+    assert "".join(character.char_unicode for character in rendered) == target
+    assert len({round(character.box.y, 3) for character in rendered}) > 1
+    assert merged.scale >= 0.5
+    assert all(
+        source_box[0] <= character.box.x <= character.box.x2 <= source_box[2]
+        and source_box[1] <= character.box.y <= character.box.y2 <= source_box[3]
+        for character in rendered
+    )
+
+
+def test_short_label_rule_does_not_merge_a_misaligned_independent_record(tmp_path):
+    label = _paragraph(
+        ["Label"],
+        "short-heading",
+        left=50,
+        bottom=522,
+        faces=["title"],
+    )
+    independent = _paragraph(
+        ["A substantially longer independent record"],
+        "independent-record",
+        left=60,
+        bottom=506,
+        faces=["body"],
+    )
+    config = Config(tmp_path)
+    config.min_text_length = 6
+    page = _page([label, independent], kind="masthead")
+
+    report = line_split.apply(config, [(1, page)])
+
+    assert page.pdf_paragraph == [label, independent]
+    assert [unit["parent_refs"] for unit in report["source_units"]] == [
+        ["p1#0"],
+        ["p1#1"],
+    ]
+
+
 def test_unicode_only_debug_furniture_is_not_a_bounded_source_unit(tmp_path):
     style = il_version_1.PdfStyle(font_id="body", font_size=4.0)
     overlay = il_version_1.PdfParagraph(
