@@ -1140,6 +1140,24 @@ def _boxes_overlap(left: list[float], right: list[float], tolerance: float) -> b
     )
 
 
+def _horizontal_overlap(
+    left: list[float],
+    right: list[float],
+    tolerance: float,
+) -> bool:
+    return min(left[2], right[2]) - max(left[0], right[0]) > tolerance
+
+
+def _page_boundary_box(page) -> list[float] | None:
+    """Return the visible page boundary used by terminal record cells."""
+    for holder_name in ("cropbox", "mediabox"):
+        holder = getattr(page, holder_name, None)
+        box = _box_record(getattr(holder, "box", None))
+        if box is not None and box[2] > box[0] and box[3] > box[1]:
+            return box
+    return None
+
+
 def _record_lane_allocations(
     page,
     pending: list[_PendingUnit],
@@ -1154,12 +1172,15 @@ def _record_lane_allocations(
     A paragraph box is an ink box, not necessarily the measure reserved for a
     record. Three vertically distinct records with the same left edge prove a
     repeated lane; the furthest ink edge they use is a conservative lane edge.
-    The closest proved record below also bounds the current record's vertical
-    cell. A single record may use either addition only when the added region
-    intersects neither another paragraph nor detected figure artwork. Records
-    remain independent and their source ink bands remain unchanged for frozen
-    truth. The typesetter still tries the source's single-line contract first;
-    the vertical cell merely makes a bounded wrap fallback provable.
+    The closest proved record below bounds an ordinary record cell. For the
+    terminal record in a proved lane, the closest visible paragraph or figure
+    whose x interval intersects the lane bounds the otherwise empty cell; only
+    a page with no such lower obstacle falls back to its visible lower edge. A
+    single record may use either addition only when the added region intersects
+    no source paint. Records remain independent and their source ink bands stay
+    unchanged for frozen truth. The typesetter still tries the source's
+    single-line contract first; the vertical cell merely makes a bounded wrap
+    fallback provable.
     """
     candidates = [
         item
@@ -1168,6 +1189,25 @@ def _record_lane_allocations(
         and item.kind in {RECORD_SINGLE, RECORD_BLOCK}
         and _box_record(item.paragraph.box) is not None
     ]
+    visible_obstacles: list[tuple[object | None, list[float]]] = []
+    visible_obstacles.extend(
+        (paragraph, box)
+        for paragraph in page.pdf_paragraph or ()
+        if not is_debug_overlay(paragraph)
+        and (box := _box_record(paragraph.box)) is not None
+    )
+    visible_obstacles.extend(
+        (None, box)
+        for figure in page.pdf_figure or ()
+        if (box := _box_record(getattr(figure, "box", None))) is not None
+    )
+    visible_obstacles.extend(
+        (None, box)
+        for layout in page.page_layout or ()
+        if (getattr(layout, "class_name", "") or "").casefold() == "figure"
+        and (box := _box_record(getattr(layout, "box", None))) is not None
+    )
+    page_boundary = _page_boundary_box(page)
     result = {}
     for item in candidates:
         if item.kind != RECORD_SINGLE:
@@ -1205,24 +1245,11 @@ def _record_lane_allocations(
             region: list[float],
             current_paragraph=item.paragraph,
         ) -> bool:
-            paragraph_obstacle = any(
-                paragraph is not current_paragraph
-                and not is_debug_overlay(paragraph)
-                and (box := _box_record(paragraph.box)) is not None
+            return any(
+                owner is not current_paragraph
                 and _boxes_overlap(region, box, config.scan_step)
-                for paragraph in page.pdf_paragraph or ()
+                for owner, box in visible_obstacles
             )
-            figure_obstacle = any(
-                (box := _box_record(getattr(figure, "box", None))) is not None
-                and _boxes_overlap(region, box, config.scan_step)
-                for figure in page.pdf_figure or ()
-            ) or any(
-                (getattr(layout, "class_name", "") or "").casefold() == "figure"
-                and (box := _box_record(getattr(layout, "box", None))) is not None
-                and _boxes_overlap(region, box, config.scan_step)
-                for layout in page.page_layout or ()
-            )
-            return paragraph_obstacle or figure_obstacle
 
         allocation_x2 = source[2]
         if lane_x2 > source[2] + config.scan_step:
@@ -1246,15 +1273,36 @@ def _record_lane_allocations(
             candidate_y = (
                 _box_record(nearest_below.paragraph.box)[3] + config.scan_step
             )
-            if candidate_y < source[1] - config.scan_step:
-                vertical_strip = [
-                    source[0],
-                    candidate_y,
-                    allocation_x2,
-                    source[1],
-                ]
-                if not obstructed(vertical_strip):
-                    allocation_y = candidate_y
+        else:
+            terminal_obstacles = [
+                box
+                for owner, box in visible_obstacles
+                if owner is not item.paragraph
+                and box[3] <= source[1] + config.scan_step
+                and _horizontal_overlap(
+                    [source[0], box[1], allocation_x2, box[3]],
+                    box,
+                    config.scan_step,
+                )
+            ]
+            if terminal_obstacles:
+                candidate_y = (
+                    max(terminal_obstacles, key=lambda box: box[3])[3]
+                    + config.scan_step
+                )
+            elif page_boundary is not None:
+                candidate_y = page_boundary[1] + config.scan_step
+            else:
+                candidate_y = source[1]
+        if candidate_y < source[1] - config.scan_step:
+            vertical_strip = [
+                source[0],
+                candidate_y,
+                allocation_x2,
+                source[1],
+            ]
+            if not obstructed(vertical_strip):
+                allocation_y = candidate_y
 
         allows_wrap = allocation_y < source[1] - config.scan_step
         if (
@@ -1937,6 +1985,16 @@ def allocation_obstacles(page, label: int) -> list[dict]:
                     "box": box,
                 }
             )
+    page_boundary = _page_boundary_box(page)
+    if page_boundary is not None:
+        found.append(
+            {
+                "page": label,
+                "kind": "page_boundary",
+                "source_ref": f"p{label}:page_boundary#0",
+                "box": page_boundary,
+            }
+        )
     return found
 
 

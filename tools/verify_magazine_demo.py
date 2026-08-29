@@ -50,6 +50,7 @@ DROPCAP_METRIC_SOURCES = {
     "advance_em_fallback",
 }
 FROZEN_BOX_TOLERANCE = 0.5
+SOURCE_PAGE_BOUNDARY_TOLERANCE = 0.01
 
 
 class VerificationError(ValueError):
@@ -127,6 +128,58 @@ def _boxes_overlap(left, right, tolerance: float) -> bool:
         min(left[2], right[2]) - max(left[0], right[0]) > tolerance
         and min(left[3], right[3]) - max(left[1], right[1]) > tolerance
     )
+
+
+def _source_pdf_page_boundaries(
+    source: Path,
+    physical_pages: set[int],
+) -> dict[int, tuple[float, float, float, float]]:
+    """Read page bounds in the normalized coordinates used by the IL.
+
+    ``fix_media_box`` rewrites the original MediaBox as ``[0 0 x1 y1]`` and
+    removes CropBox before IL parsing. Mirror that exact preprocessing here:
+    an original CropBox, even when smaller, cannot shrink the product frame.
+    """
+    if any(page <= 0 for page in physical_pages):
+        raise VerificationError("allocation obstacle page is invalid")
+    try:
+        document = pymupdf.open(source)
+    except (RuntimeError, ValueError) as error:
+        raise VerificationError(f"source PDF cannot be opened: {source}") from error
+    try:
+        boundaries = {}
+        for physical_page in sorted(physical_pages):
+            if physical_page > document.page_count:
+                raise VerificationError(
+                    f"source PDF has no physical page: p{physical_page}"
+                )
+            pdf_page = document[physical_page - 1]
+            media = getattr(pdf_page, "mediabox", None)
+            coordinates = (
+                () if media is None else tuple(float(value) for value in media)
+            )
+            if (
+                len(coordinates) != 4
+                or not all(math.isfinite(value) for value in coordinates)
+                or not (
+                    coordinates[0] < coordinates[2]
+                    and coordinates[1] < coordinates[3]
+                    and coordinates[2] > 0
+                    and coordinates[3] > 0
+                )
+            ):
+                raise VerificationError(
+                    f"source PDF page boundary is invalid: p{physical_page}"
+                )
+            boundaries[physical_page] = (
+                0.0,
+                0.0,
+                coordinates[2],
+                coordinates[3],
+            )
+        return boundaries
+    finally:
+        document.close()
 
 
 def _member_signature(member: dict, where: str) -> tuple:
@@ -529,7 +582,10 @@ def verify_toc(
     raw_obstacles = report.get("allocation_obstacles")
     if not isinstance(raw_obstacles, list):
         raise VerificationError("line split allocation obstacle inventory is missing")
-    obstacles_by_page: dict[int, list[tuple[str, tuple[float, float, float, float]]]] = {}
+    obstacles_by_page: dict[
+        int,
+        list[tuple[str, str, tuple[float, float, float, float]]],
+    ] = {}
     obstacle_refs = set()
     for obstacle in raw_obstacles:
         if not isinstance(obstacle, dict) or set(obstacle) != {
@@ -544,16 +600,52 @@ def verify_toc(
         reference = obstacle["source_ref"]
         if (
             not isinstance(page, int)
-            or kind not in {"paragraph", "pdf_figure", "layout_figure"}
+            or kind
+            not in {
+                "paragraph",
+                "pdf_figure",
+                "layout_figure",
+                "page_boundary",
+            }
             or not isinstance(reference, str)
             or reference in obstacle_refs
-            or not reference.startswith(f"p{page}")
+            or (
+                kind == "paragraph"
+                and (
+                    REF_PATTERN.fullmatch(reference) is None
+                    or not reference.startswith(f"p{page}#")
+                )
+            )
+            or (
+                kind != "paragraph"
+                and not reference.startswith(f"p{page}:{kind}#")
+            )
         ):
             raise VerificationError(f"allocation obstacle identity is invalid: {reference}")
         obstacle_refs.add(reference)
         obstacles_by_page.setdefault(page, []).append(
-            (reference, _require_box(obstacle["box"], f"obstacle {reference}"))
+            (
+                kind,
+                reference,
+                _require_box(obstacle["box"], f"obstacle {reference}"),
+            )
         )
+    source_page_boundaries = _source_pdf_page_boundaries(
+        source,
+        set(obstacles_by_page),
+    )
+    for page, obstacles in obstacles_by_page.items():
+        page_boundaries = [
+            box for kind, _reference, box in obstacles if kind == "page_boundary"
+        ]
+        if len(page_boundaries) != 1 or not _box_equal(
+            page_boundaries[0],
+            source_page_boundaries[page],
+            tolerance=SOURCE_PAGE_BOUNDARY_TOLERANCE,
+        ):
+            raise VerificationError(
+                f"allocation page boundary disagrees with source PDF: p{page}"
+            )
     refs = [unit.get("source_ref") for unit in units]
     if any(
         not isinstance(reference, str)
@@ -763,14 +855,27 @@ def verify_toc(
         page = int(reference.split("#", 1)[0][1:])
         matching_obstacles = [
             box
-            for obstacle_ref, box in obstacles_by_page.get(page, [])
-            if obstacle_ref == reference
+            for kind, obstacle_ref, box in obstacles_by_page.get(page, [])
+            if kind == "paragraph" and obstacle_ref == reference
         ]
         if len(matching_obstacles) != 1 or not _box_equal(
             matching_obstacles[0], source
         ):
             raise VerificationError(
                 f"source unit is absent from obstacle inventory: {reference}"
+            )
+        page_boundaries = [
+            box
+            for kind, _obstacle_ref, box in obstacles_by_page.get(page, [])
+            if kind == "page_boundary"
+        ]
+        if (
+            len(page_boundaries) != 1
+            or not _box_contains(page_boundaries[0], source)
+            or not _box_contains(page_boundaries[0], allocation)
+        ):
+            raise VerificationError(
+                f"allocation page boundary is invalid: {reference}"
             )
         if _box_equal(source, allocation):
             if basis != [reference] or allows_wrap:
@@ -818,15 +923,15 @@ def verify_toc(
             for peer_ref, peer in zip(basis, peers, strict=True)
         )
         page_obstacles = [
-            (obstacle_ref, box)
-            for obstacle_ref, box in obstacles_by_page.get(page, [])
-            if obstacle_ref != reference
+            (kind, obstacle_ref, box)
+            for kind, obstacle_ref, box in obstacles_by_page.get(page, [])
+            if kind != "page_boundary" and obstacle_ref != reference
         ]
 
         def intersections(region, obstacles=page_obstacles):
             return [
                 obstacle_ref
-                for obstacle_ref, box in obstacles
+                for _kind, obstacle_ref, box in obstacles
                 if _boxes_overlap(region, box, scan_step)
             ]
 
@@ -865,6 +970,22 @@ def verify_toc(
             held_y = boundary_box[3] + scan_step
             if held_y < source[1] - scan_step:
                 candidate_y = held_y
+        else:
+            terminal_obstacles = [
+                (obstacle_ref, box)
+                for _kind, obstacle_ref, box in page_obstacles
+                if box[3] <= source[1] + scan_step
+                and min(allocation[2], box[2]) - max(source[0], box[0])
+                > scan_step
+            ]
+            if terminal_obstacles:
+                _boundary_ref, boundary_box = max(
+                    terminal_obstacles,
+                    key=lambda held: held[1][3],
+                )
+                candidate_y = boundary_box[3] + scan_step
+            else:
+                candidate_y = page_boundaries[0][1] + scan_step
         vertical_candidate = [
             source[0],
             candidate_y,

@@ -5,6 +5,7 @@ import json
 from pathlib import Path
 from types import SimpleNamespace
 
+import pymupdf
 import pytest
 from babeldoc.format.pdf.document_il import il_version_1
 from babeldoc.format.pdf.document_il.midend.il_translator_llm_only import (
@@ -28,6 +29,7 @@ from tests.minimal.fakes import RecordingTracker
 from tests.minimal.fakes import StubChainTranslator
 from tools.verify_magazine_demo import VerificationError
 from tools.verify_magazine_demo import _frozen_box_equal
+from tools.verify_magazine_demo import _source_pdf_page_boundaries
 from tools.verify_magazine_demo import verify_toc
 
 
@@ -42,6 +44,32 @@ def test_frozen_truth_tolerates_only_subpoint_pdf_normalization_drift():
 
     assert _frozen_box_equal(frozen, [104.47, 688.2576, 448.212, 736.6976])
     assert not _frozen_box_equal(frozen, [104.47, 688.4946, 448.212, 736.6976])
+
+
+def test_source_pdf_page_boundary_normalizes_a_nonzero_mediabox_origin(tmp_path):
+    source = tmp_path / "origin.pdf"
+    with pymupdf.open() as document:
+        page = document.new_page(width=607.5, height=783.0)
+        document.xref_set_key(page.xref, "MediaBox", "[24 24 631.5 807]")
+        document.xref_set_key(page.xref, "CropBox", "[24 24 631.5 807]")
+        document.save(source)
+
+    assert _source_pdf_page_boundaries(source, {1}) == {
+        1: pytest.approx((0.0, 0.0, 631.5, 807.0))
+    }
+
+
+def test_source_pdf_page_boundary_ignores_a_smaller_original_cropbox(tmp_path):
+    source = tmp_path / "cropped.pdf"
+    with pymupdf.open() as document:
+        page = document.new_page(width=612.0, height=792.0)
+        document.xref_set_key(page.xref, "MediaBox", "[0 0 612 792]")
+        document.xref_set_key(page.xref, "CropBox", "[24 24 588 768]")
+        document.save(source)
+
+    assert _source_pdf_page_boundaries(source, {1}) == {
+        1: pytest.approx((0.0, 0.0, 612.0, 792.0))
+    }
 
 
 def test_typesetting_removes_only_proven_text_clip_form_shadows(
@@ -186,6 +214,23 @@ class Config:
     def get_working_file_path(self, name: str) -> str:
         self.working_dir.mkdir(parents=True, exist_ok=True)
         return str(self.working_dir / name)
+
+
+def _write_source_pdf_for_report(path: Path, report: dict) -> str:
+    boundaries = {
+        obstacle["page"]: obstacle["box"]
+        for obstacle in report["allocation_obstacles"]
+        if obstacle["kind"] == "page_boundary"
+    }
+    assert boundaries
+    with pymupdf.open() as document:
+        for page_number in range(1, max(boundaries) + 1):
+            boundary = boundaries.get(page_number, [0.0, 0.0, 600.0, 700.0])
+            assert boundary[0] == pytest.approx(0.0)
+            assert boundary[1] == pytest.approx(0.0)
+            document.new_page(width=boundary[2], height=boundary[3])
+        document.save(path)
+    return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
 def _paragraph(
@@ -400,14 +445,14 @@ def test_non_record_page_registers_only_long_prose_without_splitting(tmp_path):
 
     source = tmp_path / "source.pdf"
     output = tmp_path / "output.pdf"
-    source.write_bytes(b"source")
+    source_sha256 = _write_source_pdf_for_report(source, report)
     output.write_bytes(b"output")
     expectations = tmp_path / "editorial-expectations.json"
     expectations.write_text(
         json.dumps(
             {
                 "sample_id": "editorial-prose",
-                "source_sha256": hashlib.sha256(b"source").hexdigest(),
+                "source_sha256": source_sha256,
                 "direction": "zh-en",
                 "toc_records": [
                     {
@@ -1107,6 +1152,79 @@ def _shared_record_lane_page(
     return page, current
 
 
+def _terminal_record_lane_page(*, boundary_kind: str = "paragraph"):
+    lane_peers = [
+        _paragraph(
+            [text],
+            debug_id,
+            left=241.2349390625,
+            bottom=bottom,
+            char_width=5.0,
+        )
+        for text, debug_id, bottom in (
+            ("20 Certification cases", "terminal-lane-peer-0", 705.0),
+            ("22 Nuclear security technology", "terminal-lane-peer-1", 623.0),
+            ("Nuclear security technology", "terminal-lane-peer-2", 606.0),
+        )
+    ]
+    parent = _paragraph(
+        ["24 Incident and trafficking database", "打击非法贩运放射性物质25年"],
+        "terminal-parent",
+        left=241.2349390625,
+        bottom=515.81920390625,
+        faces=["title", "body"],
+        char_width=4.641535698784723,
+    )
+    adjacent_column = _paragraph(
+        ["New section"],
+        "adjacent-column-heading",
+        left=80.0,
+        bottom=408.336459375,
+        char_width=5.0,
+    )
+    paragraphs = [*lane_peers, parent, adjacent_column]
+    if boundary_kind == "paragraph":
+        paragraphs.append(
+            _paragraph(
+                ["26 A horizontally overlapping next-column record"],
+                "terminal-paragraph-boundary",
+                left=80.2034390625,
+                bottom=386.2794640625,
+                char_width=6.0,
+            )
+        )
+    page = _page(paragraphs, number=4, kind="toc")
+    frame = il_version_1.Box(0.0, 0.0, 595.276, 841.89)
+    page.mediabox = il_version_1.Mediabox(box=frame)
+    page.cropbox = il_version_1.Cropbox(box=frame)
+    page.page_layout = [
+        il_version_1.PageLayout(
+            box=il_version_1.Box(78.0, 482.0, 217.0, 571.0),
+            id=1,
+            conf=0.99,
+            class_name="figure",
+        )
+    ]
+    if boundary_kind == "pdf_figure":
+        page.pdf_figure = [
+            il_version_1.PdfFigure(
+                box=il_version_1.Box(260.0, 386.0, 390.0, 400.0),
+            )
+        ]
+    elif boundary_kind == "layout_figure":
+        page.page_layout.append(
+            il_version_1.PageLayout(
+                box=il_version_1.Box(260.0, 386.0, 390.0, 401.0),
+                id=2,
+                conf=0.99,
+                class_name="figure",
+            )
+        )
+    elif boundary_kind not in {"paragraph", "page"}:
+        raise AssertionError(f"unsupported boundary kind: {boundary_kind}")
+    return page, parent
+
+
 def test_single_record_uses_proven_shared_lane_without_merging(tmp_path):
     page, current = _shared_record_lane_page()
     config = Config(tmp_path)
@@ -1179,6 +1297,337 @@ def test_single_record_uses_proven_shared_lane_without_merging(tmp_path):
     assert layout["elements"][0]["final_holder_box"] == pytest.approx(
         actual["allocation_band"]
     )
+
+
+def test_terminal_child_uses_nearest_horizontally_overlapping_record_cell(
+    tmp_path,
+):
+    page, parent = _terminal_record_lane_page()
+    config = Config(tmp_path)
+    document = il_version_1.Document(page=[page], total_pages=1)
+    report = line_split.apply(config, [(5, page)])
+    actual = next(
+        unit
+        for unit in report["source_units"]
+        if unit["debug_id"] == "terminal-parent#L1"
+    )
+    upper = next(
+        unit
+        for unit in report["source_units"]
+        if unit["debug_id"] == "terminal-parent#L0"
+    )
+    boundary_ref = next(
+        unit["source_ref"]
+        for unit in report["source_units"]
+        if unit["debug_id"] == "terminal-paragraph-boundary"
+    )
+    boundary = next(
+        obstacle
+        for obstacle in report["allocation_obstacles"]
+        if obstacle["source_ref"] == boundary_ref
+    )
+
+    assert actual["parent_ref"] == upper["parent_ref"]
+    assert [
+        child["source_ref"] for child in actual["ordered_children"]
+    ] == [upper["source_ref"], actual["source_ref"]]
+    assert actual["child_order"] == 1
+    assert actual["source_band"] == pytest.approx(
+        [241.2349390625, 515.81920390625, 408.33022421875, 525.81920390625]
+    )
+    assert actual["allocation_band"] == pytest.approx(
+        [
+            actual["source_band"][0],
+            boundary["box"][3] + line_split.load_line_split_config().scan_step,
+            actual["source_band"][2],
+            actual["source_band"][3],
+        ]
+    )
+    assert actual["allocation_allows_wrap"] is True
+    assert len(actual["allocation_basis"]) == 5
+    assert actual["parent"]["source_box"] == pytest.approx(
+        [parent.box.x, parent.box.y, parent.box.x2, parent.box.y2]
+    )
+    adjacent_ref = next(
+        unit["source_ref"]
+        for unit in report["source_units"]
+        if unit["debug_id"] == "adjacent-column-heading"
+    )
+    adjacent = next(
+        obstacle
+        for obstacle in report["allocation_obstacles"]
+        if obstacle["source_ref"] == adjacent_ref
+    )
+    assert adjacent["box"][2] < actual["allocation_band"][0]
+
+    paragraph = next(
+        held
+        for held in page.pdf_paragraph
+        if held.debug_id == "terminal-parent#L1"
+    )
+    prefix = "Combating the illegal trafficking of radioactive materials "
+    suffix = " years"
+    target = f"{prefix}25{suffix}"
+    style = il_version_1.PdfStyle(font_id="body", font_size=11.0)
+    formula_box = il_version_1.Box(0.0, 0.0, 10.0, 10.0)
+    formula_characters = [
+        il_version_1.PdfCharacter(
+            char_unicode=character,
+            box=il_version_1.Box(index * 5.0, 0.0, (index + 1) * 5.0, 10.0),
+            visual_bbox=il_version_1.VisualBbox(
+                box=il_version_1.Box(
+                    index * 5.0,
+                    0.0,
+                    (index + 1) * 5.0,
+                    10.0,
+                )
+            ),
+            pdf_style=style,
+            advance=0.5,
+            xobj_id=-1,
+        )
+        for index, character in enumerate("25")
+    ]
+    paragraph.unicode = target
+    paragraph.pdf_paragraph_composition = [
+        *_target_composition(prefix, style=style),
+        il_version_1.PdfParagraphComposition(
+            pdf_formula=il_version_1.PdfFormula(
+                box=formula_box,
+                pdf_character=formula_characters,
+                x_offset=0.0,
+                y_offset=0.0,
+                x_advance=10.0,
+            )
+        ),
+        *_target_composition(suffix, style=style),
+    ]
+    layout_report.prepare(
+        config,
+        document,
+        ArticleDocumentIR(articles=(), by_page={}, by_element={}, by_chain={}),
+        article_flow_report={"article_flow_applied": False},
+        eligible_roles=(),
+    )
+    try:
+        Typesetting(SimpleNamespace(lang_out="en"), RenderMapper()).render_paragraph(
+            paragraph,
+            page,
+            {"body": RenderFont(), "title": RenderFont()},
+        )
+        layout = layout_report.finalize()
+    finally:
+        layout_report.discard()
+
+    rendered_text = ""
+    rendered_characters = []
+    for composition in paragraph.pdf_paragraph_composition:
+        if composition.pdf_character is not None:
+            rendered_characters.append(composition.pdf_character)
+            rendered_text += composition.pdf_character.char_unicode
+        elif composition.pdf_formula is not None:
+            rendered_characters.extend(composition.pdf_formula.pdf_character)
+            rendered_text += "".join(
+                character.char_unicode
+                for character in composition.pdf_formula.pdf_character
+            )
+    assert rendered_text == target
+    assert paragraph.scale >= 0.5
+    assert len({round(character.box.y, 3) for character in rendered_characters}) >= 2
+    assert layout["elements"][0]["source_box"] == pytest.approx(
+        actual["allocation_band"]
+    )
+    assert layout["elements"][0]["final_holder_box"] == pytest.approx(
+        actual["allocation_band"]
+    )
+
+
+@pytest.mark.parametrize(
+    ("boundary_kind", "expected_y2"),
+    (("pdf_figure", 400.0), ("layout_figure", 401.0), ("page", 0.0)),
+)
+def test_terminal_record_cell_uses_visible_figure_or_page_boundary(
+    tmp_path,
+    boundary_kind,
+    expected_y2,
+):
+    page, _parent = _terminal_record_lane_page(boundary_kind=boundary_kind)
+    report = line_split.apply(Config(tmp_path), [(5, page)])
+    actual = next(
+        unit
+        for unit in report["source_units"]
+        if unit["debug_id"] == "terminal-parent#L1"
+    )
+
+    assert actual["allocation_band"][1] == pytest.approx(
+        expected_y2 + line_split.load_line_split_config().scan_step
+    )
+    assert actual["allocation_allows_wrap"] is True
+
+
+@pytest.mark.parametrize(
+    "boundary_kind",
+    ("paragraph", "pdf_figure", "layout_figure", "page"),
+)
+def test_toc_verifier_rejects_terminal_cell_past_recomputed_boundary(
+    tmp_path,
+    boundary_kind,
+):
+    page, _parent = _terminal_record_lane_page(boundary_kind=boundary_kind)
+    report = line_split.apply(Config(tmp_path), [(5, page)])
+    current = next(
+        unit
+        for unit in report["source_units"]
+        if unit["debug_id"] == "terminal-parent#L1"
+    )
+    forged = list(current["allocation_band"])
+    forged[1] -= 20.0
+    current["allocation_band"] = forged
+    matching = next(
+        child
+        for child in current["ordered_children"]
+        if child["source_ref"] == current["source_ref"]
+    )
+    matching["allocation_band"] = forged
+    (tmp_path / line_split.REPORT_NAME).write_text(
+        json.dumps(report),
+        encoding="utf-8",
+    )
+    source = tmp_path / "source.pdf"
+    output = tmp_path / "output.pdf"
+    source_sha256 = _write_source_pdf_for_report(source, report)
+    output.write_bytes(b"output")
+    expectations = tmp_path / "expectations.json"
+    expectations.write_text(
+        json.dumps(
+            {
+                "sample_id": "terminal-record-cell",
+                "source_sha256": source_sha256,
+                "direction": "zh-en",
+                "toc_records": [
+                    {
+                        "anchor": current["parent_ref"],
+                        "kind": line_split.RECORD_SINGLE,
+                        "source_box": current["parent"]["source_box"],
+                    }
+                ],
+            }
+        ),
+        encoding="utf-8",
+    )
+
+    with pytest.raises(
+        VerificationError,
+        match=(
+            "allocation page boundary is invalid"
+            if boundary_kind == "page"
+            else "allocation record cell is not proved"
+        ),
+    ):
+        verify_toc(expectations, source, output, tmp_path, "zh", "en")
+
+
+def test_toc_verifier_rejects_forged_page_boundary_and_off_page_allocation(
+    tmp_path,
+):
+    page, _parent = _terminal_record_lane_page(boundary_kind="page")
+    report = line_split.apply(Config(tmp_path), [(5, page)])
+    source = tmp_path / "source.pdf"
+    output = tmp_path / "output.pdf"
+    source_sha256 = _write_source_pdf_for_report(source, report)
+    output.write_bytes(b"output")
+
+    boundary = next(
+        obstacle
+        for obstacle in report["allocation_obstacles"]
+        if obstacle["kind"] == "page_boundary"
+    )
+    boundary["box"][1] = -100.0
+    current = next(
+        unit
+        for unit in report["source_units"]
+        if unit["debug_id"] == "terminal-parent#L1"
+    )
+    forged = list(current["allocation_band"])
+    forged[1] = boundary["box"][1] + line_split.load_line_split_config().scan_step
+    current["allocation_band"] = forged
+    matching = next(
+        child
+        for child in current["ordered_children"]
+        if child["source_ref"] == current["source_ref"]
+    )
+    matching["allocation_band"] = forged
+    (tmp_path / line_split.REPORT_NAME).write_text(
+        json.dumps(report),
+        encoding="utf-8",
+    )
+    expectations = tmp_path / "expectations.json"
+    expectations.write_text(
+        json.dumps(
+            {
+                "sample_id": "forged-page-boundary",
+                "source_sha256": source_sha256,
+                "direction": "zh-en",
+                "toc_records": [
+                    {
+                        "anchor": current["parent_ref"],
+                        "kind": line_split.RECORD_SINGLE,
+                        "source_box": current["parent"]["source_box"],
+                    }
+                ],
+            }
+        ),
+        encoding="utf-8",
+    )
+
+    with pytest.raises(
+        VerificationError,
+        match="allocation page boundary disagrees with source PDF: p5",
+    ):
+        verify_toc(expectations, source, output, tmp_path, "zh", "en")
+
+
+def test_toc_verifier_rejects_cross_page_paragraph_obstacle_identity(tmp_path):
+    paragraph = _paragraph(["Record ........ 9"], "truth", left=50, bottom=400)
+    _config, _document, report = _apply(tmp_path, [paragraph])
+    obstacle = next(
+        held
+        for held in report["allocation_obstacles"]
+        if held["kind"] == "paragraph"
+    )
+    obstacle["source_ref"] = "p2#0"
+    (tmp_path / line_split.REPORT_NAME).write_text(
+        json.dumps(report),
+        encoding="utf-8",
+    )
+    source = tmp_path / "source.pdf"
+    output = tmp_path / "output.pdf"
+    source_sha256 = _write_source_pdf_for_report(source, report)
+    output.write_bytes(b"output")
+    expectations = tmp_path / "expectations.json"
+    expectations.write_text(
+        json.dumps(
+            {
+                "sample_id": "cross-page-obstacle",
+                "source_sha256": source_sha256,
+                "direction": "en-zh",
+                "toc_records": [
+                    {
+                        "anchor": "p1#0",
+                        "kind": line_split.RECORD_SINGLE,
+                        "source_box": report["source_units"][0]["source_band"],
+                    }
+                ],
+            }
+        ),
+        encoding="utf-8",
+    )
+
+    with pytest.raises(
+        VerificationError,
+        match="allocation obstacle identity is invalid: p2#0",
+    ):
+        verify_toc(expectations, source, output, tmp_path, "en", "zh")
 
 
 def test_widest_record_wraps_only_inside_proven_vertical_cell(tmp_path):
@@ -1328,14 +1777,14 @@ def test_toc_verifier_rejects_source_text_inside_claimed_allocation(tmp_path):
     )
     source = tmp_path / "source.pdf"
     output = tmp_path / "output.pdf"
-    source.write_bytes(b"source")
+    source_sha256 = _write_source_pdf_for_report(source, report)
     output.write_bytes(b"output")
     expectations = tmp_path / "expectations.json"
     expectations.write_text(
         json.dumps(
             {
                 "sample_id": "allocation-obstacle",
-                "source_sha256": hashlib.sha256(b"source").hexdigest(),
+                "source_sha256": source_sha256,
                 "direction": "en-zh",
                 "toc_records": [
                     {
@@ -1396,14 +1845,14 @@ def test_toc_verifier_rejects_forged_record_cell_over_obstacle(
     )
     source = tmp_path / "source.pdf"
     output = tmp_path / "output.pdf"
-    source.write_bytes(b"source")
+    source_sha256 = _write_source_pdf_for_report(source, report)
     output.write_bytes(b"output")
     expectations = tmp_path / "expectations.json"
     expectations.write_text(
         json.dumps(
             {
                 "sample_id": "record-cell-obstacle",
-                "source_sha256": hashlib.sha256(b"source").hexdigest(),
+                "source_sha256": source_sha256,
                 "direction": "en-zh",
                 "toc_records": [
                     {
@@ -1509,14 +1958,14 @@ def test_toc_verifier_checks_direction_alias_kind_container_and_conservation(tmp
     _config, _document, report = _apply(tmp_path, [paragraph])
     source = tmp_path / "source.pdf"
     output = tmp_path / "output.pdf"
-    source.write_bytes(b"source")
+    source_sha256 = _write_source_pdf_for_report(source, report)
     output.write_bytes(b"output")
     expectations = tmp_path / "expectations.json"
     expectations.write_text(
         json.dumps(
             {
                 "sample_id": "synthetic",
-                "source_sha256": hashlib.sha256(b"source").hexdigest(),
+                "source_sha256": source_sha256,
                 "direction": "en-zh",
                 "toc_records": [
                     {
@@ -1568,7 +2017,7 @@ def test_toc_verifier_accepts_frozen_parent_children_and_multi_anchor_semantics(
     _config, _document, report = _apply(tmp_path, [block, folio, split, prose])
     source = tmp_path / "source.pdf"
     output = tmp_path / "output.pdf"
-    source.write_bytes(b"source")
+    source_sha256 = _write_source_pdf_for_report(source, report)
     output.write_bytes(b"output")
     parent_by_ref = {
         unit["parent_ref"]: unit["parent"] for unit in report["source_units"]
@@ -1578,7 +2027,7 @@ def test_toc_verifier_accepts_frozen_parent_children_and_multi_anchor_semantics(
         json.dumps(
             {
                 "sample_id": "frozen-shape",
-                "source_sha256": hashlib.sha256(b"source").hexdigest(),
+                "source_sha256": source_sha256,
                 "direction": "en-zh",
                 "toc_records": [
                     {
@@ -1745,14 +2194,14 @@ def test_visual_parent_groups_are_one_translation_item_without_merging_records(
 
     source = tmp_path / "source.pdf"
     output = tmp_path / "output.pdf"
-    source.write_bytes(b"source")
+    source_sha256 = _write_source_pdf_for_report(source, report)
     output.write_bytes(b"output")
     expectations = tmp_path / "visual-groups.json"
     expectations.write_text(
         json.dumps(
             {
                 "sample_id": "visual-groups",
-                "source_sha256": hashlib.sha256(b"source").hexdigest(),
+                "source_sha256": source_sha256,
                 "direction": "en-zh",
                 "toc_records": [
                     {
