@@ -90,6 +90,11 @@ LINE_BREAK_REGEX = regex.compile(
     r"]+$"
 )
 
+_TEXT_CLIP_IMAGE_RE = re.compile(
+    r"\bBT\b.*?\b7(?:\.0+)?\s+Tr\b.*?\bT[Jj]\b.*?\bET\b",
+    re.DOTALL,
+)
+
 LINE_HEAD_FORBIDDEN_PUNCTUATION = frozenset([
     ",",
     ".",
@@ -1616,7 +1621,7 @@ class Typesetting:
 
     @staticmethod
     def _remove_translated_source_shadows(page: il_version_1.Page) -> None:
-        """Drop unowned source glyphs shadowing a formal target holder."""
+        """Drop provable text-clip image shadows from formal target holders."""
         from babeldoc.magazine import layout_report
 
         physical_page = None if page.page_number is None else int(page.page_number) + 1
@@ -1627,31 +1632,78 @@ class Typesetting:
             container = layout_report.source_container(paragraph, physical_page)
             if container is not None and container.source_box is not None:
                 translated_boxes.append(Box(*container.source_box))
-        if not translated_boxes or not page.pdf_character:
+        if not translated_boxes:
             return
 
-        def is_shadow(character: PdfCharacter) -> bool:
-            if character.debug_info or character.formula_layout_id is not None:
+        def center_is_in_target(box: Box | None) -> bool:
+            if box is None:
                 return False
-            held = character.visual_bbox.box if character.visual_bbox else character.box
-            if held is None:
-                return False
-            center_x = (held.x + held.x2) / 2
-            center_y = (held.y + held.y2) / 2
+            center_x = (box.x + box.x2) / 2
+            center_y = (box.y + box.y2) / 2
             return any(
-                box.x <= center_x <= box.x2 and box.y <= center_y <= box.y2
-                for box in translated_boxes
+                target.x <= center_x <= target.x2
+                and target.y <= center_y <= target.y2
+                for target in translated_boxes
             )
 
-        before = len(page.pdf_character)
-        page.pdf_character = [
-            character for character in page.pdf_character if not is_shadow(character)
+        def is_text_clip_image(form: PdfForm) -> bool:
+            if form.form_type != "image" or not center_is_in_target(form.box):
+                return False
+            state = form.graphic_state
+            instruction = (
+                None if state is None else state.passthrough_per_char_instruction
+            )
+            return bool(
+                instruction and _TEXT_CLIP_IMAGE_RE.search(instruction) is not None
+            )
+
+        def same_box(left: Box | None, right: Box | None) -> bool:
+            if left is None or right is None:
+                return False
+            return all(
+                math.isclose(
+                    getattr(left, name),
+                    getattr(right, name),
+                    rel_tol=0.0,
+                    abs_tol=0.001,
+                )
+                for name in ("x", "y", "x2", "y2")
+            )
+
+        # Some PDFs flatten text into pairs of tiny image forms.  One form is
+        # painted through a text-render-mode-7 glyph clip and its same-box
+        # companions carry the raster paint/mask.  Once the paragraph owning
+        # that exact source region has a formal target holder, replaying the
+        # group leaves both extractable clipping text and visible source ink.
+        # The text-clip operator plus the same-box relationship is the proof;
+        # ordinary images that merely overlap a paragraph are left untouched.
+        image_forms = [form for form in page.pdf_form if form.form_type == "image"]
+        clipped_boxes = [
+            form.box
+            for form in image_forms
+            if is_text_clip_image(form)
+            and any(
+                companion is not form
+                and same_box(companion.box, form.box)
+                and not is_text_clip_image(companion)
+                for companion in image_forms
+            )
         ]
-        removed = before - len(page.pdf_character)
-        if removed:
+        before_forms = len(page.pdf_form)
+        page.pdf_form = [
+            form
+            for form in page.pdf_form
+            if not (
+                form.form_type == "image"
+                and any(same_box(form.box, box) for box in clipped_boxes)
+            )
+        ]
+        removed_forms = before_forms - len(page.pdf_form)
+        if removed_forms:
             logger.info(
-                "Removed %d unowned source glyphs shadowing formal target holders on p%s",
-                removed,
+                "Removed %d text-clip image form(s) shadowing formal target "
+                "holders on p%s",
+                removed_forms,
                 physical_page,
             )
 

@@ -44,7 +44,7 @@ def test_frozen_truth_tolerates_only_subpoint_pdf_normalization_drift():
     assert not _frozen_box_equal(frozen, [104.47, 688.4946, 448.212, 736.6976])
 
 
-def test_typesetting_removes_only_unowned_source_shadows_from_translated_units(
+def test_typesetting_removes_only_proven_text_clip_form_shadows(
     tmp_path, monkeypatch,
 ):
     paragraph = _paragraph(["source text"], "shadow-owner", left=50, bottom=400)
@@ -80,6 +80,64 @@ def test_typesetting_removes_only_unowned_source_shadows_from_translated_units(
         pdf_style=style,
     )
     page.pdf_character = [shadow, formula, outside]
+    clipped_box = il_version_1.Box(51, 401, 70, 409)
+    clipped_raster = il_version_1.PdfForm(
+        box=clipped_box,
+        graphic_state=il_version_1.GraphicState(
+            passthrough_per_char_instruction="0 0 10 8 re W n",
+        ),
+        form_type="image",
+    )
+    text_clip = il_version_1.PdfForm(
+        box=il_version_1.Box(51, 401, 70, 409),
+        graphic_state=il_version_1.GraphicState(
+            passthrough_per_char_instruction=(
+                "0 0 10 8 re W n BT /C0 1 Tf 7 Tr "
+                "1 0 0 1 0 0 Tm [<0001>] TJ ET"
+            ),
+        ),
+        form_type="image",
+    )
+    ordinary_overlapping_image = il_version_1.PdfForm(
+        box=il_version_1.Box(72, 401, 90, 409),
+        graphic_state=il_version_1.GraphicState(
+            passthrough_per_char_instruction="0 0 18 8 re W n",
+        ),
+        form_type="image",
+    )
+    lone_text_clip = il_version_1.PdfForm(
+        box=il_version_1.Box(92, 401, 104, 409),
+        graphic_state=il_version_1.GraphicState(
+            passthrough_per_char_instruction=(
+                "BT /C0 1 Tf 7 Tr 1 0 0 1 0 0 Tm [<0003>] TJ ET"
+            ),
+        ),
+        form_type="image",
+    )
+    outside_raster = il_version_1.PdfForm(
+        box=il_version_1.Box(500, 500, 520, 510),
+        graphic_state=il_version_1.GraphicState(
+            passthrough_per_char_instruction="0 0 20 10 re W n",
+        ),
+        form_type="image",
+    )
+    outside_text_clip = il_version_1.PdfForm(
+        box=il_version_1.Box(500, 500, 520, 510),
+        graphic_state=il_version_1.GraphicState(
+            passthrough_per_char_instruction=(
+                "BT /C0 1 Tf 7 Tr 1 0 0 1 0 0 Tm [<0002>] TJ ET"
+            ),
+        ),
+        form_type="image",
+    )
+    page.pdf_form = [
+        clipped_raster,
+        text_clip,
+        ordinary_overlapping_image,
+        lone_text_clip,
+        outside_raster,
+        outside_text_clip,
+    ]
 
     layout_report.prepare(
         config,
@@ -98,7 +156,15 @@ def test_typesetting_removes_only_unowned_source_shadows_from_translated_units(
     finally:
         layout_report.discard()
 
-    assert page.pdf_character == [formula, outside]
+    # Page-level characters were not the real Aramco residue layer.  Do not
+    # broadly delete them merely because they overlap a translated holder.
+    assert page.pdf_character == [shadow, formula, outside]
+    assert page.pdf_form == [
+        ordinary_overlapping_image,
+        lone_text_clip,
+        outside_raster,
+        outside_text_clip,
+    ]
 
 
 class RenderMapper(FixedWidthMapper):
