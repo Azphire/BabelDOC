@@ -81,7 +81,14 @@ def _standalone_initial_fixture(*, duplicate_visual=False, duplicate_owner=False
             width=25.0,
         )
         return il_version_1.PdfParagraph(
-            box=copy.deepcopy(character.box),
+            # The semantic paragraph box is deliberately distinct from glyph
+            # ink: real display initials commonly overpaint beyond this box.
+            box=il_version_1.Box(
+                character.box.x + 1.0,
+                character.box.y + 1.0,
+                character.box.x2 - 1.0,
+                character.box.y2 - 1.0,
+            ),
             pdf_style=character.pdf_style,
             unicode="塞",
             pdf_paragraph_composition=[
@@ -273,6 +280,17 @@ def test_standalone_visual_initial_is_bound_merged_and_rendered_as_target(
     candidate = candidates[0]
     assert candidate.visual_initial_reference == "p7#1"
     assert candidate.first_run == "塞"
+    visual_character_box = tuple(
+        float(getattr(paragraph_characters(companion)[0].box, name))
+        for name in ("x", "y", "x2", "y2")
+    )
+    assert candidate.visual_initial_box == tuple(
+        float(getattr(companion.box, name)) for name in ("x", "y", "x2", "y2")
+    )
+    assert candidate.visual_initial_box != visual_character_box
+    assert candidate.binding_proof["visual_initial_glyph_box"] == list(
+        visual_character_box
+    )
     assert candidate.binding_proof["kind"] == "standalone_visual_initial"
     assert candidate.binding_proof["unique_owner_count"] == 1
     assert candidate.binding_proof["unique_visual_count"] == 1
@@ -963,9 +981,11 @@ def test_bull_standalone_truth_requires_both_corpus_nodes_and_target_evidence(
         "visual_font_id": "visual-font",
         "body_font_id": "body-font",
         "visual_font_size": 30.0,
-        "logical_start_delta": 0.955537,
-        "first_line_gap": 3.887363,
-        "vertical_gap": 2.0,
+        "visual_initial_glyph_box": [170.0, 451.0, 200.0, 481.0],
+        "owner_first_line_box": [203.0, 451.0, 350.0, 460.0],
+        "logical_start_delta": 0.470819,
+        "first_line_gap": 3.0,
+        "vertical_gap": 0.0,
         "unique_owner_count": 1,
         "unique_visual_count": 1,
     }
@@ -1039,6 +1059,23 @@ def test_bull_standalone_truth_requires_both_corpus_nodes_and_target_evidence(
         "zh",
         "en",
     )["status"] == "pass"
+
+    stable_visual_box = list(candidate["visual_initial_box"])
+    candidate["visual_initial_box"] = [
+        stable_visual_box[0] + 1.0,
+        *stable_visual_box[1:],
+    ]
+    (work / "drop_cap.report.json").write_text(
+        json.dumps({"candidates": [candidate]}),
+        encoding="utf-8",
+    )
+    with pytest.raises(VerificationError, match="truth match is not unique"):
+        verify_dropcap(expectations_path, source, output, work, "zh", "en")
+    candidate["visual_initial_box"] = stable_visual_box
+    (work / "drop_cap.report.json").write_text(
+        json.dumps({"candidates": [candidate]}),
+        encoding="utf-8",
+    )
 
     render_report["paragraphs"][0]["target_char"] = "N"
     intent_report["intents"][0]["target_char"] = "N"

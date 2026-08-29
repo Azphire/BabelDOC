@@ -1708,6 +1708,29 @@ def _verify_dropcap_binding_proof(candidate: dict, intent: dict) -> None:
         if visual_ref != owner_ref:
             raise VerificationError(f"drop-cap same-paragraph proof split: {owner_ref}")
         return
+    try:
+        owner_box = _require_box(candidate.get("source_box"), f"drop-cap owner {owner_ref}")
+        glyph_box = _require_box(
+            proof.get("visual_initial_glyph_box"),
+            f"drop-cap visual glyph {owner_ref}",
+        )
+        first_line_box = _require_box(
+            proof.get("owner_first_line_box"),
+            f"drop-cap owner first line {owner_ref}",
+        )
+    except VerificationError as exc:
+        raise VerificationError(
+            f"drop-cap standalone proof is invalid: {owner_ref}"
+        ) from exc
+    recomputed_geometry = {
+        "logical_start_delta": abs(glyph_box[0] - owner_box[0]),
+        "first_line_gap": abs(first_line_box[0] - glyph_box[2]),
+        "vertical_gap": max(
+            0.0,
+            max(glyph_box[1], first_line_box[1])
+            - min(glyph_box[3], first_line_box[3]),
+        ),
+    }
     body_size = proof.get("body_size")
     visual_size = proof.get("visual_font_size")
     if (
@@ -1738,6 +1761,7 @@ def _verify_dropcap_binding_proof(candidate: dict, intent: dict) -> None:
             not isinstance(proof.get(name), int | float)
             or isinstance(proof.get(name), bool)
             or not 0 <= float(proof[name]) <= float(body_size)
+            or abs(float(proof[name]) - recomputed_geometry[name]) > 1e-4
             for name in ("logical_start_delta", "first_line_gap", "vertical_gap")
         )
     ):

@@ -668,8 +668,15 @@ def _standalone_geometry(companion, owner, config: DropCapConfig) -> dict | None
     initial_size = character_size(companion_characters[0])
     body_size = median_font_size(owner)
     initial_box = _strict_box(companion_characters[0].box)
+    companion_box = _strict_box(companion.box)
     owner_box = _strict_box(owner.box)
-    if not initial_size or not body_size or initial_box is None or owner_box is None:
+    if (
+        not initial_size
+        or not body_size
+        or initial_box is None
+        or companion_box is None
+        or owner_box is None
+    ):
         return None
     ratio = initial_size / body_size
     if ratio < config.min_first_run_size_ratio:
@@ -710,6 +717,7 @@ def _standalone_geometry(companion, owner, config: DropCapConfig) -> dict | None
         "body_font_id": getattr(owner_characters[0].pdf_style, "font_id", None),
         "visual_font_size": initial_size,
         "initial_box": initial_box,
+        "companion_box": companion_box,
         "owner_box": owner_box,
         "first_line_box": first_box,
         "logical_start_delta": logical_start_delta,
@@ -832,6 +840,8 @@ def find_standalone_candidates(
                 "visual_font_id": geometry["visual_font_id"],
                 "body_font_id": geometry["body_font_id"],
                 "visual_font_size": round(geometry["visual_font_size"], 6),
+                "visual_initial_glyph_box": list(geometry["initial_box"]),
+                "owner_first_line_box": list(geometry["first_line_box"]),
                 "logical_start_delta": round(geometry["logical_start_delta"], 6),
                 "first_line_gap": round(geometry["first_line_gap"], 6),
                 "vertical_gap": round(geometry["vertical_gap"], 6),
@@ -856,7 +866,10 @@ def find_standalone_candidates(
                 visual_initial_reference=visual_ref,
                 visual_initial_debug_id=companion.debug_id,
                 visual_initial_text_sha256=_text_sha256(companion.unicode or ""),
-                visual_initial_box=geometry["initial_box"],
+                # Stable matching is paragraph-to-paragraph. The glyph ink box
+                # remains separate in binding_proof because it can legitimately
+                # extend beyond the paragraph's frozen semantic source box.
+                visual_initial_box=geometry["companion_box"],
                 binding_proof=proof,
             )
         )
