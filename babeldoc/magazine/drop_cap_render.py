@@ -1852,11 +1852,14 @@ def _restore_dataclass(target, snapshot) -> None:
 
 
 class _RenderPassTransaction:
-    """Restore all selected pages and active intents unless the pass commits."""
+    """Restore every active owner and intent unless the whole pass commits."""
 
     def __init__(self, translation_config, docs):
         self._translation_config = translation_config
-        self._pages = [(page, copy.deepcopy(page)) for page in docs.page]
+        paragraphs = _active_owner_paragraphs(translation_config, docs)
+        self._paragraphs = [
+            (paragraph, copy.deepcopy(paragraph)) for paragraph in paragraphs
+        ]
         self._intent_generation = drop_cap_intent.current_generation(
             translation_config
         )
@@ -1883,10 +1886,56 @@ class _RenderPassTransaction:
 
     def __exit__(self, exc_type, exc_value, traceback) -> bool:
         if exc_type is not None or not self._committed:
-            for page, snapshot in self._pages:
-                _restore_dataclass(page, snapshot)
+            for paragraph, snapshot in self._paragraphs:
+                _restore_dataclass(paragraph, snapshot)
             self._restore_intents()
         return False
+
+
+def _active_owner_paragraphs(translation_config, docs) -> list:
+    """Resolve every active physical intent ref to one paragraph object."""
+    from babeldoc.magazine import hitl
+
+    pages_by_label = {}
+    for label, page in hitl.labeled_pages(docs):
+        if label in pages_by_label:
+            raise DropCapRenderError(f"duplicate selected physical page label: p{label}")
+        pages_by_label[label] = page
+
+    paragraphs = []
+    seen_objects = set()
+    for registry_ref, intent in drop_cap_intent.intents_for(
+        translation_config
+    ).items():
+        if registry_ref != intent.source_ref:
+            raise DropCapRenderError(
+                f"drop-cap intent registry key disagrees with source ref: {registry_ref}"
+            )
+        try:
+            page_label, paragraph_index = drop_cap.parse_source_ref(registry_ref)
+        except (TypeError, ValueError) as exc:
+            raise DropCapRenderError(
+                f"drop-cap intent has invalid source ref: {registry_ref}"
+            ) from exc
+        page = pages_by_label.get(page_label)
+        if page is None:
+            raise DropCapRenderError(
+                f"drop-cap intent page is not selected: {registry_ref}"
+            )
+        page_paragraphs = page.pdf_paragraph or ()
+        if paragraph_index >= len(page_paragraphs):
+            raise DropCapRenderError(
+                f"drop-cap intent paragraph is missing: {registry_ref}"
+            )
+        paragraph = page_paragraphs[paragraph_index]
+        identity = id(paragraph)
+        if identity in seen_objects:
+            raise DropCapRenderError(
+                f"drop-cap intent paragraph ownership is ambiguous: {registry_ref}"
+            )
+        seen_objects.add(identity)
+        paragraphs.append(paragraph)
+    return paragraphs
 
 
 class _ParagraphAttempt:

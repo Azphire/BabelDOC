@@ -168,6 +168,46 @@ def _standalone_initial_fixture(*, duplicate_visual=False, duplicate_owner=False
     return docs, article_ir
 
 
+class _UncopyablePagePayload:
+    def __init__(self):
+        self.deepcopy_calls = 0
+
+    def __deepcopy__(self, _memo):
+        self.deepcopy_calls += 1
+        raise AssertionError("inactive page graph must not be copied")
+
+
+def _document_with_inactive_page(paragraphs):
+    inactive = make_document([], physical_page=6).page[0]
+    active = make_document(paragraphs, physical_page=7).page[0]
+    payload = _UncopyablePagePayload()
+    inactive.base_operations = payload
+    docs = il_version_1.Document(page=[inactive, active], total_pages=8)
+
+    base = make_article_ir(paragraphs)
+    elements = tuple(
+        replace(element, source_ref=f"p2#{index}", page=2)
+        for index, element in enumerate(base.articles[0].elements)
+    )
+    article = replace(
+        base.articles[0],
+        pages=(2,),
+        elements=elements,
+        slots=tuple(replace(slot, page=2) for slot in base.articles[0].slots),
+        policy_evidence=tuple(
+            replace(evidence, page=2)
+            for evidence in base.articles[0].policy_evidence
+        ),
+    )
+    article_ir = ArticleDocumentIR(
+        articles=(article,),
+        by_page={2: article.article_id},
+        by_element={element.source_ref: article.article_id for element in elements},
+        by_chain={},
+    )
+    return docs, article_ir, payload
+
+
 def _allowed_metric(character) -> ControlledMetric:
     return replace(metric_for(character), source="advance_em_fallback")
 
@@ -847,6 +887,85 @@ def test_typed_refusal_restores_only_current_paragraph(
     assert paragraph_snapshot(second) == second_before
     assert report["totals"]["committed"] == 1
     assert report["totals"]["failure"] == 1
+
+
+def test_render_transaction_never_copies_an_inactive_page(tmp_path) -> None:
+    paragraph = english_render_paragraph()
+    docs, article_ir, payload = _document_with_inactive_page([paragraph])
+    config = RuntimeConfig(tmp_path / "scoped-success")
+    register_render_intents(config, [paragraph])
+
+    report = drop_cap_render.apply(
+        config,
+        docs,
+        article_document_ir=article_ir,
+        typesetting_stage=SimpleNamespace(glyph_ink_metrics=_allowed_metric),
+    )
+
+    assert report is not None and report["status"] == "success"
+    assert payload.deepcopy_calls == 0
+
+
+def test_render_transaction_late_failure_restores_all_active_owners_and_intents(
+    tmp_path,
+    monkeypatch,
+) -> None:
+    paragraphs = [english_render_paragraph(), english_render_paragraph()]
+    docs, article_ir, payload = _document_with_inactive_page(paragraphs)
+    config = RuntimeConfig(tmp_path / "scoped-late-failure")
+    intents = register_render_intents(config, paragraphs)
+    before_paragraphs = [paragraph_snapshot(item) for item in paragraphs]
+    before_intents = [item.as_record() for item in intents]
+
+    class LateFailureError(RuntimeError):
+        pass
+
+    marker = LateFailureError("after all active owners changed")
+
+    def fail_late(translation_config, _docs, **_kwargs):
+        for index, paragraph in enumerate(paragraphs):
+            paragraph.unicode = f"mutated-{index}"
+            paragraph_characters(paragraph)[0].box.x += 10.0 + index
+        for intent in drop_cap_intent.intents_for(translation_config).values():
+            intent.render_status = drop_cap_intent.RENDER_APPLIED
+            intent.target_char = "X"
+            intent.target_index = 0
+        raise marker
+
+    monkeypatch.setattr(drop_cap_render, "_apply_render_pass", fail_late)
+    with pytest.raises(LateFailureError) as raised:
+        drop_cap_render.apply(
+            config,
+            docs,
+            article_document_ir=article_ir,
+            typesetting_stage=SimpleNamespace(glyph_ink_metrics=_allowed_metric),
+        )
+
+    assert raised.value is marker
+    assert [paragraph_snapshot(item) for item in paragraphs] == before_paragraphs
+    assert [
+        item.as_record()
+        for item in drop_cap_intent.intents_for(config).values()
+    ] == before_intents
+    assert payload.deepcopy_calls == 0
+
+
+@pytest.mark.parametrize("damage", ["missing", "ambiguous"])
+def test_render_transaction_owner_refs_fail_closed(tmp_path, damage) -> None:
+    paragraph = english_render_paragraph()
+    paragraphs = [paragraph] if damage == "missing" else [paragraph, paragraph]
+    docs = make_document(paragraphs)
+    config = RuntimeConfig(tmp_path / f"owner-ref-{damage}")
+    intents = register_render_intents(config, paragraphs)
+    if damage == "missing":
+        intents[0].source_ref = "p7#9"
+        drop_cap_intent.replace_intents(config, intents)
+
+    with pytest.raises(
+        drop_cap_render.DropCapRenderError,
+        match=("paragraph is missing" if damage == "missing" else "ownership is ambiguous"),
+    ):
+        drop_cap_render._active_owner_paragraphs(config, docs)
 
 
 def test_persisted_schema_and_offline_verifier_are_fail_closed(tmp_path) -> None:
