@@ -936,6 +936,30 @@ def _repair_summary(result: minimal_repair.RepairResult) -> dict:
     reason = record.get("reason")
     if not isinstance(reason, str) or not reason:
         raise MinimalPipelineStateError("repair requires a typed reason")
+    filtered = record.get("filtered_candidates")
+    if not isinstance(filtered, list):
+        raise MinimalPipelineStateError("repair requires a filtered candidate list")
+    rows = []
+    for row in filtered:
+        entry = _mapping(row, "repair filtered candidate")
+        if set(entry) != {"id", "kind", "action", "reason"}:
+            raise MinimalPipelineStateError(
+                "repair filtered candidate is not the closed schema"
+            )
+        if entry["action"] not in minimal_repair.ACTIONS:
+            raise MinimalPipelineStateError(
+                "repair filtered candidate names an unknown action"
+            )
+        for name in ("id", "kind", "reason"):
+            if not isinstance(entry[name], str) or not entry[name]:
+                raise MinimalPipelineStateError(
+                    f"repair filtered candidate {name} must be a non-empty string"
+                )
+        rows.append(dict(entry))
+    # A refused candidate is why the run's one action went unspent, so the
+    # reason it went unspent and the refusals have to agree with each other.
+    if selected is None and reason == "all_candidates_refused" and not rows:
+        raise MinimalPipelineStateError("refused repair run names no refusal")
     return {
         "selected": selected,
         "reason": reason,
@@ -945,6 +969,7 @@ def _repair_summary(result: minimal_repair.RepairResult) -> dict:
         "detection_passes_added": passes,
         "accepted": result.accepted,
         "rolled_back": result.rolled_back,
+        "filtered_candidates": rows,
     }
 
 

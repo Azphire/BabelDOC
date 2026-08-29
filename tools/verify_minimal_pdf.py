@@ -371,6 +371,7 @@ def _validate_report(report_path: Path, output: Path, allow_untranslated: bool) 
                 "detection_passes_added",
                 "accepted",
                 "rolled_back",
+                "filtered_candidates",
             }
         ),
     )
@@ -382,6 +383,27 @@ def _validate_report(report_path: Path, output: Path, allow_untranslated: bool) 
         "repair selected an unallowed action",
     )
     _text(repair["reason"], "repair.reason")
+    filtered = repair["filtered_candidates"]
+    _require(isinstance(filtered, list), "repair.filtered_candidates must be a list")
+    for position, row in enumerate(filtered):
+        entry = _object(
+            row,
+            f"repair.filtered_candidates[{position}]",
+            frozenset({"id", "kind", "action", "reason"}),
+        )
+        _require(
+            entry["action"]
+            in {"translate_orphan_text", "refit_or_reflow_owned_paragraph", "no_op"},
+            f"repair.filtered_candidates[{position}] names an unallowed action",
+        )
+        for name in ("id", "kind", "reason"):
+            _text(entry[name], f"repair.filtered_candidates[{position}].{name}")
+    _require(
+        selected is not None
+        or repair["reason"] != "all_candidates_refused"
+        or bool(filtered),
+        "a refused repair run names no refusal",
+    )
     action_count = _integer(repair["action_count"], "repair.action_count")
     applied_count = _integer(repair["applied_count"], "repair.applied_count")
     repair_requests = _integer(repair["translator_requests"], "repair.translator_requests")

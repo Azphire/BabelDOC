@@ -304,15 +304,71 @@ def _target(docs, baseline, article_document_ir, physical_ref: str) -> _Target:
     )
 
 
-def _select_issue(before, config: RepairConfig):
+def _select_issue(
+    before,
+    docs,
+    baseline,
+    article_document_ir,
+    translation_config,
+    flow_report,
+    config: RepairConfig,
+):
+    """Choose the one finding this run will act on, from those it may act on.
+
+    A run gets one action.  Ranking every finding and testing admissibility
+    only afterwards spends that action on whichever candidate sorts first, and
+    a candidate that sorts first but can never be acted on takes the run down
+    with it while an actionable candidate waits behind it.  So admissibility is
+    asked of every candidate first, on reads alone, and the ranking runs over
+    what is left.  ``no_op`` findings are not asked: the action does not touch
+    the document, so there is nothing for an admission to protect.
+
+    The refused candidates are returned rather than dropped.  "Nothing was
+    actionable" and "the detector reported nothing" are different states of the
+    run and the report has to be able to tell them apart.
+    """
     policy = acceptance.load_acceptance_policy()
+    flow_refs = None
     candidates = []
+    filtered: list[dict] = []
     for issue in before.issues:
         action = config.action_for(issue.kind)
         if issue.suggested_action_type != action:
             raise MinimalRepairError(
                 f"issue {issue.id} recommendation disagrees with repair config"
             )
+        if action != NO_OP:
+            if flow_refs is None:
+                flow_refs = _flow_refs(flow_report, article_document_ir)
+            if action == TRANSLATE_ORPHAN:
+                refused = admits_orphan(
+                    issue,
+                    docs,
+                    baseline,
+                    article_document_ir,
+                    translation_config,
+                    flow_refs,
+                    config,
+                )
+            else:
+                refused = admits_refit(
+                    issue,
+                    docs,
+                    baseline,
+                    article_document_ir,
+                    flow_refs,
+                    config,
+                )
+            if refused is not None:
+                filtered.append(
+                    {
+                        "id": issue.id,
+                        "kind": issue.kind,
+                        "action": action,
+                        "reason": refused,
+                    }
+                )
+                continue
         candidates.append(
             (
                 -policy.rank(issue.severity),
@@ -323,9 +379,9 @@ def _select_issue(before, config: RepairConfig):
             )
         )
     if not candidates:
-        return None, None
+        return None, None, tuple(filtered)
     _severity, _priority, _sort_key, issue, action = min(candidates)
-    return issue, action
+    return issue, action, tuple(filtered)
 
 
 def _box_tuple(box) -> tuple[float, float, float, float] | None:
@@ -520,6 +576,94 @@ def _visible_character_contract(
     return True
 
 
+def _orphan_admission(
+    issue,
+    docs,
+    baseline,
+    article_document_ir,
+    translation_config,
+    flow_refs,
+    config: RepairConfig,
+) -> tuple[_Target | None, str | None]:
+    """The target this finding would be translated on, or why it would not be.
+
+    Every condition below is a read.  Nothing here writes to the document,
+    resolves a translator or spends a request, which is what lets the selection
+    ask the question of every candidate before it commits to one.  The action
+    asks the same question first and refuses on the same string, so a caller
+    reaching ``_translate_orphan`` directly still sees what it saw before.
+    """
+    try:
+        if len(issue.paragraph_refs) != 1:
+            return None, "orphan_requires_one_physical_ref"
+        target = _target(
+            docs,
+            baseline,
+            article_document_ir,
+            issue.paragraph_refs[0],
+        )
+        if target.owner is not None or target.element is not None:
+            return None, "orphan_is_canonical_article_text"
+        paragraph = target.paragraph
+        if paragraph.layout_label not in config.orphan_layout_labels:
+            return None, "orphan_layout_label_not_allowed"
+        blocked = _protected(target, article_document_ir, flow_refs)
+        if blocked is not None:
+            return None, blocked
+        source = paragraph_reading_text(paragraph)
+        if not isinstance(source, str) or not source.strip():
+            return None, "orphan_source_text_unavailable"
+        detector_rule = detector_config().residue_rule(
+            getattr(translation_config, "lang_out", None)
+        )
+        if detector_rule is None:
+            return None, "residue_direction_unavailable"
+        script, detector_ratio = detector_rule
+        residue_chars, _script_chars, ratio = residue.measure(source, script)
+        min_chars = max(
+            config.orphan_min_source_chars,
+            detector_config().residue_min_chars(
+                getattr(translation_config, "lang_out", None)
+            ),
+        )
+        if (
+            len(source.strip()) < config.orphan_min_source_chars
+            or residue_chars < min_chars
+            or ratio < max(config.orphan_min_residue_ratio, detector_ratio)
+        ):
+            return None, "orphan_residue_threshold_not_met"
+        style = _paragraph_style(paragraph)
+        if (
+            not _style_is_renderable(style)
+            or _box_tuple(paragraph.box) is None
+        ):
+            return None, "orphan_style_font_or_box_unavailable"
+    except _RepairRefusalError as refusal:
+        return None, refusal.reason
+    return target, None
+
+
+def admits_orphan(
+    issue,
+    docs,
+    baseline,
+    article_document_ir,
+    translation_config,
+    flow_refs,
+    config: RepairConfig,
+) -> str | None:
+    """Why this finding is not one to translate, or ``None`` when it is."""
+    return _orphan_admission(
+        issue,
+        docs,
+        baseline,
+        article_document_ir,
+        translation_config,
+        flow_refs,
+        config,
+    )[1]
+
+
 def _translate_orphan(
     issue,
     docs,
@@ -530,50 +674,20 @@ def _translate_orphan(
     flow_refs,
     config: RepairConfig,
 ) -> tuple[_Target, int]:
-    if len(issue.paragraph_refs) != 1:
-        raise _RepairRefusalError("orphan_requires_one_physical_ref")
-    target = _target(
+    target, refused = _orphan_admission(
+        issue,
         docs,
         baseline,
         article_document_ir,
-        issue.paragraph_refs[0],
+        translation_config,
+        flow_refs,
+        config,
     )
-    if target.owner is not None or target.element is not None:
-        raise _RepairRefusalError("orphan_is_canonical_article_text")
+    if refused is not None:
+        raise _RepairRefusalError(refused)
     paragraph = target.paragraph
-    if paragraph.layout_label not in config.orphan_layout_labels:
-        raise _RepairRefusalError("orphan_layout_label_not_allowed")
-    blocked = _protected(target, article_document_ir, flow_refs)
-    if blocked is not None:
-        raise _RepairRefusalError(blocked)
     source = paragraph_reading_text(paragraph)
-    if not isinstance(source, str) or not source.strip():
-        raise _RepairRefusalError("orphan_source_text_unavailable")
-    detector_rule = detector_config().residue_rule(
-        getattr(translation_config, "lang_out", None)
-    )
-    if detector_rule is None:
-        raise _RepairRefusalError("residue_direction_unavailable")
-    script, detector_ratio = detector_rule
-    residue_chars, _script_chars, ratio = residue.measure(source, script)
-    min_chars = max(
-        config.orphan_min_source_chars,
-        detector_config().residue_min_chars(
-            getattr(translation_config, "lang_out", None)
-        ),
-    )
-    if (
-        len(source.strip()) < config.orphan_min_source_chars
-        or residue_chars < min_chars
-        or ratio < max(config.orphan_min_residue_ratio, detector_ratio)
-    ):
-        raise _RepairRefusalError("orphan_residue_threshold_not_met")
     style = _paragraph_style(paragraph)
-    if (
-        not _style_is_renderable(style)
-        or _box_tuple(paragraph.box) is None
-    ):
-        raise _RepairRefusalError("orphan_style_font_or_box_unavailable")
     original_box = _box_tuple(paragraph.box)
     source_style_digest = fixed_assets.content_digest(style)
     translator = getattr(translation_config, "translator", None)
@@ -612,6 +726,98 @@ def _translate_orphan(
     return target, 1
 
 
+def _refit_admission(
+    issue,
+    docs,
+    baseline,
+    article_document_ir,
+    flow_refs,
+    config: RepairConfig,
+) -> tuple[_Target | None, str | None]:
+    """The target this finding would be refitted on, or why it would not be.
+
+    A collision names two paragraphs and only the smaller of them is refitted,
+    so choosing which one is part of the same question as whether either may be
+    touched at all.  The choice is made here, on reads alone, and handed to the
+    action; the selection throws the target away and keeps the reason.
+    """
+    try:
+        refs = tuple(issue.paragraph_refs)
+        if issue.kind == "out_of_page":
+            if len(refs) != 1:
+                return None, "out_of_page_requires_one_ref"
+            target = _target(docs, baseline, article_document_ir, refs[0])
+        elif issue.kind == "text_text_collision":
+            if len(refs) != 2 or refs[0] == refs[1]:
+                return None, "collision_requires_two_unique_refs"
+            targets = tuple(
+                _target(docs, baseline, article_document_ir, reference)
+                for reference in refs
+            )
+            if targets[0].local_page != targets[1].local_page:
+                return None, "collision_crosses_page"
+            owners = {item.owner for item in targets}
+            if None in owners or len(owners) != 1:
+                return None, "collision_crosses_article_owner"
+            areas = tuple(_area(item) for item in targets)
+            if areas[0] == areas[1]:
+                return None, "collision_has_no_unique_smaller_member"
+            smaller = 0 if areas[0] < areas[1] else 1
+            larger = 1 - smaller
+            if areas[smaller] / areas[larger] > config.collision_max_area_ratio:
+                return None, "collision_members_are_comparable"
+            target = targets[smaller]
+        else:
+            return None, "issue_is_not_refittable"
+        if target.owner is None or target.element is None:
+            return None, "refit_target_has_no_canonical_owner"
+        if target.element.role not in config.eligible_roles:
+            return None, "refit_role_not_allowed"
+        blocked = _protected(target, article_document_ir, flow_refs)
+        if blocked is not None:
+            return None, blocked
+        if target.local_ref in baseline.fixed_inventory.protected_paragraph_refs:
+            return None, "refit_target_is_fixed_furniture"
+        source_box = target.element.source_box
+        if source_box is None or len(source_box) != 4:
+            return None, "canonical_source_box_unavailable"
+        source_box = tuple(float(value) for value in source_box)
+        if (
+            not all(math.isfinite(value) for value in source_box)
+            or source_box[0] >= source_box[2]
+            or source_box[1] >= source_box[3]
+        ):
+            return None, "canonical_source_box_invalid"
+        target_text = paragraph_reading_text(target.paragraph)
+        if not isinstance(target_text, str) or not target_text:
+            return None, "refit_target_text_unavailable"
+        style = _paragraph_style(target.paragraph)
+        if not _style_is_renderable(style):
+            return None, "refit_target_style_unavailable"
+    except _RepairRefusalError as refusal:
+        return None, refusal.reason
+    return target, None
+
+
+def admits_refit(
+    issue,
+    docs,
+    baseline,
+    article_document_ir,
+    flow_refs,
+    config: RepairConfig,
+) -> str | None:
+    """Why this finding is not one to refit, or ``None`` when it is."""
+    return _refit_admission(
+        issue,
+        docs,
+        baseline,
+        article_document_ir,
+        flow_refs,
+        config,
+    )[1]
+
+
 def _refit_target(
     issue,
     docs,
@@ -621,59 +827,20 @@ def _refit_target(
     flow_refs,
     config: RepairConfig,
 ) -> _Target:
-    refs = tuple(issue.paragraph_refs)
-    if issue.kind == "out_of_page":
-        if len(refs) != 1:
-            raise _RepairRefusalError("out_of_page_requires_one_ref")
-        target = _target(docs, baseline, article_document_ir, refs[0])
-    elif issue.kind == "text_text_collision":
-        if len(refs) != 2 or refs[0] == refs[1]:
-            raise _RepairRefusalError("collision_requires_two_unique_refs")
-        targets = tuple(
-            _target(docs, baseline, article_document_ir, reference)
-            for reference in refs
-        )
-        if targets[0].local_page != targets[1].local_page:
-            raise _RepairRefusalError("collision_crosses_page")
-        owners = {item.owner for item in targets}
-        if None in owners or len(owners) != 1:
-            raise _RepairRefusalError("collision_crosses_article_owner")
-        areas = tuple(_area(item) for item in targets)
-        if areas[0] == areas[1]:
-            raise _RepairRefusalError("collision_has_no_unique_smaller_member")
-        smaller = 0 if areas[0] < areas[1] else 1
-        larger = 1 - smaller
-        if areas[smaller] / areas[larger] > config.collision_max_area_ratio:
-            raise _RepairRefusalError("collision_members_are_comparable")
-        target = targets[smaller]
-    else:
-        raise _RepairRefusalError("issue_is_not_refittable")
-    if target.owner is None or target.element is None:
-        raise _RepairRefusalError("refit_target_has_no_canonical_owner")
-    if target.element.role not in config.eligible_roles:
-        raise _RepairRefusalError("refit_role_not_allowed")
-    blocked = _protected(target, article_document_ir, flow_refs)
-    if blocked is not None:
-        raise _RepairRefusalError(blocked)
-    if target.local_ref in baseline.fixed_inventory.protected_paragraph_refs:
-        raise _RepairRefusalError("refit_target_is_fixed_furniture")
-    source_box = target.element.source_box
-    if source_box is None or len(source_box) != 4:
-        raise _RepairRefusalError("canonical_source_box_unavailable")
-    source_box = tuple(float(value) for value in source_box)
-    if (
-        not all(math.isfinite(value) for value in source_box)
-        or source_box[0] >= source_box[2]
-        or source_box[1] >= source_box[3]
-    ):
-        raise _RepairRefusalError("canonical_source_box_invalid")
+    target, refused = _refit_admission(
+        issue,
+        docs,
+        baseline,
+        article_document_ir,
+        flow_refs,
+        config,
+    )
+    if refused is not None:
+        raise _RepairRefusalError(refused)
+    source_box = tuple(float(value) for value in target.element.source_box)
     target_text = paragraph_reading_text(target.paragraph)
     target_unicode = target.paragraph.unicode
-    if not isinstance(target_text, str) or not target_text:
-        raise _RepairRefusalError("refit_target_text_unavailable")
     style = _paragraph_style(target.paragraph)
-    if not _style_is_renderable(style):
-        raise _RepairRefusalError("refit_target_style_unavailable")
     source_style_digest = fixed_assets.content_digest(style)
     target.paragraph.box = il_version_1.Box(*source_box)
     _render_target(typesetter, target)
@@ -731,11 +898,13 @@ def _result(
     accepted,
     rolled_back,
     transaction,
+    filtered_candidates,
 ) -> RepairResult:
     record = {
         "schema_version": SCHEMA_VERSION,
         "selected": action,
         "reason": reason,
+        "filtered_candidates": [dict(row) for row in filtered_candidates],
         "offered_issue": (
             None if issue is None else {"id": issue.id, "kind": issue.kind}
         ),
@@ -807,19 +976,31 @@ def repair_once(
     if not callable(detect_after):
         raise MinimalRepairError("detect_after must be callable")
     config = load_repair_config() if config is None else config
-    issue, action = _select_issue(before, config)
+    issue, action, filtered = _select_issue(
+        before,
+        docs,
+        baseline,
+        article_document_ir,
+        translation_config,
+        flow_report,
+        config,
+    )
     working_dir = before.report_path.parent
     if issue is None:
+        # "Every candidate was refused" is not "the detector found nothing".
+        # The first says the action budget had nowhere to go and names where
+        # it could not go; the second says there was nothing to spend it on.
+        reason = "all_candidates_refused" if filtered else "no_issues"
         final = minimal_detection.mirror_after(
             before,
             working_dir,
             restored_from_before=False,
-            reason="no_issues",
+            reason=reason,
         )
         return _result(
             action=None,
             issue=None,
-            reason="no_issues",
+            reason=reason,
             action_count=0,
             applied_count=0,
             translator_requests=0,
@@ -832,6 +1013,7 @@ def repair_once(
             accepted=False,
             rolled_back=False,
             transaction=None,
+            filtered_candidates=filtered,
         )
     if action == NO_OP:
         final = minimal_detection.mirror_after(
@@ -856,6 +1038,7 @@ def repair_once(
             accepted=False,
             rolled_back=False,
             transaction=None,
+            filtered_candidates=filtered,
         )
 
     flow_refs = _flow_refs(flow_report, article_document_ir)
@@ -1027,6 +1210,7 @@ def repair_once(
             accepted=False,
             rolled_back=True,
             transaction=transaction,
+            filtered_candidates=filtered,
         )
     except _RepairRejectedError as rejected:
         if transaction is None or not transaction.restore_holds:
@@ -1053,6 +1237,7 @@ def repair_once(
             accepted=False,
             rolled_back=True,
             transaction=transaction,
+            filtered_candidates=filtered,
         )
     return _result(
         action=action,
@@ -1070,4 +1255,5 @@ def repair_once(
         accepted=True,
         rolled_back=False,
         transaction=transaction,
+        filtered_candidates=filtered,
     )

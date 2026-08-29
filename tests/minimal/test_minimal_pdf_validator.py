@@ -160,6 +160,7 @@ def _report(run_dir, output, *, translated=False):
             "detection_passes_added": 0,
             "accepted": False,
             "rolled_back": False,
+            "filtered_candidates": [],
         },
         "fixed": {"holds": True, "drift_count": 0},
         "output": {

@@ -98,10 +98,14 @@ class DetectorCallback:
         )
         binding = None
         if repair_owned_local_ref is not None:
+            # Where more than one finding asks to be translated, the one the
+            # run actually acted on is the one it was told to remove.  Naming
+            # the first orphan instead was safe only while there was one.
             physical_ref = next(
                 issue.paragraph_refs[0]
                 for issue in self.before.issues
                 if issue.suggested_action_type == minimal_repair.TRANSLATE_ORPHAN
+                and (not self.remove_ids or issue.id in self.remove_ids)
             )
             binding = {
                 "physical_ref": physical_ref,
@@ -271,9 +275,16 @@ def run_repair(
     before = before_result(tmp_path / name, issues)
     translator = translator or FakeTranslator()
     typesetter = typesetter or FakeTypesetter()
+    translation_config = SimpleNamespace(lang_out="zh", translator=translator)
     if callback is None:
-        selected, _action = minimal_repair._select_issue(
-            before, minimal_repair.load_repair_config()
+        selected, _action, _filtered = minimal_repair._select_issue(
+            before,
+            docs,
+            baseline,
+            article_ir,
+            translation_config,
+            flow,
+            minimal_repair.load_repair_config(),
         )
         callback = DetectorCallback(
             before, remove_ids=() if selected is None else (selected.id,)
@@ -284,7 +295,7 @@ def run_repair(
         article_ir,
         baseline,
         typesetter,
-        SimpleNamespace(lang_out="zh", translator=translator),
+        translation_config,
         flow,
         callback,
     )
@@ -410,9 +421,23 @@ def test_protected_targets_are_refused(tmp_path, name, item, reason):
     result, _docs, translator, _typesetter, callback, _before = run_repair(
         tmp_path, name, [item]
     )
-    assert result.record["reason"] == reason
+    # The refusal now happens while candidates are being filtered rather than
+    # inside the action, so the run never opens a transaction and there is no
+    # restored digest to inspect.  The reason a target was refused is unchanged
+    # and has moved to the candidate it was refused for.
+    assert result.record["reason"] == "all_candidates_refused"
+    assert result.record["selected"] is None
+    assert result.record["filtered_candidates"] == [
+        {
+            "id": item.id,
+            "kind": item.kind,
+            "action": minimal_repair.REFIT_OWNED,
+            "reason": reason,
+        }
+    ]
     assert result.record["applied_count"] == 0
-    assert result.record["restored_digest"]["holds"] is True
+    assert result.record["action_count"] == 0
+    assert result.record["restored_digest"] is None
     assert translator.calls == callback.calls == []
 
 
