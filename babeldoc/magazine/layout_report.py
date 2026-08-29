@@ -58,6 +58,7 @@ class SourceContainer:
     role: str
     source_box: BoxTuple
     allocation_box: BoxTuple
+    allocation_allows_wrap: bool = False
 
     @property
     def record_kind(self) -> str:
@@ -204,6 +205,9 @@ def prepare(
             if unit is not None:
                 source_ref = unit.source_ref
                 role = unit.record_kind
+                allocation_allows_wrap = bool(
+                    getattr(unit, "allocation_allows_wrap", False)
+                )
                 source_box = (
                     getattr(unit, "allocation_box", None)
                     or unit.source_box
@@ -211,6 +215,7 @@ def prepare(
             elif getattr(paragraph, "chain_id", None) or local_ref in chain_refs:
                 source_ref = physical_ref
                 role = ROLE_CHAIN
+                allocation_allows_wrap = False
                 source_box = None if element is None else element.source_box
             else:
                 element_role = (
@@ -230,6 +235,7 @@ def prepare(
                     continue
                 source_ref = physical_ref
                 role = ROLE_BODY
+                allocation_allows_wrap = False
                 source_box = None if element is None else element.source_box
 
             source = (
@@ -253,7 +259,13 @@ def prepare(
                     f"duplicate conservative layout source ref: {source_ref}"
                 )
             seen_refs.add(source_ref)
-            container = SourceContainer(source_ref, role, source, allocation)
+            container = SourceContainer(
+                source_ref,
+                role,
+                source,
+                allocation,
+                allocation_allows_wrap,
+            )
             entry = _LayoutEntry(container)
             run.entries[id(paragraph)] = entry
             run.paragraphs[id(paragraph)] = paragraph

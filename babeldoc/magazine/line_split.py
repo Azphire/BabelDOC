@@ -276,6 +276,7 @@ class SourceUnit:
     source_box: tuple[float, float, float, float] | None
     allocation_box: tuple[float, float, float, float] | None
     allocation_basis: tuple[str, ...]
+    allocation_allows_wrap: bool
     source_text_sha256: str
     source_text: str
     source_characters_sha256: str
@@ -1144,15 +1145,21 @@ def _record_lane_allocations(
     pending: list[_PendingUnit],
     source_refs: dict[int, str],
     config: LineSplitConfig,
-) -> dict[int, tuple[tuple[float, float, float, float], tuple[str, ...]]]:
-    """Prove horizontal whitespace belonging to a repeated record lane.
+) -> dict[
+    int,
+    tuple[tuple[float, float, float, float], tuple[str, ...], bool],
+]:
+    """Prove whitespace belonging to one cell of a repeated record lane.
 
     A paragraph box is an ink box, not necessarily the measure reserved for a
     record. Three vertically distinct records with the same left edge prove a
     repeated lane; the furthest ink edge they use is a conservative lane edge.
-    A single record may use that measure only when the added strip intersects
-    neither another paragraph nor detected figure artwork. Records remain
-    independent and their source ink bands remain unchanged for frozen truth.
+    The closest proved record below also bounds the current record's vertical
+    cell. A single record may use either addition only when the added region
+    intersects neither another paragraph nor detected figure artwork. Records
+    remain independent and their source ink bands remain unchanged for frozen
+    truth. The typesetter still tries the source's single-line contract first;
+    the vertical cell merely makes a bounded wrap fallback provable.
     """
     candidates = [
         item
@@ -1193,35 +1200,76 @@ def _record_lane_allocations(
         if len(lane) < 3:
             continue
         lane_x2 = max(_box_record(peer.paragraph.box)[2] for peer in lane)
-        if lane_x2 <= source[2] + config.scan_step:
-            continue
-        added_strip = [source[2], source[1], lane_x2, source[3]]
-        paragraph_obstacle = any(
-            paragraph is not item.paragraph
-            and not is_debug_overlay(paragraph)
-            and (box := _box_record(paragraph.box)) is not None
-            and _boxes_overlap(added_strip, box, config.scan_step)
-            for paragraph in page.pdf_paragraph or ()
-        )
-        figure_obstacle = any(
-            (box := _box_record(getattr(figure, "box", None))) is not None
-            and _boxes_overlap(added_strip, box, config.scan_step)
-            for figure in page.pdf_figure or ()
-        ) or any(
-            (getattr(layout, "class_name", "") or "").casefold() == "figure"
-            and (box := _box_record(getattr(layout, "box", None))) is not None
-            and _boxes_overlap(added_strip, box, config.scan_step)
-            for layout in page.page_layout or ()
-        )
-        if paragraph_obstacle or figure_obstacle:
+
+        def obstructed(
+            region: list[float],
+            current_paragraph=item.paragraph,
+        ) -> bool:
+            paragraph_obstacle = any(
+                paragraph is not current_paragraph
+                and not is_debug_overlay(paragraph)
+                and (box := _box_record(paragraph.box)) is not None
+                and _boxes_overlap(region, box, config.scan_step)
+                for paragraph in page.pdf_paragraph or ()
+            )
+            figure_obstacle = any(
+                (box := _box_record(getattr(figure, "box", None))) is not None
+                and _boxes_overlap(region, box, config.scan_step)
+                for figure in page.pdf_figure or ()
+            ) or any(
+                (getattr(layout, "class_name", "") or "").casefold() == "figure"
+                and (box := _box_record(getattr(layout, "box", None))) is not None
+                and _boxes_overlap(region, box, config.scan_step)
+                for layout in page.page_layout or ()
+            )
+            return paragraph_obstacle or figure_obstacle
+
+        allocation_x2 = source[2]
+        if lane_x2 > source[2] + config.scan_step:
+            horizontal_strip = [source[2], source[1], lane_x2, source[3]]
+            if not obstructed(horizontal_strip):
+                allocation_x2 = lane_x2
+
+        below = [
+            peer
+            for peer in lane
+            if peer is not item
+            and _box_record(peer.paragraph.box)[3]
+            <= source[1] + config.scan_step
+        ]
+        allocation_y = source[1]
+        if below:
+            nearest_below = max(
+                below,
+                key=lambda peer: _box_record(peer.paragraph.box)[3],
+            )
+            candidate_y = (
+                _box_record(nearest_below.paragraph.box)[3] + config.scan_step
+            )
+            if candidate_y < source[1] - config.scan_step:
+                vertical_strip = [
+                    source[0],
+                    candidate_y,
+                    allocation_x2,
+                    source[1],
+                ]
+                if not obstructed(vertical_strip):
+                    allocation_y = candidate_y
+
+        allows_wrap = allocation_y < source[1] - config.scan_step
+        if (
+            allocation_x2 <= source[2] + config.scan_step
+            and not allows_wrap
+        ):
             continue
         basis = tuple(
             source_refs[id(peer.paragraph)]
             for peer in sorted(lane, key=lambda held: source_refs[id(held.paragraph)])
         )
         result[id(item.paragraph)] = (
-            (source[0], source[1], lane_x2, source[3]),
+            (source[0], allocation_y, allocation_x2, source[3]),
             basis,
+            allows_wrap,
         )
     return result
 
@@ -1697,9 +1745,9 @@ def process_page(
         text = paragraph.unicode or characters_text(paragraph_characters(paragraph))
         source_character_text = characters_text(paragraph_characters(paragraph))
         box = _box_record(paragraph.box)
-        allocation, allocation_basis = lane_allocations.get(
+        allocation, allocation_basis, allocation_allows_wrap = lane_allocations.get(
             id(paragraph),
-            (None if box is None else tuple(box), (source_ref,)),
+            (None if box is None else tuple(box), (source_ref,), False),
         )
         parent_boxes = [parents[reference]["source_box"] for reference in parent_refs]
         if any(parent_box is None for parent_box in parent_boxes):
@@ -1742,6 +1790,7 @@ def process_page(
             source_box=None if box is None else tuple(box),
             allocation_box=allocation,
             allocation_basis=allocation_basis,
+            allocation_allows_wrap=allocation_allows_wrap,
             source_text_sha256=_source_hash(text),
             source_text=text,
             source_characters_sha256=_source_hash(source_character_text),
@@ -1759,6 +1808,7 @@ def process_page(
             "source_band": box,
             "allocation_band": None if allocation is None else list(allocation),
             "allocation_basis": list(allocation_basis),
+            "allocation_allows_wrap": allocation_allows_wrap,
             "source_text_sha256": unit.source_text_sha256,
             "source_characters": len(source_character_text),
             "source_characters_sha256": unit.source_characters_sha256,
@@ -1839,6 +1889,57 @@ def short_lines(page, label: int, minimum: int) -> list[dict]:
     return found
 
 
+def allocation_obstacles(page, label: int) -> list[dict]:
+    """Inventory every source region that a record allocation must avoid.
+
+    The structure pass proves allocations against the live page graph.  This
+    compact inventory gives the offline verifier the same paragraph and figure
+    geometry so it can repeat the overlap test rather than trusting a claimed
+    allocation.  Debug overlays are not source paint and are excluded by the
+    same conservative predicate as the product check.
+    """
+    found = []
+    for index, paragraph in enumerate(page.pdf_paragraph or ()):
+        if is_debug_overlay(paragraph):
+            continue
+        box = _box_record(getattr(paragraph, "box", None))
+        if box is None:
+            continue
+        found.append(
+            {
+                "page": label,
+                "kind": "paragraph",
+                "source_ref": paragraph_reference(label, index),
+                "box": box,
+            }
+        )
+    for index, figure in enumerate(page.pdf_figure or ()):
+        box = _box_record(getattr(figure, "box", None))
+        if box is not None:
+            found.append(
+                {
+                    "page": label,
+                    "kind": "pdf_figure",
+                    "source_ref": f"p{label}:pdf_figure#{index}",
+                    "box": box,
+                }
+            )
+    for index, layout in enumerate(page.page_layout or ()):
+        if (getattr(layout, "class_name", "") or "").casefold() != "figure":
+            continue
+        box = _box_record(getattr(layout, "box", None))
+        if box is not None:
+            found.append(
+                {
+                    "page": label,
+                    "kind": "layout_figure",
+                    "source_ref": f"p{label}:layout_figure#{index}",
+                    "box": box,
+                }
+            )
+    return found
+
+
 def as_record(
     config: LineSplitConfig,
     splits: list[dict],
@@ -1847,6 +1948,7 @@ def as_record(
     pages: list[dict],
     untranslated: list[dict],
     fixed_artwork: list[dict],
+    obstacles: list[dict],
     minimum: int,
 ) -> dict:
     return {
@@ -1871,6 +1973,7 @@ def as_record(
         "splits": splits,
         "exemptions": exemptions,
         "source_units": source_units,
+        "allocation_obstacles": obstacles,
         "short_lines": untranslated,
         "fixed_artwork": fixed_artwork,
     }
@@ -1907,6 +2010,7 @@ def apply(translation_config, labeled_pages, policy_of=None) -> dict | None:
     pages: list[dict] = []
     untranslated: list[dict] = []
     fixed_artwork: list[dict] = []
+    obstacles: list[dict] = []
     for label, page in labeled_pages:
         declared = config.declared(resolve(page.page_kind))
         source_characters = "".join(
@@ -1934,6 +2038,7 @@ def apply(translation_config, labeled_pages, policy_of=None) -> dict | None:
         splits.extend(records)
         exempt.extend(exemptions)
         source_units.extend(units)
+        obstacles.extend(allocation_obstacles(page, label))
         untranslated.extend(short_lines(page, label, minimum) if declared else [])
         pages.append(
             {
@@ -1980,6 +2085,7 @@ def apply(translation_config, labeled_pages, policy_of=None) -> dict | None:
         pages,
         untranslated,
         fixed_artwork,
+        obstacles,
         minimum,
     )
     working_dir = Path(translation_config.get_working_file_path(REPORT_NAME)).parent

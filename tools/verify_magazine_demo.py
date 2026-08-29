@@ -526,6 +526,34 @@ def verify_toc(
     units = report.get("source_units")
     if not isinstance(units, list):
         raise VerificationError("line split source unit inventory is missing")
+    raw_obstacles = report.get("allocation_obstacles")
+    if not isinstance(raw_obstacles, list):
+        raise VerificationError("line split allocation obstacle inventory is missing")
+    obstacles_by_page: dict[int, list[tuple[str, tuple[float, float, float, float]]]] = {}
+    obstacle_refs = set()
+    for obstacle in raw_obstacles:
+        if not isinstance(obstacle, dict) or set(obstacle) != {
+            "page",
+            "kind",
+            "source_ref",
+            "box",
+        }:
+            raise VerificationError("allocation obstacle record is malformed")
+        page = obstacle["page"]
+        kind = obstacle["kind"]
+        reference = obstacle["source_ref"]
+        if (
+            not isinstance(page, int)
+            or kind not in {"paragraph", "pdf_figure", "layout_figure"}
+            or not isinstance(reference, str)
+            or reference in obstacle_refs
+            or not reference.startswith(f"p{page}")
+        ):
+            raise VerificationError(f"allocation obstacle identity is invalid: {reference}")
+        obstacle_refs.add(reference)
+        obstacles_by_page.setdefault(page, []).append(
+            (reference, _require_box(obstacle["box"], f"obstacle {reference}"))
+        )
     refs = [unit.get("source_ref") for unit in units]
     if any(
         not isinstance(reference, str)
@@ -664,6 +692,8 @@ def verify_toc(
                 raise VerificationError(f"invalid child kind: {reference}")
             if not isinstance(child.get("fixed_companion"), bool):
                 raise VerificationError(f"invalid child translation role: {reference}")
+            if not isinstance(child.get("allocation_allows_wrap"), bool):
+                raise VerificationError(f"invalid child wrap evidence: {reference}")
             box = _require_box(child.get("source_band"), f"child {reference}")
             allocation = _require_box(
                 child.get("allocation_band"), f"allocation child {reference}"
@@ -713,6 +743,7 @@ def verify_toc(
                 "source_band",
                 "allocation_band",
                 "allocation_basis",
+                "allocation_allows_wrap",
                 "source_text_sha256",
                 "source_characters",
                 "source_characters_sha256",
@@ -728,8 +759,21 @@ def verify_toc(
         source = _require_box(child["source_band"], reference)
         allocation = _require_box(child["allocation_band"], reference)
         basis = child["allocation_basis"]
+        allows_wrap = child["allocation_allows_wrap"]
+        page = int(reference.split("#", 1)[0][1:])
+        matching_obstacles = [
+            box
+            for obstacle_ref, box in obstacles_by_page.get(page, [])
+            if obstacle_ref == reference
+        ]
+        if len(matching_obstacles) != 1 or not _box_equal(
+            matching_obstacles[0], source
+        ):
+            raise VerificationError(
+                f"source unit is absent from obstacle inventory: {reference}"
+            )
         if _box_equal(source, allocation):
-            if basis != [reference]:
+            if basis != [reference] or allows_wrap:
                 raise VerificationError(
                     f"unexpanded child has foreign allocation basis: {reference}"
                 )
@@ -737,17 +781,17 @@ def verify_toc(
         if (
             child["record_kind"] != "single_visual_line"
             or len(basis) < 3
-            or not _box_equal(
-                [source[0], source[1], allocation[2], source[3]],
-                allocation,
-            )
+            or abs(allocation[0] - source[0]) > 0.001
+            or abs(allocation[3] - source[3]) > 0.001
+            or allocation[1] > source[1] + 0.001
+            or allocation[2] < source[2] - 0.001
         ):
             raise VerificationError(f"expanded child allocation is invalid: {reference}")
         peers = [children_by_ref.get(peer_ref) for peer_ref in basis]
         if any(peer is None or peer.get("fixed_companion") for peer in peers):
             raise VerificationError(f"allocation basis is unresolved: {reference}")
-        page = reference.split("#", 1)[0]
-        if any(peer_ref.split("#", 1)[0] != page for peer_ref in basis):
+        page_prefix = reference.split("#", 1)[0]
+        if any(peer_ref.split("#", 1)[0] != page_prefix for peer_ref in basis):
             raise VerificationError(f"allocation basis crosses pages: {reference}")
         for peer_ref, peer in zip(basis, peers, strict=True):
             peer_box = _require_box(peer["source_band"], peer_ref)
@@ -773,17 +817,86 @@ def verify_toc(
             _require_box(peer["source_band"], peer_ref)[2]
             for peer_ref, peer in zip(basis, peers, strict=True)
         )
-        if abs(allocation[2] - expected_x2) > 0.001:
-            raise VerificationError(f"allocation lane edge is not proved: {reference}")
-        added_strip = [source[2], source[1], allocation[2], source[3]]
-        for other_ref, other in children_by_ref.items():
-            if other_ref == reference or other_ref.split("#", 1)[0] != page:
-                continue
-            other_box = _require_box(other["source_band"], other_ref)
-            if _boxes_overlap(added_strip, other_box, scan_step):
+        page_obstacles = [
+            (obstacle_ref, box)
+            for obstacle_ref, box in obstacles_by_page.get(page, [])
+            if obstacle_ref != reference
+        ]
+
+        def intersections(region, obstacles=page_obstacles):
+            return [
+                obstacle_ref
+                for obstacle_ref, box in obstacles
+                if _boxes_overlap(region, box, scan_step)
+            ]
+
+        horizontal_candidate = [source[2], source[1], expected_x2, source[3]]
+        horizontal_obstacles = (
+            intersections(horizontal_candidate)
+            if expected_x2 > source[2] + scan_step
+            else []
+        )
+        if abs(allocation[2] - expected_x2) <= 0.001:
+            if horizontal_obstacles:
                 raise VerificationError(
-                    f"allocation strip intersects source unit: {reference}"
+                    f"allocation region intersects obstacle: {reference}"
                 )
+        elif abs(allocation[2] - source[2]) <= 0.001:
+            if expected_x2 > source[2] + scan_step and not horizontal_obstacles:
+                raise VerificationError(
+                    f"allocation lane edge is not proved: {reference}"
+                )
+        else:
+            raise VerificationError(f"allocation lane edge is not proved: {reference}")
+
+        below_boxes = [
+            (peer_ref, _require_box(peer["source_band"], peer_ref))
+            for peer_ref, peer in zip(basis, peers, strict=True)
+            if peer_ref != reference
+            and _require_box(peer["source_band"], peer_ref)[3]
+            <= source[1] + scan_step
+        ]
+        candidate_y = source[1]
+        if below_boxes:
+            _boundary_ref, boundary_box = max(
+                below_boxes,
+                key=lambda held: held[1][3],
+            )
+            held_y = boundary_box[3] + scan_step
+            if held_y < source[1] - scan_step:
+                candidate_y = held_y
+        vertical_candidate = [
+            source[0],
+            candidate_y,
+            allocation[2],
+            source[1],
+        ]
+        vertical_obstacles = (
+            intersections(vertical_candidate)
+            if candidate_y < source[1] - scan_step
+            else []
+        )
+        has_cell_candidate = candidate_y < source[1] - scan_step
+        if has_cell_candidate and abs(allocation[1] - candidate_y) <= 0.001:
+            if vertical_obstacles:
+                raise VerificationError(
+                    f"allocation record cell is not proved: {reference}"
+                )
+            if not allows_wrap:
+                raise VerificationError(
+                    f"allocation record cell lacks wrap evidence: {reference}"
+                )
+        elif abs(allocation[1] - source[1]) <= 0.001:
+            if has_cell_candidate and not vertical_obstacles:
+                raise VerificationError(
+                    f"allocation record cell is not proved: {reference}"
+                )
+            if allows_wrap:
+                raise VerificationError(
+                    f"unexpanded record cell allows wrapping: {reference}"
+                )
+        else:
+            raise VerificationError(f"allocation record cell is not proved: {reference}")
 
     frozen_nodes = _toc_anchor_inventory(expectations)
     verified = []

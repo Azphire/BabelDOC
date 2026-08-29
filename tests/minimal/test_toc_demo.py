@@ -714,8 +714,8 @@ def test_split_aliases_are_unique_chain_uses_new_refs_and_prose_joint_succeeds(
     assert chain_report["chains"][0]["outcome"] == "joint_success"
 
 
-def _target_composition(text: str):
-    style = il_version_1.PdfStyle(font_id="body", font_size=10.0)
+def _target_composition(text: str, *, style=None):
+    style = style or il_version_1.PdfStyle(font_id="body", font_size=10.0)
     return [
         il_version_1.PdfParagraphComposition(
             pdf_same_style_unicode_characters=il_version_1.PdfSameStyleUnicodeCharacters(
@@ -993,6 +993,8 @@ def _shared_record_lane_page(
     *,
     figure_obstructed: bool = False,
     text_obstructed: bool = False,
+    cell_figure_obstructed: bool = False,
+    cell_text_obstructed: bool = False,
 ):
     current = _paragraph(
         ["4 核安保系统和措施何在?"],
@@ -1033,6 +1035,19 @@ def _shared_record_lane_page(
         488.8406328125,
         427.2397078125,
     )
+    lower_peer = _paragraph(
+        ["12 Another independent record below"],
+        "lane-lower-peer",
+        left=257.42697265625,
+        bottom=321.8677,
+        char_width=5.25,
+    )
+    lower_peer.box = il_version_1.Box(
+        257.42697265625,
+        321.8677,
+        443.755671875,
+        333.7617078125,
+    )
     micro = _paragraph(
         ["x"],
         "unrelated-micro-label",
@@ -1041,7 +1056,7 @@ def _shared_record_lane_page(
         char_width=2.0,
     )
     micro.box = il_version_1.Box(257.0, 806.0, 259.0, 808.0)
-    paragraphs = [current, peer, wide_peer, micro]
+    paragraphs = [current, peer, wide_peer, lower_peer, micro]
     if text_obstructed:
         text_obstacle = _paragraph(
             ["Visible neighboring text"],
@@ -1052,6 +1067,16 @@ def _shared_record_lane_page(
         )
         text_obstacle.box = il_version_1.Box(400.0, 706.0, 470.0, 716.0)
         paragraphs.append(text_obstacle)
+    if cell_text_obstructed:
+        cell_text_obstacle = _paragraph(
+            ["Visible text inside the proposed record cell"],
+            "record-cell-text-obstacle",
+            left=300.0,
+            bottom=370.0,
+            char_width=3.0,
+        )
+        cell_text_obstacle.box = il_version_1.Box(300.0, 370.0, 460.0, 382.0)
+        paragraphs.append(cell_text_obstacle)
     page = _page(paragraphs, number=3, kind="toc")
     frame = il_version_1.Box(0.0, 0.0, 595.276, 841.89)
     page.mediabox = il_version_1.Mediabox(box=frame)
@@ -1067,7 +1092,17 @@ def _shared_record_lane_page(
             id=1,
             conf=0.99,
             class_name="figure",
-        )
+        ),
+        il_version_1.PageLayout(
+            box=(
+                il_version_1.Box(300.0, 350.0, 470.0, 400.0)
+                if cell_figure_obstructed
+                else il_version_1.Box(100.0, 376.0, 240.0, 465.0)
+            ),
+            id=2,
+            conf=0.99,
+            class_name="figure",
+        ),
     ]
     return page, current
 
@@ -1086,16 +1121,17 @@ def test_single_record_uses_proven_shared_lane_without_merging(tmp_path):
         [256.7555859375, 705.3937, 389.773, 717.4380984375]
     )
     assert actual["allocation_band"] == pytest.approx(
-        [256.7555859375, 705.3937, 488.8406328125, 717.4380984375]
+        [256.7555859375, 621.2206765625, 488.8406328125, 717.4380984375]
     )
-    assert len(actual["allocation_basis"]) == 3
+    assert actual["allocation_allows_wrap"] is True
+    assert len(actual["allocation_basis"]) == 4
     assert all(
         unit["debug_id"] != "unrelated-micro-label"
         for unit in report["source_units"]
         if unit["source_ref"] in actual["allocation_basis"]
     )
-    assert len(page.pdf_paragraph) == 4
-    assert len({unit["source_ref"] for unit in report["source_units"]}) == 4
+    assert len(page.pdf_paragraph) == 5
+    assert len({unit["source_ref"] for unit in report["source_units"]}) == 5
 
     target = "4 Where are the nuclear security systems and measures?"
     style = il_version_1.PdfStyle(font_id="body", font_size=11.0)
@@ -1145,6 +1181,92 @@ def test_single_record_uses_proven_shared_lane_without_merging(tmp_path):
     )
 
 
+def test_widest_record_wraps_only_inside_proven_vertical_cell(tmp_path):
+    page, _current = _shared_record_lane_page()
+    config = Config(tmp_path)
+    document = il_version_1.Document(page=[page], total_pages=1)
+    report = line_split.apply(config, [(4, page)])
+    actual = next(
+        unit for unit in report["source_units"]
+        if unit["debug_id"] == "lane-wide-peer"
+    )
+    paragraph = next(
+        held for held in page.pdf_paragraph
+        if held.debug_id == "lane-wide-peer"
+    )
+
+    assert actual["source_band"] == pytest.approx(
+        [257.42697265625, 415.3457, 488.8406328125, 427.2397078125]
+    )
+    assert actual["allocation_band"] == pytest.approx(
+        [257.42697265625, 334.0117078125, 488.8406328125, 427.2397078125]
+    )
+    assert actual["allocation_allows_wrap"] is True
+    assert len(actual["allocation_basis"]) == 4
+
+    target = (
+        "10 The State Nuclear Security Technology Center Supports "
+        "International Training Efforts"
+    )
+    style = il_version_1.PdfStyle(font_id="body", font_size=11.0)
+    paragraph.unicode = target
+    paragraph.pdf_paragraph_composition = _target_composition(target, style=style)
+    layout_report.prepare(
+        config,
+        document,
+        ArticleDocumentIR(articles=(), by_page={}, by_element={}, by_chain={}),
+        article_flow_report={"article_flow_applied": False},
+        eligible_roles=(),
+    )
+    try:
+        Typesetting(SimpleNamespace(lang_out="en"), RenderMapper()).render_paragraph(
+            paragraph,
+            page,
+            {"body": RenderFont()},
+        )
+        layout = layout_report.finalize()
+    finally:
+        layout_report.discard()
+
+    rendered = [
+        composition.pdf_character
+        for composition in paragraph.pdf_paragraph_composition
+        if composition.pdf_character is not None
+    ]
+    assert "".join(character.char_unicode for character in rendered) == target
+    assert paragraph.scale >= 0.5
+    assert 2 <= len({round(character.box.y, 3) for character in rendered}) <= 3
+    assert layout["elements"][0]["source_box"] == pytest.approx(
+        actual["allocation_band"]
+    )
+    assert layout["elements"][0]["final_holder_box"] == pytest.approx(
+        actual["allocation_band"]
+    )
+    assert actual["source_band"] == pytest.approx(
+        [257.42697265625, 415.3457, 488.8406328125, 427.2397078125]
+    )
+
+
+@pytest.mark.parametrize(
+    "obstacle",
+    ["figure", "paragraph"],
+)
+def test_record_cell_refuses_visible_obstacles(tmp_path, obstacle):
+    page, _current = _shared_record_lane_page(
+        cell_figure_obstructed=obstacle == "figure",
+        cell_text_obstructed=obstacle == "paragraph",
+    )
+    report = line_split.apply(Config(tmp_path), [(4, page)])
+    actual = next(
+        unit for unit in report["source_units"]
+        if unit["debug_id"] == "lane-wide-peer"
+    )
+
+    assert actual["allocation_band"] == actual["source_band"]
+    assert actual["allocation_basis"] == [actual["source_ref"]]
+    assert actual["allocation_allows_wrap"] is False
+
+
 def test_shared_record_lane_refuses_a_figure_in_the_added_strip(tmp_path):
     page, _current = _shared_record_lane_page(figure_obstructed=True)
     report = line_split.apply(Config(tmp_path), [(4, page)])
@@ -1153,8 +1275,11 @@ def test_shared_record_lane_refuses_a_figure_in_the_added_strip(tmp_path):
         if unit["debug_id"] == "lane-current"
     )
 
-    assert actual["allocation_band"] == actual["source_band"]
-    assert actual["allocation_basis"] == [actual["source_ref"]]
+    assert actual["allocation_band"] == pytest.approx(
+        [256.7555859375, 621.2206765625, 389.773, 717.4380984375]
+    )
+    assert len(actual["allocation_basis"]) == 4
+    assert actual["allocation_allows_wrap"] is True
 
 
 def test_shared_record_lane_refuses_source_text_in_the_added_strip(tmp_path):
@@ -1169,8 +1294,11 @@ def test_shared_record_lane_refuses_source_text_in_the_added_strip(tmp_path):
         unit["debug_id"] == "lane-text-obstacle"
         for unit in report["source_units"]
     )
-    assert actual["allocation_band"] == actual["source_band"]
-    assert actual["allocation_basis"] == [actual["source_ref"]]
+    assert actual["allocation_band"] == pytest.approx(
+        [256.7555859375, 621.2206765625, 389.773, 717.4380984375]
+    )
+    assert len(actual["allocation_basis"]) == 4
+    assert actual["allocation_allows_wrap"] is True
 
 
 def test_toc_verifier_rejects_source_text_inside_claimed_allocation(tmp_path):
@@ -1190,8 +1318,10 @@ def test_toc_verifier_rejects_source_text_inside_claimed_allocation(tmp_path):
     ]
     current["allocation_band"] = allocation
     current["allocation_basis"] = basis
+    current["allocation_allows_wrap"] = False
     current["ordered_children"][0]["allocation_band"] = allocation
     current["ordered_children"][0]["allocation_basis"] = basis
+    current["ordered_children"][0]["allocation_allows_wrap"] = False
     (tmp_path / line_split.REPORT_NAME).write_text(
         json.dumps(report),
         encoding="utf-8",
@@ -1221,7 +1351,75 @@ def test_toc_verifier_rejects_source_text_inside_claimed_allocation(tmp_path):
 
     with pytest.raises(
         VerificationError,
-        match="allocation strip intersects source unit",
+        match="allocation region intersects obstacle",
+    ):
+        verify_toc(expectations, source, output, tmp_path, "en", "zh")
+
+
+@pytest.mark.parametrize("obstacle", ["figure", "paragraph"])
+def test_toc_verifier_rejects_forged_record_cell_over_obstacle(
+    tmp_path,
+    obstacle,
+):
+    page, _current = _shared_record_lane_page(
+        cell_figure_obstructed=obstacle == "figure",
+        cell_text_obstructed=obstacle == "paragraph",
+    )
+    report = line_split.apply(Config(tmp_path), [(4, page)])
+    by_debug = {unit["debug_id"]: unit for unit in report["source_units"]}
+    current = by_debug["lane-wide-peer"]
+    lower = by_debug["lane-lower-peer"]
+    basis = [
+        by_debug[debug_id]["source_ref"]
+        for debug_id in (
+            "lane-current",
+            "lane-peer",
+            "lane-wide-peer",
+            "lane-lower-peer",
+        )
+    ]
+    allocation = [
+        current["source_band"][0],
+        lower["source_band"][3] + line_split.load_line_split_config().scan_step,
+        current["source_band"][2],
+        current["source_band"][3],
+    ]
+    current["allocation_band"] = allocation
+    current["allocation_basis"] = basis
+    current["allocation_allows_wrap"] = True
+    current["ordered_children"][0]["allocation_band"] = allocation
+    current["ordered_children"][0]["allocation_basis"] = basis
+    current["ordered_children"][0]["allocation_allows_wrap"] = True
+    (tmp_path / line_split.REPORT_NAME).write_text(
+        json.dumps(report),
+        encoding="utf-8",
+    )
+    source = tmp_path / "source.pdf"
+    output = tmp_path / "output.pdf"
+    source.write_bytes(b"source")
+    output.write_bytes(b"output")
+    expectations = tmp_path / "expectations.json"
+    expectations.write_text(
+        json.dumps(
+            {
+                "sample_id": "record-cell-obstacle",
+                "source_sha256": hashlib.sha256(b"source").hexdigest(),
+                "direction": "en-zh",
+                "toc_records": [
+                    {
+                        "anchor": current["parent_ref"],
+                        "kind": line_split.RECORD_SINGLE,
+                        "source_box": current["parent"]["source_box"],
+                    }
+                ],
+            }
+        ),
+        encoding="utf-8",
+    )
+
+    with pytest.raises(
+        VerificationError,
+        match="allocation record cell is not proved",
     ):
         verify_toc(expectations, source, output, tmp_path, "en", "zh")
 

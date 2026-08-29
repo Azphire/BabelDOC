@@ -1542,7 +1542,14 @@ class Typesetting:
         typesetting_units: list[TypesettingUnit],
         source_unit,
     ) -> list[TypesettingUnit]:
-        """Render inside the source allocation proved by the structure pass."""
+        """Render inside the source allocation proved by the structure pass.
+
+        A source single-line record keeps the single-line contract whenever it
+        can fit at the configured readable scale.  Only a structure unit whose
+        allocation carries an independently proved vertical record cell may
+        retry as wrapped text, still inside that immutable allocation.  No
+        ordinary adjacent space is discovered or borrowed here.
+        """
         from babeldoc.magazine.line_split import RECORD_SINGLE
         from babeldoc.magazine.line_split import load_line_split_config
 
@@ -1554,16 +1561,32 @@ class Typesetting:
             raise BoundedTypesettingError(
                 f"{source_unit.source_ref}: source container is not measurable"
             )
+        minimum_scale = load_line_split_config().minimum_readable_scale
+        maximum_lines = 1 if source_unit.record_kind == RECORD_SINGLE else None
+        try:
+            return self.retypeset_bounded_text(
+                paragraph,
+                page,
+                typesetting_units,
+                source_ref=source_unit.source_ref,
+                source_box=source_box,
+                minimum_scale=minimum_scale,
+                maximum_lines=maximum_lines,
+            )
+        except BoundedTypesettingError:
+            if not (
+                maximum_lines == 1
+                and bool(getattr(source_unit, "allocation_allows_wrap", False))
+            ):
+                raise
         return self.retypeset_bounded_text(
             paragraph,
             page,
             typesetting_units,
             source_ref=source_unit.source_ref,
             source_box=source_box,
-            minimum_scale=load_line_split_config().minimum_readable_scale,
-            maximum_lines=(
-                1 if source_unit.record_kind == RECORD_SINGLE else None
-            ),
+            minimum_scale=minimum_scale,
+            maximum_lines=None,
         )
 
     def retypeset_bounded_text(
