@@ -377,18 +377,14 @@ def as_record(
             "changed": len(changed),
             "cleared": sum(1 for row in rows if row["cleared"]),
             "raised": sum(1 for row in rows if row["after"] and not row["before"]),
-            "chain_continuations": sum(
-                1 for row in rows if row["chain_continuation"]
-            ),
+            "chain_continuations": sum(1 for row in rows if row["chain_continuation"]),
             "indented_after": sum(1 for row in rows if row["after"]),
             "paragraphs_in_article": sum(1 for row in rows if row["in_article"]),
             "paragraphs_outside_article": sum(
                 1 for row in rows if not row["in_article"]
             ),
             "pages_eligible": sum(1 for page in pages if page["indent_eligible"]),
-            "pages_ineligible": sum(
-                1 for page in pages if not page["indent_eligible"]
-            ),
+            "pages_ineligible": sum(1 for page in pages if not page["indent_eligible"]),
             "skipped": {
                 reason: sum(1 for row in rows if row["skipped"] == reason)
                 for reason in SKIP_REASONS

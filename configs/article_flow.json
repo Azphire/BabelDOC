@@ -1,8 +1,6 @@
 {
-  "description": "Bounded article body flow across columns and canonical adjacent pages. eligible_roles is the closed vocabulary allowed to share target slots; every other role is a protected hard boundary. Legal page-column envelopes come from canonical ArticleIR source geometry and are split around fixed assets and protected elements. Capacity is measured only through the shared typesetter fit interface and all tolerances are declared here or reused from chain_translation.json.",
+  "description": "Bounded article body flow across columns and canonical adjacent pages. eligible_roles is the closed vocabulary allowed to share target slots; every other role is a protected hard boundary. The vocabulary is the layout label space, the value a source element carries as its role, so the three labels named here are the same three chain_detection.json groups under the class name body and the same three indent_policy.json admits as body_labels. The class name itself is not a layout label and no element ever carries it, so it is not written here; neither is a name for a continuing paragraph, because nothing in this pipeline produces one as a label -- a paragraph continued across a boundary is recognised by its chain index and still carries its own body label. Legal page-column envelopes come from canonical ArticleIR source geometry and are split around fixed assets and protected elements. Capacity is measured only through the shared typesetter fit interface and all tolerances are declared here or reused from chain_translation.json.",
   "eligible_roles": [
-    "body",
-    "continuation",
     "paragraph_hybrid",
     "plain text",
     "text"

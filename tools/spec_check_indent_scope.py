@@ -16,6 +16,13 @@ rather than repaired. Claim 1 is the one this batch added, and its page space
 half - a run over a selected page range asked the article index its question in
 the wrong page number space - is pinned by E6.
 
+Two structural checks stand behind the four. S4 holds the three files that each
+name what counts as running body text to one another, because a claim about
+"article body" means nothing while detection, policy and flow are free to mean
+different things by it. S5 counts the modules that assign the flag, because
+every one of these claims is a claim about a decision, and a decision has an
+author only while there is a known set of writers to hold it to.
+
 Nothing here writes down a page type name, a layout label or a language tag that
 the shipped configuration does not already declare: every fixture reads its
 vocabulary out of the configuration, so a gate that passes is a statement about
@@ -28,6 +35,8 @@ from __future__ import annotations
 
 import copy
 import hashlib
+import json
+import re
 import sys
 import tempfile
 from collections.abc import Callable
@@ -48,12 +57,39 @@ from babeldoc.magazine.article_ir import ArticleIR  # noqa: E402
 from babeldoc.magazine.article_ir import ArticlePolicyEvidence  # noqa: E402
 from babeldoc.magazine.article_ir import ArticleRegionSlot  # noqa: E402
 from babeldoc.magazine.article_ir import SourceElementRef  # noqa: E402
+from babeldoc.magazine.resource_paths import config_path  # noqa: E402
 from babeldoc.magazine.taxonomy import load_taxonomy  # noqa: E402
 
 # The labels a page sets to its own rules rather than to the body convention.
 # S3 asserts none of them is inside the body set; the behavioural checks borrow
 # the first as the title a real page would carry.
 TITLE_LABELS = ("title", "doc_title", "paragraph_title", "caption")
+
+# The one class name the pipeline groups the body labels under, and the file
+# that declares it. S4 reads the membership out of that file rather than listing
+# it, so the three definitions of "running body text" are compared and never
+# copied.
+BODY_CLASS_CONFIG = "chain_detection.json"
+BODY_CLASS_NAME = "body"
+
+# The modules allowed to assign first_line_indent. The policy pass decides the
+# flag, the reflow pass carries the decision onto the piece it places, the title
+# pass sets a title flush after typesetting and the line splitter sets the
+# fragments it makes. A fifth writer means the flag has no single answer to
+# "why is this line indented", which is the defect this whole pass exists to
+# close, so S5 fails on any name not in this set.
+INDENT_WRITERS = frozenset(
+    {
+        "indent_policy.py",
+        "cross_page_reflow.py",
+        "title_typeset.py",
+        "line_split.py",
+    }
+)
+
+# An assignment to the flag, not a comparison against it and not a keyword
+# argument: only a statement that changes what a paragraph carries counts.
+INDENT_WRITE = re.compile(r"\.first_line_indent\s*=(?!=)")
 
 # Language tags no entry of the shipped configuration is expected to claim.
 # One of them standing in for "a target this pass has no opinion about" keeps
@@ -322,6 +358,41 @@ def s3_titles_are_not_body() -> str:
     overlap = sorted(labels.intersection(TITLE_LABELS))
     require(not overlap, f"body_labels admits the title label(s) {overlap}")
     return "no title label is inside the closed set of body labels"
+
+
+def s4_one_definition_of_body() -> str:
+    with config_path(BODY_CLASS_CONFIG).open(encoding="utf-8") as f:
+        classes = json.load(f)["pair_classes"]["classes"]
+    grouped = set(classes[BODY_CLASS_NAME])
+    admitted = set(indent_policy.load_indent_config().body_labels)
+    flowed = set(article_flow.load_flow_config().eligible_roles)
+    require(
+        grouped == admitted == flowed,
+        "the three vocabularies disagree: chain detection groups "
+        f"{sorted(grouped)}, the indent policy admits {sorted(admitted)}, the "
+        f"flow pass shares slots between {sorted(flowed)}",
+    )
+    return "detection, indent policy and flow name the same three body labels"
+
+
+def s5_writers_of_the_flag() -> str:
+    found = {
+        path.name
+        for path in sorted((ROOT / "babeldoc" / "magazine").glob("*.py"))
+        if INDENT_WRITE.search(path.read_text(encoding="utf-8"))
+    }
+    extra = sorted(found - INDENT_WRITERS)
+    missing = sorted(INDENT_WRITERS - found)
+    require(
+        not extra,
+        f"first_line_indent has gained the writer(s) {extra}",
+    )
+    require(
+        not missing,
+        f"first_line_indent has lost the writer(s) {missing}, so this gate is "
+        "no longer watching what it claims to watch",
+    )
+    return "exactly four modules write the flag, and they are the declared four"
 
 
 # --------------------------------------------------------------------------
@@ -719,6 +790,8 @@ SYMBOL_CHECKS: tuple[tuple[str, Callable[[], str]], ...] = (
     ("S1", s1_reason_declared),
     ("S2", s2_clear_order),
     ("S3", s3_titles_are_not_body),
+    ("S4", s4_one_definition_of_body),
+    ("S5", s5_writers_of_the_flag),
 )
 
 RUN_CHECKS: tuple[tuple[str, Callable[[Path], str]], ...] = (

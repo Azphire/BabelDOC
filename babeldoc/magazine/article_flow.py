@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-import copy
 import json
 from collections.abc import Mapping
 from collections.abc import Sequence
@@ -659,46 +658,6 @@ def _composition(text: str, style) -> list[PdfParagraphComposition]:
             )
         )
     ]
-
-
-def _write_page(docs, page_number: int, segments, placements):
-    page = docs.page[page_number - 1]
-    assigned = []
-    released = []
-    for segment in segments:
-        legal_slot_ids = {slot.slot_id for slot in segment.ordered_slots}
-        segment_placements = [
-            item for item in placements if item.legal_slot_id in legal_slot_ids
-        ]
-        holders = list(dict.fromkeys(segment.ordered_source_refs))
-        for index, placement in enumerate(segment_placements):
-            if index < len(holders):
-                render_ref = holders[index]
-                _page, paragraph_index = parse_source_ref(render_ref)
-            else:
-                paragraph_index = len(page.pdf_paragraph)
-                render_ref = f"p{page_number}#{paragraph_index}"
-                page.pdf_paragraph.append(copy.deepcopy(placement.source_paragraph))
-            paragraph = copy.deepcopy(placement.source_paragraph)
-            paragraph.box = Box(*placement.box)
-            paragraph.unicode = placement.text
-            paragraph.pdf_style = placement.style
-            paragraph.pdf_paragraph_composition = _composition(
-                placement.text, placement.style
-            )
-            paragraph.first_line_indent = placement.first_line_indent
-            paragraph.optimal_scale = None
-            paragraph.scale = None
-            page.pdf_paragraph[paragraph_index] = paragraph
-            assigned.append(placement.with_render_ref(render_ref))
-        for render_ref in holders[len(segment_placements) :]:
-            _page, paragraph_index = parse_source_ref(render_ref)
-            paragraph = copy.deepcopy(page.pdf_paragraph[paragraph_index])
-            paragraph.unicode = ""
-            paragraph.pdf_paragraph_composition = []
-            page.pdf_paragraph[paragraph_index] = paragraph
-            released.append(render_ref)
-    return tuple(assigned), tuple(released)
 
 
 def _overlap(left, right) -> bool:
