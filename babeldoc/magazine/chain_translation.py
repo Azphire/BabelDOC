@@ -40,6 +40,7 @@ from pathlib import Path
 
 from babeldoc.format.pdf.document_il import Box
 from babeldoc.magazine import chain_backfill as backfill
+from babeldoc.magazine import line_split
 from babeldoc.magazine import short_unit
 from babeldoc.magazine.article_context import EMPTY_CONTEXT
 from babeldoc.magazine.article_ir import SourceElementRef
@@ -1447,6 +1448,9 @@ class ChainPlan:
             return None
         protected = _token_ranges(translated, protected_tokens)
         typesetter = self._slot_typesetter()
+        minimum_readable_scale = (
+            line_split.load_line_split_config().minimum_readable_scale
+        )
 
         def measurement_style(member):
             style = member.style
@@ -1459,7 +1463,8 @@ class ChainPlan:
             readable_scales = [
                 scale
                 for scale in _APPLICATION_SCALES
-                if source_size * scale >= self.config.slot_min_font_size
+                if scale >= minimum_readable_scale
+                and source_size * scale >= self.config.slot_min_font_size
             ]
             scale = min(readable_scales) if readable_scales else 1.0
             held = copy.copy(style)

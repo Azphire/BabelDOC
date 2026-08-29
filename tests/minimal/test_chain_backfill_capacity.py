@@ -198,6 +198,38 @@ def test_real_aramco_target_fits_at_configured_readable_scale(tmp_path):
     assert "".join(paragraph.unicode for paragraph in members) == target
 
 
+def test_capacity_never_measures_below_formal_readable_scale(tmp_path):
+    target = "abcdefgh" * 4
+    document, article_ir, paragraphs, translator = make_chain_fixture(
+        target, tmp_path
+    )
+    mapper = _FullWidthMapper()
+    translator.il_translator.font_mapper = mapper
+    for paragraph in paragraphs:
+        paragraph.pdf_style.font_size = 11.0
+        for composition in paragraph.pdf_paragraph_composition:
+            composition.pdf_same_style_unicode_characters.pdf_style.font_size = 11.0
+
+    plan = plan_chain_translation(
+        translator, document, RecordingTracker(), EMPTY_CONTEXT, article_ir
+    )
+
+    assert len(plan.entries) == 1
+    allocation = plan.entries[0].allocation
+    assert "".join(fragment.text for fragment in allocation.fragments) == target
+    assert all(fragment.text for fragment in allocation.fragments)
+    assert all(
+        fragment.measurement_record["measurement_scale"] == 0.5
+        for fragment in allocation.fragments
+    )
+    assert all(
+        fragment.measurement_record["measurement_font_size"] == 5.5
+        for fragment in allocation.fragments
+    )
+    plan.apply()
+    assert "".join(paragraph.unicode for paragraph in paragraphs) == target
+
+
 def test_second_writeback_failure_rolls_back_every_member(tmp_path):
     target = "译" * 12
     document, article_ir, paragraphs, translator = make_chain_fixture(
