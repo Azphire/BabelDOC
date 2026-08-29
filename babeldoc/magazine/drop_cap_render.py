@@ -632,6 +632,16 @@ def _contains(outer: BoxTuple, inner: BoxTuple, slack: float) -> bool:
     )
 
 
+def _contains_raised_anchor(outer: BoxTuple, inner: BoxTuple, slack: float) -> bool:
+    """Keep a raised initial anchored in its article while allowing its rise."""
+    return (
+        inner[0] >= outer[0] - slack
+        and inner[2] <= outer[2] + slack
+        and inner[1] >= outer[1] - slack
+        and inner[1] <= outer[3] + slack
+    )
+
+
 def _overlaps(left: BoxTuple, right: BoxTuple, tolerance: float) -> bool:
     return (
         min(left[2], right[2]) - max(left[0], right[0]) > tolerance
@@ -882,7 +892,8 @@ def _set_english_raised_initial(
     elif not _contains(geometry_guard.page_box, initial_ink, slack):
         failure = REVERT_PAGE_BOUNDS
     elif not geometry_guard.article_boxes or not any(
-        _contains(box, initial_ink, slack) for box in geometry_guard.article_boxes
+        _contains_raised_anchor(box, initial_ink, slack)
+        for box in geometry_guard.article_boxes
     ):
         failure = REVERT_ARTICLE_BOUNDS
     else:

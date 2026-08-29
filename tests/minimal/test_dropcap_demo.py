@@ -159,6 +159,35 @@ def test_direction_layout_preserves_punctuated_target_and_source_box(
         assert outcome["second_line_start_x"] == outcome["body_box"][0]
 
 
+def test_raised_initial_may_rise_above_its_anchored_article_box() -> None:
+    paragraph = english_render_paragraph()
+    config = drop_cap_render.load_render_config()
+    regime = config.regime_for("en")
+    assert regime is not None
+    article_box = tuple(
+        float(getattr(paragraph.box, name)) for name in ("x", "y", "x2", "y2")
+    )
+    guard = drop_cap_render.DecorativeGeometryGuard(
+        page_box=(0.0, 0.0, 180.0, 120.0),
+        article_boxes=(article_box,),
+        obstacles=(),
+    )
+
+    outcome = drop_cap_render.set_one(
+        paragraph,
+        regime,
+        config,
+        drop_cap_render._blank("p7#0", 7, "keep", "en", regime.name),
+        intent=direct_intent(drop_cap_intent.POLICY_ENGLISH_RAISED_INITIAL),
+        glyph_metric_resolver=metric_for,
+        geometry_guard=guard,
+    )
+
+    assert outcome["set"], outcome
+    assert outcome["initial_ink_box"][1] <= article_box[3]
+    assert outcome["initial_ink_box"][3] > article_box[3]
+
+
 def _write_chain_report(config, *, outcome: str, fallback_reason=None) -> None:
     record = {
         "chain_id": "runtime-chain",
