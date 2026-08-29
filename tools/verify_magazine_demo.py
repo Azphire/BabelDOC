@@ -11,6 +11,7 @@ import sys
 from pathlib import Path
 
 import pymupdf
+from babeldoc.magazine.line_split import load_line_split_config
 
 REF_PATTERN = re.compile(r"p\d+#\d+")
 SHA256_PATTERN = re.compile(r"[0-9a-f]{64}")
@@ -118,6 +119,13 @@ def _box_contains(outer, inner, tolerance: float = 0.001) -> bool:
         and outer[1] - tolerance <= inner[1]
         and inner[2] <= outer[2] + tolerance
         and inner[3] <= outer[3] + tolerance
+    )
+
+
+def _boxes_overlap(left, right, tolerance: float) -> bool:
+    return (
+        min(left[2], right[2]) - max(left[0], right[0]) > tolerance
+        and min(left[3], right[3]) - max(left[1], right[1]) > tolerance
     )
 
 
@@ -657,6 +665,20 @@ def verify_toc(
             if not isinstance(child.get("fixed_companion"), bool):
                 raise VerificationError(f"invalid child translation role: {reference}")
             box = _require_box(child.get("source_band"), f"child {reference}")
+            allocation = _require_box(
+                child.get("allocation_band"), f"allocation child {reference}"
+            )
+            basis = child.get("allocation_basis")
+            if (
+                not _box_contains(allocation, box)
+                or not isinstance(basis, list)
+                or not basis
+                or len(basis) != len(set(basis))
+                or reference not in basis
+            ):
+                raise VerificationError(
+                    f"child allocation evidence is invalid: {reference}"
+                )
             if not _box_contains(parent_box, box):
                 raise VerificationError(f"child left parent container: {reference}")
             child_boxes.append(box)
@@ -689,6 +711,8 @@ def verify_toc(
                 "fixed_companion",
                 "runtime_source_ref",
                 "source_band",
+                "allocation_band",
+                "allocation_basis",
                 "source_text_sha256",
                 "source_characters",
                 "source_characters_sha256",
@@ -697,6 +721,69 @@ def verify_toc(
             raise VerificationError(f"flat child audit disagrees: {unit.get('source_ref')}")
     if set(children_by_ref) != set(refs):
         raise VerificationError("flat source units disagree with ordered children")
+    split_config = load_line_split_config()
+    record_gap_ratio = split_config.record_gap_ratio
+    scan_step = split_config.scan_step
+    for reference, child in children_by_ref.items():
+        source = _require_box(child["source_band"], reference)
+        allocation = _require_box(child["allocation_band"], reference)
+        basis = child["allocation_basis"]
+        if _box_equal(source, allocation):
+            if basis != [reference]:
+                raise VerificationError(
+                    f"unexpanded child has foreign allocation basis: {reference}"
+                )
+            continue
+        if (
+            child["record_kind"] != "single_visual_line"
+            or len(basis) < 3
+            or not _box_equal(
+                [source[0], source[1], allocation[2], source[3]],
+                allocation,
+            )
+        ):
+            raise VerificationError(f"expanded child allocation is invalid: {reference}")
+        peers = [children_by_ref.get(peer_ref) for peer_ref in basis]
+        if any(peer is None or peer.get("fixed_companion") for peer in peers):
+            raise VerificationError(f"allocation basis is unresolved: {reference}")
+        page = reference.split("#", 1)[0]
+        if any(peer_ref.split("#", 1)[0] != page for peer_ref in basis):
+            raise VerificationError(f"allocation basis crosses pages: {reference}")
+        for peer_ref, peer in zip(basis, peers, strict=True):
+            peer_box = _require_box(peer["source_band"], peer_ref)
+            source_height = source[3] - source[1]
+            peer_height = peer_box[3] - peer_box[1]
+            tolerance = min(source_height, peer_height) / record_gap_ratio
+            if max(source_height, peer_height) / min(
+                source_height, peer_height
+            ) > record_gap_ratio:
+                raise VerificationError(
+                    f"allocation basis mixes record scales: {reference}"
+                )
+            if abs(peer_box[0] - source[0]) > tolerance:
+                raise VerificationError(f"allocation basis left the lane: {reference}")
+            if peer_ref != reference and not (
+                peer_box[3] <= source[1] + scan_step
+                or peer_box[1] >= source[3] - scan_step
+            ):
+                raise VerificationError(
+                    f"allocation basis is not vertically independent: {reference}"
+                )
+        expected_x2 = max(
+            _require_box(peer["source_band"], peer_ref)[2]
+            for peer_ref, peer in zip(basis, peers, strict=True)
+        )
+        if abs(allocation[2] - expected_x2) > 0.001:
+            raise VerificationError(f"allocation lane edge is not proved: {reference}")
+        added_strip = [source[2], source[1], allocation[2], source[3]]
+        for other_ref, other in children_by_ref.items():
+            if other_ref == reference or other_ref.split("#", 1)[0] != page:
+                continue
+            other_box = _require_box(other["source_band"], other_ref)
+            if _boxes_overlap(added_strip, other_box, scan_step):
+                raise VerificationError(
+                    f"allocation strip intersects source unit: {reference}"
+                )
 
     frozen_nodes = _toc_anchor_inventory(expectations)
     verified = []
@@ -866,7 +953,9 @@ def verify_layout(
     if units_path.is_file():
         units = _read(units_path).get("source_units", [])
         unit_boxes = {
-            item.get("source_ref"): item.get("source_band")
+            item.get("source_ref"): item.get(
+                "allocation_band", item.get("source_band")
+            )
             for item in units
             if isinstance(item, dict)
         }

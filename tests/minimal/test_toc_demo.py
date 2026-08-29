@@ -989,6 +989,243 @@ def test_single_visual_line_still_rejects_a_real_packer_wrap():
         )
 
 
+def _shared_record_lane_page(
+    *,
+    figure_obstructed: bool = False,
+    text_obstructed: bool = False,
+):
+    current = _paragraph(
+        ["4 核安保系统和措施何在?"],
+        "lane-current",
+        left=256.7555859375,
+        bottom=705.3937,
+        char_width=8.85,
+    )
+    current.box = il_version_1.Box(
+        256.7555859375,
+        705.3937,
+        389.77299999999997,
+        717.4380984375,
+    )
+    peer = _paragraph(
+        ["6 加强塞内加尔的核安保"],
+        "lane-peer",
+        left=256.9919140625,
+        bottom=609.0337,
+        char_width=8.98,
+    )
+    peer.box = il_version_1.Box(
+        256.9919140625,
+        609.0337,
+        382.836640625,
+        620.9706765625,
+    )
+    wide_peer = _paragraph(
+        ["10 A deliberately wider record in this lane"],
+        "lane-wide-peer",
+        left=257.42697265625,
+        bottom=415.3457,
+        char_width=5.25,
+    )
+    wide_peer.box = il_version_1.Box(
+        257.42697265625,
+        415.3457,
+        488.8406328125,
+        427.2397078125,
+    )
+    micro = _paragraph(
+        ["x"],
+        "unrelated-micro-label",
+        left=257.0,
+        bottom=806.0,
+        char_width=2.0,
+    )
+    micro.box = il_version_1.Box(257.0, 806.0, 259.0, 808.0)
+    paragraphs = [current, peer, wide_peer, micro]
+    if text_obstructed:
+        text_obstacle = _paragraph(
+            ["Visible neighboring text"],
+            "lane-text-obstacle",
+            left=400.0,
+            bottom=706.0,
+            char_width=3.0,
+        )
+        text_obstacle.box = il_version_1.Box(400.0, 706.0, 470.0, 716.0)
+        paragraphs.append(text_obstacle)
+    page = _page(paragraphs, number=3, kind="toc")
+    frame = il_version_1.Box(0.0, 0.0, 595.276, 841.89)
+    page.mediabox = il_version_1.Mediabox(box=frame)
+    page.cropbox = il_version_1.Cropbox(box=frame)
+    figure_box = (
+        il_version_1.Box(100.0, 573.0, 240.0, 760.0)
+        if not figure_obstructed
+        else il_version_1.Box(400.0, 704.0, 470.0, 720.0)
+    )
+    page.page_layout = [
+        il_version_1.PageLayout(
+            box=figure_box,
+            id=1,
+            conf=0.99,
+            class_name="figure",
+        )
+    ]
+    return page, current
+
+
+def test_single_record_uses_proven_shared_lane_without_merging(tmp_path):
+    page, current = _shared_record_lane_page()
+    config = Config(tmp_path)
+    document = il_version_1.Document(page=[page], total_pages=1)
+    report = line_split.apply(config, [(4, page)])
+    actual = next(
+        unit for unit in report["source_units"]
+        if unit["debug_id"] == "lane-current"
+    )
+
+    assert actual["source_band"] == pytest.approx(
+        [256.7555859375, 705.3937, 389.773, 717.4380984375]
+    )
+    assert actual["allocation_band"] == pytest.approx(
+        [256.7555859375, 705.3937, 488.8406328125, 717.4380984375]
+    )
+    assert len(actual["allocation_basis"]) == 3
+    assert all(
+        unit["debug_id"] != "unrelated-micro-label"
+        for unit in report["source_units"]
+        if unit["source_ref"] in actual["allocation_basis"]
+    )
+    assert len(page.pdf_paragraph) == 4
+    assert len({unit["source_ref"] for unit in report["source_units"]}) == 4
+
+    target = "4 Where are the nuclear security systems and measures?"
+    style = il_version_1.PdfStyle(font_id="body", font_size=11.0)
+    chunks = ("4", " ", "Where are the nuclear security systems and measures", "?")
+    current.unicode = target
+    current.pdf_paragraph_composition = [
+        il_version_1.PdfParagraphComposition(
+            pdf_same_style_unicode_characters=(
+                il_version_1.PdfSameStyleUnicodeCharacters(
+                    pdf_style=style,
+                    unicode=chunk,
+                )
+            )
+        )
+        for chunk in chunks
+    ]
+    layout_report.prepare(
+        config,
+        document,
+        ArticleDocumentIR(articles=(), by_page={}, by_element={}, by_chain={}),
+        article_flow_report={"article_flow_applied": False},
+        eligible_roles=(),
+    )
+    try:
+        Typesetting(SimpleNamespace(lang_out="en"), RenderMapper()).render_paragraph(
+            current,
+            page,
+            {"body": RenderFont()},
+        )
+        layout = layout_report.finalize()
+    finally:
+        layout_report.discard()
+
+    rendered = [
+        composition.pdf_character
+        for composition in current.pdf_paragraph_composition
+        if composition.pdf_character is not None
+    ]
+    assert "".join(character.char_unicode for character in rendered) == target
+    assert current.scale >= 0.5
+    assert len({round(character.box.y, 3) for character in rendered}) == 1
+    assert layout["elements"][0]["source_box"] == pytest.approx(
+        actual["allocation_band"]
+    )
+    assert layout["elements"][0]["final_holder_box"] == pytest.approx(
+        actual["allocation_band"]
+    )
+
+
+def test_shared_record_lane_refuses_a_figure_in_the_added_strip(tmp_path):
+    page, _current = _shared_record_lane_page(figure_obstructed=True)
+    report = line_split.apply(Config(tmp_path), [(4, page)])
+    actual = next(
+        unit for unit in report["source_units"]
+        if unit["debug_id"] == "lane-current"
+    )
+
+    assert actual["allocation_band"] == actual["source_band"]
+    assert actual["allocation_basis"] == [actual["source_ref"]]
+
+
+def test_shared_record_lane_refuses_source_text_in_the_added_strip(tmp_path):
+    page, _current = _shared_record_lane_page(text_obstructed=True)
+    report = line_split.apply(Config(tmp_path), [(4, page)])
+    actual = next(
+        unit for unit in report["source_units"]
+        if unit["debug_id"] == "lane-current"
+    )
+
+    assert any(
+        unit["debug_id"] == "lane-text-obstacle"
+        for unit in report["source_units"]
+    )
+    assert actual["allocation_band"] == actual["source_band"]
+    assert actual["allocation_basis"] == [actual["source_ref"]]
+
+
+def test_toc_verifier_rejects_source_text_inside_claimed_allocation(tmp_path):
+    page, _current = _shared_record_lane_page(text_obstructed=True)
+    report = line_split.apply(Config(tmp_path), [(4, page)])
+    by_debug = {unit["debug_id"]: unit for unit in report["source_units"]}
+    current = by_debug["lane-current"]
+    basis = [
+        current["source_ref"],
+        by_debug["lane-peer"]["source_ref"],
+        by_debug["lane-wide-peer"]["source_ref"],
+    ]
+    allocation = [
+        *current["source_band"][:2],
+        by_debug["lane-wide-peer"]["source_band"][2],
+        current["source_band"][3],
+    ]
+    current["allocation_band"] = allocation
+    current["allocation_basis"] = basis
+    current["ordered_children"][0]["allocation_band"] = allocation
+    current["ordered_children"][0]["allocation_basis"] = basis
+    (tmp_path / line_split.REPORT_NAME).write_text(
+        json.dumps(report),
+        encoding="utf-8",
+    )
+    source = tmp_path / "source.pdf"
+    output = tmp_path / "output.pdf"
+    source.write_bytes(b"source")
+    output.write_bytes(b"output")
+    expectations = tmp_path / "expectations.json"
+    expectations.write_text(
+        json.dumps(
+            {
+                "sample_id": "allocation-obstacle",
+                "source_sha256": hashlib.sha256(b"source").hexdigest(),
+                "direction": "en-zh",
+                "toc_records": [
+                    {
+                        "anchor": current["parent_ref"],
+                        "kind": line_split.RECORD_SINGLE,
+                        "source_box": current["parent"]["source_box"],
+                    }
+                ],
+            }
+        ),
+        encoding="utf-8",
+    )
+
+    with pytest.raises(
+        VerificationError,
+        match="allocation strip intersects source unit",
+    ):
+        verify_toc(expectations, source, output, tmp_path, "en", "zh")
+
+
 def test_bounded_overflow_fails_without_text_loss_or_container_borrowing(tmp_path):
     paragraph = _paragraph(["tiny"], "overflow", left=50, bottom=400, char_width=5)
     _config, document, report = _apply(tmp_path, [paragraph])

@@ -274,6 +274,8 @@ class SourceUnit:
     record_kind: str
     child_order: int
     source_box: tuple[float, float, float, float] | None
+    allocation_box: tuple[float, float, float, float] | None
+    allocation_basis: tuple[str, ...]
     source_text_sha256: str
     source_text: str
     source_characters_sha256: str
@@ -1130,6 +1132,100 @@ class _PendingUnit:
     fixed_companion: bool
 
 
+def _boxes_overlap(left: list[float], right: list[float], tolerance: float) -> bool:
+    return (
+        min(left[2], right[2]) - max(left[0], right[0]) > tolerance
+        and min(left[3], right[3]) - max(left[1], right[1]) > tolerance
+    )
+
+
+def _record_lane_allocations(
+    page,
+    pending: list[_PendingUnit],
+    source_refs: dict[int, str],
+    config: LineSplitConfig,
+) -> dict[int, tuple[tuple[float, float, float, float], tuple[str, ...]]]:
+    """Prove horizontal whitespace belonging to a repeated record lane.
+
+    A paragraph box is an ink box, not necessarily the measure reserved for a
+    record. Three vertically distinct records with the same left edge prove a
+    repeated lane; the furthest ink edge they use is a conservative lane edge.
+    A single record may use that measure only when the added strip intersects
+    neither another paragraph nor detected figure artwork. Records remain
+    independent and their source ink bands remain unchanged for frozen truth.
+    """
+    candidates = [
+        item
+        for item in pending
+        if not item.fixed_companion
+        and item.kind in {RECORD_SINGLE, RECORD_BLOCK}
+        and _box_record(item.paragraph.box) is not None
+    ]
+    result = {}
+    for item in candidates:
+        if item.kind != RECORD_SINGLE:
+            continue
+        source = _box_record(item.paragraph.box)
+        source_height = source[3] - source[1]
+        lane = []
+        for peer in candidates:
+            peer_box = _box_record(peer.paragraph.box)
+            peer_height = peer_box[3] - peer_box[1]
+            if min(source_height, peer_height) <= 0:
+                continue
+            if (
+                max(source_height, peer_height) / min(source_height, peer_height)
+                > config.record_gap_ratio
+            ):
+                # A micro-label merely sharing an x coordinate does not prove
+                # the measure used by ordinary-size records (and vice versa).
+                continue
+            left_tolerance = min(source_height, peer_height) / config.record_gap_ratio
+            vertically_distinct = (
+                peer is item
+                or peer_box[3] <= source[1] + config.scan_step
+                or peer_box[1] >= source[3] - config.scan_step
+            )
+            if vertically_distinct and abs(peer_box[0] - source[0]) <= left_tolerance:
+                lane.append(peer)
+        # Two unrelated rows can align by chance; require the current record
+        # and at least two independent peers.
+        if len(lane) < 3:
+            continue
+        lane_x2 = max(_box_record(peer.paragraph.box)[2] for peer in lane)
+        if lane_x2 <= source[2] + config.scan_step:
+            continue
+        added_strip = [source[2], source[1], lane_x2, source[3]]
+        paragraph_obstacle = any(
+            paragraph is not item.paragraph
+            and not is_debug_overlay(paragraph)
+            and (box := _box_record(paragraph.box)) is not None
+            and _boxes_overlap(added_strip, box, config.scan_step)
+            for paragraph in page.pdf_paragraph or ()
+        )
+        figure_obstacle = any(
+            (box := _box_record(getattr(figure, "box", None))) is not None
+            and _boxes_overlap(added_strip, box, config.scan_step)
+            for figure in page.pdf_figure or ()
+        ) or any(
+            (getattr(layout, "class_name", "") or "").casefold() == "figure"
+            and (box := _box_record(getattr(layout, "box", None))) is not None
+            and _boxes_overlap(added_strip, box, config.scan_step)
+            for layout in page.page_layout or ()
+        )
+        if paragraph_obstacle or figure_obstacle:
+            continue
+        basis = tuple(
+            source_refs[id(peer.paragraph)]
+            for peer in sorted(lane, key=lambda held: source_refs[id(held.paragraph)])
+        )
+        result[id(item.paragraph)] = (
+            (source[0], source[1], lane_x2, source[3]),
+            basis,
+        )
+    return result
+
+
 _FOLIO_TEXT = re.compile(r"[\d\s.·|/\-–—]+\Z")
 _FOLIO_EDGE = re.compile(r"(?:^\d+|\d+$)")
 
@@ -1560,6 +1656,21 @@ def process_page(
     )
     page.pdf_paragraph = rebuilt
 
+    post_source_refs = {
+        id(paragraph): paragraph_reference(label, post_index)
+        for post_index, paragraph in enumerate(page.pdf_paragraph or ())
+    }
+    lane_allocations = (
+        {}
+        if prose_only
+        else _record_lane_allocations(
+            page,
+            pending,
+            post_source_refs,
+            config,
+        )
+    )
+
     pending_by_id = {
         id(item.paragraph): item
         for item in pending
@@ -1586,6 +1697,10 @@ def process_page(
         text = paragraph.unicode or characters_text(paragraph_characters(paragraph))
         source_character_text = characters_text(paragraph_characters(paragraph))
         box = _box_record(paragraph.box)
+        allocation, allocation_basis = lane_allocations.get(
+            id(paragraph),
+            (None if box is None else tuple(box), (source_ref,)),
+        )
         parent_boxes = [parents[reference]["source_box"] for reference in parent_refs]
         if any(parent_box is None for parent_box in parent_boxes):
             group_box = None
@@ -1625,6 +1740,8 @@ def process_page(
             record_kind=kind,
             child_order=order,
             source_box=None if box is None else tuple(box),
+            allocation_box=allocation,
+            allocation_basis=allocation_basis,
             source_text_sha256=_source_hash(text),
             source_text=text,
             source_characters_sha256=_source_hash(source_character_text),
@@ -1640,6 +1757,8 @@ def process_page(
             "fixed_companion": held.fixed_companion,
             "child_order": order,
             "source_band": box,
+            "allocation_band": None if allocation is None else list(allocation),
+            "allocation_basis": list(allocation_basis),
             "source_text_sha256": unit.source_text_sha256,
             "source_characters": len(source_character_text),
             "source_characters_sha256": unit.source_characters_sha256,

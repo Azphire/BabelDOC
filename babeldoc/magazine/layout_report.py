@@ -204,7 +204,10 @@ def prepare(
             if unit is not None:
                 source_ref = unit.source_ref
                 role = unit.record_kind
-                source_box = unit.source_box
+                source_box = (
+                    getattr(unit, "allocation_box", None)
+                    or unit.source_box
+                )
             elif getattr(paragraph, "chain_id", None) or local_ref in chain_refs:
                 source_ref = physical_ref
                 role = ROLE_CHAIN

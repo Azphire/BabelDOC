@@ -1542,11 +1542,15 @@ class Typesetting:
         typesetting_units: list[TypesettingUnit],
         source_unit,
     ) -> list[TypesettingUnit]:
-        """Render one declared source unit without borrowing adjacent space."""
+        """Render inside the source allocation proved by the structure pass."""
         from babeldoc.magazine.line_split import RECORD_SINGLE
         from babeldoc.magazine.line_split import load_line_split_config
 
-        if source_unit.source_box is None:
+        source_box = (
+            getattr(source_unit, "allocation_box", None)
+            or source_unit.source_box
+        )
+        if source_box is None:
             raise BoundedTypesettingError(
                 f"{source_unit.source_ref}: source container is not measurable"
             )
@@ -1555,7 +1559,7 @@ class Typesetting:
             page,
             typesetting_units,
             source_ref=source_unit.source_ref,
-            source_box=source_unit.source_box,
+            source_box=source_box,
             minimum_scale=load_line_split_config().minimum_readable_scale,
             maximum_lines=(
                 1 if source_unit.record_kind == RECORD_SINGLE else None
