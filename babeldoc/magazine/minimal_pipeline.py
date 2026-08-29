@@ -10,6 +10,7 @@ from pathlib import Path
 import pymupdf
 
 from babeldoc.magazine import article_flow
+from babeldoc.magazine import demo_coverage
 from babeldoc.magazine import drop_cap_render
 from babeldoc.magazine import hitl
 from babeldoc.magazine import indent_policy
@@ -71,6 +72,8 @@ class MagazineState:
     """The one in-memory state object owned by a translation run."""
 
     _article_document_ir: ArticleDocumentIR | None = None
+    _coverage_snapshot: demo_coverage.CoverageSnapshot | None = None
+    _coverage_report: dict | None = None
     _structure_started: bool = False
     _structure_document_identity: int | None = None
     _hitl_state: hitl.HitlRunState | None = None
@@ -103,6 +106,10 @@ class MagazineState:
     @property
     def article_document_ir(self) -> ArticleDocumentIR | None:
         return self._article_document_ir
+
+    @property
+    def coverage_report(self) -> dict | None:
+        return self._coverage_report
 
     @property
     def structure_started(self) -> bool:
@@ -385,6 +392,14 @@ def after_styles(config, docs) -> ArticleDocumentIR:
             "ArticleBuilder did not return an ArticleDocumentIR"
     )
     state._article_document_ir = article_document_ir
+    state._coverage_snapshot = demo_coverage.freeze(
+        docs,
+        article_document_ir,
+        hitl.labeled_pages(docs),
+    )
+    # The translator only receives the frozen identity resolver.  It does not
+    # read expectations and the resolver cannot affect translation decisions.
+    config.magazine_coverage_snapshot = state._coverage_snapshot
     if docs.page:
         with _without_debug_overlay_text(docs):
             state._detection_baseline = minimal_detection.capture_baseline(
@@ -448,6 +463,11 @@ def after_translation(config, docs, typesetter) -> dict:
     state._flow_started = True
     state._flow_document_identity = id(docs)
     state._typesetter_identity = id(typesetter)
+    if state._coverage_snapshot is not None:
+        state._coverage_report = demo_coverage.finalize(
+            config,
+            state._coverage_snapshot,
+        )
     paren_dedup.apply(config, docs)
     indent_policy.apply(config, docs, article_document_ir)
     report = article_flow.apply(

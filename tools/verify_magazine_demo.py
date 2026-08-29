@@ -10,8 +10,27 @@ import re
 import sys
 from pathlib import Path
 
+import pymupdf
+
 REF_PATTERN = re.compile(r"p\d+#\d+")
 SHA256_PATTERN = re.compile(r"[0-9a-f]{64}")
+COVERAGE_REPORT_NAME = "demo_coverage.report.json"
+COVERAGE_SCHEMA_VERSION = "demo-coverage.v1"
+COVERAGE_FIELDS = {
+    "source_ref",
+    "physical_page",
+    "role",
+    "source_text_sha256",
+    "source_box",
+    "translation_owner",
+    "target_text_sha256",
+    "final_status",
+}
+COVERAGE_OPTIONAL_FIELDS = {"runtime_source_ref"}
+COVERAGE_OWNERS = {"joint", "ordinary", "preserve", "none"}
+BODY_ROLES = {"body", "text", "plain text", "paragraph_hybrid"}
+HAN_PATTERN = re.compile(r"[\u3400-\u4dbf\u4e00-\u9fff\uf900-\ufaff]")
+LATIN_PATTERN = re.compile(r"[A-Za-z]")
 DROPCAP_FIELDS = {
     "source_ref",
     "decision",
@@ -1478,12 +1497,481 @@ def verify_dropcap(
     }
 
 
+def _parse_physical_pages(value: str) -> tuple[int, ...]:
+    pages: list[int] = []
+    for raw_piece in value.split(","):
+        piece = raw_piece.strip()
+        if not piece:
+            raise argparse.ArgumentTypeError("pages must not contain empty entries")
+        if "-" in piece:
+            raw_start, raw_end = piece.split("-", 1)
+            if not raw_start.isdigit() or not raw_end.isdigit():
+                raise argparse.ArgumentTypeError("pages must be comma-separated integers or ranges")
+            start, end = int(raw_start), int(raw_end)
+            if start < 1 or end < start:
+                raise argparse.ArgumentTypeError("page ranges must be positive and ordered")
+            pages.extend(range(start, end + 1))
+        else:
+            if not piece.isdigit() or int(piece) < 1:
+                raise argparse.ArgumentTypeError("pages must be positive integers")
+            pages.append(int(piece))
+    if not pages or len(pages) != len(set(pages)):
+        raise argparse.ArgumentTypeError("pages must be non-empty and unique")
+    return tuple(pages)
+
+
+def _intersection_area(left, right) -> float:
+    width = max(0.0, min(left[2], right[2]) - max(left[0], right[0]))
+    height = max(0.0, min(left[3], right[3]) - max(left[1], right[1]))
+    return width * height
+
+
+def _box_area(box) -> float:
+    return max(0.0, box[2] - box[0]) * max(0.0, box[3] - box[1])
+
+
+def _pdf_box_to_source_box(box, page_height: float) -> tuple[float, float, float, float]:
+    """Convert PyMuPDF's top-left coordinates to the IL's bottom-left space."""
+    held = _require_box(list(box), "PDF text block")
+    return (held[0], page_height - held[3], held[2], page_height - held[1])
+
+
+def _coverage_exemptions(expectations: dict) -> tuple[dict, ...]:
+    raw_exemptions = expectations.get("coverage_exemptions", [])
+    if not isinstance(raw_exemptions, list):
+        raise VerificationError("coverage exemptions must be a list")
+    corpus = _toc_anchor_inventory(expectations)
+    exemptions = []
+    seen = set()
+    for position, raw in enumerate(raw_exemptions):
+        if not isinstance(raw, dict):
+            raise VerificationError(f"coverage exemption {position} is not an object")
+        reason = raw.get("reason")
+        if not isinstance(reason, str) or not reason:
+            raise VerificationError(f"coverage exemption {position} has no reason")
+        anchors = raw.get("anchor")
+        if isinstance(anchors, str):
+            anchors = [anchors]
+        if not isinstance(anchors, list) or not anchors:
+            page = raw.get("physical_page")
+            box = raw.get("source_box")
+            if not isinstance(page, int) or page < 1 or box is None:
+                raise VerificationError(f"coverage exemption {position} has no anchor")
+            signature = (page, _require_box(box, f"coverage exemption {position}"))
+            if signature in seen:
+                raise VerificationError("coverage exemptions are duplicated")
+            seen.add(signature)
+            exemptions.append({"refs": (), "page": page, "box": signature[1]})
+            continue
+        for anchor in anchors:
+            if not isinstance(anchor, str) or REF_PATTERN.fullmatch(anchor) is None:
+                raise VerificationError(f"coverage exemption {position} has an invalid anchor")
+            page = int(anchor[1 : anchor.index("#")])
+            box = raw.get("source_box")
+            if corpus is not None and anchor in corpus:
+                node = corpus[anchor]
+                page = node["physical_page"]
+                box = node["source_box"]
+            stable_box = None if box is None else _require_box(box, anchor)
+            signature = (anchor, page, stable_box)
+            if signature in seen:
+                raise VerificationError("coverage exemptions are duplicated")
+            seen.add(signature)
+            exemptions.append({"refs": (anchor,), "page": page, "box": stable_box})
+    return tuple(exemptions)
+
+
+def _item_is_exempt(item: dict, exemptions: tuple[dict, ...]) -> bool:
+    item_box = tuple(item["source_box"])
+    for exemption in exemptions:
+        if item["source_ref"] in exemption["refs"]:
+            return True
+        if exemption["page"] != item["physical_page"] or exemption["box"] is None:
+            continue
+        if _box_equal(item_box, exemption["box"]):
+            return True
+    return False
+
+
+def _block_is_exempt(page: int, box, exemptions: tuple[dict, ...]) -> bool:
+    area = _box_area(box)
+    return any(
+        exemption["page"] == page
+        and exemption["box"] is not None
+        and _intersection_area(box, exemption["box"]) >= min(area, _box_area(exemption["box"])) * 0.5
+        for exemption in exemptions
+    )
+
+
+def _tracking_rows(working_dir: Path) -> tuple[dict, ...]:
+    path = working_dir / "translate_tracking.json"
+    tracking = _read(path)
+    rows = []
+    for section in ("page", "cross_page", "cross_column"):
+        groups = tracking.get(section)
+        if not isinstance(groups, list):
+            raise VerificationError(f"translation tracking section is invalid: {section}")
+        for group in groups:
+            paragraphs = group.get("paragraph") if isinstance(group, dict) else None
+            if not isinstance(paragraphs, list):
+                raise VerificationError(f"translation tracking group is invalid: {section}")
+            for row in paragraphs:
+                if not isinstance(row, dict):
+                    raise VerificationError("translation tracking row is not an object")
+                rows.append(row)
+    return tuple(rows)
+
+
+def verify_coverage(
+    expectations_path: Path,
+    source: Path,
+    output: Path,
+    working_dir: Path,
+    source_lang: str,
+    target_lang: str,
+) -> dict:
+    expectations = _verify_inputs(
+        expectations_path,
+        source,
+        output,
+        source_lang,
+        target_lang,
+    )
+    report = _read(working_dir / COVERAGE_REPORT_NAME)
+    items = report.get("items")
+    if (
+        report.get("schema_version") != COVERAGE_SCHEMA_VERSION
+        or report.get("status") != "complete"
+        or report.get("direction") != f"{source_lang}-{target_lang}"
+        or not isinstance(items, list)
+    ):
+        raise VerificationError("coverage report did not complete with the requested direction")
+    exemptions = _coverage_exemptions(expectations)
+    by_ref = {}
+    signatures = []
+    owner_counts = dict.fromkeys(sorted(COVERAGE_OWNERS), 0)
+    for position, item in enumerate(items):
+        if not isinstance(item, dict) or not (
+            COVERAGE_FIELDS <= set(item)
+            and set(item) <= COVERAGE_FIELDS | COVERAGE_OPTIONAL_FIELDS
+        ):
+            raise VerificationError(f"coverage item schema is invalid: {position}")
+        reference = item.get("source_ref")
+        page = item.get("physical_page")
+        role = item.get("role")
+        owner = item.get("translation_owner")
+        target_hash = item.get("target_text_sha256")
+        status = item.get("final_status")
+        source_hash = item.get("source_text_sha256")
+        source_box = _require_box(item.get("source_box"), str(reference))
+        if (
+            not isinstance(reference, str)
+            or REF_PATTERN.fullmatch(reference) is None
+            or reference in by_ref
+            or not isinstance(page, int)
+            or isinstance(page, bool)
+            or page < 1
+            or int(reference[1 : reference.index("#")]) != page
+            or not isinstance(role, str)
+            or not role
+            or owner not in COVERAGE_OWNERS
+            or not isinstance(source_hash, str)
+            or SHA256_PATTERN.fullmatch(source_hash) is None
+            or not isinstance(status, str)
+            or not status
+        ):
+            raise VerificationError(f"coverage item identity is invalid: {reference}")
+        runtime_ref = item.get("runtime_source_ref")
+        if runtime_ref is not None and (
+            not isinstance(runtime_ref, str) or REF_PATTERN.fullmatch(runtime_ref) is None
+        ):
+            raise VerificationError(f"coverage runtime ref is invalid: {reference}")
+        if owner in {"joint", "ordinary"}:
+            if not isinstance(target_hash, str) or SHA256_PATTERN.fullmatch(target_hash) is None:
+                raise VerificationError(f"translated coverage item has no target: {reference}")
+            expected_status = "joint_success" if owner == "joint" else "translated"
+            if status != expected_status:
+                raise VerificationError(
+                    f"translated coverage item did not finish cleanly: {reference} ({status})"
+                )
+        elif target_hash is not None:
+            raise VerificationError(f"untranslated coverage item has a target digest: {reference}")
+        held = {**item, "source_box": source_box}
+        exempt = _item_is_exempt(held, exemptions)
+        if owner == "preserve" and not exempt:
+            raise VerificationError(f"preserved coverage item lacks an expectation exemption: {reference}")
+        if role == "chain" and owner != "joint":
+            raise VerificationError(f"body chain coverage item is not joint-owned: {reference}")
+        if role in BODY_ROLES and (owner == "none" or target_hash is None):
+            raise VerificationError(f"body coverage item has no target: {reference}")
+        by_ref[reference] = held
+        signatures.append((page, source_hash, source_box, held))
+        owner_counts[owner] += 1
+    if not items:
+        raise VerificationError("coverage item inventory is empty")
+
+    totals = report.get("totals")
+    if not isinstance(totals, dict) or set(totals) != {"sources", "owners"}:
+        raise VerificationError("coverage totals are missing")
+    if totals["sources"] != len(items):
+        raise VerificationError("coverage source total disagrees")
+    if totals["owners"] != owner_counts:
+        raise VerificationError("coverage owner totals disagree")
+
+    joint_refs = set()
+    chain_report = _read(working_dir / "chain_translation.report.json")
+    for chain in chain_report.get("chains", []):
+        if not isinstance(chain, dict) or chain.get("outcome") != "joint_success":
+            continue
+        physical_refs = chain.get("ordered_source_refs")
+        members = chain.get("members")
+        if not isinstance(physical_refs, list) or not isinstance(members, list):
+            raise VerificationError("joint chain coverage evidence is malformed")
+        joint_refs.update(physical_refs)
+    tracking_by_ref = {}
+    for row in _tracking_rows(working_dir):
+        reference = row.get("source_ref")
+        if isinstance(reference, str) and row.get("output") not in (None, ""):
+            tracking_by_ref.setdefault(reference, []).append(row)
+    for reference in joint_refs:
+        tracked = tracking_by_ref.get(reference, [])
+        item = by_ref.get(reference)
+        if item is None:
+            raise VerificationError(f"joint chain member is absent from coverage: {reference}")
+        if any(not isinstance(row.get("output"), str) for row in tracked) or len(
+            tracked
+        ) > 1 or (
+            len(tracked) == 1
+            and hashlib.sha256(tracked[0]["output"].encode("utf-8")).hexdigest()
+            != item["target_text_sha256"]
+        ):
+            raise VerificationError(f"joint chain member also has ordinary ownership: {reference}")
+
+    verified_chain_members = 0
+    for truth_chain in expectations.get("chains", []):
+        if truth_chain.get("role") != "body":
+            continue
+        for truth in truth_chain.get("ordered_members", []):
+            signature = _member_signature(truth, f"coverage truth {truth_chain.get('id')}")
+            matches = [
+                item
+                for page, source_hash, source_box, item in signatures
+                if page == signature[0]
+                and source_hash == signature[1]
+                and _box_equal(source_box, signature[2])
+            ]
+            if len(matches) != 1 or matches[0]["translation_owner"] != "joint":
+                raise VerificationError(
+                    f"body chain member lacks unique joint coverage: {_truth_ref(truth)}"
+                )
+            verified_chain_members += 1
+    return {
+        "check": "coverage",
+        "sample_id": expectations.get("sample_id"),
+        "items": len(items),
+        "chain_members": verified_chain_members,
+        "owners": owner_counts,
+        "status": "pass",
+    }
+
+
+def _script_count(text: str, language: str) -> int:
+    pattern = HAN_PATTERN if language.lower().startswith("zh") else LATIN_PATTERN
+    return len(pattern.findall(text))
+
+
+def _coverage_thresholds(expectations: dict, source_lang: str) -> tuple[int, int]:
+    policy = expectations.get("coverage_thresholds", {})
+    if not isinstance(policy, dict):
+        raise VerificationError("coverage thresholds must be an object")
+    default = 30 if source_lang.lower().startswith("zh") else 80
+    source_min = policy.get("source_block_min_characters", default)
+    residue_max = policy.get("max_source_script_characters", default - 1)
+    if (
+        not isinstance(source_min, int)
+        or isinstance(source_min, bool)
+        or source_min < 1
+        or not isinstance(residue_max, int)
+        or isinstance(residue_max, bool)
+        or residue_max < 0
+    ):
+        raise VerificationError("coverage thresholds must be non-negative integers")
+    return source_min, residue_max
+
+
+def _output_page_map(source_document, output_document, pages: tuple[int, ...]) -> dict[int, int]:
+    if any(page > source_document.page_count for page in pages):
+        raise VerificationError("selected physical page is outside the source PDF")
+    if output_document.page_count == source_document.page_count:
+        page_map = {page: page - 1 for page in pages}
+        compared = range(1, source_document.page_count + 1)
+        for page in compared:
+            source_page = source_document[page - 1]
+            output_page = output_document[page - 1]
+            if not (
+                math.isclose(source_page.rect.width, output_page.rect.width, abs_tol=0.01)
+                and math.isclose(source_page.rect.height, output_page.rect.height, abs_tol=0.01)
+            ):
+                raise VerificationError(f"page size changed: p{page}")
+        return page_map
+    if output_document.page_count != len(pages):
+        raise VerificationError("output page count matches neither source nor selected window")
+    page_map = {page: index for index, page in enumerate(pages)}
+    for page, output_index in page_map.items():
+        source_page = source_document[page - 1]
+        output_page = output_document[output_index]
+        if not (
+            math.isclose(source_page.rect.width, output_page.rect.width, abs_tol=0.01)
+            and math.isclose(source_page.rect.height, output_page.rect.height, abs_tol=0.01)
+        ):
+            raise VerificationError(f"page size changed: p{page}")
+    return page_map
+
+
+def verify_long_blocks_and_pdf(
+    expectations_path: Path,
+    source: Path,
+    output: Path,
+    working_dir: Path,
+    source_lang: str,
+    target_lang: str,
+    pages: tuple[int, ...],
+) -> dict:
+    expectations = _verify_inputs(
+        expectations_path,
+        source,
+        output,
+        source_lang,
+        target_lang,
+    )
+    coverage = _read(working_dir / COVERAGE_REPORT_NAME)
+    raw_items = coverage.get("items")
+    if not isinstance(raw_items, list):
+        raise VerificationError("coverage item inventory is missing")
+    items = [
+        {
+            **item,
+            "source_box": _require_box(item.get("source_box"), str(item.get("source_ref"))),
+        }
+        for item in raw_items
+        if isinstance(item, dict)
+    ]
+    if len(items) != len(raw_items):
+        raise VerificationError("coverage item inventory contains a non-object")
+    exemptions = _coverage_exemptions(expectations)
+    source_min, residue_max = _coverage_thresholds(expectations, source_lang)
+    long_blocks = 0
+    with pymupdf.open(source) as source_document, pymupdf.open(output) as output_document:
+        if source_document.page_count < 1 or output_document.page_count < 1:
+            raise VerificationError("source/output PDF must contain pages")
+        page_map = _output_page_map(source_document, output_document, pages)
+        for physical_page in pages:
+            source_page = source_document[physical_page - 1]
+            page_items = [
+                item
+                for item in items
+                if item.get("physical_page") == physical_page
+                and item.get("translation_owner") != "none"
+            ]
+            for block in source_page.get_text("blocks"):
+                if len(block) < 5 or not isinstance(block[4], str):
+                    continue
+                text = block[4]
+                if _script_count(text, source_lang) < source_min:
+                    continue
+                source_box = _pdf_box_to_source_box(block[:4], source_page.rect.height)
+                if _block_is_exempt(physical_page, source_box, exemptions):
+                    continue
+                block_area = _box_area(source_box)
+                covered_area = min(
+                    block_area,
+                    sum(
+                        _intersection_area(source_box, item["source_box"])
+                        for item in page_items
+                    ),
+                )
+                if block_area <= 0 or covered_area / block_area < 0.25:
+                    raise VerificationError(
+                        f"long source block is absent from coverage: p{physical_page} "
+                        f"box={[round(value, 3) for value in source_box]}"
+                    )
+                long_blocks += 1
+
+            output_page = output_document[page_map[physical_page]]
+            for block in output_page.get_text("blocks"):
+                if len(block) < 5 or not isinstance(block[4], str):
+                    continue
+                residue = _script_count(block[4], source_lang)
+                if residue <= residue_max:
+                    continue
+                output_box = _pdf_box_to_source_box(block[:4], output_page.rect.height)
+                if _block_is_exempt(physical_page, output_box, exemptions):
+                    continue
+                raise VerificationError(
+                    f"long source-script residue remains: p{physical_page} "
+                    f"characters={residue} box={[round(value, 3) for value in output_box]}"
+                )
+    return {
+        "check": "pdf_completeness",
+        "sample_id": expectations.get("sample_id"),
+        "physical_pages": list(pages),
+        "long_source_blocks": long_blocks,
+        "status": "pass",
+    }
+
+
+def verify_full(
+    expectations_path: Path,
+    source: Path,
+    output: Path,
+    working_dir: Path,
+    source_lang: str,
+    target_lang: str,
+    pages: tuple[int, ...],
+) -> dict:
+    if not pages:
+        raise VerificationError("full verification requires physical pages")
+    checks = {}
+    for name, verifier in (
+        ("chain", verify_chain),
+        ("toc", verify_toc),
+        ("layout", verify_layout),
+        ("title", verify_title),
+        ("dropcap", verify_dropcap),
+        ("coverage", verify_coverage),
+    ):
+        checks[name] = verifier(
+            expectations_path,
+            source,
+            output,
+            working_dir,
+            source_lang,
+            target_lang,
+        )
+    checks["pdf_completeness"] = verify_long_blocks_and_pdf(
+        expectations_path,
+        source,
+        output,
+        working_dir,
+        source_lang,
+        target_lang,
+        pages,
+    )
+    expectations = _read(expectations_path)
+    return {
+        "check": "full",
+        "sample_id": expectations.get("sample_id"),
+        "checks": checks,
+        "status": "pass",
+    }
+
+
 def _parser():
     parser = argparse.ArgumentParser()
     parser.add_argument(
         "--check",
         required=True,
-        choices=("chain", "toc", "layout", "title", "dropcap"),
+        choices=("chain", "toc", "layout", "title", "dropcap", "full"),
     )
     parser.add_argument("--expectations", required=True, type=Path)
     parser.add_argument("--source", required=True, type=Path)
@@ -1491,29 +1979,46 @@ def _parser():
     parser.add_argument(
         "--working-dir", "--run-dir", dest="working_dir", required=True, type=Path
     )
-    parser.add_argument("--source-lang", required=True)
+    parser.add_argument("--source-lang")
     parser.add_argument("--target-lang", required=True)
-    parser.add_argument("--pages")
+    parser.add_argument("--pages", type=_parse_physical_pages)
     return parser
 
 
 def main(argv=None) -> int:
     args = _parser().parse_args(argv)
     try:
+        expectations = _read(args.expectations)
+        direction = expectations.get("direction")
+        if not isinstance(direction, str) or direction.count("-") != 1:
+            raise VerificationError("expectations direction is invalid")
+        inferred_source, expected_target = direction.split("-", 1)
+        source_lang = args.source_lang or inferred_source
+        if expected_target != args.target_lang:
+            raise VerificationError(
+                "target language disagrees with expectations: "
+                f"expected={expected_target}, actual={args.target_lang}"
+            )
         verifier = {
             "chain": verify_chain,
             "toc": verify_toc,
             "layout": verify_layout,
             "title": verify_title,
             "dropcap": verify_dropcap,
+            "full": verify_full,
         }[args.check]
-        result = verifier(
+        positional = (
             args.expectations,
             args.source,
             args.output,
             args.working_dir,
-            args.source_lang,
+            source_lang,
             args.target_lang,
+        )
+        result = (
+            verifier(*positional, args.pages)
+            if args.check == "full"
+            else verifier(*positional)
         )
     except (OSError, ValueError, json.JSONDecodeError) as error:
         print(json.dumps({"check": args.check, "status": "fail", "error": str(error)}))

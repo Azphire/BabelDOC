@@ -215,6 +215,8 @@ class DocumentTranslateTracker:
             if pdf_unicode is None or i_str is None:
                 continue
             paragraph_json = {
+                "source_ref": getattr(para, "source_ref", None),
+                "runtime_source_ref": getattr(para, "runtime_source_ref", None),
                 "input": i_str,
                 "output": o_str,
                 "pdf_unicode": pdf_unicode,
@@ -249,6 +251,11 @@ class ParagraphTranslateTracker:
 
     def set_pdf_unicode(self, unicode: str):
         self.pdf_unicode = unicode
+
+    def set_source_refs(self, source_ref: str, runtime_source_ref: str) -> None:
+        """Bind one tracker to the frozen physical and runtime identities."""
+        self.source_ref = source_ref
+        self.runtime_source_ref = runtime_source_ref
 
     def set_input(self, input_text: str):
         self.input = input_text
@@ -364,6 +371,11 @@ class ILTranslator:
         self.use_as_fallback = False
         self.add_content_filter_hint_lock = threading.Lock()
         self.docs = None
+        self.coverage_snapshot = getattr(
+            translation_config,
+            "magazine_coverage_snapshot",
+            None,
+        )
 
         # Pre-compile patterns for placeholder-like tokens that may be hallucinated by LLM.
         # We only consider the same shapes as our own formula & rich-text placeholders.
@@ -959,6 +971,16 @@ class ILTranslator:
         xobj_font_map: dict[int, dict[str, PdfFont]],
     ):
         """Pre-translation processing: prepare text for translation."""
+        coverage_snapshot = getattr(
+            getattr(self, "translation_config", None),
+            "magazine_coverage_snapshot",
+            None,
+        ) or getattr(self, "coverage_snapshot", None)
+        if coverage_snapshot is not None:
+            refs = coverage_snapshot.source_refs_for(paragraph)
+            if refs is None:
+                raise ValueError("translation paragraph is outside coverage inventory")
+            tracker.set_source_refs(*refs)
         if paragraph.vertical:
             return None, None
         tracker.set_pdf_unicode(paragraph.unicode)
