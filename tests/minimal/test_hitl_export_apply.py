@@ -27,6 +27,27 @@ ROOT = Path(__file__).resolve().parents[2]
 FIXED_DECISIONS = ROOT / "reviews" / "Courier-en.decisions.json"
 FIXED_BLOB = "39b40b848671f41b3a6415cedbc4a0ecefc586ec"
 
+# The fourteen terms reviews/Courier-en.decisions.json rules on, laid over the
+# fixture's paragraphs so this document really does say what the file rules
+# about. The rulings are only checked against the source now, so a fixture whose
+# pages never mention a ruled name would have every ruling skipped as absent and
+# the applied counts below would assert nothing.
+FIXED_TERM_PARAGRAPHS: tuple[tuple[str, ...], ...] = (
+    ("Marcelo Silva de Sousa", "Lagipoiva Cherelle Jackson"),
+    ("Daniel Robinson", "David Jefferson"),
+    ("The UNESCO Courier",),
+    ("CourierT H E UNESCO",),
+    ("Yang Sha", "Du Junzhi"),
+    ("Sisco Auala", "Anna Ruohonen"),
+    ("Jim Al-Khalili", "Chimamanda Ngozi Adichie"),
+    ("Ora Marek-Martinez", "Katerina Markelova"),
+)
+
+
+def fixture_paragraph_text(index: int) -> str:
+    named = " and ".join(FIXED_TERM_PARAGRAPHS[index])
+    return f"ordinary paragraph {index} names {named}"
+
 
 def git_blob_id(data: bytes) -> str:
     data = data.replace(b"\r\n", b"\n")
@@ -61,7 +82,10 @@ def selected_fixture(
     sample: str = "Courier-en",
     candidate: bool = True,
 ) -> tuple[RuntimeConfig, il.Document, ArticleDocumentIR]:
-    page_seven = [ordinary_paragraph(f"ordinary paragraph {index}") for index in range(8)]
+    page_seven = [
+        ordinary_paragraph(fixture_paragraph_text(index))
+        for index in range(len(FIXED_TERM_PARAGRAPHS))
+    ]
     page_seven.append(
         source_drop_cap_paragraph() if candidate else ordinary_paragraph("not candidate")
     )
@@ -177,6 +201,9 @@ def test_fixed_decisions_apply_terms_scope_and_physical_drop_cap(
     assert git_blob_id(fixed_bytes) == FIXED_BLOB
     fixed = json.loads(fixed_bytes)
     assert len(fixed["terms"]) == 14
+    assert set(fixed["terms"]) == {
+        term for paragraph in FIXED_TERM_PARAGRAPHS for term in paragraph
+    }
     assert fixed["page_kinds"] == {"1": "toc"}
     assert fixed["drop_caps"]["p7#8"] == "keep"
     source, generated = isolate_review_paths(monkeypatch, tmp_path)
@@ -191,6 +218,13 @@ def test_fixed_decisions_apply_terms_scope_and_physical_drop_cap(
     report = hitl.before_translation(config, docs, article_ir, state)
     assert state.translation_pass_completed
     assert report["applied"]["terms"]["ruled"] == 14
+    assert report["applied"]["terms_conservation"] == {
+        "ruled": 14,
+        "applied": 14,
+        "skipped": 0,
+    }
+    assert not any(item["section"] == "terms" for item in report["skipped"])
+    assert report["decisions_sha256"] == hashlib.sha256(copied_before).hexdigest()
     assert state.glossary_freeze is not None
     assert state.glossary_freeze.entry_count == 14
     assert [item["paragraph"] for item in report["applied"]["drop_caps"]] == [

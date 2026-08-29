@@ -39,12 +39,15 @@ HUMAN_SOURCE = "human"
 HUMAN_CONF = 1.0
 DECISIONS_GLOSSARY = "hitl_decisions"
 OUT_OF_SELECTED_SCOPE = "out_of_selected_scope"
+ABSENT_FROM_SOURCE = "absent_from_source"
 
 _CONFIG_KEY_VERSION = "review_format_version"
 _CONFIG_KEY_SECTIONS = "sections"
 _CONFIG_KEY_DROP_CAP_DECISIONS = "drop_cap_decisions"
 _CONFIG_KEY_TRANSLATOR_VIEW_CHARS = "translator_view_chars"
 _CONFIG_KEY_MATCHED_EXCERPTS = "matched_prompt_excerpts"
+_CONFIG_KEY_TERM_SOURCE_MATCH = "term_source_match"
+_NORMALIZED_SUBSTRING = "normalized_substring"
 _REFERENCE_RE = re.compile(r"p([1-9][0-9]*)#([0-9]+)\Z")
 
 
@@ -106,6 +109,7 @@ class HitlRunState:
     draft: dict = field(default_factory=dict)
     report: dict = field(default_factory=dict)
     glossary_freeze: GlossaryFreezeEvidence | None = None
+    source_text_pages: tuple[tuple[int, str], ...] = ()
 
 
 @lru_cache(maxsize=1)
@@ -124,6 +128,7 @@ def load_hitl_config(path: str | None = None) -> dict:
         _CONFIG_KEY_DROP_CAP_DECISIONS,
         _CONFIG_KEY_TRANSLATOR_VIEW_CHARS,
         _CONFIG_KEY_MATCHED_EXCERPTS,
+        _CONFIG_KEY_TERM_SOURCE_MATCH,
     )
     missing = [key for key in required if key not in parameters]
     if missing:
@@ -161,6 +166,41 @@ def labeled_pages(docs) -> list[tuple[int, object]]:
     return [
         (page_label(page, position), page) for position, page in enumerate(docs.page)
     ]
+
+
+def capture_source_text(docs) -> tuple[tuple[int, str], ...]:
+    """Snapshot each selected page's source text, normalized once for matching.
+
+    Taken while the first pass still owns the paragraph list: ``line_split``
+    rebuilds it immediately afterwards, so a term straddling a later split point
+    is still one uninterrupted run of text here. This snapshot is the single
+    source the second pass consults about what the document actually said.
+    """
+    return tuple(
+        (
+            label,
+            Glossary.normalize_source(
+                "\n".join(
+                    paragraph.unicode or "" for paragraph in (page.pdf_paragraph or ())
+                )
+            ),
+        )
+        for label, page in labeled_pages(docs)
+    )
+
+
+def first_source_page(state: HitlRunState, source: str) -> int | None:
+    """Physical page where ``source`` first occurs, or None if it occurs nowhere."""
+    rule = load_hitl_config()[_CONFIG_KEY_TERM_SOURCE_MATCH]
+    if rule != _NORMALIZED_SUBSTRING:
+        raise HitlError(f"term source match rule {rule!r} is not implemented")
+    needle = Glossary.normalize_source(source)
+    if not needle:
+        return None
+    for label, text in state.source_text_pages:
+        if needle in text:
+            return label
+    return None
 
 
 def begin_run(translation_config, docs) -> HitlRunState:
@@ -371,8 +411,9 @@ def _load_decisions(state: HitlRunState, docs) -> Decisions | None:
     path = decisions_path(state.sample)
     if not path.exists():
         return None
+    raw_bytes = path.read_bytes()
     try:
-        raw = json.loads(path.read_text(encoding="utf-8"))
+        raw = json.loads(raw_bytes.decode("utf-8"))
     except json.JSONDecodeError as exc:
         raise HitlError(f"{path}: not valid JSON: {exc}") from exc
     if not isinstance(raw, dict):
@@ -396,6 +437,7 @@ def _load_decisions(state: HitlRunState, docs) -> Decisions | None:
     decisions = Decisions(path, terms, page_kinds, drop_caps)
     state.decisions = decisions
     state.report["decisions_file"] = str(path)
+    state.report["decisions_sha256"] = hashlib.sha256(raw_bytes).hexdigest()
     return decisions
 
 
@@ -418,7 +460,7 @@ def _term_votes(shared_context) -> dict[str, int]:
     return votes
 
 
-def export_terms(translation_config, docs) -> list[dict]:
+def export_terms(translation_config, state: HitlRunState) -> list[dict]:
     shared = translation_config.shared_context_cross_split_part
     targets = {}
     if shared.auto_extracted_glossary is not None:
@@ -427,14 +469,7 @@ def export_terms(translation_config, docs) -> list[dict]:
             for entry in shared.auto_extracted_glossary.entries
         }
     votes = _term_votes(shared)
-    first_pages: dict[str, int | None] = dict.fromkeys(votes)
-    for position, page in enumerate(docs.page):
-        text = "\n".join(
-            paragraph.unicode or "" for paragraph in (page.pdf_paragraph or ())
-        )
-        for source, first_page in tuple(first_pages.items()):
-            if first_page is None and source in text:
-                first_pages[source] = page_label(page, position)
+    first_pages = {source: first_source_page(state, source) for source in votes}
     rows = [
         {
             "source": source,
@@ -464,8 +499,7 @@ def _unique_glossary_name(base: str, existing: list[Glossary]) -> str:
     return name
 
 
-def apply_terms(translation_config, decisions: Decisions | None) -> dict | None:
-    ruled = {} if decisions is None else decisions.terms
+def apply_terms(translation_config, ruled: dict[str, str] | None) -> dict | None:
     if not ruled:
         return None
     shared = translation_config.shared_context_cross_split_part
@@ -568,6 +602,59 @@ def _scope_records(state: HitlRunState, decisions: Decisions | None) -> list[dic
     return records
 
 
+def partition_terms(
+    state: HitlRunState,
+    decisions: Decisions | None,
+) -> tuple[dict[str, str], list[dict]]:
+    """Split ruled terms into those the source still carries and those it does not.
+
+    A term absent from every page is dropped one entry at a time rather than
+    failing the file: a decisions file outlives the run that produced it and is
+    replayed against page selections that do not carry every ruled term.
+    """
+    if decisions is None:
+        return {}, []
+    kept: dict[str, str] = {}
+    absent: list[dict] = []
+    for source, target in decisions.terms.items():
+        if first_source_page(state, source) is None:
+            absent.append(
+                {
+                    "section": TERMS_SECTION,
+                    "key": source,
+                    "page": None,
+                    "reason": ABSENT_FROM_SOURCE,
+                }
+            )
+            continue
+        kept[source] = target
+    return kept, absent
+
+
+def _terms_conservation(state: HitlRunState, terms_record: dict | None) -> dict:
+    """Account for every ruled term as either applied or explicitly skipped.
+
+    The ruling either reached the glossary the translator is handed or it is
+    named in the report as absent from the source; a term that is in neither
+    place has fallen out of the single constraint path unobserved.
+    """
+    ruled_total = 0 if state.decisions is None else len(state.decisions.terms)
+    applied_count = 0 if terms_record is None else len(terms_record["entries"])
+    skipped_count = sum(
+        1 for record in state.report["skipped"] if record["section"] == TERMS_SECTION
+    )
+    if ruled_total != applied_count + skipped_count:
+        raise HitlError(
+            f"ruled terms unaccounted for: {ruled_total} ruled, "
+            f"{applied_count} applied, {skipped_count} skipped"
+        )
+    return {
+        "ruled": ruled_total,
+        "applied": applied_count,
+        "skipped": skipped_count,
+    }
+
+
 def page_kind_pass(
     translation_config,
     docs,
@@ -578,6 +665,7 @@ def page_kind_pass(
     state.page_pass_started = True
     if state.docs_identity != id(docs):
         raise HitlError("HITL state belongs to a different document")
+    state.source_text_pages = capture_source_text(docs)
     if not state.pipeline_ready:
         state.report["inactive_reason"] = "structure_only_config"
         state.report["passes"]["page_kinds"] = True
@@ -822,13 +910,18 @@ def before_translation(
         selected_decisions = _selected_drop_cap_decisions(
             translation_config, docs, state, article_document_ir
         )
-        state.draft[TERMS_SECTION] = export_terms(translation_config, docs)
+        kept_terms, absent_terms = partition_terms(state, state.decisions)
+        state.report["skipped"].extend(absent_terms)
+        state.draft[TERMS_SECTION] = export_terms(translation_config, state)
         state.draft[DROP_CAPS_SECTION] = drop_cap.review_rows(
             candidates, translation_config
         )
         _write_machine_review(translation_config, state)
 
-        terms_record = apply_terms(translation_config, state.decisions)
+        terms_record = apply_terms(translation_config, kept_terms)
+        state.report["applied"]["terms_conservation"] = _terms_conservation(
+            state, terms_record
+        )
         drop_records = drop_cap.apply_decisions(
             translation_config, labeled, selected_decisions
         )

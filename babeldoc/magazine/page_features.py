@@ -69,10 +69,11 @@ _ELLIPSIS = "…"
 _DOT_SEPARATORS = "  "
 
 _RANGE_SUFFIX = "_allowed_range"
+_CHOICE_SUFFIX = "_allowed"
 
 # A configuration entry is either a bounded number or a closed vocabulary of
 # IL structure values.
-Parameter = float | tuple[str, ...]
+Parameter = float | str | tuple[str, ...]
 
 
 class ConfigError(ValueError):
@@ -97,7 +98,10 @@ def validate_bounded_config(config: dict, path: Path) -> dict[str, Parameter]:
 
     A numeric entry is bounded by its ``<name>_allowed_range`` sibling. A list
     entry is a closed vocabulary of IL structure values, so the list is its own
-    bound: it must hold at least one non-empty string and takes no range.
+    bound: it must hold at least one non-empty string and takes no range. A
+    string entry selects one policy out of the closed vocabulary its
+    ``<name>_allowed`` sibling declares, so an unknown selection is refused by
+    the batch that declares the vocabulary rather than the one that reads it.
 
     Returns the parameter mapping without the ``description`` and range keys,
     so callers index it by plain parameter name.
@@ -116,6 +120,17 @@ def validate_bounded_config(config: dict, path: Path) -> dict[str, Parameter]:
             if f"{key}{_RANGE_SUFFIX}" in config:
                 raise ConfigError(f"{path.name}: {key} is a vocabulary, not a range")
             parameters[key] = tuple(value)
+            continue
+        if isinstance(value, str):
+            choice_key = f"{key}{_CHOICE_SUFFIX}"
+            allowed = config.get(choice_key)
+            if not isinstance(allowed, list):
+                raise ConfigError(f"{path.name}: {key} has no {choice_key} vocabulary")
+            if value not in allowed:
+                raise ConfigError(
+                    f"{path.name}: {key}={value!r} is not one of {sorted(allowed)}"
+                )
+            parameters[key] = value
             continue
         if not isinstance(value, int | float) or isinstance(value, bool):
             raise ConfigError(f"{path.name}: {key} is not a number")
