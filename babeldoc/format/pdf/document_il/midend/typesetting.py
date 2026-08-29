@@ -1075,30 +1075,44 @@ class Typesetting:
             return None
 
         bbox = getattr(font, "glyph_bbox", None)
-        source = "pymupdf.Font.glyph_bbox"
+        if isinstance(font, pymupdf.Font):
+            try:
+                # MuPDF otherwise permits fz_bound_glyph() to reuse the full
+                # font bbox.  Enable its per-glyph bounds on this mapped font
+                # instance before asking PyMuPDF for a character bbox.
+                font.this.m_internal.use_glyph_bbox = 1
+            except (AttributeError, RuntimeError, TypeError):
+                bbox = None
+        coordinates = None
         if callable(bbox):
             try:
-                raw_coordinates = bbox(glyph_id)
-            except (AttributeError, NotImplementedError, RuntimeError, TypeError):
+                # PyMuPDF's glyph_bbox() takes the Unicode codepoint, while
+                # has_glyph() returns the font's internal glyph identifier.
+                raw_coordinates = bbox(codepoint)
+            except (
+                AttributeError,
+                NotImplementedError,
+                RuntimeError,
+                TypeError,
+            ):
                 raw_coordinates = None
-                source = "advance_em_fallback"
-        else:
-            raw_coordinates = None
-            source = "advance_em_fallback"
-        if raw_coordinates is None:
+            if raw_coordinates is not None:
+                try:
+                    candidate = tuple(float(value) for value in raw_coordinates)
+                except (TypeError, ValueError):
+                    return None
+                if (
+                    len(candidate) != 4
+                    or not all(math.isfinite(value) for value in candidate)
+                    or candidate[2] <= candidate[0]
+                    or candidate[3] <= candidate[1]
+                ):
+                    return None
+                coordinates = candidate
+        source = "pymupdf.Font.glyph_bbox"
+        if coordinates is None:
             coordinates = (0.0, 0.0, advance, 1.0)
-        else:
-            try:
-                coordinates = tuple(float(value) for value in raw_coordinates)
-            except (TypeError, ValueError):
-                return None
-        if (
-            len(coordinates) != 4
-            or not all(math.isfinite(value) for value in (*coordinates, advance))
-            or coordinates[2] <= coordinates[0]
-            or coordinates[3] <= coordinates[1]
-        ):
-            return None
+            source = "advance_em_fallback"
         return GlyphInkMetric(
             ink_box_em=coordinates,
             advance_em=advance,

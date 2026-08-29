@@ -46,37 +46,24 @@ def _font_path() -> Path:
     return path
 
 
-def test_real_glyph_metric_uses_glyph_id_and_never_full_font_bbox() -> None:
+def test_real_glyph_metric_enables_per_glyph_bbox_for_unicode() -> None:
     real = pymupdf.Font(fontfile=str(_font_path()))
-    bbox_calls = []
-    advance_calls = []
-
-    class AuditedFont:
-        def has_glyph(self, codepoint: int) -> int:
-            return real.has_glyph(codepoint)
-
-        def glyph_bbox(self, glyph_id: int):
-            bbox_calls.append(glyph_id)
-            return real.glyph_bbox(glyph_id)
-
-        def glyph_advance(self, codepoint: int) -> float:
-            advance_calls.append(codepoint)
-            return real.glyph_advance(codepoint)
-
-        @property
-        def bbox(self):
-            raise AssertionError("full-font bbox must not be read")
-
     sample = pdf_character("A", 0.0, 0.0, font_id="mapped")
     typesetter = object.__new__(Typesetting)
-    typesetter.font_mapper = SimpleNamespace(fontid2font={"mapped": AuditedFont()})
+    typesetter.font_mapper = SimpleNamespace(fontid2font={"mapped": real})
+    full_font_bbox = tuple(
+        float(getattr(real.bbox, name)) for name in ("x0", "y0", "x1", "y1")
+    )
+    assert real.this.m_internal.use_glyph_bbox == 0
 
     measured = typesetter.glyph_ink_metrics(sample)
 
     assert measured is not None
-    assert bbox_calls == [real.has_glyph(ord("A"))]
-    assert advance_calls == [ord("A")]
+    assert real.this.m_internal.use_glyph_bbox == 1
     assert measured.source == "pymupdf.Font.glyph_bbox"
+    assert measured.glyph_id == real.has_glyph(ord("A"))
+    assert measured.ink_box_em == tuple(real.glyph_bbox(ord("A")))
+    assert measured.ink_box_em != full_font_bbox
     assert measured.font_id == sample.pdf_style.font_id
     assert all(abs(value) < 10 for value in measured.ink_box_em)
     assert measured.ink_box_em[0] < measured.ink_box_em[2]
