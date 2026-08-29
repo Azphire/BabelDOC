@@ -74,6 +74,12 @@
   "dropcaps": [
     {"anchor": "p4#144", "decision": "keep", "diagnostic_ref": "paragraph_owner=p4#144;visual_initial=L(same_paragraph_composition)"}
   ],
-  "coverage_exemptions": [],
+  "coverage_exemptions": [
+    {"physical_page": 1, "source_box": [28.1756, 292.8251, 60.7916, 317.5571], "reason": "fixed TOC folio companion"},
+    {"physical_page": 1, "source_box": [26.5196, 230.1851, 60.7556, 254.9171], "reason": "fixed TOC folio companion"},
+    {"physical_page": 1, "source_box": [26.3756, 155.9171, 60.8636, 180.6491], "reason": "fixed TOC folio companion"},
+    {"physical_page": 1, "source_box": [26.3396, 81.5411, 60.7916, 105.5531], "reason": "fixed TOC folio companion"},
+    {"physical_page": 1, "source_box": [45.2396, 637.8851, 60.7916, 661.8971], "reason": "fixed TOC folio companion"}
+  ],
   "stage_pages": [1, 2, 3, 4, 5, 6, 7, 8]
 }

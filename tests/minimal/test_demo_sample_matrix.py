@@ -4,7 +4,8 @@ import hashlib
 import json
 import os
 import re
-from collections import Counter, defaultdict
+from collections import Counter
+from collections import defaultdict
 from pathlib import Path
 
 import pymupdf
@@ -175,8 +176,12 @@ def test_frozen_demo_sample_matrix_is_readable_unique_and_complete() -> None:
                 assert f"p{ref[0]}#{ref[1]}" in nodes_by_ref
 
         for exemption in expectations["coverage_exemptions"]:
-            assert exemption["anchor"] in nodes_by_ref
             assert exemption["reason"].strip()
+            if "anchor" in exemption:
+                assert exemption["anchor"] in nodes_by_ref
+            else:
+                assert exemption["physical_page"] >= 1
+                assert len(exemption["source_box"]) == 4
 
         coverage[direction]["toc"].update(
             record["kind"] for record in expectations["toc_records"]
