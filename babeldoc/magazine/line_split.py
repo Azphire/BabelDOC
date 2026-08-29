@@ -506,10 +506,12 @@ def embedded_figure_artwork(page, paragraph) -> dict | None:
 
     A paragraph merely being small, or merely carrying an ``xobj_id``, is not
     enough: both occur in ordinary page text.  The conservative proof used here
-    requires an actual nested page XObject, original passthrough-only character
-    compositions owned by that XObject, and geometry nesting the paragraph in
-    that XObject and the XObject in exactly one detected figure.  A generated,
-    mixed, root-page, or geometrically independent paragraph therefore remains
+    requires an actual nested page XObject, original passthrough-only non-space
+    characters owned by that XObject, and geometry nesting both paragraph and
+    XObject in exactly one detected figure. ParagraphFinder may synthesize
+    whitespace without an XObject owner, and a Form's declared box may omit
+    glyph ink; neither weakens the non-space ownership plus figure proof. A
+    generated, mixed, root-page, or geometrically independent paragraph remains
     in the translation path.
     """
     xobj_id = getattr(paragraph, "xobj_id", None)
@@ -518,19 +520,30 @@ def embedded_figure_artwork(page, paragraph) -> dict | None:
         return None
 
     characters = []
+    owned_characters = 0
+    synthetic_whitespace_characters = 0
     for composition in compositions:
         if composition_kind(composition) != "pdf_same_style_characters":
             return None
         held = list(composition.pdf_same_style_characters.pdf_character or ())
         if not held:
             return None
-        if any(
-            character.xobj_id != xobj_id or bool(character.debug_info)
-            for character in held
-        ):
+        for character in held:
+            if bool(character.debug_info):
+                return None
+            text = character.char_unicode or ""
+            if character.xobj_id == xobj_id:
+                if not text.isspace():
+                    owned_characters += 1
+                continue
+            if character.xobj_id is None and text.isspace():
+                # ParagraphFinder may synthesize inter-run whitespace.  It has
+                # no PDF owner, but it cannot prove content outside the Form.
+                synthetic_whitespace_characters += 1
+                continue
             return None
         characters.extend(held)
-    if not characters:
+    if not characters or not owned_characters:
         return None
 
     xobjects = [
@@ -541,9 +554,6 @@ def embedded_figure_artwork(page, paragraph) -> dict | None:
     if len(xobjects) != 1:
         return None
     xobject = xobjects[0]
-    if not _box_contains(xobject.box, paragraph.box):
-        return None
-
     figures = [
         layout
         for layout in page.page_layout or ()
@@ -559,6 +569,9 @@ def embedded_figure_artwork(page, paragraph) -> dict | None:
         "xobj_id": xobj_id,
         "xobject_box": _box_record(xobject.box),
         "figure_box": _box_record(figure.box),
+        "owned_characters": owned_characters,
+        "synthetic_whitespace_characters": synthetic_whitespace_characters,
+        "paragraph_inside_xobject": _box_contains(xobject.box, paragraph.box),
     }
 
 

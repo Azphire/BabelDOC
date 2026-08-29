@@ -1442,17 +1442,45 @@ def test_unicode_only_debug_furniture_is_not_a_bounded_source_unit(tmp_path):
 
 
 def test_nested_figure_text_is_fixed_artwork_not_a_translation_unit(tmp_path):
-    artwork = _paragraph(
-        ["2024 Embedded publication label"],
-        "nested-artwork",
-        left=110,
-        bottom=610,
+    publication_line = _paragraph(
+        ["2020年2月 国际原子能机构旗舰出版物"],
+        "nested-publication-line",
+        left=105.8,
+        bottom=767.0,
         char_width=1.5,
     )
-    artwork.xobj_id = 7
-    source_characters = line_split.paragraph_characters(artwork)
-    for character in source_characters:
-        character.xobj_id = 7
+    publication_line.box = il_version_1.Box(
+        105.816090625,
+        766.730422266,
+        155.3577994,
+        769.8028,
+    )
+    cover_title = _paragraph(
+        ["核 安保"],
+        "nested-cover-title",
+        left=71.25,
+        bottom=643.0,
+        char_width=8.0,
+    )
+    cover_title.unicode = "核 安 保"
+    cover_title.box = il_version_1.Box(
+        71.248580859,
+        641.161757422,
+        130.835384511,
+        661.0026,
+    )
+    for paragraph, xobj_id in ((publication_line, 7), (cover_title, 15)):
+        paragraph.xobj_id = xobj_id
+        for character in line_split.paragraph_characters(paragraph):
+            character.xobj_id = (
+                None if (character.char_unicode or "").isspace() else xobj_id
+            )
+    artwork = (publication_line, cover_title)
+    source_characters = [
+        character
+        for paragraph in artwork
+        for character in line_split.paragraph_characters(paragraph)
+    ]
     original_character_state = [
         (
             id(character),
@@ -1464,20 +1492,39 @@ def test_nested_figure_text_is_fixed_artwork_not_a_translation_unit(tmp_path):
         )
         for character in source_characters
     ]
-    page = _page([artwork], kind="masthead")
+    caption = _paragraph(
+        ["Independent figure caption"],
+        "ordinary-caption",
+        left=70,
+        bottom=590,
+        char_width=2.0,
+    )
+    caption.xobj_id = 0
+    for character in line_split.paragraph_characters(caption):
+        character.xobj_id = 0
+    page = _page([publication_line, cover_title, caption], kind="masthead")
     page.pdf_xobject = [
         il_version_1.PdfXobject(
-            box=il_version_1.Box(108, 608, 158, 623),
+            box=il_version_1.Box(105.328, 765.954, 157.224, 770.067),
             base_operations=il_version_1.BaseOperations(value="q Q"),
             xobj_id=7,
-            xref_id=123,
-        )
+            xref_id=12323,
+        ),
+        il_version_1.PdfXobject(
+            # The real Form metadata stops below the source glyph ink.  The
+            # shared figure still contains both, and every non-space glyph
+            # independently names this XObject.
+            box=il_version_1.Box(69.3868, 636.986, 201.272, 659.359),
+            base_operations=il_version_1.BaseOperations(value="q Q"),
+            xobj_id=15,
+            xref_id=12342,
+        ),
     ]
     page.page_layout = [
         il_version_1.PageLayout(
-            box=il_version_1.Box(70, 560, 210, 690),
+            box=il_version_1.Box(59, 586, 211, 800),
             id=9,
-            conf=0.96,
+            conf=0.9686747,
             class_name="figure",
         )
     ]
@@ -1485,25 +1532,24 @@ def test_nested_figure_text_is_fixed_artwork_not_a_translation_unit(tmp_path):
 
     report = line_split.apply(config, [(2, page)])
 
-    assert report["source_units"] == []
-    assert report["totals"]["fixed_artwork"] == 1
-    assert report["fixed_artwork"] == [
-        {
-            "source_ref": "p2#0",
-            "runtime_source_ref": "p2#0",
-            "debug_id": "nested-artwork",
-            "source_box": [110.0, 610.0, 156.5, 620.0],
-            "source_text_sha256": hashlib.sha256(
-                b"2024 Embedded publication label"
-            ).hexdigest(),
-            "reason": "embedded_figure_xobject",
-            "xobj_id": 7,
-            "xobject_box": [108.0, 608.0, 158.0, 623.0],
-            "figure_box": [70.0, 560.0, 210.0, 690.0],
-        }
+    assert report["totals"]["fixed_artwork"] == 2
+    assert [item["source_ref"] for item in report["fixed_artwork"]] == [
+        "p2#0",
+        "p2#1",
     ]
-    assert artwork.unicode is None
-    assert line_split.source_unit(artwork, 2) is None
+    assert [item["xobj_id"] for item in report["fixed_artwork"]] == [7, 15]
+    assert [
+        item["synthetic_whitespace_characters"]
+        for item in report["fixed_artwork"]
+    ] == [1, 1]
+    assert [
+        item["paragraph_inside_xobject"] for item in report["fixed_artwork"]
+    ] == [True, False]
+    assert [unit["debug_id"] for unit in report["source_units"]] == [
+        "ordinary-caption"
+    ]
+    assert all(paragraph.unicode is None for paragraph in artwork)
+    assert all(line_split.source_unit(paragraph, 2) is None for paragraph in artwork)
     assert [
         (
             id(character),
@@ -1513,11 +1559,13 @@ def test_nested_figure_text_is_fixed_artwork_not_a_translation_unit(tmp_path):
                 for name in ("x", "y", "x2", "y2")
             ),
         )
-        for character in line_split.paragraph_characters(artwork)
+        for paragraph in artwork
+        for character in line_split.paragraph_characters(paragraph)
     ] == original_character_state
     driver = object.__new__(ILTranslatorLLMOnly)
     driver.translation_config = SimpleNamespace(min_text_length=1)
-    assert not driver._should_translate_paragraph(artwork)
+    assert all(not driver._should_translate_paragraph(paragraph) for paragraph in artwork)
+    assert driver._should_translate_paragraph(caption)
 
     document = il_version_1.Document(page=[page], total_pages=1)
     layout_report.prepare(
@@ -1528,20 +1576,16 @@ def test_nested_figure_text_is_fixed_artwork_not_a_translation_unit(tmp_path):
         eligible_roles=(),
     )
     try:
-        assert layout_report.is_protected_source(artwork)
-        Typesetting(
-            SimpleNamespace(lang_out="en"),
-            RenderMapper(),
-        ).render_paragraph(
-            artwork,
-            page,
-            {"body": RenderFont()},
-        )
+        typesetter = Typesetting(SimpleNamespace(lang_out="en"), RenderMapper())
+        for paragraph in artwork:
+            assert layout_report.is_protected_source(paragraph)
+            typesetter.render_paragraph(paragraph, page, {"body": RenderFont()})
     finally:
         layout_report.discard()
     assert all(
         composition.pdf_character is not None
-        for composition in artwork.pdf_paragraph_composition
+        for paragraph in artwork
+        for composition in paragraph.pdf_paragraph_composition
     )
     assert [
         (
@@ -1552,13 +1596,19 @@ def test_nested_figure_text_is_fixed_artwork_not_a_translation_unit(tmp_path):
                 for name in ("x", "y", "x2", "y2")
             ),
         )
-        for character in line_split.paragraph_characters(artwork)
+        for paragraph in artwork
+        for character in line_split.paragraph_characters(paragraph)
     ] == original_character_state
 
 
 @pytest.mark.parametrize(
     "counterexample",
-    ("no_nested_xobject", "outside_figure", "generated_mixed_content"),
+    (
+        "root_figure_caption",
+        "outside_figure",
+        "foreign_nonspace_owner",
+        "generated_mixed_content",
+    ),
 )
 def test_embedded_artwork_proof_does_not_capture_ordinary_text(
     tmp_path,
@@ -1571,11 +1621,11 @@ def test_embedded_artwork_proof_does_not_capture_ordinary_text(
         bottom=610,
         char_width=1.5,
     )
-    paragraph.xobj_id = 7
+    paragraph.xobj_id = 0 if counterexample == "root_figure_caption" else 7
     for character in line_split.paragraph_characters(paragraph):
-        character.xobj_id = 7
+        character.xobj_id = paragraph.xobj_id
     page = _page([paragraph], kind="masthead")
-    if counterexample != "no_nested_xobject":
+    if counterexample != "root_figure_caption":
         page.pdf_xobject = [
             il_version_1.PdfXobject(
                 box=il_version_1.Box(108, 608, 154, 623),
@@ -1607,6 +1657,8 @@ def test_embedded_artwork_proof_does_not_capture_ordinary_text(
                 )
             )
         )
+    elif counterexample == "foreign_nonspace_owner":
+        line_split.paragraph_characters(paragraph)[0].xobj_id = None
     config = Config(tmp_path)
 
     report = line_split.apply(config, [(2, page)])
