@@ -257,37 +257,60 @@ def _page(number: int, paragraphs: list[PdfParagraph]):
     )
 
 
-def make_chain_fixture(target: str, work: Path):
+def make_chain_fixture(target: str, work: Path, boxes=None, sources=None):
+    """One four member chain over two pages, or the shape a caller asks for.
+
+    ``boxes`` and ``sources`` let a caller give the members boxes of different
+    heights and sources of different lengths, which is what it takes to put a
+    share estimate anywhere but a box edge. The defaults are the four equal
+    boxes and equal sources every existing caller gets, so passing neither
+    leaves the fixture exactly as it was.
+    """
     boxes = (
-        (0.0, 0.0, 50.0, 15.0),
-        (60.0, 0.0, 110.0, 15.0),
-        (0.0, 0.0, 50.0, 15.0),
-        (60.0, 0.0, 110.0, 15.0),
+        (
+            (0.0, 0.0, 50.0, 15.0),
+            (60.0, 0.0, 110.0, 15.0),
+            (0.0, 0.0, 50.0, 15.0),
+            (60.0, 0.0, 110.0, 15.0),
+        )
+        if boxes is None
+        else tuple(tuple(float(value) for value in box) for box in boxes)
     )
+    sources = (
+        ("source member",) * len(boxes) if sources is None else tuple(sources)
+    )
+    if len(sources) != len(boxes):
+        raise ValueError("one source per box is needed to build a chain fixture")
     paragraphs = [
         _paragraph(
-            "source member",
+            source,
             f"member-{index}",
             box,
             chain_id="raw-chain",
             chain_index=index,
         )
-        for index, box in enumerate(boxes)
+        for index, (box, source) in enumerate(zip(boxes, sources, strict=True))
     ]
+    half = (len(boxes) + 1) // 2
     document = il_version_1.Document(
-        page=[_page(0, paragraphs[:2]), _page(1, paragraphs[2:])],
+        page=[_page(0, paragraphs[:half]), _page(1, paragraphs[half:])],
         total_pages=2,
     )
-    refs = ("p1#0", "p1#1", "p2#0", "p2#1")
+    refs = tuple(
+        f"p{1 if index < half else 2}#{index if index < half else index - half}"
+        for index in range(len(boxes))
+    )
     elements = tuple(
         SourceElementRef(
             source_ref=reference,
-            page=1 if index < 2 else 2,
-            column=index % 2,
+            page=1 if index < half else 2,
+            column=index % half if half else 0,
             reading_order=index,
             role="text",
             source_box=boxes[index],
-            source_text_hash=hashlib.sha256(b"source member").hexdigest(),
+            source_text_hash=hashlib.sha256(
+                sources[index].encode("utf-8")
+            ).hexdigest(),
             style_hash="fixed-style",
         )
         for index, reference in enumerate(refs)
@@ -295,14 +318,14 @@ def make_chain_fixture(target: str, work: Path):
     slots = tuple(
         ArticleRegionSlot(
             article_id="article-a",
-            page=1 if index < 2 else 2,
-            column=index % 2,
+            page=1 if index < half else 2,
+            column=index % half if half else 0,
             slot_order=index,
             box=boxes[index],
             fixed_obstacle_refs=(),
             capacity_hint=750.0,
         )
-        for index in range(4)
+        for index in range(len(boxes))
     )
     article = ArticleIR(
         article_id="article-a",

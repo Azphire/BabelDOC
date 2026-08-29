@@ -83,7 +83,6 @@ MECHANISM_PAGE_BATCH = "page_batch"
 # shape it is asked for everywhere else, so one chain is one row of the batch
 # protocol rather than a second protocol beside it.
 _SINGLE_ITEM_ID = 0
-SLOT_CAPACITY_STRATEGY = "slot_capacity"
 SLOT_ALLOCATED = "allocated"
 SLOT_RELEASED = "released"
 
@@ -214,6 +213,10 @@ class SlotAllocationFragment:
     end: int
     released: bool
     measurement_record: dict
+    # What the tail aligned cut that ends this fragment did, or None where the
+    # fragment was not ended by one -- the last member of a chain, and every
+    # member of a chain the cascade placed by capacity instead.
+    tail_align: dict | None = None
 
     def segment_record(self) -> dict:
         return {
@@ -240,6 +243,7 @@ class SlotAllocationFragment:
             if self.box is None
             else [round(value, 3) for value in self.box],
             "measurement": dict(self.measurement_record),
+            "tail_align": None if self.tail_align is None else dict(self.tail_align),
         }
 
 
@@ -249,6 +253,11 @@ class ChainAllocationPlan:
 
     whole_target: str
     fragments: tuple[SlotAllocationFragment, ...]
+    # Which redistribution actually placed these cuts, which is the level of
+    # the declared cascade that succeeded and not the level that was asked for
+    # first. The record below reads it rather than naming one, so a sidecar
+    # that says a chain was cut by capacity is a chain that fell to capacity.
+    strategy: str = backfill.STRATEGY_CAPACITY
 
     def __post_init__(self) -> None:
         if not self.fragments:
@@ -283,7 +292,7 @@ class ChainAllocationPlan:
 
     def as_redistribution_record(self) -> dict:
         return {
-            "strategy": SLOT_CAPACITY_STRATEGY,
+            "strategy": self.strategy,
             "profile": None,
             "fallback": None,
             "sentence_count": 0,
@@ -292,15 +301,40 @@ class ChainAllocationPlan:
                 {
                     "index": index,
                     "position": fragment.end,
-                    "mode": SLOT_CAPACITY_STRATEGY,
-                    "snapped": False,
-                    "estimate": None,
-                    "moved_to": None,
+                    "mode": self.strategy,
+                    "snapped": fragment.tail_align is not None,
+                    "estimate": None
+                    if fragment.tail_align is None
+                    else fragment.tail_align["ideal"],
+                    "moved_to": None
+                    if fragment.tail_align is None
+                    or fragment.tail_align["reason"] != backfill.TAIL_ALIGN_MOVED
+                    else backfill.MOVED_TO_LINE_END,
                 }
                 for index, fragment in enumerate(self.fragments[:-1])
             ],
             "alignment": None,
         }
+
+    def cut_displacement(self) -> list[dict]:
+        """How far each interior cut stands from the share that proposed it.
+
+        One entry per handover, and only for a cascade level that has an
+        estimate to be displaced from: a capacity plan proposes the box's own
+        capacity and reaches it by construction, so it displaces nothing and
+        records nothing.
+        """
+        return [
+            {
+                "index": index,
+                "ideal": fragment.tail_align["ideal"],
+                "position": fragment.end,
+                "delta": fragment.end - fragment.tail_align["ideal"],
+                "reason": fragment.tail_align["reason"],
+            }
+            for index, fragment in enumerate(self.fragments[:-1])
+            if fragment.tail_align is not None
+        ]
 
 
 @dataclass
@@ -373,7 +407,7 @@ class ChainEntry:
             "capacity": [
                 fragment.measurement_record for fragment in self.allocation.fragments
             ],
-            "cut_displacement": [],
+            "cut_displacement": self.allocation.cut_displacement(),
             "merged_source_chars": len(self.merge.text),
             "merged_translation_chars": len(self.translated),
             # Written out whole so that the conservation law can be stated over
@@ -1141,7 +1175,6 @@ class ChainPlan:
             [getattr(member.paragraph, "layout_label", None) for member in prepared],
             self.class_labels,
         )
-        strategy = SLOT_CAPACITY_STRATEGY
         try:
             merge = backfill.merge_chain_text(
                 [member.source for member in prepared], self.config
@@ -1331,7 +1364,10 @@ class ChainPlan:
         entry = ChainEntry(
             chain_id=chain_id,
             pair_class=pair_class,
-            strategy=strategy,
+            # The level of the cascade that actually placed the cuts, read off
+            # the plan rather than named here, so the record cannot claim a
+            # strategy the allocation did not take.
+            strategy=allocation.strategy,
             members=prepared,
             merge=merge,
             translated=translated,
@@ -1438,11 +1474,18 @@ class ChainPlan:
     ) -> ChainAllocationPlan | None:
         """Allocate against each member's source box, never an article-wide box.
 
-        First measure the capacity of every immutable source box, then let the
-        language-aware splitter place all cuts together.  That global split is
-        what reserves a legal, non-empty unit for every later body member.
-        Finally every proposed fragment is measured in its own box; a single
-        overflow invalidates the whole plan.
+        First measure the whole translation against every immutable source box,
+        then let the declared cascade place all the cuts together.  That global
+        split is what reserves a legal, non-empty unit for every later body
+        member.  Finally every proposed fragment is measured in its own box; a
+        single overflow invalidates that level of the cascade, the next level is
+        tried, and a chain no level can place is refused whole.
+
+        The order of the levels is read from ``strategies.slot_cascade`` and is
+        not written here.  A tail aligned split hands a later member the part
+        line the earlier one could not hold, so that member may overflow its own
+        box: an ordinary outcome of the strategy, which falls to capacity rather
+        than failing the chain.
         """
         if len(members) != len(slots):
             return None
@@ -1471,10 +1514,28 @@ class ChainPlan:
             held.font_size = source_size * scale
             return held, scale
 
-        def measure(text, member, slot, order, ranges=()):
-            slot_box = Box(*slot.box)
+        measured: dict[tuple, object] = {}
+
+        def measure(text, member, slot, order, ranges=(), floor=None):
+            """Fit one string into one slot box, optionally on a raised floor.
+
+            ``floor`` replaces the box's own bottom edge.  Raising it to a
+            line's baseline is how a line count is turned into a character
+            count: the packer refuses to open a line below the floor, so a
+            floor at the k-th line lets exactly k lines through.  Every
+            distinct measurement is held, because building the units for one
+            costs a parse of the translation.
+            """
+            key = (order, id(slot), floor, text, tuple(ranges))
+            held = measured.get(key)
+            if held is not None:
+                return held
+            box = tuple(float(value) for value in slot.box)
+            slot_box = Box(
+                box[0], box[1] if floor is None else float(floor), box[2], box[3]
+            )
             style, scale = measurement_style(member)
-            return typesetter.fit_text_to_slot(
+            result = typesetter.fit_text_to_slot(
                 text,
                 style,
                 self.language,
@@ -1484,7 +1545,7 @@ class ChainPlan:
                     and bool(getattr(member.paragraph, "first_line_indent", False))
                 ),
                 original_font=member.source_font,
-                protected_ranges=ranges,
+                protected_ranges=tuple(ranges),
                 unit_factory=self._measurement_unit_factory(
                     members, member, typesetter, scale
                 ),
@@ -1498,6 +1559,8 @@ class ChainPlan:
                 line_head_forbidden=self.config.line_head_forbidden,
                 line_tail_forbidden=self.config.line_tail_forbidden,
             )
+            measured[key] = result
+            return result
 
         capacities = []
         for order, (member, slot) in enumerate(zip(members, slots, strict=True)):
@@ -1511,6 +1574,205 @@ class ChainPlan:
                 return None
             capacities.append(capacity)
 
+        attempts = {
+            backfill.STRATEGY_TAIL_ALIGNED: lambda: self._attempt_tail_aligned(
+                merge, translated, members, slots, protected, measure
+            ),
+            backfill.STRATEGY_CAPACITY: lambda: self._attempt_capacity(
+                merge, translated, capacities
+            ),
+        }
+        for strategy in self.config.slot_cascade:
+            attempt = attempts.get(strategy)
+            if attempt is None:
+                raise ChainTranslationError(
+                    f"the slot cascade names {strategy!r}, which no measured "
+                    f"allocation implements"
+                )
+            split, aligns = attempt()
+            if split is None:
+                continue
+            plan = self._build_allocation(
+                translated,
+                members,
+                slots,
+                split,
+                protected,
+                measure,
+                measurement_style,
+                strategy,
+                aligns,
+            )
+            if plan is not None:
+                return plan
+        return None
+
+    def _line_end_offsets(
+        self, measure, rest, member, slot, order, ranges, base, ideal
+    ) -> tuple[tuple[int, ...], dict[int, int]]:
+        """The line ends of one member's box, as offsets into the translation.
+
+        The box is measured once whole to read off its line grid, then measured
+        again with its floor raised to a line's own baseline, which lets exactly
+        that many lines through and so turns a line count into a character
+        count.  The floor is set a fit tolerance below the baseline rather than
+        on it, because the packer admits a line whose baseline is not strictly
+        below the floor and floating point equality is no way to decide that;
+        the next line sits a whole line advance lower and is not let in by that
+        slack.
+
+        Those character counts rise with the line count -- the packer runs
+        forward and never reflows what it has placed -- so the last line end at
+        or before ``ideal`` is found by bisection, at about the logarithm of the
+        line count in measurements: the declared probe budget bounds the
+        bisection, and one more measurement settles the line it narrowed to,
+        because a line end that was never measured is not one this can offer.
+        A budget too small for the box leaves an earlier line end, which is a
+        cut that moves less than it could and never one that moves too far.
+
+        Returns the ends that were measured, ascending, and how many lines each
+        of them keeps.
+        """
+        whole = measure(rest, member, slot, order, ranges)
+        if whole.status == "invalid" or not whole.line_metrics:
+            return (), {}
+        floors = [
+            line.bounds[1] for line in whole.line_metrics if line.bounds is not None
+        ]
+        if len(floors) != len(whole.line_metrics):
+            return (), {}
+        tolerance = float(self.config.slot_fit_tolerance)
+        # The whole box is the last line's own measurement, so it is free.
+        ends: dict[int, int] = {len(floors): base + whole.consumed_range[1]}
+
+        probes = 0
+
+        def consumed(lines: int) -> int:
+            nonlocal probes
+            held = ends.get(lines)
+            if held is not None:
+                return held
+            probes += 1
+            result = measure(
+                rest,
+                member,
+                slot,
+                order,
+                ranges,
+                floor=floors[lines - 1] - tolerance,
+            )
+            ends[lines] = base + result.consumed_range[1]
+            return ends[lines]
+
+        low, high = 1, len(floors)
+        budget = int(self.config.tail_align_max_probes)
+        while low < high and probes < budget:
+            middle = (low + high + 1) // 2
+            if consumed(middle) <= ideal:
+                low = middle
+            else:
+                high = middle - 1
+        consumed(low)
+        by_end: dict[int, int] = {}
+        for lines in sorted(ends):
+            by_end.setdefault(ends[lines], lines)
+        return tuple(sorted(by_end)), by_end
+
+    def _attempt_tail_aligned(
+        self,
+        merge: backfill.ChainMerge,
+        translated: str,
+        members: list[MemberPlan],
+        slots: tuple[object, ...],
+        protected: tuple[tuple[int, int], ...],
+        measure,
+    ):
+        """Cut each member at the last line its own box filled.
+
+        The estimate comes from the source shares over the text still unserved
+        and the move comes from the member's measured line grid, so what the
+        member could not hold on its tail line travels whole to the member after
+        it instead of standing as a part line that reads as a paragraph ending.
+
+        Returns the split and one alignment record per member, the last of them
+        empty because the last member of a chain ends the paragraph and is never
+        pulled back.  Returns no split where not one member's box could be
+        measured for lines, which is the same answer as having no boxes: the
+        level cannot be said to have run, and the cascade moves on.
+        """
+        count = len(members)
+        if count < 2:
+            return None, None
+        profile = backfill.select_profile(self.language, self.config)
+        shares = merge.shares
+        positions: list[int] = []
+        estimates: list[int] = []
+        aligns: list[dict | None] = []
+        previous = 0
+        for index in range(count - 1):
+            try:
+                ideal, low, high = backfill.tail_align_ideal(
+                    translated, shares, index, previous, profile, self.config
+                )
+            except backfill.ChainBackfillError:
+                return None, None
+            rest = translated[previous:]
+            local = tuple(
+                (start - previous, end - previous)
+                for start, end in protected
+                if start >= previous
+            )
+            line_ends, kept = self._line_end_offsets(
+                measure,
+                rest,
+                members[index],
+                slots[index],
+                index,
+                local,
+                previous,
+                ideal,
+            )
+            position, reason = backfill.tail_aligned_cut(
+                ideal, line_ends, low, high, self.config.tail_align_min_kept_lines
+            )
+            positions.append(position)
+            estimates.append(ideal)
+            aligns.append(
+                {
+                    "reason": reason,
+                    "ideal": ideal,
+                    "position": position,
+                    "moved_chars": ideal - position,
+                    "kept_lines": kept.get(position, 0),
+                    "line_ends": len(line_ends),
+                }
+            )
+            previous = position
+        if all(align["reason"] == backfill.TAIL_ALIGN_NO_LINE_END for align in aligns):
+            return None, None
+        try:
+            split = backfill.redistribute(
+                merge,
+                translated,
+                self.language,
+                backfill.STRATEGY_TAIL_ALIGNED,
+                self.config,
+                aligned_lengths=None,
+                align_enabled=False,
+                cut_positions=positions,
+                cut_estimates=estimates,
+            )
+        except backfill.ChainBackfillError:
+            return None, None
+        return split, (*aligns, None)
+
+    def _attempt_capacity(
+        self,
+        merge: backfill.ChainMerge,
+        translated: str,
+        capacities: list[int],
+    ):
+        """Cut each member where its own box stops holding text."""
         try:
             split = backfill.redistribute(
                 merge,
@@ -1523,10 +1785,27 @@ class ChainPlan:
                 capacities=capacities,
             )
         except backfill.ChainBackfillError:
-            return None
+            return None, None
+        return split, None
 
-        # Protected placeholders are indivisible even where a legal language
-        # boundary happens to occur inside one.
+    def _build_allocation(
+        self,
+        translated: str,
+        members: list[MemberPlan],
+        slots: tuple[object, ...],
+        split,
+        protected: tuple[tuple[int, int], ...],
+        measure,
+        measurement_style,
+        strategy: str,
+        aligns,
+    ) -> ChainAllocationPlan | None:
+        """Measure every proposed fragment in its own box, or refuse the level.
+
+        Protected placeholders are indivisible even where a legal language
+        boundary happens to occur inside one, and a fragment its own box cannot
+        hold whole invalidates the level rather than being written in part.
+        """
         cut_positions = [segment.end for segment in split.segments[:-1]]
         if any(start < cut < end for cut in cut_positions for start, end in protected):
             return None
@@ -1549,9 +1828,7 @@ class ChainPlan:
             measurement["whole_target_range"] = [segment.start, segment.end]
             style, scale = measurement_style(member)
             measurement["measurement_scale"] = scale
-            measurement["measurement_font_size"] = getattr(
-                style, "font_size", None
-            )
+            measurement["measurement_font_size"] = getattr(style, "font_size", None)
             fragments.append(
                 SlotAllocationFragment(
                     member=member,
@@ -1565,10 +1842,11 @@ class ChainPlan:
                     end=segment.end,
                     released=False,
                     measurement_record=measurement,
+                    tail_align=None if aligns is None else aligns[order],
                 )
             )
         try:
-            return ChainAllocationPlan(translated, tuple(fragments))
+            return ChainAllocationPlan(translated, tuple(fragments), strategy)
         except ValueError:
             return None
 
@@ -1581,12 +1859,13 @@ class ChainPlan:
     ) -> ChainAllocationPlan | None:
         """Keep callers without canonical slot objects readable but unmeasured."""
         redistribute = backfill.redistribute
+        strategy = backfill.strategy_for_pair_class(pair_class, self.config)
         try:
             result = redistribute(
                 merge,
                 translated,
                 self.language,
-                backfill.strategy_for_pair_class(pair_class, self.config),
+                strategy,
                 self.config,
                 aligned_lengths=None,
                 align_enabled=self.align_enabled,
@@ -1627,7 +1906,7 @@ class ChainPlan:
                     },
                 )
             )
-        return ChainAllocationPlan(translated, tuple(fragments))
+        return ChainAllocationPlan(translated, tuple(fragments), strategy)
 
     def _translate(
         self, merged: str, members: list[MemberPlan], chain_tracker
@@ -1899,10 +2178,40 @@ class ChainPlan:
                 "requests": self.short_units.requests,
             },
             "applied": self.applied,
+            "tail_align": self.tail_align_counts(),
             "chains": [entry.as_record() for entry in self.entries],
             "escalated": list(self.escalated),
             "outcomes": list(self.outcomes),
             "skips": [record.as_record() for record in claim_records],
+        }
+
+    def tail_align_counts(self) -> dict:
+        """How the tail aligned cut fared over this run, counted once here.
+
+        One count per declared reason, so a reason that never came up reads as
+        zero rather than as absent, and one count per level of the cascade, so
+        the chains that fell past the tail aligned cut to capacity can be read
+        off without going through the chains one by one. This is the whole of
+        what a run says about the mechanism; no detector is asked to say it
+        again.
+        """
+        reasons = dict.fromkeys(backfill.TAIL_ALIGN_REASONS, 0)
+        strategies: dict[str, int] = {}
+        moved_chars = 0
+        for entry in self.entries:
+            strategy = entry.allocation.strategy
+            strategies[strategy] = strategies.get(strategy, 0) + 1
+            for fragment in entry.allocation.fragments:
+                align = fragment.tail_align
+                if align is None:
+                    continue
+                reasons[align["reason"]] += 1
+                if align["reason"] == backfill.TAIL_ALIGN_MOVED:
+                    moved_chars += align["moved_chars"]
+        return {
+            "cuts_by_reason": reasons,
+            "chains_by_strategy": strategies,
+            "moved_chars": moved_chars,
         }
 
     def write_report(self) -> Path:

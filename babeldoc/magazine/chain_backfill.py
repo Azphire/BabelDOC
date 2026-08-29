@@ -14,15 +14,18 @@ answerable to: the pieces join back to exactly the translation that came in,
 their spans tile it once with no overlap and no gap, and every member gets a
 non-empty piece.
 
-Three redistributions exist because the kinds of chain differ in what a cut
+Four redistributions exist because the kinds of chain differ in what a cut
 should respect. Running text is one paragraph the layout broke, so its
-continuation should resume where the first box ran out of room: the cut is
-placed at that box's capacity, made legal by the target language's break rule
-and pulled back off any mark a line may not open with. A broken display line
-has no such structure -- it is one line of type the layout snapped -- so it is
-cut by share throughout and claims no sentence indices. The sentence greedy cut
-that running text used to take remains, and is what a capacity cut falls back
-to where the caller could measure no box. Which one a chain takes is read from
+continuation should resume on a line the first box filled: the tail aligned cut
+puts the estimate where the source shares put it and then pulls it back to the
+last line end the member's own box reached, so the member ends on a full line
+and the half line it could not hold moves on whole to the member after it. The
+capacity cut, which fills the first box to the brim instead, remains as the
+level below it and as what an unmeasurable box falls back to. A broken display
+line has no such structure -- it is one line of type the layout snapped -- so it
+is cut by share throughout and claims no sentence indices. The sentence greedy
+cut that running text used to take remains, and is what a capacity cut falls
+back to where the caller could measure no box. Which one a chain takes is read from
 the endpoint pair class it was built under, through the declaration in
 ``configs/chain_translation.json``; nothing here names a page type or a
 publication, and every character class, threshold and separator it compares
@@ -71,6 +74,7 @@ CONFIG_PATH = config_path("chain_translation.json")
 JOIN_KEY = "join"
 PROFILES_KEY = "profiles"
 STRATEGIES_KEY = "strategies"
+TAIL_ALIGN_KEY = "tail_align"
 CAPACITY_KEY = "capacity"
 LINE_HEAD_KEY = "line_head_forbidden_punctuation"
 LINE_TAIL_KEY = "line_tail_forbidden_punctuation"
@@ -82,6 +86,7 @@ NESTED_KEYS = (
     JOIN_KEY,
     PROFILES_KEY,
     STRATEGIES_KEY,
+    TAIL_ALIGN_KEY,
     CAPACITY_KEY,
     LINE_HEAD_KEY,
     f"{LINE_HEAD_KEY}_description",
@@ -93,7 +98,13 @@ NESTED_KEYS = (
 ENTRIES_KEY = "entries"
 DEFAULT_KEY = "default"
 BY_PAIR_CLASS_KEY = "by_pair_class"
+SLOT_CASCADE_KEY = "slot_cascade"
 DESCRIPTION_KEY = "description"
+
+# The parameters that bound the tail aligned cut. Neither is a threshold on
+# whether a line is full -- measurement answers that -- so they bound only what
+# the search may cost and how little of a member it may leave behind.
+TAIL_ALIGN_PARAMETERS = ("max_probes", "min_kept_lines")
 
 # The per-profile override and the flat range that bounds it, by the same
 # convention chain_signals uses for a weight declared inside a pairing: the
@@ -119,7 +130,13 @@ REQUIRED_PARAMETERS: frozenset[str] = frozenset(
 STRATEGY_SENTENCE_GREEDY = "sentence_greedy"
 STRATEGY_PROPORTIONAL = "proportional"
 STRATEGY_CAPACITY = "capacity"
-STRATEGIES = (STRATEGY_SENTENCE_GREEDY, STRATEGY_PROPORTIONAL, STRATEGY_CAPACITY)
+STRATEGY_TAIL_ALIGNED = "tail_aligned"
+STRATEGIES = (
+    STRATEGY_SENTENCE_GREEDY,
+    STRATEGY_PROPORTIONAL,
+    STRATEGY_CAPACITY,
+    STRATEGY_TAIL_ALIGNED,
+)
 
 # Where a proportional cut may land. A break rule named by a profile has to be
 # one of them.
@@ -131,6 +148,7 @@ BREAK_RULES = (BREAK_WORD_BOUNDARY, BREAK_ANY_CHAR)
 CUT_SENTENCE = "sentence"
 CUT_PROPORTIONAL = "proportional"
 CUT_CAPACITY = "capacity"
+CUT_TAIL_ALIGNED = "tail_aligned"
 
 # Recorded on a capacity cut that was pulled back off a mark no line may open
 # with. The move is towards the start of the text, by the least it takes.
@@ -153,6 +171,13 @@ FALLBACK_PROPORTIONAL = "proportional"
 # before this one gave, and saying so is what keeps a capacity cut that was
 # never measured from reading like one that was.
 FALLBACK_NO_CAPACITY = "no_capacity"
+
+# Reported by a tail aligned redistribution the caller could measure no line
+# ends for. The cuts are then placed by the share cascade, which is the
+# estimate the alignment would have retreated from, and saying so is what keeps
+# a cut that was never offered a line end from reading like one that stood at a
+# line end on purpose.
+FALLBACK_NO_LINE_ENDS = "no_line_ends"
 
 # Recorded in place of a sentence index by a redistribution that claims no
 # sentence structure.
@@ -309,6 +334,9 @@ class BackfillConfig:
     default_profile: str
     strategy_by_pair_class: Mapping[str, str]
     default_strategy: str
+    slot_cascade: tuple[str, ...]
+    tail_align_max_probes: int
+    tail_align_min_kept_lines: int
     capacity: CapacityGrid
     line_head_forbidden: frozenset
     line_tail_forbidden: frozenset
@@ -437,6 +465,20 @@ ALIGN_REASONS = (ALIGN_SWITCH_DOWN, ALIGN_NOT_OFFERED, ALIGN_UNUSABLE)
 # How a cut came to stand where it does, beyond the share that proposed it.
 MOVED_TO_PUNCTUATION = "punctuation"
 MOVED_TO_MARKER = "marker"
+MOVED_TO_LINE_END = "line_end"
+
+# Why one tail aligned cut stands where it does. The set is closed, so a reader
+# of a sidecar meets one of these four and never a free-form sentence.
+TAIL_ALIGN_MOVED = "moved"
+TAIL_ALIGN_ALREADY_FULL = "already_full"
+TAIL_ALIGN_MIN_LINES = "min_lines"
+TAIL_ALIGN_NO_LINE_END = "no_line_end"
+TAIL_ALIGN_REASONS = (
+    TAIL_ALIGN_MOVED,
+    TAIL_ALIGN_ALREADY_FULL,
+    TAIL_ALIGN_MIN_LINES,
+    TAIL_ALIGN_NO_LINE_END,
+)
 
 
 @dataclass(frozen=True)
@@ -716,10 +758,15 @@ def _parse_profiles(
     return profiles, fallback
 
 
-def _parse_strategies(raw: object, source: str) -> tuple[dict[str, str], str]:
+def _parse_strategies(
+    raw: object, source: str
+) -> tuple[dict[str, str], str, tuple[str, ...]]:
     where = f"{source}: {STRATEGIES_KEY}"
     _require(isinstance(raw, dict), f"{where}: must be an object")
-    unknown = sorted(set(raw) - {DESCRIPTION_KEY, DEFAULT_KEY, BY_PAIR_CLASS_KEY})
+    unknown = sorted(
+        set(raw)
+        - {DESCRIPTION_KEY, DEFAULT_KEY, BY_PAIR_CLASS_KEY, SLOT_CASCADE_KEY}
+    )
     _require(not unknown, f"{where}: unknown keys {unknown}")
     fallback = raw.get(DEFAULT_KEY)
     _require(
@@ -742,7 +789,41 @@ def _parse_strategies(raw: object, source: str) -> tuple[dict[str, str], str]:
             f"{where}.{BY_PAIR_CLASS_KEY}.{pair_class}: {strategy!r} is not "
             f"implemented; the strategies are {list(STRATEGIES)}",
         )
-    return dict(by_class), fallback
+    cascade = raw.get(SLOT_CASCADE_KEY)
+    _require(
+        isinstance(cascade, list) and bool(cascade),
+        f"{where}.{SLOT_CASCADE_KEY}: must name at least one strategy",
+    )
+    for level, strategy in enumerate(cascade):
+        _require(
+            strategy in STRATEGIES,
+            f"{where}.{SLOT_CASCADE_KEY}[{level}]: {strategy!r} is not "
+            f"implemented; the strategies are {list(STRATEGIES)}",
+        )
+    _require(
+        len(set(cascade)) == len(cascade),
+        f"{where}.{SLOT_CASCADE_KEY}: names a strategy twice, {cascade}",
+    )
+    return dict(by_class), fallback, tuple(cascade)
+
+
+def _parse_tail_align(raw: object, source: str) -> tuple[int, int]:
+    """The bounds on the tail aligned search, bounded by their own ranges."""
+    where = f"{source}.{TAIL_ALIGN_KEY}"
+    _require(isinstance(raw, dict), f"{where} must be an object")
+    flat = {key: value for key, value in raw.items() if key != DESCRIPTION_KEY}
+    try:
+        numbers = dict(validate_bounded_config(flat, Path(where)))
+    except ConfigError as exc:
+        raise BackfillConfigError(str(exc)) from exc
+    missing = sorted(set(TAIL_ALIGN_PARAMETERS) - set(numbers))
+    _require(not missing, f"{where}: missing parameters {missing}")
+    for key in TAIL_ALIGN_PARAMETERS:
+        _require(
+            isinstance(numbers[key], int) and not isinstance(numbers[key], bool),
+            f"{where}.{key} counts probes or lines, so it must be a whole number",
+        )
+    return int(numbers["max_probes"]), int(numbers["min_kept_lines"])
 
 
 def _parse_capacity(raw: object, source: str) -> CapacityGrid:
@@ -819,8 +900,11 @@ def load_backfill_config(path: str | None = None) -> BackfillConfig:
     profiles, default_profile = _parse_profiles(
         raw.get(PROFILES_KEY), source, raw, default_min_chars
     )
-    strategy_by_pair_class, default_strategy = _parse_strategies(
+    strategy_by_pair_class, default_strategy, slot_cascade = _parse_strategies(
         raw.get(STRATEGIES_KEY), source
+    )
+    tail_align_max_probes, tail_align_min_kept_lines = _parse_tail_align(
+        raw.get(TAIL_ALIGN_KEY), source
     )
     return BackfillConfig(
         sentence_min_chars=default_min_chars,
@@ -835,6 +919,9 @@ def load_backfill_config(path: str | None = None) -> BackfillConfig:
         default_profile=default_profile,
         strategy_by_pair_class=strategy_by_pair_class,
         default_strategy=default_strategy,
+        slot_cascade=slot_cascade,
+        tail_align_max_probes=tail_align_max_probes,
+        tail_align_min_kept_lines=tail_align_min_kept_lines,
         capacity=_parse_capacity(raw.get(CAPACITY_KEY), source),
         line_head_forbidden=_parse_punctuation(
             raw.get(LINE_HEAD_KEY), source, LINE_HEAD_KEY
@@ -1286,6 +1373,152 @@ def _plan_capacity_cuts(
     return tuple(cuts)
 
 
+def tail_align_ideal(
+    translated: str,
+    shares: Sequence[float],
+    index: int,
+    previous: int,
+    profile: LanguageProfile,
+    config: BackfillConfig,
+) -> tuple[int, int, int]:
+    """Where the source shares put one interior cut, and the window it sits in.
+
+    The share is renormalized over the members that are still unserved, so the
+    estimate is read off the text that is actually left rather than off the
+    whole translation: a cut that moved earlier does not drag every later cut
+    with it. The estimate is then made a position a line may legally break at
+    and pulled back off a mark no line may open with, by the same two rules the
+    capacity cascade uses, so an estimate that survives to stand on its own is
+    as legal as a measured cut.
+
+    Returns ``(ideal, low, high)``. ``low`` and ``high`` are the window that
+    leaves every member, this one and each that follows, at least one
+    character.
+
+    The model here is that the members of one chain expand at about the same
+    rate, which is what lets a ratio of source characters size a piece of
+    target text. That is a declared assumption and not a measured fact. Where
+    it fails the estimate drifts, and the drift below one line is absorbed by
+    :func:`tail_aligned_cut`, the drift above one line by the caller's next
+    strategy. Nothing here tries to detect the rate.
+    """
+    length = len(translated)
+    count = len(shares)
+    low = previous + 1
+    high = length - (count - 1 - index)
+    if low > high:
+        raise ChainBackfillError(
+            f"the translation has {length} characters, too few to give each "
+            f"of {count} members a piece"
+        )
+    remaining = sum(shares[index:])
+    portion = (shares[index] / remaining) if remaining > 0 else 0.0
+    raw = previous + round((length - previous) * portion)
+    ideal = min(max(raw, low), high)
+    target = max(1, ideal - previous)
+    snapped = _snap(translated, ideal, low, high, target, profile, config)
+    position = ideal if snapped is None else snapped
+    position, _moved = _retreat_off_line_head(
+        translated, position, low, profile, config.line_head_forbidden
+    )
+    return position, low, high
+
+
+def tail_aligned_cut(
+    ideal: int,
+    line_ends: Sequence[int],
+    low: int,
+    high: int,
+    min_kept_lines: int,
+) -> tuple[int, str]:
+    """Pull one share estimate back to the last line end that does not pass it.
+
+    ``line_ends`` are the ends of the lines the member's own box holds, as
+    absolute offsets into the translation, ascending. Taking the last one at or
+    before ``ideal`` leaves that member ending on a line it filled, and hands
+    what the line could not hold to the member after it, which is where a
+    paragraph the layout broke should resume.
+
+    Whether the tail line is full is answered by measurement and not by a
+    width ratio: a Latin line filled to the rule may still leave a long word's
+    worth of space and a Chinese one at most a character's, so a ratio judges
+    the two scripts opposite ways while "does the estimate already stand at a
+    line end" is one question in both.
+
+    A candidate outside ``[low, high]`` is never taken, which is what keeps
+    every later member with a piece. ``min_kept_lines`` is read off the
+    candidate's position in ``line_ends``, so a caller that measured its lines
+    sparsely understates how many are kept and is refused a candidate it could
+    have had; at the shipped setting of one line the guard is exact for any
+    caller, sparse or not.
+
+    Returns the position and one of :data:`TAIL_ALIGN_REASONS`.
+    """
+    if any(
+        later <= earlier
+        for earlier, later in zip(line_ends, line_ends[1:], strict=False)
+    ):
+        raise ChainBackfillError(f"line ends are not ascending: {list(line_ends)}")
+    if not line_ends:
+        return ideal, TAIL_ALIGN_NO_LINE_END
+    kept = [
+        end
+        for order, end in enumerate(line_ends)
+        if end <= ideal and low <= end <= high and order + 1 >= min_kept_lines
+    ]
+    if not kept:
+        return ideal, TAIL_ALIGN_MIN_LINES
+    position = kept[-1]
+    if position == ideal:
+        return position, TAIL_ALIGN_ALREADY_FULL
+    return position, TAIL_ALIGN_MOVED
+
+
+def _plan_tail_aligned_cuts(
+    translated: str,
+    positions: Sequence[int],
+    estimates: Sequence[int] | None,
+    count: int,
+) -> tuple[Cut, ...]:
+    """Turn measured tail aligned positions into cuts, checking them first.
+
+    The positions were placed against a box this module cannot see, so what it
+    can check it checks here: one per handover, strictly ascending, and each
+    leaving both sides a character. A cut that stands where its estimate stood
+    was already at a line end and records no move.
+    """
+    if len(positions) != count - 1:
+        raise ChainBackfillError(
+            f"{len(positions)} cut positions were offered for {count} members"
+        )
+    if estimates is not None and len(estimates) != len(positions):
+        raise ChainBackfillError(
+            f"{len(estimates)} estimates were offered for {len(positions)} cuts"
+        )
+    length = len(translated)
+    previous = 0
+    for index, position in enumerate(positions):
+        high = length - (count - 1 - index)
+        if not isinstance(position, int) or position <= previous or position > high:
+            raise ChainBackfillError(
+                f"cut {index} at {position!r} does not leave every member a piece"
+            )
+        previous = position
+    return tuple(
+        Cut(
+            index,
+            position,
+            CUT_TAIL_ALIGNED,
+            True,
+            estimate=None if estimates is None else estimates[index],
+            moved_to=None
+            if estimates is None or estimates[index] == position
+            else MOVED_TO_LINE_END,
+        )
+        for index, position in enumerate(positions)
+    )
+
+
 def _sentence_intervals(
     positions: Sequence[int], ends: Sequence[int], count: int
 ) -> tuple[tuple[int, int], ...]:
@@ -1327,6 +1560,8 @@ def redistribute(
     aligned_lengths: Sequence[int] | None = None,
     align_enabled: bool = True,
     capacities: Sequence[int] | None = None,
+    cut_positions: Sequence[int] | None = None,
+    cut_estimates: Sequence[int] | None = None,
 ) -> Redistribution:
     """Cut one chain's translation back into one piece per member.
 
@@ -1346,6 +1581,16 @@ def redistribute(
     back to the share cascade where the caller could not measure them -- a
     caller with no boxes to measure says so by passing none, and the fallback
     is reported rather than assumed.
+
+    Under ``tail_aligned`` the cuts were placed against the member's own line
+    grid by a caller that can measure one, and arrive here as
+    ``cut_positions``, with the share estimates they were pulled back from as
+    ``cut_estimates``. This module owns what it can state without a box: that
+    there is one position per handover, that they ascend, that each leaves
+    every member a piece, and the conservation law below. A caller with no line
+    grid to measure says so by passing none, and the cuts are then placed by
+    the share cascade under the reported ``no_line_ends`` fallback rather than
+    silently.
     """
     config = load_backfill_config() if config is None else config
     if strategy not in STRATEGIES:
@@ -1375,6 +1620,7 @@ def redistribute(
         and all(isinstance(item, int) and item > 0 for item in capacities)
     )
     capacity_mode = strategy == STRATEGY_CAPACITY and usable_capacities
+    tail_mode = strategy == STRATEGY_TAIL_ALIGNED and cut_positions is not None
     # The sentences are attributed whenever the text has sentence structure to
     # attribute, which a body chain has however its cuts were placed. Only the
     # display strategy claims none.
@@ -1397,7 +1643,11 @@ def redistribute(
         source_shares=source_shares,
     )
 
-    if capacity_mode:
+    if tail_mode:
+        cuts = _plan_tail_aligned_cuts(
+            translated, list(cut_positions), cut_estimates, count
+        )
+    elif capacity_mode:
         cuts = _plan_capacity_cuts(translated, list(capacities), profile, config)
     else:
         cuts = _plan_cuts(
@@ -1428,6 +1678,8 @@ def redistribute(
     )
     if strategy == STRATEGY_CAPACITY and not capacity_mode:
         fallback = FALLBACK_NO_CAPACITY
+    elif strategy == STRATEGY_TAIL_ALIGNED and not tail_mode:
+        fallback = FALLBACK_NO_LINE_ENDS
     elif sentence_mode and any(cut.mode == CUT_PROPORTIONAL for cut in cuts):
         fallback = FALLBACK_PROPORTIONAL
     else:
