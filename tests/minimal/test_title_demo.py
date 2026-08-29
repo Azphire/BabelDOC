@@ -764,8 +764,11 @@ def test_impossible_title_fails_closed_and_restores_post_formal_state(
     typesetter.render_page(document.page[0])
     before = document_digest(document)
 
-    with pytest.raises(title_typeset.TitleTypesetError, match="does not fit"):
-        title_typeset.apply(config, document, typesetter)
+    # A title that will not fit rolls the pass back whole and is skipped, but it
+    # no longer ends the run: the caller gets the failure report instead of an
+    # exception, so the document still goes on to produce a PDF.
+    returned = title_typeset.apply(config, document, typesetter)
+    assert returned["status"] == "failure"
 
     assert document_digest(document) == before
     report = json.loads(
@@ -823,8 +826,11 @@ def test_late_title_overflow_rolls_back_every_prior_owner(monkeypatch, tmp_path)
     before_document = document_digest(document)
     before_paragraphs = [copy.deepcopy(paragraph) for paragraph in paragraphs]
 
-    with pytest.raises(title_typeset.TitleTypesetError, match="does not fit"):
-        title_typeset.apply(config, document, typesetter)
+    # A title that will not fit rolls the pass back whole and is skipped, but it
+    # no longer ends the run: the caller gets the failure report instead of an
+    # exception, so the document still goes on to produce a PDF.
+    returned = title_typeset.apply(config, document, typesetter)
+    assert returned["status"] == "failure"
 
     assert document_digest(document) == before_document
     assert paragraphs == before_paragraphs
@@ -990,7 +996,10 @@ def test_title_failure_does_not_clear_unrelated_fields(monkeypatch, tmp_path):
     title_typeset.prepare(config, document, article_ir, typesetter)
     untouched = document.page[0].base_operations
 
-    with pytest.raises(title_typeset.TitleTypesetError):
-        title_typeset.apply(config, document, typesetter)
+    # A title that will not fit rolls the pass back whole and is skipped, but it
+    # no longer ends the run: the caller gets the failure report instead of an
+    # exception, so the document still goes on to produce a PDF.
+    returned = title_typeset.apply(config, document, typesetter)
+    assert returned["status"] == "failure"
 
     assert document.page[0].base_operations is untouched

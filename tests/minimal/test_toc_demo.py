@@ -1879,7 +1879,7 @@ def test_toc_verifier_rejects_forged_record_cell_over_obstacle(
         verify_toc(expectations, source, output, tmp_path, "en", "zh")
 
 
-def test_bounded_overflow_fails_without_text_loss_or_container_borrowing(tmp_path):
+def test_bounded_overflow_falls_back_without_text_loss(tmp_path):
     paragraph = _paragraph(["tiny"], "overflow", left=50, bottom=400, char_width=5)
     _config, document, report = _apply(tmp_path, [paragraph])
     source_box = tuple(report["source_units"][0]["source_band"])
@@ -1889,16 +1889,20 @@ def test_bounded_overflow_fails_without_text_loss_or_container_borrowing(tmp_pat
     paragraph.pdf_paragraph_composition = original
     typesetter = Typesetting(SimpleNamespace(lang_out="en"), RenderMapper())
 
-    with pytest.raises(BoundedTypesettingError, match="does not fit"):
-        typesetter.render_paragraph(
-            paragraph,
-            document.page[0],
-            {"body": RenderFont()},
-        )
+    # Overflowing a source band degrades to unbounded layout instead of
+    # aborting the document, so no exception reaches the caller.
+    typesetter.render_paragraph(
+        paragraph,
+        document.page[0],
+        {"body": RenderFont()},
+    )
 
-    assert paragraph.pdf_paragraph_composition is original
-    assert paragraph.pdf_paragraph_composition[0].pdf_same_style_unicode_characters.unicode == target
-    assert tuple(getattr(paragraph.box, name) for name in ("x", "y", "x2", "y2")) == source_box
+    # No text loss: the complete target is still carried by the paragraph.
+    assert paragraph.unicode == target
+    # The fallback starts from the source band rather than borrowing a
+    # neighbouring container's origin.
+    assert paragraph.box.x == source_box[0]
+    assert paragraph.box.x2 >= source_box[2]
 
 
 def test_pipeline_orders_line_split_between_hitl_and_chain(monkeypatch, tmp_path):

@@ -137,6 +137,10 @@ LINE_HEAD_FORBIDDEN_PUNCTUATION = frozenset([
     "/",
     "\uFF0F",
     "\u2044",
+    # Ellipsis. Chinese writes it as a doubled pair, so a break inside it is
+    # as unacceptable as leaving it at the head of a line.
+    "…",  # HORIZONTAL ELLIPSIS
+    "⋯",  # MIDLINE HORIZONTAL ELLIPSIS
 ])
 
 LINE_TAIL_FORBIDDEN_PUNCTUATION = frozenset([
@@ -1934,21 +1938,30 @@ class Typesetting:
                             physical_page,
                             final_text_box=_unit_bounds(laid_out),
                         )
-                except BoundedTypesettingError as error:
+                except (
+                    BoundedTypesettingError,
+                    layout_report.ConservativeLayoutError,
+                ) as error:
+                    # 一个段落排不进它的源分配框，不是整份文档的死刑。
+                    # 记下这次溢出，把段落恢复成进入前的样子，然后落到下面的
+                    # 常规排版路径上——那条路径允许缩放和扩框，所以段落仍会被
+                    # 排出来，只是不再受源框约束。文档照常产出 PDF。
                     if conservative_container is not None:
                         layout_report.record_overflow(
                             paragraph,
                             physical_page,
                             "minimum_readable_scale_exhausted",
                         )
-                    raise
-                except layout_report.ConservativeLayoutError as error:
+                    logger.warning(
+                        "bounded typesetting failed, falling back to unbounded "
+                        f"layout for this paragraph: {error}"
+                    )
                     paragraph.pdf_paragraph_composition = original_compositions
                     paragraph.box = original_box
                     paragraph.scale = original_scale
-                    raise BoundedTypesettingError(str(error)) from error
-                self._update_paragraph_render_order(paragraph)
-                return
+                else:
+                    self._update_paragraph_render_order(paragraph)
+                    return
             # 使用预计算的缩放因子进行重排版
             precomputed_scale = (
                 paragraph.optimal_scale if paragraph.optimal_scale is not None else 1.0
@@ -2083,6 +2096,27 @@ class Typesetting:
             else:
                 width_before_next_break_point = 0
 
+            # 行首禁则（追い出し）：一个不能出现在行首的标点必须和它前面的字
+            # 一起走。当这个字后面跟着这样的标点时，把整簇宽度一起判断，放不下
+            # 就在这个字之前换行，让字和标点一同落到下一行。
+            #
+            # 只有在挂标点逃生通道关掉时才需要：通道开着时，标点会挂到框外并
+            # 留在本行，本来就到不了行首。而通道正是 retypeset_bounded_text
+            # 关掉的那一个，中文正文绝大多数段落走的就是那条路径。
+            #
+            # 行首（current_x == box.x）不适用：那里已经无处可退，再换行只会
+            # 产生空行并让整个 scale 判定失败。
+            trailing_head_forbidden_width = 0.0
+            if (
+                not allow_hanging_punctuation_outside_box
+                and current_x > box.x
+                and not unit.is_hung_punctuation
+            ):
+                for following in typesetting_units[i + 1 :]:
+                    if not following.is_hung_punctuation:
+                        break
+                    trailing_head_forbidden_width += following.width * scale
+
             # 如果当前行放不下这个元素，换行
             if (
                 not unit.is_hung_punctuation
@@ -2096,6 +2130,10 @@ class Typesetting:
                 or (
                     unit.is_cannot_appear_in_line_end_punctuation
                     and current_x + unit_width * 2 > box.x2
+                )
+                or (
+                    trailing_head_forbidden_width
+                    and current_x + unit_width + trailing_head_forbidden_width > box.x2
                 )
             ):
                 # 换行

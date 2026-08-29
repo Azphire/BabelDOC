@@ -444,11 +444,21 @@ def _fonts(typesetter, page) -> dict:
 
 
 def _render_target(typesetter, target: _Target) -> None:
-    typesetter.render_paragraph(
-        target.paragraph,
-        target.page,
-        _fonts(typesetter, target.page),
+    from babeldoc.format.pdf.document_il.midend.typesetting import (
+        BoundedTypesettingError,
     )
+
+    try:
+        typesetter.render_paragraph(
+            target.paragraph,
+            target.page,
+            _fonts(typesetter, target.page),
+        )
+    except BoundedTypesettingError as error:
+        # A repair that cannot be laid out is a repair to decline, not a reason
+        # to abandon the document. Refusal is this stage's own way of saying
+        # "leave this one alone"; it is recorded and the run continues.
+        raise _RepairRefusalError("render_bounded_typesetting_failed") from error
 
 
 def _paragraph_style(paragraph):

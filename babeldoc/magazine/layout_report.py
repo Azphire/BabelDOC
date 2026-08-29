@@ -331,7 +331,6 @@ def record_success(
     final_text_box: BoxTuple | None,
 ) -> None:
     """Record and enforce the final holder/text containment contract."""
-    global _RUN
     entry = _entry(paragraph, physical_page)
     if entry is None:
         return
@@ -349,8 +348,10 @@ def record_success(
         entry.final_holder_box = holder
         entry.final_text_box = final_text_box
         entry.overflow_reason = reason
+        # Same as record_overflow: snapshot the evidence but leave the run
+        # open, because the caller degrades this paragraph to unbounded layout
+        # rather than abandoning the document.
         _write()
-        _RUN = None
         raise ConservativeLayoutError(
             f"{entry.container.source_ref}: {reason.replace('_', ' ')}"
         )
@@ -365,7 +366,6 @@ def record_overflow(
     physical_page: int | None,
     reason: str,
 ) -> None:
-    global _RUN
     entry = _entry(paragraph, physical_page)
     if entry is None:
         return
@@ -373,8 +373,11 @@ def record_overflow(
     entry.final_holder_box = _box_tuple(getattr(paragraph, "box", None))
     entry.final_text_box = None
     entry.overflow_reason = reason
+    # Snapshot the evidence immediately, but keep the run open: an overflowing
+    # paragraph now falls back to unbounded layout instead of ending the
+    # document, so the pages after it still have to be recorded and finalize()
+    # still has to run.
     _write()
-    _RUN = None
 
 
 def finalize() -> dict:

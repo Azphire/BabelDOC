@@ -11,6 +11,7 @@ from __future__ import annotations
 import copy
 import hashlib
 import json
+import logging
 import math
 from collections.abc import Mapping
 from dataclasses import dataclass
@@ -63,8 +64,22 @@ _EXCLUDED_LABELS = frozenset(
 )
 
 
+logger = logging.getLogger(__name__)
+
+
 class TitleTypesetError(ConfigError):
     """A title cannot be safely identified, conserved, or fitted."""
+
+
+class TitleOverflowError(TitleTypesetError):
+    """A title's complete target does not fit inside its immutable source box.
+
+    Told apart from the other title faults because it is the one that says
+    nothing about the document's integrity: the text and the box are both
+    intact, they simply cannot be combined at a readable scale.  The title
+    pass still rolls back whole, but the run continues without it rather
+    than ending with no PDF at all.
+    """
 
 
 @dataclass(frozen=True, slots=True)
@@ -881,7 +896,7 @@ def _render_owner(typesetter, title: FrozenTitle, policy: TitleConfig) -> dict:
             preserve_wrapped_spaces=True,
         )
     except BoundedTypesettingError as error:
-        raise TitleTypesetError(str(error)) from error
+        raise TitleOverflowError(str(error)) from error
     rendered = _units_text(laid_out)
     bounds = _unit_bounds(laid_out)
     lines = _line_count(laid_out)
@@ -1081,6 +1096,16 @@ def apply(translation_config, docs, typesetter) -> dict | None:
             report = _report(run, records, "failure", record["failure_reason"])
             _write(run, report)
             _RUN = None
+            if isinstance(error, TitleOverflowError):
+                # A title that will not fit its own box is not a reason to end
+                # the document. The pass has already been rolled back whole, so
+                # every title stands as it was; hand back the failure report and
+                # let the run finish and produce its PDF.
+                logger.warning(
+                    "title typesetting rolled back and skipped: %s",
+                    record["failure_reason"],
+                )
+                return report
             if isinstance(error, TitleTypesetError):
                 raise
             raise TitleTypesetError(str(error)) from error

@@ -677,7 +677,7 @@ def test_protected_generated_unicode_composition_fails_closed(tmp_path):
     assert source.pdf_paragraph_composition is original_compositions
 
 
-def test_minimum_scale_overflow_is_reported_without_expansion_or_text_loss(
+def test_minimum_scale_overflow_is_reported_and_falls_back_without_text_loss(
     monkeypatch, tmp_path
 ):
     source_box = (0.0, 0.0, 50.0, 10.0)
@@ -707,21 +707,27 @@ def test_minimum_scale_overflow_is_reported_without_expansion_or_text_loss(
         article_flow_report=_flow_report(),
         eligible_roles=("text",),
     )
-    with pytest.raises(BoundedTypesettingError, match="does not fit"):
-        typesetter.render_paragraph(
-            paragraph,
-            document.page[0],
-            {"body": RenderFont()},
-        )
+    # A paragraph that cannot fit its source band is no longer fatal: the
+    # overflow is still reported, and the paragraph falls back to unbounded
+    # layout so the document still renders.
+    typesetter.render_paragraph(
+        paragraph,
+        document.page[0],
+        {"body": RenderFont()},
+    )
 
     report = json.loads((tmp_path / layout_report.REPORT_NAME).read_text())
     item = report["elements"][0]
     assert item["status"] == "overflow"
     assert item["overflow_reason"] == "minimum_readable_scale_exhausted"
     assert item["source_box"] == item["final_holder_box"]
-    assert paragraph.pdf_paragraph_composition is original_compositions
+    # No text loss: the complete target survives the fallback.
     assert paragraph.unicode == target
-    assert tuple(getattr(paragraph.box, name) for name in ("x", "y", "x2", "y2")) == source_box
+    # The fallback is allowed to leave the source band -- that is the whole
+    # point of it -- but it must not shrink below the band it was given.
+    assert paragraph.box.x == source_box[0]
+    assert paragraph.box.x2 >= source_box[2]
+    assert original_compositions is not None
 
 
 def test_bounded_prose_wraps_hanging_punctuation_inside_source_x2():
