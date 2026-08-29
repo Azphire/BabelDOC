@@ -371,12 +371,28 @@ def prepare(translator, paragraph, tracker, page_font_map, xobj_font_map):
     Returns ``(None, None)`` for the cases that method also refuses, which are
     refusals about what a paragraph is rather than about how long it is.
     """
+    il_translator = translator.il_translator
+    # The source refs are stamped first and unconditionally, exactly where the
+    # batch path stamps them, because they are what joins a tracker row to the
+    # coverage inventory.  A row without them is a translation the coverage
+    # ledger cannot see: the detector counts the paragraph as translated while
+    # the ledger still reports it unowned and untranslated, and the two reports
+    # of one run disagree about the same paragraph.
+    coverage_snapshot = getattr(
+        getattr(il_translator, "translation_config", None),
+        "magazine_coverage_snapshot",
+        None,
+    ) or getattr(il_translator, "coverage_snapshot", None)
+    if coverage_snapshot is not None:
+        refs = coverage_snapshot.source_refs_for(paragraph)
+        if refs is None:
+            raise ValueError("short unit paragraph is outside coverage inventory")
+        tracker.set_source_refs(*refs)
     if paragraph.vertical:
         return None, None
     tracker.set_pdf_unicode(paragraph.unicode)
     if paragraph.xobj_id in xobj_font_map:
         page_font_map = xobj_font_map[paragraph.xobj_id]
-    il_translator = translator.il_translator
     disable_rich_text = il_translator.translation_config.disable_rich_text_translate
     if not il_translator.support_llm_translate:
         disable_rich_text = True

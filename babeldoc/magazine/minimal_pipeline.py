@@ -19,6 +19,7 @@ from babeldoc.magazine import line_split
 from babeldoc.magazine import minimal_detection
 from babeldoc.magazine import minimal_repair
 from babeldoc.magazine import paren_dedup
+from babeldoc.magazine import resource_paths
 from babeldoc.magazine import title_typeset
 from babeldoc.magazine.article_builder import ArticleBuilder
 from babeldoc.magazine.article_ir import ArticleDocumentIR
@@ -250,12 +251,14 @@ _FIXED_TRUE_ATTRIBUTES = (
     "magazine_line_structure",
     "magazine_paren_dedup",
     "magazine_repair",
+    "magazine_short_unit",
     "magazine_title_typeset",
 )
 
 _FIXED_FALSE_ATTRIBUTES = (
     "magazine_checkpoint",
     "magazine_column_reflow",
+    "magazine_name_harvest",
     "magazine_pdf_compliance",
     "magazine_rotated_lane",
     "magazine_profile",
@@ -266,10 +269,56 @@ _FIXED_FALSE_ATTRIBUTES = (
 _MISSING = object()
 
 
+def declared_switches() -> dict[str, str]:
+    """Every run attribute the shipped configuration says a pass is read from.
+
+    A pass names its own switch in its own configuration and reads the run
+    attribute of that name, defaulting to off when the attribute is absent.
+    The fixed path decides that attribute for every pass it runs.  So a switch
+    the fixed path never names is a pass whose configuration advertises a way
+    to turn it on and whose runs will always find it off -- the shape a
+    finished module takes when nobody wired it up, and a shape that is
+    invisible until someone reads a report and wonders why a pass left no
+    trace.
+    """
+    found: dict[str, str] = {}
+    for path in sorted(resource_paths.resource_dir("configs").glob("*.json")):
+        try:
+            raw = json.loads(path.read_text(encoding="utf-8"))
+        except (OSError, ValueError) as error:
+            raise MinimalPipelineStateError(
+                f"unreadable magazine configuration {path.name}"
+            ) from error
+        if not isinstance(raw, dict):
+            continue
+        switch = raw.get("switch")
+        if isinstance(switch, str) and switch:
+            found[switch] = path.name
+    return found
+
+
+def _assert_every_switch_is_decided() -> None:
+    """Fail the run at startup rather than leave a pass silently unreachable."""
+    decided = set(_FIXED_TRUE_ATTRIBUTES) | set(_FIXED_FALSE_ATTRIBUTES)
+    dangling = {
+        name: source
+        for name, source in declared_switches().items()
+        if name not in decided
+    }
+    if dangling:
+        listed = ", ".join(
+            f"{name} ({source})" for name, source in sorted(dangling.items())
+        )
+        raise MinimalPipelineStateError(
+            f"the fixed path decides no value for declared switch: {listed}"
+        )
+
+
 def configure(config) -> None:
     """Configure one run for the fixed path and create its unique state."""
     if getattr(config, "magazine_state", _MISSING) is not _MISSING:
         raise MinimalPipelineStateError("magazine pipeline state is already configured")
+    _assert_every_switch_is_decided()
 
     fixed = {
         **dict.fromkeys(_FIXED_TRUE_ATTRIBUTES, True),
