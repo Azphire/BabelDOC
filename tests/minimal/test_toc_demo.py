@@ -1022,7 +1022,9 @@ def test_visual_parent_groups_are_one_translation_item_without_merging_records(
         "fd-block-subtitle",
         left=48,
         bottom=304,
-        faces=["body", "body"],
+        # The real FD fixture changes face within this visual subtitle.  It is
+        # split first, then must be coalesced with the tight title as one block.
+        faces=["body", "title"],
     )
     paragraphs = [
         bull_title,

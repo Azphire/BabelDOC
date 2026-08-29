@@ -1125,6 +1125,43 @@ def _merged_block(paragraphs: list):
 def _merge_tight_blocks(rebuilt, pending, config: LineSplitConfig):
     """Coalesce adjacent untouched single lines into physical block items."""
     by_id = {id(item.paragraph): item for item in pending}
+
+    def split_sibling_group(start: int):
+        """Return one already-split parent's complete adjacent child group."""
+        first_paragraph = rebuilt[start]
+        first = by_id.get(id(first_paragraph))
+        if (
+            first is None
+            or first.mergeable
+            or first.fixed_companion
+            or first.child_order != 0
+        ):
+            return None
+        paragraphs = []
+        held_items = []
+        cursor = start
+        expected_order = 0
+        while cursor < len(rebuilt):
+            paragraph = rebuilt[cursor]
+            held = by_id.get(id(paragraph))
+            if (
+                held is None
+                or held.mergeable
+                or held.fixed_companion
+                or held.parent_refs != first.parent_refs
+                or held.child_order != expected_order
+            ):
+                break
+            paragraphs.append(paragraph)
+            held_items.append(held)
+            expected_order += 1
+            cursor += 1
+        return (
+            (paragraphs, held_items, cursor)
+            if len(paragraphs) > 1
+            else None
+        )
+
     result = []
     result_pending = []
     position = 0
@@ -1143,17 +1180,27 @@ def _merge_tight_blocks(rebuilt, pending, config: LineSplitConfig):
         while cursor < len(rebuilt):
             next_paragraph = rebuilt[cursor]
             next_held = by_id.get(id(next_paragraph))
-            if (
-                next_held is None
-                or not next_held.mergeable
-                or not _tight_uniform_neighbors(
-                    members[-1], next_paragraph, config
-                )
-            ):
+            if next_held is None:
                 break
-            members.append(next_paragraph)
-            held_members.append(next_held)
-            cursor += 1
+            if next_held.mergeable:
+                candidates = [next_paragraph]
+                candidate_items = [next_held]
+                next_cursor = cursor + 1
+            else:
+                split_group = split_sibling_group(cursor)
+                if split_group is None:
+                    break
+                candidates, candidate_items, next_cursor = split_group
+            neighbor = (
+                candidates[0]
+                if len(candidates) == 1
+                else _merged_block(candidates)
+            )
+            if not _tight_uniform_neighbors(members[-1], neighbor, config):
+                break
+            members.extend(candidates)
+            held_members.extend(candidate_items)
+            cursor = next_cursor
         if len(members) == 1:
             result.append(paragraph)
             result_pending.append(held)
@@ -1165,9 +1212,11 @@ def _merge_tight_blocks(rebuilt, pending, config: LineSplitConfig):
             _PendingUnit(
                 paragraph=merged,
                 parent_refs=tuple(
-                    reference
-                    for item in held_members
-                    for reference in item.parent_refs
+                    dict.fromkeys(
+                        reference
+                        for item in held_members
+                        for reference in item.parent_refs
+                    )
                 ),
                 kind=RECORD_BLOCK,
                 child_order=0,
