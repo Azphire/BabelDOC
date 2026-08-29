@@ -8,7 +8,7 @@
   "title_max_lines_allowed_range": "1..8",
 
   "title_min_scale_by_target": {
-    "en": 0.5,
+    "en": 0.4,
     "zh": 0.5
   },
   "title_max_lines_by_target": {

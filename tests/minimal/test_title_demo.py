@@ -457,7 +457,7 @@ def test_long_english_title_is_complete_inside_finite_line_limit(
     )
 
     row = report["titles"][0]
-    assert report["policy"] == {"minimum_scale": 0.5, "maximum_lines": 3}
+    assert report["policy"] == {"minimum_scale": 0.4, "maximum_lines": 3}
     assert 1 < row["lines"] <= 3
     assert row["rendered_target_sha256"] == _sha256(target)
     assert paragraph.unicode == target
@@ -496,6 +496,45 @@ def test_wipo_english_title_preserves_wrapped_spaces_in_source_box(
     assert row["source_box"] == list(source_box)
     assert row["final_holder_box"] == list(source_box)
     assert row["rendered_target_sha256"] == _sha256(target)
+    final_box = row["final_text_box"]
+    assert final_box is not None
+    assert final_box[0] >= source_box[0] - 1e-3
+    assert final_box[1] >= source_box[1] - 1e-3
+    assert final_box[2] <= source_box[2] + 1e-3
+    assert final_box[3] <= source_box[3] + 1e-3
+
+
+def test_wipo_article_title_uses_english_minimum_scale_without_expansion(
+    monkeypatch, tmp_path
+):
+    target = "The New Key for Musicians to Build Their Brand"
+    source_box = (42.5057, 280.4621, 553.2257, 325.7741)
+    paragraph = _paragraph(target, "wipo-article-title", source_box, label="title")
+    paragraph.xobj_id = -1
+    paragraph.pdf_style.font_size = 48.0
+    holder = paragraph.pdf_paragraph_composition[0]
+    holder.pdf_same_style_unicode_characters.pdf_style.font_size = 48.0
+
+    report, _document_value, _typesetter = _run_title(
+        monkeypatch, tmp_path, "en", paragraph, source_box
+    )
+
+    row = report["titles"][0]
+    rendered = "".join(
+        composition.pdf_character.char_unicode
+        for composition in paragraph.pdf_paragraph_composition
+        if composition.pdf_character is not None
+    )
+    assert report["policy"] == {"minimum_scale": 0.4, "maximum_lines": 3}
+    assert row["lines"] == 1
+    assert row["scale"] >= 0.4 - 1e-9
+    assert row["scale"] < 0.5 - 1e-9
+    assert rendered == target
+    assert rendered.count(" ") == target.count(" ")
+    assert row["target_sha256"] == _sha256(target)
+    assert row["rendered_target_sha256"] == _sha256(target)
+    assert row["source_box"] == list(source_box)
+    assert row["final_holder_box"] == list(source_box)
     final_box = row["final_text_box"]
     assert final_box is not None
     assert final_box[0] >= source_box[0] - 1e-3
