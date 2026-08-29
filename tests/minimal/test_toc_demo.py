@@ -1441,6 +1441,184 @@ def test_unicode_only_debug_furniture_is_not_a_bounded_source_unit(tmp_path):
     assert document.page[0].pdf_paragraph == [overlay]
 
 
+def test_nested_figure_text_is_fixed_artwork_not_a_translation_unit(tmp_path):
+    artwork = _paragraph(
+        ["2024 Embedded publication label"],
+        "nested-artwork",
+        left=110,
+        bottom=610,
+        char_width=1.5,
+    )
+    artwork.xobj_id = 7
+    source_characters = line_split.paragraph_characters(artwork)
+    for character in source_characters:
+        character.xobj_id = 7
+    original_character_state = [
+        (
+            id(character),
+            character.char_unicode,
+            tuple(
+                getattr(character.box, name)
+                for name in ("x", "y", "x2", "y2")
+            ),
+        )
+        for character in source_characters
+    ]
+    page = _page([artwork], kind="masthead")
+    page.pdf_xobject = [
+        il_version_1.PdfXobject(
+            box=il_version_1.Box(108, 608, 158, 623),
+            base_operations=il_version_1.BaseOperations(value="q Q"),
+            xobj_id=7,
+            xref_id=123,
+        )
+    ]
+    page.page_layout = [
+        il_version_1.PageLayout(
+            box=il_version_1.Box(70, 560, 210, 690),
+            id=9,
+            conf=0.96,
+            class_name="figure",
+        )
+    ]
+    config = Config(tmp_path)
+
+    report = line_split.apply(config, [(2, page)])
+
+    assert report["source_units"] == []
+    assert report["totals"]["fixed_artwork"] == 1
+    assert report["fixed_artwork"] == [
+        {
+            "source_ref": "p2#0",
+            "runtime_source_ref": "p2#0",
+            "debug_id": "nested-artwork",
+            "source_box": [110.0, 610.0, 156.5, 620.0],
+            "source_text_sha256": hashlib.sha256(
+                b"2024 Embedded publication label"
+            ).hexdigest(),
+            "reason": "embedded_figure_xobject",
+            "xobj_id": 7,
+            "xobject_box": [108.0, 608.0, 158.0, 623.0],
+            "figure_box": [70.0, 560.0, 210.0, 690.0],
+        }
+    ]
+    assert artwork.unicode is None
+    assert line_split.source_unit(artwork, 2) is None
+    assert [
+        (
+            id(character),
+            character.char_unicode,
+            tuple(
+                getattr(character.box, name)
+                for name in ("x", "y", "x2", "y2")
+            ),
+        )
+        for character in line_split.paragraph_characters(artwork)
+    ] == original_character_state
+    driver = object.__new__(ILTranslatorLLMOnly)
+    driver.translation_config = SimpleNamespace(min_text_length=1)
+    assert not driver._should_translate_paragraph(artwork)
+
+    document = il_version_1.Document(page=[page], total_pages=1)
+    layout_report.prepare(
+        config,
+        document,
+        ArticleDocumentIR(articles=(), by_page={}, by_element={}, by_chain={}),
+        article_flow_report={"article_flow_applied": False},
+        eligible_roles=(),
+    )
+    try:
+        assert layout_report.is_protected_source(artwork)
+        Typesetting(
+            SimpleNamespace(lang_out="en"),
+            RenderMapper(),
+        ).render_paragraph(
+            artwork,
+            page,
+            {"body": RenderFont()},
+        )
+    finally:
+        layout_report.discard()
+    assert all(
+        composition.pdf_character is not None
+        for composition in artwork.pdf_paragraph_composition
+    )
+    assert [
+        (
+            id(character),
+            character.char_unicode,
+            tuple(
+                getattr(character.box, name)
+                for name in ("x", "y", "x2", "y2")
+            ),
+        )
+        for character in line_split.paragraph_characters(artwork)
+    ] == original_character_state
+
+
+@pytest.mark.parametrize(
+    "counterexample",
+    ("no_nested_xobject", "outside_figure", "generated_mixed_content"),
+)
+def test_embedded_artwork_proof_does_not_capture_ordinary_text(
+    tmp_path,
+    counterexample,
+):
+    paragraph = _paragraph(
+        ["Ordinary translatable record"],
+        counterexample,
+        left=110,
+        bottom=610,
+        char_width=1.5,
+    )
+    paragraph.xobj_id = 7
+    for character in line_split.paragraph_characters(paragraph):
+        character.xobj_id = 7
+    page = _page([paragraph], kind="masthead")
+    if counterexample != "no_nested_xobject":
+        page.pdf_xobject = [
+            il_version_1.PdfXobject(
+                box=il_version_1.Box(108, 608, 154, 623),
+                base_operations=il_version_1.BaseOperations(value="q Q"),
+                xobj_id=7,
+                xref_id=124,
+            )
+        ]
+    page.page_layout = [
+        il_version_1.PageLayout(
+            box=(
+                il_version_1.Box(70, 560, 210, 690)
+                if counterexample != "outside_figure"
+                else il_version_1.Box(300, 300, 400, 400)
+            ),
+            id=10,
+            conf=0.99,
+            class_name="figure",
+        )
+    ]
+    if counterexample == "generated_mixed_content":
+        paragraph.pdf_paragraph_composition.append(
+            il_version_1.PdfParagraphComposition(
+                pdf_same_style_unicode_characters=(
+                    il_version_1.PdfSameStyleUnicodeCharacters(
+                        pdf_style=paragraph.pdf_style,
+                        unicode="generated target",
+                    )
+                )
+            )
+        )
+    config = Config(tmp_path)
+
+    report = line_split.apply(config, [(2, page)])
+
+    assert report["fixed_artwork"] == []
+    assert len(report["source_units"]) == 1
+    assert paragraph.unicode == "Ordinary translatable record"
+    driver = object.__new__(ILTranslatorLLMOnly)
+    driver.translation_config = SimpleNamespace(min_text_length=1)
+    assert driver._should_translate_paragraph(paragraph)
+
+
 def test_debug_overlays_do_not_renumber_physical_parent_aliases(tmp_path):
     style = il_version_1.PdfStyle(font_id="body", font_size=4.0)
 

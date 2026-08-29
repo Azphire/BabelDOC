@@ -488,6 +488,80 @@ def paragraph_characters(paragraph) -> list:
     return characters
 
 
+def _box_contains(outer, inner) -> bool:
+    outer_record = _box_record(outer)
+    inner_record = _box_record(inner)
+    if outer_record is None or inner_record is None:
+        return False
+    return (
+        outer_record[0] <= inner_record[0]
+        and outer_record[1] <= inner_record[1]
+        and outer_record[2] >= inner_record[2]
+        and outer_record[3] >= inner_record[3]
+    )
+
+
+def embedded_figure_artwork(page, paragraph) -> dict | None:
+    """Prove that one source paragraph is paint inside embedded artwork.
+
+    A paragraph merely being small, or merely carrying an ``xobj_id``, is not
+    enough: both occur in ordinary page text.  The conservative proof used here
+    requires an actual nested page XObject, original passthrough-only character
+    compositions owned by that XObject, and geometry nesting the paragraph in
+    that XObject and the XObject in exactly one detected figure.  A generated,
+    mixed, root-page, or geometrically independent paragraph therefore remains
+    in the translation path.
+    """
+    xobj_id = getattr(paragraph, "xobj_id", None)
+    compositions = list(paragraph.pdf_paragraph_composition or ())
+    if xobj_id is None or not compositions:
+        return None
+
+    characters = []
+    for composition in compositions:
+        if composition_kind(composition) != "pdf_same_style_characters":
+            return None
+        held = list(composition.pdf_same_style_characters.pdf_character or ())
+        if not held:
+            return None
+        if any(
+            character.xobj_id != xobj_id or bool(character.debug_info)
+            for character in held
+        ):
+            return None
+        characters.extend(held)
+    if not characters:
+        return None
+
+    xobjects = [
+        xobject
+        for xobject in page.pdf_xobject or ()
+        if xobject.xobj_id == xobj_id
+    ]
+    if len(xobjects) != 1:
+        return None
+    xobject = xobjects[0]
+    if not _box_contains(xobject.box, paragraph.box):
+        return None
+
+    figures = [
+        layout
+        for layout in page.page_layout or ()
+        if (layout.class_name or "").casefold() == "figure"
+        and _box_contains(layout.box, xobject.box)
+        and _box_contains(layout.box, paragraph.box)
+    ]
+    if len(figures) != 1:
+        return None
+    figure = figures[0]
+    return {
+        "reason": "embedded_figure_xobject",
+        "xobj_id": xobj_id,
+        "xobject_box": _box_record(xobject.box),
+        "figure_box": _box_record(figure.box),
+    }
+
+
 def is_debug_overlay(paragraph) -> bool:
     """Whether every actual text carrier is explicitly diagnostic-only.
 
@@ -1299,6 +1373,7 @@ def process_page(
     *,
     prose_only: bool = False,
     minimum_text_length: int = 0,
+    fixed_artwork: list[dict] | None = None,
 ) -> tuple[list[dict], list[dict], list[dict]]:
     """Split a record page, or inventory only its long prose paragraphs.
 
@@ -1333,6 +1408,28 @@ def process_page(
         if not source_characters:
             # Other generated furniture can likewise have no source glyph
             # geometry. It is not a bounded TOC source unit either.
+            rebuilt.append(paragraph)
+            continue
+        artwork = embedded_figure_artwork(page, paragraph)
+        if artwork is not None:
+            source_character_text = characters_text(source_characters)
+            if fixed_artwork is not None:
+                fixed_artwork.append(
+                    {
+                        "source_ref": parent_ref,
+                        "runtime_source_ref": runtime_parent_ref,
+                        "debug_id": paragraph.debug_id,
+                        "source_box": _box_record(paragraph.box),
+                        "source_text_sha256": _source_hash(
+                            paragraph.unicode or source_character_text
+                        ),
+                        **artwork,
+                    }
+                )
+            # The original character objects remain the rendering authority.
+            # Removing only semantic input makes all translation producers
+            # decline this fixed artwork without changing its paint geometry.
+            paragraph.unicode = None
             rebuilt.append(paragraph)
             continue
         source_character_text = characters_text(source_characters)
@@ -1612,6 +1709,7 @@ def as_record(
     source_units: list[dict],
     pages: list[dict],
     untranslated: list[dict],
+    fixed_artwork: list[dict],
     minimum: int,
 ) -> dict:
     return {
@@ -1630,12 +1728,14 @@ def as_record(
             "line_paragraphs": sum(item["lines"] for item in splits),
             "exempt_paragraphs": len(exemptions),
             "short_lines": len(untranslated),
+            "fixed_artwork": len(fixed_artwork),
         },
         "pages": pages,
         "splits": splits,
         "exemptions": exemptions,
         "source_units": source_units,
         "short_lines": untranslated,
+        "fixed_artwork": fixed_artwork,
     }
 
 
@@ -1669,6 +1769,7 @@ def apply(translation_config, labeled_pages, policy_of=None) -> dict | None:
     source_units: list[dict] = []
     pages: list[dict] = []
     untranslated: list[dict] = []
+    fixed_artwork: list[dict] = []
     for label, page in labeled_pages:
         declared = config.declared(resolve(page.page_kind))
         source_characters = "".join(
@@ -1682,6 +1783,7 @@ def apply(translation_config, labeled_pages, policy_of=None) -> dict | None:
             config,
             prose_only=not declared,
             minimum_text_length=minimum,
+            fixed_artwork=fixed_artwork,
         )
         after = page_lines(page, config)
         result_characters = "".join(
@@ -1740,6 +1842,7 @@ def apply(translation_config, labeled_pages, policy_of=None) -> dict | None:
         source_units,
         pages,
         untranslated,
+        fixed_artwork,
         minimum,
     )
     working_dir = Path(translation_config.get_working_file_path(REPORT_NAME)).parent
