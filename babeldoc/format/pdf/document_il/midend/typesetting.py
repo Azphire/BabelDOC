@@ -1064,17 +1064,39 @@ class Typesetting:
         try:
             codepoint = ord(text)
             glyph_id = int(font.has_glyph(codepoint))
-            coordinates = tuple(float(value) for value in font.glyph_bbox(codepoint))
             advance = float(font.glyph_advance(codepoint))
         except (RuntimeError, TypeError, ValueError):
             return None
         if (
             glyph_id <= 0
-            or len(coordinates) != 4
+            or not math.isfinite(advance)
+            or advance <= 0
+        ):
+            return None
+
+        bbox = getattr(font, "glyph_bbox", None)
+        source = "pymupdf.Font.glyph_bbox"
+        if callable(bbox):
+            try:
+                raw_coordinates = bbox(glyph_id)
+            except (AttributeError, NotImplementedError, RuntimeError, TypeError):
+                raw_coordinates = None
+                source = "advance_em_fallback"
+        else:
+            raw_coordinates = None
+            source = "advance_em_fallback"
+        if raw_coordinates is None:
+            coordinates = (0.0, 0.0, advance, 1.0)
+        else:
+            try:
+                coordinates = tuple(float(value) for value in raw_coordinates)
+            except (TypeError, ValueError):
+                return None
+        if (
+            len(coordinates) != 4
             or not all(math.isfinite(value) for value in (*coordinates, advance))
             or coordinates[2] <= coordinates[0]
             or coordinates[3] <= coordinates[1]
-            or advance <= 0
         ):
             return None
         return GlyphInkMetric(
@@ -1082,6 +1104,7 @@ class Typesetting:
             advance_em=advance,
             font_id=str(font_id),
             glyph_id=glyph_id,
+            source=source,
         )
 
     def fit_text_to_slot(

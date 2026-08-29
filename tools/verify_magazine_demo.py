@@ -12,6 +12,23 @@ from pathlib import Path
 
 REF_PATTERN = re.compile(r"p\d+#\d+")
 SHA256_PATTERN = re.compile(r"[0-9a-f]{64}")
+DROPCAP_FIELDS = {
+    "source_ref",
+    "decision",
+    "target_char",
+    "target_index",
+    "direction_policy",
+    "metric_source",
+    "initial_box",
+    "before_target_sha256",
+    "after_target_sha256",
+    "status",
+    "failure_reason",
+}
+DROPCAP_METRIC_SOURCES = {
+    "pymupdf.Font.glyph_bbox",
+    "advance_em_fallback",
+}
 
 
 class VerificationError(ValueError):
@@ -1278,10 +1295,195 @@ def verify_title(
     }
 
 
+def _dropcap_truth_initial(truth: dict) -> str:
+    diagnostic = truth.get("diagnostic_ref")
+    if not isinstance(diagnostic, str) or "visual_initial=" not in diagnostic:
+        raise VerificationError("drop-cap truth has no visual initial")
+    value = diagnostic.split("visual_initial=", 1)[1]
+    held = re.match(r"p\d+#\d+\((.)\)", value)
+    if held is not None:
+        return held.group(1)
+    if not value:
+        raise VerificationError("drop-cap truth visual initial is empty")
+    return value[0]
+
+
+def _verify_dropcap_chain(rows: list[dict], working_dir: Path) -> None:
+    path = working_dir / "chain_translation.report.json"
+    if not path.is_file():
+        return
+    chains = _read(path).get("chains")
+    if not isinstance(chains, list):
+        raise VerificationError("chain translation inventory is invalid")
+    for row in rows:
+        reference = row["source_ref"]
+        matches = [
+            chain
+            for chain in chains
+            if isinstance(chain, dict)
+            and reference in (chain.get("ordered_source_refs") or ())
+        ]
+        if not matches:
+            continue
+        if len(matches) != 1:
+            raise VerificationError(f"drop-cap chain membership is ambiguous: {reference}")
+        chain = matches[0]
+        refs = chain.get("ordered_source_refs")
+        members = chain.get("members")
+        index = refs.index(reference)
+        if (
+            chain.get("outcome") != "joint_success"
+            or chain.get("fallback_reason") is not None
+            or chain.get("joint_call_count") != 1
+            or not isinstance(members, list)
+            or index >= len(members)
+            or not isinstance(members[index], dict)
+            or members[index].get("chain_index") != index
+            or members[index].get("source_ref") != reference
+        ):
+            raise VerificationError(f"drop-cap chain lacks joint-success proof: {reference}")
+
+
+def verify_dropcap(
+    expectations_path: Path,
+    source: Path,
+    output: Path,
+    working_dir: Path,
+    source_lang: str,
+    target_lang: str,
+):
+    expectations = _verify_inputs(
+        expectations_path,
+        source,
+        output,
+        source_lang,
+        target_lang,
+    )
+    report = _read(working_dir / "drop_cap_render.report.json")
+    rows = report.get("paragraphs")
+    totals = report.get("totals")
+    if (
+        report.get("schema_version") != "drop-cap-render.v1"
+        or report.get("status") != "success"
+        or report.get("target_lang") != target_lang
+        or not isinstance(rows, list)
+        or not isinstance(totals, dict)
+    ):
+        raise VerificationError("drop-cap report did not commit cleanly")
+    expected_policy = (
+        "chinese_two_line_initial"
+        if target_lang.lower().startswith("zh")
+        else "english_raised_initial"
+        if target_lang.lower().startswith("en")
+        else None
+    )
+    if expected_policy is None:
+        raise VerificationError("drop-cap verifier has no target direction policy")
+    by_ref = {}
+    for row in rows:
+        if not isinstance(row, dict) or set(row) != DROPCAP_FIELDS:
+            raise VerificationError("drop-cap paragraph schema is not exact")
+        reference = row.get("source_ref")
+        target_char = row.get("target_char")
+        target_index = row.get("target_index")
+        initial_box = _require_box(row.get("initial_box"), str(reference))
+        if (
+            not isinstance(reference, str)
+            or REF_PATTERN.fullmatch(reference) is None
+            or reference in by_ref
+            or row.get("decision") != "keep"
+            or row.get("status") != "committed"
+            or row.get("failure_reason") is not None
+            or not isinstance(target_char, str)
+            or len(target_char) != 1
+            or not isinstance(target_index, int)
+            or isinstance(target_index, bool)
+            or target_index < 0
+            or row.get("direction_policy") != expected_policy
+            or row.get("metric_source") not in DROPCAP_METRIC_SOURCES
+            or initial_box[2] <= initial_box[0]
+            or initial_box[3] <= initial_box[1]
+        ):
+            raise VerificationError(f"drop-cap committed record is invalid: {reference}")
+        before = _require_sha256(row, "before_target_sha256", reference)
+        after = _require_sha256(row, "after_target_sha256", reference)
+        if before != after:
+            raise VerificationError(f"drop-cap target digest changed: {reference}")
+        by_ref[reference] = row
+    if (
+        totals.get("active") != len(rows)
+        or totals.get("committed") != len(rows)
+        or totals.get("failure") != 0
+    ):
+        raise VerificationError("drop-cap totals disagree with committed inventory")
+
+    intent_report = _read(working_dir / "drop_cap_intent.report.json")
+    active_intents = [
+        item
+        for item in intent_report.get("intents", ())
+        if isinstance(item, dict)
+        and item.get("decision") == "keep"
+        and item.get("flatten_status") == "applied"
+    ]
+    if len(active_intents) != len(rows):
+        raise VerificationError("active keep intents disagree with rendered inventory")
+    for intent in active_intents:
+        reference = intent.get("source_ref")
+        row = by_ref.get(reference)
+        if (
+            row is None
+            or intent.get("render_status") != "applied"
+            or intent.get("target_char") != row["target_char"]
+            or intent.get("target_index") != row["target_index"]
+            or intent.get("target_policy") != row["direction_policy"]
+        ):
+            raise VerificationError(f"drop-cap intent was not committed: {reference}")
+
+    source_report = _read(working_dir / "drop_cap.report.json")
+    candidates = source_report.get("candidates")
+    if not isinstance(candidates, list):
+        raise VerificationError("drop-cap source candidate inventory is invalid")
+    verified = 0
+    for truth in expectations.get("dropcaps", []):
+        anchor = truth.get("anchor")
+        if (
+            not isinstance(anchor, str)
+            or REF_PATTERN.fullmatch(anchor) is None
+            or truth.get("decision") != "keep"
+        ):
+            raise VerificationError("drop-cap truth is invalid")
+        page = int(anchor[1 : anchor.index("#")])
+        source_initial = _dropcap_truth_initial(truth)
+        matches = [
+            item
+            for item in candidates
+            if isinstance(item, dict)
+            and item.get("page") == page
+            and isinstance(item.get("first_run"), str)
+            and item["first_run"].startswith(source_initial)
+        ]
+        if len(matches) != 1:
+            raise VerificationError(f"drop-cap truth match is not unique: {anchor}")
+        runtime_ref = matches[0].get("paragraph")
+        if runtime_ref not in by_ref:
+            raise VerificationError(f"drop-cap truth was not rendered: {anchor}")
+        verified += 1
+    _verify_dropcap_chain(rows, working_dir)
+    return {
+        "check": "dropcap",
+        "sample_id": expectations.get("sample_id"),
+        "dropcaps": verified,
+        "committed": len(rows),
+        "status": "pass",
+    }
+
+
 def _parser():
     parser = argparse.ArgumentParser()
     parser.add_argument(
-        "--check", required=True, choices=("chain", "toc", "layout", "title")
+        "--check",
+        required=True,
+        choices=("chain", "toc", "layout", "title", "dropcap"),
     )
     parser.add_argument("--expectations", required=True, type=Path)
     parser.add_argument("--source", required=True, type=Path)
@@ -1303,6 +1505,7 @@ def main(argv=None) -> int:
             "toc": verify_toc,
             "layout": verify_layout,
             "title": verify_title,
+            "dropcap": verify_dropcap,
         }[args.check]
         result = verifier(
             args.expectations,

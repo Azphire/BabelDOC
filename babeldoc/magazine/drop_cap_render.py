@@ -46,6 +46,7 @@ a line should be or a fragment of a first word stranded beside one.
 from __future__ import annotations
 
 import copy
+import hashlib
 import json
 import logging
 import math
@@ -77,6 +78,24 @@ logger = logging.getLogger(__name__)
 CONFIG_PATH = config_path("drop_cap_render.json")
 
 REPORT_NAME = "drop_cap_render.report.json"
+SCHEMA_VERSION = "drop-cap-render.v1"
+CHAIN_REPORT_NAME = "chain_translation.report.json"
+
+PERSISTED_FIELDS = (
+    "source_ref",
+    "decision",
+    "target_char",
+    "target_index",
+    "direction_policy",
+    "metric_source",
+    "initial_box",
+    "before_target_sha256",
+    "after_target_sha256",
+    "status",
+    "failure_reason",
+)
+STATUS_COMMITTED = "committed"
+STATUS_FAILURE = "failure"
 
 SWITCH = "magazine_drop_cap_render"
 
@@ -522,14 +541,21 @@ def _metric_for(character, resolver):
     try:
         box = tuple(float(value) for value in metric.ink_box_em)
         advance = float(metric.advance_em)
+        glyph_id = int(metric.glyph_id)
+        metric_font_id = str(metric.font_id)
     except (AttributeError, TypeError, ValueError):
         return None
+    style = getattr(character, "pdf_style", None)
+    paragraph_font_id = None if style is None else getattr(style, "font_id", None)
     if (
         len(box) != 4
         or not all(math.isfinite(value) for value in (*box, advance))
         or box[2] <= box[0]
         or box[3] <= box[1]
         or advance <= 0
+        or glyph_id <= 0
+        or not paragraph_font_id
+        or metric_font_id != str(paragraph_font_id)
     ):
         return None
     return metric
@@ -1589,6 +1615,72 @@ def kept_verdict() -> str:
     return other[0]
 
 
+def _chain_joint_success(
+    translation_config,
+    paragraph,
+    physical_reference: str,
+    local_reference: str,
+) -> bool:
+    """Prove a chain member was jointly translated before decorating it."""
+    chain_id = getattr(paragraph, "chain_id", None)
+    if not chain_id:
+        return True
+    chain_index = getattr(paragraph, "chain_index", None)
+    if (
+        not isinstance(chain_index, int)
+        or isinstance(chain_index, bool)
+        or chain_index < 0
+    ):
+        return False
+    path = Path(translation_config.get_working_file_path(CHAIN_REPORT_NAME))
+    if not path.is_file():
+        return False
+    try:
+        payload = json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, ValueError, json.JSONDecodeError):
+        return False
+    outcomes = payload.get("chains") if isinstance(payload, dict) else None
+    if not isinstance(outcomes, list):
+        return False
+    matches = []
+    for outcome in outcomes:
+        if not isinstance(outcome, dict):
+            continue
+        runtime_refs = outcome.get("runtime_source_refs")
+        physical_refs = outcome.get("ordered_source_refs")
+        identities = {outcome.get("chain_id"), outcome.get("canonical_chain_id")}
+        if (
+            chain_id not in identities
+            or not isinstance(runtime_refs, list)
+            or not isinstance(physical_refs, list)
+            or len(runtime_refs) != len(physical_refs)
+            or chain_index >= len(runtime_refs)
+            or runtime_refs[chain_index] != local_reference
+            or physical_refs[chain_index] != physical_reference
+        ):
+            continue
+        members = outcome.get("members")
+        member_order_holds = bool(
+            isinstance(members, list)
+            and (
+                chain_index < len(members)
+                and isinstance(members[chain_index], dict)
+                and members[chain_index].get("chain_index") == chain_index
+                and members[chain_index].get("runtime_source_ref")
+                == local_reference
+                and members[chain_index].get("source_ref") == physical_reference
+            )
+        )
+        if (
+            outcome.get("outcome") == "joint_success"
+            and outcome.get("fallback_reason") is None
+            and outcome.get("joint_call_count") == 1
+            and member_order_holds
+        ):
+            matches.append(outcome)
+    return len(matches) == 1
+
+
 def _render_validation(
     translation_config,
     paragraph,
@@ -1647,6 +1739,12 @@ def _render_validation(
             physical_valid
             and intent is not None
             and canonical_owner == intent.article_id
+        ),
+        "chain_joint_success": _chain_joint_success(
+            translation_config,
+            paragraph,
+            physical_reference,
+            local_reference,
         ),
     }
     return {
@@ -1838,6 +1936,11 @@ def _apply_render_pass(
                 None if regime is None else regime.name,
             )
             blank["target_policy"] = None if intent is None else intent.target_policy
+            before_text = "".join(
+                character.char_unicode or ""
+                for character in paragraph_characters(paragraph)
+                if character.box is not None
+            )
             validation = _render_validation(
                 translation_config,
                 paragraph,
@@ -1875,11 +1978,6 @@ def _apply_render_pass(
                     )
                     attempt_inventory = _without_mutable_paragraph(
                         inventory, local_reference
-                    )
-                    before_text = "".join(
-                        character.char_unicode or ""
-                        for character in paragraph_characters(paragraph)
-                        if character.box is not None
                     )
                     outcome = set_one(
                         paragraph,
@@ -1950,15 +2048,23 @@ def _apply_render_pass(
                 detail = outcome["issue"] or str(outcome["revert_reason"])
                 outcome["issue"] = detail
                 _record_render_issue(intent, physical_reference, detail)
+            after_text = "".join(
+                character.char_unicode or ""
+                for character in paragraph_characters(
+                    docs.page[position].pdf_paragraph[index]
+                )
+                if character.box is not None
+            )
+            outcome["_report_target_index"] = target_index
+            outcome["_before_target_sha256"] = hashlib.sha256(
+                before_text.encode("utf-8")
+            ).hexdigest()
+            outcome["_after_target_sha256"] = hashlib.sha256(
+                after_text.encode("utf-8")
+            ).hexdigest()
             records.append(outcome)
 
-    expected = set(config.report_fields)
     for item in records:
-        if set(item) != expected:
-            raise DropCapRenderError(
-                f"{REPORT_NAME}: a record carries {sorted(item)}, and "
-                f"{CONFIG_PATH.name} declares {sorted(expected)}"
-            )
         reason = item["revert_reason"]
         if reason is not None and reason not in config.revert_reasons:
             raise DropCapRenderError(
@@ -2027,7 +2133,11 @@ def as_record(
     regime: Regime | None,
     records: list[dict],
 ) -> dict:
+    committed = sum(1 for item in records if item["set"])
+    failures = len(records) - committed
     return {
+        "schema_version": SCHEMA_VERSION,
+        "status": "success" if failures == 0 else "failure",
         "switch": SWITCH,
         "target_lang": target_lang,
         "regime": None if regime is None else regime.name,
@@ -2053,8 +2163,11 @@ def as_record(
         "excluded_from": ["typeset_hang"],
         "compatible_with": ["column_reflow"],
         "totals": {
+            "active": len(records),
+            "committed": committed,
+            "failure": failures,
             "decided": len(records),
-            "set": sum(1 for item in records if item["set"]),
+            "set": committed,
             "reverted": sum(1 for item in records if item["reverted"]),
             "by_state": {
                 state: sum(1 for item in records if item["render_state"] == state)
@@ -2073,10 +2186,53 @@ def as_record(
     }
 
 
+def _persisted_paragraph(item: dict) -> dict:
+    style_evidence = item.get("style_evidence")
+    metric_source = (
+        style_evidence.get("metric_source")
+        if isinstance(style_evidence, dict)
+        else None
+    )
+    committed = bool(item.get("set"))
+    record = {
+        "source_ref": item.get("paragraph"),
+        "decision": item.get("decision"),
+        "target_char": item.get("initial"),
+        "target_index": item.get("_report_target_index"),
+        "direction_policy": item.get("target_policy"),
+        "metric_source": metric_source,
+        "initial_box": item.get("initial_ink_box"),
+        "before_target_sha256": item.get("_before_target_sha256"),
+        "after_target_sha256": item.get("_after_target_sha256"),
+        "status": STATUS_COMMITTED if committed else STATUS_FAILURE,
+        "failure_reason": None if committed else item.get("revert_reason"),
+    }
+    expected = set(PERSISTED_FIELDS)
+    if set(record) != expected or set(record) != set(load_render_config().report_fields):
+        raise DropCapRenderError(
+            f"{REPORT_NAME}: persisted fields disagree with the declared schema"
+        )
+    return record
+
+
+def _persisted_record(record: dict) -> dict:
+    persisted = copy.deepcopy(record)
+    persisted["paragraphs"] = [
+        _persisted_paragraph(item) for item in record.get("paragraphs", ())
+    ]
+    return persisted
+
+
 def _write_report(translation_config, record: dict) -> Path:
     path = Path(translation_config.get_working_file_path(REPORT_NAME))
     path.parent.mkdir(parents=True, exist_ok=True)
     with path.open("w", encoding="utf-8") as f:
-        json.dump(record, f, indent=2, sort_keys=True, ensure_ascii=False)
+        json.dump(
+            _persisted_record(record),
+            f,
+            indent=2,
+            sort_keys=True,
+            ensure_ascii=False,
+        )
     record_config_manifest(path.parent, [CONFIG_PATH])
     return path
