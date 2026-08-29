@@ -522,6 +522,92 @@ def test_long_uniform_horizontal_prose_does_not_capture_vertical_furniture(
     }
 
 
+def test_long_body_with_one_fallback_glyph_stays_one_prose_unit(tmp_path):
+    body = _paragraph(
+        [
+            "原子能机构总部设在维也纳国际中心。外地和联络办事",
+            "处设在日内瓦、纽约、东京和多伦多。原子能机构在摩纳哥、塞",
+            "伯斯多夫和维也纳运营着科学实验室。此外，原子能机构还向",
+            "设在意大利的里雅斯特的阿布杜斯·萨拉姆国际理论物理中",
+            "心提供支持和资金。",
+        ],
+        "body-with-fallback",
+        left=290.387,
+        bottom=90.535,
+        faces=["body"] * 5,
+        char_width=3.0,
+    )
+    fallback = il_version_1.PdfStyle(font_id="fallback", font_size=10.0)
+    middle_dot = next(
+        character
+        for character in line_split.paragraph_characters(body)
+        if character.char_unicode == "·"
+    )
+    middle_dot.pdf_style = fallback
+
+    toc_record = _paragraph(
+        ["Feature title", "By Example", "Next record"],
+        "styled-toc-records",
+        left=50,
+        bottom=600,
+        faces=["title", "byline", "title"],
+    )
+    uniform_block = _paragraph(
+        ["Short uniform", "three line", "record block"],
+        "short-uniform-block",
+        left=180,
+        bottom=450,
+        faces=["body"] * 3,
+    )
+    config = line_split.load_line_split_config()
+
+    body_examination = line_split.examine(body, config)
+    toc_examination = line_split.examine(toc_record, config)
+    block_examination = line_split.examine(uniform_block, config)
+
+    assert len(body_examination.lines) == 5
+    assert body_examination.mean_line_chars == 22.8
+    assert body_examination.heterogeneous is False
+    assert body_examination.reason == line_split.REASON_UNIFORM_STYLING
+    assert toc_examination.heterogeneous is True
+    assert toc_examination.admitted
+    assert block_examination.reason == line_split.REASON_UNIFORM_STYLING
+    assert not line_split._is_prose_exempt(uniform_block, block_examination, config)
+
+    _config, document, report = _apply(
+        tmp_path,
+        [body, toc_record, uniform_block],
+    )
+
+    units_by_parent = {}
+    for unit in report["source_units"]:
+        units_by_parent.setdefault(unit["parent_ref"], []).append(unit)
+    assert document.page[0].pdf_paragraph[0] is body
+    assert [(unit["record_kind"], unit["debug_id"]) for unit in units_by_parent["p1#0"]] == [
+        (line_split.RECORD_PROSE, "body-with-fallback")
+    ]
+    assert [unit["record_kind"] for unit in units_by_parent["p1#1"]] == [
+        line_split.RECORD_SINGLE,
+        line_split.RECORD_SINGLE,
+        line_split.RECORD_SINGLE,
+    ]
+    assert [(unit["record_kind"], unit["debug_id"]) for unit in units_by_parent["p1#2"]] == [
+        (line_split.RECORD_BLOCK, "short-uniform-block")
+    ]
+    exemption = next(
+        item for item in report["exemptions"] if item["paragraph"] == "p1#0"
+    )
+    assert exemption == {
+        "page": 1,
+        "paragraph": "p1#0",
+        "debug_id": "body-with-fallback",
+        "lines": 5,
+        "mean_line_chars": 22.8,
+        "heterogeneous": False,
+        "reason": line_split.REASON_UNIFORM_STYLING,
+    }
+
+
 def test_spanning_decorative_glyph_keeps_proven_multiline_source_as_block(tmp_path):
     paragraph = _paragraph(
         ["Banjo on the Atlas", "WRITTEN BY EXAMPLE", "A descriptive deck"],

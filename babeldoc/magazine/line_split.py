@@ -761,23 +761,28 @@ def mean_line_chars(characters, lines) -> float:
 
 
 def line_faces(characters, line) -> frozenset[str]:
-    """The faces one line is set in, by font id.
+    """The dominant faces one line is set in, by font id.
 
     Whitespace carries a style of its own and no shape, so it says nothing
-    about how the line is set and is left out. Size is left out as well: a
-    record announces itself by changing face -- the leader, the byline -- and
-    reading a size difference inside one face as a boundary would widen the
-    split on a signal a wrapped prose line can also carry.
+    about how the line is set and is left out. A single unsupported glyph can
+    be drawn from a fallback font without changing the semantic style of a prose
+    line, so only the most frequent face or tied faces describe the line. Size
+    is left out as well: a record announces itself by changing its dominant
+    face -- a title and its byline -- while reading an isolated fallback or a
+    size difference inside one face as a boundary would split wrapped prose.
     """
-    faces = set()
+    counts: dict[str, int] = {}
     for index in line:
         character = characters[index]
         if not (character.char_unicode or "").strip():
             continue
         style = character.pdf_style
         if style is not None and style.font_id is not None:
-            faces.add(style.font_id)
-    return frozenset(faces)
+            counts[style.font_id] = counts.get(style.font_id, 0) + 1
+    if not counts:
+        return frozenset()
+    maximum = max(counts.values())
+    return frozenset(face for face, count in counts.items() if count == maximum)
 
 
 def style_heterogeneous(characters, lines) -> bool:
