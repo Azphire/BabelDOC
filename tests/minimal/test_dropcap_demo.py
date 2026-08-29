@@ -12,6 +12,7 @@ import pytest
 from babeldoc.format.pdf.document_il.midend.typesetting import Typesetting
 from babeldoc.magazine import drop_cap_intent
 from babeldoc.magazine import drop_cap_render
+from babeldoc.magazine import fixed_assets
 from babeldoc.magazine.line_split import paragraph_characters
 from tests.minimal.test_drop_cap_chinese import paragraph_snapshot
 from tests.minimal.test_drop_cap_keep_flatten import ControlledMetric
@@ -186,6 +187,45 @@ def test_raised_initial_may_rise_above_its_anchored_article_box() -> None:
     assert outcome["set"], outcome
     assert outcome["initial_ink_box"][1] <= article_box[3]
     assert outcome["initial_ink_box"][3] > article_box[3]
+
+
+def test_decorative_guard_ignores_existing_paragraph_background() -> None:
+    paragraph = english_render_paragraph()
+    page = make_document([paragraph]).page[0]
+    background = fixed_assets.AssetRecord(
+        reference="background",
+        asset_type="pdf_figure",
+        page=7,
+        bbox=(0.0, 40.0, 20.0, 100.0),
+        digest="background-digest",
+        movable=False,
+        protected=True,
+    )
+    foreground = fixed_assets.AssetRecord(
+        reference="foreground",
+        asset_type="pdf_figure",
+        page=7,
+        bbox=(155.0, 40.0, 175.0, 100.0),
+        digest="foreground-digest",
+        movable=False,
+        protected=True,
+    )
+    inventory = fixed_assets.FixedAssetInventory(
+        assets=(background, foreground),
+        page_sizes=(),
+    )
+
+    guard = drop_cap_render._decorative_guard(
+        page,
+        7,
+        0,
+        "p7#0",
+        direct_intent(drop_cap_intent.POLICY_ENGLISH_RAISED_INITIAL),
+        None,
+        inventory,
+    )
+
+    assert [reference for reference, _box in guard.obstacles] == ["foreground"]
 
 
 def _write_chain_report(config, *, outcome: str, fallback_reason=None) -> None:

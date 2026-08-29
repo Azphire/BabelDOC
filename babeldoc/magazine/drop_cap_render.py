@@ -1572,7 +1572,11 @@ def _decorative_guard(
         ):
             continue
         box = tuple(float(value) for value in asset.bbox)
-        if body_box is not None and _contains(box, body_box, 0.0):
+        # Artwork already intersecting the source paragraph is its existing
+        # background / decoration, not a new foreground collision introduced
+        # by the raised initial.  It is still frozen by the post-render asset
+        # comparison below.
+        if body_box is not None and _overlaps(box, body_box, 0.0):
             continue
         obstacles[asset.reference] = box
     for other_index, other in enumerate(page.pdf_paragraph or ()):
