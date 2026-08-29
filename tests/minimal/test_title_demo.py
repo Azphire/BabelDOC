@@ -34,6 +34,18 @@ class RenderMapper(FixedWidthMapper):
         self.fontid2font = {self.base_font.font_id: self.base_font}
 
 
+class FullWidthRenderFont(RenderFont):
+    @staticmethod
+    def char_lengths(text: str, font_size: float):
+        return tuple(font_size for _character in text)
+
+
+class FullWidthRenderMapper(FixedWidthMapper):
+    def __init__(self) -> None:
+        self.base_font = FullWidthRenderFont()
+        self.fontid2font = {self.base_font.font_id: self.base_font}
+
+
 class Config:
     def __init__(self, work: Path, target: str) -> None:
         self.work = work
@@ -113,11 +125,12 @@ def _run_title(
     target: str,
     paragraph,
     source_box,
+    mapper=None,
 ):
     document = _document([paragraph])
     article_ir = _article_ir([paragraph], [source_box])
     config = Config(tmp_path, target)
-    typesetter = Typesetting(config, RenderMapper())
+    typesetter = Typesetting(config, mapper or RenderMapper())
     monkeypatch.setattr(title_typeset.line_split, "source_unit", lambda *_args: None)
     title_typeset.prepare(config, document, article_ir, typesetter)
 
@@ -149,13 +162,56 @@ def test_required_chinese_titles_are_complete_single_lines(
 
     row = report["titles"][0]
     assert report["same_formal_typesetter"] is True
-    assert report["policy"] == {"minimum_scale": 0.5, "maximum_lines": 1}
+    assert report["policy"] == {"minimum_scale": 0.4, "maximum_lines": 1}
     assert row["source_box"] == list(source_box)
     assert row["final_holder_box"] == list(source_box)
     assert row["lines"] == 1
     assert row["target_sha256"] == _sha256(target)
     assert row["rendered_target_sha256"] == _sha256(target)
     assert paragraph.unicode == target
+
+
+def test_fd_chinese_title_uses_direction_minimum_scale_without_expansion(
+    monkeypatch, tmp_path
+):
+    target = "重新思考自由贸易"
+    source_box = (38.588, 144.688, 151.036, 210.32)
+    paragraph = _paragraph(target, "fd-title", source_box, label="title")
+    paragraph.xobj_id = -1
+    paragraph.pdf_style.font_size = 32.0
+    holder = paragraph.pdf_paragraph_composition[0]
+    holder.pdf_same_style_unicode_characters.pdf_style.font_size = 32.0
+
+    report, _document_value, _typesetter = _run_title(
+        monkeypatch,
+        tmp_path,
+        "zh-CN",
+        paragraph,
+        source_box,
+        FullWidthRenderMapper(),
+    )
+
+    row = report["titles"][0]
+    rendered = "".join(
+        composition.pdf_character.char_unicode
+        for composition in paragraph.pdf_paragraph_composition
+        if composition.pdf_character is not None
+    )
+    assert report["policy"] == {"minimum_scale": 0.4, "maximum_lines": 1}
+    assert row["lines"] == 1
+    assert row["scale"] >= 0.4 - 1e-9
+    assert row["scale"] < 0.5 - 1e-9
+    assert rendered == target
+    assert row["target_sha256"] == _sha256(target)
+    assert row["rendered_target_sha256"] == _sha256(target)
+    assert row["source_box"] == list(source_box)
+    assert row["final_holder_box"] == list(source_box)
+    final_box = row["final_text_box"]
+    assert final_box is not None
+    assert final_box[0] >= source_box[0] - 1e-3
+    assert final_box[1] >= source_box[1] - 1e-3
+    assert final_box[2] <= source_box[2] + 1e-3
+    assert final_box[3] <= source_box[3] + 1e-3
 
 
 def test_styled_translation_markup_freezes_plain_visual_target(

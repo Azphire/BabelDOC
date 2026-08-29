@@ -9,7 +9,7 @@
 
   "title_min_scale_by_target": {
     "en": 0.4,
-    "zh": 0.5
+    "zh": 0.4
   },
   "title_max_lines_by_target": {
     "en": 3,
