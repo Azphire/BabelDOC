@@ -1206,6 +1206,7 @@ def _detect_and_repair(config, docs, typesetter, state: MagazineState) -> None:
             sidecar_name="issues.before.json",
             pass_index=0,
             flow_report=state.flow_report,
+            hitl_state=state.hitl_state,
         )
         state._detection_before = before
 
@@ -1227,6 +1228,7 @@ def _detect_and_repair(config, docs, typesetter, state: MagazineState) -> None:
                 pass_index=1,
                 flow_report=state.flow_report,
                 repair_owned_binding=binding,
+                hitl_state=state.hitl_state,
             )
 
         repair_result = minimal_repair.repair_once(

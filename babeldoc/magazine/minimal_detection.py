@@ -18,6 +18,7 @@ from babeldoc.magazine.detectors import collision
 from babeldoc.magazine.detectors import detector_config
 from babeldoc.magazine.detectors import fixed_asset_drift
 from babeldoc.magazine.detectors import fragment
+from babeldoc.magazine.detectors import instruction_compliance
 from babeldoc.magazine.detectors import overlap
 from babeldoc.magazine.detectors import page_bounds
 from babeldoc.magazine.detectors import residue
@@ -1148,6 +1149,7 @@ def detect(
     flow_report: dict | None = None,
     config: DetectorConfig | None = None,
     repair_owned_binding: tuple[str, str] | None = None,
+    hitl_state: object | None = None,
 ) -> DetectionResult:
     """Run the closed detector set once and write the named sidecar."""
     if baseline.document_identity != id(docs):
@@ -1202,6 +1204,7 @@ def detect(
         working_dir=Path(working_dir),
         source_geometry=baseline.source_geometry,
         article_document_ir=article_document_ir,
+        hitl_state=hitl_state,
         fixed_inventory=fixed_baseline,
         current_inventory=current_inventory,
         finalized=True,
@@ -1253,6 +1256,12 @@ def detect(
     context.file(
         fixed_asset_drift.NAME,
         {"status": "completed", "issue_count": len(fixed_issues)},
+    )
+    compliance_issues = instruction_compliance.detect(context)
+    issues.extend(compliance_issues)
+    context.file(
+        instruction_compliance.NAME,
+        {"status": "completed", "issue_count": len(compliance_issues)},
     )
     contracted = tuple(
         sorted(

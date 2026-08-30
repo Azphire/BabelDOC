@@ -735,6 +735,10 @@ class DetectionContext:
     source_geometry: object | None = None
     source_geometry_result: object | None = None
     article_document_ir: object | None = None
+    # The two-pass human review state, for the detector that asks whether a
+    # human ruling survived to the finished document. None where the run kept
+    # no review state, in which case that detector is not run at all.
+    hitl_state: object | None = None
     run_trace: object | None = None
     fixed_inventory: object | None = None
     current_inventory: object | None = None

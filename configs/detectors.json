@@ -76,7 +76,8 @@
   },
   "document_detectors": [
     "chain_conservation",
-    "fixed_asset_drift"
+    "fixed_asset_drift",
+    "instruction_compliance"
   ],
   "progress_evidence": {
     "untranslated_residue": [

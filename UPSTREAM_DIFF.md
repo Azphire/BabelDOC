@@ -125,3 +125,59 @@ Note on reachability: the two floors together require the blank remainder to be
 at least a fifth of the *page*, so only a paragraph whose box is itself a large
 share of the page can ever be reported.  This is the adjudicated rule as
 written; whether real samples trip it is a T6 measurement, reported as measured.
+
+### T1c — `instruction_compliance` re-seated on HITL rulings
+
+`detectors/instruction_compliance.py` was **replaced in place**.  Every input of
+the donor version -- `trace.chain_outcomes`, `trace.sources`,
+`trace.generations`, `trace.fragments`, `trace.geometries` -- came from a
+`RunTrace`, and it had no half that survives without one.  Nothing else
+imported it.
+
+Prechecks the adjudication made conditional, all confirmed before writing:
+
+- `MinimalPipelineState` retains the review state (`minimal_pipeline.py:81`,
+  `:125`) and it is live at `after_typesetting`, carrying both `.decisions` and
+  `.source_text_pages`.
+- All twelve samples have a decisions file in `reviews/`, with 1--46 ruled
+  terms each (eleven of twelve non-empty), 0--9 ruled page kinds (nine of
+  twelve non-empty) and ruled drop caps in two (`Courier-en`, `FD-en-v2`).
+- The drop-cap application record exists and is locatable per page: `hitl`
+  stores it at `state.report["applied"]["drop_caps"]`, rows carrying
+  `paragraph` (a `p<physical>#<index>` reference) and `decision`.
+
+**Deviation from the literal C3 wording, and why.**  The adjudication said to
+compare the `page_kinds` ruling against the `page_classify` report.  That
+comparison cannot work: `PageClassifier.process` runs and writes
+`page_classify.report.json` at `minimal_pipeline.py:427`, *before*
+`hitl.page_kind_pass` at `:431` overwrites `page.page_kind` with the human
+ruling.  The report therefore records what the machine decided, and a human
+ruling is supposed to differ from it -- so the literal check would report every
+correctly applied override as a violation, and report nothing when a ruling was
+genuinely lost.  It is exactly inverted.
+
+What is implemented instead answers the intent -- did the human constraint
+survive to the finished document -- by comparing the ruling against the live
+document (`page.page_kind`, `paragraph.drop_cap_decision`) and, beside it, the
+applying pass's own record.  Carrying both lets a finding distinguish "never
+landed" from "landed and was later overwritten", which is in the evidence as
+`recorded_as_applied` and `carried_by_document`.  The "only check where there is
+a report" clause is kept: the records are read from the HITL report, and their
+absence yields no finding.  `spec_check_b12_t1c.py` S2 pins the consequence --
+a fixture with every ruling honoured reports nothing.
+
+**Contract change.**  `DetectionContext` gained one optional field,
+`hitl_state: object | None = None`, alongside the optional pass-through
+references it already carries (`article_document_ir`, `fixed_inventory`,
+`run_trace`).  `minimal_detection.detect` gained a matching keyword-only
+`hitl_state=None`, and `minimal_pipeline` passes `state.hitl_state` at both
+detection call sites.  Additive: every existing caller and detector is
+unaffected.  The detector imports `babeldoc.glossary` for the one normalisation
+both sides of a term comparison must share; that module imports nothing from
+`babeldoc.magazine`, so the package docstring's ban on pulling in taxonomy,
+profiles, checkpoints or RunTrace still holds.  `hitl` itself is deliberately
+**not** imported, because it does pull in `taxonomy`.
+
+`configs/detectors.json` names `instruction_compliance` in `document_detectors`
+beside `chain_conservation` and `fixed_asset_drift`, and `minimal_detection`
+runs it there rather than in the page loop.

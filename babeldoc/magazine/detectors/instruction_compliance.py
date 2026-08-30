@@ -1,51 +1,86 @@
-"""Trace-backed compliance with joint-call, protection, and rollback rules."""
+"""Human rulings that did not survive to the finished document.
+
+The human constraint this pipeline actually carries is the HITL decisions file:
+a ruled glossary term, a ruled drop-cap verdict, a ruled page kind. Each is
+applied by an early pass and then has to survive every later pass -- retrieval,
+translation, line splitting, typesetting, repair -- to reach the reader. This
+detector asks, at the end, whether it did.
+
+The question is deliberately asked of the finished document rather than of the
+report the applying pass wrote about itself. A pass reporting that it applied a
+ruling is evidence that it ran, not evidence that the ruling is still there; the
+two answers differ exactly when something downstream overwrote it, which is the
+only case worth reporting. Where an applying pass keeps a record, that record is
+read as well, so a finding can say whether the ruling never landed or landed and
+was later lost.
+
+Three rules, one per section of the decisions file:
+
+``term_adoption``    a page whose source carried a ruled term, whose finished
+                     text does not carry the ruling's target.
+``drop_cap_ruling``  a ruled paragraph whose drop-cap verdict is not the one
+                     that was ruled.
+``page_kind_ruling`` a ruled page whose kind is not the one that was ruled.
+
+A sample with no decisions file is not a violation and not an error: there was
+no constraint to comply with, and the run is recorded as skipped for that
+reason. Report only; nothing here writes to the document.
+"""
 
 from __future__ import annotations
 
+from babeldoc.glossary import Glossary
 from babeldoc.magazine.detectors import base
-from babeldoc.magazine.run_trace import GENERATION_OPEN
-from babeldoc.magazine.run_trace import GENERATION_ROLLED_BACK
-from babeldoc.magazine.run_trace import RENDER_RENDERED
-from babeldoc.magazine.run_trace import ChainResultState
-from babeldoc.magazine.run_trace import SourceTerminalState
 
 NAME = "instruction_compliance"
 KIND = "instruction_compliance"
 
 REQUIRES_TRANSLATION = False
 REQUIRES_SOURCE_GEOMETRY = False
-REQUIRES_RUN_TRACE = True
+REQUIRES_HITL_STATE = True
 FINAL_ONLY = True
 
+RULE_TERM = "term_adoption"
+RULE_DROP_CAP = "drop_cap_ruling"
+RULE_PAGE_KIND = "page_kind_ruling"
+RULES = (RULE_TERM, RULE_DROP_CAP, RULE_PAGE_KIND)
 
-def _geometry(trace, source_refs):
-    boxes = []
-    for source_ref in source_refs:
-        source = trace.sources.get(source_ref)
-        if source is None:
-            continue
-        for fragment_id in source.fragment_ids:
-            fragment = trace.fragments.get(fragment_id)
-            if fragment is None:
-                continue
-            for geometry_id in fragment.geometry_ids:
-                geometry = trace.geometries.get(geometry_id)
-                if geometry is not None and geometry.active:
-                    boxes.append(geometry.final_box or geometry.pre_repair_box)
-    return base.union_box(boxes)
+SKIP_NO_HITL_STATE = "hitl_state_absent"
+SKIP_NO_DECISIONS = "decisions_file_absent"
+
+# Sections of the HITL report this detector reads, named once so a rename shows
+# up here rather than as a silently empty check.
+_APPLIED = "applied"
+_SKIPPED = "skipped"
+_DROP_CAPS_SECTION = "drop_caps"
+_PAGE_KINDS_SECTION = "page_kinds"
 
 
-def _issue(context, rule, identity, source_refs=(), detail=None):
-    trace = context.run_trace
-    sources = [trace.sources[ref] for ref in source_refs if ref in trace.sources]
+def _normalize(value: str) -> str:
+    """The one spelling both sides of a term comparison are reduced to.
+
+    The same normalisation the HITL pass captured its source pages under, so a
+    term is looked for here exactly as it was looked for there.
+    """
+    return Glossary.normalize_source(value or "")
+
+
+def _page_text(view) -> str:
+    """What one finished page shows, normalised for term matching."""
+    return _normalize(
+        "\n".join(
+            base.rendered_text(paragraph, physical_page=view.label)
+            for paragraph in (view.page.pdf_paragraph or ())
+        )
+    )
+
+
+def _issue(context, rule: str, identity: str, page: int, detail, *, refs=()):
     return base.Issue(
         kind=KIND,
-        page=min(
-            (source.page for source in sources),
-            default=context.pages[0].label if context.pages else 0,
-        ),
-        paragraph_refs=tuple(source_refs),
-        geometry=_geometry(trace, source_refs),
+        page=page,
+        paragraph_refs=tuple(refs),
+        geometry=None,
         severity=context.severity_of(KIND),
         evidence={
             "instruction": rule,
@@ -56,95 +91,159 @@ def _issue(context, rule, identity, source_refs=(), detail=None):
         },
         detector=NAME,
         detected_at_iteration=context.iteration,
-        article_refs=tuple(
-            sorted({source.article_id for source in sources if source.article_id})
-        ),
-        source_refs=tuple(source_refs),
     )
 
 
-def detect(context: base.DetectionContext) -> list[base.Issue]:
-    trace = context.run_trace
+def _skip(context, reason: str) -> list:
+    context.file(NAME, {"status": "skipped", "reason": reason, "typed": True})
+    return []
+
+
+def _report_section(report, *path):
+    value = report if isinstance(report, dict) else {}
+    for name in path:
+        if not isinstance(value, dict):
+            return None
+        value = value.get(name)
+    return value
+
+
+def _skipped_keys(report, section: str) -> frozenset[str]:
+    """Rulings the applying pass recorded as out of the run's own scope.
+
+    A ruling for a page this run did not select was never asked to land, so it
+    is not a ruling that was lost.
+    """
+    rows = _report_section(report, _SKIPPED)
+    if not isinstance(rows, list):
+        return frozenset()
+    return frozenset(
+        str(row.get("key"))
+        for row in rows
+        if isinstance(row, dict) and row.get("section") == section
+    )
+
+
+def _term_findings(context, decisions, state) -> list:
     found = []
-    for chain_id, outcome in sorted(trace.chain_outcomes.items()):
-        expected_calls = (
-            1 if outcome.result_state == ChainResultState.JOINT_SUCCESS else 0
-        )
-        if outcome.result_state in {
-            ChainResultState.JOINT_SUCCESS,
-            ChainResultState.PROTECTED_UNTRANSLATED,
-        } and outcome.translator_call_count != expected_calls:
+    pages = {view.label: view for view in context.pages}
+    texts: dict[int, str] = {}
+    for label, source_text in state.source_text_pages or ():
+        view = pages.get(label)
+        if view is None:
+            continue
+        for source, target in sorted(decisions.terms.items()):
+            needle = _normalize(source)
+            if not needle or needle not in source_text:
+                continue
+            if label not in texts:
+                texts[label] = _page_text(view)
+            wanted = _normalize(target)
+            if not wanted or wanted in texts[label]:
+                continue
             found.append(
                 _issue(
                     context,
-                    "joint_call_count",
-                    chain_id,
-                    outcome.ordered_source_refs,
+                    RULE_TERM,
+                    f"{source}->{target}:p{label}",
+                    label,
                     {
-                        "expected": expected_calls,
-                        "actual": outcome.translator_call_count,
+                        "source": source,
+                        "target": target,
+                        "page": label,
                     },
                 )
             )
-        if outcome.result_state == ChainResultState.PROTECTED_UNTRANSLATED:
-            states = [
-                trace.sources[ref].terminal_state
-                for ref in outcome.ordered_source_refs
-                if ref in trace.sources
-            ]
-            if outcome.request_id is not None or any(
-                state != SourceTerminalState.PROTECTED for state in states
-            ):
-                found.append(
-                    _issue(
-                        context,
-                        "protected_state",
-                        chain_id,
-                        outcome.ordered_source_refs,
-                        {"request_id": outcome.request_id},
-                    )
-                )
-    for source_ref, source in sorted(trace.sources.items()):
-        if source.terminal_state != SourceTerminalState.PROTECTED:
-            continue
-        rendered = any(
-            geometry.active and geometry.render_status == RENDER_RENDERED
-            for fragment_id in source.fragment_ids
-            if fragment_id in trace.fragments
-            for geometry_id in trace.fragments[fragment_id].geometry_ids
-            if geometry_id in trace.geometries
-            for geometry in (trace.geometries[geometry_id],)
-        )
-        if rendered:
-            found.append(
-                _issue(context, "protected_state", source_ref, (source_ref,))
-            )
-    for generation, record in sorted(trace.generations.items()):
-        if record.status == GENERATION_OPEN:
-            found.append(
-                _issue(context, "rollback_state", f"generation-{generation}", detail={"status": record.status})
-            )
-            continue
-        if record.status != GENERATION_ROLLED_BACK:
-            continue
-        active = {
-            "fragments": sorted(
-                item for item in record.fragment_ids if trace.fragments[item].active
-            ),
-            "geometry": sorted(
-                item for item in record.geometry_ids if trace.geometries[item].active
-            ),
-            "flow_slots": sorted(
-                item for item in record.flow_slot_ids if trace.flow_slots[item].active
-            ),
-        }
-        if any(active.values()):
-            found.append(
-                _issue(
-                    context,
-                    "rollback_state",
-                    f"generation-{generation}",
-                    detail=active,
-                )
-            )
     return found
+
+
+def _drop_cap_findings(context, decisions, state) -> list:
+    found = []
+    out_of_scope = _skipped_keys(state.report, _DROP_CAPS_SECTION)
+    applied = {
+        str(row.get("paragraph")): row.get("decision")
+        for row in (
+            _report_section(state.report, _APPLIED, _DROP_CAPS_SECTION) or ()
+        )
+        if isinstance(row, dict)
+    }
+    paragraphs = {
+        (view.label, index): paragraph
+        for view in context.pages
+        for index, paragraph in enumerate(view.page.pdf_paragraph or ())
+    }
+    for reference, ruling in sorted(decisions.drop_caps.items()):
+        if reference in out_of_scope:
+            continue
+        recorded = applied.get(reference)
+        live = paragraphs.get((ruling.physical_page, ruling.paragraph_index))
+        carried = None if live is None else live.drop_cap_decision
+        if recorded == ruling.decision and carried == ruling.decision:
+            continue
+        found.append(
+            _issue(
+                context,
+                RULE_DROP_CAP,
+                reference,
+                ruling.physical_page,
+                {
+                    "ruled": ruling.decision,
+                    "recorded_as_applied": recorded,
+                    "carried_by_document": carried,
+                    "reached_document": live is not None,
+                },
+                refs=() if live is None else (reference,),
+            )
+        )
+    return found
+
+
+def _page_kind_findings(context, decisions, state) -> list:
+    found = []
+    out_of_scope = _skipped_keys(state.report, _PAGE_KINDS_SECTION)
+    applied = {
+        row.get("page"): row.get("kind")
+        for row in (
+            _report_section(state.report, _APPLIED, _PAGE_KINDS_SECTION) or ()
+        )
+        if isinstance(row, dict)
+    }
+    pages = {view.label: view for view in context.pages}
+    for page, kind in sorted(decisions.page_kinds.items()):
+        if str(page) in out_of_scope:
+            continue
+        view = pages.get(page)
+        if view is None:
+            continue
+        carried = getattr(view.page, "page_kind", None)
+        recorded = applied.get(page)
+        if recorded == kind and carried == kind:
+            continue
+        found.append(
+            _issue(
+                context,
+                RULE_PAGE_KIND,
+                str(page),
+                page,
+                {
+                    "ruled": kind,
+                    "recorded_as_applied": recorded,
+                    "carried_by_document": carried,
+                },
+            )
+        )
+    return found
+
+
+def detect(context: base.DetectionContext) -> list[base.Issue]:
+    state = context.hitl_state
+    if state is None:
+        return _skip(context, SKIP_NO_HITL_STATE)
+    decisions = getattr(state, "decisions", None)
+    if decisions is None:
+        return _skip(context, SKIP_NO_DECISIONS)
+    return [
+        *_term_findings(context, decisions, state),
+        *_drop_cap_findings(context, decisions, state),
+        *_page_kind_findings(context, decisions, state),
+    ]
