@@ -847,34 +847,50 @@ def page_endpoints(
 # --- signals ----------------------------------------------------------------
 
 
-def tail_no_terminal_punct(
-    tail: Endpoint, config: dict[str, ChainParameter]
-) -> float | None:
-    """Whether the tail's last line stops without ending a sentence.
+def text_ends_terminal(
+    text: str,
+    terminal_punctuation,
+    terminal_closers,
+) -> bool | None:
+    """Whether a line of text stops on sentence-ending punctuation.
 
     A closing bracket or parenthesis is terminal evidence in its own right.
     Quote closers are stripped first, so a paragraph ending on a closed quote
-    still takes its verdict from the punctuation inside the quote.
+    still takes its verdict from the punctuation inside the quote. None means
+    the stripped text is empty and carries no verdict either way.
     """
-    text = tail.last_line_text.rstrip()
-    closers = config["terminal_closers"]
+    text = text.rstrip()
     # Combining marks and format characters carry no punctuation of their own
     # and would otherwise hide the closer or ender they sit on.
     while text and unicodedata.category(text[-1]) in ("Mn", "Cf"):
         text = text[:-1]
     if (
         text
-        and text[-1] in closers
+        and text[-1] in terminal_closers
         and unicodedata.category(text[-1]) == "Pe"
     ):
-        return 0.0
-    while text and text[-1] in closers:
+        return True
+    while text and text[-1] in terminal_closers:
         text = text[:-1].rstrip()
     while text and unicodedata.category(text[-1]) in ("Mn", "Cf"):
         text = text[:-1]
     if not text:
         return None
-    return 0.0 if text[-1] in config["terminal_punctuation"] else 1.0
+    return text[-1] in terminal_punctuation
+
+
+def tail_no_terminal_punct(
+    tail: Endpoint, config: dict[str, ChainParameter]
+) -> float | None:
+    """Whether the tail's last line stops without ending a sentence."""
+    ended = text_ends_terminal(
+        tail.last_line_text,
+        config["terminal_punctuation"],
+        config["terminal_closers"],
+    )
+    if ended is None:
+        return None
+    return 0.0 if ended else 1.0
 
 
 def tail_line_fill(tail: Endpoint, config: dict[str, ChainParameter]) -> float | None:

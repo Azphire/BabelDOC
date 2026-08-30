@@ -24,6 +24,7 @@ from babeldoc.magazine import repair_evidence
 from babeldoc.magazine import repair_loop as repair_loop_module
 from babeldoc.magazine import paren_dedup
 from babeldoc.magazine import resource_paths
+from babeldoc.magazine import tail_fill
 from babeldoc.magazine import title_typeset
 from babeldoc.magazine.article_builder import ArticleBuilder
 from babeldoc.magazine.article_ir import ArticleDocumentIR
@@ -272,6 +273,7 @@ _FIXED_TRUE_ATTRIBUTES = (
     "magazine_paren_dedup",
     "magazine_repair",
     "magazine_short_unit",
+    "magazine_tail_fill",
     "magazine_title_typeset",
 )
 
@@ -1542,6 +1544,9 @@ def after_typesetting(
         temp_pdf_path=temp_pdf_path,
         mediabox_data=mediabox_data,
     )
+    # Measured after repair so the sidecar describes the pages the run ships,
+    # not an intermediate state a later pass may still have moved.
+    tail_fill.apply(config, docs, article_document_ir=article_document_ir)
     return report
 
 
