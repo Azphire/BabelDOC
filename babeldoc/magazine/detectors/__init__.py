@@ -17,10 +17,13 @@ from babeldoc.magazine.detectors.base import PageView
 from babeldoc.magazine.detectors.base import load_detector_config
 
 DETECTOR_NAMES = (
+    "abnormal_blank",
     "chain_conservation",
     "fixed_asset_drift",
     "fragment_cluster",
+    "instruction_compliance",
     "out_of_page",
+    "text_figure_overlap",
     "text_text_collision",
     "untranslated_residue",
 )

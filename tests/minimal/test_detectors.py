@@ -235,9 +235,12 @@ def test_six_detectors_and_document_are_read_only(tmp_path):
         "untranslated_residue",
         "out_of_page",
         "text_text_collision",
+        "text_figure_overlap",
         "fragment_cluster",
+        "abnormal_blank",
         "chain_conservation",
         "fixed_asset_drift",
+        "instruction_compliance",
     }
 
 

@@ -17,6 +17,7 @@ from babeldoc.magazine.detectors import collision
 from babeldoc.magazine.detectors import detector_config
 from babeldoc.magazine.detectors import fixed_asset_drift
 from babeldoc.magazine.detectors import fragment
+from babeldoc.magazine.detectors import overlap
 from babeldoc.magazine.detectors import page_bounds
 from babeldoc.magazine.detectors import residue
 from babeldoc.magazine.detectors.base import DetectionContext
@@ -35,15 +36,19 @@ ISSUE_KINDS = (
     "untranslated_residue",
     "out_of_page",
     "text_text_collision",
+    "text_figure_overlap",
     "fragment_cluster",
+    "abnormal_blank",
     "chain_conservation",
     "fixed_asset_drift",
+    "instruction_compliance",
 )
 
 _PAGE_DETECTORS = (
     residue,
     page_bounds,
     collision,
+    overlap,
     fragment,
 )
 _SOURCE_REF = re.compile(r"p([1-9][0-9]*)#(0|[1-9][0-9]*)\Z")
@@ -1142,7 +1147,7 @@ def detect(
     config: DetectorConfig | None = None,
     repair_owned_binding: tuple[str, str] | None = None,
 ) -> DetectionResult:
-    """Run the closed six-detector set once and write the named sidecar."""
+    """Run the closed detector set once and write the named sidecar."""
     if baseline.document_identity != id(docs):
         raise MinimalDetectionError("detection baseline belongs to another document")
     if baseline.article_document_identity != id(article_document_ir):

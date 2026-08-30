@@ -7,14 +7,9 @@ import pytest
 
 from tools import verify_minimal_pdf
 
-KINDS = (
-    "untranslated_residue",
-    "out_of_page",
-    "text_text_collision",
-    "fragment_cluster",
-    "chain_conservation",
-    "fixed_asset_drift",
-)
+# The closed defect vocabulary has one declaration; a second copy here would
+# let the validator and its fixture drift apart silently.
+KINDS = verify_minimal_pdf.ISSUE_KINDS
 
 
 def _pdf(path, *, text, pages=8, cjk=False):

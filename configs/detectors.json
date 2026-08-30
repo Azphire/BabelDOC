@@ -1,5 +1,5 @@
 {
-  "description": "Bounded configuration for the six-detector minimal path. Page detectors run on every selected page; chain conservation and fixed-asset drift are document checks. The source geometry stage is an in-memory snapshot and never a checkpoint.",
+  "description": "Bounded configuration for the nine-detector minimal path. The closed defect vocabulary is the nine kinds severity weighs; profile_detectors and document_detectors name which of them a run actually walks, so a kind declared here without a detector behind it raises nothing rather than raising silently. Page detectors run on every selected page; chain conservation and fixed-asset drift are document checks. The source geometry stage is an in-memory snapshot and never a checkpoint.",
   "residue_directions": {
     "zh": "latin",
     "en": "han"
@@ -58,7 +58,10 @@
     "text_text_collision": "medium",
     "fragment_cluster": "low",
     "chain_conservation": "high",
-    "fixed_asset_drift": "critical"
+    "fixed_asset_drift": "critical",
+    "text_figure_overlap": "medium",
+    "abnormal_blank": "low",
+    "instruction_compliance": "high"
   },
   "default_profile": "minimal",
   "profile_detectors": {
@@ -66,7 +69,8 @@
       "untranslated_residue",
       "out_of_page",
       "text_text_collision",
-      "fragment_cluster"
+      "fragment_cluster",
+      "text_figure_overlap"
     ]
   },
   "document_detectors": [
@@ -94,6 +98,16 @@
     ],
     "fixed_asset_drift": [
       "drift_count"
+    ],
+    "text_figure_overlap": [
+      "iou"
+    ],
+    "abnormal_blank": [
+      "blank_area_ratio",
+      "blank_capacity_ratio"
+    ],
+    "instruction_compliance": [
+      "violation_count"
     ]
   },
   "suggested_action_vocabulary": [
@@ -107,7 +121,10 @@
     "text_text_collision": "refit_or_reflow_owned_paragraph",
     "fragment_cluster": "no_op",
     "chain_conservation": "no_op",
-    "fixed_asset_drift": "no_op"
+    "fixed_asset_drift": "no_op",
+    "text_figure_overlap": "no_op",
+    "abnormal_blank": "no_op",
+    "instruction_compliance": "no_op"
   },
   "source_geometry_stage": "styles_and_formulas"
 }
