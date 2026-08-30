@@ -1556,53 +1556,74 @@ class ChainPlan:
             held.font_size = source_size * scale
             return held, scale
 
-        measured: dict[tuple, object] = {}
+        def full_measurement_style(member):
+            """The member's own style unscaled: the grid the final render sets.
 
-        def measure(text, member, slot, order, ranges=(), floor=None):
-            """Fit one string into one slot box, optionally on a raised floor.
-
-            ``floor`` replaces the box's own bottom edge.  Raising it to a
-            line's baseline is how a line count is turned into a character
-            count: the packer refuses to open a line below the floor, so a
-            floor at the k-th line lets exactly k lines through.  Every
-            distinct measurement is held, because building the units for one
-            costs a parse of the translation.
+            Capacity is measured at the smallest readable scale so a fragment
+            that fits at any visited scale is never refused; but a cut chosen
+            on that shrunken grid lands mid-line on the finished page (B13's
+            "family-and-comma" tail: 29 characters read as one line at scale
+            0.5 and set as three lines at scale 1.0). The cut probes read the
+            full-size grid instead, which is the grid the application pass
+            sets whenever the fragment fits without shrinking.
             """
-            key = (order, id(slot), floor, text, tuple(ranges))
-            held = measured.get(key)
-            if held is not None:
-                return held
-            box = tuple(float(value) for value in slot.box)
-            slot_box = Box(
-                box[0], box[1] if floor is None else float(floor), box[2], box[3]
-            )
-            style, scale = measurement_style(member)
-            result = typesetter.fit_text_to_slot(
-                text,
-                style,
-                self.language,
-                slot_box,
-                paragraph_start=(
-                    order == 0
-                    and bool(getattr(member.paragraph, "first_line_indent", False))
-                ),
-                original_font=member.source_font,
-                protected_ranges=tuple(ranges),
-                unit_factory=self._measurement_unit_factory(
-                    members, member, typesetter, scale
-                ),
-                minimum_font_size=self.config.slot_min_font_size,
-                fit_tolerance=self.config.slot_fit_tolerance,
-                line_skip=(
-                    self.config.capacity.line_skip_cjk
-                    if self.config.capacity.is_cjk_target(self.language)
-                    else self.config.capacity.line_skip_latin
-                ),
-                line_head_forbidden=self.config.line_head_forbidden,
-                line_tail_forbidden=self.config.line_tail_forbidden,
-            )
-            measured[key] = result
-            return result
+            return member.style, 1.0
+
+        def _make_measure(style_of):
+            measured: dict[tuple, object] = {}
+
+            def measure(text, member, slot, order, ranges=(), floor=None):
+                """Fit one string into one slot box, optionally on a raised floor.
+
+                ``floor`` replaces the box's own bottom edge.  Raising it to a
+                line's baseline is how a line count is turned into a character
+                count: the packer refuses to open a line below the floor, so a
+                floor at the k-th line lets exactly k lines through.  Every
+                distinct measurement is held, because building the units for
+                one costs a parse of the translation.
+                """
+                key = (order, id(slot), floor, text, tuple(ranges))
+                held = measured.get(key)
+                if held is not None:
+                    return held
+                box = tuple(float(value) for value in slot.box)
+                slot_box = Box(
+                    box[0], box[1] if floor is None else float(floor), box[2], box[3]
+                )
+                style, scale = style_of(member)
+                result = typesetter.fit_text_to_slot(
+                    text,
+                    style,
+                    self.language,
+                    slot_box,
+                    paragraph_start=(
+                        order == 0
+                        and bool(
+                            getattr(member.paragraph, "first_line_indent", False)
+                        )
+                    ),
+                    original_font=member.source_font,
+                    protected_ranges=tuple(ranges),
+                    unit_factory=self._measurement_unit_factory(
+                        members, member, typesetter, scale
+                    ),
+                    minimum_font_size=self.config.slot_min_font_size,
+                    fit_tolerance=self.config.slot_fit_tolerance,
+                    line_skip=(
+                        self.config.capacity.line_skip_cjk
+                        if self.config.capacity.is_cjk_target(self.language)
+                        else self.config.capacity.line_skip_latin
+                    ),
+                    line_head_forbidden=self.config.line_head_forbidden,
+                    line_tail_forbidden=self.config.line_tail_forbidden,
+                )
+                measured[key] = result
+                return result
+
+            return measure
+
+        measure = _make_measure(measurement_style)
+        measure_full = _make_measure(full_measurement_style)
 
         capacities = []
         for order, (member, slot) in enumerate(zip(members, slots, strict=True)):
@@ -1628,7 +1649,7 @@ class ChainPlan:
                 preserve_title_words=cross_page_title,
             ),
             backfill.STRATEGY_TAIL_ALIGNED: lambda: self._attempt_tail_aligned(
-                merge, translated, members, slots, protected, measure
+                merge, translated, members, slots, protected, measure_full
             ),
             backfill.STRATEGY_CAPACITY: lambda: self._attempt_capacity(
                 merge, translated, capacities
@@ -1941,6 +1962,9 @@ class ChainPlan:
                     "moved_chars": ideal - position,
                     "kept_lines": kept.get(position, 0),
                     "line_ends": len(line_ends),
+                    # The grid these line ends were read off: the member's own
+                    # size, not the shrunken capacity grid.
+                    "cut_scale": 1.0,
                 }
             )
             previous = position

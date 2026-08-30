@@ -1,8 +1,12 @@
 {
-  "description": "Post-typesetting measurement of continuation tails. For every chain cut before a non-final member, and for every cross-column or cross-page pair of adjacent body elements in an article's reading order whether or not a chain covered it, this pass measures the finished last line of the paragraph handing over: how many ink characters it holds, how far its ink runs against the paragraph's set width, and whether it stops on sentence-ending punctuation (read with the same terminal vocabulary chain detection declares). The report is the only measurement of rendered column tails; the chain simulation's own cut accounting is process information, not evidence. full_line_fill_min says how full a last line must run to count as a full line in the summary; short_tail_max_chars says how few characters make a dangling tail worth listing one by one. This pass moves nothing and writes only its sidecar.",
+  "description": "Post-typesetting measurement of continuation tails, and the bounded rebalance the measurement licenses. For every chain cut before a non-final member, and for every cross-column or cross-page pair of adjacent body elements in an article's reading order whether or not a chain covered it, this pass measures the finished last line of the paragraph handing over: how many ink characters it holds, how far its ink runs against the paragraph's set width, and whether it stops on sentence-ending punctuation (read with the same terminal vocabulary chain detection declares). The report is the only measurement of rendered column tails; the chain simulation's own cut accounting is process information, not evidence. full_line_fill_min says how full a last line must run to count as a full line in the summary; short_tail_max_chars says how few characters make a dangling tail worth listing one by one. Where a chained cut leaves a rendered last line of at most tail_min_chars ink characters without terminal punctuation, the dangling line's characters move whole into the member the chain hands over to, the move passes the chain conservation law before it is kept, both members are re-set inside their own unchanged boxes, and a member that stops fitting rolls the move back; at most tail_rebalance_max moves per document, and tail_rebalance_max 0 turns the rebalance off. After the moves the boundaries are measured again, so the report always describes the pages the run ships.",
   "switch": "magazine_tail_fill",
   "full_line_fill_min": 0.85,
   "full_line_fill_min_allowed_range": "0.5..1.0",
   "short_tail_max_chars": 2,
-  "short_tail_max_chars_allowed_range": "1..4"
+  "short_tail_max_chars_allowed_range": "1..4",
+  "tail_min_chars": 3,
+  "tail_min_chars_allowed_range": "1..8",
+  "tail_rebalance_max": 8,
+  "tail_rebalance_max_allowed_range": "0..20"
 }

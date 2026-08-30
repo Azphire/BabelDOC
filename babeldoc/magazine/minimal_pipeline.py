@@ -1546,7 +1546,12 @@ def after_typesetting(
     )
     # Measured after repair so the sidecar describes the pages the run ships,
     # not an intermediate state a later pass may still have moved.
-    tail_fill.apply(config, docs, article_document_ir=article_document_ir)
+    tail_fill.apply(
+        config,
+        docs,
+        article_document_ir=article_document_ir,
+        typesetter=typesetter,
+    )
     return report
 
 
