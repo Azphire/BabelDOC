@@ -25,6 +25,7 @@ from babeldoc.format.pdf.document_il import PdfSameStyleUnicodeCharacters
 from babeldoc.format.pdf.document_il import PdfStyle
 from babeldoc.format.pdf.document_il.utils.fontmap import FontMapper
 from babeldoc.magazine import echo_retry
+from babeldoc.format.pdf.document_il.utils.layout_helper import Layout
 from babeldoc.format.pdf.document_il.utils.layout_helper import get_char_unicode_string
 from babeldoc.format.pdf.document_il.utils.layout_helper import get_paragraph_unicode
 from babeldoc.format.pdf.document_il.utils.layout_helper import is_same_style
@@ -339,20 +340,34 @@ class LLMTranslateTracker:
 def _source_line_lengths(paragraph) -> list[int]:
     """Character count of each visual line the source paragraph sets.
 
-    Read from the line compositions the parser built, which is the one record
-    of where the page actually breaks -- the composed translate input carries
-    no newlines.  Consumed by the echo retry's length gate, where a stacked
-    list qualifies by its lines rather than by its total.
+    Read from the characters' own geometry -- the same newline judgement the
+    composed text is built with -- because a stacked list may arrive as line
+    compositions, styled spans, or one long run, and only the boxes remember
+    where the page actually breaks.  Consumed by the echo retry's length
+    gate, where such a list qualifies by its lines rather than by its total.
     """
-    lengths = []
+    characters = []
     for composition in paragraph.pdf_paragraph_composition or ():
-        line = getattr(composition, "pdf_line", None)
-        if line is None:
+        for name in ("pdf_line", "pdf_same_style_characters"):
+            holder = getattr(composition, name, None)
+            if holder is not None:
+                characters.extend(holder.pdf_character or ())
+        if getattr(composition, "pdf_character", None) is not None:
+            characters.append(composition.pdf_character)
+    lengths = []
+    current = 0
+    previous = None
+    for character in characters:
+        if character.box is None or None in (character.box.y, character.box.y2):
             continue
-        text = "".join(
-            character.char_unicode or "" for character in line.pdf_character or ()
-        )
-        lengths.append(len(text.strip()))
+        if previous is not None and Layout.is_newline(previous, character):
+            lengths.append(current)
+            current = 0
+        if (character.char_unicode or "").strip():
+            current += 1
+        previous = character
+    if current:
+        lengths.append(current)
     return lengths
 
 

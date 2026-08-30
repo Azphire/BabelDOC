@@ -176,6 +176,21 @@ def test_real_space_at_the_boundary_is_a_word_break():
     assert visible(para) == before
 
 
+def test_source_line_lengths_reads_geometry_not_composition_kind():
+    """A stacked list arriving as one styled span still counts its lines."""
+    from babeldoc.format.pdf.document_il.midend.il_translator import (
+        _source_line_lengths,
+    )
+
+    style = pdf_style(font_size=BODY_SIZE)
+    chars = []
+    for row, name in enumerate(["Subir Lall", "Papa Diaye", "Uma Rao"]):
+        line, _ = characters(name, 0.0, style, y=100.0 - row * 14.0)
+        chars.extend(line)
+    para = paragraph_of(span_composition(chars, style))
+    assert _source_line_lengths(para) == [9, 9, 6]
+
+
 def test_echo_retry_length_gate_reads_lines():
     """A stacked list qualifies by its lines; a long single line does not."""
     long_text = "x" * 152
