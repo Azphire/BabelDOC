@@ -2,8 +2,10 @@
 
 from __future__ import annotations
 
+import contextlib
 import copy
 import hashlib
+import sys
 from collections.abc import Iterable
 from dataclasses import dataclass
 from dataclasses import fields
@@ -12,6 +14,26 @@ from dataclasses import is_dataclass
 from babeldoc.format.pdf.document_il.il_version_1 import Box
 from babeldoc.magazine import fixed_assets
 from babeldoc.magazine.run_trace import hash_record
+
+
+# How deep a snapshot may recurse. A magazine's intermediate representation is a
+# wide tree rather than a deep one, but a large document walks far enough
+# through deepcopy's own frames to reach the interpreter default, and hitting it
+# must not be what decides whether a run finishes. The depth belongs to
+# deepcopy, not to the document, so the ceiling is raised for the copy and put
+# back immediately rather than the copy being rewritten iteratively.
+RECURSION_HEADROOM = 40_000
+
+
+@contextlib.contextmanager
+def deep_recursion():
+    """Room for one deep copy of a large document, given back afterwards."""
+    previous = sys.getrecursionlimit()
+    sys.setrecursionlimit(max(previous, RECURSION_HEADROOM))
+    try:
+        yield
+    finally:
+        sys.setrecursionlimit(previous)
 
 
 class TransactionRestoreError(RuntimeError):
@@ -206,9 +228,11 @@ class TransactionSnapshot:
         )
         if any(position < 0 or position >= len(docs.page) for position in positions):
             raise ValueError("transaction page position is outside the document")
-        page_snapshots = {
-            position: copy.deepcopy(docs.page[position]) for position in positions
-        }
+        with deep_recursion():
+            page_snapshots = {
+                position: copy.deepcopy(docs.page[position])
+                for position in positions
+            }
         trace_state = (
             None if run_trace is None else run_trace.transaction_snapshot()
         )
@@ -272,8 +296,9 @@ class TransactionSnapshot:
 
     def rollback(self) -> dict:
         self.docs.page = list(self.page_sequence)
-        for position, page in self.pages.items():
-            self.docs.page[position] = copy.deepcopy(page)
+        with deep_recursion():
+            for position, page in self.pages.items():
+                self.docs.page[position] = copy.deepcopy(page)
         if hasattr(self.docs, "total_pages"):
             self.docs.total_pages = copy.deepcopy(self.total_pages)
         if self.run_trace is not None:

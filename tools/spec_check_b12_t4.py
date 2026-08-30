@@ -13,7 +13,7 @@ budget, or that the model never returned anything usable.  Those are four
 different facts about a document and they used to be one.  S5 requires each to
 come back under its own name.
 
-Eight claims:
+Nine claims:
 
 S1  An oscillating document is rolled back entire and the run stops as
     iteration_rejected, with the document byte for byte what it was.
@@ -36,6 +36,12 @@ S8  The pipeline accepts a loop result: the run report's own validation passes
     on one, and the loop is chosen only by a run that translates through the
     provider it would decide with -- never by a credential that happens to be
     in the shell.
+S9  Every document-sized copy is taken under the shared recursion headroom.
+    A large magazine reaches the interpreter's default ceiling inside
+    deepcopy's own frames, and a run that has already translated, laid out and
+    repaired its document must not then die snapshotting it.  This is a
+    structural check because the failure needs a document far larger than any
+    fixture here to reproduce.
 
 Run offline; the client is a scripted stub and no request leaves the machine.
 """
@@ -496,6 +502,49 @@ def s8_the_pipeline_accepts_a_loop_result(work: Path) -> str:
     )
 
 
+def s9_document_copies_have_recursion_headroom() -> str:
+    """The two places a whole document or page is copied, and their guard."""
+    from babeldoc.magazine import transaction as transaction_module
+
+    _require(
+        transaction_module.RECURSION_HEADROOM > sys.getrecursionlimit(),
+        "the declared headroom is not above the interpreter default",
+    )
+    before = sys.getrecursionlimit()
+    with transaction_module.deep_recursion():
+        _require(
+            sys.getrecursionlimit() >= transaction_module.RECURSION_HEADROOM,
+            "the headroom context manager did not raise the ceiling",
+        )
+    _require(
+        sys.getrecursionlimit() == before,
+        "the headroom context manager did not put the ceiling back",
+    )
+    guarded = 0
+    for name in (
+        "babeldoc/magazine/transaction.py",
+        "babeldoc/magazine/repair_evidence.py",
+    ):
+        source = (ROOT / name).read_text(encoding="utf-8")
+        for line_number, line in enumerate(source.splitlines(), start=1):
+            if "copy.deepcopy(docs" not in line:
+                continue
+            window = chr(10).join(
+                source.splitlines()[max(0, line_number - 6) : line_number]
+            )
+            _require(
+                "deep_recursion()" in window,
+                f"{name}:{line_number} copies a document without the shared "
+                f"recursion headroom",
+            )
+            guarded += 1
+    _require(guarded >= 2, f"only {guarded} document copies were found to check")
+    return (
+        f"all {guarded} document-sized copies are taken under the shared "
+        f"headroom of {transaction_module.RECURSION_HEADROOM}"
+    )
+
+
 def main() -> int:
     with tempfile.TemporaryDirectory() as raw:
         work = Path(raw)
@@ -508,6 +557,7 @@ def main() -> int:
             ("S6", lambda: s6_ceilings_bind(work)),
             ("S7", lambda: s7_termination_is_filed(work)),
             ("S8", lambda: s8_the_pipeline_accepts_a_loop_result(work)),
+            ("S9", s9_document_copies_have_recursion_headroom),
         ]
         for name, claim in claims:
             try:

@@ -24,6 +24,8 @@ import copy
 import logging
 from pathlib import Path
 
+from babeldoc.magazine import transaction
+
 logger = logging.getLogger(__name__)
 
 EVIDENCE_DIR = "evidence"
@@ -40,14 +42,6 @@ class RepairEvidenceError(RuntimeError):
     """Raised when evidence was asked for and could not be produced."""
 
 
-# How much deeper than the interpreter default the snapshot may recurse. A
-# magazine's intermediate representation is a wide tree rather than a deep one,
-# but a large document still walks far enough through deepcopy's own frames to
-# reach the default ceiling, and hitting it must not be what decides whether a
-# run finishes.
-_RECURSION_HEADROOM = 40_000
-
-
 def capture(docs):
     """The document as it stood before the loop, kept whole.
 
@@ -56,19 +50,11 @@ def capture(docs):
     it must not share a single mutable node with the document the loop is about
     to change.
 
-    The recursion ceiling is lifted for the copy and put back afterwards. It is
-    raised rather than the copy being rewritten iteratively because the depth is
-    deepcopy's own and not the document's, and lowering it again immediately
-    keeps the change from reaching anything else.
+    Taken under the same recursion headroom every other document-sized copy in
+    this pipeline uses, declared once in the transaction module.
     """
-    import sys
-
-    previous = sys.getrecursionlimit()
-    sys.setrecursionlimit(max(previous, _RECURSION_HEADROOM))
-    try:
+    with transaction.deep_recursion():
         return copy.deepcopy(docs)
-    finally:
-        sys.setrecursionlimit(previous)
 
 
 def evidence_dir(config) -> Path:
