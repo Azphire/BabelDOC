@@ -4,6 +4,7 @@ import json
 import logging
 import re
 import threading
+import unicodedata
 from pathlib import Path
 from string import Template
 
@@ -1010,6 +1011,18 @@ class ILTranslator:
             return None, None
         return text, translate_input
 
+    @staticmethod
+    def _identity_normalized(text: str) -> str:
+        """The form two texts take to call a translation unchanged.
+
+        NFC, interior whitespace runs folded to one space, outer whitespace
+        stripped -- exactly these three rules and no wider fuzz. A translation
+        that differs from its source only this trivially replaces nothing, so
+        the paragraph keeps its source composition and renders exactly as the
+        source did instead of being re-set from a generated holder.
+        """
+        return re.sub(r"\s+", " ", unicodedata.normalize("NFC", text or "")).strip()
+
     def post_translate_paragraph(
         self,
         paragraph: PdfParagraph,
@@ -1019,7 +1032,10 @@ class ILTranslator:
     ):
         """Post-translation processing: update paragraph with translated text."""
         tracker.set_output(translated_text)
-        if translated_text == translate_input:
+        source_text = getattr(translate_input, "unicode", None)
+        if isinstance(source_text, str) and self._identity_normalized(
+            translated_text
+        ) == self._identity_normalized(source_text):
             if llm_translate_tracker := tracker.last_llm_translate_tracker():
                 llm_translate_tracker.set_placeholder_full_match()
             return False

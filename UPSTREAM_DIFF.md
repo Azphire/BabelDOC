@@ -419,3 +419,31 @@ Three gaps that only a real run could show, all fixed and all gated:
 The first of these is the one worth remembering: the synthetic gates were green
 throughout, because a fixture that only ever exercises admitted actions cannot
 reach an unimplemented branch behind a refusal.
+
+## B13 — render fixes (`b13-render-fixes`)
+
+### T0 premise deviation: the exact-equality skip was dead code
+
+The plan's C2 premise read `il_translator.post_translate_paragraph` as already
+skipping composition rewrite on exact equality, with only near-equality as the
+gap.  Literally false: upstream commit `a515ea2` ("update input reference")
+changed the comparison from `translated_text == translate_input.unicode` to
+`translated_text == translate_input` — a `str` against the `TranslateInput`
+object — so the branch could never fire and even byte-identical output re-set
+the paragraph from a generated holder.  `short_unit.identity_skipped` was
+likewise always false.  The fix direction is unchanged (the planned normalized
+comparison replaces that line anyway and has to read `.unicode` to normalize),
+so this was recorded rather than stopped on: the defect the plan attributes to
+near-equality was in fact produced by *any* equality.
+
+### T2 — upstream file touched
+
+`babeldoc/format/pdf/document_il/midend/il_translator.py`
+(`post_translate_paragraph`): the unchanged-translation test is now
+`_identity_normalized(translated) == _identity_normalized(input.unicode)` where
+the normal form is exactly NFC + interior whitespace runs folded to one space +
+outer whitespace stripped.  No wider fuzz (no case folding, no punctuation
+width folding).  On a skip the paragraph keeps its source composition, which
+downstream (`layout_report._has_generated_target`, protected passthrough in
+`typesetting.render_paragraph`, `title_typeset`'s generated-target freeze)
+already treats as fixed source furniture; T2 fixtures pin that chain.
