@@ -465,9 +465,22 @@ def unify(translation_config, docs, built: FurniturePlan | None) -> None:
                     }
                 )
                 continue
+            style = member.pdf_style or _first_character_style(member)
+            if style is None:
+                # A run without a style typesets into nothing (FD p3#1: the
+                # member's paragraph carries no style at all), and nothing is
+                # a worse page than a second voice.  The copy keeps its
+                # source and the report says why.
+                unified.append(
+                    {
+                        "member": paragraph_reference(label, index),
+                        "outcome": "member_kept_source_no_style",
+                    }
+                )
+                continue
             run = il_version_1.PdfSameStyleUnicodeCharacters()
             run.unicode = text
-            run.pdf_style = member.pdf_style
+            run.pdf_style = style
             composition = il_version_1.PdfParagraphComposition()
             composition.pdf_same_style_unicode_characters = run
             member.unicode = text
@@ -481,6 +494,29 @@ def unify(translation_config, docs, built: FurniturePlan | None) -> None:
             )
     built.record["unified"] = unified
     _write_report(translation_config, built.record)
+
+
+def _first_character_style(paragraph):
+    """The style of the first source character that declares one.
+
+    The fallback for a member whose paragraph carries no style of its own:
+    the characters it was parsed from still know how they were set.
+    """
+    for composition in paragraph.pdf_paragraph_composition or ():
+        for name in ("pdf_line", "pdf_same_style_characters"):
+            holder = getattr(composition, name, None)
+            if holder is None:
+                continue
+            if getattr(holder, "pdf_style", None) is not None:
+                return holder.pdf_style
+            for character in holder.pdf_character or ():
+                if getattr(character, "pdf_style", None) is not None:
+                    return character.pdf_style
+        if composition.pdf_character is not None:
+            style = getattr(composition.pdf_character, "pdf_style", None)
+            if style is not None:
+                return style
+    return None
 
 
 def _write_report(translation_config, record: dict) -> Path:
