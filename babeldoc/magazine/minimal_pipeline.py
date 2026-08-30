@@ -1387,12 +1387,19 @@ def _detect_and_repair(
             state._repair_result = repair_result
         else:
             # The pre-repair document has to be kept before the loop touches
-            # it, and only where there is something to render it with.
-            snapshot = (
-                repair_evidence.capture(docs)
-                if temp_pdf_path is not None
-                else None
-            )
+            # it, and only where there is something to render it with. A
+            # snapshot that cannot be taken costs the run its pictures and
+            # nothing else: the translated document is the deliverable.
+            snapshot = None
+            if temp_pdf_path is not None:
+                try:
+                    snapshot = repair_evidence.capture(docs)
+                except Exception:
+                    logger.warning(
+                        "the pre-repair document could not be snapshotted; "
+                        "this run will produce no repair pictures",
+                        exc_info=True,
+                    )
             loop_result = repair_loop_module.repair_loop(
                 before,
                 docs,
