@@ -181,3 +181,57 @@ profiles, checkpoints or RunTrace still holds.  `hitl` itself is deliberately
 `configs/detectors.json` names `instruction_compliance` in `document_detectors`
 beside `chain_conservation` and `fixed_asset_drift`, and `minimal_detection`
 runs it there rather than in the page loop.
+
+### T2 — the model decision layer
+
+Adjudicated: **react/ stays asleep.**  `babeldoc/magazine/llm_decide.py` is a new
+module and imports nothing from `babeldoc/magazine/react/`.
+
+Why the plan's "reuse react/decide.py's validators" was not taken.  Both
+`react/config.py:39` and `minimal_repair.py:23` read the same
+`configs/repair_actions.json`, under mutually incompatible schemas: react wants
+`actions` as an object carrying `applicability`/`parameters`/`max_applications`,
+while the minimal parser wants a list of names and rejects unknown root keys.
+Worse, `react/config.py:112-116` declares `REQUIRED_APPLICABILITY` for exactly
+three actions -- `translate_orphan_lines`, `contain_in_page`,
+`resolve_collision` -- and refuses to parse any action name not in it.  None of
+the six action names this batch uses is among them, so the reuse would have
+meant editing react's own vocabulary declaration and migrating
+`minimal_repair`'s configuration parsing, its two tests and its admission gate.
+
+**Validation scope, as adjudicated: shape and vocabulary only.**  `interpret`
+checks exactly four fields; the action within the set that round offered;
+`issue_ids` a subset of the ids shown; parameters declared by the chosen action
+and inside their ranges.  No admission semantics.  A decision is a *nomination*;
+`admits_*` keeps the veto.  `spec_check_b12_t2.py` S5 pins this from the other
+side: a nomination the admission rule would refuse must still validate, and the
+module is grepped for `admits_`, `article_document_ir` and `by_element` to prove
+it reaches for no admission state at all.
+
+**Prompt: unchanged.**  `prompts/react_repair_decide.md` was not edited.  Three
+small block builders (`issues_block`, `actions_block`, `constraints_block`) were
+written in `llm_decide.py` against the placeholder names the file already uses
+(`{issues_block}`, `{actions_block}`, `{action_constraints}`), which was the
+second of the two options offered.  No prompt audit summary needs updating.
+
+The `constraints_block` sentence templates live in code and the numbers they
+state come from the configuration, so the rule the model reads and the rule
+`admits_*` applies cannot state different figures.
+
+**New gate assertion, as adjudicated.**  `spec_check_b12_t2.py` S7 greps the
+whole repository and requires that, outside `react/`, the donor package is
+imported at exactly two places -- `babeldoc/magazine/rotated_lane.py:60` and
+`babeldoc/magazine/title_typeset.py:35`, both the same writeback helper.  A
+second decision path waking up unnoticed now fails a gate.
+
+**Configuration.**  `configs/repair_actions.json` gained `decide_model` (with a
+closed `decide_model_vocabulary` rather than a range, a model name not being a
+threshold), `decide_temperature`, `decide_max_attempts`,
+`decide_max_issues_per_round`, `decide_issue_excerpt_chars` -- each with its
+`*_allowed_range` -- and `decide_parameters`, which is empty because no action in
+the current vocabulary takes a settable parameter yet.  `minimal_repair`'s
+`_ROOT_KEYS` gained these names via a separate `_DECIDE_KEYS` frozenset so that
+the two readers of the file stay explicit about which keys are whose;
+`minimal_repair` reads none of them.  The parameter rules are therefore
+exercised in the gate against an explicit declaration rather than against a
+number invented in the shipped file.

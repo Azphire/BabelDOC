@@ -1,5 +1,5 @@
 {
-  "description": "Bounds for one deterministic minimal repair action. There is no model decision, loop, retry, cache, transport, or cross-article mutation.",
+  "description": "Bounds for the minimal repair actions and for the model decision that nominates them. The decision chooses only which action to apply and to which findings; whether a nominated finding may be acted on stays with the deterministic admission rules, which the decision cannot overrule. There is no cache, no transport of its own, and no cross-article mutation.",
   "schema_version": "minimal-repair.v1",
   "max_actions_per_run": 1,
   "max_actions_per_run_allowed_range": "1..1",
@@ -33,6 +33,20 @@
     "collision_max_area_ratio": 0.5,
     "collision_max_area_ratio_allowed_range": "0.05..0.95"
   },
-  "asset_bbox_tolerance_pt": 0.000001,
-  "asset_bbox_tolerance_pt_allowed_range": "0.0..0.01"
+  "asset_bbox_tolerance_pt": 1e-06,
+  "asset_bbox_tolerance_pt_allowed_range": "0.0..0.01",
+  "decide_model": "gpt-4o",
+  "decide_model_vocabulary": [
+    "gpt-4o",
+    "gpt-4o-mini"
+  ],
+  "decide_temperature": 0.0,
+  "decide_temperature_allowed_range": "0.0..1.0",
+  "decide_max_attempts": 2,
+  "decide_max_attempts_allowed_range": "1..2",
+  "decide_max_issues_per_round": 8,
+  "decide_max_issues_per_round_allowed_range": "1..20",
+  "decide_issue_excerpt_chars": 200,
+  "decide_issue_excerpt_chars_allowed_range": "20..400",
+  "decide_parameters": {}
 }

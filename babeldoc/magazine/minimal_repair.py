@@ -48,6 +48,21 @@ _STYLE_CHARACTER_HOLDERS = (
     "pdf_line",
     "pdf_formula",
 )
+_DECIDE_KEYS = frozenset(
+    {
+        "decide_model",
+        "decide_model_vocabulary",
+        "decide_temperature",
+        "decide_temperature_allowed_range",
+        "decide_max_attempts",
+        "decide_max_attempts_allowed_range",
+        "decide_max_issues_per_round",
+        "decide_max_issues_per_round_allowed_range",
+        "decide_issue_excerpt_chars",
+        "decide_issue_excerpt_chars_allowed_range",
+        "decide_parameters",
+    }
+)
 _ROOT_KEYS = frozenset(
     {
         "description",
@@ -61,6 +76,11 @@ _ROOT_KEYS = frozenset(
         "asset_bbox_tolerance_pt",
         "asset_bbox_tolerance_pt_allowed_range",
     }
+    # Bounds belonging to the model decision that nominates an action rather
+    # than to the actions themselves. They share one file so that the offered
+    # vocabulary and the bounds on choosing from it cannot drift apart, and
+    # this pass reads none of them; llm_decide.py owns their meaning.
+    | _DECIDE_KEYS
 )
 
 
