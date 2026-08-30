@@ -1,0 +1,8 @@
+{
+  "description": "One bounded retry for a short unit whose translation came back as its own source in the wrong script for the target language. The ordinary translation path pastes an unchanged unit back as source furniture, which is right for a brand, an acronym or a URL and wrong for a personal name or a role title the model simply declined to render. The retry sends the one unit again with an explicit instruction (prompts/echo_retry.md): transliterate a personal name, translate a role or short phrase, and return unchanged what genuinely stands as it is. A reply that still echoes keeps the unchanged pasteback and is recorded as echo_retry_exhausted, so the page never regresses below today's behavior. echo_retry_max_chars bounds the unit length a retry is spent on; echo_retry_budget bounds the retries of one document. The unit qualifies only when its text is predominantly the wrong script for the target language, so a unit already in the target script is never re-asked.",
+  "switch": "magazine_echo_retry",
+  "echo_retry_max_chars": 80,
+  "echo_retry_max_chars_allowed_range": "10..200",
+  "echo_retry_budget": 40,
+  "echo_retry_budget_allowed_range": "0..120"
+}

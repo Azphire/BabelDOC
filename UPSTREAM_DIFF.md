@@ -475,3 +475,27 @@ T4b (band-sequence chaining) was new as planned: boundary kind
 new bounded parameter `intra_column_chain_max_gap_pt` (6, range 1..24), the
 lowest assembly priority, everything downstream (pair class, strategies,
 joint translation, conservation) reused untouched.
+
+## B14 — anchor, tails, masthead (`b14`)
+
+### T3 — upstream files touched
+
+`babeldoc/format/pdf/document_il/midend/styles_and_formulas.py`
+(`is_translatable_formula`): the rescue that hands a swallowed formula back to
+the translator accepted only digit/comma runs.  It now also accepts a run of
+ordinary words — letters joined by word punctuation with at least one
+two-letter sequence — because the formula-font name table claims any font
+whose name contains "Mono", and FD's masthead role lines (GTFlexaMono-Light,
+"EDITOR-IN-CHIEF", …) were swallowed whole by their typeface alone and never
+offered to the translator.  A single letter still stays a formula (that is
+what a variable looks like), as do raised runs and anything carrying digits
+or operators.
+
+`babeldoc/format/pdf/document_il/midend/il_translator.py`
+(`post_translate_paragraph`, tracking serializer): the unchanged-translation
+skip now consults `babeldoc.magazine.echo_retry` before pasting back — one
+bounded, explicitly-instructed retry for a short unit that echoed in the
+wrong script for the target (a personal name, a role line), configured in
+`configs/echo_retry.json` and prompted by `prompts/echo_retry.md`.  A retry
+that still echoes keeps the pasteback exactly as before and is recorded; the
+tracking rows carry the outcome under `echo_retry`.

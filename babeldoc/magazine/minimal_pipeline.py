@@ -266,6 +266,7 @@ _FIXED_TRUE_ATTRIBUTES = (
     "magazine_drop_cap_apply",
     "magazine_drop_cap_mark",
     "magazine_drop_cap_render",
+    "magazine_echo_retry",
     "magazine_formula_reclass",
     "magazine_fragment_stitch",
     "magazine_indent_policy",

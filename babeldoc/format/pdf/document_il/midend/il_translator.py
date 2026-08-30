@@ -24,6 +24,7 @@ from babeldoc.format.pdf.document_il import PdfSameStyleCharacters
 from babeldoc.format.pdf.document_il import PdfSameStyleUnicodeCharacters
 from babeldoc.format.pdf.document_il import PdfStyle
 from babeldoc.format.pdf.document_il.utils.fontmap import FontMapper
+from babeldoc.magazine import echo_retry
 from babeldoc.format.pdf.document_il.utils.layout_helper import get_char_unicode_string
 from babeldoc.format.pdf.document_il.utils.layout_helper import get_paragraph_unicode
 from babeldoc.format.pdf.document_il.utils.layout_helper import is_same_style
@@ -227,6 +228,7 @@ class DocumentTranslateTracker:
                 "multi_paragraph_index": getattr(para, "multi_paragraph_index", None),
                 "original_placeholders": original_placeholders,
                 "removed_hallucinated_placeholders": removed_hallucinated_placeholders,
+                "echo_retry": getattr(para, "echo_retry", None),
             }
             paragraphs.append(
                 paragraph_json,
@@ -1036,9 +1038,25 @@ class ILTranslator:
         if isinstance(source_text, str) and self._identity_normalized(
             translated_text
         ) == self._identity_normalized(source_text):
-            if llm_translate_tracker := tracker.last_llm_translate_tracker():
-                llm_translate_tracker.set_placeholder_full_match()
-            return False
+            # A short unit echoed in the wrong script for the target may earn
+            # one explicit retry (magazine echo_retry: transliterate a name,
+            # translate a title, keep what genuinely stands). A retry that
+            # still echoes keeps the unchanged pasteback below.
+            retried, outcome = echo_retry.attempt(
+                getattr(self, "translation_config", None),
+                getattr(self, "translate_engine", None),
+                source_text,
+            )
+            tracker.echo_retry = outcome
+            if retried is not None:
+                retry_tracker = tracker.new_llm_translate_tracker()
+                retry_tracker.set_input(f"echo-retry: {source_text}")
+                retry_tracker.set_output(retried)
+                translated_text = retried
+            else:
+                if llm_translate_tracker := tracker.last_llm_translate_tracker():
+                    llm_translate_tracker.set_placeholder_full_match()
+                return False
         paragraph.unicode = translated_text
         paragraph.pdf_paragraph_composition = self.parse_translate_output(
             translate_input,

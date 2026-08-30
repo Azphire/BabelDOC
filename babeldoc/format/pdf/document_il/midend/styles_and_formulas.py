@@ -1018,15 +1018,36 @@ class StylesAndFormulas:
             self.update_line_data(new_line)
             return PdfParagraphComposition(pdf_line=new_line)
 
+    # A run of ordinary words: letters in the run's own script joined by the
+    # punctuation words are joined by, with at least one two-letter sequence.
+    # This is the shape a staff-list role line takes ("EDITOR-IN-CHIEF",
+    # "ADVISORS TO THE EDITOR") when its editorial typeface happens to match
+    # the formula-font name table (any name containing "Mono" does), which
+    # swallowed the whole line as a formula and kept it from ever being
+    # offered to the translator. A single letter stays a formula: that is
+    # what a variable looks like.
+    _WORD_RUN = re.compile(r"^[A-Za-z][A-Za-z '&,.:;\-’]*$")
+    _LETTER_PAIR = re.compile(r"[A-Za-z]{2}")
+
     def is_translatable_formula(self, formula: PdfFormula) -> bool:
-        """判断公式是否只包含需要正常翻译的字符（数字、空格和英文逗号）"""
+        """判断公式是否只包含需要正常翻译的字符。
+
+        Two shapes qualify: the digit runs the original rule rescued (数字、
+        空格和英文逗号), and runs of ordinary words that were classed as
+        formulas by their font name alone.
+        """
         if all(char.formula_layout_id for char in formula.pdf_character):
             return False
 
         text = "".join(char.char_unicode for char in formula.pdf_character)
         if formula.y_offset > 0.1:
             return False
-        return bool(re.match(r"^[0-9, .]+$", text))
+        if re.match(r"^[0-9, .]+$", text):
+            return True
+        stripped = text.strip()
+        return bool(
+            self._WORD_RUN.match(stripped) and self._LETTER_PAIR.search(stripped)
+        )
 
     def should_split_formula(self, formula: PdfFormula) -> bool:
         """判断公式是否需要按逗号拆分（包含逗号且有其他特殊符号）"""
