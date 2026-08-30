@@ -77,11 +77,23 @@ CAUSE_PAGE_POLICY = "page_policy"  # residue.py:60 -- page declares no translati
 CAUSE_BELOW_THRESHOLD = "below_threshold"  # residue.py:65 -- under the declared floor
 BLIND_SPOT_CAUSES = (CAUSE_PAGE_POLICY, CAUSE_BELOW_THRESHOLD, UNCLASSIFIED)
 
-# Declared for this census and for nothing else. A paragraph set along the
-# vertical axis is many times taller than it is wide; the run artifacts do not
-# carry the IL's own ``vertical`` flag (it is never serialised), so the shape of
-# the box is the only evidence of rotation available to a reader of artifacts.
-# This number classifies. It does not enter any pipeline judgement.
+# Declared for this census and for nothing else. This number classifies. It
+# does not enter any pipeline judgement.
+#
+# The IL has always known which way a paragraph is set: ``vertical`` is
+# declared in il_version_1.rnc and paragraph_finder sets it from the first
+# character. What was missing was a producer -- no issue put it in evidence --
+# so this census could only guess rotation from the shape of the box, a
+# paragraph set vertically being many times taller than it is wide. The
+# residue detector now reports the flag, and a record that carries it is
+# classified on the flag alone.
+#
+# The threshold stays for the records that still have no flag: every B record
+# comes from the coverage ledger and has no issue behind it, and artifacts
+# written before the detector reported it carry no ``vertical`` either. Which
+# of the two decided a record is recorded in its ``criterion``, so a reader can
+# count how much of the rotated population rests on evidence and how much on
+# shape.
 ROTATED_MAX_ASPECT = 0.25
 
 # The census reads a paragraph's rendered text from indent_policy's excerpt,
@@ -225,10 +237,15 @@ class Record:
 
 def classify(record: Record, min_text_length: int, is_short_unit: bool) -> None:
     """Assign the first category whose criterion holds. Order is the vocabulary."""
-    if record.vertical is True:
-        record.category, record.criterion = ROTATED, "paragraph.vertical"
-        return
-    if record.aspect_ratio is not None and record.aspect_ratio < ROTATED_MAX_ASPECT:
+    if record.vertical is not None:
+        # The paragraph itself says which way it is set, so the shape of its
+        # box is not consulted: a tall narrow column of horizontal text is not
+        # rotated, and saying so from the box would be a guess overruling a
+        # fact. Only a record with no such fact falls through to the shape.
+        if record.vertical:
+            record.category, record.criterion = ROTATED, "paragraph.vertical"
+            return
+    elif record.aspect_ratio is not None and record.aspect_ratio < ROTATED_MAX_ASPECT:
         record.category, record.criterion = (
             ROTATED,
             f"aspect_ratio<{ROTATED_MAX_ASPECT}",
@@ -525,6 +542,9 @@ def census_run(run_root: Path, detectors_config: dict, page_policies: dict) -> d
             record.residue_script_chars = evidence["script_chars"]
             record.residue_ratio = evidence["residue_ratio"]
             record.residue_basis = "detector"
+            # Absent from artifacts written before the detector reported it,
+            # and absent from every B record, which has no issue at all.
+            record.vertical = evidence.get("vertical")
         if record.box is None and item is not None:
             record.box = list(item["source_box"])
         if record.box is None:

@@ -80,6 +80,13 @@ def detect(context: base.DetectionContext) -> list[base.Issue]:
                         "min_ratio": min_ratio,
                         "min_script_chars": min_chars,
                         "layout_label": paragraph.layout_label,
+                        # Whether the paragraph is set along the vertical axis.
+                        # The IL has carried this since the paragraph was
+                        # finished, but no issue ever said so, which left a
+                        # reader of the artifacts guessing rotation from the
+                        # shape of the box. Reported, not judged: no threshold
+                        # here reads it.
+                        "vertical": paragraph.vertical,
                         "debug_id": paragraph.debug_id,
                         "excerpt": text[: config.excerpt_chars],
                     },
