@@ -309,7 +309,8 @@ class ChainAllocationPlan:
                     else fragment.tail_align["ideal"],
                     "moved_to": None
                     if fragment.tail_align is None
-                    or fragment.tail_align["reason"] != backfill.TAIL_ALIGN_MOVED
+                    or fragment.tail_align["reason"]
+                    not in (backfill.TAIL_ALIGN_MOVED, backfill.TAIL_ALIGN_PUSHED)
                     else backfill.MOVED_TO_LINE_END,
                 }
                 for index, fragment in enumerate(self.fragments[:-1])
@@ -1856,6 +1857,12 @@ class ChainPlan:
             else:
                 high = middle - 1
         consumed(low)
+        if self.config.tail_align_allow_push and low < len(floors):
+            # The push branch advances to the end of the line the estimate
+            # stands in, which is the next line's consumed end -- measured
+            # here, one extra probe at most, so the cut only ever advances to
+            # a line end this box was actually measured to hold.
+            consumed(low + 1)
         by_end: dict[int, int] = {}
         for lines in sorted(ends):
             by_end.setdefault(ends[lines], lines)
@@ -1916,7 +1923,13 @@ class ChainPlan:
                 ideal,
             )
             position, reason = backfill.tail_aligned_cut(
-                ideal, line_ends, low, high, self.config.tail_align_min_kept_lines
+                ideal,
+                line_ends,
+                low,
+                high,
+                self.config.tail_align_min_kept_lines,
+                self.config.tail_align_allow_push,
+                self.config.tail_align_push_max_chars,
             )
             positions.append(position)
             estimates.append(ideal)
@@ -2395,6 +2408,7 @@ class ChainPlan:
         reasons = dict.fromkeys(backfill.TAIL_ALIGN_REASONS, 0)
         strategies: dict[str, int] = {}
         moved_chars = 0
+        pushed_chars = 0
         for entry in self.entries:
             strategy = entry.allocation.strategy
             strategies[strategy] = strategies.get(strategy, 0) + 1
@@ -2405,10 +2419,14 @@ class ChainPlan:
                 reasons[align["reason"]] += 1
                 if align["reason"] == backfill.TAIL_ALIGN_MOVED:
                     moved_chars += align["moved_chars"]
+                elif align["reason"] == backfill.TAIL_ALIGN_PUSHED:
+                    # moved_chars is ideal - position, negative on a push.
+                    pushed_chars -= align["moved_chars"]
         return {
             "cuts_by_reason": reasons,
             "chains_by_strategy": strategies,
             "moved_chars": moved_chars,
+            "pushed_chars": pushed_chars,
         }
 
     def write_report(self) -> Path:

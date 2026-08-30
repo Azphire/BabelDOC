@@ -189,11 +189,14 @@
     ]
   },
   "tail_align": {
-    "description": "The bounds on the tail aligned cut. The judgement itself carries no threshold: whether a share estimate already stands at a line end is answered by measuring the member's own box, not by comparing a filled width against a ratio. These two numbers bound only what that measurement may cost and how little of a member it may leave. max_probes caps how many times one interior cut may re-measure its box while binary searching for the last line end at or before the estimate, so a box of up to two to the max_probes lines is searched completely and a taller one settles for an earlier line end rather than costing more. min_kept_lines is how many lines the member must still hold after the pull back; below it the estimate stands where it was and the sidecar says so, because a member pulled back past its first line would be left with nothing to show.",
+    "description": "The bounds on the tail aligned cut. The judgement itself carries no threshold: whether a share estimate already stands at a line end is answered by measuring the member's own box, not by comparing a filled width against a ratio. These numbers bound only what that measurement may cost, how little of a member it may leave, and how far a refused pull back may advance instead. max_probes caps how many times one interior cut may re-measure its box while binary searching for the last line end at or before the estimate, so a box of up to two to the max_probes lines is searched completely and a taller one settles for an earlier line end rather than costing more. min_kept_lines is how many lines the member must still hold after the pull back; below it the estimate stands where it was and the sidecar says so, because a member pulled back past its first line would be left with nothing to show. allow_push opens the one move left when the pull back is refused: advancing the cut to the end of the line the estimate stands in, filling that line, with the advance taken out of the next member's piece. Every push candidate is a measured line end of the member's own box and never passes the window that leaves each later member a character. push_max_chars bounds the advance, so a mid-line estimate fills its line and never drags most of a member forward; past it the estimate stands where it was, exactly as with the push disabled.",
     "max_probes": 8,
     "max_probes_allowed_range": "1..16",
     "min_kept_lines": 1,
-    "min_kept_lines_allowed_range": "1..3"
+    "min_kept_lines_allowed_range": "1..3",
+    "allow_push": true,
+    "push_max_chars": 24,
+    "push_max_chars_allowed_range": "1..80"
   },
   "cut_align_switch": "magazine_chain_cut_align",
   "capacity": {

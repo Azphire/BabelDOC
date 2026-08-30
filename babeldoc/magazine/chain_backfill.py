@@ -101,10 +101,13 @@ BY_PAIR_CLASS_KEY = "by_pair_class"
 SLOT_CASCADE_KEY = "slot_cascade"
 DESCRIPTION_KEY = "description"
 
-# The parameters that bound the tail aligned cut. Neither is a threshold on
+# The parameters that bound the tail aligned cut. None is a threshold on
 # whether a line is full -- measurement answers that -- so they bound only what
-# the search may cost and how little of a member it may leave behind.
-TAIL_ALIGN_PARAMETERS = ("max_probes", "min_kept_lines")
+# the search may cost, how little of a member it may leave behind, and how far
+# a refused pull back may advance instead. ``allow_push`` is the switch on
+# that forward branch and is a boolean rather than a bounded number.
+TAIL_ALIGN_PARAMETERS = ("max_probes", "min_kept_lines", "push_max_chars")
+TAIL_ALIGN_ALLOW_PUSH_KEY = "allow_push"
 
 # The per-profile override and the flat range that bounds it, by the same
 # convention chain_signals uses for a weight declared inside a pairing: the
@@ -337,6 +340,8 @@ class BackfillConfig:
     slot_cascade: tuple[str, ...]
     tail_align_max_probes: int
     tail_align_min_kept_lines: int
+    tail_align_allow_push: bool
+    tail_align_push_max_chars: int
     capacity: CapacityGrid
     line_head_forbidden: frozenset
     line_tail_forbidden: frozenset
@@ -468,16 +473,21 @@ MOVED_TO_MARKER = "marker"
 MOVED_TO_LINE_END = "line_end"
 
 # Why one tail aligned cut stands where it does. The set is closed, so a reader
-# of a sidecar meets one of these four and never a free-form sentence.
+# of a sidecar meets one of these five and never a free-form sentence.
+# ``pushed`` is the forward move: the pull back was refused by min_kept_lines,
+# so the cut advanced to the end of the line the estimate stood in, filling
+# that line and taking the advance out of the next member's share.
 TAIL_ALIGN_MOVED = "moved"
 TAIL_ALIGN_ALREADY_FULL = "already_full"
 TAIL_ALIGN_MIN_LINES = "min_lines"
 TAIL_ALIGN_NO_LINE_END = "no_line_end"
+TAIL_ALIGN_PUSHED = "pushed"
 TAIL_ALIGN_REASONS = (
     TAIL_ALIGN_MOVED,
     TAIL_ALIGN_ALREADY_FULL,
     TAIL_ALIGN_MIN_LINES,
     TAIL_ALIGN_NO_LINE_END,
+    TAIL_ALIGN_PUSHED,
 )
 
 
@@ -807,11 +817,20 @@ def _parse_strategies(
     return dict(by_class), fallback, tuple(cascade)
 
 
-def _parse_tail_align(raw: object, source: str) -> tuple[int, int]:
+def _parse_tail_align(raw: object, source: str) -> tuple[int, int, bool, int]:
     """The bounds on the tail aligned search, bounded by their own ranges."""
     where = f"{source}.{TAIL_ALIGN_KEY}"
     _require(isinstance(raw, dict), f"{where} must be an object")
-    flat = {key: value for key, value in raw.items() if key != DESCRIPTION_KEY}
+    allow_push = raw.get(TAIL_ALIGN_ALLOW_PUSH_KEY)
+    _require(
+        isinstance(allow_push, bool),
+        f"{where}.{TAIL_ALIGN_ALLOW_PUSH_KEY} is a switch, so it must be a boolean",
+    )
+    flat = {
+        key: value
+        for key, value in raw.items()
+        if key not in (DESCRIPTION_KEY, TAIL_ALIGN_ALLOW_PUSH_KEY)
+    }
     try:
         numbers = dict(validate_bounded_config(flat, Path(where)))
     except ConfigError as exc:
@@ -821,9 +840,15 @@ def _parse_tail_align(raw: object, source: str) -> tuple[int, int]:
     for key in TAIL_ALIGN_PARAMETERS:
         _require(
             isinstance(numbers[key], int) and not isinstance(numbers[key], bool),
-            f"{where}.{key} counts probes or lines, so it must be a whole number",
+            f"{where}.{key} counts probes, lines or characters, so it must be "
+            "a whole number",
         )
-    return int(numbers["max_probes"]), int(numbers["min_kept_lines"])
+    return (
+        int(numbers["max_probes"]),
+        int(numbers["min_kept_lines"]),
+        bool(allow_push),
+        int(numbers["push_max_chars"]),
+    )
 
 
 def _parse_capacity(raw: object, source: str) -> CapacityGrid:
@@ -903,9 +928,12 @@ def load_backfill_config(path: str | None = None) -> BackfillConfig:
     strategy_by_pair_class, default_strategy, slot_cascade = _parse_strategies(
         raw.get(STRATEGIES_KEY), source
     )
-    tail_align_max_probes, tail_align_min_kept_lines = _parse_tail_align(
-        raw.get(TAIL_ALIGN_KEY), source
-    )
+    (
+        tail_align_max_probes,
+        tail_align_min_kept_lines,
+        tail_align_allow_push,
+        tail_align_push_max_chars,
+    ) = _parse_tail_align(raw.get(TAIL_ALIGN_KEY), source)
     return BackfillConfig(
         sentence_min_chars=default_min_chars,
         snap_search_ratio=float(parameters["snap_search_ratio"]),
@@ -922,6 +950,8 @@ def load_backfill_config(path: str | None = None) -> BackfillConfig:
         slot_cascade=slot_cascade,
         tail_align_max_probes=tail_align_max_probes,
         tail_align_min_kept_lines=tail_align_min_kept_lines,
+        tail_align_allow_push=tail_align_allow_push,
+        tail_align_push_max_chars=tail_align_push_max_chars,
         capacity=_parse_capacity(raw.get(CAPACITY_KEY), source),
         line_head_forbidden=_parse_punctuation(
             raw.get(LINE_HEAD_KEY), source, LINE_HEAD_KEY
@@ -1430,6 +1460,8 @@ def tail_aligned_cut(
     low: int,
     high: int,
     min_kept_lines: int,
+    allow_push: bool = False,
+    push_max_chars: int = 0,
 ) -> tuple[int, str]:
     """Pull one share estimate back to the last line end that does not pass it.
 
@@ -1452,6 +1484,16 @@ def tail_aligned_cut(
     have had; at the shipped setting of one line the guard is exact for any
     caller, sparse or not.
 
+    Where the pull back is refused, ``allow_push`` offers the one move left
+    that still closes the member on a full line: advancing to the first line
+    end past the estimate, which is the end of the very line the estimate
+    stood in. The advance comes out of the next member's piece, so it is
+    bounded twice -- by ``high``, which keeps every later member a character,
+    and by ``push_max_chars``, which keeps a mid-line estimate from dragging
+    most of a member forward. Every candidate is a measured line end of this
+    member's own box, so the member holds what it is handed by construction.
+    Where the push finds no candidate either, the estimate stands as before.
+
     Returns the position and one of :data:`TAIL_ALIGN_REASONS`.
     """
     if any(
@@ -1467,6 +1509,17 @@ def tail_aligned_cut(
         if end <= ideal and low <= end <= high and order + 1 >= min_kept_lines
     ]
     if not kept:
+        if allow_push:
+            pushed = [
+                end
+                for order, end in enumerate(line_ends)
+                if ideal < end
+                and low <= end <= high
+                and order + 1 >= min_kept_lines
+                and end - ideal <= push_max_chars
+            ]
+            if pushed:
+                return pushed[0], TAIL_ALIGN_PUSHED
         return ideal, TAIL_ALIGN_MIN_LINES
     position = kept[-1]
     if position == ideal:
