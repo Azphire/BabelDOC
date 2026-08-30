@@ -235,3 +235,71 @@ the two readers of the file stay explicit about which keys are whose;
 `minimal_repair` reads none of them.  The parameter rules are therefore
 exercised in the gate against an explicit declaration rather than against a
 number invented in the shipped file.
+
+### T3 — three new actions, a six-action closed vocabulary
+
+`configs/repair_actions.json` is now `mapek-demo.v1`.  `actions` holds the six;
+`issue_actions` is the kind-to-permitted-set table the decision rounds choose
+from (no_op always implicit, an empty set meaning escalate-only).
+
+**`deterministic_issue_actions` is a second mapping, deliberately.**  The
+one-shot `repair_once` pass picks an action from the kind alone, and three
+existing tests plus `spec_check_repair_admission.py` pin what it picks.  Rather
+than change what that pass does as a side effect of widening the vocabulary, its
+old single-action mapping is frozen under its own key and `repair_once` reads
+only that.  The two mappings answer different questions -- "what the frozen
+one-shot pass does" and "what a decision round may choose from" -- and
+`repair_once` is superseded by the loop in T4.
+
+`tests/minimal/test_one_repair.py::test_closed_actions_and_deterministic_selection`
+asserted the three-action vocabulary; rewritten to the six, with an added
+assertion that the frozen mapping is unchanged, so the test now pins the thing
+that must not move rather than the thing that did.
+
+Role vocabularies come from the layout-label space the rest of the pipeline
+uses: `contain_heading` takes the title pair class of `chain_detection.json`
+(`title`, `paragraph_title`) and `retypeset_article_region` the body pair class
+(`text`, `plain text`, `paragraph_hybrid`).  Note that the pre-existing
+`refit_or_reflow_owned_paragraph.eligible_roles` names `body`, which is not a
+label any pair class declares and appears only there and in the older repair
+fixture; it was left alone as out of scope, and `spec_check_b12_t3.py` uses the
+production labels so the new actions are not tested against a label no document
+carries.
+
+#### Two judgment calls in `reallocate_chain_cut` — flagged for review
+
+The plan warned to stop rather than improvise if `redistribute`'s calling
+surface did not match P10.  It very nearly does, and the action is implemented,
+but two things the plan did not anticipate had to be decided.  Both are local
+and reversible, and both fail closed.
+
+**1. The merge is rebuilt from the report, not carried.**  `redistribute` wants
+a `ChainMerge`.  By repair time the paragraphs carry the translation and the
+source member texts are gone; `chain_translation.report.json` keeps their
+*lengths* (`merge.member_chars`), the separators, and -- importantly -- the full
+merged `translation` string.  Reading the two functions settles what this costs:
+`redistribute` touches only `len(merge.members)` and `merge.shares` (a ratio of
+lengths), and `verify_redistribution` only `len(merge.members)`.  So the merge is
+rebuilt at the recorded lengths with filler member text, and the rebuild is
+refused unless the reconstructed length matches the recorded `merge.chars`.  If
+a later cut planner starts reading member text, that check fails and the action
+refuses rather than cutting on filler.
+
+**2. Reported strategy names are not cascade names.**  The chain pass reports
+the level it settled on as `slot_tail_aligned` / `slot_capacity`, while
+`chain_translation.json`'s `slot_cascade` names the strategies without the
+prefix (`tail_aligned`, `capacity`).  "One level down" is therefore read by
+stripping the prefix and stepping the cascade; a chain already at the bottom, or
+reported under a name the cascade does not carry, is refused as
+`chain_realloc_no_further_strategy`.  On the sample report inspected, the
+recorded strategy is `slot_capacity` -- the bottom -- so **this action will
+refuse on chains cut that way**, which is a real reason it may report zero
+repairs on the corpus.
+
+If either call is wrong, the fix is local to `_rebuilt_merge` and
+`_next_strategy`.
+
+All three actions refuse *whole*: the first member that will not fit takes the
+action down, and the caller's transaction restores what it had reached.
+`spec_check_b12_t3.py` S8 compares the document paragraph by paragraph and
+requires each action to have written exactly its own set.

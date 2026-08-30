@@ -306,8 +306,16 @@ def test_closed_actions_and_deterministic_selection(tmp_path):
     config = minimal_repair.load_repair_config()
     assert config.actions == minimal_repair.ACTIONS == (
         "translate_orphan_text",
+        "reallocate_chain_cut",
+        "retypeset_article_region",
+        "contain_heading",
         "refit_or_reflow_owned_paragraph",
         "no_op",
+    )
+    # The one-shot pass answers from the frozen single-action mapping, so
+    # widening the vocabulary above leaves the selections below unchanged.
+    assert dict(config.deterministic_issue_actions) == (
+        minimal_repair.DETERMINISTIC_ISSUE_ACTIONS
     )
     orphan = make_issue(
         "untranslated_residue", ("p7#2",), minimal_repair.TRANSLATE_ORPHAN

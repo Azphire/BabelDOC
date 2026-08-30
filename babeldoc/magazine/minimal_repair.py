@@ -12,6 +12,7 @@ from pathlib import Path
 
 from babeldoc.format.pdf.document_il import il_version_1
 from babeldoc.magazine import acceptance
+from babeldoc.magazine import chain_backfill
 from babeldoc.magazine import fixed_assets
 from babeldoc.magazine import minimal_detection
 from babeldoc.magazine.detectors import detector_config
@@ -21,20 +22,50 @@ from babeldoc.magazine.reading_order import paragraph_reading_text
 from babeldoc.magazine.resource_paths import config_path
 
 CONFIG_PATH = config_path("repair_actions.json")
-SCHEMA_VERSION = "minimal-repair.v1"
+SCHEMA_VERSION = "mapek-demo.v1"
 
 TRANSLATE_ORPHAN = "translate_orphan_text"
+REALLOCATE_CHAIN = "reallocate_chain_cut"
+RETYPESET_REGION = "retypeset_article_region"
+CONTAIN_HEADING = "contain_heading"
 REFIT_OWNED = "refit_or_reflow_owned_paragraph"
 NO_OP = "no_op"
-ACTIONS = (TRANSLATE_ORPHAN, REFIT_OWNED, NO_OP)
+ACTIONS = (
+    TRANSLATE_ORPHAN,
+    REALLOCATE_CHAIN,
+    RETYPESET_REGION,
+    CONTAIN_HEADING,
+    REFIT_OWNED,
+    NO_OP,
+)
 
+# What a decision round may choose from for one kind. no_op is always available
+# and is not listed; a kind mapped to nothing offers no_op alone, which is how
+# a kind that may only be escalated is written.
 ISSUE_ACTIONS = {
+    "untranslated_residue": (TRANSLATE_ORPHAN,),
+    "chain_conservation": (REALLOCATE_CHAIN,),
+    "out_of_page": (CONTAIN_HEADING, REFIT_OWNED),
+    "text_text_collision": (REFIT_OWNED,),
+    "fragment_cluster": (RETYPESET_REGION,),
+    "abnormal_blank": (RETYPESET_REGION,),
+    "text_figure_overlap": (RETYPESET_REGION,),
+    "instruction_compliance": (),
+    "fixed_asset_drift": (),
+}
+
+# The one-shot pass predates the loop and chose an action from the kind alone.
+# Frozen here so widening the vocabulary above does not change what it does.
+DETERMINISTIC_ISSUE_ACTIONS = {
     "untranslated_residue": TRANSLATE_ORPHAN,
     "out_of_page": REFIT_OWNED,
     "text_text_collision": REFIT_OWNED,
     "fragment_cluster": NO_OP,
     "chain_conservation": NO_OP,
     "fixed_asset_drift": NO_OP,
+    "abnormal_blank": NO_OP,
+    "text_figure_overlap": NO_OP,
+    "instruction_compliance": NO_OP,
 }
 
 _SOURCE_REF = re.compile(r"p([1-9][0-9]*)#(0|[1-9][0-9]*)\Z")
@@ -42,7 +73,14 @@ _RANGE = re.compile(
     r"(-?(?:[0-9]+(?:\.[0-9]+)?|\.[0-9]+))\.\."
     r"(-?(?:[0-9]+(?:\.[0-9]+)?|\.[0-9]+))\Z"
 )
-_ACTION_PRIORITY = {NO_OP: 0, TRANSLATE_ORPHAN: 1, REFIT_OWNED: 1}
+_ACTION_PRIORITY = {
+    NO_OP: 0,
+    TRANSLATE_ORPHAN: 1,
+    REFIT_OWNED: 1,
+    CONTAIN_HEADING: 1,
+    RETYPESET_REGION: 1,
+    REALLOCATE_CHAIN: 1,
+}
 _STYLE_CHARACTER_HOLDERS = (
     "pdf_same_style_characters",
     "pdf_line",
@@ -71,7 +109,11 @@ _ROOT_KEYS = frozenset(
         "max_actions_per_run_allowed_range",
         "actions",
         "issue_actions",
+        "deterministic_issue_actions",
         TRANSLATE_ORPHAN,
+        REALLOCATE_CHAIN,
+        RETYPESET_REGION,
+        CONTAIN_HEADING,
         REFIT_OWNED,
         "asset_bbox_tolerance_pt",
         "asset_bbox_tolerance_pt_allowed_range",
@@ -92,19 +134,35 @@ class MinimalRepairError(ValueError):
 class RepairConfig:
     max_actions_per_run: int
     actions: tuple[str, ...]
-    issue_actions: tuple[tuple[str, str], ...]
+    issue_actions: tuple[tuple[str, tuple[str, ...]], ...]
+    deterministic_issue_actions: tuple[tuple[str, str], ...]
     orphan_layout_labels: tuple[str, ...]
     orphan_min_residue_ratio: float
     orphan_min_source_chars: int
     eligible_roles: tuple[str, ...]
     collision_max_area_ratio: float
+    heading_eligible_roles: tuple[str, ...]
+    heading_min_scale: float
+    heading_max_lines: int
+    region_eligible_roles: tuple[str, ...]
+    region_min_scale: float
+    region_max_members: int
+    chain_max_members: int
     asset_bbox_tolerance_pt: float
 
     def action_for(self, kind: str) -> str:
-        mapping = dict(self.issue_actions)
+        """The one-shot pass's single answer for a kind, which is frozen."""
+        mapping = dict(self.deterministic_issue_actions)
         if kind not in mapping:
             raise MinimalRepairError(f"unsupported repair issue kind: {kind}")
         return mapping[kind]
+
+    def permitted_actions(self, kind: str) -> tuple[str, ...]:
+        """What a decision round may choose from for a kind, no_op included."""
+        mapping = dict(self.issue_actions)
+        if kind not in mapping:
+            raise MinimalRepairError(f"unsupported repair issue kind: {kind}")
+        return (*mapping[kind], NO_OP)
 
 
 @dataclass(frozen=True, slots=True)
@@ -233,8 +291,22 @@ def parse_repair_config(raw: object, source: str) -> RepairConfig:
     actions = _closed_strings(raw.get("actions"), f"{source}.actions")
     _require(actions == ACTIONS, f"{source}: action vocabulary must be {ACTIONS}")
     issue_actions = raw.get("issue_actions")
-    _require(isinstance(issue_actions, dict), f"{source}: issue_actions must be an object")
-    _require(issue_actions == ISSUE_ACTIONS, f"{source}: issue action mapping changed")
+    _require(
+        isinstance(issue_actions, dict), f"{source}: issue_actions must be an object"
+    )
+    _require(
+        {kind: tuple(value) for kind, value in issue_actions.items()} == ISSUE_ACTIONS,
+        f"{source}: issue action mapping changed",
+    )
+    deterministic = raw.get("deterministic_issue_actions")
+    _require(
+        isinstance(deterministic, dict),
+        f"{source}: deterministic_issue_actions must be an object",
+    )
+    _require(
+        deterministic == DETERMINISTIC_ISSUE_ACTIONS,
+        f"{source}: the frozen one-shot issue action mapping changed",
+    )
 
     orphan = raw.get(TRANSLATE_ORPHAN)
     _require(isinstance(orphan, dict), f"{source}: orphan action must be an object")
@@ -261,16 +333,70 @@ def parse_repair_config(raw: object, source: str) -> RepairConfig:
     _require(set(refit) == refit_keys, f"{source}: malformed refit action")
     roles = _closed_strings(refit["eligible_roles"], "eligible roles")
     ratio = _bounded_number(refit, "collision_max_area_ratio")
+    heading = raw.get(CONTAIN_HEADING)
+    _require(
+        isinstance(heading, dict), f"{source}: heading action must be an object"
+    )
+    _require(
+        set(heading)
+        == {
+            "eligible_roles",
+            "heading_min_scale",
+            "heading_min_scale_allowed_range",
+            "heading_max_lines",
+            "heading_max_lines_allowed_range",
+        },
+        f"{source}: malformed heading action",
+    )
+    heading_roles = _closed_strings(heading["eligible_roles"], "heading roles")
+    heading_min_scale = _bounded_number(heading, "heading_min_scale")
+    heading_max_lines = _bounded_number(heading, "heading_max_lines", integer=True)
+
+    region = raw.get(RETYPESET_REGION)
+    _require(isinstance(region, dict), f"{source}: region action must be an object")
+    _require(
+        set(region)
+        == {
+            "eligible_roles",
+            "region_min_scale",
+            "region_min_scale_allowed_range",
+            "region_max_members",
+            "region_max_members_allowed_range",
+        },
+        f"{source}: malformed region action",
+    )
+    region_roles = _closed_strings(region["eligible_roles"], "region roles")
+    region_min_scale = _bounded_number(region, "region_min_scale")
+    region_max_members = _bounded_number(region, "region_max_members", integer=True)
+
+    chain = raw.get(REALLOCATE_CHAIN)
+    _require(isinstance(chain, dict), f"{source}: chain action must be an object")
+    _require(
+        set(chain) == {"chain_max_members", "chain_max_members_allowed_range"},
+        f"{source}: malformed chain action",
+    )
+    chain_max_members = _bounded_number(chain, "chain_max_members", integer=True)
+
     tolerance = _bounded_number(raw, "asset_bbox_tolerance_pt")
     return RepairConfig(
         max_actions_per_run=max_actions,
         actions=actions,
-        issue_actions=tuple(sorted(issue_actions.items())),
+        issue_actions=tuple(
+            (kind, tuple(value)) for kind, value in sorted(issue_actions.items())
+        ),
+        deterministic_issue_actions=tuple(sorted(deterministic.items())),
         orphan_layout_labels=labels,
         orphan_min_residue_ratio=min_ratio,
         orphan_min_source_chars=min_chars,
         eligible_roles=roles,
         collision_max_area_ratio=ratio,
+        heading_eligible_roles=heading_roles,
+        heading_min_scale=heading_min_scale,
+        heading_max_lines=heading_max_lines,
+        region_eligible_roles=region_roles,
+        region_min_scale=region_min_scale,
+        region_max_members=region_max_members,
+        chain_max_members=chain_max_members,
         asset_bbox_tolerance_pt=tolerance,
     )
 
@@ -1277,3 +1403,571 @@ def repair_once(
         transaction=transaction,
         filtered_candidates=filtered,
     )
+
+
+# --- contain a heading inside the box its source occupied ---------------------
+
+
+def _bounded_units(typesetter, target: _Target):
+    """The typesetting units of one paragraph, or the refusal to build them."""
+    from babeldoc.format.pdf.document_il.midend.typesetting import (
+        BoundedTypesettingError,
+    )
+
+    try:
+        return typesetter.create_typesetting_units(
+            target.paragraph, _fonts(typesetter, target.page)
+        )
+    except BoundedTypesettingError as error:
+        raise _RepairRefusalError("bounded_units_unavailable") from error
+
+
+def _source_box(target: _Target) -> tuple[float, float, float, float] | None:
+    box = None if target.element is None else target.element.source_box
+    if box is None or len(box) != 4:
+        return None
+    box = tuple(float(value) for value in box)
+    if (
+        not all(math.isfinite(value) for value in box)
+        or box[0] >= box[2]
+        or box[1] >= box[3]
+    ):
+        return None
+    return box
+
+
+def _geometry_admission(
+    target: _Target,
+    baseline,
+    article_document_ir,
+    flow_refs,
+    roles: tuple[str, ...],
+    prefix: str,
+) -> str | None:
+    """The questions every in-place relayout asks before it moves any ink."""
+    if target.owner is None or target.element is None:
+        return f"{prefix}_target_has_no_canonical_owner"
+    if target.element.role not in roles:
+        return f"{prefix}_role_not_allowed"
+    blocked = _protected(target, article_document_ir, flow_refs)
+    if blocked is not None:
+        return blocked
+    if target.local_ref in baseline.fixed_inventory.protected_paragraph_refs:
+        return f"{prefix}_target_is_fixed_furniture"
+    if _source_box(target) is None:
+        return "canonical_source_box_invalid"
+    if not paragraph_reading_text(target.paragraph):
+        return f"{prefix}_target_text_unavailable"
+    if not _style_is_renderable(_paragraph_style(target.paragraph)):
+        return f"{prefix}_target_style_unavailable"
+    return None
+
+
+def _heading_admission(
+    issue,
+    docs,
+    baseline,
+    article_document_ir,
+    flow_refs,
+    config: RepairConfig,
+) -> tuple[_Target | None, str | None]:
+    """The heading this finding would be pulled back into, or why it would not."""
+    try:
+        if issue.kind != "out_of_page":
+            return None, "issue_is_not_a_heading_overflow"
+        refs = tuple(issue.paragraph_refs)
+        if len(refs) != 1:
+            return None, "out_of_page_requires_one_ref"
+        target = _target(docs, baseline, article_document_ir, refs[0])
+        refused = _geometry_admission(
+            target,
+            baseline,
+            article_document_ir,
+            flow_refs,
+            config.heading_eligible_roles,
+            "heading",
+        )
+        if refused is not None:
+            return None, refused
+    except _RepairRefusalError as refusal:
+        return None, refusal.reason
+    return target, None
+
+
+def admits_heading(
+    issue,
+    docs,
+    baseline,
+    article_document_ir,
+    flow_refs,
+    config: RepairConfig,
+) -> str | None:
+    """Why this finding is not a heading to contain, or ``None`` when it is."""
+    return _heading_admission(
+        issue, docs, baseline, article_document_ir, flow_refs, config
+    )[1]
+
+
+def _contain_heading(
+    issue,
+    docs,
+    baseline,
+    article_document_ir,
+    typesetter,
+    flow_refs,
+    config: RepairConfig,
+    *,
+    minimum_scale: float | None = None,
+    maximum_lines: int | None = None,
+) -> _Target:
+    """Lay a heading out again inside the box its source occupied.
+
+    The box does not move. A heading overflows its page because the translated
+    title needs more room than the source title did, and the repair is to make
+    the title fit the room rather than the room fit the title -- moving a
+    heading's box is a layout decision this pass has no standing to take. A
+    title that cannot be made to fit at the declared floor is refused and left
+    overflowing, which is visible, rather than shrunk past legibility, which is
+    not.
+    """
+    from babeldoc.format.pdf.document_il.midend.typesetting import (
+        BoundedTypesettingError,
+    )
+
+    target, refused = _heading_admission(
+        issue, docs, baseline, article_document_ir, flow_refs, config
+    )
+    if refused is not None:
+        raise _RepairRefusalError(refused)
+    source_box = _source_box(target)
+    target_text = paragraph_reading_text(target.paragraph)
+    target_unicode = target.paragraph.unicode
+    style = _paragraph_style(target.paragraph)
+    source_style_digest = fixed_assets.content_digest(style)
+    units = _bounded_units(typesetter, target)
+    try:
+        typesetter.retypeset_bounded_text(
+            target.paragraph,
+            target.page,
+            units,
+            source_ref=target.physical_ref,
+            source_box=source_box,
+            minimum_scale=(
+                config.heading_min_scale if minimum_scale is None else minimum_scale
+            ),
+            maximum_lines=(
+                config.heading_max_lines if maximum_lines is None else maximum_lines
+            ),
+            use_english_line_break=True,
+            preserve_wrapped_spaces=True,
+        )
+    except BoundedTypesettingError as error:
+        raise _RepairRefusalError("heading_does_not_fit_source_box") from error
+    if (
+        target.paragraph.unicode != target_unicode
+        or _box_tuple(target.paragraph.box) != source_box
+        or fixed_assets.content_digest(style) != source_style_digest
+        or not _visible_character_contract(target.paragraph, target_text)
+    ):
+        raise _RepairRefusalError("heading_render_contract_failed")
+    return target
+
+
+# --- lay one article region's own paragraphs out again ------------------------
+
+
+def _region_members(
+    issue,
+    docs,
+    baseline,
+    article_document_ir,
+    flow_refs,
+    config: RepairConfig,
+) -> tuple[tuple[_Target, ...], str | None]:
+    """Every paragraph of the finding's article region this run may relayout.
+
+    The region is the finding's article on the finding's page, which is the
+    unit the canonical ArticleIR already names. Members outside it are not
+    touched: an action reaching into a second article would be answering for a
+    defect nobody measured there.
+    """
+    try:
+        refs = tuple(issue.paragraph_refs)
+        if not refs:
+            return (), "region_finding_names_no_paragraph"
+        anchor = _target(docs, baseline, article_document_ir, refs[0])
+        if anchor.owner is None or anchor.element is None:
+            return (), "region_target_has_no_canonical_owner"
+        page = anchor.element.page
+        owner = anchor.owner
+        members: list[_Target] = []
+        for index, _paragraph in enumerate(anchor.page.pdf_paragraph or ()):
+            reference = fixed_assets.paragraph_reference(anchor.local_page, index)
+            if article_document_ir.by_element.get(reference) != owner:
+                continue
+            candidate = _target(
+                docs,
+                baseline,
+                article_document_ir,
+                baseline.physical_ref(reference),
+            )
+            if candidate.element is None or candidate.element.page != page:
+                continue
+            if (
+                _geometry_admission(
+                    candidate,
+                    baseline,
+                    article_document_ir,
+                    flow_refs,
+                    config.region_eligible_roles,
+                    "region",
+                )
+                is not None
+            ):
+                continue
+            members.append(candidate)
+        if not members:
+            return (), "region_has_no_relayoutable_member"
+        if len(members) > config.region_max_members:
+            return (), "region_exceeds_member_ceiling"
+    except _RepairRefusalError as refusal:
+        return (), refusal.reason
+    return tuple(members), None
+
+
+def admits_region(
+    issue,
+    docs,
+    baseline,
+    article_document_ir,
+    flow_refs,
+    config: RepairConfig,
+) -> str | None:
+    """Why this finding's region may not be laid out again, or ``None``."""
+    return _region_members(
+        issue, docs, baseline, article_document_ir, flow_refs, config
+    )[1]
+
+
+def _retypeset_region(
+    issue,
+    docs,
+    baseline,
+    article_document_ir,
+    typesetter,
+    flow_refs,
+    config: RepairConfig,
+    *,
+    minimum_scale: float | None = None,
+) -> tuple[_Target, ...]:
+    """Lay every owned member of one article region out again in its own box.
+
+    No box moves and no member crosses into another region. Every member has to
+    survive: a region half laid out is a worse page than the one the finding
+    complained about, so the first refusal takes the whole action down and the
+    caller's transaction puts the region back.
+    """
+    from babeldoc.format.pdf.document_il.midend.typesetting import (
+        BoundedTypesettingError,
+    )
+
+    members, refused = _region_members(
+        issue, docs, baseline, article_document_ir, flow_refs, config
+    )
+    if refused is not None:
+        raise _RepairRefusalError(refused)
+    scale = config.region_min_scale if minimum_scale is None else minimum_scale
+    for target in members:
+        source_box = _source_box(target)
+        target_text = paragraph_reading_text(target.paragraph)
+        target_unicode = target.paragraph.unicode
+        style = _paragraph_style(target.paragraph)
+        source_style_digest = fixed_assets.content_digest(style)
+        units = _bounded_units(typesetter, target)
+        try:
+            typesetter.retypeset_bounded_text(
+                target.paragraph,
+                target.page,
+                units,
+                source_ref=target.physical_ref,
+                source_box=source_box,
+                minimum_scale=scale,
+                maximum_lines=None,
+                use_english_line_break=True,
+                preserve_wrapped_spaces=True,
+            )
+        except BoundedTypesettingError as error:
+            raise _RepairRefusalError("region_member_does_not_fit") from error
+        if (
+            target.paragraph.unicode != target_unicode
+            or _box_tuple(target.paragraph.box) != source_box
+            or fixed_assets.content_digest(style) != source_style_digest
+            or not _visible_character_contract(target.paragraph, target_text)
+        ):
+            raise _RepairRefusalError("region_render_contract_failed")
+    return members
+
+
+# --- cut one chain's translation again, one cascade level down ----------------
+
+# What the chain pass reports a slot-cascade level as, against the strategy name
+# the cascade itself declares. The pass reports the level it settled on with a
+# "slot_" prefix; the cascade in chain_translation.json names the strategies
+# without one, so the two have to be read through each other to find out which
+# level a chain is currently at and which one is below it.
+_SLOT_PREFIX = "slot_"
+
+# What a rebuilt merge member is made of. Never read: only its length is.
+_MERGE_FILLER = " "
+
+
+def _cascade_level(reported: object) -> str | None:
+    """The cascade strategy a reported chain strategy stands for."""
+    if not isinstance(reported, str) or not reported:
+        return None
+    return reported[len(_SLOT_PREFIX) :] if reported.startswith(_SLOT_PREFIX) else reported
+
+
+def _next_strategy(reported: object, cascade: tuple[str, ...]) -> str | None:
+    """The level below the one a chain was cut at, or None at the bottom."""
+    current = _cascade_level(reported)
+    if current is None or current not in cascade:
+        return None
+    position = cascade.index(current)
+    if position + 1 >= len(cascade):
+        return None
+    return cascade[position + 1]
+
+
+def _chain_row(issue, docs) -> tuple[dict | None, str | None]:
+    """The chain report row this finding is about, or why there is none."""
+    evidence = issue.evidence or {}
+    chain_id = evidence.get("chain_id")
+    report_path = evidence.get("report_path")
+    if not isinstance(chain_id, str) or not chain_id:
+        return None, "chain_finding_names_no_chain"
+    if not isinstance(report_path, str) or not report_path:
+        return None, "chain_report_path_unavailable"
+    path = Path(report_path)
+    if not path.is_file():
+        return None, "chain_report_missing"
+    try:
+        report = json.loads(path.read_text(encoding="utf-8"))
+    except (ValueError, OSError):
+        return None, "chain_report_unreadable"
+    rows = report.get("chains")
+    if not isinstance(rows, list):
+        return None, "chain_report_has_no_chains"
+    for row in rows:
+        if not isinstance(row, dict):
+            continue
+        if chain_id in (row.get("chain_id"), row.get("canonical_chain_id")):
+            return row, None
+    return None, "chain_not_in_report"
+
+
+def _rebuilt_merge(row: dict) -> tuple[object | None, str | None]:
+    """The chain's merge, rebuilt from what the report kept of it.
+
+    Only two things are ever read back out of a merge by ``redistribute`` and
+    ``verify_redistribution``: how many members there were, and each member's
+    share of the merged source, which is a ratio of lengths. The source texts
+    themselves are gone by the time a repair runs -- the paragraphs carry the
+    translation now -- and the report keeps their lengths rather than their
+    text. So the merge is rebuilt at the right lengths and its member texts are
+    filler, and the assertion below is what keeps that sound: if a later version
+    of the cut planner starts reading the text, the filler stops matching the
+    recorded source size and the action refuses instead of cutting on nothing.
+    """
+    merge_record = row.get("merge")
+    if not isinstance(merge_record, dict):
+        return None, "chain_merge_record_missing"
+    member_chars = merge_record.get("member_chars")
+    separators = merge_record.get("separators")
+    if (
+        not isinstance(member_chars, list)
+        or not member_chars
+        or not all(isinstance(item, int) and item > 0 for item in member_chars)
+    ):
+        return None, "chain_member_lengths_unusable"
+    if not isinstance(separators, list) or len(separators) != len(member_chars):
+        return None, "chain_separators_unusable"
+    members = tuple(_MERGE_FILLER * count for count in member_chars)
+    text = "".join(
+        f"{separator}{member}"
+        for separator, member in zip(separators, members, strict=True)
+    )
+    spans: list[tuple[int, int]] = []
+    cursor = 0
+    for separator, member in zip(separators, members, strict=True):
+        cursor += len(separator)
+        spans.append((cursor, cursor + len(member)))
+        cursor += len(member)
+    if len(text) != merge_record.get("chars"):
+        return None, "chain_merge_length_disagrees_with_report"
+    return (
+        chain_backfill.ChainMerge(
+            text=text,
+            members=members,
+            separators=tuple(str(item) for item in separators),
+            spans=tuple(spans),
+            dropped_hyphens=tuple(merge_record.get("dropped_hyphens") or ()),
+        ),
+        None,
+    )
+
+
+def _chain_admission(
+    issue,
+    docs,
+    baseline,
+    article_document_ir,
+    flow_refs,
+    config: RepairConfig,
+) -> tuple[tuple[dict, object, str, tuple[_Target, ...]] | None, str | None]:
+    """The chain this finding would be cut again, or why it would not be."""
+    try:
+        if issue.kind != "chain_conservation":
+            return None, "issue_is_not_a_chain_conservation_finding"
+        row, refused = _chain_row(issue, docs)
+        if refused is not None:
+            return None, refused
+        translated = row.get("translation")
+        if not isinstance(translated, str) or not translated.strip():
+            return None, "chain_translation_unavailable"
+        backfill_config = chain_backfill.load_backfill_config()
+        strategy = _next_strategy(row.get("strategy"), backfill_config.slot_cascade)
+        if strategy is None:
+            return None, "chain_realloc_no_further_strategy"
+        merge, refused = _rebuilt_merge(row)
+        if refused is not None:
+            return None, refused
+        members = row.get("members")
+        if not isinstance(members, list) or len(members) != len(merge.members):
+            return None, "chain_member_records_disagree_with_merge"
+        if len(members) > config.chain_max_members:
+            return None, "chain_exceeds_member_ceiling"
+        targets: list[_Target] = []
+        for member in members:
+            local_ref = None if not isinstance(member, dict) else member.get(
+                "runtime_source_ref"
+            )
+            if not isinstance(local_ref, str) or not local_ref:
+                return None, "chain_member_has_no_runtime_ref"
+            physical_ref = baseline.physical_ref(local_ref)
+            if physical_ref is None:
+                return None, "chain_member_outside_selected_pages"
+            target = _target(docs, baseline, article_document_ir, physical_ref)
+            if _source_box(target) is None:
+                return None, "canonical_source_box_invalid"
+            if target.local_ref in baseline.fixed_inventory.protected_paragraph_refs:
+                return None, "chain_member_is_fixed_furniture"
+            if not _style_is_renderable(_paragraph_style(target.paragraph)):
+                return None, "chain_member_style_unavailable"
+            targets.append(target)
+    except _RepairRefusalError as refusal:
+        return None, refusal.reason
+    return (row, merge, strategy, tuple(targets)), None
+
+
+def admits_chain_reallocation(
+    issue,
+    docs,
+    baseline,
+    article_document_ir,
+    flow_refs,
+    config: RepairConfig,
+) -> str | None:
+    """Why this chain may not be cut again, or ``None`` when it may."""
+    return _chain_admission(
+        issue, docs, baseline, article_document_ir, flow_refs, config
+    )[1]
+
+
+def _reallocate_chain_cut(
+    issue,
+    docs,
+    baseline,
+    article_document_ir,
+    typesetter,
+    flow_refs,
+    config: RepairConfig,
+    *,
+    language: str | None = None,
+) -> tuple[_Target, ...]:
+    """Cut the chain's translation again one cascade level down, or refuse.
+
+    The translation itself is not touched and not asked for again: the same
+    characters are handed to the members in different proportions, which is why
+    the conservation law below is checkable at all. Every member must then hold
+    the piece it was given inside its own box; the first that cannot takes the
+    whole reallocation down, because a chain with one member overflowing and the
+    rest moved is worse than the chain the finding complained about.
+    """
+    from babeldoc.format.pdf.document_il.midend.typesetting import (
+        BoundedTypesettingError,
+    )
+
+    admitted, refused = _chain_admission(
+        issue, docs, baseline, article_document_ir, flow_refs, config
+    )
+    if refused is not None:
+        raise _RepairRefusalError(refused)
+    row, merge, strategy, targets = admitted
+    translated = row["translation"]
+    try:
+        result = chain_backfill.redistribute(
+            merge,
+            translated,
+            language,
+            strategy,
+        )
+    except chain_backfill.ChainBackfillError as error:
+        raise _RepairRefusalError("chain_redistribution_failed") from error
+    conservation = chain_backfill.verify_redistribution(merge, translated, result)
+    if not conservation.ok:
+        raise _RepairRefusalError("chain_redistribution_not_conserved")
+    if len(result.segments) != len(targets):
+        raise _RepairRefusalError("chain_segment_count_disagrees_with_members")
+
+    for target, segment in zip(targets, result.segments, strict=True):
+        piece = segment.text
+        if not piece:
+            raise _RepairRefusalError("chain_member_received_no_text")
+        source_box = _source_box(target)
+        style = _paragraph_style(target.paragraph)
+        source_style_digest = fixed_assets.content_digest(style)
+        target.paragraph.unicode = piece
+        target.paragraph.pdf_paragraph_composition = [
+            il_version_1.PdfParagraphComposition(
+                pdf_same_style_unicode_characters=(
+                    il_version_1.PdfSameStyleUnicodeCharacters(
+                        pdf_style=style,
+                        unicode=piece,
+                    )
+                )
+            )
+        ]
+        units = _bounded_units(typesetter, target)
+        try:
+            typesetter.retypeset_bounded_text(
+                target.paragraph,
+                target.page,
+                units,
+                source_ref=target.physical_ref,
+                source_box=source_box,
+                minimum_scale=config.region_min_scale,
+                maximum_lines=None,
+                use_english_line_break=True,
+                preserve_wrapped_spaces=True,
+            )
+        except BoundedTypesettingError as error:
+            raise _RepairRefusalError("chain_realloc_member_overflow") from error
+        if (
+            target.paragraph.unicode != piece
+            or _box_tuple(target.paragraph.box) != source_box
+            or fixed_assets.content_digest(style) != source_style_digest
+            or not _visible_character_contract(target.paragraph, piece)
+        ):
+            raise _RepairRefusalError("chain_realloc_render_contract_failed")
+    return targets

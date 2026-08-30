@@ -275,8 +275,11 @@ def parse_decide_config(raw: object, source: str) -> DecideConfig:
     offered: dict[str, tuple[str, ...]] = {}
     for kind, value in issue_actions.items():
         names = (value,) if isinstance(value, str) else tuple(value or ())
+        # An empty set is a kind that may only be escalated: the round is still
+        # taken and no_op is still offered, so the model can say so explicitly
+        # rather than the round being silently skipped.
         _require(
-            bool(names) and all(isinstance(item, str) for item in names),
+            all(isinstance(item, str) and item for item in names),
             f"{source}: issue_actions.{kind} must name actions",
         )
         outside = sorted(set(names) - set(actions))
