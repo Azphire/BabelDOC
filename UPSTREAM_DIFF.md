@@ -377,3 +377,32 @@ checks the biconditional in both directions -- a page has a pair if and only if
 an accepted action wrote to it -- because both halves fail silently: two renders
 of an unchanged page look like evidence of a repair, and a repair that rendered
 nothing leaves a claim nobody can check.
+
+### What the first real runs exposed
+
+Three gaps that only a real run could show, all fixed and all gated:
+
+1. **The loop never implemented `translate_orphan_text`.**  `_apply` handled the
+   four geometric actions and would have raised on the one action that asks for
+   new text.  It never surfaced in the synthetic gates because the fixtures
+   reach `_apply` only through actions the admission rule admits, and on the
+   corpus every orphan nomination was refused before it got there.  Implemented,
+   and the action now returns what it spent as well as what it wrote.
+
+2. **The run report reads `repair["translator_requests"]` by name.**  The loop
+   record did not carry it, so a run that took the loop died in
+   `_build_run_report` with a bare `KeyError` after doing all its work -- the
+   translated PDF was produced and then the report failed.  The loop now
+   accounts for its own requests, and `spec_check_b12_t4.py` S8 pins that the
+   record carries every field the report reads by name.
+
+3. **`tools/verify_minimal_pdf.py` assumed the one-shot repair schema.**  It now
+   branches: a loop run is validated against the loop's closed termination and
+   action vocabularies on its own terms rather than flattened into the other
+   shape.  Its root schema also gained `repair_evidence`, and the synthetic
+   fixture in `tests/minimal/test_minimal_pdf_validator.py` gained the same
+   section.
+
+The first of these is the one worth remembering: the synthetic gates were green
+throughout, because a fixture that only ever exercises admitted actions cannot
+reach an unimplemented branch behind a refusal.

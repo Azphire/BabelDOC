@@ -133,6 +133,7 @@ class LoopResult:
     decisions: list[dict] = field(default_factory=list)
     acceptances: list[dict] = field(default_factory=list)
     affected_elements: int = 0
+    translator_requests: int = 0
     detection_passes_added: int = 0
     final_detection: object | None = None
     rolled_back: bool = False
@@ -148,6 +149,7 @@ class LoopResult:
             "iterations": self.iterations,
             "rolled_back": self.rolled_back,
             "affected_elements": self.affected_elements,
+            "translator_requests": self.translator_requests,
             "detection_passes_added": self.detection_passes_added,
             "accepted_actions": [item.as_record() for item in self.accepted_actions],
             "refusals": list(self.refusals),
@@ -244,8 +246,26 @@ def _apply(
     flow_refs,
     config,
     parameters: dict,
-) -> tuple:
-    """Run one admitted action, returning the targets it wrote."""
+) -> tuple[tuple, int]:
+    """Run one admitted action, returning what it wrote and what it spent.
+
+    The second number is translator requests. Only one action asks for text
+    that does not exist yet, and the run report accounts for every request
+    separately from the ordinary translation, so an action that spends one has
+    to say so rather than have it counted as ordinary work.
+    """
+    if action == minimal_repair.TRANSLATE_ORPHAN:
+        target, requests = minimal_repair._translate_orphan(
+            issue,
+            docs,
+            baseline,
+            article_document_ir,
+            typesetter,
+            translation_config,
+            flow_refs,
+            config,
+        )
+        return (target,), requests
     if action == minimal_repair.CONTAIN_HEADING:
         target = minimal_repair._contain_heading(
             issue,
@@ -262,32 +282,10 @@ def _apply(
                 else int(parameters["heading_max_lines"])
             ),
         )
-        return (target,)
+        return (target,), 0
     if action == minimal_repair.RETYPESET_REGION:
-        return minimal_repair._retypeset_region(
-            issue,
-            docs,
-            baseline,
-            article_document_ir,
-            typesetter,
-            flow_refs,
-            config,
-            minimum_scale=parameters.get("region_min_scale"),
-        )
-    if action == minimal_repair.REALLOCATE_CHAIN:
-        return minimal_repair._reallocate_chain_cut(
-            issue,
-            docs,
-            baseline,
-            article_document_ir,
-            typesetter,
-            flow_refs,
-            config,
-            language=getattr(translation_config, "lang_out", None),
-        )
-    if action == minimal_repair.REFIT_OWNED:
         return (
-            minimal_repair._refit_target(
+            minimal_repair._retypeset_region(
                 issue,
                 docs,
                 baseline,
@@ -295,7 +293,38 @@ def _apply(
                 typesetter,
                 flow_refs,
                 config,
+                minimum_scale=parameters.get("region_min_scale"),
             ),
+            0,
+        )
+    if action == minimal_repair.REALLOCATE_CHAIN:
+        return (
+            minimal_repair._reallocate_chain_cut(
+                issue,
+                docs,
+                baseline,
+                article_document_ir,
+                typesetter,
+                flow_refs,
+                config,
+                language=getattr(translation_config, "lang_out", None),
+            ),
+            0,
+        )
+    if action == minimal_repair.REFIT_OWNED:
+        return (
+            (
+                minimal_repair._refit_target(
+                    issue,
+                    docs,
+                    baseline,
+                    article_document_ir,
+                    typesetter,
+                    flow_refs,
+                    config,
+                ),
+            ),
+            0,
         )
     raise RepairLoopError(f"the loop cannot apply {action!r}")
 
@@ -418,7 +447,7 @@ def repair_loop(
                     )
                     continue
                 try:
-                    targets = _apply(
+                    targets, requests = _apply(
                         decision.action,
                         issue,
                         docs,
@@ -446,6 +475,7 @@ def repair_loop(
                 # lands rather than at the end of the iteration.
                 actions_left -= 1
                 result.affected_elements += len(targets)
+                result.translator_requests += requests
                 applied.append(
                     AppliedAction(
                         iteration=iteration,

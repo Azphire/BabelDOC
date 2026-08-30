@@ -157,6 +157,9 @@ def _report(run_dir, output, *, translated=False):
             "rolled_back": False,
             "filtered_candidates": [],
         },
+        # A run that kept no repair has no page to show, and says so rather
+        # than leaving the section out.
+        "repair_evidence": {"pages": [], "pairs": [], "before_pdf": None},
         "fixed": {"holds": True, "drift_count": 0},
         "output": {
             "status": "complete",

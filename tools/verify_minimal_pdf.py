@@ -38,6 +38,7 @@ ROOT_KEYS = frozenset(
         "issues",
         "detector",
         "repair",
+        "repair_evidence",
         "fixed",
         "output",
     }
@@ -154,6 +155,150 @@ def _issue_counts(value, where: str) -> dict:
     }
     _require(total == sum(normalized.values()), f"{where} issue counts disagree")
     return {"total": total, "by_kind": normalized}
+
+
+ALL_ACTIONS = frozenset(
+    {
+        "translate_orphan_text",
+        "reallocate_chain_cut",
+        "retypeset_article_region",
+        "contain_heading",
+        "refit_or_reflow_owned_paragraph",
+        "no_op",
+    }
+)
+
+LOOP_TERMINATIONS = frozenset(
+    {
+        "no_issues",
+        "all_candidates_refused",
+        "iteration_rejected",
+        "budget_iterations",
+        "budget_actions",
+        "budget_elements",
+        "no_usable_decision",
+        "converged_all_treated",
+    }
+)
+
+
+def _validate_loop_repair(raw) -> tuple[bool, int, int]:
+    """The bounded loop's own account, held to its closed vocabularies."""
+    repair = _object(
+        raw,
+        "repair",
+        frozenset(
+            {
+                "schema_version",
+                "termination",
+                "iterations",
+                "rolled_back",
+                "affected_elements",
+                "translator_requests",
+                "detection_passes_added",
+                "accepted_actions",
+                "refusals",
+                "decisions",
+                "acceptances",
+                "residual_issues",
+            }
+        ),
+    )
+    _require(
+        repair["termination"] in LOOP_TERMINATIONS,
+        "the repair loop stopped for a reason outside the closed set",
+    )
+    actions = repair["accepted_actions"]
+    _require(isinstance(actions, list), "repair.accepted_actions must be a list")
+    for position, row in enumerate(actions):
+        _require(isinstance(row, dict), f"repair.accepted_actions[{position}]")
+        _require(
+            row.get("action") in ALL_ACTIONS,
+            f"repair.accepted_actions[{position}] names an unallowed action",
+        )
+    rolled_back = _boolean(repair["rolled_back"], "repair.rolled_back")
+    _require(
+        not (rolled_back and actions),
+        "a rolled back loop cannot have kept an action",
+    )
+    for row in repair["refusals"]:
+        _require(
+            isinstance(row, dict) and row.get("action") in ALL_ACTIONS,
+            "repair.refusals names an unallowed action",
+        )
+    return (
+        bool(actions),
+        _integer(
+            repair["detection_passes_added"], "repair.detection_passes_added"
+        ),
+        _integer(repair["translator_requests"], "repair.translator_requests"),
+    )
+
+
+def _validate_one_shot_repair(
+    raw, ordinary_counts, passes, after_index, mirrored
+) -> None:
+    """The single deterministic action's account, unchanged."""
+    repair = _object(
+        raw,
+        "repair",
+        frozenset(
+            {
+                "selected",
+                "reason",
+                "action_count",
+                "applied_count",
+                "translator_requests",
+                "detection_passes_added",
+                "accepted",
+                "rolled_back",
+                "filtered_candidates",
+            }
+        ),
+    )
+    selected = repair["selected"]
+    _require(
+        selected is None
+        or selected
+        in {"translate_orphan_text", "refit_or_reflow_owned_paragraph", "no_op"},
+        "repair selected an unallowed action",
+    )
+    _text(repair["reason"], "repair.reason")
+    filtered = repair["filtered_candidates"]
+    _require(isinstance(filtered, list), "repair.filtered_candidates must be a list")
+    for position, row in enumerate(filtered):
+        entry = _object(
+            row,
+            f"repair.filtered_candidates[{position}]",
+            frozenset({"id", "kind", "action", "reason"}),
+        )
+        _require(
+            entry["action"]
+            in {"translate_orphan_text", "refit_or_reflow_owned_paragraph", "no_op"},
+            f"repair.filtered_candidates[{position}] names an unallowed action",
+        )
+        for name in ("id", "kind", "reason"):
+            _text(entry[name], f"repair.filtered_candidates[{position}].{name}")
+    _require(
+        selected is not None
+        or repair["reason"] != "all_candidates_refused"
+        or bool(filtered),
+        "a refused repair run names no refusal",
+    )
+    action_count = _integer(repair["action_count"], "repair.action_count")
+    applied_count = _integer(repair["applied_count"], "repair.applied_count")
+    repair_requests = _integer(repair["translator_requests"], "repair.translator_requests")
+    added_passes = _integer(repair["detection_passes_added"], "repair.detection_passes_added")
+    accepted = _boolean(repair["accepted"], "repair.accepted")
+    rolled_back = _boolean(repair["rolled_back"], "repair.rolled_back")
+    _require(action_count <= 1 and applied_count <= action_count, "repair action count exceeds one")
+    _require(added_passes in (0, 1) and passes == 1 + added_passes, "repair/detector pass counts disagree")
+    _require(repair_requests == ordinary_counts["repair_requests"], "repair request accounting disagrees")
+    _require(not (accepted and rolled_back), "repair cannot be accepted and rolled back")
+    expected_after_index = 1 if accepted else 0
+    _require(after_index == expected_after_index, "final after pass index disagrees with repair")
+    _require(mirrored is not accepted, "final after mirror evidence disagrees with repair")
+
 
 
 def _validate_sidecar(path: Path, expected, pass_index: int, mirrored: bool) -> None:
@@ -361,65 +506,33 @@ def _validate_report(report_path: Path, output: Path, allow_untranslated: bool) 
     mirrored = _boolean(detector["after_mirrored"], "detector.after_mirrored")
     _require(before_index == 0, "before detector pass must be zero")
 
-    repair = _object(
-        report["repair"],
-        "repair",
-        frozenset(
-            {
-                "selected",
-                "reason",
-                "action_count",
-                "applied_count",
-                "translator_requests",
-                "detection_passes_added",
-                "accepted",
-                "rolled_back",
-                "filtered_candidates",
-            }
-        ),
-    )
-    selected = repair["selected"]
-    _require(
-        selected is None
-        or selected
-        in {"translate_orphan_text", "refit_or_reflow_owned_paragraph", "no_op"},
-        "repair selected an unallowed action",
-    )
-    _text(repair["reason"], "repair.reason")
-    filtered = repair["filtered_candidates"]
-    _require(isinstance(filtered, list), "repair.filtered_candidates must be a list")
-    for position, row in enumerate(filtered):
-        entry = _object(
-            row,
-            f"repair.filtered_candidates[{position}]",
-            frozenset({"id", "kind", "action", "reason"}),
+    raw_repair = report["repair"]
+    if isinstance(raw_repair, dict) and "termination" in raw_repair:
+        # A run that had a model to decide with takes the bounded loop, whose
+        # account of itself is a different shape from the one-shot pass's. It
+        # is validated on its own terms rather than flattened into the other.
+        accepted, added_passes, repair_requests = _validate_loop_repair(raw_repair)
+        _require(
+            repair_requests == ordinary_counts["repair_requests"],
+            "repair request accounting disagrees",
         )
         _require(
-            entry["action"]
-            in {"translate_orphan_text", "refit_or_reflow_owned_paragraph", "no_op"},
-            f"repair.filtered_candidates[{position}] names an unallowed action",
+            passes == 1 + added_passes,
+            "repair/detector pass counts disagree",
         )
-        for name in ("id", "kind", "reason"):
-            _text(entry[name], f"repair.filtered_candidates[{position}].{name}")
-    _require(
-        selected is not None
-        or repair["reason"] != "all_candidates_refused"
-        or bool(filtered),
-        "a refused repair run names no refusal",
-    )
-    action_count = _integer(repair["action_count"], "repair.action_count")
-    applied_count = _integer(repair["applied_count"], "repair.applied_count")
-    repair_requests = _integer(repair["translator_requests"], "repair.translator_requests")
-    added_passes = _integer(repair["detection_passes_added"], "repair.detection_passes_added")
-    accepted = _boolean(repair["accepted"], "repair.accepted")
-    rolled_back = _boolean(repair["rolled_back"], "repair.rolled_back")
-    _require(action_count <= 1 and applied_count <= action_count, "repair action count exceeds one")
-    _require(added_passes in (0, 1) and passes == 1 + added_passes, "repair/detector pass counts disagree")
-    _require(repair_requests == ordinary_counts["repair_requests"], "repair request accounting disagrees")
-    _require(not (accepted and rolled_back), "repair cannot be accepted and rolled back")
-    expected_after_index = 1 if accepted else 0
-    _require(after_index == expected_after_index, "final after pass index disagrees with repair")
-    _require(mirrored is not accepted, "final after mirror evidence disagrees with repair")
+        expected_after_index = 1 if accepted else 0
+        _require(
+            after_index == expected_after_index,
+            "final after pass index disagrees with repair",
+        )
+        _require(
+            mirrored is not accepted,
+            "final after mirror evidence disagrees with repair",
+        )
+    else:
+        _validate_one_shot_repair(
+            raw_repair, ordinary_counts, passes, after_index, mirrored
+        )
 
     before_path = Path(_text(detector["before_path"], "detector.before_path")).resolve()
     after_path = Path(_text(detector["after_path"], "detector.after_path")).resolve()

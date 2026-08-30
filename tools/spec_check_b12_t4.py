@@ -449,6 +449,19 @@ def s8_the_pipeline_accepts_a_loop_result(work: Path) -> str:
         record["accepted_actions"],
         "the run report saw no accepted action for an accepted iteration",
     )
+    # The run report accounts for every translator request separately from the
+    # ordinary translation, so the loop has to declare what its actions spent.
+    for key in ("translator_requests", "detection_passes_added"):
+        _require(
+            isinstance(record.get(key), int),
+            f"the loop record carries no integer {key!r}, which the run "
+            f"report reads by name",
+        )
+    _require(
+        minimal_repair.TRANSLATE_ORPHAN in repair_loop._ADMISSIONS,
+        "the loop declares no admission rule for the one action that spends a "
+        "translator request",
+    )
     # A run that does not translate through a provider the decision can reach
     # never takes the loop, whatever the environment holds.
     from babeldoc.translator.no_network import NoNetworkTranslator
