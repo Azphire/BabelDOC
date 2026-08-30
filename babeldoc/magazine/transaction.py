@@ -5,6 +5,7 @@ from __future__ import annotations
 import contextlib
 import copy
 import hashlib
+import logging
 import sys
 from collections.abc import Iterable
 from dataclasses import dataclass
@@ -14,6 +15,8 @@ from dataclasses import is_dataclass
 from babeldoc.format.pdf.document_il.il_version_1 import Box
 from babeldoc.magazine import fixed_assets
 from babeldoc.magazine.run_trace import hash_record
+
+logger = logging.getLogger(__name__)
 
 
 # How deep a snapshot may recurse. A magazine's intermediate representation is a
@@ -44,26 +47,50 @@ def _sha256(value: bytes) -> str:
     return hashlib.sha256(value).hexdigest()
 
 
+def _content_digests(docs, positions: tuple[int, ...]) -> str:
+    """The fallback reading of the same pages, taken from the objects."""
+    return hash_record(
+        [
+            (position, fixed_assets.content_digest(docs.page[position]))
+            for position in positions
+        ]
+    )
+
+
 def _page_xml_digests(docs, positions: tuple[int, ...]) -> str:
+    """A digest per page, read through the checkpoint serializer where it can.
+
+    The serializer gives the strictest reading available: two pages that differ
+    anywhere differ here. It cannot read every document, though -- a run whose
+    intermediate representation carries content-stream instructions the
+    checkpoint schema never declared has no XML form -- and the digest exists to
+    notice change, not to prove serializability. So any failure to serialize
+    falls back to digesting the objects themselves, which answers the same
+    question slightly more coarsely, rather than taking down a transaction that
+    was only trying to record what it might have to undo.
+    """
     try:
         from lxml import etree
 
         from babeldoc.magazine.checkpoint import to_checkpoint_xml
     except ModuleNotFoundError:
+        return _content_digests(docs, positions)
+    try:
+        root = etree.fromstring(to_checkpoint_xml(docs).encode("utf-8"))
+        pages = root.findall("page")
         return hash_record(
             [
-                (position, fixed_assets.content_digest(docs.page[position]))
+                (position, _sha256(etree.tostring(pages[position])))
                 for position in positions
             ]
         )
-    root = etree.fromstring(to_checkpoint_xml(docs).encode("utf-8"))
-    pages = root.findall("page")
-    return hash_record(
-        [
-            (position, _sha256(etree.tostring(pages[position])))
-            for position in positions
-        ]
-    )
+    except Exception:
+        logger.debug(
+            "this document has no checkpoint XML form; page digests fall back "
+            "to the objects themselves",
+            exc_info=True,
+        )
+        return _content_digests(docs, positions)
 
 
 def _geometry(node, path: str, seen: set[int], output: list) -> None:
