@@ -9,9 +9,11 @@ from types import SimpleNamespace
 import pytest
 from babeldoc.format.pdf.document_il import il_version_1
 from babeldoc.magazine import minimal_pipeline
-from babeldoc.magazine import vlm_client as vlm_client_module
+from babeldoc.magazine import page_classifier as page_classifier_module
 from babeldoc.magazine.article_builder import UNSUPPORTED_SAME_PAGE_MULTI_ARTICLE
 from babeldoc.magazine.article_ir import ArticleDocumentIR
+from babeldoc.magazine.taxonomy import Verdict
+from babeldoc.magazine.vlm_client import VlmVerdict
 
 ROOT = Path(__file__).resolve().parents[2]
 RUNTIME_TEMP = ROOT / ".runtime" / "temp"
@@ -31,11 +33,6 @@ class StubConfig:
     def get_working_file_path(self, name: str) -> str:
         self.working_dir.mkdir(parents=True, exist_ok=True)
         return str(self.working_dir / name)
-
-
-class CredentialEnvironmentTrap(dict[str, str]):
-    def get(self, key: str, default=None):
-        raise AssertionError(f"credential environment was queried: {key}")
 
 
 @pytest.fixture
@@ -143,24 +140,6 @@ def _force_article_body(_classifier, docs) -> il_version_1.Document:
         page.page_kind_conf = 1.0
         page.page_kind_source = "test-deterministic"
     return docs
-
-
-def _trap_model_paths(monkeypatch: pytest.MonkeyPatch) -> None:
-    def forbidden(*_args, **_kwargs):
-        raise AssertionError("VLM/model path was entered")
-
-    monkeypatch.setattr(
-        vlm_client_module,
-        "os",
-        SimpleNamespace(environ=CredentialEnvironmentTrap()),
-    )
-    monkeypatch.setattr(vlm_client_module, "read_api_key", forbidden)
-    monkeypatch.setattr(vlm_client_module, "build_openai_client", forbidden)
-    monkeypatch.setattr(
-        vlm_client_module.OpenAICompatibleTransport,
-        "complete",
-        forbidden,
-    )
 
 
 def _assert_chain_and_owner_invariants(
@@ -341,59 +320,127 @@ def test_unsupported_multi_article_and_unknown_kind_are_protected(
     assert all(slot.page != 1 for article in document_ir.articles for slot in article.slots)
 
 
-def test_vlm_disabled_path_never_enters_client_or_credentials(
+def test_enabled_vlm_routes_all_pages(
     monkeypatch: pytest.MonkeyPatch,
     runtime_work_dir: Path,
 ) -> None:
-    _trap_model_paths(monkeypatch)
-    config_file = ROOT / "configs" / "vlm.json"
-    assert json.loads(config_file.read_text(encoding="utf-8"))["enabled"] is False
+    verdicts = iter(
+        [
+            Verdict(
+                kind="article_body",
+                confidence=0.9,
+                ambiguous=False,
+                scores={"article_body": 0.9, "toc": 0.2, "editorial": 0.1},
+            ),
+            Verdict(
+                kind="article_opener",
+                confidence=0.6,
+                ambiguous=True,
+                scores={"article_opener": 0.6, "editorial": 0.55, "toc": 0.1},
+            ),
+        ]
+    )
+    monkeypatch.setattr(
+        page_classifier_module,
+        "classify",
+        lambda _features, _taxonomy: next(verdicts),
+    )
 
+    class FakeVlmClient:
+        config = SimpleNamespace(enabled=True, render_dpi=72, verdict_rows=3)
+
+        def __init__(self):
+            self.calls = []
+            self.decisions = iter(
+                [
+                    VlmVerdict(
+                        accepted=True,
+                        kind="editorial",
+                        confidence=0.88,
+                        attempts=1,
+                    ),
+                    VlmVerdict(
+                        accepted=False,
+                        reason="reply is not valid JSON",
+                        attempts=2,
+                    ),
+                ]
+            )
+
+        def classify(self, prompt, image, vocabulary):
+            self.calls.append((prompt, image, vocabulary))
+            return next(self.decisions)
+
+    client = FakeVlmClient()
     config = StubConfig(runtime_work_dir)
     docs = il_version_1.Document(
-        page=[_page(0, [], page_kind=None)],
-        total_pages=1,
+        page=[_page(0, []), _page(1, [])],
+        total_pages=2,
     )
-    minimal_pipeline.configure(config)
-    document_ir = minimal_pipeline.after_styles(config, docs)
+    page_classifier_module.PageClassifier(config, vlm_client=client).process(docs)
 
     report = json.loads(
         (config.working_dir / "page_classify.report.json").read_text(encoding="utf-8")
     )
-    assert report["vlm_enabled"] is False
-    assert all(page["vlm"] is None for page in report["pages"])
-    assert minimal_pipeline.get_article_document_ir(config) is document_ir
+    assert len(client.calls) == 2
+    assert [page["ambiguous"] for page in report["pages"]] == [False, True]
+    assert docs.page[0].page_kind == "editorial"
+    assert docs.page[0].page_kind_conf == 0.88
+    assert docs.page[0].page_kind_source == "vlm"
+    assert docs.page[1].page_kind == "article_opener"
+    assert docs.page[1].page_kind_conf == 0.6
+    assert docs.page[1].page_kind_source == "deterministic"
+    assert report["pages"][1]["vlm"]["accepted"] is False
+    assert (
+        report["pages"][1]["effective_kind_reason"]
+        == "deterministic_fallback_after_vlm_rejection"
+    )
 
 
-def test_enabled_vlm_is_rejected_before_classifier_process(
+def test_secondary_kind_sets_effective_policy(
     monkeypatch: pytest.MonkeyPatch,
     runtime_work_dir: Path,
 ) -> None:
-    process_called = False
+    monkeypatch.setattr(
+        page_classifier_module,
+        "classify",
+        lambda _features, _taxonomy: Verdict(
+            kind="article_body",
+            confidence=0.7,
+            ambiguous=False,
+            scores={"article_body": 0.7, "editorial": 0.2, "toc": 0.1},
+        ),
+    )
 
-    class EnabledClassifier:
-        vlm_enabled = True
+    class FakeVlmClient:
+        config = SimpleNamespace(enabled=True, render_dpi=72, verdict_rows=3)
 
-        def __init__(self, _config):
-            pass
+        def classify(self, _prompt, _image, _vocabulary):
+            return VlmVerdict(
+                accepted=True,
+                kind="editorial",
+                confidence=0.93,
+                secondary_kind="toc",
+                secondary_reason="The contents grid is the secondary structure.",
+                attempts=1,
+            )
 
-        def process(self, docs):
-            nonlocal process_called
-            process_called = True
-            return docs
-
-    monkeypatch.setattr(minimal_pipeline, "PageClassifier", EnabledClassifier)
     config = StubConfig(runtime_work_dir)
-    minimal_pipeline.configure(config)
+    docs = il_version_1.Document(page=[_page(0, [])], total_pages=1)
+    page_classifier_module.PageClassifier(
+        config, vlm_client=FakeVlmClient()
+    ).process(docs)
 
-    with pytest.raises(
-        minimal_pipeline.MinimalPipelineStateError,
-        match="VLM page classification must remain disabled",
-    ):
-        minimal_pipeline.after_styles(
-            config,
-            il_version_1.Document(page=[], total_pages=0),
-        )
-
-    assert process_called is False
-    assert config.magazine_state.article_document_ir is None
+    report_page = json.loads(
+        (config.working_dir / "page_classify.report.json").read_text(encoding="utf-8")
+    )["pages"][0]
+    assert docs.page[0].page_kind == "toc"
+    assert docs.page[0].page_kind_conf == 0.93
+    assert docs.page[0].page_kind_source == "vlm"
+    assert report_page["effective_kind"] == "toc"
+    assert (
+        report_page["effective_kind_reason"]
+        == "secondary_only_preserves_line_structure"
+    )
+    assert report_page["vlm"]["kind"] == "editorial"
+    assert report_page["vlm"]["secondary_kind"] == "toc"

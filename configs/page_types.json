@@ -7,7 +7,7 @@
   "page_types": [
     {
       "name": "front_cover",
-      "description": "Opening cover: dominant image, a masthead-sized title, almost no running text.",
+      "description": "Opening publication cover: issue masthead or publication identity with dominant artwork and little running text; a standalone product promotion is an advertisement instead.",
       "rules": [
         {"feature": "page_relative_position", "op": "le", "threshold": 0.15, "weight": 2.0},
         {"feature": "paragraph_count", "op": "le", "threshold": 12.0, "weight": 1.5},
@@ -30,7 +30,7 @@
     },
     {
       "name": "toc",
-      "description": "Table of contents: entry titles with page numbers, often leader dots.",
+      "description": "Navigational contents index: several entry or section titles repeatedly paired with page numbers in rows, columns or a grid; it may occupy only one region of a composite page.",
       "rules": [
         {"feature": "numeric_token_density", "op": "ge", "threshold": 0.02, "weight": 2.0},
         {"feature": "short_paragraph_ratio", "op": "ge", "threshold": 0.55, "weight": 1.5},
@@ -41,7 +41,7 @@
     },
     {
       "name": "masthead",
-      "description": "Imprint and credits: staff lists, addresses, ISSN and copyright lines set small.",
+      "description": "Publication imprint and credits: staff lists, publisher, addresses, ISSN, copyright or legal lines, usually set small; not a signed editor's letter.",
       "rules": [
         {"feature": "paragraph_count", "op": "ge", "threshold": 10.0, "weight": 1.5},
         {"feature": "short_paragraph_ratio", "op": "ge", "threshold": 0.4, "weight": 1.5},
@@ -53,7 +53,7 @@
     },
     {
       "name": "editorial",
-      "description": "Editor's letter near the front: one continuous argument in a narrow measure.",
+      "description": "Editor's letter or signed foreword: one continuous personal argument, commonly with a portrait, signature or editor attribution; not general front-of-book prose.",
       "rules": [
         {"feature": "page_relative_position", "op": "le", "threshold": 0.35, "weight": 2.0},
         {"feature": "mean_paragraph_chars", "op": "ge", "threshold": 80.0, "weight": 2.0},
@@ -65,7 +65,7 @@
     },
     {
       "name": "article_opener",
-      "description": "First page of a feature: display title, lead image and a short standfirst.",
+      "description": "First page of a named story: headline markedly larger than body text, commonly a deck, byline or author block, followed by the beginning of prose; artwork is optional.",
       "rules": [
         {"feature": "max_font_size_ratio", "op": "ge", "threshold": 2.5, "weight": 2.5},
         {"feature": "image_area_ratio", "op": "ge", "threshold": 0.25, "weight": 1.0},
@@ -77,7 +77,7 @@
     },
     {
       "name": "article_body",
-      "description": "Continuation page of a feature: multi column running text at one size.",
+      "description": "Continuation of one story: substantial running prose at body size, commonly in columns; subheads, pull quotes, drop caps, pictures or charts may appear without changing its role.",
       "rules": [
         {"feature": "text_coverage_ratio", "op": "ge", "threshold": 0.24, "weight": 2.0},
         {"feature": "mean_paragraph_chars", "op": "ge", "threshold": 110.0, "weight": 2.5},
@@ -89,7 +89,7 @@
     },
     {
       "name": "photo_spread",
-      "description": "Full bleed picture page or double spread carrying only a caption.",
+      "description": "Editorial photograph or illustration dominates the page while running prose is absent or minor; it may carry a display phrase, quotation or caption and need not be full bleed.",
       "rules": [
         {"feature": "image_area_ratio", "op": "ge", "threshold": 0.5, "weight": 3.0},
         {"feature": "text_coverage_ratio", "op": "le", "threshold": 0.15, "weight": 2.0},
@@ -100,7 +100,7 @@
     },
     {
       "name": "infographic",
-      "description": "Data page: chart or map artwork surrounded by many short numeric labels.",
+      "description": "Explanatory data or process page whose central communication is a chart, map, diagram, timeline or labelled graphic rather than an ordinary photograph.",
       "rules": [
         {"feature": "image_area_ratio", "op": "ge", "threshold": 0.25, "weight": 2.0},
         {"feature": "numeric_token_density", "op": "ge", "threshold": 0.08, "weight": 2.5},
@@ -125,7 +125,7 @@
     },
     {
       "name": "sidebar_heavy",
-      "description": "Page broken into boxed side stories: many columns and many type sizes at once.",
+      "description": "Page visibly divided into several independent modules, briefs, boxes or side stories; ordinary columns and varied type within one continuous article are not sufficient.",
       "rules": [
         {"feature": "column_count_estimate", "op": "ge", "threshold": 3.0, "weight": 2.5},
         {"feature": "distinct_font_size_count", "op": "ge", "threshold": 4.0, "weight": 2.5},
@@ -138,7 +138,7 @@
     },
     {
       "name": "contributors",
-      "description": "Author biographies with portraits, usually near the end of the issue.",
+      "description": "Collection of several short author or contributor biographies, often with one portrait per person; bylines or quoted experts inside one continuing story do not qualify.",
       "rules": [
         {"feature": "page_relative_position", "op": "ge", "threshold": 0.7, "weight": 2.0},
         {"feature": "short_paragraph_ratio", "op": "ge", "threshold": 0.6, "weight": 2.0},
@@ -163,7 +163,7 @@
     },
     {
       "name": "advertisement",
-      "description": "Bought page: single artwork with a slogan, no running text and one measure.",
+      "description": "Commercial promotion: product or service focus, prominent brand or logo, slogan, offer, QR code or call to action, usually with little editorial running text.",
       "rules": [
         {"feature": "image_area_ratio", "op": "ge", "threshold": 0.4, "weight": 2.5},
         {"feature": "text_coverage_ratio", "op": "le", "threshold": 0.25, "weight": 2.0},
@@ -176,7 +176,7 @@
     },
     {
       "name": "section_divider",
-      "description": "Section title page: a few display words on an otherwise empty page.",
+      "description": "Sparse thematic section break: a section title or theme with little prose and without the headline, byline, deck and body apparatus of a named article.",
       "rules": [
         {"feature": "paragraph_count", "op": "le", "threshold": 5.0, "weight": 2.5},
         {"feature": "title_label_ratio", "op": "ge", "threshold": 0.3, "weight": 2.0},

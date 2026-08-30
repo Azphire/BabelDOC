@@ -424,10 +424,6 @@ def after_styles(config, docs) -> ArticleDocumentIR:
 
     _normalize_selected_document_total_pages(config, docs)
     classifier = PageClassifier(config)
-    if classifier.vlm_enabled:
-        raise MinimalPipelineStateError(
-            "VLM page classification must remain disabled in the minimal pipeline"
-        )
     classifier.process(docs)
     hitl_state = hitl.begin_run(config, docs)
     state._hitl_state = hitl_state

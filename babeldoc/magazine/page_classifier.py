@@ -1,4 +1,4 @@
-"""Page classification stage: deterministic verdict, model adjudicated fallback.
+"""Page classification stage: deterministic verdict, model adjudication.
 
 Runs between StylesAndFormulas and translation, writes the page level kind
 fields into the IL, and drops a per page report next to the other working
@@ -9,18 +9,17 @@ The stage is off by default. With ``magazine_page_classify`` disabled the
 pipeline is untouched and the three IL attributes stay unset.
 
 Two layers decide a page. The deterministic layer scores geometry against the
-declared vocabulary and marks a page ambiguous when its top two candidates are
-too close to separate. Only those pages reach the second layer: the page is
-rendered and put to a vision model, which sees the image the geometry cannot
-describe. The model's answer is adopted whole or not at all -- kind, confidence
-and provenance move together -- and a refusal leaves the deterministic verdict
-exactly as it was. Everything the IL has no field for, the second candidate on a
-composite sheet and the reason a refusal was refused among it, goes to the
-sidecar report.
+declared vocabulary and marks close candidates as ambiguous. When
+``configs/vlm.json`` enables the second layer, every page is rendered and put
+to a vision model, with the ranked deterministic candidates included as
+reference. The model's answer is adopted whole or not at all -- kind,
+confidence and provenance move together -- and a refusal leaves that page's
+deterministic verdict exactly as it was.
 
-The fallback is off unless ``configs/vlm.json`` turns it on. With it off this
-stage performs no render, builds no client and reads no credential, and what it
-writes is what the deterministic layer alone produced.
+For a composite page, the report retains the model's primary and secondary
+kinds. The effective kind written into the IL is selected from those two by the
+taxonomy's ``preserve_line_structure`` policy. With the switch off this stage
+performs no render, builds no client and reads no credential.
 """
 
 from __future__ import annotations
@@ -93,14 +92,29 @@ class PageClassifier:
         percentile_names = percentile_feature_names(self.feature_config)
         vectors = extract_document_features(docs, self.feature_config)
         verdicts = [classify(features, self.taxonomy) for features in vectors]
-        adjudged = self._adjudicate(docs, verdicts)
+        adjudged = self._adjudicate(docs, verdicts, vectors)
 
         for position, (page, features, verdict) in enumerate(
             zip(docs.page, vectors, verdicts, strict=True)
         ):
             decision = adjudged.get(position)
             accepted = decision is not None and decision.accepted
-            page.page_kind = decision.kind if accepted else verdict.kind
+            if accepted:
+                effective_kind, effective_kind_reason = _effective_vlm_kind(
+                    decision,
+                    self.taxonomy.policy_of,
+                    deterministic=verdict,
+                    features=features,
+                    page_types=self.taxonomy.page_types,
+                )
+            else:
+                effective_kind = verdict.kind
+                effective_kind_reason = (
+                    "deterministic_fallback_after_vlm_rejection"
+                    if decision is not None
+                    else "deterministic_without_vlm"
+                )
+            page.page_kind = effective_kind
             page.page_kind_conf = (
                 decision.confidence if accepted else verdict.confidence
             )
@@ -124,6 +138,8 @@ class PageClassifier:
                     "final_kind": page.page_kind,
                     "final_conf": page.page_kind_conf,
                     "source": page.page_kind_source,
+                    "effective_kind": effective_kind,
+                    "effective_kind_reason": effective_kind_reason,
                     "vlm": _vlm_record(decision),
                 }
             )
@@ -131,16 +147,17 @@ class PageClassifier:
         return docs
 
     def _adjudicate(
-        self, docs: il_version_1.Document, verdicts: list[Verdict]
+        self,
+        docs: il_version_1.Document,
+        verdicts: list[Verdict],
+        features: list[dict[str, float]],
     ) -> dict[int, VlmVerdict]:
-        """Put every ambiguous page to the vision model, one render each.
+        """Put every page to the vision model, one render each.
 
         Returns the outcome per page position, refusals included: a refusal is
         recorded so the report can say why a page kept its deterministic kind.
         """
-        routed = [
-            position for position, verdict in enumerate(verdicts) if verdict.ambiguous
-        ]
+        routed = range(len(docs.page))
         if not self.vlm_enabled or not routed:
             return {}
 
@@ -165,6 +182,7 @@ class PageClassifier:
                         "deterministic_verdict": _verdict_block(
                             verdicts[position], self.vlm_config.verdict_rows
                         ),
+                        "page_features": _feature_block(features[position]),
                         "page_context": _page_context(index, rendered.page_count),
                     },
                     working_dir=self.working_dir,
@@ -213,6 +231,82 @@ def _verdict_block(verdict: Verdict, rows: int) -> str:
 
 def _page_context(index: int, total: int) -> str:
     return f"Page {index + 1} of {total} in this file."
+
+
+def _feature_block(features: dict[str, float]) -> str:
+    """Measured visual evidence, with the same stable names used by taxonomy."""
+    return "\n".join(
+        f"- {name}: {features[name]:.3f}" for name in FEATURE_NAMES
+    )
+
+
+def _effective_vlm_kind(
+    decision: VlmVerdict,
+    policy_of,
+    *,
+    deterministic: Verdict | None = None,
+    features: dict[str, float] | None = None,
+    page_types=(),
+) -> tuple[str, str]:
+    """Select the IL kind from a model's primary and secondary candidates."""
+    primary = decision.kind
+    secondary = decision.secondary_kind
+    primary_policy = policy_of(primary) or {}
+    secondary_policy = policy_of(secondary) or {}
+    primary_preserves = primary_policy.get("preserve_line_structure") is True
+    secondary_preserves = secondary_policy.get("preserve_line_structure") is True
+
+    if primary_preserves != secondary_preserves:
+        if secondary_preserves:
+            return secondary, "secondary_only_preserves_line_structure"
+        return primary, "primary_only_preserves_line_structure"
+
+    if deterministic is not None and features is not None:
+        deterministic_policy = policy_of(deterministic.kind) or {}
+        if (
+            features["image_area_ratio"] >= 0.5
+            and features["text_coverage_ratio"] <= 0.15
+            and features["max_font_size_ratio"] < 3.0
+            and deterministic_policy.get("repair_profile") == "figure"
+            and deterministic_policy.get("chain_eligible") is True
+            and primary_policy.get("indent_eligible") is True
+        ):
+            return deterministic.kind, "deterministic_image_dominant_policy"
+
+        continuous_story = (
+            features["text_coverage_ratio"] >= 0.3
+            and features["mean_paragraph_chars"] >= 60.0
+            and features["short_paragraph_ratio"] <= 0.7
+        )
+        primary_is_article_or_grid = (
+            primary_policy.get("indent_eligible") is True
+            or primary_policy.get("repair_profile") == "grid"
+        )
+        if continuous_story and primary_is_article_or_grid:
+            max_font_ratio = features["max_font_size_ratio"]
+            if max_font_ratio >= 3.0:
+                effective = _article_policy_kind(page_types, opens_article=True)
+                if effective is not None:
+                    return effective, "taxonomy_article_opener_hierarchy_policy"
+            elif max_font_ratio <= 2.7:
+                effective = _article_policy_kind(page_types, opens_article=False)
+                if effective is not None:
+                    return effective, "taxonomy_article_body_hierarchy_policy"
+
+    return primary, "primary_retained_same_preserve_line_structure_policy"
+
+
+def _article_policy_kind(page_types, *, opens_article: bool) -> str | None:
+    """Find the declared prose kind matching one article-boundary policy."""
+    for page_type in page_types:
+        policy = page_type.policy
+        if policy.get("indent_eligible") is not True:
+            continue
+        if opens_article and policy.get("opens_article") is True:
+            return page_type.name
+        if not opens_article and policy.get("starts_article") is False:
+            return page_type.name
+    return None
 
 
 def _vlm_record(decision: VlmVerdict | None) -> dict | None:

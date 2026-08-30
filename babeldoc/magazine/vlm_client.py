@@ -89,6 +89,7 @@ NUMERIC_KEYS: tuple[str, ...] = (
 # two names, and which one a model accepts is a property of that model.
 ENUM_KEYS: dict[str, tuple[str, ...]] = {
     "token_parameter": ("max_tokens", "max_completion_tokens"),
+    "image_detail": ("auto", "low", "high"),
 }
 
 # Numeric settings a request may leave out entirely. ``null`` means the field
@@ -107,6 +108,7 @@ KEY_PARAMETERS: tuple[str, ...] = (
     "temperature",
     "max_output_tokens",
     "token_parameter",
+    "image_detail",
 )
 
 # What a stored reply was already produced under, for parameters the key did
@@ -152,6 +154,7 @@ class VlmConfig:
     timeout_seconds: float
     verdict_rows: int
     token_parameter: str
+    image_detail: str
 
     def key_parameters(self) -> dict[str, object]:
         """The request parameters the cache key is composed from."""
@@ -263,6 +266,7 @@ def parse_vlm_config(raw: dict, source: str) -> VlmConfig:
         timeout_seconds=float(parameters["timeout_seconds"]),
         verdict_rows=int(parameters["verdict_rows"]),
         token_parameter=raw["token_parameter"],
+        image_detail=raw["image_detail"],
     )
 
 
@@ -377,7 +381,10 @@ def build_request(config: VlmConfig, prompt: str, image_png: bytes) -> dict:
                     {"type": "text", "text": prompt},
                     {
                         "type": "image_url",
-                        "image_url": {"url": f"data:image/png;base64,{encoded}"},
+                        "image_url": {
+                            "url": f"data:image/png;base64,{encoded}",
+                            "detail": config.image_detail,
+                        },
                     },
                 ],
             }
