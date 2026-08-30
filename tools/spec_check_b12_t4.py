@@ -13,7 +13,7 @@ budget, or that the model never returned anything usable.  Those are four
 different facts about a document and they used to be one.  S5 requires each to
 come back under its own name.
 
-Seven claims:
+Eight claims:
 
 S1  An oscillating document is rolled back entire and the run stops as
     iteration_rejected, with the document byte for byte what it was.
@@ -32,6 +32,10 @@ S6  The ceilings bind: an iteration stops at its action ceiling and a run stops
     number the decision step reads rather than a second declaration.
 S7  termination.json is written beside the findings, naming the stop and every
     finding left standing.
+S8  The pipeline accepts a loop result: the run report's own validation passes
+    on one, and the loop is chosen only by a run that translates through the
+    provider it would decide with -- never by a credential that happens to be
+    in the shell.
 
 Run offline; the client is a scripted stub and no request leaves the machine.
 """
@@ -53,6 +57,7 @@ from babeldoc.magazine import fixed_assets  # noqa: E402
 from babeldoc.magazine import llm_decide  # noqa: E402
 from babeldoc.magazine import minimal_detection  # noqa: E402
 from babeldoc.magazine import minimal_repair  # noqa: E402
+from babeldoc.magazine import minimal_pipeline  # noqa: E402
 from babeldoc.magazine import repair_loop  # noqa: E402
 from babeldoc.magazine.detectors.base import Issue  # noqa: E402
 from tools.spec_check_b12_t3 import BoundedFakeTypesetter  # noqa: E402
@@ -427,6 +432,44 @@ def s7_termination_is_filed(work: Path) -> str:
     )
 
 
+def s8_the_pipeline_accepts_a_loop_result(work: Path) -> str:
+    result, _docs = _run(
+        work,
+        "s8",
+        OVERFLOW,
+        [[]],
+        {HEADING_REF: _reply("contain_heading", [OVERFLOW[0].id])},
+    )
+    record = minimal_pipeline._loop_summary(result)
+    _require(
+        record["termination"] in repair_loop.TERMINATIONS,
+        f"the run report accepted an unnamed stop {record['termination']!r}",
+    )
+    _require(
+        record["accepted_actions"],
+        "the run report saw no accepted action for an accepted iteration",
+    )
+    # A run that does not translate through the provider it would decide with
+    # never takes the loop, whatever the environment holds.
+    for config in (
+        SimpleNamespace(),
+        SimpleNamespace(openai=True, only_parse_generate_pdf=True),
+    ):
+        _require(
+            minimal_pipeline._decision_client(config, True) is None,
+            f"a run configured as {config!r} was given a decision client",
+        )
+    _require(
+        minimal_pipeline._decision_client(SimpleNamespace(openai=True), False)
+        is None,
+        "a run that translated nothing was given a decision client",
+    )
+    return (
+        "the run report validates a loop result, and only a run translating "
+        "through its own provider takes the loop at all"
+    )
+
+
 def main() -> int:
     with tempfile.TemporaryDirectory() as raw:
         work = Path(raw)
@@ -438,6 +481,7 @@ def main() -> int:
             ("S5", lambda: s5_every_stop_is_named(work)),
             ("S6", lambda: s6_ceilings_bind(work)),
             ("S7", lambda: s7_termination_is_filed(work)),
+            ("S8", lambda: s8_the_pipeline_accepts_a_loop_result(work)),
         ]
         for name, claim in claims:
             try:

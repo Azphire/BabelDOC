@@ -133,6 +133,7 @@ class LoopResult:
     decisions: list[dict] = field(default_factory=list)
     acceptances: list[dict] = field(default_factory=list)
     affected_elements: int = 0
+    detection_passes_added: int = 0
     final_detection: object | None = None
     rolled_back: bool = False
 
@@ -147,6 +148,7 @@ class LoopResult:
             "iterations": self.iterations,
             "rolled_back": self.rolled_back,
             "affected_elements": self.affected_elements,
+            "detection_passes_added": self.detection_passes_added,
             "accepted_actions": [item.as_record() for item in self.accepted_actions],
             "refusals": list(self.refusals),
             "decisions": list(self.decisions),
@@ -335,6 +337,9 @@ def repair_loop(
 
     result = LoopResult(termination=NO_ISSUES, iterations=0, final_detection=before)
     if not before.issues:
+        result.final_detection = minimal_detection.mirror_after(
+            before, working_dir, restored_from_before=False, reason=NO_ISSUES
+        )
         _write_termination(working_dir, result)
         return result
 
@@ -479,6 +484,7 @@ def repair_loop(
             break
 
         after = detect_after(None)
+        result.detection_passes_added += 1
         comparison = acceptance.compare_issues(
             standing.issues, after.issues, policy
         )
@@ -493,6 +499,7 @@ def repair_loop(
             result.termination = ITERATION_REJECTED
             result.rolled_back = True
             result.final_detection = detect_after(None)
+            result.detection_passes_added += 1
             break
 
         snapshot.commit()
@@ -512,6 +519,15 @@ def repair_loop(
             else CONVERGED_ALL_TREATED
         )
 
+    if not result.accepted_actions:
+        # A run that kept nothing still owes the same after-sidecar the one-shot
+        # pass writes, so the finished run reads the same whichever ran.
+        result.final_detection = minimal_detection.mirror_after(
+            before,
+            working_dir,
+            restored_from_before=result.rolled_back,
+            reason=result.termination,
+        )
     _write_termination(working_dir, result)
     return result
 

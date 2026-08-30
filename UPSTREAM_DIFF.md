@@ -303,3 +303,37 @@ All three actions refuse *whole*: the first member that will not fit takes the
 action down, and the caller's transaction restores what it had reached.
 `spec_check_b12_t3.py` S8 compares the document paragraph by paragraph and
 requires each action to have written exactly its own set.
+
+### T4 — the bounded loop, and how it reaches the pipeline
+
+`babeldoc/magazine/repair_loop.py` is new.  Ceilings live in
+`configs/repair_actions.json` (`max_iterations`, `max_actions_per_iteration`,
+`max_affected_elements_per_run`, each with its range).  The plan's
+`max_candidate_issues_per_round` was **not** added: it is the same number as
+`decide_max_issues_per_round`, which T2 already declared, and the loop reads
+that one rather than declaring it twice.  `spec_check_b12_t4.py` S6 pins that
+the two agree by construction.
+
+**The call site chooses between the loop and the one-shot pass.**  The plan said
+to change `minimal_pipeline` to call `repair_loop`.  It does -- but only for a
+run that has a model to decide with.  `repair_once` is kept, not deprecated, as
+the answer for a run that translated nothing or does not translate through a
+provider the decision can reach; the loop degenerates to exactly that, and
+keeping the real pass is better than simulating it.  `_decision_client` returns
+None for such a run rather than raising.
+
+That choice is deliberately made from the run's own configuration
+(`config.openai`), **not** from whether `OPENAI_API_KEY` is in the environment.
+Keying on the environment would make an offline test run take the loop on a
+developer machine with the credential exported and the one-shot pass on CI --
+the same code behaving differently by shell.  S8 pins this.
+
+The run report now branches: a one-shot result goes through `_repair_summary`
+unchanged, and a loop result through the new `_loop_summary`, which holds it to
+the closed termination vocabulary and the closed action vocabulary.  The
+one-shot path is byte-for-byte what it was, which is why the offline suite is
+still exactly at baseline.
+
+The loop writes the same `issues.after.json` the one-shot pass does, mirroring
+the before-result whenever it kept nothing, so a finished run reads the same
+whichever ran.

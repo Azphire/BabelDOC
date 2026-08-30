@@ -17,7 +17,9 @@ from babeldoc.magazine import indent_policy
 from babeldoc.magazine import layout_report
 from babeldoc.magazine import line_split
 from babeldoc.magazine import minimal_detection
+from babeldoc.magazine import llm_decide
 from babeldoc.magazine import minimal_repair
+from babeldoc.magazine import repair_loop as repair_loop_module
 from babeldoc.magazine import paren_dedup
 from babeldoc.magazine import resource_paths
 from babeldoc.magazine import title_typeset
@@ -99,6 +101,7 @@ class MagazineState:
     _detection_document_identity: int | None = None
     _detection_before: minimal_detection.DetectionResult | None = None
     _repair_result: minimal_repair.RepairResult | None = None
+    _loop_result: object | None = None
     _minimal_report: dict | None = None
     _minimal_report_path: Path | None = None
     _result_started: bool = False
@@ -212,6 +215,10 @@ class MagazineState:
     @property
     def repair_result(self) -> minimal_repair.RepairResult | None:
         return self._repair_result
+
+    @property
+    def loop_result(self):
+        return self._loop_result
 
     @property
     def minimal_report(self) -> dict | None:
@@ -1061,32 +1068,63 @@ def _write_run_report(config, state: MagazineState, report: dict) -> Path:
     return path
 
 
+def _loop_summary(result) -> dict:
+    """The loop's own account of a run, held to its closed vocabulary."""
+    record = _mapping(result.as_record(), "repair loop record")
+    if record.get("termination") not in repair_loop_module.TERMINATIONS:
+        raise MinimalPipelineStateError("the repair loop stopped for an unnamed reason")
+    for row in record.get("accepted_actions") or ():
+        if _mapping(row, "accepted action").get("action") not in minimal_repair.ACTIONS:
+            raise MinimalPipelineStateError("the repair loop applied an unknown action")
+    if record.get("rolled_back") and record.get("accepted_actions"):
+        raise MinimalPipelineStateError("a rolled back loop kept actions")
+    return record
+
+
 def _build_run_report(config, docs, state: MagazineState) -> dict:
     before = state.detection_before
     repair_result = state.repair_result
+    loop_result = state.loop_result
     article_document_ir = state.article_document_ir
-    if before is None or repair_result is None or article_document_ir is None:
+    if before is None or article_document_ir is None:
         raise MinimalPipelineStateError("detection and repair evidence is incomplete")
+    if (repair_result is None) == (loop_result is None):
+        raise MinimalPipelineStateError(
+            "exactly one of the one-shot pass and the repair loop must have run"
+        )
     translation_performed = not bool(getattr(config, "skip_translation", False))
     before_summary = _sidecar_summary(before, config, "issues.before.json")
-    after_summary = _sidecar_summary(
-        repair_result.final_detection,
-        config,
-        "issues.after.json",
+    final_detection = (
+        repair_result.final_detection
+        if loop_result is None
+        else loop_result.final_detection
     )
-    repair = _repair_summary(repair_result)
-    passes = 1 + _count(
-        repair_result.record.get("detection_passes_added"),
-        "repair detection passes added",
+    accepted = (
+        repair_result.accepted if loop_result is None else loop_result.accepted
     )
-    if passes not in (1, 2):
-        raise MinimalPipelineStateError("detector pass count must be one or two")
+    after_summary = _sidecar_summary(final_detection, config, "issues.after.json")
+    if loop_result is None:
+        repair = _repair_summary(repair_result)
+        passes = 1 + _count(
+            repair_result.record.get("detection_passes_added"),
+            "repair detection passes added",
+        )
+        if passes not in (1, 2):
+            raise MinimalPipelineStateError("detector pass count must be one or two")
+    else:
+        repair = _loop_summary(loop_result)
+        # The loop measures once per iteration it applied something in, so the
+        # pass count is bounded by the iteration ceiling rather than by one.
+        passes = 1 + _count(
+            repair.get("detection_passes_added"),
+            "repair loop detection passes added",
+        )
     if before_summary["pass_index"] != 0:
         raise MinimalPipelineStateError("before sidecar must be detector pass zero")
-    expected_after_index = 1 if repair_result.accepted else 0
+    expected_after_index = 1 if accepted else 0
     if after_summary["pass_index"] != expected_after_index:
         raise MinimalPipelineStateError("after sidecar pass index disagrees")
-    if after_summary["mirrored"] != (not repair_result.accepted):
+    if after_summary["mirrored"] != (not accepted):
         raise MinimalPipelineStateError("after sidecar mirror evidence disagrees")
 
     chain, backfill, short_unit_requests = _chain_and_backfill_summary(
@@ -1134,7 +1172,7 @@ def _build_run_report(config, docs, state: MagazineState) -> dict:
     }
     flow = _flow_summary(docs, article_document_ir, state.flow_report)
     dropcap = _dropcap_summary(state.render_report)
-    fixed = _fixed_summary(repair_result.final_detection)
+    fixed = _fixed_summary(final_detection)
     return {
         "schema_version": RUN_SCHEMA_VERSION,
         "status": "pending_output",
@@ -1173,6 +1211,32 @@ def _build_run_report(config, docs, state: MagazineState) -> dict:
             "no_watermark_dual": None,
         },
     }
+
+
+def _decision_client(config, translation_performed: bool):
+    """The model the repair loop decides with, or None when there is none.
+
+    A run with no credential, or one that translated nothing, has nothing to
+    decide about and nothing to decide with. Returning None rather than raising
+    is what lets an offline run finish: the deterministic one-shot pass answers
+    for it instead, and the run report says which of the two ran.
+    """
+    if not translation_performed:
+        return None
+    if bool(getattr(config, "only_parse_generate_pdf", False)):
+        return None
+    # The decision goes to the same provider the run translates with. Asking
+    # only whether a credential happens to be in the environment would make a
+    # run's behaviour depend on the shell it was started from.
+    if not bool(getattr(config, "openai", False)):
+        return None
+    try:
+        return llm_decide.OpenAIDecisionClient(llm_decide.load_decide_config())
+    except llm_decide.DecisionError:
+        return None
+    except Exception:  # pragma: no cover - a client this run cannot build
+        logger.warning("repair decisions unavailable; the one-shot pass will run")
+        return None
 
 
 def _detect_and_repair(config, docs, typesetter, state: MagazineState) -> None:
@@ -1231,19 +1295,44 @@ def _detect_and_repair(config, docs, typesetter, state: MagazineState) -> None:
                 hitl_state=state.hitl_state,
             )
 
-        repair_result = minimal_repair.repair_once(
-            before,
-            docs,
-            article_document_ir,
-            baseline,
-            typesetter,
-            config,
-            state.flow_report,
-            detect_after,
-        )
-    if not isinstance(repair_result, minimal_repair.RepairResult):
-        raise MinimalPipelineStateError("minimal repair did not return a RepairResult")
-    state._repair_result = repair_result
+        client = _decision_client(config, translation_performed)
+        if client is None:
+            # No model to decide with -- an offline run, or one with no
+            # credential. The one-shot deterministic pass is what the loop
+            # degenerates to, and it is kept rather than simulated.
+            repair_result = minimal_repair.repair_once(
+                before,
+                docs,
+                article_document_ir,
+                baseline,
+                typesetter,
+                config,
+                state.flow_report,
+                detect_after,
+            )
+            if not isinstance(repair_result, minimal_repair.RepairResult):
+                raise MinimalPipelineStateError(
+                    "minimal repair did not return a RepairResult"
+                )
+            state._repair_result = repair_result
+        else:
+            loop_result = repair_loop_module.repair_loop(
+                before,
+                docs,
+                article_document_ir,
+                baseline,
+                typesetter,
+                config,
+                state.flow_report,
+                detect_after,
+                client=client,
+                working_dir=working_dir,
+            )
+            if not isinstance(loop_result, repair_loop_module.LoopResult):
+                raise MinimalPipelineStateError(
+                    "the repair loop did not return a LoopResult"
+                )
+            state._loop_result = loop_result
     report = _build_run_report(config, docs, state)
     _write_run_report(config, state, report)
     state._detection_completed = True
