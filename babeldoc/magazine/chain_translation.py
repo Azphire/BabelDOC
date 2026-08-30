@@ -36,6 +36,7 @@ import logging
 import re
 from dataclasses import dataclass
 from dataclasses import field
+from dataclasses import replace
 from pathlib import Path
 
 from babeldoc.format.pdf.document_il import Box
@@ -1614,9 +1615,16 @@ class ChainPlan:
                 return None
             capacities.append(capacity)
 
+        cross_page_title = (
+            pair_class == "title"
+            and len(members) == 2
+            and members[0].page_index != members[1].page_index
+        )
         attempts = {
             backfill.STRATEGY_PROPORTIONAL: lambda: self._attempt_proportional(
-                merge, translated
+                merge,
+                translated,
+                preserve_title_words=cross_page_title,
             ),
             backfill.STRATEGY_TAIL_ALIGNED: lambda: self._attempt_tail_aligned(
                 merge, translated, members, slots, protected, measure
@@ -1626,12 +1634,18 @@ class ChainPlan:
             ),
         }
         primary = backfill.strategy_for_pair_class(pair_class, self.config)
-        strategies = self.config.slot_cascade
-        if (
-            primary == backfill.STRATEGY_PROPORTIONAL
-            and primary not in strategies
-        ):
-            strategies = (primary, *strategies)
+        if cross_page_title:
+            # The two source title fragments determine one stable target cut.
+            # A capacity fallback would silently move it to a layout-dependent
+            # position and undo the lexical-boundary guarantee.
+            strategies = (backfill.STRATEGY_PROPORTIONAL,)
+        else:
+            strategies = self.config.slot_cascade
+            if (
+                primary == backfill.STRATEGY_PROPORTIONAL
+                and primary not in strategies
+            ):
+                strategies = (primary, *strategies)
         for strategy in strategies:
             attempt = attempts.get(strategy)
             if attempt is None:
@@ -1661,6 +1675,8 @@ class ChainPlan:
         self,
         merge: backfill.ChainMerge,
         translated: str,
+        *,
+        preserve_title_words: bool = False,
     ):
         """Cut a display chain by its declared source shares."""
         try:
@@ -1675,7 +1691,104 @@ class ChainPlan:
             )
         except backfill.ChainBackfillError:
             return None, None
+        if preserve_title_words:
+            split = self._snap_title_split_to_lexical_boundary(
+                merge, split, translated
+            )
+            if split is None:
+                return None, None
         return split, None
+
+    def _snap_title_split_to_lexical_boundary(
+        self, merge: backfill.ChainMerge, split, translated: str
+    ):
+        """Keep a two-page title cut near its source-length estimate and lexical.
+
+        Whitespace is the word boundary for non-CJK targets.  CJK has no such
+        delimiter, so use the tokenizer already owned by the translation
+        driver: its decoded token offsets preserve units such as ``推动`` while
+        still giving the source-length estimate nearby positions to choose
+        from.  An unavailable or inconsistent tokenizer fails the title chain
+        closed instead of reverting to an arbitrary character cut.
+        """
+        if len(split.segments) != 2 or len(split.cuts) != 1:
+            return None
+        cut = split.cuts[0]
+        estimate = cut.estimate
+        if estimate is None:
+            return None
+
+        if self.config.capacity.is_cjk_target(self.language):
+            tokenizer = getattr(self.translator, "tokenizer", None)
+            encode = getattr(tokenizer, "encode", None)
+            decode_with_offsets = getattr(tokenizer, "decode_with_offsets", None)
+            if encode is None or decode_with_offsets is None:
+                return None
+            try:
+                tokens = encode(translated, disallowed_special=())
+                decoded, offsets = decode_with_offsets(tokens)
+            except (TypeError, UnicodeError, ValueError):
+                return None
+            if decoded != translated or len(offsets) != len(tokens):
+                return None
+            candidates = {
+                int(position)
+                for position in offsets
+                if isinstance(position, int)
+                and 0 < position < len(translated)
+                and not self._inside_latin_word(translated, position)
+            }
+        else:
+            candidates = {
+                position
+                for position in range(1, len(translated))
+                if translated[position - 1].isspace()
+                and not translated[position].isspace()
+            }
+        if not candidates:
+            return None
+
+        position = min(candidates, key=lambda held: (abs(held - estimate), held))
+        segments = (
+            replace(
+                split.segments[0],
+                text=translated[:position],
+                start=0,
+                end=position,
+            ),
+            replace(
+                split.segments[1],
+                text=translated[position:],
+                start=position,
+                end=len(translated),
+            ),
+        )
+        result = replace(
+            split,
+            segments=segments,
+            cuts=(
+                replace(
+                    cut,
+                    position=position,
+                    snapped=True,
+                    moved_to=None,
+                ),
+            ),
+        )
+        if not backfill.verify_redistribution(merge, translated, result).ok:
+            return None
+        return result
+
+    @staticmethod
+    def _inside_latin_word(text: str, position: int) -> bool:
+        """Whether a candidate would split an ASCII word embedded in CJK."""
+
+        def word_character(character: str) -> bool:
+            return character.isascii() and (
+                character.isalnum() or character in "_'"
+            )
+
+        return word_character(text[position - 1]) and word_character(text[position])
 
     def _line_end_offsets(
         self, measure, rest, member, slot, order, ranges, base, ideal
@@ -1928,21 +2041,35 @@ class ChainPlan:
         pair_class: str | None,
     ) -> ChainAllocationPlan | None:
         """Keep callers without canonical slot objects readable but unmeasured."""
-        redistribute = backfill.redistribute
-        strategy = backfill.strategy_for_pair_class(pair_class, self.config)
-        try:
-            result = redistribute(
+        cross_page_title = (
+            pair_class == "title"
+            and len(members) == 2
+            and members[0].page_index != members[1].page_index
+        )
+        if cross_page_title:
+            strategy = backfill.STRATEGY_PROPORTIONAL
+            result, _aligns = self._attempt_proportional(
                 merge,
                 translated,
-                self.language,
-                strategy,
-                self.config,
-                aligned_lengths=None,
-                align_enabled=self.align_enabled,
-                capacities=None,
+                preserve_title_words=True,
             )
-        except backfill.ChainBackfillError:
-            return None
+            if result is None:
+                return None
+        else:
+            strategy = backfill.strategy_for_pair_class(pair_class, self.config)
+            try:
+                result = backfill.redistribute(
+                    merge,
+                    translated,
+                    self.language,
+                    strategy,
+                    self.config,
+                    aligned_lengths=None,
+                    align_enabled=self.align_enabled,
+                    capacities=None,
+                )
+            except backfill.ChainBackfillError:
+                return None
         fragments = []
         for member, segment in zip(members, result.segments, strict=True):
             paragraph_box = getattr(member.paragraph, "box", None)

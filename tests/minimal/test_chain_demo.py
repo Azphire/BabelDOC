@@ -345,6 +345,53 @@ def test_cross_page_title_chain_translates_short_fragment_once(tmp_path):
         fragment.measurement_record["measurement_scale"]
         for fragment in entry.allocation.fragments
     ] == [0.4, 0.4]
+    assert [
+        fragment.text for fragment in entry.allocation.fragments
+    ] == ["Indigenous Knowledge in a Changing ", "World"]
+    plan.apply()
+    assert "".join(paragraph.unicode for paragraph in paragraphs) == target
+
+
+def test_cross_page_title_chain_keeps_chinese_word_at_source_length_cut(tmp_path):
+    target = "土著知识如何推动科学发现"
+    document, article_ir, paragraphs, translator = make_chain_fixture(
+        target,
+        tmp_path,
+        boxes=((0.0, 0.0, 100.0, 30.0), (0.0, 0.0, 100.0, 30.0)),
+        sources=("How Indigenous knowledge drives", "scientific discovery"),
+    )
+    for paragraph in paragraphs:
+        paragraph.layout_label = "title"
+    translator.translation_config.lang_out = "zh"
+
+    class LexicalTokenizer:
+        @staticmethod
+        def encode(text, *, disallowed_special):
+            assert text == target
+            assert disallowed_special == ()
+            return list(range(7))
+
+        @staticmethod
+        def decode_with_offsets(_tokens):
+            # The source-length estimate is 7, inside “推动”.  The tokenizer
+            # exposes that two-character word as one unit bounded by 6 and 8.
+            return target, [0, 1, 2, 4, 6, 8, 10]
+
+    translator.tokenizer = LexicalTokenizer()
+
+    plan = plan_chain_translation(
+        translator, document, RecordingTracker(), EMPTY_CONTEXT, article_ir
+    )
+
+    assert len(translator.translate_engine.llm_calls) == 1
+    assert len(plan.entries) == 1
+    entry = plan.entries[0]
+    assert entry.pair_class == "title"
+    assert entry.boundary_kinds == ["page"]
+    assert entry.strategy == "proportional"
+    assert [
+        fragment.text for fragment in entry.allocation.fragments
+    ] == ["土著知识如何", "推动科学发现"]
     plan.apply()
     assert "".join(paragraph.unicode for paragraph in paragraphs) == target
 
