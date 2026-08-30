@@ -79,6 +79,17 @@ class PageClassifier:
     def vlm_enabled(self) -> bool:
         return bool(self.vlm_config.enabled)
 
+    @property
+    def classify_source(self) -> str:
+        """Which layer finishes a page: "vlm" adjudicates, "local" stands.
+
+        Declared in ``configs/vlm.json`` (``page_classify_source``).  Under
+        "local" the deterministic geometry verdict is the final one and this
+        stage performs no render, builds no client and reads no credential,
+        whatever ``enabled`` says.
+        """
+        return str(getattr(self.vlm_config, "page_classify_source", "vlm"))
+
     def client(self) -> CachedVlmClient:
         """The adjudicating client, built on first use rather than at import."""
         if self._vlm_client is None:
@@ -158,7 +169,7 @@ class PageClassifier:
         recorded so the report can say why a page kept its deterministic kind.
         """
         routed = range(len(docs.page))
-        if not self.vlm_enabled or not routed:
+        if self.classify_source != VLM_SOURCE or not self.vlm_enabled or not routed:
             return {}
 
         vocabulary = self.taxonomy.names()
@@ -197,6 +208,7 @@ class PageClassifier:
             "source": SOURCE,
             "ambiguity_margin": self.taxonomy.ambiguity_margin,
             "vlm_enabled": self.vlm_enabled,
+            "page_classify_source": self.classify_source,
             "pages": records,
         }
         path = Path(self.translation_config.get_working_file_path(REPORT_NAME))

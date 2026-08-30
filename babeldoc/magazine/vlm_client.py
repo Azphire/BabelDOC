@@ -90,6 +90,12 @@ NUMERIC_KEYS: tuple[str, ...] = (
 ENUM_KEYS: dict[str, tuple[str, ...]] = {
     "token_parameter": ("max_tokens", "max_completion_tokens"),
     "image_detail": ("auto", "low", "high"),
+    # Which layer's verdict the page classifier finishes with. "vlm" puts
+    # every page to the model (while "enabled" is true) and adopts an accepted
+    # answer whole; "local" lets the deterministic geometry verdict stand and
+    # performs no render, builds no client, reads no credential.  Both layers
+    # stay in the code and the report names which one decided each page.
+    "page_classify_source": ("vlm", "local"),
 }
 
 # Numeric settings a request may leave out entirely. ``null`` means the field
@@ -155,6 +161,7 @@ class VlmConfig:
     verdict_rows: int
     token_parameter: str
     image_detail: str
+    page_classify_source: str
 
     def key_parameters(self) -> dict[str, object]:
         """The request parameters the cache key is composed from."""
@@ -267,6 +274,7 @@ def parse_vlm_config(raw: dict, source: str) -> VlmConfig:
         verdict_rows=int(parameters["verdict_rows"]),
         token_parameter=raw["token_parameter"],
         image_detail=raw["image_detail"],
+        page_classify_source=raw["page_classify_source"],
     )
 
 
