@@ -1,5 +1,5 @@
 {
-  "description": "The closed vocabulary of repair actions, the bounds each one works inside, and the bounds on the model decision that nominates them. issue_actions is what a decision round may choose from for one detector kind and always admits no_op; it is not a promise that a nominated finding will be acted on, which stays with the deterministic admission rules. deterministic_issue_actions is the older single-action mapping the one-shot repair_once pass still reads and is not consulted by the loop. Every number an action is bounded by is declared here with its range and nowhere else.",
+  "description": "The closed vocabulary of repair actions, the bounds each one works inside, and the bounds on the model decision that nominates them. issue_actions is what a decision round may choose from for one detector kind and always admits no_op; it is not a promise that a nominated finding will be acted on, which stays with the deterministic admission rules. deterministic_issue_actions is the older single-action mapping the one-shot repair_once pass still reads and is not consulted by the loop. Every number an action is bounded by is declared here with its range and nowhere else. The loop ceilings bound one run: how many iterations it may take, how many actions one iteration may apply, and how many paragraphs the whole run may touch. How many findings one round may show is decide_max_issues_per_round, which is the same ceiling read from the decision's side and is not declared twice.",
   "schema_version": "mapek-demo.v1",
   "max_actions_per_run": 1,
   "max_actions_per_run_allowed_range": "1..1",
@@ -122,5 +122,11 @@
         "allowed_range": "0.4..1.0"
       }
     }
-  }
+  },
+  "max_iterations": 3,
+  "max_iterations_allowed_range": "1..5",
+  "max_actions_per_iteration": 4,
+  "max_actions_per_iteration_allowed_range": "1..8",
+  "max_affected_elements_per_run": 40,
+  "max_affected_elements_per_run_allowed_range": "1..120"
 }

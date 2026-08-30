@@ -99,6 +99,12 @@ _DECIDE_KEYS = frozenset(
         "decide_issue_excerpt_chars",
         "decide_issue_excerpt_chars_allowed_range",
         "decide_parameters",
+        "max_iterations",
+        "max_iterations_allowed_range",
+        "max_actions_per_iteration",
+        "max_actions_per_iteration_allowed_range",
+        "max_affected_elements_per_run",
+        "max_affected_elements_per_run_allowed_range",
     }
 )
 _ROOT_KEYS = frozenset(
