@@ -150,45 +150,39 @@ def _holder(composition):
 def _trailing_run(characters: list) -> tuple[int, list] | None:
     """The word tail at the end of one container: (slice start, letters).
 
-    The slice runs from the first letter of the tail through the container's
-    end, so moving it keeps every interleaved and trailing space in sequence.
-    Spaces standing before the first letter stay where they are.
+    A run is a *pure* letter sequence: the sources in evidence letterspace a
+    word with geometry alone and write a real space character only at a word
+    break (CERN's footer IL: no space inside ``V olume``, spaces between
+    every word).  So a space character standing between the container's end
+    and its last letters is a word break, and the boundary reads as one --
+    None here, no merge.  What letterspacing leaves is gaps, and gaps are the
+    ``_same_word`` test's to judge.
     """
-    index = len(characters) - 1
-    first_letter = None
-    while index >= 0:
-        item = characters[index]
-        if _is_letter(item):
-            first_letter = index
-        elif not _is_space(item):
-            break
-        index -= 1
-    if first_letter is None:
+    if not characters:
         return None
-    letters = [item for item in characters[first_letter:] if _is_letter(item)]
-    return first_letter, letters
+    if _is_space(characters[-1]):
+        return None
+    index = len(characters) - 1
+    while index >= 0 and _is_letter(characters[index]):
+        index -= 1
+    if index == len(characters) - 1:
+        return None
+    return index + 1, characters[index + 1 :]
 
 
 def _leading_run(characters: list) -> tuple[int, list] | None:
     """The word head at the start of one container: (slice end, letters).
 
-    The slice runs from the container's start through the last letter of the
-    head, taking any leading spaces with it; the space after the last letter
-    stays behind as the container's own separator.
-    """
-    index = 0
-    last_letter = None
-    while index < len(characters):
-        item = characters[index]
-        if _is_letter(item):
-            last_letter = index
-        elif not _is_space(item):
-            break
-        index += 1
-    if last_letter is None:
+    The mirror of ``_trailing_run``: pure letters from the container's start,
+    and a leading space character means the word broke at the boundary."""
+    if not characters or _is_space(characters[0]):
         return None
-    letters = [item for item in characters[: last_letter + 1] if _is_letter(item)]
-    return last_letter + 1, letters
+    index = 0
+    while index < len(characters) and _is_letter(characters[index]):
+        index += 1
+    if index == 0:
+        return None
+    return index, characters[:index]
 
 
 def _gap(left, right) -> float | None:

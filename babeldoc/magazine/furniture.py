@@ -84,6 +84,7 @@ class FurnitureConfig:
     edge_band_pt: float
     dupe_min_fraction: float
     dupe_tolerance_em: float
+    overlap_min_fraction: float
     excerpt_chars: int
 
 
@@ -98,6 +99,7 @@ def parse_furniture_config(raw: dict, source: str) -> FurnitureConfig:
         "furniture_edge_band_pt",
         "production_dupe_min_fraction",
         "production_dupe_tolerance_em",
+        "production_overlap_min_fraction",
         "excerpt_chars",
     ):
         if key not in parameters:
@@ -107,6 +109,7 @@ def parse_furniture_config(raw: dict, source: str) -> FurnitureConfig:
         edge_band_pt=float(parameters["furniture_edge_band_pt"]),
         dupe_min_fraction=float(parameters["production_dupe_min_fraction"]),
         dupe_tolerance_em=float(parameters["production_dupe_tolerance_em"]),
+        overlap_min_fraction=float(parameters["production_overlap_min_fraction"]),
         excerpt_chars=int(parameters["excerpt_chars"]),
     )
 
@@ -208,6 +211,29 @@ def _char_size(character) -> float | None:
     return float(size) if size else None
 
 
+def _overlap_fraction(box_a, box_b) -> float:
+    """Intersection area over the smaller box's area; 0 where unmeasurable."""
+    if box_a is None or box_b is None:
+        return 0.0
+    if None in (box_a.x, box_a.y, box_a.x2, box_a.y2) or None in (
+        box_b.x,
+        box_b.y,
+        box_b.x2,
+        box_b.y2,
+    ):
+        return 0.0
+    width = min(box_a.x2, box_b.x2) - max(box_a.x, box_b.x)
+    height = min(box_a.y2, box_b.y2) - max(box_a.y, box_b.y)
+    if width <= 0 or height <= 0:
+        return 0.0
+    area_a = (box_a.x2 - box_a.x) * (box_a.y2 - box_a.y)
+    area_b = (box_b.x2 - box_b.x) * (box_b.y2 - box_b.y)
+    smaller = min(area_a, area_b)
+    if smaller <= 0:
+        return 0.0
+    return (width * height) / smaller
+
+
 # --- the plan -----------------------------------------------------------------
 
 
@@ -242,10 +268,12 @@ def plan(translation_config, docs) -> FurniturePlan | None:
     rows = _paragraph_index(docs)
 
     marks = []
+    banded: dict[int, list] = {}
     for label, index, page, paragraph in rows:
         distance = edge_distance(paragraph, page)
         if distance is None or distance > config.edge_band_pt:
             continue
+        banded.setdefault(label, []).append((index, paragraph, distance))
         fraction = duplicate_fraction(paragraph, config.dupe_tolerance_em)
         if fraction >= config.dupe_min_fraction:
             built.production_marks.add(paragraph.debug_id)
@@ -254,11 +282,85 @@ def plan(translation_config, docs) -> FurniturePlan | None:
                     "page": label,
                     "reference": paragraph_reference(label, index),
                     "debug_id": paragraph.debug_id,
+                    "rule": "coincident_double",
                     "duplicate_fraction": round(fraction, 3),
                     "edge_distance_pt": round(distance, 1),
                     "excerpt": (paragraph.unicode or "")[: config.excerpt_chars],
                 }
             )
+
+    # Second seed: one doubled draw split into two paragraphs. Two units of
+    # one band and one page, identical after normalization, boxes lying on
+    # each other, are the two copies of one draw; each alone has nothing to
+    # pair inside itself.
+    for label, members in banded.items():
+        for i, (index_a, para_a, _da) in enumerate(members):
+            for index_b, para_b, _db in members[i + 1 :]:
+                if para_a.debug_id in built.production_marks and (
+                    para_b.debug_id in built.production_marks
+                ):
+                    continue
+                if normalized(para_a.unicode or "") != normalized(para_b.unicode or ""):
+                    continue
+                if not (para_a.unicode or "").strip():
+                    continue
+                if _overlap_fraction(para_a.box, para_b.box) < config.overlap_min_fraction:
+                    continue
+                for index, paragraph in ((index_a, para_a), (index_b, para_b)):
+                    if paragraph.debug_id in built.production_marks:
+                        continue
+                    built.production_marks.add(paragraph.debug_id)
+                    marks.append(
+                        {
+                            "page": label,
+                            "reference": paragraph_reference(label, index),
+                            "debug_id": paragraph.debug_id,
+                            "rule": "twin_paragraphs",
+                            "duplicate_fraction": None,
+                            "edge_distance_pt": None,
+                            "excerpt": (paragraph.unicode or "")[
+                                : config.excerpt_chars
+                            ],
+                        }
+                    )
+
+    # Contagion: the styles pass shreds a doubled draw into interleaved spans
+    # and neighbouring paragraphs, so a band unit lying substantially on a
+    # seed belongs to the same production cluster. Repeated to a fixed point,
+    # because a cluster can chain across the band.
+    changed = True
+    while changed:
+        changed = False
+        for label, members in banded.items():
+            seeds = [
+                paragraph
+                for _i, paragraph, _d in members
+                if paragraph.debug_id in built.production_marks
+            ]
+            if not seeds:
+                continue
+            for index, paragraph, distance in members:
+                if paragraph.debug_id in built.production_marks:
+                    continue
+                if not any(
+                    _overlap_fraction(paragraph.box, seed.box)
+                    >= config.overlap_min_fraction
+                    for seed in seeds
+                ):
+                    continue
+                built.production_marks.add(paragraph.debug_id)
+                changed = True
+                marks.append(
+                    {
+                        "page": label,
+                        "reference": paragraph_reference(label, index),
+                        "debug_id": paragraph.debug_id,
+                        "rule": "cluster_contagion",
+                        "duplicate_fraction": None,
+                        "edge_distance_pt": round(distance, 1),
+                        "excerpt": (paragraph.unicode or "")[: config.excerpt_chars],
+                    }
+                )
 
     by_text: dict[str, list] = {}
     off_band: dict[str, bool] = {}

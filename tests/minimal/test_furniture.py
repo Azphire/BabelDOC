@@ -149,7 +149,7 @@ def test_doubled_slug_is_a_production_mark_and_kept_byte_for_byte(tmp_path):
     """The CERN shape: slug and date drawn twice at one position, in the band."""
     config = StubConfig(tmp_path)
     slug = paragraph("SLUG_v2 03/07 11:48", 10.0, 8.0, debug_id="slug", doubled=True)
-    prose = paragraph("Ordinary sentence.", 10.0, 8.0, debug_id="prose")
+    prose = paragraph("Ordinary sentence.", 350.0, 8.0, debug_id="prose")
     docs = docs_of(page_of(0, [slug, prose]))
     before = json.dumps(
         [c.char_unicode for c in slug.pdf_paragraph_composition[0].pdf_line.pdf_character]
@@ -162,6 +162,30 @@ def test_doubled_slug_is_a_production_mark_and_kept_byte_for_byte(tmp_path):
         [c.char_unicode for c in slug.pdf_paragraph_composition[0].pdf_line.pdf_character]
     )
     assert after == before
+
+
+def test_twin_paragraphs_and_cluster_contagion(tmp_path):
+    """A doubled draw split into two paragraphs, plus a fragment lying on it.
+
+    CERN's escaped shapes: the styles pass shredded the two coincident slug
+    copies into separate paragraphs and interleaved fragments.  Identical
+    twins lying on each other seed the cluster; a differing fragment on top
+    of a seed catches by contagion; prose elsewhere in the band stays free.
+    """
+    config = StubConfig(tmp_path)
+    twin_a = paragraph("SLUG_v2.indd 1", 10.0, 8.0, debug_id="twin-a")
+    twin_b = paragraph("SLUG_v2.indd 1", 10.2, 8.1, debug_id="twin-b")
+    fragment = paragraph("SLG_v .indd", 12.0, 8.0, debug_id="frag")
+    aloof = paragraph("An ordinary caption.", 400.0, 8.0, debug_id="aloof")
+    docs = docs_of(page_of(0, [twin_a, twin_b, fragment, aloof]))
+    built = furniture.plan(config, docs)
+    assert built.withholds("twin-a") and built.withholds("twin-b")
+    assert built.withholds("frag")
+    assert not built.withholds("aloof")
+    report = json.loads((tmp_path / furniture.REPORT_NAME).read_text("utf-8"))
+    rules = {row["debug_id"]: row["rule"] for row in report["production_marks"]}
+    assert rules["twin-a"] == rules["twin-b"] == "twin_paragraphs"
+    assert rules["frag"] == "cluster_contagion"
 
 
 def test_stitch_refuses_a_production_mark():

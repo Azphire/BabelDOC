@@ -1,0 +1,24 @@
+{
+  "format_version": 3,
+  "sample": "CERNCourier-en",
+  "terms": {
+    "Barbara Storaci": "芭芭拉·斯托拉奇",
+    "Chloe Beaumier-Martin": "克洛伊·博米耶-马丁",
+    "Hanna Dahl": "汉娜·达尔",
+    "Marco Marchetto": "马尔科·马尔凯托",
+    "Paul Dirksen": "保罗·德克森",
+    "Tiffany Angus": "蒂芙尼·安格斯",
+    "Tonia Batten": "托尼娅·巴滕",
+    "Davide De Biasio": "达维德·德·比亚西奥",
+    "SLAC": "SLAC国家加速器实验室",
+    "HERA": "HERA",
+    "ISABELLE": "ISABELLE",
+    "CERNCOURIER": "CERNCOURIER",
+    "ERNCOURIER": "ERNCOURIER",
+    "quark–gluon plasma": "夸克-胶子等离子体"
+  },
+  "page_kinds": {
+    "4": "article_body"
+  },
+  "drop_caps": {}
+}

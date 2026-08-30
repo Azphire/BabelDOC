@@ -162,6 +162,20 @@ def test_drop_cap_scale_initial_is_left_for_the_drop_cap_lane():
     assert [item["skip"] for item in skips] == [SKIP_SIZE_RATIO]
 
 
+def test_real_space_at_the_boundary_is_a_word_break():
+    """Regression for Courier p2#5's ``andtheza``: a real space character
+    before the boundary means the words already broke, whatever the gaps say."""
+    body = pdf_style(font_size=BODY_SIZE)
+    caps = pdf_style(font_id="smallcaps", font_size=BODY_SIZE)
+    left, cursor = characters("and the ", 0.0, body)
+    right, _ = characters("za", cursor + 0.1, caps)
+    para = paragraph_of(line_composition(left), span_composition(right, caps))
+    before = visible(para)
+    merges, skips = merge_paragraph(para, config(), RATIO)
+    assert merges == [] and skips == []
+    assert visible(para) == before
+
+
 def test_echo_retry_length_gate_reads_lines():
     """A stacked list qualifies by its lines; a long single line does not."""
     long_text = "x" * 152
