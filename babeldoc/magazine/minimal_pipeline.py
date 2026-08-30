@@ -24,6 +24,7 @@ from babeldoc.magazine import title_typeset
 from babeldoc.magazine.article_builder import ArticleBuilder
 from babeldoc.magazine.article_ir import ArticleDocumentIR
 from babeldoc.magazine.chain_builder import ChainBuilder
+from babeldoc.magazine.element_classifier import ElementClassifier
 from babeldoc.magazine.page_classifier import PageClassifier
 
 
@@ -428,6 +429,7 @@ def after_styles(config, docs) -> ArticleDocumentIR:
     hitl_state = hitl.begin_run(config, docs)
     state._hitl_state = hitl_state
     hitl.page_kind_pass(config, docs, hitl_state)
+    ElementClassifier(config).process(docs)
     line_split.apply(config, hitl.labeled_pages(docs))
     ChainBuilder(config).process(docs)
 
