@@ -26,7 +26,7 @@ def characters(text: str, x: float, style, *, gap: float = 0.0, y: float = 100.0
     """Characters laid left to right, ``gap`` points between neighbours."""
     built = []
     cursor = x
-    for glyph in text:
+    for index, glyph in enumerate(text):
         width = BODY_SIZE * 0.5
         built.append(
             il.PdfCharacter(
@@ -35,6 +35,7 @@ def characters(text: str, x: float, style, *, gap: float = 0.0, y: float = 100.0
                 pdf_style=style,
                 advance=width,
                 xobj_id=0,
+                pdf_character_id=index + 1,
             )
         )
         cursor += width + gap
