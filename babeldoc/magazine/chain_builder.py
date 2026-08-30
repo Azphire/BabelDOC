@@ -56,6 +56,7 @@ from babeldoc.magazine.chain_signals import BoundaryVerdict
 from babeldoc.magazine.chain_signals import evaluate_boundary
 from babeldoc.magazine.chain_signals import evaluate_column_boundaries
 from babeldoc.magazine.chain_signals import evaluate_intra_column_boundaries
+from babeldoc.magazine.chain_signals import evaluate_stratified_column_boundaries
 from babeldoc.magazine.chain_signals import load_chain_config
 from babeldoc.magazine.line_split import source_unit
 from babeldoc.magazine.taxonomy import DEFAULT_CONFIG_PATHS
@@ -95,7 +96,11 @@ class ChainBuilder:
 
     def process(self, docs: il_version_1.Document) -> il_version_1.Document:
         verdicts = self._score_boundaries(docs)
-        taken, dropped = _accepted_edges(verdicts, self.config[BOUNDARY_PRIORITY_KEY])
+        taken, dropped = _accepted_edges(
+            verdicts,
+            self.config[BOUNDARY_PRIORITY_KEY],
+            tuple(self.config["continuation_carry_words"]),
+        )
         chains = _chains_from(taken)
         self._write_chains(chains)
         self._write_report(docs, verdicts, chains, taken, dropped)
@@ -119,6 +124,11 @@ class ChainBuilder:
             )
             verdicts.extend(
                 evaluate_intra_column_boundaries(
+                    page, physical_index, self.taxonomy.policy_of, self.config
+                )
+            )
+            verdicts.extend(
+                evaluate_stratified_column_boundaries(
                     page, physical_index, self.taxonomy.policy_of, self.config
                 )
             )
@@ -310,7 +320,9 @@ class ChainBuilder:
 
 
 def _accepted_edges(
-    verdicts: list[BoundaryVerdict], priority: tuple[str, ...]
+    verdicts: list[BoundaryVerdict],
+    priority: tuple[str, ...],
+    carry_words: tuple[str, ...] = (),
 ) -> tuple[list[BoundaryVerdict], list[tuple[BoundaryVerdict, str]]]:
     """The linked boundaries assembly takes, and the ones it drops, with reasons.
 
@@ -334,7 +346,7 @@ def _accepted_edges(
         if verdict.linked and verdict.tail is not None and verdict.head is not None
         and (
             verdict.values.get("body_label_pair") != 1.0
-            or _textually_continuous(verdict)
+            or _textually_continuous(verdict, carry_words)
         )
     ]
     ranked = sorted(
@@ -368,20 +380,32 @@ def _accepted_edges(
     )
 
 
-def _textually_continuous(verdict: BoundaryVerdict) -> bool:
+def _textually_continuous(
+    verdict: BoundaryVerdict, carry_words: tuple[str, ...] = ()
+) -> bool:
     """Conservative source-text guard for a body handover.
 
     In a Latin-script paragraph, a continuation normally resumes with a
     lower-case word.  An upper-case opener is instead evidence that the next
     record starts independently (the common TOC/byline false positive).  CJK
     text has no case and is left entirely to geometry/style evidence.
+
+    One exception: a tail whose last word is a declared carry word -- an
+    article, conjunction or preposition that cannot end a sentence -- hands
+    on whatever case the next word carries, because "...like the | United
+    Nations Declaration" resumes with a proper noun and is a continuation all
+    the same. The words are declared in the chain configuration, beside the
+    terminal punctuation they are the complement of.
     """
     tail_text = verdict.tail.paragraph.unicode or ""
     head_text = verdict.head.paragraph.unicode or ""
     if any("\u3400" <= char <= "\u9fff" for char in tail_text + head_text):
         return True
     first_alpha = next((char for char in head_text if char.isalpha()), None)
-    return first_alpha is None or not first_alpha.isupper()
+    if first_alpha is None or not first_alpha.isupper():
+        return True
+    last_word = tail_text.rstrip().rsplit(None, 1)[-1] if tail_text.strip() else ""
+    return last_word.lower() in carry_words
 
 
 def _chains_from(

@@ -107,6 +107,11 @@ LINE_STRUCTURE_POLICY_FLAG = "preserve_line_structure"
 BOUNDARY_PAGE = "page"
 BOUNDARY_COLUMN = "column"
 BOUNDARY_INTRA_COLUMN = "intra_column"
+# The fourth kind: a handover between two columns of a column system the page
+# bands conflate with others -- an embedded box setting its own columns, or a
+# main column whose band the box shares. Units and strata rebuild the systems
+# from geometry alone, and the rule is deterministic like the intra-column one.
+BOUNDARY_STRATIFIED = "stratified_column"
 
 # How two columns of one page were paired. ``column_adjacent`` is band n against
 # band n+1. ``body_next`` skips one band, which is the handover hidden behind a
@@ -151,6 +156,7 @@ PRIORITY_NAMES = (
     PAIRING_COLUMN_ADJACENT,
     PAIRING_BODY_NEXT,
     BOUNDARY_INTRA_COLUMN,
+    BOUNDARY_STRATIFIED,
 )
 
 # The two ends of a boundary, named for the reports and for the mask reasons.
@@ -170,6 +176,9 @@ REQUIRED_PARAMETERS: frozenset[str] = frozenset(
         "chain_endpoint_min_width_ratio",
         "boundary_agreement_min",
         "intra_column_chain_max_gap_pt",
+        "stratum_overlap_min",
+        "stratified_band_overlap_min",
+        "continuation_carry_words",
         HEAD_CLEAR_GAP_KEY,
         BOUNDARY_KINDS_KEY,
         BOUNDARY_PRIORITY_KEY,
@@ -439,9 +448,15 @@ def _check_in_page_declarations(
     """
     kinds = tuple(parameters[BOUNDARY_KINDS_KEY])
     _require(
-        set(kinds) == {BOUNDARY_PAGE, BOUNDARY_COLUMN, BOUNDARY_INTRA_COLUMN},
+        set(kinds)
+        == {
+            BOUNDARY_PAGE,
+            BOUNDARY_COLUMN,
+            BOUNDARY_INTRA_COLUMN,
+            BOUNDARY_STRATIFIED,
+        },
         f"{source}: {BOUNDARY_KINDS_KEY} must declare exactly "
-        f"{[BOUNDARY_PAGE, BOUNDARY_COLUMN, BOUNDARY_INTRA_COLUMN]}, "
+        f"{[BOUNDARY_PAGE, BOUNDARY_COLUMN, BOUNDARY_INTRA_COLUMN, BOUNDARY_STRATIFIED]}, "
         f"got {list(kinds)}",
     )
     priority = tuple(parameters[BOUNDARY_PRIORITY_KEY])
@@ -1067,7 +1082,11 @@ class BoundaryVerdict:
         their pairing, because the pairings are ordered against each other as
         well as against the page.
         """
-        if self.kind in (BOUNDARY_COLUMN, BOUNDARY_INTRA_COLUMN):
+        if self.kind in (
+            BOUNDARY_COLUMN,
+            BOUNDARY_INTRA_COLUMN,
+            BOUNDARY_STRATIFIED,
+        ):
             return self.pairing or self.kind
         return BOUNDARY_PAGE
 
@@ -1086,6 +1105,12 @@ class BoundaryVerdict:
             return (
                 f"p{self.tail_page + 1}:c{self.tail_column}"
                 f":v{self.tail_slot}->v{self.head_slot}"
+            )
+        if self.kind == BOUNDARY_STRATIFIED:
+            if self.tail_column is None:
+                return f"p{self.tail_page + 1}:strata"
+            return (
+                f"p{self.tail_page + 1}:s{self.tail_column}->s{self.head_column}"
             )
         if self.kind != BOUNDARY_COLUMN:
             return f"{self.tail_page + 1}->{self.head_page + 1}"
@@ -1522,6 +1547,255 @@ def evaluate_intra_column_boundaries(
                     hyphen_tail=tail_ends_on_hyphen(tail),
                     tail_slot=tail_slot,
                     head_slot=head_slot,
+                )
+            )
+    return verdicts
+
+
+def _stratified_rejected(page_index: int, reason: str) -> BoundaryVerdict:
+    return BoundaryVerdict(
+        tail_page=page_index,
+        head_page=page_index,
+        eligible=False,
+        reason=reason,
+        pair=None,
+        values=dict.fromkeys(SIGNAL_NAMES),
+        score=None,
+        linked=False,
+        tail_fill_ratio=None,
+        tail=None,
+        head=None,
+        kind=BOUNDARY_STRATIFIED,
+        pairing=BOUNDARY_STRATIFIED,
+    )
+
+
+class _UnionFind:
+    def __init__(self, size: int) -> None:
+        self.parent = list(range(size))
+
+    def find(self, index: int) -> int:
+        while self.parent[index] != index:
+            self.parent[index] = self.parent[self.parent[index]]
+            index = self.parent[index]
+        return index
+
+    def union(self, left: int, right: int) -> None:
+        self.parent[self.find(left)] = self.find(right)
+
+    def groups(self) -> dict[int, list[int]]:
+        found: dict[int, list[int]] = {}
+        for index in range(len(self.parent)):
+            found.setdefault(self.find(index), []).append(index)
+        return found
+
+
+def _overlap_fraction(
+    low_a: float, high_a: float, low_b: float, high_b: float
+) -> float:
+    """How much two intervals overlap, against the shorter of them."""
+    shorter = min(high_a - low_a, high_b - low_b)
+    if shorter <= 0:
+        return 0.0
+    return max(0.0, min(high_a, high_b) - max(low_a, low_b)) / shorter
+
+
+def evaluate_stratified_column_boundaries(
+    page: il_version_1.Page,
+    page_index: int,
+    policy_of,
+    config: dict[str, ChainParameter],
+) -> list[BoundaryVerdict]:
+    """Every handover between two columns of a rebuilt column system.
+
+    The page-wide bands conflate column systems that share an x range: an
+    embedded box setting three narrow columns under a two-column article puts
+    its first column into the article's band, so the band's tail is the box's
+    paragraph and the article's own handover to its right column disappears --
+    and the box's later columns pair with nothing at all, because their true
+    heads are neither band heads nor band tails.
+
+    The systems are rebuilt from geometry alone, in three steps that each read
+    one declared threshold. Stacked body candidates -- horizontally
+    overlapping by ``stratified_band_overlap_min`` of the narrower, vertical
+    gap within ``intra_column_chain_max_gap_pt``, the same gap the
+    intra-column rule reads -- merge into column units. Units whose vertical
+    extents overlap by ``stratum_overlap_min`` of the shorter share a stratum:
+    an embedded box is its own stratum because its columns overlap each other
+    and nothing else. Within a stratum, units overlapping in x form bands,
+    the bands stand left to right, and each adjacent pair offers one
+    handover: the lowest element of the left band against the highest of the
+    right one.
+
+    The rule is deterministic like the intra-column one: linked when the tail
+    stops without terminal punctuation, the head has clear space above it,
+    and the style does not say the two ends are different settings. Assembly
+    orders this kind last, so a handover the scored kinds already found keeps
+    its scored edge and this one is dropped as redundant.
+    """
+    policy = policy_of(page.page_kind)
+    if policy is None:
+        return [_stratified_rejected(page_index, REASON_NO_PAGE_KIND)]
+    if bool(policy.get(LINE_STRUCTURE_POLICY_FLAG, False)):
+        return [_stratified_rejected(page_index, REASON_LINE_STRUCTURE)]
+    columns = page_columns(page, config)
+    if columns is None:
+        return [_stratified_rejected(page_index, REASON_NO_ENDPOINT)]
+
+    body_labels = tuple(config["body_labels"])
+    max_gap = float(config["intra_column_chain_max_gap_pt"])
+    band_overlap_min = float(config["stratified_band_overlap_min"])
+    stratum_overlap_min = float(config["stratum_overlap_min"])
+    items = [
+        item
+        for item in columns.candidates
+        if item[1] in body_labels and item[0].box is not None
+    ]
+    if len(items) < 2:
+        return []
+
+    def box_of(index: int):
+        return items[index][0].box
+
+    # Column units: stacked candidates merge, read with the same gap bound
+    # the intra-column rule reads, so one column broken into bands by a wrap
+    # is one unit here and one stack there.
+    stacks = _UnionFind(len(items))
+    for left in range(len(items)):
+        for right in range(left + 1, len(items)):
+            a, b = box_of(left), box_of(right)
+            if (
+                _overlap_fraction(
+                    float(a.x), float(a.x2), float(b.x), float(b.x2)
+                )
+                < band_overlap_min
+            ):
+                continue
+            upper, lower = (a, b) if float(a.y2) >= float(b.y2) else (b, a)
+            gap = float(upper.y) - float(lower.y2)
+            if 0.0 <= gap <= max_gap:
+                stacks.union(left, right)
+    units = []
+    for members in stacks.groups().values():
+        boxes = [box_of(index) for index in members]
+        units.append(
+            {
+                "members": sorted(
+                    members, key=lambda index: -float(box_of(index).y2)
+                ),
+                "x": min(float(box.x) for box in boxes),
+                "x2": max(float(box.x2) for box in boxes),
+                "y": min(float(box.y) for box in boxes),
+                "y2": max(float(box.y2) for box in boxes),
+            }
+        )
+
+    # Strata: units whose vertical extents overlap enough belong to one
+    # column system; transitive, so a tall main column holds its whole side.
+    strata = _UnionFind(len(units))
+    for left in range(len(units)):
+        for right in range(left + 1, len(units)):
+            if (
+                _overlap_fraction(
+                    units[left]["y"],
+                    units[left]["y2"],
+                    units[right]["y"],
+                    units[right]["y2"],
+                )
+                >= stratum_overlap_min
+            ):
+                strata.union(left, right)
+
+    verdicts: list[BoundaryVerdict] = []
+    for unit_indices in strata.groups().values():
+        if len(unit_indices) < 2:
+            continue
+        # Bands within the stratum: units overlapping in x stand in one band.
+        bands = _UnionFind(len(unit_indices))
+        for left in range(len(unit_indices)):
+            for right in range(left + 1, len(unit_indices)):
+                a = units[unit_indices[left]]
+                b = units[unit_indices[right]]
+                if (
+                    _overlap_fraction(a["x"], a["x2"], b["x"], b["x2"])
+                    >= band_overlap_min
+                ):
+                    bands.union(left, right)
+        ordered_bands = sorted(
+            (
+                [unit_indices[position] for position in members]
+                for members in bands.groups().values()
+            ),
+            key=lambda group: min(units[index]["x"] for index in group),
+        )
+        if len(ordered_bands) < 2:
+            continue
+        for slot, (left_band, right_band) in enumerate(
+            zip(ordered_bands, ordered_bands[1:], strict=False)
+        ):
+            tail_index = min(
+                (
+                    index
+                    for unit in left_band
+                    for index in units[unit]["members"]
+                ),
+                key=lambda index: float(box_of(index).y),
+            )
+            head_index = max(
+                (
+                    index
+                    for unit in right_band
+                    for index in units[unit]["members"]
+                ),
+                key=lambda index: float(box_of(index).y2),
+            )
+            tail = build_endpoint(
+                items[tail_index], page_index, columns.bands, columns.families
+            )
+            head = build_endpoint(
+                items[head_index], page_index, columns.bands, columns.families
+            )
+            rule = next(
+                (
+                    candidate
+                    for candidate in config[PAIR_RULES_KEY]
+                    if tail.label
+                    in config[CLASS_LABELS_KEY].get(candidate.tail_class, ())
+                    and head.label
+                    in config[CLASS_LABELS_KEY].get(candidate.head_class, ())
+                ),
+                None,
+            )
+            values: dict[str, float | None] = {
+                "tail_no_terminal_punct": tail_no_terminal_punct(tail, config),
+                "tail_line_fill": tail_line_fill(tail, config),
+                "style_continuity": style_continuity(tail, head, config),
+                "body_label_pair": body_label_pair(tail, head, config),
+                "column_position": None,
+                "opener_prior": IN_PAGE_OPENER_PRIOR,
+            }
+            continues = values["tail_no_terminal_punct"] == 1.0
+            clear = head_is_clear(columns, head, config)
+            same_setting = values["style_continuity"] != 0.0
+            verdicts.append(
+                BoundaryVerdict(
+                    tail_page=page_index,
+                    head_page=page_index,
+                    eligible=True,
+                    reason=None if clear else REASON_HEAD_NOT_CLEAR,
+                    pair=None if rule is None else rule.name,
+                    values=values,
+                    score=None,
+                    linked=continues and clear and same_setting,
+                    tail_fill_ratio=tail_line_fill_ratio(tail),
+                    tail=tail,
+                    head=head,
+                    kind=BOUNDARY_STRATIFIED,
+                    pairing=BOUNDARY_STRATIFIED,
+                    tail_column=slot,
+                    head_column=slot + 1,
+                    column_count=len(ordered_bands),
+                    hyphen_tail=tail_ends_on_hyphen(tail),
                 )
             )
     return verdicts
