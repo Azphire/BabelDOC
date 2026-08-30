@@ -1055,6 +1055,8 @@ def _do_translate_single(
         translation_config,
         docs,
         typesetting_stage,
+        temp_pdf_path,
+        mediabox_data,
     )
     if translation_config.debug:
         xml_converter.write_json(

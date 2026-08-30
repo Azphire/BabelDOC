@@ -19,6 +19,7 @@ from babeldoc.magazine import line_split
 from babeldoc.magazine import minimal_detection
 from babeldoc.magazine import llm_decide
 from babeldoc.magazine import minimal_repair
+from babeldoc.magazine import repair_evidence
 from babeldoc.magazine import repair_loop as repair_loop_module
 from babeldoc.magazine import paren_dedup
 from babeldoc.magazine import resource_paths
@@ -102,6 +103,8 @@ class MagazineState:
     _detection_before: minimal_detection.DetectionResult | None = None
     _repair_result: minimal_repair.RepairResult | None = None
     _loop_result: object | None = None
+    _evidence_pages: tuple[int, ...] = ()
+    _evidence_before_pdf: object | None = None
     _minimal_report: dict | None = None
     _minimal_report_path: Path | None = None
     _result_started: bool = False
@@ -219,6 +222,14 @@ class MagazineState:
     @property
     def loop_result(self):
         return self._loop_result
+
+    @property
+    def evidence_pages(self) -> tuple[int, ...]:
+        return self._evidence_pages
+
+    @property
+    def evidence_before_pdf(self):
+        return self._evidence_before_pdf
 
     @property
     def minimal_report(self) -> dict | None:
@@ -1239,7 +1250,52 @@ def _decision_client(config, translation_performed: bool):
         return None
 
 
-def _detect_and_repair(config, docs, typesetter, state: MagazineState) -> None:
+def _record_repair_evidence(
+    config,
+    state: MagazineState,
+    loop_result,
+    snapshot,
+    temp_pdf_path,
+    mediabox_data,
+) -> None:
+    """Render the pre-repair pages a kept action wrote to, and nothing else.
+
+    A run that kept nothing renders nothing: two identical pictures would look
+    like evidence of a repair while being evidence of none. Failure to render
+    is reported and does not fail the run -- the translated document is the
+    deliverable and the pictures are an account of it.
+    """
+    pages = sorted(
+        {page for action in loop_result.accepted_actions for page in action.pages}
+    )
+    if not pages or snapshot is None or temp_pdf_path is None:
+        return
+    try:
+        before_pdf = repair_evidence.write_before_pdf(
+            config, snapshot, temp_pdf_path, mediabox_data
+        )
+        repair_evidence.render_pages(
+            before_pdf,
+            pages,
+            repair_evidence.evidence_dir(config),
+            repair_evidence.BEFORE_SUFFIX,
+        )
+    except Exception:
+        logger.warning("pre-repair evidence could not be rendered", exc_info=True)
+        return
+    state._evidence_pages = tuple(pages)
+    state._evidence_before_pdf = before_pdf
+
+
+def _detect_and_repair(
+    config,
+    docs,
+    typesetter,
+    state: MagazineState,
+    *,
+    temp_pdf_path=None,
+    mediabox_data=None,
+) -> None:
     if state._detection_started:
         raise MinimalPipelineStateError("minimal detection was already attempted")
     if not state.render_completed:
@@ -1316,6 +1372,13 @@ def _detect_and_repair(config, docs, typesetter, state: MagazineState) -> None:
                 )
             state._repair_result = repair_result
         else:
+            # The pre-repair document has to be kept before the loop touches
+            # it, and only where there is something to render it with.
+            snapshot = (
+                repair_evidence.capture(docs)
+                if temp_pdf_path is not None
+                else None
+            )
             loop_result = repair_loop_module.repair_loop(
                 before,
                 docs,
@@ -1333,6 +1396,14 @@ def _detect_and_repair(config, docs, typesetter, state: MagazineState) -> None:
                     "the repair loop did not return a LoopResult"
                 )
             state._loop_result = loop_result
+            _record_repair_evidence(
+                config,
+                state,
+                loop_result,
+                snapshot,
+                temp_pdf_path,
+                mediabox_data,
+            )
     report = _build_run_report(config, docs, state)
     _write_run_report(config, state, report)
     state._detection_completed = True
@@ -1381,7 +1452,9 @@ def _refresh_detection_fixed_baseline(
     return refreshed
 
 
-def after_typesetting(config, docs, typesetter) -> dict:
+def after_typesetting(
+    config, docs, typesetter, temp_pdf_path=None, mediabox_data=None
+) -> dict:
     """Render frozen titles then drop-cap intents after formal typesetting."""
     state = _state(config)
     if state._render_started:
@@ -1431,7 +1504,14 @@ def after_typesetting(config, docs, typesetter) -> dict:
         raise MinimalPipelineStateError("canonical ArticleDocumentIR identity changed")
     state._render_report = report
     state._render_completed = True
-    _detect_and_repair(config, docs, typesetter, state)
+    _detect_and_repair(
+        config,
+        docs,
+        typesetter,
+        state,
+        temp_pdf_path=temp_pdf_path,
+        mediabox_data=mediabox_data,
+    )
     return report
 
 
@@ -1477,6 +1557,43 @@ def finalize_result(config, result) -> dict:
     report["output"] = output
     report["status"] = "complete"
     report["completed"] = True
+    report["repair_evidence"] = _finish_repair_evidence(config, state, output)
     _write_run_report(config, state, report)
     state._result_completed = True
     return report
+
+
+def _finish_repair_evidence(config, state: MagazineState, output: dict) -> dict:
+    """Rasterise the finished pages beside the pre-repair ones already rendered.
+
+    The "after" picture is the delivered document rather than a second render
+    of the same intermediate state, so what a reader compares is the page that
+    was actually produced.
+    """
+    pages = state.evidence_pages
+    record = {"pages": list(pages), "pairs": [], "before_pdf": None}
+    if not pages or state.evidence_before_pdf is None:
+        return record
+    record["before_pdf"] = _path_value(state.evidence_before_pdf)
+    finished = output.get("no_watermark_mono") or output.get("mono")
+    if finished is None:
+        return record
+    directory = repair_evidence.evidence_dir(config)
+    try:
+        repair_evidence.render_pages(
+            finished, pages, directory, repair_evidence.AFTER_SUFFIX
+        )
+    except Exception:
+        logger.warning("finished repair evidence could not be rendered", exc_info=True)
+        return record
+    record["pairs"] = [
+        {
+            "page": page,
+            "before": _path_value(before),
+            "after": _path_value(after),
+        }
+        for page, (before, after) in sorted(
+            repair_evidence.pairs(directory, pages).items()
+        )
+    ]
+    return record

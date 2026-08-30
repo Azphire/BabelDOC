@@ -337,3 +337,39 @@ still exactly at baseline.
 The loop writes the same `issues.after.json` the one-shot pass does, mirroring
 the before-result whenever it kept nothing, so a finished run reads the same
 whichever ran.
+
+### T5 — before/after evidence, and the report
+
+**Signature change.**  `minimal_pipeline.after_typesetting` gained two optional
+positional arguments, `temp_pdf_path` and `mediabox_data`, and
+`babeldoc/format/pdf/high_level.py:1054` passes them.  They are what the writer
+needs to render the pre-repair document; both default to None, so a caller that
+does not have them (every test that drives the pass directly) is unaffected.
+
+Two test doubles of the internal `_detect_and_repair` had fixed arity and were
+relaxed to `*_args, **_kwargs`
+(`tests/minimal/test_title_demo.py:1020`,
+`tests/minimal/test_drop_cap_keep_flatten.py:630`).  They stub an internal
+function whose signature changed; nothing about what they assert moved.
+
+**The "after" picture is the delivered document, not a second render.**  The
+plan had the final product serve as "after", and it does: the pre-repair PDF is
+written during `after_typesetting`, and the after-side pages are rasterised in
+`finalize_result` from the run's own finished mono PDF.  So a reader compares
+the page that was actually produced against the page that would have been.
+
+The pre-repair PDF goes through the ordinary writer with a *shadowed* config --
+a shallow copy with its own `output_dir`, no watermark, no dual -- so the two
+pictures differ by the repair and not by how they were drawn, and the run's own
+output directory is never written to by the evidence path.
+
+**Rendering never fails a run.**  The translated document is the deliverable and
+the pictures are an account of it, so a render that raises is logged and the run
+finishes.  The snapshot itself is only taken when there is something to render
+with, so an offline run pays no deepcopy.
+
+`tools/mapek_report.py` reads only what runs wrote.  `spec_check_b12_t5.py`
+checks the biconditional in both directions -- a page has a pair if and only if
+an accepted action wrote to it -- because both halves fail silently: two renders
+of an unchanged page look like evidence of a repair, and a repair that rendered
+nothing leaves a claim nobody can check.

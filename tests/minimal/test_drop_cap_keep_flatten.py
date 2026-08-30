@@ -627,7 +627,7 @@ def test_after_typesetting_is_one_shot_after_success_and_failure(
     monkeypatch.setattr(
         minimal_pipeline,
         "_detect_and_repair",
-        lambda _config, _docs, _typesetter, _state: None,
+        lambda *_args, **_kwargs: None,
     )
     paragraph = english_render_paragraph()
     docs = make_document([paragraph])

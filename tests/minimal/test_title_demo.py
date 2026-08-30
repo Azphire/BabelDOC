@@ -1017,7 +1017,7 @@ def test_pipeline_orders_title_between_formal_layout_and_dropcap(
     monkeypatch.setattr(
         minimal_pipeline,
         "_detect_and_repair",
-        lambda *_args: order.append("detect"),
+        lambda *_args, **_kwargs: order.append("detect"),
     )
 
     minimal_pipeline.after_typesetting(config, document, typesetter)
