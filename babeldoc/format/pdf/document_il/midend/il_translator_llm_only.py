@@ -668,6 +668,20 @@ class ILTranslatorLLMOnly:
                     pbar.advance(1)
                 continue
 
+            # Withheld by the furniture pass (production mark, or a
+            # repeat-furniture member awaiting its leader's translation).
+            # This page path filters inline rather than through
+            # _should_translate_paragraph, so it consults the plan itself.
+            furniture_plan = getattr(
+                self.translation_config, "magazine_furniture_plan", None
+            )
+            if furniture_plan is not None and furniture_plan.withholds(
+                paragraph.debug_id
+            ):
+                if pbar:
+                    pbar.advance(1)
+                continue
+
             if article_context.declares_titles:
                 is_running_title = article_context.is_running_title(paragraph)
             else:

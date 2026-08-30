@@ -150,39 +150,49 @@ def _holder(composition):
 def _trailing_run(characters: list) -> tuple[int, list] | None:
     """The word tail at the end of one container: (slice start, letters).
 
-    A run is a *pure* letter sequence: the sources in evidence letterspace a
-    word with geometry alone and write a real space character only at a word
-    break (CERN's footer IL: no space inside ``V olume``, spaces between
-    every word).  So a space character standing between the container's end
-    and its last letters is a word break, and the boundary reads as one --
-    None here, no merge.  What letterspacing leaves is gaps, and gaps are the
-    ``_same_word`` test's to judge.
+    Space characters travel with the tail rather than ending it: the pipeline
+    materializes a space character for every letterspaced gap, so the letters
+    of one footer word arrive as ``o`` `` `` ``l`` `` `` ... and a run that
+    stopped at a space would never see the word.  Whether any of those spaces
+    is a *word* break is geometry -- ``_same_word`` measures the gaps -- not
+    character identity.  The slice runs from the first letter of the tail
+    through the container's end, so a move keeps every character in sequence.
     """
-    if not characters:
-        return None
-    if _is_space(characters[-1]):
-        return None
     index = len(characters) - 1
-    while index >= 0 and _is_letter(characters[index]):
+    first_letter = None
+    while index >= 0:
+        item = characters[index]
+        if _is_letter(item):
+            first_letter = index
+        elif not _is_space(item):
+            break
         index -= 1
-    if index == len(characters) - 1:
+    if first_letter is None:
         return None
-    return index + 1, characters[index + 1 :]
+    letters = [item for item in characters[first_letter:] if _is_letter(item)]
+    return first_letter, letters
 
 
 def _leading_run(characters: list) -> tuple[int, list] | None:
     """The word head at the start of one container: (slice end, letters).
 
-    The mirror of ``_trailing_run``: pure letters from the container's start,
-    and a leading space character means the word broke at the boundary."""
-    if not characters or _is_space(characters[0]):
-        return None
+    The mirror of ``_trailing_run``: the slice takes any leading spaces with
+    it and ends at the last letter of the head, leaving the container's own
+    separator space behind.
+    """
     index = 0
-    while index < len(characters) and _is_letter(characters[index]):
+    last_letter = None
+    while index < len(characters):
+        item = characters[index]
+        if _is_letter(item):
+            last_letter = index
+        elif not _is_space(item):
+            break
         index += 1
-    if index == 0:
+    if last_letter is None:
         return None
-    return index, characters[:index]
+    letters = [item for item in characters[: last_letter + 1] if _is_letter(item)]
+    return last_letter + 1, letters
 
 
 def _gap(left, right) -> float | None:
@@ -224,11 +234,13 @@ def _same_word(left_letters, right_letters, config: SpanMergeConfig) -> bool:
     """Whether the boundary gap reads as a letter gap, not a word gap.
 
     Letterspaced text separates the letters of one word as far as it separates
-    that word from digits and neighbours -- in characters.  What still tells
-    them apart is geometry: the gap across the boundary is no wider than the
-    gaps inside the runs.  Where neither run has an inside (two lone letters),
-    only a gap small against the letter size -- far under a space width --
-    counts as contiguous.
+    that word from its neighbours -- in characters.  What still tells them
+    apart is geometry, and the honest reference is the *tightest* letter gap
+    inside the runs: a letterspaced word is uniform, so its minimum matches
+    the boundary; a run that swallowed a word break is not, so its minimum is
+    the intra-word near-zero and the wide boundary is refused.  Where the
+    runs have no inside, only a gap small against the letter size -- far
+    under a space width -- counts as contiguous.
     """
     boundary = _gap(left_letters[-1], right_letters[0])
     if boundary is None:
@@ -240,7 +252,7 @@ def _same_word(left_letters, right_letters, config: SpanMergeConfig) -> bool:
     ]
     floor = config.abs_gap_em * min(sizes) if sizes else 0.0
     internal = _internal_gaps(left_letters) + _internal_gaps(right_letters)
-    allowed = max(config.gap_tolerance * max(internal), floor) if internal else floor
+    allowed = max(config.gap_tolerance * min(internal), floor) if internal else floor
     return boundary <= allowed
 
 
