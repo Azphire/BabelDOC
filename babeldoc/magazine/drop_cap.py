@@ -89,6 +89,7 @@ import copy
 import hashlib
 import json
 import logging
+import re
 import statistics
 import unicodedata
 from collections import Counter
@@ -97,6 +98,8 @@ from dataclasses import dataclass
 from functools import lru_cache
 from pathlib import Path
 from types import MappingProxyType
+
+import pymupdf
 
 from babeldoc.format.pdf.document_il import il_version_1
 from babeldoc.magazine import drop_cap_intent
@@ -876,12 +879,137 @@ def find_standalone_candidates(
     return found
 
 
+# What an ICCBased stream's /N component count means as a device space -- the
+# only family resolved past its name, because it is the only one whose
+# components normalize the way the capture's device branches already do.
+_ICC_COMPONENT_SPACES = {1: "DeviceGray", 3: "DeviceRGB", 4: "DeviceCMYK"}
+
+_DEVICE_SPACE_NAMES = frozenset(_ICC_COMPONENT_SPACES.values())
+
+_ICC_BASED_RE = re.compile(r"/ICCBased\s+(\d+)\s+\d+\s+R")
+_DIRECT_DEVICE_RE = re.compile(r"^\s*/(DeviceGray|DeviceRGB|DeviceCMYK)\s*$")
+_INDIRECT_REFERENCE_RE = re.compile(r"^\s*(\d+)\s+\d+\s+R\s*$")
+
+
+class _ColorSpaceResolver:
+    """Resolve named fill/stroke color spaces against the source PDF.
+
+    The intermediate language carries a character's content-stream operators
+    but not the resource dictionaries they name into, so ``/CS0 cs`` cannot be
+    read past the name from the instruction alone. The name is resolved in the
+    character's own drawing context -- the form xobject it came from where it
+    came from one, the page otherwise -- and only into the three device spaces
+    the color capture normalizes: a direct device name stands for itself and an
+    ICCBased stream maps by its /N component count. Every other family
+    (Separation, DeviceN, Pattern, Indexed, ...) resolves to None on purpose,
+    and the capture keeps its recorded unsupported fallback, so nothing this
+    class fails at can change a color the capture reads today.
+    """
+
+    def __init__(self, translation_config):
+        self._input_file = getattr(translation_config, "input_file", None)
+        self._document = None
+        self._open_failed = False
+        self._cache: dict[tuple[int, int | None, str], str | None] = {}
+
+    def close(self) -> None:
+        if self._document is not None:
+            self._document.close()
+            self._document = None
+
+    def _open(self):
+        if self._open_failed or self._document is not None:
+            return self._document
+        try:
+            self._document = pymupdf.open(str(self._input_file))
+        except (RuntimeError, ValueError, TypeError, OSError):
+            logger.warning(
+                "drop cap color spaces stay unresolved: cannot open %s",
+                self._input_file,
+            )
+            self._open_failed = True
+        return self._document
+
+    def for_character(self, physical_page: int, il_page, character):
+        """The resolver closure for one character's drawing context."""
+        form_xref = None
+        xobj_id = getattr(character, "xobj_id", None)
+        if xobj_id is not None:
+            form_xref = next(
+                (
+                    xobject.xref_id
+                    for xobject in il_page.pdf_xobject or ()
+                    if xobject.xobj_id == xobj_id
+                ),
+                None,
+            )
+
+        def resolve(name: str) -> str | None:
+            key = (physical_page, form_xref, name)
+            if key not in self._cache:
+                self._cache[key] = self._resolve(physical_page, form_xref, name)
+            return self._cache[key]
+
+        return resolve
+
+    def _resolve(
+        self, physical_page: int, form_xref: int | None, name: str
+    ) -> str | None:
+        document = self._open()
+        if document is None:
+            return None
+        owners: list[int] = []
+        if form_xref:
+            owners.append(int(form_xref))
+        try:
+            if 1 <= physical_page <= document.page_count:
+                owners.append(document[physical_page - 1].xref)
+            for owner in owners:
+                space = self._resolve_in(document, owner, name)
+                if space is not None:
+                    return space
+        except (RuntimeError, ValueError, TypeError, IndexError):
+            logger.warning(
+                "color space /%s stays unresolved on page %d",
+                name,
+                physical_page,
+            )
+        return None
+
+    @staticmethod
+    def _resolve_in(document, owner_xref: int, name: str) -> str | None:
+        kind, value = document.xref_get_key(
+            owner_xref, f"Resources/ColorSpace/{name}"
+        )
+        if kind == "xref":
+            reference = _INDIRECT_REFERENCE_RE.match(value or "")
+            if reference is None:
+                return None
+            value = document.xref_object(int(reference.group(1)), compressed=True)
+        elif kind not in ("name", "array"):
+            return None
+        direct = _DIRECT_DEVICE_RE.match(value or "")
+        if direct is not None:
+            return direct.group(1)
+        icc = _ICC_BASED_RE.search(value or "")
+        if icc is None:
+            return None
+        count_kind, count = document.xref_get_key(int(icc.group(1)), "N")
+        if count_kind != "int":
+            return None
+        return _ICC_COMPONENT_SPACES.get(int(count))
+
+
 def mark(
     translation_config,
     labeled_pages,
     article_document_ir: ArticleDocumentIR | None = None,
 ) -> list[Candidate]:
     """Find the candidates of one document and say so in the document.
+
+    Each candidate's frozen color resolves named color spaces against the
+    source document's own resources, so an initial painted through ``scn``
+    freezes the color it was set in rather than the capture's black default.
 
     Returns them in page order, empty where the switch is down. Only a candidate
     is written: a paragraph that is not one carries no attribute at all, so a run
@@ -928,48 +1056,59 @@ def mark(
             f"{getattr(translation_config, 'lang_out', '')!r}"
         )
     intents: list[drop_cap_intent.DropCapIntent] = []
-    for candidate in candidates:
-        paragraph = pages[candidate.page].pdf_paragraph[candidate.index]
-        visual_page, visual_index = parse_source_ref(
-            candidate.visual_initial_reference
-        )
-        visual_page_position = next(
-            (
-                index
-                for index, (physical_label, _page) in enumerate(labeled_pages)
-                if physical_label == visual_page
-            ),
-            None,
-        )
-        if visual_page_position is None:
-            raise DropCapError(
-                f"{candidate.reference}: visual initial page is not selected"
+    resolver = _ColorSpaceResolver(translation_config)
+    try:
+        for candidate in candidates:
+            paragraph = pages[candidate.page].pdf_paragraph[candidate.index]
+            visual_page, visual_index = parse_source_ref(
+                candidate.visual_initial_reference
             )
-        visual_paragraph = labeled_pages[visual_page_position][1].pdf_paragraph[
-            visual_index
-        ]
-        source_character = next(
-            (
-                character
-                for character in paragraph_characters(visual_paragraph)
-                if (character.char_unicode or "").strip()
-            ),
-            None,
-        )
-        if source_character is None:
-            raise DropCapError(f"{candidate.reference} has no source initial character")
-        intent = drop_cap_intent.build_intent(
-            source_ref=candidate.reference,
-            article_id=candidate.article_id,
-            paragraph=paragraph,
-            source_character=source_character,
-            target_policy=str(policy),
-            config_version=config.intent_config_version,
-            decision_version=config.decision_version,
-            visual_initial_ref=candidate.visual_initial_reference,
-            binding_proof=dict(candidate.binding_proof),
-        )
-        intents.append(intent)
+            visual_page_position = next(
+                (
+                    index
+                    for index, (physical_label, _page) in enumerate(labeled_pages)
+                    if physical_label == visual_page
+                ),
+                None,
+            )
+            if visual_page_position is None:
+                raise DropCapError(
+                    f"{candidate.reference}: visual initial page is not selected"
+                )
+            visual_paragraph = labeled_pages[visual_page_position][1].pdf_paragraph[
+                visual_index
+            ]
+            source_character = next(
+                (
+                    character
+                    for character in paragraph_characters(visual_paragraph)
+                    if (character.char_unicode or "").strip()
+                ),
+                None,
+            )
+            if source_character is None:
+                raise DropCapError(
+                    f"{candidate.reference} has no source initial character"
+                )
+            intent = drop_cap_intent.build_intent(
+                source_ref=candidate.reference,
+                article_id=candidate.article_id,
+                paragraph=paragraph,
+                source_character=source_character,
+                target_policy=str(policy),
+                config_version=config.intent_config_version,
+                decision_version=config.decision_version,
+                visual_initial_ref=candidate.visual_initial_reference,
+                binding_proof=dict(candidate.binding_proof),
+                resolve_color_space=resolver.for_character(
+                    visual_page,
+                    labeled_pages[visual_page_position][1],
+                    source_character,
+                ),
+            )
+            intents.append(intent)
+    finally:
+        resolver.close()
     for candidate in candidates:
         pages[candidate.page].pdf_paragraph[candidate.index].drop_cap_candidate = True
     drop_cap_intent.replace_intents(translation_config, intents)

@@ -348,7 +348,13 @@ def _numbers(operands, count: int) -> tuple[float, ...] | None:
     return tuple(float(value) for value in values)
 
 
-def freeze_color(style) -> FrozenColorState:
+# The three spaces sc/scn components can be normalized in, and how many
+# components each takes. A named space resolves into one of these or stays a
+# name, in which case the components that follow it are recorded unsupported.
+_DEVICE_COMPONENTS = {"DeviceGray": 1, "DeviceRGB": 3, "DeviceCMYK": 4}
+
+
+def freeze_color(style, resolve_color_space=None) -> FrozenColorState:
     fill = _normalized("default", (0.0,), "DeviceGray")
     assert fill is not None
     stroke: NormalizedColor | None = None
@@ -373,11 +379,22 @@ def freeze_color(style) -> FrozenColorState:
                 if operator in ("cs", "CS") and len(operands) == 1:
                     name = operands[0]
                     if isinstance(name, PdfName):
-                        if operator == "cs":
-                            fill_space = name.value
-                        else:
-                            stroke_space = name.value
                         evidence.append(f"{operator}:/{name.value}")
+                        space = name.value
+                        if (
+                            space not in _DEVICE_COMPONENTS
+                            and resolve_color_space is not None
+                        ):
+                            resolved = resolve_color_space(space)
+                            if resolved in _DEVICE_COMPONENTS:
+                                evidence.append(f"resolve:/{space}->{resolved}")
+                                space = resolved
+                            else:
+                                evidence.append(f"resolve:/{space}:unsupported")
+                        if operator == "cs":
+                            fill_space = space
+                        else:
+                            stroke_space = space
                     continue
                 direct = {
                     "g": ("fill", "DeviceGray", 1),
@@ -391,14 +408,10 @@ def freeze_color(style) -> FrozenColorState:
                     role, space, count = direct
                 elif operator in ("sc", "scn"):
                     role, space = "fill", fill_space
-                    count = {"DeviceGray": 1, "DeviceRGB": 3, "DeviceCMYK": 4}.get(
-                        space, 0
-                    )
+                    count = _DEVICE_COMPONENTS.get(space, 0)
                 elif operator in ("SC", "SCN"):
                     role, space = "stroke", stroke_space
-                    count = {"DeviceGray": 1, "DeviceRGB": 3, "DeviceCMYK": 4}.get(
-                        space, 0
-                    )
+                    count = _DEVICE_COMPONENTS.get(space, 0)
                 else:
                     if operator == "gs" and len(operands) == 1:
                         name = operands[0]
@@ -438,6 +451,7 @@ def build_intent(
     decision_version: int,
     visual_initial_ref: str | None = None,
     binding_proof: dict | None = None,
+    resolve_color_space=None,
 ) -> DropCapIntent:
     source_char = source_character.char_unicode or ""
     source_style_hash = style_hash(source_character.pdf_style)
@@ -461,7 +475,9 @@ def build_intent(
         source_codepoint=" ".join(f"U+{ord(char):04X}" for char in source_char),
         source_text_fingerprint=text_fingerprint,
         source_style_hash=source_style_hash,
-        source_color=freeze_color(source_character.pdf_style),
+        source_color=freeze_color(
+            source_character.pdf_style, resolve_color_space
+        ),
         target_policy=target_policy,
         candidate_fingerprint=candidate_fingerprint,
         config_version=config_version,
