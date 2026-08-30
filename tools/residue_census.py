@@ -218,6 +218,8 @@ class Record:
     issue_id: str | None = None
     tracking_rows: int = 0
     tracking_all_identical: bool | None = None
+    tracking_input_excerpt: str | None = None
+    tracking_output_excerpt: str | None = None
     residue_script: str | None = None
     residue_chars: int | None = None
     residue_script_chars: int | None = None
@@ -567,6 +569,14 @@ def census_run(run_root: Path, detectors_config: dict, page_policies: dict) -> d
             record.tracking_all_identical = all(
                 (row.get("input") or "") == (row.get("output") or "") for row in rows
             )
+            # ``returned_unchanged`` says the two sides were equal and
+            # ``translated_with_residue`` says they were not, and neither says
+            # what the text was. A brand name handed back as itself and a
+            # sentence the translator declined to touch are the same category
+            # until both sides are readable, so both sides are carried here at
+            # the same cut the indent excerpt uses.
+            record.tracking_input_excerpt = (rows[0].get("input") or "")[:_EXCERPT_CAP]
+            record.tracking_output_excerpt = (rows[0].get("output") or "")[:_EXCERPT_CAP]
 
         # How long the paragraph's text is. Three artifacts bear on it and each
         # is a lower bound rather than the number itself: the translator's input

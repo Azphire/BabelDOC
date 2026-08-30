@@ -63,6 +63,9 @@ SAMPLES = (
 # The census numbers frozen by b11.12 report section 10.
 FROZEN_TOTALS = {"A": 58, "B": 90, "A&B": 27, "S": 28, "total": 149}
 
+# Reported after b11.12, read by no criterion. See claim_5.
+DESCRIPTIVE_FIELDS = ("tracking_input_excerpt", "tracking_output_excerpt")
+
 results: list[str] = []
 
 
@@ -185,10 +188,20 @@ def claim_5() -> None:
         fresh = json.loads((out / "residue_census.json").read_text(encoding="utf-8"))
     frozen = json.loads(FROZEN_CENSUS.read_text(encoding="utf-8"))
     # ``run_dir`` echoes the path the census was invoked with, so it moves with
-    # the caller and not with the census. Everything else must be identical.
+    # the caller and not with the census.
+    #
+    # DESCRIPTIVE_FIELDS are fields added after b11.12 that describe a record
+    # without judging it: no criterion reads them and no count depends on them.
+    # They are dropped from both sides so this claim keeps saying what it means
+    # -- that nothing was reclassified -- rather than failing every time the
+    # census learns to report one more thing. Anything that could move a record
+    # between categories does not belong on this list.
     for payload in (fresh, frozen):
         for run in payload["runs"]:
             run["run_dir"] = Path(run.pop("run_dir")).name
+            for row in run["records"]:
+                for field in DESCRIPTIVE_FIELDS:
+                    row.pop(field, None)
     rows = [row for run in fresh["runs"] for row in run["records"]]
     totals = {
         "A": sum("A" in row["populations"] for row in rows),
