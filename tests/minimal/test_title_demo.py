@@ -713,6 +713,100 @@ def test_two_member_title_chain_has_one_complete_owner_and_no_residue(
     assert paragraphs[1].pdf_paragraph_composition == []
 
 
+def test_cross_page_title_chain_renders_each_fragment_in_its_own_page(
+    monkeypatch, tmp_path
+):
+    runtime_chain_id = "runtime-cross-page-title"
+    boxes = ((5.0, 50.0, 95.0, 65.0), (5.0, 50.0, 95.0, 65.0))
+    fragments = ("跨頁標題", "完成部分")
+    paragraphs = [
+        _paragraph(
+            fragment,
+            f"cross-page-title-{index}",
+            box,
+            label="title",
+            chain_id=runtime_chain_id,
+            chain_index=index,
+        )
+        for index, (fragment, box) in enumerate(zip(fragments, boxes, strict=True))
+    ]
+    for paragraph in paragraphs:
+        paragraph.xobj_id = -1
+    document = il_version_1.Document(
+        page=[_page(0, [paragraphs[0]]), _page(1, [paragraphs[1]])],
+        total_pages=2,
+    )
+    elements = tuple(
+        SourceElementRef(
+            source_ref=f"p{index + 1}#0",
+            page=index + 1,
+            column=0,
+            reading_order=index,
+            role="title",
+            source_box=boxes[index],
+            source_text_hash=_sha256(paragraph.unicode),
+            style_hash=f"style-{index}",
+        )
+        for index, paragraph in enumerate(paragraphs)
+    )
+    article = ArticleIR(
+        article_id="article-cross-page-title",
+        pages=(1, 2),
+        elements=elements,
+        slots=(),
+        chain_ids=("canonical-cross-page-title",),
+        policy_evidence=(),
+    )
+    refs = tuple(item.source_ref for item in elements)
+    article_ir = ArticleDocumentIR(
+        articles=(article,),
+        by_page={1: article.article_id, 2: article.article_id},
+        by_element=dict.fromkeys(refs, article.article_id),
+        by_chain={"canonical-cross-page-title": article.article_id},
+        by_chain_member=dict.fromkeys(refs, "canonical-cross-page-title"),
+    )
+    config = Config(tmp_path, "zh")
+    typesetter = Typesetting(config, RenderMapper())
+    whole = "".join(fragments)
+    (tmp_path / title_typeset.CHAIN_REPORT_NAME).write_text(
+        json.dumps(
+            {
+                "chains": [
+                    {
+                        "chain_id": runtime_chain_id,
+                        "canonical_chain_id": "canonical-cross-page-title",
+                        "pair_class": "title",
+                        "outcome": "joint_success",
+                        "runtime_source_refs": list(refs),
+                        "translation": whole,
+                        "ordered_fragments": list(fragments),
+                        "whole_target_sha256": _sha256(whole),
+                        "source_boxes": [list(box) for box in boxes],
+                        "boundary_kinds": ["page"],
+                    }
+                ]
+            }
+        ),
+        encoding="utf-8",
+    )
+    monkeypatch.setattr(title_typeset.line_split, "source_unit", lambda *_args: None)
+
+    title_typeset.prepare(config, document, article_ir, typesetter)
+    for page in document.page:
+        typesetter.render_page(page)
+    report = title_typeset.apply(config, document, typesetter)
+
+    rows = report["titles"]
+    assert [row["source_ref"] for row in rows] == list(refs)
+    assert [row["member_refs"] for row in rows] == [[refs[0]], [refs[1]]]
+    assert all(row["suppressed_refs"] == [] for row in rows)
+    assert all(row["chain_member_refs"] == list(refs) for row in rows)
+    assert all(row["chain_target_sha256"] == _sha256(whole) for row in rows)
+    assert all(row["chain_boundary_kinds"] == ["page"] for row in rows)
+    assert "".join(paragraph.unicode for paragraph in paragraphs) == whole
+    assert all(paragraph.pdf_paragraph_composition for paragraph in paragraphs)
+
+
 def test_unproved_title_chain_fails_before_suppressing_any_holder(
     monkeypatch, tmp_path
 ):

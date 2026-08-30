@@ -1078,7 +1078,9 @@ class ChainPlan:
                 issue=detail or reason or None,
             )
 
-    def _prepare(self, members, tracker) -> tuple[list[MemberPlan], str, str]:
+    def _prepare(
+        self, members, tracker, *, allow_short: bool = False
+    ) -> tuple[list[MemberPlan], str, str]:
         """Ask the pipeline for each member's source text and its placeholders.
 
         Nothing here writes to a paragraph. A refusal leaves its claim active.
@@ -1088,11 +1090,22 @@ class ChainPlan:
             paragraph = member.paragraph
             page_font_map, xobj_font_map = self.translator._build_font_maps(member.page)
             member_tracker = tracker.new_paragraph()
-            text, translate_input = (
-                self.translator.il_translator.pre_translate_paragraph(
-                    paragraph, member_tracker, page_font_map, xobj_font_map
+            translation_config = self.translator.translation_config
+            minimum = getattr(translation_config, "min_text_length", None)
+            try:
+                if allow_short and minimum is not None:
+                    # A linked title pair is translated as one semantic unit.
+                    # Its fragments may each sit below the ordinary paragraph
+                    # floor even though their merged title is not a short unit.
+                    translation_config.min_text_length = 0
+                text, translate_input = (
+                    self.translator.il_translator.pre_translate_paragraph(
+                        paragraph, member_tracker, page_font_map, xobj_font_map
+                    )
                 )
-            )
+            finally:
+                if allow_short and minimum is not None:
+                    translation_config.min_text_length = minimum
             if text is None or translate_input is None:
                 return (
                     [],
@@ -1157,8 +1170,31 @@ class ChainPlan:
                 detail=detail,
             )
             return
+        pair_class = pair_class_of(
+            [getattr(member.paragraph, "layout_label", None) for member in members],
+            self.class_labels,
+        )
+        member_pages = [member.page_index for member in members]
+        if pair_class == "title" and len(set(member_pages)) > 1 and (
+            len(members) != 2 or member_pages[1] != member_pages[0] + 1
+        ):
+            self._record_outcome(
+                chain_id,
+                members,
+                ChainResultState.PROTECTED_UNTRANSLATED,
+                reason=ESCALATION_TOPOLOGY,
+                detail=(
+                    "a cross-page title chain requires exactly one linked "
+                    f"adjacent-page edge; member pages are {member_pages}"
+                ),
+                canonical_chain_id=preflight.canonical_chain_id,
+                article_id=preflight.article_id,
+            )
+            return
         chain_tracker = tracker.new_cross_page()
-        prepared, reason, detail = self._prepare(members, chain_tracker)
+        prepared, reason, detail = self._prepare(
+            members, chain_tracker, allow_short=pair_class == "title"
+        )
         if reason:
             self._record_outcome(
                 chain_id,
@@ -1171,10 +1207,6 @@ class ChainPlan:
             )
             return
 
-        pair_class = pair_class_of(
-            [getattr(member.paragraph, "layout_label", None) for member in prepared],
-            self.class_labels,
-        )
         try:
             merge = backfill.merge_chain_text(
                 [member.source for member in prepared], self.config
@@ -1287,6 +1319,7 @@ class ChainPlan:
                     prepared,
                     preflight.ordered_slots,
                     allocation_tokens,
+                    pair_class,
                 )
                 if preflight.ordered_slots
                 else self._legacy_allocation(merge, translated, prepared, pair_class)
@@ -1471,6 +1504,7 @@ class ChainPlan:
         members: list[MemberPlan],
         slots: tuple[object, ...],
         protected_tokens: tuple[str, ...],
+        pair_class: str | None,
     ) -> ChainAllocationPlan | None:
         """Allocate against each member's source box, never an article-wide box.
 
@@ -1494,6 +1528,12 @@ class ChainPlan:
         minimum_readable_scale = (
             line_split.load_line_split_config().minimum_readable_scale
         )
+        if pair_class == "title":
+            from babeldoc.magazine import title_typeset
+
+            minimum_readable_scale = title_typeset.load_title_config().for_target(
+                self.language
+            ).title_min_scale
 
         def measurement_style(member):
             style = member.style
@@ -1575,6 +1615,9 @@ class ChainPlan:
             capacities.append(capacity)
 
         attempts = {
+            backfill.STRATEGY_PROPORTIONAL: lambda: self._attempt_proportional(
+                merge, translated
+            ),
             backfill.STRATEGY_TAIL_ALIGNED: lambda: self._attempt_tail_aligned(
                 merge, translated, members, slots, protected, measure
             ),
@@ -1582,7 +1625,14 @@ class ChainPlan:
                 merge, translated, capacities
             ),
         }
-        for strategy in self.config.slot_cascade:
+        primary = backfill.strategy_for_pair_class(pair_class, self.config)
+        strategies = self.config.slot_cascade
+        if (
+            primary == backfill.STRATEGY_PROPORTIONAL
+            and primary not in strategies
+        ):
+            strategies = (primary, *strategies)
+        for strategy in strategies:
             attempt = attempts.get(strategy)
             if attempt is None:
                 raise ChainTranslationError(
@@ -1606,6 +1656,26 @@ class ChainPlan:
             if plan is not None:
                 return plan
         return None
+
+    def _attempt_proportional(
+        self,
+        merge: backfill.ChainMerge,
+        translated: str,
+    ):
+        """Cut a display chain by its declared source shares."""
+        try:
+            split = backfill.redistribute(
+                merge,
+                translated,
+                self.language,
+                backfill.STRATEGY_PROPORTIONAL,
+                self.config,
+                aligned_lengths=None,
+                align_enabled=self.align_enabled,
+            )
+        except backfill.ChainBackfillError:
+            return None, None
+        return split, None
 
     def _line_end_offsets(
         self, measure, rest, member, slot, order, ranges, base, ideal

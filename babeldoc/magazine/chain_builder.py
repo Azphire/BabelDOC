@@ -8,13 +8,16 @@ of those edges are the chains. Members carry ``chain_id`` and a ``chain_index``
 running from zero, which is the first writer of those two intermediate language
 fields.
 
-Assembly is exclusive. A paragraph is the tail of at most one edge and the head
-of at most one, so a chain is a path and never a fork, and where two edges want
-the same end the one whose kind stands earlier in the declared priority takes it
-while the other is dropped with its reason recorded. That is what removes the
-edge which skips a column already handed over to: a column that hands on to its
-neighbour cannot also hand on past it, and the edge that says it does is
-redundant rather than additional.
+Assembly is exclusive. A running-text paragraph is the tail of at most one edge
+and the head of at most one, so a body chain is a path and never a fork. A
+display pair is one edge only: neither endpoint may participate in another
+display edge, which keeps a cross-page title chain on the two pages whose
+boundary was actually linked. Where edges compete, the one whose kind stands
+earlier in the declared priority takes the endpoint while the other is dropped
+with its reason recorded. That is what removes the edge which skips a column
+already handed over to: a column that hands on to its neighbour cannot also
+hand on past it, and the edge that says it does is redundant rather than
+additional.
 
 The stage is off by default. With ``magazine_chain_detect`` disabled the
 pipeline is untouched and both attributes stay unset.
@@ -305,9 +308,11 @@ def _accepted_edges(
 ) -> tuple[list[BoundaryVerdict], list[tuple[BoundaryVerdict, str]]]:
     """The linked boundaries assembly takes, and the ones it drops, with reasons.
 
-    Exclusive by construction: a paragraph hands on once and resumes once, so an
-    edge whose tail has already handed on, or whose head has already resumed, is
-    refused. Which of two competing edges is refused is decided by the declared
+    Exclusive by construction: a body paragraph hands on once and resumes once,
+    so an edge whose tail has already handed on, or whose head has already
+    resumed, is refused. A non-body pair additionally cannot reuse a paragraph
+    in the opposite role, which makes every accepted display chain exactly one
+    edge. Which of two competing edges is refused is decided by the declared
     priority and never by the order the document happened to be walked in, so
     the answer is a property of the configuration rather than of the walk.
 
@@ -321,8 +326,10 @@ def _accepted_edges(
         (position, verdict)
         for position, verdict in enumerate(verdicts)
         if verdict.linked and verdict.tail is not None and verdict.head is not None
-        and verdict.values.get("body_label_pair") == 1.0
-        and _textually_continuous(verdict)
+        and (
+            verdict.values.get("body_label_pair") != 1.0
+            or _textually_continuous(verdict)
+        )
     ]
     ranked = sorted(
         linked,
@@ -335,10 +342,11 @@ def _accepted_edges(
     for position, verdict in ranked:
         tail = id(verdict.tail.paragraph)
         head = id(verdict.head.paragraph)
-        if tail == head or tail in tails:
+        body_pair = verdict.values.get("body_label_pair") == 1.0
+        if tail == head or tail in tails or (not body_pair and tail in heads):
             dropped.append((position, verdict, DROPPED_TAIL_TAKEN))
             continue
-        if head in heads:
+        if head in heads or (not body_pair and head in tails):
             dropped.append((position, verdict, DROPPED_HEAD_TAKEN))
             continue
         tails.add(tail)

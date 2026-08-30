@@ -1243,27 +1243,45 @@ def evaluate_column_boundaries(
 
     verdicts: list[BoundaryVerdict] = []
     for pairing, tail_band, head_band in column_pairings(columns.order):
-        tail = build_endpoint(
-            columns.columns[tail_band][-1], page_index, columns.bands, columns.families
-        )
-        head = build_endpoint(
-            columns.columns[head_band][0], page_index, columns.bands, columns.families
-        )
-        scored = [
-            _column_pair_verdict(rule, tail, head, config)
-            for rule in config[PAIR_RULES_KEY]
-            if tail.label in config[CLASS_LABELS_KEY].get(rule.tail_class, ())
-            and head.label in config[CLASS_LABELS_KEY].get(rule.head_class, ())
-        ]
+        scored: list[PairVerdict] = []
+        for rule in config[PAIR_RULES_KEY]:
+            tail_labels = config[CLASS_LABELS_KEY].get(rule.tail_class, ())
+            head_labels = config[CLASS_LABELS_KEY].get(rule.head_class, ())
+            tail_candidates = [
+                item for item in columns.columns[tail_band] if item[1] in tail_labels
+            ]
+            head_candidates = [
+                item for item in columns.columns[head_band] if item[1] in head_labels
+            ]
+            if not tail_candidates or not head_candidates:
+                continue
+            tail = build_endpoint(
+                tail_candidates[-1], page_index, columns.bands, columns.families
+            )
+            head = build_endpoint(
+                head_candidates[0], page_index, columns.bands, columns.families
+            )
+            scored.append(_column_pair_verdict(rule, tail, head, config))
         common = {
             "kind": BOUNDARY_COLUMN,
             "pairing": pairing,
             "tail_column": tail_band,
             "head_column": head_band,
             "column_count": len(columns.bands),
-            "hyphen_tail": tail_ends_on_hyphen(tail),
         }
         if not scored:
+            tail = build_endpoint(
+                columns.columns[tail_band][-1],
+                page_index,
+                columns.bands,
+                columns.families,
+            )
+            head = build_endpoint(
+                columns.columns[head_band][0],
+                page_index,
+                columns.bands,
+                columns.families,
+            )
             verdicts.append(
                 BoundaryVerdict(
                     tail_page=page_index,
@@ -1277,6 +1295,7 @@ def evaluate_column_boundaries(
                     tail_fill_ratio=None,
                     tail=tail,
                     head=head,
+                    hyphen_tail=tail_ends_on_hyphen(tail),
                     **common,
                 )
             )
@@ -1287,6 +1306,8 @@ def evaluate_column_boundaries(
         for candidate in scored[1:]:
             if candidate.score > best.score:
                 best = candidate
+        tail = best.tail
+        head = best.head
         clear = head_is_clear(columns, head, config)
         tail_box = tail.paragraph.box
         head_box = head.paragraph.box
@@ -1321,6 +1342,7 @@ def evaluate_column_boundaries(
                 tail=best.tail,
                 head=best.head,
                 pairs=tuple(scored),
+                hyphen_tail=tail_ends_on_hyphen(best.tail),
                 constant_share=weights.get("column_position", 0.0)
                 * IN_PAGE_COLUMN_POSITION,
                 **common,

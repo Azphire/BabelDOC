@@ -126,6 +126,9 @@ class FrozenTitle:
     owner_ref: str | None = None
     member_refs: tuple[str, ...] = ()
     trailing: bool = False
+    chain_member_refs: tuple[str, ...] = ()
+    chain_target_sha256: str | None = None
+    chain_boundary_kinds: tuple[str, ...] = ()
 
 
 @dataclass(slots=True)
@@ -645,6 +648,7 @@ def _prove_title_chains(
         target = evidence.get("translation")
         fragments = evidence.get("ordered_fragments")
         source_boxes = evidence.get("source_boxes")
+        boundary_kinds = evidence.get("boundary_kinds")
         _require(
             isinstance(target, str)
             and bool(target)
@@ -671,11 +675,28 @@ def _prove_title_chains(
             ),
             f"title chain {chain_id} source boxes changed",
         )
-        _require(
-            len({item.physical_page for item in members}) == 1,
-            f"title chain {chain_id} crosses physical pages",
-        )
         refs = tuple(item.source_ref for item in members)
+        physical_pages = [item.physical_page for item in members]
+        crosses_page = len(set(physical_pages)) > 1
+        if crosses_page:
+            _require(
+                len(members) == 2
+                and physical_pages[1] == physical_pages[0] + 1
+                and boundary_kinds == ["page"],
+                f"title chain {chain_id} is not one linked adjacent-page edge",
+            )
+            for member in members:
+                member.owner_ref = member.source_ref
+                member.member_refs = (member.source_ref,)
+                member.chain_member_refs = refs
+                member.chain_target_sha256 = _sha256(target)
+                member.chain_boundary_kinds = ("page",)
+            continue
+        _require(
+            not boundary_kinds
+            or boundary_kinds == ["column"] * (len(members) - 1),
+            f"title chain {chain_id} has invalid same-page boundaries",
+        )
         # A display title can be recovered as adjacent title paragraphs.  The
         # chain report is the ownership proof and its immutable member boxes
         # define the only region the complete target may use.  It is not safe
@@ -688,6 +709,9 @@ def _prove_title_chains(
             member.owner_ref = refs[0]
             member.member_refs = refs
             member.trailing = position > 0
+            member.chain_member_refs = refs
+            member.chain_target_sha256 = _sha256(target)
+            member.chain_boundary_kinds = tuple(boundary_kinds or ())
         visual_target = "".join(member.target for member in members)
         _require(
             bool(visual_target),
@@ -1037,6 +1061,9 @@ def apply(translation_config, docs, typesetter) -> dict | None:
             "maximum_lines": run.policy.title_max_lines,
             "minimum_scale": run.policy.title_min_scale,
             "chain_id": title.chain_id,
+            "chain_member_refs": list(title.chain_member_refs),
+            "chain_target_sha256": title.chain_target_sha256,
+            "chain_boundary_kinds": list(title.chain_boundary_kinds),
             "owner_ref": title.owner_ref or title.source_ref,
             "member_refs": list(member_refs),
             "suppressed_refs": [],

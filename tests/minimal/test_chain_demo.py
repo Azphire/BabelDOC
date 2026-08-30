@@ -209,6 +209,146 @@ def test_detector_finds_bilingual_column_and_page_positive(tail_text, head_text)
     assert len(page_edges) == 1
 
 
+def test_column_pair_selects_body_endpoints_inside_pair_class():
+    config = load_chain_config()
+    body_tail = _detector_paragraph(
+        "the unfinished source continues", "body-tail", left=40, bottom=80
+    )
+    caption_shadow = _detector_paragraph(
+        "a wide figure caption below the body",
+        "caption-shadow",
+        left=40,
+        bottom=30,
+    )
+    caption_shadow.layout_label = "figure_caption"
+    body_head = _detector_paragraph(
+        "into the following body column", "body-head", left=330, bottom=600
+    )
+
+    verdicts = evaluate_column_boundaries(
+        _detector_page(0, [caption_shadow, body_head, body_tail]),
+        0,
+        _policy,
+        config,
+    )
+    edges, _dropped = _accepted_edges(verdicts, config["boundary_priority"])
+
+    assert [(edge.tail.paragraph, edge.head.paragraph) for edge in edges] == [
+        (body_tail, body_head)
+    ]
+    assert all(
+        caption_shadow not in (edge.tail.paragraph, edge.head.paragraph)
+        for edge in edges
+    )
+
+
+def test_title_pair_enters_chain_after_role_classification(tmp_path):
+    title_tail = _detector_paragraph(
+        "unfinished feature heading", "title-tail", left=40, bottom=500
+    )
+    title_tail.layout_label = "title"
+    byline = _detector_paragraph(
+        "By Example Author", "byline", left=40, bottom=450
+    )
+    byline.layout_label = "byline"
+    title_head = _detector_paragraph(
+        "continued feature heading", "title-head", left=40, bottom=600
+    )
+    title_head.layout_label = "title"
+    tail_page = _detector_page(0, [title_tail, byline])
+    tail_page.page_kind = "article_body"
+    head_page = _detector_page(1, [title_head])
+    head_page.page_kind = "article_body"
+    document = il_version_1.Document(
+        page=[tail_page, head_page],
+        total_pages=2,
+    )
+    builder = ChainBuilder(
+        SimpleNamespace(
+            get_working_file_path=lambda name: tmp_path / name,
+            split_strategy=None,
+        )
+    )
+
+    builder.process(document)
+
+    assert title_tail.chain_id == title_head.chain_id
+    assert title_tail.chain_id is not None
+    assert [title_tail.chain_index, title_head.chain_index] == [0, 1]
+    assert byline.chain_id is None
+
+
+def test_title_chain_stops_after_one_linked_page_edge(tmp_path):
+    titles = [
+        _detector_paragraph(
+            f"continued feature heading {index}",
+            f"title-{index}",
+            left=40,
+            bottom=500,
+        )
+        for index in range(3)
+    ]
+    for title in titles:
+        title.layout_label = "title"
+    pages = [_detector_page(index, [title]) for index, title in enumerate(titles)]
+    for page in pages:
+        page.page_kind = "article_body"
+    builder = ChainBuilder(
+        SimpleNamespace(
+            get_working_file_path=lambda name: tmp_path / name,
+            split_strategy=None,
+        )
+    )
+
+    builder.process(il_version_1.Document(page=pages, total_pages=3))
+
+    assert titles[0].chain_id == titles[1].chain_id
+    assert titles[0].chain_id is not None
+    assert titles[2].chain_id is None
+    report = json.loads((tmp_path / "chain_report.json").read_text(encoding="utf-8"))
+    assert len(report["edges"]) == 1
+    assert len(report["dropped_edges"]) == 1
+
+
+def test_cross_page_title_chain_translates_short_fragment_once(tmp_path):
+    target = "Indigenous Knowledge in a Changing World"
+    document, article_ir, paragraphs, translator = make_chain_fixture(
+        target,
+        tmp_path,
+        boxes=((0.0, 0.0, 100.0, 30.0), (0.0, 0.0, 60.0, 30.0)),
+        sources=("Indigenous", "知識"),
+    )
+    for paragraph in paragraphs:
+        paragraph.layout_label = "title"
+    translator.translation_config.lang_out = "en"
+    translator.translation_config.min_text_length = 5
+
+    def threshold_pre_translate(paragraph, *_args):
+        if len(paragraph.unicode) < translator.translation_config.min_text_length:
+            return None, None
+        return paragraph.unicode, TranslateInput(paragraph.pdf_style)
+
+    translator.il_translator.pre_translate_paragraph = threshold_pre_translate
+
+    plan = plan_chain_translation(
+        translator, document, RecordingTracker(), EMPTY_CONTEXT, article_ir
+    )
+
+    assert translator.translation_config.min_text_length == 5
+    assert len(translator.translate_engine.llm_calls) == 1
+    assert len(plan.entries) == 1
+    entry = plan.entries[0]
+    assert entry.pair_class == "title"
+    assert entry.boundary_kinds == ["page"]
+    assert entry.strategy == "proportional"
+    assert [
+        fragment.measurement_record["measurement_scale"]
+        for fragment in entry.allocation.fragments
+    ] == [0.4, 0.4]
+    plan.apply()
+    assert "".join(paragraph.unicode for paragraph in paragraphs) == target
+
+
 def test_detector_rejects_adjacent_negative_and_nonadjacent_physical_pages():
     config = load_chain_config()
     tail = _detector_paragraph(
