@@ -1224,6 +1224,19 @@ def _build_run_report(config, docs, state: MagazineState) -> dict:
     }
 
 
+def _translates_over_the_network(config) -> bool:
+    """Whether this run reaches a model at all.
+
+    A run given the offline translator has no provider to put a question to,
+    and a run given none has nothing at all. Either way there is no decision to
+    take and the deterministic pass answers instead.
+    """
+    from babeldoc.translator.no_network import NoNetworkTranslator
+
+    translator = getattr(config, "translator", None)
+    return translator is not None and not isinstance(translator, NoNetworkTranslator)
+
+
 def _decision_client(config, translation_performed: bool):
     """The model the repair loop decides with, or None when there is none.
 
@@ -1236,10 +1249,11 @@ def _decision_client(config, translation_performed: bool):
         return None
     if bool(getattr(config, "only_parse_generate_pdf", False)):
         return None
-    # The decision goes to the same provider the run translates with. Asking
-    # only whether a credential happens to be in the environment would make a
-    # run's behaviour depend on the shell it was started from.
-    if not bool(getattr(config, "openai", False)):
+    # The decision goes to the same provider the run translates with, and the
+    # run says which that is by the translator it was given. Asking instead
+    # whether a credential happens to be in the environment would make a run's
+    # behaviour depend on the shell it was started from.
+    if not _translates_over_the_network(config):
         return None
     try:
         return llm_decide.OpenAIDecisionClient(llm_decide.load_decide_config())

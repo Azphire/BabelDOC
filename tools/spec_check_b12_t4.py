@@ -449,20 +449,33 @@ def s8_the_pipeline_accepts_a_loop_result(work: Path) -> str:
         record["accepted_actions"],
         "the run report saw no accepted action for an accepted iteration",
     )
-    # A run that does not translate through the provider it would decide with
+    # A run that does not translate through a provider the decision can reach
     # never takes the loop, whatever the environment holds.
-    for config in (
-        SimpleNamespace(),
-        SimpleNamespace(openai=True, only_parse_generate_pdf=True),
+    from babeldoc.translator.no_network import NoNetworkTranslator
+
+    for label, config, performed in (
+        ("no translator at all", SimpleNamespace(translator=None), True),
+        (
+            "the offline translator",
+            SimpleNamespace(translator=NoNetworkTranslator("en", "zh")),
+            True,
+        ),
+        (
+            "parse-only",
+            SimpleNamespace(translator=object(), only_parse_generate_pdf=True),
+            True,
+        ),
+        ("nothing translated", SimpleNamespace(translator=object()), False),
     ):
         _require(
-            minimal_pipeline._decision_client(config, True) is None,
-            f"a run configured as {config!r} was given a decision client",
+            minimal_pipeline._decision_client(config, performed) is None,
+            f"a run with {label} was given a decision client",
         )
     _require(
-        minimal_pipeline._decision_client(SimpleNamespace(openai=True), False)
-        is None,
-        "a run that translated nothing was given a decision client",
+        not minimal_pipeline._translates_over_the_network(
+            SimpleNamespace(translator=NoNetworkTranslator("en", "zh"))
+        ),
+        "the offline translator was read as reaching a model",
     )
     return (
         "the run report validates a loop result, and only a run translating "

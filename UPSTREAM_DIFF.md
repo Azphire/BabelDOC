@@ -322,8 +322,12 @@ provider the decision can reach; the loop degenerates to exactly that, and
 keeping the real pass is better than simulating it.  `_decision_client` returns
 None for such a run rather than raising.
 
-That choice is deliberately made from the run's own configuration
-(`config.openai`), **not** from whether `OPENAI_API_KEY` is in the environment.
+That choice is deliberately made from the run's own translator -- a run given
+the offline translator, or none, has no provider to put a question to -- and
+**not** from whether `OPENAI_API_KEY` is in the environment.  (The first
+attempt keyed on `config.openai`, which `TranslationConfig` does not carry, so
+the loop would silently never have engaged; caught by the first sample run,
+before it cost anything.)
 Keying on the environment would make an offline test run take the loop on a
 developer machine with the credential exported and the one-shot pass on CI --
 the same code behaving differently by shell.  S8 pins this.
