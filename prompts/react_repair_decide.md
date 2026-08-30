@@ -107,12 +107,14 @@ Return one JSON object and nothing else: no prose before or after it, no code
 fence, no explanation. The object carries exactly these four fields.
 
 - "action": the name of one action from the vocabulary above, exactly as it is
-  written there, or the string "none" to apply nothing in this iteration.
+  written there. The vocabulary always carries an entry for applying nothing;
+  name it exactly as it is written there when that is the choice.
 - "issue_ids": an array of finding ids from the list above. An empty array when
-  the action is "none".
+  the action is the one that applies nothing.
 - "parameters": an object holding the parameters the chosen action declares.
   Every value must be a number inside the range stated for it. An empty object
-  when the action is "none", or when the declared defaults are what you want.
+  when the action applies nothing, or when the declared defaults are what you
+  want.
 - "reason": one sentence stating what in the evidence made this the choice.
 
 This is the shape of the answer, not its content:

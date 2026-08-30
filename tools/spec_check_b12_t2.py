@@ -13,7 +13,7 @@ to be refused; S5 requires a reply that names a finding the admission rule would
 throw out to be accepted here anyway, because it is a nomination and the veto
 lives elsewhere.
 
-Eight claims:
+Nine claims:
 
 S1  A well-formed reply becomes a decision on the first attempt, with no
     violation recorded.
@@ -34,6 +34,10 @@ S7  Outside react/, the donor ReAct package is imported in exactly the two
     known writeback places.  A second decision path waking up unnoticed is the
     failure this gate exists to make loud.
 S8  A decision record names no sample and carries no page anchor of its own.
+S9  The prompt never tells the model to name an action the round does not
+    offer.  A prompt that asks for one word and a vocabulary that offers
+    another costs a violation and a retry on every round that takes it, and
+    the retry hides the contradiction by recovering from it.
 
 Run offline; the client is a recorded stub and no request leaves the machine.
 """
@@ -62,6 +66,10 @@ ALLOWED_REACT_IMPORTS = {
 }
 
 KIND = "untranslated_residue"
+
+# Words that would be an instruction to name an action, if the prompt used
+# them. "none" is the one the donor prompt was written around.
+_ACTION_WORDS = {"none", "no_op", "nothing", "skip"}
 
 
 def _require(condition: bool, message: str) -> None:
@@ -438,6 +446,42 @@ def s8_decision_names_no_sample_or_anchor(work: Path) -> str:
     )
 
 
+def s9_the_prompt_offers_only_what_the_round_offers(work: Path) -> str:
+    """Every action word the request uses has to be one the round accepts."""
+    config = _config()
+    offered = set(config.offered_actions(KIND))
+    template = (ROOT / "prompts/react_repair_decide.md").read_text(encoding="utf-8")
+    quoted = set(re.findall(r'"([a-z][a-z_]{2,})"', template))
+    # Words the template quotes that are field names rather than actions.
+    fields = set(llm_decide.REQUIRED_FIELDS) | {"id"}
+    named_actions = {word for word in quoted - fields if word in _ACTION_WORDS}
+    outside = sorted(named_actions - offered)
+    _require(
+        not outside,
+        f"the prompt names {outside} as an action, which no round offers; the "
+        f"model that follows it is refused and asked again for nothing",
+    )
+    client = RecordingClient(
+        _reply(
+            action="translate_orphan_text",
+            issue_ids=_ids(ISSUES)[:1],
+            parameters={},
+            reason="residue over the floor",
+        )
+    )
+    _decide(work, client, name="s9")
+    request = client.prompts[0]
+    for action in offered:
+        _require(
+            action in request,
+            f"the request never names {action!r}, which the round accepts",
+        )
+    return (
+        f"the prompt names no action outside the round's offer, and the request "
+        f"carries all {len(offered)} it accepts"
+    )
+
+
 def main() -> int:
     with tempfile.TemporaryDirectory() as raw:
         work = Path(raw)
@@ -450,6 +494,7 @@ def main() -> int:
             ("S6", lambda: s6_every_attempt_is_logged(work)),
             ("S7", s7_react_stays_asleep),
             ("S8", lambda: s8_decision_names_no_sample_or_anchor(work)),
+            ("S9", lambda: s9_the_prompt_offers_only_what_the_round_offers(work)),
         ]
         for name, claim in claims:
             try:
