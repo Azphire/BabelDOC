@@ -208,11 +208,24 @@ side: a nomination the admission rule would refuse must still validate, and the
 module is grepped for `admits_`, `article_document_ir` and `by_element` to prove
 it reaches for no admission state at all.
 
-**Prompt: unchanged.**  `prompts/react_repair_decide.md` was not edited.  Three
-small block builders (`issues_block`, `actions_block`, `constraints_block`) were
-written in `llm_decide.py` against the placeholder names the file already uses
+**Prompt: the placeholders were kept, the wording was not.**  Three small block
+builders (`issues_block`, `actions_block`, `constraints_block`) were written in
+`llm_decide.py` against the placeholder names the file already uses
 (`{issues_block}`, `{actions_block}`, `{action_constraints}`), which was the
-second of the two options offered.  No prompt audit summary needs updating.
+second of the two options offered.
+
+That was recorded here as "prompt unchanged", and it was wrong.  The donor text
+around those slots told the model to answer `"none"` to apply nothing, while the
+vocabulary the new `actions_block` emits names that entry `no_op`.  Every round
+that chose to do nothing therefore spent a violation and a retry recovering from
+a contradiction inside its own request -- and the retry hid it, because the
+second answer was right and the round succeeded.  It was visible only in
+`repair_decisions.jsonl`, which is the first thing that audit trail was good for.
+
+The prompt now points at the offered vocabulary instead of naming a word of its
+own, and `spec_check_b12_t2.py` S9 refuses any action word in the template that
+no round accepts.  Filling a slot is not the same as reading the page it sits
+in; the lesson is the general one.
 
 The `constraints_block` sentence templates live in code and the numbers they
 state come from the configuration, so the rule the model reads and the rule
