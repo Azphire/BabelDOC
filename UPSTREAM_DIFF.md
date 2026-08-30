@@ -84,3 +84,44 @@ than it was" rather than "passes":
 `pytest` was missing from the `babeldoc` conda environment despite being a
 declared dev dependency (`pyproject.toml:158`); installed there so the suite
 and the gates run in the environment the pipeline runs in.
+
+### T1b — `abnormal_blank` re-seated on geometry
+
+`detectors/abnormal_blank.py` was **replaced in place**, not extended.  The
+donor implementation looped over `run_trace.flow_slots` and its every input --
+`RunTrace`, released flow slots, article slot capacity hints -- reached it
+through a producer this pipeline does not have.  Keeping it beside a working
+implementation would have left a dead branch that reads as a supported path, so
+the RunTrace version is gone rather than guarded.  Nothing else imported it.
+
+What it measures now, all from fields `DetectionContext` already carries:
+
+- ink is `base.rendered_box(paragraph)`, the union extent of the characters the
+  paragraph was laid out as.  That helper already existed and is the shared
+  detectors-side function the plan asked for, so no second one was written.
+  A paragraph with no laid-out character falls back to its own box and is
+  skipped rather than measured as perfectly full.
+- membership and reading order come from `context.article_document_ir`;
+  protection from `context.fixed_inventory.protected_paragraph_refs`, which is
+  the same question the rest of the pipeline asks about what may be touched.
+- physical-to-local reference mapping goes through
+  `context.source_geometry.local_ref`, the route `_with_contract` already uses,
+  rather than a positional convention invented here.
+
+The thresholds are the two keys that were already in `configs/detectors.json`;
+no new key and no second default.  `abnormal_blank_min_capacity_ratio` is read
+as the adjudicated spelling -- ink over box below the floor -- while the two
+*declared severity dimensions* count blank rather than fill
+(`blank_capacity_ratio == 1 - fill_ratio`), because `acceptance.py:258-260`
+reads any rise in a dimension as a worsening, so a fuller box has to score
+lower.  `fill_ratio` is carried in the evidence beside them for readability.
+
+The last member an article has on a page is excluded, per adjudication.  Taken
+per page, not per article: a member ending at a page or column break is where
+body text is legitimately allowed to stop short.  This is the more conservative
+of the two readings and is what `spec_check_b12_t1b.py` S2 pins.
+
+Note on reachability: the two floors together require the blank remainder to be
+at least a fifth of the *page*, so only a paragraph whose box is itself a large
+share of the page can ever be reported.  This is the adjudicated rule as
+written; whether real samples trip it is a T6 measurement, reported as measured.

@@ -70,7 +70,8 @@
       "out_of_page",
       "text_text_collision",
       "fragment_cluster",
-      "text_figure_overlap"
+      "text_figure_overlap",
+      "abnormal_blank"
     ]
   },
   "document_detectors": [

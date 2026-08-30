@@ -13,6 +13,7 @@ from pathlib import Path
 from types import MappingProxyType
 
 from babeldoc.magazine import fixed_assets
+from babeldoc.magazine.detectors import abnormal_blank
 from babeldoc.magazine.detectors import collision
 from babeldoc.magazine.detectors import detector_config
 from babeldoc.magazine.detectors import fixed_asset_drift
@@ -50,6 +51,7 @@ _PAGE_DETECTORS = (
     collision,
     overlap,
     fragment,
+    abnormal_blank,
 )
 _SOURCE_REF = re.compile(r"p([1-9][0-9]*)#(0|[1-9][0-9]*)\Z")
 

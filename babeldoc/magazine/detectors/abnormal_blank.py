@@ -1,4 +1,28 @@
-"""Flow-created blank regions normalized by canonical article capacity."""
+"""A box an article owns that its translated text no longer comes near filling.
+
+Translating a paragraph changes how much room its text needs, and the box the
+layout stage measured for the source does not move with it. Where the
+translation runs short the box stays the size the source asked for and the
+difference is printed as blank paper in the middle of an article.
+
+What counts as the text's own size is the ink, not the box: the union extent of
+the characters the paragraph was actually laid out as. A paragraph whose ink
+fills less than its declared share of its own box, and whose unfilled remainder
+is a large enough part of the page to be seen as a hole rather than as leading,
+is reported here.
+
+Two exclusions keep the measurement about the defect rather than about the
+design. A paragraph no article owns is furniture and is not measured -- neither
+is one the fixed inventory holds as protected, which is the same question the
+rest of the pipeline already asks about what may be touched. And the last
+member an article has on a page is never measured: an article stops where it
+stops, and the short paragraph it stops on is the layout working correctly. The
+exclusion is taken per page rather than per article because a member ending at
+a page or column break is the one place a run of body text is legitimately
+allowed to stop short of its box.
+
+Report only. Nothing here writes to the document.
+"""
 
 from __future__ import annotations
 
@@ -7,17 +31,15 @@ from babeldoc.magazine.detectors import base
 NAME = "abnormal_blank"
 KIND = "abnormal_blank"
 
-REQUIRES_TRANSLATION = False
-REQUIRES_SOURCE_GEOMETRY = False
+REQUIRES_TRANSLATION = True
+REQUIRES_SOURCE_GEOMETRY = True
 REQUIRES_ARTICLE_IR = True
-REQUIRES_RUN_TRACE = True
-REQUIRES_FIXED_INVENTORY = True
-FINAL_ONLY = True
 
-FLOW_BLANK_REASONS = (
-    "unused_cross_page_capacity",
-    "unused_page_local_capacity",
-)
+# Why a run measured nothing, where that is a fact about the run rather than a
+# verdict about the document.
+SKIP_NOT_TRANSLATED = "translation_not_performed"
+SKIP_NO_ARTICLE_IR = "article_ir_absent"
+SKIP_NO_SOURCE_GEOMETRY = "source_geometry_absent"
 
 
 def _area(box) -> float:
@@ -26,138 +48,121 @@ def _area(box) -> float:
     return max(0.0, box[2] - box[0]) * max(0.0, box[3] - box[1])
 
 
-def _intersection(left, right):
-    box = (
-        max(left[0], right[0]),
-        max(left[1], right[1]),
-        min(left[2], right[2]),
-        min(left[3], right[3]),
-    )
-    return None if _area(box) <= 0 else box
+def _elements_by_ref(article_document_ir) -> dict[str, object]:
+    """Every article member, under the local reference it is named by."""
+    return {
+        element.source_ref: element
+        for article in article_document_ir.articles
+        for element in article.elements
+    }
 
 
-def _union_area(boxes) -> float:
-    present = [box for box in boxes if box is not None and _area(box) > 0]
-    if not present:
-        return 0.0
-    xs = sorted({coordinate for box in present for coordinate in (box[0], box[2])})
-    area = 0.0
-    for left, right in zip(xs, xs[1:], strict=False):
-        intervals = sorted(
-            (box[1], box[3])
-            for box in present
-            if box[0] < right and box[2] > left
-        )
-        if not intervals:
-            continue
-        covered = 0.0
-        start, end = intervals[0]
-        for next_start, next_end in intervals[1:]:
-            if next_start > end:
-                covered += end - start
-                start, end = next_start, next_end
-            else:
-                end = max(end, next_end)
-        covered += end - start
-        area += (right - left) * covered
-    return area
+def _last_member_on_page(article_document_ir) -> dict[tuple[str, int], str]:
+    """The last member each article has on each page, in reading order."""
+    last: dict[tuple[str, int], tuple[int, str]] = {}
+    for article in article_document_ir.articles:
+        for element in article.elements:
+            key = (article.article_id, element.page)
+            current = last.get(key)
+            if current is None or element.reading_order > current[0]:
+                last[key] = (element.reading_order, element.source_ref)
+    return {key: reference for key, (_order, reference) in last.items()}
 
 
-def _hard_boundary(article, page: int, unsupported: set[int]) -> bool:
-    if page in unsupported:
-        return True
-    evidence = [item for item in article.policy_evidence if item.page == page]
-    return bool(evidence) and not all(item.article_reflow_allowed for item in evidence)
+def _skip(context, reason: str) -> list:
+    context.file(NAME, {"status": "skipped", "reason": reason, "typed": True})
+    return []
 
 
 def detect(context: base.DetectionContext) -> list[base.Issue]:
-    article_ir = context.article_document_ir
-    trace = context.run_trace
-    unsupported = {item.page for item in article_ir.unsupported_pages}
-    found = []
-    for flow_slot_id, flow_slot in sorted(trace.flow_slots.items()):
-        if (
-            not flow_slot.active
-            or flow_slot.status != "released"
-            or flow_slot.reason not in FLOW_BLANK_REASONS
-            or flow_slot.box is None
-        ):
+    if not context.translation_performed:
+        return _skip(context, SKIP_NOT_TRANSLATED)
+    article_document_ir = context.article_document_ir
+    if article_document_ir is None:
+        return _skip(context, SKIP_NO_ARTICLE_IR)
+    source_geometry = context.source_geometry
+    if source_geometry is None:
+        return _skip(context, SKIP_NO_SOURCE_GEOMETRY)
+
+    config = context.config
+    elements = _elements_by_ref(article_document_ir)
+    last_on_page = _last_member_on_page(article_document_ir)
+    protected = (
+        frozenset()
+        if context.fixed_inventory is None
+        else context.fixed_inventory.protected_paragraph_refs
+    )
+
+    found: list[base.Issue] = []
+    for view in context.pages:
+        frame = base.page_frame(view.page)
+        if frame is None:
             continue
-        article = article_ir.article(flow_slot.article_id)
-        if article is None or _hard_boundary(article, flow_slot.page, unsupported):
+        page_area = _area(frame[0])
+        if page_area <= 0:
             continue
-        article_slots = [
-            slot for slot in article.slots if slot.page == flow_slot.page
-        ]
-        total_area = sum(_area(slot.box) for slot in article_slots)
-        total_capacity = sum(max(0.0, slot.capacity_hint) for slot in article_slots)
-        if total_area <= 0 or total_capacity <= 0:
+        for index, paragraph in enumerate(view.page.pdf_paragraph or ()):
+            reference = view.reference(index)
+            local_ref = source_geometry.local_ref(reference)
+            if local_ref is None or local_ref in protected:
+                continue
+            article_id = article_document_ir.by_element.get(local_ref)
+            element = elements.get(local_ref)
+            if article_id is None or element is None:
+                continue
+            if last_on_page.get((article_id, element.page)) == local_ref:
+                continue
+            box = base.box_tuple(paragraph.box)
+            box_area = _area(box)
+            if box_area <= 0:
+                continue
+            ink, route = base.rendered_box(paragraph)
+            # A paragraph with no laid out character falls back to its own box,
+            # which would measure as perfectly filled and say nothing. There is
+            # no ink to compare, so there is no finding to make.
+            if ink is None or route != base.BOX_FROM_CHARACTERS:
+                continue
+            ink_area = _area(ink)
+            fill_ratio = ink_area / box_area
+            if fill_ratio >= config.abnormal_blank_min_capacity_ratio:
+                continue
+            blank_area_ratio = (box_area - ink_area) / page_area
+            if blank_area_ratio < config.abnormal_blank_min_area_ratio:
+                continue
             found.append(
                 base.Issue(
-                    kind="detector_prerequisite_missing",
-                    page=flow_slot.page,
-                    paragraph_refs=(),
-                    geometry=base.union_box([flow_slot.box]),
-                    severity=context.severity_of("detector_prerequisite_missing"),
+                    kind=KIND,
+                    page=view.label,
+                    paragraph_refs=(reference,),
+                    geometry=base.union_box([box]),
+                    severity=context.severity_of(KIND),
                     evidence={
-                        "prerequisite": "article_slot_capacity",
-                        "required_by": NAME,
-                        "flow_slot_id": flow_slot_id,
+                        # Both declared dimensions count blank, not fill, so
+                        # that a smaller number is always the better document.
+                        "blank_area_ratio": round(blank_area_ratio, 6),
+                        "blank_capacity_ratio": round(1.0 - fill_ratio, 6),
+                        "fill_ratio": round(fill_ratio, 6),
+                        "min_area_ratio": config.abnormal_blank_min_area_ratio,
+                        "min_capacity_ratio": (
+                            config.abnormal_blank_min_capacity_ratio
+                        ),
+                        "box": list(box),
+                        "ink_box": list(ink),
+                        "box_area": round(box_area, 4),
+                        "ink_area": round(ink_area, 4),
+                        "page_area": round(page_area, 4),
+                        "article_id": article_id,
+                        "reading_order": element.reading_order,
+                        "role": element.role,
+                        "debug_id": paragraph.debug_id,
+                        "layout_label": paragraph.layout_label,
                         "violation_count": 1,
-                        "identity_ref": flow_slot_id,
+                        "identity_ref": local_ref,
                     },
                     detector=NAME,
                     detected_at_iteration=context.iteration,
-                    article_refs=(article.article_id,),
+                    article_refs=(article_id,),
+                    source_refs=(local_ref,),
                 )
             )
-            continue
-        fixed_boxes = [
-            _intersection(flow_slot.box, asset.bbox)
-            for asset in context.fixed_inventory.page_assets(flow_slot.page)
-            if asset.bbox is not None
-        ]
-        blank_area = max(0.0, _area(flow_slot.box) - _union_area(fixed_boxes))
-        blank_capacity = 0.0
-        for slot in article_slots:
-            shared = _intersection(flow_slot.box, slot.box)
-            slot_area = _area(slot.box)
-            if shared is not None and slot_area > 0:
-                blank_capacity += slot.capacity_hint * _area(shared) / slot_area
-        fixed_share = 0.0 if _area(flow_slot.box) <= 0 else _union_area(fixed_boxes) / _area(flow_slot.box)
-        blank_capacity *= max(0.0, 1.0 - fixed_share)
-        area_ratio = blank_area / total_area
-        capacity_ratio = blank_capacity / total_capacity
-        if (
-            area_ratio < context.config.abnormal_blank_min_area_ratio
-            or capacity_ratio < context.config.abnormal_blank_min_capacity_ratio
-        ):
-            continue
-        source_refs = () if flow_slot.source_ref is None else (flow_slot.source_ref,)
-        found.append(
-            base.Issue(
-                kind=KIND,
-                page=flow_slot.page,
-                paragraph_refs=source_refs,
-                geometry=base.union_box([flow_slot.box]),
-                severity=context.severity_of(KIND),
-                evidence={
-                    "flow_slot_id": flow_slot_id,
-                    "flow_reason": flow_slot.reason,
-                    "blank_area": round(blank_area, 4),
-                    "article_slot_area": round(total_area, 4),
-                    "blank_area_ratio": round(area_ratio, 6),
-                    "blank_capacity": round(blank_capacity, 4),
-                    "article_slot_capacity": round(total_capacity, 4),
-                    "blank_capacity_ratio": round(capacity_ratio, 6),
-                    "fixed_asset_area": round(_union_area(fixed_boxes), 4),
-                    "violation_count": 1,
-                    "identity_ref": flow_slot_id,
-                },
-                detector=NAME,
-                detected_at_iteration=context.iteration,
-                article_refs=(article.article_id,),
-                source_refs=source_refs,
-            )
-        )
     return found
