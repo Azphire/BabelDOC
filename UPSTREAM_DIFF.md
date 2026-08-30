@@ -447,3 +447,31 @@ width folding).  On a skip the paragraph keeps its source composition, which
 downstream (`layout_report._has_generated_target`, protected passthrough in
 `typesetting.render_paragraph`, `title_typeset`'s generated-target freeze)
 already treats as fixed source furniture; T2 fixtures pin that chain.
+
+### T4 premise deviation: the same-line merge already existed, unwired
+
+The plan's T4a specified writing a new magazine pass to merge x-cut same-line
+fragments.  `babeldoc/magazine/fragment_stitch.py` already implemented it —
+rules, guards, source audit, report, its docstring literally naming the
+Courier-en p4 defect — with the switch pinned true, **zero callers and zero
+tests**: a finished module nobody wired up, invisible because the switch
+completeness check only proves a switch is decided, not that the pass runs.
+T4a therefore wired it (structure phase, after the classifiers, before
+line_split and the chain builder) instead of writing a parallel pass, and
+narrowed the shipped rules to `inline` alone: `vertical` would union a wide
+band with the column below into one rectangle that overrides wrap-around
+geometry (measured against p4: the union would overlap the pull quote), and
+`initial` restyles an oversized opening letter to the body majority at
+source-character level, destroying the style/color evidence the drop-cap lane
+freezes (and which T1 just extended).  The rules validator now admits a
+non-empty subset; both narrowed rules stay implemented and re-enter by
+declaration.  The plan's T4a thresholds (`same_line_y_overlap` 0.7,
+`same_line_max_gap_em` 1.0) were not minted: the module's own declared bounds
+(`stitch_min_y_overlap_ratio` 0.6, `stitch_max_inline_gap_ratio` 0.8em)
+already govern the same judgement.
+
+T4b (band-sequence chaining) was new as planned: boundary kind
+`intra_column` in `chain_signals`/`chain_builder`, deterministic gates, one
+new bounded parameter `intra_column_chain_max_gap_pt` (6, range 1..24), the
+lowest assembly priority, everything downstream (pair class, strategies,
+joint translation, conservation) reused untouched.

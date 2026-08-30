@@ -55,6 +55,7 @@ from babeldoc.magazine.chain_signals import SIGNAL_NAMES
 from babeldoc.magazine.chain_signals import BoundaryVerdict
 from babeldoc.magazine.chain_signals import evaluate_boundary
 from babeldoc.magazine.chain_signals import evaluate_column_boundaries
+from babeldoc.magazine.chain_signals import evaluate_intra_column_boundaries
 from babeldoc.magazine.chain_signals import load_chain_config
 from babeldoc.magazine.line_split import source_unit
 from babeldoc.magazine.taxonomy import DEFAULT_CONFIG_PATHS
@@ -113,6 +114,11 @@ class ChainBuilder:
             physical_index = index if page_number is None else int(page_number)
             verdicts.extend(
                 evaluate_column_boundaries(
+                    page, physical_index, self.taxonomy.policy_of, self.config
+                )
+            )
+            verdicts.extend(
+                evaluate_intra_column_boundaries(
                     page, physical_index, self.taxonomy.policy_of, self.config
                 )
             )

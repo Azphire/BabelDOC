@@ -100,9 +100,13 @@ ELIGIBILITY_POLICY_FLAG = "chain_eligible"
 # handover on the strength of a page level answer to a different question.
 LINE_STRUCTURE_POLICY_FLAG = "preserve_line_structure"
 
-# What a boundary joins.
+# What a boundary joins. ``intra_column`` is the third kind: two bands of
+# running text stacked inside one column -- the wide measure over a photo and
+# the narrow measure beside it -- where the layout broke one paragraph
+# vertically the way a column edge breaks one horizontally.
 BOUNDARY_PAGE = "page"
 BOUNDARY_COLUMN = "column"
+BOUNDARY_INTRA_COLUMN = "intra_column"
 
 # How two columns of one page were paired. ``column_adjacent`` is band n against
 # band n+1. ``body_next`` skips one band, which is the handover hidden behind a
@@ -141,7 +145,13 @@ HEAD_CLEAR_GAP_KEY = "head_clear_gap_em"
 # Every name chain assembly may be asked to order, in no particular order. A
 # page boundary carries the kind and a column boundary carries its pairing,
 # because the two pairings are ordered against each other and against the page.
-PRIORITY_NAMES = (BOUNDARY_PAGE, PAIRING_COLUMN_ADJACENT, PAIRING_BODY_NEXT)
+# An intra-column boundary carries its kind: it has one pairing only.
+PRIORITY_NAMES = (
+    BOUNDARY_PAGE,
+    PAIRING_COLUMN_ADJACENT,
+    PAIRING_BODY_NEXT,
+    BOUNDARY_INTRA_COLUMN,
+)
 
 # The two ends of a boundary, named for the reports and for the mask reasons.
 TAIL_ENDPOINT = "tail"
@@ -159,6 +169,7 @@ REQUIRED_PARAMETERS: frozenset[str] = frozenset(
         "top_band_ratio",
         "chain_endpoint_min_width_ratio",
         "boundary_agreement_min",
+        "intra_column_chain_max_gap_pt",
         HEAD_CLEAR_GAP_KEY,
         BOUNDARY_KINDS_KEY,
         BOUNDARY_PRIORITY_KEY,
@@ -428,9 +439,10 @@ def _check_in_page_declarations(
     """
     kinds = tuple(parameters[BOUNDARY_KINDS_KEY])
     _require(
-        set(kinds) == {BOUNDARY_PAGE, BOUNDARY_COLUMN},
+        set(kinds) == {BOUNDARY_PAGE, BOUNDARY_COLUMN, BOUNDARY_INTRA_COLUMN},
         f"{source}: {BOUNDARY_KINDS_KEY} must declare exactly "
-        f"{[BOUNDARY_PAGE, BOUNDARY_COLUMN]}, got {list(kinds)}",
+        f"{[BOUNDARY_PAGE, BOUNDARY_COLUMN, BOUNDARY_INTRA_COLUMN]}, "
+        f"got {list(kinds)}",
     )
     priority = tuple(parameters[BOUNDARY_PRIORITY_KEY])
     _require(
@@ -1028,24 +1040,37 @@ class BoundaryVerdict:
     column_count: int | None = None
     hyphen_tail: bool = False
     constant_share: float | None = None
+    tail_slot: int | None = None
+    head_slot: int | None = None
 
     @property
     def priority_name(self) -> str:
         """The name chain assembly orders this boundary by.
 
-        A page boundary answers with its kind and a column boundary with its
-        pairing, because the two pairings are ordered against each other as well
-        as against the page.
+        A page boundary answers with its kind and the two in-page kinds with
+        their pairing, because the pairings are ordered against each other as
+        well as against the page.
         """
-        return self.pairing if self.kind == BOUNDARY_COLUMN else BOUNDARY_PAGE
+        if self.kind in (BOUNDARY_COLUMN, BOUNDARY_INTRA_COLUMN):
+            return self.pairing or self.kind
+        return BOUNDARY_PAGE
 
     @property
     def label(self) -> str:
         """This boundary in the form a report and a gate name it by.
 
-        1-based file page numbers, the form the truth files are keyed in, and
-        for a column boundary the page followed by the two bands.
+        1-based file page numbers, the form the truth files are keyed in; for
+        a column boundary the page followed by the two bands, and for an
+        intra-column boundary the band followed by the two stacked positions
+        inside it.
         """
+        if self.kind == BOUNDARY_INTRA_COLUMN:
+            if self.tail_column is None:
+                return f"p{self.tail_page + 1}:bands"
+            return (
+                f"p{self.tail_page + 1}:c{self.tail_column}"
+                f":v{self.tail_slot}->v{self.head_slot}"
+            )
         if self.kind != BOUNDARY_COLUMN:
             return f"{self.tail_page + 1}->{self.head_page + 1}"
         if self.tail_column is None:
@@ -1348,6 +1373,141 @@ def evaluate_column_boundaries(
                 **common,
             )
         )
+    return verdicts
+
+
+def _intra_rejected(page_index: int, reason: str) -> BoundaryVerdict:
+    """One row standing for a page that offered no intra-column boundary."""
+    return BoundaryVerdict(
+        tail_page=page_index,
+        head_page=page_index,
+        eligible=False,
+        reason=reason,
+        pair=None,
+        values=dict.fromkeys(SIGNAL_NAMES),
+        score=None,
+        linked=False,
+        tail_fill_ratio=None,
+        tail=None,
+        head=None,
+        kind=BOUNDARY_INTRA_COLUMN,
+        pairing=BOUNDARY_INTRA_COLUMN,
+    )
+
+
+def evaluate_intra_column_boundaries(
+    page: il_version_1.Page,
+    page_index: int,
+    policy_of,
+    config: dict[str, ChainParameter],
+) -> list[BoundaryVerdict]:
+    """Every handover between two stacked body bands inside one column.
+
+    A magazine wraps a column around a photo or a pull quote by setting the
+    same running paragraph as several bands -- a wide measure, then a narrow
+    one beside the intrusion, then a wide one again -- and the paragraph
+    finder gives each band a paragraph of its own. The handover between two
+    such bands is the same event as a column edge: one paragraph resumed
+    after a layout break, which is why the boundary enters the same assembly
+    and the same joint translation as the other two kinds.
+
+    Unlike them the rule here is declared deterministic, gates rather than a
+    weighted score. Consecutive candidates of one band both carrying body
+    labels are a boundary when they stand stacked -- horizontally
+    overlapping, the vertical gap within ``intra_column_chain_max_gap_pt`` --
+    and the boundary is linked when the tail carries no terminal punctuation
+    and the head has clear space above it. The standard signal values are
+    still computed and recorded so the row reads like every other row, but
+    the score is None: no threshold decided the link, and a number would
+    claim one did. Pairs farther apart than the gap bound are not boundaries
+    and are not rows; a page with too few candidates to pair says so in one
+    row, as the column walk does.
+    """
+    policy = policy_of(page.page_kind)
+    if policy is None:
+        return [_intra_rejected(page_index, REASON_NO_PAGE_KIND)]
+    if bool(policy.get(LINE_STRUCTURE_POLICY_FLAG, False)):
+        return [_intra_rejected(page_index, REASON_LINE_STRUCTURE)]
+    columns = page_columns(page, config)
+    if columns is None:
+        return [_intra_rejected(page_index, REASON_NO_ENDPOINT)]
+
+    body_labels = tuple(config["body_labels"])
+    max_gap = float(config["intra_column_chain_max_gap_pt"])
+    verdicts: list[BoundaryVerdict] = []
+    for band in columns.order:
+        members = [
+            (slot, item)
+            for slot, item in enumerate(columns.columns[band])
+            if item[1] in body_labels
+        ]
+        for (tail_slot, tail_item), (head_slot, head_item) in zip(
+            members, members[1:], strict=False
+        ):
+            tail_box = tail_item[0].box
+            head_box = head_item[0].box
+            if tail_box is None or head_box is None:
+                continue
+            gap = float(tail_box.y) - float(head_box.y2)
+            if not 0.0 <= gap <= max_gap:
+                continue
+            overlap = min(float(tail_box.x2), float(head_box.x2)) - max(
+                float(tail_box.x), float(head_box.x)
+            )
+            if overlap <= 0.0:
+                continue
+            tail = build_endpoint(
+                tail_item, page_index, columns.bands, columns.families
+            )
+            head = build_endpoint(
+                head_item, page_index, columns.bands, columns.families
+            )
+            rule = next(
+                (
+                    candidate
+                    for candidate in config[PAIR_RULES_KEY]
+                    if tail.label
+                    in config[CLASS_LABELS_KEY].get(candidate.tail_class, ())
+                    and head.label
+                    in config[CLASS_LABELS_KEY].get(candidate.head_class, ())
+                ),
+                None,
+            )
+            values: dict[str, float | None] = {
+                "tail_no_terminal_punct": tail_no_terminal_punct(tail, config),
+                "tail_line_fill": tail_line_fill(tail, config),
+                "style_continuity": style_continuity(tail, head, config),
+                "body_label_pair": body_label_pair(tail, head, config),
+                # Both ends sit in one band, so the position term has nothing
+                # to measure; absent rather than a stated constant.
+                "column_position": None,
+                "opener_prior": IN_PAGE_OPENER_PRIOR,
+            }
+            continues = values["tail_no_terminal_punct"] == 1.0
+            clear = head_is_clear(columns, head, config)
+            verdicts.append(
+                BoundaryVerdict(
+                    tail_page=page_index,
+                    head_page=page_index,
+                    eligible=True,
+                    reason=None if clear else REASON_HEAD_NOT_CLEAR,
+                    pair=None if rule is None else rule.name,
+                    values=values,
+                    score=None,
+                    linked=continues and clear,
+                    tail_fill_ratio=tail_line_fill_ratio(tail),
+                    tail=tail,
+                    head=head,
+                    kind=BOUNDARY_INTRA_COLUMN,
+                    pairing=BOUNDARY_INTRA_COLUMN,
+                    tail_column=band,
+                    head_column=band,
+                    column_count=len(columns.bands),
+                    hyphen_tail=tail_ends_on_hyphen(tail),
+                    tail_slot=tail_slot,
+                    head_slot=head_slot,
+                )
+            )
     return verdicts
 
 
