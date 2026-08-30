@@ -1,0 +1,12 @@
+{
+  "description": "Bounds of the span merge pass, which rejoins a word split across a style boundary before translation so the translator meets it whole. A magazine hands the first letter of a word to a small-caps or colored style and the rest to another, and the two halves translate separately into shapes like 'J七月'. The rule is geometric: the letters on both sides of the boundary belong to one word when the gap across the boundary is no wider than the gaps inside the letter runs (letterspaced text separates letters with real and synthesized spaces, so character tests cannot tell a letter gap from a word gap), the continuation side starts lowercase, and the short side carries at most span_merge_max_chars letters. span_merge_gap_tolerance is how much wider than the widest in-run letter gap the boundary gap may be and still read as the same word. span_merge_abs_gap_em is the floor when neither run has an inside gap to compare against: a boundary this small against the letter size cannot be a space. A short run whose letters reach the drop cap candidate threshold (min_first_run_size_ratio in drop_cap.json, the single source of that number) is an oversized initial and is never merged; the initial belongs to the drop cap lane.",
+  "switch": "magazine_span_merge",
+  "span_merge_max_chars": 2,
+  "span_merge_max_chars_allowed_range": "1..4",
+  "span_merge_gap_tolerance": 1.25,
+  "span_merge_gap_tolerance_allowed_range": "1.0..2.0",
+  "span_merge_abs_gap_em": 0.15,
+  "span_merge_abs_gap_em_allowed_range": "0.05..0.3",
+  "excerpt_chars": 80,
+  "excerpt_chars_allowed_range": "20..400"
+}

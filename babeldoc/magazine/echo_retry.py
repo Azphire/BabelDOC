@@ -98,12 +98,39 @@ def _parse_reply(reply: str) -> str | None:
     return output.strip()
 
 
-def attempt(translation_config, engine, source_text: str) -> tuple[str | None, str]:
-    """One retry for one echoed unit: (accepted text or None, outcome name)."""
+def _within_length(source_text: str, line_lengths, max_chars: int) -> bool:
+    """Whether the unit is short enough to earn a retry.
+
+    A unit fits either as a whole or line by line: a masthead column that
+    stacks a dozen short names is one unit whose total passes the cap while
+    every visual line sits far under it, and the length cap exists to keep a
+    retry from re-asking an essay, not to protect a list from being fixed.
+    A single visual line is judged as the whole it is.
+    """
+    if len(source_text) <= max_chars:
+        return True
+    lengths = [int(item) for item in (line_lengths or ()) if int(item) > 0]
+    return len(lengths) >= 2 and all(item <= max_chars for item in lengths)
+
+
+def attempt(
+    translation_config,
+    engine,
+    source_text: str,
+    line_lengths=None,
+) -> tuple[str | None, str]:
+    """One retry for one echoed unit: (accepted text or None, outcome name).
+
+    ``line_lengths`` are the character counts of the unit's visual lines as
+    the source page sets them, which is what lets a multi-line list qualify
+    by its lines while a single long line stays refused.
+    """
     if not enabled(translation_config):
         return None, SKIP_SWITCH
     parameters = load_echo_retry_config()
-    if len(source_text) > int(parameters["echo_retry_max_chars"]):
+    if not _within_length(
+        source_text, line_lengths, int(parameters["echo_retry_max_chars"])
+    ):
         return None, SKIP_LENGTH
     lang_out = getattr(translation_config, "lang_out", "") or ""
     if not wrong_script(source_text, lang_out):

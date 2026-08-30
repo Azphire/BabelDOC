@@ -336,6 +336,26 @@ class LLMTranslateTracker:
         }
 
 
+def _source_line_lengths(paragraph) -> list[int]:
+    """Character count of each visual line the source paragraph sets.
+
+    Read from the line compositions the parser built, which is the one record
+    of where the page actually breaks -- the composed translate input carries
+    no newlines.  Consumed by the echo retry's length gate, where a stacked
+    list qualifies by its lines rather than by its total.
+    """
+    lengths = []
+    for composition in paragraph.pdf_paragraph_composition or ():
+        line = getattr(composition, "pdf_line", None)
+        if line is None:
+            continue
+        text = "".join(
+            character.char_unicode or "" for character in line.pdf_character or ()
+        )
+        lengths.append(len(text.strip()))
+    return lengths
+
+
 class ILTranslator:
     stage_name = "Translate Paragraphs"
 
@@ -1046,6 +1066,7 @@ class ILTranslator:
                 getattr(self, "translation_config", None),
                 getattr(self, "translate_engine", None),
                 source_text,
+                line_lengths=_source_line_lengths(paragraph),
             )
             tracker.echo_retry = outcome
             if retried is not None:

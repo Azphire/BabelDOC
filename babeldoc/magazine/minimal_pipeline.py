@@ -24,6 +24,7 @@ from babeldoc.magazine import repair_evidence
 from babeldoc.magazine import repair_loop as repair_loop_module
 from babeldoc.magazine import paren_dedup
 from babeldoc.magazine import resource_paths
+from babeldoc.magazine import span_merge
 from babeldoc.magazine import tail_fill
 from babeldoc.magazine import title_typeset
 from babeldoc.magazine.article_builder import ArticleBuilder
@@ -274,6 +275,7 @@ _FIXED_TRUE_ATTRIBUTES = (
     "magazine_paren_dedup",
     "magazine_repair",
     "magazine_short_unit",
+    "magazine_span_merge",
     "magazine_tail_fill",
     "magazine_title_typeset",
 )
@@ -461,6 +463,10 @@ def after_styles(config, docs) -> ArticleDocumentIR:
     # gets split into records or linked into a chain, never the fragments.
     fragment_stitch.apply(config, hitl.labeled_pages(docs))
     line_split.apply(config, hitl.labeled_pages(docs))
+    # After the stitch and the split, so a rejoined word lives in the
+    # paragraph shape the rest of the run will see; before the chain builder,
+    # so a chain never links a paragraph this pass is about to reshape.
+    span_merge.apply(config, docs)
     ChainBuilder(config).process(docs)
 
     article_document_ir = ArticleBuilder(config).process(docs)

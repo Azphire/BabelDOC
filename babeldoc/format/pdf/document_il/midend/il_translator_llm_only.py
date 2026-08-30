@@ -43,6 +43,13 @@ from babeldoc.utils.priority_thread_pool_executor import PriorityThreadPoolExecu
 
 logger = logging.getLogger(__name__)
 
+# The markup the translate input wraps around the reader's text: rich text
+# style tags and formula placeholders.  Stripped before glossary matching,
+# never from the input itself.
+_PLACEHOLDER_MARKUP = re.compile(
+    r"<\s*style\s+id\s*=\s*'\s*\d+\s*'\s*>|<\s*/\s*style\s*>|\{\s*v\s*\d+\s*\}"
+)
+
 
 PROMPT_TEMPLATE = Template(
     """$role_block
@@ -776,8 +783,14 @@ class ILTranslatorLLMOnly:
                 json_format_input, ensure_ascii=False, indent=2
             )
 
-            batch_text_for_glossary_matching = "\n".join(
-                item.get("input", "") for item in json_format_input
+            # Matched with the placeholder markup out, so a glossary source
+            # split by a style span -- a masthead word carrying its first
+            # letters in a different style -- still finds its entry.  The
+            # markup is transport, not text; the glossary speaks about what
+            # the reader sees.
+            batch_text_for_glossary_matching = _PLACEHOLDER_MARKUP.sub(
+                "",
+                "\n".join(item.get("input", "") for item in json_format_input),
             )
 
             final_input = self._build_llm_prompt(

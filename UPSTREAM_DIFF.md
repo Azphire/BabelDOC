@@ -499,3 +499,32 @@ wrong script for the target (a personal name, a role line), configured in
 `configs/echo_retry.json` and prompted by `prompts/echo_retry.md`.  A retry
 that still echoes keeps the pasteback exactly as before and is recorded; the
 tracking rows carry the outcome under `echo_retry`.
+
+## B15 — spans, indent audit, footer furniture (`b15`)
+
+### T1 — upstream files touched
+
+`babeldoc/format/pdf/document_il/midend/il_translator.py`
+(`post_translate_paragraph`, new `_source_line_lengths`): the echo-retry call
+now hands over the character counts of the source paragraph's visual lines,
+so a masthead column stacking a dozen short names qualifies for the retry by
+its lines while a single over-long line stays refused (the cap itself is
+unchanged in `configs/echo_retry.json`).
+
+`babeldoc/format/pdf/document_il/midend/il_translator_llm_only.py`
+(`translate_paragraph`): glossary matching now runs over the batch text with
+the placeholder markup (`<style id='N'>`, `</style>`, `{vN}`) stripped, so a
+glossary source split by a style span — a cover title carrying its first
+word in a different style — still finds its entry.  The markup is transport,
+not text; the input the model receives is untouched.
+
+Style ownership trade (magazine pass, not an upstream edit, recorded for its
+visible effect): `babeldoc/magazine/span_merge.py` rejoins a word split
+across a style boundary before translation by moving the short letter run
+(≤ `span_merge_max_chars`) into the long side's container and restyling it
+to that container's style.  The moved letters give up their special style —
+a small-caps or colored initial renders in the word's voice — including in a
+paragraph that later keeps its source text (identity pasteback).  Runs at
+drop-cap scale (`min_first_run_size_ratio` in `configs/drop_cap.json`, the
+single source of that number) are never touched, so the drop cap lane keeps
+its letter.
