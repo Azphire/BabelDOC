@@ -569,6 +569,9 @@ def test_chain_verifier_checks_truth_translation_and_ordinary_exclusion(tmp_path
         "sample_id": "synthetic",
         "direction": "en-zh",
         "source_sha256": hashlib.sha256(source.read_bytes()).hexdigest(),
+        # Every member below sits on page five, and the verifier adjudicates a
+        # detector chain only within the pages the truth declares it covers.
+        "stage_pages": [5],
         "chains": [
             {
                 "id": "truth",

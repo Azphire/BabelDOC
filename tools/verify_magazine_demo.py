@@ -215,6 +215,21 @@ def _chain_signature_equal(left: tuple, right: tuple) -> bool:
     )
 
 
+def _stage_pages(expectations: dict) -> frozenset[int]:
+    """The physical pages the frozen truth was authored over.
+
+    Read from the expectations and never from ``--pages``: the caller chooses
+    which pages to run, the truth file decides which pages it can adjudicate.
+    """
+    pages = expectations.get("stage_pages")
+    if not isinstance(pages, list) or not pages:
+        raise VerificationError("expectations declare no stage pages")
+    for page in pages:
+        if not isinstance(page, int) or isinstance(page, bool) or page <= 0:
+            raise VerificationError(f"invalid stage page: {page!r}")
+    return frozenset(pages)
+
+
 def _expected_chains(expectations: dict):
     expected = []
     for chain in expectations.get("chains", []):
@@ -298,10 +313,32 @@ def verify_chain(
         )
         detected.append((signatures, rows, refs))
 
+    # The detector walks the whole document; the truth is authored over the
+    # staged pages. A chain wholly outside that scope has no truth to be
+    # judged against unless the truth reaches out and declares it anyway, and
+    # one that straddles the boundary has truth for only part of itself, which
+    # is not something this verifier is willing to call verified.
+    stage_pages = _stage_pages(expectations)
+    truth_signatures = [signatures for signatures, _chain in expected]
+    adjudicated = []
+    out_of_scope_refs = set()
+    for signatures, rows, refs in detected:
+        pages = {signature[0] for signature in signatures}
+        inside = pages & stage_pages
+        outside = pages - stage_pages
+        if inside and outside:
+            raise VerificationError(f"chain straddles the declared scope: {refs}")
+        if not inside and not any(
+            _chain_signature_equal(signatures, held) for held in truth_signatures
+        ):
+            out_of_scope_refs.add(refs)
+            continue
+        adjudicated.append((signatures, rows, refs))
+
     truth_by_actual_ref = {}
     expected_actual_chains = {}
     matched_truth = set()
-    for signatures, rows, refs in detected:
+    for signatures, rows, refs in adjudicated:
         candidates = [
             index
             for index, (truth_signatures, _truth_chain) in enumerate(expected)
@@ -372,10 +409,14 @@ def verify_chain(
         raise VerificationError("chain translation plan was not applied")
 
     outcomes = {}
+    seen_outcome_refs = set()
     for item in translation.get("outcomes", []):
         refs = _report_refs(item, "translation outcome")
-        if refs in outcomes:
+        if refs in seen_outcome_refs:
             raise VerificationError(f"duplicate translation outcome: {refs}")
+        seen_outcome_refs.add(refs)
+        if refs in out_of_scope_refs:
+            continue
         if refs not in expected_actual_chains:
             raise VerificationError(f"unadjudicated translation outcome: {refs}")
         outcomes[refs] = item
@@ -391,10 +432,16 @@ def verify_chain(
         _require_sha256(item, "whole_target_sha256", str(refs))
 
     translated = {}
+    seen_translated_refs = set()
+    out_of_scope_chain_ids = set()
     for chain in translation.get("chains", []):
         refs = _report_refs(chain, "translated chain")
-        if refs in translated:
+        if refs in seen_translated_refs:
             raise VerificationError(f"duplicate translated chain: {refs}")
+        seen_translated_refs.add(refs)
+        if refs in out_of_scope_refs:
+            out_of_scope_chain_ids.add(chain.get("chain_id"))
+            continue
         translated[refs] = chain
     if set(translated) != set(expected_actual_chains):
         raise VerificationError("translated chain set disagrees with truth")
@@ -442,22 +489,56 @@ def verify_chain(
             key = (chain_id, order)
             expected_skip_keys.add(key)
 
+    # Two passes take paragraphs out of the page batch and each leaves its own
+    # kind of record, so each is adjudicated against its own evidence. A chain
+    # member is proved excluded by the page batch having asked for it and been
+    # refused; a short unit sits below the page batch's length floor, which
+    # returns before it ever asks, so its proof is that nobody asked at all.
     skips = {}
+    short_unit_skips = {}
     for item in translation.get("skips", []):
-        key = (item.get("chain_id"), item.get("chain_index"))
-        if key in skips:
-            raise VerificationError(f"duplicate chain skip: {key}")
-        if key not in expected_skip_keys:
-            raise VerificationError(f"unadjudicated chain skip: {key}")
+        owner = item.get("taken_by")
         declined = set(item.get("declined_by", []))
-        if (
-            item.get("taken_by") != "chain"
-            or "page_batch" not in declined
-        ):
-            raise VerificationError(f"chain skip does not prove exclusion: {key}")
-        skips[key] = item
+        if owner == "chain":
+            key = (item.get("chain_id"), item.get("chain_index"))
+            if item.get("chain_id") in out_of_scope_chain_ids:
+                continue
+            if key in skips:
+                raise VerificationError(f"duplicate chain skip: {key}")
+            if key not in expected_skip_keys:
+                raise VerificationError(f"unadjudicated chain skip: {key}")
+            if "page_batch" not in declined:
+                raise VerificationError(f"chain skip does not prove exclusion: {key}")
+            skips[key] = item
+        elif owner == "short_unit":
+            key = (item.get("page_index"), item.get("debug_id"))
+            if key in short_unit_skips:
+                raise VerificationError(f"duplicate short unit skip: {key}")
+            if item.get("chain_id") != "" or item.get("chain_index") is not None:
+                raise VerificationError(f"short unit skip carries chain identity: {key}")
+            if declined:
+                raise VerificationError(
+                    f"short unit skip was refused a producer it never reached: {key}"
+                )
+            short_unit_skips[key] = item
+        else:
+            raise VerificationError(f"unknown skip owner: {owner}")
     if set(skips) != expected_skip_keys:
         raise VerificationError("chain skips do not cover every joint member")
+
+    short_units = translation.get("short_units")
+    if short_units is None:
+        if short_unit_skips:
+            raise VerificationError("short unit skips without a short unit report")
+    else:
+        admitted = short_units.get("admitted")
+        if not isinstance(admitted, int) or isinstance(admitted, bool):
+            raise VerificationError(f"invalid short unit admitted count: {admitted!r}")
+        if admitted != len(short_unit_skips):
+            raise VerificationError(
+                "short unit skips do not cover every admitted unit: "
+                f"admitted={admitted}, skips={len(short_unit_skips)}"
+            )
 
     runtime_by_physical = {
         physical: runtime
@@ -486,6 +567,8 @@ def verify_chain(
         "sample_id": expectations.get("sample_id"),
         "chains": len(expected),
         "members": sum(len(signatures) for signatures, _chain in expected),
+        "out_of_scope_chains": len(out_of_scope_refs),
+        "short_unit_skips": len(short_unit_skips),
         "status": "pass",
     }
 
