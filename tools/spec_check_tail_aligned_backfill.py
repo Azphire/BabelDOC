@@ -235,11 +235,19 @@ def e1_the_cut_moves_back_to_a_measured_line_end(work: Path) -> str:
         f"the first cut recorded {first.tail_align}, not a move",
     )
     kept = first.tail_align["kept_lines"]
+    # B14: the cut probes read the full-size grid (tail_align.cut_scale),
+    # while the fragment's own measurement record keeps the capacity scale.
+    # The expected count is therefore measured at the size the cut was chosen
+    # on, recovered from the recorded pair rather than recomputed here.
+    cut_size = (
+        first.measurement_record["measurement_font_size"]
+        / first.measurement_record["measurement_scale"]
+    ) * first.tail_align.get("cut_scale", 1.0)
     expected = _consumed_in_lines(
         "译" * 40,
         TALL_LEFT,
         kept,
-        first.measurement_record["measurement_font_size"],
+        cut_size,
     )
     require(
         len(first.text) == expected,

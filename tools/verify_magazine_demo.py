@@ -1991,7 +1991,12 @@ def verify_dropcap(
         raise VerificationError("drop-cap verifier has no target direction policy")
     by_ref = {}
     for row in rows:
-        if not isinstance(row, dict) or set(row) != DROPCAP_FIELDS:
+        # The anchor field arrived in B14; a run made before it carries the
+        # same schema without it, and frozen control artifacts stay readable.
+        if not isinstance(row, dict) or set(row) not in (
+            DROPCAP_FIELDS,
+            DROPCAP_FIELDS - {"anchor"},
+        ):
             raise VerificationError("drop-cap paragraph schema is not exact")
         reference = row.get("source_ref")
         target_char = row.get("target_char")
