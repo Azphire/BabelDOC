@@ -937,9 +937,9 @@ class _ColorSpaceResolver:
         if xobj_id is not None:
             form_xref = next(
                 (
-                    xobject.xref_id
+                    getattr(xobject, "xref_id", None)
                     for xobject in il_page.pdf_xobject or ()
-                    if xobject.xobj_id == xobj_id
+                    if getattr(xobject, "xobj_id", None) == xobj_id
                 ),
                 None,
             )
