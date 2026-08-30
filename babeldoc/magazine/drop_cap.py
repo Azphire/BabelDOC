@@ -1107,6 +1107,7 @@ def mark(
                 ),
                 source_anchor=drop_cap_intent.freeze_source_anchor(
                     labeled_pages[visual_page_position][1],
+                    paragraph,
                     source_character,
                 ),
             )

@@ -961,19 +961,37 @@ def _anchor_grid_shift(
     than pushed into a refusal it did not have before.
     """
     anchor = getattr(intent, "source_anchor", None)
-    offset = None if anchor is None else anchor.ink_top_offset_pt
+    ink_top = None if anchor is None else anchor.ink_top_pt
     record = {
-        "gap_source_pt": None if offset is None else round(float(offset), 4),
+        "gap_source_pt": None,
         "gap_typeset_pt": None,
         "shift_desired_pt": None,
         "shift_pt": 0.0,
         "fallback": None,
     }
-    if offset is None:
+    if ink_top is None:
         record["fallback"] = drop_cap_intent.ANCHOR_METRIC_FALLBACK
         return 0.0, record
-    current_gap = float(paragraph.box.y2) - dry_first_ink[3]
-    desired = float(offset) - current_gap
+    # The offset is read against whichever captured top the paragraph box
+    # still carries: its own frozen top, or the initial's metric top where a
+    # towering initial governs the box by now. A box matching neither has
+    # moved or been reshaped since capture, and the anchor refuses to guess.
+    current_top = float(paragraph.box.y2)
+    reference = next(
+        (
+            candidate
+            for candidate in (anchor.owner_box_top_pt, anchor.initial_box_top_pt)
+            if candidate is not None and abs(current_top - candidate) <= 0.5
+        ),
+        None,
+    )
+    if reference is None:
+        record["fallback"] = "anchor_fallback_box_changed"
+        return 0.0, record
+    offset = float(reference) - float(ink_top)
+    record["gap_source_pt"] = round(offset, 4)
+    current_gap = current_top - dry_first_ink[3]
+    desired = offset - current_gap
     record["gap_typeset_pt"] = round(current_gap, 4)
     record["shift_desired_pt"] = round(desired, 4)
     if desired <= 0:

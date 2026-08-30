@@ -108,18 +108,25 @@ ANCHOR_METRIC_FALLBACK = "anchor_fallback_metric_box"
 
 @dataclass(frozen=True)
 class SourceAnchor:
-    """How far the source initial's ink top sits below its own metric box top.
+    """Where the source initial's ink actually started, and what it hung from.
 
     Captured while the source character still exists, in the source font at
     the source size, off the same per-glyph ink table the frontend read out of
-    the embedded font program. The render subtracts this from the paragraph's
-    metric-box gap so the target initial's ink top lands where the source
-    initial's ink actually started, not where its ascent whitespace did.
-    ``ink_top_offset_pt`` is None exactly when the source metric could not be
-    read, and then ``metric_source`` says so and the render changes nothing.
+    the embedded font program. ``ink_top_pt`` is the absolute ink top; the two
+    box tops are the owner paragraph's and the initial character's own metric
+    top at capture time, because the render hangs its grid off the paragraph
+    box and that box may equal either of them by the time it runs (a
+    towering initial can reach past its paragraph's frozen box, and a flatten
+    can merge the two). The render reads its offset against whichever top the
+    paragraph still carries, so the anchor survives a paragraph that moved
+    and refuses one whose box it no longer recognizes. ``ink_top_pt`` is None
+    exactly when the source metric could not be read, and then
+    ``metric_source`` says so and the render changes nothing.
     """
 
-    ink_top_offset_pt: float | None
+    ink_top_pt: float | None
+    owner_box_top_pt: float | None
+    initial_box_top_pt: float | None
     ink_top_em: float | None
     source_font_size: float | None
     metric_source: str
@@ -127,7 +134,9 @@ class SourceAnchor:
 
     def as_record(self) -> dict:
         return {
-            "ink_top_offset_pt": self.ink_top_offset_pt,
+            "ink_top_pt": self.ink_top_pt,
+            "owner_box_top_pt": self.owner_box_top_pt,
+            "initial_box_top_pt": self.initial_box_top_pt,
             "ink_top_em": self.ink_top_em,
             "source_font_size": self.source_font_size,
             "metric_source": self.metric_source,
@@ -480,7 +489,9 @@ def freeze_color(style, resolve_color_space=None) -> FrozenColorState:
 
 def _anchor_fallback(reason: str) -> SourceAnchor:
     return SourceAnchor(
-        ink_top_offset_pt=None,
+        ink_top_pt=None,
+        owner_box_top_pt=None,
+        initial_box_top_pt=None,
         ink_top_em=None,
         source_font_size=None,
         metric_source=ANCHOR_METRIC_FALLBACK,
@@ -488,8 +499,8 @@ def _anchor_fallback(reason: str) -> SourceAnchor:
     )
 
 
-def freeze_source_anchor(il_page, character) -> SourceAnchor:
-    """The source initial's ink-top offset below its own metric box top.
+def freeze_source_anchor(il_page, paragraph, character) -> SourceAnchor:
+    """Where the source initial's ink top actually was, in absolute points.
 
     Reads the per-glyph ink box the frontend parsed out of the embedded source
     font (``PdfFont.pdf_font_char_bounding_box``, font units over 1000, keyed
@@ -503,8 +514,12 @@ def freeze_source_anchor(il_page, character) -> SourceAnchor:
     size = None if style is None else getattr(style, "font_size", None)
     box = getattr(character, "box", None)
     char_id = getattr(character, "pdf_character_id", None)
+    owner_box = getattr(paragraph, "box", None)
+    owner_top = None if owner_box is None else getattr(owner_box, "y2", None)
     if not font_id or not size or box is None or char_id is None:
         return _anchor_fallback("source-style-or-box-incomplete")
+    if owner_top is None:
+        return _anchor_fallback("owner-box-unavailable")
     fonts = list(getattr(il_page, "pdf_font", None) or ())
     xobj_id = getattr(character, "xobj_id", None)
     if xobj_id is not None:
@@ -535,13 +550,22 @@ def freeze_source_anchor(il_page, character) -> SourceAnchor:
         top = float(box.y2)
     except (TypeError, ValueError):
         return _anchor_fallback(f"font:/{font_id}:cid:{char_id}:unreadable-metric")
-    if not all(math.isfinite(value) for value in (ink_top_em, size, baseline, top)):
+    try:
+        owner_top = float(owner_top)
+    except (TypeError, ValueError):
+        return _anchor_fallback("owner-box-unavailable")
+    if not all(
+        math.isfinite(value)
+        for value in (ink_top_em, size, baseline, top, owner_top)
+    ):
         return _anchor_fallback(f"font:/{font_id}:cid:{char_id}:non-finite-metric")
     if size <= 0 or ink_top_em <= 0 or top <= baseline:
         return _anchor_fallback(f"font:/{font_id}:cid:{char_id}:degenerate-metric")
-    offset = top - (baseline + ink_top_em * size)
+    ink_top = baseline + ink_top_em * size
     return SourceAnchor(
-        ink_top_offset_pt=round(offset, 4),
+        ink_top_pt=round(ink_top, 4),
+        owner_box_top_pt=round(owner_top, 4),
+        initial_box_top_pt=round(top, 4),
         ink_top_em=round(ink_top_em, 6),
         source_font_size=round(size, 4),
         metric_source=ANCHOR_METRIC_GLYPH_BBOX,

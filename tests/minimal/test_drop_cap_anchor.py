@@ -36,7 +36,9 @@ def anchored_intent(offset: float | None):
     anchor = None
     if offset is not None:
         anchor = drop_cap_intent.SourceAnchor(
-            ink_top_offset_pt=offset,
+            ink_top_pt=FIXTURE_BOX_TOP - offset,
+            owner_box_top_pt=FIXTURE_BOX_TOP,
+            initial_box_top_pt=FIXTURE_BOX_TOP,
             ink_top_em=0.68,
             source_font_size=30.0,
             metric_source=drop_cap_intent.ANCHOR_METRIC_GLYPH_BBOX,
@@ -131,23 +133,39 @@ def source_initial_character() -> il.PdfCharacter:
     )
 
 
+def owner_paragraph() -> il.PdfParagraph:
+    # The paragraph's frozen box top sits below the towering initial's own
+    # metric top, which is the FD p8 shape: the render must read its offset
+    # against whichever top its box carries when it runs.
+    return il.PdfParagraph(
+        unicode="A big opening", box=il.Box(x=10.0, y=20.0, x2=140.0, y2=90.0)
+    )
+
+
 def test_freeze_source_anchor_reads_the_font_ink_table() -> None:
     page = il.Page(pdf_font=[font_fixture()])
-    anchor = drop_cap_intent.freeze_source_anchor(page, source_initial_character())
+    anchor = drop_cap_intent.freeze_source_anchor(
+        page, owner_paragraph(), source_initial_character()
+    )
     assert anchor.metric_source == drop_cap_intent.ANCHOR_METRIC_GLYPH_BBOX
-    # ink top = 65 + 0.68 * 30 = 85.4, so the offset below the box top is 9.6.
-    assert anchor.ink_top_offset_pt == 9.6
+    # ink top = 65 + 0.68 * 30 = 85.4; both captured tops sit above it.
+    assert anchor.ink_top_pt == 85.4
+    assert anchor.owner_box_top_pt == 90.0
+    assert anchor.initial_box_top_pt == 95.0
     assert anchor.ink_top_em == 0.68
     assert anchor.source_font_size == 30.0
-    assert anchor.ink_top_offset_pt >= 5.0
+    # The initial's ascent whitespace is 9.6 pt, over the 5 pt gate floor.
+    assert anchor.initial_box_top_pt - anchor.ink_top_pt >= 5.0
 
 
 def test_freeze_source_anchor_without_glyph_entry_falls_back() -> None:
     character = source_initial_character()
     character.pdf_character_id = 999
     page = il.Page(pdf_font=[font_fixture()])
-    anchor = drop_cap_intent.freeze_source_anchor(page, character)
-    assert anchor.ink_top_offset_pt is None
+    anchor = drop_cap_intent.freeze_source_anchor(
+        page, owner_paragraph(), character
+    )
+    assert anchor.ink_top_pt is None
     assert anchor.metric_source == drop_cap_intent.ANCHOR_METRIC_FALLBACK
     assert any("no-glyph-ink-box" in item for item in anchor.evidence)
 
@@ -155,7 +173,7 @@ def test_freeze_source_anchor_without_glyph_entry_falls_back() -> None:
 def test_freeze_source_anchor_lands_in_the_intent_record() -> None:
     page = il.Page(pdf_font=[font_fixture()])
     character = source_initial_character()
-    paragraph = il.PdfParagraph(unicode="A big opening")
+    paragraph = owner_paragraph()
     intent = drop_cap_intent.build_intent(
         source_ref="p1#0",
         article_id="article-fixture",
@@ -164,11 +182,33 @@ def test_freeze_source_anchor_lands_in_the_intent_record() -> None:
         target_policy=drop_cap_intent.POLICY_CHINESE_TWO_LINE_INITIAL,
         config_version=1,
         decision_version=1,
-        source_anchor=drop_cap_intent.freeze_source_anchor(page, character),
+        source_anchor=drop_cap_intent.freeze_source_anchor(
+            page, paragraph, character
+        ),
     )
     record = intent.as_record()
-    assert record["source_anchor"]["ink_top_offset_pt"] == 9.6
+    assert record["source_anchor"]["ink_top_pt"] == 85.4
+    assert record["source_anchor"]["owner_box_top_pt"] == 90.0
     assert (
         record["source_anchor"]["metric_source"]
         == drop_cap_intent.ANCHOR_METRIC_GLYPH_BBOX
     )
+
+
+def test_a_reshaped_paragraph_box_refuses_the_anchor() -> None:
+    intent = anchored_intent(SOURCE_INK_OFFSET)
+    moved = drop_cap_intent.SourceAnchor(
+        ink_top_pt=intent.source_anchor.ink_top_pt,
+        owner_box_top_pt=FIXTURE_BOX_TOP + 30.0,
+        initial_box_top_pt=FIXTURE_BOX_TOP + 40.0,
+        ink_top_em=0.68,
+        source_font_size=30.0,
+        metric_source=drop_cap_intent.ANCHOR_METRIC_GLYPH_BBOX,
+        evidence=(),
+    )
+    intent = SimpleNamespace(**{**vars(intent), "source_anchor": moved})
+    _, outcome = render(intent)
+    assert outcome["set"], outcome
+    anchor = outcome["anchor"]
+    assert anchor["fallback"] == "anchor_fallback_box_changed"
+    assert anchor["shift_pt"] == 0.0

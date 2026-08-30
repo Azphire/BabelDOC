@@ -51,6 +51,13 @@ PROBE_ABOVE_PT = 2.0
 # enough that a nearby element in a merely similar color cannot stand in for
 # the initial (Courier p4 has a band 9/7/21 channels away from its own cap).
 COLOR_CHANNEL_TOLERANCE = 6
+# A near-black target renders through ICC differently in the source than in
+# the regenerated page (FD's K=1 comes out (35,31,32) on one side and (8,7,6)
+# on the other), so a black-ish initial is matched by darkness instead: every
+# channel under the ceiling and the channels close to one another.
+BLACK_TARGET_MAX = 0.2
+DARK_PIXEL_MAX = 120
+DARK_PIXEL_SPREAD = 20
 
 FLOAT_TRIPLE = re.compile(
     r"\(\s*[01]?\.[0-9]+\s*,\s*[01]?\.[0-9]+\s*,\s*[01]?\.[0-9]+\s*\)"
@@ -120,15 +127,27 @@ def _ink_top(page, x0: float, x1: float, y_top: float, y_bottom: float, rgb):
         matrix=pymupdf.Matrix(scale, scale), clip=clip, colorspace=pymupdf.csRGB
     )
     want = [round(value * 255) for value in rgb]
+    blackish = all(value <= BLACK_TARGET_MAX for value in rgb)
     buf, n = pix.samples, pix.n
+
+    def matches(offset: int) -> bool:
+        if all(
+            abs(buf[offset + channel] - want[channel]) <= COLOR_CHANNEL_TOLERANCE
+            for channel in range(3)
+        ):
+            return True
+        if not blackish:
+            return False
+        channels = [buf[offset + channel] for channel in range(3)]
+        return (
+            max(channels) <= DARK_PIXEL_MAX
+            and max(channels) - min(channels) <= DARK_PIXEL_SPREAD
+        )
+
     for row in range(pix.height):
         base = row * pix.stride
         for col in range(pix.width):
-            offset = base + col * n
-            if all(
-                abs(buf[offset + channel] - want[channel]) <= COLOR_CHANNEL_TOLERANCE
-                for channel in range(3)
-            ):
+            if matches(base + col * n):
                 return y_top + row / scale
     return None
 
