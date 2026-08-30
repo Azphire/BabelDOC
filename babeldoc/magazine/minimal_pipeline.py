@@ -13,6 +13,7 @@ from babeldoc.magazine import article_flow
 from babeldoc.magazine import demo_coverage
 from babeldoc.magazine import drop_cap_render
 from babeldoc.magazine import fragment_stitch
+from babeldoc.magazine import furniture
 from babeldoc.magazine import hitl
 from babeldoc.magazine import indent_policy
 from babeldoc.magazine import layout_report
@@ -270,6 +271,7 @@ _FIXED_TRUE_ATTRIBUTES = (
     "magazine_echo_retry",
     "magazine_formula_reclass",
     "magazine_fragment_stitch",
+    "magazine_furniture",
     "magazine_indent_policy",
     "magazine_line_structure",
     "magazine_paren_dedup",
@@ -458,6 +460,9 @@ def after_styles(config, docs) -> ArticleDocumentIR:
     state._hitl_state = hitl_state
     hitl.page_kind_pass(config, docs, hitl_state)
     ElementClassifier(config).process(docs)
+    # Before the fragment stitch, so a stitch can refuse to reach into a
+    # withheld production mark; before translation, which consults the marks.
+    config.magazine_furniture_plan = furniture.plan(config, docs)
     # After the classifiers, so page policy and operational labels are settled;
     # before line_split and the chain builder, so a stitched paragraph is what
     # gets split into records or linked into a chain, never the fragments.
@@ -551,6 +556,9 @@ def after_translation(config, docs, typesetter) -> dict:
             config,
             state._coverage_snapshot,
         )
+    # Before paren_dedup and typesetting: a member's reused text is what the
+    # later passes should read and what the page should be set from.
+    furniture.unify(config, docs, getattr(config, "magazine_furniture_plan", None))
     paren_dedup.apply(config, docs)
     indent_policy.apply(config, docs, article_document_ir)
     report = article_flow.apply(

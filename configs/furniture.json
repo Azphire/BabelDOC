@@ -1,0 +1,14 @@
+{
+  "description": "Bounds of the furniture pass (babeldoc/magazine/furniture.py), which finds two shapes at the page edge and holds them steady. Repeat furniture: a paragraph whose normalized text recurs on at least furniture_repeat_min_pages physical pages, every occurrence within furniture_edge_band_pt of its page's nearest edge, is translated once (first occurrence in document order) and every other occurrence takes that one translation, so a folio line or a publication domain speaks with one voice instead of one voice per page. The band default of 120pt is set by the deepest repeating furniture in evidence (CERN Courier's folio line stands 108pt off the page edge); the repeat-and-identical condition is what keeps body text out of the band. Production marks: a paragraph in the same band in which at least production_dupe_min_fraction of the characters lie glyph-on-glyph over a twin (same character, box origins within production_dupe_tolerance_em of the letter size) is text drawn twice at one position - the shape of a printing slug, drawn stroke-only and again under a clip in the source - and is withheld whole: not translated, not stitched, not re-set. No file-name, publication or path content ever enters either rule.",
+  "switch": "magazine_furniture",
+  "furniture_repeat_min_pages": 2,
+  "furniture_repeat_min_pages_allowed_range": "2..8",
+  "furniture_edge_band_pt": 120,
+  "furniture_edge_band_pt_allowed_range": "20..150",
+  "production_dupe_min_fraction": 0.5,
+  "production_dupe_min_fraction_allowed_range": "0.2..0.9",
+  "production_dupe_tolerance_em": 0.2,
+  "production_dupe_tolerance_em_allowed_range": "0.05..0.5",
+  "excerpt_chars": 80,
+  "excerpt_chars_allowed_range": "20..400"
+}

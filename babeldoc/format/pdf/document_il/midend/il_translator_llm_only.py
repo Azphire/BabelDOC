@@ -346,6 +346,17 @@ class ILTranslatorLLMOnly:
         if paragraph.debug_id is None or paragraph.unicode is None:
             return False
 
+        # Withheld by the furniture pass: a production mark keeps its source
+        # exactly, and a repeat-furniture member takes its leader's
+        # translation after the pass rather than a voice of its own.
+        furniture_plan = getattr(
+            self.translation_config, "magazine_furniture_plan", None
+        )
+        if furniture_plan is not None and furniture_plan.withholds(
+            paragraph.debug_id
+        ):
+            return False
+
         # Check if already translated
         if translated_ids is not None and id(paragraph) in translated_ids:
             return False

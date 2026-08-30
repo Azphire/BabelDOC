@@ -528,3 +528,20 @@ paragraph that later keeps its source text (identity pasteback).  Runs at
 drop-cap scale (`min_first_run_size_ratio` in `configs/drop_cap.json`, the
 single source of that number) are never touched, so the drop cap lane keeps
 its letter.
+
+### T3 — upstream files touched
+
+`babeldoc/format/pdf/document_il/midend/il_translator_llm_only.py`
+(`_should_translate_paragraph`): consults the furniture plan the magazine
+pass leaves on the translation config.  A production mark (text the source
+draws twice at one position and hides — a printing slug) is never offered to
+the translator; a repeat-furniture member skips its own request and takes
+its leader's translation after the pass.
+
+Style ownership trade (magazine pass, recorded for its visible effect):
+`babeldoc/magazine/furniture.py` copies a leader's translated text onto its
+members as one plain run in each member's own paragraph style, so a member
+gives up its internal style variation — the same trade T1a's span merge
+makes.  The band default (`furniture_edge_band_pt` 120, range 20..150) sits
+above the plan's suggested 60 because the deepest repeating furniture in
+evidence — CERN Courier's folio line — stands 108pt off the page edge.

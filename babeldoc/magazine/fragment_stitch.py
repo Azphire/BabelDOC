@@ -724,6 +724,7 @@ def process_page(
     placed: dict[int, str] | None = None,
     admits: frozenset[str] | None = None,
     forbids: frozenset[str] | None = None,
+    withheld: frozenset[str] = frozenset(),
 ) -> tuple[list[dict], list[dict]]:
     """Stitch every broken unit of one page. One record per stitch.
 
@@ -749,9 +750,14 @@ def process_page(
 
     groups: list[Group] = []
     for index, paragraph in enumerate(paragraphs):
+        # A paragraph the furniture pass withheld -- a production mark drawn
+        # twice at one position and hidden by the source -- may not be
+        # stitched into anything: sewing a printing slug to a date is how the
+        # B14 interleave read.  It still stands as a barrier below.
+        held = paragraph.debug_id in withheld
         group = (
             _group_of(index, paragraph, names, config)
-            if _eligible(paragraph, config)
+            if not held and _eligible(paragraph, config)
             else None
         )
         # An ineligible paragraph still occupies its place in reading order, and
@@ -1000,6 +1006,13 @@ def apply(translation_config, labeled_pages, policy_of=None) -> dict | None:
         else {}
     )
 
+    furniture_plan = getattr(translation_config, "magazine_furniture_plan", None)
+    withheld = frozenset(
+        (*furniture_plan.production_marks, *furniture_plan.reuse_members)
+        if furniture_plan is not None
+        else ()
+    )
+
     stitches: list[dict] = []
     pages: list[dict] = []
     candidates: list[dict] = []
@@ -1007,7 +1020,7 @@ def apply(translation_config, labeled_pages, policy_of=None) -> dict | None:
     for label, page in labeled_pages:
         exempt = config.declared(resolve(page.page_kind))
         if not exempt:
-            records, found = process_page(page, label, config)
+            records, found = process_page(page, label, config, withheld=withheld)
         elif unblocked:
             placed = audit.get(label, {})
             records, found = process_page(
@@ -1018,6 +1031,7 @@ def apply(translation_config, labeled_pages, policy_of=None) -> dict | None:
                 placed=placed,
                 admits=config.declared_page_classes,
                 forbids=config.blank_classes,
+                withheld=withheld,
             )
             blanked_records.extend(_blank_duplicates(page, label, placed, config))
         else:
