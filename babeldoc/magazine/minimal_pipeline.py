@@ -12,6 +12,7 @@ import pymupdf
 from babeldoc.magazine import article_flow
 from babeldoc.magazine import demo_coverage
 from babeldoc.magazine import drop_cap_render
+from babeldoc.magazine import fragment_stitch
 from babeldoc.magazine import hitl
 from babeldoc.magazine import indent_policy
 from babeldoc.magazine import layout_report
@@ -283,6 +284,10 @@ _FIXED_FALSE_ATTRIBUTES = (
     "magazine_profile",
     "magazine_mode",
     "magazine_runtime_profile",
+    # The declared-page (record page) half of the fragment stitch rides its
+    # own attribute; the fixed path decides it off so the source audit never
+    # gates a stitch on the pages line_split owns.
+    "magazine_stitch_declared",
 )
 
 _MISSING = object()
@@ -448,6 +453,10 @@ def after_styles(config, docs) -> ArticleDocumentIR:
     state._hitl_state = hitl_state
     hitl.page_kind_pass(config, docs, hitl_state)
     ElementClassifier(config).process(docs)
+    # After the classifiers, so page policy and operational labels are settled;
+    # before line_split and the chain builder, so a stitched paragraph is what
+    # gets split into records or linked into a chain, never the fragments.
+    fragment_stitch.apply(config, hitl.labeled_pages(docs))
     line_split.apply(config, hitl.labeled_pages(docs))
     ChainBuilder(config).process(docs)
 

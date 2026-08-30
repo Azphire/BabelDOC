@@ -211,10 +211,13 @@ def parse_stitch_config(raw: dict, source: str) -> StitchConfig:
         _require(key in parameters, f"{source}: missing {key}")
 
     rules = tuple(parameters[RULES_KEY])
+    implemented = {RULE_INLINE, RULE_VERTICAL, RULE_INITIAL}
     _require(
-        set(rules) == {RULE_INLINE, RULE_VERTICAL, RULE_INITIAL},
+        bool(rules)
+        and set(rules) <= implemented
+        and len(set(rules)) == len(rules),
         f"{source}: {RULES_KEY} is {sorted(rules)}, and the pass admits a pair "
-        f"under {sorted((RULE_INLINE, RULE_VERTICAL, RULE_INITIAL))}",
+        f"under a non-empty subset of {sorted(implemented)}",
     )
 
     declared_rules = tuple(parameters[DECLARED_RULES_KEY])
