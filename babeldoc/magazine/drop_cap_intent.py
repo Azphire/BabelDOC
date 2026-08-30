@@ -101,6 +101,40 @@ class FrozenColorState:
         }
 
 
+"""Where the source initial's ink metric came from, or why it could not."""
+ANCHOR_METRIC_GLYPH_BBOX = "source_font_char_bounding_box"
+ANCHOR_METRIC_FALLBACK = "anchor_fallback_metric_box"
+
+
+@dataclass(frozen=True)
+class SourceAnchor:
+    """How far the source initial's ink top sits below its own metric box top.
+
+    Captured while the source character still exists, in the source font at
+    the source size, off the same per-glyph ink table the frontend read out of
+    the embedded font program. The render subtracts this from the paragraph's
+    metric-box gap so the target initial's ink top lands where the source
+    initial's ink actually started, not where its ascent whitespace did.
+    ``ink_top_offset_pt`` is None exactly when the source metric could not be
+    read, and then ``metric_source`` says so and the render changes nothing.
+    """
+
+    ink_top_offset_pt: float | None
+    ink_top_em: float | None
+    source_font_size: float | None
+    metric_source: str
+    evidence: tuple[str, ...]
+
+    def as_record(self) -> dict:
+        return {
+            "ink_top_offset_pt": self.ink_top_offset_pt,
+            "ink_top_em": self.ink_top_em,
+            "source_font_size": self.source_font_size,
+            "metric_source": self.metric_source,
+            "evidence": list(self.evidence),
+        }
+
+
 @dataclass(frozen=True)
 class DropCapIssue:
     kind: str
@@ -160,6 +194,7 @@ class DropCapIntent:
     target_char: str | None = None
     target_index: int | None = None
     target_style_hash: str | None = None
+    source_anchor: SourceAnchor | None = None
     issues: list[DropCapIssue] = field(default_factory=list)
 
     def manual_template(self, decision: str) -> dict:
@@ -196,6 +231,9 @@ class DropCapIntent:
             "target_char": self.target_char,
             "target_index": self.target_index,
             "target_style_hash": self.target_style_hash,
+            "source_anchor": (
+                None if self.source_anchor is None else self.source_anchor.as_record()
+            ),
             "issues": [issue.as_record() for issue in self.issues],
         }
 
@@ -440,6 +478,81 @@ def freeze_color(style, resolve_color_space=None) -> FrozenColorState:
     )
 
 
+def _anchor_fallback(reason: str) -> SourceAnchor:
+    return SourceAnchor(
+        ink_top_offset_pt=None,
+        ink_top_em=None,
+        source_font_size=None,
+        metric_source=ANCHOR_METRIC_FALLBACK,
+        evidence=(reason,),
+    )
+
+
+def freeze_source_anchor(il_page, character) -> SourceAnchor:
+    """The source initial's ink-top offset below its own metric box top.
+
+    Reads the per-glyph ink box the frontend parsed out of the embedded source
+    font (``PdfFont.pdf_font_char_bounding_box``, font units over 1000, keyed
+    by the character's cid), so the offset is measured in the source font at
+    the source size. Every way the metric can be missing falls back to a
+    recorded refusal rather than a guess, and the render then leaves the
+    paragraph grid where today's behavior puts it.
+    """
+    style = getattr(character, "pdf_style", None)
+    font_id = None if style is None else getattr(style, "font_id", None)
+    size = None if style is None else getattr(style, "font_size", None)
+    box = getattr(character, "box", None)
+    char_id = getattr(character, "pdf_character_id", None)
+    if not font_id or not size or box is None or char_id is None:
+        return _anchor_fallback("source-style-or-box-incomplete")
+    fonts = list(getattr(il_page, "pdf_font", None) or ())
+    xobj_id = getattr(character, "xobj_id", None)
+    if xobj_id is not None:
+        for xobject in getattr(il_page, "pdf_xobject", None) or ():
+            if getattr(xobject, "xobj_id", None) == xobj_id:
+                fonts = list(getattr(xobject, "pdf_font", None) or ()) + fonts
+                break
+    font = next(
+        (item for item in fonts if getattr(item, "font_id", None) == font_id),
+        None,
+    )
+    if font is None:
+        return _anchor_fallback(f"font:/{font_id}:not-in-page")
+    entry = next(
+        (
+            candidate
+            for candidate in getattr(font, "pdf_font_char_bounding_box", None) or ()
+            if getattr(candidate, "char_id", None) == char_id
+        ),
+        None,
+    )
+    if entry is None:
+        return _anchor_fallback(f"font:/{font_id}:cid:{char_id}:no-glyph-ink-box")
+    try:
+        ink_top_em = float(entry.y2) / 1000.0
+        size = float(size)
+        baseline = float(box.y)
+        top = float(box.y2)
+    except (TypeError, ValueError):
+        return _anchor_fallback(f"font:/{font_id}:cid:{char_id}:unreadable-metric")
+    if not all(math.isfinite(value) for value in (ink_top_em, size, baseline, top)):
+        return _anchor_fallback(f"font:/{font_id}:cid:{char_id}:non-finite-metric")
+    if size <= 0 or ink_top_em <= 0 or top <= baseline:
+        return _anchor_fallback(f"font:/{font_id}:cid:{char_id}:degenerate-metric")
+    offset = top - (baseline + ink_top_em * size)
+    return SourceAnchor(
+        ink_top_offset_pt=round(offset, 4),
+        ink_top_em=round(ink_top_em, 6),
+        source_font_size=round(size, 4),
+        metric_source=ANCHOR_METRIC_GLYPH_BBOX,
+        evidence=(
+            f"font:/{font_id}",
+            f"cid:{char_id}",
+            f"glyph-ink-top-em:{round(ink_top_em, 6)}",
+        ),
+    )
+
+
 def build_intent(
     *,
     source_ref: str,
@@ -452,6 +565,7 @@ def build_intent(
     visual_initial_ref: str | None = None,
     binding_proof: dict | None = None,
     resolve_color_space=None,
+    source_anchor: SourceAnchor | None = None,
 ) -> DropCapIntent:
     source_char = source_character.char_unicode or ""
     source_style_hash = style_hash(source_character.pdf_style)
@@ -484,6 +598,7 @@ def build_intent(
         decision_version=decision_version,
         visual_initial_ref=visual_initial_ref or source_ref,
         binding_proof=dict(binding_proof or {}),
+        source_anchor=source_anchor,
     )
 
 

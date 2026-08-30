@@ -1149,6 +1149,7 @@ def test_bull_standalone_truth_requires_both_corpus_nodes_and_target_evidence(
         "direction_policy": "english_raised_initial",
         "metric_source": "advance_em_fallback",
         "initial_box": [170.0, 430.0, 200.0, 475.0],
+        "anchor": None,
         "before_target_sha256": digest,
         "after_target_sha256": digest,
         "status": "committed",

@@ -89,6 +89,7 @@ PERSISTED_FIELDS = (
     "direction_policy",
     "metric_source",
     "initial_box",
+    "anchor",
     "before_target_sha256",
     "after_target_sha256",
     "status",
@@ -943,6 +944,50 @@ def _set_english_raised_initial(
     }
 
 
+def _anchor_grid_shift(
+    paragraph,
+    intent,
+    dry_first_ink: BoxTuple,
+    dry_body_boxes,
+) -> tuple[float, dict]:
+    """How far the paragraph grid moves down to honor the source ink anchor.
+
+    The desired gap is the source initial's ink-top offset below its metric
+    box top, captured while the source character existed. The typeset gap is
+    what the grid currently leaves between the paragraph's box top and the
+    first line's ink. The grid moves down by the difference, never up, and
+    never past the room left between the body's lowest ink and the paragraph
+    box bottom, so a paragraph that would stop fitting is left alone rather
+    than pushed into a refusal it did not have before.
+    """
+    anchor = getattr(intent, "source_anchor", None)
+    offset = None if anchor is None else anchor.ink_top_offset_pt
+    record = {
+        "gap_source_pt": None if offset is None else round(float(offset), 4),
+        "gap_typeset_pt": None,
+        "shift_desired_pt": None,
+        "shift_pt": 0.0,
+        "fallback": None,
+    }
+    if offset is None:
+        record["fallback"] = drop_cap_intent.ANCHOR_METRIC_FALLBACK
+        return 0.0, record
+    current_gap = float(paragraph.box.y2) - dry_first_ink[3]
+    desired = float(offset) - current_gap
+    record["gap_typeset_pt"] = round(current_gap, 4)
+    record["shift_desired_pt"] = round(desired, 4)
+    if desired <= 0:
+        return 0.0, record
+    dry_body_ink = None if dry_body_boxes is None else _union(dry_body_boxes)
+    if dry_body_ink is None:
+        record["fallback"] = "anchor_fallback_body_metrics"
+        return 0.0, record
+    available = dry_body_ink[1] - float(paragraph.box.y)
+    shift = max(0.0, min(desired, available))
+    record["shift_pt"] = round(shift, 4)
+    return shift, record
+
+
 def _set_chinese_two_line_initial(
     paragraph,
     regime: Regime,
@@ -1004,8 +1049,24 @@ def _set_chinese_two_line_initial(
     dry_second_ink = None if dry_second_boxes is None else _union(dry_second_boxes)
     if dry_first_ink is None or dry_second_ink is None:
         return _refusal({**base, "initial": glyph}, REVERT_NO_METRICS)
-    target_top = dry_first_ink[3]
-    target_bottom = dry_second_ink[1]
+
+    # The typeset grid hangs the first line off the paragraph's metric-box
+    # top, which for a towering source initial includes its ascent whitespace.
+    # The source anchor says how far below that top the source ink actually
+    # started; the whole grid moves down by the difference, bounded by the
+    # room the paragraph's own box still has underneath, and the initial then
+    # follows the moved lines through the ordinary anchoring below. Without a
+    # captured source metric nothing moves and the report says so.
+    anchor_shift, anchor_record = _anchor_grid_shift(
+        paragraph,
+        intent,
+        dry_first_ink,
+        _character_ink_boxes(characters, glyph_metric_resolver),
+    )
+    if anchor_shift:
+        baselines = [value - anchor_shift for value in baselines]
+    target_top = dry_first_ink[3] - anchor_shift
+    target_bottom = dry_second_ink[1] - anchor_shift
     ink_left, ink_bottom, ink_right, ink_top = (
         float(value) for value in initial_metric.ink_box_em
     )
@@ -1153,6 +1214,7 @@ def _set_chinese_two_line_initial(
         "box": _quad(paragraph.box),
         "body_box": _quad(paragraph.box),
         "reach": [round(value, 4) for value in combined_reach],
+        "anchor": anchor_record,
         "initial_ink_box": [round(value, 4) for value in initial_ink],
         "body_ink_box": [round(value, 4) for value in body_ink],
         "first_line_ink_box": [round(value, 4) for value in first_line_ink],
@@ -2290,6 +2352,7 @@ def _persisted_paragraph(item: dict) -> dict:
         "direction_policy": item.get("target_policy"),
         "metric_source": metric_source,
         "initial_box": item.get("initial_ink_box"),
+        "anchor": item.get("anchor"),
         "before_target_sha256": item.get("_before_target_sha256"),
         "after_target_sha256": item.get("_after_target_sha256"),
         "status": STATUS_COMMITTED if committed else STATUS_FAILURE,

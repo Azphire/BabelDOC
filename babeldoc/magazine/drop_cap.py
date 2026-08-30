@@ -1105,6 +1105,10 @@ def mark(
                     labeled_pages[visual_page_position][1],
                     source_character,
                 ),
+                source_anchor=drop_cap_intent.freeze_source_anchor(
+                    labeled_pages[visual_page_position][1],
+                    source_character,
+                ),
             )
             intents.append(intent)
     finally:

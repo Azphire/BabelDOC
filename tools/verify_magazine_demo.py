@@ -41,6 +41,7 @@ DROPCAP_FIELDS = {
     "direction_policy",
     "metric_source",
     "initial_box",
+    "anchor",
     "before_target_sha256",
     "after_target_sha256",
     "status",
