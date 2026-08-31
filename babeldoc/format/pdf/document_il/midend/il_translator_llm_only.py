@@ -984,8 +984,14 @@ class ILTranslatorLLMOnly:
                 llm_translate_tracker.set_fallback_to_translate()
             self.total_count += len(llm_translate_trackers)
             self.fallback_count += len(llm_translate_trackers)
-            for input_ in inputs:
-                input_[2].unicode = input_[5]
+            # Restore each paragraph's own text. input_[5] is the shared list
+            # of batch-build unicodes aligned with ``inputs``; assigning the
+            # list itself left every paragraph of a failed batch holding a
+            # Python list as its unicode, which the per-paragraph fallback
+            # then re-translated from compositions -- masking the corruption
+            # until the coverage drift guard failed closed on it.
+            for index, input_ in enumerate(inputs):
+                input_[2].unicode = input_[5][index]
             if not should_translate_paragraph:
                 should_translate_paragraph = list(
                     range(len(batch_paragraph.paragraphs))
