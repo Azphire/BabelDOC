@@ -77,3 +77,64 @@ ITU p5 的闭引号 (275.0, 353.0)(pymupdf 空间)不压字,B16 亦无检出—�
 
 - P1 部分不符:ITU-zh 基线本有 3 条检出(计划称两样本零检出);盲区本体成立,基线断言按实测集合执行(上表可见,B16 保持该 3 条不多不少)。
 - P9 机制二分:Courier=剥除,ITU=粗值;修订件两分支恰好各治其一。
+
+---
+
+# T6 两份新冷跑:AramcoWorld-en-v2 与 fd-zh
+
+## 选样与预估
+
+- en 侧:**AramcoWorld-en-v2**(P8 实查唯一余量)。
+- zh 侧:四候选实测(小型填充路径 / 图像 / 文本块):Courier-zh 10/5/421、ABB-zh 26/17/77、WIPO-zh 1/10/112、**fd-zh 63/11/169**。选 **fd-zh**:装饰级路径密度四者之最(63 枚,直接压测本批分类器的抗误伤)、报纸式密排版与已跑杂志族版式对比最强、zh→en 方向覆盖粗值分支;Courier-zh 与已跑两轮的 Courier-en 同版式家族,对比度最低,排除。
+- 会话预估(开跑前记录):各 1–5 分钟、API 花费 < $0.5/份(fix0829 旧缓存部分命中)。**实际**:Aramco ~200s、fd ~206s;缓存命中 Aramco 13/85(15%)、fd 1/76(1.3%,几乎全冷);修复翻译请求两份均 0。
+- HITL 代批:两份均走既有决议文件(reviews/AramcoWorld-en-v2.decisions.json sha 4eaf28a2…、reviews/fd-zh.decisions.json),术语裁决 Aramco 10/10 applied、fd 38/46 applied(8 skipped);既有授权,无新人工路径。
+
+## AramcoWorld-en-v2(termination: `all_candidates_refused`,接受 0,回滚 0)
+
+| kind | 检出 | 提名 | 拒绝(逐条)| 接受 |
+|---|---|---|---|---|
+| text_figure_overlap | 3(**均 ornament_path 类,冷样本上盲区扩展首次实弹**)| 3(决策:"All findings report ornament_path…")| p7#10、p7#9 → `clearance_not_head_form`;p8#0 → `refit_role_not_allowed`(label abandon)| 0 |
+| out_of_page | 3 | 0(no_op)| — | 0 |
+| fragment_cluster | 1 | 0(no_op,低 severity)| — | 0 |
+| untranslated_residue | 13 | 3 | p1#1 `orphan_translation_unchanged`、p1#2 `formula_paragraph`、p5#19 `orphan_is_canonical_article_text` | 0 |
+
+**回路全链首次在冷样本上走通到确定性准入**:检测(ornament 类)→ 决策提名(3/3,参数缺省)→ 准入逐条拒绝并留名。归因型三分法:三处均 `refused`,理由如上。
+
+- 目检定性([aramco-p7-10-overlap.png](aramco-p7-10-overlap.png)、[aramco-p7-9-overlap.png](aramco-p7-9-overlap.png)、[aramco-p7-src-394.png](aramco-p7-src-394.png)):p7 两处在 300dpi 输出与源版渲染上**均无可见装饰物**——疑为不可见填充路径入清单(分类器按红线只读几何、不读颜色)。头部形态准入恰好把它们全部拒绝,成品无损;**visible-ink 判据列为下批候选,本批只记录**(见 N 清单)。
+- p8#0([aramco-p8-0-overlap.png](aramco-p8-0-overlap.png)):"40 40 ARAMCOWORLD ARAMCOWORLD" 双份页脚(生产标记形态)与粗规线片段相交,label abandon,role 拒绝正确;该段同时是 residue p8#0——furniture 产线标记未覆盖此页脚形态,记录。
+- residue 13 条归因:印厂 slug(indd 文件名 + cid 乱码时间戳)×5、图片来源署名(应保留类)×3、URL/订阅信息 ×2、doubled folio ×1、"RAILWAY?RAILWAY?" 双份 ×1、封面刊名 ×1。
+- 栏尾指标:10 边界(column 9 / page 1),fill_ratio 中位 0.963 / p25 0.818 / min 0.386,满行率 0.7,short_tails 0。
+- indent 捕获:46 flag 全部 stylistic,functional 0(该刊首行避让形态不存在,如实)。
+
+## fd-zh(termination: `converged_all_treated`,接受 0,回滚 0)
+
+| kind | 检出 | 提名 | 处置 | 接受 |
+|---|---|---|---|---|
+| text_figure_overlap | 8(7 条 xobject artwork 高 iou 封面/目录家具 + **1 条 ornament:p3#13**)| 0(no_op)| 决策层称"none report ornament-grade"——**对 p3#13 事实性漏辨**,见下 | 0 |
+| out_of_page | 2 | 0(no_op)| 决策层拒(条件不合)| 0 |
+| fragment_cluster | 4 | 0(no_op,低 severity)| — | 0 |
+| chain_conservation | 2 | 0(no_op)| — | 0 |
+| untranslated_residue | 6 | 0(ratio 不达)| — | 0 |
+| instruction_compliance | 10 | 0(no_op)| 术语采纳类,只记 | 0 |
+
+- **p3#13([fd-p3-13-overlap.png](fd-p3-13-overlap.png))**:目检为**真阳性**——"…Anderson Editor-in-Chief" 英译行加长压上 2.3×8.4pt 装饰小标(墨迹相交 19.05pt²)。检测器抓到(ornament_path 类,证据齐),但决策模型在 8 条同 kind 混排时对该条漏辨、整轮 no_op,未触发重问(合法 no_op 非违规)。**按归因三分法记 `refused`(决策层,理由与该条事实不符)**;决策提示词对混合类别轮次的辨别力列为下批候选,本批只记录不修。
+- 其余 7 条 artwork 类为封面/目录版式家具与整页 xobject 相交(iou 0.22–0.87,fallback_line/other_display),与 B15 同类封面形态一致,决策拒绝合理。
+- residue 6 条:zh→en 方向短汉字残留("年"、"低"、"高"、栏题"编者的话"等)——短单元/图表轴标类,列清单。
+- 栏尾指标:5 边界(column 4 / page 1),fill_ratio 中位 0.918 / min 0.104,满行率 0.6,short_tails 0。
+- indent 捕获:32 flag 全部 stylistic,functional 0。
+
+## 分类审计表追加行(page_classify,均 vlm 判定)
+
+| 样本 | 页 → kind |
+|---|---|
+| AramcoWorld-en-v2 | p1 front_cover, p2 masthead, p3 toc, p4 article_body, p5 article_opener, p6 article_body, p7 article_body, p8 article_opener, p9 article_opener |
+| fd-zh | p1 infographic, p2 sidebar_heavy, p3 masthead, p4 masthead, p5 sidebar_heavy, p6 contributors |
+
+VLM 判定未与人工真值逐页对照(本批范围外);两样本 kind 面向 indent_eligible 门尚合理(article_* 之外均不合格页,indent 决策为 0 或仅风格保留)。
+
+## 新问题清单(只记录,下批裁决)
+
+- **N-B16-1**:不可见小型填充路径可入装饰物清单(Aramco p7 两例);分类器按红线不读颜色,可见性判据(如渲染墨检)留候选。头部形态准入现阶段恰好挡住其修复通道,成品无损。
+- **N-B16-2**:决策模型在同 kind 混排轮次(8 条)中对唯一 ornament 条目漏辨(fd p3#13 真阳性未提名);候选:轮内按 asset_class 分组出示或在提示词中强调逐条核对证据字段。
+- **N-B16-3**:Aramco p8 双份页脚 "40 40 ARAMCOWORLD ARAMCOWORLD"(生产标记形态)未被 furniture 产线标记覆盖,同时以 residue + tfo 两 kind 现身。
+- **N-B16-4**:Aramco residue 中 cid 乱码印厂时间戳(subset 字体无 unicode 映射)是新形态,残留分类器把它算 Latin 残留。
