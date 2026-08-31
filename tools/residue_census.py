@@ -547,7 +547,7 @@ def census_run(run_root: Path, detectors_config: dict, page_policies: dict) -> d
             # Absent from artifacts written before the detector reported it,
             # and absent from every B record, which has no issue at all.
             record.vertical = evidence.get("vertical")
-        if record.box is None and item is not None:
+        if record.box is None and item is not None and item["source_box"] is not None:
             record.box = list(item["source_box"])
         if record.box is None:
             record.box = boxes.get(ref)
