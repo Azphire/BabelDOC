@@ -41,6 +41,7 @@ from pathlib import Path
 
 from babeldoc.format.pdf.document_il import Box
 from babeldoc.magazine import chain_backfill as backfill
+from babeldoc.magazine import chain_topology_repair as topology
 from babeldoc.magazine import line_split
 from babeldoc.magazine import short_unit
 from babeldoc.magazine.article_context import EMPTY_CONTEXT
@@ -163,6 +164,7 @@ class ChainPreflight:
     article_id: str
     ordered_source_refs: tuple[str, ...]
     ordered_slots: tuple[object, ...]
+    topology_conflict: topology.TopologyConflict | None = None
 
 
 @dataclass(frozen=True, slots=True)
@@ -551,12 +553,7 @@ class ChainClaim:
             raise ValueError("claim members must be non-empty and unique")
         if any(identity in self._records for identity in identities):
             raise ValueError("a paragraph can be held by only one active claim")
-        self._records.update(
-            {
-                id(paragraph): record
-                for paragraph, record in rows
-            }
-        )
+        self._records.update({id(paragraph): record for paragraph, record in rows})
 
     def set_result(
         self, paragraphs: list[object], result_state: ChainResultState
@@ -609,9 +606,7 @@ def _collect_chains(docs) -> list[tuple[str, list[CollectedMember]]]:
         ordered = sorted(
             members,
             key=lambda member: (
-                member.page_index
-                if member.chain_index is None
-                else member.chain_index,
+                member.page_index if member.chain_index is None else member.chain_index,
                 member.page_index,
                 member.paragraph_index,
             ),
@@ -744,6 +739,7 @@ class ChainPlan:
         self.entries: list[ChainEntry] = []
         self.escalated: list[dict] = []
         self.outcomes: list[dict] = []
+        self.topology_records: list[topology.TopologyAdjudicationRecord] = []
         self.chain_count = 0
         self.claim = ChainClaim()
         self.applied = False
@@ -831,7 +827,7 @@ class ChainPlan:
         )
 
     def _preflight_members(
-        self, members: list[CollectedMember]
+        self, chain_id: str, members: list[CollectedMember]
     ) -> tuple[ChainPreflight | None, str, str]:
         refs = tuple(member.source_ref for member in members)
         if len(members) < 2:
@@ -845,12 +841,16 @@ class ChainPlan:
         pages = [member.page_index for member in members]
         page_pairs = zip(pages, pages[1:], strict=False)
         if any(right < left or right - left > 1 for left, right in page_pairs):
-            return None, ESCALATION_TOPOLOGY, (
-                f"member pages are not continuous: {pages}"
+            return (
+                None,
+                ESCALATION_TOPOLOGY,
+                (f"member pages are not continuous: {pages}"),
             )
         if self.article_document_ir is None:
-            return None, ESCALATION_ARTICLE, (
-                "canonical ArticleDocumentIR is unavailable"
+            return (
+                None,
+                ESCALATION_ARTICLE,
+                ("canonical ArticleDocumentIR is unavailable"),
             )
         articles = [
             self.article_document_ir.by_element.get(reference) for reference in refs
@@ -865,12 +865,13 @@ class ChainPlan:
                 for order, member in enumerate(members):
                     box = getattr(member.paragraph, "box", None)
                     if box is None:
-                        return None, ESCALATION_ARTICLE, (
-                            f"member {member.source_ref} has no source box"
+                        return (
+                            None,
+                            ESCALATION_ARTICLE,
+                            (f"member {member.source_ref} has no source box"),
                         )
                     source_box = tuple(
-                        float(getattr(box, name))
-                        for name in ("x", "y", "x2", "y2")
+                        float(getattr(box, name)) for name in ("x", "y", "x2", "y2")
                     )
                     elements.append(
                         SourceElementRef(
@@ -878,15 +879,13 @@ class ChainPlan:
                             page=member.page_index + 1,
                             column=order,
                             reading_order=order,
-                            role=getattr(
-                                member.paragraph, "layout_label", None
-                            )
+                            role=getattr(member.paragraph, "layout_label", None)
                             or "unclassified",
                             source_box=source_box,
                             source_text_hash=hashlib.sha256(
-                                (
-                                    getattr(member.paragraph, "unicode", "") or ""
-                                ).encode("utf-8")
+                                (getattr(member.paragraph, "unicode", "") or "").encode(
+                                    "utf-8"
+                                )
                             ).hexdigest(),
                             style_hash=hash_record(
                                 {
@@ -932,24 +931,31 @@ class ChainPlan:
             for member in members
         ]
         if any(article != articles[0] for article in page_articles):
-            return None, ESCALATION_ARTICLE, (
-                f"member page article ids are {page_articles}"
+            return (
+                None,
+                ESCALATION_ARTICLE,
+                (f"member page article ids are {page_articles}"),
             )
         canonical_chains = [
             self.article_document_ir.by_chain_member.get(reference)
             for reference in refs
         ]
-        if any(chain is None for chain in canonical_chains) or len(
-            set(canonical_chains)
-        ) != 1:
-            return None, ESCALATION_TOPOLOGY, (
-                f"canonical chain ids are {canonical_chains}"
+        if (
+            any(chain is None for chain in canonical_chains)
+            or len(set(canonical_chains)) != 1
+        ):
+            return (
+                None,
+                ESCALATION_TOPOLOGY,
+                (f"canonical chain ids are {canonical_chains}"),
             )
         canonical_chain_id = canonical_chains[0]
         article_id = articles[0]
         if self.article_document_ir.by_chain.get(canonical_chain_id) != article_id:
-            return None, ESCALATION_ARTICLE, (
-                "canonical chain owner disagrees with members"
+            return (
+                None,
+                ESCALATION_ARTICLE,
+                ("canonical chain owner disagrees with members"),
             )
         article_lookup = getattr(self.article_document_ir, "article", None)
         article = article_lookup(article_id) if article_lookup is not None else None
@@ -970,12 +976,16 @@ class ChainPlan:
         for order, reference in enumerate(refs):
             element = elements.get(reference)
             if element is None:
-                return None, ESCALATION_ARTICLE, (
-                    f"member {reference} has no canonical article element"
+                return (
+                    None,
+                    ESCALATION_ARTICLE,
+                    (f"member {reference} has no canonical article element"),
                 )
             if element.source_box is None:
-                return None, ESCALATION_ARTICLE, (
-                    f"member {reference} has no canonical source box"
+                return (
+                    None,
+                    ESCALATION_ARTICLE,
+                    (f"member {reference} has no canonical source box"),
                 )
             reading_orders.append(element.reading_order)
             ordered_slots.append(
@@ -987,10 +997,28 @@ class ChainPlan:
                     box=tuple(float(value) for value in element.source_box),
                 )
             )
+        topology_conflict = None
         if reading_orders != sorted(reading_orders):
-            return None, ESCALATION_TOPOLOGY, (
-                f"chain members do not follow canonical reading order: "
-                f"{reading_orders}"
+            detail = (
+                f"chain members do not follow canonical reading order: {reading_orders}"
+            )
+            topology_conflict = topology.TopologyConflict(
+                runtime_chain_id=chain_id,
+                canonical_chain_id=canonical_chain_id,
+                article_id=article_id,
+                ordered_runtime_source_refs=refs,
+                ordered_physical_source_refs=tuple(
+                    member.physical_source_ref for member in members
+                ),
+                chain_indices=tuple(indices),
+                reading_orders=tuple(reading_orders),
+                member_pages=tuple(member.page_index + 1 for member in members),
+                source_boxes=tuple(slot.box for slot in ordered_slots),
+                source_fragments=tuple(
+                    getattr(member.paragraph, "unicode", "") or "" for member in members
+                ),
+                merged_source="",
+                detail=detail,
             )
         return (
             ChainPreflight(
@@ -998,9 +1026,68 @@ class ChainPlan:
                 article_id,
                 refs,
                 tuple(ordered_slots),
+                topology_conflict,
             ),
             "",
             "",
+        )
+
+    def _record_unrequested_topology(
+        self, issue: topology.TopologyConflict, reason: str
+    ) -> None:
+        decision = topology.decision_not_requested(issue, reason)
+        self.topology_records.append(
+            topology.TopologyAdjudicationRecord(
+                issue=issue,
+                decision=decision,
+                admission=topology.refused_admission(reason),
+                repair_action_applied=False,
+            )
+        )
+
+    def _topology_admission_snapshot(
+        self,
+        issue: topology.TopologyConflict,
+        members: list[CollectedMember],
+        prepared: list[MemberPlan],
+        merged_source: str,
+    ) -> topology.TopologyAdmissionSnapshot:
+        elements = {
+            element.source_ref: element
+            for article in self.article_document_ir.articles
+            for element in article.elements
+        }
+        source_boxes = []
+        for reference in issue.ordered_runtime_source_refs:
+            element = elements.get(reference)
+            source_boxes.append(
+                None
+                if element is None or element.source_box is None
+                else tuple(float(value) for value in element.source_box)
+            )
+        return topology.TopologyAdmissionSnapshot(
+            subtype=issue.subtype,
+            ordered_runtime_source_refs=tuple(member.source_ref for member in members),
+            ordered_physical_source_refs=tuple(
+                member.physical_source_ref for member in members
+            ),
+            chain_indices=tuple(member.chain_index for member in members),
+            member_object_ids=tuple(id(member.paragraph) for member in members),
+            member_pages=tuple(member.page_index + 1 for member in members),
+            article_ids=tuple(
+                self.article_document_ir.by_element.get(member.source_ref)
+                for member in members
+            ),
+            canonical_chain_ids=tuple(
+                self.article_document_ir.by_chain_member.get(member.source_ref)
+                for member in members
+            ),
+            canonical_chain_owner_article_id=self.article_document_ir.by_chain.get(
+                issue.canonical_chain_id
+            ),
+            source_boxes=tuple(source_boxes),
+            source_fragments=tuple(member.source for member in prepared),
+            merged_source=merged_source,
         )
 
     def _record_outcome(
@@ -1019,9 +1106,7 @@ class ChainPlan:
     ) -> None:
         stable_chain_id = canonical_chain_id or self._stable_chain_id(members)
         runtime_references = tuple(member.source_ref for member in members)
-        physical_references = tuple(
-            member.physical_source_ref for member in members
-        )
+        physical_references = tuple(member.physical_source_ref for member in members)
         source_boxes = []
         source_texts = []
         for member in members:
@@ -1029,10 +1114,7 @@ class ChainPlan:
             source_boxes.append(
                 None
                 if box is None
-                else [
-                    float(getattr(box, name))
-                    for name in ("x", "y", "x2", "y2")
-                ]
+                else [float(getattr(box, name)) for name in ("x", "y", "x2", "y2")]
             )
             source_texts.append(getattr(member.paragraph, "unicode", "") or "")
         try:
@@ -1075,6 +1157,16 @@ class ChainPlan:
         if allocation_probe is not None:
             record["allocation_probe"] = allocation_probe
         self.outcomes.append(record)
+        for index in range(len(self.topology_records) - 1, -1, -1):
+            topology_record = self.topology_records[index]
+            if (
+                topology_record.issue.runtime_chain_id == chain_id
+                and topology_record.final_chain_result_state is None
+            ):
+                self.topology_records[index] = topology_record.finalized(
+                    state.value, translator_call_count
+                )
+                break
         if state != ChainResultState.JOINT_SUCCESS:
             logger.warning("chain %s released after %s: %s", chain_id, reason, detail)
             self.escalated.append(record)
@@ -1171,7 +1263,7 @@ class ChainPlan:
     def _plan_chain(
         self, chain_id: str, members: list[CollectedMember], tracker
     ) -> None:
-        preflight, reason, detail = self._preflight_members(members)
+        preflight, reason, detail = self._preflight_members(chain_id, members)
         if preflight is None:
             self._record_outcome(
                 chain_id,
@@ -1186,9 +1278,26 @@ class ChainPlan:
             self.class_labels,
         )
         member_pages = [member.page_index for member in members]
-        if pair_class == "title" and len(set(member_pages)) > 1 and (
-            len(members) != 2 or member_pages[1] != member_pages[0] + 1
+        if (
+            pair_class == "title"
+            and len(set(member_pages)) > 1
+            and (len(members) != 2 or member_pages[1] != member_pages[0] + 1)
         ):
+            if preflight.topology_conflict is not None:
+                raw_sources = preflight.topology_conflict.source_fragments
+                try:
+                    raw_merged_source = backfill.merge_chain_text(
+                        list(raw_sources), self.config
+                    ).text
+                except backfill.ChainBackfillError:
+                    raw_merged_source = "".join(raw_sources)
+                issue = preflight.topology_conflict.with_sources(
+                    raw_sources, raw_merged_source
+                )
+                self._record_unrequested_topology(
+                    issue,
+                    "other_topology_conflict:cross_page_title_shape",
+                )
             self._record_outcome(
                 chain_id,
                 members,
@@ -1278,6 +1387,35 @@ class ChainPlan:
                 article_id=preflight.article_id,
             )
             return
+        if preflight.topology_conflict is not None:
+            issue = preflight.topology_conflict.with_sources(
+                tuple(member.source for member in prepared), merge.text
+            )
+            decision = topology.request_decision(issue, self.translator)
+            admission = topology.admit_decision(
+                issue,
+                decision,
+                self._topology_admission_snapshot(issue, members, prepared, merge.text),
+            )
+            self.topology_records.append(
+                topology.TopologyAdjudicationRecord(
+                    issue=issue,
+                    decision=decision,
+                    admission=admission,
+                    repair_action_applied=admission.accepted,
+                )
+            )
+            if not admission.accepted:
+                self._record_outcome(
+                    chain_id,
+                    members,
+                    ChainResultState.PROTECTED_UNTRANSLATED,
+                    reason=ESCALATION_TOPOLOGY,
+                    detail=f"{issue.detail}; {admission.reason}",
+                    canonical_chain_id=preflight.canonical_chain_id,
+                    article_id=preflight.article_id,
+                )
+                return
         try:
             translated, request_id, translator_call_count = self._translate(
                 merge.text, prepared, chain_tracker
@@ -1300,9 +1438,8 @@ class ChainPlan:
         translated_rich_text = _tokens_in(translated, rich_text_tokens)
         rich_text_preserved = translated_rich_text == rich_text_tokens
         rich_text_dropped = not translated_rich_text
-        if (
-            translated_protected != protected_tokens
-            or not (rich_text_preserved or rich_text_dropped)
+        if translated_protected != protected_tokens or not (
+            rich_text_preserved or rich_text_dropped
         ):
             detail = "joint response changed placeholder set or order"
             if request_id is not None:
@@ -1319,9 +1456,7 @@ class ChainPlan:
                 article_id=preflight.article_id,
             )
             return
-        allocation_tokens = (
-            expected_tokens if rich_text_preserved else protected_tokens
-        )
+        allocation_tokens = expected_tokens if rich_text_preserved else protected_tokens
         try:
             allocation = (
                 self._allocate_target(
@@ -1502,9 +1637,7 @@ class ChainPlan:
                 # configured readable scale gives the same proportional glyph
                 # geometry final typesetting is allowed to use, without
                 # mutating source IL or weakening the source-box gate.
-                units = [
-                    unit.relocate(0.0, 0.0, measurement_scale) for unit in units
-                ]
+                units = [unit.relocate(0.0, 0.0, measurement_scale) for unit in units]
             return units
 
         return make_units
@@ -1546,9 +1679,11 @@ class ChainPlan:
         if pair_class == "title":
             from babeldoc.magazine import title_typeset
 
-            minimum_readable_scale = title_typeset.load_title_config().for_target(
-                self.language
-            ).title_min_scale
+            minimum_readable_scale = (
+                title_typeset.load_title_config()
+                .for_target(self.language)
+                .title_min_scale
+            )
 
         def measurement_style(member):
             style = member.style
@@ -1611,9 +1746,7 @@ class ChainPlan:
                     slot_box,
                     paragraph_start=(
                         order == 0
-                        and bool(
-                            getattr(member.paragraph, "first_line_indent", False)
-                        )
+                        and bool(getattr(member.paragraph, "first_line_indent", False))
                     ),
                     original_font=member.source_font,
                     protected_ranges=tuple(ranges),
@@ -1679,10 +1812,7 @@ class ChainPlan:
             strategies = (backfill.STRATEGY_PROPORTIONAL,)
         else:
             strategies = self.config.slot_cascade
-            if (
-                primary == backfill.STRATEGY_PROPORTIONAL
-                and primary not in strategies
-            ):
+            if primary == backfill.STRATEGY_PROPORTIONAL and primary not in strategies:
                 strategies = (primary, *strategies)
         for strategy in strategies:
             attempt = attempts.get(strategy)
@@ -1769,9 +1899,7 @@ class ChainPlan:
         except backfill.ChainBackfillError:
             return None, None
         if preserve_title_words:
-            split = self._snap_title_split_to_lexical_boundary(
-                merge, split, translated
-            )
+            split = self._snap_title_split_to_lexical_boundary(merge, split, translated)
             if split is None:
                 return None, None
         return split, None
@@ -1862,8 +1990,7 @@ class ChainPlan:
         return {
             position
             for position in range(1, len(translated))
-            if translated[position - 1].isspace()
-            and not translated[position].isspace()
+            if translated[position - 1].isspace() and not translated[position].isspace()
         }
 
     def _attempt_joint_fit(
@@ -1944,9 +2071,7 @@ class ChainPlan:
             style_of = scaled_style_of(scale)
             measure = measure_factory(style_of)
             capacities = []
-            for order, (member, slot) in enumerate(
-                zip(members, slots, strict=True)
-            ):
+            for order, (member, slot) in enumerate(zip(members, slots, strict=True)):
                 result = measure(translated, member, slot, order, protected)
                 if result.status == "invalid":
                     return None
@@ -2026,9 +2151,7 @@ class ChainPlan:
         """Whether a candidate would split an ASCII word embedded in CJK."""
 
         def word_character(character: str) -> bool:
-            return character.isascii() and (
-                character.isalnum() or character in "_'"
-            )
+            return character.isascii() and (character.isalnum() or character in "_'")
 
         return word_character(text[position - 1]) and word_character(text[position])
 
@@ -2324,9 +2447,7 @@ class ChainPlan:
                 preserve_title_words=True,
             )
             if result is None:
-                self._overflow_probe["failure"] = (
-                    "proportional_title_split_failed"
-                )
+                self._overflow_probe["failure"] = "proportional_title_split_failed"
                 return None
         else:
             strategy = backfill.strategy_for_pair_class(pair_class, self.config)
@@ -2421,10 +2542,7 @@ class ChainPlan:
         trace_request_id = None
         trace = getattr(translator, "run_trace", None)
         if trace is not None:
-            references = [
-                trace.source_ref_for(member.paragraph)
-                for member in members
-            ]
+            references = [trace.source_ref_for(member.paragraph) for member in members]
             if any(reference is None for reference in references):
                 raise ChainTranslationError("chain member has no frozen source ref")
             if tuple(references) != tuple(member.source_ref for member in members):
@@ -2515,9 +2633,7 @@ class ChainPlan:
             setattr(member.paragraph, name, copy.deepcopy(value))
 
     @staticmethod
-    def _translate_input_for_members(
-        members: list[MemberPlan], member: MemberPlan
-    ):
+    def _translate_input_for_members(members: list[MemberPlan], member: MemberPlan):
         translate_input = copy.copy(member.translate_input)
         translate_input.placeholders = [
             placeholder
@@ -2553,6 +2669,13 @@ class ChainPlan:
         record["reason"] = ESCALATION_CONSERVATION
         record["detail"] = detail
         self.escalated.append(record)
+        for index, topology_record in enumerate(self.topology_records):
+            if topology_record.issue.runtime_chain_id == entry.chain_id:
+                self.topology_records[index] = topology_record.finalized(
+                    ChainResultState.FAILED_WITH_ISSUE.value,
+                    entry.translator_call_count,
+                )
+                break
         if entry.request_id is not None:
             self.translator.run_trace.rollback_completed_chain(
                 entry.canonical_chain_id,
@@ -2594,13 +2717,9 @@ class ChainPlan:
                         "writeback fragments do not reconstruct the whole target"
                     )
             except Exception as error:
-                for member, snapshot in zip(
-                    entry.members, snapshots, strict=True
-                ):
+                for member, snapshot in zip(entry.members, snapshots, strict=True):
                     self._restore_member(member, snapshot)
-                self._record_writeback_failure(
-                    entry, f"writeback failed: {error}"
-                )
+                self._record_writeback_failure(entry, f"writeback failed: {error}")
                 continue
             if entry.request_id is not None:
                 for fragment in entry.allocation.fragments:
@@ -2626,6 +2745,7 @@ class ChainPlan:
     def as_record(self) -> dict:
         merged_members = sum(len(entry.members) for entry in self.entries)
         claim_records = self.claim.records()
+        topology_records = [record.to_record() for record in self.topology_records]
         return {
             "language": self.language,
             "counts": {
@@ -2650,6 +2770,24 @@ class ChainPlan:
             },
             "applied": self.applied,
             "tail_align": self.tail_align_counts(),
+            "topology_adjudication": {
+                "counts": {
+                    "detected": len(topology_records),
+                    "decision_calls": sum(
+                        record["decision"]["call_count"] for record in topology_records
+                    ),
+                    "confirmed": sum(
+                        1 for record in topology_records if record["confirmed"]
+                    ),
+                    "admitted": sum(
+                        1 for record in topology_records if record["admitted"]
+                    ),
+                    "applied": sum(
+                        1 for record in topology_records if record["applied"]
+                    ),
+                },
+                "records": topology_records,
+            },
             "chains": [entry.as_record() for entry in self.entries],
             "escalated": list(self.escalated),
             "outcomes": list(self.outcomes),
