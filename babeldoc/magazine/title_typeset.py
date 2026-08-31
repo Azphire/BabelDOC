@@ -595,13 +595,26 @@ def _prove_title_chains(
     config,
     article_document_ir: ArticleDocumentIR,
     titles: list[FrozenTitle],
-) -> None:
+) -> list[dict]:
+    """Prove every title chain's joint translation, or accept its release.
+
+    A chain the translation stage *released* -- it recorded a non-joint
+    outcome with a reason, such as ``chain_target_overflow`` when the joint
+    target fits no allocation -- holds per-member translations, and each
+    member is typeset as the individual title it now is. That release is
+    returned, not raised: the failure the hard requires guard is a proof
+    that is missing or corrupt, not a fallback the pipeline recorded on
+    purpose. (Courier-zh's cross-page title pair was the first to release,
+    and the unconditional require killed the whole run over a recorded,
+    handled fallback.)
+    """
+    released_chains: list[dict] = []
     groups: dict[str, list[FrozenTitle]] = {}
     for title in titles:
         if title.chain_id:
             groups.setdefault(title.chain_id, []).append(title)
     if not groups:
-        return
+        return released_chains
     report_chains = _read_chain_report(config).get("chains")
     _require(
         isinstance(report_chains, list), f"{CHAIN_REPORT_NAME}.chains must be a list"
@@ -640,6 +653,25 @@ def _prove_title_chains(
             and tuple(item.get("runtime_source_refs") or ()) == local_refs
             and item.get("canonical_chain_id") == canonical[0]
         ]
+        if not matches:
+            releases = [
+                item
+                for item in report_chains
+                if isinstance(item, dict)
+                and item.get("chain_id") == chain_id
+                and item.get("outcome") != "joint_success"
+                and (item.get("fallback_reason") or item.get("reason"))
+            ]
+            if len(releases) == 1:
+                released_chains.append(
+                    {
+                        "chain_id": chain_id,
+                        "reason": releases[0].get("fallback_reason")
+                        or releases[0].get("reason"),
+                        "members": list(local_refs),
+                    }
+                )
+                continue
         _require(
             len(matches) == 1,
             f"title chain {chain_id} has no unique joint-success ownership proof",
@@ -729,6 +761,7 @@ def _prove_title_chains(
             for member in members
             for segment in member.target_segments
         )
+    return released_chains
 
 
 def prepare(
@@ -828,11 +861,14 @@ def prepare(
                     chain_index=getattr(paragraph, "chain_index", None),
                 )
             )
-    _prove_title_chains(translation_config, article_document_ir, titles)
+    released_chains = _prove_title_chains(
+        translation_config, article_document_ir, titles
+    )
     _RUN = _Run(translation_config, docs, typesetter, policy, titles, exclusions)
     return {
         "prepared": len(titles),
         "excluded": len(exclusions),
+        "released_title_chains": released_chains,
         "typesetter_identity_frozen": True,
     }
 
