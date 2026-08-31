@@ -16,6 +16,7 @@ from babeldoc.magazine import drop_cap_render
 from babeldoc.magazine import fragment_stitch
 from babeldoc.magazine import furniture
 from babeldoc.magazine import hitl
+from babeldoc.magazine import term_enforce
 from babeldoc.magazine import indent_policy
 from babeldoc.magazine import layout_report
 from babeldoc.magazine import line_split
@@ -540,6 +541,9 @@ def before_translation(config, docs) -> dict:
         article_document_ir,
         hitl_state,
     )
+    # While the paragraphs still carry their source text: hold every
+    # term-bearing unit's source for the post-translation enforcement ladder.
+    term_enforce.freeze_sources(config, docs, hitl_state)
     if state.article_document_ir is not article_document_ir:
         raise MinimalPipelineStateError("canonical ArticleDocumentIR identity changed")
     state._translation_prep_completed = True
@@ -580,6 +584,11 @@ def after_translation(config, docs, typesetter) -> dict:
     # Before paren_dedup and typesetting: a member's reused text is what the
     # later passes should read and what the page should be set from.
     furniture.unify(config, docs, getattr(config, "magazine_furniture_plan", None))
+    # The human-ruled term ladder, after unification (so it reads the text the
+    # page will carry) and before dedup/typesetting (so what it writes is what
+    # the page is set from).
+    if state.hitl_state is not None:
+        term_enforce.apply(config, docs, state.hitl_state)
     paren_dedup.apply(config, docs)
     indent_policy.apply(config, docs, article_document_ir)
     report = article_flow.apply(
