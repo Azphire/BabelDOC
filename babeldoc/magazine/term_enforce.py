@@ -49,6 +49,7 @@ from pathlib import Path
 
 from babeldoc.glossary import Glossary
 from babeldoc.magazine.page_features import validate_bounded_config
+from babeldoc.magazine import retry_guard
 from babeldoc.magazine.prompt_loader import PromptError
 from babeldoc.magazine.prompt_loader import load_prompt
 from babeldoc.magazine.resource_paths import config_path
@@ -75,6 +76,10 @@ ESCALATION_REPLY_UNUSABLE = "retry_reply_unusable"
 ESCALATION_WITHHELD = "unit_withheld_from_translation"
 ESCALATION_SPANS = "variant_spans_compositions"
 ESCALATION_OPAQUE = "composition_not_rebuildable"
+# The shared retry acceptance refused this reply. One name here, whichever of
+# the guard's tests caught it, because from this ladder's side the finding is
+# the same: the engine answered with something other than the unit.
+ESCALATION_HALLUCINATED = retry_guard.REJECTED
 
 _retry_spent: weakref.WeakKeyDictionary = weakref.WeakKeyDictionary()
 
@@ -261,6 +266,17 @@ def _retranslate_pinned(
     output = _parse_reply(reply)
     if output is None:
         return False, ESCALATION_REPLY_UNUSABLE
+    # Before the ruling is checked, not after: a reply carrying the ruled
+    # string inside four sentences of invented copy honours the ruling and is
+    # still not a translation of this unit, which is exactly how CERN Courier
+    # page 3's footer was filled with prose about a courier company.
+    accepted, refusal, evidence = retry_guard.accept(source_text, output)
+    if not accepted:
+        logger.warning(
+            "term pin reply refused (%s): %s", refusal, json.dumps(evidence)
+        )
+        retry_guard.discard_from_cache(engine, prompt.text)
+        return False, ESCALATION_HALLUCINATED
     if _normalize(target) not in _normalize(output):
         return False, ESCALATION_RETRY_STILL_VIOLATES
     style = getattr(paragraph, "pdf_style", None)

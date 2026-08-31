@@ -76,6 +76,7 @@ from babeldoc.format.pdf.document_il.utils.paragraph_helper import (
 )
 from babeldoc.magazine import source_audit
 from babeldoc.magazine import demo_coverage
+from babeldoc.magazine import retry_guard
 from babeldoc.magazine.demo_coverage import wholly_scripted
 from babeldoc.magazine.detectors.base import HAN_SCRIPT
 from babeldoc.magazine.line_split import paragraph_characters
@@ -638,6 +639,26 @@ def plan(
             answer = answers.get(position)
             if not isinstance(answer, str) or not answer.strip():
                 result.refused.append({**unit.as_record(), "reason": "no_answer"})
+                continue
+            # The same acceptance the other single-unit channels pass through:
+            # a two-character section label whose answer comes back as a
+            # sentence about the section is prose, and a unit left in its
+            # source language is the lesser harm.
+            accepted, refusal, evidence = retry_guard.accept(unit.source, answer)
+            if not accepted:
+                logger.warning(
+                    "short unit: a reply was refused (%s): %s",
+                    refusal,
+                    json.dumps(evidence),
+                )
+                result.refused.append(
+                    {
+                        **unit.as_record(),
+                        "reason": retry_guard.REJECTED,
+                        "refusal": refusal,
+                        "evidence": evidence,
+                    }
+                )
                 continue
             unit.translated = answer
             result.units.append(unit)

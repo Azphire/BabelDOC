@@ -596,3 +596,47 @@ every action application to one nominated finding id — so the exclusion
 source *is* the acted-on finding, read from its own evidence, and the model
 cannot name a different one.  This is the plan's fail-closed intent held by
 construction rather than by a redundant string parameter.
+
+## B19
+
+### T3 — upstream file touched
+
+`babeldoc/translator/cache.py` (`TranslationCache.discard`, new method).
+`get`/`set` had no counterpart that forgets one entry, and without one a
+refused reply survives the run that refused it: both hallucinated retries in
+the B18 corpus were served from cache on every warm re-run, so the defect
+reproduced without a single request being made. `discard` deletes the row for
+one engine, one parameter set and one prompt, and returns whether a row went.
+It follows `get`/`set`'s own convention for a locked database — log and carry
+on — because a cache that cannot be cleaned is a warm run that repeats a
+question, not a run that fails. Nothing calls it but `retry_guard`.
+
+### T3 — the relation to the upstream length guard
+
+`il_translator_llm_only._handle_batch_result` refuses a paragraph reply whose
+token count leaves `0.3 .. 3` of its input (:910), falls back to the source and
+marks the tracker. `babeldoc/magazine/retry_guard.py` is the same idea applied
+where that code does not run: the three single-unit channels this project added
+(`echo_retry`, `term_enforce`'s pinned retranslation, `short_unit`) each call
+the engine directly and each wrote its own narrower acceptance.
+
+The upstream test is **not reused as a function** — it is nine lines inlined in
+the middle of a batch loop, reachable only with a live translator holding a
+tokenizer, and it writes to a tracker this project's channels do not have. So
+the guard states the same semantics in one place of its own, and differs in
+three ways, each measured rather than chosen:
+
+- **Size, not tokens.** One Han character counts as one and one run of letters
+  or digits counts as one, which is what a tokenizer's count approximates. This
+  keeps the test callable with no engine in reach and holds in both directions.
+- **A conjunction, not a band.** A reply is refused only when it is past both
+  the ratio and an absolute cap. The upstream band alone would refuse honest
+  work here: measured in characters the widest honest zh->en expansion in the
+  B18 corpus runs 6.79 out per one in.
+- **A sentence test the upstream band has no need of.** A paragraph reply and
+  its paragraph are both prose; a name's reply should not be prose at all. The
+  Courier reply that reached the cover is 37 characters and inside every length
+  bound, and only the sentence test reaches it.
+
+Both guards stand: a unit passing through a retry channel and then the batch
+path is tested twice, which is correct — they refuse different things.

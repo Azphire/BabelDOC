@@ -19,6 +19,7 @@ import unicodedata
 import weakref
 from pathlib import Path
 
+from babeldoc.magazine import retry_guard
 from babeldoc.magazine.page_features import validate_bounded_config
 from babeldoc.magazine.prompt_loader import PromptError
 from babeldoc.magazine.prompt_loader import load_prompt
@@ -41,6 +42,10 @@ SKIP_LENGTH = "over_max_chars"
 SKIP_BUDGET = "budget_exhausted"
 SKIP_ENGINE = "engine_unsupported"
 UNUSABLE = "reply_unusable"
+# The shared retry acceptance refused this reply. Recorded under one name
+# whichever of the guard's tests caught it: from this channel's side the unit
+# simply stays in its source language, which is where it already was.
+REJECTED = retry_guard.REJECTED
 
 _spent: weakref.WeakKeyDictionary = weakref.WeakKeyDictionary()
 
@@ -161,6 +166,13 @@ def attempt(
         return None, UNUSABLE
     if normalized(output) == normalized(source_text):
         return None, EXHAUSTED
+    accepted, refusal, evidence = retry_guard.accept(source_text, output)
+    if not accepted:
+        logger.warning(
+            "echo retry reply refused (%s): %s", refusal, json.dumps(evidence)
+        )
+        retry_guard.discard_from_cache(engine, prompt.text)
+        return None, REJECTED
     return output, ACCEPTED
 
 

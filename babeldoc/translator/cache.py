@@ -125,6 +125,33 @@ class TranslationCache:
             else:
                 raise
 
+    def discard(self, original_text: str) -> bool:
+        """Forget one entry. True where a row was actually removed.
+
+        Added by this project (B19). A cached reply is normally an asset, but
+        a reply a pass has refused is not: without this, a warm re-run is
+        handed the refused answer instead of asking the question again, which
+        is how two hallucinated retries survived a whole B18 corpus re-run.
+        """
+        try:
+            return bool(
+                _TranslationCache.delete()
+                .where(
+                    (_TranslationCache.translate_engine == self.translate_engine)
+                    & (
+                        _TranslationCache.translate_engine_params
+                        == self.translate_engine_params
+                    )
+                    & (_TranslationCache.original_text == original_text)
+                )
+                .execute()
+            )
+        except peewee.OperationalError as e:
+            if "database is locked" in str(e):
+                logger.debug("Cache is locked")
+                return False
+            raise
+
     def _cleanup(self) -> None:
         """Remove old cache entries, keeping only the latest MAX_CACHE_ROWS records."""
         # Quick exit if another thread is already performing cleanup.
