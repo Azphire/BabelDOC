@@ -655,6 +655,54 @@ def e8_source_mode_still_reports(tmp: Path) -> str:
     return "a source mode run decides nothing and still names every paragraph fully"
 
 
+def e10_declared_flush_target_clears_the_source_flag(tmp: Path) -> str:
+    """B19: a target whose declared policy is ``none`` decides, and decides flush.
+
+    The counterpart of E8: there the target is unclaimed and the source flag
+    survives, here the shipped configuration declares a flush convention and
+    the flag the source raised is overwritten downward. The tag is read out of
+    the configuration rather than named here.
+    """
+    config = indent_policy.load_indent_config()
+    flush_tag = None
+    for tag in config.by_target:
+        mode, _origin = config.mode_for(tag)
+        if mode == indent_policy.MODE_NONE:
+            flush_tag = tag
+            break
+    require(flush_tag is not None, "no target language declares the flush policy")
+    record, docs = run(
+        tmp,
+        "e10",
+        [
+            [
+                paragraph(
+                    "body carried in indented",
+                    first_line_indent=True,
+                    chain_index=0,
+                )
+            ]
+        ],
+        {1: [0]},
+        physical_pages=[4],
+        kinds=[eligible_kind()],
+        target=flush_tag,
+    )
+    require(record["authoritative"] is True, "the flush policy claimed no authority")
+    row = row_of(record, "p1#0")
+    require(row["before"] is True, "the fixture flag did not arrive raised")
+    require(row["after"] is False, f"after is {row['after']!r}")
+    require(
+        row["skipped"] == indent_policy.SKIP_MODE,
+        f"skipped is {row['skipped']!r}",
+    )
+    require(
+        docs.page[0].pdf_paragraph[0].first_line_indent is False,
+        "the paragraph itself kept the source flag",
+    )
+    return "a declared flush target overwrites a source-raised flag downward"
+
+
 # --------------------------------------------------------------------------
 # E9: the flow pass, read only
 # --------------------------------------------------------------------------
@@ -804,6 +852,7 @@ RUN_CHECKS: tuple[tuple[str, Callable[[Path], str]], ...] = (
     ("E7", e7_conservation),
     ("E8", e8_source_mode_still_reports),
     ("E9", e9_only_the_first_piece_indents),
+    ("E10", e10_declared_flush_target_clears_the_source_flag),
 )
 
 

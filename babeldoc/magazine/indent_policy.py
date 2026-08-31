@@ -196,15 +196,42 @@ MODE_ALL = "all"
 MODE_NONE = "none"
 MODE_ALL_BUT_FIRST = "all_but_first"
 
-BY_TARGET_KEY = "indent_mode_by_target"
+BY_TARGET_KEY = "indent_policy_by_target"
 FALLBACK_KEY = "fallback_mode"
 VOCABULARY_KEY = "indent_mode_vocabulary"
 ENTRIES_KEY = "entries"
+STYLE_INDENT_KEY = "style_indent"
+# The numeric keys every target entry declares, bounded once for all entries
+# by the ranges declared beside the entries themselves.
+TARGET_NUMBER_KEYS = ("indent_em", "article_opening_rank")
 _STRUCTURAL_KEYS = (BY_TARGET_KEY, FALLBACK_KEY)
 
 
 class IndentPolicyError(ConfigError):
     """Raised when the indent policy configuration is malformed."""
+
+
+@dataclass(frozen=True)
+class TargetIndentPolicy:
+    """One target language's declared style policy, whole.
+
+    ``style_indent`` is a mode from the shared vocabulary; ``indent_em`` is
+    the pen advance the typesetting stage pins; ``article_opening_rank`` is
+    the paragraph ``all_but_first`` exempts. The functional clearance is not
+    here on purpose: an avoidance of printed ink is a fact about a page, not
+    a convention of a language, and no entry may restate it.
+    """
+
+    style_indent: str
+    indent_em: int
+    article_opening_rank: int
+
+    def to_record(self) -> dict:
+        return {
+            "style_indent": self.style_indent,
+            "indent_em": self.indent_em,
+            "article_opening_rank": self.article_opening_rank,
+        }
 
 
 @dataclass(frozen=True)
@@ -215,26 +242,31 @@ class IndentConfig:
     by_target: MappingProxyType
     fallback: str
     body_labels: tuple[str, ...]
-    article_opening_rank: int
-    indent_em: int
     excerpt_chars: int
     functional_clearance_pt: float
 
-    def mode_for(self, target_lang: str) -> tuple[str, str]:
-        """The mode one run is laid out under, and where it came from.
+    def policy_for(self, target_lang: str) -> tuple[TargetIndentPolicy | None, str]:
+        """The policy set one run is laid out under, and where it came from.
 
         Matched by longest declared prefix rather than by equality, because a
         target language reaches this project as a tag and a tag carries a
         region: a rule for a language is a rule for every variety of it. A tag
-        no entry claims takes the declared fallback, which reproduces the
-        source, because a layout convention guessed for an unnamed language is
-        worse than none.
+        no entry claims takes ``None`` with the fallback origin: there is no
+        policy set to hand back, the run reproduces the source, because a
+        layout convention guessed for an unnamed language is worse than none.
         """
         tag = (target_lang or "").strip().lower()
         claimed = [key for key in self.by_target if tag.startswith(key.lower())]
         if not claimed:
-            return self.fallback, "fallback"
+            return None, "fallback"
         return self.by_target[max(claimed, key=len)], "declared"
+
+    def mode_for(self, target_lang: str) -> tuple[str, str]:
+        """The mode alone, for readers that need no other part of the policy."""
+        policy, origin = self.policy_for(target_lang)
+        if policy is None:
+            return self.fallback, origin
+        return policy.style_indent, origin
 
 
 def _require(condition: bool, message: str) -> None:
@@ -243,13 +275,28 @@ def _require(condition: bool, message: str) -> None:
 
 
 def _read_by_target(raw: object, source: str, modes: tuple[str, ...]):
-    """The table of per target language modes, checked against the vocabulary."""
+    """The table of per target language policy sets, each checked whole.
+
+    Every entry is validated the way the flat configuration is: the mode
+    against the shared vocabulary, each number against the range the block
+    declares once for all entries, so an English-side edit is refused by the
+    same bounds a Chinese-side edit is.
+    """
     _require(isinstance(raw, dict), f"{source}: {BY_TARGET_KEY} must be an object")
+    ranges = {}
+    for number in TARGET_NUMBER_KEYS:
+        range_key = f"{number}_allowed_range"
+        _require(
+            isinstance(raw.get(range_key), str),
+            f"{source}: {BY_TARGET_KEY} must declare {range_key}",
+        )
+        ranges[range_key] = raw[range_key]
     entries = raw.get(ENTRIES_KEY)
     _require(
         isinstance(entries, dict) and bool(entries),
         f"{source}: {BY_TARGET_KEY}.{ENTRIES_KEY} must be a non-empty object",
     )
+    policies = {}
     for key, value in entries.items():
         _require(
             isinstance(key, str) and bool(key.strip()),
@@ -257,11 +304,30 @@ def _read_by_target(raw: object, source: str, modes: tuple[str, ...]):
             f"language tag: {key!r}",
         )
         _require(
-            value in modes,
-            f"{source}: {BY_TARGET_KEY}.{ENTRIES_KEY}[{key!r}]={value!r} is "
-            f"outside the declared modes {sorted(modes)}",
+            isinstance(value, dict),
+            f"{source}: {BY_TARGET_KEY}.{ENTRIES_KEY}[{key!r}] must be an object",
         )
-    return MappingProxyType({key.strip(): value for key, value in entries.items()})
+        wanted = {STYLE_INDENT_KEY, *TARGET_NUMBER_KEYS}
+        _require(
+            set(value) == wanted,
+            f"{source}: {BY_TARGET_KEY}.{ENTRIES_KEY}[{key!r}] must declare "
+            f"exactly {sorted(wanted)}, got {sorted(value)}",
+        )
+        flat = dict(value)
+        flat.update(ranges)
+        flat[f"{STYLE_INDENT_KEY}_allowed"] = list(modes)
+        try:
+            parameters = validate_bounded_config(flat, CONFIG_PATH)
+        except ConfigError as exc:
+            raise IndentPolicyError(
+                f"{source}: {BY_TARGET_KEY}.{ENTRIES_KEY}[{key!r}]: {exc}"
+            ) from exc
+        policies[key.strip()] = TargetIndentPolicy(
+            style_indent=str(parameters[STYLE_INDENT_KEY]),
+            indent_em=int(parameters["indent_em"]),
+            article_opening_rank=int(parameters["article_opening_rank"]),
+        )
+    return MappingProxyType(policies)
 
 
 def parse_indent_config(raw: dict, source: str) -> IndentConfig:
@@ -287,8 +353,6 @@ def parse_indent_config(raw: dict, source: str) -> IndentConfig:
     labels = tuple(parameters.get("body_labels", ()))
     _require(bool(labels), f"{source}: missing body_labels")
     numbers = (
-        "article_opening_rank",
-        "indent_em",
         "excerpt_chars",
         "functional_clearance_pt",
     )
@@ -299,8 +363,6 @@ def parse_indent_config(raw: dict, source: str) -> IndentConfig:
         by_target=_read_by_target(raw.get(BY_TARGET_KEY), source, modes),
         fallback=str(fallback),
         body_labels=labels,
-        article_opening_rank=int(parameters["article_opening_rank"]),
-        indent_em=int(parameters["indent_em"]),
         excerpt_chars=int(parameters["excerpt_chars"]),
         functional_clearance_pt=float(parameters["functional_clearance_pt"]),
     )
@@ -638,21 +700,32 @@ def mode_is_authoritative(mode: str) -> bool:
     return mode != MODE_SOURCE
 
 
-def mode_indents(mode: str, body_rank: int | None, config: IndentConfig) -> bool:
+def mode_indents(
+    mode: str,
+    body_rank: int | None,
+    policy: TargetIndentPolicy | None,
+) -> bool:
     """Whether the mode alone would indent a body paragraph of this rank.
 
     Asked only of a mode that is authoritative, so ``source`` never reaches
     here. A rank the article numbering could not supply is not the opening
     paragraph of anything, so a mode that exempts the opening paragraph indents
     it: the exemption is a statement about a position, and a paragraph outside
-    every article holds no position to be exempted at.
+    every article holds no position to be exempted at. The exempted rank is
+    the declared policy's; a mode that needs it with no policy behind it is a
+    caller error, not a default.
     """
     if mode == MODE_ALL:
         return True
     if mode == MODE_NONE:
         return False
     if mode == MODE_ALL_BUT_FIRST:
-        return body_rank != config.article_opening_rank
+        if policy is None:
+            raise IndentPolicyError(
+                f"{MODE_ALL_BUT_FIRST} needs a target policy to name the "
+                "exempted rank, and none was resolved"
+            )
+        return body_rank != policy.article_opening_rank
     return False
 
 
@@ -664,6 +737,7 @@ def decide(
     body_rank: int | None,
     continuation: bool,
     config: IndentConfig,
+    policy: TargetIndentPolicy | None = None,
 ) -> tuple[bool, str | None] | None:
     """What one paragraph's flag becomes and the condition that decided it.
 
@@ -678,7 +752,7 @@ def decide(
         SKIP_PAGE_INELIGIBLE: not eligible_page,
         SKIP_OUTSIDE_BODY: label not in config.body_labels,
         SKIP_OUTSIDE_ARTICLE: not in_article,
-        SKIP_MODE: not mode_indents(mode, body_rank, config),
+        SKIP_MODE: not mode_indents(mode, body_rank, policy),
         CLEAR_CHAIN_CONTINUATION: continuation,
     }
     for reason in CLEAR_ORDER:
@@ -695,6 +769,7 @@ def as_record(
     rows: list[dict],
     pages: list[dict],
     clearance_plan: ClearancePlan | None = None,
+    policy: TargetIndentPolicy | None = None,
 ) -> dict:
     changed = [row for row in rows if row["before"] != row["after"]]
     return {
@@ -705,8 +780,13 @@ def as_record(
         "modes": list(config.modes),
         "fallback_mode": config.fallback,
         "body_labels": list(config.body_labels),
-        "article_opening_rank": config.article_opening_rank,
-        "indent_em": config.indent_em,
+        "article_opening_rank": (
+            None if policy is None else policy.article_opening_rank
+        ),
+        "indent_em": None if policy is None else policy.indent_em,
+        "policy_by_target": {
+            tag: entry.to_record() for tag, entry in config.by_target.items()
+        },
         "functional_clearance_pt": config.functional_clearance_pt,
         "clearance_capture": (
             None if clearance_plan is None else clearance_plan.to_record()
@@ -831,7 +911,8 @@ def apply(
     config = load_indent_config()
     taxonomy = load_taxonomy()
     target_lang = getattr(translation_config, "lang_out", "") or ""
-    mode, origin = config.mode_for(target_lang)
+    policy, origin = config.policy_for(target_lang)
+    mode = config.fallback if policy is None else policy.style_indent
     of_element = article_of_element(article_document_ir)
     clearance_plan = getattr(translation_config, CLEARANCE_PLAN_ATTR, None)
     clearance_by_ref = (
@@ -884,6 +965,7 @@ def apply(
                 body_rank,
                 continuation,
                 config,
+                policy,
             )
             if clearance is not None:
                 # A functional avoidance: the source's first line was
@@ -958,6 +1040,7 @@ def apply(
         rows,
         page_rows,
         clearance_plan=clearance_plan,
+        policy=policy,
     )
     _require_conservation(record)
     working_dir = Path(translation_config.get_working_file_path(REPORT_NAME)).parent

@@ -15,6 +15,7 @@ from __future__ import annotations
 
 from types import SimpleNamespace
 
+from babeldoc.magazine.indent_policy import SKIP_MODE
 from babeldoc.magazine.indent_policy import SKIP_PAGE_INELIGIBLE
 from babeldoc.magazine.indent_policy import decide
 from babeldoc.magazine.indent_policy import load_indent_config
@@ -63,4 +64,36 @@ def test_advertisement_page_clears_a_body_paragraph_first():
 def test_article_page_still_indents_the_same_paragraph():
     config = load_indent_config()
     outcome = decide("plain text", "all", True, True, 1, False, config)
+    assert outcome == (True, None)
+
+
+def test_en_target_body_paragraph_takes_no_style_indent():
+    """B19 T1, positive: the declared en policy sets every body rank flush.
+
+    The decision goes through the policy the shipped configuration declares
+    for the en target, not through a mode named here, so this is a statement
+    about the config the pipeline runs on.
+    """
+    config = load_indent_config()
+    policy, origin = config.policy_for("en")
+    assert origin == "declared"
+    assert policy.style_indent == "none"
+    for rank in (1, 2, 7):
+        outcome = decide(
+            "plain text", policy.style_indent, True, True, rank, False, config, policy
+        )
+        assert outcome == (False, SKIP_MODE)
+
+
+def test_zh_target_policy_is_untouched_by_the_separation():
+    """B19 T1, negative: zh keeps the pre-B19 values, digit for digit."""
+    config = load_indent_config()
+    policy, origin = config.policy_for("zh")
+    assert origin == "declared"
+    assert policy.style_indent == "all"
+    assert policy.indent_em == 4
+    assert policy.article_opening_rank == 1
+    outcome = decide(
+        "plain text", policy.style_indent, True, True, 1, False, config, policy
+    )
     assert outcome == (True, None)
