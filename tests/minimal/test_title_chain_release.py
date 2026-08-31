@@ -58,13 +58,16 @@ def test_a_recorded_release_is_returned_not_raised(tmp_path: Path) -> None:
     (tmp_path / title_typeset.CHAIN_REPORT_NAME).write_text(
         json.dumps(
             {
-                "chains": [
+                # A released chain never reaches the applied ``chains`` list;
+                # the stage files its recorded outcome under ``outcomes``.
+                "chains": [],
+                "outcomes": [
                     {
                         "chain_id": "XyZzy",
                         "outcome": "failed_with_issue",
                         "fallback_reason": "chain_target_overflow",
                     }
-                ]
+                ],
             }
         ),
         encoding="utf-8",

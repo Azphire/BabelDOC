@@ -615,10 +615,17 @@ def _prove_title_chains(
             groups.setdefault(title.chain_id, []).append(title)
     if not groups:
         return released_chains
-    report_chains = _read_chain_report(config).get("chains")
+    report = _read_chain_report(config)
+    report_chains = report.get("chains")
     _require(
         isinstance(report_chains, list), f"{CHAIN_REPORT_NAME}.chains must be a list"
     )
+    # A chain the translation stage released never reaches ``chains`` -- the
+    # applied list -- so its recorded outcome is read where the stage filed
+    # it, in ``outcomes``.
+    report_outcomes = report.get("outcomes")
+    if not isinstance(report_outcomes, list):
+        report_outcomes = []
     for chain_id, members in groups.items():
         _require(
             len(members) >= 2,
@@ -656,7 +663,7 @@ def _prove_title_chains(
         if not matches:
             releases = [
                 item
-                for item in report_chains
+                for item in (*report_chains, *report_outcomes)
                 if isinstance(item, dict)
                 and item.get("chain_id") == chain_id
                 and item.get("outcome") != "joint_success"
