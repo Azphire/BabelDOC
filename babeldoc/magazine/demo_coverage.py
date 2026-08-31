@@ -141,18 +141,72 @@ def cross_script_companions(paragraph, neighbours) -> list:
     return companions
 
 
+def _trace_text(trace: dict) -> str | None:
+    """Unicode carried by one PyMuPDF text trace, when it is readable."""
+    try:
+        return "".join(chr(int(character[0])) for character in trace["chars"])
+    except (KeyError, TypeError, ValueError, OverflowError):
+        return None
+
+
+def _rect_coverage(inner, outer) -> float:
+    """Fraction of ``inner`` covered by the axis-aligned ``outer``."""
+    width = max(0.0, float(inner[2]) - float(inner[0]))
+    height = max(0.0, float(inner[3]) - float(inner[1]))
+    area = width * height
+    if area <= 0.0:
+        return 0.0
+    overlap_width = max(
+        0.0,
+        min(float(inner[2]), float(outer[2]))
+        - max(float(inner[0]), float(outer[0])),
+    )
+    overlap_height = max(
+        0.0,
+        min(float(inner[3]), float(outer[3]))
+        - max(float(inner[1]), float(outer[1])),
+    )
+    return overlap_width * overlap_height / area
+
+
+def _opaque_occluder_rects(kind: str, bbox, drawing) -> tuple:
+    """Painted rectangles when one bbox-log item proves opaque coverage.
+
+    A path bbox alone is not proof: a non-rectangular path can surround an
+    area without painting all of it.  PyMuPDF exposes rectangle path items,
+    so those are the only fill paths accepted here.  Image and shade bbox-log
+    items describe their painted extent directly.
+    """
+    if kind in ("fill-image", "fill-shade"):
+        return (bbox,)
+    if kind != "fill-path" or drawing is None:
+        return ()
+    try:
+        opacity = float(drawing.get("fill_opacity"))
+    except (TypeError, ValueError):
+        return ()
+    if abs(opacity - 1.0) > 1e-6:
+        return ()
+    return tuple(
+        item[1]
+        for item in drawing.get("items", ())
+        if item and item[0] == "re" and len(item) > 1
+    )
+
+
 def companion_visibility(companion, page, translation_config) -> tuple[str, dict]:
     """Whether one companion demonstrably renders as visible ink.
 
     Three criteria, decided from standing facts.  Inside the page body is a
-    geometric fact against the crop box.  Ink and non-occlusion are one
-    rendering fact: the source page's own pixels over the companion's box --
-    a companion drawn in background colour, wholly covered by an opaque
-    object, or clipped away leaves no non-background pixels there, whatever
-    the IL says about its operators.  Whenever visibility cannot be
+    geometric fact against the crop box.  The companion must then align by
+    text and geometry to exactly one source-page text trace.  A later opaque
+    paint operation that covers that trace's complete ink box proves the
+    companion absent even when still-later text contributes pixels to the
+    same crop.  With no such occluder, final-page pixels over the companion's
+    box remain the visibility proof.  Whenever visibility cannot be
     established (no readable source file, a partial-page run whose page
-    numbers do not match the file, a degenerate box), the verdict is
-    ``unrenderable`` and the caller must not exempt.
+    numbers do not match the file, a degenerate box or no unique trace), the
+    verdict is ``unrenderable`` and the caller must not exempt.
     """
     evidence: dict = {
         "companion_debug_id": getattr(companion, "debug_id", None),
@@ -204,6 +258,59 @@ def companion_visibility(companion, page, translation_config) -> tuple[str, dict
             clip = pymupdf.Rect(
                 box[0], height - box[3], box[2], height - box[1]
             )
+            companion_text = getattr(companion, "unicode", "") or ""
+            bboxlog = source_page.get_bboxlog()
+            matching_traces = []
+            for trace in source_page.get_texttrace():
+                try:
+                    trace_seqno = int(trace["seqno"])
+                    trace_log_kind, trace_ink_bbox = bboxlog[trace_seqno][:2]
+                except (IndexError, KeyError, TypeError, ValueError):
+                    continue
+                if trace_log_kind not in ("fill-text", "stroke-text"):
+                    continue
+                smaller_box_coverage = max(
+                    _rect_coverage(trace_ink_bbox, clip),
+                    _rect_coverage(clip, trace_ink_bbox),
+                )
+                if (
+                    _trace_text(trace) == companion_text
+                    and smaller_box_coverage >= 0.8
+                ):
+                    matching_traces.append((trace, trace_ink_bbox))
+            evidence["trace_match_count"] = len(matching_traces)
+            if len(matching_traces) != 1:
+                return COMPANION_UNRENDERABLE, evidence
+            trace, trace_ink_bbox = matching_traces[0]
+            trace_seqno = int(trace["seqno"])
+            trace_bbox = tuple(float(value) for value in trace["bbox"])
+            evidence["trace_seqno"] = trace_seqno
+            evidence["trace_bbox"] = list(trace_bbox)
+
+            trace_ink_bbox = tuple(float(value) for value in trace_ink_bbox)
+            evidence["trace_ink_bbox"] = list(trace_ink_bbox)
+            drawings = {
+                int(drawing["seqno"]): drawing
+                for drawing in source_page.get_drawings(extended=True)
+                if drawing.get("seqno") is not None
+            }
+            for occluder_seqno in range(trace_seqno + 1, len(bboxlog)):
+                occluder_kind, occluder_bbox = bboxlog[occluder_seqno][:2]
+                occluder_rects = _opaque_occluder_rects(
+                    occluder_kind,
+                    occluder_bbox,
+                    drawings.get(occluder_seqno),
+                )
+                for occluder_rect in occluder_rects:
+                    coverage = _rect_coverage(trace_ink_bbox, occluder_rect)
+                    if coverage >= 1.0 - 1e-6:
+                        evidence["occluder_seqno"] = occluder_seqno
+                        evidence["occluder_type"] = occluder_kind
+                        evidence["occluder_bbox"] = [
+                            float(value) for value in occluder_rect
+                        ]
+                        evidence["occlusion_coverage"] = round(coverage, 4)
+                        return COMPANION_NO_INK, evidence
             pix = source_page.get_pixmap(
                 matrix=pymupdf.Matrix(zoom, zoom), clip=clip, alpha=False
             )

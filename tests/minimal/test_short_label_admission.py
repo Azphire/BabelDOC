@@ -305,6 +305,9 @@ def _render_fixture(tmp_path, *, cover: bool):
         shape.draw_rect(pymupdf.Rect(50.0, 70.0, 200.0, 110.0))
         shape.finish(fill=(1, 1, 1), color=None)
         shape.commit()
+        # A later text operation in the same crop contributes final-page ink,
+        # but cannot prove that the earlier EDITOR operation survived.
+        pdf_page.insert_text((60.0, 100.0), "VISIBLE", fontsize=22)
     doc.save(str(pdf_path))
     doc.close()
     companion = _paragraph(
@@ -338,7 +341,9 @@ def test_a_companion_hidden_under_opaque_fill_is_not_visible(tmp_path) -> None:
         companion, page, config
     )
     assert verdict == demo_coverage.COMPANION_NO_INK
-    assert evidence["ink_fraction"] < 0.02
+    assert evidence["trace_seqno"] == 0
+    assert evidence["occluder_seqno"] == 1
+    assert evidence["occlusion_coverage"] == 1.0
 
 
 def test_a_companion_outside_the_page_body_is_not_visible(tmp_path) -> None:
