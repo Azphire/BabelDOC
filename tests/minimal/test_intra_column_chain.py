@@ -84,6 +84,32 @@ def test_a_gap_beyond_the_bound_is_no_boundary() -> None:
     assert [verdict for verdict in verdicts if verdict.eligible] == []
 
 
+def test_a_narrow_wrapped_resume_joins_its_wide_tail() -> None:
+    config = load_chain_config()
+    head = _detector_paragraph(
+        "same ending.", "narrow-head", left=40, bottom=100
+    )
+    tail = _detector_paragraph(WIDE_TOP, "wide-tail", left=140, bottom=134)
+    body_band_anchor = _detector_paragraph(
+        WIDE_BOTTOM, "body-band-anchor", left=40, bottom=20
+    )
+    page = _detector_page(0, [tail, head, body_band_anchor])
+
+    verdicts = evaluate_intra_column_boundaries(page, 0, _policy, config)
+    linked = [verdict for verdict in verdicts if verdict.linked]
+    assert len(linked) == 1
+    assert linked[0].kind == BOUNDARY_INTRA_COLUMN
+    assert linked[0].tail.paragraph is tail
+    assert linked[0].head.paragraph is head
+
+    edges, dropped = _accepted_edges(verdicts, config["boundary_priority"])
+    assert len(edges) == 1 and dropped == []
+    chains = _chains_from(edges)
+    assert [[paragraph.debug_id for paragraph in chain] for chain in chains] == [
+        ["wide-tail", "narrow-head"]
+    ]
+
+
 def test_a_stack_and_a_column_edge_join_into_one_path() -> None:
     """The p4 shape: band above band in one column, then over to the next.
 

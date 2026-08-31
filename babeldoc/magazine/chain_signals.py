@@ -46,6 +46,7 @@ from pathlib import Path
 
 from babeldoc.format.pdf.document_il import il_version_1
 from babeldoc.magazine.line_split import excludes_chain_endpoint
+from babeldoc.magazine.line_split import is_fixed_artwork
 from babeldoc.magazine.page_features import ConfigError
 from babeldoc.magazine.page_features import Parameter
 from babeldoc.magazine.page_features import validate_bounded_config
@@ -1457,12 +1458,17 @@ def evaluate_intra_column_boundaries(
     labels are a boundary when they stand stacked -- horizontally
     overlapping, the vertical gap within ``intra_column_chain_max_gap_pt`` --
     and the boundary is linked when the tail carries no terminal punctuation
-    and the head has clear space above it. The standard signal values are
-    still computed and recorded so the row reads like every other row, but
-    the score is None: no threshold decided the link, and a number would
-    claim one did. Pairs farther apart than the gap bound are not boundaries
-    and are not rows; a page with too few candidates to pair says so in one
-    row, as the column walk does.
+    and the head has clear space above it. A short final resume may be narrower
+    than the page-wide endpoint floor solely because it carries little text.
+    Such a resume is admitted here, and only here, when it is body text aligned
+    to an existing body band and is the unique mutual nearest neighbour of a
+    normal-width body tail. The tail must be unterminated and the two ends must
+    keep the same type family and size. The standard signal values are still
+    computed and recorded so the row reads like every other row, but the score
+    is None: no threshold decided the link, and a number would claim one did.
+    Pairs farther apart than the gap bound are not boundaries and are not rows;
+    a page with too few candidates to pair says so in one row, as the column
+    walk does.
     """
     policy = policy_of(page.page_kind)
     if policy is None:
@@ -1470,8 +1476,33 @@ def evaluate_intra_column_boundaries(
     if bool(policy.get(LINE_STRUCTURE_POLICY_FLAG, False)):
         return [_intra_rejected(page_index, REASON_LINE_STRUCTURE)]
     columns = page_columns(page, config)
+    had_standard_columns = columns is not None
     if columns is None:
-        return [_intra_rejected(page_index, REASON_NO_ENDPOINT)]
+        # A wide tail plus a narrow resume has only one page-level endpoint,
+        # which is insufficient for ``page_columns`` but sufficient for this
+        # local rule. Rebuild the same bands without changing the shared page
+        # candidate floor used by page and column boundaries.
+        candidates = page_candidates(page, config)
+        frame = _page_frame(page)
+        if not candidates or frame is None:
+            return [_intra_rejected(page_index, REASON_NO_ENDPOINT)]
+        column_gap = (frame.x2 - frame.x) * config["column_split_gap_ratio"]
+        bands = _column_bands(
+            [line_left(item[2][0]) for item in candidates], column_gap
+        )
+        grouped: dict[int, list] = {}
+        for item in candidates:
+            band = _band_index(bands, line_left(item[2][0]))
+            grouped.setdefault(band, []).append(item)
+        for members in grouped.values():
+            members.sort(key=lambda item: -item[0].box.y2)
+        columns = PageColumns(
+            bands=bands,
+            columns=grouped,
+            order=sorted(grouped),
+            families=_font_families(page),
+            candidates=candidates,
+        )
 
     body_labels = tuple(config["body_labels"])
     max_gap = float(config["intra_column_chain_max_gap_pt"])
@@ -1549,6 +1580,158 @@ def evaluate_intra_column_boundaries(
                     head_slot=head_slot,
                 )
             )
+
+    frame = _page_frame(page)
+    if frame is None:
+        return verdicts
+    page_width = float(frame.x2) - float(frame.x)
+    minimum_width = page_width * config["chain_endpoint_min_width_ratio"]
+    band_gap = page_width * config["column_split_gap_ratio"]
+    overlap_min = config["line_overlap_min"]
+    endpoint_labels = tuple(config["endpoint_labels"])
+    narrow_heads: list[tuple[tuple, int]] = []
+    for paragraph in page.pdf_paragraph:
+        if (
+            excludes_chain_endpoint(paragraph)
+            or is_fixed_artwork(paragraph, page_index)
+            or not (paragraph.unicode or "").strip()
+        ):
+            continue
+        label = paragraph.layout_label or ""
+        if label not in endpoint_labels or label not in body_labels:
+            continue
+        if paragraph.box is None:
+            continue
+        lines = group_lines(paragraph_characters(paragraph), overlap_min)
+        if not lines or paragraph_width(lines) >= minimum_width:
+            continue
+        head_left = line_left(lines[0])
+        matching_bands = {
+            band
+            for band, members in columns.columns.items()
+            if any(
+                member[1] in body_labels
+                and abs(line_left(member[2][0]) - head_left) <= band_gap
+                for member in members
+            )
+        }
+        if len(matching_bands) != 1:
+            continue
+        narrow_heads.append(((paragraph, label, lines), matching_bands.pop()))
+
+    if not narrow_heads:
+        if had_standard_columns:
+            return verdicts
+        return [_intra_rejected(page_index, REASON_NO_ENDPOINT)]
+
+    # Resolve geometry before continuity gates so a terminated or restyled
+    # nearer paragraph cannot be skipped in favour of a farther convenient
+    # match. Only mutual unique nearest neighbours reach a verdict.
+    possible: list[tuple[float, int, tuple, tuple]] = []
+    for head_item, head_band in narrow_heads:
+        head_box = head_item[0].box
+        if head_box is None:
+            continue
+        for members in columns.columns.values():
+            for tail_item in members:
+                if tail_item[1] not in body_labels:
+                    continue
+                tail_box = tail_item[0].box
+                if tail_box is None:
+                    continue
+                gap = float(tail_box.y) - float(head_box.y2)
+                if 0.0 <= gap <= max_gap:
+                    possible.append((gap, head_band, tail_item, head_item))
+
+    def unique_nearest(rows):
+        if not rows:
+            return None
+        nearest_gap = min(row[0] for row in rows)
+        nearest = [row for row in rows if abs(row[0] - nearest_gap) <= 1e-6]
+        return nearest[0] if len(nearest) == 1 else None
+
+    nearest_by_head = {
+        id(head[0]): unique_nearest(
+            [row for row in possible if row[3][0] is head[0]]
+        )
+        for head, _band in narrow_heads
+    }
+    nearest_by_tail = {
+        id(row[2][0]): unique_nearest(
+            [candidate for candidate in possible if candidate[2][0] is row[2][0]]
+        )
+        for row in possible
+    }
+    accepted_pairs = [
+        row
+        for row in possible
+        if nearest_by_head.get(id(row[3][0])) is row
+        and nearest_by_tail.get(id(row[2][0])) is row
+    ]
+    for _gap, head_band, tail_item, head_item in accepted_pairs:
+        tail = build_endpoint(tail_item, page_index, columns.bands, columns.families)
+        head = build_endpoint(head_item, page_index, columns.bands, columns.families)
+        rule = next(
+            (
+                candidate
+                for candidate in config[PAIR_RULES_KEY]
+                if tail.label
+                in config[CLASS_LABELS_KEY].get(candidate.tail_class, ())
+                and head.label
+                in config[CLASS_LABELS_KEY].get(candidate.head_class, ())
+            ),
+            None,
+        )
+        values: dict[str, float | None] = {
+            "tail_no_terminal_punct": tail_no_terminal_punct(tail, config),
+            "tail_line_fill": tail_line_fill(tail, config),
+            "style_continuity": style_continuity(tail, head, config),
+            "body_label_pair": body_label_pair(tail, head, config),
+            "column_position": None,
+            "opener_prior": IN_PAGE_OPENER_PRIOR,
+        }
+        clear = head_is_clear(columns, head, config)
+        continues = values["tail_no_terminal_punct"] == 1.0
+        same_style = values["style_continuity"] == 1.0
+        tail_slot = next(
+            slot
+            for slot, item in enumerate(columns.columns[tail.column_index])
+            if item[0] is tail.paragraph
+        )
+        ordered_head_band = sorted(
+            [*columns.columns[head_band], head_item],
+            key=lambda item: -item[0].box.y2,
+        )
+        head_slot = next(
+            slot
+            for slot, item in enumerate(ordered_head_band)
+            if item[0] is head.paragraph
+        )
+        verdicts.append(
+            BoundaryVerdict(
+                tail_page=page_index,
+                head_page=page_index,
+                eligible=True,
+                reason=None if clear else REASON_HEAD_NOT_CLEAR,
+                pair=None if rule is None else rule.name,
+                values=values,
+                score=None,
+                linked=continues and same_style and clear,
+                tail_fill_ratio=tail_line_fill_ratio(tail),
+                tail=tail,
+                head=head,
+                kind=BOUNDARY_INTRA_COLUMN,
+                pairing=BOUNDARY_INTRA_COLUMN,
+                tail_column=tail.column_index,
+                head_column=head_band,
+                column_count=len(columns.bands),
+                hyphen_tail=tail_ends_on_hyphen(tail),
+                tail_slot=tail_slot,
+                head_slot=head_slot,
+            )
+        )
+    if not verdicts and not had_standard_columns:
+        return [_intra_rejected(page_index, REASON_NO_ENDPOINT)]
     return verdicts
 
 
