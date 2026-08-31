@@ -68,6 +68,12 @@ ESCALATION_ARTICLE = "canonical_article_mismatch"
 ESCALATION_TOPOLOGY = "invalid_chain_topology"
 ESCALATION_OVERFLOW = "chain_target_overflow"
 
+# The last allocation level for a two-member title chain: one common scale,
+# one word-boundary cut that both member boxes can hold, chosen nearest the
+# boxes' own width shares. Recorded as the fragments' strategy so the report
+# names the level that placed the cut.
+STRATEGY_JOINT_FIT = "joint_fit"
+
 # Which pass holds a claimed paragraph.
 TAKEN_BY_CHAIN = "chain"
 TAKEN_BY_SHORT_UNIT = "short_unit"
@@ -1009,6 +1015,7 @@ class ChainPlan:
         translator_call_count: int = 0,
         canonical_chain_id: str | None = None,
         article_id: str | None = None,
+        allocation_probe: dict | None = None,
     ) -> None:
         stable_chain_id = canonical_chain_id or self._stable_chain_id(members)
         runtime_references = tuple(member.source_ref for member in members)
@@ -1065,6 +1072,8 @@ class ChainPlan:
                 for member in members
             ],
         }
+        if allocation_probe is not None:
+            record["allocation_probe"] = allocation_probe
         self.outcomes.append(record)
         if state != ChainResultState.JOINT_SUCCESS:
             logger.warning("chain %s released after %s: %s", chain_id, reason, detail)
@@ -1355,6 +1364,7 @@ class ChainPlan:
                 translator_call_count=translator_call_count,
                 canonical_chain_id=preflight.canonical_chain_id,
                 article_id=preflight.article_id,
+                allocation_probe=getattr(self, "_overflow_probe", None),
             )
             return
 
@@ -1523,7 +1533,10 @@ class ChainPlan:
         box: an ordinary outcome of the strategy, which falls to capacity rather
         than failing the chain.
         """
+        probe: dict = {"path": "slots", "strategy_failures": []}
+        self._overflow_probe = probe
         if len(members) != len(slots):
+            probe["failure"] = "member_slot_count_mismatch"
             return None
         protected = _token_ranges(translated, protected_tokens)
         typesetter = self._slot_typesetter()
@@ -1634,8 +1647,11 @@ class ChainPlan:
                 )
             capacity = result.consumed_range[1]
             if capacity <= 0:
+                probe["failure"] = f"member {order} has zero capacity"
                 return None
             capacities.append(capacity)
+        probe["capacities"] = list(capacities)
+        probe["target_chars"] = len(translated)
 
         cross_page_title = (
             pair_class == "title"
@@ -1677,7 +1693,11 @@ class ChainPlan:
                 )
             split, aligns = attempt()
             if split is None:
+                probe["strategy_failures"].append(
+                    {"strategy": strategy, "stage": "split"}
+                )
                 continue
+            failure: dict = {"strategy": strategy, "stage": "measure"}
             plan = self._build_allocation(
                 translated,
                 members,
@@ -1688,9 +1708,44 @@ class ChainPlan:
                 measurement_style,
                 strategy,
                 aligns,
+                probe=failure,
             )
             if plan is not None:
                 return plan
+            probe["strategy_failures"].append(failure)
+        # 释放前的最后一级：双成员标题按一条逻辑带联排。
+        if pair_class == "title" and len(members) == 2:
+            joint_probe: dict = {
+                "strategy": STRATEGY_JOINT_FIT,
+                "stage": "joint_fit",
+            }
+            fitted = self._attempt_joint_fit(
+                merge,
+                translated,
+                members,
+                slots,
+                protected,
+                _make_measure,
+                minimum_readable_scale,
+                probe=joint_probe,
+            )
+            if fitted is not None:
+                split, measure_joint, style_joint = fitted
+                plan = self._build_allocation(
+                    translated,
+                    members,
+                    slots,
+                    split,
+                    protected,
+                    measure_joint,
+                    style_joint,
+                    STRATEGY_JOINT_FIT,
+                    None,
+                    probe=joint_probe,
+                )
+                if plan is not None:
+                    return plan
+            probe["strategy_failures"].append(joint_probe)
         return None
 
     def _attempt_proportional(
@@ -1740,33 +1795,7 @@ class ChainPlan:
         if estimate is None:
             return None
 
-        if self.config.capacity.is_cjk_target(self.language):
-            tokenizer = getattr(self.translator, "tokenizer", None)
-            encode = getattr(tokenizer, "encode", None)
-            decode_with_offsets = getattr(tokenizer, "decode_with_offsets", None)
-            if encode is None or decode_with_offsets is None:
-                return None
-            try:
-                tokens = encode(translated, disallowed_special=())
-                decoded, offsets = decode_with_offsets(tokens)
-            except (TypeError, UnicodeError, ValueError):
-                return None
-            if decoded != translated or len(offsets) != len(tokens):
-                return None
-            candidates = {
-                int(position)
-                for position in offsets
-                if isinstance(position, int)
-                and 0 < position < len(translated)
-                and not self._inside_latin_word(translated, position)
-            }
-        else:
-            candidates = {
-                position
-                for position in range(1, len(translated))
-                if translated[position - 1].isspace()
-                and not translated[position].isspace()
-            }
+        candidates = self._title_cut_candidates(translated)
         if not candidates:
             return None
 
@@ -1800,6 +1829,197 @@ class ChainPlan:
         if not backfill.verify_redistribution(merge, translated, result).ok:
             return None
         return result
+
+    def _title_cut_candidates(self, translated: str) -> set[int] | None:
+        """Every lexical position a two-member title may be cut at.
+
+        Whitespace bounds words for a non-CJK target.  CJK has no delimiter,
+        so the translation driver's own tokenizer supplies the unit
+        boundaries; an unavailable or inconsistent tokenizer yields None and
+        the caller fails the title chain closed rather than cutting inside a
+        word.
+        """
+        if self.config.capacity.is_cjk_target(self.language):
+            tokenizer = getattr(self.translator, "tokenizer", None)
+            encode = getattr(tokenizer, "encode", None)
+            decode_with_offsets = getattr(tokenizer, "decode_with_offsets", None)
+            if encode is None or decode_with_offsets is None:
+                return None
+            try:
+                tokens = encode(translated, disallowed_special=())
+                decoded, offsets = decode_with_offsets(tokens)
+            except (TypeError, UnicodeError, ValueError):
+                return None
+            if decoded != translated or len(offsets) != len(tokens):
+                return None
+            return {
+                int(position)
+                for position in offsets
+                if isinstance(position, int)
+                and 0 < position < len(translated)
+                and not self._inside_latin_word(translated, position)
+            }
+        return {
+            position
+            for position in range(1, len(translated))
+            if translated[position - 1].isspace()
+            and not translated[position].isspace()
+        }
+
+    def _attempt_joint_fit(
+        self,
+        merge: backfill.ChainMerge,
+        translated: str,
+        members: list[MemberPlan],
+        slots: tuple[object, ...],
+        protected: tuple[tuple[int, int], ...],
+        measure_factory,
+        minimum_scale: float,
+        probe: dict | None = None,
+    ) -> tuple[object, object, object] | None:
+        """A two-member title band: one common scale, one feasible word cut.
+
+        The members' boxes are read as one logical band.  At a candidate
+        common scale, each box's capacity for the joint translation is
+        measured with the member's own style scaled by it; a cut is feasible
+        when the leading fragment fits box one and the trailing fragment
+        fits box two.  Among feasible word-boundary cuts the one nearest the
+        boxes' width shares wins.  The largest workable scale is found by
+        bisection between the title minimum and the policy size, so the pair
+        shrinks only as far as the band demands.  Returns ``(split, measure,
+        style_of)`` at the chosen scale, or None -- and the standing release
+        stays the fallback.
+        """
+        if len(members) != 2 or len(slots) != 2:
+            if probe is not None:
+                probe["reason"] = "not_a_two_member_band"
+            return None
+        candidates = self._title_cut_candidates(translated)
+        if not candidates:
+            if probe is not None:
+                probe["reason"] = "no_lexical_cut_candidates"
+            return None
+        try:
+            scaffold = backfill.redistribute(
+                merge,
+                translated,
+                self.language,
+                backfill.STRATEGY_PROPORTIONAL,
+                self.config,
+                aligned_lengths=None,
+                align_enabled=self.align_enabled,
+            )
+        except backfill.ChainBackfillError as error:
+            if probe is not None:
+                probe["reason"] = f"no_scaffold_split: {error}"
+            return None
+        if len(scaffold.segments) != 2 or len(scaffold.cuts) != 1:
+            if probe is not None:
+                probe["reason"] = "scaffold_is_not_two_segments"
+            return None
+
+        widths = []
+        for slot in slots:
+            box = tuple(float(value) for value in slot.box)
+            widths.append(max(box[2] - box[0], 0.0))
+        total_width = sum(widths)
+        if total_width <= 0:
+            if probe is not None:
+                probe["reason"] = "band_has_no_width"
+            return None
+        ideal = int(round(len(translated) * widths[0] / total_width))
+
+        def scaled_style_of(scale: float):
+            def style_of(member):
+                style = member.style
+                size = getattr(style, "font_size", None)
+                held = copy.copy(style)
+                if size is not None and float(size) > 0:
+                    held.font_size = float(size) * scale
+                return held, scale
+
+            return style_of
+
+        def best_cut_at(scale: float):
+            style_of = scaled_style_of(scale)
+            measure = measure_factory(style_of)
+            capacities = []
+            for order, (member, slot) in enumerate(
+                zip(members, slots, strict=True)
+            ):
+                result = measure(translated, member, slot, order, protected)
+                if result.status == "invalid":
+                    return None
+                capacities.append(result.consumed_range[1])
+            low = len(translated) - capacities[1]
+            high = capacities[0]
+            feasible = [cut for cut in candidates if low <= cut <= high]
+            if not feasible:
+                return None
+            cut = min(feasible, key=lambda held: (abs(held - ideal), held))
+            return cut, measure, style_of, capacities
+
+        chosen = best_cut_at(1.0)
+        chosen_scale = 1.0
+        if chosen is None:
+            floor = best_cut_at(minimum_scale)
+            if floor is None:
+                if probe is not None:
+                    probe["reason"] = "infeasible_at_minimum_scale"
+                return None
+            # Bisect for the largest workable common scale; capacity only
+            # grows as the scale falls, so feasibility is monotone.
+            low_scale, high_scale = minimum_scale, 1.0
+            chosen, chosen_scale = floor, minimum_scale
+            for _ in range(8):
+                middle = (low_scale + high_scale) / 2.0
+                candidate = best_cut_at(middle)
+                if candidate is None:
+                    high_scale = middle
+                else:
+                    chosen, chosen_scale = candidate, middle
+                    low_scale = middle
+        cut, measure, style_of, capacities = chosen
+
+        segments = (
+            replace(
+                scaffold.segments[0],
+                text=translated[:cut],
+                start=0,
+                end=cut,
+            ),
+            replace(
+                scaffold.segments[1],
+                text=translated[cut:],
+                start=cut,
+                end=len(translated),
+            ),
+        )
+        split = replace(
+            scaffold,
+            segments=segments,
+            cuts=(
+                replace(
+                    scaffold.cuts[0],
+                    position=cut,
+                    snapped=True,
+                    moved_to=None,
+                ),
+            ),
+        )
+        if not backfill.verify_redistribution(merge, translated, split).ok:
+            if probe is not None:
+                probe["reason"] = "conservation_check_failed"
+            return None
+        if probe is not None:
+            probe.update(
+                {
+                    "common_scale": round(chosen_scale, 4),
+                    "cut": cut,
+                    "capacities": list(capacities),
+                }
+            )
+        return split, measure, style_of
 
     @staticmethod
     def _inside_latin_word(text: str, position: int) -> bool:
@@ -2019,6 +2239,7 @@ class ChainPlan:
         measurement_style,
         strategy: str,
         aligns,
+        probe: dict | None = None,
     ) -> ChainAllocationPlan | None:
         """Measure every proposed fragment in its own box, or refuse the level.
 
@@ -2028,6 +2249,8 @@ class ChainPlan:
         """
         cut_positions = [segment.end for segment in split.segments[:-1]]
         if any(start < cut < end for cut in cut_positions for start, end in protected):
+            if probe is not None:
+                probe["reason"] = "cut_inside_protected_token"
             return None
 
         fragments = []
@@ -2043,6 +2266,15 @@ class ChainPlan:
             if result.status == "invalid" or result.consumed_range[1] != len(
                 segment.text
             ):
+                if probe is not None:
+                    probe.update(
+                        {
+                            "member_index": order,
+                            "fragment_chars": len(segment.text),
+                            "consumed": result.consumed_range[1],
+                            "fit_status": result.status,
+                        }
+                    )
                 return None
             measurement = result.to_record()
             measurement["whole_target_range"] = [segment.start, segment.end]
@@ -2078,6 +2310,7 @@ class ChainPlan:
         pair_class: str | None,
     ) -> ChainAllocationPlan | None:
         """Keep callers without canonical slot objects readable but unmeasured."""
+        self._overflow_probe = {"path": "legacy", "target_chars": len(translated)}
         cross_page_title = (
             pair_class == "title"
             and len(members) == 2
@@ -2091,6 +2324,9 @@ class ChainPlan:
                 preserve_title_words=True,
             )
             if result is None:
+                self._overflow_probe["failure"] = (
+                    "proportional_title_split_failed"
+                )
                 return None
         else:
             strategy = backfill.strategy_for_pair_class(pair_class, self.config)
@@ -2105,7 +2341,8 @@ class ChainPlan:
                     align_enabled=self.align_enabled,
                     capacities=None,
                 )
-            except backfill.ChainBackfillError:
+            except backfill.ChainBackfillError as error:
+                self._overflow_probe["failure"] = f"redistribute: {error}"
                 return None
         fragments = []
         for member, segment in zip(members, result.segments, strict=True):

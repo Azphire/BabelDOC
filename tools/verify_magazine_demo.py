@@ -1683,6 +1683,7 @@ def verify_title(
         "suppressed_trailing_holders": sum(
             len(row["suppressed_refs"]) for row in rows
         ),
+        "joint_fit_members": sum(1 for row in rows if row.get("joint_fit")),
         "excluded": len(exclusions),
     }:
         raise VerificationError("title totals disagree with inventory")

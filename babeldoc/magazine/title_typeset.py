@@ -945,7 +945,12 @@ def _units_text(units) -> str:
     return "".join(parts)
 
 
-def _render_owner(typesetter, title: FrozenTitle, policy: TitleConfig) -> dict:
+def _render_owner(
+    typesetter,
+    title: FrozenTitle,
+    policy: TitleConfig,
+    forced_scale: float | None = None,
+) -> dict:
     paragraph = title.paragraph
     style = copy.deepcopy(title.base_style)
     style.font_size = title.base_font_size
@@ -967,10 +972,13 @@ def _render_owner(typesetter, title: FrozenTitle, policy: TitleConfig) -> dict:
             units,
             source_ref=title.source_ref,
             source_box=title.source_box,
-            minimum_scale=policy.title_min_scale,
+            minimum_scale=(
+                policy.title_min_scale if forced_scale is None else forced_scale
+            ),
             maximum_lines=policy.title_max_lines,
             use_english_line_break=True,
             preserve_wrapped_spaces=True,
+            initial_scale=1.0 if forced_scale is None else forced_scale,
         )
     except BoundedTypesettingError as error:
         raise TitleOverflowError(str(error)) from error
@@ -1037,6 +1045,9 @@ def _report(run: _Run, records: list[dict], status: str, error: str | None) -> d
                 for item in records
                 if item.get("status") == "success"
             ),
+            "joint_fit_members": sum(
+                1 for item in records if item.get("joint_fit")
+            ),
             "excluded": len(run.exclusions),
         },
     }
@@ -1085,6 +1096,7 @@ def apply(translation_config, docs, typesetter) -> dict | None:
         for item in run.titles
     }
     records: list[dict] = []
+    rendered_owners: list[tuple[FrozenTitle, dict]] = []
     for title in sorted(owners, key=lambda item: (item.physical_page, item.source_ref)):
         member_refs = title.member_refs or (title.source_ref,)
         members = [by_ref[reference] for reference in member_refs]
@@ -1148,6 +1160,7 @@ def apply(translation_config, docs, typesetter) -> dict | None:
             record["rendered_target_sha256"] = _sha256(title.target)
             record["status"] = "success"
             records.append(record)
+            rendered_owners.append((title, record))
         except Exception as error:
             for frozen in run.titles:
                 _restore(
@@ -1190,6 +1203,59 @@ def apply(translation_config, docs, typesetter) -> dict | None:
             if isinstance(error, TitleTypesetError):
                 raise
             raise TitleTypesetError(str(error)) from error
+    # 联排同 scale：一条已证明的跨页标题链的两个 owner 各自搜到的 scale
+    # 可能不同；公共 scale 取两者较小者，把较大的一侧钉在公共 scale 上重
+    # 渲。基线取法：源基线偏移 —— title 的 source_box 即源墨迹框,包顶排
+    # 版保持源基线相对框顶的实测偏移（为零）,与全刊 title 渲染一致。
+    joint_groups: dict[str, list[tuple[FrozenTitle, dict]]] = {}
+    for title, record in rendered_owners:
+        if (
+            title.chain_id
+            and len(title.chain_member_refs) > 1
+            and title.member_refs == (title.source_ref,)
+        ):
+            joint_groups.setdefault(title.chain_id, []).append((title, record))
+    for chain_id in sorted(joint_groups):
+        group = joint_groups[chain_id]
+        if len(group) < 2:
+            continue
+        common_scale = min(float(record["scale"]) for _title, record in group)
+        try:
+            for title, record in group:
+                if float(record["scale"]) > common_scale + 1e-9:
+                    outcome = _render_owner(
+                        typesetter, title, run.policy, forced_scale=common_scale
+                    )
+                    record.update(outcome)
+                record["joint_fit"] = {
+                    "common_scale": common_scale,
+                    "member_refs": list(title.chain_member_refs),
+                    "baseline": "source_top_offset",
+                }
+        except Exception as error:
+            for frozen in run.titles:
+                _restore(frozen.paragraph, snapshots[id(frozen.paragraph)])
+            for page, curves, forms in page_snapshots.values():
+                page.pdf_curve[:] = curves
+                page.pdf_form[:] = forms
+            reason = (
+                f"title pass rolled back after joint-fit common scale failed "
+                f"for chain {chain_id}: {type(error).__name__}: {error}"
+            )
+            for previous in records:
+                previous["status"] = "rolled_back"
+                previous["failure_reason"] = reason
+                previous["rendered_target_sha256"] = None
+                previous["suppressed_refs"] = []
+                previous["suppressed_holders"] = []
+                previous.pop("joint_fit", None)
+                for field in ("scale", "lines", "final_text_box", "final_holder_box"):
+                    previous.pop(field, None)
+            report = _report(run, records, "failure", reason)
+            _write(run, report)
+            _RUN = None
+            logger.warning("title joint-fit rolled back and skipped: %s", reason)
+            return report
     report = _report(run, records, "success", None)
     _write(run, report)
     _RUN = None

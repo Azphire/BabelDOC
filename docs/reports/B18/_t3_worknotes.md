@@ -21,3 +21,9 @@
 
 - Courier 溢出的确切失败点(哪一段、哪级测量)——warm 重跑 + 新 outcome 细节读出。
 - 该链走的是 `_allocate_target` 还是 `_legacy_allocation`(fragment_boxes 空提示可能无 slots → legacy;legacy 不测量,None 只可能来自 proportional/snap 失败 → 若是 legacy,溢出其实是**切点吸附失败**而非几何溢出,joint_fit 的挂点要同时覆盖 legacy 路径)。
+
+## 执行结果(2026-08-31)
+
+- 探针落定:Courier 链走 **slots** 路径;min scale 容量 [53, 11],proportional 切点给成员二 17 字(仅进 12)→ 溢出。宽度份额切点(~35/53)同样不可行——**可行域由容量决定**,份额只在可行域内择优。实现按此收敛:可行词界切点 = [len-cap2, cap1],择最近框宽份额者;公共 scale 二分取最大可行。
+- 实样:chain Rm2XR joint_success,切点 "…Changing | Times" 词界;title 报告双成员 joint_fit,公共 scale 0.4(20pt),p2 两行 + p3 "Times" 连续呈现;released_title_chains 空;issues.after 6(B17 9),unowned 0,裸断 0。
+- 溢出探针(allocation_probe)永久入报告:路径、容量、逐策略失败点。

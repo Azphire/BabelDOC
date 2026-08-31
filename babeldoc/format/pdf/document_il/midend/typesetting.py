@@ -1415,6 +1415,11 @@ class Typesetting:
                     line_skip=line_skip,
                     require_unit_bounds_inside_box=require_unit_bounds_inside_box,
                     preserve_wrapped_spaces=preserve_wrapped_spaces,
+                    # initial == minimum 是钉死的搜索（联排同 scale）：词单元
+                    # 只许在这一个 scale 上试。
+                    pinned_scale=(
+                        scale if abs(scale - min_scale) < 1e-9 else None
+                    ),
                 )
                 if fitted is not None:
                     return fitted
@@ -1700,14 +1705,20 @@ class Typesetting:
         maximum_lines: int | None,
         use_english_line_break: bool = True,
         preserve_wrapped_spaces: bool = False,
+        initial_scale: float = 1.0,
     ) -> list[TypesettingUnit]:
-        """Render complete target text inside one immutable source box."""
+        """Render complete target text inside one immutable source box.
+
+        ``initial_scale`` lets a caller start (and, together with an equal
+        ``minimum_scale``, pin) the search below the policy size -- the
+        joint-fit title pass renders both chain members at one common scale.
+        """
         box = Box(*source_box)
         _scale, laid_out = self._find_optimal_scale_and_layout(
             paragraph,
             page,
             typesetting_units,
-            initial_scale=1.0,
+            initial_scale=initial_scale,
             use_english_line_break=use_english_line_break,
             apply_layout=True,
             minimum_scale=minimum_scale,
@@ -1795,6 +1806,7 @@ class Typesetting:
         line_skip: float,
         require_unit_bounds_inside_box: bool,
         preserve_wrapped_spaces: bool,
+        pinned_scale: float | None = None,
     ) -> tuple[float, list[TypesettingUnit] | None] | None:
         """Fit one indivisible word on a single line: widen, then shrink.
 
@@ -1815,8 +1827,11 @@ class Typesetting:
         )
         total_advance = sum(unit.width for unit in typesetting_units)
         available = float(corridor_x2) - float(base_box.x)
-        candidates = [1.0]
-        if total_advance > 0 and available > 0:
+        if pinned_scale is not None:
+            candidates = [pinned_scale]
+        else:
+            candidates = [1.0]
+        if pinned_scale is None and total_advance > 0 and available > 0:
             # 换行判定把词跑首字宽度双计（lookahead 从 units[i:] 起算），
             # 恰好进一行需要 total + max_width 的空间；再按几何梯度下探，
             # 吸收行首净空等剩余宽度贡献，min_scale 收底。
