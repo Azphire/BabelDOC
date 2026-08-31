@@ -433,13 +433,38 @@ def test_standalone_visual_initial_is_bound_merged_and_rendered_as_target(
 
 @pytest.mark.parametrize(
     "failure",
-    ["title", "folio", "formula", "far", "after_owner", "cross_article"],
+    ["formula", "far", "no_line_span", "body_starts_left", "cross_article"],
 )
 def test_standalone_visual_initial_rejects_unproved_relationship(failure) -> None:
+    """What the binding refuses, now that it is a shape and not a direction.
+
+    B19 retired three of these cases rather than repairing them, because bull-zh
+    showed each of them ruling out a real drop cap. ``title`` and ``folio``
+    turned on the companion's own layout label, and a layout model handed one
+    painted glyph has nothing to classify it by: it read bull page 8's initial
+    as a pull quote and page 3's as body text, the same glyph either way.
+    ``after_owner`` required the initial to precede its owner in reading order,
+    and an owner whose box envelopes the initial -- which is the ordinary
+    geometry of a drop cap -- sorts first, so the requirement excluded exactly
+    the well formed case. What replaces all three is shape: the ink has to
+    reach the owner's opening line, and the body has to start to its right.
+    """
     docs, article_ir = _standalone_initial_fixture()
     owner, companion = docs.page[0].pdf_paragraph[:2]
-    if failure in {"title", "folio"}:
-        companion.layout_label = failure
+    if failure == "no_line_span":
+        # A large emphasis letter printed clear of every line of the body it
+        # sits beside hangs over nothing, so no body wraps around it.
+        character = paragraph_characters(companion)[0]
+        for box in (companion.box, character.box):
+            box.y += 60.0
+            box.y2 += 60.0
+    elif failure == "body_starts_left":
+        # The body's first line opens left of the glyph's right edge: the text
+        # is printed across the letter rather than set beside it.
+        for character in paragraph_characters(owner):
+            character.box.x -= 35.0
+            character.box.x2 -= 35.0
+        owner.box.x -= 35.0
     elif failure == "formula":
         character = paragraph_characters(companion)[0]
         companion.pdf_paragraph_composition = [
@@ -461,31 +486,6 @@ def test_standalone_visual_initial_rejects_unproved_relationship(failure) -> Non
         character = paragraph_characters(companion)[0]
         character.box.x += 100.0
         character.box.x2 += 100.0
-    elif failure == "after_owner":
-        # A nearby independent display letter painted after the body is not an
-        # opening initial, even if its geometry and font ratio look decorative.
-        visual = next(
-            item
-            for item in article_ir.articles[0].elements
-            if item.source_ref == "p1#1"
-        )
-        owner_element = next(
-            item
-            for item in article_ir.articles[0].elements
-            if item.source_ref == "p1#0"
-        )
-        article_ir = replace(
-            article_ir,
-            articles=(
-                replace(
-                    article_ir.articles[0],
-                    elements=(
-                        replace(owner_element, reading_order=1),
-                        replace(visual, reading_order=2),
-                    ),
-                ),
-            ),
-        )
     else:
         owner_element = next(
             item for item in article_ir.articles[0].elements if item.source_ref == "p1#0"
@@ -532,6 +532,92 @@ def test_standalone_visual_initial_rejects_ambiguous_binding(duplicate) -> None:
     ) == []
     assert not any(
         paragraph.drop_cap_candidate for paragraph in docs.page[0].pdf_paragraph
+    )
+
+
+def test_standalone_visual_initial_binds_when_the_owner_reads_first() -> None:
+    """B19: reading order does not decide, and on a real page it cannot.
+
+    bull-zh page 3 paints the initial ``核`` as its own paragraph and the body
+    it opens as another whose box envelopes the initial's corner -- which is
+    what a drop cap looks like -- so the article builder sorted the owner ahead
+    of the initial. Under the old direction requirement that made the pair
+    unbindable, the initial was left on the page untranslated and the body
+    reached the engine without its first character, so ``核技术`` was
+    translated as ``Technology`` and the page lost the word Nuclear. The
+    binding now rests on the shape, and the shape is the same whichever
+    paragraph the layout happened to read first.
+    """
+    docs, article_ir = _standalone_initial_fixture()
+    article = article_ir.articles[0]
+    owner_element = next(
+        item for item in article.elements if item.source_ref == "p1#0"
+    )
+    visual_element = next(
+        item for item in article.elements if item.source_ref == "p1#1"
+    )
+    # The owner ahead of the initial, which is the order the real page produced.
+    reordered = replace(
+        article,
+        elements=(
+            replace(owner_element, reading_order=1),
+            replace(visual_element, reading_order=2),
+        ),
+    )
+
+    candidates = drop_cap.find_standalone_candidates(
+        [(7, 1, docs.page[0])],
+        SimpleNamespace(articles=(reordered,)),
+        drop_cap.load_drop_cap_config(),
+        drop_cap.body_labels(),
+    )
+
+    assert [candidate.reference for candidate in candidates] == ["p7#0"]
+    proof = candidates[0].binding_proof
+    assert proof["visual_initial_ref"] == "p7#1"
+    assert proof["owner_reading_order"] < proof["visual_reading_order"]
+    assert proof["line_span"] >= proof["minimum_line_span"]
+    assert proof["first_line_gap"] >= 0
+
+
+def test_a_companion_the_layout_labelled_something_else_still_binds() -> None:
+    """bull-zh page 8's shape: one glyph the layout model called a pull quote."""
+    docs, article_ir = _standalone_initial_fixture()
+    companion = docs.page[0].pdf_paragraph[1]
+    companion.layout_label = "pull_quote"
+
+    candidates = drop_cap.find_standalone_candidates(
+        [(7, 1, docs.page[0])],
+        SimpleNamespace(articles=(article_ir.articles[0],)),
+        drop_cap.load_drop_cap_config(),
+        drop_cap.body_labels(),
+    )
+
+    assert [candidate.reference for candidate in candidates] == ["p7#0"]
+    assert candidates[0].binding_proof["companion_label"] == "pull_quote"
+
+
+def test_the_declared_line_span_is_what_admits_a_hanging_initial() -> None:
+    """The knob bites: the one-line fixture fails a two-line requirement."""
+    docs, article_ir = _standalone_initial_fixture()
+    shipped = drop_cap.load_drop_cap_config()
+    assert (
+        drop_cap.find_standalone_candidates(
+            [(7, 1, docs.page[0])],
+            SimpleNamespace(articles=(article_ir.articles[0],)),
+            shipped,
+            drop_cap.body_labels(),
+        )[0].binding_proof["line_span"]
+        == 1
+    )
+    assert (
+        drop_cap.find_standalone_candidates(
+            [(7, 1, docs.page[0])],
+            SimpleNamespace(articles=(article_ir.articles[0],)),
+            replace(shipped, min_initial_line_span=2),
+            drop_cap.body_labels(),
+        )
+        == []
     )
 
 

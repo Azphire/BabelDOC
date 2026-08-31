@@ -156,6 +156,11 @@
       "name": "drop_cap_render.report.json",
       "stage": "typesetting",
       "switch": "magazine_drop_cap_render"
+    },
+    {
+      "name": "duplicate_ink.report.json",
+      "stage": "chain_builder",
+      "switch": "magazine_duplicate_ink"
     }
   ]
 }

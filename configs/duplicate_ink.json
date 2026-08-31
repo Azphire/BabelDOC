@@ -1,0 +1,14 @@
+{
+  "description": "Bounds of the rule that prints a repeated line once. A page that paints the same text twice on one line is painting it once, and reproducing both copies in a target whose metrics differ from the source's turns a duplicate the source hid into one a reader sees. Identity is the normalised source text, NFKC and outer whitespace only, read through the same normaliser the parenthetical folding rule compares by. min_overlap_fraction is how much of the narrower box two copies have to share horizontally before they count as the same line rather than two lines of a column. max_line_gap_ratio is how far apart they may stand vertically, as a multiple of their own height: zero admits only copies that touch, and one admits the copy stacked directly under its original, which is the shape a duplicated line takes. Both are scaled by the boxes themselves, so no page coordinate or publication measurement enters. min_text_chars keeps the rule off strings too short to be a line -- a folio digit repeated on a page is not a repeated line. Which copy survives is decided by how much of it no artwork covers, measured against the source file's own image placements; uncovered_tolerance is how close two copies have to be in that measure before the choice stops being about what the source showed and falls to the page's own reading order. excerpt_chars caps the text the sidecar quotes. The switch is up by default: printing one line twice is not a rendering a run has to opt out of.",
+  "switch": "magazine_duplicate_ink",
+  "min_overlap_fraction": 0.05,
+  "min_overlap_fraction_allowed_range": "0.0..1.0",
+  "max_line_gap_ratio": 1.0,
+  "max_line_gap_ratio_allowed_range": "0.0..4.0",
+  "min_text_chars": 2,
+  "min_text_chars_allowed_range": "1..40",
+  "uncovered_tolerance": 0.02,
+  "uncovered_tolerance_allowed_range": "0.0..0.5",
+  "excerpt_chars": 80,
+  "excerpt_chars_allowed_range": "20..400"
+}

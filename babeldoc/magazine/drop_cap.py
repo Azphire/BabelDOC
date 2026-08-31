@@ -184,6 +184,7 @@ class DropCapConfig:
     """Everything declared about finding one candidate and acting on a verdict."""
 
     min_first_run_size_ratio: float
+    min_initial_line_span: int
     max_first_run_chars: int
     max_body_rank_in_article: int
     excerpt_chars: int
@@ -329,6 +330,7 @@ def parse_drop_cap_config(raw: dict, source: str) -> DropCapConfig:
 
     numbers = (
         "min_first_run_size_ratio",
+        "min_initial_line_span",
         "max_first_run_chars",
         "max_body_rank_in_article",
         "excerpt_chars",
@@ -341,6 +343,7 @@ def parse_drop_cap_config(raw: dict, source: str) -> DropCapConfig:
     _require(not missing, f"{source}: missing parameters {missing}")
     return DropCapConfig(
         min_first_run_size_ratio=float(parameters["min_first_run_size_ratio"]),
+        min_initial_line_span=int(parameters["min_initial_line_span"]),
         max_first_run_chars=int(parameters["max_first_run_chars"]),
         max_body_rank_in_article=int(parameters["max_body_rank_in_article"]),
         excerpt_chars=int(parameters["excerpt_chars"]),
@@ -654,6 +657,39 @@ def _band_gap(left, right) -> float:
     return max(0.0, max(left[0], right[0]) - min(left[1], right[1]))
 
 
+def _covered_leading_lines(initial_box, lines) -> int:
+    """How many of a paragraph's leading lines the initial's ink hangs over.
+
+    Counted from the first line and stopping at the first line the glyph does
+    not reach, because hanging is a run of lines and not a set of them: a
+    glyph overlapping lines one and four of a paragraph is over something
+    else's ink, not over the opening of this one.
+    """
+    covered = 0
+    for line in lines:
+        box = _strict_box(character_union(line))
+        if box is None:
+            break
+        if min(initial_box[3], box[3]) - max(initial_box[1], box[1]) <= 0:
+            break
+        covered += 1
+    return covered
+
+
+def _initial_shaped(companion) -> bool:
+    """Whether one paragraph is a single painted letter and nothing else.
+
+    The shape test the standalone binding admits a companion by. It says
+    nothing about where the letter sits or what it belongs to -- the geometry
+    proof answers that -- only that there is one letter here to bind.
+    """
+    characters = _visible_characters(companion)
+    if len(characters) != 1:
+        return False
+    character = characters[0].char_unicode or ""
+    return _letter(character) and (companion.unicode or "").strip() == character
+
+
 def _standalone_geometry(companion, owner, config: DropCapConfig) -> dict | None:
     companion_compositions = list(companion.pdf_paragraph_composition or ())
     if not companion_compositions or any(
@@ -695,20 +731,24 @@ def _standalone_geometry(companion, owner, config: DropCapConfig) -> dict | None
     if first_box is None:
         return None
     logical_start_delta = abs(initial_box[0] - owner_box[0])
-    first_line_gap = abs(first_box[0] - initial_box[2])
-    vertical_gap = _band_gap(
-        (initial_box[1], initial_box[3]),
-        (first_box[1], first_box[3]),
-    )
-    # The paragraph's own body em is the only geometric tolerance: the initial
-    # starts on the body edge, meets its first line, and is no farther than one
-    # body glyph from that line vertically.  No publication-specific distance
-    # or page coordinate enters the proof.
+    # Directional, not absolute: the body starts to the *right* of the glyph.
+    # An absolute distance calls a first line printed across the initial well
+    # bound, which is the one arrangement that is certainly not a drop cap.
+    first_line_gap = first_box[0] - initial_box[2]
+    line_span = _covered_leading_lines(initial_box, lines)
+    # The paragraph's own body em is the only geometric tolerance, and the
+    # proof is a shape rather than a direction: the initial starts on the
+    # owner's own left edge, the body's first line starts just to its right,
+    # and the glyph hangs over the leading lines the way a body wraps around
+    # a drop cap. Nothing here asks which paragraph the layout read first --
+    # an owner whose box envelopes the initial is the ordinary geometry of a
+    # drop cap, not evidence against one -- and no page coordinate or
+    # publication-specific distance enters.
     if (
-        initial_box[0] > first_box[0]
-        or logical_start_delta > body_size
+        logical_start_delta > body_size
+        or first_line_gap < 0
         or first_line_gap > body_size
-        or vertical_gap > body_size
+        or line_span < config.min_initial_line_span
     ):
         return None
     return {
@@ -725,7 +765,12 @@ def _standalone_geometry(companion, owner, config: DropCapConfig) -> dict | None
         "first_line_box": first_box,
         "logical_start_delta": logical_start_delta,
         "first_line_gap": first_line_gap,
-        "vertical_gap": vertical_gap,
+        "line_span": line_span,
+        "minimum_line_span": config.min_initial_line_span,
+        "vertical_gap": _band_gap(
+            (initial_box[1], initial_box[3]),
+            (first_box[1], first_box[3]),
+        ),
     }
 
 
@@ -749,13 +794,18 @@ def find_standalone_candidates(
         for visual in ordered:
             visual_page, visual_index = parse_source_ref(visual.source_ref)
             held = pages_by_local.get(visual_page)
-            if held is None or visual.role not in labels:
+            if held is None:
                 continue
             physical_label, page = held
             if visual_index >= len(page.pdf_paragraph):
                 continue
             companion = page.pdf_paragraph[visual_index]
-            if companion.layout_label not in labels:
+            # Admitted by shape, not by label. A layout model given a single
+            # painted glyph has nothing to classify it by, and it reads the
+            # same glyph as body text on one page and as a pull quote on the
+            # next; what makes it an initial is that it is one oversized
+            # letter standing alone, which is a fact this can check.
+            if not _initial_shaped(companion):
                 continue
             for owner in ordered:
                 owner_page, owner_index = parse_source_ref(owner.source_ref)
@@ -763,7 +813,7 @@ def find_standalone_candidates(
                     owner.role not in labels
                     or owner_page != visual_page
                     or owner.column != visual.column
-                    or visual.reading_order >= owner.reading_order
+                    or owner.source_ref == visual.source_ref
                     or owner_index >= len(page.pdf_paragraph)
                 ):
                     continue
@@ -848,6 +898,9 @@ def find_standalone_candidates(
                 "logical_start_delta": round(geometry["logical_start_delta"], 6),
                 "first_line_gap": round(geometry["first_line_gap"], 6),
                 "vertical_gap": round(geometry["vertical_gap"], 6),
+                "line_span": geometry["line_span"],
+                "minimum_line_span": geometry["minimum_line_span"],
+                "companion_label": companion.layout_label,
                 "unique_owner_count": 1,
                 "unique_visual_count": 1,
             }

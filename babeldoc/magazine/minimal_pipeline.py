@@ -13,6 +13,7 @@ from babeldoc.magazine import article_flow
 from babeldoc.magazine import demo_coverage
 from babeldoc.magazine import display_glyph
 from babeldoc.magazine import drop_cap_render
+from babeldoc.magazine import duplicate_ink
 from babeldoc.magazine import fragment_stitch
 from babeldoc.magazine import furniture
 from babeldoc.magazine import hitl
@@ -271,6 +272,7 @@ _FIXED_TRUE_ATTRIBUTES = (
     "magazine_drop_cap_apply",
     "magazine_drop_cap_mark",
     "magazine_drop_cap_render",
+    "magazine_duplicate_ink",
     "magazine_echo_retry",
     "magazine_formula_reclass",
     "magazine_fragment_stitch",
@@ -488,6 +490,13 @@ def after_styles(config, docs) -> ArticleDocumentIR:
     # paragraph shape the rest of the run will see; before the chain builder,
     # so a chain never links a paragraph this pass is about to reshape.
     span_merge.apply(config, docs)
+    # After the page has settled into the paragraphs the rest of the run will
+    # see, so a repeated line is compared at the shape it will be set at;
+    # before the chain builder and the article builder, so no chain is linked
+    # through a copy this pass is about to empty and no article claims text
+    # that will not be printed -- which is also what leaves the coverage
+    # ledger balanced rather than owed a withheld copy.
+    duplicate_ink.apply(config, hitl.labeled_pages(docs))
     ChainBuilder(config).process(docs)
 
     article_document_ir = ArticleBuilder(config).process(docs)
