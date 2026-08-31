@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import copy
+import json
 import logging
 import math
 import re
@@ -10,6 +11,7 @@ from collections.abc import Callable
 from collections.abc import Sequence
 from dataclasses import dataclass
 from functools import cache
+from pathlib import Path
 
 import pymupdf
 import regex
@@ -288,6 +290,34 @@ def _bounds_inside_box(
         and bounds[2] <= float(box.x2) + tolerance
         and bounds[3] <= float(box.y2) + tolerance
     )
+
+
+def _word_unit_core(
+    units: Sequence["TypesettingUnit"],
+) -> list["TypesettingUnit"] | None:
+    """The trimmed run when the whole target is one indivisible word.
+
+    A word unit is a sequence whose every meaningful glyph refuses a line
+    break (``can_break_line`` is False -- Latin letters, digits and
+    word-internal marks).  Any wrap inside such a sequence cuts a word
+    mid-glyph, so the fit strategy for it is widen-then-shrink on a single
+    line, never a break.  CJK glyphs break legally between any two
+    characters and therefore never form a word unit.  Leading and trailing
+    spaces are tolerated (the packer already skips them at line starts);
+    an interior space, a formula, or any breakable glyph disqualifies.
+    """
+    start, end = 0, len(units)
+    while start < end and units[start].is_space:
+        start += 1
+    while end > start and units[end - 1].is_space:
+        end -= 1
+    core = list(units[start:end])
+    if len(core) < 2:
+        return None
+    for unit in core:
+        if unit.is_space or unit.can_break_line:
+            return None
+    return core
 
 
 def _is_passthrough_source_composition(composition: PdfParagraphComposition) -> bool:
@@ -1040,6 +1070,9 @@ class Typesetting:
             FontMapper(translation_config) if font_mapper is None else font_mapper
         )
         self.translation_config = translation_config
+        # 词单元拟合与裸断兜底的逐条归因（word_fit.report.json）。
+        self._word_fit_records: list[dict] = []
+        self._word_fit_flushed = False
         self.lang_code = self.translation_config.lang_out.upper()
         self.is_cjk = (
             # Why zh-CN/zh-HK/zh-TW here but not zh-Hans and so on?
@@ -1339,6 +1372,7 @@ class Typesetting:
         allow_hanging_punctuation_outside_box: bool = True,
         require_unit_bounds_inside_box: bool = False,
         preserve_wrapped_spaces: bool = False,
+        word_run_integrity: bool = True,
     ) -> tuple[float, list[TypesettingUnit] | None]:
         """查找最优缩放因子并可选择性地执行布局
 
@@ -1363,9 +1397,34 @@ class Typesetting:
         expand_space_flag = 0
         final_typeset_units = None
 
+        # 单词单元的唯一约束点：所有路径（普通/展示/标题/bounded）都从这里
+        # 进入布局搜索，词单元在此改走"先扩宽后缩字"的单行拟合。只在首次
+        # 进入时判定（阶段链的递归不再重复）。
+        if use_english_line_break and word_run_integrity:
+            word_core = _word_unit_core(typesetting_units)
+            if word_core is not None and not getattr(paragraph, "vertical", False):
+                fitted = self._fit_single_word_unit(
+                    paragraph,
+                    page,
+                    typesetting_units,
+                    word_core,
+                    apply_layout=apply_layout,
+                    minimum_scale=min_scale,
+                    expandable=allow_expand and box_override is None,
+                    base_box=box,
+                    line_skip=line_skip,
+                    require_unit_bounds_inside_box=require_unit_bounds_inside_box,
+                    preserve_wrapped_spaces=preserve_wrapped_spaces,
+                )
+                if fitted is not None:
+                    return fitted
+                # 走廊 + min_scale 仍不进：落回该路径既有的搜索与升级行为
+                # （bounded 以 None 失败收场，普通路径的终局兜底会逐条记录）。
+
         while scale >= min_scale:
             try:
                 # 尝试布局排版单元
+                naked_split_events: list = []
                 typeset_units, all_units_fit = self._layout_typesetting_units(
                     typesetting_units,
                     box,
@@ -1375,6 +1434,10 @@ class Typesetting:
                     use_english_line_break,
                     allow_hanging_punctuation_outside_box,
                     preserve_wrapped_spaces,
+                    forbid_naked_split=word_run_integrity,
+                    naked_split_events=(
+                        None if word_run_integrity else naked_split_events
+                    ),
                 )
 
                 if all_units_fit and maximum_lines is not None:
@@ -1393,6 +1456,16 @@ class Typesetting:
                     )
                 # 如果所有单元都放得下
                 if all_units_fit:
+                    if apply_layout and naked_split_events:
+                        # 终局兜底真的劈了词：逐条归因，不许静默。
+                        self._record_word_fit(
+                            paragraph,
+                            page,
+                            kind="naked_break",
+                            outcome="naked_break_legacy",
+                            scale=scale,
+                            events=naked_split_events,
+                        )
                     if apply_layout:
                         # 实际应用排版结果
                         rendered = [unit.render() for unit in typeset_units]
@@ -1476,7 +1549,28 @@ class Typesetting:
                     # 如果无法扩展空间，重置 scale 并继续循环
                     scale = 1.0
 
-        # 如果仍然放不下，尝试去除英文换行限制
+        # 如果仍然放不下，去除英文换行限制并放开词完整性，作为终局兜底。
+        # 词完整性在位时，去英文断行与保完整性等价（False 模式与 True 模式
+        # 只差在劈不劈词），所以只剩这一级：自由断行 + 劈词逐条记录。
+        if use_english_line_break and word_run_integrity:
+            return self._find_optimal_scale_and_layout(
+                paragraph,
+                page,
+                typesetting_units,
+                initial_scale,
+                use_english_line_break=False,
+                apply_layout=apply_layout,
+                minimum_scale=minimum_scale,
+                allow_expand=allow_expand,
+                box_override=box_override,
+                maximum_lines=maximum_lines,
+                allow_hanging_punctuation_outside_box=(
+                    allow_hanging_punctuation_outside_box
+                ),
+                require_unit_bounds_inside_box=require_unit_bounds_inside_box,
+                preserve_wrapped_spaces=preserve_wrapped_spaces,
+                word_run_integrity=False,
+            )
         if use_english_line_break:
             return self._find_optimal_scale_and_layout(
                 paragraph,
@@ -1494,6 +1588,7 @@ class Typesetting:
                 ),
                 require_unit_bounds_inside_box=require_unit_bounds_inside_box,
                 preserve_wrapped_spaces=preserve_wrapped_spaces,
+                word_run_integrity=word_run_integrity,
             )
 
         # 最后返回最小缩放因子
@@ -1629,6 +1724,260 @@ class Typesetting:
             )
         return laid_out
 
+    def _word_corridor_x2(self, paragraph, page, box: Box) -> float:
+        """The deterministic corridor limit for one word unit, along x.
+
+        Nearest of: neighbouring paragraph boxes, loose page characters,
+        figures, curves (the ornament inventory lives in ``pdf_curve``) and
+        forms with vertical overlap, and the crop box -- minus the standing
+        ``functional_clearance_pt`` (single source: ``configs/
+        indent_policy.json``).  Never below the paragraph's own right edge:
+        a blocker already inside the source box is the status quo, not a
+        reason to shrink.
+        """
+        from babeldoc.magazine.indent_policy import load_indent_config
+
+        base_x2 = float(box.x2)
+        try:
+            clearance = float(load_indent_config().functional_clearance_pt)
+        except Exception:
+            return base_x2
+        try:
+            limit = float(page.cropbox.box.x2)
+        except (AttributeError, TypeError, ValueError):
+            return base_x2
+        top, bottom = float(box.y2), float(box.y)
+        left = float(box.x)
+
+        def consider(item_box) -> float | None:
+            if item_box is None:
+                return None
+            try:
+                ix = float(item_box.x)
+                iy = float(item_box.y)
+                iy2 = float(item_box.y2)
+            except (AttributeError, TypeError, ValueError):
+                return None
+            if ix <= left + 1e-6:
+                return None
+            if iy >= top or iy2 <= bottom:
+                return None
+            return ix
+
+        for para in page.pdf_paragraph or ():
+            if para is paragraph:
+                continue
+            edge = consider(para.box)
+            if edge is not None:
+                limit = min(limit, edge)
+        for char in page.pdf_character or ():
+            edge = consider(char.box)
+            if edge is not None:
+                limit = min(limit, edge)
+        for collection in (page.pdf_figure, page.pdf_curve, page.pdf_form):
+            for item in collection or ():
+                edge = consider(getattr(item, "box", None))
+                if edge is not None:
+                    limit = min(limit, edge)
+        return max(base_x2, limit - clearance)
+
+    def _fit_single_word_unit(
+        self,
+        paragraph: il_version_1.PdfParagraph,
+        page: il_version_1.Page,
+        typesetting_units: list[TypesettingUnit],
+        word_core: list[TypesettingUnit],
+        *,
+        apply_layout: bool,
+        minimum_scale: float,
+        expandable: bool,
+        base_box: Box,
+        line_skip: float,
+        require_unit_bounds_inside_box: bool,
+        preserve_wrapped_spaces: bool,
+    ) -> tuple[float, list[TypesettingUnit] | None] | None:
+        """Fit one indivisible word on a single line: widen, then shrink.
+
+        Fit order per the word-unit contract: first the policy size inside
+        the corridor (scale 1.0), then a bounded exact-fit scale, floored at
+        the path's own minimum.  Returns None when corridor plus minimum
+        scale still cannot hold one line -- the caller falls back to the
+        path's standing behaviour.
+        """
+        corridor_x2 = base_box.x2
+        if expandable:
+            try:
+                corridor_x2 = self._word_corridor_x2(paragraph, page, base_box)
+            except Exception:
+                corridor_x2 = base_box.x2
+        work_box = Box(
+            x=base_box.x, y=base_box.y, x2=corridor_x2, y2=base_box.y2
+        )
+        total_advance = sum(unit.width for unit in typesetting_units)
+        available = float(corridor_x2) - float(base_box.x)
+        candidates = [1.0]
+        if total_advance > 0 and available > 0:
+            # 换行判定把词跑首字宽度双计（lookahead 从 units[i:] 起算），
+            # 恰好进一行需要 total + max_width 的空间；再按几何梯度下探，
+            # 吸收行首净空等剩余宽度贡献，min_scale 收底。
+            slack = max((unit.width for unit in typesetting_units), default=0.0)
+            exact = available / (total_advance + slack)
+            # 起点取 exact 与 1.0 的较小者：宽度富余时高度仍可能是短板，
+            # 梯度同样要往下走。
+            candidate = min(exact, 1.0) * 0.995
+            for _step in range(12):
+                if candidate < minimum_scale:
+                    break
+                candidates.append(candidate)
+                candidate *= 0.97
+            candidates.append(minimum_scale)
+        seen: set[float] = set()
+        for scale in candidates:
+            key = round(scale, 6)
+            if key in seen or scale < minimum_scale - 1e-9:
+                continue
+            seen.add(key)
+            try:
+                typeset_units, all_units_fit = self._layout_typesetting_units(
+                    typesetting_units,
+                    work_box,
+                    scale,
+                    line_skip,
+                    paragraph,
+                    use_english_line_break=True,
+                    allow_hanging_punctuation_outside_box=False,
+                    preserve_wrapped_spaces=preserve_wrapped_spaces,
+                    forbid_naked_split=True,
+                )
+            except Exception:
+                continue
+            if not all_units_fit or not typeset_units:
+                continue
+            if len(_line_metrics(typeset_units, tolerance=0.1)) > 1:
+                continue
+            bounds = _unit_bounds(typeset_units)
+            if require_unit_bounds_inside_box and not _bounds_inside_box(
+                work_box, bounds
+            ):
+                continue
+            outcome = "fit_policy" if scale >= 1.0 - 1e-6 else "fit_scaled"
+            final_units = None
+            if apply_layout:
+                rendered = [unit.render() for unit in typeset_units]
+                final_x2 = base_box.x2
+                if bounds is not None:
+                    final_x2 = max(float(base_box.x2), float(bounds[2]))
+                paragraph.box = Box(
+                    x=base_box.x,
+                    y=base_box.y,
+                    x2=min(float(corridor_x2), final_x2),
+                    y2=base_box.y2,
+                )
+                paragraph.scale = scale
+                paragraph.pdf_paragraph_composition = []
+                for chars, curves, forms in rendered:
+                    for char in chars:
+                        paragraph.pdf_paragraph_composition.append(
+                            PdfParagraphComposition(pdf_character=char),
+                        )
+                    for curve in curves:
+                        page.pdf_curve.append(curve)
+                    for form in forms:
+                        page.pdf_form.append(form)
+                final_units = typeset_units
+                self._record_word_fit(
+                    paragraph,
+                    page,
+                    kind="word_unit",
+                    outcome=outcome,
+                    scale=scale,
+                    corridor_x2=float(corridor_x2),
+                    base_box=[
+                        float(base_box.x),
+                        float(base_box.y),
+                        float(base_box.x2),
+                        float(base_box.y2),
+                    ],
+                    width_needed_at_policy=float(total_advance),
+                    width_available=float(available),
+                    expanded=bool(corridor_x2 > base_box.x2 + 1e-6),
+                )
+            return scale, final_units
+        if apply_layout:
+            self._record_word_fit(
+                paragraph,
+                page,
+                kind="word_unit",
+                outcome="corridor_exhausted",
+                scale=minimum_scale,
+                corridor_x2=float(corridor_x2),
+                base_box=[
+                    float(base_box.x),
+                    float(base_box.y),
+                    float(base_box.x2),
+                    float(base_box.y2),
+                ],
+                width_needed_at_policy=float(total_advance),
+                width_available=float(available),
+                expanded=bool(corridor_x2 > base_box.x2 + 1e-6),
+            )
+        return None
+
+    def _record_word_fit(
+        self,
+        paragraph,
+        page,
+        *,
+        kind: str,
+        outcome: str,
+        scale: float,
+        events: list | None = None,
+        **extra,
+    ) -> None:
+        page_number = getattr(page, "page_number", None)
+        record = {
+            "kind": kind,
+            "outcome": outcome,
+            "page": None if page_number is None else int(page_number) + 1,
+            "debug_id": getattr(paragraph, "debug_id", None),
+            "text": (getattr(paragraph, "unicode", None) or "")[:120],
+            "scale": round(float(scale), 4),
+        }
+        if events:
+            record["splits"] = events[:20]
+            record["split_count"] = len(events)
+        record.update(extra)
+        self._word_fit_records.append(record)
+        if self._word_fit_flushed:
+            self._flush_word_fit_report()
+
+    def _flush_word_fit_report(self) -> None:
+        """Write the word-fit sidecar; never let reporting kill typesetting."""
+        try:
+            path = Path(
+                self.translation_config.get_working_file_path(
+                    "word_fit.report.json"
+                )
+            )
+            counts: dict[str, int] = {}
+            for record in self._word_fit_records:
+                key = f"{record['kind']}:{record['outcome']}"
+                counts[key] = counts.get(key, 0) + 1
+            payload = {
+                "schema_version": 1,
+                "counts": counts,
+                "records": self._word_fit_records,
+            }
+            path.parent.mkdir(parents=True, exist_ok=True)
+            path.write_text(
+                json.dumps(payload, ensure_ascii=False, indent=2, sort_keys=True)
+                + "\n",
+                encoding="utf-8",
+            )
+            self._word_fit_flushed = True
+        except Exception:
+            logger.warning("word_fit report flush failed", exc_info=True)
+
     def typesetting_document(self, document: il_version_1.Document):
         # 原有的排版逻辑
         for page in document.page:
@@ -1649,6 +1998,7 @@ class Typesetting:
             for page in document.page:
                 self.translation_config.raise_if_cancelled()
                 self.render_page(page)
+        self._flush_word_fit_report()
 
     @staticmethod
     def _remove_translated_source_shadows(page: il_version_1.Page) -> None:
@@ -2001,6 +2351,8 @@ class Typesetting:
         use_english_line_break: bool = True,
         allow_hanging_punctuation_outside_box: bool = True,
         preserve_wrapped_spaces: bool = False,
+        forbid_naked_split: bool = False,
+        naked_split_events: list | None = None,
     ) -> tuple[list[TypesettingUnit], bool]:
         """布局排版单元。
 
@@ -2147,6 +2499,23 @@ class Typesetting:
                     and current_x + unit_width + trailing_head_forbidden_width > box.x2
                 )
             ):
+                # 这个换行落在两个不可断字符之间就是在劈词。拉丁断行只许发生
+                # 在空白/连字符处；禁止时判本次 scale 失败（压力传给缩放），
+                # 允许时记录事件（终局兜底路径的逐条归因）。
+                if (
+                    last_unit is not None
+                    and not unit.can_break_line
+                    and not last_unit.can_break_line
+                ):
+                    if forbid_naked_split:
+                        return [], False
+                    if naked_split_events is not None:
+                        naked_split_events.append(
+                            {
+                                "prev": last_unit.try_get_unicode(),
+                                "next": unit.try_get_unicode(),
+                            }
+                        )
                 # 换行
                 if preserve_wrapped_spaces and unit.is_space:
                     # A bounded title must conserve its exact target sequence.
