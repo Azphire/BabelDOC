@@ -210,6 +210,46 @@ class TestCapture:
         assert plan is not None and len(plan.entries) == 1
         assert plan.entries[0].asset_class == "pdf_figure"
 
+    def test_same_style_run_shape_still_measures(self, tmp_path):
+        """The real post-styles shape: one style run spanning both lines.
+
+        This is the shape the first Courier rerun met -- every raised flag
+        fell to ``no_leading_line`` because the reader trusted the leading
+        composition to be a line. The measurement must come off the
+        characters, whatever the styles pass wrapped them in.
+        """
+        chars = [
+            _char(30.0, 80.0, 35.0, 88.0),
+            _char(35.0, 80.0, 40.0, 88.0),
+            _char(10.0, 68.0, 15.0, 76.0),
+        ]
+        run = il_version_1.PdfSameStyleCharacters(
+            box=Box(10.0, 68.0, 110.0, 88.0),
+            pdf_style=il_version_1.PdfStyle(font_id="body", font_size=10.0),
+        )
+        run.pdf_character = chars
+        paragraph = il_version_1.PdfParagraph(
+            box=Box(10.0, 60.0, 110.0, 90.0),
+            pdf_style=il_version_1.PdfStyle(font_id="body", font_size=10.0),
+            unicode="source caption",
+            debug_id="cap-run",
+            layout_label="figure_caption",
+            first_line_indent=True,
+            pdf_paragraph_composition=[
+                il_version_1.PdfParagraphComposition(pdf_same_style_characters=run)
+            ],
+        )
+        page = _page(0, [paragraph])
+        page.pdf_curve = [_ornament(12.0, 80.0, 18.0, 86.0)]
+        docs = il_version_1.Document(page=[page], total_pages=1)
+
+        plan = indent_policy.capture_clearance(_config(tmp_path), docs)
+
+        assert plan is not None and len(plan.entries) == 1
+        entry = plan.entries[0]
+        assert entry.indent_pt == pytest.approx(20.0)
+        assert entry.strip == (10.0, 80.0, 30.0, 88.0)
+
     def test_switch_down_captures_nothing(self, tmp_path):
         config = _config(tmp_path)
         config.magazine_indent_policy = False

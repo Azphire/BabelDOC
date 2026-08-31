@@ -2243,11 +2243,13 @@ class Typesetting:
                     ],
                 )
             elif composition.pdf_character:
+                # PdfParagraph is slotted and has never carried a debug_info
+                # attribute, so naming one here raised AttributeError the
+                # first time a paragraph arrived as a bare character
+                # composition. The sibling branches pass no flag; the
+                # character carries its own.
                 result.append(
-                    TypesettingUnit(
-                        char=composition.pdf_character,
-                        debug_info=paragraph.debug_info,
-                    ),
+                    TypesettingUnit(char=composition.pdf_character),
                 )
             elif composition.pdf_same_style_characters:
                 result.extend(

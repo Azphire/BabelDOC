@@ -395,35 +395,63 @@ def _box_contains(outer, inner, tolerance: float = 0.1) -> bool:
     )
 
 
+def _character_box(character):
+    visual = getattr(character, "visual_bbox", None)
+    if visual is not None and visual.box is not None:
+        return visual.box
+    return character.box
+
+
+def _ordered_characters(paragraph):
+    """Every character of the paragraph in reading order.
+
+    The composition shape is whatever the last structural pass left: the
+    paragraph finder saw lines, but the styles pass rewraps them into
+    same-style runs that may span several lines, so the first composition is
+    not the first line and a reader who assumes so measures nothing. The
+    characters themselves stay in reading order through every rewrap.
+    """
+    characters = []
+    for composition in paragraph.pdf_paragraph_composition or ():
+        if composition.pdf_line is not None:
+            characters.extend(composition.pdf_line.pdf_character)
+        elif composition.pdf_same_style_characters is not None:
+            characters.extend(composition.pdf_same_style_characters.pdf_character)
+        elif composition.pdf_formula is not None:
+            characters.extend(composition.pdf_formula.pdf_character)
+        elif composition.pdf_character is not None:
+            characters.append(composition.pdf_character)
+    return characters
+
+
 def _first_line_geometry(paragraph):
     """The first line's first-character x and vertical ink span, or None.
 
-    Read the way the paragraph finder read it when it raised the flag: the
-    leading composition must be a line with characters. A paragraph whose
-    head the formula pass rewrapped has no measurable first line and is left
-    to the stylistic jurisdiction.
+    The first character in reading order opens the first line; the line is
+    every following character whose ink overlaps that character's vertical
+    band. Geometry alone -- no composition shape is trusted to mean "line".
     """
-    compositions = paragraph.pdf_paragraph_composition or ()
-    if not compositions:
+    characters = _ordered_characters(paragraph)
+    if not characters:
         return None
-    line = getattr(compositions[0], "pdf_line", None)
-    if line is None or not line.pdf_character:
+    first_box = _character_box(characters[0])
+    if first_box is None:
         return None
-    boxes = []
-    for character in line.pdf_character:
-        visual = getattr(character, "visual_bbox", None)
-        box = visual.box if visual is not None and visual.box is not None else (
-            character.box
-        )
+    band_y, band_y2 = float(first_box.y), float(first_box.y2)
+    if band_y2 <= band_y:
+        return None
+    ink_y, ink_y2 = band_y, band_y2
+    for character in characters[1:]:
+        box = _character_box(character)
         if box is None:
-            return None
-        boxes.append(box)
-    first = boxes[0]
-    return (
-        float(first.x),
-        min(float(box.y) for box in boxes),
-        max(float(box.y2) for box in boxes),
-    )
+            continue
+        shared = min(float(box.y2), band_y2) - max(float(box.y), band_y)
+        height = min(float(box.y2) - float(box.y), band_y2 - band_y)
+        if height <= 0 or shared < height * 0.5:
+            break
+        ink_y = min(ink_y, float(box.y))
+        ink_y2 = max(ink_y2, float(box.y2))
+    return (float(first_box.x), ink_y, ink_y2)
 
 
 def _artwork_boxes(page) -> tuple[tuple[str, tuple[float, float, float, float]], ...]:

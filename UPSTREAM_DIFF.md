@@ -566,3 +566,12 @@ stepping around a printed triangle, a pull quote opening right of an
 oversized quotation mark); four target-font space widths know nothing about
 where that ink ends (ITU p5), and the indent policy used to clear such flags
 outright (B15 Courier p2/p8).
+
+`babeldoc/format/pdf/document_il/midend/typesetting.py`
+(`create_typesetting_units`, bare-character branch): dropped the
+`debug_info=paragraph.debug_info` argument.  `PdfParagraph` is slotted and
+has never carried that attribute, so the branch raised `AttributeError` the
+first time a paragraph arrived as a bare `pdf_character` composition — the
+crash B14 saw once and could not reproduce; a B16 single-page run
+(`--pages 2`, Courier-en) reproduced it deterministically.  The sibling
+branches pass no flag and the character carries its own.
