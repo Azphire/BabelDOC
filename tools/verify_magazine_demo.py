@@ -1674,7 +1674,7 @@ def verify_title(
     exclusions = report.get("exclusions")
     if not isinstance(exclusions, list) or not isinstance(totals, dict):
         raise VerificationError("title totals/exclusions are missing")
-    if totals != {
+    expected_totals = {
         "owners": len(rows),
         "success": len(rows),
         "failure": 0,
@@ -1685,7 +1685,15 @@ def verify_title(
         ),
         "joint_fit_members": sum(1 for row in rows if row.get("joint_fit")),
         "excluded": len(exclusions),
-    }:
+    }
+    if (
+        "joint_fit_members" not in totals
+        and expected_totals["joint_fit_members"] == 0
+    ):
+        # A report written before the joint-fit result class existed carries
+        # no such total; absent key and zero pairs agree.
+        expected_totals.pop("joint_fit_members")
+    if totals != expected_totals:
         raise VerificationError("title totals disagree with inventory")
     active_refs = set(by_ref)
     for exclusion in exclusions:
