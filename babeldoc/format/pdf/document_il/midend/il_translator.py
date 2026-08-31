@@ -1021,6 +1021,10 @@ class ILTranslator:
             tracker.set_source_refs(*refs)
         if paragraph.vertical:
             return None, None
+        # A pinned display glyph keeps its source exactly: fixed ink, not
+        # prose, its position its meaning.
+        if paragraph.layout_label == "display_glyph":
+            return None, None
         # Fail closed at the enqueue site: a paragraph whose text drifted
         # since the coverage freeze would send the inventory one text and the
         # model another, and the two reports of one run would disagree.

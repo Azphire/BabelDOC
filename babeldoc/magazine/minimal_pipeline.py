@@ -11,6 +11,7 @@ import pymupdf
 
 from babeldoc.magazine import article_flow
 from babeldoc.magazine import demo_coverage
+from babeldoc.magazine import display_glyph
 from babeldoc.magazine import drop_cap_render
 from babeldoc.magazine import fragment_stitch
 from babeldoc.magazine import furniture
@@ -265,6 +266,7 @@ _FIXED_TRUE_ATTRIBUTES = (
     "magazine_hitl_apply",
     "magazine_hitl_export",
     "magazine_detect",
+    "magazine_display_glyph",
     "magazine_drop_cap_apply",
     "magazine_drop_cap_mark",
     "magazine_drop_cap_render",
@@ -466,6 +468,13 @@ def after_styles(config, docs) -> ArticleDocumentIR:
     state._hitl_state = hitl_state
     hitl.page_kind_pass(config, docs, hitl_state)
     ElementClassifier(config).process(docs)
+    # After the classifiers, before everything structural: a pinned glyph is
+    # its own paragraph by the time the stitch, the splitter, the chains and
+    # the article builder read the page, and by pipeline order this pass runs
+    # before the drop cap candidate signal -- which is what fixes the
+    # jurisdiction between the two (an opening-position run is left for the
+    # drop cap lane, recorded as refused).
+    display_glyph.apply(config, docs)
     # Before the fragment stitch, so a stitch can refuse to reach into a
     # withheld production mark; before translation, which consults the marks.
     config.magazine_furniture_plan = furniture.plan(config, docs)

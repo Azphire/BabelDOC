@@ -346,6 +346,11 @@ class ILTranslatorLLMOnly:
         if paragraph.debug_id is None or paragraph.unicode is None:
             return False
 
+        # A pinned display glyph keeps its source exactly: it is fixed ink,
+        # not prose, and its position is its meaning.
+        if paragraph.layout_label == "display_glyph":
+            return False
+
         # Withheld by the furniture pass: a production mark keeps its source
         # exactly, and a repeat-furniture member takes its leader's
         # translation after the pass rather than a voice of its own.

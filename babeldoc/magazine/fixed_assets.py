@@ -42,6 +42,14 @@ FORMULA_TYPE = "pdf_formula"
 FURNITURE_TYPE = "pdf_paragraph_furniture"
 ROTATED_PARAGRAPH_TYPE = "pdf_paragraph_rotated"
 
+# A short oversized character run the display glyph pass pinned at its source
+# position (babeldoc/magazine/display_glyph.py). The label is how a pinned
+# paragraph is recognised everywhere, and the enumerator below is the one
+# reader both consumers share -- the indent clearance capture and the overlap
+# detector -- so the two can never disagree about what a display glyph is.
+DISPLAY_GLYPH_LABEL = "display_glyph"
+DISPLAY_GLYPH_ASSET_CLASS = "display_glyph"
+
 
 def paragraph_reference(page: int, index: int) -> str:
     return f"p{page}#{index}"
@@ -175,6 +183,23 @@ def ornament_curves(
                     (float(box.x), float(box.y), float(box.x2), float(box.y2)),
                 )
             )
+    return tuple(found)
+
+
+def display_glyph_paragraphs(
+    page,
+) -> tuple[tuple[int, tuple[float, float, float, float]], ...]:
+    """Every pinned display glyph of one page: (index into pdf_paragraph, bbox)."""
+    found = []
+    for index, paragraph in enumerate(getattr(page, "pdf_paragraph", None) or ()):
+        if getattr(paragraph, "layout_label", None) != DISPLAY_GLYPH_LABEL:
+            continue
+        box = getattr(paragraph, "box", None)
+        if box is None:
+            continue
+        found.append(
+            (index, (float(box.x), float(box.y), float(box.x2), float(box.y2)))
+        )
     return tuple(found)
 
 
@@ -361,14 +386,25 @@ def build_inventory(
                 or page_number in unsupported_pages
                 or (article_refs is not None and source_ref not in article_refs)
             )
-            if fixed_paragraph:
+            display_glyph = (
+                getattr(paragraph, "layout_label", None) == DISPLAY_GLYPH_LABEL
+            )
+            if fixed_paragraph or display_glyph:
                 asset_type = (
                     ROTATED_PARAGRAPH_TYPE
                     if bool(getattr(paragraph, "vertical", False))
                     else FURNITURE_TYPE
                 )
                 assets.append(
-                    _record(source_ref, asset_type, page_number, paragraph)
+                    _record(
+                        source_ref,
+                        asset_type,
+                        page_number,
+                        paragraph,
+                        asset_class=(
+                            DISPLAY_GLYPH_ASSET_CLASS if display_glyph else None
+                        ),
+                    )
                 )
             for composition_index, composition in enumerate(
                 paragraph.pdf_paragraph_composition or ()

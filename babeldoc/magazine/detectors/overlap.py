@@ -124,7 +124,7 @@ def _ornament_issue(context, view, index, paragraph, text, box, ornaments):
     config = context.config
     ink = _ink_boxes(paragraph, box)
     worst = None
-    for position, bbox in ornaments:
+    for source, position, bbox, asset_class in ornaments:
         area = 0.0
         rectangles = []
         for item in ink:
@@ -142,10 +142,10 @@ def _ornament_issue(context, view, index, paragraph, text, box, ornaments):
             max(item[3] for item in rectangles),
         )
         if worst is None or area > worst[0]:
-            worst = (area, rectangle, position, bbox)
+            worst = (area, rectangle, source, position, bbox, asset_class)
     if worst is None or worst[0] < config.ornament_overlap_min_pt2:
         return None
-    area, rectangle, position, bbox = worst
+    area, rectangle, source, position, bbox, asset_class = worst
     return base.Issue(
         kind=KIND,
         page=view.label,
@@ -154,9 +154,9 @@ def _ornament_issue(context, view, index, paragraph, text, box, ornaments):
         severity=context.severity_of(KIND),
         evidence={
             "iou": round(base.intersection_over_union(box, bbox), 4),
-            "artwork_source": "pdf_curve",
+            "artwork_source": source,
             "artwork_index": position,
-            "asset_class": fixed_assets.ORNAMENT_ASSET_CLASS,
+            "asset_class": asset_class,
             "ornament_bbox": [round(value, 4) for value in bbox],
             "intersection_box": [round(value, 4) for value in rectangle],
             "intersection_area_pt2": round(area, 4),
@@ -175,10 +175,35 @@ def detect(context: base.DetectionContext) -> list[base.Issue]:
     thresholds = fixed_assets.load_ornament_thresholds()
     for view in context.pages:
         artwork = artwork_boxes(view.page)
-        ornaments = fixed_assets.ornament_curves(view.page, thresholds)
+        # Ornament-grade curves and pinned display glyphs enter one
+        # measurement under one threshold: both are small fixed ink a line of
+        # text may be set over, and both are read through the fixed_assets
+        # enumerators so this detector and the clearance capture can never
+        # disagree about what is protected.
+        ornaments = [
+            ("pdf_curve", position, bbox, fixed_assets.ORNAMENT_ASSET_CLASS)
+            for position, bbox in fixed_assets.ornament_curves(
+                view.page, thresholds
+            )
+        ] + [
+            (
+                "pdf_paragraph",
+                position,
+                bbox,
+                fixed_assets.DISPLAY_GLYPH_ASSET_CLASS,
+            )
+            for position, bbox in fixed_assets.display_glyph_paragraphs(view.page)
+        ]
         if not artwork and not ornaments:
             continue
         for index, paragraph in enumerate(view.page.pdf_paragraph or ()):
+            # A pinned glyph is the protected side of this measurement, never
+            # the text side: it would otherwise stand on its own box.
+            if (
+                getattr(paragraph, "layout_label", None)
+                == fixed_assets.DISPLAY_GLYPH_LABEL
+            ):
+                continue
             text = base.rendered_text(paragraph, physical_page=view.label).strip()
             box = base.box_tuple(paragraph.box)
             if not text or box is None:

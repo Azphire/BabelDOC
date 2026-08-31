@@ -315,6 +315,11 @@ def candidates(
             text = paragraph.unicode
             if text is None or getattr(paragraph, "debug_id", None) is None:
                 continue
+            # A pinned display glyph is fixed ink, not a short label: it is
+            # excluded by name because the ideographic floor would otherwise
+            # reach it.
+            if paragraph.layout_label == "display_glyph":
+                continue
             length = len(text)
             # One ideograph is one word; one Latin letter is not. A wholly-Han
             # unit reaches down to its own, lower floor -- the single-character

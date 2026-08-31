@@ -47,7 +47,9 @@ from babeldoc.magazine.detectors.base import script_counts
 
 REPORT_NAME = "demo_coverage.report.json"
 SCHEMA_VERSION = "demo-coverage.v1"
-_PRESERVE_ROLES = frozenset({"brand", "credit", "folio"})
+# ``display_glyph`` is the label the display glyph pass pins fixed ink under
+# (fixed_assets.DISPLAY_GLYPH_LABEL): preserved on purpose, like the marks.
+_PRESERVE_ROLES = frozenset({"brand", "credit", "folio", "display_glyph"})
 
 # The closed vocabulary of reasons a source may end untranslated without being
 # a hole in the ledger. Order is precedence: the first reason that holds names

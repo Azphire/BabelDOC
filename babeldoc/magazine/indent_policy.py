@@ -508,6 +508,7 @@ def capture_clearance(translation_config, docs) -> ClearancePlan | None:
     for position, page in enumerate(docs.page or ()):
         canonical_page = position + 1
         ornaments = fixed_assets.ornament_curves(page, thresholds)
+        display_glyphs = fixed_assets.display_glyph_paragraphs(page)
         artwork = _artwork_boxes(page)
         for index, paragraph in enumerate(page.pdf_paragraph or ()):
             if not paragraph.first_line_indent:
@@ -542,6 +543,15 @@ def capture_clearance(translation_config, docs) -> ClearancePlan | None:
                         bbox,
                     )
                     break
+            if hit is None:
+                for glyph_index, bbox in display_glyphs:
+                    if glyph_index != index and _boxes_intersect(strip, bbox):
+                        hit = (
+                            fixed_assets.DISPLAY_GLYPH_ASSET_CLASS,
+                            f"pdf_paragraph#{glyph_index}",
+                            bbox,
+                        )
+                        break
             if hit is None:
                 for reference, bbox in artwork:
                     if _boxes_intersect(strip, bbox) and not _box_contains(
