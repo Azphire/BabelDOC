@@ -112,6 +112,7 @@ class DetectorConfig:
     fragment_min_x_overlap_ratio: float
     fragment_font_size_tolerance: float
     overlap_min_iou: float
+    ornament_overlap_min_pt2: float
     page_safety_margin_ratio: float
     out_of_page_min_overflow_ratio: float
     collision_min_iou: float
@@ -350,6 +351,7 @@ def parse_detector_config(
         fragment_min_x_overlap_ratio=float(parameters["fragment_min_x_overlap_ratio"]),
         fragment_font_size_tolerance=float(parameters["fragment_font_size_tolerance"]),
         overlap_min_iou=float(parameters["overlap_min_iou"]),
+        ornament_overlap_min_pt2=float(parameters["ornament_overlap_min_pt2"]),
         page_safety_margin_ratio=float(parameters["page_safety_margin_ratio"]),
         out_of_page_min_overflow_ratio=float(
             parameters["out_of_page_min_overflow_ratio"]

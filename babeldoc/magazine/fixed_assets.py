@@ -58,6 +58,7 @@ class AssetRecord:
     protected: bool
     formula_ref: str | None = None
     figure_ref: str | None = None
+    asset_class: str | None = None
 
     def to_record(self) -> dict:
         return {
@@ -70,6 +71,7 @@ class AssetRecord:
             "protected": self.protected,
             "formula_ref": self.formula_ref,
             "figure_ref": self.figure_ref,
+            "asset_class": self.asset_class,
         }
 
 
@@ -260,6 +262,7 @@ def _record(
     *,
     formula_ref: str | None = None,
     figure_ref: str | None = None,
+    asset_class: str | None = None,
 ) -> AssetRecord:
     return AssetRecord(
         reference=reference,
@@ -271,6 +274,7 @@ def _record(
         protected=True,
         formula_ref=formula_ref,
         figure_ref=figure_ref,
+        asset_class=asset_class,
     )
 
 
@@ -341,6 +345,12 @@ def build_inventory(
                         page_number,
                         item,
                         figure_ref=reference if collection == "pdf_figure" else None,
+                        asset_class=(
+                            ORNAMENT_ASSET_CLASS
+                            if collection == "pdf_curve"
+                            and is_ornament_curve(item, load_ornament_thresholds())
+                            else None
+                        ),
                     )
                 )
         for paragraph_index, paragraph in enumerate(page.pdf_paragraph or ()):
