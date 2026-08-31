@@ -209,3 +209,107 @@ def test_apply_stitches_and_writes_the_report(tmp_path) -> None:
     assert record["rules"] == ["inline"]
     assert (tmp_path / fragment_stitch.REPORT_NAME).is_file()
     assert page.pdf_paragraph[0].unicode == LEFT_TEXT + RIGHT_TEXT
+
+
+# --- the declared-page lane ---------------------------------------------------
+#
+# A page whose lines are records was left alone entirely until B17. The lane
+# that unblocks it is narrow by construction: only the inline rule runs, and
+# only where the independent source audit placed a member of the pair in a
+# class the configuration admits. The shape it repairs is a photo cutting one
+# visual line into two finder paragraphs -- line_split assembles records
+# within one paragraph and cannot rejoin that.
+
+RECORD_LEFT = "这一行末尾的词语被照片切成了两"
+RECORD_RIGHT = "半继续"
+
+
+def record_cut_page() -> il.Page:
+    left = line_paragraph(RECORD_LEFT, 68.0, 639.2, debug_id="head")
+    right = line_paragraph(
+        RECORD_RIGHT,
+        68.0 + len(RECORD_LEFT) * 4.0 + 0.7,
+        639.2,
+        label="fallback_line",
+        debug_id="tail",
+    )
+    page = il.Page(
+        pdf_paragraph=[left, right],
+        pdf_font=[il.PdfFont(font_id="body", name="ABC+TheSans")],
+        page_number=2,
+    )
+    page.page_kind = "contents"
+    return page
+
+
+def _record_policy(_kind):
+    return {"preserve_line_structure": True}
+
+
+def test_declared_page_stays_untouched_without_the_switch(tmp_path) -> None:
+    page = record_cut_page()
+    config = _config_for(tmp_path, magazine_fragment_stitch=True)
+    record = fragment_stitch.apply(config, [(2, page)], policy_of=_record_policy)
+    assert record["totals"]["stitches"] == 0
+    assert record["declared_pages_unblocked"] is False
+    assert page.pdf_paragraph[1].unicode == RECORD_RIGHT
+
+
+def test_declared_lane_stitches_an_audited_fracture(tmp_path, monkeypatch) -> None:
+    page = record_cut_page()
+    config = _config_for(
+        tmp_path, magazine_fragment_stitch=True, magazine_stitch_declared=True
+    )
+    monkeypatch.setattr(
+        fragment_stitch,
+        "_audit_declared",
+        lambda *_args: {2: {1: "true_fracture"}},
+    )
+    record = fragment_stitch.apply(config, [(2, page)], policy_of=_record_policy)
+    assert record["declared_pages_unblocked"] is True
+    assert record["totals"]["stitches"] == 1
+    assert record["stitches"][0]["rule"] == fragment_stitch.RULE_INLINE
+    assert page.pdf_paragraph[0].unicode == RECORD_LEFT + RECORD_RIGHT
+    assert page.pdf_paragraph[1].unicode == ""
+
+
+def test_declared_lane_refuses_a_pair_the_audit_did_not_place(
+    tmp_path, monkeypatch
+) -> None:
+    page = record_cut_page()
+    config = _config_for(
+        tmp_path, magazine_fragment_stitch=True, magazine_stitch_declared=True
+    )
+    monkeypatch.setattr(fragment_stitch, "_audit_declared", lambda *_args: {})
+    record = fragment_stitch.apply(config, [(2, page)], policy_of=_record_policy)
+    assert record["totals"]["stitches"] == 0
+    assert page.pdf_paragraph[1].unicode == RECORD_RIGHT
+
+
+def test_declared_lane_refuses_a_duplicate_layer_and_blanks_it(
+    tmp_path, monkeypatch
+) -> None:
+    page = record_cut_page()
+    config = _config_for(
+        tmp_path, magazine_fragment_stitch=True, magazine_stitch_declared=True
+    )
+    monkeypatch.setattr(
+        fragment_stitch,
+        "_audit_declared",
+        lambda *_args: {2: {1: "duplicate_layer"}},
+    )
+    record = fragment_stitch.apply(config, [(2, page)], policy_of=_record_policy)
+    assert record["totals"]["stitches"] == 0
+    assert record["totals"]["duplicate_blanked"] == 1
+    # The surplus layer gives up its paint, exactly as a merged-away member does.
+    assert page.pdf_paragraph[1].unicode == ""
+    assert page.pdf_paragraph[0].unicode == RECORD_LEFT
+
+
+def test_fixed_path_decides_the_declared_switch_on() -> None:
+    from babeldoc.magazine import minimal_pipeline
+
+    assert "magazine_stitch_declared" in minimal_pipeline._FIXED_TRUE_ATTRIBUTES
+    assert (
+        "magazine_stitch_declared" not in minimal_pipeline._FIXED_FALSE_ATTRIBUTES
+    )

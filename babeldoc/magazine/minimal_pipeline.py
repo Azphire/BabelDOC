@@ -278,6 +278,16 @@ _FIXED_TRUE_ATTRIBUTES = (
     "magazine_repair",
     "magazine_short_unit",
     "magazine_span_merge",
+    # The declared-page (record page) half of the fragment stitch. B13 decided
+    # it off so the source audit never gated a stitch on the pages line_split
+    # owns -- but line_split assembles records within one finder paragraph and
+    # cannot rejoin a visual line the finder broke across two (fd-zh p2: a
+    # photo cut a contents-page standfirst into `...的后` + `遗症开始`, and the
+    # four-character tail was never enqueued). The audit-gated inline rule is
+    # the shipped repair for exactly that shape, so B17 turns it on: on a
+    # declared page only the inline rule runs, only where the independent
+    # source audit places a member as true_fracture.
+    "magazine_stitch_declared",
     "magazine_tail_fill",
     "magazine_title_typeset",
 )
@@ -291,10 +301,6 @@ _FIXED_FALSE_ATTRIBUTES = (
     "magazine_profile",
     "magazine_mode",
     "magazine_runtime_profile",
-    # The declared-page (record page) half of the fragment stitch rides its
-    # own attribute; the fixed path decides it off so the source audit never
-    # gates a stitch on the pages line_split owns.
-    "magazine_stitch_declared",
 )
 
 _MISSING = object()
