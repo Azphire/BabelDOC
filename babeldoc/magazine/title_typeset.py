@@ -15,6 +15,7 @@ import logging
 import math
 from collections.abc import Mapping
 from dataclasses import dataclass
+from dataclasses import field
 from dataclasses import replace
 from functools import lru_cache
 from pathlib import Path
@@ -139,6 +140,7 @@ class _Run:
     policy: TitleConfig
     titles: list[FrozenTitle]
     exclusions: list[dict]
+    released_chains: list[dict] = field(default_factory=list)
 
 
 _RUN: _Run | None = None
@@ -871,7 +873,15 @@ def prepare(
     released_chains = _prove_title_chains(
         translation_config, article_document_ir, titles
     )
-    _RUN = _Run(translation_config, docs, typesetter, policy, titles, exclusions)
+    _RUN = _Run(
+        translation_config,
+        docs,
+        typesetter,
+        policy,
+        titles,
+        exclusions,
+        released_chains,
+    )
     return {
         "prepared": len(titles),
         "excluded": len(exclusions),
@@ -1011,6 +1021,7 @@ def _report(run: _Run, records: list[dict], status: str, error: str | None) -> d
         },
         "titles": records,
         "exclusions": run.exclusions,
+        "released_title_chains": run.released_chains,
         "totals": {
             "owners": len(records),
             "success": sum(item.get("status") == "success" for item in records),
