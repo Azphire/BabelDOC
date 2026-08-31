@@ -390,6 +390,10 @@ def prepare(translator, paragraph, tracker, page_font_map, xobj_font_map):
         tracker.set_source_refs(*refs)
     if paragraph.vertical:
         return None, None
+    # The same fail-closed drift guard the batch enqueue site holds: a unit
+    # whose text moved since the freeze must not reach a model.
+    if coverage_snapshot is not None:
+        coverage_snapshot.assert_source_unchanged(paragraph)
     tracker.set_pdf_unicode(paragraph.unicode)
     if paragraph.xobj_id in xobj_font_map:
         page_font_map = xobj_font_map[paragraph.xobj_id]

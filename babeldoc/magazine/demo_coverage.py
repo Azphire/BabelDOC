@@ -4,6 +4,27 @@ The inventory is frozen after structural processing, while source paragraphs
 still carry their original text and geometry.  Translation outcomes are joined
 later from the two existing producer reports; this module does not influence
 which paragraphs are translated.
+
+Conservation (B17)
+------------------
+
+Every frozen source has to end the run in exactly one of four states: owned by
+a translation path, preserved on purpose, skipped for a reason this module can
+name, or listed. The naming is a closed vocabulary -- ``SKIP_REASONS`` -- and a
+paragraph that holds source-script text, was translated by nobody, and fits no
+reason in the vocabulary goes to ``unowned_sources``. A non-empty list is a
+defect signal, recorded rather than raised, because the ledger's job is to make
+a hole visible, not to decide whether the hole was acceptable.
+
+The ledger covers the paragraph census. Ink that never became a paragraph -- a
+figure, an xobject, text fused into a formula object -- is owned by the fixed
+asset inventory and is protected by construction, not accounted here.
+
+The snapshot also carries a byte-exact guard: the sha256 of every paragraph's
+``unicode`` at freeze time. A translation path that binds a paragraph whose
+text has drifted since the freeze is enqueueing something the inventory never
+saw, and the guard fails closed at the enqueue site rather than letting the
+drifted text reach a model.
 """
 
 from __future__ import annotations
@@ -11,14 +32,44 @@ from __future__ import annotations
 import hashlib
 import json
 from dataclasses import dataclass
+from dataclasses import field
 from pathlib import Path
 
+from babeldoc.format.pdf.document_il.utils.paragraph_helper import is_cid_paragraph
+from babeldoc.format.pdf.document_il.utils.paragraph_helper import (
+    is_placeholder_only_paragraph,
+)
 from babeldoc.magazine import drop_cap_intent
 from babeldoc.magazine import line_split
+from babeldoc.magazine.detectors.base import HAN_SCRIPT
+from babeldoc.magazine.detectors.base import LATIN_SCRIPT
+from babeldoc.magazine.detectors.base import script_counts
 
 REPORT_NAME = "demo_coverage.report.json"
 SCHEMA_VERSION = "demo-coverage.v1"
 _PRESERVE_ROLES = frozenset({"brand", "credit", "folio"})
+
+# The closed vocabulary of reasons a source may end untranslated without being
+# a hole in the ledger. Order is precedence: the first reason that holds names
+# the row. Anything untranslated that earns none of these is unowned.
+SKIP_REASONS = (
+    "furniture_withheld",
+    "vertical",
+    "cid_encoding",
+    "placeholder_only",
+    "no_source_script",
+    "below_length_floor",
+)
+
+
+def _source_script(lang_in: str) -> str:
+    """Which script bucket carries this run's source language.
+
+    Mirrors ``residue_directions`` in configs/detectors.json read from the
+    other end: that table names the script a *target* would show as residue,
+    which is the script its source was written in.
+    """
+    return HAN_SCRIPT if str(lang_in or "").lower().startswith("zh") else LATIN_SCRIPT
 
 
 def _sha256(text: str) -> str:
@@ -57,6 +108,14 @@ class FrozenCoverageItem:
     source_box: tuple[float, float, float, float] | None
     preserve_candidate: bool
     chain_member: bool
+    # Measurements, not judgments: which script bucket the frozen text holds
+    # and what standing traits the paragraph carried at freeze time. The
+    # direction-dependent judgment (which bucket is "the source script") is
+    # taken at finalize, where the run's languages are known.
+    han_chars: int = 0
+    latin_chars: int = 0
+    text_length: int = 0
+    skip_traits: tuple[str, ...] = ()
 
 
 @dataclass(slots=True)
@@ -65,13 +124,55 @@ class CoverageSnapshot:
 
     items: tuple[FrozenCoverageItem, ...]
     _refs_by_object: dict[int, tuple[str, str]]
+    _unicode_sha_by_object: dict[int, str] = field(default_factory=dict)
 
     def source_refs_for(self, paragraph) -> tuple[str, str] | None:
         """Return ``(physical source ref, runtime source ref)`` for a paragraph."""
         return self._refs_by_object.get(id(paragraph))
 
+    def assert_source_unchanged(self, paragraph) -> None:
+        """Fail closed when a paragraph's text drifted since the freeze.
 
-def freeze(_docs, article_document_ir, labeled_pages) -> CoverageSnapshot:
+        Called at the enqueue sites. A paragraph the snapshot never froze is
+        not this guard's question -- the ref binding above it already raises
+        for that -- so an unknown identity passes through.
+        """
+        frozen = self._unicode_sha_by_object.get(id(paragraph))
+        if frozen is None:
+            return
+        current = _sha256(str(getattr(paragraph, "unicode", "") or ""))
+        if current != frozen:
+            refs = self._refs_by_object.get(id(paragraph))
+            raise ValueError(
+                "translation source drifted from the frozen coverage inventory: "
+                f"{refs[0] if refs else '<unbound>'}"
+            )
+
+
+def _skip_traits(paragraph, furniture_plan) -> tuple[str, ...]:
+    """The standing reasons this paragraph would not be enqueued, at freeze."""
+    traits: list[str] = []
+    if furniture_plan is not None and furniture_plan.withholds(
+        getattr(paragraph, "debug_id", None)
+    ):
+        traits.append("furniture_withheld")
+    if getattr(paragraph, "vertical", False):
+        traits.append("vertical")
+    if is_cid_paragraph(paragraph):
+        traits.append("cid_encoding")
+    # The helper reads an empty composition list as "nothing but placeholders";
+    # a paragraph with no composition at all holds no formula, so ask only
+    # where there is a composition to ask about.
+    if getattr(
+        paragraph, "pdf_paragraph_composition", None
+    ) and is_placeholder_only_paragraph(paragraph):
+        traits.append("placeholder_only")
+    return tuple(traits)
+
+
+def freeze(
+    _docs, article_document_ir, labeled_pages, furniture_plan=None
+) -> CoverageSnapshot:
     """Freeze source text, boxes, roles and both ref namespaces."""
     article_elements = {
         element.source_ref: element
@@ -81,6 +182,7 @@ def freeze(_docs, article_document_ir, labeled_pages) -> CoverageSnapshot:
     chain_refs = set(article_document_ir.by_chain_member)
     items: list[FrozenCoverageItem] = []
     refs_by_object: dict[int, tuple[str, str]] = {}
+    unicode_sha_by_object: dict[int, str] = {}
     seen_physical: set[str] = set()
 
     for runtime_page, (physical_page, page) in enumerate(labeled_pages, start=1):
@@ -128,6 +230,7 @@ def freeze(_docs, article_document_ir, labeled_pages) -> CoverageSnapshot:
             preserve = role in _PRESERVE_ROLES or bool(
                 unit is not None and unit.fixed_companion
             )
+            scripts = script_counts(text)
             item = FrozenCoverageItem(
                 runtime_source_ref=runtime_ref,
                 source_ref=physical_ref,
@@ -137,11 +240,18 @@ def freeze(_docs, article_document_ir, labeled_pages) -> CoverageSnapshot:
                 source_box=source_box,
                 preserve_candidate=preserve,
                 chain_member=chain_member,
+                han_chars=scripts[HAN_SCRIPT],
+                latin_chars=scripts[LATIN_SCRIPT],
+                text_length=len(text),
+                skip_traits=_skip_traits(paragraph, furniture_plan),
             )
             items.append(item)
             refs_by_object[id(paragraph)] = (physical_ref, runtime_ref)
+            unicode_sha_by_object[id(paragraph)] = _sha256(
+                str(getattr(paragraph, "unicode", "") or "")
+            )
 
-    return CoverageSnapshot(tuple(items), refs_by_object)
+    return CoverageSnapshot(tuple(items), refs_by_object, unicode_sha_by_object)
 
 
 def _read_optional(path: Path) -> dict:
@@ -200,6 +310,29 @@ def _joint_outcomes(report: dict) -> dict[str, list[dict]]:
     return outcomes
 
 
+def _skip_reason(
+    item: FrozenCoverageItem, source_script: str, length_floor: int
+) -> str | None:
+    """The first closed-vocabulary reason this untranslated item earns, or None.
+
+    Trait reasons come first because they hold at any length; the script test
+    next, because a paragraph with nothing in the source script was never a
+    translation's business; the length floor last, so a short unit is named by
+    the floor that refused it rather than by what it contains.
+    """
+    for trait in item.skip_traits:
+        if trait in SKIP_REASONS:
+            return trait
+    script_chars = (
+        item.han_chars if source_script == HAN_SCRIPT else item.latin_chars
+    )
+    if script_chars == 0:
+        return "no_source_script"
+    if item.text_length < length_floor:
+        return "below_length_floor"
+    return None
+
+
 def finalize(config, snapshot: CoverageSnapshot) -> dict:
     """Join frozen sources to existing producer outcomes and write evidence."""
     report_path = Path(config.get_working_file_path(REPORT_NAME))
@@ -217,8 +350,11 @@ def finalize(config, snapshot: CoverageSnapshot) -> dict:
         and intent.visual_initial_ref != intent.source_ref
         and intent.binding_proof.get("kind") == "standalone_visual_initial"
     }
+    source_script = _source_script(getattr(config, "lang_in", ""))
+    length_floor = int(getattr(config, "min_text_length", 0) or 0)
 
     rows: list[dict] = []
+    unowned: list[dict] = []
     for item in snapshot.items:
         ordinary_rows = ordinary.get(item.runtime_source_ref, [])
         joint_rows = joint.get(item.runtime_source_ref, [])
@@ -280,6 +416,11 @@ def finalize(config, snapshot: CoverageSnapshot) -> dict:
                 "missing_joint_outcome" if item.chain_member else "untranslated"
             )
 
+        skip_reason = (
+            _skip_reason(item, source_script, length_floor)
+            if final_status == "untranslated"
+            else None
+        )
         rows.append(
             {
                 "source_ref": item.source_ref,
@@ -301,12 +442,32 @@ def finalize(config, snapshot: CoverageSnapshot) -> dict:
                     else None
                 ),
                 "final_status": final_status,
+                "skip_reason": skip_reason,
             }
         )
+        if final_status == "untranslated" and skip_reason is None:
+            unowned.append(
+                {
+                    "source_ref": item.source_ref,
+                    "runtime_source_ref": item.runtime_source_ref,
+                    "physical_page": item.physical_page,
+                    "role": item.role,
+                    "source_script_chars": (
+                        item.han_chars
+                        if source_script == HAN_SCRIPT
+                        else item.latin_chars
+                    ),
+                    "text_length": item.text_length,
+                }
+            )
 
     owner_totals = dict.fromkeys(("joint", "ordinary", "preserve", "none"), 0)
     for row in rows:
         owner_totals[row["translation_owner"]] += 1
+    skip_reason_totals = dict.fromkeys(SKIP_REASONS, 0)
+    for row in rows:
+        if row["skip_reason"] is not None:
+            skip_reason_totals[row["skip_reason"]] += 1
     report = {
         "schema_version": SCHEMA_VERSION,
         "status": "complete",
@@ -317,6 +478,9 @@ def finalize(config, snapshot: CoverageSnapshot) -> dict:
         "target_lang": str(getattr(config, "lang_out", "")),
         "items": rows,
         "totals": {"sources": len(rows), "owners": owner_totals},
+        "source_script": source_script,
+        "skip_reason_totals": skip_reason_totals,
+        "unowned_sources": unowned,
     }
     report_path.parent.mkdir(parents=True, exist_ok=True)
     report_path.write_text(

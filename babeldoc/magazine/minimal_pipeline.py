@@ -484,6 +484,7 @@ def after_styles(config, docs) -> ArticleDocumentIR:
         docs,
         article_document_ir,
         hitl.labeled_pages(docs),
+        getattr(config, "magazine_furniture_plan", None),
     )
     # The translator only receives the frozen identity resolver.  It does not
     # read expectations and the resolver cannot affect translation decisions.

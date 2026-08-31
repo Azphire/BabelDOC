@@ -1021,6 +1021,11 @@ class ILTranslator:
             tracker.set_source_refs(*refs)
         if paragraph.vertical:
             return None, None
+        # Fail closed at the enqueue site: a paragraph whose text drifted
+        # since the coverage freeze would send the inventory one text and the
+        # model another, and the two reports of one run would disagree.
+        if coverage_snapshot is not None:
+            coverage_snapshot.assert_source_unchanged(paragraph)
         tracker.set_pdf_unicode(paragraph.unicode)
         if paragraph.xobj_id in xobj_font_map:
             page_font_map = xobj_font_map[paragraph.xobj_id]
