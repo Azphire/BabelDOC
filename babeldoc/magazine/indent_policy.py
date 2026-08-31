@@ -244,6 +244,7 @@ class IndentConfig:
     body_labels: tuple[str, ...]
     excerpt_chars: int
     functional_clearance_pt: float
+    min_visual_font_pt: float
 
     def policy_for(self, target_lang: str) -> tuple[TargetIndentPolicy | None, str]:
         """The policy set one run is laid out under, and where it came from.
@@ -355,6 +356,7 @@ def parse_indent_config(raw: dict, source: str) -> IndentConfig:
     numbers = (
         "excerpt_chars",
         "functional_clearance_pt",
+        "min_visual_font_pt",
     )
     missing = sorted(set(numbers) - set(parameters))
     _require(not missing, f"{source}: missing parameters {missing}")
@@ -365,6 +367,7 @@ def parse_indent_config(raw: dict, source: str) -> IndentConfig:
         body_labels=labels,
         excerpt_chars=int(parameters["excerpt_chars"]),
         functional_clearance_pt=float(parameters["functional_clearance_pt"]),
+        min_visual_font_pt=float(parameters["min_visual_font_pt"]),
     )
 
 

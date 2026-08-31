@@ -168,6 +168,11 @@ FIT_NONE = "no_fit"
 FIT_INVALID = "invalid"
 
 
+# The smallest release worth taking. A corridor thinner than this buys no line
+# and costs a paragraph box that no longer matches the source.
+_MIN_RELEASE_PT = 1.0
+
+
 class BoundedTypesettingError(RuntimeError):
     """A declared source unit cannot fit its immutable source container."""
 
@@ -1396,6 +1401,9 @@ class Typesetting:
         min_scale = minimum_scale
         expand_space_flag = 0
         final_typeset_units = None
+        # The visual floor and the one release it is allowed to ask for.
+        floor_scale = self._visual_floor_scale(paragraph, typesetting_units)
+        bottom_released = False
 
         # 单词单元的唯一约束点：所有路径（普通/展示/标题/bounded）都从这里
         # 进入布局搜索，词单元在此改走"先扩宽后缩字"的单行拟合。只在首次
@@ -1506,6 +1514,66 @@ class Typesetting:
                 scale = min_scale
             else:
                 scale = next_scale
+
+            # The visual floor, released downward. A body paragraph squeezed
+            # below the smallest size a reader can read is not a fit, so
+            # before the search goes there the source box's bottom edge is let
+            # out into the deterministic corridor beneath it -- the width
+            # corridor's own function family, turned through ninety degrees.
+            # Tried once per paragraph, and only where the floor actually
+            # binds; a corridor that buys nothing leaves everything as it was
+            # and the search carries on into the behaviour that shipped.
+            if (
+                not bottom_released
+                and floor_scale is not None
+                and scale < floor_scale
+                # Only a paragraph's own source box is released. A box handed
+                # in from outside is a container someone else chose -- a flow
+                # slot, a title chain member's share, a bounded rewrite that
+                # promised to stay inside one immutable box -- and growing it
+                # would be answering a question that was not asked here.
+                and box_override is None
+            ):
+                bottom_released = True
+                released = self._release_paragraph_bottom(paragraph, page, box)
+                if released is None:
+                    self._record_word_fit(
+                        paragraph,
+                        page,
+                        kind="bottom_release",
+                        outcome="corridor_exhausted",
+                        scale=scale,
+                        floor_scale=round(float(floor_scale), 4),
+                        base_box=[
+                            float(box.x), float(box.y),
+                            float(box.x2), float(box.y2),
+                        ],
+                    )
+                else:
+                    self._record_word_fit(
+                        paragraph,
+                        page,
+                        kind="bottom_release",
+                        outcome="released",
+                        scale=scale,
+                        floor_scale=round(float(floor_scale), 4),
+                        released_pt=round(float(box.y) - float(released.y), 4),
+                        base_box=[
+                            float(box.x), float(box.y),
+                            float(box.x2), float(box.y2),
+                        ],
+                        released_box=[
+                            float(released.x), float(released.y),
+                            float(released.x2), float(released.y2),
+                        ],
+                    )
+                    box = released
+                    if apply_layout:
+                        paragraph.box = copy.deepcopy(box)
+                    # Search the taller box from the top: the release is only
+                    # worth taking if it buys back a readable size.
+                    scale = initial_scale
+                    continue
 
             if allow_expand and scale < 0.7:
                 space_expanded = False  # 标记是否成功扩展了空间
@@ -1791,6 +1859,117 @@ class Typesetting:
                 if edge is not None:
                     limit = min(limit, edge)
         return max(base_x2, limit - clearance)
+
+    def _paragraph_corridor_y(self, paragraph, page, box: Box) -> float:
+        """The deterministic corridor limit for one paragraph, downward.
+
+        ``_word_corridor_x2`` turned through ninety degrees, and deliberately
+        the same function: the nearest of neighbouring paragraph boxes, loose
+        page characters, figures, curves and forms with horizontal overlap,
+        and the crop box -- plus the standing ``functional_clearance_pt``
+        (single source: ``configs/indent_policy.json``, the same one the word
+        corridor reads).  Never above the paragraph's own bottom edge: a
+        blocker already inside the source box is the status quo, not a reason
+        to grow upward.
+
+        This is not ``get_max_bottom_space``.  That one scales the crop box by
+        1.1, leaves no clearance, and exists to serve the pre-existing
+        expansion this pass sits beside; a corridor a release is measured
+        against has to be the same corridor the width release is measured
+        against, or the two answer differently about the same page.
+        """
+        from babeldoc.magazine.indent_policy import load_indent_config
+
+        base_y = float(box.y)
+        try:
+            clearance = float(load_indent_config().functional_clearance_pt)
+        except Exception:
+            return base_y
+        try:
+            limit = float(page.cropbox.box.y)
+        except (AttributeError, TypeError, ValueError):
+            return base_y
+        left, right = float(box.x), float(box.x2)
+        top = float(box.y2)
+
+        def consider(item_box) -> float | None:
+            if item_box is None:
+                return None
+            try:
+                iy2 = float(item_box.y2)
+                ix = float(item_box.x)
+                ix2 = float(item_box.x2)
+            except (AttributeError, TypeError, ValueError):
+                return None
+            if iy2 >= base_y - 1e-6:
+                return None
+            if ix >= right or ix2 <= left:
+                return None
+            return iy2
+
+        for para in page.pdf_paragraph or ():
+            if para is paragraph:
+                continue
+            edge = consider(para.box)
+            if edge is not None:
+                limit = max(limit, edge)
+        for char in page.pdf_character or ():
+            edge = consider(char.box)
+            if edge is not None:
+                limit = max(limit, edge)
+        for collection in (page.pdf_figure, page.pdf_curve, page.pdf_form):
+            for item in collection or ():
+                edge = consider(getattr(item, "box", None))
+                if edge is not None:
+                    limit = max(limit, edge)
+        del top
+        return min(base_y, limit + clearance)
+
+    def _release_paragraph_bottom(self, paragraph, page, box: Box):
+        """One taller box for a paragraph the visual floor binds, or None.
+
+        Returns the released box without applying it, so the caller decides
+        whether the taller box actually earned its keep.
+        """
+        try:
+            corridor_y = self._paragraph_corridor_y(paragraph, page, box)
+        except Exception:
+            return None
+        if corridor_y >= float(box.y) - _MIN_RELEASE_PT:
+            return None
+        return Box(x=box.x, y=corridor_y, x2=box.x2, y2=box.y2)
+
+    def _visual_floor_scale(self, paragraph, typesetting_units) -> float | None:
+        """The scale below which this paragraph stops being readable, or None.
+
+        ``None`` for anything the floor has no opinion about: a paragraph
+        whose label is not running body text (a folio set small is set small
+        on purpose), one whose units carry no font size, and any run whose
+        configuration cannot be read.  The floor is a property of body text,
+        so the label vocabulary is the indent policy's, read rather than
+        copied.
+        """
+        from babeldoc.magazine.indent_policy import load_indent_config
+
+        try:
+            config = load_indent_config()
+            floor_pt = float(config.min_visual_font_pt)
+            labels = config.body_labels
+        except Exception:
+            return None
+        if getattr(paragraph, "layout_label", None) not in labels:
+            return None
+        sizes = [
+            float(unit.font_size)
+            for unit in typesetting_units
+            if getattr(unit, "font_size", None)
+        ]
+        if not sizes:
+            return None
+        base = max(sizes)
+        if base <= 0:
+            return None
+        return floor_pt / base
 
     def _fit_single_word_unit(
         self,
