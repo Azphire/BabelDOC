@@ -1,0 +1,7 @@
+{
+  "description": "What counts as an ornament-grade vector path: a small filled pdf_curve a magazine sets beside text as furniture -- a triangle before a caption, an oversized quotation mark opening a pull quote. The judgement is geometric and nothing else: the path must paint a fill, its bounding box must stay under ornament_max_area_pt2, and neither side of that box may exceed ornament_max_side_pt. The area ceiling is what keeps background color blocks and full-width illustrations out -- they are also filled paths, but nothing a first line was ever asked to step around. Color and path content are deliberately not consulted: a rule that reads the artwork would be a rule about this magazine, and the thresholds are stated in page points so the same judgement holds at every page size. Both the indent clearance capture and the text_figure_overlap detector read this one file, so the inventory the repair loop anchors to and the avoidance the typesetter restores can never disagree about what an ornament is.",
+  "ornament_max_area_pt2": 600,
+  "ornament_max_area_pt2_allowed_range": "50..5000",
+  "ornament_max_side_pt": 40,
+  "ornament_max_side_pt_allowed_range": "8..120"
+}

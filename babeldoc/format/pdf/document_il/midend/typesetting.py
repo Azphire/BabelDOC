@@ -2048,7 +2048,16 @@ class Typesetting:
         last_unit: TypesettingUnit | None = None
         layout_line_index = 0
         if paragraph.first_line_indent:
-            current_x += space_width * 4
+            from babeldoc.magazine.indent_policy import functional_clearance_width
+
+            # A functional avoidance carries its own measured width: the
+            # source's first line was clearing printed ink, and four space
+            # widths of the target font know nothing about where that ink
+            # ends. Stylistic indents keep the em approximation.
+            clearance = functional_clearance_width(
+                self.translation_config, paragraph
+            )
+            current_x += space_width * 4 if clearance is None else clearance
         # 遍历所有排版单元
         for i, unit in enumerate(typesetting_units):
             # 计算当前单元在当前缩放下的尺寸

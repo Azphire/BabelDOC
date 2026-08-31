@@ -545,3 +545,24 @@ gives up its internal style variation — the same trade T1a's span merge
 makes.  The band default (`furniture_edge_band_pt` 120, range 20..150) sits
 above the plan's suggested 60 because the deepest repeating furniture in
 evidence — CERN Courier's folio line — stands 108pt off the page edge.
+
+## B16 — ornament overlap: cause first, loop as backstop (`b16`)
+
+### T1 — upstream file touched
+
+`babeldoc/format/pdf/document_il/midend/typesetting.py`
+(`_layout_typesetting_units`, the `first_line_indent` pen advance): where the
+magazine indent-clearance plan holds a functional avoidance for the paragraph
+(looked up by `debug_id` via
+`babeldoc.magazine.indent_policy.functional_clearance_width`), the first-line
+pen moves in by the measured source width — first character x minus box x,
+plus `functional_clearance_pt` (`configs/indent_policy.json`, 2pt, range
+0..8) — instead of the historical four space widths.  Paragraphs without a
+functional entry keep the em approximation exactly as before, and a run
+without the magazine switch never builds a plan, so the upstream behaviour
+is unchanged outside the minimal pipeline.  Cause: the source flag conflates
+stylistic indentation with functional avoidance (a caption's first line
+stepping around a printed triangle, a pull quote opening right of an
+oversized quotation mark); four target-font space widths know nothing about
+where that ink ends (ITU p5), and the indent policy used to clear such flags
+outright (B15 Courier p2/p8).

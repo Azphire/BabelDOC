@@ -29,6 +29,24 @@ why the indent still moves the pen by the amount the stage has always moved it
 -- the configuration pins that amount rather than setting it, and a gate holds
 the stage to the pin.
 
+One family of indents is outside that jurisdiction, and B16 is where the
+pipeline learned to tell it apart. The source flag conflates two meanings: a
+stylistic convention (indent the opening of a paragraph because the language
+does) and a functional avoidance (start the first line to the right because a
+triangle, an oversized quotation mark, or a piece of artwork is printed where
+the line would otherwise begin). The B15 Courier run showed what treating both
+as style costs: the policy cleared the flag on two captions whose indents were
+stepping around a printed triangle, and the translated first lines were set
+over the triangles. So before translation, while the source characters still
+carry their geometry, ``capture_clearance`` measures every raised flag: where
+the leading strip of the first line -- box edge to first character -- crosses
+an ornament-grade curve or a piece of artwork, the indent is functional, its
+width is recorded in page points, and this pass loses the right to clear it.
+The typesetting stage consults the same record and moves the pen by the
+measured width instead of its em approximation, because four space widths of
+the target font is a statement about style and says nothing about where a
+printed triangle ends.
+
 Being the only writer is the point. A flag that three passes may raise and one
 may lower has no answer to "why is this line indented" that can be read off any
 one of them, and the contents page of a magazine is where that showed: the flag
@@ -92,6 +110,7 @@ from pathlib import Path
 from types import MappingProxyType
 
 from babeldoc.magazine import chain_builder
+from babeldoc.magazine import fixed_assets
 from babeldoc.magazine.article_ir import ArticleDocumentIR
 from babeldoc.magazine.cross_page_reflow import _physical_page_number
 from babeldoc.magazine.drop_cap import paragraph_reference
@@ -116,6 +135,21 @@ SWITCH = "magazine_indent_policy"
 # The policy flag a page is qualified by. Declared in the page type vocabulary
 # and read by name here, which is what keeps page type names out of this module.
 PAGE_ELIGIBILITY_POLICY_FLAG = "indent_eligible"
+
+# Where the functional clearance plan travels: on the translation config, keyed
+# by paragraph ``debug_id`` and canonical reference. The IL dataclasses are
+# slotted, so cross-pass state cannot ride on the paragraphs themselves; this
+# is the same carriage the furniture plan uses.
+CLEARANCE_PLAN_ATTR = "magazine_indent_clearance_plan"
+
+# The mark a functional row carries in the sidecar. Not a skip reason: a
+# functional paragraph is not flush, its flag stands and the accounting counts
+# it among the indented.
+FUNCTIONAL_CLEARANCE = "functional_clearance"
+
+# The measurement threshold the paragraph finder itself uses: a first
+# character less than a point right of its own box is not an indent.
+MEASURABLE_INDENT_PT = 1.0
 
 # Why a paragraph this pass decided is set flush. One reason per unmet
 # condition, declared here rather than written at each site, so a reader of the
@@ -178,6 +212,7 @@ class IndentConfig:
     article_opening_rank: int
     indent_em: int
     excerpt_chars: int
+    functional_clearance_pt: float
 
     def mode_for(self, target_lang: str) -> tuple[str, str]:
         """The mode one run is laid out under, and where it came from.
@@ -245,7 +280,12 @@ def parse_indent_config(raw: dict, source: str) -> IndentConfig:
     )
     labels = tuple(parameters.get("body_labels", ()))
     _require(bool(labels), f"{source}: missing body_labels")
-    numbers = ("article_opening_rank", "indent_em", "excerpt_chars")
+    numbers = (
+        "article_opening_rank",
+        "indent_em",
+        "excerpt_chars",
+        "functional_clearance_pt",
+    )
     missing = sorted(set(numbers) - set(parameters))
     _require(not missing, f"{source}: missing parameters {missing}")
     return IndentConfig(
@@ -256,6 +296,7 @@ def parse_indent_config(raw: dict, source: str) -> IndentConfig:
         article_opening_rank=int(parameters["article_opening_rank"]),
         indent_em=int(parameters["indent_em"]),
         excerpt_chars=int(parameters["excerpt_chars"]),
+        functional_clearance_pt=float(parameters["functional_clearance_pt"]),
     )
 
 
@@ -272,6 +313,257 @@ def load_indent_config(path: str | None = None) -> IndentConfig:
 
 def enabled(translation_config) -> bool:
     return bool(getattr(translation_config, SWITCH, False))
+
+
+@dataclass(frozen=True)
+class ClearanceEntry:
+    """One functional avoidance, measured off the untranslated source.
+
+    ``width_pt`` is what the typesetting stage moves the pen by: the measured
+    step of the source's first character past its own box edge, plus the
+    declared clearance margin. ``indent_pt`` is the raw measurement without
+    the margin, kept so the sidecar shows what was measured apart from what
+    was added.
+    """
+
+    debug_id: str | None
+    canonical_ref: str
+    canonical_page: int
+    indent_pt: float
+    width_pt: float
+    strip: tuple[float, float, float, float]
+    asset_class: str
+    asset_ref: str
+    asset_bbox: tuple[float, float, float, float]
+
+    def to_record(self) -> dict:
+        return {
+            "debug_id": self.debug_id,
+            "canonical_ref": self.canonical_ref,
+            "canonical_page": self.canonical_page,
+            "indent_pt": round(self.indent_pt, 4),
+            "width_pt": round(self.width_pt, 4),
+            "strip": [round(value, 4) for value in self.strip],
+            "asset_class": self.asset_class,
+            "asset_ref": self.asset_ref,
+            "asset_bbox": [round(value, 4) for value in self.asset_bbox],
+        }
+
+
+@dataclass(frozen=True)
+class ClearancePlan:
+    """Every functional avoidance of one run, frozen before translation."""
+
+    entries: tuple[ClearanceEntry, ...]
+    clearance_pt: float
+    totals: MappingProxyType
+
+    @property
+    def by_debug_id(self) -> dict[str, ClearanceEntry]:
+        return {
+            entry.debug_id: entry
+            for entry in self.entries
+            if entry.debug_id
+        }
+
+    @property
+    def by_ref(self) -> dict[str, ClearanceEntry]:
+        return {entry.canonical_ref: entry for entry in self.entries}
+
+    def to_record(self) -> dict:
+        return {
+            "clearance_pt": self.clearance_pt,
+            "totals": dict(self.totals),
+            "entries": [entry.to_record() for entry in self.entries],
+        }
+
+
+def _boxes_intersect(left, right) -> bool:
+    """Whether two bboxes share ink -- positive area, not mere touch."""
+    return (
+        min(left[2], right[2]) - max(left[0], right[0]) > 0
+        and min(left[3], right[3]) - max(left[1], right[1]) > 0
+    )
+
+
+def _box_contains(outer, inner, tolerance: float = 0.1) -> bool:
+    return (
+        outer[0] <= inner[0] + tolerance
+        and outer[1] <= inner[1] + tolerance
+        and outer[2] >= inner[2] - tolerance
+        and outer[3] >= inner[3] - tolerance
+    )
+
+
+def _first_line_geometry(paragraph):
+    """The first line's first-character x and vertical ink span, or None.
+
+    Read the way the paragraph finder read it when it raised the flag: the
+    leading composition must be a line with characters. A paragraph whose
+    head the formula pass rewrapped has no measurable first line and is left
+    to the stylistic jurisdiction.
+    """
+    compositions = paragraph.pdf_paragraph_composition or ()
+    if not compositions:
+        return None
+    line = getattr(compositions[0], "pdf_line", None)
+    if line is None or not line.pdf_character:
+        return None
+    boxes = []
+    for character in line.pdf_character:
+        visual = getattr(character, "visual_bbox", None)
+        box = visual.box if visual is not None and visual.box is not None else (
+            character.box
+        )
+        if box is None:
+            return None
+        boxes.append(box)
+    first = boxes[0]
+    return (
+        float(first.x),
+        min(float(box.y) for box in boxes),
+        max(float(box.y2) for box in boxes),
+    )
+
+
+def _artwork_boxes(page) -> tuple[tuple[str, tuple[float, float, float, float]], ...]:
+    found = []
+    for collection in fixed_assets.ARTWORK_COLLECTIONS:
+        for index, item in enumerate(getattr(page, collection, None) or ()):
+            box = getattr(item, "box", None)
+            if box is None:
+                continue
+            found.append(
+                (
+                    f"{collection}#{index}",
+                    (float(box.x), float(box.y), float(box.x2), float(box.y2)),
+                )
+            )
+    return tuple(found)
+
+
+def capture_clearance(translation_config, docs) -> ClearancePlan | None:
+    """Measure every functional avoidance while the source geometry is live.
+
+    Runs before translation, because translation replaces the characters the
+    measurement needs. For every paragraph whose flag the source raised, the
+    leading strip -- box edge to first character, over the first line's ink
+    span -- is tested against the page's ornament-grade curves and artwork.
+    An asset crossing the strip makes the indent functional; an artwork box
+    containing the whole paragraph is the ground the paragraph stands on,
+    not something its first line stepped aside for, and does not count.
+
+    The plan is attached to the translation config either way, empty when
+    nothing measured functional, ``None`` when the switch is down, so a
+    downstream reader can tell "no avoidances" from "nobody looked".
+    """
+    if not enabled(translation_config):
+        setattr(translation_config, CLEARANCE_PLAN_ATTR, None)
+        return None
+    config = load_indent_config()
+    thresholds = fixed_assets.load_ornament_thresholds()
+    totals = {
+        "flag_raised": 0,
+        "no_leading_line": 0,
+        "below_threshold": 0,
+        "vertical": 0,
+        "stylistic": 0,
+        "functional": 0,
+    }
+    entries: list[ClearanceEntry] = []
+    for position, page in enumerate(docs.page or ()):
+        canonical_page = position + 1
+        ornaments = fixed_assets.ornament_curves(page, thresholds)
+        artwork = _artwork_boxes(page)
+        for index, paragraph in enumerate(page.pdf_paragraph or ()):
+            if not paragraph.first_line_indent:
+                continue
+            totals["flag_raised"] += 1
+            if getattr(paragraph, "vertical", False):
+                totals["vertical"] += 1
+                continue
+            box = paragraph.box
+            geometry = None if box is None else _first_line_geometry(paragraph)
+            if geometry is None:
+                totals["no_leading_line"] += 1
+                continue
+            first_x, ink_y, ink_y2 = geometry
+            indent_pt = first_x - float(box.x)
+            if indent_pt <= MEASURABLE_INDENT_PT or ink_y2 <= ink_y:
+                totals["below_threshold"] += 1
+                continue
+            strip = (float(box.x), ink_y, first_x, ink_y2)
+            paragraph_box = (
+                float(box.x),
+                float(box.y),
+                float(box.x2),
+                float(box.y2),
+            )
+            hit = None
+            for curve_index, bbox in ornaments:
+                if _boxes_intersect(strip, bbox):
+                    hit = (
+                        fixed_assets.ORNAMENT_ASSET_CLASS,
+                        f"pdf_curve#{curve_index}",
+                        bbox,
+                    )
+                    break
+            if hit is None:
+                for reference, bbox in artwork:
+                    if _boxes_intersect(strip, bbox) and not _box_contains(
+                        bbox, paragraph_box
+                    ):
+                        hit = (reference.split("#", 1)[0], reference, bbox)
+                        break
+            if hit is None:
+                totals["stylistic"] += 1
+                continue
+            totals["functional"] += 1
+            asset_class, asset_ref, asset_bbox = hit
+            entries.append(
+                ClearanceEntry(
+                    debug_id=getattr(paragraph, "debug_id", None),
+                    canonical_ref=f"p{canonical_page}#{index}",
+                    canonical_page=canonical_page,
+                    indent_pt=indent_pt,
+                    width_pt=indent_pt + config.functional_clearance_pt,
+                    strip=strip,
+                    asset_class=asset_class,
+                    asset_ref=f"p{canonical_page}:{asset_ref}",
+                    asset_bbox=asset_bbox,
+                )
+            )
+    plan = ClearancePlan(
+        entries=tuple(entries),
+        clearance_pt=config.functional_clearance_pt,
+        totals=MappingProxyType(totals),
+    )
+    setattr(translation_config, CLEARANCE_PLAN_ATTR, plan)
+    logger.debug(
+        "indent clearance: %d flag(s) raised, %d functional",
+        totals["flag_raised"],
+        totals["functional"],
+    )
+    return plan
+
+
+def functional_clearance_width(translation_config, paragraph) -> float | None:
+    """The measured pen advance for one paragraph's first line, if functional.
+
+    Consulted by the typesetting stage in place of its em approximation.
+    ``None`` -- no plan, no debug id, or no functional entry -- means the
+    stylistic advance applies as it always has.
+    """
+    plan = getattr(translation_config, CLEARANCE_PLAN_ATTR, None)
+    if plan is None:
+        return None
+    debug_id = getattr(paragraph, "debug_id", None)
+    if not debug_id:
+        return None
+    entry = plan.by_debug_id.get(debug_id)
+    if entry is None:
+        return None
+    return entry.width_pt
 
 
 def article_of_element(
@@ -353,6 +645,7 @@ def as_record(
     target_lang: str,
     rows: list[dict],
     pages: list[dict],
+    clearance_plan: ClearancePlan | None = None,
 ) -> dict:
     changed = [row for row in rows if row["before"] != row["after"]]
     return {
@@ -365,6 +658,10 @@ def as_record(
         "body_labels": list(config.body_labels),
         "article_opening_rank": config.article_opening_rank,
         "indent_em": config.indent_em,
+        "functional_clearance_pt": config.functional_clearance_pt,
+        "clearance_capture": (
+            None if clearance_plan is None else clearance_plan.to_record()
+        ),
         "page_eligibility_flag": PAGE_ELIGIBILITY_POLICY_FLAG,
         "skip_reasons": list(SKIP_REASONS),
         "pages": len(pages),
@@ -378,6 +675,9 @@ def as_record(
             "cleared": sum(1 for row in rows if row["cleared"]),
             "raised": sum(1 for row in rows if row["after"] and not row["before"]),
             "chain_continuations": sum(1 for row in rows if row["chain_continuation"]),
+            "functional_clearance": sum(
+                1 for row in rows if row.get("functional_clearance")
+            ),
             "indented_after": sum(1 for row in rows if row["after"]),
             "paragraphs_in_article": sum(1 for row in rows if row["in_article"]),
             "paragraphs_outside_article": sum(
@@ -409,6 +709,13 @@ def _require_conservation(record: dict) -> None:
         raise IndentPolicyError(
             f"indent policy decided {totals['decided']} and left alone "
             f"{totals['left_alone']} of {paragraphs} paragraph(s)"
+        )
+    flat_functional = [
+        row for row in record["paragraphs"] if row.get("functional_clearance")
+    ]
+    if any(not row["after"] for row in flat_functional):
+        raise IndentPolicyError(
+            "a functional avoidance left this pass without its flag"
         )
     if not record["authoritative"]:
         return
@@ -477,6 +784,10 @@ def apply(
     target_lang = getattr(translation_config, "lang_out", "") or ""
     mode, origin = config.mode_for(target_lang)
     of_element = article_of_element(article_document_ir)
+    clearance_plan = getattr(translation_config, CLEARANCE_PLAN_ATTR, None)
+    clearance_by_ref = (
+        {} if clearance_plan is None else clearance_plan.by_ref
+    )
 
     rank_of_article: dict[str, int] = {}
     rows: list[dict] = []
@@ -515,6 +826,7 @@ def apply(
                 rank_of_article[article_id] = body_rank
             before = bool(paragraph.first_line_indent)
             continuation = chain_builder.is_chain_continuation(paragraph)
+            clearance = clearance_by_ref.get(canonical_ref)
             decision = decide(
                 layout_label,
                 mode,
@@ -524,12 +836,23 @@ def apply(
                 continuation,
                 config,
             )
-            if decision is None:
+            if clearance is not None:
+                # A functional avoidance: the source's first line was
+                # stepping around printed ink, and no paragraph convention
+                # has authority over where a triangle ends. The flag is
+                # restored rather than merely left, in case a writer
+                # between the capture and here dropped it.
+                paragraph.first_line_indent = True
+                skipped = None
+                decided = False
+            elif decision is None:
                 skipped = SKIP_MODE
+                decided = False
             else:
                 value, skipped = decision
                 paragraph.first_line_indent = value
                 decided_here += 1
+                decided = True
             after = bool(paragraph.first_line_indent)
             rows.append(
                 {
@@ -546,9 +869,24 @@ def apply(
                     "chain_continuation": continuation,
                     "before": before,
                     "after": after,
-                    "decided": decision is not None,
+                    "decided": decided,
                     "cleared": before and not after,
                     "skipped": skipped,
+                    "functional_clearance": clearance is not None,
+                    "clearance_width_pt": (
+                        None if clearance is None else round(clearance.width_pt, 4)
+                    ),
+                    "clearance_asset": (
+                        None
+                        if clearance is None
+                        else {
+                            "asset_class": clearance.asset_class,
+                            "asset_ref": clearance.asset_ref,
+                            "asset_bbox": [
+                                round(value, 4) for value in clearance.asset_bbox
+                            ],
+                        }
+                    ),
                     "excerpt": (paragraph.unicode or "")[: config.excerpt_chars],
                 }
             )
@@ -563,7 +901,15 @@ def apply(
             }
         )
 
-    record = as_record(config, mode, origin, target_lang, rows, page_rows)
+    record = as_record(
+        config,
+        mode,
+        origin,
+        target_lang,
+        rows,
+        page_rows,
+        clearance_plan=clearance_plan,
+    )
     _require_conservation(record)
     working_dir = Path(translation_config.get_working_file_path(REPORT_NAME)).parent
     write_report(working_dir, record)

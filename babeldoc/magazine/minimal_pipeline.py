@@ -495,6 +495,10 @@ def after_styles(config, docs) -> ArticleDocumentIR:
                 article_document_ir,
                 labeled_pages=hitl.labeled_pages(docs),
             )
+    # While the source characters still carry their geometry: which raised
+    # indent flags are functional avoidances, and how wide the avoidance
+    # measured. Translation replaces the characters, so this cannot wait.
+    indent_policy.capture_clearance(config, docs)
     return article_document_ir
 
 

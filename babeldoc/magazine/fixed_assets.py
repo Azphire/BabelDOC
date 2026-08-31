@@ -9,7 +9,12 @@ from dataclasses import dataclass
 from dataclasses import fields
 from dataclasses import is_dataclass
 from enum import Enum
+from functools import lru_cache
 from pathlib import Path
+
+from babeldoc.magazine.page_features import ConfigError
+from babeldoc.magazine.page_features import validate_bounded_config
+from babeldoc.magazine.resource_paths import config_path
 
 REPORT_NAME = "fixed_asset_inventory.report.json"
 
@@ -23,6 +28,16 @@ PAGE_ASSET_COLLECTIONS = (
 )
 ARTWORK_COLLECTIONS = ("pdf_figure", "pdf_xobject")
 FORMULA_CHILD_COLLECTIONS = ("pdf_curve", "pdf_form")
+
+# Ornament-grade vector paths: the small filled curves a magazine sets beside
+# text -- a triangle before a caption, an oversized quotation mark opening a
+# pull quote. One classifier serves both consumers -- the indent clearance
+# capture that restores the source's avoidance, and the overlap detector that
+# reports text set over one -- so the two can never disagree about what an
+# ornament is. The judgement is geometric alone; nothing here reads color or
+# path content.
+ORNAMENT_CONFIG_PATH = config_path("ornament_assets.json")
+ORNAMENT_ASSET_CLASS = "ornament_path"
 FORMULA_TYPE = "pdf_formula"
 FURNITURE_TYPE = "pdf_paragraph_furniture"
 ROTATED_PARAGRAPH_TYPE = "pdf_paragraph_rotated"
@@ -92,6 +107,73 @@ class FixedAssetInventory:
                 for page, media, crop in self.page_sizes
             ],
         }
+
+
+@dataclass(frozen=True, slots=True)
+class OrnamentThresholds:
+    """The declared bounds under which a filled curve counts as an ornament."""
+
+    max_area_pt2: float
+    max_side_pt: float
+
+
+@lru_cache(maxsize=2)
+def load_ornament_thresholds(path: str | None = None) -> OrnamentThresholds:
+    """Load and validate ``configs/ornament_assets.json``."""
+    config_file = ORNAMENT_CONFIG_PATH if path is None else Path(path)
+    with config_file.open(encoding="utf-8") as f:
+        raw = json.load(f)
+    if not isinstance(raw, dict):
+        raise ConfigError(f"{config_file.name}: root must be an object")
+    parameters = validate_bounded_config(raw, config_file)
+    missing = sorted(
+        {"ornament_max_area_pt2", "ornament_max_side_pt"} - set(parameters)
+    )
+    if missing:
+        raise ConfigError(f"{config_file.name}: missing parameters {missing}")
+    return OrnamentThresholds(
+        max_area_pt2=float(parameters["ornament_max_area_pt2"]),
+        max_side_pt=float(parameters["ornament_max_side_pt"]),
+    )
+
+
+def is_ornament_curve(curve, thresholds: OrnamentThresholds) -> bool:
+    """Whether one ``pdf_curve`` is ornament-grade, judged by shape alone.
+
+    A fill under both declared bounds. The area ceiling keeps background
+    color blocks and large illustrations out; degenerate boxes paint no ink
+    a line could stand on and are refused outright. ``debug_info`` is not
+    consulted -- the frontend stamps it truthy on real curves too.
+    """
+    if not getattr(curve, "fill_background", False):
+        return False
+    box = getattr(curve, "box", None)
+    if box is None:
+        return False
+    width = float(box.x2) - float(box.x)
+    height = float(box.y2) - float(box.y)
+    if width <= 0 or height <= 0:
+        return False
+    if width * height > thresholds.max_area_pt2:
+        return False
+    return max(width, height) <= thresholds.max_side_pt
+
+
+def ornament_curves(
+    page, thresholds: OrnamentThresholds
+) -> tuple[tuple[int, tuple[float, float, float, float]], ...]:
+    """Every ornament-grade curve of one page: (index into pdf_curve, bbox)."""
+    found = []
+    for index, curve in enumerate(getattr(page, "pdf_curve", None) or ()):
+        if is_ornament_curve(curve, thresholds):
+            box = curve.box
+            found.append(
+                (
+                    index,
+                    (float(box.x), float(box.y), float(box.x2), float(box.y2)),
+                )
+            )
+    return tuple(found)
 
 
 @dataclass(frozen=True, slots=True)
