@@ -323,7 +323,7 @@ def test_pipeline_freezes_after_article_builder(monkeypatch, tmp_path: Path) -> 
     monkeypatch.setattr(
         minimal_pipeline.demo_coverage,
         "freeze",
-        lambda *_: events.append("coverage_freeze") or snapshot,
+        lambda *_args, **_kwargs: events.append("coverage_freeze") or snapshot,
     )
     config = Config(tmp_path)
     minimal_pipeline.configure(config)

@@ -62,9 +62,23 @@ SKIP_REASONS = (
     "vertical",
     "cid_encoding",
     "placeholder_only",
-    "bilingual_companion",
+    "bilingual_companion_visible",
     "no_source_script",
     "below_length_floor",
+)
+
+# The closed vocabulary of companion visibility verdicts.  Only ``visible``
+# earns the bilingual exemption; every other verdict fails open to
+# translation, because an untranslated label is worse than a doubled one.
+COMPANION_VISIBLE = "visible"
+COMPANION_OUTSIDE_PAGE_BODY = "outside_page_body"
+COMPANION_NO_INK = "no_ink_evidence"
+COMPANION_UNRENDERABLE = "unrenderable"
+COMPANION_VISIBILITIES = (
+    COMPANION_VISIBLE,
+    COMPANION_OUTSIDE_PAGE_BODY,
+    COMPANION_NO_INK,
+    COMPANION_UNRENDERABLE,
 )
 
 
@@ -98,6 +112,145 @@ def _boxes_intersect(left, right) -> bool:
         min(left[2], right[2]) > max(left[0], right[0])
         and min(left[3], right[3]) > max(left[1], right[1])
     )
+
+
+def cross_script_companions(paragraph, neighbours) -> list:
+    """Every other-script double sharing this paragraph's ink area."""
+    own_script = wholly_scripted(getattr(paragraph, "unicode", "") or "")
+    if own_script is None:
+        return []
+    try:
+        own_box = _box(getattr(paragraph, "box", None))
+    except ValueError:
+        return []
+    if own_box is None:
+        return []
+    companions = []
+    for other in neighbours:
+        if other is paragraph:
+            continue
+        other_script = wholly_scripted(getattr(other, "unicode", "") or "")
+        if other_script is None or other_script == own_script:
+            continue
+        try:
+            other_box = _box(getattr(other, "box", None))
+        except ValueError:
+            continue
+        if other_box is not None and _boxes_intersect(own_box, other_box):
+            companions.append(other)
+    return companions
+
+
+def companion_visibility(companion, page, translation_config) -> tuple[str, dict]:
+    """Whether one companion demonstrably renders as visible ink.
+
+    Three criteria, decided from standing facts.  Inside the page body is a
+    geometric fact against the crop box.  Ink and non-occlusion are one
+    rendering fact: the source page's own pixels over the companion's box --
+    a companion drawn in background colour, wholly covered by an opaque
+    object, or clipped away leaves no non-background pixels there, whatever
+    the IL says about its operators.  Whenever visibility cannot be
+    established (no readable source file, a partial-page run whose page
+    numbers do not match the file, a degenerate box), the verdict is
+    ``unrenderable`` and the caller must not exempt.
+    """
+    evidence: dict = {
+        "companion_debug_id": getattr(companion, "debug_id", None),
+        "companion_excerpt": (getattr(companion, "unicode", "") or "")[:40],
+    }
+    try:
+        box = _box(getattr(companion, "box", None))
+    except ValueError:
+        box = None
+    if box is None:
+        return COMPANION_UNRENDERABLE, evidence
+    evidence["companion_box"] = list(box)
+    crop = getattr(getattr(page, "cropbox", None), "box", None)
+    if crop is not None:
+        tolerance = 1.0
+        inside = (
+            float(crop.x) - tolerance <= box[0]
+            and float(crop.y) - tolerance <= box[1]
+            and box[2] <= float(crop.x2) + tolerance
+            and box[3] <= float(crop.y2) + tolerance
+        )
+        if not inside:
+            evidence["cropbox"] = [
+                float(crop.x), float(crop.y), float(crop.x2), float(crop.y2)
+            ]
+            return COMPANION_OUTSIDE_PAGE_BODY, evidence
+    if getattr(translation_config, "page_ranges", None):
+        # A subset run renders from a file whose page numbers no longer
+        # match the IL's; a wrong region proves nothing.
+        return COMPANION_UNRENDERABLE, evidence
+    input_file = getattr(translation_config, "input_file", None)
+    page_number = getattr(page, "page_number", None)
+    if not input_file or page_number is None:
+        return COMPANION_UNRENDERABLE, evidence
+    from babeldoc.magazine.short_unit import load_short_unit_config
+
+    try:
+        config = load_short_unit_config()
+        min_fraction = config.companion_ink_min_fraction
+        zoom = config.companion_render_zoom
+    except Exception:
+        return COMPANION_UNRENDERABLE, evidence
+    try:
+        import pymupdf
+
+        with pymupdf.open(str(input_file)) as source:
+            source_page = source[int(page_number)]
+            height = float(source_page.mediabox.y1)
+            clip = pymupdf.Rect(
+                box[0], height - box[3], box[2], height - box[1]
+            )
+            pix = source_page.get_pixmap(
+                matrix=pymupdf.Matrix(zoom, zoom), clip=clip, alpha=False
+            )
+        if pix.width < 2 or pix.height < 2:
+            return COMPANION_UNRENDERABLE, evidence
+        stride = pix.n
+        samples = pix.samples
+        counts: dict[bytes, int] = {}
+        total = pix.width * pix.height
+        for offset in range(0, total * stride, stride):
+            pixel = bytes(samples[offset : offset + stride])
+            counts[pixel] = counts.get(pixel, 0) + 1
+        modal = max(counts.values())
+        ink_fraction = 1.0 - (modal / total)
+    except Exception:
+        return COMPANION_UNRENDERABLE, evidence
+    evidence["ink_fraction"] = round(ink_fraction, 4)
+    evidence["ink_min_fraction"] = min_fraction
+    if ink_fraction >= min_fraction:
+        return COMPANION_VISIBLE, evidence
+    return COMPANION_NO_INK, evidence
+
+
+def visible_cross_script_twin(
+    paragraph, neighbours, page, translation_config
+) -> tuple[bool, dict | None]:
+    """The bilingual exemption, now conditional on a visible companion.
+
+    Returns ``(exempt, evidence)``.  Exempt only when at least one
+    other-script double demonstrably renders -- the page already shows the
+    same label in the target reader's script.  A companion whose visibility
+    cannot be proven does not exempt: the unit stays on the translation
+    path, because an untranslated label harms more than a doubled one.
+    """
+    companions = cross_script_companions(paragraph, neighbours)
+    if not companions:
+        return False, None
+    last_evidence: dict | None = None
+    for companion in companions:
+        verdict, evidence = companion_visibility(
+            companion, page, translation_config
+        )
+        evidence["visibility"] = verdict
+        if verdict == COMPANION_VISIBLE:
+            return True, evidence
+        last_evidence = evidence
+    return False, last_evidence
 
 
 def cross_script_twin(paragraph, neighbours) -> bool:
@@ -233,7 +386,13 @@ class CoverageSnapshot:
         )
 
 
-def _skip_traits(paragraph, furniture_plan, page_paragraphs) -> tuple[str, ...]:
+def _skip_traits(
+    paragraph,
+    furniture_plan,
+    page_paragraphs,
+    page=None,
+    translation_config=None,
+) -> tuple[str, ...]:
     """The standing reasons this paragraph would not be enqueued, at freeze."""
     traits: list[str] = []
     if furniture_plan is not None and furniture_plan.withholds(
@@ -251,13 +410,20 @@ def _skip_traits(paragraph, furniture_plan, page_paragraphs) -> tuple[str, ...]:
         paragraph, "pdf_paragraph_composition", None
     ) and is_placeholder_only_paragraph(paragraph):
         traits.append("placeholder_only")
-    if cross_script_twin(paragraph, page_paragraphs):
-        traits.append("cross_script_twin")
+    exempt, _evidence = visible_cross_script_twin(
+        paragraph, page_paragraphs, page, translation_config
+    )
+    if exempt:
+        traits.append("cross_script_twin_visible")
     return tuple(traits)
 
 
 def freeze(
-    _docs, article_document_ir, labeled_pages, furniture_plan=None
+    _docs,
+    article_document_ir,
+    labeled_pages,
+    furniture_plan=None,
+    translation_config=None,
 ) -> CoverageSnapshot:
     """Freeze source text, boxes, roles and both ref namespaces."""
     article_elements = {
@@ -331,7 +497,11 @@ def freeze(
                 latin_chars=scripts[LATIN_SCRIPT],
                 text_length=len(text),
                 skip_traits=_skip_traits(
-                    paragraph, furniture_plan, page.pdf_paragraph or ()
+                    paragraph,
+                    furniture_plan,
+                    page.pdf_paragraph or (),
+                    page=page,
+                    translation_config=translation_config,
                 ),
             )
             items.append(item)
@@ -427,8 +597,12 @@ def _skip_reason(
     # written wholly in the run's source script is a companion the target
     # language already covers -- the other half is the coverage the page came
     # with.
-    if "cross_script_twin" in item.skip_traits and script_chars and not other_chars:
-        return "bilingual_companion"
+    if (
+        "cross_script_twin_visible" in item.skip_traits
+        and script_chars
+        and not other_chars
+    ):
+        return "bilingual_companion_visible"
     if script_chars == 0:
         return "no_source_script"
     if item.text_length < length_floor:

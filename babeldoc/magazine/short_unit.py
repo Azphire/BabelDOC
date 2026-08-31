@@ -75,7 +75,7 @@ from babeldoc.format.pdf.document_il.utils.paragraph_helper import (
     is_pure_numeric_paragraph,
 )
 from babeldoc.magazine import source_audit
-from babeldoc.magazine.demo_coverage import cross_script_twin
+from babeldoc.magazine import demo_coverage
 from babeldoc.magazine.demo_coverage import wholly_scripted
 from babeldoc.magazine.detectors.base import HAN_SCRIPT
 from babeldoc.magazine.line_split import paragraph_characters
@@ -125,6 +125,8 @@ class ShortUnitConfig:
     name_min_words: int
     name_max_words: int
     batch_max_units: int
+    companion_ink_min_fraction: float
+    companion_render_zoom: int
     switch: str
     shapes: tuple[str, ...]
 
@@ -169,6 +171,10 @@ def load_short_unit_config(path: str | None = None) -> ShortUnitConfig:
         name_min_words=int(parameters["name_min_words"]),
         name_max_words=int(parameters["name_max_words"]),
         batch_max_units=int(parameters["batch_max_units"]),
+        companion_ink_min_fraction=float(
+            parameters["companion_ink_min_fraction"]
+        ),
+        companion_render_zoom=int(parameters["companion_render_zoom"]),
         switch=switch,
         shapes=shapes,
     )
@@ -494,15 +500,26 @@ def plan(
     # pair the page printed on purpose -- a masthead set in two languages on
     # one spot. The target-language half is already there, so translating the
     # source-script half would say the same thing twice on the same ink. The
-    # refusal is recorded, and the coverage ledger names the same fact from
-    # its own measurement.
+    # exemption additionally demands the companion demonstrably render as
+    # visible ink; a companion that cannot be proven visible does not exempt,
+    # and the unit stays enqueued (an untranslated label harms more than a
+    # doubled one). The refusal is recorded with the visibility evidence, and
+    # the coverage ledger names the same fact from its own measurement.
     admitted: list[Unit] = []
     for unit in units:
-        neighbours = list(pages[unit.page_index].pdf_paragraph or ())
-        if cross_script_twin(unit.paragraph, neighbours):
+        page = pages[unit.page_index]
+        neighbours = list(page.pdf_paragraph or ())
+        exempt, evidence = demo_coverage.visible_cross_script_twin(
+            unit.paragraph, neighbours, page, translation_config
+        )
+        if exempt:
             unit.source = unit.paragraph.unicode or ""
             result.refused.append(
-                {**unit.as_record(), "reason": "bilingual_companion"}
+                {
+                    **unit.as_record(),
+                    "reason": "bilingual_companion_visible",
+                    "companion": evidence,
+                }
             )
             continue
         admitted.append(unit)

@@ -126,7 +126,9 @@ def test_labels_merely_beside_each_other_are_not_twins() -> None:
     assert demo_coverage.cross_script_twin(label, [label, beside]) is False
 
 
-def test_coverage_names_the_source_side_of_a_twin(tmp_path) -> None:
+def test_coverage_names_the_source_side_of_a_visible_twin(
+    tmp_path, monkeypatch
+) -> None:
     label = _paragraph("编者的话", 451.0, 745.0, font_size=18.0, debug_id="label")
     double = _paragraph(
         "EDITOR", 455.0, 746.0, font_size=22.0, debug_id="double", width=73.0
@@ -135,6 +137,14 @@ def test_coverage_names_the_source_side_of_a_twin(tmp_path) -> None:
     docs = il.Document(page=[page], total_pages=3)
     from babeldoc.magazine.article_ir import ArticleDocumentIR
 
+    monkeypatch.setattr(
+        demo_coverage,
+        "companion_visibility",
+        lambda companion, held_page, config: (
+            demo_coverage.COMPANION_VISIBLE,
+            {"ink_fraction": 0.1},
+        ),
+    )
     snapshot = demo_coverage.freeze(
         docs, ArticleDocumentIR((), {}, {}, {}, {}), [(3, page)]
     )
@@ -153,17 +163,72 @@ def test_coverage_names_the_source_side_of_a_twin(tmp_path) -> None:
     # The Han half is the companion; the Latin half, untranslated in a zh-en
     # run, is not a hole either -- but it is not a companion, it is the page's
     # own English and stays visible under its own reason.
-    assert by_ref["p3#0"]["skip_reason"] == "bilingual_companion"
+    assert by_ref["p3#0"]["skip_reason"] == "bilingual_companion_visible"
     assert by_ref["p3#1"]["skip_reason"] == "no_source_script"
     assert report["unowned_sources"] == []
 
 
-def test_plan_refuses_a_twin_with_a_recorded_reason(tmp_path) -> None:
+def test_coverage_gives_no_exemption_without_visibility_proof(
+    tmp_path, monkeypatch
+) -> None:
+    # The same twin geometry, but the companion cannot be proven visible:
+    # the trait is withheld, so the Han half earns no skip reason and shows
+    # up as the hole it would otherwise silently be.
+    label = _paragraph("编者的话", 451.0, 745.0, font_size=18.0, debug_id="label")
+    double = _paragraph(
+        "EDITOR", 455.0, 746.0, font_size=22.0, debug_id="double", width=73.0
+    )
+    page = il.Page(page_number=3, pdf_paragraph=[label, double])
+    docs = il.Document(page=[page], total_pages=3)
+    from babeldoc.magazine.article_ir import ArticleDocumentIR
+
+    monkeypatch.setattr(
+        demo_coverage,
+        "companion_visibility",
+        lambda companion, held_page, config: (
+            demo_coverage.COMPANION_NO_INK,
+            {"ink_fraction": 0.0},
+        ),
+    )
+    snapshot = demo_coverage.freeze(
+        docs, ArticleDocumentIR((), {}, {}, {}, {}), [(3, page)]
+    )
+
+    class Config:
+        lang_in = "zh"
+        lang_out = "en"
+        min_text_length = 5
+        page_ranges = None
+
+        def get_working_file_path(self, name: str) -> str:
+            return str(tmp_path / name)
+
+    config = Config()
+    config.min_text_length = 3  # below the label's four characters
+    report = demo_coverage.finalize(config, snapshot)
+    by_ref = {row["source_ref"]: row for row in report["items"]}
+    assert by_ref["p3#0"]["skip_reason"] is None
+    assert "p3#0" in [
+        row["source_ref"] for row in report["unowned_sources"]
+    ]
+
+
+def test_plan_refuses_a_visible_twin_with_a_recorded_reason(
+    tmp_path, monkeypatch
+) -> None:
     label = _paragraph("编者的话", 451.0, 745.0, font_size=18.0, debug_id="label")
     double = _paragraph(
         "EDITOR", 455.0, 746.0, font_size=22.0, debug_id="double", width=73.0
     )
     docs = _docs([label, double])
+    monkeypatch.setattr(
+        demo_coverage,
+        "companion_visibility",
+        lambda companion, page, config: (
+            demo_coverage.COMPANION_VISIBLE,
+            {"ink_fraction": 0.1},
+        ),
+    )
 
     class Translator:
         class translation_config:  # noqa: N801 - attribute bag, not a type
@@ -172,5 +237,127 @@ def test_plan_refuses_a_twin_with_a_recorded_reason(tmp_path) -> None:
 
     plan = short_unit.plan(Translator(), docs, tracker=None)
     assert plan.units == []
-    assert [item["reason"] for item in plan.refused] == ["bilingual_companion"]
+    assert [item["reason"] for item in plan.refused] == [
+        "bilingual_companion_visible"
+    ]
     assert plan.refused[0]["source"] == "编者的话"
+    assert plan.refused[0]["companion"]["visibility"] == "visible"
+
+
+def test_plan_enqueues_a_twin_whose_companion_is_not_provably_visible(
+    tmp_path, monkeypatch
+) -> None:
+    label = _paragraph("编者的话", 451.0, 745.0, font_size=18.0, debug_id="label")
+    double = _paragraph(
+        "EDITOR", 455.0, 746.0, font_size=22.0, debug_id="double", width=73.0
+    )
+    docs = _docs([label, double])
+    monkeypatch.setattr(
+        demo_coverage,
+        "companion_visibility",
+        lambda companion, page, config: (
+            demo_coverage.COMPANION_NO_INK,
+            {"ink_fraction": 0.0},
+        ),
+    )
+    # The unit must reach the enqueue path; a stubbed prepare marks the
+    # attempt without needing the whole translator machinery.
+    monkeypatch.setattr(
+        short_unit, "prepare", lambda *args, **kwargs: (None, None)
+    )
+
+    class Tracker:
+        def new_page(self):
+            return self
+
+        def new_paragraph(self):
+            return self
+
+    class Translator:
+        class translation_config:  # noqa: N801 - attribute bag, not a type
+            min_text_length = 5
+            input_file = str(tmp_path / "absent.pdf")
+            shared_context_cross_split_part = None
+
+        @staticmethod
+        def _build_font_maps(_page):
+            return {}, {}
+
+    plan = short_unit.plan(Translator(), docs, tracker=Tracker())
+    # Not exempted: the refusal reason is the stub's no_text, never the
+    # bilingual companion.
+    assert [item["reason"] for item in plan.refused] == ["no_text"]
+
+
+# --- companion visibility, measured off real pixels ---------------------------
+
+
+def _render_fixture(tmp_path, *, cover: bool):
+    import pymupdf
+
+    pdf_path = tmp_path / ("covered.pdf" if cover else "visible.pdf")
+    doc = pymupdf.open()
+    pdf_page = doc.new_page(width=595.0, height=842.0)
+    # Top-down insertion point y=100 -> ink around IL y 742..762.
+    pdf_page.insert_text((60.0, 100.0), "EDITOR", fontsize=22)
+    if cover:
+        shape = pdf_page.new_shape()
+        shape.draw_rect(pymupdf.Rect(50.0, 70.0, 200.0, 110.0))
+        shape.finish(fill=(1, 1, 1), color=None)
+        shape.commit()
+    doc.save(str(pdf_path))
+    doc.close()
+    companion = _paragraph(
+        "EDITOR", 58.0, 738.0, font_size=22.0, debug_id="companion", width=100.0
+    )
+    page = il.Page(
+        page_number=0,
+        pdf_paragraph=[companion],
+        cropbox=il.Cropbox(box=il.Box(0.0, 0.0, 595.0, 842.0)),
+    )
+
+    class Config:
+        input_file = str(pdf_path)
+        page_ranges = None
+
+    return companion, page, Config()
+
+
+def test_a_companion_with_real_ink_is_visible(tmp_path) -> None:
+    companion, page, config = _render_fixture(tmp_path, cover=False)
+    verdict, evidence = demo_coverage.companion_visibility(
+        companion, page, config
+    )
+    assert verdict == demo_coverage.COMPANION_VISIBLE
+    assert evidence["ink_fraction"] > 0.0
+
+
+def test_a_companion_hidden_under_opaque_fill_is_not_visible(tmp_path) -> None:
+    companion, page, config = _render_fixture(tmp_path, cover=True)
+    verdict, evidence = demo_coverage.companion_visibility(
+        companion, page, config
+    )
+    assert verdict == demo_coverage.COMPANION_NO_INK
+    assert evidence["ink_fraction"] < 0.02
+
+
+def test_a_companion_outside_the_page_body_is_not_visible(tmp_path) -> None:
+    companion, page, config = _render_fixture(tmp_path, cover=False)
+    page.cropbox = il.Cropbox(box=il.Box(0.0, 0.0, 595.0, 700.0))
+    verdict, _evidence = demo_coverage.companion_visibility(
+        companion, page, config
+    )
+    assert verdict == demo_coverage.COMPANION_OUTSIDE_PAGE_BODY
+
+
+def test_an_unrenderable_companion_is_not_visible(tmp_path) -> None:
+    companion, page, _config = _render_fixture(tmp_path, cover=False)
+
+    class Absent:
+        input_file = str(tmp_path / "absent.pdf")
+        page_ranges = None
+
+    verdict, _evidence = demo_coverage.companion_visibility(
+        companion, page, Absent()
+    )
+    assert verdict == demo_coverage.COMPANION_UNRENDERABLE
