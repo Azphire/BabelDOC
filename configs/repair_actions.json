@@ -32,7 +32,7 @@
       "retypeset_article_region"
     ],
     "text_figure_overlap": [
-      "retypeset_article_region"
+      "refit_or_reflow_owned_paragraph"
     ],
     "instruction_compliance": [],
     "fixed_asset_drift": []
@@ -120,6 +120,12 @@
       "region_min_scale": {
         "default": 0.7,
         "allowed_range": "0.4..1.0"
+      }
+    },
+    "refit_or_reflow_owned_paragraph": {
+      "clearance_pt": {
+        "default": 2,
+        "allowed_range": "0..8"
       }
     }
   },

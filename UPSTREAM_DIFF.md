@@ -575,3 +575,24 @@ first time a paragraph arrived as a bare `pdf_character` composition — the
 crash B14 saw once and could not reproduce; a B16 single-page run
 (`--pages 2`, Courier-en) reproduced it deterministically.  The sibling
 branches pass no flag and the character carries its own.
+
+### T3 — upstream file touched
+
+`babeldoc/format/pdf/document_il/midend/typesetting.py`
+(`_layout_typesetting_units`, the same pen advance as T1): the clearance
+lookup is no longer gated on `first_line_indent` — a repair-owned width
+(`magazine_repair_clearance`, written only by the admitted
+refit-with-clearance action) applies even to a paragraph the source set
+flush, because the repair loop may order a first-line advance for text the
+translation landed on an ornament.  Paragraphs with neither a captured nor
+a repair width keep the flag-gated em approximation exactly as before.
+The flag itself gains no new writer; the four declared in
+`spec_check_indent_scope` S5 remain the four.
+
+Design note, recorded as a deviation from the batch plan's letter: the plan
+asked for a `clear_finding` parameter naming the finding whose ornament is
+cleared.  The decision schema is numeric-only, and the loop already binds
+every action application to one nominated finding id — so the exclusion
+source *is* the acted-on finding, read from its own evidence, and the model
+cannot name a different one.  This is the plan's fail-closed intent held by
+construction rather than by a redundant string parameter.

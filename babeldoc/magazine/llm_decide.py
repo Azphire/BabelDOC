@@ -84,7 +84,13 @@ _CONSTRAINT_SENTENCES = {
     "refit_or_reflow_owned_paragraph": (
         "the finding's paragraph is claimed by an article, carries one of the "
         "roles {roles}, and -- where the finding is a collision -- covers no "
-        "more than {collision_max_area_ratio} of the area it shares"
+        "more than {collision_max_area_ratio} of the area it shares; where "
+        "the finding is a text_figure_overlap it must report an "
+        "ornament-grade path (asset_class ornament_path) standing in the "
+        "first line's own band, and the repair re-sets the paragraph in its "
+        "own box with the first line advanced past the ornament's right edge "
+        "plus clearance_pt -- the ornament itself never moves, and a "
+        "paragraph the advance cannot fit is refused"
     ),
 }
 

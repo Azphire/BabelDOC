@@ -147,6 +147,12 @@ CLEARANCE_PLAN_ATTR = "magazine_indent_clearance_plan"
 # it among the indented.
 FUNCTIONAL_CLEARANCE = "functional_clearance"
 
+# Where the repair loop's own clearance widths travel: a plain mapping of
+# ``debug_id`` to width in page points, written only by the admitted
+# refit-with-clearance action. Consulted ahead of the captured plan, because
+# a repair is a later, measured correction of the same quantity.
+REPAIR_CLEARANCE_ATTR = "magazine_repair_clearance"
+
 # The measurement threshold the paragraph finder itself uses: a first
 # character less than a point right of its own box is not an indent.
 MEASURABLE_INDENT_PT = 1.0
@@ -579,14 +585,19 @@ def functional_clearance_width(translation_config, paragraph) -> float | None:
     """The measured pen advance for one paragraph's first line, if functional.
 
     Consulted by the typesetting stage in place of its em approximation.
-    ``None`` -- no plan, no debug id, or no functional entry -- means the
-    stylistic advance applies as it always has.
+    ``None`` -- no plan, no debug id, and no repair entry -- means the
+    stylistic advance applies as it always has. A repair-written width wins
+    over the captured one: it is a later, measured correction of the same
+    quantity, made after the captured width was seen to be insufficient.
     """
-    plan = getattr(translation_config, CLEARANCE_PLAN_ATTR, None)
-    if plan is None:
-        return None
     debug_id = getattr(paragraph, "debug_id", None)
     if not debug_id:
+        return None
+    repairs = getattr(translation_config, REPAIR_CLEARANCE_ATTR, None)
+    if repairs and debug_id in repairs:
+        return float(repairs[debug_id])
+    plan = getattr(translation_config, CLEARANCE_PLAN_ATTR, None)
+    if plan is None:
         return None
     entry = plan.by_debug_id.get(debug_id)
     if entry is None:

@@ -49,7 +49,12 @@ ISSUE_ACTIONS = {
     "text_text_collision": (REFIT_OWNED,),
     "fragment_cluster": (RETYPESET_REGION,),
     "abnormal_blank": (RETYPESET_REGION,),
-    "text_figure_overlap": (RETYPESET_REGION,),
+    # B16: an ornament overlap is one paragraph's first line standing on one
+    # small fixed path, and the paragraph-scoped refit clears it in place.
+    # B12 hung this kind on the region action and watched every nomination
+    # die of region_target_has_no_canonical_owner; the region action keeps
+    # fragment_cluster and abnormal_blank, whose defects really are regional.
+    "text_figure_overlap": (REFIT_OWNED,),
     "instruction_compliance": (),
     "fixed_asset_drift": (),
 }
@@ -878,6 +883,99 @@ def _translate_orphan(
     return target, 1
 
 
+def _finite_bbox(raw) -> tuple[float, float, float, float] | None:
+    if not isinstance(raw, list | tuple) or len(raw) != 4:
+        return None
+    try:
+        values = tuple(float(value) for value in raw)
+    except (TypeError, ValueError):
+        return None
+    if not all(math.isfinite(value) for value in values):
+        return None
+    if values[0] >= values[2] or values[1] >= values[3]:
+        return None
+    return values
+
+
+def _first_line_band(paragraph) -> tuple[float, float] | None:
+    """The vertical ink span of the first line, read off the characters."""
+    characters = paragraph_characters(paragraph)
+    if not characters:
+        return None
+    first = characters[0].box
+    if first is None or first.y is None or first.y2 is None:
+        return None
+    band_y, band_y2 = float(first.y), float(first.y2)
+    if band_y2 <= band_y:
+        return None
+    for character in characters[1:]:
+        box = character.box
+        if box is None or box.y is None or box.y2 is None:
+            continue
+        shared = min(float(box.y2), band_y2) - max(float(box.y), band_y)
+        height = min(float(box.y2) - float(box.y), band_y2 - band_y)
+        if height <= 0 or shared < height * 0.5:
+            break
+        band_y = min(band_y, float(box.y))
+        band_y2 = max(band_y2, float(box.y2))
+    return band_y, band_y2
+
+
+def _ink_ornament_area(paragraph, bbox: tuple[float, float, float, float]) -> float:
+    """How much of the paragraph's ink stands on the ornament, in points."""
+    area = 0.0
+    for character in paragraph_characters(paragraph):
+        box = character.box
+        if box is None:
+            continue
+        width = min(float(box.x2), bbox[2]) - max(float(box.x), bbox[0])
+        height = min(float(box.y2), bbox[3]) - max(float(box.y), bbox[1])
+        if width > 0 and height > 0:
+            area += width * height
+    return area
+
+
+def _ornament_clearance_admission(
+    issue,
+    target: _Target,
+    baseline,
+    config: RepairConfig,
+) -> str | None:
+    """Why this overlap is not one the head clearance can act on, or None.
+
+    Three refusals, each its own fact. The finding must name an
+    ornament-grade path -- an artwork overlap measured by union ratio is a
+    different defect and the region this action does not own. The ornament
+    must be in the frozen fixed-asset inventory at the position the evidence
+    states, because the ornament is the anchor and the text is what moves.
+    And the ornament must stand in the first line's own band: the only
+    exclusion the typesetting stage supports is advancing the first line's
+    pen (the B16 clearance channel), so an ornament under a later line is a
+    shape this batch declines rather than half-repairs.
+    """
+    evidence = issue.evidence or {}
+    if evidence.get("asset_class") != fixed_assets.ORNAMENT_ASSET_CLASS:
+        return "overlap_not_ornament"
+    bbox = _finite_bbox(evidence.get("ornament_bbox"))
+    index = evidence.get("artwork_index")
+    if bbox is None or not isinstance(index, int) or isinstance(index, bool):
+        return "ornament_evidence_invalid"
+    reference = f"p{target.local_page}:pdf_curve#{index}"
+    record = baseline.fixed_inventory.by_ref.get(reference)
+    if record is None or record.bbox is None:
+        return "ornament_not_fixed_asset"
+    tolerance = config.asset_bbox_tolerance_pt
+    if any(
+        abs(float(held) - float(stated)) > tolerance
+        for held, stated in zip(record.bbox, bbox, strict=True)
+    ):
+        return "ornament_not_fixed_asset"
+    band = _first_line_band(target.paragraph)
+    if band is None or min(bbox[3], band[1]) - max(bbox[1], band[0]) <= 0:
+        return "clearance_not_head_form"
+    return None
+
+
 def _refit_admission(
     issue,
     docs,
@@ -899,6 +997,13 @@ def _refit_admission(
             if len(refs) != 1:
                 return None, "out_of_page_requires_one_ref"
             target = _target(docs, baseline, article_document_ir, refs[0])
+        elif issue.kind == "text_figure_overlap":
+            if len(refs) != 1:
+                return None, "overlap_requires_one_ref"
+            target = _target(docs, baseline, article_document_ir, refs[0])
+            refused = _ornament_clearance_admission(issue, target, baseline, config)
+            if refused is not None:
+                return None, refused
         elif issue.kind == "text_text_collision":
             if len(refs) != 2 or refs[0] == refs[1]:
                 return None, "collision_requires_two_unique_refs"
@@ -978,6 +1083,9 @@ def _refit_target(
     typesetter,
     flow_refs,
     config: RepairConfig,
+    *,
+    translation_config=None,
+    clearance_pt: float | None = None,
 ) -> _Target:
     target, refused = _refit_admission(
         issue,
@@ -990,6 +1098,15 @@ def _refit_target(
     if refused is not None:
         raise _RepairRefusalError(refused)
     source_box = tuple(float(value) for value in target.element.source_box)
+    if issue.kind == "text_figure_overlap":
+        return _refit_with_clearance(
+            issue,
+            target,
+            source_box,
+            typesetter,
+            translation_config,
+            clearance_pt,
+        )
     target_text = paragraph_reading_text(target.paragraph)
     target_unicode = target.paragraph.unicode
     style = _paragraph_style(target.paragraph)
@@ -1003,6 +1120,89 @@ def _refit_target(
         or not _visible_character_contract(target.paragraph, target_text)
     ):
         raise _RepairRefusalError("refit_render_contract_failed")
+    return target
+
+
+# What the decision schema declares for ``clearance_pt`` and the loop hands
+# through; stated once here for the caller that has no parameters to give.
+DEFAULT_CLEARANCE_PT = 2.0
+
+
+def _refit_with_clearance(
+    issue,
+    target: _Target,
+    source_box: tuple[float, float, float, float],
+    typesetter,
+    translation_config,
+    clearance_pt: float | None,
+) -> _Target:
+    """Re-set the paragraph in its own box, first line advanced past the ornament.
+
+    The ornament never moves -- it is a fixed asset and the admission proved
+    it. What moves is the pen: a repair-owned clearance width (the B16
+    channel the typesetting stage reads) advances the first line past the
+    ornament's right edge plus the margin. Every failure restores the
+    paragraph and the width store to what they were, so a refused repair
+    leaves no fingerprints for the next round to trip on.
+    """
+    from babeldoc.magazine import indent_policy
+
+    if translation_config is None:
+        raise _RepairRefusalError("clearance_requires_translation_config")
+    paragraph = target.paragraph
+    debug_id = getattr(paragraph, "debug_id", None)
+    if not debug_id:
+        raise _RepairRefusalError("clearance_requires_debug_id")
+    margin = DEFAULT_CLEARANCE_PT if clearance_pt is None else float(clearance_pt)
+    bbox = _finite_bbox((issue.evidence or {}).get("ornament_bbox"))
+    if bbox is None:
+        raise _RepairRefusalError("ornament_evidence_invalid")
+    width = bbox[2] - source_box[0] + margin
+    if width <= 0 or width >= source_box[2] - source_box[0]:
+        raise _RepairRefusalError("clearance_no_fit")
+
+    store = getattr(translation_config, indent_policy.REPAIR_CLEARANCE_ATTR, None)
+    if store is None:
+        store = {}
+        setattr(translation_config, indent_policy.REPAIR_CLEARANCE_ATTR, store)
+    previous_width = store.get(debug_id)
+    saved_box = paragraph.box
+    saved_compositions = copy.deepcopy(paragraph.pdf_paragraph_composition)
+    saved_scale = getattr(paragraph, "scale", None)
+    saved_optimal = getattr(paragraph, "optimal_scale", None)
+    target_text = paragraph_reading_text(paragraph)
+    target_unicode = paragraph.unicode
+    style = _paragraph_style(paragraph)
+    source_style_digest = fixed_assets.content_digest(style)
+
+    def _restore() -> None:
+        paragraph.box = saved_box
+        paragraph.pdf_paragraph_composition = saved_compositions
+        paragraph.scale = saved_scale
+        paragraph.optimal_scale = saved_optimal
+        if previous_width is None:
+            store.pop(debug_id, None)
+        else:
+            store[debug_id] = previous_width
+
+    store[debug_id] = width
+    try:
+        paragraph.box = il_version_1.Box(*source_box)
+        _render_target(typesetter, target)
+    except _RepairRefusalError:
+        _restore()
+        raise
+    if (
+        paragraph.unicode != target_unicode
+        or _box_tuple(paragraph.box) != source_box
+        or fixed_assets.content_digest(style) != source_style_digest
+        or not _visible_character_contract(paragraph, target_text)
+    ):
+        _restore()
+        raise _RepairRefusalError("refit_render_contract_failed")
+    if _ink_ornament_area(paragraph, bbox) > 1e-6:
+        _restore()
+        raise _RepairRefusalError("clearance_no_fit")
     return target
 
 

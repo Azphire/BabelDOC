@@ -322,6 +322,8 @@ def _apply(
                     typesetter,
                     flow_refs,
                     config,
+                    translation_config=translation_config,
+                    clearance_pt=parameters.get("clearance_pt"),
                 ),
             ),
             0,
