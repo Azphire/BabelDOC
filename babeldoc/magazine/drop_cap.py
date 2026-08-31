@@ -1762,6 +1762,18 @@ def apply(translation_config, labeled_pages) -> dict | None:
         drop_cap_intent.write_report(translation_config)
         transaction.commit()
 
+    # The merge/prepend above is a sanctioned pre-translation rewrite of the
+    # frozen source (recorded here, transactional). The coverage drift guard
+    # must follow the sanctioned text, or it kills the run at the first
+    # enqueue of a merged owner (Courier-en p5#5 was the first: the guard is
+    # newer than this pass and the two had never met on a drop-cap sample).
+    snapshot = getattr(translation_config, "magazine_coverage_snapshot", None)
+    if snapshot is not None:
+        refreeze = getattr(snapshot, "refreeze_source", None)
+        if callable(refreeze):
+            for paragraph in touched:
+                refreeze(paragraph)
+
     logger.debug(
         "drop cap apply: %d verdict(s), %d merged",
         record["totals"]["decided"],

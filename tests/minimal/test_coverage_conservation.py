@@ -255,3 +255,24 @@ def test_pre_translate_fails_closed_before_building_any_request() -> None:
         translator.pre_translate_paragraph(paragraph, tracker, {}, {})
     # The refs were still bound first, so the failure names a source.
     assert tracker.source_ref == "p7#0"
+
+
+def test_guard_accepts_a_sanctioned_drop_cap_refreeze() -> None:
+    # The drop-cap apply channel merges the visual initial into its owner
+    # before translation -- a recorded rewrite of both text and characters.
+    # After the channel refreezes the paragraph, the guard protects the
+    # sanctioned text; before it does, the same rewrite still fails closed.
+    owner = _paragraph("n the Purus River the light fades")
+    snapshot = _freeze([owner])
+
+    owner.unicode = "On the Purus River the light fades"
+    with pytest.raises(ValueError, match="drifted"):
+        snapshot.assert_source_unchanged(owner)
+
+    snapshot.refreeze_source(owner)
+    snapshot.assert_source_unchanged(owner)
+
+    # Everything after the refreeze is still guarded.
+    owner.unicode = "tampered later"
+    with pytest.raises(ValueError, match="drifted"):
+        snapshot.assert_source_unchanged(owner)

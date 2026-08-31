@@ -347,6 +347,27 @@ class CoverageSnapshot:
         """Return ``(physical source ref, runtime source ref)`` for a paragraph."""
         return self._refs_by_object.get(id(paragraph))
 
+    def refreeze_source(self, paragraph) -> None:
+        """Accept one sanctioned pre-translation rewrite of a frozen source.
+
+        The drop-cap apply channel merges a visual initial into its owner --
+        or empties the standalone holder it came from -- before translation:
+        a recorded, transactional rewrite of text this ledger froze earlier.
+        The guard's shas follow the sanctioned text so that everything after
+        this point stays protected; the frozen item keeps naming the
+        original text it froze, because the ledger reports what the source
+        page said, not what a pass rewrote it into.
+        """
+        identity = id(paragraph)
+        if identity not in self._unicode_sha_by_object:
+            return
+        self._unicode_sha_by_object[identity] = _sha256(
+            str(getattr(paragraph, "unicode", "") or "")
+        )
+        self._chars_sha_by_object[identity] = _sha256(
+            get_char_unicode_string(line_split.paragraph_characters(paragraph))
+        )
+
     def assert_source_unchanged(self, paragraph) -> None:
         """Fail closed when a paragraph's text drifted since the freeze.
 
