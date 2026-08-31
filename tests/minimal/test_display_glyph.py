@@ -145,6 +145,20 @@ def test_a_long_oversized_run_is_a_heading_and_stays(tmp_path) -> None:
     assert record["counts"] == {"pinned": 0, "refused": 0}
 
 
+def test_an_oversized_word_goes_back_to_the_flow(tmp_path) -> None:
+    # A big topic word over a section label translates to something; pinning
+    # it would silently exempt that translation. Recorded, not pinned.
+    host = _mixed_paragraph([("编者按 ", 12.0), ("创新", 30.0)])
+
+    record, page = _apply(tmp_path, [host])
+
+    assert record["counts"]["pinned"] == 0
+    assert [item["reason"] for item in record["refused"]] == [
+        display_glyph.REFUSED_LETTERED_RUN
+    ]
+    assert len(page.pdf_paragraph) == 1
+
+
 def test_the_switch_down_leaves_the_page_alone(tmp_path) -> None:
     host = _mixed_paragraph([("A line ", 8.0), ("8", 65.0)])
     record, page = _apply(tmp_path, [host], on=False)

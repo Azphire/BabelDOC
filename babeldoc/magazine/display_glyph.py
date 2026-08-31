@@ -36,6 +36,13 @@ untouched for the drop cap lane to judge, whether or not that lane later
 takes it. Everything after the first character is this pass's territory.
 This pass runs before the drop cap candidate signal, so the order is fixed
 by the pipeline rather than by racing, and every refusal is recorded.
+
+And a pinned run must be translation-invariant: digits and marks only, no
+letter of any script. Pinning trades re-setting for fidelity, and that trade
+is only free where the run would translate to itself -- a ``8`` is an ``8``
+in any language, while a two-character topic word pinned over a section
+label (the first cold sample this pass walked) is a translation silently
+not made. Lettered runs go back to the flow, recorded as refused.
 """
 
 from __future__ import annotations
@@ -63,6 +70,7 @@ SWITCH = "magazine_display_glyph"
 
 # Why a qualifying run was not pinned. Closed, and every refusal is recorded.
 REFUSED_OPENING_POSITION = "opening_position_drop_cap_lane"
+REFUSED_LETTERED_RUN = "lettered_run_translates"
 
 
 def load_display_glyph_config() -> dict:
@@ -226,6 +234,19 @@ def apply(translation_config, docs) -> dict | None:
                     refused.append(
                         {**record, "reason": REFUSED_OPENING_POSITION}
                     )
+                    continue
+                # Pinning is only harmless where the run translates to
+                # itself. A numeral or a mark does; a word does not -- the
+                # first cold walk of this pass pinned a 30pt two-character
+                # topic word over a section label, which silently exempted a
+                # real translation from happening. Letters of any script
+                # send the run back to the flow.
+                if any(
+                    glyph.isalpha()
+                    for character in run
+                    for glyph in (character.char_unicode or "").strip()
+                ):
+                    refused.append({**record, "reason": REFUSED_LETTERED_RUN})
                     continue
                 glyph = _pinned_paragraph(run, paragraph)
                 _rebuild_without(paragraph, {id(c) for c in run})
