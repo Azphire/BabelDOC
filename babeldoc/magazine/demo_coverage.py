@@ -57,6 +57,7 @@ SKIP_REASONS = (
     "vertical",
     "cid_encoding",
     "placeholder_only",
+    "bilingual_companion",
     "no_source_script",
     "below_length_floor",
 )
@@ -70,6 +71,63 @@ def _source_script(lang_in: str) -> str:
     which is the script its source was written in.
     """
     return HAN_SCRIPT if str(lang_in or "").lower().startswith("zh") else LATIN_SCRIPT
+
+
+def wholly_scripted(text: str) -> str | None:
+    """The one script bucket a text's letters all belong to, or None.
+
+    Digits, punctuation and spacing take no part; a text whose letters split
+    across buckets, or that has no letters at all, belongs to no one bucket.
+    """
+    counts = script_counts(text or "")
+    han, latin = counts[HAN_SCRIPT], counts[LATIN_SCRIPT]
+    if han and not latin:
+        return HAN_SCRIPT
+    if latin and not han:
+        return LATIN_SCRIPT
+    return None
+
+
+def _boxes_intersect(left, right) -> bool:
+    return (
+        min(left[2], right[2]) > max(left[0], right[0])
+        and min(left[3], right[3]) > max(left[1], right[1])
+    )
+
+
+def cross_script_twin(paragraph, neighbours) -> bool:
+    """Whether this paragraph shares its ink area with its other-script double.
+
+    The shape of a bilingual masthead: the page prints one label in two
+    languages on one spot (fd's contents header sets a Han label over its
+    own English rendering). The half written in the run's source script is
+    already accompanied by its target-language text, so translating it would
+    say the same thing twice on the same ink. The test is symmetric and
+    direction-free: one wholly-scripted box intersecting a wholly-scripted
+    box of the other bucket.
+    """
+    own_script = wholly_scripted(getattr(paragraph, "unicode", "") or "")
+    if own_script is None:
+        return False
+    try:
+        own_box = _box(getattr(paragraph, "box", None))
+    except ValueError:
+        return False
+    if own_box is None:
+        return False
+    for other in neighbours:
+        if other is paragraph:
+            continue
+        other_script = wholly_scripted(getattr(other, "unicode", "") or "")
+        if other_script is None or other_script == own_script:
+            continue
+        try:
+            other_box = _box(getattr(other, "box", None))
+        except ValueError:
+            continue
+        if other_box is not None and _boxes_intersect(own_box, other_box):
+            return True
+    return False
 
 
 def _sha256(text: str) -> str:
@@ -149,7 +207,7 @@ class CoverageSnapshot:
             )
 
 
-def _skip_traits(paragraph, furniture_plan) -> tuple[str, ...]:
+def _skip_traits(paragraph, furniture_plan, page_paragraphs) -> tuple[str, ...]:
     """The standing reasons this paragraph would not be enqueued, at freeze."""
     traits: list[str] = []
     if furniture_plan is not None and furniture_plan.withholds(
@@ -167,6 +225,8 @@ def _skip_traits(paragraph, furniture_plan) -> tuple[str, ...]:
         paragraph, "pdf_paragraph_composition", None
     ) and is_placeholder_only_paragraph(paragraph):
         traits.append("placeholder_only")
+    if cross_script_twin(paragraph, page_paragraphs):
+        traits.append("cross_script_twin")
     return tuple(traits)
 
 
@@ -243,7 +303,9 @@ def freeze(
                 han_chars=scripts[HAN_SCRIPT],
                 latin_chars=scripts[LATIN_SCRIPT],
                 text_length=len(text),
-                skip_traits=_skip_traits(paragraph, furniture_plan),
+                skip_traits=_skip_traits(
+                    paragraph, furniture_plan, page.pdf_paragraph or ()
+                ),
             )
             items.append(item)
             refs_by_object[id(paragraph)] = (physical_ref, runtime_ref)
@@ -326,6 +388,15 @@ def _skip_reason(
     script_chars = (
         item.han_chars if source_script == HAN_SCRIPT else item.latin_chars
     )
+    other_chars = (
+        item.latin_chars if source_script == HAN_SCRIPT else item.han_chars
+    )
+    # The measurement is direction-free; the judgment is not. Only the half
+    # written wholly in the run's source script is a companion the target
+    # language already covers -- the other half is the coverage the page came
+    # with.
+    if "cross_script_twin" in item.skip_traits and script_chars and not other_chars:
+        return "bilingual_companion"
     if script_chars == 0:
         return "no_source_script"
     if item.text_length < length_floor:

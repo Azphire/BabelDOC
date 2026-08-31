@@ -39,9 +39,15 @@ class Config:
         return str(self.working_dir / name)
 
 
+_next_slot = iter(range(0, 100000, 300))
+
+
 def _paragraph(text: str, *, label: str = "plain text", vertical=False):
+    # Each fixture paragraph gets its own ground: overlapping boxes would
+    # read as cross-script twins, which is its own test's business.
+    x = float(next(_next_slot))
     return il_version_1.PdfParagraph(
-        box=il_version_1.Box(x=10, y=20, x2=210, y2=80),
+        box=il_version_1.Box(x=x + 10, y=20, x2=x + 210, y2=80),
         unicode=text,
         layout_label=label,
         vertical=vertical,

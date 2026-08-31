@@ -75,6 +75,9 @@ from babeldoc.format.pdf.document_il.utils.paragraph_helper import (
     is_pure_numeric_paragraph,
 )
 from babeldoc.magazine import source_audit
+from babeldoc.magazine.demo_coverage import cross_script_twin
+from babeldoc.magazine.demo_coverage import wholly_scripted
+from babeldoc.magazine.detectors.base import HAN_SCRIPT
 from babeldoc.magazine.line_split import paragraph_characters
 from babeldoc.magazine.page_features import ConfigError
 from babeldoc.magazine.page_features import validate_bounded_config
@@ -115,6 +118,7 @@ class ShortUnitError(ConfigError):
 @dataclass(frozen=True)
 class ShortUnitConfig:
     shape_exception_floor: int
+    ideographic_exception_floor: int
     short_label_max_chars: int
     min_letters: int
     adjacent_gap_ratio: float
@@ -158,6 +162,7 @@ def load_short_unit_config(path: str | None = None) -> ShortUnitConfig:
         )
     return ShortUnitConfig(
         shape_exception_floor=int(parameters["shape_exception_floor"]),
+        ideographic_exception_floor=int(parameters["ideographic_exception_floor"]),
         short_label_max_chars=int(parameters["short_label_max_chars"]),
         min_letters=int(parameters["min_letters"]),
         adjacent_gap_ratio=float(parameters["adjacent_gap_ratio"]),
@@ -212,6 +217,13 @@ def is_solitary(index: int, paragraphs: list, config: ShortUnitConfig) -> bool:
     Measured as a multiple of the paragraph's own font size, so the same
     judgement is made at any size, and against the horizontal gap alone: two
     boxes are beside each other when they share a band and nearly touch.
+
+    A neighbour written wholly in a different script bucket does not defeat
+    solitarity: the test exists to catch pieces of a broken word, and a word
+    does not break across scripts. A Han label brushing an English header is
+    a label beside a header, not half of anything -- and where the two are
+    the same label printed twice, the bilingual companion refusal in ``plan``
+    takes it before a request is built.
     """
     own = _box(paragraphs[index])
     if own is None:
@@ -219,6 +231,7 @@ def is_solitary(index: int, paragraphs: list, config: ShortUnitConfig) -> bool:
     size = font_size_of(paragraphs[index])
     if not size:
         return False
+    own_script = wholly_scripted(paragraphs[index].unicode or "")
     reach = size * config.adjacent_gap_ratio
     for other, paragraph in enumerate(paragraphs):
         if other == index:
@@ -226,6 +239,10 @@ def is_solitary(index: int, paragraphs: list, config: ShortUnitConfig) -> bool:
         box = _box(paragraph)
         if box is None or not (paragraph.unicode or "").strip():
             continue
+        if own_script is not None:
+            other_script = wholly_scripted(paragraph.unicode or "")
+            if other_script is not None and other_script != own_script:
+                continue
         if min(own[3], box[3]) - max(own[1], box[1]) <= 0:
             continue
         gap = max(own[0], box[0]) - min(own[2], box[2])
@@ -299,7 +316,16 @@ def candidates(
             if text is None or getattr(paragraph, "debug_id", None) is None:
                 continue
             length = len(text)
-            if not config.shape_exception_floor <= length < minimum:
+            # One ideograph is one word; one Latin letter is not. A wholly-Han
+            # unit reaches down to its own, lower floor -- the single-character
+            # axis label a chart prints -- while anything with Latin letters
+            # keeps the two-character floor.
+            floor = (
+                config.ideographic_exception_floor
+                if wholly_scripted(text) == HAN_SCRIPT
+                else config.shape_exception_floor
+            )
+            if not floor <= length < minimum:
                 continue
             # The other three tests the page batch applies below the floor. A
             # folio, a paragraph drawn in an unmapped encoding and a paragraph
@@ -457,10 +483,28 @@ def plan(
         docs, minimum, config, fractured_paragraphs(translation_config, docs)
     )
     units = [unit for unit in units if id(unit.paragraph) not in excluded_paragraph_ids]
+    pages = list(docs.page or ())
+
+    # A label whose box intersects its own other-script double is a bilingual
+    # pair the page printed on purpose -- a masthead set in two languages on
+    # one spot. The target-language half is already there, so translating the
+    # source-script half would say the same thing twice on the same ink. The
+    # refusal is recorded, and the coverage ledger names the same fact from
+    # its own measurement.
+    admitted: list[Unit] = []
+    for unit in units:
+        neighbours = list(pages[unit.page_index].pdf_paragraph or ())
+        if cross_script_twin(unit.paragraph, neighbours):
+            unit.source = unit.paragraph.unicode or ""
+            result.refused.append(
+                {**unit.as_record(), "reason": "bilingual_companion"}
+            )
+            continue
+        admitted.append(unit)
+    units = admitted
     if not units:
         return result
 
-    pages = list(docs.page or ())
     prepared: list[Unit] = []
     # One tracking level per page, opened once and reused, so a unit is filed
     # under the page it stands on exactly as a batch of that page is.
@@ -615,6 +659,7 @@ def write_report(translation_config, plan_result: ShortUnitPlan, config=None) ->
         "switch": config.switch,
         "enabled": plan_result.enabled,
         "shape_exception_floor": config.shape_exception_floor,
+        "ideographic_exception_floor": config.ideographic_exception_floor,
         "short_label_max_chars": config.short_label_max_chars,
         "adjacent_gap_ratio": config.adjacent_gap_ratio,
         "min_text_length": int(getattr(translation_config, "min_text_length", 0) or 0),
