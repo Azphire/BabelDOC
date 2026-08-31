@@ -189,6 +189,46 @@ def test_guard_passes_an_unchanged_paragraph_and_fails_a_drifted_one() -> None:
         snapshot.assert_source_unchanged(paragraph)
 
 
+def test_guard_sanctions_a_rederivation_from_unchanged_characters() -> None:
+    # The fallback path rebuilds unicode from the paragraph's own characters
+    # (a CJK page renders fullwidth punctuation over ASCII codes). Unchanged
+    # characters, re-derived text: sanctioned. A foreign value: not.
+    style = il_version_1.PdfStyle(font_id="body", font_size=9.0)
+    characters = [
+        il_version_1.PdfCharacter(
+            char_unicode=glyph,
+            box=il_version_1.Box(10 + i * 9, 20, 19 + i * 9, 29),
+            pdf_style=style,
+            advance=9.0,
+            xobj_id=0,
+        )
+        for i, glyph in enumerate("传真:(202)")
+    ]
+    paragraph = il_version_1.PdfParagraph(
+        box=il_version_1.Box(x=10, y=20, x2=100, y2=29),
+        unicode="传真：（202）",
+        layout_label="plain text",
+        vertical=False,
+        pdf_paragraph_composition=[
+            il_version_1.PdfParagraphComposition(
+                pdf_same_style_characters=il_version_1.PdfSameStyleCharacters(
+                    box=il_version_1.Box(x=10, y=20, x2=100, y2=29),
+                    pdf_style=style,
+                    pdf_character=characters,
+                )
+            )
+        ],
+    )
+    snapshot = _freeze([paragraph])
+
+    paragraph.unicode = "传真:(202)"  # what the characters actually spell
+    snapshot.assert_source_unchanged(paragraph)
+
+    paragraph.unicode = "传真:(203)"  # not what they spell
+    with pytest.raises(ValueError, match="drifted"):
+        snapshot.assert_source_unchanged(paragraph)
+
+
 def test_guard_ignores_a_paragraph_the_freeze_never_saw() -> None:
     # The frozen paragraph is kept alive: the snapshot's identity map is keyed
     # by id(), and a collected paragraph would let a newcomer reuse its id.

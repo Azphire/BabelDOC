@@ -35,6 +35,9 @@ from dataclasses import dataclass
 from dataclasses import field
 from pathlib import Path
 
+from babeldoc.format.pdf.document_il.utils.layout_helper import (
+    get_char_unicode_string,
+)
 from babeldoc.format.pdf.document_il.utils.paragraph_helper import is_cid_paragraph
 from babeldoc.format.pdf.document_il.utils.paragraph_helper import (
     is_placeholder_only_paragraph,
@@ -185,6 +188,7 @@ class CoverageSnapshot:
     items: tuple[FrozenCoverageItem, ...]
     _refs_by_object: dict[int, tuple[str, str]]
     _unicode_sha_by_object: dict[int, str] = field(default_factory=dict)
+    _chars_sha_by_object: dict[int, str] = field(default_factory=dict)
 
     def source_refs_for(self, paragraph) -> tuple[str, str] | None:
         """Return ``(physical source ref, runtime source ref)`` for a paragraph."""
@@ -196,17 +200,37 @@ class CoverageSnapshot:
         Called at the enqueue sites. A paragraph the snapshot never froze is
         not this guard's question -- the ref binding above it already raises
         for that -- so an unknown identity passes through.
+
+        One rewrite is sanctioned: the per-paragraph fallback re-derives
+        ``unicode`` from the paragraph's own characters before retrying
+        (il_translator.translate_paragraph, use_as_fallback), and a CJK page
+        renders fullwidth punctuation over ASCII character codes, so the
+        derived text can differ from the finder's. The characters are the
+        ground truth (the B16 lesson), so a current text that equals the
+        text derived from an unchanged character stream passes; anything
+        else -- a foreign value, a truncation, a tampered stream -- fails.
         """
         frozen = self._unicode_sha_by_object.get(id(paragraph))
         if frozen is None:
             return
-        current = _sha256(str(getattr(paragraph, "unicode", "") or ""))
-        if current != frozen:
-            refs = self._refs_by_object.get(id(paragraph))
-            raise ValueError(
-                "translation source drifted from the frozen coverage inventory: "
-                f"{refs[0] if refs else '<unbound>'}"
-            )
+        text = str(getattr(paragraph, "unicode", "") or "")
+        if _sha256(text) == frozen:
+            return
+        derived = get_char_unicode_string(
+            line_split.paragraph_characters(paragraph)
+        )
+        if (
+            text == derived
+            and _sha256(derived) == self._chars_sha_by_object.get(id(paragraph))
+        ):
+            return
+        refs = self._refs_by_object.get(id(paragraph))
+        raise ValueError(
+            "translation source drifted from the frozen coverage inventory: "
+            f"{refs[0] if refs else '<unbound>'} "
+            f"(now {len(text)} chars, type {type(getattr(paragraph, 'unicode', None)).__name__}: "
+            f"{text[:60]!r})"
+        )
 
 
 def _skip_traits(paragraph, furniture_plan, page_paragraphs) -> tuple[str, ...]:
@@ -245,6 +269,7 @@ def freeze(
     items: list[FrozenCoverageItem] = []
     refs_by_object: dict[int, tuple[str, str]] = {}
     unicode_sha_by_object: dict[int, str] = {}
+    chars_sha_by_object: dict[int, str] = {}
     seen_physical: set[str] = set()
 
     for runtime_page, (physical_page, page) in enumerate(labeled_pages, start=1):
@@ -314,8 +339,13 @@ def freeze(
             unicode_sha_by_object[id(paragraph)] = _sha256(
                 str(getattr(paragraph, "unicode", "") or "")
             )
+            chars_sha_by_object[id(paragraph)] = _sha256(
+                get_char_unicode_string(line_split.paragraph_characters(paragraph))
+            )
 
-    return CoverageSnapshot(tuple(items), refs_by_object, unicode_sha_by_object)
+    return CoverageSnapshot(
+        tuple(items), refs_by_object, unicode_sha_by_object, chars_sha_by_object
+    )
 
 
 def _read_optional(path: Path) -> dict:
