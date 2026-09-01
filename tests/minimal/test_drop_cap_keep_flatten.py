@@ -419,6 +419,79 @@ def register_render_intents(
     return intents
 
 
+def bound_intent(
+    *,
+    article_id: str,
+    source_text: str | None = None,
+    source_font_id: str | None = None,
+    config_version: int = 2,
+) -> drop_cap_intent.DropCapIntent:
+    paragraph = source_drop_cap_paragraph()
+    if source_text is not None:
+        paragraph.unicode = source_text
+    source_character = paragraph_characters(paragraph)[0]
+    if source_font_id is not None:
+        source_character.pdf_style.font_id = source_font_id
+    return drop_cap_intent.build_intent(
+        source_ref="p16#5",
+        article_id=article_id,
+        paragraph=paragraph,
+        source_character=source_character,
+        target_policy=drop_cap_intent.POLICY_CHINESE_TWO_LINE_INITIAL,
+        config_version=config_version,
+        decision_version=1,
+        visual_initial_ref="p16#5",
+        binding_proof={
+            "kind": "same_paragraph_composition",
+            "owner_ref": "p16#5",
+            "visual_initial_ref": "p16#5",
+        },
+    )
+
+
+def test_bound_decision_survives_article_regrouping() -> None:
+    review_intent = bound_intent(article_id="article-review")
+    formal_intent = bound_intent(article_id="article-formal")
+
+    assert review_intent.article_id != formal_intent.article_id
+    assert review_intent.candidate_id == formal_intent.candidate_id
+    assert review_intent.candidate_fingerprint == formal_intent.candidate_fingerprint
+
+    decision = drop_cap.parse_manual_decision(
+        "p16#5",
+        review_intent.manual_template("keep"),
+        ("keep", "flatten"),
+    )
+    assert drop_cap_intent.decision_matches(formal_intent, decision)
+
+
+def test_bound_decision_rejects_source_or_config_drift() -> None:
+    intent = bound_intent(article_id="article-review")
+    decision = drop_cap.parse_manual_decision(
+        "p16#5",
+        intent.manual_template("keep"),
+        ("keep", "flatten"),
+    )
+    drifted = (
+        bound_intent(
+            article_id="article-formal",
+            source_text="A changed source paragraph",
+        ),
+        bound_intent(
+            article_id="article-formal",
+            source_font_id="changed-source-initial",
+        ),
+        bound_intent(
+            article_id="article-formal",
+            config_version=3,
+        ),
+    )
+
+    for drifted_intent in drifted:
+        assert drifted_intent.candidate_id != intent.candidate_id
+        assert not drop_cap_intent.decision_matches(drifted_intent, decision)
+
+
 @pytest.mark.parametrize("decision", ["keep", "flatten"])
 def test_keep_and_flatten_offer_exactly_one_source_initial(
     tmp_path: Path,

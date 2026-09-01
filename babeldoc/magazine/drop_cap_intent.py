@@ -596,7 +596,6 @@ def build_intent(
     text_fingerprint = _digest(paragraph.unicode or "")
     candidate_payload = {
         "source_ref": source_ref,
-        "article_id": article_id,
         "source_char": source_char,
         "source_text_fingerprint": text_fingerprint,
         "source_style_hash": source_style_hash,

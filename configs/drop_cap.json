@@ -14,7 +14,7 @@
   "initial_size_tolerance_allowed_range": "0.0..2.0",
   "color_tolerance": 0.003922,
   "color_tolerance_allowed_range": "0.0..0.05",
-  "intent_config_version": 1,
+  "intent_config_version": 2,
   "intent_config_version_allowed_range": "1..99",
   "decision_version": 1,
   "decision_version_allowed_range": "1..99",
