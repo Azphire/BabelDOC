@@ -69,11 +69,11 @@
   "drop_caps": {
     "p16#5": {
       "decision": "keep",
-      "candidate_id": "dropcap-7b3f05958a514bc8334917494701c897ad1e8581c62c8c6c3be1f0fec6ef39e7",
+      "candidate_id": "dropcap-c0620078275e4623fa31077fcb08a89b1961f1896ea51c81266d1f73267fa266",
       "source_ref": "p16#5",
       "source_text_fingerprint": "84d0a43cc20671d903fd436e01ad0d57460f966fb086f531c8a03ce975631424",
       "source_style_hash": "d642014aaa3670b4a0c8aa58a359d112d5adfb3d45268f5839db59a01233fd32",
-      "config_version": 1,
+      "config_version": 2,
       "decision_version": 1
     }
   }
