@@ -31,6 +31,16 @@ logger = logging.getLogger(__name__)
 __version__ = "0.6.4"
 
 
+class TranslationEventError(RuntimeError):
+    """Raised when the translation stream emits an error event."""
+
+
+def _raise_for_error_event(event: dict[str, Any]) -> None:
+    if event.get("type") != "error":
+        return
+    raise TranslationEventError(str(event.get("error", "translation failed")))
+
+
 def create_parser():
     parser = configargparse.ArgParser(
         config_file_parser_class=configargparse.TomlConfigParser(["babeldoc"]),
@@ -795,7 +805,7 @@ async def main():
                     logger.debug(event)
                 if event["type"] == "error":
                     logger.error(f"Error: {event['error']}")
-                    break
+                    _raise_for_error_event(event)
                 if event["type"] == "finish":
                     result = event["translate_result"]
                     logger.info(str(result))
